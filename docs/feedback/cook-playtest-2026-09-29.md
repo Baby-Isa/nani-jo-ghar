@@ -1,6 +1,6 @@
 # Cook play-test, 29 Sept 2026: every point, analysis and the plan
 
-**Source:** Zafar's 31-minute voice note, played on the live site after the overnight v2 run (build 16c3fb1, before the 11:50 chai fixes). Transcript: `docs/feedback/cook-playtest-2026-09-29-transcript.md`. Every point below carries its timestamp. The coverage check at the end maps every line of the transcript to an item, so nothing is dropped.
+**Source:** Zafar's 31-minute voice note, played on the live site after the overnight v2 run (build 16c3fb1, before the 11:50 chai fixes). Transcript: `docs/archive/feedback-transcripts/cook-playtest-2026-09-29-transcript.md`. Every point below carries its timestamp. The coverage check at the end maps every line of the transcript to an item, so nothing is dropped.
 
 **How to read it:**
 - **X** items are shared (they touch every station). The station sections follow them: **P** pantry, **C** chai, **M** maani, **D** daar, **T** chaat, **S** samosa, **K** sekelo.

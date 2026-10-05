@@ -1,30 +1,25 @@
 # Shared API (`js/shared/`)
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - §3 Star sets, `data/shared/stars.json`, `js/shared/stars.js`, ear star and voice star (`Stars.ear`, `Stars.voice`), and `Results.toStars` ("accuracy gold ⇔ ear, hints ⇔ no-help") → the code matches the doc but the concept is superseded: scoring is the three badges (time, accuracy, hints); no ear or voice star; the legacy star code is to be deleted (H5, J7, decisions 1–2)
-> - §6 stub-swap table and §7 "Phase B owns the rest" → historical, describing 25 Sept; `save.js` and `app.js` (phase B) are built
-> - §0 file and global table is missing about ten newer modules (`buttons.js`, `results.js`, `onboard.js`, `uistore.js`, `character.js`, `charmaker.js`, `conversations.js`, `family-voice.js`, `fit.js`, `sfx.js`, `story.js`); some are covered in §9 and §12–§16
-> - Hands in any API (first-person hands) → parked, none in Cook (H13)
-> - Every mode must use the shared screens and buttons, never restyled (non-negotiable 8)
+*The calls, arguments and data formats of the shared modules in `js/shared/`, with the engine core (`js/core/`) beside them. Updated 6 Oct 2026. The foundation (the framework session of the moment, `target-model.md` § 9.4) owns `js/shared/`, `js/core/`, `data/relations.json` and `data/shared/`; modes read them and never edit them. Ask for a change in your report; don't fork a copy.*
 
-*The contract between the foundation and the mode builds, 25 Sept 2026. Every call, its arguments and what it returns, the data formats, and how each mode swaps its stub for the real module. The foundation session owns `js/shared/`, `data/relations.json` and `data/shared/`; modes read them and never edit them. Ask for a change by writing it in your build log; don't fork a copy.*
+**Where the API of each module is written.** The older modules (§§ 1–5, 8–16 below, written 25–30 Sept) are documented in this file. The newer ones are documented in their own file headers, which are the reference: `js/shared/host.js` (the mini-game interface and the host), `mode.js` (the mode interface and the shell loop), `input.js`, `frame.js`, `stage.js`, `fit.js`, `bulb.js`, `tally.js`, `focus.js`, and everything in `js/core/` (`save`, `progress`, `score`, `wallet`, `voice`, `context`, `unlocks`, `settings`, `content`, `log`, `lang/`); `js/core/types.js` holds the shared contracts as JSDoc types. How the pieces fit is `target-model.md`; how to build a game from them is `building-games.md`.
 
-## 0. Loading
+## 0. Loading and the module list
 
-Every module is one plain file with no dependencies. As a `<script>` it sets a global and also hangs itself on `window.Shared`; in Node, `require()` it (the leak bots and tests do this).
+Two kinds of module live here. **Classic scripts** set a global (and some also hang on `window.Shared`); in Node, `require()` them (the leak bots and tests do). **ES modules** (`host.js`, `mode.js`, `input.js`, everything in `js/core/`) are imported by name through the page's import map, which `build/bump_version.py` writes and stamps.
 
-| File | Global | `Shared.` | Data it reads |
+| File | Global or exports | Used by | Status |
 |---|---|---|---|
-| `js/shared/speech.js` | `Speech` | `speech` | family MP3s via the audio manifest |
-| `js/shared/rel.js` | `Rel` | `rel` | `data/relations.json` |
-| `js/shared/whichone.js` | `WhichOne` | `whichone` | none (a mode passes its look-alike groups) |
-| `js/shared/stars.js` | `Stars` | `stars` | `data/shared/stars.json` |
-| `js/shared/say.js` | `Say` | `say` | uses `Speech`, and `Stars` if loaded |
-| `js/shared/overlay.js` | `Overlay` | `overlay` | `data/shared/overlays.json` |
-| `js/shared/save.js` | `Save` | `save` | localStorage (section 11) |
-| `js/shared/app.js` | `NjgApp` | none | none (section 12; browser only) |
-| `js/shared/order-card.js` | `OrderCard` | `orderCard` | none (section 14; `shape()` runs in Node) |
-| `js/shared/guide.js` | `NaniGuide` | `guide` | the Save flag `naniMuted` (section 14.4; browser only) |
+| `host.js`, `mode.js`, `input.js` | ES exports; `window.njgTest` | Cook, the clinic, the demo | **current**: the plug-in contract |
+| `frame.js`, `stage.js`, `fit.js` | `Frame`, `Stage`, `FitText` | every page with the frame | current |
+| `guide.js`, `bulb.js`, `order-card.js`, `buttons.js`, `tally.js`, `results.js`, `onboard.js`, `focus.js`, `say.js` | `NaniGuide`, `Bulb`, `OrderCard`, `NjgButtons`, `Tally`, `Results`, `Onboard`, `Focus`, `Say` | Cook, the clinic | current |
+| `speech.js` | `Speech` | the speaking moments | current (on-device, closed set) |
+| `app.js`, `save.js`, `uistore.js`, `family-voice.js`, `sfx.js` | `NjgApp`, `Save`, `UIStore`, `FamilyVoice`, `Sfx` | every page | current (`save.js` is the classic tag the parked pages load; the core's `js/core/save.js` is the same API as a module) |
+| `character.js`, `charmaker.js`, `story.js` | `Character`, the character maker, the story player | first launch | current |
+| `conversations.js` | `Conversations` | none yet | built, not wired |
+| `stars.js`, `whichone.js`, `rel.js`, `overlay.js` | `Stars`, `WhichOne`, `Rel`, `Overlay` | the parked modes (Find it, Tidy up, Who did it?, Dress up, Monsoon rush, Snap) | **legacy**: Cook and the clinic use none of them; they go or are rewritten when those modes move (decision 38) |
+
+The legacy four read `data/relations.json`, `data/shared/stars.json` and `data/shared/overlays.json`:
 
 ```html
 <script src="js/shared/speech.js"></script>
@@ -38,12 +33,12 @@ Every module is one plain file with no dependencies. As a `<script>` it sets a g
 </script>
 ```
 
-In Node, use `Rel.load(require("../data/relations.json"))` and do the same for the others. A module that hasn't loaded its data still works, but only on built-in defaults: Rel knows the common relations, and Stars uses Cook's rule with `minTested` 2.
+In Node, use `Rel.load(require("../data/relations.json"))` and do the same for the others. A module that hasn't loaded its data still works, but only on built-in defaults.
 
 Conventions:
 - **Coordinates** are design pixels on the 1600×900 stage. A panning scene sets `stage: [w, 900]`.
 - **Rects** are `[x0, y0, x1, y1]`. `box: [x, y, w, h]` is accepted and converted.
-- **Word ids** are Cook's (`cook-chai`, `fru-01`, `ph-…`). Nothing shared invents Kutchi: every relation word is a placeholder with `kutchi: null`.
+- **Word ids** are the language engine's (`n.samosa`); Cook's older ids (`cook-chai`, `fru-01`, `ph-…`) are kept as aliases. Nothing shared invents Kutchi: a word the engine can't say is a gap with a grey-italic placeholder (G2).
 - **Randomness** is always passed in (`rng`), so generators and bots are seeded.
 
 ---
@@ -179,7 +174,7 @@ An item is `{id, noun, colour?, size?, ...}` or `{id, noun, attrs: {...}}`; `kin
 | `WhichOne.group(id, groups)` / `WhichOne.candidates(id, groups, {n, rng, exclude})` / `WhichOne.checkGroups(groups)` | the look-alike group; the candidates to show (the whole group or n of it, always including id, shuffled); problems (duplicates, singletons). `groups` is an array of arrays or `{groups: [...]}` (Find it's and Cook's shape) |
 | `WhichOne.balance(items, used, {min: 2, except})` | `{ok, problems, counts, distinct, median}`: every said value (`used` = dim names or `[{dim, value}]`) is on ≥ 2 items (Who did it 3.2), plus each item's distinctiveness and the median |
 | `WhichOne.distinctive(item, items, dims)` / `WhichOne.notStandout(item, items, dims)` | how many of its values are unique; is it at or below the median (the culprit rule) |
-| `WhichOne.consistent(items, clues)` / `WhichOne.lucky(items, clues)` | who still fits; accusing now is a guess (more than one fits: no ear star). A clue is `fn(item)`, `{fits(item)}` or `{dim, value, not?}` |
+| `WhichOne.consistent(items, clues)` / `WhichOne.lucky(items, clues)` | who still fits; accusing now is a guess (more than one fits: a miss on the accuracy badge). A clue is `fn(item)`, `{fits(item)}` or `{dim, value, not?}` |
 | `WhichOne.blindOdds(rows, items, {visible, dims, strategies, countKnown})` | `{p, rows: [{p, strategy, candidates, targets}]}`: the chance a non-speaker gets every row right, taking the strongest prior per row (`uniform`, `odd` one out, most `common` value, plus yours). Use `row.visible` / `opts.visible` for what a non-speaker can read (an English placeholder), and report such rows apart |
 | `WhichOne.setOdds(scope, answers, {features, salience})` | Dress up 8.4: the best blind chance of picking exactly the set `answers` from `scope`. The strategies are uniform, the one strictly most common value of any feature, and the most salient colour; a strategy set smaller than k takes it all plus the rest at random |
 | `WhichOne.fitBudget(make, {budget: 0.05, addDecoy, addRow, odds, blind, maxSteps})` | `{round, p, steps, ok}`: `make()` a round, then alternate `addDecoy(round)` / `addRow(round)` (each returns the grown round or null) until `odds(round) ≤ budget` |
@@ -189,7 +184,9 @@ An item is `{id, noun, colour?, size?, ...}` or `{id, noun, attrs: {...}}`; `kin
 
 ---
 
-## 3. Star sets and ear/voice rules: `data/shared/stars.json`, `js/shared/stars.js`
+## 3. Star sets and ear/voice rules: `data/shared/stars.json`, `js/shared/stars.js` (legacy: the parked modes only)
+
+*This is the 25 Sept star model. Scoring is now three badges and pocket money (`js/core/score.js`, H5, decisions 1–3, 10); there is no ear or voice star. The code stays only for the parked modes that still load it and is removed when they move. Do not use it in a new mode.*
 
 ### 3.1 The data
 `rules.defaults`, then `rules.<mode>`, then `rules.<mode>.variants.<name>` (a visit type, a mechanic).
@@ -278,7 +275,7 @@ const out = await Say.moment({
 - **Parent log.** It writes one `Speech.logMoment(...)` entry per moment.
 - **No voice lines while listening.** While `Say.isListening()` is true, the mode must not play a voice line.
 
-The voice star is `Stars.voice([out, ...], mode)`.
+The speaking bonus (legacy name: the voice star, `Stars.voice([out, ...], mode)`) now only feeds pocket money (decision 2).
 
 The other calls:
 - **`Say.tell(opts)`** is the same moment, accepting `actor` for `character`.
@@ -346,35 +343,15 @@ The designed call is unchanged: `Speech.listen({choices, timeoutMs, onState, pcm
 
 ---
 
-## 6. Swapping a stub for the real module
+## 6. (Retired) Swapping a stub for the real module
 
-Each swap is one line, or a few in a single adapter file. After swapping, delete the stub and run your leak bot: the shared modules are at least as strict as the stubs.
+The 25 Sept table of per-mode stubs and their swaps is in git history. A parked mode that moves onto the framework adopts the shared kit the way Cook and the clinic did (`building-games.md`), not through the legacy modules.
 
-| Mode | Stub today | Swap to |
-|---|---|---|
-| **Find it** | `Find.matches` on `item.rel`, `Find.makeWants` size rows in `gen.js`, `Find.fakeListen`, `data/find.json` `star_set` | `Rel.holds(item, want.where, scene)` (word matching is the default); `WhichOne.checkDecoys(items, row, {minValues: {size: 2}})` or `WhichOne.build` for size rows; `Say.tell({choices, actor, onChoice, speech: {listen: Find.fakeListen, hasTemplates: () => true}})` in the lab, the real `Speech` otherwise; `Stars.installInto(Cook.data)` and `Stars.voice/ear(rows, "find")` |
-| **Tidy up** | `js/tidy/stubs/rel.js` (its own board dialect), `js/tidy/stubs/say.js`, speech stubbed to null, sidecars `kitchen-tidy.json` etc. | `Tidy.Rel = Rel.Tidy` (section 1.4: the stub's API and answers exactly; converge on the board form in phase B); `Tidy.say = (choices, o) => Say.moment(Object.assign({choices, mode: "tidy"}, o))`; stars `Stars.ear(rows, "tidy")` |
-| **Who did it?** | `js/who/stubs/whichone.js` (`balance`, `blindOdds(case)`), speech URL flags, greybox overlays, `data/who.json` `star_set` | `const W = WhichOne` in `case.js`: `W.balance(suspects, dims)` returns the stub's `counts`, `distinct` and `median`, plus `ok` and `problems`. Keep the case-level `blindOdds(case)` in `case.js` (it's the case's own formula), or build it from `WhichOne.setOdds`/`product`. **Don't write `js/shared/mechanics/tell.js`**: use `Say.tell({choices, actor, onHeard})` (it reports `{choice, via}`). For the URL flags, pass `speech: {listen: stubListen, hasTemplates: () => true}`. Suspects: `Overlay.figure("grey-cat", ["ov-trace", "item:fru-01"])` with your people's anchors added as bases |
-| **Dress up** | `js/dress/stubs/pick.js`, `js/dress/mechanics/say.js`, a local `star_sets` | `Dress.Pick = WhichOne.Pick` (the same API and answers), or `WhichOne.setOdds` directly; `say.js` → `Say.moment({... mode: "dress-up"})` (it already checks `window.Shared?.speech`); `Stars.rules("dress-up")`; the doll → `Overlay` with Dress up's slots (add full-body bases to `overlays.json` in phase B) |
-| **Monsoon rush** | `js/monsoon/speech-stub.js`, a local `say.js`, sidecars, `data/monsoon-audio.json` | `Say.moment({choices, mode: "monsoon", speech: labStub \|\| Speech})`; `Stars.ear(rows, "monsoon")` (80% over ≥ 6, forecast ≥ 10), `Stars.voice(moments, "monsoon")`, and `Stars.progress(rows, "monsoon", {busy})` for the Busy stage rule; `Stars.isMenuWord`; sidecars through `Rel.scene(base, sidecar)` when G6 L2+ needs relations |
-| **Clinic** | `js/clinic/stubs/{speech,which,overlay}.js`, `js/clinic/mechanics/tell.js` | `tell.run({io})` → `Say.moment({choices, expected: answer, accept: (c) => c === answer, grandparent: parentJudge, pillsLive: pillsFromStart, minConfidence, mode: "clinic"})`. A wrong pill plays out and the pills stay up, as your `tell` does. The voice star is `Stars.voice(moments, "clinic")` (first try only). `which.js` → `WhichOne.candidates(id, lookalike_groups, {n: 3})`; `overlay.js` → `Overlay` |
-| **Snap** | `js/snap/adapters.js` → `stubs/stars.js`, `stubs/which-one.js` | In `adapters.js`: `Snap.Stars = Stars` (`Stars.ear(rows, {minTested: 2})` and `Stars.voice(said, {minSaid: 2})` take the stub's row shapes and return `offered` and `earned`; add `lens` locally, or use `Stars.ICONS.lens`); keep the size-class picker or use `WhichOne.checkDecoys(items, row, {minValues: {size: 3}})`. `Snap.listen` stays; the pill fallback can move to `Say.moment` |
+## 7. Tests
 
-Until phase B these calls go through the modes' own files, so nothing in `js/shared/` needs editing by a mode.
-
-## 7. Tests, lab and what is not here
-
-- **Unit tests:** `node --test build/test_shared_*.mjs` (speech, rel, whichone, stars, say, overlay and the stub-compat tests; no browser).
-- **Browser smoke test:** `node build/test_shared-browser.mjs` (port 8800, one page, the global playwright).
-- **Lab:** `lab/shared.html` shows overlays with anchors, a say moment, relations on the bazaar scene, and star slots.
-
-Phase B owns the rest:
-- the shell, "one app, one save", with `Speech.setProfile` and `Speech.onLog` wired to the profile;
-- `Stars.ICONS` merged into `UI.ICON`, and `Stars.installInto(Cook.data)` in the shell;
-- the audio manifest's `dur` and `keyAt` fields;
-- merging scene sidecars into `data/scenes/*`;
-- full-body bases;
-- a shared `js/shared/mechanics/` folder if two modes' mechanics converge.
+- **Fast checks:** `node build/tools/review/checks.mjs` (the core, host, shared kit, CSS lint and review-tool unit tests, the word gate, the stamp dry run).
+- **Shared modules:** `node --test build/test_shared_*.mjs`, and the browser tests `build/test_shared-browser.mjs`, `build/test_shared-ui-browser.mjs` and `build/test_frame-browser.mjs` (each on its own port, one at a time under the browser lock, B16).
+- **Labs:** `lab/kit.html` shows every state of the kit (end screen, order card, bulb, tally); `lab/shared.html` and `lab/shared-ui.html` show the legacy modules.
 
 ---
 
@@ -424,8 +401,8 @@ Reduced motion shows everything at once (sounds still play). Every target is at 
 | `Results.recordTime(mode, game, level, ms)` / `Results.best(...)` | judge and store / the stored best |
 | `Results.accuracyTier(right, total)` / `Results.hintTier(n)` | `gold \| mid \| plain` (`none`: nothing asked) |
 | `Results.badges(round, prevMs)` | all three |
-| `Results.toStars({right, total, hints, rows?, mode?, hand?, third?})` | `{ear, hand, third}`: Accuracy gold ⇔ ear, Hints gold ⇔ no-help. With `rows` the mode's `Stars.ear` rule decides. The craft star passes through |
-| `Results.fromStars(stars, {help?, right?, total?})` | show()'s `{right, total, hints}` for a mode that only has stars, with tiers matching them |
+| `Results.toStars({right, total, hints, rows?, mode?, hand?, third?})` (legacy, parked modes only) | `{ear, hand, third}`: Accuracy gold ⇔ ear, Hints gold ⇔ no-help. With `rows` the mode's `Stars.ear` rule decides. The craft star passes through |
+| `Results.fromStars(stars, {help?, right?, total?})` (legacy, parked modes only) | show()'s `{right, total, hints}` for a mode that only has stars, with tiers matching them |
 
 ### 8.1 `UIStore`: where bests and "seen" live
 `UIStore.get/set(section, key)`, `clear(section?)`, `use(backend)`, `memory()`. **Phase B:** with `js/shared/save.js` loaded (every game page loads it), the data is the current player's `"ui"` namespace in the one save (section 11): `{bests, onboarded, seen, clinic: {state}}`; `UIStore.kind()` is `"save"`. Without it (Node, the old fruit-bowl errand): with a profile attached (`Progress.attachProfile`) the data is `profile.shared_ui`; with neither, one fallback key, `localStorage["njg-shared-ui-fallback-v1"]` (migrated into the one save the first time a device runs it).
@@ -459,15 +436,17 @@ Onboard.signal("pour-done");   // the mode says the child did it (or dispatch a 
    - `hints` is your help count (Cook: `ctx.help`);
    - `words` is your word review list mapped to `{kutchi, english, id}`;
    - pass `speak` to use your audio.
-   Keep awarding stars as now; `Results.toStars(round)` gives the same answer for ear and no-help (or pass your stars in with `fromStars`). Nothing changes in `progress.js`.
+   In a plug-in this is automatic: the host calls `Score.finish` and shows the one end screen from the marks and hints a mini-game reports (`ctx.mark`, `ctx.hint`). `Results.show` is called directly only by the parked pages; `Results.toStars` is legacy.
 3. **Onboarding.** At the end of each mini-game's build, write its script (UX §10):
    - call `await Onboard.run("<mode>/<station>", script)` before the station's first round;
    - call `Onboard.signal(name)` where your mechanic already knows the child did the thing;
    - for canvas stations, give the spotlight rects in page px, from your stage-to-screen transform.
-4. **Fade-ins.** Mark the sidebar, stars and light bulb with `Onboard.await(el, "<mode>/sidebar")`, and call `Onboard.fadeIn(el, key)` in the round that first needs each one.
+4. **Fade-ins.** Mark the sidebar, badges and light bulb with `Onboard.await(el, "<mode>/sidebar")`, and call `Onboard.fadeIn(el, key)` in the round that first needs each one.
 5. **Tests.** Run `node --test build/test_shared_ui.mjs` and `node build/test_shared-ui-browser.mjs` (port 8811). The lab is `lab/shared-ui.html`.
 
 ## 11. The one save: `js/shared/save.js` (phase B, 26 Sept 2026)
+
+**Schema 2 (R2, 5 Oct).** `js/core/save.js` is the same API as a module, with one table of namespaces (`target-model.md` § 3.4): Cook's `words` moved to the core's `words`, and Cook's and the clinic's coins merged into one `wallet`; the old keys are kept as a way back. The classic `js/shared/save.js` below is the tag the parked pages still load; both read and write the same keys. The key table below is the schema-1 layout and is kept as the migration reference.
 
 Every mode reads and writes progress through it, through a small adapter in that mode. Load it right after `js/version.js` on every game page (before anything that saves).
 
@@ -476,7 +455,7 @@ Every mode reads and writes progress through it, through a small adapter in that
 | Key | Holds |
 |---|---|
 | `njg-save` | the root: `{schema: 1, current, players: [{id, name, colour, created, auto?}], migrated: {oldKey: {player, ns, at}}}` |
-| `njg-save:<player>:cook` | `Cook.save` exactly as before: coins, day, **word stages** (`words`), **stars** (`best`), `taught`, and the `find` / `dress` / `snap` sub-saves that share it. The star and stage rules are Cook's, unchanged |
+| `njg-save:<player>:cook` | `Cook.save` exactly as before: coins, day, **word stages** (`words`), **bests** (`best`), `taught`, and the `find` / `dress` / `snap` sub-saves that share it. The star and stage rules are Cook's, unchanged |
 | `njg-save:<player>:ui` | `UIStore`: personal bests (`results.js`), onboarding "seen" flags (`onboard.js`), `seen`, the clinic's `state` |
 | `njg-save:<player>:speech` | voice enrolment (`speech.js`): `{choice: [packed takes]}` |
 | `njg-save:<player>:shell` | the shell's flags: `firstDone` (had the first pantry round) |
@@ -521,7 +500,7 @@ What makes the separate pages one app. Load `css/shared/app.css` first in the `<
 
 **A mode's first launch** is its own adapter's job: Cook's is `js/cook/app.js` (`?first=1`: one play button, then day 1's pantry order, then home), hooked into `flow.js` by `Cook.afterOrder(spec, day, {free})`, which may return `"leave"`.
 
-**The first-launch hook** (for character creation and the Eid story, `docs/game-design/modes/first-launch.md`, built later on top of the shell). `js/home.js` sends any player without the `firstDone` flag (a brand-new device, or a child just added in "Who's playing?") to one URL, `FIRST` (now `first.html?app=1`: section 13). The later flow:
+**The first-launch hook** (for character creation and the story hook, which is still the Eid one and moves to the Birthday, `docs/game-design/modes/first-launch.md`, built later on top of the shell). `js/home.js` sends any player without the `firstDone` flag (a brand-new device, or a child just added in "Who's playing?") to one URL, `FIRST` (now `first.html?app=1`: section 13). The later flow:
 1. points `FIRST` at its own page (say `first.html?app=1`), which loads `css/shared/app.css`, `save.js` and `app.js` like any mode;
 2. keeps what it makes in the current player's save: a name and colour through `Save.updatePlayer(Save.currentId(), {name, colour})`, the character's layers in a new namespace (`Save.set("character", {...})`);
 3. may still hand over to Cook's pantry round (`NjgApp.go("cook.html?app=1&first=1")`: Cook sets `firstDone` and goes home), or ends itself with `Save.setFlag("firstDone", true)` then `NjgApp.home("first")`.
@@ -529,7 +508,7 @@ A save migrated from before the shell (any Cook orders, words or UI data) counts
 
 ## 13. The first launch: `first.html`, `js/shared/story.js`, `js/shared/character.js` (26 Sept 2026)
 
-`FIRST` in `js/home.js` is now `first.html?app=1`: make your character, arrive at Nani's, Cook's pantry round, "Can you make me chai?", Cook's chai round, Nani sips, the Eid picture story, Yes/No, home (`docs/game-design/modes/first-launch.md`; report `build/reports/first-launch.md`).
+`FIRST` in `js/home.js` is now `first.html?app=1`: make your character, arrive at Nani's, Cook's pantry round, "Can you make me chai?", Cook's chai round, Nani sips, the story hook's picture story (Eid today; the Birthday next), Yes/No, home (`docs/game-design/modes/first-launch.md`; report `build/reports/first-launch.md`).
 
 **The save.** New namespaces: `character` (`{v: 1, choices: {body, skin, hair, eyes, top, bottom}, hands: "player-boy" | "player-girl", updated}`: swatch ids, not colours, so the palette can be retuned) and `story` (`{"first-launch": {at: <scene id> | null, started, done?}}`). `firstDone` is set by the story's `end` scene. Device-wide grown-ups' settings live in the root: `Save.setting(name)` / `Save.setSetting(name, value)` (`storyHelp`: `"en-k"`, the default, or `"k"`); a save file carries players, not settings.
 
@@ -547,7 +526,7 @@ Design system §12 (`docs/design-language/ui-design-system.md`), for **every mod
 
 ```js
 { person:   { id: "nana", face: "assets/…/nana-badge.webp", name: "Nana" } | null,   // the face is the replay button
-  headline: { html: "Muke <span class=word>mishkaki</span> khape.", rec: false, key } | null,
+  headline: { html: "Muke <span class=word>sekelo</span> khape.", rec: false, key } | null,
   items: [
     { label: "ba lakri gos", count: 2, parts: [], key },                                  // no recipe: no parts
     { label: "hakri lakri mixed", count: 1, ordered: true, done: false, key,

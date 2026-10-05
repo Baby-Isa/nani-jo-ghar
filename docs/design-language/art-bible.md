@@ -1,17 +1,6 @@
 # Nani jo Ghar: art bible
 
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - Liquids drawn as discs masked by the pot's inner rim (§8) → pre-rendered pictures, cross-faded; never drawn dots or discs (D11)
-> - "Default: the image API's native transparent background" → art is made in ChatGPT via Claude in Chrome; no alpha, so batches use magenta `#FF00FF` for food and grey `#808080` for steel, glass, wood, tools and characters, then key it (D1, D3, D22). See `art-pipeline.md`
-> - Hands (§7) and the hands sections of the prompt templates → parked, none in Cook (H13); the hand work is kept in `art-pipeline.md` under "Hands (parked)"
-> - Quilt (in the cast notes) → bookshelf (decision 4)
-> - Star-related art and UI (ear, hand, tick stars) → three badges (H5)
-> - "No private photos" wording in older prompts → superseded by decision 9
-> - Chapter 1 "thick outlines / cel shading" style line → retired; this bible's 3D-film look stands
-> - Open in this file: "tappable items get the most saturation in the frame" and "one accent pattern per surface" (§2) are not in the rulebook; they live here.
-> - §5 (layers, pivots, containers, export, transparent backgrounds), §9 (prompt templates) and §10 (visual QA checklist) moved to `art-pipeline.md`.
-
 **Started:** 24 Sept 2026. **Status:** v1, the single source of truth for every image prompt and every art review. It will be amended as the Cook with Nani stations settle; parts marked **(provisional)** are expected to change.
 
 **Where the decisions came from:** `docs/archive/art/art-direction-options.md` (section 10, the chosen 3D-film look), `docs/archive/cook/cook-with-nani-phase-a-design.md` (section 2, what went wrong and the agreed fixes), `docs/archive/art/Asset Building Plan.md` (hands, cats, ambient motion, real-life likeness), `docs/archive/design-v1/game-modes-v2.md` (the eight modes), `docs/archive/art/Asset Naming Convention.md` (file names, slicing).
@@ -67,7 +56,7 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 |---|---|---|---|
 | Kutch red (madder) | Embroidery and dupatta red | `#B72424` | Nani's dupatta and embroidery, mirror-work frames, the boy cuff's embroidery |
 | Deep maroon | Ma's kurta | `#7F1D31` | Clothing accents |
-| Marigold | Warm yellow-orange | `#E8A33A` | Turmeric, daal, celebrations (petals), highlights |
+| Marigold | Warm yellow-orange | `#E8A33A` | Turmeric, daar, celebrations (petals), highlights |
 | Indigo | Ajrakh blue | `#2E3A6E` | Ajrakh prints, spice cupboard back, calm UI accents |
 | Limewash cream | Walls (lit) | `#EFE3D3` | Home walls; `#D3B196` in shade |
 | Marble | Warm white | `#FAE5D4` | Worktops, island top |
@@ -86,7 +75,7 @@ Attach these (never the old storybook art) when a prompt needs a style reference
 
 ### Light
 
-Four lighting states, planned now rather than left for later, since Arc 1 needs evening and night (the guests coming tonight, the Eid evening party) and Arc 3 needs a storm sky.
+Four lighting states, planned now rather than left for later, since Arc 1 needs evening and night (the guests coming tonight, the Birthday evening party) and Arc 3 needs a storm sky.
 
 | Lighting state | Key light | Fill / shadows | Used for |
 |---|---|---|---|
@@ -121,17 +110,17 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 
 | Scene | Camera | Horizon / framing rule | Sprites in this camera |
 |---|---|---|---|
-| **Cooking stations** (board, hob, tawa, fry, grill, assemble) **(provisional)** | T | Worktop fills the frame edge to edge; the station object (board, hob, tray) centred; bottom 20% kept clear for hands entering from the bottom edge | Ingredients in every cooking state, pans, pots, tools, hands (T set), liquid discs, flame rings |
+| **Cooking stations** (board, hob, tawa, fry, grill, assemble) **(provisional)** | T | Worktop fills the frame edge to edge; the station object (board, hob, tray) centred| Ingredients in every cooking state, pans, pots, tools, pre-rendered pot contents (cross-faded), flame rings |
 | **Chop (ninja)** **(provisional)** | T, or E against the splashback | Decide in the station review. If T, thrown items scale up towards the camera; if E, they arc against a plain wall | Whole and sliced vegetables in that one view |
-| **Island (family, greetings, serving)** | E | Island top edge nearly horizontal at 65–70% of frame height; characters behind it, cut at the waist; heads over plain wall | Characters (upper body), cats on the floor or sill, serving dishes in F view, hands (E set) |
+| **Island (family, greetings, serving)** | E | Island top edge nearly horizontal at 65–70% of frame height; characters behind it, cut at the waist; heads over plain wall | Characters (upper body), cats on the floor or sill, serving dishes in F view |
 | **Pantry shelves** | E, straight on to the cupboard | Shelf tops just visible (a few pixels of top surface) so items can stand on them; no shelf at the very top edge | Items in F view, containers (jars, tins, jugs) in F view |
-| **Hub (Nani's kitchen, wide)** | E | Same as the island, wider; the island front is the occluder and the quilt's surface | Characters, cats, Eid dressing, ambient motion layers |
-| **Bazaar (Find it)** | E | Customer's side, horizon at about 55%; one long counter or display row; a traditional stall is fine | Items in F view (shared with the pantry), shopkeepers, hands (E) |
+| **Hub (Nani's kitchen, wide)** | E | Same as the island, wider; the island front is the occluder and the bookshelf's surface | Characters, cats, celebration dressing (the Birthday; Eid later), ambient motion layers |
+| **Bazaar (Find it)** | E | Customer's side, horizon at about 55%; one long counter or display row; a traditional stall is fine | Items in F view (shared with the pantry), shopkeepers |
 | **Tidy up** | T for table and dastarkhwan; E for shelves | As cooking stations or the pantry | Tableware T, household items T or F |
 | **Dress up** | E, full body, front | Character standing on a plain floor; horizon at hip height | Base body plus clothing layers, front view only |
 | **Nani's clinic** | T for the table; E for the patient | Table top-down with the patient seen at the island framing | Remedies and instruments T; characters E |
 | **Who did it?** | E | Suspects in a row behind a counter, sofa or bolster; cards as flat C3 hand holds | Characters and cats E; clue items F |
-| **Monsoon rush** | E, side-on room cross-section | Horizon at mid-height; drips fall straight down | Buckets and items F; hands E |
+| **Monsoon rush** | E, side-on room cross-section | Horizon at mid-height; drips fall straight down | Buckets and items F |
 | **Snap** | E, wide panorama (2–4 screens), parallax layers | Horizon constant across the whole panorama | Animals, people, places E |
 
 **Current faults this fixes:** the stove background shows the tiled splashback (a ¾ view), props were drawn at about 30° from the side, and the pantry used top-down items on eye-level shelves. New cooking-station backgrounds are straight-down worktops.
@@ -165,12 +154,12 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 | Milk jug | 10 wide, 18 tall | 1.4 | Pantry faults had it the same size as cardamom |
 | Chapati / maani (rolled) | 18–20 | 1.5 | |
 | Saucepan (chai) | 16 across, handle 18 | 1.2 + handle | |
-| Daal pot | 22 across | 1.7 | |
+| Daar pot | 22 across | 1.7 | |
 | Chakla (rolling board) | 25 across | 1.9 | |
 | Tawa | 26 across, plus handle | 2.0 | |
 | Knife | 28 long | 2.1 | Tool sprite, sits in the B1 grip |
 | Ladle / spatula | 30 long | 2.3 | |
-| Mishkaki skewer | 30 long | 2.3 | |
+| Sekelo skewer | 30 long | 2.3 | |
 | Thali | 30 across | 2.3 | |
 | Rolling pin (velan) | 35 long | 2.7 | Thin and tapered, the Gujarati style |
 | Two-burner hob | 60 × 50 | 4.6 | |
@@ -181,7 +170,7 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 **Readability rules:**
 - **Minimum tap target: about 90 px** on the 1600×900 stage. Anything smaller than that at true scale comes in a container (katori, tin, jar) or is shown as a heap.
 - **Readability boost:** small items may be drawn up to 1.5× true scale. **The order of sizes never inverts**: cardamom is never bigger than garlic, and garlic never bigger than the milk jug.
-- **First-person hands are drawn at 1.2× the worktop scale** (they're nearer the camera). Every hand uses the same factor.
+- **(Parked, H13.) First-person hands are drawn at 1.2× the worktop scale** (they're nearer the camera). Every hand uses the same factor.
 
 ---
 
@@ -198,17 +187,17 @@ Moved to `docs/design-language/art-pipeline.md` (§5: layers, pivots, containers
 
 | Motion | Art needed | Done in code |
 |---|---|---|
-| Bunting swaying (Eid) | Each flag its own small sprite on a string sprite | Per-flag sway with an offset, a gust every so often |
+| Bunting swaying (celebrations) | Each flag its own small sprite on a string sprite | Per-flag sway with an offset, a gust every so often |
 | Curtain in a breeze | Curtain as a separate layer | A slow skew/wave |
 | Ceiling fan | The blades as a separate sprite | Rotation |
-| Steam (chai, daal, rain on a hot road) | One soft wisp sprite | Particles |
+| Steam (chai, daar, rain on a hot road) | One soft wisp sprite | Particles |
 | Flames on the hob | Already drawn in code | Flicker |
 | Dust in a sunbeam | One soft dot | Drifting particles in the light shaft |
 | Plants, leaf shadows on the wall | Plant and leaf-shadow layers | Sway |
 | Washing line, a kite through the window | Each item a sprite | Sway, a kite bobbing |
 | Birds on the windowsill or wire (pigeons, sparrows) | 3–4 poses (sit, peck, hop, fly off) | Occasional hop; fly off when tapped |
 | Kasuku, the parrot (African grey, windowsill or a perch — hub, doorway, kitchen) | Pose set: perched, head tilt, beak open "talking", wings flapping, walking along the perch. Head a separate layer | Idle tilts and the odd "talking" beat when it repeats a word (behaviour: `docs/game-design/cast.md`); never during a task |
-| Lanterns and fairy lights (Eid) | Lantern sprite; one light-dot sprite | Glow pulse, twinkle |
+| Lanterns and fairy lights (celebrations) | Lantern sprite; one light-dot sprite | Glow pulse, twinkle |
 | Clock | Hands as separate sprites | Ticking |
 | Rain on the window, drips (Monsoon) | Drop and streak sprites | Particles |
 | Cats, Nani | See section 3; Nani's breathing and blinking already exist | Breathing, blinking, tail flicks |
@@ -248,7 +237,7 @@ Keep it subtle: 2–4 moving things per scene, never near a tap target, and swit
 | **Nani** | **Based on Zafar's mum — she has agreed.** The current Nani (`sources/cook/nani-sheet.webp`) is a generated placeholder, to be replaced by a sheet made from Mum's photos | From the placeholder, until the new sheet: round thin gold glasses, red Kutch-embroidered dupatta over the head, cream kurta with red embroidery, small gold drop earrings, no bangles; a thin diamond tennis bracelet (right wrist), a yellow gold ring with a red aqiq (right ring finger) and a yellow gold solitaire diamond ring (left ring finger); see the Cast doc. Final details come from Mum's photos |
 | **Nana, Ma, Ali, other cousins, guests** | **Generic** — not based on real family members | Placeholder looks stand until each is designed: Nana in a white knitted cap, round glasses, white beard, cream kurta, brown waistcoat; Ma in a green dupatta with gold motif over the head, maroon kurta with embroidery, gold jhumka earrings; **Ali** (cousin, renamed from the placeholder "Bilal") tall and lanky for his age, tousled black hair, an orange T-shirt with a pocket |
 | **The doctor** | **Based on Zafar's wife's granddad; photos to come.** Arc 3 (the Monsoon, "Nani has a cold") and Nani's clinic mode | Likeness from the photos once they arrive, kept as the sheet-first rule below; a warm, reassuring build, a doctor's bag |
-| **Big Ma** | **Based on Zafar's wife's great-grandma; photos to come.** "The spill" (mends the kurta in her room) and recurring at Eid, dinners and gatherings | Likeness from the photos once they arrive, kept as the sheet-first rule below; warm, senior, a soft cardigan or shawl over a plain kurta, glasses low on the nose, sewing things (needle, thread reel, small scissors) to hand |
+| **Big Ma** | **Based on Zafar's wife's great-grandma; photos to come.** the Making clothes arc (mends and makes clothes in her room) and recurring at the Birthday, dinners and gatherings | Likeness from the photos once they arrive, kept as the sheet-first rule below; warm, senior, a soft cardigan or shawl over a plain kurta, glasses low on the nose, sewing things (needle, thread reel, small scissors) to hand |
 | **Shopkeeper(s)** | To be redone in the 3D look | Made as edits of a family style reference, so they look like one family of designs |
 
 **Nani from real life (asset plan, section 5):**
@@ -294,7 +283,7 @@ An **African grey**, generic (no real-life likeness). Lives on the windowsill or
 
 ---
 
-## 7. Hands
+## 7. Hands (parked: none in Cook, H13; kept for a mode that needs first-person scenes)
 
 Full list and generation order: `docs/archive/art/Asset Building Plan.md`, section 1.
 
@@ -343,16 +332,16 @@ Reskins change **only the skin tone, sleeve and accessories**, and they are made
 | Spices (jeeru, rai, hardar, elchi, loon…) | in a jar, tin or katori | heaped in a katori; a pinch; sizzling in oil (code adds bubbles) |
 | Atto (flour) | in a steel dabba | heaped in a bowl |
 | Dough | — | ball, rolled raw circle, half-cooked (brown spots), puffed, burnt |
-| Milk, water | jug | disc (see below) |
-| Daal | dry, in a bowl | dry in a bowl; cooked disc in the pot |
+| Milk, water | jug | pre-rendered contents pictures (see below) |
+| Daar | dry, in a bowl | dry in a bowl; cooked contents picture in the pot |
 | Samosa | on a plate | filled flat, folded raw, fried golden, burnt |
-| Mishkaki | on a plate | raw on the skewer, grilled, charred |
+| Sekelo (mishkaki cubes) | on a plate | raw on the skewer, grilled, charred |
 
 **How states are made:** each state is **generated fresh with its own full prompt** (template 9c), never edited from another state. Turning a whole onion into diced onion is a complete transformation that edit mode won't carry across (tested 24 Sept 2026: the edit produced solid two-tone cubes). States match each other only through the shared style block, the same view wording and the same colour words. **Edit mode is only for small changes to the same object:** hand poses from the signed-off reference hand (9e), reskins (9f), and adding an item into an empty station background (9d). Never for state changes. Use code for anything convincing as an effect: steam, bubbles, sizzle, a golden tint, a sparkle. "Burnt" is always its own drawing.
 
 **Spices:** always **heaped in open bowls** (a steel katori or a small ceramic bowl) so the colour and texture read from above and from the front. Tins and jars only in the pantry F view. The masala dabba is the natural T-view spice container.
 
-**Liquids from above:** liquid is a **disc** masked by the pot's inner rim, never a flat oval or a side view. The disc grows from the base radius towards the rim radius as it fills, so the visible band of inner wall shrinks. Colour, bubbles and a boil-over are code. Pour shows a stream sprite from the jug lip to the disc.
+**Liquids from above:** pot and pan contents are **pre-rendered pictures** (one per fill state, same registered canvas) cross-faded as the level changes; never drawn dots or discs (D11). Bubbles and a boil-over are code. Pour shows a stream sprite from the jug lip to the contents.
 
 **Flames:** a **flame ring** sprite (small blue tongues with warm tips around the burner) in T view, flickered in code. Not dots.
 
@@ -365,7 +354,7 @@ Moved to `docs/design-language/art-pipeline.md`.
 
 **Cultural accuracy (a Khoja home, Kutch and East Africa):**
 - **Clothing:** kurta, kurti, salwar, dupatta or headscarf; modest cuts; caps on men as the family confirms. No Hindu religious markers.
-- **Food:** halal, no pork, no alcohol. Dishes look like home versions: rotli and maani thin and soft with brown spots, daal yellow and loose, chai milky and orange-brown in a glass, mishkaki as small marinated cubes on a skewer.
+- **Food:** halal, no pork, no alcohol. Dishes look like home versions: rotli and maani thin and soft with brown spots, daar yellow and loose, chai milky and orange-brown in a glass, sekelo with mishkaki as small marinated cubes on a skewer.
 - **Kitchen items:** steel thali and katori, masala dabba, tawa, chakla and a thin tapered velan, vaghariyu for tadka, a chai saucepan and strainer, steel dabbas, a pressure cooker. East African and Kutch set dressing: `docs/archive/art/Asset Building Plan.md`, "Set dressing: East African and Kutch objects".
 - **Decor:** Kutch craft as accents (mirror-work, ajrakh, bandhani, brass); no deity images, no temple items.
 

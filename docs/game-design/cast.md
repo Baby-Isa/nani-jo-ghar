@@ -1,19 +1,10 @@
 # Nani jo Ghar: cast
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Existing text is left as written.
-> - "Arc 1: Eid at Nani's", "Later arcs" (Monsoon, Wedding, crow, village), "The spill" and "Eid morning" appearances → the Birthday arc, day-out trips, Making clothes with Big Ma, Monsoon, Who did it (H36–H39)
-> - "Nana … storyteller in Arc 5" → Story by the Fire (H40)
-> - Kasuku imitates "Arre re!" "just after a mistake" → idle moments only, never during a task (I9)
-> - Nani's gold bangles → no bangles (the later correction in this file wins)
-> - "Zafar's wife's granddad" is Hannah's granddad (same person; the rules use Hannah's)
-> - The player's hands → none in Cook (H13); hands are parked in the art docs
-> - Recurring cast rows below mention "Eid" and "mends the kurta in The spill" → the Birthday arc (H36)
-
 **Started:** 24 Sept 2026. Who appears in the game, where, and who they're based on. Art rules for characters are in `docs/design-language/art-bible.md` section 6.
 
 **Real-life likenesses** (agreed with the family; character sheet first, then every pose from the sheet):
 - **Nani:** Zafar's mum (she has agreed).
-- **The doctor:** Zafar's wife's granddad (photos to come).
+- **The doctor:** Hannah's granddad (Zafar's wife's granddad; photos to come).
 - **Simba and Zazu:** Zafar's cats.
 - **Big Ma:** Zafar's wife's great-grandma (photos to come). **Decided 24 Sept 2026** — see below.
 
@@ -21,33 +12,33 @@ Everyone else is a **generic** character.
 
 ## Big Ma (decided 24 Sept 2026)
 
-Zafar's wife's great-grandma. She's the warm senior pillar of the family — her relationship to the player is never explained, the way a small child just knows "that's Big Ma". She's recurring at Eid, dinners and gatherings, and **she's the family's seamstress**: instead of a tailor's shop, the player goes to **Big Ma's room**, where her sewing things are. She solves problems there (she fixes the stained kurta in "The spill") and **sings a song while she sews** (Zafar's wife will record it). She also takes the **elders'** role on Eid morning where it fits, alongside the generic elders. This replaces the earlier "great-grandma" options list (eldest / seamstress / both) and the generic tailor.
+Zafar's wife's great-grandma. She's the warm senior pillar of the family — her relationship to the player is never explained, the way a small child just knows "that's Big Ma". She's recurring at the Birthday, dinners and gatherings, and **she's the family's seamstress**: instead of a tailor's shop, the player goes to **Big Ma's room**, where her sewing things are. She solves problems there (she fixes the stained kurta in "The spill") and **sings a song while she sews** (Zafar's wife will record it). She also takes the **elders'** role on Eid morning where it fits, alongside the generic elders. This replaces the earlier "great-grandma" options list (eldest / seamstress / both) and the generic tailor.
 
-## Arc 1: Eid at Nani's
+## Arc 1: the Birthday (cast as first written for "Eid at Nani's")
 
 | Character | Based on | Where they appear | Their job in the learning |
 |---|---|---|---|
 | **Nani** | Zafar's mum | Everywhere | Gives the instructions; her fixed phrases are the backbone of the grammar |
-| **The player** | Boy or girl (hands only in first-person scenes) | Everywhere | — |
+| **The player** | Boy or girl (hands are parked; none in Cook, H13) | Everywhere | — |
 | **Simba** (big brother, 5, black Russian Blue, green eyes) | Zafar's cat | Hub, kitchen, "The cat and the sweets", Find it | Scatters the sweets; teaches position words and describing ("the big one") |
 | **Zazu** (little brother, 1, grey Russian Blue, green eyes, drawn as a kitten) | Zafar's cat | The same | Simba's partner in crime; big/small, dark/light |
 | **Kasuku** (the parrot, African grey) | — | Hub, the doorway, the kitchen windowsill | Repeats words the player has heard (see below) |
-| **Nana** | Generic | Cook (orders chai), Eid morning; the storyteller in Arc 5 | Kinship, past tense later |
-| **Ma** (the player's mum) | Generic | Cook, Eid morning | Kinship, her tastes (no milk, ginger) |
+| **Nana** | Generic | Cook (orders chai), the Birthday party; the storyteller of the Story by the Fire (H40) | Kinship, past tense later |
+| **Ma** (the player's mum) | Generic | Cook, the Birthday party | Kinship, her tastes (no milk, ginger) |
 | **Ali** (cousin, tall and lanky; renamed from the placeholder "Bilal") | Generic | Cook | Tastes (extra sev) |
 | **The older cousin** | Generic | "Knock knock", later arcs | Always losing things; later the player gives *them* instructions |
 | **The fruit seller** | Generic | Bazaar (the fruit bowl errand, built) | Numbers, fruit; sometimes hands over the wrong thing, so the player corrects them |
-| **Big Ma** | Zafar's wife's great-grandma (real-life likeness) | "The spill": fixes the stained kurta in her room, sings while she sews; "Eid morning": among the elders, gives Eidi | Colours, "which one?", sewing vocab; Eid greetings, respect language |
+| **Big Ma** | Zafar's wife's great-grandma (real-life likeness) | The Making clothes with Big Ma arc: fixes and makes clothes in her room, sings while she sews; at the Birthday: among the elders | Colours, "which one?", sewing vocab; greetings, respect language |
 | **The guests** (2–4 aunties and uncles) | Generic | "Knock knock", the dastarkhwan, the sharbat spill | Greetings, respect language, "for whom?" |
-| **The elders** | Generic, **plus Big Ma** | "Eid morning": greet them, receive Eidi | Eid greetings, respect language |
+| **The elders** | Generic, **plus Big Ma** | the Birthday: greet them | Greetings, respect language |
 
-**The clothes-stall keeper is dropped** from "The spill": Big Ma fixes the kurta rather than a new one being bought, so there's no stall visit. Shopping already appears in Chapter 1 (the fruit bowl), so the mode isn't lost from Arc 1.
+**The clothes-stall keeper is dropped** from Big Ma's mending story: Big Ma fixes the kurta rather than a new one being bought, so there's no stall visit. Shopping already appears in Chapter 1 (the fruit bowl), so the mode isn't lost from Arc 1.
 
 ## Later arcs (for reference)
 
 | Character | Arc | Based on |
 |---|---|---|
-| **The doctor** | 3, The Monsoon ("Nani has a cold", the clinic), and **Nani's clinic** mode | Zafar's wife's granddad |
+| **The doctor** | The clinic (its own mode and standalone arc) | Zafar's wife's granddad |
 | Goats, hens and chicks | 3 | — |
 | Relatives at the wedding (bride, groom, their families) | 2 | Generic |
 | The crow (took the ring) | 4 | — |
@@ -58,7 +49,7 @@ Zafar's wife's great-grandma. She's the warm senior pillar of the family — her
 
 An **African grey**, a common East African household parrot. It gives cheap, funny review:
 - **"Salamun alaykum!"** when the player comes in the door; it has heard it so often.
-- It imitates Nani's **"Arre re!"** just after a mistake.
+- It repeats words and **"Arre re!"** in idle moments only, never during a task (I9).
 - Now and then it repeats a **word the player met recently**, favouring the weakest ones. Tap it to hear the word again, which gives spaced review for free.
 - **Its voice is the family's own recordings**, pitch-shifted, with a squawk added. No extra recording is needed.
 - **Rule:** it speaks only in idle moments (the hub, arriving, between orders), **never during a task**, so it can't give an answer away.
@@ -78,7 +69,7 @@ An **African grey**, a common East African household parrot. It gives cheap, fun
 |---|---|---|
 | **Nani** | `sources/art/characters/nani-sheet-v2-approved.png` (on the art branch; approved by Zafar, 24 Sept) | **The close-up (Nani leaning on the counter, waist up) is the canonical in-game look and framing for her:** use its style and pose as the basis for her kitchen-island scenes, where she stands behind the counter. Every later Nani image is made from this sheet, never from the photos. |
 
-## The player's hands: modern, not costume (24 Sept 2026)
+## The player's hands: modern, not costume (24 Sept 2026; parked: none in Cook, H13)
 
 Zafar's wife wants **modern hints and nods, not caricature**. The player's own hands wear everyday modern sleeves: the boy a plain white linen shirt sleeve rolled back between the elbow and the wrist, the girl the same kind of rolled sleeve in a soft colour with a few thin glass bangles (mehndi at Eid). Nani's hands are unchanged: her red sleeve, gold bangles and rings. Details: Art Bible section 7, Asset Building Plan section 1.2.
 
@@ -166,7 +157,7 @@ The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `big
 | **Tidy up** | Knocked everything over; put it back where Nani says | Positions, rules |
 | **Monsoon rush** | Get the cats inside before the rain | Rooms, positions |
 | **Snap** | "Take a photo of the cat asleep on the chair" | Describing |
-| **Care ritual** (optional) | Feed them each day: *bo* scoops for one, *hikdo* for the other | Numbers, names, kinship-style "whose bowl?" |
+| **Care ritual** (optional) | Feed them each day: *ba* scoops for one, *hakro* for the other | Numbers, names, kinship-style "whose bowl?" |
 
 **Rules:** a cat never covers a tap target and never blocks play at random. Mischief is a scripted event with its own moment; otherwise the cats live on the floor layer and in the margins.
 
@@ -178,7 +169,7 @@ The photos are in the git-ignored `sources/private/` folder (named `mum-*`, `big
 
 ### 7. Big Ma's room (new scene, decided 24 Sept 2026)
 
-Replaces the tailor's shop in "The spill" (Roadmap, Arc 1). Big Ma is the family's seamstress: instead of a shop, the player goes to her room to get the stained kurta fixed.
+Replaces the tailor's shop in Big Ma's mending story (Roadmap). Big Ma is the family's seamstress: instead of a shop, the player goes to her room to get the stained kurta fixed.
 
 - **Background:** a warm, homely room with a **sewing corner** — a sewing machine or basket, thread reels in a small rack or tin, a pin cushion, folded cloth, scissors. Restrained set dressing (section 6's rule: 1–2 nods, not more).
 - **Character sheet:** Big Ma, real-life likeness (Art Bible, section 6; `docs/game-design/cast.md`). Sheet-first rule: photos in, character sheet out, Zafar signs off, every later pose from the sheet.
@@ -194,6 +185,6 @@ Replaces the tailor's shop in "The spill" (Roadmap, Arc 1). Big Ma is the family
 | The cat | Steals and hides things | Runs every Hide and seek errand; a running gag, no peril, endless postpositions |
 | Nana | Dozes, tells stories | The past-tense narrator; arrives once a trip needs retelling a past event |
 | Older cousin | Always losing things, eventually asks the player to explain | Role reversal: the player gives the instruction |
-| Big Ma | The family's seamstress; sings while she sews | Recurring at Eid, dinners and gatherings; solves problems in her room (e.g. mends the kurta in "The spill") |
+| Big Ma | The family's seamstress; sings while she sews | Recurring at the Birthday, dinners and gatherings; solves problems in her room (e.g. mends a kurta) |
 | The shopkeeper | Sometimes hands over the wrong thing | The player's first taste of correcting someone in Kutchi |
 

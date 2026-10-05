@@ -1,19 +1,12 @@
 # Conversations: design (module id `conversations`)
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
-> - Stars, the ear star, the voice star, craft stars, `star_sets` and `minTested` → three badges: time, accuracy, hints (H5, J7, decisions 1–3)
-> - *Achija* (goodbye) and *Aabhar aanjo* (thank you) → goodbye *khuda-fis*, thank you in English (26 Sept; G6)
-> - *nar* for "no" → ***na*** (*nar* means "look") (G5, decision 5)
-> - Story homes (Eid morning, "The spill", the wedding, the shoe mountain, Arc 1/3/4/5) → the Birthday arc, day-out trips, clinic, Making clothes with Big Ma, Monsoon, Who did it (H36–H39) (the §7.7 map of 94 rows is built on the old five arcs; rebase it)
-> - *mishkaki* as the dish → *sekelo* is the dish, *mishkaki* the meat cubes (H20)
-
 **Date:** 26 Sept 2026
 **Status:** a proposal for Zafar. Nothing is built. It grows game idea 20 (`docs/ideas.md`) into its own module, as Zafar asked on 26 Sept, and folds in ideas 6, 9, 14, 16 and 18.
 **Reads:** `docs/language/grammar-notes.md` (all of it), the Roadmap (arcs, S1–S6), the Cast, `docs/design-language/ux-principles.md`, `docs/game-design/modes/first-launch.md`, `docs/architecture/speech-recognition-plan.md`, `docs/architecture/shared-api.md`, the Cook, clinic and Find it designs, and the five parked mode designs.
 
 **The Kutchi rule.** Every Kutchi line below carries its source:
 - **§n**: `docs/language/grammar-notes.md`, section n (the family's own Kutchi);
-- **hd**: from the class handout, already in the game with a stand-in voice, waiting for Mum to confirm (Questions for Mum D5): *Salamun alaykum*, *Wa alaikum salaam*, *Achija*, *Aabhar aanjo*, *Hedo*, *Ghan*, *Arre re*;
+- **hd**: from the class handout, already in the game with a stand-in voice, waiting for Mum to confirm (Questions for Mum D5): *Salamun alaykum*, *Wa alaikum salaam*, *Hedo*, *Ghan*, *Arre re*;
 - **PH**: `placeholder (English): to record`. It shows as grey italic English in the game and is never tested.
 
 A ✓ after a line means a family clip already exists in `data/family-audio.json` (Mum, then Zafar, from Section B).
@@ -67,7 +60,7 @@ Fourteen types. "Who uses it" names the speakers who say the *first* line. The c
 | # | Type | Examples: the first line → the child's reply | Who uses it | Formal / informal variants | First stage |
 |---|---|---|---|---|---|
 | **T1** | **Greeting: arriving** | *Salamun alaykum!* → *Wa alaikum salaam!* (hd). Kasuku's *Salamun alaykum!* (Cast). Nani's *Hedo, beta!* (hd + §22) | Everyone, on the day's first meeting. Kasuku at the door | The salaam is the same for everyone. The register shows in what follows (T3) | S1 |
-| **T2** | **Greeting: leaving** | *Achija!* → *Achija!* (hd). *Mu lai khobar!* ✓ (wait for me, §27). *Hal mu saathe* (come with me, §12). PH: *Get well soon* (clinic G84); *See you tomorrow* | Customers, patients, shopkeepers and guests as they leave; Ali | *Achija* is the same both ways | S1 |
+| **T2** | **Greeting: leaving** | *Khuda-fis!* → *Khuda-fis!*. *Mu lai khobar!* ✓ (wait for me, §27). *Hal mu saathe* (come with me, §12). PH: *Get well soon* (clinic G84); *See you tomorrow* | Customers, patients, shopkeepers and guests as they leave; Ali | *Khuda-fis* is the same both ways | S1 |
 | **T3** | **Well-being** | *Tu ki aiye?* ✓ → *Aau theek ai.* ✓ (S1), then *Aau theek ai. Aai ki aayo?* or *Aau theek ai. Tu ki aiye?* (S2). The asker then answers *Aau theek ai.* PH (S4): *I don't feel well* (G112), *I'm tired* (G62), *I'm cold* (G11) | Every visitor: customers, patients, the doctor, shopkeepers, guests | The asker uses the child form. The child's return question carries the register | S1 (reply), S2 (register) |
 | **T4** | **"Do you know who I am?"** | PH *Do you know who I am?* → a name: *Nani, Nana, Ma, Big Ma, Ali*. The child's counter-question at S3 is *Ker ai?* ✓ (who is it?, §23) | Family visitors on their first meeting, a relative in a funny hat, faces in old photos (Arc 5) | None in the answer (a name). The kinship *titles* (E85–E102) are PH until Mum records them | S1 (untested: the question is PH) |
 | **T5** | **Requests to the child** | *Tu muke chai banai dinda?* ✓ → *Ha!* ✓ (§27, B41). *Muke {x} de* (§9). *Muke chakhan lai de* ✓ (let me taste, §27): the child hands the bowl over. *Ma lai pan hakro banai* (make one for Ma too, §8). PH: *Can you help me?*, *Will you help me cook?*, *Are you cooking today?* | Nani, Nana, Ma, Big Ma, customers, the doctor | The asker uses *Tu*. The child's reply *Ha!* is the same to everyone. From S3 the child asks *Aai muke chai banai dinda?* (idea 18) | S1 |
@@ -76,7 +69,7 @@ Fourteen types. "Who uses it" names the speakers who say the *first* line. The c
 | **T8** | **Question-word questions** | *Ker ai?* ✓ (who's there?) · *Hi kuro ai?* ✓ (what's this?) · *Kida ai?* ✓ (where is it?) · *Kyo?* ✓ (which one?) · *Kitla?* ✓ (how many?) · *ki* (how, §21) · *Kida wo?* (where was it?, §20) · *Ker mitai khai vyo?* (who ate the sweets?, §20). Answers: *Hida / huda* ✓ (§23), *hi / hu*, *hi na, hu* (§13), a number (§2–3), *{x} table mathe ai* (§15) | Nani (a lost spoon), shopkeepers, the doctor; the child from S3 | The words don't change. The child's version to an elder adds *aai / anke* where the frame has one | S2 (where, who), S3 (which, how many), S5 (was) |
 | **T9** | **Likes** | PH: *I like chai* (C94), *What's your favourite colour?* / *I like red* (F35). Until then, wants carry it: *Toke kuro khapeto?* → *Muke {x} khape* | Relatives (Arc 2's gift chapter), Nani | PH until C94 | S3 |
 | **T10** | **Small talk** | Weather: *Warsaad band thai vyo* (the rain's stopped, §19); PH *It's raining* (G7), *It's hot* (G10). Food: *Tayar ai* ✓ (it's ready), *Ukreto* ✓ (it's boiling), *Kha!* ✓. Work: *Kam kari vya?* / *Kam khalas thai vyo?* (finished work?, §19). Eid: PH *Tomorrow is Eid* (first launch), *Eid Mubarak* (F71). *Time pati vyo* (§19) | Nana home from work, Nani, guests, strangers on the Arc 5 journey | *vyo / vya* (§21) when it's said about an elder | S3–S4 |
-| **T11** | **Thanks and "you're welcome"** | *Aabhar aanjo!* (hd; the family may just say the English *thank you*, §23) → *Jara e wandho nai* ✓ (§27). Praise: *Shabash!* ✓ (§25) | Customers, patients, shopkeepers, Nani. The child thanks shopkeepers and the doctor from S2 | The same both ways | S2 |
+| **T11** | **Thanks and "you're welcome"** | "Thank you!" (the family says the English *thank you*, §23) → *Jara e wandho nai* ✓ (§27). Praise: *Shabash!* ✓ (§25) | Customers, patients, shopkeepers, Nani. The child thanks shopkeepers and the doctor from S2 | The same both ways | S2 |
 | **T12** | **Apologies** | PH *Sorry* → PH *It's okay* (Who did it?'s reveal). *Arre re!* (doc) is the everyday "oh dear" | Simba's owner in Who did it?, a guest after the spill (Arc 1 Ch4), the child | PH | S3 |
 | **T13** | **The child asks** (role reversal) | The child opens with a T3, T6 or T8 line: *Aai ki aayo?* · *Anke / Toke kuro khapeto?* · *Aai muke chai banai dinda?* · *Ker ai?* · *Kida ai?* · *Kitla?* · *Hida acho* | The child, to any speaker | The register is the child's choice, by who they're talking to | S2 (*Ker ai?* at the door, with pills), S3 (spoken) |
 | **T14** | **Calls and warnings** (heard first, said later) | *Hedo!* (hd) · *Hida ach / acho* (§21) · *Jaldi kar / karo* ✓ · *Dhyan rakh!* ✓ (careful!) · *Mu lai khobar!* ✓ · *Hal mu saathe* · *Bhaj na, hal* · *Na ad!* (hot!, §12) | Nani and Ali (heard); the child calls Nana *hida acho* (idea 14) | *ach / acho*, *kar / karo* | S1 (heard), S3 (said) |
@@ -143,6 +136,8 @@ Length grows by **chaining** short exchanges (a `chain` in the data), not by aut
 
 ### 3.4 Mapped onto the syllabus and the arcs
 
+*Arc column: the 25 Sept five-arc numbering (Arc 1 Eid at Nani's, Arc 2 the wedding, Arc 3 the monsoon, Arc 4 the lost ring, Arc 5 the village). The live arcs are the Birthday (Arc 1; "Eid morning" rows become the Birthday party), the day-out trips, the clinic, Making clothes with Big Ma, the Monsoon and Who did it (H36–H39). Rebase the rows when Conversations is wired.*
+
 | Stage | Arc | New exchange types | Max length | Register | Rungs used |
 |---|---|---|---|---|---|
 | **S1** Arrive and fetch | First launch, Arc 1 Ch1–2 | T1, T2, T3 (reply *Aau theek ai* only), T5 (→ *Ha!*), T4 (names, untested) | L1 | Heard | R1–R3 |
@@ -164,7 +159,7 @@ Every item carries its source and its stage. PH items are English until Mum reco
 
 | Category | Items | Source | Stage |
 |---|---|---|---|
-| **Greetings, leaving** | *Salamun alaykum*, *Wa alaikum salaam*, *Achija*, *Hedo* | hd (D5) | S1 |
+| **Greetings, leaving** | *Salamun alaykum*, *Wa alaikum salaam*, *Khuda-fis*, *Hedo* | hd (D5) | S1 |
 | | *Mu lai khobar!*, *Hal mu saathe* | §27, §12 | S1 heard |
 | **Well-being** | *Tu ki aiye?*, *Ki ai?*, *Aai ki aayo?*, *Aau theek ai* | §21, §27 | S1 → S3 |
 | | *not well, tired, cold, hot, better, happy, sad* | PH (G112, G62, G11, G10, G63–G65) | S4 |
@@ -182,16 +177,16 @@ Every item carries its source and its stage. PH items are English until Mum reco
 | | *{person} lai*, *{person} lai pan hakro banai* | §8 | S2 |
 | | *{x} kida ai?* | §23 + the word order of §15 (to confirm) | S2 |
 | | *Daar ne maani saathe khapeti?* → *Haa, muke … khapeti* | §7 | S3 (heard at S2) |
-| **Offer nouns** | *chai, paani, dudh, khun, maani, daar, chaat, samosa, mishkaki, mitai, ambo* | §7, §20, §26, game data | S1 |
+| **Offer nouns** | *chai, paani, dudh, khun, maani, daar, chaat, samosa, sekelo, mitai, ambo* | §7, §20, §26, game data | S1 |
 | **Numbers** | *hakro / hakri, ba, trae, char, panj* | §2, §3, game data | S1 |
-| **Thanks, praise** | *Aabhar aanjo* | hd (Q1) | S1 heard, S2 |
+| **Thanks, praise** | "Thank you" | hd (Q1) | S1 heard, S2 |
 | | *thank you* (English, as the family uses it) | §23 | S2 |
 | | *Jara e wandho nai*, *Shabash* | §27, §25 | S2 |
 | **Small talk** | *warsaad band thai vyo*, *tayar ai*, *ukreto*, *kam kari vya?*, *khalas thai vyo*, *time pati vyo* | §19, §25 | S3–S5 |
 | | *It's raining, Eid Mubarak, Tomorrow is Eid* | PH (G7, F71, first launch) | S1 story, S4 |
 | **Calls, warnings** | *hida ach / acho*, *jaldi kar / karo*, *dhyan rakh*, *bhaj na, hal*, *na ad* | §12, §21, §27 | S1 heard, S3 said |
 
-**One spelling flag for the clinic.** The clinic design writes yes/no as *haa / nar*. The notes settle these as ***ha*** and ***na*** (§23, §24): *nar* is "look" (§20). The clinic's adapter should use this module's `ha` / `na` lines.
+**Spelling note for the clinic.** Yes/no is ***ha*** and ***na*** (§23, §24); *nar* is "look" (§20). The clinic uses this module's `ha` / `na` lines.
 
 ---
 
@@ -231,7 +226,7 @@ Everything goes in the one save, in a new namespace: `Save.get("conversations")`
 | **Register up** (`heard → choose → say → start`) | The same rule, on the register history. `choose` also needs the stage to be S2 or later, `say` S3, and `start` S3 with R5 unlocked |
 | **Length up** | The type is at R3 or above: chains that include it become eligible |
 | **Down one rung** | 2 of the last 3 attempts at this rung are not right first time (never below R1). The register strand steps down on the same rule |
-| **R4 fallbacks** | A pill tap at R4 is neither up nor down (the voice star stays *open*, speech plan). **3 fallbacks in a row** park R4 for this type for 3 sessions. It plays at R3 meanwhile, then R4 is tried again |
+| **R4 fallbacks** | A pill tap at R4 is neither up nor down (no speaking bonus, nothing lost; speech plan). **3 fallbacks in a row** park R4 for this type for 3 sessions. It plays at R3 meanwhile, then R4 is tried again |
 | **Skips** | Neither up nor down (§6.2) |
 | **Placeholder lines** | An exchange with any PH line is never tested. It moves nobody (`placeholdersTested: false`, as in `stars.json`) |
 
@@ -246,10 +241,10 @@ Everything goes in the one save, in a new namespace: `Save.get("conversations")`
 - `pick` (§8) prefers a type that's due. When nothing is due, it prefers the weakest type (the lowest rung, then the lowest box).
 - Kasuku (Cast) repeats a *reply* the child has used, favouring the weakest, in idle moments only. That's free spaced review.
 
-### 5.4 Stars, the voice star and the end-of-round screen
+### 5.4 Badges, the speaking bonus and the end-of-round screen
 
-- **The host's ear star and the three badges are untouched.** Conversation rows are never counted in the host round's accuracy or hints (UX §9), so small talk can't cost a cooking star.
-- **The voice star:** a conversation's speaking moment (R4 or R5, spoken) counts as a speaking moment for the host round (`Stars.voice(hostMoments.concat(Conversations.roundMoments(roundId)), mode)`). It can earn the voice star. A pill tap leaves it open, never lost. **This gives Cook its first speaking moments** (Cook Q9 item 9) with no Cook mechanic changes.
+- **The host's three badges (time, accuracy, hints) are untouched.** Conversation rows are never counted in the host round's accuracy or hints (UX §9), so small talk can't cost a badge.
+- **The speaking bonus (there is no voice star, decision 2):** a conversation's speaking moment (R4 or R5, spoken) counts as a speaking moment for the host round, and correct speaking earns more pocket money (decision 10). A pill tap earns no bonus and loses nothing. **This gives Cook its first speaking moments** (Cook Q9 item 9) with no Cook mechanic changes.
 - **The word review** (the end-of-round screen's page 2) adds the conversation's key words (`Conversations.roundWords(roundId)`), each with its English and a tap to hear.
 - **The parent log** (device only) gets one line per moment: the type, rung, speaker, register asked and chosen, via, and confidence.
 
@@ -257,7 +252,7 @@ Everything goes in the one save, in a new namespace: `Save.get("conversations")`
 
 | What happened | What the child sees and hears |
 |---|---|
-| Wrong content (*Achija* to a salaam) | The speaker tilts their head and says the right reply themselves, gently, as an echo. The bubbles come back once, and the right one throbs after 3 s. Not right first time |
+| Wrong content (*Khuda-fis* to a salaam) | The speaker tilts their head and says the right reply themselves, gently, as an echo. The bubbles come back once, and the right one throbs after 3 s. Not right first time |
 | Wrong register (*Tu ki aiye?* to Nana) | Nana looks behind him for the child you must be talking to, chuckles, and says *Aai ki aayo?* himself. Then he answers it: *Aau theek ai*. A comic recast, never a buzz |
 | A bare *Na.* to an offer | The elder raises an eyebrow. Nani, from the side: *Na, na khape*. The child taps again |
 | Nothing (10 s) | The skip (§6.2) |
@@ -353,17 +348,17 @@ Every mode's pipeline stages, every story arc and chapter, the first launch and 
 | # | Step | When | Speaker | Exchange | Stages | Priority |
 |---|---|---|---|---|---|---|
 | FL1 | Make your character | – | – | **None**: pictures only, and nobody has been met yet | – | none |
-| FL2 | Arrive at Nani's house | before | Nani at the door; Kasuku (heard) | **E1 salaam** (T1): *Salamun alaykum!* → *Wa alaikum salaam!* vs *Achija!*. R1, 2 bubbles. Kasuku squawks *Salamun alaykum!* from the windowsill (heard only) | S1 | **MVP** |
+| FL2 | Arrive at Nani's house | before | Nani at the door; Kasuku (heard) | **E1 salaam** (T1): *Salamun alaykum!* → *Wa alaikum salaam!* vs *Khuda-fis!*. R1, 2 bubbles. Kasuku squawks *Salamun alaykum!* from the windowsill (heard only) | S1 | **MVP** |
 | FL3 | The pantry round (the chai things) | – | – | **None**: the first round stays the clean three-item pantry (UX §7) | – | none |
 | FL4 | Back to Nani | before the chai | Nani | **E4 make me chai** (T5): *Tu muke chai banai dinda?* ✓ → *Ha!* ✓ vs *Na.*. It's the line every child half-knows (*chai*), so the first reply they understand is a real one. R1 | S1 | **MVP** |
 | FL5 | The chai station | after | Nani | Heard only: "Mmm, lovely chai! *Shabash, beta*." (to record) | S1 | **MVP** (heard) |
 | FL6 | The story panels (Eid tomorrow, guests, empty pots) | – | Nani | **None**: story lines are English then Kutchi. There's nothing to answer until the question | – | none |
 | FL7 | "Will you help me cook?" | the story's last beat | Nani | **E5 help me cook** (T5): PH *Will you help me cook?* → *Ha!* ✓ / PH *Yes, I'll help you cook*. Only yes works: the No bubble dodges the finger, or Nani laughs. The question is a story line (English then Kutchi), and the reply is gameplay (Kutchi) | S1 | **MVP** (untested until recorded) |
-| FL8 | Cook's first day, the first customer | before the order | Nana | **E3 how are you** (T3): *Tu ki aiye?* ✓ → *Aau theek ai.* ✓ vs *Achija!*. L1, R1 | S1 | **MVP** |
+| FL8 | Cook's first day, the first customer | before the order | Nana | **E3 how are you** (T3): *Tu ki aiye?* ✓ → *Aau theek ai.* ✓ vs *Khuda-fis!*. L1, R1 | S1 | **MVP** |
 | FL9 | The home screen, afterwards | before, once per session | Whoever is in the hub | E1 on the day's first visit, then E3 | S1–S6 | later |
 
 **FL walkthrough (level 1).**
-- **FL2.** The door opens. Nani, smiling: *Salamun alaykum!*, with the read-along lighting the words. Two bubbles rise bottom right: a waving hand with *Wa alaikum salaam!*, and a hand waving goodbye with *Achija!*. The ghost finger taps the first once, it plays, and the finger taps again. The bubble floats to Nani, and she beams. Kasuku: *Salamun alaykum!* (squawk). Six seconds.
+- **FL2.** The door opens. Nani, smiling: *Salamun alaykum!*, with the read-along lighting the words. Two bubbles rise bottom right: a waving hand with *Wa alaikum salaam!*, and a hand waving goodbye with *Khuda-fis!*. The ghost finger taps the first once, it plays, and the finger taps again. The bubble floats to Nani, and she beams. Kasuku: *Salamun alaykum!* (squawk). Six seconds.
 - **FL4.** Nani holds up an empty glass: *Tu muke chai banai dinda?*. The bubbles are a nodding head (*Ha!*) and a head shake (*Na.*). *Ha!*: Nani claps and points at the stove. *Na.*: her eyebrow goes up, she laughs, and *Ha!* throbs.
 - **FL7.** It's the same shape, and the No bubble slides away from the finger, twice.
 
@@ -379,7 +374,7 @@ Every mode's pipeline stages, every story arc and chapter, the first launch and 
 | CK6 | **Prepare** · thread, fill + fold, roll | during, at the phase button ("Go to the barbecue") | Ali, Nani | Optional: Ali's *Mu lai khobar!* (heard), or **E9 where is it** | S2+ | optional |
 | CK7 | **Cook** · the chai tray's boil (Relaxed only) | during: the pan heating, before the knob's green window | Nani | **E9 where is it** (T8): *Chamchi kida ai?* → tap the teaspoon on the counter. From R2 the reply is *Hida!* ✓ (it's by you) or *Huda!* ✓ (it's over there), by where it is | S2 | **MVP** (the one MVP "during") |
 | CK8 | **Cook** · tadka, fry, grill, tawa, stir, the knob's window | – | – | **None**: heat clocks and green windows. Nani's *Dhyan rakh!* ✓ may play as a heard warning | – | none |
-| CK9 | **Serve** · pour the cups, plate, bowl | after the hand-over | The customer | **E7 thanks** (T11): *Aabhar aanjo!* → *Jara e wandho nai* ✓ vs *Achija!*. If this is the round's one moment, then **E2** as they leave (heard) | S2 | **MVP** |
+| CK9 | **Serve** · pour the cups, plate, bowl | after the hand-over | The customer | **E7 thanks** (T11): "Thank you!" → *Jara e wandho nai* ✓ vs *Khuda-fis!*. If this is the round's one moment, then **E2** as they leave (heard) | S2 | **MVP** |
 | CK10 | **Serve** · *{person} lai* | – | – | **None added**: the mode owns it (Cook Q9 items 5 and 9: *Nana lai* said aloud) | – | none |
 | CK11 | **Serve → review**: Nani's treat | after serve, before the end screen (story days) | Nani | **E6 what would you like** (T6): *Toke kuro khapeto?* ✓ → *Muke {x} khape* for 2–3 pictured things from today's words (spaced review), or *Na, na khape*. S2: a bare *Na.* is in the set (the trap). Any polite answer is right. What you pick is what she hands you, so at R3 a mis-heard pick has a visible consequence | S2 | **MVP** |
 | CK12 | **Review** · the end-of-round screen | – | – | **None**: a clean screen. The conversation's words join page 2 | – | none |
@@ -388,17 +383,17 @@ Every mode's pipeline stages, every story arc and chapter, the first launch and 
 | CK15 | **Samosa + fry**: after | after | The child → the customer | **T10, R4**: the child says *Tayar ai!* ✓ as they serve | S3 | optional |
 | CK16 | **The chai tray**, the day's end (idea 18) | before | The child → Nana | **T13**: Nana's turn to make chai. The child asks *Aai muke chai banai dinda?* ✓ (not *Tu …*). Spoken at S3 | S3 | later |
 | CK17 | **Open kitchen**: each arrival | before | Customers | CK1 rotation; **E8 who am I?** for a first-time guest | S1–S3 | later |
-| CK18 | **Open kitchen**: "Close the kitchen" | after | The last customer, Nani | **E2** *Achija!* | S1 | later |
+| CK18 | **Open kitchen**: "Close the kitchen" | after | The last customer, Nani | **E2** *Khuda-fis!* | S1 | later |
 | CK19 | **Station lab** | – | – | **None**: the lab is for testing stations | – | none |
 
 **CK walkthrough (a level-1 chai day, S1 → S2).**
-- **S1.** Nana walks up to the island. *Tu ki aiye?* (his bubble, read along). Bubbles: a thumbs-up face with *Aau theek ai.*, and a waving hand with *Achija!*. The child taps, taps: Nana nods. *Tu muke chai banai dinda?* → *Ha!*. The request card comes up.
+- **S1.** Nana walks up to the island. *Tu ki aiye?* (his bubble, read along). Bubbles: a thumbs-up face with *Aau theek ai.*, and a waving hand with *Khuda-fis!*. The child taps, taps: Nana nods. *Tu muke chai banai dinda?* → *Ha!*. The request card comes up.
 - **S2**, a few sessions later. Nana asks *Tu ki aiye?*. There are two thumbs-up bubbles, *Aau theek ai. Aai ki aayo?* and *Aau theek ai. Tu ki aiye?*, same picture, plus the waving hand.
   - The child picks *Aai*: Nana puts a hand on his heart, *Aau theek ai*, and beams.
   - The child picks *Tu*: Nana looks over his shoulder for the small child you must be talking to, laughs, says *Aai ki aayo?* himself, and the bubbles come back once.
   - Later, Ali asks the same *Tu ki aiye?*, and there *Tu* is the right one.
 - **During the boil (Relaxed):** *Chamchi kida ai?*. The child taps the teaspoon, and Nani takes it. *Shabash!*.
-- **After serving:** Nana, *Aabhar aanjo!* → *Jara e wandho nai*. He waves *Achija!* and goes.
+- **After serving:** Nana, "Thank you!" → *Jara e wandho nai*. He waves *Khuda-fis!* and goes.
 
 That's three moments offered across a two-dish day, and the cap takes at most one per round.
 
@@ -414,11 +409,11 @@ That's three moments offered across a two-dish day, and the cap takes at most on
 | CL6 | **3 Pharmacy** · the belt | – | – | **None**: a moving belt. After `handover`, the doctor's *Shabash!* is heard | – | none |
 | CL7 | **3 Pharmacy**, after the tray check, S2+ | after | The child → the doctor | Optional: **E7** reversed. The doctor thanks you, and you say *Jara e wandho nai* | S2 | optional |
 | CL8 | **4 Heal** · any game | – | – | **None**: H6 is already the clinic's conversation game, and nothing interrupts a heal | – | none |
-| CL9 | **5 Send-off** · after E1/E2 feelings | after | The patient | **E7 thanks** (*Aabhar aanjo!* → *Jara e wandho nai*) or **E2 bye** (*Achija!* → *Achija!* vs *Salamun alaykum!*: arriving or leaving, read from the patient walking out). The clinic's **E3 "Say goodbye"** speaking moment runs on this module's E2 at R4 | S1–S2 | **MVP** |
+| CL9 | **5 Send-off** · after E1/E2 feelings | after | The patient | **E7 thanks** ("Thank you!" → *Jara e wandho nai*) or **E2 bye** (*Khuda-fis!* → *Khuda-fis!* vs *Salamun alaykum!*: arriving or leaving, read from the patient walking out). The clinic's **E3 "Say goodbye"** speaking moment runs on this module's E2 at R4 | S1–S2 | **MVP** |
 | CL10 | **Before diagnosis**, S4 | before stage 2 | The child → the patient | **T13**: the child opens with *Aai ki aayo?* / *Tu ki aiye?* by kind. The patient's answer is PH *I don't feel well* (G112), which leads into D2 | S4 | later |
 | CL11 | **5 Send-off** · E4 *You ask* (how do you feel?) | – | – | The clinic owns it (feelings PH). When the feelings are recorded, it becomes this module's T3 at R5 | S3–S4 | later |
 | CL12 | **You're the patient** (V0) | before | The doctor | **E3 with a twist**: *Tu ki aiye?*, and *Aau theek ai* is funny-wrong (you're hurt!). PH *My knee hurts* is right | S2 | later |
-| CL13 | **Close the clinic** | after | The doctor | **E2** *Achija!* and **E7** (the child thanks him) | S1–S2 | later |
+| CL13 | **Close the clinic** | after | The doctor | **E2** *Khuda-fis!* and **E7** (the child thanks him) | S1–S2 | later |
 | CL14 | **Open clinic** (free play) | before | Each patient | CL2's rotation, capped at 1 per patient | S1–S4 | later |
 | CL15 | **Arc 3 Ch4** "Tell the doctor about Nani" | – | – | The clinic owns it (its S3 speaking) | – | none |
 
@@ -426,7 +421,7 @@ That's three moments offered across a two-dish day, and the cap takes at most on
 - **Arriving.** The doctor laughs: *Salamun alaykum!* → *Wa alaikum salaam!*.
 - **The waiting room.** The doctor calls the girl, and she stands. On her way to the bench she turns to the child: *Tu ki aiye?* → *Aau theek ai.*. She sits, and diagnosis starts.
 - **At S2**, an old man is called. He asks *Tu ki aiye?*, and *Aai ki aayo?* is the right return. A boy asks the same, and *Tu ki aiye?* is right.
-- **The send-off.** The girl, plaster on: *Aabhar aanjo!* → *Jara e wandho nai*. Then the end-of-round screen.
+- **The send-off.** The girl, plaster on: "Thank you!" → *Jara e wandho nai*. Then the end-of-round screen.
 
 The cap keeps it to one graded moment per patient: CL1 counts for patient 1, CL2 or CL9 for the others.
 
@@ -439,10 +434,10 @@ The cap keeps it to one graded moment per patient: CL1 counts for patient 1, CL2
 | FI3 | **3 The counter** · 3a salaam and *khanigin* | before | The shopkeeper (stranger → *aai*) | **E1 salaam**, then **E3** (formal return). This **replaces Find it's own `greet`** (which reads Cook's `exchanges.salaam` today) | S1–S2 | later (first after the MVP) |
 | FI4 | 3 The counter · 3b Ask for one | before | The shopkeeper | The mode owns the speaking. Its prompt becomes *Toke kuro khapeto?* ✓ (A8.8, to a child) in place of PH *What do you need?* | S2 | later |
 | FI5 | 4 Find it (the search) | – | – | **None**: the search is the listening job | – | none |
-| FI6 | 5 Hand over · 5a the bag | after the swap | The child → the shopkeeper | **E7** reversed: the child says *Aabhar aanjo*, and he says *Jara e wandho nai* | S2 | later |
+| FI6 | 5 Hand over · 5a the bag | after the swap | The child → the shopkeeper | **E7** reversed: the child says "Thank you", and he says *Jara e wandho nai* | S2 | later |
 | FI7 | 5 Hand over · 5c scales, 5d pay | – | – | **None** (5d later: prices, *kitla?*) | – | none |
 | FI8 | 6 Home · 6b give one to Nana | after | Nana | The mode owns *Hi Nana lai ai*. Then **E7** (Nana thanks you) | S2 | optional |
-| FI9 | 7 Send-off / leaving the stall | after | The shopkeeper | **E2** *Achija!* | S1 | later |
+| FI9 | 7 Send-off / leaving the stall | after | The shopkeeper | **E2** *Khuda-fis!* | S1 | later |
 
 ### 7.5 The parked modes (lighter)
 
@@ -472,6 +467,8 @@ The cap keeps it to one graded moment per patient: CL1 counts for patient 1, CL2
 | HB3 | Grandparent mode | any | Nani (real) | Any exchange, with Nani reading the line | S1–S6 | later |
 
 ### 7.7 The story arcs and chapters
+
+*Arc column: the 25 Sept five-arc numbering (Arc 1 Eid at Nani's, Arc 2 the wedding, Arc 3 the monsoon, Arc 4 the lost ring, Arc 5 the village). The live arcs are the Birthday (Arc 1; "Eid morning" rows become the Birthday party), the day-out trips, the clinic, Making clothes with Big Ma, the Monsoon and Who did it (H36–H39). Rebase the rows when Conversations is wired.*
 
 | # | Arc · chapter | When | Speaker | Exchange | Stages | Priority |
 |---|---|---|---|---|---|---|
@@ -616,7 +613,7 @@ const res = await Conversations.maybe({
 //         register: { asked, chose, ok }, moments: [/* Say outcomes */], words: [/* {id, kutchi, english} */] }
 
 await Conversations.run("wellbeing.howareyou", ctx);   // scripted: story beats, the first launch (no caps)
-Conversations.roundMoments(roundId);                    // → Stars.voice(...)
+Conversations.roundMoments(roundId);                    // → the speaking bonus in the scoring model
 Conversations.roundWords(roundId);                      // → Results.show({ words })
 ```
 
@@ -630,7 +627,7 @@ Conversations.roundWords(roundId);                      // → Results.show({ wo
 **Hooks into the shared modules:**
 - **`say.js`** runs R4 and R5 when spoken: `Say.moment({choices: answerIds, mode: ctx.mode, expected, accept, character, grandparent, label})`. Before offering R4, `Speech.hasTemplates(answerIds)` must be true (the templates come from the lines' family clips via `Speech.loadTemplates`).
 - **`whichone.js`**: `WhichOne.candidates(correctId, lookalikeGroups, {n, rng})` picks the distractors.
-- **`stars.js`**: a new `rules.conversations` (`voiceMin 1`, `placeholdersTested false`).
+- **Scoring data**: a `conversations` rule (`placeholdersTested false`; no voice star, decision 2). It was `rules.conversations` in the old `stars.js`.
 - **`save.js`**: the `"conversations"` namespace.
 - **`onboard.js`**: the first tap-tap, and the first mic.
 - **`results.js`**: the words, through the host.
@@ -648,13 +645,13 @@ Conversations.roundWords(roundId);                      // → Results.show({ wo
 
 | Exchange | Type | Lines (source) | Placements | Rungs, length, register |
 |---|---|---|---|---|
-| **E1** `greet.salaam` | T1 | *Salamun alaykum!* → *Wa alaikum salaam!*; distractor *Achija!* (all hd) | FL2, CK1, CL1 | R1–R3; L1; fixed |
-| **E2** `greet.bye` | T2 | *Achija!* → *Achija!*; distractor *Salamun alaykum!* (hd) | CL9 (and heard at CK9) | R1–R4; L1; fixed |
+| **E1** `greet.salaam` | T1 | *Salamun alaykum!* → *Wa alaikum salaam!*; distractor *Khuda-fis!* | FL2, CK1, CL1 | R1–R3; L1; fixed |
+| **E2** `greet.bye` | T2 | *Khuda-fis!* → *Khuda-fis!*; distractor *Salamun alaykum!* | CL9 (and heard at CK9) | R1–R4; L1; fixed |
 | **E3** `wellbeing.howareyou` | T3 | *Tu ki aiye?* ✓ / *Ki ai?* → *Aau theek ai.* ✓ (S1); + *Aai ki aayo?* ✓ / *Tu ki aiye?* ✓ (S2) (§21, §27) | FL8, CK1, CL1, CL2 | R1–R3; L1 → L2; heard → **choose** |
 | **E4** `request.make` | T5 | *Tu muke {dish} banai dinda?* (✓ for chai) → *Ha!* ✓; distractor *Na.* ✓ (§27, §23) | FL4, CK2 | R1–R4 (*Ha* is one word); L1; fixed |
 | **E5** `request.help-cook` | T5 | PH *Will you help me cook?* → *Ha!* ✓; the No bubble dodges | FL7 | R1; L1; untested until recorded |
 | **E6** `offer.what-like` | T6 | *Toke kuro khapeto?* ✓ → *Muke {x} khape* / *Na, na khape*; the S2 trap is a bare *Na.* ✓ (§23, §1, §11) | CK11 | R1–R3; L1; fixed (the politeness is the test) |
-| **E7** `thanks.welcome` | T11 | *Aabhar aanjo!* (hd) → *Jara e wandho nai* ✓ (§27); distractor *Achija!* | CK9, CL9 | R1–R3; L1; fixed |
+| **E7** `thanks.welcome` | T11 | "Thank you!" (English) → *Jara e wandho nai* ✓ (§27); distractor *Khuda-fis!* | CK9, CL9 | R1–R3; L1; fixed |
 | **E8** `kin.who-am-i` | T4 | PH *Do you know who I am?* → a name bubble with a face (*Nana, Big Ma, Ali*) | CL3 | R1–R2; L1; untested until recorded |
 | **E9** `where.kida` | T8 | *{x} kida ai?* (§23, §15 order) → tap it; from R2 *Hida!* ✓ / *Huda!* ✓ (§23) | CK7 | R1–R4 (*hida / huda*: a set of 2); L1; fixed |
 
@@ -674,7 +671,7 @@ Plus heard-only lines: Kasuku's salaam (FL2), "Mmm, lovely chai! *Shabash, beta*
    - that every MVP line resolves to existing chunks;
    - a **leak bot** with the strategies *echo the question*, *first bubble*, *longest bubble*, *always formal* and *always informal*. Each must stay under 55% right on graded S2 register moments over 500 sessions (it's a two-way choice balanced 50/50, so chance is the floor; what matters is that no strategy beats it).
 2. **The bubbles**: the browser half and CSS, with a lab page `lab/conversations.html` (any exchange × rung × speaker, a fake mic). Check it at 915×375, 1280×800 and iPad.
-3. **Cook**: CK1, CK2, CK7, CK9 and CK11, replacing the small talk in `flow.js`, with the save migration and the voice star hook.
+3. **Cook**: CK1, CK2, CK7, CK9 and CK11, replacing the small talk in `flow.js`, with the save migration and the speaking-bonus hook.
 4. **The first launch**: FL2, FL4, FL5, FL7 and FL8, through `Conversations.run` on `first.html`.
 5. **The clinic**: CL1, CL2, CL3 and CL9, through its stage files. Its goodbye speaking moment goes through E2.
 
@@ -685,8 +682,8 @@ These are only the lines the MVP needs that have **no family clip yet**. Mum say
 **Group 1: Greetings (confirm the handout; they're already in the Questions doc as D5)**
 1. *Salamun alaykum!* (as Nani greets a grandchild at the door)
 2. *Wa alaikum salaam!* (as a child answers) 🎤
-3. *Achija!* (bye: as a visitor leaving, and as the child's reply) 🎤
-4. "Thank you!": *Aabhar aanjo!*, or however the family really says it (Q1)
+3. *Khuda-fis!* (bye: as a visitor leaving, and as the child's reply) 🎤
+4. "Thank you!": "Thank you!", or however the family really says it (Q1)
 5. Hello, as a cousin says it to a cousin, if it's different from the salaam (else skip)
 
 **Group 2: How are you**
@@ -698,7 +695,7 @@ These are only the lines the MVP needs that have **no family clip yet**. Mum say
 **Group 3: Requests and offers**
 10. *Tu muke daar banai dinda?*
 11. *Tu muke maani banai dinda?*
-12. *Tu muke chaat banai dinda?* · *Tu muke samosa banai dinda?* · *Tu muke mishkaki banai dinda?* (or say "*Tu muke* … *banai dinda?*" once with a gap, so the dish can be dropped in: Q5)
+12. *Tu muke chaat banai dinda?* · *Tu muke samosa banai dinda?* · *Tu muke sekelo banai dinda?* (or say "*Tu muke* … *banai dinda?*" once with a gap, so the dish can be dropped in: Q5)
 13. *Muke chai khape.* · *Muke paani khape.* · *Muke dudh khape.* (the child answering *Toke kuro khapeto?*) 🎤
 14. *Na, na khape.* (the polite no, as a child says it) 🎤
 15. *Chamchi kida ai?* · *Cup kida ai?* (Nani looking for something)
@@ -721,7 +718,7 @@ These are only the lines the MVP needs that have **no family clip yet**. Mum say
 4. Nani and Nana: the same respect form (default kept).
 5. **Recording:** Mum records the **common whole phrases**. Everything else is **built from modular chunks**: smaller phrases or single words, joined by the game.
 6. Register is graded from S2 and spoken from S3: **yes**.
-7. A spoken reply can earn the round's voice star: **yes**.
+7. A spoken reply earns the speaking bonus (more pocket money; no voice star, decision 2): **yes**.
 8. **The wrong-register reaction:** no "looks behind him" joke. Nana (or whoever is spoken to) gives a **gentle head scratch or embarrassed look**, **cycling through 3–4 different "that's not quite right" expressions** so it doesn't repeat. Still no negatives mid-round; it's recorded for the end review.
 9. **Frequency:** **one conversation per game mode**, plus **one every 2 minutes** on top. Tune after playtesting. The parent setting stays.
 10. **Kasuku:** only repeats words, for now.
@@ -742,13 +739,13 @@ These are only the lines the MVP needs that have **no family clip yet**. Mum say
 
 Defaults are in bold. The build takes the defaults.
 
-1. **Thank you.** Does the family say *Aabhar aanjo* (the handout) or the English "thank you" (as in *na, thank you*, §23)? **Default: *Aabhar aanjo* until Mum says.**
-2. **Greetings.** Is *Salamun alaykum / Wa alaikum salaam* the family's everyday hello, and *Achija* the everyday bye (both from the handout)? **Default: yes, pending D5.**
+1. **Thank you.** *Resolved (Zafar, 26 Sept; G6):* the family says the English "thank you" (as in *na, thank you*, §23).
+2. **Greetings.** *Salamun alaykum / Wa alaikum salaam* is the everyday hello (pending Mum, D5); the everyday bye is *Khuda-fis* (Zafar, 26 Sept; G6).
 3. **Which "you" for whom?** A child to Ma (their own mum), to an older cousin, to a shopkeeper. **Default: *aai* for every adult, *tu* for children and cousins.**
 4. **Nani and Nana.** Do they get the same respect form? §21 says it's the same for a man or a woman. **Default: yes.**
 5. **Templates.** Can *Tu muke {x} banai dinda?* and *{x} kida ai?* take any noun (recorded as chunks), or record each whole? **Default: whole lines for the MVP's five dishes, chunks later.**
-6. **Timing.** Register graded from S2 (the end of Arc 1, Eid morning) and spoken from S3 (Arc 2). **Default: as written.** Too early or too late?
-7. **The voice star.** May a conversation's spoken reply earn the host round's voice star (it can never lose it)? **Default: yes.** Ear and badges are untouched.
+6. **Timing.** Register graded from S2 (the end of Arc 1, the Birthday party) and spoken from S3 (Arc 2). **Default: as written.** Too early or too late?
+7. **The speaking bonus.** May a conversation's spoken reply earn the host round's speaking bonus (it can never lose it)? **Answered yes** (decision 2: there is no voice star). The badges are untouched.
 8. **Frequency.** At most 1 per round and at least 90 s apart, with a parent setting (Often / Sometimes / Story only / Off). **Default: Sometimes.**
 9. **The wrong-register joke.** Nana looks behind him for the child you're talking to. Warm, or too cheeky? **Default: keep it.**
 10. **Kasuku.** May the parrot hold tiny ungraded exchanges in idle moments, or only echo? **Default: echo only for the MVP.**
@@ -765,7 +762,7 @@ Branch `claude/conversations-mvp` (from `claude/nifty-rubin-c0d431`). Design: `d
 
 ### 26 Sept 2026
 - Started. Read the handover, the design (all of it, §10a), UX §14, the grammar notes, save.js, story.js (its `choice` kind already does the §14 shake + 4 cycling reactions: embarrassed, scratch, puzzled, sigh; the module reuses those names), character.js (gender = `Save.get("character").choices.body`), family-audio.json (86 Mum + 87 Zafar clips).
-- §10a applied to the MVP lines: goodbye is *Khuda-fis!* (replaces *Achija* everywhere); thanks is the English "Thank you!" (replaces *Aabhar aanjo*); *aai* for anyone older (older cousin included), *tu* for same age or younger.
+- §10a applied to the MVP lines: goodbye is *Khuda-fis!* (replaced the handout's *Achija* everywhere); thanks is the English "Thank you!" (replaced the handout's *Aabhar aanjo*); *aai* for anyone older (older cousin included), *tu* for same age or younger.
 - Data: `data/conversations/{lines,exchanges,speakers,placements}.json`. Chains live inside placements (`CL1.chain`), so no separate `chains.json` for the MVP.
 - Engine `js/shared/conversations.js`: pure half (resolve, answers, machine/step, allow, pick, update, migrateCook) + bubbles (maybe, run, hear, play). R4/R5 (speaking) are capped to R3 in the bubbles until Say.moment + family speech templates are wired.
 - Register balance is kept across sessions (`state.reg`), not per session: per session let "longest/always formal" reach 55.7% on the clinic's 4-elder/2-child bench. Now every blind strategy is at 50% or below.

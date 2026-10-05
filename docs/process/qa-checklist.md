@@ -4,20 +4,20 @@ Nothing reaches Zafar until every line that applies passes. The design docs say 
 
 - **auto**: a script checks it (named).
 - **eye**: a reviewer checks it on the screenshots.
-- **eye → auto**: checked by eye today; the automated check is planned (step 2a: sandbox flow tests and layout lint).
+- **eye → auto**: checked by eye; the sandbox's screen lint (`build/lint/layout.mjs`, run at every recorded state) already measures the lines whose row names a lint check; where none is named, no script does it yet.
 
 A reviewer who is not the builder fills in the results, flaws first.
 
 ## How to run a review
 
-1. **While iterating:** laptop view (1366×768) only, changed screens only, one screenshot each, looked at and fixed. The full review below runs once, before the one push to `main`.
-2. Run every **auto** line that applies to the touched modes.
-3. Screenshot every visually distinct state, uncropped, at **844×390** (phone landscape, iPhone 12–14), **800×360** (small Android landscape, the tightest height), **1366×768** (laptop) and **1440×900** / **1280×800** (16:10 laptops), across levels 1–4. One upright phone shot (390×844) checks the "please rotate" card.
+1. **While iterating (builders, decision 48):** fast checks only: `node build/tools/review/checks.mjs` (tests, the word lint, the version stamps), the leak scripts, `check_onboard`, and `node build/tools/review/touched.mjs` for the flows you changed, run at laptop size (1366×768) with `build/sandbox/run.mjs --touched … --quick`, one shot each, looked at and fixed. The full matrix below runs once, in the orchestrator's `/review`, before a publish.
+2. Run every **auto** line that applies to the touched modes (`touched.mjs` names the flows; `build/sandbox/run.mjs --gate` is the whole matrix; `shotdiff.mjs` compares the shots with the approved ones).
+3. Screenshot every visually distinct state, uncropped, at **844×390** (phone landscape, iPhone 12–14), **800×360** (small Android landscape, the tightest height), **1366×768** (laptop) **1440×900** / **1280×800** (16:10 laptops) and the tablets **1024×768**, **1180×820** and **1366×1024** (landscape, decision 24), across levels 1–4. One upright phone shot (390×844) checks the "please rotate" card.
    - "Every state" means every state that draws something different, not just start, middle and end: a hob heating, turned down, pan lifted, boiled over; 1–4 burners where the count changes the layout; end screens with all right / mixed / none, 0 / 1 / 2 / 3+ hints, new best / good / plain.
    - Each shoot script names its states in its header.
 4. Zoom ×2 on the focal object of each shot and go through the **eye** lines. List every flaw first, then write one line per state. "The screenshot exists" doesn't count.
-5. Recheck every row of `regressions.md` for the touched screens.
-6. Compare side by side (not from memory) with the approved mock-up where one exists (e.g. `build/reports/chai-v2-mockup/`), with Cook's shared screens, and item by item with Zafar's last feedback (each ✅ or a note).
+5. Recheck every row of `regressions.md` for the touched screens: `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin` lists them.
+6. Compare side by side (not from memory) with the approved mock-up where one exists (named in the brief), with Cook's shared screens, and item by item with Zafar's last feedback (each ✅ or a note).
 7. Record results in the session report (`build/reports/<name>.md`) using the template at the end. The builder never reviews its own work: the orchestrator or a fresh session does, and the orchestrator looks at the final shots itself before reporting done.
 
 ---
@@ -28,16 +28,16 @@ A reviewer who is not the builder fills in the results, flaws first.
 
 | ID | Check | Rule | How |
 |---|---|---|---|
-| TXT-01 | No text is clipped, cut off or ellipsised, including headlines, card rows, pills, chips, badges and end-screen word tiles | F7 | eye → auto |
-| TXT-02 | Long headlines shrink first, then wrap; they never overflow their card | F7 | eye → auto |
+| TXT-01 | No text is clipped, cut off or ellipsised, including headlines, card rows, pills, chips, badges and end-screen word tiles | F7 | auto: layout lint `text-clipped`, `ellipsis` |
+| TXT-02 | Long headlines shrink first, then wrap; they never overflow their card | F7 | auto: layout lint `text-clipped` |
 | TXT-03 | The guide box shows at most 2 lines; a card row shows 1 | F7 | eye → auto |
 | TXT-04 | Outlines, glows and highlights around text have room and aren't cut by the card edge | F7 | eye |
-| TXT-05 | No text is smaller than 14 px (L4) at 800×360 and 844×390, chip words included; words stay readable at a glance on a phone | F2 | eye → auto |
+| TXT-05 | No text is smaller than 14 px (L4) at 800×360 and 844×390, chip words included; words stay readable at a glance on a phone | F2 | auto: layout lint `text-small` |
 | TXT-06 | Only Nunito at the four sizes: L1 22/800, L2 20/800, L3 17/700, L4 14/600 | F2 | eye → auto |
 | TXT-07 | Kutchi on cards is lower case, with Kutchi number words and no full stop | F10 | eye |
 | TXT-08 | Every spoken line is also written, with the read-along underline as it's said | E3, E4 | eye |
 | TXT-09 | One text line beside an icon is centred on the icon | F21 | eye |
-| TXT-10 | Words never break mid-word ("tr/ae/kh/un") at any checklist size | F7 | eye → auto |
+| TXT-10 | Words never break mid-word ("tr/ae/kh/un") at any checklist size | F7 | auto: layout lint `word-broken` |
 | TXT-11 | The word review shows the exact word the order used (*hakri lakri*, not *hakro*) | F10, F14 | eye → auto |
 
 ## LAY: layout and spacing
@@ -46,12 +46,12 @@ A reviewer who is not the builder fills in the results, flaws first.
 
 | ID | Check | Rule | How |
 |---|---|---|---|
-| LAY-01 | The stage fills the screen: no letterbox or cream strip | F18 | eye → auto |
-| LAY-02 | No horizontal scroll on the page or the sidebar | F8, F18 | auto: `build/test_e2e.py`, `build/test_cook.py` (sidebar) |
+| LAY-01 | The stage fills the screen: no letterbox or cream strip | F18 | eye · layout lint at every size in the matrix |
+| LAY-02 | No horizontal scroll on the page or the sidebar | F8, F18 | auto: layout lint `page-scroll`, `scroll-container` |
 | LAY-03 | Spacing only from 4, 8, 12, 16, 24, 32, 40 px (outer margin 32, between regions 24–32, inside cards 16, related controls 12, label to icon 8); padding equal on matching sides | F2, F16 | eye → auto |
-| LAY-04 | Tap targets are at least 48 px even when the icon is 24 px (knobs, dock buttons, chips); art items at least ~90 px on the 1600×900 stage or in a container | F2, D21 | eye → auto |
+| LAY-04 | Tap targets are at least 48 px even when the icon is 24 px (knobs, dock buttons, chips); art items at least ~90 px on the 1600×900 stage or in a container | F2, D21 | auto: layout lint `tap-small` · eye for art size |
 | LAY-05 | Left sidebar ~22%, play area ~78%; big buttons bottom right | F4, F5 | eye |
-| LAY-06 | Nothing covers a tappable item or the play area | E23 | auto: `build/test_cook.py` (topmost-element check before each tap) · eye elsewhere |
+| LAY-06 | Nothing covers a tappable item or the play area | E23 | auto: layout lint `covered`, `covers-play-area` |
 | LAY-07 | Shelf band: identical slots, items at true relative heights, equal padding top and bottom; bounces and glows stay inside the band | F15, F16 | eye |
 | LAY-08 | Characters are cut off by the scene, never the screen edge; no floating heads | F19 | eye |
 | LAY-09 | Positions come from scene data, not CSS nudges | J4 | eye (code review) |
@@ -72,7 +72,7 @@ A reviewer who is not the builder fills in the results, flaws first.
 | CMP-04 | Only design tokens: the colour set (`docs/design-language/ui-design-system.md` §2), radii 12 or full circle, one shadow `0 2px 8px rgba(40,25,10,.10)`; red #C0443C only in the end review | F2 | eye → auto |
 | CMP-05 | Flat UI: white pills, flat gold done outline, no gradients or 3D text; no step counters or internal numbers | F3, F23 | eye |
 | CMP-06 | Guide box is sage, top of the sidebar; speech bubbles solid cream with dark text | F11, F24 | eye |
-| CMP-07 | One white card per person: face + headline + stacked rows; no name label, no cards in cards, no scroll bar | E21, F8 | eye |
+| CMP-07 | One white card per person: face + headline + stacked rows; no name label, no cards in cards, no scroll bar | E21, F8 | eye · layout lint `scroll-container` |
 | CMP-08 | Order model: person → items → parts, max three tiers; rows and the spoken sentence share one source and order | F9, F10 | eye |
 | CMP-09 | "Don't" rows are dashed with a no-sign; finished items fold to a gold line; "next" in grey, never numbered | F9 | eye |
 | CMP-10 | The focal thing pulses with a centred glow and bounce; inactive things dim ~10% | F17 | eye |
@@ -90,13 +90,13 @@ A reviewer who is not the builder fills in the results, flaws first.
 | ID | Check | Rule | How |
 |---|---|---|---|
 | LNG-01 | No written English for the child anywhere (grown-ups' "?" pop-up aside); no spoken English in games or help; in story mode, spoken English is followed by the Kutchi | E1, G15 | auto: `build/check_onboard.mjs` (Cook coaches) · eye elsewhere |
-| LNG-02 | The Kutchi leak test passes at level 1: a non-speaker bot can't win. Check the known leak patterns: help that shows the answer; the game deciding for you; the screen giving the answer; fixed slots; sound matching; decoys that give themselves away; row shapes that decode the order; a count shown where it should be heard | C10 | auto: `build/leak_*.mjs` (other modes); Cook's leak checks are in `build/test_cook.py` · eye for the patterns |
-| LNG-03 | Every line is a full sentence built by the engine; every word heard is a family recording; no hand-written fragments | G9, G12 | eye (until the engine lands) |
-| LNG-04 | No invented Kutchi: every string is sourced, drafts carry `draft: true`, missing words are grey-italic placeholders flagged "to record" | G1–G3 | eye · auto: `build/lines_needing_family.py` (lists the gaps) |
+| LNG-02 | The Kutchi leak test passes at level 1: a non-speaker bot can't win. Check the known leak patterns: help that shows the answer; the game deciding for you; the screen giving the answer; fixed slots; sound matching; decoys that give themselves away; row shapes that decode the order; a count shown where it should be heard | C10 | auto: `node build/tools/review/leak.mjs <game>` (`--list` names them; Cook's needs a browser) and `build/leak_*.mjs` · eye for the patterns |
+| LNG-03 | Every line is a full sentence built by the engine; every word heard is a family recording; no hand-written fragments | G9, G12 | auto: `node build/lint/words.mjs` (literals in game code, lines with no recording) · eye |
+| LNG-04 | No invented Kutchi: every string is sourced, drafts carry `draft: true`, missing words are grey-italic placeholders flagged "to record" | G1–G3 | eye · auto: `node build/lint/words.mjs`, `build/lines_needing_family.py` (lists the gaps) |
 | LNG-05 | No English or pictures where the task is understanding Kutchi; one place for a word's text at a time | G22 | eye |
 | LNG-06 | Settled spellings used (*na*, *khun*, *ba*, *hane*, *khuda-fis* …) | G4–G8 | eye → auto |
 | LNG-07 | No Kutchi grammar in game code; frames and forms live in data | G13, G18 | eye (code review) |
-| LNG-08 | Never English inside an item pill | G3 | eye → auto |
+| LNG-08 | Never English inside an item pill | G3 | auto: `node build/lint/words.mjs` (English a child may see) |
 
 ## INT: interaction and feel
 
@@ -114,7 +114,7 @@ A reviewer who is not the builder fills in the results, flaws first.
 | INT-08 | Visible timers wherever there's time pressure, ~15% quicker per level, set in data | H8, H47 | eye |
 | INT-09 | Colour never carries meaning alone | E33 | eye |
 | INT-10 | Counting follows the level rule (L1 written + counted aloud, L2 written, L3+ heard) | E12 | eye |
-| INT-11 | Every station plays through to the end at every level | C1 | auto: `build/test_cook.py`, `build/test_clinic*.py`, per-mode tests · eye |
+| INT-11 | Every station plays through to the end at every level | C1 | auto: the sandbox (`build/sandbox/run.mjs`: each flow must reach its end) and the per-mode tests · eye |
 | INT-12 | Level 1 is the smallest possible round; each level adds one thing; two jobs are phases with a button between | E6, E7 | eye |
 | INT-13 | The same kind of action uses the same gesture throughout a mini-game, and controls never change between levels | E13 | eye |
 | INT-14 | Rows tick when that step closes (put down, finished, served), never the moment a number is reached | E11 | eye → auto |

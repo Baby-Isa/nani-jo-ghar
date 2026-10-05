@@ -1,17 +1,5 @@
 # Mode-design method
 
-> **Stale points (the rulebook, `docs/process/rules.md`, wins).** The briefs below are copied word for word; read them with these overrides:
-> - "Three stars", the "ear star", "voice star", "craft star", "help costs the ear star", "tap-to-reveal costs a star" → scoring is the **three end-of-round badges: time, accuracy, hints**; no ear or voice star; the light bulb is the help and costs a bulb on the hints badge (H5, J7, E25, decisions 1–3).
-> - "Pass the wife's test" (Sceptic) → the **Kutchi leak test**: someone who knows no Kutchi can't win by reading, matching, eliminating, patterns or waiting (non-negotiable 6; `docs/process/qa-checklist.md` holds the leak patterns).
-> - "No English step pills", "a word review at the end (Kutchi → English)", "word shows as text, fades by stage" → **no written English for the child, ever**; written English for grown-ups lives only in the "?" pop-up (E1, decision 12; non-negotiable 5).
-> - "Hands: first-person hands come from the existing hand set" → hands are out of Cook and parked (Zafar, 28 Sept; art-bible/art-pipeline).
-> - "Eid rush", Eid-morning beats and "arcs" in the old homes → the first arc is the Birthday; old arc homes are overridden (H36–H39).
-> - Files go in `docs/game-design/modes/<mode>.md` (not `docs/modes/<mode-id>-design.md`); "don't commit or push" and "only create your one file" were per-session instructions for those runs, not standing rules; session rules are in `process/session-brief-template.md`.
-> - Clinic waiting room of 8–10 people at level 3 → at most 6 (H28). "No needles/stitches" in OVERVIEW → stitches and injections are fine (Zafar, 25 Sept).
-> - Kutchi examples inside the briefs (*hikdo*, *bo*, *vadho*, *daal*, *marcha*) → G5 (*hikdo*, *bo*), G4 (*vadho*, *daal*), G25 and decision 5 (*marcha*).
-> - Speech: the closed-set design stands; "voice star" is gone (J7); the recogniser call is `js/shared/speech.js` (`architecture/speech-recognition-plan.md`).
-> - The mini-game rules (consistent gestures within a mini-game, auto-tick, card is master) are in `design-language/ux-principles.md` and rules H2.
-
 How a mode gets designed, in the order the work runs. The five questions, the pipeline-of-stages rule and the leak test are rules (H1, H2, non-negotiable 6); this file keeps the **method** behind them. Also see `game-design/modes/README.md` for the modes and their core verbs.
 
 **The process:** pipeline (stages and mini-games) → design template with persona loops → quality pass (five questions, cut to the best) → deep dive (modular mechanics, speaking moments, first set) → fun checklist → Zafar approves → build.
@@ -35,7 +23,7 @@ Zafar's feedback on the clinic, which he wants applied to **every** mode:
 4. **Heal.** The most fun part: one comical mini-game per body part, **15–20 of them** (see below). Some reuse Cook (making a cup of chai with lemon; turmeric milk = the tadka station).
 5. **Send-off.** "Is everything okay now?" "Yes, now I'm happy!": feelings words (*okay, happy, better, sad, scared*) and goodbye.
 
-**Healing mini-games: Zafar's steer.** Comical, never gory, but **stitches and injections are fine** (reversing the earlier "no needles, no stitches" call). Look at popular children's doctor apps (e.g. Toca Life: Hospital, Dr. Panda Hospital, My Town: Hospital, Baby Panda's Hospital, Bimi Boo Doctor, Dentist games) for mechanics that already work. Ideas so far: ear (pull out the earwax, then clean), cut (suturing, following a sequence), teeth (brush in an order: up, up, left, right…; tap the tooth; cover a crack), eyes (drops), tongue (something!), elbows, knees, stomach. Every one must carry Kutchi, even if only through the instructions and the counts/colours/sides in them.
+**Healing mini-games: Zafar's steer.** Comical, never gory, but **stitches and injections are allowed** (25 Sept steer, reversing the earlier "no needles, no stitches" call; the pill organiser stays out, H46). Look at popular children's doctor apps (e.g. Toca Life: Hospital, Dr. Panda Hospital, My Town: Hospital, Baby Panda's Hospital, Bimi Boo Doctor, Dentist games) for mechanics that already work. Ideas so far: ear (pull out the earwax, then clean), cut (suturing, following a sequence), teeth (brush in an order: up, up, left, right…; tap the tooth; cover a crack), eyes (drops), tongue (something!), elbows, knees, stomach. Every one must carry Kutchi, even if only through the instructions and the counts/colours/sides in them.
 
 ### What each mode's redesign must produce
 Add a new top section to the mode's design doc, **"Pipeline design, 25 Sept 2026"**, superseding older sections where they conflict:
@@ -149,9 +137,9 @@ Repo: `/home/user/nani-jo-ghar`.
 
 ### 2. Non-negotiable design rules (learned the hard way)
 
-1. **Every choice the player makes is set by something said in Kutchi, and it varies between rounds.** Pass the wife's test: someone who doesn't know Kutchi must not be able to win the "understood" star by reading, matching letter shapes, eliminating options, remembering fixed patterns, or waiting for a glow.
+1. **Every choice the player makes is set by something said in Kutchi, and it varies between rounds.** Pass the Kutchi leak test (non-negotiable 6): someone who knows no Kutchi must not be able to win by reading, matching letter shapes, eliminating options, remembering fixed patterns, or waiting for a glow.
 2. **Known leak patterns to design out from day one:**
-   - Help that shows the answer is free (it must cost the ear star).
+   - Help that shows the answer is free (it must cost a lightbulb on the hints badge).
    - Counts end by themselves, or trays hold exactly the number needed.
    - Optional steps are only offered when they were ordered.
    - Fixed positions or order.
@@ -159,20 +147,19 @@ Repo: `/home/user/nani-jo-ghar`.
    - Pictures or colour swatches in the order list.
    - Text matching between the order card and item labels.
    - Target zones that move to the answer.
-3. **A word shows as text in only one place at a time**, and fades by word stage: text, then speaker only, then •••; tap-to-reveal costs a star.
+3. **A word shows as text in only one place at a time**, and fades by word stage: text, then speaker only, then •••; tap-to-reveal costs a hint (the eye badge at closed-card levels).
 4. **The cue is on the object. Nothing covers the play area.** Nani's "pass me" lives in the sidebar.
 5. **Calm and clarity (Zafar's latest feedback):**
    - An intro card shows who wants what, as a one-line-per-item sequence.
    - A few seconds of silence at the start so the player can work it out; Nani must not be chatty or intrusive.
    - A sidebar that doesn't eat the play area; help as a "?" button.
-   - No English step pills.
-   - A word review at the end (Kutchi → English).
+   - No written English for the child, ever (E1): no English step pills; the end word review shows Kutchi with English under it for the grown-ups' check (F14).
    - Visible timers where there's time pressure.
    - Level 1 is simple in hand skill but varied in what's asked.
 6. **Never invent Kutchi.** Use existing words and frames from `data/cook.json` and the content master. Where a word is missing, use an English placeholder (grey italic) and list it for the family.
 7. **Levels are data; mechanics are reusable building blocks; free play and story routes both exist; every mode has a lab.**
 8. **Upgrades never do the listening for you.**
-9. **Hands:** first-person hands come from the existing hand set (poses, skinned per character); design for those poses, or name any new pose needed.
+9. **Hands:** none. Hands are parked (H13); a mode that needs a first-person scene says so and asks Zafar first.
 
 ### 3. Research (web search)
 
@@ -189,12 +176,12 @@ Find what makes the proven hits behind your mode fun and replayable (the referen
 - **Zafar, 38:** adult learner; wants lots of Kutchi per minute; a Puzzle Pirates fan.
 - **Farah, 34:** commuter; plays 3–5 minutes at a time.
 - **Nani, 68:** the voice; plays alongside a grandchild; must be proud of it.
-- **The Sceptic:** Zafar's wife. She doesn't know Kutchi, actively tries to win the ear star by pattern matching, elimination, reading and waiting, and reports every way she succeeded.
+- **The Sceptic:** Zafar's wife. She doesn't know Kutchi, actively tries to win (the accuracy badge) by pattern matching, elimination, reading and waiting, and reports every way she succeeded.
 - **The Builder:** a pragmatic engineer. What's expensive to build or to draw? What can reuse Cook and Find it?
 
 Then revise the design, and record in a **changelog table per loop**: finding → change. Stop after loop 3 only if the Sceptic can't win and every persona has a reason to come back; otherwise do more loops. Keep the loop notes in the document (condensed) so Zafar can see the design earned its shape.
 
-### 5. The document you write: `docs/modes/<mode-id>-design.md`
+### 5. The document you write: `docs/game-design/modes/<mode>.md`
 
 UK English. Tables and short bullets. No filler. Sections:
 
@@ -214,12 +201,12 @@ UK English. Tables and short bullets. No filler. Sections:
    - recasts on mistakes;
    - role-reversal potential (the player gives the instruction);
    - a **list of words and frames needed from the family**, marked as English placeholders until then.
-7. **Stars, rewards and upgrades:** this mode's three stars (the ear star is always "understood"; propose its own icon for the craft star, e.g. a chef's hat is Cook's), pocket money, collectibles, and upgrades that never do the listening.
+7. **Badges, rewards and upgrades:** the three shared badges (time, accuracy, hints; H5), what the mode adds to pocket money (volume × quality × difficulty, decision 10), collectibles, and upgrades that never do the listening.
 8. **Engineering spec for the builder:**
    - the data model (scene, items, relations, requests, levels);
    - what's reused from Cook and Find it, and which new building blocks are needed;
    - the lab;
-   - the test harness, including the automated leak bot (a no-Kutchi bot must fail the ear star in more than 90% of rounds);
+   - the test harness, including the automated leak bot (a no-Kutchi bot must fail to win in more than 90% of rounds);
    - the file layout (e.g. `<mode>.html`, `js/<mode>/`, `data/<mode>.json`, until the one-app shell exists).
 9. **Scene, art and asset list:**
    - the camera per scene;
@@ -240,7 +227,7 @@ UK English. Tables and short bullets. No filler. Sections:
 
 ### 6. Rules for you
 
-- **Only create your one file**, `docs/modes/<mode-id>-design.md`. Don't edit any other file, and don't commit: other agents work in this checkout, and the orchestrator commits.
+- **Only create your one file**, `docs/game-design/modes/<mode>.md`, and edit no other file (a session's own rules are in its brief, `process/session-brief-template.md`).
 - Coordinate by respecting the other modes' core verbs, so the mechanics don't overlap:
   - Cook = build;
   - Find it = search;
@@ -269,9 +256,9 @@ UK English. Tables and short bullets. No filler. Sections:
 3. **Mastery:** you can get better, and the game shows it (grades, combos, personal bests).
 4. **Variety through rule twists,** not new games: new ingredient, new customer quirk, new modifier.
 5. **Juice:** instant feedback (bounce, pop, sound, particles, a customer's reaction).
-6. **A meta loop:** coins → upgrades and unlocks → new possibilities in the next round.
+6. **A meta loop:** pocket money → upgrades and unlocks → new possibilities in the next round (never a wage or a loss, decision 20).
 7. **Characters you care about** (recurring family members with tastes and personalities).
-8. **Surprise:** randomised orders and occasional special events (Eid rush, a guest with an odd request).
+8. **Surprise:** randomised orders and occasional special events (a rush of guests, a guest with an odd request).
 9. **Tension then release,** but never punishment for the language itself.
 10. **The language is the input:** you can't win without understanding the Kutchi.
 
@@ -279,9 +266,7 @@ UK English. Tables and short bullets. No filler. Sections:
 
 > from: docs/archive/mode-briefs/OVERVIEW.md § What all six designs agree on
 
-> Stale: "stars and help costs" → three badges, with the light bulb as the help (H5); "the leak bot" is in `process/rules.md` and the labs are linked from `labs.html`; point 1 (the shared word list) is in `language/lexicon.md` §3.
-
-2. **Build on the shared engine, after "one app, one save".** Every mode reuses Cook and Find it's building blocks: word pills, the order ladder, stars and help costs, levels as data, the lab, the test harness and the leak bot. Relations stored as data also enables role reversal later.
+2. **Build on the shared engine, after "one app, one save".** Every mode reuses Cook and Find it's building blocks: word pills, the order ladder, the three badges and the light bulb as the help, levels as data, the lab, the test harness and the leak bot. Relations stored as data also enables role reversal later.
 3. **Most modes have a slice that already works as a real Kutchi test:**
    - Monsoon rush's kitchen leak (food words);
    - Who did it?'s magnifier (*hardar*);

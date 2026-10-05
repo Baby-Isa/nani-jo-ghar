@@ -1,13 +1,6 @@
 # Lexicon: the words the game uses and where each came from
 
-> **Stale points (the rulebook, `docs/process/rules.md`, wins).** Blocks below are copied word for word from older files; these lines are overridden:
-> - *hakri cup* / "Cup has no gender" (cook-word-changes-B §2) → *hakro cup*: cup is a he-word (Mum, 28 Sept, grammar-notes §29 R8; G5).
-> - *marcha* for green chilli, *laal marcha* (handout words, cook-word-changes-B §5 item 5) → *mirchi* only, no plural, for now (G24, G25, decision 5).
-> - Handout words *hikdo* (one) and *bo* (two), *nar* (no), *aastethi*, *bharelo* (full), *vadho* (big), *ghos*, *channa*, *daal*, *bajr jo maani*, *Achija* → superseded by *hakro/hakri*, *ba*, *na*, *aste thi*, *aako*, *wadho*, *gos*, *chana*, *daar*, *bajr ji maani*, *khuda-fis* (G5, G6, G24).
-> - "Gujarati text-to-speech placeholder voice" (cook-with-nani-words) → TTS is test-only and never ships; no AI-generated Kutchi (G14, non-negotiable 10).
-> - "Aabhar aanjo" (thank you) → the family says English "thank you" (G6).
-> - The Content Master spreadsheet as "single source of truth" (Brief, Technical Plan) → open question, see "The Excel's role" below (G10, J8).
-> - Handout vocabulary is fine to use as a map and for words, but is never shipped as text, and stays "unconfirmed" until Mum says (G1, G21).
+**Blocks below copied from older files are kept as recorded.** Where a later decision changed a spelling or a word, the *Corrections* table at the end of this file gives the current form; the engine's data (`data/lang/`) is the live lexicon (decision 40).
 
 **Status words used here:** *confirmed* = said by Mum or Zafar and recorded in `language/grammar-notes.md`; *draft* = flagged doubtful (⚠); *unconfirmed handout* = from the class handouts or the content master, never confirmed by Mum ("confirm with Mum").
 
@@ -311,15 +304,15 @@ Full orders the prototype builds, for recording as whole sentences:
 
 Everything in the released app is recorded, written and drawn for this project. The handouts are a map of what to cover, not a source to copy.
 
-## 5. The Excel's role (open question)
+## 5. The Excel's role (decided: retired)
 
 `content/Nani jo Ghar - Content Master.xlsx` exists. `build/build_content.py` reads it and warns never to resave it with openpyxl, because the "Carrier sentences" tab holds Excel formulas. The older docs (Brief, Technical Plan, Game Design, Roadmap) call it the single source of truth for every word, edited by Mum and her sister, with ids such as `fru-01`, `veg-01`, `spi-01`.
 
 **Drift risk:** every Cook word confirmed since 24 Sept (*daar*, *ba*, *hakro/hakri*, *chundo*, *aako*, *gos*, *boga* …) lives in `data/cook.json`, not in the sheet.
 
-**Open question for Zafar (recommendation: make this file the source):** is the Excel still the single source of truth, or does `lexicon.md` (feeding the language engine, rules G10 and J8) replace it? Does Mum still edit the sheet? Until decided, treat `data/cook.json` and `data/family-audio.json` as the live record and the sheet as history. Also still open from the audit: whether the three Word copies of Mum's question rounds are still used (see `language/mum-questions/README.md`).
+**Decided (Zafar, 1 Oct, decision 17): the Excel is retired as a source.** Its rows were imported once as words still wanted; the live lexicon is the engine's data in `data/lang/` (decision 40), and this file is the dated record of what Mum confirmed. `data/family-audio.json` holds the clips.
 
-> from: docs/archive/cook/cook-with-nani-todo.md § Noun singular and plural forms (Zafar, 26 Sept). Stale: the *mirchi* / *marcha* line is overridden by decision 5 (*mirchi* only, no plural).
+> from: docs/archive/cook/cook-with-nani-todo.md § Noun singular and plural forms (Zafar, 26 Sept). The *mirchi* / *marcha* line is overridden by decision 5 (*mirchi* only, no plural).
 
 ### Noun singular and plural forms (Zafar, 26 Sept)
 Nouns need a singular and a plural form in the data, and the game should say the right one for the count:
@@ -420,3 +413,17 @@ Source: `grammar-notes.md` §38–§55; recordings in `sources/audio/mum-2026-10
 | ***huda*** | over there | C79 12:41 | confirmed (§23) |
 | ***aau … aiya · tu … aiye · aai … aayo · e … ai · pa/asa … aayo · … ain*** | I am · you are (child) · you are (elder) · he/she is · we are · they are | C79 9:52–15:59; C22-C49 6:00–7:54 | confirmed; *aiya*, *aiye*, *ain* spelling ✓ 5 Oct |
 | ***winjanta*** | (we) are going | C79 17:21, 24:25 | ⚠ |
+
+---
+
+## Corrections (superseded handout and Cook spellings)
+
+| Recorded above | Now | Source |
+|---|---|---|
+| *hakri cup*, "Cup has no gender" (cook-word-changes-B §2) | *hakro cup*: cup is a he-word | Mum, 28 Sept, grammar-notes §29 R8; G5 |
+| *marcha* for green chilli, *laal marcha* (handout words, cook-word-changes-B §5 item 5) | *mirchi* only, no plural, for now (the red pepper is *laal marcha* by decision 35b) | G24, G25, decisions 5 and 35 |
+| *hikdo* (one), *bo* (two), *nar* (no), *aastethi*, *bharelo* (full), *vadho* (big), *ghos*, *channa*, *daal*, *bajr jo maani*, *Achija* | *hakro/hakri*, *ba*, *na*, *aste thi*, *aako*, *wadho*, *gos*, *chana*, *daar*, *bajr ji maani*, *khuda-fis* | G5, G6, G24 |
+| "Gujarati text-to-speech placeholder voice" (cook-with-nani-words) | TTS is test-only and never ships; no AI-generated Kutchi | G14, non-negotiable 10 |
+| *Aabhar aanjo* (thank you) | the family says the English "thank you" | G6 |
+| The Content Master spreadsheet as "single source of truth" | retired as a source (decision 17); words live in the engine's lexicon | G10 |
+| Handout vocabulary is fine as a map and for words | never shipped as text, and "unconfirmed" until Mum says | G1, G21 |

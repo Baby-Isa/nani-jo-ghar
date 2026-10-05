@@ -1,157 +1,89 @@
-# Nani jo Ghar — Technical Plan
+# Nani jo Ghar: technical plan
 
-> **Stale points (what `docs/process/rules.md` now overrides; the text below is left as written).**
-> - Phaser (older briefs and the alive-Nani lab pages use a vendored Phaser) → Cook runs on Phaser (cook.html loads js/vendor/phaser.min.js); the other modes are DOM/SVG; Phaser's future is a step-2a decision.
-> - "Patch" / the quilt as a list of earned patches (§ data model) → bookshelf (decision 4)
-> - `chunk_type` on Sentence (§ Chunked recording) → the language engine builds lines from recorded words; the most frequent phrases are recorded whole (G9, G12); frames and word forms live in data, no Kutchi grammar in game code (G13, G18). Treat `chunk_type` as superseded until the engine spec (step 2b) replaces it
-> - Device profile in a store on the device, IndexedDB `njg_shell` (`js/storage.js`) → that is the legacy bowl page only; the live save is `js/shared/save.js` (localStorage `njg-save`, see `shared-api.md` §11)
-> - Touch targets "minimum 44px" → tap targets ≥48 px (F2)
-> - "Home screen PWA, works offline" → there is no `manifest` or service worker in the repo today; the PWA and store wrap are still to do (see `docs/status.md`)
-> - MVP: "Story 1, *Eid at Nani's*, is the release candidate; the other four arcs conditional" → Arc 1 is the Birthday; store launch with Arcs 1–5 (H36–H41)
-> - Audio pipeline: placeholder TTS "in the nearest available voice" → TTS is test-only and never ships; only real family voices ship (G14, non-negotiable 10)
-> - Stars and star-based progression anywhere in the data model → three badges (H5, decisions 1–2)
-
-*How the app is built. Companion to the Brief and the Game Design doc.*
-
-Sep 22, 2026 · @Someone
+*How the app is built and how it reaches the stores. Written 22 Sept 2026; rewritten 6 Oct 2026 to match the code as built. The detail is in `target-model.md` (the layers), `code-map.md` (the files) and `shared-api.md` (the modules).*
 
 ## Architecture
 
-One codebase, three outputs: a website, an iOS app, an Android app.
+One codebase, three outputs: a website (GitHub Pages, `main` is live), an iOS app and an Android app (a Capacitor wrap of the same files, not built yet).
 
 ```mermaid
 flowchart LR
-  A[Content master<br/>spreadsheet] --> B[Build step<br/>spreadsheet to JSON]
-  B --> C[Web app<br/>HTML, CSS, JS]
-  C --> D[Home screen PWA]
-  C --> E[Capacitor wrap]
+  A[Language data<br/>data/lang, built by build/lang] --> C[Web app<br/>HTML, CSS, ES modules]
+  B[Scenes, levels, arcs<br/>JSON in data/] --> C
+  C --> D[GitHub Pages: the test site]
+  C --> E[Capacitor wrap: not built]
   E --> F[App Store]
   E --> G[Google Play]
 ```
 
-**No backend.** Nothing is sent anywhere. All content, art and audio ship bundled inside the app, so it works with no signal, which is also what lets it pass Apple's review as a real app rather than a website in a box.
+**No backend.** Nothing is sent anywhere (J1). Content, art and audio ship bundled in the app. There are no accounts, uploads or analytics; speech recognition runs on the device.
 
-**A local profile per player**, stored on the device only, so Isa and a cousin sharing one tablet each keep their own progress. No accounts, no sign-in, no server to lose a password to.
+**A local profile per player**, in the one save (`js/core/save.js`, localStorage, schema 2), so Isa and a cousin sharing a tablet each keep their own progress. Nothing else touches storage (J3, B17).
 
-**Plain web technology**, not a game engine. This is a content pipeline with a renderer on top, and the renderer is simple: images, CSS animation, an audio player, and small tap handlers. A game engine would add complexity nothing here needs.
+**Plain web technology.** DOM and SVG for every mode, Phaser (`js/vendor/phaser.min.js`) for Cook only. ES modules loaded through an import map that `build/bump_version.py` writes and stamps; no bundler, no TypeScript build (`target-model.md` § 10). The code is four layers: the engine core, the shared framework, content as data, and modes as plug-ins.
 
-**Lazy loading.** Each scene's art and audio load only when that scene is first opened, not at install. Keeps the initial download small as scenes are added.
+**The language engine.** Every word and line comes from the engine, not from game code (G9, G26, G27): a lexicon, word classes (paradigms), abstract meanings and a Kutchi concrete grammar, as data in `data/lang/`, run by a small general JavaScript linearizer in `js/core/lang/engine/`. A game asks for a meaning and gets a sentence plus a clip plan, or a gap with an honest placeholder. The engine's design is `docs/language/engine-design.md`.
+
+**Lazy loading.** A mode loads its own scripts, styles and art when it is first opened.
 
 ## Screens and devices
 
-**Locked to landscape.** Every scene is a wide illustration with a shopping list or notebook docked to one side, which only works one way round.
+**Landscape only.** Every scene is a wide illustration with the sidebar docked on the left (about 22%, F4); portrait shows one wordless "please turn your phone" card.
 
-**Designed at phone width, scaled up.** The canvas keeps a fixed aspect ratio and grows to fill a tablet screen rather than showing more world. A tablet gets a bigger picture, not a different layout.
+**Built to scale, phones to tablets** (decision 24). One frame (`js/shared/frame.js`, `data/layout.json`) picks phone, tablet or laptop and writes every size from tokens; the stage (`js/shared/stage.js`) fits each scene's 1600×900 background to any screen with no letterbox (F18); text shrinks, then wraps (F7). Tablets use extra space for bigger play items; Cook's station layouts for tablets are not done yet (CK-TAB-01).
 
 | Device | Handling |
-| --- | --- |
-| Phone | Baseline design, full width |
-| Tablet | Same layout, scaled up, letterboxed if the aspect ratio doesn't match |
-| Touch targets | Minimum 44px, larger for anything a young child taps often |
-| Safe areas | Notches and home indicators respected on both phone and tablet |
-
-One fixed aspect ratio (16:9) for every scene background keeps this simple. A background generated at the wrong ratio is a recurring cost, so the image prompts fix this from the start.
+|---|---|
+| Phone | the baseline: 844×390 main, 800×360 the tightest |
+| Tablet | scaled sidebar and text; 1024×768, 1180×820, 1366×1024 are in the screen matrix |
+| Touch targets | at least 48 px, even when the picture is smaller (F2) |
+| Safe areas | notches and home indicators respected |
+| Older devices | the cut-off is set by the market (decision 26): iOS 15+ with a module shim (not vendored yet), Android 7+, a cheap-phone performance budget (not measured yet) |
 
 ## Data model
 
-Two halves. **Content** ships inside the app and is the same for everyone. **Device state** lives only on that phone and is different for every player.
+Two halves. **Content** ships inside the app and is the same for everyone. **Device state** lives only on that phone.
 
-```mermaid
-flowchart TD
-  Word --> Recording
-  Word --> Sentence
-  Sentence --> Recording
-  Scene --> Errand
-  Errand --> Sentence
-  Errand --> Word
-  Errand --> Patch
-  Profile --> PlayerWordProgress
-  PlayerWordProgress --> Word
-  Profile --> Patch
-```
+**Content.** The language engine's data (`data/lang/`: `lexicon`, `paradigms`, `abstract`, `concrete`, `params`, `clips`; nouns carry gender, singular and plural, G13, G18); `data/family-audio.json` (every recording: speaker, file, meaning, OK or ??); scenes with measured positions (`data/scenes/`); each mode's levels and games; arcs (`data/arcs/`); the map and unlock rules; the economy (pay and prices).
 
-**Content entities**, built from the content master spreadsheet, shipped as JSON:
+**Device state**, one save with one namespace per owner (`target-model.md` § 3.4):
 
-| Entity | Key fields | Notes |
-| --- | --- | --- |
-| Word | english, kutchi_draft, kutchi_confirmed, category, confidence, image_ref, gender, plural_form, syllabus_stage, domain | image_ref points at a sheet and a cell, e.g. `fruit-sheet, row 2, col 3`. gender, plural_form, syllabus_stage and domain are new, see below |
-| Recording | word_id or sentence_id, speaker, file, type | type is isolated or carrier_sentence, see Pipelines |
-| Sentence | template_kutchi, template_english, slot, chunk_type | chunk_type is new, see "Chunked recording" below |
-| Scene | name, kind (hub or spoke), background_ref, unlocks_after | |
-| Errand | scene_id, opening_sentence_id, target_words, reward_patch_id, timed | the unit of play, one per session |
+| Namespace | Holds |
+|---|---|
+| `words` | per word, `understand_stage` and `produce_stage` (1–5; up a stage on correct recall from the Kutchi, down after two misses, G23) |
+| `wallet` | the one purse and owned upgrades |
+| `ui` | personal bests, onboarding "seen" |
+| `story`, `shelf` | the story log and the bookshelf: one named book per finished arc (decision 4) |
+| `character`, `speech`, `conversations`, `<mode>` | the player's look, voice enrolment (features only, never audio), Conversations, each mode's own state |
 
-**Device entities**, created and stored only on that phone:
+**Why progress is per word, not per level.** A word's stage is read every time it appears anywhere in the game and decides how much help it gets (`Progress.support`). Comprehension comes before production, so `produce_stage` never runs ahead of `understand_stage`.
 
-| Entity | Key fields | Notes |
-| --- | --- | --- |
-| Profile | name, avatar, reads, writes | reads and writes are new, see below |
-| PlayerWordProgress | profile_id, word_id, understand_stage 1 to 5, produce_stage 1 to 5, last_seen | understand_stage and produce_stage replace the single stage field, see below |
-| Patch | profile_id, errand_id, motif | the quilt, as a list of earned patches |
-| ChildRecording | word_id, file | the record-and-compare feature, never leaves the device |
+**Profiles carry "can read" and "can type"** flags set by an adult (neither is a difficulty setting, neither is inferred from age).
 
-**Why the sentence is its own entity, not assembled from words.** A carrier sentence like *Muke bo limu khape* has to be recorded whole, because splicing separate word recordings together sounds robotic and breaks the immersion the whole design depends on. For the bazaar's roughly 16 items that means about 16 short sentence recordings alongside the isolated word recordings, which is a small addition to the recording session and worth it for how natural it sounds.
-
-**Why progress is per word, not per level.** This is the field the design principle actually runs on. A word's stage is read every time it appears anywhere in the game, and it is the main thing deciding how much help that word gets. Splitting it into `understand_stage` and `produce_stage` (below) is the only refinement needed; no other progress field is required.
-
-**Word gains gender, plural_form, syllabus_stage and domain.** Kutchi nouns carry grammatical gender, and adjectives and verbs that go with a noun agree with it, so a word's gender has to be known before its sentences can be generated correctly, not just for the noun's own translation. plural_form is the word's own plural, not assumed from an -s ending. syllabus_stage (S1 to S6) and domain (e.g. kinship, body, weather) are the fields the syllabus and the errand generator sort and filter by; both are set once when a word is confirmed and don't change afterwards. These are populated by Zafar's mother and aunt alongside the Kutchi word itself, at the same review pass, since gender and plural are properties of the word, not separate research.
-
-**Chunked recording, not whole sentences.** Recording a full sentence for every word/number/position combination doesn't scale. Instead a Sentence's `chunk_type` marks it as one of: `frame` (fixed wording that never changes, recorded once per game, e.g. "I need…"), `noun_phrase` (a word plus a quantity, recorded once per word × number actually used, e.g. "two oranges"), `place_phrase` (a word plus a position, recorded once per scene hotspot, e.g. "under the sofa"), or `reaction` (fixed, e.g. "Arre re!", "Well done"). An errand assembles a line by playing chunks back to back with a short pause, which sounds natural because each chunk is a real recorded phrase, never a spliced single word. Where Kutchi's agreement rules glue two chunks together in a way a pause would break (for instance a verb whose ending depends on the object that follows it), that combination is recorded as one chunk instead of two, flagged as such in the content master. This is what makes errand generation possible without exploding the recording list: the generator only ever picks combinations whose chunks already exist, and can output the recording list needed for the next family session.
-
-**Understand vs Produce.** `PlayerWordProgress.understand_stage` works exactly as the single stage field did before: it drives how much visual and audio support a word gets, and how it's tested by listening or reading. `produce_stage` tracks the same word for speaking and writing, always at or behind the understand stage, per the design principle that comprehension comes before production. A word can sit at understand stage 5 while its produce stage is still 1 if the player has never been asked to say or type it.
-
-**Profile gains reads and writes.** Two boolean capability flags set once when a profile is made (or left off for a young child). reads gates whether romanised text is ever shown as a word's own support (stage 3 in the difficulty table); writes gates whether the notebook ever asks that profile to type a word. Neither is a difficulty setting and neither is ever inferred from age; a profile with both off can still reach the highest understand and produce stages through listening and speaking alone.
-
-**Recording carries a source field**, tts_placeholder or family. The app always prefers a family recording when one exists for a word, and falls back to the placeholder otherwise. This is what makes the placeholder replaceable without touching anything else: a word's other fields never change when its audio does.
+**Sentences are built, not stored.** The engine builds each sentence from recorded words; the most frequent phrases are recorded whole after a simulated run, and until the pre-publish pass whole-phrase clips are switched off so the engine is tested everywhere (decisions 13, 26; G12). Recordings never change the engine.
 
 ## Pipelines
 
-Three separate conveyor belts, each turning family-made raw material into bundled app assets. None of them need code changes to run again for a new scene.
+Three belts, each turning family-made material into bundled assets.
 
-**Content: spreadsheet to JSON**
+**Language: Mum's answers to data.** Mum's rounds and recordings are processed with the `/mum-round` skill (`build/tools/ops/mumround.mjs`): transcribe, cut and normalise clips, index them, then feed every fact into the engine first (G27, decision 40). `build/lang/import_all.mjs` rebuilds `data/lang/` from the hand-edited seed and the other sources and reports the gaps (`data/lang/reports/gap-list.md`), which become the next round's questions (`mumsheet.mjs`).
 
-1. The content master spreadsheet is the single source of truth, edited by Zafar's mother and aunt.
-2. A short script reads it and writes the Word, Sentence, Scene and Errand JSON the app loads.
-3. Adding a scene means adding rows and re-running the script. No new code.
+**Audio: recording to bundled files.** Mum records long takes saying question ids; Zafar marks every clip OK or ?? in `lab/family-audio.html`; only OK clips ship. Computer voices are test-only on Pages and never ship (G14); the store app plays family clips only.
 
-**Audio: recording to bundled files, staged and swappable**
-
-1. **Placeholder today.** Until a real recording exists, a word falls back to text-to-speech reading the romanised spelling in the nearest available voice, Gujarati or Hindi. Clearly worse, clearly temporary, good enough to test the game before anyone has been recorded.
-2. **Real voices, staged.** Record in one long take per session, each word or sentence said twice with a pause. A script finds the silences and splits the take into one file per item, named to match the content master.
-3. **Multiple speakers stack, they don't replace.** Each new voice adds another Recording row for the same word. The app can pick one at random, or let a player choose whose voice they hear.
-4. **Swapping needs no rebuild.** A Recording is just a file matched by name to the content master. Replacing the placeholder with a family voice, or adding a second one, is a file drop, not a code change.
-
-**Art: sheets to sliced assets**
-
-1. Each generated sheet, whether a grid of items or a character in three states, is one image on a plain flat magenta background, hex FF00FF.
-2. A script keys out the magenta and slices the sheet into individual transparent PNGs, one per cell.
-3. Files are named to match the content master's image_ref, the same linking approach as audio.
+**Art: ChatGPT to cut-outs.** Art is made in ChatGPT through Claude in Chrome from one ready-to-paste block (D1, D3; the `/art-run` skill, `docs/design-language/art-pipeline.md`); a flat magenta ground for food, grey for steel, glass, wood and characters, then keyed and cut by `build/tools/art/artcut.py`, judged by `artjudge.py`, and committed to `sources/art/<pack>/` on `main`. Backgrounds are 1600×900.
 
 ## Release path
 
-| Stage | What it is | Needed |
-| --- | --- | --- |
-| Home screen PWA | The web app, added to a phone home screen, works offline | Nothing. Free, immediate |
-| Capacitor wrap | The same code, packaged as a native app | A Mac for the iOS build |
-| App Store | Submitted under Kids or Education | Apple Developer Program, $99 or about £79 a year |
-| Google Play | Submitted under the Designed for Families programme | One-off $25, about £20 |
+| Stage | What it is | State |
+|---|---|---|
+| GitHub Pages | the test site: `main` is live, labs included | live |
+| Home screen PWA | a manifest and a small offline service worker | not built (no manifest or service worker in the repo) |
+| Capacitor wrap | the same files packaged as a native app; family clips only | not built (`build/package.mjs` planned) |
+| App Store | Kids or Education category; Apple Developer Program, about £79 a year | to do |
+| Google Play | Designed for Families; one-off $25 | to do |
 
-**Test on the home screen PWA first.** It looks and behaves like an installed app and costs nothing, so this is how Zafar's mother and the children try it before any store spend.
+**Kids category rules** are already reflected in the design: no third-party analytics, no ads, no accounts, a privacy policy; because nothing leaves the device, the policy is short and true.
 
-**Kids category rules,** already reflected in the design: no third-party analytics, no ads, no accounts, a privacy policy. Because nothing leaves the device, the privacy policy is short and true rather than a compliance exercise.
+**Apple's thin-wrapper rejection** does not apply: images, audio and logic are bundled and the app works offline once wrapped.
 
-**Apple's thin-wrapper rejection** does not apply here, because the images, audio and logic are bundled inside the app and it works with no internet. That is the bar, and it is already met.
-
-**MVP scope for the first submission**, per the Roadmap doc: Story 1, *Eid at Nani's*, finished end to end, is the release candidate. The other four arcs are conditional on that one landing well with the family and the target audience.
-
-## Open decisions and your next steps
-
-**Open decisions**, worth settling before the first build, not urgent today:
-
-- Whether carrier sentences get recorded per item now, or added once the bazaar scene proves itself
-- Whether a second family's Kutchi ever gets added as alternate audio, which the data model already allows for
-
-**Your next steps**
-
-1. Read this doc and the Game Design doc, comment on anything that should change
-2. Reply to the open comment on the Brief about the working title
-3. When ready, say so and the content master spreadsheet for the bazaar scene gets built next
+**First release.** Arc 1, *The Birthday*, finished end to end, is the release candidate; the store launch carries Arcs 1–5 (H36–H41). The commercial model is open (decision 7). The current plan and what is next are in `docs/status.md`; the sprints are in `docs/sprints/`.

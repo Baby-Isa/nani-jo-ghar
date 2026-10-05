@@ -1,10 +1,6 @@
 # First launch: onboarding and the story hook (Zafar, 26 Sept; draft)
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
-> - "Tomorrow is Eid" hook and the record list built on it → the Birthday arc (H36)
-> - English and romanised subtitles and the story-help device setting → no written English for the child (E1, F23); spoken English allowed in story mode only (non-negotiable 5)
-> - "Boy or girl also picks the player's hands" → hands parked, none in Cook (H13)
-> - Placeholder Kutchi sources → never invent Kutchi; grey-italic English flagged "to record" (non-negotiable 4)
+**Where this stands (5 Oct 2026).** The built story still says "Tomorrow is Eid" (`data/story/first-launch.json`). Arc 1 is the Birthday (H36), so the hook, the lines and the record list below are re-worded for the Birthday before Mum records them (`docs/status.md`, Waiting on Zafar 3). Spoken English then Kutchi is allowed in story mode only; the child never sees English written (E1, G15, decision 12). Missing Kutchi is a grey-italic English placeholder flagged "to record", never invented (G2).
 
 ## What Zafar said
 1. **Make your character.** Creating the character comes first. Zafar asked for Claude's view.
@@ -57,7 +53,7 @@
 - **The choices on the right**, as picture swatches: no reading needed, big tap targets.
 
 **Choices for now:**
-- boy or girl (this also picks the player's hands: player-boy / player-girl);
+- boy or girl (this picks the figure; hands are parked, H13);
 - skin tone (a few warm tones, following the Cast's skin rules);
 - hair colour;
 - eye colour;
@@ -71,7 +67,7 @@
 - The options are data (`data/character-options.json`: categories, each with swatches and tint or layer ids).
 - The character is drawn from layers: a body base, then tinted hair, eyes and clothing layers.
 - A new category (hairstyle, glasses, hijab, outfits, Eid clothes) is a new data entry plus art layers, with no code change.
-- The choices are saved in the player's save (`js/shared/save.js`), and the hands, the home screen and later the world use them.
+- The choices are saved in the player's save (`js/shared/save.js`), and the home screen and later the world use them.
 
 **Placeholder art:** simple layered shapes (SVG or greybox) until the ChatGPT art makes a proper layered character.
 
@@ -101,7 +97,7 @@ Zafar's idea: in the story, Nani says each line in English first, then Kutchi. H
   - chapter 2: English only when the light bulb is pressed;
   - later: Kutchi only.
 - **Gameplay lines never get English** (the light bulb stays the help there), so the lesson isn't given away.
-- **A parent setting, "Story help"**, offers English, off (pictures only) or later another language. That covers non-English families: the lines are one file per language.
+- **A parent setting, "Story help"**, offers spoken English, off (pictures only) or later another language. That covers non-English families: the lines are one file per language.
 
 ### Decided (Zafar, 26 Sept): English, then Kutchi, with no sandwich
 In the story, Nani says each line **in English first, then in Kutchi**. The lines are very short and simple:
@@ -160,7 +156,7 @@ The spec is `docs/game-design/modes/first-launch.md` ("Character creation", "Zaf
 - **The pantry items:** Cook's pantry picks level 1's three from `basics` (five items). For this visit only, `js/cook/app.js` narrows `basics` to chai, dudh and khun, so Nani's list is exactly the chai things. The mechanics are unchanged.
 - **Nani's chai:** the chai tray's cups come from the recipe's `family` list (Nana, Ma, cousin). For this visit only it's `["nani"]`, so the one cup has Nani's face. Her chai's details (milk, sugar, elchi) are still random, as for anyone.
 - **Cook hooks:** a `then=` return page, restricted to `<name>.html?…` on this site, and `Cook.startDay` exported (one line in `flow.js`). The old `first=1` still works. Cook's chai demo and pocket-money rules don't run in the story's rounds.
-- **The English/Kutchi card:** one chunk per language. Each chunk lights up as it's spoken (read-along, UX §1). The speaker replays. Placeholder Kutchi has a faint dotted underline. It's there for grown-ups; children won't notice it.
+- **The story card:** the Kutchi chunk lights up as it's spoken (read-along, UX §1); the English is spoken only, and any written English sits behind the grown-ups' "?" (E1). The speaker replays. Placeholder Kutchi has a faint dotted underline. It's there for grown-ups; children won't notice it.
 - **Voices:** Mum's clip where one says exactly the Kutchi shown (`make-chai`, `lovely-chai` "Shabash!", `lets-cook`). The child's "Ha!" is Zafar's clip. Otherwise the browser's speech, else silent timing. If a browser blocks sound (coming back from Cook without a tap), the speaker pulses gold.
 - **"Mmm, lovely chai! Shabash, beta."**: only "Shabash!" is recorded, so the Kutchi chunk is "Shabash!" (real voice) and "beta" is in the English.
 - **Kutchi placeholders:** never invented freely. Each is built from family words or frames, and each is marked `placeholder: true` with a `note` giving its source:

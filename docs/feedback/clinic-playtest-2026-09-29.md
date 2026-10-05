@@ -1,7 +1,7 @@
 # Clinic play-test, 29 Sept 2026: every point, analysis and the plan
 
 **Source:** Zafar's two voice notes from playing the clinic lab (`lab/clinic-core.html`, heal labs A–C). Transcripts:
-- `docs/feedback/clinic-playtest-2026-09-29-transcript-part1.md` (24 min: waiting room, diagnosis, pharmacy, send-off, and the heal games cut, knee and ear);
+- `docs/archive/feedback-transcripts/clinic-playtest-2026-09-29-transcript-part1.md` (24 min: waiting room, diagnosis, pharmacy, send-off, and the heal games cut, knee and ear);
 - `…-part2.md` (18 min: the heal games tooth, taste, fever, boing, eye and foot).
 
 Every point carries its timestamp (**1:** or **2:** for the part). The coverage check at the end maps every line of both transcripts to an item.

@@ -1,11 +1,5 @@
 # More speaking as the game goes on: a proposal (29 Sept 2026)
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
-> - "The voice star starts at rung 2", "coins, never the voice star", Open question 3 "voice star as the reward" → no voice star; scoring is three badges (H5, decisions 1–3)
-> - Spoken-English lines and "Achija" / "Aabhar aanjo" as defaults → goodbye is *khuda-fis*, thank you is in English (Zafar, 26 Sept; G6)
-> - Coins as the reward for speaking → decision 10 (upgrades)
-> - Any English written on screen as the instruction to speak → none for the child (E1, F23); a picture says what, the heard frame says how
-
 **Status:** approved by Zafar (29 Sept); nothing built yet. It extends the Roadmap's "Skill channels" ladder (rung 4 "picture only → say it, role reversal"; rung 6 "a question in context → answer aloud") and the Conversations module.
 
 ## The problem (Zafar, 29 Sept)
@@ -40,9 +34,9 @@ Zafar, 29 Sept: yes to repeating after a model; **no separate whisper recordings
 | 3 Picture | only the picture; the words are one tap away (the peek) | says the whole line |
 | 4 Choice | the picture shows two needs | picks which to ask for, then says it |
 
-The start is fully supported: every line is written and underlined as it's spoken, the first time and every time at rung 1. The words fade by the child's own record for that sentence pattern, not by the mode's level. Rung 1 is practice: it earns coins and a cheer, and the voice star starts at rung 2.
+The start is fully supported: every line is written and underlined as it's spoken, the first time and every time at rung 1. The words fade by the child's own record for that sentence pattern, not by the mode's level. Rung 1 is practice: a cheer, no bonus; from rung 2 correct speaking earns more pocket money (decision 2; there is no voice star).
 
-If there's no mic, or a null result twice, the fallback is the pills: coins, never the voice star. A parent can tick ✓ (Grandparent mode).
+If there's no mic, or a null result twice, the fallback is the pills: they earn no speaking bonus. A parent can tick ✓ (Grandparent mode).
 
 ## The rule: speak only inside a real two-person exchange (Zafar, 29 Sept)
 Speaking goes where people **naturally talk to each other**: ordering food (the customer and the cook), or the doctor and the patient. It does **not** go where nobody would really say the line; you don't call "little boy, next" in a waiting room. **The child always sees a regular exchange between two people first** (the watch step, many times as the listener), then takes one side of it.
@@ -62,7 +56,7 @@ Each row is a natural exchange the child has watched from one side before taking
 | Clinic, the patient | **child (the doctor's helper): [where does it hurt?] / [how do you feel?]** → the patient answers | the doctor asking the first patients | E4's lines are placeholders (Section G, the doctor's recording) |
 | Clinic, "you're the patient" visit | the doctor asks → **child: [my knee hurts]** | the other patients answering | Section G |
 | Clinic, pharmacy | **child: [bring me] the plaster** → the pharmacist puts it on the belt | the doctor asking the pharmacist | Section G |
-| Clinic, send-off | **child: [get well soon] / goodbye** → the patient thanks | the doctor saying it | *Achija* (exists) |
+| Clinic, send-off | **child: [get well soon] / goodbye** → the patient thanks | the doctor saying it | *Khuda-fis* (G6) |
 | Birthday: guests | **child (the host): [do you want chai?]** → the guest: *haa* / *na* | Nani offering | *haa*, *na* exist |
 | Put it there | **child: [where does this go?]** → Nani says where; the child places it | Ali asking Nani | – |
 | Hide and seek | **child: [have you seen the sweets?]** → a family member says where | Nani asking around | – |
@@ -93,4 +87,4 @@ The per-child tracker decides, word by word. A frame becomes speakable (rung 1) 
 ## Open for Zafar
 1. ~~Echo at rung 1?~~ **Yes (Zafar, 29 Sept), with no whisper recordings; the text is written and underlined at the start.**
 2. ~~Which mode first?~~ **Cook's ordering, as the pilot (Zafar agrees it fits; the clinic's patient conversations next).**
-3. Should speaking ever be required to progress, or always optional with the voice star as the reward? Claude suggests optional, because of the mic, shy children and noisy rooms.
+3. Should speaking ever be required to progress, or always optional, with correct speaking earning more pocket money (decision 2)? Claude suggests optional, because of the mic, shy children and noisy rooms.

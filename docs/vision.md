@@ -1,22 +1,5 @@
 # Vision
 
-> **Stale points (the rulebook, `docs/process/rules.md`, wins).** Blocks below are copied word for word from the Project Brief (22 Sept) and Game Design (23 Sept); these lines are overridden:
-> - "Not a business. No ads, no subscriptions … free" → **commercial model open**: Zafar's £2/month idea (first arc free) and "free to the community" both stay open (J5, decision 7).
-> - "A quilt that fills in" / "the quilt, with patches earned" (principle 8, scope) → **a bookshelf**: at the "book end" review with Nani the arc's book goes on the shelf, name on the spine; quilt-making is a Big Ma arc (I14, decision 4).
-> - "Points, stars or XP" / "stars" → scoring is the **three end-of-round badges: time, accuracy, hints** (H5, J7, decisions 1–3).
-> - Principle 4 "English is available … gist caption, text one tap away on any word" → **no written English for the child, ever**; the light bulb is the help and costs a bulb; spoken English only in story mode (E1, E25, non-negotiable 5, decision 12). Game Design's "subtitles … in English" likewise.
-> - Principle 7 / Game Design "Nani's house has no timers, ever" → Cook has level timers (open question about a relaxed mode); timed runs are still opt-in where the design says so.
-> - Principle 11 "adding the fifth scene should mean filling in a spreadsheet" → content model first stands (J4), but the spreadsheet's role is open (see `language/lexicon.md` § The Excel's role).
-> - "Scope of the first release: one room and one stall, 60 words, the quilt" and "Out of scope: the clinic, the beach" → stale; the repo has Cook, the clinic and six parked modes. The first release candidate is Arc 1, The Birthday, finished end to end (H36–H39). Current plan: `docs/status.md`.
-> - "The hub is Nani's house … the bazaar, the kitchen, the clinic and the beach road" and "Nani … a character confined to the kitchen" → Nani is the child's guide everywhere (Zafar, 28 Sept).
-> - Game Design's "pocket money at Eid", "functional purchases: extra seconds, hints" → pocket money rewards doing well, by volume × quality × difficulty; upgrades never do the listening for you (decision 10, H-rules in §4 Feedback, scoring and rewards).
-> - Game Design's "Art direction" (cel shading, thick outlines) → the stylised 3D look, no outlines (D13, D16).
-> - "Hikdo, bo, trae", *daal*, *nar* and the like in copied examples → G5 (*hikdo*, *bo*, *nar*), G4 (*daal*).
-> - "Everything is audio-first … Timers: adult on by default" age table: the difficulty model stands; specifics change with each mode's design.
-> - "Grandparent mode is the one to protect" is **not in rules.md**; it is carried here as a design intent, status unconfirmed (see "Open questions").
-> - "Avoid entirely: … speech recognition" (game-modes-v2 §5) → every mode has closed-set speaking moments (`game-design/speaking.md`); recognition is on-device only (J1).
-> - Kutchi examples for Mum's recording: one family's Kutchi, romanised only (G4).
-
 The pitch, who it is for, what success looks like, the pillars that break ties, and what we will not do. The rules themselves are in `process/rules.md`; the pillars here are the reasons behind them. The working agreement is in `CLAUDE.md`.
 
 ## Zafar's aim
@@ -37,7 +20,7 @@ The pitch, who it is for, what success looks like, the pillars that break ties, 
 
 A Kutchi language game, played on a phone or tablet, in which you walk around a small Kutchi world and complete tasks for the people in it.
 
-The hub is Nani's house. From there you go to the bazaar, the kitchen, the clinic and the beach road, each holding one area of vocabulary. Tasks are given in spoken Kutchi and completed by acting on them: fetch these things, find out who is ill, bring back the right colour threads. Every voice in the game belongs to a real family member.
+The hub is Nani's house, with Nani as the child's guide everywhere. From there you go to the places on the map (the kitchen, the clinic, the bazaar, the beach), each holding one area of vocabulary. Tasks are given in spoken Kutchi and completed by acting on them: fetch these things, find out who is ill, bring back the right colour threads. Every voice in the game belongs to a real family member.
 
 It is built once as a web app and wrapped for the App Store and Google Play, so the same work produces a website, an iPhone app and an Android app.
 
@@ -46,7 +29,7 @@ It is built once as a web app and wrapped for the App Store and Google Play, so 
 
 **Nani is the child's guide**, not a character confined to her kitchen (decided 28 Sept 2026). She helps the child learn, grow and explore, and she appears everywhere: cooking, travelling, the clinic, the sewing room, and the fire at the end of every arc. The kitchen is still home base and still teaches the most words, but it's her house, not her cage.
 
-> from: docs/archive/design-v1/Game Design.md § The core loop (the shape of one errand; the diagram's quilt step is stale, see the box)
+> from: docs/archive/design-v1/Game Design.md § The core loop (the shape of one errand; the diagram's last step is now a page in the arc's book)
 
 
 A session is one errand, start to finish, in five to eight minutes.
@@ -58,7 +41,7 @@ flowchart LR
   C --> D[Find and buy<br/>the right things]
   D --> E[Home<br/>hand them over]
   E --> F[She asks for each<br/>one back in turn]
-  F --> G[A patch<br/>joins the quilt]
+  F --> G[A page<br/>joins the arc's book]
 ```
 
 The shape matters more than the setting. Every scene in the game, now and later, runs this same loop: an instruction in Kutchi, a journey, an act of recognition under some pressure, a return, and a short recall at the end that quietly repeats the words you were weakest on.
@@ -116,7 +99,7 @@ Where age does change things:
 
 **Tone.** Warm, never sarcastic, never babyish. Nani is pleased when you get it right and unbothered when you do not. Nothing in the game hurries, scolds or nags, and there are no notifications.
 
-**Accessibility.** Everything is audio-first, so a child who cannot read plays exactly the same game. Touch targets sized for four-year-old fingers. Subtitles for every spoken line, in English and romanised Kutchi. Colour never carries meaning on its own, which matters particularly in the blanket quest, where each colour is also named aloud and written.
+**Accessibility.** Everything is audio-first, so a child who cannot read plays exactly the same game. Touch targets sized for four-year-old fingers. Every Kutchi line is written in romanised Kutchi and underlined as it is spoken; there is no written English for the child (the light bulb and the grown-ups' "?" are the help). Colour never carries meaning on its own, which matters particularly in the quilt-making arc, where each colour is also named aloud.
 
 ### The personas
 
@@ -167,14 +150,14 @@ These settle arguments later, so they are worth disagreeing with now.
 1. **Difficulty is per word, not per level.** How much help a word gets depends on how many times that player has met that word. There is no beginner mode and no expert mode. This is how one app serves a four-year-old and an adult on the same screen, and it is where spaced repetition lives.
 2. **The task is the test.** Assessment happens by acting on an instruction, never by a quiz screen. If Nani asks for two lemons and you bring two lemons, you have been assessed.
 3. **No cutscenes.** Teaching happens inside the interaction. Anything that plays at you is skippable.
-4. **English is available, but never spoken.** Nani's voice is Kutchi only, always. English exists as a gist caption, and as text one tap away on any word or sentence, but it never arrives in the audio channel unasked. The tap is where the effort happens, and the effort is where the learning is.
+4. **No written English for the child, ever.** Nani's voice is Kutchi, and spoken English appears only in story mode (said first, then repeated in Kutchi where needed, rare, E1, G15). Games and help use no English at all; the light bulb is the help and costs a bulb on the hints badge (E25); written English for grown-ups lives only in the "?" pop-up.
 5. **Every voice is a real person.** No synthesis, no text-to-speech, no AI-generated Kutchi in the product.
 6. **Nothing is ever lost.** No punishment mechanics, no losing items or money for being slow. Pressure creates bonuses, never penalties.
-7. **Calm places and busy places.** Nani's house has no timers, ever. Urgency belongs outside the house and is always optional.
-8. **Progress is an object, not a number.** A quilt that fills in, not points, stars or XP.
+7. **Calm places and busy places.** Pressure is always the upside version: nothing floods, breaks or punishes, and customers never leave angry (E29). Cook's timers come from the level, set in data and getting about 15% quicker per level (H8); whether a relaxed no-timer setting exists is an open question (`docs/status.md`).
+8. **Progress is an object, not a number.** A bookshelf that fills in, one named book per finished arc (decision 4); the score is three badges (time, accuracy, hints), never points, stars or XP.
 9. **Nothing leaves the device.** No accounts, no uploads, no analytics. Recordings made in the app stay on the phone.
 10. **Text is never in an image.** All words are drawn over the art, so any word can change without regenerating anything.
-11. **The content model comes first.** The app is a content pipeline with a renderer on top. Adding the fifth scene should mean filling in a spreadsheet.
+11. **The content model comes first.** The app is a content pipeline with a renderer on top. Adding the fifth scene should mean adding data, not code: the language lives in the engine's lexicon (`data/lang/`), scenes and levels in data files (J4, G26).
 
 ### Design research behind the game modes
 
@@ -193,13 +176,13 @@ Sources: Habgood & Ainsworth, *Motivating children to learn effectively* (2011);
 
 ## What we will not do
 
-> from: docs/archive/design-v1/Project Brief.md § Non-goals ("Not a business" is stale: commercial model open, decision 7)
+> from: docs/archive/design-v1/Project Brief.md § Non-goals
 
 
 - **Not a CEFR course.** CEFR assumes a standardised written language with formal registers. Kutchi has neither. We borrow its sequencing logic and claim none of its levels.
 - **Not a script-teaching app.** Kutchi is written informally in Gujarati or Perso-Arabic script and there is no agreed standard. Romanised spelling only, matched generously.
 - **Not a dictionary or a preservation archive.** Those are worthy and they are different projects.
-- **Not a business.** No ads, no subscriptions, no growth targets. If it is ever released widely, it is free.
+- **No ads, no growth targets.** The commercial model is open (decision 7): Zafar's £2 a month idea (the first arc free) and "free to the community" both stay open.
 - **Not a replacement for speaking to your grandmother.** The app exists to get more Kutchi spoken between people, not less.
 - **Not multi-dialect.** One family's Kutchi, done properly, beats a neutral version nobody recognises. Other varieties can come later as alternate audio.
 
@@ -222,9 +205,9 @@ Written down so they do not get proposed again in six months.
 
 One rule behind most of these: **nothing in this game may make a child feel bad.** The game can be hard, and should be for an adult, but the cost of failure is always another go.
 
-> from: docs/archive/design-v1/game-modes-v2.md § 5 Feasibility (the "avoid" line; "speech recognition" here is stale: closed-set speaking moments are in every mode, `game-design/speaking.md`)
+> from: docs/archive/design-v1/game-modes-v2.md § 5 Feasibility
 
-**Avoid entirely:** 3D, physics piles (triple-match), multiplayer, speech recognition, full-body character animation.
+**Avoid entirely:** physics piles (triple-match), multiplayer, full-body character animation. Speech recognition is on-device and closed-set only (J1, `game-design/speaking.md`).
 
 > from: docs/archive/design-v1/free-play-and-world-ideas.md § 4. Scope assessment (the two rows that say No, and the breadth-before-depth rule)
 
@@ -278,7 +261,7 @@ Everything in the released app is recorded, written and drawn for this project. 
 > from: docs/archive/design-v1/free-play-and-world-ideas.md § Other languages later (rules.md J10: Gujarati next; G13: keep grammar out of the engines)
 
 
-The content model is already language-agnostic: words and sentences have ids and come from a spreadsheet, and audio is one file per id. Plugging in a popular language (Spanish, Arabic, Hindi, Mandarin…) is mostly:
+The content model is already language-agnostic: words and sentences have ids and come from the engine's lexicon, and audio is one file per id. Plugging in a popular language (Spanish, Arabic, Hindi, Mandarin…) is mostly:
 - a new content sheet, recordings from paid native speakers, and per-language sentence templates (plural and gender rules differ);
 - the art and engines reused as they are.
 

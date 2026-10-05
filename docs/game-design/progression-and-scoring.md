@@ -1,14 +1,5 @@
 # Progression and scoring
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Source blocks are copied word for word and not corrected.
-> - Stars, the ear star, the voice star, craft stars and "star_sets" → three badges: time, accuracy, hints (H5, J7, decisions 1–3)
-> - The quilt and its patches as the progress object → a bookshelf, one named book per finished arc (decision 4)
-> - Coins, prices, the 375-coin shop, pocket money "given at Eid", hints that cost pocket money or pause the clock → decision 10 (upgrades) and decision 1 (the light bulb costs a lightbulb)
-> - Digits or dots "2 × santra", target digits on the chalkboard → no digits for the child (E12, F25)
-> - Subtitles, English link on every card, English toggle → no written English for the child (E1, F23)
-> - *hikdo/bo* → *hakro/hakri*, *ba*; *daal* → *daar*; *vadho* → *wadho* (G4, G5)
-> - Doing it "at Eid" (pocket money, rewards) → the Birthday arc (H36)
-
 How a child's words advance, how the skills are checked, what scores and unlocks there are, and how errands are generated. The badge rules themselves are in `docs/process/rules.md` (H5, J7) and are not restated here.
 
 ## Part 1. Per-word stages, the notebook and adopted mechanics (Game Design)
@@ -83,22 +74,20 @@ It is also where an adult goes to cram, which is a real behaviour worth supporti
 
 > from: docs/archive/design-v1/Game Design.md § The quilt
 
-### The quilt
+### The bookshelf
 
-There are no points, stars, XP or streaks. Progress is a quilt on the wall of Nani's house, and every finished errand adds a patch.
-
-Kutch has a real patchwork tradition, so the object is not decoration borrowed from another game. It sits in the hub, it grows, and it is the first thing a returning player sees.
+There are no points, stars, XP or streaks. Progress is a bookshelf in Nani's house: when a child finishes an arc, the "book end" review with Nani puts that arc's book on the shelf with its name on the spine (decision 4). Word books (a picture dictionary by topic) sit beside the story books (decision 23).
 
 Why an object rather than a number:
 
 - A four-year-old understands a picture filling in. A number going up means nothing to them.
 - An adult is not insulted by it, because it is a thing being made rather than a score being awarded.
-- It cannot be gamed. There is no way to grind it, because patches come from errands and errands come from vocabulary.
-- It gives the whole game an ending. A finished quilt is a finished game, which most language apps deliberately never offer.
+- It cannot be gamed: books come from finished arcs, and arcs come from vocabulary.
+- It gives the game an ending.
 
-**Patch design.** Each patch carries a motif from the scene that earned it: fruit for the bazaar, thread spools for the blanket quest, a stethoscope for the clinic. Tapping a patch replays that errand. So the quilt doubles as the level select screen, and revisiting old material is framed as looking at something you made.
+**Replay.** A book opens to its chapters, each replayable (a recommendation awaiting Zafar's yes; `docs/status.md`). Free play shows every place on the map, locked ones labelled with the story that opens them (decision 22).
 
-**Pocket money** sits alongside it as a small spendable currency, earned from errands and given at Eid. It buys nothing cosmetic. It buys things that change play: an extra few seconds on a timed scene, a hint that pauses the clock, a new shelf for Nani's kitchen that opens a new set of words. Money that buys content is content. Money that buys hats is grinding.
+**Pocket money** is one purse across every mode. It rewards doing well: volume (tasks completed) × quality (fewer hints, more ticks, a quicker time; correct speaking pays more) × difficulty. The child is never told the mechanism. It buys things that change play, never the listening; prices are set so an upgrade comes every 2–3 games at first, then every 4–5 (decision 10). It comes from one data file tuned by simulation, with no wages and nothing lost (decision 20).
 
 
 
@@ -113,8 +102,8 @@ Why an object rather than a number:
 - **Pre-exposure:** at the bowl/pot step, Nani names things she has already added so the next errand's words are heard before they're taught.
 - **Recipes are the unit of an errand**, tied to story events. Mixed categories (fruit + veg + spice) aid discrimination.
 - **Errand lists are generated**: words due for review plus new words, decoys chosen to look alike. (Hand-written for the fruit bowl only.)
-- **The shopping list shows Kutchi (romanised) plus a play button**, never a picture and never English. English is one tap away.
-- **Quantities are shown and heard.** The list shows "2 × santra" with dots that fill in; Nani says the plural sentence when the quantity is more than 1. *Supersedes the earlier "no digits on the list" decision, after playtest 1 showed players couldn't tell how many to buy.*
+- **The order card shows Kutchi (romanised) with the face as the replay**, never a picture and never written English for the child; the light bulb is the help (E1, E25).
+- **Quantities are spoken, and written as Kutchi number words** by the counting rule: L1 written and counted along, L2 written, L3+ heard only. No digits or dots for the child (E12, decision 41).
 - **Pantry gaps are the item's outline shape**, pulsing as Nani names it, on first meeting only.
 - **Glow is a hint, not a giveaway:** only after a wrong tap or ~5 seconds of hesitation.
 - **A word advances a stage on correct recall from the Kutchi**, not on being seen. Two misses drop it a stage.
@@ -176,7 +165,6 @@ Once a mode's first errand is built well, later errands in that mode are generat
 | Second burner | Two pots cook at once | Expensive; pays off in the busy setting |
 | Bigger pantry | More ingredients and recipes unlocked | Opens bigger orders (more coins, harder listening) |
 | Tawa upgrade | Rotis cook faster | Only useful once you've unlocked roti |
-| A cousin as helper | Auto-washes vegetables | Costs coins every day (a running wage), like a tycoon game |
 
 A **counter with 4 slots** forces the classic decision: chai machine *or* second burner *or* spice rack. Different players build different kitchens.
 
@@ -192,6 +180,8 @@ A **counter with 4 slots** forces the classic decision: chai machine *or* second
 
 ### 8. Station upgrades: in the build now, and what the real upgrade could be
 
+Prices and coin amounts below are the 28 Sept prototype's; the live numbers come from the pocket-money data file (decisions 10 and 20). There are no daily wages.
+
 The prototype shows most upgrades as a gilded "special" version of the ordinary prop (gold tint and a twinkle), because there's no art for the real thing yet. The right-hand column is what each one should become.
 
 | Station | In the build (price) | What it does now | Real upgrade to design and draw |
@@ -204,9 +194,9 @@ The prototype shows most upgrades as a gilded "special" version of the ordinary 
 | Rolling | Special rolling pin (30) | Rolls twice as fast; never too big | **A tapered belan**, then a **chapati press** that makes a perfect circle in one push |
 | Tawa | Special tawa (40) | Flip window twice as wide | **A heavy cast-iron tawa**, then a **roti jali** (mesh) for a guaranteed puff |
 | Chopping | Special knife (25); Ali helps (15 + 5 a day) | 2 swipes instead of 4; Ali chops for you | **A sharp chef's knife**, then a **pull-cord vegetable chopper**. Helpers become **family staff with a daily wage** (tycoon-style), each with a personality |
-| Tadka | Special tadka pan (30) | Tips itself into the daal (you still add the spices in Nani's order) | **A long-handled tadka ladle** that pours straight into the pot. Later, a **masala dabba** on the counter, as décor only: it must never open the right spice for you, because that would do the listening |
+| Tadka | Special tadka pan (30) | Tips itself into the daar (you still add the spices in Nani's order) | **A long-handled tadka ladle** that pours straight into the pot. Later, a **masala dabba** on the counter, as décor only: it must never open the right spice for you, because that would do the listening |
 | Stirring | Special pot (30) | Small, wobbly circles count | **A long wooden ladle (doi)**; later a **pressure cooker whose whistles you count** (a new counting mini-game) |
-| Serving | Special thali (40) | +3 coins tip per order | **A brass thali with katoris**: better presentation, bigger tips, and the plating mini-game ("daal in the bowl, maani on the left") |
+| Serving | Special thali (40) | +3 coins tip per order | **A brass thali with katoris**: better presentation, bigger tips, and the plating mini-game ("daar in the bowl, maani on the left") |
 
 **Design rule kept:** no upgrade touches the Kutchi. Fetching the right thing, the counts, the tadka order and "the usual" are always the player's job.
 
