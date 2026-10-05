@@ -1505,6 +1505,11 @@
           S.wiggle(g.sk);
           return;
         }
+        // C3 (SEK-09, Zafar 30 Sept): a mistimed skewer shows it (turned too soon: the meat is still raw; left too
+        // long: charred), then goes back to the rack, filled and ready to grill again. The redo and its time are
+        // the whole cost: nothing is scored for it (the first good turn and lift score as before)
+        const early = !forced && g.v < lo;
+        if ((early || forced || g.v >= 1) && backToRack(g, early ? "raw" : "charred")) return;
         const last = g.phase >= k.turns;
         const v = forced ? 1 : g.v;
         const score = v >= 1 ? k.burntScore : S.bandScore(v, lo, hi);
@@ -1564,6 +1569,39 @@
         }
         showDone();
       };
+
+      /* SEK-09: a mistimed skewer goes back to the rack (false: no room there, so it stays and is scored as before) */
+      function backToRack(g, state) {
+        if (rack.indexOf(null) < 0) return false;
+        g.busy = true;
+        g.out = true;
+        spots[g.spot] = null;
+        grilling.splice(grilling.indexOf(g), 1);
+        if (g.sk.hit) g.sk.hit.destroy();
+        if (!grilling.length && sizzle) {
+          sizzle.stop();
+          sizzle = null;
+        }
+        const vx = spotX(g.spot);
+        const sx = g.sk.scaleX;
+        Cook.sfx.flip();
+        // turned over: its other side shows how it is (raw, or charred with smoke)
+        if (state === "charred") S.wisps(vx, Y(GRILL.skewerY - 60), 4, L(70));
+        Cook.tween(S, { targets: g.sk, scaleX: sx * 0.12, duration: 110, yoyo: true })
+          .then(() => {
+            g.sk.scaleX = sx;
+            SK.cook(g.sk, state === "charred" ? 1 : 0, { burnt: state === "charred", marks: 0 });
+            return Cook.wait(state === "charred" ? 900 : 700);
+          })
+          .then(() => {
+            // filled and ready again: fresh pieces, back in the rack's next free place
+            SK.cook(g.sk, 0, { burnt: false, marks: 0 });
+            placeOnRack({ pieces: g.pieces, sprite: g.sk });
+            z.progress({ regrill: true });
+          })
+          .catch(() => {});
+        return true;
+      }
 
       /* the chips basket: on the plate or not (the order says) */
       if (chips) {

@@ -498,6 +498,28 @@
       sheet.blobs.push(b);
       return b;
     }
+    /** C3 (E14): a spoonful taken back off the strip: its mound shrinks (or goes back to its pile); the rest close up. */
+    function unspoon(sheet, b) {
+      const pa = fillAt(sheet);
+      const id = b.wordId;
+      b.spoons = (b.spoons || 1) - 1;
+      Cook.sfx.pop();
+      if (b.spoons <= 0) {
+        sheet.blobs.splice(sheet.blobs.indexOf(b), 1);
+        S.untap(b);
+        const obj = items[id];
+        const to = obj ? { x: obj.x, y: obj.y - obj.displayHeight * 0.2 } : { x: b.x, y: b.y + z.L(200) };
+        S.fly(b, to.x, to.y, { duration: 320, arc: z.L(90) }).then(() => b.destroy());
+      }
+      const kinds = sheet.blobs.map((o) => o.wordId);
+      const spots = mounds(pa, kinds.length);
+      sheet.blobs.forEach((o) => {
+        const sp = spots[kinds.indexOf(o.wordId)];
+        const size = sp.size * Math.min(1.3, 1 + 0.1 * ((o.spoons || 1) - 1));
+        S.tweens.add({ targets: o, x: sp.x, y: sp.y, displayWidth: size, displayHeight: size * 0.96, duration: 240 });
+      });
+      return id;
+    }
     /** Where m fillings' mounds sit on the strip's end (world px): one big, two side by side, or a ring. */
     function mounds(pa, m) {
       if (m <= 1) return [{ x: pa.x, y: pa.y, size: pa.r * 1.8 }];
@@ -520,6 +542,23 @@
       const got = {};
       const order = [];
       let last = 0;
+      // C3 (E14, take it back until Done): a tap on a mound takes one spoonful of it back; the strip as it is at Done is graded
+      let open = true;
+      const takeBack = (b) => {
+        if (!open || !b.active || !sheet.blobs.includes(b) || performance.now() - last < 220) return;
+        last = performance.now();
+        const id = unspoon(sheet, b);
+        got[id] = Math.max(0, (got[id] || 0) - 1);
+        const at = order.lastIndexOf(id);
+        if (at >= 0) order.splice(at, 1);
+        if ((wantB[id] || 0) > 1 && UI.mission.untickItem) UI.mission.untickItem(id, ctx.dishAt || 0);
+        z.progress({ unfilled: id, n: got[id] });
+      };
+      Cook.undoAt = () => {
+        if (Cook.paused) return null; // (Nani's "pass me" is up: nothing else takes a tap)
+        const b = open && sheet.blobs.find((o) => o.active && o.tapReady);
+        return b ? S.centre(b) : null;
+      };
       for (;;) {
         const next = kindsB.find((id) => (got[id] || 0) < wantB[id]) || null;
         const r = await St.freePick(z, { items, next, doneOk: order.length > 0, doneGlow: ctx.guided && !next });
@@ -537,9 +576,16 @@
         // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
         const cnt = (level || z.level) <= 1 && UI.tallyLine ? UI.tallyLine(got[id], id) : null;
         pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(150), cnt ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
-        await into;
+        const mound = await into;
+        if (mound && mound.active && open) {
+          S.tappable(mound, () => takeBack(mound));
+          mound.tapReady = true;
+        }
         z.progress({ filled: id, n: got[id] });
       }
+      open = false;
+      Cook.undoAt = null;
+      sheet.blobs.forEach((o) => o.active && S.untap(o));
       // graded now: each filling, how many spoons, and nothing they said no to
       let fillWrong = null;
       Object.keys(got).forEach((id) => {

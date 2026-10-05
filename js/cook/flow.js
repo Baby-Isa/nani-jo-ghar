@@ -843,7 +843,7 @@
   /** Nani's recipe book: the dishes learned and the words met, in Kutchi (tap to hear); the English is behind the "?" (E1). */
   function showBook() {
     const taught = Object.keys(Cook.data.recipes).filter((k) => Cook.save.taught[k]);
-    const met = Object.keys(Cook.save.words).filter((id) => Cook.data.words[id]);
+    const met = Cook.metWords().filter((id) => Cook.data.words[id]);
     const p = UI.panel(`
       ${taught.length ? `<div class="chips">${taught.map((k) => `<button class="chip" type="button" data-w="${UI.esc(Cook.data.recipes[k].name)}">${UI.esc(Cook.display(Cook.data.recipes[k].name))}</button>`).join("")}</div>` : ""}
       <div class="cards">${Object.keys(Cook.data.customers).map((who) => `<div class="ccard book-face"><img src="${face(who)}" alt=""></div>`).join("")}</div>

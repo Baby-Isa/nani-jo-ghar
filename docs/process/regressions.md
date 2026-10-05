@@ -30,7 +30,7 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | SH-10 | Rows tick or count up as items go in (chai bug, tooth three taps, clinic rows); level-1 counts for fever, foot, drinks, boing judged in play | built, not re-played | auto: `build/test_cook.py` tick check; eye: L1 · CMP-09 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §10; `docs/feedback/clinic-playtest-2026-09-29.md` G6 |
 | SH-11 | No early ticks or folds: samosa card ticked after filling while still frying, daar Nana's tick during the stir, "don't" row gold mid-dish; samosa headline cut to "Muke ba samosa …" | built, not re-played | auto: order-card node tests; eye: samosa, daar · CMP-09, TXT-01 | `docs/process/overnight-log.md` 03:07; `docs/archive/handovers/overnight-queue.md` notes |
 | SH-12 | Items with no word at higher levels keep a speaker-only chip of the same size and position | fixed | eye: L3–L4 · CMP-08 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §10 |
-| SH-13 | Counting along is consistent: L1 written and counted aloud, L2 written, L3+ heard | built, not re-played | eye: L1–L4 · INT-10 | `docs/feedback/cook-playtest-2026-09-29.md` X12, Q7 |
+| SH-13 | Counting along is consistent: L1 written and counted aloud, L2 written, L3+ heard | built, not re-played (C3, 5 Oct, decision 41: every station counts along at L1 only, chai's sugar included; L3+ headlines lose the number too) | eye: L1–L4 · INT-10 | `docs/feedback/cook-playtest-2026-09-29.md` X12, Q7 |
 | SH-14 | Item labels do not overlap with more than five items; look-alike bowls are labelled | fixed | eye: 1366×768 | `docs/archive/cook/cook-with-nani-todo.md` Wave 1 |
 | SH-15 | Count badges show the running tally, not the target | fixed | eye: each station | `docs/archive/cook/cook-with-nani-todo.md` Wave 1 |
 | SH-16 | Speaker icon sits inside the face circle and is tappable everywhere (cards, pop-up, guide box, hob faces); face = replay; no per-line speaker, translate or eye buttons | built, not re-played | eye: 390×844 · INT-01 | `docs/design-language/ux-principles.md` §4; `docs/feedback/cook-playtest-2026-09-29.md` X3 |
@@ -67,7 +67,7 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | SH-32 | Collected things are visible where they go (no invisible counters) | open (unverified) | eye: each station | `docs/archive/design-v1/Roadmap and Story Structure.md` Lessons 3 |
 | SH-33 | Items are sized by width and height, never overflow their box | open (unverified) | auto: `build/check_vessel_meta.py`; eye | `docs/feedback/playtest-2026-09-23.md` §1 #9; Roadmap Lessons 4 |
 | SH-34 | Shelf band: equal padding top and bottom, bounce and glow stay inside, water bottle does not touch the top, room above dough containers | built, not re-played | eye: 1366×768 · LAY-07 | `docs/feedback/cook-playtest-2026-09-29.md` X7, C2, M9 |
-| SH-35 | Shelf items at true relative heights; enough gap between cooking area and shelf | open (unverified) | eye: 1366×768 · LAY-07 | `docs/design-language/ui-design-system.md` §10 (late) |
+| SH-35 | Shelf items at true relative heights; enough gap between cooking area and shelf | built, not re-played (C3, 5 Oct: rechecked on the chai tray, maani, sekelo and pantry at 1366×768, 1280×800, 844×390; no code change) | eye: 1366×768 · LAY-07 | `docs/design-language/ui-design-system.md` §10 (late) |
 | SH-36 | One line of text beside a character icon is centred on the icon | open (unverified) | eye: collapsed cards · TXT-09 | `docs/design-language/ui-design-system.md` §10 (late) |
 | SH-37 | Cook screens have one focal thing; UI and world look like one product; identical shelf slots; design tokens only | built, not re-played | eye: 1366×768 · CMP-10, CMP-04 | `docs/design-language/ui-design-system.md` §1.1–1.4 |
 | SH-38 | A counted row at L1 turns gold the moment the count is reached and the step closes by itself; from L2 it ticks only when the step closes (decision D5) | built, not re-played | eye: L1 and L2, each counted step · CMP-09 | `docs/feedback/clinic-playtest-2026-10-01.md` this report P7, 1:3:44–4:55 |
@@ -86,7 +86,7 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| PAN-01 | **KNOWN BUG.** "Bring me these" headline clipped ("these" cut) and the growing highlighted row / gold done-outline clipped at the card edges (re-found 30 Sept 18:00 UK) | **reopened** | eye: 390×844 and 1366×768, each fetched row · TXT-01, TXT-04 (auto planned) | `docs/feedback/cook-playtest-2026-09-29.md` P3, P2; `docs/archive/handovers/NEXT-CHAT-START.md` §2 |
+| PAN-01 | **KNOWN BUG.** "Bring me these" headline clipped ("these" cut) and the growing highlighted row / gold done-outline clipped at the card edges (re-found 30 Sept 18:00 UK) | built, not re-played (C3, 5 Oct: whole at 844×390, 1280×800 and 1024×768 mid-fetch, headline and the done row's gold outline inside the card) | eye: 390×844 and 1366×768, each fetched row · TXT-01, TXT-04 (auto planned) | `docs/feedback/cook-playtest-2026-09-29.md` P3, P2; `docs/archive/handovers/NEXT-CHAT-START.md` §2 |
 | PAN-02 | **KNOWN BUG.** Spoken and written lines are fragments with no verb (*khun, ne daar, ne dudh*; "I want tea and milk. I want tea with two sugars…"); want one natural sentence per person, in every station. Needs the language engine | **open** | eye/ear: every order sentence · LNG-03 | `docs/feedback/cook-playtest-2026-09-29.md` X1; `docs/archive/handovers/NEXT-CHAT-START.md` §2 |
 | PAN-03 | Headline says "bring me these for {dish}", not "Muke dudh de." over atto with chai below (reads as if milk were a different kind of thing); Kutchi line still to record | fixed | eye: pantry card · LNG-04 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §1 |
 | PAN-04 | Counting voice and Nani's "next thing" line do not overlap (one speech queue per station) | built, not re-played | eye: ear | `docs/feedback/cook-playtest-2026-09-29.md` P1 |
@@ -114,14 +114,14 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| MAA-01 | Maani card headline still repeats its row over *hakri maani* | open | eye: maani card · CMP-07 | `docs/feedback/cook-playtest-2026-09-29.md` X12 ("left open") |
+| MAA-01 | Maani card headline still repeats its row over *hakri maani* | built, not re-played (C3, 5 Oct: the card's headline is the dish's own line, *Muke maani khape.*; the kind is said in the headline and written on its row) | eye: maani card · CMP-07 | `docs/feedback/cook-playtest-2026-09-29.md` X12 ("left open") |
 | MAA-02 | Sentence is *Muke hakri bajr ji maani khape*, no spare "Ne" | built, not re-played | eye/ear: orders | `docs/feedback/cook-playtest-2026-09-29.md` M1 |
 | MAA-03 | Flames peek top, bottom and sides of the tawa: wide single burner, ring on the rim | built, not re-played | eye: 1366×768 | `docs/feedback/cook-playtest-2026-09-29.md` M2, M7 |
 | MAA-04 | Dough: two realistic piles, one tap sends one ball; ball goes back if you change your mind; no tray (question: can a pile run out?) | built, not re-played | eye: dough shelf | `docs/feedback/cook-playtest-2026-09-29.md` M3, Q14 |
 | MAA-05 | Cooked maani is flat (raw, half, cooked, burnt), never puffed like a poori | built, not re-played | eye: each state | `docs/feedback/cook-playtest-2026-09-29.md` M5 |
 | MAA-06 | Turner is a flat wooden turner, not "weird tweezers" | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` M6, Q15 |
 | MAA-07 | Tawa is high-resolution, not a 400 px upscale | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` M8 |
-| MAA-08 | Count badge does not overlap the hob; roll-tawa plate not cut off; tick not over the resting spatula (builder) | open (unverified) | eye: 1280×800, 915×375 | `docs/archive/cook/cook-with-nani-todo.md` Wave 4 (builder) |
+| MAA-08 | Count badge does not overlap the hob; roll-tawa plate not cut off; tick not over the resting spatula (builder) | built, not re-played (C3, 5 Oct: rechecked at 1280×800 and 844×390, no count badge on the hob, plates whole, the tick clear of the turner; 915×375 is no longer in the matrix) | eye: 1280×800, 915×375 | `docs/archive/cook/cook-with-nani-todo.md` Wave 4 (builder) |
 
 ## Cook: daar
 
@@ -134,7 +134,7 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | DAAR-05 | Ginger and added things are not white dots; stir turns the pictured contents (review bowl still shows dry chilli and curry leaves) | built, not re-played | eye: each stage | `docs/feedback/cook-playtest-2026-09-29.md` D3, D10 |
 | DAAR-06 | Finished daar is photoreal on a small wooden trivet | built, not re-played | eye: serve | `docs/feedback/cook-playtest-2026-09-29.md` D5 |
 | DAAR-07 | Pot and chopped-ingredient container are straight top-down | built, not re-played | eye: 1366×768 · ART-03 | `docs/feedback/cook-playtest-2026-09-29.md` D11 |
-| DAAR-08 | Chop card writes quantities at every level (open question: should L1 say *ba dungri* only?) | open | eye: L1–L4 · INT-10 | `build/reports/daar-v3.md` (open question) |
+| DAAR-08 | Chop card writes quantities at every level (open question: should L1 say *ba dungri* only?) | built, not re-played (C3, 5 Oct, decision 41: no written quantity from L3; her face replays the numbers) | eye: L1–L4 · INT-10 | `build/reports/daar-v3.md` (open question) |
 
 ## Cook: chaat
 
@@ -171,9 +171,9 @@ Paths are as of 30 Sept 2026 (before the docs tidy); `R-x` means `build/reports/
 | SEK-04 | No bare "boga" skewers; a veg skewer names what is on it, in order | built, not re-played | auto: data check; eye | `docs/feedback/cook-playtest-2026-09-29.md` K4 |
 | SEK-05 | No duplicate pick in an order ("tameto, tameto") | fixed | auto: `build/test_cook.py --orders` | `docs/archive/cook/cook-with-nani-todo.md` Wave 1 |
 | SEK-06 | Onion and tomato are big and chunky, the same in the bowl and on the skewer, not oversized against the stick | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` K5; `docs/process/overnight-log.md` (orchestrator) |
-| SEK-07 | Plate skewers drawn close together; skewer handle sits off the plate; plate lines up with grill and rack | open | eye: plate state | `docs/feedback/cook-playtest-2026-09-29.md` K8; `build/reports/sekelo-v3.md` §6 |
+| SEK-07 | Plate skewers drawn close together; skewer handle sits off the plate; plate lines up with grill and rack | built, not re-played (C3, 5 Oct: R6's fanned plate rechecked at L3, handles off the plate, plate level with grill and rack; the handles still meet at the rim) | eye: plate state | `docs/feedback/cook-playtest-2026-09-29.md` K8; `build/reports/sekelo-v3.md` §6 |
 | SEK-08 | One job per phase (thread, then grill); no chips on the grill | fixed | eye: each phase | `docs/design-language/ux-principles.md` §5, §6 |
-| SEK-09 | Turning a skewer too soon shows nothing and costs nothing (too late not yet tested). An early turn should show the meat still uncooked; a late one burnt (charred art exists). **Decided (Zafar, 30 Sept):** a mistimed skewer goes back to the rack, filled and ready to grill again; the redo and its time are the whole cost (no score penalty). The family can react (undercooked / burnt). | open (decided, not built) | eye: grill phase, turn early / on time / late, L1–L4 · INT-05 | Zafar, orchestrator chat 30 Sept |
+| SEK-09 | Turning a skewer too soon shows nothing and costs nothing (too late not yet tested). An early turn should show the meat still uncooked; a late one burnt (charred art exists). **Decided (Zafar, 30 Sept):** a mistimed skewer goes back to the rack, filled and ready to grill again; the redo and its time are the whole cost (no score penalty). The family can react (undercooked / burnt). | built, not re-played (C3, 5 Oct: a turn before the green shows the raw side, a skewer left to char shows it charred; both go back to the rack to grill again, nothing scored; no family reaction yet) | eye: grill phase, turn early / on time / late, L1–L4 · INT-05 | Zafar, orchestrator chat 30 Sept |
 
 ## Cook: general
 

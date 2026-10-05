@@ -1,8 +1,8 @@
 /*
  * R3a's hook-up, moved out of cook.html into its own module (R4, decision 18: the page loads as modules):
  * Cook's camera follows the shared stage (js/shared/stage.js; the same picture on a laptop, and on a
- * tablet the scene may grow to its safe area, data/layout.json stage.scenes.cook), and the light bulb
- * goes through the shared bulb (js/shared/bulb.js).
+ * tablet the scene may grow to its safe area, data/layout.json stage.scenes.cook). (The light bulb is the
+ * shared one, built in js/cook/ui.js since C3: no shim.)
  * R4 (decision 24): each Cook view may have its own safe area in Cook's scene data, in design units
  * (data/scenes/cook-views.json `views[<view>].safe`: what the child must reach in that view), so a tablet
  * grows that view's play items up to data/layout.json's itemScale; layout.json's "cook:<view>" wins over it.
@@ -40,5 +40,4 @@
         .then(function (d) { Cook.viewScenes = (d && d.views) || {}; })
         .catch(function () { Cook.viewScenes = {}; });
     });
-  if (window.Bulb && window.UI) Bulb.cookShim(UI, Cook);
 })();

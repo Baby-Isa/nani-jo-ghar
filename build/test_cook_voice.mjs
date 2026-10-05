@@ -2,14 +2,15 @@
 // handed over by js/cook/boot.js as Cook.voicePlan), so whole-phrase family clips are off in Cook as well.
 // For every Cook order line (L1-L4, every recipe and customer), every word and every whole line, Lang.speak plays
 // exactly the core's plan (files in order, device-voice turns), and never a clip of more than one word.
-// Without the core (Cook.voicePlan unset) Cook's own search is unchanged: build/core/voice-parity.test.mjs.
+// C3: Lang.speak hands the plan to the core's voice (core.voice.say), so the test gives Cook a core voice.
+// Without the core Cook's own search is unchanged: build/core/voice-parity.test.mjs.
 // Run: node --test build/test_cook_voice.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import { loadCook, ROOT } from "./core/cook-harness.mjs";
-import { clipIndex, planClips, isPhrase, voicePath } from "../js/core/voice.js";
+import { clipIndex, planClips, isPhrase, voicePath, createVoice } from "../js/core/voice.js";
 
 test("Cook's Lang.speak follows the core's plan: stitched word by word, no whole-phrase clip", async () => {
   const { Cook, win } = await loadCook({ seed: 5 });
@@ -28,6 +29,9 @@ test("Cook's Lang.speak follows the core's plan: stitched word by word, no whole
   const sayOf = (id) => (id && Cook.data.words[id] && Cook.data.words[id].say) || null;
   // what js/cook/boot.js sets once the core has loaded
   Cook.voicePlan = (segs) => planClips(segs, index, { path: voicePath(), sayOf });
+  // C3: and the core's one voice, playing through Cook's player (js/cook/boot.js's player)
+  const player = { play: (u) => Cook.speakFile(u), stop() {}, synth: (t) => Cook.synthSay(t) };
+  Cook.core = { voice: createVoice({ index, player, path: "test", phrases: false, gapMs: 0 }) };
   assert.equal(voicePath(), "test");
   const lines = [];
   const D = Cook.data;
