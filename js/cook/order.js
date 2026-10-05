@@ -268,7 +268,7 @@
         const l = Lang.line(F.no, r.phrase);
         segs = lower(cut(l.segs));
         en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
-      } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join])) { // (the parked pages: their own lines)
+      } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join])) { // (parked pages only: their own lines)
         const l = Lang.line(join, r.phrase);
         // inside the sentence: no capital (the engine says a join it has no rule for as a sentence of its own)
         segs = lower(cut(l.segs));
