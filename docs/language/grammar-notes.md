@@ -358,7 +358,7 @@ Rough transcript: `sources/audio/mum-2026-09-26/B.md`. **Each word is said sever
 - ***cup*** is just *cup*. One cup: ***hakri cup***. A full (filled-up) cup: ***bharelo cup***. A whole cup, the one used more in cooking: ***aako cup***.
 
 ### Zafar, 26 Sept (afternoon)
-- **Chilli:** ***mirchi*** is one chilli, and ***marcha*** is the plural. This is an irregular pair, unlike *ambo → amba*. Red chilli powder stays *lal marcha*.
+- **Chilli:** ***mirchi*** is one chilli, and ***marcha*** is the plural. This is an irregular pair, unlike *ambo → amba*. Red chilli powder stays *laal marcha*.
 - Spellings *vyo*, *kyo*, *anke*, *wadhare*, *thorok*, *jara e wandho nai* and *mu lai khobar* are confirmed.
 - *kere karein* (who did it?) is **not** confirmed. Zafar doesn't recognise it, so re-ask Mum for A8.9.
 
@@ -641,18 +641,18 @@ Mum: "there's no concept of *a* and *the*". You either point (***hi wadho chokro
 - **The biggest:** ***wadho ma wadho***; the smallest ***nindho ma nindho*** (10:00–10:21; clear). Doubling for emphasis is common: ***jaldi jaldi***.
 - **"Tea and the things that go with it":** ***chai bai*** (an echo word; *chai bai banai*) (10:44–11:11; ⚠ spelling).
 
-### 44. C37–C43: "red" is *lal* and never changes
+### 44. C37–C43: "red" is *laal* and never changes
 | ID | English | What Mum said | Confidence (time) |
 |---|---|---|---|
-| C37 | the red cup · the red cups | ***lal cup · lal cup*** (or *lal cups*) | clear (12:35–12:54) |
-| C38 | the red mango · the red mangoes | ***lal ambo · lal amba*** | clear (12:57–13:28) |
-| C39 | the red door · the red doors | ***lal darwajo · lal darwaja*** | clear (13:28–13:37) |
-| C40 | the red dupatta · the red dupattas | ***lal pacheri · lal pacheriyu*** | clear (13:37–13:48) |
-| C41 | in the red cup · on the red mango · behind the red door | ***lal cup je andar · lal ambe je mathe · lal darwaje je puthiya*** | clear (13:48–14:02) |
-| C42 | The cup / mango / door is red. The mangoes are red. | ***Cup lal ai. Ambo lal ai. Darwajo lal ai. Amba lal ain.*** (Zafar swapped "the cups" for "the mangoes") | clear (14:02–14:21) |
-| C43 | the red one · the red ones · not the red one | "The one that is red": ***je lal ai …*** (singular) and ***je lal ain …*** (plural), with a short word after it Whisper can't catch. Not the red one: ***lal na***; "don't buy the red one" ***lal na ginje*** ⚠; "buy the red one" ***lal gin*** | *lal na* clear; the rest ⚠ (14:21–16:12) |
+| C37 | the red cup · the red cups | ***laal cup · laal cup*** (or *laal cups*) | clear (12:35–12:54) |
+| C38 | the red mango · the red mangoes | ***laal ambo · laal amba*** | clear (12:57–13:28) |
+| C39 | the red door · the red doors | ***laal darwajo · laal darwaja*** | clear (13:28–13:37) |
+| C40 | the red dupatta · the red dupattas | ***laal pacheri · laal pacheriyu*** | clear (13:37–13:48) |
+| C41 | in the red cup · on the red mango · behind the red door | ***laal cup je andar · laal ambe je mathe · laal darwaje je puthiya*** | clear (13:48–14:02) |
+| C42 | The cup / mango / door is red. The mangoes are red. | ***Cup laal ai. Ambo laal ai. Darwajo laal ai. Amba laal ain.*** (Zafar swapped "the cups" for "the mangoes") | clear (14:02–14:21) |
+| C43 | the red one · the red ones · not the red one | "The one that is red": ***je laal ai …*** (singular) and ***je laal ain …*** (plural), with a short word after it Whisper can't catch. Not the red one: ***laal na***; "don't buy the red one" ***laal na ginje*** ⚠; "buy the red one" ***laal gin*** | *laal na* clear; the rest ⚠ (14:21–16:12) |
 
-**Rule (settled):** *lal* doesn't agree: it's the same for he-words, she-words and plurals. (So not every describing word changes; *lal* is like *tayar* and *theek*, §6 of `grammar-kb.md`.) The noun still changes (*lal ambe je mathe*). Mum's point at 16:06: a short answer depends on the question's verb (*lal na* = "not the red one" for whatever you're doing).
+**Rule (settled):** *laal* doesn't agree: it's the same for he-words, she-words and plurals. (So not every describing word changes; *laal* is like *tayar* and *theek*, §6 of `grammar-kb.md`.) The noun still changes (*laal ambe je mathe*). Mum's point at 16:06: a short answer depends on the question's verb (*laal na* = "not the red one" for whatever you're doing).
 
 ### 45. C44–C48: three words for "good": *dayo*, *saro*, and the English *fine*
 | ID | English | What Mum said | Confidence (time) |
@@ -767,18 +767,18 @@ Rough transcript: `sources/audio/mum-2026-10-05/C79.md`.
 **Rule (settled, with C59):** before a postposition, *jo* → ***je*** with a he-word thing (whatever the owner), and the he-word itself takes *-e* if it ends in *-o*. *ji* stays *ji*. The short postposition sits straight after the noun (*cup me*, *ambe mathe*); the fuller one adds *je* (*cup je andar*), as §15 found.
 
 ### Is the grammar "nailed down" now?
-Much more of it. **Settled from these three files:** describing words agree (*wadho/wadhi/wadha*, *nindho*, *dayo*, *saro*), *lal* doesn't; *ai* / *ain*; the *-e* form before postpositions for he-words, their describing words and their "of" word (*wadhe chokre sathe*, *Nani je ambe je mathe*); *jo/ji/ja* agree with the thing; *munjo, tojo, anjo, injo, asanjo, panjo, iloka jo*; the person forms of "be" (*aiya, aiye, aayo, ai*); two "we"s (*pa*, *asa*); *hi / hu / hi mare / hu mare*.
+Much more of it. **Settled from these three files:** describing words agree (*wadho/wadhi/wadha*, *nindho*, *dayo*, *saro*), *laal* doesn't; *ai* / *ain*; the *-e* form before postpositions for he-words, their describing words and their "of" word (*wadhe chokre sathe*, *Nani je ambe je mathe*); *jo/ji/ja* agree with the thing; *munjo, tojo, anjo, injo, asanjo, panjo, iloka jo*; the person forms of "be" (*aiya, aiye, aayo, ai*); two "we"s (*pa*, *asa*); *hi / hu / hi mare / hu mare*.
 
 **Still open:** the he-word plural before a postposition (*wadha chokra sathe* or *-e*); the boys' (*chokra jo* ⚠); the she-word plural *-yu*: when it's needed (Mum: optional when the sentence already shows "more than one"); *saro*'s plural; *iloka*'s make-up; most cooking verbs' polite and "for me" forms (only the bare commands were said).
 
 ### Claude's check against Sindhi and Gujarati (not evidence; leads for Masi)
 - *munjo / tunjo / hun jo* and the *jo/ji/ja/je* "of" are Sindhi (*muhinjo, tuhinjo, hun jo*); Gujarati says *māru, tāru*. So the possessives are firmly on the Sindhi side, as is ***asaan*** / ***paan*** for the two "we"s (Sindhi *asān* exclusive, *pāṇa* inclusive).
 - ***iloka***: Gujarati *e loko* = "those people" (*lok* = people), which fits Mum's feeling that it's *e* + *loka*; Sindhi uses *hu* / *unhan*. Likely a Gujarati-side compound that the family says as one word.
-- *ain* (are) matches Sindhi *āhin*; *ai* matches *āhe*. *aiya* matches Sindhi *āhiyān* (I am); *aiye* matches *āhīn* (you are). *saro* matches Sindhi *sāro* ("good"? more often "whole") and Gujarati *sāru* (good): Gujarati fits the meaning better. *dayo* matches Gujarati *ḍāhyo* (well-behaved, wise). *lal* is the same everywhere.
+- *ain* (are) matches Sindhi *āhin*; *ai* matches *āhe*. *aiya* matches Sindhi *āhiyān* (I am); *aiye* matches *āhīn* (you are). *saro* matches Sindhi *sāro* ("good"? more often "whole") and Gujarati *sāru* (good): Gujarati fits the meaning better. *dayo* matches Gujarati *ḍāhyo* (well-behaved, wise). *laal* is the same everywhere.
 - *mare* (all) is unusual: Gujarati *badhā*, Sindhi *sabh*; worth asking Masi how she says "all of these".
 
 ### What this means for the engine (proposed; the orchestrator puts game changes to Zafar)
-1. **Adjectives** need forms for he-one *-o*, he-more *-a*, she *-i*, and the ***-e*** form before a postposition; a flag for invariant ones (*lal*, *fine*, *tayar*, *theek*). *barabar* goes after the noun.
+1. **Adjectives** need forms for he-one *-o*, he-more *-a*, she *-i*, and the ***-e*** form before a postposition; a flag for invariant ones (*laal*, *fine*, *tayar*, *theek*). *barabar* goes after the noun.
 2. **Nouns** need the *-e* form stored per noun (now confirmed for *chokro, ambo, darwajo, bakro, rasoro*), and the *-yu* plural where Mum gave it (*chokriyu, pacheriyu, bakuliyu, pialiyu, gadiyu, kursiyu, chakliyu, shatiyu*); *maani, kan, pag, tawa* have no plural.
 3. **"of"** = *jo/ji/ja* by the thing's gender and number, *je* before a postposition with a he-word thing; owner in its *-e* form. Pronoun owners *mun-, to-, an-, in-, asan-, pan-*; *iloka jo*.
 4. **"be"** = *aiya / aiye / aayo / ai / ain* by person and number; the elder "you" and "we" share *aayo*.
@@ -792,7 +792,7 @@ Much more of it. **Settled from these three files:** describing words agree (*wa
 4. I34–I35: *koso* (Sindhi-looking) vs *garam*; *thundo* vs Dad's *thadhu*: Masi's tie-break.
 5. C28, C30–C32: the he-word plural with "with / in / on / behind": *wadha chokra sathe* or *wadhe chokre sathe*? *wadha amba je mathe* or *wadhe ambe je mathe*?
 6. C58: "the boys' cup": *chokra jo cup* or *chokre jo cup*?
-7. C43: the short word after *je lal ai …* ("the one that is red, …").
+7. C43: the short word after *je laal ai …* ("the one that is red, …").
 8. C48: "the boys are good": *chokra sara ain*?
 9. C67: is *hu chokri rasore me ai* what she meant for "she's in the kitchen (that girl)"?
 10. *iloka*: one word or *e* + *loka*? And *mare* (all): how does Masi say "all of these"?

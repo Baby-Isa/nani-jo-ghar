@@ -23,7 +23,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 | 3 | Oblique before postpositions | **Known for one thing** (5 Oct: he-word *-e*, also on its describing word and *jo*); plural open | P2 | Q2, Q3; plural still open |
 | 4 | Articles | Known: none | — | — |
 | 5 | Possession *jo / ji / je / ja* | **Known** (5 Oct: agrees with the thing; *je* before a postposition; *munjo, tojo, anjo, injo, asanjo, panjo, iloka jo*) | P2 | — |
-| 6 | Adjectives | **Mostly known** (5 Oct: *wadho/wadha/wadhi/wadhe*; *lal* invariant; *dayo* vs *saro*) | P1 (maani) / P2 | L25, L92 |
+| 6 | Adjectives | **Mostly known** (5 Oct: *wadho/wadha/wadhi/wadhe*; *laal* invariant; *dayo* vs *saro*) | P1 (maani) / P2 | L25, L92 |
 | 7 | Numbers and counting | 1–2 known, 3–5 heard, 6–10 unknown | P1 | L52, L53, L54, E119–E123 |
 | 8 | Measures and "a skewer of" | Partly known | P1 | M1–M9, L14, L27, L57 |
 | 9 | Pronouns and "to me" forms | Mostly known (5 Oct: *pa* / *asa* we, *iloka* they, *hi/hu mare*); "to him/them" open | P2 | C86–C92, L93, L82 |
@@ -101,7 +101,7 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 ## 6. Adjectives (describing words)
 
-- **KNOWN (5 Oct, notes §40–§46).** Agreeing adjectives have four forms: he one ***-o*** (*wadho*), he more than one ***-a*** (*wadha*, even with *cup*), she ***-i*** in both numbers (*wadhi chokriyu*), and ***-e*** before a postposition (*wadhe chokre sathe*). The same after "is": *chokro wadho ai, chokra wadha ain, chokriyu wadhi ain*. **Invariant:** *lal* (red), *fine*, *barabar* (right; goes after the noun). "Good" is ***dayo*** (well-behaved; people and animals) or ***saro*** (things), or the English *fine* (*bo fine*, very nice). No "the big one": point (*hi wadho chokro*) or add a verb (*wadho khan*). Superlative ***X ma X*** (*wadho ma wadho*). Still open: *saro*'s he plural, *nindhe*.
+- **KNOWN (5 Oct, notes §40–§46).** Agreeing adjectives have four forms: he one ***-o*** (*wadho*), he more than one ***-a*** (*wadha*, even with *cup*), she ***-i*** in both numbers (*wadhi chokriyu*), and ***-e*** before a postposition (*wadhe chokre sathe*). The same after "is": *chokro wadho ai, chokra wadha ain, chokriyu wadhi ain*. **Invariant:** *laal* (red), *fine*, *barabar* (right; goes after the noun). "Good" is ***dayo*** (well-behaved; people and animals) or ***saro*** (things), or the English *fine* (*bo fine*, very nice). No "the big one": point (*hi wadho chokro*) or add a verb (*wadho khan*). Superlative ***X ma X*** (*wadho ma wadho*). Still open: *saro*'s he plural, *nindhe*.
 
 - **KNOWN.** Agreeing pairs: *wadho/wadhi* (big), *nindho/nindhi* (small), *aako/aaki* (whole, full), *bharelo/bhareli* (heaped), *ardo/ardi* (half portion), *kari* / *mori* (black / unsweetened; she-forms only heard) (notes §4, §10, §24, §25). The adjective comes before the noun (*ba wadhi maani*, *aako cup*). Invariant: *kali* (only), *tayar* (ready), *theek* (fine), *mixed* (English) (notes §25, §27). *lilo* = green (§26 B34).
 - **HYPOTHESIS.** [GF-Snd] agreeing adjectives have 16 forms (number × gender × 4 cases); he plural -a, she plural -iyun.

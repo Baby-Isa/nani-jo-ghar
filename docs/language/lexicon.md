@@ -2,7 +2,7 @@
 
 > **Stale points (the rulebook, `docs/process/rules.md`, wins).** Blocks below are copied word for word from older files; these lines are overridden:
 > - *hakri cup* / "Cup has no gender" (cook-word-changes-B §2) → *hakro cup*: cup is a he-word (Mum, 28 Sept, grammar-notes §29 R8; G5).
-> - *marcha* for green chilli, *lal marcha* (handout words, cook-word-changes-B §5 item 5) → *mirchi* only, no plural, for now (G24, G25, decision 5).
+> - *marcha* for green chilli, *laal marcha* (handout words, cook-word-changes-B §5 item 5) → *mirchi* only, no plural, for now (G24, G25, decision 5).
 > - Handout words *hikdo* (one) and *bo* (two), *nar* (no), *aastethi*, *bharelo* (full), *vadho* (big), *ghos*, *channa*, *daal*, *bajr jo maani*, *Achija* → superseded by *hakro/hakri*, *ba*, *na*, *aste thi*, *aako*, *wadho*, *gos*, *chana*, *daar*, *bajr ji maani*, *khuda-fis* (G5, G6, G24).
 > - "Gujarati text-to-speech placeholder voice" (cook-with-nani-words) → TTS is test-only and never ships; no AI-generated Kutchi (G14, non-negotiable 10).
 > - "Aabhar aanjo" (thank you) → the family says English "thank you" (G6).
@@ -179,7 +179,7 @@ Until then it stays a grey English placeholder. It is the last English word in a
 2. ⚠ ***lakri*** before *gos*, *boga* and *mixed* (Mum said it only with *mishkaki*).
 3. ⚠ ***{x} hane kadh.*** / ***{x} chadi de.***, with the thing named in place of *inke*.
 4. ⚠ ***wadhare*** (more), ***thorok*** (a little), ***Jara e wandho nai***, ***Mu lai khobar!***: all marked doubtful in the notes.
-5. **The chilli words:** Mum says *mirchi* for chilli, and the game has used *marcha* (green chilli) and *lal marcha* (red chilli powder) since the content master. Which is right, or are both used? (Not changed.)
+5. **The chilli words:** Mum says *mirchi* for chilli, and the game has used *marcha* (green chilli) and *laal marcha* (red chilli powder) since the content master. Which is right, or are both used? (Not changed.)
 6. ***chana*** replaces the draft *channa* (B9's spelling). The art file names (`topping-channa-bowl-t`) are unchanged.
 
 ### 6. Still to do
@@ -401,7 +401,7 @@ Source: `grammar-notes.md` §38–§55; recordings in `sources/audio/mum-2026-10
 | ***fine*** (English), ***bo fine*** | nice, very nice | invariant | C22-C49 18:14, 19:46 | confirmed |
 | ***khaso*** | nice, special | ? | C22-C49 18:14 | ⚠ |
 | ***barabar*** | right, proper, just right (after the noun: *cup barabar ai*) | invariant | C22-C49 19:08; I1-I35 4:38 | confirmed |
-| ***lal*** | red | invariant | C22-C49 12:35–14:21 | confirmed |
+| ***laal*** | red | invariant | C22-C49 12:35–14:21 | confirmed |
 | ***jhino · jhini*** | thin | ? | I1-I35 4:28 | spelling ✓ 5 Oct |
 | ***jadi*** (she) | thick | ? | I1-I35 4:35 | spelling ✓ 5 Oct |
 | ***garam*** | hot (to touch); *koso* discussed | invariant? | I1-I35 6:54 | confirmed |

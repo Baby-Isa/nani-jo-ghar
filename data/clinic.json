@@ -305,10 +305,10 @@
    "qfm": "new (R3.6 priority 3)"
   },
   "col-red": {
-   "kutchi": "lal",
+   "kutchi": "laal",
    "english": "red",
    "hex": "#c9483b",
-   "src": "Mum 5 Oct (Round 4 C37-C43, C22-C49.m4a 12:35-14:21; lexicon §6.3): lal, red; never changes. Clip: lal (W1). data/clinic/lang.json still spells it laal (col-red, red): see build/reports/w1-words.md",
+   "src": "Mum 5 Oct (Round 4 C37-C43, C22-C49.m4a 12:35-14:21; lexicon §6.3): laal, red; never changes. Clip: laal (W1).",
    "qfm": "E60"
   },
   "col-green": {
