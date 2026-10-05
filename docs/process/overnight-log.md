@@ -96,3 +96,4 @@
 - 2026-10-02 10:42 UK · Fable's clinic review: not ready for Zafar (results over a blank stage, lingering ✓, off-screen bubble, square help light, phone card wrapping). Rows CLN-69–80, SH-47–48 added. Launched C1 clinic polish (stop 15:30); the two order-card items sent to G1.
 - 2026-10-05 11:00 UK · Weekly usage limit (2 Oct, ~11:00 UK) stopped C1 and G1 mid-way; their edits saved as WIP commits abef3118 and a1726e71 (unchecked). Handover written in docs/status.md for a new orchestrator chat.
 - 2026-10-05 11:40 UK · Zafar said go: C1 (clinic polish, Opus high, stop 16:00) and G1 (gate fixes, Opus medium, stop 15:00) launched side by side; gate after both; Zafar plays this evening.
+- 2026-10-05 11:52 UK · Mum's 5 Oct recordings (I1-I35, C22-C49, C79; 63 min) committed to sources/audio/mum-2026-10-05/; processing session launched (Opus high, stop 17:30) at Zafar's request, a third top-model session alongside C1 and G1.
