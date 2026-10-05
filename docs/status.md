@@ -8,11 +8,10 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (5 Oct 2026, 15:00 UK):** handover from the 5 Oct orchestrator chat. All work is on branch `ccr-fcd9dddd-wnywzc`; `main` is still the 1 Oct build.
-- **Done today:** C1 clinic polish (`build/reports/c1-clinic-polish.md`), G1 gate fixes (`g1-gate-fixes.md`), Mum's 5 Oct recordings processed (`mum-2026-10-05.md`: Round 4, grammar §38–55, 168 clips not yet ear-checked), W1 Mum's words into Cook's guide box and the clinic data (`w1-words.md`), the Keine et al. paper + Gemini excerpts analysed (`docs/language/sources/kutchi-findings-summary-2026-10-05.md`, a 67-item yes/no list for Mum in `docs/language/mum-questions/`). Decisions 28–31 (and 32 when W2 lands: red is ***laal***).
-- **Done 15:50:** the gate (`step3-gate.md`: 493 pages end; 17 new Cook findings), W2 (`w2-words.md`), A1 (`a1-clinic-art.md`); all three sessions closed.
-- **Done 17:24:** F1 (`f1-gate-findings.md`, \$2.87; 0 new findings; its shots not committed, so the orchestrator's own review covers them). **Running:** C3, Opus high, `session_01SWTAcuq152o9XrXTKptA8j`, stop 22:30 → `c3-cook-ready.md`. A2, Opus high, `session_01HpATZUqu38HaMT1EfVzjpb`, stop 20:00 → `a2-clinic-art.md` (Zafar said go 16:40). 4a done 17:21 (`step4a-engine-core.md`, 33 tests pass). 4b, Sonnet high, `session_01AuehJXVk7GdR1KnKKXbxV9`, stop 00:30 → `step4b-engine-fill.md` (decision 40 scope). Chrome art run: part B 35 of 37 on `main` (C2, B1 to come), then parts C and D.
-- **Decision 33:** Zafar plays only after all the art is finished and wired, the full checks pass, and it is live on `main`. No play tonight.
+**Where things stand (5 Oct 2026, 20:45 UK):** all work is on branch `ccr-fcd9dddd-wnywzc`; `main` is still the 1 Oct build plus art uploads. Decisions 28–46 were made today.
+- **Done today** (reports in `build/reports/`): C1, G1, Mum's 5 Oct round, W1, W2, the step 3 gate, F1, A1, A2 (the girl's clinic art, all wired), C3 (Cook ready to play), 4a and 4b (the language engine built and filled), 4e (the clinic on the engine), T1–T3 (18 scripts, 8 project skills), the Fable docs audit (`docs/process/audits/2026-10-05-docs-audit.md`).
+- **Art:** paused after part B (decision 43); 76 of 115 on `main`; redo list in `docs/design-language/art-plans/clinic-heal-redo-list.yaml`.
+- **Zafar plays** only once it is all live on `main` (decision 33).
 
 **Next steps, in order (decisions 33-45):**
 1. Re-arm a 30-35 minute `send_later` check-in; `node build/tools/ops/checkin.mjs --log`; one line to Zafar.
