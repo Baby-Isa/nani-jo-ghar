@@ -8,15 +8,17 @@ import { decodePng, encodePng, resize, luma, blank, blit, drawText } from "./lib
 import { args, help, runDir, rel, ROOT, TOOLS, die, more } from "./lib/common.mjs";
 
 const HELP = `
-node build/tools/review/shotdiff.mjs [--run <id|dir>] [--vs <run-id>] [--flows a,b] [--threshold N] [--approve] [--manifest file]
+node build/tools/review/shotdiff.mjs [--run <id|dir>] [--vs <run-id>] [--flows a,b] [--threshold N] [--approve [--also run,run]] [--strict] [--manifest file]
   Compares a sandbox run's screenshots (default: the newest run) with the approved manifest and prints only the CHANGED and NEW shots,
   plus the approved shots this run no longer has (only for flows the run covers). Writes a contact sheet of just those:
   <run>/sheets/changed.png (numbered cells) and changed.md (number -> shot path).
   --vs <run>      compare with another saved run at full resolution (side-by-side sheet: old | new) instead of the manifest
   --approve       record this run as the approved one: merges its shots into the manifest (replaces entries for the flows it covers)
   --flows a,b     only these flow ids (slugs such as cook-chai-tray, or a prefix such as clinic-)
-  --threshold N   how different counts as changed: a shot is changed when the biggest 16x9 grid-cell luma change is at least N of 255
-                  (default 6) or its mean change is at least N/12; exact-identical shots are never changed
+  --threshold N   how different counts as changed: a shot is changed when 16x9 grid-cell luma changes (of 255) reach N
+                  (default 6) in at least two cells, or one cell by 4N, or its mean change is at least N/12; --strict: any one cell of N.
+                  Exact-identical shots are never changed
+  --also a,b      with --approve: more runs of the same code; a shot that wobbles between runs keeps every variant
   --manifest f    use another manifest file (default build/tools/review/approved-shots.json)
   Exit 0 when nothing changed or is new, 1 otherwise (2 on a usage error). No network.
 Manifest entry per shot: "WxH:sha8:<144 base64 chars>" = size, hash of the pixels, a 16x9 luma thumbnail.`;
@@ -24,7 +26,7 @@ const a = args(); help(HELP, a);
 
 const GW = 16, GH = 9;
 const MANIFEST = a.val("manifest", join(TOOLS, "approved-shots.json"));
-const TH = +a.val("threshold", 6);
+const TH = +a.val("threshold", 6), STRICT = a.has("strict");
 
 function walk(dir) { // every shot of a run: key "flow-slug/size/NN-state.png" -> absolute path
   const out = new Map();
@@ -44,7 +46,9 @@ function signature(path) {
 }
 const pack = (s) => `${s.w}x${s.h}:${s.sha}:${s.sig.toString("base64")}`;
 function unpack(str) { const [wh, sha, b64] = str.split(":"); const [w, h] = wh.split("x").map(Number); return { w, h, sha, sig: Buffer.from(b64, "base64") }; }
-function dist(x, y) { let max = 0, sum = 0; for (let i = 0; i < x.length; i++) { const d = Math.abs(x[i] - y[i]); sum += d; if (d > max) max = d; } return { max, mean: sum / x.length }; }
+function dist(x, y) { let max = 0, sum = 0, n = 0; for (let i = 0; i < x.length; i++) { const d = Math.abs(x[i] - y[i]); sum += d; if (d > max) max = d; if (d >= TH) n++; } return { max, mean: sum / x.length, n }; }
+// a blip in one grid cell (a small thing animating, a blinking cursor) is not a change; two cells, a strong cell or a wide shift is
+const big = (d) => d.mean >= TH / 12 || d.max >= 4 * TH || d.n >= 2 || STRICT && d.max >= TH;
 const flowOf = (k) => k.split("/")[0];
 
 let run;
@@ -82,13 +86,13 @@ function compare(vs, n) { // against every variant, the closest wins
 function compare1(o, n) {
   if (o.w !== n.w || o.h !== n.h) return { kind: "changed", why: `size ${o.w}x${o.h} -> ${n.w}x${n.h}` };
   const d = dist(o.sig, n.sig);
-  if (d.max < TH && d.mean < TH / 12) return { kind: "same", ...d };
+  if (!big(d)) return { kind: "same", ...d };
   // fit n = g*o + c (least squares over the grid): a pure fade or exposure change leaves almost no residual
   const N = o.sig.length; let sx = 0, sy = 0, sxx = 0, sxy = 0;
   for (let i = 0; i < N; i++) { sx += o.sig[i]; sy += n.sig[i]; sxx += o.sig[i] * o.sig[i]; sxy += o.sig[i] * n.sig[i]; }
   const den = N * sxx - sx * sx, g = den ? (N * sxy - sx * sy) / den : 1, c = (sy - g * sx) / N;
   let res = 0; for (let i = 0; i < N; i++) res = Math.max(res, Math.abs(n.sig[i] - (g * o.sig[i] + c)));
-  if (res < TH && (Math.abs(g - 1) > 0.02 || Math.abs(c) > 2)) return { kind: "tone", ...d, why: `whole-screen brightness change (x${g.toFixed(2)})` };
+  if (res < TH * 2 && (Math.abs(g - 1) > 0.02 || Math.abs(c) > 2)) return { kind: "tone", ...d, why: `whole-screen brightness change (x${g.toFixed(2)})` };
   return { kind: "changed", ...d, why: `grid change max ${d.max}, mean ${d.mean.toFixed(2)}` };
 }
 const sameFlowSize = (k) => k.split("/").slice(0, 2).join("/") + "/";
