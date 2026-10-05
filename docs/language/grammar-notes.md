@@ -541,3 +541,257 @@ Things Claude noticed in the recording, checked with Zafar. Two of Claude's read
 9. **Yesterday:** use ***gaykal*** for now (Mum: *kale* alone is Gujarati for both yesterday and tomorrow; *saware* = tomorrow, S3).
 
 Still open from this list: whether *randhnu no khapdo* (Zafar's try in S6) is a real "of" word *no/ni/nu* or a slip.
+
+## 5 Oct 2026: Mum and Zafar, Round 4 Section I, Questions I1–I35 (cooking words; 8 min, `sources/audio/mum-2026-10-05/I1-I35.m4a`)
+
+**Which round:** Round 4. Section I exists only in the Round 4 sheet (Round 5 has no I-numbers), and on the tape Zafar opens with "This is I, cooking words. I1, pour" and reads the Round 4 English line by line (I21 "thin, like a maani", I26 "cassava (mogo)", I28 "skewer"). The same check was done for the other two files below.
+
+Rough transcript: `sources/audio/mum-2026-10-05/I1-I35.md`. Whisper turned most of the Kutchi into English words ("bagel curry ched" for *bego kari chad*), so every answer below was re-heard in short windows (each take on its own, transcribed phonetically and in English). Spellings follow Zafar's rules (w not v, doubled long vowels, the lexicon's settled spellings). The section was a quick chat, not a three-times list, so most answers are said once or twice, often inside a sentence.
+
+**Confidence:** *clear* = Mum says it more than once, or the re-hearing and the transcript agree. ⚠ = heard once or unclear: a draft until Zafar checks it. *not answered* = no Kutchi on the tape.
+
+### 38. I1–I21: cooking words
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| I1 | pour | No single word. "You just say put it in there": ***bakuli me wij*** (put it in the bowl). Zafar offered *dhor*: Mum said *dhor* is closer to "spill" | ⚠ (0:09–0:30, 0:46–0:50). *dhor* not recorded as an answer |
+| I2 | boil | ***ukar***: ***chai ke ukar, paani ke ukar*** (boil the tea, boil the water) | clear (0:54–1:01). Same root as *ukreto* (it's boiling, §25) |
+| I3 | turn it down (the flame) | ***slow kar*** (English *slow* + *kar*, "make it slow"). Zafar's *aste thi kar* — "no, slow kar". Literally "make the fire less" is possible but not what people say | clear for *slow kar* (1:03–1:20) |
+| I4 | add / put it in | ***wiji chad***, ***andar wiji chad*** (put it in) | clear (1:22–1:31). *wij* = put in (§9); *chad* is the "leave it, finish it" helper (§27 *chadi de*) |
+| I5 | take it out | ***kadhi chad*** | ⚠ (1:31–1:33). *kadh* = take out (§25, §29 R6) |
+| I6 | knead | ***gund***: ***atto gund*** (knead the dough) | ⚠ (1:35–1:37) |
+| I7 | roll (it out) | **not answered** (Mum: "Roll out the maani? What?") | not answered (1:37–1:41) |
+| I8 | flip it | ***firai*** / ***firai chad*** (turn it over; *firai* is short, *firai chad* is "turn it"). Turning a car round is the same word: ***gadi firai chad*** | clear (1:42–2:20) |
+| I9 | press | ***dabai*** | ⚠ (1:45–1:47) |
+| I10 | chop | ***nindha nindha kap*** (cut it small; *nindha* = small, said twice), "*kat kat kat*" for the action | ⚠ (1:51–1:56) |
+| I11 | cut | ***kap***, ***kapi chad*** | ⚠ (1:48–1:52) |
+| I12 | stir | ***firai*** again: "it's basically turn" | clear (2:20–2:25) |
+| I13 | mix | ***bego kari chad*** (put it together); people also say ***mix kari chad*** with the English word | clear (2:31–2:49) |
+| I14 | fry | ***tar***: ***samosa tar, bhajiya tar***. "Make it fried": ***tarelo kari chad***, ***inke tarelo kari chad*** (Zafar hadn't heard *tar kar*) | ⚠ (2:49–3:11). *tarelo* matches *tarela bataata* (chips, §26) |
+| I15 | fold | ***waar***: ***samosa waar*** (Zafar: it sounds like *waar*, hair) | clear (3:13–3:20) |
+| I16 | fill | ***bhar***: ***paani bhari chad*** (fill it with water) | clear (3:23–3:28) |
+| I17 | sprinkle | No word yet ("I'm sure there's a word; I'll have to think"). For now ***thorok wij*** (put a little in). *chando* is "drops", not sprinkle | ⚠ (3:28–3:47): Mum to come back to it |
+| I18 | serve / put it on the plate | No word for "serve". ***bakuli me wiji chad*** (put it in the bowl), ***table mathe rakhi chad*** (put it on the table), ***khenjo tayar karyo*** (let's get the food ready), and for serving guests chai: ***chai khani win, mare lai*** (take the chai, for everyone) | ⚠ (3:47–4:18): each heard once |
+| I19 | taste it | ***chakh*** | clear (4:18–4:20). Matches *chakhan lai de* (§27 B46) |
+| I20 | wash | ***dho***: ***glass dho, cup dho*** | ⚠ (4:20–4:25) |
+| I21 | thin (a maani) · just right | thin ***jhino*** (he) / ***jhini*** (she): ***jhini maani banai***. Thick: ***jadi maani banai*** (she-form; he-form *jado* not said). Just right: ***barabar*** | ⚠ spelling of *jhino* (Whisper "jeeno") and *jadi* (4:26–4:40) |
+
+### 39. I22–I35: more kitchen things
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| I22 | egg | The proper Kutchi word is ***indo***; most East African families say ***mayai*** (Swahili) | clear (4:40–4:52) |
+| I23 | chicken | The proper Kutchi word is ***murgi***; the East African word is Swahili (Whisper: "kukro"; Swahili *kuku*) | *murgi* clear; the Swahili word ⚠ (4:52–5:00) |
+| I24 | oil | **not answered clearly** (only "oil?" on the tape; the first pass guessed "daal") | not answered (5:00) |
+| I25 | pastry (samosa) | ***chapri*** (samosa pastry). There's no puff pastry | ⚠ spelling (5:05–5:11) |
+| I26 | cassava (mogo) | ***mogo*** ("a Swahili food, you don't get it in India") | clear (5:11–5:17) |
+| I27 | corn (on the cob) | ***makai*** | clear (5:17–5:26) |
+| I28 | a skewer | ***mishkaki ji lakri***; for kebabs ***kebab ji lakri***. ***lakri*** is just "stick" | clear (5:26–5:40) |
+| I29 | a pot | ***tapelo*** is the proper Kutchi; ***sufuria*** (Swahili) is used commonly. "We'll have to decide" | clear (5:40–5:52) |
+| I30 | the tawa | ***tawa***, the same for one and more than one | clear (5:54–6:03) |
+| I31 | rolling pin · board | rolling pin ***welan***. Board: no separate word heard ("cut it on the wood": *pate mathe kap*? ⚠) | *welan* clear; board not answered (6:03–6:18) |
+| I32 | ladle | ***chamcho*** (the big spoon); "there are special words for teaspoon and tablespoon, but not the other ones" | clear (6:18–6:28) |
+| I33 | flame / the stove | flame = fire = ***aag*** (no difference). Stove: ***chulo***. Light the stove: ***chulo bar*** (*bar* = light it) | clear (6:28–6:52) |
+| I34 | hot (to touch) | ***garam***, ***garam ai***. Zafar asked about *koso*: Mum thinks it's Gujarati taken into Kutchi, and asked Claude to check (below) | *garam* clear; *koso* ⚠ (6:53–7:17) |
+| I35 | cold (food gone cold) | ***thandu thai vyo*** (it's gone cold). Dad says ***thadhu***: "a different dialect of Kutchi; I would never say *thadhu*" | ⚠ spelling (7:18–7:35) |
+
+### Claude's check (Mum asked at 7:14: "which is Gujarati and which is more Sindhi?")
+Not evidence: a lead for Masi. Gujarati has *garam* and *ūnũ* for hot; Sindhi has *garm* and ***kosō*** (warm, hot). So *koso* looks **Sindhi**, not Gujarati, which would make it the older Kutchi word and *garam* the shared one. For cold, Gujarati is *ṭhaṇḍũ* and Sindhi ***thadho***: Dad's *thadhu* is the Sindhi-side form, Mum's *thandu* the Gujarati-side one. *tapelo* is Gujarati *tapeli*; *welan* is Gujarati *veḷaṇ*; *firai* fits Gujarati *pherav-* (turn); *tar* fits Gujarati *taḷ-* (fry); *chakh* is both. *mayai*, *sufuria*, *bakuli*, *mogo* are Swahili.
+
+## 5 Oct 2026: Mum and Zafar, Round 4 Section C22–C49 ("big", "red", "good", "small"; 25 min, `sources/audio/mum-2026-10-05/C22-C49.m4a`)
+
+**Which round:** Round 4. C27 (dupatta), C36 ("the big one, pointing at a boy"), C37–C49 exist only on the Round 4 sheet; Round 5 skips C27 and stops at C35. Zafar reads "C27, big pacheri" and "C43, the red one", the Round 4 lines. Zafar starts by telling Mum there's no "the" in Kutchi, so she leaves it out (0:00).
+
+Rough transcript: `sources/audio/mum-2026-10-05/C22-C49.md`. Mum says each phrase once or twice; the discussion in between matters as much as the answers. Spelling: big is written ***wadho*** (Zafar's settled spelling, G4/lexicon), though Mum's tape sounds closer to *wado*; small ***nindho*** likewise.
+
+### 40. C22–C27: "big" agrees with the noun: *wadho / wadhi / wadha*
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C22 | the big boy · the big boys | ***wadho chokro · wadha chokra*** | clear (0:14–0:24) |
+| C23 | the big girl · the big girls | ***wadhi chokri · wadhi chokriyu*** | clear (0:24–0:32) |
+| C24 | the big cup · the big cups | ***wadho cup · wadha cup*** | clear (0:33–0:40) |
+| C25 | the big mango · the big mangoes | ***wadho ambo · wadha amba*** | clear (0:41–0:49) |
+| C26 | the big door · the big doors | ***wadho darwajo · wadha darwaja*** | clear (0:51–0:59) |
+| C27 | the big dupatta · the big dupattas | ***wadhi pacheri · wadhi pacheriyu*** | clear (1:00–1:09) |
+
+**Rule (settled):** the describing word takes the noun's gender and number: he-word one *-o*, he-word more than one *-a* (even on *cup*, which itself doesn't change), she-word *-i* in both. She-words also take the ***-yu*** plural here (*chokriyu*, *pacheriyu*): Mum said them unprompted.
+
+### 41. C28–C32: "big" before "with", "in", "on", "behind": the *-e* form spreads to the describing word
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C28 | with the big boy · with the big boys | ***wadhe chokre sathe*** (Mum first said *hu wadhe chokre sathe*, "with that big boy", then dropped *hu*) · ***wadha chokra sathe*** ("it's still *chokra*") | clear for the one (1:21–1:40); ⚠ the plural (1:48–2:09: Mum wavers between *chokra* and *chokre*) |
+| C29 | with the big girl · with the big girls | ***wadhi chokri sathe · wadhi chokriyu sathe*** | clear (2:13–2:26) |
+| C30 | in the big cup · in the big cups | ***wadhe cup me***; fuller ***wadhe cup je andar***. Plural *wadha cup je andar* ⚠ ("a weird sentence"). Tried with she-words instead: ***wadhi bakuli je andar · wadhi bakuliyu je andar*** (bowl), ***wadhi piali je andar · wadhi pialiyu je andar***, ***wadhi gadi je andar · wadhi gadiyu je andar*** (in the big car, "definitely") | *wadhe cup me* and the she-word pairs clear (2:26–4:44); the he-word plural ⚠ |
+| C31 | on the big mango · on the big mangoes | ***wadhe ambe je mathe***; plural not settled ("masculine doesn't seem to change, it doesn't roll off like that") | clear for the one (4:44–4:50); plural not answered |
+| C32 | behind the big door · behind the big doors | ***wadhe darwaje je puthiya***; plural ***darwaje je puthiya*** ⚠ (no clean answer) | clear for the one (5:39–5:52) |
+
+**Rule (settled for one thing):** before *sathe*, *me* or *je …*, a he-word in *-o* takes ***-e***, and so does its describing word: *wadhe chokre sathe*, *wadhe cup me*, *wadhe ambe je mathe*, *wadhe darwaje je puthiya*. This answers §36's open question about *ambo je mathe*: with a describing word in front, Mum said ***ambe*** without hesitating. *cup* itself doesn't change, but *wadho* still becomes *wadhe*. She-words don't change (*wadhi chokri sathe*, *wadhi bakuli je andar*), and their plural keeps *-yu* before *je*. **The he-word plural before a postposition is still open** (*wadha chokra sathe* or *wadhe chokre sathe*).
+
+### 42. C33–C35: "is" and "are": *ai* and *ain*
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C33 | The boy is big. · The boys are big. | ***Chokro wadho ai. · Chokra wadha ain.*** | clear (6:00–6:20) |
+| C34 | The girl is big. · The girls are big. | ***Chokri wadhi ai. · Chokriyu wadhi ain.*** ("not *wadha*, but *wadhi*, but *ain*") | clear (6:25–6:45) |
+| C35 | The cup / mango / door is big. The cups / mangoes are big. | ***Cup wadho ai. Ambo wadho ai. Darwajo wadho ai. Cups wadha ain. Amba wadha ain.*** Also ***limu wadho ai / limu wadha ain***, and cabbage ***kobi*** (*kobi wadha ain* ⚠) | clear (6:45–7:50) |
+
+**Rule (settled):** ***ai*** = is, ***ain*** = are (Mum: "like *is* and *are*"; "the *ain* tells you it's plural"). The word order is thing, describing word, *ai/ain*. Mum says *cups* with the English *-s* when speaking of cups ("not a native word"). Spelling of *ain* (Whisper: *ayin*, *aayn*) for Zafar to confirm.
+
+### 43. C36: there is no "the big one" on its own
+Mum: "there's no concept of *a* and *the*". You either point (***hi wadho chokro***, this big boy; ***hu wadho chokro***, that big boy; ***hi wadhi chokri***, ***hu wadhi chokriyu***), or the describing word goes with a verb: ***wadho khan*** (take the big one), ***wadho wapar*** (use the big one), ***wadho cup khanech*** (bring the big cup), ***wadho gin*** (buy the big one). (8:02–9:56; clear.)
+- **The biggest:** ***wadho ma wadho***; the smallest ***nindho ma nindho*** (10:00–10:21; clear). Doubling for emphasis is common: ***jaldi jaldi***.
+- **"Tea and the things that go with it":** ***chai bai*** (an echo word; *chai bai banai*) (10:44–11:11; ⚠ spelling).
+
+### 44. C37–C43: "red" is *lal* and never changes
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C37 | the red cup · the red cups | ***lal cup · lal cup*** (or *lal cups*) | clear (12:35–12:54) |
+| C38 | the red mango · the red mangoes | ***lal ambo · lal amba*** | clear (12:57–13:28) |
+| C39 | the red door · the red doors | ***lal darwajo · lal darwaja*** | clear (13:28–13:37) |
+| C40 | the red dupatta · the red dupattas | ***lal pacheri · lal pacheriyu*** | clear (13:37–13:48) |
+| C41 | in the red cup · on the red mango · behind the red door | ***lal cup je andar · lal ambe je mathe · lal darwaje je puthiya*** | clear (13:48–14:02) |
+| C42 | The cup / mango / door is red. The mangoes are red. | ***Cup lal ai. Ambo lal ai. Darwajo lal ai. Amba lal ain.*** (Zafar swapped "the cups" for "the mangoes") | clear (14:02–14:21) |
+| C43 | the red one · the red ones · not the red one | "The one that is red": ***je lal ai …*** (singular) and ***je lal ain …*** (plural), with a short word after it Whisper can't catch. Not the red one: ***lal na***; "don't buy the red one" ***lal na ginje*** ⚠; "buy the red one" ***lal gin*** | *lal na* clear; the rest ⚠ (14:21–16:12) |
+
+**Rule (settled):** *lal* doesn't agree: it's the same for he-words, she-words and plurals. (So not every describing word changes; *lal* is like *tayar* and *theek*, §6 of `grammar-kb.md`.) The noun still changes (*lal ambe je mathe*). Mum's point at 16:06: a short answer depends on the question's verb (*lal na* = "not the red one" for whatever you're doing).
+
+### 45. C44–C48: three words for "good": *dayo*, *saro*, and the English *fine*
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C44 | a good boy · good boys | ***dayo chokro · daya chokra*** | clear (16:16–16:37) |
+| C45 | a good girl · good girls | ***dayi chokri · dayi chokriyu*** | clear (16:39–17:59) |
+| C46 | a good mango · good mangoes | ***fine ambo · fine amba***; also ***khaso ambo*** (loosely "nice"), and ***barabar*** = proper, right | clear (18:02–18:55) |
+| C47 | a good cup · a good door · good maani | first ***fine cup, fine darwajo***; then, after C48, Mum went back: ***saro cup, saro darwajo, sari maani*** ("it changes, it's feminine") | clear (18:45–20:40) |
+| C48 | The boy / girl / mango is good. The maani are good. | ***Chokro saro ai. Chokri sari ai. Ambo saro ai. Maani sari ain.*** (not *maanu*). Also ***chakliyu sari ain*** (the birds are good) | clear (20:40–21:56) |
+
+- ***dayo / dayi / daya*** is "good" as in **well-behaved**: people and animals only (***dayo kutro***, a good dog; ***dayi chakli***, a good bird). You can't say it of a chair or a mango (17:13–17:49).
+- ***saro / sari*** is the everyday "good" for things, and agrees like *wadho* (*saro cup*, *sari maani*). The he-word plural (*sara*?) wasn't said.
+- People mostly say the English ***fine***: *maani bo fine ai* (the maani is really nice), *darwajo bo fine ai* (19:46–20:00). ***bo*** = very (this confirms §33 S2's *bo fine*).
+- ***barabar*** = right, proper (*cup barabar ai*: the cup is right); it comes after the noun, not before.
+
+**Maani has no plural** (21:00–22:52): *maani sari ain*, never *maanu*; "the *ain* tells you it's plural". But other she-words do: ***chakliyu***, ***shatiyu*** (shirts; *char shatiyu*). Mum: "if the word has a plural, you change it".
+
+### 46. C49: "the small one": *nindho / nindhi / nindha*
+- ***nindho chokro***, ***hu nindho chokro*** (that small boy), ***hu nindhi chokri*** (23:06–23:28; clear).
+- As with *wadho*, there's no "the small one" on its own: ***nindho*** alone as an answer, ***wadho ke nindho?*** (big or small?), ***nindho gin*** (buy the small one) (23:30–24:43).
+- More than one: ***nindha***; ***wadha ke nindha amba?*** (the big mangoes or the small ones?) (24:53–25:22; clear).
+
+## 5 Oct 2026: Mum and Zafar, Round 4 Section C50–C79 (whose is it; I, you, we; my, your; 30 min, `sources/audio/mum-2026-10-05/C79.m4a`)
+
+**Which round:** Round 4. The file is named after its last question but covers **C50–C79**: Zafar reads "C50, Nana's cup" at 0:25 and ends with C79 at 28:12. C56–C58 and C60–C79 are only on the Round 4 sheet (Round 5 has C50–C55 and C59).
+
+Rough transcript: `sources/audio/mum-2026-10-05/C79.md`.
+
+### 47. C50–C55: "of" agrees with the thing owned, never the owner
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C50 | Nana's cup · Nana's cups | ***Nana jo cup · Nana ja cups*** | clear (0:25–0:45) |
+| C51 | Nana's mango · Nana's mangoes | ***Nana jo ambo · Nana ja amba*** | clear (0:46–0:59) |
+| C52 | Nana's door · dupatta · maani | ***Nana jo darwajo · Nana ji pacheri · Nana ji maani*** | clear (1:00–1:15) |
+| C53 | Nani's cup · Nani's cups | ***Nani jo cup · Nani ja cups*** | clear (1:55–2:30) |
+| C54 | Nani's mango · Nani's mangoes | ***Nani jo ambo · Nani ja amba*** | clear (2:34–2:52) |
+| C55 | Nani's door · dupatta · goat | ***Nani jo darwajo · Nani ji pacheri · Nani ji bakri*** (a she-goat) · ***Nani jo bakro*** (a billy goat) | clear (2:52–3:14) |
+
+**Rule (settled):** ***jo*** (he-word thing), ***ji*** (she-word thing), ***ja*** (he-word things, more than one). Mum: "it's all based on the cup and cups; it doesn't matter whether it's Nani or Nana" (2:04–2:34). Zafar's childhood mix-up ("I'm a boy, so it should be masculine") is exactly this. The she-word plural (*ji* again?) wasn't said with a noun here; see C60 and C76.
+
+### 48. C56–C58: "the boy's", "the girls'", "the goat's"
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C56 | the boy's cup · the boy's mango | ***chokre jo cup · chokre jo ambo*** | clear (3:14–3:30) |
+| C57 | the girl's cup · the girl's mango | ***chokri jo cup · chokri jo ambo*** | clear (3:30–3:43) |
+| C58 | the boys' cup · the girls' mango · the goat's ear · the goats' ears | boys': ***chokra jo cup*** ⚠ (Mum: "I think we just say *chokra*"); girls': ***chokriyu jo ambo***; ear: ***bakri jo kan*** (she-goat), ***bakre jo kan*** (billy goat: "*e*, not *o*, because it's belonging to the *bakro*"). *kan* (ear) and *pag* (foot) have no plural: "you just say one or two". Goats' mangoes: ***bakre ja amba*** | clear except the boys' (3:43–5:20) |
+
+**Rule (settled):** the owner takes the ***-e*** form before *jo/ji/ja* if it's a he-word in *-o* (*chokre jo*, *bakre jo*), as §18 guessed. She-words and other words don't change (*chokri jo*, *Nana jo*). The plural owner is open (*chokra jo* ⚠).
+
+### 49. C59: "in Nana's cup": *jo* becomes *je* too
+| English | What Mum said | Confidence (time) |
+|---|---|---|
+| in Nana's cup | ***Nana je cup je andar*** | ⚠ (5:20–5:27: Whisper hears *ja*; the pattern below says *je*) |
+| on Nani's mango | ***Nani je ambe je mathe*** | clear (5:27–5:33) |
+| behind the boy's door | ***chokre je darwaje je puthiya*** ("belonging to the boy, belonging to the door, behind it") | clear (5:33–5:45) |
+| with the girl's goat (all four) | girl + she-goat ***chokri ji bakri sathe*** · girl + billy goat ***chokri je bakre sathe*** · boy + billy goat ***chokre je bakre sathe*** · boy + she-goat ***chokre ji bakri sathe*** | clear (6:00–8:15, said several times) |
+
+**Rule (settled):** before a postposition, a he-word thing takes *-e*, and its *jo* becomes ***je*** with it (*Nani je ambe je mathe*). A she-word thing keeps *ji* (*chokri ji bakri sathe*). Mum: "it doesn't change whether it's girl or boy; it depends on the goat" (8:09).
+
+### 50. C60: "It's Nana's": the unknown thing defaults to *jo*
+- ***Nana jo ai. Nani jo ai.*** "I don't know if it's female or masculine, the thing, so you default to masculine" (8:15–8:33; clear). The boy's: ***chokre jo ai*** (8:35; ⚠).
+- They're the girls': ***chokriyu ja ain*** (things of unknown or he-gender) and ***chokriyu ji ain*** (she-word things) (9:00–9:24; clear). So the she-word plural of "of" is ***ji***, and *ja* is the he-word plural.
+
+### 51. C61–C67: "I am", "you are", "he/she is": *aiya, aiye, aayo, ai*
+| ID | English | What Mum said | Confidence (time) |
+|---|---|---|---|
+| C61 | I'm in the kitchen (a man; a woman) | ***Aau rasore me aiya.*** The same for a man and a woman | ⚠ spelling of *aiya* (9:52–12:01; Whisper *aaya*, *aanya*); clear that it doesn't change |
+| C62 | You're in the kitchen (to a child) | ***Tu rasore me aiye.*** | ⚠ (12:03–12:16) |
+| C63 | You're in the kitchen (to Nana) | ***Aai rasore me aayo.*** | clear (12:18–12:28) |
+| C64 | He's in the kitchen (this boy) | ***E rasore me ai.*** | clear (12:29–12:41) |
+| C65 | He's in the kitchen (that boy) | ***E huda rasore me ai*** (he's over there in the kitchen) — only to make a point; normally the same as C64. In the same room: just ***huda*** | clear (12:41–14:26) |
+| C66 | She's in the kitchen (this girl) | ***E rasore me ai.*** The same as "he" | clear (14:28–14:47) |
+| C67 | She's in the kitchen (that girl) | ***Hu chokri rasore me ai*** (that girl); ***hi chokri*** (this girl) | ⚠ (14:53–15:10) |
+
+**Rule:** "be" changes with the person, not with gender: *aau … aiya*, *tu … aiye*, *aai … aayo*, *e … ai*. There's no separate "he" and "she" (***e*** for both, §21), and "this one / that one" is *hi / hu* only when you point. *aiya* matches K13 (*aau ker aiya?*, §30), *aiye* matches K4 (*tu ki aiye?*). *rasoro* (kitchen) takes *-e*: *rasore me*.
+
+### 52. C68: two words for "we": *pa* (with you) and *asa* (without you)
+- ***Pa rasore me aayo***: we (including you) are in the kitchen. ***Asa rasore me aayo***: we (not you) are in the kitchen. ***Pa mare / asa mare rasore me aayo***: we're **all** in the kitchen (15:10–15:59; clear).
+- Mum: "*asa* is us without you, *pa* is us including you" (16:54–17:08). ***Asa bare winjanta*** = we're going out (and you're not coming); ***pa bare winjanta*** = we're all going out (17:19–17:30; ⚠ spelling; the *-nta* plural as in *khapanta*, *achenta*).
+- "we are" is ***aayo***, the same as the respectful "you are" (C63). This fits *panke* (to us, §37.1).
+
+### 53. C69–C71: "they", "these", "those"; *mare* = all
+- Where are the mangoes? They're in the kitchen: ***rasore me ain*** (no word for "they" needed) (17:39–17:55).
+- ***Hi rasore me ain*** (these are in the kitchen), ***hu rasore me ain*** (those are) (18:03–18:12; clear).
+- ***hi mare*** = all of these, ***hu mare*** = all of those: ***hi mare rasore me ain, ne hu mare rasore me ain*** (18:12–18:26; ⚠ spelling of *mare*).
+- C71: ***hi*** (this one, these), ***hu*** (that one, those), ***hi mare / hu mare*** (all these / all those). The same for cups and mangoes (18:26–18:54; clear).
+
+### 54. C72–C78: my, your, his, her, our, their
+| ID | English | One he-word · one she-word · he-words · she-words | Confidence (time) |
+|---|---|---|---|
+| C72 | my | ***munjo cup, munjo ambo · munji kursi · munja cups, munja amba · munji kursiyu*** | clear (18:56–19:39) |
+| C73 | your (to a child) | ***tojo cup, tojo ambo · toji kursi · toja cups ain, toja amba ain · toji kursi ain*** | clear (21:24–22:02) |
+| C74 | your (to Nana) | ***anjo cup, anjo ambo · anji kursi · anja cups, anja amba · anji kursi*** | clear (22:24–23:00) |
+| C75 | his | ***injo cup, injo ambo · inji kursi*** | clear (23:09–23:17) |
+| C76 | her | the same as his: ***injo cup, injo ambo · inji kursi · inja amba · inji kursiyu*** | clear (23:17–23:30) |
+| C77 | our | without you ***asanjo cup, asanjo ambo***; with you ***panjo cup, panjo ambo***. We're going to our house: ***pa panje ghare winjanta*** ⚠ | clear for the words (23:30–25:00) |
+| C78 | their | ***iloka jo cup, iloka ji kursi, iloka jo ambo · iloka ja cups, iloka ji kursi, iloka ja amba*** | clear (25:00–28:06) |
+
+- The ending follows the **thing**, as with *Nana jo* (C50): *mun-*, *to-*, *an-* (respectful you), *in-* (his/her), *asan-*, *pan-*, *iloka* + *jo/ji/ja*. Mum: "it changes on masculine or feminine" (22:52).
+- **Plural on the noun is optional when something else shows it** (19:39–20:54): *munji kursi* is "my chair"; "my chairs" alone is ***munji kursiyu***, but in ***hi mare munji kursi ain*** ("these are all my chairs") the *-yu* is dropped because *hi mare … ain* already says "more than one". *amba* still changes ("it doesn't make the word longer", 22:03).
+- ***iloka*** = them / those people, said as one word (25:17–27:53). Mum and Zafar discussed whether it's *e* + *loka*; Mum: "I feel it's two words" and "we'll defer to Claude". Claude's view below; it's a question for Masi, not a fact.
+
+### 55. C79: "in my cup": *munje*, *toje*, *inje* before a postposition
+| English | What Mum said | Confidence (time) |
+|---|---|---|
+| in my cup | ***munje cup me*** | clear (28:12–28:16) |
+| on your mango (to a child) | ***toje ambe mathe*** ("not *tojo*: *tojo ambo ai* is 'it's your mango'; now it's belonging to the mango, it's on top of that") | clear (28:20–28:49) |
+| on your chair (to a child) | ***toji kursi mathe*** ("because *kursi* is feminine") | clear (28:49–29:00) |
+| with his goat | billy goat ***inje bakre sathe***; she-goat ***inji bakri sathe*** | clear (29:00–29:15) |
+| in her cup | ***inje cup me***; fuller ***inje cup je andar*** ("inside her cup") | clear (29:15–29:31) |
+
+**Rule (settled, with C59):** before a postposition, *jo* → ***je*** with a he-word thing (whatever the owner), and the he-word itself takes *-e* if it ends in *-o*. *ji* stays *ji*. The short postposition sits straight after the noun (*cup me*, *ambe mathe*); the fuller one adds *je* (*cup je andar*), as §15 found.
+
+### Is the grammar "nailed down" now?
+Much more of it. **Settled from these three files:** describing words agree (*wadho/wadhi/wadha*, *nindho*, *dayo*, *saro*), *lal* doesn't; *ai* / *ain*; the *-e* form before postpositions for he-words, their describing words and their "of" word (*wadhe chokre sathe*, *Nani je ambe je mathe*); *jo/ji/ja* agree with the thing; *munjo, tojo, anjo, injo, asanjo, panjo, iloka jo*; the person forms of "be" (*aiya, aiye, aayo, ai*); two "we"s (*pa*, *asa*); *hi / hu / hi mare / hu mare*.
+
+**Still open:** the he-word plural before a postposition (*wadha chokra sathe* or *-e*); the boys' (*chokra jo* ⚠); the she-word plural *-yu*: when it's needed (Mum: optional when the sentence already shows "more than one"); *saro*'s plural; *iloka*'s make-up; most cooking verbs' polite and "for me" forms (only the bare commands were said).
+
+### Claude's check against Sindhi and Gujarati (not evidence; leads for Masi)
+- *munjo / tunjo / hun jo* and the *jo/ji/ja/je* "of" are Sindhi (*muhinjo, tuhinjo, hun jo*); Gujarati says *māru, tāru*. So the possessives are firmly on the Sindhi side, as is ***asaan*** / ***paan*** for the two "we"s (Sindhi *asān* exclusive, *pāṇa* inclusive).
+- ***iloka***: Gujarati *e loko* = "those people" (*lok* = people), which fits Mum's feeling that it's *e* + *loka*; Sindhi uses *hu* / *unhan*. Likely a Gujarati-side compound that the family says as one word.
+- *ain* (are) matches Sindhi *āhin*; *ai* matches *āhe*. *aiya* matches Sindhi *āhiyān* (I am); *aiye* matches *āhīn* (you are). *saro* matches Sindhi *sāro* ("good"? more often "whole") and Gujarati *sāru* (good): Gujarati fits the meaning better. *dayo* matches Gujarati *ḍāhyo* (well-behaved, wise). *lal* is the same everywhere.
+- *mare* (all) is unusual: Gujarati *badhā*, Sindhi *sabh*; worth asking Masi how she says "all of these".
+
+### What this means for the engine (proposed; the orchestrator puts game changes to Zafar)
+1. **Adjectives** need forms for he-one *-o*, he-more *-a*, she *-i*, and the ***-e*** form before a postposition; a flag for invariant ones (*lal*, *fine*, *tayar*, *theek*). *barabar* goes after the noun.
+2. **Nouns** need the *-e* form stored per noun (now confirmed for *chokro, ambo, darwajo, bakro, rasoro*), and the *-yu* plural where Mum gave it (*chokriyu, pacheriyu, bakuliyu, pialiyu, gadiyu, kursiyu, chakliyu, shatiyu*); *maani, kan, pag, tawa* have no plural.
+3. **"of"** = *jo/ji/ja* by the thing's gender and number, *je* before a postposition with a he-word thing; owner in its *-e* form. Pronoun owners *mun-, to-, an-, in-, asan-, pan-*; *iloka jo*.
+4. **"be"** = *aiya / aiye / aayo / ai / ain* by person and number; the elder "you" and "we" share *aayo*.
+5. **Pronouns:** *pa* and *asa* are both "we"; *hi / hu* (+ *mare* for "all").
+6. **Cook verbs (Section I):** *ukar, wij / wiji chad, kadh / kadhi chad, firai (chad), kap, tar, waar, bhar, chakh, dho, bar, dabai, gund*, *slow kar*, *bego kari chad*: the bare child command for each. Polite and "for me" forms are still unknown.
+
+### For Mum next time
+1. I7 **roll** (rolling out a maani), I24 **oil**, I31 **board** (chopping or rolling), I17 **sprinkle** (she said she'd think of the word).
+2. I23: the Swahili word for chicken (*kuku*?), and which one Nani would say in the game.
+3. I29: *tapelo* or *sufuria* for the game ("we'll have to decide").
+4. I34–I35: *koso* (Sindhi-looking) vs *garam*; *thandu* vs Dad's *thadhu*: Masi's tie-break.
+5. C28, C30–C32: the he-word plural with "with / in / on / behind": *wadha chokra sathe* or *wadhe chokre sathe*? *wadha amba je mathe* or *wadhe ambe je mathe*?
+6. C58: "the boys' cup": *chokra jo cup* or *chokre jo cup*?
+7. C43: the short word after *je lal ai …* ("the one that is red, …").
+8. C48: "the boys are good": *chokra sara ain*?
+9. C67: is *hu chokri rasore me ai* what she meant for "she's in the kitchen (that girl)"?
+10. *iloka*: one word or *e* + *loka*? And *mare* (all): how does Masi say "all of these"?
+11. Each cooking verb's elder form and "for me" form (*wiji de*?), and the boy/girl forms of "I'll …" with them.
