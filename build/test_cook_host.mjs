@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /*
- * R4: Cook as a mode plug-in, played through lab.html and the one game host (js/cook/main.js), in a real browser:
+ * R4, C4: Cook as a mode plug-in, played through lab.html and the one game host (js/cook/main.js), in a real browser.
+ * C4: the host mounts Cook directly in its element (no frame); the test hands Cook's own hook to the sandbox's player
+ * (window.__cook, window.Cook: the lab page has neither, the host's njgTest is its hook) and checks no iframe is used.
  *   1. lab: the pantry (fetch) alone -> the host's one end screen -> the list
  *   2. lab: the story plan (Nani's pantry for chai, then a customer's chai) -> one end screen for the plan
  *   3. free play: the open kitchen's first customer -> the end screen pays -> Next brings the next customer
@@ -27,15 +29,16 @@ const check = (ok, what) => {
 };
 const state = (page) => page.evaluate("window.njgTest ? String(njgTest.state()) : 'loading'").catch(() => "loading");
 
-// play the Cook stage `game` inside the adapter's frame (it fills the screen at (0, 0), so its points are the page's)
+// play the Cook stage `game`, mounted on the lab page itself (C4: no frame)
 async function playStage(page, rec, game, prefix) {
-  const frame = () => page.frames().find((f) => f.url().includes("cook.html") && f.url().includes("hosted=1"));
   await page.waitForFunction((g) => String(window.njgTest && njgTest.state()).includes(`${g}/playing`) || String(window.njgTest && njgTest.state()).includes("results"), game, { timeout: 60000 });
   if (!(await state(page)).includes(`${game}/playing`)) return false;
-  const proxy = { evaluate: (...a) => frame().evaluate(...a), $: (s) => frame().$(s), click: (s, o) => frame().click(s, o), waitForSelector: (s, o) => frame().waitForSelector(s, o), mouse: page.mouse };
+  check((await page.$$("iframe")).length === 0, `${game}: no iframe (Cook is mounted in the host's element)`);
+  // the sandbox's player reads Cook's own hook: the test hands it over (the same module the host imported)
+  await page.evaluate(() => import("./js/cook/mount.js").then((m) => ((window.__cook = m.Cook.testHook), (window.Cook = m.Cook))));
   await sleep(500);
   await rec.state(`${prefix}start`, { settle: 300 });
-  const P = new CookPlayer(proxy, rec, { prefix });
+  const P = new CookPlayer(page, rec, { prefix });
   P.helped = true;
   await P.play(async () => !(await state(page)).includes(`${game}/`), { timeout: 300000 });
   return true;

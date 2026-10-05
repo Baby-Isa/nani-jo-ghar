@@ -489,7 +489,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return UI.orderWordForms(ctx.ladders).map((w) => ({ id: w.id, kutchi: w.kutchi, cell: w.cell, english: Cook.english(w.id), right: !missed.has(w.id), toCheck: !!w.check || undefined }));
   }
   async function roundEnd(ctx, { scored, actions }) {
-    const R = global.Results;
+    // inside the game host (js/cook/main.js) the host catches the end screen: it shows the one for the whole plan
+    const R = Cook.hostResults || global.Results;
     if (!R || Cook.noResults) return null;
     UI.hideCount();
     const { round, prevBest } = scored;
@@ -977,7 +978,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
   /** An end-of-round pop-up still up (a station started from the harness or a menu over it) goes. */
   function closeResults() {
-    const cur = global.Results && global.Results.current && global.Results.current();
+    const R = Cook.hostResults || global.Results;
+    const cur = R && R.current && R.current();
     if (cur) cur.close();
   }
 
@@ -1342,6 +1344,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       showTitle();
       ready();
     };
+    // Phaser's visibility handler adds a listener on the document and never removes it (Phaser 3.90: anonymous, no
+    // destroy), and sets window.onblur/onfocus: while the game starts, a visibilitychange listener goes through
+    // Cook's lifetime instead (removed at unmount), and halt() puts the window's own onblur/onfocus back
+    const docAdd = document.addEventListener;
+    const unpatch = () => document.addEventListener === patched && (document.addEventListener = docAdd);
+    const patched = function (type, fn, o) {
+      if (/visibilitychange$/.test(type)) Cook.life.onEnd(() => document.removeEventListener(type, fn, o));
+      return docAdd.call(this, type, fn, o);
+    };
+    document.addEventListener = patched;
+    Cook.life.onEnd(unpatch);
+    winFocus = { onblur: global.onblur, onfocus: global.onfocus };
     Cook.game = new Phaser.Game({
       type: Phaser.AUTO,
       parent,
@@ -1353,8 +1367,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       input: { activePointers: 1 },
       scene: [Cook.CookScene],
     });
+    // (Phaser adds it in Game.start, after its "ready" event: the first frame is after it)
+    Cook.game.events.once("poststep", unpatch);
     return shown;
   };
+  let winFocus = null;
   Cook.halt = function () {
     Cook.run++;
     Cook.inDay = false;
@@ -1366,12 +1383,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // a first-time script of Cook's still up: it goes, unseen (js/shared/onboard.js leave)
     const ob = global.Onboard && global.Onboard.active && global.Onboard.active();
     if (ob && String(ob.id || "").startsWith("cook/")) (ob.leave || ob.skip)();
+    // a script that has ended fades out for 300 ms before the kit removes its layer: it goes with Cook's screen now
+    document.querySelectorAll(".njg-onboard:not(.on)").forEach((n) => n.remove());
     closeResults();
     if (Cook.stopVoice) Cook.stopVoice();
     if (Cook.closeAudio) Cook.closeAudio();
     UI.reset();
     const game = Cook.game;
     Cook.game = Cook.scene = Cook.ctx = null;
+    if (winFocus) Object.assign(global, winFocus);
+    winFocus = null;
     Cook.expect = Cook.gauge = Cook.undoAt = null;
     if (game) {
       // the WebGL context goes at once (a long free play mounts Cook round after round; browsers keep only a few)
