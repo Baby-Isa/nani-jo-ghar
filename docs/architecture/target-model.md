@@ -1,10 +1,29 @@
-# The code's target operating model
+# The architecture: the target model, as built
 
-Step 2a, 1 Oct 2026, for Zafar's approval. Nothing here is built yet; step 3 builds it, one session at a time (the plan is in [`gap-analysis.md`](gap-analysis.md)). Where this file and `docs/process/rules.md` disagree, the rulebook wins.
+Step 2a (1 Oct 2026) set the model and Zafar approved it (decision 18). Step 3 (R0–R7, gate 5 Oct) and step 4 (the language engine, 4a–4e) built it for **Cook and the clinic**; C4 (6 Oct) mounted Cook directly through the host. This file describes the code **as it is**: § 0 says what is built, what still sits on the old structure and what is not built; the rest keeps the model's reasoning. The plan that got here is archived (`docs/archive/architecture/gap-analysis.md`). Where this file and `docs/process/rules.md` disagree, the rulebook wins.
 
-**In one paragraph.** The game becomes four layers. At the bottom, an **engine core** that every mode shares: the language engine, voices and speech recognition, per-word progress, the one save, and one scoring and pocket-money model. On top of it, a **shared game framework**: one screen frame, one set of UI components, one way to run a mini-game. On top of that, **content as data**: levels, scenes, recipes, patients, arcs and lines written as meanings. And at the top, **modes as plug-ins**: Cook, the clinic, Find it and the rest each fill in one standard form and get the whole framework for free. Around it all sits the **tooling** that lets a session play the real game, measure it and screenshot it before anyone calls it done.
+**In one paragraph.** The game is four layers. At the bottom, an **engine core** that every mode shares: the language engine, voices and speech recognition, per-word progress, the one save, and one scoring and pocket-money model. On top of it, a **shared game framework**: one screen frame, one set of UI components, one way to run a mini-game. On top of that, **content as data**: levels, scenes, recipes, patients, arcs and lines written as meanings. And at the top, **modes as plug-ins**: Cook, the clinic, Find it and the rest each fill in one standard form and get the whole framework for free. Around it all sits the **tooling** that lets a session play the real game, measure it and screenshot it before anyone calls it done.
 
 > **Words used here.** *Module*: one code file with a clear job. *Interface* (or *contract*): the fixed list of calls one part offers another, so either side can change inside without breaking the other. *Plug-in*: a part that fits a standard interface, like an appliance into a socket. *Adapter*: a thin layer that makes old code look like the new interface, so it can be replaced later without the callers noticing. *Lint*: an automatic check that reads code or measures a screen and lists rule breaks. *Sandbox*: a test browser that plays the game by itself.
+
+---
+
+## 0. As built (6 Oct 2026)
+
+| Layer | What exists | Where |
+|---|---|---|
+| **Core** (no drawing; browser and Node) | the one save (schema 2), per-word progress, the three-badge score and pocket money, one wallet, one voice player (stitched speech), the play context, unlocks, settings, content versions, the story log; `loadCore()` | `js/core/*.js`; data `data/economy.json`, `progress.json`, `unlocks.json`, `map.json` |
+| **Language engine** (inside the core) | the seam `Lang` and a general linearizer, clip planner, gap reporter and data validator; no Kutchi in code | `js/core/lang/index.js`, `js/core/lang/engine/`; data `data/lang/` (built by `build/lang/import_all.mjs` from `data/lang/seed/` and the other sources) |
+| **Framework** | the frame and tokens, the stage, text fitting, the guide box, bulb, order card, buttons, tally, end screen, onboarding, focus pulse, the speaking moment; **the game host, the mode interface and the input layer**; the app shell | `js/shared/` and `css/shared/` |
+| **Modes as plug-ins** | **Cook** and **the clinic** are plug-ins (`main.js` exports the mode object); a demo mode built from two adapters proves the pattern | `js/cook/main.js`, `js/clinic/main.js`, `js/demo/` |
+| **Content as data** | arcs (the Birthday skeleton, a demo arc), the map, unlocks, the economy, scenes, each mode's levels, the engine's words | `data/` |
+| **Tooling** | the sandbox, the screen and CSS lints, the word lint, the review, ops and art tools, the language tools and eight project skills | `build/sandbox/`, `build/lint/`, `build/tools/`, `build/lang/`, `.claude/skills/` |
+
+**How Cook and the clinic run now.** The shell (`js/shared/mode.js`) resolves how a round was asked for (story, free play or a lab) through the core's unlock service, asks the mode for a `plan()` of stages, and the host (`js/shared/host.js`) mounts each stage's mini-game, scores the whole plan once (`Score.finish`) and shows the one end screen. Cook's stations and the clinic's stages and heal games are mini-games of the one shape in § 6.2. Cook mounts **directly** in the element the host gives it (`js/cook/mount.js`, `screen: "own"`, since it draws its own sidebar and play area): its former ~50 global scripts are ES modules on one namespace (`js/cook/ns.js`, `index.js`), and unmounting tears down the Phaser game, timers, listeners, audio and DOM (`js/cook/life.js`; `build/test_cook_mount.mjs` mounts and unmounts five times and checks nothing is left). There are no station iframes and no adapters in Cook. Cook's words come from the engine through `js/cook/words.js`, the clinic's through `js/clinic/lang.js`; their game code holds no word text (the word lint is strict on both).
+
+**Still on the old structure (the parked modes, moved when their turn comes, decision 38).** Find it, Tidy up, Who did it?, Dress up, Monsoon rush and Snap load classic scripts and still use `js/cook/lang.js` (the old proto-engine) and the legacy star helpers (`js/shared/stars.js`, `data/shared/stars.json`, `js/shared/whichone.js`, `rel.js`, `overlay.js`); Cook and the clinic use none of them. `js/shared/conversations.js` is built but not wired into pages. The first launch (`first.html`) is a live page of its own, not yet a plug-in.
+
+**Not built yet.** A packaging script for the store app (`dist/`: planned as `build/package.mjs`); a shared shelf band and speech-bubble component (Cook draws its shelf in `js/cook/kitchen-kit.js`); tablet layouts for Cook's stations (CK-TAB-01); the vendored module shim for older iPads (decision 26: iOS 15+); the offline service worker.
 
 ---
 
@@ -71,12 +90,12 @@ The engine's internals, data formats and API are step 2b's: [`docs/language/engi
   card.show(r.rows); Voice.say(r);   // rows and speech from the same result (F10)
   ```
 - **One door for words on screen too.** The order card, the shelf chips, the end-screen word review and the bulb's English all take `Lang` results, so the review shows the exact form the order used (fixes SH-02 at its root).
-- **Until step 4:** step 3 puts a `Lang` **adapter** in `js/core/lang/` with the same calls, built on today's proto-engine (`js/cook/lang.js` + `js/cook/order.js` + `data/cook.json` `lines`/`grammar`). Step 3 builds only this **seam**, and moves the clinic's hard-coded Kutchi through it (Cook's callers already use the proto-engine). Moving Cook's callers onto `Lang.say` is step 4d's job (engine-design § 14), and step 4 replaces the inside. No new Kutchi or grammar is written in step 3: anything the adapter can't say comes back as a gap.
+- **As built (step 4):** the engine is real. `js/core/lang/index.js` is the seam every mode calls; `js/core/lang/engine/` holds the linearizer, the clip planner, the gap reporter (`gaps.js`, the minimum of 4c) and the validator. The data in `data/lang/` is **generated** by `build/lang/import_all.mjs` from the hand-edited seed (`data/lang/seed/`: Cook's and the clinic's lines, the word classes in `paradigms.json`), the lexicon, Mum's rounds and the recordings index; a fix goes into a seed or hand file, never into the generated JSON. Cook and the clinic ask for meanings through `js/cook/words.js` and `js/clinic/lang.js`, which keep the old call names so no station changed; `Lang.join` is the one marked adapter where the engine has no rule yet (orders' "with" and "and"). Everything the engine can't say comes back as a gap in `data/lang/reports/gap-list.md`, which becomes Mum's next questions.
 - **Gaps are collected**, not hidden: every gap the sandbox meets is written to the gap list that becomes Mum's next questions (engine-design § 10).
 
 ### 3.2 Voice and speech: `js/core/voice.js` (+ `js/shared/speech.js`, unchanged)
 
-One player for every voice in the game, replacing the six playback paths there are today.
+One player for every voice in the game (it replaced six playback paths).
 
 - `Voice.say(result, {channel, onWord})` plays a `Lang` clip plan in order and reports each word as it starts (for the read-along underline, E4). `Voice.word(id)` for a chip or the face replay. `Voice.stop(channel)`.
 - **One queue per screen:** a new line on the same channel waits or replaces, never overlaps (PAN-04).
@@ -95,7 +114,7 @@ Per-word, per-player progress, the "spine" of the design (`docs/game-design/prog
 - Modes ask **how much help** to give: `Progress.support(wordId)` → `{text, picture, autoPlay, hintAfterMs}`. This replaces Cook's `labelMode`, `cardHidden` and `hintDelay`, and gives the clinic and every other mode the same per-word behaviour.
 - One rule for "one place for a word's text at a time" (G22) lives here, not in each mode.
 
-### 3.4 Save: `js/core/save.js` (today's `js/shared/save.js`, moved, same API)
+### 3.4 Save: `js/core/save.js` (the old `js/shared/save.js`, moved, same API)
 
 The one save stays exactly as built (localStorage, players, namespaces, export/import, migrations). What changes is that **every namespace is registered in one table**, and nothing else touches storage (J3, B17):
 
@@ -128,7 +147,7 @@ Schema 2 migrates the old shapes once (Cook's `words`, `coins`, `owned`; the cli
 
 **Wallet** rules: coins only go up, except when the child buys something (E29: never lose what you earned; so no daily wages). Upgrades automate physical steps, never the listening (H6).
 
-There are **no stars** anywhere in the target: no ear star, voice star or star sets (H5, J7).
+Cook and the clinic have **no stars**: no ear star, voice star or star sets (H5, J7). The legacy star helpers remain only for the parked modes that still use them and go when those modes move.
 
 ### 3.6 Story log: `js/core/log.js`
 
@@ -149,21 +168,21 @@ Everything a child sees that isn't a mode's own play area. One component per sha
 
 ### 4.2 The UI kit
 
-| Component | Target file | Rules |
+| Component | File (as built) | Rules |
 |---|---|---|
 | Guide box (Nani; the doctor in the clinic) with face replay, bulb, mute | `guide.js` | F11, E27, CMP-06 |
-| Light bulb (English for 5/3/2/1 s by level; costs a bulb) | `bulb.js` | E25, decision 1 |
+| Light bulb (English for 5/3/2/1 s by level; costs a bulb) | `bulb.js` (`Bulb.create`) | E25, decision 1 |
 | Order card, request pop-up, closed cards | `order-card.js` | E4, E21, F8–F10 |
 | Buttons: Done, Next, answer pills, end actions | `buttons.js` | F6, F22 |
-| Shelf band and the `🔊 word` chip | `shelf.js` | F15, F16 |
+| Shelf band and the `🔊 word` chip | Cook's kitchen kit, `js/cook/kitchen-kit.js` (a shared shelf is not built) | F15, F16 |
 | Tally (what you did, never the target) | `tally.js` | F25, E11 |
-| Speech bubble and read-along underline | `bubble.js` | E3, E4, F24 |
+| Read-along underline | drawn by the guide box and the order card | E3, E4 |
 | End screen: badges → word review → actions | `results.js` | F12–F14 |
-| Onboarding: dim, ghost finger, child does it | `onboard.js` | E2, E9 |
+| Onboarding: dim, ghost finger, child does it; the grown-ups' skip in the "?" menu | `onboard.js` | E2, E9, E31 |
 | Speaking moment | `say.js` | E32 |
-| Grown-ups' "?" menu: skip, English help, settings | `grownups.js` | E1, E31 |
 | Home ⌂, nav dock, page changes | `app.js` | F4 |
 | Focus pulse and dimming | `focus.js` | F17 |
+| Frame, stage, text fitting | `frame.js`, `stage.js`, `fit.js` | F4, F5, F7, F18 |
 
 Each component has a lab entry showing every state (for the screenshot review) and a test. Cook's Phaser shelf chip and face badge draw the same look on the canvas; the DOM component is the reference.
 
@@ -179,12 +198,12 @@ Within one mini-game the gesture for a kind of action never changes between leve
 
 ### 4.4 The game host: running a mode's stages
 
-`js/shared/host.js` runs a **pipeline of stages** (H1): it mounts each stage's mini-game, hands it a context (§ 6.2), waits for it to finish, makes sure it cleared its own UI and stopped its effects (E17), and moves on. It generalises the two hosts that exist today, Cook's `Mech.combined` / station library and the clinic's `Clinic.Heal.register` / heal host, which do the same job two ways.
+`js/shared/host.js` runs a **pipeline of stages** (H1): it mounts each stage's mini-game, hands it a context (§ 6.2), waits for it to finish, makes sure it cleared its own UI and stopped its effects (E17), counts first marks only (E14), then calls `Score.finish` and shows the end screen. It replaced the two hosts that existed before (Cook's `Mech.combined` and the clinic's heal host, which are now stages inside it). `js/shared/mode.js` is the shell side (the mode interface, resolving an entry through the unlock service, the shell loop); `js/shared/input.js` is the one gesture feel; `js/demo/` is a tiny mode built only from two adapters, kept as the proof and the worked example (`docs/architecture/building-games.md`).
 
 ### 4.5 The shell: hub, arcs, bookshelf, Conversations
 
 - **Pages stay pages.** The house (`index.html`) opens a mode's page, and the mode comes back (`js/shared/app.js`, why: `build/reports/shell.md`). This works the same inside Capacitor.
-- **Arcs are data** (`data/arcs/<arc>.json`): chapters, errands (each = a mode, an entry and its settings), the beats between them and where Conversations may slot in. The hub reads the arc and the save to light the next errand and fill the house (H36–H40).
+- **Arcs are data** (`data/arcs/<arc>.json`; built: the Birthday skeleton with Cook's errand playable, a demo arc, `index.json`; `build/host/check_arcs.mjs` checks them): chapters, errands (each = a mode, an entry and its settings), the beats between them and where Conversations may slot in. The hub reads the arc and the save to light the next errand and fill the house (H36–H40).
 - **The bookshelf** (decision 4) and **Story by the Fire** read the story log.
 - **Conversations** (`js/shared/conversations.js`, built, not wired) is placed by the shell, not by modes: a mode only announces natural pauses (`ctx.pause("after-serve")`) and the shell decides whether a conversation goes there (H44).
 
@@ -259,7 +278,7 @@ export default {
 `ctx` gives the game the whole framework, so it never reaches for globals:
 `ctx.level`, `ctx.scene` (positions from scene data), `ctx.lang` and `ctx.voice` (§ 3.1–3.2), `ctx.card`, `ctx.guide`, `ctx.shelf`, `ctx.buttons`, `ctx.onboard(id, steps)`, `ctx.mark(row, ok)` and `ctx.hint()` (the tally), `ctx.progress` (§ 3.3), `ctx.log` (§ 3.6), `ctx.pause(name)` (Conversations slots), `ctx.rng` (seeded, so bots repeat), `ctx.wait(ms)` (stops cleanly when the child leaves), and `ctx.test` (the test hook, § 8.1).
 
-Cook's stations, the clinic's five stages and its heal games, and later Find it's and Tidy up's games all become mini-games of this one shape. A combined station (Cook's Chai tray) is a mini-game that runs sub-steps itself; that's fine.
+Cook's stations, the clinic's five stages and its heal games are mini-games of this one shape (built); Find it's and Tidy up's games become so when those modes move. The clinic's heal games keep their own contract inside the stage (`docs/architecture/clinic-heal-api.md`). A combined station (Cook's Chai tray) is a mini-game that runs sub-steps itself; that's fine.
 
 ### 6.3 What a mode may and may not do
 
@@ -276,22 +295,22 @@ Cook's stations, the clinic's five stages and its heal games, and later Find it'
 
 ## 7. How it fits together: one Cook order, end to end
 
-1. The hub reads `data/arcs/birthday.json` and the save, lights "Cook each guest's order", and opens `cook.html?app=1&arc=birthday&errand=cook-1`.
-2. The frame draws the sidebar and play area; `main.js` plans the stages (pantry first if it's the first time that day, H15, then the chai tray).
-3. The chai tray asks `Lang.say(Need(nana, chai with milk, two sugars))`; the order card shows `r.rows`, `Voice.say(r)` reads it with the underline.
+1. The shell (`js/shared/mode.js`) is asked for Cook's errand, for example `lab.html?mode=cook&play=story` or the Birthday's `cook-1`; it checks the unlock service (`data/unlocks.json`, `data/arcs/birthday.json`) and the entry.
+2. Cook's `plan()` gives the stages: the pantry first if it's the first time that day (H15, H49), then the order's stations. The host mounts each one in the play area (`js/cook/mount.js`).
+3. The station asks `Lang` (through `js/cook/words.js`) for a meaning such as *Need(nana, chai with milk, two sugars)*; the order card shows `r.rows`, `Voice.say(r)` reads it word by word with the underline.
 4. The child plays; the game calls `ctx.mark()` as each row closes (E11) and `ctx.hint()` when the bulb is used.
-5. On Done, `Score.finish` gives three badges and pocket money, writes the best, the coins, the word evidence and the story line; the end screen shows them; Again / Next / Home.
+5. When the plan ends, `Score.finish` gives three badges and pocket money and writes the best, the coins, the word evidence and the story line; the one end screen shows them; Again / Next / Home.
 6. Back at the hub, the next errand lights; the arc's book grows.
 
 ---
 
 ## 8. Tooling (`build/`)
 
-The point of the tooling is Zafar's aim: *"play the game inside your test sandbox and have a checklist: words clipping, spacing, padding, all the standard things."* It comes **first** in step 3, because every later session is checked by it.
+The point of the tooling is Zafar's aim: *"play the game inside your test sandbox and have a checklist: words clipping, spacing, padding, all the standard things."* It was built **first** in step 3 (R1), because every later session is checked by it.
 
 ### 8.1 The test hook (one contract, every mode)
 
-Every page exposes `window.njgTest` (replacing today's twelve different hooks, `__cook`, `__clinic`, `__tidy`…):
+Every plug-in page exposes `window.njgTest` (`js/shared/host.js`, `input.js`; built for Cook and the clinic; the parked modes keep their own hooks, `__tidy` and so on, and Cook's station labs also use `Cook.testHook`):
 
 | Call | Returns |
 |---|---|
@@ -301,41 +320,44 @@ Every page exposes `window.njgTest` (replacing today's twelve different hooks, `
 | `hitAreas()` | every tappable thing with its screen box, including on the Phaser canvas |
 | `states()` | the list of visually distinct states this mode can reach (for the screenshot matrix, C2) |
 
-Cook's `__cook.expectation()` and the clinic's hooks already do most of this; the host provides it for every mini-game.
+The host provides it for every mini-game.
 
 ### 8.2 The layout lint
 
 Two halves, both run by every session before it says "done":
 
-- **CSS lint** (`build/lint/css.mjs`, no browser, seconds): colours, font sizes, radii and the shadow only from `tokens.css`; no `text-overflow: ellipsis`; no positioning numbers for scene things in mode CSS; spacing on the 4/8 grid.
+- **CSS lint** (`build/lint/css.mjs`, no browser, seconds; `build/lint/words.mjs` is the word lint: string literals and English a child may see in game code, strict on `js/cook` and `js/clinic`): colours, font sizes, radii and the shadow only from `tokens.css`; no `text-overflow: ellipsis`; no positioning numbers for scene things in mode CSS; spacing on the 4/8 grid.
 - **Screen lint** (`build/lint/layout.mjs`, in the sandbox, at every captured state and every size, 844×390, 800×360, 1366×768, 1440×900, 1280×800, C2): text cut, clipped by a parent or ellipsised (TXT-01, TXT-02); text under 14 px (TXT-05); words broken mid-word (TXT-10); guide box over two lines, a card row over one (TXT-03); tap targets under 48 px measured as the real hit area (LAY-04); anything covering a tappable thing or the play area (LAY-06, LAY-12); letterbox or cream strip (LAY-01); sideways scroll (LAY-02); uneven padding on matching sides of cards (LAY-03, warning).
-- **Ratchet, not a cliff.** On its first run the lint writes a baseline of today's failures, each tied to a regression row where one exists. From then on a session may not add a failure, and the count only goes down.
+- **Ratchet, not a cliff.** The lint keeps a baseline of known failures (`build/lint/baseline.json`), each tied to a regression row where one exists. From then on a session may not add a failure, and the count only goes down.
 
 ### 8.3 The sandbox
 
-`build/sandbox/play.mjs`, Node + Playwright, one at a time under the browser lock (B16):
+`build/sandbox/run.mjs`, Node + Playwright, one at a time under the browser lock (B16), on its own port:
 
 ```
-node build/sandbox/play.mjs --mode cook --flow lab:chai-tray --levels 1-4 --sizes phone,phone-small,laptop,16x10 --bot fair
+COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser.lock timeout 1200 node build/sandbox/run.mjs --touched cook:chai-tray --quick
+COOK_TEST_PORT=8814 node build/sandbox/run.mjs --gate        # everything, in lock-sized chunks (the orchestrator's /review)
 ```
 
-- Plays the **real pages** (story, free play and every lab entry) by following `expect()` with real pointer events, like `build/test_cook.py` does today.
+The flows are in `build/sandbox/flows/` (house, first launch, Cook, the clinic, the parked modes' smoke flows); `build/tools/review/touched.mjs` maps a diff to the flows to run.
+
+- Plays the **real pages** (story, free play and every lab entry) by following `expect()` with real pointer events.
 - Three bots: **fair** (does what the words say), **mistake** (wrong taps now and then, for the warm-failure paths) and **blind** (no Kutchi: the leak test, C10; the Node leak bots stay for the maths).
 - At every new named state: a screenshot and a lint pass.
-- Writes `build/out/<run>/` (never committed): a **contact sheet** page (states down, sizes across, flaws marked), the lint results, and a QA results stub pre-filled with the checklist IDs and the auto lines, for the reviewer to finish (C3, C4).
-- **What changed since the last approved run**: a pixel diff marks changed shots so the reviewer looks there first. It flags; a person judges (non-negotiable 7). Approved sets live on an orphan `qa-baselines` branch, not on `main`.
+- Writes `build/screenshots/sandbox/<run>/` (never committed): a **contact sheet** page (states down, sizes across, flaws marked), the lint results, and a QA results stub pre-filled with the checklist IDs and the auto lines, for the reviewer to finish (C3, C4).
+- **What changed since the last approved run**: a pixel diff marks changed shots so the reviewer looks there first. It flags; a person judges (non-negotiable 7). The approved set is `build/tools/review/approved-shots.json` (`shotdiff.mjs`).
 - Its simulated games also feed the pocket-money calibration (§ 3.5) and the engine's frequency statistics (engine-design § 8).
 
 ### 8.4 Tests
 
-- **Logic** (no browser): `node --test` over `build/test/` for the core, the framework's pure parts, each mode's planner and the leak bots. Runs in seconds; every session runs it.
-- **Flows**: the sandbox (§ 8.3) replaces the per-mode Python browser tests as each area is refactored (Python Playwright isn't installed in session containers; Node Playwright is).
+- **Logic** (no browser): `node build/tools/review/checks.mjs` runs the fast checks in one go (`node --test` over the core, the host, the shared kit, the CSS lint and the review tools; the word gate; the version-stamp dry run), and `node --test build/lang/` the engine. Every session runs it.
+- **Flows**: the sandbox (§ 8.3) plays the real flows; the old per-mode Python browser tests (`build/test_cook.py`, `test_clinic*.py`) remain for their modes where Python Playwright is available (it is not in session containers; Node Playwright is).
 - The existing checks stay where they work: `check_vessel_meta.py`, `bg_align_check.py`, `check_hotspots.py`, `lines_needing_family.py`, `check_onboard.mjs` (made general).
 
 ### 8.5 Versioning and packaging
 
-- **`njgV()` and `bump_version.py` stay** (B7). With ES modules, `bump_version` also writes the page's import map (§ 10), so module files get the stamp without every file changing on every push.
-- **`build/package.mjs`** copies only what the store app uses (pages, `js/`, `css/`, `data/`, the assets the data and code refer to, OK family clips; no labs, TTS files or unchecked clips) into `dist/`, which is what Capacitor wraps. It also lists missing and unused assets.
+- **`njgV()` and `bump_version.py` stay** (B7). With ES modules, `bump_version` also writes the page's import map (§ 10; built: 29 mapped modules, `--dry-run` lists them), so module files get the stamp without every file changing on every push; `build/check_stamps.mjs` fails an unstamped request.
+- **`build/package.mjs`** (not built yet) will copy only what the store app uses (pages, `js/`, `css/`, `data/`, the assets the data and code refer to, OK family clips; no labs, TTS files or unchecked clips) into `dist/`, which is what Capacitor wraps. It also lists missing and unused assets.
 - **The test site stays as it is:** Pages publishes the tip of `main`, labs included (A10), so nothing about publishing changes (B7–B9). To keep the site under GitHub's 1 GB limit, test screenshots and report images stop being committed and live as release or artifact files instead (decision 8a). An Action-built site is a fallback only if that isn't enough (decision 8b).
 - A check fails any asset URL built in code without `njgV()` / `Cook.v()` (ART-05).
 
@@ -347,15 +369,15 @@ node build/sandbox/play.mjs --mode cook --flow lab:chai-tray --levels 1-4 --size
 
 ```
 index.html  first.html  <mode>.html  lab.html  labs.html (generated)
-js/core/          engine core (§ 3): lang/, voice.js, progress.js, save.js, score.js, wallet.js, log.js
+js/core/          engine core (§ 3): lang/ (the seam and engine/), voice.js, progress.js, save.js, score.js, wallet.js, unlocks.js, context.js, settings.js, log.js
 js/shared/        the framework and UI kit (§ 4)
-js/<mode>/        main.js, games/<game>.js, the mode's own helpers
+js/<mode>/        main.js (the plug-in), the mode's games or stations, its own helpers (Cook: mount.js, ns.js, stations/, mechanics/; the clinic: stages/, heal/)
 js/vendor/        Phaser and any other vendored library
 css/shared/       tokens.css + one file per shared component
 css/<mode>.css    the mode's own play area only
 data/lang/  data/<mode>/  data/scenes/  data/arcs/  data/economy.json  data/progress.json
 lab/              developer pages only (family-audio, component galleries)
-build/test/  build/lint/  build/sandbox/  build/art/  build/reports/   (build/out/ is ignored)
+build/core/ build/host/ build/lang/ (unit tests and tools)  build/lint/  build/sandbox/  build/tools/{review,ops,art}/  build/reports/   (build/screenshots/ is ignored)
 assets/           art and audio, unchanged
 ```
 
@@ -371,7 +393,7 @@ Mode folders keep their current names (`cook`, `clinic`, `find`, `tidy`, `who`, 
 
 - **ES modules** (`import` / `export`), one job per file, named exports; no new globals (only `window.njgTest` and the version stamp).
 - The contracts in this file (mode, mini-game, `ctx`, round, `Lang` result) are written once as JSDoc type comments in `js/core/types.js`, so a session can read the exact shape.
-- A file over ~600 lines is a sign it holds two jobs; split it when it's next touched (today eight files are over 1,000 lines).
+- A file over ~600 lines is a sign it holds two jobs; split it when it's next touched (several Cook files still are).
 
 ### 9.4 Who owns what (how sessions don't collide)
 
@@ -388,7 +410,7 @@ A mode session that needs something shared writes a **marked stub with the same 
 
 ### 9.5 Every session ends the same way
 
-`node --test build/test`, the CSS lint, the sandbox on the screens it touched with the screen lint, the leak bot for any changed mini-game, the regression rows for those screens, `bump_version`, the report in `build/reports/<name>.md`, one push (B6, C6, the QA checklist).
+Builders run the fast checks (decision 48): `node build/tools/review/checks.mjs`, the leak scripts, `check_onboard`, one `touched.mjs` pass at laptop size on the flows they changed, the regression rows for those screens, the report in `build/reports/<id>-<topic>.md`, and one push of the branch; only a session briefed to publish runs `bump_version` and pushes to `main` (B6, C6, C8, the QA checklist). The full matrix runs once, in the orchestrator's `/review`.
 
 ---
 
@@ -397,8 +419,8 @@ A mode session that needs something shared writes a **marked stub with the same 
 | Question | Recommendation | Why |
 |---|---|---|
 | Bundler (Vite, esbuild) or no build? | **No build step.** | Capacitor only needs a folder of static files (`webDir`); it doesn't care how they were made. A bundler adds a step every session must run and can forget, and hides the real files from screenshots and diffs. Revisit only if load time on a real phone becomes a problem (the code is ~2.7 MB unminified plus Phaser's 1.2 MB; measure first). |
-| Classic scripts or ES modules? | **ES modules, page by page**, starting with the core. | Dependencies become visible in each file (a session sees what a file uses), the 49-tag script lists go, Node tests import the same files without wrappers, unused files show up. Supported in every browser the game targets and in Capacitor's web views. |
-| Cache-busting with modules? | **An import map written by `bump_version`.** | Modules import names like `#core/save.js`; one `<script type="importmap">` per page maps each to `js/core/save.js?v=<stamp>`. Node maps the same names through `package.json` "imports". So only the pages change on a bump (as now), not every file. Import maps need iOS 16.4 or later (iPads from 2017 on can run it). Mitigation: the pilot session (R2a) checks the family's oldest iPad; if it's older, a small vendored shim (es-module-shims) adds import maps, or the stamp goes on each import line instead. |
+| Classic scripts or ES modules? | **ES modules, page by page**, starting with the core. | Dependencies become visible in each file (a session sees what a file uses), the long script-tag lists go, Node tests import the same files without wrappers, unused files show up. Supported in every browser the game targets and in Capacitor's web views. |
+| Cache-busting with modules? | **An import map written by `bump_version`.** | Modules import names like `#core/save.js`; one `<script type="importmap">` per page maps each to `js/core/save.js?v=<stamp>`. Node maps the same names through `package.json` "imports". So only the pages change on a bump (as now), not every file. Import maps need iOS 16.4 or later (iPads from 2017 on can run it). Mitigation: decision 26 sets the cut-off at iOS 15+ with a vendored shim (es-module-shims); the shim is **not vendored yet** and the oldest-iPad check is still to do. |
 | Phaser? | **Keep it for Cook; DOM/SVG for everything else.** | Cook's stations are built on Phaser 3.90 and play-tested; the clinic proves DOM/SVG is enough for the rest, and DOM text can be linted and fitted. Phaser's canvas exposes its hit areas through the test hook. |
 | TypeScript? | **No; JSDoc types for the contracts.** | The same safety where it matters (the interfaces), no compile step. |
 | Visual regression testing? | **Contact sheets plus a "what changed" diff, judged by a person.** | Pass/fail screenshot tests break on every art change and teach people to approve blindly; the rulebook wants a person to judge every state (C1, C3). |
@@ -418,6 +440,6 @@ A mode session that needs something shared writes a **marked stub with the same 
 
 ---
 
-## 12. Open items for Zafar
+## 12. Open items
 
-The decisions this model needs are listed, with recommendations, in [`build/reports/step-2a.md`](../../build/reports/step-2a.md). The gaps between today's code and this model, and the sessions that close them, are in [`gap-analysis.md`](gap-analysis.md).
+What is not built is listed in § 0. Open questions to Zafar are in `docs/status.md`; the gaps the tools report are in `data/lang/reports/gap-list.md` and the open rows in `docs/process/regressions.md`.

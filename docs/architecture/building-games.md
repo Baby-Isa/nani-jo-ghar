@@ -1,6 +1,6 @@
 # Building games and arcs from existing parts
 
-Step 3, R3b, 1 Oct 2026. How to add a mini-game, a mode, an arc and a map place by plugging existing parts together, so that new games and arcs are built from the mechanics and modes we already have (decisions 22 to 24). The worked example throughout is the **demo mode** (`js/demo/`), which runs one of Cook's stations and one of the clinic's healing games through the one game host without changing a line of either.
+Step 3, R3b, 1 Oct 2026; updated 6 Oct 2026 (Cook and the clinic are now real plug-ins). How to add a mini-game, a mode, an arc and a map place by plugging existing parts together, so that new games and arcs are built from the mechanics and modes we already have (decisions 22 to 24). The worked example throughout is the **demo mode** (`js/demo/`), which runs one of Cook's stations and one of the clinic's healing games through the one game host without changing a line of either.
 
 The shapes are written once, in code comments at the top of `js/shared/host.js` (the mini-game and its `ctx`), `js/shared/mode.js` (the mode, the entry, the shell loop), `js/shared/input.js` (gestures) and `build/host/check_arcs.mjs` (the arc file). This guide says how to use them; the rules themselves live in `docs/process/rules.md` and are linked by ID, not repeated. Where this guide and the rulebook disagree, the rulebook wins.
 
@@ -78,14 +78,18 @@ export default {
 - Every mode gets `lab.html?mode=<id>` for free, and `labs.html` lists it after `node build/gen_labs.mjs` (never hand-edit `labs.html`; `--check` fails when it's stale).
 - `dev: true` marks a test-site mode that never goes on the child's map (the demo).
 
-### Wrapping code that isn't moved yet: adapters
+### Real plug-ins to copy
 
-Until R4 and R5 move Cook and the clinic onto the host, their mechanics plug in through **adapters** (target-model's word: a thin layer that makes old code look like the new interface). The demo has one of each:
+Cook (`js/cook/main.js`) and the clinic (`js/clinic/main.js`) are the two real examples. The clinic draws into the play area the host gives it; Cook has its own sidebar and play area, so its stages say `screen: "own"` and mount Cook directly in the element the host provides (`js/cook/mount.js`; `needs` lists the scripts and styles Cook wants on the host's page; the host scores the whole plan once and Cook scores nothing itself when mounted with `hosted: true`). Both take their words from the language engine through a small glue file (`js/cook/words.js`, `js/clinic/lang.js`) and hold no word text in code (G26, the word lint).
 
-- `cookLab(key)` (`js/demo/cook-adapter.js`) runs any Cook Station-lab key ("fetch", "chai-tray", "recipe:chai") in the real `cook.html`, inside a frame, through Cook's own test hook, and catches Cook's end-of-round pop-up so the host shows the one end screen for the whole plan.
-- `healGame(id)` (`js/demo/heal-adapter.js`) mounts any registered healing game ("cut", "knee", "ear") on the clinic's own screen through the clinic's own heal host, after the host has loaded the clinic's scripts and stylesheet (`needs`).
+### Wrapping code that isn't a plug-in yet: adapters
 
-Both say `screen: "own"` (they draw the whole screen, not just the play area) and carry `adapter: {of}`, so `check_onboard` checks them with Cook's and the clinic's own onboarding checks. An adapter's game scores itself, so it ends with `ctx.done({right, total, hints, timeMs, words, evidence})` and the host turns that into marks and word progress. Use an adapter to try a new combination quickly; build a real mini-game when the combination stays.
+A thin layer that makes old code look like the new interface. Cook and the clinic no longer need one; the parked modes will move onto the host properly when their turn comes (decision 38). The demo keeps one of each as the worked example (`js/demo/`, not Cook's or the clinic's own code):
+
+- `cookLab(key)` (`js/demo/cook-adapter.js`) runs a Cook Station-lab key ("fetch", "chai-tray", "recipe:chai") in `cook.html` inside a frame, through Cook's test hook, and catches Cook's end-of-round pop-up so the host shows the one end screen for the whole plan.
+- `healGame(id)` (`js/demo/heal-adapter.js`) mounts any registered healing game ("cut", "knee", "ear") on the clinic's own screen through the clinic's heal host, after the host has loaded the clinic's scripts and stylesheet (`needs`).
+
+Both say `screen: "own"` and carry `adapter: {of}`, so `check_onboard` checks them with Cook's and the clinic's own onboarding checks. An adapter's game scores itself, so it ends with `ctx.done({right, total, hints, timeMs, words, evidence})` and the host turns that into marks and word progress. Use an adapter to try a new combination quickly; build a real mini-game when it earns its place.
 
 ## Add an arc
 
@@ -112,7 +116,7 @@ An arc is `data/arcs/<arc>.json`, listed in `data/arcs/index.json`. The Birthday
 ```
 
 - **flow** is the order a chapter plays in: a **beat** (an id; its picture and lines are made elsewhere, carried by picture and sound, I13), an **errand** (a mode, its `entry` and its `settings`: `level`, `params`), or a **conversation** slot (H44).
-- **status** of an errand: `playable` (its mode runs on the host: `js/<mode>/main.js` exists), `waiting` (the mode exists but hasn't moved onto the host yet: Cook until R4), `to-build` (no mode yet). A beat is `to-write`, `written` or `recorded`.
+- **status** of an errand: `playable` (its mode runs on the host: `js/<mode>/main.js` exists), `waiting` (the mode exists but hasn't moved onto the host yet: the parked modes), `to-build` (no mode yet). A beat is `to-write`, `written` or `recorded`.
 - **open** is when the arc itself is available, in the unlock rules' grammar (`js/core/unlocks.js`). **opens** lists what finishing the chapter opens: map places or modes. The shell adds these to `data/unlocks.json`'s rules (`withArcRules`), so a locked place says which story opens it (H57, decision 22); where both say something, `data/unlocks.json` wins and the validator notes it.
 - An arc holds **no words for the child**: no `kutchi`, `text`, `line` or `en` keys. Lines are meanings in the language engine's data (G13), and the child never reads English (E1). `note` fields are for grown-ups and sessions.
 - Every story arc ends with the Story by the Fire (H40): its last errand's mode is `fire`. Test arcs (`"test": true`) are exempt and never reach the child's map or bookshelf.
@@ -135,7 +139,7 @@ Free play starts from the map (decision 22). A place is an entry in `data/map.js
 
 ## Worked example: the demo
 
-1. **Two mini-games from existing parts**: `pantry = cookLab("fetch")` and `scrape = healGame("cut")`, in `js/demo/main.js`. Neither Cook's nor the clinic's files changed.
+1. **Two mini-games from existing parts**: `pantry = cookLab("fetch")` and `scrape = healGame("cut")`, in `js/demo/main.js`, through the two adapters above. Neither Cook's nor the clinic's files changed.
 2. **One mode**: a plan of pantry, a pause slot, scrape; a lab for each and for the whole round; endless free play.
 3. **One arc**: `data/arcs/demo.json`, one chapter whose one errand is the demo's whole plan, and `"opens": ["demo"]`.
 4. **Play it**:

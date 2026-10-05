@@ -1,14 +1,15 @@
 # Cook with Nani: how to add ingredients, recipes, levels and stations
 
-**Updated:** 26 Sept 2026 (Wave 6). For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
+**Updated:** 6 Oct 2026 (after steps 4d and C4). For whoever adds the next dishes (Claude or a person). Most additions are **data plus art**: no code.
 
-Never invent Kutchi. A new word goes in with `"kutchi": null` and its English, and shows as a grey English placeholder until the family gives the Kutchi.
+Never invent Kutchi (G1). A new word goes into the language engine's data with its English and no Kutchi, and shows as a grey-italic English placeholder flagged "to record" until the family gives the Kutchi. Cook's code holds no word text (G26): it asks the engine through `js/cook/words.js`.
 
 ## 1. Where things live
 
 | What | Where |
 |---|---|
-| Words, lines, grammar, customers, recipes, difficulty levels, upgrades | `data/cook.json` |
+| The item catalogue (art states, heaps, bowls), customers, recipes, difficulty levels, upgrades, the frames' meanings (`meanings`) | `data/cook.json` |
+| The words themselves (Kutchi, English, gender, forms), lines, grammar, the guide box's English | the language engine: edit `data/lang/seed/cook.json` (or the engine's hand layer, `build/lang/hand/`), then `node build/lang/import_all.mjs` rebuilds `data/lang/` (G27) |
 | A combined station's own data (its name, goal and levels) | `data/stations/<id>.json` |
 | One mechanic (a verb: pour, roll, tawa…) | `js/cook/mechanics/<id>.js` |
 | One combined station (Maani line, Chai tray…) | `js/cook/stations/<id>.js` |
@@ -21,27 +22,28 @@ The **Station lab** (title screen) runs every mechanic, every combined station a
 
 ## 2. Add an ingredient
 
-Add an entry to `words` in `data/cook.json`:
+Two places, because the item and its word are different things.
+
+1. **The item** (art): add an entry to `words` in `data/cook.json`:
 
 ```json
 "ph-mayai": {
-  "kutchi": null,
-  "english": "eggs",
   "heap": {"kind": "balls", "color": "#f6ead2"},
   "layer": {"kind": "liquid", "color": "#f3c84b"},
-  "bowl": "ceramic",
-  "src": "placeholder"
+  "bowl": "ceramic"
 }
 ```
 
-- **Id:** `ph-` for a placeholder; the family's words keep their content-master ids (`veg-02`, `spi-10`).
+2. **The word:** add it to `words` in `data/lang/seed/cook.json` with its English and, only if the family has said it, its Kutchi, gender and forms; with no Kutchi it is a flagged placeholder. Run `node build/lang/import_all.mjs --check` (0 errors) and `node --test build/lang/`. Every gap shows up in `data/lang/reports/gap-list.md`, which becomes Mum's next questions.
+
+- **Id:** `ph-` for a placeholder; the family's words keep their older ids (`veg-02`, `spi-10`; the engine keeps them as aliases of its own `n.…` ids).
 - **Art states** (all optional; anything missing is drawn from `heap`):
   - `image`: a painted prop, `assets/cook/props/<image>.webp`. It loads by itself.
   - `heap`: the ingredient heaped in a bowl (the pantry, the counter). Kinds: `grains`, `crystals`, `powder`, `balls`, `cubes`, `pieces`, `sticks`, `pods`.
   - `piece`: one piece (on a skewer, thrown in the air when chopping).
   - `layer`: a spoonful in a bowl or on pastry (`"kind": "liquid"` for sauces, eggs).
-- **Audio:** a family recording goes to `assets/audio/word/<id>.mp3` and its id into `data/audio-manifest.json` (`word`). Until then `build/build_cook_tts.py` makes a placeholder voice; it needs a Gujarati spelling for any new Kutchi token (its `GU` table).
-- **Gender** (Wave 6, the family's grammar: `docs/language/grammar-notes.md`): every noun has `"gender": "he" | "she" | "unknown"`. Words that agree with their noun carry `forms` (`{"he": "hakro", "she": "hakri"}`: "one", and describing words like *wadho/wadhi*) and, if the voice spelling differs, `say_forms`. The phrase builder picks the form from the next noun in the phrase ("ba wadhi maani"); unknown gender uses the word's own `kutchi`. Mark a noun `unknown` until the family says.
+- **Audio:** a family recording is cut and indexed by the `/mum-round` pipeline into `data/family-audio.json`; Zafar marks it OK in `lab/family-audio.html`, and only OK clips ship. The test site may play a stand-in voice for a word with no clip; the store app never does (G14).
+- **Gender** (the family's grammar: `docs/language/grammar-notes.md`): every noun carries `"gender": "he" | "she"` or is unknown. An unknown gender takes the he-form, is flagged "to check" and is never recorded whole or shipped (decision 21, G2). Describing words agree with their noun (*wadho / wadhi / wadha / wadhe*) through the engine's word classes (`data/lang/seed/paradigms.json`); Cook's code never picks a form.
 - **Look-alikes:** add the word to `lookalikes` (what it's easily confused with) so the pantry and "pass me" offer a real choice. `pantry_decoys` lists spare pantry items.
 
 ## 3. Add a customer taste
@@ -70,7 +72,7 @@ A recipe is an entry in `recipes` with five parts. Every choice the player makes
 | "no X" | `{"type": "no", "else": {"chance": 0.5, "from": ["veg-12"]}}` | the customer's dislikes, else maybe one |
 | per person | `{"type": "people", "count": 2, "tastes": "chai", "each": {"khun": {"int": [1, 3], "taste": "khun"}}}` | `[{"who": "nana", "khun": 3}, {"who": "ma", "khun": 1}]` |
 | how many of each kind | `{"type": "tally", "kinds": ["ph-meat", "ph-pepper"], "total": {"int": [2, 3]}, "min": {"ph-meat": 1}}` | `{"ph-meat": 2, "ph-pepper": 1}` |
-| a kind with a describing word | tally kinds like `"ph-big+cook-maani"` | said "ba wadha maani" (the Maani line, level 3) |
+| a kind with a describing word | tally kinds like `"ph-big+cook-maani"` | said "ba wadhi maani" (the Maani line, level 3) |
 | different by level | `{"byLevel": [{"int": [2, 3]}, {"int": [3, 4]}]}` | the value for the order's level (past the end: the last); works at any depth in a slot |
 
 Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`. Any value in a slot, at any depth, can be `{"byLevel": [level 1, level 2, level 3]}`: the order's level picks one (the last repeats). **Level 1 is gentle on the hand, not on the ear:** from the first order, what's asked varies (the owner's rule). Chai's `cups` has two people at level 1, each with their own milk, sugar and plain/elchi/aadu, three at 2, and half/full at 3; mishkaki's `skewers` is two skewers at level 1 (two meat, two veg or one of each), two or three with at most one mixed at 2, then three or four (`"total": {"byLevel": [2, {"int": [2, 3]}, {"int": [3, 4]}]}`); maani asks for both doughs at level 1 (`"min"`); daal names several vegetables to chop. The hand gets harder through `mechanics.<id>.levels` (section 5). Rows said `"for"` one person (`"forEach": "$cups", "for": "$it.who"`) become that person's own part of the mission card, with their face.
@@ -101,7 +103,7 @@ Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player k
 
 | `do` | What it does |
 |---|---|
-| any mechanic: `fetch`, `knead`, `roll`, `tawa`, `chop`, `tadka`, `stir`, `assemble`, `fry`, `thread`, `grill`… | a whole station |
+| any mechanic: `fetch`, `roll`, `tawa`, `chop`, `tadka`, `stir`, `assemble`, `fry`, `thread`, `grill`… | a whole station |
 | `pour`, `add`, `boil`, `count` | a step inside the scene set up by `view` |
 | any combined station, `fillFold` | a whole station |
 | `view` | a scene: `{"station": "pour", "view": "hob"}` (views: `hob`, `wood`, `marble`, `pantry`) |
@@ -154,20 +156,20 @@ Cook.Mech.lab("roll-tawa", { name: "Roll → Tawa", verb: "Combined", async run(
 - **Several at once:** the tawa runs `tawas` tawas and the grill `skewers` skewers, each with its own ring and timer; a mechanic makes one child zone per instance with `z.child()`.
 - **Badges:** every zone reports into the same order, so there is one set of three badges (time, accuracy, hints); the host also keeps each zone's scores (`host.scores`).
 - **Custom logic:** give the definition `run: async (host, params) => …` to drive the zones yourself (for example, "roll them all first" versus a production line).
-- **Files:** the Maani line, Chai tray and Mishkaki grill already have their files in `js/cook/stations/`, loaded by `cook.html`. Give each its own `data/stations/<id>.json` so parallel work never touches the same file.
+- **Files:** the Maani line, Chai tray and Mishkaki grill already have their files in `js/cook/stations/`, loaded by `js/cook/index.js` (one namespace, mounted by `js/cook/mount.js`; Cook is a plug-in of the shared host, `docs/architecture/target-model.md` § 0). Give each its own `data/stations/<id>.json` so parallel work never touches the same file.
 
-**A new mechanic** is one file in `js/cook/mechanics/` (add its `<script>` to `cook.html`): `Cook.Mech.define(id, {station, view, footprint, run(z, params, k)})` plus `Cook.Mech.lab(…)`. Inside `run`:
+**A new mechanic** is one file in `js/cook/mechanics/` (add its `import` to `js/cook/index.js`, in load order): `Cook.Mech.define(id, {station, view, footprint, run(z, params, k)})` plus `Cook.Mech.lab(…)`. Inside `run`:
 - draw with `z.X(x)`, `z.Y(y)`, `z.L(size)` (design coords, so it works full screen and in a zone);
 - listen with `z.on("pointermove", …)` and animate with `z.tick(…)` (never `S.input.on` or one `S.tick`);
 - say what the player should do next with `z.expect({…})` (the test plays from it) and pass `io: z.io` to `S.step`, `S.pour` and `S.ring`;
-- score with `z.listen(ok, why)` (ear) and `z.skill(score, what)` (hand); send items with `z.emit(item)`, take them with `z.take()`;
+- mark rows with `z.listen(ok, why)` (an understanding row) and `z.skill(score, what)` (a skill row); both feed the three badges through the host, never stars (H5); send items with `z.emit(item)`, take them with `z.take()`;
 - read every tuning number from `k` (its levels in `data/cook.json`), never a constant.
 
 ## 7. Language
 
 Frames from the family (25 Sept, drafts flagged `draft: true` with a `src`): `give` *Muke {x} de* (pass me / give me), `first` *Pela {x}* (the first step of a sequence; the rest are *Ne poi {x}*: `grammar.then_first` and `grammar.then`), `waari` *{x} waari chai* (chai with elchi, with aadu), `sugar` *Muke chai me {x} khape* (the sugar count), `for` *{x} lai* (for a person: `grammar.for`, with the person's word from `customers.<id>.word`). The order frame *Muke {x} khape* is the informal one and doesn't agree with gender.
 
-Code never contains Kutchi or its grammar. Sentence frames are `lines` ("Muke {x} khape.", "Ne {x}."), and `grammar` says how they combine: number words (`numbers`), where the number goes (`count`: `"{n} {x}"`), how a list is said (`list`), which frame starts an order (`order`), how "no X" is said (`no`), and the "and then" linker (`then` → the draft line *Ne poi {x}.*, Mum to confirm; `then_word` is its word, `lnk-nepoi`: from word stage 3 the ladder stops drawing the sequence and only the spoken *ne poi* tells you the order). Another language (Gujarati first) swaps `words`, `lines` and `grammar`.
+Code never contains Kutchi or its grammar. `meanings` in `data/cook.json` maps each of Cook's frame keys (a need, a list, a "no" row, an "and then" step …) to the **language-engine meaning** it asks for (`data/lang/abstract.json`); the engine builds the words, their agreement, the number words, the join words and the clip plan (`js/cook/words.js`). A frame the engine has no rule for comes back as a gap, a grey-italic English placeholder flagged "to record"; `Lang.join` is the one marked adapter that sets pieces side by side where the engine has no rule yet ("with", "and"). The family's frames below are recorded in `docs/language/grammar-notes.md` and live in the engine's data, not in Cook.
 
 ## 8. Worked example: chips mayai (fry, pour, flip)
 
