@@ -16,7 +16,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **Next steps, in order (decisions 33-44):**
 1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
-2. Running (5 Oct evening): C3 Cook ready to play (`session_01SWTAcuq152o9XrXTKptA8j`, proof run), 4e the clinic onto the engine (`session_01EvLeEZ6dW2FsyiCv1Dh463`, Opus high, stop 03:00), T1 review/check scripts (`session_013vbisvEXZuNrniTVPi3Lx1`, Sonnet high), T2 art scripts + faster Chrome runner (`session_01RZJ971PVcSi1E5G6sZRZ1r`, Sonnet high). Done today: F1, A2, 4a, 4b (all reports in `build/reports/`).
+2. Running (5 Oct evening): C3 Cook ready to play (`session_01SWTAcuq152o9XrXTKptA8j`, proof run), 4e the clinic onto the engine (`session_01EvLeEZ6dW2FsyiCv1Dh463`, Opus high, stop 03:00), T1 review/check scripts (`session_013vbisvEXZuNrniTVPi3Lx1`, Sonnet high), T2 art scripts + faster Chrome runner (`session_01RZJ971PVcSi1E5G6sZRZ1r`, Sonnet high), T3 ops scripts + project skills (`session_01Q2rYgaJ2ff3h8YCiix1CyE`, Opus medium). T1 done (`t1-review-tools.md`). Done today: F1, A2, 4a, 4b (all reports in `build/reports/`).
 3. When C3 ends: launch 4d, Cook onto the engine (Opus high, ~$15-20; 4e owns `js/core/lang/index.js`, 4d builds on it).
 4. When T1 or T2 ends: launch T3 (brief generator, Mum-round pipeline, voice-note feedback pipeline, publish, check-in summary, Mum question sheets, and project skills wrapping all tools; Opus medium).
 5. When 4d and 4e are done: orchestrator review (T1's touched mapper + screenshot diff if ready; changed screens, full matrix, flaws first, regression rows), bump, publish to `main`, Pages check, send Zafar the link and what to play.
