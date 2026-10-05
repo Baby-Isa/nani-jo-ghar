@@ -763,3 +763,58 @@ If 1–3 hold up, the style is safe to commit to.
 - The quiet left strip is no longer needed for the sidebar (it has its own column), but keep the far edges uncluttered for the 4:3 crop.
 - Same camera height and painterly lighting in every scene, 16:9, no text.
 - Supply separately, on transparent backgrounds, in the same style: carried container, destination container, counter front layer, swaying items.
+
+---
+
+## 15. Art tools and the fast runner (T2, decisions 43 and 44)
+
+Anything done the same way twice is a script the model runs. All four tools live in `build/tools/art/`, print short summaries (never dumps), can be re-run and answer `--help`. The old `build/cut_*.py` scripts stay as they are; the cutter reproduces one of them and replaces them for new packs.
+
+| Tool | Command | What it saves | Proof (5 Oct) |
+|---|---|---|---|
+| **Cutter** `artcut.py` | `python3 build/tools/art/artcut.py build/tools/art/specs/<pack>.cut.json [--out DIR] [--only ID,..] [--list] [-v]` | webp + `@2x` per piece, a data JSON (`cut-data.json`: canvases, feet lines, anchors, exits, boxes) and `cut-report.txt`; skips what hasn't landed and lists it; flags (REDO, ΔE) print even in the short summary | Re-cut the clinic pack's girl wide poses (26 files), the child and girl close-ups with their registered states, and the O1/O3 prop sheets, against `cut_clinic_heal_v3.py` run into a temp folder and against the committed `assets/clinic/`: **0.000 % of pixels differ, max 0**, via `artdiff.py` |
+| **Diff** `artdiff.py` | `python3 build/tools/art/artdiff.py REF_DIR NEW_DIR [--glob ..]` | nothing; one line per file (alpha-weighted pixel diff) | the proof above |
+| **Judge** `artjudge.py` | `python3 build/tools/art/artjudge.py [--only girl-M1,..] [--dir D] [--json F] [-v]` | PASS / FLAG / FAIL per image with the reason; optional JSON | the 67 images of `sources/art/clinic-heal-v3/`: flags U1, M1, M2, Y1-Y3 (framing), W10 (feet and scale), O2 (round glossy discs), T1/K1/P1 (skin ΔE 7-9), boy E1 and M1; sheets and the rest pass |
+| **Block generator** `artblock.py` | `python3 build/tools/art/artblock.py [--check] [--redo LIST.yaml] [--stdout] [--sync-doc]` | the paste block in `docs/design-language/art-plans/<pack>-chrome-block.txt` (or `-redo-block.txt`) | regenerated the clinic block (115 lines): run-order differences are wording only (one explicit template line per prompt in part C; a "part done" line after part A); the runner section is new |
+
+### 15.1 The cut spec (JSON or YAML, one per pack)
+`pack`, `src`, `out`, `data`, `skin_render` (the approved render's lit skin, ΔE limits 6 and 12), `failed` (source → reason, not cut) and `jobs`. A job has an `id` and a `type`; `"each": [{"kind": "girl", "p": "girl"}]` repeats it with `<kind>` and `<p>` replaced, so a new person is one more row.
+- `closeup`: `src`, `exits` (the edges the limb or head leaves by, kept flush), `out`, `states` (other pictures, each `register: {mode, band}`: ECC onto the base, keyed on its canvas), `mirror` (a recorded gaze fix).
+- `grid`: a prop sheet cut by its gutters in reading order: `names` (null skips), `rows`, `glass` (partial alpha, never a solid core), `failed`, `registered: [{names, align}]` (one canvas per object), `pad` (16), `max` (512).
+- `figure`: the base pose; `poses` (whole figures registered on a band, fitted by scale if they drift), `faces` (head-only edits kept as layers, with their leak % against the head), `fig_h` (the drawn height at 1x, which sets the 1x size; the `@2x` never exceeds the source), `neck`, `anchors` (source px → canvas fractions), 512 px corner heads, an optional `side` pose with its own faces.
+Not in the cutter (stay in `cut_clinic_heal_v3.py` until a pack needs them): SIFT room registration and the diff overlay (R3, R4) and the gauge and chart measures (R5, C1, C2). Add them as job types when needed.
+
+### 15.2 The run spec and the paste block
+`specs/<pack>.run.yaml` is the run as data: `people` (prefix → sheet and limb set; the slot texts come from the plan's PEOPLE table), `templates` and `limb_templates` (attach, save-as, check per prompt ID; `kept:X`, `edit: kept:X`, a trailing `?` for optional), `lines` (the one-offs), `parts` (the order; `compact` prints per-person templates once), `checks` (the words in the block, plus what the judge measures), `passfail` and the `runner` knobs. `artblock.py` validates it against the plan first (every prompt exists, every dependency exists, no duplicate save-as, every reference file is in the repo), then fills `templates/block.txt` and `templates/runner-loop.txt`. **A new pack's block is generated, never hand-written:** write the plan, copy the spec, run `--check`, run the tool.
+
+**The art redo list** (`art-plans/<pack>-redo-list.yaml`) is the input for a run that fixes earlier work: `redo` (a line ID, why it failed, its source), `new` (lines with no prompt yet; they run only when the plan has the prompt and a check, else they are listed NOT READY), `checks` for the new lines, `considered` (looked at and left out). `artblock.py --redo` builds a block of just those lines plus the edits that follow a redone picture, saved as `-v2` beside the old `-v1`, each ending in REDO: what was wrong. The clinic's list holds U1, M1, M2, Y1 (and so Y2, Y3), T1 gaze, W10 scale, O2 spots, and the girl's standing pose for the send-off (NOT READY: needs a W11 prompt in the plan).
+
+### 15.3 The fast runner (decision 43)
+The rule: **no ChatGPT window ever sits idle.** Keep N windows generating; the moment one finishes, judge it and send the edit or the next prompt at once; commits, reference fetches and logging happen only while every window is generating; stalls are detected, retried once and then skipped. A kept image is attached from the runner's workspace copy, so an edit never waits for its original's GitHub commit; commits are batched. Parts are priorities, not walls. The knobs are in the run spec (`runner:`; clinic: 3 windows, 60 s between sends, stall 6 min, hard 10 min, 2 redos, commits of 6 or after 25 min). The loop below is `templates/runner-loop.txt`, copied here by `artblock.py --sync-doc` (edit the template, not this copy); `N`, `G`, `X`, `Y`, `B`, `F` stand for the knobs.
+
+<!-- runner-loop:start -->
+```
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep N windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (committing to GitHub, fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (saved in your workspace, not yet committed) · COMMITTED · SKIPPED or STALLED (why). Two queues: READY (redos at the front, then run order) and SAVE (kept, not yet committed).
+
+THE TICK. Repeat until every line is COMMITTED or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). If the prompt you start needs this very picture, fetch and save it first (move 2, steps a and b only, into your workspace under its save-as name) and attach that local copy, never waiting for the GitHub commit; otherwise send first, then fetch and save it while the new prompt generates, and add it to SAVE.
+   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than N windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave G seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) commit SAVE (all queued files in one upload) when B files are queued, or the oldest has waited F minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for X minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing Y minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+```
+<!-- runner-loop:end -->
+
+**Judging at speed.** The runner judges in one look. If its workspace has the repo and python, `artjudge.py --dir <saved images> --only <ID>` gives numbers first (a FAIL is a redo; a FLAG says where to look). Claude's stricter pass (plan section 7) still happens after upload, from contact sheets, and `artjudge.py` over the whole folder is its first step. The judge never measures gaze, anatomy, fingers, likeness or style; text is only found on the flat ground, not on an object.

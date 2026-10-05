@@ -72,51 +72,58 @@
  "lines": {
   "side-left": {
    "who": "patient",
-   "kutchi": "[EN: My left eye]",
-   "english": "My left eye",
+   "e": "My left eye",
    "placeholder": true
   },
   "side-right": {
    "who": "patient",
-   "kutchi": "[EN: My right eye]",
-   "english": "My right eye",
+   "e": "My right eye",
    "placeholder": true
   },
   "patch": {
    "who": "doctor",
-   "kutchi": "[EN: Cover the other eye]",
-   "english": "Cover the other eye",
+   "e": "Cover the other eye",
    "placeholder": true
   },
   "chart": {
    "who": "doctor",
-   "kutchi": "[EN: The chart.]",
-   "english": "The chart.",
+   "e": "The chart.",
    "placeholder": true
   },
   "arr": {
    "who": "patient",
-   "kutchi": "[EN: Arrr!]",
-   "english": "Arrr! A pirate!",
+   "e": "Arrr! A pirate!",
    "placeholder": true
   },
   "squint": {
    "who": "patient",
-   "kutchi": "[EN: Hmmm...]",
-   "english": "Hmmm... (squints)",
+   "e": "Hmmm... (squints)",
    "placeholder": true
   },
   "blink": {
    "who": "patient",
-   "kutchi": "[EN: Ooh, cold!]",
-   "english": "Ooh, cold!",
+   "e": "Ooh, cold!",
    "placeholder": true
   },
   "squawk": {
    "who": "kasuku",
-   "kutchi": "[EN: Squawk!]",
-   "english": "Squawk!",
+   "e": "Squawk!",
    "placeholder": true
+  },
+  "eye-why": {
+   "e": "I can't see well.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "eye-goal": {
+   "e": "Drops first, then let's test your eyes.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "eye-better": {
+   "e": "I can see!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
  },
  "chart_nouns": [

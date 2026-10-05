@@ -1,28 +1,27 @@
 /*
- * The clinic's words and sentences, through the language seam (target-model § 3.1; gap-analysis "R5: the clinic's
- * Kutchi through the seam"). No Kutchi, no number table, no join and no word form is written in the clinic's code:
- * every word comes from data/clinic/lang.json (and the clinic's item data) by id, every frame (pela / ne poi / ne)
- * is a line in that file, and a describing word or "one" takes its form from the noun's gender there (unknown
- * gender: the he-form, flagged "to check", decision 21). What has no Kutchi comes back as a gap: the grey-italic
- * English placeholder, flagged to record (G2).
+ * The clinic's words and lines, through the language engine (step 4e, decision 42; rules G26, G27). The engine
+ * (js/core/lang/engine/ over data/lang/) is the only source: every word, number, describing word, frame and line the
+ * clinic shows or plays is an engine meaning, built and agreed by the engine, with the engine's clip plan for the
+ * voice (stitched from words, decision 26). This file holds no Kutchi, no word table, no frame and no agreement: it
+ * names meanings by concept id (a.big, num value, the clinic's old ids as the engine's aliases) and turns the
+ * engine's result into the clinic's display word. What the engine can't say comes back as its own gap: the
+ * grey-italic English placeholder, flagged to record (G2, G9).
  *
- * Two halves:
- *   1. A PROTO-ENGINE with the calls js/core/lang/index.js's adapter makes of Cook's (phrase, line, wordLine,
- *      numLine, list, join, plain, bare, gender, countParts), over the clinic's data. In the game the clinic's
- *      core Lang is createLang({cook: ClinicLang.source}) (js/clinic/main.js) and every line goes through it.
- *   2. say(meaning) with the seam's meanings ({fn: "Item" | "Word" | "Count" | "First" | "Then" | "Also" |
- *      "Join" | "Phrase"}): through the core's Lang once main.js has handed it over (ClinicLang.use), else the
- *      same build locally (Node: the leak bots and unit tests). show() turns a result into the clinic's display
- *      word {kutchi, english, placeholder, ids}: English segments in [brackets], which Kit.text draws grey italic.
- *
- *   ClinicLang.load(json)                 the data (Clinic.Run.load and the Node tests)
- *   ClinicLang.resolve = (id) => entry    extra words by id (the clinic's items), set by the kit
- *   ClinicLang.say(meaning) -> Result     ClinicLang.show(meaning | Result, {cap, lower}) -> display word
- *   ClinicLang.w(id) ClinicLang.num(n)    one word, a number word (display words)
- *   ClinicLang.first(x) .then(x) .also(x) .join([...]) .item(id, {n, size, noun}) .count(n) .side(s) .yes() .no()
+ *   await ClinicLang.ready(loadJSON)      the browser: load the engine and its data once (Clinic.HealHost.loadBase)
+ *   ClinicLang.say(meaning) -> Result     the engine's result (a Join is several results one after the other)
+ *   ClinicLang.show(meaning | Result, {cap, lower, row}) -> {kutchi, english, placeholder, ids, plan, check}
+ *   ClinicLang.w(id) .num(n) .line(key, vars, {pool}) display words: a word, a number word, a clinic line by key
+ *   ClinicLang.first(x) .then(x) .also(x) .item(id, {n, size, mods}) .count(n) .join([...]) .step(i, x)
  *                                         meaning builders (x: a word id, a meaning, or a list of them)
+ *   ClinicLang.lex(id)                    the engine id of a clinic id (its alias), or null
  *
- * Plain <script> (window.ClinicLang, Clinic.Lang) and Node require().
+ * THE ONE ADAPTER LEFT (marked, step 4e): `Join`. A heal game's card row such as "ne poi thread: pela wadho, ba"
+ * is several engine-built pieces placed one after the other with a punctuation mark between them; the engine has
+ * no rule for these rows yet (data/lang/reports/gap-list.md, the clinic's frames). Every piece is the engine's own
+ * output (its words, forms, gaps and clips); the join adds only the order and the mark. Callers: the heal games'
+ * rows (cut, knee, ear, eye, boing, taste, foot) and the parked games (tummy, hic, hair).
+ *
+ * Plain <script> (window.ClinicLang, Clinic.Lang) and Node require() (Node reads data/lang/ from the repo).
  */
 (function (root, factory) {
   const L = factory();
@@ -33,193 +32,206 @@
   }
 })(typeof self !== "undefined" ? self : typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
-  const E = { data: { words: {}, lines: {}, grammar: {} }, resolve: null, seam: null, gapLog: [] };
-  const G = () => E.data.grammar || {};
+  const DATA_FILES = ["params", "lexicon", "paradigms", "abstract", "concrete", "clips"];
+  const E = { engine: null, gapLog: [], ctx: {} };
 
-  E.load = function (json) {
-    E.data = { words: Object.assign({}, (json && json.words) || {}), lines: Object.assign({}, (json && json.lines) || {}), grammar: Object.assign({}, (json && json.grammar) || {}) };
-    return E;
+  /** Hand the clinic an engine (the browser after ready(), a test with its own data). */
+  E.use = (engine) => (E.engine = engine || null);
+  /** The browser: load the engine module and data/lang/ once. loadJSON(path) is the kit's (stamped URLs). */
+  // (it resolves to true, never to E: E has a `then` builder, so awaiting E would wait for ever)
+  E.ready = async function (loadJSON, root = "") {
+    if (E.engine) return true;
+    if (!E.loading)
+      E.loading = (async () => {
+        // through the core's seam (the import map stamps it); a page without the map loads the engine by path
+        let mod;
+        try {
+          mod = await import("#core/lang/index.js");
+        } catch (e) {
+          mod = await import(`${root}js/core/lang/engine/index.js`);
+        }
+        const data = {};
+        for (const f of DATA_FILES) data[f] = await loadJSON(`data/lang/${f}.json`);
+        const audio = (await loadJSON("data/family-audio.json")) || [];
+        E.engine = mod.createEngine({ data, audio });
+      })();
+    await E.loading;
+    return true;
+  };
+  const EN = () => {
+    if (!E.engine) throw new Error("ClinicLang: no engine yet (await ClinicLang.ready first)");
+    return E.engine;
   };
 
-  /** A word's entry: the lexicon, then the clinic's items (E.resolve), else an English placeholder named by its id. */
-  const entry = (id) => E.data.words[id] || (E.resolve && E.resolve(id)) || null;
-  const english = (id) => {
-    const w = entry(id);
-    return (w && (w.english || w.e)) || String(id).replace(/^cl-/, "").replace(/-/g, " ");
+  /* ---------------- ids ---------------- */
+  // the clinic's ids are the engine's aliases (build/lang/import_clinic.mjs): a word by its own id, a tray item as
+  // clinic.item.<id>, a line as clinic.line.<key>, the pipeline's words as clinic.pipeline.<kind>.<key>
+  const PREFIX = ["", "clinic.item.", "clinic.line.", "clinic.line.pipeline."];
+  E.lex = function (id, prefixes = PREFIX) {
+    if (id == null) return null;
+    const lx = EN().linearizer;
+    for (const p of prefixes) {
+      const e = lx.lexOf(p + id);
+      if (e) return e.id;
+    }
+    return null;
   };
-  const isPlaceholder = (id) => {
-    const w = entry(id);
-    return !(w && (w.kutchi || w.k));
+  /** A number's word id (the engine finds a number word by its value). */
+  E.numId = function (n) {
+    const c = EN().linearizer.classify(Number(n), { type: "Num" }, {});
+    return c.missingValue != null ? null : c.id;
   };
-  const display = (id) => {
-    const w = entry(id);
-    return (w && (w.kutchi || w.k)) || english(id);
+  // the clinic's sizes, sides, yes and no are concepts; the engine holds their words
+  const CONCEPT = { big: "a.big", small: "a.small", left: "a.left", right: "a.right" };
+  E.sizeId = (size) => CONCEPT[size] || null;
+  E.sideId = (side) => CONCEPT[side] || null;
+  E.yesId = () => "phrase.yes";
+  E.noId = () => "neg.not";
+
+  /* ---------------- meanings ---------------- */
+  const PUNCT = { ",": 1, ".": 1, ":": 1, ";": 1, "!": 1, "?": 1 };
+  const asM = (x) => (x == null ? x : typeof x === "string" ? (PUNCT[x] ? { fn: "Punct", t: x } : { fn: "Item", kind: x }) : typeof x === "number" ? { fn: "Count", n: x } : Array.isArray(x) ? { fn: "Join", parts: x.map(asM) } : x);
+  const idOf = (id) => E.lex(id) || id;
+  E.item = (kind, o = {}) => ({ fn: "Item", kind, n: o.n, mods: o.size ? [E.sizeId(o.size)].filter(Boolean) : o.mods });
+  E.count = (n) => ({ fn: "Count", n });
+  E.first = (x, o = {}) => ({ fn: "First", x: asM(x), lower: !!o.lower });
+  E.then = (x, o = {}) => ({ fn: "Then", x: asM(x), lower: !!o.lower });
+  E.also = (x, o = {}) => ({ fn: "And", x: asM(x), lower: o.lower !== false });
+  E.p = (t) => ({ fn: "Punct", t });
+  E.join = (parts, sep) => ({ fn: "Join", parts: parts.map(asM), sep });
+  E.word = (id) => ({ fn: "Word", id });
+  /** The step joins of an ordered list: the first "first x", the rest "and then x" (lower: inside a row). */
+  E.step = (i, x, o) => (i === 0 ? E.first(x, o) : E.then(x, o));
+  /** A whole line said on its own: a phrase entry (Say, or Exclaim / Ask by its own mark). */
+  E.phrase = (id) => {
+    const lx = idOf(id);
+    const e = EN().linearizer.lexOf(lx);
+    const g = String((e && e.gloss) || "");
+    return { fn: /!\s*$/.test(g) ? "Exclaim" : /\?\s*$/.test(g) ? "Ask" : "Say", x: lx };
   };
 
-  /* ---------------- 1. the proto-engine (the adapter's calls) ---------------- */
-  const Lang = {};
-  Lang.gender = (id) => {
-    const g = (entry(id) || {}).gender;
-    return g === "he" || g === "she" ? g : null;
-  };
-  Lang.hasForms = (id) => !!(id && (entry(id) || {}).forms);
-  Lang.form = (id, gender) => {
-    const w = entry(id) || {};
-    return (w.forms && w.forms[gender || "he"]) || display(id);
-  };
-  Lang.word = (id, gender) => [{ t: Lang.form(id, gender), lang: isPlaceholder(id) ? "e" : "k", w: id }];
-  Lang.numId = (n) => (G().numbers || {})[n] || null;
-  Lang.num = (n, gender) => {
-    const id = Lang.numId(n);
-    return id ? Lang.word(id, gender) : [{ t: String(n), lang: "e" }];
-  };
-  Lang.countParts = (n, id, { one = true } = {}) => {
-    if (n == null || (n === 1 && !one)) return [id];
-    const t = G().count || "{n} {x}";
-    return t.indexOf("{x}") < t.indexOf("{n}") ? [id, n] : [n, id];
-  };
-  /** parts: word ids and numbers; a number or describing word agrees with the next noun that has a gender field. */
-  Lang.phrase = (parts) => {
-    const segs = [];
-    const en = [];
-    const sep = G().sep != null ? G().sep : " ";
-    const nounAfter = (i) => {
-      for (let j = i + 1; j < parts.length; j++) if (typeof parts[j] === "string" && entry(parts[j]) && "gender" in entry(parts[j])) return parts[j];
-      for (let j = i + 1; j < parts.length; j++) if (typeof parts[j] === "string") return parts[j];
-      return null;
-    };
-    parts.forEach((p, i) => {
-      if (i) segs.push({ t: sep, lang: null });
-      const noun = nounAfter(i);
-      const g = Lang.gender(noun);
-      const add = typeof p === "number" ? Lang.num(p, g) : Lang.word(p, g);
-      // decision 21: a form agreeing with a noun of unconfirmed gender is the he-form, flagged "to check"
-      if (noun && !g && add.some((x) => Lang.hasForms(x.w))) add.forEach((x) => Lang.hasForms(x.w) && (x.check = noun));
-      segs.push(...add);
-      en.push(typeof p === "number" ? String(p) : english(p));
-    });
-    return { segs, en: en.join(" ") };
-  };
-  Lang.line = (key, phrase) => {
-    const f = E.data.lines[key];
-    if (!f && entry(key)) return Object.assign(Lang.wordLine(key), { key });
-    if (!f) return { segs: [{ t: key, lang: "e" }], en: key, key };
-    const lang = f.k ? "k" : "e";
-    const [a, b] = (f.k || f.e).split("{x}");
-    const segs = [];
-    if (a) segs.push({ t: a, lang });
-    if (phrase && b !== undefined) segs.push(...phrase.segs);
-    if (b) segs.push({ t: b, lang });
-    const enT = f.en || f.e;
-    return { segs, en: phrase ? enT.replace("{x}", phrase.en) : enT, key };
-  };
-  Lang.wordLine = (id) => ({ segs: Lang.word(id), en: english(id) });
-  const wrap = (tmpl, segs, en, lang) => {
-    const [a, b] = String(tmpl || "{x}").split("{x}");
-    const out = [];
-    if (a) out.push({ t: a, lang });
-    out.push(...segs);
-    if (b) out.push({ t: b, lang });
-    return { segs: out, en: (a || "") + en + (b || "") };
-  };
-  Lang.numLine = (n) => wrap(G().number || "{x}!", Lang.num(n), String(n), "k");
-  Lang.bare = (phrase) => wrap((G().list || {}).first || "{x}", phrase.segs, phrase.en, "k");
-  Lang.join = (lines, sep = " ") => {
-    const segs = [];
-    let en = "";
-    lines.forEach((l, i) => {
-      if (i && sep && !l.punct) segs.push({ t: sep, lang: null });
-      segs.push(...l.segs);
-      en += (i && sep && !l.punct ? sep : "") + l.en;
-    });
-    return { segs, en, parts: lines };
-  };
-  Lang.list = (entries, { seq = false } = {}) => {
-    const out = [];
-    entries.forEach((e, gi) =>
-      [].concat(e).forEach((id, j) => {
-        const ph = Lang.phrase([id]);
-        out.push(!out.length ? (seq ? Lang.line(G().then_first || "first", ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && gi > 0 ? G().then || "then" : "and", ph));
-      })
-    );
-    return Lang.join(out);
-  };
-  Lang.plain = (line) => line.segs.map((s) => s.t).join("");
-  E.Lang = Lang;
-  /** What createLang({cook}) takes: {Lang, Order, data}. */
-  E.source = { Lang, Order: null, get data() {
-    // the adapter reads words for each segment's status: the lexicon plus the items resolved so far
-    return E.data;
-  } };
-
-  /* ---------------- 2. meanings ---------------- */
-  const ROLE = { First: "first", Then: "then", Also: "and", Times: "times" };
-  function itemParts(m) {
-    if (typeof m === "string") return [m];
-    if (Array.isArray(m)) return m;
-    const head = (m.mods || []).concat([m.kind]);
-    if (m.n == null) return head;
-    return Lang.countParts(m.n, "\u0000", { one: m.one !== false }).flatMap((p) => (p === "\u0000" ? head : [p]));
+  /** A clinic meaning -> the engine's meaning (ids to engine ids; lists of words inside a frame to the frame's list). */
+  function toEngine(m) {
+    if (typeof m === "string") return { fn: "Item", kind: idOf(m) };
+    const out = {};
+    for (const k of Object.keys(m)) {
+      if (k === "lower" || k === "sep") continue;
+      const v = m[k];
+      if (k === "fn") out.fn = v;
+      else if (k === "kind" || k === "id") out[k] = idOf(v);
+      else if (k === "mods") out.mods = v ? v.filter(Boolean).map(idOf) : v;
+      else if (Array.isArray(v)) out[k] = v.map((x) => (typeof x === "object" ? toEngine(x) : idOf(x)));
+      else if (v && typeof v === "object") out[k] = engineArg(v);
+      else out[k] = typeof v === "string" ? idOf(v) : v;
+    }
+    return out;
   }
-  function build(m) {
-    if (typeof m === "string") return Lang.wordLine(m);
+  // a frame's argument: a plain word is the word itself; a Join of words (a colour and a noun, "laal ne lilo plaster")
+  // is said piece by piece inside the frame, so it stays a Join and the frame is built around it (see say)
+  const engineArg = (v) => (v.fn === "Join" ? v : v.fn === "Item" && !v.n && !(v.mods && v.mods.length) ? idOf(v.kind) : toEngine(v));
+
+  /* ---------------- results ---------------- */
+  const empty = () => ({ ok: true, text: "", en: "", tokens: [], segments: [], clipPlan: [], drafts: [], gaps: [] });
+  /** append result b to result a (a space between, none before a mark) */
+  function concat(a, b, { space = true } = {}) {
+    if (!b.segments.length) return a;
+    const off = a.tokens.length;
+    const segOff = a.segments.length + (a.segments.length && space ? 1 : 0);
+    if (a.segments.length && space) a.segments.push({ t: " ", lang: null });
+    a.segments.push(...b.segments.map((s) => Object.assign({}, s)));
+    a.tokens.push(...b.tokens);
+    a.clipPlan.push(...(b.clipPlan || []).map((c) => Object.assign({}, c, { tokens: c.tokens && c.tokens.map((t) => t + off), segs: c.segs && c.segs.map((t) => (t == null || t < 0 ? t : t + segOff)) })));
+    a.drafts.push(...(b.drafts || []));
+    a.gaps.push(...(b.gaps || []));
+    a.ok = a.ok && b.ok;
+    a.text += (a.text && space ? " " : "") + b.text;
+    a.en += (a.en && space ? " " : "") + (b.en || "");
+    return a;
+  }
+  /** a sentence result as a row piece: no capital, no final mark (F10: card rows), unless asked */
+  function rowOf(r, { lower }) {
+    const segs = r.segments.slice();
+    while (segs.length && segs[segs.length - 1].lang == null && /^[.!?]$/.test(segs[segs.length - 1].t)) segs.pop();
+    if (lower) {
+      const i = segs.findIndex((s) => s.lang);
+      if (i >= 0) segs[i] = Object.assign({}, segs[i], { t: segs[i].t.charAt(0).toLowerCase() + segs[i].t.slice(1) });
+    }
+    const text = segs.map((s) => s.t).join("");
+    const en = String(r.en || "").replace(/[.!?]+$/, "");
+    return Object.assign({}, r, { segments: segs, text, en: lower ? en.charAt(0).toLowerCase() + en.slice(1) : en });
+  }
+  /** one word in its default form (a number, an id), as a result */
+  function wordResult(id) {
+    const r = EN().word(id, null, E.ctx);
+    const e = EN().linearizer.lexOf(id);
+    return Object.assign({}, r, { en: (e && e.gloss) || String(id), segments: r.segments.map((s) => Object.assign({}, s)) });
+  }
+
+  /** Every line: the engine's result for a meaning (Join: the pieces one after the other). */
+  E.say = function (m0) {
+    const m = asM(m0);
+    let r;
     switch (m.fn) {
-      case "Item":
-        return Lang.phrase(itemParts(m));
-      case "Word":
-        return Lang.wordLine(m.id);
-      case "Count":
-        return m.bare ? { segs: Lang.num(m.n), en: String(m.n) } : Lang.numLine(m.n);
-      case "Phrase":
-        return Lang.line(m.id);
       case "Punct":
-        return { segs: [{ t: m.t, lang: null }], en: m.t, punct: true };
-      case "Join":
-        return Lang.join(m.parts.map(build), m.sep != null ? m.sep : " ");
+        r = Object.assign(empty(), { text: m.t, en: m.t, segments: [{ t: m.t, lang: null }], punct: true });
+        break;
+      case "Count": {
+        const id = E.numId(m.n);
+        r = id ? wordResult(id) : Object.assign(empty(), { ok: false, text: String(m.n), en: String(m.n), segments: [{ t: String(m.n), lang: "e", gap: "number" }], gaps: [{ kind: "lexeme", what: `no number word for ${m.n}` }] });
+        break;
+      }
+      case "Word":
+        r = wordResult(idOf(m.id));
+        break;
+      case "Join": {
+        r = empty();
+        for (const p of m.parts) {
+          const pr = E.say(p);
+          concat(r, pr, { space: !pr.punct });
+        }
+        break;
+      }
       default: {
-        const k = ROLE[m.fn];
-        if (!k) throw new Error(`ClinicLang: no meaning ${m.fn}`);
-        const l = Lang.line(k, m.x != null ? build(m.x) : undefined);
-        // inside a row ("pela wadho, ne poi nindho") the frame starts lower case: spelling, not grammar
-        if (m.lower && l.segs[0] && l.segs[0].t) l.segs[0] = Object.assign({}, l.segs[0], { t: l.segs[0].t.charAt(0).toLowerCase() + l.segs[0].t.slice(1) });
-        if (m.lower) l.en = l.en.charAt(0).toLowerCase() + l.en.slice(1);
-        return l;
+        // a frame round a Join of words ("ne poi" + "laal ne lilo plaster"): the frame with its first word, then the
+        // rest of the Join after it (the engine has no rule for a list in these frames: gap list)
+        const x = m.x && m.x.fn === "Join" ? m.x : null;
+        if (x && x.parts.length) {
+          const [head, ...rest] = x.parts;
+          r = E.say(Object.assign({}, m, { x: head }));
+          for (const p of rest) {
+            const pr = E.say(p);
+            concat(r, pr, { space: !pr.punct });
+          }
+          break;
+        }
+        // a frame round a describing word or a number said on its own ("pela wadho"): the engine's frame word, then
+        // the engine's own word (its frames take a noun phrase; a lone describing word has no noun to agree with)
+        const bare = m.x && m.x.fn === "Item" && !m.x.n && !(m.x.mods && m.x.mods.length) ? EN().linearizer.lexOf(idOf(m.x.kind)) : null;
+        if (bare && !["N", "PN", "Phrase"].includes(bare.pos) && ["First", "Then", "And"].includes(m.fn)) {
+          r = rowOf(EN().say({ fn: m.fn }, E.ctx), { lower: !!m.lower });
+          concat(r, wordResult(bare.id));
+          break;
+        }
+        const em = toEngine(m);
+        if (em.fn === "Item" && !em.n && !(em.mods && em.mods.length)) {
+          r = wordResult(em.kind);
+          break;
+        }
+        r = EN().say(em, E.ctx);
+        if (["First", "Then", "And"].includes(m.fn)) r = rowOf(r, { lower: !!m.lower });
       }
     }
-  }
-  /** The local seam: the same Result shape as js/core/lang (ok, text, en, segments, gaps). */
-  function localSay(m) {
-    const line = build(m);
-    const segments = line.segs.map((s) => Object.assign({}, s));
-    const gaps = [];
-    segments.forEach((s, i) => {
-      if (s.lang === "e") gaps.push(s.w ? { kind: "lexeme", lex: s.w, what: s.t, seg: i } : { kind: "rule", what: s.t.trim(), seg: i });
-      if (s.check) gaps.push({ kind: "feature", lex: s.check, feature: "gender", defaulted: s.t, seg: i });
-    });
-    gaps.forEach((g) => E.gapLog.push(Object.assign({ meaning: m && m.fn }, g)));
-    return { ok: !gaps.some((g) => g.kind === "rule" || g.kind === "lexeme"), text: Lang.plain(line), en: line.en, segments, gaps, line };
-  }
-  // what the core adapter builds exactly as here: an Item, a Word, a Phrase, or a frame round one Item
-  const simple = (m) => !!m && typeof m === "object" && (["Item", "Word", "Phrase"].includes(m.fn) || (ROLE[m.fn] && (m.x == null || (m.x.fn === "Item" && !m.x.parts))));
-  /** Every line: the core's Lang when the game has handed it over (main.js), else the same build here. */
-  E.say = function (m) {
-    if (E.seam && simple(m)) {
-      // the core adapter understands Item, Word, Phrase and the frames; Join and bare counts it builds the same way
-      try {
-        const r = E.seam.say(m);
-        if (r && r.segments && r.segments.length) return r;
-      } catch (e) {
-        /* fall back to the local build */
-      }
-    }
-    return localSay(m);
+    (r.gaps || []).forEach((g) => E.gapLog.push(Object.assign({ meaning: m.fn }, g)));
+    return r;
   };
-  E.use = (lang) => (E.seam = lang || null);
 
   /** A result (or a meaning) as the clinic's display word: English segments in [brackets] (Kit.text: grey italic). */
   E.show = function (x, o = {}) {
-    const r = x && x.segments ? x : E.say(x);
+    let r = x && x.segments ? x : E.say(x);
+    if (o.row) r = rowOf(r, { lower: !!o.lower });
     const segs = r.segments;
+    // a placeholder's gloss may carry a note for grown-ups in brackets ("right (side)"): the card shows the word
+    const plain = (t) => String(t).replace(/\s*\([^)]*\)/g, "");
     let out = "";
     let buf = null; // English text being gathered into one [bracket]
     const close = () => {
@@ -230,7 +242,7 @@
       buf = null;
     };
     segs.forEach((s, i) => {
-      if (s.lang === "e") buf = (buf || "") + s.t;
+      if (s.lang === "e") buf = (buf || "") + plain(s.t);
       else if (!s.lang && buf !== null) {
         const nx = segs.slice(i + 1).find((q) => q.lang);
         if (nx && nx.lang === "e") buf += s.t;
@@ -244,9 +256,9 @@
       }
     });
     close();
-    const hasK = r.segments.some((s) => s.lang === "k");
-    let kutchi = hasK ? out.replace(/\s+([,.!?])/g, "$1") : null;
-    let en = r.en || "";
+    const hasK = segs.some((s) => s.lang === "k");
+    let kutchi = hasK ? out.replace(/\s+([,.!?:;])/g, "$1") : null;
+    let en = plain(r.en || "").replace(/([.!?])\1+$/, "$1");
     if (o.cap) {
       if (kutchi) kutchi = kutchi.replace(/^(\[?)(\S)/, (a, b, c) => b + c.toUpperCase());
       en = en.charAt(0).toUpperCase() + en.slice(1);
@@ -256,39 +268,60 @@
     const caps = (t) => t.replace(/([.!?]\s+)(\[?)([a-z])/g, (a, b, c, d) => b + c + d.toUpperCase());
     if (kutchi) kutchi = caps(kutchi);
     en = caps(en);
-    const ids = r.segments.filter((s) => s.w).map((s) => s.w);
-    return { kutchi, english: en, placeholder: !hasK, ids, check: r.segments.some((s) => s.check) || undefined };
+    const ids = segs.filter((s) => s.w).map((s) => s.w);
+    const check = (r.gaps || []).some((g) => g.kind === "feature") || undefined;
+    return { kutchi, english: en, placeholder: !hasK, ids, plan: r.clipPlan || [], check };
   };
 
-  /* ---------------- builders (so the clinic's code names meanings, never words) ---------------- */
-  const asM = (x) => (x == null ? x : typeof x === "string" ? ({ ",": 1, ".": 1, ":": 1, ";": 1, "!": 1 }[x] ? { fn: "Punct", t: x } : { fn: "Item", kind: x }) : Array.isArray(x) ? { fn: "Join", parts: x.map(asM) } : x);
-  E.item = (kind, o = {}) => ({ fn: "Item", kind, n: o.n, mods: o.size ? [(G().size || {})[o.size]].filter(Boolean) : o.mods });
-  E.count = (n, bare = true) => ({ fn: "Count", n, bare });
-  E.first = (x, o = {}) => ({ fn: "First", x: asM(x), lower: !!o.lower });
-  E.then = (x, o = {}) => ({ fn: "Then", x: asM(x), lower: !!o.lower });
-  E.also = (x) => ({ fn: "Also", x: asM(x) });
-  E.p = (t) => ({ fn: "Punct", t });
-  E.join = (parts, sep) => ({ fn: "Join", parts: parts.map(asM), sep });
-  E.word = (id) => ({ fn: "Word", id });
-  /** The step joins of an ordered list: the first "pela x", the rest "ne poi x" (lower: inside a row). */
-  E.step = (i, x, o) => (i === 0 ? E.first(x, o) : E.then(x, o));
-  /** Display words. */
+  /* ---------------- display words ---------------- */
   E.w = (id, o) => Object.assign(E.show(E.word(id), o), { id });
-  E.num = (n, o) => Object.assign(E.show(E.count(n), o), { id: Lang.numId(n), n });
-  E.numId = Lang.numId;
-  E.sizeId = (size) => (G().size || {})[size] || null;
-  E.sideId = (side) => (G().sides || {})[side] || null;
-  E.yesId = () => G().yes || null;
-  E.noId = () => G().no || null;
+  E.num = (n, o) => Object.assign(E.show(E.count(n), o), { id: E.numId(n), n });
   /** A display word for a size + noun ("wadho [wax]"): the describing word agrees with the noun (he-form if unknown). */
   E.sized = (size, noun, o) => E.show(E.item(noun, { size }), o);
-  // Node (the leak bots, the unit tests): the data from the repo, so a plan reads the same words as the game
-  if (typeof module === "object" && module.exports && typeof require === "function" && typeof __dirname === "string") {
-    try {
-      E.load(JSON.parse(require("fs").readFileSync(require("path").join(__dirname, "..", "..", "data", "clinic", "lang.json"), "utf8")));
-    } catch (e) {
-      /* no data: every word is a placeholder */
+
+  /**
+   * A clinic line by its key (data/clinic.json lines, a heal game's lines, data/clinic/pipeline.json lines). A line with
+   * no slot is the engine's phrase entry for it (clinic.line.<key>); a line with slots names its engine meaning in its
+   * data (`fn`), and vars fill the slots (each a word id, a meaning, or a display word that carries its meaning `m`).
+   *   line(key, vars, {def: the line's data object, pipeline: true})
+   */
+  E.line = function (key, vars = {}, o = {}) {
+    const def = o.def || {};
+    const fn = def.fn;
+    const slot = (v) => (v && typeof v === "object" && !v.fn ? v.m || v.id : v);
+    let m;
+    if (def.meaning) {
+      // a template naming an engine meaning, its slots as "$name" ({"fn": "Need", "who": "p1", "thing": "$a"})
+      const fill = (t) => (typeof t === "string" && t.startsWith("$") ? slot(vars[t.slice(1)]) : Array.isArray(t) ? t.map(fill) : t && typeof t === "object" ? Object.fromEntries(Object.entries(t).map(([k, x]) => [k, fill(x)])) : t);
+      m = fill(def.meaning);
+    } else if (fn) {
+      m = { fn };
+      for (const [k, v] of Object.entries(vars)) m[k] = slot(v);
+    } else if (def.lex) {
+      m = E.phrase(def.lex);
+    } else {
+      const id = E.lex(key, o.pipeline ? ["clinic.line.pipeline.", "clinic.line."] : ["clinic.line.", "clinic.line.pipeline.", ""]);
+      m = id ? E.phrase(id) : null;
     }
-  }
+    if (!m) return { kutchi: null, english: String(key), placeholder: true, plan: [], key };
+    const w = E.show(m, o);
+    return Object.assign(w, { key, m, who: def.who, audio: def.audio });
+  };
   return E;
 });
+
+// Node (the leak bots, the unit tests): the engine over the repo's data/lang/, so a plan reads the same words as the game
+if (typeof module === "object" && module.exports && typeof require === "function" && typeof __dirname === "string") {
+  try {
+    const fs = require("fs");
+    const path = require("path");
+    const rootDir = path.join(__dirname, "..", "..");
+    const read = (p) => JSON.parse(fs.readFileSync(path.join(rootDir, p), "utf8"));
+    const { createEngine } = require(path.join(rootDir, "js", "core", "lang", "engine", "index.js"));
+    const data = {};
+    for (const f of ["params", "lexicon", "paradigms", "abstract", "concrete", "clips"]) data[f] = read(`data/lang/${f}.json`);
+    module.exports.use(createEngine({ data, audio: read("data/family-audio.json"), path: "test", phrases: false }));
+  } catch (e) {
+    /* no engine: say() throws, as in a page that hasn't loaded it */
+  }
+}

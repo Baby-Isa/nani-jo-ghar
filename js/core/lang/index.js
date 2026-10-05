@@ -31,6 +31,10 @@
  */
 import { planClips, voicePath } from "../voice.js";
 
+// The language engine itself (step 4a/4b), through the seam: the clinic speaks only through it since step 4e
+// (js/clinic/lang.js); Cook still uses createLang below until step 4d.
+export { createEngine, loadEngine } from "./engine/index.js";
+
 /** Meaning -> the role it plays in today's frames. A role is resolved through data.grammar first, then data.lines. */
 export const FRAME_ROLES = {
   Need: { grammar: ["order", "first"], key: "need" },
@@ -65,7 +69,7 @@ export const GAPS = [
   { id: "gender-default", kind: "feature", what: "A describing word or \"one\" next to a noun of unknown gender takes the word's own spelling (today's code), not an explicit he-form flagged \"to check\" (decision 21).", fix: "step 4 (Lang marks it); Mum for each noun" },
   { id: "register", what: "No speaker/addressee agreement (tu / aai by age, G6) and no polite register beyond picking the `canyou` frame by name.", fix: "step 4 (ctx.speaker, ctx.addressee, ctx.register)" },
   { id: "verbs", what: "Steps and commands are frames with a slot (Pela {x}., Hane {x}!, {x} hane kadh.), not verbs with forms; fragments without a verb (PAN-02) stay fragments.", fix: "step 4 (Steps, Imp; L55, L56, L59, L60)" },
-  { id: "clinic", what: "The clinic's words, numbers and joins (pela / ne poi, wadho / nindho, number words in four files) are in its own code and data, which this adapter does not read; R5 must route them through the seam as data, or they come back as gaps.", fix: "R5 (as data), step 4" },
+  { id: "clinic", what: "Done in step 4e: the clinic no longer uses this adapter; every clinic word and line is the engine's (createEngine, re-exported here; js/clinic/lang.js).", fix: "step 4e (done)" },
   { id: "word-timing", kind: "audio", what: "Inside a whole-phrase recording the read-along can only underline the whole span (no word timestamps yet).", fix: "step 4c (engine-design § 9)" },
   { id: "lexicon", what: "Words come from data/cook.json (+ station files) only; there is no single lexicon or engine word ids (n.samosa); Cook ids are used as they are.", fix: "step 4 (data/lang/lexicon.json, ids kept as aliases)" },
 ];

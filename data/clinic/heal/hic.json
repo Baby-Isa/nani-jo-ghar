@@ -61,56 +61,47 @@
   "lines": {
     "hic": {
       "who": "patient",
-      "kutchi": "[EN: Hic!]",
-      "english": "Hic!",
+      "e": "Hic!",
       "placeholder": true
     },
     "glug": {
       "who": "patient",
-      "kutchi": "[EN: Glug!]",
-      "english": "Glug!",
+      "e": "Glug!",
       "placeholder": true
     },
     "slurp": {
       "who": "patient",
-      "kutchi": "[EN: Slurrrp... it's empty!]",
-      "english": "Slurrrp... it's empty!",
+      "e": "Slurrrp... it's empty!",
       "placeholder": true
     },
     "splash": {
       "who": "patient",
-      "kutchi": "[EN: Oops! Splash!]",
-      "english": "Oops! Splash!",
+      "e": "Oops! Splash!",
       "placeholder": true
     },
     "mmph": {
       "who": "patient",
-      "kutchi": "[EN: Mmmph!]",
-      "english": "Mmmph! (cheeks full)",
+      "e": "Mmmph! (cheeks full)",
       "placeholder": true
     },
     "boo": {
       "who": "doctor",
-      "kutchi": "[EN: Boo!]",
-      "english": "Boo!",
+      "e": "Boo!",
       "placeholder": true
     },
     "eek": {
       "who": "patient",
-      "kutchi": "[EN: Eeek!]",
-      "english": "Eeek!",
+      "e": "Eeek!",
       "placeholder": true
     },
     "laugh": {
       "who": "doctor",
-      "kutchi": "[EN: Ha ha ha! All gone!]",
-      "english": "Ha ha ha! All gone!",
+      "e": "Ha ha ha! All gone!",
       "placeholder": true
     },
     "back": {
       "who": "patient",
-      "kutchi": "[EN: ...hic! Still there!]",
-      "english": "...hic! Still there!",
+      "e": "...hic! Still there!",
       "placeholder": true
     }
   },
