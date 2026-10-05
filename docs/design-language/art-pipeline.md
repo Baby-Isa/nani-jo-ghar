@@ -724,13 +724,11 @@ then drop them into the game and playtest. Only if it holds up in motion, on a p
 
 ### The ChatGPT stress test (what the test should cover)
 
-> Stale: "transparent background" below → ChatGPT gives no alpha, so the test sheets use magenta or grey grounds, then key (D1, D22); "the hands" in step 5 → parked, none in Cook (H13).
-
 1. **Canonical Nani:** 1 neutral image, then 5 edits (eyes closed, mouth open, smile, pointing *above* the counter, worried). Does she stay the same person?
-2. **Twelve ingredients** in one style, each on a transparent background, the same scale and lighting.
+2. **Twelve ingredients** in one style, each on a flat magenta ground (grey for metal and glass), keyed out later, the same scale and lighting.
 3. **Ingredient states:** an onion raw, then halved, then chopped (edits of the same image).
 4. **The empty kitchen background** at 16:9: no Nani, no props on the tappable surfaces, with room behind the island.
-5. **Layers:** basket back and front, the hands, the brass bowl back and front (transparent).
+5. **Layers:** the pantry tray, the brass bowl back and front (cut from a flat ground).
 6. **A second character** (the shopkeeper) in the same style, next to Nani, so they look like one family of designs.
 
 If 1–3 hold up, the style is safe to commit to.
@@ -741,16 +739,14 @@ If 1–3 hold up, the style is safe to commit to.
 
 > from: docs/archive/design-v1/Roadmap and Story Structure.md § Layout contract v2 › Background art brief (every new background)
 
-> Stale: the quiet left strip and the 4:3 crop below pre-date the left sidebar at about 22% (F4) and the no-letterbox rule (F18); the rest of the layout contract v2 is in `ui-design-system.md`.
-
 ### Background art brief (every new background)
 
 - A counter, island or bolster running across the scene, with room behind it for the character. No leftover floor objects (rugs, crates) where it goes or in the foreground.
 - A slightly high camera looking down onto the work surface, so items and containers read clearly.
 - Clear, flat, evenly lit surfaces where tappable items go. **No painted food anywhere near a tappable zone.**
-- The quiet left strip is no longer needed for the sidebar (it has its own column), but keep the far edges uncluttered for the 4:3 crop.
+- The sidebar has its own column (left, about 22%, F4) and the stage fills the screen with no letterbox (F18), so keep the far edges uncluttered for any screen shape; the rest of the layout contract is in `ui-design-system.md`.
 - Same camera height and painterly lighting in every scene, 16:9, no text.
-- Supply separately, on transparent backgrounds, in the same style: carried container, destination container, counter front layer, swaying items.
+- Supply separately, cut from a flat ground, in the same style: carried container, destination container, counter front layer, swaying items.
 
 ---
 
