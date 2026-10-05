@@ -8,32 +8,28 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (5 Oct 2026, 11:00 UK):** handover from the long 1–2 Oct orchestrator chat.
-- **Steps 1, 2a, 2b: done and approved.** Decisions 17–27 (1 Oct) are in `docs/decisions.md` and the rulebook.
-- **Step 3 (the refactor) is almost done**, all on branch `ccr-fcd9dddd-wnywzc`; **nothing is on `main` yet** (the live site is still the 1 Oct step-1 build).
-  - Done (reports in `build/reports/`): R0 clean slate; R1 + R1b the sandbox and layout lint (480 pages, 8 sizes incl. tablets); R2 the core; R3a the frame and kit built to scale; R3b the game host and formats (`docs/architecture/building-games.md`); R4 Cook onto the framework; R5 the clinic onto it; R6 gate prep (stitched speech, version stamps, sidebar fit, Snap hang).
-  - **The clinic's nine heal games are redesigned** to Zafar's 1 Oct notes (`build/reports/heal-A.md`, `heal-B.md`, `heal-C.md`): zoom in/out staging, the bulb/eye split, the guided first round, the end review's steps, the fever room, the drop machine, eye test versions A and B (`?eyetest=a|b`). Stand-in art until the art run.
-- **Two jobs stopped mid-way at the weekly usage limit (2 Oct)**, saved as WIP commits on the branch, **not yet checked**:
-  1. **C1, clinic polish** (commit `abef3118`), from Fable's review: rows CLN-69 to CLN-80 in `docs/process/regressions.md` (results card over the scene, buttons cleared on done, bubbles on screen, a round help glow, the word review at 800×360, the scrape's hand clear of the tools, readable hot/cold jugs, English lines styled as placeholders, a smoother zoom, scene pictures not emoji, the tick badge always reads, 48 px eye pills). Started: results over the scene, bubble clamp, glow.
-  2. **G1, gate fixes** (commit `a1726e71`), from `build/reports/step3-r6.md` "Left for the gate" plus SH-47/SH-48: phone three-person rounds fold to headlines, one-line rows on phones, the closed card's headline and flag on phones, Cook day 6 say-slot at 1024×768, Find's dock at 48 px, Cook's voice through the core (stitched), the parked modes' unstamped fetches, the stars test.
-- **Art:** the clinic art plan (115 images) and Chrome block are ready (`docs/design-language/art-plans/clinic-heal-chrome-block.txt`); **Zafar is running it** (part A needs him ~30–40 min). The art plan's §10 questions still need his answers.
-- **The doctor's visit is ~9 Oct.** He plays every heal game; it must look better than Cook today and work first time (decision 27).
-- **Open, later:** Cook's tablet layouts (CK-TAB-01), take-back in 9 Cook stations (CK-TB-01), Mum's Round 4 recording not processed, eye test A or B (Zafar chooses when he plays).
+**Where things stand (5 Oct 2026, 15:00 UK):** handover from the 5 Oct orchestrator chat. All work is on branch `ccr-fcd9dddd-wnywzc`; `main` is still the 1 Oct build.
+- **Done today:** C1 clinic polish (`build/reports/c1-clinic-polish.md`), G1 gate fixes (`g1-gate-fixes.md`), Mum's 5 Oct recordings processed (`mum-2026-10-05.md`: Round 4, grammar §38–55, 168 clips not yet ear-checked), W1 Mum's words into Cook's guide box and the clinic data (`w1-words.md`), the Keine et al. paper + Gemini excerpts analysed (`docs/language/sources/kutchi-findings-summary-2026-10-05.md`, a 67-item yes/no list for Mum in `docs/language/mum-questions/`). Decisions 28–31 (and 32 when W2 lands: red is ***laal***).
+- **Still running (check each with `get_session`; reports land in `build/reports/`):**
+  1. **Gate**: full sandbox run, Sonnet, `session_01G2jdcAfGrNjmDL2mgHdH93`, stop 17:00 → `step3-gate.md`.
+  2. **W2**: Cook's samosa/daar guide phases, the clinic words shown and heard, *lal* → ***laal*** everywhere, decision 32; Sonnet, `session_01JcvC7Umt9dTH9ZVUQ27aJc`, stop 17:30 → `w2-words.md`.
+  3. **A1**: the girl's clinic art cut and wired into the nine heal games; told to wrap up (big context) → `a1-clinic-art.md` with a "left for the next art session" list. Opus, `session_01MX4oT85PhNCze8gryAZbNz`.
+  4. **Chrome art run** (Zafar's browser): parts B–D still landing in `sources/art/clinic-heal-v3/` on `main` (30 of 115 at 14:50).
+- **Zafar wants Mum's words AND the art wired before he plays tonight.**
 
 **Next steps, in order:**
-1. **Finish C1 and G1** (one session each, side by side: C1 owns the clinic files and `js/shared/{results,host,onboard}.js` + `css/shared/results.css`; G1 owns `js/shared/order-card.js` + `css/shared/order-card.css`, `js/cook/**`, `js/find/**`, the parked modes' fetches). Each first checks its WIP commit in the sandbox (`--touched`), then completes its list.
-2. **The gate:** a full sandbox run (`node build/sandbox/run.mjs --gate`, then `--update-baseline`), a quick Fable look at the clinic and Cook sheets, then **Zafar plays the branch build** (lab links in `labs.html`). With his OK: `python3 build/bump_version.py`, merge to `main`, check the Pages build, send him a screenshot.
-3. **The art lands:** cut and wire it (the art plan §8), re-shoot, Zafar plays, then the doctor's visit.
-4. **Then:** process Mum's Round 4 recording; step 4 (build and fill the language engine); the word books and dictionary mode; finish Cook.
-
-**How to run it cheaply** (last week ran out early):
-- The orchestrator chat stays short: read reports, not transcripts; one-line check-ins; hand over at each step boundary.
-- At most two top-model build sessions at a time; mid-tier (Sonnet) for mechanical work; Fable only for reviews before Zafar sees something.
-- `--touched` sandbox runs while working; the full gate once, before publishing.
-- When a session hits a usage limit, schedule its resume for one minute after the reset (read the reset time from the failure).
+1. Re-arm a 35-minute `send_later` check-in; one line to Zafar each time; log in `docs/process/overnight-log.md`.
+2. When the gate, W2 and A1 are done: read the three reports; your own look (sandbox `--flow` on clinic heal games + `clinic:patient` and `cook:samosa`, `cook:daar`, at 1366×768 and 800×360; flaws first).
+3. Check the preview loads: https://raw.githack.com/Baby-Isa/nani-jo-ghar/ccr-fcd9dddd-wnywzc/labs.html (raw.githack serves the branch; the repo is public). Hand Zafar that link and a short list of what to play (the clinic's nine heal games and one patient end to end; Cook chai, samosa, daar; Mum's new words in the guide box: tap its speaker).
+4. His feedback → a full report and regression rows the same day (CLAUDE.md).
+5. When Chrome finishes parts C and D: a fresh art session A2 (Opus, high) continues from `build/cut_clinic_heal_v3.py` and `data/clinic/heal-art.json` per A1's list.
+6. With Zafar's OK after play: `python3 build/bump_version.py`, merge to `main`, check the Pages build, send a screenshot (decision 28: one publish after the gate).
+7. Open: Mum's 168 clips need ear-checking in `lab/family-audio.html`; the yes/no list for Mum; Round 5.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` (this "Next chat" section first) and `docs/process/rules.md`. Work on branch `ccr-fcd9dddd-wnywzc`. Give me a short plan update, then propose how to finish C1 and G1 and run the gate (models, cost, parallel sessions), following "How to run it cheaply". Don't start anything until I say go.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first) and only the rulebook sections for the work at hand (§2 sessions, §3 quality). Work on branch `ccr-fcd9dddd-wnywzc`. Check the running sessions listed there, give me a one-paragraph update, then carry on with "Next steps" (check-ins, your look, then the play link). Tell me before launching anything new.
+
+**Keeping new chats cheap:** read only the rulebook sections a task needs (not all of `rules.md`); read reports, never transcripts; hand over at each step boundary or around 300k context.
 
 ---
 
