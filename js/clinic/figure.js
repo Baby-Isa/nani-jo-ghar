@@ -230,7 +230,33 @@
         return { x: c.x - fr.left, y: c.y - fr.top, r: Math.sqrt(a / Math.PI) * (c.scale || 1) };
       },
       /** The part under a client point: {part (no "body-"), side ("left"/"right"/null), key} or null. */
-      partAt(cx, cy, { active, closeup = false, pad = 60 } = {}) {
+      partAt(cx, cy, { active, closeup = false, pad = 60, prefer = null } = {}) {
+        // A2 (5 Oct): on the art (front pose), its measured tap areas (heal-art.json patients[kind].taps): the
+        // smallest area holding the tap wins, else the nearest within pad; face parts only in the close-up, as below.
+        // Two parts on one spot (her closed mouth is also the tooth) give `prefer` when it's one of them
+        const T = fig.art && fig.art.view === "front" && fig.art.spec.taps;
+        if (T) {
+          const r = fig.art.base.getBoundingClientRect();
+          if (!r.height) return null;
+          const act = new Set((active || Object.keys(T).map((k) => k.split(".")[0])).map((p) => partId(p)));
+          let best = [];
+          let bd = Infinity;
+          Object.entries(T).forEach(([k, [ax, ay, ar]]) => {
+            const [p, sd] = k.split(".");
+            const pid = partId(p);
+            if (!act.has(pid)) return;
+            const face = body.isFace(pid);
+            if (closeup ? !(face || pid === "body-head") : face) return;
+            const d = Math.hypot(cx - (r.left + ax * r.width), cy - (r.top + ay * r.height));
+            const R = ar * r.height;
+            // inside: rank by the area's size (smaller first); outside: by the distance past its edge, plus pad
+            const score = d <= R ? R - 1e6 : d - R <= pad ? d - R : Infinity;
+            if (score < bd - 1e-6) (bd = score), (best = [{ part: p, side: sd || null, key: k }]);
+            else if (Math.abs(score - bd) <= 1e-6) best.push({ part: p, side: sd || null, key: k });
+          });
+          if (!best.length) return null;
+          return best.find((b) => prefer && b.part === String(prefer).replace(/^body-/, "")) || best[0];
+        }
         const [x, y] = toDesign(cx, cy);
         const act = (active || body.keys.map((k) => body.split(k).part)).map(partId);
         const h = body.hit(x, y, { active: act, closeup, pad: pad / scale });
@@ -314,6 +340,21 @@
       },
       /** Zoom onto a part (the close-up): zoom 1 = the whole figure. Animated. focus(null) goes back. */
       focus(part, side, zoom = 2.6, ms = 450) {
+        if (fig.art) {
+          // A2 (5 Oct): on the art, the whole figure (the art and the marks over it) is scaled about the part's spot
+          const a = part ? fig.artAnchor(part, side) || fig.artAnchor("head") : null;
+          const box = fig.artBox;
+          if (a && box) {
+            const br = box.getBoundingClientRect();
+            const rr = root.getBoundingClientRect();
+            const k = root.style.transform ? parseFloat((/scale\(([\d.]+)\)/.exec(root.style.transform) || [0, 1])[1]) : 1;
+            root.style.transformOrigin = `${((br.left - rr.left) / k + (a.x * br.width) / k) / (rr.width / k) * 100}% ${((br.top - rr.top) / k + (a.y * br.height) / k) / (rr.height / k) * 100}%`;
+          }
+          const to = part ? zoom : 1;
+          const anim = root.animate ? root.animate([{ transform: root.style.transform || "scale(1)" }, { transform: `scale(${to})` }], { duration: ms || 1, easing: "ease-in-out" }) : null;
+          root.style.transform = to === 1 ? "" : `scale(${to})`;
+          return anim ? anim.finished.catch(() => {}) : Promise.resolve();
+        }
         let to;
         if (!part) to = VB.slice();
         else {
@@ -393,6 +434,15 @@
           fig.swirl(pk, sk || null, true);
         }
         return true;
+      },
+      /** Back to the greybox (a stage the art has no pose for, e.g. standing): the art layer is dropped. */
+      dropArt() {
+        if (!fig.artBox) return;
+        fig.artBox.remove();
+        root.classList.remove("has-art");
+        groups.marks.removeAttribute("transform");
+        root.style.transform = "";
+        fig.art = fig.artEl = fig.artBox = null;
       },
       /** The art's face for a mood (W2-W6 on the front; W8 happy on the side); the greybox's moods map onto them. */
       artMood(m) {

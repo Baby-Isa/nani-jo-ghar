@@ -29,7 +29,10 @@
       const { screen, data } = env;
       const res = S.result("diagnosis");
       S.env = env;
-      const standing = plan.pose === "stand";
+      // A2 (5 Oct): the patient's real art (heal-art.json, the front-on W1: the plan's diagnosis shot) when it's cut.
+      // The art has sitting poses only, so with it the check-up (D3) is on the bed's edge too, not by the wall
+      const artSpec = await S.artFor(env.fig && env.fig.kind);
+      const standing = plan.pose === "stand" && !artSpec;
       const stage = S.room(screen, standing ? "stand" : "exam");
       stage.dataset.variant = plan.variant;
       const box = stage.scene;
@@ -51,11 +54,13 @@
       const fig = env.fig;
       layer.appendChild(fig.el);
       fig.pose(standing ? "stand" : "sit");
-      // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher)
+      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(artSpec, { view: "front", figH: cfg.fig.h }));
+      // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher); the art
+      // sits by its measured seat line (the backs of the thighs on the mattress), as in the heal games
       const seat = () => {
         if (!box || standing || cfg.seat == null) return;
         layer.style.top = `${cfg.fig.bottom * 100}%`;
-        const q = fig.hotspot("knee", "left", box);
+        const q = fig.hotspot(art ? "seat" : "knee", "left", box);
         const H = box.clientHeight || 1;
         if (q && isFinite(q.y)) layer.style.top = `${(cfg.fig.bottom + (cfg.seat * H - q.y) / H) * 100}%`;
       };
@@ -85,7 +90,7 @@
       }
       zoom.need = (part) => (zoom.el && FACE.includes(part) !== zoom.on ? { kind: "tap", target: ".cl-mag" } : null);
       env.zoom = zoom;
-      const tapPart = (e, active) => (e.target.closest && e.target.closest(".cl-mag, .cl-kit") ? null : fig.partAt(e.clientX, e.clientY, { active: active || levelParts, closeup: zoom.on }));
+      const tapPart = (e, active) => (e.target.closest && e.target.closest(".cl-mag, .cl-kit") ? null : fig.partAt(e.clientX, e.clientY, { active: active || levelParts, closeup: zoom.on, prefer: plan.part }));
       const partW = (p) => ({ english: data.part_words[p] || p });
 
       if (plan.variant === "D1" || plan.variant === "D1b") await d1(env, plan, res, { stage, top, fig, at });
@@ -98,7 +103,7 @@
       if (zoom.el) zoom.el.remove();
       fig.swirl(plan.part, plan.side, true);
       S.say(plan.name, "doctor");
-      const btn = await S.button(screen, { kutchi: "[To the counter]", english: "To the counter" });
+      const btn = await S.button(screen, S.line(env, "tocounter"));
       void btn;
       res.words.push({ kutchi: null, english: data.part_words[plan.part] || plan.part });
       void h;
@@ -203,7 +208,7 @@
         if (yes) {
           if (global.Sfx && global.Sfx.bing) try { global.Sfx.bing(); } catch (e) { /* no sound */ }
           fig.swirl(plan.part, plan.side, true);
-          await S.say({ kutchi: `[My ${data.part_words[plan.part]}]`, english: `My ${data.part_words[plan.part]}` }, "patient");
+          await S.say(S.line(env, "mypart", { part: { english: data.part_words[plan.part] } }), "patient");
         }
         busy = false;
         if (graded || yes) armButtons(true);

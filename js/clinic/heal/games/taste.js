@@ -224,7 +224,14 @@
     /* ---------------- the cotton bud (O3: dipped in the soothing ointment) ---------------- */
     const budArt = art("budOintment");
     const budG = s("g", { opacity: 0 }, S.fx);
-    if (budArt) s("image", { href: url(budArt.src), x: -8, y: -150, width: 60, height: 160 }, budG);
+    if (budArt && budArt.size) {
+      // A2 (5 Oct): O3's bud is a horizontal picture, the ointment on its right-hand swab: that swab's centre on
+      // the dab point, the stick up and a little to the right
+      const [bw, bh] = budArt.size;
+      const k = 150 / Math.max(1, bw - 32);
+      const g = s("g", { transform: `rotate(110) translate(${-(bw - 16 - (bh - 32) / 2) * k} ${-(bh / 2) * k})` }, budG);
+      s("image", { href: url(budArt.src), x: 0, y: 0, width: bw * k, height: bh * k }, g);
+    } else if (budArt) s("image", { href: url(budArt.src), x: -8, y: -150, width: 60, height: 160 }, budG);
     else {
       s("rect", { x: -3, y: -150, width: 7, height: 140, rx: 3, fill: "#e9dcc4", transform: "rotate(18)" }, budG);
       s("ellipse", { cx: 0, cy: -6, rx: 13, ry: 19, fill: "#fbfbf8", stroke: "#d8d4ca", "stroke-width": 2 }, budG);

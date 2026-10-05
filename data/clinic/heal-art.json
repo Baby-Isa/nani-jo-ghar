@@ -142,7 +142,159 @@
     },
     "happy": "assets/clinic/patients/girl/girl-side-face-happy.webp"
    },
-   "age": "child"
+   "age": "child",
+   "taps": {
+    "head": [
+     0.494,
+     0.13,
+     0.11
+    ],
+    "ear.left": [
+     0.714,
+     0.241,
+     0.04
+    ],
+    "ear.right": [
+     0.272,
+     0.245,
+     0.04
+    ],
+    "eye.left": [
+     0.575,
+     0.215,
+     0.03
+    ],
+    "eye.right": [
+     0.405,
+     0.215,
+     0.03
+    ],
+    "nose": [
+     0.494,
+     0.255,
+     0.022
+    ],
+    "mouth": [
+     0.494,
+     0.284,
+     0.025
+    ],
+    "tooth": [
+     0.494,
+     0.284,
+     0.025
+    ],
+    "throat": [
+     0.494,
+     0.33,
+     0.025
+    ],
+    "neck": [
+     0.494,
+     0.355,
+     0.03
+    ],
+    "chest": [
+     0.494,
+     0.44,
+     0.06
+    ],
+    "tummy": [
+     0.494,
+     0.53,
+     0.05
+    ],
+    "shoulder.left": [
+     0.68,
+     0.4,
+     0.045
+    ],
+    "shoulder.right": [
+     0.31,
+     0.4,
+     0.045
+    ],
+    "arm.left": [
+     0.7,
+     0.47,
+     0.05
+    ],
+    "arm.right": [
+     0.29,
+     0.47,
+     0.05
+    ],
+    "elbow.left": [
+     0.69,
+     0.535,
+     0.035
+    ],
+    "elbow.right": [
+     0.3,
+     0.535,
+     0.035
+    ],
+    "hand.left": [
+     0.56,
+     0.6,
+     0.04
+    ],
+    "hand.right": [
+     0.43,
+     0.6,
+     0.04
+    ],
+    "finger.left": [
+     0.53,
+     0.64,
+     0.025
+    ],
+    "finger.right": [
+     0.46,
+     0.64,
+     0.025
+    ],
+    "knee.left": [
+     0.61,
+     0.7,
+     0.05
+    ],
+    "knee.right": [
+     0.38,
+     0.7,
+     0.05
+    ],
+    "leg.left": [
+     0.62,
+     0.8,
+     0.05
+    ],
+    "leg.right": [
+     0.37,
+     0.8,
+     0.05
+    ],
+    "foot.left": [
+     0.63,
+     0.91,
+     0.04
+    ],
+    "foot.right": [
+     0.36,
+     0.91,
+     0.04
+    ],
+    "toe.left": [
+     0.62,
+     0.955,
+     0.022
+    ],
+    "toe.right": [
+     0.38,
+     0.955,
+     0.022
+    ]
+   }
   }
  },
  "closeups": {
@@ -201,6 +353,7 @@
     ]
    }
   },
+  "adult": {},
   "girl": {
    "ear": {
     "file": "assets/clinic/closeups/girl/ear.webp",
@@ -306,41 +459,30 @@
   }
  },
  "_report": [
-  "girl: wide poses",
-  "  skin girl W1 face: #F4965F ΔE 1.5 from the approved family render",
-  "  head band y 57..540",
-  "  W2 happy: shift +0.1,-2.0 px, leak outside the head 0.16%",
-  "  W3 sad: shift +0.5,+0.8 px, leak outside the head 0.02%",
-  "  W4 pain: shift +3.2,+0.6 px, leak outside the head 0.21%",
-  "  W5 hot: shift +0.9,+5.4 px, leak outside the head 1.31%",
-  "  W6 cold: shift +0.9,+2.3 px, leak outside the head 0.27%",
-  "  W9 blanket: shift -0.4,-0.5 px; leg-band alpha drift 0.11%",
-  "  W10: fitted by scale 0.995 on the legs (an interim; the redo list has it)",
-  "  W10 bottle: shift +1.1,-26.1 px; leg-band alpha drift 0.34%",
-  "  W8 side happy: leak 0.32%",
-  "boy: no W1 yet",
-  "old-man: no W1 yet",
-  "old-woman: no W1 yet",
-  "uncle: no W1 yet",
-  "auntie: no W1 yet",
-  "child K: cut, exits left,bottom",
-  "  kick: shift +0.1,-0.3 px",
-  "  graze: shift +0.0,-0.2 px",
-  "child F: cut, exits left",
-  "  graze: shift +0.0,-0.5 px",
-  "  cut: shift +0.0,-0.4 px",
-  "  child-u1-upperarm-v1.png: judged a fail, not cut (sleeveless vest, bare shoulder; chin and plait in frame (modesty, I1))",
-  "child P: cut, exits bottom",
-  "girl E: cut, exits top,right,bottom",
-  "girl M1: cut, exits top",
-  "girl M2: cut, exits top",
-  "girl Y: cut, exits bottom",
-  "  sore: shift -0.1,-0.0 px",
-  "  closed: shift -0.3,+1.0 px",
-  "girl T1: cut, exits bottom",
-  "  girl T1: mirrored (the gaze)",
-  "girl T2: cut, exits bottom",
-  "o1-ear-foot-bits-v1.png: 9 pieces for 9 names"
+  "o1-ear-foot-bits-v1.png: 9 pieces for 9 names",
+  "o3-bud-ointment-v1.png: 4 pieces for 4 names",
+  "  registered on one canvas 359x117: bud, bud-ointment, bud-wax",
+  "r1-fever-things-v1.png: 5 pieces for 5 names",
+  "  registered on one canvas 446x423: heater-off, heater-on",
+  "r2-ceiling-fan-v1.png: 2 pieces for 2 names",
+  "r5-thermo-gauge-v1.png: 1 pieces for 1 names",
+  "  thermo-gauge: tube x 54-90, y 20-489 of 145x512; the bulb 78 px wide",
+  "b1-filling-button-v1.png: 4 pieces for 4 names",
+  "  registered on one canvas 494x401: filling-button-up, filling-button-down",
+  "  registered on one canvas 512x320: filling-nozzle, filling-nozzle-paste",
+  "c1-eye-chart-front-v1.png: 1 pieces for 1 names",
+  "c2-eye-chart-turned-v1.png: 1 pieces for 1 names",
+  "  eye-chart-front: board [[0.0781, 0.0547], [0.9276, 0.0547], [0.9276, 0.9492], [0.0781, 0.9492]], 6 ruled lines",
+  "  eye-chart-turned: board [[0.1578, 0.123], [0.8915, 0.084], [0.8383, 0.7637], [0.0947, 0.748]], 0 ruled lines",
+  "r3-exam-room-square-v1.png: registered to CB2b, scale 1.2243, offset -0.1,-252.8 (382 of 431 matches)",
+  "  R3: square room written",
+  "r4-exam-window-open-v1.png: registered to CB2b, scale 1.0596, offset -2.1,-24.3 (200 of 440 matches)",
+  "  R4: window overlay 208x473 px at the room's top-left",
+  "o2-mouth-bits-v1.png: 8 pieces for 8 names",
+  "  spot-red: judged a fail, not cut (O2's spots are round glossy discs that read as gumballs or sweets (I2, plan 3.3); the game keeps its drawn sore spots)",
+  "  spot-yellow: judged a fail, not cut (as spot-red)",
+  "  spot-blue: judged a fail, not cut (as spot-red)",
+  "  spot-green: judged a fail, not cut (as spot-red)"
  ],
  "props": {
   "wax-big": {
@@ -387,6 +529,199 @@
    "file": "assets/clinic/heal-v3/dirt.webp",
    "w": 366,
    "h": 306
+  },
+  "bud": {
+   "file": "assets/clinic/heal-v3/bud.webp",
+   "w": 359,
+   "h": 117
+  },
+  "bud-ointment": {
+   "file": "assets/clinic/heal-v3/bud-ointment.webp",
+   "w": 359,
+   "h": 117
+  },
+  "bud-wax": {
+   "file": "assets/clinic/heal-v3/bud-wax.webp",
+   "w": 359,
+   "h": 117
+  },
+  "ointment-pot": {
+   "file": "assets/clinic/heal-v3/ointment-pot.webp",
+   "w": 323,
+   "h": 313
+  },
+  "ice-pack": {
+   "file": "assets/clinic/room-items/ice-pack.webp",
+   "w": 505,
+   "h": 351
+  },
+  "hot-water-bottle": {
+   "file": "assets/clinic/room-items/hot-water-bottle.webp",
+   "w": 387,
+   "h": 458
+  },
+  "hand-fan": {
+   "file": "assets/clinic/room-items/hand-fan.webp",
+   "w": 470,
+   "h": 414
+  },
+  "heater-off": {
+   "file": "assets/clinic/room-items/heater-off.webp",
+   "w": 446,
+   "h": 423
+  },
+  "heater-on": {
+   "file": "assets/clinic/room-items/heater-on.webp",
+   "w": 446,
+   "h": 423
+  },
+  "fan-body": {
+   "file": "assets/clinic/room-items/fan-body.webp",
+   "w": 279,
+   "h": 512
+  },
+  "fan-blades": {
+   "file": "assets/clinic/room-items/fan-blades.webp",
+   "w": 491,
+   "h": 512
+  },
+  "thermo-gauge": {
+   "file": "assets/clinic/room-items/thermo-gauge.webp",
+   "w": 145,
+   "h": 512,
+   "tube": [
+    0.3724,
+    0.0391,
+    0.6207,
+    0.9551
+   ],
+   "bulb": 2.167
+  },
+  "filling-button-up": {
+   "file": "assets/clinic/heal-v3/filling-button-up.webp",
+   "w": 494,
+   "h": 401
+  },
+  "filling-button-down": {
+   "file": "assets/clinic/heal-v3/filling-button-down.webp",
+   "w": 494,
+   "h": 401
+  },
+  "filling-nozzle": {
+   "file": "assets/clinic/heal-v3/filling-nozzle.webp",
+   "w": 512,
+   "h": 320
+  },
+  "filling-nozzle-paste": {
+   "file": "assets/clinic/heal-v3/filling-nozzle-paste.webp",
+   "w": 512,
+   "h": 320
+  },
+  "eye-chart-front": {
+   "file": "assets/clinic/heal-v3/eye-chart-front.webp",
+   "w": 691,
+   "h": 1024,
+   "board": [
+    [
+     0.0781,
+     0.0547
+    ],
+    [
+     0.9276,
+     0.0547
+    ],
+    [
+     0.9276,
+     0.9492
+    ],
+    [
+     0.0781,
+     0.9492
+    ]
+   ],
+   "lines": [
+    0.3286,
+    0.4558,
+    0.5813,
+    0.6998,
+    0.8111,
+    0.9187
+   ]
+  },
+  "eye-chart-turned": {
+   "file": "assets/clinic/heal-v3/eye-chart-turned.webp",
+   "w": 507,
+   "h": 1024,
+   "board": [
+    [
+     0.1578,
+     0.123
+    ],
+    [
+     0.8915,
+     0.084
+    ],
+    [
+     0.8383,
+     0.7637
+    ],
+    [
+     0.0947,
+     0.748
+    ]
+   ],
+   "lines": [
+    0.3286,
+    0.4558,
+    0.5813,
+    0.6998,
+    0.8111,
+    0.9187
+   ]
+  },
+  "decay-1": {
+   "file": "assets/clinic/heal-v3/decay-1.webp",
+   "w": 306,
+   "h": 305
+  },
+  "decay-2": {
+   "file": "assets/clinic/heal-v3/decay-2.webp",
+   "w": 320,
+   "h": 286
+  },
+  "decay-3": {
+   "file": "assets/clinic/heal-v3/decay-3.webp",
+   "w": 308,
+   "h": 290
+  },
+  "filling-patch": {
+   "file": "assets/clinic/heal-v3/filling-patch.webp",
+   "w": 303,
+   "h": 276
+  }
+ },
+ "rooms": {
+  "exam-square": {
+   "file": "assets/clinic/rooms/bg-clinic-exam-cb2b-sq-v1.webp",
+   "size": [
+    1536,
+    1536
+   ],
+   "middle": [
+    256,
+    1280
+   ],
+   "_about": "R3: CB2b exactly in rows 256-1280; the ceiling and floor bands are R3's. No @2x (CB2b has none)."
+  },
+  "window-open": {
+   "file": "assets/clinic/room-items/window-open.webp",
+   "box": [
+    0,
+    0,
+    0.1354,
+    0.4619
+   ],
+   "_about": "R4: the open window over CB2b, box = x0, y0, x1, y1 in CB2b's fractions (the room's own pixels)"
   }
  }
 }

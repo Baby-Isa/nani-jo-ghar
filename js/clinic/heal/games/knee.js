@@ -47,14 +47,14 @@
     const say = (m, o) => Lg.show(m, o);
     const steps = [
       { id: "kick", kind: "kick", count: kicks, row: Object.assign({ id: "kick" }, say(Lg.join(["hammer", ",", Lg.count(kicks)]), { cap: true })) },
-      { id: "wrap", kind: "wrap", count: turns, order, row: Object.assign({ id: "wrap" }, say(Lg.join([Lg.then("bandage"), ",", Lg.item("turns", { n: turns })]))) },
+      { id: "wrap", kind: "wrap", count: turns, order, row: Object.assign({ id: "wrap" }, say(Lg.join([Lg.then("cl-bandage"), ",", Lg.item("turns", { n: turns })]))) },
     ];
     const rows = [
       { id: "kick-count", options: K.kicks[L], answer: kicks },
       // 13i: the flashing stops at the last turn, so the turns are no longer decided by the word alone: a hand-skill row
       { id: "wrap-turns", options: K.turns[L], answer: turns, skill: true },
     ];
-    const words = [Lg.num(kicks), Lg.num(turns), Lg.w("lnk-nepoi"), HS.ph("knee"), HS.ph("bandage")];
+    const words = [Lg.num(kicks), Lg.num(turns), Lg.w("lnk-nepoi"), Lg.w("body-knee"), Lg.w("cl-bandage")];
     return { level: L, side, steps, rows, words };
   }
 

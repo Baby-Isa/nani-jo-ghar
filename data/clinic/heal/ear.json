@@ -269,7 +269,18 @@
     "w": 407,
     "h": 335
    },
-   "_a1": "A1 (5 Oct): O1's wax (drawn at 2.5 x the blob's radius, so the sizes keep their ratios) and the tissue; any patient."
+   "_a1": "A1 (5 Oct): O1's wax (drawn at 2.5 x the blob's radius, so the sizes keep their ratios) and the tissue; any patient.",
+   "bud": {
+    "file": "assets/clinic/heal-v3/bud.webp",
+    "w": 359,
+    "h": 117
+   },
+   "bud-wax": {
+    "file": "assets/clinic/heal-v3/bud-wax.webp",
+    "w": 359,
+    "h": 117
+   },
+   "_a2": "A2 (5 Oct): O3's bud, clean and with wax (one canvas), the swab on the tip of the wipe"
   }
  },
  "hearing": {
