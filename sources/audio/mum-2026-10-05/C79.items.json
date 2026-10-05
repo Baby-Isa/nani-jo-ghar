@@ -1,0 +1,984 @@
+[
+ {
+  "qid": "C50",
+  "at": 27.15,
+  "items": [
+   {
+    "id": "nana-jo-cup",
+    "kutchi": "Nana jo cup",
+    "english": "Nana's cup",
+    "mum": [
+     30.15,
+     31.73
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nanajokapu\""
+   },
+   {
+    "id": "nana-ja-cups",
+    "kutchi": "Nana ja cups",
+    "english": "Nana's cups",
+    "mum": [
+     35.65,
+     36.77
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nana Jakops\""
+   }
+  ]
+ },
+ {
+  "qid": "C51",
+  "at": 48.23,
+  "items": [
+   {
+    "id": "nana-jo-ambo",
+    "kutchi": "Nana jo ambo",
+    "english": "Nana's mango",
+    "mum": [
+     51.23,
+     52.93
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nana jo ambo.\""
+   },
+   {
+    "id": "nana-ja-amba",
+    "kutchi": "Nana ja amba",
+    "english": "Nana's mangoes",
+    "mum": [
+     58.44,
+     59.65
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nanaja amba.\""
+   }
+  ]
+ },
+ {
+  "qid": "C52",
+  "at": 60.25,
+  "items": [
+   {
+    "id": "nana-jo-darwajo",
+    "kutchi": "Nana jo darwajo",
+    "english": "Nana's door",
+    "mum": [
+     63.25,
+     64.58
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nanaji o Dorwaji\""
+   },
+   {
+    "id": "nana-ji-pacheri",
+    "kutchi": "Nana ji pacheri",
+    "english": "Nana's dupatta",
+    "mum": [
+     67.98,
+     69.37
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nanaji pacheri\""
+   },
+   {
+    "id": "nana-ji-maani",
+    "kutchi": "Nana ji maani",
+    "english": "Nana's maani",
+    "mum": [
+     74.88,
+     75.95
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nanajimani.\""
+   }
+  ]
+ },
+ {
+  "qid": "C53",
+  "at": 116.64,
+  "items": [
+   {
+    "id": "nani-jo-cup",
+    "kutchi": "Nani jo cup",
+    "english": "Nani's cup",
+    "mum": [
+     119.64,
+     120.61
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nani jokop?\""
+   },
+   {
+    "id": "nani-ja-cups",
+    "kutchi": "Nani ja cups",
+    "english": "Nani's cups",
+    "mum": [
+     122.57,
+     123.68
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nani jacobs\""
+   }
+  ]
+ },
+ {
+  "qid": "C54",
+  "at": 163.24,
+  "items": [
+   {
+    "id": "nani-jo-ambo",
+    "kutchi": "Nani jo ambo",
+    "english": "Nani's mango",
+    "mum": [
+     166.24,
+     167.72
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nani jo ambo?\""
+   },
+   {
+    "id": "nani-ja-amba",
+    "kutchi": "Nani ja amba",
+    "english": "Nani's mangoes",
+    "mum": [
+     169.34,
+     170.77
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nani ja amba?\""
+   }
+  ]
+ },
+ {
+  "qid": "C55",
+  "at": 172.4,
+  "items": [
+   {
+    "id": "nani-jo-darwajo",
+    "kutchi": "Nani jo darwajo",
+    "english": "Nani's door",
+    "mum": [
+     175.4,
+     176.82
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nani jodhara wajo?\""
+   },
+   {
+    "id": "nani-ji-pacheri",
+    "kutchi": "Nani ji pacheri",
+    "english": "Nani's dupatta",
+    "mum": [
+     179.01,
+     180.79
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nani jipa cheri?\""
+   },
+   {
+    "id": "nani-ji-bakri",
+    "kutchi": "Nani ji bakri",
+    "english": "Nani's goat (a she-goat)",
+    "mum": [
+     183.05,
+     184.19
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Naniji Bakri\""
+   },
+   {
+    "id": "nani-jo-bakro",
+    "kutchi": "Nani jo bakro",
+    "english": "Nani's goat (a billy goat)",
+    "mum": [
+     193.81,
+     195.14
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nani jo bakro?\""
+   }
+  ]
+ },
+ {
+  "qid": "C56",
+  "at": 195.37,
+  "items": [
+   {
+    "id": "chokre-jo-cup",
+    "kutchi": "chokre jo cup",
+    "english": "the boy's cup",
+    "mum": [
+     198.37,
+     199.29
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Chokre jo kapa.\""
+   },
+   {
+    "id": "chokre-jo-ambo",
+    "kutchi": "chokre jo ambo",
+    "english": "the boy's mango",
+    "mum": [
+     210.64,
+     211.82
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Chokre jo ambu.\""
+   }
+  ]
+ },
+ {
+  "qid": "C57",
+  "at": 212.34,
+  "items": [
+   {
+    "id": "chokri-jo-cup",
+    "kutchi": "chokri jo cup",
+    "english": "the girl's cup",
+    "mum": [
+     215.34,
+     216.32
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Chokri jo kapa\""
+   },
+   {
+    "id": "chokri-jo-ambo",
+    "kutchi": "chokri jo ambo",
+    "english": "the girl's mango",
+    "mum": [
+     222.11,
+     223.32
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Chokri jo ambo\""
+   }
+  ]
+ },
+ {
+  "qid": "C58",
+  "at": 253.66,
+  "items": [
+   {
+    "id": "chokriyu-jo-ambo",
+    "kutchi": "chokriyu jo ambo",
+    "english": "the girls' mango",
+    "mum": [
+     256.66,
+     258.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Chokriung jo ambo.\""
+   },
+   {
+    "id": "bakri-jo-kan",
+    "kutchi": "bakri jo kan",
+    "english": "the she-goat's ear",
+    "mum": [
+     264.34,
+     265.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Bakri joka\""
+   },
+   {
+    "id": "bakre-jo-kan",
+    "kutchi": "bakre jo kan",
+    "english": "the billy goat's ear",
+    "mum": [
+     266.99,
+     268.06
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Bakrejoka.\""
+   },
+   {
+    "id": "bakre-ja-amba",
+    "kutchi": "bakre ja amba",
+    "english": "the billy goat's mangoes",
+    "mum": [
+     314.01,
+     316.08
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Makreja, makreja amba\""
+   },
+   {
+    "id": "kan",
+    "kutchi": "kan",
+    "english": "ear",
+    "mum": [
+     265.02,
+     265.41
+    ],
+    "zafar": "skip: not cut in the original run",
+    "note": "W1 5 Oct: one word cut from Mum's take bakri-jo-kan for stitched speech (decision 26); machine-checked by Whisper on the clip alone (\"Kama.\" / \"Come.\" unprompted, \"Kam\" prompted (n heard as m)), right speaker by pitch; not yet heard by Zafar"
+   }
+  ]
+ },
+ {
+  "qid": "C59",
+  "at": 322.93,
+  "items": [
+   {
+    "id": "nana-je-cup-je-andar",
+    "kutchi": "Nana je cup je andar",
+    "english": "in Nana's cup",
+    "mum": [
+     325.93,
+     327.45
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ je or ja: Whisper hears ja; take chosen by hand; re-transcribed as \"Nana jekop janda.\""
+   },
+   {
+    "id": "nani-je-ambe-je-mathe",
+    "kutchi": "Nani je ambe je mathe",
+    "english": "on Nani's mango",
+    "mum": [
+     330.07,
+     331.85
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nani je ambe je mate\""
+   },
+   {
+    "id": "chokre-je-darwaje-je-puthiya",
+    "kutchi": "chokre je darwaje je puthiya",
+    "english": "behind the boy's door",
+    "mum": [
+     335.11,
+     337.03
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Chokri je derwaji je butia.\""
+   },
+   {
+    "id": "chokri-ji-bakri-sathe",
+    "kutchi": "chokri ji bakri sathe",
+    "english": "with the girl's she-goat",
+    "mum": [
+     470.38,
+     473.7
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Chokri jee bakri sathe.\""
+   },
+   {
+    "id": "chokri-je-bakre-sathe",
+    "kutchi": "chokri je bakre sathe",
+    "english": "with the girl's billy goat",
+    "mum": [
+     476.11,
+     478.52
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Chokri je bakre sathe.\""
+   },
+   {
+    "id": "chokre-je-bakre-sathe",
+    "kutchi": "chokre je bakre sathe",
+    "english": "with the boy's billy goat",
+    "mum": [
+     481.14,
+     483.06
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Chokre je bakre sate\""
+   },
+   {
+    "id": "chokre-ji-bakri-sathe",
+    "kutchi": "chokre ji bakri sathe",
+    "english": "with the boy's she-goat",
+    "mum": [
+     484.99,
+     488.01
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Chokreji bakrisate\""
+   }
+  ]
+ },
+ {
+  "qid": "C60",
+  "at": 498.81,
+  "items": [
+   {
+    "id": "nana-jo-ai",
+    "kutchi": "Nana jo ai.",
+    "english": "It's Nana's.",
+    "mum": [
+     501.81,
+     502.77
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nanajwae\""
+   },
+   {
+    "id": "nani-jo-ai",
+    "kutchi": "Nani jo ai.",
+    "english": "It's Nani's.",
+    "mum": [
+     504.22,
+     505.34
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Nani jo aye?\""
+   },
+   {
+    "id": "chokriyu-ji-ain",
+    "kutchi": "Chokriyu ji ain.",
+    "english": "They're the girls'.",
+    "mum": [
+     556.57,
+     557.55
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Kriujain.\""
+   }
+  ]
+ },
+ {
+  "qid": "C61",
+  "at": 693.29,
+  "items": [
+   {
+    "id": "aau-rasore-me-aiya",
+    "kutchi": "Aau rasore me aiya.",
+    "english": "I'm in the kitchen.",
+    "mum": [
+     696.29,
+     697.65
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Aurasore mea nya\""
+   }
+  ]
+ },
+ {
+  "qid": "C62",
+  "at": 730.38,
+  "items": [
+   {
+    "id": "tu-rasore-me-aiye",
+    "kutchi": "Tu rasore me aiye.",
+    "english": "You're in the kitchen. (to a child)",
+    "mum": [
+     733.38,
+     735.24
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Tu rasore mea yetu.\""
+   }
+  ]
+ },
+ {
+  "qid": "C63",
+  "at": 740.83,
+  "items": [
+   {
+    "id": "aai-rasore-me-aayo",
+    "kutchi": "Aai rasore me aayo.",
+    "english": "You're in the kitchen. (to an elder)",
+    "mum": [
+     743.83,
+     745.34
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Aina irasore mea joh.\""
+   }
+  ]
+ },
+ {
+  "qid": "C64",
+  "at": 756.89,
+  "items": [
+   {
+    "id": "e-rasore-me-ai",
+    "kutchi": "E rasore me ai.",
+    "english": "He's (she's) in the kitchen.",
+    "mum": [
+     759.89,
+     760.96
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Irasoreme.\""
+   }
+  ]
+ },
+ {
+  "qid": "C65",
+  "at": 773.7,
+  "items": [
+   {
+    "id": "e-huda-rasore-me-ai",
+    "kutchi": "E huda rasore me ai.",
+    "english": "He's over there in the kitchen.",
+    "mum": [
+     776.7,
+     778.17
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Ihudara sore mea\""
+   }
+  ]
+ },
+ {
+  "qid": "C67",
+  "at": 897.7,
+  "items": [
+   {
+    "id": "hu-chokri-rasore-me-ai",
+    "kutchi": "Hu chokri rasore me ai.",
+    "english": "That girl is in the kitchen.",
+    "mum": [
+     900.7,
+     902.31
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Hucho krira sore mea\""
+   }
+  ]
+ },
+ {
+  "qid": "C68",
+  "at": 913.64,
+  "items": [
+   {
+    "id": "asa-rasore-me-aayo",
+    "kutchi": "Asa rasore me aayo.",
+    "english": "We (not you) are in the kitchen.",
+    "mum": [
+     916.64,
+     917.95
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Asaara soremeyo.\""
+   },
+   {
+    "id": "pa-rasore-me-aayo",
+    "kutchi": "Pa rasore me aayo.",
+    "english": "We (with you) are in the kitchen.",
+    "mum": [
+     941.18,
+     942.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Para soremeyo.\""
+   }
+  ]
+ },
+ {
+  "qid": "C69",
+  "at": 1084.6,
+  "items": [
+   {
+    "id": "hi-rasore-me-ain",
+    "kutchi": "Hi rasore me ain.",
+    "english": "These are in the kitchen.",
+    "mum": [
+     1087.6,
+     1088.91
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Hii raso reme.\""
+   }
+  ]
+ },
+ {
+  "qid": "C71",
+  "at": 1117.85,
+  "items": [
+   {
+    "id": "hi-mare",
+    "kutchi": "hi mare",
+    "english": "all of these",
+    "mum": [
+     1120.85,
+     1122.05
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); re-transcribed as \"Hii mare.\""
+   },
+   {
+    "id": "hu-mare",
+    "kutchi": "hu mare",
+    "english": "all of those",
+    "mum": [
+     1123.74,
+     1125.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "⚠ spelling unconfirmed (Whisper's hearing); take chosen by hand; re-transcribed as \"Those ones ʻumare.\""
+   }
+  ]
+ },
+ {
+  "qid": "C72",
+  "at": 1137.3,
+  "items": [
+   {
+    "id": "munjo-cup",
+    "kutchi": "munjo cup",
+    "english": "my cup",
+    "mum": [
+     1140.3,
+     1140.98
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Munjoka\""
+   },
+   {
+    "id": "munjo-ambo",
+    "kutchi": "munjo ambo",
+    "english": "my mango",
+    "mum": [
+     1142.23,
+     1143.16
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Mwenyo ambo.\""
+   },
+   {
+    "id": "munja-cups",
+    "kutchi": "munja cups",
+    "english": "my cups",
+    "mum": [
+     1145.35,
+     1146.24
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Mwenja kapsi.\""
+   },
+   {
+    "id": "munja-amba",
+    "kutchi": "munja amba",
+    "english": "my mangoes",
+    "mum": [
+     1148.6,
+     1149.52
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Mwenye amba.\""
+   },
+   {
+    "id": "munji-kursi",
+    "kutchi": "munji kursi",
+    "english": "my chair",
+    "mum": [
+     1170.81,
+     1171.75
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Mwenji kursi\""
+   },
+   {
+    "id": "munji-kursiyu",
+    "kutchi": "munji kursiyu",
+    "english": "my chairs",
+    "mum": [
+     1176.2,
+     1177.16
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Mwenji kursio\""
+   }
+  ]
+ },
+ {
+  "qid": "C73",
+  "at": 1287.99,
+  "items": [
+   {
+    "id": "tojo-cup",
+    "kutchi": "tojo cup",
+    "english": "your cup (to a child)",
+    "mum": [
+     1290.99,
+     1291.61
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Tujoka.\""
+   },
+   {
+    "id": "tojo-ambo",
+    "kutchi": "tojo ambo",
+    "english": "your mango (to a child)",
+    "mum": [
+     1293.94,
+     1294.78
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Tujo ambo.\""
+   },
+   {
+    "id": "toji-kursi-ain",
+    "kutchi": "Toji kursi ain.",
+    "english": "They're your chairs. (to a child)",
+    "mum": [
+     1305.96,
+     1307.3
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Toji kursi ainu.\""
+   },
+   {
+    "id": "toja-amba-ain",
+    "kutchi": "Toja amba ain.",
+    "english": "They're your mangoes. (to a child)",
+    "mum": [
+     1320.53,
+     1321.76
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Toja ambain\""
+   }
+  ]
+ },
+ {
+  "qid": "C74",
+  "at": 1347.5,
+  "items": [
+   {
+    "id": "anjo-cup",
+    "kutchi": "anjo cup",
+    "english": "your cup (to an elder)",
+    "mum": [
+     1350.5,
+     1351.23
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Anjoka.\""
+   },
+   {
+    "id": "anji-kursi",
+    "kutchi": "anji kursi",
+    "english": "your chair (to an elder)",
+    "mum": [
+     1353.81,
+     1354.82
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Anji kusi\""
+   },
+   {
+    "id": "anja-amba",
+    "kutchi": "anja amba",
+    "english": "your mangoes (to an elder)",
+    "mum": [
+     1370.46,
+     1371.44
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Anja amba.\""
+   }
+  ]
+ },
+ {
+  "qid": "C75",
+  "at": 1389.12,
+  "items": [
+   {
+    "id": "injo-cup",
+    "kutchi": "injo cup",
+    "english": "his (her) cup",
+    "mum": [
+     1392.12,
+     1392.81
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Injoka\""
+   },
+   {
+    "id": "injo-ambo",
+    "kutchi": "injo ambo",
+    "english": "his (her) mango",
+    "mum": [
+     1394.01,
+     1394.96
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Injo ambo.\""
+   },
+   {
+    "id": "inji-kursi",
+    "kutchi": "inji kursi",
+    "english": "his (her) chair",
+    "mum": [
+     1396.31,
+     1397.21
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Njiku usi\""
+   }
+  ]
+ },
+ {
+  "qid": "C76",
+  "at": 1410,
+  "items": [
+   {
+    "id": "inja-amba",
+    "kutchi": "inja amba",
+    "english": "her (his) mangoes",
+    "mum": [
+     1413,
+     1413.97
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Njaamba\""
+   }
+  ]
+ },
+ {
+  "qid": "C77",
+  "at": 1420.49,
+  "items": [
+   {
+    "id": "asanjo-cup",
+    "kutchi": "asanjo cup",
+    "english": "our cup (not yours)",
+    "mum": [
+     1423.49,
+     1424.14
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Asanjuka.\""
+   },
+   {
+    "id": "asanjo-ambo",
+    "kutchi": "asanjo ambo",
+    "english": "our mango (not yours)",
+    "mum": [
+     1431.62,
+     1432.62
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Asanjo ambo\""
+   },
+   {
+    "id": "panjo-cup",
+    "kutchi": "panjo cup",
+    "english": "our cup (yours too)",
+    "mum": [
+     1443.81,
+     1444.52
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Panjoka\""
+   }
+  ]
+ },
+ {
+  "qid": "C78",
+  "at": 1501.99,
+  "items": [
+   {
+    "id": "iloka-jo-cup",
+    "kutchi": "iloka jo cup",
+    "english": "their cup",
+    "mum": [
+     1504.99,
+     1505.91
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Ilo kajoka.\""
+   },
+   {
+    "id": "iloka-ji-kursi",
+    "kutchi": "iloka ji kursi",
+    "english": "their chair",
+    "mum": [
+     1677.12,
+     1678.38
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Ilo kaji kusi\""
+   },
+   {
+    "id": "iloka-jo-ambo",
+    "kutchi": "iloka jo ambo",
+    "english": "their mango",
+    "mum": [
+     1679.62,
+     1680.84
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"ila kajo ambo\""
+   },
+   {
+    "id": "iloka-ja-amba",
+    "kutchi": "iloka ja amba",
+    "english": "their mangoes",
+    "mum": [
+     1689.97,
+     1691.19
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Ilo kaja amba.\""
+   }
+  ]
+ },
+ {
+  "qid": "C79",
+  "at": 1692.8,
+  "items": [
+   {
+    "id": "munje-cup-me",
+    "kutchi": "munje cup me",
+    "english": "in my cup",
+    "mum": [
+     1695.8,
+     1696.81
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; FLAG: the re-transcript doesn't resemble the word; re-transcribed as \"Mwenye kapme.\""
+   },
+   {
+    "id": "toje-ambe-mathe",
+    "kutchi": "toje ambe mathe",
+    "english": "on your mango (to a child)",
+    "mum": [
+     1701.15,
+     1702.39
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Toje ambe mate.\""
+   },
+   {
+    "id": "toji-kursi-mathe",
+    "kutchi": "toji kursi mathe",
+    "english": "on your chair (to a child)",
+    "mum": [
+     1737.02,
+     1738.01
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Tojikursima\""
+   },
+   {
+    "id": "inje-bakre-sathe",
+    "kutchi": "inje bakre sathe",
+    "english": "with his billy goat",
+    "mum": [
+     1749.74,
+     1751.66
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "re-transcribed as \"Inje bakre sate\""
+   },
+   {
+    "id": "inje-cup-me",
+    "kutchi": "inje cup me",
+    "english": "in her cup",
+    "mum": [
+     1757.78,
+     1758.78
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "take chosen by hand; re-transcribed as \"Nje kapme.\""
+   }
+  ]
+ }
+]

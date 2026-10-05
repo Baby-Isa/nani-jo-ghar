@@ -1,0 +1,8 @@
+# Python packages for the art tools (artjudge, artcut, artdiff, artblock, artspec). Install once per machine or container:
+#   pip install -r build/tools/art/requirements.txt
+# opencv-python-headless (no GUI libraries, so it works in a container) is what artjudge.py needs and wasn't there before R7.
+opencv-python-headless>=4.8
+numpy
+pillow
+scipy
+pyyaml
