@@ -367,6 +367,10 @@
         t.x = sx + iconW + 2;
         cont.add(t);
       }
+      // a long (placeholder) word on a small screen: the label grows so its text is never under 14px as rendered
+      const shown = this.scale.displaySize.height / this.scale.gameSize.height;
+      const base = text ? Math.max(1, 14.2 / (34 * shown * this.cameras.main.zoom)) : 1;
+      cont.setScale(base);
       cont.setSize(w, 42);
       cont.setInteractive(new Phaser.Geom.Rectangle(-w / 2, -21, w, 42), Phaser.Geom.Rectangle.Contains);
       cont.on("pointerdown", (p, lx, ly, ev) => {
@@ -374,7 +378,7 @@
         Cook.unlockAudio();
         if (Cook.onLabel) Cook.onLabel(id); // from word stage 3, hearing the target's label is help
         Lang.speakWord(id);
-        this.tweens.add({ targets: cont, scale: 1.12, duration: 90, yoyo: true });
+        this.tweens.add({ targets: cont, scale: base * 1.12, duration: 90, yoyo: true });
       });
       obj.once("destroy", () => cont.destroy());
       return cont;

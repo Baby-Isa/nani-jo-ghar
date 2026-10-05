@@ -212,8 +212,8 @@
    "dur": 3.609,
    "keyAt": 3.18
   },
-  "muke hikdo lal marcha dine": {
-   "file": "assets/audio/cook-tts/muke-hikdo-lal-marcha-dine.mp3",
+  "muke hikdo laal marcha dine": {
+   "file": "assets/audio/cook-tts/muke-hikdo-laal-marcha-dine.mp3",
    "dur": 4.73,
    "keyAt": 4.021
   },
@@ -307,8 +307,8 @@
    "dur": 2.836,
    "keyAt": 2.406
   },
-  "muke lal marcha khape": {
-   "file": "assets/audio/cook-tts/muke-lal-marcha-khape.mp3",
+  "muke laal marcha khape": {
+   "file": "assets/audio/cook-tts/muke-laal-marcha-khape.mp3",
    "dur": 3.832,
    "keyAt": 3.4
   },
@@ -487,8 +487,8 @@
    "dur": 1.815,
    "keyAt": 1.407
   },
-  "ne lal marcha": {
-   "file": "assets/audio/cook-tts/ne-lal-marcha.mp3",
+  "ne laal marcha": {
+   "file": "assets/audio/cook-tts/ne-laal-marcha.mp3",
    "dur": 2.769,
    "keyAt": 2.343
   },
@@ -687,8 +687,8 @@
    "dur": 1.623,
    "keyAt": 1.22
   },
-  "lal marcha": {
-   "file": "assets/audio/cook-tts/lal-marcha.mp3",
+  "laal marcha": {
+   "file": "assets/audio/cook-tts/laal-marcha.mp3",
    "dur": 2.396,
    "keyAt": 1.994
   },

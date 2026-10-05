@@ -159,8 +159,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 #count-badge:not(.njg-tally) {
   position: absolute; z-index: 8; right: 3%; top: 4%;
-  background: var(--cream); border-radius: 18px; padding: 4px 18px; box-shadow: var(--shadow);
-  display: flex; align-items: baseline; gap: 10px; font-family: var(--kutchi-font); font-weight: 800;
+  background: var(--cream); border-radius: 18px; padding: 4px 16px; box-shadow: var(--shadow);
+  display: flex; align-items: baseline; gap: 8px; font-family: var(--kutchi-font); font-weight: 800;
 }
 #count-badge:not(.njg-tally) .count-digit { font-size: clamp(26px, 3.6vw, 48px); color: var(--madder); }
 #count-badge:not(.njg-tally).bump { animation: bump .3s; }
@@ -627,7 +627,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   #nani-card .wp .wp-text { font-size: 15px; }
   .lsec.lfor { gap: 4px; }
   .lsec.lfor .lface { width: 26px; height: 26px; }
-  #count-badge:not(.njg-tally) { padding: 2px 12px; border-radius: 14px; }
+  #count-badge:not(.njg-tally) { padding: 4px 12px; border-radius: 14px; }
   #count-badge:not(.njg-tally) .count-digit { font-size: 24px; }
   #intro { padding: 2%; }
   #intro .ic-go { display: none; }
@@ -786,7 +786,7 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
 
 /* 5. the big button between two jobs ("Go to the barbecue"), bottom right under the thumb */
 #go-btn:not(.njg-btn) {
-  position: absolute; z-index: 8; right: 2.5%; bottom: 4%; display: inline-flex; align-items: center; gap: 10px;
+  position: absolute; z-index: 8; right: 2.5%; bottom: 4%; display: inline-flex; align-items: center; gap: 8px;
   border: none; border-radius: 999px; padding: clamp(10px, 1.6vw, 18px) clamp(16px, 2.4vw, 30px);
   background: var(--madder); color: #fff; box-shadow: 0 5px 0 #86362a, var(--shadow);
   font-family: var(--ui-font); font-weight: 800; font-size: clamp(17px, 2.2vw, 28px);
@@ -812,10 +812,10 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
 /* ---------- Wave 6b: the picture tally (top right), Nani's voice, the throbbing hint ---------- */
 /* the tally: a picture of each thing and how many you've done so far (never the target); it never takes a tap */
 /* 28 Sept (Zafar): a grid, at most three across (six things = 2 x 3), never one long wrapping line */
-#count-badge:not(.njg-tally) { pointer-events: none; display: grid; grid-template-columns: repeat(var(--cols, 3), auto); align-items: center; justify-items: start; gap: 4px 14px; padding: 6px 14px; }
+#count-badge:not(.njg-tally) { pointer-events: none; display: grid; grid-template-columns: repeat(var(--cols, 3), auto); align-items: center; justify-items: start; gap: 4px 12px; padding: 8px 12px; }
 /* placed on a point of the picture (UI.tallyAt), e.g. the pantry's fridge base (R4: the shared tally on Cook's page too: only its place) */
 #count-badge.njg-tally.at { right: auto; justify-content: center; max-width: none; transform: translate(-50%, -100%); }
-#count-badge:not(.njg-tally).at { right: auto; transform: translate(-50%, -50%); gap: 2px 10px; padding: 4px 10px; }
+#count-badge:not(.njg-tally).at { right: auto; transform: translate(-50%, -50%); gap: 4px 8px; padding: 4px 8px; }
 #count-badge:not(.njg-tally).at .tl img { width: clamp(22px, 2.5vw, 36px); height: clamp(22px, 2.5vw, 36px); }
 #count-badge:not(.njg-tally).at .tl .count-digit { font-size: clamp(18px, 2.1vw, 28px); }
 #count-badge:not(.njg-tally) .tl { display: inline-flex; align-items: center; gap: 4px; }
@@ -836,7 +836,7 @@ body.w6 #mission .throb { animation: throb .7s ease-in-out infinite alternate; b
 @keyframes throb { from { box-shadow: 0 0 0 0 rgba(201,151,58,0); background-color: transparent; } to { box-shadow: 0 0 0 4px rgba(201,151,58,.45); background-color: rgba(255, 217, 138, .45); } }
 @media (prefers-reduced-motion: reduce) { body.w6 #mission .throb { animation: none; background-color: rgba(255, 217, 138, .5); } }
 @media (max-height: 500px) {
-  #count-badge:not(.njg-tally) { padding: 2px 8px; gap: 2px 8px; }
+  #count-badge:not(.njg-tally) { padding: 4px 8px; gap: 4px 8px; }
   #count-badge:not(.njg-tally) .tl img { width: 26px; height: 26px; }
   #count-badge:not(.njg-tally) .tl .count-digit { font-size: 20px; }
   #voice { font-size: 14px; padding: 4px 10px 4px 6px; }
