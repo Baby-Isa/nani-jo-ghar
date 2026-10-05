@@ -101,3 +101,4 @@
 - 2026-10-05 12:35 UK · C1 clinic polish done: CLN-69–80 built (results over the room, bubbles, glow, word review at 800×360, scrape hand, jugs, zoom, pictures, tick badge, eye pills), check_onboard clean; --touched heal games 108 pages, check passed. Report build/reports/c1-clinic-polish.md.
 - 2026-10-05 12:25 UK · Check-in: C1 done (all 12 clinic rows built, 9 heal games end clean, $8.60); its 3 order-card findings sent to G1. G1 on SH-47/48 and Cook day 6. Mum's session: grammar notes, lexicon, KB pushed; cutting clips.
 - 2026-10-05 12:53 UK · Mum's 5 Oct session done: Round 4 I1–I35 and C22–C79 written up (grammar-notes §38–§55, lexicon §6, grammar-kb, decision 30); 168 Mum clips cut, unchecked; report build/reports/mum-2026-10-05.md.
+- 2026-10-05 13:00 UK · Check-in: Mum's recordings done (Round 4; grammar §38–55, ~40 words, 168 clips unchecked, 11 spellings for Zafar; $8.94). G1 on a third fold step for phones, SH-47/48 built; still running (stop 15:00).
