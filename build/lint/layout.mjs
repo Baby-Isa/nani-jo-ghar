@@ -129,9 +129,14 @@ export async function pageLint(opts) {
       try { const m = el.getScreenCTM(); if (m) return Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)) || 1; } catch (e) {}
       return 1;
     }
-    if (el.offsetWidth > 0) { const r = el.getBoundingClientRect(); const s = r.width / el.offsetWidth; if (s > 0 && isFinite(s)) return s; }
-    if (el.offsetHeight > 0) { const r = el.getBoundingClientRect(); const s = r.height / el.offsetHeight; if (s > 0 && isFinite(s)) return s; }
-    return 1;
+    // the scale is the product of the ancestors' transforms, not rect/offsetWidth (wrong for a wrapped inline span)
+    let k = 1;
+    for (let a = el; a && a.nodeType === 1; a = a.parentElement) {
+      const t = cs(a).transform;
+      if (!t || t === "none") continue;
+      try { const m = new DOMMatrixReadOnly(t); const d = Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)); if (d > 0 && isFinite(d)) k *= d; } catch (e) {}
+    }
+    return k;
   }
   const all = document.querySelectorAll("body *");
   for (const el of all) {
