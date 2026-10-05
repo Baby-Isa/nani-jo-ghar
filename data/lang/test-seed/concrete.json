@@ -1,0 +1,58 @@
+{
+  "_about": "TEST SEED ONLY (step 4a): the Kutchi rules for the seed meanings, each cited. A slot is {arg, case?, cell?, via?, list?} (an argument), {lex, cell?} (a fixed word, by lexicon id) or {punct}. Cells are templates: {arg.feature}, {feature}, $field, a literal; | gives a fallback.",
+  "lin": {
+    "Item": {
+      "feats": { "gender": "{kind.gender}", "number": "{n.number|$number|sg}", "person": "p3", "lex": "{kind.lex}" },
+      "slots": [
+        { "arg": "n", "cell": "{gender}" },
+        { "arg": "mods", "each": true, "cell": "{gender}.{number}.{case}" },
+        { "arg": "kind", "cell": "{number}.{case}" },
+        { "arg": "with", "via": "WithFood" },
+        { "arg": "without", "via": "WithoutFood" }
+      ],
+      "status": "confirmed", "src": "grammar-notes §2, §4 (hakro ambo, ba amba), §40 (wadho chokro), §41 (wadhe chokre sathe)"
+    },
+    "Of": {
+      "feats": { "gender": "{thing.gender}", "number": "{thing.number|sg}", "person": "p3", "lex": "{thing.lex}" },
+      "slots": [ { "arg": "owner", "case": "obl" }, { "lex": "gen.of", "cell": "{gender}.{number}.{case}" }, { "arg": "thing", "case": "{case}" } ],
+      "status": "confirmed", "src": "grammar-notes §47 (agrees with the thing owned), §48 (owner takes -e), §49 (je before a postposition); decision 30 (b), (c)"
+    },
+    "With": { "slots": [ { "arg": "x", "case": "obl" }, { "lex": "post.sathe" } ], "status": "confirmed", "src": "grammar-notes §36 C18, §41 C28-C29" },
+    "In": { "slots": [ { "arg": "x", "case": "obl" }, { "lex": "post.me" } ], "status": "confirmed", "src": "grammar-notes §41 C30 (wadhe cup me), §51 (rasore me)" },
+    "On": { "slots": [ { "arg": "x", "case": "obl" }, { "lex": "link.je" }, { "lex": "post.mathe" } ], "status": "confirmed", "src": "grammar-notes §15, §41 C31, §44 C41, §49" },
+    "MixedIn": {
+      "feats": { "gender": "{head.gender}", "number": "{head.number|sg}", "person": "p3", "lex": "{head.lex}" },
+      "only": { "head.lex": ["n.chai"] }, "onlyAsk": ["L17", "L22"],
+      "slots": [ { "arg": "x" }, { "lex": "post.waari" }, { "arg": "head", "case": "{case}" } ],
+      "status": "confirmed", "src": "grammar-notes §6 (dudh waari chai: said of chai only)"
+    },
+    "Without": {
+      "feats": { "gender": "{head.gender}", "number": "{head.number|sg}", "person": "p3", "lex": "{head.lex}" },
+      "only": { "head.gender": ["she"] }, "onlyAsk": ["L36"],
+      "slots": [ { "arg": "x" }, { "lex": "post.wagar" }, { "lex": "gen.of", "cell": "{head.gender}.{head.number}.dir" }, { "arg": "head", "case": "{case}" } ],
+      "status": "draft", "src": "grammar-notes §10 (dudh wagar ji chai); whether ji agrees with the dish is open (dungri wagar ji daar, daar's gender unknown: L36)"
+    },
+    "WithFood": { "status": "unknown", "ask": ["L17", "L22", "L23", "L27"], "english": "with {x}", "what": "with, joining an extra to food", "src": "grammar-kb feature 23" },
+    "WithoutFood": { "status": "unknown", "ask": ["L19", "L24"], "english": "without {x}", "what": "no X, inside an order", "src": "grammar-kb feature 19" },
+    "PredDat": {
+      "variants": {
+        "informal": [ { "arg": "who", "case": "dat" }, { "arg": "thing", "case": "dir" }, { "arg": "verb", "cell": "informal" } ],
+        "polite": [ { "arg": "who", "case": "dat" }, { "arg": "thing", "case": "dir" }, { "arg": "verb", "cell": "pres.{thing.gender}.{thing.number}" } ]
+      },
+      "defaultVariant": "informal", "mark": ".",
+      "status": "confirmed", "src": "grammar-notes §1 (muke hakri maani khape / khapeti; muke ba amba khapanta), §31"
+    },
+    "IsA": {
+      "slots": [ { "arg": "thing", "case": "dir" }, { "arg": "quality", "cell": "{thing.gender}.{thing.number}.dir" }, { "lex": "cop.be", "cell": "{thing.person}.{thing.number}" } ],
+      "mark": ".", "status": "confirmed", "src": "grammar-notes §42 C33-C35 (Chokro wadho ai. Chokra wadha ain.), §44 C42"
+    },
+    "BeIn": {
+      "slots": [ { "arg": "who", "case": "dir" }, { "arg": "place", "case": "obl" }, { "lex": "post.me" }, { "lex": "cop.be", "cell": "{who.person}.{who.number}" } ],
+      "mark": ".", "status": "confirmed", "src": "grammar-notes §51 C61-C64, §52 C68; decision 30 (d), (e)"
+    },
+    "BelongsTo": {
+      "slots": [ { "arg": "owner", "case": "obl" }, { "lex": "gen.of", "cell": "{thing.gender|he}.{thing.number|sg}.dir" }, { "lex": "cop.be", "cell": "p3.{thing.number|sg}" } ],
+      "mark": ".", "status": "confirmed", "src": "grammar-notes §50 C60 (Nana jo ai: an unknown thing takes the he-form); decision 30 (f)"
+    }
+  }
+}
