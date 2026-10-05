@@ -221,7 +221,7 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
    a finished person keeps the gold check in the corner. */
 .oc-card.folded:not(.oc-big) { min-height: var(--njg-tap); justify-content: center; }
 .oc-minis { display: flex; flex-wrap: wrap; gap: var(--njg-s2); min-width: 0; }
-.oc-card.oc-mini { padding: var(--njg-s1); min-height: 0; }
+.oc-card.oc-mini { padding: var(--njg-s1); min-width: var(--njg-tap); min-height: var(--njg-tap); align-items: center; justify-content: center; }
 /* (important: a mode may set its own .fit display with an id, e.g. Cook's #side) */
 .oc-card.oc-mini .oc-headline, .oc-card.oc-mini .oc-body, .oc-card.oc-mini .oc-look { display: none !important; }
 .oc-card.oc-mini .oc-done-tk { position: absolute; top: calc(var(--njg-s1) * -1); right: calc(var(--njg-s1) * -1); }

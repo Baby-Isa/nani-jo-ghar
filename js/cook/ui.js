@@ -1180,6 +1180,8 @@
         return line.parts.map((l) => ({ row: l.row, line: l, els: elsOf(l, map).filter((e) => el.contains(e)) }));
       };
       el._rows = c.rows;
+      // G1, the third step: the person in progress's rows flow as pills, two to a line (decision 25's layout)
+      if (!big && (mission.compact || 0) >= 3 && c.who && !minis.has(c.key)) el.classList.add("oc-pills");
       if (minis.has(c.key)) {
         // G1, the second step on a sidebar still too short: the people not in progress are their faces in one row
         // (each face still the replay; a tap beside it brings that person forward)
@@ -1240,10 +1242,11 @@
     const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
     raf(() =>
       raf(() => {
-        if (!mission || (mission.compact || 0) >= 2 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
+        if (!mission || (mission.compact || 0) >= 3 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
         if (side.scrollHeight <= side.clientHeight + 1) return;
         if (orderCards().filter((c) => c.who).length < 2) return;
-        // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face
+        // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face,
+        // 3 flows the open card's rows as pills
         mission.compact = (mission.compact || 0) + 1;
         renderOrder();
       })
