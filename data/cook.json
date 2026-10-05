@@ -1,94 +1,49 @@
 {
  "_about": "Cook with Nani proof of concept (24 Sept 2026). Every Kutchi string here is a DRAFT. Words marked source 'zafar-24sep' were confirmed by Zafar as right for now (khun, not khand). Sentences only recombine frames already in the content master (Muke {x} khape / Ne {x} / Salamun alaykum / Wa alaikum salaam / Aabhar aanjo / Achija / Arre re / Hedo / Ghan). Cooking verbs have NO Kutchi yet: they are shown as gestures, and listed in docs/archive/language/cook-with-nani-words.md for the family. Phase A (24 Sept 2026): words with kutchi null are ENGLISH PLACEHOLDERS shown in grey italic until the family supplies the Kutchi (see docs/language/mum-questions/Questions for Mum (Round 2 — Cooking).md). 25 Sept 2026: seven more words (ph-no, ph-slowly, ph-quickly, ph-half, ph-full, ph-big, ph-small) came from Zafar written phonetically over chat, temporary and unconfirmed (Mum to confirm). Each has `kutchi` (a readable romanised spelling, shown on screen) and `say` (Zafar's own phonetic spelling, used for the voice only, never shown). 26 Sept 2026: Mum's A8 and Section B answers (docs/language/grammar-notes.md §23-§28) replaced most English placeholders and Zafar's phonetic drafts; every change is listed in docs/archive/language/cook-word-changes-B.md.",
+ "_words": "The item catalogue (step 4d): each thing's picture (image), drawn heap, bowl, piece and layer, and joinless, by Cook's id. Its words (Kutchi, English, gender, forms, voice spelling) are the language engine's (data/lang/; their old home is data/lang/seed/cook.json); Cook's ids are the engine's aliases.",
  "words": {
   "cook-paani": {
-   "kutchi": "paani",
-   "_gender": "Mum 28 Sept (Round 3 K10; docs/language/grammar-notes.md §31): muke paani/dudh khapeto (the he-word ending)",
-   "english": "water",
-   "gender": "he",
-   "image": "water-jug",
-   "src": "zafar-24sep"
+   "image": "water-jug"
   },
   "cook-chai": {
-   "kutchi": "chai",
-   "english": "tea",
-   "gender": "she",
    "image": "tea-tin",
    "heap": {
     "kind": "grains",
     "color": "#3b2415"
    },
-   "bowl": "steel",
-   "src": "zafar-24sep"
+   "bowl": "steel"
   },
   "cook-dudh": {
-   "kutchi": "dudh",
-   "_gender": "Mum 28 Sept (Round 3 K10; docs/language/grammar-notes.md §31): muke paani/dudh khapeto (the he-word ending)",
-   "english": "milk",
-   "gender": "he",
-   "image": "milk-jug",
-   "src": "zafar-24sep"
+   "image": "milk-jug"
   },
   "cook-khun": {
-   "kutchi": "khun",
-   "english": "sugar",
-   "gender": "unknown",
    "heap": {
     "kind": "crystals",
     "color": "#f4efe4"
    },
-   "bowl": "ceramic",
-   "src": "zafar-24sep"
+   "bowl": "ceramic"
   },
   "cook-atto": {
-   "kutchi": "atto",
-   "english": "flour",
-   "gender": "unknown",
    "image": "atto",
    "heap": {
     "kind": "powder",
     "color": "#efe3c8"
    },
-   "bowl": "steel",
-   "src": "zafar-24sep"
+   "bowl": "steel"
   },
   "cook-daal": {
-   "kutchi": "daar",
-   "english": "daal",
-   "gender": "unknown",
-   "src_change": "was daal; Mum 25 Sept (A3 recording, docs/language/grammar-notes.md): daar ends in r",
    "image": "daal-dry",
    "heap": {
     "kind": "balls",
     "color": "#f0b429"
    },
-   "bowl": "clay",
-   "src": "zafar-24sep"
+   "bowl": "clay"
   },
   "cook-maani": {
-   "kutchi": "maani",
-   "kutchi_one": "maani",
-   "kutchi_many": "maani",
-   "_count": "Mum 28 Sept (Round 3 P6, C5; docs/language/grammar-notes.md §34): hakri maani, ba maani, no change",
-   "english": "chapati",
-   "gender": "she",
-   "image": "chapati-puffed",
-   "src": "zafar-24sep"
+   "image": "chapati-puffed"
   },
-  "cook-bajrmaani": {
-   "kutchi": "bajr ji maani",
-   "english": "millet chapati",
-   "gender": "she",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B11): ji, not jo, because maani is a she-word",
-   "src_change": "was bajr jo maani (Zafar 24 Sept draft)"
-  },
+  "cook-bajrmaani": {},
   "veg-01": {
-   "kutchi": "bataato",
-   "kutchi_one": "bataato",
-   "kutchi_many": "bataata",
-   "_count": "Mum 28 Sept (Round 3 P1; docs/language/grammar-notes.md §34): one bateto, three bateta (Whisper's spelling, kept in the game's bataato/bataata spelling for Zafar to check); a he-word in -o, -o -> -a",
-   "english": "potato",
-   "gender": "unknown",
    "heap": {
     "kind": "cubes",
     "color": "#ecd18a"
@@ -101,16 +56,9 @@
     "kind": "cubes",
     "color": "#ecd18a"
    },
-   "bowl": "steel",
-   "src": "content master"
+   "bowl": "steel"
   },
   "veg-02": {
-   "kutchi": "dungri",
-   "kutchi_one": "dungri",
-   "kutchi_many": "dungri",
-   "_count": "Mum 28 Sept (Round 3 P2; docs/language/grammar-notes.md §34): trae dungri, no change",
-   "english": "onion",
-   "gender": "unknown",
    "image": "onion",
    "heap": {
     "kind": "pieces",
@@ -124,13 +72,9 @@
     "kind": "pieces",
     "color": "#e9c6d8"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "veg-03": {
-   "kutchi": "tameto",
-   "english": "tomato",
-   "gender": "unknown",
    "image": "tomato",
    "heap": {
     "kind": "cubes",
@@ -144,16 +88,9 @@
     "kind": "cubes",
     "color": "#e0453a"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "veg-12": {
-   "kutchi": "marcha",
-   "_count_mum": "Mum 28 Sept (Round 3 P4; docs/language/grammar-notes.md §34): Mum says mirchi for one and for more (trae mirchi de, 'like salt'); she thinks marcha may be Gujarati or the whole dried chilli. Contradicts Zafar's 26 Sept note: Zafar to decide. Not changed.",
-   "kutchi_one": "mirchi",
-   "english": "green chilli",
-   "note": "Zafar 26 Sept: mirchi = one chilli, marcha = plural. The game has no singular/plural switch yet (see cook-with-nani-todo: noun plurals), so marcha stays for counts; mirchi is kept for when one chilli is asked for.",
-   "gender": "unknown",
    "image": "chilli",
    "heap": {
     "kind": "pieces",
@@ -163,163 +100,87 @@
     "kind": "leaves",
     "color": "#3f8a2c"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "veg-13": {
-   "kutchi": "lasan",
-   "english": "garlic",
-   "gender": "unknown",
    "image": "garlic",
    "heap": {
     "kind": "pieces",
     "color": "#f1ead2"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "veg-10": {
-   "kutchi": "watana",
-   "_count_mum": "Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): watana are FRIED peas (the snack); green peas are matar. Zafar to check which one this is. Not changed.",
-   "src_change": "was vatana; Zafar 25 Sept: no V in Kutchi, always W",
-   "english": "peas",
-   "gender": "unknown",
    "heap": {
     "kind": "balls",
     "color": "#7cb342"
    },
-   "bowl": "steel",
-   "src": "content master"
+   "bowl": "steel"
   },
   "veg-14": {
-   "kutchi": "aadu",
-   "english": "ginger",
-   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#d9b26f"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "fru-02": {
-   "kutchi": "limu",
-   "kutchi_one": "limu",
-   "kutchi_many": "limu",
-   "_count": "Mum 28 Sept (Round 3 P5; docs/language/grammar-notes.md §34): char limu, no change",
-   "english": "lemon",
-   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#f3d54a"
    },
-   "bowl": "ceramic",
-   "src": "handout"
+   "bowl": "ceramic"
   },
   "spi-01": {
-   "kutchi": "hardar",
-   "english": "turmeric",
-   "gender": "unknown",
    "heap": {
     "kind": "powder",
     "color": "#e9a313"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "spi-02": {
-   "kutchi": "jeeru",
-   "english": "cumin seeds",
-   "gender": "unknown",
    "heap": {
     "kind": "grains",
     "color": "#7a5530"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "spi-05": {
-   "kutchi": "rai",
-   "english": "mustard seeds",
-   "gender": "unknown",
    "heap": {
     "kind": "dots",
     "color": "#2a1d18"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "spi-10": {
-   "kutchi": "elchi",
-   "english": "cardamom",
-   "gender": "unknown",
    "image": "elchi",
    "heap": {
     "kind": "pods",
     "color": "#9bbf6a"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "spi-16": {
-   "kutchi": "loon",
-   "english": "salt",
-   "gender": "unknown",
    "heap": {
     "kind": "crystals",
     "color": "#ffffff",
     "sparkle": true
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
   "spi-04": {
-   "kutchi": "laal marcha",
-   "english": "red chilli powder",
-   "gender": "unknown",
    "heap": {
     "kind": "powder",
     "color": "#c7361f"
    },
-   "bowl": "ceramic",
-   "src": "content master"
+   "bowl": "ceramic"
   },
-  "num-01": {
-   "kutchi": "hakro",
-   "english": "one",
-   "forms": {
-    "he": "hakro",
-    "she": "hakri"
-   },
-   "_forms": "\"one\" agrees with the noun's gender (words[id].gender): hakro ambo, hakri maani. A noun of unknown gender takes `kutchi` (hakro), and dishes are ordered without \"one\" (the informal frame Muke {x} khape).",
-   "src": "Mum 25 Sept (A3 recording, docs/language/grammar-notes.md); was hikdo (class handout)"
-  },
-  "num-02": {
-   "kutchi": "ba",
-   "english": "two",
-   "say": "ber",
-   "src": "Mum 25 Sept (A3 recording, docs/language/grammar-notes.md): said like the Ber of Bernstein; was bo (class handout). Screen spelling ba is Zafar's proposal, to confirm with the recording",
-   "draft": true
-  },
-  "num-03": {
-   "kutchi": "trae",
-   "english": "three",
-   "src": "handout"
-  },
-  "num-04": {
-   "kutchi": "char",
-   "english": "four",
-   "src": "handout"
-  },
-  "num-05": {
-   "kutchi": "panj",
-   "english": "five",
-   "src": "handout"
-  },
+  "num-01": {},
+  "num-02": {},
+  "num-03": {},
+  "num-04": {},
+  "num-05": {},
   "ph-chana": {
-   "kutchi": "chana",
-   "english": "chickpeas",
-   "gender": "unknown",
    "heap": {
     "kind": "balls",
     "color": "#d9b77a"
@@ -328,14 +189,9 @@
     "kind": "balls",
     "color": "#d9b77a"
    },
-   "bowl": "steel",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B9)",
-   "src_change": "was channa (Zafar 24 Sept draft)"
+   "bowl": "steel"
   },
   "ph-dahi": {
-   "kutchi": "dai",
-   "english": "yoghurt",
-   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#f8f5ee"
@@ -344,13 +200,9 @@
     "kind": "liquid",
     "color": "#fbf8f1"
    },
-   "bowl": "ceramic",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B8): dai (a yoghurt starter culture is mervan). Was a draft from Zafar, 24 Sept"
+   "bowl": "ceramic"
   },
   "ph-amli": {
-   "kutchi": "amli ji chutney",
-   "english": "tamarind chutney",
-   "gender": "she",
    "heap": {
     "kind": "liquid",
     "color": "#6b3a1e",
@@ -361,14 +213,9 @@
     "color": "#6b3a1e",
     "drizzle": true
    },
-   "bowl": "ceramic",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B31): amli = tamarind. She-word: it takes ji (the jo/ji rule, §18 and B11)",
-   "src_change": "was an English placeholder"
+   "bowl": "ceramic"
   },
   "ph-lili": {
-   "kutchi": "fudino ji chutney",
-   "english": "mint chutney",
-   "gender": "she",
    "heap": {
     "kind": "liquid",
     "color": "#5d9b3a",
@@ -379,14 +226,9 @@
     "color": "#4f8f30",
     "drizzle": true
    },
-   "bowl": "ceramic",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B32): no general word for green chutney; mint chutney is fudino ji chutney, coconut chutney nair ji chutney. The game's is the bright green bowl (topping-lili-bowl-t, colour #5d9b3a), so mint",
-   "src_change": "was the English placeholder green chutney"
+   "bowl": "ceramic"
   },
   "ph-sev": {
-   "kutchi": "sev",
-   "english": "sev",
-   "gender": "unknown",
    "heap": {
     "kind": "strands",
     "color": "#e8b23a"
@@ -395,14 +237,9 @@
     "kind": "strands",
     "color": "#e8b23a"
    },
-   "bowl": "brass",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B29): sev, the same word",
-   "src_change": "was an English placeholder"
+   "bowl": "brass"
   },
   "ph-dhana": {
-   "kutchi": "dhania",
-   "english": "coriander",
-   "gender": "unknown",
    "heap": {
     "kind": "leaves",
     "color": "#4f8f3a"
@@ -411,29 +248,16 @@
     "kind": "leaves",
     "color": "#4f8f3a"
    },
-   "bowl": "ceramic",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B30): dhania = fresh coriander (mint is fudino)",
-   "src_change": "was an English placeholder"
+   "bowl": "ceramic"
   },
   "ph-keema": {
-   "kutchi": "chundo",
-   "english": "mince",
-   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#8a5238"
    },
-   "bowl": "steel",
-   "src": "Zafar 26 Sept: chundo (Kutchi; it also means to mince, in general), correcting Mum's recording's chindo (docs/language/grammar-notes.md §26, B33). Keema is also right (alt)",
-   "alt": [
-    "keema"
-   ],
-   "src_change": "was an English placeholder (mince); first written chindo from the recording"
+   "bowl": "steel"
   },
   "ph-meat": {
-   "kutchi": "gos",
-   "english": "meat",
-   "gender": "unknown",
    "heap": {
     "kind": "cubes",
     "color": "#9c4a32"
@@ -442,14 +266,9 @@
     "kind": "cubes",
     "color": "#9c4a32"
    },
-   "bowl": "steel",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B10)",
-   "src_change": "was ghos (Zafar 24 Sept draft)"
+   "bowl": "steel"
   },
   "ph-pepper": {
-   "kutchi": null,
-   "english": "green pepper",
-   "gender": "unknown",
    "heap": {
     "kind": "pieces",
     "color": "#4f9a3a"
@@ -458,552 +277,189 @@
     "kind": "pieces",
     "color": "#4f9a3a"
    },
-   "bowl": "ceramic",
-   "src": "placeholder: no Kutchi word (Mum 26 Sept, B34: capsicum isn't a traditional ingredient; mirchi = chilli, lilo = green). Recommendation in docs/archive/language/cook-word-changes-B.md"
+   "bowl": "ceramic"
   },
   "ph-chips": {
-   "kutchi": "tarela bataata",
-   "english": "chips",
-   "gender": "unknown",
    "heap": {
     "kind": "sticks",
     "color": "#f0c050"
    },
-   "bowl": "steel",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B28): tarela bataata = fried potatoes (the family also just says chips). A plural (bataato -> bataata)",
-   "src_change": "was an English placeholder"
+   "bowl": "steel"
   },
   "ph-ghee": {
-   "kutchi": "ghee",
-   "english": "ghee",
-   "gender": "unknown",
    "heap": {
     "kind": "liquid",
     "color": "#f2d27a"
    },
-   "bowl": "brass",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B35): ghee, the same word",
-   "src_change": "was an English placeholder"
+   "bowl": "brass"
   },
-  "ph-chaat": {
-   "kutchi": "chaat",
-   "english": "chaat",
-   "gender": "unknown",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B36): chaat is the mixture in the bowl",
-   "src_change": "was an English placeholder"
-  },
-  "ph-samosa": {
-   "kutchi": "samosa",
-   "kutchi_one": "samosa",
-   "kutchi_many": "samosa",
-   "_count": "Mum 28 Sept (Round 3 P7; docs/language/grammar-notes.md §34): no change. Zafar asked for Nani to say 'sambusa' (the family's word; clip sambusa-r3): not changed here yet",
-   "english": "samosa",
-   "gender": "unknown",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B37)",
-   "src_change": "was an English placeholder"
-  },
-  "ph-sekelo": {
-   "kutchi": "sekelo",
-   "english": "sekelo",
-   "gender": "unknown",
-   "draft": true,
-   "src": "Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"
-  },
-  "ph-mishkaki": {
-   "kutchi": "mishkaki",
-   "english": "mishkaki",
-   "gender": "unknown",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B38; use Mum's recording)",
-   "src_change": "was an English placeholder"
-  },
-  "ph-lakri": {
-   "kutchi": "lakri",
-   "kutchi_one": "lakri",
-   "kutchi_many": "lakri",
-   "_count": "Mum 28 Sept (Round 3 P8; docs/language/grammar-notes.md §34): hakri lakri, char lakri, no change",
-   "english": "skewer",
-   "gender": "she",
-   "_use": "Said before a skewer's kind in the mishkaki order (the tally's `unit`, and data/stations/mishkaki-grill.json mechanic.skewer.unit): hakri lakri gos, ba lakri boga. Mum said it with mishkaki (hakri lakri mishkaki, ba lakri mishkaki); with gos, boga and mixed it's Claude's extension, to check.",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25): lakri = a stick; one skewer is hakri lakri mishkaki, two ba lakri mishkaki. A she-word (hakri)",
-   "draft": true
-  },
-  "lnk-nepoi": {
-   "kutchi": "ne poi",
-   "english": "and then",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B12): ne poi confirmed",
-   "linker": true
-  },
-  "ph-no": {
-   "kutchi": "na",
-   "english": "no / not",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na, not nar (nar = look). The polite whole sentence is muke na khape (nato / nati agree)",
-   "src_change": "was nar (Zafar 25 Sept, phonetic)"
-  },
-  "ph-slowly": {
-   "kutchi": "aste thi",
-   "english": "slowly",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B2): aste = slow",
-   "src_change": "was aastethi (Zafar 25 Sept, phonetic)"
-  },
-  "ph-quickly": {
-   "kutchi": "jaldi",
-   "english": "quickly",
-   "say": "jal-dee",
-   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B3)"
-  },
-  "ph-kari": {
-   "kutchi": "kari",
-   "english": "black",
-   "src": "Mum, A4 (docs/language/grammar-notes.md §10): kari chai is black tea, chai with no milk. Not recorded yet. Chai is a she-word, so kari; the he-word form is probably karo (unconfirmed), not used",
-   "_use": "Only in kari chai (the Chai tray, Zafar 29 Sept): a cup ordered by its name, its card's rows say what that means (dudh na)"
-  },
-  "ph-mori": {
-   "kutchi": "mori",
-   "english": "unsweetened",
-   "src": "Mum, A4 (docs/language/grammar-notes.md §10): mori chai is chai with no sugar. Not recorded yet. Chai is a she-word, so mori; the he-word form is probably moro (unconfirmed), not used",
-   "_use": "Only in mori chai (the Chai tray, Zafar 29 Sept): a cup ordered by its name, its card's rows say what that means (khun na)"
-  },
+  "ph-chaat": {},
+  "ph-samosa": {},
+  "ph-sekelo": {},
+  "ph-mishkaki": {},
+  "ph-lakri": {},
+  "lnk-nepoi": {},
+  "ph-no": {},
+  "ph-slowly": {},
+  "ph-quickly": {},
+  "ph-kari": {},
+  "ph-mori": {},
   "ph-half": {
-   "kutchi": "adh",
-   "english": "half",
-   "say": "udd",
-   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet",
    "joinless": true
   },
   "ph-full": {
-   "kutchi": "aako",
-   "english": "full",
-   "src": "Mum 26 Sept (Section B, B5; docs/language/grammar-notes.md §24) and Zafar's spelling, 26 Sept: aako, with two a's (replaces ako / aki)",
-   "src_change": "was bharelo (Zafar 25 Sept, phonetic)",
-   "_use": "aako cup = a whole cup, the one used in cooking (Zafar 26 Sept: use aako cup for recipe amounts). A filled-up cup is bharelo cup; bharelo / bhareli also means heaped (bhareli chamchi). Cup has no gender: one cup is hakri cup. The Chai tray says it on its own, like adh: Ne aako.",
    "joinless": true
   },
-  "ph-big": {
-   "kutchi": "wadho",
-   "english": "big",
-   "say": "wudd-oar",
-   "forms": {
-    "he": "wadho",
-    "she": "wadhi"
-   },
-   "say_forms": {
-    "she": "wudd-ee"
-   },
-   "_forms": "A describing word agrees with its noun: wadho for he-words, wadhi for she-words like maani (both confirmed). No V at the start of a Kutchi word: was vadho.",
-   "src": "Zafar 25 Sept, phonetic; wadho / wadhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B6)"
-  },
-  "ph-small": {
-   "kutchi": "nindho",
-   "english": "small",
-   "say": "nindh-oar",
-   "forms": {
-    "he": "nindho",
-    "she": "nindhi"
-   },
-   "say_forms": {
-    "she": "nindh-ee"
-   },
-   "_forms": "As ph-big: nindho (he-words), nindhi (she-words like maani), both confirmed.",
-   "src": "Zafar 25 Sept, phonetic; nindho / nindhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B7)"
-  },
-  "lnk-pela": {
-   "kutchi": "pela",
-   "english": "first",
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke pela daar khape, ne poi maani",
-   "draft": true
-  },
-  "cook-waari": {
-   "kutchi": "waari",
-   "english": "with (mixed in)",
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, kesar waari chai",
-   "draft": true
-  },
-  "kin-nana": {
-   "kutchi": "Nana",
-   "english": "Nana",
-   "gender": "he",
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai"
-  },
-  "kin-ma": {
-   "kutchi": "Ma",
-   "english": "Ma",
-   "gender": "she",
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): Ma lai pan hakro banai"
-  },
-  "name-ali": {
-   "kutchi": "Ali",
-   "english": "Ali",
-   "gender": "he",
-   "src": "a name (the cousin)"
-  },
-  "ph-pantry": {
-   "kutchi": null,
-   "english": "pantry",
-   "gender": "unknown",
-   "src": "placeholder"
-  }
- },
- "lines": {
-  "greet": {
-   "k": "Salamun alaykum!",
-   "en": "Peace be upon you!"
-  },
-  "greet-reply": {
-   "k": "Wa alaikum salaam!",
-   "en": "And peace be upon you too!"
-  },
-  "thanks": {
-   "k": "Aabhar aanjo!",
-   "en": "Thank you!"
-  },
-  "bye": {
-   "k": "Achija!",
-   "en": "Bye!"
-  },
-  "oops": {
-   "k": "Arre re!",
-   "en": "Oh dear!"
-  },
-  "hey": {
-   "k": "Hedo!",
-   "en": "Hey!"
-  },
-  "here": {
-   "k": "Ghan.",
-   "en": "Here you are."
-  },
-  "need": {
-   "k": "Muke {x} khape.",
-   "en": "I need {x}."
-  },
-  "and": {
-   "k": "Ne {x}.",
-   "en": "And {x}."
-  },
-  "give": {
-   "k": "Muke {x} de.",
-   "en": "Give me {x}.",
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke chamchi de; pass me is the same as give me. Was Muke hikdo {x} dine.",
-   "draft": true
-  },
-  "no": {
-   "k": "{x} na.",
-   "en": "No {x}.",
-   "draft": true,
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1; A4 §11): na, not nar. The shape is Mum's everyday khun na (no sugar), two words like Ne {x}. so a no row doesn't stand out by its shape; the polite whole sentence is Muke {x} na khape. Was Nar {x}."
-  },
-  "only": {
-   "k": "Kali {x}.",
-   "en": "Only {x}.",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B13): kali, the same for he- and she-words (kali amba)"
-  },
-  "enough": {
-   "k": "Bas!",
-   "en": "Enough!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B19)"
-  },
-  "more": {
-   "k": "Wadhare!",
-   "en": "More!",
-   "draft": true,
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B20): doubtful (⚠)"
-  },
-  "times": {
-   "e": "{x} times"
-  },
-  "howareyou": {
-   "k": "Tu ki aiye?",
-   "en": "How are you?",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B43; §21): to a child (the customers ask the player); to an elder it's Aai ki aayo?"
-  },
-  "fine": {
-   "k": "Aau theek ai.",
-   "en": "I'm fine, thank you.",
-   "src": "Mum 26 Sept (Section B, B43; docs/language/grammar-notes.md §27); spelling confirmed by Zafar, 26 Sept"
-  },
-  "yes": {
-   "k": "Ha!",
-   "en": "Yes!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §23): ha"
-  },
-  "nope": {
-   "k": "Na.",
-   "en": "No.",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na. A bare na is rude when turning something down (§11), which is why it's a wrong answer in Cook's exchanges"
-  },
-  "canyou": {
-   "k": "Tu muke {x} banai dinda?",
-   "en": "Can you make me {x}?",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B40): to a child; no word for can, the voice rises at the end. To an elder: Aai muke … banai dinda?"
-  },
-  "ofcourse": {
-   "k": "Ha!",
-   "en": "Of course!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B41)"
-  },
-  "welcome": {
-   "k": "Jara e wandho nai.",
-   "en": "You're welcome.",
-   "draft": true,
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B42): it's no trouble at all. Doubtful (⚠)"
-  },
-  "wait": {
-   "k": "Mu lai khobar!",
-   "en": "Wait for me!",
-   "draft": true,
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B44): doubtful (⚠)"
-  },
-  "welldone": {
-   "k": "Shabash!",
-   "en": "Well done!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B25)"
-  },
-  "forwho": {
-   "k": "Hi {x} lai ai.",
-   "en": "This is for {x}.",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B39; A3 §8): Hi Nana lai ai"
-  },
-  "chop-these": {
-   "e": "Chop these",
-   "record": true,
-   "_about": "Nani's chop card headline at the daar station (step 4d: was typed in js/cook/stations/daar.js); to record with Mum"
-  },
-  "go-fry": {
-   "e": "Fry them",
-   "record": true,
-   "_about": "The samosa station's button from folding to frying (step 4d: was data/stations/samosa.json phases.go); to record with Mum"
-  },
-  "go-grill": {
-   "e": "To the grill",
-   "record": true,
-   "_about": "The sekelo station's button from threading to the grill (step 4d: was data/stations/mishkaki-grill.json phases.go); to record with Mum"
-  },
-  "pocket": {
-   "e": "I'll give you pocket money for helping. Get it all right and be quick, and you get more!"
-  },
-  "then": {
-   "k": "Ne poi {x}.",
-   "en": "And then {x}.",
-   "src": "zafar-24sep-draft; ne poi confirmed by Mum 25 Sept (A3.3-A3.6 recording)"
-  },
-  "first": {
-   "k": "Pela {x}.",
-   "en": "First {x}.",
-   "draft": true,
-   "src": "Mum 25 Sept (A3.3-A3.6): pela = first (Muke pela daar khape, ne poi maani). As a line of its own, a draft"
-  },
-  "need_waari": {
-   "k": "Muke {x} waari chai khape.",
-   "en": "I want chai with {x}.",
-   "draft": true,
-   "src": "29 Sept (X1): Mum's order frame Muke {x} khape with her {x} waari chai (A3.3-A3.6: dudh / khun / kesar waari chai), put together; the whole sentence is to confirm with Mum (Q5 1)"
-  },
-  "with": {
-   "e": "with {x}",
-   "record": true,
-   "src": "29 Sept (X1): the join between an order's headline and the rest (Muke ba samosa khape, with ba chundo, trae marcha). English placeholder, TO RECORD: how Mum says 'with' for food (waari? sathe?) is Q5"
-  },
-  "and_join": {
-   "e": "and {x}",
-   "record": true,
-   "src": "29 Sept (X1): the join before a second kind of the same dish (Muke ba bajr ji maani khape, and hakri maani). English placeholder, TO RECORD with Mum (Q5 4); no Ne chaining"
-  },
-  "waari": {
-   "k": "{x} waari chai.",
-   "en": "Chai with {x}.",
-   "draft": true,
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, khun waari chai, kesar waari chai"
-  },
-  "sugar": {
-   "k": "Muke chai me {x} khape.",
-   "en": "In my chai I want {x}.",
-   "draft": true,
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke chai me ba khun khapeti (formal); khape is the informal ending the game uses everywhere"
-  },
-  "for": {
-   "k": "{x} lai.",
-   "en": "For {x}.",
-   "draft": true,
-   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai (this is for Nana); lai = for"
-  },
-  "now": {
-   "k": "Hane {x}!",
-   "en": "Now {x}!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B14): hane is now in a sequence of steps (hane tameta wij), the cooking one; haver is now in general"
-  },
-  "lift": {
-   "k": "{x} hane kadh.",
-   "en": "Lift out the {x}.",
-   "draft": true,
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B15): inke hane kadh (lift it out now); the thing named in place of inke is Claude's (⚠)"
-  },
-  "leave": {
-   "k": "{x} chadi de.",
-   "en": "Leave the {x}.",
-   "draft": true,
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B16): inke chadi de (leave it be); the thing named in place of inke is Claude's (⚠). A bit longer: Thori war rakh."
-  },
-  "burning": {
-   "k": "Bareto!",
-   "en": "It's burning!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B23)"
-  },
-  "little": {
-   "k": "Thorok.",
-   "en": "A little.",
-   "draft": true,
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B21): Whisper heard torok; doubtful (⚠)"
-  },
-  "ready": {
-   "k": "Tayar ai.",
-   "en": "It's ready.",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B22)"
-  },
-  "boiling": {
-   "k": "Ukreto!",
-   "en": "It's boiling!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B24)"
-  },
-  "longer": {
-   "k": "Thori war rakh.",
-   "en": "Leave it a bit longer.",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B16)"
-  },
-  "careful": {
-   "k": "Dhyan rakh!",
-   "en": "Careful!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B49): to a child"
-  },
-  "hurry": {
-   "k": "Jaldi kar!",
-   "en": "Hurry up!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B48): to a child (Jaldi karo! to an elder)"
-  },
-  "eat": {
-   "k": "Kha!",
-   "en": "Eat!",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B45)"
-  },
-  "taste": {
-   "k": "Muke chakhan lai de.",
-   "en": "Let me taste it.",
-   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B46). Also Khobar, aau chakha (wait, I'll taste it)"
-  },
-  "guide-add": {
-   "k": "Wiji chad!",
-   "en": "Put it in!",
-   "src": "Mum 5 Oct (Round 4 I1-I35 1:22, docs/language/lexicon.md §6.1): wiji chad, put it in; spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (add)"
-  },
-  "guide-slow": {
-   "k": "Slow kar!",
-   "en": "Turn it down!",
-   "src": "Mum 5 Oct (Round 4 I1-I35 1:03, lexicon §6.1): slow kar, turn the flame down (English slow + kar; not aste thi kar). Nani's guide box (watch)"
-  },
-  "guide-knead": {
-   "k": "Atto gund!",
-   "en": "Knead the dough!",
-   "draft": true,
-   "src": "Mum 5 Oct (Round 4 I6, I1-I35 1:35, lexicon §6.1): atto gund; gund heard once (⚠). Nani's guide box (knead)"
-  },
-  "guide-firai": {
-   "k": "Firai!",
-   "en": "Turn it! (flip it over, stir it round)",
-   "src": "Mum 5 Oct (Round 4 I1-I35 1:59-2:20, lexicon §6.1): firai is flip and also stir; spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (flip, stir)"
-  },
-  "guide-chop": {
-   "k": "Nindha nindha kap!",
-   "en": "Chop it small!",
-   "draft": true,
-   "src": "Mum 5 Oct (Round 4 I10, I1-I35 1:51-1:56, lexicon §6.1): nindha nindha kap, cut it small (⚠). Nani's guide box (chop)"
-  },
-  "guide-fold": {
-   "k": "Samosa waar!",
-   "en": "Fold the samosa!",
-   "src": "Mum 5 Oct (Round 4 I15, I1-I35 3:13, lexicon §6.1): waar, like samosa waar. Nani's guide box (fold)"
-  },
-  "guide-fry": {
-   "k": "Tar!",
-   "en": "Fry it!",
-   "draft": true,
-   "src": "Mum 5 Oct (Round 4 I14, I1-I35 2:52, lexicon §6.1): tar (samosa tar, bhajiya tar) (⚠). Nani's guide box (fry)"
-  },
-  "guide-fill": {
-   "k": "Bhar!",
-   "en": "Fill it!",
-   "src": "Mum 5 Oct (Round 4 I16, I1-I35 3:23, lexicon §6.1): bhar, fill (paani bhari chad). Nani's guide box (fill)"
-  },
-  "guide-fire": {
-   "k": "Chulo bar!",
-   "en": "Light the stove!",
-   "src": "Mum 5 Oct (Round 4 I33, I1-I35 6:46, lexicon §6.1-6.2): chulo bar; chulo spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (chai-tray:knob)"
-  }
- },
- "grammar": {
-  "_about": "How this language builds sentences. The code only names roles (an order's first line, a list, a counted noun); the words are in `words` and the frames in `lines`. Another language (Gujarati first) swaps this block with those two. Order ladder: `order` frames start each dish, `list.next` joins things in any order, `then` (the line key) joins the next step of a sequence (\"Ne poi {x}.\", a draft from Zafar, Mum to confirm), `no` says leave-it-out rows (\"{x} na.\", Mum 26 Sept, B1: two words, like `and`, so a hidden no-row isn't given away by its shape), and `then_word` is the linker's word id: from its word stage 3 the ladder stops drawing the sequence and only the spoken linker tells you the order.",
-  "numbers": {
-   "1": "num-01",
-   "2": "num-02",
-   "3": "num-03",
-   "4": "num-04",
-   "5": "num-05"
-  },
-  "count": "{n} {x}",
-  "sep": " ",
-  "order": {
-   "first": "need",
-   "next": "and",
-   "polite": "canyou",
-   "_polite": "28 Sept (Zafar): an order's first line is short at level 1 (Muke chai khape.) and polite from level 2 (Tu muke chai banai dinda?, Mum's B40 frame; both recorded for chai)"
-  },
-  "list": {
-   "first": "{x}.",
-   "next": "and"
-  },
-  "number": "{x}!",
-  "then": "then",
-  "then_first": "first",
-  "for": "for",
-  "gender": {
-   "_about": "Words agree with a noun's gender (words[id].gender: he | she | unknown). A word with `forms` ({he, she}) takes the form for the noun it goes with: \"one\" (hakro/hakri) and describing words (wadho/wadhi). Unknown gender (most nouns until the family says) takes the word's own `kutchi`; the order frame Muke {x} khape is the informal one and never changes (docs/language/grammar-notes.md 1).",
-   "default": "unknown"
-  },
-  "no": "no",
-  "then_word": "lnk-nepoi"
+  "ph-big": {},
+  "ph-small": {},
+  "lnk-pela": {},
+  "cook-waari": {},
+  "kin-nana": {},
+  "kin-ma": {},
+  "name-ali": {},
+  "ph-pantry": {}
  },
  "meanings": {
-  "_about": "Step 4d (decision 42): which language-engine meaning each of Cook's frame keys asks for (data/lang/abstract.json; the same map as build/lang/hand/cook-map.mjs FRAMES). \"$x\" is the thing the game fills in. The engine builds the words, their agreement and the clip plan (js/cook/words.js); a frame the engine has no rule for comes back as its gap (grey-italic English, flagged to record). Fixed lines need no row here: the engine knows them by the alias cook.line.<key>. `lines` and `grammar` above are no longer read by the game: they stay as a source the engine's importers read (build/lang/import_cook.mjs).",
-  "need": {"fn": "Need", "who": "p1", "thing": "$x"},
-  "and": {"fn": "And", "x": "$x"},
-  "give": {"fn": "GiveMe", "x": "$x"},
-  "no": {"fn": "NoItem", "x": "$x"},
-  "only": {"fn": "Only", "x": "$x"},
-  "then": {"fn": "Then", "x": "$x"},
-  "first": {"fn": "First", "x": "$x"},
-  "now": {"fn": "Now", "x": "$x"},
-  "stir-now": {"fn": "Now", "x": "$x"},
-  "for": {"fn": "For", "x": "$x"},
-  "forwho": {"fn": "ForWho", "x": "$x"},
-  "waari": {"fn": "MixedIn", "head": "cook-chai", "x": "$x"},
-  "need_waari": {"fn": "Need", "who": "p1", "thing": {"fn": "MixedIn", "head": "cook-chai", "x": "$x"}},
-  "sugar": {"fn": "WantIn", "container": "cook-chai", "thing": "$x"},
-  "lift": {"fn": "Lift", "x": "$x"},
-  "leave": {"fn": "Leave", "x": "$x"},
-  "canyou": {"fn": "CanYouMake", "who": "p2", "thing": "$x"},
-  "howareyou": {"fn": "HowAreYou", "who": "p2"},
-  "fine": {"fn": "ImFine"},
-  "with": {"fn": "WithFood", "x": "$x"},
-  "and_join": {"fn": "AndKind", "x": "$x"},
-  "times": {"fn": "Times", "n": "$x"},
-  "guide-add": {"fn": "DoIt", "verb": "v.put-in"},
-  "guide-knead": {"fn": "Command", "verb": "v.knead", "obj": "cook-atto"},
-  "guide-firai": {"fn": "Command", "verb": "v.turn"},
-  "guide-fold": {"fn": "Command", "verb": "v.fold", "obj": "ph-samosa"},
-  "guide-fry": {"fn": "Command", "verb": "v.fry"},
-  "guide-fill": {"fn": "Command", "verb": "v.fill"},
-  "guide-fire": {"fn": "Command", "verb": "v.light", "obj": "n.stove"},
-  "headline-pantry": {"fn": "BringMeTheseForX", "x": "$x"},
-  "thanks": {"fn": "Exclaim", "x": "phrase.thank-you-the-english-words-the-family-says-them"},
-  "bye": {"fn": "Exclaim", "x": "phrase.goodbye-khuda-hafiz"}
+  "_about": "Step 4d (decision 42): which language-engine meaning each of Cook's frame keys asks for (data/lang/abstract.json; the same map as build/lang/hand/cook-map.mjs FRAMES). \"$x\" is the thing the game fills in. The engine builds the words, their agreement and the clip plan (js/cook/words.js); a frame the engine has no rule for comes back as its gap (grey-italic English, flagged to record). Fixed lines need no row here: the engine knows them by the alias cook.line.<key>. Cook's lines, grammar and words moved to the engine's own source, data/lang/seed/cook.json (build/lang/import_cook.mjs reads them there).",
+  "need": {
+   "fn": "Need",
+   "who": "p1",
+   "thing": "$x"
+  },
+  "and": {
+   "fn": "And",
+   "x": "$x"
+  },
+  "give": {
+   "fn": "GiveMe",
+   "x": "$x"
+  },
+  "no": {
+   "fn": "NoItem",
+   "x": "$x"
+  },
+  "only": {
+   "fn": "Only",
+   "x": "$x"
+  },
+  "then": {
+   "fn": "Then",
+   "x": "$x"
+  },
+  "first": {
+   "fn": "First",
+   "x": "$x"
+  },
+  "now": {
+   "fn": "Now",
+   "x": "$x"
+  },
+  "stir-now": {
+   "fn": "Now",
+   "x": "$x"
+  },
+  "for": {
+   "fn": "For",
+   "x": "$x"
+  },
+  "forwho": {
+   "fn": "ForWho",
+   "x": "$x"
+  },
+  "waari": {
+   "fn": "MixedIn",
+   "head": "cook-chai",
+   "x": "$x"
+  },
+  "need_waari": {
+   "fn": "Need",
+   "who": "p1",
+   "thing": {
+    "fn": "MixedIn",
+    "head": "cook-chai",
+    "x": "$x"
+   }
+  },
+  "sugar": {
+   "fn": "WantIn",
+   "container": "cook-chai",
+   "thing": "$x"
+  },
+  "lift": {
+   "fn": "Lift",
+   "x": "$x"
+  },
+  "leave": {
+   "fn": "Leave",
+   "x": "$x"
+  },
+  "canyou": {
+   "fn": "CanYouMake",
+   "who": "p2",
+   "thing": "$x"
+  },
+  "howareyou": {
+   "fn": "HowAreYou",
+   "who": "p2"
+  },
+  "fine": {
+   "fn": "ImFine"
+  },
+  "with": {
+   "fn": "WithFood",
+   "x": "$x"
+  },
+  "and_join": {
+   "fn": "AndKind",
+   "x": "$x"
+  },
+  "times": {
+   "fn": "Times",
+   "n": "$x"
+  },
+  "guide-add": {
+   "fn": "DoIt",
+   "verb": "v.put-in"
+  },
+  "guide-knead": {
+   "fn": "Command",
+   "verb": "v.knead",
+   "obj": "cook-atto"
+  },
+  "guide-firai": {
+   "fn": "Command",
+   "verb": "v.turn"
+  },
+  "guide-fold": {
+   "fn": "Command",
+   "verb": "v.fold",
+   "obj": "ph-samosa"
+  },
+  "guide-fry": {
+   "fn": "Command",
+   "verb": "v.fry"
+  },
+  "guide-fill": {
+   "fn": "Command",
+   "verb": "v.fill"
+  },
+  "guide-fire": {
+   "fn": "Command",
+   "verb": "v.light",
+   "obj": "n.stove"
+  },
+  "headline-pantry": {
+   "fn": "BringMeTheseForX",
+   "x": "$x"
+  },
+  "thanks": {
+   "fn": "Exclaim",
+   "x": "phrase.thank-you-the-english-words-the-family-says-them"
+  },
+  "bye": {
+   "fn": "Exclaim",
+   "x": "phrase.goodbye-khuda-hafiz"
+  }
  },
  "verdicts": {
   "_about": "Words shown over the action after a timing or a pour (English UI). Mechanics name them by key.",
@@ -1151,10 +607,30 @@
    "name": "ph-pantry",
    "forDish": {
     "_about": "29 Sept (Q6, Zafar): in story mode the first time each of these dishes is made that day starts with a pantry trip for its things (a second one that day doesn't; free play and the lab skip it). What each dish's trip fetches, all stocked in the pantry (shelf art), in the order Nani asks",
-    "chai": ["cook-chai", "cook-dudh", "cook-khun", "spi-10"],
-    "daal": ["cook-daal", "veg-02", "veg-03", "spi-01"],
-    "chaat": ["veg-01", "ph-chana", "veg-02", "ph-sev"],
-    "samosa": ["ph-keema", "veg-01", "veg-02", "cook-atto"]
+    "chai": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "spi-10"
+    ],
+    "daal": [
+     "cook-daal",
+     "veg-02",
+     "veg-03",
+     "spi-01"
+    ],
+    "chaat": [
+     "veg-01",
+     "ph-chana",
+     "veg-02",
+     "ph-sev"
+    ],
+    "samosa": [
+     "ph-keema",
+     "veg-01",
+     "veg-02",
+     "cook-atto"
+    ]
    },
    "english": "Pantry",
    "price": 2,
@@ -1165,11 +641,7 @@
    "how": "Listen to what Nani needs, then tap each one into the basket.",
    "headline": {
     "line": "headline-pantry",
-    "line_plain": "headline-pantry-plain",
-    "en": "Bring me these for {dish}",
-    "en_plain": "Bring me these",
-    "record": true,
-    "_about": "28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+    "line_plain": "headline-pantry-plain"
    },
    "lists": {
     "basics": [
@@ -2005,7 +1477,10 @@
   "samosa": {
    "name": "ph-samosa",
    "countRule": true,
-   "baseFirst": ["kinds", "kinds2"],
+   "baseFirst": [
+    "kinds",
+    "kinds2"
+   ],
    "_baseFirst": "30 Sept (Zafar): the base filling (chundo or bataato: each block's first kind) is the first row on the card and said first; the rest stay shuffled (js/cook/order.js)",
    "english": "Samosa",
    "price": 5,
@@ -2018,11 +1493,21 @@
     "no": {
      "type": "no",
      "tasteChance": {
-      "byLevel": [0, 0, 0.6, 0.6]
+      "byLevel": [
+       0,
+       0,
+       0.6,
+       0.6
+      ]
      },
      "else": {
       "chance": {
-       "byLevel": [0, 0, 0.8, 0.8]
+       "byLevel": [
+        0,
+        0,
+        0.8,
+        0.8
+       ]
       },
       "from": [
        "veg-12",
@@ -2048,8 +1533,25 @@
      "from": "$fillings_all",
      "exclude": "no",
      "take": {
-     "byLevel": [[0, 1], [1, 1], [1, 2], [1, 2]]
-    },
+      "byLevel": [
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        1
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        1,
+        2
+       ]
+      ]
+     },
      "order": "any"
     },
     "fillings": {
@@ -2058,22 +1560,78 @@
      "minFirst": 1,
      "_minFirst": "29 Sept (S18, Zafar): every samosa has its base filling (the first kind: chundo, or bataato for veg) at least one spoon, named as a row; marcha, dhania and the rest are extras. 'Two samosas, three chillies' can't happen",
      "total": {
-     "int": {
-      "byLevel": [[2, 3], [3, 4], [3, 5], [3, 5]]
+      "int": {
+       "byLevel": [
+        [
+         2,
+         3
+        ],
+        [
+         3,
+         4
+        ],
+        [
+         3,
+         5
+        ],
+        [
+         3,
+         5
+        ]
+       ]
+      }
      }
-    }
     },
     "count": {
-    "int": {
-     "byLevel": [[1, 2], [1, 2], [2, 3], [2, 3]]
-    }
-   },
+     "int": {
+      "byLevel": [
+       [
+        1,
+        2
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        2,
+        3
+       ]
+      ]
+     }
+    },
     "count2": {
      "int": {
-      "byLevel": [[0, 0], [0, 0], [1, 2], [1, 2]]
+      "byLevel": [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        1,
+        2
+       ]
+      ]
      },
      "zero": {
-      "byLevel": [1, 1, 0.5, 0.5]
+      "byLevel": [
+       1,
+       1,
+       0.5,
+       0.5
+      ]
      },
      "_count2": "30 Sept (Zafar: two different samosas in one order): from level 3, half the orders have a second kind, this many of it (0: none). Its own block on the card; its first strip starts empty"
     },
@@ -2083,7 +1641,9 @@
     "base2": {
      "type": "items",
      "from": "$bases",
-     "exclude": ["base1"],
+     "exclude": [
+      "base1"
+     ],
      "take": 1,
      "_base2": "the second kind's base is the other base (chundo or bataato) from the first kind's"
     },
@@ -2092,7 +1652,10 @@
      "first": "$base2",
      "from": "$extras",
      "exclude": "no",
-     "take": [0, 1],
+     "take": [
+      0,
+      1
+     ],
      "order": "any"
     },
     "fillings2": {
@@ -2100,7 +1663,10 @@
      "kinds": "$kinds2",
      "minFirst": 1,
      "total": {
-      "int": [2, 3]
+      "int": [
+       2,
+       3
+      ]
      }
     }
    },
@@ -2179,8 +1745,16 @@
      "veg-12",
      "ph-dhana"
     ],
-    "bases": ["ph-keema", "veg-01"],
-    "extras": ["veg-10", "veg-02", "veg-12", "ph-dhana"]
+    "bases": [
+     "ph-keema",
+     "veg-01"
+    ],
+    "extras": [
+     "veg-10",
+     "veg-02",
+     "veg-12",
+     "ph-dhana"
+    ]
    },
    "how": "Fill them with what they say, fold them, then fry them."
   },
@@ -2248,7 +1822,10 @@
    "slots": {
     "vegKind": {
      "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri gos: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
-     "pick": ["veg-02", "veg-03"]
+     "pick": [
+      "veg-02",
+      "veg-03"
+     ]
     },
     "skewers": {
      "type": "tally",
@@ -2276,7 +1853,12 @@
      },
      "min": {
       "ph-mixed": {
-       "byLevel": [0, 0, 1, 2]
+       "byLevel": [
+        0,
+        0,
+        1,
+        2
+       ]
       }
      },
      "_min": "29 Sept (K4): mostly mixed from level 3 (one of two or three; two of three or four at level 4). 30 Sept (sekelo session): level 3 may have two mixed (one mix, said once: ba lakri mixed), so half or more are mixed on most orders; level 4 stays at two (two different mixes are graded one of each)",
@@ -2473,31 +2055,185 @@
   "fetch": {
    "_about": "Pantry v3 (29 Sept): positions measured from assets/cook/bg/bg-pantry-v3-1600.webp in the 1600x900 world (the shelves, the fridge's three levels and the long tray laid out from sources/art/pantry-v2/pantry-v3-layout-sketch.png). slots: where an item stands (x centre, y its base, w/h its box before the item's shelf size); zone shelf or fridge. fridge: the items that only ever go in the fridge (everything else goes on the shelves). tray: the row of spaces on the tray (x0/x1 its inside, y the base, w/h an item's box there, gap between spaces; front: the tray's front edge [x, y, w, h] in the picture, drawn again over what's on the tray). tally: the tally's centre in the pantry, on the fridge's steel base, clear of everything. fridgeMin: the smallest size a thing is drawn at in the fridge.",
    "slots": [
-    {"x": 143, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 378, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 612, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 847, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 1082, "y": 199, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 143, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 378, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 612, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 847, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 1082, "y": 417, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 143, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 378, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 612, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 847, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 1082, "y": 626, "w": 200, "h": 175, "zone": "shelf"},
-    {"x": 1335, "y": 202, "w": 140, "h": 140, "zone": "fridge"},
-    {"x": 1482, "y": 202, "w": 140, "h": 140, "zone": "fridge"},
-    {"x": 1335, "y": 416, "w": 140, "h": 175, "zone": "fridge"},
-    {"x": 1482, "y": 416, "w": 140, "h": 175, "zone": "fridge"},
-    {"x": 1335, "y": 620, "w": 140, "h": 175, "zone": "fridge"},
-    {"x": 1482, "y": 620, "w": 140, "h": 175, "zone": "fridge"}
+    {
+     "x": 143,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 378,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 612,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 847,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1082,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 143,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 378,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 612,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 847,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1082,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 143,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 378,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 612,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 847,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1082,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1335,
+     "y": 202,
+     "w": 140,
+     "h": 140,
+     "zone": "fridge"
+    },
+    {
+     "x": 1482,
+     "y": 202,
+     "w": 140,
+     "h": 140,
+     "zone": "fridge"
+    },
+    {
+     "x": 1335,
+     "y": 416,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    },
+    {
+     "x": 1482,
+     "y": 416,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    },
+    {
+     "x": 1335,
+     "y": 620,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    },
+    {
+     "x": 1482,
+     "y": 620,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    }
    ],
-   "fridge": ["cook-dudh", "ph-juice", "ph-dahi", "ph-keema", "ph-meat", "ph-chicken", "ph-fish", "ph-butter", "ph-cheese", "ph-cream", "ph-eggs"],
-   "tray": {"x0": 46, "x1": 1182, "y": 850, "w": 150, "h": 150, "gap": 160, "front": [29, 842, 1172, 46]},
-   "tally": [1406, 776],
+   "fridge": [
+    "cook-dudh",
+    "ph-juice",
+    "ph-dahi",
+    "ph-keema",
+    "ph-meat",
+    "ph-chicken",
+    "ph-fish",
+    "ph-butter",
+    "ph-cheese",
+    "ph-cream",
+    "ph-eggs"
+   ],
+   "tray": {
+    "x0": 46,
+    "x1": 1182,
+    "y": 850,
+    "w": 150,
+    "h": 150,
+    "gap": 160,
+    "front": [
+     29,
+     842,
+     1172,
+     46
+    ]
+   },
+   "tally": [
+    1406,
+    776
+   ],
    "fridgeMin": 0.9,
    "levels": [
     {
@@ -2921,16 +2657,25 @@
   "fill": {
    "levels": [
     {
-     "decoys": [1, 1],
+     "decoys": [
+      1,
+      1
+     ],
      "decoyPick": "random",
      "rowY": 780,
      "flyMs": 340
     },
     {
-     "decoys": [2, 2]
+     "decoys": [
+      2,
+      2
+     ]
     },
     {
-     "decoys": [2, 3]
+     "decoys": [
+      2,
+      3
+     ]
     }
    ]
   },
@@ -3077,43 +2822,135 @@
  },
  "art": {
   "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
-  "props": ["dough-ball-bajr", "chapati-raw-bajr", "chapati-half-bajr", "chapati-puffed-bajr", "chapati-burnt"],
+  "props": [
+   "dough-ball-bajr",
+   "chapati-raw-bajr",
+   "chapati-half-bajr",
+   "chapati-puffed-bajr",
+   "chapati-burnt"
+  ],
   "sprites": {
    "_about": "Painted item sprites (ChatGPT batch 1, build/reports/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). tool-chakla-t and veg-dungri-whole-t now wired (art.chakla; veg-02.whole, the daal chop). Left out on purpose (no station reads that state yet, or a design call): veg-dungri-peeled-t (no peel step, only whole -> chopped), tool-velan-t (the rolling pin is part of the two-hand grip, js/cook/hands.js), vessel-thali-t (vessel:serving already uses chaat-bowl; swapping to a flat thali needs Zafar's call on dishes other than chaat). tools: a painted tool drawn into a drawn hand (Wave 6b).",
    "dir": "assets/cook/items/",
    "max": 256,
    "items": {
-    "spi-01": { "bowl": "spice-hardar-bowl-t" },
-    "spi-02": { "bowl": "spice-jeeru-bowl-t" },
-    "spi-04": { "bowl": "spice-lal-marcha-bowl-t" },
-    "spi-05": { "bowl": "spice-rai-bowl-t" },
-    "spi-10": { "bowl": "spice-elchi-bowl-t" },
-    "spi-16": { "bowl": "spice-loon-bowl-t" },
-    "cook-khun": { "bowl": "dry-khun-bowl-t" },
-    "cook-chai": { "bowl": "dry-chai-leaves-bowl-t" },
-    "cook-atto": { "bowl": "dry-atto-bowl-t" },
-    "cook-daal": { "bowl": "dry-daal-bowl-t" },
-    "ph-ghee": { "bowl": "dry-ghee-bowl-t" },
-    "ph-chana": { "bowl": "topping-channa-bowl-t" },
-    "ph-dahi": { "bowl": "topping-dai-bowl-t" },
-    "ph-amli": { "bowl": "topping-amli-bowl-t" },
-    "ph-lili": { "bowl": "topping-lili-bowl-t" },
-    "ph-sev": { "bowl": "topping-sev-bowl-t" },
-    "ph-dhana": { "bowl": "topping-dhana-chopped-bowl-t" },
-    "ph-keema": { "bowl": "topping-keema-bowl-t" },
-    "ph-chips": { "bowl": "chips-golden-t", "raw": "chips-raw-t" },
-    "veg-01": { "bowl": "topping-bataato-boiled-bowl-t", "whole": "veg-bataato-whole-t", "cubed": "veg-bataato-cubed-t", "raw": "mishkaki-bataato-raw-t" },
-    "veg-02": { "bowl": "topping-dungri-chopped-bowl-t", "whole": "veg-dungri-whole-t", "raw": "mishkaki-dungri-raw-t", "grilled": "mishkaki-dungri-grilled-t", "charred": "mishkaki-dungri-charred-t" },
-    "veg-03": { "bowl": "topping-tameto-chopped-bowl-t", "whole": "veg-tameto-whole-t", "raw": "mishkaki-tameto-raw-t", "grilled": "mishkaki-tameto-grilled-t", "charred": "mishkaki-tameto-charred-t" },
-    "veg-10": { "bowl": "topping-vatana-bowl-t" },
-    "veg-12": { "bowl": "topping-marcha-chopped-bowl-t", "whole": "veg-marcha-whole-t" },
-    "veg-13": { "bowl": "veg-lasan-chopped-t", "whole": "veg-lasan-whole-t" },
-    "veg-14": { "bowl": "veg-aadu-grated-bowl-t", "whole": "veg-aadu-whole-t" },
-    "fru-02": { "bowl": "veg-limu-whole-t", "whole": "veg-limu-whole-t" },
-    "ph-meat": { "raw": "mishkaki-meat-raw-t", "grilled": "mishkaki-meat-grilled-t", "charred": "mishkaki-meat-charred-t" },
-    "ph-mishkaki": { "raw": "mishkaki-meat-raw-t", "grilled": "mishkaki-meat-grilled-t", "charred": "mishkaki-meat-charred-t" },
-    "ph-pepper": { "whole": "veg-pepper-whole-t", "raw": "mishkaki-pepper-raw-t", "grilled": "mishkaki-pepper-grilled-t", "charred": "mishkaki-pepper-charred-t" },
-    "ph-samosa": { "folded": "samosa-folded-t", "fried": "samosa-fried-golden-t" },
+    "spi-01": {
+     "bowl": "spice-hardar-bowl-t"
+    },
+    "spi-02": {
+     "bowl": "spice-jeeru-bowl-t"
+    },
+    "spi-04": {
+     "bowl": "spice-lal-marcha-bowl-t"
+    },
+    "spi-05": {
+     "bowl": "spice-rai-bowl-t"
+    },
+    "spi-10": {
+     "bowl": "spice-elchi-bowl-t"
+    },
+    "spi-16": {
+     "bowl": "spice-loon-bowl-t"
+    },
+    "cook-khun": {
+     "bowl": "dry-khun-bowl-t"
+    },
+    "cook-chai": {
+     "bowl": "dry-chai-leaves-bowl-t"
+    },
+    "cook-atto": {
+     "bowl": "dry-atto-bowl-t"
+    },
+    "cook-daal": {
+     "bowl": "dry-daal-bowl-t"
+    },
+    "ph-ghee": {
+     "bowl": "dry-ghee-bowl-t"
+    },
+    "ph-chana": {
+     "bowl": "topping-channa-bowl-t"
+    },
+    "ph-dahi": {
+     "bowl": "topping-dai-bowl-t"
+    },
+    "ph-amli": {
+     "bowl": "topping-amli-bowl-t"
+    },
+    "ph-lili": {
+     "bowl": "topping-lili-bowl-t"
+    },
+    "ph-sev": {
+     "bowl": "topping-sev-bowl-t"
+    },
+    "ph-dhana": {
+     "bowl": "topping-dhana-chopped-bowl-t"
+    },
+    "ph-keema": {
+     "bowl": "topping-keema-bowl-t"
+    },
+    "ph-chips": {
+     "bowl": "chips-golden-t",
+     "raw": "chips-raw-t"
+    },
+    "veg-01": {
+     "bowl": "topping-bataato-boiled-bowl-t",
+     "whole": "veg-bataato-whole-t",
+     "cubed": "veg-bataato-cubed-t",
+     "raw": "mishkaki-bataato-raw-t"
+    },
+    "veg-02": {
+     "bowl": "topping-dungri-chopped-bowl-t",
+     "whole": "veg-dungri-whole-t",
+     "raw": "mishkaki-dungri-raw-t",
+     "grilled": "mishkaki-dungri-grilled-t",
+     "charred": "mishkaki-dungri-charred-t"
+    },
+    "veg-03": {
+     "bowl": "topping-tameto-chopped-bowl-t",
+     "whole": "veg-tameto-whole-t",
+     "raw": "mishkaki-tameto-raw-t",
+     "grilled": "mishkaki-tameto-grilled-t",
+     "charred": "mishkaki-tameto-charred-t"
+    },
+    "veg-10": {
+     "bowl": "topping-vatana-bowl-t"
+    },
+    "veg-12": {
+     "bowl": "topping-marcha-chopped-bowl-t",
+     "whole": "veg-marcha-whole-t"
+    },
+    "veg-13": {
+     "bowl": "veg-lasan-chopped-t",
+     "whole": "veg-lasan-whole-t"
+    },
+    "veg-14": {
+     "bowl": "veg-aadu-grated-bowl-t",
+     "whole": "veg-aadu-whole-t"
+    },
+    "fru-02": {
+     "bowl": "veg-limu-whole-t",
+     "whole": "veg-limu-whole-t"
+    },
+    "ph-meat": {
+     "raw": "mishkaki-meat-raw-t",
+     "grilled": "mishkaki-meat-grilled-t",
+     "charred": "mishkaki-meat-charred-t"
+    },
+    "ph-mishkaki": {
+     "raw": "mishkaki-meat-raw-t",
+     "grilled": "mishkaki-meat-grilled-t",
+     "charred": "mishkaki-meat-charred-t"
+    },
+    "ph-pepper": {
+     "whole": "veg-pepper-whole-t",
+     "raw": "mishkaki-pepper-raw-t",
+     "grilled": "mishkaki-pepper-grilled-t",
+     "charred": "mishkaki-pepper-charred-t"
+    },
+    "ph-samosa": {
+     "folded": "samosa-folded-t",
+     "fried": "samosa-fried-golden-t"
+    },
     "cook-maani": {
      "dough": "v3/maani/dough-ball-wheat",
      "raw": "v3/maani/maani-wheat-raw",
@@ -3130,23 +2967,94 @@
      "burnt": "v3/maani/maani-millet-burnt",
      "bowl": "v3/maani/maani-millet-cooked"
     },
-    "cook-paani": { "jug": "vessel-water-jug-f" },
-    "cook-dudh": { "jug": "vessel-milk-jug-f" },
-    "glass": { "empty": "vessel-glass-chai-empty-f", "full": "vessel-glass-chai-full-f" },
-    "tawa": { "top": { "file": "vessel-tawa-t", "max": 0 } },
-    "tool-chakla": { "top": { "file": "tool-chakla-t", "max": 0 } },
-    "pan": { "top": { "file": "vessel-saucepan-t", "max": 0 } },
-    "pot": { "top": { "file": "vessel-pot-t", "max": 0 } },
-    "tadka-pan": { "top": { "file": "vessel-tadka-pan-t", "max": 0 } },
-    "chaat-bowl": { "empty": { "file": "chaat-bowl-empty-t", "max": 0 } },
-    "katori": { "top": "vessel-katori-t" },
-    "kadai": { "oil": { "file": "vessel-kadai-oil-t", "max": 0 } },
-    "plate": { "top": "plate-enamel-empty-t" },
-    "knife": { "tool": { "file": "tool-knife-t", "max": 400 } },
-    "ladle": { "tool": { "file": "tool-ladle-t", "max": 400 } },
-    "spatula": { "tool": { "file": "tool-spatula-t", "max": 400 } },
-    "slotted-spoon": { "tool": { "file": "tool-slotted-spoon-t", "max": 400 } },
-    "skewer": { "tool": { "file": "skewer-empty-t", "max": 0 } }
+    "cook-paani": {
+     "jug": "vessel-water-jug-f"
+    },
+    "cook-dudh": {
+     "jug": "vessel-milk-jug-f"
+    },
+    "glass": {
+     "empty": "vessel-glass-chai-empty-f",
+     "full": "vessel-glass-chai-full-f"
+    },
+    "tawa": {
+     "top": {
+      "file": "vessel-tawa-t",
+      "max": 0
+     }
+    },
+    "tool-chakla": {
+     "top": {
+      "file": "tool-chakla-t",
+      "max": 0
+     }
+    },
+    "pan": {
+     "top": {
+      "file": "vessel-saucepan-t",
+      "max": 0
+     }
+    },
+    "pot": {
+     "top": {
+      "file": "vessel-pot-t",
+      "max": 0
+     }
+    },
+    "tadka-pan": {
+     "top": {
+      "file": "vessel-tadka-pan-t",
+      "max": 0
+     }
+    },
+    "chaat-bowl": {
+     "empty": {
+      "file": "chaat-bowl-empty-t",
+      "max": 0
+     }
+    },
+    "katori": {
+     "top": "vessel-katori-t"
+    },
+    "kadai": {
+     "oil": {
+      "file": "vessel-kadai-oil-t",
+      "max": 0
+     }
+    },
+    "plate": {
+     "top": "plate-enamel-empty-t"
+    },
+    "knife": {
+     "tool": {
+      "file": "tool-knife-t",
+      "max": 400
+     }
+    },
+    "ladle": {
+     "tool": {
+      "file": "tool-ladle-t",
+      "max": 400
+     }
+    },
+    "spatula": {
+     "tool": {
+      "file": "tool-spatula-t",
+      "max": 400
+     }
+    },
+    "slotted-spoon": {
+     "tool": {
+      "file": "tool-slotted-spoon-t",
+      "max": 400
+     }
+    },
+    "skewer": {
+     "tool": {
+      "file": "skewer-empty-t",
+      "max": 0
+     }
+    }
    },
    "art": {
     "vessel:pan": "pan.top",
@@ -3169,9 +3077,24 @@
     "stick": "skewer.tool"
    },
    "frames": {
-    "pastry:3": [60, 50, 240, 230],
-    "pastry:4": [60, 50, 240, 230],
-    "layer:ph-chips": [40, 10, 220, 180]
+    "pastry:3": [
+     60,
+     50,
+     240,
+     230
+    ],
+    "pastry:4": [
+     60,
+     50,
+     240,
+     230
+    ],
+    "layer:ph-chips": [
+     40,
+     10,
+     220,
+     180
+    ]
    },
    "props": {
     "chapati-raw": "cook-maani.raw",
@@ -3190,11 +3113,53 @@
     "glass-chai": "glass.full"
    },
    "vessels": {
-    "pan": { "rim": [0.34, 0.575, 0.317, 0.323], "depth": 0.075 },
-    "pot": { "rim": [0.497, 0.455, 0.372, 0.421], "depth": 0.079 },
-    "tadka": { "rim": [0.391, 0.617, 0.364, 0.306], "depth": 0.069 },
-    "serving": { "rim": [0.495, 0.5, 0.459, 0.464], "depth": 0.026 },
-    "kadai": { "rim": [0.501, 0.556, 0.303, 0.374], "depth": 0, "size": 0.78, "filled": true }
+    "pan": {
+     "rim": [
+      0.34,
+      0.575,
+      0.317,
+      0.323
+     ],
+     "depth": 0.075
+    },
+    "pot": {
+     "rim": [
+      0.497,
+      0.455,
+      0.372,
+      0.421
+     ],
+     "depth": 0.079
+    },
+    "tadka": {
+     "rim": [
+      0.391,
+      0.617,
+      0.364,
+      0.306
+     ],
+     "depth": 0.069
+    },
+    "serving": {
+     "rim": [
+      0.495,
+      0.5,
+      0.459,
+      0.464
+     ],
+     "depth": 0.026
+    },
+    "kadai": {
+     "rim": [
+      0.501,
+      0.556,
+      0.303,
+      0.374
+     ],
+     "depth": 0,
+     "size": 0.78,
+     "filled": true
+    }
    },
    "bg": {
     "marble": "bg-cook-worktop-t-v1-1600",
@@ -3203,92 +3168,422 @@
    },
    "shelf": {
     "_about": "Pantry v2 (28 Sept, docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md): each item as a side-on container for the pantry's shelves and fridge, `<id>.shelf` -> [file stem, size]. size is the container's real height against a tall jar (1), so a spice jar never shows as big as the flour; the fetch mechanic multiplies its slot's box by it. Cut by build/cut_pantry_v2.py; bare (no label) until Zafar decides on labels.",
-    "cook-atto": ["shelf-cook-atto-bare-f", 1.0],
-    "ph-bajri-atto": ["shelf-ph-bajri-atto-bare-f", 1.0],
-    "cook-khun": ["shelf-cook-khun-bare-f", 1.0],
-    "cook-chai": ["shelf-cook-chai-bare-f", 1.0],
-    "cook-daal": ["shelf-cook-daal-bare-f", 1.0],
-    "ph-chana": ["shelf-ph-chana-bare-f", 1.0],
-    "ph-sev": ["shelf-ph-sev-bare-f", 1.0],
-    "ph-rice": ["shelf-ph-rice-bare-f", 1.0],
-    "ph-cocoa": ["shelf-ph-cocoa-bare-f", 1.0],
-    "spi-01": ["shelf-spi-01-bare-f", 0.8],
-    "spi-02": ["shelf-spi-02-bare-f", 0.8],
-    "spi-05": ["shelf-spi-05-bare-f", 0.8],
-    "spi-10": ["shelf-spi-10-bare-f", 0.8],
-    "spi-16": ["shelf-spi-16-bare-f", 0.8],
-    "spi-04": ["shelf-spi-04-bare-f", 0.8],
-    "spi-11": ["shelf-spi-11-bare-f", 0.8],
-    "spi-09": ["shelf-spi-09-bare-f", 0.8],
-    "ph-sprinkles": ["shelf-ph-sprinkles-bare-f", 0.8],
-    "cook-dudh": ["shelf-cook-dudh-bare-f", 1.0],
-    "cook-paani": ["shelf-cook-paani-bare-f", 1.0],
-    "ph-oil": ["shelf-ph-oil-bare-f", 1.0],
-    "ph-amli": ["shelf-ph-amli-bare-f", 1.0],
-    "ph-lili": ["shelf-ph-lili-bare-f", 1.0],
-    "ph-juice": ["shelf-ph-juice-bare-f", 1.0],
-    "ph-ketchup": ["shelf-ph-ketchup-bare-f", 1.0],
-    "ph-honey": ["shelf-ph-honey-bare-f", 1.0],
-    "ph-rose": ["shelf-ph-rose-bare-f", 1.0],
-    "ph-dahi": ["shelf-ph-dahi-bare-f", 0.7],
-    "ph-keema": ["shelf-ph-keema-bare-f", 0.7],
-    "ph-meat": ["shelf-ph-meat-bare-f", 0.7],
-    "ph-ghee": ["shelf-ph-ghee-bare-f", 0.7],
-    "ph-chicken": ["shelf-ph-chicken-bare-f", 0.7],
-    "ph-fish": ["shelf-ph-fish-bare-f", 0.7],
-    "ph-butter": ["shelf-ph-butter-bare-f", 0.7],
-    "ph-cheese": ["shelf-ph-cheese-bare-f", 0.7],
-    "ph-cream": ["shelf-ph-cream-bare-f", 0.7],
-    "veg-01": ["shelf-veg-01-bare-f", 0.9],
-    "veg-02": ["shelf-veg-02-bare-f", 0.9],
-    "veg-03": ["shelf-veg-03-bare-f", 0.9],
-    "veg-12": ["shelf-veg-12-bare-f", 0.9],
-    "veg-13": ["shelf-veg-13-bare-f", 0.9],
-    "veg-14": ["shelf-veg-14-bare-f", 0.9],
-    "veg-10": ["shelf-veg-10-bare-f", 0.9],
-    "ph-pepper": ["shelf-ph-pepper-bare-f", 0.9],
-    "ph-dhana": ["shelf-ph-dhana-bare-f", 0.9],
-    "fru-02": ["shelf-fru-02-bare-f", 0.9],
-    "fru-01": ["shelf-fru-01-bare-f", 0.9],
-    "fru-04": ["shelf-fru-04-bare-f", 0.9],
-    "fru-05": ["shelf-fru-05-bare-f", 0.9],
-    "fru-06": ["shelf-fru-06-bare-f", 0.9],
-    "fru-08": ["shelf-fru-08-bare-f", 0.9],
-    "fru-09": ["shelf-fru-09-bare-f", 0.9],
-    "veg-04": ["shelf-veg-04-bare-f", 0.9],
-    "ph-corn": ["shelf-ph-corn-bare-f", 0.9],
-    "ph-eggs": ["shelf-ph-eggs-bare-f", 0.85],
-    "ph-bread": ["shelf-ph-bread-bare-f", 0.85],
-    "ph-biscuits": ["shelf-ph-biscuits-bare-f", 0.85],
-    "ph-mithai": ["shelf-ph-mithai-bare-f", 0.85],
-    "ph-pastry": ["shelf-ph-pastry-bare-f", 0.85],
-    "ph-crisps": ["shelf-ph-crisps-bare-f", 0.85],
-    "ph-candles": ["shelf-ph-candles-bare-f", 0.85],
-    "ph-jam": ["shelf-ph-jam-bare-f", 0.85],
-    "ph-chocolate": ["shelf-ph-chocolate-bare-f", 0.85]
+    "cook-atto": [
+     "shelf-cook-atto-bare-f",
+     1
+    ],
+    "ph-bajri-atto": [
+     "shelf-ph-bajri-atto-bare-f",
+     1
+    ],
+    "cook-khun": [
+     "shelf-cook-khun-bare-f",
+     1
+    ],
+    "cook-chai": [
+     "shelf-cook-chai-bare-f",
+     1
+    ],
+    "cook-daal": [
+     "shelf-cook-daal-bare-f",
+     1
+    ],
+    "ph-chana": [
+     "shelf-ph-chana-bare-f",
+     1
+    ],
+    "ph-sev": [
+     "shelf-ph-sev-bare-f",
+     1
+    ],
+    "ph-rice": [
+     "shelf-ph-rice-bare-f",
+     1
+    ],
+    "ph-cocoa": [
+     "shelf-ph-cocoa-bare-f",
+     1
+    ],
+    "spi-01": [
+     "shelf-spi-01-bare-f",
+     0.8
+    ],
+    "spi-02": [
+     "shelf-spi-02-bare-f",
+     0.8
+    ],
+    "spi-05": [
+     "shelf-spi-05-bare-f",
+     0.8
+    ],
+    "spi-10": [
+     "shelf-spi-10-bare-f",
+     0.8
+    ],
+    "spi-16": [
+     "shelf-spi-16-bare-f",
+     0.8
+    ],
+    "spi-04": [
+     "shelf-spi-04-bare-f",
+     0.8
+    ],
+    "spi-11": [
+     "shelf-spi-11-bare-f",
+     0.8
+    ],
+    "spi-09": [
+     "shelf-spi-09-bare-f",
+     0.8
+    ],
+    "ph-sprinkles": [
+     "shelf-ph-sprinkles-bare-f",
+     0.8
+    ],
+    "cook-dudh": [
+     "shelf-cook-dudh-bare-f",
+     1
+    ],
+    "cook-paani": [
+     "shelf-cook-paani-bare-f",
+     1
+    ],
+    "ph-oil": [
+     "shelf-ph-oil-bare-f",
+     1
+    ],
+    "ph-amli": [
+     "shelf-ph-amli-bare-f",
+     1
+    ],
+    "ph-lili": [
+     "shelf-ph-lili-bare-f",
+     1
+    ],
+    "ph-juice": [
+     "shelf-ph-juice-bare-f",
+     1
+    ],
+    "ph-ketchup": [
+     "shelf-ph-ketchup-bare-f",
+     1
+    ],
+    "ph-honey": [
+     "shelf-ph-honey-bare-f",
+     1
+    ],
+    "ph-rose": [
+     "shelf-ph-rose-bare-f",
+     1
+    ],
+    "ph-dahi": [
+     "shelf-ph-dahi-bare-f",
+     0.7
+    ],
+    "ph-keema": [
+     "shelf-ph-keema-bare-f",
+     0.7
+    ],
+    "ph-meat": [
+     "shelf-ph-meat-bare-f",
+     0.7
+    ],
+    "ph-ghee": [
+     "shelf-ph-ghee-bare-f",
+     0.7
+    ],
+    "ph-chicken": [
+     "shelf-ph-chicken-bare-f",
+     0.7
+    ],
+    "ph-fish": [
+     "shelf-ph-fish-bare-f",
+     0.7
+    ],
+    "ph-butter": [
+     "shelf-ph-butter-bare-f",
+     0.7
+    ],
+    "ph-cheese": [
+     "shelf-ph-cheese-bare-f",
+     0.7
+    ],
+    "ph-cream": [
+     "shelf-ph-cream-bare-f",
+     0.7
+    ],
+    "veg-01": [
+     "shelf-veg-01-bare-f",
+     0.9
+    ],
+    "veg-02": [
+     "shelf-veg-02-bare-f",
+     0.9
+    ],
+    "veg-03": [
+     "shelf-veg-03-bare-f",
+     0.9
+    ],
+    "veg-12": [
+     "shelf-veg-12-bare-f",
+     0.9
+    ],
+    "veg-13": [
+     "shelf-veg-13-bare-f",
+     0.9
+    ],
+    "veg-14": [
+     "shelf-veg-14-bare-f",
+     0.9
+    ],
+    "veg-10": [
+     "shelf-veg-10-bare-f",
+     0.9
+    ],
+    "ph-pepper": [
+     "shelf-ph-pepper-bare-f",
+     0.9
+    ],
+    "ph-dhana": [
+     "shelf-ph-dhana-bare-f",
+     0.9
+    ],
+    "fru-02": [
+     "shelf-fru-02-bare-f",
+     0.9
+    ],
+    "fru-01": [
+     "shelf-fru-01-bare-f",
+     0.9
+    ],
+    "fru-04": [
+     "shelf-fru-04-bare-f",
+     0.9
+    ],
+    "fru-05": [
+     "shelf-fru-05-bare-f",
+     0.9
+    ],
+    "fru-06": [
+     "shelf-fru-06-bare-f",
+     0.9
+    ],
+    "fru-08": [
+     "shelf-fru-08-bare-f",
+     0.9
+    ],
+    "fru-09": [
+     "shelf-fru-09-bare-f",
+     0.9
+    ],
+    "veg-04": [
+     "shelf-veg-04-bare-f",
+     0.9
+    ],
+    "ph-corn": [
+     "shelf-ph-corn-bare-f",
+     0.9
+    ],
+    "ph-eggs": [
+     "shelf-ph-eggs-bare-f",
+     0.85
+    ],
+    "ph-bread": [
+     "shelf-ph-bread-bare-f",
+     0.85
+    ],
+    "ph-biscuits": [
+     "shelf-ph-biscuits-bare-f",
+     0.85
+    ],
+    "ph-mithai": [
+     "shelf-ph-mithai-bare-f",
+     0.85
+    ],
+    "ph-pastry": [
+     "shelf-ph-pastry-bare-f",
+     0.85
+    ],
+    "ph-crisps": [
+     "shelf-ph-crisps-bare-f",
+     0.85
+    ],
+    "ph-candles": [
+     "shelf-ph-candles-bare-f",
+     0.85
+    ],
+    "ph-jam": [
+     "shelf-ph-jam-bare-f",
+     0.85
+    ],
+    "ph-chocolate": [
+     "shelf-ph-chocolate-bare-f",
+     0.85
+    ]
    },
    "need": {
-    "fetch": ["bg:pantry", "cook-atto.shelf", "cook-khun.shelf", "cook-chai.shelf", "cook-daal.shelf", "ph-chana.shelf", "ph-sev.shelf", "spi-01.shelf", "spi-02.shelf", "spi-05.shelf", "spi-10.shelf", "spi-16.shelf", "spi-04.shelf", "cook-dudh.shelf", "cook-paani.shelf", "ph-amli.shelf", "ph-lili.shelf", "ph-dahi.shelf", "ph-keema.shelf", "ph-meat.shelf", "ph-ghee.shelf", "veg-01.shelf", "veg-02.shelf", "veg-03.shelf", "veg-12.shelf", "veg-13.shelf", "veg-14.shelf", "veg-10.shelf", "ph-pepper.shelf", "ph-dhana.shelf", "fru-02.shelf"],
-    "pour": ["pan.top"],
-    "watch": ["pan.top"],
-    "boil": ["pan.top"],
-    "count": ["pan.top", "cook-khun.bowl", "spi-16.bowl", "cook-atto.bowl"],
-    "add": ["pan.top", "cook-chai.bowl", "spi-10.bowl", "veg-14.bowl", "spi-02.bowl", "spi-05.bowl"],
-    "chai-tray": ["bg:marble", "pan.top", "cook-chai.bowl", "spi-02.bowl", "spi-05.bowl", "cook-khun.bowl", "spi-16.bowl", "spi-10.bowl", "veg-14.bowl", "veg-13.bowl"],
-    "chop": ["knife.tool", "veg-01.whole", "veg-02.whole", "veg-03.whole", "veg-12.whole", "veg-13.whole", "veg-14.whole"],
-    "tadka": ["pot.top", "tadka-pan.top", "spi-02.bowl", "spi-05.bowl", "spi-01.bowl", "veg-12.bowl", "spi-16.bowl", "veg-13.bowl"],
+    "fetch": [
+     "bg:pantry",
+     "cook-atto.shelf",
+     "cook-khun.shelf",
+     "cook-chai.shelf",
+     "cook-daal.shelf",
+     "ph-chana.shelf",
+     "ph-sev.shelf",
+     "spi-01.shelf",
+     "spi-02.shelf",
+     "spi-05.shelf",
+     "spi-10.shelf",
+     "spi-16.shelf",
+     "spi-04.shelf",
+     "cook-dudh.shelf",
+     "cook-paani.shelf",
+     "ph-amli.shelf",
+     "ph-lili.shelf",
+     "ph-dahi.shelf",
+     "ph-keema.shelf",
+     "ph-meat.shelf",
+     "ph-ghee.shelf",
+     "veg-01.shelf",
+     "veg-02.shelf",
+     "veg-03.shelf",
+     "veg-12.shelf",
+     "veg-13.shelf",
+     "veg-14.shelf",
+     "veg-10.shelf",
+     "ph-pepper.shelf",
+     "ph-dhana.shelf",
+     "fru-02.shelf"
+    ],
+    "pour": [
+     "pan.top"
+    ],
+    "watch": [
+     "pan.top"
+    ],
+    "boil": [
+     "pan.top"
+    ],
+    "count": [
+     "pan.top",
+     "cook-khun.bowl",
+     "spi-16.bowl",
+     "cook-atto.bowl"
+    ],
+    "add": [
+     "pan.top",
+     "cook-chai.bowl",
+     "spi-10.bowl",
+     "veg-14.bowl",
+     "spi-02.bowl",
+     "spi-05.bowl"
+    ],
+    "chai-tray": [
+     "bg:marble",
+     "pan.top",
+     "cook-chai.bowl",
+     "spi-02.bowl",
+     "spi-05.bowl",
+     "cook-khun.bowl",
+     "spi-16.bowl",
+     "spi-10.bowl",
+     "veg-14.bowl",
+     "veg-13.bowl"
+    ],
+    "chop": [
+     "knife.tool",
+     "veg-01.whole",
+     "veg-02.whole",
+     "veg-03.whole",
+     "veg-12.whole",
+     "veg-13.whole",
+     "veg-14.whole"
+    ],
+    "tadka": [
+     "pot.top",
+     "tadka-pan.top",
+     "spi-02.bowl",
+     "spi-05.bowl",
+     "spi-01.bowl",
+     "veg-12.bowl",
+     "spi-16.bowl",
+     "veg-13.bowl"
+    ],
     "assemble": [],
-    "fill": ["chaat-bowl.empty", "ph-keema.bowl", "veg-01.bowl", "veg-10.bowl", "veg-02.bowl", "veg-12.bowl", "ph-dhana.bowl"],
-    "fold": ["ph-samosa.folded", "plate.top"],
-    "fry": ["slotted-spoon.tool", "kadai.oil", "ph-samosa.folded", "ph-samosa.fried", "ph-chips.raw"],
-    "knead": ["chaat-bowl.empty"],
-    "flip": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
-    "tawa": ["chaat-bowl.empty", "spatula.tool", "tawa.top"],
-    "stir": ["ladle.tool"],
+    "fill": [
+     "chaat-bowl.empty",
+     "ph-keema.bowl",
+     "veg-01.bowl",
+     "veg-10.bowl",
+     "veg-02.bowl",
+     "veg-12.bowl",
+     "ph-dhana.bowl"
+    ],
+    "fold": [
+     "ph-samosa.folded",
+     "plate.top"
+    ],
+    "fry": [
+     "slotted-spoon.tool",
+     "kadai.oil",
+     "ph-samosa.folded",
+     "ph-samosa.fried",
+     "ph-chips.raw"
+    ],
+    "knead": [
+     "chaat-bowl.empty"
+    ],
+    "flip": [
+     "chaat-bowl.empty",
+     "spatula.tool",
+     "tawa.top"
+    ],
+    "tawa": [
+     "chaat-bowl.empty",
+     "spatula.tool",
+     "tawa.top"
+    ],
+    "stir": [
+     "ladle.tool"
+    ],
     "maani-line": [],
-    "thread": ["skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.raw", "veg-01.cubed"],
-    "grill": ["skewer.tool", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "ph-mishkaki.grilled", "ph-pepper.grilled", "veg-02.grilled", "veg-03.grilled", "ph-mishkaki.charred", "ph-pepper.charred", "veg-02.charred", "veg-03.charred", "ph-chips.bowl"],
-    "mishkaki-grill": ["bg:marble", "skewer.tool", "katori.top", "ph-mishkaki.raw", "ph-pepper.raw", "veg-02.raw", "veg-03.raw", "veg-01.raw", "veg-01.cubed"]
+    "thread": [
+     "skewer.tool",
+     "katori.top",
+     "ph-mishkaki.raw",
+     "ph-pepper.raw",
+     "veg-02.raw",
+     "veg-03.raw",
+     "veg-01.raw",
+     "veg-01.cubed"
+    ],
+    "grill": [
+     "skewer.tool",
+     "ph-mishkaki.raw",
+     "ph-pepper.raw",
+     "veg-02.raw",
+     "veg-03.raw",
+     "ph-mishkaki.grilled",
+     "ph-pepper.grilled",
+     "veg-02.grilled",
+     "veg-03.grilled",
+     "ph-mishkaki.charred",
+     "ph-pepper.charred",
+     "veg-02.charred",
+     "veg-03.charred",
+     "ph-chips.bowl"
+    ],
+    "mishkaki-grill": [
+     "bg:marble",
+     "skewer.tool",
+     "katori.top",
+     "ph-mishkaki.raw",
+     "ph-pepper.raw",
+     "veg-02.raw",
+     "veg-03.raw",
+     "veg-01.raw",
+     "veg-01.cubed"
+    ]
    }
   }
  },
@@ -3853,219 +4148,339 @@
  },
  "lab": {
   "_about": "Wave 6b (the quality pass, Q4 and Q9 item 6): the Station lab lists the nine kept stations (lab entry keys, in this order); every other entry (the sub-mechanics: pour, boil, count, roll, flip, thread, grill…) sits under 'Parts' for testing. Knead is cut (its file isn't loaded).",
-  "stations": ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa"]
+  "stations": [
+   "fetch",
+   "chai-tray",
+   "maani-line",
+   "mishkaki-grill",
+   "daar",
+   "chop",
+   "tadka",
+   "stir",
+   "assemble",
+   "samosa"
+  ]
  },
  "onboard": {
   "_about": "Wave 6b (docs/design-language/ux-principles.md 8 and 10): the first-time onboarding script for each kept station, run by the shared kit (js/shared/onboard.js) through js/cook/coach.js. Each step is one move the overlay shows: everything dims except the next thing to do (the station's own 'what to do next', Cook.expect), a ghost hand does `do` once (tap, swipe, stir, roll, hold), the child does it, then the next. After the last step the overlay is gone at that station for good (once per profile). `what` says what the step is, for people reading this. Only the guided first time (a dish's first order; the Station lab with 'Nani helps'). Keys are the stations' own keys (Cook.Stations.begin).",
   "fetch": [
-   {"do": "tap", "what": "the first thing on Nani's list, on the shelf"},
-   {"do": "tap", "what": "the next thing"},
-   {"do": "tap", "what": "the last thing"}
+   {
+    "do": "tap",
+    "what": "the first thing on Nani's list, on the shelf"
+   },
+   {
+    "do": "tap",
+    "what": "the next thing"
+   },
+   {
+    "do": "tap",
+    "what": "the last thing"
+   }
   ],
   "chai-tray": [
-   {"do": "tap", "what": "the water jug: one tap pours water into the pan, up to the line"},
-   {"do": "tap", "what": "the tea leaves (among look-alikes)"},
-   {"do": "tap", "what": "the big knob: the burner lights"},
-   {"do": "tap", "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"}
+   {
+    "do": "tap",
+    "what": "the water jug: one tap pours water into the pan, up to the line"
+   },
+   {
+    "do": "tap",
+    "what": "the tea leaves (among look-alikes)"
+   },
+   {
+    "do": "tap",
+    "what": "the big knob: the burner lights"
+   },
+   {
+    "do": "tap",
+    "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"
+   }
   ],
   "maani-line": [
-   {"do": "tap", "what": "the dough pile they asked for (a ball flies out)"},
-   {"do": "roll", "what": "roll the ball up and down until it fills the gold ring"},
-   {"do": "tap", "what": "the maani onto the tawa"},
-   {"do": "tap", "what": "flip it on the green (the turner flips it)"}
+   {
+    "do": "tap",
+    "what": "the dough pile they asked for (a ball flies out)"
+   },
+   {
+    "do": "roll",
+    "what": "roll the ball up and down until it fills the gold ring"
+   },
+   {
+    "do": "tap",
+    "what": "the maani onto the tawa"
+   },
+   {
+    "do": "tap",
+    "what": "flip it on the green (the turner flips it)"
+   }
   ],
   "thread": [
-   {"do": "tap", "what": "a bowl: the piece slides down the skewer"},
-   {"do": "tap", "what": "the next piece"},
-   {"do": "tap", "what": "the next piece"},
-   {"do": "tap", "what": "the last piece: the skewer is full"}
+   {
+    "do": "tap",
+    "what": "a bowl: the piece slides down the skewer"
+   },
+   {
+    "do": "tap",
+    "what": "the next piece"
+   },
+   {
+    "do": "tap",
+    "what": "the next piece"
+   },
+   {
+    "do": "tap",
+    "what": "the last piece: the skewer is full"
+   }
   ],
   "grill": [
-   {"do": "tap", "what": "a skewer on the rack: onto the grill"},
-   {"do": "tap", "what": "turn it on the green"},
-   {"do": "tap", "what": "turn it again on the green"},
-   {"do": "tap", "what": "lift it onto the plate on the green"}
+   {
+    "do": "tap",
+    "what": "a skewer on the rack: onto the grill"
+   },
+   {
+    "do": "tap",
+    "what": "turn it on the green"
+   },
+   {
+    "do": "tap",
+    "what": "turn it again on the green"
+   },
+   {
+    "do": "tap",
+    "what": "lift it onto the plate on the green"
+   }
   ],
   "daar": [
-   {"do": "swipe", "what": "slice a vegetable Nani named: its pieces go to the side"},
-   {"do": "swipe", "what": "and another, before the timer runs out"}
+   {
+    "do": "swipe",
+    "what": "slice a vegetable Nani named: its pieces go to the side"
+   },
+   {
+    "do": "swipe",
+    "what": "and another, before the timer runs out"
+   }
   ],
   "chop": [
-   {"do": "swipe", "what": "slice a vegetable Nani named"},
-   {"do": "swipe", "what": "and another"}
+   {
+    "do": "swipe",
+    "what": "slice a vegetable Nani named"
+   },
+   {
+    "do": "swipe",
+    "what": "and another"
+   }
   ],
   "tadka": [
-   {"do": "tap", "what": "the first spice she said, into the hot oil"},
-   {"do": "tap", "what": "the next spice"},
-   {"do": "tap", "what": "the next one (or the pan: tip it into the pot)"}
+   {
+    "do": "tap",
+    "what": "the first spice she said, into the hot oil"
+   },
+   {
+    "do": "tap",
+    "what": "the next spice"
+   },
+   {
+    "do": "tap",
+    "what": "the next one (or the pan: tip it into the pot)"
+   }
   ],
   "stir": [
-   {"do": "stir", "what": "drag the ladle round the pot, counting the laps"},
-   {"do": "tap", "what": "the tick when it's done"}
+   {
+    "do": "stir",
+    "what": "drag the ladle round the pot, counting the laps"
+   },
+   {
+    "do": "tap",
+    "what": "the tick when it's done"
+   }
   ],
   "assemble": [
-   {"do": "tap", "what": "the first topping they said: the bottom layer"},
-   {"do": "tap", "what": "the next layer"},
-   {"do": "tap", "what": "the next layer"}
+   {
+    "do": "tap",
+    "what": "the first topping they said: the bottom layer"
+   },
+   {
+    "do": "tap",
+    "what": "the next layer"
+   },
+   {
+    "do": "tap",
+    "what": "the next layer"
+   }
   ],
   "fill": [
-   {"do": "tap", "what": "a spoon of the first filling they said"},
-   {"do": "tap", "what": "the next spoon"},
-   {"do": "tap", "what": "the next spoon"}
+   {
+    "do": "tap",
+    "what": "a spoon of the first filling they said"
+   },
+   {
+    "do": "tap",
+    "what": "the next spoon"
+   },
+   {
+    "do": "tap",
+    "what": "the next spoon"
+   }
   ],
   "fry": [
-   {"do": "tap", "what": "a samosa into the oil"},
-   {"do": "tap", "what": "lift it out on the green"}
+   {
+    "do": "tap",
+    "what": "a samosa into the oil"
+   },
+   {
+    "do": "tap",
+    "what": "lift it out on the green"
+   }
   ],
   "samosa": [
-   {"do": "tap", "what": "a spoon of the first filling they said, onto the strip"},
-   {"do": "tap", "what": "the next spoon (as many as the card says)"},
-   {"do": "tap", "what": "the tick when the filling's in"},
-   {"do": "swipe", "what": "fold the strip over the filling"},
-   {"do": "swipe", "what": "fold it again"},
-   {"do": "swipe", "what": "the last fold: it's sealed"}
+   {
+    "do": "tap",
+    "what": "a spoon of the first filling they said, onto the strip"
+   },
+   {
+    "do": "tap",
+    "what": "the next spoon (as many as the card says)"
+   },
+   {
+    "do": "tap",
+    "what": "the tick when the filling's in"
+   },
+   {
+    "do": "swipe",
+    "what": "fold the strip over the filling"
+   },
+   {
+    "do": "swipe",
+    "what": "fold it again"
+   },
+   {
+    "do": "swipe",
+    "what": "the last fold: it's sealed"
+   }
   ],
   "daar-cook": [
-   {"do": "tap", "what": "the knob: the oil is hot at once, it sizzles"},
-   {"do": "tap", "what": "the first spice Nana said, into the hot oil"},
-   {"do": "tap", "what": "the next spice"},
-   {"do": "tap", "what": "the chopped vegetables, one pile at a time: each row ticks as it goes in"},
-   {"do": "tap", "what": "the daar"},
-   {"do": "stir", "what": "drag the ladle round the pot, counting the laps (the dial shows how fast)"},
-   {"do": "tap", "what": "the tick when it's done"}
+   {
+    "do": "tap",
+    "what": "the knob: the oil is hot at once, it sizzles"
+   },
+   {
+    "do": "tap",
+    "what": "the first spice Nana said, into the hot oil"
+   },
+   {
+    "do": "tap",
+    "what": "the next spice"
+   },
+   {
+    "do": "tap",
+    "what": "the chopped vegetables, one pile at a time: each row ticks as it goes in"
+   },
+   {
+    "do": "tap",
+    "what": "the daar"
+   },
+   {
+    "do": "stir",
+    "what": "drag the ladle round the pot, counting the laps (the dial shows how fast)"
+   },
+   {
+    "do": "tap",
+    "what": "the tick when it's done"
+   }
   ],
   "_phases": {
    "_about": "29 Sept (X11): every phase of every station, by the key its coach runs under (St.begin or St.coach). build/check_onboard.mjs fails when one has no script above, or when a station's code starts a phase this list doesn't know.",
-   "pantry": ["fetch"],
-   "chai": ["chai-tray"],
-   "maani": ["maani-line"],
-   "daar": ["daar", "daar-cook"],
-   "chaat": ["assemble"],
-   "samosa": ["samosa", "fry"],
-   "sekelo": ["thread", "grill"]
+   "pantry": [
+    "fetch"
+   ],
+   "chai": [
+    "chai-tray"
+   ],
+   "maani": [
+    "maani-line"
+   ],
+   "daar": [
+    "daar",
+    "daar-cook"
+   ],
+   "chaat": [
+    "assemble"
+   ],
+   "samosa": [
+    "samosa",
+    "fry"
+   ],
+   "sekelo": [
+    "thread",
+    "grill"
+   ]
   }
  },
  "guide": {
   "_about": "28 Sept (Zafar): Nani's guide box at the top of the sidebar says what to do NOW, in Kutchi. Until 5 Oct none was recorded, so each showed as an English placeholder flagged 'to record' (build/reports/cook-ui-28sept.md lists them). W1, 5 Oct: Mum's Round 4 answers give ten of them a `line` (guide-*: add, watch, knead, flip, stir, chop, fold, fry, fill, chai-tray:knob; build/reports/w1-words.md); the rest stay flagged placeholders (pour, roll, the pantry headline and others Mum hasn't answered). Once Mum records one, give it a `line` (a key in `lines`) and the box shows and says that instead. Keys: a station (data.stations), or station:phase. While Nani says one of her own lines at a station (Hane …!, Bareto!, Jaldi kar!), the box shows that line.",
-  "fetch": {
-   "en": "Bring these from the pantry"
-  },
-  "passme": {
-   "en": "Pass me that one"
-  },
-  "pour": {
-   "en": "Pour it up to the line"
-  },
+  "fetch": {},
+  "passme": {},
+  "pour": {},
   "add": {
-   "en": "Put it in the pan",
    "line": "guide-add"
   },
   "watch": {
-   "en": "Watch it; turn it down before it boils over",
    "line": "guide-slow"
   },
-  "count": {
-   "en": "Put in as many spoons as they said"
-  },
+  "count": {},
   "knead": {
-   "en": "Press the dough",
    "line": "guide-knead"
   },
-  "roll": {
-   "en": "Roll the maani round"
-  },
+  "roll": {},
   "flip": {
-   "en": "Turn it over on the tawa",
    "line": "guide-firai"
   },
   "chop": {
-   "en": "Chop what they said",
    "line": "guide-chop"
   },
-  "tadka": {
-   "en": "Add the spices, in order"
-  },
+  "tadka": {},
   "stir": {
-   "en": "Stir it round",
    "line": "guide-firai"
   },
-  "assemble": {
-   "en": "Make the bowl, in order"
-  },
+  "assemble": {},
   "fill": {
-   "en": "Fill the samosa",
    "line": "guide-fill"
   },
   "fold": {
-   "en": "Fold the samosa",
    "line": "guide-fold"
   },
   "fry": {
-   "en": "Fry them, then lift them out",
    "line": "guide-fry"
   },
-  "thread": {
-   "en": "Thread the skewers"
-  },
-  "grill": {
-   "en": "Grill the skewers"
-  },
+  "thread": {},
+  "grill": {},
   "samosa:fill": {
-   "en": "Fill the samosa",
    "line": "guide-fill"
   },
   "samosa:fold": {
-   "en": "Fold the samosa",
    "line": "guide-fold"
   },
   "samosa:fry": {
-   "en": "Fry them, then lift them out",
    "line": "guide-fry"
   },
   "daar:chop": {
-   "en": "Chop what they said",
    "line": "guide-chop"
   },
   "daar:cook": {
-   "en": "Put it in the pan",
    "line": "guide-add"
   },
-  "chai-tray": {
-   "en": "Make each cup the way they said"
-  },
-  "chai-tray:water": {
-   "en": "Put water in the pan"
-  },
-  "chai-tray:tea": {
-   "en": "Put the chai in the pan"
-  },
+  "chai-tray": {},
+  "chai-tray:water": {},
+  "chai-tray:tea": {},
   "chai-tray:knob": {
-   "en": "Light the fire",
    "line": "guide-fire"
   },
-  "chai-tray:cups": {
-   "en": "Make each pan the way they said"
-  },
-  "chai-tray:pour": {
-   "en": "Pour each pan into their glass"
-  },
-  "mishkaki-grill": {
-   "en": "Thread the skewers, then grill them"
-  },
-  "mishkaki-grill:thread": {
-   "en": "Thread the skewers"
-  },
-  "mishkaki-grill:grill": {
-   "en": "Grill the skewers"
-  },
-  "maani-line": {
-   "en": "Roll the maani, then cook it"
-  },
-  "roll-tawa": {
-   "en": "Roll the maani, then cook it"
-  },
-  "default": {
-   "en": "Cook it the way they said"
-  }
+  "chai-tray:cups": {},
+  "chai-tray:pour": {},
+  "mishkaki-grill": {},
+  "mishkaki-grill:thread": {},
+  "mishkaki-grill:grill": {},
+  "maani-line": {},
+  "roll-tawa": {},
+  "default": {}
  }
 }

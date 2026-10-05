@@ -11,22 +11,8 @@
   }
  },
  "words": {
-  "ph-veg": {
-   "kutchi": "boga",
-   "english": "vegetable",
-   "gender": "unknown",
-   "src": "Mum 26 Sept (Section B, B17; docs/language/grammar-notes.md §25): boga, the family's word (from Swahili)",
-   "src_change": "was an English placeholder",
-   "_note": "a vegetable skewer (no meat)"
-  },
-  "ph-mixed": {
-   "kutchi": "mixed",
-   "english": "mixed",
-   "gender": "unknown",
-   "src": "Mum 26 Sept (Section B, B18; docs/language/grammar-notes.md §25): mixed, the English word",
-   "src_change": "was an English placeholder",
-   "_note": "a skewer of meat and vegetables, threaded in the order said"
-  }
+  "ph-veg": {},
+  "ph-mixed": {}
  },
  "mechanic": {
   "skewer": {

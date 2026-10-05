@@ -33,6 +33,8 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       const { page, rec } = ctx;
       await openCook(ctx);
       const P = new CookPlayer(page, rec, { mode });
+      // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
+      if (mode === "takeback") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
       await page.evaluate(([k, l, g]) => { __cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);
       await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
       await sleep(500);

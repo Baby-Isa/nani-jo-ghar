@@ -553,6 +553,16 @@
         if (at >= 0) order.splice(at, 1);
         if ((wantB[id] || 0) > 1 && UI.mission.untickItem) UI.mission.untickItem(id, ctx.dishAt || 0);
         z.progress({ unfilled: id, n: got[id] });
+        // C3 leftover (4d): Done only while something is on the strip; emptied, it goes until the next spoonful
+        if (!order.length) {
+          UI.hideDone();
+          const nx = kindsB.find((k) => (got[k] || 0) < wantB[k]) || id;
+          const o = items[nx];
+          if (o && o.active) {
+            const c = S.centre(o);
+            z.expect({ kind: "tap", x: c.x, y: c.y, key: nx, wrongs: [] });
+          }
+        }
       };
       Cook.undoAt = () => {
         // (not while Nani's "pass me" or a first-time coach is up: only the thing they point at takes a tap)
@@ -704,7 +714,7 @@
         glowOn = { poly, a: from, b: to };
         const offerGo = n > 0 && f === 0;
         const r = await swipe(z, S, {
-          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: Lang.label(phases.go || "go-fry").text, expectGo: offerGo && n >= total, glowGo: offerGo && ctx.guided && n >= total, minLen: k.minLen || 0.45 });
+          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: Lang.label(phases.go || "go-fry"), expectGo: offerGo && n >= total, glowGo: offerGo && ctx.guided && n >= total, minLen: k.minLen || 0.45 });
         glowOn = null;
         if (r === "go") {
           quit = true;
@@ -837,8 +847,8 @@
       );
       // 30 Sept: "fry them" is the shared button kit's → Next (js/shared/buttons.js, UX-PRINCIPLES 15)
       const stage = document.querySelector("#stage");
-      if (offerGo && global.NjgButtons && stage) nextBtn = global.NjgButtons.next(stage, goLabel, () => finish("go"), { id: "samosa-next", glow: !!glowGo });
-      else if (offerGo) UI.go(goLabel, { glow: !!glowGo }).then(() => finish("go"));
+      if (offerGo && global.NjgButtons && stage) nextBtn = global.NjgButtons.next(stage, goLabel.text, () => finish("go"), { id: "samosa-next", glow: !!glowGo });
+      else if (offerGo) UI.go(goLabel.text, { glow: !!glowGo, rec: goLabel.rec }).then(() => finish("go"));
       z.expect(expectGo ? { kind: "click", selector: nextBtn ? "#samosa-next" : "#go-btn" } : { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
     });
   }

@@ -70,7 +70,7 @@
       if (phases.thread && !attempt) Cook.UI.gist(phases.thread);
       if (ctx.nextStep) ctx.nextStep("Skewer");
       const tz = Mech.zone(S, ctx, { id: "thread", level: lv("thread") });
-      const made = await Mech.run("thread", tz, Object.assign({ handoff: { label: Cook.Lang.label(phases.go || "go-grill").text, max: rack } }, order));
+      const made = await Mech.run("thread", tz, Object.assign({ handoff: Object.assign({ max: rack }, (({ text, rec }) => ({ label: text, rec }))(Cook.Lang.label(phases.go || "go-grill"))) }, order));
       tz.close();
       St.end();
 

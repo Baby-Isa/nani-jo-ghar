@@ -214,8 +214,18 @@
       }
       return o;
     });
-    const unsure = (r.gaps || []).filter((g) => g.kind === "feature" && g.feature === "gender").map((g) => ids.get(g.lex) || g.lex);
-    if (unsure.length) segs.forEach((s) => s.draft && s.lex && Lang.hasForms(s.lex) && (s.check = unsure[0]));
+    // the engine marks the token whose form came from a defaulted gender (tokens and worded segments run in step)
+    const toks = (r.tokens || []).filter((t) => !t.punct);
+    let k = 0;
+    segs.forEach((s) => {
+      if (!s.lang) return;
+      const t = toks[k++];
+      const noun = t && t.defaulted && [].concat(t.defaulted.gender || [])[0];
+      // only a form that changes with the gender ("hakro", not "ba"): the form's key names the gender used
+      const dflt = (LX().features.gender || {}).default;
+      const dep = noun && t.lex && t.cell && String(LX().inflect(t.lex, t.cell).key || "").split(".").includes(dflt);
+      if (dep && t.lex !== noun) s.check = ids.get(noun) || noun;
+    });
     let en = r.en || "";
     if (row) {
       while (segs.length && segs[segs.length - 1].lang == null && /^[.!?]$/.test(segs[segs.length - 1].t)) segs.pop();
