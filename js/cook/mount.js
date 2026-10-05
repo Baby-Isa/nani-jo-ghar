@@ -40,9 +40,28 @@ export async function mount(el, o = {}) {
     W.Frame.mount({ app: $("app"), side: me.side, play: $("stage") });
   }
   if (o.speed) Cook.speed = Number(o.speed) || Cook.speed;
+  stampPhaser(W);
   await Cook.boot($("game"), { hosted: !!o.hosted });
   if (current !== me) throw Object.assign(new Error("cook: unmounted while it started"), { name: "HostLeft" });
   return { Cook, el, unmount };
+}
+
+/**
+ * Every file a Phaser scene loads gets the version stamp (B7). js/version.js does this when Phaser is loaded before
+ * it (cook.html); a host page that loads Phaser later (lab.html, through Cook's needs) gets the same hook here.
+ */
+function stampPhaser(W) {
+  const P = W.Phaser;
+  const proto = P && P.Loader && P.Loader.LoaderPlugin && P.Loader.LoaderPlugin.prototype;
+  if (!proto || proto._njgV || typeof W.njgV !== "function") return;
+  const addFile = proto.addFile;
+  proto.addFile = function (file) {
+    [].concat(file).forEach((f) => {
+      if (f && typeof f.url === "string") f.url = W.njgV(f.url);
+    });
+    return addFile.call(this, file);
+  };
+  proto._njgV = true;
 }
 
 export function unmount() {

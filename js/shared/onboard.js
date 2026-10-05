@@ -456,10 +456,23 @@
       const t = e.changedTouches ? e.changedTouches[0] : e;
       return { x: t.clientX, y: t.clientY };
     };
-    const allowed = (e) => skipBtn.contains(e.target) || (!layer.classList.contains("between") && lit.some((r) => inside(pt(e), r)));
+    // (C4, 4d's daar smoke timeout: the light is where its target is NOW, not where the last frame drew it. A press that
+    // came right after the game's next target appeared, before the next frame, was judged against the old light and
+    // blocked, while its release, a frame later, counted as the coach's tap: the coach moved on and the game never got it)
+    const litNow = () => {
+      const st = m.state().step;
+      return st ? rectsOf(st.spotlight) : lit;
+    };
+    const onLight = (e) => litNow().some((r) => inside(pt(e), r));
+    const allowed = (e) => skipBtn.contains(e.target) || (!layer.classList.contains("between") && onLight(e));
+    // (C4: a script whose steps are all done blocks nothing while its layer fades: the breath after the last step
+    // swallowed the next press, daar's stir)
+    const over = () => ["done", "skipped"].includes(m.state().phase);
     const block = (e) => {
-      if (skipBtn.contains(e.target) || pass(e)) return;
-      if (!allowed(e)) {
+      if (skipBtn.contains(e.target) || pass(e) || over()) return;
+      // (C4: the breath between steps never swallows a press on the lit thing: the game gets it (E5, input is live);
+      // only the coach's own step count waits for the breath to end, in up())
+      if (!onLight(e)) {
         e.stopPropagation();
         e.preventDefault();
       }
