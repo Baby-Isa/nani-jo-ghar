@@ -50,7 +50,7 @@ export const PFX = { N: "n", PN: "pn", A: "a", V: "v", Num: "num", Pron: "pron",
 export function conceptId(pos, gloss) {
   let g = String(gloss || "").toLowerCase().replace(/['\u2019]/g, "");
   if (pos === "Phrase") g = g.replace(/[()]/g, " ");
-  else g = g.replace(/\(.*?\)/g, " ").split(/[,;/]|\bor\b/)[0];
+  else g = g.replace(/\(.*?\)/g, " ").split(/[,;/]|\s+or\s+/)[0];
   const words = slug(g).split("-").filter(Boolean).slice(0, pos === "Phrase" ? 12 : 5);
   return `${PFX[pos] || "x"}.${words.join("-") || "word"}`;
 }
@@ -137,8 +137,15 @@ export class Store {
     if (!id) {
       // the same word from another source: the same pos and the same spelling is the same entry
       const same = lemmaKey ? (this.byLemma.get(norm(lemmaKey)) || []).find((i) => this.entries.get(i) && this.entries.get(i).pos === e0.pos) : null;
+      // a placeholder waiting for exactly this word (same part of speech, same English): the word fills it in
+      const hasKutchi = !!(e0.lemma || lemmaKey || e0.parts || (e0.forms && Object.keys(e0.forms).length));
+      const waiting = !same && hasKutchi && e0.status !== "to-record" && e0.gloss ? Array.from(this.entries.values()).find((x) => x.status === "to-record" && x.pos === e0.pos && norm(String(x.gloss).split(/[,;(]/)[0]) === norm(String(e0.gloss).split(/[,;(]/)[0])) : null;
       if (same) id = same;
-      else {
+      else if (waiting) {
+        id = waiting.id;
+        waiting.status = e0.status || "draft";
+        waiting.history = [...(waiting.history || []), { date: "2026-10-05", change: "was an English placeholder, to record", src: [].concat(e0.src || [])[0] || "step 4b" }];
+      } else {
         const base = conceptId(e0.pos, e0.gloss || e0.en);
         id = base;
         for (let n = 2; this.entries.has(id) || this.aliasOwner(id); n++) id = `${base}-${n}`;
@@ -236,7 +243,10 @@ export class Store {
       if (!e) continue;
       const byField = new Map();
       for (const c of cl) (byField.get(c.field) || byField.set(c.field, []).get(c.field)).push(c);
-      for (const [field, cs] of byField) {
+      for (let [field, cs] of byField) {
+        // a placeholder's "to record" is not a claim against a word that has since been given (it was filled in)
+        if (field === "status" && (e.lemma || (e.forms && Object.keys(e.forms).length) || (e.parts && e.parts.length))) cs = cs.filter((c) => c.value !== "to-record");
+        if (!cs.length) continue;
         const distinct = new Map();
         for (const c of cs) {
           const k = field === "status" ? c.value : norm(c.value);
@@ -280,10 +290,26 @@ export class Store {
     const list = Array.from(this.entries.values());
     list.sort((a, b) => order.indexOf(a.pos) - order.indexOf(b.pos) || a.id.localeCompare(b.id));
     return list.map((e) => {
+      // a noun carries its plural (G18): where none has been heard, say so as an unknown cell (a gap that asks Mum), never a guess
+      const headAgrees = (e.parts || []).some((p) => /\{cell\}/.test(p.cell || "")); // a fixed expression whose head noun takes the cell (a she-word thing)
+      if ((e.pos === "N" || e.pos === "PN") && e.status !== "to-record" && !e.paradigm && e.number !== "pl" && !headAgrees && !Object.keys(e.forms || {}).some((k) => k.startsWith("pl") || k === "*")) {
+        e.forms = { ...(e.forms || {}), "pl.*": { status: "unknown", ask: ["new"], src: "no plural heard yet (step 4b: nothing is guessed)" } };
+      }
+      // a verb Mum has given as a bare command to a child has no elder's form yet: an unknown cell that asks, never the child's form said to an elder
+      if (e.pos === "V" && e.status !== "to-record" && e.forms && "imp.informal" in e.forms && !("imp.polite" in e.forms)) {
+        e.forms = { ...e.forms, "imp.polite": { status: "unknown", ask: ["C142-C151"], src: "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151" } };
+      }
+      // the English plural, for Mum's sheet ("one sugar, two sugars"); never shown to a child
+      if (e.pos === "N" && !e.glossPl && e.gloss && !/[(,]/.test(e.gloss)) {
+        const words = e.gloss.split(" ");
+        const last = words.pop();
+        const pl = /(s|x|z|ch|sh)$/.test(last) ? (/s$/.test(last) ? last : last + "es") : /[^aeiou]y$/.test(last) ? last.slice(0, -1) + "ies" : /(tomato|potato|mango)$/.test(last) ? last + "es" : last + "s";
+        e.glossPl = [...words, pl].join(" ");
+      }
       const o = {};
       const keys = ["id", "pos", "gender", "ref", "person", "number", "clusivity", "value", "paradigm", "lemma", "say", "gloss", "glossPl", "forms", "parts", "status", "src", "aliases", "ask", "notes", "open", "history"];
       for (const k of keys) if (e[k] !== undefined && !(Array.isArray(e[k]) && !e[k].length)) o[k] = e[k];
-      for (const k of Object.keys(e)) if (!(k in o) && e[k] !== undefined) o[k] = e[k];
+      for (const k of Object.keys(e)) if (!(k in o) && e[k] !== undefined && !(Array.isArray(e[k]) && !e[k].length)) o[k] = e[k];
       return o;
     });
   }

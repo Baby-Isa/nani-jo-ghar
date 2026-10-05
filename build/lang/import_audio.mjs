@@ -3,7 +3,7 @@
 // which word form or which whole phrase a recording is; where the recording and the entry disagree the row is not
 // written and the recording is listed as unlinked. A recording of one word is linked to every entry that says exactly
 // that text; a recording of a fixed phrase is linked as a whole meaning (Say / Exclaim / Ask of that phrase); a
-// recording of a sentence the rules build (Muke hakri maani khape) is attached by finding the meaning whose
+// recording of a sentence the rules build (an order, a place, a possessive) is attached by finding the meaning whose
 // linearisation is exactly that text (attach.mjs).
 import { readJSON, norm } from "./lib.mjs";
 import { formIndex } from "./phrases.mjs";

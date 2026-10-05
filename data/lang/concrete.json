@@ -625,89 +625,125 @@
    "src": "grammar-notes §15 (the everyday, shorter version drops je: cup table mathe ai)"
   },
   "Command": {
-   "slots": [
-    {
-     "arg": "obj"
-    },
-    {
-     "arg": "verb",
-     "cell": "imp.informal"
-    }
-   ],
+   "variants": {
+    "informal": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.informal"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.polite"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
    "mark": "!",
    "status": "confirmed",
-   "src": "grammar-notes §38 (the bare commands to a child: atto gund, samosa waar, samosa tar, chulo bar, paani bhari chad), §12",
-   "exceptions": [
-    {
-     "only": {
-      "register": [
-       "polite"
-      ]
-     },
-     "status": "unknown",
-     "ask": [
-      "C142-C151",
-      "N1-N23"
-     ],
-     "english": "{verb} {obj}",
-     "what": "a command to an elder (Mum has said only the bare command to a child)",
-     "src": "grammar-notes §38 (polite and 'for me' forms are still unknown), For Mum next time 11"
-    }
+   "src": "grammar-notes §38 (the bare commands to a child: atto gund, samosa waar, samosa tar, chulo bar, paani bhari chad), §12; to an elder §21 (hida acho), §27 B48 (Jaldi karo!)",
+   "notes": [
+    "A command to an elder asks for the verb's imp.polite form: only ach / acho and kar / karo are known so far (the others are a form gap asking C142-C151)."
    ]
   },
   "DoIt": {
-   "slots": [
-    {
-     "arg": "obj"
-    },
-    {
-     "arg": "verb",
-     "cell": "conj"
-    },
-    {
-     "lex": "v.leave",
-     "cell": "imp.informal"
-    }
-   ],
+   "variants": {
+    "informal": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "conj"
+     },
+     {
+      "lex": "v.leave",
+      "cell": "imp.informal"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "conj"
+     },
+     {
+      "lex": "v.leave",
+      "cell": "imp.polite"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
    "mark": "!",
    "status": "confirmed",
-   "src": "grammar-notes §38 I4, I5, I11, I13, I16 (wiji chad, kadhi chad, kapi chad, bego kari chad, paani bhari chad: chad = leave it, finish it)",
-   "exceptions": [
-    {
-     "only": {
-      "register": [
-       "polite"
-      ]
-     },
-     "status": "unknown",
-     "ask": [
-      "C142-C151"
-     ],
-     "english": "{verb} it {obj}",
-     "what": "a 'put it in' command to an elder",
-     "src": "grammar-notes §38 (polite forms unknown)"
-    }
-   ]
+   "src": "grammar-notes §38 I4, I5, I11, I13, I16 (wiji chad, kadhi chad, kapi chad, bego kari chad, paani bhari chad: chad = leave it, finish it)"
   },
   "Dont": {
-   "slots": [
-    {
-     "arg": "obj"
-    },
-    {
-     "lex": "neg.not"
-    },
-    {
-     "arg": "verb",
-     "cell": "imp.informal"
-    }
-   ],
+   "variants": {
+    "informal": [
+     {
+      "arg": "obj"
+     },
+     {
+      "lex": "neg.not"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.informal"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "obj"
+     },
+     {
+      "lex": "neg.not"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.polite"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
    "mark": "!",
    "status": "confirmed",
-   "src": "grammar-notes §12 (na next to the verb, after it: khun na wij, khun na wapur, ad na, hal na, bol na, watu na kar)",
-   "notes": [
-    "na before the verb is urgent or changes the meaning: see DontNow (§12)."
-   ]
+   "src": "grammar-notes §12 (khun na wij, khun na wapur, watu na kar: with a thing, na sits between the thing and the verb)"
+  },
+  "DontVerb": {
+   "variants": {
+    "informal": [
+     {
+      "arg": "verb",
+      "cell": "imp.informal"
+     },
+     {
+      "lex": "neg.not"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "verb",
+      "cell": "imp.polite"
+     },
+     {
+      "lex": "neg.not"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §12 (ad na, hal na, bol na, bhaj na: with no thing, na follows the verb; na first is the sharp warning, see DontNow)"
   },
   "DontNow": {
    "slots": [
@@ -928,6 +964,88 @@
    ],
    "status": "confirmed",
    "src": "grammar-notes §55 C79 (toje ambe mathe, toji kursi mathe: the short postposition sits straight after the noun; the fuller one adds je, §15)"
+  },
+  "Or": {
+   "feats": {
+    "gender": "{a.gender}",
+    "number": "{a.number|sg}",
+    "person": "p3",
+    "lex": "{a.lex}"
+   },
+   "slots": [
+    {
+     "arg": "a"
+    },
+    {
+     "lex": "conj.or"
+    },
+    {
+     "arg": "b"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §9 (hi ambo khan, ke hi maani khan: ke = or), §46 (wadho ke nindho?)"
+  },
+  "PutAt": {
+   "slots": [
+    {
+     "arg": "thing"
+    },
+    {
+     "arg": "anchor",
+     "case": "obl"
+    },
+    {
+     "lex": "link.place"
+    },
+    {
+     "arg": "rel"
+    },
+    {
+     "lex": "v.put",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §16 (saani je agiya rakh: put it in front of the plate; rakh = put, place)"
+  },
+  "Call": {
+   "slots": [
+    {
+     "lex": "pron.p3",
+     "cell": "dir"
+    },
+    {
+     "arg": "x",
+     "case": "dir"
+    }
+   ],
+   "mark": "!",
+   "status": "draft",
+   "src": "grammar-notes §36 C21 (E chokro! E chokri!: calling out puts e before the word ⚠)",
+   "notes": [
+    "Names take no e: Nana! Nani! Ali! (§36 C21, §30 K14)."
+   ],
+   "exceptions": [
+    {
+     "only": {
+      "x.lex": [
+       "pn.nana",
+       "pn.nani",
+       "pn.ali"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "x",
+       "case": "dir"
+      }
+     ],
+     "status": "confirmed",
+     "src": "grammar-notes §36 C21, §30 K14 (Nana! Nani! Ali!)"
+    }
+   ]
   },
   "Place": {
    "slots": [

@@ -48,7 +48,7 @@
 
 ## Status
 
-Designed in step 2b (1 Oct 2026; decision 17). **Engine core built in step 4a (5 Oct 2026)**, not wired to any game: `js/core/lang/index.js` (the seam) still answers every caller until 4d (Cook) and 4e (the clinic). Report: `build/reports/step4a-engine-core.md`. Step 2b's outputs: `engine-design.md`, `grammar-kb.md`, `mum-questions/Questions for Mum (Round 5).md`, `fill-the-engine.md`, `build/reports/step-2b.md`.
+Designed in step 2b (1 Oct 2026; decision 17). **Engine core built in step 4a (5 Oct 2026)**, not wired to any game: `js/core/lang/index.js` (the seam) still answers every caller until 4d (Cook) and 4e (the clinic). Report: `build/reports/step4a-engine-core.md`. **Filled in step 4b (5 Oct 2026; decision 40): see "What is filled" below.** Step 2b's outputs: `engine-design.md`, `grammar-kb.md`, `mum-questions/Questions for Mum (Round 5).md`, `fill-the-engine.md`, `build/reports/step-2b.md`.
 
 ## What is built (step 4a)
 
@@ -61,7 +61,7 @@ Designed in step 2b (1 Oct 2026; decision 17). **Engine core built in step 4a (5
 | `js/core/lang/engine/validate.js` | the data check (§ 12.4) |
 | `js/core/lang/engine/gaps.js` | the gap reporter (minimum 4c, decision 38 c) |
 | `data/lang/params.json`, `elicit.json` | the feature model and Mum's question templates (real) |
-| `data/lang/lexicon.json`, `paradigms.json`, `abstract.json`, `concrete.json`, `clips.json` | **empty: step 4b fills them** |
+| `data/lang/lexicon.json`, `paradigms.json`, `abstract.json`, `concrete.json`, `clips.json` | **filled by step 4b** (`node build/lang/import_all.mjs`; do not edit by hand) |
 | `data/lang/test-seed/` | a small grammar from grammar-notes, cited, **for tests only** |
 | `build/lang/engine.test.mjs`, `build/lang/gap-report.mjs` | `node --test build/lang/`; `node build/lang/gap-report.mjs --needs <file>` (or `--seed`) |
 
@@ -103,3 +103,12 @@ An entry with no source; an English-only word not flagged to-record; a to-record
 ### Room for English and the dictionary (not built)
 `abstract.json` is shared and language-neutral. An English grammar would be a second `lexicon` + `paradigms` + `concrete` set with the same ids and meanings (`createEngine({data: {...english}})`); the abstract `en` templates are its seed. **Translation box:** within the engine's coverage, parse English by generating candidate meanings from the abstract syntax, linearising them in English and matching (closed sets, so no general parser), then `Lang.say` the meaning in Kutchi. **Dictionary:** export the lexicon (gloss, forms by cell, status, source, clips, topic) straight from `lexicon.json`.
 
+## What is filled (step 4b, 5 Oct 2026; decision 40, rule G27)
+
+The engine is the one home of the Kutchi that is known. `data/lang/{lexicon,paradigms,abstract,concrete,clips}.json` are **built, not typed**: `node build/lang/import_all.mjs` reads every source and rewrites them (and the reports), and is re-run after each of Mum's rounds. Report: `build/reports/step4b-engine-fill.md`. Reports written each run, in `data/lang/reports/`: `gap-list.md` (the minimum 4c: what Cook and the clinic say that the engine cannot say or has no recording for, grouped for Mum), `clash-list.md` (every place two sources disagree), `coverage.md` (the counts) and `source-coverage.md` (emphasised words in the notes the lexicon cannot say: a word Mum gave that nobody loaded shows up there).
+
+**Counts (5 Oct).** 857 lexicon entries: 336 confirmed, 163 draft, 358 to record (English only); 338 phrases (153 are fixed expressions made of other words), 325 nouns, 56 verbs, 40 describing words, 26 postpositions. 5 word classes, 113 meanings, 112 rules (38 confirmed, 12 draft, 62 unknown with the questions that settle them), 4 exceptions. 417 distinct recordings (395 with a file): 593 rows in `clips.json` (158 word forms, 258 fixed phrases, 177 sentences the rules build, each exactly what Mum said); 30 recordings are not linked, and each is explained in the clash list § 6. The data check: 0 errors, 0 warnings. `node --test build/lang/`: 56 pass (the 34 of 4a, 22 for the fill: re-runnable, golden sentences checked against Mum's recordings, exceptions, ids, no Kutchi in code, every Cook and clinic id resolves).
+
+**Sources loaded:** `data/cook.json`, `data/stations/*`, `data/content.json` (handout: always draft), `data/clinic.json`, `clinic/lang.json`, `clinic/pipeline.json`, `clinic/heal/*`, `data/conversations/lines.json`, `data/story/first-launch.json`, the parked modes' data, `lexicon.md` § 6 (parsed), `grammar-notes.md` and `grammar-kb.md` (by hand in `build/lang/hand/`, each entry citing its section), the 5 Oct report, `data/family-audio.json`. **Not loaded as Kutchi:** the AI research, the Sindhi and Gujarati comparisons and `Mum yes-no list` (rule G1). `cook-tts.json` and `monsoon-audio.json` (the same 186 keys) are checked against the lexicon: every word is there except the five superseded spellings (*daal, hikdo, dine, vatana, lal*).
+
+**Changes to the data model (all in data, none in game code).** `params`: part of speech `Dem` and `Q`; tense `conj` (the 'having done' form before *chad*); case `poss` (the 'my / your / his' stem). Rules may carry `notes`. The clip index's meaning key now names the person actually said (*p2resp* to an elder) and a game's old id by the entry's id, so a recording of a sentence said to an elder never shares a key with the child's. The data check no longer warns for a fixed-expression noun with no plural of its own (it takes its number from its head word).

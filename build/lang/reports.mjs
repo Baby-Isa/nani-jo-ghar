@@ -6,6 +6,9 @@ import { readJSON, writeText, norm } from "./lib.mjs";
 import { gapReport } from "../../js/core/lang/engine/gaps.js";
 import { createEngine } from "../../js/core/lang/engine/index.js";
 import { REASONS, PAIRS } from "./hand/contradictions.mjs";
+import { DECISION_CLASHES } from "./hand/clash-notes.mjs";
+import { NOT_LOADED } from "./hand/not-kutchi.mjs";
+import { readText } from "./lib.mjs";
 
 const OUT = "data/lang/reports/";
 
@@ -28,7 +31,11 @@ function wordNeeds(S, game, ids) {
       needs.push({ label, meaning: { fn: "Item", kind: e.id, n: 1 } });
       if (e.pos === "N" && e.status !== "to-record") needs.push({ label: `${label}, more than one`, meaning: { fn: "Item", kind: e.id, n: 3 } });
     } else if (e.pos === "Num") needs.push({ label, meaning: { fn: "Item", kind: "n.cup", n: e.value } });
-    else if (e.pos === "A") needs.push({ label, meaning: { fn: "Amt", x: e.id } });
+    else if (e.pos === "A") {
+      // a describing word that only has a she-form is asked on a she-word (tea), not alone
+      const sheOnly = e.forms && Object.keys(e.forms).length && Object.keys(e.forms).every((k) => k.startsWith("she"));
+      needs.push({ label, meaning: sheOnly ? { fn: "Item", kind: "n.tea", mods: [e.id] } : { fn: "Amt", x: e.id } });
+    }
     else if (e.pos === "V") needs.push({ label, meaning: { fn: "Command", verb: e.id } });
     else needs.push({ label, meaning: { fn: "Say", x: e.id } });
   }
@@ -212,24 +219,7 @@ export function clashListMarkdown(S, log, gl) {
 
   // decisions or sources the games have not caught up with
   out.push("", "## 4. The game's data and a decision or an answer disagree", "");
-  const gaps = [
-    ["Chilli", "Cook shows marcha (veg-12); Mum says mirchi for one and for more; decision 5 says mirchi only, no plural, for now; the content master also has marcha.", "Follow decision 5 (mirchi). Zafar to confirm with Mum (Round 5 Q13)."],
-    ["Peas", "Cook's veg-10 is watana, called 'peas'; Mum says watana are fried peas and green peas are matar.", "Zafar to check which one Cook means (Round 5 Q12)."],
-    ["Samosa", "Zafar asked for Nani to say sambusa (clip sambusa-r3); the game and Mum's list say samosa.", "Zafar to decide (Round 5 Q15)."],
-    ["Kitchen", "rasoro is the proper Kutchi word; the family also says jikoni (Swahili).", "Zafar to decide which one the game uses."],
-    ["Pantry", "Mum answered the pantry (kabaat, the cupboard); the game still shows an English placeholder.", "Wire it in step 4d (the engine already says it)."],
-    ["Right (side)", "The clinic says jamno; Mum has said only jamni (with baju, a she-word); jamno is the he-form by the pattern, not heard.", "Ask Mum for jamno (Round 5 C-series left/right)."],
-    ["Yes", "The clinic spells yes haa; Mum's A8.1 is ha (re-transcribed haa).", "Zafar to check the spelling against the clip."],
-    ["Thank you", "Cook and the clinic still say Aabhar aanjo (class handout); the family says the English 'thank you' (Zafar 26 Sept, rule G6).", "Follow the rule: replace it in step 4d / 4e."],
-    ["Goodbye", "Cook and the clinic still say Achija (class handout); Zafar's decision is khuda-fis (26 Sept, G6).", "Follow the rule."],
-    ["Hedo / Ghan", "Hedo ('Hey!'/'Here!') and Ghan ('Here you are') are class-handout words never confirmed by Mum (G21).", "Ask Mum, or drop them."],
-    ["The sugar sentence", "Mum said Muke chai me ba khun khapeti (a she-singular ending on a count of two); the rule for plural counts gives khapanta.", "Ask Mum (Round 5 L34, L9)."],
-    ["Aau theek ai", "Mum says ai (not aiya) after aau when she says 'I'm fine'; elsewhere 'I am' is aiya.", "Ask Mum whether it is a fixed phrase."],
-    ["dinda / dinde", "Mum said dinda to both an elder and a child, and dinde as Nani; Zafar says one is for an elder.", "Ask Mum (Round 5 Q8)."],
-    ["khanigin / khanij / khanech", "Three spellings for take-and-bring forms across §9, §37.8 and §43.", "Ask Mum (Round 5 Q9)."],
-    ["wapur / wapar", "The word for 'use' is spelled both ways in the notes.", "Zafar to listen and choose."],
-    ["kenjo / khenjo / khabar / khobar", "Two spellings of food (S5 and I18) and two of wait / knowledge.", "Zafar to listen and choose."],
-  ];
+  const gaps = DECISION_CLASHES;
   out.push("| Thing | What disagrees | Recommendation |", "|---|---|---|");
   for (const [a, b, c] of gaps) out.push(`| ${a} | ${b} | ${c} |`);
 
@@ -321,9 +311,46 @@ export function coverageMarkdown(S, log, data, validation, audio) {
     "",
     "Loaded: data/cook.json, data/stations/*.json, data/content.json, data/clinic.json, data/clinic/lang.json, data/clinic/pipeline.json, data/clinic/heal/*.json, data/conversations/lines.json, data/story/first-launch.json, the parked modes' data (dress, who, relations, monsoon, snap, tidy, find), docs/language/lexicon.md §6 (the tables), docs/language/grammar-notes.md and grammar-kb.md (by hand, each entry citing its section), the 5 Oct report, data/family-audio.json.",
     "",
-    "Not loaded as Kutchi (rule G1: two AIs agreeing is not evidence): the Gemini blueprints, Claude's grammar checklist, the Sindhi and Gujarati comparisons in grammar-notes, the 'Claude's check' paragraphs, the agreement paper, and `Mum yes-no list (2026-10-05).md`. They shaped the questions, never the data. Data/cook-tts.json and data/monsoon-audio.json are test-only text-to-speech indexes (rule G14): they are checked against the lexicon, not loaded.",
+    "Not loaded as Kutchi (rule G1: two AIs agreeing is not evidence): the Gemini blueprints, Claude's grammar checklist, the Sindhi and Gujarati comparisons in grammar-notes, the 'Claude's check' paragraphs, the agreement paper, and `Mum yes-no list (2026-10-05).md`. They shaped the questions, never the data. data/cook-tts.json and data/monsoon-audio.json (the same 186 keys) are test-only text-to-speech indexes (rule G14): they are checked against the lexicon, not loaded.",
     "",
   ].join("\n");
+}
+
+/* ---------------- source coverage: emphasised words in the notes the lexicon cannot say ---------------- */
+
+export function sourceCoverageMarkdown(data) {
+  const known = new Set();
+  const par = data.paradigms.paradigms;
+  for (const e of data.lexicon.entries) {
+    if (e.status === "to-record") continue;
+    for (const t of [e.lemma, ...Object.values(e.forms || {}).map((v) => (typeof v === "string" ? v : v && v.t))]) if (t) for (const w of norm(t).split(" ")) known.add(w);
+    const p = e.paradigm && par[e.paradigm];
+    if (p && e.lemma) {
+      const stem = p.stem && p.stem.drop && e.lemma.endsWith(p.stem.drop) ? e.lemma.slice(0, -p.stem.drop.length) : e.lemma;
+      for (const c of Object.values(p.cells)) if (c.make) known.add(norm(c.make.replace("{stem}", stem).replace("{lemma}", e.lemma)));
+    }
+  }
+  const files = ["docs/language/grammar-notes.md", "docs/language/lexicon.md", "build/reports/mum-2026-10-05.md"];
+  const ignore = new Map();
+  for (const [why, list] of Object.entries(NOT_LOADED)) for (const w of list.split(/\s+/)) if (w) ignore.set(w, why);
+  const missing = new Map();
+  for (const f of files) {
+    const text = readText(f);
+    for (const m of text.matchAll(/\*\*\*([^*\n]+?)\*\*\*|(?<![*\w])\*([^*\n]{1,60}?)\*(?![*\w])/g)) {
+      for (const w of norm(m[1] || m[2]).split(" ")) if (w && /^[a-z]+$/.test(w) && !known.has(w)) (missing.get(w) || missing.set(w, new Set()).get(w)).add(f.split("/").pop());
+    }
+  }
+  const out = ["# Source coverage: emphasised words in the notes that the lexicon cannot say", "", "Every word in bold or italic in `grammar-notes.md`, `lexicon.md` and the 5 Oct report that is not a form of some entry. Re-run `node build/lang/import_all.mjs` after adding Mum's next answers to the notes and the hand files: a word she gave that nobody loaded shows up under **to review**. Words are grouped by why they are not loaded (never a silent skip).", ""];
+  const byWhy = new Map();
+  const review = [];
+  for (const [w, fs] of missing) {
+    const why = ignore.get(w);
+    if (why) (byWhy.get(why) || byWhy.set(why, []).get(why)).push(w);
+    else review.push(w);
+  }
+  out.push(`## To review (${review.length})`, "", review.length ? review.sort().join(", ") : "Nothing: every emphasised word is loaded or accounted for below.", "");
+  for (const [why, list] of byWhy) out.push(`## ${why} (${list.length})`, "", list.sort().join(", "), "");
+  return out.join("\n");
 }
 
 export function writeReports({ S, log, data, audio, validation }) {
@@ -332,5 +359,6 @@ export function writeReports({ S, log, data, audio, validation }) {
   writeText(OUT + "gap-list.md", gapListMarkdown(S, gl) + "\n");
   writeText(OUT + "clash-list.md", clashListMarkdown(S, log, gl) + "\n");
   writeText(OUT + "coverage.md", coverageMarkdown(S, log, data, validation, audio) + "\n");
+  writeText(OUT + "source-coverage.md", sourceCoverageMarkdown(data) + "\n");
   return gl;
 }

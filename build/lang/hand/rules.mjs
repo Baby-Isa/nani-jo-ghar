@@ -10,16 +10,16 @@ const Opt = (o) => ({ ...o, optional: true });
 
 /** [name, cat, args, en, elicit, extra] */
 const ABSTRACT = [
-  ["And", "Utt", { x: NP }, "And {x}.", ["I'd like chai. And milk. And two sugars."], { rows: ["x"] }],
-  ["Then", "Utt", { x: NP }, "And then {x}.", ["First daar, and then maani."], { rows: ["x"] }],
-  ["First", "Utt", { x: NP }, "First {x}.", ["First daar, and then maani."], { rows: ["x"] }],
+  ["And", "Utt", { x: NP }, "And {x}.", ["I'd like tea. And milk. And two sugars."], { rows: ["x"] }],
+  ["Then", "Utt", { x: NP }, "And then {x}.", ["First lentils, and then a chapati."], { rows: ["x"] }],
+  ["First", "Utt", { x: NP }, "First {x}.", ["First lentils, and then a chapati."], { rows: ["x"] }],
   ["NoItem", "Utt", { x: NP }, "No {x}.", ["No sugar. (the very short way)"], { rows: ["x"] }],
   ["Only", "Utt", { x: NP }, "Only {x}.", ["Only two onions."], { rows: ["x"] }],
   ["Now", "Utt", { x: NP }, "Now {x}!", ["Now the tomatoes! (in a gentle sequence of cooking steps)"], { rows: ["x"] }],
   ["GiveMe", "Utt", { x: NP }, "Give me {x}.", ["Give me a teaspoon. Pass me the salt."], { rows: ["x"] }],
   ["ForWho", "Utt", { x: NP }, "This is for {x}.", ["This is for Nana."]],
   ["For", "Utt", { x: NP }, "For {x}.", ["For Nana."], { rows: ["x"] }],
-  ["CanYouMake", "Utt", { who: { type: "Person" }, thing: NP }, "Can you make me {thing}?", ["Can you make me chai? (to a grandchild, and then to Nana)"]],
+  ["CanYouMake", "Utt", { who: { type: "Person" }, thing: NP }, "Can you make me {thing}?", ["Can you make me tea? (to a grandchild, and then to Nana)"]],
   ["HowAreYou", "Utt", { who: { type: "Person" } }, "How are you?", ["How are you? (to a child, to a cousin, to Nana)"]],
   ["ImFine", "Utt", {}, "I'm fine.", ["I'm fine."]],
   ["NotNeed", "Utt", { thing: NP }, "I don't want {thing}.", ["No, I don't want sugar. (polite, and the short way)"]],
@@ -28,7 +28,8 @@ const ABSTRACT = [
   ["LocatedAtShort", "Utt", { thing: NP, anchor: NP, rel: { type: "Post" } }, "{thing} is {rel} {anchor} (the everyday short way).", ["The cup is on the table. (the everyday way)"]],
   ["Command", "Utt", { verb: { type: "V" }, obj: Opt(NP) }, "{verb} {obj}!", ["Cut the onion. Knead the dough. Fry the samosa."]],
   ["DoIt", "Utt", { verb: { type: "V" }, obj: Opt(NP) }, "{verb} it {obj}!", ["Put it in. Take it out. Fill it with water."]],
-  ["Dont", "Utt", { verb: { type: "V" }, obj: Opt(NP) }, "Don't {verb} {obj}.", ["Don't put sugar in. Don't touch that. Don't run, walk."]],
+  ["Dont", "Utt", { verb: { type: "V" }, obj: NP }, "Don't {verb} {obj}.", ["Don't put sugar in. Don't use sugar."]],
+  ["DontVerb", "Utt", { verb: { type: "V" } }, "Don't {verb}.", ["Don't touch that. Don't run, walk. Don't speak."]],
   ["DontNow", "Utt", { verb: { type: "V" } }, "Don't {verb}! (urgent)", ["Don't touch! (it's hot, you'll burn!)"]],
   ["Point", "NP", { which: { type: "Dem" }, x: NP }, "{which} {x}", ["this big boy; that big boy"]],
   ["PossPron", "NP", { owner: { type: "Person" }, thing: NP }, "{owner}'s {thing}", ["my cup; your mango (to a child); his chair; our house"]],
@@ -37,13 +38,16 @@ const ABSTRACT = [
   ["Amt", "NP", { x: { type: "A" } }, "{x}", ["half; a whole cup"]],
   ["Exclaim", "Utt", { x: { type: "Phrase" } }, "{x}!", ["Well done! It's burning!"]],
   ["Ask", "Utt", { x: { type: "Phrase" } }, "{x}?", ["Where is it? Who's there?"]],
-  ["WantIn", "Utt", { container: NP, thing: NP }, "In my {container} I want {thing}.", ["In my chai I want two sugars."]],
-  ["AndKind", "Utt", { x: NP }, "and {x} (a second kind of the same dish)", ["I'd like two samosas with mince, and one with potato."], { rows: ["x"] }],
-  ["ButNo", "Utt", { head: NP, x: NP }, "{head}, but no {x}", ["I'd like daar, but no onion."]],
+  ["WantIn", "Utt", { container: NP, thing: NP }, "In my {container} I want {thing}.", ["In my tea I want two sugars."]],
+  ["AndKind", "Utt", { x: NP }, "and {x} (a second kind of one dish)", ["I'd like two samosas with mince, and one with potato."], { rows: ["x"] }],
+  ["ButNo", "Utt", { head: NP, x: NP }, "{head}, but no {x}", ["I'd like lentils, but no onion."]],
   ["Times", "Utt", { n: { type: "Num" } }, "{n} times", ["once; twice; three times (stir it three times)"]],
-  ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like daar first, and then maani."], { rows: ["a", "b"] }],
-  ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like daar first, and then maani."], { rows: ["a", "rest"] }],
+  ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "b"] }],
+  ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "rest"] }],
   ["OnShort", "PP", { x: NP }, "on {x} (the short way)", ["on the big mango (the everyday way)"]],
+  ["Or", "NP", { a: NP, b: NP }, "{a} or {b}", ["this mango or this chapati; the big one or the small one"]],
+  ["PutAt", "Utt", { thing: Opt(NP), anchor: NP, rel: { type: "Post" } }, "Put {thing} {rel} {anchor}.", ["Put the cup in front of the plate."]],
+  ["Call", "Utt", { x: NP }, "{x}! (calling out)", ["Hey, boy! Nana! Nani!"]],
   ["Place", "NP", { anchor: NP, rel: { type: "Post" } }, "{rel} {anchor}", ["on the table; behind the door; in the cupboard"]],
   ["Lift", "Utt", { x: Opt(NP) }, "Lift out the {x}.", ["Take the samosas out now."], { rows: ["x"] }],
   ["Leave", "Utt", { x: Opt(NP) }, "Leave the {x}.", ["Leave the chips in."], { rows: ["x"] }],
@@ -81,14 +85,46 @@ const CONCRETE = {
   LocatedAt: { slots: [S("thing", { case: "dir" }), S("anchor", { case: "obl" }), L("link.place"), S("rel"), L("cop.be", "p3.{thing.number|sg}")], mark: ".", status: "confirmed", src: `${GN} §15 (cup table je mathe ai), §18 (the noun doesn't change before je, -o words take -e: darwaje je puthiya), §36 C14` },
   LocatedAtShort: { slots: [S("thing", { case: "dir" }), S("anchor", { case: "obl" }), S("rel"), L("cop.be", "p3.{thing.number|sg}")], mark: ".", status: "confirmed", src: `${GN} §15 (the everyday, shorter version drops je: cup table mathe ai)` },
   Command: {
-    slots: [S("obj"), S("verb", { cell: "imp.informal" })],
+    variants: {
+      informal: [S("obj"), S("verb", { cell: "imp.informal" })],
+      polite: [S("obj"), S("verb", { cell: "imp.polite" })],
+    },
+    defaultVariant: "informal",
     mark: "!",
     status: "confirmed",
-    src: `${GN} §38 (the bare commands to a child: atto gund, samosa waar, samosa tar, chulo bar, paani bhari chad), §12`,
-    exceptions: [{ only: { register: ["polite"] }, status: "unknown", ask: ["C142-C151", "N1-N23"], english: "{verb} {obj}", what: "a command to an elder (Mum has said only the bare command to a child)", src: `${GN} §38 (polite and 'for me' forms are still unknown), For Mum next time 11` }],
+    src: `${GN} §38 (the bare commands to a child: atto gund, samosa waar, samosa tar, chulo bar, paani bhari chad), §12; to an elder §21 (hida acho), §27 B48 (Jaldi karo!)`,
+    notes: ["A command to an elder asks for the verb's imp.polite form: only ach / acho and kar / karo are known so far (the others are a form gap asking C142-C151)."],
   },
-  DoIt: { slots: [S("obj"), S("verb", { cell: "conj" }), L("v.leave", "imp.informal")], mark: "!", status: "confirmed", src: `${GN} §38 I4, I5, I11, I13, I16 (wiji chad, kadhi chad, kapi chad, bego kari chad, paani bhari chad: chad = leave it, finish it)`, exceptions: [{ only: { register: ["polite"] }, status: "unknown", ask: ["C142-C151"], english: "{verb} it {obj}", what: "a 'put it in' command to an elder", src: `${GN} §38 (polite forms unknown)` }] },
-  Dont: { slots: [S("obj"), L("neg.not"), S("verb", { cell: "imp.informal" })], mark: "!", status: "confirmed", src: `${GN} §12 (na next to the verb, after it: khun na wij, khun na wapur, ad na, hal na, bol na, watu na kar)`, notes: ["na before the verb is urgent or changes the meaning: see DontNow (§12)."] },
+  DoIt: {
+    variants: {
+      informal: [S("obj"), S("verb", { cell: "conj" }), L("v.leave", "imp.informal")],
+      polite: [S("obj"), S("verb", { cell: "conj" }), L("v.leave", "imp.polite")],
+    },
+    defaultVariant: "informal",
+    mark: "!",
+    status: "confirmed",
+    src: `${GN} §38 I4, I5, I11, I13, I16 (wiji chad, kadhi chad, kapi chad, bego kari chad, paani bhari chad: chad = leave it, finish it)`,
+  },
+  Dont: {
+    variants: {
+      informal: [S("obj"), L("neg.not"), S("verb", { cell: "imp.informal" })],
+      polite: [S("obj"), L("neg.not"), S("verb", { cell: "imp.polite" })],
+    },
+    defaultVariant: "informal",
+    mark: "!",
+    status: "confirmed",
+    src: `${GN} §12 (khun na wij, khun na wapur, watu na kar: with a thing, na sits between the thing and the verb)`,
+  },
+  DontVerb: {
+    variants: {
+      informal: [S("verb", { cell: "imp.informal" }), L("neg.not")],
+      polite: [S("verb", { cell: "imp.polite" }), L("neg.not")],
+    },
+    defaultVariant: "informal",
+    mark: "!",
+    status: "confirmed",
+    src: `${GN} §12 (ad na, hal na, bol na, bhaj na: with no thing, na follows the verb; na first is the sharp warning, see DontNow)`,
+  },
   DontNow: { slots: [L("neg.not"), S("verb", { cell: "imp.informal" })], mark: "!", status: "confirmed", src: `${GN} §12 (na ad is the sharp warning: it's hot, you'll burn!)` },
   Point: { feats: { gender: "{x.gender}", number: "{x.number|sg}", person: "p3", lex: "{x.lex}" }, slots: [S("which"), S("x", { case: "{case}" })], status: "confirmed", src: `${GN} §43 C36 (hi wadho chokro, hu wadho chokro: you either point or the describing word goes with a verb), §13` },
   PossPron: { feats: { gender: "{thing.gender}", number: "{thing.number|sg}", person: "p3", lex: "{thing.lex}" }, slots: [S("owner", { cell: "poss.{thing.gender}.{thing.number}.{case}" }), S("thing", { case: "{case}" })], status: "confirmed", src: `${GN} §54 C72-C78 (munjo cup, munji kursi, munja amba), §55 C79 (munje cup me, toje ambe mathe)`, notes: ["The ending follows the thing owned, not the owner (§54). The plural -yu on the thing is dropped when something else shows 'more than one' (hi mare munji kursi ain)."] },
@@ -116,6 +152,9 @@ const CONCRETE = {
     exceptions: [{ only: { register: ["polite"] }, status: "unknown", ask: ["L34", "L9"], english: "In my {container} I want {thing}", what: "the polite 'in my chai I want two sugars' (Mum said khapeti with ba khun)", src: `${GN} §6` }],
   },
   OnShort: { slots: [S("x", { case: "obl" }), L("post.on")], status: "confirmed", src: `${GN} §55 C79 (toje ambe mathe, toji kursi mathe: the short postposition sits straight after the noun; the fuller one adds je, §15)` },
+  Or: { feats: { gender: "{a.gender}", number: "{a.number|sg}", person: "p3", lex: "{a.lex}" }, slots: [S("a"), L("conj.or"), S("b")], status: "confirmed", src: `${GN} §9 (hi ambo khan, ke hi maani khan: ke = or), §46 (wadho ke nindho?)` },
+  PutAt: { slots: [S("thing"), S("anchor", { case: "obl" }), L("link.place"), S("rel"), L("v.put", "imp.informal")], mark: "!", status: "confirmed", src: `${GN} §16 (saani je agiya rakh: put it in front of the plate; rakh = put, place)` },
+  Call: { slots: [L("pron.p3", "dir"), S("x", { case: "dir" })], mark: "!", status: "draft", src: `${GN} §36 C21 (E chokro! E chokri!: calling out puts e before the word ⚠)`, notes: ["Names take no e: Nana! Nani! Ali! (§36 C21, §30 K14)."], exceptions: [{ only: { "x.lex": ["pn.nana", "pn.nani", "pn.ali"] }, slots: [S("x", { case: "dir" })], status: "confirmed", src: `${GN} §36 C21, §30 K14 (Nana! Nani! Ali!)` }] },
   Place: { slots: [S("anchor", { case: "obl" }), L("link.place"), S("rel")], status: "confirmed", src: `${GN} §15 (cup kabaat je andar, table je niche, darwaje je puthiya: the place belongs to the thing), §18, §49 (Nani je ambe je mathe; Nana je cup je andar)` },
   Lift: { slots: [S("x"), L("adv.now-in-steps"), L("v.take-out", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B15 (inke hane kadh: lift it out now); data/cook.json lines.lift names the thing where Mum said inke (it): Claude's extension, to check`, notes: ["hever kadh is the urgent one (§29 R6, §37.6); hane kadh is the gentle one in a sequence of steps (Cook keeps hane kadh)."] },
   Leave: { slots: [S("x"), L("v.leave", "conj"), L("v.give", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B16 (inke chadi de: leave it be); data/cook.json lines.leave names the thing where Mum said inke (it): Claude's extension, to check` },
@@ -128,6 +167,10 @@ const CONCRETE = {
 };
 
 export function apply(S_) {
+  // the 4a seed's examples for Mum are English only (the neutrality test: no Kutchi in abstract.json)
+  S_.functions.Without.elicit = ["tea without milk", "lentils without onion"];
+  S_.functions.MixedIn.elicit = ["tea with milk"];
+  S_.functions.WithoutFood.elicit = ["I'd like lentils, but no onion."];
   for (const [name, cat, args, en, elicit, extra] of ABSTRACT) {
     S_.functions[name] = { cat, args, en, elicit, ...(extra || {}) };
   }

@@ -4,6 +4,7 @@
  *
  *   validate(data, { audio }) -> { ok, errors: [{where, msg}], warnings: [{where, msg}] }
  *
+ * (A noun made of other words gets its number from its head word, so it needs no plural of its own.)
  * Errors: an entry with no source; a word with no Kutchi that is not flagged to-record; a to-record word that
  * carries a Kutchi form (a guess: G1); unknown part of speech, status, paradigm or feature value; a reserved
  * (hyp) feature value in use; a form key naming a value no feature has; a confirmed or draft cell with nothing
@@ -82,7 +83,7 @@ export function validate(data, { audio = null } = {}) {
         if (p.stem && p.stem.drop && !(e.lemma || "").endsWith(p.stem.drop)) err(where, `lemma "${e.lemma}" doesn't end in "${p.stem.drop}" (paradigm ${e.paradigm})`);
         if (!e.lemma) err(where, "a word with a paradigm needs its lemma");
       }
-    } else if ((e.pos === "N" || e.pos === "PN") && e.status !== "to-record" && !(e.forms && Object.keys(e.forms).some((k) => k.startsWith("pl") || k === "*"))) {
+    } else if ((e.pos === "N" || e.pos === "PN") && e.status !== "to-record" && !(e.parts && e.parts.length) && !(e.forms && Object.keys(e.forms).some((k) => k.startsWith("pl") || k === "*"))) {
       warn(where, "a noun with no paradigm and no plural form: its plural can't be said (G18)");
     }
     for (const key of Object.keys(e.forms || {})) {

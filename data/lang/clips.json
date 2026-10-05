@@ -141,11 +141,6 @@
    "cell": "*"
   },
   {
-   "clip": "na",
-   "lex": "n.not",
-   "cell": "*"
-  },
-  {
    "clip": "muke-na-khape",
    "meaning": "Say(phrase.i-dont-want-it-polite)"
   },
@@ -192,11 +187,6 @@
   {
    "clip": "adh",
    "lex": "a.adh",
-   "cell": "*"
-  },
-  {
-   "clip": "adh",
-   "lex": "n.half",
    "cell": "*"
   },
   {
@@ -263,11 +253,6 @@
    "clip": "nindho",
    "lex": "a.small",
    "cell": "he.sg.dir"
-  },
-  {
-   "clip": "nindho",
-   "lex": "n.small",
-   "cell": "sg.dir"
   },
   {
    "clip": "nindhi",
@@ -321,8 +306,15 @@
   },
   {
    "clip": "ne-poi",
-   "lex": "n.and-then-2",
-   "cell": "*"
+   "meaning": "Say(phrase.and-then)"
+  },
+  {
+   "clip": "ne-poi",
+   "meaning": "Exclaim(phrase.and-then)"
+  },
+  {
+   "clip": "ne-poi",
+   "meaning": "Ask(phrase.and-then)"
   },
   {
    "clip": "mervan",
@@ -528,7 +520,7 @@
   },
   {
    "clip": "keema",
-   "lex": "n.mince-keema",
+   "lex": "n.mince-regional",
    "cell": "*"
   },
   {
@@ -548,7 +540,7 @@
   },
   {
    "clip": "sambusa",
-   "lex": "n.samosa-sambusa",
+   "lex": "n.samosa-nani",
    "cell": "*"
   },
   {
@@ -737,8 +729,15 @@
   },
   {
    "clip": "ne-poi-r3",
-   "lex": "n.and-then-2",
-   "cell": "*"
+   "meaning": "Say(phrase.and-then)"
+  },
+  {
+   "clip": "ne-poi-r3",
+   "meaning": "Exclaim(phrase.and-then)"
+  },
+  {
+   "clip": "ne-poi-r3",
+   "meaning": "Ask(phrase.and-then)"
   },
   {
    "clip": "hever-kadh",
@@ -1194,7 +1193,7 @@
   },
   {
    "clip": "sambusa-r3",
-   "lex": "n.samosa-sambusa",
+   "lex": "n.samosa-nani",
    "cell": "*"
   },
   {
@@ -1351,16 +1350,6 @@
    "clip": "nindha",
    "lex": "a.small",
    "cell": "he.pl.dir"
-  },
-  {
-   "clip": "nindha",
-   "lex": "n.small",
-   "cell": "pl.dir"
-  },
-  {
-   "clip": "nindha",
-   "lex": "n.small",
-   "cell": "pl.obl"
   },
   {
    "clip": "nana-jo-ai",
@@ -1685,6 +1674,11 @@
   {
    "clip": "barabar",
    "lex": "a.proper",
+   "cell": "*"
+  },
+  {
+   "clip": "barabar",
+   "lex": "phrase.just-right",
    "cell": "*"
   },
   {
@@ -2282,8 +2276,16 @@
    "meaning": "Item(n.dupatta,[a.big])"
   },
   {
+   "clip": "wadhi-pacheriyu",
+   "meaning": "Item(n.dupatta,[a.big],number=pl)"
+  },
+  {
    "clip": "laal-pacheri",
    "meaning": "Item(n.dupatta,[a.red])"
+  },
+  {
+   "clip": "laal-pacheriyu",
+   "meaning": "Item(n.dupatta,[a.red],number=pl)"
   },
   {
    "clip": "nana-ji-pacheri",

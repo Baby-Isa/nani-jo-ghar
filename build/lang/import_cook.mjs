@@ -36,7 +36,12 @@ export function importWords(S, words, { file, okWords, rank = RANK.game, posOf =
   let n = 0;
   for (const [cid, w] of Object.entries(words)) {
     if (cid === "_about" || !w || typeof w !== "object" || w.from) continue; // `from`: a copy of a Cook word, already loaded
-    const pos = (posOf && posOf(cid, w)) || POS[cid] || (cid.startsWith("num-") ? "Num" : "N");
+    let pos = (posOf && posOf(cid, w)) || POS[cid] || (cid.startsWith("num-") ? "Num" : null);
+    if (!pos) {
+      // no part of speech given for this id: the same word already loaded under another id (the heal files spell one word under several ids) keeps its part of speech
+      const hit = w.kutchi ? (S.byLemma.get(norm(w.kutchi)) || [])[0] : null;
+      pos = (hit && S.entries.get(hit) && S.entries.get(hit).pos) || "N";
+    }
     const sameAs = sameAsMap[cid];
     // a copy of a word Cook already loaded (same id, same Kutchi): nothing to add but where else it is used
     const have = S.find(cid);

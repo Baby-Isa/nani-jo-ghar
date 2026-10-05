@@ -567,6 +567,12 @@
     "num-02",
     "n2"
    ],
+   "open": [
+    {
+     "q": "Whisper wrote 'two' as bha in the first notes (muke bha kursi khapanti, §1); Zafar's spelling is ba, voiced ber. Same word, three spellings (ba, bha, ber).",
+     "src": "grammar-notes §1, §3, §35"
+    }
+   ],
    "history": [
     {
      "date": "2026-10-05",
@@ -578,8 +584,7 @@
      "change": "status: two = ba (voiced ber) is settled; data/cook.json still flags it draft",
      "src": "rule G5 (settled words); grammar-notes §35 (two is ba, confirming §3)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "num.3",
@@ -737,7 +742,14 @@
    "lemma": "war",
    "gloss": "a while (thori war = a bit longer)",
    "forms": {
-    "sg.*": "war"
+    "sg.*": "war",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -750,48 +762,11 @@
    }
   },
   {
-   "id": "n.all-better",
-   "pos": "N",
-   "gender": null,
-   "gloss": "All better!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.all-better: no source given"
-   ],
-   "aliases": [
-    "all-better"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "n.all-done",
-   "pos": "N",
-   "gender": null,
-   "gloss": "All done!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.all-done: no source given"
-   ],
-   "aliases": [
-    "all-done"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.all-the",
    "pos": "N",
    "gender": null,
    "gloss": "all the",
+   "glossPl": "all thes",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-all: an English placeholder, to record"
@@ -810,6 +785,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "and then",
+   "glossPl": "and thens",
    "status": "to-record",
    "src": [
     "data/clinic/heal/boing.json words.nepoi: no source given"
@@ -821,79 +797,47 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
-  },
-  {
-   "id": "n.and-then-2",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.i-she",
-   "lemma": "ne poi",
-   "gloss": "and then",
-   "status": "confirmed",
-   "src": [
-    "data/clinic/heal/cut.json words.ne-poi: no source given",
-    "data/clinic/heal/foot.json words.nepoi: no source given",
-    "data/clinic/heal/hair.json words.nepoi: no source given",
-    "data/clinic/heal/hic.json words.nepoi: no source given",
-    "data/clinic/heal/tummy.json words.nepoi: no source given"
-   ],
-   "aliases": [
-    "ne-poi",
-    "nepoi"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.apple",
    "pos": "N",
    "gender": null,
+   "paradigm": "noun.invariant",
+   "lemma": "safarjan",
    "gloss": "apple",
-   "status": "to-record",
+   "glossPl": "apples",
+   "status": "draft",
    "src": [
-    "data/clinic/lang.json words.cl-apple: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+    "data/clinic/lang.json words.cl-apple: English placeholder (to record): a word the clinic's lines use with no Kutchi yet",
+    "data/content.json words.fru-08: handout (class handout / content master; never confirmed by Mum)"
    ],
    "aliases": [
-    "cl-apple"
+    "cl-apple",
+    "fru-08"
    ],
    "ask": {
     "word": [
      "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "n.apple-2",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.invariant",
-   "lemma": "safarjan",
-   "gloss": "apple",
-   "status": "draft",
-   "src": [
-    "data/content.json words.fru-08: handout (class handout / content master; never confirmed by Mum)"
-   ],
-   "aliases": [
-    "fru-08"
-   ],
-   "ask": {
+    ],
     "gender": [
      "new"
     ]
-   }
+   },
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "data/content.json words.fru-08: handout (class handout / content master; never confirmed by Mum)"
+    }
+   ]
   },
   {
    "id": "n.arm",
    "pos": "N",
    "gender": null,
    "gloss": "arm",
+   "glossPl": "arms",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-arm: placeholder",
@@ -907,8 +851,7 @@
     "word": [
      "G44"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.asafoetida",
@@ -917,6 +860,7 @@
    "paradigm": "noun.invariant",
    "lemma": "hing",
    "gloss": "asafoetida",
+   "glossPl": "asafoetidas",
    "status": "draft",
    "src": [
     "data/content.json words.spi-14: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -937,6 +881,7 @@
    "paradigm": "noun.invariant",
    "lemma": "ringraa",
    "gloss": "aubergine",
+   "glossPl": "aubergines",
    "status": "draft",
    "src": [
     "data/content.json words.veg-09: freelang (class handout / content master; never confirmed by Mum)"
@@ -957,6 +902,7 @@
    "paradigm": "noun.o-he",
    "lemma": "kelo",
    "gloss": "banana",
+   "glossPl": "bananas",
    "status": "draft",
    "src": [
     "data/content.json words.fru-01: handout (class handout / content master; never confirmed by Mum)"
@@ -975,6 +921,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "bandage",
+   "glossPl": "bandages",
    "status": "to-record",
    "src": [
     "data/clinic.json words.care-bandage: placeholder",
@@ -992,14 +939,14 @@
     "word": [
      "G74"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.bangles",
    "pos": "N",
    "gender": null,
    "gloss": "bangles",
+   "glossPl": "bangles",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-bangle: an English placeholder, to record"
@@ -1018,6 +965,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "basket",
+   "glossPl": "baskets",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-basket: an English placeholder, to record"
@@ -1038,6 +986,7 @@
    "paradigm": "noun.invariant",
    "lemma": "tamalpatr",
    "gloss": "bay leaf",
+   "glossPl": "bay leafs",
    "status": "draft",
    "src": [
     "data/content.json words.spi-12: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -1056,6 +1005,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "beads",
+   "glossPl": "beads",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-beads: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
@@ -1067,32 +1017,26 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
-   "id": "n.big",
+   "id": "n.bhajiya",
    "pos": "N",
    "gender": null,
-   "paradigm": "noun.o-he",
-   "lemma": "wadho",
-   "gloss": "big",
+   "lemma": "bhajiya",
+   "gloss": "bhajiya (a fried snack)",
+   "forms": {
+    "*": "bhajiya"
+   },
    "status": "draft",
    "src": [
-    "data/clinic/heal/cut.json words.wadho: no source given",
-    "data/clinic/heal/eye.json words.big: no source given",
-    "data/clinic/heal/foot.json words.big: a copy of this word"
-   ],
-   "aliases": [
-    "wadho",
-    "big"
+    "grammar-notes §38 I14 (samosa tar, bhajiya tar: ⚠)"
    ],
    "ask": {
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.big-ma",
@@ -1118,6 +1062,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "big toe",
+   "glossPl": "big toes",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-big-toe: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
@@ -1129,8 +1074,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.billy-goat",
@@ -1163,6 +1107,7 @@
    "paradigm": "noun.i-she",
    "lemma": "chakli",
    "gloss": "bird",
+   "glossPl": "birds",
    "forms": {
     "pl.dir": {
      "t": "chakliyu",
@@ -1185,6 +1130,7 @@
    "paradigm": "noun.i-she",
    "lemma": "mari",
    "gloss": "black pepper",
+   "glossPl": "black peppers",
    "status": "draft",
    "src": [
     "data/content.json words.spi-11: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -1203,6 +1149,7 @@
    "pos": "N",
    "gender": "she",
    "gloss": "black tea",
+   "glossPl": "black teas",
    "parts": [
     {
      "lex": "a.black",
@@ -1233,27 +1180,30 @@
    "pos": "N",
    "gender": null,
    "gloss": "blanket",
+   "glossPl": "blankets",
    "status": "to-record",
    "src": [
     "data/clinic.json words.care-blanket: placeholder",
-    "data/clinic.json items.blanket: the pharmacy tray's placeholder (English, to record)"
+    "data/clinic.json items.blanket: the pharmacy tray's placeholder (English, to record)",
+    "data/clinic/lang.json words.fever-blanket: English placeholder (to record): the fever room: the small warming step (over the shoulders, CLN-56)"
    ],
    "aliases": [
     "care-blanket",
-    "clinic.item.blanket"
+    "clinic.item.blanket",
+    "fever-blanket"
    ],
    "ask": {
     "word": [
      "G78"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.blue",
    "pos": "N",
    "gender": null,
    "gloss": "blue",
+   "glossPl": "blues",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-col-blue: an English placeholder, to record"
@@ -1272,6 +1222,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "blue bottle",
+   "glossPl": "blue bottles",
    "status": "to-record",
    "src": [
     "data/clinic.json words.med-blue: placeholder"
@@ -1283,8 +1234,7 @@
     "word": [
      "G117"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.board",
@@ -1307,6 +1257,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "board",
+   "glossPl": "boards",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-board: an English placeholder, to record"
@@ -1321,29 +1272,11 @@
    }
   },
   {
-   "id": "n.boing",
-   "pos": "N",
-   "gender": null,
-   "gloss": "BOING!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.boing: no source given"
-   ],
-   "aliases": [
-    "boing"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.bottle",
    "pos": "N",
    "gender": null,
    "gloss": "bottle",
+   "glossPl": "bottles",
    "status": "to-record",
    "src": [
     "data/clinic.json items.bottle: the pharmacy tray's placeholder (English, to record)"
@@ -1364,6 +1297,7 @@
    "paradigm": "noun.i-she",
    "lemma": "bakuli",
    "gloss": "bowl",
+   "glossPl": "bowls",
    "forms": {
     "pl.dir": {
      "t": "bakuliyu",
@@ -1392,6 +1326,7 @@
    "paradigm": "noun.i-she",
    "lemma": "piali",
    "gloss": "bowl",
+   "glossPl": "bowls",
    "forms": {
     "pl.dir": {
      "t": "pialiyu",
@@ -1412,6 +1347,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "box",
+   "glossPl": "boxes",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-box: an English placeholder, to record"
@@ -1449,6 +1385,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "bubble",
+   "glossPl": "bubbles",
    "status": "to-record",
    "src": [
     "data/clinic/heal/tummy.json words.bubble: no source given"
@@ -1460,14 +1397,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.bubbles",
    "pos": "N",
    "gender": null,
    "gloss": "bubbles",
+   "glossPl": "bubbles",
    "status": "to-record",
    "src": [
     "data/clinic/heal/tummy.json words.bubbles: no source given"
@@ -1479,14 +1416,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.buttons",
    "pos": "N",
    "gender": null,
    "gloss": "buttons",
+   "glossPl": "buttons",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-button: an English placeholder, to record"
@@ -1507,6 +1444,7 @@
    "paradigm": "noun.i-she",
    "lemma": "kobi",
    "gloss": "cabbage",
+   "glossPl": "cabbages",
    "status": "draft",
    "src": [
     "lexicon.md §6.2 (C22-C49 7:37)",
@@ -1526,6 +1464,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "cap",
+   "glossPl": "caps",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-topi: an English placeholder, to record",
@@ -1548,6 +1487,7 @@
    "paradigm": "noun.i-she",
    "lemma": "gadi",
    "gloss": "car",
+   "glossPl": "cars",
    "forms": {
     "pl.dir": {
      "t": "gadiyu",
@@ -1570,6 +1510,7 @@
    "paradigm": "noun.i-she",
    "lemma": "elchi",
    "gloss": "cardamom",
+   "glossPl": "cardamoms",
    "status": "draft",
    "src": [
     "data/cook.json words.spi-10: content master",
@@ -1582,14 +1523,14 @@
     "gender": [
      "L44"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.cardigan",
    "pos": "N",
    "gender": null,
    "gloss": "cardigan",
+   "glossPl": "cardigans",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-cardigan: an English placeholder, to record"
@@ -1627,6 +1568,7 @@
    "paradigm": "noun.invariant",
    "lemma": "gajar",
    "gloss": "carrot",
+   "glossPl": "carrots",
    "status": "draft",
    "src": [
     "data/content.json words.veg-04: freelang (class handout / content master; never confirmed by Mum)"
@@ -1647,6 +1589,7 @@
    "paradigm": "noun.o-he",
    "lemma": "mogo",
    "gloss": "cassava",
+   "glossPl": "cassavas",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 5:11)"
@@ -1662,6 +1605,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "cast",
+   "glossPl": "casts",
    "status": "to-record",
    "src": [
     "data/clinic.json items.cast: the pharmacy tray's placeholder (English, to record)",
@@ -1684,6 +1628,7 @@
    "paradigm": "noun.invariant",
    "lemma": "phulaver",
    "gloss": "cauliflower",
+   "glossPl": "cauliflowers",
    "status": "draft",
    "src": [
     "data/content.json words.veg-05: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -1698,12 +1643,32 @@
    }
   },
   {
+   "id": "n.ceiling-fan",
+   "pos": "N",
+   "gender": null,
+   "gloss": "ceiling fan",
+   "glossPl": "ceiling fans",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-ceiling-fan: English placeholder (to record): the fever room: the medium cooling step"
+   ],
+   "aliases": [
+    "fever-ceiling-fan"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.chaat",
    "pos": "N",
    "gender": null,
    "paradigm": "noun.invariant",
    "lemma": "chaat",
    "gloss": "chaat",
+   "glossPl": "chaats",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-chaat: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B36): chaat is the mixture in the bowl"
@@ -1722,8 +1687,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-chaat: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B36): chaat is the mixture in the bowl"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.chair",
@@ -1732,6 +1696,7 @@
    "paradigm": "noun.i-she",
    "lemma": "kursi",
    "gloss": "chair",
+   "glossPl": "chairs",
    "forms": {
     "pl.dir": {
      "t": "kursiyu",
@@ -1795,6 +1760,7 @@
    "paradigm": "noun.invariant",
    "lemma": "cheree",
    "gloss": "cherry",
+   "glossPl": "cherries",
    "status": "draft",
    "src": [
     "data/content.json words.fru-14: handout (class handout / content master; never confirmed by Mum)"
@@ -1813,6 +1779,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "chest",
+   "glossPl": "chests",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-chest: placeholder",
@@ -1826,8 +1793,7 @@
     "word": [
      "G60"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.chicken",
@@ -1836,9 +1802,19 @@
    "paradigm": "noun.i-she",
    "lemma": "murgi",
    "gloss": "chicken",
+   "glossPl": "chickens",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 4:57)"
+   ],
+   "open": [
+    {
+     "q": "The Swahili word for chicken (Whisper heard kukro; Swahili kuku?) and which one Nani says in the game.",
+     "ask": [
+      "I23"
+     ],
+     "src": "grammar-notes §38 I23, For Mum next time 2"
+    }
    ]
   },
   {
@@ -1848,6 +1824,7 @@
    "paradigm": "noun.invariant",
    "lemma": "chana",
    "gloss": "chickpeas",
+   "glossPl": "chickpeas",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-chana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B9)"
@@ -1866,8 +1843,7 @@
      "change": "was channa (Zafar 24 Sept draft)",
      "src": "data/cook.json words.ph-chana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B9)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.chilli",
@@ -1876,6 +1852,7 @@
    "paradigm": "noun.i-she",
    "lemma": "mirchi",
    "gloss": "chilli",
+   "glossPl": "chillis",
    "forms": {
     "*": "mirchi"
    },
@@ -1922,6 +1899,7 @@
    "gender": "he",
    "number": "pl",
    "gloss": "chips",
+   "glossPl": "chips",
    "parts": [
     {
      "lex": "a.fried",
@@ -1950,8 +1928,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-chips: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B28): tarela bataata = fried potatoes (the family also just says chips). A plural (bataato -> bataata)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.chips-english",
@@ -1982,6 +1959,7 @@
    "gender": "she",
    "lemma": "chutney",
    "gloss": "chutney",
+   "glossPl": "chutneys",
    "forms": {
     "*": "chutney"
    },
@@ -2009,6 +1987,7 @@
    "paradigm": "noun.invariant",
    "lemma": "taj",
    "gloss": "cinnamon",
+   "glossPl": "cinnamons",
    "status": "draft",
    "src": [
     "data/content.json words.spi-09: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -2027,6 +2006,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "cloth",
+   "glossPl": "cloths",
    "status": "to-record",
    "src": [
     "data/clinic.json items.cloth: the pharmacy tray's placeholder (English, to record)",
@@ -2053,6 +2033,7 @@
    "paradigm": "noun.invariant",
    "lemma": "laving",
    "gloss": "cloves",
+   "glossPl": "cloves",
    "status": "draft",
    "src": [
     "data/content.json words.spi-08: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -2072,6 +2053,7 @@
    "gender": null,
    "lemma": "nair",
    "gloss": "coconut",
+   "glossPl": "coconuts",
    "forms": {
     "*": "nair"
    },
@@ -2098,6 +2080,7 @@
    "paradigm": "noun.invariant",
    "lemma": "naariyel",
    "gloss": "coconut",
+   "glossPl": "coconuts",
    "status": "draft",
    "src": [
     "data/content.json words.fru-09: handout (class handout / content master; never confirmed by Mum)"
@@ -2122,6 +2105,7 @@
    "pos": "N",
    "gender": "she",
    "gloss": "coconut chutney",
+   "glossPl": "coconut chutneys",
    "parts": [
     {
      "lex": "n.coconut",
@@ -2133,7 +2117,7 @@
     },
     {
      "lex": "n.chutney",
-     "cell": "sg.dir"
+     "cell": "{cell}"
     }
    ],
    "status": "confirmed",
@@ -2152,6 +2136,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "collar",
+   "glossPl": "collars",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-collar: an English placeholder, to record"
@@ -2170,6 +2155,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "comb",
+   "glossPl": "combs",
    "status": "to-record",
    "src": [
     "data/clinic.json items.comb: the pharmacy tray's placeholder (English, to record)"
@@ -2184,32 +2170,21 @@
    }
   },
   {
-   "id": "n.comb-it",
-   "pos": "N",
-   "gender": null,
-   "gloss": "Comb it",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/hair.json words.comb: no source given"
-   ],
-   "aliases": [
-    "comb"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.cooking",
    "pos": "N",
    "gender": null,
    "lemma": "randhan",
    "gloss": "cooking",
+   "glossPl": "cookings",
    "forms": {
-    "sg.*": "randhan"
+    "sg.*": "randhan",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "draft",
    "src": [
@@ -2229,6 +2204,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "cool cloth",
+   "glossPl": "cool cloths",
    "status": "to-record",
    "src": [
     "data/clinic.json words.care-cloth: placeholder"
@@ -2240,8 +2216,7 @@
     "word": [
      "G75"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.coriander",
@@ -2250,6 +2225,7 @@
    "paradigm": "noun.invariant",
    "lemma": "dhania",
    "gloss": "coriander",
+   "glossPl": "corianders",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-dhana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B30): dhania = fresh coriander (mint is fudino)"
@@ -2268,8 +2244,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-dhana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B30): dhania = fresh coriander (mint is fudino)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.coriander-seeds",
@@ -2278,6 +2253,7 @@
    "paradigm": "noun.invariant",
    "lemma": "dhana",
    "gloss": "coriander seeds",
+   "glossPl": "coriander seeds",
    "status": "draft",
    "src": [
     "data/content.json words.spi-03: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -2298,6 +2274,7 @@
    "paradigm": "noun.i-she",
    "lemma": "makai",
    "gloss": "corn on the cob",
+   "glossPl": "corn on the cobs",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 5:20)"
@@ -2313,6 +2290,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "cotton",
+   "glossPl": "cottons",
    "status": "to-record",
    "src": [
     "data/clinic.json items.cotton: the pharmacy tray's placeholder (English, to record)"
@@ -2331,6 +2309,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "cotton bud",
+   "glossPl": "cotton buds",
    "status": "to-record",
    "src": [
     "data/clinic.json items.cotton-bud: the pharmacy tray's placeholder (English, to record)",
@@ -2347,48 +2326,11 @@
    }
   },
   {
-   "id": "n.count-to",
-   "pos": "N",
-   "gender": null,
-   "gloss": "Count to",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/hic.json words.count: no source given"
-   ],
-   "aliases": [
-    "count"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "n.count-with-me",
-   "pos": "N",
-   "gender": null,
-   "gloss": "Count with me!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.count: no source given"
-   ],
-   "aliases": [
-    "count"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.counter",
    "pos": "N",
    "gender": null,
    "gloss": "counter",
+   "glossPl": "counters",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-counter: an English placeholder, to record"
@@ -2407,6 +2349,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "crate",
+   "glossPl": "crates",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-crate: an English placeholder, to record"
@@ -2425,6 +2368,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "crutches",
+   "glossPl": "crutches",
    "status": "to-record",
    "src": [
     "data/clinic.json items.crutches: the pharmacy tray's placeholder (English, to record)"
@@ -2445,6 +2389,7 @@
    "paradigm": "noun.i-she",
    "lemma": "kaakri",
    "gloss": "cucumber",
+   "glossPl": "cucumbers",
    "status": "draft",
    "src": [
     "data/content.json words.veg-11: freelang (class handout / content master; never confirmed by Mum)"
@@ -2465,6 +2410,7 @@
    "paradigm": "noun.invariant",
    "lemma": "jeeru",
    "gloss": "cumin seeds",
+   "glossPl": "cumin seeds",
    "status": "draft",
    "src": [
     "data/cook.json words.spi-02: content master",
@@ -2477,8 +2423,7 @@
     "gender": [
      "L43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.cup",
@@ -2506,8 +2451,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.cupboard",
@@ -2546,6 +2490,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "curtain",
+   "glossPl": "curtains",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-curtain: an English placeholder, to record"
@@ -2564,6 +2509,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "cushion",
+   "glossPl": "cushions",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-cushion: an English placeholder, to record"
@@ -2584,6 +2530,7 @@
    "paradigm": "noun.invariant",
    "lemma": "daar",
    "gloss": "daal",
+   "glossPl": "daals",
    "status": "draft",
    "src": [
     "data/cook.json words.cook-daal: zafar-24sep",
@@ -2604,14 +2551,14 @@
      "change": "was daal; Mum 25 Sept (A3 recording, docs/language/grammar-notes.md): daar ends in r",
      "src": "data/cook.json words.cook-daal: zafar-24sep"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.dabs",
    "pos": "N",
    "gender": null,
    "gloss": "dabs",
+   "glossPl": "dabs",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-dabs: English placeholder (to record): a word the clinic's lines use with no Kutchi yet",
@@ -2625,8 +2572,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.dear",
@@ -2664,6 +2610,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "dishes",
+   "glossPl": "dishes",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-c-tableware: an English placeholder, to record"
@@ -2684,6 +2631,7 @@
    "paradigm": "noun.o-he",
    "lemma": "kutro",
    "gloss": "dog",
+   "glossPl": "dogs",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (C22-C49 17:39)"
@@ -2737,6 +2685,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "drill",
+   "glossPl": "drills",
    "status": "to-record",
    "src": [
     "data/clinic.json items.drill: the pharmacy tray's placeholder (English, to record)"
@@ -2755,6 +2704,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "drop",
+   "glossPl": "drops",
    "status": "to-record",
    "src": [
     "data/clinic/heal/eye.json words.drop: no source given"
@@ -2766,14 +2716,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.dropper",
    "pos": "N",
    "gender": null,
    "gloss": "dropper",
+   "glossPl": "droppers",
    "status": "to-record",
    "src": [
     "data/clinic.json words.care-drops: placeholder"
@@ -2785,16 +2735,20 @@
     "word": [
      "G116"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.drops",
    "pos": "N",
    "gender": null,
-   "gloss": "drops",
-   "status": "to-record",
+   "lemma": "chando",
+   "gloss": "drops (not sprinkle)",
+   "forms": {
+    "*": "chando"
+   },
+   "status": "confirmed",
    "src": [
+    "grammar-notes §38 I17 (chando is drops, not sprinkle)",
     "data/clinic.json items.drops: the pharmacy tray's placeholder (English, to record)",
     "data/clinic/lang.json words.cl-drops: English placeholder (to record): a word the clinic's lines use with no Kutchi yet",
     "data/clinic/heal/ear.json words.w-drops: no source given",
@@ -2807,7 +2761,7 @@
     "drops"
    ],
    "ask": {
-    "word": [
+    "gender": [
      "new"
     ]
    }
@@ -2820,6 +2774,16 @@
    "lemma": "pacheri",
    "gloss": "dupatta (the family says pacheri)",
    "glossPl": "dupattas",
+   "forms": {
+    "pl.dir": {
+     "t": "pacheriyu",
+     "src": "grammar-notes §40 C27 (wadhi pacheriyu: Mum said it unprompted; spelling confirmed by Zafar 5 Oct, decision 31)"
+    },
+    "pl.obl": {
+     "t": "pacheriyu",
+     "src": "grammar-notes §40 C27, §54"
+    }
+   },
    "status": "confirmed",
    "src": [
     "grammar-notes §35 C4 (hakri pacheri, ba pacheri; Mum: it can be hakro too ⚠)",
@@ -2840,6 +2804,7 @@
    "paradigm": "noun.invariant",
    "lemma": "kan",
    "gloss": "ear",
+   "glossPl": "ears",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (C79 4:30–4:53)",
@@ -2867,6 +2832,7 @@
    "paradigm": "noun.o-he",
    "lemma": "indo",
    "gloss": "egg",
+   "glossPl": "eggs",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 4:40)"
@@ -2893,6 +2859,7 @@
    "paradigm": "noun.i-she",
    "lemma": "mayai",
    "gloss": "egg",
+   "glossPl": "eggs",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 4:40)"
@@ -2917,6 +2884,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "elbow",
+   "glossPl": "elbows",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-elbow: placeholder",
@@ -2930,8 +2898,7 @@
     "word": [
      "G56"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.eye",
@@ -2969,6 +2936,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "eye drops",
+   "glossPl": "eye drops",
    "status": "to-record",
    "src": [
     "data/clinic.json items.care-drops: the pharmacy tray's placeholder (English, to record)"
@@ -2987,6 +2955,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "eye patch",
+   "glossPl": "eye patches",
    "status": "to-record",
    "src": [
     "data/clinic.json items.patch: the pharmacy tray's placeholder (English, to record)",
@@ -3007,6 +2976,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "fan",
+   "glossPl": "fans",
    "status": "to-record",
    "src": [
     "data/clinic.json items.fan: the pharmacy tray's placeholder (English, to record)"
@@ -3027,6 +2997,7 @@
    "paradigm": "noun.i-she",
    "lemma": "variyali",
    "gloss": "fennel seeds",
+   "glossPl": "fennel seeds",
    "status": "draft",
    "src": [
     "data/content.json words.spi-13: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -3047,6 +3018,7 @@
    "paradigm": "noun.i-she",
    "lemma": "methi",
    "gloss": "fenugreek seeds",
+   "glossPl": "fenugreek seeds",
    "status": "draft",
    "src": [
     "data/content.json words.spi-06: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -3067,6 +3039,7 @@
    "paradigm": "noun.invariant",
    "lemma": "anjir",
    "gloss": "fig",
+   "glossPl": "figs",
    "status": "draft",
    "src": [
     "data/content.json words.fru-10: handout (class handout / content master; never confirmed by Mum)"
@@ -3085,6 +3058,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "filling",
+   "glossPl": "fillings",
    "status": "to-record",
    "src": [
     "data/clinic.json items.paste: the pharmacy tray's placeholder (English, to record)"
@@ -3105,6 +3079,7 @@
    "paradigm": "noun.invariant",
    "lemma": "film",
    "gloss": "film",
+   "glossPl": "films",
    "status": "confirmed",
    "src": [
     "grammar-notes Zafar's corrections to A5-A7 (film khalas thai vai: film is a she-word)"
@@ -3115,6 +3090,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "finger",
+   "glossPl": "fingers",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-finger: placeholder",
@@ -3128,8 +3104,7 @@
     "word": [
      "G58"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.fire",
@@ -3138,6 +3113,7 @@
    "paradigm": "noun.invariant",
    "lemma": "aag",
    "gloss": "fire",
+   "glossPl": "fires",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 6:39)"
@@ -3153,6 +3129,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "flask",
+   "glossPl": "flasks",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-flask: an English placeholder, to record"
@@ -3173,6 +3150,7 @@
    "paradigm": "noun.o-he",
    "lemma": "atto",
    "gloss": "flour",
+   "glossPl": "flours",
    "status": "draft",
    "src": [
     "data/cook.json words.cook-atto: zafar-24sep"
@@ -3184,14 +3162,14 @@
     "gender": [
      "L35"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.flower",
    "pos": "N",
    "gender": null,
    "gloss": "flower",
+   "glossPl": "flowers",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-flower: an English placeholder, to record"
@@ -3212,6 +3190,7 @@
    "paradigm": "noun.o-he",
    "lemma": "khenjo",
    "gloss": "food",
+   "glossPl": "foods",
    "status": "draft",
    "src": [
     "grammar-notes §33 S5 (kenjo nai: ⚠)",
@@ -3276,6 +3255,7 @@
    "paradigm": "noun.invariant",
    "lemma": "pag",
    "gloss": "foot",
+   "glossPl": "foots",
    "status": "draft",
    "src": [
     "lexicon.md §6.2 (C79 4:53)",
@@ -3300,6 +3280,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "fruit",
+   "glossPl": "fruits",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-c-fruit: an English placeholder, to record"
@@ -3320,6 +3301,7 @@
    "paradigm": "noun.o-he",
    "lemma": "garam masalo",
    "gloss": "garam masala",
+   "glossPl": "garam masalas",
    "status": "draft",
    "src": [
     "data/content.json words.spi-07: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -3340,6 +3322,7 @@
    "paradigm": "noun.invariant",
    "lemma": "lasan",
    "gloss": "garlic",
+   "glossPl": "garlics",
    "status": "draft",
    "src": [
     "data/cook.json words.veg-13: content master",
@@ -3352,8 +3335,7 @@
     "gender": [
      "L42"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.ghee",
@@ -3362,6 +3344,7 @@
    "paradigm": "noun.invariant",
    "lemma": "ghee",
    "gloss": "ghee",
+   "glossPl": "ghees",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-ghee: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B35): ghee, the same word"
@@ -3380,8 +3363,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-ghee: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B35): ghee, the same word"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.ginger",
@@ -3390,6 +3372,7 @@
    "paradigm": "noun.invariant",
    "lemma": "aadu",
    "gloss": "ginger",
+   "glossPl": "gingers",
    "status": "draft",
    "src": [
     "data/cook.json words.veg-14: content master",
@@ -3402,8 +3385,7 @@
     "gender": [
      "L42"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.girl",
@@ -3456,6 +3438,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "glasses",
+   "glossPl": "glasses",
    "status": "to-record",
    "src": [
     "data/who.json words.ph-glasses: an English placeholder, to record (placeholder)"
@@ -3488,6 +3471,7 @@
    "paradigm": "noun.invariant",
    "lemma": "drakhu",
    "gloss": "grapes",
+   "glossPl": "grapes",
    "status": "draft",
    "src": [
     "data/content.json words.fru-11: handout (class handout / content master; never confirmed by Mum)"
@@ -3520,6 +3504,7 @@
    "paradigm": "noun.i-she",
    "lemma": "phali",
    "gloss": "green beans",
+   "glossPl": "green beans",
    "status": "draft",
    "src": [
     "data/content.json words.veg-16: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -3538,6 +3523,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "green bottle",
+   "glossPl": "green bottles",
    "status": "to-record",
    "src": [
     "data/clinic.json words.med-green: placeholder"
@@ -3549,8 +3535,7 @@
     "word": [
      "G117"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.green-peas",
@@ -3589,8 +3574,7 @@
     "word": [
      "B34"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.guests",
@@ -3599,6 +3583,7 @@
    "paradigm": "noun.i-she",
    "lemma": "mageni",
    "gloss": "guests",
+   "glossPl": "guests",
    "status": "draft",
    "src": [
     "grammar-notes §33 S4 (Mageni achenta: ⚠)"
@@ -3613,32 +3598,11 @@
    ]
   },
   {
-   "id": "n.half",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.invariant",
-   "lemma": "adh",
-   "gloss": "half",
-   "status": "draft",
-   "src": [
-    "data/clinic/heal/hic.json words.adh: no source given",
-    "data/clinic/heal/tummy.json words.adh: a copy of this word"
-   ],
-   "aliases": [
-    "adh"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.hammer",
    "pos": "N",
    "gender": null,
    "gloss": "hammer",
+   "glossPl": "hammers",
    "status": "to-record",
    "src": [
     "data/clinic.json items.hammer: the pharmacy tray's placeholder (English, to record)"
@@ -3659,6 +3623,7 @@
    "paradigm": "noun.invariant",
    "lemma": "hath",
    "gloss": "hand",
+   "glossPl": "hands",
    "status": "draft",
    "src": [
     "grammar-notes §17 (dabo hath: the left hand)",
@@ -3678,10 +3643,30 @@
    ]
   },
   {
+   "id": "n.hand-fan",
+   "pos": "N",
+   "gender": null,
+   "gloss": "hand fan",
+   "glossPl": "hand fans",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-hand-fan: English placeholder (to record): the fever room: the small cooling step"
+   ],
+   "aliases": [
+    "fever-hand-fan"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.head",
    "pos": "N",
    "gender": null,
    "gloss": "head",
+   "glossPl": "heads",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-head: placeholder",
@@ -3695,14 +3680,14 @@
     "word": [
      "G42"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.headscarf",
    "pos": "N",
    "gender": null,
    "gloss": "headscarf",
+   "glossPl": "headscarfs",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-scarf: an English placeholder, to record"
@@ -3717,13 +3702,40 @@
    }
   },
   {
+   "id": "n.heater",
+   "pos": "N",
+   "gender": null,
+   "gloss": "heater",
+   "glossPl": "heaters",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-heater: English placeholder (to record): the fever room: the big warming step"
+   ],
+   "aliases": [
+    "fever-heater"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.help",
    "pos": "N",
    "gender": null,
    "lemma": "madad",
    "gloss": "help",
+   "glossPl": "helps",
    "forms": {
-    "sg.*": "madad"
+    "sg.*": "madad",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "draft",
    "src": [
@@ -3740,6 +3752,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "hem",
+   "glossPl": "hems",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-hem: an English placeholder, to record"
@@ -3754,29 +3767,11 @@
    }
   },
   {
-   "id": "n.hold-your-breath",
-   "pos": "N",
-   "gender": null,
-   "gloss": "Hold your breath!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/hic.json words.hold: no source given"
-   ],
-   "aliases": [
-    "hold"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.honey",
    "pos": "N",
    "gender": null,
    "gloss": "honey",
+   "glossPl": "honeys",
    "status": "to-record",
    "src": [
     "data/clinic.json words.med-honey: placeholder",
@@ -3792,27 +3787,28 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.hot-water-bottle",
    "pos": "N",
    "gender": null,
    "gloss": "hot-water bottle",
+   "glossPl": "hot-water bottles",
    "status": "to-record",
    "src": [
-    "data/clinic.json words.care-bottle: placeholder"
+    "data/clinic.json words.care-bottle: placeholder",
+    "data/clinic/lang.json words.fever-bottle: English placeholder (to record): the fever room: the medium warming step (the patient hugs it)"
    ],
    "aliases": [
-    "care-bottle"
+    "care-bottle",
+    "fever-bottle"
    ],
    "ask": {
     "word": [
      "G77"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.house",
@@ -3821,6 +3817,7 @@
    "paradigm": "noun.invariant",
    "lemma": "ghar",
    "gloss": "house",
+   "glossPl": "houses",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (C79 24:10)"
@@ -3831,25 +3828,28 @@
    "pos": "N",
    "gender": null,
    "gloss": "ice pack",
+   "glossPl": "ice packs",
    "status": "to-record",
    "src": [
-    "data/clinic.json words.care-ice: placeholder"
+    "data/clinic.json words.care-ice: placeholder",
+    "data/clinic/lang.json words.fever-ice-pack: English placeholder (to record): the fever room: the spare cooler, off behind a data flag (art plan question 7)"
    ],
    "aliases": [
-    "care-ice"
+    "care-ice",
+    "fever-ice-pack"
    ],
    "ask": {
     "word": [
      "G76"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.jar",
    "pos": "N",
    "gender": null,
    "gloss": "jar",
+   "glossPl": "jars",
    "status": "to-record",
    "src": [
     "data/clinic.json items.bug-jar: the pharmacy tray's placeholder (English, to record)"
@@ -3868,6 +3868,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "jug",
+   "glossPl": "jugs",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-jug: an English placeholder, to record"
@@ -3886,6 +3887,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "jug of cold water",
+   "glossPl": "jug of cold waters",
    "status": "to-record",
    "src": [
     "data/clinic.json items.jug-cold: the pharmacy tray's placeholder (English, to record)"
@@ -3904,6 +3906,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "jug of hot water",
+   "glossPl": "jug of hot waters",
    "status": "to-record",
    "src": [
     "data/clinic.json items.jug-hot: the pharmacy tray's placeholder (English, to record)"
@@ -3922,6 +3925,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "jugs",
+   "glossPl": "jugs",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-jugs: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
@@ -3933,14 +3937,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.katori",
    "pos": "N",
    "gender": null,
    "gloss": "katori",
+   "glossPl": "katoris",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-katori: an English placeholder, to record"
@@ -3960,6 +3964,7 @@
    "gender": null,
    "lemma": "kebab",
    "gloss": "kebab",
+   "glossPl": "kebabs",
    "forms": {
     "*": "kebab"
    },
@@ -3980,6 +3985,7 @@
    "paradigm": "noun.i-she",
    "lemma": "chawi",
    "gloss": "key",
+   "glossPl": "keys",
    "status": "confirmed",
    "src": [
     "grammar-notes §15 (chawi darwaje je puthiya ai)"
@@ -3998,7 +4004,7 @@
    "lemma": "rasoro",
    "gloss": "kitchen",
    "glossPl": "kitchens",
-   "status": "draft",
+   "status": "confirmed",
    "src": [
     "grammar-notes §51 (rasoro takes -e: rasore me)",
     "§33 S9",
@@ -4007,10 +4013,11 @@
    "notes": [
     "one / more than one: before me: rasore"
    ],
-   "open": [
+   "history": [
     {
-     "q": "Sources disagree on the status: \"draft\" (4a seed (grammar-notes, cited per entry)) vs \"confirmed\" (lexicon.md §6). Using \"draft\" for now.",
-     "src": "step 4b importers (clash list)"
+     "date": "2026-10-05",
+     "change": "status: rasoro is Mum's own word (Aau rasore me aiya); only its -e form before a postposition is a draft, and that is the paradigm cell's status",
+     "src": "grammar-notes §20, §51 C61"
     }
    ]
   },
@@ -4047,6 +4054,7 @@
    "paradigm": "noun.i-she",
    "lemma": "kivi",
    "gloss": "kiwi",
+   "glossPl": "kiwis",
    "status": "draft",
    "src": [
     "data/content.json words.fru-07: handout (class handout / content master; never confirmed by Mum)"
@@ -4078,6 +4086,9 @@
    "aliases": [
     "body-knee",
     "clinic.pipeline.part.knee"
+   ],
+   "notes": [
+    "gutanyu is 'kneeling' (§35 C11), not the plural."
    ]
   },
   {
@@ -4087,7 +4098,14 @@
    "lemma": "khabar",
    "gloss": "knowledge, news (Toke khabar ai: do you know)",
    "forms": {
-    "sg.*": "khabar"
+    "sg.*": "khabar",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "draft",
    "src": [
@@ -4105,6 +4123,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "kurta",
+   "glossPl": "kurtas",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-kurta: an English placeholder, to record"
@@ -4123,6 +4142,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "kurti",
+   "glossPl": "kurtis",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-kurti: an English placeholder, to record"
@@ -4141,6 +4161,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "leaf",
+   "glossPl": "leafs",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-leaf: an English placeholder, to record"
@@ -4159,6 +4180,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "leave the",
+   "glossPl": "leave thes",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-leave: an English placeholder, to record"
@@ -4177,6 +4199,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "leg",
+   "glossPl": "legs",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-leg: placeholder",
@@ -4191,8 +4214,7 @@
     "word": [
      "G45"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.lemon",
@@ -4201,6 +4223,7 @@
    "paradigm": "noun.invariant",
    "lemma": "limu",
    "gloss": "lemon",
+   "glossPl": "lemons",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (C22-C49 7:27)",
@@ -4228,6 +4251,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "little toe",
+   "glossPl": "little toes",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-little-toe: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
@@ -4239,14 +4263,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.lollipop",
    "pos": "N",
    "gender": null,
    "gloss": "lollipop",
+   "glossPl": "lollipops",
    "status": "to-record",
    "src": [
     "data/clinic.json items.lollipop: the pharmacy tray's placeholder (English, to record)"
@@ -4267,6 +4291,7 @@
    "paradigm": "noun.i-she",
    "lemma": "litchi",
    "gloss": "lychee",
+   "glossPl": "lychees",
    "status": "draft",
    "src": [
     "data/content.json words.fru-15: handout (class handout / content master; never confirmed by Mum)"
@@ -4285,6 +4310,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "man",
+   "glossPl": "mans",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.man: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -4326,6 +4352,7 @@
    "paradigm": "noun.o-he",
    "lemma": "aamo",
    "gloss": "mango",
+   "glossPl": "mangoes",
    "status": "draft",
    "src": [
     "data/content.json words.fru-05: handout (class handout / content master; never confirmed by Mum)"
@@ -4352,6 +4379,7 @@
    "paradigm": "noun.invariant",
    "lemma": "gos",
    "gloss": "meat",
+   "glossPl": "meats",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-meat: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B10)"
@@ -4370,8 +4398,26 @@
      "change": "was ghos (Zafar 24 Sept draft)",
      "src": "data/cook.json words.ph-meat: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B10)"
     }
+   ]
+  },
+  {
+   "id": "n.medicine",
+   "pos": "N",
+   "gender": null,
+   "gloss": "medicine",
+   "glossPl": "medicines",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.boing-medicine: English placeholder (to record): the boing's drop machine: the coloured liquid medicine in its tubes (never sweets, I2)"
    ],
-   "notes": []
+   "aliases": [
+    "boing-medicine"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "n.middle",
@@ -4380,6 +4426,7 @@
    "paradigm": "noun.invariant",
    "lemma": "wich",
    "gloss": "middle",
+   "glossPl": "middles",
    "status": "confirmed",
    "src": [
     "grammar-notes §15 (chamchi ba cup je wich me ai), §17 (wich me: in the middle)"
@@ -4391,12 +4438,32 @@
    }
   },
   {
+   "id": "n.middle-toe",
+   "pos": "N",
+   "gender": null,
+   "gloss": "middle toe",
+   "glossPl": "middle toes",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.foot-middle-toe: English placeholder (to record): the foot (heal/games/foot.js): level 3 names the toes for the order"
+   ],
+   "aliases": [
+    "foot-middle-toe"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.milk",
    "pos": "N",
    "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "dudh",
    "gloss": "milk",
+   "glossPl": "milks",
    "status": "confirmed",
    "src": [
     "grammar-notes §6, §10",
@@ -4419,6 +4486,7 @@
    "gender": null,
    "lemma": "bajr",
    "gloss": "millet",
+   "glossPl": "millets",
    "forms": {
     "*": "bajr"
    },
@@ -4440,6 +4508,7 @@
    "pos": "N",
    "gender": "she",
    "gloss": "millet chapati",
+   "glossPl": "millet chapatis",
    "parts": [
     {
      "lex": "n.millet",
@@ -4451,7 +4520,7 @@
     },
     {
      "lex": "n.chapati",
-     "cell": "sg.dir"
+     "cell": "{cell}"
     }
    ],
    "status": "confirmed",
@@ -4467,8 +4536,7 @@
      "change": "was bajr jo maani (Zafar 24 Sept draft)",
      "src": "data/cook.json words.cook-bajrmaani: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B11): ji, not jo, because maani is a she-word"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.mince",
@@ -4477,6 +4545,7 @@
    "paradigm": "noun.o-he",
    "lemma": "chundo",
    "gloss": "mince",
+   "glossPl": "minces",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-keema: Zafar 26 Sept: chundo (Kutchi; it also means to mince, in general), correcting Mum's recording's chindo (docs/language/grammar-notes.md §26, B33). Keema is also right (alt)"
@@ -4501,7 +4570,7 @@
    ]
   },
   {
-   "id": "n.mince-keema",
+   "id": "n.mince-regional",
    "pos": "N",
    "gender": null,
    "lemma": "keema",
@@ -4529,6 +4598,7 @@
    "gender": null,
    "lemma": "fudino",
    "gloss": "mint",
+   "glossPl": "mints",
    "forms": {
     "*": "fudino"
    },
@@ -4547,6 +4617,7 @@
    "pos": "N",
    "gender": "she",
    "gloss": "mint chutney",
+   "glossPl": "mint chutneys",
    "parts": [
     {
      "lex": "n.mint",
@@ -4558,7 +4629,7 @@
     },
     {
      "lex": "n.chutney",
-     "cell": "sg.dir"
+     "cell": "{cell}"
     }
    ],
    "status": "confirmed",
@@ -4574,8 +4645,7 @@
      "change": "was the English placeholder green chutney",
      "src": "data/cook.json words.ph-lili: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B32): no general word for green chutney; mint chutney is fudino ji chutney, coconut chutney nair ji chutney. The game's is the bright green bowl (topping-lili-bowl-t, colour #5d9b3a), so mint"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.mishkaki",
@@ -4584,6 +4654,7 @@
    "paradigm": "noun.i-she",
    "lemma": "mishkaki",
    "gloss": "mishkaki",
+   "glossPl": "mishkakis",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-mishkaki: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B38; use Mum's recording)"
@@ -4602,8 +4673,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-mishkaki: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B38; use Mum's recording)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.mixed",
@@ -4612,6 +4682,7 @@
    "paradigm": "noun.invariant",
    "lemma": "mixed",
    "gloss": "mixed",
+   "glossPl": "mixeds",
    "status": "confirmed",
    "src": [
     "data/stations/mishkaki-grill.json words.ph-mixed: Mum 26 Sept (Section B, B18; docs/language/grammar-notes.md §25): mixed, the English word"
@@ -4640,6 +4711,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "moon",
+   "glossPl": "moons",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-moon: an English placeholder, to record"
@@ -4658,6 +4730,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "mouth",
+   "glossPl": "mouths",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-mouth: placeholder",
@@ -4671,14 +4744,14 @@
     "word": [
      "G51"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.mud",
    "pos": "N",
    "gender": null,
    "gloss": "mud",
+   "glossPl": "muds",
    "status": "to-record",
    "src": [
     "data/who.json words.ph-mud: an English placeholder, to record (placeholder)"
@@ -4699,6 +4772,7 @@
    "paradigm": "noun.i-she",
    "lemma": "rai",
    "gloss": "mustard seeds",
+   "glossPl": "mustard seeds",
    "status": "draft",
    "src": [
     "data/cook.json words.spi-05: content master",
@@ -4711,14 +4785,14 @@
     "gender": [
      "L43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.my-left-arm",
    "pos": "N",
    "gender": null,
    "gloss": "My left arm",
+   "glossPl": "My left arms",
    "status": "to-record",
    "src": [
     "data/clinic/heal/boing.json words.my-left-arm: no source given"
@@ -4730,14 +4804,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.my-right-arm",
    "pos": "N",
    "gender": null,
    "gloss": "My right arm",
+   "glossPl": "My right arms",
    "status": "to-record",
    "src": [
     "data/clinic/heal/boing.json words.my-right-arm: no source given"
@@ -4749,14 +4823,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.neck",
    "pos": "N",
    "gender": null,
    "gloss": "neck",
+   "glossPl": "necks",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-neck: placeholder",
@@ -4770,14 +4844,14 @@
     "word": [
      "G54"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.needle",
    "pos": "N",
    "gender": null,
    "gloss": "needle",
+   "glossPl": "needles",
    "status": "to-record",
    "src": [
     "data/clinic.json items.needle: the pharmacy tray's placeholder (English, to record)",
@@ -4798,6 +4872,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "nose",
+   "glossPl": "noses",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-nose: placeholder"
@@ -4809,35 +4884,14 @@
     "word": [
      "G50"
     ]
-   },
-   "notes": []
-  },
-  {
-   "id": "n.not",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.invariant",
-   "lemma": "na",
-   "gloss": "not",
-   "status": "draft",
-   "src": [
-    "data/clinic/heal/eye.json words.no: no source given"
-   ],
-   "aliases": [
-    "no"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.nothing",
    "pos": "N",
    "gender": null,
    "gloss": "nothing",
+   "glossPl": "nothings",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-nothing: an English placeholder, to record"
@@ -4875,6 +4929,7 @@
    "paradigm": "noun.invariant",
    "lemma": "bhindaa",
    "gloss": "okra",
+   "glossPl": "okras",
    "status": "draft",
    "src": [
     "data/content.json words.veg-08: freelang (class handout / content master; never confirmed by Mum)"
@@ -4893,6 +4948,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "old",
+   "glossPl": "olds",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.old: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -4911,6 +4967,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "ones",
+   "glossPl": "ones",
    "status": "to-record",
    "src": [
     "data/clinic/heal/hair.json words.ones: no source given"
@@ -4922,8 +4979,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.onion",
@@ -4932,6 +4988,7 @@
    "paradigm": "noun.i-she",
    "lemma": "dungri",
    "gloss": "onion",
+   "glossPl": "onions",
    "status": "confirmed",
    "src": [
     "data/cook.json words.veg-02: content master",
@@ -4956,6 +5013,7 @@
    "paradigm": "noun.invariant",
    "lemma": "santra",
    "gloss": "orange",
+   "glossPl": "oranges",
    "status": "draft",
    "src": [
     "data/content.json words.fru-04: handout (class handout / content master; never confirmed by Mum)",
@@ -4978,6 +5036,7 @@
    "paradigm": "noun.o-he",
    "lemma": "papaiyo",
    "gloss": "papaya",
+   "glossPl": "papayas",
    "status": "draft",
    "src": [
     "data/content.json words.fru-03: handout (class handout / content master; never confirmed by Mum)"
@@ -4998,6 +5057,7 @@
    "paradigm": "noun.invariant",
    "lemma": "peach",
    "gloss": "peach",
+   "glossPl": "peaches",
    "status": "draft",
    "src": [
     "data/content.json words.fru-13: handout (class handout / content master; never confirmed by Mum)"
@@ -5018,6 +5078,7 @@
    "paradigm": "noun.i-she",
    "lemma": "naaspati",
    "gloss": "pear",
+   "glossPl": "pears",
    "status": "draft",
    "src": [
     "data/content.json words.fru-06: handout (class handout / content master; never confirmed by Mum)"
@@ -5038,6 +5099,7 @@
    "paradigm": "noun.invariant",
    "lemma": "watana",
    "gloss": "peas",
+   "glossPl": "peas",
    "forms": {
     "sg.dir": {
      "t": "watano",
@@ -5086,6 +5148,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "pillow",
+   "glossPl": "pillows",
    "status": "to-record",
    "src": [
     "data/clinic.json words.care-pillow: placeholder"
@@ -5097,14 +5160,14 @@
     "word": [
      "G80"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.pin",
    "pos": "N",
    "gender": null,
    "gloss": "pin",
+   "glossPl": "pins",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-pin: an English placeholder, to record"
@@ -5125,6 +5188,7 @@
    "paradigm": "noun.invariant",
    "lemma": "ananas",
    "gloss": "pineapple",
+   "glossPl": "pineapples",
    "status": "draft",
    "src": [
     "data/content.json words.fru-12: handout (class handout / content master; never confirmed by Mum)"
@@ -5143,6 +5207,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "plaster",
+   "glossPl": "plasters",
    "status": "to-record",
    "src": [
     "data/clinic.json words.care-plaster: placeholder",
@@ -5163,8 +5228,7 @@
     "word": [
      "G73"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.plate",
@@ -5194,6 +5258,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "pocket",
+   "glossPl": "pockets",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-pocket: an English placeholder, to record"
@@ -5212,6 +5277,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "pointer",
+   "glossPl": "pointers",
    "status": "to-record",
    "src": [
     "data/clinic.json items.pointer: the pharmacy tray's placeholder (English, to record)",
@@ -5234,6 +5300,7 @@
    "paradigm": "noun.invariant",
    "lemma": "daadam",
    "gloss": "pomegranate",
+   "glossPl": "pomegranates",
    "status": "draft",
    "src": [
     "data/content.json words.fru-16: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -5254,6 +5321,7 @@
    "paradigm": "noun.o-he",
    "lemma": "tapelo",
    "gloss": "pot",
+   "glossPl": "pots",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 5:40)"
@@ -5276,6 +5344,7 @@
    "paradigm": "noun.invariant",
    "lemma": "sufuria",
    "gloss": "pot",
+   "glossPl": "pots",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 5:40)"
@@ -5298,6 +5367,7 @@
    "paradigm": "noun.o-he",
    "lemma": "bataato",
    "gloss": "potato",
+   "glossPl": "potatoes",
    "status": "draft",
    "src": [
     "data/cook.json words.veg-01: content master",
@@ -5329,6 +5399,7 @@
    "paradigm": "noun.invariant",
    "lemma": "kolu",
    "gloss": "pumpkin",
+   "glossPl": "pumpkins",
    "status": "draft",
    "src": [
     "data/content.json words.veg-15: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -5349,6 +5420,7 @@
    "paradigm": "noun.invariant",
    "lemma": "warsaad",
    "gloss": "rain",
+   "glossPl": "rains",
    "status": "confirmed",
    "src": [
     "grammar-notes §19 (warsaad band thai vyo: the rain stopped)"
@@ -5364,6 +5436,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "red bottle",
+   "glossPl": "red bottles",
    "status": "to-record",
    "src": [
     "data/clinic.json words.med-red: placeholder"
@@ -5375,8 +5448,7 @@
     "word": [
      "G117"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.red-chilli-powder",
@@ -5384,6 +5456,7 @@
    "gender": null,
    "lemma": "laal marcha",
    "gloss": "red chilli powder",
+   "glossPl": "red chilli powders",
    "parts": [
     {
      "lex": "a.red",
@@ -5391,7 +5464,7 @@
     },
     {
      "lex": "n.dried-chilli",
-     "cell": "sg.dir"
+     "cell": "{cell}"
     }
    ],
    "status": "draft",
@@ -5406,8 +5479,7 @@
     "gender": [
      "L44"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.rolling-pin",
@@ -5416,6 +5488,7 @@
    "paradigm": "noun.invariant",
    "lemma": "welan",
    "gloss": "rolling pin",
+   "glossPl": "rolling pins",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 6:08)"
@@ -5431,6 +5504,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "rub",
+   "glossPl": "rubs",
    "status": "to-record",
    "src": [
     "data/clinic/heal/hair.json words.rub: no source given"
@@ -5442,14 +5516,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.rubs",
    "pos": "N",
    "gender": null,
    "gloss": "rubs",
+   "glossPl": "rubs",
    "status": "to-record",
    "src": [
     "data/clinic/heal/hair.json words.rubs: no source given"
@@ -5461,14 +5535,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.rug",
    "pos": "N",
    "gender": null,
    "gloss": "rug",
+   "glossPl": "rugs",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-rug: an English placeholder, to record"
@@ -5483,12 +5557,33 @@
    }
   },
   {
+   "id": "n.saffron",
+   "pos": "N",
+   "gender": null,
+   "lemma": "kesar",
+   "gloss": "saffron",
+   "glossPl": "saffrons",
+   "forms": {
+    "*": "kesar"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §6 (kesar waari chai: chai with saffron)"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.salt",
    "pos": "N",
    "gender": null,
    "paradigm": "noun.invariant",
    "lemma": "loon",
    "gloss": "salt",
+   "glossPl": "salts",
    "status": "draft",
    "src": [
     "data/cook.json words.spi-16: content master",
@@ -5505,8 +5600,7 @@
     "gender": [
      "L34"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.samosa",
@@ -5515,6 +5609,7 @@
    "paradigm": "noun.invariant",
    "lemma": "samosa",
    "gloss": "samosa",
+   "glossPl": "samosas",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-samosa: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B37)"
@@ -5539,24 +5634,7 @@
    ]
   },
   {
-   "id": "n.samosa-pastry",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.i-she",
-   "lemma": "chapri",
-   "gloss": "samosa pastry",
-   "status": "confirmed",
-   "src": [
-    "lexicon.md §6.2 (I1-I35 5:05)"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "n.samosa-sambusa",
+   "id": "n.samosa-nani",
    "pos": "N",
    "gender": null,
    "lemma": "sambusa",
@@ -5584,29 +5662,29 @@
    ]
   },
   {
-   "id": "n.say-it-again",
+   "id": "n.samosa-pastry",
    "pos": "N",
    "gender": null,
-   "gloss": "Say it again?",
-   "status": "to-record",
+   "paradigm": "noun.i-she",
+   "lemma": "chapri",
+   "gloss": "samosa pastry",
+   "glossPl": "samosa pastries",
+   "status": "confirmed",
    "src": [
-    "data/clinic/heal/boing.json words.again: no source given"
-   ],
-   "aliases": [
-    "again"
+    "lexicon.md §6.2 (I1-I35 5:05)"
    ],
    "ask": {
-    "word": [
+    "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.scales",
    "pos": "N",
    "gender": null,
    "gloss": "scales",
+   "glossPl": "scales",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-scales: an English placeholder, to record"
@@ -5625,6 +5703,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "scissors",
+   "glossPl": "scissors",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-scissors: an English placeholder, to record"
@@ -5645,6 +5724,7 @@
    "paradigm": "noun.o-he",
    "lemma": "sekelo",
    "gloss": "sekelo",
+   "glossPl": "sekelos",
    "status": "draft",
    "src": [
     "data/cook.json words.ph-sekelo: Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"
@@ -5656,8 +5736,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sesame-seeds",
@@ -5666,6 +5745,7 @@
    "paradigm": "noun.invariant",
    "lemma": "tal",
    "gloss": "sesame seeds",
+   "glossPl": "sesame seeds",
    "status": "draft",
    "src": [
     "data/content.json words.spi-15: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -5686,6 +5766,7 @@
    "paradigm": "noun.invariant",
    "lemma": "sev",
    "gloss": "sev",
+   "glossPl": "sevs",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-sev: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B29): sev, the same word"
@@ -5704,14 +5785,14 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-sev: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B29): sev, the same word"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.shampoo",
    "pos": "N",
    "gender": null,
    "gloss": "shampoo",
+   "glossPl": "shampoos",
    "status": "to-record",
    "src": [
     "data/clinic.json items.shampoo: the pharmacy tray's placeholder (English, to record)",
@@ -5732,6 +5813,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "shawl",
+   "glossPl": "shawls",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-shawl: an English placeholder, to record"
@@ -5809,6 +5891,7 @@
    "paradigm": "noun.i-she",
    "lemma": "shati",
    "gloss": "shirt",
+   "glossPl": "shirts",
    "forms": {
     "pl.dir": {
      "t": "shatiyu",
@@ -5829,6 +5912,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "short",
+   "glossPl": "shorts",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.short: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -5847,6 +5931,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "shoulder",
+   "glossPl": "shoulders",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-shoulder: placeholder",
@@ -5860,8 +5945,7 @@
     "word": [
      "G55"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.side",
@@ -5870,6 +5954,7 @@
    "paradigm": "noun.invariant",
    "lemma": "baju",
    "gloss": "side",
+   "glossPl": "sides",
    "status": "draft",
    "src": [
     "grammar-notes §17 (hi baju / hu baju; jamni baju)"
@@ -5889,6 +5974,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "sip",
+   "glossPl": "sips",
    "status": "to-record",
    "src": [
     "data/clinic/heal/hic.json words.sip: no source given"
@@ -5900,14 +5986,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sips",
    "pos": "N",
    "gender": null,
    "gloss": "sips",
+   "glossPl": "sips",
    "status": "to-record",
    "src": [
     "data/clinic/heal/hic.json words.sips: no source given"
@@ -5919,8 +6005,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.skewer",
@@ -5930,7 +6015,7 @@
    "lemma": "lakri",
    "gloss": "skewer (a stick)",
    "glossPl": "skewers",
-   "status": "draft",
+   "status": "confirmed",
    "src": [
     "grammar-notes §25 B-table (lakri = a stick; a she-word, so hakri lakri mishkaki)",
     "grammar-notes §34 P8 (hakri lakri, char lakri: no change)",
@@ -5946,10 +6031,11 @@
     "count: Mum 28 Sept (Round 3 P8; docs/language/grammar-notes.md §34): hakri lakri, char lakri, no change",
     "use: Said before a skewer's kind in the mishkaki order (the tally's `unit`, and data/stations/mishkaki-grill.json mechanic.skewer.unit): hakri lakri gos, ba lakri boga. Mum said it with mishkaki (hakri lakri mishkaki, ba lakri mishkaki); with gos, boga and mixed it's Claude's extension, to check."
    ],
-   "open": [
+   "history": [
     {
-     "q": "Sources disagree on the status: \"draft\" (data/cook.json) vs \"confirmed\" (hand: grammar-notes prose; lexicon.md §6). Using \"draft\" for now.",
-     "src": "step 4b importers (clash list)"
+     "date": "2026-10-05",
+     "change": "status: lakri is Mum's own word (hakri lakri, char lakri, mishkaki ji lakri); data/cook.json's draft flag is about using it with gos, boga and mixed, which is a draft on the Unit rule, not on the word",
+     "src": "grammar-notes §25, §34 P8, §39 I28"
     }
    ]
   },
@@ -5958,6 +6044,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "sleeve",
+   "glossPl": "sleeves",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-sleeve: an English placeholder, to record"
@@ -5972,34 +6059,11 @@
    }
   },
   {
-   "id": "n.small",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.o-he",
-   "lemma": "nindho",
-   "gloss": "small",
-   "status": "confirmed",
-   "src": [
-    "data/clinic/heal/cut.json words.nindho: no source given",
-    "data/clinic/heal/eye.json words.small: no source given",
-    "data/clinic/heal/foot.json words.small: a copy of this word"
-   ],
-   "aliases": [
-    "nindho",
-    "small"
-   ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.sock",
    "pos": "N",
    "gender": null,
    "gloss": "sock",
+   "glossPl": "socks",
    "status": "to-record",
    "src": [
     "data/clinic/heal/ear.json words.th-sock: no source given"
@@ -6011,14 +6075,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.socks",
    "pos": "N",
    "gender": null,
    "gloss": "socks",
+   "glossPl": "socks",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-socks: an English placeholder, to record"
@@ -6037,12 +6101,32 @@
    "pos": "N",
    "gender": null,
    "gloss": "sofa",
+   "glossPl": "sofas",
    "status": "to-record",
    "src": [
     "data/find.json words.placeholders.ph-sofa: an English placeholder, to record"
    ],
    "aliases": [
     "ph-sofa"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.soothing-ointment",
+   "pos": "N",
+   "gender": null,
+   "gloss": "soothing ointment",
+   "glossPl": "soothing ointments",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.taste-ointment: English placeholder (to record): the sore-spots game: the cotton bud is dipped in it; Zafar called it malam (decision 27): to confirm with Mum"
+   ],
+   "aliases": [
+    "taste-ointment"
    ],
    "ask": {
     "word": [
@@ -6072,6 +6156,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "spices",
+   "glossPl": "spices",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-c-spice: an English placeholder, to record"
@@ -6092,6 +6177,7 @@
    "paradigm": "noun.i-she",
    "lemma": "bhaji",
    "gloss": "spinach",
+   "glossPl": "spinaches",
    "status": "draft",
    "src": [
     "data/content.json words.veg-07: sindhi-cognate (class handout / content master; never confirmed by Mum)"
@@ -6110,6 +6196,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "splinters",
+   "glossPl": "splinters",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-splinters: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
@@ -6121,14 +6208,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.spoon",
    "pos": "N",
    "gender": null,
    "gloss": "spoon",
+   "glossPl": "spoons",
    "status": "to-record",
    "src": [
     "data/clinic.json items.spoon: the pharmacy tray's placeholder (English, to record)",
@@ -6145,10 +6232,30 @@
    }
   },
   {
+   "id": "n.spots",
+   "pos": "N",
+   "gender": null,
+   "gloss": "spots",
+   "glossPl": "spots",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.taste-spots: English placeholder (to record): the sore-spots game: the sore spots on the tongue"
+   ],
+   "aliases": [
+    "taste-spots"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.star",
    "pos": "N",
    "gender": null,
    "gloss": "star",
+   "glossPl": "stars",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-star: an English placeholder, to record"
@@ -6167,6 +6274,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "stethoscope",
+   "glossPl": "stethoscopes",
    "status": "to-record",
    "src": [
     "data/clinic.json words.tool-stethoscope: placeholder",
@@ -6180,14 +6288,14 @@
     "word": [
      "G110"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sticker",
    "pos": "N",
    "gender": null,
    "gloss": "sticker",
+   "glossPl": "stickers",
    "status": "to-record",
    "src": [
     "data/clinic.json items.sticker: the pharmacy tray's placeholder (English, to record)"
@@ -6206,6 +6314,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "stitches",
+   "glossPl": "stitches",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-stitches: English placeholder (to record): a word the clinic's lines use with no Kutchi yet",
@@ -6219,8 +6328,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.stove",
@@ -6229,6 +6337,7 @@
    "paradigm": "noun.o-he",
    "lemma": "chulo",
    "gloss": "stove",
+   "glossPl": "stoves",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 6:43)"
@@ -6241,6 +6350,7 @@
    "paradigm": "noun.invariant",
    "lemma": "khun",
    "gloss": "sugar",
+   "glossPl": "sugars",
    "status": "confirmed",
    "src": [
     "grammar-notes §6 (sugar stays khun)",
@@ -6257,14 +6367,14 @@
     "gender": [
      "L34"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.sun-hat",
    "pos": "N",
    "gender": null,
    "gloss": "sun hat",
+   "glossPl": "sun hats",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-hat: an English placeholder, to record"
@@ -6300,6 +6410,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "syrup",
+   "glossPl": "syrups",
    "status": "to-record",
    "src": [
     "data/clinic.json words.med-syrup: placeholder"
@@ -6311,14 +6422,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.t-shirt",
    "pos": "N",
    "gender": null,
    "gloss": "T-shirt",
+   "glossPl": "T-shirts",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-tshirt: an English placeholder, to record"
@@ -6373,6 +6484,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "tall",
+   "glossPl": "talls",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.tall: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -6392,6 +6504,7 @@
    "gender": null,
    "lemma": "amli",
    "gloss": "tamarind",
+   "glossPl": "tamarinds",
    "forms": {
     "*": "amli"
    },
@@ -6411,6 +6524,7 @@
    "pos": "N",
    "gender": "she",
    "gloss": "tamarind chutney",
+   "glossPl": "tamarind chutneys",
    "parts": [
     {
      "lex": "n.tamarind",
@@ -6422,7 +6536,7 @@
     },
     {
      "lex": "n.chutney",
-     "cell": "sg.dir"
+     "cell": "{cell}"
     }
    ],
    "status": "confirmed",
@@ -6438,8 +6552,7 @@
      "change": "was an English placeholder",
      "src": "data/cook.json words.ph-amli: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B31): amli = tamarind. She-word: it takes ji (the jo/ji rule, §18 and B11)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.tank",
@@ -6455,29 +6568,11 @@
    ]
   },
   {
-   "id": "n.tap-the-knee",
-   "pos": "N",
-   "gender": null,
-   "gloss": "Tap the knee",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/knee.json words.w-tap-knee: no source given"
-   ],
-   "aliases": [
-    "w-tap-knee"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.taps",
    "pos": "N",
    "gender": null,
    "gloss": "taps",
+   "glossPl": "taps",
    "status": "to-record",
    "src": [
     "data/clinic/heal/knee.json words.w-taps: no source given"
@@ -6489,8 +6584,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tasting",
@@ -6499,7 +6593,14 @@
    "lemma": "chakhan",
    "gloss": "tasting (muke chakhan lai de: let me taste it)",
    "forms": {
-    "sg.*": "chakhan"
+    "sg.*": "chakhan",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -6518,6 +6619,7 @@
    "paradigm": "noun.invariant",
    "lemma": "tawa",
    "gloss": "tawa",
+   "glossPl": "tawas",
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 5:56)"
@@ -6538,6 +6640,7 @@
    "paradigm": "noun.i-she",
    "lemma": "chai",
    "gloss": "chai",
+   "glossPl": "chais",
    "status": "confirmed",
    "src": [
     "grammar-notes §1, §5, §6",
@@ -6552,8 +6655,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.teaspoon",
@@ -6585,29 +6687,11 @@
    ]
   },
   {
-   "id": "n.thats-mine",
-   "pos": "N",
-   "gender": null,
-   "gloss": "That's mine!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.mine: no source given"
-   ],
-   "aliases": [
-    "mine"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.the-basket",
    "pos": "N",
    "gender": null,
    "gloss": "the basket",
+   "glossPl": "the baskets",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-basket: an English placeholder, to record"
@@ -6622,29 +6706,11 @@
    }
   },
   {
-   "id": "n.the-blue-one",
-   "pos": "N",
-   "gender": null,
-   "gloss": "The blue one!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.the-blue-one: no source given"
-   ],
-   "aliases": [
-    "the-blue-one"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.the-bottom-row",
    "pos": "N",
    "gender": null,
    "gloss": "the bottom row",
+   "glossPl": "the bottom rows",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-bottomrow: an English placeholder, to record"
@@ -6663,6 +6729,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the bottom shelf",
+   "glossPl": "the bottom shelfs",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-bottomshelf: an English placeholder, to record"
@@ -6681,6 +6748,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the box",
+   "glossPl": "the boxes",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-box: an English placeholder, to record"
@@ -6699,6 +6767,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the bucket",
+   "glossPl": "the buckets",
    "status": "to-record",
    "src": [
     "data/monsoon.json words.ph-bucket: an English placeholder, to record (placeholder)"
@@ -6717,6 +6786,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the charpai",
+   "glossPl": "the charpais",
    "status": "to-record",
    "src": [
     "data/monsoon.json words.ph-charpai: an English placeholder, to record (placeholder)"
@@ -6735,6 +6805,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the corners",
+   "glossPl": "the corners",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-corners: an English placeholder, to record"
@@ -6753,6 +6824,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the doctor’s syringe",
+   "glossPl": "the doctor’s syringes",
    "status": "to-record",
    "src": [
     "data/clinic.json items.syringe: the pharmacy tray's placeholder (English, to record)"
@@ -6767,10 +6839,30 @@
    }
   },
   {
+   "id": "n.the-eye-test",
+   "pos": "N",
+   "gender": null,
+   "gloss": "the eye test",
+   "glossPl": "the eye tests",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.eye-test: English placeholder (to record): the eye game's chart row (a line to record)"
+   ],
+   "aliases": [
+    "eye-test"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.the-gate",
    "pos": "N",
    "gender": null,
    "gloss": "the gate",
+   "glossPl": "the gates",
    "status": "to-record",
    "src": [
     "data/monsoon.json words.ph-gate: an English placeholder, to record (placeholder)"
@@ -6785,29 +6877,11 @@
    }
   },
   {
-   "id": "n.the-green-one",
-   "pos": "N",
-   "gender": null,
-   "gloss": "The green one!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.the-green-one: no source given"
-   ],
-   "aliases": [
-    "the-green-one"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.the-hot-water-bottle",
    "pos": "N",
    "gender": null,
    "gloss": "the hot-water bottle",
+   "glossPl": "the hot-water bottles",
    "status": "to-record",
    "src": [
     "data/clinic/heal/tummy.json words.bottle: no source given"
@@ -6819,14 +6893,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.the-middle-row",
    "pos": "N",
    "gender": null,
    "gloss": "the middle row",
+   "glossPl": "the middle rows",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-middlerow: an English placeholder, to record"
@@ -6841,29 +6915,11 @@
    }
   },
   {
-   "id": "n.the-red-one",
-   "pos": "N",
-   "gender": null,
-   "gloss": "The red one!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/boing.json words.the-red-one: no source given"
-   ],
-   "aliases": [
-    "the-red-one"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.the-top-row",
    "pos": "N",
    "gender": null,
    "gloss": "the top row",
+   "glossPl": "the top rows",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-toprow: an English placeholder, to record"
@@ -6882,6 +6938,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the top shelf",
+   "glossPl": "the top shelfs",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-topshelf: an English placeholder, to record"
@@ -6900,6 +6957,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the tray",
+   "glossPl": "the trays",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-t-tray: an English placeholder, to record"
@@ -6918,6 +6976,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the tree",
+   "glossPl": "the trees",
    "status": "to-record",
    "src": [
     "data/monsoon.json words.ph-tree: an English placeholder, to record (placeholder)"
@@ -6954,6 +7013,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "the water pot",
+   "glossPl": "the water pots",
    "status": "to-record",
    "src": [
     "data/monsoon.json words.ph-waterpot: an English placeholder, to record (placeholder)"
@@ -6972,6 +7032,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "thermometer",
+   "glossPl": "thermometers",
    "status": "to-record",
    "src": [
     "data/clinic.json words.tool-strip: placeholder",
@@ -6987,8 +7048,7 @@
     "word": [
      "G111"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.thing",
@@ -6996,6 +7056,7 @@
    "gender": "she",
    "lemma": "chij",
    "gloss": "thing",
+   "glossPl": "things",
    "forms": {
     "sg.*": "chij",
     "pl.dir": {
@@ -7020,6 +7081,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "thread",
+   "glossPl": "threads",
    "status": "to-record",
    "src": [
     "data/clinic.json items.thread: the pharmacy tray's placeholder (English, to record)",
@@ -7044,6 +7106,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "throat",
+   "glossPl": "throats",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-throat: placeholder"
@@ -7055,8 +7118,7 @@
     "word": [
      "G53"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.time",
@@ -7080,6 +7142,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "times",
+   "glossPl": "times",
    "status": "to-record",
    "src": [
     "data/clinic/heal/boing.json words.times: no source given",
@@ -7092,14 +7155,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tissue",
    "pos": "N",
    "gender": null,
    "gloss": "tissue",
+   "glossPl": "tissues",
    "status": "to-record",
    "src": [
     "data/clinic.json words.care-tissue: placeholder",
@@ -7113,14 +7176,14 @@
     "word": [
      "G79"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.toe",
    "pos": "N",
    "gender": null,
    "gloss": "toe",
+   "glossPl": "toes",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-toe: placeholder",
@@ -7136,8 +7199,7 @@
     "word": [
      "G59"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tomato",
@@ -7146,6 +7208,7 @@
    "paradigm": "noun.o-he",
    "lemma": "tameto",
    "gloss": "tomato",
+   "glossPl": "tomatoes",
    "forms": {
     "pl.dir": {
      "status": "unknown",
@@ -7181,14 +7244,14 @@
      "q": "Sources disagree on the lemma: \"tameto\" (data/cook.json; data/content.json) vs \"tumata\" (grammar-notes §34 P3 (Whisper's hearing)). Using \"tameto\" for now.",
      "src": "step 4b importers (clash list)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "n.tooth",
    "pos": "N",
    "gender": null,
    "gloss": "tooth",
+   "glossPl": "tooths",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-tooth: placeholder",
@@ -7202,14 +7265,14 @@
     "word": [
      "G52"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.toothbrush",
    "pos": "N",
    "gender": null,
    "gloss": "toothbrush",
+   "glossPl": "toothbrushes",
    "status": "to-record",
    "src": [
     "data/clinic.json items.toothbrush: the pharmacy tray's placeholder (English, to record)"
@@ -7228,6 +7291,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "torch",
+   "glossPl": "torches",
    "status": "to-record",
    "src": [
     "data/clinic.json words.tool-torch: placeholder",
@@ -7241,14 +7305,14 @@
     "word": [
      "G110"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tub",
    "pos": "N",
    "gender": null,
    "gloss": "tub",
+   "glossPl": "tubs",
    "status": "to-record",
    "src": [
     "data/clinic.json items.tub: the pharmacy tray's placeholder (English, to record)"
@@ -7267,6 +7331,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "tummy",
+   "glossPl": "tummies",
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-tummy: placeholder",
@@ -7280,8 +7345,7 @@
     "word": [
      "G43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.turmeric",
@@ -7290,6 +7354,7 @@
    "paradigm": "noun.invariant",
    "lemma": "hardar",
    "gloss": "turmeric",
+   "glossPl": "turmerics",
    "status": "draft",
    "src": [
     "data/cook.json words.spi-01: content master",
@@ -7302,14 +7367,14 @@
     "gender": [
      "L43"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.turner",
    "pos": "N",
    "gender": null,
    "gloss": "turner",
+   "glossPl": "turners",
    "status": "to-record",
    "src": [
     "data/stations/maani-line.json words.ph-turner: placeholder, TO RECORD with Mum (29 Sept play-test Q15): the flat wooden turner the family flips maani with; Zafar's word sounds like 'moikyo', unconfirmed. Not shown or spoken yet: the turner is a picture only (js/cook/stations/maani-line.js)"
@@ -7321,14 +7386,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.turns",
    "pos": "N",
    "gender": null,
    "gloss": "turns",
+   "glossPl": "turns",
    "status": "to-record",
    "src": [
     "data/clinic/heal/knee.json words.w-turns: no source given"
@@ -7340,14 +7405,14 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.tweezers",
    "pos": "N",
    "gender": null,
    "gloss": "tweezers",
+   "glossPl": "tweezers",
    "status": "to-record",
    "src": [
     "data/clinic.json items.tweezers: the pharmacy tray's placeholder (English, to record)",
@@ -7368,6 +7433,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "umbrella",
+   "glossPl": "umbrellas",
    "status": "to-record",
    "src": [
     "data/dress.json words.ph-umbrella: an English placeholder, to record"
@@ -7386,6 +7452,7 @@
    "pos": "N",
    "gender": "she",
    "gloss": "unsweetened tea",
+   "glossPl": "unsweetened teas",
    "parts": [
     {
      "lex": "a.unsweetened",
@@ -7408,6 +7475,7 @@
    "paradigm": "noun.invariant",
    "lemma": "boga",
    "gloss": "vegetable",
+   "glossPl": "vegetables",
    "status": "confirmed",
    "src": [
     "data/stations/mishkaki-grill.json words.ph-veg: Mum 26 Sept (Section B, B17; docs/language/grammar-notes.md §25): boga, the family's word (from Swahili)"
@@ -7436,6 +7504,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "vegetables",
+   "glossPl": "vegetables",
    "status": "to-record",
    "src": [
     "data/tidy.json words.placeholders.ph-c-veg: an English placeholder, to record"
@@ -7456,6 +7525,7 @@
    "paradigm": "noun.invariant",
    "lemma": "paani",
    "gloss": "water",
+   "glossPl": "waters",
    "status": "draft",
    "src": [
     "data/cook.json words.cook-paani: zafar-24sep",
@@ -7479,6 +7549,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "wax",
+   "glossPl": "waxes",
    "status": "to-record",
    "src": [
     "data/clinic/lang.json words.cl-wax: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
@@ -7490,33 +7561,33 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
-   "id": "n.wipe-it",
+   "id": "n.window",
    "pos": "N",
    "gender": null,
-   "gloss": "Wipe it",
+   "gloss": "window",
+   "glossPl": "windows",
    "status": "to-record",
    "src": [
-    "data/clinic/heal/boing.json words.wipe: no source given"
+    "data/clinic/lang.json words.fever-window: English placeholder (to record): the fever room (D15f): a thing round the room, the big cooling step"
    ],
    "aliases": [
-    "wipe"
+    "fever-window"
    ],
    "ask": {
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.with-the-baby",
    "pos": "N",
    "gender": null,
    "gloss": "with the baby",
+   "glossPl": "with the babies",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.baby: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -7535,6 +7606,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "with the child",
+   "glossPl": "with the childs",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.child: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -7553,6 +7625,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "woman",
+   "glossPl": "womans",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.woman: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -7573,6 +7646,7 @@
    "paradigm": "noun.invariant",
    "lemma": "kam",
    "gloss": "work",
+   "glossPl": "works",
    "status": "confirmed",
    "src": [
     "grammar-notes §19 (kam kari vya? / kam khalas thai vyo?)"
@@ -7588,6 +7662,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "X-ray",
+   "glossPl": "X-rays",
    "status": "to-record",
    "src": [
     "data/clinic.json items.xray: the pharmacy tray's placeholder (English, to record)"
@@ -7602,29 +7677,11 @@
    }
   },
   {
-   "id": "n.x-ray-the-leg",
-   "pos": "N",
-   "gender": null,
-   "gloss": "X-ray the leg, clonk",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/knee.json words.w-xray: no source given"
-   ],
-   "aliases": [
-    "w-xray"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "n.yes",
    "pos": "N",
    "gender": null,
    "gloss": "yes",
+   "glossPl": "yes",
    "status": "to-record",
    "src": [
     "data/who.json words.ph-yes: an English placeholder, to record (placeholder (A8.1 asked))"
@@ -7645,6 +7702,7 @@
    "paradigm": "noun.i-she",
    "lemma": "dai",
    "gloss": "yoghurt",
+   "glossPl": "yoghurts",
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-dahi: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B8): dai (a yoghurt starter culture is mervan). Was a draft from Zafar, 24 Sept"
@@ -7656,8 +7714,7 @@
     "gender": [
      "L38"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "n.yoghurt-starter-culture",
@@ -7665,6 +7722,7 @@
    "gender": null,
    "lemma": "mervan",
    "gloss": "yoghurt starter culture",
+   "glossPl": "yoghurt starter cultures",
    "forms": {
     "*": "mervan"
    },
@@ -7683,6 +7741,7 @@
    "pos": "N",
    "gender": null,
    "gloss": "young",
+   "glossPl": "youngs",
    "status": "to-record",
    "src": [
     "data/clinic/pipeline.json ladder_words.young: an English placeholder, to record (the doctor's session, Round 4 Section G)"
@@ -7746,7 +7805,14 @@
    "lemma": "Eid",
    "gloss": "Eid (the festival)",
    "forms": {
-    "-": "Eid"
+    "-": "Eid",
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -7828,8 +7894,7 @@
     "gender": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "pn.nani",
@@ -7895,16 +7960,25 @@
    "lemma": "adh",
    "say": "udd",
    "gloss": "half (of an amount: adh cup)",
-   "status": "confirmed",
+   "status": "draft",
    "src": [
     "grammar-notes §24 B4",
-    "data/cook.json words.ph-half: Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet"
+    "data/cook.json words.ph-half: Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet",
+    "data/clinic/heal/hic.json words.adh: no source given",
+    "data/clinic/heal/tummy.json words.adh: a copy of this word"
    ],
    "aliases": [
-    "ph-half"
+    "ph-half",
+    "adh"
    ],
    "notes": [
     "adh for amounts (half a cup of milk); ardo / ardi for a half portion."
+   ],
+   "open": [
+    {
+     "q": "Sources disagree on the status: \"draft\" (data/clinic/heal/hic.json) vs \"confirmed\" (hand: grammar-notes prose; data/cook.json). Using \"draft\" for now.",
+     "src": "step 4b importers (clash list)"
+    }
    ]
   },
   {
@@ -7919,10 +7993,15 @@
     "grammar-notes §40, §41",
     "decision 30 (a)",
     "lexicon.md §6.3 (C22-C49 0:14–5:52)",
-    "data/cook.json words.ph-big: Zafar 25 Sept, phonetic; wadho / wadhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B6)"
+    "data/cook.json words.ph-big: Zafar 25 Sept, phonetic; wadho / wadhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B6)",
+    "data/clinic/heal/cut.json words.wadho: no source given",
+    "data/clinic/heal/eye.json words.big: no source given",
+    "data/clinic/heal/foot.json words.big: a copy of this word"
    ],
    "aliases": [
-    "ph-big"
+    "ph-big",
+    "wadho",
+    "big"
    ],
    "notes": [
     "forms: A describing word agrees with its noun: wadho for he-words, wadhi for she-words like maani (both confirmed). No V at the start of a Kutchi word: was vadho.",
@@ -7979,8 +8058,7 @@
     "word": [
      "E62"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "a.closed",
@@ -8120,29 +8198,12 @@
   {
    "id": "a.green",
    "pos": "A",
-   "gloss": "green",
-   "status": "to-record",
-   "src": [
-    "data/clinic.json words.col-green: placeholder"
-   ],
-   "aliases": [
-    "col-green"
-   ],
-   "ask": {
-    "word": [
-     "E61"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "a.green-2",
-   "pos": "A",
    "paradigm": "adj.o",
    "lemma": "lilo",
    "gloss": "green",
    "status": "confirmed",
    "src": [
+    "data/clinic.json words.col-green: placeholder",
     "data/clinic/lang.json words.col-green: Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct",
     "data/clinic/lang.json words.green: the same word as col-green, for games that name a colour by its plain id (the boing): Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct",
     "data/dress.json words.ph-green: an English placeholder, to record",
@@ -8154,7 +8215,18 @@
     "ph-green",
     "ph-col-green"
    ],
-   "notes": []
+   "ask": {
+    "word": [
+     "E61"
+    ]
+   },
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "data/clinic/lang.json words.col-green: Mum's own word: green = lilo (docs/language/grammar-notes.md line 321, B34: 'Green is lilo'); its she-form is not on record, so none is given; wired for every clinic colour (the scrape's plasters, the sore spots, the boing), heal-A 2 Oct"
+    }
+   ]
   },
   {
    "id": "a.half",
@@ -8217,8 +8289,7 @@
      "q": "koso (Sindhi-looking) vs garam for hot: Masi's tie-break.",
      "src": "grammar-notes §39 I34"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.left",
@@ -8251,8 +8322,7 @@
     {
      "q": "The she-form of dabo (and agreement with the patient's side): not said."
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.lukewarm",
@@ -8269,8 +8339,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "a.nice",
@@ -8400,8 +8469,7 @@
     "red",
     "ph-red",
     "ph-col-red"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.remaining",
@@ -8450,8 +8518,7 @@
      "q": "Sources disagree on the lemma: \"jamni\" (hand: grammar-notes prose) vs \"jamno\" (data/clinic/lang.json). Using \"jamni\" for now.",
      "src": "step 4b importers (clash list)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "a.sad",
@@ -8497,10 +8564,15 @@
    "status": "confirmed",
    "src": [
     "lexicon.md §6.3 (C22-C49 23:06–25:22)",
-    "data/cook.json words.ph-small: Zafar 25 Sept, phonetic; nindho / nindhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B7)"
+    "data/cook.json words.ph-small: Zafar 25 Sept, phonetic; nindho / nindhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B7)",
+    "data/clinic/heal/cut.json words.nindho: no source given",
+    "data/clinic/heal/eye.json words.small: no source given",
+    "data/clinic/heal/foot.json words.small: a copy of this word"
    ],
    "aliases": [
-    "ph-small"
+    "ph-small",
+    "nindho",
+    "small"
    ],
    "notes": [
     "forms: As ph-big: nindho (he-words), nindhi (she-words like maani), both confirmed.",
@@ -8671,8 +8743,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "a.young",
@@ -8780,24 +8851,6 @@
    ]
   },
   {
-   "id": "v.blanket",
-   "pos": "V",
-   "gloss": "blanket",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-blanket: English placeholder (to record): the fever room: the small warming step (over the shoulders, CLN-56)"
-   ],
-   "aliases": [
-    "fever-blanket"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "v.boil",
    "pos": "V",
    "lemma": "ukar",
@@ -8810,6 +8863,13 @@
     "pres.he.sg": {
      "t": "ukreto",
      "src": "grammar-notes §25 B24 (ukreto: it's boiling)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -8835,6 +8895,13 @@
      "t": "khanechi",
      "status": "draft",
      "src": "grammar-notes §33 S1 (khanechi dinde: ⚠)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -8863,6 +8930,13 @@
     "imp.informal": {
      "t": "khanij",
      "src": "grammar-notes §37.8"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -8894,8 +8968,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.buy",
@@ -8906,6 +8979,13 @@
     "imp.informal": {
      "t": "ginech",
      "src": "grammar-notes §43"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -8916,7 +8996,8 @@
    ],
    "notes": [
     "Spelling confirmed by Zafar 5 Oct; the meaning (buy or fetch) is ⚠. gin (laal gin) and ginje (laal na ginje) were heard too.",
-    "wadho khan, wadho wapar, wadho ginech (take / use / buy the big one)"
+    "wadho khan, wadho wapar, wadho ginech (take / use / buy the big one)",
+    "Also heard: gin (laal gin: buy the red one) and ginje (laal na ginje: don't buy the red one), both ⚠ (§44 C43)."
    ],
    "open": [
     {
@@ -8924,24 +9005,6 @@
      "src": "grammar-notes §43, §44 C43"
     }
    ]
-  },
-  {
-   "id": "v.ceiling-fan",
-   "pos": "V",
-   "gloss": "ceiling fan",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-ceiling-fan: English placeholder (to record): the fever room: the medium cooling step"
-   ],
-   "aliases": [
-    "fever-ceiling-fan"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
   },
   {
    "id": "v.clean-it",
@@ -8958,8 +9021,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.close",
@@ -8976,8 +9038,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.come",
@@ -9029,6 +9090,13 @@
     "conj": {
      "t": "kapi",
      "src": "grammar-notes §38 I11 (kapi chad: spelling confirmed by Zafar 5 Oct)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9037,7 +9105,8 @@
     "lexicon.md §6.1 (I1-I35 1:48–1:56)"
    ],
    "notes": [
-    "chop = nindha nindha kap (cut it small)"
+    "chop = nindha nindha kap (cut it small)",
+    "'kat kat kat' is Mum's sound for the action of chopping, not a word (§38 I10)."
    ]
   },
   {
@@ -9067,42 +9136,6 @@
    ]
   },
   {
-   "id": "v.down",
-   "pos": "V",
-   "gloss": "down",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.tooth-down: English placeholder (to record): the tooth game's brush moves"
-   ],
-   "aliases": [
-    "tooth-down"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.drill-the-bad-bits",
-   "pos": "V",
-   "gloss": "drill the bad bits",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.tooth-drill: English placeholder (to record): the tooth game's drill row (a line to record)"
-   ],
-   "aliases": [
-    "tooth-drill"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "v.eat",
    "pos": "V",
    "lemma": "kha",
@@ -9115,6 +9148,13 @@
     "conj": {
      "t": "khai",
      "src": "grammar-notes §20 (khai vyo: ate)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9148,6 +9188,13 @@
     "conj": {
      "t": "bhari",
      "src": "grammar-notes §38 I16"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9161,42 +9208,6 @@
    ]
   },
   {
-   "id": "v.fill-it-to-the-green",
-   "pos": "V",
-   "gloss": "fill it to the green",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.tooth-fill: English placeholder (to record): the tooth game's fill row (a line to record)"
-   ],
-   "aliases": [
-    "tooth-fill"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.fix-it",
-   "pos": "V",
-   "gloss": "fix it",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-fix: English placeholder (to record): the fever room's level-3 line: the doctor names nothing and the child works it out (decision 27, D15f)"
-   ],
-   "aliases": [
-    "fever-fix"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "v.fold",
    "pos": "V",
    "lemma": "waar",
@@ -9205,6 +9216,13 @@
     "imp.informal": {
      "t": "waar",
      "src": "grammar-notes §38 I15"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9225,6 +9243,13 @@
     "imp.informal": {
      "t": "tar",
      "src": "grammar-notes §38 I14"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9265,15 +9290,18 @@
      "t": "dos",
      "status": "draft",
      "src": "grammar-notes §32 S8 (… kar dos: a boy says it; heard)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §9 (Muke chamchi de: give me a teaspoon; pass is the same as give)",
-    "data/clinic/lang.json words.fever-give: English placeholder (to record): the fever room's verbs (the hand fan, the hot-water bottle, the ice pack go to the patient)"
-   ],
-   "aliases": [
-    "fever-give"
+    "grammar-notes §9 (Muke chamchi de: give me a teaspoon; pass is the same as give)"
    ],
    "open": [
     {
@@ -9284,60 +9312,6 @@
      "src": "grammar-notes §37.7"
     }
    ]
-  },
-  {
-   "id": "v.give-it",
-   "pos": "V",
-   "gloss": "give it",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.taste-give: English placeholder (to record): the sore-spots game's drink row: give the drink (a line to record)"
-   ],
-   "aliases": [
-    "taste-give"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.hand-fan",
-   "pos": "V",
-   "gloss": "hand fan",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-hand-fan: English placeholder (to record): the fever room: the small cooling step"
-   ],
-   "aliases": [
-    "fever-hand-fan"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.heater",
-   "pos": "V",
-   "gloss": "heater",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-heater: English placeholder (to record): the fever room: the big warming step"
-   ],
-   "aliases": [
-    "fever-heater"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
   },
   {
    "id": "v.help",
@@ -9353,92 +9327,6 @@
    ]
   },
   {
-   "id": "v.hot-water-bottle",
-   "pos": "V",
-   "gloss": "hot-water bottle",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-bottle: English placeholder (to record): the fever room: the medium warming step (the patient hugs it)"
-   ],
-   "aliases": [
-    "fever-bottle"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.ice-pack",
-   "pos": "V",
-   "gloss": "ice pack",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-ice-pack: English placeholder (to record): the fever room: the spare cooler, off behind a data flag (art plan question 7)"
-   ],
-   "aliases": [
-    "fever-ice-pack"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.im-too-cold",
-   "pos": "V",
-   "gloss": "I'm too cold!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-too-cold: English placeholder (to record): the fever room: the patient (a line to record)"
-   ],
-   "aliases": [
-    "fever-too-cold"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.im-too-hot",
-   "pos": "V",
-   "gloss": "I'm too hot!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-too-hot: English placeholder (to record): the fever room: the patient says how they feel (a line to record)"
-   ],
-   "aliases": [
-    "fever-too-hot"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.just-right",
-   "pos": "V",
-   "lemma": "barabar",
-   "gloss": "Just right!",
-   "status": "confirmed",
-   "src": [
-    "data/clinic/lang.json words.fever-just-right: Mum 5 Oct (Round 4 I21, lexicon §6.3, spelling confirmed decision 31): barabar, just right; never changes. W2 5 Oct: the fever room's green-zone line says her word, clip barabar. The rest of the fever lines stay placeholders (too hot / too cold are whole sentences, not garam / thundo)"
-   ],
-   "aliases": [
-    "fever-just-right"
-   ],
-   "notes": []
-  },
-  {
    "id": "v.knead",
    "pos": "V",
    "lemma": "gund",
@@ -9447,6 +9335,13 @@
     "imp.informal": {
      "t": "gund",
      "src": "grammar-notes §38 I6"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9471,6 +9366,13 @@
     "conj": {
      "t": "chadi",
      "src": "grammar-notes §25 B16 (inke chadi de: leave it be)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9493,6 +9395,13 @@
      "t": "winjanta",
      "status": "draft",
      "src": "grammar-notes §52 (pa bare winjanta: we are going out: ⚠ spelling)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9512,6 +9421,13 @@
     "imp.informal": {
      "t": "bar",
      "src": "grammar-notes §39 I33"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9542,6 +9458,13 @@
     "imp.informal": {
      "t": "nar",
      "src": "grammar-notes §20"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9566,6 +9489,13 @@
     "conj": {
      "t": "banai",
      "src": "grammar-notes §27 B40 (banai dinda)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9584,40 +9514,17 @@
    ]
   },
   {
-   "id": "v.medicine",
+   "id": "v.mix",
    "pos": "V",
-   "gloss": "medicine",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.boing-medicine: English placeholder (to record): the boing's drop machine: the coloured liquid medicine in its tubes (never sweets, I2)"
-   ],
-   "aliases": [
-    "boing-medicine"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
+   "lemma": "mix",
+   "gloss": "mix (the English word: mix kari chad)",
+   "forms": {
+    "-": "mix"
    },
-   "notes": []
-  },
-  {
-   "id": "v.middle-toe",
-   "pos": "V",
-   "gloss": "middle toe",
-   "status": "to-record",
+   "status": "confirmed",
    "src": [
-    "data/clinic/lang.json words.foot-middle-toe: English placeholder (to record): the foot (heal/games/foot.js): level 3 names the toes for the order"
-   ],
-   "aliases": [
-    "foot-middle-toe"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
+    "grammar-notes §38 I13 (people also say mix kari chad with the English word)"
+   ]
   },
   {
    "id": "v.open",
@@ -9634,26 +9541,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.ow",
-   "pos": "V",
-   "gloss": "Ow!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.foot-ow: English placeholder (to record): the foot: the patient when the splinter touches the side of its channel (a line to record)"
-   ],
-   "aliases": [
-    "foot-ow"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.pop",
@@ -9670,8 +9558,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.pour",
@@ -9699,6 +9586,13 @@
     "imp.informal": {
      "t": "dabai",
      "src": "grammar-notes §38 I9"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -9706,24 +9600,6 @@
     "grammar-notes §38 I9 (⚠)",
     "lexicon.md §6.1 (I1-I35 1:46)"
    ]
-  },
-  {
-   "id": "v.press-it",
-   "pos": "V",
-   "gloss": "press it",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.boing-press: English placeholder (to record): the boing (heal/games/boing.js, D15g): the row for pressing the syringe's glowing end, which starts the jab"
-   ],
-   "aliases": [
-    "boing-press"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
   },
   {
    "id": "v.put",
@@ -9739,6 +9615,13 @@
      "t": "rakhi",
      "status": "draft",
      "src": "grammar-notes §38 I18 (⚠)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9772,6 +9655,13 @@
     "conj": {
      "t": "wiji",
      "src": "grammar-notes §38 I4 (wiji chad); spelling confirmed by Zafar 5 Oct"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9799,8 +9689,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.roll",
@@ -9825,6 +9714,13 @@
     "imp.informal": {
      "t": "bhaj",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9855,30 +9751,19 @@
     "imp.informal": {
      "t": "we",
      "src": "grammar-notes §16"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
    "src": [
     "grammar-notes §16 (munje same we: sit opposite me)"
    ]
-  },
-  {
-   "id": "v.soothing-ointment",
-   "pos": "V",
-   "gloss": "soothing ointment",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.taste-ointment: English placeholder (to record): the sore-spots game: the cotton bud is dipped in it; Zafar called it malam (decision 27): to confirm with Mum"
-   ],
-   "aliases": [
-    "taste-ointment"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
   },
   {
    "id": "v.speak",
@@ -9889,6 +9774,13 @@
     "imp.informal": {
      "t": "bol",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -9897,22 +9789,27 @@
    ]
   },
   {
-   "id": "v.spots",
+   "id": "v.spill",
    "pos": "V",
-   "gloss": "spots",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.taste-spots: English placeholder (to record): the sore-spots game: the sore spots on the tongue"
-   ],
-   "aliases": [
-    "taste-spots"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
+   "lemma": "dhor",
+   "gloss": "spill",
+   "forms": {
+    "imp.informal": {
+     "t": "dhor",
+     "src": "grammar-notes §38 I1 (Mum: closer to spill)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
+    }
    },
-   "notes": []
+   "status": "draft",
+   "src": [
+    "grammar-notes §38 I1 (Zafar offered dhor for pour: Mum said dhor is closer to spill)"
+   ]
   },
   {
    "id": "v.sprinkle",
@@ -9929,42 +9826,6 @@
    }
   },
   {
-   "id": "v.still-too-cold",
-   "pos": "V",
-   "gloss": "Still too cold!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-still-cold: English placeholder (to record): the fever room: the patient (a line to record)"
-   ],
-   "aliases": [
-    "fever-still-cold"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.still-too-hot",
-   "pos": "V",
-   "gloss": "Still too hot!",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-still-hot: English placeholder (to record): the fever room: the patient, after a change that wasn't enough (a line to record)"
-   ],
-   "aliases": [
-    "fever-still-hot"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "v.switch-off",
    "pos": "V",
    "gloss": "switch off",
@@ -9979,8 +9840,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.switch-on",
@@ -9997,8 +9857,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "v.take",
@@ -10013,6 +9872,13 @@
     "conj": {
      "t": "khani",
      "src": "grammar-notes §20 (Simba khani vyo: Simba took it)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10026,24 +9892,6 @@
    ]
   },
   {
-   "id": "v.take-back",
-   "pos": "V",
-   "gloss": "take back",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-take-away: English placeholder (to record): the fever room's verbs: the undo, named from level 2"
-   ],
-   "aliases": [
-    "fever-take-away"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "v.take-it-yourself",
    "pos": "V",
    "lemma": "khanigin",
@@ -10052,6 +9900,13 @@
     "imp.informal": {
      "t": "khanigin",
      "src": "grammar-notes §9"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -10067,24 +9922,6 @@
      "src": "grammar-notes §9, §37.8"
     }
    ]
-  },
-  {
-   "id": "v.take-off",
-   "pos": "V",
-   "gloss": "take off",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-take-off: English placeholder (to record): the fever room's verbs (the blanket): the undo, named from level 2"
-   ],
-   "aliases": [
-    "fever-take-off"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
   },
   {
    "id": "v.take-out",
@@ -10103,6 +9940,13 @@
     "conj": {
      "t": "kadhi",
      "src": "grammar-notes §38 I5 (kadhi chad); spelling confirmed by Zafar 5 Oct"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10110,42 +9954,6 @@
     "grammar-notes §25 B15 (hane kadh)",
     "grammar-notes §29 R6 (hever kadh)"
    ]
-  },
-  {
-   "id": "v.take-the-temperature",
-   "pos": "V",
-   "gloss": "take the temperature",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-temp: English placeholder (to record): the fever room's first row (heal/games/fever.js): the thermometer goes in, then the wall thermometer reads live"
-   ],
-   "aliases": [
-    "fever-temp"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.take-the-wax-out",
-   "pos": "V",
-   "gloss": "Take the wax out",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.ear-wax-out: English placeholder (to record): the ear's level-1 wax row (heal/games/ear.js, heal-A 2 Oct; was a bracketed line in the code)"
-   ],
-   "aliases": [
-    "ear-wax-out"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
   },
   {
    "id": "v.taste",
@@ -10161,6 +9969,13 @@
      "t": "chakha",
      "status": "draft",
      "src": "grammar-notes §27 B46 (Khobar, aau chakha: I'll taste it)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10172,24 +9987,6 @@
    "notes": [
     "chakhan (Muke chakhan lai de: let me taste it) is the verb noun, 'for tasting' (kb feature 27)."
    ]
-  },
-  {
-   "id": "v.the-eye-test",
-   "pos": "V",
-   "gloss": "the eye test",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.eye-test: English placeholder (to record): the eye game's chart row (a line to record)"
-   ],
-   "aliases": [
-    "eye-test"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
   },
   {
    "id": "v.to-cook",
@@ -10222,6 +10019,13 @@
     "imp.informal": {
      "t": "ad",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10242,6 +10046,13 @@
     "conj": {
      "t": "firai",
      "src": "grammar-notes §38 I8 (firai chad)"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10255,24 +10066,6 @@
    ]
   },
   {
-   "id": "v.up",
-   "pos": "V",
-   "gloss": "up",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.tooth-up: English placeholder (to record): the tooth game's brush moves (heal/games/tooth.js); was a bare English id"
-   ],
-   "aliases": [
-    "tooth-up"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "v.use",
    "pos": "V",
    "lemma": "wapur",
@@ -10281,6 +10074,13 @@
     "imp.informal": {
      "t": "wapur",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10316,6 +10116,13 @@
     "imp.informal": {
      "t": "khobar",
      "src": "grammar-notes §27 B44"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -10339,6 +10146,13 @@
     "imp.informal": {
      "t": "hal",
      "src": "grammar-notes §12"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "confirmed",
@@ -10404,6 +10218,13 @@
     "imp.informal": {
      "t": "dho",
      "src": "grammar-notes §38 I20"
+    },
+    "imp.polite": {
+     "status": "unknown",
+     "ask": [
+      "C142-C151"
+     ],
+     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
     }
    },
    "status": "draft",
@@ -10452,42 +10273,6 @@
    ]
   },
   {
-   "id": "v.which-one-did-i-say",
-   "pos": "V",
-   "gloss": "Which one did I say?",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.ear-hear-q: English placeholder (to record): the doctor's line before the whispered word in the ear's hearing check (heal/games/ear.js, D15c, heal-A 2 Oct)"
-   ],
-   "aliases": [
-    "ear-hear-q"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
-   "id": "v.window",
-   "pos": "V",
-   "gloss": "window",
-   "status": "to-record",
-   "src": [
-    "data/clinic/lang.json words.fever-window: English placeholder (to record): the fever room (D15f): a thing round the room, the big cooling step"
-   ],
-   "aliases": [
-    "fever-window"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   },
-   "notes": []
-  },
-  {
    "id": "v.wipe",
    "pos": "V",
    "gloss": "wipe",
@@ -10502,8 +10287,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "cop.be",
@@ -10777,7 +10561,7 @@
    "forms": {
     "-": "waari"
    },
-   "status": "draft",
+   "status": "confirmed",
    "src": [
     "grammar-notes §6 (dudh waari chai)",
     "data/cook.json words.cook-waari: Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, kesar waari chai"
@@ -10785,13 +10569,13 @@
    "aliases": [
     "cook-waari"
    ],
-   "open": [
+   "history": [
     {
-     "q": "Sources disagree on the status: \"draft\" (data/cook.json) vs \"confirmed\" (4a seed (grammar-notes, cited per entry)). Using \"draft\" for now.",
-     "src": "step 4b importers (clash list)"
+     "date": "2026-10-05",
+     "change": "status: Mum said waari in the 25 Sept recording (dudh waari chai, khun waari chai, kesar waari chai); data/cook.json's draft flag is about its frame lines, which stay drafts",
+     "src": "grammar-notes §6"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "post.next-to",
@@ -11029,7 +10813,7 @@
    ]
   },
   {
-   "id": "conj.word",
+   "id": "conj.or",
    "pos": "Conj",
    "lemma": "ke",
    "gloss": "or",
@@ -11114,6 +10898,23 @@
    ]
   },
   {
+   "id": "adv.down",
+   "pos": "Adv",
+   "gloss": "down",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.tooth-down: English placeholder (to record): the tooth game's brush moves"
+   ],
+   "aliases": [
+    "tooth-down"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "adv.enough",
    "pos": "Adv",
    "lemma": "bas",
@@ -11155,8 +10956,7 @@
      "q": "Is pela confirmed? Mum said it in a sentence (§7); data/cook.json keeps it draft.",
      "src": "grammar-notes §7"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.joined-up",
@@ -11263,8 +11063,7 @@
    ],
    "aliases": [
     "ph-quickly"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.slow",
@@ -11300,8 +11099,7 @@
      "change": "was aastethi (Zafar 25 Sept, phonetic)",
      "src": "data/cook.json words.ph-slowly: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B2): aste = slow"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.then",
@@ -11335,8 +11133,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "adv.together",
@@ -11378,6 +11175,23 @@
    ]
   },
   {
+   "id": "adv.up",
+   "pos": "Adv",
+   "gloss": "up",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.tooth-up: English placeholder (to record): the tooth game's brush moves (heal/games/tooth.js); was a bare English id"
+   ],
+   "aliases": [
+    "tooth-up"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "adv.very",
    "pos": "Adv",
    "lemma": "bo",
@@ -11405,8 +11219,7 @@
    ],
    "aliases": [
     "cl-waaro"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "adv.yesterday",
@@ -11460,17 +11273,25 @@
      "src": "grammar-notes §11 (khun nati khape; spelling confirmed by Zafar)"
     }
    },
-   "status": "confirmed",
+   "status": "draft",
    "src": [
     "grammar-notes §11, §12",
     "rule G5 (no = na)",
-    "data/cook.json words.ph-no: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na, not nar (nar = look). The polite whole sentence is muke na khape (nato / nati agree)"
+    "data/cook.json words.ph-no: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na, not nar (nar = look). The polite whole sentence is muke na khape (nato / nati agree)",
+    "data/clinic/heal/eye.json words.no: no source given"
    ],
    "aliases": [
-    "ph-no"
+    "ph-no",
+    "no"
    ],
    "notes": [
     "na agrees with the thing wanted in the full refusal: nato (he), nati (she) (§24 B1, §11)."
+   ],
+   "open": [
+    {
+     "q": "Sources disagree on the status: \"draft\" (data/clinic/heal/eye.json) vs \"confirmed\" (4a seed (grammar-notes, cited per entry); data/cook.json). Using \"draft\" for now.",
+     "src": "step 4b importers (clash list)"
+    }
    ],
    "history": [
     {
@@ -11835,14 +11656,33 @@
    "gloss": "All better!",
    "status": "to-record",
    "src": [
-    "data/clinic.json lines.cl-allbetter: the clinic's own line, no Kutchi yet"
+    "data/clinic.json lines.cl-allbetter: the clinic's own line, no Kutchi yet",
+    "data/clinic/heal/boing.json words.all-better: no source given"
    ],
    "aliases": [
-    "clinic.line.cl-allbetter"
+    "clinic.line.cl-allbetter",
+    "all-better"
    ],
    "ask": {
     "word": [
      "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.all-done",
+   "pos": "Phrase",
+   "gloss": "All done!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.all-done: no source given"
+   ],
+   "aliases": [
+    "all-done"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -11906,12 +11746,18 @@
    "src": [
     "grammar-notes §7 (ne poi = and then, confirmed)",
     "grammar-notes §24 B12",
-    "data/cook.json words.lnk-nepoi: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B12): ne poi confirmed"
+    "data/cook.json words.lnk-nepoi: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B12): ne poi confirmed",
+    "data/clinic/heal/cut.json words.ne-poi: no source given",
+    "data/clinic/heal/foot.json words.nepoi: no source given",
+    "data/clinic/heal/hair.json words.nepoi: a copy of this word",
+    "data/clinic/heal/hic.json words.nepoi: a copy of this word",
+    "data/clinic/heal/tummy.json words.nepoi: a copy of this word"
    ],
    "aliases": [
-    "lnk-nepoi"
-   ],
-   "notes": []
+    "lnk-nepoi",
+    "ne-poi",
+    "nepoi"
+   ]
   },
   {
    "id": "phrase.and-what-else",
@@ -11996,7 +11842,7 @@
      "cell": "he.sg.dir"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -12020,7 +11866,7 @@
      "cell": "sg.dir"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -12035,7 +11881,7 @@
      "cell": "-"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -12050,6 +11896,23 @@
    "notes": [
     "ke here marks the thing boiled (the object marker)."
    ]
+  },
+  {
+   "id": "phrase.boing",
+   "pos": "Phrase",
+   "gloss": "BOING!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.boing: no source given"
+   ],
+   "aliases": [
+    "boing"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.bring-me",
@@ -12190,8 +12053,7 @@
     "cl-achija",
     "clinic.line.goodbye-achija",
     "content.snt-14"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.can-you-help-me",
@@ -12383,6 +12245,23 @@
    }
   },
   {
+   "id": "phrase.comb-it",
+   "pos": "Phrase",
+   "gloss": "Comb it",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hair.json words.comb: no source given"
+   ],
+   "aliases": [
+    "comb"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.come-along-with-me",
    "pos": "Phrase",
    "lemma": "hal mu saathe",
@@ -12511,6 +12390,40 @@
    ],
    "aliases": [
     "cook.guide.default"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.count-to",
+   "pos": "Phrase",
+   "gloss": "Count to",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json words.count: no source given"
+   ],
+   "aliases": [
+    "count"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.count-with-me",
+   "pos": "Phrase",
+   "gloss": "Count with me!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.count: no source given"
+   ],
+   "aliases": [
+    "count"
    ],
    "ask": {
     "word": [
@@ -12669,7 +12582,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -12689,7 +12602,7 @@
    "gloss": "don't come with me (a different meaning)",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -12732,7 +12645,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -12759,7 +12672,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -12779,7 +12692,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -12795,7 +12708,7 @@
    "gloss": "don't touch! (urgent: it's hot)",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -12838,7 +12751,7 @@
      "cell": "imp.informal"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -12846,6 +12759,23 @@
    "src": [
     "grammar-notes §12"
    ]
+  },
+  {
+   "id": "phrase.drill-the-bad-bits",
+   "pos": "Phrase",
+   "gloss": "drill the bad bits",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.tooth-drill: English placeholder (to record): the tooth game's drill row (a line to record)"
+   ],
+   "aliases": [
+    "tooth-drill"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.drops-please",
@@ -12862,8 +12792,7 @@
     "word": [
      "new"
     ]
-   },
-   "notes": []
+   }
   },
   {
    "id": "phrase.eat",
@@ -12896,6 +12825,40 @@
    "aliases": [
     "cook.line.enough"
    ]
+  },
+  {
+   "id": "phrase.fill-it-to-the-green",
+   "pos": "Phrase",
+   "gloss": "fill it to the green",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.tooth-fill: English placeholder (to record): the tooth game's fill row (a line to record)"
+   ],
+   "aliases": [
+    "tooth-fill"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.fix-it",
+   "pos": "Phrase",
+   "gloss": "fix it",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-fix: English placeholder (to record): the fever room's level-3 line: the doctor names nothing and the child works it out (decision 27, D15f)"
+   ],
+   "aliases": [
+    "fever-fix"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.found-it",
@@ -12948,6 +12911,40 @@
    ],
    "aliases": [
     "clinic.line.goodbye-getwell"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.give",
+   "pos": "Phrase",
+   "gloss": "give",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-give: English placeholder (to record): the fever room's verbs (the hand fan, the hot-water bottle, the ice pack go to the patient)"
+   ],
+   "aliases": [
+    "fever-give"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.give-it",
+   "pos": "Phrase",
+   "gloss": "give it",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.taste-give: English placeholder (to record): the sore-spots game's drink row: give the drink (a line to record)"
+   ],
+   "aliases": [
+    "taste-give"
    ],
    "ask": {
     "word": [
@@ -13518,8 +13515,7 @@
     "cook.line.hey",
     "cl-hedo",
     "content.snt-03"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.hey-boy-calling-out-puts-e-before-the-word",
@@ -13592,6 +13588,23 @@
    "ask": {
     "word": [
      "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.hold-your-breath",
+   "pos": "Phrase",
+   "gloss": "Hold your breath!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/hic.json words.hold: no source given"
+   ],
+   "aliases": [
+    "hold"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },
@@ -13820,7 +13833,7 @@
      "cell": "dat"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -14084,6 +14097,40 @@
    "src": [
     "grammar-notes §51 C61"
    ]
+  },
+  {
+   "id": "phrase.im-too-cold",
+   "pos": "Phrase",
+   "gloss": "I'm too cold!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-too-cold: English placeholder (to record): the fever room: the patient (a line to record)"
+   ],
+   "aliases": [
+    "fever-too-cold"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.im-too-hot",
+   "pos": "Phrase",
+   "gloss": "I'm too hot!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-too-hot: English placeholder (to record): the fever room: the patient says how they feel (a line to record)"
+   ],
+   "aliases": [
+    "fever-too-hot"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.in-blue",
@@ -14456,6 +14503,22 @@
    }
   },
   {
+   "id": "phrase.just-right",
+   "pos": "Phrase",
+   "lemma": "barabar",
+   "gloss": "Just right!",
+   "forms": {
+    "-": "barabar"
+   },
+   "status": "confirmed",
+   "src": [
+    "data/clinic/lang.json words.fever-just-right: Mum 5 Oct (Round 4 I21, lexicon §6.3, spelling confirmed decision 31): barabar, just right; never changes. W2 5 Oct: the fever room's green-zone line says her word, clip barabar. The rest of the fever lines stay placeholders (too hot / too cold are whole sentences, not garam / thundo)"
+   ],
+   "aliases": [
+    "fever-just-right"
+   ]
+  },
+  {
    "id": "phrase.leave-it-a-bit-longer",
    "pos": "Phrase",
    "lemma": "thori war rakh",
@@ -14740,6 +14803,30 @@
    }
   },
   {
+   "id": "phrase.mix-it-with-the-english-word-mix",
+   "pos": "Phrase",
+   "lemma": "mix kari chad",
+   "gloss": "mix it (with the English word mix)",
+   "parts": [
+    {
+     "lex": "v.mix",
+     "cell": "-"
+    },
+    {
+     "lex": "a.black",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "v.leave",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §38 I13"
+   ]
+  },
+  {
    "id": "phrase.mix-put-it-together",
    "pos": "Phrase",
    "lemma": "bego kari chad",
@@ -14971,14 +15058,14 @@
    "gloss": "No, I don't want any.",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
      "punct": ","
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15005,7 +15092,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -15021,7 +15108,7 @@
    "gloss": "no, thank you",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15075,7 +15162,7 @@
    "gloss": "no, I don't want it (polite)",
    "parts": [
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15166,7 +15253,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -15186,7 +15273,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -15207,7 +15294,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     },
     {
@@ -15234,7 +15321,7 @@
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -15440,6 +15527,23 @@
    }
   },
   {
+   "id": "phrase.ow",
+   "pos": "Phrase",
+   "gloss": "Ow!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.foot-ow: English placeholder (to record): the foot: the patient when the splinter touches the side of its channel (a line to record)"
+   ],
+   "aliases": [
+    "foot-ow"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.pass-me-that-one",
    "pos": "Phrase",
    "gloss": "Pass me that one",
@@ -15483,6 +15587,23 @@
    ],
    "aliases": [
     "cook.guide.pour"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.press-it",
+   "pos": "Phrase",
+   "gloss": "press it",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.boing-press: English placeholder (to record): the boing (heal/games/boing.js, D15g): the row for pressing the syringe's glowing end, which starts the jab"
+   ],
+   "aliases": [
+    "boing-press"
    ],
    "ask": {
     "word": [
@@ -15816,10 +15937,12 @@
    "gloss": "Say it again?",
    "status": "to-record",
    "src": [
-    "data/clinic.json lines.cl-sayagain: the clinic's own line, no Kutchi yet"
+    "data/clinic.json lines.cl-sayagain: the clinic's own line, no Kutchi yet",
+    "data/clinic/heal/boing.json words.again: no source given"
    ],
    "aliases": [
-    "clinic.line.cl-sayagain"
+    "clinic.line.cl-sayagain",
+    "again"
    ],
    "ask": {
     "word": [
@@ -15859,11 +15982,11 @@
      "cell": "fut.p1"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
-     "lex": "neg.not",
+     "lex": "phrase.no",
      "cell": "-"
     }
    ],
@@ -16087,6 +16210,73 @@
    ]
   },
   {
+   "id": "phrase.still-too-cold",
+   "pos": "Phrase",
+   "gloss": "Still too cold!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-still-cold: English placeholder (to record): the fever room: the patient (a line to record)"
+   ],
+   "aliases": [
+    "fever-still-cold"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.still-too-hot",
+   "pos": "Phrase",
+   "gloss": "Still too hot!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-still-hot: English placeholder (to record): the fever room: the patient, after a change that wasn't enough (a line to record)"
+   ],
+   "aliases": [
+    "fever-still-hot"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.stop-the-car-keep-it-standing",
+   "pos": "Phrase",
+   "lemma": "gadi ke ubhi rakh",
+   "gloss": "stop the car (keep it standing)",
+   "forms": {
+    "-": "gadi ke ubhi rakh"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §25 B19 ('stop' is the English stop, or gadi ke ubhi rakh)"
+   ],
+   "notes": [
+    "not analysed into words yet: ubhi is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.take-back",
+   "pos": "Phrase",
+   "gloss": "take back",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-take-away: English placeholder (to record): the fever room's verbs: the undo, named from level 2"
+   ],
+   "aliases": [
+    "fever-take-away"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.take-it-out",
    "pos": "Phrase",
    "lemma": "kadhi chad",
@@ -16155,6 +16345,23 @@
    ]
   },
   {
+   "id": "phrase.take-off",
+   "pos": "Phrase",
+   "gloss": "take off",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-take-off: English placeholder (to record): the fever room's verbs (the blanket): the undo, named from level 2"
+   ],
+   "aliases": [
+    "fever-take-off"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.take-the-big-one",
    "pos": "Phrase",
    "lemma": "wadho khan",
@@ -16189,6 +16396,57 @@
    "notes": [
     "not analysed into words yet: win is not in the lexicon (build/lang/phrases.mjs)"
    ]
+  },
+  {
+   "id": "phrase.take-the-temperature",
+   "pos": "Phrase",
+   "gloss": "take the temperature",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.fever-temp: English placeholder (to record): the fever room's first row (heal/games/fever.js): the thermometer goes in, then the wall thermometer reads live"
+   ],
+   "aliases": [
+    "fever-temp"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.take-the-wax-out",
+   "pos": "Phrase",
+   "gloss": "Take the wax out",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.ear-wax-out: English placeholder (to record): the ear's level-1 wax row (heal/games/ear.js, heal-A 2 Oct; was a bracketed line in the code)"
+   ],
+   "aliases": [
+    "ear-wax-out"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.tap-the-knee",
+   "pos": "Phrase",
+   "gloss": "Tap the knee",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/knee.json words.w-tap-knee: no source given"
+   ],
+   "aliases": [
+    "w-tap-knee"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.tea-and-the-things-that-go-with-it-an-echo-word",
@@ -16413,6 +16671,23 @@
    }
   },
   {
+   "id": "phrase.thats-mine",
+   "pos": "Phrase",
+   "gloss": "That's mine!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.mine: no source given"
+   ],
+   "aliases": [
+    "mine"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.the-big-mangoes-or-the-small-ones",
    "pos": "Phrase",
    "lemma": "wadha ke nindha amba",
@@ -16423,7 +16698,7 @@
      "cell": "he.pl.dir"
     },
     {
-     "lex": "conj.word",
+     "lex": "conj.or",
      "cell": "-"
     },
     {
@@ -16463,6 +16738,23 @@
    "src": [
     "grammar-notes §43"
    ]
+  },
+  {
+   "id": "phrase.the-blue-one",
+   "pos": "Phrase",
+   "gloss": "The blue one!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.the-blue-one: no source given"
+   ],
+   "aliases": [
+    "the-blue-one"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.the-boy",
@@ -16544,6 +16836,23 @@
    ],
    "aliases": [
     "clinic.pipeline.kind.girl"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.the-green-one",
+   "pos": "Phrase",
+   "gloss": "The green one!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.the-green-one: no source given"
+   ],
+   "aliases": [
+    "the-green-one"
    ],
    "ask": {
     "word": [
@@ -16646,6 +16955,23 @@
    "src": [
     "grammar-notes §19"
    ]
+  },
+  {
+   "id": "phrase.the-red-one",
+   "pos": "Phrase",
+   "gloss": "The red one!",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.the-red-one: no source given"
+   ],
+   "aliases": [
+    "the-red-one"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.the-smallest",
@@ -17254,8 +17580,7 @@
    "aliases": [
     "cook.line.welldone",
     "cl-shabash"
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.well-done-dear",
@@ -17662,6 +17987,23 @@
    }
   },
   {
+   "id": "phrase.which-one-did-i-say",
+   "pos": "Phrase",
+   "gloss": "Which one did I say?",
+   "status": "to-record",
+   "src": [
+    "data/clinic/lang.json words.ear-hear-q: English placeholder (to record): the doctor's line before the whispered word in the ear's hearing check (heal/games/ear.js, D15c, heal-A 2 Oct)"
+   ],
+   "aliases": [
+    "ear-hear-q"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.who-ate-the-sweets",
    "pos": "Phrase",
    "lemma": "ker mitai khai vyo",
@@ -17879,6 +18221,23 @@
    ]
   },
   {
+   "id": "phrase.wipe-it",
+   "pos": "Phrase",
+   "gloss": "Wipe it",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json words.wipe: no source given"
+   ],
+   "aliases": [
+    "wipe"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.with-the-big-boy",
    "pos": "Phrase",
    "lemma": "wadhe chokre sathe",
@@ -17901,6 +18260,23 @@
    "src": [
     "grammar-notes §41 C28"
    ]
+  },
+  {
+   "id": "phrase.x-ray-the-leg-clonk",
+   "pos": "Phrase",
+   "gloss": "X-ray the leg, clonk",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/knee.json words.w-xray: no source given"
+   ],
+   "aliases": [
+    "w-xray"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.yes",
@@ -17937,8 +18313,7 @@
      "q": "Sources disagree on the form -: \"ha\" (hand: grammar-notes prose) vs \"haa\" (data/clinic/lang.json; data/cook.json). Using \"ha\" for now.",
      "src": "step 4b importers (clash list)"
     }
-   ],
-   "notes": []
+   ]
   },
   {
    "id": "phrase.yes-i-want-daar-and-maani",

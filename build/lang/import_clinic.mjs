@@ -11,11 +11,19 @@ import { ROOT } from "./lib.mjs";
 
 const SOURCE = "data/clinic.json";
 
+const SENTENCE = /[!?]|^(comb|wipe|count|hold|say|tap|x-ray|clean|fix|give|press|take|fill|drill|which|still|i'm|that's|all|ow)\b/i;
+const VERBS = /^(open|close|pop|put on|take off|switch on|switch off|take back|brush|wipe|make|roll|pour|sprinkle)$/i;
+
+/** the part of speech of a clinic word id: its prefix, then what the English says (a line, a verb, a direction, else a thing) */
 function posOf(id, w) {
   if (POS[id]) return POS[id];
   for (const p of Object.keys(POS_PREFIX)) if (id.startsWith(p)) return POS_PREFIX[p];
-  if (VERB_PREFIX.some((p) => id.startsWith(p))) return "V";
-  return null; // not a clinic-only id: Cook's part-of-speech map, then a noun
+  const en = String(w.english || "").trim();
+  if (SENTENCE.test(en)) return "Phrase";
+  if (VERBS.test(en)) return "V";
+  if (/^(up|down)$/i.test(en)) return "Adv";
+  if (w.kutchi) return null; // a word with Kutchi: the part of speech of the word already loaded, else Cook's map
+  return "N";
 }
 
 export function importClinic(S) {
@@ -26,7 +34,7 @@ export function importClinic(S) {
   const clinic = readJSON("data/clinic.json");
   stat.words += importWords(S, clinic.words, { file: "data/clinic.json", ...opts });
 
-  // the tray nouns: one entry per English word; the ones the family has (paani, limu, loon, khun, dudh) keep Cook's entries
+  // the tray nouns: one entry per English word; the ones the family has (water, lemon, salt, sugar, milk) keep Cook's entries
   for (const [id, it] of Object.entries(clinic.items || {})) {
     if (id === "_about" || !it || typeof it !== "object") continue;
     const src = `data/clinic.json items.${id}: the pharmacy tray's ${it.placeholder ? "placeholder (English, to record)" : "word from Cook"}`;

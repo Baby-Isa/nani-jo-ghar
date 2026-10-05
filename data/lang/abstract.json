@@ -97,7 +97,7 @@
    },
    "en": "{head} with {x} in it",
    "elicit": [
-    "chai with milk"
+    "tea with milk"
    ]
   },
   "Without": {
@@ -112,8 +112,8 @@
    },
    "en": "{head} without {x}",
    "elicit": [
-    "chai without milk",
-    "daar without onion"
+    "tea without milk",
+    "lentils without onion"
    ]
   },
   "WithFood": {
@@ -138,7 +138,7 @@
    },
    "en": "without {x}",
    "elicit": [
-    "I'd like daar, but no onion."
+    "I'd like lentils, but no onion."
    ]
   },
   "Need": {
@@ -270,7 +270,7 @@
    },
    "en": "And {x}.",
    "elicit": [
-    "I'd like chai. And milk. And two sugars."
+    "I'd like tea. And milk. And two sugars."
    ],
    "rows": [
     "x"
@@ -285,7 +285,7 @@
    },
    "en": "And then {x}.",
    "elicit": [
-    "First daar, and then maani."
+    "First lentils, and then a chapati."
    ],
    "rows": [
     "x"
@@ -300,7 +300,7 @@
    },
    "en": "First {x}.",
    "elicit": [
-    "First daar, and then maani."
+    "First lentils, and then a chapati."
    ],
    "rows": [
     "x"
@@ -405,7 +405,7 @@
    },
    "en": "Can you make me {thing}?",
    "elicit": [
-    "Can you make me chai? (to a grandchild, and then to Nana)"
+    "Can you make me tea? (to a grandchild, and then to Nana)"
    ]
   },
   "HowAreYou": {
@@ -527,13 +527,24 @@
      "type": "V"
     },
     "obj": {
-     "type": "NP",
-     "optional": true
+     "type": "NP"
     }
    },
    "en": "Don't {verb} {obj}.",
    "elicit": [
-    "Don't put sugar in. Don't touch that. Don't run, walk."
+    "Don't put sugar in. Don't use sugar."
+   ]
+  },
+  "DontVerb": {
+   "cat": "Utt",
+   "args": {
+    "verb": {
+     "type": "V"
+    }
+   },
+   "en": "Don't {verb}.",
+   "elicit": [
+    "Don't touch that. Don't run, walk. Don't speak."
    ]
   },
   "DontNow": {
@@ -657,7 +668,7 @@
    },
    "en": "In my {container} I want {thing}.",
    "elicit": [
-    "In my chai I want two sugars."
+    "In my tea I want two sugars."
    ]
   },
   "AndKind": {
@@ -667,7 +678,7 @@
      "type": "NP"
     }
    },
-   "en": "and {x} (a second kind of the same dish)",
+   "en": "and {x} (a second kind of one dish)",
    "elicit": [
     "I'd like two samosas with mince, and one with potato."
    ],
@@ -687,7 +698,7 @@
    },
    "en": "{head}, but no {x}",
    "elicit": [
-    "I'd like daar, but no onion."
+    "I'd like lentils, but no onion."
    ]
   },
   "Times": {
@@ -714,7 +725,7 @@
    },
    "en": "First {a}, and then {b}.",
    "elicit": [
-    "I'd like daar first, and then maani."
+    "I'd like lentils first, and then a chapati."
    ],
    "rows": [
     "a",
@@ -733,7 +744,7 @@
    },
    "en": "I'd like {a} first, and then {rest}.",
    "elicit": [
-    "I'd like daar first, and then maani."
+    "I'd like lentils first, and then a chapati."
    ],
    "rows": [
     "a",
@@ -750,6 +761,52 @@
    "en": "on {x} (the short way)",
    "elicit": [
     "on the big mango (the everyday way)"
+   ]
+  },
+  "Or": {
+   "cat": "NP",
+   "args": {
+    "a": {
+     "type": "NP"
+    },
+    "b": {
+     "type": "NP"
+    }
+   },
+   "en": "{a} or {b}",
+   "elicit": [
+    "this mango or this chapati; the big one or the small one"
+   ]
+  },
+  "PutAt": {
+   "cat": "Utt",
+   "args": {
+    "thing": {
+     "type": "NP",
+     "optional": true
+    },
+    "anchor": {
+     "type": "NP"
+    },
+    "rel": {
+     "type": "Post"
+    }
+   },
+   "en": "Put {thing} {rel} {anchor}.",
+   "elicit": [
+    "Put the cup in front of the plate."
+   ]
+  },
+  "Call": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "{x}! (calling out)",
+   "elicit": [
+    "Hey, boy! Nana! Nani!"
    ]
   },
   "Place": {
