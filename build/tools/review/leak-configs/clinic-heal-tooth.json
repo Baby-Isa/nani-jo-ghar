@@ -1,0 +1,1 @@
+{ "id": "clinic-heal-tooth", "adapter": "heal-registry", "registry": "js/clinic/heal/registry.js", "load": ["js/clinic/heal/games/tooth.js"], "games": ["tooth"], "blindMax": 0.1, "accepted": {} }

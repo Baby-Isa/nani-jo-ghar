@@ -8,7 +8,7 @@
 // word-variant, word-no-recording; selector is file:line) so the sandbox can adopt them later. Allow-list: build/lint/words-allow.json.
 //   node build/lint/words.mjs [--top N] [--json] [--only a,b,c,d] [--dirs js/cook,js/clinic] [--strict]
 import { readFileSync, readdirSync, existsSync, writeSync } from "node:fs";
-import { join, dirname, relative } from "node:path";
+import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 
@@ -27,16 +27,18 @@ if (has("--help") || has("-h")) {
   C  misspelt variants from the engine's clash list (data/lang/reports/clash-list.md) and the settled ones in words-variants below,
      found in game code and data (laal not lal, ...)
   D  lines with no family recording, from the engine (build/core/lang-gaps.mjs: audio gaps)
+  --src <dir>   read the game code from another folder (the tests plant fixtures there)
   Allow-list: build/lint/words-allow.json (exact text, regex, or file; each with a reason).`);
   process.exit(0);
 }
 
+const SRC = val("--src") ? resolve(val("--src")) : ROOT; // where the game code is read from (a fixture folder in the tests)
 const DIRS = (val("--dirs") || "js/cook,js/clinic,js/shared").split(",");
 const ONLY = new Set((val("--only") || "a,b,c,d").split(","));
 const TOP = +(val("--top") || 6);
-const rd = (p) => readFileSync(join(ROOT, p), "utf8");
+const rd = (p, base = ROOT) => readFileSync(join(base, p), "utf8");
 const J = (p) => JSON.parse(rd(p));
-function walk(dir, ok) { const out = []; const d = join(ROOT, dir); if (!existsSync(d)) return out; for (const e of readdirSync(d, { withFileTypes: true })) { const rp = join(dir, e.name); if (e.isDirectory()) out.push(...walk(rp, ok)); else if (ok(e.name)) out.push(rp); } return out; }
+function walk(dir, ok, base = SRC) { const out = []; const d = join(base, dir); if (!existsSync(d)) return out; for (const e of readdirSync(d, { withFileTypes: true })) { const rp = join(dir, e.name); if (e.isDirectory()) out.push(...walk(rp, ok, base)); else if (ok(e.name)) out.push(rp); } return out; }
 
 // ---------- vocabularies ----------
 const lex = existsSync(join(ROOT, "data/lang/lexicon.json")) ? J("data/lang/lexicon.json").entries : [];
@@ -124,7 +126,7 @@ function classify(text) {
 if (ONLY.has("a") || ONLY.has("b")) {
   for (const f of files) {
     if (allowFile.includes(f)) continue;
-    const src = rd(f);
+    const src = rd(f, SRC);
     for (const L of literals(src)) {
       if (NOT_TEXT_CTX.test(L.ctx) || allowText.has(L.text.trim()) || allowRe.some((r) => r.test(L.text))) continue;
       const k = classify(L.text);
@@ -147,9 +149,9 @@ if (existsSync(clash)) for (const m of readFileSync(clash, "utf8").matchAll(/the
 }
 const variantHits = new Map();
 if (ONLY.has("c")) {
-  const scan = [...DIRS.flatMap((d) => walk(d, (nm) => /\.m?js$/.test(nm))), ...walk("data", (nm) => nm.endsWith(".json")).filter((f) => !/^data\/(lang|conversations|arcs|examples)\//.test(f) && !/family-audio|audio-manifest|cook-tts|asset-list|hand-|monsoon-audio/.test(f)), ...walk("js/core", (nm) => /\.js$/.test(nm)).filter(() => false)];
+  const scan = [...DIRS.flatMap((d) => walk(d, (nm) => /\.m?js$/.test(nm))), ...walk("data", (nm) => nm.endsWith(".json"), ROOT).filter((f) => !/^data\/(lang|conversations|arcs|examples)\//.test(f) && !/family-audio|audio-manifest|cook-tts|asset-list|hand-|monsoon-audio/.test(f)), ...walk("js/core", (nm) => /\.js$/.test(nm)).filter(() => false)];
   for (const f of scan) {
-    const lines = rd(f).split("\n");
+    const lines = rd(f, f.startsWith("data/") ? ROOT : SRC).split("\n");
     for (const [wrong, info] of variants) {
       const re = new RegExp(`(?<![A-Za-z-])${wrong}(?![A-Za-z-])`, "i");
       lines.forEach((ln, i) => { if (re.test(ln) && !/^\s*(\/\/|\*)/.test(ln)) { const h = variantHits.get(wrong) || { ...info, n: 0, where: [] }; h.n++; if (h.where.length < 3 && !h.where.includes(`${f}:${i + 1}`)) h.where.push(`${f}:${i + 1}`); variantHits.set(wrong, h); } });
