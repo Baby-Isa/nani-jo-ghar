@@ -74,7 +74,7 @@ export function apply(S) {
   w("Adv", "hever", "now (in general, urgent)", [`${GN} §25 B14 (hever hal)`, `${GN} §29 R6 (hever kadh)`, `${GN} §37.6`], { id: "adv.now-urgent", n: ["hever na = not now (§25 B16)."] });
   w("Adv", "bo", "very", [`${GN} §45 (maani bo fine ai)`, `${GN} §33 S2`]);
   w("Adv", "thori", "a little, a bit (in thori war: a bit of time)", [`${GN} §25 B16 (thori war rakh)`], { id: "adv.a-bit-of", n: ["thori agrees with the she-word war? Not enough heard to say."] });
-  w("N", "war", "a while (thori war = a bit longer)", [`${GN} §25 B16 (thori war rakh)`], { g: "she", d: true, q: [{ q: "Is war a she-word (thori war)? Inferred from thori, not said." }], par: false, f: { "sg.*": "war" } });
+  w("N", "war", "a while (thori war = a bit longer)", [`${GN} §25 B16 (thori war rakh)`], { par: false, f: { "sg.*": "war" }, ask: { gender: ["new"] } });
   w("Adv", "bas", "enough", [`${GN} §25 B19`], );
   w("Adv", "thorok", "a little (thorok)", [`${GN} §25 B21 (Whisper: torok; spelling confirmed by Zafar 26 Sept PM)`], { d: true, q: [{ q: "thorok (a little): ⚠ doubtful in the notes; Zafar confirmed the spelling 26 Sept PM.", src: `${GN} §25 B21, §28` }] });
   w("Adv", "wadhare", "more", [`${GN} §25 B20 (⚠ doubtful; spelling confirmed by Zafar 26 Sept PM)`], { d: true, q: [{ q: "wadhare (more): ⚠ doubtful in the notes; Zafar confirmed the spelling 26 Sept PM.", src: `${GN} §25 B20, §28` }] });
@@ -86,7 +86,7 @@ export function apply(S) {
   w("A", "ardo", "half (a portion)", [`${GN} §24 B4 (ardo / ardi, agrees with gender; when the gender is unknown use the he-form)`], { f: { "he.*.dir": { t: "ardo", src: `${GN} §24 B4` }, "she.*.dir": { t: "ardi", src: `${GN} §24 B4` } }, par: false });
   w("A", "adh", "half (of an amount: adh cup)", [`${GN} §24 B4`], { inv: true, id: "a.adh", n: ["adh for amounts (half a cup of milk); ardo / ardi for a half portion."] });
   w("A", "dabo", "left", [`${GN} §17 (dabo hath: the left hand)`], { f: { "he.*.dir": { t: "dabo", src: `${GN} §17` } }, par: false, q: [{ q: "The she-form of dabo (and agreement with the patient's side): not said." }] });
-  w("A", "jamni", "right (she-form: jamni baju)", [`${GN} §17 (jamni baju: on the right; jamno hath is probably right but not said)`], { id: "a.right", f: { "she.*.dir": { t: "jamni", src: `${GN} §17 (jamni baju)` } }, par: false, d: true, q: [{ q: "Is the he-form jamno? Heard only as jamni (baju is a she-word); jamno is Claude's guess and is not entered.", src: `${GN} §17` }] });
+  w("A", "jamni", "right (side)", [`${GN} §17 (jamni baju: on the right; jamno hath is probably right but not said)`], { id: "a.right", f: { "she.*.dir": { t: "jamni", src: `${GN} §17 (jamni baju)` } }, par: false, d: true, q: [{ q: "Is the he-form jamno? Heard only as jamni (baju is a she-word); jamno is Claude's guess and is not entered.", src: `${GN} §17` }] });
   w("A", "fine", "nice, good (the English word)", [`${GN} §45 C46-C48 (fine ambo, fine cup, bo fine)`], { inv: true });
   w("A", "khaso", "nice, special", [`${GN} §45 C46 (khaso ambo: ⚠)`], { id: "a.special", d: true, inv: true });
   w("A", "barabar", "right, proper, just right", [`${GN} §45 C46, C48 (cup barabar ai: it goes after the noun)`], { id: "a.proper", inv: true, n: ["Goes after the noun, not before (§45)."] });
@@ -367,6 +367,11 @@ export function apply(S) {
   w("Phrase", "hu rasore me ain", "those are in the kitchen", [`${GN} §53 C69-C70`]);
   noun("kebab", "kebab", [`${GN} §39 I28 (kebab ji lakri: a kebab skewer)`], { ask: { gender: ["new"] }, par: false, f: { "*": "kebab" } });
   noun("glass", "glass (the English word)", [`${GN} §38 I20 (glass dho, cup dho)`], { ask: { gender: ["L49"] }, par: false, f: { "*": "glass" } });
+
+  w("Phrase", "muke chai banai dinda", "can you make me chai? (said naturally, without 'you')", [`${GN} §27 B40 (the recording said naturally, without tu / aai)`], { d: true });
+  w("Phrase", "jaldi karo", "hurry up! (to an elder)", [`${GN} §27 B48 (Jaldi kar! to a child, Jaldi karo! to an elder)`]);
+  w("Phrase", "ki aiye", "how are you? (informal: tu ki aiye without the tu)", [`${GN} §30 K4 (⚠ the sheet had Ki ai?; Mum and Zafar both said ki aiye)`, `${GN} §21 (to anyone, informally: ki ai?)`], { d: true });
+  w("Phrase", "ki ai", "how are you? (casual)", [`${GN} §21 (to anyone, informally: ki ai?)`]);
 
   /* ---------------- more words the fixed expressions are made of ---------------- */
   noun("table", "table (the English word)", [`${GN} §35 C6 (hakro table, ba table: a he-word that doesn't change)`, `${GN} §15 (cup table je mathe ai)`], { g: "he", par: "noun.invariant" });

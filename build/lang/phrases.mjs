@@ -92,7 +92,7 @@ export function phrasify(S) {
         missing.push(tok);
         continue;
       }
-      parts.push(c.cell === "-" || c.cell === "*" ? { lex: c.id } : { lex: c.id, cell: c.cell });
+      parts.push({ lex: c.id, cell: c.cell });
     }
     if (missing.length) {
       stat.plain++;

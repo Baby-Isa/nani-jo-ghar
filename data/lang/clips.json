@@ -1,1 +1,2533 @@
-{ "_about": "The clip index: which family recording (an id in data/family-audio.json) says which word form (lex + cell) or which whole meaning (a meaning key). Recordings never change the engine (rule G12). Filled by step 4b.", "clips": [] }
+{
+ "_about": "The clip index: which family recording (an id in data/family-audio.json) says which word form (lex + cell) or which whole meaning (a meaning key). Recordings never change the engine (rule G12). Built by build/lang/import_all.mjs from data/family-audio.json.",
+ "clips": [
+  {
+   "clip": "ha",
+   "lex": "phrase.yes",
+   "cell": "*"
+  },
+  {
+   "clip": "na-thank-you",
+   "meaning": "Say(phrase.no-thank-you)"
+  },
+  {
+   "clip": "na-thank-you",
+   "meaning": "Exclaim(phrase.no-thank-you)"
+  },
+  {
+   "clip": "na-thank-you",
+   "meaning": "Ask(phrase.no-thank-you)"
+  },
+  {
+   "clip": "ker-ai",
+   "meaning": "Say(phrase.whos-there)"
+  },
+  {
+   "clip": "ker-ai",
+   "meaning": "Exclaim(phrase.whos-there)"
+  },
+  {
+   "clip": "ker-ai",
+   "meaning": "Ask(phrase.whos-there)"
+  },
+  {
+   "clip": "hi-kuro-ai",
+   "meaning": "Say(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai",
+   "meaning": "Exclaim(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai",
+   "meaning": "Ask(phrase.whats-this)"
+  },
+  {
+   "clip": "kida-ai",
+   "meaning": "Say(phrase.where-is-it)"
+  },
+  {
+   "clip": "kida-ai",
+   "meaning": "Exclaim(phrase.where-is-it)"
+  },
+  {
+   "clip": "kida-ai",
+   "meaning": "Ask(phrase.where-is-it)"
+  },
+  {
+   "clip": "kyo",
+   "lex": "q.which-one",
+   "cell": "*"
+  },
+  {
+   "clip": "kitla",
+   "lex": "q.how-many",
+   "cell": "*"
+  },
+  {
+   "clip": "toke-kuro-khapeto",
+   "meaning": "Say(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "toke-kuro-khapeto",
+   "meaning": "Exclaim(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "toke-kuro-khapeto",
+   "meaning": "Ask(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "anke-kuro-khapeto",
+   "meaning": "Say(phrase.what-would-you-like-to-an-adult)"
+  },
+  {
+   "clip": "anke-kuro-khapeto",
+   "meaning": "Exclaim(phrase.what-would-you-like-to-an-adult)"
+  },
+  {
+   "clip": "anke-kuro-khapeto",
+   "meaning": "Ask(phrase.what-would-you-like-to-an-adult)"
+  },
+  {
+   "clip": "kere-karein",
+   "meaning": "Say(phrase.who-did-it-zafar-doesnt-recognise-it)"
+  },
+  {
+   "clip": "kere-karein",
+   "meaning": "Exclaim(phrase.who-did-it-zafar-doesnt-recognise-it)"
+  },
+  {
+   "clip": "kere-karein",
+   "meaning": "Ask(phrase.who-did-it-zafar-doesnt-recognise-it)"
+  },
+  {
+   "clip": "hi",
+   "lex": "dem.this",
+   "cell": "*"
+  },
+  {
+   "clip": "hu",
+   "lex": "dem.that",
+   "cell": "*"
+  },
+  {
+   "clip": "hida",
+   "lex": "dem.here",
+   "cell": "*"
+  },
+  {
+   "clip": "hida",
+   "lex": "phrase.here-by-you",
+   "cell": "*"
+  },
+  {
+   "clip": "huda",
+   "lex": "dem.there",
+   "cell": "*"
+  },
+  {
+   "clip": "huda",
+   "lex": "phrase.there-over-there",
+   "cell": "*"
+  },
+  {
+   "clip": "na",
+   "lex": "neg.not",
+   "cell": "*"
+  },
+  {
+   "clip": "na",
+   "lex": "phrase.no",
+   "cell": "*"
+  },
+  {
+   "clip": "na",
+   "lex": "n.not",
+   "cell": "*"
+  },
+  {
+   "clip": "muke-na-khape",
+   "meaning": "Say(phrase.i-dont-want-it-polite)"
+  },
+  {
+   "clip": "muke-na-khape",
+   "meaning": "Exclaim(phrase.i-dont-want-it-polite)"
+  },
+  {
+   "clip": "muke-na-khape",
+   "meaning": "Ask(phrase.i-dont-want-it-polite)"
+  },
+  {
+   "clip": "muke-nato-khape",
+   "meaning": "Say(phrase.i-dont-want-it-in-full-nato-for-a-he-word)"
+  },
+  {
+   "clip": "muke-nato-khape",
+   "meaning": "Exclaim(phrase.i-dont-want-it-in-full-nato-for-a-he-word)"
+  },
+  {
+   "clip": "muke-nato-khape",
+   "meaning": "Ask(phrase.i-dont-want-it-in-full-nato-for-a-he-word)"
+  },
+  {
+   "clip": "aste-thi",
+   "lex": "adv.slowly",
+   "cell": "*"
+  },
+  {
+   "clip": "jaldi",
+   "lex": "adv.quickly",
+   "cell": "*"
+  },
+  {
+   "clip": "ardo",
+   "lex": "a.half",
+   "cell": "he.sg.dir"
+  },
+  {
+   "clip": "ardo",
+   "lex": "a.half",
+   "cell": "he.pl.dir"
+  },
+  {
+   "clip": "adh",
+   "lex": "a.adh",
+   "cell": "*"
+  },
+  {
+   "clip": "adh",
+   "lex": "n.half",
+   "cell": "*"
+  },
+  {
+   "clip": "ardi",
+   "lex": "a.half",
+   "cell": "she.sg.dir"
+  },
+  {
+   "clip": "ardi",
+   "lex": "a.half",
+   "cell": "she.pl.dir"
+  },
+  {
+   "clip": "bhareli",
+   "lex": "a.filled-up",
+   "cell": "she.sg.dir"
+  },
+  {
+   "clip": "bhareli",
+   "lex": "a.filled-up",
+   "cell": "she.pl.dir"
+  },
+  {
+   "clip": "bharelo",
+   "lex": "a.filled-up",
+   "cell": "he.sg.dir"
+  },
+  {
+   "clip": "bharelo",
+   "lex": "a.filled-up",
+   "cell": "he.pl.dir"
+  },
+  {
+   "clip": "aaki",
+   "lex": "a.whole",
+   "cell": "she.sg.dir"
+  },
+  {
+   "clip": "aaki",
+   "lex": "a.whole",
+   "cell": "she.sg.obl"
+  },
+  {
+   "clip": "aaki",
+   "lex": "a.whole",
+   "cell": "she.pl.dir"
+  },
+  {
+   "clip": "aaki",
+   "lex": "a.whole",
+   "cell": "she.pl.obl"
+  },
+  {
+   "clip": "aako",
+   "lex": "a.whole",
+   "cell": "he.sg.dir"
+  },
+  {
+   "clip": "aako",
+   "lex": "a.whole",
+   "cell": "he.pl.dir"
+  },
+  {
+   "clip": "nindho",
+   "lex": "a.small",
+   "cell": "he.sg.dir"
+  },
+  {
+   "clip": "nindho",
+   "lex": "n.small",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "nindhi",
+   "lex": "a.small",
+   "cell": "she.sg.dir"
+  },
+  {
+   "clip": "nindhi",
+   "lex": "a.small",
+   "cell": "she.sg.obl"
+  },
+  {
+   "clip": "nindhi",
+   "lex": "a.small",
+   "cell": "she.pl.dir"
+  },
+  {
+   "clip": "nindhi",
+   "lex": "a.small",
+   "cell": "she.pl.obl"
+  },
+  {
+   "clip": "dai",
+   "lex": "n.yoghurt",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "dai",
+   "lex": "n.yoghurt",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "dai",
+   "lex": "n.yoghurt",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "dai",
+   "lex": "n.yoghurt",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "chana",
+   "lex": "n.chickpeas",
+   "cell": "*"
+  },
+  {
+   "clip": "gos",
+   "lex": "n.meat",
+   "cell": "*"
+  },
+  {
+   "clip": "ne-poi",
+   "lex": "n.and-then-2",
+   "cell": "*"
+  },
+  {
+   "clip": "mervan",
+   "lex": "n.yoghurt-starter-culture",
+   "cell": "*"
+  },
+  {
+   "clip": "kali",
+   "lex": "adv.only",
+   "cell": "*"
+  },
+  {
+   "clip": "hever",
+   "lex": "adv.now-urgent",
+   "cell": "*"
+  },
+  {
+   "clip": "hane",
+   "lex": "adv.now-in-steps",
+   "cell": "*"
+  },
+  {
+   "clip": "inke-hane-kadh",
+   "meaning": "Say(phrase.take-it-out-now-gently-in-a-sequence)"
+  },
+  {
+   "clip": "inke-hane-kadh",
+   "meaning": "Exclaim(phrase.take-it-out-now-gently-in-a-sequence)"
+  },
+  {
+   "clip": "inke-hane-kadh",
+   "meaning": "Ask(phrase.take-it-out-now-gently-in-a-sequence)"
+  },
+  {
+   "clip": "inke-chadi-de",
+   "meaning": "Say(phrase.leave-it-be)"
+  },
+  {
+   "clip": "inke-chadi-de",
+   "meaning": "Exclaim(phrase.leave-it-be)"
+  },
+  {
+   "clip": "inke-chadi-de",
+   "meaning": "Ask(phrase.leave-it-be)"
+  },
+  {
+   "clip": "ha-kadh",
+   "meaning": "Say(phrase.yes-take-it-out)"
+  },
+  {
+   "clip": "ha-kadh",
+   "meaning": "Exclaim(phrase.yes-take-it-out)"
+  },
+  {
+   "clip": "ha-kadh",
+   "meaning": "Ask(phrase.yes-take-it-out)"
+  },
+  {
+   "clip": "hever-na",
+   "meaning": "Say(phrase.not-now)"
+  },
+  {
+   "clip": "hever-na",
+   "meaning": "Exclaim(phrase.not-now)"
+  },
+  {
+   "clip": "hever-na",
+   "meaning": "Ask(phrase.not-now)"
+  },
+  {
+   "clip": "thori-war-rakh",
+   "meaning": "Say(phrase.leave-it-a-bit-longer)"
+  },
+  {
+   "clip": "thori-war-rakh",
+   "meaning": "Exclaim(phrase.leave-it-a-bit-longer)"
+  },
+  {
+   "clip": "thori-war-rakh",
+   "meaning": "Ask(phrase.leave-it-a-bit-longer)"
+  },
+  {
+   "clip": "boga",
+   "lex": "n.vegetable",
+   "cell": "*"
+  },
+  {
+   "clip": "mixed",
+   "lex": "n.mixed",
+   "cell": "*"
+  },
+  {
+   "clip": "bas",
+   "lex": "adv.enough",
+   "cell": "*"
+  },
+  {
+   "clip": "bas",
+   "lex": "phrase.enough",
+   "cell": "*"
+  },
+  {
+   "clip": "wadhare",
+   "lex": "adv.more",
+   "cell": "*"
+  },
+  {
+   "clip": "wadhare",
+   "lex": "phrase.more",
+   "cell": "*"
+  },
+  {
+   "clip": "thorok",
+   "lex": "adv.a-little",
+   "cell": "*"
+  },
+  {
+   "clip": "thorok",
+   "lex": "phrase.a-little",
+   "cell": "*"
+  },
+  {
+   "clip": "tayar-ai",
+   "meaning": "Say(phrase.its-ready)"
+  },
+  {
+   "clip": "tayar-ai",
+   "meaning": "Exclaim(phrase.its-ready)"
+  },
+  {
+   "clip": "tayar-ai",
+   "meaning": "Ask(phrase.its-ready)"
+  },
+  {
+   "clip": "bareto",
+   "lex": "phrase.its-burning",
+   "cell": "*"
+  },
+  {
+   "clip": "ukreto",
+   "lex": "v.boil",
+   "cell": "pres.he.sg"
+  },
+  {
+   "clip": "ukreto",
+   "lex": "phrase.its-boiling",
+   "cell": "*"
+  },
+  {
+   "clip": "shabash",
+   "lex": "intj.well-done",
+   "cell": "*"
+  },
+  {
+   "clip": "shabash",
+   "lex": "phrase.well-done",
+   "cell": "*"
+  },
+  {
+   "clip": "chamcho",
+   "lex": "n.tablespoon",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "chamchi",
+   "lex": "n.teaspoon",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "chamchi",
+   "lex": "n.teaspoon",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "chamchi",
+   "lex": "n.teaspoon",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "chamchi",
+   "lex": "n.teaspoon",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "chips",
+   "lex": "n.chips-english",
+   "cell": "*"
+  },
+  {
+   "clip": "sev",
+   "lex": "n.sev",
+   "cell": "*"
+  },
+  {
+   "clip": "dhania",
+   "lex": "n.coriander",
+   "cell": "*"
+  },
+  {
+   "clip": "amli",
+   "lex": "n.tamarind",
+   "cell": "*"
+  },
+  {
+   "clip": "keema",
+   "lex": "n.mince-keema",
+   "cell": "*"
+  },
+  {
+   "clip": "chundo",
+   "lex": "n.mince",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "ghee",
+   "lex": "n.ghee",
+   "cell": "*"
+  },
+  {
+   "clip": "chaat",
+   "lex": "n.chaat",
+   "cell": "*"
+  },
+  {
+   "clip": "sambusa",
+   "lex": "n.samosa-sambusa",
+   "cell": "*"
+  },
+  {
+   "clip": "samosa",
+   "lex": "n.samosa",
+   "cell": "*"
+  },
+  {
+   "clip": "mishkaki",
+   "lex": "n.mishkaki",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "mishkaki",
+   "lex": "n.mishkaki",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "mishkaki",
+   "lex": "n.mishkaki",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "mishkaki",
+   "lex": "n.mishkaki",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "hi-nana-lai-ai",
+   "meaning": "Say(phrase.this-is-for-nana)"
+  },
+  {
+   "clip": "hi-nana-lai-ai",
+   "meaning": "Exclaim(phrase.this-is-for-nana)"
+  },
+  {
+   "clip": "hi-nana-lai-ai",
+   "meaning": "Ask(phrase.this-is-for-nana)"
+  },
+  {
+   "clip": "tu-muke-chai-banai-dinda",
+   "meaning": "Say(phrase.can-you-make-me-chai)"
+  },
+  {
+   "clip": "tu-muke-chai-banai-dinda",
+   "meaning": "Exclaim(phrase.can-you-make-me-chai)"
+  },
+  {
+   "clip": "tu-muke-chai-banai-dinda",
+   "meaning": "Ask(phrase.can-you-make-me-chai)"
+  },
+  {
+   "clip": "muke-chai-banai-dinda",
+   "meaning": "Say(phrase.can-you-make-me-chai-said-naturally-without-you)"
+  },
+  {
+   "clip": "muke-chai-banai-dinda",
+   "meaning": "Exclaim(phrase.can-you-make-me-chai-said-naturally-without-you)"
+  },
+  {
+   "clip": "muke-chai-banai-dinda",
+   "meaning": "Ask(phrase.can-you-make-me-chai-said-naturally-without-you)"
+  },
+  {
+   "clip": "ha-of-course",
+   "lex": "phrase.yes",
+   "cell": "*"
+  },
+  {
+   "clip": "jara-e-wandho-nai",
+   "meaning": "Say(phrase.youre-welcome-its-no-trouble-at-all)"
+  },
+  {
+   "clip": "jara-e-wandho-nai",
+   "meaning": "Exclaim(phrase.youre-welcome-its-no-trouble-at-all)"
+  },
+  {
+   "clip": "jara-e-wandho-nai",
+   "meaning": "Ask(phrase.youre-welcome-its-no-trouble-at-all)"
+  },
+  {
+   "clip": "mu-lai-khobar",
+   "meaning": "Say(phrase.wait-for-me)"
+  },
+  {
+   "clip": "mu-lai-khobar",
+   "meaning": "Exclaim(phrase.wait-for-me)"
+  },
+  {
+   "clip": "mu-lai-khobar",
+   "meaning": "Ask(phrase.wait-for-me)"
+  },
+  {
+   "clip": "kha",
+   "lex": "v.eat",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "kha",
+   "lex": "phrase.eat",
+   "cell": "*"
+  },
+  {
+   "clip": "muke-chakhan-lai-de",
+   "meaning": "Say(phrase.let-me-taste-it)"
+  },
+  {
+   "clip": "muke-chakhan-lai-de",
+   "meaning": "Exclaim(phrase.let-me-taste-it)"
+  },
+  {
+   "clip": "muke-chakhan-lai-de",
+   "meaning": "Ask(phrase.let-me-taste-it)"
+  },
+  {
+   "clip": "jaldi-kar",
+   "meaning": "Say(phrase.hurry-up)"
+  },
+  {
+   "clip": "jaldi-kar",
+   "meaning": "Exclaim(phrase.hurry-up)"
+  },
+  {
+   "clip": "jaldi-kar",
+   "meaning": "Ask(phrase.hurry-up)"
+  },
+  {
+   "clip": "jaldi-karo",
+   "meaning": "Say(phrase.hurry-up-to-an-elder)"
+  },
+  {
+   "clip": "jaldi-karo",
+   "meaning": "Exclaim(phrase.hurry-up-to-an-elder)"
+  },
+  {
+   "clip": "jaldi-karo",
+   "meaning": "Ask(phrase.hurry-up-to-an-elder)"
+  },
+  {
+   "clip": "dhyan-rakh",
+   "meaning": "Say(phrase.careful-keep-care)"
+  },
+  {
+   "clip": "dhyan-rakh",
+   "meaning": "Exclaim(phrase.careful-keep-care)"
+  },
+  {
+   "clip": "dhyan-rakh",
+   "meaning": "Ask(phrase.careful-keep-care)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3",
+   "meaning": "Say(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3",
+   "meaning": "Exclaim(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3",
+   "meaning": "Ask(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3-b",
+   "meaning": "Say(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3-b",
+   "meaning": "Exclaim(phrase.whats-this)"
+  },
+  {
+   "clip": "hi-kuro-ai-r3-b",
+   "meaning": "Ask(phrase.whats-this)"
+  },
+  {
+   "clip": "toke-kuro-khapeto-r3",
+   "meaning": "Say(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "toke-kuro-khapeto-r3",
+   "meaning": "Exclaim(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "toke-kuro-khapeto-r3",
+   "meaning": "Ask(phrase.what-would-you-like-to-a-child)"
+  },
+  {
+   "clip": "ne-poi-r3",
+   "lex": "n.and-then-2",
+   "cell": "*"
+  },
+  {
+   "clip": "hever-kadh",
+   "meaning": "Say(phrase.take-it-out-now-urgent)"
+  },
+  {
+   "clip": "hever-kadh",
+   "meaning": "Exclaim(phrase.take-it-out-now-urgent)"
+  },
+  {
+   "clip": "hever-kadh",
+   "meaning": "Ask(phrase.take-it-out-now-urgent)"
+  },
+  {
+   "clip": "amli-r3",
+   "lex": "n.tamarind",
+   "cell": "*"
+  },
+  {
+   "clip": "kere-karein-r3",
+   "meaning": "Say(phrase.who-did-it-zafar-doesnt-recognise-it)"
+  },
+  {
+   "clip": "kere-karein-r3",
+   "meaning": "Exclaim(phrase.who-did-it-zafar-doesnt-recognise-it)"
+  },
+  {
+   "clip": "kere-karein-r3",
+   "meaning": "Ask(phrase.who-did-it-zafar-doesnt-recognise-it)"
+  },
+  {
+   "clip": "salamun-alaykum",
+   "meaning": "Say(phrase.hello-peace-be-upon-you)"
+  },
+  {
+   "clip": "salamun-alaykum",
+   "meaning": "Exclaim(phrase.hello-peace-be-upon-you)"
+  },
+  {
+   "clip": "salamun-alaykum",
+   "meaning": "Ask(phrase.hello-peace-be-upon-you)"
+  },
+  {
+   "clip": "salamun-alaykum-b",
+   "meaning": "Say(phrase.hello-peace-be-upon-you)"
+  },
+  {
+   "clip": "salamun-alaykum-b",
+   "meaning": "Exclaim(phrase.hello-peace-be-upon-you)"
+  },
+  {
+   "clip": "salamun-alaykum-b",
+   "meaning": "Ask(phrase.hello-peace-be-upon-you)"
+  },
+  {
+   "clip": "alaikum-salaam",
+   "meaning": "Say(phrase.hello-back-the-way-mum-said-it-no-wa)"
+  },
+  {
+   "clip": "alaikum-salaam",
+   "meaning": "Exclaim(phrase.hello-back-the-way-mum-said-it-no-wa)"
+  },
+  {
+   "clip": "alaikum-salaam",
+   "meaning": "Ask(phrase.hello-back-the-way-mum-said-it-no-wa)"
+  },
+  {
+   "clip": "alaikum-salaam-b",
+   "meaning": "Say(phrase.hello-back-the-way-mum-said-it-no-wa)"
+  },
+  {
+   "clip": "alaikum-salaam-b",
+   "meaning": "Exclaim(phrase.hello-back-the-way-mum-said-it-no-wa)"
+  },
+  {
+   "clip": "alaikum-salaam-b",
+   "meaning": "Ask(phrase.hello-back-the-way-mum-said-it-no-wa)"
+  },
+  {
+   "clip": "ki-aiye",
+   "meaning": "Say(phrase.how-are-you-informal-tu-ki-aiye-without-the-tu)"
+  },
+  {
+   "clip": "ki-aiye",
+   "meaning": "Exclaim(phrase.how-are-you-informal-tu-ki-aiye-without-the-tu)"
+  },
+  {
+   "clip": "ki-aiye",
+   "meaning": "Ask(phrase.how-are-you-informal-tu-ki-aiye-without-the-tu)"
+  },
+  {
+   "clip": "aau-theek-ai-aai-ki-aayo",
+   "meaning": "Say(phrase.im-fine-and-how-are-you)"
+  },
+  {
+   "clip": "aau-theek-ai-aai-ki-aayo",
+   "meaning": "Exclaim(phrase.im-fine-and-how-are-you)"
+  },
+  {
+   "clip": "aau-theek-ai-aai-ki-aayo",
+   "meaning": "Ask(phrase.im-fine-and-how-are-you)"
+  },
+  {
+   "clip": "aau-theek-ai-tu-ki-aiye",
+   "meaning": "Say(phrase.im-fine-and-how-are-you-2)"
+  },
+  {
+   "clip": "aau-theek-ai-tu-ki-aiye",
+   "meaning": "Exclaim(phrase.im-fine-and-how-are-you-2)"
+  },
+  {
+   "clip": "aau-theek-ai-tu-ki-aiye",
+   "meaning": "Ask(phrase.im-fine-and-how-are-you-2)"
+  },
+  {
+   "clip": "na-muke-na-khape",
+   "meaning": "Say(phrase.no-thanks-with-me)"
+  },
+  {
+   "clip": "na-muke-na-khape",
+   "meaning": "Exclaim(phrase.no-thanks-with-me)"
+  },
+  {
+   "clip": "na-muke-na-khape",
+   "meaning": "Ask(phrase.no-thanks-with-me)"
+  },
+  {
+   "clip": "na-muke-na-khape-b",
+   "meaning": "Say(phrase.no-thanks-with-me)"
+  },
+  {
+   "clip": "na-muke-na-khape-b",
+   "meaning": "Exclaim(phrase.no-thanks-with-me)"
+  },
+  {
+   "clip": "na-muke-na-khape-b",
+   "meaning": "Ask(phrase.no-thanks-with-me)"
+  },
+  {
+   "clip": "toke-khabar-ai-aau-ker-aiya",
+   "meaning": "Say(phrase.do-you-know-who-i-am)"
+  },
+  {
+   "clip": "toke-khabar-ai-aau-ker-aiya",
+   "meaning": "Exclaim(phrase.do-you-know-who-i-am)"
+  },
+  {
+   "clip": "toke-khabar-ai-aau-ker-aiya",
+   "meaning": "Ask(phrase.do-you-know-who-i-am)"
+  },
+  {
+   "clip": "nana",
+   "lex": "pn.nana",
+   "cell": "*"
+  },
+  {
+   "clip": "nana",
+   "lex": "phrase.nana",
+   "cell": "*"
+  },
+  {
+   "clip": "nani",
+   "lex": "pn.nani",
+   "cell": "*"
+  },
+  {
+   "clip": "nani",
+   "lex": "phrase.nani",
+   "cell": "*"
+  },
+  {
+   "clip": "ali",
+   "lex": "pn.ali",
+   "cell": "*"
+  },
+  {
+   "clip": "ali",
+   "lex": "phrase.ali",
+   "cell": "*"
+  },
+  {
+   "clip": "big-ma",
+   "lex": "pn.big-ma",
+   "cell": "*"
+  },
+  {
+   "clip": "wadima",
+   "lex": "n.big-ma",
+   "cell": "*"
+  },
+  {
+   "clip": "maji",
+   "lex": "n.great-grandmother",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "maji",
+   "lex": "n.great-grandmother",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "maji",
+   "lex": "n.great-grandmother",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "maji",
+   "lex": "n.great-grandmother",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "beta",
+   "lex": "n.dear",
+   "cell": "*"
+  },
+  {
+   "clip": "tu-muke-help-kar-de",
+   "meaning": "Say(phrase.can-you-help-me)"
+  },
+  {
+   "clip": "tu-muke-help-kar-de",
+   "meaning": "Exclaim(phrase.can-you-help-me)"
+  },
+  {
+   "clip": "tu-muke-help-kar-de",
+   "meaning": "Ask(phrase.can-you-help-me)"
+  },
+  {
+   "clip": "muke-chai-ji-chiju-khanechi-dinde",
+   "meaning": "Say(phrase.will-you-bring-me-the-chai-things)"
+  },
+  {
+   "clip": "muke-chai-ji-chiju-khanechi-dinde",
+   "meaning": "Exclaim(phrase.will-you-bring-me-the-chai-things)"
+  },
+  {
+   "clip": "muke-chai-ji-chiju-khanechi-dinde",
+   "meaning": "Ask(phrase.will-you-bring-me-the-chai-things)"
+  },
+  {
+   "clip": "muke-chai-ji-chiju-khanechi-dinde-b",
+   "meaning": "Say(phrase.will-you-bring-me-the-chai-things)"
+  },
+  {
+   "clip": "muke-chai-ji-chiju-khanechi-dinde-b",
+   "meaning": "Exclaim(phrase.will-you-bring-me-the-chai-things)"
+  },
+  {
+   "clip": "muke-chai-ji-chiju-khanechi-dinde-b",
+   "meaning": "Ask(phrase.will-you-bring-me-the-chai-things)"
+  },
+  {
+   "clip": "mmm-chai-bo-fine-ai-shabash-beta",
+   "meaning": "Say(phrase.mmm-lovely-chai-well-done-dear)"
+  },
+  {
+   "clip": "mmm-chai-bo-fine-ai-shabash-beta",
+   "meaning": "Exclaim(phrase.mmm-lovely-chai-well-done-dear)"
+  },
+  {
+   "clip": "mmm-chai-bo-fine-ai-shabash-beta",
+   "meaning": "Ask(phrase.mmm-lovely-chai-well-done-dear)"
+  },
+  {
+   "clip": "saware-eid-ai",
+   "meaning": "Say(phrase.tomorrow-is-eid)"
+  },
+  {
+   "clip": "saware-eid-ai",
+   "meaning": "Exclaim(phrase.tomorrow-is-eid)"
+  },
+  {
+   "clip": "saware-eid-ai",
+   "meaning": "Ask(phrase.tomorrow-is-eid)"
+  },
+  {
+   "clip": "mageni-achenta",
+   "meaning": "Say(phrase.guests-are-coming)"
+  },
+  {
+   "clip": "mageni-achenta",
+   "meaning": "Exclaim(phrase.guests-are-coming)"
+  },
+  {
+   "clip": "mageni-achenta",
+   "meaning": "Ask(phrase.guests-are-coming)"
+  },
+  {
+   "clip": "o-kenjo-nai",
+   "meaning": "Say(phrase.oh-no-theres-no-food)"
+  },
+  {
+   "clip": "o-kenjo-nai",
+   "meaning": "Exclaim(phrase.oh-no-theres-no-food)"
+  },
+  {
+   "clip": "o-kenjo-nai",
+   "meaning": "Ask(phrase.oh-no-theres-no-food)"
+  },
+  {
+   "clip": "oho-kenjo-nai",
+   "meaning": "Say(phrase.oh-no-theres-no-food-more-dramatic)"
+  },
+  {
+   "clip": "oho-kenjo-nai",
+   "meaning": "Exclaim(phrase.oh-no-theres-no-food-more-dramatic)"
+  },
+  {
+   "clip": "oho-kenjo-nai",
+   "meaning": "Ask(phrase.oh-no-theres-no-food-more-dramatic)"
+  },
+  {
+   "clip": "panke-randhnu-khapdo",
+   "meaning": "Say(phrase.we-need-to-cook)"
+  },
+  {
+   "clip": "panke-randhnu-khapdo",
+   "meaning": "Exclaim(phrase.we-need-to-cook)"
+  },
+  {
+   "clip": "panke-randhnu-khapdo",
+   "meaning": "Ask(phrase.we-need-to-cook)"
+  },
+  {
+   "clip": "tu-muke-randhan-lai-madad-kar-de",
+   "meaning": "Say(phrase.will-you-help-me-cook)"
+  },
+  {
+   "clip": "tu-muke-randhan-lai-madad-kar-de",
+   "meaning": "Exclaim(phrase.will-you-help-me-cook)"
+  },
+  {
+   "clip": "tu-muke-randhan-lai-madad-kar-de",
+   "meaning": "Ask(phrase.will-you-help-me-cook)"
+  },
+  {
+   "clip": "ha-aau-randhan-lai-madad-kar-dis",
+   "meaning": "Say(phrase.help-cook-girl)"
+  },
+  {
+   "clip": "ha-aau-randhan-lai-madad-kar-dis",
+   "meaning": "Exclaim(phrase.help-cook-girl)"
+  },
+  {
+   "clip": "ha-aau-randhan-lai-madad-kar-dis",
+   "meaning": "Ask(phrase.help-cook-girl)"
+  },
+  {
+   "clip": "ha-aau-randhan-lai-madad-kar-dos",
+   "meaning": "Say(phrase.help-cook-boy)"
+  },
+  {
+   "clip": "ha-aau-randhan-lai-madad-kar-dos",
+   "meaning": "Exclaim(phrase.help-cook-boy)"
+  },
+  {
+   "clip": "ha-aau-randhan-lai-madad-kar-dos",
+   "meaning": "Ask(phrase.help-cook-boy)"
+  },
+  {
+   "clip": "ha-r3",
+   "lex": "phrase.yes",
+   "cell": "*"
+  },
+  {
+   "clip": "hal-rasore-me-winja",
+   "meaning": "Say(phrase.come-lets-go-to-the-kitchen)"
+  },
+  {
+   "clip": "hal-rasore-me-winja",
+   "meaning": "Exclaim(phrase.come-lets-go-to-the-kitchen)"
+  },
+  {
+   "clip": "hal-rasore-me-winja",
+   "meaning": "Ask(phrase.come-lets-go-to-the-kitchen)"
+  },
+  {
+   "clip": "dungri",
+   "lex": "n.onion",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "dungri",
+   "lex": "n.onion",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "dungri",
+   "lex": "n.onion",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "dungri",
+   "lex": "n.onion",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "tameto",
+   "lex": "n.tomato",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "mirchi",
+   "lex": "n.chilli",
+   "cell": "*"
+  },
+  {
+   "clip": "aakhi-mirchi",
+   "meaning": "Say(phrase.a-whole-chilli-not-powdered)"
+  },
+  {
+   "clip": "aakhi-mirchi",
+   "meaning": "Exclaim(phrase.a-whole-chilli-not-powdered)"
+  },
+  {
+   "clip": "aakhi-mirchi",
+   "meaning": "Ask(phrase.a-whole-chilli-not-powdered)"
+  },
+  {
+   "clip": "mirchi-b",
+   "lex": "n.chilli",
+   "cell": "*"
+  },
+  {
+   "clip": "limu",
+   "lex": "n.lemon",
+   "cell": "*"
+  },
+  {
+   "clip": "maani",
+   "lex": "n.chapati",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "maani",
+   "lex": "n.chapati",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "maani",
+   "lex": "n.chapati",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "maani",
+   "lex": "n.chapati",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "samosa-r3",
+   "lex": "n.samosa",
+   "cell": "*"
+  },
+  {
+   "clip": "sambusa-r3",
+   "lex": "n.samosa-sambusa",
+   "cell": "*"
+  },
+  {
+   "clip": "lakri",
+   "lex": "n.skewer",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "lakri",
+   "lex": "n.skewer",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "lakri",
+   "lex": "n.skewer",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "lakri",
+   "lex": "n.skewer",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "chamchi-r3",
+   "lex": "n.teaspoon",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "chamchi-r3",
+   "lex": "n.teaspoon",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "chamchi-r3",
+   "lex": "n.teaspoon",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "chamchi-r3",
+   "lex": "n.teaspoon",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "chamcho-r3",
+   "lex": "n.tablespoon",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "chamcha",
+   "lex": "n.tablespoon",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "chamcha",
+   "lex": "n.tablespoon",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "cup",
+   "lex": "n.cup",
+   "cell": "*"
+  },
+  {
+   "clip": "matar",
+   "lex": "n.green-peas",
+   "cell": "*"
+  },
+  {
+   "clip": "watana",
+   "lex": "n.peas",
+   "cell": "*"
+  },
+  {
+   "clip": "watano",
+   "lex": "n.peas",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "matar-b-m",
+   "lex": "n.green-peas",
+   "cell": "*"
+  },
+  {
+   "clip": "matar-b-z",
+   "lex": "n.green-peas",
+   "cell": "*"
+  },
+  {
+   "clip": "kabaat",
+   "lex": "n.cupboard",
+   "cell": "*"
+  },
+  {
+   "clip": "e-chokro",
+   "meaning": "Say(phrase.hey-boy-calling-out-puts-e-before-the-word)"
+  },
+  {
+   "clip": "e-chokro",
+   "meaning": "Exclaim(phrase.hey-boy-calling-out-puts-e-before-the-word)"
+  },
+  {
+   "clip": "e-chokro",
+   "meaning": "Ask(phrase.hey-boy-calling-out-puts-e-before-the-word)"
+  },
+  {
+   "clip": "e-chokri",
+   "meaning": "Say(phrase.hey-girl)"
+  },
+  {
+   "clip": "e-chokri",
+   "meaning": "Exclaim(phrase.hey-girl)"
+  },
+  {
+   "clip": "e-chokri",
+   "meaning": "Ask(phrase.hey-girl)"
+  },
+  {
+   "clip": "wadhe-chokre-sathe",
+   "meaning": "Say(phrase.with-the-big-boy)"
+  },
+  {
+   "clip": "wadhe-chokre-sathe",
+   "meaning": "Exclaim(phrase.with-the-big-boy)"
+  },
+  {
+   "clip": "wadhe-chokre-sathe",
+   "meaning": "Ask(phrase.with-the-big-boy)"
+  },
+  {
+   "clip": "laal-na",
+   "meaning": "Say(phrase.not-the-red-one)"
+  },
+  {
+   "clip": "laal-na",
+   "meaning": "Exclaim(phrase.not-the-red-one)"
+  },
+  {
+   "clip": "laal-na",
+   "meaning": "Ask(phrase.not-the-red-one)"
+  },
+  {
+   "clip": "wadho-ginech-nindho-ginech",
+   "meaning": "Say(phrase.buy-the-big-one-buy-the-small-one)"
+  },
+  {
+   "clip": "wadho-ginech-nindho-ginech",
+   "meaning": "Exclaim(phrase.buy-the-big-one-buy-the-small-one)"
+  },
+  {
+   "clip": "wadho-ginech-nindho-ginech",
+   "meaning": "Ask(phrase.buy-the-big-one-buy-the-small-one)"
+  },
+  {
+   "clip": "nindha",
+   "lex": "a.small",
+   "cell": "he.pl.dir"
+  },
+  {
+   "clip": "nindha",
+   "lex": "n.small",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "nindha",
+   "lex": "n.small",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "nana-jo-ai",
+   "meaning": "Say(phrase.its-nanas)"
+  },
+  {
+   "clip": "nana-jo-ai",
+   "meaning": "Exclaim(phrase.its-nanas)"
+  },
+  {
+   "clip": "nana-jo-ai",
+   "meaning": "Ask(phrase.its-nanas)"
+  },
+  {
+   "clip": "nani-jo-ai",
+   "meaning": "Say(phrase.its-nanis)"
+  },
+  {
+   "clip": "nani-jo-ai",
+   "meaning": "Exclaim(phrase.its-nanis)"
+  },
+  {
+   "clip": "nani-jo-ai",
+   "meaning": "Ask(phrase.its-nanis)"
+  },
+  {
+   "clip": "chokriyu-ji-ain",
+   "meaning": "Say(phrase.theyre-the-girls-she-word-things)"
+  },
+  {
+   "clip": "chokriyu-ji-ain",
+   "meaning": "Exclaim(phrase.theyre-the-girls-she-word-things)"
+  },
+  {
+   "clip": "chokriyu-ji-ain",
+   "meaning": "Ask(phrase.theyre-the-girls-she-word-things)"
+  },
+  {
+   "clip": "aau-rasore-me-aiya",
+   "meaning": "Say(phrase.im-in-the-kitchen-a-man-or-a-woman)"
+  },
+  {
+   "clip": "aau-rasore-me-aiya",
+   "meaning": "Exclaim(phrase.im-in-the-kitchen-a-man-or-a-woman)"
+  },
+  {
+   "clip": "aau-rasore-me-aiya",
+   "meaning": "Ask(phrase.im-in-the-kitchen-a-man-or-a-woman)"
+  },
+  {
+   "clip": "tu-rasore-me-aiye",
+   "meaning": "Say(phrase.youre-in-the-kitchen-to-a-child)"
+  },
+  {
+   "clip": "tu-rasore-me-aiye",
+   "meaning": "Exclaim(phrase.youre-in-the-kitchen-to-a-child)"
+  },
+  {
+   "clip": "tu-rasore-me-aiye",
+   "meaning": "Ask(phrase.youre-in-the-kitchen-to-a-child)"
+  },
+  {
+   "clip": "aai-rasore-me-aayo",
+   "meaning": "Say(phrase.youre-in-the-kitchen-to-nana)"
+  },
+  {
+   "clip": "aai-rasore-me-aayo",
+   "meaning": "Exclaim(phrase.youre-in-the-kitchen-to-nana)"
+  },
+  {
+   "clip": "aai-rasore-me-aayo",
+   "meaning": "Ask(phrase.youre-in-the-kitchen-to-nana)"
+  },
+  {
+   "clip": "e-rasore-me-ai",
+   "meaning": "Say(phrase.hes-shes-in-the-kitchen)"
+  },
+  {
+   "clip": "e-rasore-me-ai",
+   "meaning": "Exclaim(phrase.hes-shes-in-the-kitchen)"
+  },
+  {
+   "clip": "e-rasore-me-ai",
+   "meaning": "Ask(phrase.hes-shes-in-the-kitchen)"
+  },
+  {
+   "clip": "e-huda-rasore-me-ai",
+   "meaning": "Say(phrase.hes-over-there-in-the-kitchen)"
+  },
+  {
+   "clip": "e-huda-rasore-me-ai",
+   "meaning": "Exclaim(phrase.hes-over-there-in-the-kitchen)"
+  },
+  {
+   "clip": "e-huda-rasore-me-ai",
+   "meaning": "Ask(phrase.hes-over-there-in-the-kitchen)"
+  },
+  {
+   "clip": "hu-chokri-rasore-me-ai",
+   "meaning": "Say(phrase.that-girl-is-in-the-kitchen)"
+  },
+  {
+   "clip": "hu-chokri-rasore-me-ai",
+   "meaning": "Exclaim(phrase.that-girl-is-in-the-kitchen)"
+  },
+  {
+   "clip": "hu-chokri-rasore-me-ai",
+   "meaning": "Ask(phrase.that-girl-is-in-the-kitchen)"
+  },
+  {
+   "clip": "hi-rasore-me-ain",
+   "meaning": "Say(phrase.these-are-in-the-kitchen)"
+  },
+  {
+   "clip": "hi-rasore-me-ain",
+   "meaning": "Exclaim(phrase.these-are-in-the-kitchen)"
+  },
+  {
+   "clip": "hi-rasore-me-ain",
+   "meaning": "Ask(phrase.these-are-in-the-kitchen)"
+  },
+  {
+   "clip": "hi-mare",
+   "meaning": "Say(phrase.all-of-these)"
+  },
+  {
+   "clip": "hi-mare",
+   "meaning": "Exclaim(phrase.all-of-these)"
+  },
+  {
+   "clip": "hi-mare",
+   "meaning": "Ask(phrase.all-of-these)"
+  },
+  {
+   "clip": "hu-mare",
+   "meaning": "Say(phrase.all-of-those)"
+  },
+  {
+   "clip": "hu-mare",
+   "meaning": "Exclaim(phrase.all-of-those)"
+  },
+  {
+   "clip": "hu-mare",
+   "meaning": "Ask(phrase.all-of-those)"
+  },
+  {
+   "clip": "chai-ke-ukar-paani-ke-ukar",
+   "meaning": "Say(phrase.boil-the-tea-boil-the-water)"
+  },
+  {
+   "clip": "chai-ke-ukar-paani-ke-ukar",
+   "meaning": "Exclaim(phrase.boil-the-tea-boil-the-water)"
+  },
+  {
+   "clip": "chai-ke-ukar-paani-ke-ukar",
+   "meaning": "Ask(phrase.boil-the-tea-boil-the-water)"
+  },
+  {
+   "clip": "slow-kar",
+   "meaning": "Say(phrase.turn-it-down-the-flame)"
+  },
+  {
+   "clip": "slow-kar",
+   "meaning": "Exclaim(phrase.turn-it-down-the-flame)"
+  },
+  {
+   "clip": "slow-kar",
+   "meaning": "Ask(phrase.turn-it-down-the-flame)"
+  },
+  {
+   "clip": "wiji-chad",
+   "meaning": "Say(phrase.put-it-in-add)"
+  },
+  {
+   "clip": "wiji-chad",
+   "meaning": "Exclaim(phrase.put-it-in-add)"
+  },
+  {
+   "clip": "wiji-chad",
+   "meaning": "Ask(phrase.put-it-in-add)"
+  },
+  {
+   "clip": "andar-wiji-chad",
+   "meaning": "Say(phrase.put-it-in-add-second-way)"
+  },
+  {
+   "clip": "andar-wiji-chad",
+   "meaning": "Exclaim(phrase.put-it-in-add-second-way)"
+  },
+  {
+   "clip": "andar-wiji-chad",
+   "meaning": "Ask(phrase.put-it-in-add-second-way)"
+  },
+  {
+   "clip": "kadhi-chad",
+   "meaning": "Say(phrase.take-it-out)"
+  },
+  {
+   "clip": "kadhi-chad",
+   "meaning": "Exclaim(phrase.take-it-out)"
+  },
+  {
+   "clip": "kadhi-chad",
+   "meaning": "Ask(phrase.take-it-out)"
+  },
+  {
+   "clip": "dabai",
+   "lex": "v.press",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "kapi-chad",
+   "meaning": "Say(phrase.cut)"
+  },
+  {
+   "clip": "kapi-chad",
+   "meaning": "Exclaim(phrase.cut)"
+  },
+  {
+   "clip": "kapi-chad",
+   "meaning": "Ask(phrase.cut)"
+  },
+  {
+   "clip": "nindha-nindha-kap",
+   "meaning": "Say(phrase.chop-it-small)"
+  },
+  {
+   "clip": "nindha-nindha-kap",
+   "meaning": "Exclaim(phrase.chop-it-small)"
+  },
+  {
+   "clip": "nindha-nindha-kap",
+   "meaning": "Ask(phrase.chop-it-small)"
+  },
+  {
+   "clip": "firai",
+   "lex": "v.turn",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "firai",
+   "lex": "v.turn",
+   "cell": "conj"
+  },
+  {
+   "clip": "firai-chad",
+   "meaning": "Say(phrase.turn-over-also-stir)"
+  },
+  {
+   "clip": "firai-chad",
+   "meaning": "Exclaim(phrase.turn-over-also-stir)"
+  },
+  {
+   "clip": "firai-chad",
+   "meaning": "Ask(phrase.turn-over-also-stir)"
+  },
+  {
+   "clip": "bego-kari-chad",
+   "meaning": "Say(phrase.mix-put-it-together)"
+  },
+  {
+   "clip": "bego-kari-chad",
+   "meaning": "Exclaim(phrase.mix-put-it-together)"
+  },
+  {
+   "clip": "bego-kari-chad",
+   "meaning": "Ask(phrase.mix-put-it-together)"
+  },
+  {
+   "clip": "tarelo-kari-chad",
+   "meaning": "Say(phrase.fry-it-make-it-fried)"
+  },
+  {
+   "clip": "tarelo-kari-chad",
+   "meaning": "Exclaim(phrase.fry-it-make-it-fried)"
+  },
+  {
+   "clip": "tarelo-kari-chad",
+   "meaning": "Ask(phrase.fry-it-make-it-fried)"
+  },
+  {
+   "clip": "thorok-wij",
+   "meaning": "Say(phrase.sprinkle-put-a-little-in)"
+  },
+  {
+   "clip": "thorok-wij",
+   "meaning": "Exclaim(phrase.sprinkle-put-a-little-in)"
+  },
+  {
+   "clip": "thorok-wij",
+   "meaning": "Ask(phrase.sprinkle-put-a-little-in)"
+  },
+  {
+   "clip": "bakuli-me-wiji-chad",
+   "meaning": "Say(phrase.put-it-in-the-bowl-the-stand-in-for-serve)"
+  },
+  {
+   "clip": "bakuli-me-wiji-chad",
+   "meaning": "Exclaim(phrase.put-it-in-the-bowl-the-stand-in-for-serve)"
+  },
+  {
+   "clip": "bakuli-me-wiji-chad",
+   "meaning": "Ask(phrase.put-it-in-the-bowl-the-stand-in-for-serve)"
+  },
+  {
+   "clip": "chakh",
+   "lex": "v.taste",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "dhui-ginta-ja-glass-dho-cup-dho",
+   "meaning": "Say(phrase.wash-the-glass-wash-the-cup)"
+  },
+  {
+   "clip": "dhui-ginta-ja-glass-dho-cup-dho",
+   "meaning": "Exclaim(phrase.wash-the-glass-wash-the-cup)"
+  },
+  {
+   "clip": "dhui-ginta-ja-glass-dho-cup-dho",
+   "meaning": "Ask(phrase.wash-the-glass-wash-the-cup)"
+  },
+  {
+   "clip": "barabar",
+   "lex": "a.proper",
+   "cell": "*"
+  },
+  {
+   "clip": "indo",
+   "lex": "n.egg",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "chapri",
+   "lex": "n.samosa-pastry",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "chapri",
+   "lex": "n.samosa-pastry",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "chapri",
+   "lex": "n.samosa-pastry",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "chapri",
+   "lex": "n.samosa-pastry",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "makai",
+   "lex": "n.corn-on-the-cob",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "makai",
+   "lex": "n.corn-on-the-cob",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "makai",
+   "lex": "n.corn-on-the-cob",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "makai",
+   "lex": "n.corn-on-the-cob",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "tapelo",
+   "lex": "n.pot",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "tawa",
+   "lex": "n.tawa",
+   "cell": "*"
+  },
+  {
+   "clip": "welan",
+   "lex": "n.rolling-pin",
+   "cell": "*"
+  },
+  {
+   "clip": "chamcho-oct5",
+   "lex": "n.tablespoon",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "aag",
+   "lex": "n.fire",
+   "cell": "*"
+  },
+  {
+   "clip": "garam",
+   "lex": "a.hot",
+   "cell": "*"
+  },
+  {
+   "clip": "thundo-thai-vyo",
+   "meaning": "Say(phrase.its-gone-cold)"
+  },
+  {
+   "clip": "thundo-thai-vyo",
+   "meaning": "Exclaim(phrase.its-gone-cold)"
+  },
+  {
+   "clip": "thundo-thai-vyo",
+   "meaning": "Ask(phrase.its-gone-cold)"
+  },
+  {
+   "clip": "chulo",
+   "lex": "n.stove",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "ukar",
+   "lex": "v.boil",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "slow",
+   "lex": "adv.slow",
+   "cell": "*"
+  },
+  {
+   "clip": "kar",
+   "lex": "v.do",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "atto",
+   "lex": "n.flour",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "gund",
+   "lex": "v.knead",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "bar",
+   "lex": "v.light",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "bhar",
+   "lex": "v.fill",
+   "cell": "imp.informal"
+  },
+  {
+   "clip": "thundo",
+   "lex": "a.cold",
+   "cell": "he.sg.dir"
+  },
+  {
+   "clip": "kan",
+   "lex": "n.ear",
+   "cell": "*"
+  },
+  {
+   "clip": "laal",
+   "lex": "a.red",
+   "cell": "*"
+  },
+  {
+   "clip": "chokra-sathe-b",
+   "meaning": "With(Item(n.boy,number=pl))"
+  },
+  {
+   "clip": "chokra-sathe",
+   "meaning": "With(Item(n.boy,number=pl))"
+  },
+  {
+   "clip": "chokre-sathe",
+   "meaning": "With(n.boy)"
+  },
+  {
+   "clip": "chokre-sathe-b-m",
+   "meaning": "With(n.boy)"
+  },
+  {
+   "clip": "chokre-sathe-b-z",
+   "meaning": "With(n.boy)"
+  },
+  {
+   "clip": "chokro-wadho-ai",
+   "meaning": "IsA(n.boy,a.big)"
+  },
+  {
+   "clip": "wadho-chokro",
+   "meaning": "Item(n.boy,[a.big])"
+  },
+  {
+   "clip": "wadha-chokra",
+   "meaning": "Item(n.boy,[a.big],number=pl)"
+  },
+  {
+   "clip": "chokra-wadha-ain",
+   "meaning": "IsA(Item(n.boy,number=pl),a.big)"
+  },
+  {
+   "clip": "dayo-chokro",
+   "meaning": "Item(n.boy,[a.well-behaved])"
+  },
+  {
+   "clip": "daya-chokra",
+   "meaning": "Item(n.boy,[a.well-behaved],number=pl)"
+  },
+  {
+   "clip": "chokro-saro-ai",
+   "meaning": "IsA(n.boy,a.good)"
+  },
+  {
+   "clip": "nindho-chokro",
+   "meaning": "Item(n.boy,[a.small])"
+  },
+  {
+   "clip": "ba-chokriyu",
+   "meaning": "Item(n.girl,2)"
+  },
+  {
+   "clip": "ba-chokriyu-b",
+   "meaning": "Item(n.girl,2)"
+  },
+  {
+   "clip": "chokriyu-sathe",
+   "meaning": "With(Item(n.girl,number=pl))"
+  },
+  {
+   "clip": "chokri-sathe",
+   "meaning": "With(n.girl)"
+  },
+  {
+   "clip": "chokri-wadhi-ai",
+   "meaning": "IsA(n.girl,a.big)"
+  },
+  {
+   "clip": "wadhi-chokri",
+   "meaning": "Item(n.girl,[a.big])"
+  },
+  {
+   "clip": "wadhi-chokriyu",
+   "meaning": "Item(n.girl,[a.big],number=pl)"
+  },
+  {
+   "clip": "wadhi-chokriyu-sathe",
+   "meaning": "With(Item(n.girl,[a.big],number=pl))"
+  },
+  {
+   "clip": "chokriyu-wadhi-ain",
+   "meaning": "IsA(Item(n.girl,number=pl),a.big)"
+  },
+  {
+   "clip": "wadhi-chokri-sathe",
+   "meaning": "With(Item(n.girl,[a.big]))"
+  },
+  {
+   "clip": "dayi-chokri",
+   "meaning": "Item(n.girl,[a.well-behaved])"
+  },
+  {
+   "clip": "dayi-chokriyu",
+   "meaning": "Item(n.girl,[a.well-behaved],number=pl)"
+  },
+  {
+   "clip": "chokri-sari-ai",
+   "meaning": "IsA(n.girl,a.good)"
+  },
+  {
+   "clip": "amba-je-mathe",
+   "meaning": "On(Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "toje-ambe-mathe",
+   "meaning": "OnShort(PossPron(p2,n.mango))"
+  },
+  {
+   "clip": "ambo-wadho-ai",
+   "meaning": "IsA(n.mango,a.big)"
+  },
+  {
+   "clip": "wadho-ambo",
+   "meaning": "Item(n.mango,[a.big])"
+  },
+  {
+   "clip": "wadha-amba",
+   "meaning": "Item(n.mango,[a.big],number=pl)"
+  },
+  {
+   "clip": "amba-wadha-ain",
+   "meaning": "IsA(Item(n.mango,number=pl),a.big)"
+  },
+  {
+   "clip": "wadhe-ambe-je-mathe",
+   "meaning": "Place(Item(n.mango,[a.big]),post.on)"
+  },
+  {
+   "clip": "laal-ambo",
+   "meaning": "Item(n.mango,[a.red])"
+  },
+  {
+   "clip": "laal-amba",
+   "meaning": "Item(n.mango,[a.red],number=pl)"
+  },
+  {
+   "clip": "amba-laal-ain",
+   "meaning": "IsA(Item(n.mango,number=pl),a.red)"
+  },
+  {
+   "clip": "ambo-saro-ai",
+   "meaning": "IsA(n.mango,a.good)"
+  },
+  {
+   "clip": "nana-jo-ambo",
+   "meaning": "Of(pn.nana,n.mango)"
+  },
+  {
+   "clip": "nani-jo-ambo",
+   "meaning": "Of(pn.nani,n.mango)"
+  },
+  {
+   "clip": "munjo-ambo",
+   "meaning": "PossPron(p1,n.mango)"
+  },
+  {
+   "clip": "munja-amba",
+   "meaning": "PossPron(p1,Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "tojo-ambo",
+   "meaning": "PossPron(p2,n.mango)"
+  },
+  {
+   "clip": "anja-amba",
+   "meaning": "PossPron(p2resp,Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "injo-ambo",
+   "meaning": "PossPron(p3,n.mango)"
+  },
+  {
+   "clip": "inja-amba",
+   "meaning": "PossPron(p3,Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "asanjo-ambo",
+   "meaning": "PossPron(p1pl.excl,n.mango)"
+  },
+  {
+   "clip": "iloka-jo-ambo",
+   "meaning": "Of(pron.they,n.mango)"
+  },
+  {
+   "clip": "iloka-ja-amba",
+   "meaning": "Of(pron.they,Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "darwaje-je-puthiya",
+   "meaning": "Place(n.door,post.behind)"
+  },
+  {
+   "clip": "darwajo-wadho-ai",
+   "meaning": "IsA(n.door,a.big)"
+  },
+  {
+   "clip": "wadho-darwajo",
+   "meaning": "Item(n.door,[a.big])"
+  },
+  {
+   "clip": "wadha-darwaja",
+   "meaning": "Item(n.door,[a.big],number=pl)"
+  },
+  {
+   "clip": "wadhe-darwaje-je-puthiya",
+   "meaning": "Place(Item(n.door,[a.big]),post.behind)"
+  },
+  {
+   "clip": "laal-darwajo",
+   "meaning": "Item(n.door,[a.red])"
+  },
+  {
+   "clip": "laal-darwaja",
+   "meaning": "Item(n.door,[a.red],number=pl)"
+  },
+  {
+   "clip": "laal-darwaje-je-puthiya",
+   "meaning": "Place(Item(n.door,[a.red]),post.behind)"
+  },
+  {
+   "clip": "saro-darwajo",
+   "meaning": "Item(n.door,[a.good])"
+  },
+  {
+   "clip": "nana-jo-darwajo",
+   "meaning": "Of(pn.nana,n.door)"
+  },
+  {
+   "clip": "nani-jo-darwajo",
+   "meaning": "Of(pn.nani,n.door)"
+  },
+  {
+   "clip": "pa-rasore-me-aayo",
+   "meaning": "BeIn(p1pl.incl,n.kitchen)"
+  },
+  {
+   "clip": "asa-rasore-me-aayo",
+   "meaning": "BeIn(p1pl.excl,n.kitchen)"
+  },
+  {
+   "clip": "hakro-cup",
+   "meaning": "Item(n.cup,1)"
+  },
+  {
+   "clip": "hakro-cup-b",
+   "meaning": "Item(n.cup,1)"
+  },
+  {
+   "clip": "cup-je-andar",
+   "meaning": "Place(n.cup,post.inside)"
+  },
+  {
+   "clip": "cup-kida-ai",
+   "meaning": "Where(n.cup)"
+  },
+  {
+   "clip": "cup-wadho-ai",
+   "meaning": "IsA(n.cup,a.big)"
+  },
+  {
+   "clip": "wadho-cup",
+   "meaning": "Item(n.cup,[a.big])"
+  },
+  {
+   "clip": "wadha-cup",
+   "meaning": "Item(n.cup,[a.big],number=pl)"
+  },
+  {
+   "clip": "wadhe-cup-me",
+   "meaning": "In(Item(n.cup,[a.big]))"
+  },
+  {
+   "clip": "laal-cup",
+   "meaning": "Item(n.cup,[a.red])"
+  },
+  {
+   "clip": "cup-laal-ai",
+   "meaning": "IsA(n.cup,a.red)"
+  },
+  {
+   "clip": "aako-cup",
+   "meaning": "Item(n.cup,[a.whole])"
+  },
+  {
+   "clip": "aako-cup-r3",
+   "meaning": "Item(n.cup,[a.whole])"
+  },
+  {
+   "clip": "aako-cup-r3-b",
+   "meaning": "Item(n.cup,[a.whole])"
+  },
+  {
+   "clip": "bharelo-cup",
+   "meaning": "Item(n.cup,[a.filled-up])"
+  },
+  {
+   "clip": "saro-cup",
+   "meaning": "Item(n.cup,[a.good])"
+  },
+  {
+   "clip": "nana-jo-cup",
+   "meaning": "Of(pn.nana,n.cup)"
+  },
+  {
+   "clip": "nani-jo-cup",
+   "meaning": "Of(pn.nani,n.cup)"
+  },
+  {
+   "clip": "munjo-cup",
+   "meaning": "PossPron(p1,n.cup)"
+  },
+  {
+   "clip": "munje-cup-me",
+   "meaning": "In(PossPron(p1,n.cup))"
+  },
+  {
+   "clip": "tojo-cup",
+   "meaning": "PossPron(p2,n.cup)"
+  },
+  {
+   "clip": "anjo-cup",
+   "meaning": "PossPron(p2resp,n.cup)"
+  },
+  {
+   "clip": "injo-cup",
+   "meaning": "PossPron(p3,n.cup)"
+  },
+  {
+   "clip": "inje-cup-me",
+   "meaning": "In(PossPron(p3,n.cup))"
+  },
+  {
+   "clip": "panjo-cup",
+   "meaning": "PossPron(p1pl.incl,n.cup)"
+  },
+  {
+   "clip": "asanjo-cup",
+   "meaning": "PossPron(p1pl.excl,n.cup)"
+  },
+  {
+   "clip": "iloka-jo-cup",
+   "meaning": "Of(pron.they,n.cup)"
+  },
+  {
+   "clip": "maani-je-mathe",
+   "meaning": "On(Item(n.chapati,number=pl))"
+  },
+  {
+   "clip": "tu-muke-maani-banai-dinda",
+   "meaning": "CanYouMake(p2,n.chapati)"
+  },
+  {
+   "clip": "sari-maani",
+   "meaning": "Item(n.chapati,[a.good])"
+  },
+  {
+   "clip": "maani-sari-ain",
+   "meaning": "IsA(Item(n.chapati,number=pl),a.good)"
+  },
+  {
+   "clip": "nana-ji-maani",
+   "meaning": "Of(pn.nana,n.chapati)"
+  },
+  {
+   "clip": "muke-chai-khapeti",
+   "meaning": "Need(p1,Item(n.tea))|polite|"
+  },
+  {
+   "clip": "aai-muke-chai-banai-dinda",
+   "meaning": "CanYouMake(p2resp,n.tea)"
+  },
+  {
+   "clip": "aai-muke-chai-banai-dinda-r3",
+   "meaning": "CanYouMake(p2resp,n.tea)"
+  },
+  {
+   "clip": "muke-dudh-khapeto",
+   "meaning": "Need(p1,Item(n.milk))|polite|"
+  },
+  {
+   "clip": "nana-sathe",
+   "meaning": "With(Item(pn.nana,number=pl))"
+  },
+  {
+   "clip": "nani-sathe",
+   "meaning": "With(Item(pn.nani,number=pl))"
+  },
+  {
+   "clip": "hakri-lakri",
+   "meaning": "Item(n.skewer,1)"
+  },
+  {
+   "clip": "char-lakri",
+   "meaning": "Item(n.skewer,4)"
+  },
+  {
+   "clip": "muke-chamchi-de",
+   "meaning": "GiveMe(Item(n.teaspoon))"
+  },
+  {
+   "clip": "hakri-chamchi",
+   "meaning": "Item(n.teaspoon,1)"
+  },
+  {
+   "clip": "chamchi-kida-ai",
+   "meaning": "Where(n.teaspoon)"
+  },
+  {
+   "clip": "bhareli-chamchi",
+   "meaning": "Item(n.teaspoon,[a.filled-up])"
+  },
+  {
+   "clip": "muke-chamcho-de",
+   "meaning": "GiveMe(Item(n.tablespoon))"
+  },
+  {
+   "clip": "hakro-chamcho",
+   "meaning": "Item(n.tablespoon,1)"
+  },
+  {
+   "clip": "wadho-chamcho",
+   "meaning": "Item(n.tablespoon,[a.big])"
+  },
+  {
+   "clip": "bakra-sathe",
+   "meaning": "With(Item(n.she-goat,number=pl))"
+  },
+  {
+   "clip": "bakri-sathe",
+   "meaning": "With(n.she-goat)"
+  },
+  {
+   "clip": "nani-ji-bakri",
+   "meaning": "Of(pn.nani,n.she-goat)"
+  },
+  {
+   "clip": "nani-jo-bakro",
+   "meaning": "Of(pn.nani,n.billy-goat)"
+  },
+  {
+   "clip": "inje-bakre-sathe",
+   "meaning": "With(PossPron(p3,n.billy-goat))"
+  },
+  {
+   "clip": "wadhi-pacheri",
+   "meaning": "Item(n.dupatta,[a.big])"
+  },
+  {
+   "clip": "laal-pacheri",
+   "meaning": "Item(n.dupatta,[a.red])"
+  },
+  {
+   "clip": "nana-ji-pacheri",
+   "meaning": "Of(pn.nana,n.dupatta)"
+  },
+  {
+   "clip": "nani-ji-pacheri",
+   "meaning": "Of(pn.nani,n.dupatta)"
+  },
+  {
+   "clip": "aaki-tanki",
+   "meaning": "Item(n.tank,[a.whole])"
+  },
+  {
+   "clip": "aaki-tanki-r3",
+   "meaning": "Item(n.tank,[a.whole])"
+  },
+  {
+   "clip": "nair-ji-chutney",
+   "meaning": "Item(n.coconut-chutney)"
+  },
+  {
+   "clip": "table-je-niche",
+   "meaning": "Place(n.table,post.under)"
+  },
+  {
+   "clip": "chulo-bar",
+   "meaning": "Command(v.light,n.stove)"
+  },
+  {
+   "clip": "wadhi-bakuli-je-andar",
+   "meaning": "Place(Item(n.bowl,[a.big]),post.inside)"
+  },
+  {
+   "clip": "wadhi-gadi-je-andar",
+   "meaning": "Place(Item(n.car,[a.big]),post.inside)"
+  },
+  {
+   "clip": "char-limu",
+   "meaning": "Item(n.lemon,4)"
+  },
+  {
+   "clip": "toji-kursi-mathe",
+   "meaning": "OnShort(PossPron(p2,n.chair))"
+  },
+  {
+   "clip": "munji-kursi",
+   "meaning": "PossPron(p1,n.chair)"
+  },
+  {
+   "clip": "munji-kursiyu",
+   "meaning": "PossPron(p1,Item(n.chair,number=pl))"
+  },
+  {
+   "clip": "anji-kursi",
+   "meaning": "PossPron(p2resp,n.chair)"
+  },
+  {
+   "clip": "inji-kursi",
+   "meaning": "PossPron(p3,n.chair)"
+  },
+  {
+   "clip": "iloka-ji-kursi",
+   "meaning": "Of(pron.they,n.chair)"
+  },
+  {
+   "clip": "dayi-chakli",
+   "meaning": "Item(n.bird,[a.well-behaved])"
+  },
+  {
+   "clip": "dayo-kutro",
+   "meaning": "Item(n.dog,[a.well-behaved])"
+  },
+  {
+   "clip": "muke-paani-khapeto",
+   "meaning": "Need(p1,Item(n.water))|polite|"
+  },
+  {
+   "clip": "paani-bhari-chad",
+   "meaning": "DoIt(v.fill,n.water)"
+  },
+  {
+   "clip": "atto-gund",
+   "meaning": "Command(v.knead,n.flour)"
+  },
+  {
+   "clip": "tu-muke-daar-banai-dinda",
+   "meaning": "CanYouMake(p2,n.daal)"
+  },
+  {
+   "clip": "bajr-ji-maani",
+   "meaning": "Item(n.millet-chapati)"
+  },
+  {
+   "clip": "tarela-bataata",
+   "meaning": "Item(n.potato,[a.fried],number=pl)"
+  },
+  {
+   "clip": "trae-dungri",
+   "meaning": "Item(n.onion,3)"
+  },
+  {
+   "clip": "amli-ji-chutney",
+   "meaning": "Item(n.tamarind-chutney)"
+  },
+  {
+   "clip": "fudino-ji-chutney",
+   "meaning": "Item(n.mint-chutney)"
+  },
+  {
+   "clip": "tu-muke-chaat-banai-dinda",
+   "meaning": "CanYouMake(p2,n.chaat)"
+  },
+  {
+   "clip": "tu-muke-samosa-banai-dinda",
+   "meaning": "CanYouMake(p2,n.samosa)"
+  },
+  {
+   "clip": "tu-muke-mishkaki-banai-dinda",
+   "meaning": "CanYouMake(p2,n.mishkaki)"
+  },
+  {
+   "clip": "hakri-lakri-mishkaki",
+   "meaning": "Unit(1,n.skewer,n.mishkaki)"
+  },
+  {
+   "clip": "hakri-lakri-mishkaki-r3",
+   "meaning": "Unit(1,n.skewer,n.mishkaki)"
+  },
+  {
+   "clip": "ba-lakri-mishkaki",
+   "meaning": "Unit(2,n.skewer,n.mishkaki)"
+  },
+  {
+   "clip": "chokre-jo-cup",
+   "meaning": "Of(n.boy,n.cup)"
+  },
+  {
+   "clip": "chokre-jo-ambo",
+   "meaning": "Of(n.boy,n.mango)"
+  },
+  {
+   "clip": "chokre-je-darwaje-je-puthiya",
+   "meaning": "Place(Of(n.boy,n.door),post.behind)"
+  },
+  {
+   "clip": "chokre-ji-bakri-sathe",
+   "meaning": "With(Of(n.boy,n.she-goat))"
+  },
+  {
+   "clip": "chokre-je-bakre-sathe",
+   "meaning": "With(Of(n.boy,n.billy-goat))"
+  },
+  {
+   "clip": "chokri-jo-cup",
+   "meaning": "Of(n.girl,n.cup)"
+  },
+  {
+   "clip": "chokri-jo-ambo",
+   "meaning": "Of(n.girl,n.mango)"
+  },
+  {
+   "clip": "chokri-ji-bakri-sathe",
+   "meaning": "With(Of(n.girl,n.she-goat))"
+  },
+  {
+   "clip": "chokri-je-bakre-sathe",
+   "meaning": "With(Of(n.girl,n.billy-goat))"
+  },
+  {
+   "clip": "nana-je-cup-je-andar",
+   "meaning": "Place(Of(pn.nana,n.cup),post.inside)"
+  },
+  {
+   "clip": "nana-ja-amba",
+   "meaning": "Of(pn.nana,Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "nani-ja-amba",
+   "meaning": "Of(pn.nani,Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "nani-je-ambe-je-mathe",
+   "meaning": "Place(Of(pn.nani,n.mango),post.on)"
+  },
+  {
+   "clip": "bakri-jo-kan",
+   "meaning": "Of(n.she-goat,n.ear)"
+  },
+  {
+   "clip": "bakre-ja-amba",
+   "meaning": "Of(n.billy-goat,Item(n.mango,number=pl))"
+  },
+  {
+   "clip": "bakre-jo-kan",
+   "meaning": "Of(n.billy-goat,n.ear)"
+  },
+  {
+   "clip": "kebab-ji-lakri",
+   "meaning": "Of(n.kebab,n.skewer)"
+  },
+  {
+   "clip": "mishkaki-ji-lakri",
+   "meaning": "Of(n.mishkaki,n.skewer)"
+  },
+  {
+   "clip": "jhini-maani-banai",
+   "meaning": "Command(v.make,Item(n.chapati,[a.thin]))"
+  },
+  {
+   "clip": "jadi-maani-banai",
+   "meaning": "Command(v.make,Item(n.chapati,[a.thick]))"
+  },
+  {
+   "clip": "hane-kadh",
+   "meaning": "Lift()"
+  },
+  {
+   "clip": "chadi-de",
+   "meaning": "Leave()"
+  },
+  {
+   "clip": "hu-wadhe-chokre-sathe",
+   "meaning": "With(Point(dem.that,Item(n.boy,[a.big])))"
+  },
+  {
+   "clip": "tu-ki-aiye",
+   "meaning": "HowAreYou(p2)"
+  },
+  {
+   "clip": "aai-ki-aayo",
+   "meaning": "HowAreYou(p2resp)"
+  },
+  {
+   "clip": "aau-theek-ai",
+   "meaning": "ImFine()"
+  },
+  {
+   "clip": "aau-theek-ai-r3",
+   "meaning": "ImFine()"
+  },
+  {
+   "clip": "hu-nindhi-chokri",
+   "meaning": "Point(dem.that,Item(n.girl,[a.small]))"
+  }
+ ]
+}

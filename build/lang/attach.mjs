@@ -47,6 +47,10 @@ function* candidates(S) {
     yield { fn: "In", x: { fn: "Item", kind: k, number: "pl" } };
     yield { fn: "On", x: { fn: "Item", kind: k, number: "pl" } };
     for (const r of posts) yield { fn: "Place", anchor: k, rel: r };
+    yield { fn: "OnShort", x: k };
+    for (const o of PERSONS) yield { fn: "OnShort", x: { fn: "PossPron", owner: o, thing: k } };
+    yield { fn: "Lift", x: k };
+    yield { fn: "Leave", x: k };
     yield { fn: "Where", thing: k };
     yield { fn: "ForWho", x: k };
     yield { fn: "For", x: k };
@@ -109,6 +113,9 @@ function* candidates(S) {
     yield { fn: "DontNow", verb: v };
   }
   for (const a of adjs) yield { fn: "Most", adj: a };
+  yield { fn: "Lift" };
+  yield { fn: "Leave" };
+  for (const d of ["dem.this", "dem.that"]) for (const k of nouns) for (const a of adjs) yield { fn: "With", x: { fn: "Point", which: d, x: item(k, null, [a]) } };
   for (const t of places) for (const a of places) for (const r of posts) {
     if (t === a) continue;
     yield { fn: "LocatedAt", thing: t, anchor: a, rel: r };

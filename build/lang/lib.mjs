@@ -100,6 +100,9 @@ export class Store {
     }
     return null;
   }
+  entriesWithAlternatives() {
+    return Array.from(this.entries.values()).filter((e) => (e.open || []).some((q) => /Two words for the same thing/.test(q.q)));
+  }
   aliasOwner(id) {
     for (const e of this.entries.values()) if ((e.aliases || []).includes(id)) return e;
     return null;
