@@ -100,7 +100,7 @@ Work is done when `docs/process/qa-checklist.md` passes:
 - every item on `docs/process/regressions.md` for the touched screens is rechecked;
 - the change is compared side by side with the approved mock-up and with Zafar's last feedback, item by item.
 
-While iterating: laptop size, changed screens only, one shot each. Run the full matrix before the final push.
+Build sessions check fast (tests, leak scripts, `checks.mjs`, one laptop-size `--touched` pass on what they changed); the full matrix, sound run and outside review run once, in the orchestrator's `/review`, before a publish (decision 48).
 
 ## Language
 

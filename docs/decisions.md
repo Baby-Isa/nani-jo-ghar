@@ -290,6 +290,12 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **46. The tools are used automatically:** Zafar won't know when to prompt a script or skill, so the orchestrator and every session use them by default whenever the task matches (CLAUDE.md "Tools and skills", rule B21).
   Source: Zafar, orchestrator chat, 5 Oct ("will you automatically use the scripts where needed? I won't know when to prompt them"). Rule: B21
 
+- **47. The docs rewrite (from the Fable audit, `docs/process/audits/2026-10-05-docs-audit.md`):** runs after C4, on its own branch, while Zafar plays (it touches no game file); Sonnet high, then a Fable review. The 16 non-negotiables stay in CLAUDE.md (the only file every session loads) and the rulebook points to them, not the reverse; everything else the audit cuts from CLAUDE.md goes. Old decisions, step-1 files and parked-mode designs are archived, never deleted. It also refreshes the architecture docs and the Cook and clinic mode docs to describe the code as it now is.
+  Source: Zafar, orchestrator chat, 5 Oct ("agree with your suggestions"). Rule: A (docs), B18
+
+- **48. One consolidated check, not three:** builders run fast checks only (tests, leak scripts, `checks.mjs` incl. the word lint, check_onboard, and one `--touched` pass at laptop size on the flows they changed, one shot each, looked at by the builder). The full screen matrix, the sound run and the outside review run once, by the orchestrator (`/review`), just before a publish. Replaces "full matrix before the final push" per session.
+  Source: Zafar, orchestrator chat, 5 Oct ("we do a lot of checking ... can be cut down or consolidated"). Rule: C8
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.
