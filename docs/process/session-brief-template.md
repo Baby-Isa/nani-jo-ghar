@@ -25,7 +25,7 @@ DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on. NO
 PERMISSIONS NEEDED UP FRONT
 TASKS (numbered, each with its acceptance criterion)
 REGRESSION ROWS TO RECHECK (listed by regress.mjs for the flows it touches)
-PROOF (decision 48): checks.mjs, leak scripts, check_onboard, touched.mjs and its sandbox command at 1366x768 only, shotdiff.mjs, regress.mjs --stdin, skeleton.mjs
+PROOF (decisions 48, 50; HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`): checks.mjs, leak scripts, check_onboard, touched.mjs and its sandbox command at 1366x768 only, shotdiff.mjs, regress.mjs --stdin, skeleton.mjs
 TESTS: browser tests one at a time (flock, own COOK_TEST_PORT; the next free port is recorded in docs/architecture/testing.md)
 GIT and FINISH: build/reports/<id>-<topic>.md (under 300 words), the QA checklist results, one line in docs/process/overnight-log.md, commit and push the branch.
   Only a session the brief marks `publish` ends with bump_version and one push to main.

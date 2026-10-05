@@ -27,7 +27,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 11. **Every line is a full, natural sentence built by the language engine, and every word the child hears is a real family voice.** The most frequent phrases (found by statistical analysis of simulated play) are recorded whole; the rest are assembled from recorded words. Never hand-written fragments or hand fixes: if the engine can't say it, report the gap.
 12. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can take it back until Done.
 13. **Art is made in ChatGPT via Claude in Chrome** from one ready-to-paste block. A paid API only for a rapid prototype when Zafar can't respond, under $2.
-14. **Sessions:** at most ~4 at once, no helper sessions, complete briefs, `python3 build/bump_version.py` and one push to `main` at the end.
+14. **Sessions:** at most ~4 at once, no helper sessions, complete briefs. A build session pushes its branch only and checks fast (at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`); the orchestrator alone runs the full check, `python3 build/bump_version.py` and the one push to `main` (decisions 33, 48, 50).
 15. **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
 16. **The family is Khoja Shia Ithna'asheri Muslim** (internal note only; never named in anything players or the public read): halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
 

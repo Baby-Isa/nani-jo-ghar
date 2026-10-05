@@ -72,7 +72,8 @@ if (s.flows?.length && !a.has("no-rows")) {
   add("");
 }
 
-add("PROOF (rule C8, decision 48: fast checks only; the orchestrator's /review runs the full matrix once before a publish):",
+add("PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):",
+  "  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's \`/review\`. If a check would run longer, stop it and say so in the report.",
   "  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).",
   "  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.",
   "  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).",
