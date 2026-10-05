@@ -26,8 +26,8 @@ export function apply(S) {
   S.patch("pron.p2", { forms: { dat: { t: "toke", src: `${GN} §23 (toke kuro khapeto?), §37.1` }, ...poss("to", ["he.sg.dir", "she.*.dir", "he.pl.dir", "he.sg.obl", "she.*.obl"], `${GN} §54 C73, §55 C79`) } }, { source: "hand: grammar-notes prose" });
   S.patch("pron.p2resp", { forms: { dat: { t: "anke", status: "confirmed", src: `${GN} §23 (anke kuro khapeto?: spelling confirmed by Zafar 26 Sept PM, §28)` }, ...poss("an", ["he.sg.dir", "she.*.dir", "he.pl.dir"], `${GN} §54 C74 (anje, the form before a postposition, was not said)`) } }, { source: "hand: grammar-notes prose" });
   S.patch("pron.p3", { forms: { ...poss("in", ["he.sg.dir", "she.*.dir", "he.pl.dir", "he.sg.obl", "she.*.obl"], `${GN} §54 C75-C76, §55 C79`) }, notes: ["e is both he and she (§21, §51); his and her are the same word (injo, §54 C76)."] }, { source: "hand: grammar-notes prose" });
-  S.patch("pron.pa", { forms: { dat: { t: "panke", status: "draft", src: `${GN} §33 S6 (panke randhnu khapdo: ⚠), §37.1` }, ...poss("pan", ["he.sg.dir"], `${GN} §54 C77 (panjo cup, panjo ambo; panje ghare ⚠)`) }, open: [{ q: "Is panke 'to us including you' only, or does asa have its own (asanke)?", src: `${GN} §37.1` }] }, { source: "hand: grammar-notes prose" });
-  S.patch("pron.asa", { forms: { ...poss("asan", ["he.sg.dir"], `${GN} §54 C77 (asanjo cup, asanjo ambo)`) } }, { source: "hand: grammar-notes prose" });
+  S.patch("pron.we-incl", { forms: { dat: { t: "panke", status: "draft", src: `${GN} §33 S6 (panke randhnu khapdo: ⚠), §37.1` }, ...poss("pan", ["he.sg.dir"], `${GN} §54 C77 (panjo cup, panjo ambo; panje ghare ⚠)`) }, open: [{ q: "Is panke 'to us including you' only, or does asa have its own (asanke)?", src: `${GN} §37.1` }] }, { source: "hand: grammar-notes prose" });
+  S.patch("pron.we-excl", { forms: { ...poss("asan", ["he.sg.dir"], `${GN} §54 C77 (asanjo cup, asanjo ambo)`) } }, { source: "hand: grammar-notes prose" });
   w("Pron", "iloka", "they / them (those people)", [`${GN} §54 C78`, `${GN} §53 (no word for 'they' needed: rasore me ain)`], {
     ref: "p3pl", person: "p3", number: "pl", f: { dir: "iloka", obl: "iloka" },
     n: ["Said as one word (spelling confirmed by Zafar 5 Oct, decision 31); Mum thinks it may be two words, e + loka (§54)."],
@@ -46,7 +46,7 @@ export function apply(S) {
   w("Q", "kyo", "which one", [`${GN} §23 (kyo?: ⚠)`, `${GN} Zafar 26 Sept PM (spelling confirmed)`], { d: true });
   w("Q", "kitla", "how many", [`${GN} §23 (kitla?)`]);
   w("Q", "ki", "how / what / something", [`${GN} §21 (tu ki aiye?)`, `${GN} §14 (ki on its own is what or something; ki na ki = something or other)`], { n: ["Also 'nothing' in ki na, and the start of ki baki nai (none left): see the phrases."] });
-  w("Q", "kere", "who (as the one who did it)", [`${GN} §23 (kere karein?: ⚠)`, `${GN} §29 R12`], { d: true, n: ["Zafar does not recognise it (26 Sept PM); stays out of the game."], q: [{ q: "kere karein?: what do the children really hear? Zafar didn't recognise it; re-ask Mum (A8.9).", src: `${GN} Zafar 26 Sept PM, §29 R12` }] });
+  w("Q", "kere", "who (as the one who did it)", [`${GN} §23 (kere karein?: ⚠)`, `${GN} §29 R12`], { id: "q.who-did-it", d: true, n: ["Zafar does not recognise it (26 Sept PM); stays out of the game."], q: [{ q: "kere karein?: what do the children really hear? Zafar didn't recognise it; re-ask Mum (A8.9).", src: `${GN} Zafar 26 Sept PM, §29 R12` }] });
 
   /* ---------------- numbers ---------------- */
   w("Num", "trae", "three", [`${GN} §34 P1-P4 (trae bateta, trae dungri, trae mirchi)`, "class handout"], { id: "num.3", value: 3, number: "pl", f: { "*": "trae" }, a: ["num-03"] });
@@ -55,7 +55,7 @@ export function apply(S) {
 
   /* ---------------- postpositions, link words, conjunctions, adverbs ---------------- */
   w("Post", "niche", "under, underneath", [`${GN} §15 (cup table je niche ai)`]);
-  w("Post", "andar", "in, inside", [`${GN} §15 (cup kabaat je andar ai)`, `${GN} §41 C30 (wadhe cup je andar)`], { n: ["me (in) and andar (inside) are both said: cup me, cup je andar (§55 C79)."] });
+  w("Post", "andar", "in, inside", [`${GN} §15 (cup kabaat je andar ai)`, `${GN} §41 C30 (wadhe cup je andar)`], { id: "post.inside", n: ["me (in) and andar (inside) are both said: cup me, cup je andar (§55 C79)."] });
   w("Post", "puthiya", "behind", [`${GN} §15 (a soft h after the t)`, `${GN} Zafar's corrections to A5-A7`]);
   w("Post", "bajume", "next to, beside", [`${GN} §15 (saani je bajume)`]);
   w("Post", "agiya", "in front of (anywhere in front)", [`${GN} §15 (Nana je agiya)`, `${GN} Zafar's corrections (one a)`]);
@@ -64,35 +64,35 @@ export function apply(S) {
   w("Post", "ma", "among (in 'the biggest', wadho ma wadho)", [`${GN} §43 (wadho ma wadho, nindho ma nindho)`], { q: [{ q: "Is the ma of 'the biggest' the same word as me (in)? Mum said 'maa means in' (§37.2).", src: `${GN} §37.2, §43` }] });
   w("Conj", "ne", "and", [`${GN} §6 (ne chai, ne dudh)`, `${GN} §7 (daar ne maani)`], { n: ["In a list each item takes its own ne (§6)."] });
   w("Conj", "ke", "or", [`${GN} §9 (hi ambo khan, ke hi maani khan)`, `${GN} §49 (wadho ke nindho?)`]);
-  w("Post", "ke", "(marks who or what is acted on: Simba ke rasore me nares)", [`${GN} §20 (Simba ke rasore me nares: heard once)`, `${GN} §37.1 (muke, toke, anke, panke carry the same ke)`], { id: "post.ke", d: true, n: ["Like Sindhi khe / Hindi ko; heard once (§20)."], q: [{ q: "The object marker ke: when is it needed? Heard once ('I saw Simba'): kb feature 22.", ask: ["L93", "C132-C136"], src: "grammar-kb feature 22" }] });
+  w("Post", "ke", "(marks who or what is acted on: Simba ke rasore me nares)", [`${GN} §20 (Simba ke rasore me nares: heard once)`, `${GN} §37.1 (muke, toke, anke, panke carry the same ke)`], { id: "post.object-marker", d: true, n: ["Like Sindhi khe / Hindi ko; heard once (§20)."], q: [{ q: "The object marker ke: when is it needed? Heard once ('I saw Simba'): kb feature 22.", ask: ["L93", "C132-C136"], src: "grammar-kb feature 22" }] });
   w("Adv", "poi", "then", [`${GN} §7 (ne poi = and then, confirmed)`, `${GN} §24 B12`], { n: ["Only heard in ne poi."] });
   w("Adv", "pela", "first", [`${GN} §7 (Muke pela daar khape, ne poi maani)`], { d: true, q: [{ q: "Is pela confirmed? Mum said it in a sentence (§7); data/cook.json keeps it draft.", src: `${GN} §7` }] });
   w("Adv", "pan", "also, too", [`${GN} §8 (Ma lai pan hakro banai)`, `${GN} §9 (dungri pan wij)`]);
   w("Adv", "saathe", "together", [`${GN} §7 (Daar ne maani saathe khapeti?)`], { d: true, q: [{ q: "Is saathe (together) the same word as sathe (with)? Spelled differently in the notes.", src: `${GN} §7, §36 C17` }] });
   w("Adv", "kali", "only", [`${GN} §25 B13 (kali amba: the same for he- and she-words)`]);
-  w("Adv", "hane", "now (in a sequence of steps)", [`${GN} §25 B14`, `${GN} §37.6 (hane kadh: the gentle 'now, take it out')`]);
-  w("Adv", "hever", "now (in general, urgent)", [`${GN} §25 B14 (hever hal)`, `${GN} §29 R6 (hever kadh)`, `${GN} §37.6`], { n: ["hever na = not now (§25 B16)."] });
+  w("Adv", "hane", "now (in a sequence of steps)", [`${GN} §25 B14`, `${GN} §37.6 (hane kadh: the gentle 'now, take it out')`], { id: "adv.now-in-steps" });
+  w("Adv", "hever", "now (in general, urgent)", [`${GN} §25 B14 (hever hal)`, `${GN} §29 R6 (hever kadh)`, `${GN} §37.6`], { id: "adv.now-urgent", n: ["hever na = not now (§25 B16)."] });
   w("Adv", "bo", "very", [`${GN} §45 (maani bo fine ai)`, `${GN} §33 S2`]);
-  w("Adv", "thori", "a little, a bit (in thori war: a bit of time)", [`${GN} §25 B16 (thori war rakh)`], { id: "adv.thori", n: ["thori agrees with the she-word war? Not enough heard to say."] });
-  w("N", "war", "time, a while (thori war = a bit longer)", [`${GN} §25 B16 (thori war rakh)`], { g: "she", d: true, q: [{ q: "Is war a she-word (thori war)? Inferred from thori, not said." }], par: false, f: { "sg.*": "war" } });
-  w("Adv", "bas", "enough", [`${GN} §25 B19`], { id: "adv.bas" });
-  w("Adv", "thorok", "a little", [`${GN} §25 B21 (Whisper: torok; spelling confirmed by Zafar 26 Sept PM)`], { d: true, q: [{ q: "thorok (a little): ⚠ doubtful in the notes; Zafar confirmed the spelling 26 Sept PM.", src: `${GN} §25 B21, §28` }] });
+  w("Adv", "thori", "a little, a bit (in thori war: a bit of time)", [`${GN} §25 B16 (thori war rakh)`], { id: "adv.a-bit-of", n: ["thori agrees with the she-word war? Not enough heard to say."] });
+  w("N", "war", "a while (thori war = a bit longer)", [`${GN} §25 B16 (thori war rakh)`], { g: "she", d: true, q: [{ q: "Is war a she-word (thori war)? Inferred from thori, not said." }], par: false, f: { "sg.*": "war" } });
+  w("Adv", "bas", "enough", [`${GN} §25 B19`], );
+  w("Adv", "thorok", "a little (thorok)", [`${GN} §25 B21 (Whisper: torok; spelling confirmed by Zafar 26 Sept PM)`], { d: true, q: [{ q: "thorok (a little): ⚠ doubtful in the notes; Zafar confirmed the spelling 26 Sept PM.", src: `${GN} §25 B21, §28` }] });
   w("Adv", "wadhare", "more", [`${GN} §25 B20 (⚠ doubtful; spelling confirmed by Zafar 26 Sept PM)`], { d: true, q: [{ q: "wadhare (more): ⚠ doubtful in the notes; Zafar confirmed the spelling 26 Sept PM.", src: `${GN} §25 B20, §28` }] });
-  w("Adv", "bego", "together (in bego kari chad: put it together, mix)", [`${GN} §38 I13`]);
-  w("A", "theek", "fine, all right (never changes)", [`${GN} §27 B43 (Aau theek ai)`, `${GN} §44 (theek, tayar, laal never agree)`], { id: "a.theek", inv: true });
+  w("Adv", "bego", "joined up (in bego kari chad: put it together, mix)", [`${GN} §38 I13`]);
+  w("A", "theek", "fine, all right (never changes)", [`${GN} §27 B43 (Aau theek ai)`, `${GN} §44 (theek, tayar, laal never agree)`], { id: "a.okay", inv: true });
   w("A", "tayar", "ready", [`${GN} §25 B22 (Tayar ai)`, `${GN} §44 (never agrees)`], { inv: true });
-  w("A", "aako", "whole, full (aako cup: a whole cup)", [`${GN} §29 R3-R4 (aako cup, aaki tanki)`], { id: "a.aako", f: { "he.*.dir": { t: "aako", src: `${GN} §24 B5, §29 R3 (aako cup)` }, "she.*.dir": { t: "aaki", src: `${GN} §24 B5, §29 R4 (aaki tanki)` } }, par: false, n: ["aako cup = a whole cup, the one used in cooking (Zafar 26 Sept). bharelo = filled up (a different word)."] });
+  w("A", "aako", "whole, full (aako cup: a whole cup)", [`${GN} §29 R3-R4 (aako cup, aaki tanki)`], { id: "a.whole", f: { "he.*.dir": { t: "aako", src: `${GN} §24 B5, §29 R3 (aako cup)` }, "she.*.dir": { t: "aaki", src: `${GN} §24 B5, §29 R4 (aaki tanki)` } }, par: false, n: ["aako cup = a whole cup, the one used in cooking (Zafar 26 Sept). bharelo = filled up (a different word)."] });
   w("A", "bharelo", "filled up, heaped (bharelo cup, bhareli chamchi)", [`${GN} §24 B5`], { f: { "he.*.dir": { t: "bharelo", src: `${GN} §24 B5` }, "she.*.dir": { t: "bhareli", src: `${GN} §24 B5 (bhareli chamchi: a heaped teaspoon)` } }, par: false });
   w("A", "ardo", "half (a portion)", [`${GN} §24 B4 (ardo / ardi, agrees with gender; when the gender is unknown use the he-form)`], { f: { "he.*.dir": { t: "ardo", src: `${GN} §24 B4` }, "she.*.dir": { t: "ardi", src: `${GN} §24 B4` } }, par: false });
   w("A", "adh", "half (of an amount: adh cup)", [`${GN} §24 B4`], { inv: true, id: "a.adh", n: ["adh for amounts (half a cup of milk); ardo / ardi for a half portion."] });
   w("A", "dabo", "left", [`${GN} §17 (dabo hath: the left hand)`], { f: { "he.*.dir": { t: "dabo", src: `${GN} §17` } }, par: false, q: [{ q: "The she-form of dabo (and agreement with the patient's side): not said." }] });
-  w("A", "jamni", "right (she-form: jamni baju)", [`${GN} §17 (jamni baju: on the right; jamno hath is probably right but not said)`], { id: "a.jamno", f: { "she.*.dir": { t: "jamni", src: `${GN} §17 (jamni baju)` } }, par: false, d: true, q: [{ q: "Is the he-form jamno? Heard only as jamni (baju is a she-word); jamno is Claude's guess and is not entered.", src: `${GN} §17` }] });
+  w("A", "jamni", "right (she-form: jamni baju)", [`${GN} §17 (jamni baju: on the right; jamno hath is probably right but not said)`], { id: "a.right", f: { "she.*.dir": { t: "jamni", src: `${GN} §17 (jamni baju)` } }, par: false, d: true, q: [{ q: "Is the he-form jamno? Heard only as jamni (baju is a she-word); jamno is Claude's guess and is not entered.", src: `${GN} §17` }] });
   w("A", "fine", "nice, good (the English word)", [`${GN} §45 C46-C48 (fine ambo, fine cup, bo fine)`], { inv: true });
-  w("A", "khaso", "nice, special", [`${GN} §45 C46 (khaso ambo: ⚠)`], { d: true, inv: true });
-  w("A", "barabar", "right, proper, just right", [`${GN} §45 C46, C48 (cup barabar ai: it goes after the noun)`], { inv: true, n: ["Goes after the noun, not before (§45)."] });
+  w("A", "khaso", "nice, special", [`${GN} §45 C46 (khaso ambo: ⚠)`], { id: "a.special", d: true, inv: true });
+  w("A", "barabar", "right, proper, just right", [`${GN} §45 C46, C48 (cup barabar ai: it goes after the noun)`], { id: "a.proper", inv: true, n: ["Goes after the noun, not before (§45)."] });
   w("A", "garam", "hot (to touch)", [`${GN} §39 I34 (garam ai)`], { inv: true, q: [{ q: "koso (Sindhi-looking) vs garam for hot: Masi's tie-break.", src: `${GN} §39 I34` }] });
-  w("A", "dayo", "good (well-behaved: people and animals only)", [`${GN} §45 C44-C45 (dayo chokro, dayi chokri)`], { n: ["Not for things: you cannot say it of a chair or a mango (§45)."] });
-  w("A", "saro", "good (things)", [`${GN} §45 C47-C48 (saro cup, sari maani)`], { q: [{ q: "The he-word plural of saro (sara?) was not said; also 'the boys are good'.", src: `${GN} §45, For Mum next time 8` }] });
+  w("A", "dayo", "good (well-behaved: people and animals only)", [`${GN} §45 C44-C45 (dayo chokro, dayi chokri)`], { id: "a.well-behaved", n: ["Not for things: you cannot say it of a chair or a mango (§45)."] });
+  w("A", "saro", "good (things)", [`${GN} §45 C47-C48 (saro cup, sari maani)`], { id: "a.good", q: [{ q: "The he-word plural of saro (sara?) was not said; also 'the boys are good'.", src: `${GN} §45, For Mum next time 8` }] });
   w("A", "jhino", "thin", [`${GN} §38 I21 (jhini maani banai)`], { n: ["Spelling confirmed by Zafar 5 Oct."] });
   w("A", "jadi", "thick (she-form; he-form not said)", [`${GN} §38 I21 (jadi maani banai)`], { f: { "she.*.dir": { t: "jadi", src: `${GN} §38 I21` } }, par: false, q: [{ q: "The he-form of jadi (jado?) was not said.", src: `${GN} §38 I21` }] });
   w("A", "thundo", "cold (gone cold)", [`${GN} §39 I35 (thundo thai vyo)`], { n: ["Spelling confirmed by Zafar 5 Oct, decision 31 (not thandu); Dad says thadhu: a different dialect form (§39)."], q: [{ q: "thundo vs Dad's thadhu: Masi's tie-break.", src: `${GN} §39 I35` }] });
@@ -164,6 +164,7 @@ export function apply(S) {
 
   /* ---------------- nouns from the prose ---------------- */
   const noun = (lemma, gloss, src, o = {}) => w("N", lemma, gloss, src, o);
+  noun("lakri", "skewer (a stick)", [`${GN} §25 B-table (lakri = a stick; a she-word, so hakri lakri mishkaki)`, `${GN} §34 P8 (hakri lakri, char lakri: no change)`, "lexicon.md §6.2 (I1-I35 5:28)"], { g: "she", pl: "skewers" });
   noun("chamchi", "teaspoon", [`${GN} §9`, `${GN} §34 P9`, `${GN} §29`], { g: "she", pl: "teaspoons", n: ["The family says chamchi (small) and chamcho (big): the -i / -o pattern again (§9)."] });
   noun("chamcho", "tablespoon, ladle", [`${GN} §9`, `${GN} §34 P9 (chamcha plural)`, "lexicon §6.2 (I32: the ladle is the big spoon)"], { g: "he", pl: "tablespoons" });
   noun("kabaat", "cupboard", [`${GN} §15 (cup kabaat je andar ai)`, `${GN} §34 P13`], { ask: { gender: ["new"] }, pl: "cupboards", n: ["Also khanje jo kabaat (a food cupboard: ⚠) and pinjro (the old netted food cage, §34 P13)."] });
@@ -179,14 +180,14 @@ export function apply(S) {
   noun("film", "film", [`${GN} Zafar's corrections to A5-A7 (film khalas thai vai: film is a she-word)`], { g: "she" });
   noun("time", "time (the English word)", [`${GN} §19 (time pati vyo: time's up)`], { ask: { gender: ["new"] } });
   noun("mitai", "sweets (the family's word; mithai at a celebration is fine)", [`${GN} §20 (ker mitai khai vyo?)`], { ask: { gender: ["new"] } });
-  noun("jikoni", "kitchen (the family's Swahili-born word)", [`${GN} §20 (the family also says jikoni: probably borrowed from Swahili jiko)`], { ask: { gender: ["new"] }, n: ["rasoro is the proper Kutchi word (§20); which one the game uses is Zafar's call."], q: [{ q: "rasoro or jikoni for the kitchen in the game?", src: `${GN} §20` }] });
+  noun("jikoni", "kitchen (the family's Swahili-born word)", [`${GN} §20 (the family also says jikoni: probably borrowed from Swahili jiko)`], { id: "n.kitchen-swahili", ask: { gender: ["new"] }, n: ["rasoro is the proper Kutchi word (§20); which one the game uses is Zafar's call."], q: [{ q: "rasoro or jikoni for the kitchen in the game?", src: `${GN} §20` }] });
   noun("beta", "dear, child (boys and girls alike)", [`${GN} §22 (beta for both; strictly a girl is beti)`, `${GN} §30 K15`], { g: "he", n: ["Used for boys and girls alike; Mum says dikra sounds more Gujarati, so it is not used (§22)."] });
-  noun("beti", "dear (a girl; strictly)", [`${GN} §22`], { g: "she", n: ["beta is used for both (§22)."] });
+  noun("beti", "dear (a girl; strictly)", [`${GN} §22`], { id: "n.dear-girl", g: "she", n: ["beta is used for both (§22)."] });
   noun("wadima", "Big Ma (great-grandmother, 'big mother')", [`${GN} §30 K14 (Wadima: wadi = big, she-form)`], { g: "she", n: ["Recorded with Maji and Dadima; the game uses 'Big Ma' (English), decision 11."] });
   noun("maji", "great-grandmother (the traditional name)", [`${GN} §30 K14`], { g: "she" });
   noun("dadima", "grandmother (father's mother)", [`${GN} §30 K14`], { g: "she" });
   noun("mageni", "guests", [`${GN} §33 S4 (Mageni achenta: ⚠)`], { d: true, ask: { gender: ["new"] }, n: ["Looks like Swahili mgeni (guest), like boga and jikoni (§36 Claude's check, not evidence)."] });
-  noun("khenjo", "food", [`${GN} §33 S5 (kenjo nai: ⚠)`, `${GN} §38 I18 (khenjo tayar karyo: let's get the food ready)`], { d: true, id: "n.khenjo", ask: { gender: ["new"] }, q: [{ q: "kenjo (S5, Whisper) or khenjo (I18): the same word, food? Which spelling?", src: `${GN} §33 S5, §38 I18` }] });
+  noun("khenjo", "food", [`${GN} §33 S5 (kenjo nai: ⚠)`, `${GN} §38 I18 (khenjo tayar karyo: let's get the food ready)`], { d: true, ask: { gender: ["new"] }, q: [{ q: "kenjo (S5, Whisper) or khenjo (I18): the same word, food? Which spelling?", src: `${GN} §33 S5, §38 I18` }] });
   noun("chij", "thing", [`${GN} §37.3 (chai ji chiju: the chai things)`], { g: "she", d: true, f: { "sg.*": "chij", "pl.dir": { t: "chiju", status: "draft", src: `${GN} §33 S1, §37.3 (chiju: ⚠)` }, "pl.obl": { status: "unknown", ask: ["L46-L51"] } }, par: false });
   w("Adv", "saware", "tomorrow", [`${GN} §33 S3 (Saware Eid ai: ⚠)`, `${GN} §37.9`], { d: true, q: [{ q: "tomorrow: saware or kale (Gujarati-looking)? Mum: 'take what we've said'.", src: `${GN} §33 S3` }] });
   w("Adv", "gaykal", "yesterday (for now)", [`${GN} §37.9 (use gaykal for now)`, "docs/decisions.md Claude's working assumptions (Yesterday)"], { d: true, q: [{ q: "yesterday: gaykal is a working assumption, not Mum's word; kale means both yesterday and tomorrow (Gujarati).", src: `${GN} §37.9` }] });
@@ -214,7 +215,7 @@ export function apply(S) {
   w("Phrase", "dhyan rakh", "careful! (keep care)", [`${GN} §27 B49`], { a: ["cook.line.careful"] });
   w("Phrase", "hever na", "not now", [`${GN} §25 B16 (Samosa kadhu ke na? Ha, kadh / Hever na)`]);
   w("Phrase", "thori war rakh", "leave it a bit longer", [`${GN} §25 B16`], { a: ["cook.line.longer"] });
-  w("Phrase", "na, muke na khape", "no, I don't want it (polite)", [`${GN} §30 K11 (the sheet had Na, na khape)`, `${GN} §11`, "rule G7"], { id: "phr.na-muke-na-khape" });
+  w("Phrase", "na, muke na khape", "no, I don't want it (polite)", [`${GN} §30 K11 (the sheet had Na, na khape)`, `${GN} §11`, "rule G7"], { id: "phrase.no-thanks-with-me" });
   w("Phrase", "munje same rakh", "put it in front of me, facing me", [`${GN} §16`]);
   w("Phrase", "munje same we", "sit opposite me", [`${GN} §16`]);
   w("Phrase", "munje agiya jagai hida we", "sit here, in the space in front of me", [`${GN} §16`]);
@@ -227,8 +228,8 @@ export function apply(S) {
   w("Phrase", "table je mathe wo", "it was on the table", [`${GN} §20`]);
   w("Phrase", "e chokro!", "hey, boy! (calling out puts e before the word)", [`${GN} §36 C21 (⚠)`], { d: true });
   w("Phrase", "e chokri!", "hey, girl!", [`${GN} §36 C21 (⚠)`], { d: true });
-  w("Phrase", "ha, aau randhan lai madad kar dis", "yes, I'll help you cook (a girl says it)", [`${GN} §32 S8`, `${GN} §33 S8 (heard)`], { d: true, id: "phr.help-cook-girl", n: ["A girl says dis, a boy dos: the verb agrees with the speaker (§32)."] });
-  w("Phrase", "ha, aau randhan lai madad kar dos", "yes, I'll help you cook (a boy says it)", [`${GN} §32 S8`, `${GN} §33 S8 (heard)`], { d: true, id: "phr.help-cook-boy" });
+  w("Phrase", "ha, aau randhan lai madad kar dis", "yes, I'll help you cook (a girl says it)", [`${GN} §32 S8`, `${GN} §33 S8 (heard)`], { d: true, id: "phrase.help-cook-girl", n: ["A girl says dis, a boy dos: the verb agrees with the speaker (§32)."] });
+  w("Phrase", "ha, aau randhan lai madad kar dos", "yes, I'll help you cook (a boy says it)", [`${GN} §32 S8`, `${GN} §33 S8 (heard)`], { d: true, id: "phrase.help-cook-boy" });
   w("Phrase", "toke khabar ai, aau ker aiya?", "do you know who I am?", [`${GN} §30 K13 (⚠ whole line; only Nani's version recorded)`], { d: true });
   w("Phrase", "saware eid ai", "tomorrow is Eid", [`${GN} §33 S3 (⚠)`], { d: true, a: ["story.eid-tomorrow"] });
   w("Phrase", "mageni achenta", "guests are coming", [`${GN} §33 S4 (⚠)`], { d: true, a: ["story.everyone-coming"] });
@@ -241,8 +242,8 @@ export function apply(S) {
   w("Phrase", "jara e wandho nai", "you're welcome (it's no trouble at all)", [`${GN} §27 B42 (⚠)`, `${GN} §28 (spelling confirmed by Zafar 26 Sept PM)`], { d: true, a: ["cook.line.welcome"], q: [{ q: "Jara e wandho nai: ⚠ doubtful in the notes; Zafar confirmed the spelling 26 Sept PM.", src: `${GN} §27 B42, §28` }] });
   w("Phrase", "mu lai khobar", "wait for me!", [`${GN} §27 B44 (⚠)`, `${GN} §28 (spelling confirmed by Zafar 26 Sept PM)`], { d: true, a: ["cook.line.wait"] });
   w("Phrase", "khobar, aau chakha", "wait, I'll taste it", [`${GN} §27 B46 (also Muke chakhan lai de)`], { d: true });
-  w("Phrase", "kam kari vya?", "have you finished work?", [`${GN} §19`]);
-  w("Phrase", "kam khalas thai vyo?", "have you finished work?", [`${GN} §19`]);
+  w("Phrase", "kam kari vya?", "have you finished work? (said one way)", [`${GN} §19`]);
+  w("Phrase", "kam khalas thai vyo?", "have you finished work? (said the other way)", [`${GN} §19`]);
   w("Phrase", "warsaad band thai vyo", "the rain stopped", [`${GN} §19`]);
   w("Phrase", "film khalas thai vai", "the film has finished, completely", [`${GN} §19`, `${GN} Zafar's corrections (vai for a she-word)`]);
   w("Phrase", "time pati vyo", "time's up", [`${GN} §19`], { d: true });
@@ -278,7 +279,7 @@ export function apply(S) {
   w("Phrase", "hane tameta wij", "now put the tomatoes in", [`${GN} §25 B14`]);
   w("Phrase", "dungri wij", "add the onion", [`${GN} §9`]);
   w("Phrase", "dungri pan wij", "add onion too", [`${GN} §9`]);
-  w("Phrase", "hi chamchi de", "give me this teaspoon (muke hi chamchi de)", [`${GN} §9`], { id: "phr.hi-chamchi-de" });
+  w("Phrase", "hi chamchi de", "give me this teaspoon (muke hi chamchi de)", [`${GN} §9`]);
   w("Phrase", "daar ne maani saathe khapeti?", "daar and maani together?", [`${GN} §7 (a waiter's question)`]);
   w("Phrase", "haa, muke daar ne maani khapeti", "yes, I want daar and maani", [`${GN} §7`]);
   w("Phrase", "ma lai pan hakro banai", "make one for Ma too", [`${GN} §8`]);
@@ -321,7 +322,21 @@ export function apply(S) {
   w("Phrase", "chokriyu ji ain", "they're the girls' (she-word things)", [`${GN} §50`]);
   w("Phrase", "chokre jo ai", "it's the boy's", [`${GN} §50 C60 (⚠)`], { d: true });
   w("Phrase", "kobi wadha ain", "the cabbages are big", [`${GN} §42 C35 (⚠)`], { d: true });
+  /* ---------------- food words inside fixed expressions, and the chilli, pea and mince questions ---------------- */
+  noun("bajr", "millet", [`${GN} §24 B11 (bajr ji maani)`], { par: false, f: { "*": "bajr" }, ask: { gender: ["new"] }, n: ["Only heard inside bajr ji maani."] });
+  noun("amli", "tamarind", [`${GN} §26 B31`, `${GN} §29 R9 (amli: clear)`], { par: false, f: { "*": "amli" }, ask: { gender: ["new"] } });
+  noun("fudino", "mint", [`${GN} §26 B30, B32 (mint is fudino)`], { par: false, f: { "*": "fudino" }, ask: { gender: ["new"] } });
+  noun("nair", "coconut", [`${GN} §26 B32 (coconut chutney is nair ji chutney)`], { par: false, f: { "*": "nair" }, ask: { gender: ["new"] } });
+  noun("chutney", "chutney", [`${GN} §26 B31-B32 (amli ji chutney, fudino ji chutney: ji, so a she-word)`], { g: "she", d: true, par: false, f: { "*": "chutney" }, n: ["A she-word by inference from ji (docs/decisions.md working assumptions: not a spoken fact)."], q: [{ q: "Is chutney a she-word? Inferred from ji in amli ji chutney.", ask: ["L41"], src: `${GN} §26 B31-B32` }] });
+  noun("mirchi", "chilli", [`${GN} §34 P4 (mirchi for one and for more: 'like salt'; trae mirchi de)`, "docs/decisions.md 5 (mirchi only, no plural, for now)"], { par: false, f: { "*": "mirchi" }, ask: { gender: ["L47"] }, q: [{ q: "mirchi or marcha for the green chilli? Mum says mirchi (one and more); Zafar (26 Sept PM) said marcha is the plural; decision 5 says mirchi only for now.", ask: ["Q13"], src: `${GN} §34 P4, decision 5` }] });
+  noun("marcha", "chilli (the dried chilli, or the plural: Zafar's word)", [`${GN} §28 (Zafar 26 Sept PM: marcha is the plural)`, `${GN} §34 P4 (Mum thinks marcha may be Gujarati, or the whole dried chilli: aakha marcha)`, "lexicon.md § Doubts for Zafar 5"], { id: "n.dried-chilli", d: true, par: false, f: { "*": "marcha" }, ask: { gender: ["L44"] } });
+  noun("keema", "mince (keema: the region's word)", [`${GN} §26 B33`, `${GN} §28 (Zafar 26 Sept: keema is also right)`], { id: "n.mince-keema", par: false, f: { "*": "keema" }, ask: { gender: ["L37"] }, n: ["Across the whole region (Urdu, Hindi, Gujarati, Sindhi) so it cannot tell you the speaker is using Kutchi (§28)."] });
+  noun("sambusa", "samosa (what Nani says: the family's word)", [`${GN} §34 P7 (Zafar's instruction: the family grew up with sambusa)`], { id: "n.samosa-sambusa", d: true, par: false, f: { "*": "sambusa" }, ask: { gender: ["L47"] }, q: [{ q: "samosa or sambusa: which does Nani say? (clip sambusa-r3 exists; the game still says samosa.)", ask: ["Q15"], src: `${GN} §34 P7` }] });
+  noun("matar", "peas (green peas)", [`${GN} §34 P11 (green peas are matar)`], { id: "n.green-peas", par: false, f: { "*": "matar" }, ask: { gender: ["new"] } });
+  w("PN", "Ma", "Ma (mother)", [`${GN} §7 (Ma lai pan hakro banai)`, "data/cook.json kin-ma (a customer)"], { g: "she", par: false, f: { "*": "Ma" }, a: ["kin-ma"] });
+  w("PN", "Ali", "Ali (the cousin)", ["data/cook.json name-ali (a name)", `${GN} §30 K14 (Nana! Nani! Ali!)`], { g: "he", par: false, f: { "*": "Ali" }, a: ["name-ali"] });
+
   /* ---------------- a few patches and set phrases made of other words ---------------- */
-  S.patch("neg.na", { forms: { he: { t: "nato", src: `${GN} §24 B1 (muke nato khape: nato for a he-word)` }, she: { t: "nati", src: `${GN} §11 (khun nati khape; spelling confirmed by Zafar)` } }, notes: ["na agrees with the thing wanted in the full refusal: nato (he), nati (she) (§24 B1, §11)."] }, { source: "hand: grammar-notes prose" });
-  w("Phrase", "ne poi", "and then", [`${GN} §7 (ne poi = and then, confirmed)`, `${GN} §24 B12`], { parts: [["conj.ne"], ["adv.poi"]], a: ["lnk-nepoi"] });
+  S.patch("neg.not", { forms: { he: { t: "nato", src: `${GN} §24 B1 (muke nato khape: nato for a he-word)` }, she: { t: "nati", src: `${GN} §11 (khun nati khape; spelling confirmed by Zafar)` } }, notes: ["na agrees with the thing wanted in the full refusal: nato (he), nati (she) (§24 B1, §11)."] }, { source: "hand: grammar-notes prose" });
+  w("Phrase", "ne poi", "and then", [`${GN} §7 (ne poi = and then, confirmed)`, `${GN} §24 B12`], { parts: [["conj.and"], ["adv.then"]], a: ["lnk-nepoi"] });
 }

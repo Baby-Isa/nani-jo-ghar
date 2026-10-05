@@ -40,6 +40,21 @@ export const slug = (s) =>
     .replace(/\s+/g, "-")
     .replace(/^-+|-+$/g, "");
 
+/** The id prefix of each part of speech (the seed's convention). */
+export const PFX = { N: "n", PN: "pn", A: "a", V: "v", Num: "num", Pron: "pron", Dem: "dem", Q: "q", Post: "post", Link: "link", Conj: "conj", Adv: "adv", Intj: "intj", Phrase: "phrase", Cop: "cop", Gen: "gen" };
+
+/**
+ * An id names the CONCEPT in English, never the Kutchi word (engine-spec: n.boy, a.big, v.want), so an English
+ * lexicon can share the ids: pos prefix + the first part of the English gloss (before a comma, a bracket, a slash).
+ */
+export function conceptId(pos, gloss) {
+  let g = String(gloss || "").toLowerCase().replace(/['\u2019]/g, "");
+  if (pos === "Phrase") g = g.replace(/[()]/g, " ");
+  else g = g.replace(/\(.*?\)/g, " ").split(/[,;/]|\bor\b/)[0];
+  const words = slug(g).split("-").filter(Boolean).slice(0, pos === "Phrase" ? 12 : 5);
+  return `${PFX[pos] || "x"}.${words.join("-") || "word"}`;
+}
+
 /** How much each kind of source is worth when two disagree (higher wins). */
 export const RANK = { mum: 5, zafar: 5, hand: 4, lexicon: 4, game: 2, conversation: 2, story: 2, handout: 1, modes: 0, audio: 3 };
 
@@ -59,6 +74,8 @@ export class Store {
     this.errors = [];
     this.byLemma = new Map(); // norm(lemma) -> [id]
     this.counts = {}; // source -> number of entries touched
+    this.idNotes = [];
+    this.gameLines = []; // every line a game says: {game, key, alias, kind, meaning, entry, ...}
     this.formOrigin = new Map(); // "id|cell" -> {source, rank}
   }
 
@@ -67,6 +84,10 @@ export class Store {
     this.resolutions.set(`${id}|${field}`, { chosen, why, src });
   }
 
+  aliasOwner(id) {
+    for (const e of this.entries.values()) if ((e.aliases || []).includes(id)) return e;
+    return null;
+  }
   has(id) {
     return this.entries.has(id) || !!this.find(id);
   }
@@ -87,8 +108,25 @@ export class Store {
    */
   add(spec, { source, rank }) {
     const e0 = { ...spec };
-    const id = e0.id;
-    if (!id) throw new Error("add: an entry needs an id: " + JSON.stringify(spec).slice(0, 100));
+    const lemmaKey = e0.lemmaKey || e0.lemma;
+    delete e0.lemmaKey;
+    // a source that only fails to confirm a word (a handout, "OK for now") gives no evidence either way: its status
+    // is used only when the word is new; an explicit draft flag or a confirmation is a claim (settle() takes the worst)
+    const statusDefault = e0.statusDefault;
+    delete e0.statusDefault;
+    let id = e0.id;
+    if (!id) {
+      // the same word from another source: the same pos and the same spelling is the same entry
+      const same = lemmaKey ? (this.byLemma.get(norm(lemmaKey)) || []).find((i) => this.entries.get(i) && this.entries.get(i).pos === e0.pos) : null;
+      if (same) id = same;
+      else {
+        const base = conceptId(e0.pos, e0.gloss || e0.en);
+        id = base;
+        for (let n = 2; this.entries.has(id) || this.aliasOwner(id); n++) id = `${base}-${n}`;
+        if (id !== base) this.idNotes.push(`${id}: "${e0.gloss}" already names ${base} (a different word): check these are two words, not one`);
+      }
+      e0.id = id;
+    }
     this.counts[source] = (this.counts[source] || 0) + 1;
     let e = this.entries.get(id);
     if (!e) {
@@ -101,6 +139,7 @@ export class Store {
     this.claim(id, "lemma", e0.lemma, source, rank);
     if ("gender" in e0 && e0.gender) this.claim(id, "gender", e0.gender, source, rank);
     if (e0.status) this.claim(id, "status", e0.status, source, rank);
+    if (statusDefault && !e0.status) e0.status = statusDefault;
     // plain fields: first writer wins for descriptive text; lists are unioned
     for (const k of ["gloss", "glossPl", "paradigm", "en", "say", "ref", "person", "number", "clusivity", "value", "lemma"]) {
       if (e0[k] != null && e[k] == null) e[k] = e0[k];
@@ -108,7 +147,10 @@ export class Store {
     if ("gender" in e0 && !("gender" in e)) e.gender = e0.gender;
     else if (e0.gender && !e.gender) e.gender = e0.gender;
     if (e0.pos && !e.pos) e.pos = e0.pos;
-    if (e0.status) e.status = e.status ? (STATUS_RANK[e0.status] > STATUS_RANK[e.status] ? e0.status : e.status) : e0.status;
+    if (e0.status) {
+      if (statusDefault && !spec.status) e.status = e.status || e0.status;
+      else e.status = e.status ? (STATUS_RANK[e0.status] > STATUS_RANK[e.status] ? e0.status : e.status) : e0.status;
+    }
     e.src = uniq([...arr(e.src), ...arr(e0.src)]);
     for (const k of ["aliases", "notes"]) if (e0[k]) e[k] = uniq([...(e[k] || []), ...arr(e0[k])]);
     if (e0.open) e.open = [...(e.open || []), ...arr(e0.open).filter((q) => !(e.open || []).some((x) => x.q === q.q))];
@@ -137,8 +179,17 @@ export class Store {
         }
       }
     }
-    if (e0.lemma) {
-      const n = norm(e0.lemma);
+    if (!lemmaKey && e0.forms) {
+      for (const v of Object.values(e0.forms)) {
+        const t = typeof v === "string" ? v : v && v.t;
+        if (!t) continue;
+        const nn = norm(t);
+        const l = this.byLemma.get(nn) || this.byLemma.set(nn, []).get(nn);
+        if (!l.includes(id)) l.push(id);
+      }
+    }
+    if (lemmaKey) {
+      const n = norm(lemmaKey);
       const l = this.byLemma.get(n) || this.byLemma.set(n, []).get(n);
       if (!l.includes(id)) l.push(id);
     }

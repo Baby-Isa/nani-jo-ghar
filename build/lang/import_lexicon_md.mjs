@@ -31,7 +31,7 @@ function statusFor(item, cell) {
   return "draft";
 }
 
-const SAME = { wapar: "v.wapur" }; // the same word spelled two ways in the notes (a clash, kept)
+const SAME = { wapar: "v.use" }; // the same word spelled two ways in the notes (a clash, kept; the hand entry is v.use)
 
 export function importLexiconMd(S) {
   const text = readText("docs/language/lexicon.md");
@@ -74,11 +74,11 @@ export function importLexiconMd(S) {
           const st = statusFor(item, statusCell);
           const gloss = glosses ? glosses[idx] : english;
           if (!multi) {
-            const id = SAME[item] || `v.${slug(item)}`;
-            S.add({ id, pos: "V", lemma: item, gloss, forms: { "imp.informal": { t: item, src: srcStr } }, status: st, src: srcStr, notes: plain(row[cN] || "") ? [plain(row[cN])] : undefined }, { source: SOURCE, rank });
+            S.add({ ...(SAME[item] ? { id: SAME[item] } : {}), pos: "V", lemma: item, gloss, forms: { "imp.informal": { t: item, src: srcStr } }, status: st, src: srcStr, notes: plain(row[cN] || "") ? [plain(row[cN])] : undefined }, { source: SOURCE, rank });
             added.verbs++;
           } else {
-            S.add({ id: `phr.${slug(item)}`, pos: "Phrase", lemma: item, gloss: glosses ? gloss : `${english} (${item})`, forms: { "-": item }, status: st, src: srcStr, notes: plain(row[cN] || "") ? [plain(row[cN])] : undefined }, { source: SOURCE, rank });
+            const nth = items.slice(0, idx).filter((x) => x.trim().split(/\s+/).length > 1).length;
+            S.add({ pos: "Phrase", lemma: item, gloss: glosses ? gloss : nth ? `${english} (${["", "second", "third", "fourth"][nth] || nth + 1 + "th"} way)` : english, forms: { "-": item }, status: st, src: srcStr, notes: plain(row[cN] || "") ? [plain(row[cN])] : undefined }, { source: SOURCE, rank });
             added.phrases++;
           }
         });
@@ -90,7 +90,6 @@ export function importLexiconMd(S) {
         items.forEach((item, idx) => {
           const st = statusFor(item, statusCell);
           const e = {
-            id: `n.${slug(item)}`,
             pos: "N",
             lemma: item,
             gloss: english.replace(/\s*\(.*?\)\s*/g, " ").replace(/\s+/g, " ").trim().split(/,|;/)[0],
@@ -124,11 +123,11 @@ export function importLexiconMd(S) {
           const lemma = forms[0].split(/\s+/).length > 1 ? forms[0] : forms[0];
           const st = statusFor(forms[0], statusCell);
           if (lemma.includes(" ")) {
-            S.add({ id: `phr.${slug(lemma)}`, pos: "Phrase", lemma, gloss: `${english} (${lemma})`, forms: { "-": lemma }, status: st, src: srcStr }, { source: SOURCE, rank });
+            S.add({ pos: "Phrase", lemma, gloss: `${english} (the fuller way)`, forms: { "-": lemma }, status: st, src: srcStr }, { source: SOURCE, rank });
             added.phrases++;
             continue;
           }
-          const e = { id: `a.${slug(lemma)}`, pos: "A", lemma, gloss: english.split(",")[0].replace(/\s*\(.*\)/, "").trim(), status: st, src: srcStr };
+          const e = { pos: "A", lemma, gloss: english.split(",")[0].replace(/\s*\(.*\)/, "").trim(), status: st, src: srcStr };
           if (forms.length >= 2 && /o$/.test(lemma)) e.paradigm = "adj.o";
           else if (/she/.test(plain(row[cK]))) e.forms = { "she.*.dir": { t: lemma, src: srcStr } };
           else if (!/o$/.test(lemma)) e.paradigm = "adj.invariant";

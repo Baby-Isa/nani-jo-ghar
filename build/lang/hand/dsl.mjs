@@ -1,9 +1,7 @@
 // The small builder the hand files use. A hand entry is knowledge that lives only in prose (grammar-notes.md,
 // lexicon.md prose, decisions), so each call names its section in `src` (rule G27: a source on every entry).
 // Nothing here knows any Kutchi; the words are in the hand files, the rules in rules.mjs.
-import { slug } from "../lib.mjs";
 
-export const PFX = { N: "n", PN: "pn", A: "a", V: "v", Num: "num", Pron: "pron", Dem: "dem", Q: "q", Post: "post", Link: "link", Conj: "conj", Adv: "adv", Intj: "intj", Phrase: "phr", Cop: "cop", Gen: "gen" };
 const INVARIANT_POS = new Set(["Post", "Link", "Conj", "Adv", "Intj", "Dem", "Q", "Phrase"]);
 const arr = (x) => (x == null ? [] : Array.isArray(x) ? x : [x]);
 
@@ -30,9 +28,9 @@ export function autoParadigm(pos, lemma, gender, inv) {
  */
 export function builder(S, { source, rank }) {
   return function w(pos, lemma, gloss, src, o = {}) {
-    const id = o.id || `${PFX[pos]}.${slug(lemma || gloss)}`;
-    const e = { id, pos, gloss, src: arr(src) };
-    if (!e.src.length) throw new Error(`hand entry ${id} has no source`);
+    const e = { pos, gloss, src: arr(src) };
+    if (o.id) e.id = o.id;
+    if (!e.src.length) throw new Error(`hand entry "${gloss}" has no source`);
     if (o.tr) {
       e.status = "to-record";
     } else {
@@ -51,7 +49,7 @@ export function builder(S, { source, rank }) {
     if (o.parts) {
       e.parts = o.parts.map((p) => (p === "," || p === "." || p === "!" || p === "?" ? { punct: p } : Array.isArray(p) ? (p[1] ? { lex: p[0], cell: p[1] } : { lex: p[0] }) : { lex: p }));
       delete e.lemma;
-      if (o.lemma) e.lemma = undefined;
+      if (lemma) e.lemmaKey = lemma;
     }
     for (const k of ["ref", "person", "number", "clusivity", "value", "say"]) if (o[k] != null) e[k] = o[k];
     if (o.n) e.notes = arr(o.n);
