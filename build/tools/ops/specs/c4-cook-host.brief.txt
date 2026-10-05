@@ -54,6 +54,8 @@ TASKS (each with its acceptance criterion):
      Accept: the word lint shows 0 literals for those three files.
   5. Parked modes that import Cook scripts (find, tidy, who, dress, monsoon, snap) keep working.
      Accept: all six parked flows end in the sandbox.
+  6. 4d's open item: the daar smoke test hits its 240 s limit in the stir phase (no page error; the sandbox daar flows end). Find why (slow stir loop, a wait that never resolves, or the test's own timing) and fix the cause.
+     Accept: the daar smoke test passes inside its limit.
 
 REGRESSION ROWS TO RECHECK (48 rows of docs/process/regressions.md; * = open or reopened):
   shared components (48): SH-01*, SH-02*, SH-03, SH-04, SH-05, SH-06, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-18, SH-19, SH-20, SH-21, SH-22, SH-23, SH-24, SH-25, SH-26, SH-27*, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48

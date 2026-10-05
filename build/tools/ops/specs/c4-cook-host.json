@@ -1,21 +1,84 @@
 {
   "name": "C4, Cook's stations mounted through the shared host (decision 45)",
-  "model": "Opus", "effort": "high", "why": "structural refactor of the most-played mode; judgement and visual checks",
-  "cost": "about $20-30", "stop": "6 Oct 2026, 05:00 UK", "branch": "ccr-fcd9dddd-wnywzc",
-  "rules": ["2", "3", "4", "6"],
-  "read": ["docs/architecture/target-model.md", "docs/architecture/shared-api.md", "docs/architecture/building-games.md", "build/reports/step3-r3b.md", "build/reports/step3-r4.md", "build/reports/c3-cook-ready.md", "build/reports/step4d-cook-engine.md", "build/reports/r7-leftovers.md", "js/shared/host.js and js/shared/mode.js (how the clinic and conversations mount as plug-ins)"],
-  "owns": ["js/cook/**", "css/cook.css", "cook.html and Cook's station pages", "data/cook.json", "data/stations/**", "build/test_cook*", "build/leak_cook.mjs", "js/clinic/heal/games/hic.js, tummy.js, hair.js (task 4 only)", "build/reports/c4-cook-host.md", "docs/process/overnight-log.md (append only)", "docs/process/regressions.md (status column of rows you build)"],
-  "readOnly": ["js/shared/** and js/core/** (smallest additive change only if the host lacks a hook Cook needs; keep the API; say why)", "js/core/lang/engine/** and data/lang/** except data/lang/seed/ for task 4 (then rerun build/lang/import_all.mjs --check and node --test build/lang/)", "js/clinic/** except task 4's three files", "every other mode"],
+  "model": "Opus",
+  "effort": "high",
+  "why": "structural refactor of the most-played mode; judgement and visual checks",
+  "cost": "about $20-30",
+  "stop": "6 Oct 2026, 05:00 UK",
+  "branch": "ccr-fcd9dddd-wnywzc",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6"
+  ],
+  "read": [
+    "docs/architecture/target-model.md",
+    "docs/architecture/shared-api.md",
+    "docs/architecture/building-games.md",
+    "build/reports/step3-r3b.md",
+    "build/reports/step3-r4.md",
+    "build/reports/c3-cook-ready.md",
+    "build/reports/step4d-cook-engine.md",
+    "build/reports/r7-leftovers.md",
+    "js/shared/host.js and js/shared/mode.js (how the clinic and conversations mount as plug-ins)"
+  ],
+  "owns": [
+    "js/cook/**",
+    "css/cook.css",
+    "cook.html and Cook's station pages",
+    "data/cook.json",
+    "data/stations/**",
+    "build/test_cook*",
+    "build/leak_cook.mjs",
+    "js/clinic/heal/games/hic.js, tummy.js, hair.js (task 4 only)",
+    "build/reports/c4-cook-host.md",
+    "docs/process/overnight-log.md (append only)",
+    "docs/process/regressions.md (status column of rows you build)"
+  ],
+  "readOnly": [
+    "js/shared/** and js/core/** (smallest additive change only if the host lacks a hook Cook needs; keep the API; say why)",
+    "js/core/lang/engine/** and data/lang/** except data/lang/seed/ for task 4 (then rerun build/lang/import_all.mjs --check and node --test build/lang/)",
+    "js/clinic/** except task 4's three files",
+    "every other mode"
+  ],
   "permissions": "git push to the branch; Node; local browser tests (Playwright, Chromium preinstalled)",
   "tasks": [
-    {"do": "Make Cook a plug-in like the clinic: Cook's ~50 global scripts become ES modules (no bundler, per the target model); Cook starts inside an element the host gives it and stops cleanly (teardown: Phaser game destroyed, listeners, timers, audio and DOM removed).", "accept": "mounting and unmounting Cook 5 times in a row in the host leaves no listeners, timers, canvases or DOM behind (a test proves it); no Cook global remains except a marked one parked pages still need."},
-    {"do": "Remove the station iframe adapters: the host mounts every Cook station directly.", "accept": "no iframe in any Cook flow; every Cook flow in the sandbox still ends."},
-    {"do": "Cook's own title, day flow and shop move onto the shell's shared screens where the shell has them; where it doesn't, say exactly what is missing.", "accept": "a line per screen in the report: moved, or missing piece named."},
-    {"do": "Rule G26 leftover: the parked heal games hic, tummy and hair still type their rows' English in code; move it into data/lang (seed) like 4e did.", "accept": "the word lint shows 0 literals for those three files."},
-    {"do": "Parked modes that import Cook scripts (find, tidy, who, dress, monsoon, snap) keep working.", "accept": "all six parked flows end in the sandbox."}
+    {
+      "do": "Make Cook a plug-in like the clinic: Cook's ~50 global scripts become ES modules (no bundler, per the target model); Cook starts inside an element the host gives it and stops cleanly (teardown: Phaser game destroyed, listeners, timers, audio and DOM removed).",
+      "accept": "mounting and unmounting Cook 5 times in a row in the host leaves no listeners, timers, canvases or DOM behind (a test proves it); no Cook global remains except a marked one parked pages still need."
+    },
+    {
+      "do": "Remove the station iframe adapters: the host mounts every Cook station directly.",
+      "accept": "no iframe in any Cook flow; every Cook flow in the sandbox still ends."
+    },
+    {
+      "do": "Cook's own title, day flow and shop move onto the shell's shared screens where the shell has them; where it doesn't, say exactly what is missing.",
+      "accept": "a line per screen in the report: moved, or missing piece named."
+    },
+    {
+      "do": "Rule G26 leftover: the parked heal games hic, tummy and hair still type their rows' English in code; move it into data/lang (seed) like 4e did.",
+      "accept": "the word lint shows 0 literals for those three files."
+    },
+    {
+      "do": "Parked modes that import Cook scripts (find, tidy, who, dress, monsoon, snap) keep working.",
+      "accept": "all six parked flows end in the sandbox."
+    },
+    {
+      "do": "4d's open item: the daar smoke test hits its 240 s limit in the stir phase (no page error; the sandbox daar flows end). Find why (slow stir loop, a wait that never resolves, or the test's own timing) and fix the cause.",
+      "accept": "the daar smoke test passes inside its limit."
+    }
   ],
-  "flows": ["touched"], "shared": true,
-  "port": 8818, "browser": true,
-  "report": "c4-cook-host", "publish": false,
-  "extra": ["Do NOT remove or change any mechanic: this is plumbing only; the game must look and play exactly as after 4d.", "Proof is fast checks only (decision 48): tests, leak scripts, checks.mjs, check_onboard, one --touched pass at 1366x768 plus the six parked flows; the orchestrator runs the full matrix once before publishing."]
+  "flows": [
+    "touched"
+  ],
+  "shared": true,
+  "port": 8818,
+  "browser": true,
+  "report": "c4-cook-host",
+  "publish": false,
+  "extra": [
+    "Do NOT remove or change any mechanic: this is plumbing only; the game must look and play exactly as after 4d.",
+    "Proof is fast checks only (decision 48): tests, leak scripts, checks.mjs, check_onboard, one --touched pass at 1366x768 plus the six parked flows; the orchestrator runs the full matrix once before publishing."
+  ]
 }
