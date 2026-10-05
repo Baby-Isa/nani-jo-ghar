@@ -15,6 +15,7 @@ against W1: size and feet line); glyph-like marks on the ground (text); near-dup
 may read as sweets. NOT measured (a model must look): gaze, anatomy, fingers, likeness, modesty beyond a missing-sleeve
 hint, style. A PASS here is never a pass of the art, only that the numbers are fine."""
 import argparse
+import functools
 import json
 import os
 import sys
@@ -43,11 +44,10 @@ class Result:
         return "FAIL" if self.fail else "FLAG" if self.flag else "PASS"
 
 
-def keyed(path, cache={}):
-    if path not in cache:
-        a = L.load(path)
-        cache[path] = (a,) + L.key(a)
-    return cache[path]
+@functools.lru_cache(maxsize=4)  # a few at a time: each is ~100 MB of float arrays
+def keyed(path):
+    a = L.load(path)
+    return (a,) + L.key(a)
 
 
 def touches(obj):

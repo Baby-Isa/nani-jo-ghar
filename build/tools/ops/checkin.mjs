@@ -1,0 +1,68 @@
+#!/usr/bin/env node
+// Check-in summary: what landed since the last check-in, the art count on main and the sessions status.md lists; --log appends the line.
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { ROOT, args, help, gitSoft, branch, ukStamp, fromUk, logLine, LOG, STATUS } from "./lib.mjs";
+
+const HELP = `
+node build/tools/ops/checkin.mjs [--since "YYYY-MM-DD HH:MM"] [--art dir] [--art-target 115] [--log] [--note "text"] [--no-fetch]
+  Prints, in a few lines:
+    - commits on this branch (after git fetch) since the last "Check-in" line of docs/process/overnight-log.md (or --since, UK time),
+      grouped by their session tag ("T2:", "4e:", ...)
+    - reports added under build/reports/ in that time
+    - art on main: images under --art (default sources/art/clinic-heal-v3) on origin/main, against --art-target (default 115)
+    - the sessions docs/status.md "Next chat" lists (session id, what it is, and whether its report has landed)
+  --log appends one line to the overnight log ("Check-in: ..."), with --note added (your one-line judgement of the screenshots).
+  Git only; no other network.`;
+const a = args(); help(HELP, a);
+const br = branch();
+if (!a.has("no-fetch")) gitSoft("fetch", "-q", "origin", br, "main");
+const ref = gitSoft("rev-parse", "--verify", "-q", `origin/${br}`) ? `origin/${br}` : "HEAD";
+
+// since when
+let since = a.val("since") ? fromUk(a.val("since")) : null;
+if (!since) {
+  const last = readFileSync(LOG, "utf8").split("\n").filter((l) => /^- \d{4}-\d\d-\d\d \d\d:\d\d UK · Check-in/.test(l)).pop();
+  since = last ? fromUk(last.slice(2, 18)) : new Date(Date.now() - 3600e3);
+}
+const iso = since.toISOString();
+console.log(`Since ${ukStamp(since)} UK (${a.val("since") ? "--since" : "last check-in"}), branch ${ref}`);
+
+// commits, grouped by session tag
+const commits = gitSoft("log", ref, `--since=${iso}`, "--no-merges", "--format=%h\t%s").split("\n").filter(Boolean).map((l) => l.split("\t"));
+const tags = {};
+for (const [, s] of commits) { const t = (/^([\w.-]{1,12})(?: \([^)]*\))?:/.exec(s) || [, "other"])[1]; (tags[t] ||= []).push(s.replace(/^[\w.-]{1,12}(?: \([^)]*\))?:\s*/, "")); }
+console.log(`Commits: ${commits.length}${commits.length ? ` (${Object.entries(tags).map(([t, l]) => `${t} ${l.length}`).join(", ")})` : ""}`);
+for (const [t, l] of Object.entries(tags)) console.log(`  ${t}: ${l[0].slice(0, 110)}${l.length > 1 ? ` (+${l.length - 1})` : ""}`);
+
+// reports landed
+const reports = [...new Set(gitSoft("log", ref, `--since=${iso}`, "--diff-filter=A", "--name-only", "--format=", "--", "build/reports/").split("\n").filter(Boolean))];
+console.log(`Reports landed: ${reports.length ? reports.map((r) => r.replace("build/reports/", "")).join(", ") : "none"}`);
+
+// art on main
+const artDir = a.val("art", "sources/art/clinic-heal-v3"), target = +a.val("art-target", 115);
+const art = gitSoft("ls-tree", "-r", "--name-only", "origin/main", artDir).split("\n").filter((f) => /\.(png|webp|jpe?g)$/i.test(f));
+const artNew = gitSoft("log", "origin/main", `--since=${iso}`, "--diff-filter=A", "--name-only", "--format=", "--", artDir).split("\n").filter(Boolean).length;
+console.log(`Art on main: ${art.length} of ${target} in ${artDir} (${artNew} new since)`);
+
+// sessions in status.md "Next chat"
+const status = existsSync(STATUS) ? readFileSync(STATUS, "utf8") : "";
+const next = status.slice(status.indexOf("## Next chat"), status.indexOf("\n## ", status.indexOf("## Next chat") + 5));
+const seen = new Map(), ids = [...next.matchAll(/`(session_\w+)`/g)];
+ids.forEach((m, i) => {
+  if (seen.has(m[1])) return;
+  const lineStart = next.lastIndexOf("\n", m.index) + 1, prevEnd = i && ids[i - 1].index > lineStart ? ids[i - 1].index + ids[i - 1][0].length : lineStart;
+  const before = next.slice(prevEnd, m.index), after = next.slice(m.index + m[0].length, i + 1 < ids.length ? ids[i + 1].index : undefined).split("\n")[0];
+  const label = (before.split(/[;.]\s|\),\s|:\*\*\s/).pop() || "").replace(/\*\*|Running:?|\d\.\s/g, "").replace(/^[\s,:)-]+|[\s,(:-]+$/g, "").trim();
+  const rep = (/`([\w.-]+\.md)`/.exec(after.split(/\)[,;.]/)[0]) || [])[1];
+  const landed = rep && existsSync(join(ROOT, "build", "reports", rep));
+  seen.set(m[1], `${m[1]}  ${label.slice(-60)}${rep ? `  report ${rep}: ${landed ? "landed" : "not yet"}` : ""}`);
+});
+console.log(`Sessions in status.md: ${seen.size}`);
+for (const s of seen.values()) console.log(`  ${s}`);
+
+if (a.has("log")) {
+  const parts = [`Check-in: ${commits.length} commits${commits.length ? ` (${Object.entries(tags).map(([t, l]) => `${t} ${l.length}`).join(", ")})` : ""}`,
+    reports.length ? `reports ${reports.map((r) => r.replace("build/reports/", "")).join(", ")}` : "", `art ${art.length} of ${target}`, a.val("note") || ""].filter(Boolean);
+  console.log(`Logged: ${logLine(parts.join("; ") + ".")}`);
+}

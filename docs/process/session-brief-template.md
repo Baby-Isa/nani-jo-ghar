@@ -10,6 +10,10 @@
 
 Use this for every build session. The rules it draws on are in `process/rules.md` §2 (sessions, agents and git); this file links to them by ID instead of restating them: **B3** (no helper sessions), **B4** (every brief is complete), **B17** (a mode session edits only its own mode's files), plus B16 (browser tests), B6, B7–B9 (publishing) and B18 (big refactors on their own branch). CLAUDE.md, "Briefing a build session", is the short form.
 
+## Generate it, don't type it
+
+`node build/tools/ops/brief.mjs <spec.json> --out <file>` fills this template from a small JSON spec and adds the standing lines (read-first list, no helpers, don't remove mechanics, the proof steps, the regression rows for the flows it touches, the finish rules). Worked example: `build/tools/ops/specs/4e-clinic-engine.json`; the `/brief` skill (`.claude/skills/brief/SKILL.md`) walks through it. Change the generator, not a generated brief, when a standing line changes. The template below stays as the reference for what a brief holds.
+
 ## Fill-in template
 
 Copy this into the session prompt and fill every line. A remote session can't be messaged, so the brief must be complete; to redirect a session, interrupt it and relaunch (B4).
