@@ -77,7 +77,7 @@ A recipe is an entry in `recipes` with five parts. Every choice the player makes
 
 Any slot can take `"taste"`, and `"prefer": "weak"` picks the words the player knows least. `"$name"` refers to an earlier slot or to a list in the recipe's `lists`. Any value in a slot, at any depth, can be `{"byLevel": [level 1, level 2, level 3]}`: the order's level picks one (the last repeats). **Level 1 is gentle on the hand, not on the ear:** from the first order, what's asked varies (the owner's rule). Chai's `cups` has two people at level 1, each with their own milk, sugar and plain/elchi/aadu, three at 2, and half/full at 3; mishkaki's `skewers` is two skewers at level 1 (two meat, two veg or one of each), two or three with at most one mixed at 2, then three or four (`"total": {"byLevel": [2, {"int": [2, 3]}, {"int": [3, 4]}]}`); maani asks for both doughs at level 1 (`"min"`); daal names several vegetables to chop. The hand gets harder through `mechanics.<id>.levels` (section 5). Rows said `"for"` one person (`"forEach": "$cups", "for": "$it.who"`) become that person's own part of the mission card, with their face.
 
-**`say`: the order as spoken**, one entry per line. Frames are roles (`"order"` starts a dish: "Muke … khape" or "Ne …"; `"and"`, `"no"`, `"only"`); the words come from `lines` and the word order from `grammar`.
+**`say`: the order as spoken**, one entry per line. Frames are roles (`"order"` starts a dish: "Muke … khape" or "Ne …"; `"and"`, `"no"`, `"only"`); the words and the word order come from the language engine (the `meanings` map names the meaning each role asks for).
 
 ```json
 {"frame": "order", "x": [{"n": "$cups", "of": "cook-chai", "one": false}]},
