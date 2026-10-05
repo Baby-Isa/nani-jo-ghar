@@ -1,0 +1,20 @@
+{
+  "name": "D1, the docs rewrite and the sprint structure (decisions 47, 49)",
+  "model": "Sonnet", "effort": "high", "why": "mostly mechanical moving and tightening, but every cut must keep the meaning; Fable reviews after",
+  "cost": "about $18-25", "stop": "6 Oct 2026, 08:00 UK", "branch": "docs-rewrite (created from ccr-fcd9dddd-wnywzc; merge back only on Zafar's go)",
+  "rules": ["1", "2", "3"],
+  "read": ["docs/process/audits/2026-10-05-docs-audit.md (your plan: follow its 11-step migration, with the changes below)", "docs/decisions.md 26-49", "docs/architecture/testing.md (Tools)", ".claude/skills/*/SKILL.md", "build/reports/ for step 3, 4a-4e, C3, C4, R7, T1-T3, E1 (what the code now is)"],
+  "owns": ["docs/** (all of it, on the docs-rewrite branch)", "CLAUDE.md", ".claude/skills/** (add /sprint; trim others only to remove duplication)", "build/tools/ops/checkin.mjs (dated overnight-log path only)", "data/lang/test-seed/paradigms.json and data/lang/seed/ (only to move the real paradigms out of test-seed, E1's follow-up; rerun build/lang/import_all.mjs --check and node --test build/lang/)", "build/reports/d1-docs-rewrite.md"],
+  "readOnly": ["all game code and other data (js/**, css/**, data/** except the paradigm move above)", "build/** except the two items above"],
+  "permissions": "git push to the docs-rewrite branch; Node",
+  "tasks": [
+    {"do": "Follow the audit's migration plan steps 1-10 (archive harvests/step-1/parked-mode docs/transcripts with git mv; rules.md without station designs, decisions log or open questions; qa-checklist with tablets and real tool names; regressions.md one Source per row and four statuses; every Stale box resolved and removed; status.md clean; overnight log rotated by date).", "accept": "every step ticked in the report with its commit; nothing deleted that isn't archived; `regress.mjs` and `statuscounts.mjs` still parse."},
+    {"do": "CLAUDE.md: KEEP the 16 non-negotiables there (decision 47: the rulebook points to CLAUDE.md for them, not the reverse); cut everything the skills and rulebook now carry; add the 'where a new fact goes' paragraph from the audit.", "accept": "CLAUDE.md under ~1,500 tokens with all 16 non-negotiables intact word for word."},
+    {"do": "Sprint structure (decision 49): docs/sprints/ with a template (goal, budget, sessions, small decisions, outcome, 3-line look back); S01-remedial-and-engine.md written from today's work (decisions 28-49 that are sprint-only go there); S02-play-and-fix-cook-clinic.md opened with its goal. Sort decisions 1-49: lasting ones become rules (with a one-line why and date) and stay in a short decisions.md; the rest archive with Sprint 1 or earlier. A /sprint skill to open and close a sprint.", "accept": "decisions.md holds only lasting decisions; every rule ID it cites exists; /sprint skill under 40 lines."},
+    {"do": "Refresh the architecture docs (target-model, shared-api, code-map, technical-plan, building-games) and the Cook and clinic mode docs to describe the code as it now is: the core, the host and plug-ins, the language engine (data/lang, js/core/lang/engine), the tools and skills.", "accept": "no doc describes a shim, iframe adapter or old lookup that no longer exists (spot-check against the code)."},
+    {"do": "E1 follow-up: move the real paradigms out of data/lang/test-seed/ into the real seed so production data doesn't depend on a test folder.", "accept": "import_all --check 0 errors; node --test build/lang/ passes."}
+  ],
+  "flows": [], "browser": false,
+  "report": "d1-docs-rewrite", "publish": false,
+  "extra": ["Work on branch docs-rewrite only (git checkout -b docs-rewrite from the integration branch after pulling it; push -u origin docs-rewrite). The orchestrator merges it after a Fable review and Zafar's go.", "Plain British English, short sentences, Zafar's style: no jargon. Archive, never delete."]
+}
