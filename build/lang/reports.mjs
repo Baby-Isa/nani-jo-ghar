@@ -29,7 +29,11 @@ function wordNeeds(S, game, ids) {
       needs.push({ label, meaning: { fn: "Item", kind: e.id, n: 1 } });
       if (e.pos === "N" && e.status !== "to-record") needs.push({ label: `${label}, more than one`, meaning: { fn: "Item", kind: e.id, n: 3 } });
     } else if (e.pos === "Num") needs.push({ label, meaning: { fn: "Item", kind: "n.cup", n: e.value } });
-    else if (e.pos === "A") needs.push({ label, meaning: { fn: "Amt", x: e.id } });
+    else if (e.pos === "A") {
+      // a describing word that only has a she-form is asked on a she-word (tea), not alone
+      const sheOnly = e.forms && Object.keys(e.forms).length && Object.keys(e.forms).every((k) => k.startsWith("she"));
+      needs.push({ label, meaning: sheOnly ? { fn: "Item", kind: "n.tea", mods: [e.id] } : { fn: "Amt", x: e.id } });
+    }
     else if (e.pos === "V") needs.push({ label, meaning: { fn: "Command", verb: e.id } });
     else needs.push({ label, meaning: { fn: "Say", x: e.id } });
   }

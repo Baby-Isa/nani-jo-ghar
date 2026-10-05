@@ -1677,6 +1677,11 @@
    "cell": "*"
   },
   {
+   "clip": "barabar",
+   "lex": "phrase.just-right",
+   "cell": "*"
+  },
+  {
    "clip": "indo",
    "lex": "n.egg",
    "cell": "sg.dir"

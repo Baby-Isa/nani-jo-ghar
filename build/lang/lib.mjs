@@ -291,12 +291,20 @@ export class Store {
     list.sort((a, b) => order.indexOf(a.pos) - order.indexOf(b.pos) || a.id.localeCompare(b.id));
     return list.map((e) => {
       // a noun carries its plural (G18): where none has been heard, say so as an unknown cell (a gap that asks Mum), never a guess
-      if ((e.pos === "N" || e.pos === "PN") && e.status !== "to-record" && !e.paradigm && e.number !== "pl" && !Object.keys(e.forms || {}).some((k) => k.startsWith("pl") || k === "*")) {
+      const headAgrees = (e.parts || []).some((p) => /\{cell\}/.test(p.cell || "")); // a fixed expression whose head noun takes the cell (a she-word thing)
+      if ((e.pos === "N" || e.pos === "PN") && e.status !== "to-record" && !e.paradigm && e.number !== "pl" && !headAgrees && !Object.keys(e.forms || {}).some((k) => k.startsWith("pl") || k === "*")) {
         e.forms = { ...(e.forms || {}), "pl.*": { status: "unknown", ask: ["new"], src: "no plural heard yet (step 4b: nothing is guessed)" } };
       }
       // a verb Mum has given as a bare command to a child has no elder's form yet: an unknown cell that asks, never the child's form said to an elder
       if (e.pos === "V" && e.status !== "to-record" && e.forms && "imp.informal" in e.forms && !("imp.polite" in e.forms)) {
         e.forms = { ...e.forms, "imp.polite": { status: "unknown", ask: ["C142-C151"], src: "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151" } };
+      }
+      // the English plural, for Mum's sheet ("one sugar, two sugars"); never shown to a child
+      if (e.pos === "N" && !e.glossPl && e.gloss && !/[(,]/.test(e.gloss)) {
+        const words = e.gloss.split(" ");
+        const last = words.pop();
+        const pl = /(s|x|z|ch|sh)$/.test(last) ? (/s$/.test(last) ? last : last + "es") : /[^aeiou]y$/.test(last) ? last.slice(0, -1) + "ies" : /(tomato|potato|mango)$/.test(last) ? last + "es" : last + "s";
+        e.glossPl = [...words, pl].join(" ");
       }
       const o = {};
       const keys = ["id", "pos", "gender", "ref", "person", "number", "clusivity", "value", "paradigm", "lemma", "say", "gloss", "glossPl", "forms", "parts", "status", "src", "aliases", "ask", "notes", "open", "history"];

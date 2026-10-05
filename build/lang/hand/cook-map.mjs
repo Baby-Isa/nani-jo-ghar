@@ -12,11 +12,11 @@ export const POS = {
 
 /** Cook word ids that are made of other words (fixed expressions: cell is each part's own form) */
 export const PARTS = {
-  "cook-bajrmaani": { gender: "she", parts: [["n.millet", "sg.obl"], ["gen.of", "she.sg.dir"], ["n.chapati", "sg.dir"]] },
-  "ph-amli": { gender: "she", parts: [["n.tamarind", "sg.obl"], ["gen.of", "she.sg.dir"], ["n.chutney", "sg.dir"]] },
-  "ph-lili": { gender: "she", parts: [["n.mint", "sg.obl"], ["gen.of", "she.sg.dir"], ["n.chutney", "sg.dir"]] },
+  "cook-bajrmaani": { gender: "she", parts: [["n.millet", "sg.obl"], ["gen.of", "she.sg.dir"], ["n.chapati", "{cell}"]] },
+  "ph-amli": { gender: "she", parts: [["n.tamarind", "sg.obl"], ["gen.of", "she.sg.dir"], ["n.chutney", "{cell}"]] },
+  "ph-lili": { gender: "she", parts: [["n.mint", "sg.obl"], ["gen.of", "she.sg.dir"], ["n.chutney", "{cell}"]] },
   "ph-chips": { gender: "he", number: "pl", parts: [["a.fried", "he.pl.dir"], ["n.potato", "pl.dir"]] },
-  "spi-04": { gender: null, parts: [["a.red", "he.pl.dir"], ["n.dried-chilli", "sg.dir"]] },
+  "spi-04": { gender: null, parts: [["a.red", "he.pl.dir"], ["n.dried-chilli", "{cell}"]] },
 };
 
 /** Cook word ids whose entry is an existing concept under another id (the id of the entry; the alias is added) */

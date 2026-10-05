@@ -1,19 +1,19 @@
 # Coverage: what the engine holds (step 4b)
 
-Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
+Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Lexicon
 
-861 entries (153 are fixed expressions made of other words).
+857 entries (153 are fixed expressions made of other words).
 
 | By part of speech | Entries |
 |---|---|
-| N | 331 |
-| Phrase | 308 |
-| V | 86 |
+| Phrase | 338 |
+| N | 325 |
+| V | 56 |
 | A | 40 |
 | Post | 26 |
-| Adv | 24 |
+| Adv | 26 |
 | Num | 10 |
 | PN | 9 |
 | Pron | 7 |
@@ -27,7 +27,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
 
 | By status | Entries |
 |---|---|
-| to-record | 362 |
+| to-record | 358 |
 | confirmed | 336 |
 | draft | 163 |
 
@@ -49,11 +49,11 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
 
 ## Recordings
 
-417 distinct recordings in data/family-audio.json (395 with a file). 590 rows in clips.json: 157 word forms, 258 fixed phrases, 175 sentences the rules build. 32 recordings are not linked (clash list § 6).
+417 distinct recordings in data/family-audio.json (395 with a file). 591 rows in clips.json: 158 word forms, 258 fixed phrases, 175 sentences the rules build. 32 recordings are not linked (clash list § 6).
 
 ## Games
 
-Game lines registered: 304 (cook 91, clinic 121, and 92 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 72.
+Game lines registered: 304 (cook 91, clinic 121, and 92 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 71.
 
 ## Sources loaded, and sources deliberately not
 
