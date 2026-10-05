@@ -15,8 +15,8 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **Next steps, in order (decisions 33-45):**
 1. Re-arm a 30-35 minute `send_later` check-in; `node build/tools/ops/checkin.mjs --log`; one line to Zafar.
-2. Running (5 Oct night, all stop by 03:00): 4e the clinic onto the engine (`session_01EvLeEZ6dW2FsyiCv1Dh463`), 4d Cook onto the engine (`session_01FEBF4MPUvkRBi7NJD9fJdC`, auto), R7 every leftover outside Cook/clinic (`session_01N7s9C8VqmN22RLcwwGzBB4`, auto). Done today: F1, A2, C3, 4a, 4b, T1, T2, T3 (reports in `build/reports/`).
-3. When 4d ends: launch C4, Cook's stations mounted through the shared host (Opus high, auto): start/stop in a given element, teardown, globals into modules, Cook's own title/days/shop onto the shell if feasible.
+2. Running (5 Oct night): C4 Cook mounted through the shared host (`session_01Bx6Kz5A7XGcpaL5C2hizYS`, Opus high, auto, stop 05:00; brief `build/tools/ops/specs/c4-cook-host.brief.txt`), E1 engine marks guessed forms as drafts (`session_01GYAi5DP8sH3xR5MDok9ttq`, Sonnet). Done: 4d, 4e, R7 and all earlier sessions (reports in `build/reports/`).
+3. When C4 ends: the docs rewrite (decisions 47, 49: Fable audit plan + architecture and Cook/clinic mode docs + sprint structure; own branch; Sonnet high, then Fable review), alongside the orchestrator's review.
 4. When 4d, 4e, R7 and C4 are done: the orchestrator's `/review` (touched mapper → regression rows → sandbox full matrix → shotdiff, flaws first), then `/publish`, Pages check, send Zafar the link and what to play.
 5. Zafar plays → `/feedback` → fixes; clash list sheet for Zafar and Mum (`mumsheet.mjs`); the art redo list + part C in one faster run (`/art-run`; write the W11 standing pose prompt first).
 6. The docs rewrite (Fable reviews) closes the chapter.

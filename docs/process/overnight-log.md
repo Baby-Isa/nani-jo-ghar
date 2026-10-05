@@ -153,3 +153,4 @@
 - 2026-10-05 21:00 UK · R7 done ($4.42; 11 of 12 done, clinic word gate ready; found find.html broken by 4d). Decisions 47 (docs rewrite after C4) and 48 (one consolidated check). 4d told to cut its proof, fix find.html, clear clinic's 72 literals.
 - 2026-10-05 21:40 UK · Decision 49: sprints (one file per sprint, small decisions there, lasting ones as rules); this chapter = Sprint 1; set up in the docs rewrite.
 - 21:48 UK · 4d done: Cook on the engine; Cook's and the clinic's words in data/lang/seed/; word gate strict on js/cook and js/clinic; tests, leaks, onboard and host pass; laptop pass stopped at 86 pages (all end, 0 page errors). Report build/reports/step4d-cook-engine.md.
+- 2026-10-05 21:50 UK · 4d done ($33; Cook on the engine, word gate strict on cook+clinic, 86 Cook pages at 1366 end). C4 launched (Opus high, auto, stop 05:00, brief from brief.mjs). E1 launched (Sonnet, engine marks forms from guessed genders as drafts).
