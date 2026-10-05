@@ -664,7 +664,7 @@
      * and Nani names it at once. Otherwise Nani names it after the word's
      * hesitation delay, and it glows a little later; each counts as help.
      */
-    step({ items, expected, word, guided, sayLine, allowAny, onWrong, onLand, quiet = false, io = Cook.IO }) {
+    step({ items, expected, word, guided, sayLine, allowAny, onWrong, onLand, quiet = false, io = Cook.IO, ctl = null }) {
       return new Promise((resolve) => {
         let misses = 0;
         const target = items[expected];
@@ -676,6 +676,13 @@
             this.glow(o, false);
           });
         };
+        // C3 (E14): the caller can stop this step (a thing was taken back: the step starts again with it)
+        if (ctl)
+          ctl.cancel = () => {
+            cleanup();
+            io.expect(null);
+            resolve({ cancelled: true, misses });
+          };
         // Nani is a voice at a station; the row she names throbs on the card (UX 13)
         const hint = () => sayLine && UI.voice(sayLine).catch(() => {});
         if (guided) {

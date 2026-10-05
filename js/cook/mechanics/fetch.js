@@ -83,6 +83,8 @@
         const f = slot.zone === "fridge" ? Math.max(Cook.Art.shelfSize(id), P.fridgeMin || 0) : Cook.Art.shelfSize(id);
         items[id] = S.prop(key, z.X(slot.x), z.Y(slot.y), z.L(slot.w * f), z.L(slot.h * f));
         items[id].label = S.label(items[id], id);
+        // where it lives, so a thing taken back off the tray goes home (E14)
+        items[id].home = { x: items[id].x, y: items[id].y, scale: items[id].scale, depth: items[id].depth };
       });
       // the tray on the counter: one outlined space per thing on the list, in a row, so you
       // can see how many are still missing (not which). A wrong pick takes a space too (UX 11),
@@ -118,6 +120,7 @@
       const ask = (id, first) => Lang.line(first && Cook.data.lines.give ? "give" : Lang.orderFrame(1), Lang.phrase([id]));
       if (ctx.guided && askLines) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
       const remaining = need.slice();
+      const fetched = new Set();
       let n = 0;
       // "pass me" in the pantry: something on the shelf that isn't in this order
       const pantryPassMe = async () => {
@@ -138,17 +141,63 @@
         }
       };
       // Wave 6b: onto the tray, into the next space (a wrong one too, from level 2: nothing says it's wrong until the review)
-      const onTray = (id, obj) => {
+      const tray = []; // C3 (E14): what's on the tray, in its spaces ({id, obj, right})
+      const step = {}; // the step waiting for a tap (a take-back starts it again)
+      let fetching = true;
+      const trayAt = (i, id, obj) => {
+        const at = spaceAt(i);
+        const f = Cook.Art.shelfSize(id);
+        return { x: at.x, y: at.y + z.L(4), scale: S.fitScale(obj.texture.key, z.L(T.w * f), z.L(T.h * f)) };
+      };
+      const onTray = (id, obj, right = false) => {
         if (n >= need.length) outlines.push(outline(n, id));
-        const at = spaceAt(n);
+        const t = trayAt(n, id, obj);
         const space = outlines[n];
         n++;
         UI.countUp(id);
-        const f = Cook.Art.shelfSize(id);
+        const e = { id, obj, right, busy: true };
+        tray.push(e);
         // its space's outline goes as it lands
-        return S.fly(obj, at.x, at.y + z.L(4), { scale: S.fitScale(obj.texture.key, z.L(T.w * f), z.L(T.h * f)), depth: D.front + 1, duration: k.flyMs }).then(() => {
+        return S.fly(obj, t.x, t.y, { scale: t.scale, depth: D.front + 1, duration: k.flyMs }).then(() => {
           if (space && space.active) S.tweens.add({ targets: space, alpha: 0, duration: 160, onComplete: () => space.destroy() });
+          e.busy = false;
+          if (fetching && obj.active) S.tappable(obj, () => takeBack(e));
         });
+      };
+      /** C3 (E14, take it back until Done): a tap on the tray sends a thing back to its shelf; the first pick is the one scored. */
+      const takeBack = (e) => {
+        if (!fetching || e.busy || !tray.includes(e)) return;
+        tray.splice(tray.indexOf(e), 1);
+        S.untap(e.obj);
+        n--;
+        UI.countDown(e.id);
+        if (e.right) {
+          remaining.push(e.id);
+          const b = ctx.basket.indexOf(e.id);
+          if (b >= 0) ctx.basket.splice(b, 1);
+          if (UI.mission.untickItem) UI.mission.untickItem(e.id, ctx.dishAt || 0);
+        }
+        Cook.sfx.pop();
+        // its space on the tray is free again (the ones after it close up)
+        while (outlines.length <= n) outlines.push(null);
+        if (n < need.length) outlines[n] = outline(n, need[n]);
+        tray.forEach((x, i) => {
+          const t = trayAt(i, x.id, x.obj);
+          S.tweens.add({ targets: x.obj, x: t.x, y: t.y, duration: 220, ease: "Sine.easeInOut" });
+        });
+        const h = e.obj.home;
+        S.fly(e.obj, h.x, h.y, { scale: h.scale, depth: h.depth, duration: k.flyMs }).then(() => {
+          if (!e.obj.active || !fetching) return;
+          e.obj.label = S.label(e.obj, e.id);
+          items[e.id] = e.obj;
+          // the waiting step starts again, with it back on the shelf
+          if (step.cancel) step.cancel();
+        });
+      };
+      Cook.undoAt = () => {
+        if (Cook.paused) return null; // (Nani's "pass me" is up: nothing else takes a tap)
+        const e = fetching && tray.find((x) => !x.busy);
+        return e ? S.centre(e.obj) : null;
       };
       while (remaining.length) {
         const expected = remaining[0];
@@ -172,20 +221,32 @@
             onTray(key, obj);
           },
           io: z.io,
+          ctl: step,
         });
+        step.cancel = null;
+        if (r.cancelled) continue;
         const id = r.key;
         remaining.splice(remaining.indexOf(id), 1);
-        if (!guided) Cook.markRight(id);
+        // the first pick of each thing is the one that counts (a thing taken back and fetched again isn't counted twice)
+        const again = fetched.has(id);
+        fetched.add(id);
+        if (!guided && !again) Cook.markRight(id);
         if (ctx.tickItem) ctx.tickItem(id);
         const obj = items[id];
         delete items[id];
         Cook.sfx.right();
         if (obj.label) obj.label.destroy();
         z.progress({ fetched: id });
-        await onTray(id, obj);
         ctx.basket.push(id);
-        if (n === 1 && remaining.length) await pantryPassMe();
+        const landed = onTray(id, obj, true);
+        // the last thing on the list: it lands and the pantry is done (the tray closes; nothing more to take back)
+        if (!remaining.length) fetching = false;
+        await landed;
+        if (n === 1 && remaining.length && !again) await pantryPassMe();
       }
+      fetching = false;
+      Cook.undoAt = null;
+      tray.forEach((e) => e.obj.active && S.untap(e.obj));
     },
   });
 

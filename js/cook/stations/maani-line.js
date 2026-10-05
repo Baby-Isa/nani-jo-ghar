@@ -548,6 +548,14 @@
     plates.forEach((b) => {
       S.tappable(b, () => pick(b));
     });
+    // C3 (E14, MAA-04): changing your mind before rolling sends the ball back to its pile (a tap on the other pile);
+    // a rolled or cooked maani can't be unmade (the art shows it), so that's the take-back here
+    Cook.undoAt = () => {
+        if (Cook.paused) return null; // (Nani's "pass me" is up: nothing else takes a tap)
+      if (finished || !chakla || chakla.busy || chakla.started) return null;
+      const other = plates.find((b) => b.type !== chakla.type && b.left > 0);
+      return other ? centre(other) : null;
+    };
     step("Roll");
     let finish;
     const finishing = new Promise((resolve) => (finish = resolve));
@@ -556,6 +564,7 @@
 
     /* ---------- the tick: check the count of each kind ---------- */
     finished = true;
+    Cook.undoAt = null;
     UI.hideDone();
     ring.clear();
     if (sizzle) sizzle.stop();

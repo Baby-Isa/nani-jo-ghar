@@ -1482,6 +1482,19 @@
     renderOrder();
     return r;
   };
+  /** C3 (E14): a thing taken back before Done: the last row it ticked (or counted up) opens again. */
+  M.untickItem = function (id, dish = 0) {
+    const L = ladderFor(dish);
+    if (!L) return null;
+    const rows = Order().rows(L).filter((x) => !x.no && (x.got || 0) > 0 && x.ids.includes(id));
+    const r = rows.find((x) => !x.head) || rows[0];
+    if (!r) return null;
+    r.got = Math.max(0, (r.got || 0) - 1);
+    r.done = false;
+    settle(L);
+    renderOrder();
+    return r;
+  };
   /**
    * A step has closed (the chop ring ran out, the cup is poured, Done): its
    * rows with these items tick, count rows included, right or not (the count
@@ -1892,6 +1905,15 @@
   global.addEventListener("resize", () => tallyPt && placeTally());
   UI.hideCount = () => {
     tally.clear();
+    drawTally();
+  };
+  /** C3 (E14): one thing's count down by one (a take-back); at none it leaves the tally. */
+  UI.countDown = function (id) {
+    const n = Math.max(0, UI.countOf(id) - 1);
+    if (n > 0) return UI.count(n, { id, speak: false });
+    tally.delete(id);
+    const kt = shared();
+    if (kt) kt.clear();
     drawTally();
   };
   let doneResolve = null;
