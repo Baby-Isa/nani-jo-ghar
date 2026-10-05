@@ -390,3 +390,11 @@ test("no Kutchi in the engine's code: no seed word appears in js/core/lang/engin
     for (const f of forms) assert.ok(!new RegExp(`\\b${f}\\b`).test(src), `"${f}" appears in ${file}`);
   }
 });
+
+test("meaning keys are canonical (argument order from the abstract syntax; internal fields left out)", () => {
+  const a = E.say({ fn: "Need", thing: Item("n.maani", { n: 1 }), who: "p1" });
+  assert.equal(a.key, "Need(p1,Item(n.maani,1))");
+  const b = E.say({ fn: "Need", who: "p1", thing: Item("n.ambo", { n: 2, with: [Item("n.cup")] }) });
+  assert.equal(b.key, "Need(p1,Item(n.ambo,2,[Item(n.cup)]))");
+  assert.ok(!b.trace.some((t) => /\$parent|object Object/.test(JSON.stringify(t))));
+});

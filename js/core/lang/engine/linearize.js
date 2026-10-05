@@ -281,7 +281,7 @@ export function linearize(L, meaning, ctx = {}) {
     if (Array.isArray(v)) return "[" + v.map(meaningKey).join(",") + "]";
     if (typeof v !== "object") return String(v);
     const abs = functions[v.fn] || { args: {} };
-    const names = Object.keys(abs.args || {}).concat(Object.keys(v).filter((k) => k !== "fn" && !(k in (abs.args || {}))).sort());
+    const names = Object.keys(abs.args || {}).concat(Object.keys(v).filter((k) => k !== "fn" && !k.startsWith("$") && !(k in (abs.args || {}))).sort());
     const parts = names.filter((k) => v[k] != null).map((k) => (k in (abs.args || {}) ? meaningKey(v[k]) : `${k}=${meaningKey(v[k])}`));
     return `${v.fn}(${parts.join(",")})`;
   }
