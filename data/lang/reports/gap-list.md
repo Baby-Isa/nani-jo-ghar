@@ -96,7 +96,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 3. One daal, two daals. (Or: "I'd like some daal, please", said politely.) Ask: L36.
    - Needed by: Cook word "daal" (cook-daal); Cook word "daal" (cook-daal), more than one.
 4. One potato, two potatoes. (Or: "I'd like some potato, please", said politely.) Ask: Q14.
-   - Needed by: Cook word "potato" (veg-01); Cook word "potato" (veg-01), more than one.
+   - Needed by: Cook word "potato" (veg-01); Cook word "potato" (veg-01), more than one; Cook word "chips" (ph-chips) … (4 lines).
 5. One onion, two onions. (Or: "I'd like some onion, please", said politely.) Ask: L46.
    - Needed by: Cook word "onion" (veg-02); Cook word "onion" (veg-02), more than one.
 6. One tomato, two tomatoes. (Or: "I'd like some tomato, please", said politely.) Ask: L46.

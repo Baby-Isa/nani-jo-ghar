@@ -448,3 +448,24 @@ test("meanings are language-neutral: no Kutchi in abstract.json, and word ids na
   for (const f of forms) assert.ok(!new RegExp(`\\b${f}\\b`).test(abs), `"${f}" in abstract.json`);
   for (const e of d.lexicon.entries) for (const f of forms) assert.ok(!new RegExp(`\\.${f}$`).test(e.id), `id ${e.id} is a Kutchi word`);
 });
+
+/* ---------------- a form that rests on a guessed gender is a draft (E1, decision 45, rules G2/G9) ---------------- */
+
+test("a plural built on a defaulted gender is a draft; a confirmed-gender noun's plural stays confirmed", () => {
+  const real = createEngine({ data: loadData({ seed: false }), audio: AUDIO, path: "store", phrases: false });
+  const gen = (id) => real.word ? real.word(id, "pl.dir") : null;
+  for (const [id, t] of [["n.mince", "chunda"], ["n.potato", "bataata"]]) {
+    const r = gen(id);
+    assert.equal(r.tokens[0].t, t);
+    assert.notEqual(r.tokens[0].status, "confirmed", `${t} must be a draft`);
+    assert.deepEqual(r.tokens[0].defaulted, { gender: [id] });
+    assert.ok(r.gaps.some((g) => g.kind === "feature" && g.lex === id), `${t} must reach the gap list`);
+    assert.equal(r.drafts.length, 1);
+  }
+  const sg = gen("n.mince");
+  assert.equal(real.word("n.mince", "sg.dir").tokens[0].status, "confirmed", "the recorded singular is no guess");
+  const ok = real.word("n.billy-goat", "pl.dir");
+  assert.equal(ok.tokens[0].status, "confirmed");
+  assert.equal(ok.tokens[0].defaulted, undefined);
+  assert.equal(ok.drafts.length, 0);
+});

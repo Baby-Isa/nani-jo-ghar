@@ -105,7 +105,10 @@ export function createLinearizer(data) {
     if (t == null) t = String(cellObj.make).replace(/\{stem\}/g, stemOf(e, p)).replace(/\{lemma\}/g, e.lemma || "");
     const status = worst(e.status || "confirmed", cellObj.status || "confirmed");
     const src = [].concat(cellObj.src || [], pick.from === "lexicon" && !cellObj.src ? e.src || [] : []);
-    return { t, status, src, entry: e, from: pick.from, key: pick.key };
+    // a class made for one gender (paradigm.gender) gives a guess when the word's own gender is unknown (decision 45, G2)
+    // (the lemma itself is the recorded word, so it is no guess)
+    const guessed = !!(pick.from === "paradigm" && p && p.gender && !e.gender && t !== e.lemma);
+    return { t, status: guessed ? worst(status, "draft") : status, src, entry: e, from: pick.from, key: pick.key, guessedGender: guessed ? e.id : null };
   }
 
   /* ---------- values and features ---------- */
@@ -341,8 +344,9 @@ export function linearize(L, meaning, ctx = {}) {
     }
     const tok = { t: r.t, lang: "k", lex: r.entry.id, cell: filled.cell, status: r.status, src: r.src };
     if (r.entry.say) tok.say = r.entry.say;
-    if (filled.def.length) {
-      tok.defaulted = { gender: Array.from(new Set(filled.def)) };
+    const defIds = Array.from(new Set([...filled.def, ...(r.guessedGender ? [r.guessedGender] : [])]));
+    if (defIds.length) {
+      tok.defaulted = { gender: defIds };
       tok.status = L.worst(tok.status, "draft");
       for (const lx of tok.defaulted.gender) {
         const le = L.lexOf(lx);

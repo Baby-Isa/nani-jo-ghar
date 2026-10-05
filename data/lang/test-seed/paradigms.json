@@ -2,6 +2,7 @@
   "_about": "TEST SEED ONLY (step 4a): a few word classes from grammar-notes, for the engine's golden tests. Step 4b writes the real data/lang/paradigms.json.",
   "paradigms": {
     "noun.o-he": {
+      "gender": "he",
       "pos": "N",
       "stem": { "drop": "o" },
       "cells": {
@@ -16,6 +17,7 @@
       "cells": { "*": { "make": "{lemma}", "status": "confirmed", "src": "grammar-notes §35 (cup, table, limu), §36 C12, C16" } }
     },
     "noun.i-she": {
+      "gender": "she",
       "pos": "N",
       "cells": {
         "sg.*": { "make": "{lemma}", "status": "confirmed", "src": "grammar-notes §4, §41 C29 (wadhi chokri sathe)" },

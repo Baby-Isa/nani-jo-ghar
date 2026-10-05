@@ -186,7 +186,8 @@ export function createEngine({ data, audio = [], voice = null, path = null, phra
     const tok = r.gap ? { t: (r.entry && (r.entry.en || r.entry.gloss)) || lexId, lang: "e", lex: lexId, cell: c, status: "to-record", gap: r.gap.kind, placeholder: true } : { t: r.t, lang: "k", lex: r.entry.id, cell: c, status: r.status, src: r.src };
     const lin = { tokens: [tok], nodes: [], gaps: r.gap ? [r.gap] : [] };
     // reported only when the form found depends on the defaulted gender (its key names it), as in linearize
-    if (!r.gap && defaulted.length && String(r.key || "").split(".").includes(defaulted[0])) {
+    if (!r.gap && ((defaulted.length && String(r.key || "").split(".").includes(defaulted[0])) || r.guessedGender)) {
+      if (!defaulted.length) defaulted.push(L.features.gender && L.features.gender.default);
       tok.defaulted = { gender: [lexId] };
       tok.status = L.worst(tok.status, "draft");
       lin.gaps.push({ kind: "feature", lex: lexId, feature: "gender", defaulted: defaulted[0], key: ["feature", "", lexId, "", "gender"].join("|"), what: `"${(e && e.gloss) || lexId}" said on its own: no noun to agree with, so the ${defaulted[0]}-form was used (Mum's rule)`, ask: [] });
