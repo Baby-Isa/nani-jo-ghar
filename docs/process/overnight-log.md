@@ -94,3 +94,4 @@
 - 2026-10-02 09:58 UK · R6 done; G1 gate fixes launched (stop 13:30); heal-B done (tooth, sore spots, eye A/B; leak bots <10%); A and C running (stop 14:00).
 - 2026-10-02 10:33 UK · Heal groups A, B, C all done (nine heal games redesigned; leak bots under 10% except the knee's accepted exception); Mum's laal/lilo wired for red/green. Fable reviewing the clinic contact sheets. G1 gate fixes still running.
 - 2026-10-02 10:42 UK · Fable's clinic review: not ready for Zafar (results over a blank stage, lingering ✓, off-screen bubble, square help light, phone card wrapping). Rows CLN-69–80, SH-47–48 added. Launched C1 clinic polish (stop 15:30); the two order-card items sent to G1.
+- 2026-10-05 11:00 UK · Weekly usage limit (2 Oct, ~11:00 UK) stopped C1 and G1 mid-way; their edits saved as WIP commits abef3118 and a1726e71 (unchecked). Handover written in docs/status.md for a new orchestrator chat.
