@@ -69,6 +69,18 @@
     tick.dataset.seat = String(i);
     tick.setAttribute("aria-label", "This one");
     tick.innerHTML = TICK;
+    // A2 (5 Oct, F1's finding): a spot low in the room (the desk) put its tick under a phone's crop (10 px off at
+    // 844x390): after each fit the tick is lifted just enough to stay on screen, never moved otherwise
+    const keepIn = () => {
+      tick.style.marginTop = "";
+      const view = box.parentElement;
+      if (!view || !tick.isConnected) return;
+      const over = tick.getBoundingClientRect().bottom - (view.getBoundingClientRect().bottom - 4);
+      if (over > 0) tick.style.marginTop = `${-Math.ceil(over)}px`;
+    };
+    box.addEventListener("scenefit", keepIn);
+    if (global.requestAnimationFrame) global.requestAnimationFrame(keepIn);
+    else keepIn();
     return { wrap, tick, b, i, gone: false };
   }
 

@@ -26,6 +26,7 @@
 - On tablets the cut game couldn't end: the arm's slide pushed the graze off screen.
 - The fever fan and window tap boxes left phone screens.
 - A *leg* asked in diagnosis was hinted on the knee.
+- F1's finding: the waiting room's L4 desk tick was 10 px under the screen at 844×390, and the ticks were 44 px. Now lifted on screen and 48 px; `--touched clinic:waiting` has 0 findings.
 
 ## Proof
 - `check_onboard` and 13 clinic leak scripts pass.
@@ -37,6 +38,7 @@
 - On 4:3 tablets the cut game's fingertips reach under the tool column.
 - At 800×360, "too cold" covers the bottle, and the chart icons are small.
 - Mouth and tooth share one spot (her mouth is closed).
+- At L4–L5 on phones the desk tick nearly touches the door tick.
 
 **Screenshots:** `build/screenshots/sandbox/a2-touched/`, `a2-touched-fix/`, `a2-fever-fix/`, `a2-rotate/`, `a2-midgame/`.
 
