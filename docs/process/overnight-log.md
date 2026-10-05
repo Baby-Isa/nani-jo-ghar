@@ -141,3 +141,4 @@
 - 2026-10-05 19:26 UK · T3: ops scripts (brief, mumround, feedback, publish dry-run, checkin, mumsheet) and 8 project skills done; proofs in build/reports/t3-ops-tools.md; pushed to the branch, no bump, no main.
 - 2026-10-05 19:31 UK · T2 done (artcut reproduces cuts 0% diff, artblock, artjudge flags 15/67 incl. all known fails; faster runner loop in block; redo list). T3 done (brief, mumround, feedback, publish, checkin, mumsheet + 8 skills). Merged origin/main (76 art uploads only) into the branch. C3 proof 60%; 4e migrating.
 - 2026-10-05 20:07 UK · Check-in (checkin.mjs works): C3 re-running take-back and daar flows (~40 min); 4e has every clinic stage and heal game on the engine, proof ~2/3. 4d waits for C3 (same files).
+- 2026-10-05 20:15 UK · C3 done ($19.7). Decision 45 (all remedial now). Launched 4d (Cook onto engine, Opus high, auto) and R7 (all leftovers + tool gaps, Sonnet high, auto). C4 (Cook stations in the host) queued after 4d.
