@@ -1,0 +1,72 @@
+SESSION NAME / MODE:  C4, Cook's stations mounted through the shared host (decision 45)
+MODEL AND EFFORT:     Opus, high effort (structural refactor of the most-played mode; judgement and visual checks)
+COST ESTIMATE:        about $20-30
+HARD STOP:            6 Oct 2026, 05:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-fcd9dddd-wnywzc. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 6 only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/architecture/target-model.md
+  6. docs/architecture/shared-api.md
+  7. docs/architecture/building-games.md
+  8. build/reports/step3-r3b.md
+  9. build/reports/step3-r4.md
+  10. build/reports/c3-cook-ready.md
+  11. build/reports/step4d-cook-engine.md
+  12. build/reports/r7-leftovers.md
+  13. js/shared/host.js and js/shared/mode.js (how the clinic and conversations mount as plug-ins)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/**
+  - css/cook.css
+  - cook.html and Cook's station pages
+  - data/cook.json
+  - data/stations/**
+  - build/test_cook*
+  - build/leak_cook.mjs
+  - js/clinic/heal/games/hic.js, tummy.js, hair.js (task 4 only)
+  - build/reports/c4-cook-host.md
+  - docs/process/overnight-log.md (append only)
+  - docs/process/regressions.md (status column of rows you build)
+READ-ONLY (never edit):
+  - js/shared/** and js/core/** (smallest additive change only if the host lacks a hook Cook needs; keep the API; say why)
+  - js/core/lang/engine/** and data/lang/** except data/lang/seed/ for task 4 (then rerun build/lang/import_all.mjs --check and node --test build/lang/)
+  - js/clinic/** except task 4's three files
+  - every other mode
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: write a marked stub with the same API in your own folder (B17)
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node; local browser tests (Playwright, Chromium preinstalled); the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Make Cook a plug-in like the clinic: Cook's ~50 global scripts become ES modules (no bundler, per the target model); Cook starts inside an element the host gives it and stops cleanly (teardown: Phaser game destroyed, listeners, timers, audio and DOM removed).
+     Accept: mounting and unmounting Cook 5 times in a row in the host leaves no listeners, timers, canvases or DOM behind (a test proves it); no Cook global remains except a marked one parked pages still need.
+  2. Remove the station iframe adapters: the host mounts every Cook station directly.
+     Accept: no iframe in any Cook flow; every Cook flow in the sandbox still ends.
+  3. Cook's own title, day flow and shop move onto the shell's shared screens where the shell has them; where it doesn't, say exactly what is missing.
+     Accept: a line per screen in the report: moved, or missing piece named.
+  4. Rule G26 leftover: the parked heal games hic, tummy and hair still type their rows' English in code; move it into data/lang (seed) like 4e did.
+     Accept: the word lint shows 0 literals for those three files.
+  5. Parked modes that import Cook scripts (find, tidy, who, dress, monsoon, snap) keep working.
+     Accept: all six parked flows end in the sandbox.
+
+REGRESSION ROWS TO RECHECK (48 rows of docs/process/regressions.md; * = open or reopened):
+  shared components (48): SH-01*, SH-02*, SH-03, SH-04, SH-05, SH-06, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-18, SH-19, SH-20, SH-21, SH-22, SH-23, SH-24, SH-25, SH-26, SH-27*, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C8, decision 48: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs c4-cook-host` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8818.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/c4-cook-host.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+Do NOT remove or change any mechanic: this is plumbing only; the game must look and play exactly as after 4d.
+Proof is fast checks only (decision 48): tests, leak scripts, checks.mjs, check_onboard, one --touched pass at 1366x768 plus the six parked flows; the orchestrator runs the full matrix once before publishing.
