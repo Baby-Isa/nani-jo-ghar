@@ -296,6 +296,9 @@ Source paths are the original docs (some will have moved to `docs/archive/`); ru
 - **48. One consolidated check, not three:** builders run fast checks only (tests, leak scripts, `checks.mjs` incl. the word lint, check_onboard, and one `--touched` pass at laptop size on the flows they changed, one shot each, looked at by the builder). The full screen matrix, the sound run and the outside review run once, by the orchestrator (`/review`), just before a publish. Replaces "full matrix before the final push" per session.
   Source: Zafar, orchestrator chat, 5 Oct ("we do a lot of checking ... can be cut down or consolidated"). Rule: C8
 
+- **49. Work in sprints:** a sprint is one play cycle with one goal and a budget (scope is cut rather than overrun), ending in one full check, a publish to `main`, Zafar's play, `/feedback` and a three-line look back at the process. One file per sprint (`docs/sprints/Snn-<name>.md`: goal, budget, sessions, small decisions, outcome), archived when it closes. Small decisions live in the sprint file; lasting ones become rules with a one-line "why" and a date, and the central decisions log keeps only those. The regression list and ideas list are the backlog. This chapter is Sprint 1 ("remedial and engine"), closing at the coming publish; Sprint 2 is "play and fix Cook and the clinic". The docs rewrite sets this up: sprint folder and template, the 49 decisions sorted into rules vs Sprint 1, and a `/sprint` skill. The orchestrator steers Zafar into the sprint structure when he starts new work without it.
+  Source: Zafar, orchestrator chat, 5 Oct ("yes to all ... push me into the sprint structure when starting new tasks"). Rule: A (working agreement)
+
 ## Claude's working assumptions (not confirmed by Zafar or Mum)
 
 These are not decisions. Each needs a yes or no from Zafar or Mum; then move it above as a dated decision, or change it.

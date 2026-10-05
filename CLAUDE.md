@@ -8,6 +8,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 - Discuss first. Never start builds, agents, sessions or art while Zafar is still talking something through or while a question to him is open. Propose, wait for an explicit go, then act.
 - Approval for one thing is not approval for the next. Work one step at a time; each step ends with a deliverable Zafar reviews.
+- Work in sprints (decision 49): one goal, a budget, one full check and a publish at the end, then Zafar plays. When Zafar starts new work outside a sprint, steer him into one (propose the goal and budget) before acting.
 - When he says more is coming, collect and list; plan nothing until he's done.
 - Put decisions to him as a numbered list, each with a recommendation, answerable "yes to all except …". Write his answers into `docs/decisions.md`.
 - Nothing reaches Zafar that breaks a written rule. Run the QA checklist first and look at the screenshots yourself.

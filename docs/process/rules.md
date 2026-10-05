@@ -94,6 +94,8 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 - **Use the tools by default:** the project skills (`.claude/skills/`) and scripts (`build/tools/`, `build/lang/`, `build/lint/`) are used whenever a task matches, without Zafar asking; a missing or broken tool is fixed, not worked round. (B21, decision 46)
 
+- **Work in sprints:** one goal and a budget per sprint; small decisions in the sprint file (`docs/sprints/`), lasting ones as rules with a why; each sprint ends with one `/review`, a publish, Zafar's play and a short look back. The orchestrator steers new work into a sprint. (A29, decision 49)
+
 ### Briefs
 - **Every brief is complete:** owned files, a hard stop time, links to `CLAUDE.md`, the rulebook, `docs/design-language/ux-principles.md` and `docs/process/qa-checklist.md`, "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
 
