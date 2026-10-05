@@ -1,14 +1,12 @@
 # Nani jo Ghar: the rulebook
 
-Every standing rule Zafar has given for building Nani jo Ghar, de-duplicated and grouped by who or what it's for. **The newest word from Zafar wins:** if a newer message from him clashes with this file, follow him and update it.
+Every standing rule Zafar has given for building Nani jo Ghar, once, grouped by who or what it's for. **The newest word from Zafar wins:** if a newer message from him clashes with this file, follow him and update it here and in `docs/decisions.md` in the same commit.
 
-The full harvest with sources, superseded rules and the conflicts table is `docs/process/rules-harvest.md`; the IDs in brackets point there (A1 = R-A1), and "decision n" points to the decisions log at the end.
-
-Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
+The IDs in brackets (A1, H13, G26 …) are stable anchors that other docs cite; "decision n" points to `docs/decisions.md`. The harvest that first collected the rules, with sources and superseded wording, is `docs/archive/process/step1/rules-harvest.md`. The station and game rules for Cook (H10–H24, H52) and the clinic (H25–H35) now live in their mode docs, under "Standing rules".
 
 ## Contents
 
-- [Top rules](#top-rules)
+- [The non-negotiables](#the-non-negotiables)
 - [1. Working with Zafar](#1-working-with-zafar)
 - [2. Sessions, agents and git](#2-sessions-agents-and-git)
 - [3. Quality and review](#3-quality-and-review)
@@ -19,32 +17,23 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - [8. Language, Kutchi and voice](#8-language-kutchi-and-voice)
 - [9. Characters, family and culture](#9-characters-family-and-culture)
 - [10. Platform, privacy and release](#10-platform-privacy-and-release)
-- [Open questions](#open-questions)
-- [Decisions log, 30 Sept](#decisions-log-30-sept)
 
-## Top rules
+## The non-negotiables
 
-> **The non-negotiables. Every session follows these.**
->
-> 1. **Discuss first; act only when told.** No builds, agents or assets while Zafar is talking it through or while any question to him is open. (A1, A2)
-> 2. **If Zafar didn't comment on it, leave it**, and never remove or replace a mechanic without his explicit OK. (A4, A5)
-> 3. **Fix it properly, once.** A fixed issue stays fixed: every past feedback item is on the regression list and rechecked at every review. (A8, C6)
-> 4. **Never invent Kutchi.** Mum (with Masi as second opinion) is the only authority; two AIs agreeing is not evidence. (G1)
-> 5. **No written English for the child, ever.** Spoken English only in story mode, then the Kutchi, kept rare; none in games or help. (E1, G15, decision 12)
-> 6. **Pass the Kutchi leak test:** someone who knows no Kutchi can't win by reading, matching, eliminating or waiting. (C10)
-> 7. **Done means looked at, not tests passed.** Every state is screenshotted and judged, flaws listed first, by someone other than the builder. (C1, C3, C4)
-> 8. **The same shared screens and buttons in every mode**, from `js/shared/`, never restyled. (F1)
-> 9. **No clipped or ellipsised text, anywhere.** (F7)
-> 10. **Only real family voices ship;** no TTS or AI Kutchi. (G14)
-> 11. **Every line is a full, natural sentence built by the engine; every word heard is a real family voice**: frequent phrases recorded whole, the rest assembled from recorded words; never hand fixes. (G9, G10, G12, decision 13)
-> 12. **Nothing makes a child feel bad:** progress not verdicts, never wait for speech, take it back until Done. (E5, E10, E14, E30)
-> 13. **Art is made in ChatGPT via Claude in Chrome** from one ready-to-paste block; a paid API only for a rapid prototype under $2. (D1, D3)
-> 14. **Sessions:** at most ~4 at once, no helper sessions, complete briefs, `bump_version` and one push to `main` at the end. (B1, B3, B4, B6, B7)
-> 15. **Be cost-conscious** and recommend a model and effort level with every suggested action. (A11, A12)
-> 16. **The family is Khoja Shia Ithna'asheri Muslim** (internal only, never named in the game or public material): halal only, no Hindu religious markers; never sweets, lollies or biscuits as rewards. (I1, I2)
+The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (decision 47). They are not repeated here. Other docs cite them as "non-negotiable n"; the rules behind each are:
+
+| n | Rules | n | Rules |
+|---|---|---|---|
+| 1 Discuss first | A1, A2 | 9 No clipped text | F7 |
+| 2 Leave what he didn't comment on | A4, A5 | 10 Only real family voices | G14 |
+| 3 Fix it properly, once | A8, C6 | 11 Engine-built lines, family voices | G9, G10, G12 |
+| 4 Never invent Kutchi | G1 | 12 Nothing makes a child feel bad | E5, E10, E14, E30 |
+| 5 No written English for the child | E1, G15 | 13 Art via ChatGPT in Chrome | D1, D3 |
+| 6 The Kutchi leak test | C10 | 14 Sessions | B1, B3, B4, B6, B7 |
+| 7 Done means looked at | C1, C3, C4 | 15 Cost-conscious | A11, A12 |
+| 8 Shared screens and buttons | F1 | 16 The family's faith | I1, I2 |
 
 ---
-
 ## 1. Working with Zafar
 
 ### Discussing and acting
@@ -72,8 +61,8 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **The orchestrator owns the regression list:** new feedback becomes a row the same day, every brief lists the rows for its screens, every step end reports open rows by mode in `docs/status.md`; Zafar never has to track it. During runs, a one-line update to Zafar at every check-in. (decision 16)
 - **One rulebook, one place for reviews.** Don't scatter rules; check old handovers for rules before archiving them. (A18, A19)
 - **The orchestrator chat plans, reviews and delegates:** tight briefs or a clean instruction file per executing chat, lean context, agent reports under ~250 words without cutting findings. (A20, A23)
-- **Copy decisions Zafar made directly in a child session** (see `docs/process/overnight-log.md`) into the design doc. (A21)
-- **A new chat opens with a plan update** after reading `docs/status.md` (its "Next chat" section first), `docs/design-language/ux-principles.md`, `docs/language/grammar-notes.md` and `docs/ideas.md`. (A15, A28)
+- **Copy decisions Zafar made directly in a child session** (see `docs/process/overnight-log.md` and the dated files in `docs/process/overnight-log/`) into the design doc. (A21)
+- **A new chat opens with a plan update** after reading `CLAUDE.md`, then `docs/status.md` (its "Next chat" section first) and only the rulebook sections and mode doc the work needs; it reads reports, never transcripts, and `ux-principles.md`, `grammar-notes.md` and `ideas.md` only when the task touches them. (A15, A28)
 - **Hand over at every step boundary, not when the chat is full:** rewrite the "Next chat" section of `docs/status.md` with a ready-to-paste starting prompt and push it; recommend a fresh chat per step or at ~70% context, rather than compacting mid-task. (A25, decision 14)
 - **Overnight runs:** regular check-ins and a written report by 08:00 UK, then update the tracker and handovers so a new chat can start. (A17)
 
@@ -97,12 +86,12 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **Work in sprints:** one goal and a budget per sprint; small decisions in the sprint file (`docs/sprints/`), lasting ones as rules with a why; each sprint ends with one `/review`, a publish, Zafar's play and a short look back. The orchestrator steers new work into a sprint. (A29, decision 49)
 
 ### Briefs
-- **Every brief is complete:** owned files, a hard stop time, links to `CLAUDE.md`, the rulebook, `docs/design-language/ux-principles.md` and `docs/process/qa-checklist.md`, "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
+- **Every brief is complete:** owned files, a hard stop time, links to `CLAUDE.md`, the rulebook sections it needs and `docs/process/qa-checklist.md` (`build/tools/ops/brief.mjs` writes it, so the generator is the truth), "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
 
 ### Git and publishing
 - **The release cycle runs in this order:** art finished in ChatGPT → wired in → full checks on everything (the full QA matrix) → publish to `main` → Zafar plays and gives feedback → new art, art fixes and gameplay fixes from that feedback, then round again. Zafar plays only what is live on `main`, never a half-wired branch preview. The full checks cover only what changed since the last gate (plus screens reached by any shared-file change), never a repeat of unchanged screens. For the clinic, the girl's finished art (part B with its props) is enough; other patients are stitched in later. (B20, decisions 33, 34, 37)
-- **Check `git log origin/main` before redoing work;** during a run, log a timestamped line in `docs/process/overnight-log.md` and push the branch every 20–30 minutes. (B6, B14)
-- **End every session with** a report in `build/reports/<name>.md`, the QA checklist results (`docs/process/qa-checklist.md`), `bump_version` and ONE push to `main`. (B6)
+- **Check `git log origin/main` before redoing work;** during a run, log a timestamped line in `docs/process/overnight-log.md` (`checkin.mjs --log` moves earlier days to `docs/process/overnight-log/<date>.md`) and push the branch every 20–30 minutes. (B6, B14)
+- **End every session with** a report in `build/reports/<id>-<topic>.md` (under 300 words), the QA checklist results (`docs/process/qa-checklist.md`), `bump_version` and ONE push to `main`. (B6)
 - **Run `python3 build/bump_version.py` before every push to `main`;** every asset URL built in code goes through `Cook.v()` / `njgV()`. (B7)
 - **`main` is the live Pages site:** publish = bump, commit, push the branch and `HEAD:main`; if an upload races you, merge `origin/main` and push again; on `?v=` conflicts, take the real side and re-bump. (B8, B9)
 - **Commit small and often, never force-push,** with the Co-Authored-By and Claude-Session lines. Big audio files go up as a GitHub release. (B15, J11)
@@ -196,32 +185,9 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 
 ## 5. Game design: modes, story and progression
 
-### Cook
-- **Cook's design has two homes:** the shared look and components in `docs/design-language/ui-design-system.md`, and Cook's stations in `docs/game-design/modes/cook.md` (split from the Cook design system v1 on 1 Oct). Together they are Cook's single source of truth. (H10)
-- **Story mode is one recipe across a few stations;** free play is the kitchen with people arriving, stopping when you choose. (H50)
-- **Pantry first, story mode only:** the first time each dish is made that day starts with a pantry trip ("bring me these for {dish}"); Nani's "pass me" goes in the pantry and slower modes. (H15, H49)
-- **Everything cooks in the pan or pot, never the glass:** one pan per person, one burner per pan, no empty or lit-but-unused burners. Maani keeps one tawa. (H11)
-- **One shared kitchen kit** (hob, knobs, glowing-ring "on", pour, boards) in chai v2's best version, and **no hands anywhere in Cook**. (H12, H13)
-- **Ingredient cameras are consistent within each station** (chai/daar side-on jars, chaat side-on, samosa and sekelo top-down, pantry straight-on). (H14)
-- **Pour is a tap-measure;** "don't" rows are sub-rows (*dudh na*), not *{x} wagar ji {dish}*. (H17, H23)
-- **Chai:** about half the cups ordered by name (*kari*, *mori*) with rows saying what that means; a plain wooden tray with four cut-outs and faces beside the hob. (H16, H51)
-- **Daar:** swipe chop from Nani's chopping card (with decoys), a speed dial and lap count, no oil ring, numbers hidden from level 3. (H18)
-- **Samosa:** the swipe fold stays, a base filling first, two different samosas per order allowed; chips belong here with the fry, not the grill. (H19, H24)
-- **Sekelo** is the grill and dish name (*mishkaki* = the meat cubes): vertical skewers, no bare "boga" skewers, headline like "one mixed, two meat". (H20)
-- **Maani:** a dough pile, one ball per tap, flat cooked maani with spots, a flat wooden turner, at most three things on screen. (H21)
-- **Chaat:** a bigger bowl, ingredients on two rows, built in order, no tally. (H22)
-- **Pantry art:** straight-on shelves, labelled clear jars, a fridge on the right, a tray with spaces instead of a basket. (H52)
+### Cook and the clinic
 
-### Clinic
-- **The clinic is Hannah's granddad's; the child is his helper.** The doctor's box replaces Nani's unless a story brings her. (H25)
-- **Pretend care only:** comical, never gory; the child hands things to the doctor, who gives any medicine. (H26)
-- **Pipeline: waiting room → diagnosis → pharmacy belt → heal game → send-off;** a wrong pick costs score, nothing is greyed out. (H27)
-- **Waiting room:** at most 6 people, a picked person rises, a describing-word ladder, the call heard not read from level 3, no speaking. (H28)
-- **Diagnosis and pharmacy stay calm:** no countdowns (the belt gets faster from level 3); a straight-on painted belt with no hatches. (H29, H30)
-- **Heal games:** scrape, knee, ear, tooth, drinks, fever, boing, eye, foot (details in the harvest); tummy, hic and hair wait; the "why" explainer only standalone or in the lab. (H31, H32)
-- **Send-off:** feelings in a thought bubble, fixes by level, goodbye in the scene, and **an apple, never a lolly**. (H33, decision 8)
-- **The end screen offers Again (same patient) and All patients.** (H34)
-- **Backgrounds:** a bench of six, an exam room with the real certificate frame and toys, pharmacy straight on, the close-up bed. (H35)
+The station and game rules moved to the mode docs, keeping their IDs as anchors: Cook (H10–H24, H49–H52) in `docs/game-design/modes/cook.md` § Standing rules; the clinic (H25–H35) in `docs/game-design/modes/clinic.md` § Standing rules. Rules for every mode stay in §4.
 
 ### Conversations
 - **Conversations are their own module,** woven around modes and story beats: one per mode plus one every ~2 minutes; get it right to move on; difficulty ramps written + sound → sound → speaking → asking. (H44)
@@ -384,45 +350,3 @@ Compiled 30 Sept 2026, with Zafar's answers of 30 Sept (19:30 UTC) applied.
 - **A landing page (with a sign-up list) and a code-built trailer from in-game footage** are in the plan. (J5)
 - **Success is Mum enjoying the recording and a child asking to play again,** not downloads or streaks. (J9)
 - **If Kutchi works, reuse the game for other diaspora languages** (Gujarati next). (J10)
-- **The agreed sequence from 30 Sept:** this rulebook → the docs "brain" and archiving → language-engine research with the target operating model → refactor → populate the engine. (J8)
-
----
-
-## Open questions
-
-- **Commercial model: TBC.** Zafar's £2/month idea (first arc free) and "free to the community" both stay open; no rule yet. (J5, decision 7)
-- **The *mirchi* plural:** *mirchi* only for now; Zafar to confirm with Mum. (decision 5)
-- **Words still to ask Mum:** *kere karein* ("who did it?"), which Zafar doesn't recognise; green pepper (no Kutchi word: drop it from skewers?); the maani turner *moikyo*; *Muke sekelo khape*. (G25, H20, H21)
-- **A skip for spoken replies in Conversations** is TBC. (E26)
-
-## Decisions log, 30 Sept
-
-Zafar's answers to the NEEDS ZAFAR conflicts, 30 Sept, 19:30 UTC (harvest Conflicts table numbers in brackets):
-
-1. **Hints cost lightbulbs** (the hints badge); nothing costs the ear star any more. (#5)
-2. **The voice star goes;** correct speaking earns more pocket money. The child isn't told the mechanism: simply, the better they do, the more pocket money. (#58)
-3. **The accuracy tick fills gold / grey,** not green/red. (#59)
-4. **The quilt becomes Big Ma's quilt-making story arc** (separate from her making-outfits arc); the progress marker is a bookshelf that fills with one named book per finished arc at the "book end" review with Nani. (#6)
-5. **Use *mirchi* only for now** (no *marcha* plural); Zafar will confirm with Mum. (#25)
-6. **Everything stays public** (repo, recordings) until the game or landing page is published and people start looking; then revisit. (#41)
-7. **Commercial model: TBC;** both ideas stay open, no rule. (#42)
-8. **Mithai at a celebration is fine;** never lollies, biscuits or sweets as rewards to the child (the clinic lolly goes). (#43)
-9. **Unattended runs may make art of family members;** all consent is given; Zafar supervises only each person's first character sheet. Supersedes "real people's art only with Zafar present". (#66)
-10. **Pocket money model:** pay by volume × quality (hints, ticks, time) × difficulty; upgrade prices calibrated so an upgrade comes every 2–3 games at first, stretching to 4–5. (Zafar, 30 Sept)
-11. **Big Ma is called "Big Ma"** in the game. Quilt-making and making outfits are two separate Big Ma arcs. (Zafar, 30 Sept)
-12. **English:** no written English for the child, ever. Story mode may speak English and then repeat in Kutchi where needed, especially at the start for longer exposition, avoided where simple lines and visuals will do. (Zafar, 30 Sept, reviewing CLAUDE.md)
-13. **Engine and voices:** every word must be a human recording, but the sentence can be built by the engine; statistical analysis of simulated play identifies the most-used phrases, which are recorded whole. (Zafar, 30 Sept)
-14. **Handover timing:** don't wait for a full chat; hand over at step boundaries and around 70% context rather than compacting. (Zafar, 30 Sept)
-15. **Phone screenshots are landscape:** 844×390 (iPhone 12–14, one of the three most-used phone sizes) as the main phone size, 800×360 (the most-used Android size and the tightest height) in the full matrix, plus one upright shot for the rotate card. (Zafar, 30 Sept)
-16. **The orchestrator owns the regression list** and reports open rows at every step end; a one-line update to Zafar at every check-in during runs. (Zafar, 1 Oct)
-17. **The language engine is a Kutchi engine:** GF's design, our own small JavaScript engine; Sindhi only as a structural reference. The Excel is retired as a source. (Zafar, 1 Oct)
-18. **The code target model is approved** (`docs/architecture/target-model.md`); star code and the clinic's phase-1 prototype go; computer voices stay on the test site, out of the store app. (Zafar, 1 Oct)
-19. **Keep building the clinic, ideally to completion before the doctor's ~9 Oct visit,** so he can play his section. Supersedes "no clinic build before the visit". (Zafar, 1 Oct)
-20. **Screenshots and report images are not committed** (site under 1 GB); **the clinic's coins join the one purse now**; no wages; browser tests in Node; the layout lint only gets stricter. (Zafar, 1 Oct)
-21. **Unconfirmed gender → the he-form, flagged and never shipped;** the bowl errand retired; step 3 as the lean plan with R4 and R5 side by side; Mum's 1 Oct session uses Round 4. (Zafar, 1 Oct)
-22. **Story mode and free play;** the free-play map shows every place, locked ones labelled with the story that opens them; the core holds the play context, unlocks, the map as data, the language setting, per-child settings, a paid-content check and content versions. (Zafar, 1 Oct)
-23. **Word books** (a picture dictionary by topic) on the shelf beside the story books; R3b (one game host, mode and arc formats, a build guide) is back in step 3. (Zafar, 1 Oct)
-24. **No gaps in the checks** (every live flow and level, mistakes and hints, canvas text, sound, overlap, tablets, parked-mode smoke flows); **tablets first-class and layout built to scale**, the scaling rules set later in data. (Zafar, 1 Oct)
-25. **Flexible, not locked:** the sidebar and its text scale with the screen; the order card can lay short rows out as pills sharing a line, chosen per screen size in data (default stacked until Zafar chooses). (Zafar, 1 Oct)
-26. **Stitched speech everywhere** until the pre-publish pass (whole-phrase clips off); a dictionary mode later; device support set by the market (iOS 15+ with a shim, Android 7+, a cheap-phone performance budget); model reply voice follows the character; five word stages; labs pay like real play. (Zafar, 1 Oct)
-27. **The clinic's heal games** per the 1 Oct report §10 with Zafar's changes (`docs/decisions.md`): zoom in and out, two wide shots, body states, the bulb/eye split, the guided first round, the review shows what went wrong; everything lands before the doctor's visit and must look better than Cook today. (Zafar, 1 Oct)
