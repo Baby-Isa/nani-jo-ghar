@@ -156,3 +156,4 @@
 - 2026-10-05 21:50 UK · 4d done ($33; Cook on the engine, word gate strict on cook+clinic, 86 Cook pages at 1366 end). C4 launched (Opus high, auto, stop 05:00, brief from brief.mjs). E1 launched (Sonnet, engine marks forms from guessed genders as drafts).
 - 2026-10-05 E1 done: guessed-gender plurals (chunda, bataata) now draft; potato gap +2 Cook lines, clinic 0; tests/checks/leaks pass. Report build/reports/e1-engine-drafts.md
 - 2026-10-05 22:10 UK · E1 done (guessed-gender plurals now drafts; 57 lang tests; 4 Cook lines now flagged). Follow-up for the docs-rewrite/cleanup: the importer copies real paradigms from data/lang/test-seed/ — move them into the real seed so production data doesn't live in a test folder.
+- 2026-10-05 22:08 UK · C4: Cook is ES modules on one namespace, mounted by js/cook/mount.js; cook.html and the host's stages mount it (no station iframes); test_cook_mount 5 mounts clean; test_cook_host 3 flows pass.
