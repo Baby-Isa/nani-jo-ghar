@@ -126,7 +126,16 @@
         if (!nani) return;
         const span = document.createElement("span");
         if (w) Kit.text(w, span);
-        nani.set(span.innerHTML, { rec: !!(w && (!w.kutchi || /\[/.test(w.kutchi))) });
+        const rec = !!(w && (!w.kutchi || /\[/.test(w.kutchi)));
+        nani.set(span.innerHTML, { rec });
+        // R4: while the doctor is both the asker and the guide (a heal game), his line is his card's strip
+        if (scr.strip) scr.card.setStrip(w ? { html: span.innerHTML, rec } : null);
+      };
+      /** R4 (decision 55, T29): one face: the box keeps only its tools and the guide's line goes on the card. */
+      scr.stripMode = (on) => {
+        scr.strip = !!on;
+        if (nani && nani.strip) nani.strip(scr.strip);
+        if (!scr.strip) scr.card.setStrip(null);
       };
       Kit.Voice.speakers.nani = Kit.Voice.speakers.guide = () => bulbRow.querySelector(".ng-face") || bulbRow;
       scr.closeHelp = () => helpPop.classList.add("hidden");

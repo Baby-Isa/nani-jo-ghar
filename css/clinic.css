@@ -528,3 +528,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-fig .fig-art-swirl .fig-swirl { animation: cl-spin 3s linear infinite; transform-box: fill-box; transform-origin: center; }
 .cl-fig.has-art.react .fig-art-in { animation: cl-wobble .35s; transform-origin: 50% 100%; }
 .cl-fig.has-art.pose-shake .fig-art-in { animation: cl-shiver .5s 2; }
+
+/* T29 (decision 55): a heal game's whole step list is on the card from the start; the steps still to come are greyed
+   until they open (the one highlight is the open step's) */
+.cl-row.later { opacity: .45; }
+.cl-row.later.next-up { opacity: 1; }

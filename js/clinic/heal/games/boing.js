@@ -324,7 +324,7 @@
       if (anim) anim.finished.then(land, land);
       else land();
       if (!anim) drawDrops();
-      ctx.tally("drops", st.drops.length);
+      ctx.tally("drops", st.drops.length, { next: "press", of: d.drops.length }); // S02-A hook: decision 52, the next step shows at L2+
       ctx.sfx("pop");
       // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
       if (P.level === 1 && st.drops.length >= d.drops.length) S.when(() => (!cur() || cur().kind !== "drops" || st.over ? "stop" : !st.busy), close, 450);
@@ -380,7 +380,7 @@
       if (c.kind === "wipe" && S.sel === "cotton") {
         st.wipes++;
         S.count(st.wipes);
-        ctx.tally("cotton", st.wipes);
+        ctx.tally("cotton", st.wipes, { next: "lever", of: c.count }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         shine.setAttribute("opacity", Math.min(0.3, st.wipes * 0.08));

@@ -388,6 +388,9 @@
       if (!finished) card.speak(ids);
     });
     card.setRows([]);
+    // R4 / T29 (decision 55): the doctor is the card's asker and the off-screen guide: one face (the card's), his
+    // line for the step now as the card's top strip; the box keeps only the bulb and the mute
+    if (v2 && screen.stripMode) screen.stripMode(true);
 
     /* ---- the shared play rules for every heal game (1 Oct report § 8D-8G, decision 27) ----
      * D6 (SH-39): the running count sits on the tool in use: its Kutchi word at L1-2 (said at L1), dots from L3;
@@ -430,6 +433,38 @@
       b.classList.add("bump");
     };
 
+    // decision 52: the "what's next" reveal (ctx.tally): the next row and its tool, a beat after the count is reached
+    let nextT = null;
+    let nextOn = null;
+    let readyT = null;
+    const nextOff = () => {
+      clearTimeout(nextT);
+      nextT = null;
+      if (!nextOn) return;
+      stage.querySelectorAll(".hs-tool.next-up").forEach((b) => b.classList.remove("pulse", "next-up"));
+      card.el.querySelectorAll(".cl-row.next-up").forEach((r) => r.classList.remove("next-up"));
+      nextOn = null;
+    };
+    const nextUp = (tool) => {
+      if (!tool) return nextOff();
+      if (nextT || nextOn) return;
+      const at = card.st.now;
+      nextT = setTimeout(() => {
+        nextT = null;
+        if (finished || card.st.now !== at) return;
+        const id = card.nextStepId();
+        nextOn = { tool, id };
+        // the next tool (an exact id, or every tool its id starts with: all the plasters, never just the right colour)
+        const t = String(tool);
+        [...stage.querySelectorAll(".hs-tool")].filter((b) => b.dataset.tool === t || (t.endsWith("-") && String(b.dataset.tool || "").startsWith(t))).forEach((b) => b.classList.add("pulse", "next-up"));
+        const rowEl = id && card.row(id) && card.row(id).el;
+        if (rowEl) rowEl.classList.add("next-up");
+        if (id && screen.setGuide) screen.setGuide(card.row(id));
+        // the doctor (off screen: his box) says the next step's line, once
+        if (id) card.speak([id]);
+      }, Kit.fast ? 300 : 2000);
+    };
+
     const ctx = {
       level,
       side,
@@ -454,8 +489,11 @@
           if (rowId !== card.st.now) {
             clearCounts();
             showDone(false);
+            nextOff();
           }
           card.now(rowId);
+          // T29: the guide's line is the step now (it clears when no step is open)
+          if (v2 && screen.setGuide) screen.setGuide(rowId ? card.row(rowId) : null);
         },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),
@@ -489,6 +527,9 @@
         // D6: the count on the tool in use (never the target); level 1 also says the number (E12)
         if (n > 0) countOn(itemId, n, o.at || null);
         else clearCounts();
+        // decision 52 (CLN-82, the stuck fix): from level 2, once the count is reached (o.of) on a step the next
+        // action closes (o.next: the next tool's id), the next step's row lights and its tool glows after ~2 s
+        nextUp(level >= 2 && o.next && o.of && n >= o.of ? o.next : null);
         // D7: from level 2 the ✓ closes a counted step once it has begun; at level 1 the step closes itself (D5).
         // SH-40 (2 Oct): a step the child's next action closes (the next tool: o.next) never shows the ✓
         if (n > 0 && level >= 2 && !o.next) showDone(true);
@@ -497,6 +538,10 @@
       /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */
       ready(on) {
         if (v2) showDone(on);
+        // decision 52 (CLN-83): where the outcome is obvious (the last plaster is on) it moves on by itself after a
+        // beat, with no ✓ to press; a step the child can still change (on false again) cancels it
+        clearTimeout(readyT);
+        if (v2 && on) readyT = setTimeout(() => !finished && done.on && done.btn && done.btn.isConnected && done.btn.click(), Kit.fast ? 200 : 1200);
       },
       log(entry) {
         const e = Object.assign({ t: Date.now() - t0, game: def.id }, entry);
@@ -523,6 +568,8 @@
         screen.clearActions();
         done.btn = null;
         clearCounts();
+        nextOff();
+        clearTimeout(readyT);
         // D14 (1 Oct, SH-44): which step went wrong, for the end review: each judged row's line, right or not, and
         // what was done (the game's own detail, e.g. "2 of 3")
         const rowFor = (id) => {
@@ -657,6 +704,7 @@
           }
         }
         if (staging && !kept) staging.destroy();
+        if (screen.stripMode) screen.stripMode(false);
         if (!opts.patient) fig.destroy();
         Kit.Voice.clear();
         // the card is the screen's: the next stage gets it whole again (D8 is the heal games' rule)

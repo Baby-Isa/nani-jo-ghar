@@ -453,8 +453,9 @@
     const card = this;
     const st = this.st;
     const OC = global.OrderCard;
-    // D8 (1 Oct): a progressive card grows one step at a time; the rows still to come aren't drawn
-    const rows = this.progressive ? this.rows.slice(0, this.shown + 1) : this.rows;
+    // D8 (1 Oct) / T29 (6 Oct, decision 55): a progressive card shows the WHOLE step list from the start, the rows
+    // still to come greyed ("later") until their step opens, so the child sees what's coming
+    const rows = this.rows;
     const pending = this.progressive && this.shown < this.rows.length - 1;
     const part = (r) => ({ label: Kit.rowHtml(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
     const items = [];
@@ -477,7 +478,7 @@
     const headHtml = !tt ? null : typeof tt === "string" ? esc(tt) : Kit.rowHtml(tt);
     // a headline still to record (the heal games' goal, D9) carries the grown-ups' "to record" flag (G2)
     const rec = !!(tt && typeof tt === "object" && !tt.kutchi);
-    const data = { person: null, headline: headHtml ? { html: headHtml, key: "__head", rec } : null, items };
+    const data = { person: null, headline: headHtml ? { html: headHtml, key: "__head", rec } : null, items, strip: this.strip || null };
     if (pending) data.done = false;
     card.rows.forEach((r) => (r.el = null));
     const opts = {
@@ -499,6 +500,7 @@
         if (!r) return;
         rowEl.classList.add("cl-row");
         rowEl.dataset.row = r.id;
+        rowEl.classList.toggle("later", !!card.progressive && card.rows.indexOf(r) > card.shown);
         rowEl.classList.toggle("pulse", st.pulse === r.id);
         rowEl.classList.toggle("now", st.now === r.id);
         rowEl.classList.toggle("reading", st.reading === r.id);
@@ -547,6 +549,14 @@
     this.titleText = title || "";
     this.faceEl = faceEl || null;
     return this.render();
+  };
+  /** R4 (decision 55): the guide's line as the card's top strip (the doctor is both the asker and the guide). */
+  Kit.Card.prototype.setStrip = function (s) {
+    this.strip = s && s.html ? s : null;
+    const OC = global.OrderCard;
+    const c = this.el.querySelector(".oc-card");
+    if (OC && OC.setStrip && c) OC.setStrip(c, this.strip);
+    return this;
   };
   Kit.Card.prototype.ordered = function (on = true) {
     this.isOrdered = !!on;
@@ -603,6 +613,13 @@
     const fresh = this.rows.slice(this.shown + 1, last + 1).map((r) => r.id);
     this.shown = last;
     return fresh;
+  };
+  /** Decision 52 (CLN-82): the step after the open one (its first row id), for the L2+ "what's next" reveal. */
+  Kit.Card.prototype.nextStepId = function () {
+    const cur = this.st.now ? this.rows.findIndex((r) => r.id === this.st.now) : -1;
+    const from = cur >= 0 ? this.groupEnd(cur) + 1 : this.shown + 1;
+    const r = this.rows.slice(Math.max(0, from)).find((x) => !this.st.done.has(x.id));
+    return r ? r.id : null;
   };
   Kit.Card.prototype.row = function (id) {
     return this.rows.find((r) => r.id === id) || null;

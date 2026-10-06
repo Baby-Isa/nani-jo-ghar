@@ -216,7 +216,7 @@
         }
         st.kicks++;
         S.count(st.kicks);
-        ctx.tally("hammer", st.kicks, { next: true }); // SH-40: the bandage (the next action) closes this step
+        ctx.tally("hammer", st.kicks, { next: "bandage", of: c.count }); // SH-40: the bandage (the next action) closes this step; // S02-A hook: decision 52, the next step shows at L2+
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (ctx.level === 1 && st.kicks >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         const hm = s("image", { href: (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)("assets/clinic/items-v2/reflex-hammer.webp"), x: KX + 40 * KS, y: KY + 10 * KS, width: 150 * KS, height: 100 * KS }, S.fx);

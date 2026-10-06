@@ -306,7 +306,7 @@
         st.temp = st.temp && st.temp !== t ? "mixed" : t;
         st.jugs++;
         S.count(st.jugs);
-        ctx.tally(S.sel, st.jugs);
+        ctx.tally(S.sel, st.jugs, { next: "splinter", of: c.jugs }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (P.level === 1 && st.jugs >= c.jugs) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
         water.setAttribute("fill", TCOL[t]);
