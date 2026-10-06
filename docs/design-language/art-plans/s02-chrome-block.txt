@@ -1,0 +1,216 @@
+You're making 45 images in ChatGPT for a children's game called Nani jo Ghar and putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/ccr-a7370759-t0lee7/docs/design-language/art-plans/s02-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/
+Reference images, by the name the run order uses:
+ style-anchor-v1.png            RAW + sources/art/style-anchor-v1.png
+ bg-cook-service-v1.jpg         RAW + assets/cook/bg/service.jpg
+ chai-pan-pour-draft1.png       RAW + sources/art/chai-v2/pan-pour-draft1.png
+ chai-glasses-draft1.png        RAW + sources/art/chai-v2/glasses-draft1.png
+ pantry-spice-jars-v2.png       RAW + sources/art/pantry-v2/pantry-v2-sheet2-spice-jars.png
+ cook-plates-0-4-v2.png         RAW + sources/art/cook-v3-1/r6-plate-0-4-v2.png
+ cook-ladle-trivet-bowl-v1.png  RAW + sources/art/cook-v3/d2-ladle-trivet-bowl-v1.png
+ ci1-care-kit-v1.png            RAW + sources/art/clinic-v2/items/ci1-care-kit-v1.png
+ ci2-tools-comfort-v1.png       RAW + sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+ ci4-plasters-v1.png            RAW + sources/art/clinic-v2/items/ci4-plasters-v1.png
+ ci5-foot-soak-v1.png           RAW + sources/art/clinic-v2/items/ci5-foot-soak-v1.png
+ r1-fever-things-v1.png         RAW + sources/art/clinic-heal-v3/r1-fever-things-v1.png
+ s1-girl-sheet-v2.png           RAW + sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+ girl-w1-front-neutral-v1.png   RAW + sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
+Kept images: "kept:X" is the image you kept for prompt X, already committed by you to RAW + sources/art/s02/<X's save-as name>.
+The upload page: https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/s02
+The folder (to check and to resume): https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/s02
+
+MOVING IMAGES WITHOUT DOWNLOADING (no Chrome downloads, no file pickers, nothing for Zafar to do)
+Use your cloud workspace and your browser file-upload tool. Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. Test both moves on the first image that finishes and log that they worked.
+
+1. INTO CHATGPT (attaching). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run; a kept image is attached from your workspace copy, not fetched again. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, and check the composer shows exactly that many thumbnails before you paste.
+
+2. OUT OF CHATGPT, INTO GITHUB (saving a kept image). Never use ChatGPT's download button.
+   a) Find the new image's address: read the src of the newest large image in the reply (e.g. document.querySelectorAll('main img'), the last one at least 512 px wide; reading an attribute is fine, fetching isn't). Make sure it's the NEW image, not one you attached.
+   b) Fetch that address into your cloud workspace and save it under the prompt's save-as name. Check it's the full image (1024 px or more on its long side), not a thumbnail. If the workspace can't fetch it, open the image full-size in ChatGPT and try its address from there.
+   c) Commit in batches (see the loop, step 4a): open the upload page, put every queued file into the page's file input in one go, check they all appear with the right names.
+   d) In "Commit changes", write "s02: <the IDs>" as the message and the log lines (see THE LOG), one per file, in the extended description; choose "Commit directly to the main branch", commit, and check the folder page lists every file.
+   If an image can't be saved, leave it in its ChatGPT chat, log "NOT SAVED: <chat title>" and carry on; Claude collects those afterwards. Never fall back to downloading, and never ask Zafar to do it.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (committing to GitHub, fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (saved in your workspace, not yet committed) · COMMITTED · SKIPPED or STALLED (why). Two queues: READY (redos at the front, then run order) and SAVE (kept, not yet committed).
+
+THE TICK. Repeat until every line is COMMITTED or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). If the prompt you start needs this very picture, fetch and save it first (move 2, steps a and b only, into your workspace under its save-as name) and attach that local copy, never waiting for the GitHub commit; otherwise send first, then fetch and save it while the new prompt generates, and add it to SAVE.
+   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) commit SAVE (all queued files in one upload) when 6 files are queued, or the oldest has waited 25 minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+FIRST-PASS NUMBERS (optional)
+If your workspace has python and a clone of https://github.com/Baby-Isa/nani-jo-ghar, run `python3 build/tools/art/artjudge.py --dir <the folder of your saved images> --only <ID>` on each kept image before your own look: a FAIL line is a redo, a FLAG line names what to look at hardest. It never replaces looking.
+
+APPROVALS
+- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.
+- Everything else is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log "needs Zafar: likeness" and carry on.
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
+- Sign nothing in or out. Delete no chats.
+- Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with the slots filled for that line's person, and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most 2 redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+6. Save the kept image (move 2 a and b) and queue it for the next batch commit.
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART A: THE KITCHEN (1)
+Run A1 first: Session B's screens wait for it, and it is the picture Zafar sees first.
+A1 | bg-cook-service-v1.jpg, style-anchor-v1.png | a1-kitchen-service-trays-v1.png | KITCHEN + the same room and camera as the attached kitchen; three empty trays; ONE marble edge under the sink; nobody in it
+Part A done: post the part A summary (see AT THE END) and carry on.
+
+PART B: THE SERVED DISHES (1)
+B1 | style-anchor-v1.png | b1-served-dishes-v1.png | DISHES
+Part B done: post the part B summary (see AT THE END) and carry on.
+
+PART C: THE COOK FIXES (11)
+C2 is an edit of the kept C1 (attach only that one). Everything else attaches repo files only.
+C1 | chai-pan-pour-draft1.png, style-anchor-v1.png | c1-chai-pan-pour-milk-v1.png | PANPOUR
+C2 | edit: kept:C1 | c2-chai-pan-pour-black-v1.png | PANEDIT
+C3 | chai-glasses-draft1.png, style-anchor-v1.png | c3-black-tea-glass-states-v1.png | GLASSES
+C4 | style-anchor-v1.png | c4-teaspoon-t-v1.png | SPOON
+C5 | pantry-spice-jars-v2.png, style-anchor-v1.png | c5-spice-jars-v1.png | JARS
+C6 | style-anchor-v1.png | c6-ginger-t-v1.png | GINGER
+C7 | cook-plates-0-4-v2.png, style-anchor-v1.png | c7-sekelo-plate-plain-t-v1.png | PLATE
+C8 | style-anchor-v1.png | c8-chaat-glass-side-v1.png | GLASSBOWL
+C9 | style-anchor-v1.png | c9-knife-t-v1.png | KNIFE
+C10 | cook-ladle-trivet-bowl-v1.png, style-anchor-v1.png | c10-daar-bowl-trivet-t-v1.png | BOWLTRIVET
+C11 | style-anchor-v1.png | c11-samosa-fold-frames-v1.png | FOLD
+Part C done: post the part C summary (see AT THE END) and carry on.
+
+PART D: THE COIN JAR (2)
+D1 | style-anchor-v1.png | d1-coin-jar-levels-v1.png | JAR
+D2 | style-anchor-v1.png | d2-coin-pile-v1.png | COINS
+Part D done: post the part D summary (see AT THE END) and carry on.
+
+PART E: THE CLINIC SPRITE SHEETS (one sheet per item) (17)
+Each sheet is the SAME object in every cell, in the clinic things' plastic, steel and cloth; judge the views against the plan's table 3.5.
+E1 | ci2-tools-comfort-v1.png, style-anchor-v1.png | e1-cloth-sheet-v1.png | SHEET8
+E2 | ci4-plasters-v1.png, style-anchor-v1.png | e2-plasters-flat-v1.png | PLASTERS
+E3 | ci4-plasters-v1.png, style-anchor-v1.png | e3-plaster-views-v1.png | SHEET8
+E4 | ci1-care-kit-v1.png, style-anchor-v1.png | e4-drop-bottle-sheet-v1.png | SHEET8G
+E5 | ci1-care-kit-v1.png, style-anchor-v1.png | e5-toothbrush-sheet-v1.png | SHEET8
+E6 | r1-fever-things-v1.png, style-anchor-v1.png | e6-hand-fan-sheet-v1.png | SHEET8
+E7 | ci2-tools-comfort-v1.png, style-anchor-v1.png | e7-desk-fan-sheet-v1.png | SHEET8
+E8 | r1-fever-things-v1.png, style-anchor-v1.png | e8-hot-water-bottle-sheet-v1.png | SHEET8
+E9 | r1-fever-things-v1.png, style-anchor-v1.png | e9-heater-sheet-v1.png | HEATER
+E10 | ci1-care-kit-v1.png, style-anchor-v1.png | e10-alcohol-wipe-sheet-v1.png | SHEET8
+E11 | ci2-tools-comfort-v1.png, style-anchor-v1.png | e11-syringe-sheet-v1.png | SYRINGE
+E12 | ci1-care-kit-v1.png, style-anchor-v1.png | e12-tweezers-sheet-v1.png | SHEET8
+E13 | ci1-care-kit-v1.png, style-anchor-v1.png | e13-cotton-bud-sheet-v1.png | SHEET8G
+E14 | ci2-tools-comfort-v1.png, style-anchor-v1.png | e14-waste-bin-sheet-v1.png | SHEET8
+E15 | style-anchor-v1.png | e15-ear-bits-angled-v1.png | EARBITS
+E16 | ci5-foot-soak-v1.png, style-anchor-v1.png | e16-jugs-sheet-v1.png | JUGS
+E17 | ci1-care-kit-v1.png, style-anchor-v1.png | e17-thermometer-sheet-v1.png | SHEET8G
+Part E done: post the part E summary (see AT THE END) and carry on.
+
+PART F: THE GIRL (new poses, then the clinic redo list) (13)
+Person: girl. W12 waits for the kept W11; M4 is an edit of M3; RY2 and RY3 are edits of RY1. The R-lines end with what failed last time: judge for that first, then the whole check.
+W11 | style-anchor-v1.png, s1-girl-sheet-v2.png, girl-w1-front-neutral-v1.png | girl-w11-standing-palms-v1.png | W11
+W12 | style-anchor-v1.png, s1-girl-sheet-v2.png, kept:W11 | girl-w12-standing-wave-v1.png | W12
+M3 | style-anchor-v1.png, s1-girl-sheet-v2.png | girl-m3-mouth-brush-v1.png | M3
+M4 | edit: kept:M3 | girl-m4-mouth-plaque-v1.png | PLAQUE
+RU1 | style-anchor-v1.png, s1-girl-sheet-v2.png | child-u1-upperarm-v2.png | RU1 + REDO of the clinic pack's child-U1: last time a sleeveless vest, a bare shoulder, the chin and a plait were in shot
+RM1 | style-anchor-v1.png, s1-girl-sheet-v2.png | girl-m1-mouth-v2.png | RM1 + REDO of girl-M1: last time framed too wide (ears, plaits, collar in shot)
+RM2 | style-anchor-v1.png, s1-girl-sheet-v2.png | girl-m2-tongue-v2.png | RM2 + REDO of girl-M2: last time framed too wide and rosy cheeks
+RY1 | style-anchor-v1.png, s1-girl-sheet-v2.png | girl-y1-eyes-v2.png | RY1 + REDO of girl-Y1: last time the head's sides, ears and plaits were in shot
+RY2 | edit: kept:RY1 | girl-y2-eye-sore-v2.png | RY2
+RY3 | edit: kept:RY1 | girl-y3-eyes-closed-v2.png | RY3
+RT1 | style-anchor-v1.png, s1-girl-sheet-v2.png | girl-t1-eyetest-a-v2.png | RT1 + REDO of girl-T1: last time she looked away from the chart
+RW10 | style-anchor-v1.png, s1-girl-sheet-v2.png, girl-w1-front-neutral-v1.png | girl-w10-bottle-v2.png | RW10 + REDO of girl-W10: last time 2.4% smaller than W1 with the feet 2% off W1's line
+RO2 | style-anchor-v1.png | o2-mouth-bits-v2.png | RO2 + REDO of O2: last time the four spots were round glossy discs that read as sweets
+Part F done.
+
+CHECKS (by check ID)
+KITCHEN: the same room from the same camera as the attached kitchen (window and tap left, sink worktop with ONE marble edge, three empty shelves, hob in sage cabinets, mirror-work hanging and brass pot right, arched doorway, pendant lamp, marble island with oak-slat front across the whole width, its top edge horizontal at about 65% of the height) · three identical empty pale-oak trays side by side on the island at about 22%, 50% and 78% of the width · nobody, no hands, no food · the scene fits a central 16:9 band · light from the upper left, shadows to the right · sharp, no blur
+DISHES: eight dishes in a 4 by 2 grid, in order: milky chai glass, black tea in the same glass, a stack of maani on a steel plate, a steel bowl of yellow daar, layered chaat in a thin glass bowl, two samosas on a steel plate, two straight parallel skewers on an oval steel plate, a basket with a milk jug, tea tin and cloth sack · all seen from the front and a little above · nothing under them · lit from the upper left
+PANPOUR: the same brushed-steel pan as the attached draft, seen from above, tipped about 35 degrees to the lower left, a stream of milky chai leaving the lip · handle to the upper right · the WHOLE pan, handle and stream inside the image with a clear margin on every side · no shadow under it
+PANEDIT: only the liquid changed, to clear deep amber black tea (in the pan and the stream) · the pan, handle, tilt, size, position and background identical
+GLASSES: three times the SAME cutting glass as the attached, at the same size and place in each cell · empty, half, full of clear amber black tea (no milk) · straight on from the front
+SPOON: one plain steel teaspoon from directly above, bowl left, handle right, flat and level · nothing in it · about 80% of the width · touches no edge
+JARS: four times the same small glass jar, straight on, full to the shoulder: garlic cloves (brass lid), ginger pieces (dark wood lid), green cardamom pods (black lid), coarse salt (white ceramic lid) · the contents large and clear through the glass · the four lids clearly different · no labels
+GINGER: two cells from directly above: a knobbly branching ginger root with pale tan skin and one cut yellow end; three thin round slices lying flat · reads as real ginger, never as sweets or gummies
+PLATE: one plain oval brushed-steel plate from directly above, long axis left to right, completely EMPTY · no sticks, skewers, food or pattern · about 85% of the width · touches no edge
+GLASSBOWL: one simple clear glass bowl exactly side-on, empty · straight slightly flaring sides, a THIN flat base, a plain rim · only a faint tint and two thin wall lines · NO reflections, highlights, thick bottom, facets or pattern · touches no edge
+KNIFE: one knife from directly above, blade left, pale wood handle right, cutting edge at the bottom · a little stocky · the tip and the handle's end both well inside the image (at least 10% margin all round) · touches no edge
+BOWLTRIVET: two cells from directly above, rims perfect circles: the steel bowl of plain yellow daar with NOTHING under it; the empty round woven trivet on its own · the bowl smaller than the trivet
+FOLD: six frames in a 3 by 2 grid from directly above · the pastry strip the SAME height in every frame, its top and bottom edges on the same two lines in all six cells, its right-hand end at the same place · nothing above or below those lines · the fold grows from the LEFT end by diagonal folds; frame 6 is the finished triangle, the strip's height, alone · simple matte pastry, not hyper-real
+JAR: five times the SAME clear glass jar with a brass lid, at the same size and place in each cell, straight on · empty, a quarter, half, three-quarters, full of plain matte gold coins · no label · NO markings, numbers, letters or faces on any coin
+COINS: two cells from the front and slightly above: one plain gold coin on its edge; a small heap of five · plain smooth discs with a slightly raised rim · NO markings, numbers, letters or faces
+SHEET8: eight views of the SAME object in a 4 by 2 grid, in the order and at the angles the plan's prompt lists (belt view front-and-above, top-down, front, the in-use angle, then the spares) · the same object, colours and materials as the attached clinic things in every cell · "exactly side-on" and "from directly above" drawn so, not at an angle · lit from the upper left in every cell · nothing but the object (no hands, skin or body parts)
+SHEET8G: as SHEET8 (eight views of the same object in a 4 by 2 grid, the plan's order and angles, lit from the upper left) · glass or clear plastic kept clean and see-through · a drop or a loose part counts with its cell, nothing crosses a boundary
+PLASTERS: eleven plasters flat from directly above in a 4 by 3 grid, the last cell empty, in order: red, yellow, blue, green, skin, red-yellow, red-blue, red-green, yellow-blue, yellow-green, blue-green · the colour covers the WHOLE plaster, strip and pad alike, matte and even · the two-colour ones split lengthwise, half and half · all the same shape and size
+HEATER: eight views of the same cream heater in a 4 by 2 grid: three-quarter LEFT off and on, front off and on, side-on FACING LEFT off and on, top-down, back · each off/on pair at exactly the same size and place · on = the two bars glowing orange with a soft glow · no dials, switches or markings
+SYRINGE: eight views of the same clear syringe in a 4 by 2 grid in the plan's order: lying front-above, top-down, side, upright OPEN and empty, upright full of clear liquid, tilted 45 degrees cap down-left, side-on, plunger pressed · the blue cap ON in every view · NO bare needle anywhere · tick marks only, no digits
+EARBITS: six things in a 3 by 2 grid, each seen three-quarter from the side and a little above, lit from the upper left: wax big, medium, small (glossy golden, friendly); a brown seed; a bud tip with wax; a falling teardrop wax blob · no ear or skin drawn
+JUGS: nine jugs in a 3 by 3 grid: columns hot (steam), cold (frost and two ice cubes), lukewarm (plain); rows standing front-and-above, top-down (rim a circle), pouring tilted 40 degrees with the spout to the lower left and a stream · the three jugs of a row at the same size and place · the same jug as the attached foot-soak sheet
+W11: the same girl as the sheet and the attached front picture, STANDING upright, facing us, both feet flat on one level, arms a little out, both PALMS turned to us, fingers apart · neutral face · fills about 85% of the height, touches no edge · no floor drawn · five fingers on each hand
+W12: the same girl, size, place and feet as the attached standing picture · one hand up in a small wave, palm to us, the other arm relaxed · a big happy smile · touches no edge · no floor drawn
+M3: only the lower face, from above the nose tip to below the chin · the cheeks run off the LEFT and RIGHT edges, no ears, plaits, hair or collar · the mouth open A LITTLE, the teeth showing through a gap about a third of the mouth's height, top row clear · clean white teeth
+PLAQUE: only the teeth changed, to a matte pale-yellow film with paler speckles, thickest at the gum line · nothing gross, no decay · everything else identical
+RU1: a bare upper arm, the yellow sleeve PUSHED UP to the shoulder and clearly in view · the arm leaves the BOTTOM edge, the dress's side at the LEFT edge · NOTHING of the head, neck, chin, hair or plaits · clean skin
+RM1: only the lower face · the cheeks run off the LEFT and RIGHT edges, no ears, plaits, hair or collar · mouth wide open "aah", top and bottom teeth clear, white and healthy
+RM2: only the lower face · the cheeks run off the LEFT and RIGHT edges · tongue out and down, plain pink, no spots · PLAIN skin with no blush: the tongue is the only pink
+RY1: from the mid-forehead to below the nose tip · the head's SIDES run off the LEFT and RIGHT edges, no ears, plaits or ribbons · both eyes open, clear, looking at us, across the middle
+RY2: only the eye on the viewer's RIGHT is sore (pink white, puffy pink lids) · the other eye unchanged · no tears · everything else identical
+RY3: both eyes gently closed · nothing else changed
+RT1: head and shoulders front-on, the shoulders running off the BOTTOM edge only · one hand flat over the eye on the viewer's RIGHT, five fingers · the other eye LOOKING A LITTLE TO OUR RIGHT, past us (not at us, not away to the left) · the same girl as the sheet
+RW10: the same girl at EXACTLY the attached front picture's size and framing, seat and feet in the same place · the teal knitted hot-water bottle hugged against the tummy, both hands on it · a comforted face · touches no edge
+RO2: four MATTE, softly irregular, slightly raised sore spots the same size (red, yellow, blue, green) with no gloss, highlight or hard edge, never round glossy discs; three jagged decay patches; one matte off-white filling patch with no outline
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare (the kitchen A1 included).
+- The background isn't one flat mid-grey (A1 excepted); there's a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head or body runs off that edge (A1 fills the whole image).
+- The wrong number of things, things in the wrong order, the wrong view in a cell, or extra objects, people, hands or animals (in a sprite sheet, a hand holding the item is a fail).
+- Hands: not five fingers on each visible hand, fused or extra fingers.
+- The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals), or looking older or younger.
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest clothes, or any religious marker (bindi, tilak, sindoor, deities, temple items); any person drawn in the kitchen.
+- Anything scary, bloody, gory or gross; a bare needle on the syringe.
+- Anything that looks like sweets, lollies, gumballs or jelly beans: coins or spots drawn as glossy discs, ginger drawn as gummies.
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left, or cells of one sheet lit from different sides; a second light; "seen exactly side-on" or "from directly above" drawn at an angle; circles drawn as ovals where "from directly above" was asked (the tipped pan excepted).
+- A registered set (the three glasses, the five jars, the six fold frames, the heater's pairs, a row of jugs) whose object moves or changes size between cells.
+
+THE LOG
+One line per kept image, used in its batch commit's description:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | <notes>
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, every "NOT SAVED" image, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+RESUMING
+If this message is pasted again later with the word "resume", open the folder page: every committed file is a kept image (its commit's description holds its log line). Carry on from the first prompt in the run order whose save-as file isn't there.
+
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), not saved. Flush the SAVE queue before you post it. At the very end, also commit the whole log as sources/art/s02/art-run-log.txt: on the folder page use "Add file" > "Create new file", paste the log, commit directly to main.

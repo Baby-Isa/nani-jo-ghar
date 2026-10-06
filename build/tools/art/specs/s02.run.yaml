@@ -1,0 +1,245 @@
+# The run spec for pack s02 (Sprint 2 art: the kitchen, the served dishes, the Cook fixes, the coin jar, the clinic
+# sprite sheets, the girl). Read by build/tools/art/artblock.py (the paste block) and artjudge.py (the first-pass
+# judge). The prompts stay in the art plan (section 5). Edit this file, then regenerate the block; never hand-edit the block.
+pack: s02
+title: Sprint 2 art
+plan: docs/design-language/art-plans/s02-art-plan.md
+plan_branch: ccr-a7370759-t0lee7      # the block reads the plan from this branch until it reaches main
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: main
+dest: sources/art/s02
+real_people: false                     # nobody real is drawn: Nani's existing leaning picture is reused (decision 64)
+runner:
+  windows: 3
+  send_gap_seconds: 60
+  stall_minutes: 6
+  hard_minutes: 10
+  redos: 2
+  commit_batch: 6
+  flush_minutes: 25
+refs:                                  # reference images by the name the run order uses
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+  bg-cook-service-v1.jpg: assets/cook/bg/service.jpg
+  chai-pan-pour-draft1.png: sources/art/chai-v2/pan-pour-draft1.png
+  chai-glasses-draft1.png: sources/art/chai-v2/glasses-draft1.png
+  pantry-spice-jars-v2.png: sources/art/pantry-v2/pantry-v2-sheet2-spice-jars.png
+  cook-plates-0-4-v2.png: sources/art/cook-v3-1/r6-plate-0-4-v2.png
+  cook-ladle-trivet-bowl-v1.png: sources/art/cook-v3/d2-ladle-trivet-bowl-v1.png
+  ci1-care-kit-v1.png: sources/art/clinic-v2/items/ci1-care-kit-v1.png
+  ci2-tools-comfort-v1.png: sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+  ci4-plasters-v1.png: sources/art/clinic-v2/items/ci4-plasters-v1.png
+  ci5-foot-soak-v1.png: sources/art/clinic-v2/items/ci5-foot-soak-v1.png
+  r1-fever-things-v1.png: sources/art/clinic-heal-v3/r1-fever-things-v1.png
+  s1-girl-sheet-v2.png: sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+  girl-w1-front-neutral-v1.png: sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
+# no per-person templates in this pack: every line is a one-off
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  # A: the kitchen
+  A1:  {attach: [bg-cook-service-v1.jpg, style-anchor-v1.png], save: a1-kitchen-service-trays-v1.png, check: KITCHEN,
+        note: "the same room and camera as the attached kitchen; three empty trays; ONE marble edge under the sink; nobody in it"}
+  # B: the served dishes
+  B1:  {attach: [style-anchor-v1.png], save: b1-served-dishes-v1.png, check: DISHES}
+  # C: the Cook fixes
+  C1:  {attach: [chai-pan-pour-draft1.png, style-anchor-v1.png], save: c1-chai-pan-pour-milk-v1.png, check: PANPOUR}
+  C2:  {attach: ["edit: kept:C1"], save: c2-chai-pan-pour-black-v1.png, check: PANEDIT}
+  C3:  {attach: [chai-glasses-draft1.png, style-anchor-v1.png], save: c3-black-tea-glass-states-v1.png, check: GLASSES}
+  C4:  {attach: [style-anchor-v1.png], save: c4-teaspoon-t-v1.png, check: SPOON}
+  C5:  {attach: [pantry-spice-jars-v2.png, style-anchor-v1.png], save: c5-spice-jars-v1.png, check: JARS}
+  C6:  {attach: [style-anchor-v1.png], save: c6-ginger-t-v1.png, check: GINGER}
+  C7:  {attach: [cook-plates-0-4-v2.png, style-anchor-v1.png], save: c7-sekelo-plate-plain-t-v1.png, check: PLATE}
+  C8:  {attach: [style-anchor-v1.png], save: c8-chaat-glass-side-v1.png, check: GLASSBOWL}
+  C9:  {attach: [style-anchor-v1.png], save: c9-knife-t-v1.png, check: KNIFE}
+  C10: {attach: [cook-ladle-trivet-bowl-v1.png, style-anchor-v1.png], save: c10-daar-bowl-trivet-t-v1.png, check: BOWLTRIVET}
+  C11: {attach: [style-anchor-v1.png], save: c11-samosa-fold-frames-v1.png, check: FOLD}
+  # D: the coin jar
+  D1:  {attach: [style-anchor-v1.png], save: d1-coin-jar-levels-v1.png, check: JAR}
+  D2:  {attach: [style-anchor-v1.png], save: d2-coin-pile-v1.png, check: COINS}
+  # E: the clinic sprite sheets (one per item)
+  E1:  {attach: [ci2-tools-comfort-v1.png, style-anchor-v1.png], save: e1-cloth-sheet-v1.png, check: SHEET8}
+  E2:  {attach: [ci4-plasters-v1.png, style-anchor-v1.png], save: e2-plasters-flat-v1.png, check: PLASTERS}
+  E3:  {attach: [ci4-plasters-v1.png, style-anchor-v1.png], save: e3-plaster-views-v1.png, check: SHEET8}
+  E4:  {attach: [ci1-care-kit-v1.png, style-anchor-v1.png], save: e4-drop-bottle-sheet-v1.png, check: SHEET8G}
+  E5:  {attach: [ci1-care-kit-v1.png, style-anchor-v1.png], save: e5-toothbrush-sheet-v1.png, check: SHEET8}
+  E6:  {attach: [r1-fever-things-v1.png, style-anchor-v1.png], save: e6-hand-fan-sheet-v1.png, check: SHEET8}
+  E7:  {attach: [ci2-tools-comfort-v1.png, style-anchor-v1.png], save: e7-desk-fan-sheet-v1.png, check: SHEET8}
+  E8:  {attach: [r1-fever-things-v1.png, style-anchor-v1.png], save: e8-hot-water-bottle-sheet-v1.png, check: SHEET8}
+  E9:  {attach: [r1-fever-things-v1.png, style-anchor-v1.png], save: e9-heater-sheet-v1.png, check: HEATER}
+  E10: {attach: [ci1-care-kit-v1.png, style-anchor-v1.png], save: e10-alcohol-wipe-sheet-v1.png, check: SHEET8}
+  E11: {attach: [ci2-tools-comfort-v1.png, style-anchor-v1.png], save: e11-syringe-sheet-v1.png, check: SYRINGE}
+  E12: {attach: [ci1-care-kit-v1.png, style-anchor-v1.png], save: e12-tweezers-sheet-v1.png, check: SHEET8}
+  E13: {attach: [ci1-care-kit-v1.png, style-anchor-v1.png], save: e13-cotton-bud-sheet-v1.png, check: SHEET8G}
+  E14: {attach: [ci2-tools-comfort-v1.png, style-anchor-v1.png], save: e14-waste-bin-sheet-v1.png, check: SHEET8}
+  E15: {attach: [style-anchor-v1.png], save: e15-ear-bits-angled-v1.png, check: EARBITS}
+  E16: {attach: [ci5-foot-soak-v1.png, style-anchor-v1.png], save: e16-jugs-sheet-v1.png, check: JUGS}
+  E17: {attach: [ci1-care-kit-v1.png, style-anchor-v1.png], save: e17-thermometer-sheet-v1.png, check: SHEET8G}
+  # F: the girl (new poses, then the clinic redo list's open lines, saved as -v2 beside the clinic pack's -v1)
+  W11:  {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png, girl-w1-front-neutral-v1.png], save: girl-w11-standing-palms-v1.png, check: W11}
+  W12:  {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png, "kept:W11"], save: girl-w12-standing-wave-v1.png, check: W12}
+  M3:   {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png], save: girl-m3-mouth-brush-v1.png, check: M3}
+  M4:   {person: girl, attach: ["edit: kept:M3"], save: girl-m4-mouth-plaque-v1.png, check: PLAQUE}
+  RU1:  {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png], save: child-u1-upperarm-v2.png, check: RU1,
+         note: "REDO of the clinic pack's child-U1: last time a sleeveless vest, a bare shoulder, the chin and a plait were in shot"}
+  RM1:  {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png], save: girl-m1-mouth-v2.png, check: RM1,
+         note: "REDO of girl-M1: last time framed too wide (ears, plaits, collar in shot)"}
+  RM2:  {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png], save: girl-m2-tongue-v2.png, check: RM2,
+         note: "REDO of girl-M2: last time framed too wide and rosy cheeks"}
+  RY1:  {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png], save: girl-y1-eyes-v2.png, check: RY1,
+         note: "REDO of girl-Y1: last time the head's sides, ears and plaits were in shot"}
+  RY2:  {person: girl, attach: ["edit: kept:RY1"], save: girl-y2-eye-sore-v2.png, check: RY2}
+  RY3:  {person: girl, attach: ["edit: kept:RY1"], save: girl-y3-eyes-closed-v2.png, check: RY3}
+  RT1:  {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png], save: girl-t1-eyetest-a-v2.png, check: RT1,
+         note: "REDO of girl-T1: last time she looked away from the chart"}
+  RW10: {person: girl, attach: [style-anchor-v1.png, s1-girl-sheet-v2.png, girl-w1-front-neutral-v1.png], save: girl-w10-bottle-v2.png, check: RW10,
+         note: "REDO of girl-W10: last time 2.4% smaller than W1 with the feet 2% off W1's line"}
+  RO2:  {attach: [style-anchor-v1.png], save: o2-mouth-bits-v2.png, check: RO2,
+         note: "REDO of O2: last time the four spots were round glossy discs that read as sweets"}
+# the run order. Parts are priorities, not barriers: a free window takes the next READY line, even from a later part.
+parts:
+  - id: A
+    title: THE KITCHEN
+    intro: "Run A1 first: Session B's screens wait for it, and it is the picture Zafar sees first."
+    items: [{lines: [A1]}]
+  - id: B
+    title: THE SERVED DISHES
+    items: [{lines: [B1]}]
+  - id: C
+    title: THE COOK FIXES
+    intro: "C2 is an edit of the kept C1 (attach only that one). Everything else attaches repo files only."
+    items: [{lines: [C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11]}]
+  - id: D
+    title: THE COIN JAR
+    items: [{lines: [D1, D2]}]
+  - id: E
+    title: THE CLINIC SPRITE SHEETS (one sheet per item)
+    intro: "Each sheet is the SAME object in every cell, in the clinic things' plastic, steel and cloth; judge the views against the plan's table 3.5."
+    items: [{lines: [E1, E2, E3, E4, E5, E6, E7, E8, E9, E10, E11, E12, E13, E14, E15, E16, E17]}]
+  - id: F
+    title: THE GIRL (new poses, then the clinic redo list)
+    intro: "Person: girl. W12 waits for the kept W11; M4 is an edit of M3; RY2 and RY3 are edits of RY1. The R-lines end with what failed last time: judge for that first, then the whole check."
+    items: [{lines: [W11, W12, M3, M4, RU1, RM1, RM2, RY1, RY2, RY3, RT1, RW10, RO2]}]
+# the checks, by check ID: text = the words in the block; judge = what the first-pass judge measures
+checks:
+  KITCHEN:
+    text: the same room from the same camera as the attached kitchen (window and tap left, sink worktop with ONE marble edge, three empty shelves, hob in sage cabinets, mirror-work hanging and brass pot right, arched doorway, pendant lamp, marble island with oak-slat front across the whole width, its top edge horizontal at about 65% of the height) · three identical empty pale-oak trays side by side on the island at about 22%, 50% and 78% of the width · nobody, no hands, no food · the scene fits a central 16:9 band · light from the upper left, shadows to the right · sharp, no blur
+    judge: {aspect: [3, 2], bg: none}
+  DISHES:
+    text: 'eight dishes in a 4 by 2 grid, in order: milky chai glass, black tea in the same glass, a stack of maani on a steel plate, a steel bowl of yellow daar, layered chaat in a thin glass bowl, two samosas on a steel plate, two straight parallel skewers on an oval steel plate, a basket with a milk jug, tea tin and cloth sack · all seen from the front and a little above · nothing under them · lit from the upper left'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true, soft_edges: true}
+  PANPOUR:
+    text: the same brushed-steel pan as the attached draft, seen from above, tipped about 35 degrees to the lower left, a stream of milky chai leaving the lip · handle to the upper right · the WHOLE pan, handle and stream inside the image with a clear margin on every side · no shadow under it
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true, soft_edges: true}
+  PANEDIT:
+    text: only the liquid changed, to clear deep amber black tea (in the pan and the stream) · the pan, handle, tilt, size, position and background identical
+    judge: {aspect: [1, 1], bg: flat, edit: {allowed: [0, 0, 1, 1]}, soft_edges: true}
+  GLASSES:
+    text: three times the SAME cutting glass as the attached, at the same size and place in each cell · empty, half, full of clear amber black tea (no milk) · straight on from the front
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true, soft_edges: true}
+  SPOON:
+    text: one plain steel teaspoon from directly above, bowl left, handle right, flat and level · nothing in it · about 80% of the width · touches no edge
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}
+  JARS:
+    text: 'four times the same small glass jar, straight on, full to the shoulder: garlic cloves (brass lid), ginger pieces (dark wood lid), green cardamom pods (black lid), coarse salt (white ceramic lid) · the contents large and clear through the glass · the four lids clearly different · no labels'
+    judge: {aspect: [3, 2], bg: flat, pieces: 4, no_touch: true, soft_edges: true}
+  GINGER:
+    text: 'two cells from directly above: a knobbly branching ginger root with pale tan skin and one cut yellow end; three thin round slices lying flat · reads as real ginger, never as sweets or gummies'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 2, no_touch: true, sweets: true}
+  PLATE:
+    text: one plain oval brushed-steel plate from directly above, long axis left to right, completely EMPTY · no sticks, skewers, food or pattern · about 85% of the width · touches no edge
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}
+  GLASSBOWL:
+    text: one simple clear glass bowl exactly side-on, empty · straight slightly flaring sides, a THIN flat base, a plain rim · only a faint tint and two thin wall lines · NO reflections, highlights, thick bottom, facets or pattern · touches no edge
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true, soft_edges: true}
+  KNIFE:
+    text: one knife from directly above, blade left, pale wood handle right, cutting edge at the bottom · a little stocky · the tip and the handle's end both well inside the image (at least 10% margin all round) · touches no edge
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}
+  BOWLTRIVET:
+    text: 'two cells from directly above, rims perfect circles: the steel bowl of plain yellow daar with NOTHING under it; the empty round woven trivet on its own · the bowl smaller than the trivet'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  FOLD:
+    text: 'six frames in a 3 by 2 grid from directly above · the pastry strip the SAME height in every frame, its top and bottom edges on the same two lines in all six cells, its right-hand end at the same place · nothing above or below those lines · the fold grows from the LEFT end by diagonal folds; frame 6 is the finished triangle, the strip''s height, alone · simple matte pastry, not hyper-real'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  JAR:
+    text: 'five times the SAME clear glass jar with a brass lid, at the same size and place in each cell, straight on · empty, a quarter, half, three-quarters, full of plain matte gold coins · no label · NO markings, numbers, letters or faces on any coin'
+    judge: {aspect: [3, 2], bg: flat, pieces: 5, no_touch: true, soft_edges: true}
+  COINS:
+    text: 'two cells from the front and slightly above: one plain gold coin on its edge; a small heap of five · plain smooth discs with a slightly raised rim · NO markings, numbers, letters or faces'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true, sweets: true}
+  SHEET8:
+    text: eight views of the SAME object in a 4 by 2 grid, in the order and at the angles the plan's prompt lists (belt view front-and-above, top-down, front, the in-use angle, then the spares) · the same object, colours and materials as the attached clinic things in every cell · "exactly side-on" and "from directly above" drawn so, not at an angle · lit from the upper left in every cell · nothing but the object (no hands, skin or body parts)
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true}
+  SHEET8G:
+    text: as SHEET8 (eight views of the same object in a 4 by 2 grid, the plan's order and angles, lit from the upper left) · glass or clear plastic kept clean and see-through · a drop or a loose part counts with its cell, nothing crosses a boundary
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 8, no_touch: true, soft_edges: true}
+  PLASTERS:
+    text: 'eleven plasters flat from directly above in a 4 by 3 grid, the last cell empty, in order: red, yellow, blue, green, skin, red-yellow, red-blue, red-green, yellow-blue, yellow-green, blue-green · the colour covers the WHOLE plaster, strip and pad alike, matte and even · the two-colour ones split lengthwise, half and half · all the same shape and size'
+    judge: {aspect: [3, 2], bg: flat, pieces: 11, no_touch: true}
+  HEATER:
+    text: 'eight views of the same cream heater in a 4 by 2 grid: three-quarter LEFT off and on, front off and on, side-on FACING LEFT off and on, top-down, back · each off/on pair at exactly the same size and place · on = the two bars glowing orange with a soft glow · no dials, switches or markings'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true, soft_edges: true}
+  SYRINGE:
+    text: 'eight views of the same clear syringe in a 4 by 2 grid in the plan''s order: lying front-above, top-down, side, upright OPEN and empty, upright full of clear liquid, tilted 45 degrees cap down-left, side-on, plunger pressed · the blue cap ON in every view · NO bare needle anywhere · tick marks only, no digits'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 8, no_touch: true, soft_edges: true}
+  EARBITS:
+    text: 'six things in a 3 by 2 grid, each seen three-quarter from the side and a little above, lit from the upper left: wax big, medium, small (glossy golden, friendly); a brown seed; a bud tip with wax; a falling teardrop wax blob · no ear or skin drawn'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true, soft_edges: true}
+  JUGS:
+    text: 'nine jugs in a 3 by 3 grid: columns hot (steam), cold (frost and two ice cubes), lukewarm (plain); rows standing front-and-above, top-down (rim a circle), pouring tilted 40 degrees with the spout to the lower left and a stream · the three jugs of a row at the same size and place · the same jug as the attached foot-soak sheet'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 9, no_touch: true, soft_edges: true}
+  W11:
+    text: the same girl as the sheet and the attached front picture, STANDING upright, facing us, both feet flat on one level, arms a little out, both PALMS turned to us, fingers apart · neutral face · fills about 85% of the height, touches no edge · no floor drawn · five fingers on each hand
+    judge: {aspect: [2, 3], bg: flat, fill_h: [0.75, 0.95], no_touch: true, skin_face: [0.25, 0.0, 0.75, 0.2]}
+  W12:
+    text: the same girl, size, place and feet as the attached standing picture · one hand up in a small wave, palm to us, the other arm relaxed · a big happy smile · touches no edge · no floor drawn
+    judge: {aspect: [2, 3], bg: flat, fill_h: [0.75, 0.95], no_touch: true, like: W11}
+  M3:
+    text: only the lower face, from above the nose tip to below the chin · the cheeks run off the LEFT and RIGHT edges, no ears, plaits, hair or collar · the mouth open A LITTLE, the teeth showing through a gap about a third of the mouth's height, top row clear · clean white teeth
+    judge: {aspect: [3, 2], bg: flat, exits: [left, right], allow_touch: [top, bottom], side_hair: 0.08, skin_obj: true}
+  PLAQUE:
+    text: only the teeth changed, to a matte pale-yellow film with paler speckles, thickest at the gum line · nothing gross, no decay · everything else identical
+    judge: {aspect: [3, 2], bg: flat, exits: [left, right], allow_touch: [top, bottom], edit: {allowed: [0.2, 0.3, 0.8, 0.8]}, skin_obj: true}
+  RU1:
+    text: a bare upper arm, the yellow sleeve PUSHED UP to the shoulder and clearly in view · the arm leaves the BOTTOM edge, the dress's side at the LEFT edge · NOTHING of the head, neck, chin, hair or plaits · clean skin
+    judge: {aspect: [3, 2], bg: flat, exits: [left, bottom], skin_obj: true, sleeve: true}
+  RM1:
+    text: only the lower face · the cheeks run off the LEFT and RIGHT edges, no ears, plaits, hair or collar · mouth wide open "aah", top and bottom teeth clear, white and healthy
+    judge: {aspect: [3, 2], bg: flat, exits: [left, right], allow_touch: [top, bottom], side_hair: 0.08, skin_obj: true}
+  RM2:
+    text: 'only the lower face · the cheeks run off the LEFT and RIGHT edges · tongue out and down, plain pink, no spots · PLAIN skin with no blush: the tongue is the only pink'
+    judge: {aspect: [3, 2], bg: flat, exits: [left, right], allow_touch: [top, bottom], side_hair: 0.08, skin_obj: true}
+  RY1:
+    text: from the mid-forehead to below the nose tip · the head's SIDES run off the LEFT and RIGHT edges, no ears, plaits or ribbons · both eyes open, clear, looking at us, across the middle
+    judge: {aspect: [3, 2], bg: flat, exits: [left, right], allow_touch: [top, bottom], side_hair: 0.08, skin_obj: true}
+  RY2:
+    text: only the eye on the viewer's RIGHT is sore (pink white, puffy pink lids) · the other eye unchanged · no tears · everything else identical
+    judge: {aspect: [3, 2], bg: flat, exits: [left, right], allow_touch: [top, bottom], edit: {allowed: [0.05, 0.2, 0.95, 0.8]}, skin_obj: true}
+  RY3:
+    text: both eyes gently closed · nothing else changed
+    judge: {aspect: [3, 2], bg: flat, exits: [left, right], allow_touch: [top, bottom], edit: {allowed: [0.05, 0.2, 0.95, 0.8]}, skin_obj: true}
+  RT1:
+    text: head and shoulders front-on, the shoulders running off the BOTTOM edge only · one hand flat over the eye on the viewer's RIGHT, five fingers · the other eye LOOKING A LITTLE TO OUR RIGHT, past us (not at us, not away to the left) · the same girl as the sheet
+    judge: {aspect: [2, 3], bg: flat, exits: [bottom], skin_obj: true}
+  RW10:
+    text: the same girl at EXACTLY the attached front picture's size and framing, seat and feet in the same place · the teal knitted hot-water bottle hugged against the tummy, both hands on it · a comforted face · touches no edge
+    judge: {aspect: [2, 3], bg: flat, no_touch: true, skin_face: [0.25, 0.0, 0.75, 0.24]}
+  RO2:
+    text: 'four MATTE, softly irregular, slightly raised sore spots the same size (red, yellow, blue, green) with no gloss, highlight or hard edge, never round glossy discs; three jagged decay patches; one matte off-white filling patch with no outline'
+    judge: {aspect: [3, 2], bg: flat, pieces: 8, no_touch: true, sweets: true, soft_edges: true}
+passfail:
+- Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare (the kitchen A1 included).
+- The background isn't one flat mid-grey (A1 excepted); there's a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head or body runs off that edge (A1 fills the whole image).
+- The wrong number of things, things in the wrong order, the wrong view in a cell, or extra objects, people, hands or animals (in a sprite sheet, a hand holding the item is a fail).
+- 'Hands: not five fingers on each visible hand, fused or extra fingers.'
+- The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals), or looking older or younger.
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest clothes, or any religious marker (bindi, tilak, sindoor, deities, temple items); any person drawn in the kitchen.
+- Anything scary, bloody, gory or gross; a bare needle on the syringe.
+- 'Anything that looks like sweets, lollies, gumballs or jelly beans: coins or spots drawn as glossy discs, ginger drawn as gummies.'
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left, or cells of one sheet lit from different sides; a second light; "seen exactly side-on" or "from directly above" drawn at an angle; circles drawn as ovals where "from directly above" was asked (the tipped pan excepted).
+- A registered set (the three glasses, the five jars, the six fold frames, the heater's pairs, a row of jugs) whose object moves or changes size between cells.

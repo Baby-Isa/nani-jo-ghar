@@ -3,6 +3,8 @@
 # id = a line of the run (build/tools/art/specs/clinic-heal-v3.run.yaml). The edits that follow a redone picture
 # (Y2, Y3 after Y1) are added by the generator. A redo saves as -v2 (the old -v1 stays in the repo until the cut moves).
 # `why` is what failed, from the build reports; the runner judges for that first.
+# 6 Oct: every open line here (U1, M1, M2, Y1 and so Y2, Y3, T1, W10, O2, and the new W11) runs in pack s02 instead
+# (build/tools/art/specs/s02.run.yaml, lines RU1, RM1, RM2, RY1-RY3, RT1, RW10, RO2, W11; W12 added). Don't run this list again.
 pack: clinic-heal-v3
 redo:
   - id: child-U1
