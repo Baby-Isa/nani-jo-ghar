@@ -9,7 +9,7 @@
   2. Three canvas words at 13.5 px at 800x360 ("khun", "chai", "mishkaki"): floored at 14 px at source (`Cook.Kit.textFloor`).
   3. Two spacing-grid slips on the speaker margins (css/cook.css): on the grid.
   4. clinic:heal-knee#hint and heal-ear#hint timed out: did not reproduce; a late first-time help could block a tap, now built when the help starts.
-- **Re-check** (run `review-s01-recheck`, the touched flows at 800x360 and 1024x768): RECHECK_LINE
+- **Re-check** (run `review-s01-recheck`, the touched flows at 800x360 and 1024x768): **CHECK PASSED**, 0 new findings, both #hint flows end, 112 fixed.
 
 ## Looked at, flaws first
 - Day 6 greeting at 800x360 (before F2): pills over the counter (fixed). The guide box shows "Cook it the way they said." as a grey "to record" placeholder (rule 4 allows it until Mum records the line). The "oh dear!" the lint caught is hidden gloss text, not shown to the child.
