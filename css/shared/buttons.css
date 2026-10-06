@@ -13,12 +13,14 @@
   right: max(var(--njg-s3), 2.5%, env(safe-area-inset-right, 0px)); bottom: max(var(--njg-s3), 4%, env(safe-area-inset-bottom, 0px));
   width: var(--njg-done); aspect-ratio: 1; border-radius: 50%; padding: 0; margin: 0;
   background: var(--njg-cream); border: var(--njg-line) solid var(--njg-cream-edge); color: transparent; font-size: 0; overflow: hidden;
-  box-shadow: var(--njg-lip);
+  /* SH-61 (6 Oct): the ✓ is flat: no lip, no drop shadow behind the gold tick */
+  box-shadow: none;
 }
 .njg-done-tick { position: absolute; inset: 0; background: no-repeat center 54% / 66% url("../../assets/ui/results/tick-gold.webp?v=20261006T012012Z"); }
-.njg-done:active { transform: translateY(var(--njg-s1)); box-shadow: var(--njg-lip-down); }
+.njg-done:active { transform: scale(0.96); }
+/* SH-58: it glows when it is the only thing left (a gold ring that breathes, never a shadow) */
 .njg-done.glow { animation: njgDoneGlow 1s ease-in-out infinite; }
-@keyframes njgDoneGlow { 50% { box-shadow: var(--njg-glow-gold), var(--njg-lip); } }
+@keyframes njgDoneGlow { 50% { box-shadow: var(--njg-glow-gold); } }
 
 /* → Next: the flat pill (Cook's #go-btn.ds): white card, charcoal text, gold edge and icon */
 .njg-next {

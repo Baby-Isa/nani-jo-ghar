@@ -104,24 +104,26 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-tally-chip.bump { animation: cl-bump .3s; }
 @keyframes cl-bump { 50% { transform: scale(1.2); } }
 
-/* ---------- the big buttons (right) ---------- */
-.cl-go { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: #fff !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: var(--njg-s2) var(--njg-s2); box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
-.cl-go:active { transform: translateY(3px); box-shadow: 0 2px 0 #1f6457; }
-.cl-go .ph { color: #e8fff9; }
+/* ---------- the big buttons (right) ----------
+   S02-A (non-negotiable 8, SH-61): the shared kit's buttons (.njg-btn: ✓ Done, → Next, the pills) are styled by
+   css/shared/buttons.css alone; these rules are only for the clinic's own old buttons */
+.cl-go:not(.njg-btn) { min-height: 72px; border-radius: 22px; border: none; background: var(--cl-accent); color: #fff !important; font: 800 clamp(15px, 1.6vw, 21px) var(--cl-head); line-height: 1.05; padding: var(--njg-s2) var(--njg-s2); box-shadow: 0 5px 0 #1f6457; cursor: pointer; }
+.cl-go:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 2px 0 #1f6457; }
+.cl-go:not(.njg-btn) .ph { color: #e8fff9; }
 /* Sidebar v2 (Zafar, 28 Sept evening): the Done button in every mode is the gold-metal tick on a round cream button */
-.cl-go.done {
+.cl-go:not(.njg-btn).done {
   align-self: center; width: clamp(64px, 8vw, 92px); min-height: 0; aspect-ratio: 1; border-radius: 50%; padding: 0;
   background: #fffaf0 no-repeat center 54% / 66% url("../assets/ui/results/tick-gold.webp?v=20261006T012012Z");
   border: 1px solid #e6d5b8; color: transparent !important; font-size: 0; overflow: hidden;
   box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.2);
 }
-.cl-go.done.throb { animation: cl-throb-done 1.1s ease-in-out infinite; }
+.cl-go:not(.njg-btn).done.throb { animation: cl-throb-done 1.1s ease-in-out infinite; }
 @keyframes cl-throb-done { 50% { transform: scale(1.06); box-shadow: 0 4px 0 #e0cba6, 0 0 0 8px rgba(217, 164, 65, .35); } }
-.cl-go.done:active { box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
-.cl-go.alt { background: #fff; color: var(--cl-ink) !important; box-shadow: 0 5px 0 #d8c6a8; }
-.cl-go.alt .ph { color: var(--cl-soft); }
-.cl-go.throb { animation: cl-throb-go 1.1s ease-in-out infinite; }
-.cl-go:disabled { opacity: .35; animation: none; cursor: default; }
+.cl-go:not(.njg-btn).done:active { box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
+.cl-go:not(.njg-btn).alt { background: #fff; color: var(--cl-ink) !important; box-shadow: 0 5px 0 #d8c6a8; }
+.cl-go:not(.njg-btn).alt .ph { color: var(--cl-soft); }
+.cl-go:not(.njg-btn).throb { animation: cl-throb-go 1.1s ease-in-out infinite; }
+.cl-go:not(.njg-btn):disabled { opacity: .35; animation: none; cursor: default; }
 @keyframes cl-throb-go { 50% { transform: scale(1.06); box-shadow: 0 5px 0 #1f6457, 0 0 0 8px rgba(46, 139, 122, .25); } }
 
 /* ---------- speech bubbles ---------- */
@@ -174,12 +176,12 @@ body.clinic button { font-family: inherit; color: inherit; }
 
 @media (max-height: 460px) {
   .cl-row { padding: var(--njg-s1) var(--njg-s1); font-size: 15px; }
-  .cl-go { min-height: 56px; }
+  .cl-go:not(.njg-btn) { min-height: 56px; }
   .cl-card-face, .cl-card-speak, .cl-bulb { width: 36px; height: 36px; }
   .cl-side .cl-tray .cl-dish { height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cl-row.pulse, .cl-dish.pulse, .cl-go.throb, .cl-fig .fig-swirl { animation: none; }
+  .cl-row.pulse, .cl-dish.pulse, .cl-go:not(.njg-btn).throb, .cl-fig .fig-swirl { animation: none; }
 }
 
 /* ================= the pipeline's stages (js/clinic/stages/*.js) ================= */
@@ -280,7 +282,7 @@ body.clinic button { font-family: inherit; color: inherit; }
   .cl-side .cl-tray { flex-direction: row; }
   .cl-side .cl-tray .cl-dish { width: 64px; height: 56px; }
   .cl-actions { flex-direction: row; justify-content: flex-end; padding: var(--njg-s2); }
-  .cl-go { min-width: 140px; }
+  .cl-go:not(.njg-btn) { min-width: 140px; }
   .cl-lab-bar { left: 0; right: 0; }
 }
 .cl-mag { position: absolute; left: 3%; top: 4%; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #d8c6a8; background: #fff; font-size: 30px; cursor: pointer; z-index: 25; }
@@ -411,9 +413,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-actions { position: absolute; z-index: 40; right: max(10px, 2%); bottom: max(10px, 3%); left: auto; top: auto; display: flex; flex-direction: row; align-items: flex-end; justify-content: flex-end; gap: var(--njg-s2); padding: 0; background: none; pointer-events: none; max-width: calc(100% - 20px); }
 .cl-actions > * { pointer-events: auto; }
 .cl-actions .njg-btn { position: relative; right: auto; bottom: auto; }
-.cl-actions .cl-go.njg-next { color: #2a2522 !important; min-height: 48px; }
-.cl-actions .cl-go.njg-next .ph { color: #8a7a6c; }
-.cl-actions .cl-go.njg-done { min-height: 0; }
 @media (max-width: 700px) and (orientation: portrait) { .cl-app { grid-template-rows: auto 1fr; } }
 /* 13c: the card is the shared order card; its box is only the frame */
 .cl-card { background: none; box-shadow: none; padding: 0; border-radius: 0; flex: 0 1 auto; min-height: 0; overflow: auto; }
@@ -472,14 +471,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* 13a, 13b: the lab's debug log sits over the sidebar, clear of the play area (lab only) */
 .cl-lab-out { left: 8px; bottom: 66px; max-width: calc(var(--cl-side-w) - 16px); max-height: 28vh; font-size: 11px; opacity: .92; }
 .cl-lab-bar { right: 0; }
-/* the shared buttons keep their one look (UX 15): the clinic's old .cl-go styles (kept on them for the tests) don't apply */
-.cl-go.njg-next { background: #fff !important; color: #2a2522 !important; border: 2px solid #c9962e !important; border-radius: 12px !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .10) !important; font: 800 clamp(15px, 1.5vw, 20px)/1.15 Nunito, "Baloo 2", system-ui, sans-serif !important; min-height: 48px; padding: clamp(var(--njg-s2), 1.1vw, var(--njg-s3)) clamp(var(--njg-s3), 1.8vw, 22px) !important; animation: none; }
-.cl-go.njg-next.glow { animation: njgNextGlow 1s ease-in-out infinite; }
-.cl-go.njg-next .ph { color: #6f6153 !important; }
-.cl-go.njg-done { background: #fffaf0 !important; border: 1px solid #e6d5b8 !important; border-radius: 50% !important; box-shadow: 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, .22) !important; min-height: 0 !important; padding: 0 !important; width: clamp(58px, 8vw, 96px) !important; height: auto !important; aspect-ratio: 1; animation: none; }
-.cl-go.njg-done.glow { animation: njgDoneGlow 1s ease-in-out infinite; }
-.njg-pill.cl-go { min-height: 56px !important; border-radius: 999px !important; background: #fff !important; color: #2a2522 !important; box-shadow: 0 2px 8px rgba(40, 25, 10, .12) !important; border: 2px solid #c9962e !important; }
-.njg-pill.cl-go .ph { color: #6f6153; }
 
 /* ---- the heal games' shared play rules (R5; 1 Oct report § 8E, decision 27) ---- */
 /* D6 (SH-39): the running count on the tool in use: the Kutchi number word at levels 1-2, dots from level 3 */

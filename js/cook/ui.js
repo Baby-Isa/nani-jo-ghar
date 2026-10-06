@@ -299,16 +299,26 @@
     return ids;
   };
   let voiceTok = 0;
+  const throbbedHidden = new Set();
   UI.voice = async function (line, opts = {}) {
     if (!UI.w6() || !Cook.inStation || !$("#voice")) return UI.say(line, { badge: true }, opts);
     const tok = ++voiceTok;
     card().classList.add("hidden");
     bubble().classList.add("hidden");
-    // the rows she's talking about: every row (on the small card) with one of her words on it
+    // the row she's talking about: ONE highlight at a time (SH-53), the first open row with one of her words on it;
+    // a word hidden on the card is lit only the first time it is hidden (D11: after that the glow would give it away)
     const ids = lineWords(line).filter((id) => !String(id).startsWith("num-") && !String(id).startsWith("lnk-"));
     const els = [];
+    let lit = null;
     sideEls.forEach((list, r) => {
-      if (r && r.ids && r.ids.some((id) => ids.includes(id))) els.push(...list);
+      if (lit || !r || !r.ids || r.done || !r.ids.some((id) => ids.includes(id))) return;
+      if (rowHidden(r)) {
+        const key = r.ids.join("+");
+        if (throbbedHidden.has(key)) return;
+        throbbedHidden.add(key);
+      }
+      lit = r;
+      els.push(...list);
     });
     const cap = $("#voice");
     const onCard = els.length > 0 && !opts.caption;
@@ -2101,10 +2111,18 @@
     drawTally();
   };
   let doneResolve = null;
+  let doneGlowT = null;
   UI.done = function (opts = {}) {
     const b = $("#done-btn");
     b.classList.remove("hidden");
     b.classList.toggle("glow", !!opts.glow);
+    // SH-58 (C8, D5): when the ✓ is the only thing left it glows after a short beat (the first plays of a station:
+    // its first five rounds), not only in a guided round
+    clearTimeout(doneGlowT);
+    const st = (Cook.ctx && Cook.ctx.order && Cook.ctx.order.dishes && (Cook.ctx.order.dishes[Cook.ctx.dishAt || 0] || {}).recipe) || "lab";
+    const plays = (Cook.save.donePlays = Cook.save.donePlays || {});
+    if (opts.glow !== false && (plays[st] || 0) < 5) doneGlowT = setTimeout(() => !b.classList.contains("hidden") && b.classList.add("glow"), 2000 / (Cook.speed || 1));
+    plays[st] = (plays[st] || 0) + 1;
     return new Promise((resolve) => {
       doneResolve = resolve;
     });
@@ -2132,6 +2150,7 @@
     goResolve = null;
   };
   UI.hideDone = function () {
+    clearTimeout(doneGlowT);
     $("#done-btn").classList.add("hidden");
     doneResolve = null;
   };

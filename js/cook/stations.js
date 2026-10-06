@@ -572,14 +572,46 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       );
       this.tweens.add({ targets: t, y: y - 90, alpha: { from: 1, to: 0 }, duration: 1300, ease: "Cubic.easeOut", onComplete: () => t.destroy() });
     }
-    /** A result word over the action: "Perfect!", "Too much", "Too early". */
+    /**
+     * A result over the action, as a PICTURE (R5, T20, SH-54 of S02-A: no written English for the child): a sparkle
+     * (perfect, golden, puffed), steam over the rim (boiled over), smoke (burnt, charred), a pale swatch (too early,
+     * too pale, flat), a ring smaller than its target (too small, too thin, too little). Kutchi words later, where
+     * Mum gives them. `words` are the same keys as before (data.verdicts).
+     */
     verdict(x, y, score, words = {}) {
-      // words are keys into data.verdicts (or plain text)
-      const V = (Cook.data && Cook.data.verdicts) || {};
       const key = score >= 95 ? words.perfect || "perfect" : score >= 70 ? words.good || "good" : words.bad || "bad";
-      const w = V[key] || key;
-      this.floatText(x, y, w, score >= 95 ? "#ffe08a" : score >= 70 ? "#ffffff" : "#ffd6c9", 50);
-      if (score >= 95) this.sparkle(x, y);
+      const g = this.track(this.add.graphics().setDepth(D.top));
+      const done = () => this.tweens.add({ targets: g, y: g.y - 60, alpha: { from: 1, to: 0 }, duration: 1300, ease: "Cubic.easeOut", onComplete: () => g.destroy() });
+      g.setPosition(x, y);
+      if (["perfect", "golden", "it-puffed", "turned", "good"].includes(key)) {
+        g.destroy();
+        this.sparkle(x, y);
+        if (key !== "good") this.burst(x, y - 10, [0xffe08a, 0xf6c35b], 10, 80);
+        return;
+      }
+      if (["burnt", "charred"].includes(key)) {
+        g.destroy();
+        for (let i = 0; i < 3; i++) this.puff(x + (i - 1) * 26, y - i * 8, 0x4a3f38, 46);
+        return;
+      }
+      if (key === "boiled-over") {
+        g.destroy();
+        this.steam(x, y + 30, 5);
+        return;
+      }
+      if (["too-early", "too-pale", "flat"].includes(key)) {
+        // a pale swatch beside the golden one it should be
+        g.fillStyle(0xfffaf0, 1).fillCircle(-26, 0, 22).lineStyle(4, 0xe6d5b8, 1).strokeCircle(-26, 0, 22);
+        g.fillStyle(0xd9a441, 0.35).fillCircle(26, 0, 22).lineStyle(4, 0xc9962e, 0.5).strokeCircle(26, 0, 22);
+        return done();
+      }
+      if (["too-small", "too-thin", "too-little"].includes(key)) {
+        // a small ring inside the dashed target ring it should fill
+        for (let a = 0; a < 16; a++) g.lineStyle(4, 0xc9962e, 0.6).beginPath().arc(0, 0, 34, (a / 16) * Math.PI * 2, ((a + 0.55) / 16) * Math.PI * 2).strokePath();
+        g.lineStyle(5, 0xfffaf0, 1).strokeCircle(0, 0, 18);
+        return done();
+      }
+      g.destroy(); // "bad", "too-much": nothing to say mid-round (UX 11)
     }
     bandScore(v, lo, hi) {
       if (v >= lo && v <= hi) return 100;
