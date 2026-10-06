@@ -97,3 +97,10 @@
   .njg-guide { column-gap: var(--njg-s1); }
   .njg-guide .ng-tools { gap: var(--njg-s1); }
 }
+
+/* R4 (guide-and-card, decision 55): the asker is the guide (Nani's own pantry list): one face only, on her card;
+   the box keeps just its tools (the bulb and the mute) on one quiet line, and her line shows as the card's top strip */
+.njg-guide.ng-strip { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tools"; padding: 0; background: none; border-color: transparent; box-shadow: none; }
+.njg-guide.ng-strip::before { display: none; }
+.njg-guide.ng-strip .ng-face,
+.njg-guide.ng-strip .ng-say { display: none; }

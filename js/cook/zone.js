@@ -48,7 +48,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * The round's level is the order's (the lab's level, or the dish's), not a
    * zone's own knob level (the grill's threading runs at knob level 1 at
    * every station level). quietMistakes(ctx): from level 2 nothing says
-   * "wrong" while you play (no "Arre re!", no wiggle, no bounce, no red
+   * "wrong" while you play (no "oh oh", no wiggle, no bounce, no red
    * burst); the mistake is logged and shown in the end review.
    * gentleOops(ctx): level 1 keeps one gentle correction per round (true the
    * first time only). */
@@ -315,14 +315,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /**
      * Wave 6b (UX 11): no negative feedback mid-round. From level 2 a
      * mistake lands like any other move (it's logged for the end review);
-     * level 1 keeps one gentle correction per round, the first "Arre re!".
+     * level 1 keeps one gentle correction per round, the first "oh oh" (R6).
      */
     get quiet() {
       return Cook.quietMistakes(this.ctx);
     }
     oops() {
-      if (!Cook.gentleOops(this.ctx)) return Promise.resolve();
-      return this.say(Lang.line("oops"), { ms: 900 }).catch(() => {});
+      return Cook.oops(this.ctx); // R6: the family's "oh oh oh" or a soft sound (S02-A hook; arre re is gone)
     }
     /** Nani may interrupt after ms (she decides; Busy keeps cooking). */
     passMeAfter(ms) {

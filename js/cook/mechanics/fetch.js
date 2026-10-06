@@ -205,7 +205,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
       while (remaining.length) {
         const expected = remaining[0];
-        const guided = ctx.guided || Cook.wordStage(expected) === 1;
+        const guided = UI.stepOpen ? UI.stepOpen(ask(expected, n === 0), { ctx }) : ctx.guided || Cook.wordStage(expected) === 1; // S02-A hook: R2/T2, help after the pause
         Cook.markSeen(expected);
         const r = await S.step({
           items,

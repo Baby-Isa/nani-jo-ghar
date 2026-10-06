@@ -1022,7 +1022,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             lastSpill = now;
             spills++;
             spill();
-            if (spills === 1 && Cook.gentleOops(ctx)) z.say(Lang.line("oops"), { ms: 900, caption: true }).catch(() => {});
+            if (spills === 1) Cook.oops(ctx); // R6 (S02-A hook): no arre re
           }
         } else overT = 0;
       });

@@ -232,11 +232,49 @@ function stitch(segs, index, { path, sayOf }) {
 /** A browser player: one <audio> at a time, and the device voice for the test path. */
 export function browserPlayer() {
   let audio = null;
+  // PAN-11 (6 Oct): an interjection (the count word as you tap) pauses the line, plays on its own, and the line
+  // carries on where it was
+  let over = null;
+  let overDone = Promise.resolve();
+  let held = null;
+  const resumeHeld = () => {
+    const h = held;
+    held = null;
+    if (h && h === audio && h.paused && !h.ended) {
+      const p = h.play();
+      if (p && p.catch) p.catch(() => {});
+    }
+  };
   return {
-    play(url) {
+    over(url) {
+      return (overDone = new Promise((resolve) => {
+        try {
+          if (over) over.pause();
+          if (audio && !audio.paused && !audio.ended) {
+            held = audio;
+            audio.pause();
+          }
+          const a = (over = new Audio(stamp(url)));
+          const fin = () => {
+            if (over === a) over = null;
+            resolve(true);
+          };
+          a.onended = a.onerror = fin;
+          const p = a.play();
+          if (p && p.catch) p.catch(() => fin());
+        } catch (e) {
+          resolve(false);
+        }
+      }));
+    },
+    resume: resumeHeld,
+    async play(url) {
+      // the line's next clip waits for an interjection still playing (then carries on)
+      if (over) await overDone;
       return new Promise((resolve) => {
         try {
           if (audio) audio.pause();
+          held = null;
           audio = new Audio(stamp(url));
           audio.onended = audio.onerror = () => resolve(true);
           const p = audio.play();
@@ -248,6 +286,9 @@ export function browserPlayer() {
     },
     stop() {
       try {
+        held = null;
+        if (over) over.pause();
+        over = null;
         if (audio) audio.pause();
         if (globalThis.speechSynthesis) globalThis.speechSynthesis.cancel();
       } catch (e) {
@@ -275,7 +316,7 @@ export function browserPlayer() {
   };
 }
 
-export function createVoice({ index, player, path, phrases, gapMs = 120 } = {}) {
+export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
   const P = player || (typeof Audio !== "undefined" ? browserPlayer() : { play: async () => true, stop() {}, synth: async () => true });
   const thePath = () => path || voicePath();
   const thePhrases = () => (phrases == null ? phrasesOn() : !!phrases);
@@ -314,8 +355,34 @@ export function createVoice({ index, player, path, phrases, gapMs = 120 } = {}) 
     return channels.get(ch).token === token;
   }
 
+  /**
+   * An interjection over whatever is playing (over: true; PAN-11): the line playing pauses, these clips play, and the
+   * line carries on from where it was. Nothing else is stopped; a newer interjection replaces an older one.
+   */
+  let overTok = 0;
+  async function sayOver(items, onWord) {
+    const tok = ++overTok;
+    for (const it of items) {
+      if (tok !== overTok) return false;
+      if (onWord) {
+        try {
+          onWord(it.tokens, it);
+        } catch (e) {
+          /* the caller's problem */
+        }
+      }
+      const file = it.file && (it.source === "family-ok" || thePath() === "test") ? it.file : null;
+      if (file && P.over) await P.over(file);
+      else if (file) await P.play(file);
+      else if (it.source === "device" && thePath() === "test" && P.synth) await P.synth(it.text);
+    }
+    if (tok === overTok && P.resume) P.resume();
+    return tok === overTok;
+  }
+
   /** Play a Lang result (or {segments}) on a channel. A new line replaces the one playing (queue: true waits). Returns at once. */
-  V.say = function (result, { channel = "main", onWord, queue = false } = {}) {
+  V.say = function (result, { channel = "main", onWord, queue = false, over = false } = {}) {
+    if (over) return sayOver(V.plan(result), onWord).then((done) => ({ done }));
     const prev = channels.get(channel) || { token: 0, done: Promise.resolve(true) };
     const token = prev.token + 1;
     const items = V.plan(result);

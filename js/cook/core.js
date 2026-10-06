@@ -446,6 +446,19 @@
     };
   }
 
+  /**
+   * R6 (decision 61): a real mistake at level 1, once a round: the family's "oh oh oh" when Mum has recorded it
+   * (the engine's line cook.line.oh-oh, played only from a family clip), else the soft sound. Never on a right move,
+   * never from level 2 (Cook.gentleOops). Returns a promise for the callers that waited on the old spoken line.
+   */
+  Cook.oops = function (ctx) {
+    if (!Cook.gentleOops || !Cook.gentleOops(ctx || Cook.ctx)) return Promise.resolve();
+    const L = Cook.Lang;
+    const line = L && L.hasLine && L.hasLine("oh-oh") ? L.line("oh-oh") : null;
+    if (line && L.hasWhole(line)) return L.speak(line).catch(() => {});
+    Cook.sfx.oops();
+    return Cook.wait ? Cook.wait(450) : Promise.resolve();
+  };
   Cook.sfx = {
     right() {
       tone(784, 0.14, { type: "triangle", gain: 0.25 });
@@ -454,6 +467,11 @@
     // warm, low, short: never a buzzer
     soft() {
       tone(330, 0.16, { type: "sine", gain: 0.18, slide: -60 });
+    },
+    // R6 (decision 61): the soft "oh-oh" that stands in for Mum's "oh oh oh" until she records it (arre re is gone)
+    oops() {
+      tone(440, 0.14, { type: "sine", gain: 0.14, slide: -20 });
+      tone(370, 0.22, { type: "sine", gain: 0.14, slide: -40, when: 0.17 });
     },
     pop() {
       tone(520, 0.08, { type: "sine", gain: 0.2, slide: 300 });

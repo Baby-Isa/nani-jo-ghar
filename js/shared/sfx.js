@@ -72,6 +72,11 @@
     tap: (c, o) => note(c, o, { type: "triangle", f: 660, len: 0.08, gain: 0.14 }),
     whoosh: (c, o) => note(c, o, { type: "sine", f: 300, len: 0.25, gain: 0.08, slideTo: 700 }),
     pop: (c, o) => note(c, o, { type: "sine", f: 520, len: 0.12, gain: 0.14, slideTo: 780 }),
+    // R6 (decision 61): a soft "oh-oh" for a real mistake at level 1, until Mum records her "oh oh oh" (never arre re)
+    oops: (c, o) => {
+      note(c, o, { type: "sine", f: 440, len: 0.14, gain: 0.12, slideTo: 420 });
+      note(c, o, { type: "sine", f: 370, t: 0.17, len: 0.22, gain: 0.12, slideTo: 330 });
+    },
   };
   Sfx.names = Object.keys(SOUNDS);
   Sfx.play = function (name, opts) {

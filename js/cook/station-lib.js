@@ -35,9 +35,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const BURNER = { left: { x: 515, y: 375 }, right: { x: 1085, y: 375 } };
   const STRIP_Y = 790;
 
-  // at a station Nani is a voice (docs/design-language/ux-principles.md 13); one gentle "Arre re!" at level 1 only (UX 11)
+  // at a station Nani is a voice (docs/design-language/ux-principles.md 13); one gentle "oh oh" at level 1 only (UX 11, R6)
   const nani = (line, opts = {}) => UI.voice(line, opts);
-  const oops = () => (Cook.gentleOops(Cook.ctx) ? nani(Lang.line("oops"), { ms: 900 }).catch(() => {}) : Promise.resolve());
+  const oops = () => Cook.oops(Cook.ctx); // R6: the family's "oh oh oh" or a soft sound (S02-A hook; arre re is gone)
   // C3 (decision 41, E12): from level 3 a number is heard, never written: in Nani's box it shows as dots too
   const hideKnown = (ctx) => (id) => (!ctx.guided && Cook.cardHidden(id)) || ((ctx.level || 1) >= 3 && /^num-/.test(String(id)));
   S$.nani = nani;

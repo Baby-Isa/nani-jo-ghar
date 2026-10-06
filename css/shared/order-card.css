@@ -245,3 +245,20 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
   html[data-ff="phone"] .oc-card:not(.oc-big) .oc-headline.rec .oc-rec { margin-top: 0; }
   html[data-ff="phone"] .oc-card:not(.oc-big) .oc-items, html[data-ff="phone"] .oc-card:not(.oc-big) .oc-parts { gap: calc(var(--njg-s1) / 2); }
 }
+
+/* R4 (guide-and-card, decision 55): the guide's next-step line as the card's top strip, when the asker is the guide
+   (one face: Nani's pantry list). Sage like the guide box, so it reads as her line, not a row of the order */
+.oc-strip {
+  margin: calc(var(--njg-card-pad) * -1) calc(var(--njg-card-pad) * -1) var(--njg-s2);
+  padding: var(--njg-s2) var(--njg-card-pad);
+  background: color-mix(in srgb, var(--njg-sage) 20%, var(--njg-card));
+  border-bottom: var(--njg-line) solid color-mix(in srgb, var(--njg-sage) 45%, var(--njg-card));
+  border-radius: var(--njg-radius) var(--njg-radius) 0 0;
+  display: flex; flex-direction: column; align-items: flex-start; min-width: 0;
+}
+.oc-strip-t { display: block; max-width: 100%; white-space: normal; --fit-min: var(--njg-t4); font-family: var(--njg-font); font-weight: 800; font-size: var(--sb-h, var(--njg-side-h)); line-height: 1.2; color: var(--njg-ink); }
+.oc-strip-t .word { color: var(--njg-word); }
+.oc-strip.rec .oc-strip-t { font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
+.oc-strip.new { animation: ocStrip .3s ease-out; }
+@keyframes ocStrip { from { opacity: .2; } }
+.oc-look.bulb svg { width: 100%; height: 100%; }

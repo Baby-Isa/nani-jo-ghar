@@ -402,12 +402,13 @@
     return (line.plan || []).map((c) => (c.file ? c : c.lang === "e" ? Object.assign({}, c, { source: "missing" }) : Object.assign({}, c, { source: path() === "test" ? "device" : "missing", text: c.say || c.text })));
   }
   Lang.planOf = planOf;
-  Lang.speak = async (line) => {
+  Lang.speak = async (line, { over = false } = {}) => {
     if (!line) return false;
     const items = planOf(line);
     const V = Cook.core && Cook.core.voice;
     if (V) {
-      await V.say({ clipPlan: items }, { channel: "cook" });
+      // over: an interjection (the count as you tap) that pauses the line playing, then lets it carry on (PAN-11)
+      await V.say({ clipPlan: items }, { channel: "cook", over });
       return true;
     }
     // no core (it failed to load): the family clips in order

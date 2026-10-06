@@ -23,6 +23,8 @@
  *
  *   { person:   {id, face, name} | null,         the face (= replay) and its alt text
  *     headline: {html, rec?, key?} | null,       rec: a line still to record (its English, flagged)
+ *     strip:    {html, rec?} | null,             R4: the guide's next-step line when the asker is the guide (one
+ *                                                face: Nani's pantry list); a thin band across the card's top
  *     items: [{ label: html | null, count: 1, parts: [{label, done, next?, no?, key?}],
  *               ordered: false, done?: bool, key? }],
  *     done?: bool }                               default: every item done
@@ -63,6 +65,8 @@
   const OC = {};
   OC.CHECK = `<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#c9962e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const FOLD_AFTER = 700;
+  // decision 57: the small bulb on a closed spoken card (flat, the design tokens' gold; no counter)
+  OC.BULB = `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4a12 12 0 0 0-7 21.8c1.3 1 2 2.4 2 4V31h10v-1.2c0-1.6.7-3 2-4A12 12 0 0 0 20 4z" fill="#f2c14e" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M15 34.5h10M16.5 38h7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`;
   OC.EYE = `<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M2 20 Q32 -6 62 20 Q32 46 2 20Z" fill="#fffaf0" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="20" r="10" fill="currentColor"/></svg>`;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -198,11 +202,27 @@
     });
   }
 
+  /** R4: the guide's line as the card's top strip (also used to update it in place: OC.setStrip). */
+  OC.stripEl = function (s) {
+    const e = el("div", ["oc-strip", s.rec ? "rec" : ""].filter(Boolean).join(" "), `<span class="oc-strip-t fit fit2">${s.html}</span>${s.rec ? `<small class="oc-rec">to record</small>` : ""}`);
+    return e;
+  };
+  OC.setStrip = function (cardEl, s) {
+    if (!cardEl) return;
+    const old = cardEl.querySelector(":scope > .oc-strip");
+    if (!s || !s.html) return old && old.remove();
+    const e = OC.stripEl(s);
+    if (old) old.replaceWith(e);
+    else cardEl.insertBefore(e, cardEl.firstChild);
+    e.classList.add("new");
+  };
+
   OC.card = function (data, opts = {}) {
     const sh = OC.shape(data, opts);
     const c = el("div", ["oc-card", opts.big ? "oc-big" : "", sh.done ? "done" : "", sh.direct ? "direct" : ""].filter(Boolean).join(" "));
     const p = data.person || null;
     if (p && p.id) c.dataset.who = p.id;
+    if (data.strip && data.strip.html && !opts.big) c.appendChild(OC.stripEl(data.strip));
     const head = el("div", "oc-head");
     if (p && p.face) {
       const f = el("button", "oc-face face-say", `<img src="${esc(p.face)}" alt="${esc(p.name || "")}"><span class="say-badge" aria-hidden="true"></span>`);
@@ -220,7 +240,8 @@
     }
     head.insertAdjacentHTML("beforeend", `<span class="oc-done-tk">${OC.CHECK}</span>`);
     // D12 (1 Oct, decision 27): on a closed card a small eye says "tap to look" (a look has its own badge)
-    if (opts.closed && opts.onPeek && !opts.big) head.insertAdjacentHTML("beforeend", `<span class="oc-look" aria-hidden="true">${OC.EYE}</span>`);
+    // decision 57 (CLN-91): on a spoken card (opts.look "bulb": the waiting room's call) it is a small bulb, no counter
+    if (opts.closed && opts.onPeek && !opts.big) head.insertAdjacentHTML("beforeend", `<span class="oc-look${opts.look === "bulb" ? " bulb" : ""}" aria-hidden="true">${opts.look === "bulb" ? OC.BULB : OC.EYE}</span>`);
     c.appendChild(head);
     if (sh.items.length) {
       const body = el("div", "oc-body");

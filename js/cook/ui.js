@@ -287,7 +287,7 @@
    * at a station Nani is a VOICE. Her card doesn't take sidebar space: her
    * line plays, and the rows of the order card it names throb while she
    * says it (the throbbing hint). A line about something that isn't on the
-   * card (a short interjection, "Arre re!", or a switch, "now marcha!")
+   * card (a short interjection, or a switch, "now marcha!")
    * shows as a small caption over the top of the picture that never takes a
    * tap. Outside a station (story moments, the send-off) she talks as before.
    *   UI.voice(line, opts) -> resolves when it ends (a tap skips, as UI.say)
@@ -317,6 +317,8 @@
     // 28 Sept: her line shows in her own box at the top of the sidebar (no caption over the picture)
     if (guide) {
       guideLine = line;
+      const st = stepper && stepper.current;
+      if (st && st.line && Lang.plain(st.line) === Lang.plain(line)) st.shown = true;
       guide.set(raHtml(line, { hide: opts.hide }));
       guide.talk(true);
     } else if (!onCard) {
@@ -346,7 +348,12 @@
       if (tok === voiceTok) {
         els.forEach((e) => e.classList.remove("throb"));
         cap.classList.add("hidden");
-        if (guide) guide.talk(false);
+        if (guide) {
+          guide.talk(false);
+          // R2 (bug 3 of the guide-and-card inventory): a spoken line never outstays its moment: the box goes back to
+          // the step that is open (its line if it has been shown), else the station's instruction
+          if (!opts.keep) restoreGuide();
+        }
       }
     }
     Cook.checkRun(token);
@@ -381,6 +388,8 @@
   };
   function showGuide() {
     if (!guide) return;
+    // a step is open (UI.step): the box is that step's, never the station's standing instruction
+    if (stepper && stepper.current) return restoreGuide();
     guideLine = null;
     const key = guideEntryKey();
     if (!key) return guide.set("");
@@ -391,6 +400,80 @@
       guide.set(raHtml(guideLine));
     } else guide.set(esc(Lang.plain(line)), { rec: true });
   }
+  function restoreGuide() {
+    if (!guide) return;
+    const st = stepper && stepper.current;
+    if (!st) {
+      guideLine = null;
+      if (stepper) return showGuideKey();
+      return;
+    }
+    guideLine = st.shown ? st.line : null;
+    guide.set(st.shown ? st.html : "", { rec: !!(st.shown && st.rec) });
+  }
+  function showGuideKey() {
+    const s = stepper;
+    stepper = null;
+    try {
+      showGuide();
+    } finally {
+      stepper = s;
+    }
+  }
+
+  /*
+   * The step rules (decision 55; docs/design-language/guide-and-card.md R1-R4), Cook's side of NaniGuide.stepper:
+   *   UI.step(line, {glow(on), hide, helpAfter, quiet})  a step opens: its one line (L1 shown and said at once; L2+
+   *                         after the pause, with the glow and a hint on the badge); the line clears when it closes
+   *   UI.stepDone()         the step ended (the line clears, the glow goes)
+   *   UI.stepPoke()         the child acted: the pause starts again
+   *   UI.stepHelp()         help now (the line, said, and the glow)
+   *   UI.stepOpen(line, {ctx})  the one-line hook a station's step engine calls (the pantry): opens the step with the
+   *                         station's own hesitation help (helpAfter false), and says whether to guide at once (only
+   *                         the taught first round: decision 55, SH-60: help after the pause, the first item too)
+   */
+  let stepper = null;
+  function makeStepper() {
+    if (!global.NaniGuide || !global.NaniGuide.stepper) return null;
+    return global.NaniGuide.stepper({
+      show: (html, o) => guide && guide.set(html, o),
+      clear: () => guide && guide.set(""),
+      speak: (s) => (s.line && Lang.hasVoice(s.line) && guide ? queued(() => speakAlong(s.line, guide.el)) : null),
+      glow: (s, on) => s.glow && s.glow(on),
+      level: () => orderLevel(),
+      onHelp: (s) => Cook.onHelp && Cook.onHelp("hint", { ids: s.ids || [] }),
+    });
+  }
+  UI.step = function (line, o = {}) {
+    if (!stepper) stepper = makeStepper();
+    if (!stepper || !line) return null;
+    const rec = line.ok === false;
+    return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids });
+  };
+  UI.stepDone = () => stepper && stepper.close();
+  /** An off-screen guide's line in her box (or her card's strip, R4), said; resolves when it ends (a tap skips). */
+  UI.guideSay = async function (line, o = {}) {
+    if (!guide || !line) return UI.say(line, { badge: true }, o);
+    if (stepper) stepper.close();
+    guideLine = line;
+    guide.set(raHtml(line), { rec: line.ok === false });
+    guide.talk(true);
+    let off = null;
+    const skipped = new Promise((resolve) => (off = onPage(document, "pointerdown", (ev) => !(ev.target.closest && ev.target.closest("button, a, #overlay")) && resolve(), true)));
+    try {
+      const voice = !UI.naniMuted() && Lang.hasVoice(line);
+      await Promise.race([voice ? Promise.all([queued(() => speakAlong(line, guide.el)), Cook.wait(600)]) : Cook.wait(o.ms || Math.min(2600, Cook.readMs(Lang.plain(line)))), skipped]);
+    } finally {
+      if (off) off();
+      if (guide) guide.talk(false);
+    }
+  };
+  UI.stepPoke = () => stepper && stepper.poke();
+  UI.stepHelp = () => stepper && stepper.help();
+  UI.stepOpen = function (line, { ctx } = {}) {
+    UI.step(line, { helpAfter: false });
+    return !!(ctx && ctx.guided);
+  };
   /** The station (or station:phase) whose instruction the box shows. */
   UI.guideFor = function (key) {
     guideKey = key || null;
@@ -410,7 +493,7 @@
   function mountGuide() {
     const el = $("#guide");
     if (!el || !global.NaniGuide) return;
-    guide = global.NaniGuide.mount(el, {
+    const g = global.NaniGuide.mount(el, {
       face: Cook.v(Cook.facePath("nani")),
       bulb: Cook.v("assets/ui/results/icon-bulb.webp"),
       bulbId: "btn-bulb",
@@ -429,6 +512,16 @@
           .then(() => btn.classList.remove("on"));
       },
     });
+    // R4: while the asker is the guide (Nani's own list) her line is her card's top strip, not a second face
+    const rawSet = g.set;
+    g.set = (html, o = {}) => {
+      rawSet(html, o);
+      if (!mission || !mission.stripMode) return;
+      mission.strip = html ? { html, rec: !!o.rec } : null;
+      const c = document.querySelector(`#mission .oc-card[data-who="${CSS.escape(String(mission.who))}"]`);
+      if (OCard() && OCard().setStrip) OCard().setStrip(c, mission.strip);
+    };
+    guide = g;
     showGuide();
   }
 
@@ -700,6 +793,11 @@
       level: orderLevel(),
     };
     UI.bulbOff();
+    // R4: Nani asking herself (the pantry list): one face, her line as the card's strip
+    mission.stripMode = who === "nani";
+    mission.strip = null;
+    if (guide && guide.strip) guide.strip(mission.stripMode);
+    if (UI.stepDone) UI.stepDone();
     // Nani's box: a new order, so no station's instruction yet
     if (UI.guideFor) UI.guideFor(null);
     const el = $("#mission");
@@ -1135,7 +1233,7 @@
       const H = L.head;
       const rowsDone = !!OCard() && items.length > 0 && OCard().shape({ items }).items.every((it) => it.done);
       const done = rowsDone && (!H || !!H.rec || !(H.ids || []).length || !!H.done);
-      cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: person(mission.who), headline, items, done } });
+      cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: person(mission.who), headline, items, done, strip: mission.stripMode && L === mission.ladders[0] ? mission.strip : null } });
     });
     // the next step of an ordered job (a light grey band): only in the first ordered list still open
     let marked = false;
@@ -1702,9 +1800,12 @@
     $("#mission").classList.add("stamped");
     if (mission) mission.stamped = true;
     UI.bulbOff();
+    UI.stepDone();
   };
   M.close = function () {
     stopReading();
+    UI.stepDone();
+    if (guide && guide.strip) guide.strip(false);
     $("#mission").classList.add("hidden");
     $("#mission").classList.remove("arriving");
     intro().classList.add("hidden");
@@ -1876,7 +1977,8 @@
     // C3 (decision 41, E12): Nani counts along at level 1 only, in every station (the Chai tray's sugar too);
     // level 2: written on the card, no counting along; level 3+: heard in the order only (the face replays it)
     const heard = lv <= 1;
-    if (speak && n >= 1 && n <= 5 && heard && !UI.naniMuted()) queued(() => Lang.speak(tallyLine(n, id)));
+    // PAN-11 (6 Oct): the count word goes over her line at once (her line pauses and carries on), never queued behind it
+    if (speak && n >= 1 && n <= 5 && heard && !UI.naniMuted()) Lang.speak(tallyLine(n, id), { over: true }).catch(() => {});
   };
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {
@@ -2018,6 +2120,8 @@
         /* gone with the screen */
       }
     }
+    if (stepper) stepper.close();
+    stepper = null;
     guide = guideKey = guideLine = null;
     if (kitTally && kitTally.destroy) kitTally.destroy();
     kitTally = null;
