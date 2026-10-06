@@ -247,8 +247,10 @@
   gap: 0;
   padding: var(--njg-s1);
 }
+/* SH-03 (6 Oct, decision 18 of the Cook play-test): wrong is ALWAYS the left half and right the right half, even when
+   one side is empty (all right, or all wrong): the two halves are the same width, so the centre line never moves */
 .rs-words-col {
-  flex: var(--rs-cols, 1) 1 0;
+  flex: 1 1 0;
   min-width: 0;
   display: grid;
   grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, var(--njg-end-col)));
@@ -256,9 +258,8 @@
   gap: var(--njg-s3);
   padding: 0 var(--njg-s4);
 }
-.rs-words-col:empty { display: none; }
-/* the thin divider between wrong (left) and right (right) */
-.rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: var(--njg-line) solid #d8c4a2; }
+/* the thin divider between wrong (left) and right (right), always at the centre */
+.rs-words-bad + .rs-words-ok { border-left: var(--njg-line) solid #d8c4a2; }
 /* the two groups sit towards the middle */
 .rs-words-bad { justify-content: end; }
 .rs-words-ok { justify-content: start; }
@@ -318,6 +319,7 @@
   .rs-actions .rs-btn.rs-done { flex: none; width: var(--rs-btn); }
   .rs-words { flex-direction: column; align-items: stretch; gap: var(--njg-s3); }
   .rs-words-col { padding: 0; }
+  .rs-words-col:empty { display: none; }
   .rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: none; border-top: var(--njg-line) solid #d8c4a2; padding-top: var(--njg-s3); }
   .rs-words-col { grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, 1fr)); }
   .rs-words-col.c3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }

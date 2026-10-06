@@ -917,7 +917,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const made = pan.has.water > 0 && pan.has.leaves > 0 && pan.poured > 0;
       const hasMilk = pan.has.milk > 0;
       const got = { chai: made, milk: hasMilk === !!p.dudh, sugar: pan.sugar === (p.khun || 0) && !pan.salt };
-      got.extra = p.extra ? pan.extras.includes(p.extra) : true;
+      // SH-50: a wrong extra in the cup marks that person's extra row too (not only a missing one)
+      got.extra = p.extra ? pan.extras.includes(p.extra) && pan.extras.every((id) => id === p.extra) : true;
       const amount = !p.amount ? null : pan.poured >= 2 ? "ph-full" : "ph-half";
       got.amount = !p.amount || (got.chai && amount === p.amount);
       const why = [];
