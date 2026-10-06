@@ -1,0 +1,76 @@
+{
+ "_about": "Robot vs Mum voice test (Sprint 2, decision 63). Zafar edits 'gu' (Gujarati letters) or 'latin' (as it sounds) and 'speed' per item, then: python3 build/voice-test/robot_test.py r2",
+ "speed": 1.0,
+ "items": [
+  {
+   "id": "maani",
+   "kutchi": "maani",
+   "mum": "maani.mp3",
+   "gu": "માની",
+   "latin": "maa-nee"
+  },
+  {
+   "id": "dungri",
+   "kutchi": "dungri",
+   "mum": "dungri.mp3",
+   "gu": "ડુંગરી",
+   "latin": "doong-ree"
+  },
+  {
+   "id": "mirchi",
+   "kutchi": "mirchi",
+   "mum": "mirchi.mp3",
+   "gu": "મિર્ચી",
+   "latin": "mir-chee"
+  },
+  {
+   "id": "matar",
+   "kutchi": "matar",
+   "mum": "matar.mp3",
+   "gu": "મટર",
+   "latin": "muh-tur"
+  },
+  {
+   "id": "shabash",
+   "kutchi": "shabash!",
+   "mum": "shabash.mp3",
+   "gu": "શાબાશ!",
+   "latin": "shaa-baash!"
+  },
+  {
+   "id": "chamcho",
+   "kutchi": "chamcho",
+   "mum": "chamcho.mp3",
+   "gu": "ચમચો",
+   "latin": "chum-cho"
+  },
+  {
+   "id": "chai-banai",
+   "kutchi": "Muke chai banai dinda?",
+   "mum": "muke-chai-banai-dinda.mp3",
+   "gu": "મુકે ચાઈ બનાઈ દીંદા?",
+   "latin": "Moo-kay chaai buh-naa-ee deen-daa?"
+  },
+  {
+   "id": "tu-ki-aiye",
+   "kutchi": "Tu ki aiye?",
+   "mum": "tu-ki-aiye.mp3",
+   "gu": "તું કી અઈયે?",
+   "latin": "Too kee ai-yay?"
+  },
+  {
+   "id": "aau-theek",
+   "kutchi": "Aau theek ai",
+   "mum": "aau-theek-ai-r3.mp3",
+   "gu": "આઉ ઠીક અઈ।",
+   "latin": "Aa-oo theek ai."
+  },
+  {
+   "id": "nana-lai",
+   "kutchi": "Hi Nana lai ai.",
+   "mum": "hi-nana-lai-ai.mp3",
+   "gu": "હી નાના લઈ અઈ।",
+   "latin": "Hee Naa-naa lai ai."
+  }
+ ]
+}
