@@ -588,10 +588,10 @@
     // SH-60 (PA5): a grown-ups' "play as new": every word is new again (as a first play), the first-time help too
     const nw = document.createElement("p");
     nw.className = "hp-new";
-    nw.innerHTML = `<a href="#">Play as new</a> <span>(for grown-ups: forget the words learned on this device)</span>`;
+    nw.innerHTML = `<a href="#" data-ask="Play as new? Every word shows again as on a first play, and the first-time help comes back. Pocket money and upgrades stay.">Play as new</a> <span>(for grown-ups: forget the words learned on this device)</span>`;
     nw.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
-      if (!global.confirm || global.confirm("Play as new? Every word shows again as on a first play, and the first-time help comes back. Pocket money and upgrades stay.")) {
+      if (!global.confirm || global.confirm(e.currentTarget.dataset.ask)) {
         Cook.resetSave({ fresh: true });
         UI.closeHelp();
         if (mission) renderOrder();
