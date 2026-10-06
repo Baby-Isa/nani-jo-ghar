@@ -8,19 +8,19 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (written by D1, 6 Oct 2026):** the docs rewrite is done on branch `docs-rewrite` (not merged, never pushed to `main`); the game is on branch `ccr-fcd9dddd-wnywzc`, and `main` is still the 1 Oct build plus art uploads. Sprint 1 ("remedial and engine", `docs/sprints/S01-remedial-and-engine.md`) closes at the next publish; Sprint 2 is "play and fix Cook and the clinic" (`S02-…`).
-- **Done:** step 3 and step 4 (Cook and the clinic on the core and the engine), C3, R7, E1, W1, W2, A1, A2, T1–T3, the Fable docs audit, D1 (reports in `build/reports/`). C4 (Cook mounted through the host, no iframes; title, days and shop not yet on shared screens: `c4-cook-host.md`).
-- **Art** is paused until after play (decision 43); 76 of 115 clinic images on `main`; the redo list is `docs/design-language/art-plans/clinic-heal-redo-list.yaml`.
-- **Zafar plays** only once it is live on `main` (decision 33).
+**Where things stand (6 Oct 2026, written by the 5 Oct orchestrator):** Sprint 1 ("remedial and engine", `docs/sprints/S01-remedial-and-engine.md`) is closed: everything is published to `main` (PUBLISH_LINE). Cook and the clinic run on the shared core and the language engine; Cook is a host plug-in; the clinic runs on the girl's finished art; 18 scripts and 9 project skills are in use by default; the docs are rewritten (decisions 28–50). Reports for every session are in `build/reports/`; the final check is `build/reports/s01-review.md`.
 
-**Next steps, in order:**
-1. Fable reviews the `docs-rewrite` diff against the audit (`docs/process/audits/2026-10-05-docs-audit.md`); on Zafar's go, merge `docs-rewrite` into the integration branch.
-2. The orchestrator's `/review` (touched mapper, regression rows, the sandbox full matrix, shotdiff, flaws first), then `/publish`, the Pages check, and the link and what to play for Zafar.
-3. Open Sprint 2 with Zafar (`/sprint`: goal, budget, sessions, one go at a time). He plays → `/feedback` → fixes; the clash-list sheet for Zafar and Mum (`mumsheet.mjs`); the art redo list plus part C in one faster run (`/art-run`; write the W11 standing pose prompt first).
-4. Open: Mum's 168 clips to ear-check; Round 5 and 6; the questions under "Waiting on Zafar" below.
+**This chat opens Sprint 2** ("play and fix Cook and the clinic", `docs/sprints/S02-play-and-fix-cook-clinic.md`). Run `/sprint` to open it with Zafar:
+1. **Play link:** https://baby-isa.github.io/nani-jo-ghar/labs.html (hard refresh first). What to play:
+   - **Cook:** chai, samosa, daar and the pantry at levels 1–3 (the counting rule: L1 written and counted along, L2 written, L3 heard only; undo before Done; Mum's words in the guide box: tap its speaker).
+   - **The clinic:** one full patient visit, then all nine heal games on the girl's art (fever room, eye test A and B, tooth fill, ear wax, the bud and *malam*).
+   - Listen for: the greetings ("thank you", *khuda-fis*), grey "to record" placeholders, anything in English for the child.
+2. **Zafar's feedback** (voice notes or text) goes into this chat → `/feedback` → a report and regression rows the same day.
+3. **Scope Sprint 2 together:** from his feedback plus the open rows (table below) pick what gets fixed this sprint; set the budget (money and days); then `/brief` the fix sessions (fast checks only, decision 50) and one `/review` + publish at the end.
+4. Also open, to schedule inside or after Sprint 2: the art redo list + part C in one faster run (`/art-run`; write the W11 standing-pose prompt first); the clash-list sheet for Zafar and Mum (`mumsheet.mjs`); Mum's 168 clips to ear-check; Cook's title/day/shop still on Cook's own screens (C4: the shell lacks them).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first) and only the rulebook sections for the work at hand. Branch `ccr-fcd9dddd-wnywzc` (docs on `docs-rewrite` until merged). Give me a one-paragraph update, then carry on with "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-fcd9dddd-wnywzc`. Sprint 1 is closed and live. Open Sprint 2 with me (`/sprint`): give me the play link and what to play, then wait for my feedback; turn it into rows with `/feedback`, and propose the Sprint 2 scope and budget as a numbered list. Tell me before launching anything new.
 
 ---
 
@@ -33,7 +33,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 | 3 | Refactor to the target model (R0–R7), gate 5 Oct | **Done** for Cook and the clinic; parked modes move when their turn comes (decision 38) |
 | 4 | The language engine built (4a, 4b), Cook and the clinic onto it (4d, 4e); 4c is the gap reporter only | **Done** (5 Oct) |
 | Remedial | Everything the refactor left (decision 45): C3, C4 (Cook through the shared host), R7, E1 | **Done** (C4 6 Oct) |
-| Docs | The docs rewrite and the sprint structure (D1; decisions 47, 49) | Done on branch `docs-rewrite`, Fable review next |
+| Docs | The docs rewrite and the sprint structure (D1; decisions 47, 49, 50) | **Done** (merged 6 Oct) |
 | Sprint 1 → 2 | Sprint 1 ("remedial and engine") closes at the publish and Zafar's play; Sprint 2 is "play and fix Cook and the clinic" (`docs/sprints/`) | Next |
 | Then | Finish Cook and the clinic by play and feedback; then Arc 1's other modes, story glue, the beach trip as template, other trips, the sewing arc (decision 39) | After Sprint 2 |
 
