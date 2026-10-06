@@ -72,8 +72,5 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-06 00:30 UK · Zafar: merge D1 without him; make the quick-checks-only rule stick in the briefing files; full check after the merge; publish; handover → new chat opens with a Sprint 2 scoping session + play link. (Decision 50, recorded after the D1 merge.) C4 told to stop its 1-hour pass and finish.
 - 2026-10-06 00:34 UK · C4 done: Cook is modules mounted by js/cook/mount.js (no station iframes, 5 mounts clean), heal games' English to the seed, the daar smoke fixed (onboarding kit swallowed presses; 3×25 s); sandbox stopped at 137/223 on the orchestrator's word, all end. Report build/reports/c4-cook-host.md.
 - 2026-10-06 00:40 UK · C4 done (Cook a host plug-in; 5 mounts clean; no iframes; daar smoke fixed via onboard.js; 10 station smokes + parked flows end). D1 told to merge C4 and update the architecture/Cook docs. bump_version already maps js/cook modules (C4's note moot).
-<<<<<<< Updated upstream
 - 2026-10-06 D1 · C4 merged into docs-rewrite; architecture and Cook docs updated; report final.
-=======
 - 2026-10-06 01:42 UK · Full review run review-s01: 490/493 pages end, 0 page errors, 1697 baseline findings fixed; FAILED on 11 new Cook findings at 800x360 (greeting pills over the play area, three 13.5 px canvas words, 2 spacing-grid) + clinic heal-knee/ear #hint stall. F2 launched (Opus medium, auto, stop 03:30, 15-min check cap). Publish after F2.
->>>>>>> Stashed changes
