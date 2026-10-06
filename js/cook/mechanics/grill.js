@@ -1059,7 +1059,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
   /** The word pop (§4: learning happens during the action): `🔊 word` rises by the action, the clip plays. */
   SK.pop = function (S, z, id, x, y, { speak = true } = {}) {
-    const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(z.k));
+    const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(Math.max(z.k, Cook.Kit.textFloor(S, 36)))); // never under 14px as rendered
     const t = S.add.text(0, 0, Cook.display(id), { fontFamily: V2.FONT, fontSize: "36px", fontStyle: "800", color: V2.INK.kutchi }).setOrigin(0, 0.5);
     const w = 34 + 10 + t.width + 36;
     const g = S.add.graphics();

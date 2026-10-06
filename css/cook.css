@@ -353,11 +353,16 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 /* C3 (LAY-04, F1's tap-small): the bubble's and a choice's speaker are a full tap target; the icon stays 24 px */
 #bubble .wp .wp-say, #choices .choice .wp .wp-say { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: var(--njg-s3, 12px); }
 /* (the bigger target takes no room: the bubble and the choices keep their size, so they never reach into the play area) */
-#bubble .wp .wp-say { margin: -7px; }
-#choices .choice .wp .wp-say { margin: -6px; }
+#bubble .wp .wp-say, #choices .choice .wp .wp-say { margin: calc(-1 * var(--njg-s2, 8px)); }
 #choices .choice.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }
 #choices .choice.wrong { animation: shake .35s; }
 #choices .choice.right { background: #e3f0dc; border-color: var(--sage); }
+/* F2 (LAY-06): on a short phone the pills sit in one low row, so they stay clear of the middle of the play area */
+@media (max-height: 430px) {
+  #choices { bottom: var(--njg-s2, 8px); width: 100%; gap: var(--njg-s2, 8px); flex-wrap: nowrap; }
+  #choices .choice { min-height: var(--njg-tap, 48px); padding: 0 var(--njg-s3, 12px) 0 var(--njg-s2, 8px); border-width: 2px; flex: 0 1 auto; }
+  #choices .choice .wp-text { white-space: normal; }
+}
 
 /* ---- the mission card (the order card): compact, on top of the sidebar ---- */
 /* the card gives way before Nani's line and the rail do: a very long order scrolls inside it */

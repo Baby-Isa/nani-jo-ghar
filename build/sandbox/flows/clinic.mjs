@@ -190,9 +190,17 @@ class ClinicPlayer {
     if (!has) { await this.once(`heal-${game}-no-driver`); await this.rec.stop(`heal ${game}: no debug driver; ended with the test's finishHeal()`); await this.ev(() => window.__clinic.finishHeal()); await sleep(400); return; }
     await this.once(`heal-${game}-start`, { settle: 300 });
     const t0 = Date.now();
-    let steps = 0, mid = false;
+    let steps = 0, mid = false, lastA = null;
     while (!(await this.ev(() => !!window.__clinic.last)) && (await this.ev(() => !!window.__clinic.Stages.heal.current))) {
-      if (Date.now() - t0 > 90000) throw new Error(`heal ${game}: timed out playing`);
+      if (Date.now() - t0 > 90000) {
+        // what the game and the first-time help were doing when it stalled (F2: so a stall names its cause)
+        const why = await this.ev(() => {
+          const r = window.__clinic.Stages.heal.current, ob = window.Onboard && Onboard.active && Onboard.active();
+          const lay = document.querySelector(".njg-onboard");
+          return { next: r && r.controller.debug ? r.controller.debug.next() : null, onboard: ob ? ob.id : null, layer: lay ? lay.className : null };
+        }).catch(() => null);
+        throw new Error(`heal ${game}: timed out playing (last ${JSON.stringify(lastA)}; ${JSON.stringify(why)})`);
+      }
       if (this.mistakes && !this.made.has("heal-slip")) {
         const slip = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; });
         if (slip) { this.made.add("heal-slip"); await this.healAct(slip); await sleep(250); await this.once(`heal-${game}-slip`, { settle: 0 }); continue; }
@@ -202,6 +210,7 @@ class ClinicPlayer {
       // while the first-time overlay runs it ignores taps for about 450 ms between its steps: go at a child's pace
       if (a.do !== "wait" && (await this.page.$(".njg-onboard"))) await sleep(700);
       await this.healAct(a);
+      lastA = a;
       steps++;
       if (!mid && steps > 6 && a.do !== "wait") { mid = true; await this.once(`heal-${game}-mid`); }
     }

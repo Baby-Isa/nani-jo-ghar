@@ -428,7 +428,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     /* ---------- the word pop (§4: learning happens during the action) ---------- */
     const pop = (id, x, y, { speak = true } = {}) => {
-      const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0));
+      const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(Math.max(1, Cook.Kit.textFloor(S, 36)))); // never under 14px as rendered
       const t = S.add.text(0, 0, Cook.display(id), { fontFamily: FONT, fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
       const w = 34 + 10 + t.width + 36;
       const g = S.add.graphics();

@@ -499,38 +499,52 @@
         const t = typeof target === "function" ? target() : target;
         return !!(t && t.closest && t.closest(".hs-tools, .cl-actions, .njg-btn, .njg-pills"));
       })();
-      const steps = [];
-      // the tool is already in hand (picking it opened this step): start at the second thing
-      const held = isTool && (() => {
-        const t = typeof target === "function" ? target() : target;
-        return t && t.dataset && t.dataset.tool && t.dataset.tool === S.sel;
-      })();
-      if (held) {
-        /* no first step */
-      } else if (g === "drag" && sp.to) {
-        const to = rectOf(sp.to);
-        steps.push({ spotlight: [first, to], ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
-      } else steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
-      const nx = then || sp.then;
-      if (nx) {
-        const t2 = rectOf(nx.target || nx);
-        const g2 = nx.gesture || "tap";
-        const to2 = nx.to ? rectOf(nx.to) : null;
-        if (t2()) steps.push({ spotlight: to2 ? [t2, to2] : t2, ghost: to2 ? { gesture: g2, from: t2, to: to2 } : { gesture: g2 }, wait: "hs-did" });
-      }
-      if (!steps.length) return;
+      // F2 (the heal-knee/heal-ear #hint stalls): the steps are built when the help starts, not when it was asked for. A help
+      // that starts later (queued behind another, or the re-show below) would light a tool the child already holds, and the
+      // child's next move, outside that light, would be blocked
+      const build = () => {
+        const steps = [];
+        // the tool is already in hand (picking it opened this step): start at the second thing
+        const held = isTool && (() => {
+          const t = typeof target === "function" ? target() : target;
+          return t && t.dataset && t.dataset.tool && t.dataset.tool === S.sel;
+        })();
+        if (held) {
+          /* no first step */
+        } else if (g === "drag" && sp.to) {
+          const to = rectOf(sp.to);
+          steps.push({ spotlight: [first, to], ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
+        } else if (first()) steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+        const nx = then || sp.then;
+        if (nx) {
+          const t2 = rectOf(nx.target || nx);
+          const g2 = nx.gesture || "tap";
+          const to2 = nx.to ? rectOf(nx.to) : null;
+          if (t2()) steps.push({ spotlight: to2 ? [t2, to2] : t2, ghost: to2 ? { gesture: g2, from: t2, to: to2 } : { gesture: g2 }, wait: "hs-did" });
+        }
+        return steps;
+      };
+      if (!build().length) return;
       S.uncue();
       cueId = `clinic/heal-${S.game}-${key}`;
       const asked = Date.now();
       const id = cueId;
-      global.Onboard.run(cueId, steps, { force: force === "1", idleMs: 6000 })
+      // another help still on screen: this one starts when it has gone (if it is still the current one)
+      const start = (o) => {
+        if (cueId !== id) return Promise.resolve("skipped");
+        const other = global.Onboard.active && global.Onboard.active();
+        if (other && other.id !== id) return new Promise((r) => ctx.after(150, () => start(o).then(r)));
+        const steps = build();
+        return steps.length ? global.Onboard.run(id, steps, o) : Promise.resolve("skipped");
+      };
+      start({ force: force === "1", idleMs: 6000 })
         .then((how) => {
           // SH-46 (1 Oct, P32): a move the child has met before but isn't doing now is shown again after a pause,
           // not only the first time ever
           if (how !== "seen") return;
           ctx.after(8000, () => {
             if (S.lastDid > asked || cueId !== id || mine()) return;
-            global.Onboard.run(id, steps, { force: true, idleMs: 6000 }).catch(() => {});
+            start({ force: true, idleMs: 6000 }).catch(() => {});
           });
         })
         .catch(() => {});
