@@ -187,5 +187,6 @@
   "en|tamarind chutney": "assets/audio/cook-tts/en-tamarind-chutney.mp3",
   "en|times": "assets/audio/cook-tts/en-times.mp3",
   "en|yoghurt": "assets/audio/cook-tts/en-yoghurt.mp3"
- }
+ },
+ "speed": "full"
 }

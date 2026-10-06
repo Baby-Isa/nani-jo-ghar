@@ -3,7 +3,11 @@
 (Google, via gTTS) reading every line the prototype can say, slowed to
 about half speed. Zafar asked for this on 24 Sept 2026 ("use Gujarati audio
 and play it half speed or slower, it was crazy fast in the previous test
-builds").
+builds"). On 6 Oct he asked for normal speed (decision 63): new files are
+built at gTTS's normal pace, and the existing half-speed files were sped up
+in place with `--full-speed` (ffmpeg atempo 1.33 then 1.5, pitch kept, lead
+and tail silence trimmed), because Google TTS can't be reached from the
+build containers.
 
 This is a PLACEHOLDER, clearly worse than a person: a Gujarati voice
 reading Kutchi, so some sounds will be wrong. Family recordings replace it
@@ -24,6 +28,7 @@ How it works:
   - data/cook-tts.json maps each line's key to its file
 
 Run: python3 build/build_cook_tts.py   (needs network, gTTS, imageio-ffmpeg)
+     python3 build/build_cook_tts.py --full-speed   (offline, ffmpeg)
 """
 import json
 import os
@@ -33,13 +38,15 @@ import subprocess
 import sys
 import tempfile
 
-from gtts import gTTS
-import imageio_ffmpeg
 
 GAME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(GAME, "assets", "audio", "cook-tts")
 MANIFEST = os.path.join(GAME, "data", "cook-tts.json")
-ATEMPO = 0.75  # on top of gTTS's own slow mode: roughly half normal speed
+ATEMPO = 1.0  # decision 63: normal speed (was 0.75 on top of gTTS slow mode)
+# --full-speed: the files built at half speed get these two passes (x2 overall)
+FULL_SPEED = "atempo=1.33,atempo=1.5"
+TRIM = ("silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03,"
+        "areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.06,areverse")
 
 # romanised Kutchi -> Gujarati script, only so the voice can read it
 GU = {
@@ -173,9 +180,10 @@ def lines():
 
 
 def speak(text, lang, path, ffmpeg, tempo):
+    from gtts import gTTS
     with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
         if lang == "gu":
-            gTTS(text, lang="gu", slow=True).save(tmp.name)
+            gTTS(text, lang="gu", slow=False).save(tmp.name)
         else:
             gTTS(text, lang="en", tld="co.uk", slow=False).save(tmp.name)
         subprocess.run(
@@ -185,9 +193,31 @@ def speak(text, lang, path, ffmpeg, tempo):
         os.unlink(tmp.name)
 
 
+def full_speed(ffmpeg="ffmpeg"):
+    """Speed the half-speed files up in place (once: the manifest records it)."""
+    data = json.load(open(MANIFEST))
+    if data.get("speed") == "full":
+        print("already at full speed")
+        return
+    n = 0
+    for key, rel in data["lines"].items():
+        path = os.path.join(GAME, rel)
+        if not os.path.exists(path):
+            continue
+        chain = (FULL_SPEED if not key.startswith("en|") else "atempo=1.18") + "," + TRIM
+        tmp = path + ".tmp.mp3"
+        subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-i", path, "-filter:a", chain, "-ac", "1", "-b:a", "48k", tmp], check=True)
+        os.replace(tmp, path)
+        n += 1
+    data["speed"] = "full"
+    json.dump(data, open(MANIFEST, "w"), indent=1, ensure_ascii=False)
+    print(f"{n} files sped up")
+
+
 def main():
     global SAY
     os.makedirs(OUT, exist_ok=True)
+    import imageio_ffmpeg
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     manifest = {}
     data = json.load(open(os.path.join(GAME, "data", "cook.json")))
@@ -217,4 +247,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if "--full-speed" in sys.argv:
+        full_speed()
+    else:
+        main()

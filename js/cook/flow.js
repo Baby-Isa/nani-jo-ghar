@@ -123,7 +123,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         else row = UI.mission.missNext(ctx.dishAt);
       }
       else if (p.kind === "count") row = UI.mission.missItem(p.noun, ctx.dishAt, { counted: true });
-      // a mistake with no row of its own (a wrong thing picked, an extra): its own red slot at the end
+      // SH-49 (6 Oct): a wrong thing picked marks the row it was picked for: the thing being asked for now (the
+      // pantry's next item), else the next open row; a mistake with no row at all costs no tick (ticks = rows)
+      else if (p.kind === "wrong") {
+        const want = Cook.expect && typeof Cook.expect.key === "string" && Cook.expect.key !== p.ids[0] ? Cook.expect.key : null;
+        row = (want && UI.mission.missItem(want, ctx.dishAt, { no: false })) || null;
+        if (!row) row = UI.mission.missNext(ctx.dishAt);
+      }
       if (!row && !["shown", "passme"].includes(p.kind)) ctx.strays++;
       if (["no", "order", "wrong"].includes(p.kind) && p.ids[0] && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(p.ids[0]), ok: false });
     };
@@ -180,11 +186,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const ids = info.ids || (Cook.expect && Cook.expect.key ? [Cook.expect.key] : []);
       ids.forEach((id) => typeof id === "string" && ctx.wordHelp.add(id));
       if (Cook.save.mode === "busy") drainPatience(HELP_COST[kind] || 5);
-      const open = !$("#mission").classList.contains("hidden") && !$("#mission").classList.contains("stamped");
-      if (["reveal", "translate", "shown"].includes(kind) && (open || info.passMe)) {
-        const what = (info.ids || []).join(" ") || "the order";
-        ctx.listen(false, `${kind === "shown" ? "shown" : kind === "reveal" ? "revealed" : "translated"} ${what}`);
-      }
+      // SH-49 (6 Oct): the bulb, a translation or a shown hint is a hint and only a hint: it goes on the hints
+      // badge, never as a lost tick (the ticks are the order's rows, one to one)
     };
     // the item labels' speakers: from word stage 3, hearing the thing you're
     // looking for counts as help (otherwise you could match sounds)
@@ -410,9 +413,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /* ---------------- the end of a round: the shared screen (UX 9) ----------------
    * js/shared/results.js: page 1 is three badges (time with the personal best
    * per game and level, accuracy as slots, hints), page 2 the word review.
-   * Accuracy is the order's rows (gold unless the row went wrong) plus one
-   * grey slot per mistake that isn't a row (a wrong thing, an extra one; a
-   * mistake heard with every row still right is one such slot). Hints are
+   * Accuracy is the order's rows, one tick each (gold unless the row went
+   * wrong) and nothing else (SH-49, 6 Oct): a wrong thing marks the row it
+   * was picked for, so every lost tick names its word in the review. Hints are
    * every help used (ctx.help: hints, the light bulb, hearing it again).
    * The badges, the best, the pocket money and the story line come from the
    * core in one step (Score.finish, js/core/score.js); Cook computes none of them.
@@ -425,10 +428,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         marks.push(!r.miss);
       })
     );
+    // SH-49 (6 Oct): one tick per row and nothing else; a round with no rows at all is one tick for the round
     const rows = marks.length;
-    for (let i = 0; i < Math.min(ctx.strays || 0, 8); i++) marks.push(false);
     if (!marks.length) marks.push(!ctx.listenMiss);
-    if (ctx.listenMiss && marks.every(Boolean)) marks.push(false);
     marks.rows = rows;
     return marks;
   }
@@ -486,7 +488,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   function reviewWords(ctx) {
     const missed = missedWordIds(ctx);
-    return UI.orderWordForms(ctx.ladders).map((w) => ({ id: w.id, kutchi: w.kutchi, cell: w.cell, english: Cook.english(w.id), right: !missed.has(w.id), toCheck: !!w.check || undefined }));
+    // SH-50 (6 Oct): per person, not merged: a word right in one person's row and wrong in another's shows on both sides
+    const rightSomewhere = new Set();
+    (ctx.ladders || []).forEach((L) =>
+      Cook.Order.rows(L, { all: true }).forEach((r) => {
+        if (r.miss || r.head) return;
+        r.line.segs.filter((x) => x.w).map((x) => x.w).concat(r.ids).forEach((id) => rightSomewhere.add(id));
+      })
+    );
+    const out = [];
+    UI.orderWordForms(ctx.ladders).forEach((w) => {
+      const base = { id: w.id, kutchi: w.kutchi, cell: w.cell, english: Cook.english(w.id), toCheck: !!w.check || undefined };
+      const bad = missed.has(w.id);
+      if (bad) out.push(Object.assign({}, base, { right: false }));
+      if (!bad || (rightSomewhere.has(w.id) && !ctx.wordMiss.has(w.id))) out.push(Object.assign({}, base, { right: true }));
+    });
+    return out;
   }
   async function roundEnd(ctx, { scored, actions }) {
     // inside the game host (js/cook/main.js) the host catches the end screen: it shows the one for the whole plan
