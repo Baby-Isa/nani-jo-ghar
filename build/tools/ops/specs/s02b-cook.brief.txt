@@ -1,0 +1,76 @@
+SESSION NAME / MODE:  S02-B, Cook: every point from the 6 Oct play (Sprint 2)
+MODEL AND EFFORT:     Opus, medium effort (many station fixes on top of Session A's shared round flow; mostly clear, some visual judgement)
+COST ESTIMATE:        about $45-55
+HARD STOP:            10 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 5 (Cook), 6 (UI) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. build/reports/s02a-round-flow.md (the shared APIs you call: redo, requests pop-up, guide lines per step, bulb, verdict pictures)
+  6. docs/design-language/guide-and-card.md (approved: rows T1-T21 are yours to fill per station)
+  7. docs/feedback/cook-playtest-2026-10-06.md (every point, cause file:line, section 1a)
+  8. docs/decisions.md 51-65; docs/sprints/S02-play-and-fix-cook-clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/**, js/cook/mechanics/**, js/cook/recipes.js, js/cook/stations.js, js/cook/station-lib.js, js/cook/kitchen-kit.js, js/cook/art.js, js/cook/zone.js, js/cook/app.js, js/cook/page.js
+  - data/cook.json, data/stations/** (lines through the language engine only)
+  - css/cook.css and css/cook-side-v2.css for station-only rules (Session A is finished; keep its shared rules)
+  - labs.html (Cook entries)
+  - build/reports/s02b-cook.md
+READ-ONLY (never edit):
+  - js/shared/**, js/core/** (Session A's; call them, report any gap)
+  - js/clinic/**, data/clinic/** (Session C, running at the same time)
+  - data/lang/** (placeholders through the importers only)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: art that isn't made yet (kitchen with trays, coin jar, samosa fold frames, chai pour and black tea, sekelo plate, chaat glass, knife, split trivet) arrives from the art run: build the code to take it (named asset ids, sizes from metadata) and use the current art until then; list the ids in the report
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Fill every Cook guide line per step from the table (T1-T19): pantry one card with a top strip and Muke de; chai water/tea/Chulo bar!/Slow kar!/item wiji chad!/pour; maani step lines; daar chop card (one Nani card), cook steps in order and the stir line; chaat flow (ask, pantry, chop, his sequence, bowl); samosa Bhar!/Samosa waar!/Chulo bar!/Tar!; sekelo thread/grill/Firai!; pass me on screen, pausing, with a 3 s ring, never in the first plays (PAN-10, CHT-07, MAA-14, SH-56).
+     Accept: pantry, chai, daar and samosa at L1: the box changes with each step and never repeats the card
+  2. Wire Session A's redo into every station in place of the whole-game restart (daar, samosa, chaat, sekelo, maani, pantry), with help on the second try and show-me on the third (DAAR-09, CK-23).
+     Accept: a wrong layer in chaat redoes only that layer; a wrong spice in daar redoes only the tadka
+  3. Chai: burner twice as fast at every level; a counted row turns gold at the count at L1; the pan handle opaque over the rim; a real teaspoon for the stir (art run asset, current until then); glass and pan show black tea when there's no milk (CHAI-10, CHAI-16, CHAI-12, CHAI-13, CHAI-14, ART-14).
+     Accept: chai L1 reaches green in about 7 s; two sugars tick at the second
+  4. Maani: no shadow under the dough piles; maani lands on the thali's flat area; sizzle only while something is on a lit tawa, and the knob turns the flame off; rolling pin above the ring and ~10% longer; ghost finger on the tap after a pause (MAA-09 to MAA-13, CK-20).
+     Accept: empty tawa is silent; x2 zoom shows no maani on the rim
+  5. Daar and chop: the trivet stays (split image, or hide it on tip); the ladle turns so its handle stays hooked on the rim; laps and speed on the card, the asked speed green, the other yellow, spill red; a smaller margin-safe knife, wider spacing, slower at L1, the ghost finger drags the knife, the blade cuts, the row highlights at the right count; find and fix the flat-cut pot top (DAAR-10 to DAAR-14).
+     Accept: stir card shows trae and aste thi; knife tip whole at x2 zoom
+  6. Chaat: the checker counts quantities, the row ticks at the second potato, a retry re-says on his own card with rows lit as spoken (CHT-06, CHT-08).
+     Accept: one potato for two is wrong and redone
+  7. Samosa: one block per kind (head 'ba samosa', fillings under it); at the top level all strips laid out, tap a strip to fill, then roll each; diagonal fold swipes keeping the pastry's height (fold frames from the art run); the pan knob turns off and the sizzle stops; samosas stay in the oil and the plate's flat area; peas are matar (SAM-11 to SAM-15).
+     Accept: L3 two kinds read as two blocks; strips filled by tapping
+  8. Sekelo: count-along only at L1; each skewer's sequence said right after it; quantity written where said; pieces tick as they go on; straight skewers left to right on the plate (new plate art when it lands) (SEK-10 to SEK-13, SEK-07).
+     Accept: L2 thread is silent per piece; spoken order matches the card order
+  9. The coin-jar day summary (Zafar's design, docs/feedback/cook-playtest-2026-10-06.md C11): each card (face, task, coins) lands on the jar, coins drop in with a ching, the card rises and fades, the next comes in; this game's total beside, the jar's total below; Next is the primary button; jar fill pictures from the art run (five levels) (SH-51).
+     Accept: a 3-order day plays the sequence; screenshot at 390x844 and 1366x768
+  10. The counter: three tray spots for served dishes, one per customer, right items on the right tray, shadows to the right (kitchen art from the art run); story days labelled as days; pantry only the first time a dish is ever made; Tadka stays in the labs but out of the first-launch list (CK-21, CK-24, PAN-13, DAAR-15).
+     Accept: a 3-person chai serves onto three trays
+
+REGRESSION ROWS TO RECHECK (110 rows of docs/process/regressions.md; * = open or reopened):
+  cook:pantry (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+  cook:chai-tray (16): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07*, CHAI-08*, CHAI-09, CHAI-10*, CHAI-11*, CHAI-12*, CHAI-13*, CHAI-14*, CHAI-15*, CHAI-16*
+  cook:maani-line (14): MAA-01, MAA-02, MAA-03, MAA-04, MAA-05, MAA-06, MAA-07, MAA-08, MAA-09*, MAA-10*, MAA-11*, MAA-12*, MAA-13*, MAA-14*
+  cook:daar (18): DAAR-01, DAAR-02*, DAAR-03, DAAR-04, DAAR-05, DAAR-06, DAAR-07, DAAR-08, DAAR-09*, DAAR-10*, DAAR-11*, DAAR-12*, DAAR-13*, DAAR-14*, DAAR-15*, CK-06, CK-08, CK-10
+  cook:chaat (10): CHT-01, CHT-02, CHT-03*, CHT-04, CHT-05, CHT-06*, CHT-07*, CHT-08*, CHT-09*, CK-TB-01*
+  cook:samosa (17): SAM-01, SAM-02, SAM-03, SAM-04, SAM-05*, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11*, SAM-12*, SAM-13*, SAM-14*, SAM-15*, CK-08, CK-09
+  cook:mishkaki-grill (13): SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-07*, SEK-08, SEK-09, SEK-10*, SEK-11*, SEK-12*, SEK-13*
+  cook:story (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s02b-cook` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8822.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s02b-cook.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

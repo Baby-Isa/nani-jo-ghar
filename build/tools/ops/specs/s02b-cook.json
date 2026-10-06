@@ -1,0 +1,42 @@
+{
+  "name": "S02-B, Cook: every point from the 6 Oct play (Sprint 2)",
+  "model": "Opus",
+  "effort": "medium",
+  "why": "many station fixes on top of Session A's shared round flow; mostly clear, some visual judgement",
+  "cost": "about $45-55",
+  "stop": "10 Oct 2026, 12:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": ["2", "3", "4", "5 (Cook)", "6 (UI)"],
+  "read": [
+    "build/reports/s02a-round-flow.md (the shared APIs you call: redo, requests pop-up, guide lines per step, bulb, verdict pictures)",
+    "docs/design-language/guide-and-card.md (approved: rows T1-T21 are yours to fill per station)",
+    "docs/feedback/cook-playtest-2026-10-06.md (every point, cause file:line, section 1a)",
+    "docs/decisions.md 51-65; docs/sprints/S02-play-and-fix-cook-clinic.md"
+  ],
+  "owns": [
+    "js/cook/stations/**, js/cook/mechanics/**, js/cook/recipes.js, js/cook/stations.js, js/cook/station-lib.js, js/cook/kitchen-kit.js, js/cook/art.js, js/cook/zone.js, js/cook/app.js, js/cook/page.js",
+    "data/cook.json, data/stations/** (lines through the language engine only)",
+    "css/cook.css and css/cook-side-v2.css for station-only rules (Session A is finished; keep its shared rules)",
+    "labs.html (Cook entries)",
+    "build/reports/s02b-cook.md"
+  ],
+  "readOnly": ["js/shared/**, js/core/** (Session A's; call them, report any gap)", "js/clinic/**, data/clinic/** (Session C, running at the same time)", "data/lang/** (placeholders through the importers only)"],
+  "stubs": "art that isn't made yet (kitchen with trays, coin jar, samosa fold frames, chai pour and black tea, sekelo plate, chaat glass, knife, split trivet) arrives from the art run: build the code to take it (named asset ids, sizes from metadata) and use the current art until then; list the ids in the report",
+  "tasks": [
+    { "do": "Fill every Cook guide line per step from the table (T1-T19): pantry one card with a top strip and Muke de; chai water/tea/Chulo bar!/Slow kar!/item wiji chad!/pour; maani step lines; daar chop card (one Nani card), cook steps in order and the stir line; chaat flow (ask, pantry, chop, his sequence, bowl); samosa Bhar!/Samosa waar!/Chulo bar!/Tar!; sekelo thread/grill/Firai!; pass me on screen, pausing, with a 3 s ring, never in the first plays (PAN-10, CHT-07, MAA-14, SH-56).", "accept": "pantry, chai, daar and samosa at L1: the box changes with each step and never repeats the card" },
+    { "do": "Wire Session A's redo into every station in place of the whole-game restart (daar, samosa, chaat, sekelo, maani, pantry), with help on the second try and show-me on the third (DAAR-09, CK-23).", "accept": "a wrong layer in chaat redoes only that layer; a wrong spice in daar redoes only the tadka" },
+    { "do": "Chai: burner twice as fast at every level; a counted row turns gold at the count at L1; the pan handle opaque over the rim; a real teaspoon for the stir (art run asset, current until then); glass and pan show black tea when there's no milk (CHAI-10, CHAI-16, CHAI-12, CHAI-13, CHAI-14, ART-14).", "accept": "chai L1 reaches green in about 7 s; two sugars tick at the second" },
+    { "do": "Maani: no shadow under the dough piles; maani lands on the thali's flat area; sizzle only while something is on a lit tawa, and the knob turns the flame off; rolling pin above the ring and ~10% longer; ghost finger on the tap after a pause (MAA-09 to MAA-13, CK-20).", "accept": "empty tawa is silent; x2 zoom shows no maani on the rim" },
+    { "do": "Daar and chop: the trivet stays (split image, or hide it on tip); the ladle turns so its handle stays hooked on the rim; laps and speed on the card, the asked speed green, the other yellow, spill red; a smaller margin-safe knife, wider spacing, slower at L1, the ghost finger drags the knife, the blade cuts, the row highlights at the right count; find and fix the flat-cut pot top (DAAR-10 to DAAR-14).", "accept": "stir card shows trae and aste thi; knife tip whole at x2 zoom" },
+    { "do": "Chaat: the checker counts quantities, the row ticks at the second potato, a retry re-says on his own card with rows lit as spoken (CHT-06, CHT-08).", "accept": "one potato for two is wrong and redone" },
+    { "do": "Samosa: one block per kind (head 'ba samosa', fillings under it); at the top level all strips laid out, tap a strip to fill, then roll each; diagonal fold swipes keeping the pastry's height (fold frames from the art run); the pan knob turns off and the sizzle stops; samosas stay in the oil and the plate's flat area; peas are matar (SAM-11 to SAM-15).", "accept": "L3 two kinds read as two blocks; strips filled by tapping" },
+    { "do": "Sekelo: count-along only at L1; each skewer's sequence said right after it; quantity written where said; pieces tick as they go on; straight skewers left to right on the plate (new plate art when it lands) (SEK-10 to SEK-13, SEK-07).", "accept": "L2 thread is silent per piece; spoken order matches the card order" },
+    { "do": "The coin-jar day summary (Zafar's design, docs/feedback/cook-playtest-2026-10-06.md C11): each card (face, task, coins) lands on the jar, coins drop in with a ching, the card rises and fades, the next comes in; this game's total beside, the jar's total below; Next is the primary button; jar fill pictures from the art run (five levels) (SH-51).", "accept": "a 3-order day plays the sequence; screenshot at 390x844 and 1366x768" },
+    { "do": "The counter: three tray spots for served dishes, one per customer, right items on the right tray, shadows to the right (kitchen art from the art run); story days labelled as days; pantry only the first time a dish is ever made; Tadka stays in the labs but out of the first-launch list (CK-21, CK-24, PAN-13, DAAR-15).", "accept": "a 3-person chai serves onto three trays" }
+  ],
+  "flows": ["cook:pantry", "cook:chai-tray", "cook:maani-line", "cook:daar", "cook:chaat", "cook:samosa", "cook:mishkaki-grill", "cook:story"],
+  "shared": false,
+  "port": 8822,
+  "report": "s02b-cook",
+  "publish": false
+}
