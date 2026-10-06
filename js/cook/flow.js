@@ -234,7 +234,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await S().talk("nani", Lang.line(ex.answer), { ms: 1100 });
       return 0;
     }
-    const opts = [ex.answer].concat(ex.wrong).map((k) => ({ key: k, line: Lang.line(k) }));
+    // R6 (decision 61): arre re is not a family word, so never a pill either: the data's "oops" option becomes "thank you"
+    const wrong = [...new Set(ex.wrong.map((k) => (k === "oops" ? "thanks" : k)))].filter((k) => k !== ex.answer);
+    const opts = [ex.answer].concat(wrong).map((k) => ({ key: k, line: Lang.line(k) }));
     const r = await UI.choose(opts, ex.answer, {
       glowAfter: 7000,
       onWrong: () => S().chars.nani && S().talk("nani", Lang.line(ex.answer), { ms: 1200 }).catch(() => {}),

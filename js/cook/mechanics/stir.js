@@ -425,7 +425,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               lastSpill = now;
               spills++;
               spill();
-              if (spills === 1 && Cook.gentleOops(ctx)) react(Lang.line("oops"), true);
+              if (spills === 1) Cook.oops(ctx); // S02-A hook: R6, no arre re (a soft sound at L1)
             }
           } else overT = 0;
           draw(now);
