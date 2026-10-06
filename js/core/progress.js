@@ -230,6 +230,11 @@ export function createProgress({ save, data, followCook = true } = {}) {
     said: (id, ev) => put(id, said(all()[id], ev, D)),
     support: (id, o) => support(all()[id], D, o),
     importCook: (cookWords) => save && save.set("words", importCook(all(), cookWords, D)),
+    /** SH-60 (PA5): forget every learned word ("Start over", the grown-ups' "play as new"): each word is new again. */
+    reset: () => {
+      lastCook = null;
+      if (save) save.set("words", {});
+    },
   };
   return P;
 }

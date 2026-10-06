@@ -53,3 +53,17 @@
 .njg-pills.locked .njg-pill { pointer-events: none; }
 @keyframes njgPillShake { 20%, 60% { transform: translateX(calc(var(--njg-s1) * -1.5)); } 40%, 80% { transform: translateX(calc(var(--njg-s1) * 1.5)); } }
 @media (prefers-reduced-motion: reduce) { .njg-done.glow, .njg-next.glow, .njg-pill.shake { animation: none; } }
+
+/* The action button (S02-A, non-negotiable 8, SH-60): the end screen's buttons (Again / Next / the list / Home) as one
+   shared look for every screen's actions: Cook's day summary, shop and title, the clinic's stage screens. White with a
+   grey edge; the main action charcoal; a picture inside (an icon), a label only for grown-ups' screens */
+.njg-act {
+  height: var(--njg-end-btn); min-width: calc(var(--njg-end-btn) * 1.7); padding: 0 var(--njg-s5);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--njg-s2);
+  border: var(--njg-line) solid #d9d2c7; border-radius: var(--njg-radius); background: var(--njg-card); color: var(--njg-ink);
+  font: 800 var(--njg-end-btn-t)/1 var(--njg-font); box-shadow: none; transition: transform .12s;
+}
+.njg-act svg { width: calc(var(--njg-end-btn) * 0.5); height: calc(var(--njg-end-btn) * 0.5); flex: none; }
+.njg-act.primary { background: var(--njg-ink); border-color: var(--njg-ink); color: #fff; }
+.njg-act:active { transform: scale(0.97); }
+.njg-act:focus-visible { outline: calc(var(--njg-line-2) * 1.5) solid var(--njg-gold); outline-offset: var(--njg-line-2); }

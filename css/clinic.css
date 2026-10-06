@@ -533,3 +533,7 @@ body.clinic button { font-family: inherit; color: inherit; }
    until they open (the one highlight is the open step's) */
 .cl-row.later { opacity: .45; }
 .cl-row.later.next-up { opacity: 1; }
+
+/* SH-60: the grown-ups' "play as new" in the "?" pop-up */
+.cl-help-new { margin: var(--njg-s2) 0 0; font-size: 14px; color: var(--cl-soft); }
+.cl-help-new a { font-weight: 800; color: var(--cl-ink); }

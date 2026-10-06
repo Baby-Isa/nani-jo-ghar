@@ -142,6 +142,18 @@
       scr.openHelp = () => {
         helpPop.innerHTML = "";
         h("div", "cl-help-text", helpPop, scr.goal || "Listen to the doctor, then do what the card says.");
+        // SH-60: the grown-ups' "play as new" (the same as Cook's): every word is new again, the first-time help too
+        const nw = h("p", "cl-help-new", helpPop);
+        nw.innerHTML = `<a href="#">Play as new</a> <span>(for grown-ups: forget the words learned on this device)</span>`;
+        nw.querySelector("a").addEventListener("click", (e) => {
+          e.preventDefault();
+          if (global.confirm && !global.confirm("Play as new? Every word shows again as on a first play, and the first-time help comes back. Pocket money stays.")) return;
+          const core = global.__clinic && global.__clinic.core;
+          if (core && core.progress && core.progress.reset) core.progress.reset();
+          if (global.UIStore && global.UIStore.clear) global.UIStore.clear();
+          if (global.Onboard && global.Onboard.reset) global.Onboard.reset();
+          scr.closeHelp();
+        });
         if (global.Onboard && global.Onboard.active && global.Onboard.active()) {
           const sk = global.Onboard.skipButton(helpPop);
           if (sk) sk.addEventListener("skipped", scr.closeHelp);

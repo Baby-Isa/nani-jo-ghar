@@ -584,7 +584,20 @@
     if (!pop || !btn) return;
     pop.querySelector(".hp-text").textContent = helpText;
     // the grown-ups' skip lives here now (G7 / CQ15), only while the first-time help runs
-    pop.querySelectorAll(".ob-skip-row").forEach((x) => x.remove());
+    pop.querySelectorAll(".ob-skip-row, .hp-new").forEach((x) => x.remove());
+    // SH-60 (PA5): a grown-ups' "play as new": every word is new again (as a first play), the first-time help too
+    const nw = document.createElement("p");
+    nw.className = "hp-new";
+    nw.innerHTML = `<a href="#">Play as new</a> <span>(for grown-ups: forget the words learned on this device)</span>`;
+    nw.querySelector("a").addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!global.confirm || global.confirm("Play as new? Every word shows again as on a first play, and the first-time help comes back. Pocket money and upgrades stay.")) {
+        Cook.resetSave({ fresh: true });
+        UI.closeHelp();
+        if (mission) renderOrder();
+      }
+    });
+    pop.appendChild(nw);
     if (global.Onboard && global.Onboard.active && global.Onboard.active()) {
       const sk = global.Onboard.skipButton(pop);
       if (sk) sk.addEventListener("skipped", () => UI.closeHelp());
@@ -804,6 +817,9 @@
       level: orderLevel(),
     };
     UI.bulbOff();
+    // SH-59 (C16): a new order starts with the "?" calm (no pulse left over from the last station or a conversation)
+    if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
+    UI.closeHelp();
     // R4: Nani asking herself (the pantry list): one face, her line as the card's strip
     mission.stripMode = who === "nani";
     mission.strip = null;

@@ -333,6 +333,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ctx.steps = order.dishes.flatMap(chipsFor);
     const name = who === "nani" ? "Nani" : Cook.data.customers[who].name;
     uiStage();
+    UI.hideGist(); // SH-59: no "?" pulse carried into the greeting (a conversation) or the new order
 
     if (!demo && who === "nani") {
       // Nani asks herself (the pantry): she's already here, no small talk
@@ -773,7 +774,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Cook.PIC = PIC;
   const coinsHtml = (n, cls = "") => `<span class="pill coins ${cls}"><i class="coin-dot"></i>${n}</span>`;
   /** A picture button (its label is for screen readers and the grown-ups, never written for the child). */
-  const picBtn = (id, pic, label, cls = "") => `<button class="btn pic-btn ${cls}" id="${id}" type="button" aria-label="${UI.esc(label)}" title="${UI.esc(label)}">${PIC[pic]}</button>`;
+  // non-negotiable 8 (S02-A): the shared action button (css/shared/buttons.css .njg-act), the end screen's look
+  const picBtn = (id, pic, label, cls = "") => `<button class="njg-btn njg-act pic-btn ${cls.replace(/\bbig\b/, "")}" id="${id}" type="button" aria-label="${UI.esc(label)}" title="${UI.esc(label)}">${PIC[pic]}</button>`;
   /**
    * The grown-ups' "?" on a panel: a round "?" in its top corner; the English (what this screen is,
    * settings, the lab) opens beside it and nowhere else (E1, E31).
@@ -1141,7 +1143,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     $("#t-shop").addEventListener("click", showShop);
     $("#t-reset").addEventListener("click", (e) => {
       e.preventDefault();
-      if (confirm("Start Cook with Nani again from day 1? The story days and Cook's word dots start again; pocket money and upgrades stay in the purse (coins are never taken away).")) {
+      if (confirm("Start Cook with Nani again from day 1? The story days and the words learned start again (every word shows on the card); pocket money and upgrades stay in the purse (coins are never taken away).")) {
         Cook.resetSave();
         showTitle();
       }

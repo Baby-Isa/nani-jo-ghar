@@ -119,13 +119,18 @@
       Cook.storageOK = false;
     }
   };
-  Cook.resetSave = function () {
+  Cook.resetSave = function ({ fresh = false } = {}) {
     const mode = Cook.save.mode;
     const hands = Cook.save.hands;
     Cook.save = blankSave();
     Cook.save.mode = mode;
     if (hands) Cook.save.hands = hands;
     Cook.writeSave();
+    // SH-60 (PA5): starting over also forgets the learned words (every word shows on the card again)
+    const P = Cook.core && Cook.core.progress;
+    if (P && P.reset) P.reset();
+    // fresh ("play as new", the grown-ups' "?"): the first-time help and the UI stages come back too
+    if (fresh && global.UIStore && global.UIStore.clear) global.UIStore.clear();
   };
   /*
    * Step 3 R4: Cook on the engine core (js/core/, ES modules). cook.html's module bootstrap
