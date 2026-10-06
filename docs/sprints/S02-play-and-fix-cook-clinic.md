@@ -7,14 +7,19 @@
 Zafar plays Cook and the clinic on the engine, live on `main`; every point he raises is a regression row the same day and is fixed; the sprint ends with Cook and the clinic ready to call finished (their ideas in `docs/ideas.md` gone through with him).
 
 ## Budget
-To set with Zafar before any launch: propose a ceiling in money and a number of days; cut scope rather than overrun.
+**$200 ceiling, about 7 days** (Zafar, 6 Oct). Cut scope rather than overrun.
 
 ## Sessions
-Planned, none launched yet:
-- `/feedback` on Zafar's voice notes: one report per play, rows added the same day.
-- Fix sessions per area, from the open rows (`statuscounts.mjs`): Cook (pantry, chai, daar, sekelo, general), the clinic (8 open), shared components (7 open).
-- The art run: the clinic redo list (`docs/design-language/art-plans/clinic-heal-redo-list.yaml`) and part C in one faster run (`/art-run`; the W11 standing pose prompt first).
-- Mum's round: the clash list sheet for Zafar and Mum (`mumsheet.mjs`); the 168 clips to ear-check; Round 5 and 6 (`/mum-round`).
+Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
+1. **Guide box vs card table** (orchestrator, this chat, ~$10): every line in every Cook station and clinic stage, what the box and the card say and why; the pantry shown both ways (one card vs two boxes); the samosa card checked against the other stations' rules. Zafar answers it row by row before Session A.
+2. **Session A: shared round flow** (Opus high, ~$50, 1.5 days): ticks match the review, wrong always left; redo the wrong item, show-me after three; next step shown at L2+; no extra click when obvious; requests up front; a guide line per step; the bulb translates the guide line and shows numbers; one highlight colour, inset gold, flat ✓; a tap pauses speech; the chef's call-back closing line; "Start over" clears learned words (also behind "?"); the button family on the screens in use; load times; robot test voice at full speed.
+3. **Robot voice test** (orchestrator, during A, ~$3): Mum's 10 clips cleaned; the robot from respellings in two voices; Zafar edits spellings and speeds; blind A/B page.
+4. **Sessions B and C, in parallel once A is done** (launched without asking again):
+   - **B, Cook** (Opus medium, ~$50, 2 days): every Cook row; the coin-jar screen (Zafar's design); the three counter trays; the samosa card (one block per kind) and laid-out strips; diagonal fold swipes keeping the height; Tadka stays in the labs.
+   - **C, clinic** (Opus high, ~$50, 2 days): every clinic row; the girl's art through the whole story (other patients wait); ear and eye redesigns; fever number model; boing; tooth plaque and the square drill; the foot wash.
+5. **Art run** (ready for Zafar on 7 Oct; ~$15 + his ChatGPT): the kitchen with three trays and Nani leaning (her existing picture); Cook and pantry items; samosa fold frames; clinic items as Fable-planned sprite sheets (6–8 views each, spares); the coin jar in five fill levels.
+6. **`/review` and publish** at the end (~$20).
+- **Sprint 3:** Mum's Round 5 (*Muke de*, *Muke chai lai de*, "oh oh oh", "ow"…), the fever room tidy.
 
 ## Small decisions
 None yet.

@@ -142,12 +142,15 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 - **Show, don't tell, on the shared `js/shared/onboard.js`:** dim all but one thing, the ghost finger does it once, the child does it; UI fades in only when first needed. (E2, E9)
 - **Babysit at the start:** every spoken line is also written and underlined as it's said. (E3, E4)
 - **The instruction card is the master;** Nani is a voice plus hints and short interjections, with a moment of silence at the start. (E27)
-- **Never make the child wait for speech:** input is live, a tap goes ahead, the line can be replayed. (E5)
+- **Never make the child wait for speech:** input is live, a tap goes ahead, the line can be replayed; a tap pauses the line, the count plays, and the line carries on. (E5)
+- **Requests come first:** everyone who orders comes in and one pop-up shows each order (or the doctor's request), read out, tap to skip; it folds to the sidebar and the game is quiet; each instruction comes just before the game that needs it. (E37, decision 53)
+- **The guide box says the next step, in step with the highlight;** the card is what's wanted and the box never repeats it; exact lines per game in the guide-vs-card table. (F26, decision 55)
 
 ### Help and hints
 - **The light bulb is the help:** it flips the text to English for 5/3/2/1 s by level and **costs a lightbulb on the hints badge**; the face is the one replay; no per-line translate buttons. (E25, decision 1)
 - **The bulb is for language, the eye is for reading:** the bulb translates (one bulb per use); opening a closed card is a look, counted on its own eye badge at closed-card levels. (E25, F9, decision 27)
-- **A glow is a hint, not a giveaway:** only after a wrong tap or ~5 s of hesitation, and never at the top level for what the words should tell. (E16, E28)
+- **A glow is a hint, not a giveaway:** only after a wrong tap or ~5 s of hesitation (the first item too), never on a hidden word after its first hidden showing, and never at the top level for what the words should tell. (E16, E28)
+- **The bulb translates the guide line too, and always shows the full order with numbers;** on spoken cards the closed card's eye is a small bulb with no counter. (E25, decision 57)
 - **From level 3, cards are closed;** peeking costs a hint. (F9, H22, H34)
 
 ### Levels and difficulty
@@ -159,10 +162,13 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 
 ### Counting
 - **The counting rule:** at every level Nani says the order at the start and the speaker replays it on demand. L1: the card writes the quantity in Kutchi words and Nani counts along aloud as the child works; L2: the card still writes it, no counting along; L3+: nothing written and no counting along, only the spoken order (replayable). Say the number with the item; no tallies except chai's sugar. Every station follows it, daar's chop card included. (E12, decision 41)
-- **Rows tick when that step closes** (put down, finished, served), never when a number is reached; the count is judged at the end. (E11)
+- **Rows tick when that step closes** (put down, finished, served); at L1 a counted row turns gold the moment the count is reached (D5); a number is written the first times it is heard, at any level. (E11, decision 57)
+- **The next step is always visible:** at L2+ once a count is reached the next step's row appears and its tool glows after a pause; where the outcome is obvious the game moves on by itself, no extra click. (E36, decision 52)
 
 ### Interaction
 - **You can take it back until Done:** tap to undo; the first placement is scored; a filled slot loses its dashed outline; impossible undo shows in the art. (E14, E15)
+- **A wrong item is redone on the spot:** the rest stays done, that item empties and its row reopens; the second try has help; after three wrong tries the game shows the right way; never a whole-game restart. (E35, decision 51)
+- **Things inside a container sit on its flat inner area,** never on the rim or sides. (F27, decision 56)
 - **Each stage clears its own UI and stops its effects when done;** reply pills appear only when needed and never overlap (the knee's done-flash is the one exception). (E17, E18, E19)
 - **Give clear feedback while an action is under way** (e.g. too-fast/too-slow zones on the stir dial). (E34)
 - **Nothing covers a tappable item or the play area;** anything collected is visible where it goes. (E23, E24)
@@ -170,7 +176,8 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 - **No new character animations unless they can be done well;** prefer the simple version. (E22)
 
 ### Feedback, scoring and rewards
-- **Show progress, not verdicts:** no red crosses or buzzes mid-round; mistakes show in the end review. Gentle exceptions: the conversation reply, the serve frown, the waiting-room shake. (E10)
+- **Show progress, not verdicts:** no red crosses or buzzes mid-round; mistakes show in the end review. Gentle exceptions: the conversation reply, the serve frown, the waiting-room shake, the redo of a wrong item, and a wrong yes/no in the eye and ear tests (shakes red; the doctor names the row with pictures). (E10, decisions 51, 59)
+- **The closing line is a chef's call-back** of what was made ("one chai, two samosa"), then a happy face or *shabash*; never "I want…" again. (E38, decision 54)
 - **Scoring is the three end-of-round badges: time, accuracy, hints,** with a personal best per mode and level. No ear star, no voice star; remove the legacy star code. (H5, J7, decisions 1–2)
 - **The accuracy tick fills gold for right and grey for wrong.** (F13, decision 3)
 - **Pocket money rewards doing well:** one simple internal model pays by **volume** (tasks completed) × **quality** (fewer hints, more ticks, quicker time; correct speaking pays more) × **difficulty**. Never explain the mechanism to the child: the better they do, the more they earn. (decisions 2, 10)
@@ -215,6 +222,7 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 ## 6. UI and visual design
 
 ### Look and layout
+- **Speech bubbles:** a character on screen speaks from a bubble next to their face (above or below, where there's room); an off-screen guide (Nani, the doctor in heal games) speaks by the green box at the top left. (F26, decision 55)
 - **Use only the design tokens** (CDS §2): the colour set, Nunito L1–L4, 8-pt spacing, radii 12 or full circle, one soft shadow, tap targets ≥48 px. (F2)
 - **The UI is flat material against the 3D art:** white pills, flat gold done outline, no gradients or 3D text; no step counters, internal numbers or English support text. (F3, F23)
 - **Left sidebar ~22%** (guide box, cards, ? · ⌂ · book dock); **play area ~78%** with the shelf band; big buttons bottom right under the thumb. (F4, F5)
@@ -299,6 +307,8 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 - **Romanised only, matched generously:** W not V at a word's start, no English articles, long vowels doubled where heard long (*waari*, *daar*, *maani*). (G4)
 - **Settled:** no = ***na*** (never *nar*); sugar = ***khun***; two = ***ba*** (voiced "ber"); *hakro*/*hakri* by gender; -o plurals to -a; cooking "now" = ***hane***. (G5)
 - **Greetings:** *salaam*; goodbye ***khuda-fis***; thank you in English; ***aai*** for anyone older, ***tu*** for same age or younger. (G6)
+- **Greetings are learned by watching:** visible gestures (wave, hand out), small pictures on answer pills, the meaning said once in spoken English in story mode; never written. (G15, G22, decision 58)
+- **Word fixes (6 Oct):** green peas *matar*; *arre re* out (Mum's "oh oh oh"). (decision 61)
 - **Refuse politely** (*na khape*), never a bare *na*; the frame *Muke {x} khape* never changes, with the long polite form in Conversations only. (G7, G8)
 - **Sides are the patient's own** (*dabo*/*jamno*); the doctor says "bring me", never "I want". (G19, G20)
 - **Use the family's listed spellings as written** (harvest G24); provisional words stay unconfirmed until Mum says; *mirchi* only, no plural, for now. (G24, G25, decision 5)
