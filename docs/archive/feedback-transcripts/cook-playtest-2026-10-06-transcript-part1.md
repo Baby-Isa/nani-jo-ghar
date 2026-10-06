@@ -1,0 +1,245 @@
+# Transcript: dcedc8af-Kutchi_game_feedback_6_Oct_part_1.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:01** Okay, I'm beginning my feedback
+- **0:03** I'm first going to
+- **0:05** Play the live game cook with Nani
+- **0:08** And then I will probably do the individual cooking modes
+- **0:13** in the clinic
+- **0:15** Sorry in the labs and then I'll move on to the clinic
+- **0:22** First thing to say is
+- **0:24** I'm listening to the voices the sound quality for the things recorded by my mom are not good. It's like
+- **0:30** fuzzy and
+- **0:32** volumes off even if you fix the volume and normalized it doesn't sound as
+- **0:37** good or clean or clear or crisp as
+- **0:42** The robot voice
+- **0:45** Can we revisit this do not think it's possible to
+- **0:50** Get the robot to do all the voicing like it seems to
+- **0:55** pronounce words, okay
+- **0:57** Some of the time and whether it doesn't
+- **1:00** Can we not spell it phonetically or spell it in a way that makes it say what we need to?
+- **1:06** You know, we could use English script. We could use a Gujarati script, but I'm sure like the voice the robot voice isn't terrible
+- **1:14** I
+- **1:16** Don't know how possible it is for my mom to record all of this a good enough studio quality level
+- **1:20** I mean I can buy a mic. I've got like a
+- **1:23** walk-in wardrobe that I can use I thought the sound quality came better
+- **1:28** when I heard certain things or maybe my mom now I want to record everything I
+- **1:36** can ask I just want to know if this is a possibility yeah or we just spend a day
+- **1:46** in a studio clinic also I don't know it just seems
+- **1:50** seems like we're not there at the moment I would be good to record it with human
+- **1:54** voice I think but it only if it's the same standard as the robot voice in
+- **1:59** terms of professional quality at the moment it's not it's not hitting the
+- **2:04** mark there although when I thought I heard individual words it was maybe some
+- **2:10** of them in the recent batch I left with the computer to do I don't know that's
+- **2:13** the first thing
+- **2:15** the second thing is this kitchen background is so low quality and I've
+- **2:22** said this before it's so super low-res and it's very jarring because the
+- **2:28** character of Nani is very high-res as other parts of the games the kitchen
+- **2:33** just stands out terribly it needs to be redone or you need to find the high-res
+- **2:38** version of the image
+- **2:40** also I think it looks a bit cheap having Nani like bobbling behind the counter but
+- **2:50** with her arms folded I mean can we not have her arms folded on the counter you
+- **2:57** know if we're gonna redo the kitchen now a few times maybe we should just do it
+- **3:00** with Nani resting on the counter drawn that way from the start so it looks
+- **3:06** natural
+- **3:07** because we know that's like often produced image and other people can come
+- **3:12** up behind the counter but at least she's there maybe we just hone down the
+- **3:20** bobbling a little bit okay I'm pressing level one
+- **3:27** chai, daar, muke, ataab, daar
+- **3:33** muke, daar, dha
+- **3:37** okay so firstly okay two things first now when it goes into the pantry mode it
+- **3:46** says bring me these from the pantry top left English I know that needs to be
+- **3:49** recorded but then muke, chai, dha
+- **3:56** but then below it is the is the recipe card anyway which also says bring me
+- **4:00** these on the items
+- **4:02** so that seems a bit redundant either we take Nani out of here in terms of the helper card
+- **4:09** or we keep her in but she should say what she says after a few seconds which is muke, chai, dha
+- **4:18** give me the tea and tea gets highlighted like maybe for the beginning level
+- **4:24** now did I just click start the game maybe for the beginning that's what she shows you
+- **4:29** because I guess you can click let's have a go you can click translate
+- **4:37** okay when you click translate doesn't change what she says into English the
+- **4:43** green card only changes the recipe card so I think you should change what she
+- **4:48** says to English as well so you've got the instruction there more clearly
+- **4:54** and yeah I think she should tell you to bring the tea and then bring the flour
+- **5:01** and then bring the dar so there's at least a bit of guidance at the first level and then
+- **5:06** maybe afterwards she could say she could say minimized or something and then only
+- **5:14** comes out to help you if you need to or if you click on it and expands you can
+- **5:18** kind of give you the fuller instruction of what to do
+- **5:21** which again would be in Kutchi but then you can translate to English with the button
+- **5:25** I'm just thinking otherwise like it's it's the same thing twice
+- **5:28** um the other thing I was gonna say is
+- **5:34** playing it now I think it's quite clear what the language needs to be for this game so
+- **5:41** it bring me these should say mukhe daar like give me mukhe daar
+- **5:47** and then when she's talking she says and the first card comes up before you go
+- **5:52** into the game it says mukhe daar, chai, naato, naadar so she says mukhe daar
+- **6:01** give me, pause and then she says the first item tea and flour and dal that's
+- **6:13** like I think
+- **6:14** the most succinct and clearest way to do it and mukhe daar give me is short enough to go in the title part of the card
+- **6:32** yeah
+- **6:36** I don't know if the icons are too big for the bulb and the speaker or
+- **6:41** maybe they're fine maybe they're fine also the top of the pantry looks like
+- **6:45** it's just been stretched like the background which you actually may have
+- **6:51** just done to fit my screen I don't know not many people play on laptop so it's
+- **6:56** not the end of the world I didn't have the game logic works in terms of users
+- **7:02** and settings but like it's not showing me the names of the ingredients for
+- **7:07** certain ones that presumably clicked on before
+- **7:11** I didn't see like a profile thing or anything like that so presumably it's
+- **7:14** just learned that I've I now know those but if I'm playing this for the first
+- **7:20** time it shouldn't it should show me everything and we should we should have
+- **7:26** yeah I should be able to play this through in a way that I'm playing it for
+- **7:29** the first time anyway let's try now I like the way the chai is highlighted
+- **7:33** I'm clicking that
+- **7:37** it ticks together Hukri chai spoken out loud it's not bad the pause between the
+- **7:42** two the pause between the two needs to be less and then you pause a bit and she
+- **7:49** tells you the next thing okay no it's quite helpful yes if you can hear how
+- **7:55** bad the quality is on the on the robot versus on the robot versus the
+- **8:06** human recording okay I don't like where after the game ended I gave it well she
+- **8:24** just repeated it all out again she said give it to me give it to me give it to
+- **8:26** me then thank you give me tea give me flour whatever thank you that
+- **8:33** doesn't make sense I think she should just repeat what she wanted so she
+- **8:40** should she should almost be auditing like oh chai, aato, chai, ne aato, ne, whatever it
+- **8:49** was the three items item one and item two and item three shabash like well
+- **8:57** done thank you
+- **8:58** um and i didn't get a good enough chance to see but i think when i played the other game modes like
+- **9:04** the items don't look very good on the kitchen counter afterwards i don't know how we solved
+- **9:09** that i think yeah can we not like copy the tray idea there's another same perspective of items
+- **9:21** and i'm missing the tea one it was just terrible but the tea clearly wasn't sitting on the counter
+- **9:25** and all the angles were off and the shadows were off
+- **9:28** i don't know what an elegant solution to that is because you have to either you have to generate
+- **9:33** all the different food items at the angle of the kitchen or we make the kitchen counter flat
+- **9:39** which wouldn't look the best to be honest
+- **9:46** we put it in a tray which masks like we do for the pantry which masks the bottom of it
+- **9:51** so if it's not angled slightly off
+- **9:55** you don't quite see it but yeah that needs working through and then it's
+- **10:05** annoying I didn't see where I got a three out of four or three out of four
+- **10:11** anything tell me what it is I feel like I'm about to click on the tick and it
+- **10:15** should show me the details in that tick square
+- **10:22** and if I click next it doesn't tell me anything red so I don't know why I got
+- **10:26** wrong there that's really frustrating there's only three items so how can I've
+- **10:31** got one of them wrong on the tick it's not right the tick should only you
+- **10:36** don't lose a tick if you bring the wrong item well you know specifically muck
+- **10:42** mucked up a word so I don't know what's bringing that tick down but we need to
+- **10:44** review that for sure and
+- **10:49** either on that tick square or on the next screen it should very clearly show
+- **10:52** you which ones you got wrong it should relate one to one
+- **10:56** the numbers of the ticks and then the word review afterwards
+- **11:02** that basket doesn't look good by the way on the kitchen counter
+- **11:15** Muke, Irchi, Dha
+- **11:19** so here we could say Muke chai le de
+- **11:22** so instead of Muke de which is give me say Muke chai le de
+- **11:27** for tea bring like bring these and then I can list the items as I've already given you the feedback
+- **11:32** I kind of like the way it shows it but then blanks out some of the words so you have to remember that is good
+- **11:43** and I actually wasn't paying attention so I actually don't know what the next items are
+- **11:55** so I'm going to click the play button
+- **12:08** Okay, the voice is just spazzing out there, I don't really understand what it was saying
+- **12:17** maybe because I clicked an item halfway or something but when I pressed play it
+- **12:25** didn't recount the list properly let me try it again I'm gonna press play on her
+- **12:30** voice and halfway through she's talking I'm gonna press an item
+- **12:34** and see what happens
+- **12:54** Okay, I don't know if you can translate what she said but it didn't, it didn't
+- **13:01** yeah she said the first two items and I clicked LG then she just said Hakro and
+- **13:07** then, I don't know, it needs checking, it just threw her off. I think, yeah, we need to
+- **13:15** make sure what she was going to say was correct and then when you click an item
+- **13:21** it should pause what she says, count the item if we're in the game away counting
+- **13:26** the items and then she should continue where she was like uninterrupted
+- **13:30** also when the item is highlighted in the sidebar in the menu and like it's
+- **13:37** highlighted gold and flashes it's still clipped, it's still cut off. Please can we fix that?
+- **13:46** Okay I've already given you feedback about how are we counting everything in this manner
+- **13:53** you should just list out the items and then say thank you
+- **13:58** Once again I'm not getting a tick for one of the items but it's not telling me they've got anything wrong
+- **14:05** The basket looks terrible on the kitchen counter
+- **14:10** I was playing this game earlier for a little while and when you kind of get into it it does
+- **14:13** it does start to become a little bit fun but all the bits around it with the really annoying voice
+- **14:19** and the voice is not making sense honestly contribute a large part to it you're just
+- **14:24** sitting there waiting for this like woman just to shout at you in an annoying accent
+- **14:28** you
+- **14:28** I think his voicing is quite good actually this conversation element now
+- **14:34** the granddad or whatever walked in he's talking to me and I saw in a later game
+- **14:39** mode that they were talking to each other Nani and Nana and that was um that
+- **14:45** was really good actually
+- **14:49** Tu, Muke, Chai
+- **14:54** Bane, Dinda, Ha, Muke, Chai, Thape
+- **15:01** This is good, this works quite well it's it's painfully slow but it
+- **15:05** Muke, Irchi
+- **15:08** If this is like the first game mode or the beginner mode it's hard to know now but it doesn't it's not quite working in the fact that like I've heard it said he wants two sugars
+- **15:18** so the first time that I'm playing this mode in the lab
+- **15:22** that I've heard a number like two sugars and obviously that's the first
+- **15:27** time you're hearing it that should still be like written out not hidden because
+- **15:30** you know how could you be expected to know the numbers yet so yeah it's hard
+- **15:36** to assess because I feel like I'm not sure I'm not sure if the game thinks I'm
+- **15:42** new or not new because here it's showing me the words and all the items but I
+- **15:46** thought I was playing through the story mode
+- **15:48** I don't know in either case if a number is being introduced it shouldn't be covered
+- **15:57** the text shouldn't be hidden but this game was looking better though
+- **16:03** um so yeah this is where I
+- **16:09** yeah Nani because I put the water in the pan yeah
+- **16:14** um actually she can say put water in the pan that's fine because the English will translate
+- **16:22** it okay let's play the game so we put in water that's good the way it calls out items you put
+- **16:28** it in is nice that's good um visuals are looking better what do I put in next though there's no clue
+- **16:37** here
+- **16:39** see now Nani just says make each pan the way they said that's not a good thing especially
+- **16:46** not this part this level of the game she should say just to put in elchi just to put in the
+- **16:52** next item now um I actually didn't even know what to do myself okay well I'm gonna translate
+- **16:58** this it says cardamom milk and two sugars okay so I'm gonna put in milk and I'm gonna put in
+- **17:06** cardamom and I'm gonna put in two sugars I guess I guess see now I've put in two
+- **17:23** sugars and it's not ticked off but the milk is visible and ticked off so
+- **17:27** there's a consistent that the milk was hidden but then became visible when I'm
+- **17:31** one in exactly the sequence but when I put the milk in it then said milk on the left hand side
+- **17:36** and gave me a tick if I put in the two sugars it should I think it should say the tick once I've
+- **17:40** got that right um especially at this point but yeah I don't I don't know what Nani should say
+- **17:47** when there's a hidden item like maybe just put the next item or something like that
+- **17:55** put the next thing bay cheese which you should
+- **18:01** okay now it's quite clear to press the burner so that this burner takes way too
+- **18:07** much time to get to the green zone like it's so when I'm just bored I can know
+- **18:11** in the future game modes when you're making different pots of tea at the same
+- **18:14** time you might you might seem less slow right now it's way too slow I think it
+- **18:19** needs to be twice the speed and then when I click on the source button
+- **18:28** the saucepan for the pouring motion is terrible like it's clipped off the
+- **18:33** bottom right corner of the saucepan is clipped and the angle and stuff is kind
+- **18:39** of weird I think it needs redoing there's a whole new other piece of
+- **18:43** artwork and then I think it might need to be clearer at this stage to press the
+- **18:50** tick button I think that might need highlighting especially someone sitting
+- **18:55** on the screen then for a couple of seconds and there's nothing else to do
+- **18:59** there's only one cup of tea so yeah I think we should make the green tick a
+- **19:06** bit bigger not make it bigger but like buzz it or glow it or whatever the
+- **19:09** design language is to indicate also one thing I think when you make other cups
+- **19:14** of tea they all look the same like at least the milk the one without milk
+- **19:18** should look different the one with milk
+- **19:24** but otherwise it's not it's all right it's game mode shabash that's that's good
+- **19:38** so again he shouldn't say again I want one tea he should just say
+- **19:43** he should just say um one tea thank you again with the ticks okay it's fine I don't want me to
+- **19:51** keep repeating this and again like I said the items on the kitchen counter don't look good
+- **19:54** we need a solution for all of that
+- **19:56** otherwise it's quite fun the pocket money screen needs working on it's not
+- **20:07** bad I mean one thing is the cards seem clipped because it's like rounded the
+- **20:13** top corners and squared off at the bottom I think it's just be more visually
+- **20:19** clear for someone
+- **20:21** I don't know if you get there should be like a jar with coins and then that the
+- **20:34** total number of coins at the bottom I written like kind of how we did on the
+- **20:38** three cards you know with a light bulb within the light bulb times
+- **20:43** whatever at the bottom it should be like a jar with coins
+- **20:46** we could we can um you know create it in like five different versions where it's like empty
+- **20:55** quarter full half full whatever just for some interest and then it's kind of like
+- **21:04** that we do it as a visual like these cards with the person's face the task and the coins
+- **21:09** like bring bring bring like on top of the the jar
+- **21:14** like kind of
+- **21:17** Appearing with a ding and then moving upward and fading and the next one take it next one takes this place ding like here's
+- **21:23** Another five coins the card comes on top of the jar the coins get deposited in the jar with a ching
+- **21:30** And then it fades upward
+- **21:35** Slowly like moves upward and fades and as it moves upward and fade the next one comes in that makes sense
+- **21:40** so it's kind of like
+- **21:41** With a fun animation of like coins being deposited basically
+- **21:51** Yeah, and then maybe like to the right or above those cards or something you could just put the total
+- **21:56** addition for that
+- **21:59** gameplay and then the total below the jar and overall and then we probably need to work on
+- **22:06** our buttons and icons in general like
+- **22:09** make sure they're consistent. This home button, I mean they're squircles, squared off, circled off squares
+- **22:16** in the tab, in the side tab for question mark home and book but then here they're rounded.
+- **22:24** I guess we still haven't fully figured out the sidebar, all of its tabs and stuff. Maybe this
+- **22:28** is one we save for later in terms of the buttons but I think the money screen we should maybe work
+- **22:34** on. I don't know.
+- **22:35** Maybe all the screens need a bit of work. I mean, I like the end game screen, right?
+- **22:40** Maybe that's our template and we just start to build it out for this screen as well and then we
+- **22:46** can take that design language and use it for the game's overall home page and settings pages and
+- **22:51** profile pages and stuff. Okay, that's all for this voice note.

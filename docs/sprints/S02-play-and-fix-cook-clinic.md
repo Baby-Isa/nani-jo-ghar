@@ -19,6 +19,9 @@ Planned, none launched yet:
 ## Small decisions
 None yet.
 
+## Feedback in
+- 6 Oct, Cook (four voice notes): `docs/feedback/cook-playtest-2026-10-06.md`. About 120 points, 22 decisions waiting (§4), 66 new rows and 10 reopened. The clinic play is next; then the scope.
+
 ## Outcome
 Filled in at the close.
 

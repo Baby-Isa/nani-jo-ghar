@@ -1,0 +1,147 @@
+# Transcript: 2aeb6b88-Kutchi_game_feedback_6_Oct_part_4.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** for some reason now i'm still playing the the chickpea bowl game i've had a new order from
+- **0:05** Nana i want to go to the chopping thing the knife is cut out i feel like worse than it was before
+- **0:11** the tip of the knife is completely like clipped maybe i missed it earlier but i feel like it
+- **0:17** wasn't clipped earlier so i don't know if we're using the same asset or whatever it's just needs
+- **0:23** fixing need sorting
+- **0:27** um yeah okay i don't know why i'm making getting stuff getting stuff for tea again
+- **0:37** just getting kind of boring um from the pantry i don't understand am i still in the
+- **0:47** arc one i really don't know what's going on
+- **0:53** okay i'm going back home now that's just it's too long i think that was all game mode for um
+- **1:02** okay i've had enough to be honest i'm gonna play the lab mode now um
+- **1:09** so let's play the lab mode for i've done pantry and chai and i've done maani line
+- **1:16** i think i've done daar as well and shop i've mentioned so i'm going to do
+- **1:23** you
+- **1:23** oh i didn't even know now there's so many different things there let me just do sekelo
+- **1:34** i've noticed they're taking really really long to load like six seven eight nine
+- **1:42** ten seconds ten seconds to load the page for when i click on it on the lab
+- **1:47** okay level one seemed okay for the sekelo game
+- **1:51** i'm not sure if i'm reading it out every time you put it on the skewer
+- **1:56** it's helpful but maybe it's fine for now i'm on level two and she still calls it
+- **2:04** out every time you put the item on the skewer let's see if that goes away later i think i
+- **2:10** should do at some point the placement of the skewers on the bowls definitely needs work
+- **2:16** i don't know why the skewers bend
+- **2:18** left and right is it to try not overlap i think we just need a very simple
+- **2:23** solution to this like they just the skewers stay straight not bent and um
+- **2:37** i don't know just have them go in a sequence from left to right across the plate
+- **2:43** um
+- **2:45** yeah just like straight perpendicular to each other or something okay so this time i got an
+- **2:51** order for two mixed uh lacqueries and one onion lacquery but the the voice sequencing was off so
+- **3:01** she told me she wanted a a mixed lacquery two of them then an onion lacquery and then she
+- **3:09** ran through the order of the mixed lacquery
+- **3:12** whereas she should say i want two mixed lacqueries first this then this then this
+- **3:17** then this and then move on to the next lacquery that isn't mixed so
+- **3:21** yeah the sequence should immediately
+- **3:26** follow the item that requires a sequenced also i'm sure she said two
+- **3:32** again but it's not only written once
+- **3:36** also it's confusing now because
+- **3:39** Lakri dungri the onion one is highlighted and the onions are being
+- **3:46** highlighted in the game but at the same time the mixed skewer the tomato is
+- **3:51** being highlighted or actually kind of screwed out but I think it's meant to be
+- **3:55** highlighted we should change the color on that to make it look more highlighted
+- **3:58** to indicate I think that you know start with tomato so
+- **4:04** yeah that's it's confusing you see just go top to bottom the first item is mixed
+- **4:10** which it is not a recipe card then the first prompt should be to to fill out
+- **4:15** the mixed one and that should be the only one highlighted and the highlight should be a
+- **4:23** bit clearer I feel like for the dungaree it's got a little bit of gold to it which
+- **4:28** works the tomato one looks a bit more gray the one in the sequence
+- **4:32** let's just check all of our color values and stuff and make it consistent across all the different game modes for this
+- **4:37** but yeah to be clear only one thing highlighted at a time should be the first item or the first part of the first item
+- **4:44** and it should be reflected both in the recipe card and in the ingredients that are highlighted in the game screen itself
+- **4:55** and see now I'm putting the mixed one first because it's first and the game's kind of yeah it's not updating on the left hand side
+- **5:04** the recipe card as I'm doing it and it's still just highlighting the onions because
+- **5:07** I think it wants me to do that one first
+- **5:13** okay now I'm going to play the samosa game
+- **5:20** if you go back over the transcripts you'll know that peas is mata, watano is fried peas
+- **5:28** the type of
+- **5:29** kind of fried peas you'd get in chevro or chevda however you guys say it we say
+- **5:35** chevro so yeah she ought to be mata for peas if it's fresh green peas so this
+- **5:44** isn't quite clear now he wants two samosas he's on one I read it as he
+- **5:48** wants one potato samosa and one onion samosa but this is suggesting actually
+- **5:55** he wants two samosas which are made up of
+- **5:57** potato and onion yeah that's not clear and also yeah that's just not that clear
+- **6:15** sure we've come across this problem before I don't get clearer that it's
+- **6:20** well why am I getting confused because
+- **6:25** um because in the example in the mishkaki one right when you want two different types
+- **6:36** of mishkaki it's show the same way I would say one mixed and like one and the mixed even if it
+- **6:41** wasn't mixed because mixed shows you the sequence if it was one mish one gorse and one onion it
+- **6:47** would show you the same way this one does in terms of the same like hierarchical graphical
+- **6:52** level so that's why it's confusing I think that needs to change into
+- **7:10** something I'm not sure what can you suggest it please I'm sure we figured
+- **7:13** out these rules or if not there should be something that fits the rules the
+- **7:18** rules and quite nicely
+- **7:20** so they just wants one maybe it's just linking the two recipes with the two
+- **7:27** ingredients even though they're not doesn't need to go in sequentially kind
+- **7:34** of makes the point that they're part of the same item I don't know
+- **7:40** I'm not sure about the tick thing necessarily like
+- **7:50** oh it's fine it's fine at this stage it's just what if there's more samosas but let's find out
+- **7:54** what happens yeah the animations are not good for this one like the samosa gets
+- **8:05** I don't know you can kind of see it samosa jump around the chopping board um and
+- **8:15** increase and decrease in size like it should be very like
+- **8:21** the height of the the height of the pastry roll should just stay the same and it should fold
+- **8:28** neatly um also I don't think you should necessarily swipe exactly horizontal each
+- **8:34** time that kind of defeats the fun it should be like diagonally up or diagonally down from left to
+- **8:40** right
+- **8:40** you know bottom left to top right or top left to bottom right depending on which way the pastry is
+- **8:45** going but yeah this visual definitely needs work I can see how I tried to overlay the image but
+- **8:52** it's not working you might even be able to just skip the whole transition overlay and just
+- **9:03** um no I guess you do need that you might but you might not have to phase them in like that
+- **9:07** you might try to switch from one to the other if it's quick the animation is quick enough
+- **9:11** a bit of blur or you can try what you did again but it needs work I think it's
+- **9:16** probably because they're too realistic you kind of want the samosa
+- **9:24** folding so it's that yeah nothing kind of goes above the top and bottom lines
+- **9:28** of the original pastry roll and yeah then you might not see so many creases
+- **9:33** and stuff might be quite as realistic but needs fixing samosa
+- **9:39** something's not quite clear about this game mode like actually I guess it keeps
+- **9:44** putting them in for you so you can know maybe it's fine maybe it's fine it's a
+- **9:48** bit different it's a bit different again like I said review across all of these
+- **9:57** but Nani should first say turn on the pan and her instruction and then she
+- **10:02** should say fry she was just saying fry the whole time
+- **10:07** I also can't turn the pan off the frying pan off which it's not really a big deal
+- **10:17** but I'd like to try to turn it off and stop the sizzling okay let's put the
+- **10:23** samosas in okay that's good again let's try avoid them touching going outside
+- **10:32** the area of the oil just to keep the visuals realistic
+- **10:36** why did I only get two out of three ticks I don't understand it doesn't make
+- **10:40** sense there's nothing on the next screen that explains it to me okay let's try a
+- **10:47** different level trying level two now again so so long to load 12 seconds
+- **10:57** and the samosas are outside of the metal trays they sit in or they're going up
+- **11:02** the sides of the metal trays they need to be checked everywhere where
+- **11:04** something's inside something else
+- **11:07** for realism the frying handle thing that was quite good it's not bad I'll try
+- **11:16** level three now because now on level three this makes no sense to me
+- **11:20** whatsoever there's chundor but it's like indented so unless it says samosa so is
+- **11:28** it trying to say that like for one of the samosas you just want
+- **11:33** the chundor the mince but then why does it say samosa by itself as an ingredient line the same
+- **11:39** as like any other ingredients written and why is only the chundor indented
+- **11:48** it's like in English it says I'd like samosa and it says potato nor coriander chili samosa
+- **11:57** all visually the same as ingredients and then mince indented underneath samosa
+- **12:02** makes no sense whatsoever if this is what I'm assuming is which is to and the
+- **12:10** quantities aren't here if it's two samosas of one type and one of the other
+- **12:16** that that needs to be much clearer I thought we made rules for how that
+- **12:19** should look if we haven't tell me but it should adhere to those that structure so
+- **12:24** let me try it potato oh but quantities aren't here either
+- **12:29** but I do but I do also it's highlighting the cheese I don't know that it should be
+- **12:44** though can I click the tick and then it wants me to roll the samosa so I'm gonna
+- **12:50** roll I'm gonna roll two of them
+- **12:54** samosa but now it's filling the third one but that's I don't think that's right
+- **13:02** based off of what the thing was telling me to do how does it work then if I need
+- **13:08** to make different samosas of different types with it like auto populating them
+- **13:15** maybe it just puts out two rolls of pastry on the board there's space for it
+- **13:21** and you fill them all first with the right ingredients by clicking on that pastry roll
+- **13:29** and filling them and then you roll them and then it's probably enough to like stretch it to three
+- **13:35** different types of samosas and that's probably the hardest level I don't know I definitely got
+- **13:39** this wrong like I don't understand the instructions but let's just finish it anyway oh god
+- **13:49** okay three samosa yeah I'm not ever going to try it it's too complicated to understand what's going on
+- **13:58** but the speaking and the recipe cards will fix that okay I'm done with I'm done with the samosa
+- **14:03** section oh what is this daar game is this retired now it's on the new stoves it's got two stovetops
+- **14:10** a bunch of ingredients but old art
+- **14:15** I don't know if I'm meant to be playing that or not it's Tadka actually that's the game mode I just played Tadka
+- **14:21** okay I'm gonna leave that so I've played sekelo, I've played the daar in the story mode, I've played the chaat
+- **14:29** I've played the samosa, the maani, the chai, the chop I haven't done all the game modes but that's just an annoying game
+- **14:39** the pantry I felt like I made more at the time I guess I'm just used to them at this point
+- **14:44** okay that might be it for cooking
+- **14:50** I'm going to upload this upload these now get you to start filling them out in
+- **14:55** the meantime I'm gonna then play the clinic games

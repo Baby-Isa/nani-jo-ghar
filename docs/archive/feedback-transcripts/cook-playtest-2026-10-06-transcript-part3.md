@@ -1,0 +1,248 @@
+# Transcript: 00a12989-Kutchi_game_feedback_6_Oct_part_3.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** Okay, so when I play the chopping game, firstly the explainer for the chopping game needs to be clearer, I think it needs to take the knife itself and move it left and right, along with the ghost finger, so you understand that, and yeah, it should highlight when you cut the correct number of items, I do worry about people finding that game mode hard, I don't know if it needs to be
+- **0:28** slower and the items more geographically spread out left to right, so there's more
+- **0:36** space between them, but I think the easier mode for that needs to be a little
+- **0:40** bit easier, and just be careful again with loads of text all coming all at the
+- **0:45** same time, sorry, loads of voice all coming at the same time, it's hard to, yeah, it's just
+- **0:54** loads of sounds coming at you.
+- **0:58** Okay, let's play this game now, so you have to...
+- **1:03** Okay, so now Nani's saying which you should, right, put it in, but the current action that has been highlighted is pressing the, turning on the cooker.
+- **1:14** So, you need to review all of these against the games, the next step instruction should be the one that Nani's telling you to do,
+- **1:23** and you need to match up what the game is saying, so I'm going to follow the on...
+- **1:27** the game's visual instruction, I'm going to turn on the cooker.
+- **1:36** Again with the gold highlighting getting clipped. So, first put Jiro, okay, then put Lassen.
+- **1:49** So, now what does it tell me to put those items in? Like, I get it.
+- **1:53** I think Nani was trying to tell me the first to put the chopped items in and she shouldn't just say would you should she should say actually yeah that's fine but she said yeah put them in and those items should be highlighted but no you do put them in second normally right you do your spices first so the order is fine
+- **2:19** it's just she should once you put these things in the Lassen and the Jiro
+- **2:25** first you turn it on the cooker then you put the Lassen and the Jiro that's ticked
+- **2:30** and then yeah and then these items should be highlighted which is kind of
+- **2:36** correct she just didn't say that and but now her Nani's instruction
+- **2:41** still says first put in the Jiro then the Lassen. Now you've done that task she
+- **2:45** just told you
+- **2:47** to whatever turn the cooker on or if you've already turned the cooker on she should have
+- **2:52** told you now now her instruction should be telling you to put put it in and it
+- **2:59** it's being the highlighted chopped up items on the left hand side I think it
+- **3:03** makes sense to yeah turn the cooker on put the spices in then put the other
+- **3:07** items in but yes she needs to be telling you what to do next so just to be clear
+- **3:13** so you put the cooker on first our first instruction should be put the cooker on and the cooker button should be highlighted then she should be telling you first put in the Lassan then put in the Jura and that's the next thing you do on the screen and those two items get ticked off and then if you put in the side chopped items you should say put them in and the side items should be highlighted and bouncing or whatever
+- **3:39** and and the issue is right now she's not telling me to put them in she's still saying first Juru
+- **3:46** and then Lassan. Tomato, Bhangri
+- **3:53** and now again it's time to put the Daar in and she's not telling me that
+- **3:58** um it should say Daar which you should like put the Daar in so her instruction should be clear
+- **4:05** there should be a recipe a step-by-step instruction for how to complete each of these games and she should read out the instructions to you
+- **4:13** and then the problem is when you put the Daar in the mat goes in as well
+- **4:17** the mat should stay where it is or it should disappear and you just put the
+- **4:21** you just put the pot in okay so now I have to start this which kind of makes sense
+- **4:27** Akro, Me
+- **4:31** now I've done that I think it should just um
+- **4:37** oh it's hard
+- **4:41** no I guess at that point then it's just highlight once I've done it twice it should highlight the
+- **4:45** tick the tick for me at least the first few times so I know again what do I do now I should
+- **4:50** press the tick can you try turning this yeah we need the spoon
+- **4:56** the ladle needs to rotate okay the way the dart rotates that she's kind of cool
+- **5:05** but the way the loader it rotates you've currently got kind of a handle hooked on
+- **5:09** the edge of the rim which is clever but then as you move the ladle around the
+- **5:13** edge of the saucepan the ladle itself needs to rotate such that the handle of
+- **5:21** the ladle always
+- **5:22** goes across the rim of the saucepan um stays on the rim of the saucepan that will be clever
+- **5:31** in the same way rotating the dart you can just rotate the saucepan so it's
+- **5:35** yeah always around the edge also the saucepan have a look at it the top edge of the saucepan
+- **5:39** silver saucepan it clips it's just a straight line it's cut um i don't know how that passed QC
+- **5:50** okay now now now it highlights the question mark which is good which is there's the pot
+- **6:07** of course you start all over again you shouldn't have to start all the way again if you just
+- **6:10** started incorrectly if you chop the wrong items or something then yeah um and also the
+- **6:16** knife isn't cut out correctly yeah the knife's not cut out correctly and it's hard because the knife is so big i want the knife to be smaller
+- **6:42** and then i mean that anything that hits the blade of the knife gets cut
+- **6:50** um i don't know what i'm doing now that's okay it's weird i don't know what i'm doing
+- **6:56** okay sending me visually telling me to turn the pan on so i'm doing that
+- **7:04** okay i did highlight Juru to put in which kind of defeats the purpose of
+- **7:08** the writing of Juru being hidden so this time around Juru
+- **7:11** the item in the instruction card was hidden and um but it highlighted it for me which gave it away right so i don't know if that's intentional i think is that what we do the first time it's hidden that's fine if we do but then the second time it's hidden you shouldn't do that anymore or we just don't do it at all once it's hidden um which i think is probably fine there's only two items there anyway so like
+- **7:40** confusing and then by the time there's more items you've learned the pattern
+- **7:45** tomato, bhangri
+- **7:55** okay i didn't actually hear
+- **8:07** um yeah i didn't hear how many times it needs to be stirred and it's not in Nani's instruction
+- **8:32** card
+- **8:33** which it should be so i can't even check i actually have no idea of knowing now
+- **8:38** it should be in the instruction card right it's the next item to do
+- **8:50** also we've taken out the um
+- **8:54** instruction of how quickly to stir it
+- **8:59** so then in the speedometer which looks nice actually it doesn't really make
+- **9:04** sense so you should say like yeah slow or quick so you know and then depending
+- **9:18** if you said slow or quick that should be green on the speedometer and the other
+- **9:22** one should be yellow
+- **9:24** then the too fast one can remain as red maybe you don't get failed if you don't
+- **9:36** stir it correctly maybe just oh no let's just keep it you should fail maybe you
+- **9:41** just fail things twice then it gives up on you I don't know ah it's actually
+- **9:46** annoying I don't have any time to stir this it's not told me anyway I've done it twice now
+- **9:49** okay luckily that was correct I'm sure the recording for this money he told me
+- **9:58** he wanted to two monies and one budget money but when I reveal the text and
+- **10:06** translate it to English with a light bulb it just says chapati so I'm gonna
+- **10:11** assume it's I'm gonna assume it's one
+- **10:16** but I don't think it is. I don't think that's what he said I shall only do one
+- **10:35** more money because I think I'm sure he told me to either way the point being
+- **10:40** right is if he didn't say to it should say to
+- **10:47** he did say two I was right so if you reveal it then the reveal should say two
+- **10:52** okay the recipe card should always say what the item is plus the quantity if the
+- **11:01** quantity is one does need to say one otherwise it should always say the
+- **11:03** quantity and then yeah the fact that it's hidden doesn't change that once it's
+- **11:09** revealed it should still say what it was meant to be if this is arc one now I'm
+- **11:15** now being asked to get item fatigue and I think it's getting a bit boring we
+- **11:19** should start to introduce more the cooking modes people find it fun
+- **11:25** especially because pantry and tea are probably the two most boring game modes
+- **11:29** oh there was the dar one as well that's true um but pantry doesn't really feel like a game mode
+- **11:36** uh how many other games do you even have I'm just saying we should we should start we should
+- **11:44** think about how we like slowly introduce new game modes but in a way that means they're
+- **11:49** not overwhelmed but also like it's fun and I think at this point
+- **11:53** I don't want to make tea again uh I'd rather play something new um having said that I didn't really
+- **12:02** listen to what she said and I don't know what to get um okay so now there's four items I need to
+- **12:12** bring for tea all items are blanked off I can't see what they are but in Nani's instructions she's
+- **12:18** saying give me tea
+- **12:19** and the tea's being highlighted so
+- **12:26** that's not really right because that defeats the purpose of the tea being
+- **12:32** obfuscated
+- **12:35** and now Nani's instruction card still says oh okay
+- **12:39** it was still saying give me chai for maybe like five seconds after I'd
+- **12:43** already selected the chai only now it's saying
+- **12:48** give me milk so I get that she helps you after a time lag that's good but then
+- **12:56** there was no time lag at the beginning for the tea right so so that's the
+- **13:06** problem right she should only say like the help from Nani and the item being
+- **13:13** highlighted about zinc should only come after a time lag including for the first
+- **13:16** item question then is what do you have Nani saying instead of
+- **13:21** in that beginning stage where there's no oh there's no there's no clue to start
+- **13:35** with I'm not really sure it's honest can you suggest three different things you
+- **13:40** could say one being maybe nothing one being where should just be the generic
+- **13:47** sentence
+- **13:48** instructions for getting things from the pantry maybe just muke daar, just give it to me right
+- **14:04** um
+- **14:08** yeah muke chai lai daar, give it to me for tea
+- **14:12** I can't remember what I said earlier but we have to be consistent about which
+- **14:15** who gets the fuller instruction um is it the person in the recipe card or is it Nani
+- **14:25** I mean playing this game mode right now to me it seems like she should be saying
+- **14:29** in a recipe card bring me muke daar because that's also how she should
+- **14:36** yeah that's what she should be saying but then the Nani uh
+- **14:41** green card should be saying give me these to make tea because she's kind of
+- **14:47** like the recipe person she's telling you like she set the task as well so she's
+- **14:52** kind of telling you wait yeah this is confusing she's both the helper and the
+- **14:56** person setting the task I don't know I'm not sure but in this one it feels like
+- **15:01** the green one should be saying give me these to make tea that's the overarching
+- **15:04** thing right so you're not sure what to do you can translate that and it says
+- **15:10** bring me these for tea and then the recipe card says bring me and the items
+- **15:18** I think that makes most sense for this particular instance right now maybe you
+- **15:23** can advise me as to the wider pattern okay so now what I I put the wrong item
+- **15:33** in on purpose
+- **15:36** I'll put two wrong items what is loon I don't understand what that is it's a
+- **15:43** smaller spice jar with white crystals in it I don't get it okay so now I put in
+- **15:49** two wrong items and everything just paused
+- **15:56** but not paused but like I did complete the game so I guess that maybe the
+- **16:01** indication something's wrong and only two of them were ticked so I guess that's
+- **16:04** explanation enough now I've still put one incorrect item in there and only two are ticked
+- **16:09** which is good two correct one incorrect now I'm going to press the fourth item which will be
+- **16:13** correct which does get ticked off but there's one that's still wrong so that's actually very good
+- **16:22** I think uh cardamom there we go okay that's good
+- **16:32** That's good. So now I'm being told to make tea for three people but only the granddad came in.
+- **16:43** I feel like all the people with orders should come in and then before you enter the game mode
+- **16:50** on the big recipe card or whatever the big instruction pop-up it should have all three of
+- **16:55** them with their individual orders.
+- **16:57** As recipe cards and then those three recipe cards minimise into the left-hand sidebar and you start the game.
+- **17:04** Because also when the game's done you're kind of trying to get on with it so
+- **17:09** you don't want to kind of be listening to them while you're raring to get into the game.
+- **17:15** Whereas the pop-up comes up first you can't start the game so there's nothing to do
+- **17:18** but to listen which is better and you see each person with their instructions and that way
+- **17:23** yeah that way you just when the game starts like cool okay let's go without
+- **17:30** like loads of annoying talking taking up loads of time and that way you can make
+- **17:36** them quiet quicker as well by clicking on the big pop-up and starting the game
+- **17:41** quicker if you don't want to hear them speak everything out and then it can just
+- **17:45** be nice and quiet when you actually into the game
+- **17:50** again I mix up Lasso and Ado we really need a solution for these
+- **17:54** things in the small jars maybe the jars we just make them bigger the gold top maybe is
+- **17:58** enough to show that they're different maybe they can just be a tiny bit smaller than the rest right
+- **18:10** also I realized you can turn on the cooker and then start putting the ingredients in
+- **18:15** which means you can just cheat to make things quicker you can just turn on the
+- **18:19** cooker straight away oh maybe that's fine then maybe that's why it's fine at
+- **18:25** the speed it is because you can turn it on as long as you get everything in there
+- **18:28** at the right time well before the green point then it's it's fine so maybe let's
+- **18:35** leave that as it is it's a bit of an unintended
+- **18:38** something I intended but I guess it can make it more fun for advanced players
+- **18:42** again I didn't get a chance to correct myself because I was wrong but again I
+- **18:47** got the orders wrong because when I press the reveal it didn't give me the
+- **18:50** quantity when I press the reveal it didn't give me the quantities written
+- **18:55** down so I was never gonna be able to get that correct if I didn't hear it the
+- **18:59** first time so you have to have the quantities written down and shown on the
+- **19:03** reveal and you should let me remake just the cup of tea that I got wrong
+- **19:09** before progressing and then and then it goes to the back to the kitchen scene
+- **19:16** again so now I think I pressed level four the order how the glass still looks
+- **19:22** janky for the channa it's like it's too glassy too realistic like it just needs
+- **19:32** to be like a thin side-on profile of a glass without the thicker bottom or
+- **19:36** without like
+- **19:37** trying to overdo the distortions that you see I thought we redid our work for this
+- **19:43** already it doesn't look good um
+- **19:50** yeah just to be without all these reflections like as if it's yeah I don't know it's just
+- **19:56** cleaner and simpler uh yeah so if this is if this what I'm playing right now is like the arc
+- **20:03** for game one
+- **20:05** or even if it's not she Nani said that can you bring me these items to make chaat for the
+- **20:10** pantry so I played that game then the then the kid came in asked for chaat
+- **20:14** then the chopping game now I'm making the bowl of chaat and um
+- **20:20** feels like the sequence is just wrong there like I think he should come in
+- **20:27** um
+- **20:30** say will you make me chaat I say yes
+- **20:33** then Nani tells me could get these things from the ingredient pantry then I finish the pantry game then the boy says
+- **20:40** We go back to the kitchen and the boy says okay
+- **20:43** Again, I want chaat
+- **20:45** When the first time I said will you make me chaat or whatever then the second time Nani says okay
+- **20:50** I want in my chaat first this second this third this
+- **20:58** and then you do the chopping game I think and then you do the channa bowl
+- **21:09** game I mean the thing is you want to better hear his instructions of the
+- **21:13** order immediately proceeding playing the game where you need to put it in the
+- **21:16** right order so you don't have to hold that in your head for a long period of
+- **21:19** time so maybe yeah he just says he wants channa but it's hard then if he tells
+- **21:27** okay it's fine yeah he tells you he asks you will you make me channa you say yes
+- **21:33** Nani tells you to get the ingredients she tells you to chop them then he comes
+- **21:36** back then he tells you the sequence he wants it in then you launch the sequence
+- **21:40** filling the bowl game. I feel like that flow makes more sense and we should consider the
+- **21:46** flow for all the other recipes as well
+- **21:51** that you're told things at the right time
+- **21:54** but I like the one I just suggested we should use that flow. So the potato ticked green
+- **21:59** even though I only put one potato in and he said two potatoes so it should only tick in after the
+- **22:05** second potato goes in. I thought we're going to fix the artwork on this it just looks horrendous
+- **22:12** sure we did if not propose to me how I make it look better because it just looks terrible
+- **22:20** Okay I don't remember what I was saying, I had a phone call. I'm continuing the
+- **22:29** Channa game, I'm pressing the tick button. Oh it was wrong. He wants chaat, first channa,
+- **22:36** two potatoes, oh he wants two mochi. Okay so this gives me a chance to do it again.
+- **22:46** I'm not sure if we need... I don't know, he kind of came again and another card came
+- **22:57** on the left with him explaining what he wanted. I'm not sure that's the right
+- **23:03** thing to do. I think it should it should just remain two cards on the left, the
+- **23:10** Nani helper card and
+- **23:12** his card. First I'm placing the order and then yeah it should just like highlight
+- **23:22** the ingredients as he talks it through. So Pella Channa, first chickpeas, it should
+- **23:28** highlight that one first and then two potatoes and then should highlight two
+- **23:33** potatoes and then Murchi, should highlight Murchi. So the voiceover
+- **23:39** explanation should...
+- **23:41** be on top of the existing recipe card so they can still look at the same place and then when the voice stops they still have the visual reference.
+- **23:49** But again, he said two Murchi but it only says one Murchi on the recipe card so this is I think a bug across all different game modes.
+- **23:57** Like if it says two, then it should say two. Or maybe you don't know how to say two in Kutchi for Murchi.
+- **24:05** What if they needed you to just put a place, just put it in English, just put the words two for the moment.
+- **24:11** Because that is just, yeah, unplayable right now.
+- **24:20** I remember again, like I said, it ticked after the first potato but it should tick after the second one once because it requires two.
+- **24:30** Come to king. Why is that wrong now?
+- **24:35** I don't understand.
+- **24:37** First channa, and then two potatoes, or maybe it is just one milk, I don't understand, okay.
+- **24:58** First chickpeas, and then two potatoes.
+- **25:05** Neepal, mirchi, channa, potato, it actually makes no sense. Okay, something's broken here.
+- **25:17** Mukhi, chaat, khapi, well anyway, channa, neepal, channa, neepal, I'm going to put one potato, see if that works. Mirchi.
+- **25:29** That worked, but it says two potatoes, so that's a, again, that's a bug, it's saying two potatoes,
+- **25:33** but the correct answer only needed one. Also, it highlights there should be a circle breaker
+- **25:39** at some point, if you get it wrong three times, it should just like, it should just give up on you,
+- **25:44** or it should just show you then, that's what it should do, it should show you,
+- **25:46** it should take over and show you the correct way of doing it.
+- **25:51** Also, I don't know why after, Nani says arere after each of these, I thought that
+- **25:56** means no or bad, I don't know, it's not a word we use, but it doesn't make sense, she
+- **25:59** says that after every time, even if you get it correct. Okay, I'm clicking through,
+- **26:04** Mirchi was wrong, but I mean, if I failed because of the potatoes, then, oh, I don't
+- **26:10** know, that's marked as correct, but arguably that's why I got wrong, in fact
+- **26:17** the numbers is what I got wrong, apparently, so.
+- **26:20** So, that should go on the left-hand side, if you fail because of numbers, the numbers
+- **26:26** should go on the left, as they interact.

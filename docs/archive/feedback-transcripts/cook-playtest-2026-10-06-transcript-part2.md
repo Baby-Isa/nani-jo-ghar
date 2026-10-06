@@ -1,0 +1,233 @@
+# Transcript: 81571a16-Kutchi_game_feedback_6_Oct_part_2.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** okay it's continuing my feedback I've just finished this this chai game in in
+- **0:07** in the cook playing mode I first did a pantry game then I had to make it I
+- **0:11** played the game where I had to get things from the cupboard and make tea
+- **0:17** so I'm not actually sure what the buttons are because I don't know what the home not sure
+- **0:22** what button I should press next Nani shop is in red and kind of bolded so makes you
+- **0:26** think you should click that
+- **0:27** But I don't really want to go to the home button do I? I kind of want to go to the next button for the story mode
+- **0:33** The shop's kind of cool. It needs work, I think
+- **0:38** It's not terrible but we also don't know what any of the things do. It's fine
+- **0:41** We can come back to this just save it somewhere in the to-do list the shop needs work
+- **0:49** Right now I'm gonna press 2 in the cook game and let's play that
+- **0:54** I don't know why it randomly highlighted the question mark button in the bottom left
+- **1:01** This is what they just asked for then cook it the way they just said tap on the order card to hear it again
+- **1:08** Okay, I just it's not bad instructions probably the wrong point to flash it because right now it's just a conversation
+- **1:15** It's actually if you know if you wanted to highlight it then you should
+- **1:20** She give a relevant tip, which is like, you know
+- **1:24** Respond with the correct response
+- **1:26** But I don't think it needs highlighting like that
+- **1:30** Okay, I'm gonna say the wrong thing here and say a rare rare
+- **1:37** Okay, it's good that then Nani says the correct response I think I should just tell you oh she telling you
+- **1:43** You should say that. Okay needs to be clear that that's a thought bubble from her
+- **1:48** and the answer I gave should highlight in red and the waalaikum salam needs to
+- **1:58** be a bit more clear I can see now it's highlighted it's just highlighted gold
+- **2:02** against the brown kitchen background that's why it doesn't stand out so much
+- **2:06** so I think we can make that a little bit clearer maybe grey out the two wrong
+- **2:15** answers
+- **2:16** just to help emphasise the correct one then
+- **2:26** I don't know why it shows the correct answer in black, is that intentional?
+- **2:34** what am I also don't like
+- **2:37** it doesn't really explain what it means right like you're hearing
+- **2:41** he's asking you something you know to apply but how do you know that means how are you
+- **2:46** so
+- **2:48** hmm Disney's thinking about this is thinking about oh oh again maybe it's
+- **3:02** like we need to show it first like oh I actually do that though it's so
+- **3:11** complicated how do you teach someone
+- **3:14** a whole bloody language through a game when you don't include English
+- **3:23** maybe we do just include English
+- **3:27** under the how are you so at least they learn or their parent can help them I think that the part
+- **3:35** of this was meant to kind of the woman the person to see the interactions between two people
+- **3:40** then kind of pick up on it you know if if the boy asks Nani how are you and
+- **3:47** she looks happy and responds I'm well then or there's like a big emoticon icon that says like
+- **4:00** she's like
+- **4:03** yeah happy
+- **4:05** then people can kind of pick up on it maybe there's like a waving one little waving that
+- **4:10** comes along with I mean ideally the characters should do this like if they meet each other
+- **4:15** they should like wave right wave to each other or wave to you on the screen it's fine exactly
+- **4:21** the way they orientate themselves doesn't matter so much but the point being like if you can see
+- **4:25** they're having a conversation and they're kind of like waving and saying salamu alaykum and
+- **4:30** waving and then leaving for the khuda-fis that explains that one
+- **4:34** and then asking you to make the items I think kind of works because then if you
+- **4:38** pick it up afterwards depending on the item you're making but yeah this how are
+- **4:42** you one is how can we show I'm asking how are you like do we just show him
+- **4:47** like with like a you know 50-50 kind of expression like hands out like
+- **5:00** how are you and then do we have English next to the answers or maybe English and
+- **5:08** an icon so like oh you can't you have to make icons for everything it's
+- **5:21** impossible but I could offer this could be a wave how they get that the greeting
+- **5:25** ones could be waved icons next to them
+- **5:28** the ha and na yes and no can be like ticks and crosses the emotion ones could be like
+- **5:37** happy face I don't know I really don't know I need you to not skip over this one lightly
+- **5:41** and just take what I've said need you to really think about this one and help me out here and
+- **5:45** maybe I'm over worrying like if you just learn that when they ask you that you apply that do
+- **5:49** you pick it up I don't know if you do
+- **5:53** quite honestly you need something English and or an emoji and all them
+- **6:02** acting out okay I'll see that way for you okay anyway money
+- **6:10** okay so now Nani seem to roll the money then cook yeah I think that's
+- **6:24** mmm I think steps to be broken down broken down more again it I thought I'm
+- **6:41** not getting the right guidance for a new player to the game but the money should
+- **6:46** be you know highlighted and stuff to show me I need to select it
+- **6:50** I think she should say like choose the correct dough ball or I don't know no
+- **6:58** she should just say like
+- **7:07** take the dough ball or click the dough ball nobody have a word for click get the dough
+- **7:16** ball
+- **7:16** roll the maani, cook the maani like he should be telling you like that like a
+- **7:20** like a set of instructions cooking instructions also the problem is the
+- **7:27** dough balls are top-down in their view but then they have a drop shadow at the
+- **7:32** bottom like if you look at the image if you've got a screenshot saved you can
+- **7:37** look at it you'll see like they're like floating molecules because you're
+- **7:41** looking from a top-down view onto a pile
+- **7:44** but then at the bottom part of the image there's a drop shadow which means that
+- **7:49** they're standing up you'll see it now I've mentioned it it doesn't
+- **7:54** make sense so either we remove the drop shadow and it just looks top-down or we
+- **7:58** orientate the dough balls to be resting on a flat surface I think top-down
+- **8:04** is the right way forward. It doesn't immediately look like they're dough
+- **8:10** balls I'll be honest
+- **8:12** but it's fine for now. So I select it, money
+- **8:19** and then Nani says money which I guess is fine. Okay and then I think the swiping thing kind of
+- **8:25** makes sense. It's not clear, I have to tap on it then as well. Maybe that thing should come back
+- **8:37** the little icony ghost finger thing and show a press on the money button.
+- **8:43** Speed on this is good though, looks nice, that's fun.
+- **8:51** The way it goes into the tray, oh I guess it's fine, it's not the best thing.
+- **8:55** It just, it goes onto the edge of the tray, like the edge that curls up at the top, which ruins the illusion.
+- **9:01** It needs to go on the flat portion of the tray.
+- **9:03** We can maybe make the tray bigger, maybe we need to make a wool.
+- **9:07** A rool, a wool, r-u-l-e, a wool.
+- **9:11** That items that go into these trays can only go onto the flat portion, not the sides of the tray. It ruins the illusion.
+- **9:21** There's another thing I was going to say. The sizzling sound of cooking still plays, even though there's no maani on the tawa anymore.
+- **9:29** And if I turn off the flames, it's still playing. So that needs to be fixed. The sound should only play while there's something sizzling on the pan itself.
+- **9:38** I'm going to try something else. I'm going to roll another maani.
+- **9:43** Yeah, the rolling pin sits under the circle.
+- **9:51** The circle size indicator, which looks weird. I think the rolling pin should sit above
+- **9:57** everything, including over the circle size indicator. Yeah, and when the indicator goes gold.
+- **10:04** The rolling pin should sit over it. It will look better.
+- **10:11** And then, yeah, it says too early.
+- **10:15** Okay, it looks a little undercooked. Fine.
+- **10:18** Then I press the tick. Oh, he's not happy.
+- **10:25** These random interventions from Nani are a bit random, but...
+- **10:32** I guess you get used to it.
+- **10:33** Because then, neatly in the sidebar, then...
+- **10:40** It's got a bit more confusing than if she came across the screen, interrupted and asked it.
+- **10:46** Actually, maybe we should...
+- **10:48** Maybe we should change that. Maybe she should come on the screen and pause everything.
+- **10:53** And be like, oh, can I have this? Because I...
+- **10:55** I get why we put it on the side screen, but then it can get confused with an instruction or something like that.
+- **11:02** And it's also quite hard to see the icons when they're that small, for the food items.
+- **11:06** So maybe she should just come, like, across the screen, interrupting you.
+- **11:11** But as well, I think we have to start to cover maybe...
+- **11:15** Not the first time you're playing every game mode, like, give it a bit of a chance for you to get used to that, you know?
+- **11:20** Let's build up to these interruptions.
+- **11:23** Yeah, I didn't see the ending screen, but I've told you enough times now, like, it can't...
+- **11:29** The way the items are placed on the kitchen counter, the way the trays and stuff on the kitchen counter, it all looks naff. We need to figure it out.
+- **11:42** And if the answer is too complicated, too much effort to display everything, then we just...
+- **11:50** I don't know.
+- **11:53** If we don't show it, maybe we just show it like a...
+- **11:56** a food thing, with like a silver tray on it so you can't see. Oh I don't know. No, scrap that. I don't know. I don't know. I don't know. I don't know.
+- **12:04** Okay, so now I've got two items wrong. Hakri and maani, but the tikk was just out of one.
+- **12:13** This needs thinking. How can I get zero out of one? How can it only be out of one, but then I got two words wrong?
+- **12:19** I guess that's because it was one item, right? Yeah, that kind of makes sense.
+- **12:24** I thought I said the wrong should be on the left, and the correct one should be on the right.
+- **12:29** That needs to be the case even when there's only all right or all wrong.
+- **12:34** It needs to kind of be visually consistent and clear to you always that left is bad and right is good.
+- **12:42** Muke, chai, dha.
+- **12:46** I've got focus now. I already can't see anything.
+- **12:51** Muke, kan, dha. Muke, irchi, dha.
+- **13:03** Okay, done it.
+- **13:06** Chai. Muke, jeeru, dha. Thank you.
+- **13:12** Elchi.
+- **13:16** Sugar. Undo.
+- **13:17** Thank you. Okay, that kind of worked okay.
+- **13:32** And I think when she pops up on screen, Nani, to ask for a random item, and it pops up like a card, it reveals what you're currently playing and pauses what you're currently playing.
+- **13:44** You should have a timer on it, a very simple circle with a tick-tock sound, and the circle goes from full to zero in a clock motion to put some pressure on.
+- **13:58** And it can be quite quick, like three seconds or something. And then she can just look annoyed if she doesn't get the item in time.
+- **14:12** This is kind of good, like the character comes on screen, she says Salaam-Alaikum, I say Alaikum-Salaam, that's kind of good.
+- **14:20** Yeah, so she's kind of asking me how I am, like she put her hand out in that way, which kind of helped.
+- **14:34** Maybe you'll pick it up over time. It's hard, I know the language.
+- **14:39** It's not easy to know from someone who doesn't play the language, but...
+- **14:44** Oh, what's going on with the kitchen image here on the left?
+- **14:48** Under the sink, it looks like the image has been duplicated. This whole kitchen
+- **14:52** thing needs to be looking at. I don't know how this passed the quality control.
+- **14:58** But like it's telling you what the answer is, so when someone asks you Tuki-Aye, you ask Auntie-Kaye, and like...
+- **15:04** Maybe that's fine for now and then maybe later interactions you see sometimes people will say they're not okay and they'll look sad or something.
+- **15:14** Or maybe you'll learn that in the clinic. So maybe it's okay. We're kind of going for a sort of emotion kind of theme here, aren't we? But I do wonder if at the very least English needs to be there.
+- **15:30** Mukhe, chai, bane, dinda, haa, mukhe, chai, khape, mukhe, adu, wari, chai, khape, dood, naa, akro,
+- **15:56** kan, mukhe, irchi, wari, chai, khape, It's just so slow when they talk like this. I know I set it to half speed.
+- **16:07** You know what? Let's just increase it to normal speed now because
+- **16:12** if nothing else it's doing my head in. But like I said at the beginning,
+- **16:17** we're going to revisit the idea of them...
+- **16:23** Maybe I get if we could use computer voice actors. These ones aren't terrible. They're a bit annoying, but I think it's because they're slow. If we can get them to pronounce things correctly, it might be helpful for us.
+- **16:38** Okay, so I mean the instruction here is good to put water in the pan. God, I actually can't focus on what these guys need all the time.
+- **16:49** Point is they talk so slowly, I don't want to get them to play out loud again.
+- **16:53** It's fine, I'll use a light bulb.
+- **17:11** Can we get a more realistic spoon for the stirring in the sugar?
+- **17:15** Putting in and stirring in the sugar animation. It's good animation, but a more realistic spoon would fit the theme.
+- **17:25** I mean this team mode with two people, it does work quite well actually. We're not far off.
+- **17:31** The items in the jars are quite hard to see, even on my laptop. Cardamom, ginger, garlic.
+- **17:37** I do wonder if we need to do something different on that.
+- **17:42** Yeah, so just the way that the tea looks good, that it's tea without milk, but then in the
+- **17:53** pan it goes back to being milk tea, and when you pour it in the glass as well. So that
+- **17:58** just needs fixing, but it's not bad actually, it's not bad. It's amazing how you have to
+- **18:05** get every little thing right to make a game good.
+- **18:08** Oh, and just check, right now I'm playing a tea game with two people's tea, the right-hand tea saucepan, the handle of the teaspoon goes over the rim, sorry, the handle of the saucepan goes over the rim of the cooker, but you can see the rim of the cooker underneath.
+- **18:34** Like obviously, if you're looking from top-down, you shouldn't be able to see anything through the handle.
+- **18:40** Right, I'm sure I can see a faint outline.
+- **18:45** Well, I think I can anyway.
+- **18:48** So, yeah, I need to increase the opacity on that 100% and make it go to the top.
+- **18:56** Okay, so no, she's not happy with her tea now because I made a mistake.
+- **19:01** Now she's repeating her instruction.
+- **19:04** No.
+- **19:10** So then you should redo it then.
+- **19:16** So this should be, I think if you get it wrong, you should redo it, right?
+- **19:21** His tea should have stayed where it was, but her teacup should have emptied.
+- **19:29** Her menu card should have expanded again. The tick on her menu card should have been removed.
+- **19:36** And you have to redo her one.
+- **19:40** And maybe the second time you redo it, it gives you help.
+- **19:44** So then it does like bounce and highlight the items for you.
+- **19:49** Like you're doing it the first time so that you can like, don't get too frustrated.
+- **19:55** But you have to do it again because you got it wrong.
+- **19:57** I think that's the general principle for these games.
+- **20:00** If you get one item of a multi-order item wrong and it tells you no, you should redo the item.
+- **20:09** How did this pass QA? The tick on this screen has not been cut out well.
+- **20:15** On this image specifically. I can see the grey around the tick.
+- **20:21** On one part of it. The upper left part of it.
+- **20:26** Even the upper right part of it is not cut out that well.
+- **20:29** For fuck's sake, like, I just don't understand.
+- **20:38** And it said like all the items right there, all the words right there, but how can that be right?
+- **20:42** Because I put the wrong item in her tea, so one of them should show as wrong.
+- **20:51** Okay, so now he wants two maanis and he wants chai. The handle looks a little, the rolling pin looks a little bit small. I don't know, I thought the rolling pin is normally wider than the rolling board. I don't know, maybe it's fine for now.
+- **21:10** I don't know if we can just keep the same one and just scale it up a tiny bit, I don't know.
+- **21:14** Okay, he wants...
+- **21:17** Two maanis, I think. Okay, so we've rolled that one out, that's good. Put it on the pan, start rolling the other one. Oh god, we might have to just slow down this cooking speed because if you try and do two it's nearly impossible to roll and cook. Oh, actually it's fine. Okay, it's fine.
+- **21:46** It's fine, because you haven't got anywhere to store the maanis before you cook them, so...
+- **21:52** So then it's fine. It's just on the chopping board if you want, and if it's not...
+- **21:58** Yeah, it's on the chopping board. Yeah, yeah, it's fine, it's fine.
+- **22:02** Shabash. Okay, so that's good.
+- **22:05** Muke. Gos. Duh.
+- **22:10** Thank you.
+- **22:12** Muke. Mee. Maani.
+- **22:42** Shabash.
+- **22:43** 
+- **22:43** Tea, and how he wants his tea. So that needs, that logic needs checking and changing across the game modes.
+- **22:49** So he wants Adwari Chai. So that's the thing, that's the instruction card he should be reading out to me.
+- **22:55** It was ginger milk and two sugars. OK.
+- **22:57** Maani. Chai. Chai. Noon.
+- **23:05** This ginger doesn't look like ginger whatsoever. That needs work.
+- **23:09** Looks like gummies. Aadu. He wants two sugars.
+- **23:16** Yeah, if you get the right number of sugars, you should just take it off, especially if you can't see it. Like, that's hard enough then.
+- **23:22** I know you can guess, but you can't guess the item because you can't see the item. And then in terms of the number, it's fine. You'll just...
+- **23:33** It's fine. You'll learn eventually.
+- **23:39** Shabash. And then it says served. Then when he comes in the kitchen, it says served on
+- **23:52** the tea recipe card, but not served on the money recipe card. Both should say served
+- **23:59** because I got all of it right. Again, it's highlighting that I got all the words correct,
+- **24:08** but I didn't. I got Jinja Vong. I pressed Aadu instead, so that should be read into the left.
+- **24:19** Hmm. Okay. Press the home button. Now I'm going to press level three or whatever. Three. I'm not really sure. What is this game?
+- **24:30** I don't really understand what this is, to be honest. It's not the lab mode.
+- **24:35** Maybe this is just the cook game as it is in arc one. I don't really know.
+- **24:48** It's so annoying when it highlights the ingredient in gold. The gold outline is clipped. It's just very annoying.
+- **25:01** We need to think about shadows of items on the kitchen as well, because on the kitchen counter the sun is coming in from the left, so shadows should be slightly to the right if we do have items on the kitchen counter.
+- **25:13** And it would be nice to have kitchen items on there. It really completes the story of you serving the items.
+- **25:20** Okay, that's the end of this voice note. The next one we'll start with... I'll press... I don't know, I'll just keep playing.
+- **25:26** The cook mode.
