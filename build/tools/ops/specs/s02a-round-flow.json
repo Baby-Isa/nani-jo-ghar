@@ -1,0 +1,43 @@
+{
+  "name": "S02-A, the shared round flow (Sprint 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "one set of round rules used by every Cook station and clinic game; judgement about flow, timing and the guide-and-card rules",
+  "cost": "about $45-55",
+  "stop": "8 Oct 2026, 12:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": ["2", "3", "4 (Instructions, Help, Counting, Interaction, Feedback)", "6 (UI)"],
+  "read": [
+    "docs/design-language/guide-and-card.md (approved in full: rules R1-R6, rows T1-T34; this session builds the shared parts)",
+    "docs/feedback/cook-playtest-2026-10-06.md and docs/feedback/clinic-playtest-2026-10-06.md (sections 1a and 3; causes are cited file:line)",
+    "docs/decisions.md 51-65 and docs/process/rules.md section 4",
+    "docs/sprints/S02-play-and-fix-cook-clinic.md"
+  ],
+  "owns": [
+    "js/shared/**, css/shared/** (guide box, order card, buttons, results, onboarding, bulb)",
+    "js/core/** (voice, save, score, progress)",
+    "js/cook/flow.js, js/cook/ui.js, js/cook/order.js, js/cook/core.js, js/cook/words.js, js/cook/dom.js, css/cook.css, css/cook-side-v2.css (the round flow only; station files belong to Session B next)",
+    "js/clinic/kit.js, js/clinic/screen.js, js/clinic/heal/host.js, js/clinic/heal/scene.js, js/clinic/stages/common.js, js/clinic/main.js, css/clinic.css (the round flow only; games and stages belong to Session C next)",
+    "build/build_cook_tts.py and data/cook-tts.json, assets/audio/cook-tts/** (rebuild at full speed)",
+    "build/reports/s02a-round-flow.md"
+  ],
+  "readOnly": ["js/cook/stations/**, js/cook/mechanics/** except a one-line hook call each where a shared change needs it (list them in the report)", "js/clinic/heal/games/**, js/clinic/stages/* other than common.js (same: hook calls only)", "data/lang/** (placeholders through the importers only)", "assets/** art"],
+  "stubs": "new lines are grey 'to record' placeholders through the language engine (non-negotiable 11); a missing engine piece is reported, never hand-written",
+  "tasks": [
+    { "do": "Ticks match order rows one to one: no tick lost for a bulb, translate or shown hint (those count only on the hints badge) or a stray with no row; a wrong item marks that person's row (per person, not deduplicated); a wrong count shows as wrong. The word review always puts wrong on the left and right on the right, even with one column (SH-49, SH-50, SH-03, CK-07).", "accept": "pantry and 2-person chai end screens after a bulb press and one wrong item: ticks = rows, the wrong word red on the left; screenshot of a one-column all-right and all-wrong review" },
+    { "do": "A wrong item is redone on the spot through one shared API the stations call: the rest stays done, that item empties, its row reopens, the second try has help (glow), after three wrong tries the game shows the right way (decision 51, CK-23). Wire it into chai and one clinic game as the reference; B and C wire the rest.", "accept": "chai 2-person with one wrong cup: only that cup redoes; third wrong try shows the answer" },
+    { "do": "The next step is always visible: at L2+ once a counted step reaches its count, the next step's row appears and its tool glows after ~2 s; where the outcome is obvious the round moves on by itself with no Found it / ✓ / stage button (decision 52, CLN-82, CLN-83). Fix in the shared card and heal host so every game gets it.", "accept": "scrape, knee, boing, foot at L2: after the count the next row and glow appear; no stuck state" },
+    { "do": "Requests first: one pop-up shows everyone who orders (Cook) or the doctor's request (pharmacy, heal games), each said in the speaker's own bubble, tap to skip; then the cards fold to the sidebar and the game is quiet (decision 53, CHAI-15, CLN-84, T6, T27).", "accept": "3-person chai: all three come in and the pop-up shows three cards before play" },
+    { "do": "The guide box follows rules R1-R4: one line per step in step with the highlight; never the whole card; L1 speaks as each step opens, L2+ only after a pause with the glow (first item too); a spoken line clears when its step ends; bubbles from faces for on-screen speakers, the box for off-screen guides; one card with a top strip when the asker is the guide (pantry, daar chop). Provide the shared API; B and C fill the per-station lines (SH-56, SH-60, SH-63, PAN-10).", "accept": "pantry L1 and L2 and one heal game behave as T1, T2 and T29; no face appears twice" },
+    { "do": "The bulb also flips the guide line to English and always shows the full order with numbers; a number is written the first times it is heard at any level; on spoken cards the closed card's eye is a small bulb with no counter (decision 57, SH-52, SH-57, CLN-91).", "accept": "maani L3 bulb shows 'two chapati'; pantry bulb translates the guide line; waiting-room L3 shows a small bulb" },
+    { "do": "One highlight at a time, one colour token, gold outlines drawn inside (never clipped by overflow), a flat ✓ with no shadow that glows when it is the only thing left; the serve stamp is a picture per card; written English verdict floats (Perfect!, Burnt!, Golden!, Boiled over!, Too early…) become pictures (R5, SH-53, SH-55, SH-58, SH-61, SH-54, T20).", "accept": "x2 zoom screenshots of a highlighted row, the ✓ and a verdict moment show no clipping, no shadow, no English" },
+    { "do": "Speech: a tap pauses the line, the count word plays, the line carries on; trim the gap between count words (PAN-11, PAN-12). The closing line is a chef's call-back of what was made, then Shabash and a happy face (decision 54, CK-22). Remove arre re; use Mum's 'oh oh oh' clip if it exists (search data/family-audio.json), else a soft sound, at L1 only on a real mistake (R6, CHT-09).", "accept": "tap mid-line in the pantry: she resumes; serve says the call-back; no 'arre re' anywhere (grep)" },
+    { "do": "The button family: one consistent set of buttons and icons on the screens in use (sidebar tabs, end screen, day summary, clinic stage buttons), from js/shared only (non-negotiable 8). The '?' gets a grown-up 'play as new' and Cook's 'Start over' also clears learned words (SH-60). Clear the '?' pulse at each new order (SH-59).", "accept": "side-by-side screenshot of every button kind; fresh profile after 'play as new' shows every word" },
+    { "do": "Loading: measure Cook and clinic lab page load, then load per station or game only (no serial JSON chain, games loaded on demand) (CK-25, CLN-88). Rebuild the placeholder robot voice at full speed (decision 63, LNG-09).", "accept": "report gives before/after load times for 3 pages; target under 3 s on a warm cache" }
+  ],
+  "flows": ["cook:pantry", "cook:chai-tray", "cook:story", "clinic:waiting", "clinic:pharmacy", "clinic:heal-cut", "clinic:heal-knee"],
+  "shared": true,
+  "port": 8821,
+  "report": "s02a-round-flow",
+  "publish": false
+}

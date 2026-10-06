@@ -41,7 +41,7 @@ add("READ FIRST (in this order):",
 add("");
 
 add("FILES THIS SESSION OWNS (edit only these):", ...list(s.owns),
-  "READ-ONLY (never edit):", ...list([...(s.readOnly || []), "js/shared/**, build/tools/** and every other session's files unless listed above"]),
+  "READ-ONLY (never edit):", ...list([...(s.readOnly || []), ((s.owns || []).some((o) => o.startsWith("js/shared/")) ? "" : "js/shared/**, ") + "build/tools/** and every other session's files unless listed above"]),
   `SHARED PIECES NEEDED BUT MISSING: ${s.stubs || "write a marked stub with the same API in your own folder (B17)"}`, "",
   "DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.",
   "NO helper sessions or background helpers (B3).",

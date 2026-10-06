@@ -1,0 +1,78 @@
+SESSION NAME / MODE:  S02-A, the shared round flow (Sprint 2)
+MODEL AND EFFORT:     Opus, high effort (one set of round rules used by every Cook station and clinic game; judgement about flow, timing and the guide-and-card rules)
+COST ESTIMATE:        about $45-55
+HARD STOP:            8 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4 (Instructions, Help, Counting, Interaction, Feedback), 6 (UI) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/design-language/guide-and-card.md (approved in full: rules R1-R6, rows T1-T34; this session builds the shared parts)
+  6. docs/feedback/cook-playtest-2026-10-06.md and docs/feedback/clinic-playtest-2026-10-06.md (sections 1a and 3; causes are cited file:line)
+  7. docs/decisions.md 51-65 and docs/process/rules.md section 4
+  8. docs/sprints/S02-play-and-fix-cook-clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/**, css/shared/** (guide box, order card, buttons, results, onboarding, bulb)
+  - js/core/** (voice, save, score, progress)
+  - js/cook/flow.js, js/cook/ui.js, js/cook/order.js, js/cook/core.js, js/cook/words.js, js/cook/dom.js, css/cook.css, css/cook-side-v2.css (the round flow only; station files belong to Session B next)
+  - js/clinic/kit.js, js/clinic/screen.js, js/clinic/heal/host.js, js/clinic/heal/scene.js, js/clinic/stages/common.js, js/clinic/main.js, css/clinic.css (the round flow only; games and stages belong to Session C next)
+  - build/build_cook_tts.py and data/cook-tts.json, assets/audio/cook-tts/** (rebuild at full speed)
+  - build/reports/s02a-round-flow.md
+READ-ONLY (never edit):
+  - js/cook/stations/**, js/cook/mechanics/** except a one-line hook call each where a shared change needs it (list them in the report)
+  - js/clinic/heal/games/**, js/clinic/stages/* other than common.js (same: hook calls only)
+  - data/lang/** (placeholders through the importers only)
+  - assets/** art
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: new lines are grey 'to record' placeholders through the language engine (non-negotiable 11); a missing engine piece is reported, never hand-written
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Ticks match order rows one to one: no tick lost for a bulb, translate or shown hint (those count only on the hints badge) or a stray with no row; a wrong item marks that person's row (per person, not deduplicated); a wrong count shows as wrong. The word review always puts wrong on the left and right on the right, even with one column (SH-49, SH-50, SH-03, CK-07).
+     Accept: pantry and 2-person chai end screens after a bulb press and one wrong item: ticks = rows, the wrong word red on the left; screenshot of a one-column all-right and all-wrong review
+  2. A wrong item is redone on the spot through one shared API the stations call: the rest stays done, that item empties, its row reopens, the second try has help (glow), after three wrong tries the game shows the right way (decision 51, CK-23). Wire it into chai and one clinic game as the reference; B and C wire the rest.
+     Accept: chai 2-person with one wrong cup: only that cup redoes; third wrong try shows the answer
+  3. The next step is always visible: at L2+ once a counted step reaches its count, the next step's row appears and its tool glows after ~2 s; where the outcome is obvious the round moves on by itself with no Found it / ✓ / stage button (decision 52, CLN-82, CLN-83). Fix in the shared card and heal host so every game gets it.
+     Accept: scrape, knee, boing, foot at L2: after the count the next row and glow appear; no stuck state
+  4. Requests first: one pop-up shows everyone who orders (Cook) or the doctor's request (pharmacy, heal games), each said in the speaker's own bubble, tap to skip; then the cards fold to the sidebar and the game is quiet (decision 53, CHAI-15, CLN-84, T6, T27).
+     Accept: 3-person chai: all three come in and the pop-up shows three cards before play
+  5. The guide box follows rules R1-R4: one line per step in step with the highlight; never the whole card; L1 speaks as each step opens, L2+ only after a pause with the glow (first item too); a spoken line clears when its step ends; bubbles from faces for on-screen speakers, the box for off-screen guides; one card with a top strip when the asker is the guide (pantry, daar chop). Provide the shared API; B and C fill the per-station lines (SH-56, SH-60, SH-63, PAN-10).
+     Accept: pantry L1 and L2 and one heal game behave as T1, T2 and T29; no face appears twice
+  6. The bulb also flips the guide line to English and always shows the full order with numbers; a number is written the first times it is heard at any level; on spoken cards the closed card's eye is a small bulb with no counter (decision 57, SH-52, SH-57, CLN-91).
+     Accept: maani L3 bulb shows 'two chapati'; pantry bulb translates the guide line; waiting-room L3 shows a small bulb
+  7. One highlight at a time, one colour token, gold outlines drawn inside (never clipped by overflow), a flat ✓ with no shadow that glows when it is the only thing left; the serve stamp is a picture per card; written English verdict floats (Perfect!, Burnt!, Golden!, Boiled over!, Too early…) become pictures (R5, SH-53, SH-55, SH-58, SH-61, SH-54, T20).
+     Accept: x2 zoom screenshots of a highlighted row, the ✓ and a verdict moment show no clipping, no shadow, no English
+  8. Speech: a tap pauses the line, the count word plays, the line carries on; trim the gap between count words (PAN-11, PAN-12). The closing line is a chef's call-back of what was made, then Shabash and a happy face (decision 54, CK-22). Remove arre re; use Mum's 'oh oh oh' clip if it exists (search data/family-audio.json), else a soft sound, at L1 only on a real mistake (R6, CHT-09).
+     Accept: tap mid-line in the pantry: she resumes; serve says the call-back; no 'arre re' anywhere (grep)
+  9. The button family: one consistent set of buttons and icons on the screens in use (sidebar tabs, end screen, day summary, clinic stage buttons), from js/shared only (non-negotiable 8). The '?' gets a grown-up 'play as new' and Cook's 'Start over' also clears learned words (SH-60). Clear the '?' pulse at each new order (SH-59).
+     Accept: side-by-side screenshot of every button kind; fresh profile after 'play as new' shows every word
+  10. Loading: measure Cook and clinic lab page load, then load per station or game only (no serial JSON chain, games loaded on demand) (CK-25, CLN-88). Rebuild the placeholder robot voice at full speed (decision 63, LNG-09).
+     Accept: report gives before/after load times for 3 pages; target under 3 s on a warm cache
+
+REGRESSION ROWS TO RECHECK (165 rows of docs/process/regressions.md; * = open or reopened):
+  cook:pantry (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+  cook:chai-tray (16): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07*, CHAI-08*, CHAI-09, CHAI-10*, CHAI-11*, CHAI-12*, CHAI-13*, CHAI-14*, CHAI-15*, CHAI-16*
+  cook:story (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+  clinic:waiting (27): CLN-10, CLN-11*, CLN-12, CLN-13*, CLN-14*, CLN-15, CLN-90*, CLN-91*, CLN-92*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*
+  clinic:pharmacy (26): CLN-19, CLN-20, CLN-21, CLN-22, CLN-23*, CLN-24, CLN-96*, CLN-97*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*
+  clinic:heal-cut (27): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-82*, CLN-84*, CLN-85*, CLN-87*, CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-45, CLN-46, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99*
+  clinic:heal-knee (27): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-82*, CLN-84*, CLN-85*, CLN-87*, CLN-30, CLN-33, CLN-42, CLN-43, CLN-44, CLN-45, CLN-47, CLN-48, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-100*
+  shared components (63): SH-01*, SH-02*, SH-03*, SH-04, SH-05, SH-06, SH-49*, SH-50*, SH-51*, SH-61*, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52*, SH-53*, SH-54*, SH-55*, SH-62*, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56*, SH-57*, SH-58*, SH-59*, SH-60*, SH-63*, SH-23, SH-24, SH-25, SH-26, SH-27*, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38*, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s02a-round-flow` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8821.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s02a-round-flow.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
