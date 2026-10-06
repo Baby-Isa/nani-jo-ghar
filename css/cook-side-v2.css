@@ -320,3 +320,13 @@ body.w6 #intro .ic-card.wide .oc-item { break-inside: avoid; margin-bottom: 10px
 /* R3a: in the pop-up (a scroll box) the face's 48 px tap area takes its full room, so nothing pokes past the card */
 body.w6 #intro .oc-card .oc-face { margin: 0; }
 body.w6 #intro .oc-card .oc-face::after { inset: 0; }
+
+/* decision 53 (CHAI-15): the requests pop-up with several people: their cards side by side, one column each
+   (two by two at four), so every order is on screen at once */
+body.w6 #intro .ic-card.crowd { width: min(1120px, 94%); max-width: 1120px; }
+body.w6 #intro .ic-card.crowd .ic-order { display: grid; grid-template-columns: repeat(var(--crowd-cols, 2), minmax(0, 1fr)); align-items: start; gap: 16px; }
+body.w6 #intro .ic-card.crowd .ic-order > .oc-card + .oc-card { padding-top: 0; border-top: 0; }
+body.w6 #intro .ic-card.crowd .ic-order > .oc-card { padding-left: 16px; border-left: 1px solid var(--sb-line); }
+body.w6 #intro .ic-card.crowd .ic-order > .oc-card:first-child,
+body.w6 #intro .ic-card.crowd.c4 .ic-order > .oc-card:nth-child(3) { border-left: 0; padding-left: 0; }
+body.w6 #intro .oc-card.speaking .oc-face img { box-shadow: 0 0 0 4px var(--njg-gold); }

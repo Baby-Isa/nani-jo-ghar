@@ -1499,8 +1499,13 @@
     drawCards(box, introEls, { big: true });
     const card = intro().querySelector(".ic-card");
     card.classList.add("people");
+    // decision 53: several people's orders side by side (one column each, two by two at four), never off the screen
+    const n = box.querySelectorAll(":scope > .oc-card[data-who]").length;
+    card.classList.toggle("crowd", n >= 2);
+    card.classList.toggle("c4", n >= 4);
+    card.style.setProperty("--crowd-cols", String(n >= 4 ? 2 : Math.max(1, n)));
     // a long order: the pop-up lays its items out in two columns rather than running off the screen
-    card.classList.toggle("wide", box.querySelectorAll(".oc-row").length > 8);
+    card.classList.toggle("wide", n < 2 && box.querySelectorAll(".oc-row").length > 8);
   }
   /** The order card's own speaker: the whole order, read along on the card. */
   M.sayCard = function () {
