@@ -21,7 +21,20 @@
  *   g.talk(on)              her face bobs while she talks
  *   g.replaying(on)         her face's badge lights while her line is heard again
  *   g.el                    the box
+ *   g.strip(on)             R4: the asker is the guide (Nani's pantry list): the box keeps only its tools (no second
+ *                           face, no line); the host shows the line as the card's top strip
  *   NaniGuide.muted()       is her voice off? (every mode asks this before she speaks)
+ *
+ * The step rules (decision 55, rules R1-R4 of docs/design-language/guide-and-card.md), one for every mode:
+ *   const st = NaniGuide.stepper({show(html, {rec}), clear(), speak(step) -> Promise, glow(step, on), level() -> n,
+ *                                 pauseMs(level) -> ms, onHelp(step)})
+ *   st.open({html, rec, line, ...})   a step opens: ONE line, the next step only (never the whole card). Level 1:
+ *                           shown and said at once, the glow after the pause. Level 2+: nothing until the pause,
+ *                           then the line, said, with the glow (the first step too). Help, not a giveaway.
+ *   st.close()              the step ended: its line clears (a spoken line never outstays its step), the glow goes
+ *   st.poke()               the child did something: the pause starts again
+ *   st.help()               the help now (the bulb, a wrong tap): line, voice and glow
+ *   st.current              the open step, or null
  *   NaniGuide.setMuted(v)   NaniGuide.onMute(fn) -> unsubscribe
  *
  * Plain <script>: window.NaniGuide (and Shared.guide). Styles: css/shared/guide.css.
@@ -67,6 +80,76 @@
     });
   };
   G.onMute = (fn) => (listeners.push(fn), () => listeners.splice(listeners.indexOf(fn), 1));
+
+  /** The pause before help, by level (ms): about 5 s at level 1 (the glow), a little longer from level 2. */
+  G.PAUSE = [5000, 6000, 7000, 8000];
+  G.stepper = function (o = {}) {
+    const lv = () => Math.max(1, Number(o.level ? o.level() : 1) || 1);
+    const pause = (l) => (o.pauseMs ? o.pauseMs(l) : G.PAUSE[Math.min(G.PAUSE.length, l) - 1]);
+    let cur = null;
+    let timer = null;
+    let shownAt = 0;
+    const call = (fn, ...a) => {
+      try {
+        return fn ? fn(...a) : undefined;
+      } catch (e) {
+        return undefined;
+      }
+    };
+    const stopTimer = () => (clearTimeout(timer), (timer = null));
+    const show = (s) => {
+      if (!s || s.shown) return;
+      s.shown = true;
+      shownAt = Date.now();
+      call(o.show, s.html, { rec: !!s.rec });
+    };
+    const say = (s) => Promise.resolve(G.muted() ? null : call(o.speak, s)).catch(() => {});
+    const helpNow = (s) => {
+      if (!s || s !== cur) return;
+      show(s);
+      s.helped = true;
+      call(o.onHelp, s);
+      say(s);
+      call(o.glow, s, true);
+    };
+    const arm = () => {
+      stopTimer();
+      const s = cur;
+      // helpAfter false: the host's own hesitation help runs this step (the line is still the box's)
+      if (!s || s.helped || s.helpAfter === false) return;
+      timer = setTimeout(() => helpNow(s), pause(lv()));
+    };
+    const st = {
+      get current() {
+        return cur;
+      },
+      open(step) {
+        st.close();
+        cur = Object.assign({ shown: false, helped: false }, step);
+        if (lv() <= 1 && !cur.quiet) {
+          show(cur);
+          say(cur);
+        } else call(o.clear);
+        arm();
+        return cur;
+      },
+      close() {
+        stopTimer();
+        const s = cur;
+        cur = null;
+        if (s) call(o.glow, s, false);
+        call(o.clear);
+      },
+      poke() {
+        if (cur && !cur.helped) arm();
+      },
+      help() {
+        helpNow(cur);
+      },
+      shownFor: () => (cur && cur.shown ? Date.now() - shownAt : 0),
+    };
+    return st;
+  };
 
   const SPEAKER = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="ng-waves" d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path class="ng-slash" d="M16 9l6 6M22 9l-6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`;
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -136,6 +219,9 @@
       },
       replaying(on) {
         face.classList.toggle("on", !!on);
+      },
+      strip(on) {
+        el.classList.toggle("ng-strip", !!on);
       },
       destroy() {
         off();

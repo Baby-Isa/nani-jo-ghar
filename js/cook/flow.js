@@ -407,8 +407,39 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         .filter((r) => r.miss)
         .forEach((r) => missed.push(r.no || r.head ? r.line : r.said || Lang.line(Lang.frames().any, r.phrase)))
     );
-    return missed.length && missed.length <= 3 ? Lang.join(missed) : ctx.orderLine;
+    // decision 54: only the rows that went wrong, never the whole order again ("I want…")
+    return missed.length ? Lang.join(missed.slice(0, 3)) : null;
   }
+
+  /**
+   * Decision 54 (CK-22, T4, T7): the closing line is the chef's call-back of what was made, a list in the engine's own
+   * frames ("Chai. Ne daar. Ne atto."; chai per person: "Aadu waari chai. Ne chai."), then Shabash. Never the order
+   * again as "I want…". The rows are the card's (the same source as the order, F10).
+   */
+  function callBack(ctx) {
+    const phrases = [];
+    (ctx.ladders || []).forEach((L) => {
+      const people = L.sections.filter((s) => s.for);
+      if (people.length) {
+        // one per person: their dish by its kind ("aadu waari chai"), else the dish itself
+        people.forEach((s) => {
+          const h = s.head;
+          const dish = L.head && L.head.phrase;
+          if (h && h.phrase && dish && h.ids.length && !(L.head.ids || []).some((id) => h.ids.includes(id)) && Lang.hasLine("waari") && L.recipe === "chai") phrases.push(Lang.line("waari", h.phrase));
+          else if (dish) phrases.push(dish);
+        });
+        return;
+      }
+      const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && r.phrase);
+      if (rows.length) rows.forEach((r) => phrases.push(r.phrase));
+      else if (L.head && L.head.phrase) phrases.push(L.head.phrase);
+    });
+    if (!phrases.length) return null;
+    const F = Lang.frames();
+    return Lang.join(phrases.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
+  }
+  Cook.callBack = callBack;
+  const shabash = () => Lang.say({ fn: "Exclaim", x: "intj.well-done" });
 
   /* ---------------- the end of a round: the shared screen (UX 9) ----------------
    * js/shared/results.js: page 1 is three badges (time with the personal best
@@ -572,13 +603,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     drawServed(ctx, Cook.CHARS[who].x);
     Cook.sfx.pop();
     await Cook.wait(600);
-    const understood = ctx.listenMiss === 0;
-    // what they asked for that didn't happen: Nani says "Arre re" and the
-    // customer says the Kutchi again (the teaching moment)
-    if (!understood) {
-      S().setMood(who, "neutral");
-      await S().talk("nani", Lang.line("oops"), { ms: 900 });
-      await S().talk(who, recast(ctx), { after: "neutral" });
+    // decision 54: Nani calls back what was made; a row that went wrong (a station not yet redoing on the spot,
+    // decision 51) is said again by the customer, that row only (never the whole order as "I want…")
+    const missedRows = (ctx.ladders || []).some((L) => Cook.Order.rows(L, { all: true }).some((r) => r.miss));
+    const back = callBack(ctx);
+    if (back) await S().talk("nani", back, { after: "happy" });
+    if (missedRows && who !== "nani") {
+      const again = recast(ctx);
+      if (again) await S().talk(who, again, { after: "neutral" });
     }
     // the round, scored and paid by the core (Score.finish: the badges, the best, the coins, the story line)
     const game = order.dishes.map((d) => d.recipe).join("+");
@@ -603,11 +635,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     Cook.writeSave();
     await Cook.wait(900);
     if (who === "nani") {
-      // Nani's own list (the pantry): just her thanks; she stays in her kitchen
-      await S().talk("nani", Lang.line("thanks"), { after: "happy" });
+      // Nani's own list (the pantry, T4): Shabash and her happy face; she stays in her kitchen
+      await S().talk("nani", shabash(), { after: "happy" });
     } else {
-      await S().talk(who, Lang.line("thanks"), { after: pleased ? "happy" : "neutral" });
-      await S().talk("nani", Lang.line("welcome"), { ms: 900 });
+      // T7: Shabash from Nani, then the customer's thank you (the family's English words, G6) and khuda-fis
+      await S().talk("nani", shabash(), { after: "happy", ms: 900 });
+      await S().talk(who, Lang.line("thanks"), { after: "happy" });
       await S().talk(who, Lang.line("bye"));
     }
     UI.hideBubble();
@@ -947,7 +980,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       } else openLadders(ctx, [what]);
       ctx.lines = [{ line: ctx.orderLine }];
       uiStage({ all: true });
-      UI.mission.open({ who: "nana", name: "Nana (lab)", ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
+      // R4: Nani's own list (the pantry) is her card, with her face; every other station's is Nana's order
+      const asker = !Array.isArray(what) && what && (what.who === "nani" || what.recipe === "pantry") ? "nani" : "nana";
+      order.who = asker;
+      UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana (lab)", ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
       // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
       ctx.intro = UI.mission.introduce()
         .catch(() => {})
@@ -964,6 +1000,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // close its rows: they tick now it's finished, as a dish's do (the kept stations tick their own)
     if (!keptKeys().includes(key)) (ctx.ladders || []).forEach((L, i) => UI.mission.finishDish(i));
     const tEnd = Date.now();
+    // decision 54 (T4, T7): the chef's call-back of what was made, then Shabash, in the guide's box (she's off
+    // screen at a station; her card's strip in the pantry); a part tried on its own has nothing to call back
+    if (keptKeys().includes(key) || /^recipe:/.test(key)) {
+      const back = callBack(ctx);
+      if (back) await UI.guideSay(back).catch(() => {});
+      await UI.guideSay(shabash(), { ms: 900 }).catch(() => {});
+    }
     // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
     // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)
     UI.mission.stamp();

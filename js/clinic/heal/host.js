@@ -93,7 +93,8 @@
   };
 
   // the doctor's short interjections (E27): the engine's phrases, by the clinic's old ids (its aliases)
-  const INTERJECT = { shabash: "cl-shabash", arre: "cl-arre", achija: "cl-achija", hedo: "cl-hedo" };
+  // R6 (decision 61): "arre" is not a family word: it is a soft sound now, once a round, at level 1 only
+  const INTERJECT = { shabash: "cl-shabash", achija: "cl-achija", hedo: "cl-hedo" };
   const LANG = () => global.ClinicLang;
 
   /** The patient API a game receives (contract + additions). */
@@ -472,6 +473,11 @@
       onboardOn: opts.onboard !== false,
       taught, // D13: the guided first round (nothing scored)
       interject(k) {
+        if (k === "arre") {
+          if (level <= 1 && !ctx.oopsed && global.Sfx && global.Sfx.play) global.Sfx.play("oops");
+          ctx.oopsed = true;
+          return Promise.resolve();
+        }
         const l = INTERJECT[k] ? LANG().show(LANG().phrase(INTERJECT[k])) : HOST.line(k, data);
         return Kit.Voice.say(l, { who: "doctor" });
       },
