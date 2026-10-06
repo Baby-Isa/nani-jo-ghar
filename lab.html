@@ -15,14 +15,14 @@
   (passed to every stage as ctx.params), &nonav=1 (the end screen's buttons don't leave the page: tests).
   labs.html lists every lab entry (build/gen_labs.mjs). The test hook is window.njgTest (target-model § 8.1).
 -->
-<link rel="stylesheet" href="css/shared/app.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/app.css?v=20261006T012012Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/shared/results.css?v=20261001T045807Z">
-<link rel="stylesheet" href="css/shared/onboard.css?v=20261001T045807Z">
-<link rel="stylesheet" href="css/shared/guide.css?v=20261001T045807Z">
-<link rel="stylesheet" href="css/shared/order-card.css?v=20261001T045807Z">
-<link rel="stylesheet" href="css/shared/buttons.css?v=20261001T045807Z">
+<link rel="stylesheet" href="css/shared/results.css?v=20261006T012012Z">
+<link rel="stylesheet" href="css/shared/onboard.css?v=20261006T012012Z">
+<link rel="stylesheet" href="css/shared/guide.css?v=20261006T012012Z">
+<link rel="stylesheet" href="css/shared/order-card.css?v=20261006T012012Z">
+<link rel="stylesheet" href="css/shared/buttons.css?v=20261006T012012Z">
 <style>
   /* the lab page's own chrome only: the host's frame ({root, play, own}, R3a) fills the screen; the play area is where a stage draws */
   html, body { margin: 0; height: 100%; background: #f3e7d3; }
@@ -37,34 +37,142 @@
 <script type="importmap" data-njg="core">
 {
  "imports": {
-  "#core/content.js": "./js/core/content.js?v=20261001T045807Z",
-  "./js/core/content.js": "./js/core/content.js?v=20261001T045807Z",
-  "#core/context.js": "./js/core/context.js?v=20261001T045807Z",
-  "./js/core/context.js": "./js/core/context.js?v=20261001T045807Z",
-  "#core/env.js": "./js/core/env.js?v=20261001T045807Z",
-  "./js/core/env.js": "./js/core/env.js?v=20261001T045807Z",
-  "#core/index.js": "./js/core/index.js?v=20261001T045807Z",
-  "./js/core/index.js": "./js/core/index.js?v=20261001T045807Z",
-  "#core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
-  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261001T045807Z",
-  "#core/log.js": "./js/core/log.js?v=20261001T045807Z",
-  "./js/core/log.js": "./js/core/log.js?v=20261001T045807Z",
-  "#core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
-  "./js/core/progress.js": "./js/core/progress.js?v=20261001T045807Z",
-  "#core/save.js": "./js/core/save.js?v=20261001T045807Z",
-  "./js/core/save.js": "./js/core/save.js?v=20261001T045807Z",
-  "#core/score.js": "./js/core/score.js?v=20261001T045807Z",
-  "./js/core/score.js": "./js/core/score.js?v=20261001T045807Z",
-  "#core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
-  "./js/core/settings.js": "./js/core/settings.js?v=20261001T045807Z",
-  "#core/types.js": "./js/core/types.js?v=20261001T045807Z",
-  "./js/core/types.js": "./js/core/types.js?v=20261001T045807Z",
-  "#core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
-  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261001T045807Z",
-  "#core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
-  "./js/core/voice.js": "./js/core/voice.js?v=20261001T045807Z",
-  "#core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z",
-  "./js/core/wallet.js": "./js/core/wallet.js?v=20261001T045807Z"
+  "#clinic/main.js": "./js/clinic/main.js?v=20261006T012012Z",
+  "./js/clinic/main.js": "./js/clinic/main.js?v=20261006T012012Z",
+  "#cook/app.js": "./js/cook/app.js?v=20261006T012012Z",
+  "./js/cook/app.js": "./js/cook/app.js?v=20261006T012012Z",
+  "#cook/art.js": "./js/cook/art.js?v=20261006T012012Z",
+  "./js/cook/art.js": "./js/cook/art.js?v=20261006T012012Z",
+  "#cook/boot.js": "./js/cook/boot.js?v=20261006T012012Z",
+  "./js/cook/boot.js": "./js/cook/boot.js?v=20261006T012012Z",
+  "#cook/coach.js": "./js/cook/coach.js?v=20261006T012012Z",
+  "./js/cook/coach.js": "./js/cook/coach.js?v=20261006T012012Z",
+  "#cook/dom.js": "./js/cook/dom.js?v=20261006T012012Z",
+  "./js/cook/dom.js": "./js/cook/dom.js?v=20261006T012012Z",
+  "#cook/flow.js": "./js/cook/flow.js?v=20261006T012012Z",
+  "./js/cook/flow.js": "./js/cook/flow.js?v=20261006T012012Z",
+  "#cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261006T012012Z",
+  "./js/cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261006T012012Z",
+  "#cook/hands.js": "./js/cook/hands.js?v=20261006T012012Z",
+  "./js/cook/hands.js": "./js/cook/hands.js?v=20261006T012012Z",
+  "#cook/index.js": "./js/cook/index.js?v=20261006T012012Z",
+  "./js/cook/index.js": "./js/cook/index.js?v=20261006T012012Z",
+  "#cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261006T012012Z",
+  "./js/cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261006T012012Z",
+  "#cook/life.js": "./js/cook/life.js?v=20261006T012012Z",
+  "./js/cook/life.js": "./js/cook/life.js?v=20261006T012012Z",
+  "#cook/main.js": "./js/cook/main.js?v=20261006T012012Z",
+  "./js/cook/main.js": "./js/cook/main.js?v=20261006T012012Z",
+  "#cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261006T012012Z",
+  "./js/cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261006T012012Z",
+  "#cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261006T012012Z",
+  "./js/cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261006T012012Z",
+  "#cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261006T012012Z",
+  "./js/cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261006T012012Z",
+  "#cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261006T012012Z",
+  "./js/cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261006T012012Z",
+  "#cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261006T012012Z",
+  "./js/cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261006T012012Z",
+  "#cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261006T012012Z",
+  "./js/cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261006T012012Z",
+  "#cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261006T012012Z",
+  "./js/cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261006T012012Z",
+  "#cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261006T012012Z",
+  "./js/cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261006T012012Z",
+  "#cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261006T012012Z",
+  "./js/cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261006T012012Z",
+  "#cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261006T012012Z",
+  "./js/cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261006T012012Z",
+  "#cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261006T012012Z",
+  "./js/cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261006T012012Z",
+  "#cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261006T012012Z",
+  "./js/cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261006T012012Z",
+  "#cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261006T012012Z",
+  "./js/cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261006T012012Z",
+  "#cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261006T012012Z",
+  "./js/cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261006T012012Z",
+  "#cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261006T012012Z",
+  "./js/cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261006T012012Z",
+  "#cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261006T012012Z",
+  "./js/cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261006T012012Z",
+  "#cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261006T012012Z",
+  "./js/cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261006T012012Z",
+  "#cook/mount.js": "./js/cook/mount.js?v=20261006T012012Z",
+  "./js/cook/mount.js": "./js/cook/mount.js?v=20261006T012012Z",
+  "#cook/ns.js": "./js/cook/ns.js?v=20261006T012012Z",
+  "./js/cook/ns.js": "./js/cook/ns.js?v=20261006T012012Z",
+  "#cook/page.js": "./js/cook/page.js?v=20261006T012012Z",
+  "./js/cook/page.js": "./js/cook/page.js?v=20261006T012012Z",
+  "#cook/station-lib.js": "./js/cook/station-lib.js?v=20261006T012012Z",
+  "./js/cook/station-lib.js": "./js/cook/station-lib.js?v=20261006T012012Z",
+  "#cook/stations.js": "./js/cook/stations.js?v=20261006T012012Z",
+  "./js/cook/stations.js": "./js/cook/stations.js?v=20261006T012012Z",
+  "#cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261006T012012Z",
+  "./js/cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261006T012012Z",
+  "#cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261006T012012Z",
+  "./js/cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261006T012012Z",
+  "#cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261006T012012Z",
+  "./js/cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261006T012012Z",
+  "#cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261006T012012Z",
+  "./js/cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261006T012012Z",
+  "#cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261006T012012Z",
+  "./js/cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261006T012012Z",
+  "#cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261006T012012Z",
+  "./js/cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261006T012012Z",
+  "#cook/zone.js": "./js/cook/zone.js?v=20261006T012012Z",
+  "./js/cook/zone.js": "./js/cook/zone.js?v=20261006T012012Z",
+  "#core/content.js": "./js/core/content.js?v=20261006T012012Z",
+  "./js/core/content.js": "./js/core/content.js?v=20261006T012012Z",
+  "#core/context.js": "./js/core/context.js?v=20261006T012012Z",
+  "./js/core/context.js": "./js/core/context.js?v=20261006T012012Z",
+  "#core/env.js": "./js/core/env.js?v=20261006T012012Z",
+  "./js/core/env.js": "./js/core/env.js?v=20261006T012012Z",
+  "#core/index.js": "./js/core/index.js?v=20261006T012012Z",
+  "./js/core/index.js": "./js/core/index.js?v=20261006T012012Z",
+  "#core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261006T012012Z",
+  "./js/core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261006T012012Z",
+  "#core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261006T012012Z",
+  "./js/core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261006T012012Z",
+  "#core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261006T012012Z",
+  "./js/core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261006T012012Z",
+  "#core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261006T012012Z",
+  "./js/core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261006T012012Z",
+  "#core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261006T012012Z",
+  "./js/core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261006T012012Z",
+  "#core/lang/index.js": "./js/core/lang/index.js?v=20261006T012012Z",
+  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261006T012012Z",
+  "#core/log.js": "./js/core/log.js?v=20261006T012012Z",
+  "./js/core/log.js": "./js/core/log.js?v=20261006T012012Z",
+  "#core/progress.js": "./js/core/progress.js?v=20261006T012012Z",
+  "./js/core/progress.js": "./js/core/progress.js?v=20261006T012012Z",
+  "#core/save.js": "./js/core/save.js?v=20261006T012012Z",
+  "./js/core/save.js": "./js/core/save.js?v=20261006T012012Z",
+  "#core/score.js": "./js/core/score.js?v=20261006T012012Z",
+  "./js/core/score.js": "./js/core/score.js?v=20261006T012012Z",
+  "#core/settings.js": "./js/core/settings.js?v=20261006T012012Z",
+  "./js/core/settings.js": "./js/core/settings.js?v=20261006T012012Z",
+  "#core/types.js": "./js/core/types.js?v=20261006T012012Z",
+  "./js/core/types.js": "./js/core/types.js?v=20261006T012012Z",
+  "#core/unlocks.js": "./js/core/unlocks.js?v=20261006T012012Z",
+  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261006T012012Z",
+  "#core/voice.js": "./js/core/voice.js?v=20261006T012012Z",
+  "./js/core/voice.js": "./js/core/voice.js?v=20261006T012012Z",
+  "#core/wallet.js": "./js/core/wallet.js?v=20261006T012012Z",
+  "./js/core/wallet.js": "./js/core/wallet.js?v=20261006T012012Z",
+  "#demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261006T012012Z",
+  "./js/demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261006T012012Z",
+  "#demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261006T012012Z",
+  "./js/demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261006T012012Z",
+  "#demo/main.js": "./js/demo/main.js?v=20261006T012012Z",
+  "./js/demo/main.js": "./js/demo/main.js?v=20261006T012012Z",
+  "#demo/paths.js": "./js/demo/paths.js?v=20261006T012012Z",
+  "./js/demo/paths.js": "./js/demo/paths.js?v=20261006T012012Z",
+  "#shared/host.js": "./js/shared/host.js?v=20261006T012012Z",
+  "./js/shared/host.js": "./js/shared/host.js?v=20261006T012012Z",
+  "#shared/input.js": "./js/shared/input.js?v=20261006T012012Z",
+  "./js/shared/input.js": "./js/shared/input.js?v=20261006T012012Z",
+  "#shared/mode.js": "./js/shared/mode.js?v=20261006T012012Z",
+  "./js/shared/mode.js": "./js/shared/mode.js?v=20261006T012012Z"
  }
 }
 </script>
@@ -72,19 +180,19 @@
 <body>
 <div id="lab-app"><div id="lab-stage"></div></div>
 
-<script src="js/version.js?v=20261001T045807Z"></script>
+<script src="js/version.js?v=20261006T012012Z"></script>
 <!-- the shared kit, as every game page loads it (the one save is the core's, js/core/save.js: no classic save.js here) -->
-<script src="js/shared/family-voice.js?v=20261001T045807Z"></script>
-<script src="js/shared/uistore.js?v=20261001T045807Z"></script>
-<script src="js/shared/sfx.js?v=20261001T045807Z"></script>
-<script src="js/shared/results.js?v=20261001T045807Z"></script>
-<script src="js/shared/onboard.js?v=20261001T045807Z"></script>
-<script src="js/shared/guide.js?v=20261001T045807Z"></script>
-<script src="js/shared/fit.js?v=20261001T045807Z"></script>
-<script src="js/shared/order-card.js?v=20261001T045807Z"></script>
-<script src="js/shared/buttons.js?v=20261001T045807Z"></script>
-<script src="js/shared/speech.js?v=20261001T045807Z"></script>
-<script src="js/shared/say.js?v=20261001T045807Z"></script>
+<script src="js/shared/family-voice.js?v=20261006T012012Z"></script>
+<script src="js/shared/uistore.js?v=20261006T012012Z"></script>
+<script src="js/shared/sfx.js?v=20261006T012012Z"></script>
+<script src="js/shared/results.js?v=20261006T012012Z"></script>
+<script src="js/shared/onboard.js?v=20261006T012012Z"></script>
+<script src="js/shared/guide.js?v=20261006T012012Z"></script>
+<script src="js/shared/fit.js?v=20261006T012012Z"></script>
+<script src="js/shared/order-card.js?v=20261006T012012Z"></script>
+<script src="js/shared/buttons.js?v=20261006T012012Z"></script>
+<script src="js/shared/speech.js?v=20261006T012012Z"></script>
+<script src="js/shared/say.js?v=20261006T012012Z"></script>
 <script type="module">
   const q = new URLSearchParams(location.search);
   if (!q.has("play")) q.set("play", q.has("arc") ? "story" : "lab");
