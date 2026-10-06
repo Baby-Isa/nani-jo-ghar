@@ -323,7 +323,7 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 - **The engine is the one home of Kutchi knowledge:** every word, form, rule and exception lives in the engine's data; all new information (Mum's answers, recordings, corrections) is fed into it first, and nothing about Kutchi is kept anywhere else. (G27, decision 40)
 
 ### Voices and recordings
-- **Every voice in the product is a real family member;** TTS is test-only, replaced file for file. The child's model reply is Zafar's (boy) or Mum's (girl) for now. (G14, G17)
+- **Every voice in the product is a real family member;** TTS is test-only, replaced file for file. The cast: Mum (Nani); Hannah's grandad (the doctor and older-man voices); Zafar and Hannah (the children's voices). Every clip goes through the clean-up pass (de-noise, level, trimmed silence); new lines are recorded on the tested set-up. (G14, G17, decision 66)
 - **Recording practice:** Mum records long takes saying section IDs, split by silence; Zafar marks every clip OK/?? in `lab/family-audio.html`; only OK clips ship. (G16)
 - **Consent:** contributors know where their voice is used and can have it removed; children's voices never ship and stay on the device. (I15)
 

@@ -22,7 +22,7 @@ Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
 - **Sprint 3:** Mum's Round 5 (*Muke de*, *Muke chai lai de*, "oh oh oh", "ow"…), the fever room tidy.
 
 ## Small decisions
-None yet.
+- 7 Oct: the robot voice test is closed (decision 66): family voices stay; Mum's cleaned clips won. Next: test recording set-ups, then retakes; Hannah's grandad records the doctor and older-man lines; Zafar and Hannah the children.
 
 ## Feedback in
 - 6 Oct, Cook (four voice notes): `docs/feedback/cook-playtest-2026-10-06.md`. About 120 points, 22 decisions waiting (§4), 66 new rows and 10 reopened. 
