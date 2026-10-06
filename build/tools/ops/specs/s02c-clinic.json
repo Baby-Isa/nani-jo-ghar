@@ -1,0 +1,42 @@
+{
+  "name": "S02-C, the clinic: every point from the 6 Oct play (Sprint 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "game redesigns (ear, eye, fever, tooth, diagnosis) on top of Session A's flow; judgement and visual work",
+  "cost": "about $45-55",
+  "stop": "10 Oct 2026, 12:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": ["2", "3", "4", "5 (Clinic)", "6 (UI)"],
+  "read": [
+    "build/reports/s02a-round-flow.md (the shared APIs: redo, next step visible, requests pop-up, guide lines, bulb)",
+    "docs/design-language/guide-and-card.md (approved: rows T22-T34 are yours)",
+    "docs/feedback/clinic-playtest-2026-10-06.md (every point, cause file:line, section 1a)",
+    "docs/decisions.md 51-65; docs/sprints/S02-play-and-fix-cook-clinic.md"
+  ],
+  "owns": [
+    "js/clinic/heal/games/**, js/clinic/stages/** except common.js, js/clinic/figure.js, js/clinic/body.js, js/clinic/pipeline.js, js/clinic/run.js, js/clinic/lang.js",
+    "data/clinic/** (lines through the language engine only)",
+    "css/clinic.css for game-only rules (keep Session A's shared rules)",
+    "lab/clinic-core.html, labs.html (clinic entries)",
+    "build/reports/s02c-clinic.md"
+  ],
+  "readOnly": ["js/shared/**, js/core/**, js/clinic/kit.js, js/clinic/heal/host.js, js/clinic/stages/common.js (Session A's; call them, report any gap)", "js/cook/**, data/cook.json (Session B, running at the same time)", "data/lang/**"],
+  "stubs": "art not made yet (standing patient pose, cloth, wax, drop bottle, toothbrush, fan, bin, boing set, item sprite sheets) arrives from the art run: code takes named asset ids; use current art until then; list the ids in the report",
+  "tasks": [
+    { "do": "The girl's finished art through the whole story: waiting room, diagnosis, send-off, sticker and card faces (other patients keep their art until the girl is settled) (CLN-81, CL1).", "accept": "the clinic morning end to end shows her art at every stage" },
+    { "do": "Lines and bubbles per the table T22-T34: the doctor in bubbles when on screen, in the box when off; patient bubbles at her face (top right in heal games, under her mouth in the eye game); D1 'ask', D2 'find', D3 'check her over' headlines; the doctor names the part on yes; no 'Cold!' at the wash; boing headline 'Time for the jab'; doctor's-room picture button (CLN-85, CLN-86, CLN-92, SH-63).", "accept": "waiting room and D1 at L1 match T23 and T24" },
+    { "do": "Diagnosis: bigger patient, smaller centred dots; a tried dot goes grey after no; moves on by itself on yes; D3 card like sekelo (tool head, parts under it, ticking), the torch zooms to the face by itself, one highlight colour; no swirl icon (CLN-93 to CLN-95).", "accept": "D3 L1: tapping the eye with the torch works first time" },
+    { "do": "Waiting room: six on the bench, nobody standing at any level; pills show faces or speakers, not the called text; clean spacing of circles and boxes (CLN-11, CLN-13, CLN-14, CLN-90).", "accept": "L2 and L5 screenshots: no one standing; no matchable text" },
+    { "do": "Pharmacy: the request pop-up first; a wrong colour never ticks (reproduce with a seed) and is redone; items sit on the belt (CLN-96, CLN-97).", "accept": "seeded wrong colour plaster is rejected and redone" },
+    { "do": "Ear: ghost finger drags the tweezers to a bin; smears left where blobs were pulled; sore skin cleared at the end; drop bottle nozzle down; the hearing test redesign (doctor 'I'm telling you' with dots, 'did you hear', her 'you told me', the child picks for her, wrong means more drops) (CLN-100, CLN-101, T31).", "accept": "ear L1 played through including a wrong pick" },
+    { "do": "Eye: a wrong yes/no shakes red and the doctor names the row with pictures; a misread gets a drop and a right re-read before the tick; outlines inset; the chart drawn in code with a stylised eye, one big item at the top and more smaller ones lower, shrinking clearly, on the lines; 'to the eye test' button bottom right; L1 her word as a fading bubble; water and milk pictures distinct (CLN-106, EY1-EY13).", "accept": "eye L3 with a deliberate wrong judgement behaves as EY13" },
+    { "do": "Fever: one number model (things add or take 2, 3 or 4); what she says, how she looks and the gauge always agree; one green zone for logic and drawing; the mouth thermometer in the tool column; sweat and snowflake icons by her head; window opens and closes with no gust; cue follows the item (CLN-104). Room tidy waits for Sprint 3.", "accept": "fever L2: no 'too cold' while green; barabar only in the zone" },
+    { "do": "Tooth: brush turned into the mouth, following the finger across it; plaque that clears as you brush; mouth less open (art run; current until then); filling off-white, no outline; 'ow' and a buzz outside the line; the square drill on square-edged decay as a trial (CLN-102).", "accept": "tooth L1 and L3 played; square drill visible" },
+    { "do": "Scrape, knee, taste, boing, foot: dabbing cloth asset id; connector line and plasters in the sequence; knee glow ellipse gone, wrap round the knee, more turns; taste holes cleared, the next step cued, liquids that look like what's in them; boing alcohol wipe with motion, a funny jab, a plaster choice; foot water washes the dirt to show the splinter, no flooding (CLN-99, CLN-100, CLN-103, CLN-105, CLN-107).", "accept": "each game played once at L2 without getting stuck" }
+  ],
+  "flows": ["clinic:waiting", "clinic:diagnosis", "clinic:pharmacy", "clinic:sendoff", "clinic:heal-cut", "clinic:heal-knee", "clinic:heal-ear", "clinic:heal-eye"],
+  "shared": false,
+  "port": 8823,
+  "report": "s02c-clinic",
+  "publish": false
+}
