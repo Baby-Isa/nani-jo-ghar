@@ -8,7 +8,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (6 Oct 2026, written by the 5 Oct orchestrator):** Sprint 1 ("remedial and engine", `docs/sprints/S01-remedial-and-engine.md`) is closed: everything is published to `main` (PUBLISH_LINE). Cook and the clinic run on the shared core and the language engine; Cook is a host plug-in; the clinic runs on the girl's finished art; 18 scripts and 9 project skills are in use by default; the docs are rewritten (decisions 28–50). Reports for every session are in `build/reports/`; the final check is `build/reports/s01-review.md`.
+**Where things stand (6 Oct 2026, written by the 5 Oct orchestrator):** Sprint 1 ("remedial and engine", `docs/sprints/S01-remedial-and-engine.md`) is closed: everything is published to `main` (commit `6f6fd16`, version 20261006T012012Z, Pages build succeeded 6 Oct 02:23 UK). Cook and the clinic run on the shared core and the language engine; Cook is a host plug-in; the clinic runs on the girl's finished art; 18 scripts and 9 project skills are in use by default; the docs are rewritten (decisions 28–50). Reports for every session are in `build/reports/`; the final check is `build/reports/s01-review.md`.
 
 **This chat opens Sprint 2** ("play and fix Cook and the clinic", `docs/sprints/S02-play-and-fix-cook-clinic.md`). Run `/sprint` to open it with Zafar:
 1. **Play link:** https://baby-isa.github.io/nani-jo-ghar/labs.html (hard refresh first). What to play:

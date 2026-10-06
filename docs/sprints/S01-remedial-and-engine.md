@@ -42,3 +42,9 @@ To fill at the close: the publish commit, the open rows by mode, the spend. At w
 1. Reports and rules made the sessions repeatable; the engine landed early (4a, 4b) so Cook and the clinic moved onto it before play.
 2. Docs drifted: three layers of status, a decisions log that stopped at 27, 44 "Stale points" boxes. Cost: tokens in every session.
 3. Change: work in sprints, with one file per sprint and `/sprint` to open and close it (decision 49).
+
+
+## Closed 6 Oct 2026, 02:30 UK
+Published to `main` (`6f6fd16`) after the full check (`build/reports/s01-review.md`: 490/493 pages end, 11 findings + 2 stalls fixed by F2, re-check passed).
+
+**Look back:** (1) The engine and the tools landed far faster than estimated; costs ran over on 4b and 4d when scope grew mid-session. (2) Builders kept running hour-long checks; decision 50 now caps them at 15 minutes. (3) Sessions in default permission mode stalled on prompts; launch in auto mode.
