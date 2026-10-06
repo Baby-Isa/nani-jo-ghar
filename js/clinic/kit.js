@@ -514,6 +514,7 @@
     if (this.closed) {
       opts.closed = true;
       opts.onPeek = this.closed.onPeek || null;
+      opts.look = this.closed.look || null; // decision 57: a spoken card's look is a small bulb
       opts.open = !!this.bulbOn; // D11: the bulb opens a closed card for its time
       this.closedSeen = true; // the round had a closed card: the end screen shows the eye badge (D12)
     }
@@ -553,7 +554,7 @@
   };
   /** The closed card (13a, 13c: from level 3 the call is heard, not read): a tap peeks and counts a hint. */
   Kit.Card.prototype.close = function (on = true, o = {}) {
-    this.closed = on ? { onPeek: o.onPeek || null } : null;
+    this.closed = on ? { onPeek: o.onPeek || null, look: o.look || null } : null;
     this.fold = {};
     return this.render();
   };

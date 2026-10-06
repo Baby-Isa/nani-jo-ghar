@@ -379,6 +379,7 @@
   let guide = null;
   let guideKey = null;
   let guideLine = null; // what the box shows now: a line (Kutchi) or null (the instruction)
+  let guideEnglish = null; // the line the bulb is showing in English now
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
   // which data.guide key the box shows now (the station:phase, else the station, else the default)
   const guideEntryKey = () => {
@@ -1191,7 +1192,9 @@
   const OCard = () => global.OrderCard;
   /** A row's words on the card: no full stop at the end (the headline is the sentence; rows are lower case, see the card's CSS). */
   const rowText = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
-  const partNode = (r, gi) => ({ label: rowText(text6(r.line, rowHide(r))), done: !!r.done, no: !!r.no, key: r, gi, next: false });
+  // decision 57 (SH-52): the bulb's English is the full order, numbers too ("two chapati"), whatever the card drops
+  const fullLine = (r) => (mission && mission.english && r.phrase && !r.no ? r.phrase : r.line);
+  const partNode = (r, gi) => ({ label: rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, key: r, gi, next: false });
   /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
   const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
   /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */
@@ -1207,7 +1210,7 @@
     if (r.rec) return { html: esc(r.line.en || Lang.plain(r.line)), rec: true, key: r };
     // the headline is what the person says, always shown (design system 12): its words never fade to
     // dots ("Muke ••• khape." at the grill); the rows below carry the listening
-    return { html: text6(r.cardLine || r.line, () => false), key: r };
+    return { html: text6(mission && mission.english ? r.line : r.cardLine || r.line, () => false), key: r };
   }
   /** Every card of the order: [{data, key, who, rows}] (rows: the ladder rows it shows, for read-along). */
   function orderCards() {
@@ -1249,7 +1252,7 @@
             rowsShown.push(r);
             if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(item(rowText(text6(oneOf(r), rowHide(r))), ps)));
             else {
-              const it = item(rowText(text6(r.line, rowHide(r))), mixes[0] || null);
+              const it = item(rowText(text6(fullLine(r), rowHide(r))), mixes[0] || null);
               it.count = r.qty || 1;
               items.push(it);
             }
@@ -1528,6 +1531,11 @@
   function bulbOn() {
     Cook.sfx.click();
     $("#side").classList.add("english");
+    // SH-57 (decision 57): the bulb flips the guide's line to English too (her box, or her card's strip)
+    if (guide && guideLine && guideLine.en && guideLine.ok !== false) {
+      guideEnglish = guideLine;
+      guide.set(`<span class="en6">${esc(guideLine.en)}</span>`);
+    }
     if (mission && !$("#mission").classList.contains("stamped")) {
       mission.english = true;
       // English for rows still to do is the answer: the accuracy badge (Cook.onHelp "translate")
@@ -1542,6 +1550,10 @@
   function bulbOffOwn() {
     const side = $("#side");
     if (side) side.classList.remove("english");
+    if (guide && guideEnglish) {
+      if (guideLine === guideEnglish) guide.set(raHtml(guideLine));
+      guideEnglish = null;
+    }
     if (mission && mission.english) {
       mission.english = false;
       renderOrder();

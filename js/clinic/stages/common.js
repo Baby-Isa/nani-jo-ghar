@@ -245,11 +245,12 @@
    * `.reading` is the read-along's promise. opts: ordered (one ordered job), closed + onPeek (the closed
    * card: the call is heard, not read; a tap peeks and counts a hint).
    */
-  S.request = function (screen, { title, face, rows, who = "doctor", read = true, ordered = false, closed = false, onPeek = null }) {
+  S.request = function (screen, { title, face, rows, who = "doctor", read = true, ordered = false, closed = false, onPeek = null, look = null }) {
     const card = screen.card;
     card.who = who;
     card.isOrdered = !!ordered;
-    card.closed = closed ? { onPeek } : null;
+    // decision 57 (CLN-91): look "bulb" on a spoken card (the waiting room's call): the small bulb, no counter
+    card.closed = closed ? { onPeek, look } : null;
     card.fold = {};
     card.titleText = title || "";
     card.faceEl = face || S.doctorFace();

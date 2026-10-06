@@ -38,6 +38,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-bulb svg { width: 28px; height: 28px; }
 .cl-bulb.lit { background: #ffe26a; color: #b8860b; box-shadow: 0 0 18px 6px rgba(255, 220, 90, .8); }
 .cl-hint-n { font: 800 var(--njg-t2) var(--cl-head); color: var(--cl-soft); }
+/* decision 57 (CLN-91, W5): no counter beside the bulb (the hints are on the end screen's badge) */
+.cl-hint-n { display: none !important; }
 
 /* ---------- the instruction card ---------- */
 /* the clinic's closed card ends its head with its own "···",

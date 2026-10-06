@@ -168,6 +168,14 @@
   Cook.metWords = () => (P() ? Object.keys(P().all()).filter((id) => P().get(id).seen > 0) : Object.keys(Cook.save.words));
   Cook.labelMode = (id) => ["", "text", "speaker", "speaker", "speaker"][Cook.wordStage(id)];
   Cook.cardHidden = (id) => Cook.wordStage(id) >= 3 && !Cook.isPlaceholder(id);
+  /** How many times a word has been met (heard in an order): decision 57's "the first times it is heard". */
+  Cook.timesHeard = (id) => {
+    if (P()) {
+      const w = P().get(id);
+      return (w && w.seen) || 0;
+    }
+    return (Cook.save.words[id] && Cook.save.words[id].seen) || 0;
+  };
   Cook.paused = false;
   Cook.hintDelay = function (id) {
     // Wave 5 (clarity and calm): hints after a longer hesitation (data.calm.hintMs by word
