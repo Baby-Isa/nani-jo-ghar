@@ -320,3 +320,29 @@ body.w6 #intro .ic-card.wide .oc-item { break-inside: avoid; margin-bottom: 10px
 /* R3a: in the pop-up (a scroll box) the face's 48 px tap area takes its full room, so nothing pokes past the card */
 body.w6 #intro .oc-card .oc-face { margin: 0; }
 body.w6 #intro .oc-card .oc-face::after { inset: 0; }
+
+/* decision 53 (CHAI-15): the requests pop-up with several people: their cards side by side, one column each
+   (two by two at four), so every order is on screen at once */
+body.w6 #intro .ic-card.crowd { width: min(1120px, 94%); max-width: 1120px; }
+body.w6 #intro .ic-card.crowd .ic-order { display: grid; grid-template-columns: repeat(var(--crowd-cols, 2), minmax(0, 1fr)); align-items: start; gap: 16px; }
+body.w6 #intro .ic-card.crowd .ic-order > .oc-card + .oc-card { padding-top: 0; border-top: 0; }
+body.w6 #intro .ic-card.crowd .ic-order > .oc-card { padding-left: 16px; border-left: 1px solid var(--sb-line); }
+body.w6 #intro .ic-card.crowd .ic-order > .oc-card:first-child,
+body.w6 #intro .ic-card.crowd.c4 .ic-order > .oc-card:nth-child(3) { border-left: 0; padding-left: 0; }
+body.w6 #intro .oc-card.speaking .oc-face img { box-shadow: 0 0 0 4px var(--njg-gold); }
+
+/* SH-54 (R5, T20): "served" is a picture stamp on EVERY card of the order (no English word), drawn inside the card so
+   nothing clips it: a gold ring with a covered dish, tilted like a stamp */
+body.w6 #mission .m-stamp { display: none; }
+body.w6 #mission.stamped .oc-card::after {
+  content: ""; position: absolute; z-index: 4; pointer-events: none;
+  right: var(--njg-s2); bottom: var(--njg-s2); width: calc(var(--njg-icon) * 1.6); height: calc(var(--njg-icon) * 1.6);
+  transform: rotate(-12deg); opacity: .9; animation: stampIn .35s cubic-bezier(.2,1.4,.4,1);
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='%23fffaf0' stroke='%23c9962e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='16.5' fill='none' stroke='%23c9962e' stroke-width='1.5'/%3E%3Cpath d='M13 30h22M15.5 30a8.5 8.5 0 0 1 17 0' fill='none' stroke='%23c9962e' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19.5' r='1.8' fill='%23c9962e'/%3E%3C/svg%3E");
+}
+@keyframes stampIn { from { transform: rotate(-12deg) scale(1.6); opacity: 0; } }
+/* SH-53 / SH-55: the one highlight (her row while she talks) is the gold token, drawn INSIDE the row, so no card or
+   sidebar edge can clip it */
+body.w6 #mission .throb { animation: throbIn .7s ease-in-out infinite alternate !important; border-radius: var(--njg-radius); }
+@keyframes throbIn { from { box-shadow: inset 0 0 0 var(--njg-line) var(--njg-gold); background-color: var(--njg-card); } to { box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); background-color: color-mix(in srgb, var(--njg-gold) 16%, var(--njg-card)); } }
+@media (prefers-reduced-motion: reduce) { body.w6 #mission .throb { animation: none !important; box-shadow: inset 0 0 0 var(--njg-line-2) var(--njg-gold); } }

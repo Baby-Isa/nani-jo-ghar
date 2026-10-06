@@ -57,7 +57,7 @@ export const screenHTML = () => `
         <div class="m-who"><div class="m-dish"></div><div class="m-sum"></div></div>
       </div>
       <div class="m-order"></div>
-      <div class="m-stamp">Served!</div>
+      <div class="m-stamp" aria-hidden="true"></div>
     </div>
     <!-- 2. Nani's current line: one short line; at the stations she talks from here, so her words never cover a thing to tap -->
     <div id="live">

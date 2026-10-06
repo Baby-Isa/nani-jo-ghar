@@ -49,6 +49,10 @@
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
  *   OrderCard.render(box, cards, opts)   several cards into box (replaces its content); returns the elements
  *   OrderCard.CHECK                  the small flat gold check (svg)
+ *   OrderCard.redo({max})            decision 51 (CK-23), one rule for every game: a wrong item is redone on the spot.
+ *       r.wrong(key) -> {tries, action}  action "redo" (empty that item, reopen its row, try again with help) or, at
+ *                                    the max'th wrong try (3), "show" (the game shows the right way and moves on)
+ *       r.right(key)  r.tries(key)  r.help(key) (true from the second try: the host glows the next thing)
  *
  * Plain <script>: window.OrderCard (and Shared.orderCard). Styles: css/shared/order-card.css.
  * Nani's guide box is its sibling: js/shared/guide.js (NaniGuide).
@@ -215,6 +219,23 @@
     if (old) old.replaceWith(e);
     else cardEl.insertBefore(e, cardEl.firstChild);
     e.classList.add("new");
+  };
+
+  OC.redo = function ({ max = 3 } = {}) {
+    const tries = new Map();
+    const n = (k) => tries.get(String(k)) || 0;
+    return {
+      max,
+      wrong(key) {
+        const t = n(key) + 1;
+        tries.set(String(key), t);
+        return { tries: t, action: t >= max ? "show" : "redo" };
+      },
+      right: (key) => n(key),
+      tries: n,
+      help: (key) => n(key) >= 1,
+      reset: () => tries.clear(),
+    };
   };
 
   OC.card = function (data, opts = {}) {

@@ -37,7 +37,9 @@
    * says only the thing, and how many is heard in the order (remember it). C3 (decision 41): every
    * station follows it, the Chai tray's sugar included (data/cook.json countRule on every counted recipe).
    */
-  const cardParts = (parts, level, rule) => (rule && level >= 3 ? parts.filter((p) => typeof p !== "number") : parts);
+  // decision 57 (SH-52): a number is written the first times it is heard, at any level (then level 3 drops it)
+  const heardFew = (n) => !!(Cook.timesHeard && Cook.numId && Cook.timesHeard(Cook.numId(n)) < 3);
+  const cardParts = (parts, level, rule) => (rule && level >= 3 ? parts.filter((p) => typeof p !== "number" || heardFew(p)) : parts);
   /**
    * C3 (decision 41, E12): a headline that says a quantity ("Muke trae samosa khape.") follows the rule too: from
    * level 3 the card writes its sentence without the number ("Muke samosa khape."), built from the same frame; the

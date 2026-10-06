@@ -299,16 +299,26 @@
     return ids;
   };
   let voiceTok = 0;
+  const throbbedHidden = new Set();
   UI.voice = async function (line, opts = {}) {
     if (!UI.w6() || !Cook.inStation || !$("#voice")) return UI.say(line, { badge: true }, opts);
     const tok = ++voiceTok;
     card().classList.add("hidden");
     bubble().classList.add("hidden");
-    // the rows she's talking about: every row (on the small card) with one of her words on it
+    // the row she's talking about: ONE highlight at a time (SH-53), the first open row with one of her words on it;
+    // a word hidden on the card is lit only the first time it is hidden (D11: after that the glow would give it away)
     const ids = lineWords(line).filter((id) => !String(id).startsWith("num-") && !String(id).startsWith("lnk-"));
     const els = [];
+    let lit = null;
     sideEls.forEach((list, r) => {
-      if (r && r.ids && r.ids.some((id) => ids.includes(id))) els.push(...list);
+      if (lit || !r || !r.ids || r.done || !r.ids.some((id) => ids.includes(id))) return;
+      if (rowHidden(r)) {
+        const key = r.ids.join("+");
+        if (throbbedHidden.has(key)) return;
+        throbbedHidden.add(key);
+      }
+      lit = r;
+      els.push(...list);
     });
     const cap = $("#voice");
     const onCard = els.length > 0 && !opts.caption;
@@ -379,6 +389,7 @@
   let guide = null;
   let guideKey = null;
   let guideLine = null; // what the box shows now: a line (Kutchi) or null (the instruction)
+  let guideEnglish = null; // the line the bulb is showing in English now
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
   // which data.guide key the box shows now (the station:phase, else the station, else the default)
   const guideEntryKey = () => {
@@ -573,7 +584,20 @@
     if (!pop || !btn) return;
     pop.querySelector(".hp-text").textContent = helpText;
     // the grown-ups' skip lives here now (G7 / CQ15), only while the first-time help runs
-    pop.querySelectorAll(".ob-skip-row").forEach((x) => x.remove());
+    pop.querySelectorAll(".ob-skip-row, .hp-new").forEach((x) => x.remove());
+    // SH-60 (PA5): a grown-ups' "play as new": every word is new again (as a first play), the first-time help too
+    const nw = document.createElement("p");
+    nw.className = "hp-new";
+    nw.innerHTML = `<a href="#">Play as new</a> <span>(for grown-ups: forget the words learned on this device)</span>`;
+    nw.querySelector("a").addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!global.confirm || global.confirm("Play as new? Every word shows again as on a first play, and the first-time help comes back. Pocket money and upgrades stay.")) {
+        Cook.resetSave({ fresh: true });
+        UI.closeHelp();
+        if (mission) renderOrder();
+      }
+    });
+    pop.appendChild(nw);
     if (global.Onboard && global.Onboard.active && global.Onboard.active()) {
       const sk = global.Onboard.skipButton(pop);
       if (sk) sk.addEventListener("skipped", () => UI.closeHelp());
@@ -793,6 +817,9 @@
       level: orderLevel(),
     };
     UI.bulbOff();
+    // SH-59 (C16): a new order starts with the "?" calm (no pulse left over from the last station or a conversation)
+    if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
+    UI.closeHelp();
     // R4: Nani asking herself (the pantry list): one face, her line as the card's strip
     mission.stripMode = who === "nani";
     mission.strip = null;
@@ -977,7 +1004,16 @@
    * the sidebar: on a tap, or after the voice and a short pause.
    */
   M.introduce = async function (opts = {}) {
-    if (!mission || !hasRows(mission)) return;
+    if (!mission) return;
+    // decision 53 (CHAI-15, T6): requests first: everyone's own order comes up front (a cup's rows that waited for
+    // the tray too), each person's card read in turn, lit as they say it (tap to skip); then the game is quiet
+    const people = opts.people !== false && mission.ladders.some((L) => L.sections.some((s) => s.for));
+    if (people) {
+      mission.ladders.forEach((L) => L.sections.forEach((s) => s.for && s.when && (s.shown = true)));
+      mission.peopleSaid = true;
+      renderOrder();
+    }
+    if (!hasRows(mission)) return;
     const m = mission;
     const el = intro();
     const card = el.querySelector(".ic-card");
@@ -1012,8 +1048,27 @@
     Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
     card.classList.add("talk");
     const voice = opts.speak !== false && Lang.hasVoice(m.line);
+    // decision 53: each person says their own card (their face lights: the card is their bubble), one after another
+    let skipped = false;
+    tapped.then(() => (skipped = true));
+    const sayPeople = async () => {
+      const cards = [...intro().querySelectorAll(".ic-order .oc-card[data-who]")];
+      for (const c of cards) {
+        if (skipped || token !== Cook.run) return;
+        const face = c.querySelector(".oc-face");
+        c.classList.add("speaking");
+        if (face) face.classList.add("on");
+        try {
+          await readAlong(c._parts ? c._parts() : [], { min: 700 });
+        } finally {
+          c.classList.remove("speaking");
+          if (face) face.classList.remove("on");
+        }
+        await Cook.wait(160);
+      }
+    };
     // Wave 6: read along: each part lights up on the card as it's said
-    const said = UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
+    const said = people && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
     const talk = said.then(() => {
       card.classList.remove("talk");
       return Cook.wait(opts.pause != null ? opts.pause : 1400);
@@ -1073,6 +1128,7 @@
     }
   };
   M.introOpen = introOpen;
+  M.peopleSaid = () => !!(mission && mission.peopleSaid);
 
   /* ================= Wave 6: cards, read-along, the light bulb ================= */
   /*
@@ -1162,7 +1218,9 @@
   const OCard = () => global.OrderCard;
   /** A row's words on the card: no full stop at the end (the headline is the sentence; rows are lower case, see the card's CSS). */
   const rowText = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
-  const partNode = (r, gi) => ({ label: rowText(text6(r.line, rowHide(r))), done: !!r.done, no: !!r.no, key: r, gi, next: false });
+  // decision 57 (SH-52): the bulb's English is the full order, numbers too ("two chapati"), whatever the card drops
+  const fullLine = (r) => (mission && mission.english && r.phrase && !r.no ? r.phrase : r.line);
+  const partNode = (r, gi) => ({ label: rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, key: r, gi, next: false });
   /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
   const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
   /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */
@@ -1178,7 +1236,7 @@
     if (r.rec) return { html: esc(r.line.en || Lang.plain(r.line)), rec: true, key: r };
     // the headline is what the person says, always shown (design system 12): its words never fade to
     // dots ("Muke ••• khape." at the grill); the rows below carry the listening
-    return { html: text6(r.cardLine || r.line, () => false), key: r };
+    return { html: text6(mission && mission.english ? r.line : r.cardLine || r.line, () => false), key: r };
   }
   /** Every card of the order: [{data, key, who, rows}] (rows: the ladder rows it shows, for read-along). */
   function orderCards() {
@@ -1220,7 +1278,7 @@
             rowsShown.push(r);
             if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(item(rowText(text6(oneOf(r), rowHide(r))), ps)));
             else {
-              const it = item(rowText(text6(r.line, rowHide(r))), mixes[0] || null);
+              const it = item(rowText(text6(fullLine(r), rowHide(r))), mixes[0] || null);
               it.count = r.qty || 1;
               items.push(it);
             }
@@ -1470,8 +1528,13 @@
     drawCards(box, introEls, { big: true });
     const card = intro().querySelector(".ic-card");
     card.classList.add("people");
+    // decision 53: several people's orders side by side (one column each, two by two at four), never off the screen
+    const n = box.querySelectorAll(":scope > .oc-card[data-who]").length;
+    card.classList.toggle("crowd", n >= 2);
+    card.classList.toggle("c4", n >= 4);
+    card.style.setProperty("--crowd-cols", String(n >= 4 ? 2 : Math.max(1, n)));
     // a long order: the pop-up lays its items out in two columns rather than running off the screen
-    card.classList.toggle("wide", box.querySelectorAll(".oc-row").length > 8);
+    card.classList.toggle("wide", n < 2 && box.querySelectorAll(".oc-row").length > 8);
   }
   /** The order card's own speaker: the whole order, read along on the card. */
   M.sayCard = function () {
@@ -1494,6 +1557,11 @@
   function bulbOn() {
     Cook.sfx.click();
     $("#side").classList.add("english");
+    // SH-57 (decision 57): the bulb flips the guide's line to English too (her box, or her card's strip)
+    if (guide && guideLine && guideLine.en && guideLine.ok !== false) {
+      guideEnglish = guideLine;
+      guide.set(`<span class="en6">${esc(guideLine.en)}</span>`);
+    }
     if (mission && !$("#mission").classList.contains("stamped")) {
       mission.english = true;
       // English for rows still to do is the answer: the accuracy badge (Cook.onHelp "translate")
@@ -1508,6 +1576,10 @@
   function bulbOffOwn() {
     const side = $("#side");
     if (side) side.classList.remove("english");
+    if (guide && guideEnglish) {
+      if (guideLine === guideEnglish) guide.set(raHtml(guideLine));
+      guideEnglish = null;
+    }
     if (mission && mission.english) {
       mission.english = false;
       renderOrder();
@@ -1705,6 +1777,25 @@
       (counted ? rows.find(num) : null);
     if (r) r.miss = true;
     return r;
+  };
+  /**
+   * Decision 51 (CK-23): a wrong item is redone on the spot: its rows open again (opts.for: one person's), the first
+   * try's mark (r.miss) kept for the end review. Returns the rows reopened.
+   */
+  M.reopen = function (ids, dish = 0, opts = {}) {
+    const L = ladderFor(dish);
+    if (!L) return [];
+    const want = ids == null ? null : [].concat(ids);
+    const rows = Order()
+      .rows(L, { all: true })
+      .filter((r) => !r.head && (!opts.for || r.for === opts.for) && (!want || r.ids.some((id) => want.includes(id))));
+    rows.forEach((r) => {
+      r.done = false;
+      r.got = 0;
+    });
+    if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
+    renderOrder();
+    return rows;
   };
   /** The next open step went wrong (an out-of-order pick). */
   M.missNext = function (dish = 0) {
@@ -2036,10 +2127,18 @@
     drawTally();
   };
   let doneResolve = null;
+  let doneGlowT = null;
   UI.done = function (opts = {}) {
     const b = $("#done-btn");
     b.classList.remove("hidden");
     b.classList.toggle("glow", !!opts.glow);
+    // SH-58 (C8, D5): when the ✓ is the only thing left it glows after a short beat (the first plays of a station:
+    // its first five rounds), not only in a guided round
+    clearTimeout(doneGlowT);
+    const st = (Cook.ctx && Cook.ctx.order && Cook.ctx.order.dishes && (Cook.ctx.order.dishes[Cook.ctx.dishAt || 0] || {}).recipe) || "lab";
+    const plays = (Cook.save.donePlays = Cook.save.donePlays || {});
+    if (opts.glow !== false && (plays[st] || 0) < 5) doneGlowT = setTimeout(() => !b.classList.contains("hidden") && b.classList.add("glow"), 2000 / (Cook.speed || 1));
+    plays[st] = (plays[st] || 0) + 1;
     return new Promise((resolve) => {
       doneResolve = resolve;
     });
@@ -2067,6 +2166,7 @@
     goResolve = null;
   };
   UI.hideDone = function () {
+    clearTimeout(doneGlowT);
     $("#done-btn").classList.add("hidden");
     doneResolve = null;
   };

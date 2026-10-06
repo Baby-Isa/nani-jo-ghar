@@ -1048,3 +1048,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
   #panel > .shop-grid .shop-item.pic { grid-template-columns: auto minmax(0, 1fr); justify-items: start; padding: var(--njg-s1) var(--njg-s2); }
   #panel > .shop-grid .shop-item.pic .shop-img, #panel > .shop-grid .shop-item.pic .shop-img img { width: var(--njg-tap); height: var(--njg-tap); }
 }
+
+/* SH-60: the grown-ups' "play as new" in the "?" pop-up (English for grown-ups only lives here) */
+#help-pop .hp-new { margin: var(--njg-s2, 8px) 0 0; font-size: 14px; color: #7a6558; }
+#help-pop .hp-new a { font-weight: 800; color: #6b4a2a; }

@@ -557,10 +557,9 @@
      * The host writes the count (ctx.tally's chip, and at level 1 the card's row, said aloud: G6), so
      * nothing is drawn here: at level 3 the count is heard only, and said here. S.count(null) is a no-op.
      */
-    S.count = (n, o = {}) => {
-      if (n == null) return;
-      if (ctx.level >= 3 && HS.num(n) && Voice && !o.silent) Voice.say(Lg().num(n, { cap: true }), { who: "doctor", noBubble: true });
-    };
+    // decision 41 (E12, EY11): counting along is level 1 only (the host says it); from level 3 nothing is written and
+    // nothing is counted aloud: the number is heard only in the request
+    S.count = () => {};
 
     /**
      * D5 (SH-38): close a step by itself once it can (level 1 at the count): test() -> true (now), false (wait a

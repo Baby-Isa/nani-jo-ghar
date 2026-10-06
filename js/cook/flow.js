@@ -98,6 +98,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // item, an extra one), each a red slot on the accuracy badge; when the round started
       strays: 0,
       t0: null,
+      // decision 51 (CK-23): a wrong item is redone on the spot, at most three tries, then the game shows the right way
+      redo: global.OrderCard && global.OrderCard.redo ? global.OrderCard.redo({ max: 3 }) : null,
     };
     Cook.ctx = ctx;
     ctx.listen = (ok, why) => {
@@ -331,6 +333,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ctx.steps = order.dishes.flatMap(chipsFor);
     const name = who === "nani" ? "Nani" : Cook.data.customers[who].name;
     uiStage();
+    UI.hideGist(); // SH-59: no "?" pulse carried into the greeting (a conversation) or the new order
 
     if (!demo && who === "nani") {
       // Nani asks herself (the pantry): she's already here, no small talk
@@ -343,6 +346,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (Math.random() < 0.35) await exchange(who, EX("howareyou"));
       // the order card is always the short form (Sidebar v2), so the polite ask can come first at any level
       if (Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
+      // decision 53 (CHAI-15): everyone who orders comes in before the requests pop-up (the chai tray's other cups)
+      const others = [...new Set(order.dishes.flatMap((d) => (d.cups || []).map((c) => c.who)))].filter((w) => w && w !== who && w !== "nani" && Cook.CHARS[w] && !S().chars[w]);
+      const base = Cook.CHARS[who] ? Cook.CHARS[who].x : 940;
+      others.forEach((w, i) => S().addChar(w, { enter: true, x: Math.min(1460, base + 250 * (i + 1)) }));
+      if (others.length) await Cook.wait(900);
     }
     // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
     UI.hideBubble();
@@ -353,6 +361,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     } finally {
       stop();
     }
+    ctx.requestsSaid = !!(UI.mission.peopleSaid && UI.mission.peopleSaid());
     if (!demo) startPatience(order);
     ctx.t0 = Date.now();
     if (!demo) {
@@ -532,7 +541,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const base = { id: w.id, kutchi: w.kutchi, cell: w.cell, english: Cook.english(w.id), toCheck: !!w.check || undefined };
       const bad = missed.has(w.id);
       if (bad) out.push(Object.assign({}, base, { right: false }));
-      if (!bad || (rightSomewhere.has(w.id) && !ctx.wordMiss.has(w.id))) out.push(Object.assign({}, base, { right: true }));
+      if (!bad || rightSomewhere.has(w.id)) out.push(Object.assign({}, base, { right: true }));
     });
     return out;
   }
@@ -645,6 +654,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     UI.hideBubble();
     if (who !== "nani") await S().leaveChar(who);
+    // the others who came in with the order (decision 53) go too
+    for (const w of Object.keys(S().chars || {})) if (w !== "nani") await S().leaveChar(w);
     // Wave 6b: the shared end-of-round screen (time, accuracy, hints; then the words)
     await roundEnd(ctx, { scored });
     state.ordersServed = (state.ordersServed || 0) + 1;
@@ -763,7 +774,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Cook.PIC = PIC;
   const coinsHtml = (n, cls = "") => `<span class="pill coins ${cls}"><i class="coin-dot"></i>${n}</span>`;
   /** A picture button (its label is for screen readers and the grown-ups, never written for the child). */
-  const picBtn = (id, pic, label, cls = "") => `<button class="btn pic-btn ${cls}" id="${id}" type="button" aria-label="${UI.esc(label)}" title="${UI.esc(label)}">${PIC[pic]}</button>`;
+  // non-negotiable 8 (S02-A): the shared action button (css/shared/buttons.css .njg-act), the end screen's look
+  const picBtn = (id, pic, label, cls = "") => `<button class="njg-btn njg-act pic-btn ${cls.replace(/\bbig\b/, "")}" id="${id}" type="button" aria-label="${UI.esc(label)}" title="${UI.esc(label)}">${PIC[pic]}</button>`;
   /**
    * The grown-ups' "?" on a panel: a round "?" in its top corner; the English (what this screen is,
    * settings, the lab) opens beside it and nowhere else (E1, E31).
@@ -987,7 +999,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
       ctx.intro = UI.mission.introduce()
         .catch(() => {})
-        .then(() => (ctx.t0 = Date.now()));
+        .then(() => {
+          ctx.t0 = Date.now();
+          ctx.requestsSaid = !!(UI.mission.peopleSaid && UI.mission.peopleSaid());
+        });
     };
     try {
       await Cook.Mech.runLab(key, s, ctx, { card: openCard, level, region });
@@ -1128,7 +1143,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     $("#t-shop").addEventListener("click", showShop);
     $("#t-reset").addEventListener("click", (e) => {
       e.preventDefault();
-      if (confirm("Start Cook with Nani again from day 1? The story days and Cook's word dots start again; pocket money and upgrades stay in the purse (coins are never taken away).")) {
+      if (confirm("Start Cook with Nani again from day 1? The story days and the words learned start again (every word shows on the card); pocket money and upgrades stay in the purse (coins are never taken away).")) {
         Cook.resetSave();
         showTitle();
       }

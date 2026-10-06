@@ -116,7 +116,7 @@
       S.say(S.line(env, "why-waiting"), "doctor");
       // from level 3 the card is closed: the call is heard, not read; a tap on it is the paid peek (13a, 13c)
       const closed = plan.level >= 3;
-      await S.request(screen, { title: "", rows: plan.card, closed, onPeek: () => screen.peek("waiting-card") });
+      await S.request(screen, { title: "", rows: plan.card, closed, onPeek: () => screen.peek("waiting-card"), look: "bulb" }); // S02-A hook: decision 57
       let callIdx = 0;
       const rows = plan.rows;
       const W4 = plan.variant === "W4";
