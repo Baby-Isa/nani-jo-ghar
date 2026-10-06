@@ -1,0 +1,81 @@
+<title>Mum or the Robot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one column of word cards; each card = the word, its two editable spellings, and six play buttons in a 2x3 grid (Mum row, robot rows). */
+:root {
+  --bg: #f6f3ee; --card: #fffdf9; --ink: #2b2420; --muted: #75685e; --line: #e4dbd0;
+  --mum: #8a4b2e; --robot: #3c6474; --play: #efe7dc;
+  --display: "Fraunces", Georgia, serif; --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1d1916; --card: #26211d; --ink: #f0e8df; --muted: #b3a597; --line: #3a322c;
+  --mum: #e09a74; --robot: #8fbccb; --play: #322b25; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1d1916; --card: #26211d; --ink: #f0e8df; --muted: #b3a597; --line: #3a322c;
+  --mum: #e09a74; --robot: #8fbccb; --play: #322b25; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--body); padding-inline: 16px; padding-block: 24px 48px }
+main { max-width: 760px; margin: 0 auto; display: grid; gap: 20px }
+h1 { font: 600 2rem/1.15 var(--display); margin: 0; text-wrap: balance }
+.lede { color: var(--muted); margin: 0; max-width: 62ch }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 14px }
+.word { font: 600 1.5rem/1.2 var(--display) }
+.spell { display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px; align-items: center }
+.spell label { font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted) }
+.spell input { font: 1rem var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; min-width: 0 }
+.clips { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px }
+button.play { font: 600 .95rem var(--body); text-align: left; border: 1px solid var(--line); background: var(--play); color: var(--ink); border-radius: 10px; padding: 10px 12px; cursor: pointer; display: flex; gap: 10px; align-items: center }
+button.play::before { content: "▶"; font-size: .8rem; width: 1.6em; height: 1.6em; border-radius: 50%; display: grid; place-items: center; background: var(--robot); color: var(--card); flex: none }
+button.play.mum::before { background: var(--mum) }
+button.play.on { outline: 2px solid var(--robot) }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--mum); outline-offset: 2px }
+.missing { color: var(--muted); font-size: .9rem; font-style: italic }
+textarea { font: 1rem var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; box-sizing: border-box; min-height: 2.6em }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+button.copy { font: 700 1rem var(--body); background: var(--mum); color: var(--card); border: 0; border-radius: 10px; padding: 12px 18px; cursor: pointer }
+.toast { color: var(--muted) }
+#out { display: none }
+</style>
+<main>
+  <h1>Mum or the robot?</h1>
+  <p class="lede">Round __ROUND__. Each word has Mum as recorded, Mum cleaned up, and two robot voices reading it two ways: from Gujarati letters, and from a "sounds-like" spelling. Change either spelling (or add a note, like "slower" or "harder kh"), then press <b>Copy my changes</b> and paste them into the chat. I'll make round two from them. The blind test comes after.</p>
+  <div id="list"></div>
+  <div class="bar"><button class="copy" id="copy">Copy my changes</button><span class="toast" id="toast"></span></div>
+  <textarea id="out" readonly></textarea>
+</main>
+<script>
+const ITEMS = __DATA__;
+const list = document.getElementById("list");
+let audio = null, onBtn = null;
+function play(btn, file) {
+  if (audio) { audio.pause(); onBtn && onBtn.classList.remove("on"); }
+  audio = new Audio(file); onBtn = btn; btn.classList.add("on");
+  audio.onended = () => btn.classList.remove("on");
+  audio.play().catch(() => btn.classList.remove("on"));
+}
+ITEMS.forEach((it, i) => {
+  const c = document.createElement("section"); c.className = "card"; c.style.marginBottom = "16px";
+  c.innerHTML = `<div class="word">${it.kutchi}</div>
+    <div class="spell"><label for="gu${i}">Gujarati</label><input id="gu${i}" value="${it.gu}">
+    <label for="la${i}">Sounds like</label><input id="la${i}" value="${it.latin}"></div>
+    <div class="clips"></div>
+    <textarea id="note${i}" placeholder="Note for this word (optional)"></textarea>`;
+  const box = c.querySelector(".clips");
+  it.clips.forEach(cl => {
+    const b = document.createElement("button"); b.className = "play" + (cl.k.startsWith("mum") ? " mum" : "");
+    b.textContent = cl.label; b.onclick = () => play(b, cl.file); box.appendChild(b);
+  });
+  if (it.clips.length < 6) { const m = document.createElement("span"); m.className = "missing"; m.textContent = "Some robot clips are still being made."; box.appendChild(m); }
+  list.appendChild(c);
+});
+document.getElementById("copy").onclick = () => {
+  const lines = ITEMS.map((it, i) => {
+    const gu = document.getElementById("gu" + i).value.trim(), la = document.getElementById("la" + i).value.trim(), n = document.getElementById("note" + i).value.trim();
+    const ch = []; if (gu !== it.gu) ch.push(`gujarati: ${gu}`); if (la !== it.latin) ch.push(`sounds like: ${la}`); if (n) ch.push(`note: ${n}`);
+    return ch.length ? `${it.id}: ${ch.join(" | ")}` : null;
+  }).filter(Boolean);
+  const text = lines.length ? "Voice test __ROUND__ changes\n" + lines.join("\n") : "Voice test __ROUND__: no changes";
+  const t = document.getElementById("toast"), out = document.getElementById("out");
+  navigator.clipboard.writeText(text).then(() => { t.textContent = "Copied. Paste it into the chat."; })
+    .catch(() => { out.style.display = "block"; out.value = text; out.select(); t.textContent = "Select the text below and copy it."; });
+};
+</script>

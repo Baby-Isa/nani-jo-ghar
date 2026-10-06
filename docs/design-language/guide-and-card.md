@@ -1,6 +1,6 @@
 # Who says what: the guide box, the card and the bubbles
 
-**Status: approved in full by Zafar, 6 Oct ("yes to all").** Sessions A, B and C build from it. Sprint 2, item 1 (decision 55). Every row lists what happens **now** (from the code, 6 Oct) and what is **proposed**, with the reason. Once answered, Sessions A, B and C build from it.
+**Status: approved in full by Zafar, 6 Oct ("yes to all").** Sessions A, B and C build from it. Sprint 2, item 1 (decision 55). Every row lists what happens **now** (from the code, 6 Oct) and what is **proposed**, with the reason.
 
 **Kutchi:** only lines already in the language engine are written in Kutchi here. Every new line is its English meaning in [brackets], flagged **to record** for Mum's next round (Sprint 3). Until she records it, the game shows the grey placeholder. Nothing is invented (non-negotiable 4).
 
