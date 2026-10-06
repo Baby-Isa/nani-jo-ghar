@@ -339,7 +339,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let glowing = null;
     let doneShown = false;
     let finishUp;
-    const doneP = new Promise((r) => (finishUp = r));
+    let doneP = new Promise((r) => (finishUp = r));
     const dishNo = () => ctx.dishAt || 0;
     const [lo, hi] = kBoil.band;
 
@@ -834,7 +834,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       zb.expect(nx ? nx.e : null);
       if (nx && nx.phase) phase(nx.phase);
       // the focal rule: the next generic step pulses (a person's choice only when Nani helps)
-      const obj = nx && nx.obj && (nx.focal || guided) ? nx.obj : null;
+      const obj = nx && nx.obj && (nx.focal || guided || (sel && sel.redo)) ? nx.obj : null; // decision 51: a redo has help
       if (glowing !== obj) {
         unglow();
         if (obj) S.glow(obj, true, { bounce: !!obj.isJar });
@@ -853,7 +853,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ctx.nextStep && ctx.nextStep("Water");
     phase("water");
     select(pans[0]);
-    for (const pan of pans) {
+    for (const pan of ctx.requestsSaid ? [] : pans) { // decision 53: said already in the requests pop-up
       speaking = true;
       await personSay(pan);
       speaking = false;
@@ -861,7 +861,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     talked = true;
     refresh();
-    const nudge = setInterval(() => !finished && refresh(), 250);
+    let nudge = setInterval(() => !finished && refresh(), 250);
 
     /** The review faces, one over each glass (sized to the tray's spacing); the praise is said once, when all are right. */
     async function review(wrongPans) {
@@ -897,75 +897,134 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       );
     }
 
-    /* ---------- the tick: check every glass against what its person said ---------- */
-    await doneP;
-    finished = true;
-    clearInterval(nudge);
+    /* ---------- the tick: check every glass against what its person said ----------
+     * Decision 51 (CK-23, S02-A reference wiring): a wrong cup is redone on the spot. The right cups stay done; the
+     * wrong one empties (pan and glass), its person's rows open again, and the second try has help (the next thing
+     * glows). At the third wrong try the game shows the right way and moves on. The first try is the one scored. */
+    let round = 0;
+    const emptyPan = (pan) => {
+      Object.assign(pan, { level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [], heat: 0, state: "cold", poured: 0, closed: false, spoonsClosed: false });
+      pan.redo = (pan.redo || 0) + 1;
+      setKnob(pan, "off");
+      if (pan.heatRing && pan.heatRing.g) pan.heatRing.g.clear();
+      pan.bubbles.clear();
+      setLook(pan);
+      ["empty", "half", "full"].forEach((s2) => pan.well.glass[s2].setAlpha(s2 === "empty" ? 1 : 0));
+      pan.well.fill = 0;
+      UI.mission.reopen(null, dishNo(), { for: pan.who });
+    };
+    // the right way, shown: their things glow in turn on the shelf while their card is read, then the glass fills
+    const showRight = async (pan) => {
+      const p = pan.p;
+      const ids = ["cook-paani", "cook-chai", p.dudh ? "cook-dudh" : null, p.khun ? "cook-khun" : null, p.extra || null].filter((id) => id && shelf[id]);
+      select(pan);
+      const said = personSay(pan).catch(() => {});
+      for (const id of ids) {
+        S.glow(shelf[id], true, { bounce: true });
+        await Cook.wait(520);
+        S.glow(shelf[id], false);
+      }
+      await said;
+      ["empty", "half", "full"].forEach((s2) => pan.well.glass[s2].setAlpha(s2 === "full" ? 1 : 0));
+      pan.poured = 2;
+      pan.redo = 0;
+      personRows(L(), pan.who).forEach((r) => UI.mission.tickItem(r.ids[0], dishNo(), { for: pan.who, no: r.no, close: true }));
+      S.sparkle(pan.well.x, pan.well.y);
+    };
+    for (;;) {
+      await doneP;
+      finished = true;
+      clearInterval(nudge);
+      unglow();
+      UI.hideDone();
+      UI.hideCount();
+      zb.expect(null);
+      const lad = L();
+      const dish = dishNo();
+      const recasts = [];
+      for (const pan of pans) {
+        if (round && !pan.redo) continue; // a right cup stays done
+        const p = pan.p;
+        const name = nameOf(pan.who);
+        const made = pan.has.water > 0 && pan.has.leaves > 0 && pan.poured > 0;
+        const hasMilk = pan.has.milk > 0;
+        const got = { chai: made, milk: hasMilk === !!p.dudh, sugar: pan.sugar === (p.khun || 0) && !pan.salt };
+        // SH-50: a wrong extra in the cup marks that person's extra row too (not only a missing one)
+        got.extra = p.extra ? pan.extras.includes(p.extra) && pan.extras.every((id) => id === p.extra) : !pan.extras.length;
+        const amount = !p.amount ? null : pan.poured >= 2 ? "ph-full" : "ph-half";
+        got.amount = !p.amount || (got.chai && amount === p.amount);
+        const why = [];
+        if (!pan.has.water) why.push(`left out cook-paani for ${name}`);
+        if (!pan.has.leaves) why.push(`left out cook-chai for ${name}`);
+        if (!pan.poured) why.push(`poured no chai for ${name}`);
+        if (!got.milk) why.push(p.dudh ? `left out cook-dudh for ${name}` : `added cook-dudh (they said no) for ${name}`);
+        if (pan.sugar !== (p.khun || 0)) why.push(p.khun ? `${pan.sugar} cook-khun, they asked for ${p.khun} (${name})` : `added cook-khun (they said no) for ${name}`);
+        else if (p.khun && !round) ctx.listen(true, `${pan.sugar} cook-khun, they asked for ${p.khun} (${name})`);
+        if (p.extra && !pan.extras.includes(p.extra)) why.push(`left out ${p.extra} for ${name}`);
+        pan.extras.filter((id) => id !== p.extra).forEach((id) => why.push(`added ${id} for ${name}`));
+        if (p.amount && got.chai && amount !== p.amount) why.push(`poured ${amount} for ${name}, not ${p.amount}`);
+        const rows = personRows(lad, pan.who);
+        const bad = [];
+        rows.forEach((r) => {
+          const id = r.ids[0];
+          const ok = id === "cook-dudh" ? got.milk : id === "cook-khun" ? got.sugar : id === "ph-half" || id === "ph-full" ? got.amount : got.extra;
+          if (ok) {
+            UI.mission.tickItem(id, dish, { for: pan.who, no: r.no });
+            if (!round && !r.no && id !== "cook-khun" && ctx.did && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
+          } else {
+            // the first try is the one scored: a redo marks nothing new
+            if (!round) UI.mission.missItem(id, dish, { for: pan.who, no: r.no });
+            bad.push(r);
+          }
+        });
+        // a wrong cup with no row of its own to blame (a plain chai with an extra in it): its person's first row
+        if (!round && (why.length || pan.salt) && !bad.length && rows[0]) UI.mission.missItem(rows[0].ids[0], dish, { for: pan.who, no: rows[0].no });
+        if (!round) why.forEach((w) => ctx.listen(false, w));
+        if (!guided && !round) {
+          (got.milk ? Cook.markRight : Cook.markMiss)("cook-dudh");
+          if (p.khun) (got.sugar ? Cook.markRight : Cook.markMiss)(Cook.numId(p.khun));
+          (got.sugar ? Cook.markRight : Cook.markMiss)("cook-khun");
+          if (p.extra) (got.extra ? Cook.markRight : Cook.markMiss)(p.extra);
+        }
+        if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });
+        else {
+          pan.redo = 0;
+          S.sparkle(pan.well.x, pan.well.y);
+        }
+      }
+      // the review (29 Sept, X10 / Q1: Cook.Kit.review): each person's big round face over their glass,
+      // happy when it's right, a gentle frown when it's wrong (then they say again what they asked for)
+      Cook.chaiServe = recasts.length ? "wrong" : "right"; // for the screenshot script
+      const looks = await review(recasts.map((r) => r.pan));
+      if (recasts.length) {
+        if (!round) await zb.oops();
+        for (const { pan, rows } of recasts) {
+          select(pan);
+          await personSay(pan, rows || undefined);
+        }
+      }
+      await Promise.all(looks.map((l) => l.close()));
+      if (!recasts.length || !ctx.redo) break;
+      // decision 51: each wrong cup is redone, or (its third wrong try) shown the right way
+      const again = [];
+      for (const { pan } of recasts) {
+        const r = ctx.redo.wrong(`chai:${pan.who}`);
+        if (r.action === "show") await showRight(pan);
+        else again.push(pan);
+      }
+      if (!again.length) break;
+      round++;
+      again.forEach(emptyPan);
+      finished = false;
+      doneShown = false;
+      doneP = new Promise((r) => (finishUp = r));
+      select(again[0]);
+      nudge = setInterval(() => !finished && refresh(), 250);
+      refresh();
+    }
     stopHeat();
-    unglow();
-    UI.hideDone();
-    UI.hideCount();
-    zb.expect(null);
     [...pans.flatMap((q) => [q.img, q.face, q.knobHit]), ...Object.values(shelf)].forEach((o) => S.untap(o));
     Object.values(shelf).forEach((o) => o.chip && o.chip.disableInteractive());
-    const lad = L();
-    const dish = dishNo();
-    const recasts = [];
-    for (const pan of pans) {
-      const p = pan.p;
-      const name = nameOf(pan.who);
-      const made = pan.has.water > 0 && pan.has.leaves > 0 && pan.poured > 0;
-      const hasMilk = pan.has.milk > 0;
-      const got = { chai: made, milk: hasMilk === !!p.dudh, sugar: pan.sugar === (p.khun || 0) && !pan.salt };
-      // SH-50: a wrong extra in the cup marks that person's extra row too (not only a missing one)
-      got.extra = p.extra ? pan.extras.includes(p.extra) && pan.extras.every((id) => id === p.extra) : true;
-      const amount = !p.amount ? null : pan.poured >= 2 ? "ph-full" : "ph-half";
-      got.amount = !p.amount || (got.chai && amount === p.amount);
-      const why = [];
-      if (!pan.has.water) why.push(`left out cook-paani for ${name}`);
-      if (!pan.has.leaves) why.push(`left out cook-chai for ${name}`);
-      if (!pan.poured) why.push(`poured no chai for ${name}`);
-      if (!got.milk) why.push(p.dudh ? `left out cook-dudh for ${name}` : `added cook-dudh (they said no) for ${name}`);
-      if (pan.sugar !== (p.khun || 0)) why.push(p.khun ? `${pan.sugar} cook-khun, they asked for ${p.khun} (${name})` : `added cook-khun (they said no) for ${name}`);
-      else if (p.khun) ctx.listen(true, `${pan.sugar} cook-khun, they asked for ${p.khun} (${name})`);
-      if (p.extra && !pan.extras.includes(p.extra)) why.push(`left out ${p.extra} for ${name}`);
-      pan.extras.filter((id) => id !== p.extra).forEach((id) => why.push(`added ${id} for ${name}`));
-      if (p.amount && got.chai && amount !== p.amount) why.push(`poured ${amount} for ${name}, not ${p.amount}`);
-      const rows = personRows(lad, pan.who);
-      const bad = [];
-      rows.forEach((r) => {
-        const id = r.ids[0];
-        const ok = id === "cook-dudh" ? got.milk : id === "cook-khun" ? got.sugar : id === "ph-half" || id === "ph-full" ? got.amount : got.extra;
-        if (ok) {
-          UI.mission.tickItem(id, dish, { for: pan.who, no: r.no });
-          if (!r.no && id !== "cook-khun" && ctx.did && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
-        } else {
-          UI.mission.missItem(id, dish, { for: pan.who, no: r.no });
-          bad.push(r);
-        }
-      });
-      why.forEach((w) => ctx.listen(false, w));
-      if (!guided) {
-        (got.milk ? Cook.markRight : Cook.markMiss)("cook-dudh");
-        if (p.khun) (got.sugar ? Cook.markRight : Cook.markMiss)(Cook.numId(p.khun));
-        (got.sugar ? Cook.markRight : Cook.markMiss)("cook-khun");
-        if (p.extra) (got.extra ? Cook.markRight : Cook.markMiss)(p.extra);
-      }
-      if (why.length || pan.salt) recasts.push({ pan, rows: !got.chai || !bad.length ? null : bad });
-      else S.sparkle(pan.well.x, pan.well.y);
-    }
-    // the review (29 Sept, X10 / Q1: Cook.Kit.review): each person's big round face over their glass,
-    // happy when it's right, a gentle frown when it's wrong (then they say again what they asked for)
-    Cook.chaiServe = recasts.length ? "wrong" : "right"; // for the screenshot script
-    const looks = await review(recasts.map((r) => r.pan));
-    if (recasts.length) {
-      await zb.oops();
-      for (const { pan, rows } of recasts) {
-        select(pan);
-        await personSay(pan, rows || undefined);
-      }
-    }
-    await Promise.all(looks.map((l) => l.close()));
     await Cook.wait(500);
     zb.close();
     zt.close();

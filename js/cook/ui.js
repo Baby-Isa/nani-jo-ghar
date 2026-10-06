@@ -977,7 +977,16 @@
    * the sidebar: on a tap, or after the voice and a short pause.
    */
   M.introduce = async function (opts = {}) {
-    if (!mission || !hasRows(mission)) return;
+    if (!mission) return;
+    // decision 53 (CHAI-15, T6): requests first: everyone's own order comes up front (a cup's rows that waited for
+    // the tray too), each person's card read in turn, lit as they say it (tap to skip); then the game is quiet
+    const people = opts.people !== false && mission.ladders.some((L) => L.sections.some((s) => s.for));
+    if (people) {
+      mission.ladders.forEach((L) => L.sections.forEach((s) => s.for && s.when && (s.shown = true)));
+      mission.peopleSaid = true;
+      renderOrder();
+    }
+    if (!hasRows(mission)) return;
     const m = mission;
     const el = intro();
     const card = el.querySelector(".ic-card");
@@ -1012,8 +1021,27 @@
     Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
     card.classList.add("talk");
     const voice = opts.speak !== false && Lang.hasVoice(m.line);
+    // decision 53: each person says their own card (their face lights: the card is their bubble), one after another
+    let skipped = false;
+    tapped.then(() => (skipped = true));
+    const sayPeople = async () => {
+      const cards = [...intro().querySelectorAll(".ic-order .oc-card[data-who]")];
+      for (const c of cards) {
+        if (skipped || token !== Cook.run) return;
+        const face = c.querySelector(".oc-face");
+        c.classList.add("speaking");
+        if (face) face.classList.add("on");
+        try {
+          await readAlong(c._parts ? c._parts() : [], { min: 700 });
+        } finally {
+          c.classList.remove("speaking");
+          if (face) face.classList.remove("on");
+        }
+        await Cook.wait(160);
+      }
+    };
     // Wave 6: read along: each part lights up on the card as it's said
-    const said = UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
+    const said = people && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
     const talk = said.then(() => {
       card.classList.remove("talk");
       return Cook.wait(opts.pause != null ? opts.pause : 1400);
@@ -1073,6 +1101,7 @@
     }
   };
   M.introOpen = introOpen;
+  M.peopleSaid = () => !!(mission && mission.peopleSaid);
 
   /* ================= Wave 6: cards, read-along, the light bulb ================= */
   /*
@@ -1705,6 +1734,25 @@
       (counted ? rows.find(num) : null);
     if (r) r.miss = true;
     return r;
+  };
+  /**
+   * Decision 51 (CK-23): a wrong item is redone on the spot: its rows open again (opts.for: one person's), the first
+   * try's mark (r.miss) kept for the end review. Returns the rows reopened.
+   */
+  M.reopen = function (ids, dish = 0, opts = {}) {
+    const L = ladderFor(dish);
+    if (!L) return [];
+    const want = ids == null ? null : [].concat(ids);
+    const rows = Order()
+      .rows(L, { all: true })
+      .filter((r) => !r.head && (!opts.for || r.for === opts.for) && (!want || r.ids.some((id) => want.includes(id))));
+    rows.forEach((r) => {
+      r.done = false;
+      r.got = 0;
+    });
+    if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
+    renderOrder();
+    return rows;
   };
   /** The next open step went wrong (an out-of-order pick). */
   M.missNext = function (dish = 0) {
