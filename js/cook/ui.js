@@ -447,8 +447,15 @@
   function makeStepper() {
     if (!global.NaniGuide || !global.NaniGuide.stepper) return null;
     return global.NaniGuide.stepper({
-      show: (html, o) => guide && guide.set(html, o),
-      clear: () => guide && guide.set(""),
+      show: (html, o) => {
+        if (!guide) return;
+        guideLine = stepper && stepper.current && stepper.current.line && stepper.current.line.ok !== false ? stepper.current.line : null;
+        guide.set(html, o);
+      },
+      clear: () => {
+        guideLine = null;
+        if (guide) guide.set("");
+      },
       speak: (s) => (s.line && Lang.hasVoice(s.line) && guide ? queued(() => speakAlong(s.line, guide.el)) : null),
       glow: (s, on) => s.glow && s.glow(on),
       level: () => orderLevel(),
