@@ -53,8 +53,9 @@
           mod = await import(new URL(`${root}js/core/lang/engine/index.js`, base).href);
         }
         const data = {};
-        for (const f of DATA_FILES) data[f] = await loadJSON(`data/lang/${f}.json`);
-        const audio = (await loadJSON("data/family-audio.json")) || [];
+        // CLN-88 (S02-A): the language files at once, not one after another
+        const [audioRaw] = await Promise.all([loadJSON("data/family-audio.json"), ...DATA_FILES.map(async (f) => (data[f] = await loadJSON(`data/lang/${f}.json`)))]);
+        const audio = audioRaw || [];
         E.engine = mod.createEngine({ data, audio });
       })();
     await E.loading;
