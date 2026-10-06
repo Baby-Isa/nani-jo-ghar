@@ -20,7 +20,8 @@ Planned, none launched yet:
 None yet.
 
 ## Feedback in
-- 6 Oct, Cook (four voice notes): `docs/feedback/cook-playtest-2026-10-06.md`. About 120 points, 22 decisions waiting (§4), 66 new rows and 10 reopened. The clinic play is next; then the scope.
+- 6 Oct, Cook (four voice notes): `docs/feedback/cook-playtest-2026-10-06.md`. About 120 points, 22 decisions waiting (§4), 66 new rows and 10 reopened. 
+- 6 Oct, the clinic (notes 5, 7, 8): `docs/feedback/clinic-playtest-2026-10-06.md`. About 110 points, 14 decisions (§4), 31 new rows and 13 reopened. Root causes: L2+ steps close only by the next action, which isn't shown (stuck); the girl's art isn't in the story.
 
 ## Outcome
 Filled in at the close.

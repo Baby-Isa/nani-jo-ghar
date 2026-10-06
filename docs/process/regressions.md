@@ -22,6 +22,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | SH-49 | Ticks map one-to-one to order rows: no tick lost for a bulb, translate or "shown" hint or a stray with no row; every lost tick names its row in the review (3 of 4 with nothing red) | **open** | eye: pantry and chai end, after a bulb press · CMP-13 | `docs/feedback/cook-playtest-2026-10-06.md` PA8 |
 | SH-50 | A wrong item in a multi-person order marks that person's row and shows in the review (chai: aadu put in for lasan showed all words right); a wrong count shows on the left | **open** | eye: 2-person chai L2, chaat counts · CMP-13 | `docs/feedback/cook-playtest-2026-10-06.md` C22, T10 |
 | SH-51 | Coin-jar pocket-money screen (five fill pictures, card lands on the jar, coins drop with a ching, card rises and fades; this game's total and the jar total) from the end-screen template; cards not clipped (rounded top, square bottom now); Next is the primary button, not a red "Nani's shop" (pending decision) | **open** | eye: day summary 1366×768, 390×844 | `docs/feedback/cook-playtest-2026-10-06.md` C10, C11, C14 |
+| SH-61 | The ✓ is flat: no drop shadow or lip behind the gold tick (shared) | **open** | eye: ×2 zoom, clinic and Cook · CMP-02 | `docs/feedback/clinic-playtest-2026-10-06.md` SH1 |
 
 ### Order cards
 
@@ -42,6 +43,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | SH-53 | One highlight at a time, one colour token, in the card and on the stage together; no throb on a hidden word after its first hidden showing; rows tick piece by piece (sekelo mixed, samosa) | **open** | eye: sekelo L2, daar L2, samosa L3 · CMP-09 | `docs/feedback/cook-playtest-2026-10-06.md` S5, D11, A10 |
 | SH-54 | "Served" is a picture stamp per card (no English word), on every dish of a combined order, not clipped | **open** | eye: chai + maani order | `docs/feedback/cook-playtest-2026-10-06.md` C25 |
 | SH-55 | Gold done/next outline drawn inside, never clipped by the card or sidebar (`overflow:hidden` on `#mission`, `.oc-in`, `.pc-in`) | **open** | eye: ×2 zoom, every station · CMP-07 | `docs/feedback/cook-playtest-2026-10-06.md` PA11 |
+| SH-62 | The sequence connector ends at the last row's centre, even when a row wraps | **open** | eye: scrape, knee cards · CMP-07 | `docs/feedback/clinic-playtest-2026-10-06.md` S3, K5 |
 
 ### Onboarding and help
 
@@ -57,6 +59,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | SH-58 | The ✓ glows whenever it is the only thing left, for the first plays (not only in guided rounds) | **open** | eye: chai, daar L1 · CMP-02 | `docs/feedback/cook-playtest-2026-10-06.md` C8, D5 |
 | SH-59 | No "?" pulse during a conversation; the pulse clears at each new order | **open** | eye: story day, pantry → order | `docs/feedback/cook-playtest-2026-10-06.md` C16 |
 | SH-60 | Help (line and glow) only after the pause, for the first item too; a new player sees every word ("Start over" clears learned words; "play as new" in "?") | **open** | eye: pantry L2, fresh profile · LNG-02 | `docs/feedback/cook-playtest-2026-10-06.md` PA5, PA12 |
+| SH-63 | The guide box vs the card: one rule and a table of every line in every Cook station and clinic stage (pending decision; first job of Sprint 2) | **open** | eye/ear: every game | `docs/feedback/clinic-playtest-2026-10-06.md` G1, D6, D13, FV7, B1, FT3 |
 
 ### Buttons and sidebar
 
@@ -263,7 +266,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| CLN-01 | Rough stand-in art made judging hard ("so overwhelmed by how terrible the visuals were"); real art after prototypes | open | eye: each room | `docs/feedback/clinic-playtest-2026-09-29.md` G2 |
+| CLN-01 | Rough stand-in art made judging hard ("so overwhelmed by how terrible the visuals were"); real art after prototypes | **reopened** (6 Oct play-test) | eye: each room | `docs/feedback/clinic-playtest-2026-09-29.md` G2; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-02 | Backgrounds locked first: six new rooms, heal games have a background, nothing faded; pharmacy straight-on belt (CB4c) still to come | built, not re-played | eye: 1366×768 · ART-03 | `docs/feedback/clinic-playtest-2026-09-29.md` G1 |
 | CLN-03 | Clinic uses what Cook learned: shared order card as patient card, guide box, end pop-up, review faces, spacing | built, not re-played | eye: 1366×768 · CMP-01 | `docs/feedback/clinic-playtest-2026-09-29.md` G3 |
 | CLN-04 | Language builds up simply (man, woman, boy, girl; old, young; tall, short; colours; "with the baby"); per-child complexity tracker deferred | built, not re-played | eye/ear: waiting room ladder | `docs/feedback/clinic-playtest-2026-09-29.md` G4, W4, CQ2 |
@@ -272,25 +275,40 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CLN-07 | Lab debug log (bottom left) does not overlap the pills or counter | open | eye: lab pages | `docs/feedback/clinic-playtest-2026-09-29.md` §13a–b |
 | CLN-08 | Heal-game close-up background blurred more in code so the room never competes; certificate frame blurred to match | open | eye: heal games | `docs/game-design/modes/clinic.md` §B |
 | CLN-09 | Clinic tooth at least 1 cm even zoomed (0.50 cm on iPad); trolley objects about 60 design px on phone; replay timer does not overlap a recast line (builder) | open | auto: `build/check_hotspots.py` · LAY-11 | `docs/archive/build-logs/clinic-build-log.md` Known gaps (builder) |
+| CLN-81 | The girl's finished art in the whole story: waiting room, diagnosis, send-off, sticker and card faces (rough sprites and the stand-in body now) | **open** | eye: clinic morning end to end | `docs/feedback/clinic-playtest-2026-10-06.md` CL1 |
+| CLN-82 | L2+: once a count is reached, the next step's row appears and its tool glows after a pause (stuck after dabs, kicks, wipes, jugs: scrape, knee, boing, foot) | **open** | eye: every heal game L2, L3 | `docs/feedback/clinic-playtest-2026-10-06.md` H1, K5, B5, FT4, TA3 |
+| CLN-83 | No extra click when the outcome is clear ("Found it", end ✓, stage buttons): it moves on after a beat (pending decision) | **open** | eye: diagnosis, pharmacy, scrape, ear | `docs/feedback/clinic-playtest-2026-10-06.md` D2, P2, S4, E9 |
+| CLN-84 | The request first in a pop-up, then a quiet game (pharmacy and every heal game) (pending decision) | **open** | eye/ear: pharmacy L3, tooth L2, boing L3 | `docs/feedback/clinic-playtest-2026-10-06.md` P1, P8, T5, B7 |
+| CLN-85 | Patient face top right in heal games (clear of the doctor's box); in the eye game her bubble under her mouth | **open** | eye: each heal game | `docs/feedback/clinic-playtest-2026-10-06.md` G2, EY5 |
+| CLN-86 | Dialogue in bubbles from the speaker's face (she says salaam, he replies; she says "too cold"); instructions in the doctor's box | **open** | eye/ear: waiting, fever | `docs/feedback/clinic-playtest-2026-10-06.md` CL2, FV3, D7 |
+| CLN-87 | Zoom in and out about 1.5 s; zoom-out from full zoom on the healed part | **open** | eye: any heal game | `docs/feedback/clinic-playtest-2026-10-06.md` Z1, Z2 |
+| CLN-88 | Clinic lab pages load fast (no serial JSON chain, games loaded on demand) | **open** | auto: timing | `docs/feedback/clinic-playtest-2026-10-06.md` FT1 |
+| CLN-89 | Labs point at the current clinic lab only (old clinic lab index still reachable) | **open** | eye: labs.html | `docs/feedback/clinic-playtest-2026-10-06.md` L1 |
 
 ### Waiting room
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | CLN-10 | Waiting room not too wide, front half not empty floor; something on the wall says "doctor's" | built, not re-played | eye: 1366×768 | `docs/feedback/clinic-playtest-2026-09-29.md` W1 |
-| CLN-11 | People sit on one large bench (six seats, no armchairs) | built, not re-played | eye: 1366×768 | `docs/feedback/clinic-playtest-2026-09-29.md` W2 |
+| CLN-11 | People sit on one large bench (six seats, no armchairs) | **reopened** (6 Oct play-test) | eye: 1366×768 | `docs/feedback/clinic-playtest-2026-09-29.md` W2; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-12 | Picking the right person: no walking; tick under each person; the picked person rises off the seat | built, not re-played | eye: each level | `docs/feedback/clinic-playtest-2026-09-29.md` W3, §13 |
-| CLN-13 | At most six people at every level (changed from 8–12) | built, not re-played | eye: L4 | `docs/feedback/clinic-playtest-2026-09-29.md` W5, §13a |
-| CLN-14 | "Call them in" does not leak: card shows a round face with no text; call heard from L3 | built, not re-played | auto: leak bot; eye · LNG-02 | `docs/feedback/clinic-playtest-2026-09-29.md` §13a |
+| CLN-13 | At most six people at every level (changed from 8–12) | **reopened** (6 Oct play-test) | eye: L4 | `docs/feedback/clinic-playtest-2026-09-29.md` W5, §13a; `docs/feedback/clinic-playtest-2026-10-06.md` |
+| CLN-14 | "Call them in" does not leak: card shows a round face with no text; call heard from L3 | **reopened** (6 Oct play-test) | auto: leak bot; eye · LNG-02 | `docs/feedback/clinic-playtest-2026-09-29.md` §13a; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-15 | L4: pick everyone straight away, judge at the end, ticks show numbers; L5 has the same fixes | built, not re-played | eye: L4, L5 | `docs/feedback/clinic-playtest-2026-09-29.md` §13a, §13f |
+| CLN-90 | Selector circles and "call them in" boxes spaced cleanly | **open** | eye: 1366×768, 844×390 | `docs/feedback/clinic-playtest-2026-10-06.md` W1 |
+| CLN-91 | The closed card's eye is a small bulb, no counter (pending decision) | **open** | eye: W L3 | `docs/feedback/clinic-playtest-2026-10-06.md` W5 |
+| CLN-92 | "To the doctor's room" button (location, not "where does it hurt") | **open** | eye: waiting end | `docs/feedback/clinic-playtest-2026-10-06.md` CL3 |
 
 ### Diagnosis
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| CLN-16 | "Found it" and "Next" variant is explained (folded into D1 as level 2) | built, not re-played | eye: L2 | `docs/feedback/clinic-playtest-2026-09-29.md` D2 |
+| CLN-16 | "Found it" and "Next" variant is explained (folded into D1 as level 2) | **reopened** (6 Oct play-test) | eye: L2 | `docs/feedback/clinic-playtest-2026-09-29.md` D2; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-17 | Scene: patient sits on the bed edge, doctor beside them three-quarter turned (or stands by an anatomy poster) | built, not re-played | eye: 1366×768 | `docs/feedback/clinic-playtest-2026-09-29.md` D3, CQ3 |
-| CLN-18 | D3 tools are clear: torch looks like a torch (not a pill), thermometer looks like one, one cue per tool, two tools at L1 | built, not re-played | eye: ×2 zoom | `docs/feedback/clinic-playtest-2026-09-29.md` D5 |
+| CLN-18 | D3 tools are clear: torch looks like a torch (not a pill), thermometer looks like one, one cue per tool, two tools at L1 | **reopened** (6 Oct play-test) | eye: ×2 zoom | `docs/feedback/clinic-playtest-2026-09-29.md` D5; `docs/feedback/clinic-playtest-2026-10-06.md` |
+| CLN-93 | D1: bigger patient, smaller dots centred on the parts; a tried dot goes grey after "no", never green; she says yes and the doctor names the part | **open** | eye: D1 L1, L2 | `docs/feedback/clinic-playtest-2026-10-06.md` D1, D3, D4, D5 |
+| CLN-94 | D3: card like sekelo (tool head, parts under it, ticking); the torch zooms on the face by itself (eye taps now ignored without the 🔍); one highlight colour; a headline; bigger standing patient (pending decision) | **open** | eye: D3 L1, L2 | `docs/feedback/clinic-playtest-2026-10-06.md` D8, D10, D11, D12, D13 |
+| CLN-95 | No swirl icon over the sore part | **open** | eye: D1 | `docs/feedback/clinic-playtest-2026-10-06.md` D9 |
 
 ### Pharmacy
 
@@ -300,8 +318,10 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CLN-20 | Level 3 is harder by faster belt or closer items, not a timer; hard-to-draw "filling" item is a tube | built, not re-played | eye: L3 · INT-08 | `docs/feedback/clinic-playtest-2026-09-29.md` P4, CQ5 |
 | CLN-21 | Doctor says "[Bring me] the plaster"; "Muke plaster khape" is a customer's line (English placeholder, to record with Mum) | built, not re-played | eye: pharmacy card · LNG-04 | `docs/feedback/clinic-playtest-2026-09-29.md` §13b |
 | CLN-22 | A filled slot loses its dashed outline; a placed item can be put back; first pick is scored | built, not re-played | auto: take-back test; eye · INT-02 | `docs/feedback/clinic-playtest-2026-09-29.md` §13b |
-| CLN-23 | Items sit on the belt (flat base, contact shadow), not floating or tilted | open | eye: ×2 zoom · ART-03 | `docs/feedback/clinic-playtest-2026-09-29.md` §13b |
+| CLN-23 | Items sit on the belt (flat base, contact shadow), not floating or tilted | **reopened** (6 Oct play-test) | eye: ×2 zoom · ART-03 | `docs/feedback/clinic-playtest-2026-09-29.md` §13b; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-24 | Pharmacy tray feeds the heal game; a wrong pick costs score, nothing greyed out | built, not re-played | eye: pharmacy to heal | `docs/feedback/clinic-playtest-2026-09-29.md` §13 |
+| CLN-96 | Wrong colour plaster never ticks (red ticked for *lilo*); reproduce with a seed | **open** | eye: pharmacy L2 | `docs/feedback/clinic-playtest-2026-10-06.md` P5 |
+| CLN-97 | Items sit on the belt (green bottle floats); jugs cut cleanly; red plaster red all the way | **open** | eye: ×2 zoom | `docs/feedback/clinic-playtest-2026-10-06.md` P1, P9, P10 |
 
 ### Send-off
 
@@ -312,17 +332,18 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CLN-27 | An apple, never a lolly (also boing's lollipop) | built, not re-played | auto: grep lolly, lollipop · CUL-02 | `docs/feedback/clinic-playtest-2026-09-29.md` E3 |
 | CLN-28 | Doctor card does not list every line up front or repeat them; no script card | built, not re-played | eye: L2–L4 · CMP-07 | `docs/feedback/clinic-playtest-2026-09-29.md` §13e |
 | CLN-29 | Send-off L3: help items and reply pills do not sit on top of each other; reply pills only when needed | built, not re-played | eye: L3 · INT-03 | `docs/feedback/clinic-playtest-2026-09-29.md` §13f |
+| CLN-98 | She says how she feels in her bubble, on her real art, then the child picks the feeling, clearly | **open** | eye: send-off L1, L2 | `docs/feedback/clinic-playtest-2026-10-06.md` SO1 |
 
 ### Heal games
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | CLN-30 | Each heal game explains itself with one "why" beat ("why am I clicking on the things?"), no English sentences in bubbles | built, not re-played | auto: `build/check_onboard.mjs` · LNG-01 | `docs/feedback/clinic-playtest-2026-09-29.md` G5, §13g |
-| CLN-31 | Fever playable: tray id is thermometer, first-time help does not block taps, fan does not look like the strip; hot and cold to "just right" (Zafar's review pending) | built, not re-played | auto: help-path test; eye | `docs/feedback/clinic-playtest-2026-09-29.md` G8, H-fever |
+| CLN-31 | Fever playable: tray id is thermometer, first-time help does not block taps, fan does not look like the strip; hot and cold to "just right" (Zafar's review pending) | **reopened** (6 Oct play-test) | auto: help-path test; eye | `docs/feedback/clinic-playtest-2026-09-29.md` G8, H-fever; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-32 | Scrape: not too clicky; plasters in clear colours and order; a plaster can be taken off; sequence on the shared card | built, not re-played | eye: scrape · INT-02 | `docs/feedback/clinic-playtest-2026-09-29.md` H-cut, §13h |
 | CLN-33 | Knee: bandage shows on every tap; flashing stops when done; named leg not highlighted at top level; level 3 left and right clear (leak bot blind rate about 25% at L1 accepted) | built, not re-played | auto: leak bot; eye · INT-06 | `docs/feedback/clinic-playtest-2026-09-29.md` H-knee, §13i, §13l |
-| CLN-34 | Ear: level 1 not too hard (*wadho* and *nindho* not too early); wax is dragged to a tissue, not tapped; pop-up wax does not vanish by itself | built, not re-played | eye: L1 | `docs/feedback/clinic-playtest-2026-09-29.md` §13j |
-| CLN-35 | Tooth: brushing clear; no confusing bug; voice-overs, input live and sidebar work | built, not re-played | eye: tooth | `docs/feedback/clinic-playtest-2026-09-29.md` H-tooth, §13k |
+| CLN-34 | Ear: level 1 not too hard (*wadho* and *nindho* not too early); wax is dragged to a tissue, not tapped; pop-up wax does not vanish by itself | **reopened** (6 Oct play-test) | eye: L1 | `docs/feedback/clinic-playtest-2026-09-29.md` §13j; `docs/feedback/clinic-playtest-2026-10-06.md` |
+| CLN-35 | Tooth: brushing clear; no confusing bug; voice-overs, input live and sidebar work | **reopened** (6 Oct play-test) | eye: tooth | `docs/feedback/clinic-playtest-2026-09-29.md` H-tooth, §13k; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-36 | Taste game is understandable (soothing drinks redesign) | built, not re-played | eye: drinks | `docs/feedback/clinic-playtest-2026-09-29.md` H-taste |
 | CLN-37 | Boing: plaster part clear; apple not lollipop; coloured beads idea | built, not re-played | eye: boing | `docs/feedback/clinic-playtest-2026-09-29.md` H-boing |
 | CLN-38 | Eye: "what else other than fruit and veg?" answered; "why am I clicking on the things?" answered | built, not re-played | eye: eye game | `docs/feedback/clinic-playtest-2026-09-29.md` H-eye |
@@ -344,15 +365,15 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CLN-54 | Drinks: the recipe on separate rows under a headline; no counts at L1; the pour shown | built, not re-played | eye: drinks L1 | `docs/feedback/clinic-playtest-2026-10-01.md` P47–P49, 1:25:21–26:41 |
 | CLN-55 | Drinks are never a three-recipe memory test; the sore-spot game with one drink (D15e) | built, not re-played | eye: drinks L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P50, P51, 1:26:48–29:49 |
 | CLN-56 | Fever: the blanket goes over the shoulders, never the face | built, not re-played | eye: fever, cold | `docs/feedback/clinic-playtest-2026-10-01.md` P55, 2:0:14–0:26 |
-| CLN-57 | Fever: always clear what to do next (no tools that silently do nothing); a live thermometer with a zone | built, not re-played | eye: fever, after each change | `docs/feedback/clinic-playtest-2026-10-01.md` P58, P59, 2:1:01–2:21 |
+| CLN-57 | Fever: always clear what to do next (no tools that silently do nothing); a live thermometer with a zone | **reopened** (6 Oct play-test) | eye: fever, after each change | `docs/feedback/clinic-playtest-2026-10-01.md` P58, P59, 2:1:01–2:21; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-58 | Boing: the syringe's end starts the jab; tapping the syringe never takes beads out by surprise | built, not re-played | eye: boing L1, L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P69, P70, 2:9:07–11:16 |
 | CLN-59 | Eye: the sore eye is clear | built, not re-played | eye: eye L1 | `docs/feedback/clinic-playtest-2026-10-01.md` P74, 2:11:55–12:06 |
 | CLN-60 | Eye: the first-time help never presses *haa* on a row read wrong | built, not re-played | auto: help path; eye: first play · LNG-02 | `docs/feedback/clinic-playtest-2026-10-01.md` P76, 2:12:25–12:39 |
-| CLN-61 | Eye: obviously an eye chart; the patient seen looking at it; chart rows highlight and tick like card rows | built, not re-played | eye: eye test | `docs/feedback/clinic-playtest-2026-10-01.md` P78, P79, P83, P87, 2:12:59–14:26, 2:15:49–17:16 |
+| CLN-61 | Eye: obviously an eye chart; the patient seen looking at it; chart rows highlight and tick like card rows | **reopened** (6 Oct play-test) | eye: eye test | `docs/feedback/clinic-playtest-2026-10-01.md` P78, P79, P83, P87, 2:12:59–14:26, 2:15:49–17:16; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-62 | Eye: after *na* the dropper over the eye shows what to do | built, not re-played | eye: eye, a wrong read | `docs/feedback/clinic-playtest-2026-10-01.md` P77, P88, 2:12:39–12:59, 2:17:16–17:45 |
 | CLN-63 | Eye L3: no hidden first step without a row or a line | built, not re-played | eye: eye L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P82, 2:15:22–15:49 |
 | CLN-64 | Foot: the sole; a path with turns; touching the side is a scored mistake | built, not re-played | eye: foot L2, L3 | `docs/feedback/clinic-playtest-2026-10-01.md` P90, P92, 2:18:35–20:07 |
-| CLN-65 | Patients have hot, cold, sore and happy states, from one body | open | eye: each state | `docs/feedback/clinic-playtest-2026-10-01.md` P57, 2:0:53–1:01 |
+| CLN-65 | Patients have hot, cold, sore and happy states, from one body | **reopened** (6 Oct play-test) | eye: each state | `docs/feedback/clinic-playtest-2026-10-01.md` P57, 2:0:53–1:01; `docs/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-66 | No lollipop anywhere in the clinic: the boing tool list on the wide shot still shows 🍭 (the close-up shows the apple) | built, not re-played | eye: boing wide shot · CUL-02 | orchestrator review of R5's zoom sheets, 2 Oct |
 | CLN-67 | The patient's round face in the close-up matches the patient (a boy's face shows over the girl) | built, not re-played | eye: each heal close-up | orchestrator review of R5's zoom sheets, 2 Oct |
 | CLN-68 | Card rows join cleanly: no stray space before a comma ("Wipe , ba") | built, not re-played | eye: boing card | orchestrator review of R5's zoom sheets, 2 Oct |
@@ -368,6 +389,16 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CLN-78 | The ear's hearing check and the eye chart use scene-fitting pictures, not emoji | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
 | CLN-79 | The tick badge always reads (never '–') | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
 | CLN-80 | The eye test's haa/na pills are at least 48 px on phones | built, not re-played | eye: heal games, phone/laptop/tablet | Fable's clinic review, 2 Oct |
+| CLN-99 | Scrape: a dabbing cloth; connector line ends at the last row; all steps (plasters too) in the sequence; no "Cold!" mid-step | **open** | eye: scrape L1–L3 | `docs/feedback/clinic-playtest-2026-10-06.md` S1, S3, H3 |
+| CLN-100 | Knee: no yellow glow ellipse; the wrap goes round the knee; more turns (about 4–6 / 5–8 / 6–10) | **open** | eye: knee L1–L3 | `docs/feedback/clinic-playtest-2026-10-06.md` K2, K3, K6 |
+| CLN-101 | Ear: ghost finger drags the tweezers to a bin; smears left where blobs were; sore skin cleared at the end; drop bottle nozzle down; wax at the ear's angle | **open** | eye: ear L1, L2 | `docs/feedback/clinic-playtest-2026-10-06.md` E1, E2, E4, E5, E6, E8 |
+| CLN-102 | Ear hearing test: doctor says "I'm telling you ___" (dots), she says "you told me…", the child picks for her; wrong → more drops, asked again (pending decision) | **open** | eye/ear: ear L1–L3 | `docs/feedback/clinic-playtest-2026-10-06.md` E3 |
+| CLN-103 | Tooth: brush turned into the mouth and following the finger; plaque clears as you brush; mouth less open; filling off-white, no outline; "ow" and buzz outside the line; square drill trial (pending decision) | **open** | eye: tooth L1–L3 | `docs/feedback/clinic-playtest-2026-10-06.md` T1, T3, T4, T7, T9 |
+| CLN-104 | Taste: the tongue's purple holes cleared on the fix; the next step cued; real liquids, level rising | **open** | eye: taste L1 | `docs/feedback/clinic-playtest-2026-10-06.md` TA2, TA3, TA4 |
+| CLN-105 | Fever: one number model (±2/3/4); what she says, looks and the gauge agree; one green zone for line and drawing; tools in the column; tidy room; fan points down; no gust; sweat/snowflake icons (pending decision) | **open** | eye: fever L1–L3 | `docs/feedback/clinic-playtest-2026-10-06.md` FV1, FV2, FV4, FV5, FV8–FV12 |
+| CLN-106 | Boing: alcohol wipe with a wipe motion; a funny jab; a plaster choice; the bulb shows the next step (pending decision) | **open** | eye: boing L1–L3 | `docs/feedback/clinic-playtest-2026-10-06.md` B2, B4, B5, B6 |
+| CLN-107 | Eye: a wrong yes/no shakes red, the doctor names the row with pictures; a misread gets a drop and a right re-read before the tick; outlines don't overlap; chart drawn in code, items shrink clearly, one big at top; stylised eye; "to the eye test" button bottom right; L1 her word as a fading bubble; count-along L1 only; water vs milk pictures (pending decision) | **open** | eye: eye L1–L3 | `docs/feedback/clinic-playtest-2026-10-06.md` EY1, EY3, EY6, EY7, EY10–EY13 |
+| CLN-108 | Foot: water washes the dirt off to show the splinter; no flooding (pending decision) | **open** | eye: foot L1, L2 | `docs/feedback/clinic-playtest-2026-10-06.md` FT2 |
 
 ## First launch and shell
 
@@ -447,6 +478,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | KEEP-11 | Nana's voice; Nani and Nana talking; two-person chai; maani speed; the greeting hand gesture | keep | eye: each | `docs/feedback/cook-playtest-2026-10-06.md` V4, M4, M13, C17 |
 | KEEP-12 | The card that shows then blanks words; chai highlighted at the start; calling out items as they go in | keep | eye: pantry, chai | `docs/feedback/cook-playtest-2026-10-06.md` PA6, PA9, C3 |
 | KEEP-13 | Pantry wrong-item handling; cooker on early is fine; daar dial and rotation; samosa fry and frying handle | keep | eye: each | `docs/feedback/cook-playtest-2026-10-06.md` PA13, C28, D6, A9 |
+| KEEP-14 | Clinic: the zoom in and out; scrape sequence; pharmacy pause-hint and card fold; knee animation and dots; ear clean-up and wax that keeps coming; tooth drill, fill-to-green, clean mouth, L3 one-by-one, fill timer; taste popping; fever window; eye test and art; foot splinters; waiting room L3 heard-not-seen | keep | eye: each | `docs/feedback/clinic-playtest-2026-10-06.md` P4, P7, K4, K7, E7, T2, T8, TA1, TA5, EY9, FT5, W4 |
 
 ## Retired
 

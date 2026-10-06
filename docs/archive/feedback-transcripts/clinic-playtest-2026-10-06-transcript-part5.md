@@ -1,0 +1,226 @@
+# Transcript: acfed083-Kutchi_Game_Feedback_6_Oct_Part_5.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** okay so I'm clicking play a clinic morning let's give it a go so I think
+- **0:09** this is the end-to-end story I'm watching. Who's next to bring in the girl okay I
+- **0:21** thought we put in the new artwork of the girl into this
+- **0:25** I thought we wired her in to all the clinics what was the point of me waiting for you to
+- **0:31** who's next to wire in the clinic girl okay it's just stupid
+- **0:36** she should be wired in anyway bring in this is the waiting room part
+- **0:43** and then why does he let me try that again
+- **0:51** why does he say salaam alaikum and then reply to himself saying alaikum salaam
+- **0:55** that doesn't make any sense surely the girl should be replying that bring patient chakri
+- **1:03** salaam alaikum okay now she says salaam alaikum walaikum salaam okay that's good the placement's
+- **1:08** good though i like that i take that back that's good um i shouldn't say where does it hurt um
+- **1:15** i should just say like doctor's room in the button
+- **1:18** um yeah more like location led does it hurt here
+- **1:31** does it hurt here ha my guten
+- **1:41** okay so she said
+- **1:44** well he says my good time which means knee I thought was need I do I don't
+- **1:52** know ignore me well this is the actual character isn't it I think we need to be
+- **2:06** a bit more zoomed in no it's you're not gonna be quite small on a different game
+- **2:11** a different screen like it's quite hard to like click on her different body parts
+- **2:17** but firstly that there the pulsating things are quite big but also yeah how
+- **2:23** are you gonna in the future get them to be small enough to be one on those I
+- **2:29** guess shoulder we don't have but elbow I don't know all the different body parts
+- **2:32** I don't know I'm just saying maybe we just make her bigger
+- **2:40** I think there's a bit of scale to do that and then the pulsating things a
+- **2:46** little bit smaller and more accurately centered over the body parts right now
+- **2:52** you seem to be slightly approximated at the moment okay now once I've selected
+- **2:58** it's the knee nicely a swelling and a motion here for the knee huh
+- **3:03** why you didn't do I need to click the found it mode like it she says yes and
+- **3:09** it's kind of a little bit obvious now but I guess maybe in the future you're saying
+- **3:18** I don't know
+- **3:21** I think it should just take you to the next part of the game mode if it's obvious
+- **3:25** we don't introduce more of these bottom right hand corner clicks that we need to
+- **3:28** a scrape when he says a scrape that doesn't make sense to me
+- **3:33** oh
+- **3:36** fine is he first dilosing where it is and then what it is hmm this needs to be
+- **3:42** clearer I think it just needs to be like where is it and you click and she says
+- **3:49** no and then at some point she says yes when you click the right one and then
+- **3:52** he or she says the body parts name she says yes then he says your knee that
+- **4:00** would make sense to me
+- **4:02** and then it just starts the next game mode bring me plaster so nothing really
+- **4:08** introduces this game mode like the pharmacy one surely like in cook it
+- **4:16** should come up and the doctor should instruct you to say like okay bring me a
+- **4:21** plaster yeah and also the items the green bottle is just not sitting on the
+- **4:29** travelator thing at all I guess all this artwork needs to be redone otherwise
+- **4:38** it's not terrible in this game mode but yeah it used to be clear and then it
+- **4:43** didn't go green when I selected the plaster I think maybe that's fine right
+- **4:47** because we don't want to make it obvious for them but yes we need that first
+- **4:55** quit explaining the items to get
+- **4:58** plaster good and then he says plaster good um that's fine
+- **5:06** I think you should just take you to the next game mode again though
+- **5:09** one more there to do if he says it's good
+- **5:13** let's clean it and well zooming wasn't bad that zooming wasn't bad actually
+- **5:18** it could be it could be a little smoother maybe like half the speed
+- **5:22** um and the her animations don't look good but okay anyway again I don't know if he needs
+- **5:30** to come on a pop-up and explain maybe he doesn't need to every time I mean he's there on the top
+- **5:36** left but again there's nothing there on the top left that he's saying there's nothing written
+- **5:40** there anyway but anyway same click on the water palapani so let's do that again we need to think
+- **5:46** about he's there twice he's there in the green on the left hand side he's there in the green card
+- **5:51** and then he's there in the recipe card or maybe you're just saying that like
+- **5:55** him in the green card is just there for the sound and the help and the
+- **6:00** instruction comes in the recipe card that's maybe okay as long as we're
+- **6:07** consistent within this game that's fine so now it's saying to put the palapani across
+- **6:12** any point cloth tray can now she's saying dabs
+- **6:19** image of her oh it's not an image of her it's just her her icon happens to be the top left
+- **6:25** maybe we move her icon to the top right so it doesn't get confused with the game
+- **6:31** left hand game screen where the instructions come from and text pops out maybe that we do
+- **6:36** that for all of these clinic games move them the person who's been treated to the top right
+- **6:41** where it won't clash with anything kind of makes sense when you serve things as well
+- **6:45** in the cooking game the person comes on the top right
+- **6:49** and then the poi cloth to our dabs yeah left otherwise the dabs Kutchi I think
+- **6:58** you would then I might end up being a longer sentence structure but let's
+- **7:06** leave it for now so we get the cloth my tap on your own to VA okay we need that
+- **7:14** artwork for the
+- **7:17** cloth when you're dabbing with it right now it's a foliage cloth off to the side
+- **7:22** which makes sense but when you're dabbing with it it should be like a you
+- **7:24** know dabbing form cloth and then red plaster I feel like all the instructions
+- **7:34** should be there from the beginning I guess he's spelling them out at the
+- **7:36** beginning okay that's fine the first time
+- **7:41** red plaster
+- **7:44** on the other left though like artwork looks all right you know actually it
+- **7:50** looks quite cool to see the sequence the water and then and then the dabbing it
+- **7:55** was was joined with like a sequencing kind of joiney thing which by the way
+- **7:59** didn't yeah you can take it closely like the line the vertical line extended
+- **8:05** past the horizontal line going to the second item
+- **8:10** but then the plaster wasn't included in that sequency thing I think they should
+- **8:14** none of them should have been in the sequence or all of them should have been in the
+- **8:16** sequence that's press the tick again we don't not sure how I feel about this
+- **8:21** tick when it's done I think you should just get moved on look at that thank
+- **8:28** you oh the zoom out that's kind of cool we should kind of make sure it's positioning
+- **8:31** you kind of zoom out from the position of the knee I feel happy or the position
+- **8:35** of whichever thing you've just fixed
+- **8:37** um just a slight slower but that was quite good in that zoom out actually
+- **8:43** oh I missed what happened now is everything okay now
+- **8:49** well how do we know the answer did she say well if I click play button
+- **8:54** I can't I'm in tutorial mode I click happy thank you she said thank you okay I'm not sure
+- **9:00** presumably she should have said yes I'm happy or something and then you click the emotion to say
+- **9:06** which emotion she is feeling I missed that one fine let me play it and I'll
+- **9:12** test it bring in chakra and if you click on this time I clicked on her forehead
+- **9:19** for does it hurt here and she said no but the circle turned green so I think
+- **9:26** that's wrong we should probably turn red or
+- **9:32** gray or something I don't know so you know you don't you've already tried the
+- **9:37** option maybe gray cuz where to indicate that's the her area you didn't oh yeah
+- **9:48** also it turns green is good selected than the ungreens again um I'm not sure
+- **9:56** how I feel about that
+- **9:57** yeah not sure feels like it needs a little bit of thinking through there or we can keep
+- **10:21** it as it is but as soon as she says no it should
+- **10:23** go back to pulsating and not be green anymore
+- **10:30** let's i don't spend ages doing the actually no forget about it i was going to say we could redo
+- **10:34** the artwork for the pharmacist but let's just leave it as it is i don't know that the green
+- **10:40** tick button has a the tick button sorry it has like a bit of a looks like a bit of a drop shadow
+- **10:45** around it okay it's saying lila plaster i'm gonna purposely oh and then it showed me green because
+- **10:50** i paused for a little while that was clever
+- **10:52** i like that i'm gonna put red oh someone let me put red is it now i'm in tutorial mode okay
+- **11:00** now i'm gonna select red okay i'm putting red on oh i got a tick though look at that
+- **11:07** that shouldn't got a tick for that thank you i put the red one on but it said lilo
+- **11:12** is everything okay now that kind of wrong mechanism and do it again
+- **11:16** mechanism needs to be the same as cook
+- **11:18** we need to bring my consistency here oh i forgot to listen again
+- **11:22** let me see if i can refresh
+- **11:30** who's next okay whatever just anyway add the
+- **11:33** add the send off screen and you need she needs to say how she feels then you have
+- **11:37** to select how she feels she should she should say it
+- **11:41** okay so that was a full game so now i do what oh that's old clinic lab index
+- **11:46** okay let me play the waiting room who's next bring in man variant w3 who's next
+- **11:57** woman okay we have to see the text for call them in clips the round circles underneath the
+- **12:05** characters um this looks a bit messy so there should be you should consider the padding and
+- **12:11** the spacing between the circle selectors to select the patients and the boxes have called them in
+- **12:16** so woman come okay so let's click salam alaikum waa alaikum salam
+- **12:29** okay that's level one on that let me try level two presumably I can't next
+- **12:37** chakra come okay this time it says chakra come
+- **12:43** so I can still just match the words also we should only have people sitting on the
+- **12:47** bench I've decided maximum six people sitting on the bench no one standing no
+- **12:51** one no one else there I've already told you that so if it's legacy you need to
+- **12:56** update it okay so the moment I can still just match up the chakra come to the
+- **13:04** chakra come on the bottom bar should I not also be speak
+- **13:11** well about people can't read we don't be through this before then analogous
+- **13:17** example in a quick game or the dialogue game I thought I should be a speaker no
+- **13:26** so you can
+- **13:34** here which one each one means if you can't
+- **13:38** read I'm not sure that we need a visual team that's probably fine
+- **13:48** Salam alaikum okay let's try level WAA like I'm Salam to happens who's next
+- **13:55** Chakra okay I like that this time you can't hear so you can hear but you can't
+- **14:00** see there's a little eye button to bring it down
+- **14:05** no we shouldn't do that we should just put we should change that eye to a light
+- **14:14** bulb keep it small in the bottom right we don't do that for cook but cook it's
+- **14:31** normally in the visual ingredients
+- **14:35** I don't know I just consistency is important I think here it's fine to put a little light
+- **14:42** bulb I know it's already at the top but maybe that's fine to start with maybe take away the
+- **14:50** light bulb as the games go on so you don't need to know or maybe just leave it there for this one
+- **14:54** for talking it seems okay because like there's nothing else in that card so it's not like the
+- **14:59** end of the world what if I do click the light bulb at the top does the same thing
+- **15:04** um with a one counter next to it then two counter I'm not sure we need that
+- **15:14** I don't think we need the counter let's take that off yeah but let's change the eye to a
+- **15:19** light bulb and let's think through if we need to always if we should always have
+- **15:24** that on speechy things maybe maybe we should but not on ingredients or tasks
+- **15:30** we need to know to learn to press the global global light bulb button if they
+- **15:34** need help and we click the play button on his face chakra come Salam alaikum
+- **15:45** let me try level waa like I'm salam who's next woman come Salam alaikum
+- **15:56** not only like a lot who's next okay that looks the same okay fine so that was the
+- **16:03** waiting room let's try the diagnosis now does it hurt here that's sort of Boris
+- **16:09** let me try okay a very in d1 level two let's go does it hurt here does it hurt
+- **16:20** here no
+- **16:22** does it hurt here no why the two buttons found a sugar bug yeah anyway
+- **16:31** just take my initial feedback about the buttons in the next stages and I guess
+- **16:39** that was fine does it hurt here I'm going to try varying d2 now level one
+- **16:48** where does it hurt
+- **16:50** what you didn't hurts
+- **17:06** I'm wondering if on varying d2 he should say his item in the recipe card on the
+- **17:15** left
+- **17:16** maybe not maybe it's fine we just have the doctor doubled up twice that's my
+- **17:20** only concern they're both saying where does it hurt maybe one of them should be
+- **17:28** saying like I don't know test or ask I'm not sure I'm not sure the purpose of
+- **17:39** each of these ones let's figure out what it should be
+- **17:42** okay I got disrupted I don't know where I am on this I'm gonna play the version
+- **17:48** variant E3 at level one okay I kinda get the difference between variation two and
+- **17:54** three I guess I see the point of it I mean it's someone instructing you which
+- **18:01** I guess is good just to learn in Kutchi but I don't feel well I don't know why
+- **18:06** again a speech bubble should come from her
+- **18:09** speech bubble should come from her doesn't feel well and then the speech
+- **18:15** bubble should come from the doctor no or if not the speech bubble
+- **18:19** then the sidebar should say look at the hand but it's not really clear like I've got
+- **18:25** two things on the left thermometer and a hand and he's saying look at the heart
+- **18:29** so click on her hand that's great it's not easy to look at her to click on her
+- **18:33** hand well that's not easy but it just doesn't seem like
+- **18:37** clickable or you know like she's not like her body's not displayed in a way
+- **18:46** that makes it easy and obvious like I wonder if Varian D3 is only played on
+- **18:51** like standing patients that are standing with like their kind of palms
+- **18:58** supinated facing the front and out to the left a bit
+- **19:02** and they're bigger and therefore it's like you can quite clearly click on like
+- **19:05** a distinct part, a hand, an elbow or whatever. I'm not sure I like the swirly
+- **19:15** swirly icon for that's where the injury is I don't know it doesn't fit with the
+- **19:23** rest of the game I think it brings it down a little bit. I'm not sure we need
+- **19:28** anything
+- **19:30** but yeah okay I guess I get variant D3 it's just the way that it's spoken it needs
+- **19:34** fixing they should say whatever they say and then let's try level two the doctor
+- **19:40** should give instructions. I don't feel well I don't know why. Okay that's fine. Look at
+- **19:45** looking. Again so the doctor said two things he said look at
+- **19:55** hut although for some reason they stopped pronouncing it well and that was
+- **20:00** highlighted and then he said look at the eyes and then that is now in a different
+- **20:04** color the color of the text bubble that says look in the eyes is different from
+- **20:10** look at the hand and now they're both highlighted in slightly different colors
+- **20:14** I don't know which one's first also don't know which implement to use
+- **20:21** and I guess it's the hand and click on her hand look in the torch
+- **20:29** no it says looking so he should say use the torch but where am I looking oh in
+- **20:37** the eye that didn't work and that didn't work okay I can't click on our eyes that
+- **20:46** that's pointless so this doesn't really work yeah I mean there's two
+- **21:02** instructions here which thing to use and where to look and we need to describe
+- **21:07** how to say that and I'm imagining maybe it's like
+- **21:15** like with a mushkaki skewer sticks it's like okay use your hand and then the sub
+- **21:28** is like oh I want a mixed mushkaki and the sub thing is look at the knee look
+- **21:33** at the hand they tick off as you go and then the next one says use the torch
+- **21:43** look in the eye you know and that way makes it clear which instrument you have to use
+- **21:49** and where you have to look there's also no main title text for the doctor's recipe card
+- **22:04** um I don't know what I should say to be honest look everywhere I don't know
+- **22:10** um or find
+- **22:13** find it or I don't know and then again what's the purpose of the the doctor green card at the top
+- **22:23** that's a big fundamental problem we have to figure out for all the all of these I'm running out of
+- **22:28** mental power to determine it but yeah this doesn't work at this point I'm clicking the
+- **22:33** I'm clicking as highlighted the torch I'm clicking the eye and all around the eye and it's just not
+- **22:38** working so
+- **22:40** that needs fixing but yeah let's keep the variants let's take into account my feedback
+- **22:44** okay and that's it for the diagnosis stage

@@ -1,0 +1,251 @@
+# Transcript: 6bc476e6-Kutchi_Game_Feedback_6_Oct_Part_8.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** okay and now I'm doing taste while there's so many to do I've got taste
+- **0:11** fever boing I inferred I'm so bored of playing this game of the game feedback
+- **0:18** for hours let's see the sore spots okay I'm doing taste level one okay that was
+- **0:25** kind of far
+- **0:26** dude popping the dots or whatever putting the ointment on them as they
+- **0:31** moved around that was good now I have to make a harder what I do so I put milk
+- **0:35** okay the the liquid needs work going in okay then you need new artwork for all
+- **0:40** of that including having like we do with tea having different kind of liquid
+- **0:45** depending what's in there okay I put the milk in the hard and then what do I do
+- **0:53** is it done okay the teaspoon and I click on it my tongue feels better
+- **1:00** thank you I feel better that fix all the issues there's some purple dots left
+- **1:06** remaining though so you fixed it I shouldn't be any purple dots left
+- **1:11** remaining let me try level two let's see the sore spots
+- **1:20** pop Lilo spots any blue okay spots make that's quite fun
+- **1:35** yeah jumpy hard art waro dude feels better
+- **1:48** thank you okay now I'm gonna play fever level one let's get you just right take
+- **1:58** the temperature okay well now the temperature thing is sitting like not
+- **2:01** off to the right nicely as an item like it is no other game mode is just
+- **2:05** randomly in the middle of the game that's not good I'm too cold switch on
+- **2:13** heater okay
+- **2:15** I'm too hot switch but then it said Barabara right like it was correct but
+- **2:21** then the thermometer went above the green and she's saying she's too hot now
+- **2:28** so she no said Barbara maybe it's a bug where when it passes the green mark it
+- **2:31** says that or maybe he was asking the question because the voice recording is
+- **2:39** is not voiced like a like a question
+- **2:42** the doctor said things I think should come up the top left in a speech bubble
+- **2:46** or something okay the fan artwork needs to be done I don't know how you missed that one
+- **2:50** the fan is like face on it should look like it should be like pointing
+- **2:54** downwards to do the fan. I'm too cold. No but she's saying Barabarai.
+- **3:00** Does it make sense? Okay the doctor should be saying asking Barabarai maybe the
+- **3:05** speech bubble doesn't come out maybe the speech maybe it's just in in in the green
+- **3:09** you know doctor fucking thing side box and then she says I'm too cold yeah okay
+- **3:25** let's try the hot water okay now she's just that that dialogue to be clear about
+- **3:31** like who's saying what and where she's saying it should just go above her head
+- **3:36** if he's saying it should come either out from the left or should be in that left
+- **3:41** box
+- **3:42** if I just come out from the left because if it's like dialogue in the ongoing
+- **3:47** conversation it should like he should have his own speech bubbles if it's like
+- **3:51** instructions to you then you should stay within his green box that's kind of fun
+- **3:56** I don't really like items scattered about haphazardly as they are they need
+- **3:59** a place
+- **4:09** yeah I don't know it just needs like I left the windows a game mode for this one
+- **4:14** but that would have been cool but the windows are really where the window is
+- **4:20** there needs to be a heater placed slightly more nicely facing her so maybe
+- **4:28** the heat is on the right hand side of the room so at least the heat can go
+- **4:35** right to left even if it's pointing a bit more towards you so you can see it's
+- **4:38** on
+- **4:39** thermometer is fine the one on the wall but the one that goes in her mouth
+- **4:44** should be on the left on the start on the right hand side like how items
+- **4:47** normally do and the fan again just lying there so that needs to be lying properly
+- **4:52** either on the bed or on the desk or something or there's like a shelf for
+- **4:58** some of these items I don't know I need thinking about but it needs to be a
+- **5:00** little bit less haphazard okay let's try level two
+- **5:04** let's get you just right take the temperature yeah let's take English text
+- **5:10** not let's get you just right but like I don't know I don't know I'm not getting
+- **5:18** drawn back into who says should be saying what in what card but it's just
+- **5:24** yeah should be instructions for you and that oh I don't know okay temperature I'm too cold
+- **5:35** this is too cold this is too cold yeah thermometers in the green section
+- **5:40** which is incorrect but I'm ready I'm too hot switch on ceiling fan you get all the
+- **5:49** little I know the logic kidneys to be working out if she's too cold she's to
+- **5:52** look too cold at the moment it needs to be in the cold section if she's too hot
+- **5:57** she's to look too hot she's to say too hot and the form it needs to be in the
+- **6:00** hot section I mean like all that needs sticking together but I'm ready I'm too
+- **6:05** cold
+- **6:06** switch off ceiling fan okay we can't turn the fan on and turn the fan off and
+- **6:14** that's the answer I don't know what happened to the window opening this
+- **6:20** needs a bit of fixing it's not far like the mechanics like not terrible but like
+- **6:27** yeah like
+- **6:32** you need to code it like I said like you need to a temperature needs to be a
+- **6:35** certain nominal number like 10 or something in the background and then
+- **6:40** all these items need to give like plus 3 plus 2 or plus 4 and or minus 2 minus 3
+- **6:49** minus 4 and that sets up like the equation of what items needs to happen
+- **6:55** when to get you to get them to the right thing even if the doctor is directing
+- **6:59** you use that as a basis to work out an interesting sequence
+- **7:06** of things to press to get them to the right place you can't just give them one thing then
+- **7:10** take it away and all of a sudden it's better again okay let's try level three let's get you
+- **7:14** just right give her the thermometer i'm just too cold give hot water bottle hot water bottle hot
+- **7:21** water bottle i'm too hot take back hot water bottle the crying emoji is not the one she just
+- **7:28** needs like a she needs a sweating she just needs like two little icons like a sweating one
+- **7:35** on the top right of her head and like a little ice flake
+- **7:39** again the top right of her head just so you can't read her facial expressions
+- **7:42** it's just really obvious which one she's feeling
+- **7:44** okay the game's not highlighting something but there's nothing there anymore
+- **7:49** what's it asking me to give her? the hot water bottle? I can't even see. Oh the fan, it was just the wrong point, take back hand fan
+- **8:02** still too cold, still too cold, I'm too hot, fix it, the window looked good but the the window open and close look good the intermediate um
+- **8:16** animation where like a cartoony gust of wind wasn't good just you just open and
+- **8:24** close it I think okay she's just right now okay you need to fix how all this
+- **8:30** works but in theory it's good but I need it to be good in practice okay now we're
+- **8:37** doing boing level one I'll do it
+- **8:43** you count what I'll do it you can't why does it say that
+- **8:50** acro doesn't want to do with what's actually happening so chart acro VA tray
+- **8:59** press chart tray VA acro plaster
+- **9:09** got the countdowns a bit um
+- **9:15** thank you i feel better i think it needs like a not a flashbang but a funny a funny uh
+- **9:23** sound and animation so the kids don't get scared of getting injections
+- **9:27** okay in theory in theory it's it's okay it needs all new artwork um let's try level two
+- **9:35** i'll do it and it shouldn't say i'll do it you can't because that's not what's actually happening
+- **9:39** three
+- **9:40** it says wipe three times
+- **9:46** i'm not sure cotton bud is the best thing to wipe it with there's no wiping animation either
+- **9:51** um i feel like an alcohol wipe is the right thing for this
+- **9:55** okay i've wiped it three times now now what now what happens
+- **10:02** okay i start putting in the four drops i need to know just to click that do i
+- **10:07** might need more support with that that's four drops and now what
+- **10:16** press it i just kept clicking it i'm not sure if that's something actually
+- **10:19** happened without me
+- **10:22** acro
+- **10:24** plaster
+- **10:30** okay we can start doing different kind of plasters or something to uh
+- **10:34** make that part vaguely interesting
+- **10:41** okay I'm wiping it three times
+- **10:45** done it three times but now what like
+- **10:49** it should show you in the tutorial like what to do after you've clicked it like
+- **10:54** because I don't know now I'm just clicking on random shit I don't know what to click on
+- **10:59** now I've done it three times instead
+- **11:02** it's just not like it's not clear just as a wipe three times when I press the
+- **11:09** light bulb what I've wiped it too many times now how do I forget something next
+- **11:13** the next thing that what I click on but I don't know I don't know what kind of
+- **11:18** drops to put in because it never told me I can't see it on the light bulb either
+- **11:22** so it's not like I can move on I can't move on by now filling up the range
+- **11:27** because one you didn't show me that to start with which you should do and then
+- **11:32** there's no instructions now for me to do that so that needs completely fixing level three you
+- **11:39** should say clearly what needs and again that screen should come up at the front like this is what to do
+- **11:53** and you should voice it out and have the dots where the colors are or something like that
+- **11:57** so it doesn't give it all away and then
+- **12:02** it should be a pop-up card which tells you what to do then it minimizes on to
+- **12:08** the left if you want me to reveal it it reveals all the information so you can
+- **12:13** still know what to do and and the on-boarding screen should show you what
+- **12:21** to do after you've clicked after you've dabbed enough times and the dab should
+- **12:24** be an alcohol wipe and then any other feedback I gave right let's do the eye
+- **12:28** game
+- **12:31** drops first then let's test your eyes Shando VA again I want a full review of
+- **12:41** every single thing that said by either the green doctor or the recipe card
+- **12:46** doctor for every single gourmet every point make a big table and tell me what
+- **12:50** they should be and why with clear logic and consistency
+- **13:02** this is good I like the eye test the eye is a bit freaky though I think it needs to be a
+- **13:10** stylized eye at the top of the eye test not a real looking one she says it limo so
+- **13:20** you should say no and then give her another eye drop
+- **13:28** that is correct laser okay all the outlines of the items on the eye test
+- **13:35** overlapping each other as they turn gold which shouldn't happen I know she said
+- **13:47** how'd I go to a pizza again if I didn't listen because I just have to guess now
+- **13:54** thank you I feel better okay maybe her text should come like over her yellow
+- **14:02** under her mouth or even under her neck on her torso there's lots of empty space
+- **14:07** there rather than moving hers to the top right because there's no top right space
+- **14:13** for her in this game mode okay let's try a level drops first then let's test your
+- **14:23** VA one two oh what's this kind of thing now a whole colored chart thing has
+- **14:33** appeared and it's flashing I click on yeah oh that doesn't know made no sense
+- **14:38** whatsoever I don't understand what I was trying to get me to do is I try to get
+- **14:41** me to move on to the next part of the game I know I wasn't listening to what
+- **14:46** she said
+- **14:51** maybe in level one it should say Limu in her dialogue box a bubble that appears
+- **14:58** under like you know on her yellow clothing kind of under her mouth but
+- **15:03** quite away behind her mouth or maybe just right her neck level I don't know but
+- **15:08** then it disappears so just pops up Limu and already starts fading and it's
+- **15:13** faded in like a second just to kind of help you to start with I think we
+- **15:20** should implement that for level one
+- **15:23** no more eye drops. Mischie. And it'd be nice if her mouth moves right so you can
+- **15:32** see that she's the one saying these things. Lazen. Even with the speech bubble
+- **15:39** like under her I think if she can move her mouth as she's talking that's a better
+- **15:43** deal. The artwork's quite nice, that's very nice artwork.
+- **15:49** Paani. So she said Paani. What if I pretend that's correct and that's not? I can see. Thank
+- **15:58** you, I feel better. Well I'm assuming that wasn't Paani, he looked like milk. Okay I'm
+- **16:03** going to try level three and I'm going to try and get something wrong on purpose and
+- **16:06** let's see what happens. Drops first, then let's test your eyes. Shando. 1, 2, 3, 4.
+- **16:18** Okay I see that pulsing thing is meant to be a...
+- **16:26** Yeah at level three, if level three is the hardest level he no longer needs to count out the numbers as he's doing it because you can see them on the right hand side and the little dots.
+- **16:35** So we can stop that at that point and I think that's the eye test icon you're trying to show, like oh let's go to the eye test. Well let's put it at the bottom right then because go to the next screen, it's generally on the bottom right.
+- **16:49** Yeah? And then yeah, if go to the next things on the bottom right, it should be on the bottom right.
+- **16:58** But everyone else have had text saying go to this, so I don't know why this time it needs an icon.
+- **17:04** So maybe we should just say go to eye test.
+- **17:14** The eye test. Oh god, this is hard.
+- **17:16** Mirchi. Yeah, do it.
+- **17:20** The items do you need to get physically smaller?
+- **17:25** And the items should sit on the line?
+- **17:30** We might have to redo the eye chart.
+- **17:32** Like it's not clear that it's getting smaller the lower down the eye chart you go.
+- **17:37** I think it needs to be much more exaggerated.
+- **17:40** It's barely smaller at all. It needs to be significant. You might want to just draw the lines on yourself rather than get Chachapuchi to space it out exactly how you want it to.
+- **17:56** Especially because there's only four lines. I think you could draw it better, space them out better, and size the items better as well.
+- **18:06** Going bigger to smaller. Also, is it me, or do you normally have more items at the top and fewer items at the bottom of an eye test? Like it's like a triangle? I think so. If that's what you normally do, and I'm correct, then maybe we do that for the eye test, just to kind of add to the visual indication that this is what's going on.
+- **18:29** Highlighted.
+- **18:32** Okay, so that's what I'm going to do. So she got that correct, but I'm going to say no, but it still ticked it as correct.
+- **18:46** So that's a problem. How do you give feedback to the user that they got it wrong, and they selected the wrong thing?
+- **18:57** Maybe, like, the doctor should say, we need to be teachable moment, right? Someone needs
+- **19:08** to teach this. Maybe the doctor said, maybe the doctor should, like, say, lesson, whatever
+- **19:17** the items, item one, item two, and there should be a picture of it, and then he should say,
+- **19:23** that's correct, or something.
+- **19:26** Because right now, ticking it is gold, like I said, all the gold things are overlapping
+- **19:37** each other, and it's asking me to give her eye drops, which suggests that she completely
+- **19:42** got it wrong, both things indicating that she got it wrong, that's not correct.
+- **19:49** So that needs fixing.
+- **19:52** Maybe the doctor should just say, like, listen, or whatever, just say item one, item two, with little icons next to them, and then it ticks correct.
+- **20:18** Because she got it correct. Or maybe, you know, he, the doctor, says item one, item two,
+- **20:31** with the icons, and then my no button, which I incorrectly pressed, should, like,
+- **20:37** turn red and shake. Then I have to, then I know that, okay, I need to press yes.
+- **20:44** Then when I press yes, it ticks correct, and it works.
+- **20:48** Now, how does that work for the reverse case? Let's think that one through. So if
+- **20:51** she was wrong and I clicked yes, then it's the same thing, actually.
+- **20:55** He should say what the items are, but in the speech bubble, he should have the icons of what
+- **21:00** the items are. I then realize, oh, I was wrong, and the button that I selected goes red and shakes,
+- **21:06** and then I have to press the other one. Lazen.
+- **21:10** Dude.
+- **21:11** Limu.
+- **21:12** Dungri.
+- **21:13** Tomato.
+- **21:14** So, she got that wrong, so I'm going to press no.
+- **21:20** Limu.
+- **21:21** But I shouldn't tick it if she got it wrong.
+- **21:25** Tomato.
+- **21:26** Nani.
+- **21:27** Dungri.
+- **21:28** I shouldn't tick it.
+- **21:29** You should give her the eye drop, then she says it again, and it ticks itself.
+- **21:36** Kutchi gets it right this time. That should be the sequence.
+- **21:38** So she says it again after receiving the eye drop, gets it correct this time because she received the eye drop, then the road ticks.
+- **21:46** Then there's a pause, and then she then starts, then the buttons reappear, the yes or no button, and then she says the next row of items.
+- **21:58** Okay, I didn't listen to what she said, so...
+- **22:01** Okay, that's my feedback for that game. It's not bad, actually. Let's play foot.
+- **22:12** Level one. Taking ten hours to load. Let's take the splinters out. Okay, Nani,
+- **22:21** lukewarm, VA, jugs, VA.
+- **22:27** Splinters.
+- **22:29** No, let me just take out the pouring water. I don't know, just the whole flooding in water doesn't really make any sense.
+- **22:36** Maybe we just focus on, uh...
+- **22:42** Taking the splinter out.
+- **22:47** Plaster.
+- **22:48** Okay, that wasn't bad.
+- **22:51** Thank you. I feel better.
+- **22:53** We can do the piney, but it should just... it should...
+- **22:55** clean the dirt and unveil the splinter. That's what it should do.
+- **23:03** And again, like, it's just... I start ignoring the cards because it's just so noisy and incorrect
+- **23:08** all the time, but it should say it more nicely. Let's take the splinters out.
+- **23:12** The park card should happen. Lukewarm. Tray. Jugs.
+- **23:22** Um...
+- **23:25** Okay, so now how... oh god, three jugs. Okay. And now what do I do? Now I've done the three
+- **23:34** jugs against a recurring problem, I've done the right number, what do I do next? There's
+- **23:38** no, like, splinter thing for me to... Splinters. For me to, like, move on to the next part
+- **23:48** of the game, it's really annoying. Okay, splinters. Oh, that's kind of cool.
+- **23:55** But wait, I can't... Oh, okay, I kind of see.
+- **24:02** That's cool, that's actually kind of cool.
+- **24:06** Yeah, I like that. Okay, fine. That's the foot, and then...
+- **24:13** And then that's it. Also, I kind of like the idea of the tummy game.
+- **24:18** It needs a little bit of working, but taking out the sweets is good. Maybe we show a tummy,
+- **24:23** and we show there's vegetables in there, different vegetables,
+- **24:26** or different fruit, and then, like, sweets, and, like, chocolate.
+- **24:30** And stuff. Like, bad stuff, like Mittai, or whatever. And then you have to take out the bad stuff to, yeah, maybe show the inside of a stomach, and a big, like, sucky pipe thing, and then you have to, like, suck out the bad sweets, and they feel better, and then you give them tea. Yeah, it's not a bad game world, actually. Let's develop it properly.
+- **24:56** Give me your thoughts on how to make it good, and then let's include any artwork in the game modes.
+- **25:00** Or let's just leave the tummy for now, we've got enough game modes.

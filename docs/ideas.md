@@ -50,3 +50,8 @@ Same columns as above. Status for each is what the source said; nothing here is 
 | 35 | Onboarding | **No tutorial:** level 1 of every mechanic is the onboarding; first launch goes straight into play. | – | Old Cook to-do | Kept: `modes/first-launch.md`, E2, E9 |
 | 36 | Every mode | **Role reversal (the child gives the instruction):** a phrase builder from pills, a character who follows it (and gets it wrong if the child does). | – | Old Cook to-do; `speaking.md` | Idea; partly the speaking ramp (E32) |
 | 37 | Language | **Other languages later** (Gujarati next, J10); keep grammar out of code and templates in data. | – | Old free-play notes | Future (G13, J10) |
+| 38 | Cook: Nani's shop | **The shop needs work:** what each thing does, worth saving for. | – | Zafar, 6 Oct (`docs/feedback/cook-playtest-2026-10-06.md` C15) | Parked |
+| 39 | Every screen | **One button and icon family** (squircles in the side tab vs round buttons elsewhere); the sidebar tabs worked out. | – | Zafar, 6 Oct (Cook C12) | Parked |
+| 40 | Home, settings, profile | **The end screen is the template** for the home page, settings and profile pages. | – | Zafar, 6 Oct (Cook C13) | Idea; after the coin-jar screen |
+| 41 | Clinic: fever | **A window game:** the windows as their own small game. | – | Zafar, 6 Oct (`docs/feedback/clinic-playtest-2026-10-06.md` FV6) | Idea |
+| 42 | Clinic: tummy | **Take out the extra sweets:** a cutaway tummy with fruit, vegetables and the sweets she ate too many of at a wedding; a pipe sucks out only the extra sweets (the count is the Kutchi); then warm water or tea. Never "bad food", never a reward. | to record | Zafar, 6 Oct (clinic TU1); parked by him ("we've got enough game modes") | Parked |

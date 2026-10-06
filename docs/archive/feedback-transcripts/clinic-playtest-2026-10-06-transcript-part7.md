@@ -1,0 +1,261 @@
+# Transcript: 8bbe8efd-Kutchi_Game_Feedback_6_Oct_Part_7.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** hammer, okay i'm now on the pharmacy game, bandage, level two
+- **0:09** um
+- **0:14** we just need to think about the artwork because when it's on the
+- **0:19** where's the hammer here
+- **0:24** when it's on the
+- **0:26** conveyor belt and then when it comes kind of into your tray area I know it's
+- **0:35** not a tray which is fine when it comes into the tray area at the bottom then
+- **0:42** will the artworks be the same because you're gonna change the artwork so it
+- **0:45** looks like it can clearly be sitting on the conveyor belt maybe it is the same
+- **0:50** but you need to check if it needs two orientations and then maybe
+- **0:54** when you use these items does it need the items icon on the right hand side
+- **1:01** you know for you to select and then finally when you're using the item itself
+- **1:05** like for example the drill to drill out the parts of the teeth does that need
+- **1:08** the objects in a different orientation I think we should just like do a bit of
+- **1:12** review as to where and how all these items needs to be used and what shapes
+- **1:17** and sizes and orientations so we can just
+- **1:20** do one pass at a time or make one sprite sheet for each item so we've got some
+- **1:24** flexibility. Yeah there's a bit of a drop shadow on the white tick thing, on the
+- **1:30** white border behind the gold tick, I don't like that.
+- **1:35** Bandage, good. Hammer, good. Yeah and again it went bandage to hammer in terms of
+- **1:45** counting the items and saying that they were correct. It's just got top to bottom, always.
+- **1:51** I like how the card folded up nicely afterwards, it's good. Okay fine we're
+- **1:57** going to play level five on this. Bring me, pillow, jug of hot water, any point, so
+- **2:05** this is where I think, cold water, any point, plaster.
+- **2:12** This is where, again, Simiter Cook, and we really need to be consistent here, he should say the items he wants before you go into the game mode, because otherwise you're hearing and trying to play and listen all at the same time. He should just tell you what it is and then you go into the game mode.
+- **2:33** We need to be making things consistent across these games.
+- **2:41** The red plaster probably needs to be red all the way.
+- **2:48** Jug of hot water, good.
+- **2:51** Jug of cold water.
+- **2:52** Okay, otherwise not bad.
+- **2:53** These jugs aren't cut out nicely, but that's fine, I think this was temporary quick artwork.
+- **2:59** Okay that's the pharmacy mode, I think that's fine.
+- **3:01** Bring me.
+- **3:02** I'm going to try now the heal games.
+- **3:06** Let's brush.
+- **3:07** Fix it and fill it. I'll start with the heal cut.
+- **3:17** Let's clean it and put plasters on. I think I've already played the first game mode so let's do level
+- **3:27** two. Let's clean it and put plaster. Okay I'm playing level two but I put the water and that
+- **3:33** was fine. That ticked. Then it said use the cloth and do four dabs which I did. Nothing happened. I
+- **3:38** did more dabs. It keeps counting higher but nothing's happening. I don't know how to get out
+- **3:41** of this and how to proceed now. There's no like...
+- **3:44** tick or next button or anything so I'm just stuck. It doesn't make any sense.
+- **3:51** Where do I go from here? I'm not sure. Plus presumably we're going to fix the artwork
+- **3:57** for like the cuts and the scrapes to make them look more realistic.
+- **4:05** Yeah there's nothing more can we say about that. I can't play the rest of the game.
+- **4:08** I'm just kind of stuck. Let me try level three now.
+- **4:13** Let's clean it and put plaster on it. And I keep going back to this but like I really kind of
+- **4:21** emphasize that we have to come away from the sprint having clear logic for what's
+- **4:26** said by the Nani or the doctor in the green guiding box as a title page and
+- **4:32** what's said by the in the recipe card. I don't know I just find it just visually just
+- **4:36** like the two of them. You see the same face twice. It's just like...
+- **4:41** I don't know, it's...
+- **4:45** I don't know, it just feels bad. It feels wrong.
+- **4:49** It feels like they should have individual things to say or...
+- **4:53** they shouldn't be the same face.
+- **5:01** Yeah, I don't know what we do for Nani when she's giving you the instructions.
+- **5:05** So she's both the guide and the person. I don't know.
+- **5:09** Ooh, he's meant to give you the... the green card's meant to give you in the cooking game,
+- **5:16** like, follow the recipe and give you the next item in the recipe, so maybe that's what he
+- **5:21** should be doing here.
+- **5:26** And then the recipe card should just say, like, um, clean and heal.
+- **5:36** Or something. Okay, let's try... put the finally... I don't know why it needs to say cold after that.
+- **5:48** Doesn't really make sense to me. I'll play the cloth, and then one, two, three, four...
+- **5:57** Okay, well then nothing happens. Okay, whatever, same for level three.
+- **6:01** Okay, that's that game mode. Now I'm gonna do...
+- **6:05** The knee.
+- **6:08** Let's check it and bandage it.
+- **6:11** Hammer.
+- **6:13** Chart.
+- **6:14** Take the hammer.
+- **6:15** Acro.
+- **6:17** That's kind of fine. That is quite zoomed in.
+- **6:20** VA.
+- **6:21** Tray.
+- **6:22** Chart.
+- **6:23** Any point.
+- **6:24** It could be a tad zoomed out, but...
+- **6:26** Okay, maybe it's fine.
+- **6:28** Turns.
+- **6:29** Then why is there a yellow, like, semicircular moon crescent thing to the side and slightly behind the knee?
+- **6:34** I thought that was going to be, like, something.
+- **6:37** Is that cut out badly? Is that meant to show that it's hurting? I don't know.
+- **6:40** Can I click on the bandage?
+- **6:51** Do we do the bandage on the knee?
+- **6:53** For doing the bandage on the knee, the bandage has to go around the knee.
+- **6:57** Like, from the... over the kneecap and behind the kneecap.
+- **7:02** You don't have to change that much, just move it diagonally a bit so it's wrapping around the knee.
+- **7:09** I thought this was just for, like, cuts or something. Could you bandage it? I don't know.
+- **7:17** We can put it here, that's fine, because there's nothing else to do here, but
+- **7:21** yeah, right now the bandage just ends in the middle of the leg,
+- **7:24** it doesn't make any sense. It needs to be wrapping around.
+- **7:28** The knee. Okay, let's see, uh, level two. Let's check it and bandage it. One, two, three, four, five. It's not a bad animation, actually, it's quite impressive.
+- **7:45** Okay, I've done the hammer five times, and the bandage. But the text for the bandage didn't come out until I clicked the bandage.
+- **7:55** Before it just said hammer. So, yeah, once I've done the hammering, it needs to tell me
+- **8:00** what's next, or it needs to already be what's next there. And again, the lines
+- **8:07** linking the hammer to the bandage, the vertical line linking the two
+- **8:11** horizontal lines, extends beyond the bottom horizontal line, as if it was
+- **8:18** going on to another item, but it's not.
+- **8:21** Okay, we can do more turns for the bandages, but this is a good opportunity to use higher
+- **8:32** numbers I think, because also it looks better. But yeah, we're gonna have to improve this
+- **8:40** visual and make it go like around the knee, and take away that weird yellow thing as well,
+- **8:46** doesn't make any sense.
+- **8:47** That feels better.
+- **8:48** Let's try level three, because if nothing else, I just kind of want to try the bandage game in one go.
+- **9:01** I like the little dots at the top you keep clicking on. That's good. That's very clever.
+- **9:06** But now nothing's happening, right, until I click the bandage.
+- **9:11** Now the voiceover comes.
+- **9:14** Turns. Hekro. VA. Tray. Yeah, the dots need to alternate from left to right.
+- **9:24** You should never... Bandage should follow that. Yeah, okay. Not terrible, but
+- **9:34** definitely needs to be higher numbers, even for the easy mode for the bandage.
+- **9:37** That's the whole fun of it.
+- **9:39** I'm playing that game. Let's go for ear. Oh god, that's close up. It's fine now.
+- **9:58** So I have to use this glove thing? I have to drag it? Now I'm confused.
+- **10:05** Oh, that explainer wasn't clear.
+- **10:09** That had to put it in the tissue. Use the tweezers to put it in the tissue.
+- **10:14** Oh god.
+- **10:24** Oh, then you have to clear up afterwards. Okay.
+- **10:28** It's kind of clever, but the bits you have to clear with the cotton bud shouldn't just appear out of nowhere.
+- **10:32** They should be residue from the earwax or something.
+- **10:37** That was kind of fun.
+- **10:44** Tomato?
+- **10:45** What?
+- **10:46** Why all of a sudden did it say which one?
+- **10:57** Oh, which one did I say?
+- **11:02** Is this testing the hearing?
+- **11:04** Fine, but this needs to be like... I've not done the eye test game, but it needs to be like...
+- **11:12** Tomato?
+- **11:18** Okay, I see where you're coming from. It needs like...
+- **11:24** To be clear, the question is coming from the doctor and the answer is coming from...
+- **11:30** the girl, so maybe we need a little face icon of the girl. Tomato? Tomato? Which one did I say? Tomato?
+- **11:51** So yeah, he needs to say then... Tomato?
+- **11:57** I don't know, something along the lines of like... Tomato?
+- **12:03** Can you hear me? Can you hear me properly? Tomato?
+- **12:12** I'm saying tomato. Tomato?
+- **12:19** Or simplify it like... I'm saying tomato.
+- **12:22** Tomato? Did you hear me? And then she says... Tomato? And you said... Tomato? And... Tomato?
+- **12:38** Yeah, in her speech bubble or something is the three items to select. Tomato? Which is
+- **12:46** visually how on the screen we show. Earwax is disgusting. Maybe we change it to like a
+- **12:52** little...
+- **12:53** chemical waste tray or if left nothing else or waste paper basket tray so at
+- **13:00** least once it goes inside you don't see it. We see enough space on the screen to
+- **13:05** be able to do this but I think you probably could probably come on the top
+- **13:09** left right by like where the card is the green card is and say like... Tomato?
+- **13:21** She can't say I'm saying tomato in Kutchi because it's it's the tomato would come second in the middle of the sentence.
+- **13:33** Tomato? No, you can say I am telling you.
+- **13:38** Tomato. I am telling you tomato.
+- **13:43** Did you hear and then she can say
+- **13:48** I heard
+- **13:50** and then her answer and then yeah let's make a let's make her little face and
+- **13:55** maybe a little speech bubble for her and then you select I can hear again yeah
+- **14:02** thank you I feel better okay but there's a pink blob on here that never went away
+- **14:06** I don't know if that was meant to go away after the ear drops or what that was but I feel like
+- **14:10** that shouldn't still be there feels like you're meant to be trying to clear all that out
+- **14:15** so yeah I'm not sure why that pink purple thing still remains with my
+- **14:26** suggestions I think it could be a good game mode let's try level two let's
+- **14:34** clean it also the ear blobs don't look realistic on the ear I think
+- **14:38** they're from two different perspectives the ear blobs are like
+- **14:41** any point facing the ear blobs are like flat at the bottom like they're on a
+- **14:51** flat surface but you're looking at the ear side on so they might need to be
+- **14:55** rotated or something they don't look like they're adhered to the ear yeah and
+- **15:06** like I said the help game doesn't show you need the tweezers to drag them
+- **15:11** so pillow what dorks that point in door
+- **15:20** it's kind of funny that won't keep coming
+- **15:26** any point cotton bud and then cotton buds
+- **15:36** any boy Shanda sure and then four drops one two three four okay when you do the
+- **15:45** drops the bottle given the drops is facing with the nozzle up it should face
+- **15:49** with a nozzle down so the drops fall out the nozzle into the air so that needs
+- **15:53** work
+- **16:00** yeah and then you have to press the tick
+- **16:03** for some reason which is annoying which one did I say to my pill okay nobody's
+- **16:12** spoken about which one did I say I can hear again thing thank you I feel better
+- **16:22** but wait when does she give them a long answer sometimes and then you have to
+- **16:26** put more air drops similar to the eye game is that the point of it
+- **16:32** that's what you should do so so she says I chore I'm a couture you told me
+- **16:41** tomato or I'm a couture yeah well yeah so you have to select what she actually
+- **16:51** how's this how's this work you should select what she's saying she heard
+- **16:59** is that right no she should just say I'm a couture you told me and then it's
+- **17:15** displays the three images and you have to select the image that the doctor
+- **17:20** said and if you get it wrong then you have to put in more drops and and then
+- **17:27** he asks you again until you get it right that's a fun little way of kind of
+- **17:33** making you do it again making you put some extra a jobs first and then trying
+- **17:36** it again and she doesn't answer she lets you answer for her yeah that way as a
+- **17:41** learner you have to hear what the doctor said and repeat it back also maybe you
+- **17:45** don't want him to show what he said then because you're trying to listen to it
+- **17:53** please you come out in a speech bubble and say it and and the word he says
+- **17:57** should be like hidden with the dots so you understand that you said something
+- **18:01** you need to know what that is and then you can replay it if you need to yeah
+- **18:06** then if you click on the volume button of the green card then it will say what
+- **18:13** we said again okay that's kind of good I'm afraid level two now let's do
+- **18:21** tooth let's brush for a girl's gonna play this game more hello devil hello
+- **18:35** double the toothbrush needs to be how it was the first time right like you know
+- **18:41** the bristles facing into the mouth and needs to be cut out much better this
+- **18:48** toothbrush
+- **18:49** and I need to move it more to the right more to the left so the bristles go all
+- **18:53** the way to the edge of the mouth when other movements too small drill the bad
+- **19:04** bits how there's no drill okay I see oh can I hug on the tooth and it makes a
+- **19:15** mark
+- **19:16** that's that's kind of to the green that's kind of good fit to the green
+- **19:23** the buttons kind of good looks a little awkward to flowing there it doesn't hurt
+- **19:28** now thank you I feel better that's not terrible I think the healed the final
+- **19:36** filling needs to maybe be be slightly closer to teeth color so you still see
+- **19:40** the filling but
+- **19:43** it looks like you don't have a better job maybe just don't put the outline
+- **19:47** around it that will look better that's not that bad actually got the the visual
+- **19:52** the mouth is very clean yeah I do like that obviously damage the teeth she
+- **19:59** should say like ow or like it should like maybe give a mock vibration if you
+- **20:04** go outside of the line otherwise it's quite clever though
+- **20:11** let's try level two this can't be too fiddly let's brush because people reading
+- **20:17** fingers on your phone and on tablets hello dabbo any point right side any
+- **20:29** point up any point dabbo so again these you should have the instructions with
+- **20:36** you beforehand
+- **20:38** before you start the game so you can just go and do it yeah yeah I've said
+- **20:50** that enough times now okay so now it's showing you but the ghost hand is
+- **20:56** showing you to swipe but I don't think you need to I guess you can swipe
+- **21:02** okay
+- **21:05** it's kind of good feeling into the green it doesn't hurt now it's not bad it's
+- **21:17** kind of good I wonder if the drill should be shouldn't should make square
+- **21:30** hold that makes sense and the fill the part of the area you have to drill out
+- **21:40** also has like 90 degrees square edges that way it's kind of clear that you're
+- **21:48** easily clicking in the right space or clicking in the wrong space well it does
+- **21:55** look good that they're jaggedy but it's just hard because your tool is circular
+- **22:00** so there's not so much high fidelity because you have to put in like an area
+- **22:06** for an area for going outside the lines like a bit of a bit of allowance because
+- **22:13** it's like it's circular right and the shape isn't circular so let's try it
+- **22:23** let's try it how suggested if it's wrong it's wrong then it's fine
+- **22:26** I'm gonna play level three because it's actually kind of fun let's brush fix it
+- **22:32** and fill it actually it's not bad that you have to listen and then do one move
+- **22:36** after the next move as you recounts them out for brushing the teeth actually
+- **22:40** goes kind of well of course our timer here oh god fill it to the green do you
+- **22:49** know what take back what I said about the fillings once you include the time
+- **22:52** but then it's enough
+- **22:54** difficulty to like have the right speed and skill let's keep it it's actually
+- **23:00** quite good yeah I kind of like he tells you one by one left and up now down no
+- **23:06** right that's kind of good just make it reveal nicely I guess in the beginning
+- **23:13** levels where the text comes out and yeah I think the teeth should become cleaner
+- **23:18** no
+- **23:19** as you brush them there should be like dirt on them and they become clean each
+- **23:25** time you brush it in each direction I wonder if that requires the mouth being a
+- **23:28** bit closed but it's such a good visual such a perfect Pixar level mouth I'm not
+- **23:33** sure if we want to mess with it but
+- **23:40** yeah maybe just try to put some plaque around the teeth and stuff like that and
+- **23:44** then fix it maybe the mouth could be a little bit more closed
+- **23:46** while you brush them I don't know see what you think always keep it the same
+- **23:54** maybe it's fine it's just because when you're brushing it the brush doesn't
+- **23:57** actually reach doesn't actually touch where the teeth are which doesn't have
+- **24:00** to but it's miles out right the mouth is gaping wide open the mouth is like six
+- **24:05** times the height of the teeth or seven times the height of the teeth so in the
+- **24:10** middle is a massive area where the toothbrush is which is nowhere near the
+- **24:12** teeth
+- **24:14** if they're a bit more closed like well the mouth was open three times the
+- **24:22** height of the teeth so it was third third and third and your brush kind of
+- **24:25** half overlaps the teeth and covers the middle of the mouth that would make more
+- **24:30** sense I think let's try that and you can see the plaque clearing behind the
+- **24:35** toothbrush and then you can fix the filling and maybe the mouth can stay
+- **24:39** open for the filling as it is now so you don't need to redo that
+- **24:42** or if you think it's better for continuity you just yeah do the filling
+- **24:49** with the mouth in the same position as you brush it
