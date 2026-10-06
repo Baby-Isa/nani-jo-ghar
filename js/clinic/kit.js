@@ -69,11 +69,21 @@
   Kit.art = null; // data/clinic/rough-art.json, once loaded
   Kit.root = ""; // path prefix to the site root ("../" from lab/)
   Kit.url = (u) => (global.njgV ? global.njgV(Kit.root + u) : Kit.root + u);
+  // CLN-88 (load times): each file is fetched once per page (the same text shared by every caller, each gets its own
+  // parsed copy) and through the browser's cache: the URL carries the version stamp (njgV), so no revalidation trip
+  const jsonText = new Map();
   Kit.loadJSON = async function (path) {
+    const u = Kit.url(path);
+    if (!jsonText.has(u))
+      jsonText.set(
+        u,
+        fetch(u, global.njgV ? {} : { cache: "no-cache" })
+          .then((r) => (r.ok ? r.text() : null))
+          .catch(() => null)
+      );
     try {
-      const r = await fetch(Kit.url(path), { cache: "no-cache" });
-      if (!r.ok) return null;
-      return await r.json();
+      const t = await jsonText.get(u);
+      return t == null ? null : JSON.parse(t);
     } catch (e) {
       return null;
     }

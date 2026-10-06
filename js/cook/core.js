@@ -38,8 +38,9 @@
     Cook.audioManifest = manifest || {};
     Cook.tts = (tts && tts.lines) || {}; // parked pages only
     // modules that build themselves from the data (recipes, a combined
-    // station's own data file) run here, in the order they registered
-    for (const fn of Cook.onLoad) await fn(data);
+    // station's own data file) run here, started in the order they registered and
+    // awaited together (CK-25: each station's own file was fetched one after another)
+    await Promise.all(Cook.onLoad.map((fn) => fn(data)));
     return data;
   };
   /*

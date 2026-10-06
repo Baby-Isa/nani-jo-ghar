@@ -15,6 +15,29 @@ function load(rel) {
   u.search = globalThis.NJG_V ? `?v=${globalThis.NJG_V}` : "";
   return import(u.href);
 }
+// CK-25 (load times, S02-A): every file is asked for at once (a modulepreload each), then run one at a time in the
+// order below as before. It was a chain: each file's download waited for the one before it (40 files, 3 s on a phone)
+const CLASSIC = ["./core.js", "./words.js", "./ui.js", "./recipes.js", "./order.js"];
+const ORDER = ["./boot.js", "./core.js", "./words.js", "./art.js", "./ui.js", "./stations.js", "./station-lib.js", "./zone.js", "./kitchen-kit.js", "./mechanics/fetch.js", "./mechanics/passme.js", "./mechanics/pour.js", "./mechanics/add.js", "./mechanics/boil.js", "./mechanics/count.js", "./mechanics/roll.js", "./mechanics/tawa.js", "./mechanics/chop.js", "./mechanics/tadka.js", "./mechanics/stir.js", "./mechanics/assemble.js", "./mechanics/fill-fold.js", "./mechanics/fry.js", "./mechanics/thread.js", "./mechanics/grill.js", "./stations/roll-tawa.js", "./stations/maani-line.js", "./stations/chai-tray.js", "./stations/mishkaki-grill.js", "./stations/samosa.js", "./stations/daar.js", "./recipes.js", "./order.js", "./coach.js", "./flow.js", "./frame-hookup.js"];
+try {
+  const doc = globalThis.document;
+  if (doc && doc.head) {
+    ORDER.forEach((rel) => {
+      let href;
+      if (CLASSIC.includes(rel)) {
+        const u = new URL(rel, import.meta.url);
+        u.search = globalThis.NJG_V ? `?v=${globalThis.NJG_V}` : "";
+        href = u.href;
+      } else href = import.meta.resolve ? import.meta.resolve(rel) : new URL(rel, import.meta.url).href;
+      const l = doc.createElement("link");
+      l.rel = "modulepreload";
+      l.href = href;
+      doc.head.appendChild(l);
+    });
+  }
+} catch (e) {
+  /* no preload: the chain below still loads everything */
+}
 await import("./boot.js");
 await load("./core.js");
 await load("./words.js");
