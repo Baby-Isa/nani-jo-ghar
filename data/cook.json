@@ -1583,6 +1583,8 @@
     "kinds",
     "kinds2"
    ],
+   "blockHeads": true,
+   "_blockHeads": "SAM-11: the headline is written without the count (Muke samosa khape.); each block's head carries it",
    "_baseFirst": "30 Sept (Zafar): the base filling (chundo or bataato: each block's first kind) is the first row on the card and said first; the rest stay shuffled (js/cook/order.js)",
    "english": "Samosa",
    "price": 5,
@@ -1784,8 +1786,23 @@
      ]
     },
     {
+     "frame": "bare",
+     "block": 1,
+     "blockHead": true,
+     "silent": true,
+     "x": [
+      {
+       "n": "$count",
+       "of": "ph-samosa",
+       "one": false
+      }
+     ],
+     "_about": "SAM-11 (T16, S02-B): one block per kind of samosa, its head the count and dish (ba samosa), its fillings under it, like sekelo's skewers and maani's kinds. On the card only: the order already says it"
+    },
+    {
      "tally": "$fillings",
-     "frame": "and"
+     "frame": "and",
+     "block": 1
     },
     {
      "forEach": "$no",

@@ -335,7 +335,8 @@
       if (frame === "bare" && !ps.length) return;
       // "bare": the words on their own, no frame ("trae aste thi": the stir row, T14)
       const line = frame === "bare" ? Lang.bare(Lang.phrase(ps)) : Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
-      if (!when) lines.push(line);
+      // silent: on the card only, never said (SAM-11: the first block's head, "ba samosa", is already in the order)
+      if (!when && !e.silent) lines.push(line);
       // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list).
       // 28 Sept (Zafar): a recipe with its own `headline` (the pantry's "bring me these for …")
       // keeps that line as the card's head, so what's fetched is all rows, the first one leading

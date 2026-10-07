@@ -333,6 +333,8 @@ export function apply(S) {
   noun("keema", "mince (keema: the region's word)", [`${GN} §26 B33`, `${GN} §28 (Zafar 26 Sept: keema is also right)`], { id: "n.mince-regional", par: false, f: { "*": "keema" }, ask: { gender: ["L37"] }, n: ["Across the whole region (Urdu, Hindi, Gujarati, Sindhi) so it cannot tell you the speaker is using Kutchi (§28)."] });
   noun("sambusa", "samosa (what Nani says: the family's word)", [`${GN} §34 P7 (Zafar's instruction: the family grew up with sambusa)`], { id: "n.samosa-nani", d: true, par: false, f: { "*": "sambusa" }, ask: { gender: ["L47"] }, q: [{ q: "samosa or sambusa: which does Nani say? (clip sambusa-r3 exists; the game still says samosa.)", ask: ["Q15"], src: `${GN} §34 P7` }] });
   noun("matar", "peas (green peas)", [`${GN} §34 P11 (green peas are matar)`], { id: "n.green-peas", par: false, f: { "*": "matar" }, ask: { gender: ["new"] } });
+  // decision 61 (6 Oct): Cook's peas (veg-10) are green peas, matar; watana, the fried peas, keeps its own entry
+  noun("watana", "fried peas (the snack)", [`${GN} §34 P11 (watana are fried peas, the snack)`], { id: "n.peas", par: false, f: { "*": "watana" }, ask: { gender: ["new"] } });
   w("PN", "Ma", "Ma (mother)", [`${GN} §7 (Ma lai pan hakro banai)`, "data/cook.json kin-ma (a customer)"], { g: "she", par: false, f: { "*": "Ma" }, a: ["kin-ma"] });
   w("PN", "Ali", "Ali (the cousin)", ["data/cook.json name-ali (a name)", `${GN} §30 K14 (Nana! Nani! Ali!)`], { g: "he", par: false, f: { "*": "Ali" }, a: ["name-ali"] });
 
