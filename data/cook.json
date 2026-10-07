@@ -1525,7 +1525,9 @@
       "veg-02": "$onions",
       "veg-03": "$tomatoes"
      },
-     "_qty": "29 Sept (T1, X12): a layer that's chopped first says how many (ba bataato), as its chop does"
+     "_qty": "29 Sept (T1, X12): a layer that's chopped first says how many (ba bataato), as its chop does",
+     "when": "assemble",
+     "_when": "CHT-07 (decision 53, T15, S02-B): the layer order is said just before the bowl, by him from his card (js/cook/mechanics/assemble.js), not with the order at the start"
     },
     {
      "forEach": "$no",
@@ -1558,7 +1560,12 @@
      "do": "assemble",
      "sequence": "$seq",
      "exclude": "$no",
-     "decoyPool": "$toppings"
+     "decoyPool": "$toppings",
+     "qty": {
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
+     }
     },
     {
      "do": "serve",

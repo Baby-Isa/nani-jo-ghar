@@ -307,7 +307,8 @@
             // "Pela chana. Ne poi bataato." (first …, and then …: the family's word order)
             const line = !said.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
             said.push(line);
-            rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null, labelQty: st.n <= 1 && q > 1 });
+            // CHT-06 (T3): a layer said with a count ("ba bataato") needs that many: its row ticks at the last one
+            rows.push({ kind: "item", ids: [id], qty: st.n > 1 ? st.n : q > 1 ? q : st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null, labelQty: st.n <= 1 && q > 1 });
           });
         });
         if (said.length && !when) lines.push(Lang.join(said));
