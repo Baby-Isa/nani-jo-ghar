@@ -425,12 +425,18 @@
           S.pick(t.id);
           if (onPick) onPick(t.id, b);
         };
+        // (a drag that starts on a tool, a plaster to the knee, is released elsewhere: a touch's lift is still sent to the
+        // tool, so only a lift inside the tool's own box is a tap)
+        const inBox = (e) => {
+          const r = b.getBoundingClientRect();
+          return e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        };
         ctx.on(b, "pointerdown", () => (downOn = true));
-        ctx.on(b, "pointerleave", () => (downOn = false));
         ctx.on(b, "pointerup", (e) => {
-          e.stopPropagation();
-          if (!downOn) return;
+          const was = downOn;
           downOn = false;
+          if (!was || !inBox(e)) return;
+          e.stopPropagation();
           upAt = Date.now();
           pickIt();
         });
