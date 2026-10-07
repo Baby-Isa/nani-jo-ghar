@@ -800,13 +800,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("assemble", {
     station: "assemble",
     view: "marble",
-    async run(z, { sequence, exclude = [], pool, decoyPool }, k) {
+    async run(z, { sequence: seq0, exclude = [], pool, decoyPool, qty = null }, k) {
       const S = z.S;
       const ctx = z.ctx;
       const guided = !!ctx.guided;
       const level = Math.max(z.level || 1, Cook.roundLevel(ctx));
+      // CHT-06 (T3, T7): the checker counts quantities: "ba bataato" is two spoons of potato, one after the other
+      // (qty: {id: n}, the same slots as the chop's), so one potato for two is wrong
+      const sequence = (seq0 || []).map((e) => (!Array.isArray(e) && qty && Number(qty[e]) > 1 ? Array(Number(qty[e])).fill(e) : e));
       const flat = sequence.flat();
       const C = checker(sequence);
+      const redo = St.redo(ctx);
+      const steps = St.steps(ctx);
+      let help = false; // decision 51: the second try has help (the next layer glows)
       const dishNo = () => ctx.dishAt || 0;
       // this station's own first-time demo replaces the generic spotlight (js/cook/coach.js)
       if (Cook.Coach) Cook.Coach.stop(true);
@@ -1139,6 +1145,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- level 4: the card starts folded ---------- */
       if (ctx.intro) await ctx.intro;
+      /*
+       * CHT-07 (decision 53, T15): each instruction just before the game that needs it. The layer order waited on
+       * his card (data: the list's `when: "assemble"`); now he comes back and says it, his card's rows lit one by one
+       * as he says them (level 4: from memory, heard only).
+       */
+      const rv = UI.mission.reveal ? UI.mission.reveal("assemble") : null;
+      if (rv && rv.s) {
+        const seqRows = rv.s.groups.flat();
+        const seqLine = Lang.join(seqRows.map((r) => r.line).filter(Boolean));
+        z.expect({ kind: "wait" });
+        let said = false;
+        if (level < 4 && UI.mission.sayPerson) said = await Promise.race([UI.mission.sayPerson(who, seqRows), Cook.wait(12000).then(() => true)]);
+        if (!said && seqLine.segs.length) {
+          if (level >= 4) await Promise.race([Lang.speak(seqLine).catch(() => {}), Cook.wait(9000)]);
+          else {
+            await Promise.race([St.customerSay(ctx, seqLine, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
+            St.customerDone();
+          }
+        }
+      }
       const unfold = foldCard(level >= 4);
 
       let tries = 0;
@@ -1195,11 +1221,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           let last = 0;
           building = true;
           for (;;) {
+            // T15: the box names the next layer ("Bataato. Wiji chad!"), only after a pause (help, never a giveaway);
+            // a word the card hides shows as dots there too; not at level 4 (from memory)
+            const nx = C.next(got);
+            if (nx && level < 4) steps.to("assemble:next", { id: `layer-${got.length}-${nx}`, line: St.addLine(nx), quiet: true });
+            else steps.done();
             const r = await St.freePick(z, {
               items,
               next: C.next(got),
               doneOk: got.length > 0,
-              doneGlow: guided && got.length >= C.total,
+              doneGlow: (guided || help) && got.length >= C.total,
+              help,
             });
             if (r.done) break;
             if (performance.now() - last < 220) continue; // a double tap
@@ -1208,6 +1240,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             await drop(r.id);
           }
           building = false;
+          steps.done();
           while (busy) await Cook.wait(60);
           z.expect({ kind: "wait" });
           tries++;
@@ -1224,29 +1257,56 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             await look.close();
             break;
           }
-          // not quite: a gentle face, they say what they asked for again, the glass comes back empty
-          // (only the first mistake counts: the accuracy badge and the end review)
+          // not quite (decision 51, CHT-08): a gentle face; only the wrong layer comes back out (with any above it: a
+          // layer can't come out from under another), the right ones below stay; the customer says just those rows
+          // again ON HIS OWN CARD, lit as he says them; the second try has help (the next layer glows); the third
+          // wrong try shows the right way (each layer glows and goes in). Only the first mistake counts.
           firstMiss(m);
+          const rd = redo.wrong(`chaat:${m.at}`);
           await review(false);
-          const line = orderLine(ladderOf(ctx));
-          // level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
-          if (line && level >= 4) await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);
-          else if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
-          St.customerDone();
-          await Promise.all([look.close(), bowl.empty()]);
-          got.length = 0;
-          ticked.length = 0;
-          // the card starts again (its misses stay for the review)
-          const L = ladderOf(ctx);
-          if (L) {
-            Cook.Order.rows(L, { all: true }).forEach((r) => {
-              if (r.head) return;
+          const keep = m.got === undefined ? got.length : m.at;
+          const back = [];
+          while (got.length > keep) {
+            await bowl.removeTop();
+            got.pop();
+            const r = ticked.pop();
+            if (r) {
+              r.got = Math.max(0, (r.got || 1) - 1);
               r.done = false;
-              r.got = 0;
-            });
-            L.sections.forEach((s) => (s.at = 0));
-            UI.mission.refresh();
+              if (!back.includes(r)) back.push(r);
+            }
           }
+          const L = ladderOf(ctx);
+          const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
+          if (sq && sq.at) sq.at = Math.max(0, sq.at - back.length);
+          UI.mission.refresh();
+          // the rows still to do (the redone ones and anything after them), said again from his card
+          const todo = L ? Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && !r.done) : [];
+          const said = level < 4 && UI.mission.sayPerson ? await Promise.race([UI.mission.sayPerson(who, todo.length ? todo : null), Cook.wait(9000)]) : false;
+          if (!said) {
+            const line = orderLine(ladderOf(ctx));
+            // level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
+            if (line && level >= 4) await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);
+            else if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
+            St.customerDone();
+          }
+          await look.close();
+          if (rd.action === "show") {
+            // the right way, shown: each layer still to go glows on the shelf and goes in, in order
+            for (let nx = C.next(got); nx && items[nx]; nx = C.next(got)) {
+              S.glow(items[nx], true, { bounce: true });
+              await Cook.wait(420);
+              S.glow(items[nx], false);
+              await drop(nx);
+            }
+            while (busy) await Cook.wait(60);
+            if (exclude.length) UI.mission.closeItem(exclude, dishNo());
+            await review(true);
+            await Cook.wait(700);
+            await look.close();
+            break;
+          }
+          help = true;
         }
       } finally {
         unfold();
@@ -1269,6 +1329,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         sequence: d.seq,
         exclude: d.no,
         decoyPool: Cook.data.recipes.chaat.lists.toppings,
+        qty: { "veg-01": d.potatoes, "veg-02": d.onions, "veg-03": d.tomatoes },
       });
     },
   });

@@ -307,7 +307,8 @@
             // "Pela chana. Ne poi bataato." (first …, and then …: the family's word order)
             const line = !said.length ? (seq && F.seqFirst ? Lang.line(F.seqFirst, ph) : Lang.bare(ph)) : Lang.line(seq && j === 0 && si > 0 ? F.seq : F.any, ph);
             said.push(line);
-            rows.push({ kind: "item", ids: [id], qty: st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null, labelQty: st.n <= 1 && q > 1 });
+            // CHT-06 (T3): a layer said with a count ("ba bataato") needs that many: its row ticks at the last one
+            rows.push({ kind: "item", ids: [id], qty: st.n > 1 ? st.n : q > 1 ? q : st.n, dot, group: Array.isArray(st.entry) ? "any" : "seq", for: forWho, line, parts: ps, list: true, sec, when, cardOf: e.cardOf || null, labelQty: st.n <= 1 && q > 1 });
           });
         });
         if (said.length && !when) lines.push(Lang.join(said));
@@ -334,7 +335,8 @@
       if (frame === "bare" && !ps.length) return;
       // "bare": the words on their own, no frame ("trae aste thi": the stir row, T14)
       const line = frame === "bare" ? Lang.bare(Lang.phrase(ps)) : Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
-      if (!when) lines.push(line);
+      // silent: on the card only, never said (SAM-11: the first block's head, "ba samosa", is already in the order)
+      if (!when && !e.silent) lines.push(line);
       // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list).
       // 28 Sept (Zafar): a recipe with its own `headline` (the pantry's "bring me these for …")
       // keeps that line as the card's head, so what's fetched is all rows, the first one leading

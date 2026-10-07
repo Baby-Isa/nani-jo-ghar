@@ -25,12 +25,13 @@ export const SAME_AS = {
   "ph-pantry": "n.cupboard", // Mum answered the pantry: kabaat (grammar-notes §34 P13)
   "ph-keema": "n.mince",
   "ph-pepper": "n.green-pepper", // no Kutchi word (Mum, B34)
+  "veg-10": "n.green-peas", // decision 61 (Zafar, 6 Oct): Cook's peas are green peas, matar; watana (fried peas) is n.peas
 };
 
 /** Words of the game with no English-neutral id of their own and a note worth keeping */
 export const CLASH_NOTES = {
   "veg-12": "data/cook.json shows marcha (green chilli); Mum says mirchi for one and for more, and decision 5 says mirchi only for now. The id veg-12 follows the decision; Zafar to confirm with Mum (Round 5 Q13).",
-  "veg-10": "data/cook.json calls watana 'peas'; Mum says green peas are matar and watana are fried peas (the snack): Zafar to check which one Cook means (Round 5 Q12). The id veg-10 stays with watana until he says.",
+  "veg-10": "Decision 61 (Zafar, 6 Oct): Cook's peas are green peas, matar (with the R); watana are fried peas (the snack), n.peas. Round 5 Q12 answered.",
   "ph-pantry": "Mum answered the pantry (grammar-notes §34 P13): kabaat, the cupboard. The game still shows the English placeholder; the engine can already say it.",
 };
 
