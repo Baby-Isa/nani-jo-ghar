@@ -542,7 +542,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* CLN-81: the girl's art on the bench (her seat line on the cushion; no stool, no tint) */
 .cl-wp.art .cl-wp-img { filter: drop-shadow(0 3px 3px rgba(40, 25, 10, .18)); }
 /* CLN-92: the way to the doctor's room is a picture of the room, no words */
-.cl-room-go .njg-next-t { display: flex; align-items: center; }
+.cl-room-btn .njg-next-t { display: flex; align-items: center; }
 .cl-room-pic { display: block; width: clamp(56px, 6vw, 84px); aspect-ratio: 1.5; border-radius: 8px; background-size: cover; background-position: 50% 55%; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .7); }
 /* CLN-14: the call-them pills are faces with a speaker, no words */
 .cl-face-pill { display: inline-flex !important; align-items: center; gap: var(--njg-s1); padding: 4px 12px 4px 4px !important; }
@@ -605,8 +605,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .eye-name img { width: 48px; height: 48px; object-fit: contain; }
 /* a wrong yes / no shakes red (decision 59) */
 .hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
-.eye-go .njg-next-t { display: flex; align-items: center; }
-.eye-go-chart { width: 34px; height: 44px; display: block; }
+.eye-btn .njg-next-t { display: flex; align-items: center; }
+.eye-btn-chart { width: 34px; height: 44px; display: block; }
 /* T4 (CLN-103): the tooth buzzes when the drill goes outside the line */
 .tooth-close.buzz { animation: tooth-buzz .25s linear 2; }
 @keyframes tooth-buzz { 25% { transform: translate(2px, -1px); } 50% { transform: translate(-2px, 1px); } 75% { transform: translate(1px, 1px); } }

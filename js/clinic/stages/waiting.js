@@ -120,9 +120,8 @@
         btn.disabled = true;
         if (global.Sfx && global.Sfx.tap) try { global.Sfx.tap(); } catch (e) { /* no sound */ }
         res(btn);
-      }, "throb cl-room-go");
+      }, "throb cl-room-btn");
       btn.dataset.go = "doctor's room";
-      btn.setAttribute("aria-label", "To the doctor's room");
       const t = btn.querySelector(".njg-next-t") || btn;
       t.textContent = "";
       const pic = h("span", "cl-room-pic", t);
