@@ -450,6 +450,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | LNG-09 | Test voice at normal speed (built slowed, `ATEMPO 0.75`) | **open** | ear | `docs/feedback/cook-playtest-2026-10-06.md` V2 |
 | LNG-10 | "Thank you" and the family's "oh dear" recorded; *arre re* out until Mum gives it | **open** | ear | `docs/feedback/cook-playtest-2026-10-06.md` T9 |
 | LNG-11 | *Muke de*, *Muke chai lai de* checked with Mum | **open** | auto: lines_needing_family | `docs/feedback/cook-playtest-2026-10-06.md` PA4 |
+| LNG-12 | Clip candidates say only the target word in the right voice (picker offered 'Okay' for amli, 'P-10 Cup' and 'P-11' for cup, English talk for chulo) | **open** | auto: blind double transcription + 30-clip audit; ear: Zafar's picker | Zafar, 7 Oct (chat) |
 
 ## Process
 
