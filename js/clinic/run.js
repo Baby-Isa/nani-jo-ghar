@@ -103,7 +103,7 @@
     const list = h("div", "cl-receipt-list", r);
     outs.forEach((o) => {
       const row = h("div", "cl-receipt-row", list);
-      row.appendChild(S.personFace(o.plan.kind, "happy"));
+      row.appendChild(Clinic.Figure.face(o.plan.kind, "happy"));
       h("span", "cl-receipt-item", row).appendChild(Kit.icon(o.plan.stages.pharmacy.asked[0], null));
       // no stars anywhere (H5): a gold tick for a patient with every row right, a grey one otherwise (F13)
       const mark = h("span", `cl-receipt-mark${o.right === o.total ? " gold" : ""}`, row);
