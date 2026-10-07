@@ -18,6 +18,7 @@
  *   NjgButtons.glow(btn, on)
  *   const row = NjgButtons.grownUp(parent, label, note, onPress, {ask, cls}) -> <p class="njg-grownup"> (the "?" pop-up's
  *            grown-ups' action, e.g. "Play as new": the .njg-act look at tap height; row.btn is the button)
+ *   NjgButtons.playAsNew(parent, onPress, {upgrades, cls})  the "?" pop-up's "Play as new" (SH-60), one wording
  *   NjgButtons.endActions({again, next, list, home})  Results.show's `actions`, in the one order:
  *            each value true (the default label) or a label string; the last one given is primary
  *   NjgButtons.ORDER = ["again", "next", "list", "home"]
@@ -167,6 +168,17 @@
     row.btn = b;
     if (parent) parent.appendChild(row);
     return row;
+  };
+  /**
+   * SH-60: the grown-ups' "Play as new" (every word new again, the first-time help back), the one wording for every
+   * mode. o.upgrades: the mode keeps upgrades too (Cook); o.cls: the mode's class on the row.
+   */
+  B.playAsNew = function (parent, onPress, o = {}) {
+    const keeps = o.upgrades ? "Pocket money and upgrades stay." : "Pocket money stays.";
+    return B.grownUp(parent, "Play as new", "(for grown-ups: forget the words learned on this device)", onPress, {
+      cls: o.cls,
+      ask: `Play as new? Every word shows again as on a first play, and the first-time help comes back. ${keeps}`,
+    });
   };
   return B;
 });

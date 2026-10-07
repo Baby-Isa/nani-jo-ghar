@@ -149,6 +149,11 @@
       EY.left = { x: EYA.eyes[1], y: EYA.eyes[2] };
     }
     const sore = EY[soreSide];
+    // S02-G (gate s02-gate): the dropper hanging over the eye is the drop's target too (its picture is x -30..30,
+    // y -128..-10 under the hang point at sore.y - 34, plus the bob and a finger's slack). At 4:3 the tool shelf sits
+    // on the sore eye's outer edge, and a touch there snaps to the shelf's button, so the dropper is the sure tap
+    const DROPPER_TAP = { y: sore.y - 34 - 69 };
+    const onDropper = (p) => Math.abs(p.x - sore.x) <= 60 && p.y >= sore.y - 34 - 150 && p.y <= sore.y;
     // Y2 has the sore eye on the viewer's right (the patient's left): mirrored for the patient's right
     const eyesArt = art("eyesSore");
     let soreEl = null;
@@ -591,7 +596,7 @@
       drawChart();
       if (c.kind === "drops") {
         ctx.card.now("drops");
-        return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: sore.x, y: sore.y, r: 80 } });
+        return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: sore.x, y: sore.y - 55, r: 110 } }); // S02-G: the dropper and the eye
       }
       if (c.kind === "read") {
         if (st.view !== "test") await toTest();
@@ -622,11 +627,6 @@
     S.tools([{ id: "drops", glyph: "💧", img: "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
       if (id === "drops" && cur() && cur().kind === "drops") showDropper(sore, false);
     });
-    // S02-G (gate s02-gate): the dropper hanging over the eye is the drop's target too (its picture is x -30..30,
-    // y -128..-10 under the hang point at sore.y - 34, plus the bob and a finger's slack). At 4:3 the tool shelf sits
-    // on the sore eye's outer edge, and a touch there snaps to the shelf's button, so the dropper is the sure tap
-    const DROPPER_TAP = { y: sore.y - 34 - 69 };
-    const onDropper = (p) => Math.abs(p.x - sore.x) <= 60 && p.y >= sore.y - 34 - 150 && p.y <= sore.y;
     const dropIn = async (at) => {
       await fallDrop(at);
       S.face("wince", 400);

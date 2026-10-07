@@ -596,11 +596,11 @@
     pop.querySelectorAll(".ob-skip-row, .hp-new").forEach((x) => x.remove());
     // SH-60 (PA5): a grown-ups' "play as new": every word is new again (as a first play), the first-time help too
     // S02-G (gate): the shared grown-ups' button (NjgButtons.grownUp), at tap height, not a small link
-    global.NjgButtons.grownUp(pop, "Play as new", "(for grown-ups: forget the words learned on this device)", () => {
+    global.NjgButtons.playAsNew(pop, () => {
       Cook.resetSave({ fresh: true });
       UI.closeHelp();
       if (mission) renderOrder();
-    }, { cls: "hp-new", ask: "Play as new? Every word shows again as on a first play, and the first-time help comes back. Pocket money and upgrades stay." });
+    }, { cls: "hp-new", upgrades: true });
     if (global.Onboard && global.Onboard.active && global.Onboard.active()) {
       const sk = global.Onboard.skipButton(pop);
       if (sk) sk.addEventListener("skipped", () => UI.closeHelp());
