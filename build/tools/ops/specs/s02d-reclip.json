@@ -1,0 +1,37 @@
+{
+  "name": "S02-D, re-clip every family recording (Sprint 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "audio judgement: finding every take, telling speakers apart, ranking quality and cutting cleanly",
+  "cost": "about $30-40 (plus about $2 of Whisper)",
+  "stop": "8 Oct 2026, 18:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": ["2", "3", "8 (Language, Kutchi and voice)"],
+  "read": [
+    "docs/decisions.md 66 and 67 (why: clips were badly chosen and cut; Zafar picks from ranked takes)",
+    "build/split_voice_notes.py and build/transcribe_family.py (the old cutter: Whisper segment times, highpass + loudnorm only)",
+    "data/family-audio.json (802 clips: id, kutchi, speaker, file, source, start, end, checked) and sources/audio/** (30 recordings, 165 MB)",
+    "build/voice-test/robot_test.py (the CLEAN filter chain Zafar liked) and the prototype notes below"
+  ],
+  "owns": [
+    "build/tools/audio/** (new: the re-clipper, the review page builder, the apply-picks script)",
+    "assets/audio/family-candidates/** (new: ranked takes; old clips under assets/audio/family/ are never deleted or overwritten)",
+    "data/family-audio-candidates.json (new) and, only through the apply-picks script after Zafar's picks, data/family-audio.json",
+    "build/reports/s02d-reclip.md"
+  ],
+  "readOnly": ["js/**, css/**, data/cook.json, data/clinic/** (Sessions B and C are running)", "data/lang/**", "assets/audio/family/** existing files (read only; never overwrite)"],
+  "stubs": "none; a line with no take above the bar is listed as 'record again' in the report",
+  "tasks": [
+    { "do": "Re-transcribe every source recording in data/family-audio.json's sources with Whisper word and segment timestamps (pieces of about 25 s cut at pauses, previous text as prompt; OPENAI_API_KEY is set; cache the JSON so it never runs twice).", "accept": "one cached transcript per source; total Whisper cost in the report" },
+    { "do": "Find every take of every manifest line across all sources (fuzzy match of the Kutchi text, nearby question id, aliases like matar/mata), not just the one already chosen. Find each take's true onset and offset from the sound (adaptive energy threshold per region, extended through voiced frames), not from Whisper times. Label the speaker by median pitch (prototype: Mum about 175-205 Hz, Zafar about 125-135 Hz; calibrate per source from known clips).", "accept": "for matar in Kutchi.260928.m4a: the 1650 s take is labelled Zafar; Mum's takes at about 1647.9 and 1697.5 s are found" },
+    { "do": "Score every take: right speaker, words match, signal to noise, quiet gap before and after (isolation), no overlap with other speech, no clipping, natural length. Set a quality bar; keep at most 5 takes above it per line, ranked. Cut each with about 150 ms lead and 250 ms tail, 15 ms fades, then the CLEAN chain (high-pass, de-noise tuned for Mum's low level, silence trim, loudnorm to -16 LUFS) so every clip sits at the same loudness.", "accept": "candidates in assets/audio/family-candidates/<clip-id>/1.mp3..; data/family-audio-candidates.json lists ranks, scores, source times and speaker" },
+    { "do": "A review page (build/tools/audio/review.html, static, self-contained list of files) Zafar can use on his phone: lines ordered worst first (old clip's score), each with the current clip and the ranked candidates, a one-tap pick per line ('keep current' allowed), rank 1 marked as the suggestion, and a 'Copy my picks' button producing a compact list. The orchestrator publishes it.", "accept": "page lists every line with at least one candidate; the matar line offers Mum's clean take as rank 1" },
+    { "do": "build/tools/audio/apply_picks.mjs: takes the pasted picks, copies the chosen candidate to assets/audio/family/<new-name>.mp3, points data/family-audio.json at it (keeping the old file and recording the old path), sets checked: 'ok-zafar'. Dry-run mode prints the changes.", "accept": "dry run on a 3-pick sample changes exactly 3 entries" },
+    { "do": "Report: how many lines got a better take, how many redo/hand-picked lines now have a passing take, the lines with nothing above the bar (to record again), and the cost.", "accept": "report under 300 words with those counts" }
+  ],
+  "flows": [],
+  "shared": false,
+  "port": 8824,
+  "report": "s02d-reclip",
+  "publish": false
+}

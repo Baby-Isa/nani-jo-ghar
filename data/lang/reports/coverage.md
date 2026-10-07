@@ -4,11 +4,11 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Lexicon
 
-943 entries (153 are fixed expressions made of other words).
+953 entries (153 are fixed expressions made of other words).
 
 | By part of speech | Entries |
 |---|---|
-| Phrase | 419 |
+| Phrase | 429 |
 | N | 330 |
 | V | 56 |
 | A | 40 |
@@ -27,7 +27,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 | By status | Entries |
 |---|---|
-| to-record | 444 |
+| to-record | 454 |
 | confirmed | 336 |
 | draft | 163 |
 
@@ -36,7 +36,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 | grammar-notes | 487 |
 | data/clinic* | 457 |
 | parked modes | 166 |
-| data/cook.json | 110 |
+| data/cook.json | 120 |
 | lexicon.md §6 | 69 |
 | data/content.json (handout) | 66 |
 | conversations / story | 38 |
@@ -53,7 +53,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Games
 
-Game lines registered: 389 (cook 96, clinic 201, and 92 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 71.
+Game lines registered: 405 (cook 112, clinic 201, and 92 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 71.
 
 ## Sources loaded, and sources deliberately not
 
