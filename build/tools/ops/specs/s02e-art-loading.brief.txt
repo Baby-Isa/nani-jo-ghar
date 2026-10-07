@@ -1,0 +1,66 @@
+SESSION NAME / MODE:  S02-E, cut and wire the s02 art, and modular loading (Sprint 2)
+MODEL AND EFFORT:     Opus, high effort (visual judgement cutting 49 images and placing them, plus the loading architecture every future build follows (decision 68))
+COST ESTIMATE:        about $40-50
+HARD STOP:            8 Oct 2026, 18:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 6 (UI), 7 (Art), 10 (Platform: J11) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/design-language/art-plans/s02-art-plan.md (what each image is for; §3.5 the clinic item → place → view → cell table) and build/tools/art/specs/s02.run.yaml
+  6. sources/art/s02/ on main (49 images incl. Zafar's extras: e5b toothbrush brushing views, d1 coin jar with a slot in the lid); git checkout origin/main -- sources/art/s02 to get them
+  7. docs/design-language/art-pipeline.md (artcut, artdiff), build/tools/art/specs/clinic-heal-v3.cut.json (worked cut spec)
+  8. build/reports/s02b-cook.md, s02c-clinic.md, s02f-finish.md (the art ids each station waits for: data/cook.json art.s02 ready:false, clinic ids cloth-dab, ear-bin, alcohol-wipe, brushInMouth, standing pose)
+  9. docs/decisions.md 64, 65, 68; docs/process/rules.md J11; docs/architecture/building-games.md 'Loading'
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/art/specs/s02.cut.json (new), assets/cook/** and assets/clinic/** new files from the cut (never overwrite old art; new names)
+  - data/cook.json art blocks and data/stations/**, data/clinic/heal-art.json and data/clinic/** art references
+  - js/cook/stations.js, js/cook/art.js, js/cook/station-lib.js, js/cook/boot.js and the stations' art hookups; js/clinic/heal/host.js, js/clinic/main.js, js/clinic/run.js, js/clinic/lang.js loading only
+  - build/tools/review/loadcheck.mjs (new) and its line in build/tools/review/checks.mjs
+  - build/reports/s02e-art-loading.md
+READ-ONLY (never edit):
+  - js/shared/**, js/core/** (except a shared asset-loader helper in js/shared/assets.js if needed, documented)
+  - data/lang/**
+  - data/family-audio.json
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: an image that can't be cut cleanly keeps the old art and goes on docs/design-language/art-plans/s02-redo-list.yaml (B1 sekelo green pepper is already there)
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Write s02.cut.json and cut all 49 sources with artcut (sprite sheets into named cells per the plan's §3.5 table; WebP at drawn size; clean edges, no grey fringe). The checker miscounts B1, E8, E16 pieces: cut those by explicit boxes. Prove each cut with artdiff and a x2 zoom contact sheet you look at.
+     Accept: every art id waited on by B, C and F exists as a cut file; contact sheet in the report with flaws listed first
+  2. Wire the art: the full-res kitchen with its three walnut trays (served dishes land in the trays, shadows right; Nani's existing leaning picture on it, smaller bob); served dishes; chai pour pans (milk and black), black-tea glass states, teaspoon; spice jars, ginger; sekelo plain plate (skewers straight, left to right); chaat glass; knife; daar bowl and trivet separately; samosa fold frames; the coin jar (use the slot-lid jar, coins dropping into the slot) and coin pile; clinic sheets (cloth dab, plasters, drop bottle nozzle down, toothbrush brushing views e5b in the brushing game, fans, hot-water bottle, heater, alcohol wipe, syringe, tweezers, cotton bud, bin, ear bits, jugs, thermometer); the girl's new poses (standing palms for D3, waving for greetings/send-off, mouth less open + plaque for brushing, eyes and eye test). Flip each art.s02 ready:false to true as it lands.
+     Accept: screens at 1366x768 of the kitchen with three dishes on trays, the coin jar, chai pour, tooth brushing, D3 standing; flaws listed first
+  3. Modular loading (decision 68): each Cook station and clinic game declares its asset list in its data; CookScene.preload loads only shared assets (kitchen, characters, buttons); a station's assets load when it is chosen, started during the greeting / requests pop-up, the next story station prefetched in the background; same for clinic games (no loading all 12 heal games up front; JSON loads in parallel). Images at drawn size.
+     Accept: before/after cold and warm load times for the Cook lab, a Cook station, the clinic morning and one heal game; Cook open under 1.5 s warm-cache target
+  4. build/tools/review/loadcheck.mjs: opens a station or game page headless and fails if it requests any asset not in that page's manifest (another game's art); add it to checks.mjs so every future build runs it.
+     Accept: checks.mjs runs loadcheck and passes; a deliberate stray preload makes it fail
+
+REGRESSION ROWS TO RECHECK (173 rows of docs/process/regressions.md; * = open or reopened):
+  cook:pantry (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+  cook:chai-tray (16): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07*, CHAI-08*, CHAI-09, CHAI-10*, CHAI-11*, CHAI-12*, CHAI-13*, CHAI-14*, CHAI-15*, CHAI-16*
+  cook:samosa (17): SAM-01, SAM-02, SAM-03, SAM-04, SAM-05*, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11*, SAM-12*, SAM-13*, SAM-14*, SAM-15*, CK-08, CK-09
+  cook:story (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+  clinic:heal-tooth (28): CLN-02, CLN-03, CLN-08*, CLN-09*, CLN-81*, CLN-84*, CLN-85*, CLN-87*, CLN-30, CLN-35*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-51, CLN-52, CLN-53, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103*
+  clinic:diagnosis (24): CLN-16*, CLN-17, CLN-18*, CLN-93*, CLN-94*, CLN-95*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*
+  clinic:heal-ear (29): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-84*, CLN-85*, CLN-87*, CLN-30, CLN-34*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-49, CLN-50, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-71, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-101*, CLN-102*
+  shared components (63): SH-01*, SH-02*, SH-03*, SH-04, SH-05, SH-06, SH-49*, SH-50*, SH-51*, SH-61*, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52*, SH-53*, SH-54*, SH-55*, SH-62*, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56*, SH-57*, SH-58*, SH-59*, SH-60*, SH-63*, SH-23, SH-24, SH-25, SH-26, SH-27*, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38*, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s02e-art-loading` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8827.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s02e-art-loading.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
