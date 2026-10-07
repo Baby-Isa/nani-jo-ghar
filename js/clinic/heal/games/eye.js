@@ -663,12 +663,11 @@
           S.did();
           testBtn.remove();
           closeDrops();
-        }, "throb eye-go");
+        }, "throb eye-btn");
         testBtn.dataset.go = "eye test";
-        testBtn.setAttribute("aria-label", "To the eye test");
         const t = testBtn.querySelector(".njg-next-t") || testBtn;
         t.textContent = "";
-        t.insertAdjacentHTML("beforeend", '<svg class="eye-go-chart" viewBox="0 0 40 52" aria-hidden="true"><rect x="2" y="2" width="36" height="48" rx="5" fill="#fffefb" stroke="#a9824d" stroke-width="3"/><path d="M12 12 Q20 6 28 12 Q20 18 12 12Z" fill="#fff" stroke="#4a6f98" stroke-width="2"/><circle cx="20" cy="12" r="2.6" fill="#4a6f98"/><circle cx="20" cy="25" r="4" fill="#e2b23b"/><circle cx="14" cy="35" r="3" fill="#d9534f"/><circle cx="26" cy="35" r="3" fill="#5aa05a"/><circle cx="11" cy="43" r="2" fill="#8a5a3a"/><circle cx="20" cy="43" r="2" fill="#e2b23b"/><circle cx="29" cy="43" r="2" fill="#5aa05a"/></svg>');
+        t.insertAdjacentHTML("beforeend", '<svg class="eye-btn-chart" viewBox="0 0 40 52" aria-hidden="true"><rect x="2" y="2" width="36" height="48" rx="5" fill="#fffefb" stroke="#a9824d" stroke-width="3"/><path d="M12 12 Q20 6 28 12 Q20 18 12 12Z" fill="#fff" stroke="#4a6f98" stroke-width="2"/><circle cx="20" cy="12" r="2.6" fill="#4a6f98"/><circle cx="20" cy="25" r="4" fill="#e2b23b"/><circle cx="14" cy="35" r="3" fill="#d9534f"/><circle cx="26" cy="35" r="3" fill="#5aa05a"/><circle cx="11" cy="43" r="2" fill="#8a5a3a"/><circle cx="20" cy="43" r="2" fill="#e2b23b"/><circle cx="29" cy="43" r="2" fill="#5aa05a"/></svg>');
         S.cue("chart", CUES.chart, testBtn);
       }
       st.busy = true;
@@ -707,7 +706,7 @@
             if (st.drops >= c.count) {
               if (P.level < 2 || !testBtn) return { do: "wait" };
               const r = testBtn.getBoundingClientRect();
-              return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: "to the eye test" };
+              return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: "eyetest" };
             }
             return S.sel !== "drops" ? tool("drops") : Object.assign({ do: "tap", what: "drop" }, S.client(sore.x, sore.y));
           }

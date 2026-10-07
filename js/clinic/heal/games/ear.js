@@ -615,7 +615,7 @@
             return S.sel !== "drops" ? tool("drops") : at(CANAL.x, CANAL.y, "drop");
           }
           if (c.kind === "hear") {
-            if (st.moreDrops > 0) return S.sel !== "drops" ? tool("drops") : at(CANAL.x, CANAL.y, "more drop");
+            if (st.moreDrops > 0) return S.sel !== "drops" ? tool("drops") : at(CANAL.x, CANAL.y, "drop+");
             const b = pics && pics.querySelector(`[data-word="${c.word}"]`);
             if (!b) return { do: "wait" };
             const r = b.getBoundingClientRect();
