@@ -83,7 +83,7 @@ HOW TO RUN EACH PROMPT
 RUN ORDER. Line format: ID (person) | attach | save as | check
 PART A: THE KITCHEN (1)
 Run A1 first: Session B's screens wait for it, and it is the picture Zafar sees first.
-A1 | bg-cook-service-v1.jpg, style-anchor-v1.png | a1-kitchen-service-trays-v1.png | KITCHEN + the same room and camera as the attached kitchen; three empty trays; ONE marble edge under the sink; nobody in it
+A1 | bg-cook-service-v1.jpg, style-anchor-v1.png | a1-kitchen-service-trays-v1.png | KITCHEN + the same room and camera as the attached kitchen; three empty rich dark walnut trays (same wood as the rolling board and pin); ONE marble edge under the sink; nobody in it
 Part A done: post the part A summary (see AT THE END) and carry on.
 
 PART B: THE SERVED DISHES (1)
@@ -149,7 +149,7 @@ RO2 | style-anchor-v1.png | o2-mouth-bits-v2.png | RO2 + REDO of O2: last time t
 Part F done.
 
 CHECKS (by check ID)
-KITCHEN: the same room from the same camera as the attached kitchen (window and tap left, sink worktop with ONE marble edge, three empty shelves, hob in sage cabinets, mirror-work hanging and brass pot right, arched doorway, pendant lamp, marble island with oak-slat front across the whole width, its top edge horizontal at about 65% of the height) · three identical empty pale-oak trays side by side on the island at about 22%, 50% and 78% of the width · nobody, no hands, no food · the scene fits a central 16:9 band · light from the upper left, shadows to the right · sharp, no blur
+KITCHEN: the same room from the same camera as the attached kitchen (window and tap left, sink worktop with ONE marble edge, three empty shelves, hob in sage cabinets, mirror-work hanging and brass pot right, arched doorway, pendant lamp, marble island with oak-slat front across the whole width, its top edge horizontal at about 65% of the height) · three identical empty pale-oak rich dark walnut trays (the chakla and velan wood) side by side on the island at about 22%, 50% and 78% of the width · nobody, no hands, no food · the scene fits a central 16:9 band · light from the upper left, shadows to the right · sharp, no blur
 DISHES: eight dishes in a 4 by 2 grid, in order: milky chai glass, black tea in the same glass, a stack of maani on a steel plate, a steel bowl of yellow daar, layered chaat in a thin glass bowl, two samosas on a steel plate, two straight parallel skewers on an oval steel plate, a basket with a milk jug, tea tin and cloth sack · all seen from the front and a little above · nothing under them · lit from the upper left
 PANPOUR: the same brushed-steel pan as the attached draft, seen from above, tipped about 35 degrees to the lower left, a stream of milky chai leaving the lip · handle to the upper right · the WHOLE pan, handle and stream inside the image with a clear margin on every side · no shadow under it
 PANEDIT: only the liquid changed, to clear deep amber black tea (in the pan and the stream) · the pan, handle, tilt, size, position and background identical

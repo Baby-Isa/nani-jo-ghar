@@ -194,7 +194,7 @@ Generate an image, 1536×1024, landscape.
 
 Using the attached kitchen picture as the only reference for the room, redraw the same kitchen at full detail from exactly the same camera: eye level, straight on, one-point perspective, every vertical line vertical, the white marble island's top edge horizontal at about 65% of the image height, its pale oak slatted front below it across the whole width. Everything in the same place as the reference: the tall window and brass tap at the left, the sink's marble worktop with ONE single clean marble edge (no second strip below it), the three plain empty oak shelves on the warm limewash wall, the black gas hob set in the sage-green cabinets with brass knobs, the small mirror-work hanging and the round brass pot at the right, the arched doorway with the garden beyond, the white pendant lamp with a brass top. Keep the whole scene inside a central 16:9 band: the top and bottom 80 pixels show only more wall above and more oak slats below, so the image can be cropped to 16:9 with nothing lost.
 
-New in this picture: three identical small, shallow, rectangular serving trays of pale oak with low rims, completely empty, standing side by side on the island top, evenly spaced with their centres at about 22%, 50% and 78% of the image width, each about 14% of the image width long, their long sides parallel to the island's front edge, their near rims a little back from the island's front edge, each with a soft contact shadow to its lower right. Nothing else on the island.
+New in this picture: three identical small, shallow, rectangular serving trays of rich dark walnut wood (the same warm dark walnut as the chakla rolling board and velan rolling pin) with low rims, completely empty, standing side by side on the island top, evenly spaced with their centres at about 22%, 50% and 78% of the image width, each about 14% of the image width long, their long sides parallel to the island's front edge, their near rims a little back from the island's front edge, each with a soft contact shadow to its lower right. Nothing else on the island.
 
 Nobody in the picture: no people, no hands, no food, no dishes other than the three empty trays. The wall and the island's back edge across the middle stay plain, for a character added later.
 
@@ -929,7 +929,7 @@ Regression rows the wiring sessions recheck: ART-13, CHAI-07, PAN-09, SEK-07, CH
 
 ## 10. Questions for Zafar (answer "yes to all except …")
 
-1. **Nani is not redrawn:** her existing leaning picture goes on the new kitchen by code, and the kitchen is drawn empty with three plain pale-oak trays. *Recommend yes.*
+1. **Nani is not redrawn:** her existing leaning picture goes on the new kitchen by code, and the kitchen is drawn empty with three plain trays. **Zafar (7 Oct): yes, in the same rich walnut as the rolling pin and board; yes to questions 2-7.***
 2. **Pantry basket as a served dish** (a basket holding a milk jug, tea tin and cloth sack) for the pantry order's "served" picture. *Recommend yes.*
 3. **Coins with no markings** (plain gold discs: no numbers, no faces, no text, rule 5). *Recommend yes.*
 4. **Plaster colours by code** from one red plaster's eight views (a flat hue shift), with the eleven flat plasters drawn solid for the belt and tray. *Recommend yes.*
