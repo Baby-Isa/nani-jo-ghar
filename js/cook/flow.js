@@ -585,12 +585,52 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- serve: the badges, pocket money ---------------- */
-  function drawServed(ctx, x) {
+  /*
+   * CK-21 (K4, decision 64): served dishes go on the customer's own tray on the counter, one tray per customer (three
+   * spots), shadows falling right (the light is from the left). The redrawn kitchen (art.s02 "kitchen-trays") has
+   * the trays painted in, at its measured spots (meta.trays: [x, y, w, h] design px, left to right); until it lands,
+   * a flat tray is drawn at each customer's spot.
+   */
+  const TRAY_SPOTS = [[480, 716, 330, 92], [940, 716, 330, 92], [1400, 716, 330, 92]];
+  function trayFor(x) {
+    const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+    const spots = kt && kt.ready && Array.isArray((kt.meta || {}).trays) ? kt.meta.trays : TRAY_SPOTS;
+    const t = spots.reduce((a, b) => (Math.abs(b[0] - x) < Math.abs(a[0] - x) ? b : a));
+    return { x: t[0], y: t[1], w: t[2], h: t[3], painted: !!(kt && kt.ready) };
+  }
+  function drawTray(s, t) {
+    if (t.painted) return;
+    const g = s.track(s.add.graphics().setDepth(Cook.D.occ + 1.5));
+    // the shadow falls right and a little down (light from the left)
+    g.fillStyle(0x2a1a0a, 0.18);
+    g.fillRoundedRect(t.x - t.w / 2 + 14, t.y - t.h / 2 + 9, t.w, t.h, 18);
+    g.fillStyle(0x9a6a3c, 1);
+    g.fillRoundedRect(t.x - t.w / 2, t.y - t.h / 2, t.w, t.h, 18);
+    g.fillStyle(0xc89a62, 1);
+    g.fillRoundedRect(t.x - t.w / 2 + 9, t.y - t.h / 2 + 8, t.w - 18, t.h - 16, 12);
+  }
+  function drawServed(ctx, x0) {
     const s = S();
     const n = ctx.served.length;
+    const tray = trayFor(x0);
+    // CK-21: an order for several people (the chai tray's cups) serves each person's glass onto their own tray
+    const people = ctx.served.length === 1 && ctx.served[0].recipe === "chai" && Array.isArray(ctx.served[0].cups) && ctx.served[0].cups.length > 1 ? ctx.served[0].cups : null;
+    if (people) {
+      const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+      const spots = kt && kt.ready && Array.isArray((kt.meta || {}).trays) ? kt.meta.trays : TRAY_SPOTS;
+      people.slice(0, spots.length).forEach((p, i) => {
+        const t = { x: spots[i][0], y: spots[i][1], w: spots[i][2], h: spots[i][3], painted: !!(kt && kt.ready) };
+        drawTray(s, t);
+        s.prop("glass-chai", t.x, t.y - 4, 100, 130, { depth: Cook.D.occ + 2 });
+        s.steam(t.x, 560, 1);
+      });
+      return;
+    }
+    drawTray(s, tray);
+    const x = tray.x;
     ctx.served.forEach((d, i) => {
-      const px = x + (i - (n - 1) / 2) * 200;
-      const y = 712;
+      const px = x + (i - (n - 1) / 2) * Math.min(200, tray.w / Math.max(1, n));
+      const y = tray.y - 4;
       if (d.recipe === "chai") for (let c = 0; c < d.count; c++) s.prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "maani") {
         s.prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });
@@ -696,8 +736,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     for (const spec of day.orders) {
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
-      if (!free) for (const dish of spec.dishes) if (!fetched.has(dish) && pantryFirst(dish)) {
+      if (!free) for (const dish of spec.dishes) if (!fetched.has(dish) && pantryFirst(dish) && !fetchedEver(dish)) {
         fetched.add(dish);
+        markFetched(dish);
         await runOrder(pantryFor(dish, spec), day);
       }
       await runOrder(buildOrder(spec), day);
@@ -1374,6 +1415,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   Cook.hosted = false; // set by Cook.boot (inside the game host, js/cook/main.js)
   const today = () => new Date().toISOString().slice(0, 10);
+  /** Decision 60 (PAN-13, S02-B): the pantry trip runs only the first time a dish is EVER made in the story. */
+  function fetchedEver(dish) {
+    return !!(Cook.save.pantryDone && Cook.save.pantryDone[dish]);
+  }
+  function markFetched(dish) {
+    Cook.save.pantryDone = Object.assign({}, Cook.save.pantryDone, { [dish]: true });
+    Cook.writeSave();
+  }
   function fetchedToday(dish) {
     const f = Cook.save.fetched || {};
     return f.day === today() && (f.dishes || []).includes(dish);
@@ -1392,7 +1441,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const level = o.level || 1;
     if (o.pantry) {
       const dish = o.dish || "chai";
-      if (!pantryFirst(dish) || fetchedToday(dish)) return { skipped: true };
+      if (!pantryFirst(dish) || fetchedToday(dish) || fetchedEver(dish)) return { skipped: true };
+      markFetched(dish);
       const f = Cook.save.fetched && Cook.save.fetched.day === today() ? Cook.save.fetched : { day: today(), dishes: [] };
       f.dishes = f.dishes.concat(dish);
       Cook.save.fetched = f;

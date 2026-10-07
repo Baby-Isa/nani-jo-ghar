@@ -72,7 +72,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
 
     preload() {
-      ["service", "pantry"].forEach((b) => this.load.image(`bg-${b}`, `assets/cook/bg/${b}.jpg`));
+      // S02-B (decision 64, CK-21): the redrawn kitchen with three trays on the counter, once the art run lands it
+      const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+      ["service", "pantry"].forEach((b) => this.load.image(`bg-${b}`, b === "service" && kt && kt.ready && kt.file ? kt.file : `assets/cook/bg/${b}.jpg`));
       ["nani-neutral", "nani-talk", "nani-happy", "nani-point"].forEach((k) => this.load.image(k, `assets/cook/characters/${k}.webp`));
       ["nana", "ma", "cousin"].forEach((c) =>
         ["happy", "neutral", "impatient"].forEach((p) => this.load.image(`${c}-${p}`, `assets/cook/characters/${c}-${p}.webp`))
