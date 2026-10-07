@@ -753,15 +753,84 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return loading[ref];
   }
   Art.load = (scene, refs) => Promise.all([].concat(refs).map((r) => load(scene, r)));
+  /** Load one file into the texture manager under `key` (a prop, a fallback photo); `alt` is tried if it fails. */
+  const files = {};
+  Art.loadFile = function (scene, key, url, alt) {
+    if (!scene || scene.textures.exists(key)) return Promise.resolve(true);
+    if (files[key]) return files[key];
+    files[key] = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const add = () => {
+          if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          resolve(true);
+        };
+        if (img.decode) img.decode().then(add, add);
+        else add();
+      };
+      img.onerror = () => {
+        delete files[key];
+        if (alt) Art.loadFile(scene, key, alt).then(resolve);
+        else resolve(false);
+      };
+      img.src = Cook.v ? Cook.v(url) : url;
+    });
+    return files[key];
+  };
+  /*
+   * Decision 68 (J11, S02-E): what a station or mechanic loads when it's chosen, from its data (data/cook.json
+   * art.assets.stations[name].props: prop texture names, each assets/cook/props/<name>.webp or its painted sprite,
+   * data.art.sprites.props) plus its painted sprites (data.art.sprites.need[name]). Nothing else is ever preloaded.
+   */
+  const AS = () => ((Cook.data && Cook.data.art) || {}).assets || {};
+  const propFiles = (name) => {
+    const st = (AS().stations || {})[name] || {};
+    const swap = Art.propSprites();
+    return [].concat(st.props || []).map((p) => [p, swap[p] || `assets/cook/props/${p}.webp`, swap[p] ? `assets/cook/props/${p}.webp` : null]);
+  };
+  Art.loadStation = function (scene, name) {
+    const refs = (SP().need || {})[name] || [];
+    return Promise.all([Art.load(scene, refs), ...propFiles(name).map(([k, u, alt]) => Art.loadFile(scene, k, u, alt))]);
+  };
   /**
-   * Load what station or mechanic `name` lists in data.art.sprites.need.
-   * Never waits longer than `ms` (a slow connection gets the drawings and
-   * the sprites arrive for next time).
+   * Load what station or mechanic `name` needs (above). Never waits longer than `ms` (a slow connection gets the
+   * drawings and the sprites arrive for next time).
    */
   Art.need = function (scene, name, ms = 2500) {
-    const refs = (SP().need || {})[name] || [];
-    if (!refs.length || !scene) return Promise.resolve();
-    return Promise.race([Art.load(scene, refs), new Promise((r) => setTimeout(r, ms))]);
+    if (!scene) return Promise.resolve();
+    return Promise.race([Art.loadStation(scene, name), new Promise((r) => setTimeout(r, ms))]);
+  };
+  /**
+   * Start loading stations' pictures in the background (while an order is read, or the next one in a story), without
+   * waiting: names are station keys (and "served:<recipe>" for a dish's served picture, art.s02 "served-dishes").
+   */
+  Art.prefetch = function (scene, names) {
+    if (!scene) return;
+    [].concat(names || []).forEach((n) => {
+      if (String(n).startsWith("served:")) Art.loadServed(scene, n.slice(7));
+      else Art.loadStation(scene, n);
+    });
+  };
+  /** A dish's served picture (art.s02 "served-dishes", meta.dishes recipe -> file) as texture "s02-served-<recipe>". */
+  Art.servedKey = (recipe) => `s02-served-${recipe}`;
+  Art.servedArt = function (recipe) {
+    const e = (((Cook.data && Cook.data.art) || {}).s02 || {})["served-dishes"];
+    const f = e && e.ready && e.meta && e.meta.dishes && e.meta.dishes[recipe];
+    return f ? Object.assign({ key: Art.servedKey(recipe) }, f) : null;
+  };
+  /** The served picture's name for a recipe: its no-milk variant (meta.dishes[x].of/when) for a cup with no milk. */
+  Art.servedName = function (recipe, { noMilk = false } = {}) {
+    const e = (((Cook.data && Cook.data.art) || {}).s02 || {})["served-dishes"];
+    const D = (e && e.meta && e.meta.dishes) || {};
+    const v = noMilk && Object.keys(D).find((k) => D[k].of === recipe && D[k].when === "noMilk");
+    return v || recipe;
+  };
+  /** Load a recipe's served picture and its variants. */
+  Art.loadServed = function (scene, recipe) {
+    const e = (((Cook.data && Cook.data.art) || {}).s02 || {})["served-dishes"];
+    const D = (e && e.meta && e.meta.dishes) || {};
+    const names = [recipe].concat(Object.keys(D).filter((k) => D[k].of === recipe));
+    return Promise.all(names.map((n) => Art.servedArt(n)).filter(Boolean).map((a) => Art.loadFile(scene, a.key, a.file)));
   };
   /** A pantry container's real height against a tall jar (data.art.sprites.shelf), 1 if unknown. */
   Art.shelfSize = (id) => (((SP().shelf || {})[id] || [])[1] || 1);

@@ -72,37 +72,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
 
     preload() {
-      // S02-B (decision 64, CK-21): the redrawn kitchen with three trays on the counter, once the art run lands it
+      /*
+       * Decision 68 (J11, S02-E): the scene loads only what every screen shares: the kitchen (the redrawn one with its
+       * three trays, decision 64, once art.s02 "kitchen-trays" has landed), Nani and the customers, the cousin's badge
+       * (data/cook.json art.assets.shared). A station's own pictures (its props, painted sprites and station art) load
+       * when it's chosen (St.begin -> Cook.Art.need), prefetched while the order is read (Cook.Art.prefetch); never
+       * another station's. Each texture key keeps the name the code draws it by.
+       */
       const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
-      ["service", "pantry"].forEach((b) => this.load.image(`bg-${b}`, b === "service" && kt && kt.ready && kt.file ? kt.file : `assets/cook/bg/${b}.jpg`));
-      ["nani-neutral", "nani-talk", "nani-happy", "nani-point"].forEach((k) => this.load.image(k, `assets/cook/characters/${k}.webp`));
-      ["nana", "ma", "cousin"].forEach((c) =>
-        ["happy", "neutral", "impatient"].forEach((p) => this.load.image(`${c}-${p}`, `assets/cook/characters/${c}-${p}.webp`))
-      );
-      this.load.image("cousin-badge", Cook.facePath("cousin"));
-      const props = [
-        "onion", "onion-half", "onion-chopped", "tomato", "tomato-chopped", "chilli", "garlic", "daal-dry", "jeeru", "rai",
-        "hardar", "loon", "atto", "water-jug", "dough-ball", "chapati-raw", "chapati-half", "chapati-puffed", "rolling-pin",
-        "tawa", "pot", "pot-daal", "tadka-pan", "saucepan", "milk-jug", "tea-tin", "sugar-jar", "elchi", "glass", "glass-chai",
-        "knife", "knife-gold", "thali", "chai-machine", "basket", "basket-front",
-      ];
-      // plus any prop named in the data (a word's `image`, data.art.props), so
-      // new art is a file in assets/cook/props/ and a name in the data
-      const more = Cook.items().map((id) => Cook.item(id).image).concat(((Cook.data && Cook.data.art) || {}).props || []);
-      // a prop that has a painted sprite (data.art.sprites.props) loads the sprite under the
-      // prop's name instead (the same width, so it draws the same size); if that fails, the prop
-      const swap = Cook.Art.propSprites();
-      [...new Set(props.concat(more.filter(Boolean)))].forEach((p) => this.load.image(p, swap[p] || `assets/cook/props/${p}.webp`));
-      this.load.on("loaderror", (file) => {
-        if (!swap[file.key] || String(file.url).includes("/props/")) return;
-        setTimeout(() => {
-          this.load.image(file.key, `assets/cook/props/${file.key}.webp`);
-          if (!this.load.isLoading()) this.load.start();
-        });
-      });
+      const shared = ((((Cook.data && Cook.data.art) || {}).assets || {}).shared || {}).images || {};
+      Object.entries(shared).forEach(([key, url]) => this.load.image(key, key === "bg-service" && kt && kt.ready && kt.file ? kt.file : url));
+      if (!shared["bg-service"]) this.load.image("bg-service", kt && kt.ready && kt.file ? kt.file : "assets/cook/bg/service.jpg");
     }
 
     create() {
+      // decision 64 (S02-E): on the redrawn kitchen each customer stands behind their own tray (its measured middle)
+      const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+      const trays = kt && kt.ready && kt.meta && Array.isArray(kt.meta.trays) ? kt.meta.trays : null;
+      if (trays && trays[1]) ["nana", "ma", "cousin"].forEach((c) => (CHARS[c].x = trays[1][0]));
       this.cameras.main.setBackgroundColor("#e9dcc4");
       this.bg = this.add.image(0, 0, "bg-service").setOrigin(0).setDepth(D.bg);
       this.bgExt = [];
@@ -249,6 +236,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the tally goes back to its corner (a view may place it: the pantry puts it on the fridge)
       if (UI.tallyAt) UI.tallyAt(null);
       // a painted view (data.art.sprites.bg) once loaded; the service and the old pantry photo otherwise
+      // (the old pantry photo, only if the painted one never came: loaded now, decision 68)
+      if (name === "pantry" && !Cook.Art.sprite(this, bgRef) && !this.textures.exists("bg-pantry")) await Cook.Art.loadFile(this, "bg-pantry", "assets/cook/bg/pantry.jpg");
       if ((name === "service" || name === "pantry") && !Cook.Art.sprite(this, bgRef)) this.setBg(`bg-${name}`);
       else this.setBg(Cook.Art.tex(this, `bg:${name}`));
       UI.hideBubble();
@@ -648,7 +637,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       this.chars[who] = img;
       if (enter) {
         img.x = W + 260;
-        this.tweens.add({ targets: img, x: c.x, duration: 900, ease: "Cubic.easeOut" });
+        // (to the spot asked for: the chai tray's other people stand behind their own trays, decision 64)
+        this.tweens.add({ targets: img, x: x != null ? x : c.x, duration: 900, ease: "Cubic.easeOut" });
         this.tweens.add({ targets: img, y: c.top - 14, duration: 150, yoyo: true, repeat: 2 });
       }
       return img;

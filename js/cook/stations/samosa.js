@@ -70,6 +70,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the finished samosa (fold-6): its own middle and width on the canvas (it flies to the plate by it)
       done: { x: 0.7, y: 0.401, w: 274 },
     },
+    // SAM-05 (S02-E): the art run's frames (C11), registered on the strip's left end, top and bottom lines: the first two
+    // folds roll the triangle in from the left end (left to right); then the strip's far end wraps onto it (the third
+    // swipe goes right to left, sweep from 0.97 down: the strip shortens from its right end into the triangle)
+    foldS02: {
+      w: 482,
+      h: 149,
+      fill: { x: 0.14, y: 0.5, r: 0.085 },
+      swipes: [
+        { steps: [1, 2], sweep: [0.03, 0.33], from: [0.08, 0.5], to: [0.36, 0.5], glow: [0.03, 0.1, 0.34, 0.9] },
+        { steps: [2, 3], sweep: [0.03, 0.97], from: [0.16, 0.5], to: [0.48, 0.5], glow: [0.03, 0.1, 0.46, 0.9] },
+        { steps: [3, 4, 5, 6], sweep: [0.97, 0.03], from: [0.9, 0.5], to: [0.3, 0.5], glow: [0.3, 0.1, 0.97, 0.9] },
+      ],
+      done: { x: 0.206, y: 0.5, w: 166 },
+    },
     // the karahi of oil (S14, S17, S19): its round body, handles left out; oil = the oil's radius / the body's
     karahi: { w: 1253, cx: 0.4975, cy: 0.4992, r: 0.3914, oil: 0.8994 },
     // the paper-lined enamel plate (S10): its rim; flat = the flat paper-lined centre's half-width / the rim r
@@ -174,7 +188,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ["sv3-jharo", V3 + "jharo.webp"],
       ["sv2-thali", "assets/cook/items/vessel-thali-t.png"],
     ]
-      .concat([1, 2, 3, 4, 5, 6].map((i) => [`sv3-fold-${i}`, `${V3}fold-${i}.webp`]))
+      // SAM-05 (S02-E): the art run's six frames on one baseline at one height (art.s02 "samosa-fold-*", C11) under the same keys
+      .concat([1, 2, 3, 4, 5, 6].map((i) => [`sv3-fold-${i}`, St.art(`samosa-fold-${i}`) ? St.art(`samosa-fold-${i}`).file : `${V3}fold-${i}.webp`]))
       .concat([0, 1, 2, 3].map((i) => [`sv2-fry-${i}`, `${V2}fry-${i}.webp`]))
       .concat(ids.filter(heapUrl).map((id) => [`sv3-heap-${id}`, heapUrl(id)]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
@@ -365,7 +380,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the plate the folded samosas wait on (right of the board; S10: on its flat middle)
     const plate = plateAt(z, S, PLATE.x, PLATE.y, PLATE.d);
     const items = shelf(z0, S, ids, level);
-    const F = META.fold;
+    const F = St.art("samosa-fold-1") ? META.foldS02 : META.fold;
     const SW = F.w * STAGE_K;
     const SH = F.h * STAGE_K;
     // a fold-canvas point (fractions) in world px, for a strip centred at (cx, cy) design px
@@ -406,10 +421,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const newImg = S.textures.get(`sv3-fold-${sw.steps[seg + 1]}`).getSourceImage();
       const edge = (sw.sweep[0] + (sw.sweep[1] - sw.sweep[0]) * u) * W;
       const fe = 0.07 * W;
+      // a sweep that runs right to left (sweep[1] < sweep[0]) brings the new picture in on the edge's right
+      const rev = sw.sweep[1] < sw.sweep[0];
       const grad = (g) => {
-        const gr = g.createLinearGradient(edge - fe, 0, edge, 0);
-        gr.addColorStop(0, "rgba(0,0,0,1)");
-        gr.addColorStop(1, "rgba(0,0,0,0)");
+        const gr = rev ? g.createLinearGradient(edge, 0, edge + fe, 0) : g.createLinearGradient(edge - fe, 0, edge, 0);
+        gr.addColorStop(0, rev ? "rgba(0,0,0,0)" : "rgba(0,0,0,1)");
+        gr.addColorStop(1, rev ? "rgba(0,0,0,1)" : "rgba(0,0,0,0)");
         return gr;
       };
       const a = offA.getContext("2d");

@@ -82,8 +82,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf };
   const FONT = "Nunito, sans-serif";
   const jarUrl = (id) => `assets/cook/items/shelf-${id}-bare-f.webp`;
-  // the small-jar family for every spice slot (aadu and lasan drawn for v2 in the same jar)
+  // the small-jar family for every spice slot: the art run's jars with lids that differ (art.s02 "spice-jar-*", C5; the
+  // ginger jar replaces the old one that read as gummies, C24) once they land, else the v2 jars
   const SPICE_JAR = { "veg-14": "assets/cook/items/shelf-veg-14-jar-f.webp", "veg-13": "assets/cook/items/shelf-veg-13-jar-f.webp" };
+  const spiceJar = (id) => {
+    const s02 = ((Cook.data.art || {}).s02 || {});
+    const e = Object.keys(s02).map((k) => s02[k]).find((v) => v && v.ready && v.line === "C5" && v.word === id);
+    return (e && e.file) || SPICE_JAR[id] || jarUrl(id);
+  };
   const ART = [
     ["v2-pan-pour", V2 + "pan-pour.webp"],
     ["v2-tray", V2 + "tray-4-cutout-t.webp"],
@@ -155,7 +161,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         ART.concat(
           St.artLoad(BLACK_ART.concat("teaspoon")), // S02-B: the art run's black-tea pan and glasses, the teaspoon, once they land
           people.flatMap((p) => Cook.Kit.faceArt(p.who)),
-          [].concat(...shelfIds).map((id) => [`jar-${id}`, SPICE_JAR[id] || jarUrl(id)])
+          [].concat(...shelfIds).map((id) => [`jar-${id}`, spiceJar(id)])
         )
       ),
       Cook.wait(5000),

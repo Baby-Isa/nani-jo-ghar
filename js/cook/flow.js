@@ -343,6 +343,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ctx.steps = order.dishes.flatMap(chipsFor);
     const name = who === "nani" ? "Nani" : Cook.data.customers[who].name;
     uiStage();
+    // decision 68 (J11): this order's stations and its served dish start loading now, while the customer greets
+    // and the order is read (nothing of another station's)
+    Cook.prefetchDishes(order.dishes.map((d) => d.recipe));
     UI.hideGist(); // SH-59: no "?" pulse carried into the greeting (a conversation) or the new order
 
     if (!demo && who === "nani") {
@@ -359,7 +362,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // decision 53 (CHAI-15): everyone who orders comes in before the requests pop-up (the chai tray's other cups)
       const others = [...new Set(order.dishes.flatMap((d) => (d.cups || []).map((c) => c.who)))].filter((w) => w && w !== who && w !== "nani" && Cook.CHARS[w] && !S().chars[w]);
       const base = Cook.CHARS[who] ? Cook.CHARS[who].x : 940;
-      others.forEach((w, i) => S().addChar(w, { enter: true, x: Math.min(1460, base + 250 * (i + 1)) }));
+      // on the redrawn kitchen the next person stands behind the next tray along (decision 64)
+      const along = traySpots().map((t) => t[0]).filter((x) => x > base + 100);
+      others.forEach((w, i) => S().addChar(w, { enter: true, x: along[i] != null ? along[i] : Math.min(1460, base + 250 * (i + 1)) }));
       if (others.length) await Cook.wait(900);
     }
     // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
@@ -592,6 +597,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return out;
   }
 
+  /* ---------------- loading by order (decision 68, J11) ---------------- */
+  // the stations a recipe runs (data.recipes[r].run, the steps that are stations), the served picture
+  const NOT_STATION = ["serve", "result", "wait", "interrupt"];
+  const stationsOf = (r) => (((Cook.data.recipes || {})[r] || {}).run || []).map((x) => x.do).filter((k) => k && !NOT_STATION.includes(k));
+  const warmed = new Set();
+  /** Start loading what these dishes' stations show (their props, sprites and declared files) and their served pictures. */
+  Cook.prefetchDishes = function (recipes) {
+    const s = S();
+    if (!s || !Cook.Art.prefetch) return;
+    const list = [].concat(recipes || []).filter(Boolean);
+    const stations = [...new Set(list.flatMap(stationsOf))];
+    Cook.Art.prefetch(s, stations.concat(list.map((r) => `served:${r}`)));
+    // the files a station's own code loads (art.assets.stations[key].prefetch): into the browser's cache now
+    const AS = ((Cook.data.art || {}).assets || {}).stations || {};
+    stations.forEach((k) => ((AS[k] || {}).prefetch || []).forEach((u) => {
+      if (warmed.has(u)) return;
+      warmed.add(u);
+      new Image().src = Cook.v(u);
+    }));
+  };
+
   /* ---------------- serve: the badges, pocket money ---------------- */
   /*
    * CK-21 (K4, decision 64): served dishes go on the customer's own tray on the counter, one tray per customer (three
@@ -600,12 +626,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * a flat tray is drawn at each customer's spot.
    */
   const TRAY_SPOTS = [[480, 716, 330, 92], [940, 716, 330, 92], [1400, 716, 330, 92]];
+  function traySpots() {
+    const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+    return kt && kt.ready && Array.isArray((kt.meta || {}).trays) ? kt.meta.trays : TRAY_SPOTS;
+  }
   function trayFor(x) {
     const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
-    const spots = kt && kt.ready && Array.isArray((kt.meta || {}).trays) ? kt.meta.trays : TRAY_SPOTS;
+    const spots = traySpots();
     const t = spots.reduce((a, b) => (Math.abs(b[0] - x) < Math.abs(a[0] - x) ? b : a));
     return { x: t[0], y: t[1], w: t[2], h: t[3], painted: !!(kt && kt.ready) };
   }
+  // the drawn stand-ins' props, for a dish with no served picture yet (loaded at serve time, not at open)
+  const SERVED_PROPS = ["glass-chai", "thali", "chapati-puffed", "pot-daal"];
   function drawTray(s, t) {
     if (t.painted) return;
     const g = s.track(s.add.graphics().setDepth(Cook.D.occ + 1.5));
@@ -617,6 +649,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     g.fillStyle(0xc89a62, 1);
     g.fillRoundedRect(t.x - t.w / 2 + 9, t.y - t.h / 2 + 8, t.w - 18, t.h - 16, 12);
   }
+  /*
+   * S02-E (B1, K4): a dish's served picture on its tray (art.s02 "served-dishes", loaded with the order: Art.prefetch),
+   * standing on the tray's floor (the painted rim hides its base), its contact shadow falling right. False when the
+   * dish has no picture yet (it keeps the drawing below).
+   */
+  function servedPic(s, recipe, x, t, i) {
+    const a = Cook.Art.servedArt(recipe);
+    if (!a || !s.textures.exists(a.key)) return false;
+    const h = a.drawH;
+    const w = (h * a.w) / a.h;
+    const base = t.y + t.h * 0.18;
+    s.track(s.add.ellipse(x + w * 0.1, base - h * 0.02, w * 0.9, Math.max(10, h * 0.14), 0x2a1a0a, 0.2).setDepth(Cook.D.occ + 1.9 + i * 0.01));
+    s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
+    return true;
+  }
+  // a chai cup with no milk (CHAI-07) is served as black tea
+  const servedRecipe = (d, c = 0) => Cook.Art.servedName(d.recipe, { noMilk: Array.isArray(d.cups) && !!d.cups[c] && d.cups[c].dudh === false });
   function drawServed(ctx, x0) {
     const s = S();
     const n = ctx.served.length;
@@ -626,10 +675,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (people) {
       const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
       const spots = kt && kt.ready && Array.isArray((kt.meta || {}).trays) ? kt.meta.trays : TRAY_SPOTS;
+      // each person's glass on the tray in front of them (decision 64); Nani's own on hers; anyone not standing, in turn
+      const used = new Set();
       people.slice(0, spots.length).forEach((p, i) => {
-        const t = { x: spots[i][0], y: spots[i][1], w: spots[i][2], h: spots[i][3], painted: !!(kt && kt.ready) };
+        const ch = s.chars && s.chars[p.who];
+        const px = ch ? ch.x : p.who === "nani" && Cook.CHARS.nani ? Cook.CHARS.nani.x : null;
+        let j = px == null ? -1 : spots.reduce((b, sp, q) => (used.has(q) ? b : b < 0 || Math.abs(sp[0] - px) < Math.abs(spots[b][0] - px) ? q : b), -1);
+        if (j < 0) j = spots.findIndex((_, q) => !used.has(q));
+        used.add(j);
+        const t = { x: spots[j][0], y: spots[j][1], w: spots[j][2], h: spots[j][3], painted: !!(kt && kt.ready) };
         drawTray(s, t);
-        s.prop("glass-chai", t.x, t.y - 4, 100, 130, { depth: Cook.D.occ + 2 });
+        if (!servedPic(s, Cook.Art.servedName(ctx.served[0].recipe, { noMilk: p.dudh === false }), t.x, t, 0)) s.prop("glass-chai", t.x, t.y - 4, 100, 130, { depth: Cook.D.occ + 2 });
         s.steam(t.x, 560, 1);
       });
       return;
@@ -639,7 +695,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ctx.served.forEach((d, i) => {
       const px = x + (i - (n - 1) / 2) * Math.min(200, tray.w / Math.max(1, n));
       const y = tray.y - 4;
-      if (d.recipe === "chai") for (let c = 0; c < d.count; c++) s.prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
+      if (d.recipe === "chai" && Cook.Art.servedArt("chai") && s.textures.exists(Cook.Art.servedKey("chai"))) {
+        for (let c = 0; c < d.count; c++) servedPic(s, servedRecipe(d, c), px + c * 56 - (d.count - 1) * 28, tray, c);
+      } else if (d.recipe !== "chai" && d.recipe !== "mishkaki" && servedPic(s, servedRecipe(d), px, tray, i));
+      else if (d.recipe === "chai") for (let c = 0; c < d.count; c++) s.prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "maani") {
         s.prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });
         for (let k = 0; k < d.count; k++) s.track(s.add.image(px, 690 - k * 9, "chapati-puffed").setScale(0.25).setDepth(Cook.D.occ + 3));
@@ -662,6 +721,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await serviceView(who === "nani" ? null : who);
     const busy = Cook.save.mode === "busy";
     if (busy && state.patience != null && state.patience < 0.35) S().setMood(who, "impatient");
+    // the served pictures were prefetched with the order; a slow one gets a moment, then the drawing stands in
+    await Promise.race([Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), Cook.wait(1200)]);
+    if (order.dishes.some((d) => d.recipe !== "mishkaki" && !Cook.Art.servedArt(d.recipe))) await Promise.race([Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), Cook.wait(800)]);
     drawServed(ctx, Cook.CHARS[who].x);
     Cook.sfx.pop();
     await Cook.wait(600);
@@ -741,7 +803,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.hideGist();
     // 29 Sept (Q6): dishes whose things have been fetched from the pantry today
     const fetched = new Set();
-    for (const spec of day.orders) {
+    for (const [i, spec] of day.orders.entries()) {
+      // decision 68: the next order's stations load in the background while this one plays (a pause first, so they
+      // never compete with this order's own pictures)
+      const next = day.orders[i + 1];
+      if (next) setTimeout(() => Cook.prefetchDishes(next.dishes), 6000);
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
       if (!free) for (const dish of spec.dishes) if (!fetched.has(dish) && pantryFirst(dish) && !fetchedEver(dish)) {
@@ -948,10 +1014,32 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await anim([{ transform: "translateY(-60px) scale(.9)", opacity: 0 }, { transform: "translateY(0) scale(1)", opacity: 1 }], { duration: 380, easing: "cubic-bezier(.2,.8,.3,1.2)" });
         await Cook.wait(350);
         if (c.coins) {
-          const coin = document.createElement("i");
-          coin.className = "coin-dot jar-coin";
+          // S02-E (D1, D2): the art run's coin drops into the slot in the jar's lid (art.s02 "coin", meta.slot), edge on
+          const coinArt = (((Cook.data.art || {}).s02 || {}).coin) || null;
+          const jarArt = (((Cook.data.art || {}).s02 || {})["coin-jar-empty"]) || null;
+          const jarImg = pic.querySelector(".jar-img");
+          let coin;
+          let fall = 90;
+          if (coinArt && coinArt.ready && jarImg && jarArt && jarArt.meta && jarArt.meta.slot) {
+            coin = document.createElement("img");
+            coin.src = Cook.v(coinArt.file);
+            coin.alt = "";
+            coin.className = "jar-coin";
+            coin.style.height = "auto";
+            const jr = jarImg.getBoundingClientRect();
+            const dr = drop.getBoundingClientRect();
+            const w = Math.max(18, jr.width * 0.2);
+            coin.style.width = `${w}px`;
+            const startTop = el.offsetHeight * 0.7;
+            coin.style.top = `${startTop}px`;
+            // the coin's bottom edge reaches the slot, then it slips in (squashed thin, as if edge on, and gone)
+            fall = Math.max(20, jr.top + jr.height * jarArt.meta.slot[1] - dr.top - startTop - w * 1.1);
+          } else {
+            coin = document.createElement("i");
+            coin.className = "coin-dot jar-coin";
+          }
           drop.appendChild(coin);
-          if (coin.animate) await coin.animate([{ transform: "translate(-50%, 0)", opacity: 1 }, { transform: "translate(-50%, 90px)", opacity: 0.2 }], { duration: 360, easing: "ease-in", fill: "forwards" }).finished.catch(() => {});
+          if (coin.animate) await coin.animate([{ transform: "translate(-50%, 0)", opacity: 1 }, { transform: `translate(-50%, ${fall}px)`, opacity: 1, offset: 0.8 }, { transform: `translate(-50%, ${fall + 10}px) scaleY(0.2)`, opacity: coin.tagName === "IMG" ? 0 : 0.2 }], { duration: 420, easing: "ease-in", fill: "forwards" }).finished.catch(() => {});
           coin.remove();
           Cook.sfx.coin();
           shown += c.coins;
@@ -1520,6 +1608,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
     },
     lab: (key, guided = true, opts = {}) => runLab(key, guided, opts),
+    // (a test hook, S02-E: the coin jar on its own: the day's summary for these cards [{who, dishes, coins}])
+    jar(cards = []) {
+      state.cards = cards;
+      state.dayCoins = cards.reduce((n, c) => n + (c.coins || 0), 0);
+      showSummary({ id: 1, title: "", orders: [] }, { free: true });
+    },
     order: (o) => hostedOrder(o),
     reset() {
       Cook.resetSave();

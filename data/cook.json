@@ -3341,12 +3341,12 @@
      0.8
     ],
     "spi-10": [
-     "shelf-spi-10-bare-f",
-     0.8
+     "shelf-elchi-jar-v2-f",
+     1
     ],
     "spi-16": [
-     "shelf-spi-16-bare-f",
-     0.8
+     "shelf-loon-jar-v2-f",
+     1
     ],
     "spi-04": [
      "shelf-spi-04-bare-f",
@@ -3453,12 +3453,12 @@
      0.9
     ],
     "veg-13": [
-     "shelf-veg-13-bare-f",
-     0.9
+     "shelf-lasan-jar-v2-f",
+     1
     ],
     "veg-14": [
-     "shelf-veg-14-bare-f",
-     0.9
+     "shelf-aadu-jar-v2-f",
+     1
     ],
     "veg-10": [
      "shelf-veg-10-bare-f",
@@ -3543,7 +3543,8 @@
     "ph-chocolate": [
      "shelf-ph-chocolate-bare-f",
      0.85
-    ]
+    ],
+    "_s02": "S02-E (C5, PA14/PAN-09): garlic, ginger, cardamom and salt use the art run's small jars with lids that differ (shelf-<name>-jar-v2-f), at a whole slot (1)"
    },
    "need": {
     "fetch": [
@@ -3714,204 +3715,908 @@
    "_about": "S02-B: the art run s02's Cook pictures (build/tools/art/specs/s02.run.yaml), by the id the game asks for. Until a line lands, `ready` is false and the game keeps the current art (or a drawn stand-in). When /art-run cuts one: set `file` (the game's webp), `ready: true` and the measured `meta` (sizes, registration points, the flat inner area). Nothing else changes in code.",
    "kitchen-trays": {
     "line": "A1",
-    "file": "assets/cook/bg/service-trays.jpg",
-    "ready": false,
+    "file": "assets/cook/bg/service-v2.webp",
+    "ready": true,
     "meta": {
-     "trays": "three tray spots in design px [x, y, w, h], measured on the cut"
+     "trays": [
+      [
+       358,
+       652,
+       339,
+       58
+      ],
+      [
+       802,
+       652,
+       331,
+       58
+      ],
+      [
+       1251,
+       652,
+       332,
+       58
+      ]
+     ],
+     "_about": "three tray boxes in design px [cx, cy, w, h], left to right, measured on the cut (artcut background job); the island's back edge lands at y 608 as on service.jpg (the occluder crops at 611)"
     },
     "station": "service"
    },
    "served-dishes": {
     "line": "B1",
-    "file": "assets/cook/served/",
-    "ready": false,
+    "file": "assets/cook/items/served/",
+    "ready": true,
     "meta": {
-     "_about": "one webp per dish at the counter's angle, shadow to the right"
+     "_about": "recipe -> its served picture (the counter's angle, light from the left; no shadow drawn in: code adds it to the right). h is the drawn height in design px on the tray. Sekelo keeps the drawn skewer: B1's sekelo shows green pepper (s02-redo-list.yaml). A variant (of, when: noMilk) is the same recipe's picture for a cup with no milk (black tea, CHAI-07).",
+     "dishes": {
+      "chai": {
+       "file": "assets/cook/items/served/chai-milk.webp",
+       "w": 246,
+       "h": 300,
+       "drawH": 130
+      },
+      "chai-black": {
+       "file": "assets/cook/items/served/chai-black.webp",
+       "w": 245,
+       "h": 300,
+       "drawH": 130,
+       "of": "chai",
+       "when": "noMilk"
+      },
+      "maani": {
+       "file": "assets/cook/items/served/maani.webp",
+       "w": 300,
+       "h": 197,
+       "drawH": 124
+      },
+      "daal": {
+       "file": "assets/cook/items/served/daar.webp",
+       "w": 300,
+       "h": 256,
+       "drawH": 128
+      },
+      "chaat": {
+       "file": "assets/cook/items/served/chaat.webp",
+       "w": 300,
+       "h": 288,
+       "drawH": 140
+      },
+      "samosa": {
+       "file": "assets/cook/items/served/samosa.webp",
+       "w": 300,
+       "h": 257,
+       "drawH": 128
+      },
+      "pantry": {
+       "file": "assets/cook/items/served/pantry-basket.webp",
+       "w": 300,
+       "h": 279,
+       "drawH": 150
+      }
+     }
     },
     "station": "service"
    },
    "chai-pan-pour-milk": {
     "line": "C1",
     "file": "assets/cook/items/chai-v2/pan-pour-milk.webp",
-    "ready": false,
+    "ready": true,
     "meta": {
-     "lipX": 0.03,
-     "lipY": 0.545
+     "lipX": 0.057,
+     "lipY": 0.98,
+     "_about": "the origin is the painted stream's tip (it lands over the glass)"
     },
-    "station": "chai-tray"
+    "station": "chai-tray",
+    "size": [
+     611,
+     640
+    ]
    },
    "chai-pan-pour-black": {
     "line": "C2",
     "file": "assets/cook/items/chai-v2/pan-pour-black.webp",
-    "ready": false,
+    "ready": true,
     "meta": {
-     "lipX": 0.03,
-     "lipY": 0.545
+     "lipX": 0.057,
+     "lipY": 0.98,
+     "_about": "the origin is the painted stream's tip"
     },
-    "station": "chai-tray"
+    "station": "chai-tray",
+    "size": [
+     612,
+     640
+    ]
    },
    "chai-glass-black-half": {
     "line": "C3",
     "file": "assets/cook/items/chai-v2/glass-black-half.webp",
-    "ready": false,
-    "station": "chai-tray"
+    "ready": true,
+    "station": "chai-tray",
+    "size": [
+     213,
+     256
+    ]
    },
    "chai-glass-black-full": {
     "line": "C3",
     "file": "assets/cook/items/chai-v2/glass-black-full.webp",
-    "ready": false,
-    "station": "chai-tray"
+    "ready": true,
+    "station": "chai-tray",
+    "size": [
+     213,
+     256
+    ]
    },
    "teaspoon": {
     "line": "C4",
-    "file": "assets/cook/items/v3/chai/teaspoon-t.webp",
-    "ready": false,
+    "file": "assets/cook/items/chai-v2/teaspoon-t.webp",
+    "ready": true,
     "meta": {
      "bowl": [
-      0.5,
-      0.85
+      0.2,
+      0.5
      ],
-     "len": 0.9
+     "len": 1
     },
-    "station": "chai-tray"
+    "station": "chai-tray",
+    "size": [
+     300,
+     84
+    ]
    },
    "sekelo-plate": {
     "line": "C7",
     "file": "assets/cook/items/v3/sekelo/plate-plain-t.webp",
-    "ready": false,
+    "ready": true,
     "meta": {
      "flat": [
       0.5,
       0.5,
       0.4,
-      0.4
+      0.37
      ]
     },
-    "station": "mishkaki-grill"
+    "station": "mishkaki-grill",
+    "size": [
+     780,
+     551
+    ]
    },
    "chaat-glass": {
     "line": "C8",
-    "file": "assets/cook/items/v3/chaat/glass-side.webp",
-    "ready": false,
-    "station": "assemble"
+    "file": "assets/cook/items/v3/chaat/bowl-side-v2.webp",
+    "ready": true,
+    "station": "assemble",
+    "size": [
+     900,
+     457
+    ],
+    "meta": {
+     "_about": "measured on the cut (S02-E) the way build/check_vessel_meta.py measures bowl-side: fractions of the sprite; rim/floor = the front lines of the rim and the inside floor, ery = their ellipses' half-heights, inside = the inside wall [left, right] at 41 heights",
+     "bowl": {
+      "w": 900,
+      "h": 457,
+      "cx": 0.5,
+      "rim": 0.206,
+      "floor": 0.957,
+      "eryRim": 0.0855,
+      "eryFloor": 0.0735,
+      "floorTop": 0.81,
+      "floorHw": 0.381,
+      "inside": [
+       [
+        0.0211,
+        0.9789
+       ],
+       [
+        0.0211,
+        0.9789
+       ],
+       [
+        0.0211,
+        0.9789
+       ],
+       [
+        0.0211,
+        0.9789
+       ],
+       [
+        0.0244,
+        0.9756
+       ],
+       [
+        0.0267,
+        0.9733
+       ],
+       [
+        0.03,
+        0.97
+       ],
+       [
+        0.0322,
+        0.9678
+       ],
+       [
+        0.0356,
+        0.9644
+       ],
+       [
+        0.0389,
+        0.9611
+       ],
+       [
+        0.0411,
+        0.9589
+       ],
+       [
+        0.0444,
+        0.9556
+       ],
+       [
+        0.0478,
+        0.9522
+       ],
+       [
+        0.0511,
+        0.9489
+       ],
+       [
+        0.0544,
+        0.9467
+       ],
+       [
+        0.0567,
+        0.9433
+       ],
+       [
+        0.06,
+        0.94
+       ],
+       [
+        0.0633,
+        0.9367
+       ],
+       [
+        0.0667,
+        0.9333
+       ],
+       [
+        0.0689,
+        0.93
+       ],
+       [
+        0.0722,
+        0.9278
+       ],
+       [
+        0.0756,
+        0.9244
+       ],
+       [
+        0.0789,
+        0.9211
+       ],
+       [
+        0.0822,
+        0.9178
+       ],
+       [
+        0.0856,
+        0.9144
+       ],
+       [
+        0.0889,
+        0.9111
+       ],
+       [
+        0.0922,
+        0.9078
+       ],
+       [
+        0.0956,
+        0.9044
+       ],
+       [
+        0.0989,
+        0.9011
+       ],
+       [
+        0.1022,
+        0.8978
+       ],
+       [
+        0.1056,
+        0.8944
+       ],
+       [
+        0.1089,
+        0.8911
+       ],
+       [
+        0.1122,
+        0.8878
+       ],
+       [
+        0.1156,
+        0.8844
+       ],
+       [
+        0.1189,
+        0.8811
+       ],
+       [
+        0.1189,
+        0.8811
+       ],
+       [
+        0.1189,
+        0.8811
+       ],
+       [
+        0.1189,
+        0.8811
+       ],
+       [
+        0.1189,
+        0.8811
+       ],
+       [
+        0.1189,
+        0.8811
+       ],
+       [
+        0.1189,
+        0.8811
+       ]
+      ]
+     }
+    }
    },
    "knife": {
     "line": "C9",
-    "file": "assets/cook/items/v3/daar/knife-t.webp",
-    "ready": false,
+    "file": "assets/cook/items/tool-knife-t-v2.webp",
+    "ready": true,
     "meta": {
      "blade": [
-      0.05,
-      0.62,
-      0.5,
-      0.95
+      0.02,
+      0.45,
+      0.57,
+      0.92
      ]
     },
-    "station": "daar"
+    "station": "daar",
+    "size": [
+     300,
+     63
+    ]
    },
    "daar-bowl": {
     "line": "C10",
-    "file": "assets/cook/items/v3/daar/bowl-t.webp",
+    "file": "assets/cook/items/v3/daar/daar-bowl-plain-t.webp",
     "ready": false,
-    "station": "daar"
+    "station": "daar",
+    "_hold": "C10's daar is drawn as round glossy beads that read as sweets (the run log's FAIL); on s02-redo-list.yaml. Cut, not shown: the one split picture stays"
    },
    "daar-trivet": {
     "line": "C10",
     "file": "assets/cook/items/v3/daar/trivet-t.webp",
-    "ready": false,
-    "station": "daar"
+    "ready": true,
+    "station": "daar",
+    "size": [
+     360,
+     358
+    ]
    },
    "samosa-fold-1": {
     "line": "C11",
-    "file": "assets/cook/items/v3/samosa/fold-1-s02.webp",
-    "ready": false,
+    "file": "assets/cook/items/v3/samosa/fold-v2-1.webp",
+    "ready": true,
     "meta": {
-     "baseline": "one baseline, constant height"
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
     },
-    "station": "samosa"
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
    },
    "samosa-fold-2": {
     "line": "C11",
-    "file": "assets/cook/items/v3/samosa/fold-2-s02.webp",
-    "ready": false,
+    "file": "assets/cook/items/v3/samosa/fold-v2-2.webp",
+    "ready": true,
     "meta": {
-     "baseline": "one baseline, constant height"
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
     },
-    "station": "samosa"
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
    },
    "samosa-fold-3": {
     "line": "C11",
-    "file": "assets/cook/items/v3/samosa/fold-3-s02.webp",
-    "ready": false,
+    "file": "assets/cook/items/v3/samosa/fold-v2-3.webp",
+    "ready": true,
     "meta": {
-     "baseline": "one baseline, constant height"
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
     },
-    "station": "samosa"
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
    },
    "samosa-fold-4": {
     "line": "C11",
-    "file": "assets/cook/items/v3/samosa/fold-4-s02.webp",
-    "ready": false,
+    "file": "assets/cook/items/v3/samosa/fold-v2-4.webp",
+    "ready": true,
     "meta": {
-     "baseline": "one baseline, constant height"
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
     },
-    "station": "samosa"
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
    },
    "samosa-fold-5": {
     "line": "C11",
-    "file": "assets/cook/items/v3/samosa/fold-5-s02.webp",
-    "ready": false,
+    "file": "assets/cook/items/v3/samosa/fold-v2-5.webp",
+    "ready": true,
     "meta": {
-     "baseline": "one baseline, constant height"
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
     },
-    "station": "samosa"
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
    },
    "samosa-fold-6": {
     "line": "C11",
-    "file": "assets/cook/items/v3/samosa/fold-6-s02.webp",
-    "ready": false,
+    "file": "assets/cook/items/v3/samosa/fold-v2-6.webp",
+    "ready": true,
     "meta": {
-     "baseline": "one baseline, constant height"
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
     },
-    "station": "samosa"
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
    },
    "coin-jar-empty": {
-    "line": "D1",
-    "file": "assets/cook/ui/coin-jar-empty.webp",
-    "ready": false,
-    "station": "summary"
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-0.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
    },
    "coin-jar-quarter": {
-    "line": "D1",
-    "file": "assets/cook/ui/coin-jar-quarter.webp",
-    "ready": false,
-    "station": "summary"
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-1.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
    },
    "coin-jar-half": {
-    "line": "D1",
-    "file": "assets/cook/ui/coin-jar-half.webp",
-    "ready": false,
-    "station": "summary"
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-2.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
    },
    "coin-jar-three-quarter": {
-    "line": "D1",
-    "file": "assets/cook/ui/coin-jar-three-quarter.webp",
-    "ready": false,
-    "station": "summary"
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-3.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
    },
    "coin-jar-full": {
-    "line": "D1",
-    "file": "assets/cook/ui/coin-jar-full.webp",
-    "ready": false,
-    "station": "summary"
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-4.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
    },
    "coin-pile": {
     "line": "D2",
-    "file": "assets/cook/ui/coin-pile.webp",
-    "ready": false,
+    "file": "assets/cook/items/jar/coin-pile.webp",
+    "ready": true,
     "station": "summary"
    },
-   "_station": "Decision 68 (modular loading, J11): each id names the station that loads it (St.artLoad in that station; 'service' is the kitchen view's background, swapped in CookScene.preload's existing bg-service entry only once ready; 'summary' is the day's coin jar), for Session E's per-station manifests"
+   "_station": "Decision 68 (modular loading, J11): each id names the station that loads it (St.artLoad in that station; 'service' is the kitchen view's background, swapped in CookScene.preload's existing bg-service entry only once ready; 'summary' is the day's coin jar), for Session E's per-station manifests",
+   "chai-glass-black-empty": {
+    "line": "C3",
+    "file": "assets/cook/items/chai-v2/glass-black-empty.webp",
+    "ready": true,
+    "station": "chai-tray",
+    "size": [
+     213,
+     256
+    ]
+   },
+   "coin": {
+    "line": "D2",
+    "file": "assets/cook/items/jar/coin.webp",
+    "ready": true,
+    "station": "summary"
+   },
+   "ginger-root": {
+    "line": "C6",
+    "file": "assets/cook/items/chai-v2/ginger-root-t.webp",
+    "ready": true,
+    "station": "chai-tray"
+   },
+   "ginger-slices": {
+    "line": "C6",
+    "file": "assets/cook/items/chai-v2/ginger-slices-t.webp",
+    "ready": true,
+    "station": "chai-tray"
+   },
+   "spice-jar-lasan": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-lasan-jar-v2-f.webp",
+    "ready": true,
+    "word": "veg-13",
+    "station": "chai-tray, fetch"
+   },
+   "spice-jar-aadu": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-aadu-jar-v2-f.webp",
+    "ready": true,
+    "word": "veg-14",
+    "station": "chai-tray, fetch"
+   },
+   "spice-jar-elchi": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-elchi-jar-v2-f.webp",
+    "ready": true,
+    "word": "spi-10",
+    "station": "chai-tray, fetch"
+   },
+   "spice-jar-loon": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-loon-jar-v2-f.webp",
+    "ready": true,
+    "word": "spi-16",
+    "station": "chai-tray, fetch"
+   }
+  },
+  "assets": {
+   "_about": "Decision 68 (J11, S02-E): what Cook loads, by screen. shared: the textures the scene preloads (the kitchen, Nani, the customers, the cousin's badge): nothing else loads at open. stations[key].props: the prop textures (assets/cook/props/<name>.webp, or the painted sprite data.art.sprites.props names) a station loads when it is chosen (Cook.Art.need, with its painted sprites data.art.sprites.need[key]); stations[key].files: the folders and files the station's own code may load (its art lists), which build/tools/review/loadcheck.mjs holds every page to. A station that loads anything outside shared + its own entry fails the load check.",
+   "shared": {
+    "images": {
+     "bg-service": "assets/cook/bg/service.jpg",
+     "nani-neutral": "assets/cook/characters/nani-neutral.webp",
+     "nani-talk": "assets/cook/characters/nani-talk.webp",
+     "nani-happy": "assets/cook/characters/nani-happy.webp",
+     "nani-point": "assets/cook/characters/nani-point.webp",
+     "nana-happy": "assets/cook/characters/nana-happy.webp",
+     "nana-neutral": "assets/cook/characters/nana-neutral.webp",
+     "nana-impatient": "assets/cook/characters/nana-impatient.webp",
+     "ma-happy": "assets/cook/characters/ma-happy.webp",
+     "ma-neutral": "assets/cook/characters/ma-neutral.webp",
+     "ma-impatient": "assets/cook/characters/ma-impatient.webp",
+     "cousin-happy": "assets/cook/characters/cousin-happy.webp",
+     "cousin-neutral": "assets/cook/characters/cousin-neutral.webp",
+     "cousin-impatient": "assets/cook/characters/cousin-impatient.webp",
+     "cousin-badge": "assets/cook/characters/cousin-face.webp"
+    }
+   },
+   "stations": {
+    "fetch": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "atto",
+      "daal-dry",
+      "chapati-puffed",
+      "onion",
+      "tomato",
+      "chilli",
+      "garlic",
+      "elchi"
+     ]
+    },
+    "passme": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "atto",
+      "daal-dry",
+      "chapati-puffed",
+      "onion",
+      "tomato",
+      "chilli",
+      "garlic",
+      "elchi"
+     ]
+    },
+    "chai-tray": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "elchi"
+     ]
+    },
+    "pour": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "elchi"
+     ]
+    },
+    "boil": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "elchi"
+     ]
+    },
+    "watch": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "elchi"
+     ]
+    },
+    "count": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "elchi"
+     ]
+    },
+    "add": {
+     "props": [
+      "water-jug",
+      "tea-tin",
+      "milk-jug",
+      "elchi"
+     ]
+    },
+    "maani-line": {
+     "props": [
+      "atto",
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ]
+    },
+    "knead": {
+     "props": [
+      "atto",
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ]
+    },
+    "roll": {
+     "props": [
+      "atto",
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ]
+    },
+    "flip": {
+     "props": [
+      "atto",
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ]
+    },
+    "tawa": {
+     "props": [
+      "atto",
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ]
+    },
+    "roll-tawa": {
+     "props": [
+      "atto",
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ]
+    },
+    "daar": {
+     "props": [
+      "knife",
+      "pot",
+      "onion",
+      "tomato",
+      "chilli",
+      "garlic",
+      "daal-dry"
+     ]
+    },
+    "chop": {
+     "props": [
+      "knife",
+      "pot",
+      "onion",
+      "tomato",
+      "chilli",
+      "garlic",
+      "daal-dry"
+     ]
+    },
+    "tadka": {
+     "props": [
+      "knife",
+      "pot",
+      "onion",
+      "tomato",
+      "chilli",
+      "garlic",
+      "daal-dry"
+     ]
+    },
+    "stir": {
+     "props": [
+      "knife",
+      "pot",
+      "onion",
+      "tomato",
+      "chilli",
+      "garlic",
+      "daal-dry"
+     ]
+    },
+    "assemble": {
+     "props": [
+      "onion",
+      "chilli"
+     ]
+    },
+    "fill": {
+     "props": [
+      "onion",
+      "chilli"
+     ]
+    },
+    "fold": {
+     "props": [
+      "onion",
+      "chilli"
+     ]
+    },
+    "fry": {
+     "props": [
+      "onion",
+      "chilli"
+     ]
+    },
+    "samosa": {
+     "props": [
+      "onion",
+      "chilli"
+     ]
+    },
+    "mishkaki-grill": {
+     "props": [
+      "onion",
+      "tomato"
+     ]
+    },
+    "thread": {
+     "props": [
+      "onion",
+      "tomato"
+     ]
+    },
+    "grill": {
+     "props": [
+      "onion",
+      "tomato"
+     ]
+    }
+   }
   }
  },
  "days": [

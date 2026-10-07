@@ -948,11 +948,62 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, `assets/cook/items/${bowls[id]}.webp`]));
     // v3 (K5, K6, K9): the pictured rack and plate, the grill, the one stick, the chunky pieces
     const v3 = [["sk3-grill", V3.DIR + "grill.webp"], ["sk3-stick", V3.DIR + "stick.webp"]];
-    for (let n = 0; n <= 4; n++) v3.push([`sk3-rack-${n}`, `${V3.DIR}rack-${n}.webp`], [`sk3-plate-${n}`, `${V3.DIR}plate-${n}-v2.webp`]);
+    // SEK-07 / S2 (S02-E): the art run's plain plate (art.s02 "sekelo-plate", C7): the skewers are laid on it by code,
+    // straight and side by side, left to right (SK.platePlain), in place of the fanned plate-n pictures
+    const plain = Cook.Stations.art("sekelo-plate");
+    for (let n = 0; n <= 4; n++) {
+      v3.push([`sk3-rack-${n}`, `${V3.DIR}rack-${n}.webp`]);
+      if (!plain) v3.push([`sk3-plate-${n}`, `${V3.DIR}plate-${n}-v2.webp`]);
+    }
+    if (plain) v3.push(["sk3-plate-plain", plain.file]);
     const names = [...new Set(ids.concat(SK.pieceIds()).map(SK.v3Name).filter(Boolean))];
     names.forEach((n) => ["raw", "grilled", "charred"].forEach((st) => v3.push([`sk3-${n}-${st}`, `${V3.DIR}${n}-${st}.webp`])));
     list.push(...v3);
-    return Promise.race([Cook.Stations.load(S, list), Cook.wait(15000)]);
+    return Promise.race([Cook.Stations.load(S, list).then(() => plain && SK.platePlain(S)), Cook.wait(15000)]);
+  };
+  /**
+   * SEK-07 / S2 (S02-E): the plate pictures sk3-plate-0..4 made from the plain plate and the one stick (sk3-stick):
+   * n skewers lying straight and parallel, tips to the left, their handles off the plate's right edge, spaced evenly
+   * down the plate. V3.plate becomes this canvas's measures, so everything that plates along a drawn skewer (the
+   * served picture, SK.plate3) works on it unchanged.
+   */
+  SK.platePlain = function (S) {
+    if (!S.textures.exists("sk3-plate-plain") || !S.textures.exists("sk3-stick")) return;
+    const pl = S.textures.get("sk3-plate-plain").getSourceImage();
+    const st = S.textures.get("sk3-stick").getSourceImage();
+    const fl = ((Cook.Stations.art("sekelo-plate") || {}).meta || {}).flat || [0.5, 0.5, 0.4, 0.37];
+    const ST = V3.stick;
+    const len = pl.width * fl[2] * 2 * 0.86; // tip to handle: most of the plate's flat width
+    const k = len / ((ST.handle - ST.tip) * st.height);
+    const tipX = pl.width * (fl[0] - fl[2] * 0.86);
+    const handleX = tipX + len;
+    const endX = tipX + (ST.end - ST.tip) * st.height * k;
+    const W = Math.ceil(Math.max(pl.width, endX + 8));
+    const H = pl.height;
+    const cy = pl.height * fl[1];
+    const gap = pl.height * fl[3] * 0.62;
+    const ys = (n) => Array.from({ length: n }, (_, i) => cy + (i - (n - 1) / 2) * (n > 1 ? Math.min(gap, (2 * gap * 1.2) / (n - 1)) : 0));
+    const sticks = [[]];
+    for (let n = 0; n <= 4; n++) {
+      const key = `sk3-plate-${n}`;
+      if (S.textures.exists(key)) S.textures.remove(key);
+      const c = S.textures.createCanvas(key, W, H);
+      const g = c.getContext();
+      g.drawImage(pl, 0, 0);
+      const row = [];
+      ys(n).forEach((y) => {
+        // the stick canvas is upright (tip at the top): turned a quarter so the tip points left
+        g.save();
+        g.translate(tipX, y);
+        g.rotate(-Math.PI / 2);
+        g.drawImage(st, (-st.width * k) / 2, -ST.tip * st.height * k, st.width * k, st.height * k);
+        g.restore();
+        row.push([tipX / W, y / H, handleX / W, y / H, endX / W, y / H]);
+      });
+      c.refresh();
+      if (n) sticks.push(row);
+    }
+    V3.plate = { w: W, h: H, rim: [(pl.width * fl[0]) / W, fl[1], (pl.width * fl[2] * 1.12) / W], sticks, plain: true };
   };
   /** The taster's faces (happy, neutral) for serve and taste. */
   SK.faceArt = (S, who) => Promise.race([Cook.Stations.load(S, Cook.Kit.faceArt(who)), Cook.wait(15000)]);

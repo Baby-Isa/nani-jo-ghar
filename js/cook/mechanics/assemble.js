@@ -166,10 +166,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // the side-on glass bowl, as build/check_vessel_meta.py measured it (v3/chaat/meta.json "bowl-side"): the
   // rim's and the inside floor's front lines, how flat a level's ellipse is there, and the inside wall's
   // [left, right] at 41 heights of the sprite (all fractions of the sprite's width / height)
-  const BOWL = { w: 1214, h: 618, cx: 0.4992, rim: 0.0599, floor: 0.8285, eryRim: 0.025, eryFloor: 0.1504, floorTop: 0.6489, floorHw: 0.304 };
+  let BOWL = { w: 1214, h: 618, cx: 0.4992, rim: 0.0599, floor: 0.8285, eryRim: 0.025, eryFloor: 0.1504, floorTop: 0.6489, floorHw: 0.304 };
   // prettier-ignore
-  const BOWL_INSIDE = [[0.0346,0.9646],[0.0346,0.9646],[0.0346,0.9646],[0.0372,0.962],[0.0445,0.9539],[0.0477,0.9507],[0.0509,0.9483],[0.0549,0.9443],[0.0581,0.9411],[0.0613,0.9379],[0.0653,0.9347],[0.0685,0.9299],[0.0733,0.9259],[0.0773,0.9218],[0.0813,0.9178],[0.0854,0.913],[0.0902,0.9081],[0.095,0.9033],[0.0999,0.8985],[0.1055,0.8928],[0.1112,0.8871],[0.1177,0.8807],[0.1242,0.8742],[0.1315,0.8677],[0.1396,0.8595],[0.1469,0.8514],[0.1567,0.8425],[0.1657,0.8327],[0.1763,0.8221],[0.1885,0.8106],[0.2002,0.799],[0.2125,0.7858],[0.2273,0.7718],[0.2446,0.7545],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504]];
-  const GLASS = { w: BOWL.w, h: BOWL.h, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, inside: BOWL_INSIDE };
+  let BOWL_INSIDE = [[0.0346,0.9646],[0.0346,0.9646],[0.0346,0.9646],[0.0372,0.962],[0.0445,0.9539],[0.0477,0.9507],[0.0509,0.9483],[0.0549,0.9443],[0.0581,0.9411],[0.0613,0.9379],[0.0653,0.9347],[0.0685,0.9299],[0.0733,0.9259],[0.0773,0.9218],[0.0813,0.9178],[0.0854,0.913],[0.0902,0.9081],[0.095,0.9033],[0.0999,0.8985],[0.1055,0.8928],[0.1112,0.8871],[0.1177,0.8807],[0.1242,0.8742],[0.1315,0.8677],[0.1396,0.8595],[0.1469,0.8514],[0.1567,0.8425],[0.1657,0.8327],[0.1763,0.8221],[0.1885,0.8106],[0.2002,0.799],[0.2125,0.7858],[0.2273,0.7718],[0.2446,0.7545],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504]];
+  let GLASS = { w: BOWL.w, h: BOWL.h, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, inside: BOWL_INSIDE };
   // the side-on pots (the pantry jars' look): one canvas, standing on its measured bottom-centre (meta.json)
   const POT = { w: 356, h: 370, anchor: [0.5, 0.9514] };
   // the food inside a pot, below the jar's own highlights and above its thick base (the layers' texture)
@@ -196,7 +196,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const GLASS_W = 760; // the side-on bowl: wide, so a layer of a long order is still a clear strip
   const GLASS_X = 800;
   // the bowl is centred in the scene above the shelf band (0..SHELF_TOP): its middle at SHELF_TOP / 2
-  const GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
+  let GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
+  /*
+   * CHT-03 / T1 (S02-E): the art run's plain thin side-on bowl (art.s02 "chaat-glass", C8) once it has landed, with its
+   * own measured inside (meta.bowl, the same measures as BOWL above); else the v3 bowl.
+   */
+  let bowlUrl = V3 + "bowl-side.webp";
+  function useBowlArt() {
+    const a = St.art("chaat-glass");
+    const m = a && a.meta && a.meta.bowl;
+    if (!m) return;
+    BOWL = { w: m.w, h: m.h, cx: m.cx, rim: m.rim, floor: m.floor, eryRim: m.eryRim, eryFloor: m.eryFloor, floorTop: m.floorTop, floorHw: m.floorHw };
+    BOWL_INSIDE = m.inside;
+    GLASS = { w: BOWL.w, h: BOWL.h, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, inside: BOWL_INSIDE };
+    GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
+    bowlUrl = a.file;
+  }
   const INK = {
     text: "#2A2522",
     kutchi: "#8C2F2F",
@@ -819,10 +834,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!pool) pool = St.decoys(decoyPool, flat.concat(exclude), knobInt(k.decoys), k.decoyPick);
       const ids = Cook.shuffle([...new Set(pool.concat(flat, exclude))]);
       const who = (ctx.order && ctx.order.who) || "nana";
+      useBowlArt();
       await Promise.race([
         St.load(
           S,
-          [["cv3-bowl", V3 + "bowl-side.webp"]].concat(
+          [["cv3-bowl", bowlUrl]].concat(
             Cook.Kit ? Cook.Kit.faceArt(who) : [],
             ids.filter((id) => POTS[id]).map((id) => [`cv3-pot-${id}`, `${V3}${POTS[id]}.webp`]),
           ),
