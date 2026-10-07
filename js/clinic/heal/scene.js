@@ -414,12 +414,30 @@
         // what came from the pharmacy (13) is still known (S.fromTray), but D16 (1 Oct, CLN-42): no gold
         // half-circle badge on the tools: an unexplained icon
         if (S.fromTray(t)) b.classList.add("from-tray");
-        ctx.on(b, "click", (e) => {
-          e.stopPropagation();
+        // S02 review (the heal-ear #hint stall on a tablet): a tool is picked when the finger lifts on it, not on the
+        // browser's click, which a touch screen can drop while the first-time help is up (the help moved on, the pick
+        // never came); a keyboard's click (no press before it) still picks
+        let downOn = false;
+        let upAt = 0;
+        const pickIt = () => {
           if (!S.ready) return;
           S.did(); // the child is on it: the first-time help moves on
           S.pick(t.id);
           if (onPick) onPick(t.id, b);
+        };
+        ctx.on(b, "pointerdown", () => (downOn = true));
+        ctx.on(b, "pointerleave", () => (downOn = false));
+        ctx.on(b, "pointerup", (e) => {
+          e.stopPropagation();
+          if (!downOn) return;
+          downOn = false;
+          upAt = Date.now();
+          pickIt();
+        });
+        ctx.on(b, "click", (e) => {
+          e.stopPropagation();
+          if (Date.now() - upAt < 800) return; // the same tap, already picked
+          pickIt();
         });
         S.toolEls[t.id] = b;
       });

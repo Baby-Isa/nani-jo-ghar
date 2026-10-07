@@ -1062,7 +1062,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .jar-drop .jar-card { margin: 0; box-shadow: 0 6px 18px rgba(40, 25, 10, 0.18); }
 .jar-drop .jar-coin { position: absolute; left: 50%; top: 70%; width: 22px; height: 22px; }
 .jar-today .pill { font-size: clamp(20px, 3vw, 30px); }
-.day-dot .day-sun { display: block; width: 18px; height: 18px; margin: 0 auto -2px; color: #c9962e; }
+.day-dot .day-sun { display: block; width: 18px; height: 18px; margin: 0 auto calc(var(--njg-line-2) * -1); color: #c9962e; }
 .day-dot .day-sun svg { width: 100%; height: 100%; }
 
 /* T19 (MAA-14, S02-B): Nani's "pass me" comes ON SCREEN over the play area (the game is paused), her bubble asks,
@@ -1073,7 +1073,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #stage #passme.onscreen .pm-face { width: 84px; height: 84px; flex: none; }
 #stage #passme.onscreen .pm-face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; }
 #stage #passme.onscreen .pm-say { background: #fff; border-radius: 16px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(40, 25, 10, 0.12); position: relative; }
-#stage #passme.onscreen .pm-tray { display: flex; justify-content: center; gap: 14px; margin-top: 14px; }
+#stage #passme.onscreen .pm-tray { display: flex; justify-content: center; gap: var(--njg-s3); margin-top: var(--njg-s3); }
 #stage #passme.onscreen .pm-tray .pm-item { width: 30%; max-width: 150px; }
 #stage #passme.onscreen .pm-tray .pm-item img { width: 100%; height: auto; display: block; }
 /* S02-G (gate s02-gate, cook:fetch): with the s02 jars (tall pictures) the card outgrew a phone's stage and the pictures

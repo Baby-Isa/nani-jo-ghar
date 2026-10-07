@@ -592,9 +592,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-main:has(.cl-heal) .cl-tally { right: calc(var(--njg-big-face) * 1.2 + var(--njg-s4)); }
 /* CLN-107 (EY5, EY7, T32): her words under her mouth in the eye test (L1 written, fading; L2+ a talking bubble) */
 .eye-said { position: absolute; z-index: 9; transform: translate(-50%, 0); max-width: 40%; padding: var(--njg-s2) var(--njg-s3); background: #fffaf1; border: 2px solid #e2d3bb; border-radius: 16px; font: 800 var(--njg-t3, 18px) var(--cl-head); color: var(--cl-ink); box-shadow: var(--njg-shadow); pointer-events: none; transition: opacity .6s; }
-.eye-said::before { content: ""; position: absolute; left: 50%; top: -10px; margin-left: -9px; border: 9px solid transparent; border-top: 0; border-bottom-color: #fffaf1; }
+.eye-said::before { content: ""; position: absolute; left: 50%; top: -10px; margin-left: calc(var(--njg-s2) * -1); border: var(--njg-s2) solid transparent; border-top: 0; border-bottom-color: #fffaf1; }
 .eye-said.fade { opacity: 0; }
-.eye-said.talk { display: flex; gap: 6px; padding: 12px 16px; }
+.eye-said.talk { display: flex; gap: var(--njg-s2); padding: 12px 16px; }
 .eye-said.talk i { width: 9px; height: 9px; border-radius: 50%; background: #8a7a6a; animation: eye-talk 1s ease-in-out infinite; }
 .eye-said.talk i:nth-child(2) { animation-delay: .15s; }
 .eye-said.talk i:nth-child(3) { animation-delay: .3s; }
