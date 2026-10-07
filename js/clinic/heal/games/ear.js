@@ -589,6 +589,8 @@
           };
           const at = (x, y, what) => Object.assign({ do: "tap", what }, S.client(x, y));
           if (c.kind === "wax") {
+            // E1: the tweezers first (the help shows picking them up, then the drag into the bin)
+            if (S.sel !== "tweezers") return tool("tweezers");
             const want = c.order && c.order.find((k) => !st.out.includes(k));
             const b = (want && blobs.find((q) => !q.out && q.size === want)) || inEar()[0];
             if (!b) return { do: "wait", ms: 120 };

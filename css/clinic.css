@@ -613,3 +613,13 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* TA3 (CLN-104): the glass glows when it's time to give it to her */
 .heal-taste g.pulse { animation: taste-glow 1s ease-in-out infinite; }
 @keyframes taste-glow { 50% { filter: drop-shadow(0 0 10px rgba(255, 196, 64, .95)); } }
+/* CLN-98: the send-off on her art plays in the doctor's room: the "one more thing" in his hand is sized as at the door */
+.room-exam .cl-extra { width: clamp(64px, 7vw, 90px); height: clamp(64px, 7vw, 90px); margin: 0; border-radius: 18px; }
+.room-exam .cl-extra .cl-item { width: 100%; height: 100%; background: none; border: 0; }
+/* CLN-93: the dot's tap target stays 48 px (F2); the ring drawn inside it is smaller */
+.cl-probe { width: 48px; height: 48px; border: 0; background: none; }
+.cl-probe::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; border: 3px solid rgba(226, 163, 58, .9); background: rgba(255, 226, 150, .35); }
+.cl-probe.asking, .cl-probe.tried, .cl-probe.found { border: 0; background: none; box-shadow: none; }
+.cl-probe.asking::before { border-color: #c9962e; background: rgba(255, 226, 150, .55); box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
+.cl-probe.tried::before { border-color: rgba(120, 110, 100, .55); background: rgba(200, 195, 188, .45); }
+.cl-probe.found::before { border-color: #c9962e; background: rgba(242, 193, 78, .6); }
