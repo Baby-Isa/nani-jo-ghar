@@ -591,3 +591,19 @@ body.clinic button { font-family: inherit; color: inherit; }
    right), clear of the doctor's box; her bubbles come from it. The eye game puts her bubble under her mouth instead */
 .cl-heal .hs-face { left: auto; right: var(--njg-s2); }
 .cl-main:has(.cl-heal) .cl-tally { right: calc(var(--njg-big-face) * 1.2 + var(--njg-s4)); }
+/* CLN-107 (EY5, EY7, T32): her words under her mouth in the eye test (L1 written, fading; L2+ a talking bubble) */
+.eye-said { position: absolute; z-index: 9; transform: translate(-50%, 0); max-width: 40%; padding: var(--njg-s2) var(--njg-s3); background: #fffaf1; border: 2px solid #e2d3bb; border-radius: 16px; font: 800 var(--njg-t3, 18px) var(--cl-head); color: var(--cl-ink); box-shadow: var(--njg-shadow); pointer-events: none; transition: opacity .6s; }
+.eye-said::before { content: ""; position: absolute; left: 50%; top: -10px; margin-left: -9px; border: 9px solid transparent; border-top: 0; border-bottom-color: #fffaf1; }
+.eye-said.fade { opacity: 0; }
+.eye-said.talk { display: flex; gap: 6px; padding: 12px 16px; }
+.eye-said.talk i { width: 9px; height: 9px; border-radius: 50%; background: #8a7a6a; animation: eye-talk 1s ease-in-out infinite; }
+.eye-said.talk i:nth-child(2) { animation-delay: .15s; }
+.eye-said.talk i:nth-child(3) { animation-delay: .3s; }
+@keyframes eye-talk { 50% { transform: translateY(-4px); opacity: .5; } }
+/* EY13: the doctor names the row with its pictures (by his box, top left) */
+.eye-name { position: absolute; left: var(--njg-s2); top: var(--njg-s2); z-index: 9; display: flex; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s3); background: #e8f1ea; border: 2px solid #9cc2a6; border-radius: 16px; box-shadow: var(--njg-shadow); animation: cl-pop .2s; }
+.eye-name img { width: 48px; height: 48px; object-fit: contain; }
+/* a wrong yes / no shakes red (decision 59) */
+.hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
+.eye-go .njg-next-t { display: flex; align-items: center; }
+.eye-go-chart { width: 34px; height: 44px; display: block; }
