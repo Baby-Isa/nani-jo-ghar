@@ -833,16 +833,16 @@
    "en": "Make each pan the way they said"
   },
   "chai-tray:pour": {
-   "en": "Pour each pan into their glass"
+   "en": "Pour it into their glass"
   },
   "mishkaki-grill": {
    "en": "Thread the skewers, then grill them"
   },
   "mishkaki-grill:thread": {
-   "en": "Thread the skewers"
+   "en": "Thread them"
   },
   "mishkaki-grill:grill": {
-   "en": "Grill the skewers"
+   "en": "Grill them"
   },
   "maani-line": {
    "en": "Roll the maani, then cook it"
@@ -852,6 +852,33 @@
   },
   "default": {
    "en": "Cook it the way they said"
+  },
+  "chai-tray:next": {
+   "en": "Put in the next thing"
+  },
+  "maani-line:take": {
+   "en": "Take a dough ball"
+  },
+  "maani-line:roll": {
+   "en": "Roll it round"
+  },
+  "maani-line:tawa": {
+   "en": "Put it on the tawa"
+  },
+  "maani-line:off": {
+   "en": "Take it off"
+  },
+  "daar:veg": {
+   "en": "Put the vegetables in"
+  },
+  "daar:daar": {
+   "en": "Put the daar in"
+  },
+  "samosa:next": {
+   "en": "Fill the next one"
+  },
+  "assemble:next": {
+   "en": "Put in the next thing"
   }
  },
  "headlines": {

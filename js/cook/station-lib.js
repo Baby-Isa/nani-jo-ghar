@@ -307,11 +307,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const y = p.y + Math.sin(a) * ry;
           const lift = Math.max(0, 1 - Math.min(u, 1 - u) * 8); // dips in, lifts out
           sp.clear().setAlpha(1 - lift * 0.7);
-          // the handle leans out to the lower right (the hand's side), the bowl in the liquid
-          sp.lineStyle(Math.max(3, L * 7), 0xb9bcc2, 1);
-          sp.lineBetween(x, y - lift * L * 20, x + L * 70, y + L * 38 - lift * L * 20);
-          sp.fillStyle(0xd7d9dd, 1);
-          sp.fillEllipse(x, y - lift * L * 20, L * 26, L * 16);
+          // the handle leans out to the lower right (the hand's side), the bowl in the liquid (CHAI-13: a teaspoon)
+          S$.teaspoon(sp, x, y - lift * L * 20, x + L * 70, y + L * 38 - lift * L * 20, L);
           // the swirl it leaves on the surface
           sw.clear();
           for (let i = 0; i < 3; i++) {
@@ -332,6 +329,53 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         },
       });
     });
+  };
+
+  /*
+   * CHAI-13 (C18): a real teaspoon, drawn until the art run's (art.s02 "teaspoon") lands: a deep oval bowl with its
+   * shine, a thin neck and a handle that widens to a rounded end, steel with a darker edge. (bx, by) is the bowl,
+   * (hx, hy) the handle's end; heap: the colour of what's on it (sugar), or null.
+   */
+  S$.teaspoon = function (g, bx, by, hx, hy, L, heap = null) {
+    const a = Math.atan2(hy - by, hx - bx);
+    const len = Math.hypot(hx - bx, hy - by);
+    const nx = -Math.sin(a);
+    const ny = Math.cos(a);
+    const at = (t, w) => ({ x: bx + Math.cos(a) * len * t + nx * w, y: by + Math.sin(a) * len * t + ny * w });
+    const neck = 0.22;
+    const pts = [at(neck, L * 1.6), at(0.78, L * 3.4), at(0.97, L * 3.6), at(1, 0), at(0.97, -L * 3.6), at(0.78, -L * 3.4), at(neck, -L * 1.6)];
+    g.fillStyle(0x8d9198, 1);
+    g.fillPoints(pts.map((p, i) => ({ x: p.x + (i < 3 ? nx : -nx) * 0.8, y: p.y + (i < 3 ? ny : -ny) * 0.8 })), true);
+    g.fillStyle(0xc9ccd2, 1);
+    g.fillPoints(pts, true);
+    g.fillStyle(0xeef0f3, 0.8);
+    g.fillPoints([at(neck + 0.05, L * 0.4), at(0.9, L * 1.2), at(0.9, L * 0.2), at(neck + 0.05, -L * 0.2)], true);
+    // the bowl: an oval along the handle's line
+    const bw = L * 15;
+    const bh = L * 10;
+    const ell = (w, h, dx = 0) => {
+      const out = [];
+      for (let i = 0; i < 20; i++) {
+        const t = (i / 20) * Math.PI * 2;
+        const ex = Math.cos(t) * w + dx;
+        const ey = Math.sin(t) * h;
+        out.push({ x: bx + Math.cos(a) * ex - Math.sin(a) * ey, y: by + Math.sin(a) * ex + Math.cos(a) * ey });
+      }
+      return out;
+    };
+    g.fillStyle(0x8d9198, 1);
+    g.fillPoints(ell(bw + 1.2, bh + 1.2), true);
+    g.fillStyle(0xd9dbe0, 1);
+    g.fillPoints(ell(bw, bh), true);
+    g.fillStyle(0xa9adb4, 1);
+    g.fillPoints(ell(bw * 0.78, bh * 0.7, -L * 1), true);
+    if (heap != null) {
+      g.fillStyle(heap, 1);
+      g.fillPoints(ell(bw * 0.7, bh * 0.62, -L * 1), true);
+    } else {
+      g.fillStyle(0xffffff, 0.75);
+      g.fillPoints(ell(bw * 0.25, bh * 0.18, -L * 5), true);
+    }
   };
 
   /**
@@ -407,6 +451,68 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     v.rim = rim;
     return v;
   };
+
+  /*
+   * S02-B (T1-T19, decision 55, rule R2): Nani's guide box is the NEXT STEP, one line at a time, in step with the
+   * highlight. A station names its steps by guide key (data/cook.json `guide`: a Mum line, else the engine's grey
+   * to-record placeholder) and moves the box on as each step opens:
+   *   const g = St.steps(ctx);   g.to("maani-line:take", {glow(on), line})   g.done()   g.poke()   g.key
+   * Level 1: the line is shown and said as the step opens; level 2+: only after a pause, with the glow (Session A's
+   * UI.step). The same key twice in a row is the same step (no repeat). Old pages without UI.step get guideFor.
+   */
+  S$.guideLine = (key) => Lang.guideLine(key, ((Cook.data && Cook.data.guide) || {})[key] || {});
+  /** "Elchi. Wiji chad!": the next thing then Mum's "put it in" (T9; the join is the engine's, to check with Mum). */
+  S$.addLine = (id) => Lang.join([Lang.bare(Lang.phrase([id])), Lang.line("guide-add")]);
+  S$.steps = function (ctx) {
+    let cur = null;
+    const g = {
+      get key() {
+        return cur;
+      },
+      to(key, o = {}) {
+        const id = o.id || key;
+        if (!key) return g.done();
+        if (id === cur && !o.force) return null;
+        cur = id;
+        const line = o.line || S$.guideLine(key);
+        if (UI.step) return UI.step(line, { glow: o.glow || null, hide: o.hide || (ctx ? hideKnown(ctx) : undefined), quiet: !!o.quiet, ids: o.ids });
+        if (UI.guideFor) UI.guideFor(key);
+        return null;
+      },
+      done() {
+        cur = null;
+        if (UI.stepDone) UI.stepDone();
+      },
+      poke: () => UI.stepPoke && UI.stepPoke(),
+      help: () => UI.stepHelp && UI.stepHelp(),
+    };
+    return g;
+  };
+  /*
+   * Decision 51 (CK-23): a wrong item is redone on the spot, never the whole game. A station keeps one tracker per
+   * round (ctx.redo, from flow.js / OrderCard.redo; a lab page without it gets its own) and asks it per item key.
+   */
+  S$.redo = (ctx) => (ctx && ctx.redo) || (ctx && (ctx.redo = global.OrderCard && global.OrderCard.redo ? global.OrderCard.redo({ max: 3 }) : null)) || {
+    wrong: () => ({ tries: 3, action: "show" }),
+    help: () => false,
+    tries: () => 0,
+    right: () => 0,
+  };
+
+  /*
+   * S02-B: the art run's pictures by id (data/cook.json art.s02). St.art(id) is the entry once it has landed
+   * (ready, with its file and measured meta), else null, and the station keeps its current art. St.artLoad(ids)
+   * gives the [key, url] pairs to load (only the ready ones: nothing missing is ever fetched); the texture key is
+   * "s02-<id>".
+   */
+  S$.art = (id) => {
+    const e = ((((Cook.data || {}).art || {}).s02 || {})[id]) || null;
+    return e && e.ready && e.file ? e : null;
+  };
+  S$.artKey = (id) => `s02-${id}`;
+  S$.artLoad = (ids) => [].concat(ids).filter((id) => S$.art(id)).map((id) => [S$.artKey(id), S$.art(id).file]);
+  /** Has the art run's picture for this id loaded into the scene? */
+  S$.hasArt = (S, id) => !!(S$.art(id) && S.textures && S.textures.exists(S$.artKey(id)));
 
   S$.BURNER = BURNER;
   S$.STRIP_Y = STRIP_Y;

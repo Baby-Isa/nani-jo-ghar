@@ -95,6 +95,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     .concat(...[1, 2, 3, 4].map((n) => Cook.Kit.art(n, []))) // the shared kitchen kit: hobs, knobs, flames
     .filter(([key], i, a) => a.findIndex(([k2]) => k2 === key) === i);
 
+  // CHAI-14 / CHAI-07 (C9): a cup with no milk is black tea, in the tipped pan, the stream and the glass. The art
+  // run's pictures (art.s02) replace the stand-in: until then the stream is dark and the glass is tinted darker.
+  const BLACK_ART = ["chai-pan-pour-milk", "chai-pan-pour-black", "chai-glass-black-half", "chai-glass-black-full"];
+  const BLACK = { stream: 0x7a3c16, tint: 0xc07a4c };
+
   Mech.combined("chai-tray", {
     station: "chai-tray",
     view: "marble",
@@ -148,6 +153,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       St.load(
         S,
         ART.concat(
+          St.artLoad(BLACK_ART.concat("teaspoon")), // S02-B: the art run's black-tea pan and glasses, the teaspoon, once they land
           people.flatMap((p) => Cook.Kit.faceArt(p.who)),
           [].concat(...shelfIds).map((id) => [`jar-${id}`, SPICE_JAR[id] || jarUrl(id)])
         )
@@ -155,13 +161,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Cook.wait(5000),
     ]);
     let lastPhase = null;
-    const phase = (key) => {
-      if (key === lastPhase) return;
-      lastPhase = key;
+    const steps = St.steps(ctx);
+    /*
+     * S02-B (T8-T10): the box is the next step, one line at a time. water -> tea -> Chulo bar! -> (at the green)
+     * Slow kar! -> for the chosen pan, "{item}. Wiji chad!" (a hidden item: [the next thing]) -> pour. Nothing to do
+     * (waiting on the heat): the box is empty.
+     */
+    const stepLine = (key, id) => {
+      if (key === "cups" && id) return Cook.cardHidden(id) && !guided ? St.guideLine("chai-tray:next") : St.addLine(id);
+      return St.guideLine(key === "slow" ? "chai-tray:slow" : `chai-tray:${key}`);
+    };
+    let lastGist = null;
+    const phase = (key, id) => {
+      const sid = key ? `${key}:${id || ""}` : null;
+      if (sid === lastPhase) return;
+      lastPhase = sid;
+      if (!key) return steps.done();
+      steps.to(key, { id: sid, line: stepLine(key, id) });
+      if (key === lastGist) return;
+      lastGist = key;
       const text = ((Cook.data.stations["chai-tray"] || {}).phases || {})[key];
       Cook.save.seenStation = Cook.save.seenStation || {};
       const seenKey = `chai-tray:${key}`;
-      if (UI.guideFor) UI.guideFor(seenKey);
       if (text && (guided || ctx.lab || !Cook.save.seenStation[seenKey])) UI.gist(text);
       Cook.save.seenStation[seenKey] = true;
     };
@@ -222,6 +243,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.shadow = S.contactShadow(img, { centerX: x, centerY: y + panR * 0.08, width: panR * 2.15, height: panR * 2.15 });
       const mix = S.track(S.add.image(x, y, "v3-pan-empty").setOrigin(pm.cx, pm.cy).setScale(panScale).setDepth(D.item + 0.05).setAlpha(0));
       const layers = { mix };
+      // CHAI-12 (C19): the handle stays fully opaque OVER the heat ring: the pan's handle (about 40 degrees up-right
+      // of the rim's centre, measured on v3/chai/pan-empty.webp) is drawn again above the ring, masked to its wedge
+      const handle = S.track(S.add.image(x, y, "v3-pan-empty").setOrigin(pm.cx, pm.cy).setScale(panScale).setDepth(D.fx - 1.9));
+      {
+        const mg = S.make.graphics({ add: false });
+        const pts = [-54, -26].flatMap((deg, k) => {
+          const t = (deg * Math.PI) / 180;
+          const inner = { x: x + Math.cos(t) * rimR * 0.86, y: y + Math.sin(t) * rimR * 0.86 };
+          const outer = { x: x + Math.cos(t) * rimR * 3, y: y + Math.sin(t) * rimR * 3 };
+          return k ? [outer, inner] : [inner, outer];
+        });
+        mg.fillStyle(0xffffff, 1);
+        mg.fillPoints(pts, true);
+        handle.setMask(mg.createGeometryMask());
+      }
+      layers.handle = handle;
       const bubbles = S.track(S.add.graphics().setDepth(D.item + 0.5));
       const heatRing = Cook.Kit.heatRing(S);
       const sel = S.track(S.add.graphics().setDepth(D.item - 0.5));
@@ -526,6 +563,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         pan.sugar++;
         UI.count(pan.sugar, { id: "cook-khun" });
         if (Cook.Hands) Cook.Hands.count(S, pan.sugar);
+        // CHAI-16 (D5, rule E11): at level 1 the counted row turns gold the moment the count is reached
+        if (level <= 1 && pan.sugar === (pan.p.khun || 0)) closeSpoons(pan);
         pop(id, at.x, at.y, { speak: false });
         await spoonInto(pan, obj, id);
       } else {
@@ -617,9 +656,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       last = now;
       steamT += dt;
       pans.forEach((pan) => {
+        const hd = pan.layers && pan.layers.handle;
+        if (hd) hd.setAlpha(pan.img.alpha).setScale(pan.img.scaleX, pan.img.scaleY);
         if (pan.state === "heating") {
           const was = pan.heat >= lo && pan.heat <= hi;
-          pan.heat += kBoil.rate * dt;
+          // CHAI-10: twice as fast to the green; in the green it slows to half, so the turn-down keeps its old time
+          pan.heat += kBoil.rate * (pan.heat >= lo ? 0.5 : 1) * dt;
           const inBand = pan.heat >= lo && pan.heat <= hi;
           if (inBand && !was) Cook.sfx.click();
           drawRing(pan);
@@ -648,6 +690,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
 
     /* ---------- pouring: a ready pan tips into its person's glass ---------- */
+    // the glass shows black tea (CHAI-14): the art run's glasses when they've landed, else the milk-tea glass darker
+    const blackGlass = (w) => {
+      ["half", "full"].forEach((st) => {
+        const g = w.glass[st];
+        if (!g || g.blackDone) return;
+        g.blackDone = true;
+        if (St.hasArt(S, `chai-glass-black-${st}`)) {
+          const [dw, dh] = [g.displayWidth, g.displayHeight];
+          g.setTexture(St.artKey(`chai-glass-black-${st}`)).setDisplaySize(dw, dh);
+        }
+        else g.setTint(BLACK.tint);
+      });
+    };
     const panTap = async (pan) => {
       if (finished || busy) return;
       if (pan.state !== "ready" || pan.poured >= 2 || !talked) {
@@ -661,9 +716,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const w = pan.well;
       const pp = META.panPour;
       const pw = panR * 2.05;
-      const ps = pw / pp.w;
-      // the tipped pan: its lip over the glass
-      const tilt = S.track(S.add.image(pan.x, pan.y, "v2-pan-pour").setOrigin(pp.lipX, pp.lipY).setScale(ps * 0.9).setDepth(D.fx + 1).setAlpha(0));
+      // the tipped pan: its lip over the glass (black tea or milk tea: the art run's tipped pans once they land)
+      const black = !(pan.has.milk > 0);
+      const artId = black ? "chai-pan-pour-black" : "chai-pan-pour-milk";
+      const tiltKey = St.hasArt(S, artId) ? St.artKey(artId) : "v2-pan-pour";
+      const tm = (tiltKey !== "v2-pan-pour" && St.art(artId).meta) || pp;
+      const ps = pw / (tiltKey !== "v2-pan-pour" ? S.textures.get(tiltKey).getSourceImage().width : pp.w);
+      if (black) blackGlass(w);
+      const tilt = S.track(S.add.image(pan.x, pan.y, tiltKey).setOrigin(tm.lipX, tm.lipY).setScale(ps * 0.9).setDepth(D.fx + 1).setAlpha(0));
       pan.img.setAlpha(0);
       // the pan's off the burner: no flame and no glow on an empty burner while it pours (29 Sept)
       pan.away = true;
@@ -693,7 +753,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             stream.clear();
             stream.lineStyle(13, 0x6e3a17, 0.35);
             stream.lineBetween(tilt.x, tilt.y + 2, w.x, w.y);
-            stream.lineStyle(9, COL.glass, 1);
+            stream.lineStyle(9, black ? BLACK.stream : COL.glass, 1);
             stream.lineBetween(tilt.x, tilt.y + 2, w.x, w.y);
             stream.fillStyle(0xe8b988, 0.9);
             stream.fillCircle(w.x, w.y, 7 + 3 * Math.sin(u * 40));
@@ -789,7 +849,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!talked || finished) return null;
       // 1. a heating pan near the green comes first (turn it down in time)
       const hot = pans.filter((q) => q.state === "heating").sort((a, b) => b.heat - a.heat)[0];
-      if (hot && hot.heat >= lo - 0.14) return { e: { kind: "timing", x: hot.knobHit.x, y: hot.knobHit.y, key: `knob-${hot.who}` }, obj: hot.knob, gauge: hot, focal: true, phase: "knob" };
+      if (hot && hot.heat >= lo - 0.14) return { e: { kind: "timing", x: hot.knobHit.x, y: hot.knobHit.y, key: `knob-${hot.who}` }, obj: hot.knob, gauge: hot, focal: true, phase: "slow" };
       // 2. a ready pan pours into its glass
       for (const q of pans) {
         const need = halves ? (q.p.amount === "ph-half" ? 1 : 2) : 2;
@@ -799,21 +859,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       for (const q of pans) {
         if (q.state !== "cold") continue;
         const id = want(q);
-        if (sel !== q) return { e: tapOn(q.img, `pan-${q.who}`), obj: q.face, focal: false, phase: id ? (q.has.water ? "cups" : "water") : "knob" };
+        if (sel !== q) return { e: tapOn(q.img, `pan-${q.who}`), obj: q.face, focal: false, phase: id ? (id === "cook-paani" ? "water" : id === "cook-chai" ? "tea" : "cups") : "knob", pid: id };
         if (id) {
           const e = tapOn(shelf[id], id, { n: id === "cook-khun" ? q.sugar : undefined });
           if (id === "cook-khun") {
             e.wrongs = shelf["spi-16"] ? [at(shelf["spi-16"])] : [];
             if (ctx.lab && q === pans[pans.length - 1]) e.mistake = true; // the lab always tries the salt once
           }
-          return { e, obj: shelf[id], focal: GENERIC.has(id), phase: id === "cook-paani" ? "water" : id === "cook-chai" ? "tea" : "cups" };
+          return { e, obj: shelf[id], focal: GENERIC.has(id), phase: id === "cook-paani" ? "water" : id === "cook-chai" ? "tea" : "cups", pid: id };
         }
         return { e: { kind: "tap", x: q.knobHit.x, y: q.knobHit.y, key: `knob-on-${q.who}` }, obj: q.knob, focal: true, phase: "knob" };
       }
       // 4. waiting on the heat
-      if (hot) return { e: { kind: "timing", x: hot.knobHit.x, y: hot.knobHit.y, key: `knob-${hot.who}` }, obj: null, gauge: hot, focal: false, phase: "knob" };
-      if (doneShown) return { e: { kind: "click", selector: "#done-btn" }, obj: null, phase: "pour" };
-      return { e: { kind: "wait" }, obj: null, phase: "pour" };
+      if (hot) return { e: { kind: "timing", x: hot.knobHit.x, y: hot.knobHit.y, key: `knob-${hot.who}` }, obj: null, gauge: hot, focal: false, phase: null };
+      if (doneShown) return { e: { kind: "click", selector: "#done-btn" }, obj: null, phase: null };
+      return { e: { kind: "wait" }, obj: null, phase: null };
     }
     const unglow = () => {
       if (glowing) S.glow(glowing, false);
@@ -832,7 +892,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       gaugePan = nx && nx.gauge ? nx.gauge : null;
       if (gaugePan) zb.gauge({ level: gaugePan.heat, lo, hi });
       zb.expect(nx ? nx.e : null);
-      if (nx && nx.phase) phase(nx.phase);
+      if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)
       // the focal rule: the next generic step pulses (a person's choice only when Nani helps)
       const obj = nx && nx.obj && (nx.focal || guided || (sel && sel.redo)) ? nx.obj : null; // decision 51: a redo has help
       if (glowing !== obj) {
@@ -851,7 +911,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     /* ---------- the start: everyone says how they like it ---------- */
     ctx.nextStep && ctx.nextStep("Water");
-    phase("water");
     select(pans[0]);
     for (const pan of ctx.requestsSaid ? [] : pans) { // decision 53: said already in the requests pop-up
       speaking = true;
@@ -911,6 +970,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       setLook(pan);
       ["empty", "half", "full"].forEach((s2) => pan.well.glass[s2].setAlpha(s2 === "empty" ? 1 : 0));
       pan.well.fill = 0;
+      ["half", "full"].forEach((st) => {
+        const g = pan.well.glass[st];
+        g.blackDone = false;
+        g.clearTint();
+        const [dw, dh] = [g.displayWidth, g.displayHeight];
+        g.setTexture(`v2-glass-${st}`).setDisplaySize(dw, dh);
+      });
       UI.mission.reopen(null, dishNo(), { for: pan.who });
     };
     // the right way, shown: their things glow in turn on the shelf while their card is read, then the glass fills
@@ -935,6 +1001,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await doneP;
       finished = true;
       clearInterval(nudge);
+      phase(null);
       unglow();
       UI.hideDone();
       UI.hideCount();
