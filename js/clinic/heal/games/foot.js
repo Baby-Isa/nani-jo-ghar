@@ -156,8 +156,34 @@
     const chanG = s("g", { "clip-path": `url(#${clipId})` }, S.layer);
     const chanFill = HS.shade ? HS.shade(sole, 0.45) : "#f6e2cc";
     const splG = s("g", {}, S.layer);
+    // FT2 (CLN-108): the sole is dirty and the dirt hides the splinters; each jug's water washes some of it away, and the
+    // last jug of the count shows them all (no water rising over the foot: no flooding)
+    const dirtG = s("g", { "clip-path": `url(#${clipId})`, class: "fo-dirt" }, S.layer);
     const plG = s("g", {}, S.layer);
     const fxG = s("g", {}, S.fx);
+    const dirt = [];
+    {
+      const blob = (x, y, r) => dirt.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (r * (0.8 + ctx.rng() * 0.5)).toFixed(1), ry: (r * (0.55 + ctx.rng() * 0.35)).toFixed(1), fill: ctx.rng() < 0.5 ? "#7a5a3a" : "#8f6c48", opacity: (0.75 + ctx.rng() * 0.2).toFixed(2) }, dirtG) });
+      // thick over every splinter's spot and its channel, so it's hidden until washed
+      P.splinters.forEach((q) => q.pts.forEach((pt, k) => k < 3 && [0, 1, 2, 3].forEach(() => blob(pt[0] + (ctx.rng() - 0.5) * 50, pt[1] + (ctx.rng() - 0.5) * 50, 20 + ctx.rng() * 12))));
+      for (let k = 0; k < 40; k++) blob(200 + ctx.rng() * 400, 80 + ctx.rng() * 380, 8 + ctx.rng() * 14);
+    }
+    const washDirt = (share) => {
+      const left = dirt.filter((d) => !d.gone);
+      const n = share >= 1 ? left.length : Math.min(left.length, Math.ceil(dirt.length * share));
+      HS.shuffle(left, ctx.rng).slice(0, n).forEach((d) => {
+        d.gone = true;
+        d.el.animate([{ opacity: d.el.getAttribute("opacity"), transform: "translate(0,0)" }, { opacity: 0, transform: "translate(0px, 30px)" }], { duration: fast() ? 60 : 600, fill: "forwards" });
+      });
+    };
+    // the water from the jug: a stream that splashes onto the sole, then runs off (never a rising pool)
+    const splash = (col) => {
+      const st2 = s("path", { d: "M470 -20 Q440 120 400 240", stroke: col, "stroke-width": 16, fill: "none", "stroke-linecap": "round", opacity: 0.8 }, fxG);
+      const ring = s("ellipse", { cx: 400, cy: 250, rx: 30, ry: 14, fill: "none", stroke: col, "stroke-width": 5, opacity: 0.8 }, fxG);
+      ring.animate([{ rx: 30, ry: 14, opacity: 0.8 }, { rx: 140, ry: 60, opacity: 0 }], { duration: fast() ? 60 : 650, fill: "forwards" });
+      ctx.after(fast() ? 80 : 520, () => st2.remove());
+      ctx.after(fast() ? 100 : 700, () => ring.remove());
+    };
 
     const at = (q, t) => {
       const T = Math.max(0, Math.min(q.lens[q.lens.length - 1], t));
@@ -252,6 +278,7 @@
       const c = cur();
       if (!c) return;
       if (c.kind === "soak") {
+        washDirt(1); // the soak is over: the last of the dirt rinses off and the splinters show
         judge("soak-water", st.temp === c.temp, st.temp || "none");
         judge("soak-jugs", st.jugs === c.jugs, `${st.jugs} of ${c.jugs}`);
       }
@@ -309,8 +336,10 @@
         ctx.tally(S.sel, st.jugs, { next: "splinter", of: c.jugs }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (P.level === 1 && st.jugs >= c.jugs) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
-        water.setAttribute("fill", TCOL[t]);
-        water.setAttribute("opacity", Math.min(0.4, 0.1 + st.jugs * 0.07));
+        // FT2: each jug washes the same share of the dirt away (never "until it's clean": the count is the words', C10);
+        // the rest rinses off when the soak closes. No water overlay
+        splash(TCOL[t]);
+        washDirt(0.18);
         S.face(t === "hot" ? "hot" : t === "cold" ? "cold" : "happy", 600);
         st.busy = true;
         ctx.after(fast() ? 60 : 300, () => (st.busy = false));
