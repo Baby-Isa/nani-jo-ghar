@@ -67,25 +67,43 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const kThread = Mech.knobs("thread", { level: lv("thread") });
     await SK.loadArt(S, SK.pieceIds().concat(kThread.decoyPool || []));
     await SK.faceArt(S, who);
+    // decision 51 (CK-23, S02-B): a plate that isn't quite right keeps its right skewers; only the wrong or missing
+    // ones are threaded and grilled again (with help), and the third time it's taken as it is
+    const redo = St.redo(ctx);
+    const steps = St.steps(ctx); // T18: [Thread them], then [Grill them]
+    let todo = order;
+    let keep = [];
     for (let attempt = 0; ; attempt++) {
-      // 1. thread every skewer
+      // 1. thread every skewer still to make
       await St.begin(S, ctx, "thread", "marble");
       if (phases.thread && !attempt) Cook.UI.gist(phases.thread);
       if (ctx.nextStep) ctx.nextStep("Skewer");
       const tz = Mech.zone(S, ctx, { id: "thread", level: lv("thread") });
-      const made = await Mech.run("thread", tz, Object.assign({ handoff: Object.assign({ max: rack }, (({ text, rec }) => ({ label: text, rec }))(Cook.Lang.label(phases.go || "go-grill"))) }, order));
+      steps.to("mishkaki-grill:thread", { id: `thread-${attempt}` });
+      // R5 (T18): the button to the grill is the grill icon alone, no English
+      const made = await Mech.run("thread", tz, Object.assign({ handoff: { max: rack, label: "", rec: false } }, todo));
       tz.close();
+      steps.done();
       St.end();
 
-      // 2. the grill: the skewers wait on the rack; then the plate goes to them to taste
+      // 2. the grill: the skewers wait on the rack; the right ones from before are already on the plate
       await St.begin(S, ctx, "grill", "marble");
       if (phases.grill && !attempt) Cook.UI.gist(phases.grill);
       if (ctx.nextStep) ctx.nextStep("Grill");
       const gz = Mech.zone(S, ctx, { id: "grill", level: lv("grill") });
-      const r = await Mech.run("grill", gz, Object.assign({ rackItems: (made && made.items) || [], shelf: made && made.shelf, taste: { who }, retry: attempt > 0, lastTry: attempt >= 2 }, order));
+      steps.to("mishkaki-grill:grill", { id: `grill-${attempt}` });
+      const last = attempt > 0 && redo.tries("sekelo") >= 2;
+      const r = await Mech.run("grill", gz, Object.assign({ rackItems: (made && made.items) || [], shelf: made && made.shelf, taste: { who }, retry: attempt > 0, lastTry: last, prePlated: keep }, order));
       gz.close();
+      steps.done();
       St.end();
       if (!r || !r.redo) return r;
+      redo.wrong("sekelo");
+      keep = r.keep || [];
+      todo = Object.assign({}, order, { skewers: r.missing });
+      // their rows open again for the ones to make again
+      const ids = [].concat(...Object.keys(r.missing).map((w) => w.split("+")));
+      if (Cook.UI.mission.reopen) Cook.UI.mission.reopen(ids, ctx.dishAt || 0);
     }
   }
 

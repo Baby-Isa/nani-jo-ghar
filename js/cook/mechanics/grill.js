@@ -1635,6 +1635,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* Wave 6: the skewers threaded before "Go to the barbecue" wait on the rack */
       if (params.rackItems) params.rackItems.slice(0, k.rack).forEach((it) => placeOnRack({ pieces: it.pieces }));
+      /* decision 51 (S02-B): the right skewers of a plate that wasn't quite right stay on it, grilled */
+      (params.prePlated || []).forEach((pieces) => {
+        const j = plate.length;
+        const sk = SK.make(S, pieces, { x: X(PLATE.x), y: Y(PLATE.y), n: pieces.length });
+        SK.cook(sk, 1, { marks: 2 });
+        sk.setDepth(D.item + 3 + j * 0.01);
+        if (!plateArt) sk.setPosition(X(PLATE.x + (j - 0.5) * 30), Y(PLATE.y + 8)).setScale(0.36 * z.k);
+        plate.push({ pieces, cls: SK.classify(pieces, pattern), burnt: false, sprite: sk, landed: true });
+      });
+      if ((params.prePlated || []).length) platePic();
 
       /* the thread zone's skewers arrive on the rack */
       line.room = () => rack.filter((r) => !r).length - incoming;
@@ -1786,8 +1796,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (Cook.forceTaste: the screenshot script shows the "not quite" path once)
         const ok = Cook.forceTaste != null ? Cook.forceTaste : complete();
         Cook.forceTaste = null;
-        await taste(S, z, { who: params.taste.who, ok, plateImg, plateArt, plateD, skewers: plate.map((p, j) => p.sprite || null), X, Y, L, PLATE });
-        if (!ok && !params.lastTry) return { redo: true, plate: plate.map((p) => p.pieces), count: plate.length };
+        // decision 51 (CK-23, S02-B): only the wrong skewers come off the plate (a mix in the wrong order, one they
+        // didn't ask for, one too many); the right ones stay, and the missing ones are threaded and grilled again
+        const keepN = {};
+        const keep = [];
+        const off = [];
+        plate.forEach((p) => {
+          const w = p.cls.ok ? p.cls.kind : null;
+          if (w && (keepN[w] || 0) < (want[w] || 0)) {
+            keepN[w] = (keepN[w] || 0) + 1;
+            keep.push(p);
+          } else off.push(p);
+        });
+        const missing = {};
+        Object.keys(want).forEach((w) => want[w] > (keepN[w] || 0) && (missing[w] = want[w] - (keepN[w] || 0)));
+        await taste(S, z, { who: params.taste.who, ok, plateImg, plateArt, plateD, skewers: (ok ? plate : off).map((p) => p.sprite || null), X, Y, L, PLATE, keepAll: !ok && keep.length > 0 });
+        if (!ok && !params.lastTry && Object.keys(missing).length) return { redo: true, keep: keep.map((p) => p.pieces), missing, plate: plate.map((p) => p.pieces), count: plate.length };
         closeRows();
       }
       return { plate: plate.map((p) => p.pieces), chips: chipsOn, art, count: plate.length };
@@ -1800,7 +1824,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * clip (Shabash!). Wrong: a gentle frown (never a red cross), and the plate slides back empty so the
    * child makes it again.
    */
-  async function taste(S, z, { who, ok, plateArt, plateD, skewers, X, Y, L, PLATE }) {
+  async function taste(S, z, { who, ok, plateArt, plateD, skewers, X, Y, L, PLATE, keepAll = false }) {
     z.expect({ kind: "wait" });
     await SK.faceArt(S, who);
     // K10: the face sits over the plate, its lower edge on the plate's upper rim (the skewers stay in sight);
@@ -1811,7 +1835,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!ok) {
       // the plate slides back, empty: make it again
       skewers.filter(Boolean).forEach((sk) => S.tweens.add({ targets: sk, alpha: 0, duration: 300 }));
-      if (plateArt) S.tweens.add({ targets: plateArt.img, alpha: 0.4, duration: 150, yoyo: true, onYoyo: () => plateArt.set(0) });
+      if (plateArt && !keepAll) S.tweens.add({ targets: plateArt.img, alpha: 0.4, duration: 150, yoyo: true, onYoyo: () => plateArt.set(0) });
       await Cook.wait(400);
     }
   }

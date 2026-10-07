@@ -361,12 +361,14 @@
       // cups) are their own sentence; ordered lists ("Pela chana. Ne poi bataato.") follow as before
       const whole = heads && L.head && !L.head.rec;
       const plain = (s) => !s.simple && !s.seq && !s.groups.some((g) => g.some((r) => r.list));
-      if (whole) said(O.sentence(L.head, [].concat(...L.sections.filter((s) => !s.when && !s.for && !s.block && plain(s)).map((s) => [].concat(...s.groups))), { join: O.joinOf(L) }));
-      L.sections.forEach((s) => {
-        if (s.when && !withWhen) return;
-        // a person's own rows, or a second block of the dish ("and trae samosa, with bataato."): their own sentence
-        if (s.for || s.block) return said(O.sentence(s.head || L.head, [].concat(...s.groups), { join: O.joinOf(L) }));
-        if (whole && !s.when && plain(s)) return;
+      // SAM-11: a dish in blocks says its first block in the headline's sentence (as before: "Muke ba samosa khape,
+      // with ba chundo."); the block's own head ("ba samosa") is the card's, never said twice
+      const b1 = L.sections.some((s) => s.block === 1);
+      // SEK-11 (S3): a mixed skewer's sequence is said right after it ("ba lakri mix: pela gos, ne poi dungri"), then
+      // the next skewer, never all the lists at the end
+      const listsOf = (r) => (r && r.cards ? L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || withWhen)) : []);
+      const early = new Set();
+      const speakSection = (s) => {
         let first = true;
         s.groups.forEach((g, gi) => {
           let firstInGroup = true;
@@ -389,6 +391,29 @@
             firstInGroup = false;
           });
         });
+      };
+      if (whole && !b1) {
+        const rows = [].concat(...L.sections.filter((s) => !s.when && !s.for && !s.block && plain(s)).map((s) => [].concat(...s.groups)));
+        const at = rows.findIndex((r) => listsOf(r).length);
+        if (at < 0) said(O.sentence(L.head, rows, { join: O.joinOf(L) }));
+        else {
+          said(O.sentence(L.head, rows.slice(0, at + 1), { join: O.joinOf(L) }));
+          rows.slice(at).forEach((r, k) => {
+            if (k) push(Lang.line(F.any, r.phrase), r);
+            listsOf(r).forEach((y) => {
+              early.add(y);
+              speakSection(y);
+            });
+          });
+        }
+      }
+      L.sections.forEach((s) => {
+        if (s.when && !withWhen) return;
+        if (early.has(s)) return;
+        // a person's own rows, or a block of the dish ("and trae samosa, with bataato."): their own sentence
+        if (s.for || s.block) return said(O.sentence(s.block === 1 && whole ? L.head : s.head || L.head, [].concat(...s.groups), { join: O.joinOf(L) }));
+        if (whole && !s.when && plain(s)) return;
+        speakSection(s);
       });
     });
     return Lang.join(lines);
