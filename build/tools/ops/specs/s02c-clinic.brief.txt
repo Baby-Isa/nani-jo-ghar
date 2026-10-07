@@ -40,7 +40,7 @@ TASKS (each with its acceptance criterion):
      Accept: D3 L1: tapping the eye with the torch works first time
   4. Waiting room: six on the bench, nobody standing at any level; pills show faces or speakers, not the called text; clean spacing of circles and boxes (CLN-11, CLN-13, CLN-14, CLN-90).
      Accept: L2 and L5 screenshots: no one standing; no matchable text
-  5. Pharmacy: the request pop-up first; a wrong colour never ticks (reproduce with a seed) and is redone; items sit on the belt (CLN-96, CLN-97).
+  5. Pharmacy: the request pop-up first; a wrong colour never ticks (reproduce with a seed) and is redone through Session A's OrderCard.redo (per item; help on the second try, show-me on the third), and the same redo wired into any heal step where a wrong item can be chosen (plaster colour, drink, eye drop); items sit on the belt (CLN-96, CLN-97).
      Accept: seeded wrong colour plaster is rejected and redone
   6. Ear: ghost finger drags the tweezers to a bin; smears left where blobs were pulled; sore skin cleared at the end; drop bottle nozzle down; the hearing test redesign (doctor 'I'm telling you' with dots, 'did you hear', her 'you told me', the child picks for her, wrong means more drops) (CLN-100, CLN-101, T31).
      Accept: ear L1 played through including a wrong pick
