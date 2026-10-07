@@ -1173,8 +1173,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const BOWL_IN = 0.39; // the steel bowl's rim, as a fraction of the picture's width from its body's centre
   function splitTrivet(S, bowlImg, meta) {
     const key = bowlImg.texture.key;
-    const tKey = `${key}-trivet-only`;
-    const bKey = `${key}-bowl-only`;
+    const tKey = `${key}-t1`; // (texture keys: the trivet left behind, the bowl lifted)
+    const bKey = `${key}-b1`;
     const art = St.hasArt(S, "daar-bowl") && St.hasArt(S, "daar-trivet");
     try {
       if (!art && !S.textures.exists(tKey)) {

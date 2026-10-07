@@ -634,7 +634,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       steps.done();
       if (!fillWrong) return { got, order, fillWrong: null };
       // decision 51: a wrong filling empties this strip and it's filled again, with help; the third wrong try shows it
-      const rd = redo.wrong(`samosa:fill:${block}`);
+      const rd = redo.wrong(`fill-${block}`);
       sheet.blobs.slice().forEach((bl) => {
         while (bl.active && sheet.blobs.includes(bl)) unspoon(sheet, bl);
       });
