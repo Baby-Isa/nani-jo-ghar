@@ -24,6 +24,7 @@ Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
 - **Sprint 3:** Mum's Round 5 (*Muke de*, *Muke chai lai de*, "oh oh oh", "ow"…), the fever room tidy.
 
 ## Small decisions
+- 7 Oct: waiting room levels 2+ call only children until other patients' art exists, so the girl is the patient at every level (Zafar, option a). Session F finishes B and C's open items (~$15-20; sprint now about $270).
 - 7 Oct: the robot voice test is closed (decision 66): family voices stay; Mum's cleaned clips won. Next: test recording set-ups, then retakes; Hannah's grandad records the doctor and older-man lines; Zafar and Hannah the children.
 
 ## Feedback in

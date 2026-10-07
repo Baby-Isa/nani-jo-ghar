@@ -1,0 +1,62 @@
+SESSION NAME / MODE:  S02-F, finish B and C's open items (Sprint 2)
+MODEL AND EFFORT:     Opus, medium effort (small, known leftovers in Cook and the clinic, on code B and C just wrote)
+COST ESTIMATE:        about $15-20
+HARD STOP:            8 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 5 (Cook, Clinic) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. build/reports/s02b-cook.md and build/reports/s02c-clinic.md (their Open lists are your tasks)
+  6. build/reports/s02a-round-flow.md (OrderCard.redo, St.steps, the guide lines)
+  7. docs/design-language/guide-and-card.md; docs/decisions.md 51-68
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/maani-line.js, js/cook/mechanics/fetch.js, js/cook/stations/samosa.js, js/cook/mechanics/fill-fold.js, js/cook/stations/mishkaki-grill.js, js/cook/mechanics/thread.js, js/cook/mechanics/grill.js
+  - js/clinic/stages/diagnosis.js, js/clinic/stages/waiting.js, js/clinic/pipeline.js, data/clinic/pipeline.json, js/clinic/heal/host.js (the L3 strip count only)
+  - build/reports/s02f-finish.md
+READ-ONLY (never edit):
+  - js/shared/**, js/core/** (call, don't change)
+  - assets/** art (Session E wires the new art later)
+  - data/lang/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Maani and pantry redo only the wrong item through OrderCard.redo (a wrong maani or a wrong pantry item comes back; the rest stays; help on try 2; show-me on try 3) (decision 51).
+     Accept: a 2-maani order with one wrong: only that one is remade; a wrong pantry item goes back to the shelf alone
+  2. Samosa top levels: every strip laid out side by side on the board at the start; tap a strip to fill it, then roll each (Zafar's design, SAM-12).
+     Accept: L3 with two kinds shows all strips at once
+  3. Sekelo: prove the per-skewer redo live and fix it if needed; add the grill's Firai! line at each turn (T18, SEK-13).
+     Accept: a 2-skewer order with one wrong: only that skewer comes back empty
+  4. Clinic: after the diagnosis end screen the room shows the patient (not an empty room); at L3 the heal card's strip doesn't write the count (heard only, decision 41).
+     Accept: screens after diagnosis and an L3 heal step
+  5. Waiting room, Zafar's choice (a), 7 Oct: until other patients' art exists, level 2+ calls describe only children (girl/boy with colours, order, two calls, 'with the baby' etc. still add difficulty), so the girl's art can be the patient at every level without the description leaking.
+     Accept: L2 and L4 waiting rooms call children only; the girl is the patient; leak bots still pass
+
+REGRESSION ROWS TO RECHECK (103 rows of docs/process/regressions.md; * = open or reopened):
+  cook:maani-line (14): MAA-01, MAA-02, MAA-03, MAA-04, MAA-05, MAA-06, MAA-07, MAA-08, MAA-09*, MAA-10*, MAA-11*, MAA-12*, MAA-13*, MAA-14*
+  cook:pantry (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+  cook:samosa (17): SAM-01, SAM-02, SAM-03, SAM-04, SAM-05*, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11*, SAM-12*, SAM-13*, SAM-14*, SAM-15*, CK-08, CK-09
+  cook:mishkaki-grill (13): SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-07*, SEK-08, SEK-09, SEK-10*, SEK-11*, SEK-12*, SEK-13*
+  clinic:waiting (27): CLN-10, CLN-11*, CLN-12, CLN-13*, CLN-14*, CLN-15, CLN-90*, CLN-91*, CLN-92*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*
+  clinic:diagnosis (24): CLN-16*, CLN-17, CLN-18*, CLN-93*, CLN-94*, CLN-95*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s02f-finish` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8825.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s02f-finish.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

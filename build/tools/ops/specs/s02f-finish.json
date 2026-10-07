@@ -1,0 +1,34 @@
+{
+  "name": "S02-F, finish B and C's open items (Sprint 2)",
+  "model": "Opus",
+  "effort": "medium",
+  "why": "small, known leftovers in Cook and the clinic, on code B and C just wrote",
+  "cost": "about $15-20",
+  "stop": "8 Oct 2026, 12:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": ["2", "3", "4", "5 (Cook, Clinic)"],
+  "read": [
+    "build/reports/s02b-cook.md and build/reports/s02c-clinic.md (their Open lists are your tasks)",
+    "build/reports/s02a-round-flow.md (OrderCard.redo, St.steps, the guide lines)",
+    "docs/design-language/guide-and-card.md; docs/decisions.md 51-68"
+  ],
+  "owns": [
+    "js/cook/stations/maani-line.js, js/cook/mechanics/fetch.js, js/cook/stations/samosa.js, js/cook/mechanics/fill-fold.js, js/cook/stations/mishkaki-grill.js, js/cook/mechanics/thread.js, js/cook/mechanics/grill.js",
+    "js/clinic/stages/diagnosis.js, js/clinic/stages/waiting.js, js/clinic/pipeline.js, data/clinic/pipeline.json, js/clinic/heal/host.js (the L3 strip count only)",
+    "build/reports/s02f-finish.md"
+  ],
+  "readOnly": ["js/shared/**, js/core/** (call, don't change)", "assets/** art (Session E wires the new art later)", "data/lang/**"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "Maani and pantry redo only the wrong item through OrderCard.redo (a wrong maani or a wrong pantry item comes back; the rest stays; help on try 2; show-me on try 3) (decision 51).", "accept": "a 2-maani order with one wrong: only that one is remade; a wrong pantry item goes back to the shelf alone" },
+    { "do": "Samosa top levels: every strip laid out side by side on the board at the start; tap a strip to fill it, then roll each (Zafar's design, SAM-12).", "accept": "L3 with two kinds shows all strips at once" },
+    { "do": "Sekelo: prove the per-skewer redo live and fix it if needed; add the grill's Firai! line at each turn (T18, SEK-13).", "accept": "a 2-skewer order with one wrong: only that skewer comes back empty" },
+    { "do": "Clinic: after the diagnosis end screen the room shows the patient (not an empty room); at L3 the heal card's strip doesn't write the count (heard only, decision 41).", "accept": "screens after diagnosis and an L3 heal step" },
+    { "do": "Waiting room, Zafar's choice (a), 7 Oct: until other patients' art exists, level 2+ calls describe only children (girl/boy with colours, order, two calls, 'with the baby' etc. still add difficulty), so the girl's art can be the patient at every level without the description leaking.", "accept": "L2 and L4 waiting rooms call children only; the girl is the patient; leak bots still pass" }
+  ],
+  "flows": ["cook:maani-line", "cook:pantry", "cook:samosa", "cook:mishkaki-grill", "clinic:waiting", "clinic:diagnosis"],
+  "shared": false,
+  "port": 8825,
+  "report": "s02f-finish",
+  "publish": false
+}
