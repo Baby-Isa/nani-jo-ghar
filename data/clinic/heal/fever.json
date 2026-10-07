@@ -58,39 +58,39 @@
   "icePack": false
  },
  "room": {
-  "_about": "things: side (cool/warm), size (1 small, 2 medium, 3 big), fixed (stays where it is: a toggle) or not (goes to the patient). at: where each sits on CB2b, in fractions of the picture (x centre, y its bottom, h and w its size), moved into view when a screen crops the picture (the art plan §3.4 positions; remeasure when the art lands).",
+  "_about": "things: side (cool/warm), size (S02-C, FV9, CLN-105: one number model, each thing adds or takes 2 small, 3 medium, 4 big), fixed (stays where it is: a toggle) or not (goes to the patient). at: where each sits on CB2b, in fractions of the picture (x centre, y its bottom, h and w its size), moved into view when a screen crops the picture (the art plan §3.4 positions; remeasure when the art lands).",
   "things": {
    "window": {
     "side": "cool",
-    "size": 3,
+    "size": 4,
     "fixed": true
    },
    "ceiling-fan": {
     "side": "cool",
-    "size": 2,
+    "size": 3,
     "fixed": true
    },
    "hand-fan": {
     "side": "cool",
-    "size": 1
+    "size": 2
    },
    "ice-pack": {
     "side": "cool",
-    "size": 2,
+    "size": 3,
     "spare": true
    },
    "heater": {
     "side": "warm",
-    "size": 3,
+    "size": 4,
     "fixed": true
    },
    "bottle": {
     "side": "warm",
-    "size": 2
+    "size": 3
    },
    "blanket": {
     "side": "warm",
-    "size": 1
+    "size": 2
    }
   },
   "at": {

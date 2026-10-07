@@ -26,12 +26,16 @@
 
   // the chart's pictures: words the child already knows from Cook, each by its lexicon id (HS.pic: the clinic's art
   // where it has the thing, CLN-78)
-  const THINGS = ["fru-02", "veg-01", "veg-02", "veg-03", "veg-12", "veg-13", "veg-14", "cook-dudh", "cook-paani"].map((lex) => ({ id: lex, lex, icon: HS.pic(lex) }));
+  // EY10 (CLN-107): water is Cook's blue drop on the chart (the steel jug read as milk next to the milk jug)
+  const PIC = { "cook-paani": "assets/cook/items/icon-cook-paani.webp" };
+  const THINGS = ["fru-02", "veg-01", "veg-02", "veg-03", "veg-12", "veg-13", "veg-14", "cook-dudh", "cook-paani"].map((lex) => ({ id: lex, lex, icon: PIC[lex] || HS.pic(lex) }));
   const BY = Object.fromEntries(THINGS.map((t) => [t.id, t]));
   const RID = (i) => `chart-${"abcdef"[i]}`; // a chart row's scored id (the review lists it under the eye-test row)
   const W = (t) => HS.L.w(t.lex);
   const word = (t) => W(t).kutchi || `[${W(t).english}]`;
-  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4 }, per: { 1: [1], 2: [1], 3: [2, 3] }, wrongP: 0.45 };
+  // EY12 (decision 12 of the 6 Oct report, CLN-107): a real eye chart: one big picture at the top, more and smaller
+  // ones lower down; per[L][row] = the pictures in that row
+  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4 }, per: { 1: [1, 1, 2], 2: [1, 2, 2, 3], 3: [1, 2, 3, 4] }, wrongP: 0.45 };
   const WHY = { problem: "eye-why", goal: "eye-goal" }; // line keys in data/clinic/heal/eye.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -50,7 +54,7 @@
     let pi = 0;
     const chart = [];
     for (let r = 0; r < K.rows[L]; r++) {
-      const n = HS.pick(K.per[L], rng);
+      const n = K.per[L][r] || 1;
       const pics = [];
       while (pics.length < n) {
         const id = pool[pi++ % pool.length].id;
@@ -108,7 +112,7 @@
       }
       return String(v).toUpperCase() === "B" ? "B" : "A";
     })();
-    const st = { i: 0, drops: 0, judged: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false };
+    const st = { i: 0, drops: 0, judged: {}, ticked: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false };
     const cur = () => P.steps[st.i] || null;
     ctx.card.setRows(P.steps.filter((x) => x.kind === "drops").map((x) => x.row).concat([Object.assign({}, HS.L.w("eye-test", { cap: true }), { id: "chart" })]));
     const skin = S.skin || "#c99a74";
@@ -219,6 +223,7 @@
     });
     const miniRing = s("rect", { x: MINI.x - 12, y: MINI.y - 12, width: MINI.w + 24, height: MINI.h + 24, rx: 16, fill: "none", stroke: "#f0b43c", "stroke-width": 6, opacity: 0 }, miniG);
     let miniOn = false;
+    let testBtn = null;
     const lightMini = (on) => {
       miniOn = on;
       miniG.setAttribute("opacity", on ? 1 : 0);
@@ -294,7 +299,8 @@
       // a quarter turn: the board's left edge is further away, so shorter (a perspective map of the board's own units)
       turn = { k: 0.84, x: 26 };
     }
-    const chartArt = art(version === "A" ? "chartFront" : "chartTurned");
+    // EY1 (CLN-107): the chart is drawn in code, with a stylised eye (the painted charts' realistic eye was "freaky")
+    const chartArt = null;
     // A2 (5 Oct): C1 / C2. The board's corners (art.*.board, shares of the picture) fix where the picture goes and
     // the board's own units (CH) take the board's shape, so the rows of pictures are never stretched
     let IMG = null; // the chart picture's box
@@ -365,7 +371,7 @@
     const rowsG = s("g", {}, chartG);
     const nR = P.chart.length;
     const top = CH.y + 58;
-    const SIZES = [74, 62, 52, 44].slice(0, nR);
+    const SIZES = [84, 60, 44, 32].slice(0, nR); // EY12: each row clearly smaller
     const gap = (CH.h - 70 - SIZES.reduce((a, b) => a + b, 0)) / nR;
     // A2: on the art, each row sits on one of the chart's own ruled lines under the eye (the biggest at the top)
     const LINES = IMG && chartArt.lines && chartArt.lines.length > nR ? chartArt.lines : null;
@@ -376,10 +382,11 @@
         const sz = Math.min(SIZES[i], (y1 - y0) * 0.86, (CH.w - 36) / (P.chart[i].pics.length * 1.12));
         return { y: y1 - sz - 6, h: sz + 4, sz };
       }
+      // EY12: each row's pictures stand on a ruled line; the outlines are inset so they never overlap (EY3)
       let y = top;
       for (let k = 0; k < i; k++) y += SIZES[k] + gap;
       const sz = Math.min(SIZES[i], (CH.w - 36) / (P.chart[i].pics.length * 1.12));
-      return { y, h: SIZES[i] + gap * 0.6, sz };
+      return { y, h: SIZES[i] + gap * 0.5, sz, line: y + SIZES[i] + 2 };
     };
     const CHECK = (x, y, r, g) => {
       const c = s("g", { transform: `translate(${x} ${y})` }, g);
@@ -391,18 +398,27 @@
       P.chart.forEach((c, i) => {
         const b = rowBox(i);
         const now = cur() && cur().kind === "read" && cur().row === i;
-        const done = RID(i) in st.judged;
+        // CLN-107 (EY13): a row ticks when it's really done (judged right, and read right after a drop), never on a
+        // wrong judgement
+        const done = !!st.ticked[i];
+        if (b.line) {
+          const [x1, y1] = Q(CH.x + 14, b.line);
+          const [x2, y2] = Q(CH.x + CH.w - 14, b.line);
+          s("line", { x1, y1, x2, y2, stroke: "#c9bfae", "stroke-width": 2 }, rowsG);
+        }
         // the card's own looks (CLN-61): "now" is the soft band, a judged row has the gold outline and check
-        if (now) s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 8, b.y - 4, CH.w - 16, b.h + 8), fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3, "stroke-linejoin": "round" } : { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3 }, rowsG);
+        const ry = b.y - 1;
+        const rh = b.h;
+        if (now) s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 10, ry, CH.w - 20, rh), fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3, "stroke-linejoin": "round" } : { x: CH.x + 10, y: ry, width: CH.w - 20, height: rh, rx: 10, fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3 }, rowsG);
         if (done) {
-          s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 8, b.y - 4, CH.w - 16, b.h + 8), fill: "none", stroke: "#c9962e", "stroke-width": 4, "stroke-linejoin": "round" } : { x: CH.x + 8, y: b.y - 4, width: CH.w - 16, height: b.h + 8, rx: 10, fill: "none", stroke: "#c9962e", "stroke-width": 4 }, rowsG);
+          s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 10, ry, CH.w - 20, rh), fill: "none", stroke: "#c9962e", "stroke-width": 4, "stroke-linejoin": "round" } : { x: CH.x + 10, y: ry, width: CH.w - 20, height: rh, rx: 10, fill: "none", stroke: "#c9962e", "stroke-width": 4 }, rowsG);
           const [cx, cy] = Q(CH.x + CH.w - 12, b.y + 4);
           CHECK(cx, cy, 11, rowsG);
         }
         c.pics.forEach((id, k) => {
           const bx = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * 1.12;
-          const [px, py] = Q(bx, b.y + b.h / 2 - 2);
           const z = b.sz * kAt(bx);
+          const [px, py] = b.line ? Q(bx, b.line - b.sz / 2 - 1) : Q(bx, b.y + b.h / 2 - 2);
           s("image", { href: url(BY[id].icon), x: px - z / 2, y: py - z / 2, width: z, height: z, opacity: done || now || !cur() || cur().kind !== "read" || cur().row < i ? 1 : 0.85 }, rowsG);
         });
       });
@@ -470,13 +486,18 @@
       const line = HS.L.show(HS.L.join(said.flatMap((id, k) => (k ? [",", BY[id].lex] : [BY[id].lex]))));
       showJudge(false);
       S.face("read");
-      if (P.level === 1) S.said(said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", "));
+      // T32, EY5, EY7 (CLN-107): what she says is in a bubble under her mouth; at L1 her words are written in it and
+      // fade in about a second; from L2 the bubble shows she's talking, the words are heard only
+      mouthSay(P.level === 1 ? said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", ") : null);
       if (again) {
         st.busy = true;
-        await S.say(line, "patient");
+        await ctx.say(line, { who: "patient", noBubble: true });
         S.face("neutral");
+        // she read it right: the row ticks itself, then a pause before the next row (EY13)
+        st.ticked[i] = true;
+        drawChart();
+        await new Promise((r) => ctx.after(fast() ? 80 : 900, r));
         st.busy = false;
-        S.said(null);
         return advance();
       }
       // the judging pills come up as the reading starts: input never waits for the talking (13i)
@@ -488,16 +509,58 @@
         if (S.cuesOn && !again) P.rows = P.rows.filter((r) => r.id !== RID(0));
         S.cue("read", CUES.read, c.wrong ? naBtn : haaBtn);
       }
-      S.say(line, "patient").then(() => S.face("neutral"));
+      ctx.say(line, { who: "patient", noBubble: true }).then(() => S.face("neutral"));
     };
-    const onJudge = (saysRight) => {
+    // her bubble under her mouth (the eye test): the anchor below her mouth on the left panel
+    const mouthAt = () => (readEye ? { x: readEye.x + (version === "A" ? 40 : 10), y: readEye.y + (version === "A" ? 92 : 70) } : null);
+    const mouthSay = (text) => {
+      S.root.querySelectorAll(".eye-said").forEach((n) => n.remove());
+      const m = mouthAt();
+      if (!m) return;
+      const el = S.h("div", `eye-said${text ? "" : " talk"}`, S.root, text || "");
+      if (!text) el.innerHTML = '<i></i><i></i><i></i>';
+      const c = S.client(m.x, m.y);
+      const rr = S.root.getBoundingClientRect();
+      el.style.left = `${c.x - rr.left}px`;
+      el.style.top = `${c.y - rr.top}px`;
+      ctx.after(text ? (fast() ? 120 : 1200) : fast() ? 120 : 2200, () => el.classList.add("fade"));
+      ctx.after(text ? (fast() ? 300 : 2000) : fast() ? 300 : 2800, () => el.remove());
+    };
+    // EY13: a wrong judgement: the doctor (his box, off screen) names the row with its pictures, said aloud
+    const nameRow = async (i) => {
+      const c = P.chart[i];
+      S.root.querySelectorAll(".eye-name").forEach((n) => n.remove());
+      const el = S.h("div", "eye-name", S.root);
+      c.pics.forEach((id) => {
+        const im = S.h("img", null, el);
+        im.alt = "";
+        im.src = url(BY[id].icon);
+      });
+      const line = HS.L.show(HS.L.join(c.pics.flatMap((id, k) => (k ? [",", BY[id].lex] : [BY[id].lex]))));
+      await ctx.say(line, { who: "doctor", noBubble: true });
+      ctx.after(fast() ? 100 : 1600, () => el.remove());
+    };
+    const onJudge = async (saysRight) => {
       if (!st.awaiting || st.busy || st.over) return;
       const { i, wrong } = st.awaiting;
       judge(RID(i), saysRight === !wrong, saysRight ? yesNo.yes : yesNo.no);
+      S.uncue();
+      if (saysRight === wrong) {
+        // EY13, decision 59 (CLN-107): a wrong yes / no shakes red, and the doctor names the row with its pictures;
+        // the child judges again (the first judgement is what's scored)
+        const b = saysRight ? haaBtn : naBtn;
+        b.classList.remove("nope-red");
+        void b.offsetWidth;
+        b.classList.add("nope-red");
+        st.busy = true;
+        await nameRow(i);
+        b.classList.remove("nope-red");
+        st.busy = false;
+        return;
+      }
       st.awaiting = null;
       showJudge(false);
       S.said(null);
-      S.uncue();
       drawChart();
       if (!saysRight) {
         // CLN-62: the dropper hangs over the eye and pulses: one tap, then they read the row again
@@ -506,7 +569,14 @@
         S.cue("redrop", CUES.redrop, { x: readEye.x, y: readEye.y - 50, r: 50 });
         return;
       }
-      advance();
+      // she read it right and the child said so: the row ticks, a pause, then the next row
+      st.ticked[i] = true;
+      drawChart();
+      st.busy = true;
+      ctx.after(fast() ? 80 : 700, () => {
+        st.busy = false;
+        advance();
+      });
     };
     const advance = () => {
       st.i++;
@@ -574,11 +644,7 @@
         return;
       }
       if (c.kind !== "drops") return;
-      // from level 2 the lit chart in the corner starts the test
-      if (miniOn && p.x > MINI.x - 16 && p.x < MINI.x + MINI.w + 16 && p.y > MINI.y - 16 && p.y < MINI.y + MINI.h + 16) {
-        S.did();
-        return closeDrops();
-      }
+
       if (S.sel !== "drops") return;
       if (Math.hypot(p.x - sore.x, (p.y - sore.y) * 1.3) > 140 && Math.hypot(p.x - sore.x, p.y - (sore.y - 70)) > 70) return;
       st.drops++;
@@ -589,9 +655,21 @@
       else if (soreEl) soreEl.setAttribute("opacity", Math.max(0.08, 0.55 - 0.18 * st.drops));
       // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
       if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900);
-      if (P.level >= 2 && !miniOn) {
-        lightMini(true);
-        S.cue("chart", CUES.chart, { x: MINI.x + MINI.w / 2, y: MINI.y + MINI.h / 2, r: 70 });
+      // EY6 (CLN-107): from level 2, once a drop is in, a "to the eye test" button comes up bottom right like every
+      // other stage's (a picture of the chart, no words), never a flashing chart in the corner
+      if (P.level >= 2 && !testBtn) {
+        testBtn = ctx.button("", () => {
+          if (st.busy || st.over || !cur() || cur().kind !== "drops") return;
+          S.did();
+          testBtn.remove();
+          closeDrops();
+        }, "throb eye-go");
+        testBtn.dataset.go = "eye test";
+        testBtn.setAttribute("aria-label", "To the eye test");
+        const t = testBtn.querySelector(".njg-next-t") || testBtn;
+        t.textContent = "";
+        t.insertAdjacentHTML("beforeend", '<svg class="eye-go-chart" viewBox="0 0 40 52" aria-hidden="true"><rect x="2" y="2" width="36" height="48" rx="5" fill="#fffefb" stroke="#a9824d" stroke-width="3"/><path d="M12 12 Q20 6 28 12 Q20 18 12 12Z" fill="#fff" stroke="#4a6f98" stroke-width="2"/><circle cx="20" cy="12" r="2.6" fill="#4a6f98"/><circle cx="20" cy="25" r="4" fill="#e2b23b"/><circle cx="14" cy="35" r="3" fill="#d9534f"/><circle cx="26" cy="35" r="3" fill="#5aa05a"/><circle cx="11" cy="43" r="2" fill="#8a5a3a"/><circle cx="20" cy="43" r="2" fill="#e2b23b"/><circle cx="29" cy="43" r="2" fill="#5aa05a"/></svg>');
+        S.cue("chart", CUES.chart, testBtn);
       }
       st.busy = true;
       ctx.after(fast() ? 60 : 250, () => (st.busy = false));
@@ -626,7 +704,11 @@
           };
           if (st.redrop) return Object.assign({ do: "tap", what: "redrop" }, S.client(readEye.x, readEye.y - 30));
           if (c.kind === "drops") {
-            if (st.drops >= c.count) return P.level >= 2 ? Object.assign({ do: "tap", what: "chart" }, S.client(MINI.x + MINI.w / 2, MINI.y + MINI.h / 2)) : { do: "wait" };
+            if (st.drops >= c.count) {
+              if (P.level < 2 || !testBtn) return { do: "wait" };
+              const r = testBtn.getBoundingClientRect();
+              return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: "to the eye test" };
+            }
             return S.sel !== "drops" ? tool("drops") : Object.assign({ do: "tap", what: "drop" }, S.client(sore.x, sore.y));
           }
           if (st.awaiting) {
