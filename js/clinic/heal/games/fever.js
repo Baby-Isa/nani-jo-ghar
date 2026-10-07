@@ -30,15 +30,17 @@
 
   // the defaults (fever.json overrides them): effect sizes in reading units; the zone is -ZONE..+ZONE
   const THINGS = {
-    window: { side: "cool", size: 3, fixed: true, verbs: ["fever-open", "fever-close"], word: "fever-window" },
-    "ceiling-fan": { side: "cool", size: 2, fixed: true, verbs: ["fever-switch-on", "fever-switch-off"], word: "fever-ceiling-fan" },
-    "hand-fan": { side: "cool", size: 1, verbs: ["fever-give", "fever-take-away"], word: "fever-hand-fan" },
-    "ice-pack": { side: "cool", size: 2, verbs: ["fever-give", "fever-take-away"], word: "fever-ice-pack", spare: true },
-    heater: { side: "warm", size: 3, fixed: true, verbs: ["fever-switch-on", "fever-switch-off"], word: "fever-heater" },
-    bottle: { side: "warm", size: 2, verbs: ["fever-give", "fever-take-away"], word: "fever-bottle" },
-    blanket: { side: "warm", size: 1, verbs: ["fever-put-on", "fever-take-off"], word: "fever-blanket" },
+    // FV9 (CLN-105): one number model: every thing adds or takes 2 (small), 3 (medium) or 4 (big); the zone is -1..+1,
+    // and the fever never starts inside it (gaps of 2 or more), so what she says, how she looks and the gauge agree
+    window: { side: "cool", size: 4, fixed: true, verbs: ["fever-open", "fever-close"], word: "fever-window" },
+    "ceiling-fan": { side: "cool", size: 3, fixed: true, verbs: ["fever-switch-on", "fever-switch-off"], word: "fever-ceiling-fan" },
+    "hand-fan": { side: "cool", size: 2, verbs: ["fever-give", "fever-take-away"], word: "fever-hand-fan" },
+    "ice-pack": { side: "cool", size: 3, verbs: ["fever-give", "fever-take-away"], word: "fever-ice-pack", spare: true },
+    heater: { side: "warm", size: 4, fixed: true, verbs: ["fever-switch-on", "fever-switch-off"], word: "fever-heater" },
+    bottle: { side: "warm", size: 3, verbs: ["fever-give", "fever-take-away"], word: "fever-bottle" },
+    blanket: { side: "warm", size: 2, verbs: ["fever-put-on", "fever-take-off"], word: "fever-blanket" },
   };
-  const K = { zone: 1, max: 6, exchanges: { 1: [3], 2: [3, 4], 3: [4] }, fixFrom: 3, fixLast: { 3: 1 }, gaps: { 1: [2], 2: [1, 2, 3], 3: [1, 2, 3] }, fixGaps: [2, 3, 4], icePack: false };
+  const K = { zone: 1, max: 8, exchanges: { 1: [3], 2: [3, 4], 3: [4] }, fixFrom: 3, fixLast: { 3: 1 }, gaps: { 1: [3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, fixGaps: [5, 6, 7], icePack: false };
   const WHY = { problem: "fever-why", goal: "fever-goal" }; // line keys in data/clinic/heal/fever.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -96,7 +98,7 @@
       const undo = tries.filter((t) => !t.a.to);
       if (undo.length && rng() < 0.5) pool = undo;
     }
-    const t = pool.length ? HS.pick(pool, rng) : { a: named[0], g: Math.abs(named[0].delta), lands: [named[0]] };
+    const t = pool.length ? HS.pick(pool, rng) : { a: named[0], g: Math.max(k.zone + 1, Math.abs(named[0].delta)), lands: [named[0]] };
     return { hot, gap: t.g, mode: "named", answer: actKey(t.a), action: t.a, options: acts.map(actKey), landing: t.lands.map(actKey) };
   }
   /** The fewest taps from `on` that bring reading r into the zone (for the driver and the "fix it" rows). */
@@ -154,7 +156,11 @@
     ".fv-thing svg,.fv-thing img{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}",
     ".fv-thing img{object-fit:contain}",
     ".fv-thing.pulse{animation:hs-pulse 1s ease-in-out infinite}",
-    ".fv-thing.held{filter:drop-shadow(0 0 6px #2e8b7a)}",
+    ".fv-thing.held,.hs-tool.held{filter:drop-shadow(0 0 6px #2e8b7a)}",
+    ".fv-mood{position:absolute;z-index:6;width:clamp(26px,3.2vw,44px);aspect-ratio:1;transform:translate(-20%,-60%);pointer-events:none}",
+    ".fv-mood svg{display:none;width:100%;height:100%}",
+    ".fv-mood[data-state=hot] .fv-hot,.fv-mood[data-state=cold] .fv-cold{display:block;animation:cl-pop .25s}",
+    ".cl-patient-layer.pulse{animation:hs-pulse 1s ease-in-out infinite}",
     ".fv-thing.gone{visibility:hidden}",
     ".fv-thing.painted .fv-frame,.fv-thing.painted .fv-shut{display:none}",
     ".fv-thing .fv-open{display:none}",
@@ -167,7 +173,7 @@
     ".fv-blades{transform-box:fill-box;transform-origin:50% 50%}",
     ".fv-thing.on .fv-blades{animation:fv-spin .5s linear infinite}",
     ".fv-breeze{opacity:0}",
-    ".fv-thing.on .fv-breeze{opacity:.8;animation:fv-breeze 1.2s ease-in-out infinite}",
+    ".fv-thing.on .fv-breeze{opacity:0}", // FV12: the window just opens and closes, no gust
     ".fv-glow{opacity:0;transition:opacity .4s}",
     ".fv-thing.on .fv-glow{opacity:1}",
     ".fv-waves{opacity:0}",
@@ -359,7 +365,8 @@
       const H = box.clientHeight || 1;
       if (q && isFinite(q.y)) layer.style.top = `${(ec.fig.bottom + (ec.seat * H - q.y) / H) * 100}%`;
     };
-    if (Kit && Kit.Voice) Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
+    // T33 (CLN-86): her lines in her bubble at her face
+    if (Kit && Kit.Voice) Kit.Voice.speakers.patient = () => (artOn && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
     // what the patient wears or holds (stand-ins on the figure's own drawing, so they move with it)
     const wear = s("g", { class: "fv-wear" }, fig.groups.marks);
     const body = fig.body;
@@ -368,6 +375,7 @@
     /* ---- the things round the room ---- */
     const els = {};
     const on = {};
+    let mood = null; // the sweat / snowflake by her head (FV10), made below
     const AT = Object.assign(
       {
         window: { x: 0.045, y: 0.44, h: 0.38, w: 0.075 },
@@ -421,7 +429,11 @@
       return b;
     };
     Object.keys(cfg.things).forEach(mkThing);
-    mkThing("thermometer");
+    // FV1 (CLN-105): the mouth thermometer is a tool in the column on the right, like every other game's tools
+    S.tools([{ id: "thermometer", img: "assets/clinic/items-v2/thermometer.webp" }], (id) => {
+      if (id === "thermometer") tapThing("thermometer");
+    });
+    els.thermometer = S.toolEls.thermometer;
     // A2 (5 Oct): R2's ceiling fan: the body (downrod and motor) hangs from the ceiling; the blade disc, drawn from
     // directly below, is tilted into the room's view and spins when on (art plan 3.4). fever.json art.fan: the files,
     // the motor's foot (where the blades sit) as a share of the body's height, the disc's width against the body's
@@ -466,9 +478,12 @@
     if (!GA) s("rect", { x: 2, y: 0, width: 36, height: 200, rx: 18, fill: "#ffffff", stroke: "#a8a296", "stroke-width": 3 }, gs);
     // with the art the zones are bands across the glass (the tube is the whole box), else beside the drawn column
     const ZX = GA ? [6, 28, 2, 36] : [12, 16, 8, 24];
-    s("rect", { x: ZX[0], y: yOf(RANGE), width: ZX[1], height: yOf(cfg.k.zone + 0.5) - yOf(RANGE), fill: "#f6c9c0", opacity: GA ? 0.85 : 1 }, gs);
-    s("rect", { x: ZX[0], y: yOf(-cfg.k.zone - 0.5), width: ZX[1], height: yOf(-RANGE) - yOf(-cfg.k.zone - 0.5), fill: "#c9def6", opacity: GA ? 0.85 : 1 }, gs);
-    s("rect", { x: ZX[2], y: yOf(cfg.k.zone + 0.5), width: ZX[3], height: yOf(-cfg.k.zone - 0.5) - yOf(cfg.k.zone + 0.5), rx: 4, fill: "#7fcf86", stroke: "#3fa35b", "stroke-width": 2 }, gs);
+    // FV2 (CLN-105): one green zone for the logic and the drawing: the readings are whole numbers, so the band is
+    // exactly the readings that count as "just right" (-Z..+Z) and the next reading either side is clearly out of it
+    const ZE = cfg.k.zone + 0.5;
+    s("rect", { x: ZX[0], y: yOf(RANGE), width: ZX[1], height: yOf(ZE) - yOf(RANGE), fill: "#f6c9c0", opacity: GA ? 0.85 : 1 }, gs);
+    s("rect", { x: ZX[0], y: yOf(-ZE), width: ZX[1], height: yOf(-RANGE) - yOf(-ZE), fill: "#c9def6", opacity: GA ? 0.85 : 1 }, gs);
+    s("rect", { x: ZX[2], y: yOf(ZE), width: ZX[3], height: yOf(-ZE) - yOf(ZE), rx: 4, fill: "#7fcf86", stroke: "#3fa35b", "stroke-width": 2 }, gs);
     const colBg = s("rect", { x: 16, y: TUBE.top, width: 8, height: TUBE.bot - TUBE.top, rx: 4, fill: "rgba(0,0,0,.06)" }, gs);
     void colBg;
     const col = s("rect", { class: "fv-col", x: 15, y: TUBE.top, width: 10, height: TUBE.bot - TUBE.top + 10, rx: 5, fill: "#c9ccd2" }, gs);
@@ -519,7 +534,8 @@
         }
         place(el, x, y, h, a.w);
       };
-      Object.keys(els).forEach((id) => put(els[id], AT[id]));
+      Object.keys(els).forEach((id) => id !== "thermometer" && put(els[id], AT[id]));
+      placeMood();
       // the window: over the painted one when it's on screen (only its open state is drawn); a whole drawn window
       // when the screen crops the picture's left edge (a tablet), until the square room (R3)
       if (els.window) els.window.classList.toggle("painted", v.x0 <= 0.002);
@@ -582,7 +598,29 @@
         d.style.animationDelay = `${i * 0.6}s`;
       });
     };
+    // FV10 (CLN-105): a small sweat drop (too hot) or snowflake (too cold) by the top right of her head, so it reads at
+    // a glance; her own hot / cold face stays (no crying face). Gone in the zone
+    mood = S.h("div", "fv-mood", box);
+    mood.innerHTML = '<svg class="fv-hot" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 C27 15 31 21 31 27 a11 11 0 0 1 -22 0 C9 21 13 15 20 4Z" fill="#6bb7ea" stroke="#2f7fbf" stroke-width="2.5"/><path d="M15 26 a5 5 0 0 0 5 5" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><svg class="fv-cold" viewBox="0 0 40 40" aria-hidden="true"><g stroke="#3f6fd8" stroke-width="3" stroke-linecap="round" fill="none"><path d="M20 4v32M6 12l28 16M6 28l28-16"/><path d="M15 6l5 4 5-4M15 34l5-4 5 4M4 18l6 1-2-6M36 22l-6-1 2 6M4 22l6-1-2 6M36 18l-6 1 2-6"/></g></svg>';
+    function placeMood() {
+      if (!mood) return;
+      const hd = artOn && fig.artSpot ? fig.artSpot("head") : null;
+      const el = hd ? null : fig.el.querySelector(".fig-head");
+      const br = box.getBoundingClientRect();
+      if (!br.width) return;
+      let x;
+      let y;
+      if (hd) (x = hd.x + hd.r * 0.95), (y = hd.y - hd.r * 0.85);
+      else if (el) {
+        const r = el.getBoundingClientRect();
+        (x = r.right), (y = r.top);
+      } else return;
+      mood.style.left = `${((x - br.left) / br.width) * 100}%`;
+      mood.style.top = `${((y - br.top) / br.height) * 100}%`;
+    }
     const feel = (r) => {
+      mood.dataset.state = r == null || inZone(r, cfg.k) ? "" : r > 0 ? "hot" : "cold";
+      placeMood();
       if (r == null) return fig.react("idle", 0);
       if (inZone(r, cfg.k)) return fig.react("happy", 0);
       fig.react(r > 0 ? "hot" : "cold", 0);
@@ -606,6 +644,7 @@
     const unhint = () => {
       clearTimeout(hintT);
       Object.values(els).forEach((b) => b.classList.remove("pulse"));
+      layer.classList.remove("pulse");
     };
     const hintLater = (ms) => {
       unhint();
@@ -614,7 +653,10 @@
       if (!c || P.level >= 3) return;
       hintT = setTimeout(() => {
         const k = c.kind === "temp" ? (st.held ? null : "thermometer") : c.live && c.live.answer ? c.live.answer.split(":")[1] : null;
-        if (k && els[k] && !st.over) els[k].classList.add("pulse");
+        if (!k || st.over) return;
+        // FV11 (CLN-105): the glow follows the thing: one she's holding or wearing glows on her, never its empty spot
+        if (cfg.things[k] && !cfg.things[k].fixed && on[k]) layer.classList.add("pulse");
+        else if (els[k]) els[k].classList.add("pulse");
       }, ms);
     };
     const open = () => {
@@ -649,7 +691,8 @@
         if (cur() === c && !st.over) ctx.say(c.row);
       });
       const target = e.mode === "fix" ? (e.fixWith[0] || "").split(":")[1] : e.answer.split(":")[1];
-      S.cue(c.kind, CUES[c.kind], els[target] || els.window);
+      const worn = cfg.things[target] && !cfg.things[target].fixed && on[target];
+      S.cue(c.kind, CUES[c.kind], worn ? layer : els[target] || els.window);
       hintLater(fast() ? 400 : 5000);
     };
     const next = () => {
@@ -706,6 +749,9 @@
       const portable = !cfg.things[id].fixed;
       if (portable) els[id].classList.toggle("gone", !!on[id]); // it's on the patient now; a tap on the patient's spot takes it back
       ctx.sfx("tap");
+      // FV8 (CLN-105): what she says always matches the gauge now: a line she hadn't finished (the old "too hot")
+      // goes, so her next words are about this reading
+      if (Kit && Kit.Voice && Kit.Voice.clear) Kit.Voice.clear();
       const r = reading();
       showReading(r);
       feel(r);
@@ -732,7 +778,7 @@
         st.held = false;
         st.measured = true;
         els.thermometer.classList.remove("held");
-        els.thermometer.classList.add("gone");
+        S.used("thermometer");
         drawWear();
         ctx.sfx("tap");
         ctx.card.tick("temp");
