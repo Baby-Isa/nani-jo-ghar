@@ -1050,8 +1050,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 }
 
 /* SH-60: the grown-ups' "play as new" in the "?" pop-up (English for grown-ups only lives here) */
-#help-pop .hp-new { margin: var(--njg-s2, 8px) 0 0; font-size: 14px; color: #7a6558; }
-#help-pop .hp-new a { font-weight: 800; color: #6b4a2a; }
+#help-pop .hp-new .njg-grownup-note { color: #7a6558; }
 
 /* SH-51 (S02-B): the coin-jar day summary (js/cook/flow.js showSummary): the jar, a card landing on it, today's
    coins beside it and the jar's total under it */
@@ -1077,6 +1076,14 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #stage #passme.onscreen .pm-tray { display: flex; justify-content: center; gap: 14px; margin-top: 14px; }
 #stage #passme.onscreen .pm-tray .pm-item { width: 30%; max-width: 150px; }
 #stage #passme.onscreen .pm-tray .pm-item img { width: 100%; height: auto; display: block; }
+/* S02-G (gate s02-gate, cook:fetch): with the s02 jars (tall pictures) the card outgrew a phone's stage and the pictures
+   hung off the bottom: the card is never taller than the stage inside the safe area, and the pictures shrink to fit */
+#stage #passme.onscreen { box-sizing: border-box; display: flex; flex-direction: column; max-height: calc(100% - 2 * max(var(--njg-s2), env(safe-area-inset-top, 0px), env(safe-area-inset-bottom, 0px))); }
+#stage #passme.onscreen .pm-nani { flex: none; }
+#stage #passme.onscreen .pm-tray { flex: 0 1 auto; min-height: 0; }
+#stage #passme.onscreen .pm-tray .pm-item { min-height: 0; }
+#stage #passme.onscreen .pm-tray .pm-item img { flex: 0 1 auto; min-height: 0; max-height: 100%; object-fit: contain; }
+#stage #passme.onscreen .pm-tray .pm-item .wp-say { flex: none; }
 #stage #passme.onscreen.late .pm-face { animation: pmHuff .18s ease-in-out 4 alternate; }
 #stage #passme.onscreen.leaving { opacity: 0; transition: opacity .3s; }
 #passme .pm-ring { position: absolute; left: -6px; top: -6px; width: 96px; height: 96px; pointer-events: none; }

@@ -535,8 +535,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-row.later.next-up { opacity: 1; }
 
 /* SH-60: the grown-ups' "play as new" in the "?" pop-up */
-.cl-help-new { margin: var(--njg-s2) 0 0; font-size: 14px; color: var(--cl-soft); }
-.cl-help-new a { font-weight: 800; color: var(--cl-ink); }
+.cl-help-new .njg-grownup-note { color: inherit; opacity: .85; }
 
 /* ---------------- S02-C (Session C, 7 Oct): the clinic's own game rules ---------------- */
 /* CLN-81: the girl's art on the bench (her seat line on the cushion; no stool, no tint) */

@@ -388,6 +388,159 @@
       0.7
      ]
     },
+    "_taps": "S02-G (gate s02-gate, D3 stalls): her standing pose's own tap areas, measured on girl-stand-front@2x as for the sitting art: x, y as fractions of the picture, r as a share of its height (the patient's own sides: left is the viewer's right). The diagnosis (fig.partAt, fig.tapAnchors) reads them in place of the sitting taps",
+    "taps": {
+     "head": [
+      0.5,
+      0.12,
+      0.11
+     ],
+     "ear.left": [
+      0.72,
+      0.22,
+      0.035
+     ],
+     "ear.right": [
+      0.27,
+      0.22,
+      0.035
+     ],
+     "eye.left": [
+      0.585,
+      0.195,
+      0.028
+     ],
+     "eye.right": [
+      0.415,
+      0.195,
+      0.028
+     ],
+     "nose": [
+      0.5,
+      0.225,
+      0.02
+     ],
+     "mouth": [
+      0.5,
+      0.255,
+      0.022
+     ],
+     "tooth": [
+      0.5,
+      0.255,
+      0.022
+     ],
+     "throat": [
+      0.5,
+      0.3,
+      0.02
+     ],
+     "neck": [
+      0.5,
+      0.315,
+      0.025
+     ],
+     "chest": [
+      0.5,
+      0.4,
+      0.06
+     ],
+     "tummy": [
+      0.5,
+      0.55,
+      0.06
+     ],
+     "shoulder.left": [
+      0.66,
+      0.36,
+      0.04
+     ],
+     "shoulder.right": [
+      0.34,
+      0.36,
+      0.04
+     ],
+     "arm.left": [
+      0.69,
+      0.42,
+      0.045
+     ],
+     "arm.right": [
+      0.31,
+      0.42,
+      0.045
+     ],
+     "elbow.left": [
+      0.72,
+      0.475,
+      0.03
+     ],
+     "elbow.right": [
+      0.28,
+      0.475,
+      0.03
+     ],
+     "hand.left": [
+      0.86,
+      0.465,
+      0.05
+     ],
+     "hand.right": [
+      0.14,
+      0.465,
+      0.05
+     ],
+     "finger.left": [
+      0.87,
+      0.425,
+      0.025
+     ],
+     "finger.right": [
+      0.13,
+      0.425,
+      0.025
+     ],
+     "knee.left": [
+      0.62,
+      0.8,
+      0.035
+     ],
+     "knee.right": [
+      0.38,
+      0.8,
+      0.035
+     ],
+     "leg.left": [
+      0.62,
+      0.855,
+      0.035
+     ],
+     "leg.right": [
+      0.38,
+      0.855,
+      0.035
+     ],
+     "foot.left": [
+      0.645,
+      0.925,
+      0.04
+     ],
+     "foot.right": [
+      0.355,
+      0.925,
+      0.04
+     ],
+     "toe.left": [
+      0.65,
+      0.935,
+      0.02
+     ],
+     "toe.right": [
+      0.35,
+      0.935,
+      0.02
+     ]
+    },
     "faces": {},
     "heads": {
      "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",

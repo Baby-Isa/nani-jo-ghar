@@ -622,6 +622,11 @@
     S.tools([{ id: "drops", glyph: "💧", img: "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
       if (id === "drops" && cur() && cur().kind === "drops") showDropper(sore, false);
     });
+    // S02-G (gate s02-gate): the dropper hanging over the eye is the drop's target too (its picture is x -30..30,
+    // y -128..-10 under the hang point at sore.y - 34, plus the bob and a finger's slack). At 4:3 the tool shelf sits
+    // on the sore eye's outer edge, and a touch there snaps to the shelf's button, so the dropper is the sure tap
+    const DROPPER_TAP = { y: sore.y - 34 - 69 };
+    const onDropper = (p) => Math.abs(p.x - sore.x) <= 60 && p.y >= sore.y - 34 - 150 && p.y <= sore.y;
     const dropIn = async (at) => {
       await fallDrop(at);
       S.face("wince", 400);
@@ -648,7 +653,7 @@
       if (c.kind !== "drops") return;
 
       if (S.sel !== "drops") return;
-      if (Math.hypot(p.x - sore.x, (p.y - sore.y) * 1.3) > 140 && Math.hypot(p.x - sore.x, p.y - (sore.y - 70)) > 70) return;
+      if (Math.hypot(p.x - sore.x, (p.y - sore.y) * 1.3) > 140 && !onDropper(p)) return;
       st.drops++;
       ctx.tally("drops", st.drops);
       if (ctx.level >= 3) S.count(st.drops);
@@ -710,7 +715,7 @@
               const r = testBtn.getBoundingClientRect();
               return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: "eyetest" };
             }
-            return S.sel !== "drops" ? tool("drops") : Object.assign({ do: "tap", what: "drop" }, S.client(sore.x, sore.y));
+            return S.sel !== "drops" ? tool("drops") : Object.assign({ do: "tap", what: "drop" }, S.client(sore.x, DROPPER_TAP.y));
           }
           if (st.awaiting) {
             const b = (st.awaiting.wrong ? naBtn : haaBtn).getBoundingClientRect();

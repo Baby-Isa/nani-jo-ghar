@@ -67,3 +67,9 @@
 .njg-act.primary { background: var(--njg-ink); border-color: var(--njg-ink); color: #fff; }
 .njg-act:active { transform: scale(0.97); }
 .njg-act:focus-visible { outline: calc(var(--njg-line-2) * 1.5) solid var(--njg-gold); outline-offset: var(--njg-line-2); }
+
+/* S02-G (SH-60): the grown-ups' action in the "?" pop-up ("Play as new", NjgButtons.grownUp): the action button at tap
+   height (a label, for grown-ups only), the note beside it wrapping under when the pop-up is narrow */
+.njg-grownup { display: flex; flex-wrap: wrap; align-items: center; gap: var(--njg-s2); margin: var(--njg-s2) 0 0; }
+.njg-act.njg-act-s { height: auto; min-height: var(--njg-tap); min-width: calc(var(--njg-tap) * 2); padding: var(--njg-s1) var(--njg-s4); font-size: var(--njg-t3); line-height: 1.15; }
+.njg-grownup-note { flex: 1 1 10em; min-width: 0; font-size: 14px; font-weight: 600; line-height: 1.3; }

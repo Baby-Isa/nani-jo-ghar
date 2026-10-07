@@ -16,6 +16,8 @@
  *   const row = NjgButtons.pills(parent, [{id, label | html | node}], onPick, {cls}) -> <div class="njg-pills">
  *            row.pill(id) the button, row.lock(on), row.remove()
  *   NjgButtons.glow(btn, on)
+ *   const row = NjgButtons.grownUp(parent, label, note, onPress, {ask, cls}) -> <p class="njg-grownup"> (the "?" pop-up's
+ *            grown-ups' action, e.g. "Play as new": the .njg-act look at tap height; row.btn is the button)
  *   NjgButtons.endActions({again, next, list, home})  Results.show's `actions`, in the one order:
  *            each value true (the default label) or a label string; the last one given is primary
  *   NjgButtons.ORDER = ["again", "next", "list", "home"]
@@ -133,6 +135,37 @@
     if (parent) parent.appendChild(row);
     row.pill = (id) => els[id] || null;
     row.lock = (on = true) => row.classList.toggle("locked", !!on);
+    return row;
+  };
+
+  /**
+   * S02-G (gate s02-gate, SH-60): a grown-ups' action in the "?" pop-up ("Play as new"): the shared action button
+   * (.njg-act) at tap height with a label (grown-ups read it; the child never needs it) and a small note beside it.
+   * o.ask = the confirm question (no press without a yes), o.cls = the mode's class on the row (its margin, note colour).
+   * Returns the row; row.btn is the button.
+   */
+  B.grownUp = function (parent, label, note, onPress, o = {}) {
+    const row = doc().createElement("p");
+    row.className = `njg-grownup${o.cls ? ` ${o.cls}` : ""}`;
+    const b = doc().createElement("button");
+    b.type = "button";
+    b.className = "njg-btn njg-act njg-act-s";
+    b.textContent = label;
+    if (o.ask) b.dataset.ask = o.ask;
+    row.appendChild(b);
+    if (note) {
+      const n = doc().createElement("span");
+      n.className = "njg-grownup-note";
+      n.textContent = note;
+      row.appendChild(n);
+    }
+    wire(b, (e) => {
+      e.preventDefault();
+      if (o.ask && root.confirm && !root.confirm(o.ask)) return;
+      if (onPress) onPress(e, b);
+    });
+    row.btn = b;
+    if (parent) parent.appendChild(row);
     return row;
   };
   return B;
