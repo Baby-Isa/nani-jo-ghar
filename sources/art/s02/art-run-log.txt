@@ -1,0 +1,57 @@
+s02 art run log (7 Oct 2026). Generated in ChatGPT, judged by Claude, committed to sources/art/s02.
+Format: ID | time | save as | PASS / FAIL (points) / minor | redos | notes
+
+A1 | 12:08 | a1-kitchen-service-trays-v1.png | PASS | 0 | same room and camera, three empty walnut trays, nobody
+B1 | 12:09 | b1-served-dishes-v1.png | PASS | 0 | flat grey measured; daar a little beady
+C1 | 12:20 | c1-chai-pan-pour-milk-v1.png | FAIL (margin under 10% right/bottom; angled, not strictly top-down) | 2 | best of three
+C2 | 12:23 | c2-chai-pan-pour-black-v1.png | PASS | 0 | edit of C1; only the liquid changed
+C3 | 12:18 | c3-black-tea-glass-states-v1.png | PASS | 0 | empty, half, full; same glass
+C4 | 12:19 | c4-teaspoon-t-v1.png | PASS | 0 | about 89% of width
+C5 | 12:24 | c5-spice-jars-v1.png | PASS | 1 | try 1 jars crossed cell lines
+C6 | 12:22 | c6-ginger-t-v1.png | PASS | 0 | root ends just inside its cell
+C7 | 12:25 | c7-sekelo-plate-plain-t-v1.png | PASS | 0 | empty oval plate
+C8 | 12:34 | c8-chaat-glass-side-v1.png | FAIL (rim and base drawn as ellipses, not exactly side-on) | 2 | plainest of three
+C9 | 12:35 | c9-knife-t-v1.png | FAIL (margins 5-6%, under the 10% asked) | 2 | best margins of three
+C10 | 12:36 | c10-daar-bowl-trivet-t-v1.png | FAIL (daar drawn as round glossy beads; reads like sweets) | 2 | all three tries the same
+C11 | 12:43 | c11-samosa-fold-frames-v1.png | FAIL (row 2 sits higher in its cells than row 1; strip end moves) | 2 | strip height equal in all frames
+D1 | 12:46 | d1-coin-jar-levels-v1.png | FAIL (jars drift ~12% across their cells) | 2 | most matte coins of three
+D1-nolid | 12:52 | d1-coin-jar-levels-nolid-v1.png | extra (Zafar): open rim, no lid | 0 | same drift as D1
+D1-slot | 12:55 | d1-coin-jar-levels-slot-v1.png | extra (Zafar): brass lid with horizontal coin slot | 0 | same drift as D1; coins matte
+D2 | 12:39 | d2-coin-pile-v1.png | PASS | 0 | plain coins, no markings
+E1 | 12:42 | e1-cloth-sheet-v1.png | PASS | 0 | eight views in order
+E2 | 12:54 | e2-plasters-flat-v1.png | FAIL (two-colour plasters split left/right, not along the long axis) | 2 | order, colours, empty cell right
+E3 | 12:48 | e3-plaster-views-v1.png | PASS | 0 | no skin drawn
+E4 | 12:53 | e4-drop-bottle-sheet-v1.png | PASS | 1 | try 1 crossed row lines
+E5 | 13:05 | e5-toothbrush-sheet-v1.png | FAIL (cell 1 brush within 2px of its cell edge) | 2 | best of three
+E5B | 13:01 | e5b-toothbrush-brushing-views-v1.png | extra (Zafar): brusher's view, level / 30 up / 30 down, without / with paste | 0 | level view shows a few bristle tips
+E6 | 13:07 | e6-hand-fan-sheet-v1.png | FAIL (handles in cells 1-2 touch their cell edge) | 2 | best of three
+E7 | 12:59 | e7-desk-fan-sheet-v1.png | PASS | 0 | no markings
+E8 | 15:25 | e8-hot-water-bottle-sheet-v1.png | FAIL (side and back views cross into next cell) | 2 | all three the same
+E9 | 15:29 | e9-heater-sheet-v1.png | PASS | 2 | off/on pairs within 4-12px
+E10 | 15:32 | e10-alcohol-wipe-sheet-v1.png | FAIL (packets touch cell lines) | 2 | no text on packets
+E11 | 15:35 | e11-syringe-sheet-v1.png | minor (edge touches; view 4 plunger not pulled out) | 1 | caps on, no needle, no digits
+E12 | 15:34 | e12-tweezers-sheet-v1.png | minor (one tip touches a cell edge) | 0 |
+E13 | 15:41 | e13-cotton-bud-sheet-v1.png | PASS | 0 |
+E14 | 15:45 | e14-waste-bin-sheet-v1.png | minor (side-view bin touches a cell line) | 0 |
+E15 | 15:50 | e15-ear-bits-angled-v1.png | PASS | 0 | prompt accidentally sent twice in one chat; first image used
+E16 | 16:03 | e16-jugs-sheet-v1.png | minor (jugs fill the full cell height; rows touch) | 1 |
+E17 | 15:56 | e17-thermometer-sheet-v1.png | PASS | 0 | ticks only
+W11 | 15:57 | girl-w11-standing-palms-v1.png | PASS | 0 | gentle smile, slight cheek blush
+W12 | 16:02 | girl-w12-standing-wave-v1.png | PASS | 0 | same size and feet line as W11
+M3 | 16:06 | girl-m3-mouth-brush-v1.png | PASS | 1 | try 1 skin too orange
+M4 | 16:45 | girl-m4-mouth-plaque-v1.png | FAIL (plaque very subtle) | 2 | try 1 had clear plaque but a 1448x1086 canvas
+RU1 | 16:07 | child-u1-upperarm-v2.png | PASS | 0 | sleeve pushed up, nothing of the head
+RM1 | 16:09 | girl-m1-mouth-v2.png | PASS | 0 |
+RM2 | 16:41 | girl-m2-tongue-v2.png | PASS | 0 | no spots, no blush
+RY1 | 16:08 | girl-y1-eyes-v2.png | PASS | 0 |
+RY2 | 16:38 | girl-y2-eye-sore-v2.png | PASS | 0 | edit of RY1
+RY3 | 16:44 | girl-y3-eyes-closed-v2.png | minor (brows and hairline shifted slightly) | 0 | edit of RY1
+RT1 | 16:46 | girl-t1-eyetest-a-v2.png | PASS | 0 | open eye looks to our right
+RW10 | 16:48 | girl-w10-bottle-v2.png | PASS | 0 | box matches W1 within 2px
+RO2 | 16:47 | o2-mouth-bits-v2.png | PASS | 0 | irregular matte spots, not discs
+
+Skipped: none. Stalled: none. Not saved: none.
+Events: 13:09 ChatGPT "You've reached the limit for file attachments. Try again Oct 7, 3:05 PM" - paused, resumed 15:19.
+15:33 redo policy changed at Zafar's request: no redos for minor cell-edge touches.
+16:13-16:38 Chrome extension unresponsive; resumed when Zafar confirmed Chrome was open.
+Method: images moved ChatGPT -> GitHub in-browser (canvas -> IndexedDB -> postMessage to the GitHub upload page); no downloads.
