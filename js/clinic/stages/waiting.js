@@ -36,15 +36,40 @@
     return Kit.person(list[(n - 1) % list.length], "neutral") || Kit.person(list[0], "neutral");
   }
 
+  /**
+   * CLN-81 (6 Oct, CL1): the girl's finished art (data/clinic/heal-art.json patients.girl, the front-on sitting pose)
+   * sits ON the bench (her seat line on the cushion, her feet dangling), the same picture she has in the diagnosis,
+   * the heal games and the send-off. The other people keep their rough sprites until their art lands.
+   * GIRL_SEAT: the cushion line in shares of the waiting room picture (scenes-v2 waiting: the bench's front edge);
+   * GIRL_H: her whole figure's height in shares of the picture (a child beside the adults' 0.34 sitting height).
+   */
+  const GIRL_SEAT = 0.6;
+  const GIRL_H = 0.31;
+  let girlArt = null;
+  const SPEAKER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  /** Her head (the art's neutral head) as a round face, as the card and the sticker use it. */
+  const headOf = (art, mood) => {
+    const f = h("div", "cl-face person art");
+    const img = h("img", "", f);
+    img.alt = "";
+    img.src = Kit.url((art.heads && (art.heads[mood || "neutral"] || art.heads.neutral)) || art.front);
+    return f;
+  };
+  const artFor = (b) => (b.kind === "girl" && girlArt && girlArt.front ? girlArt : null);
+
   /** One person in the room: the sprite (recoloured for the colour rung), the child beside them, the tick under them. */
   function personEl(box, cfg, b, i, used) {
     const slot = cfg.slots[b.slot] || cfg.slots.bench0;
     const child = b.who === "boy" || b.who === "girl";
-    const hgt = cfg.adult * (child ? cfg.child : 1) * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) * (slot.scale || 1);
-    const wrap = S.place(h("div", `cl-wp${child ? " child" : ""}`, box), { x: slot.x, y: slot.y, h: hgt, z: slot.z });
+    const art = artFor(b);
+    const hgt = art ? GIRL_H * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) : cfg.adult * (child ? cfg.child : 1) * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) * (slot.scale || 1);
+    // the art: her seat line (anchors.seat) on the cushion, so the wrap's bottom (her feet) sits below it
+    const y = art ? GIRL_SEAT + hgt * (art.feet - art.anchors.seat[1]) / art.feet : slot.y;
+    const wrap = S.place(h("div", `cl-wp${child ? " child" : ""}${art ? " art" : ""}`, box), { x: slot.x, y, h: art ? hgt / art.feet : hgt, z: slot.z });
     wrap.dataset.seat = String(i);
     wrap.dataset.slot = b.slot;
-    const src = spriteFor(b, used);
+    wrap.dataset.kind = b.kind;
+    const src = art ? art.front : spriteFor(b, used);
     const fig = h("div", "cl-wp-fig", wrap);
     const img = h("img", "cl-wp-img", fig);
     img.alt = "";
@@ -84,11 +109,37 @@
     return { wrap, tick, b, i, gone: false };
   }
 
+  /**
+   * CL3, CLN-92 (T23): the way out of the waiting room is a picture of the doctor's room (the exam room's own
+   * picture, small), no words: it is a place, not "where does it hurt". The shared → Next button with the picture.
+   */
+  function roomButton(screen) {
+    return new Promise((res) => {
+      const btn = screen.go("", () => {
+        if (btn.disabled) return;
+        btn.disabled = true;
+        if (global.Sfx && global.Sfx.tap) try { global.Sfx.tap(); } catch (e) { /* no sound */ }
+        res(btn);
+      }, "throb cl-room-go");
+      btn.dataset.go = "doctor's room";
+      btn.setAttribute("aria-label", "To the doctor's room");
+      const t = btn.querySelector(".njg-next-t") || btn;
+      t.textContent = "";
+      const pic = h("span", "cl-room-pic", t);
+      const room = Clinic.Scenes && Clinic.Scenes.rooms && Clinic.Scenes.rooms.exam;
+      if (room) pic.style.backgroundImage = `url("${Kit.url(room.src)}")`;
+    });
+  }
+
   S.waiting = {
     async run(env, plan) {
       const { screen, data } = env;
       const res = S.result("waiting");
+      girlArt = await S.artFor("girl");
       const stage = S.room(screen, "waiting");
+      // T22, T23 (decision 55): the doctor is on screen, so he talks in bubbles at his face; his box holds only the
+      // child's next step: [Bring them in] at L1, nothing from L2
+      screen.setNani(plan.level <= 1 ? S.line(env, "bring-them-in") : null);
       stage.dataset.variant = plan.variant;
       stage.dataset.level = String(plan.level);
       const box = stage.scene || stage;
@@ -98,7 +149,7 @@
       const dimg = h("img", "", doc);
       dimg.alt = "";
       dimg.src = Kit.url(Kit.person("doctor", "neutral") || Kit.sprite("doctor-neutral"));
-      Kit.Voice.speakers.doctor = () => doc;
+      Kit.Voice.speakers.doctor = () => dimg;
       const used = {};
       const seats = plan.bench.map((b, i) => personEl(box, cfg, b, i, used));
       if (plan.variant === "W4") {
@@ -142,9 +193,10 @@
       const rise = async (s) => {
         s.gone = true;
         s.wrap.classList.add("risen");
-        Kit.Voice.speakers.patient = () => s.wrap;
+        // CL2, CLN-86: each line's bubble from its speaker's face (her head, his face in the door), she greets first
+        Kit.Voice.speakers.patient = () => s.wrap.querySelector(".cl-wp-img") || s.wrap;
         await Kit.wait(Kit.fast ? 60 : 450);
-        S.say(S.line(env, "salaam"), "patient");
+        await S.say(S.line(env, "salaam"), "patient");
         S.say(S.line(env, "salaam-back"), "doctor");
       };
 
@@ -248,11 +300,32 @@
         const whos = Array.from(new Set(plan.bench.map((b) => b.who)));
         const target = plan.bench[r.answer].who;
         const word = (k) => global.ClinicPipeline.line(data, "come", { kind: global.ClinicPipeline.describe(data, { who: k }, ["kind"]) });
+        // W2, CLN-14 (leak test): the pills show the person's face and a speaker (tap it to hear the call), never the
+        // called words as text, so they can't be matched with the card by reading
+        const faced = () => stage.ownerDocument.querySelectorAll(".njg-say .pill[data-choice], .cl-pills .cl-pill[data-choice]").forEach((b) => {
+          if (b.dataset.faced) return;
+          b.dataset.faced = "1";
+          const k = b.dataset.choice;
+          b.textContent = "";
+          b.classList.add("cl-face-pill");
+          b.setAttribute("aria-label", k);
+          const s = seats.find((x) => x.b.who === k);
+          b.appendChild(s && artFor(s.b) ? headOf(girlArt) : S.personFace(s ? s.b.kind : k, "neutral"));
+          const sp = h("span", "cl-pill-say", b);
+          sp.innerHTML = SPEAKER;
+          sp.addEventListener("click", (e) => {
+            e.stopPropagation();
+            S.say(word(k), "doctor", { noBubble: true });
+          });
+        });
+        const watch = new MutationObserver(faced);
+        watch.observe(env.screen.main, { childList: true, subtree: true });
         const out = await S.moment(env, {
+          label: () => "",
           choices: whos,
           expected: target,
           word,
-          caption: Kit.plain(S.line(env, "cap-callthem")).replace(/[.!?]$/, ""), // a caption, no full stop
+          // no caption: written English for the child (non-negotiable 5); the card above already carries the call
           character: {
             act: async (k) => {
               const s = seats.find((x) => x.b.who === k && !x.gone);
@@ -271,6 +344,7 @@
             return k === target;
           },
         });
+        watch.disconnect();
         res.moments.push(out);
         const s = seats[r.answer];
         s.wrap.classList.remove("standing");
@@ -284,7 +358,7 @@
       await done;
       S.current = null;
       S.endOnboard();
-      await S.button(screen, S.line(env, "where"));
+      await roomButton(screen);
       res.words.push(plan.calls[plan.calls.length - 1].say);
       return res;
     },

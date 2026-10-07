@@ -367,7 +367,9 @@
       const id = E.lex(key, o.pipeline ? ["clinic.line.pipeline.", "clinic.line."] : ["clinic.line.", "clinic.line.pipeline.", ""]);
       m = id ? E.phrase(id) : null;
     }
-    if (!m) return { kutchi: null, english: String(key), placeholder: true, plan: [], key };
+    // a line the engine doesn't hold yet (S02-C's new lines, to record: data/lang is the engine's, imported later)
+    // shows its English meaning from the clinic's data as the grey "to record" placeholder, never its id
+    if (!m) return { kutchi: null, english: String(def.english || key), placeholder: true, plan: [], key, rec: true };
     const w = E.show(m, o);
     return Object.assign(w, { key, m, who: def.who, audio: def.audio });
   };

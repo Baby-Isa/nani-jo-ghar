@@ -537,3 +537,23 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* SH-60: the grown-ups' "play as new" in the "?" pop-up */
 .cl-help-new { margin: var(--njg-s2) 0 0; font-size: 14px; color: var(--cl-soft); }
 .cl-help-new a { font-weight: 800; color: var(--cl-ink); }
+
+/* ---------------- S02-C (Session C, 7 Oct): the clinic's own game rules ---------------- */
+/* CLN-81: the girl's art on the bench (her seat line on the cushion; no stool, no tint) */
+.cl-wp.art .cl-wp-img { filter: drop-shadow(0 3px 3px rgba(40, 25, 10, .18)); }
+/* CLN-92: the way to the doctor's room is a picture of the room, no words */
+.cl-room-go .njg-next-t { display: flex; align-items: center; }
+.cl-room-pic { display: block; width: clamp(56px, 6vw, 84px); aspect-ratio: 1.5; border-radius: 8px; background-size: cover; background-position: 50% 55%; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .7); }
+/* CLN-14: the call-them pills are faces with a speaker, no words */
+.cl-face-pill { display: inline-flex !important; align-items: center; gap: var(--njg-s1); padding: 4px 12px 4px 4px !important; }
+.cl-face-pill .cl-face { width: 48px; height: 48px; flex: none; }
+.cl-pill-say { display: grid; place-items: center; width: 32px; height: 32px; color: #1f6f62; }
+.cl-pill-say svg { width: 22px; height: 22px; }
+/* the colour rung on her art: only her dress (37-70% of her height) takes the colour */
+.cl-wp.art .cl-wp-tint { opacity: .9;
+  -webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 36%, #000 39%, #000 68%, transparent 71%);
+  mask-image: var(--mask), linear-gradient(to bottom, transparent 36%, #000 39%, #000 68%, transparent 71%); }
+/* CLN-98: on her art (sitting on the bed) the feelings' thought bubble opens to the LEFT of her head */
+.cl-thought.beside { transform-origin: 100% 0%; }
+.cl-thought.beside .cl-thought-dot.d1 { left: auto; bottom: auto; right: -14px; top: 18px; }
+.cl-thought.beside .cl-thought-dot.d2 { left: auto; bottom: auto; right: -28px; top: 34px; }

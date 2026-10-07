@@ -34,31 +34,65 @@
     async run(env, plan, patient) {
       const { screen, data } = env;
       const res = S.result("sendoff");
-      const stage = S.room(screen, "door");
+      // CLN-81, CLN-98 (6 Oct, CL1, SO1): a patient with her finished art says goodbye on it. Her art sits only (the
+      // standing pose comes with the art run), so until then the send-off is where she already sits: the bed's edge in
+      // the doctor's room, the doctor beside her (as in the diagnosis); her own faces show the feeling. Without art:
+      // the door, the stand-in body and the face circle, as before.
+      const fig = env.fig;
+      const artSpec = await S.artFor(fig.kind);
+      const heads = (artSpec && artSpec.heads) || null;
+      const onArt = !!(artSpec && artSpec.front);
+      const stage = S.room(screen, onArt ? "exam" : "door");
       stage.dataset.mode = plan.mode;
       screen.trayWrap.classList.add("hidden");
       const box = stage.scene || stage;
-      const cfg = stage.sceneCfg && stage.sceneCfg.patient ? stage.sceneCfg : { patient: { x: 0.64, y: 0.8, h: 0.46 }, doctor: { x: 0.44, y: 0.86, h: 0.64 }, cards: { x: 0.36, y: 0.9 } };
-      const docEl = S.place(Kit.doctorFigure(box, "cl-doc-door"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
-      const layer = S.place(h("div", "cl-patient-layer v2", box), { x: cfg.patient.x, y: cfg.patient.y, h: cfg.patient.h, w: cfg.patient.h * (620 / 900) / 1.5, z: 3 });
-      const fig = env.fig;
-      // A2 (5 Oct): the art has sitting poses only (part B): standing at the door is still the stand-in body, with
-      // the patient's own face for each feeling in the circle (W2-W6's head crops, heal-art.json heads)
-      if (fig.dropArt) fig.dropArt();
-      const artSpec = await S.artFor(fig.kind);
-      const heads = (artSpec && artSpec.heads) || null;
-      layer.appendChild(fig.el);
-      fig.focus(null, null, 1, 0);
-      fig.pose("stand");
+      let cfg;
+      let docEl;
+      let layer;
+      if (onArt && stage.sceneCfg && stage.sceneCfg.fig) {
+        const ex = stage.sceneCfg;
+        cfg = { patient: { x: ex.fig.x, y: ex.fig.bottom, h: ex.fig.h }, doctor: ex.doctor, cards: { x: 0.6, y: 0.95 } };
+        docEl = S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: ex.doctor.x, y: ex.doctor.y, h: ex.doctor.h, z: 2 });
+        layer = S.place(h("div", "cl-patient-layer v2", box), { x: ex.fig.x, y: ex.fig.bottom, h: ex.fig.h, w: ex.fig.h * (620 / 900) / 1.5, z: 3 });
+        layer.appendChild(fig.el);
+        fig.focus(null, null, 1, 0);
+        fig.pose("sit");
+        fig.useArt(artSpec, { view: "front", figH: ex.fig.h });
+        fig.artBody && fig.artBody("front");
+        const seat = () => {
+          layer.style.top = `${ex.fig.bottom * 100}%`;
+          const q = fig.hotspot("seat", "left", box);
+          const H = box.clientHeight || 1;
+          if (q && isFinite(q.y)) layer.style.top = `${(ex.fig.bottom + (ex.seat * H - q.y) / H) * 100}%`;
+        };
+        seat();
+        box.addEventListener("scenefit", seat);
+      } else {
+        cfg = stage.sceneCfg && stage.sceneCfg.patient ? stage.sceneCfg : { patient: { x: 0.64, y: 0.8, h: 0.46 }, doctor: { x: 0.44, y: 0.86, h: 0.64 }, cards: { x: 0.36, y: 0.9 } };
+        docEl = S.place(Kit.doctorFigure(box, "cl-doc-door"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
+        layer = S.place(h("div", "cl-patient-layer v2", box), { x: cfg.patient.x, y: cfg.patient.y, h: cfg.patient.h, w: cfg.patient.h * (620 / 900) / 1.5, z: 3 });
+        if (fig.dropArt) fig.dropArt();
+        layer.appendChild(fig.el);
+        fig.focus(null, null, 1, 0);
+        fig.pose("stand");
+      }
+      fig.swirl(null, null, false);
       fig.react("idle", 0);
-      Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
+      // T28, CLN-98: her lines in her bubble at her face, his at his
+      Kit.Voice.speakers.patient = () => (onArt && fig.anchorEl ? fig.anchorEl("mouth") : fig.el.querySelector(".fig-head") || fig.el);
       Kit.Voice.speakers.doctor = () => docEl;
+      // the doctor is on screen: his box holds only the child's next step, [Pick how she feels] at L1 (T28)
+      screen.setNani(plan.level <= 1 ? S.line(env, "pick-feel") : null);
       // UX 16: while they talk, the doctor and the patient stand three-quarter turned to each other
       S.stage(docEl, layer, "talk");
-      // level 1's hint that the feeling shows sits ON the patient's own face (13d): a stand-in circle over the
-      // head until the real art's expressions exist; never a second face floating beside the bubble
+      // level 1's hint that the feeling shows sits ON the patient's own face (13d): on her art, her own face for the
+      // feeling (heal-art.json faces); on the stand-in, a circle over the head; never a second face floating beside
       const circle = h("div", "cl-feel-circle on-face", layer);
       const showFeel = (f) => {
+        if (onArt) {
+          fig.react(f ? (f === "happy" ? "happy" : (data.feelings[f] && data.feelings[f].mood) || f) : "idle", 0);
+          return;
+        }
         circle.innerHTML = "";
         const own = f && heads && (heads[f] || heads[(data.feelings[f] && data.feelings[f].mood) || ""]);
         if (own) {
@@ -75,6 +109,13 @@
           const d = Math.max(hr.width, hr.height) * 1.05;
           Object.assign(circle.style, { width: `${d}px`, left: `${hr.left - lr.left + hr.width / 2}px`, top: `${hr.top - lr.top + hr.height / 2 - d / 2}px` });
         }
+      };
+      /** Her head's box in client px (the art's head anchor, else the greybox head). */
+      const headBox = () => {
+        const a = onArt && fig.artSpot && fig.artSpot("head");
+        if (a) return { left: a.x - a.r, top: a.y - a.r, width: a.r * 2, height: a.r * 2 };
+        const head = fig.el.querySelector(".fig-head");
+        return head ? head.getBoundingClientRect() : layer.getBoundingClientRect();
       };
       showFeel(null);
       // 13e: no card listing every line up front (no script cards, UX 16): the doctor's box says the one
@@ -97,7 +138,7 @@
         if (env.onboard && !seen) {
           qcard = h("div", "cl-ask-card", box);
           S.place(qcard, { x: cfg.patient.x, y: cfg.patient.y - cfg.patient.h - 0.02, z: 30 });
-          qcard.appendChild(S.personFace(patient.kind, "neutral"));
+          qcard.appendChild(Clinic.Figure.face(patient.kind, "neutral"));
           h("span", "cl-ask-q", qcard, "?");
           S.say(S.line(env, "whisper-ask"), "guide");
         }
@@ -133,13 +174,21 @@
       if (plan.mode === "helps") cards = h("div", "cl-help-tray", stage);
       else {
         cards = h("div", "cl-thought", box);
-        const head = fig.el.querySelector(".fig-head");
-        const hb = head ? head.getBoundingClientRect() : layer.getBoundingClientRect();
+        const hb = headBox();
         const bb = box.getBoundingClientRect();
         const hx = (hb.left + hb.width * 0.8 - bb.left) / Math.max(1, bb.width);
         const hy = (hb.top - bb.top) / Math.max(1, bb.height);
         cards.style.left = `${Math.min(0.62, hx + 0.03) * 100}%`;
         cards.style.bottom = `${Math.max(0.25, 1 - hy + 0.03) * 100}%`;
+        if (onArt) {
+          // on the bed she sits high in the room: the thought bubble opens beside her head, to the left, kept on screen
+          cards.classList.add("beside");
+          const hl = (hb.left - bb.left) / Math.max(1, bb.width);
+          cards.style.left = "";
+          cards.style.right = `${(1 - hl + 0.035) * 100}%`;
+          cards.style.bottom = "";
+          cards.style.top = `${Math.max(0.08, hy) * 100}%`;
+        }
         h("i", "cl-thought-dot d1", cards);
         h("i", "cl-thought-dot d2", cards);
       }
@@ -307,7 +356,7 @@
       S.endOnboard();
       // the sticker for the album
       const sticker = h("div", "cl-sticker", stage);
-      sticker.appendChild(S.personFace(patient.kind, "happy"));
+      sticker.appendChild(Clinic.Figure.face(patient.kind, "happy"));
       if (global.Sfx && global.Sfx.gold) try { global.Sfx.gold(); } catch (e) { /* no sound */ }
       await Kit.wait(Kit.fast ? 60 : 1100);
       res.words.push(global.ClinicLang.w(PL().pword("feeling", plan.feeling)));

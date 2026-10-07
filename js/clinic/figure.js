@@ -45,6 +45,27 @@
     pink: "#e77fb0", orange: "#e8872f", purple: "#8e5bb5", brown: "#8a5a3a", grey: "#9aa0a8",
   };
   Clinic.Figure = { KINDS, COLOURS, VB };
+  /**
+   * CLN-81 (6 Oct, CL1): a person's round face for a card, a pill, a bench seat or the sticker: the finished art's head
+   * for a kind that has it (data/clinic/heal-art.json patients[kind].heads, the girl now), else the stages' rough face.
+   * The heal art must be loaded (Clinic.HealHost.healArt, by Run.load); the sticker's happy face is her happy head.
+   */
+  Clinic.Figure.face = function (kind, mood) {
+    const Kit = Clinic.Kit;
+    const HA = (Clinic.HealHost && Clinic.HealHost.healArt) || (Clinic.Stages && Clinic.Stages._healArt) || null;
+    const spec = HA && HA.patients && HA.patients[kind];
+    const heads = spec && spec.heads;
+    if (!heads) return Clinic.Stages.personFace(kind, mood);
+    const F = { ouch: "pain", sore: "pain", giggle: "happy", relief: "happy", scared: "sad" };
+    const m = F[mood] || mood || "neutral";
+    const f = document.createElement("div");
+    f.className = "cl-face person art";
+    const img = document.createElement("img");
+    img.alt = "";
+    img.src = Kit.url(heads[m] || heads.neutral);
+    f.appendChild(img);
+    return f;
+  };
 
   const el = (tag, attrs, parent) => {
     const n = document.createElementNS(NS, tag);
@@ -288,6 +309,11 @@
         fig._pt = setTimeout(() => root.classList.remove(`pose-${name}`), 1200);
       },
       swirl(part, side, on = true) {
+        // D9, CLN-95 (6 Oct): no swirl icon over the sore part ("it brings it down"): the patient's own sore look
+        // (her pain face, set by the games) shows it. The sore part is still remembered for the zoom and the art.
+        fig._artSwirl = on ? [part, side] : null;
+        fig._sore = on ? [part, side] : null;
+        if (!fig.noSwirl) return;
         if (fig.art) {
           // on the art: the same swirl as a small DOM layer at the part's anchor
           fig.artEl.querySelectorAll(".fig-art-swirl").forEach((n) => n.remove());
@@ -477,6 +503,24 @@
         A.body = name;
         fig.artMood(mood);
         return true;
+      },
+      /**
+       * T30, CLN-85 (decision 55): a point on the figure a speech bubble can come from (her face): a tiny element at
+       * the part's place on the art (or the greybox head), kept with the figure as it zooms. Voice.speakers.patient
+       * takes it so her bubbles sit beside her face, never at the corner.
+       */
+      anchorEl(part = "mouth", side = null) {
+        const host = fig.artEl || root.querySelector(".fig-head") || root;
+        let a = host.querySelector(":scope > .fig-anchor");
+        if (!a) {
+          a = document.createElement("i");
+          a.className = "fig-anchor";
+          host.appendChild(a);
+        }
+        const at = fig.art && fig.artAnchor(part, side);
+        a.style.left = at ? `${at.x * 100}%` : "50%";
+        a.style.top = at ? `${at.y * 100}%` : "40%";
+        return a;
       },
       /** A part's place on the art, in client px ({x, y, r}), from the measured anchors; null without art or anchor. */
       artAnchor(part, side) {
