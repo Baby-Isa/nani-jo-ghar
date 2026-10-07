@@ -838,7 +838,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           extra.forEach(emptyStrip);
           let again = false;
           for (const b of missing) {
-            const rd = redo.wrong(`samosa:count-${b}`);
+            const rd = redo.wrong(`strips-${b}`);
             if (rd.action === "show") {
               while (of(b).length < wantN(b)) {
                 const x = strips.find((y) => !y.block);
