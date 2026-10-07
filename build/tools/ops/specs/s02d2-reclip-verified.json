@@ -1,0 +1,30 @@
+{
+  "name": "S02-D2, re-clip with blind listening checks (Sprint 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "D's candidates were never checked for what they say: Zafar found 'Okay' for amli and 'P-10 Cup' for cup; this must be right",
+  "cost": "about $25-30 (about $5 of transcription and listening APIs)",
+  "stop": "8 Oct 2026, 12:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": ["2", "3", "8 (Language, Kutchi and voice)"],
+  "read": [
+    "build/reports/s02d-reclip.md (what D built: build/tools/audio/*) and decisions 66-67",
+    "build/tools/audio/listen-pilot-20.json and listen_pilot.py: the orchestrator's pilot on the first 20 lines. Whisper (not told the target) catches the junk; gpt-audio-1.5 TOLD the target 'hears' it anyway ('P-11' passed as cup) - so every check must be BLIND",
+    "data/family-audio.json and sources/audio/**"
+  ],
+  "owns": ["build/tools/audio/**", "assets/audio/family-candidates/** (replace D's candidates entirely)", "data/family-audio-candidates.json", "build/reports/s02d2-reclip-verified.md"],
+  "readOnly": ["js/**, data/cook.json, data/clinic/**", "data/lang/**", "assets/audio/family/** (never overwrite)", "data/family-audio.json (only apply_picks writes it, after Zafar's picks)"],
+  "stubs": "none; a line with no verified take says 'record again'",
+  "tasks": [
+    { "do": "Split every source into utterances with Silero VAD (pip silero-vad or the onnx model; free) with tuned min-silence so one candidate = one thing one person said; never a stretch of conversation. Keep D's Whisper word-time cache for locating takes.", "accept": "no candidate longer than the target's natural length + 0.6 s; chulo offers no clip containing English" },
+    { "do": "Two BLIND transcriptions of every candidate utterance (whisper-1 and gpt-4o-transcribe, no prompt, never told the target). Reject if either contains English words not in the target, a question id (letter+number like P-10, B31), filler (okay, yes, so, hmm), laughter, a second voice, or the word repeated. Keep only if both transcripts fuzzily match the target (normalise Gujarati/Devanagari/Urdu script output to Latin, phonetic matching for Kutchi spellings).", "accept": "amli never offers the 'Okay' clip; cup never offers 'P-10 Cup' or 'P-11'; atto never offers 'God bless you'" },
+    { "do": "Speaker by pitch (calibrated per source) and loudness; the target speaker's takes only. Cut with lead/tail padding, fades, CLEAN chain, -16 LUFS. Rank by blind-match strength, clarity and isolation; at most 5 per line.", "accept": "matar offers Mum's clean take (about 1647.9 s or 1697.5 s of Kutchi.260928.m4a) as rank 1" },
+    { "do": "Audit: pick 30 random kept candidates and run a THIRD blind check (gpt-audio-1.5 asked only 'transcribe exactly what you hear, list every word and voice', not told the target); report how many contain anything but the target. Target: 0-1 of 30. If more, tighten and repeat.", "accept": "audit table in the report with the error count" },
+    { "do": "Rebuild review.html (and the two phone pages via build/tools/audio/pack_pages.py) with only verified candidates; lines with none say 'record again' and are listed at the end, not mixed in.", "accept": "the orchestrator can publish the pages; counts in the report" }
+  ],
+  "flows": [],
+  "shared": false,
+  "port": 8826,
+  "report": "s02d2-reclip-verified",
+  "publish": false
+}

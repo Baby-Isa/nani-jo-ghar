@@ -1,0 +1,56 @@
+SESSION NAME / MODE:  S02-D2, re-clip with blind listening checks (Sprint 2)
+MODEL AND EFFORT:     Opus, high effort (D's candidates were never checked for what they say: Zafar found 'Okay' for amli and 'P-10 Cup' for cup; this must be right)
+COST ESTIMATE:        about $25-30 (about $5 of transcription and listening APIs)
+HARD STOP:            8 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 8 (Language, Kutchi and voice) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. build/reports/s02d-reclip.md (what D built: build/tools/audio/*) and decisions 66-67
+  6. build/tools/audio/listen-pilot-20.json and listen_pilot.py: the orchestrator's pilot on the first 20 lines. Whisper (not told the target) catches the junk; gpt-audio-1.5 TOLD the target 'hears' it anyway ('P-11' passed as cup) - so every check must be BLIND
+  7. data/family-audio.json and sources/audio/**
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/audio/**
+  - assets/audio/family-candidates/** (replace D's candidates entirely)
+  - data/family-audio-candidates.json
+  - build/reports/s02d2-reclip-verified.md
+READ-ONLY (never edit):
+  - js/**, data/cook.json, data/clinic/**
+  - data/lang/**
+  - assets/audio/family/** (never overwrite)
+  - data/family-audio.json (only apply_picks writes it, after Zafar's picks)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none; a line with no verified take says 'record again'
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Split every source into utterances with Silero VAD (pip silero-vad or the onnx model; free) with tuned min-silence so one candidate = one thing one person said; never a stretch of conversation. Keep D's Whisper word-time cache for locating takes.
+     Accept: no candidate longer than the target's natural length + 0.6 s; chulo offers no clip containing English
+  2. Two BLIND transcriptions of every candidate utterance (whisper-1 and gpt-4o-transcribe, no prompt, never told the target). Reject if either contains English words not in the target, a question id (letter+number like P-10, B31), filler (okay, yes, so, hmm), laughter, a second voice, or the word repeated. Keep only if both transcripts fuzzily match the target (normalise Gujarati/Devanagari/Urdu script output to Latin, phonetic matching for Kutchi spellings).
+     Accept: amli never offers the 'Okay' clip; cup never offers 'P-10 Cup' or 'P-11'; atto never offers 'God bless you'
+  3. Speaker by pitch (calibrated per source) and loudness; the target speaker's takes only. Cut with lead/tail padding, fades, CLEAN chain, -16 LUFS. Rank by blind-match strength, clarity and isolation; at most 5 per line.
+     Accept: matar offers Mum's clean take (about 1647.9 s or 1697.5 s of Kutchi.260928.m4a) as rank 1
+  4. Audit: pick 30 random kept candidates and run a THIRD blind check (gpt-audio-1.5 asked only 'transcribe exactly what you hear, list every word and voice', not told the target); report how many contain anything but the target. Target: 0-1 of 30. If more, tighten and repeat.
+     Accept: audit table in the report with the error count
+  5. Rebuild review.html (and the two phone pages via build/tools/audio/pack_pages.py) with only verified candidates; lines with none say 'record again' and are listed at the end, not mixed in.
+     Accept: the orchestrator can publish the pages; counts in the report
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s02d2-reclip-verified` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8826.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s02d2-reclip-verified.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

@@ -1,0 +1,346 @@
+[
+ [
+  "mum/amli",
+  1,
+  "Okay",
+  {
+   "error": "'NoneType' object has no attribute 'group'"
+  }
+ ],
+ [
+  "zafar/aaki-tanki",
+  1,
+  "Hāki tanki!",
+  {
+   "heard": "aaki tanki",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "zafar/aaki-tanki",
+  2,
+  "Ah-kee tan-kee.",
+  {
+   "heard": "aaki tanki",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "zafar/cup",
+  1,
+  "P-10 Cup.",
+  {
+   "heard": "cup",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "zafar/cup",
+  2,
+  "Cup.",
+  {
+   "heard": "cup",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "zafar/cup",
+  3,
+  "P-11",
+  {
+   "heard": "cup",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "zafar/aai-ki-aayo",
+  1,
+  "iKey ION",
+  {
+   "heard": "aai ki aayo",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/jhini-maani-banai",
+  1,
+  "Gino is thin. So thin money, feminine, genie money. Genie money.",
+  {
+   "heard": "jhini maani banai",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/aag",
+  1,
+  "ugh",
+  {
+   "heard": "aag",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/toji-kursi-mathe",
+  1,
+  "Tō tī kursi mate.",
+  {
+   "heard": "toji kursi mathe",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/toji-kursi-mathe",
+  2,
+  "doji kursi mathe kursi is feminine.",
+  {
+   "heard": "toji kursi mathe gos kursi sameh",
+   "only_target": false,
+   "extra": "gos kursi sameh",
+   "speaker_ok": true,
+   "clear": 3,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/atto",
+  1,
+  "God bless you.",
+  {
+   "error": "'NoneType' object has no attribute 'group'"
+  }
+ ],
+ [
+  "mum/atto",
+  2,
+  "गुण्ड",
+  {
+   "heard": "gund",
+   "only_target": false,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/bar",
+  1,
+  "Chullo. Yes, if you want to light the stove, you'd say Chullo Bar.",
+  {
+   "heard": "chulo bar",
+   "only_target": false,
+   "extra": "chulo",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/amba-je-mathe",
+  1,
+  "آم بے جمعت ہے",
+  {
+   "heard": "ambe je mathe",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/amba-je-mathe",
+  2,
+  "आम्बा आम्बेजे मत्हे",
+  {
+   "heard": "amba ambe je mathe",
+   "only_target": false,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/amba-je-mathe",
+  3,
+  "I'm not sure who you're shouting at.",
+  {
+   "heard": "amba je mathe",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/ukar",
+  1,
+  "Take your car panic turn it down.",
+  {
+   "heard": "ukar panike ukar",
+   "only_target": false,
+   "extra": "panike",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/bharelo-cup",
+  1,
+  "You wouldn't say Borelli cup because that's masculine, Borello cup.",
+  {
+   "error": "'NoneType' object has no attribute 'group'"
+  }
+ ],
+ [
+  "mum/chokriyu-ji-ain",
+  1,
+  "or if it's masculine or unknown, he would say Chokryu Jain.",
+  {
+   "heard": "chokriyu ji ain",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/chulo",
+  1,
+  "Chullo. Yes, if you want to light the stove, you'd say Chullo Bar.",
+  {
+   "heard": "chulo yes if you want to light the stove you'd say chulo",
+   "only_target": false,
+   "extra": "yes if you want to light the stove you'd say chulo",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/gund",
+  1,
+  "God bless you.",
+  {
+   "error": "'NoneType' object has no attribute 'group'"
+  }
+ ],
+ [
+  "mum/gund",
+  2,
+  "गुण्ड",
+  {
+   "heard": "gund",
+   "only_target": true,
+   "extra": "",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/ha-r3",
+  1,
+  "حل رسورے میں ونجے حل",
+  {
+   "heard": "ha",
+   "only_target": false,
+   "extra": "hol rasore me vinje",
+   "speaker_ok": true,
+   "clear": 3,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/hakro-cup",
+  1,
+  "하크로컵 하크로컵",
+  {
+   "heard": "hakro cup hakro cup",
+   "only_target": false,
+   "extra": "repeated second time",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/hu-chokri-rasore-me-ai",
+  1,
+  "That girl over there, she's in the kitchen. Yeah. Who chokri rasore may I?",
+  {
+   "heard": "hu chokri rasore me ai",
+   "only_target": false,
+   "extra": "that girl over there she's in the kitchen",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/kan",
+  1,
+  "Bakri Jokhan",
+  {
+   "heard": "bakri jo kan",
+   "only_target": false,
+   "extra": "bakri jo",
+   "speaker_ok": true,
+   "clear": 5,
+   "cut_ok": true
+  }
+ ],
+ [
+  "mum/laal",
+  1,
+  "लाल पच्छेरे",
+  {
+   "heard": "laal pacheri",
+   "only_target": false,
+   "extra": "pacheri",
+   "speaker_ok": true,
+   "clear": 4,
+   "cut_ok": true
+  }
+ ]
+]
