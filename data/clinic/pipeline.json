@@ -60,6 +60,7 @@
       "standing": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "_why": "S02-C (6 Oct play W3, CLN-11, CLN-13): nobody stands at any level; everyone sits on the six-seat bench" },
       "slots": { "bench": ["bench0", "bench1", "bench2", "bench3", "bench4", "bench5"], "standing": ["door", "desk", "window"], "front": [] },
       "rungs": ["kind", "age", "height", "colour", "with"],
+      "kidsOnly": { "from": 2, "rungs": ["colour", "height"], "rungFrom": { "colour": 2, "height": 3 }, "focus": { "2": "colour", "3": "height", "4": "colour", "5": "colour" }, "_why": "S02-F (Zafar, 7 Oct, option a): until the other patients' art exists, level 2+ calls name only a child and the patient (the last one called) is the girl, so her art is the patient at every level without the description leaking. A child has no old / young: her words are a colour (from level 2) and tall / short (from level 3); W4 calls a boy first, then her. The grown-ups (old / young, with the baby / the child) stay in the room, never called. Remove this block when the other patients' art lands." },
       "firstBench": 2,
       "ringsMs": { "1": 60000, "2": 45000, "3": 30000, "4": 30000, "5": 30000 }
     },

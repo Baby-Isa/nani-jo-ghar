@@ -157,8 +157,8 @@
   const matches = (p, q, attrs) => p.who === q.who && attrs.every((a) => a === "kind" || (p[a] || null) === (q[a] || null));
   P.waitingRungs = (data, L) => (data.stages.waiting.rungs || ["kind"]).slice(0, Math.max(1, Math.min(5, L)));
   /** The shortest description (kind + the level's word first, then earlier words) that names just this person, or null. */
-  P.uniqueAttrs = function (data, people, i, L, focus) {
-    const rungs = P.waitingRungs(data, L);
+  P.uniqueAttrs = function (data, people, i, L, focus, rungList) {
+    const rungs = rungList || P.waitingRungs(data, L);
     const p = people[i];
     const has = (a) => a === "kind" || p[a] != null;
     const tries = [];
@@ -175,8 +175,15 @@
     if (variant === "W2") variant = "W1"; // W2 (kind + colour / size) is the ladder's rungs now
     if (variant === "W3" && o.speak === false) variant = "W1";
     if (variant === "W4" && L < 3 && !o.variant) variant = "W1";
+    // S02-F (Zafar, 7 Oct, option a): until the other patients' art exists, a level 2+ call names only a child, and
+    // the patient (the last one called) is the girl, so her art is the patient at every level. A child has no
+    // old / young (the age rung): the call is the kind plus the child's own words (a colour, tall / short), and the
+    // grown-ups in the room are never called (with the baby / the child, the colours, still in the room)
+    const KO = S.kidsOnly || null;
+    const kids = !!(KO && L >= (KO.from || 2) && !o.first && variant !== "W3");
+    const kidRungs = kids ? ["kind"].concat((KO.rungs || ["colour", "height"]).filter((a) => L >= ((KO.rungFrom || {})[a] || 2))) : null;
     const rungs = P.waitingRungs(data, L);
-    const focus = variant === "W3" ? "kind" : rungs[rungs.length - 1];
+    const focus = variant === "W3" ? "kind" : kids ? (KO.focus || {})[L] || kidRungs[kidRungs.length - 1] : rungs[rungs.length - 1];
     const whos = ["man", "woman", "boy", "girl"];
     const colours = data.colours;
     // a random person with every rung's attribute up to L
@@ -200,7 +207,22 @@
         targets = [people.findIndex((p) => p.who === "girl")];
         break;
       }
-      if (variant === "W3" || L === 1) {
+      if (kids) {
+        // the girl (the patient) with the level's word; a near miss for it (another girl without it, a boy with it)
+        const kid = (who) => {
+          const p = { who, age: null, height: null, colour: null, with: null };
+          if (kidRungs.includes("height")) p.height = rng() < 0.5 ? "tall" : "short";
+          if (kidRungs.includes("colour")) p.colour = pick(colours, rng);
+          return p;
+        };
+        const t = kid("girl");
+        people.push(t);
+        people.push(Object.assign(kid("girl"), { [focus]: other(focus, t[focus]) }));
+        people.push(Object.assign(kid("boy"), { [focus]: t[focus] }));
+        // W4: a second child to call first (a boy, so the order is the lesson, not the look)
+        if (variant === "W4") people.push(kid("boy"));
+        while (people.length < n) people.push(person(pick(["man", "woman"], rng)));
+      } else if (variant === "W3" || L === 1) {
         // kinds only: different kinds (never two identical people, 13), so every one of them can be called
         shuffle(whos, rng).slice(0, Math.min(n, whos.length)).forEach((w) => people.push(person(w)));
       } else {
@@ -240,15 +262,17 @@
       if (clash) continue;
       people = shuffle(people, rng);
       // who can be called: a description naming just them (kind + the level's word first)
-      const callable = people.map((p, i) => (variant === "W3" || L === 1 ? (people.filter((q) => q.who === p.who).length === 1 ? ["kind"] : null) : P.uniqueAttrs(data, people, i, L, focus)));
-      const withFocus = people.map((p, i) => i).filter((i) => callable[i] && (focus === "kind" || callable[i].includes(focus)));
+      const callable = people.map((p, i) => (variant === "W3" || L === 1 ? (people.filter((q) => q.who === p.who).length === 1 ? ["kind"] : null) : kids && ADULT(p.who) ? null : P.uniqueAttrs(data, people, i, L, focus, kidRungs)));
+      const withFocus = people.map((p, i) => i).filter((i) => callable[i] && (focus === "kind" || callable[i].includes(focus)) && (!kids || people[i].who === "girl"));
       if (!withFocus.length) continue;
       const a = pick(withFocus, rng);
       targets = [a];
       if (variant === "W4") {
         const b = people.map((p, i) => i).filter((i) => i !== a && callable[i]);
         if (!b.length) continue;
-        targets.push(pick(b, rng));
+        // the patient is the last one called: with children only she is the girl, called second
+        if (kids) targets.unshift(pick(b, rng));
+        else targets.push(pick(b, rng));
       }
       break;
     }
@@ -259,7 +283,7 @@
     const order = shuffle(people.map((_, i) => i), rng);
     const bench = people.map((p, i) => Object.assign({}, p, { kind: P.personKind(p), slot: slotList[order.indexOf(i)] || `front${i}`, i }));
     const calls = targets.map((t) => {
-      const attrs = variant === "W3" || L === 1 || o.first ? ["kind"] : P.uniqueAttrs(data, bench, t, L, focus);
+      const attrs = variant === "W3" || L === 1 || o.first ? ["kind"] : P.uniqueAttrs(data, bench, t, L, focus, kidRungs);
       return { target: t, say: P.describe(data, bench[t], attrs), attrs };
     });
     const rows = calls.map((c, i) => ({
