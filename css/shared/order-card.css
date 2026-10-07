@@ -262,3 +262,8 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 .oc-strip.new { animation: ocStrip .3s ease-out; }
 @keyframes ocStrip { from { opacity: .2; } }
 .oc-look.bulb svg { width: 100%; height: 100%; }
+/* S02 review: on the shortest phones (800x360) the guide's strip gives back a little padding, so a card with the strip,
+   a two-line headline and four rows (the cut game) still fits its sidebar without a scroll */
+@media (max-height: 370px) {
+  html[data-ff="phone"] .oc-card:not(.oc-big) .oc-strip { padding-block: var(--njg-s1); margin-bottom: var(--njg-s1); }
+}

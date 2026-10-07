@@ -293,7 +293,7 @@
   Results.wordCols = (n) => (n ? Math.min(3, n) : 0);
   function wordsHtml(words) {
     const card = (w, i) => `<button class="rs-word ${w.right === false ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
-          ${w.kutchi ? `<b>${esc(w.kutchi)}</b>` : `<b class="rs-ph">${esc(w.english || "")}</b><small class="rs-rec">to record</small>`}<span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${w.kutchi ? esc(w.english) : ""}</span></button>`;
+          ${w.kutchi ? `<b class="fit">${esc(w.kutchi)}</b>` : `<b class="rs-ph fit">${esc(w.english || "")}</b><small class="rs-rec">to record</small>`}<span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${w.kutchi ? `<span class="fit">${esc(w.english)}</span>` : ""}</span></button>`;
     const bad = [];
     const ok = [];
     words.forEach((w, i) => (w.right === false ? bad : ok).push(card(w, i)));
@@ -453,6 +453,8 @@
       card.dataset.step = "2";
       p1.setAttribute("aria-hidden", "true");
       p2.removeAttribute("aria-hidden");
+      // non-negotiable 9: a long word (e.g. "thermometer") shrinks to fit its tile, then wraps; never clipped
+      if (root.FitText) root.FitText.run(p2);
       const h1 = card.getBoundingClientRect().height;
       if (!reduced() && card.animate && Math.abs(h1 - h0) > 2) card.animate([{ height: `${h0}px` }, { height: `${h1}px` }], { duration: 280, easing: "cubic-bezier(.3,.7,.2,1)" });
       p2.classList.add("enter");

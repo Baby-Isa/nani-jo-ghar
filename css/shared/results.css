@@ -393,7 +393,11 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
    and a long list takes a fourth column */
 @media (orientation: landscape) and (max-height: 440px) {
   .njg-results .rs-words-col { gap: var(--njg-s2); }
-  .njg-results .rs-words-col.many { grid-template-columns: repeat(4, minmax(0, var(--njg-end-col))); }
+  /* S02 review: three columns, not four: at four, "thermometer" and the "to record" flag could not fit a tile (non-negotiable 9);
+     a long list scrolls inside the words panel instead */
+  .njg-results .rs-word .rs-rec { white-space: normal; max-width: 100%; }
   .njg-results .rs-word { flex-direction: row; flex-wrap: wrap; column-gap: var(--njg-s2); row-gap: 0; min-height: var(--njg-tap); padding: var(--njg-s1) var(--njg-s2); }
   .njg-results .rs-word .rs-rec { order: 3; }
 }
+/* non-negotiable 9 (S02 review): a word tile's word and English shrink to fit on one line (js/shared/fit.js), then wrap */
+.rs-word b.fit, .rs-word .rs-en .fit { white-space: nowrap; overflow: visible; min-width: 0; max-width: 100%; }
