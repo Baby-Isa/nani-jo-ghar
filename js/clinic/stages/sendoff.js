@@ -42,6 +42,9 @@
       const artSpec = await S.artFor(fig.kind);
       const heads = (artSpec && artSpec.heads) || null;
       const onArt = !!(artSpec && artSpec.front);
+      // S02-E (W12, CLN-98): at the goodbye she stands up off the bed and waves (heal-art.json patients[kind].stand.wave)
+      const waveArt = onArt && artSpec.stand && artSpec.stand.wave ? Object.assign({}, artSpec.stand, { front: artSpec.stand.wave, heads: artSpec.stand.heads || artSpec.heads }) : null;
+      let waveOn = () => {};
       const stage = S.room(screen, onArt ? "exam" : "door");
       stage.dataset.mode = plan.mode;
       screen.trayWrap.classList.add("hidden");
@@ -67,6 +70,16 @@
         };
         seat();
         box.addEventListener("scenefit", seat);
+        if (waveArt) {
+          waveOn = () => {
+            if (fig.waving) return;
+            fig.waving = true;
+            box.removeEventListener("scenefit", seat);
+            // standing on the floor in front of the bed (scenes-v2 exam.floor)
+            layer.style.top = `${(ex.floor || 0.8) * 100}%`;
+            fig.useArt(waveArt, { view: "front", figH: ex.fig.h });
+          };
+        }
       } else {
         cfg = stage.sceneCfg && stage.sceneCfg.patient ? stage.sceneCfg : { patient: { x: 0.64, y: 0.8, h: 0.46 }, doctor: { x: 0.44, y: 0.86, h: 0.64 }, cards: { x: 0.36, y: 0.9 } };
         docEl = S.place(Kit.doctorFigure(box, "cl-doc-door"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
@@ -339,7 +352,7 @@
           expected: plan.goodbye,
           word: (id) => PL().goodbye(data, id),
           caption: Kit.plain(S.line(env, "cap-sayit")).replace(/[.!?]$/, ""), // a caption, no full stop
-          character: { act: async (id) => { fig.pose("wave"); await S.say(PL().goodbye(data, id), "patient"); } },
+          character: { act: async (id) => { waveOn(); fig.pose("wave"); await S.say(PL().goodbye(data, id), "patient"); } },
           accept: (id) => {
             res.judge(r, id === plan.goodbye);
             return true;
@@ -350,6 +363,7 @@
       } else {
         await S.say(S.line(env, "thanks"), "patient");
       }
+      waveOn();
       fig.pose("wave");
       layer.classList.add("leaving");
       S.current = null;

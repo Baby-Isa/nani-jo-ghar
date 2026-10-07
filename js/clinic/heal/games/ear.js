@@ -480,7 +480,10 @@
         if (S.sel !== "tweezers") S.pick("tweezers");
         st.drag = { b, el: s("g", { class: "ear-held" }, S.fx) };
         if (!bit(`wax-${b.size}`, 0, 0, b.r * 2.5, st.drag.el)) s("circle", { cx: 0, cy: 0, r: b.r, fill: `url(#ear-wax-${uid})`, stroke: "#8a6010", "stroke-width": 2.5 }, st.drag.el);
-        s("image", { href: url("assets/clinic/items-v2/tweezers.webp"), x: -8, y: -60, width: 110, height: 52, transform: "rotate(-30)" }, st.drag.el);
+        // S02-E (E12): the art run's tweezers at 45 degrees, tips to the lower left on the blob (sheets.json "use-45")
+        const twArt = Kit && Kit.view ? Kit.view("tweezers", "use-45") : null;
+        if (twArt) s("image", { href: url(twArt), x: -10, y: -96, width: 106, height: 106 }, st.drag.el);
+        else s("image", { href: url("assets/clinic/items-v2/tweezers.webp"), x: -8, y: -60, width: 110, height: 52, transform: "rotate(-30)" }, st.drag.el);
         st.drag.el.setAttribute("transform", `translate(${p.x} ${p.y})`);
         b.el.setAttribute("opacity", 0.25);
         return;
@@ -501,7 +504,9 @@
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (!more && ctx.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
         // E8 (CLN-101): the bottle nozzle DOWN over the canal; the drop falls from the nozzle
-        const bottle = s("image", { href: url("assets/clinic/items-v2/eye-drops.webp"), x: CANAL.x - 23, y: CANAL.y - 196, width: 46, height: 92, transform: `rotate(180 ${CANAL.x} ${CANAL.y - 150})` }, S.fx);
+        // S02-E (E4): the art run's bottle held nozzle down (sheets.json drop-bottle "use-down"), else the old one turned over
+        const downArt = Kit && Kit.view ? Kit.view("drop-bottle", "use-down") : null;
+        const bottle = s("image", { href: url(downArt || "assets/clinic/items-v2/eye-drops.webp"), x: CANAL.x - 23, y: CANAL.y - 196, width: 46, height: 92, transform: downArt ? null : `rotate(180 ${CANAL.x} ${CANAL.y - 150})` }, S.fx);
         const d = s("ellipse", { cx: CANAL.x, cy: CANAL.y - 98, rx: 7, ry: 10, fill: "#6bb7ea" }, S.fx);
         d.animate([{ transform: "translateY(0)" }, { transform: "translateY(90px)", opacity: 0.2 }], { duration: 420, fill: "forwards" });
         ctx.after(480, () => (d.remove(), bottle.remove()));

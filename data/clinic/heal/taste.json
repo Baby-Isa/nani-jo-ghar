@@ -89,7 +89,7 @@
  "art": {
   "_about": "art plan pack clinic-heal-v3 (M2, O2, O3): used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units",
   "tongue": {
-   "src": "assets/clinic/closeups/{kind}/tongue.webp",
+   "src": "assets/clinic/closeups/{kind}/tongue-v2.webp",
    "ready": true,
    "box": [
     -58.4,
@@ -101,7 +101,9 @@
     "girl"
    ],
    "has2x": true,
-   "_a1": "A1 (5 Oct): M2's tongue (centre 764, 650 in the source, 460 wide) on the game's tongue (centre 400, 309, 276 wide) at 0.6, so every spot's hole sits on it."
+   "_a1": "A1 (5 Oct): M2's tongue (centre 764, 650 in the source, 460 wide) on the game's tongue (centre 400, 309, 276 wide) at 0.6, so every spot's hole sits on it.",
+   "src_v1": "assets/clinic/closeups/{kind}/tongue.webp",
+   "_s02": "S02-E (RM2, the redo: tighter, plain skin): the tongue sits within a few px of v1's (bbox 525-1003, 425-952 against 535-1009, 424-923), so the box stays"
   },
   "spot-red": {
    "src": "assets/clinic/heal-v3/spot-red.webp",
@@ -159,5 +161,12 @@
    "who": "patient",
    "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
- }
+ },
+ "assets": [
+  "assets/clinic/closeups/girl/tongue-v2.webp",
+  "assets/clinic/heal-v3/bud-ointment.webp",
+  "assets/clinic/items-v2/tumbler.webp",
+  "assets/clinic/sheets/bud/bud-pot-belt.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

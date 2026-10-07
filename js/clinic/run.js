@@ -20,7 +20,10 @@
   const R = (Clinic.Run = { data: null, log: [], last: null, opts: { speak: true, onboard: true } });
 
   R.load = async function () {
+    // decision 68: the clinic's own data at once, in parallel (the sheets map too); no game's code or pictures here
+    const sheets = Kit.loadJSON("data/clinic/sheets.json");
     await Clinic.HealHost.loadBase();
+    R.sheets = (await sheets) || null;
     const pj = await Kit.loadJSON("data/clinic/pipeline.json");
     R.data = PL().prepare(pj, Clinic.HealHost.clinic);
     // clinic v2: the item overrides (the apple, the tube, the torch) reach every picture; the new rooms
@@ -31,7 +34,9 @@
     R.bodyFile = Clinic.HealHost.bodyFile;
     return R;
   };
-  R.games = () => Clinic.Heal.ids();
+  // the healing games a plan may draw: the mode's list (js/clinic/main.js HEAL and PARKED, R.gameIds), loaded or not
+  // (decision 68: a game's code loads when it's chosen); the registered ones when no list is set (the heal host lab)
+  R.games = () => (R.gameIds && R.gameIds.length ? R.gameIds.slice() : Clinic.Heal.ids());
 
   /* ---------------- saved state ---------------- */
   // R5: the clinic's own namespace in the one save ("clinic": session, stage levels, album). No coins: they are the

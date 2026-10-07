@@ -320,13 +320,13 @@
  "art": {
   "_about": "art plan pack clinic-heal-v3: used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; eye = where the open eye is (the redrop)",
   "eyesSore": {
-   "src": "assets/clinic/closeups/{kind}/eyes-sore.webp",
+   "src": "assets/clinic/closeups/{kind}/eyes-v2-sore.webp",
    "ready": true,
    "box": [
-    -222.9,
-    -313.0,
-    1244.2,
-    829.4
+    -160.9,
+    -236.9,
+    1136.6,
+    757.8
    ],
    "_note": "Y2: the sore eye on the viewer's right (the patient's left): the code mirrors it for the other side",
    "kinds": [
@@ -335,22 +335,36 @@
    "has2x": true,
    "_a1": "A1 (5 Oct): Y2 at 0.81, its eyes' midpoint (769, 695 in the 1536 x 1024 source) on (400, 250), so the face leaves by the bottom too; eyes = where that puts the patient's right and left eye ([right x, left x, y]: the game's drops and dropper follow). The run framed Y1/Y2 wider than asked (redo list). The blink waits for Y3.",
    "eyes": [
+    164,
+    636,
+    230
+   ],
+   "src_v1": "assets/clinic/closeups/{kind}/eyes-sore.webp",
+   "box_v1": [
+    -222.9,
+    -313.0,
+    1244.2,
+    829.4
+   ],
+   "eyes_v1": [
     218,
     582,
     250
-   ]
+   ],
+   "_s02": "S02-E (RY1-RY3, the redo: tighter framing): the v2 pupils (439, 639 and 1077, 623 in the 1536 x 1024 source) at 0.74, so the picture still fills the view below 500 (to 521, as v1's reached 516); the eyes' targets move with them (v1's box and eyes kept as *_v1)"
   },
   "eyesClosed": {
-   "src": "assets/clinic/closeups/{kind}/eyes-closed.webp",
+   "src": "assets/clinic/closeups/{kind}/eyes-v2-closed.webp",
    "ready": true,
    "kinds": [
     "girl"
    ],
    "has2x": true,
-   "_a1": "A1 (5 Oct): Y3 on Y2's canvas: the blink after each drop."
+   "_a1": "A1 (5 Oct): Y3 on Y2's canvas: the blink after each drop.",
+   "src_v1": "assets/clinic/closeups/{kind}/eyes-closed.webp"
   },
   "testA": {
-   "src": "assets/clinic/closeups/{kind}/eyetest-a.webp",
+   "src": "assets/clinic/closeups/{kind}/eyetest-a-v2.webp",
    "ready": true,
    "box": [
     0,
@@ -359,14 +373,20 @@
     500
    ],
    "eye": [
-    243,
-    194
+    149,
+    208
    ],
    "kinds": [
     "girl"
    ],
    "has2x": true,
-   "_a1": "A1 (5 Oct): T1, mirrored in the cut so she looks at the chart (the run's picture looked away); slice-fitted into the left panel; eye = her open eye there."
+   "_a1": "A1 (5 Oct): T1, mirrored in the cut so she looks at the chart (the run's picture looked away); slice-fitted into the left panel; eye = her open eye there.",
+   "src_v1": "assets/clinic/closeups/{kind}/eyetest-a.webp",
+   "eye_v1": [
+    243,
+    194
+   ],
+   "_s02": "S02-E (RT1, the redo): the open eye looks a little to our right, past us at the chart, as drawn (v1 was mirrored for its gaze; v2 isn't): her open eye (390, 657 in the 1024 x 1536 source) at the box's slice scale 0.383"
   },
   "testB": {
    "src": "assets/clinic/closeups/{kind}/eyetest-b.webp",
@@ -458,13 +478,27 @@
    "_a2": "A2 (5 Oct): C2, the same chart turned on its easel; board = its four corners, so the rows are laid on it in perspective; lines are C1's."
   },
   "eyes": {
-   "src": "assets/clinic/closeups/{kind}/eyes.webp",
+   "src": "assets/clinic/closeups/{kind}/eyes-v2.webp",
    "ready": true,
    "kinds": [
     "girl"
    ],
    "has2x": true,
-   "_a1": "A1 (5 Oct): Y1, the clear eyes on Y2's canvas: fades in over the sore eye with each drop."
+   "_a1": "A1 (5 Oct): Y1, the clear eyes on Y2's canvas: fades in over the sore eye with each drop.",
+   "src_v1": "assets/clinic/closeups/{kind}/eyes.webp"
   }
- }
+ },
+ "assets": [
+  "assets/clinic/closeups/girl/eyes-v2-closed.webp",
+  "assets/clinic/closeups/girl/eyes-v2-sore.webp",
+  "assets/clinic/closeups/girl/eyes-v2.webp",
+  "assets/clinic/closeups/girl/eyetest-a-v2.webp",
+  "assets/clinic/items-v2/milk-jug.webp",
+  "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
+  "assets/clinic/sheets/drop-bottle/drop-bottle-use-down.webp",
+  "assets/cook/items/icon-cook-paani.webp",
+  "assets/cook/items/icon-veg-02.webp",
+  "assets/cook/items/icon-veg-03.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

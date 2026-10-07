@@ -318,5 +318,12 @@
    ],
    "has2x": true
   }
- }
+ },
+ "assets": [
+  "assets/clinic/closeups/child/knee-kick.webp",
+  "assets/clinic/closeups/child/knee.webp",
+  "assets/clinic/items-v2/bandage-roll.webp",
+  "assets/clinic/items-v2/reflex-hammer.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

@@ -200,7 +200,11 @@
  },
  "art": {
   "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
-  "cloth-dab": {"file": "assets/clinic/items-v2/cloth-dab.webp", "on": false, "why": "S1, CLN-99: the cloth in the hand while dabbing (art run s02)"},
+  "cloth-dab": {
+   "file": "assets/clinic/sheets/cloth/cloth-dab.webp",
+   "on": true,
+   "why": "S1, CLN-99: the cloth in the hand while dabbing (art run s02)"
+  },
   "forearm-graze": {
    "file": "assets/clinic/closeups/child/forearm.webp",
    "on": true,
@@ -237,5 +241,15 @@
    "has2x": true,
    "_a1": "A1 (5 Oct): the game draws its own graze, dirt and plasters, so the plain K1 is the limb (K3's graze would show twice); its knee's front (950, 390 in the source) at (440, 350), so both plaster patches (x 235 and 385) sit on bare skin. kinds: the child limbs' cloth is white (the girl's leggings) until the fabric tint is built."
   }
- }
+ },
+ "assets": [
+  "assets/clinic/closeups/child/knee.webp",
+  "assets/clinic/items-v2/water-jug.webp",
+  "assets/clinic/sheets/cloth/cloth-tool.webp",
+  "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
+  "assets/clinic/sheets/plaster-flat/plaster-flat-green.webp",
+  "assets/clinic/sheets/plaster-flat/plaster-flat-red.webp",
+  "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

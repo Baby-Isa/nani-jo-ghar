@@ -93,10 +93,26 @@
   }
  },
  "lines": {
-  "ear-tell": {"e": "I'm telling you", "who": "doctor", "_src": "English placeholder (to record), S02-C: the hearing test, T31 (the word follows as dots)"},
-  "ear-didhear": {"e": "Did you hear?", "who": "doctor", "_src": "English placeholder (to record), S02-C: the hearing test, T31"},
-  "ear-youtold": {"e": "You told me…", "who": "patient", "_src": "English placeholder (to record), S02-C: the hearing test, T31 (the child picks the picture for her)"},
-  "ear-more-drops": {"e": "A few more drops", "who": "doctor", "_src": "English placeholder (to record), S02-C: the hearing test, a wrong pick, T31"},
+  "ear-tell": {
+   "e": "I'm telling you",
+   "who": "doctor",
+   "_src": "English placeholder (to record), S02-C: the hearing test, T31 (the word follows as dots)"
+  },
+  "ear-didhear": {
+   "e": "Did you hear?",
+   "who": "doctor",
+   "_src": "English placeholder (to record), S02-C: the hearing test, T31"
+  },
+  "ear-youtold": {
+   "e": "You told me…",
+   "who": "patient",
+   "_src": "English placeholder (to record), S02-C: the hearing test, T31 (the child picks the picture for her)"
+  },
+  "ear-more-drops": {
+   "e": "A few more drops",
+   "who": "doctor",
+   "_src": "English placeholder (to record), S02-C: the hearing test, a wrong pick, T31"
+  },
   "heal-ear-side": {
    "voice": "patient",
    "k": "{side} {part}",
@@ -252,7 +268,11 @@
  },
  "art": {
   "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
-  "ear-bin": {"file": "assets/clinic/heal-v3/ear-bin.webp", "on": false, "why": "E4, CLN-101: the waste bin the wax goes into (art run s02)"},
+  "ear-bin": {
+   "file": "assets/clinic/sheets/bin/bin-three-q-open.webp",
+   "on": true,
+   "why": "E4, CLN-101: the waste bin the wax goes into (art run s02)"
+  },
   "ear": {
    "file": "assets/clinic/closeups/girl/ear.webp",
    "on": true,
@@ -317,5 +337,15 @@
    "2": 3,
    "3": 4
   }
- }
+ },
+ "assets": [
+  "assets/clinic/closeups/girl/ear.webp",
+  "assets/clinic/heal-v3/bud.webp",
+  "assets/clinic/heal-v3/wax-mid.webp",
+  "assets/clinic/sheets/bin/bin-three-q-open.webp",
+  "assets/clinic/sheets/bud/bud-pot-belt.webp",
+  "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
+  "assets/clinic/sheets/tweezers/tweezers-tool.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

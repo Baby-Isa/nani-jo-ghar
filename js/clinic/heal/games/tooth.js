@@ -180,8 +180,10 @@
       });
     };
     drawSpecks(false);
-    // the toothbrush (the clinic v2 art), its head on the front teeth, the handle out of the mouth
-    const BR = Object.assign({ src: "assets/clinic/items-v2/toothbrush.webp", size: [374, 291], head: [62, 52], w: 300 }, data.brush || {});
+    // the toothbrush (the clinic v2 art), its head on the front teeth, the handle out of the mouth; the art run's
+    // brusher's view (art "brushInMouth", E5b) with its own size and head once it's ready
+    const brushIn = art("brushInMouth");
+    const BR = Object.assign({ src: "assets/clinic/items-v2/toothbrush.webp", size: [374, 291], head: [62, 52], w: 300 }, data.brush || {}, brushIn ? { size: brushIn.size, head: brushIn.head, w: brushIn.w } : {});
     const brushG = s("g", {}, mouthG);
     const bW = BR.w;
     const bH = (BR.w * BR.size[1]) / BR.size[0];
@@ -189,7 +191,6 @@
     const hy = (BR.head[1] / BR.size[1]) * bH;
     // T1 (CLN-103): the brush turned so its head lies across the front teeth, the handle out of the corner of the mouth
     // (art id "toothbrush-in-mouth" from the art run, once ready: the bristles into the mouth)
-    const brushIn = art("brushInMouth");
     const brushImg = s("image", { href: url(brushIn ? brushIn.src : BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH, transform: brushIn ? null : `rotate(-12 ${M.x} ${M.y - 60})` }, brushG);
     void brushImg;
     // T9 (CLN-103): plaque on the teeth that clears where the brush goes (and the last of it when the brushing is done)
@@ -201,7 +202,34 @@
       plaque.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (12 + ctx.rng() * 7).toFixed(1), ry: (4 + ctx.rng() * 2).toFixed(1), fill: "#d6be5a", opacity: 0.55 }, plaqueG), gone: false });
     }
     mouthG.insertBefore(plaqueG, brushG);
+    /*
+     * S02-E (M3, M4; CLN-103, T9): the brushing has its own mouth, less open (art "mouthBrush"), and the plaque is the
+     * art run's picture registered on it (art "plaque"), wiped away under the brush through a mask; the drawn plaque
+     * spots stay as the record of what's been cleared (hidden). Both go when the view moves on to the sore tooth.
+     */
+    const mbArt = art("mouthBrush");
+    const plArt = mbArt && art("plaque");
+    let brushFace = null;
+    let wipeMask = null;
+    let plaqueImg = null;
+    if (mbArt) {
+      brushFace = s("g", { class: "tooth-mouth-brush" }, mouthG);
+      mouthG.insertBefore(brushFace, plaqueG);
+      const b = mbArt.box;
+      s("image", { href: url(mbArt.src), x: b[0], y: b[1], width: b[2], height: b[3], preserveAspectRatio: "none" }, brushFace);
+      if (plArt) {
+        const defs = s("defs", {}, brushFace);
+        const mk = s("mask", { id: `${uid}-wipe`, maskUnits: "userSpaceOnUse", x: b[0], y: b[1], width: b[2], height: b[3] }, defs);
+        s("rect", { x: b[0], y: b[1], width: b[2], height: b[3], fill: "#fff" }, mk);
+        wipeMask = mk;
+        plaqueImg = s("image", { href: url(plArt.src), x: b[0], y: b[1], width: b[2], height: b[3], preserveAspectRatio: "none", mask: `url(#${uid}-wipe)` }, brushFace);
+        plaqueG.setAttribute("opacity", 0);
+      }
+    }
+    const wipe = (x, y, r = 58) => wipeMask && s("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r, fill: "#000" }, wipeMask);
+    const plaqueGone = (ms = 600) => plaqueImg && plaqueImg.animate && plaqueImg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, fill: "forwards" });
     const scrub = (hx2, hy2) => {
+      wipe(hx2, hy2);
       plaque.forEach((q) => {
         if (q.gone || Math.hypot(q.x - hx2, q.y - hy2) > 64) return;
         q.gone = true;
@@ -382,6 +410,7 @@
         // the push-in: the mouth view zooms on the sore tooth, then the close is there (same place, same size)
         st.busy = true;
         brushG.setAttribute("opacity", 0);
+        if (brushFace) brushFace.setAttribute("opacity", 0);
         S.clear(foam); // the brushing's foam stays in the brushing (never into the drill's close-up)
         await camera(VB0, zoomBox(), 650);
         mouthG.setAttribute("opacity", 0);
@@ -507,7 +536,18 @@
       const [dx, dy] = SCREEN[m];
       if (!drag && brushG.animate) brushG.animate([{ transform: "translate(0,0)" }, { transform: `translate(${dx * 140}px,${dy * 70}px)` }, { transform: "translate(0,0)" }], { duration: 520 });
       scrub(M.x + dx * 120, M.y - 60 + dy * 60);
-      if (c.i === P.moves.length - 1) plaque.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 0.55 }, { opacity: 0 }], { duration: 600, fill: "forwards" })));
+      if (c.i === P.moves.length - 1) {
+        plaque.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 0.55 }, { opacity: 0 }], { duration: 600, fill: "forwards" })));
+        plaqueGone();
+      }
+      // E5b: an up or down stroke shows the brush tipped that way for the stroke
+      if (brushIn && (brushIn.up || brushIn.down) && dy) {
+        const tip = dy < 0 ? brushIn.up : brushIn.down;
+        if (tip) {
+          brushImg.setAttribute("href", url(tip));
+          ctx.after(520, () => brushImg.setAttribute("href", url(brushIn.src)));
+        }
+      }
       for (let k = 0; k < 3; k++) {
         const f = s("circle", { cx: M.x + dx * (30 + k * 25) + (ctx.rng() - 0.5) * 40, cy: M.y - 70 + dy * (20 + k * 18) + (ctx.rng() - 0.5) * 20, r: 9 + k * 3, fill: "#fff", opacity: 0.92 }, foam);
         ctx.after(1500, () => f.remove());

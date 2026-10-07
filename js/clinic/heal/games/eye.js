@@ -184,7 +184,9 @@
     }
     // the dropper (the clinic v2 eye drops), hanging over the sore eye once picked
     const dropper = s("g", { opacity: 0 }, S.fx);
-    s("image", { href: url("assets/clinic/items-v2/eye-drops.webp"), x: -30, y: -128, width: 60, height: 118, transform: "rotate(180 0 -69)" }, dropper);
+    // S02-E (E4): the art run's bottle held nozzle down (sheets.json drop-bottle "use-down"), else the old one turned over
+    const downArt = Kit0 && Kit0.view ? Kit0.view("drop-bottle", "use-down") : null;
+    s("image", { href: url(downArt || "assets/clinic/items-v2/eye-drops.webp"), x: -30, y: -128, width: 60, height: 118, transform: downArt ? null : "rotate(180 0 -69)" }, dropper);
     const ring = s("circle", { cx: 0, cy: 34, r: 40, fill: "none", stroke: "#f0b43c", "stroke-width": 6, opacity: 0 }, dropper); // round the eye
     let dropperAt = null;
     let bob = 0;

@@ -33,7 +33,10 @@
       // A2 (5 Oct): the patient's real art (heal-art.json, the front-on W1: the plan's diagnosis shot) when it's cut.
       // The art has sitting poses only, so with it the check-up (D3) is on the bed's edge too, not by the wall
       const artSpec = await S.artFor(env.fig && env.fig.kind);
-      const standing = plan.pose === "stand" && !artSpec;
+      // S02-E (W11, D3, CLN-93): her standing picture (heal-art.json patients[kind].stand: palms to us, so the hands,
+      // arms, knees and feet can all be tapped) once it's cut; the art without it stays sitting on the bed's edge
+      const standArt = plan.pose === "stand" && artSpec && artSpec.stand && artSpec.stand.front ? Object.assign({}, artSpec.stand, { heads: artSpec.stand.heads || artSpec.heads }) : null;
+      const standing = plan.pose === "stand" && (!artSpec || !!standArt);
       const stage = S.room(screen, standing ? "stand" : "exam");
       stage.dataset.variant = plan.variant;
       const box = stage.scene;
@@ -56,7 +59,7 @@
       layer.appendChild(fig.el);
       fig.pose(standing ? "stand" : "sit");
       // D1, CLN-93 (6 Oct): a bigger patient so her parts are easy to tap (her seat stays on the bed's edge)
-      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(artSpec, { view: "front", figH: cfg.fig.h / BIG }));
+      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(standArt || artSpec, { view: "front", figH: standArt ? cfg.fig.h : cfg.fig.h / BIG }));
       if (art) fig.tapAnchors = true;
       // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher); the art
       // sits by its measured seat line (the backs of the thighs on the mattress), as in the heal games

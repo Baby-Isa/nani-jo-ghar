@@ -82,7 +82,51 @@ function hookShared(Clinic) {
   if (G().Bulb && G().Bulb.KitBulb) Kit.Bulb = G().Bulb.KitBulb(Kit);
   if (G().Tally && G().Tally.KitTally) Kit.Tally = G().Tally.KitTally(Kit);
   if (G().Stage && S.useStage) S.useStage(G().Stage);
+  // S02-E (decision 65): the items' sprite sheets (data/clinic/sheets.json, loaded by Run.load): an old single-view
+  // picture is drawn as the sheet view that replaces it, wherever the clinic resolves a picture (Kit.url); a game asks
+  // for a view by name (Kit.view(item, view)) where it needs a working angle
+  if (Clinic.Run) Clinic.Run.gameIds = HEAL.concat(PARKED);
+  const base = Kit.url;
+  Kit.url = (u) => {
+    const m = Clinic.Run && Clinic.Run.sheets && Clinic.Run.sheets.remap;
+    return base(m && m[u] ? m[u] : u);
+  };
+  Kit.view = (item, view) => {
+    const v = Clinic.Run && Clinic.Run.sheets && Clinic.Run.sheets.views && Clinic.Run.sheets.views[item];
+    return (v && v[view]) || null;
+  };
 }
+
+/*
+ * Decision 68 (J11, S02-E): a healing game loads when it's chosen, never with the page: its code (js/clinic/heal/
+ * games/<id>.js), its data and its pictures (data/clinic/heal/<id>.json "assets", warmed into the browser's cache).
+ * prefetchGame starts all three without waiting (when a patient's plan is made, during the waiting room and the
+ * diagnosis; the next patient's while this one plays); loadGame waits for the code and data before the game mounts.
+ */
+const gameLoads = {};
+export function loadGame(id, doc = G().document) {
+  const Clinic = G().Clinic;
+  if (!id || !Clinic) return Promise.resolve(false);
+  if (gameLoads[id]) return gameLoads[id];
+  const Kit = Clinic.Kit;
+  const code = Clinic.Heal.has(id) ? Promise.resolve(true) : loadScript(doc, `${Kit.root || ""}js/clinic/heal/games/${id}.js`);
+  const data = Clinic.HealHost && Clinic.HealHost.gameData ? Clinic.HealHost.gameData(id) : Promise.resolve(null);
+  gameLoads[id] = Promise.all([code, data]).then(([, d]) => {
+    const pics = (d && Array.isArray(d.assets) && d.assets) || [];
+    const Img = G().Image;
+    if (Img)
+      pics.forEach((u) => {
+        if (typeof u !== "string" || u.includes("*")) return;
+        const im = new Img();
+        im.src = Kit.url(u);
+      });
+    return true;
+  });
+  return gameLoads[id];
+}
+export const prefetchGame = (id) => {
+  if (id) loadGame(id).catch(() => null);
+};
 
 async function ensureScreen(el, ctx) {
   const Clinic = G().Clinic;
@@ -93,8 +137,7 @@ async function ensureScreen(el, ctx) {
       const Kit = Clinic.Kit;
       if (Kit.root == null || Kit.root === "") Kit.root = rootFrom(el.ownerDocument.baseURI);
       hookShared(Clinic);
-      // every healing game that exists (clinic.html loads them itself; lab.html through here)
-      await Promise.all(HEAL.concat(PARKED).map((id) => (Clinic.Heal.has(id) ? true : loadScript(el.ownerDocument, `${Kit.root}js/clinic/heal/games/${id}.js`))));
+      // decision 68: no healing game loads here; each loads when its patient's plan is made (loadGame)
       await Clinic.Run.load();
       // the clinic's words: the language engine, loaded by Run.load (Clinic.HealHost.loadBase -> ClinicLang.ready; step 4e)
     })();
@@ -147,6 +190,8 @@ function roundFor(ctx, screen) {
     const ailment = heal ? P.ailmentsFor(R.data, 3, [heal]).find((a) => (R.data.ailments[a].from || 1) <= L) || P.ailmentsFor(R.data, 3, [heal])[0] : null;
     plan = P.patient(R.data, { rng, levels: p.levels || levelsAll(L), variants: p.variant ? { [p.stage || ctx.game]: p.variant } : {}, ailment, games, speak: R.opts.speak });
   }
+  // decision 68: this patient's healing game starts loading now, while the waiting room and the diagnosis play
+  if (plan.stages && plan.stages.heal) prefetchGame(plan.stages.heal.game);
   const env = R.env(screen, plan, { rng, onboard: p.onboard !== false && R.opts.onboard });
   screen.resetHints();
   screen.trayWrap.classList.add("hidden");
@@ -192,6 +237,8 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           const name = stage;
           const sp = plan.stages[name];
           if (name === "heal" && heal && sp.game !== heal) sp.game = heal;
+          if (name === "heal") await loadGame(sp.game, el.ownerDocument);
+          if (stopped) return;
           const res = await R.stage(screen, name, plan, env);
           S.current = null; // the stage is over: nothing is expected of the child until the next one says so
           if (stopped) return;
@@ -293,6 +340,9 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
   const outs = [];
   for (let i = 0; i < m.patients.length; i++) {
     const plan = m.patients[i];
+    // decision 68: the next patient's game loads in the background while this one plays
+    const nextPlan = m.patients[i + 1];
+    if (nextPlan && nextPlan.stages && nextPlan.stages.heal) G().setTimeout(() => prefetchGame(nextPlan.stages.heal.game), 8000);
     const stages = patientStages({ seed: Math.floor(rng() * 1e9) + 1, morning: i, levels: plan.levels });
     const acts = i < m.patients.length - 1 ? ["again", "next"] : ["again", "next"];
     const actions = endActions ? endActions(Object.fromEntries(acts.map((a) => [a, true]))) : acts.map((a, k) => ({ id: a, label: a, primary: k === acts.length - 1 }));

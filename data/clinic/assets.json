@@ -1,0 +1,9 @@
+{
+ "_about": "Decision 68 (J11): the pictures every clinic page may load (the rooms, the people, the shared items, the screen). A healing game declares its own in data/clinic/heal/<id>.json \"assets\". build/tools/review/loadcheck.mjs holds every clinic page to these.",
+ "shared": [
+  "assets/ui/**",
+  "assets/clinic/rooms/*",
+  "assets/clinic/patients/**",
+  "assets/clinic/rough/**"
+ ]
+}

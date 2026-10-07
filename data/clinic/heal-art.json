@@ -14,7 +14,7 @@
    "h": 472,
    "front": "assets/clinic/patients/girl/girl-front.webp",
    "blanket": "assets/clinic/patients/girl/girl-front-blanket.webp",
-   "bottle": "assets/clinic/patients/girl/girl-front-bottle.webp",
+   "bottle": "assets/clinic/patients/girl/girl-front-bottle-v2.webp",
    "faces": {
     "happy": "assets/clinic/patients/girl/girl-face-happy.webp",
     "sad": "assets/clinic/patients/girl/girl-face-sad.webp",
@@ -294,7 +294,112 @@
      0.955,
      0.022
     ]
-   }
+   },
+   "stand": {
+    "_s02": "S02-E (W11, W12; D3 and the send-off): standing, palms to us (front) and waving (wave), registered on the feet, one canvas; anchors measured on the cut as canvas fractions (the patient's own sides: left is the viewer's right); hands are both palms. No face layers: her standing faces are the pictures' own",
+    "canvas": [
+     827,
+     1460
+    ],
+    "src": [
+     97,
+     18
+    ],
+    "w": 358,
+    "h": 632,
+    "front": "assets/clinic/patients/girl/girl-stand-front.webp",
+    "wave": "assets/clinic/patients/girl/girl-stand-front-wave.webp",
+    "feet": 0.9733,
+    "anchors": {
+     "forehead": [
+      0.5,
+      0.13
+     ],
+     "eyes": [
+      0.5,
+      0.2
+     ],
+     "mouth": [
+      0.5,
+      0.255
+     ],
+     "head": [
+      0.5,
+      0.2
+     ],
+     "ear.left": [
+      0.72,
+      0.22
+     ],
+     "ear.right": [
+      0.27,
+      0.22
+     ],
+     "upperarm.left": [
+      0.68,
+      0.4
+     ],
+     "upperarm.right": [
+      0.32,
+      0.4
+     ],
+     "forearm.left": [
+      0.74,
+      0.49
+     ],
+     "forearm.right": [
+      0.26,
+      0.49
+     ],
+     "hand": [
+      0.86,
+      0.46
+     ],
+     "hand.left": [
+      0.86,
+      0.46
+     ],
+     "hand.right": [
+      0.14,
+      0.46
+     ],
+     "tummy": [
+      0.5,
+      0.56
+     ],
+     "knee.left": [
+      0.62,
+      0.8
+     ],
+     "knee.right": [
+      0.38,
+      0.8
+     ],
+     "foot.left": [
+      0.65,
+      0.93
+     ],
+     "foot.right": [
+      0.35,
+      0.93
+     ],
+     "seat": [
+      0.5,
+      0.7
+     ]
+    },
+    "faces": {},
+    "heads": {
+     "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",
+     "happy": "assets/clinic/patients/girl/girl-head-happy.webp",
+     "sad": "assets/clinic/patients/girl/girl-head-sad.webp",
+     "pain": "assets/clinic/patients/girl/girl-head-pain.webp",
+     "hot": "assets/clinic/patients/girl/girl-head-hot.webp",
+     "cold": "assets/clinic/patients/girl/girl-head-cold.webp"
+    }
+   },
+   "bottle-v1": "assets/clinic/patients/girl/girl-front-bottle.webp",
+   "_s02_bottle": "S02-E (RW10): the bottle hug redone at W1's exact size and feet (registered to W1, girl-front-bottle-v2); bottle-v1 kept"
   }
  },
  "closeups": {
@@ -374,7 +479,7 @@
     ]
    },
    "mouth": {
-    "file": "assets/clinic/closeups/girl/mouth.webp",
+    "file": "assets/clinic/closeups/girl/mouth-v2.webp",
     "size": [
      1536,
      1024
@@ -387,10 +492,12 @@
      0.0,
      1.0,
      1.0
-    ]
+    ],
+    "file_v1": "assets/clinic/closeups/girl/mouth.webp",
+    "_s02": "S02-E: the art run's redo (-v2, tighter framing), the v1 kept as file_v1"
    },
    "tongue": {
-    "file": "assets/clinic/closeups/girl/tongue.webp",
+    "file": "assets/clinic/closeups/girl/tongue-v2.webp",
     "size": [
      1536,
      1024
@@ -403,10 +510,12 @@
      0.0,
      1.0,
      1.0
-    ]
+    ],
+    "file_v1": "assets/clinic/closeups/girl/tongue.webp",
+    "_s02": "S02-E: the art run's redo (-v2, tighter framing), the v1 kept as file_v1"
    },
    "eyes": {
-    "file": "assets/clinic/closeups/girl/eyes.webp",
+    "file": "assets/clinic/closeups/girl/eyes-v2.webp",
     "size": [
      1536,
      1024
@@ -420,11 +529,15 @@
      0.9792,
      1.0
     ],
-    "sore": "assets/clinic/closeups/girl/eyes-sore.webp",
-    "closed": "assets/clinic/closeups/girl/eyes-closed.webp"
+    "sore": "assets/clinic/closeups/girl/eyes-v2-sore.webp",
+    "closed": "assets/clinic/closeups/girl/eyes-v2-closed.webp",
+    "file_v1": "assets/clinic/closeups/girl/eyes.webp",
+    "sore_v1": "assets/clinic/closeups/girl/eyes-sore.webp",
+    "closed_v1": "assets/clinic/closeups/girl/eyes-closed.webp",
+    "_s02": "S02-E: the art run's redo (-v2, tighter framing), the v1 kept as file_v1"
    },
    "eyetest-a": {
-    "file": "assets/clinic/closeups/girl/eyetest-a.webp",
+    "file": "assets/clinic/closeups/girl/eyetest-a-v2.webp",
     "size": [
      1024,
      1536
@@ -438,7 +551,9 @@
      0.9707,
      1.0
     ],
-    "mirrored": true
+    "mirrored": true,
+    "file_v1": "assets/clinic/closeups/girl/eyetest-a.webp",
+    "_s02": "S02-E: the art run's redo (-v2, tighter framing), the v1 kept as file_v1"
    },
    "eyetest-b": {
     "file": "assets/clinic/closeups/girl/eyetest-b.webp",

@@ -4335,7 +4335,7 @@
    }
   },
   "assets": {
-   "_about": "Decision 68 (J11, S02-E): what Cook loads, by screen. shared: the textures the scene preloads (the kitchen, Nani, the customers, the cousin's badge): nothing else loads at open. stations[key].props: the prop textures (assets/cook/props/<name>.webp, or the painted sprite data.art.sprites.props names) a station loads when it is chosen (Cook.Art.need, with its painted sprites data.art.sprites.need[key]); stations[key].files: the folders and files the station's own code may load (its art lists), which build/tools/review/loadcheck.mjs holds every page to. A station that loads anything outside shared + its own entry fails the load check.",
+   "_about": "Decision 68 (J11, S02-E): what Cook loads, by screen. shared: the textures the scene preloads (the kitchen, Nani, the customers, the cousin's badge): nothing else loads at open. stations[key].props: the prop textures (assets/cook/props/<name>.webp, or the painted sprite data.art.sprites.props names) a station loads when it is chosen (Cook.Art.need, with its painted sprites data.art.sprites.need[key]); stations[key].files: the folders and files the station's own code may load (its art lists); stations[key].prefetch: the files it shows first, warmed into the browser's cache while its order is read, which build/tools/review/loadcheck.mjs holds every page to. A station that loads anything outside shared + its own entry fails the load check.",
    "shared": {
     "images": {
      "bg-service": "assets/cook/bg/service.jpg",
@@ -4353,7 +4353,14 @@
      "cousin-neutral": "assets/cook/characters/cousin-neutral.webp",
      "cousin-impatient": "assets/cook/characters/cousin-impatient.webp",
      "cousin-badge": "assets/cook/characters/cousin-face.webp"
-    }
+    },
+    "files": [
+     "assets/cook/bg/service*",
+     "assets/cook/characters/*",
+     "assets/ui/**",
+     "assets/cook/bg/bg-cook-*-1600.webp"
+    ],
+    "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
    },
    "stations": {
     "fetch": {
@@ -4369,6 +4376,57 @@
       "chilli",
       "garlic",
       "elchi"
+     ],
+     "files": [
+      "assets/cook/bg/bg-pantry-v3-1600.webp",
+      "assets/cook/items/shelf-*",
+      "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
+      "assets/cook/items/vessel-milk-jug-f.webp",
+      "assets/cook/items/vessel-water-jug-f.webp"
+     ],
+     "prefetch": [
+      "assets/cook/bg/bg-pantry-v3-1600.webp",
+      "assets/cook/items/shelf-aadu-jar-v2-f.webp",
+      "assets/cook/items/shelf-cook-atto-bare-f.webp",
+      "assets/cook/items/shelf-cook-chai-bare-f.webp",
+      "assets/cook/items/shelf-cook-daal-bare-f.webp",
+      "assets/cook/items/shelf-cook-dudh-bare-f.webp",
+      "assets/cook/items/shelf-cook-khun-bare-f.webp",
+      "assets/cook/items/shelf-cook-paani-bare-f.webp",
+      "assets/cook/items/shelf-elchi-jar-v2-f.webp",
+      "assets/cook/items/shelf-fru-02-bare-f.webp",
+      "assets/cook/items/shelf-lasan-jar-v2-f.webp",
+      "assets/cook/items/shelf-loon-jar-v2-f.webp",
+      "assets/cook/items/shelf-ph-amli-bare-f.webp",
+      "assets/cook/items/shelf-ph-chana-bare-f.webp",
+      "assets/cook/items/shelf-ph-dahi-bare-f.webp",
+      "assets/cook/items/shelf-ph-dhana-bare-f.webp",
+      "assets/cook/items/shelf-ph-ghee-bare-f.webp",
+      "assets/cook/items/shelf-ph-keema-bare-f.webp",
+      "assets/cook/items/shelf-ph-lili-bare-f.webp",
+      "assets/cook/items/shelf-ph-meat-bare-f.webp",
+      "assets/cook/items/shelf-ph-pepper-bare-f.webp",
+      "assets/cook/items/shelf-ph-sev-bare-f.webp",
+      "assets/cook/items/shelf-spi-01-bare-f.webp",
+      "assets/cook/items/shelf-spi-02-bare-f.webp",
+      "assets/cook/items/shelf-spi-04-bare-f.webp",
+      "assets/cook/items/shelf-spi-05-bare-f.webp",
+      "assets/cook/items/shelf-veg-01-bare-f.webp",
+      "assets/cook/items/shelf-veg-02-bare-f.webp",
+      "assets/cook/items/shelf-veg-03-bare-f.webp",
+      "assets/cook/items/shelf-veg-10-bare-f.webp",
+      "assets/cook/items/shelf-veg-12-bare-f.webp",
+      "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
+      "assets/cook/items/vessel-milk-jug-f.webp",
+      "assets/cook/items/vessel-water-jug-f.webp",
+      "assets/cook/props/atto.webp",
+      "assets/cook/props/chilli.webp",
+      "assets/cook/props/daal-dry.webp",
+      "assets/cook/props/elchi.webp",
+      "assets/cook/props/garlic.webp",
+      "assets/cook/props/onion.webp",
+      "assets/cook/props/tea-tin.webp",
+      "assets/cook/props/tomato.webp"
      ]
     },
     "passme": {
@@ -4384,7 +4442,8 @@
       "chilli",
       "garlic",
       "elchi"
-     ]
+     ],
+     "files": []
     },
     "chai-tray": {
      "props": [
@@ -4392,6 +4451,68 @@
       "tea-tin",
       "milk-jug",
       "elchi"
+     ],
+     "files": [
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/chai-v2/*",
+      "assets/cook/items/v3/chai/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/*-bowl-t.webp",
+      "assets/cook/items/shelf-*",
+      "assets/cook/items/veg-*",
+      "assets/cook/items/vessel-milk-jug-f.webp",
+      "assets/cook/items/vessel-saucepan-t.webp",
+      "assets/cook/items/vessel-water-jug-f.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/chai-v2/glass-black-full.webp",
+      "assets/cook/items/chai-v2/glass-black-half.webp",
+      "assets/cook/items/chai-v2/glass-empty.webp",
+      "assets/cook/items/chai-v2/glass-full.webp",
+      "assets/cook/items/chai-v2/glass-half.webp",
+      "assets/cook/items/chai-v2/pan-pour-black.webp",
+      "assets/cook/items/chai-v2/pan-pour-milk.webp",
+      "assets/cook/items/chai-v2/pan-pour.webp",
+      "assets/cook/items/chai-v2/teaspoon-t.webp",
+      "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+      "assets/cook/items/dry-chai-leaves-bowl-t.webp",
+      "assets/cook/items/dry-khun-bowl-t.webp",
+      "assets/cook/items/shelf-aadu-jar-v2-f.webp",
+      "assets/cook/items/shelf-cook-chai-bare-f.webp",
+      "assets/cook/items/shelf-cook-dudh-bare-f.webp",
+      "assets/cook/items/shelf-cook-khun-bare-f.webp",
+      "assets/cook/items/shelf-cook-paani-bare-f.webp",
+      "assets/cook/items/shelf-elchi-jar-v2-f.webp",
+      "assets/cook/items/shelf-lasan-jar-v2-f.webp",
+      "assets/cook/items/shelf-loon-jar-v2-f.webp",
+      "assets/cook/items/spice-elchi-bowl-t.webp",
+      "assets/cook/items/spice-jeeru-bowl-t.webp",
+      "assets/cook/items/spice-loon-bowl-t.webp",
+      "assets/cook/items/spice-rai-bowl-t.webp",
+      "assets/cook/items/v3/chai/pan-boil-milky.webp",
+      "assets/cook/items/v3/chai/pan-boil-tea.webp",
+      "assets/cook/items/v3/chai/pan-empty.webp",
+      "assets/cook/items/v3/chai/pan-foam.webp",
+      "assets/cook/items/v3/chai/pan-leaves.webp",
+      "assets/cook/items/v3/chai/pan-milky.webp",
+      "assets/cook/items/v3/chai/pan-spiced.webp",
+      "assets/cook/items/v3/chai/pan-tea.webp",
+      "assets/cook/items/v3/chai/pan-water.webp",
+      "assets/cook/items/v3/hob/hob-1.webp",
+      "assets/cook/items/v3/hob/hob-2.webp",
+      "assets/cook/items/v3/hob/hob-3.webp",
+      "assets/cook/items/v3/hob/hob-4-v2.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/veg-aadu-grated-bowl-t.webp",
+      "assets/cook/items/veg-lasan-chopped-t.webp",
+      "assets/cook/items/vessel-milk-jug-f.webp",
+      "assets/cook/items/vessel-saucepan-t.webp",
+      "assets/cook/items/vessel-water-jug-f.webp",
+      "assets/cook/props/elchi.webp",
+      "assets/cook/props/tea-tin.webp"
      ]
     },
     "pour": {
@@ -4400,7 +4521,8 @@
       "tea-tin",
       "milk-jug",
       "elchi"
-     ]
+     ],
+     "files": []
     },
     "boil": {
      "props": [
@@ -4408,7 +4530,8 @@
       "tea-tin",
       "milk-jug",
       "elchi"
-     ]
+     ],
+     "files": []
     },
     "watch": {
      "props": [
@@ -4416,7 +4539,8 @@
       "tea-tin",
       "milk-jug",
       "elchi"
-     ]
+     ],
+     "files": []
     },
     "count": {
      "props": [
@@ -4424,7 +4548,8 @@
       "tea-tin",
       "milk-jug",
       "elchi"
-     ]
+     ],
+     "files": []
     },
     "add": {
      "props": [
@@ -4432,7 +4557,8 @@
       "tea-tin",
       "milk-jug",
       "elchi"
-     ]
+     ],
+     "files": []
     },
     "maani-line": {
      "props": [
@@ -4447,6 +4573,39 @@
       "chapati-raw-bajr",
       "chapati-half-bajr",
       "chapati-puffed-bajr"
+     ],
+     "files": [
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/v3/maani/*",
+      "assets/cook/items/maani-v2/thali.webp",
+      "assets/cook/items/vessel-tawa-t.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/maani-v2/thali.webp",
+      "assets/cook/items/v3/hob/hob-1.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/v3/maani/chakla.webp",
+      "assets/cook/items/v3/maani/dough-ball-millet.webp",
+      "assets/cook/items/v3/maani/dough-ball-wheat.webp",
+      "assets/cook/items/v3/maani/dough-pile-millet.webp",
+      "assets/cook/items/v3/maani/dough-pile-wheat.webp",
+      "assets/cook/items/v3/maani/maani-millet-burnt.webp",
+      "assets/cook/items/v3/maani/maani-millet-cooked.webp",
+      "assets/cook/items/v3/maani/maani-millet-half.webp",
+      "assets/cook/items/v3/maani/maani-millet-raw.webp",
+      "assets/cook/items/v3/maani/maani-wheat-burnt.webp",
+      "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
+      "assets/cook/items/v3/maani/maani-wheat-half.webp",
+      "assets/cook/items/v3/maani/maani-wheat-raw.webp",
+      "assets/cook/items/v3/maani/tawa.webp",
+      "assets/cook/items/v3/maani/turner.webp",
+      "assets/cook/items/v3/maani/velan.webp",
+      "assets/cook/items/vessel-tawa-t.webp",
+      "assets/cook/props/atto.webp"
      ]
     },
     "knead": {
@@ -4462,7 +4621,8 @@
       "chapati-raw-bajr",
       "chapati-half-bajr",
       "chapati-puffed-bajr"
-     ]
+     ],
+     "files": []
     },
     "roll": {
      "props": [
@@ -4477,7 +4637,8 @@
       "chapati-raw-bajr",
       "chapati-half-bajr",
       "chapati-puffed-bajr"
-     ]
+     ],
+     "files": []
     },
     "flip": {
      "props": [
@@ -4492,7 +4653,8 @@
       "chapati-raw-bajr",
       "chapati-half-bajr",
       "chapati-puffed-bajr"
-     ]
+     ],
+     "files": []
     },
     "tawa": {
      "props": [
@@ -4507,7 +4669,8 @@
       "chapati-raw-bajr",
       "chapati-half-bajr",
       "chapati-puffed-bajr"
-     ]
+     ],
+     "files": []
     },
     "roll-tawa": {
      "props": [
@@ -4522,7 +4685,8 @@
       "chapati-raw-bajr",
       "chapati-half-bajr",
       "chapati-puffed-bajr"
-     ]
+     ],
+     "files": []
     },
     "daar": {
      "props": [
@@ -4533,6 +4697,74 @@
       "chilli",
       "garlic",
       "daal-dry"
+     ],
+     "files": [
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/v3/daar/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/shelf-*",
+      "assets/cook/items/tool-knife-t-v2.webp",
+      "assets/cook/items/tool-knife-t.png",
+      "assets/cook/items/tool-knife-t.webp",
+      "assets/cook/items/veg-*"
+     ],
+     "prefetch": [
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/shelf-spi-01-bare-f.webp",
+      "assets/cook/items/shelf-spi-02-bare-f.webp",
+      "assets/cook/items/shelf-veg-12-bare-f.webp",
+      "assets/cook/items/tool-knife-t-v2.webp",
+      "assets/cook/items/tool-knife-t.png",
+      "assets/cook/items/tool-knife-t.webp",
+      "assets/cook/items/v3/daar/chop-heap-chilli.webp",
+      "assets/cook/items/v3/daar/chop-heap-onion.webp",
+      "assets/cook/items/v3/daar/chop-heap-tomato.webp",
+      "assets/cook/items/v3/daar/chop-piece-chilli.webp",
+      "assets/cook/items/v3/daar/chop-piece-onion.webp",
+      "assets/cook/items/v3/daar/chop-piece-tomato.webp",
+      "assets/cook/items/v3/daar/daar-bowl-trivet-plain.webp",
+      "assets/cook/items/v3/daar/daar-bowl-trivet.webp",
+      "assets/cook/items/v3/daar/dial-fast.webp",
+      "assets/cook/items/v3/daar/dial-slow.webp",
+      "assets/cook/items/v3/daar/dial-spill.webp",
+      "assets/cook/items/v3/daar/dial-stopped.webp",
+      "assets/cook/items/v3/daar/ladle-v2.webp",
+      "assets/cook/items/v3/daar/pot-chilli-only.webp",
+      "assets/cook/items/v3/daar/pot-chilli.webp",
+      "assets/cook/items/v3/daar/pot-daar.webp",
+      "assets/cook/items/v3/daar/pot-empty.webp",
+      "assets/cook/items/v3/daar/pot-oil.webp",
+      "assets/cook/items/v3/daar/pot-onion-chilli.webp",
+      "assets/cook/items/v3/daar/pot-onion.webp",
+      "assets/cook/items/v3/daar/pot-seeds.webp",
+      "assets/cook/items/v3/daar/pot-stir.webp",
+      "assets/cook/items/v3/daar/pot-tadka-v2.webp",
+      "assets/cook/items/v3/daar/pot-tadka.webp",
+      "assets/cook/items/v3/daar/pot-tomato-chilli.webp",
+      "assets/cook/items/v3/daar/pot-tomato-only.webp",
+      "assets/cook/items/v3/daar/pot-tomato.webp",
+      "assets/cook/items/v3/daar/trivet-t.webp",
+      "assets/cook/items/v3/daar/veg-bowl.webp",
+      "assets/cook/items/v3/hob/hob-1.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/veg-aadu-chopped-t.png",
+      "assets/cook/items/veg-aadu-whole-t.webp",
+      "assets/cook/items/veg-bataato-cubed-t.webp",
+      "assets/cook/items/veg-bataato-whole-t.webp",
+      "assets/cook/items/veg-dungri-whole-t.webp",
+      "assets/cook/items/veg-lasan-chopped-t.webp",
+      "assets/cook/items/veg-lasan-whole-t.webp",
+      "assets/cook/items/veg-marcha-whole-t.webp",
+      "assets/cook/items/veg-tameto-whole-t.webp",
+      "assets/cook/props/chilli.webp",
+      "assets/cook/props/daal-dry.webp",
+      "assets/cook/props/garlic.webp",
+      "assets/cook/props/knife.webp",
+      "assets/cook/props/onion.webp",
+      "assets/cook/props/pot.webp",
+      "assets/cook/props/tomato.webp"
      ]
     },
     "chop": {
@@ -4544,6 +4776,26 @@
       "chilli",
       "garlic",
       "daal-dry"
+     ],
+     "files": [
+      "assets/cook/items/tool-knife-t.webp",
+      "assets/cook/items/veg-*"
+     ],
+     "prefetch": [
+      "assets/cook/items/tool-knife-t.webp",
+      "assets/cook/items/veg-aadu-whole-t.webp",
+      "assets/cook/items/veg-bataato-whole-t.webp",
+      "assets/cook/items/veg-dungri-whole-t.webp",
+      "assets/cook/items/veg-lasan-whole-t.webp",
+      "assets/cook/items/veg-marcha-whole-t.webp",
+      "assets/cook/items/veg-tameto-whole-t.webp",
+      "assets/cook/props/chilli.webp",
+      "assets/cook/props/daal-dry.webp",
+      "assets/cook/props/garlic.webp",
+      "assets/cook/props/knife.webp",
+      "assets/cook/props/onion.webp",
+      "assets/cook/props/pot.webp",
+      "assets/cook/props/tomato.webp"
      ]
     },
     "tadka": {
@@ -4555,6 +4807,29 @@
       "chilli",
       "garlic",
       "daal-dry"
+     ],
+     "files": [
+      "assets/cook/items/*-bowl-t.webp",
+      "assets/cook/items/veg-*",
+      "assets/cook/items/vessel-pot-t.webp",
+      "assets/cook/items/vessel-tadka-pan-t.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/spice-hardar-bowl-t.webp",
+      "assets/cook/items/spice-jeeru-bowl-t.webp",
+      "assets/cook/items/spice-loon-bowl-t.webp",
+      "assets/cook/items/spice-rai-bowl-t.webp",
+      "assets/cook/items/topping-marcha-chopped-bowl-t.webp",
+      "assets/cook/items/veg-lasan-chopped-t.webp",
+      "assets/cook/items/vessel-pot-t.webp",
+      "assets/cook/items/vessel-tadka-pan-t.webp",
+      "assets/cook/props/chilli.webp",
+      "assets/cook/props/daal-dry.webp",
+      "assets/cook/props/garlic.webp",
+      "assets/cook/props/knife.webp",
+      "assets/cook/props/onion.webp",
+      "assets/cook/props/pot.webp",
+      "assets/cook/props/tomato.webp"
      ]
     },
     "stir": {
@@ -4566,55 +4841,168 @@
       "chilli",
       "garlic",
       "daal-dry"
+     ],
+     "files": [
+      "assets/cook/items/tool-ladle-t.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/tool-ladle-t.webp",
+      "assets/cook/props/chilli.webp",
+      "assets/cook/props/daal-dry.webp",
+      "assets/cook/props/garlic.webp",
+      "assets/cook/props/knife.webp",
+      "assets/cook/props/onion.webp",
+      "assets/cook/props/pot.webp",
+      "assets/cook/props/tomato.webp"
      ]
     },
     "assemble": {
      "props": [
       "onion",
       "chilli"
+     ],
+     "files": [
+      "assets/cook/items/v3/chaat/*"
+     ],
+     "prefetch": [
+      "assets/cook/items/v3/chaat/bowl-side-v2.webp",
+      "assets/cook/items/v3/chaat/pot-chana.webp",
+      "assets/cook/items/v3/chaat/pot-imli.webp",
+      "assets/cook/items/v3/chaat/pot-potato.webp",
+      "assets/cook/props/chilli.webp",
+      "assets/cook/props/onion.webp"
      ]
     },
     "fill": {
      "props": [
       "onion",
       "chilli"
-     ]
+     ],
+     "files": []
     },
     "fold": {
      "props": [
       "onion",
       "chilli"
-     ]
+     ],
+     "files": []
     },
     "fry": {
      "props": [
       "onion",
       "chilli"
-     ]
+     ],
+     "files": []
     },
     "samosa": {
      "props": [
       "onion",
       "chilli"
+     ],
+     "files": [
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/samosa-v2/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/v3/samosa/*",
+      "assets/cook/items/vessel-thali-t.png"
+     ],
+     "prefetch": [
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/samosa-v2/fry-0.webp",
+      "assets/cook/items/samosa-v2/fry-1.webp",
+      "assets/cook/items/samosa-v2/fry-2.webp",
+      "assets/cook/items/samosa-v2/fry-3.webp",
+      "assets/cook/items/v3/hob/hob-wide.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/v3/samosa/board.webp",
+      "assets/cook/items/v3/samosa/fill-chundo.webp",
+      "assets/cook/items/v3/samosa/fill-dhania.webp",
+      "assets/cook/items/v3/samosa/fold-v2-1.webp",
+      "assets/cook/items/v3/samosa/fold-v2-2.webp",
+      "assets/cook/items/v3/samosa/fold-v2-3.webp",
+      "assets/cook/items/v3/samosa/fold-v2-4.webp",
+      "assets/cook/items/v3/samosa/fold-v2-5.webp",
+      "assets/cook/items/v3/samosa/fold-v2-6.webp",
+      "assets/cook/items/v3/samosa/jharo.webp",
+      "assets/cook/items/v3/samosa/karahi.webp",
+      "assets/cook/items/v3/samosa/plate.webp",
+      "assets/cook/items/vessel-thali-t.png",
+      "assets/cook/props/chilli.webp",
+      "assets/cook/props/onion.webp"
      ]
     },
     "mishkaki-grill": {
      "props": [
       "onion",
       "tomato"
+     ],
+     "files": [
+      "assets/cook/items/sekelo/*",
+      "assets/cook/items/v3/sekelo/*",
+      "assets/cook/items/mishkaki-*",
+      "assets/cook/items/plate-enamel-empty-t.webp",
+      "assets/cook/items/skewer-empty-t.webp",
+      "assets/cook/items/tool-board-t.png",
+      "assets/cook/items/veg-*",
+      "assets/cook/items/vessel-katori-t.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/mishkaki-bataato-raw-t.webp",
+      "assets/cook/items/mishkaki-dungri-raw-t.webp",
+      "assets/cook/items/mishkaki-meat-raw-t.webp",
+      "assets/cook/items/mishkaki-pepper-raw-t.webp",
+      "assets/cook/items/mishkaki-tameto-raw-t.webp",
+      "assets/cook/items/plate-enamel-empty-t.webp",
+      "assets/cook/items/sekelo/grill-t.webp",
+      "assets/cook/items/sekelo/rack-t.webp",
+      "assets/cook/items/sekelo/stick-v.webp",
+      "assets/cook/items/skewer-empty-t.webp",
+      "assets/cook/items/tool-board-t.png",
+      "assets/cook/items/v3/sekelo/grill.webp",
+      "assets/cook/items/v3/sekelo/heap-meat.webp",
+      "assets/cook/items/v3/sekelo/heap-onion.webp",
+      "assets/cook/items/v3/sekelo/heap-potato.webp",
+      "assets/cook/items/v3/sekelo/heap-tomato.webp",
+      "assets/cook/items/v3/sekelo/meat-charred.webp",
+      "assets/cook/items/v3/sekelo/meat-grilled.webp",
+      "assets/cook/items/v3/sekelo/meat-raw.webp",
+      "assets/cook/items/v3/sekelo/onion-charred.webp",
+      "assets/cook/items/v3/sekelo/onion-grilled.webp",
+      "assets/cook/items/v3/sekelo/onion-raw.webp",
+      "assets/cook/items/v3/sekelo/plate-plain-t.webp",
+      "assets/cook/items/v3/sekelo/potato-charred.webp",
+      "assets/cook/items/v3/sekelo/potato-grilled.webp",
+      "assets/cook/items/v3/sekelo/potato-raw.webp",
+      "assets/cook/items/v3/sekelo/rack-0.webp",
+      "assets/cook/items/v3/sekelo/rack-1.webp",
+      "assets/cook/items/v3/sekelo/rack-2.webp",
+      "assets/cook/items/v3/sekelo/rack-3.webp",
+      "assets/cook/items/v3/sekelo/rack-4.webp",
+      "assets/cook/items/v3/sekelo/stick.webp",
+      "assets/cook/items/v3/sekelo/tomato-charred.webp",
+      "assets/cook/items/v3/sekelo/tomato-grilled.webp",
+      "assets/cook/items/v3/sekelo/tomato-raw.webp",
+      "assets/cook/items/veg-bataato-cubed-t.webp",
+      "assets/cook/items/vessel-katori-t.webp",
+      "assets/cook/props/onion.webp",
+      "assets/cook/props/tomato.webp"
      ]
     },
     "thread": {
      "props": [
       "onion",
       "tomato"
-     ]
+     ],
+     "files": []
     },
     "grill": {
      "props": [
       "onion",
       "tomato"
-     ]
+     ],
+     "files": []
     }
    }
   }

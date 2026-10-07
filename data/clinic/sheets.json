@@ -1,0 +1,207 @@
+{
+ "_about": "S02-E (decision 65): the clinic's items as sprite sheets (pack s02, build/tools/art/specs/s02.cut.json; E1-E17), one picture per view: views[item][view] -> file (belt: the pharmacy's belt, front and a little above; tray: top-down; tool: the heal games' tool column; use, use-down, ...: the working angle; the rest are spares). remap: an old single-view picture -> the sheet view that replaces it wherever the clinic draws it (Clinic.Kit.url, installed by js/clinic/main.js); the old files stay. Not remapped: the two-colour plasters (E2 split them across, not along: s02-redo-list.yaml) and the ceiling fan (R2 stays).",
+ "views": {
+  "bin": {
+   "front": "assets/clinic/sheets/bin/bin-front.webp",
+   "kidney-3q": "assets/clinic/sheets/bin/bin-kidney-3q.webp",
+   "kidney-top": "assets/clinic/sheets/bin/bin-kidney-top.webp",
+   "side": "assets/clinic/sheets/bin/bin-side.webp",
+   "three-q-open": "assets/clinic/sheets/bin/bin-three-q-open.webp",
+   "three-q": "assets/clinic/sheets/bin/bin-three-q.webp",
+   "tool": "assets/clinic/sheets/bin/bin-tool.webp",
+   "top-open": "assets/clinic/sheets/bin/bin-top-open.webp"
+  },
+  "brushing": {
+   "down-paste": "assets/clinic/sheets/brushing/brushing-down-paste.webp",
+   "down": "assets/clinic/sheets/brushing/brushing-down.webp",
+   "level-paste": "assets/clinic/sheets/brushing/brushing-level-paste.webp",
+   "level": "assets/clinic/sheets/brushing/brushing-level.webp",
+   "up-paste": "assets/clinic/sheets/brushing/brushing-up-paste.webp",
+   "up": "assets/clinic/sheets/brushing/brushing-up.webp"
+  },
+  "bud": {
+   "flat": "assets/clinic/sheets/bud/bud-flat.webp",
+   "ointment": "assets/clinic/sheets/bud/bud-ointment.webp",
+   "pot-belt": "assets/clinic/sheets/bud/bud-pot-belt.webp",
+   "pot-side": "assets/clinic/sheets/bud/bud-pot-side.webp",
+   "pot-tray": "assets/clinic/sheets/bud/bud-pot-tray.webp",
+   "use-down": "assets/clinic/sheets/bud/bud-use-down.webp",
+   "use": "assets/clinic/sheets/bud/bud-use.webp",
+   "wax": "assets/clinic/sheets/bud/bud-wax.webp"
+  },
+  "cloth": {
+   "belt": "assets/clinic/sheets/cloth/cloth-belt.webp",
+   "dab-3q": "assets/clinic/sheets/cloth/cloth-dab-3q.webp",
+   "dab-wet": "assets/clinic/sheets/cloth/cloth-dab-wet.webp",
+   "dab": "assets/clinic/sheets/cloth/cloth-dab.webp",
+   "flat": "assets/clinic/sheets/cloth/cloth-flat.webp",
+   "side": "assets/clinic/sheets/cloth/cloth-side.webp",
+   "tool": "assets/clinic/sheets/cloth/cloth-tool.webp",
+   "tray": "assets/clinic/sheets/cloth/cloth-tray.webp"
+  },
+  "desk-fan": {
+   "back": "assets/clinic/sheets/desk-fan/desk-fan-back.webp",
+   "belt": "assets/clinic/sheets/desk-fan/desk-fan-belt.webp",
+   "icon": "assets/clinic/sheets/desk-fan/desk-fan-icon.webp",
+   "side": "assets/clinic/sheets/desk-fan/desk-fan-side.webp",
+   "three-q": "assets/clinic/sheets/desk-fan/desk-fan-three-q.webp",
+   "top": "assets/clinic/sheets/desk-fan/desk-fan-top.webp",
+   "use-3q": "assets/clinic/sheets/desk-fan/desk-fan-use-3q.webp",
+   "use": "assets/clinic/sheets/desk-fan/desk-fan-use.webp"
+  },
+  "drop-bottle": {
+   "belt": "assets/clinic/sheets/drop-bottle/drop-bottle-belt.webp",
+   "cap-off": "assets/clinic/sheets/drop-bottle/drop-bottle-cap-off.webp",
+   "side": "assets/clinic/sheets/drop-bottle/drop-bottle-side.webp",
+   "squeeze": "assets/clinic/sheets/drop-bottle/drop-bottle-squeeze.webp",
+   "tool": "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
+   "tray": "assets/clinic/sheets/drop-bottle/drop-bottle-tray.webp",
+   "use-down": "assets/clinic/sheets/drop-bottle/drop-bottle-use-down.webp",
+   "use": "assets/clinic/sheets/drop-bottle/drop-bottle-use.webp"
+  },
+  "ear-bits": {
+   "bud-wax": "assets/clinic/sheets/ear-bits/ear-bits-bud-wax.webp",
+   "seed": "assets/clinic/sheets/ear-bits/ear-bits-seed.webp",
+   "wax-big": "assets/clinic/sheets/ear-bits/ear-bits-wax-big.webp",
+   "wax-drop": "assets/clinic/sheets/ear-bits/ear-bits-wax-drop.webp",
+   "wax-mid": "assets/clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
+   "wax-small": "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp"
+  },
+  "hand-fan": {
+   "room": "assets/clinic/sheets/hand-fan/hand-fan-room.webp",
+   "side": "assets/clinic/sheets/hand-fan/hand-fan-side.webp",
+   "three-q": "assets/clinic/sheets/hand-fan/hand-fan-three-q.webp",
+   "tool": "assets/clinic/sheets/hand-fan/hand-fan-tool.webp",
+   "tray": "assets/clinic/sheets/hand-fan/hand-fan-tray.webp",
+   "use-left": "assets/clinic/sheets/hand-fan/hand-fan-use-left.webp",
+   "use-right": "assets/clinic/sheets/hand-fan/hand-fan-use-right.webp",
+   "use": "assets/clinic/sheets/hand-fan/hand-fan-use.webp"
+  },
+  "heater": {
+   "3q-off": "assets/clinic/sheets/heater/heater-3q-off.webp",
+   "3q-on": "assets/clinic/sheets/heater/heater-3q-on.webp",
+   "back": "assets/clinic/sheets/heater/heater-back.webp",
+   "front-off": "assets/clinic/sheets/heater/heater-front-off.webp",
+   "front-on": "assets/clinic/sheets/heater/heater-front-on.webp",
+   "side-off": "assets/clinic/sheets/heater/heater-side-off.webp",
+   "side-on": "assets/clinic/sheets/heater/heater-side-on.webp",
+   "top": "assets/clinic/sheets/heater/heater-top.webp"
+  },
+  "hot-water-bottle": {
+   "back": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-back.webp",
+   "lying": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-lying.webp",
+   "room": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-room.webp",
+   "side": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-side.webp",
+   "stopper-off": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-stopper-off.webp",
+   "tool": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-tool.webp",
+   "tray": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-tray.webp",
+   "use": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-use.webp"
+  },
+  "jug": {
+   "cold-belt": "assets/clinic/sheets/jug/jug-cold-belt.webp",
+   "cold-pour": "assets/clinic/sheets/jug/jug-cold-pour.webp",
+   "cold-tray": "assets/clinic/sheets/jug/jug-cold-tray.webp",
+   "hot-belt": "assets/clinic/sheets/jug/jug-hot-belt.webp",
+   "hot-pour": "assets/clinic/sheets/jug/jug-hot-pour.webp",
+   "hot-tray": "assets/clinic/sheets/jug/jug-hot-tray.webp",
+   "warm-belt": "assets/clinic/sheets/jug/jug-warm-belt.webp",
+   "warm-pour": "assets/clinic/sheets/jug/jug-warm-pour.webp",
+   "warm-tray": "assets/clinic/sheets/jug/jug-warm-tray.webp"
+  },
+  "plaster-flat": {
+   "blue-green": "assets/clinic/sheets/plaster-flat/plaster-flat-blue-green.webp",
+   "blue": "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
+   "green": "assets/clinic/sheets/plaster-flat/plaster-flat-green.webp",
+   "red-blue": "assets/clinic/sheets/plaster-flat/plaster-flat-red-blue.webp",
+   "red-green": "assets/clinic/sheets/plaster-flat/plaster-flat-red-green.webp",
+   "red-yellow": "assets/clinic/sheets/plaster-flat/plaster-flat-red-yellow.webp",
+   "red": "assets/clinic/sheets/plaster-flat/plaster-flat-red.webp",
+   "skin": "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+   "yellow-blue": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow-blue.webp",
+   "yellow-green": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow-green.webp",
+   "yellow": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp"
+  },
+  "plaster": {
+   "belt": "assets/clinic/sheets/plaster/plaster-belt.webp",
+   "forearm": "assets/clinic/sheets/plaster/plaster-forearm.webp",
+   "knee": "assets/clinic/sheets/plaster/plaster-knee.webp",
+   "peel": "assets/clinic/sheets/plaster/plaster-peel.webp",
+   "side": "assets/clinic/sheets/plaster/plaster-side.webp",
+   "tool": "assets/clinic/sheets/plaster/plaster-tool.webp",
+   "tray": "assets/clinic/sheets/plaster/plaster-tray.webp",
+   "upperarm": "assets/clinic/sheets/plaster/plaster-upperarm.webp"
+  },
+  "syringe": {
+   "belt": "assets/clinic/sheets/syringe/syringe-belt.webp",
+   "filled": "assets/clinic/sheets/syringe/syringe-filled.webp",
+   "pressed": "assets/clinic/sheets/syringe/syringe-pressed.webp",
+   "side": "assets/clinic/sheets/syringe/syringe-side.webp",
+   "tool": "assets/clinic/sheets/syringe/syringe-tool.webp",
+   "tray": "assets/clinic/sheets/syringe/syringe-tray.webp",
+   "upright": "assets/clinic/sheets/syringe/syringe-upright.webp",
+   "use": "assets/clinic/sheets/syringe/syringe-use.webp"
+  },
+  "thermometer": {
+   "arm": "assets/clinic/sheets/thermometer/thermometer-arm.webp",
+   "belt": "assets/clinic/sheets/thermometer/thermometer-belt.webp",
+   "read": "assets/clinic/sheets/thermometer/thermometer-read.webp",
+   "side": "assets/clinic/sheets/thermometer/thermometer-side.webp",
+   "tool": "assets/clinic/sheets/thermometer/thermometer-tool.webp",
+   "tray": "assets/clinic/sheets/thermometer/thermometer-tray.webp",
+   "use-down": "assets/clinic/sheets/thermometer/thermometer-use-down.webp",
+   "use": "assets/clinic/sheets/thermometer/thermometer-use.webp"
+  },
+  "toothbrush": {
+   "belt": "assets/clinic/sheets/toothbrush/toothbrush-belt.webp",
+   "paste": "assets/clinic/sheets/toothbrush/toothbrush-paste.webp",
+   "side": "assets/clinic/sheets/toothbrush/toothbrush-side.webp",
+   "tool": "assets/clinic/sheets/toothbrush/toothbrush-tool.webp",
+   "tray": "assets/clinic/sheets/toothbrush/toothbrush-tray.webp",
+   "use-down": "assets/clinic/sheets/toothbrush/toothbrush-use-down.webp",
+   "use-up": "assets/clinic/sheets/toothbrush/toothbrush-use-up.webp",
+   "use": "assets/clinic/sheets/toothbrush/toothbrush-use.webp"
+  },
+  "tweezers": {
+   "belt": "assets/clinic/sheets/tweezers/tweezers-belt.webp",
+   "open": "assets/clinic/sheets/tweezers/tweezers-open.webp",
+   "side": "assets/clinic/sheets/tweezers/tweezers-side.webp",
+   "splinter": "assets/clinic/sheets/tweezers/tweezers-splinter.webp",
+   "tool": "assets/clinic/sheets/tweezers/tweezers-tool.webp",
+   "tray": "assets/clinic/sheets/tweezers/tweezers-tray.webp",
+   "use-45": "assets/clinic/sheets/tweezers/tweezers-use-45.webp",
+   "use": "assets/clinic/sheets/tweezers/tweezers-use.webp"
+  },
+  "wipe": {
+   "belt": "assets/clinic/sheets/wipe/wipe-belt.webp",
+   "flat": "assets/clinic/sheets/wipe/wipe-flat.webp",
+   "side": "assets/clinic/sheets/wipe/wipe-side.webp",
+   "three-q": "assets/clinic/sheets/wipe/wipe-three-q.webp",
+   "tool": "assets/clinic/sheets/wipe/wipe-tool.webp",
+   "torn": "assets/clinic/sheets/wipe/wipe-torn.webp",
+   "tray": "assets/clinic/sheets/wipe/wipe-tray.webp",
+   "use": "assets/clinic/sheets/wipe/wipe-use.webp"
+  }
+ },
+ "remap": {
+  "assets/clinic/items-v2/eye-drops.webp": "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
+  "assets/clinic/items-v2/tweezers.webp": "assets/clinic/sheets/tweezers/tweezers-tool.webp",
+  "assets/clinic/items-v2/cotton-buds.webp": "assets/clinic/sheets/bud/bud-pot-belt.webp",
+  "assets/clinic/items-v2/thermometer.webp": "assets/clinic/sheets/thermometer/thermometer-tool.webp",
+  "assets/clinic/items-v2/toothbrush.webp": "assets/clinic/sheets/toothbrush/toothbrush-tool.webp",
+  "assets/clinic/items-v2/syringe.webp": "assets/clinic/sheets/syringe/syringe-tool.webp",
+  "assets/clinic/items-v2/jug-hot.webp": "assets/clinic/sheets/jug/jug-hot-belt.webp",
+  "assets/clinic/items-v2/jug-cold.webp": "assets/clinic/sheets/jug/jug-cold-belt.webp",
+  "assets/clinic/items-v2/jug-lukewarm.webp": "assets/clinic/sheets/jug/jug-warm-belt.webp",
+  "assets/clinic/items-v2/cloth-blue.webp": "assets/clinic/sheets/cloth/cloth-tool.webp",
+  "assets/clinic/items-v2/desk-fan.webp": "assets/clinic/sheets/desk-fan/desk-fan-belt.webp",
+  "assets/clinic/room-items/hand-fan.webp": "assets/clinic/sheets/hand-fan/hand-fan-room.webp",
+  "assets/clinic/room-items/heater-off.webp": "assets/clinic/sheets/heater/heater-3q-off.webp",
+  "assets/clinic/room-items/heater-on.webp": "assets/clinic/sheets/heater/heater-3q-on.webp",
+  "assets/clinic/room-items/hot-water-bottle.webp": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-room.webp",
+  "assets/clinic/items-v2/plaster-red.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-red.webp",
+  "assets/clinic/items-v2/plaster-yellow.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp",
+  "assets/clinic/items-v2/plaster-blue.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
+  "assets/clinic/items-v2/plaster-green.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-green.webp",
+  "assets/clinic/items-v2/plaster-skin.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp"
+ }
+}

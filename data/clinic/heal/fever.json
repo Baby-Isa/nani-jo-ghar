@@ -200,5 +200,16 @@
    "who": "doctor",
    "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
- }
+ },
+ "assets": [
+  "assets/clinic/items-v2/blanket-red.webp",
+  "assets/clinic/room-items/fan-blades.webp",
+  "assets/clinic/room-items/fan-body.webp",
+  "assets/clinic/room-items/thermo-gauge.webp",
+  "assets/clinic/sheets/hand-fan/hand-fan-room.webp",
+  "assets/clinic/sheets/heater/heater-3q-off.webp",
+  "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-room.webp",
+  "assets/clinic/sheets/thermometer/thermometer-tool.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

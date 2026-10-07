@@ -6,7 +6,9 @@
  * words  the word lint's strict gate (check A, string literals in game code) on the folders in build/lint/words-gate.json "enforce";
  *        "ready" folders are reported but not enforced until their engine step reports 0 literals
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
- * Browser checks are not run here (one at a time under the lock, rule B16): build/check_stamps.mjs, build/lint/layout.test.mjs, the sandbox
+ * load   build/tools/review/loadcheck.mjs (decision 68, J11): every Cook station and clinic game page loads only the pictures
+ *        in its manifest (never another game's); a browser check, so it runs under the browser lock (B16), about 3 minutes
+ * Other browser checks are not run here (one at a time under the lock, rule B16): build/check_stamps.mjs, build/lint/layout.test.mjs, the sandbox
  * (`touched.mjs` prints the command), and the leak bots (`leak.mjs --list`; leak.mjs cook needs a browser).
  */
 import { spawnSync } from "node:child_process";
@@ -16,7 +18,7 @@ import { args, help, ROOT } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
-const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "bump"];
+const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "bump", "load"];
 const run = (cmd, argv) => spawnSync(cmd, argv, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
 const ls = (dir, ok) => readdirSync(join(ROOT, dir)).filter(ok).map((f) => join(dir, f));
 const results = [];
@@ -40,5 +42,11 @@ if (only.includes("words")) {
 if (only.includes("bump")) {
   const r = run("python3", ["build/bump_version.py", "--dry-run"]);
   note("bump", r.status === 0 && !/Traceback/.test(r.stderr), r.status === 0 ? `dry run lists ${((r.stdout.split("\n")[0].match(/\.html|\.css|\.js/g)) || []).length} files, ${(/import map: (\d+) modules/.exec(r.stdout) || [0, "?"])[1]} modules` : "bump_version.py failed");
+}
+if (only.includes("load")) {
+  const r = run("flock", ["-w", "1800", "/tmp/njg-browser.lock", "timeout", "900", process.execPath, "build/tools/review/loadcheck.mjs"]);
+  const last = (r.stdout.trim().split("\n").pop() || "").trim();
+  note("load", r.status === 0, last || `loadcheck exited ${r.status}`);
+  if (r.status !== 0) console.log((r.stdout.match(/^(FAIL.*|\s{7}assets\/.*)$/gm) || []).slice(0, 10).map((l) => "     " + l.trim()).join("\n"));
 }
 process.exit(results.every(Boolean) ? 0 : 1);

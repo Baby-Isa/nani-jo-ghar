@@ -163,11 +163,19 @@
  },
  "art": {
   "_about": "The art plan's D1 and D2 (docs/design-language/art-plans/clinic-heal-art-plan.md §8), swapped in by file name when they exist; until then the code-drawn machine, levers, drops and syringe. The levers, drops and the two-layer syringe need their cut positions (tube, socket, spout) before they replace the drawn ones.",
-  "alcohol-wipe": {"file": "assets/clinic/items-v2/alcohol-wipe.webp", "on": false, "why": "B4, CLN-106: the alcohol wipe (art run s02)"},
+  "alcohol-wipe": {
+   "file": "assets/clinic/sheets/wipe/wipe-tool.webp",
+   "on": true,
+   "why": "B4, CLN-106: the alcohol wipe (art run s02)"
+  },
   "machine": "assets/clinic/heal-v3/drop-machine.webp"
  },
  "lines": {
-  "boing-jab-goal": {"e": "Time for the jab", "who": "doctor", "_src": "English placeholder (to record), S02-C: T34, the boing card headline"},
+  "boing-jab-goal": {
+   "e": "Time for the jab",
+   "who": "doctor",
+   "_src": "English placeholder (to record), S02-C: T34, the boing card headline"
+  },
   "boing-why": {
    "e": "Time for my jab.",
    "who": "patient",
@@ -178,5 +186,14 @@
    "who": "doctor",
    "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
- }
+ },
+ "assets": [
+  "assets/clinic/heal-v3/drop-machine.webp",
+  "assets/clinic/items-v2/apple.webp",
+  "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
+  "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+  "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp",
+  "assets/clinic/sheets/wipe/wipe-tool.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

@@ -105,19 +105,27 @@
  "art": {
   "_about": "art plan pack clinic-heal-v3: each slot is used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; tip = the nozzle's tip in its own drawn size. Until then the game draws stand-ins.",
   "mouth": {
-   "src": "assets/clinic/closeups/{kind}/mouth.webp",
+   "src": "assets/clinic/closeups/{kind}/mouth-v2.webp",
    "ready": true,
    "box": [
-    -131.3,
-    -44.3,
-    1059.8,
-    706.6
+    -49.0,
+    -21.3,
+    890.9,
+    593.9
    ],
    "kinds": [
     "girl"
    ],
    "has2x": true,
-   "_a1": "A1 (5 Oct): M1's upper teeth (centre 770, 312 in the 1536 x 1024 source, about 480 wide) on the game's upper row (centre 400, 171, 330 wide) at 0.69; the ears and plaits fall off screen, the cheeks fill the sides. The drill view stays drawn."
+   "_a1": "A1 (5 Oct): M1's upper teeth (centre 770, 312 in the 1536 x 1024 source, about 480 wide) on the game's upper row (centre 400, 171, 330 wide) at 0.69; the ears and plaits fall off screen, the cheeks fill the sides. The drill view stays drawn.",
+   "src_v1": "assets/clinic/closeups/{kind}/mouth.webp",
+   "box_v1": [
+    -131.3,
+    -44.3,
+    1059.8,
+    706.6
+   ],
+   "_s02": "S02-E (RM1, the redo: tighter framing, no ears or plaits): v2's upper teeth (centre 774, 335, about 570 wide) on the same upper row (centre 400, 173) at 0.58 (v1's box kept as box_v1)"
   },
   "decay1": {
    "src": "assets/clinic/heal-v3/decay-1.webp",
@@ -161,6 +169,46 @@
    "src": "assets/clinic/heal-v3/filling-patch.webp",
    "ready": true,
    "_a2": "A2 (5 Oct): O2's white filling, laid inside each drilled patch's outline as the paste goes in"
+  },
+  "mouthBrush": {
+   "src": "assets/clinic/closeups/{kind}/mouth-brush.webp",
+   "ready": true,
+   "box": [
+    -462,
+    -314,
+    1720,
+    1147
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_s02": "S02-E (M3, CLN-103): the mouth less open for the brushing (teeth a third of the mouth's height): its teeth (x 601-940, y 398-501 of the 1536 x 1024 source) on the brushing row (centre 400, 190, about 380 wide) at 1.12. Shown for the brush step only; the drill and fill keep M1."
+  },
+  "plaque": {
+   "src": "assets/clinic/closeups/{kind}/mouth-brush-plaque.webp",
+   "ready": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_s02": "S02-E (M4, T9): the plaque picture, registered to M3 (same box): drawn over it and wiped away where the brush goes (a mask), the last of it at the brushing's end"
+  },
+  "brushInMouth": {
+   "src": "assets/clinic/sheets/brushing/brushing-level.webp",
+   "ready": true,
+   "size": [
+    490,
+    125
+   ],
+   "head": [
+    70,
+    55
+   ],
+   "w": 330,
+   "up": "assets/clinic/sheets/brushing/brushing-up.webp",
+   "down": "assets/clinic/sheets/brushing/brushing-down.webp",
+   "_s02": "S02-E (E5b, CLN-103): the brusher's view of the toothbrush, level; up and down are the same brush tipped 30 degrees for an up or down stroke (their own canvases: up 471 x 220, down 472 x 194, the head at the left)"
   }
  },
  "camera": {
@@ -174,7 +222,11 @@
   "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
  },
  "lines": {
-  "tooth-ow": {"e": "Ow!", "who": "patient", "_src": "English placeholder (to record), S02-C: T4, drilling outside the line (Mum: ow)"},
+  "tooth-ow": {
+   "e": "Ow!",
+   "who": "patient",
+   "_src": "English placeholder (to record), S02-C: T4, drilling outside the line (Mum: ow)"
+  },
   "tooth-why": {
    "e": "My tooth hurts.",
    "who": "patient",
@@ -200,5 +252,17 @@
    "who": "patient",
    "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
   }
- }
+ },
+ "assets": [
+  "assets/clinic/closeups/girl/mouth-brush-plaque.webp",
+  "assets/clinic/closeups/girl/mouth-brush.webp",
+  "assets/clinic/closeups/girl/mouth-v2.webp",
+  "assets/clinic/heal-v3/decay-1.webp",
+  "assets/clinic/heal-v3/filling-button-down.webp",
+  "assets/clinic/heal-v3/filling-button-up.webp",
+  "assets/clinic/heal-v3/filling-nozzle.webp",
+  "assets/clinic/items-v2/dentist-drill.webp",
+  "assets/clinic/sheets/brushing/brushing-level.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

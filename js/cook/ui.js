@@ -2254,6 +2254,9 @@
   UI.panel = function (html, opts = {}) {
     const o = $("#overlay");
     o.classList.remove("hidden");
+    // S02-E (decision 64): the title shows the redrawn kitchen once it has landed (the old photo isn't fetched)
+    const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+    o.style.backgroundImage = opts.title && kt && kt.ready && kt.file ? `url("${Cook.v(kt.file)}")` : "";
     o.classList.toggle("title-mode", !!opts.title);
     const p = $("#panel");
     p.innerHTML = html;

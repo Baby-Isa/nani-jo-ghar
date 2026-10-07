@@ -330,9 +330,10 @@
   const what = Q.get("stage") || (Q.get("patient") ? "patient" : Q.get("morning") ? "morning" : null);
   if (Q.get("level")) $("lab-level").value = Q.get("level");
   if (Q.get("seed")) $("lab-seed").value = Q.get("seed");
-  // the classic scripts and the clinic's data first, so the first stage starts at once
-  await Promise.all(CM.HEAL.concat(CM.PARKED).map((id) => new Promise((res) => { const s = document.createElement("script"); s.src = njgV(`js/clinic/heal/games/${id}.js`); s.onload = s.onerror = () => res(); document.body.appendChild(s); })));
+  // the clinic's data first, so the first stage starts at once; a healing game's code and pictures load when its patient
+  // is chosen (decision 68: js/clinic/main.js loadGame), never all twelve with the page
   await Run.load();
+  if (Q.get("game")) CM.prefetchGame(Q.get("game"));
   C.ready = true;
   if (what) {
     $("lab-what").value = what;
