@@ -21,7 +21,8 @@
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
   const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, drops: { 1: [2, 3, 4], 2: [3, 4, 5] }, colours: ["red", "yellow", "blue", "green"], tubes: { 3: 4 }, one: "purple", maxDrops: 5 };
-  const WHY = { problem: "boing-why", goal: "boing-goal" }; // line keys in data/clinic/heal/boing.json (the engine says them)
+  // line keys in data/clinic/heal/boing.json (the engine says them); T34: the headline is [Time for the jab] (to record)
+  const WHY = { problem: "boing-why", goal: "boing-jab-goal" };
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     wipe: { gesture: "tap", then: "tap" },
@@ -192,7 +193,7 @@
       st.judged[id] = ok;
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
-    const TOOL = { wipe: "cotton", plaster: "plaster" };
+    const TOOL = { wipe: "cotton", plaster: "plaster-skin" };
     const addRows = (c) => {
       (c.rows || [c.row]).filter(Boolean).forEach((r) => ctx.card.addRow(r));
     };
@@ -242,6 +243,31 @@
       if (cur()) open();
       else finish();
     };
+    // B2: a cartoon "boing" (a springy pitch wobble), made here; quiet in tests
+    const boingSound = () => {
+      try {
+        if (fast() || (Kit && Kit.Voice && Kit.Voice.quiet)) return;
+        const AC = root.AudioContext || root.webkitAudioContext;
+        if (!AC) return;
+        const c = (boingSound.ctx = boingSound.ctx || new AC());
+        const o = c.createOscillator();
+        const g = c.createGain();
+        const t = c.currentTime;
+        o.type = "sine";
+        o.frequency.setValueAtTime(180, t);
+        o.frequency.exponentialRampToValueAtTime(520, t + 0.08);
+        for (let k = 0; k < 6; k++) o.frequency.setValueAtTime(k % 2 ? 300 : 420, t + 0.1 + k * 0.06);
+        o.frequency.exponentialRampToValueAtTime(200, t + 0.5);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.25, t + 0.03);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+        o.connect(g).connect(c.destination);
+        o.start(t);
+        o.stop(t + 0.6);
+      } catch (e) {
+        /* no sound */
+      }
+    };
     const countdown = async () => {
       st.busy = true;
       glow.getAnimations && glow.getAnimations().forEach((a) => a.cancel());
@@ -260,21 +286,25 @@
         await S.say(HS.L.num(k, { cap: true }), "doctor");
       }
       S.clear(countG);
-      // BOING: a comic starburst (no written word), the arm jumps, the needle goes in and out
-      const burst = s("g", { transform: `translate(${A.x} ${A.y - 90})` }, countG);
-      const pts = [];
-      for (let k = 0; k < 16; k++) {
-        const r = k % 2 ? 34 : 70;
-        const a = (Math.PI * 2 * k) / 16;
-        pts.push(`${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r).toFixed(1)}`);
+      // B2 (CLN-106): a FUNNY jab, never a flash: the syringe boings on a spring (squash and stretch), a cartoon
+      // "boing" sound, little hearts and stars pop round the spot, and she giggles (no starburst, no "ouch")
+      if (syG.animate) syG.animate([{ transform: "scale(1, 1)" }, { transform: "scale(1.15, .7)" }, { transform: "scale(.9, 1.2)" }, { transform: "scale(1.05, .92)" }, { transform: "scale(1, 1)" }], { duration: fast() ? 60 : 700, composite: "add" });
+      boingSound();
+      const fun = s("g", {}, countG);
+      for (let k = 0; k < 7; k++) {
+        const a = -Math.PI / 2 + (k - 3) * 0.42;
+        const g = s("g", {}, fun);
+        if (k % 2) s("path", { d: "M0 -6 C-6 -14 -16 -6 0 6 C16 -6 6 -14 0 -6Z", fill: "#f28aa0", stroke: "#c95a78", "stroke-width": 2 }, g);
+        else s("path", { d: "M0 -10 L3 -3 L10 -3 L4 2 L6 9 L0 5 L-6 9 L-4 2 L-10 -3 L-3 -3Z", fill: "#ffd84a", stroke: "#e8a02f", "stroke-width": 2 }, g);
+        const x1 = A.x + Math.cos(a) * 90;
+        const y1 = A.y - 40 + Math.sin(a) * 90;
+        if (g.animate) g.animate([{ transform: `translate(${A.x}px, ${A.y - 30}px) scale(.2)`, opacity: 0 }, { transform: `translate(${x1}px, ${y1}px) scale(1.3)`, opacity: 1 }, { transform: `translate(${x1}px, ${y1 - 20}px) scale(1)`, opacity: 0 }], { duration: fast() ? 60 : 900, fill: "forwards" });
+        else g.setAttribute("transform", `translate(${x1} ${y1})`);
       }
-      s("polygon", { points: pts.join(" "), fill: "#ffd84a", stroke: "#e8872f", "stroke-width": 5 }, burst);
-      burst.animate && burst.animate([{ transform: `translate(${A.x}px, ${A.y - 90}px) scale(.2)` }, { transform: `translate(${A.x}px, ${A.y - 90}px) scale(1.15)` }, { transform: `translate(${A.x}px, ${A.y - 90}px) scale(1)` }], { duration: 350, fill: "forwards" });
-      armG.animate && armG.animate([{ transform: "translateY(0)" }, { transform: "translateY(-16px)" }, { transform: "translateY(8px)" }, { transform: "translateY(0)" }], { duration: 500 });
+      armG.animate && armG.animate([{ transform: "translateY(0)" }, { transform: "translateY(-10px)" }, { transform: "translateY(5px)" }, { transform: "translateY(0)" }], { duration: 500 });
       S.clear(dropG); // the medicine is in
       plunger.setAttribute("opacity", 0);
-      S.face("ouch", 700);
-      ctx.sfx("pop");
+      S.face("giggle", 900);
       ctx.after(fast() ? 100 : 900, () => {
         S.clear(countG);
         if (move) move.cancel();
@@ -294,7 +324,14 @@
     };
 
     const IMG = "assets/clinic/items-v2/";
-    S.tools([{ id: "cotton", img: IMG + "cotton-buds.webp", glyph: "•" }, { id: "plaster", img: IMG + "plaster-skin.webp", glyph: "•" }], () => {
+    // B4 (CLN-106): an alcohol wipe, not a cotton bud (art id "alcohol-wipe", the art run; a drawn sachet until then);
+    // B6: three plasters to choose from (any is fine: a choice, not a test)
+    const wipeArt = ART["alcohol-wipe"] && ART["alcohol-wipe"].on ? ART["alcohol-wipe"].file : null;
+    const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
+    const PLASTERS = ["skin", "blue", "yellow"];
+    st.plaster = null;
+    S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: `${IMG}plaster-${c}.webp`, glyph: "•" }))), (id) => {
+      if (/^plaster-/.test(id)) st.plaster = id.slice(8);
       const c = cur();
       if (st.over || st.busy || !c) return;
     });
@@ -384,12 +421,15 @@
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         shine.setAttribute("opacity", Math.min(0.3, st.wipes * 0.08));
-        const w = s("ellipse", { cx: p.x, cy: p.y, rx: 22, ry: 14, fill: "#fff", opacity: 0.55 }, S.fx);
-        ctx.after(400, () => w.remove());
+        // B4: the wipe in the hand sweeps across the spot (a wipe, not a dab)
+        const w = s("image", { href: wipeArt && Kit ? Kit.url(wipeArt) : WIPE_SVG, x: A.x - 34, y: A.y - 34, width: 68, height: 68 }, S.fx);
+        if (w.animate) w.animate([{ transform: "translate(-40px, 6px) rotate(-8deg)" }, { transform: "translate(40px, -6px) rotate(8deg)" }, { transform: "translate(-20px, 4px) rotate(-4deg)" }], { duration: fast() ? 60 : 450, fill: "forwards" });
+        ctx.after(fast() ? 80 : 480, () => w.remove());
         S.face("happy", 400);
-      } else if (c.kind === "plaster" && S.sel === "plaster" && Math.hypot(p.x - A.x, p.y - A.y) < 70) {
-        s("rect", { x: A.x - 40, y: A.y - 20, width: 80, height: 40, rx: 12, fill: "#f2d2a8", stroke: "#b98a60", "stroke-width": 2 }, markG);
-        s("rect", { x: A.x - 12, y: A.y - 10, width: 24, height: 20, rx: 4, fill: "#fff", opacity: 0.6 }, markG);
+      } else if (c.kind === "plaster" && /^plaster-/.test(S.sel || "") && Math.hypot(p.x - A.x, p.y - A.y) < 70) {
+        // B6: the plaster she was given (the picture of the one picked)
+        const kind = S.sel.slice(8);
+        s("image", { href: Kit ? Kit.url(`${IMG}plaster-${kind}.webp`) : `${IMG}plaster-${kind}.webp`, x: A.x - 52, y: A.y - 26, width: 104, height: 52 }, markG);
         spot.setAttribute("opacity", 0);
         shine.setAttribute("opacity", 0);
         ctx.after(250, () => close());
@@ -436,7 +476,7 @@
             return at(levers[want].kx, levers[want].y, `lever ${want}`);
           }
           if (c.kind === "press") return at(syCx, SY.y - 47, "press the glowing end");
-          if (c.kind === "plaster") return S.sel !== "plaster" ? tool("plaster") : at(A.x, A.y, "plaster");
+          if (c.kind === "plaster") return !/^plaster-/.test(S.sel || "") ? tool("plaster-skin") : at(A.x, A.y, "plaster");
           return { do: "wait" };
         },
         slip() {
