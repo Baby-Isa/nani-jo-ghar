@@ -29,8 +29,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       const options = [want].concat(St.lookalikes(want, k.options - 1));
       const prevExpect = Cook.expect;
-      const relaxed = Cook.save.mode !== "busy";
-      if (relaxed) Cook.paused = true;
+      // T19 (MAA-14): she comes on screen and the game pauses (in either setting) while she asks
+      Cook.paused = true;
       Cook.sfx.pop();
       Cook.markSeen(want);
       Cook.interrupting = true;
@@ -44,6 +44,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         Cook.interrupting = false;
         Cook.paused = false;
       }
+      // out of time: her impatient face, and no coins for it (nothing else is lost)
+      if (r.late) z.listen(false, `pass me ${want} (too slow)`);
       if (r.misses) Cook.markMiss(want);
       else Cook.markRight(want);
       z.listen(r.misses === 0, `pass me ${want}`);

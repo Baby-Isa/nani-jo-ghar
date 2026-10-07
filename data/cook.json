@@ -708,8 +708,9 @@
    "free": false,
    "how": "Listen to what Nani needs, then tap each one into the basket.",
    "headline": {
-    "line": "headline-pantry",
-    "line_plain": "headline-pantry-plain"
+    "line": "headline-give",
+    "line_plain": "headline-give",
+    "_was": "headline-pantry / -plain (Bring me these for {dish}); T1: Muke de"
    },
    "lists": {
     "basics": [
@@ -4441,7 +4442,10 @@
   "coachSteps": 4,
   "uiAfter": {
    "bulb": 2
-  }
+  },
+  "passMeAfterPlays": 2,
+  "passMeRingMs": 3000,
+  "_passMeS02": "S02-B (T19, MAA-14): passMeAfterPlays = how many orders of a dish before Nani's 'pass me' can come (never in the first plays); passMeRingMs = her ring's time (3 s) once she has asked; the game pauses while she's on screen"
  },
  "timing": {
   "_about": "Cook timers by level (design system §11): flip, boil and fry timers get about 15% quicker per level (a rate is multiplied by (1/(1 - levelSpeed))^(level - 1)). Read by the maani station v2; the other stations adopt it as they are rebuilt.",

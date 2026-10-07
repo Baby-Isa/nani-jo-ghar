@@ -722,8 +722,64 @@
     box.classList.remove("hidden", "leaving");
     box.classList.toggle("busy", Cook.save.mode === "busy");
     let misses = 0;
-    if (!UI.naniMuted()) Lang.speak(line);
+    /*
+     * T19 (MAA-14, M9, M10): Nani comes ON SCREEN, over the play area (the game is paused), with a 3-second ring and
+     * a tick-tock once she has asked; out of time, she looks impatient and goes (no penalty beyond its coins).
+     */
+    const home = box.parentNode;
+    const next = box.nextSibling;
+    const stage = $("#stage");
+    if (stage && opts.onScreen !== false) {
+      stage.appendChild(box);
+      box.classList.add("onscreen");
+    }
+    let ring = box.querySelector(".pm-ring");
+    if (!ring) {
+      ring = document.createElement("div");
+      ring.className = "pm-ring";
+      ring.innerHTML = `<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" class="pm-ring-bg"/><circle cx="20" cy="20" r="16" class="pm-ring-fg"/></svg>`;
+      box.querySelector(".pm-nani").appendChild(ring);
+    }
+    ring.classList.remove("run");
+    box.classList.remove("late");
+    const ringMs = opts.ringMs || (Cook.data.calm || {}).passMeRingMs || 3000;
+    let clock = null;
+    let ticker = null;
+    let over = false;
+    const stopClock = () => {
+      clearTimeout(clock);
+      clearInterval(ticker);
+      ring.classList.remove("run");
+    };
+    const putBack = () => {
+      box.classList.remove("onscreen", "late");
+      if (home && box.parentNode !== home) home.insertBefore(box, next);
+    };
+    const said = UI.naniMuted() ? Promise.resolve() : Promise.resolve(Lang.speak(line)).catch(() => {});
     return new Promise((resolve) => {
+      said.then(() => {
+        if (over || box.classList.contains("hidden")) return;
+        void ring.offsetWidth;
+        ring.style.setProperty("--pm-ring-ms", `${ringMs}ms`);
+        ring.classList.add("run");
+        let tock = false;
+        ticker = setInterval(() => ((tock = !tock), Cook.sfx.click && Cook.sfx.click()), 500);
+        clock = setTimeout(() => {
+          if (over) return;
+          over = true;
+          stopClock();
+          box.classList.add("late");
+          if (Cook.expect && String(Cook.expect.selector || "").startsWith("#passme")) Cook.expect = null;
+          setTimeout(() => {
+            box.classList.add("leaving");
+            setTimeout(() => {
+              box.classList.add("hidden");
+              putBack();
+              resolve({ misses: misses + 1, late: true });
+            }, 300);
+          }, 900);
+        }, ringMs);
+      });
       Cook.shuffle(options).forEach((id) => {
         const b = document.createElement("div");
         b.className = "pm-item";
@@ -749,7 +805,10 @@
           // Wave 6b (UX 11): from level 2 a wrong pick is taken like any other (she says thanks);
           // the end review shows it
           const quiet = id !== want && Cook.quietMistakes && Cook.quietMistakes(Cook.ctx);
+          if (over) return;
           if (id === want || quiet) {
+            over = true;
+            stopClock();
             if (quiet) misses++;
             b.classList.add(quiet ? "picked" : "right");
             if (quiet) Cook.sfx.pop();
@@ -759,6 +818,7 @@
               box.classList.add("leaving");
               setTimeout(() => {
                 box.classList.add("hidden");
+                putBack();
                 UI.voice(Lang.line("thanks"), { ms: 900 }).catch(() => {});
                 resolve({ misses });
               }, 300);

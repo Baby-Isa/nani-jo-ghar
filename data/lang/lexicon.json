@@ -11553,6 +11553,23 @@
    }
   },
   {
+   "id": "phrase.a-few-more-drops",
+   "pos": "Phrase",
+   "gloss": "A few more drops",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/ear.json lines.ear-more-drops: English placeholder (to record), S02-C: the hearing test, a wrong pick, T31"
+   ],
+   "aliases": [
+    "clinic.line.ear-more-drops"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.a-little",
    "pos": "Phrase",
    "lemma": "thorok",
@@ -12175,10 +12192,10 @@
    "gloss": "Bring me these",
    "status": "to-record",
    "src": [
-    "data/cook.json lines.headline-pantry-plain: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+    "data/cook.json lines.headline-give: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
    ],
    "aliases": [
-    "cook.line.headline-pantry-plain"
+    "cook.line.headline-give"
    ],
    "ask": {
     "word": [
@@ -12924,6 +12941,23 @@
    ]
   },
   {
+   "id": "phrase.did-you-hear",
+   "pos": "Phrase",
+   "gloss": "Did you hear?",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/ear.json lines.ear-didhear: English placeholder (to record), S02-C: the hearing test, T31"
+   ],
+   "aliases": [
+    "clinic.line.ear-didhear"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.do-you-know-who-i-am",
    "pos": "Phrase",
    "lemma": "toke khabar ai, aau ker aiya",
@@ -13499,6 +13533,26 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "phrase.give-me",
+   "pos": "Phrase",
+   "gloss": "Give me",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.headline-give: no source given"
+   ],
+   "aliases": [
+    "cook.line.headline-give"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "T1 (S02-B, guide-and-card.md R4): the pantry card's headline is Muke de ('give me'), the items its rows; Nani's next-item line is the card's strip. To record with Mum (Round 5); until then this grey placeholder"
+   ]
   },
   {
    "id": "phrase.give-me-this-teaspoon-muke-hi-chamchi-de",
@@ -14904,6 +14958,23 @@
    "src": [
     "grammar-notes §51 C61"
    ]
+  },
+  {
+   "id": "phrase.im-telling-you",
+   "pos": "Phrase",
+   "gloss": "I'm telling you",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/ear.json lines.ear-tell: English placeholder (to record), S02-C: the hearing test, T31 (the word follows as dots)"
+   ],
+   "aliases": [
+    "clinic.line.ear-tell"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.im-too-cold",
@@ -16884,10 +16955,12 @@
    "gloss": "Ow!",
    "status": "to-record",
    "src": [
-    "data/clinic/lang.json words.foot-ow: English placeholder (to record): the foot: the patient when the splinter touches the side of its channel (a line to record)"
+    "data/clinic/lang.json words.foot-ow: English placeholder (to record): the foot: the patient when the splinter touches the side of its channel (a line to record)",
+    "data/clinic/heal/tooth.json lines.tooth-ow: English placeholder (to record), S02-C: T4, drilling outside the line (Mum: ow)"
    ],
    "aliases": [
-    "foot-ow"
+    "foot-ow",
+    "clinic.line.tooth-ow"
    ],
    "ask": {
     "word": [
@@ -19045,6 +19118,23 @@
    }
   },
   {
+   "id": "phrase.time-for-the-jab",
+   "pos": "Phrase",
+   "gloss": "Time for the jab",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/boing.json lines.boing-jab-goal: English placeholder (to record), S02-C: T34, the boing card headline"
+   ],
+   "aliases": [
+    "clinic.line.boing-jab-goal"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.times-up",
    "pos": "Phrase",
    "lemma": "time pati vyo",
@@ -20265,6 +20355,23 @@
    "ask": {
     "word": [
      "to record"
+    ]
+   }
+  },
+  {
+   "id": "phrase.you-told-me",
+   "pos": "Phrase",
+   "gloss": "You told me…",
+   "status": "to-record",
+   "src": [
+    "data/clinic/heal/ear.json lines.ear-youtold: English placeholder (to record), S02-C: the hearing test, T31 (the child picks the picture for her)"
+   ],
+   "aliases": [
+    "clinic.line.ear-youtold"
+   ],
+   "ask": {
+    "word": [
+     "new"
     ]
    }
   },

@@ -712,6 +712,11 @@
    "k": "Chulo bar!",
    "en": "Light the stove!",
    "src": "Mum 5 Oct (Round 4 I33, I1-I35 6:46, lexicon §6.1-6.2): chulo bar; chulo spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (chai-tray:knob)"
+  },
+  "headline-give": {
+   "e": "Give me",
+   "record": true,
+   "_about": "T1 (S02-B, guide-and-card.md R4): the pantry card's headline is Muke de ('give me'), the items its rows; Nani's next-item line is the card's strip. To record with Mum (Round 5); until then this grey placeholder"
   }
  },
  "grammar": {

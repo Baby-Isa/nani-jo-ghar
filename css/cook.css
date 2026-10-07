@@ -1065,3 +1065,27 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .jar-today .pill { font-size: clamp(20px, 3vw, 30px); }
 .day-dot .day-sun { display: block; width: 18px; height: 18px; margin: 0 auto -2px; color: #c9962e; }
 .day-dot .day-sun svg { width: 100%; height: 100%; }
+
+/* T19 (MAA-14, S02-B): Nani's "pass me" comes ON SCREEN over the play area (the game is paused), her bubble asks,
+   three pictures, a 3-second ring with a tick-tock; out of time she looks impatient (a shake) and goes */
+#stage #passme.onscreen { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 60; width: min(560px, 92%); padding: 16px; background: #fffaf2; border-radius: 22px; box-shadow: 0 18px 50px rgba(40, 25, 10, 0.35); animation: pmIn .35s cubic-bezier(.2,.8,.3,1.2); }
+#stage #passme.onscreen.hidden { display: none; }
+#stage #passme.onscreen .pm-nani { display: flex; align-items: center; gap: 12px; position: relative; }
+#stage #passme.onscreen .pm-face { width: 84px; height: 84px; flex: none; }
+#stage #passme.onscreen .pm-face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; }
+#stage #passme.onscreen .pm-say { background: #fff; border-radius: 16px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(40, 25, 10, 0.12); position: relative; }
+#stage #passme.onscreen .pm-tray { display: flex; justify-content: center; gap: 14px; margin-top: 14px; }
+#stage #passme.onscreen .pm-tray .pm-item { width: 30%; max-width: 150px; }
+#stage #passme.onscreen .pm-tray .pm-item img { width: 100%; height: auto; display: block; }
+#stage #passme.onscreen.late .pm-face { animation: pmHuff .18s ease-in-out 4 alternate; }
+#stage #passme.onscreen.leaving { opacity: 0; transition: opacity .3s; }
+#passme .pm-ring { position: absolute; left: -6px; top: -6px; width: 96px; height: 96px; pointer-events: none; }
+#passme:not(.onscreen) .pm-ring { display: none; }
+#passme .pm-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+#passme .pm-ring circle { fill: none; stroke-width: 3.2; }
+#passme .pm-ring .pm-ring-bg { stroke: rgba(201, 150, 46, 0.18); }
+#passme .pm-ring .pm-ring-fg { stroke: #c9962e; stroke-dasharray: 100.5; stroke-dashoffset: 0; }
+#passme .pm-ring.run .pm-ring-fg { animation: pmRing var(--pm-ring-ms, 3000ms) linear forwards; }
+@keyframes pmRing { to { stroke-dashoffset: 100.5; } }
+@keyframes pmIn { from { opacity: 0; transform: translate(-50%, -40%) scale(.92); } }
+@keyframes pmHuff { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }

@@ -73,6 +73,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const HELP_COST = { replay: 5, hint: 5, label: 5, help: 5, reveal: 8, translate: 8, shown: 8 };
 
   function makeCtx(order, { lab = false, guided = false } = {}) {
+    // MAA-14: how many times each dish has been played (Nani's "pass me" waits for the first plays to pass)
+    if (!lab && order && Array.isArray(order.dishes)) {
+      Cook.save.plays = Object.assign({}, Cook.save.plays);
+      order.dishes.forEach((d) => d && d.recipe && (Cook.save.plays[d.recipe] = (Cook.save.plays[d.recipe] || 0) + 1));
+    }
     const ctx = {
       order,
       lab,
@@ -166,6 +171,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
     ctx.maybePassMe = async () => {
       if (ctx.guided || ctx.lab || ctx.interrupts >= ctx.maxInterrupts) return;
+      // MAA-14 (M9, T19): never in the first plays of a dish (data.calm.passMeAfterPlays orders of it), then it ramps up
+      const rcp = ((ctx.order.dishes || [])[ctx.dishAt] || {}).recipe;
+      if (rcp && ((Cook.save.plays || {})[rcp] || 0) < (calm().passMeAfterPlays != null ? calm().passMeAfterPlays : 2)) return;
       // Wave 5: fewer at level 1 (and none in the first order of a session: see runOrder)
       const PM = calm().passMeChance || {};
       const dish = ctx.order.dishes[ctx.dishAt];

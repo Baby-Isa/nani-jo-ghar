@@ -1204,7 +1204,7 @@
    ],
    "english": "Bring me these for {x}",
    "what": "Bring me these for {x}",
-   "src": "data/cook.json lines.headline-pantry: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+   "src": "data/cook.json lines.headline-give: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
   },
   "MyXHurts": {
    "status": "unknown",
