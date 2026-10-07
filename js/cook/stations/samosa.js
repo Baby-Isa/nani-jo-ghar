@@ -102,7 +102,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const FRY = { hobK: 1.14, bx: 600, r: 250, px: 1310, pd: 340, trayY: 772, trayD: 150, trayPitch: 180 };
   // a samosa in the oil (design px wide) and where they float (degrees round the middle, radius / the oil's):
   // fewer samosas, bigger and further apart
-  const OIL = (n) => (n <= 3 ? { size: 180, r: 0.5, at: [-90, 30, 150] } : n <= 4 ? { size: 165, r: 0.55, at: [-135, -45, 45, 135] } : { size: 145, r: 0.62, at: [-90, 30, 150, -30, 90, 210] });
+  // SAM-14 (A8, decision 56): every samosa stays inside the oil's flat surface: its spot (r, a fraction of the oil's
+  // radius) plus half its size stays within 0.8 of the oil (was up to 0.94: they reached the karahi's sides)
+  const OIL = (n) => (n <= 3 ? { size: 170, r: 0.42, at: [-90, 30, 150] } : n <= 4 ? { size: 150, r: 0.47, at: [-135, -45, 45, 135] } : { size: 128, r: 0.52, at: [-90, 30, 150, -30, 90, 210] });
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, glow: 0xffe3a0 };
   const FONT = "Nunito, sans-serif";
 
@@ -180,46 +182,44 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       .concat(Cook.Kit ? Cook.Kit.art(1, [], { wide: true }) : []);
     await Promise.race([St.load(S, art), Cook.wait(12000)]);
 
-    let first = null; // the first try's verdict (only it counts)
-    let result = null;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      /* ---------- 1 + 2: fill and fold ---------- */
-      // the fill and the fold: the first time, the coach shows each move (X11: data.onboard.samosa)
-      await St.begin(S, ctx, "samosa", "marble");
-      if (phases.fill && !attempt) UI.gist(phases.fill);
-      if (ctx.nextStep) ctx.nextStep("Fill");
-      const fz = Mech.zone(S, ctx, { id: "fill", level });
-      const made = await fillFold(fz, { ids, want, kinds, exclude, count, want2, kinds2, count2, level, phases, retry: attempt > 0 });
-      fz.close();
-      St.end();
+    /*
+     * Decision 51 (CK-23, S02-B): a mistake redoes only that samosa, never the whole game. A wrong filling empties
+     * that strip and it's filled again (with help); too few samosas: fold the missing one; a samosa lifted too
+     * soon goes back into the oil, a burnt one is swapped for a fresh one to fry. The third wrong try shows the
+     * right way. Only the first try is scored.
+     */
+    const redo = St.redo(ctx);
+    const steps = St.steps(ctx);
+    /* ---------- 1 + 2: fill and fold ---------- */
+    // the fill and the fold: the first time, the coach shows each move (X11: data.onboard.samosa)
+    await St.begin(S, ctx, "samosa", "marble");
+    if (phases.fill) UI.gist(phases.fill);
+    if (ctx.nextStep) ctx.nextStep("Fill");
+    const fz = Mech.zone(S, ctx, { id: "fill", level });
+    const made = await fillFold(fz, { ids, want, kinds, exclude, count, want2, kinds2, count2, level, phases, retry: false, redo, steps });
+    fz.close();
+    St.end();
 
-      /* ---------- 3: fry, then serve and taste ---------- */
-      // the fry: its first-time coach runs (X11: data.onboard.fry; it used to be switched off here)
-      await St.begin(S, ctx, "fry", "marble");
-      if (phases.fry && !attempt) UI.gist(phases.fry);
-      if (ctx.nextStep) ctx.nextStep("Fry");
-      const yz = Mech.zone(S, ctx, { id: "fry", level });
-      const fried = await fry(yz, { n: made.n, level });
-      // the verdict: the filling, the count, and nothing raw or burnt on the plate
-      const countWrong = made.two ? (made.nA !== count || made.nB !== count2 ? `made ${made.nA} and ${made.nB}, they asked for ${count} and ${count2}: ph-samosa` : null) : made.n !== count ? `made ${made.n}, they asked for ${count}: ph-samosa` : null;
-      const why = made.fillWrong || countWrong || fried.bad;
-      if (!first) {
-        first = { ok: !why, why };
-        // the fill has already been heard (graded at its tick): here the count and the frying
-        const later = why && why !== made.fillWrong ? why : null;
-        if (later) yz.listen(false, later);
-        const nOne = made.two ? made.nA : made.n;
-        if (!ctx.guided && count <= 5) (nOne === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
-        if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
-        if (made.two && !ctx.guided && count2 <= 5) (made.nB === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
-      }
-      const ok = await serve(yz, { who, plate: fried.plate, ok: !why, last: attempt >= 2 });
-      yz.close();
-      St.end();
-      result = { count: made.n, fillings: made.got, fried: fried.lifted, fillings2: made.got2 || null };
-      cardFold(false);
-      if (ok) break;
-    }
+    /* ---------- 3: fry, then serve and taste ---------- */
+    // the fry: its first-time coach runs (X11: data.onboard.fry; it used to be switched off here)
+    await St.begin(S, ctx, "fry", "marble");
+    if (phases.fry) UI.gist(phases.fry);
+    if (ctx.nextStep) ctx.nextStep("Fry");
+    const yz = Mech.zone(S, ctx, { id: "fry", level });
+    const fried = await fry(yz, { n: made.n, level, redo, steps });
+    // the first try's verdict (graded where it happened): the count and the frying
+    const countWrong = made.countWrong || null;
+    if (countWrong || fried.bad) yz.listen(false, countWrong || fried.bad);
+    const nOne = made.two ? made.nA0 : made.n0;
+    if (!ctx.guided && count <= 5) (nOne === count ? Cook.markRight : Cook.markMiss)(Cook.numId(count));
+    if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
+    if (made.two && !ctx.guided && count2 <= 5) (made.nB0 === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
+    steps.done();
+    await serve(yz, { who, plate: fried.plate, ok: true, last: true });
+    yz.close();
+    St.end();
+    const result = { count: made.n, fillings: made.got, fried: fried.lifted, fillings2: made.got2 || null };
+    cardFold(false);
     ctx.result.samosa = result;
     ctx.result.fillings = result && result.fillings;
     ctx.result.folded = result && result.count;
@@ -327,7 +327,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const rows = Math.ceil(n / cols);
     const cw = (2 * half) / cols;
     const chh = (2 * half) / Math.max(rows, 1);
-    const w = Math.min(half * 1.15, cw * 0.94, (chh / aspect) * 0.94);
+    // SAM-14 (M5): inside the flat middle, never over its edge (was half x 1.15: 8% too big)
+    const w = Math.min(half * 0.98, cw * 0.9, (chh / aspect) * 0.9);
     const out = [];
     for (let i = 0; i < n; i++) {
       const r = Math.floor(i / cols);
@@ -349,7 +350,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- 1 + 2: fill the pastry, then fold it (and more of them) ---------- */
-  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry }) {
+  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
     const z0 = z;
     z = Cook.liftZone(z0);
@@ -541,7 +542,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const two = count2 > 0 && kinds2.length > 0;
     const bOpt = (b) => (two ? { block: b } : {});
     /** Fill one strip for one block, then grade it (how many spoons of each, nothing they said no to). */
-    async function fillOne(wantB, kindsB, block) {
+    async function fillOne(wantB, kindsB, block, tries = 0, again = false) {
+      const help = tries > 0;
+      const rtry = retry || tries > 0 || again; // only a strip's first try is scored
       const got = {};
       const order = [];
       let last = 0;
@@ -575,7 +578,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
       for (;;) {
         const next = kindsB.find((id) => (got[id] || 0) < wantB[id]) || null;
-        const r = await St.freePick(z, { items, next, doneOk: order.length > 0, doneGlow: ctx.guided && !next });
+        // T17: "Bhar!" and the next filling (at level 1 said as it opens; later after a pause, with the glow)
+        if (next) steps.to("samosa:fill", { id: `fill-${block}-${order.length}-${next}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([next]))]) });
+        else steps.done();
+        const r = await St.freePick(z, { items, next, doneOk: order.length > 0, doneGlow: (ctx.guided || help) && !next, help });
+        steps.poke();
         if (r.done) break;
         if (performance.now() - last < 220) continue; // a double tap
         last = performance.now();
@@ -605,26 +612,52 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Object.keys(got).forEach((id) => {
         if (wantB[id]) return;
         fillWrong = fillWrong || (exclude.includes(id) ? `put ${id} in (they said no)` : `put ${id} in`);
-        if (!retry && exclude.includes(id)) UI.mission.missItem(id, ctx.dishAt || 0, { no: true });
+        if (!rtry && exclude.includes(id)) UI.mission.missItem(id, ctx.dishAt || 0, { no: true });
       });
       kindsB.forEach((id) => {
         const g = got[id] || 0;
         const right = g === wantB[id];
         if (!right) {
           fillWrong = fillWrong || `spooned ${g}, they asked for ${wantB[id]}: ${id}${two ? ` (samosa ${block})` : ""}`;
-          if (!retry) UI.mission.missItem(id, ctx.dishAt || 0, Object.assign({ counted: true }, bOpt(block)));
+          if (!rtry) UI.mission.missItem(id, ctx.dishAt || 0, Object.assign({ counted: true }, bOpt(block)));
         }
-        if (!ctx.guided && !retry) {
+        if (!ctx.guided && !rtry) {
           (right ? Cook.markRight : Cook.markMiss)(id);
           if (wantB[id] <= 5) (right ? Cook.markRight : Cook.markMiss)(Cook.numId(wantB[id]));
         }
       });
-      if (!retry) z.listen(!fillWrong, fillWrong || "filled");
+      if (!rtry) z.listen(!fillWrong, fillWrong || "filled");
       if (two) UI.mission.closeItem(kindsB, ctx.dishAt || 0, { block });
       else if (ctx.closeItem) ctx.closeItem(kindsB);
       else UI.mission.closeItem(kindsB, ctx.dishAt || 0);
       if (!fillWrong && exclude.length && (!two || block === 2)) UI.mission.closeItem(exclude, ctx.dishAt || 0, { no: true });
-      return { got, order, fillWrong };
+      steps.done();
+      if (!fillWrong) return { got, order, fillWrong: null };
+      // decision 51: a wrong filling empties this strip and it's filled again, with help; the third wrong try shows it
+      const rd = redo.wrong(`samosa:fill:${block}`);
+      sheet.blobs.slice().forEach((bl) => {
+        while (bl.active && sheet.blobs.includes(bl)) unspoon(sheet, bl);
+      });
+      UI.mission.reopen(kindsB.concat(Object.keys(got)), ctx.dishAt || 0);
+      if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
+      await Cook.wait(400);
+      if (rd.action === "show") {
+        const order2 = [];
+        for (const id of kindsB) {
+          for (let i = 0; i < wantB[id]; i++) {
+            if (items[id]) S.glow(items[id], true, { bounce: true });
+            await spoon(sheet, id);
+            order2.push(id);
+            if (items[id]) S.glow(items[id], false);
+          }
+        }
+        if (two) UI.mission.closeItem(kindsB, ctx.dishAt || 0, { block });
+        else if (ctx.closeItem) ctx.closeItem(kindsB);
+        else UI.mission.closeItem(kindsB, ctx.dishAt || 0);
+        return { got: Object.assign({}, wantB), order: order2, fillWrong };
+      }
+      const again2 = await fillOne(wantB, kindsB, block, tries + 1);
+      return Object.assign(again2, { fillWrong });
     }
     const f1 = await fillOne(want, kinds, 1);
     const got = f1.got;
@@ -679,6 +712,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let n = 0;
     let nA = 0; // (two kinds: how many of each were made)
     let nB = 0;
+    let first = null; // the first time Next was pressed: the count then (only the first try is scored)
+    const goIcon = (() => {
+      // R5 (T17): the button to the karahi is a picture, no English
+      const el = document.createElement("span");
+      el.className = "samosa-go-icon";
+      el.setAttribute("aria-label", "fry");
+      el.innerHTML = `<img src="${Cook.v ? Cook.v(V3 + "karahi.webp") : V3 + "karahi.webp"}" alt="" style="height:38px;width:auto;display:block">`;
+      return el;
+    })();
     let second = false; // folding the second kind now
     const total = count + (two ? count2 : 0);
     const most = total + (k.maxExtra != null ? k.maxExtra : 3);
@@ -705,8 +747,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           cardFold(true);
           Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
           if (ctx.nextStep) ctx.nextStep("Fold");
+        } else if (level >= 3 && !two) {
+          // SAM-12 (A5, A11): at the top levels each strip is filled by the child (no filling goes on by itself)
+          Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 1, duration: 250 }));
+          cardFold(false);
+          const fN = await fillOne(want, kinds, 1, 0, true);
+          order = fN.order;
+          cardFold(true);
+          Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
         } else for (const id of order) await spoon(sheet, id, { quiet: true, fast: true });
       }
+      steps.to("samosa:fold", { id: `fold-${n}` }); // T17: Samosa waar!
       for (let f = 0; f < F.swipes.length; f++) {
         const sw = F.swipes[f];
         const cxy = { x: (sheet.x - z.X(P0.x)) / z.k + P0.x, y: P0.y };
@@ -717,9 +768,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         glowOn = { poly, a: from, b: to };
         const offerGo = n > 0 && f === 0;
         const r = await swipe(z, S, {
-          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: Lang.label(phases.go || "go-fry"), expectGo: offerGo && n >= total, glowGo: offerGo && ctx.guided && n >= total, minLen: k.minLen || 0.45 });
+          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: { text: goIcon, rec: false }, expectGo: offerGo && n >= total, glowGo: offerGo && (ctx.guided || !!first) && n >= total, minLen: k.minLen || 0.45 });
         glowOn = null;
         if (r === "go") {
+          if (!first) first = { n, nA, nB };
+          // decision 51: too few samosas: the customer says how many again and the next one is folded (this strip
+          // stays); the third time the missing ones are made for you
+          if (!two && n < total) {
+            const rd = redo.wrong("samosa:count");
+            if (rd.action !== "show") {
+              const line = orderLine(ladderOf(ctx));
+              if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
+              if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(8000)]);
+              St.customerDone();
+              f = -1; // fold this strip from its first fold
+              continue;
+            }
+            // shown: the missing ones appear, folded, on the plate
+            while (n < total) {
+              const done6 = S.track(S.add.image(sheet.x, sheet.y, "sv3-fold-6").setScale(z.L(STAGE_K)).setDepth(D.item));
+              const dn = F.done;
+              done6.setPosition(done6.x + (dn.x - 0.5) * SW * z.k, done6.y + (dn.y - 0.5) * SH * z.k).setOrigin(dn.x, dn.y);
+              onPlate.push(done6);
+              n++;
+              nA++;
+            }
+            const spots = plateSpots(onPlate.length, PLATE.x, PLATE.y, plate.flatHalf, 0.75);
+            await Promise.all(onPlate.map((o, i) => S.fly(o, z.X(spots[i].x), z.Y(spots[i].y), { scale: z.L(spots[i].w) / F.done.w, duration: 360, arc: z.L(60) })));
+          }
           quit = true;
           break;
         }
@@ -767,13 +843,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Promise.all(moves);
       if (n >= most) break;
     }
+    // decision 51: more than they asked for: the extra ones leave the plate (only the first count is scored)
+    if (!first) first = { n, nA, nB };
+    if (!two && n > total) {
+      const extra = onPlate.splice(total);
+      extra.forEach((o) => S.tweens.add({ targets: o, alpha: 0, y: o.y - z.L(60), duration: 360, onComplete: () => o.destroy() }));
+      n = total;
+      nA = total;
+      await Cook.wait(380);
+      const spots = plateSpots(onPlate.length, PLATE.x, PLATE.y, plate.flatHalf, 0.75);
+      onPlate.forEach((o, i) => S.tweens.add({ targets: o, x: z.X(spots[i].x), y: z.Y(spots[i].y), duration: 260 }));
+    }
+    steps.done();
     stopGlowTick();
     glowG.destroy();
     UI.hideGo();
     UI.hideDone();
     z.expect({ kind: "wait" });
     await Cook.wait(250);
-    return { n, nA, nB, two, got, got2, fillWrong, order };
+    const countWrong = two ? (first.nA !== count || first.nB !== count2 ? `made ${first.nA} and ${first.nB}, they asked for ${count} and ${count2}: ph-samosa` : null) : first.n !== count ? `made ${first.n}, they asked for ${count}: ph-samosa` : null;
+    return { n, nA, nB, two, got, got2, fillWrong, order, countWrong, n0: first.n, nA0: first.nA, nB0: first.nB };
   }
 
   /**
@@ -857,10 +946,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- 3: fry in the karahi on the wide hob, lift onto the paper-lined plate ---------- */
-  async function fry(z, { n, level }) {
+  async function fry(z, { n, level, redo, steps }) {
     const z0 = z;
     z = Cook.liftZone(z0);
     const S = z.S;
+    const ctx = z.ctx;
     const Kit = Cook.Kit;
     const k = Mech.knobs("fry", { level });
     const [lo, hi] = k.band || [0.62, 0.84];
@@ -898,9 +988,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     // 1. the knob: the flames come up and STAY up while it's on (S21: "low" drew its smaller ring wholly
     // under the karahi, so the fire vanished once the oil was hot). S16 / Q9: no heating ring: the oil is
-    // hot, and the sizzle says it's ready
+    // hot, and the sizzle says it's ready. SAM-13 (A7): the knob turns the fire OFF again (the sizzle stops,
+    // nothing fries), and on again. T17: Chulo bar!, then Tar!
     const cx = at.x;
     const cy = at.y;
+    steps.to("samosa:fire");
     await new Promise((resolve) => {
       burner.knobHit.handAction = false;
       if (z.guided) S.glow(burner.knobHit, true);
@@ -920,11 +1012,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       burner.knob.baseScale = 1;
       S.tweens.add({ targets: burner.knob, scale: 1.1, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     });
-    const sizzle = Cook.sfx.sizzleLoop();
-    S.loops.push(sizzle);
+    let sizzle = null;
+    let fireOn = false;
     // shimmer on the oil: it's hot
     const shimmer = S.track(S.add.ellipse(cx, cy, oilR * 1.7, oilR * 1.7, 0xfff3c0, 0).setDepth(D.item + 0.05));
     S.tweens.add({ targets: shimmer, alpha: 0.12, duration: 700, yoyo: true, repeat: -1 });
+    let post = () => {};
+    const setFire = (on) => {
+      fireOn = on;
+      burner.set(on ? "high" : "off");
+      shimmer.setVisible(on);
+      if (on && !sizzle) {
+        sizzle = Cook.sfx.sizzleLoop();
+        S.loops.push(sizzle);
+      } else if (!on && sizzle) {
+        sizzle.stop();
+        sizzle = null;
+      }
+      post();
+    };
+    setFire(true);
+    S.tappable(burner.knobHit, () => setFire(!fireOn));
     await Cook.wait(350);
 
     // 2. drop them in (any order, one tap each), lift each when golden
@@ -953,7 +1061,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const s = (fdt() / 1000) * (Cook.speed || 1);
       frying.forEach((f) => {
         if (f.out) return;
-        f.level += f.rate * s;
+        f.level += f.rate * s * (fireOn ? 1 : 0); // the fire off: nothing fries
         colour(f);
         f.ring.draw(f.a.x, f.y0 + z.L(4), z.L(OL.size * 0.4), Math.min(1.25, f.level), lo, hi);
         // a gentle bob in the oil, and bubbles
@@ -983,17 +1091,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return new Promise((r) => S.tweens.add({ targets: [l.im, l.b], x: z.X(sp.x), y: z.Y(sp.y), scale: sc, angle: sp.a, duration: fast ? 1 : 280, onComplete: r }));
         }),
       );
+    const liftLine = Lang.hasLine("lift") ? Lang.line("lift", Lang.phrase(["ph-samosa"])) : null;
     await new Promise((resolveAll) => {
-      const post = () => {
+      post = () => {
         const waiting = raw.filter((r) => !r.gone);
         const cur = frying.filter((f) => !f.out).sort((a, b) => b.level - a.level)[0];
         if (!waiting.length && !cur) return resolveAll();
+        // T17: the fire off -> Chulo bar!; a golden one at level 3 -> "Samosa hane kadh."; else Tar!
+        if (!fireOn) {
+          steps.to("samosa:fire", { id: "fire-again" });
+          return z.expect({ kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" });
+        }
+        if (cur && cur.level >= lo && level >= 3 && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine });
+        else steps.to("samosa:fry", { id: "fry" });
         // the next thing pulses: a raw one while there's room, else the samosa furthest on
         if (cur && (cur.level >= lo || !waiting.length)) z.expect({ kind: "timing", x: cur.a.x, y: cur.a.y, key: "lift" });
         else if (waiting.length) z.expect({ kind: "tap", x: waiting[0].x, y: waiting[0].y, key: "samosa" });
         else z.expect({ kind: "wait" });
       };
-      raw.forEach((im) => {
+      const addRaw = (im) => {
         S.tweens.add({ targets: im, scale: im.baseScale * 1.06, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
         S.tappable(im, async () => {
           if (im.gone) return;
@@ -1016,13 +1132,41 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           frying.push(f);
           const lift = async () => {
             if (f.out) return;
+            const L = f.level;
+            const verdict = L < lo ? "light" : L > (k.burnAt || 1.15) ? "dark" : "golden";
+            if (verdict !== "golden") {
+              if (!f.scored) bad = bad || (verdict === "light" ? "lifted a samosa before it was golden" : "a samosa went too dark");
+              // decision 51: a pale one goes back into the oil to finish; a burnt one is swapped for a fresh one to fry
+              // (the third wrong lift is taken as it is)
+              if (redo.wrong("samosa:fry").action !== "show") {
+                f.scored = true;
+                if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
+                if (verdict === "light") {
+                  S.tweens.add({ targets: [im, b], y: f.y0 - z.L(18), duration: 140, yoyo: true });
+                  f.help = true;
+                  post();
+                  return;
+                }
+                f.out = true;
+                f.ring.destroy();
+                S.untap(im);
+                S.untap(b);
+                S.tweens.add({ targets: [im, b], alpha: 0, duration: 360, onComplete: () => (im.destroy(), b.destroy()) });
+                const tr = trays.find((t) => t.alpha < 0.5) || trays[0];
+                S.tweens.add({ targets: [tr, tr.shadow].filter(Boolean), alpha: 1, duration: 300 });
+                const fresh = S.track(S.add.image(tr.x, tr.y - z.L(4), "sv2-fry-0").setScale(z.L(128) / META.fry.w * 0.85).setDepth(D.item + 0.1));
+                fresh.baseScale = fresh.scale;
+                fresh.handAction = false;
+                raw.push(fresh);
+                addRaw(fresh);
+                post();
+                return;
+              }
+            }
             f.out = true;
             f.ring.destroy();
             S.untap(im);
             S.untap(b);
-            const L = f.level;
-            const verdict = L < lo ? "light" : L > (k.burnAt || 1.15) ? "dark" : "golden";
-            if (verdict !== "golden") bad = bad || (verdict === "light" ? "lifted a samosa before it was golden" : "a samosa went too dark");
             z.skill(verdict === "golden" ? 100 : verdict === "light" ? 55 : k.burntScore || 40, "fry");
             // the next thing to do moves on at once (it stopped frying the moment it was tapped)
             post();
@@ -1059,7 +1203,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           S.tappable(b, lift);
           post();
         });
-      });
+      };
+      raw.forEach(addRaw);
       post();
       // re-post as the samosas cross into golden (the lift becomes the next thing)
       const again = S.addTick(() => {
@@ -1075,9 +1220,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     tick();
     z.gauge(null);
     z.expect({ kind: "wait" });
-    burner.set("off");
+    post = () => {};
+    setFire(false);
+    steps.done();
     shimmer.destroy();
-    if (sizzle && sizzle.stop) sizzle.stop();
     await Cook.wait(300);
     return { lifted: lifted.map((l) => l.verdict), bad, plate: { img: plate, items: lifted.flatMap((l) => [l.im, l.b]) } };
   }
