@@ -585,12 +585,52 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- serve: the badges, pocket money ---------------- */
-  function drawServed(ctx, x) {
+  /*
+   * CK-21 (K4, decision 64): served dishes go on the customer's own tray on the counter, one tray per customer (three
+   * spots), shadows falling right (the light is from the left). The redrawn kitchen (art.s02 "kitchen-trays") has
+   * the trays painted in, at its measured spots (meta.trays: [x, y, w, h] design px, left to right); until it lands,
+   * a flat tray is drawn at each customer's spot.
+   */
+  const TRAY_SPOTS = [[480, 716, 330, 92], [940, 716, 330, 92], [1400, 716, 330, 92]];
+  function trayFor(x) {
+    const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+    const spots = kt && kt.ready && Array.isArray((kt.meta || {}).trays) ? kt.meta.trays : TRAY_SPOTS;
+    const t = spots.reduce((a, b) => (Math.abs(b[0] - x) < Math.abs(a[0] - x) ? b : a));
+    return { x: t[0], y: t[1], w: t[2], h: t[3], painted: !!(kt && kt.ready) };
+  }
+  function drawTray(s, t) {
+    if (t.painted) return;
+    const g = s.track(s.add.graphics().setDepth(Cook.D.occ + 1.5));
+    // the shadow falls right and a little down (light from the left)
+    g.fillStyle(0x2a1a0a, 0.18);
+    g.fillRoundedRect(t.x - t.w / 2 + 14, t.y - t.h / 2 + 9, t.w, t.h, 18);
+    g.fillStyle(0x9a6a3c, 1);
+    g.fillRoundedRect(t.x - t.w / 2, t.y - t.h / 2, t.w, t.h, 18);
+    g.fillStyle(0xc89a62, 1);
+    g.fillRoundedRect(t.x - t.w / 2 + 9, t.y - t.h / 2 + 8, t.w - 18, t.h - 16, 12);
+  }
+  function drawServed(ctx, x0) {
     const s = S();
     const n = ctx.served.length;
+    const tray = trayFor(x0);
+    // CK-21: an order for several people (the chai tray's cups) serves each person's glass onto their own tray
+    const people = ctx.served.length === 1 && ctx.served[0].recipe === "chai" && Array.isArray(ctx.served[0].cups) && ctx.served[0].cups.length > 1 ? ctx.served[0].cups : null;
+    if (people) {
+      const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+      const spots = kt && kt.ready && Array.isArray((kt.meta || {}).trays) ? kt.meta.trays : TRAY_SPOTS;
+      people.slice(0, spots.length).forEach((p, i) => {
+        const t = { x: spots[i][0], y: spots[i][1], w: spots[i][2], h: spots[i][3], painted: !!(kt && kt.ready) };
+        drawTray(s, t);
+        s.prop("glass-chai", t.x, t.y - 4, 100, 130, { depth: Cook.D.occ + 2 });
+        s.steam(t.x, 560, 1);
+      });
+      return;
+    }
+    drawTray(s, tray);
+    const x = tray.x;
     ctx.served.forEach((d, i) => {
-      const px = x + (i - (n - 1) / 2) * 200;
-      const y = 712;
+      const px = x + (i - (n - 1) / 2) * Math.min(200, tray.w / Math.max(1, n));
+      const y = tray.y - 4;
       if (d.recipe === "chai") for (let c = 0; c < d.count; c++) s.prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "maani") {
         s.prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });
@@ -696,8 +736,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     for (const spec of day.orders) {
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
-      if (!free) for (const dish of spec.dishes) if (!fetched.has(dish) && pantryFirst(dish)) {
+      if (!free) for (const dish of spec.dishes) if (!fetched.has(dish) && pantryFirst(dish) && !fetchedEver(dish)) {
         fetched.add(dish);
+        markFetched(dish);
         await runOrder(pantryFor(dish, spec), day);
       }
       await runOrder(buildOrder(spec), day);
@@ -775,6 +816,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     one: svg('<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>'),
     feast: svg('<path d="M3 15h18"/><path d="M5 15a7 7 0 0 1 14 0"/><path d="M12 6v2"/><path d="M4 19h16"/>'),
     lock: svg('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+    sun: svg('<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>'),
   };
   Cook.PIC = PIC;
   const coinsHtml = (n, cls = "") => `<span class="pill coins ${cls}"><i class="coin-dot"></i>${n}</span>`;
@@ -825,23 +867,97 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /** The day's end: who you cooked for, what, and the coins (each order's badges and words were on its own end screen). */
+  /*
+   * SH-51 (C11, C13, C14; decision 8 of the 6 Oct play-test): the coin jar. Each card (their face, what you made,
+   * the coins) lands on the jar, the coins drop in with a ching, the card rises and fades, then the next comes in.
+   * Beside the jar: this game's coins; under it: the jar's total. The jar fills in five pictures (the art run's
+   * art.s02 "coin-jar-*"; a drawn jar until they land). Next is the primary button; the shop is beside it.
+   */
+  const JAR_LEVELS = ["empty", "quarter", "half", "three-quarter", "full"];
+  const jarFull = () => Math.max(50, ...Cook.data.upgrades.filter((u) => !u.hidden).map((u) => Cook.price(u) || 0));
+  const jarLevel = (coins) => Math.max(0, Math.min(4, Math.ceil((coins / jarFull()) * 4 - 0.001)));
+  function jarHtml(level) {
+    const art = (((Cook.data.art || {}).s02 || {})[`coin-jar-${JAR_LEVELS[level]}`]) || null;
+    if (art && art.ready && art.file) return `<img class="jar-img" src="${Cook.v(art.file)}" alt="">`;
+    // the drawn stand-in: a glass jar with a gold lid, coins up to the level
+    const fill = [0, 0.25, 0.5, 0.75, 1][level];
+    const top = 150 - 110 * fill;
+    const coins = [];
+    for (let y = 148; y > top + 6; y -= 13) for (let x = 36; x <= 98; x += 15) coins.push(`<ellipse cx="${x + ((y / 13) % 2 ? 6 : 0)}" cy="${y}" rx="9" ry="4.5" fill="#e3b341" stroke="#a87a1c" stroke-width="1.4"/>`);
+    return `<svg class="jar-svg" viewBox="0 0 140 170" aria-hidden="true">
+      <rect x="22" y="30" width="96" height="128" rx="22" fill="#eef4f6" fill-opacity="0.55" stroke="#9fb3ba" stroke-width="3"/>
+      ${fill ? `<clipPath id="jarclip"><rect x="25" y="${top}" width="90" height="${155 - top}" rx="18"/></clipPath><g clip-path="url(#jarclip)">${coins.join("")}</g>` : ""}
+      <rect x="30" y="16" width="80" height="18" rx="6" fill="#c9962e" stroke="#8f6a1e" stroke-width="2"/>
+      <path d="M36 50 q-6 40 0 90" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="0.6" fill="none"/>
+    </svg>`;
+  }
   function showSummary(day, { free } = {}) {
     UI.clearStage();
     // the last station's instruction goes from Nani's box (the day is over)
     if (UI.guideFor) UI.guideFor(null);
     const last = day.finale && !free;
-    const card = (c) => `<div class="ccard sum-card"><div class="cc-head"><img src="${face(c.who)}" alt=""><span class="cc-dish">${c.dishes.map(dishName).join(" + ")}</span></div>${c.coins ? `<span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>` : ""}</div>`;
+    const total = Cook.coins();
+    let shown = Math.max(0, total - (state.dayCoins || 0));
+    const card = (c) => `<div class="ccard sum-card jar-card"><div class="cc-head"><img src="${face(c.who)}" alt=""><span class="cc-dish">${c.dishes.map(dishName).join(" + ")}</span></div>${c.coins ? `<span class="cc-coins"><i class="coin-dot"></i>+${c.coins}</span>` : ""}</div>`;
     const p = UI.panel(`
-      <div class="purse">${coinsHtml(`+${state.dayCoins}`, "today")}<span class="purse-sep" aria-hidden="true">${PIC.shop}</span>${coinsHtml(Cook.coins(), "total")}</div>
-      <div class="cards">${state.cards.map(card).join("")}</div>
+      <div class="jar-sum">
+        <div class="jar-col">
+          <div class="jar-stage"><div class="jar-pic">${jarHtml(jarLevel(shown))}</div><div class="jar-drop"></div></div>
+          <div class="jar-total">${coinsHtml(shown, "total")}</div>
+        </div>
+        <div class="jar-today">${coinsHtml(`+${state.dayCoins}`, "today")}</div>
+      </div>
       <div class="btn-row pic-row">
         ${picBtn("sum-menu", "home", "Menu")}
-        ${last ? picBtn("sum-finale", "feast", "The Eid feast!", "primary") : picBtn("sum-shop", "shop", "Nani's shop", "primary")}
+        ${picBtn("sum-shop", "shop", "Nani's shop")}
+        ${last ? picBtn("sum-finale", "feast", "The Eid feast!", "primary") : picBtn("sum-next", "play", "Next day", "primary")}
       </div>`);
-    grownUps(p, `<h3>${free ? UI.esc(day.title) : `Day ${day.id}: ${UI.esc(day.title)}`}</h3><p>Who your child cooked for today and the pocket money each order earned (first: today's coins; then everything in the purse). Each order's badges and words were shown when it was served.</p>`);
-    ($("#sum-shop") || $("#sum-finale")).addEventListener("click", () => (last ? showFinale() : showShop()));
+    grownUps(p, `<h3>${free ? UI.esc(day.title) : `Day ${day.id}: ${UI.esc(day.title)}`}</h3><p>Who your child cooked for today and the pocket money each order earned, dropped into the coin jar one by one (beside it: today's coins; under it: everything in the jar). Each order's badges and words were shown when it was served.</p>`);
+    $("#sum-shop").addEventListener("click", showShop);
+    if ($("#sum-finale")) $("#sum-finale").addEventListener("click", showFinale);
+    if ($("#sum-next"))
+      $("#sum-next").addEventListener("click", () => {
+        if (free) return showTitle();
+        const days = Cook.data.days;
+        const nx = days[Math.min(Cook.save.day, days.length) - 1];
+        return Cook.save.finished || !nx ? showTitle() : startDay(nx);
+      });
     $("#sum-menu").addEventListener("click", showTitle);
+    // (the test harness's end-of-day mark: the sandbox's player stops at the shop button)
     Cook.expect = { kind: "click", selector: last ? "#sum-finale" : "#sum-shop" };
+    // the cards, one at a time: in over the jar, the coins drop in (ching), up and away
+    const drop = p.querySelector(".jar-drop");
+    const pic = p.querySelector(".jar-pic");
+    const tot = p.querySelector(".jar-total");
+    const run = Cook.run;
+    (async () => {
+      for (const c of state.cards) {
+        if (run !== Cook.run || !drop.isConnected) return;
+        drop.innerHTML = card(c);
+        const el = drop.firstElementChild;
+        const anim = (kf, o) => (el.animate ? el.animate(kf, Object.assign({ fill: "forwards" }, o)).finished.catch(() => {}) : Promise.resolve());
+        Cook.sfx.pop();
+        await anim([{ transform: "translateY(-60px) scale(.9)", opacity: 0 }, { transform: "translateY(0) scale(1)", opacity: 1 }], { duration: 380, easing: "cubic-bezier(.2,.8,.3,1.2)" });
+        await Cook.wait(350);
+        if (c.coins) {
+          const coin = document.createElement("i");
+          coin.className = "coin-dot jar-coin";
+          drop.appendChild(coin);
+          if (coin.animate) await coin.animate([{ transform: "translate(-50%, 0)", opacity: 1 }, { transform: "translate(-50%, 90px)", opacity: 0.2 }], { duration: 360, easing: "ease-in", fill: "forwards" }).finished.catch(() => {});
+          coin.remove();
+          Cook.sfx.coin();
+          shown += c.coins;
+          tot.innerHTML = coinsHtml(Math.min(shown, total), "total");
+          pic.innerHTML = jarHtml(jarLevel(shown));
+        }
+        await anim([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(-70px)", opacity: 0 }], { duration: 420, easing: "ease-in" });
+        drop.innerHTML = "";
+      }
+      if (run === Cook.run && tot.isConnected) {
+        tot.innerHTML = coinsHtml(total, "total");
+        pic.innerHTML = jarHtml(jarLevel(total));
+      }
+    })();
   }
 
   const imgFor = (u) => Cook.v(u.art ? Cook.Art.url(u.art) : u.image && u.image.endsWith("badge") ? `assets/cook/characters/${u.image}.webp` : `assets/cook/props/${u.image}.webp`);
@@ -1085,7 +1201,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       .map((d) => {
         const cls = Cook.save.best[d.id] != null ? "done" : d.id === nextDay && !Cook.save.finished ? "next" : "";
         const open = d.id <= Cook.save.day || Cook.save.finished;
-        return `<button class="day-dot ${cls}" data-day="${d.id}" ${open ? "" : "disabled"} type="button" aria-label="Day ${d.id}: ${UI.esc(d.title)}" style="border:none;background:none"><b>${open ? d.id : PIC.lock}</b>${Cook.save.best[d.id] != null ? `<span class="st">${PIC.done}</span>` : ""}</button>`;
+        // CK-24 (C26): a story day is a DAY (a small sun over its number), never read as a level
+        return `<button class="day-dot ${cls}" data-day="${d.id}" ${open ? "" : "disabled"} type="button" aria-label="Day ${d.id}: ${UI.esc(d.title)}" style="border:none;background:none"><span class="day-sun" aria-hidden="true">${PIC.sun}</span><b>${open ? d.id : PIC.lock}</b>${Cook.save.best[d.id] != null ? `<span class="st">${PIC.done}</span>` : ""}</button>`;
       })
       .join("");
     const mode = Cook.save.mode;
@@ -1298,6 +1415,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   Cook.hosted = false; // set by Cook.boot (inside the game host, js/cook/main.js)
   const today = () => new Date().toISOString().slice(0, 10);
+  /** Decision 60 (PAN-13, S02-B): the pantry trip runs only the first time a dish is EVER made in the story. */
+  function fetchedEver(dish) {
+    return !!(Cook.save.pantryDone && Cook.save.pantryDone[dish]);
+  }
+  function markFetched(dish) {
+    Cook.save.pantryDone = Object.assign({}, Cook.save.pantryDone, { [dish]: true });
+    Cook.writeSave();
+  }
   function fetchedToday(dish) {
     const f = Cook.save.fetched || {};
     return f.day === today() && (f.dishes || []).includes(dish);
@@ -1316,7 +1441,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const level = o.level || 1;
     if (o.pantry) {
       const dish = o.dish || "chai";
-      if (!pantryFirst(dish) || fetchedToday(dish)) return { skipped: true };
+      if (!pantryFirst(dish) || fetchedToday(dish) || fetchedEver(dish)) return { skipped: true };
+      markFetched(dish);
       const f = Cook.save.fetched && Cook.save.fetched.day === today() ? Cook.save.fetched : { day: today(), dishes: [] };
       f.dishes = f.dishes.concat(dish);
       Cook.save.fetched = f;

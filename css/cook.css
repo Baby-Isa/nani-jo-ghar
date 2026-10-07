@@ -1052,3 +1052,16 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 /* SH-60: the grown-ups' "play as new" in the "?" pop-up (English for grown-ups only lives here) */
 #help-pop .hp-new { margin: var(--njg-s2, 8px) 0 0; font-size: 14px; color: #7a6558; }
 #help-pop .hp-new a { font-weight: 800; color: #6b4a2a; }
+
+/* SH-51 (S02-B): the coin-jar day summary (js/cook/flow.js showSummary): the jar, a card landing on it, today's
+   coins beside it and the jar's total under it */
+.jar-sum { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 4vw, 48px); margin: 4px 0 clamp(64px, 12vh, 96px); flex-wrap: wrap; }
+.jar-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.jar-stage { position: relative; width: clamp(96px, 20vh, 170px); padding-top: clamp(56px, 11vh, 96px); }
+.jar-pic .jar-svg, .jar-pic .jar-img { display: block; width: 100%; height: auto; }
+.jar-drop { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: clamp(190px, 46vw, 260px); pointer-events: none; }
+.jar-drop .jar-card { margin: 0; box-shadow: 0 6px 18px rgba(40, 25, 10, 0.18); }
+.jar-drop .jar-coin { position: absolute; left: 50%; top: 70%; width: 22px; height: 22px; }
+.jar-today .pill { font-size: clamp(20px, 3vw, 30px); }
+.day-dot .day-sun { display: block; width: 18px; height: 18px; margin: 0 auto -2px; color: #c9962e; }
+.day-dot .day-sun svg { width: 100%; height: 100%; }

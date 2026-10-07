@@ -1028,7 +1028,8 @@
     {
      "do": "serve",
      "key": "glass-chai",
-     "count": "$tray.served"
+     "count": "$tray.served",
+     "cups": "$cups"
     },
     {
      "do": "wait",
@@ -4459,7 +4460,11 @@
    "stir",
    "assemble",
    "samosa"
-  ]
+  ],
+  "notInLaunch": [
+   "tadka"
+  ],
+  "_notInLaunch": "Decision 62 (DAAR-15, S02-B): Tadka stays in the labs (the Station lab and labs.html) but is not in the first launch: Daar replaced it. A launch build leaves out every station listed here."
  },
  "onboard": {
   "_about": "Wave 6b (docs/design-language/ux-principles.md 8 and 10): the first-time onboarding script for each kept station, run by the shared kit (js/shared/onboard.js) through js/cook/coach.js. Each step is one move the overlay shows: everything dims except the next thing to do (the station's own 'what to do next', Cook.expect), a ghost hand does `do` once (tap, swipe, stir, roll, hold), the child does it, then the next. After the last step the overlay is gone at that station for good (once per profile). `what` says what the step is, for people reading this. Only the guided first time (a dish's first order; the Station lab with 'Nani helps'). Keys are the stations' own keys (Cook.Stations.begin).",

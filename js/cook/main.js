@@ -62,7 +62,7 @@ const STATIONS = [
   ["mishkaki-grill", "Sekelo grill", ["tap", "drag"]],
   ["daar", "Daar", ["tap", "swipe", "circle"]],
   ["chop", "Chop", ["tap", "swipe"]],
-  ["tadka", "Tadka", ["tap"]],
+  ["tadka", "Tadka (lab only)", ["tap"]], // decision 62 (DAAR-15): in the labs, not in the first launch (data/cook.json lab.notInLaunch)
   ["stir", "Stir", ["circle"]],
   ["assemble", "Chaat bowl", ["tap"]],
   ["samosa", "Samosa", ["tap", "swipe"]],
