@@ -1,0 +1,57 @@
+SESSION NAME / MODE:  S02-D, re-clip every family recording (Sprint 2)
+MODEL AND EFFORT:     Opus, high effort (audio judgement: finding every take, telling speakers apart, ranking quality and cutting cleanly)
+COST ESTIMATE:        about $30-40 (plus about $2 of Whisper)
+HARD STOP:            8 Oct 2026, 18:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 8 (Language, Kutchi and voice) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/decisions.md 66 and 67 (why: clips were badly chosen and cut; Zafar picks from ranked takes)
+  6. build/split_voice_notes.py and build/transcribe_family.py (the old cutter: Whisper segment times, highpass + loudnorm only)
+  7. data/family-audio.json (802 clips: id, kutchi, speaker, file, source, start, end, checked) and sources/audio/** (30 recordings, 165 MB)
+  8. build/voice-test/robot_test.py (the CLEAN filter chain Zafar liked) and the prototype notes below
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/audio/** (new: the re-clipper, the review page builder, the apply-picks script)
+  - assets/audio/family-candidates/** (new: ranked takes; old clips under assets/audio/family/ are never deleted or overwritten)
+  - data/family-audio-candidates.json (new) and, only through the apply-picks script after Zafar's picks, data/family-audio.json
+  - build/reports/s02d-reclip.md
+READ-ONLY (never edit):
+  - js/**, css/**, data/cook.json, data/clinic/** (Sessions B and C are running)
+  - data/lang/**
+  - assets/audio/family/** existing files (read only; never overwrite)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none; a line with no take above the bar is listed as 'record again' in the report
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Re-transcribe every source recording in data/family-audio.json's sources with Whisper word and segment timestamps (pieces of about 25 s cut at pauses, previous text as prompt; OPENAI_API_KEY is set; cache the JSON so it never runs twice).
+     Accept: one cached transcript per source; total Whisper cost in the report
+  2. Find every take of every manifest line across all sources (fuzzy match of the Kutchi text, nearby question id, aliases like matar/mata), not just the one already chosen. Find each take's true onset and offset from the sound (adaptive energy threshold per region, extended through voiced frames), not from Whisper times. Label the speaker by median pitch (prototype: Mum about 175-205 Hz, Zafar about 125-135 Hz; calibrate per source from known clips).
+     Accept: for matar in Kutchi.260928.m4a: the 1650 s take is labelled Zafar; Mum's takes at about 1647.9 and 1697.5 s are found
+  3. Score every take: right speaker, words match, signal to noise, quiet gap before and after (isolation), no overlap with other speech, no clipping, natural length. Set a quality bar; keep at most 5 takes above it per line, ranked. Cut each with about 150 ms lead and 250 ms tail, 15 ms fades, then the CLEAN chain (high-pass, de-noise tuned for Mum's low level, silence trim, loudnorm to -16 LUFS) so every clip sits at the same loudness.
+     Accept: candidates in assets/audio/family-candidates/<clip-id>/1.mp3..; data/family-audio-candidates.json lists ranks, scores, source times and speaker
+  4. A review page (build/tools/audio/review.html, static, self-contained list of files) Zafar can use on his phone: lines ordered worst first (old clip's score), each with the current clip and the ranked candidates, a one-tap pick per line ('keep current' allowed), rank 1 marked as the suggestion, and a 'Copy my picks' button producing a compact list. The orchestrator publishes it.
+     Accept: page lists every line with at least one candidate; the matar line offers Mum's clean take as rank 1
+  5. build/tools/audio/apply_picks.mjs: takes the pasted picks, copies the chosen candidate to assets/audio/family/<new-name>.mp3, points data/family-audio.json at it (keeping the old file and recording the old path), sets checked: 'ok-zafar'. Dry-run mode prints the changes.
+     Accept: dry run on a 3-pick sample changes exactly 3 entries
+  6. Report: how many lines got a better take, how many redo/hand-picked lines now have a passing take, the lines with nothing above the bar (to record again), and the cost.
+     Accept: report under 300 words with those counts
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s02d-reclip` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8824.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s02d-reclip.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

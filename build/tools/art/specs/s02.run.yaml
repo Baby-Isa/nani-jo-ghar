@@ -40,7 +40,7 @@ limb_templates: {}
 lines:
   # A: the kitchen
   A1:  {attach: [bg-cook-service-v1.jpg, style-anchor-v1.png], save: a1-kitchen-service-trays-v1.png, check: KITCHEN,
-        note: "the same room and camera as the attached kitchen; three empty trays; ONE marble edge under the sink; nobody in it"}
+        note: "the same room and camera as the attached kitchen; three empty rich dark walnut trays (same wood as the rolling board and pin); ONE marble edge under the sink; nobody in it"}
   # B: the served dishes
   B1:  {attach: [style-anchor-v1.png], save: b1-served-dishes-v1.png, check: DISHES}
   # C: the Cook fixes
@@ -124,7 +124,7 @@ parts:
 # the checks, by check ID: text = the words in the block; judge = what the first-pass judge measures
 checks:
   KITCHEN:
-    text: the same room from the same camera as the attached kitchen (window and tap left, sink worktop with ONE marble edge, three empty shelves, hob in sage cabinets, mirror-work hanging and brass pot right, arched doorway, pendant lamp, marble island with oak-slat front across the whole width, its top edge horizontal at about 65% of the height) · three identical empty pale-oak trays side by side on the island at about 22%, 50% and 78% of the width · nobody, no hands, no food · the scene fits a central 16:9 band · light from the upper left, shadows to the right · sharp, no blur
+    text: the same room from the same camera as the attached kitchen (window and tap left, sink worktop with ONE marble edge, three empty shelves, hob in sage cabinets, mirror-work hanging and brass pot right, arched doorway, pendant lamp, marble island with oak-slat front across the whole width, its top edge horizontal at about 65% of the height) · three identical empty pale-oak rich dark walnut trays (the chakla and velan wood) side by side on the island at about 22%, 50% and 78% of the width · nobody, no hands, no food · the scene fits a central 16:9 band · light from the upper left, shadows to the right · sharp, no blur
     judge: {aspect: [3, 2], bg: none}
   DISHES:
     text: 'eight dishes in a 4 by 2 grid, in order: milky chai glass, black tea in the same glass, a stack of maani on a steel plate, a steel bowl of yellow daar, layered chaat in a thin glass bowl, two samosas on a steel plate, two straight parallel skewers on an oval steel plate, a basket with a milk jug, tea tin and cloth sack · all seen from the front and a little above · nothing under them · lit from the upper left'
