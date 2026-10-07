@@ -369,7 +369,7 @@
     }
     // a line the engine doesn't hold yet (S02-C's new lines, to record: data/lang is the engine's, imported later)
     // shows its English meaning from the clinic's data as the grey "to record" placeholder, never its id
-    if (!m) return { kutchi: null, english: String(def.english || key), placeholder: true, plan: [], key, rec: true };
+    if (!m) return { kutchi: null, english: String(def.english || def.e || key), placeholder: true, plan: [], key, rec: true, who: def.who };
     const w = E.show(m, o);
     return Object.assign(w, { key, m, who: def.who, audio: def.audio });
   };
