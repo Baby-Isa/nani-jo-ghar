@@ -1,0 +1,1128 @@
+{
+ "seed": 69,
+ "n": 30,
+ "runs": 3,
+ "other_content": 0,
+ "other_any_run": 1,
+ "ask": "Transcribe exactly what you hear in this audio clip, word for word, in whatever language it is, written in Latin letters as it sounds. List every word you hear, including any numbers, letters, filler words, laughter or other sounds, and say how many different voices speak. Answer in JSON only: {\"words\": \"<every word in order>\", \"voices\": <number>, \"other_sounds\": \"<laughter, noises, or empty>\"}",
+ "rows": [
+  {
+   "key": "mum/daya-chokra",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/daya-chokra/1.mp3",
+   "target": "daya chokra",
+   "runs": [
+    {
+     "heard": "daha çok böyle",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.475,
+     "reasons": [
+      "extra word 'boyle'",
+      "missing word 'cokra'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "daha çok",
+     "voices": 1,
+     "other_sounds": "",
+     "strength": 0.556,
+     "reasons": [
+      "missing word 'cokra'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "dāyachōta",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.778,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 1
+  },
+  {
+   "key": "zafar/huda",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/zafar/huda/2.mp3",
+   "target": "huda",
+   "runs": [
+    {
+     "heard": "hodan",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.76,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "hola",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.712,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "ho dang",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.633,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/bharelo-cup",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/bharelo-cup/1.mp3",
+   "target": "bharelo cup",
+   "runs": [
+    {
+     "heard": "bore no ka",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.739,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "bore no ka",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.739,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "barêno ka",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.739,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/inke-hane-kadh",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/zafar/inke-hane-kadh/1.mp3",
+   "target": "inke hane kadh",
+   "runs": [
+    {
+     "heard": "inka hanekam",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.818,
+     "reasons": [
+      "ending 'inka' for 'inke'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "Inkeraan ekauli",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.692,
+     "reasons": [
+      "extra word 'ekauli'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "inkeh han nekal",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.833,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 1
+  },
+  {
+   "key": "mum/ardo",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/mum/ardo/2.mp3",
+   "target": "ardo",
+   "runs": [
+    {
+     "heard": "ardhu",
+     "voices": 1,
+     "other_sounds": "",
+     "strength": 0.95,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "ardo",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "ardou",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.95,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/matar-b-m",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/mum/matar-b-m/2.mp3",
+   "target": "matar",
+   "runs": [
+    {
+     "heard": "",
+     "voices": null,
+     "other_sounds": "",
+     "strength": 0.0,
+     "reasons": [
+      "nothing heard",
+      "no answer"
+     ],
+     "other": false
+    },
+    {
+     "heard": "",
+     "voices": 0,
+     "other_sounds": "empty",
+     "strength": 0.0,
+     "reasons": [
+      "nothing heard"
+     ],
+     "other": false
+    },
+    {
+     "heard": "",
+     "voices": 0,
+     "other_sounds": "empty",
+     "strength": 0.0,
+     "reasons": [
+      "nothing heard"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 0
+  },
+  {
+   "key": "mum/jaldi-kar",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/jaldi-kar/1.mp3",
+   "target": "Jaldi kar!",
+   "runs": [
+    {
+     "heard": "jaldi kar",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "jaldi kar",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "jaldi kar",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/ha-of-course",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/ha-of-course/1.mp3",
+   "target": "Ha!",
+   "runs": [
+    {
+     "heard": "Ha",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "ha",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "ha",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/mishkaki-ji-lakri",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/mishkaki-ji-lakri/1.mp3",
+   "target": "mishkaki ji lakri",
+   "runs": [
+    {
+     "heard": "moshka kiji ulap",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.643,
+     "reasons": [
+      "extra word 'ulap'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "moja kaki ji laughing",
+     "voices": 1,
+     "other_sounds": "laughing",
+     "strength": 0.588,
+     "reasons": [
+      "extra word 'laughing'",
+      "sounds: laughing"
+     ],
+     "other": true
+    },
+    {
+     "heard": "moshka kiji lovki",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.746,
+     "reasons": [
+      "extra word 'lovki'"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 1,
+   "other_content": false,
+   "recognised_runs": 0
+  },
+  {
+   "key": "mum/wadho-chamcho",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/wadho-chamcho/1.mp3",
+   "target": "wadho chamcho",
+   "runs": [
+    {
+     "heard": "Waduh campur",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.665,
+     "reasons": [
+      "extra word 'campur'",
+      "missing word 'camco'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "Bodo chamech",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.633,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "bodo cem aja",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.475,
+     "reasons": [
+      "extra word 'cem'",
+      "extra word 'aja'",
+      "missing word 'camco'"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 1
+  },
+  {
+   "key": "zafar/samosa-r3",
+   "rank": 3,
+   "file": "assets/audio/family-candidates/zafar/samosa-r3/3.mp3",
+   "target": "samosa",
+   "runs": [
+    {
+     "heard": "samosa",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "samosa",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "samosa",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/na-muke-na-khape",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/na-muke-na-khape/1.mp3",
+   "target": "Na, muke na khape",
+   "runs": [
+    {
+     "heard": "na mukena hapa",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.833,
+     "reasons": [
+      "extra word 'hapa'",
+      "missing word 'kape'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "na mkenya haka sema",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.562,
+     "reasons": [
+      "extra word 'sema'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "Na mkena khabata",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.615,
+     "reasons": [
+      "extra word 'khabata'",
+      "missing word 'kape'"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 0
+  },
+  {
+   "key": "zafar/maji",
+   "rank": 3,
+   "file": "assets/audio/family-candidates/zafar/maji/3.mp3",
+   "target": "Maji!",
+   "runs": [
+    {
+     "heard": "maji",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "ma ji",
+     "voices": 1,
+     "other_sounds": "",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "maji",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/nana",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/zafar/nana/1.mp3",
+   "target": "Nana!",
+   "runs": [
+    {
+     "heard": "nana",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "nana",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "nana",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/hakri-lakri",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/mum/hakri-lakri/2.mp3",
+   "target": "hakri lakri",
+   "runs": [
+    {
+     "heard": "Hakri lakrid",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.909,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "hakrilakril",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.909,
+     "reasons": [
+      "extra word 'hakrilakril'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "ha kri laku",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.8,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 2
+  },
+  {
+   "key": "mum/big-ma",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/big-ma/1.mp3",
+   "target": "Big Ma!",
+   "runs": [
+    {
+     "heard": "big ma",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "big moo",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.95,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "Big Mo",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.95,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/tameto",
+   "rank": 3,
+   "file": "assets/audio/family-candidates/zafar/tameto/3.mp3",
+   "target": "tameto",
+   "runs": [
+    {
+     "heard": "tomato",
+     "voices": 1,
+     "other_sounds": "",
+     "strength": 0.9,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "tomato",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.9,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "tomato",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.9,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/hi-nana-lai-ai",
+   "rank": 3,
+   "file": "assets/audio/family-candidates/mum/hi-nana-lai-ai/3.mp3",
+   "target": "Hi Nana lai ai.",
+   "runs": [
+    {
+     "heard": "he nana lai ai",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.95,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "hi nana lai ai",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "hee nana lai ai",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/sambusa-r3",
+   "rank": 3,
+   "file": "assets/audio/family-candidates/mum/sambusa-r3/3.mp3",
+   "target": "sambusa",
+   "runs": [
+    {
+     "heard": "sambusa",
+     "voices": 1,
+     "other_sounds": "",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "",
+     "voices": 0,
+     "other_sounds": "empty",
+     "strength": 0.0,
+     "reasons": [
+      "nothing heard"
+     ],
+     "other": false
+    },
+    {
+     "heard": "",
+     "voices": 0,
+     "other_sounds": "",
+     "strength": 0.0,
+     "reasons": [
+      "nothing heard"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 1
+  },
+  {
+   "key": "zafar/samosa-r3",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/zafar/samosa-r3/2.mp3",
+   "target": "samosa",
+   "runs": [
+    {
+     "heard": "samosa",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "samosa",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "samosa",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "mum/big-ma",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/mum/big-ma/2.mp3",
+   "target": "Big Ma!",
+   "runs": [
+    {
+     "heard": "big man",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.833,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "bigmon",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.792,
+     "reasons": [
+      "extra word 'bigmon'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "Big mac",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.833,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 2
+  },
+  {
+   "key": "mum/kali",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/kali/1.mp3",
+   "target": "kali",
+   "runs": [
+    {
+     "heard": "khaali",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "Khali",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "khaali",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/muke-paani-khapeto",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/zafar/muke-paani-khapeto/1.mp3",
+   "target": "Muke paani khapeto",
+   "runs": [
+    {
+     "heard": "oke panik capek tuh",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.76,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "oke panik capek tuh",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.76,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "oke pani kapetoh",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.882,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/salamun-alaykum-b",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/zafar/salamun-alaykum-b/1.mp3",
+   "target": "Salamun alaykum!",
+   "runs": [
+    {
+     "heard": "Salam aleikum",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.786,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "Selamat pagi",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.407,
+     "reasons": [
+      "extra word 'pagi'",
+      "missing word 'alaikum'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "Selamat pagi",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.407,
+     "reasons": [
+      "extra word 'pagi'",
+      "missing word 'alaikum'"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 1
+  },
+  {
+   "key": "zafar/jaldi",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/zafar/jaldi/2.mp3",
+   "target": "jaldi",
+   "runs": [
+    {
+     "heard": "chal de",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.76,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "chalte",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.57,
+     "reasons": [
+      "extra word 'chalte'",
+      "missing word 'jaldi'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "chal de",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.76,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 2
+  },
+  {
+   "key": "mum/ghee",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/ghee/1.mp3",
+   "target": "ghee",
+   "runs": [
+    {
+     "heard": "gee",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "gi",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "Gi",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/kali",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/zafar/kali/2.mp3",
+   "target": "kali",
+   "runs": [
+    {
+     "heard": "ka li",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "cari",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.75,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "ca-li",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/bas",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/zafar/bas/1.mp3",
+   "target": "bas!",
+   "runs": [
+    {
+     "heard": "pas",
+     "voices": 1,
+     "other_sounds": "",
+     "strength": 0.667,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "pas",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.667,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "пас",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.667,
+     "reasons": [],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 3
+  },
+  {
+   "key": "zafar/mishkaki",
+   "rank": 2,
+   "file": "assets/audio/family-candidates/zafar/mishkaki/2.mp3",
+   "target": "mishkaki",
+   "runs": [
+    {
+     "heard": "",
+     "voices": 0,
+     "other_sounds": "empty",
+     "strength": 0.0,
+     "reasons": [
+      "nothing heard"
+     ],
+     "other": false
+    },
+    {
+     "heard": "mishkaki",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 1.0,
+     "reasons": [],
+     "other": false
+    },
+    {
+     "heard": "",
+     "voices": 0,
+     "other_sounds": "empty",
+     "strength": 0.0,
+     "reasons": [
+      "nothing heard"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 1
+  },
+  {
+   "key": "mum/tayar-ai",
+   "rank": 1,
+   "file": "assets/audio/family-candidates/mum/tayar-ai/1.mp3",
+   "target": "tayar ai",
+   "runs": [
+    {
+     "heard": "tai arra",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.857,
+     "reasons": [
+      "ending 'taiara' for 'taiar'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "te adoro",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.543,
+     "reasons": [
+      "extra word 'te'",
+      "extra word 'adoro'",
+      "missing word 'taiar'",
+      "missing word 'ai'"
+     ],
+     "other": false
+    },
+    {
+     "heard": "tayara",
+     "voices": 1,
+     "other_sounds": "empty",
+     "strength": 0.857,
+     "reasons": [
+      "ending 'taiara' for 'taiar'"
+     ],
+     "other": false
+    }
+   ],
+   "other_votes": 0,
+   "other_content": false,
+   "recognised_runs": 0
+  }
+ ]
+}

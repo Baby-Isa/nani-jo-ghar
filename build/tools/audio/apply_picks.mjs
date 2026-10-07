@@ -55,7 +55,7 @@ for (const p of picks) {
   copies.push([path.join(ROOT, c.file), path.join(ROOT, to)]);
   if (!entry.old_file) Object.assign(entry, { old_file: entry.file, old_start: entry.start, old_end: entry.end, old_source: entry.source });
   Object.assign(entry, { file: to, source: c.source, start: c.start, end: c.end, checked: "ok-zafar" });
-  entry.note = `${entry.note ? entry.note + "; " : ""}re-clipped (S02-D), Zafar picked take ${c.rank}`;
+  entry.note = `${entry.note ? entry.note + "; " : ""}re-clipped (S02-D2, blind-verified), Zafar picked take ${c.rank}`;
   changed++;
 }
 console.log(`${changed} entries ${dry ? "would change (dry run, nothing written)" : "changed"}`);

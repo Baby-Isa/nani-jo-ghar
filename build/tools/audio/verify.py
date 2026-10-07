@@ -38,7 +38,7 @@ GLOBAL_MIN = 5
 KEEP = 5
 MAX_OTHER = 0.2       # share of voiced frames that may sit on the other voice's side of the pitch split
 OVER = 0.6            # a take may be at most this much longer than the line's natural length
-RIVAL_MARGIN = 0.05
+RIVAL_MARGIN = 0.03   # another line's text this close (or closer) takes the utterance away
 
 
 def keyform(t):
@@ -125,7 +125,8 @@ def main():
                 if k not in pre:
                     continue
                 near = local and abs(u["s"] - e["start"]) <= REGION
-                pf = [max(sim(x, keyform(f)) for f in target_forms(e["kutchi"])) for x in pre[k]]
+                pf = [max(sim(x, keyform(f), skeleton=" " not in f.strip()) for f in target_forms(e["kutchi"]))
+                      for x in pre[k]]
                 if min(pf) < STRONG - 0.1 and not (near and max(pf) >= STRONG):
                     continue
                 ok, v = judged(rel, u, e["kutchi"])
@@ -145,8 +146,8 @@ def main():
                     if abs(len(keyform(rt)) - len(tk)) > 4:
                         continue
                     ok2, v2 = judged(rel, u, rt)
-                    if ok2 and np.mean([x["strength"] for x in v2.values()]) > mine + RIVAL_MARGIN:
-                        why.append(f"closer to '{rt}'")
+                    if ok2 and np.mean([x["strength"] for x in v2.values()]) > mine - RIVAL_MARGIN:
+                        why.append(f"as close to '{rt}'")
                         break
                 if why:
                     rejected[key(rel, u)] = why

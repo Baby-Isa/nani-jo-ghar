@@ -1,0 +1,2210 @@
+{
+"assets/audio/family/mum/ha.mp3": {
+"whisper-1": "Huh.",
+"gpt-4o-transcribe": "Ha."
+},
+"assets/audio/family/zafar/ha.mp3": {
+"whisper-1": "HAH",
+"gpt-4o-transcribe": "Ha."
+},
+"assets/audio/family/mum/na-thank-you.mp3": {
+"whisper-1": "Na. Thank you.",
+"gpt-4o-transcribe": "Na, thank you."
+},
+"assets/audio/family/zafar/na-thank-you.mp3": {
+"whisper-1": "Nah. Thank you.",
+"gpt-4o-transcribe": "Na, thank you."
+},
+"assets/audio/family/mum/ker-ai.mp3": {
+"whisper-1": "Care Aye",
+"gpt-4o-transcribe": "Cén áit?"
+},
+"assets/audio/family/zafar/ker-ai.mp3": {
+"whisper-1": "Cat eye.",
+"gpt-4o-transcribe": "Cearaí."
+},
+"assets/audio/family/mum/hi-kuro-ai.mp3": {
+"whisper-1": "ひっくろあい",
+"gpt-4o-transcribe": "ヒクロアイ"
+},
+"assets/audio/family/zafar/hi-kuro-ai.mp3": {
+"whisper-1": "He caught our eye.",
+"gpt-4o-transcribe": "Hī koro ai."
+},
+"assets/audio/family/mum/kida-ai.mp3": {
+"whisper-1": "Kida'ai.",
+"gpt-4o-transcribe": "Kida ai."
+},
+"assets/audio/family/zafar/kida-ai.mp3": {
+"whisper-1": "Kid I.",
+"gpt-4o-transcribe": "Kida ai."
+},
+"assets/audio/family/mum/kyo.mp3": {
+"whisper-1": "귀여워",
+"gpt-4o-transcribe": "Kyo."
+},
+"assets/audio/family/zafar/kyo.mp3": {
+"whisper-1": "큐",
+"gpt-4o-transcribe": "Kio?"
+},
+"assets/audio/family/mum/kitla.mp3": {
+"whisper-1": "Gitla.",
+"gpt-4o-transcribe": "Gitla."
+},
+"assets/audio/family/zafar/kitla.mp3": {
+"whisper-1": "Kittler",
+"gpt-4o-transcribe": "Kjetla."
+},
+"assets/audio/family/mum/toke-kuro-khapeto.mp3": {
+"whisper-1": "το κεκουρό χαπέτο.",
+"gpt-4o-transcribe": "Toke kuro kapeta"
+},
+"assets/audio/family/mum/anke-kuro-khapeto.mp3": {
+"whisper-1": "anche Kurokapeto.",
+"gpt-4o-transcribe": "Anke kurokapeto."
+},
+"assets/audio/family/zafar/toke-kuro-khapeto.mp3": {
+"whisper-1": "Τόκε κοροκοπέτω.",
+"gpt-4o-transcribe": "Toke kōrokapeto."
+},
+"assets/audio/family/zafar/anke-kuro-khapeto.mp3": {
+"whisper-1": "アンケ・コロ・カペト",
+"gpt-4o-transcribe": "Anke koro kapeto."
+},
+"assets/audio/family/mum/kere-karein.mp3": {
+"whisper-1": "खेर करें।",
+"gpt-4o-transcribe": "Kerkarin."
+},
+"assets/audio/family/zafar/kere-karein.mp3": {
+"whisper-1": "개깔아이",
+"gpt-4o-transcribe": "Kēkarei."
+},
+"assets/audio/family/mum/hi.mp3": {
+"whisper-1": "Hmm?",
+"gpt-4o-transcribe": "He"
+},
+"assets/audio/family/mum/hu.mp3": {
+"whisper-1": "Who?",
+"gpt-4o-transcribe": "Hu"
+},
+"assets/audio/family/zafar/hu.mp3": {
+"whisper-1": "home.",
+"gpt-4o-transcribe": "Hou."
+},
+"assets/audio/family/zafar/hi.mp3": {
+"whisper-1": "He",
+"gpt-4o-transcribe": "Hí"
+},
+"assets/audio/family/mum/hida.mp3": {
+"whisper-1": "Hidup",
+"gpt-4o-transcribe": "Heda."
+},
+"assets/audio/family/mum/huda.mp3": {
+"whisper-1": "Hooda.",
+"gpt-4o-transcribe": "Huda."
+},
+"assets/audio/family/zafar/huda.mp3": {
+"whisper-1": "هدى",
+"gpt-4o-transcribe": "Hoda."
+},
+"assets/audio/family/zafar/hida.mp3": {
+"whisper-1": "هدى",
+"gpt-4o-transcribe": "Heda?"
+},
+"assets/audio/family/mum/na.mp3": {
+"whisper-1": "No.",
+"gpt-4o-transcribe": "Na."
+},
+"assets/audio/family/zafar/na.mp3": {
+"whisper-1": "Na.",
+"gpt-4o-transcribe": "Na"
+},
+"assets/audio/family/mum/muke-na-khape.mp3": {
+"whisper-1": "موکه نخبه.",
+"gpt-4o-transcribe": "Mu ke na khape."
+},
+"assets/audio/family/mum/muke-nato-khape.mp3": {
+"whisper-1": "Mukena to kape.",
+"gpt-4o-transcribe": "Mu kenna tokape."
+},
+"assets/audio/family/zafar/muke-nato-khape.mp3": {
+"whisper-1": "Μοκένα το καπέλο.",
+"gpt-4o-transcribe": "Mukena tokape."
+},
+"assets/audio/family/zafar/muke-na-khape.mp3": {
+"whisper-1": "مكة نكهة",
+"gpt-4o-transcribe": "Muka na kape."
+},
+"assets/audio/family/mum/aste-thi.mp3": {
+"whisper-1": "Αστεθεί.",
+"gpt-4o-transcribe": "Aste ti."
+},
+"assets/audio/family/zafar/aste-thi.mp3": {
+"whisper-1": "آستیتی",
+"gpt-4o-transcribe": "Asteații."
+},
+"assets/audio/family/mum/jaldi.mp3": {
+"whisper-1": "Jaldi!",
+"gpt-4o-transcribe": "جلدی"
+},
+"assets/audio/family/zafar/jaldi.mp3": {
+"whisper-1": "چل دی",
+"gpt-4o-transcribe": "جلدی."
+},
+"assets/audio/family/mum/ardo.mp3": {
+"whisper-1": "अर्दो",
+"gpt-4o-transcribe": "Ardo."
+},
+"assets/audio/family/mum/adh.mp3": {
+"whisper-1": "أد",
+"gpt-4o-transcribe": "Ad"
+},
+"assets/audio/family/zafar/adh.mp3": {
+"whisper-1": "أد",
+"gpt-4o-transcribe": "Ad."
+},
+"assets/audio/family/zafar/ardo.mp3": {
+"whisper-1": "Ardo",
+"gpt-4o-transcribe": "Ardo."
+},
+"assets/audio/family/mum/ardi.mp3": {
+"whisper-1": "अर्धी",
+"gpt-4o-transcribe": "اردی"
+},
+"assets/audio/family/zafar/ardi.mp3": {
+"whisper-1": "أرثي",
+"gpt-4o-transcribe": "Arti"
+},
+"assets/audio/family/mum/aako-cup.mp3": {
+"whisper-1": "I cook up.",
+"gpt-4o-transcribe": "A kokap."
+},
+"assets/audio/family/zafar/aaki-tanki.mp3": {
+"whisper-1": "Akitanki.",
+"gpt-4o-transcribe": "Aki tanki?"
+},
+"assets/audio/family/mum/aaki-tanki.mp3": {
+"whisper-1": "Thank you",
+"gpt-4o-transcribe": "Kiitänki."
+},
+"assets/audio/family/mum/bharelo-cup.mp3": {
+"whisper-1": "Borrello Cup.",
+"gpt-4o-transcribe": "Barelo kap."
+},
+"assets/audio/family/zafar/bhareli-chamchi.mp3": {
+"whisper-1": "바랄리 참치",
+"gpt-4o-transcribe": "Bareli çamçi."
+},
+"assets/audio/family/zafar/bhareli.mp3": {
+"whisper-1": "Barely.",
+"gpt-4o-transcribe": "Bareli"
+},
+"assets/audio/family/zafar/bharelo.mp3": {
+"whisper-1": "barelo",
+"gpt-4o-transcribe": "Barello."
+},
+"assets/audio/family/zafar/aaki.mp3": {
+"whisper-1": "Aqui.",
+"gpt-4o-transcribe": "Aqui?"
+},
+"assets/audio/family/zafar/aako.mp3": {
+"whisper-1": "아코",
+"gpt-4o-transcribe": "Ako."
+},
+"assets/audio/family/mum/nindho.mp3": {
+"whisper-1": "님도",
+"gpt-4o-transcribe": "Nindo?"
+},
+"assets/audio/family/mum/nindhi.mp3": {
+"whisper-1": "Nindi",
+"gpt-4o-transcribe": "Nindi."
+},
+"assets/audio/family/zafar/nindhi.mp3": {
+"whisper-1": "NINDI",
+"gpt-4o-transcribe": "Nindi."
+},
+"assets/audio/family/zafar/nindho.mp3": {
+"whisper-1": "린더",
+"gpt-4o-transcribe": "Nindo?"
+},
+"assets/audio/family/mum/dai.mp3": {
+"whisper-1": "Bang!",
+"gpt-4o-transcribe": "Đây"
+},
+"assets/audio/family/zafar/dai.mp3": {
+"whisper-1": "day.",
+"gpt-4o-transcribe": "Dei"
+},
+"assets/audio/family/mum/chana.mp3": {
+"whisper-1": "Chana.",
+"gpt-4o-transcribe": "Channa."
+},
+"assets/audio/family/zafar/chana.mp3": {
+"whisper-1": "جنة",
+"gpt-4o-transcribe": "Čana."
+},
+"assets/audio/family/mum/gos.mp3": {
+"whisper-1": "Goss.",
+"gpt-4o-transcribe": "Gos"
+},
+"assets/audio/family/zafar/gos.mp3": {
+"whisper-1": "course.",
+"gpt-4o-transcribe": "Gos."
+},
+"assets/audio/family/mum/bajr-ji-maani.mp3": {
+"whisper-1": "बाजर जी मानी",
+"gpt-4o-transcribe": "Bajarji mani."
+},
+"assets/audio/family/zafar/bajr-ji-maani.mp3": {
+"whisper-1": "Bhajaji Mani",
+"gpt-4o-transcribe": "Baaja Jimani."
+},
+"assets/audio/family/mum/ne-poi.mp3": {
+"whisper-1": "Nē poi.",
+"gpt-4o-transcribe": "Ne poi."
+},
+"assets/audio/family/zafar/ne-poi.mp3": {
+"whisper-1": "На-по-й!",
+"gpt-4o-transcribe": "Na, poy."
+},
+"assets/audio/family/zafar/mervan.mp3": {
+"whisper-1": "Melvyn",
+"gpt-4o-transcribe": "Merfan."
+},
+"assets/audio/family/mum/kali.mp3": {
+"whisper-1": "Kali",
+"gpt-4o-transcribe": "Khali"
+},
+"assets/audio/family/zafar/kali.mp3": {
+"whisper-1": "Kali",
+"gpt-4o-transcribe": "Kali."
+},
+"assets/audio/family/mum/hever.mp3": {
+"whisper-1": "However...",
+"gpt-4o-transcribe": "Hevar"
+},
+"assets/audio/family/zafar/hever.mp3": {
+"whisper-1": "ever.",
+"gpt-4o-transcribe": "Hewa."
+},
+"assets/audio/family/zafar/hane.mp3": {
+"whisper-1": "Hannah",
+"gpt-4o-transcribe": "Hanne."
+},
+"assets/audio/family/mum/hane.mp3": {
+"whisper-1": "Honey.",
+"gpt-4o-transcribe": "Hane."
+},
+"assets/audio/family/mum/inke-hane-kadh.mp3": {
+"whisper-1": "اِن کے ہانے قد",
+"gpt-4o-transcribe": "انکھیہانے کڈھ۔"
+},
+"assets/audio/family/mum/hane-kadh.mp3": {
+"whisper-1": "Hanukkah Day.",
+"gpt-4o-transcribe": "Hane kade."
+},
+"assets/audio/family/zafar/hane-kadh.mp3": {
+"whisper-1": "هنأكد",
+"gpt-4o-transcribe": "Hane kad."
+},
+"assets/audio/family/zafar/inke-hane-kadh.mp3": {
+"whisper-1": "إن كأحنى قد.",
+"gpt-4o-transcribe": "Inkè hanekad."
+},
+"assets/audio/family/mum/chadi-de.mp3": {
+"whisper-1": "छड़ी दे",
+"gpt-4o-transcribe": "ਛੱਡੀ ਦੇ।"
+},
+"assets/audio/family/mum/inke-chadi-de.mp3": {
+"whisper-1": "en que charide.",
+"gpt-4o-transcribe": "Inkechadide."
+},
+"assets/audio/family/mum/ha-kadh.mp3": {
+"whisper-1": "Haakad",
+"gpt-4o-transcribe": "Hakad?"
+},
+"assets/audio/family/mum/hever-na.mp3": {
+"whisper-1": "Have Arno.",
+"gpt-4o-transcribe": "ہے ورنہ."
+},
+"assets/audio/family/mum/thori-war-rakh.mp3": {
+"whisper-1": "Tori wa raak.",
+"gpt-4o-transcribe": "Toriwarak."
+},
+"assets/audio/family/zafar/chadi-de.mp3": {
+"whisper-1": "Tchau, tchau!",
+"gpt-4o-transcribe": "Cèddida."
+},
+"assets/audio/family/mum/boga.mp3": {
+"whisper-1": "Boga.",
+"gpt-4o-transcribe": "Бога"
+},
+"assets/audio/family/zafar/boga.mp3": {
+"whisper-1": "Boga.",
+"gpt-4o-transcribe": "Poga."
+},
+"assets/audio/family/mum/hakri-lakri-mishkaki.mp3": {
+"whisper-1": "हकरी लक्री मुश्काकी",
+"gpt-4o-transcribe": "Hakri lakri mujkaki."
+},
+"assets/audio/family/zafar/hakri-lakri-mishkaki.mp3": {
+"whisper-1": "ہکڑی لکڑی مشکا کی",
+"gpt-4o-transcribe": "Haqîrîya kirî meşkakî."
+},
+"assets/audio/family/zafar/ba-lakri-mishkaki.mp3": {
+"whisper-1": "Barak li mushkak.",
+"gpt-4o-transcribe": "Përlakrimoshqaki"
+},
+"assets/audio/family/mum/mixed.mp3": {
+"whisper-1": "Mixed.",
+"gpt-4o-transcribe": "Mixt."
+},
+"assets/audio/family/zafar/mixed.mp3": {
+"whisper-1": "Mixed.",
+"gpt-4o-transcribe": "Mixt."
+},
+"assets/audio/family/mum/bas.mp3": {
+"whisper-1": "बस",
+"gpt-4o-transcribe": "Bas."
+},
+"assets/audio/family/zafar/bas.mp3": {
+"whisper-1": "Bass.",
+"gpt-4o-transcribe": "Bas"
+},
+"assets/audio/family/mum/wadhare.mp3": {
+"whisper-1": "ودارك",
+"gpt-4o-transcribe": "ودارك"
+},
+"assets/audio/family/zafar/wadhare.mp3": {
+"whisper-1": "Wǒ dǎrén.",
+"gpt-4o-transcribe": "我答。"
+},
+"assets/audio/family/mum/thorok.mp3": {
+"whisper-1": "torok",
+"gpt-4o-transcribe": "Torok"
+},
+"assets/audio/family/zafar/thorok.mp3": {
+"whisper-1": "TOROK",
+"gpt-4o-transcribe": "Tarak."
+},
+"assets/audio/family/mum/tayar-ai.mp3": {
+"whisper-1": "Тая рай",
+"gpt-4o-transcribe": "Tayaray."
+},
+"assets/audio/family/zafar/tayar-ai.mp3": {
+"whisper-1": "Day-eye-eye!",
+"gpt-4o-transcribe": "Deiarai."
+},
+"assets/audio/family/mum/bareto.mp3": {
+"whisper-1": "Barreto",
+"gpt-4o-transcribe": "Bareto."
+},
+"assets/audio/family/zafar/bareto.mp3": {
+"whisper-1": "Bareto.",
+"gpt-4o-transcribe": "Baleto."
+},
+"assets/audio/family/mum/ukreto.mp3": {
+"whisper-1": "UCRETO",
+"gpt-4o-transcribe": "Ukreto."
+},
+"assets/audio/family/zafar/ukreto.mp3": {
+"whisper-1": "ΟΚΡΕΑΤΟ",
+"gpt-4o-transcribe": "O kreator."
+},
+"assets/audio/family/mum/shabash.mp3": {
+"whisper-1": "Shabbos!",
+"gpt-4o-transcribe": "Şabaş!"
+},
+"assets/audio/family/zafar/shabash.mp3": {
+"whisper-1": "Shabbos!",
+"gpt-4o-transcribe": "Şabaş."
+},
+"assets/audio/family/mum/hakri-chamchi.mp3": {
+"whisper-1": "खकरी चमची",
+"gpt-4o-transcribe": "Hakiri čamči."
+},
+"assets/audio/family/mum/chamcho.mp3": {
+"whisper-1": "Chum Cho.",
+"gpt-4o-transcribe": "Tsamcho"
+},
+"assets/audio/family/zafar/chamchi.mp3": {
+"whisper-1": "참치",
+"gpt-4o-transcribe": "참치"
+},
+"assets/audio/family/zafar/chamcho.mp3": {
+"whisper-1": "참초",
+"gpt-4o-transcribe": "참초."
+},
+"assets/audio/family/zafar/hakri-chamchi.mp3": {
+"whisper-1": "है क्रोष समची",
+"gpt-4o-transcribe": "Hekrosamči?"
+},
+"assets/audio/family/zafar/hakro-chamcho.mp3": {
+"whisper-1": "해크로 참초",
+"gpt-4o-transcribe": "Helo chamtsho."
+},
+"assets/audio/family/mum/hakri-cup.mp3": {
+"whisper-1": "하크로컵",
+"gpt-4o-transcribe": "하크러컵?"
+},
+"assets/audio/family/zafar/hakri-cup.mp3": {
+"whisper-1": "해커락압",
+"gpt-4o-transcribe": "Heklokap."
+},
+"assets/audio/family/mum/tarela-bataata.mp3": {
+"whisper-1": "Torela batata",
+"gpt-4o-transcribe": "Tarela bateta."
+},
+"assets/audio/family/mum/chips.mp3": {
+"whisper-1": "Chips.",
+"gpt-4o-transcribe": "Chips."
+},
+"assets/audio/family/zafar/chips.mp3": {
+"whisper-1": "Chips.",
+"gpt-4o-transcribe": "Chips."
+},
+"assets/audio/family/zafar/tarela-bataata.mp3": {
+"whisper-1": "Tare la batata.",
+"gpt-4o-transcribe": "Tawala bateta"
+},
+"assets/audio/family/mum/sev.mp3": {
+"whisper-1": "Save.",
+"gpt-4o-transcribe": "Sev"
+},
+"assets/audio/family/zafar/sev.mp3": {
+"whisper-1": "Sev.",
+"gpt-4o-transcribe": "Zev."
+},
+"assets/audio/family/mum/dhania.mp3": {
+"whisper-1": "the near,",
+"gpt-4o-transcribe": "Dhanya."
+},
+"assets/audio/family/zafar/dhania.mp3": {
+"whisper-1": "等你呀!",
+"gpt-4o-transcribe": "Tania."
+},
+"assets/audio/family/mum/amli.mp3": {
+"whisper-1": "آمني.",
+"gpt-4o-transcribe": "Amli."
+},
+"assets/audio/family/mum/amli-ji-chutney.mp3": {
+"whisper-1": "आम लीजी चटनी",
+"gpt-4o-transcribe": "آملی جی چٹنی."
+},
+"assets/audio/family/zafar/amli.mp3": {
+"whisper-1": "آم لی",
+"gpt-4o-transcribe": "Armlee."
+},
+"assets/audio/family/zafar/amli-ji-chutney.mp3": {
+"whisper-1": "آم لی جی چھٹنی",
+"gpt-4o-transcribe": "Amlygi chutney."
+},
+"assets/audio/family/mum/nair-ji-chutney.mp3": {
+"whisper-1": "Nair G Chutney",
+"gpt-4o-transcribe": "नायर जी चटनी।"
+},
+"assets/audio/family/zafar/nair-ji-chutney.mp3": {
+"whisper-1": "NAYA JI CHAD NI",
+"gpt-4o-transcribe": "Nayagi chutney."
+},
+"assets/audio/family/mum/fudino-ji-chutney.mp3": {
+"whisper-1": "Fudinoji chutney.",
+"gpt-4o-transcribe": "Foodi noje chutney."
+},
+"assets/audio/family/zafar/fudino-ji-chutney.mp3": {
+"whisper-1": "फुद्धी नोजी चट्नी",
+"gpt-4o-transcribe": "Fudino je chutný."
+},
+"assets/audio/family/mum/keema.mp3": {
+"whisper-1": "Keema",
+"gpt-4o-transcribe": "Kima."
+},
+"assets/audio/family/mum/chundo.mp3": {
+"whisper-1": "준도",
+"gpt-4o-transcribe": "Chundo."
+},
+"assets/audio/family/zafar/keema.mp3": {
+"whisper-1": "kīmā",
+"gpt-4o-transcribe": "Kima."
+},
+"assets/audio/family/zafar/chundo.mp3": {
+"whisper-1": "천도",
+"gpt-4o-transcribe": "촌도."
+},
+"assets/audio/family/zafar/ghee.mp3": {
+"whisper-1": "gee",
+"gpt-4o-transcribe": "Qui."
+},
+"assets/audio/family/mum/ghee.mp3": {
+"whisper-1": "Gee",
+"gpt-4o-transcribe": "Gi."
+},
+"assets/audio/family/mum/chaat.mp3": {
+"whisper-1": "Csád!",
+"gpt-4o-transcribe": "Çat."
+},
+"assets/audio/family/zafar/chaat.mp3": {
+"whisper-1": "چاد",
+"gpt-4o-transcribe": "Čat."
+},
+"assets/audio/family/mum/sambusa.mp3": {
+"whisper-1": "Sambusa",
+"gpt-4o-transcribe": "Sambusa."
+},
+"assets/audio/family/zafar/samosa.mp3": {
+"whisper-1": "Samosa",
+"gpt-4o-transcribe": "سموسه"
+},
+"assets/audio/family/zafar/mishkaki.mp3": {
+"whisper-1": "مشکاکی",
+"gpt-4o-transcribe": "Mishkaki."
+},
+"assets/audio/family/mum/mishkaki.mp3": {
+"whisper-1": "Mushkake.",
+"gpt-4o-transcribe": "مشکا کی"
+},
+"assets/audio/family/mum/hi-nana-lai-ai.mp3": {
+"whisper-1": "HI NANA LAI AYE",
+"gpt-4o-transcribe": "Hi nāna lai ai."
+},
+"assets/audio/family/zafar/hi-nana-lai-ai.mp3": {
+"whisper-1": "ہی نانا لائائے",
+"gpt-4o-transcribe": "Hi, nānaleiai."
+},
+"assets/audio/family/mum/tu-muke-chai-banai-dinda.mp3": {
+"whisper-1": "Tumuke chaya banayidinde",
+"gpt-4o-transcribe": "توں مکّے چائے بنا دیندے؟"
+},
+"assets/audio/family/mum/aai-muke-chai-banai-dinda.mp3": {
+"whisper-1": "Ane, muche, ceai, bănai, dindă",
+"gpt-4o-transcribe": "ਮੈਂ ਮੁੱਖੇ ਚਾਇ ਬਣਾਈ ਦਿੰਦਾ।"
+},
+"assets/audio/family/mum/muke-chai-banai-dinda.mp3": {
+"whisper-1": "Muke chaya banayidinde.",
+"gpt-4o-transcribe": "مکے چائے بنائی دیندے؟"
+},
+"assets/audio/family/zafar/muke-chai-banai-dinda.mp3": {
+"whisper-1": "Muhteçar benanında",
+"gpt-4o-transcribe": "Bu keçäniň ahyrynda?"
+},
+"assets/audio/family/mum/ha-of-course.mp3": {
+"whisper-1": "Huh?",
+"gpt-4o-transcribe": "Ha."
+},
+"assets/audio/family/zafar/ha-of-course.mp3": {
+"whisper-1": "Huh.",
+"gpt-4o-transcribe": "Ha"
+},
+"assets/audio/family/mum/jara-e-wandho-nai.mp3": {
+"whisper-1": "जराए वान्धोनै",
+"gpt-4o-transcribe": "जराय वांदो নাই."
+},
+"assets/audio/family/zafar/jara-e-wandho-nai.mp3": {
+"whisper-1": "Jarrah I won don't I?",
+"gpt-4o-transcribe": "Jarai wando nai."
+},
+"assets/audio/family/mum/tu-ki-aiye.mp3": {
+"whisper-1": "तू की है ये?",
+"gpt-4o-transcribe": "Tukiya ye."
+},
+"assets/audio/family/mum/aai-ki-aayo.mp3": {
+"whisper-1": "Ai, quem é eu?",
+"gpt-4o-transcribe": "Ai kia e o."
+},
+"assets/audio/family/mum/aau-theek-ai.mp3": {
+"whisper-1": "आओ ठीक है",
+"gpt-4o-transcribe": "Ao tiikeya."
+},
+"assets/audio/family/zafar/tu-ki-aiye.mp3": {
+"whisper-1": "Tu kijaję.",
+"gpt-4o-transcribe": "تو کیا ہے؟"
+},
+"assets/audio/family/zafar/aai-ki-aayo.mp3": {
+"whisper-1": "Ikea you",
+"gpt-4o-transcribe": "Aikio."
+},
+"assets/audio/family/zafar/aau-theek-ai.mp3": {
+"whisper-1": "آو تی که این",
+"gpt-4o-transcribe": "Ău tīngaia"
+},
+"assets/audio/family/mum/mu-lai-khobar.mp3": {
+"whisper-1": "مولای خبر",
+"gpt-4o-transcribe": "Mulai khabar."
+},
+"assets/audio/family/zafar/mu-lai-khobar.mp3": {
+"whisper-1": "모라이커벌",
+"gpt-4o-transcribe": "মলাই কবর।"
+},
+"assets/audio/family/mum/kha.mp3": {
+"whisper-1": "가",
+"gpt-4o-transcribe": "카."
+},
+"assets/audio/family/zafar/kha.mp3": {
+"whisper-1": "카",
+"gpt-4o-transcribe": "카"
+},
+"assets/audio/family/mum/muke-chakhan-lai-de.mp3": {
+"whisper-1": "मुके चखनलैडे",
+"gpt-4o-transcribe": "မြိုက်ကျခန်းလိုက်တယ်။"
+},
+"assets/audio/family/zafar/muke-chakhan-lai-de.mp3": {
+"whisper-1": "مکه چکر نایده",
+"gpt-4o-transcribe": "Mukhe çakernayde?"
+},
+"assets/audio/family/mum/muke-chamchi-de.mp3": {
+"whisper-1": "Muke chumchide!",
+"gpt-4o-transcribe": "Mukecham chi de."
+},
+"assets/audio/family/mum/muke-chamcho-de.mp3": {
+"whisper-1": "Ok, ce-am ce-o de?",
+"gpt-4o-transcribe": "کے چمچوں دے."
+},
+"assets/audio/family/zafar/muke-chamchi-de.mp3": {
+"whisper-1": "مکرچم چی ده!",
+"gpt-4o-transcribe": "Mo kajamčida?"
+},
+"assets/audio/family/zafar/muke-chamcho-de.mp3": {
+"whisper-1": "اوکی چند چوده؟",
+"gpt-4o-transcribe": "Oké, cemcso de?"
+},
+"assets/audio/family/mum/jaldi-kar.mp3": {
+"whisper-1": "जल्दी कार",
+"gpt-4o-transcribe": "جلدی کر۔"
+},
+"assets/audio/family/zafar/jaldi-kar.mp3": {
+"whisper-1": "Cahillikar",
+"gpt-4o-transcribe": "ژەلدیکار؟"
+},
+"assets/audio/family/mum/jaldi-karo.mp3": {
+"whisper-1": "जल्दी करो",
+"gpt-4o-transcribe": "جلدی کرو۔"
+},
+"assets/audio/family/zafar/jaldi-karo.mp3": {
+"whisper-1": "جلدی کارو",
+"gpt-4o-transcribe": "جلدی کرو۔"
+},
+"assets/audio/family/mum/dhyan-rakh.mp3": {
+"whisper-1": "The Iron Rock",
+"gpt-4o-transcribe": "De anrac."
+},
+"assets/audio/family/zafar/dhyan-rakh.mp3": {
+"whisper-1": "Diyanet",
+"gpt-4o-transcribe": "Diariac"
+},
+"assets/audio/family/mum/hi-kuro-ai-r3.mp3": {
+"whisper-1": "Hikuruae.",
+"gpt-4o-transcribe": "He karu ai?"
+},
+"assets/audio/family/zafar/hi-kuro-ai-r3-b.mp3": {
+"whisper-1": "Hikaroae.",
+"gpt-4o-transcribe": "Hikoro ai."
+},
+"assets/audio/family/zafar/hi-kuro-ai-r3.mp3": {
+"whisper-1": "Hikoroae.",
+"gpt-4o-transcribe": "He korowai."
+},
+"assets/audio/family/mum/toke-kuro-khapeto-r3.mp3": {
+"whisper-1": "특히 크로카펫도",
+"gpt-4o-transcribe": "Το κεχρι καπέτο."
+},
+"assets/audio/family/zafar/toke-kuro-khapeto-r3.mp3": {
+"whisper-1": "토켓코러 커픠토",
+"gpt-4o-transcribe": "Toke koro kapeto."
+},
+"assets/audio/family/mum/aako-cup-r3.mp3": {
+"whisper-1": "I cook up.",
+"gpt-4o-transcribe": "A cook-up."
+},
+"assets/audio/family/zafar/aako-cup-r3-b.mp3": {
+"whisper-1": "Aquacup.",
+"gpt-4o-transcribe": "Aqua Cup"
+},
+"assets/audio/family/zafar/aako-cup-r3.mp3": {
+"whisper-1": "ขอขอบคุณครับ",
+"gpt-4o-transcribe": "Akwokap."
+},
+"assets/audio/family/mum/aaki-tanki-r3.mp3": {
+"whisper-1": "Akitanki",
+"gpt-4o-transcribe": "Aki danki."
+},
+"assets/audio/family/zafar/aaki-tanki-r3.mp3": {
+"whisper-1": "Aki-Tanki",
+"gpt-4o-transcribe": "Ākītangi."
+},
+"assets/audio/family/mum/ne-poi-r3.mp3": {
+"whisper-1": "Ne poi!",
+"gpt-4o-transcribe": "Ne poj?"
+},
+"assets/audio/family/zafar/ne-poi-r3.mp3": {
+"whisper-1": "Napoj.",
+"gpt-4o-transcribe": "Nepoj."
+},
+"assets/audio/family/mum/hever-kadh.mp3": {
+"whisper-1": "Have a good day.",
+"gpt-4o-transcribe": "Hevarkad."
+},
+"assets/audio/family/zafar/hever-kadh.mp3": {
+"whisper-1": "هذا قد.",
+"gpt-4o-transcribe": "Həvə kad."
+},
+"assets/audio/family/mum/hakri-lakri-mishkaki-r3.mp3": {
+"whisper-1": "हक्री लक्री मुश्काकी",
+"gpt-4o-transcribe": "Hakri lakri muškaki."
+},
+"assets/audio/family/zafar/hakri-lakri-mishkaki-r3.mp3": {
+"whisper-1": "Hakui lakui mishkaki.",
+"gpt-4o-transcribe": "Hakwilakwii maškahkii."
+},
+"assets/audio/family/mum/hakro-cup.mp3": {
+"whisper-1": "하크로컵",
+"gpt-4o-transcribe": "Хакрокап."
+},
+"assets/audio/family/zafar/hakro-cup.mp3": {
+"whisper-1": "حقوق",
+"gpt-4o-transcribe": "하크로카."
+},
+"assets/audio/family/zafar/hakro-cup-b.mp3": {
+"whisper-1": "or cup.",
+"gpt-4o-transcribe": "bokap"
+},
+"assets/audio/family/mum/amli-r3.mp3": {
+"whisper-1": "Amli",
+"gpt-4o-transcribe": "Amli."
+},
+"assets/audio/family/zafar/amli-r3.mp3": {
+"whisper-1": "Amli",
+"gpt-4o-transcribe": "Amli."
+},
+"assets/audio/family/mum/aai-muke-chai-banai-dinda-r3.mp3": {
+"whisper-1": "Aimu kechayi banayidinda.",
+"gpt-4o-transcribe": "ಅಯ್ಮಿಕೆ ಚಾಯ್ ಬನೈದಿಂದ?"
+},
+"assets/audio/family/zafar/aai-muke-chai-banai-dinda-r3.mp3": {
+"whisper-1": "AYMAK AÇAY BEN AYNDINDA",
+"gpt-4o-transcribe": "Anı bıkayçay benendında."
+},
+"assets/audio/family/mum/aau-theek-ai-r3.mp3": {
+"whisper-1": "आओ ठीक है यह",
+"gpt-4o-transcribe": "او ٹھیک ہے."
+},
+"assets/audio/family/zafar/aau-theek-ai-r3.mp3": {
+"whisper-1": "아오틴카야",
+"gpt-4o-transcribe": "Aw tín kaya."
+},
+"assets/audio/family/mum/kere-karein-r3.mp3": {
+"whisper-1": "Care Carey.",
+"gpt-4o-transcribe": "Cearcairí."
+},
+"assets/audio/family/zafar/kere-karein-r3.mp3": {
+"whisper-1": "کیا کھڑا ہے؟",
+"gpt-4o-transcribe": "Ceathrar."
+},
+"assets/audio/family/mum/salamun-alaykum.mp3": {
+"whisper-1": "As-salamu alaykum",
+"gpt-4o-transcribe": "السلام علیکم"
+},
+"assets/audio/family/zafar/salamun-alaykum.mp3": {
+"whisper-1": "السلام علیکم",
+"gpt-4o-transcribe": "Сәләм عليكم."
+},
+"assets/audio/family/zafar/salamun-alaykum-b.mp3": {
+"whisper-1": "Asalaamu Alaikum",
+"gpt-4o-transcribe": "سلام علیکم"
+},
+"assets/audio/family/mum/alaikum-salaam.mp3": {
+"whisper-1": "علیکم سلام",
+"gpt-4o-transcribe": "عليکم سلام"
+},
+"assets/audio/family/zafar/alaikum-salaam-b.mp3": {
+"whisper-1": "علیکم السلام",
+"gpt-4o-transcribe": "وعليكم السلام."
+},
+"assets/audio/family/zafar/alaikum-salaam.mp3": {
+"whisper-1": "علیکم السلام",
+"gpt-4o-transcribe": "وعليكم السلام"
+},
+"assets/audio/family/mum/khuda-fis.mp3": {
+"whisper-1": "Kudahafiz.",
+"gpt-4o-transcribe": "خدا حافظ"
+},
+"assets/audio/family/zafar/khuda-fis.mp3": {
+"whisper-1": "Khuda hafiz.",
+"gpt-4o-transcribe": "Khuda hafiz."
+},
+"assets/audio/family/mum/ki-aiye.mp3": {
+"whisper-1": "Кияе",
+"gpt-4o-transcribe": "Kia e."
+},
+"assets/audio/family/zafar/ki-aiye.mp3": {
+"whisper-1": "Kiaia.",
+"gpt-4o-transcribe": "Kiaia."
+},
+"assets/audio/family/mum/aau-theek-ai-aai-ki-aayo.mp3": {
+"whisper-1": "आओ ठीक है आई की एयो",
+"gpt-4o-transcribe": "Aw tiikaya, aykiyeo."
+},
+"assets/audio/family/zafar/aau-theek-ai-aai-ki-aayo.mp3": {
+"whisper-1": "Awtika ia! Aikia io!",
+"gpt-4o-transcribe": "Ao ti kan ya. Ai ki a yo?"
+},
+"assets/audio/family/mum/aau-theek-ai-tu-ki-aiye.mp3": {
+"whisper-1": "आओ ठीक है या, तू की है या?",
+"gpt-4o-transcribe": "آں ٹھیک ہیں، توں کیہں ہیں؟"
+},
+"assets/audio/family/zafar/aau-theek-ai-tu-ki-aiye.mp3": {
+"whisper-1": "Awti'i gaea. Tukia ea.",
+"gpt-4o-transcribe": "Aotīkaia, Tukīaia."
+},
+"assets/audio/family/mum/tu-muke-daar-banai-dinda.mp3": {
+"whisper-1": "të mukedarë bënajdin dhe.",
+"gpt-4o-transcribe": "Tumukedaar banaidin dhe."
+},
+"assets/audio/family/zafar/tu-muke-daar-banai-dinda.mp3": {
+"whisper-1": "Tumak'ı darbe nendinde?",
+"gpt-4o-transcribe": "Toma kedár benendênde?"
+},
+"assets/audio/family/mum/tu-muke-maani-banai-dinda.mp3": {
+"whisper-1": "تُمُكَمَانِي بَنَيْرِنْدَه",
+"gpt-4o-transcribe": "Tumu kemani banaydindha."
+},
+"assets/audio/family/zafar/tu-muke-maani-banai-dinda.mp3": {
+"whisper-1": "Tumukamani benayindena.",
+"gpt-4o-transcribe": "Tu muqemani benandende."
+},
+"assets/audio/family/mum/tu-muke-chaat-banai-dinda.mp3": {
+"whisper-1": "تو مکه چهارت بنایدین ده.",
+"gpt-4o-transcribe": "ਤੁਮੁੱਕੇ ਛਾਤ ਬਣਾਈਂਦੇ?"
+},
+"assets/audio/family/mum/tu-muke-samosa-banai-dinda.mp3": {
+"whisper-1": "Tu muke samosa banay dinda.",
+"gpt-4o-transcribe": "Tumu kes samosa banaydıñda?"
+},
+"assets/audio/family/mum/tu-muke-mishkaki-banai-dinda.mp3": {
+"whisper-1": "تمکہ مشکاہ کی بنائی دیندے۔",
+"gpt-4o-transcribe": "Tomukamishkaaki banaidindé."
+},
+"assets/audio/family/zafar/tu-muke-chaat-banai-dinda.mp3": {
+"whisper-1": "Tumukat shaat panay dinda.",
+"gpt-4o-transcribe": "Du makest schad benaidende."
+},
+"assets/audio/family/zafar/tu-muke-samosa-banai-dinda.mp3": {
+"whisper-1": "Tüm əqasım olsa bən əndində.",
+"gpt-4o-transcribe": "Tomokə səmosaben ayn dində."
+},
+"assets/audio/family/zafar/tu-muke-mishkaki-banai-dinda.mp3": {
+"whisper-1": "تمہیں کمیشگاہ کی بنائی دیندہ",
+"gpt-4o-transcribe": "Tumo kemeşkaki bîna dînde."
+},
+"assets/audio/family/mum/muke-chai-khapeti.mp3": {
+"whisper-1": "Muketahi kapiti.",
+"gpt-4o-transcribe": "Muche chai kapeti."
+},
+"assets/audio/family/mum/muke-paani-khapeto.mp3": {
+"whisper-1": "מוכרפני חפטו.",
+"gpt-4o-transcribe": "Μουκεπάνη χαπετό."
+},
+"assets/audio/family/mum/muke-dudh-khapeto.mp3": {
+"whisper-1": "מוקדות כפתור.",
+"gpt-4o-transcribe": "Mu kedud khapeto."
+},
+"assets/audio/family/zafar/muke-chai-khapeti.mp3": {
+"whisper-1": "Bokeh chai ka paiti!",
+"gpt-4o-transcribe": "Ba mhaith leat tae?"
+},
+"assets/audio/family/zafar/muke-paani-khapeto.mp3": {
+"whisper-1": "Mokia pāni kapeto!",
+"gpt-4o-transcribe": "Mo ke pani kapeto."
+},
+"assets/audio/family/zafar/muke-dudh-khapeto.mp3": {
+"whisper-1": "בוקדות כפתור.",
+"gpt-4o-transcribe": "Mokëdut kapetó."
+},
+"assets/audio/family/mum/na-muke-na-khape.mp3": {
+"whisper-1": "נעמוק נחפה.",
+"gpt-4o-transcribe": "Naá mukena xape."
+},
+"assets/audio/family/zafar/na-muke-na-khape.mp3": {
+"whisper-1": "Namo kanakape.",
+"gpt-4o-transcribe": "Na moko na kape."
+},
+"assets/audio/family/zafar/na-muke-na-khape-b.mp3": {
+"whisper-1": "Now, Mukherjee Nakhlep.",
+"gpt-4o-transcribe": "Na, mokanaka pa."
+},
+"assets/audio/family/mum/chamchi-kida-ai.mp3": {
+"whisper-1": "Chum Cheeky Day!",
+"gpt-4o-transcribe": "ชามชีกี้ใด"
+},
+"assets/audio/family/mum/cup-kida-ai.mp3": {
+"whisper-1": "Kop ki day!",
+"gpt-4o-transcribe": "Gap kide."
+},
+"assets/audio/family/zafar/chamchi-kida-ai.mp3": {
+"whisper-1": "Čamřík jedáj!",
+"gpt-4o-transcribe": "Chwmsi gyda'i."
+},
+"assets/audio/family/zafar/cup-kida-ai.mp3": {
+"whisper-1": "Khaap Khidai!",
+"gpt-4o-transcribe": "Ķab kedāi."
+},
+"assets/audio/family/mum/toke-khabar-ai-aau-ker-aiya.mp3": {
+"whisper-1": "تو کیا خبر ہے آنکھے رہے ہیں؟",
+"gpt-4o-transcribe": "تو کے خبر ہے آں کہہ ریاں؟"
+},
+"assets/audio/family/zafar/toke-khabar-ai-aau-ker-aiya.mp3": {
+"whisper-1": "Dwyloch pwysau Cabaret.",
+"gpt-4o-transcribe": "Toka cabarai au kerai."
+},
+"assets/audio/family/mum/nana.mp3": {
+"whisper-1": "Na, na.",
+"gpt-4o-transcribe": "Nana."
+},
+"assets/audio/family/mum/nani.mp3": {
+"whisper-1": "Nani?",
+"gpt-4o-transcribe": "Nani?"
+},
+"assets/audio/family/mum/ali.mp3": {
+"whisper-1": "ألي",
+"gpt-4o-transcribe": "Ali."
+},
+"assets/audio/family/zafar/nana.mp3": {
+"whisper-1": "nana",
+"gpt-4o-transcribe": "Nana"
+},
+"assets/audio/family/zafar/nani.mp3": {
+"whisper-1": "나니?",
+"gpt-4o-transcribe": "Nani?"
+},
+"assets/audio/family/zafar/ali.mp3": {
+"whisper-1": "علي",
+"gpt-4o-transcribe": "Ali"
+},
+"assets/audio/family/mum/big-ma.mp3": {
+"whisper-1": "Big ma.",
+"gpt-4o-transcribe": "Bigma."
+},
+"assets/audio/family/mum/wadima.mp3": {
+"whisper-1": "Wadima.",
+"gpt-4o-transcribe": "Wadima."
+},
+"assets/audio/family/mum/maji.mp3": {
+"whisper-1": "Maji",
+"gpt-4o-transcribe": "Maji."
+},
+"assets/audio/family/zafar/big-ma.mp3": {
+"whisper-1": "Pygma",
+"gpt-4o-transcribe": "Bigma"
+},
+"assets/audio/family/zafar/wadima.mp3": {
+"whisper-1": "وَدِيمًا",
+"gpt-4o-transcribe": "ودیما."
+},
+"assets/audio/family/zafar/maji.mp3": {
+"whisper-1": "MAJI",
+"gpt-4o-transcribe": "Magji"
+},
+"assets/audio/family/mum/beta.mp3": {
+"whisper-1": "Beta.",
+"gpt-4o-transcribe": "بیٹا"
+},
+"assets/audio/family/zafar/beta.mp3": {
+"whisper-1": "Better.",
+"gpt-4o-transcribe": "Better."
+},
+"assets/audio/family/mum/tu-muke-help-kar-de.mp3": {
+"whisper-1": "तुम उके हेल्ब कर दे.",
+"gpt-4o-transcribe": "توں مکے ہیلپ کر دے؟"
+},
+"assets/audio/family/zafar/tu-muke-help-kar-de.mp3": {
+"whisper-1": "هل تريد المساعدة يا قارضة؟",
+"gpt-4o-transcribe": "Tu mokke help karda?"
+},
+"assets/audio/family/mum/muke-chai-ji-chiju-khanechi-dinde.mp3": {
+"whisper-1": "Muke tshay ji tshi tshu khane tshi dinde.",
+"gpt-4o-transcribe": "Mukechayi di tshiǰu khanye tshiḍinda?"
+},
+"assets/audio/family/zafar/muke-chai-ji-chiju-khanechi-dinde-b.mp3": {
+"whisper-1": "Mokhe tshay ji tshi ju, kane tshi nda.",
+"gpt-4o-transcribe": "Mokėčiai didžių kančių inde."
+},
+"assets/audio/family/zafar/muke-chai-ji-chiju-khanechi-dinde.mp3": {
+"whisper-1": "Bukke tsai ji tshi ju, kane tshi dinda.",
+"gpt-4o-transcribe": "Ɔkɛchai ji chi ju, kane chi dinda."
+},
+"assets/audio/family/mum/mmm-chai-bo-fine-ai-shabash-beta.mp3": {
+"whisper-1": "चाय बहुत फ़ाइन है, शबाश बेटा.",
+"gpt-4o-transcribe": "Mmm, Çay bo fain e. Shabash beta."
+},
+"assets/audio/family/zafar/mmm-chai-bo-fine-ai-shabash-beta.mp3": {
+"whisper-1": "Hmm, try both by night. Shabbos, beta.",
+"gpt-4o-transcribe": "Hmm, chay bo fai nai, shabash beta."
+},
+"assets/audio/family/mum/saware-eid-ai.mp3": {
+"whisper-1": "سواري إيد آي",
+"gpt-4o-transcribe": "Soware Eid ay."
+},
+"assets/audio/family/zafar/saware-eid-ai.mp3": {
+"whisper-1": "扫瓦尔伊代",
+"gpt-4o-transcribe": "Sawaya idai."
+},
+"assets/audio/family/mum/mageni-achenta.mp3": {
+"whisper-1": "ماجيني أشنطة",
+"gpt-4o-transcribe": "Mageni achanta."
+},
+"assets/audio/family/zafar/mageni-achenta.mp3": {
+"whisper-1": "MAGHENI ACCENTA",
+"gpt-4o-transcribe": "Magani a chenta."
+},
+"assets/audio/family/mum/o-kenjo-nai.mp3": {
+"whisper-1": "Oh, kēnzio nei!",
+"gpt-4o-transcribe": "Oh, kēnjo nei."
+},
+"assets/audio/family/mum/oho-kenjo-nai.mp3": {
+"whisper-1": "Oho, kenjo nai.",
+"gpt-4o-transcribe": "Oho, kenjo nei?"
+},
+"assets/audio/family/zafar/oho-kenjo-nai.mp3": {
+"whisper-1": "おほー、かんじょうない",
+"gpt-4o-transcribe": "おほう、謙譲ない?"
+},
+"assets/audio/family/mum/panke-randhnu-khapdo.mp3": {
+"whisper-1": "ਪਾਂਕੇ ਰਂਦ ਨੁ ਖ਼ਬ ਦੋ।",
+"gpt-4o-transcribe": "Bankerandnu kapdo."
+},
+"assets/audio/family/zafar/panke-randhnu-khapdo.mp3": {
+"whisper-1": "Pankerand no kapto.",
+"gpt-4o-transcribe": "Pan kerand no capto."
+},
+"assets/audio/family/mum/tu-muke-randhan-lai-madad-kar-de.mp3": {
+"whisper-1": "تم کریندن لئے مدد کردے",
+"gpt-4o-transcribe": "تم کراندان لای مەدەتکردە."
+},
+"assets/audio/family/zafar/tu-muke-randhan-lai-madad-kar-de.mp3": {
+"whisper-1": "തுமൊக்கে ரந்஦ேந் ಲಾಇ ಮಟಾತಕಾರದಾ.",
+"gpt-4o-transcribe": "Тумукерһанденлай мататкарде?"
+},
+"assets/audio/family/mum/ha-aau-randhan-lai-madad-kar-dis.mp3": {
+"whisper-1": "हाँ, आउरंदनले मदद करदेश।",
+"gpt-4o-transcribe": "Ha, aurandanle madat kardis."
+},
+"assets/audio/family/mum/ha-aau-randhan-lai-madad-kar-dos.mp3": {
+"whisper-1": "Ha, au rând în le-ai mădăt cărătos!",
+"gpt-4o-transcribe": "هاوڕەندانت لێ مەدەد کردۆس."
+},
+"assets/audio/family/zafar/ha-aau-randhan-lai-madad-kar-dos.mp3": {
+"whisper-1": "Ha, awr wanda'n lai ma datgordos.",
+"gpt-4o-transcribe": "Ha, a wanden lai madad kordos."
+},
+"assets/audio/family/mum/ha-r3.mp3": {
+"whisper-1": "Huh.",
+"gpt-4o-transcribe": "Ha."
+},
+"assets/audio/family/zafar/ha-r3.mp3": {
+"whisper-1": "Ha!",
+"gpt-4o-transcribe": "Ha"
+},
+"assets/audio/family/mum/hal-rasore-me-winja.mp3": {
+"whisper-1": "حل رسوره می وینجه.",
+"gpt-4o-transcribe": "Hal rasore me vinde."
+},
+"assets/audio/family/zafar/hal-rasore-me-winja.mp3": {
+"whisper-1": "حلق رصورة مرنجة",
+"gpt-4o-transcribe": "Hal rasula emêrînce?"
+},
+"assets/audio/family/mum/bateto.mp3": {
+"whisper-1": "Potato",
+"gpt-4o-transcribe": "بطاطا"
+},
+"assets/audio/family/mum/trae-bateta.mp3": {
+"whisper-1": "3. Potato",
+"gpt-4o-transcribe": "Treba teta."
+},
+"assets/audio/family/zafar/bateto.mp3": {
+"whisper-1": "바테또",
+"gpt-4o-transcribe": "Pateto."
+},
+"assets/audio/family/zafar/trae-bateta-b.mp3": {
+"whisper-1": "Tra bateta.",
+"gpt-4o-transcribe": "Ceba ceta."
+},
+"assets/audio/family/zafar/trae-bateta.mp3": {
+"whisper-1": "Trzeba czytać.",
+"gpt-4o-transcribe": "Treba četa."
+},
+"assets/audio/family/mum/dungri.mp3": {
+"whisper-1": "Dunghri",
+"gpt-4o-transcribe": "ڈونگری."
+},
+"assets/audio/family/mum/trae-dungri.mp3": {
+"whisper-1": "Tre dunghri",
+"gpt-4o-transcribe": "Tre dungri."
+},
+"assets/audio/family/zafar/dungri.mp3": {
+"whisper-1": "TONGURI",
+"gpt-4o-transcribe": "통글이"
+},
+"assets/audio/family/zafar/trae-dungri.mp3": {
+"whisper-1": "ਤੈ ਦੁਂਗਰੀ",
+"gpt-4o-transcribe": "Tre dungri."
+},
+"assets/audio/family/mum/tameto.mp3": {
+"whisper-1": "tomato",
+"gpt-4o-transcribe": "Tomato"
+},
+"assets/audio/family/zafar/tameto.mp3": {
+"whisper-1": "tomato",
+"gpt-4o-transcribe": "Tomato"
+},
+"assets/audio/family/mum/mirchi.mp3": {
+"whisper-1": "मिर्ची",
+"gpt-4o-transcribe": "Mirçi."
+},
+"assets/audio/family/mum/aakhi-mirchi.mp3": {
+"whisper-1": "آکھی مرچی",
+"gpt-4o-transcribe": "Ake mirci."
+},
+"assets/audio/family/mum/mirchi-b.mp3": {
+"whisper-1": "मिर्ची",
+"gpt-4o-transcribe": "مرچی"
+},
+"assets/audio/family/zafar/mirchi.mp3": {
+"whisper-1": "Merci.",
+"gpt-4o-transcribe": "Merçi."
+},
+"assets/audio/family/mum/limu.mp3": {
+"whisper-1": "Les mots",
+"gpt-4o-transcribe": "Les mots."
+},
+"assets/audio/family/mum/char-limu.mp3": {
+"whisper-1": "Charlie moo",
+"gpt-4o-transcribe": "Charlimu."
+},
+"assets/audio/family/zafar/limu.mp3": {
+"whisper-1": "Les mots.",
+"gpt-4o-transcribe": "Lemon."
+},
+"assets/audio/family/mum/maani.mp3": {
+"whisper-1": "Money.",
+"gpt-4o-transcribe": "Mani"
+},
+"assets/audio/family/zafar/maani.mp3": {
+"whisper-1": "money",
+"gpt-4o-transcribe": "Mani"
+},
+"assets/audio/family/mum/samosa-r3.mp3": {
+"whisper-1": "Samosa",
+"gpt-4o-transcribe": "Samosa?"
+},
+"assets/audio/family/zafar/samosa-r3.mp3": {
+"whisper-1": "سموسہ",
+"gpt-4o-transcribe": "समोसा"
+},
+"assets/audio/family/mum/sambusa-r3.mp3": {
+"whisper-1": "Sambusa",
+"gpt-4o-transcribe": "Sambusa."
+},
+"assets/audio/family/zafar/sambusa-r3.mp3": {
+"whisper-1": "سمبوسہ",
+"gpt-4o-transcribe": "Sambosa."
+},
+"assets/audio/family/mum/hakri-lakri.mp3": {
+"whisper-1": "ہکری لکری",
+"gpt-4o-transcribe": "हक्री लक्री."
+},
+"assets/audio/family/mum/lakri.mp3": {
+"whisper-1": "Luckery.",
+"gpt-4o-transcribe": "Lacry."
+},
+"assets/audio/family/mum/char-lakri.mp3": {
+"whisper-1": "चार लक्री",
+"gpt-4o-transcribe": "چار لکڑی۔"
+},
+"assets/audio/family/zafar/hakri-lakri.mp3": {
+"whisper-1": "حقيلك",
+"gpt-4o-transcribe": "哈克伊拉克。"
+},
+"assets/audio/family/zafar/lakri.mp3": {
+"whisper-1": "لکری",
+"gpt-4o-transcribe": "Láchraí."
+},
+"assets/audio/family/mum/chamchi-r3.mp3": {
+"whisper-1": "Jim G",
+"gpt-4o-transcribe": "Jamci?"
+},
+"assets/audio/family/mum/chamcho-r3.mp3": {
+"whisper-1": "Chum Cho!",
+"gpt-4o-transcribe": "འཆམ་མཆོད་。"
+},
+"assets/audio/family/mum/chamcha.mp3": {
+"whisper-1": "Jamcha",
+"gpt-4o-transcribe": "चमचा"
+},
+"assets/audio/family/zafar/chamchi-r3.mp3": {
+"whisper-1": "참치",
+"gpt-4o-transcribe": "참치."
+},
+"assets/audio/family/zafar/chamcho-r3.mp3": {
+"whisper-1": "참초",
+"gpt-4o-transcribe": "Chamcho"
+},
+"assets/audio/family/zafar/chamcha.mp3": {
+"whisper-1": "참차",
+"gpt-4o-transcribe": "참차."
+},
+"assets/audio/family/mum/cup.mp3": {
+"whisper-1": "Cup.",
+"gpt-4o-transcribe": "Кап."
+},
+"assets/audio/family/zafar/cup.mp3": {
+"whisper-1": "Cup.",
+"gpt-4o-transcribe": "Cup"
+},
+"assets/audio/family/mum/matar.mp3": {
+"whisper-1": "Peace.",
+"gpt-4o-transcribe": "மட்டர்."
+},
+"assets/audio/family/zafar/matar.mp3": {
+"whisper-1": "Murder.",
+"gpt-4o-transcribe": "Mar."
+},
+"assets/audio/family/mum/watana.mp3": {
+"whisper-1": "Watana.",
+"gpt-4o-transcribe": "Watana."
+},
+"assets/audio/family/zafar/watano.mp3": {
+"whisper-1": "Watano",
+"gpt-4o-transcribe": "Wātano."
+},
+"assets/audio/family/mum/watano.mp3": {
+"whisper-1": "Watano.",
+"gpt-4o-transcribe": "Watano."
+},
+"assets/audio/family/mum/matar-b-m.mp3": {
+"whisper-1": "mutter",
+"gpt-4o-transcribe": "Mata."
+},
+"assets/audio/family/zafar/matar-b-z.mp3": {
+"whisper-1": "mutter",
+"gpt-4o-transcribe": "Mater"
+},
+"assets/audio/family/mum/kabaat.mp3": {
+"whisper-1": "Kabbat.",
+"gpt-4o-transcribe": "کبات"
+},
+"assets/audio/family/zafar/kabaat.mp3": {
+"whisper-1": "Kabat",
+"gpt-4o-transcribe": "Kabát."
+},
+"assets/audio/family/mum/hakro-cup-ba-cup.mp3": {
+"whisper-1": "حقرقق بقق",
+"gpt-4o-transcribe": "Ha krocap, bahcap."
+},
+"assets/audio/family/zafar/hakro-cup-ba-cup.mp3": {
+"whisper-1": "Hock rock up, back up.",
+"gpt-4o-transcribe": "Hakurokap bakap!"
+},
+"assets/audio/family/mum/hakro-ambo-ba-amba.mp3": {
+"whisper-1": "Hakroambo beambah.",
+"gpt-4o-transcribe": "Hakuro ambo bamba."
+},
+"assets/audio/family/zafar/hakro-ambo-ba-amba.mp3": {
+"whisper-1": "حكرا أمبا بأمبا",
+"gpt-4o-transcribe": "Hoklo ambo, ba amba."
+},
+"assets/audio/family/mum/hakro-darwajo-ba-darwaja.mp3": {
+"whisper-1": "حقر دروجة بــدروجة",
+"gpt-4o-transcribe": "هەکڕە دروازە بە دروازە."
+},
+"assets/audio/family/zafar/hakro-darwajo-ba-darwaja.mp3": {
+"whisper-1": "حقر الدرواجة بعد الواجهة",
+"gpt-4o-transcribe": "هاكردنەوەجوو بە درواژە."
+},
+"assets/audio/family/mum/hakri-pacheri-ba-pacheri.mp3": {
+"whisper-1": "हकरी पच्छेरी बपच्छेरी",
+"gpt-4o-transcribe": "Hakri pačeri, ba pačeri."
+},
+"assets/audio/family/zafar/hakri-pacheri-ba-pacheri.mp3": {
+"whisper-1": "حقری پچھری با پچھری",
+"gpt-4o-transcribe": "حەقی پەچەری با پەچەری."
+},
+"assets/audio/family/mum/hakri-maani-ba-maani.mp3": {
+"whisper-1": "Hakrimani Bhaimani.",
+"gpt-4o-transcribe": "Hakrimani ba mani."
+},
+"assets/audio/family/zafar/hakri-maani-ba-maani.mp3": {
+"whisper-1": "حقريماني باماني",
+"gpt-4o-transcribe": "حەکرێمانی بەمانی."
+},
+"assets/audio/family/mum/hakro-table-ba-table.mp3": {
+"whisper-1": "Hakro table, birth table.",
+"gpt-4o-transcribe": "Hakarao table, bo table"
+},
+"assets/audio/family/zafar/hakro-table-ba-table.mp3": {
+"whisper-1": "HACRO table, BIRR table.",
+"gpt-4o-transcribe": "Haclo teb'l, b'r teb'l."
+},
+"assets/audio/family/mum/hakri-bakri-ba-bakri.mp3": {
+"whisper-1": "बकरी बकरी बकरी",
+"gpt-4o-transcribe": "بکخگری بکری ببکری."
+},
+"assets/audio/family/mum/hakri-bakri-ba-bakri-b.mp3": {
+"whisper-1": "Hakri Bakri, Berbakri.",
+"gpt-4o-transcribe": "اکری بکری با بکری."
+},
+"assets/audio/family/mum/hakro-bakro-ba-bakra.mp3": {
+"whisper-1": "Or if it's a male goat. Hakro bakro, ba bakra.",
+"gpt-4o-transcribe": "ہکرو بکرو ب بکرہ"
+},
+"assets/audio/family/mum/hakro-bakro-ba-bakra-b.mp3": {
+"whisper-1": "Hakrobakro bebakra.",
+"gpt-4o-transcribe": "Hakro bakro ba bakra."
+},
+"assets/audio/family/mum/hakri-chokri-ba-chokri.mp3": {
+"whisper-1": "हकरी चोकरी बचोकरी",
+"gpt-4o-transcribe": "Hakri čokri, be čokri."
+},
+"assets/audio/family/zafar/hakri-chokri-ba-chokri.mp3": {
+"whisper-1": "Hakri Chokri, Pa Chokri.",
+"gpt-4o-transcribe": "Haicléit choclí, bá choclí."
+},
+"assets/audio/family/mum/ba-chokriyu.mp3": {
+"whisper-1": "ब चोकरियू",
+"gpt-4o-transcribe": "Bë çokriu."
+},
+"assets/audio/family/mum/ba-chokriyu-b.mp3": {
+"whisper-1": "बचो क्रियू",
+"gpt-4o-transcribe": "Bö çokriw."
+},
+"assets/audio/family/zafar/ba-chokriyu.mp3": {
+"whisper-1": "Pa Chok Ri Yu",
+"gpt-4o-transcribe": "Dy siocliw."
+},
+"assets/audio/family/mum/hakri-akh-ba-akhyu.mp3": {
+"whisper-1": "حقري أك بأك يوم",
+"gpt-4o-transcribe": "Haqriak ba akhyu."
+},
+"assets/audio/family/mum/hakro-gutan-ba-gutan.mp3": {
+"whisper-1": "हक्रो गुत्थन ब गुत्थन",
+"gpt-4o-transcribe": "Hakkaruguutan, baaguutan."
+},
+"assets/audio/family/zafar/hakro-gutan-ba-gutan.mp3": {
+"whisper-1": "حق رقطن باقطن",
+"gpt-4o-transcribe": "Haqla gotan ba gotan."
+},
+"assets/audio/family/mum/cup-je-andar.mp3": {
+"whisper-1": "cup to your under",
+"gpt-4o-transcribe": "کپ کے اندر۔"
+},
+"assets/audio/family/zafar/cup-je-andar.mp3": {
+"whisper-1": "CUP G UNDER",
+"gpt-4o-transcribe": "Kapçı anda."
+},
+"assets/audio/family/zafar/ambo-je-mathe-b-z.mp3": {
+"whisper-1": "Amboca maçı, maç...",
+"gpt-4o-transcribe": "Амбоҗа мат."
+},
+"assets/audio/family/mum/ambo-je-mathe.mp3": {
+"whisper-1": "آم بوجی مطلب",
+"gpt-4o-transcribe": "Am bojemat."
+},
+"assets/audio/family/mum/amba-je-mathe.mp3": {
+"whisper-1": "بلور العنبة جمعتها",
+"gpt-4o-transcribe": "Plural amba je mate."
+},
+"assets/audio/family/zafar/ambo-je-mathe.mp3": {
+"whisper-1": "あんぼじま",
+"gpt-4o-transcribe": "Амбоџемат."
+},
+"assets/audio/family/zafar/amba-je-mathe.mp3": {
+"whisper-1": "AMBA CİMATTE",
+"gpt-4o-transcribe": "Amba Jimatë."
+},
+"assets/audio/family/mum/darwaje-je-puthiya.mp3": {
+"whisper-1": "That's why JJ put here.",
+"gpt-4o-transcribe": "دروائجے جی پڇيو."
+},
+"assets/audio/family/mum/maani-je-mathe.mp3": {
+"whisper-1": "مانی جے مت ہے",
+"gpt-4o-transcribe": "ماں نیجے متھے."
+},
+"assets/audio/family/mum/table-je-niche.mp3": {
+"whisper-1": "TABLE GENIȚE",
+"gpt-4o-transcribe": "ٹیبل کے نیچے؟"
+},
+"assets/audio/family/mum/bakri-sathe.mp3": {
+"whisper-1": "बक्री साथ है",
+"gpt-4o-transcribe": "بکری ساتھ ہے۔"
+},
+"assets/audio/family/mum/bakra-sathe.mp3": {
+"whisper-1": "बकरा साथ है।",
+"gpt-4o-transcribe": "بکراساتھے."
+},
+"assets/audio/family/mum/bakro-sathe.mp3": {
+"whisper-1": "बकरो साथ है।",
+"gpt-4o-transcribe": "بکرو ساتھ ہے۔"
+},
+"assets/audio/family/mum/chokre-sathe.mp3": {
+"whisper-1": "चोकरे साथ",
+"gpt-4o-transcribe": "Čokresat."
+},
+"assets/audio/family/mum/chokre-sathe-b-m.mp3": {
+"whisper-1": "चो करे साथ है।",
+"gpt-4o-transcribe": "چوکرے ساتھے۔"
+},
+"assets/audio/family/zafar/chokre-sathe.mp3": {
+"whisper-1": "Csok re száte!",
+"gpt-4o-transcribe": "Çoqre saate."
+},
+"assets/audio/family/zafar/chokre-sathe-b-z.mp3": {
+"whisper-1": "ÇOK RE-SAT",
+"gpt-4o-transcribe": "Tá Claire sa."
+},
+"assets/audio/family/mum/chokra-sathe-b.mp3": {
+"whisper-1": "ЧОКРАСАТЬ!",
+"gpt-4o-transcribe": "छोकरासाथ."
+},
+"assets/audio/family/mum/chokra-sathe.mp3": {
+"whisper-1": "चो करसते",
+"gpt-4o-transcribe": "ছোকৰা ছাথে।"
+},
+"assets/audio/family/mum/chokri-sathe.mp3": {
+"whisper-1": "चोकरी साथ",
+"gpt-4o-transcribe": "Çokrisat."
+},
+"assets/audio/family/mum/chokriyu-sathe.mp3": {
+"whisper-1": "Çok kırgınsın sen.",
+"gpt-4o-transcribe": "Çokriyonsate."
+},
+"assets/audio/family/mum/nana-sathe.mp3": {
+"whisper-1": "Nanasat.",
+"gpt-4o-transcribe": "Na nasad."
+},
+"assets/audio/family/mum/nani-sathe.mp3": {
+"whisper-1": "Να νύσατε.",
+"gpt-4o-transcribe": "Na nisa te."
+},
+"assets/audio/family/mum/e-chokro.mp3": {
+"whisper-1": "이 쪽으로",
+"gpt-4o-transcribe": "I chokuro."
+},
+"assets/audio/family/mum/e-chokri.mp3": {
+"whisper-1": "에이치오크리",
+"gpt-4o-transcribe": "এক ছোকৰি।"
+},
+"assets/audio/family/mum/wadho-chokro.mp3": {
+"whisper-1": "Waduh Chokro",
+"gpt-4o-transcribe": "Wadò chòkro."
+},
+"assets/audio/family/mum/wadha-chokra.mp3": {
+"whisper-1": "وداة شوكرة",
+"gpt-4o-transcribe": "Wadda chokra."
+},
+"assets/audio/family/mum/wadhi-chokri.mp3": {
+"whisper-1": "ودي شوكري",
+"gpt-4o-transcribe": "وڌ دي چوڪري."
+},
+"assets/audio/family/mum/wadhi-chokriyu.mp3": {
+"whisper-1": "Wadi Chokri",
+"gpt-4o-transcribe": "وڈی چوکریوں"
+},
+"assets/audio/family/mum/wadho-cup.mp3": {
+"whisper-1": "วัดโดครับ",
+"gpt-4o-transcribe": "วัดโดยครับ"
+},
+"assets/audio/family/mum/wadha-cup.mp3": {
+"whisper-1": "What.gov",
+"gpt-4o-transcribe": "Wadda kàpp."
+},
+"assets/audio/family/mum/wadho-ambo.mp3": {
+"whisper-1": "Wado Ambo.",
+"gpt-4o-transcribe": "Waddo ambo."
+},
+"assets/audio/family/mum/wadha-amba.mp3": {
+"whisper-1": "Wada Amba.",
+"gpt-4o-transcribe": "Wadda amba."
+},
+"assets/audio/family/mum/wadho-darwajo.mp3": {
+"whisper-1": "Waduh darwajo!",
+"gpt-4o-transcribe": "Wado darwajo"
+},
+"assets/audio/family/mum/wadha-darwaja.mp3": {
+"whisper-1": "وداة دارواجة",
+"gpt-4o-transcribe": "وداعا دراجة."
+},
+"assets/audio/family/mum/wadhi-pacheri.mp3": {
+"whisper-1": "Wadih Paceri",
+"gpt-4o-transcribe": "Wodi paceri."
+},
+"assets/audio/family/mum/wadhi-pacheriyu.mp3": {
+"whisper-1": "ودي بتشيريو",
+"gpt-4o-transcribe": "وڏي پڇيريو."
+},
+"assets/audio/family/mum/hu-wadhe-chokre-sathe.mp3": {
+"whisper-1": "cu vădeci ocresate.",
+"gpt-4o-transcribe": "هو وده چوکري ساتھے."
+},
+"assets/audio/family/mum/wadhe-chokre-sathe.mp3": {
+"whisper-1": "वद्धे चोक्रे साथ है।",
+"gpt-4o-transcribe": "ওই ছোকৰেটো সৈতে।"
+},
+"assets/audio/family/mum/wadhi-chokri-sathe.mp3": {
+"whisper-1": "Wadi Chokri Sathe.",
+"gpt-4o-transcribe": "وڈی چوکری ساتھے"
+},
+"assets/audio/family/mum/wadhi-chokriyu-sathe.mp3": {
+"whisper-1": "With the big gulls, Wadi Chokriun Sathe.",
+"gpt-4o-transcribe": "Wê diçû kirîyûn satê."
+},
+"assets/audio/family/mum/wadhe-cup-me.mp3": {
+"whisper-1": "Wedekapme.",
+"gpt-4o-transcribe": "Wode kpɛmɛ."
+},
+"assets/audio/family/mum/wadhi-bakuli-je-andar.mp3": {
+"whisper-1": "ودي بكل جيانده",
+"gpt-4o-transcribe": "Wadiba kulijenda."
+},
+"assets/audio/family/mum/wadhi-bakuliyu-je-andar.mp3": {
+"whisper-1": "ودّي بكل يونجي عنده",
+"gpt-4o-transcribe": "Wodi bokul yunji onɗa."
+},
+"assets/audio/family/mum/wadhi-gadi-je-andar.mp3": {
+"whisper-1": "و 3 ديجي أندر",
+"gpt-4o-transcribe": "وڈی گڈی جہاندر?"
+},
+"assets/audio/family/mum/wadhi-gadiyu-je-andar.mp3": {
+"whisper-1": "What did you get us genda",
+"gpt-4o-transcribe": "Wadi ga dju jamba."
+},
+"assets/audio/family/mum/wadhe-ambe-je-mathe.mp3": {
+"whisper-1": "Wadi Ambejimaté.",
+"gpt-4o-transcribe": "Wadde ambe jemate."
+},
+"assets/audio/family/mum/wadhe-darwaje-je-puthiya.mp3": {
+"whisper-1": "Vă dădăroase geputia!",
+"gpt-4o-transcribe": "Wadedarwaje je puchha"
+},
+"assets/audio/family/mum/chokro-wadho-ai.mp3": {
+"whisper-1": "Chokrova Do'ai",
+"gpt-4o-transcribe": "ڇوڪرو وڊو آهي."
+},
+"assets/audio/family/mum/chokra-wadha-ain.mp3": {
+"whisper-1": "Chokra Wada",
+"gpt-4o-transcribe": "Çokra wadda."
+},
+"assets/audio/family/mum/chokri-wadhi-ai.mp3": {
+"whisper-1": "چوکری وڈی آئی",
+"gpt-4o-transcribe": "چوڪري ودي آهي."
+},
+"assets/audio/family/mum/chokriyu-wadhi-ain.mp3": {
+"whisper-1": "شكراً وداعاً",
+"gpt-4o-transcribe": "Çukriyun waddi ayn."
+},
+"assets/audio/family/mum/ambo-wadho-ai.mp3": {
+"whisper-1": "I'm Boa Doi.",
+"gpt-4o-transcribe": "Ambo wa doi."
+},
+"assets/audio/family/mum/cup-wadho-ai.mp3": {
+"whisper-1": "قب ود اي",
+"gpt-4o-transcribe": "Kop wad do aí?"
+},
+"assets/audio/family/mum/darwajo-wadho-ai.mp3": {
+"whisper-1": "That's why I do what I do.",
+"gpt-4o-transcribe": "Darwajo wa doi."
+},
+"assets/audio/family/mum/cups-wadha-ain.mp3": {
+"whisper-1": "قبص ودائن",
+"gpt-4o-transcribe": "Kap swada'in."
+},
+"assets/audio/family/mum/amba-wadha-ain.mp3": {
+"whisper-1": "Amba wadha aina.",
+"gpt-4o-transcribe": "Amba wadaaina."
+},
+"assets/audio/family/mum/laal-cup.mp3": {
+"whisper-1": "LALCOP",
+"gpt-4o-transcribe": "Lal kop."
+},
+"assets/audio/family/mum/laal-ambo.mp3": {
+"whisper-1": "Lal Ambo",
+"gpt-4o-transcribe": "Lal ambo?"
+},
+"assets/audio/family/mum/laal-amba.mp3": {
+"whisper-1": "لعل أمبا",
+"gpt-4o-transcribe": "Lal amba."
+},
+"assets/audio/family/mum/laal-darwajo.mp3": {
+"whisper-1": "لعال درواجة",
+"gpt-4o-transcribe": "لال دروازو."
+},
+"assets/audio/family/mum/laal-darwaja.mp3": {
+"whisper-1": "لال درواجة",
+"gpt-4o-transcribe": "L'albero è già."
+},
+"assets/audio/family/mum/laal-pacheri.mp3": {
+"whisper-1": "लाल पच्छेरी",
+"gpt-4o-transcribe": "لال پچھيري?"
+},
+"assets/audio/family/mum/laal-pacheriyu.mp3": {
+"whisper-1": "لال پچھے ریو",
+"gpt-4o-transcribe": "L'alpachériu."
+},
+"assets/audio/family/mum/laal-darwaje-je-puthiya.mp3": {
+"whisper-1": "La dăruage și puțin!",
+"gpt-4o-transcribe": "لا دروازے جی پڇيا."
+},
+"assets/audio/family/mum/cup-laal-ai.mp3": {
+"whisper-1": "Kaplowlai!",
+"gpt-4o-transcribe": "Kaplaalai."
+},
+"assets/audio/family/mum/amba-laal-ain.mp3": {
+"whisper-1": "Ambalalain.",
+"gpt-4o-transcribe": "Amba Lalen."
+},
+"assets/audio/family/mum/laal-na.mp3": {
+"whisper-1": "Just lol no.",
+"gpt-4o-transcribe": "جس لال نہ."
+},
+"assets/audio/family/mum/dayo-chokro.mp3": {
+"whisper-1": "Daj joj očokru!",
+"gpt-4o-transcribe": "Dajo čokro."
+},
+"assets/audio/family/mum/daya-chokra.mp3": {
+"whisper-1": "Daya Cokra",
+"gpt-4o-transcribe": "Daya çoqra."
+},
+"assets/audio/family/mum/dayi-chokri.mp3": {
+"whisper-1": "दाई चोक्री",
+"gpt-4o-transcribe": "Да, и чокри."
+},
+"assets/audio/family/mum/dayi-chakli.mp3": {
+"whisper-1": "दाई चक्ली",
+"gpt-4o-transcribe": "दाय चकली?"
+},
+"assets/audio/family/mum/dayo-kutro.mp3": {
+"whisper-1": "Dayo kuturuk, pek!",
+"gpt-4o-transcribe": "Da joqutroq."
+},
+"assets/audio/family/mum/dayi-chokriyu.mp3": {
+"whisper-1": "Дай чокрю!",
+"gpt-4o-transcribe": "دائي چڪريون"
+},
+"assets/audio/family/mum/saro-cup.mp3": {
+"whisper-1": "Sa-ro-ka-pae.",
+"gpt-4o-transcribe": "Saaro kape."
+},
+"assets/audio/family/mum/saro-darwajo.mp3": {
+"whisper-1": "S-au rădăruat joi.",
+"gpt-4o-transcribe": "Sarodaroaġivai."
+},
+"assets/audio/family/mum/sari-maani.mp3": {
+"whisper-1": "सारी मानी है",
+"gpt-4o-transcribe": "Sari manie."
+},
+"assets/audio/family/mum/chokro-saro-ai.mp3": {
+"whisper-1": "or cross out a Y.",
+"gpt-4o-transcribe": "Ocro saru ai."
+},
+"assets/audio/family/mum/chokri-sari-ai.mp3": {
+"whisper-1": "चोकरी सारी है",
+"gpt-4o-transcribe": "ছোকৰী ছাৰিছে."
+},
+"assets/audio/family/mum/ambo-saro-ai.mp3": {
+"whisper-1": "Ambo Saroé.",
+"gpt-4o-transcribe": "Ambo sarwe."
+},
+"assets/audio/family/mum/maani-sari-ain.mp3": {
+"whisper-1": "Mä oon Iisariin.",
+"gpt-4o-transcribe": "Ma ni sariyain."
+},
+"assets/audio/family/mum/nindho-chokro.mp3": {
+"whisper-1": "NİNDO ÇOKLU",
+"gpt-4o-transcribe": "Nindo chokro."
+},
+"assets/audio/family/mum/hu-nindhi-chokri.mp3": {
+"whisper-1": "हूँ निन्दी चोकरी",
+"gpt-4o-transcribe": "Hoonindi cokri."
+},
+"assets/audio/family/mum/wadho-ginech-nindho-ginech.mp3": {
+"whisper-1": "Vodogonich. Nenogonich. Yeah.",
+"gpt-4o-transcribe": "Wado ginech, nindo ginech."
+},
+"assets/audio/family/mum/nindha.mp3": {
+"whisper-1": "Ninda",
+"gpt-4o-transcribe": "Ninda."
+},
+"assets/audio/family/mum/nana-jo-cup.mp3": {
+"whisper-1": "Nanajokapu.",
+"gpt-4o-transcribe": "Nana Jokob."
+},
+"assets/audio/family/mum/nana-ja-cups.mp3": {
+"whisper-1": "Nana Jakobs",
+"gpt-4o-transcribe": "Nana Jacobs"
+},
+"assets/audio/family/mum/nana-jo-ambo.mp3": {
+"whisper-1": "Nanajo ambo.",
+"gpt-4o-transcribe": "Nana jo ambo."
+},
+"assets/audio/family/mum/nana-ja-amba.mp3": {
+"whisper-1": "Nanaja Amba",
+"gpt-4o-transcribe": "Nanaja amba."
+},
+"assets/audio/family/mum/nana-jo-darwajo.mp3": {
+"whisper-1": "نانا جو درواجو",
+"gpt-4o-transcribe": "نانا جو دروازو."
+},
+"assets/audio/family/mum/nana-ji-pacheri.mp3": {
+"whisper-1": "नाना जी पच्छेरी",
+"gpt-4o-transcribe": "نانا جي پڇاڙي."
+},
+"assets/audio/family/mum/nana-ji-maani.mp3": {
+"whisper-1": "Nanajimani.",
+"gpt-4o-transcribe": "Nana jimani."
+},
+"assets/audio/family/mum/nani-jo-cup.mp3": {
+"whisper-1": "Nani jokopo?",
+"gpt-4o-transcribe": "Nani jokop."
+},
+"assets/audio/family/mum/nani-ja-cups.mp3": {
+"whisper-1": "Nani Jacobs",
+"gpt-4o-transcribe": "Nanny Jacobs."
+},
+"assets/audio/family/mum/nani-jo-ambo.mp3": {
+"whisper-1": "Nani Jo Ambo.",
+"gpt-4o-transcribe": "Nani jo ambo."
+},
+"assets/audio/family/mum/nani-ja-amba.mp3": {
+"whisper-1": "Nani ja amba?",
+"gpt-4o-transcribe": "Nani jaamba."
+},
+"assets/audio/family/mum/nani-jo-darwajo.mp3": {
+"whisper-1": "نانی جدرواجو",
+"gpt-4o-transcribe": "Nani jo darwajo?"
+},
+"assets/audio/family/mum/nani-ji-pacheri.mp3": {
+"whisper-1": "Nani Jibacheri.",
+"gpt-4o-transcribe": "Nani jipacheri?"
+},
+"assets/audio/family/mum/nani-ji-bakri.mp3": {
+"whisper-1": "नानी जी बक्री",
+"gpt-4o-transcribe": "نانی جی بکری"
+},
+"assets/audio/family/mum/nani-jo-bakro.mp3": {
+"whisper-1": "نانی جو بکرو.",
+"gpt-4o-transcribe": "Nani jobakro."
+},
+"assets/audio/family/mum/chokre-jo-cup.mp3": {
+"whisper-1": "چھوکری جو کپ",
+"gpt-4o-transcribe": "Çok recekap."
+},
+"assets/audio/family/mum/chokre-jo-ambo.mp3": {
+"whisper-1": "Cokrejo Ambo",
+"gpt-4o-transcribe": "Cho krejo ambo."
+},
+"assets/audio/family/mum/chokri-jo-cup.mp3": {
+"whisper-1": "Чокириджу кап.",
+"gpt-4o-transcribe": "çok rica."
+},
+"assets/audio/family/mum/chokri-jo-ambo.mp3": {
+"whisper-1": "초크리지오 암보",
+"gpt-4o-transcribe": "Ĉokriĝo ambo."
+},
+"assets/audio/family/mum/chokriyu-jo-ambo.mp3": {
+"whisper-1": "चो क्रियूँ जो अम्बो",
+"gpt-4o-transcribe": "ڇوڪريون جو آمبو."
+},
+"assets/audio/family/mum/bakri-jo-kan.mp3": {
+"whisper-1": "بکری جکن",
+"gpt-4o-transcribe": "Bakri dyokan."
+},
+"assets/audio/family/mum/bakre-jo-kan.mp3": {
+"whisper-1": "Bakrejo kana.",
+"gpt-4o-transcribe": "بکري جو کن."
+},
+"assets/audio/family/mum/bakre-ja-amba.mp3": {
+"whisper-1": "بكريجة ، بكريجة أمبا",
+"gpt-4o-transcribe": "Bakreja amba."
+},
+"assets/audio/family/mum/nana-je-cup-je-andar.mp3": {
+"whisper-1": "Naneci kapciyandı.",
+"gpt-4o-transcribe": "Nana je kopjeanda."
+},
+"assets/audio/family/mum/nani-je-ambe-je-mathe.mp3": {
+"whisper-1": "نانی جے آن بے جے مت ہے",
+"gpt-4o-transcribe": "Naani je ambe je mathe."
+},
+"assets/audio/family/mum/chokre-je-darwaje-je-puthiya.mp3": {
+"whisper-1": "cho kreze derwa zeze butio.",
+"gpt-4o-transcribe": "ছোকৰেজে দৰৱাজেৰে পুথিয়া."
+},
+"assets/audio/family/mum/chokri-ji-bakri-sathe.mp3": {
+"whisper-1": "छोकरी जी बकरी साथ है।",
+"gpt-4o-transcribe": "چوکری جی بکری ساتھ ہے."
+},
+"assets/audio/family/mum/chokri-je-bakre-sathe.mp3": {
+"whisper-1": "चोकरी जे बकरे साथ है।",
+"gpt-4o-transcribe": "چوکری جے بکرے ساتھ ہے."
+},
+"assets/audio/family/mum/chokre-je-bakre-sathe.mp3": {
+"whisper-1": "چھوکرے جے بکرے ساتھ ہے",
+"gpt-4o-transcribe": "چھوکرے کے بکرے ساتھ ہیں۔"
+},
+"assets/audio/family/mum/chokre-ji-bakri-sathe.mp3": {
+"whisper-1": "چھوکرے جی بکری ساتھ ہے",
+"gpt-4o-transcribe": "چھوکری جی بکری ساتھے."
+},
+"assets/audio/family/mum/nana-jo-ai.mp3": {
+"whisper-1": "Nana Jo'ai.",
+"gpt-4o-transcribe": "Nana jo ai."
+},
+"assets/audio/family/mum/nani-jo-ai.mp3": {
+"whisper-1": "Nani Jo'ai.",
+"gpt-4o-transcribe": "Nani jo ai?"
+},
+"assets/audio/family/mum/chokriyu-ji-ain.mp3": {
+"whisper-1": "creugine",
+"gpt-4o-transcribe": "Criúinigh an."
+},
+"assets/audio/family/mum/aau-rasore-me-aiya.mp3": {
+"whisper-1": "Aura soremme aina.",
+"gpt-4o-transcribe": "Aura soreme aña."
+},
+"assets/audio/family/mum/tu-rasore-me-aiye.mp3": {
+"whisper-1": "تون رساره می آیند.",
+"gpt-4o-transcribe": "Tú rasóreme añet."
+},
+"assets/audio/family/mum/aai-rasore-me-aayo.mp3": {
+"whisper-1": "Hay rastro de mea yó.",
+"gpt-4o-transcribe": "አይራሶ ረምዓን ነው።"
+},
+"assets/audio/family/mum/e-rasore-me-ai.mp3": {
+"whisper-1": "Είρες ωραία.",
+"gpt-4o-transcribe": "Ir a sore me."
+},
+"assets/audio/family/mum/e-huda-rasore-me-ai.mp3": {
+"whisper-1": "I hudara sore me.",
+"gpt-4o-transcribe": "Ihuda rasoremeae."
+},
+"assets/audio/family/mum/hu-chokri-rasore-me-ai.mp3": {
+"whisper-1": "Muchos queridos seres míos.",
+"gpt-4o-transcribe": "Kucho krinos oremea."
+},
+"assets/audio/family/mum/asa-rasore-me-aayo.mp3": {
+"whisper-1": "اصار را سوره میکنید.",
+"gpt-4o-transcribe": "Assara sore meo."
+},
+"assets/audio/family/mum/pa-rasore-me-aayo.mp3": {
+"whisper-1": "para seremenho.",
+"gpt-4o-transcribe": "Para soremeo?"
+},
+"assets/audio/family/mum/hi-rasore-me-ain.mp3": {
+"whisper-1": "He rest so remain.",
+"gpt-4o-transcribe": "Hî rasore meyn."
+},
+"assets/audio/family/mum/hi-mare.mp3": {
+"whisper-1": "We probably say himare.",
+"gpt-4o-transcribe": "Vi pleier å se himmelen."
+},
+"assets/audio/family/mum/hu-mare.mp3": {
+"whisper-1": "Those ones who murder.",
+"gpt-4o-transcribe": "Hoomara."
+},
+"assets/audio/family/mum/munjo-cup.mp3": {
+"whisper-1": "문조컵",
+"gpt-4o-transcribe": "Moonsokap"
+},
+"assets/audio/family/mum/munjo-ambo.mp3": {
+"whisper-1": "문조 안보",
+"gpt-4o-transcribe": "Munjo ambo."
+},
+"assets/audio/family/mum/munja-cups.mp3": {
+"whisper-1": "Moonja cups",
+"gpt-4o-transcribe": "Munja kaps."
+},
+"assets/audio/family/mum/munja-amba.mp3": {
+"whisper-1": "Munja Amba.",
+"gpt-4o-transcribe": "Munja amba"
+},
+"assets/audio/family/mum/munji-kursi.mp3": {
+"whisper-1": "Mungi Kursi.",
+"gpt-4o-transcribe": "Munji kursi."
+},
+"assets/audio/family/mum/munji-kursiyu.mp3": {
+"whisper-1": "문지구 씨요.",
+"gpt-4o-transcribe": "Mundje kursor."
+},
+"assets/audio/family/mum/tojo-cup.mp3": {
+"whisper-1": "Close your cup.",
+"gpt-4o-transcribe": "Տոճոկը։"
+},
+"assets/audio/family/mum/tojo-ambo.mp3": {
+"whisper-1": "Tuyo, Ambo.",
+"gpt-4o-transcribe": "Tujuh amboh."
+},
+"assets/audio/family/mum/toji-kursi-ain.mp3": {
+"whisper-1": "2. kursa aynı",
+"gpt-4o-transcribe": "تو جی کرسی آئن."
+},
+"assets/audio/family/mum/toja-amba-ain.mp3": {
+"whisper-1": "to'ya ambain.",
+"gpt-4o-transcribe": "Toja ambaen."
+},
+"assets/audio/family/mum/anjo-cup.mp3": {
+"whisper-1": "and your cup.",
+"gpt-4o-transcribe": "Anca kap."
+},
+"assets/audio/family/mum/anji-kursi.mp3": {
+"whisper-1": "안지구 씨",
+"gpt-4o-transcribe": "Angie cursi."
+},
+"assets/audio/family/mum/anja-amba.mp3": {
+"whisper-1": "أنجا أمبا",
+"gpt-4o-transcribe": "Anja amba."
+},
+"assets/audio/family/mum/injo-cup.mp3": {
+"whisper-1": "인조컵",
+"gpt-4o-transcribe": "飲酒か。"
+},
+"assets/audio/family/mum/injo-ambo.mp3": {
+"whisper-1": "in Jo'ambo.",
+"gpt-4o-transcribe": "Injo ambo."
+},
+"assets/audio/family/mum/inji-kursi.mp3": {
+"whisper-1": "NG CURSY.",
+"gpt-4o-transcribe": "Inji kursi."
+},
+"assets/audio/family/mum/inja-amba.mp3": {
+"whisper-1": "Inja Amba",
+"gpt-4o-transcribe": "Inja amba."
+},
+"assets/audio/family/mum/asanjo-cup.mp3": {
+"whisper-1": "a sand joker",
+"gpt-4o-transcribe": "A szándjok."
+},
+"assets/audio/family/mum/asanjo-ambo.mp3": {
+"whisper-1": "Asanjo Ambo",
+"gpt-4o-transcribe": "Asanjo amboh."
+},
+"assets/audio/family/mum/panjo-cup.mp3": {
+"whisper-1": "Banjo-Kop",
+"gpt-4o-transcribe": "Բանջուկը։"
+},
+"assets/audio/family/mum/iloka-jo-cup.mp3": {
+"whisper-1": "Iloka joka!",
+"gpt-4o-transcribe": "Élők a gyokok."
+},
+"assets/audio/family/mum/iloka-ji-kursi.mp3": {
+"whisper-1": "e loca de cursi.",
+"gpt-4o-transcribe": "Ilokaji kursi."
+},
+"assets/audio/family/mum/iloka-jo-ambo.mp3": {
+"whisper-1": "Ilo kajo ambo.",
+"gpt-4o-transcribe": "Ila khajo ambo."
+},
+"assets/audio/family/mum/iloka-ja-amba.mp3": {
+"whisper-1": "Ilo kaja amba.",
+"gpt-4o-transcribe": "Ilokaja amba."
+},
+"assets/audio/family/mum/munje-cup-me.mp3": {
+"whisper-1": "मुझे कप में",
+"gpt-4o-transcribe": "مجھے کپ میں."
+},
+"assets/audio/family/mum/toje-ambe-mathe.mp3": {
+"whisper-1": "तो जे आम बे मत हैं।",
+"gpt-4o-transcribe": "Tođe ambe mathe."
+},
+"assets/audio/family/mum/toji-kursi-mathe.mp3": {
+"whisper-1": "2G κούρση μαθαίνει.",
+"gpt-4o-transcribe": "ტოჯი კურსიმათე."
+},
+"assets/audio/family/mum/inje-bakre-sathe.mp3": {
+"whisper-1": "انجے بکرے ساتھ ہے",
+"gpt-4o-transcribe": "İnce bakır eşyate."
+},
+"assets/audio/family/mum/inje-cup-me.mp3": {
+"whisper-1": "İnce kapı me.",
+"gpt-4o-transcribe": "Injekapme."
+},
+"assets/audio/family/mum/chai-ke-ukar-paani-ke-ukar.mp3": {
+"whisper-1": "Turn it on.",
+"gpt-4o-transcribe": "چائے کے اوکار."
+},
+"assets/audio/family/mum/slow-kar.mp3": {
+"whisper-1": "Sloker",
+"gpt-4o-transcribe": "سلوکر"
+},
+"assets/audio/family/mum/wiji-chad.mp3": {
+"whisper-1": "you",
+"gpt-4o-transcribe": "Vijichad."
+},
+"assets/audio/family/mum/andar-wiji-chad.mp3": {
+"whisper-1": "under which Chad",
+"gpt-4o-transcribe": "اندویچ چد."
+},
+"assets/audio/family/mum/kadhi-chad.mp3": {
+"whisper-1": "God bless you.",
+"gpt-4o-transcribe": "Gadìċed."
+},
+"assets/audio/family/mum/atto-gund.mp3": {
+"whisper-1": "अत्तो गुन्त",
+"gpt-4o-transcribe": "Ato gunt."
+},
+"assets/audio/family/mum/dabai.mp3": {
+"whisper-1": "До свидания.",
+"gpt-4o-transcribe": "Dabai."
+},
+"assets/audio/family/mum/kapi-chad.mp3": {
+"whisper-1": "Capuchin",
+"gpt-4o-transcribe": "Kapiched."
+},
+"assets/audio/family/mum/nindha-nindha-kap.mp3": {
+"whisper-1": "would be Nindan in the country.",
+"gpt-4o-transcribe": "Budbiri ninda ninda."
+},
+"assets/audio/family/mum/firai.mp3": {
+"whisper-1": "Firae",
+"gpt-4o-transcribe": "Firai."
+},
+"assets/audio/family/mum/firai-chad.mp3": {
+"whisper-1": "It's the same. Okay, Richard.",
+"gpt-4o-transcribe": "Tá sé réiteach."
+},
+"assets/audio/family/mum/bego-kari-chad.mp3": {
+"whisper-1": "Begoka Richard",
+"gpt-4o-transcribe": "Bego karičed."
+},
+"assets/audio/family/mum/tarelo-kari-chad.mp3": {
+"whisper-1": "tără locări cer.",
+"gpt-4o-transcribe": "Te relocaricer."
+},
+"assets/audio/family/mum/paani-bhari-chad.mp3": {
+"whisper-1": "Panii Băricieri.",
+"gpt-4o-transcribe": "Pani barichet."
+},
+"assets/audio/family/mum/thorok-wij.mp3": {
+"whisper-1": "Torque rich.",
+"gpt-4o-transcribe": "Торгуйчы"
+},
+"assets/audio/family/mum/bakuli-me-wiji-chad.mp3": {
+"whisper-1": "Boca Lima, Wichita.",
+"gpt-4o-transcribe": "பல்குலிமேவிச்சது."
+},
+"assets/audio/family/mum/chakh.mp3": {
+"whisper-1": "Chuck.",
+"gpt-4o-transcribe": "Jack."
+},
+"assets/audio/family/mum/dhui-ginta-ja-glass-dho-cup-dho.mp3": {
+"whisper-1": "do'y ginta sa glass do'y cup do'y",
+"gpt-4o-transcribe": "دوی ګینده جا ګلاس دو کپ دو."
+},
+"assets/audio/family/mum/jhini-maani-banai.mp3": {
+"whisper-1": "जीनी मानी जीनी मानी बनाए",
+"gpt-4o-transcribe": "জিনি মানি বনায়।"
+},
+"assets/audio/family/mum/jadi-maani-banai.mp3": {
+"whisper-1": "जाड़ी मानी बनहे",
+"gpt-4o-transcribe": "जाड़ी मानी बनाए."
+},
+"assets/audio/family/mum/barabar.mp3": {
+"whisper-1": "बराबड़ा",
+"gpt-4o-transcribe": "Beraber."
+},
+"assets/audio/family/mum/indo.mp3": {
+"whisper-1": "It is Indo.",
+"gpt-4o-transcribe": "disindo."
+},
+"assets/audio/family/mum/chapri.mp3": {
+"whisper-1": "चप्पूरी",
+"gpt-4o-transcribe": "چپری."
+},
+"assets/audio/family/mum/makai.mp3": {
+"whisper-1": "call it Makai.",
+"gpt-4o-transcribe": "Kulik ma kay."
+},
+"assets/audio/family/mum/mishkaki-ji-lakri.mp3": {
+"whisper-1": "مشكاكي جي لقري",
+"gpt-4o-transcribe": "مشکا کی جی لکڑی."
+},
+"assets/audio/family/mum/kebab-ji-lakri.mp3": {
+"whisper-1": "God bless you, Lakshmi.",
+"gpt-4o-transcribe": "Kemancilokri."
+},
+"assets/audio/family/mum/tapelo.mp3": {
+"whisper-1": "The Pillow",
+"gpt-4o-transcribe": "To pelo."
+},
+"assets/audio/family/mum/tawa.mp3": {
+"whisper-1": "أن أتوى",
+"gpt-4o-transcribe": "No te taua."
+},
+"assets/audio/family/mum/welan.mp3": {
+"whisper-1": "Swellen",
+"gpt-4o-transcribe": "Swellen."
+},
+"assets/audio/family/mum/chamcho-oct5.mp3": {
+"whisper-1": "चम्छो",
+"gpt-4o-transcribe": "ਚਮਚੋ?"
+},
+"assets/audio/family/mum/wadho-chamcho.mp3": {
+"whisper-1": "Wadochumcho.",
+"gpt-4o-transcribe": "Bodo chamcho?"
+},
+"assets/audio/family/mum/aag.mp3": {
+"whisper-1": "Ang.",
+"gpt-4o-transcribe": "Ag"
+},
+"assets/audio/family/mum/chulo-bar.mp3": {
+"whisper-1": "the store you'd say Chullo Bar.",
+"gpt-4o-transcribe": "ብስቱው ይዘችሁ ሎባር."
+},
+"assets/audio/family/mum/garam.mp3": {
+"whisper-1": "Garamy.",
+"gpt-4o-transcribe": "Гараме."
+},
+"assets/audio/family/mum/thundo-thai-vyo.mp3": {
+"whisper-1": "Tandoor to you.",
+"gpt-4o-transcribe": "ထန်လိုသေးပါ။"
+},
+"assets/audio/family/mum/chulo.mp3": {
+"whisper-1": "to know",
+"gpt-4o-transcribe": "Chulop."
+},
+"assets/audio/family/mum/ukar.mp3": {
+"whisper-1": "car.",
+"gpt-4o-transcribe": "ukar"
+},
+"assets/audio/family/mum/slow.mp3": {
+"whisper-1": "slow",
+"gpt-4o-transcribe": "Slok."
+},
+"assets/audio/family/mum/kar.mp3": {
+"whisper-1": "Kerr",
+"gpt-4o-transcribe": "Kar."
+},
+"assets/audio/family/mum/atto.mp3": {
+"whisper-1": "I don't",
+"gpt-4o-transcribe": "Atog."
+},
+"assets/audio/family/mum/gund.mp3": {
+"whisper-1": "Gunt.",
+"gpt-4o-transcribe": "und"
+},
+"assets/audio/family/mum/bar.mp3": {
+"whisper-1": "Bye.",
+"gpt-4o-transcribe": "bar"
+},
+"assets/audio/family/mum/bhar.mp3": {
+"whisper-1": "बर",
+"gpt-4o-transcribe": "Bar."
+},
+"assets/audio/family/mum/thundo.mp3": {
+"whisper-1": "ठंडोत",
+"gpt-4o-transcribe": "Tandot."
+},
+"assets/audio/family/mum/kan.mp3": {
+"whisper-1": "Come.",
+"gpt-4o-transcribe": "Komm."
+},
+"assets/audio/family/mum/laal.mp3": {
+"whisper-1": "lol",
+"gpt-4o-transcribe": "L'alpi"
+}
+}
