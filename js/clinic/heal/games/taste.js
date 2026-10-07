@@ -162,7 +162,8 @@
     // the holes the spots pop out of: eight places over the tongue
     const HOLES = (data.holes || [[320, 215], [400, 210], [480, 215], [305, 290], [375, 280], [445, 290], [495, 300], [345, 360], [440, 365]]).slice();
     const holeOrder = HS.shuffle(HOLES.map((_, i) => i), ctx.rng);
-    HOLES.forEach(([x, y]) => s("ellipse", { cx: x, cy: y + 6, rx: 15, ry: 6, fill: "#c9606e", opacity: 0.55 }, mouthG));
+    // TA4 (CLN-104): the purple holes are cleared when the tongue is fixed (they're kept to fade at the end)
+    const holeEls = HOLES.map(([x, y]) => s("ellipse", { cx: x, cy: y + 6, rx: 15, ry: 6, fill: "#c9606e", opacity: 0.55 }, mouthG));
     const spotsG = s("g", {}, S.layer);
     const fxG = s("g", {}, S.fx);
     const R = 26;
@@ -262,7 +263,27 @@
     s("ellipse", { cx: GL.x + GL.w / 2, cy: GL.y + GL.h - 4, rx: GL.w * 0.48, ry: 7, fill: "#000", opacity: 0.18 }, glassG); // contact shadow
     s("image", { href: url("assets/clinic/items-v2/tumbler.webp"), x: GL.x, y: GL.y, width: GL.w, height: GL.h }, glassG);
     const TOP = { x: GL.x + GL.w / 2, y: GL.y + GL.h * 0.14, rx: GL.w * 0.4, ry: GL.h * 0.055 };
+    // TA2 (CLN-104): the drink fills the glass from the bottom up and looks like what's in it (milk white and opaque,
+    // water clear and pale blue, the mixed drinks their own colour); its surface rides up with it
+    const BOT = GL.y + GL.h * 0.9;
+    const cid = `taste-glass-${Math.floor(ctx.rng() * 1e6)}`;
+    const clip = s("clipPath", { id: cid }, s("defs", {}, S.svg));
+    s("path", { d: `M${GL.x + GL.w * 0.1} ${TOP.y} L${GL.x + GL.w * 0.9} ${TOP.y} L${GL.x + GL.w * 0.84} ${BOT} Q${TOP.x} ${BOT + 8} ${GL.x + GL.w * 0.16} ${BOT}Z` }, clip);
+    const body = s("rect", { x: GL.x, y: BOT, width: GL.w, height: 0, fill: "#fff", opacity: 0, "clip-path": `url(#${cid})` }, glassG);
     const liquid = s("ellipse", { cx: TOP.x, cy: TOP.y + 4, rx: TOP.rx, ry: TOP.ry, fill: "#fff", opacity: 0 }, glassG);
+    const level = (u, col, op) => {
+      const y = BOT - (BOT - TOP.y - 4) * u;
+      body.setAttribute("y", y);
+      body.setAttribute("height", Math.max(0, BOT - y + 10));
+      liquid.setAttribute("cy", y);
+      if (col) {
+        body.setAttribute("fill", col);
+        liquid.setAttribute("fill", col);
+      }
+      body.setAttribute("opacity", u > 0 ? op : 0);
+      liquid.setAttribute("opacity", u > 0 ? Math.min(1, op + 0.15) : 0);
+    };
+    const opOf = (id) => (id === "water" ? 0.55 : 0.95);
     const blob = s("ellipse", { cx: TOP.x - 6, cy: TOP.y + 3, rx: TOP.rx * 0.45, ry: TOP.ry * 0.6, fill: "#fff", opacity: 0 }, glassG);
     const glassArt = (key) => art(key);
     void glassArt;
@@ -286,8 +307,7 @@
       });
       await tween(220, (u) => g.setAttribute("transform", `translate(${to.x} ${to.y}) rotate(${-100 * u})`));
       const stream = s("path", { d: `M${to.x - 50} ${to.y - 10} Q${TOP.x + 20} ${to.y + 10} ${TOP.x} ${TOP.y}`, stroke: t.liquid, "stroke-width": 9, fill: "none", "stroke-linecap": "round", opacity: id === "water" ? 0.75 : 0.95 }, S.fx);
-      liquid.setAttribute("fill", t.liquid);
-      await tween(560, (u) => liquid.setAttribute("opacity", u));
+      await tween(760, (u) => level(u, t.liquid, opOf(id)));
       stream.remove();
       await tween(180, (u) => g.setAttribute("transform", `translate(${to.x} ${to.y}) rotate(${-100 * (1 - u)})`));
       await tween(300, (u) => {
@@ -321,15 +341,23 @@
       g.remove();
       const gl = st.glass;
       const d = Object.keys(DRINKS).find((k) => DRINKS[k].liquid === gl.liquid && Object.keys(gl.adds).length === 1 && gl.adds[DRINKS[k].add]);
-      liquid.setAttribute("fill", d ? DRINKS[d].mixed : gl.liquid ? THINGS[gl.liquid].liquid : "#eee");
-      if (!gl.liquid) liquid.setAttribute("opacity", 0);
+      if (gl.liquid) level(1, d ? DRINKS[d].mixed : THINGS[gl.liquid].liquid, d ? 0.95 : opOf(gl.liquid));
+      else level(0);
       blob.setAttribute("opacity", 0);
       gl.stirred = true;
       st.busy = false;
     };
+    // a glow on the next thing after a pause (E16: a hint after hesitation); it goes when the child acts
+    let nudgeT = null;
+    const nudge = (el, still) => {
+      clearTimeout(nudgeT);
+      [S.toolEls.spoon, glassG].forEach((x) => x && x.classList.remove("pulse"));
+      if (!el) return;
+      nudgeT = setTimeout(() => !st.over && still() && el.classList.add("pulse"), fast() ? 200 : 1800);
+    };
     const emptyGlass = () => {
       st.glass = { liquid: null, adds: {}, stirred: false, slip: false };
-      liquid.setAttribute("opacity", 0);
+      level(0);
       blob.setAttribute("opacity", 0);
     };
     emptyGlass();
@@ -431,6 +459,8 @@
         if (P.level >= 2) ctx.tally(id, gl.adds[id]);
         S.uncue();
         await addIn(id);
+        // TA3 (CLN-104): the next step is cued: the spoon glows after a short pause (stir it)
+        nudge(S.toolEls.spoon, () => !st.glass.stirred);
         return;
       }
       if (id === "spoon") {
@@ -438,6 +468,8 @@
         S.uncue();
         await stir();
         if (cur() === c) S.cue("give", CUES.give, { x: GL.x + GL.w / 2, y: GL.y + GL.h / 2, r: GL.w * 0.6 });
+        // then the glass glows: give it to her
+        nudge(glassG, () => st.glass.stirred && cur() === c && !st.busy);
       }
     };
     const glassKey = () => {
@@ -448,6 +480,7 @@
     };
     const give = async () => {
       const c = cur();
+      nudge(null);
       const gl = st.glass;
       if (!gl.stirred) return S.cue("stir", { gesture: "tap" }, S.toolEls.spoon);
       const key = glassKey();
@@ -461,12 +494,15 @@
       const cy = GL.y + GL.h / 2;
       await tween(420, (u) => glassG.setAttribute("transform", `translate(${(400 - cx) * ease(u) * 0.55} ${(150 - cy) * ease(u) * 0.6}) rotate(${-25 * u} ${cx} ${cy})`));
       S.face("drink", 700);
-      await tween(300, (u) => liquid.setAttribute("opacity", 1 - u));
+      await tween(300, (u) => level(1 - u, null, 0.95));
       await tween(300, (u) => glassG.setAttribute("transform", `translate(${(400 - cx) * (1 - u) * 0.55} ${(150 - cy) * (1 - u) * 0.6}) rotate(${-25 * (1 - u)} ${cx} ${cy})`));
       emptyGlass();
       if (ok) {
         // the spots left fade away
-        await tween(fast() ? 1 : 700, (u) => spots.forEach((sp) => sp.state !== "popped" && sp.g.setAttribute("opacity", 1 - u)));
+        await tween(fast() ? 1 : 700, (u) => {
+          spots.forEach((sp) => sp.state !== "popped" && sp.g.setAttribute("opacity", 1 - u));
+          holeEls.forEach((hEl) => hEl.setAttribute("opacity", 0.55 * (1 - u)));
+        });
         ctx.card.tick("drink");
         S.face("happy");
         st.busy = false;
