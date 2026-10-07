@@ -57,8 +57,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const PLATE_Y = 666 + (900 - 883) + 8 + PLATE_D / 2;
   const PLATE_PITCH = 204;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
+  // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
+  // maani-v2/thali.webp: the flat floor is a circle 0.42 of the picture's width across from its centre.
+  const THALI_FLAT = 0.42;
   const CHIP_Y = 860;
-  const PIN_W = 440; // the v3 velan is a thicker pin: shorter, so it sits on the board and not over its edges
+  const PIN_W = 484; // MAA-12 (M12): a real velan is a little wider than the board: the v3 pin about 10% longer (was 440)
   // 30 Sept (M3, M9 / Q14): the dough piles stand straight on the band (no tray), on this line just above
   // their chips; St.shelfFit sizes them so the gap above equals the gap under the chips (no hop: a pile
   // doesn't bounce, it squashes a little as a ball comes off)
@@ -192,9 +195,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const RING_R = TAWA_R - 14;
     let heat = "high";
     S.tappable(burner.knobHit, () => {
-      // the knob: high (the ring runs at its pace) or low (slower: more time to roll)
-      heat = heat === "high" ? "low" : "high";
+      // the knob: high (the ring runs at its pace), low (slower: more time to roll), off (MAA-11: the flame goes
+      // out, nothing cooks, the sizzle stops), then high again
+      heat = heat === "high" ? "low" : heat === "low" ? "off" : "high";
       burner.set(heat);
+      sizzleSync();
+      stepNow();
     });
     if (burner.face)
       S.tappable(burner.face, () => {
@@ -234,7 +240,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const bottom = S.textures.exists(key) ? St.opaqueSpan(S, key)[1] : 1;
       const img = S.track(S.add.image(x, PILE_BASE, key).setOrigin(0.5, bottom).setScale(pileK).setDepth(D.item - 1));
       img.baseScale = pileK;
-      img.shadow = S.contactShadow(img, { centerX: x, centerY: PILE_BASE - 6, width: img.displayWidth * 0.86, height: 24 });
+      // MAA-09 (M2): no drop shadow: the piles are seen from above, like the balls
       img.type = type;
       // always more than anyone orders, the same in both, never shown (the pile is one picture): out of
       // balls, the pile goes (a ball put back brings it back)
@@ -316,9 +322,52 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Lang.speakWord(id);
     };
 
+    /*
+     * S02-B (T11, decision 55): the box is the next step, in step with what glows. The tawa comes first when its
+     * maani is in the green (Firai! to flip, [Take it off] on the second side); else the board: [Take a dough
+     * ball] -> [Roll it round] -> [Put it on the tawa]. Waiting on the tawa with nothing else to do: empty.
+     */
+    const steps = St.steps(ctx);
+    function stepNow() {
+      if (finished) return steps.done();
+      const t = onTawa;
+      const hot = t && !t.busy && heat !== "off" && t.v >= lo && t.v <= hi;
+      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}` });
+      if (waiting && waiting.landed && !onTawa) return steps.to("maani-line:tawa", { id: `tawa-on-${items.indexOf(waiting)}` });
+      if (chakla && !chakla.busy) return steps.to("maani-line:roll", { id: `roll-${items.length}` });
+      if (!chakla && !waiting && nextType()) return steps.to("maani-line:take", { id: `take-${items.length}` });
+      steps.done();
+    }
+    /*
+     * MAA-13 (M3, as SH-46): after a pause the ghost finger shows the tap on the rolled maani, again and again, until
+     * it goes on the tawa (not once per profile). The pause is the guide's (about 5 s at level 1, longer later).
+     */
+    let ghostT = null;
+    let ghostOn = null;
+    const stopGhost = () => {
+      if (ghostT) ghostT.remove();
+      ghostT = null;
+      if (ghostOn) ghostOn.g.stop();
+      ghostOn = null;
+    };
+    function ghostSync() {
+      const w = !finished && waiting && waiting.landed && !onTawa ? waiting : null;
+      if (ghostOn && ghostOn.it !== w) stopGhost();
+      if (!w || ghostOn || ghostT) return;
+      const pause = ((global.NaniGuide && global.NaniGuide.PAUSE) || [5000])[Math.min(3, level - 1)] || 5000;
+      ghostT = S.time.delayedCall(pause, () => {
+        ghostT = null;
+        if (waiting !== w || onTawa || finished) return;
+        const c = S.centre(w.sprite);
+        ghostOn = { it: w, g: S.ghost([[c.x, c.y], [c.x, c.y + 2]], { duration: 900 }) };
+      });
+    }
+
     /* ---------- what's next (the test plays from it; the focal rule; guided glows the answer) ---------- */
     function update() {
       if (finished) return;
+      stepNow();
+      ghostSync();
       const need = !chakla && !waiting ? nextType() : null;
       plates.forEach((b) => glowOn(b, !!(ctx.guided && need === b.type)));
       // a rolled maani and a free tawa: that's the next thing (it pulses, whatever the level)
@@ -433,16 +482,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       it.sprite.setDepth(D.item + 1);
       await S.fly(it.sprite, TW.x, TW.y, { scale: sz, duration: 380, arc: 90 });
       it.sprite.baseScale = sz;
-      Cook.sfx.sizzle(0.4);
+      if (heat !== "off") Cook.sfx.sizzle(0.4);
       t.busy = false;
-      if (!sizzle) {
-        sizzle = Cook.sfx.sizzleLoop();
-        S.loops.push(sizzle);
-      }
+      sizzleSync();
       S.tappable(it.sprite, () => tawaTap());
       zt.passMeAfter(kTawa.passMeAfterMs);
     }
     let sizzle = null;
+    // MAA-11 (M6): the sizzle plays only while something is on a lit tawa
+    function sizzleSync() {
+      const on = !finished && !!onTawa && heat !== "off";
+      if (on && !sizzle) {
+        sizzle = Cook.sfx.sizzleLoop();
+        S.loops.push(sizzle);
+      } else if (!on && sizzle) {
+        sizzle.stop();
+        sizzle = null;
+      }
+    }
     S.tappable(tawa, () => tawaTap());
     // the browning as the ring fills: the maani's own colour times a warm tint
     const C = Phaser.Display.Color;
@@ -503,12 +560,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const d = dones[it.type] || Object.values(dones)[0];
       const j = d.n++;
       onTawa = null;
+      sizzleSync();
       S.untap(sp);
       sp.setDepth(D.item + 2 + j * 0.01);
       S.tweens.add({ targets: sp, angle: Math.random() * 24 - 12, duration: 450 });
       turnerHomeTween();
-      const [fx, fy] = FAN[j % FAN.length];
-      const fly = S.fly(sp, d.x + fx, d.y + fy, { scale: discScale(sp.texture.key, PLATE_D * 0.3 * it.sizeF), duration: 450 });
+      const pr = PLATE_D * 0.3 * it.sizeF;
+      const room = Math.max(0, PLATE_D * THALI_FLAT - pr - 3); // how far its centre may sit off the thali's centre
+      const [f0x, f0y] = FAN[j % FAN.length];
+      const fk = Math.min(1, room / Math.max(1, Math.hypot(f0x, f0y)));
+      const [fx, fy] = [f0x * fk, f0y * fk];
+      const fly = S.fly(sp, d.x + fx, d.y + fy, { scale: discScale(sp.texture.key, pr), duration: 450 });
       update();
       await fly;
       it.where = "plate";
@@ -528,13 +590,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       last = now;
       const t = onTawa;
       if (!t || t.busy || finished) return;
-      const rate = (t.side === 1 ? rate1 : rate2) * (heat === "low" ? 0.6 : 1);
+      const rate = (t.side === 1 ? rate1 : rate2) * (heat === "off" ? 0 : heat === "low" ? 0.6 : 1);
       t.v += rate * dt;
       const nowIn = t.v >= lo && t.v <= hi;
       if (nowIn !== inBand) {
         inBand = nowIn;
         glowOn(t.it.sprite, nowIn);
         if (nowIn) Cook.sfx.click();
+        stepNow();
       }
       // the browning as the ring fills: a warm tint over the raw side, lighter over the spotted side
       t.it.sprite.setTint(brown(Math.min(1, t.v) * (t.side === 1 ? 1 : 0.5)));
@@ -571,7 +634,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     Cook.undoAt = null;
     UI.hideDone();
     ring.clear();
-    if (sizzle) sizzle.stop();
+    sizzleSync();
+    steps.done();
+    stopGhost();
     [zb, zon, zt].forEach((z) => z.expect(null));
     plates.forEach((b) => {
       glowOn(b, false);

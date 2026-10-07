@@ -656,6 +656,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       last = now;
       steamT += dt;
       pans.forEach((pan) => {
+        const bs = pan.well && pan.well.blackShade;
+        if (bs) bs.setAlpha(Math.max(pan.well.glass.half.alpha, pan.well.glass.full.alpha));
         const hd = pan.layers && pan.layers.handle;
         if (hd) hd.setAlpha(pan.img.alpha).setScale(pan.img.scaleX, pan.img.scaleY);
         if (pan.state === "heating") {
@@ -700,7 +702,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const [dw, dh] = [g.displayWidth, g.displayHeight];
           g.setTexture(St.artKey(`chai-glass-black-${st}`)).setDisplaySize(dw, dh);
         }
-        else g.setTint(BLACK.tint);
+        else if (!w.blackShade) {
+          // the stand-in (no tints in the canvas renderer): a darker tea multiplied over the milk tea, faded with it
+          const d = g.displayWidth;
+          w.blackShade = S.track(S.add.circle(g.x, g.y, d * 0.37, BLACK.tint, 1).setDepth(g.depth + 0.01).setAlpha(0));
+          w.blackShade.setBlendMode(Phaser.BlendModes.MULTIPLY);
+        }
       });
     };
     const panTap = async (pan) => {
@@ -970,10 +977,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       setLook(pan);
       ["empty", "half", "full"].forEach((s2) => pan.well.glass[s2].setAlpha(s2 === "empty" ? 1 : 0));
       pan.well.fill = 0;
+      if (pan.well.blackShade) pan.well.blackShade = (pan.well.blackShade.destroy(), null);
       ["half", "full"].forEach((st) => {
         const g = pan.well.glass[st];
         g.blackDone = false;
-        g.clearTint();
         const [dw, dh] = [g.displayWidth, g.displayHeight];
         g.setTexture(`v2-glass-${st}`).setDisplaySize(dw, dh);
       });
