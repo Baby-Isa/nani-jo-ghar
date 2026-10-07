@@ -1050,7 +1050,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 }
 
 /* SH-60: the grown-ups' "play as new" in the "?" pop-up (English for grown-ups only lives here) */
-#help-pop .hp-new .njg-grownup-note { color: #7a6558; }
+#help-pop .hp-new .njg-grownup-note { color: inherit; opacity: .85; }
 
 /* SH-51 (S02-B): the coin-jar day summary (js/cook/flow.js showSummary): the jar, a card landing on it, today's
    coins beside it and the jar's total under it */
