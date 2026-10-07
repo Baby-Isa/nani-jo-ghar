@@ -3718,7 +3718,8 @@
     "ready": false,
     "meta": {
      "trays": "three tray spots in design px [x, y, w, h], measured on the cut"
-    }
+    },
+    "station": "service"
    },
    "served-dishes": {
     "line": "B1",
@@ -3726,7 +3727,8 @@
     "ready": false,
     "meta": {
      "_about": "one webp per dish at the counter's angle, shadow to the right"
-    }
+    },
+    "station": "service"
    },
    "chai-pan-pour-milk": {
     "line": "C1",
@@ -3735,7 +3737,8 @@
     "meta": {
      "lipX": 0.03,
      "lipY": 0.545
-    }
+    },
+    "station": "chai-tray"
    },
    "chai-pan-pour-black": {
     "line": "C2",
@@ -3744,17 +3747,20 @@
     "meta": {
      "lipX": 0.03,
      "lipY": 0.545
-    }
+    },
+    "station": "chai-tray"
    },
    "chai-glass-black-half": {
     "line": "C3",
     "file": "assets/cook/items/chai-v2/glass-black-half.webp",
-    "ready": false
+    "ready": false,
+    "station": "chai-tray"
    },
    "chai-glass-black-full": {
     "line": "C3",
     "file": "assets/cook/items/chai-v2/glass-black-full.webp",
-    "ready": false
+    "ready": false,
+    "station": "chai-tray"
    },
    "teaspoon": {
     "line": "C4",
@@ -3766,7 +3772,8 @@
       0.85
      ],
      "len": 0.9
-    }
+    },
+    "station": "chai-tray"
    },
    "sekelo-plate": {
     "line": "C7",
@@ -3779,12 +3786,14 @@
       0.4,
       0.4
      ]
-    }
+    },
+    "station": "mishkaki-grill"
    },
    "chaat-glass": {
     "line": "C8",
     "file": "assets/cook/items/v3/chaat/glass-side.webp",
-    "ready": false
+    "ready": false,
+    "station": "assemble"
    },
    "knife": {
     "line": "C9",
@@ -3797,17 +3806,20 @@
       0.5,
       0.95
      ]
-    }
+    },
+    "station": "daar"
    },
    "daar-bowl": {
     "line": "C10",
     "file": "assets/cook/items/v3/daar/bowl-t.webp",
-    "ready": false
+    "ready": false,
+    "station": "daar"
    },
    "daar-trivet": {
     "line": "C10",
     "file": "assets/cook/items/v3/daar/trivet-t.webp",
-    "ready": false
+    "ready": false,
+    "station": "daar"
    },
    "samosa-fold-1": {
     "line": "C11",
@@ -3815,7 +3827,8 @@
     "ready": false,
     "meta": {
      "baseline": "one baseline, constant height"
-    }
+    },
+    "station": "samosa"
    },
    "samosa-fold-2": {
     "line": "C11",
@@ -3823,7 +3836,8 @@
     "ready": false,
     "meta": {
      "baseline": "one baseline, constant height"
-    }
+    },
+    "station": "samosa"
    },
    "samosa-fold-3": {
     "line": "C11",
@@ -3831,7 +3845,8 @@
     "ready": false,
     "meta": {
      "baseline": "one baseline, constant height"
-    }
+    },
+    "station": "samosa"
    },
    "samosa-fold-4": {
     "line": "C11",
@@ -3839,7 +3854,8 @@
     "ready": false,
     "meta": {
      "baseline": "one baseline, constant height"
-    }
+    },
+    "station": "samosa"
    },
    "samosa-fold-5": {
     "line": "C11",
@@ -3847,7 +3863,8 @@
     "ready": false,
     "meta": {
      "baseline": "one baseline, constant height"
-    }
+    },
+    "station": "samosa"
    },
    "samosa-fold-6": {
     "line": "C11",
@@ -3855,38 +3872,46 @@
     "ready": false,
     "meta": {
      "baseline": "one baseline, constant height"
-    }
+    },
+    "station": "samosa"
    },
    "coin-jar-empty": {
     "line": "D1",
     "file": "assets/cook/ui/coin-jar-empty.webp",
-    "ready": false
+    "ready": false,
+    "station": "summary"
    },
    "coin-jar-quarter": {
     "line": "D1",
     "file": "assets/cook/ui/coin-jar-quarter.webp",
-    "ready": false
+    "ready": false,
+    "station": "summary"
    },
    "coin-jar-half": {
     "line": "D1",
     "file": "assets/cook/ui/coin-jar-half.webp",
-    "ready": false
+    "ready": false,
+    "station": "summary"
    },
    "coin-jar-three-quarter": {
     "line": "D1",
     "file": "assets/cook/ui/coin-jar-three-quarter.webp",
-    "ready": false
+    "ready": false,
+    "station": "summary"
    },
    "coin-jar-full": {
     "line": "D1",
     "file": "assets/cook/ui/coin-jar-full.webp",
-    "ready": false
+    "ready": false,
+    "station": "summary"
    },
    "coin-pile": {
     "line": "D2",
     "file": "assets/cook/ui/coin-pile.webp",
-    "ready": false
-   }
+    "ready": false,
+    "station": "summary"
+   },
+   "_station": "Decision 68 (modular loading, J11): each id names the station that loads it (St.artLoad in that station; 'service' is the kitchen view's background, swapped in CookScene.preload's existing bg-service entry only once ready; 'summary' is the day's coin jar), for Session E's per-station manifests"
   }
  },
  "days": [
