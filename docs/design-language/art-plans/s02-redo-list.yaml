@@ -1,0 +1,4 @@
+# s02 redo list (orchestrator's judging, 7 Oct). Run after the main block: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s02.run.yaml --redo docs/design-language/art-plans/s02-redo-list.yaml
+B1:
+  why: the sekelo plate shows green pepper on the skewers; green pepper is dropped (no Kutchi word; status.md working assumptions). Everything else in B1 passes.
+  fix: same sheet and layout; the sekelo skewers carry only meat, onion and tomato pieces, no green pepper.
