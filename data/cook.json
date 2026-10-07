@@ -3804,7 +3804,8 @@
     "meta": {
      "lipX": 0.057,
      "lipY": 0.98,
-     "_about": "the origin is the painted stream's tip (it lands over the glass)"
+     "_about": "the origin is the painted stream's tip (it lands over the glass); scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
+     "scale": 1.7
     },
     "station": "chai-tray",
     "size": [
@@ -3819,7 +3820,8 @@
     "meta": {
      "lipX": 0.057,
      "lipY": 0.98,
-     "_about": "the origin is the painted stream's tip"
+     "_about": "the origin is the painted stream's tip (it lands over the glass); scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
+     "scale": 1.7
     },
     "station": "chai-tray",
     "size": [

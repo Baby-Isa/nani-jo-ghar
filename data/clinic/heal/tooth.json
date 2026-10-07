@@ -175,7 +175,7 @@
    "ready": true,
    "box": [
     -462,
-    -314,
+    -267,
     1720,
     1147
    ],
@@ -183,7 +183,7 @@
     "girl"
    ],
    "has2x": true,
-   "_s02": "S02-E (M3, CLN-103): the mouth less open for the brushing (teeth a third of the mouth's height): its teeth (x 601-940, y 398-501 of the 1536 x 1024 source) on the brushing row (centre 400, 190, about 380 wide) at 1.12. Shown for the brush step only; the drill and fill keep M1."
+   "_s02": "S02-E (M3, CLN-103): the mouth less open for the brushing (teeth a third of the mouth's height): its upper teeth (y about 398-450 of the 1536 x 1024 source, x 601-940) on the brushing row (the brush head at 400, 190) at 1.12. Shown for the brush step only; the drill and fill keep M1."
   },
   "plaque": {
    "src": "assets/clinic/closeups/{kind}/mouth-brush-plaque.webp",

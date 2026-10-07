@@ -654,10 +654,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * standing on the tray's floor (the painted rim hides its base), its contact shadow falling right. False when the
    * dish has no picture yet (it keeps the drawing below).
    */
-  function servedPic(s, recipe, x, t, i) {
+  function servedPic(s, recipe, x, t, i, maxW = Infinity) {
     const a = Cook.Art.servedArt(recipe);
     if (!a || !s.textures.exists(a.key)) return false;
-    const h = a.drawH;
+    // several dishes share one tray: each fits its share of the tray's width (M5: things stay on the flat part)
+    const k = Math.min(1, maxW / ((a.drawH * a.w) / a.h));
+    const h = a.drawH * k;
     const w = (h * a.w) / a.h;
     const base = t.y + t.h * 0.18;
     s.track(s.add.ellipse(x + w * 0.1, base - h * 0.02, w * 0.9, Math.max(10, h * 0.14), 0x2a1a0a, 0.2).setDepth(Cook.D.occ + 1.9 + i * 0.01));
@@ -696,8 +698,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const px = x + (i - (n - 1) / 2) * Math.min(200, tray.w / Math.max(1, n));
       const y = tray.y - 4;
       if (d.recipe === "chai" && Cook.Art.servedArt("chai") && s.textures.exists(Cook.Art.servedKey("chai"))) {
-        for (let c = 0; c < d.count; c++) servedPic(s, servedRecipe(d, c), px + c * 56 - (d.count - 1) * 28, tray, c);
-      } else if (d.recipe !== "chai" && d.recipe !== "mishkaki" && servedPic(s, servedRecipe(d), px, tray, i));
+        for (let c = 0; c < d.count; c++) servedPic(s, servedRecipe(d, c), px + c * 56 - (d.count - 1) * 28, tray, c, (tray.w * 0.92) / Math.max(1, n));
+      } else if (d.recipe !== "chai" && d.recipe !== "mishkaki" && servedPic(s, servedRecipe(d), px, tray, i, (tray.w * 0.92) / Math.max(1, n)));
       else if (d.recipe === "chai") for (let c = 0; c < d.count; c++) s.prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "maani") {
         s.prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });
@@ -1608,6 +1610,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
     },
     lab: (key, guided = true, opts = {}) => runLab(key, guided, opts),
+    // (a test hook, S02-E: the service view with an order's dishes on the trays, e.g. a chai tray for three people:
+    // served({who: "nana", served: [{recipe: "chai", cups: [{who: "nani"}, {who: "nana", dudh: false}, {who: "ma"}]}]}))
+    async served({ who = "nana", served = [] } = {}) {
+      UI.closePanel();
+      await serviceView(who);
+      const others = [...new Set(served.flatMap((d) => (d.cups || []).map((c) => c.who)))].filter((w) => w && w !== who && w !== "nani" && Cook.CHARS[w] && !S().chars[w]);
+      const along = traySpots().map((t) => t[0]).filter((x) => x > Cook.CHARS[who].x + 100);
+      others.forEach((w, i) => S().addChar(w, { x: along[i] != null ? along[i] : 1460 }));
+      await Promise.all(served.map((d) => Cook.Art.loadServed(S(), d.recipe)));
+      drawServed({ served }, Cook.CHARS[who].x);
+    },
     // (a test hook, S02-E: the coin jar on its own: the day's summary for these cards [{who, dishes, coins}])
     jar(cards = []) {
       state.cards = cards;

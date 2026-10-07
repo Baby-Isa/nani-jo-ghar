@@ -734,7 +734,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const artId = black ? "chai-pan-pour-black" : "chai-pan-pour-milk";
       const tiltKey = St.hasArt(S, artId) ? St.artKey(artId) : "v2-pan-pour";
       const tm = (tiltKey !== "v2-pan-pour" && St.art(artId).meta) || pp;
-      const ps = pw / (tiltKey !== "v2-pan-pour" ? S.textures.get(tiltKey).getSourceImage().width : pp.w);
+      // (the art run's pictures carry their stream: meta.scale sizes the pan body to the pan on the hob)
+      const ps = (pw / (tiltKey !== "v2-pan-pour" ? S.textures.get(tiltKey).getSourceImage().width : pp.w)) * ((tiltKey !== "v2-pan-pour" && tm.scale) || 1);
       if (black) blackGlass(w);
       const tilt = S.track(S.add.image(pan.x, pan.y, tiltKey).setOrigin(tm.lipX, tm.lipY).setScale(ps * 0.9).setDepth(D.fx + 1).setAlpha(0));
       pan.img.setAlpha(0);

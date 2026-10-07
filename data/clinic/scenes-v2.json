@@ -32,7 +32,7 @@
     "_about": "CB2b: the patient sits on the bed's edge (the mattress top at y 0.53, the step stool's top at 0.66, the floor at 0.8), facing us; the stand-in doctor stands to the right, turned 3/4. fig = the figure's box (the patient DOM figure draws seated inside it, feet at its bottom).",
     "fig": { "x": 0.5, "bottom": 0.69, "h": 0.56 },
     "seat": 0.535,
-    "floor": 0.8,
+    "floor": 0.88,
     "side": { "_about": "A1 (5 Oct), the art plan section 3.1 W7: side-on, the patient sits on the bed's right-hand end in profile, facing right (the knee, ear and eye test B zooms); x = the seat anchor across, seat = the mattress top it sits on.", "x": 0.7, "seat": 0.535 },
     "doctor": { "x": 0.735, "y": 0.9, "h": 0.66 }
   },

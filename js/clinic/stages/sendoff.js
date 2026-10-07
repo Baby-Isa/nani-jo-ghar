@@ -45,6 +45,8 @@
       // S02-E (W12, CLN-98): at the goodbye she stands up off the bed and waves (heal-art.json patients[kind].stand.wave)
       const waveArt = onArt && artSpec.stand && artSpec.stand.wave ? Object.assign({}, artSpec.stand, { front: artSpec.stand.wave, heads: artSpec.stand.heads || artSpec.heads }) : null;
       let waveOn = () => {};
+      // (its picture loads now, so she never blinks out at the goodbye; useArt draws the @2x)
+      if (waveArt && global.Image) new global.Image().src = Kit.url(String(waveArt.front).replace(/\.webp$/, "@2x.webp"));
       const stage = S.room(screen, onArt ? "exam" : "door");
       stage.dataset.mode = plan.mode;
       screen.trayWrap.classList.add("hidden");

@@ -115,7 +115,9 @@ let pages = only ? PAGES.filter((p) => only.includes(p.id)) : PAGES;
 if (a.has("stray")) pages = PAGES.filter((p) => p.id === "cook:chai-tray").map((p) => Object.assign({}, p, { stray: "assets/cook/items/v3/samosa/board.webp" }));
 
 /* ---------------- the server (a cache like the live site's, so a warm load is warm) ---------------- */
+let served = 0;
 const srv = createServer((req, res) => {
+  served++;
   const p = decodeURIComponent(new URL(req.url, BASE).pathname);
   let f = normalize(join(ROOT, p));
   if (!f.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
@@ -130,15 +132,17 @@ await new Promise((r, j) => { srv.once("error", j); srv.listen(PORT, "127.0.0.1"
 const exe = existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined;
 const browser = await pw.chromium.launch({ executablePath: exe, args: ["--no-sandbox", "--disable-webgl", "--autoplay-policy=no-user-gesture-required"] });
 
-async function visit(pg, page) {
+async function visit(pg, page, warm = false) {
   const reqs = [];
   let phase = 0, bytes = 0;
   const onReq = (r) => { const u = r.url(); if (u.startsWith(BASE)) reqs.push({ u: decodeURIComponent(new URL(u).pathname.slice(1)), phase }); };
   const onRes = (r) => { bytes += +(r.headers()["content-length"] || 0); };
   page.on("request", onReq);
   page.on("response", onRes);
+  const s0 = served;
   const t0 = Date.now();
-  await page.goto(BASE + pg.url, { waitUntil: "commit" });
+  // (the warm pass is a new navigation, not a reload: a reload makes the browser revalidate what it has cached)
+  await page.goto(BASE + pg.url + (warm ? "&warm=1" : ""), { waitUntil: "commit" });
   await page.waitForFunction(pg.ready, null, { timeout: 45000, polling: 50 });
   const tOpen = Date.now() - t0;
   let tStation = null;
@@ -156,20 +160,21 @@ async function visit(pg, page) {
   if (pg.after) await pg.after(page, pg);
   page.off("request", onReq);
   page.off("response", onRes);
-  return { reqs, tOpen, tStation, bytes };
+  return { reqs, tOpen, tStation, bytes, served: served - s0 };
 }
 
 const results = [];
 async function checkPage(pg) {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 768 }, serviceWorkers: "block" });
-  await ctx.route(/^https?:\/\//, (route) => (route.request().url().startsWith(BASE) ? route.fallback() : route.abort()));
+  // nothing from outside the repo (web fonts); not when timing: intercepting requests turns the browser's cache off
+  if (!TIME) await ctx.route(/^https?:\/\//, (route) => (route.request().url().startsWith(BASE) ? route.fallback() : route.abort()));
   const page = await ctx.newPage();
   const errs = [];
   page.on("pageerror", (e) => errs.push(String(e.message || e)));
   try {
     if (TIME) {
       const cold = await visit(pg, page);
-      const warm = await visit(pg, page);
+      const warm = await visit(pg, page, true);
       results.push({ pg, cold, warm, errs });
     } else {
       const r = await visit(pg, page);
@@ -200,7 +205,7 @@ for (const pg of pages) {
   if (!r) continue;
   if (r.error) { fail++; console.log(`FAIL ${pg.id.padEnd(20)} did not load: ${r.error}`); continue; }
   if (TIME) {
-    const f = (v) => `${v.tOpen} ms${v.tStation != null ? ` + station ${v.tStation} ms` : ""}, ${v.reqs.length} requests, ${v.reqs.filter((q) => IMG.test(q.u)).length} pictures, ${(v.bytes / 1e6).toFixed(1)} MB`;
+    const f = (v) => `${v.tOpen} ms${v.tStation != null ? ` + station ${v.tStation} ms` : ""}, ${v.reqs.length} requests (${v.served} from the server), ${v.reqs.filter((q) => IMG.test(q.u)).length} pictures, ${(v.bytes / 1e6).toFixed(1)} MB`;
     console.log(`time ${pg.id.padEnd(20)} cold ${f(r.cold)} | warm ${f(r.warm)}`);
     continue;
   }

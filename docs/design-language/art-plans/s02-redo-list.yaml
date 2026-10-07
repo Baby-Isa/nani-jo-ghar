@@ -2,3 +2,9 @@
 B1:
   why: the sekelo plate shows green pepper on the skewers; green pepper is dropped (no Kutchi word; status.md working assumptions). Everything else in B1 passes.
   fix: same sheet and layout; the sekelo skewers carry only meat, onion and tomato pieces, no green pepper.
+C10:
+  why: the daar is drawn as round glossy yellow beads that read as sweets at the drawn size (the run log's FAIL, all three tries). S02-E cut it (assets/cook/items/v3/daar/daar-bowl-plain-t.webp) but holds it (data/cook.json art.s02 daar-bowl ready false); the trivet half is wired, the one split picture stays for the bowl.
+  fix: same steel bowl, top-down, filled with smooth loose yellow daar (a soft matte surface with a few lentil grains), no beads, no gloss; registered so the bowl's radius is about 0.8 of the trivet's.
+E2:
+  why: the two-colour plasters are split left/right across the strip, not lengthwise (the run log's FAIL). S02-E wires only the five one-colour plasters (data/clinic/sheets.json remap); the six two-colour ones keep the v2 art.
+  fix: same sheet and order; each two-colour plaster split along its long axis (top half one colour, bottom half the other), the pad in both.
