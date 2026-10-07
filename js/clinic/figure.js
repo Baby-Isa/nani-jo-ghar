@@ -518,8 +518,16 @@
           host.appendChild(a);
         }
         const at = fig.art && fig.artAnchor(part, side);
-        a.style.left = at ? `${at.x * 100}%` : "50%";
-        a.style.top = at ? `${at.y * 100}%` : "40%";
+        // the anchor covers the part's area (her whole head for "head"), so a bubble "above the speaker" clears it
+        const A = fig.art;
+        const rh = at ? at.r || { head: 0.11, eyes: 0.05, mouth: 0.035 }[at.q] || 0.04 : 0;
+        const rw = A && A.V && A.V.w ? (rh * A.V.h) / A.V.w : rh;
+        Object.assign(a.style, {
+          left: at ? `${(at.x - rw) * 100}%` : "50%",
+          top: at ? `${(at.y - rh) * 100}%` : "40%",
+          width: `${rw * 200}%`,
+          height: `${rh * 200}%`,
+        });
         return a;
       },
       /** A part's place on the art, in client px ({x, y, r}), from the measured anchors; null without art or anchor. */

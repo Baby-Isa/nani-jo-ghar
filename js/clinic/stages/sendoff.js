@@ -79,7 +79,7 @@
       fig.swirl(null, null, false);
       fig.react("idle", 0);
       // T28, CLN-98: her lines in her bubble at her face, his at his
-      Kit.Voice.speakers.patient = () => (onArt && fig.anchorEl ? fig.anchorEl("mouth") : fig.el.querySelector(".fig-head") || fig.el);
+      Kit.Voice.speakers.patient = () => (onArt && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
       Kit.Voice.speakers.doctor = () => docEl;
       // the doctor is on screen: his box holds only the child's next step, [Pick how she feels] at L1 (T28)
       screen.setNani(plan.level <= 1 ? S.line(env, "pick-feel") : null);

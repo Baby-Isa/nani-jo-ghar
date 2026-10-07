@@ -557,3 +557,16 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-thought.beside { transform-origin: 100% 0%; }
 .cl-thought.beside .cl-thought-dot.d1 { left: auto; bottom: auto; right: -14px; top: 18px; }
 .cl-thought.beside .cl-thought-dot.d2 { left: auto; bottom: auto; right: -28px; top: 34px; }
+/* CLN-93 (D1, D4): smaller dots centred on the parts; the one being asked about lit (one colour, never green
+   before her answer); a tried one grey and still; the found one gold for a beat */
+.cl-probe { width: clamp(32px, 3.4vw, 44px); height: clamp(32px, 3.4vw, 44px); border-width: 3px; }
+.cl-probe::after { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: rgba(226, 163, 58, .95); }
+.cl-probe.asking { animation: none; border-color: #c9962e; background: rgba(255, 226, 150, .55); box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
+.cl-probe.tried { animation: none; border-color: rgba(120, 110, 100, .55); background: rgba(200, 195, 188, .45); cursor: default; }
+.cl-probe.tried::after { background: rgba(120, 110, 100, .6); }
+.cl-probe.found { animation: none; border-color: #c9962e; background: rgba(242, 193, 78, .6); }
+/* D3 (CLN-94): the find is her sore face, no icon: just a soft ring where she was looked at */
+.cl-find { width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(201, 150, 46, .8); font-size: 0; animation: cl-pop .2s; }
+.cl-find.sore { font-size: 0; filter: none; border-color: #c9962e; box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
+/* T30: the point her speech bubbles come from (her mouth on the art) */
+.cl-fig .fig-anchor { position: absolute; min-width: 2px; min-height: 2px; pointer-events: none; }
