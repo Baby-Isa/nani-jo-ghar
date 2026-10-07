@@ -95,6 +95,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4619 };
   // (R8) the speed dial's four flat cream icons: stopped, slow (tortoise), fast (hare), too fast (a splash)
   const DIAL_ICONS = ["stopped", "slow", "fast", "spill"];
+  // DAAR-13: the margin-safe knife's edge, tip to heel, as fractions of tool-knife-t.png (345 x 296)
+  const KNIFE_BLADE = [0.07, 0.08, 0.5, 0.64];
+  // DAAR-11 (D6): the ladle's handle leaves its bowl about 57 degrees above the right (ladle-v2.webp); turned so it
+  // always points out to the rim, hooked over it, as the ladle goes round
+  const LADLE_HANDLE = (-57 * Math.PI) / 180;
   /*
    * Where the chopped pieces wait (D4, Q4: "in bowls, or on the counter at the top right: try it and judge").
    * "counter": one small pile per piece, a row per vegetable, straight on the counter (chosen: it can be
@@ -150,7 +155,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the chop's own begin shows it (data.onboard.daar)
     const vegAll = [...new Set(kinds.concat(no, pool))].filter((id) => VEG[id]);
     const art = [
-      ["dv2-knife", IT + "tool-knife-t.webp"],
+      ["dv2-knife", IT + "tool-knife-t.png"], // DAAR-13: the margin-safe cut (the webp touched its canvas edge: the tip was clipped)
       ["dv3-trivet", V3 + "daar-bowl-trivet.webp"],
       ["dv3-ladle", V3 + "ladle-v2.webp"],
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain.webp"],
@@ -162,69 +167,86 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
       .concat(DIAL_ICONS.map((n) => [`dv3-dial-${n}`, `${V3}dial-${n}.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
-      .concat(Cook.Kit ? Cook.Kit.art(1, []) : []);
+      .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
+      .concat(St.artLoad(["knife", "daar-bowl", "daar-trivet"])); // S02-B: the art run's knife and split bowl/trivet, once they land
     await Promise.race([St.load(S, art), Cook.wait(12000)]);
 
-    let first = null; // the first try's verdict (only it counts)
-    let result = null;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      /* ---------- 1: chop (nothing to chop: an order can ask for no vegetables at all, then it's straight to the pot) ---------- */
-      let chopped = { got: {}, wrong: null, rows: [] };
-      if (kinds.length) {
+    /*
+     * Decision 51 (CK-23, DAAR-09): a mistake redoes only that step, never the whole game. A wrong chop count chops
+     * again only the wrong vegetables (the right ones stay chopped and ticked); a wrong tadka order takes the seeds
+     * out and does the tadka again; a wrong number of stirs stirs again. The second try has help (the next thing
+     * glows); the third wrong try shows the right way and moves on. Only the first try is scored.
+     */
+    const redo = St.redo(ctx);
+    const steps = St.steps(ctx);
+    /* ---------- 1: chop (nothing to chop: an order can ask for no vegetables at all, then it's straight to the pot) ---------- */
+    const chopped = { got: {}, wrong: null, rows: [] };
+    if (kinds.length) {
+      let need = Object.assign({}, want);
+      for (let tries = 0; ; tries++) {
         await St.begin(S, ctx, "daar", "marble"); // the first time, the ghost finger (data.onboard.daar): two swipes
         if (ctx.nextStep) ctx.nextStep("Chop");
-        if (phases.chop && !attempt) UI.gist(phases.chop);
+        if (phases.chop && !tries) UI.gist(phases.chop);
         const cz = Mech.zone(S, ctx, { id: "chop", level });
-        const nani = naniCard(want, no, level);
-        chopped = await chop(cz, { want, kinds, no, pool, level, retry: attempt > 0, nani, side });
+        const nani = naniCard(want, no, level, kinds.filter((id) => !(id in need)));
+        const c = await chop(cz, { want: need, kinds: Object.keys(need), no, pool, level, retry: tries > 0, nani, side });
         nani.close();
         cz.close();
         St.end();
-      }
-
-      /* ---------- 2: tadka and stir, then serve and taste ---------- */
-      await St.begin(S, ctx, "daar", "marble");
-      if (Cook.Coach) Cook.Coach.stop(false);
-      // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
-      if (!attempt) St.coach(ctx, "daar-cook");
-      if (ctx.nextStep) ctx.nextStep("tadka");
-      UI.mission.reveal("tadka");
-      // 29 Sept (D9, Zafar): the chopped things still have to go in, so their rows go back to "to do"
-      // here and tick again as each pile goes into the pot (cook())
-      const Lc = ladderOf(ctx);
-      if (Lc) {
-        Cook.Order.rows(Lc, { all: true }).forEach((r) => {
-          if (r.head || r.no || !r.ids.some((id) => id in want)) return;
-          r.done = false;
-          r.got = 0;
+        Object.keys(need).forEach((id) => {
+          if ((c.cut[id] || 0) === need[id]) {
+            chopped.got[id] = need[id];
+            delete need[id];
+          }
         });
-        UI.mission.refresh();
+        if (!c.wrong) break;
+        chopped.wrong = chopped.wrong || c.wrong;
+        const r = redo.wrong("daar:chop");
+        if (r.action === "show") {
+          // the third wrong try: the right count is put out for you (the card's rows tick), and on to the pot
+          Object.keys(need).forEach((id) => (chopped.got[id] = need[id]));
+          if (ctx.closeItem) ctx.closeItem(Object.keys(need));
+          need = {};
+          break;
+        }
+        // only the wrong vegetables come back: their rows open again; Nani says just those again
+        UI.mission.reopen(Object.keys(need), ctx.dishAt || 0);
+        if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
       }
-      // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint
-      const peek = K.ladder === "closed" && UI.mission.closeCards;
-      if (peek) UI.mission.closeCards(true, { peek: true });
-      if (phases.cook && !attempt) UI.gist(phases.cook);
-      const kz = Mech.zone(S, ctx, { id: "cook", level });
-      const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: attempt > 0, side });
-      if (peek) UI.mission.closeCards(false);
-      const why = chopped.wrong || cooked.wrong;
-      if (!first) first = { ok: !why, why };
-      const ok = await serve(kz, { who, pot: cooked.pot, ok: !why, last: attempt >= 2 });
-      kz.close();
-      St.end();
-      result = { chopped: chopped.got, tadka: cooked.order, stirred: cooked.stirred };
-      if (ok) break;
-      // not quite: the card starts again (its misses stay for the review)
-      const L = ladderOf(ctx);
-      if (L) {
-        Cook.Order.rows(L, { all: true }).forEach((r) => {
-          if (r.head) return;
-          r.done = false;
-          r.got = 0;
-        });
-        UI.mission.refresh();
-      }
+      chopped.rows = kinds.filter((id) => chopped.got[id]);
     }
+
+    /* ---------- 2: tadka and stir, then serve and taste ---------- */
+    await St.begin(S, ctx, "daar", "marble");
+    if (Cook.Coach) Cook.Coach.stop(false);
+    // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
+    St.coach(ctx, "daar-cook");
+    if (ctx.nextStep) ctx.nextStep("tadka");
+    UI.mission.reveal("tadka");
+    // 29 Sept (D9, Zafar): the chopped things still have to go in, so their rows go back to "to do"
+    // here and tick again as each pile goes into the pot (cook())
+    const Lc = ladderOf(ctx);
+    if (Lc) {
+      Cook.Order.rows(Lc, { all: true }).forEach((r) => {
+        if (r.head || r.no || !r.ids.some((id) => id in want)) return;
+        r.done = false;
+        r.got = 0;
+      });
+      UI.mission.refresh();
+    }
+    // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint
+    const peek = K.ladder === "closed" && UI.mission.closeCards;
+    if (peek) UI.mission.closeCards(true, { peek: true });
+    if (phases.cook) UI.gist(phases.cook);
+    const kz = Mech.zone(S, ctx, { id: "cook", level });
+    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps });
+    if (peek) UI.mission.closeCards(false);
+    steps.done();
+    const why = chopped.wrong || cooked.wrong;
+    await serve(kz, { who, pot: cooked.pot, ok: true, last: true, firstOk: !why });
+    kz.close();
+    St.end();
+    const result = { chopped: chopped.got, tadka: cooked.order, stirred: cooked.stirred };
     ctx.result.daar = result;
     ctx.result.chopped = result && result.chopped;
     if (ctx.closeItem) ctx.closeItem(["cook-daal"], { all: true });
@@ -232,19 +254,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
-  function naniCard(want, no, level = 1) {
+  function naniCard(want, no, level = 1, doneIds = []) {
     const M = UI.mission;
     // 30 Sept (Zafar, Q7): from level 3 the chop card is words only ("dungri"); how many is heard, as on the order card
     const parts = (id) => Lang.countParts(want[id], id);
     // (from level 3 the noun keeps the form its count gave it: "trae dungri" is written "dungri")
-    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(level >= 3 ? Lang.phraseUncounted(parts(id)) : Lang.phrase(parts(id))), done: false }));
+    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(level >= 3 ? Lang.phraseUncounted(parts(id)) : Lang.phrase(parts(id))), done: doneIds.includes(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
     no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))))), done: false, no: true }));
     // "Chop these": the engine's line (to record with Mum: a grey-italic placeholder until then)
     const chopHead = Lang.line("chop-these");
+    // T12 (R4): one Nani card. Her step line ("Nindha nindha kap!") is the card's top strip, and her box keeps only
+    // its tools while she's the asker (no second face)
+    const stepLine = St.guideLine("daar:chop");
     const data = () => ({
       person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
+      strip: { html: stepLine.ok === false ? Lang.plain(stepLine) : Lang.html(stepLine), rec: stepLine.ok === false },
       headline: { html: Lang.html(chopHead), rec: !chopHead.ok },
       // a "don't" row is the shared card's no-row style (dashed, the no-sign), never ticked here
       items: rows.map((r) => (r.no ? { label: null, parts: [{ label: r.label, done: false, no: true, key: r }] } : { label: r.label, count: 2, parts: [], done: r.done, key: r })),
@@ -259,8 +285,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const opts = { say: line ? () => Lang.speak(line) : null };
     M.addCard("daar-chop", data(), opts);
     M.closeCards(true);
+    if (UI.guideStrip) UI.guideStrip(true);
     return {
       rows,
+      // DAAR-13 (rule E11): at level 1 a row lights the moment its count is reached
+      tick(id) {
+        const r = rows.find((x) => x.id === id && !x.no);
+        if (!r || r.done) return;
+        r.done = true;
+        M.addCard("daar-chop", data(), opts);
+      },
       // the rows she asked for tick; her "don't" row stays neutral (nothing was added)
       tickAll() {
         rows.forEach((r) => !r.no && (r.done = true));
@@ -269,6 +303,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       close() {
         M.removeCard("daar-chop");
         M.closeCards(false);
+        if (UI.guideStrip) UI.guideStrip(false);
       },
     };
   }
@@ -405,7 +440,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
     Cook.daarPhase = "chop"; // (for build/shoot_daar_v3.py: which state is on screen)
     // the chop mechanic itself (its levels, decoys and ring); Nani says what to chop (the number always said)
-    const cut = (await Mech.run("chop", z, { targets: want, pool, no, knifeKey: "dv2-knife", onSlice, tally: false, timer: { x: 130, y: 130 } })) || {};
+    // DAAR-13 (D10): the margin-safe knife (the art run's when it lands), whose blade cuts too
+    const knifeKey = St.hasArt(S, "knife") ? St.artKey("knife") : "dv2-knife";
+    const blade = (St.hasArt(S, "knife") && (St.art("knife").meta || {}).blade) || KNIFE_BLADE;
+    const cut = (await Mech.run("chop", z, { targets: want, pool, no, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), tally: false, timer: { x: 130, y: 130 } })) || {};
     // graded now: each vegetable, how many (a sliced decoy falls away: it never reaches the pot)
     let wrong = null;
     kinds.forEach((id) => {
@@ -423,11 +461,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await Cook.wait(700);
     const got = {};
     kinds.forEach((id) => (cut[id] || 0) > 0 && (got[id] = cut[id]));
-    return { got, wrong, rows: rows.filter((id) => got[id]) };
+    return { got, cut, wrong, rows: rows.filter((id) => got[id]) };
   }
 
   /* ---------- 2: tadka and stir in the v3 pot on the kit hob (one burner, one pot) ---------- */
-  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side }) {
+  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps }) {
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
@@ -512,7 +550,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // 1. the knob: the oil is hot at once, and the sizzle says so (S16: no heating ring)
     burner.knob.baseScale = 1;
     S.tweens.add({ targets: burner.knob, scale: 1.1, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+    // T13: Chulo bar! (the step line; at level 1 said as it opens, from level 2 after a pause)
+    steps.to("daar:fire");
     await tapOnce(z, S, burner.knobHit, "knob", { glow: z.guided });
+    steps.done();
     S.tweens.killTweensOf(burner.knob);
     burner.knob.setScale(1);
     burner.set("high");
@@ -526,12 +567,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // 2. the tadka: the spices in the order Nani said (the card shows it; a wrong one goes in too, graded)
     Object.values(items).forEach((o) => S.tweens.add({ targets: o, alpha: 1, duration: 250 }));
     const hide = St.hideKnown(ctx);
-    if (flat.length && !retry) await Promise.race([z.say(Lang.list(tadka, { seq: true }), { hide }).catch(() => {}), Cook.wait(7000)]);
+    // T13: "Pela jeeru. Ne poi rai." is the tadka step's line: at level 1 the step says it; from level 2 she says the
+    // order once at the start (the counting rule) and the line comes back after a pause
+    const tadkaLine = flat.length ? Lang.list(tadka, { seq: true }) : null;
+    const tadkaStep = (again) => {
+      if (!tadkaLine) return null;
+      if (Cook.roundLevel(ctx) <= 1) return steps.to("daar:tadka", { line: tadkaLine, hide, force: again });
+      // (the step opens once she's said it: opening it clears the box)
+      return Promise.race([z.say(tadkaLine, { hide }).catch(() => {}), Cook.wait(7000)]).then(() => steps.to("daar:tadka", { line: tadkaLine, hide, quiet: true, force: again }));
+    };
+    await tadkaStep(false);
     const order = [];
     let wrong = null;
-    const series = [];
+    let series = [];
     tadka.forEach((e) => series.push([].concat(e)));
     let si = 0;
+    let tadkaWrong = null;
+    let help = false;
     // a pinch from the jar: the jar tips over the pot, the seeds land in the oil (the picture changes: D3)
     const spiceDrop = async (id) => {
       const obj = items[id];
@@ -549,7 +601,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     while (si < series.length) {
       const group = series[si];
       const next = group[0];
-      const r = await St.freePick(z, { items, next, doneOk: false });
+      const r = await St.freePick(z, { items, next, doneOk: false, help });
+      steps.poke();
       const id = r.id;
       order.push(id);
       if (group.includes(id)) {
@@ -561,7 +614,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const expected = next;
         const why = flat.includes(id) ? `tadka ${id} before ${expected}` : `put ${id} in the tadka`;
         wrong = wrong || why;
-        if (!retry) {
+        tadkaWrong = tadkaWrong || why;
+        if (!retry && !help) {
           z.listen(false, why);
           if (flat.includes(expected)) UI.mission.missItem(expected, ctx.dishAt || 0);
           Cook.markMiss(expected);
@@ -572,7 +626,36 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await drop;
       z.progress({ added: id });
       if (!group.length) si++;
+      if (si < series.length || !tadkaWrong) continue;
+      // decision 51 (DAAR-09): the tadka went in out of order: the seeds come out and it's done again, with help;
+      // the third wrong try shows the right way (each spice glows and goes in, in order)
+      const rd = redo.wrong("daar:tadka");
+      tadkaWrong = null;
+      await setPot("oil", 360);
+      UI.mission.reopen(flat, ctx.dishAt || 0);
+      series = [];
+      tadka.forEach((e) => series.push([].concat(e)));
+      si = 0;
+      if (rd.action === "show") {
+        for (const g of series) {
+          for (const sid of g) {
+            if (!items[sid]) continue;
+            S.glow(items[sid], true, { bounce: true });
+            await Cook.wait(380);
+            S.glow(items[sid], false);
+            await spiceDrop(sid);
+            order.push(sid);
+            if (ctx.tickItem) ctx.tickItem(sid);
+            else UI.mission.tickItem(sid, ctx.dishAt || 0);
+          }
+        }
+        break;
+      }
+      if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
+      help = true;
+      await tadkaStep(true);
     }
+    steps.done();
     if (!wrong && !retry) z.listen(true, "tadka");
     Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
 
@@ -594,6 +677,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
     Cook.daarPhase = "piles";
     let left = Object.keys(hits);
+    if (left.length) steps.to("daar:veg"); // T13: [Put the vegetables in]
     while (left.length) {
       const pick = {};
       left.forEach((id) => (pick[id] = hits[id]));
@@ -624,11 +708,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Cook.wait(200);
     }
     Cook.daarPhase = "veg-in";
-    // the daar: its bowl on the trivet tips into the pot; the tadka comes up on top
+    // the daar: its bowl on the trivet tips into the pot; the tadka comes up on top. DAAR-10 (D4): the TRIVET
+    // STAYS on the counter: only the bowl lifts (the art run's split pictures, else the one picture split here)
+    steps.to("daar:daar"); // T13: [Put the daar in]
+    const split = splitTrivet(S, dBowl, plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET);
     S.tweens.add({ targets: dBowl, alpha: 1, duration: 200 });
     S.tweens.add({ targets: dBowl, scale: dBowl.scale * 1.05, duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     await tapOnce(z, S, dBowl, "daar", { glow: z.guided });
+    steps.done();
     S.tweens.killTweensOf(dBowl);
+    split.lift();
     const home = { x: dBowl.x, y: dBowl.y, s: dBowl.scale };
     await Cook.tween(S, { targets: dBowl, x: cx + bodyR * 1.05, y: cy - bodyR * 0.7, angle: -35, scale: home.s * 0.9, duration: 420, ease: "Quad.easeInOut" });
     const pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
@@ -642,16 +731,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (sizzle && sizzle.stop) sizzle.stop();
     if (ctx.nextStep) ctx.nextStep("Stir");
     if (K.stirLine && !retry) UI.gist(K.stirLine);
+    // T14 (DAAR-12): the stir row (the laps and the speed) shows on the card now
+    UI.mission.reveal("stir");
 
-    // 4. stir: drag the ladle round (or tap the pot: one turn); the speed dial, the laps as the Kutchi word
-    const st = await stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry });
-    const stirred = st.count;
-    if (stirred !== laps) wrong = wrong || `stirred ${stirred} times, they asked for ${laps}`;
-    if (!retry) {
-      z.listen(stirred === laps, `stirred ${stirred} times, they asked for ${laps}`);
-      if (!ctx.guided && laps <= 5) (stirred === laps ? Cook.markRight : Cook.markMiss)(Cook.numId(laps));
-      if (st.speedOk != null) z.listen(st.speedOk, `stir speed ${st.asked}${st.corrected ? " (Nani had to say it)" : ""}`);
+    // 4. stir: drag the ladle round (or tap the pot: one turn); the speed dial, the laps as the Kutchi word.
+    // Decision 51: the wrong number of stirs is stirred again (the laps start at nothing), with help; the third
+    // wrong try is counted right for you and moves on.
+    let stirred = 0;
+    for (let t = 0; ; t++) {
+      const st = await stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry: retry || t > 0, steps });
+      stirred = st.count;
+      if (!t && !retry) {
+        z.listen(stirred === laps, `stirred ${stirred} times, they asked for ${laps}`);
+        if (!ctx.guided && laps <= 5) (stirred === laps ? Cook.markRight : Cook.markMiss)(Cook.numId(laps));
+        if (st.speedOk != null) z.listen(st.speedOk, `stir speed ${st.asked}${st.corrected ? " (Nani had to say it)" : ""}`);
+      }
+      if (stirred === laps) break;
+      wrong = wrong || `stirred ${stirred} times, they asked for ${laps}`;
+      if (redo.wrong("daar:stir").action === "show") break;
+      if (Cook.roundLevel(ctx) <= 1) Cook.oops(ctx);
     }
+    steps.done();
     burner.set("off");
     return { order, wrong, stirred, pot: { img: pot, cx, cy, bodyR } };
   }
@@ -663,7 +763,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * gold needle; and under it the laps, as the Kutchi number word on a white chip (no digits, no pips).
    * x, y: its centre (design px). Returns {set(spd), laps(n), close()}.
    */
-  function speedDial(z, S, { x, y, bands, max }) {
+  function speedDial(z, S, { x, y, bands, max, asked = null }) {
     const W = 340;
     const H = 330;
     const R = 104;
@@ -690,10 +790,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     g.strokeRoundedRect(-W / 2, -H / 2, W, H, 28);
     const [e1, e2, e3] = bands;
     const toA = (v) => Math.PI + Cook.clamp(v / max, 0, 1) * Math.PI;
+    // DAAR-12 (D13): the asked speed is green, the other yellow, spilling red (nothing asked: slow green, quick yellow)
+    const GREEN = 0x8fb087;
+    const YELLOW = 0xe0b04a;
     const BANDS = [
       [0, e1, 0x8a8078],
-      [e1, e2, 0x8fb087],
-      [e2, e3, 0xe0b04a],
+      [e1, e2, asked === "quick" ? YELLOW : GREEN],
+      [e2, e3, asked === "quick" ? GREEN : YELLOW],
       [e3, max, 0xd0604a],
     ];
     BANDS.forEach(([a, b, col]) => {
@@ -831,7 +934,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * pictured contents turn with the ladle (D10: the tadka picture, clipped inside the rim; the swirl picture
    * comes up as you go faster). speed: null | "slow" | "quick" (said from level 2, judged by the ear only).
    */
-  function stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry }) {
+  function stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry, steps }) {
     return new Promise((resolve) => {
       const ctx = z.ctx;
       const hide = St.hideKnown(ctx);
@@ -857,7 +960,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ladle.setScale((inR * 0.3) / (LADLE.r * LADLE.w));
       const ringG = S.track(S.add.circle(cx + trackR, cy, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
       S.tweens.add({ targets: ringG, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
-      const dial = speedDial(z, S, { x: 1260, y: 400, bands, max: k.dialMax || 3 });
+      const dial = speedDial(z, S, { x: 1260, y: 400, bands, max: k.dialMax || 3, asked });
       let count = 0;
       let ang = 0; // the ladle's angle
       let rot = 0; // the contents' turn
@@ -908,6 +1011,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "click", selector: "#done-btn" });
       const place = () => {
         ladle.setPosition(cx + Math.cos(ang) * trackR, cy + Math.sin(ang) * trackR);
+        ladle.setRotation(ang - LADLE_HANDLE); // DAAR-11: the handle points out over the rim, wherever the ladle is
         ringG.setPosition(ladle.x, ladle.y);
         still.setRotation(rot);
         swirl.setRotation(rot);
@@ -1029,7 +1133,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       place();
       // Nani says how many ("Trae!"), and from level 2 how fast ("Trae. Dhire dhire.")
       const said = asked && k.speedWords ? Lang.join([Lang.numLine(laps), Lang.line(k.speedWords[asked])]) : Lang.numLine(laps);
-      if (!retry) z.say(said, { hide }).catch(() => {});
+      // T13: the stir step's line is "Firai!" with the laps and the speed ("Firai! Trae! Aste thi.")
+      const stepLine = Lang.join([St.guideLine("daar:stir"), said]);
+      if (!steps) {
+        if (!retry) z.say(said, { hide }).catch(() => {});
+      } else if (Cook.roundLevel(ctx) <= 1) steps.to("daar:stir", { line: stepLine, hide, force: retry });
+      else {
+        z.say(said, { hide })
+          .catch(() => {})
+          .then(() => !over && steps.to("daar:stir", { line: stepLine, hide, quiet: true, force: retry }));
+      }
       Cook.markSeen(Cook.numId(laps));
       post();
       UI.done({ glow: false }).then(() => {
@@ -1049,6 +1162,90 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         resolve({ count, asked, speedOk, corrected, spills });
       });
     });
+  }
+
+  /*
+   * DAAR-10 (D4): the trivet stays on the counter; only the bowl tips into the pot. With the art run's two pictures
+   * (art.s02 "daar-bowl", "daar-trivet") they're used as they are; until then the one picture is split here: the
+   * bowl (everything inside its rim) lifts away, and the trivet left behind has its middle woven in, from its own ring.
+   * Returns {lift()}: call it as the bowl starts to move (the trivet appears under it).
+   */
+  const BOWL_IN = 0.39; // the steel bowl's rim, as a fraction of the picture's width from its body's centre
+  function splitTrivet(S, bowlImg, meta) {
+    const key = bowlImg.texture.key;
+    const tKey = `${key}-trivet-only`;
+    const bKey = `${key}-bowl-only`;
+    const art = St.hasArt(S, "daar-bowl") && St.hasArt(S, "daar-trivet");
+    try {
+      if (!art && !S.textures.exists(tKey)) {
+        const src = S.textures.get(key).getSourceImage();
+        const w = src.width;
+        const h = src.height;
+        const cx = meta.cx * w;
+        const cy = meta.cy * h;
+        const rIn = BOWL_IN * w;
+        const ring = rIn + (meta.r * w - rIn) * 0.45; // the middle of the woven ring
+        const mk = () => {
+          const c = document.createElement("canvas");
+          c.width = w;
+          c.height = h;
+          return c;
+        };
+        const tc = mk();
+        const tg = tc.getContext("2d", { willReadFrequently: true });
+        tg.drawImage(src, 0, 0);
+        const d = tg.getImageData(0, 0, w, h);
+        const px = d.data;
+        const orig = new Uint8ClampedArray(px);
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const dx = x - cx;
+            const dy = y - cy;
+            const rr = Math.hypot(dx, dy);
+            if (rr > rIn + 2) continue;
+            // the weave carries on inward: the ring's own pixel at this angle, a little darker towards the middle
+            const a = Math.atan2(dy, dx);
+            const sr = ring - ((rIn - rr) % (ring - rIn > 6 ? (ring - rIn) * 0.9 : 6));
+            const sx = Math.round(cx + Math.cos(a) * sr);
+            const sy2 = Math.round(cy + Math.sin(a) * sr);
+            const si = (Math.max(0, Math.min(h - 1, sy2)) * w + Math.max(0, Math.min(w - 1, sx))) * 4;
+            const di = (y * w + x) * 4;
+            const k = 0.9;
+            px[di] = orig[si] * k;
+            px[di + 1] = orig[si + 1] * k;
+            px[di + 2] = orig[si + 2] * k;
+            px[di + 3] = 255;
+          }
+        }
+        tg.putImageData(d, 0, 0);
+        S.textures.addCanvas(tKey, tc);
+        const bc = mk();
+        const bg = bc.getContext("2d");
+        bg.drawImage(src, 0, 0);
+        bg.globalCompositeOperation = "destination-in";
+        bg.beginPath();
+        bg.arc(cx, cy, rIn + 2, 0, Math.PI * 2);
+        bg.fill();
+        S.textures.addCanvas(bKey, bc);
+      }
+    } catch (e) {
+      return { lift() {} }; // a tainted or missing picture: it tips in whole, as before
+    }
+    return {
+      lift() {
+        const tex = art ? St.artKey("daar-trivet") : tKey;
+        if (!S.textures.exists(tex)) return;
+        const t = S.track(S.add.image(bowlImg.x, bowlImg.y, tex).setOrigin(bowlImg.originX, bowlImg.originY).setScale(bowlImg.scaleX).setDepth(bowlImg.depth - 0.01));
+        if (art) t.setDisplaySize(bowlImg.displayWidth, bowlImg.displayHeight);
+        if (bowlImg.shadow) bowlImg.shadow.setVisible(false);
+        t.shadow = S.contactShadow(t);
+        const bt = art ? St.artKey("daar-bowl") : bKey;
+        if (S.textures.exists(bt)) {
+          const [dw, dh] = [bowlImg.displayWidth, bowlImg.displayHeight];
+          bowlImg.setTexture(bt).setDisplaySize(dw, dh);
+        }
+      },
+    };
   }
 
   /* ---------- serve and taste (§14a): the bowl on its trivet (D5), their face over it ---------- */

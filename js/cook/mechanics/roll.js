@@ -147,7 +147,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       drawGuide();
       let pin;
       if (opts.pinTex) {
-        pin = S.track(S.add.image(cx, cy + z.L(60), opts.pinTex).setDepth(D.item + 2).setAlpha(0));
+        // MAA-12 (M7): the pin rolls ABOVE the size ring (the ring is D.fx)
+        pin = S.track(S.add.image(cx, cy + z.L(60), opts.pinTex).setDepth(D.fx + 0.5).setAlpha(0));
         pin.setScale(z.L(opts.pinW || 520) / S.texSize(opts.pinTex).w);
         S.tweens.add({ targets: pin, alpha: 1, duration: 200 });
       } else pin = S.hand("pin", { x: cx, y: cy + z.L(60), k: z.k });

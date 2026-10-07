@@ -200,6 +200,7 @@
  },
  "art": {
   "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
+  "cloth-dab": {"file": "assets/clinic/items-v2/cloth-dab.webp", "on": false, "why": "S1, CLN-99: the cloth in the hand while dabbing (art run s02)"},
   "forearm-graze": {
    "file": "assets/clinic/closeups/child/forearm.webp",
    "on": true,

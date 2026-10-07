@@ -13276,6 +13276,23 @@
    }
   },
   {
+   "id": "phrase.fill-the-next-one",
+   "pos": "Phrase",
+   "gloss": "Fill the next one",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.samosa:next: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.samosa:next"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.fix-it",
    "pos": "Phrase",
    "gloss": "fix it",
@@ -13508,7 +13525,23 @@
     "data/cook.json guide.grill: Nani's guide box says what to do now; no Kutchi recorded yet"
    ],
    "aliases": [
-    "cook.guide.grill",
+    "cook.guide.grill"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.grill-them",
+   "pos": "Phrase",
+   "gloss": "Grill them",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.mishkaki-grill:grill: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
     "cook.guide.mishkaki-grill:grill"
    ],
    "ask": {
@@ -16867,9 +16900,9 @@
    }
   },
   {
-   "id": "phrase.pour-each-pan-into-their-glass",
+   "id": "phrase.pour-it-into-their-glass",
    "pos": "Phrase",
-   "gloss": "Pour each pan into their glass",
+   "gloss": "Pour it into their glass",
    "status": "to-record",
    "src": [
     "data/cook.json guide.chai-tray:pour: Nani's guide box says what to do now; no Kutchi recorded yet"
@@ -16927,6 +16960,24 @@
    ],
    "aliases": [
     "cook.guide.count"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.put-in-the-next-thing",
+   "pos": "Phrase",
+   "gloss": "Put in the next thing",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.chai-tray:next: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.chai-tray:next",
+    "cook.guide.assemble:next"
    ],
    "ask": {
     "word": [
@@ -17096,6 +17147,23 @@
    ]
   },
   {
+   "id": "phrase.put-it-on-the-tawa",
+   "pos": "Phrase",
+   "gloss": "Put it on the tawa",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.maani-line:tawa: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.maani-line:tawa"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.put-the-chai-in-the-pan",
    "pos": "Phrase",
    "gloss": "Put the chai in the pan",
@@ -17105,6 +17173,40 @@
    ],
    "aliases": [
     "cook.guide.chai-tray:tea"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.put-the-daar-in",
+   "pos": "Phrase",
+   "gloss": "Put the daar in",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.daar:daar: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.daar:daar"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.put-the-vegetables-in",
+   "pos": "Phrase",
+   "gloss": "Put the vegetables in",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.daar:veg: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.daar:veg"
    ],
    "ask": {
     "word": [
@@ -17148,6 +17250,23 @@
    "src": [
     "grammar-notes §43"
    ]
+  },
+  {
+   "id": "phrase.roll-it-round",
+   "pos": "Phrase",
+   "gloss": "Roll it round",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.maani-line:roll: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.maani-line:roll"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
   },
   {
    "id": "phrase.roll-the-maani-round",
@@ -17605,6 +17724,23 @@
    ]
   },
   {
+   "id": "phrase.take-a-dough-ball",
+   "pos": "Phrase",
+   "gloss": "Take a dough ball",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.maani-line:take: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.maani-line:take"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "phrase.take-back",
    "pos": "Phrase",
    "gloss": "take back",
@@ -17614,6 +17750,23 @@
    ],
    "aliases": [
     "fever-take-away"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.take-it-off",
+   "pos": "Phrase",
+   "gloss": "Take it off",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.maani-line:off: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.maani-line:off"
    ],
    "ask": {
     "word": [
@@ -18697,8 +18850,7 @@
     "data/cook.json guide.thread: Nani's guide box says what to do now; no Kutchi recorded yet"
    ],
    "aliases": [
-    "cook.guide.thread",
-    "cook.guide.mishkaki-grill:thread"
+    "cook.guide.thread"
    ],
    "ask": {
     "word": [
@@ -18716,6 +18868,23 @@
    ],
    "aliases": [
     "cook.guide.mishkaki-grill"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "phrase.thread-them",
+   "pos": "Phrase",
+   "gloss": "Thread them",
+   "status": "to-record",
+   "src": [
+    "data/cook.json guide.mishkaki-grill:thread: Nani's guide box says what to do now; no Kutchi recorded yet"
+   ],
+   "aliases": [
+    "cook.guide.mishkaki-grill:thread"
    ],
    "ask": {
     "word": [
@@ -18918,7 +19087,8 @@
    ],
    "aliases": [
     "cook.line.guide-slow",
-    "cook.guide.watch"
+    "cook.guide.watch",
+    "cook.guide.chai-tray:slow"
    ],
    "notes": [
     "English slow + kar; not aste thi kar"
