@@ -24,3 +24,4 @@ build/reports/**/*.jpg
 build/reports/**/*.jpeg
 build/reports/**/*.webp
 build/reports/**/*.gif
+build/tools/audio/pages/
