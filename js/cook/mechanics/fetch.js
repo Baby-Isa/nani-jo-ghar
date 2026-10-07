@@ -203,6 +203,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const e = fetching && tray.find((x) => !x.busy);
         return e ? S.centre(e.obj) : null;
       };
+      // decision 51 (CK-23, S02-F): a wrong pick is redone on the spot, never the whole pantry. Level 1 says so as it
+      // happens (a wiggle; from the second wrong try the right one glows); from level 2 it lands on the tray quietly
+      // (UX 11). The third wrong try for a thing: the game shows the right one and puts it on the tray itself. At the
+      // end the wrong things on the tray go back to their shelf, one by one; the right ones stay.
+      const redo = St.redo(ctx);
+      let showFor = null;
       while (remaining.length) {
         const expected = remaining[0];
         const guided = UI.stepOpen ? UI.stepOpen(ask(expected, n === 0), { ctx }) : ctx.guided || Cook.wordStage(expected) === 1; // S02-A hook: R2/T2, help after the pause
@@ -218,6 +224,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           onWrong: (key, m) => {
             z.listen(false, always.includes(key) && !need.includes(key) && inOrder(ctx).has(key) ? `fetched ${key} (they said no)` : `fetched ${key}`);
             if (m === 1) z.oops();
+            if (redo.wrong(`pantry:${expected}`).action === "show" && !showFor) {
+              showFor = expected;
+              // after this pick has landed (a quiet one goes to the tray first)
+              setTimeout(() => step.cancel && step.cancel(), 0);
+            }
           },
           onLand: (key, obj) => {
             if (obj.label) obj.label.destroy();
@@ -228,13 +239,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           ctl: step,
         });
         step.cancel = null;
-        if (r.cancelled) continue;
-        const id = r.key;
+        let shown = false;
+        if (r.cancelled && showFor === expected && items[expected] && items[expected].active) {
+          // the right way, shown: it glows, Nani names it, and it goes onto the tray by itself
+          showFor = null;
+          shown = true;
+          const o = items[expected];
+          if (Cook.onHelp) Cook.onHelp("shown", { ids: [expected] });
+          S.glow(o, true, { bounce: true });
+          await Promise.race([UI.voice(ask(expected, n === 0)).catch(() => {}), Cook.wait(2500)]);
+          S.glow(o, false);
+        } else if (r.cancelled) {
+          showFor = null;
+          continue;
+        }
+        const id = shown ? expected : r.key;
         remaining.splice(remaining.indexOf(id), 1);
         // the first pick of each thing is the one that counts (a thing taken back and fetched again isn't counted twice)
         const again = fetched.has(id);
         fetched.add(id);
-        if (!guided && !again) Cook.markRight(id);
+        if (!guided && !again && !shown) Cook.markRight(id);
         if (ctx.tickItem) ctx.tickItem(id);
         const obj = items[id];
         delete items[id];
@@ -251,6 +275,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       fetching = false;
       Cook.undoAt = null;
       tray.forEach((e) => e.obj.active && S.untap(e.obj));
+      // the wrong things on the tray go back to their shelf, one by one; the right ones stay (and close up)
+      const wrongs = tray.filter((e) => !e.right);
+      if (wrongs.length) {
+        await Promise.all(tray.map((e) => (e.busy ? Cook.wait(k.flyMs + 50) : null)));
+        await z.oops();
+        for (const e of wrongs) {
+          tray.splice(tray.indexOf(e), 1);
+          n--;
+          UI.countDown(e.id);
+          const h = e.obj.home;
+          S.wiggle(e.obj);
+          await Cook.wait(260);
+          await S.fly(e.obj, h.x, h.y, { scale: h.scale, depth: h.depth, duration: k.flyMs });
+          if (e.obj.active) e.obj.label = S.label(e.obj, e.id);
+        }
+        tray.forEach((x, i) => {
+          const t = trayAt(i, x.id, x.obj);
+          S.tweens.add({ targets: x.obj, x: t.x, y: t.y, duration: 220, ease: "Sine.easeInOut" });
+        });
+        await Cook.wait(300);
+      }
     },
   });
 

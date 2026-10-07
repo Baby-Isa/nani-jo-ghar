@@ -395,6 +395,34 @@
     // R4 / T29 (decision 55): the doctor is the card's asker and the off-screen guide: one face (the card's), his
     // line for the step now as the card's top strip; the box keeps only the bulb and the mute
     if (v2 && screen.stripMode) screen.stripMode(true);
+    // decision 41 (S02-F, C open item): from level 3 a count is heard, never read: the strip shows the step's line
+    // without its number word (the doctor still says it whole)
+    const NUM_EN = /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\b\s*/gi;
+    const numWords = (() => {
+      const CL = global.ClinicLang;
+      const out = {};
+      if (!CL || !CL.numId || !CL.num) return out;
+      for (let n = 1; n <= 12; n++) {
+        try {
+          const id = CL.numId(n);
+          const w = id && CL.num(n);
+          if (w && w.kutchi) out[id] = w.kutchi;
+        } catch (e) {
+          /* a number the engine has no word for */
+        }
+      }
+      return out;
+    })();
+    const stripRow = (row) => {
+      if (!row || level < 3) return row;
+      const nums = (row.ids || []).filter((id) => numWords[id]);
+      if (!nums.length) return row;
+      const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      let k = row.kutchi;
+      if (k) nums.forEach((id) => (k = k.replace(new RegExp(`(^|\\s)${esc(numWords[id])}(?=[\\s,.!?]|$)\\s*`, "i"), "$1")));
+      if (k) k = k.trim().replace(/^(\[?)(\S)/, (a, b, c) => b + c.toUpperCase());
+      return Object.assign({}, row, { kutchi: k, english: String(row.english || "").replace(NUM_EN, "").trim() });
+    };
 
     /* ---- the shared play rules for every heal game (1 Oct report § 8D-8G, decision 27) ----
      * D6 (SH-39): the running count sits on the tool in use: its Kutchi word at L1-2 (said at L1), dots from L3;
@@ -463,7 +491,7 @@
         [...stage.querySelectorAll(".hs-tool")].filter((b) => b.dataset.tool === t || (t.endsWith("-") && String(b.dataset.tool || "").startsWith(t))).forEach((b) => b.classList.add("pulse", "next-up"));
         const rowEl = id && card.row(id) && card.row(id).el;
         if (rowEl) rowEl.classList.add("next-up");
-        if (id && screen.setGuide) screen.setGuide(card.row(id));
+        if (id && screen.setGuide) screen.setGuide(stripRow(card.row(id)));
         // the doctor (off screen: his box) says the next step's line, once
         if (id) card.speak([id]);
       }, Kit.fast ? 300 : 2000);
@@ -497,7 +525,7 @@
           }
           card.now(rowId);
           // T29: the guide's line is the step now (it clears when no step is open)
-          if (v2 && screen.setGuide) screen.setGuide(rowId ? card.row(rowId) : null);
+          if (v2 && screen.setGuide) screen.setGuide(rowId ? stripRow(card.row(rowId)) : null);
         },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),

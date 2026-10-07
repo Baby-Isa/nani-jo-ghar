@@ -1680,6 +1680,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const ringG = S.track(S.add.graphics().setDepth(D.fx + 1));
       let last = performance.now();
       let smokeAt = 0;
+      // T18 (SEK-13 leftover, S02-F): the guide says "Firai!" each time a skewer reaches its green and wants turning
+      // (not for the lift); the box empties once nothing is waiting to be turned
+      const fstep = Cook.Stations.steps(ctx);
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
@@ -1698,6 +1701,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           SK.ring(ringG, { cx, cy, w: L(RING.w), h: L(RING.h), v: g.v, lo, hi, L, last: g.phase >= k.turns, inBand });
           if (!g.busy && g.v >= 1) tapGrill(g, true);
         });
+        const hot = grilling.filter((g) => !g.busy && !g.out && g.v >= lo && g.v <= hi && g.phase < k.turns).sort((a, b) => b.v - a.v)[0];
+        if (hot) fstep.to("mishkaki-grill:flip", { id: `flip-${hot.spot}-${hot.phase}-${hot.sk && hot.sk.id != null ? hot.sk.id : ""}` });
+        else if (fstep.key) fstep.done();
         if (now > smokeAt && grilling.length) {
           smokeAt = now + 500 / Cook.speed;
           const g = Cook.pick(grilling);
@@ -1750,6 +1756,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await done;
       finished = true;
       stop();
+      if (fstep.key) fstep.done();
       embers.remove();
       if (sizzle) sizzle.stop();
       ringG.clear();

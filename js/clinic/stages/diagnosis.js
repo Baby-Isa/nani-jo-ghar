@@ -122,6 +122,13 @@
       fig.react("ouch", 0);
       await S.say(plan.name, "doctor");
       await Kit.wait(Kit.fast ? 60 : 900);
+      // S02-F (C open item): the end screen comes up over this room, and a stage played alone hands its patient
+      // back (fig.destroy) first: a still copy of her stays in her place, so the room behind is never empty
+      const still = fig.el.cloneNode(true);
+      still.classList.add("cl-fig-still");
+      still.style.pointerEvents = "none";
+      still.setAttribute("aria-hidden", "true");
+      layer.insertBefore(still, fig.el);
       res.words.push(PL().partWord(data, plan.part));
       void h;
       return res;

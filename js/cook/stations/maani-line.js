@@ -264,6 +264,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let finished = false;
     let firstOn = true;
     let doneShown = false;
+    let helping = false; // decision 51: a redo round (the right pile glows)
     const count = (key, where) => items.filter((it) => it.key === key && (!where || it.where === where)).length;
     const plated = () => items.filter((it) => it.where === "plate");
     /** How many more of this dough the order needs (the plan for the test and for guided glows; never shown). */
@@ -369,7 +370,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       stepNow();
       ghostSync();
       const need = !chakla && !waiting ? nextType() : null;
-      plates.forEach((b) => glowOn(b, !!(ctx.guided && need === b.type)));
+      plates.forEach((b) => glowOn(b, !!((ctx.guided || helping) && need === b.type))); // decision 51: a redo has help
       // a rolled maani and a free tawa: that's the next thing (it pulses, whatever the level)
       if (waiting) glowOn(waiting.sprite, !onTawa && waiting.landed);
       if (need) {
@@ -384,11 +385,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (idle() && plated().length) {
         if (!doneShown) {
           doneShown = true;
-          UI.done({ glow: !!(ctx.guided && allDone()) }).then(() => {
+          UI.done({ glow: !!((ctx.guided || helping) && allDone()) }).then(() => {
             doneShown = false;
             finish();
           });
-        } else UI.glowDone(!!(ctx.guided && allDone()));
+        } else UI.glowDone(!!((ctx.guided || helping) && allDone()));
       } else if (doneShown) {
         doneShown = false;
         UI.hideDone();
@@ -616,58 +617,138 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
     // C3 (E14, MAA-04): changing your mind before rolling sends the ball back to its pile (a tap on the other pile);
     // a rolled or cooked maani can't be unmade (the art shows it), so that's the take-back here
-    Cook.undoAt = () => {
+    const undoAt = () => {
         // (not while Nani's "pass me" or a first-time coach is up: only the thing they point at takes a tap)
         if (Cook.paused || (Cook.Coach && Cook.Coach.active())) return null;
       if (finished || !chakla || chakla.busy || chakla.started) return null;
       const other = plates.find((b) => b.type !== chakla.type && b.left > 0);
       return other ? centre(other) : null;
     };
+    Cook.undoAt = undoAt;
     step("Roll");
     let finish;
-    const finishing = new Promise((resolve) => (finish = resolve));
+    let finishing = new Promise((resolve) => (finish = resolve));
     update();
-    await finishing;
 
-    /* ---------- the tick: check the count of each kind ---------- */
-    finished = true;
-    Cook.undoAt = null;
-    UI.hideDone();
-    ring.clear();
-    sizzleSync();
-    steps.done();
-    stopGhost();
-    [zb, zon, zt].forEach((z) => z.expect(null));
-    plates.forEach((b) => {
-      glowOn(b, false);
-      S.untap(b);
-    });
-    const made = {};
-    plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
+    /* ---------- the tick: check the count of each kind ----------
+     * Decision 51 (CK-23, S02-F): a wrong maani is redone on the spot, never the whole line. The right ones stay on
+     * their plates; a wrong one (the other dough, the other size, one too many) is lifted off and taken away, and a
+     * missing one's row opens again. The second try has help (the right pile glows); at the third wrong try for that
+     * kind the game shows the right way (its pile glows, a cooked maani lands on the plate) and moves on. Only the
+     * first try is scored. */
+    const redo = St.redo(ctx);
+    let round = 0;
     let allOk = true;
-    new Set(Object.keys(want).concat(Object.keys(made))).forEach((key) => {
+    let made = {};
+    /** Take a wrong maani off its plate: it lifts and goes (a cooked maani can't go back into the dough). */
+    const takeAway = async (it) => {
+      const d = dones[it.type];
+      if (d) d.n = Math.max(0, d.n - 1);
+      items.splice(items.indexOf(it), 1);
+      S.untap(it.sprite);
+      await Cook.tween(S, { targets: it.sprite, y: it.sprite.y - 70, alpha: 0, duration: 420, ease: "Sine.easeIn" });
+      it.sprite.destroy();
+    };
+    /** The right way, shown (the third wrong try): its pile glows, then a cooked maani of that kind lands on its plate. */
+    const showRight = async (key) => {
       const { type, size } = split(key);
-      const w = want[key] || 0;
-      const got = made[key] || 0;
-      if (got !== w) allOk = false;
-      // the kind as the order says it ("ph-big+cook-maani"): the result card shows "ba wadhi maani"
-      zb.listen(got === w, `made ${got} ${key}, they asked for ${w}`);
-      if (!ctx.guided && w) {
-        const mark = got === w ? Cook.markRight : Cook.markMiss;
-        [Cook.numId(w), type, size].filter(Boolean).forEach((id) => mark(id));
+      const pl = plateOf(type);
+      if (pl) {
+        S.glow(pl, true, { bounce: true });
+        wordPop(type, CH.x, CH.y - CHAKLA_D / 2 - 10);
+        await Cook.wait(900);
+        S.glow(pl, false);
       }
-    });
-    // the step has closed (Done): its rows tick, count rows too, right or not (UX 11)
-    if (ctx.closeItem) ctx.closeItem([], { all: true });
-    // the review (29 Sept, X10 / Q1: Cook.Kit.review): their big round face over the finished plates,
-    // happy when the counts are right, a gentle frown when they're not (the card shows which)
-    if (who && Cook.Kit.review) {
-      const ds = Object.values(dones);
-      const fx = ds.reduce((a, d) => a + d.x, 0) / ds.length;
-      const look = await Cook.Kit.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 70, size: 230 });
-      await Cook.wait(allOk ? 300 : 900);
-      await look.close();
+      const d = dones[type] || Object.values(dones)[0];
+      const j = d.n++;
+      const it = { type, size, key, where: "plate", state: "cooked", shown: true };
+      it.sizeF = sizes ? Math.sqrt((sizes.find((s) => s.id === size) || { r: rMax }).r / rMax) : 1;
+      const tex = texOf(type, "cooked");
+      const from = pl ? S.centre(pl) : { x: CH.x, y: CH.y };
+      it.sprite = S.track(S.add.image(from.x, from.y, tex).setDepth(D.item + 2 + j * 0.01).setScale(0.05));
+      items.push(it);
+      const pr = PLATE_D * 0.3 * it.sizeF;
+      const room = Math.max(0, PLATE_D * THALI_FLAT - pr - 3);
+      const [f0x, f0y] = FAN[j % FAN.length];
+      const fk = Math.min(1, room / Math.max(1, Math.hypot(f0x, f0y)));
+      await S.fly(it.sprite, d.x + f0x * fk, d.y + f0y * fk, { scale: discScale(tex, pr), duration: 520, arc: 120 });
+      S.sparkle(d.x, d.y);
+      if (ctx.tickCard) ctx.tickCard(key);
+    };
+    for (;;) {
+      await finishing;
+      finished = true;
+      Cook.undoAt = null;
+      UI.hideDone();
+      ring.clear();
+      sizzleSync();
+      steps.done();
+      stopGhost();
+      [zb, zon, zt].forEach((z) => z.expect(null));
+      plates.forEach((b) => glowOn(b, false));
+      made = {};
+      plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
+      allOk = true;
+      const missing = {}; // key -> how many more
+      const extra = []; // the wrong maani on the plates (the last ones of a kind made too many times)
+      new Set(Object.keys(want).concat(Object.keys(made))).forEach((key) => {
+        const { type, size } = split(key);
+        const w = want[key] || 0;
+        const got = made[key] || 0;
+        if (got !== w) allOk = false;
+        if (got < w) missing[key] = w - got;
+        if (got > w) extra.push(...plated().filter((it) => it.key === key).slice(w));
+        if (round) return; // only the first try is scored
+        // the kind as the order says it ("ph-big+cook-maani"): the result card shows "ba wadhi maani"
+        zb.listen(got === w, `made ${got} ${key}, they asked for ${w}`);
+        if (!ctx.guided && w) {
+          const mark = got === w ? Cook.markRight : Cook.markMiss;
+          [Cook.numId(w), type, size].filter(Boolean).forEach((id) => mark(id));
+        }
+      });
+      // the step has closed (Done): its rows tick, count rows too, right or not (UX 11)
+      if (ctx.closeItem) ctx.closeItem([], { all: true });
+      // the review (29 Sept, X10 / Q1: Cook.Kit.review): their big round face over the finished plates,
+      // happy when the counts are right, a gentle frown when they're not (the card shows which)
+      if (who && Cook.Kit.review) {
+        const ds = Object.values(dones);
+        const fx = ds.reduce((a, d) => a + d.x, 0) / ds.length;
+        const look = await Cook.Kit.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 70, size: 230 });
+        await Cook.wait(allOk ? 300 : 900);
+        await look.close();
+      }
+      if (allOk) break;
+      if (!round && zb.oops) await zb.oops();
+      // the wrong ones go; a missing one is made again (or, its third wrong try, shown)
+      await Promise.all(extra.map(takeAway));
+      const again = [];
+      for (const key of Object.keys(missing)) {
+        const r = redo.wrong(`maani:${key}`);
+        for (let i = 0; i < missing[key]; i++) {
+          if (r.action === "show") await showRight(key);
+          else again.push(key);
+        }
+      }
+      if (!again.length) {
+        if (ctx.closeItem) ctx.closeItem([], { all: true });
+        allOk = true;
+        made = {};
+        plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
+        break;
+      }
+      // their rows open again, they say it again, and the right pile glows (help from the second try)
+      round++;
+      if (UI.mission && UI.mission.reopen) UI.mission.reopen([...new Set(again.flatMap((k) => k.split("+")))], ctx.dishAt || 0);
+      if (UI.mission && UI.mission.replay) UI.mission.replay();
+      helping = true;
+      finished = false;
+      doneShown = false;
+      finishing = new Promise((resolve) => (finish = resolve));
+      Cook.undoAt = undoAt;
+      update();
     }
+    Cook.undoAt = null;
+    plates.forEach((b) => S.untap(b));
     ctx.result.maani = plated().length;
     ctx.result.maaniKinds = made;
     [zb, zr, zon, zt].forEach((z) => z.close());

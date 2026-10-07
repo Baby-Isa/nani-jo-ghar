@@ -459,7 +459,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /* a spoonful: a little heap lifts off its pile and lands on the strip's left end (the first fold covers it) */
     const fillAt = (sheet) => {
       const f = F.fill;
-      return { x: sheet.x + (f.x - 0.5) * SW * z.k, y: sheet.y + (f.y - 0.5) * SH * z.k, r: f.r * SW * z.k };
+      const q = sheet.scaleX / z.L(STAGE_K); // SAM-12: a strip laid out on the board is smaller (q < 1)
+      return { x: sheet.x + (f.x - 0.5) * SW * z.k * q, y: sheet.y + (f.y - 0.5) * SH * z.k * q, r: f.r * SW * z.k * q };
     };
     async function spoon(sheet, id, { quiet = false, fast = false } = {}) {
       const obj = items[id];
@@ -542,7 +543,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const two = count2 > 0 && kinds2.length > 0;
     const bOpt = (b) => (two ? { block: b } : {});
     /** Fill one strip for one block, then grade it (how many spoons of each, nothing they said no to). */
-    async function fillOne(wantB, kindsB, block, tries = 0, again = false) {
+    async function fillOne(wantB, kindsB, block, tries = 0, again = false, auto = false) {
       const help = tries > 0;
       const rtry = retry || tries > 0 || again; // only a strip's first try is scored
       const got = {};
@@ -591,7 +592,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         order.push(id);
         // a count row counts up; nothing ticks before the fill closes (a one-spoon row ticking at its
         // first spoon would give the count away, UX 11)
-        if ((wantB[id] || 0) > 1) UI.mission.tickItem(id, ctx.dishAt || 0, bOpt(block));
+        if ((wantB[id] || 0) > 1) UI.mission.tickItem(id, ctx.dishAt || 0, auto ? {} : bOpt(block));
         const into = spoon(sheet, id);
         const pa = fillAt(sheet);
         // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
@@ -607,6 +608,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       open = false;
       Cook.undoAt = null;
       sheet.blobs.forEach((o) => o.active && S.untap(o));
+      // SAM-12: a strip on the laid-out board is the kind its base filling says (chundo or bataato: the two kinds
+      // never share a base), else the kind still wanted
+      if (auto && two) {
+        const b1 = (got[kinds[0]] || 0) > 0;
+        const b2 = (got[kinds2[0]] || 0) > 0;
+        if (b2 && !b1) block = 2;
+        else if (b1 && !b2) block = 1;
+        wantB = block === 2 ? want2 : want;
+        kindsB = block === 2 ? kinds2 : kinds;
+      }
       // graded now: each filling, how many spoons, and nothing they said no to
       let fillWrong = null;
       Object.keys(got).forEach((id) => {
@@ -632,9 +643,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       else UI.mission.closeItem(kindsB, ctx.dishAt || 0);
       if (!fillWrong && exclude.length && (!two || block === 2)) UI.mission.closeItem(exclude, ctx.dishAt || 0, { no: true });
       steps.done();
-      if (!fillWrong) return { got, order, fillWrong: null };
+      if (!fillWrong) return { got, order, fillWrong: null, block };
       // decision 51: a wrong filling empties this strip and it's filled again, with help; the third wrong try shows it
-      const rd = redo.wrong(`fill-${block}`);
+      const rd = redo.wrong(auto && sheet.slot != null ? `fill-strip-${sheet.slot}` : `fill-${block}`);
       sheet.blobs.slice().forEach((bl) => {
         while (bl.active && sheet.blobs.includes(bl)) unspoon(sheet, bl);
       });
@@ -654,25 +665,32 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (two) UI.mission.closeItem(kindsB, ctx.dishAt || 0, { block });
         else if (ctx.closeItem) ctx.closeItem(kindsB);
         else UI.mission.closeItem(kindsB, ctx.dishAt || 0);
-        return { got: Object.assign({}, wantB), order: order2, fillWrong };
+        return { got: Object.assign({}, wantB), order: order2, fillWrong, block };
       }
-      const again2 = await fillOne(wantB, kindsB, block, tries + 1);
+      const again2 = await fillOne(wantB, kindsB, block, tries + 1, false, auto);
       return Object.assign(again2, { fillWrong });
     }
-    const f1 = await fillOne(want, kinds, 1);
-    const got = f1.got;
-    let order = f1.order;
-    let fillWrong = f1.fillWrong;
+    // SAM-12 (A5, A11, Zafar's design): from level 3 every strip lies on the board at the start (grid())
+    const gridMode = level >= 3;
+    let got = {};
+    let order = [];
+    let fillWrong = null;
     let got2 = null;
-    Cook.sfx.right();
-    const pa0 = fillAt(sheet);
-    S.sparkle(pa0.x, pa0.y);
-    // the card folds until the plate is tasted; the shelf goes quiet: folding is next
-    await Cook.wait(500);
-    cardFold(true);
-    Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
-    if (ctx.nextStep) ctx.nextStep("Fold");
-    if (phases.fold && !retry) UI.gist(phases.fold);
+    if (!gridMode) {
+      const f1 = await fillOne(want, kinds, 1);
+      got = f1.got;
+      order = f1.order;
+      fillWrong = f1.fillWrong;
+      Cook.sfx.right();
+      const pa0 = fillAt(sheet);
+      S.sparkle(pa0.x, pa0.y);
+      // the card folds until the plate is tasted; the shelf goes quiet: folding is next
+      await Cook.wait(500);
+      cardFold(true);
+      Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
+      if (ctx.nextStep) ctx.nextStep("Fold");
+      if (phases.fold && !retry) UI.gist(phases.fold);
+    } else sheet.destroy();
 
     /* ---------- FOLD: swipe each flap over; a soft glow shows the next swipe ---------- */
     const glowG = S.track(S.add.graphics().setDepth(D.fx - 1).setBlendMode(Phaser.BlendModes.ADD));
@@ -726,7 +744,199 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const most = total + (k.maxExtra != null ? k.maxExtra : 3);
     const onPlate = [];
     let quit = false;
-    while (n < most && !quit) {
+    /*
+     * SAM-12 (A5, A11: Zafar's design, 6 Oct): at the top levels every strip lies on the board at the start, side by
+     * side, one more than the order needs (how many to fill is the child's: the count is never shown). Tap a strip to
+     * fill it (a filled one is the kind its base filling says); the tick when they're all filled; then each one is
+     * folded in turn (it slides to the middle of the board) and goes onto the plate. Nothing is spooned by itself.
+     * Decision 51: a wrong strip is emptied and filled again (fillOne); too many of a kind: the extra strip is
+     * emptied; too few: they say the order again and another strip is filled (the third time it's filled for them).
+     */
+    async function grid() {
+      const N = Math.min(6, total + 1);
+      let lay = null;
+      for (let cols = 1; cols <= N; cols++) {
+        const rows = Math.ceil(N / cols);
+        const q = Math.min(((BOARD.w * 0.94) / cols) * 0.92 / SW, ((BOARD.h * 0.86) / rows) * 0.92 / SH);
+        if (!lay || q > lay.q) lay = { cols, rows, q };
+      }
+      const cw = (BOARD.w * 0.94) / lay.cols;
+      const ch = (BOARD.h * 0.86) / lay.rows;
+      const strips = [];
+      for (let i = 0; i < N; i++) {
+        const r = Math.floor(i / lay.cols);
+        const m = r < lay.rows - 1 ? lay.cols : N - lay.cols * (lay.rows - 1);
+        const c = i - r * lay.cols;
+        const x = BOARD.x + (c - (m - 1) / 2) * cw;
+        const y = P0.y + (r - (lay.rows - 1) / 2) * ch;
+        const st = pastry(x);
+        st.setPosition(z.X(x), z.Y(y)).setScale(z.L(STAGE_K * lay.q)).setAlpha(0);
+        st.slot = i;
+        st.block = 0;
+        st.home = { x: st.x, y: st.y, scale: st.scale };
+        S.tweens.add({ targets: st, alpha: 1, duration: 260, delay: 60 * i });
+        strips.push(st);
+      }
+      await Cook.wait(300 + 60 * N);
+      const of = (b) => strips.filter((x) => x.block === b);
+      const wantN = (b) => (b === 1 ? count : two ? count2 : 0);
+      const nextBlock = () => (of(1).length < wantN(1) ? 1 : of(2).length < wantN(2) ? 2 : 0);
+      let helping = false;
+      /** A strip to fill (tap it), or the tick (they're all filled). */
+      const pickStrip = () =>
+        new Promise((resolve) => {
+          const empty = strips.filter((x) => !x.block);
+          const filled = strips.length - empty.length;
+          let over = false;
+          const fin = (r) => {
+            if (over) return;
+            over = true;
+            empty.forEach((x) => {
+              S.untap(x);
+              S.glow(x, false);
+            });
+            UI.hideDone();
+            z.expect(null);
+            resolve(r);
+          };
+          empty.forEach((x) => S.tappable(x, () => fin({ strip: x })));
+          const nb = nextBlock();
+          if (filled) UI.done({ glow: !!((ctx.guided || helping) && !nb) }).then(() => fin({ done: true }));
+          if (nb && empty[0]) {
+            if (ctx.guided || helping) S.glow(empty[0], true, { bounce: true });
+            const c = S.centre(empty[0]);
+            z.expect({ kind: "tap", x: c.x, y: c.y, key: "strip", wrongs: [] });
+          } else if (filled) z.expect({ kind: "click", selector: "#done-btn" });
+          else z.expect({ kind: "wait" });
+        });
+      const emptyStrip = (x) => {
+        x.blobs.slice().forEach((bl) => {
+          while (bl.active && x.blobs.includes(bl)) unspoon(x, bl);
+        });
+        x.block = 0;
+      };
+      /** The right way, shown: a strip is filled for them (its heaps glow in turn). */
+      const showFill = async (x, b) => {
+        const wB = b === 2 ? want2 : want;
+        sheet = x;
+        for (const id of Object.keys(wB)) {
+          for (let i = 0; i < wB[id]; i++) {
+            if (items[id]) S.glow(items[id], true, { bounce: true });
+            await spoon(x, id);
+            if (items[id]) S.glow(items[id], false);
+          }
+        }
+        x.block = b;
+      };
+      for (;;) {
+        const r = await pickStrip();
+        if (r.done) {
+          if (!first) first = { n: of(1).length + of(2).length, nA: of(1).length, nB: of(2).length };
+          const extra = [1, 2].flatMap((b) => of(b).slice(wantN(b)));
+          const missing = [1, 2].filter((b) => of(b).length < wantN(b));
+          if (!extra.length && !missing.length) break;
+          extra.forEach(emptyStrip);
+          let again = false;
+          for (const b of missing) {
+            const rd = redo.wrong(`samosa:count-${b}`);
+            if (rd.action === "show") {
+              while (of(b).length < wantN(b)) {
+                const x = strips.find((y) => !y.block);
+                if (!x) break;
+                await showFill(x, b);
+              }
+            } else again = true;
+          }
+          if (!again) break;
+          // too few: they say the order again, and the next strip glows (help from the second try)
+          helping = true;
+          const line = orderLine(ladderOf(ctx));
+          if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(8000)]);
+          St.customerDone();
+          continue;
+        }
+        const x = r.strip;
+        sheet = x;
+        S.tweens.add({ targets: x, scale: x.home.scale * 1.04, duration: 140, yoyo: true });
+        const b = nextBlock() || 1;
+        const res = await fillOne(b === 2 ? want2 : want, b === 2 ? kinds2 : kinds, b, 0, strips.some((y) => y.block), true);
+        x.block = res.block || b;
+        if (x.block === 1) got = res.got;
+        else got2 = res.got;
+        order = res.order;
+        fillWrong = fillWrong || res.fillWrong;
+        Cook.sfx.right();
+        const pa = fillAt(x);
+        S.sparkle(pa.x, pa.y);
+      }
+      // the spare strips go back; the card folds until the plate is tasted; the shelf goes quiet: folding is next
+      strips.filter((x) => !x.block).forEach((x) => S.tweens.add({ targets: x, alpha: 0, duration: 260, onComplete: () => x.destroy() }));
+      await Cook.wait(400);
+      cardFold(true);
+      Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
+      if (ctx.nextStep) ctx.nextStep("Fold");
+      if (phases.fold && !retry) UI.gist(phases.fold);
+      const toFold = strips.filter((x) => x.block).sort((a, b) => a.block - b.block || a.slot - b.slot);
+      for (const x of toFold) {
+        // the others step back while this one comes to the middle of the board, full size, its filling with it
+        toFold.filter((y) => y !== x && y.active).forEach((y) => {
+          S.tweens.add({ targets: [y, ...y.blobs], alpha: 0, duration: 200 });
+        });
+        const k1 = z.L(STAGE_K) / x.scaleX;
+        const tx = z.X(P0.x);
+        const ty = z.Y(P0.y);
+        x.blobs.forEach((bl) => S.tweens.add({ targets: bl, x: tx + (bl.x - x.x) * k1, y: ty + (bl.y - x.y) * k1, displayWidth: bl.displayWidth * k1, displayHeight: bl.displayHeight * k1, duration: 380, ease: "Cubic.easeInOut" }));
+        await new Promise((res) => S.tweens.add({ targets: x, x: tx, y: ty, scale: z.L(STAGE_K), duration: 380, ease: "Cubic.easeInOut", onComplete: res }));
+        sheet = x;
+        steps.to("samosa:fold", { id: `fold-${n}` }); // T17: Samosa waar!
+        for (let f = 0; f < F.swipes.length; f++) {
+          const sw = F.swipes[f];
+          const cxy = { x: P0.x, y: P0.y };
+          const [gx0, gy0, gx1, gy1] = sw.glow;
+          const poly = [at(cxy.x, cxy.y, gx0, gy0), at(cxy.x, cxy.y, gx1, gy0), at(cxy.x, cxy.y, gx1, gy1), at(cxy.x, cxy.y, gx0, gy1)];
+          const from = at(cxy.x, cxy.y, sw.from[0], sw.from[1]);
+          const to = at(cxy.x, cxy.y, sw.to[0], sw.to[1]);
+          glowOn = { poly, a: from, b: to };
+          await swipe(z, S, { onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? x.blobs : []), fimg, sheet: x, offerGo: false, goLabel: { text: goIcon, rec: false }, expectGo: false, glowGo: false, minLen: k.minLen || 0.45 });
+          glowOn = null;
+          if (f === 0) x.blobs.forEach((bl) => bl.destroy());
+          if (f === 0) x.blobs = [];
+          x.setTexture(`sv3-fold-${sw.steps[sw.steps.length - 1]}`);
+          fimg.setVisible(false);
+          x.setVisible(true);
+          Cook.sfx.flip();
+          setTimeout(() => Cook.sfx.click(), 60);
+          const s0 = x.scale;
+          S.tweens.add({ targets: x, scale: s0 * 1.05, duration: 70, yoyo: true, ease: "Quad.easeOut" });
+          z.progress((f + 1) / F.swipes.length);
+        }
+        n++;
+        if (x.block === 2) nB++;
+        else nA++;
+        z.skill(100, "fold");
+        S.tweens.killTweensOf(x);
+        x.setScale(z.L(STAGE_K));
+        const dn = F.done;
+        x.setPosition(x.x + (dn.x - 0.5) * SW * z.k, x.y + (dn.y - 0.5) * SH * z.k).setOrigin(dn.x, dn.y);
+        S.sparkle(x.x, x.y);
+        Cook.sfx.right();
+        pop(z, S, Cook.display("ph-samosa"), x.x, x.y - z.L(170), { speakId: "ph-samosa", ms: 1100 });
+        await Cook.wait(160);
+        onPlate.push(x);
+        const spots = plateSpots(onPlate.length, PLATE.x, PLATE.y, plate.flatHalf, 0.75);
+        await Promise.all(
+          onPlate.map((o, i) => {
+            const sp = spots[i];
+            const sc = z.L(sp.w) / dn.w;
+            if (o === x) return S.fly(o, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: 420, arc: z.L(90) }).then(() => o.setAngle(sp.a));
+            return new Promise((res) => S.tweens.add({ targets: o, x: z.X(sp.x), y: z.Y(sp.y), scale: sc, angle: sp.a, duration: 300, onComplete: res }));
+          }),
+        );
+        toFold.filter((y) => y.active && !onPlate.includes(y)).forEach((y) => S.tweens.add({ targets: [y, ...y.blobs], alpha: 1, duration: 200 }));
+      }
+    }
+    if (gridMode) await grid();
+    while (!gridMode && n < most && !quit) {
       if (n > 0) {
         // the next strip slides in, and the same filling goes on it (the same spoons, said quietly)
         sheet = pastry(P0.x - 700);
@@ -747,14 +957,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           cardFold(true);
           Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
           if (ctx.nextStep) ctx.nextStep("Fold");
-        } else if (level >= 3 && !two) {
-          // SAM-12 (A5, A11): at the top levels each strip is filled by the child (no filling goes on by itself)
-          Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 1, duration: 250 }));
-          cardFold(false);
-          const fN = await fillOne(want, kinds, 1, 0, true);
-          order = fN.order;
-          cardFold(true);
-          Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
         } else for (const id of order) await spoon(sheet, id, { quiet: true, fast: true });
       }
       steps.to("samosa:fold", { id: `fold-${n}` }); // T17: Samosa waar!
