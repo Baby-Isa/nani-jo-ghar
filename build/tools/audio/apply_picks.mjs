@@ -19,6 +19,8 @@ const MANIFEST = path.join(ROOT, "data/family-audio.json");
 const CANDS = path.join(ROOT, "data/family-audio-candidates.json");
 
 const args = process.argv.slice(2);
+// --status=ok-auto marks the orchestrator's own picks (decision 70); Zafar's picks stay ok-zafar
+const STATUS = (args.find((a) => a.startsWith("--status=")) || "--status=ok-zafar").split("=")[1];
 const dry = args.includes("--dry-run");
 const file = args.find((a) => !a.startsWith("--"));
 const text = file ? fs.readFileSync(file, "utf8") : fs.readFileSync(0, "utf8");
@@ -43,7 +45,7 @@ for (const p of picks) {
   if (!entry) { console.error(`no manifest entry for ${key}`); continue; }
   if (p.pick === "k") {
     console.log(`${key}: keep ${entry.file} (checked ${entry.checked ?? "-"} -> ok-zafar)`);
-    entry.checked = "ok-zafar";
+    entry.checked = STATUS;
     changed++;
     continue;
   }
@@ -54,7 +56,7 @@ for (const p of picks) {
   console.log(`${key}: ${entry.file} -> ${to} (take ${c.rank}, ${path.basename(c.source)} ${c.start}-${c.end} s, score ${c.score})`);
   copies.push([path.join(ROOT, c.file), path.join(ROOT, to)]);
   if (!entry.old_file) Object.assign(entry, { old_file: entry.file, old_start: entry.start, old_end: entry.end, old_source: entry.source });
-  Object.assign(entry, { file: to, source: c.source, start: c.start, end: c.end, checked: "ok-zafar" });
+  Object.assign(entry, { file: to, source: c.source, start: c.start, end: c.end, checked: STATUS });
   entry.note = `${entry.note ? entry.note + "; " : ""}re-clipped (S02-D2, blind-verified), Zafar picked take ${c.rank}`;
   changed++;
 }

@@ -77,7 +77,7 @@
     (list || []).forEach((e) => {
       if (!e || !e.id || !e.file || !e.speaker || e.checked === "redo") return;
       const o = (out[e.id] = out[e.id] || {});
-      const r = e.checked === "ok-zafar" ? 3 : e.checked === "ok" ? 2 : 1;
+      const r = e.checked === "ok-zafar" ? 3 : e.checked === "ok" || e.checked === "ok-auto" ? 2 : 1;
       const k = e.id + "|" + e.speaker;
       if (!o[e.speaker] || r > rank[k]) (o[e.speaker] = e.file), (rank[k] = r);
     });

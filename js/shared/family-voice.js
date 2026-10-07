@@ -45,7 +45,7 @@
   FV.ready = () => !!byText;
 
   // ok = 2, unchecked (no `checked` field) = 1, redo is never stored at all
-  const rankOf = (checked) => (checked === "ok-zafar" ? 3 : checked === "ok" ? 2 : 1); // ok-zafar: picked by Zafar in the clip picker (decision 67)
+  const rankOf = (checked) => (checked === "ok-zafar" ? 3 : checked === "ok" || checked === "ok-auto" ? 2 : 1); // ok-zafar: picked by Zafar in the clip picker (decision 67)
 
   function build(list) {
     const texts = {};

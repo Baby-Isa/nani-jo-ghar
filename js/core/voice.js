@@ -65,11 +65,11 @@ export const isPhrase = (text) => norm(text).includes(" ");
  * (with `source`: "family-ok" | "family-unchecked") or null.
  */
 export function chooseClip(entries, { path = "store", speaker = null } = {}) {
-  const isOk = (e) => e.checked === "ok" || e.checked === "ok-zafar"; // ok-zafar: picked by Zafar (decision 67)
+  const isOk = (e) => e.checked === "ok" || e.checked === "ok-zafar" || e.checked === "ok-auto"; // ok-auto: orchestrator's blind-verified pick (decision 70) // ok-zafar: picked by Zafar (decision 67)
   const usable = (entries || []).filter((e) => e && e.file && e.speaker && e.checked !== "redo" && (isOk(e) || path === "test"));
   if (!usable.length) return null;
   const tag = (e) => Object.assign({}, e, { source: isOk(e) ? "family-ok" : "family-unchecked" });
-  const okOf = (who) => usable.find((e) => e.speaker === who && e.checked === "ok-zafar") || usable.find((e) => e.speaker === who && e.checked === "ok");
+  const okOf = (who) => usable.find((e) => e.speaker === who && e.checked === "ok-zafar") || usable.find((e) => e.speaker === who && isOk(e));
   const anyOf = (who) => usable.find((e) => e.speaker === who);
   if (speaker) {
     const own = okOf(speaker) || anyOf(speaker);
