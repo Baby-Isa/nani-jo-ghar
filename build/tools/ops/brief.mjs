@@ -44,6 +44,7 @@ add("FILES THIS SESSION OWNS (edit only these):", ...list(s.owns),
   "READ-ONLY (never edit):", ...list([...(s.readOnly || []), ((s.owns || []).some((o) => o.startsWith("js/shared/")) ? "" : "js/shared/**, ") + "build/tools/** and every other session's files unless listed above"]),
   `SHARED PIECES NEEDED BUT MISSING: ${s.stubs || "write a marked stub with the same API in your own folder (B17)"}`, "",
   "DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.",
+  "LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.",
   "NO helper sessions or background helpers (B3).",
   `PERMISSIONS NEEDED UP FRONT: ${s.permissions || "git push to the branch; Node, Python"}${s.browser === false ? "" : "; the browser (Playwright, /opt/pw-browsers/chromium)"}`, "");
 

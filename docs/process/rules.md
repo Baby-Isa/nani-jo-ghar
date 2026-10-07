@@ -356,6 +356,7 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 - **One app, one save:** every mode plugs into the shell and `js/shared/save.js`; progress is per word. (J3)
 - **Content model first:** positions are measured per background and stored as scene data, never nudged in CSS; swapping art never changes code. (J4)
 - **A clean, modular, scalable codebase to modern best practice;** remove legacy code and concepts when the design moves on. The target is `docs/architecture/target-model.md`: a core, the shared kit, content as data, modes as plug-ins, ES modules with no bundler. (J6, J7, decision 18)
+- **Load only what's on screen (modular loading):** every mode and mini-game declares its own asset list in its data; opening a mode loads only the shared shell (backgrounds, characters, buttons); a game's art loads when it's chosen, prefetched during the greeting or request pop-up, and the next one in the story loads in the background; images are WebP at their drawn size. A build that preloads another game's assets fails the load check (`build/tools/review/loadcheck.mjs`). (J11, decision 68)
 - **Everything stays public (repo, recordings)** until the game or landing page is published and people start looking; then revisit. (decision 6)
 - **A landing page (with a sign-up list) and a code-built trailer from in-game footage** are in the plan. (J5)
 - **Success is Mum enjoying the recording and a child asking to play again,** not downloads or streaks. (J9)
