@@ -240,6 +240,19 @@
     const parts = (x, env) => {
       const out = [];
       (x || []).forEach((tok) => {
+        // S02-B (T14): {"num": "$laps"}: the number word on its own ("trae"); {"word": "$speed", "map": {...}}: a
+        // slot's value mapped to its word ("slow" -> aste thi), left out when the slot is empty
+        if (isObj(tok) && "num" in tok) {
+          const n = Number(res(tok.num, env)) || 0;
+          if (n > 0) out.push(Lang.numId(n));
+          return;
+        }
+        if (isObj(tok) && "word" in tok) {
+          const v = res(tok.word, env);
+          const id = v == null ? null : tok.map ? tok.map[v] : v;
+          if (id) out.push(id);
+          return;
+        }
         if (isObj(tok) && "n" in tok) {
           const n = res(tok.n, env);
           out.push(...Lang.countParts(n, res(tok.of, env), { one: tok.one !== false }));
@@ -318,7 +331,9 @@
       }
       const frame = e.frame === "order" ? Lang.orderFrame(i, d.level) : e.frame;
       const ps = parts(e.x, env);
-      const line = Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
+      if (frame === "bare" && !ps.length) return;
+      // "bare": the words on their own, no frame ("trae aste thi": the stir row, T14)
+      const line = frame === "bare" ? Lang.bare(Lang.phrase(ps)) : Lang.line(frame, e.x ? Lang.phrase(ps) : undefined);
       if (!when) lines.push(line);
       // "head": this line starts the order in place of a dish ("Muke chai de.": Nani's pantry list).
       // 28 Sept (Zafar): a recipe with its own `headline` (the pantry's "bring me these for …")

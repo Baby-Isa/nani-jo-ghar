@@ -56,7 +56,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * wants next (for the guided glow and the test only; never shown
    * otherwise). Nothing is refused.
    */
-  St.freePick = (z, { items, next, doneOk, doneGlow }) =>
+  St.freePick = (z, { items, next, doneOk, doneGlow, help = false }) =>
     new Promise((resolve) => {
       const S = z.S;
       let over = false;
@@ -75,7 +75,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Object.entries(items).forEach(([id, obj]) => obj && obj.active && S.tappable(obj, () => finish({ id, obj })));
       if (doneOk) UI.done({ glow: !!doneGlow }).then(() => finish({ done: true }));
       const target = next && items[next] && items[next].active ? items[next] : null;
-      if (target && z.guided) S.glow(target, true);
+      if (target && (z.guided || help)) S.glow(target, true); // help: a redo's second try (decision 51)
       if (target) {
         const c = S.centre(target);
         const wrongs = Object.keys(items)

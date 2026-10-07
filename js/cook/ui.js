@@ -492,6 +492,8 @@
     UI.step(line, { helpAfter: false });
     return !!(ctx && ctx.guided);
   };
+  /** R4 (S02-B, T12): while Nani asks on a card of her own (daar's chop list) her box keeps only its tools (one face). */
+  UI.guideStrip = (on) => guide && guide.strip && guide.strip(!!on || !!(mission && mission.stripMode));
   /** The station (or station:phase) whose instruction the box shows. */
   UI.guideFor = function (key) {
     guideKey = key || null;

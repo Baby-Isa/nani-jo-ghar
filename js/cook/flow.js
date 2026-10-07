@@ -441,7 +441,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         return;
       }
-      const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && r.phrase);
+      const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && r.phrase && !r.stepRow); // (a step's row, the stir's laps, isn't a thing made)
       if (rows.length) rows.forEach((r) => phrases.push(r.phrase));
       else if (L.head && L.head.phrase) phrases.push(L.head.phrase);
     });
