@@ -570,3 +570,24 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-find.sore { font-size: 0; filter: none; border-color: #c9962e; box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
 /* T30: the point her speech bubbles come from (her mouth on the art) */
 .cl-fig .fig-anchor { position: absolute; min-width: 2px; min-height: 2px; pointer-events: none; }
+/* T27 (decision 53): the doctor's request pop-up over the counter, then it folds into the sidebar */
+.cl-req-veil { position: absolute; inset: 0; z-index: 110; background: rgba(40, 25, 10, .18); transition: background .4s; }
+.cl-req-veil.going { background: rgba(40, 25, 10, 0); }
+.cl-req-pop { overflow: visible; padding: var(--njg-s3); }
+/* CLN-96 (decision 51): the item to redo glows as it rides past (a second try's help, or after a pause) */
+.cl-belt-dish.hint .cl-item { filter: drop-shadow(0 0 10px rgba(255, 196, 64, .95)) drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
+.cl-belt-dish.hint .cl-item { animation: cl-belt-glow 1s ease-in-out infinite; }
+@keyframes cl-belt-glow { 50% { filter: drop-shadow(0 0 16px rgba(255, 196, 64, 1)) drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); } }
+/* CLN-23, CLN-97: items sit ON the belt: the picture's bottom on the belt's surface, a contact shadow under it,
+   and a coloured item without its own picture is coloured itself (no tinted disc floating behind it) */
+.cl-belt.v2 .cl-belt-dish .cl-item-img { object-position: 50% 100%; }
+.cl-belt.v2 .cl-belt-dish::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -3%; height: 10%; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(20, 20, 20, .32), transparent 70%); z-index: -1; }
+.cl-belt.v2 .cl-belt-dish .cl-item[data-colour]:not(.own-colour) { background: none; }
+.cl-item[data-colour="green"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(3) hue-rotate(60deg); }
+.cl-item[data-colour="blue"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(3) hue-rotate(170deg); }
+.cl-item[data-colour="red"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(4) hue-rotate(-35deg); }
+.cl-item[data-colour="yellow"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(4) hue-rotate(5deg); }
+/* CLN-85 (G2, T30): in the heal games the patient's round face sits top RIGHT (as in Cook, the person served is top
+   right), clear of the doctor's box; her bubbles come from it. The eye game puts her bubble under her mouth instead */
+.cl-heal .hs-face { left: auto; right: var(--njg-s2); }
+.cl-main:has(.cl-heal) .cl-tally { right: calc(var(--njg-big-face) * 1.2 + var(--njg-s4)); }

@@ -23,6 +23,44 @@
   const h = Kit.h;
   const PL = () => global.ClinicPipeline;
 
+  /**
+   * The request pop-up (decision 53, T27): the doctor's card at full size over the play area, read out row by row (the
+   * read-along); a tap anywhere skips the rest. Then it folds into the sidebar. A stand-in for a shared clinic pop-up
+   * (Session A's Cook pop-up is Cook's own: reported).
+   */
+  function requestPopup(screen, { title, rows, ordered }) {
+    return new Promise((resolve) => {
+      const veil = h("div", "cl-req-veil", screen.main);
+      const el = h("div", "cl-card-big cl-req-pop", veil);
+      const card = new Kit.Card(el, { who: "doctor" });
+      card.isOrdered = !!ordered;
+      card.titleText = title || "";
+      card.faceEl = S.doctorFace();
+      card.setRows(rows.map((r) => Object.assign({}, r)));
+      let over = false;
+      const fold = async () => {
+        if (over) return;
+        over = true;
+        card.rows = [];
+        const to = screen.card.el.getBoundingClientRect();
+        const from = el.getBoundingClientRect();
+        el.style.transition = "transform .45s ease-in, opacity .45s ease-in";
+        el.style.transformOrigin = "0 0";
+        el.style.transform = `translate(${to.left - from.left - from.width / 2}px, ${to.top - from.top - from.height * 0.55}px) scale(${Math.max(0.2, to.width / Math.max(1, from.width))})`;
+        el.style.opacity = "0";
+        veil.classList.add("going");
+        await Kit.wait(Kit.fast ? 40 : 460);
+        veil.remove();
+        resolve();
+      };
+      veil.addEventListener("pointerdown", fold);
+      Kit.wait(Kit.fast ? 20 : 300)
+        .then(() => card.speak())
+        .then(() => Kit.wait(Kit.fast ? 20 : 700))
+        .then(fold);
+    });
+  }
+
   S.pharmacy = {
     async run(env, plan) {
       const { screen, data } = env;
@@ -57,9 +95,12 @@
       const st = PL().beltState(plan);
       const wordOf = (it) => PL().itemWord(data, it.id, it);
 
-      // the doctor's request (13b "[Bring me] ..."), read along in the sidebar; the belt runs at once (13i)
-      // from level 3 the card is closed: the counts and the order are heard, not read (13c, Cook's rule Q7)
-      await S.request(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq), closed: plan.level >= 3, onPeek: () => screen.peek("pharmacy-card") });
+      // T27, decision 53 (P1, P8, CLN-84): the request first. The doctor's [Bring me] ... comes up in a pop-up over the
+      // counter and is read out (a tap skips it); then it folds into the sidebar and the belt starts, quiet.
+      // From level 3 the sidebar card is closed: the counts and the order are heard, not read (13c, Q7)
+      screen.setNani(null);
+      await requestPopup(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq) });
+      await S.request(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq), closed: plan.level >= 3, onPeek: () => screen.peek("pharmacy-card"), read: false });
 
       // the belt: dishes enter on the right every everyMs, cross in crossMs, loop through plan.loop
       const everyMs = plan.slow ? plan.everyMs * 1.3 : plan.everyMs;
@@ -91,6 +132,7 @@
         const w = track.clientWidth;
         const dw = o.el.offsetWidth || 80;
         o.el.style.transform = `translateX(${w - k * (w + dw)}px)`;
+        o.el.classList.toggle("hint", helpKeys.has(o.el.dataset.key));
         if (k > 1) {
           o.el.remove();
           live.delete(o);
@@ -153,9 +195,30 @@
         fly.remove();
       };
 
+      // T27: a pause with nothing picked: the doctor's box names the next thing and it glows as it passes (E16: a
+      // glow only after a hesitation); it goes quiet again at the next pick
+      let idle = 0;
+      const idleHint = () => {
+        clearTimeout(idle);
+        idle = setTimeout(() => {
+          if (dead || busy) return;
+          const want = plan.asked.find((a) => !st.dishes.some((d) => d && d.key === PL().beltKey(a)));
+          if (!want) return;
+          screen.setNani(S.line(env, "bringme", { a: wordOf(want) }));
+          helpKeys.add(PL().beltKey(want));
+          idleHinted = PL().beltKey(want);
+        }, Kit.fast ? 400 : 7000);
+      };
+      let idleHinted = null;
       const counted = plan.asked.some((a) => a.count);
       const grab = async (o) => {
         if (busy || o.taken) return;
+        if (idleHinted) {
+          helpKeys.delete(idleHinted);
+          idleHinted = null;
+          screen.setNani(null);
+        }
+        idleHint();
         const r = PL().beltGrab(plan, st, o.it);
         if (!r) return;
         o.taken = true;
@@ -170,17 +233,18 @@
         if (counted) screen.tally.set(d.id, r.count);
         if (PL().beltFull(st)) await check();
       };
-      // the tray is full: ✓ Done hands it over (the shared button); until then a dish can be taken back
+      // decision 52 (P2, P5, CLN-83, CLN-96): the tray is full, so the doctor takes it by himself after a beat (no ✓: a
+      // ✓ appearing on a full tray read as "right" even with the wrong colour in it); during the beat a dish can
+      // still be taken back (UX 17)
       let checkBtn = null;
       const check = async () => {
         if (checkBtn) return;
-        checkBtn = screen.go("✓", () => {
-          if (busy || !PL().beltFull(st)) return;
-          checkBtn.remove();
-          checkBtn = null;
-          handover();
-        }, "done throb");
-        checkBtn.dataset.go = "done";
+        checkBtn = { pending: true };
+        const me = checkBtn;
+        await Kit.wait(Kit.fast ? 120 : 1100);
+        if (checkBtn !== me || busy || !PL().beltFull(st)) return;
+        checkBtn = null;
+        handover();
       };
       const takeBack = (i) => {
         if (busy || committed || !st.dishes[i]) return;
@@ -190,12 +254,27 @@
         if (counted) screen.tally.set(d.id, 0);
         res.log.push({ type: "takeback", detail: d.key });
         if (global.Sfx && global.Sfx.tap) try { global.Sfx.tap(); } catch (e) { /* no sound */ }
-        if (checkBtn && !PL().beltFull(st)) {
-          checkBtn.remove();
-          checkBtn = null;
-        }
+        if (checkBtn && !PL().beltFull(st)) checkBtn = null;
       };
       let committed = false;
+      const redo = global.OrderCard && global.OrderCard.redo ? global.OrderCard.redo({ max: 3 }) : { wrong: () => ({ tries: 1, action: "redo" }), help: () => false };
+      const helpKeys = new Set(); // the items to glow on the belt (a second try)
+      const shows = [];
+      const showRight = async (dishIdx, want) => {
+        const key = PL().beltKey(want);
+        const r = PL().beltGrab(plan, st, { id: want.id, colour: want.colour || null });
+        if (!r) return;
+        const ghost = h("button", "cl-belt-dish cl-belt-show", track);
+        Kit.icon({ id: want.id, colour: want.colour }, ghost);
+        ghost.style.transform = `translateX(${Math.max(0, track.clientWidth / 2 - 40)}px)`;
+        await Kit.wait(Kit.fast ? 60 : 700);
+        await hop({ el: ghost }, r.dish);
+        ghost.remove();
+        const d = st.dishes[r.dish];
+        tray.fill(r.dish, { id: d.id, colour: d.colour, count: r.count });
+        helpKeys.delete(key);
+        void dishIdx;
+      };
 
       const handover = async () => {
         busy = true;
@@ -211,19 +290,31 @@
             if (k >= 0) screen.card.tick(`grab${k}`);
           }
           else {
+            // decision 51 (E35, CLN-96): only this item is redone: the dish empties, its row stays open, the rest
+            // stays done. The second try has help (the right one glows on the belt); at the third the right one
+            // comes over by itself (the shared rule, OrderCard.redo)
             const want = r.want ? plan.asked.find((a) => PL().beltKey(a) === r.want) : null;
+            const k = want ? plan.asked.indexOf(want) : -1;
+            const step = redo.wrong(k >= 0 ? `grab${k}` : `dish${r.dish}`);
             await S.say(S.line(env, "handover-no", { x: it ? wordOf(it) : "clinic.line.pipeline.w-empty", y: want ? wordOf(want) : "clinic.line.pipeline.w-that" }), "doctor");
             tray.fill(r.dish, null);
             if (it) screen.tally.set(it.id, 0);
+            if (want) {
+              if (step.action === "show") shows.push({ dish: r.dish, want });
+              else if (redo.help(`grab${k}`)) helpKeys.add(r.want);
+            }
           }
           dish.classList.remove("lifted");
         }
+        // the third wrong try: the right one rides in and hops into its dish by itself
+        for (const sh of shows.splice(0)) await showRight(sh.dish, sh.want);
         if (!res.rows.length) {
           PL().beltRows(plan, st).forEach((r) => res.judge(r.row, r.ok));
           res.log.push({ type: "handover", taps: st.taps.slice() });
         }
         paused--;
         busy = false;
+        if (PL().beltFull(st) && !out.every((r) => r.ok)) check(); // the right one came over by itself: hand over again
         if (out.every((r) => r.ok)) {
           committed = true;
           trayBox.classList.add("committed");
@@ -233,12 +324,7 @@
       };
 
       S.setExpect("pharmacy", () => {
-        if (checkBtn) {
-          const need = plan.asked.find((a) => a.count && (counts[PL().beltKey(a)] || 0) < a.count);
-          if (!need) return { stage: "pharmacy", kind: "tap", target: '.cl-go[data-go="done"]' };
-          // a counted item still short with the tray full: take the wrong dish back (tests), else keep tapping
-        }
-        if (busy) return { stage: "pharmacy", kind: "wait" };
+        if (busy || (checkBtn && PL().beltFull(st))) return { stage: "pharmacy", kind: "wait" };
         const want = plan.asked.find((a) => {
           const k = PL().beltKey(a);
           const d = st.dishes.find((x) => x && x.key === k);
@@ -249,15 +335,20 @@
         return { stage: "pharmacy", kind: "belt", key: k, target: `.cl-belt-dish[data-key="${k}"]`, wrong: `.cl-belt-dish:not([data-key="${k}"])` };
       });
 
+      idleHint();
       if (env.first) S.onboard(env, "pharmacy", [{ spotlight: () => track, ghost: { gesture: "tap" }, wait: "clinic-belt-tap" }]);
 
       await done;
       dead = true;
+      clearTimeout(idle);
       cancelAnimationFrame(raf);
+      // T27: on the right tray, the doctor's "Achija" in his box (he is off screen here)
+      screen.setNani(S.line(env, "handover-ok", { x: wordOf(plan.asked[plan.asked.length - 1]) }));
       S.current = null;
       S.endOnboard();
       if (global.Sfx && global.Sfx.right) try { global.Sfx.right(); } catch (e) { /* no sound */ }
-      await S.button(screen, S.line(env, "tobench"));
+      // decision 52 (P2): the tray is right, so it moves on by itself after a beat (no "To the bench" button)
+      await Kit.wait(Kit.fast ? 60 : 1000);
       plan.words.forEach((w) => res.words.push(w.word));
       return res;
     },

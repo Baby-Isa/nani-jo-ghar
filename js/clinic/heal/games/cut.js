@@ -578,6 +578,11 @@
     patch: { rx: 40, ry: 18 },
   };
   const ART = "assets/clinic/items-v2/";
+  // S02-C: an art id from the S02 art run (data/clinic/heal/<game>.json art[id], used once `on`), else null
+  const artOn = (ctx, id) => {
+    const a = ctx.data && ctx.data.art && ctx.data.art[id];
+    return a && a.on && a.file ? a.file : null;
+  };
   // the two-colour plasters the v2 art has (either way round)
   const PAIRS = ["blue-green", "red-blue", "red-green", "red-yellow", "yellow-blue", "yellow-green"];
   const plasterFile = (o) => {
@@ -611,7 +616,9 @@
     const Lg = LG();
     const col = (c) => `col-${c}`;
     const name = (o) => (o.length === 2 ? [col(o[0]), Lg.also(col(o[1]))] : [col(o[0])]);
-    const plasterRows = seq.map((o, i) => Object.assign({ id: `plaster${i}` }, say(n > 1 || i > 0 ? Lg.step(i, [...name(o), "cl-plaster"], { lower: true }) : Lg.join([...name(o), "cl-plaster"]))));
+    // S3 (CLN-99): the plasters are in the same sequence as the wash and the cloth (all the steps, or none, joined by
+    // the line): "ne poi {colour} plaster" each, so the line runs from the water to the last plaster
+    const plasterRows = seq.map((o, i) => Object.assign({ id: `plaster${i}`, seq: "steps" }, say(Lg.step(2 + i, [...name(o), "cl-plaster"], { lower: true }))));
     const steps = [
       { id: "wash", kind: "wash", row: Object.assign({ id: "wash", seq: "steps" }, say(Lg.first("cook-paani"))) },
       { id: "dab", kind: "dab", count: dab, row: Object.assign({ id: "dab", seq: "steps" }, say(Lg.join([Lg.then("cl-cloth"), ",", Lg.item("cl-dabs", { n: dab })]))) },
@@ -644,8 +651,10 @@
     const st = { i: 0, dabs: 0, over: false, busy: false, judged: {}, firstSeq: [], carry: null, washing: false };
     const cur = () => P.steps[st.i] || null;
     const rowsOf = (x) => x.rows || [x.row];
-    ctx.card.ordered(false); // two sequences: the steps, then the plasters (13h)
-    ctx.card.setRows(rowsOf(P.steps[0]));
+    const redo = root.OrderCard && root.OrderCard.redo ? root.OrderCard.redo({ max: 3 }) : { wrong: () => ({ tries: 1, action: "redo" }), help: () => false };
+    ctx.card.ordered(false); // one sequence: the wash, the cloth and every plaster (S3)
+    // T29 (decision 52): the whole step list from the start, one sequence (wash, cloth, each plaster), the next in grey
+    ctx.card.setRows([].concat(...P.steps.map(rowsOf)));
     const fast = () => !!(root.Clinic && root.Clinic.Kit && root.Clinic.Kit.fast);
     const Kit = root.Clinic && root.Clinic.Kit;
     const url = (u) => (Kit && Kit.url ? Kit.url(u) : u);
@@ -747,10 +756,7 @@
     const open = () => {
       const c = cur();
       if (!c) return;
-      if (st.i > 0) {
-        rowsOf(c).forEach((r) => ctx.card.addRow(r));
-        ctx.say(c.row);
-      }
+      if (st.i > 0) ctx.say(c.row);
       // D8: the plaster step opens its first plaster's row (the next one opens as each goes on)
       ctx.card.now(c.kind === "plaster" ? "plaster0" : c.id);
       if (c.kind === "wash") {
@@ -898,8 +904,7 @@
         st.busy = true;
         specks.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" })));
         wetG.setAttribute("opacity", 1);
-        S.face("ouch", 900);
-        S.say("cold", "patient");
+        // H3, T30 (CLN-99): no "Cold!" when the wash finishes (it isn't a step): the rinse just ends
         ctx.sfx("pop");
         ctx.after(fast() ? 150 : 600, () => {
           st.busy = false;
@@ -967,6 +972,30 @@
       }
       drawPlaster(pl);
       ctx.sfx("pop");
+      // decision 51 (CLN-96): a plaster in the wrong colour for its place in the order is redone on the spot: it comes
+      // off again (the others stay), the row stays open; the second try glows the right one on the shelf; at the third
+      // the right one goes on by itself. The first plaster laid is still what's scored (firstSeq)
+      const k = laid().length - 1;
+      const wantO = P.steps[2].seq[k];
+      if (wantO && P.key(opt) !== P.key(wantO)) {
+        const key = `plaster${k}`;
+        const step = redo.wrong(key);
+        S.face("wince", 700);
+        st.busy = true;
+        ctx.after(fast() ? 80 : 650, () => {
+          st.busy = false;
+          if (pl.patch && pl.patch.cover === pl) lift(pl);
+          if (step.action === "show") {
+            Object.values(S.toolEls).forEach((b) => b.classList.remove("pulse"));
+            drop(wantO, { x: best.x, y: best.y });
+          } else if (redo.help(key)) {
+            const b = S.toolEls["pl-" + P.key(wantO)];
+            if (b) b.classList.add("pulse");
+          }
+        });
+        return true;
+      }
+      Object.values(S.toolEls).forEach((b) => /^pl-/.test(b.dataset.tool || "") && b.classList.remove("pulse"));
       if (best.full) S.face("happy", 600);
       else {
         S.face("wince", 800); // a red corner still shows: drag it again to cover it
@@ -1068,7 +1097,9 @@
       }
       if (S.sel === "cloth" && c.kind === "dab") {
         st.dabs++;
-        const m = s("image", { href: url(ART + "cloth-blue.webp"), x: p.x - 50, y: p.y - 40, width: 100, height: 74 }, S.fx);
+        // S1 (CLN-99): the cloth in the hand while dabbing is its own picture (art id "cloth-dab", the art run); the folded
+        // cloth stays on the shelf. Until the art lands, the folded one
+        const m = s("image", { href: url(artOn(ctx, "cloth-dab") || ART + "cloth-blue.webp"), x: p.x - 50, y: p.y - 40, width: 100, height: 74 }, S.fx);
         m.animate([{ transform: "translateY(-14px)" }, { transform: "translateY(0)" }, { transform: "translateY(-10px)", opacity: 0 }], { duration: 450, fill: "forwards" });
         ctx.after(480, () => m.remove());
         wetG.setAttribute("opacity", Math.max(0, 1 - st.dabs * 0.3));
