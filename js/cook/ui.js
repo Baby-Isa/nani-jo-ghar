@@ -1269,7 +1269,9 @@
         if (s.block && s.head) {
           // 30 Sept: a second block of the dish (samosa's second kind): its own row ("trae samosa"), its parts under it
           const parts = flat.map((x) => partNode(x.r, x.gi));
-          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts, ordered: false, at: 0, src: flat, key: s.head });
+          // SAM-11 (T16): a block's head is always its own row ("ba samosa", its fillings under it), even when it's the
+          // only block (count 2: never the shared card's "direct" shape, which drops the head)
+          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;
         }
