@@ -316,7 +316,10 @@
       variant = "D1"; // D1b is D1's level 2 now
       L2 = Math.max(2, L);
     }
-    const graded = variant === "D1" && L2 >= 2;
+    // decision 52 (6 Oct, D2, D5): D1 is "you ask" at every level: no Found it / Next, she says yes and it moves on, so
+    // there is no act to grade (the old level-2 grading judged the button press); D2 and D3 are the graded variants
+    const graded = false;
+    void L2;
     const pool = (data.parts[L] || data.parts[3]).filter((p) => p !== part);
     const rows = [];
     let probes = null;

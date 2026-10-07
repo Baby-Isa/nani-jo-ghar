@@ -5,18 +5,18 @@ The minimum for step 4c (decision 38 c). **No frequency ranking and no simulator
 | | Cook | Clinic |
 |---|---|---|
 | Sentences and frames the engine cannot say yet | 5 | 42 |
-| Words with no Kutchi yet (English placeholders in the game today) | 24 | 239 |
+| Words with no Kutchi yet (English placeholders in the game today) | 34 | 239 |
 | A form of a word we know is missing (plural, 'with the …') | 1 | 0 |
 | Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 30 | 4 |
 | We know the word but have no recording of it | 91 | 39 |
 
-Lines and words checked: Cook 213, clinic 375. A recording counts here if any take exists; 17 more words have a take that is not yet ticked OK in `lab/family-audio.html` (only OK takes ship, rule G16).
+Lines and words checked: Cook 229, clinic 375. A recording counts here if any take exists; 17 more words have a take that is not yet ticked OK in `lab/family-audio.html` (only OK takes ship, rule G16).
 
 Gaps are listed once, however many lines need them: closing a word closes it everywhere. The words and lines that exist only in the parked modes (dress, who, snap, tidy, find, monsoon, relations) are in the lexicon as to-record entries and are not repeated here.
 
 ## Cook
 
-151 things to ask or record, from the lines and words the game uses today.
+161 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (5)
 
@@ -31,7 +31,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 5. Please say these the way you would at home: "Bring me these for knee" Ask: to record with Mum (the game line has no Kutchi yet).
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-pantry).
 
-### Words with no Kutchi yet (English placeholders in the game today) (24)
+### Words with no Kutchi yet (English placeholders in the game today) (34)
 
 1. How do you say "green pepper"? Please say it in a short sentence, e.g. "bring me the green pepper". Ask: B34.
    - Needed by: Cook word "green pepper" (ph-pepper).
@@ -62,9 +62,9 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 14. Please say, the way you would at home: "Make the bowl, in order" Ask: new.
    - Needed by: cook line "Make the bowl, in order" (cook.guide.assemble).
 15. Please say, the way you would at home: "Thread the skewers" Ask: new.
-   - Needed by: cook line "Thread the skewers" (cook.guide.thread); cook line "Thread the skewers" (cook.guide.mishkaki-grill:thread).
+   - Needed by: cook line "Thread the skewers" (cook.guide.thread).
 16. Please say, the way you would at home: "Grill the skewers" Ask: new.
-   - Needed by: cook line "Grill the skewers" (cook.guide.grill); cook line "Grill the skewers" (cook.guide.mishkaki-grill:grill).
+   - Needed by: cook line "Grill the skewers" (cook.guide.grill).
 17. Please say, the way you would at home: "Make each cup the way they said" Ask: new.
    - Needed by: cook line "Make each cup the way they said" (cook.guide.chai-tray).
 18. Please say, the way you would at home: "Put water in the pan" Ask: new.
@@ -73,14 +73,34 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: cook line "Put the chai in the pan" (cook.guide.chai-tray:tea).
 20. Please say, the way you would at home: "Make each pan the way they said" Ask: new.
    - Needed by: cook line "Make each pan the way they said" (cook.guide.chai-tray:cups).
-21. Please say, the way you would at home: "Pour each pan into their glass" Ask: new.
-   - Needed by: cook line "Pour each pan into their glass" (cook.guide.chai-tray:pour).
+21. Please say, the way you would at home: "Pour it into their glass" Ask: new.
+   - Needed by: cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
 22. Please say, the way you would at home: "Thread the skewers, then grill them" Ask: new.
    - Needed by: cook line "Thread the skewers, then grill them" (cook.guide.mishkaki-grill).
-23. Please say, the way you would at home: "Roll the maani, then cook it" Ask: new.
+23. Please say, the way you would at home: "Thread them" Ask: new.
+   - Needed by: cook line "Thread them" (cook.guide.mishkaki-grill:thread).
+24. Please say, the way you would at home: "Grill them" Ask: new.
+   - Needed by: cook line "Grill them" (cook.guide.mishkaki-grill:grill).
+25. Please say, the way you would at home: "Roll the maani, then cook it" Ask: new.
    - Needed by: cook line "Roll the maani, then cook it" (cook.guide.maani-line); cook line "Roll the maani, then cook it" (cook.guide.roll-tawa).
-24. Please say, the way you would at home: "Cook it the way they said" Ask: new.
+26. Please say, the way you would at home: "Cook it the way they said" Ask: new.
    - Needed by: cook line "Cook it the way they said" (cook.guide.default).
+27. Please say, the way you would at home: "Put in the next thing" Ask: new.
+   - Needed by: cook line "Put in the next thing" (cook.guide.chai-tray:next); cook line "Put in the next thing" (cook.guide.assemble:next).
+28. Please say, the way you would at home: "Take a dough ball" Ask: new.
+   - Needed by: cook line "Take a dough ball" (cook.guide.maani-line:take).
+29. Please say, the way you would at home: "Roll it round" Ask: new.
+   - Needed by: cook line "Roll it round" (cook.guide.maani-line:roll).
+30. Please say, the way you would at home: "Put it on the tawa" Ask: new.
+   - Needed by: cook line "Put it on the tawa" (cook.guide.maani-line:tawa).
+31. Please say, the way you would at home: "Take it off" Ask: new.
+   - Needed by: cook line "Take it off" (cook.guide.maani-line:off).
+32. Please say, the way you would at home: "Put the vegetables in" Ask: new.
+   - Needed by: cook line "Put the vegetables in" (cook.guide.daar:veg).
+33. Please say, the way you would at home: "Put the daar in" Ask: new.
+   - Needed by: cook line "Put the daar in" (cook.guide.daar:daar).
+34. Please say, the way you would at home: "Fill the next one" Ask: new.
+   - Needed by: cook line "Fill the next one" (cook.guide.samosa:next).
 
 ### A form of a word we know is missing (plural, 'with the …') (1)
 

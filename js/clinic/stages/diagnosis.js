@@ -22,6 +22,7 @@
   const PL = () => global.ClinicPipeline;
 
   const FACE = ["eye", "ear", "nose", "mouth", "tooth", "throat"];
+  const BIG = 1.3; // the art's size over its room size in the diagnosis (D1: "maybe make her bigger")
   const FINDS = { hand: "👀", torch: "✨", stethoscope: "〰️", thermometer: "🔥" };
 
   S.diagnosis = {
@@ -54,7 +55,8 @@
       const fig = env.fig;
       layer.appendChild(fig.el);
       fig.pose(standing ? "stand" : "sit");
-      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(artSpec, { view: "front", figH: cfg.fig.h }));
+      // D1, CLN-93 (6 Oct): a bigger patient so her parts are easy to tap (her seat stays on the bed's edge)
+      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(artSpec, { view: "front", figH: cfg.fig.h / BIG }));
       if (art) fig.tapAnchors = true;
       // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher); the art
       // sits by its measured seat line (the backs of the thighs on the mattress), as in the heal games
@@ -69,13 +71,17 @@
       if (box) box.addEventListener("scenefit", seat);
       fig.react("idle", 0);
       fig.swirl(plan.part, plan.side, false);
-      Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
+      // T30 / CLN-86: her bubbles from her face (the art's mouth), his from him
+      Kit.Voice.speakers.patient = () => (art && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
+      // T22: the doctor is on screen, so he talks in bubbles; the card's headline says the job, the box stays empty
+      screen.setNani(null);
       const top = h("div", "cl-fx", stage);
       const at = (part, side) => fig.hotspot(part, side, stage);
       // the face parts answer only in the close-up: the magnifier toggles it (the head frames the face)
       const zoom = { on: false, busy: false, el: null };
       const levelParts = data.parts[plan.level] || data.parts[3];
-      if (plan.variant !== "D1" && levelParts.some((p) => FACE.includes(p))) {
+      // D11 (6 Oct): in the check-up (D3) the torch zooms to the face by itself; the magnifier is D2's only
+      if (plan.variant === "D2" && levelParts.some((p) => FACE.includes(p))) {
         zoom.el = h("button", "cl-mag", stage, "🔍");
         zoom.el.type = "button";
         zoom.el.setAttribute("aria-label", "Look closer at the face");
@@ -90,8 +96,18 @@
         });
       }
       zoom.need = (part) => (zoom.el && FACE.includes(part) !== zoom.on ? { kind: "tap", target: ".cl-mag" } : null);
+      /** D3: the torch looks at the face, the other tools at the body: the zoom follows the tool by itself. */
+      zoom.to = async (on) => {
+        if (zoom.on === on) return;
+        while (zoom.busy) await Kit.wait(40);
+        zoom.busy = true;
+        zoom.on = on;
+        await fig.focus(on ? "head" : null, null, on ? 2.4 : 1, Kit.fast ? 60 : 700);
+        zoom.busy = false;
+      };
       env.zoom = zoom;
-      const tapPart = (e, active) => (e.target.closest && e.target.closest(".cl-mag, .cl-kit") ? null : fig.partAt(e.clientX, e.clientY, { active: active || levelParts, closeup: zoom.on, prefer: plan.part }));
+      // two parts on one spot (her closed mouth is also the tooth): the one being asked for wins (D11), else the sore one
+      const tapPart = (e, active, prefer) => (e.target.closest && e.target.closest(".cl-mag, .cl-kit") ? null : fig.partAt(e.clientX, e.clientY, { active: active || levelParts, closeup: zoom.on, prefer: prefer || plan.part }));
       const partW = (p) => PL().partWord(data, p);
 
       if (plan.variant === "D1" || plan.variant === "D1b") await d1(env, plan, res, { stage, top, fig, at });
@@ -102,10 +118,10 @@
       S.current = null;
       if (zoom.on) await fig.focus(null, null, 1, Kit.fast ? 60 : 350);
       if (zoom.el) zoom.el.remove();
-      fig.swirl(plan.part, plan.side, true);
-      S.say(plan.name, "doctor");
-      const btn = await S.button(screen, S.line(env, "tocounter"));
-      void btn;
+      // decision 52 (D2, CLN-83): the outcome is clear, so no "To the counter" click: the doctor names it and it moves on
+      fig.react("ouch", 0);
+      await S.say(plan.name, "doctor");
+      await Kit.wait(Kit.fast ? 60 : 900);
       res.words.push(PL().partWord(data, plan.part));
       void h;
       return res;
@@ -114,9 +130,9 @@
 
   async function d1(env, plan, res, { stage, top, fig, at }) {
     const { screen, data } = env;
-    const graded = !!plan.graded; // D1 level 2 (the old D1b)
-    const row = plan.rows[0];
-    await S.request(screen, { title: "", rows: plan.card });
+    // T24 (decision 55): the card's headline is the job, [Ask where it hurts]; the doctor's [Does it hurt here?] and her
+    // Ha / Na are bubbles at their faces. D1 is taught at every level (decision 52: no Found it, no Next)
+    await S.request(screen, { title: S.line(env, "ask-where"), rows: [] });
     let dots = plan.probes.map((p) => {
       const side = p === plan.part ? plan.side : data.sided.includes(p) ? (env.rng() < 0.5 ? "left" : "right") : null;
       const d = h("button", "cl-probe", top);
@@ -133,7 +149,7 @@
     // on a small screen two decoys can land on top of each other (or of the sore one): keep the sore
     // part, drop any decoy closer than a dot's width to one already kept (the row judges only the sore part)
     {
-      const size = (dots[0] && dots[0].el.offsetWidth) || 50;
+      const size = (dots[0] && dots[0].el.offsetWidth) || 40;
       const kept = [];
       dots.slice().sort((a, b) => (b.part === plan.part) - (a.part === plan.part)).forEach((d) => {
         const x = parseFloat(d.el.style.left);
@@ -145,87 +161,66 @@
     }
     const onResize = () => dots.forEach((d) => d.place());
     global.addEventListener("resize", onResize);
+    // the art's picture may still be loading when the dots are first placed: place them again once it's drawn
+    whenDrawn(fig).then(onResize);
     let busy = false;
     let finish;
     const done = new Promise((r) => (finish = r));
-    const acts = [];
-    let lastAnswer = null;
-    let current = null;
-    const act = (which) => {
-      if (!current || busy) return;
-      acts.push(PL().judgeProbe(plan, current.part, which));
-      if (which === "found") {
-        if (graded) res.judge(row, acts.every(Boolean));
-        dots.forEach((x) => x.el.remove());
-        finish();
-      } else {
-        current.el.classList.add("done");
-        current = null;
-        armButtons(false);
-      }
-    };
-    // Found it / Next are the shared answer pills (UX 15), in the play area's corner
-    const choices = [{ id: "found", node: Kit.text(S.line(env, "found"), null) }].concat(graded ? [{ id: "next", node: Kit.text(S.line(env, "next"), null) }] : []);
-    const pills = global.NjgButtons ? global.NjgButtons.pills(screen.actions, choices, (id) => act(id), { cls: "cl-answer" }) : null;
-    const pill = (id) => (pills ? pills.pill(id) : screen.go(S.line(env, id), () => act(id)));
-    const found = pill("found");
-    found.classList.add("cl-go");
-    found.dataset.act = "found";
-    const next = graded ? pill("next") : null;
-    if (next) {
-      next.classList.add("cl-go");
-      next.dataset.act = "next";
-    }
-    const armButtons = (on) => {
-      found.disabled = !on;
-      found.classList.toggle("throb", on && !graded);
-      if (next) next.disabled = !on;
-    };
-    armButtons(false);
     S.setExpect("diagnosis", () => {
-      if (current && !found.disabled) {
-        const a2 = lastAnswer === "yes" ? "found" : "next";
-        return { stage: "diagnosis", kind: "act", act: a2, target: `.cl-go[data-act="${a2}"]`, wrong: `.cl-go[data-act="${a2 === "found" ? "next" : "found"}"]` };
-      }
       if (busy) return { stage: "diagnosis", kind: "wait" };
       const d = dots.find((x) => x.part === plan.part);
-      return { stage: "diagnosis", kind: "tap", target: `.cl-probe[data-part="${d.part}"]`, wrong: `.cl-probe:not([data-part="${d.part}"]):not(.done)` };
+      return { stage: "diagnosis", kind: "tap", target: `.cl-probe[data-part="${d.part}"]`, wrong: `.cl-probe:not([data-part="${d.part}"]):not(.tried)` };
     });
     dots.forEach((d) => {
       d.el.addEventListener("click", async () => {
-        if (busy) return;
+        if (busy || d.el.classList.contains("tried")) return;
         busy = true;
-        current = d;
-        armButtons(false);
-        dots.forEach((x) => x.el.classList.remove("sel"));
-        d.el.classList.add("sel");
+        // D4 (CLN-93): the dot being asked about is lit (the one highlight), never green before her answer
+        dots.forEach((x) => x.el.classList.remove("asking"));
+        d.el.classList.add("asking");
         S.signal("clinic-probe");
         await S.say(S.line(env, "here"), "doctor");
         const yes = d.part === plan.part;
-        lastAnswer = yes ? "yes" : "no";
-        fig.react("idle", 0);
-        // the patient's answer: the data's line for yes / no (haa / na, G9)
-        await S.say(S.line(env, (data.answer_lines || {})[lastAnswer] || lastAnswer), "patient");
-        if (yes) {
-          if (global.Sfx && global.Sfx.bing) try { global.Sfx.bing(); } catch (e) { /* no sound */ }
-          fig.swirl(plan.part, plan.side, true);
-          await S.say(S.line(env, "mypart", { part: PL().pword("part", plan.part) }), "patient");
+        fig.react(yes ? "ouch" : "idle", 0);
+        // the patient's answer: the data's line for yes / no (haa / na, G9), in her bubble
+        await S.say(S.line(env, (data.answer_lines || {})[yes ? "yes" : "no"] || (yes ? "yes" : "no")), "patient");
+        d.el.classList.remove("asking");
+        if (!yes) {
+          // D4: a tried dot goes grey (and can't be asked again); the others keep pulsing
+          d.el.classList.add("tried");
+          d.el.disabled = true;
+          busy = false;
+          return;
         }
-        busy = false;
-        if (graded || yes) armButtons(true);
+        // D3 (CLN-93): on yes the doctor names the part in his bubble, and it moves on by itself (decision 52)
+        if (global.Sfx && global.Sfx.bing) try { global.Sfx.bing(); } catch (e) { /* no sound */ }
+        d.el.classList.add("found");
+        dots.forEach((x) => x !== d && x.el.remove());
+        await S.say(PL().partWord(data, plan.part), "doctor");
+        await Kit.wait(Kit.fast ? 40 : 500);
+        d.el.remove();
+        finish();
       });
     });
     if (env.first) S.onboard(env, "diagnosis", [{ spotlight: () => dots.find((x) => x.part === plan.part).el, ghost: { gesture: "tap" }, wait: "clinic-probe" }]);
     await done;
     global.removeEventListener("resize", onResize);
-    screen.card.tick("probe");
     screen.clearActions();
   }
 
+  /** Resolves once the figure's art picture is decoded and laid out (at once without art). */
+  function whenDrawn(fig) {
+    const img = fig.art && fig.art.base;
+    if (!img) return Promise.resolve();
+    const ready = img.complete && img.naturalWidth ? Promise.resolve() : new Promise((r) => img.addEventListener("load", r, { once: true }));
+    return ready.then(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+  }
+
   async function d2(env, plan, res, { stage, fig, tapPart, partW }) {
-    const { screen, data } = env;
+    const { screen } = env;
     const row = plan.rows[0];
-    await S.request(screen, { title: "", rows: plan.card });
+    // T25: the card's headline [Find where it hurts]; her [My {part} hurts] in her bubble; his [That's it]; it moves on
+    await S.request(screen, { title: S.line(env, "find-where"), rows: [] });
     S.say(row.patientSays, "patient"); // input is live at once (13i): a tap during the line goes ahead
     let busy = false;
     let finish;
@@ -248,11 +243,9 @@
       res.judge(row, ok);
       res.log.push({ type: ok ? "right" : "wrong", rowId: row.id, detail: `${tap.side || ""} ${tap.part}` });
       if (ok) {
-        fig.swirl(plan.part, plan.side, true);
         fig.react("relief");
         S.signal("clinic-part");
-        S.say(S.line(env, "thatsit"), "doctor");
-        screen.card.tick("where");
+        await S.say(S.line(env, "thatsit"), "doctor");
         finish();
       } else {
         fig.react("giggle");
@@ -268,11 +261,25 @@
     await done;
   }
 
+  /**
+   * D3, the check-up (T26, decision on D3, CLN-94): her [I don't feel well] in her bubble; the card like sekelo: the
+   * headline [Check her over], one block per tool ([Use your hand], [Use the torch]) with the parts to look at under
+   * it, ticking as each is done; one highlight (the row now). Picking the torch zooms to her face by itself, any
+   * other tool zooms back out, so the eye and the ear answer at the first tap.
+   */
   async function d3(env, plan, res, { stage, top, fig, at, tapPart }) {
     const { screen, data } = env;
     const tools = data.stages.diagnosis.tools;
-    S.say(S.line(env, "unwell"), "patient");
-    await S.request(screen, { title: "", rows: plan.card });
+    S.say(S.line(env, "unwell-short"), "patient");
+    // the card: each call's row is "[the part]" under its tool's block (rows sharing a seq are one block)
+    const order = [];
+    plan.calls.forEach((c) => !order.includes(c.tool) && order.push(c.tool));
+    const calls = order.flatMap((t) => plan.calls.filter((c) => c.tool === t));
+    const partRow = (c) => Object.assign(PL().partWord(data, c.part, c.side || null), { id: c.id, seq: `tool-${c.tool}` });
+    const heads = {};
+    order.forEach((t) => (heads[`tool-${t}`] = S.line(env, `use-${t}`)));
+    blockCard(screen.card, heads);
+    await S.request(screen, { title: S.line(env, "check-over"), rows: calls.map(partRow) });
     const kit = h("div", "cl-kit", stage);
     let tool = null;
     const btns = {};
@@ -285,6 +292,7 @@
         tool = t;
         Object.values(btns).forEach((x) => x.classList.toggle("sel", x === b));
         S.signal("clinic-tool");
+        env.zoom.to(t === "torch");
       });
       btns[t] = b;
     });
@@ -311,14 +319,12 @@
     let busy = false;
     let finish;
     const done = new Promise((r) => (finish = r));
-    screen.card.now(plan.calls[0].id);
+    screen.card.now(calls[0].id);
     let cueing = true;
-    cue(plan.calls[0]).then(() => (cueing = false));
+    cue(calls[0]).then(() => (cueing = false));
     S.setExpect("diagnosis", () => {
-      const c = plan.calls[i];
+      const c = calls[i];
       if (!c || busy || cueing || env.zoom.busy) return { stage: "diagnosis", kind: "wait" };
-      const z = tool === c.tool && env.zoom.need(c.part);
-      if (z) return Object.assign({ stage: "diagnosis" }, z);
       if (tool !== c.tool) return { stage: "diagnosis", kind: "tap", target: `.cl-kit-tool[data-tool="${c.tool}"]` };
       const q = fig.hotspot(c.part, c.side || (c.sore ? plan.side : "left"), stage);
       const r = stage.getBoundingClientRect();
@@ -326,45 +332,84 @@
     });
     const allParts = data.parts[plan.level] || data.parts[3];
     stage.addEventListener("click", async (e) => {
-      if (busy || e.target.closest(".cl-kit")) return;
-      const c = plan.calls[i];
+      if (busy || env.zoom.busy || e.target.closest(".cl-kit")) return;
+      const c = calls[i];
       if (!c || !tool) return;
-      const tap = tapPart(e, allParts);
+      const tap = tapPart(e, allParts, c.part);
       if (!tap) return;
       busy = true;
-      const row = plan.rows[i];
+      const row = plan.rows.find((r) => r.id === c.id);
       const ok = PL().judgeCheck(row, tool, tap);
       res.judge(row, ok);
       res.log.push({ type: ok ? "right" : "wrong", rowId: row.id, detail: `${tool} ${tap.side || ""} ${tap.part}` });
-      // the find shows only at the sore part, whatever was used
+      // the find shows only at the sore part, whatever was used: her sore face (no swirl, no icon)
       const sore = tap.part === plan.part && (!plan.side || !tap.side || tap.side === plan.side);
       const q = at(tap.part, tap.side);
-      const f = h("div", `cl-find${sore ? " sore" : ""}`, top, sore ? FINDS[tool] || "!" : "·");
+      const f = h("div", `cl-find${sore ? " sore" : ""}`, top);
       f.style.left = `${q.x}px`;
       f.style.top = `${q.y}px`;
-      setTimeout(() => f.remove(), 1400);
-      if (sore) {
-        fig.react("ouch");
-        fig.swirl(plan.part, plan.side, true);
-      } else fig.react(tool === "hand" ? "giggle" : "idle");
+      setTimeout(() => f.remove(), 900);
+      if (sore) fig.react("ouch", 0);
+      else fig.react(tool === "hand" ? "giggle" : "idle");
       await Kit.wait(Kit.fast ? 60 : 700);
       if (ok) {
         screen.card.tick(c.id);
         i++;
-        tool = null;
-        Object.values(btns).forEach((x) => x.classList.remove("sel"));
-        Object.values(btns).forEach((x) => x.classList.remove("cue"));
-        if (i >= plan.calls.length) finish();
+        if (i >= calls.length) finish();
         else {
-          screen.card.now(plan.calls[i].id);
+          // the next row: a new tool's block means picking that tool (the old one is put down)
+          if (calls[i].tool !== tool) {
+            tool = null;
+            Object.values(btns).forEach((x) => x.classList.remove("sel"));
+          }
+          Object.values(btns).forEach((x) => x.classList.remove("cue"));
+          screen.card.now(calls[i].id);
           cueing = true;
-          await cue(plan.calls[i]);
+          await cue(calls[i]);
           cueing = false;
         }
       }
       busy = false;
     });
     await done;
+    blockCard(screen.card, null);
     kit.remove();
+  }
+
+  /**
+   * The sekelo-style block card (T26) on the clinic's card: Kit.Card draws a `seq` group with no head of its own, so
+   * for the check-up the group's head is set to the tool's line as the shared order card draws it (OrderCard: an item
+   * with a label and its parts). heads = {seq: word} | null to stop. The card's own method is wrapped for this card
+   * only (Kit.Card is Session A's: a group head there would replace this; reported).
+   */
+  function blockCard(card, heads) {
+    if (!heads) {
+      delete card.render;
+      card.render();
+      return;
+    }
+    card.render = function () {
+      const OC = global.OrderCard;
+      const orig = OC && OC.card;
+      if (!orig) return Kit.Card.prototype.render.call(this);
+      const rows = this.rows;
+      OC.card = (data, opts) => {
+        data.items = data.items.map((it) => {
+          const key = it.key != null ? it.key : it.parts && it.parts[0] && it.parts[0].key;
+          const r = rows.find((x) => x.id === key);
+          const head = r && heads[r.seq];
+          if (!head) return it;
+          // a single-part block was drawn as a plain row: it gets its head back, the part under it
+          const parts = it.label === null || it.parts.length ? it.parts : [{ label: it.label, done: it.done, key: it.key, miss: it.miss }];
+          return Object.assign({}, it, { label: Kit.rowHtml(head), parts, ordered: false, key: undefined, done: parts.every((p) => p.done) });
+        });
+        return orig(data, opts);
+      };
+      try {
+        return Kit.Card.prototype.render.call(this);
+      } finally {
+        OC.card = orig;
+      }
+    };
   }
 })(typeof self !== "undefined" ? self : this);

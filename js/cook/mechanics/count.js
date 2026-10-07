@@ -26,13 +26,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const col = St.heapColor(word, 0xffffff);
     const c = S.centre(bowl);
     const sp = S.track(S.add.container(c.x, c.y - z.L(20)).setDepth(D.fx));
-    const g = S.add.graphics();
-    g.fillStyle(0xb9bcc2, 1);
-    g.fillRoundedRect(z.L(8), -z.L(4), z.L(56), z.L(8), z.L(4));
-    g.fillEllipse(0, 0, z.L(34), z.L(24));
-    g.fillStyle(col, 1);
-    g.fillEllipse(0, -z.L(3), z.L(26), z.L(14));
-    sp.add(g);
+    // CHAI-13: a real teaspoon (the art run's picture once it lands, art.s02 "teaspoon"), its bowl heaped
+    if (St.hasArt(S, "teaspoon")) {
+      const im = S.add.image(0, 0, St.artKey("teaspoon"));
+      const m = St.art("teaspoon").meta || {};
+      const bowlAt = m.bowl || [0.5, 0.85];
+      im.setOrigin(bowlAt[0], bowlAt[1]).setScale(z.L(80) / Math.max(im.width, im.height)).setAngle(-60);
+      const heap = S.add.ellipse(0, 0, z.L(20), z.L(12), col, 1);
+      sp.add([im, heap]);
+    } else {
+      const g = S.add.graphics();
+      St.teaspoon(g, 0, 0, z.L(64), z.L(4), z.L(1), col);
+      sp.add(g);
+    }
     const p = into.surface ? into.surface() : into;
     await S.fly(sp, p.x + (Math.random() - 0.5) * z.L(30), p.y - z.L(10), { duration: ms, arc: z.L(90) });
     S.tweens.add({ targets: sp, angle: -70, duration: 120 });
