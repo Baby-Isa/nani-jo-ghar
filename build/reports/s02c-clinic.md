@@ -1,12 +1,12 @@
 # S02-C: the clinic, every point from the 6 Oct play
 
-Branch `ccr-a7370759-t0lee7`. Builder's notes only; not reviewed.
+Branch `ccr-a7370759-t0lee7`. Not reviewed.
 
 ## What changed
 1. **Girl's art**: bench, diagnosis (bigger), send-off (on the bed: no standing pose yet), sticker, receipt and pill faces (`Figure.face`); no swirl.
 2. **Waiting**: nobody stands; face+speaker pills; bubbles at faces; L1 box only; room-picture button.
 3. **Diagnosis**: small dots (48 px target), grey after no, doctor names the part, moves on; D3 card in tool blocks, torch zooms itself.
-4. **Pharmacy**: pop-up first; full tray hands over (the ✓ was the "tick" in P5; the checker was right); per-item redo; items on the belt.
+4. **Pharmacy**: pop-up first; full tray hands over (the ✓ was P5's "tick"); per-item redo; items on the belt.
 5. **Heal**: face top right; scrape plasters in the sequence, redo, no Cold!; knee wrap; ear bin, smears, hearing test; eye chart in code, EY13; fever ±2/3/4, icons; tooth plaque, square drill, ow+buzz; taste rising drinks, cues; boing wipe, funny jab, plaster choice; foot dirt wash.
 6. New lines are grey placeholders (lang.js falls back to the data's English): 20, to record.
 
