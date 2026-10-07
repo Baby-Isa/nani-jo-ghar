@@ -1,0 +1,29 @@
+{
+  "name": "S02-G, fix the pre-publish gate's blockers (Sprint 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "blockers found by the orchestrator's full gate (s02-gate); a publish waits on them",
+  "cost": "about $10-15",
+  "stop": "8 Oct 2026, 12:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": ["2", "3"],
+  "read": [
+    "build/screenshots/sandbox/s02-gate/summary.md and the gate log lines quoted below",
+    "build/reports/s02e-art-loading.md (the art and loading changes that caused these)"
+  ],
+  "owns": ["js/clinic/**, data/clinic/** (diagnosis D3 standing-pose hit areas, eye game drop)", "js/shared/** for the help pop-up link and the pass-me tray only", "css/** for those two only", "build/sandbox/** drivers only if the game is right and the driver is wrong (say which in the report)", "build/reports/s02g-gate-fixes.md"],
+  "readOnly": ["assets/**", "data/lang/**", "data/family-audio.json"],
+  "stubs": "none",
+  "tasks": [
+    { "do": "Diagnosis D3 (clinic:diagnosis@L2, @L3#mistake, clinic:patient@L2/@L3 at every size) stalls at expect {kind:'point', part:'hand'}: the girl's new standing pose (girl-w11) has no measured tap areas, so the hand can't be hit. Measure her standing-pose taps (heal-art.json, as for the sitting art) and make the game and driver use the pose's own taps.", "accept": "those flows reach their end at 800x360, 1366x768, 1440x900" },
+    { "do": "clinic:heal-eye (L1 #hint, L2) stalls: the driver taps 'drop' at a fixed x=923,y=360 that no longer hits the dropper after E's art; fix the drop target (game) or the driver (if the game is right), so a child's tap on the dropper works.", "accept": "clinic:heal-eye, @L2, #hint reach their end at 1024x768 and 800x360" },
+    { "do": "The grown-ups' 'Play as new' link in the help pop-up is 80x19 px (tap-small, 72 findings): make it a proper shared button of at least 44 px tap height.", "accept": "no tap-small on #help-pop" },
+    { "do": "The pass-me tray's pictures hang 4-10 px off the screen on some sizes (cook:fetch L1-L4): keep the tray inside the safe area.", "accept": "no tap-offscreen for #passme" },
+    { "do": "Re-run only those flows at every size (sandbox --flow ... --every-size --check is allowed for this narrow set) and report the result.", "accept": "CHECK PASSED for the listed flows" }
+  ],
+  "flows": ["clinic:diagnosis", "clinic:patient", "clinic:heal-eye", "first", "cook:fetch"],
+  "shared": true,
+  "port": 8828,
+  "report": "s02g-gate-fixes",
+  "publish": false
+}

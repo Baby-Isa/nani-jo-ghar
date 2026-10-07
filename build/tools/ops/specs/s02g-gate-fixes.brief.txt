@@ -1,0 +1,63 @@
+SESSION NAME / MODE:  S02-G, fix the pre-publish gate's blockers (Sprint 2)
+MODEL AND EFFORT:     Opus, high effort (blockers found by the orchestrator's full gate (s02-gate); a publish waits on them)
+COST ESTIMATE:        about $10-15
+HARD STOP:            8 Oct 2026, 12:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3 only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. build/screenshots/sandbox/s02-gate/summary.md and the gate log lines quoted below
+  6. build/reports/s02e-art-loading.md (the art and loading changes that caused these)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/**, data/clinic/** (diagnosis D3 standing-pose hit areas, eye game drop)
+  - js/shared/** for the help pop-up link and the pass-me tray only
+  - css/** for those two only
+  - build/sandbox/** drivers only if the game is right and the driver is wrong (say which in the report)
+  - build/reports/s02g-gate-fixes.md
+READ-ONLY (never edit):
+  - assets/**
+  - data/lang/**
+  - data/family-audio.json
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Diagnosis D3 (clinic:diagnosis@L2, @L3#mistake, clinic:patient@L2/@L3 at every size) stalls at expect {kind:'point', part:'hand'}: the girl's new standing pose (girl-w11) has no measured tap areas, so the hand can't be hit. Measure her standing-pose taps (heal-art.json, as for the sitting art) and make the game and driver use the pose's own taps.
+     Accept: those flows reach their end at 800x360, 1366x768, 1440x900
+  2. clinic:heal-eye (L1 #hint, L2) stalls: the driver taps 'drop' at a fixed x=923,y=360 that no longer hits the dropper after E's art; fix the drop target (game) or the driver (if the game is right), so a child's tap on the dropper works.
+     Accept: clinic:heal-eye, @L2, #hint reach their end at 1024x768 and 800x360
+  3. The grown-ups' 'Play as new' link in the help pop-up is 80x19 px (tap-small, 72 findings): make it a proper shared button of at least 44 px tap height.
+     Accept: no tap-small on #help-pop
+  4. The pass-me tray's pictures hang 4-10 px off the screen on some sizes (cook:fetch L1-L4): keep the tray inside the safe area.
+     Accept: no tap-offscreen for #passme
+  5. Re-run only those flows at every size (sandbox --flow ... --every-size --check is allowed for this narrow set) and report the result.
+     Accept: CHECK PASSED for the listed flows
+
+REGRESSION ROWS TO RECHECK (128 rows of docs/process/regressions.md; * = open or reopened):
+  clinic:diagnosis (24): CLN-16*, CLN-17, CLN-18*, CLN-93*, CLN-94*, CLN-95*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*
+  clinic:patient (18): CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*
+  clinic:heal-eye (33): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-84*, CLN-85*, CLN-87*, CLN-30, CLN-38, CLN-39*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-47, CLN-59, CLN-60, CLN-61*, CLN-62, CLN-63, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-107*
+  first (2): FL-01, FL-02*
+  cook:fetch (13): PAN-01*, PAN-02*, PAN-03, PAN-04, PAN-05, PAN-06, PAN-07, PAN-08, PAN-09*, PAN-10*, PAN-11*, PAN-12*, PAN-13*
+  shared components (63): SH-01*, SH-02*, SH-03*, SH-04, SH-05, SH-06, SH-49*, SH-50*, SH-51*, SH-61*, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52*, SH-53*, SH-54*, SH-55*, SH-62*, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56*, SH-57*, SH-58*, SH-59*, SH-60*, SH-63*, SH-23, SH-24, SH-25, SH-26, SH-27*, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38*, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s02g-gate-fixes` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8828.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s02g-gate-fixes.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
