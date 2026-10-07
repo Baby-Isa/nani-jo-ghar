@@ -24,6 +24,7 @@ def main():
         items.append({
             "k": r["key"], "t": r["kutchi"], "e": r.get("english") or "", "q": r.get("qid") or "",
             "s": r["speaker"], "ck": r.get("checked") or "", "o": UP + r["file"], "os": r["old"]["score"],
+            "wv": bool(r["old"]["speaker"] and r["old"]["speaker"] != r["speaker"]),
             "c": [{"r": c["rank"], "f": UP + c["file"], "sc": c["score"],
                    "src": os.path.basename(c["source"]) + f" {c['start']:.1f}s",
                    "same": c.get("same_as_current", False)} for c in r["candidates"]]})
@@ -98,7 +99,7 @@ function render() {
         <button class="choose">${cur === val ? "Picked" : "Pick"}</button></div>`;
     return `<section class="line${cur ? " done" : ""}">
       <div class="hd"><b>${esc(d.t)}</b><span class="en">${esc(d.e)}</span>
-      <span class="meta">${esc(d.s)} · ${esc(d.q)} · now ${d.os}${d.ck ? " · " + esc(d.ck) : ""}</span></div>
+      <span class="meta">${esc(d.s)} · ${esc(d.q)} · now ${d.os}${d.ck ? " · " + esc(d.ck) : ""}${d.wv ? " · current sounds like the other voice" : ""}</span></div>
       <div class="opts">${opt("k", "Keep current", "score " + d.os, d.o, false)}
       ${d.c.map((c) => opt(String(c.r), "Take " + c.r, "score " + c.sc + " · " + c.src + (c.same ? " · same take, new cut" : ""), c.f, c.r === 1)).join("")}</div></section>`;
   }).join("");
