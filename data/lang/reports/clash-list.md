@@ -10,14 +10,14 @@ Where two sources disagree the engine never chooses silently: it uses the higher
 4. **yes** (`phrase.yes`): the spelling or the word. The engine uses "ha" (hand: grammar-notes prose; data/cook.json); the other source says "haa" (data/clinic/lang.json; data/cook.json).
 5. **yes** (`phrase.yes`): the form. The engine uses "ha" (hand: grammar-notes prose); the other source says "haa" (data/clinic/lang.json; data/cook.json).
 6. **chilli** (`n.chilli`): the spelling or the word. The engine uses "mirchi" (hand: grammar-notes prose; data/cook.json); the other source says "marcha" (data/content.json).
-7. **potato** (`n.potato`): the spelling or the word. The engine uses "bataato" (data/cook.json; data/content.json); the other source says "bateto" (grammar-notes §34 P1 (Whisper's hearing)).
-8. **tomato** (`n.tomato`): the spelling or the word. The engine uses "tameto" (data/cook.json; data/content.json); the other source says "tumata" (grammar-notes §34 P3 (Whisper's hearing)).
+7. **peas (green peas)** (`n.green-peas`): the spelling or the word. The engine uses "matar" (hand: grammar-notes prose; data/cook.json); the other source says "vatana" (data/content.json).
+8. **potato** (`n.potato`): the spelling or the word. The engine uses "bataato" (data/cook.json; data/content.json); the other source says "bateto" (grammar-notes §34 P1 (Whisper's hearing)).
+9. **tomato** (`n.tomato`): the spelling or the word. The engine uses "tameto" (data/cook.json; data/content.json); the other source says "tumata" (grammar-notes §34 P3 (Whisper's hearing)).
 
-### Already settled by a rule or a decision (3)
+### Already settled by a rule or a decision (2)
 
-9. **one** (`num.1`): the spelling or the word. The engine uses "hakro" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "hikdo" (data/content.json). **Settled:** the handout's hikdo for 'one' is superseded: the family says hakro / hakri by gender (grammar-notes §2; rule G5 (docs/process/rules.md § 8); docs/language/lexicon.md stale points).
-10. **two** (`num.2`): the spelling or the word. The engine uses "ba" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "bo" (data/content.json). **Settled:** the handout's bo for 'two' is superseded: the family says ba (voiced ber) (grammar-notes §3, §35; rule G5; docs/language/lexicon.md stale points).
-11. **peas** (`n.peas`): the spelling or the word. The engine uses "watana" (data/cook.json); the other source says "vatana" (data/content.json). **Settled:** no V at the start of a Kutchi word, always W (the content master's vatana) (grammar-notes Spelling rules from Zafar (25 Sept), §28 (V may appear inside a word); rule G4).
+10. **one** (`num.1`): the spelling or the word. The engine uses "hakro" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "hikdo" (data/content.json). **Settled:** the handout's hikdo for 'one' is superseded: the family says hakro / hakri by gender (grammar-notes §2; rule G5 (docs/process/rules.md § 8); docs/language/lexicon.md stale points).
+11. **two** (`num.2`): the spelling or the word. The engine uses "ba" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "bo" (data/content.json). **Settled:** the handout's bo for 'two' is superseded: the family says ba (voiced ber) (grammar-notes §3, §35; rule G5; docs/language/lexicon.md stale points).
 
 ## 2. Two words for one thing (6)
 

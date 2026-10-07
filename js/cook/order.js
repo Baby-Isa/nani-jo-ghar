@@ -45,8 +45,10 @@
    * level 3 the card writes its sentence without the number ("Muke samosa khape."), built from the same frame; the
    * full line is still what's said (and replayed from the face).
    */
-  function headCard(r, level, rule) {
+  function headCard(r, level, rule, uncounted = false) {
     const parts = r.parts || [];
+    // SAM-11 (T16): a dish whose count heads each of its blocks ("ba samosa") writes its headline without it
+    if (uncounted && r.frame && parts.some((p) => typeof p === "number")) return Lang.line(r.frame, Lang.phraseUncounted ? Lang.phraseUncounted(parts) : Lang.phrase(parts.filter((p) => typeof p !== "number")));
     const shown = cardParts(parts, level, rule);
     if (!r.frame || shown.length === parts.length || !shown.length) return null;
     // the noun keeps the form its count gave it (Lang.phraseUncounted; the parked pages: the words as they are)
@@ -118,7 +120,7 @@
     const row = (r) => rowOf(r, rule);
     Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
       if (r.kind === "dish" && !L.head) {
-        L.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule) });
+        L.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule, !!(Cook.data.recipes[d.recipe] || {}).blockHeads) });
         return;
       }
       // a person's own headline (the Chai tray's "Muke kari chai khape."): heads their card, not a row
@@ -170,6 +172,14 @@
         }
         return;
       }
+      // S02-B (T14): a row that waits for its station (daar's stir row: the laps and the speed) is its own section,
+      // shown when that station starts, after the rest
+      if (r.when) {
+        let s = L.sections.find((y) => y.key === `when:${r.when}`);
+        if (!s) L.sections.push((s = { key: `when:${r.when}`, seq: false, when: r.when, groups: [[]], stepRow: true }));
+        s.groups[0].push(Object.assign(x, { stepRow: true }));
+        return;
+      }
       // everything else said on its own line: one any-order group
       if (!any) L.sections.push((any = { key: "any", seq: false, groups: [[]] }));
       any.groups[0].push(x);
@@ -187,7 +197,8 @@
       });
     });
     // "no X": among the any-order rows, else sprinkled through the list
-    const home = any || L.sections.filter((s) => !s.when && !s.for).pop();
+    // (a dish in blocks, SAM-11: its "no" rows go with the first block, said once for all of them)
+    const home = any || L.sections.filter((s) => !s.when && !s.for && !s.block).pop() || L.sections.find((s) => s.block === 1) || L.sections.filter((s) => !s.when && !s.for).pop();
     if (home) sprinkle(home.groups, nos);
     else if (nos.length) L.sections.push({ key: "any", seq: false, groups: [Cook.shuffle(nos)] });
     // 30 Sept (Zafar, samosa): "baseFirst" names the slot whose first item is the base (samosa's chundo or

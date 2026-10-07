@@ -96,12 +96,11 @@
    "src": "content master"
   },
   "veg-10": {
-   "kutchi": "watana",
-   "_count_mum": "Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): watana are FRIED peas (the snack); green peas are matar. Zafar to check which one this is. Not changed.",
-   "src_change": "was vatana; Zafar 25 Sept: no V in Kutchi, always W",
-   "english": "peas",
+   "kutchi": "matar",
+   "src_change": "was watana (fried peas); decision 61 (Zafar, 6 Oct): green peas are matar, with the R (Mum 28 Sept, Round 3 P11, grammar-notes §34; her matar-b-m clip). Earlier: was vatana; Zafar 25 Sept: no V in Kutchi, always W",
+   "english": "green peas",
    "gender": "unknown",
-   "src": "content master"
+   "src": "Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): green peas are matar; decision 61"
   },
   "veg-14": {
    "kutchi": "aadu",

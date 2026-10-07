@@ -441,7 +441,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         return;
       }
-      const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && r.phrase);
+      // a dish in blocks (SAM-11: "ba samosa", "and trae samosa"): what was made is each block's head
+      const heads = L.sections.filter((s) => s.block && s.head && s.head.phrase);
+      if (heads.length) return heads.forEach((s) => phrases.push(s.head.phrase));
+      const rows = Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && r.phrase && !r.stepRow); // (a step's row, the stir's laps, isn't a thing made)
       if (rows.length) rows.forEach((r) => phrases.push(r.phrase));
       else if (L.head && L.head.phrase) phrases.push(L.head.phrase);
     });

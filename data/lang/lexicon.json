@@ -3560,6 +3560,7 @@
    "id": "n.green-peas",
    "pos": "N",
    "gender": null,
+   "paradigm": "noun.invariant",
    "lemma": "matar",
    "gloss": "peas (green peas)",
    "forms": {
@@ -3567,13 +3568,35 @@
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §34 P11 (green peas are matar)"
+    "grammar-notes §34 P11 (green peas are matar)",
+    "data/cook.json words.veg-10: Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): green peas are matar; decision 61",
+    "data/content.json words.veg-10: sindhi-cognate (class handout / content master; never confirmed by Mum)"
+   ],
+   "aliases": [
+    "veg-10"
    ],
    "ask": {
     "gender": [
      "new"
     ]
-   }
+   },
+   "open": [
+    {
+     "q": "Decision 61 (Zafar, 6 Oct): Cook's peas are green peas, matar (with the R); watana are fried peas (the snack), n.peas. Round 5 Q12 answered.",
+     "src": "data/cook.json words.veg-10: Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): green peas are matar; decision 61"
+    },
+    {
+     "q": "Sources disagree on the lemma: \"matar\" (hand: grammar-notes prose; data/cook.json) vs \"vatana\" (data/content.json). Using \"matar\" for now.",
+     "src": "step 4b importers (clash list)"
+    }
+   ],
+   "history": [
+    {
+     "date": "2026-09-26",
+     "change": "was watana (fried peas); decision 61 (Zafar, 6 Oct): green peas are matar, with the R (Mum 28 Sept, Round 3 P11, grammar-notes §34; her matar-b-m clip). Earlier: was vatana; Zafar 25 Sept: no V in Kutchi, always W",
+     "src": "data/cook.json words.veg-10: Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): green peas are matar; decision 61"
+    }
+   ]
   },
   {
    "id": "n.green-pepper",
@@ -5134,11 +5157,10 @@
    "id": "n.peas",
    "pos": "N",
    "gender": null,
-   "paradigm": "noun.invariant",
    "lemma": "watana",
-   "gloss": "peas",
-   "glossPl": "peas",
+   "gloss": "fried peas (the snack)",
    "forms": {
+    "*": "watana",
     "sg.dir": {
      "t": "watano",
      "status": "draft",
@@ -5147,38 +5169,15 @@
    },
    "status": "confirmed",
    "src": [
-    "data/cook.json words.veg-10: content master",
-    "data/content.json words.veg-10: sindhi-cognate (class handout / content master; never confirmed by Mum)"
-   ],
-   "aliases": [
-    "veg-10"
+    "grammar-notes §34 P11 (watana are fried peas, the snack)"
    ],
    "ask": {
     "gender": [
-     "Q12"
+     "new"
     ]
    },
    "notes": [
-    "count_mum: Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): watana are FRIED peas (the snack); green peas are matar. Zafar to check which one this is. Not changed.",
     "watana are FRIED peas (the snack); green peas are matar (§34 P11)."
-   ],
-   "open": [
-    {
-     "q": "data/cook.json calls watana 'peas'; Mum says green peas are matar and watana are fried peas (the snack): Zafar to check which one Cook means (Round 5 Q12). The id veg-10 stays with watana until he says.",
-     "src": "data/cook.json words.veg-10: content master"
-    }
-   ],
-   "history": [
-    {
-     "date": "2026-09-26",
-     "change": "was vatana; Zafar 25 Sept: no V in Kutchi, always W",
-     "src": "data/cook.json words.veg-10: content master"
-    },
-    {
-     "date": "2026-10-05",
-     "change": "lemma: no V at the start of a Kutchi word, always W (the content master's vatana)",
-     "src": "grammar-notes Spelling rules from Zafar (25 Sept), §28 (V may appear inside a word); rule G4"
-    }
    ]
   },
   {
@@ -11979,6 +11978,26 @@
    }
   },
   {
+   "id": "phrase.ask-where-it-hurts",
+   "pos": "Phrase",
+   "gloss": "Ask where it hurts",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.ask-where: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.ask-where"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the D1 card's headline (T24)"
+   ]
+  },
+  {
    "id": "phrase.between-in-the-middle",
    "pos": "Phrase",
    "lemma": "wich me",
@@ -12189,6 +12208,26 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §43"
+   ]
+  },
+  {
+   "id": "phrase.bring-them-in",
+   "pos": "Phrase",
+   "gloss": "Bring them in",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.bring-them-in: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.bring-them-in"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the doctor's box in the waiting room at L1 (T23)"
    ]
   },
   {
@@ -12521,6 +12560,26 @@
      "to record"
     ]
    }
+  },
+  {
+   "id": "phrase.check-her-over",
+   "pos": "Phrase",
+   "gloss": "Check her over",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.check-over: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.check-over"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the D3 card's headline (T26)"
+   ]
   },
   {
    "id": "phrase.chop-it-small",
@@ -13291,6 +13350,26 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "phrase.find-where-it-hurts",
+   "pos": "Phrase",
+   "gloss": "Find where it hurts",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.find-where: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.find-where"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the D2 card's headline (T25)"
+   ]
   },
   {
    "id": "phrase.fix-it",
@@ -14428,10 +14507,12 @@
    "gloss": "I don't feel well.",
    "status": "to-record",
    "src": [
-    "data/clinic.json lines.cl-unwell: the clinic's own line, no Kutchi yet"
+    "data/clinic.json lines.cl-unwell: the clinic's own line, no Kutchi yet",
+    "data/clinic/pipeline.json lines.pipeline.unwell-short: data/clinic/pipeline.json"
    ],
    "aliases": [
-    "clinic.line.cl-unwell"
+    "clinic.line.cl-unwell",
+    "clinic.line.pipeline.unwell-short"
    ],
    "ask": {
     "word": [
@@ -16900,6 +16981,26 @@
    }
   },
   {
+   "id": "phrase.pick-how-she-feels",
+   "pos": "Phrase",
+   "gloss": "Pick how she feels",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.pick-feel: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.pick-feel"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the doctor's box in the send-off at L1 (T28)"
+   ]
+  },
+  {
    "id": "phrase.pour-it-into-their-glass",
    "pos": "Phrase",
    "gloss": "Pour it into their glass",
@@ -19148,6 +19249,86 @@
    ],
    "notes": [
     "not analysed into words yet: wapar is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.use-the-stethoscope",
+   "pos": "Phrase",
+   "gloss": "Use the stethoscope",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.use-stethoscope: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.use-stethoscope"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the D3 card's block head for the stethoscope (T26)"
+   ]
+  },
+  {
+   "id": "phrase.use-the-thermometer",
+   "pos": "Phrase",
+   "gloss": "Use the thermometer",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.use-thermometer: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.use-thermometer"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the D3 card's block head for the thermometer (T26)"
+   ]
+  },
+  {
+   "id": "phrase.use-the-torch",
+   "pos": "Phrase",
+   "gloss": "Use the torch",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.use-torch: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.use-torch"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the D3 card's block head for the torch (T26)"
+   ]
+  },
+  {
+   "id": "phrase.use-your-hand",
+   "pos": "Phrase",
+   "gloss": "Use your hand",
+   "status": "to-record",
+   "src": [
+    "data/clinic/pipeline.json lines.pipeline.use-hand: data/clinic/pipeline.json"
+   ],
+   "aliases": [
+    "clinic.line.pipeline.use-hand"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "English placeholder (to record), S02-C: the D3 card's block head for the hand (T26)"
    ]
   },
   {

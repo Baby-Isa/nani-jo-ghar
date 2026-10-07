@@ -20,7 +20,8 @@
 
   const K = {
     kicks: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
-    turns: { 1: [2, 3, 4], 2: [3, 4, 5], 3: [3, 4, 5] },
+    // K6 (CLN-100): higher numbers, "the whole fun of it": about 4-6 / 5-8 / 6-10 turns
+    turns: { 1: [4, 5, 6], 2: [5, 6, 7, 8], 3: [6, 7, 8, 9, 10] },
   };
   const WHY = { problem: "knee-why", goal: "knee-goal" }; // line keys in data/clinic/heal/knee.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
@@ -122,9 +123,13 @@
       im.setAttribute("clip-path", `url(#${gid}-bot)`);
       artShin.appendChild(im);
     }
+    // the turns that pass behind the leg go under the knee's picture (K3)
+    const behind = s("g", { class: "knee-wrap-behind" }, g);
+    g.insertBefore(behind, g.firstChild);
     legs[P.side] = { g, glow, shin: artShin || shin, wrap, x: KX };
     const sore = legs[P.side];
-    const glowOn = (on) => sore.glow.setAttribute("opacity", on ? 0.5 : 0);
+    // K2 (CLN-100): no yellow glow ellipse behind the knee (it read as a badly cut crescent): the sore look is hers
+    const glowOn = () => sore.glow.setAttribute("opacity", 0);
     glowOn(true);
     const dotsG = s("g", {}, S.layer);
     const dotPos = (d) => ({ x: sore.x + (d.s === "l" ? -78 : 92) * KS, y: KY + (-40 + d.y * 40) * KS });
@@ -255,9 +260,20 @@
           ctx.log({ type: "extra", rowId: "wrap", detail: "not the flashing dot" });
           return;
         }
-        const from = st.last || { x: sore.x + (d.s === "l" ? 70 : -70) * KS, yy: d.yy };
-        s("line", { x1: from.x, y1: from.yy, x2: d.x, y2: d.yy, stroke: "#fbfaf4", "stroke-width": 22 * KS, "stroke-linecap": "round", opacity: 0.95 }, sore.wrap);
-        s("line", { x1: from.x, y1: from.yy, x2: d.x, y2: d.yy, stroke: "#d8d2c4", "stroke-width": 2, "stroke-dasharray": "4 6" }, sore.wrap);
+        const from = st.last || { x: sore.x + (d.s === "l" ? 70 : -70) * KS, yy: d.yy, s: d.s === "l" ? "r" : "l" };
+        // K3 (CLN-100): the bandage goes ROUND the knee: a turn from the back (left dot) to the front (right dot)
+        // passes over the kneecap, bowed down and across it (drawn on top); a turn from the front to the back passes
+        // behind the leg (drawn under the knee, so only its ends show at the edges), bowed up. Each turn sits a little
+        // lower, so the wrap builds down the knee diagonally
+        const front = d.s === "r";
+        // the turns overlap like a real wrap: each a little lower, cycling over the knee's height
+        const lay = ((st.turns % 6) - 2.5) * 9 * KS;
+        const mx = (from.x + d.x) / 2;
+        const my = (from.yy + d.yy) / 2 + (front ? 30 : -24) * KS + lay;
+        const dpath = `M${from.x} ${from.yy + lay} Q${mx} ${my} ${d.x} ${d.yy + lay + (front ? 16 : -16) * KS}`;
+        const into = front ? sore.wrap : behind;
+        s("path", { d: dpath, fill: "none", stroke: front ? "#fbfaf4" : "#d9d3c4", "stroke-width": 22 * KS, "stroke-linecap": "round", opacity: front ? 0.97 : 0.9 }, into);
+        s("path", { d: dpath, fill: "none", stroke: "#cfc8b8", "stroke-width": 2, "stroke-dasharray": "4 6", opacity: front ? 1 : 0.6 }, into);
         st.last = d;
         st.turns++;
         S.count(st.turns);

@@ -1260,11 +1260,21 @@
      ]
     },
     "speed": {
-     "pick": [
-      null,
-      "slow",
-      "quick"
-     ]
+     "byLevel": [
+      {
+       "pick": [
+        null
+       ]
+      },
+      {
+       "pick": [
+        null,
+        "slow",
+        "quick"
+       ]
+      }
+     ],
+     "_about": "S02-B: no speed at level 1 (the stir mechanic asks none there), so the card never shows one it won't ask"
     }
    },
    "say": [
@@ -1314,6 +1324,23 @@
     {
      "list": "$tadka",
      "when": "tadka"
+    },
+    {
+     "frame": "bare",
+     "x": [
+      {
+       "num": "$laps"
+      },
+      {
+       "word": "$speed",
+       "map": {
+        "slow": "ph-slowly",
+        "quick": "ph-quickly"
+       }
+      }
+     ],
+     "when": "stir",
+     "_about": "T14 (DAAR-12, S02-B): the stir row on the card: the laps and the speed asked (from level 2), shown when the stir starts"
     }
    ],
    "need": [
@@ -1498,7 +1525,9 @@
       "veg-02": "$onions",
       "veg-03": "$tomatoes"
      },
-     "_qty": "29 Sept (T1, X12): a layer that's chopped first says how many (ba bataato), as its chop does"
+     "_qty": "29 Sept (T1, X12): a layer that's chopped first says how many (ba bataato), as its chop does",
+     "when": "assemble",
+     "_when": "CHT-07 (decision 53, T15, S02-B): the layer order is said just before the bowl, by him from his card (js/cook/mechanics/assemble.js), not with the order at the start"
     },
     {
      "forEach": "$no",
@@ -1531,7 +1560,12 @@
      "do": "assemble",
      "sequence": "$seq",
      "exclude": "$no",
-     "decoyPool": "$toppings"
+     "decoyPool": "$toppings",
+     "qty": {
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
+     }
     },
     {
      "do": "serve",
@@ -1549,6 +1583,8 @@
     "kinds",
     "kinds2"
    ],
+   "blockHeads": true,
+   "_blockHeads": "SAM-11: the headline is written without the count (Muke samosa khape.); each block's head carries it",
    "_baseFirst": "30 Sept (Zafar): the base filling (chundo or bataato: each block's first kind) is the first row on the card and said first; the rest stay shuffled (js/cook/order.js)",
    "english": "Samosa",
    "price": 5,
@@ -1750,8 +1786,23 @@
      ]
     },
     {
+     "frame": "bare",
+     "block": 1,
+     "blockHead": true,
+     "silent": true,
+     "x": [
+      {
+       "n": "$count",
+       "of": "ph-samosa",
+       "one": false
+      }
+     ],
+     "_about": "SAM-11 (T16, S02-B): one block per kind of samosa, its head the count and dish (ba samosa), its fillings under it, like sekelo's skewers and maani's kinds. On the card only: the order already says it"
+    },
+    {
      "tally": "$fillings",
-     "frame": "and"
+     "frame": "and",
+     "block": 1
     },
     {
      "forEach": "$no",
@@ -2528,6 +2579,8 @@
    "levels": [
     {
      "phases": 1,
+     "slow": 0.8,
+     "knifePx": 190,
      "every": 0.7,
      "fasterPerStage": 0.06,
      "fasterMax": 0.25,
@@ -2578,6 +2631,7 @@
     },
     {
      "phases": 2,
+     "slow": 1,
      "every": 0.6,
      "throwSpeed": [
       1330,

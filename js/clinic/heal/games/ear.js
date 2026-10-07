@@ -47,7 +47,8 @@
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice); one gesture
   // per thing (P32): the wax is a drag, the wipe a drag, the drops a tap, the check a tap
   const CUES = {
-    wax: { gesture: "drag" },
+    // E1 (CLN-101): the ghost finger picks the tweezers, then drags a blob with them into the bin
+    wax: { gesture: "tap", then: { gesture: "drag" } },
     wipe: { gesture: "tap", then: { gesture: "drag" } },
     drops: { gesture: "tap", then: "tap" },
     hear: { watch: true },
@@ -156,9 +157,18 @@
       const h = w * (f.h / f.w);
       return s("image", { href: url(f.file), x: cx - w / 2, y: cy - h / 2, width: w, height: h }, parent);
     };
-    if (bit("tissue", TISSUE.x, TISSUE.y + 4, 150, tissue)) tissue.setAttribute("data-art", "1");
-    else s("path", { d: `M${TISSUE.x - 58} ${TISSUE.y - 34} Q${TISSUE.x} ${TISSUE.y - 52} ${TISSUE.x + 58} ${TISSUE.y - 34} L${TISSUE.x + 50} ${TISSUE.y + 38} Q${TISSUE.x} ${TISSUE.y + 50} ${TISSUE.x - 50} ${TISSUE.y + 38}Z`, fill: "#fbfbf6", stroke: "#cfc6b6", "stroke-width": 3 }, tissue);
-    if (!tissue.hasAttribute("data-art")) s("path", { d: `M${TISSUE.x - 30} ${TISSUE.y - 8} Q${TISSUE.x} ${TISSUE.y + 4} ${TISSUE.x + 30} ${TISSUE.y - 8}`, fill: "none", stroke: "#e2dbcd", "stroke-width": 3 }, tissue);
+    // E4 (CLN-101): a small waste bin, not a tissue: what goes in is out of sight. Art id "ear-bin" (the art run, by
+    // data/clinic/heal/ear.json art["ear-bin"].on); until then a drawn steel bin with its lid open
+    const binArt = ctx.data && ctx.data.art && ctx.data.art["ear-bin"];
+    if (binArt && binArt.on) {
+      s("image", { href: url(binArt.file), x: TISSUE.x - 70, y: TISSUE.y - 80, width: 140, height: 150 }, tissue);
+      tissue.setAttribute("data-art", "1");
+    } else {
+      s("ellipse", { cx: TISSUE.x, cy: TISSUE.y + 62, rx: 58, ry: 10, fill: "rgba(40,30,20,.18)" }, tissue);
+      s("path", { d: `M${TISSUE.x - 50} ${TISSUE.y - 30} L${TISSUE.x - 40} ${TISSUE.y + 60} Q${TISSUE.x} ${TISSUE.y + 70} ${TISSUE.x + 40} ${TISSUE.y + 60} L${TISSUE.x + 50} ${TISSUE.y - 30}Z`, fill: "#c9cfd6", stroke: "#8f98a3", "stroke-width": 3 }, tissue);
+      s("ellipse", { cx: TISSUE.x, cy: TISSUE.y - 30, rx: 50, ry: 12, fill: "#5d6670", stroke: "#8f98a3", "stroke-width": 3 }, tissue);
+      s("path", { d: `M${TISSUE.x - 52} ${TISSUE.y - 34} Q${TISSUE.x - 30} ${TISSUE.y - 92} ${TISSUE.x + 22} ${TISSUE.y - 86} L${TISSUE.x + 18} ${TISSUE.y - 74} Q${TISSUE.x - 22} ${TISSUE.y - 78} ${TISSUE.x - 40} ${TISSUE.y - 34}Z`, fill: "#dfe3e8", stroke: "#8f98a3", "stroke-width": 3 }, tissue);
+    }
     const onTissue = s("g", {}, S.layer);
     const smearG = s("g", { class: "ear-smears" }, S.layer);
     const waxG = s("g", { class: "ear-wax" }, S.layer);
@@ -169,6 +179,19 @@
       const taken = (x, y) => blobs.some((b) => !b.out && Math.hypot(b.x - x, b.y - y) < b.r + 26);
       const free = HS.shuffle(SPOTS, ctx.rng).filter(([x, y]) => !taken(x, y) && !sores.some((q) => Math.hypot(q.x - x, q.y - y) < 30));
       return free[0] || null;
+    };
+    // E2 (CLN-101): the first blobs sit on a smear of their own, drawn under them from the start, so pulling one
+    // uncovers the residue where it was (never smears appearing from nowhere)
+    const smears = [];
+    const leaveSmear = (b) => {
+      if (smears.length >= K.smears[P.level]) return;
+      const pts = [];
+      for (let q = 0; q < 6; q++) {
+        const x = b.x + (ctx.rng() - 0.5) * b.r * 1.2;
+        const y = b.y + (ctx.rng() - 0.5) * b.r * 0.9;
+        pts.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (b.r * 0.32 + ctx.rng() * 3).toFixed(1), ry: (b.r * 0.22 + ctx.rng() * 2).toFixed(1), fill: "#c99a2e", opacity: 0.7 }, smearG), gone: false });
+      }
+      smears.push({ pts });
     };
     const drawBlob = (b) => {
       if (b.el) b.el.remove();
@@ -184,6 +207,7 @@
       const b = { id: blobs.length, size, x: spot[0], y: spot[1], r, out: false };
       blobs.push(b);
       drawBlob(b);
+      if (!pop) leaveSmear(b);
       if (pop && b.el.animate) {
         // it comes out of the canal: the child sees where more wax comes from (P38)
         b.el.animate([{ transform: `translate(${CANAL.x - b.x}px, ${CANAL.y - b.y}px) scale(.2)` }, { transform: "translate(0,0) scale(1.15)", offset: 0.7 }, { transform: "translate(0,0) scale(1)" }], { duration: fast() ? 120 : 420, easing: "ease-out" });
@@ -225,18 +249,7 @@
       }
     };
 
-    /* ---- the smears the blobs leave, and the bud that wipes them ---- */
-    const smears = [];
-    const leaveSmear = (b) => {
-      if (smears.length >= K.smears[P.level]) return;
-      const pts = [];
-      for (let q = 0; q < 6; q++) {
-        const x = b.x + (ctx.rng() - 0.5) * 34;
-        const y = b.y + (ctx.rng() - 0.5) * 22;
-        pts.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (6 + ctx.rng() * 4).toFixed(1), ry: (4 + ctx.rng() * 3).toFixed(1), fill: "#d9a42a", opacity: 0.75 }, smearG), gone: false });
-      }
-      smears.push({ pts });
-    };
+    /* ---- the bud that wipes the smears ---- */
     const smearLeft = () => smears.reduce((a, q) => a + q.pts.filter((p) => !p.gone).length, 0);
     const bud = s("g", { class: "ear-bud", opacity: 0 }, S.fx);
     s("line", { x1: 0, y1: 0, x2: 120, y2: -90, stroke: "#f2f2f2", "stroke-width": 7, "stroke-linecap": "round" }, bud);
@@ -306,7 +319,7 @@
       const c = cur();
       if (!c) return;
       if (st.i > 0) {
-        rowsOf(c).forEach((r) => ctx.card.addRow(r));
+        rowsOf(c).forEach((r) => ctx.card.addRow(c.kind === "hear" ? tellRow(c) : r));
         if (c.kind !== "hear") ctx.say(c.row);
       }
       ctx.card.now(c.kind === "wax" && c.rows ? "wax0" : c.id);
@@ -315,7 +328,7 @@
           const b = (c.order && blobs.find((q) => !q.out && q.size === c.order[0])) || inEar()[0];
           return b ? { x: b.x, y: b.y, r: b.r + 10 } : null;
         };
-        S.cue("wax", Object.assign({ to: { x: TISSUE.x, y: TISSUE.y, r: 50 } }, CUES.wax), first);
+        S.cue("wax", CUES.wax, S.toolEls.tweezers, { gesture: "drag", target: first, to: { x: TISSUE.x, y: TISSUE.y, r: 50 } });
       } else if (c.kind === "wipe") {
         if (!smears.length) return close(); // nothing left to wipe (never a dead step)
         const a = smears[0].pts[0];
@@ -344,6 +357,8 @@
     const finish = () => {
       st.over = true;
       S.uncue();
+      // E5 (CLN-101): the sore pink skin is gone at the end (healed by the drops)
+      soreG.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fast() ? 100 : 900, fill: "forwards" });
       ctx.card.now(null);
       S.face("happy");
       S.say("ear-better", "patient");
@@ -351,18 +366,36 @@
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 
-    /* ---- 4. can you hear me? (the whisper, then the pictures) ---- */
+    /* ---- 4. can you hear me? (T31, decision on E3, CLN-102) ----
+     * Both speak with faces. The doctor (off screen: his box) says [I'm telling you] and the word, softly; his box
+     * shows the word as dots (a tap on his face plays it again), then [Did you hear?]. She answers in her bubble
+     * [You told me…], and the child picks the picture for her. A wrong pick: a few more drops in her ear, and he asks
+     * again (the first pick is what's scored). */
     let pics = null;
+    const tellRow = (c) => {
+      const Lg = HS.L;
+      const w = Lg.w(c.word);
+      const HH = root.Clinic && root.Clinic.HealHost;
+      const t = HH && HH.line ? HH.line("ear-tell", ctx.data) : { english: "" };
+      // the word is never written (G22): the box shows dots in its place; the replay says it
+      return Object.assign({ id: "hear" }, { kutchi: `[${t.english}] •••`, english: `${t.english} …`, placeholder: false, plan: [{ text: t.english }].concat(w.plan || [{ text: Kit ? Kit.plain(w) : w.english }]) });
+    };
     const whisper = (c) => {
       const Lg = HS.L;
       const w = Lg.w(c.word);
       // the word alone, softly, in the doctor's (family) voice; never written: the task is hearing it (G22)
-      ctx.say(Object.assign({}, w), { who: "doctor", noBubble: true, soft: true });
+      return ctx.say(Object.assign({}, w), { who: "doctor", noBubble: true, soft: true });
     };
-    const startHear = (c) => {
-      ctx.say(c.row);
+    const ask = async (c) => {
+      await ctx.say("ear-tell", { who: "doctor", noBubble: true });
+      await whisper(c);
+      await ctx.say("ear-didhear", { who: "doctor", noBubble: true });
+      if (st.over || cur() !== c) return;
       S.face("neutral");
-      ctx.after(fast() ? 100 : 900, () => whisper(c));
+      await S.say("ear-youtold", "patient");
+    };
+    const morePictures = (c) => {
+      if (pics) pics.remove();
       pics = S.h("div", "hs-pics", S.root);
       c.choices.forEach((id) => {
         const b = S.h("button", "hs-pic", pics);
@@ -375,25 +408,48 @@
         im.src = url(HS.pic(id)); // CLN-78: the clinic's own art where it has the thing
         ctx.on(b, "click", (e) => {
           e.stopPropagation();
-          if (st.over || cur() !== c) return;
+          if (st.over || cur() !== c || st.hearBusy) return;
           S.did();
           b.classList.add("picked");
-          judge("hear-word", id === c.word, id);
-          ctx.card.tick("hear");
-          ctx.after(fast() ? 100 : 500, () => {
+          if (!st.judged.hasOwnProperty("hear-word")) judge("hear-word", id === c.word, id);
+          if (id === c.word) {
+            ctx.card.tick("hear");
+            S.face("happy", 900);
+            ctx.after(fast() ? 100 : 500, () => {
+              if (pics) pics.remove();
+              pics = null;
+              close();
+            });
+            return;
+          }
+          // wrong: she didn't hear it right: a few more drops, then he asks again
+          st.hearBusy = true;
+          b.classList.add("nope");
+          ctx.after(fast() ? 80 : 600, async () => {
             if (pics) pics.remove();
             pics = null;
-            close();
+            await ctx.say("ear-more-drops", { who: "doctor", noBubble: true });
+            st.moreDrops = 2;
+            S.toolEls.drops && S.toolEls.drops.classList.add("pulse");
+            st.hearBusy = false;
           });
         });
       });
-      // no answer for a while: he whispers it again (a hint after hesitation, never the answer: E16)
-      const again = () => {
-        if (st.over || cur() !== c) return;
-        whisper(c);
-        ctx.after(7000, again);
-      };
-      ctx.after(7000, again);
+    };
+    const startHear = async (c) => {
+      ctx.card.now("hear");
+      st.hearBusy = true;
+      await ask(c);
+      st.hearBusy = false;
+      if (st.over || cur() !== c) return;
+      morePictures(c);
+    };
+    // the more-drops of a wrong pick: tapped into the canal, then he asks again
+    const moreDrop = (c) => {
+      st.moreDrops--;
+      if (st.moreDrops > 0) return;
+      S.toolEls.drops && S.toolEls.drops.classList.remove("pulse");
+      ctx.after(fast() ? 100 : 700, () => startHear(c));
     };
 
     /* ---- the tools: the v2 item art ---- */
@@ -434,14 +490,19 @@
         wipeAt(p);
         return;
       }
-      if (c.kind === "drops" && S.sel === "drops" && Math.hypot(p.x - CANAL.x, p.y - CANAL.y) < 110) {
-        st.drops++;
-        S.count(st.drops);
-        ctx.tally("drops", st.drops);
+      const more = c.kind === "hear" && st.moreDrops > 0;
+      if ((c.kind === "drops" || more) && S.sel === "drops" && Math.hypot(p.x - CANAL.x, p.y - CANAL.y) < 110) {
+        if (more) moreDrop(c);
+        else {
+          st.drops++;
+          S.count(st.drops);
+          ctx.tally("drops", st.drops);
+        }
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
-        const bottle = s("image", { href: url("assets/clinic/items-v2/eye-drops.webp"), x: CANAL.x - 20, y: CANAL.y - 190, width: 46, height: 92 }, S.fx);
-        const d = s("ellipse", { cx: CANAL.x, cy: CANAL.y - 90, rx: 7, ry: 10, fill: "#6bb7ea" }, S.fx);
+        if (!more && ctx.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
+        // E8 (CLN-101): the bottle nozzle DOWN over the canal; the drop falls from the nozzle
+        const bottle = s("image", { href: url("assets/clinic/items-v2/eye-drops.webp"), x: CANAL.x - 23, y: CANAL.y - 196, width: 46, height: 92, transform: `rotate(180 ${CANAL.x} ${CANAL.y - 150})` }, S.fx);
+        const d = s("ellipse", { cx: CANAL.x, cy: CANAL.y - 98, rx: 7, ry: 10, fill: "#6bb7ea" }, S.fx);
         d.animate([{ transform: "translateY(0)" }, { transform: "translateY(90px)", opacity: 0.2 }], { duration: 420, fill: "forwards" });
         ctx.after(480, () => (d.remove(), bottle.remove()));
         S.face("ouch", 400);
@@ -468,8 +529,8 @@
         b.el.remove();
         st.removed++;
         st.out.push(b.size);
-        s("circle", { cx: TISSUE.x - 34 + ctx.rng() * 68, cy: TISSUE.y - 14 + ctx.rng() * 30, r: Math.min(14, b.r * 0.6), fill: "#d9a42a", opacity: 0.85 }, onTissue);
-        leaveSmear(b);
+        // into the bin: out of sight (E4); the smear under it was there all along (E2)
+        void onTissue;
         ctx.sfx("pop");
         S.face("happy", 400);
         const c = cur();
@@ -554,6 +615,7 @@
             return S.sel !== "drops" ? tool("drops") : at(CANAL.x, CANAL.y, "drop");
           }
           if (c.kind === "hear") {
+            if (st.moreDrops > 0) return S.sel !== "drops" ? tool("drops") : at(CANAL.x, CANAL.y, "more drop");
             const b = pics && pics.querySelector(`[data-word="${c.word}"]`);
             if (!b) return { do: "wait" };
             const r = b.getBoundingClientRect();

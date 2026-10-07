@@ -570,3 +570,40 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-find.sore { font-size: 0; filter: none; border-color: #c9962e; box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
 /* T30: the point her speech bubbles come from (her mouth on the art) */
 .cl-fig .fig-anchor { position: absolute; min-width: 2px; min-height: 2px; pointer-events: none; }
+/* T27 (decision 53): the doctor's request pop-up over the counter, then it folds into the sidebar */
+.cl-req-veil { position: absolute; inset: 0; z-index: 110; background: rgba(40, 25, 10, .18); transition: background .4s; }
+.cl-req-veil.going { background: rgba(40, 25, 10, 0); }
+.cl-req-pop { overflow: visible; padding: var(--njg-s3); }
+/* CLN-96 (decision 51): the item to redo glows as it rides past (a second try's help, or after a pause) */
+.cl-belt-dish.hint .cl-item { filter: drop-shadow(0 0 10px rgba(255, 196, 64, .95)) drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
+.cl-belt-dish.hint .cl-item { animation: cl-belt-glow 1s ease-in-out infinite; }
+@keyframes cl-belt-glow { 50% { filter: drop-shadow(0 0 16px rgba(255, 196, 64, 1)) drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); } }
+/* CLN-23, CLN-97: items sit ON the belt: the picture's bottom on the belt's surface, a contact shadow under it,
+   and a coloured item without its own picture is coloured itself (no tinted disc floating behind it) */
+.cl-belt.v2 .cl-belt-dish .cl-item-img { object-position: 50% 100%; }
+.cl-belt.v2 .cl-belt-dish::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -3%; height: 10%; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(20, 20, 20, .32), transparent 70%); z-index: -1; }
+.cl-belt.v2 .cl-belt-dish .cl-item[data-colour]:not(.own-colour) { background: none; }
+.cl-item[data-colour="green"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(3) hue-rotate(60deg); }
+.cl-item[data-colour="blue"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(3) hue-rotate(170deg); }
+.cl-item[data-colour="red"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(4) hue-rotate(-35deg); }
+.cl-item[data-colour="yellow"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(4) hue-rotate(5deg); }
+/* CLN-85 (G2, T30): in the heal games the patient's round face sits top RIGHT (as in Cook, the person served is top
+   right), clear of the doctor's box; her bubbles come from it. The eye game puts her bubble under her mouth instead */
+.cl-heal .hs-face { left: auto; right: var(--njg-s2); }
+.cl-main:has(.cl-heal) .cl-tally { right: calc(var(--njg-big-face) * 1.2 + var(--njg-s4)); }
+/* CLN-107 (EY5, EY7, T32): her words under her mouth in the eye test (L1 written, fading; L2+ a talking bubble) */
+.eye-said { position: absolute; z-index: 9; transform: translate(-50%, 0); max-width: 40%; padding: var(--njg-s2) var(--njg-s3); background: #fffaf1; border: 2px solid #e2d3bb; border-radius: 16px; font: 800 var(--njg-t3, 18px) var(--cl-head); color: var(--cl-ink); box-shadow: var(--njg-shadow); pointer-events: none; transition: opacity .6s; }
+.eye-said::before { content: ""; position: absolute; left: 50%; top: -10px; margin-left: -9px; border: 9px solid transparent; border-top: 0; border-bottom-color: #fffaf1; }
+.eye-said.fade { opacity: 0; }
+.eye-said.talk { display: flex; gap: 6px; padding: 12px 16px; }
+.eye-said.talk i { width: 9px; height: 9px; border-radius: 50%; background: #8a7a6a; animation: eye-talk 1s ease-in-out infinite; }
+.eye-said.talk i:nth-child(2) { animation-delay: .15s; }
+.eye-said.talk i:nth-child(3) { animation-delay: .3s; }
+@keyframes eye-talk { 50% { transform: translateY(-4px); opacity: .5; } }
+/* EY13: the doctor names the row with its pictures (by his box, top left) */
+.eye-name { position: absolute; left: var(--njg-s2); top: var(--njg-s2); z-index: 9; display: flex; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s3); background: #e8f1ea; border: 2px solid #9cc2a6; border-radius: 16px; box-shadow: var(--njg-shadow); animation: cl-pop .2s; }
+.eye-name img { width: 48px; height: 48px; object-fit: contain; }
+/* a wrong yes / no shakes red (decision 59) */
+.hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
+.eye-go .njg-next-t { display: flex; align-items: center; }
+.eye-go-chart { width: 34px; height: 44px; display: block; }
