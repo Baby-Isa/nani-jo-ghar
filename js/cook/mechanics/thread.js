@@ -178,7 +178,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const slot = SK.slotY(sk.ids.length - 1, n);
         await Cook.tween(S, { targets: [img, img.marks], y: slot, duration: 180 + (slot + 250) * 0.6, ease: "Quad.easeIn" });
         // the word pops by the skewer as the piece settles, and the family clip plays
-        SK.pop(S, z, id, z.X(BOARD.x - BOARD.w / 2 - 130), z.Y(SKY + slot * SKS));
+        // SEK-10 (S1, decision 41): the count-along (each piece's word said) is level 1 only; later the word just pops
+        SK.pop(S, z, id, z.X(BOARD.x - BOARD.w / 2 - 130), z.Y(SKY + slot * SKS), { speak: Cook.roundLevel(ctx) <= 1 });
+        // SEK-13 (S5): a mixed skewer's piece rows tick as each piece goes on, while it follows a mix still to make
+        const pj = pats.findIndex((x, j) => !madePat[j] && x.length === n && sk.ids.every((p, q) => p === x[q]));
+        sk.ticked = sk.ticked || [];
+        if (pj >= 0 && ctx.tickItem && sk.ticked.length === sk.ids.length - 1) {
+          const pos = pats.slice(0, pj).reduce((a, x) => a + x.length, 0) + sk.ids.length - 1;
+          ctx.tickItem(pos);
+          sk.ticked.push({ pos, id });
+        }
         if (exp && exp.w) sk.target = exp.w;
         if (sk.ids.length >= n) await finish();
         busy = false;
@@ -194,6 +203,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const wx = sk.x + img.x * sk.scaleX;
         const wy = sk.y + img.y * sk.scaleY;
         SK.popPiece(sk);
+        // (a piece taken back: its row opens again)
+        if (sk.ticked && sk.ticked.length > sk.ids.length) {
+          const t = sk.ticked.pop();
+          if (UI.mission.untickItem) UI.mission.untickItem(t.id, ctx.dishAt || 0);
+        }
         const back = S.track(S.add.image(wx, wy, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.soft();
         await S.fly(back, bowls[id].x, bowls[id].y, { duration: 280, arc: z.L(60) });
@@ -212,13 +226,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.sparkle(z.X(BOARD.x), z.Y(SKY - 60));
         Cook.sfx.right();
         // a mixed one ticks its own mix's pieces (the sequence's positions: two different mixes are said one after the other)
+        const pre = sk.ticked || [];
         if (c.ok && c.kind === mixedW && !madePat[c.pat] && ctx.tickItem) {
           const at = pats.slice(0, c.pat).reduce((a, x) => a + x.length, 0);
           sk.ids.forEach((id, i) => {
             if (!z.guided) Cook.markRight(id);
-            ctx.tickItem(at + i);
+            if (!pre.some((t) => t.pos === at + i)) ctx.tickItem(at + i);
           });
-        }
+        } else if (pre.length && UI.mission.untickItem) pre.forEach((t) => UI.mission.untickItem(t.id, ctx.dishAt || 0)); // it wasn't that mix after all
         if (c.ok && c.kind === mixedW && c.pat >= 0) madePat[c.pat]++;
         z.progress({ threaded: sk.ids.slice(), kind: c.kind });
         await Cook.wait(250);
