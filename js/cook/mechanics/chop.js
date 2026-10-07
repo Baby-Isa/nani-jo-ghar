@@ -58,7 +58,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, onSlice = null, tally = true, timer = null }, k) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, tally = true, timer = null }, k) {
       const S = z.S;
       const ctx = z.ctx;
       const want = {};
@@ -74,14 +74,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let knife;
       if (knifeKey && S.textures.exists(knifeKey)) {
         // the kit's knife on its own (no hand): blade up, it follows the finger
+        // DAAR-13 (D10): a smaller knife (was 260 px), the margin-safe cut so its tip is never clipped
         knife = S.track(S.add.image(z.X(1300), z.Y(640), knifeKey).setDepth(D.hand).setAngle(35));
-        knife.setScale(z.L(260) / Math.max(knife.width, knife.height));
+        knife.setScale(z.L(k.knifePx || 190) / Math.max(knife.width, knife.height));
       } else knife = S.hand("knife", { x: z.X(1300), y: z.Y(640), angle: -25, k: z.k });
       if (k.special) S.special(knife);
       // bigger vegetables on a small (phone) screen, so a finger can hit them
       const small = S.scale && S.scale.displaySize && S.scale.displaySize.width < 800;
       const size = small ? k.phoneSize || k.size : k.size;
       const flying = [];
+      let lastX = null;
       const cut = {};
       const sliced = {};
       let wrong = 0;
@@ -110,9 +112,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.textures.addCanvas(key, c);
         return key;
       };
-      const [v0, v1] = k.throwSpeed;
+      // DAAR-13 (D1): slower at level 1 (k.slow < 1): the throws keep their height (speed x a, gravity x a^2) but
+      // take 1/a as long in the air, and come further apart
+      const slow = k.slow || 1;
+      const [v0, v1] = k.throwSpeed.map((v) => v * slow);
+      const gravity = k.gravity * slow * slow;
       // how long a throw is in the air (up and back below the board), in game seconds
-      const flight = (2 * v1) / k.gravity + 0.3;
+      const flight = (2 * v1) / gravity + 0.3;
 
       /* ---------- the rounds: what flies, how often, how long ---------- */
       const rounds = splitRounds(ids, Math.max(1, Math.min(k.phases || 1, ids.length))).map((tg, i) => {
@@ -128,7 +134,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const bag = [];
         for (let c = 0; c < cycles; c++) bag.push(...Cook.shuffle(kinds.slice()));
         const stage = Math.min(...tg.map((t) => Cook.wordStage(t)));
-        const every = k.every * (1 - Math.min(k.fasterMax, (stage - 1) * k.fasterPerStage));
+        const every = (k.every / slow) * (1 - Math.min(k.fasterMax, (stage - 1) * k.fasterPerStage));
         return { i, targets: tg, kinds, bag, every, secs: bag.length * every + flight };
       });
       const total = rounds.reduce((a, r) => a + r.secs, 0);
@@ -165,11 +171,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         let key = texFor(pick);
         const v = (k.variants || {})[pick];
         if (v && phase.kinds.some((x) => (v.near || []).includes(x)) && Math.random() < v.chance) key = variantTex(pick, v.color);
-        const img = S.track(S.add.image(z.X(220 + Math.random() * 1120), z.Y(990), key).setDepth(D.item + 2));
+        // DAAR-13 (D1): spread wider across the board (each throw away from the last one)
+        let x0 = 180 + Math.random() * 1200;
+        if (lastX != null && Math.abs(x0 - lastX) < 300) x0 = lastX < 780 ? Math.min(1380, lastX + 300 + Math.random() * 300) : Math.max(180, lastX - 300 - Math.random() * 300);
+        lastX = x0;
+        const img = S.track(S.add.image(z.X(x0), z.Y(990), key).setDepth(D.item + 2));
         img.setScale(S.fitScale(key, z.L(size), z.L(size)));
         img.wordId = pick;
         img.phase = phase;
-        img.vx = (z.X(760) - img.x) * (0.25 + Math.random() * 0.3);
+        img.vx = (z.X(760) - img.x) * (0.15 + Math.random() * 0.2) * slow;
         // peak around the upper third of the play area
         img.vy = -z.L(v0 + Math.random() * (v1 - v0));
         img.spin = (Math.random() - 0.5) * 5;
@@ -194,6 +204,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (onSlice) onSlice({ id, ok: !!phase && phase.targets.includes(id), x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
         if (ok) {
           cut[id] = (cut[id] || 0) + 1;
+          // DAAR-13, rule E11: at level 1 the row lights the moment the count is reached
+          if (cut[id] === want[id] && Cook.roundLevel(ctx) <= 1) {
+            if (onCount) onCount(id);
+            else if (tick && ctx.closeItem) ctx.closeItem([id]);
+          }
           S.burst(img.x, img.y, [0xffffff, 0xf6d27a], 10, z.L(70));
           z.progress({ cut: id, n: cut[id] });
         } else {
@@ -211,6 +226,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return ok;
       };
       let prev = null;
+      // DAAR-13 (D10): anything the blade passes through is cut too, not only the finger's line. blade: the edge's
+      // two ends as fractions of the knife picture [tipX, tipY, heelX, heelY]
+      const BL = blade || null;
+      const bladeAt = () => {
+        if (!BL || !knife.displayWidth) return null;
+        const w = knife.displayWidth;
+        const h = knife.displayHeight;
+        const c = Math.cos(knife.rotation);
+        const sn = Math.sin(knife.rotation);
+        const at = (fx, fy) => {
+          const lx = (fx - knife.originX) * w;
+          const ly = (fy - knife.originY) * h;
+          return { x: knife.x + lx * c - ly * sn, y: knife.y + lx * sn + ly * c };
+        };
+        return [at(BL[0], BL[1]), at(BL[2], BL[3])];
+      };
+      let prevBlade = null;
       const trail = S.track(S.add.graphics().setDepth(D.top));
       const trailPts = [];
       const move = (p) => {
@@ -221,12 +253,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const cur = { x: p.worldX, y: p.worldY };
         knife.setPosition(cur.x + z.L(40), cur.y + z.L(20));
         trailPts.push({ x: cur.x, y: cur.y, t: performance.now() });
+        const bl = bladeAt();
         if (prev && Phaser.Math.Distance.Between(prev.x, prev.y, cur.x, cur.y) > 12) {
-          const line = new Phaser.Geom.Line(prev.x, prev.y, cur.x, cur.y);
+          const lines = [new Phaser.Geom.Line(prev.x, prev.y, cur.x, cur.y)];
+          if (bl) {
+            lines.push(new Phaser.Geom.Line(bl[0].x, bl[0].y, bl[1].x, bl[1].y));
+            if (prevBlade) lines.push(new Phaser.Geom.Line(prevBlade[0].x, prevBlade[0].y, bl[0].x, bl[0].y), new Phaser.Geom.Line(prevBlade[1].x, prevBlade[1].y, bl[1].x, bl[1].y));
+          }
           flying.slice().forEach((img) => {
             if (!img.active || img.sliced) return;
             const c = new Phaser.Geom.Circle(img.x, img.y, img.displayWidth * 0.42);
-            if (!Phaser.Geom.Intersects.LineToCircle(line, c)) return;
+            if (!lines.some((line) => Phaser.Geom.Intersects.LineToCircle(line, c))) return;
             Cook.sfx.chop();
             Cook.sfx.whoosh();
             const ok = sliceIt(img);
@@ -238,9 +275,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           });
         }
         prev = cur;
+        prevBlade = bl;
       };
       // a swipe starts where the finger goes down
-      const offs = [z.on("pointerdown", (p) => (prev = { x: p.worldX, y: p.worldY })), z.on("pointermove", move), z.on("pointerup", () => (prev = null))];
+      const offs = [z.on("pointerdown", (p) => ((prev = { x: p.worldX, y: p.worldY }), (prevBlade = null), stopDemo())), z.on("pointermove", move), z.on("pointerup", () => ((prev = null), (prevBlade = null)))];
       let running = false; // the ring runs and vegetables fly (not while Nani gives the first order)
       let spawnT = 0;
       let roundT = 0;
@@ -273,7 +311,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         flying.forEach((img) => {
           if (!img.active) return;
-          img.vy += z.L(k.gravity) * dt;
+          img.vy += z.L(gravity) * dt;
           img.x += img.vx * dt;
           img.y += img.vy * dt;
           img.angle += img.spin;
@@ -295,7 +333,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // straight down through where it's heading; and a decoy, for one deliberate mistake
         // aimed where each one will be when the swipe lands (the tester says how long its swipes take)
         const lead = (global.__cookSwipeLead || 0.25) * gameRate;
-        const at = (o) => ({ x: o.x + o.vx * lead, y: o.y + o.vy * lead + 0.5 * z.L(k.gravity) * lead * lead, vy: o.vy + z.L(k.gravity) * lead });
+        const at = (o) => ({ x: o.x + o.vx * lead, y: o.y + o.vy * lead + 0.5 * z.L(gravity) * lead * lead, vy: o.vy + z.L(gravity) * lead });
         const inView = (o) => {
           const p = at(o);
           return o.active && !o.sliced && p.y < z.Y(760) && p.y > z.Y(120) && Math.abs(p.vy) < z.L(700);
@@ -320,7 +358,47 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             : { kind: "wait" }
         );
       });
-      S.ghost([[z.X(400), z.Y(450)], [z.X(1200), z.Y(380)]], { duration: 500, delay: z.guided ? 1200 : 6000 });
+      // DAAR-13 (D1): the ghost finger DRAGS THE KNIFE left and right across the board (the knife goes with it) until
+      // the first touch; without a knife picture, the ghost alone as before
+      const stopDemo = knifeKey && knife.texture && knife.texture.key === knifeKey ? demoKnife() : S.ghost([[z.X(400), z.Y(450)], [z.X(1200), z.Y(380)]], { duration: 500, delay: z.guided ? 1200 : 6000 }).stop;
+      function demoKnife() {
+        const a = { x: z.X(420), y: z.Y(440) };
+        const b = { x: z.X(1180), y: z.Y(400) };
+        const home = { x: knife.x, y: knife.y };
+        const nh = Cook.Hands && Cook.Hands.ghost ? Cook.Hands.ghost(S) : null;
+        const dot = nh ? null : S.track(S.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top));
+        let tw = null;
+        let alive = true;
+        const go = () => {
+          if (!alive) return;
+          tw = S.tweens.addCounter({
+            from: 0,
+            to: 1,
+            duration: 1400 / slow,
+            onUpdate: (t) => {
+              const u = t.getValue();
+              const f = u < 0.5 ? u * 2 : 2 - u * 2; // across and back
+              const x = a.x + (b.x - a.x) * f;
+              const y = a.y + (b.y - a.y) * f + Math.sin(f * Math.PI) * z.L(-40);
+              const al = u < 0.08 ? u / 0.08 : u > 0.92 ? (1 - u) / 0.08 : 1;
+              knife.setPosition(x + z.L(40), y + z.L(20));
+              if (nh) nh.at(x, y, al);
+              if (dot) dot.setPosition(x, y).setAlpha(0.75 * al);
+            },
+            onComplete: () => alive && S.time.delayedCall(500, go),
+          });
+        };
+        const t0 = S.time.delayedCall(z.guided ? 1200 : 4000, go);
+        return () => {
+          if (!alive) return;
+          alive = false;
+          t0.remove();
+          if (tw) tw.stop();
+          if (nh) nh.stop();
+          if (dot && dot.active) dot.destroy();
+          if (!prev) knife.setPosition(home.x, home.y);
+        };
+      }
       // "Kali ba dungri. Ne hakro tameto.": the number is always said
       const orderLine = (tg, first) =>
         Lang.join(tg.map((id, j) => Lang.line(j === 0 ? (first ? "only" : "now") : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))));
@@ -346,6 +424,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
       }
       running = false;
+      stopDemo();
       left = 0;
       drawRing();
       // the ring's own "time's up" (not a verdict on the count)

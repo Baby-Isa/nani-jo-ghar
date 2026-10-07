@@ -1260,11 +1260,21 @@
      ]
     },
     "speed": {
-     "pick": [
-      null,
-      "slow",
-      "quick"
-     ]
+     "byLevel": [
+      {
+       "pick": [
+        null
+       ]
+      },
+      {
+       "pick": [
+        null,
+        "slow",
+        "quick"
+       ]
+      }
+     ],
+     "_about": "S02-B: no speed at level 1 (the stir mechanic asks none there), so the card never shows one it won't ask"
     }
    },
    "say": [
@@ -1314,6 +1324,23 @@
     {
      "list": "$tadka",
      "when": "tadka"
+    },
+    {
+     "frame": "bare",
+     "x": [
+      {
+       "num": "$laps"
+      },
+      {
+       "word": "$speed",
+       "map": {
+        "slow": "ph-slowly",
+        "quick": "ph-quickly"
+       }
+      }
+     ],
+     "when": "stir",
+     "_about": "T14 (DAAR-12, S02-B): the stir row on the card: the laps and the speed asked (from level 2), shown when the stir starts"
     }
    ],
    "need": [
@@ -2528,6 +2555,8 @@
    "levels": [
     {
      "phases": 1,
+     "slow": 0.8,
+     "knifePx": 190,
      "every": 0.7,
      "fasterPerStage": 0.06,
      "fasterMax": 0.25,
@@ -2578,6 +2607,7 @@
     },
     {
      "phases": 2,
+     "slow": 1,
      "every": 0.6,
      "throwSpeed": [
       1330,

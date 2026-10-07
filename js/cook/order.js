@@ -170,6 +170,14 @@
         }
         return;
       }
+      // S02-B (T14): a row that waits for its station (daar's stir row: the laps and the speed) is its own section,
+      // shown when that station starts, after the rest
+      if (r.when) {
+        let s = L.sections.find((y) => y.key === `when:${r.when}`);
+        if (!s) L.sections.push((s = { key: `when:${r.when}`, seq: false, when: r.when, groups: [[]], stepRow: true }));
+        s.groups[0].push(Object.assign(x, { stepRow: true }));
+        return;
+      }
       // everything else said on its own line: one any-order group
       if (!any) L.sections.push((any = { key: "any", seq: false, groups: [[]] }));
       any.groups[0].push(x);
