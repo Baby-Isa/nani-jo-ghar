@@ -149,6 +149,9 @@ Free play starts from the map (decision 22). A place is an entry in `data/map.js
    - `lab.html?mode=demo&play=free` again: open; each round pays, Next brings the next.
 5. **Proof**: `build/host/mode.test.mjs` plays the same loop in Node with stand-in games; `build/host/demo-browser.mjs` plays the real adapters in Chromium, screenshots and lints each state.
 
+## Loading (decision 68)
+Every mode and mini-game lists its own assets in its data (one manifest per game). The shell loads only shared assets (kitchen or room backgrounds, characters, buttons). A game's assets load when it is chosen, starting during the greeting or request pop-up; in a story, the next game's assets load in the background. Images are WebP at the size they are drawn. `build/tools/review/loadcheck.mjs` fails a page that requests another game's assets.
+
 ## Before you call it done
 
 - `node --test build/host/` (the host, the mode interface, input, arcs, labs, onboarding) and `node --test build/core/`.

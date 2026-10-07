@@ -7,7 +7,7 @@
 Zafar plays Cook and the clinic on the engine, live on `main`; every point he raises is a regression row the same day and is fixed; the sprint ends with Cook and the clinic ready to call finished (their ideas in `docs/ideas.md` gone through with him).
 
 ## Budget
-**$200 ceiling, about 7 days** (Zafar, 6 Oct). Cut scope rather than overrun.
+**$200 ceiling, about 7 days** (Zafar, 6 Oct); about $250 with Sessions D and E (Zafar agreed, 7 Oct). Cut scope rather than overrun.
 
 ## Sessions
 Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
@@ -18,7 +18,9 @@ Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
    - **B, Cook** (Opus medium, ~$50, 2 days): every Cook row; the coin-jar screen (Zafar's design); the three counter trays; the samosa card (one block per kind) and laid-out strips; diagonal fold swipes keeping the height; Tadka stays in the labs.
    - **C, clinic** (Opus high, ~$50, 2 days): every clinic row; the girl's art through the whole story (other patients wait); ear and eye redesigns; fever number model; boing; tooth plaque and the square drill; the foot wash.
 5. **Art run** (ready for Zafar on 7 Oct; ~$15 + his ChatGPT): the kitchen with three trays and Nani leaning (her existing picture); Cook and pantry items; samosa fold frames; clinic items as Fable-planned sprite sheets (6–8 views each, spares); the coin jar in five fill levels.
-6. **`/review` and publish** at the end (~$20).
+6. **Session D: re-clip every recording** (Opus high, ~$35; running 7 Oct): every take found, ranked, only takes above the bar; Zafar picks on a review page (decisions 66, 67).
+7. **Session E: wire in the new art and modular loading** (after B, C and the art run; ~$35-45): per-game asset manifests for Cook and the clinic, load on choose with prefetch, images at drawn size, and `build/tools/review/loadcheck.mjs` in `checks.mjs` (decision 68).
+8. **`/review` and publish** at the end (~$20).
 - **Sprint 3:** Mum's Round 5 (*Muke de*, *Muke chai lai de*, "oh oh oh", "ow"…), the fever room tidy.
 
 ## Small decisions
