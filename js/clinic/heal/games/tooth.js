@@ -43,6 +43,13 @@
   // the tooth close-up's crown (svg units): decay is placed inside it
   const CROWN = { x0: 300, x1: 482, y0: 168, y1: 352 };
 
+  /** T7 (the square-drill trial, CLN-103): a square-edged patch, its corners nudged a little (data drill.square). */
+  function box(cx, cy, r, rng) {
+    const j = () => (rng() - 0.5) * r * 0.16;
+    const a = r * (0.8 + rng() * 0.25);
+    const b = r * (0.8 + rng() * 0.25);
+    return [[cx - a + j(), cy - b + j()], [cx + a + j(), cy - b + j()], [cx + a + j(), cy + b + j()], [cx - a + j(), cy + b + j()]].map(([x, y]) => [Math.round(x), Math.round(y)]);
+  }
   /** A jagged patch: points round (cx, cy), radius r +- 35 %. */
   function jag(cx, cy, r, rng) {
     const n = 9 + Math.floor(rng() * 4);
@@ -85,7 +92,8 @@
       const cx = CROWN.x0 + dk.r + rng() * (CROWN.x1 - CROWN.x0 - 2 * dk.r);
       const cy = CROWN.y0 + dk.r + rng() * (CROWN.y1 - CROWN.y0 - 2 * dk.r);
       if (patches.some((p) => Math.hypot(p.cx - cx, p.cy - cy) < dk.r * 2.3)) continue;
-      patches.push({ cx: Math.round(cx), cy: Math.round(cy), r: dk.r, pts: jag(cx, cy, dk.r, rng) });
+      const square = !(data && data.drill && data.drill.square === false);
+      patches.push({ cx: Math.round(cx), cy: Math.round(cy), r: dk.r, square, pts: square ? box(cx, cy, dk.r, rng) : jag(cx, cy, dk.r, rng) });
     }
     const steps = moves.map((m, i) => ({
       id: `b${i}`,
@@ -168,7 +176,7 @@
       S.clear(specks);
       P.steps.find((x) => x.kind === "drill").patches.forEach((p) => {
         const d = p.pts.map(([x, y], i) => `${i ? "L" : "M"}${toMouth(x, y).join(" ")}`).join(" ") + "Z";
-        s("path", { d, fill: filled ? "#f4f4f6" : "#5a3d2c", stroke: filled ? "#cfd3da" : "none", "stroke-width": 1 }, specks);
+        s("path", { d, fill: filled ? "#f3eee0" : "#5a3d2c", stroke: "none" }, specks);
       });
     };
     drawSpecks(false);
@@ -179,8 +187,27 @@
     const bH = (BR.w * BR.size[1]) / BR.size[0];
     const hx = (BR.head[0] / BR.size[0]) * bW;
     const hy = (BR.head[1] / BR.size[1]) * bH;
-    const brushImg = s("image", { href: url(BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH }, brushG);
+    // T1 (CLN-103): the brush turned so its head lies across the front teeth, the handle out of the corner of the mouth
+    // (art id "toothbrush-in-mouth" from the art run, once ready: the bristles into the mouth)
+    const brushIn = art("brushInMouth");
+    const brushImg = s("image", { href: url(brushIn ? brushIn.src : BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH, transform: brushIn ? null : `rotate(-12 ${M.x} ${M.y - 60})` }, brushG);
     void brushImg;
+    // T9 (CLN-103): plaque on the teeth that clears where the brush goes (and the last of it when the brushing is done)
+    const plaqueG = s("g", { class: "tooth-plaque" }, mouthG);
+    const plaque = [];
+    for (let k = 0; k < 26; k++) {
+      const x = 240 + (k / 25) * 320 + (ctx.rng() - 0.5) * 12;
+      const y = (k % 2 ? 188 : 160) + (ctx.rng() - 0.5) * 8;
+      plaque.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (12 + ctx.rng() * 7).toFixed(1), ry: (4 + ctx.rng() * 2).toFixed(1), fill: "#d6be5a", opacity: 0.55 }, plaqueG), gone: false });
+    }
+    mouthG.insertBefore(plaqueG, brushG);
+    const scrub = (hx2, hy2) => {
+      plaque.forEach((q) => {
+        if (q.gone || Math.hypot(q.x - hx2, q.y - hy2) > 64) return;
+        q.gone = true;
+        q.el.animate([{ opacity: 0.55 }, { opacity: 0 }], { duration: 300, fill: "forwards" });
+      });
+    };
     const foam = s("g", {}, mouthG);
 
     /* ---------------- 2. the sore tooth, close (still in the mouth: gum, neighbours, lip) ---------------- */
@@ -237,6 +264,7 @@
     drillEl.dataset.tipX = String(tipX);
     drillEl.dataset.tipY = String(tipY);
     const TIP_R = 17; // the bur's reach, svg units
+    const SQUARE = !(data.drill && data.drill.square === false); // T7: the square drill trial (Zafar: "try it how I suggested")
 
     /* ---------------- 3. the fill: the nozzle, the gauge, the big button ---------------- */
     const fillG = s("g", { opacity: 0 }, S.fx);
@@ -305,7 +333,8 @@
       drillPatches.forEach((p) => {
         const k = Math.min(f / zone[0], 1) * (f > zone[1] ? 1 + (f - zone[1]) * 1.6 : 1);
         const tf = `translate(${p.cx * (1 - k)} ${p.cy * (1 - k)}) scale(${k})`;
-        s("path", { d: p.d, fill: "#fdfdff", stroke: f > zone[1] ? "#c8ccd6" : "none", "stroke-width": 3, transform: tf }, pasteG);
+        // T3 (CLN-103): the filling a shade off white (tooth-coloured), never an outline
+        s("path", { d: p.d, fill: "#f3eee0", stroke: "none", transform: tf }, pasteG);
         // A2 (5 Oct): O2's filling over the paste, inside the patch's own outline (its gloss reads as a filling)
         if (fillArt) {
           const cid = `${uid}-f${p.cx | 0}-${p.cy | 0}`;
@@ -353,6 +382,7 @@
         // the push-in: the mouth view zooms on the sore tooth, then the close is there (same place, same size)
         st.busy = true;
         brushG.setAttribute("opacity", 0);
+        S.clear(foam); // the brushing's foam stays in the brushing (never into the drill's close-up)
         await camera(VB0, zoomBox(), 650);
         mouthG.setAttribute("opacity", 0);
         toothG.setAttribute("opacity", 1);
@@ -446,6 +476,13 @@
       if (!drag) return;
       const p = S.pt(e);
       if (drag.drill) return drillAt(p);
+      // T1: the brush follows the finger across the whole mouth (kept inside the open mouth), scrubbing the plaque
+      if (cur() && cur().kind === "brush") {
+        const dxB = Math.max(-190, Math.min(190, p.x - drag.from.x));
+        const dyB = Math.max(-80, Math.min(110, p.y - drag.from.y));
+        brushG.setAttribute("transform", `translate(${dxB.toFixed(1)} ${dyB.toFixed(1)})`);
+        scrub(M.x + dxB, M.y - 60 + dyB);
+      }
       if (drag.fired) return;
       const dx = p.x - drag.from.x;
       const dy = p.y - drag.from.y;
@@ -456,6 +493,7 @@
     });
     const up = () => {
       if (drag && drag.drill) drillEl.setAttribute("opacity", 0);
+      if (drag && !drag.drill) brushG.setAttribute("transform", "");
       drag = null;
       if (st.holding) stopFill();
     };
@@ -467,7 +505,9 @@
       if (!c || c.kind !== "brush") return;
       st.done.push(m);
       const [dx, dy] = SCREEN[m];
-      if (brushG.animate) brushG.animate([{ transform: "translate(0,0)" }, { transform: `translate(${dx * 70}px,${dy * 50}px)` }, { transform: "translate(0,0)" }], { duration: 420 });
+      if (!drag && brushG.animate) brushG.animate([{ transform: "translate(0,0)" }, { transform: `translate(${dx * 140}px,${dy * 70}px)` }, { transform: "translate(0,0)" }], { duration: 520 });
+      scrub(M.x + dx * 120, M.y - 60 + dy * 60);
+      if (c.i === P.moves.length - 1) plaque.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 0.55 }, { opacity: 0 }], { duration: 600, fill: "forwards" })));
       for (let k = 0; k < 3; k++) {
         const f = s("circle", { cx: M.x + dx * (30 + k * 25) + (ctx.rng() - 0.5) * 40, cy: M.y - 70 + dy * (20 + k * 18) + (ctx.rng() - 0.5) * 20, r: 9 + k * 3, fill: "#fff", opacity: 0.92 }, foam);
         ctx.after(1500, () => f.remove());
@@ -492,14 +532,16 @@
       if (!inTooth) return;
       // cut away the decay under the tip
       if (!drag || !drag.last || Math.hypot(p.x - drag.last.x, p.y - drag.last.y) > 4) {
-        s("circle", { cx: p.x, cy: p.y, r: TIP_R, fill: "#000" }, mask);
+        // T7: a square bur cuts square (the trial), else round
+        if (SQUARE) s("rect", { x: p.x - TIP_R, y: p.y - TIP_R, width: TIP_R * 2, height: TIP_R * 2, fill: "#000" }, mask);
+        else s("circle", { cx: p.x, cy: p.y, r: TIP_R, fill: "#000" }, mask);
         if (drag) drag.last = p;
       }
       let onDecay = false;
       c.patches.forEach((pa) => {
         if (Math.hypot(p.x - pa.cx, p.y - pa.cy) < pa.r * 1.4 + TIP_R) {
           pa.samples.forEach(([x, y], i) => {
-            if (pa.left.has(i) && Math.hypot(p.x - x, p.y - y) < TIP_R) {
+            if (pa.left.has(i) && (SQUARE ? Math.max(Math.abs(p.x - x), Math.abs(p.y - y)) < TIP_R : Math.hypot(p.x - x, p.y - y) < TIP_R)) {
               pa.left.delete(i);
               onDecay = true;
             }
@@ -522,6 +564,19 @@
           st.white++;
           s("circle", { cx: p.x, cy: p.y, r: 6, fill: "#e4ddcf" }, scuffG);
           if (st.white % 4 === 1) S.face("wince", 400);
+          // T4 (CLN-103): outside the line she says "ow" and the drill buzzes (a vibration where the device has one)
+          if (Date.now() - (st.owT || 0) > 1400) {
+            st.owT = Date.now();
+            S.say("tooth-ow", "patient");
+            try {
+              if (root.navigator && root.navigator.vibrate) root.navigator.vibrate(60);
+            } catch (e) {
+              /* no vibration */
+            }
+            toothG.classList.remove("buzz");
+            void toothG.getBoundingClientRect();
+            toothG.classList.add("buzz");
+          }
           if (st.white >= chipAt && !st.chipped) {
             st.chipped = true;
             chipEl.setAttribute("opacity", 1);

@@ -607,3 +607,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 .hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
 .eye-go .njg-next-t { display: flex; align-items: center; }
 .eye-go-chart { width: 34px; height: 44px; display: block; }
+/* T4 (CLN-103): the tooth buzzes when the drill goes outside the line */
+.tooth-close.buzz { animation: tooth-buzz .25s linear 2; }
+@keyframes tooth-buzz { 25% { transform: translate(2px, -1px); } 50% { transform: translate(-2px, 1px); } 75% { transform: translate(1px, 1px); } }
