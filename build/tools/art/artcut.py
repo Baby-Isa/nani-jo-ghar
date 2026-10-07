@@ -12,6 +12,9 @@ Job types (spec "jobs", each with an "id"; "each": [{...vars}] repeats a job wit
   grid     a prop sheet cut by its gutters: pieces in reading order get "names" (null skips one), padded, max "max" px;
            "glass": names kept at partial alpha; "failed": {name: reason} not cut; "registered": [{"names", "align"}]
            pad pieces of one object onto one shared canvas (base | topleft)
+  background  (s02) a 16:9 background cropped at "crop_y", resized, with painted trays measured ("measure")
+  grid "cells"/"boxes" (s02): whole blobs by centroid per cell, or explicit source-px boxes; "sizes" per name;
+           "soft" keys the whole sheet colour-to-alpha (glass); "register_scale" shrinks a registered set together
   figure   a single standing/sitting figure: the base pose and its poses ("poses": whole figures registered on a band),
            face layers ("faces": head-only edits on the base's canvas), one canvas for all, the 1x size from "fig_h",
            @2x never above the source, anchors as canvas fractions, 512 px corner heads, an optional side pose
@@ -138,51 +141,116 @@ def save_closeup(img, path, job):
 
 # ---------------------------------------------------------------- grid
 
+def cell_pieces(job, obj, shape, ma):
+    """Pieces by cell or by box (s02): "cells": [cols, rows] gives each whole blob to the cell holding its centroid
+    (art-pipeline "whole blobs by centroid"), so an item that pokes over a cell line stays whole; "boxes":
+    {name: [x0, y0, x1, y1]} (source px) cuts a named piece by an explicit box, for items that touch a neighbour.
+    Returns [(y0, x0, y1, x1, mask, name)] in reading order, the mask being the piece's own pixels in that box."""
+    H, W = shape
+    out = []
+    boxes = job.get("boxes", {})
+    names = job["names"]
+    if "cells" in job:
+        cols, rows = job["cells"]
+        lb, n = ndi.label(obj)
+        sz = ndi.sum(np.ones_like(lb), lb, range(1, n + 1))
+        com = ndi.center_of_mass(np.ones_like(lb), lb, range(1, n + 1))
+        cell_of = {}
+        for i, (c, s) in enumerate(zip(com, sz), 1):
+            if s < job.get("min_bit", 60):
+                continue
+            cx_, cy_ = min(cols - 1, int(c[1] / (W / cols))), min(rows - 1, int(c[0] / (H / rows)))
+            cell_of.setdefault(cy_ * cols + cx_, []).append(i)
+        for idx, nm in enumerate(names):
+            if not nm or nm in boxes:
+                continue
+            ids = cell_of.get(idx, [])
+            if not ids or sum(sz[i - 1] for i in ids) < ma:
+                log("  %s: nothing in cell %d" % (nm, idx + 1), flag=True)
+                continue
+            m = np.isin(lb, ids)
+            ys, xs = np.nonzero(m)
+            y0, x0, y1, x1 = ys.min(), xs.min(), ys.max() + 1, xs.max() + 1
+            out.append((y0, x0, y1, x1, m[y0:y1, x0:x1], nm))
+    for nm, (bx0, by0, bx1, by1) in boxes.items():
+        reg = np.zeros((H, W), bool)
+        reg[by0:by1, bx0:bx1] = True
+        m = obj & reg
+        lb, n = ndi.label(m)
+        if n > 1:  # the neighbour's slivers inside the box go: keep the blobs of real size
+            s = ndi.sum(np.ones_like(lb), lb, range(1, n + 1))
+            m = np.isin(lb, [i + 1 for i, v in enumerate(s) if v >= max(job.get("min_bit", 60), 0.02 * s.max())])
+        ys, xs = np.nonzero(m)
+        if not len(ys):
+            log("  %s: nothing in its box" % nm, flag=True)
+            continue
+        y0, x0, y1, x1 = ys.min(), xs.min(), ys.max() + 1, xs.max() + 1
+        out.append((y0, x0, y1, x1, m[y0:y1, x0:x1], nm))
+    order = {nm: i for i, nm in enumerate(names)}
+    out.sort(key=lambda t: order.get(t[5], 1e9))
+    return out
+
+
 def cut_grid(job, cx):
     p = cx.path(job["src"])
     if not p:
         return None
     a = L.load(p)
     ma = job.get("min_area", 1500)
-    k, obj = L.key(a, multi=ma)
-    lb, n = ndi.label(ndi.binary_dilation(obj, iterations=6))
-    pieces = []
-    for i in range(1, n + 1):
-        ys, xs = np.nonzero(lb == i)
-        if len(ys) >= ma:
-            pieces.append((ys.min(), xs.min(), ys.max() + 1, xs.max() + 1, i))
-    rows = job.get("rows", 3)
-    pieces.sort(key=lambda t: (int(((t[0] + t[2]) / 2) // (a.shape[0] / rows)), t[1]))  # rows by the top, then left to right
+    k, obj = L.key(a, multi=ma, tol=job.get("tol", 10))
     names = job["names"]
-    log("%s: %d pieces for %d names%s" % (job["id"], len(pieces), len(names), "" if len(pieces) == len(names) else "  <-- COUNT MISMATCH"),
-        flag=len(pieces) != len(names))
+    if "cells" in job or "boxes" in job:
+        named = cell_pieces(job, obj, a.shape[:2], ma)
+        log("%s: %d piece(s) by %s for %d name(s)" % (job["id"], len(named), "cell" if "cells" in job else "box", len([n for n in names if n])))
+    else:
+        lb, n = ndi.label(ndi.binary_dilation(obj, iterations=6))
+        pieces = []
+        for i in range(1, n + 1):
+            ys, xs = np.nonzero(lb == i)
+            if len(ys) >= ma:
+                pieces.append((ys.min(), xs.min(), ys.max() + 1, xs.max() + 1, i))
+        rows = job.get("rows", 3)
+        pieces.sort(key=lambda t: (int(((t[0] + t[2]) / 2) // (a.shape[0] / rows)), t[1]))  # rows by the top, then left to right
+        log("%s: %d pieces for %d names%s" % (job["id"], len(pieces), len(names), "" if len(pieces) == len(names) else "  <-- COUNT MISMATCH"),
+            flag=len(pieces) != len(names))
+        named = [(y0, x0, y1, x1, lb[y0:y1, x0:x1] == i, nm) for (y0, x0, y1, x1, i), nm in zip(pieces, names)]
     props = {}
     pad, big = job.get("pad", 16), job.get("max", 512)
+    sizes = job.get("sizes", {})  # name -> its longest side in px (decision 68: at drawn size, not the sheet's)
     outdir = cx.to(job["outdir"])
     ks = None
-    for (y0, x0, y1, x1, i), nm in zip(pieces, names):
+    soft_all = job.get("soft", False)
+    cvs = {}
+    for (y0, x0, y1, x1, m, nm) in named:
         if not nm:
             continue
         if nm in job.get("failed", {}):
             log("  %s: judged a fail, not cut (%s)" % (nm, job["failed"][nm]), quiet=True)
             continue
-        m = lb[y0:y1, x0:x1] == i
-        if nm in job.get("glass", ()):  # partial alpha, never a solid core
-            ks = ks if ks is not None else L.key(a, multi=ma, soft=True)[0]
+        if soft_all or nm in job.get("glass", ()):  # partial alpha, never a solid core
+            ks = ks if ks is not None else L.key(a, multi=ma, soft=True, tol=job.get("tol", 10))[0]
             piece = ks[y0:y1, x0:x1].copy()
+            m = ndi.binary_fill_holes(ndi.binary_dilation(m, iterations=2))  # the soft edge stays; clear glass inside isn't a hole
         else:
             piece = k[y0:y1, x0:x1].copy()
         piece[..., 3] *= m
         img = L.to_img(piece)
         cv = Image.new("RGBA", (img.width + 2 * pad, img.height + 2 * pad), (0, 0, 0, 0))
         cv.alpha_composite(img, (pad, pad))
-        s = min(1, big / max(cv.size))
+        cvs[nm] = cv
+    # one scale per registered set when "register_scale" (s02): the states of one object shrink together
+    group_of = {n: g["names"] for g in job.get("registered", []) for n in g["names"]} if job.get("register_scale") else {}
+    for nm, cv in cvs.items():
+        grp = [g for g in group_of.get(nm, [nm]) if g in cvs]
+        s = min(1, min(sizes.get(g, big) / max(cvs[g].size) for g in grp))
         if s < 1:
             cv = cv.resize((round(cv.width * s), round(cv.height * s)), Image.LANCZOS)
         path = "%s/%s.webp" % (outdir, nm)
-        os.makedirs(outdir, exist_ok=True)
-        cv.save(path, quality=job.get("q", 90), method=6)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        cv.save(path, quality=job.get("q", 90), method=6, lossless=job.get("lossless", False))
         props[nm] = {"file": cx.rel(path), "w": cv.width, "h": cv.height}
+        if job.get("scale_note"):
+            props[nm]["scale"] = round(s, 4)
     for grp in job.get("registered", []):
         register_set(props, grp["names"], grp.get("align", "topleft"), cx, job.get("q", 90))
     return {"props": props}
@@ -331,7 +399,95 @@ def cut_figure(job, cx):
     return {"patient": job.get("data", job["id"]), "value": out}
 
 
-TYPES = {"closeup": cut_closeup, "grid": cut_grid, "figure": cut_figure}
+# ---------------------------------------------------------------- background (s02)
+
+def cut_background(job, cx):
+    """A background at 16:9 (art-pipeline Export): the scene's band cropped at "crop_y" (the source row that becomes
+    the top; chosen so a measured line, e.g. the island's back edge, lands where the old background had it), resized
+    to "size" (1600x900), saved as webp (or jpg). "measure": {"trays": {"hsv": [h0, h1, s0, v1], "count": 3}} finds
+    the dark walnut trays painted on it and records each one's box in design px [cx, cy, w, h] (left to right)."""
+    p = cx.path(job["src"])
+    if not p:
+        return None
+    im = Image.open(p).convert("RGB")
+    W, H = im.size
+    tw, th = job.get("size", [1600, 900])
+    bh = round(W * th / tw)
+    oy = job.get("crop_y", (H - bh) // 2)
+    band = im.crop((0, oy, W, oy + bh)).resize((tw, th), Image.LANCZOS)
+    outp = cx.to(job["out"])
+    os.makedirs(os.path.dirname(outp), exist_ok=True)
+    if outp.endswith(".jpg"):
+        band.save(outp, quality=job.get("q", 86), optimize=True, progressive=True)
+    else:
+        band.save(outp, quality=job.get("q", 86), method=6)
+    d = {"file": cx.rel(outp), "size": [tw, th], "crop_y": oy, "src_band": [W, bh]}
+    tr = (job.get("measure") or {}).get("trays")
+    if tr:
+        a = np.asarray(band)
+        hsv = cv2.cvtColor(a, cv2.COLOR_RGB2HSV)
+        h0, h1, s0, v1 = tr["hsv"]
+        y0, y1 = tr.get("band", [0, th])
+        m = (hsv[..., 0] >= h0) & (hsv[..., 0] <= h1) & (hsv[..., 1] >= s0) & (hsv[..., 2] <= v1)
+        m[:y0] = False
+        m[y1:] = False
+        m = ndi.binary_closing(m, iterations=3)
+        lb, n = ndi.label(m)
+        sz = ndi.sum(np.ones_like(lb), lb, range(1, n + 1))
+        best = sorted(range(1, n + 1), key=lambda i: -sz[i - 1])[: tr.get("count", 3)]
+        trays = []
+        for i in best:
+            ys, xs = np.nonzero(lb == i)
+            x0, x1, y0_, y1_ = xs.min(), xs.max() + 1, ys.min(), ys.max() + 1
+            trays.append([int(round((x0 + x1) / 2)), int(round((y0_ + y1_) / 2)), int(x1 - x0), int(y1_ - y0_)])
+        trays.sort()
+        d["trays"] = trays
+        log("  trays (design px cx, cy, w, h): %s" % trays, quiet=True)
+    for nm, (ln, want) in (job.get("lines") or {}).items():
+        d.setdefault("lines", {})[nm] = {"src": ln, "at": round((ln - oy) * th / bh, 1), "want": want}
+        log("  %s: source row %d lands at %.1f (old background %d)" % (nm, ln, (ln - oy) * th / bh, want), quiet=True)
+    log("%s: background %dx%d from rows %d..%d" % (job["id"], tw, th, oy, oy + bh))
+    return {"props": {job.get("data", job["id"]): d}}
+
+
+def cut_pose(job, cx):
+    """(s02) A redone whole-figure pose onto an existing figure's canvas, without re-cutting that figure (its files
+    stay as they are): registered to "base" (the figure's base picture) on "band" (translation, or by scale when it
+    drifts), keyed, cropped at the canvas recorded in "canvas_from" (file#path.to.patient: src, canvas, w, h)."""
+    p = cx.path(job["src"])
+    if not p:
+        return None
+    base = L.load(os.path.join(REPO, job["base"]))
+    fpath, _, keypath = job["canvas_from"].partition("#")
+    spec = json.load(open(os.path.join(REPO, fpath)))
+    for k in keypath.split("."):
+        spec = spec[k]
+    H, W = base.shape[:2]
+    e = fit_to(L.load(p), base.shape)
+    band = job["band"]
+    kb, _ = L.key(base)
+    lb = np.zeros((H, W), bool)
+    lb[int(band[0] * H):int(band[1] * H)] = True
+    best = None
+    for mode in (cv2.MOTION_TRANSLATION, cv2.MOTION_AFFINE):
+        r, M = L.ecc(e, base, band, mode, say=log)
+        kr, _ = L.key(r)
+        drift = np.abs(kr[..., 3] - kb[..., 3])[lb].mean()
+        if best is None or drift < best[0]:
+            best = (drift, kr, M)
+    drift, kr, M = best
+    log("  %s: shift %+.1f,%+.1f px, scale %.3f; leg-band alpha drift %.2f%%%s" % (job["id"], M[0, 2], M[1, 2], np.hypot(M[0, 0], M[1, 0]), drift * 100, " REDO" if drift > job.get("drift_max", 0.02) else ""),
+        flag=drift > job.get("drift_max", 0.02), quiet=True)
+    x0, y0 = spec["src"]
+    cw, ch = spec["canvas"]
+    size1 = (spec["w"], spec["h"])
+    size2 = (size1[0] * 2, size1[1] * 2) if size1[1] * 2 <= ch else (cw, ch)
+    out = L.save(L.to_img(kr[y0:y0 + ch, x0:x0 + cw]), cx.to(job["out"]), 90, size1, size2)
+    log("%s: pose on the figure's canvas %dx%d" % (job["id"], cw, ch))
+    return {"closeup": job.get("data", job["id"]), "value": {"file": cx.rel(out[0]), "drift": round(float(drift), 4)}}
+
+
+TYPES = {"closeup": cut_closeup, "grid": cut_grid, "figure": cut_figure, "background": cut_background, "pose": cut_pose}
 
 
 # ---------------------------------------------------------------- spec handling
@@ -406,7 +562,8 @@ def main(argv=None):
     with open(data_path, "w") as f:
         json.dump(data, f, indent=1, ensure_ascii=False)
         f.write("\n")
-    open(os.path.join(out, "cut-report.txt"), "w").write("\n".join(REPORT) + "\n")
+    rep = os.path.join(out, "cut-report.txt") if a.out or not spec.get("report_beside_data") else data_path.replace(".json", "-report.txt")
+    open(rep, "w").write("\n".join(REPORT) + "\n")
     miss = sorted(set(cx.missing))
     print("\n%d job(s); %d flag(s)%s; data %s" % (len(jobs), len(FLAGS), ("; %d source(s) not landed" % len(miss)) if miss else "", os.path.relpath(data_path, REPO)))
     return 1 if FLAGS else 0

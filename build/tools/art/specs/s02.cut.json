@@ -1,0 +1,958 @@
+{
+ "pack": "s02",
+ "about": "Sprint 2 art (pack s02), cut by build/tools/art/artcut.py from sources/art/s02/ (art plan s02 section 8; Session S02-E). Cook pieces under assets/cook/, clinic sheets under assets/clinic/sheets/<item>/, the girl's new poses and v2 close-ups beside the v1 files (never overwritten). Sizes are the drawn size x1.5 (decision 68).",
+ "src": "sources/art/s02",
+ "out": "assets",
+ "data": "data/clinic/s02-cut.json",
+ "skin_render": [
+  243,
+  152,
+  97
+ ],
+ "skin_limits": [
+  6,
+  12
+ ],
+ "failed": {
+  "d1-coin-jar-levels-v1.png": "superseded by Zafar's slot-lid jar (d1-coin-jar-levels-slot-v1.png)",
+  "d1-coin-jar-levels-nolid-v1.png": "superseded by the slot-lid jar"
+ },
+ "jobs": [
+  {
+   "id": "a1-kitchen",
+   "type": "background",
+   "src": "a1-kitchen-service-trays-v1.png",
+   "out": "cook/bg/service-v2.webp",
+   "data": "kitchen",
+   "size": [
+    1600,
+    900
+   ],
+   "crop_y": 20,
+   "q": 84,
+   "lines": {
+    "island-back-edge": [
+     604,
+     608
+    ]
+   },
+   "measure": {
+    "trays": {
+     "hsv": [
+      0,
+      25,
+      60,
+      120
+     ],
+     "band": [
+      600,
+      820
+     ],
+     "count": 3
+    }
+   }
+  },
+  {
+   "id": "b1-served",
+   "type": "grid",
+   "src": "b1-served-dishes-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "cook/items/served",
+   "names": [
+    "chai-milk",
+    "chai-black",
+    "maani",
+    "daar",
+    "chaat",
+    "samosa",
+    "sekelo",
+    "pantry-basket"
+   ],
+   "max": 300,
+   "glass": [
+    "chai-milk",
+    "chai-black",
+    "chaat"
+   ]
+  },
+  {
+   "id": "c1c2-pour",
+   "type": "grid",
+   "src": "c1-chai-pan-pour-milk-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "cook/items/chai-v2",
+   "names": [
+    "pan-pour-milk"
+   ],
+   "max": 640
+  },
+  {
+   "id": "c2-pour",
+   "type": "grid",
+   "src": "c2-chai-pan-pour-black-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "cook/items/chai-v2",
+   "names": [
+    "pan-pour-black"
+   ],
+   "max": 640
+  },
+  {
+   "id": "c3-glass-black",
+   "type": "grid",
+   "src": "c3-black-tea-glass-states-v1.png",
+   "cells": [
+    3,
+    1
+   ],
+   "outdir": "cook/items/chai-v2",
+   "names": [
+    "glass-black-empty",
+    "glass-black-half",
+    "glass-black-full"
+   ],
+   "max": 256,
+   "soft": true,
+   "register_scale": true,
+   "registered": [
+    {
+     "names": [
+      "glass-black-empty",
+      "glass-black-half",
+      "glass-black-full"
+     ],
+     "align": "base"
+    }
+   ]
+  },
+  {
+   "id": "c4-teaspoon",
+   "type": "grid",
+   "src": "c4-teaspoon-t-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "cook/items/chai-v2",
+   "names": [
+    "teaspoon-t"
+   ],
+   "max": 300
+  },
+  {
+   "id": "c5-spice-jars",
+   "type": "grid",
+   "src": "c5-spice-jars-v1.png",
+   "cells": [
+    4,
+    1
+   ],
+   "outdir": "cook/items",
+   "names": [
+    "shelf-lasan-jar-v2-f",
+    "shelf-aadu-jar-v2-f",
+    "shelf-elchi-jar-v2-f",
+    "shelf-loon-jar-v2-f"
+   ],
+   "max": 256,
+   "glass": [
+    "shelf-lasan-jar-v2-f",
+    "shelf-aadu-jar-v2-f",
+    "shelf-elchi-jar-v2-f",
+    "shelf-loon-jar-v2-f"
+   ]
+  },
+  {
+   "id": "c6-ginger",
+   "type": "grid",
+   "src": "c6-ginger-t-v1.png",
+   "cells": [
+    2,
+    1
+   ],
+   "outdir": "cook/items/chai-v2",
+   "names": [
+    "ginger-root-t",
+    "ginger-slices-t"
+   ],
+   "max": 256
+  },
+  {
+   "id": "c7-sekelo-plate",
+   "type": "grid",
+   "src": "c7-sekelo-plate-plain-t-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "cook/items/v3/sekelo",
+   "names": [
+    "plate-plain-t"
+   ],
+   "max": 780
+  },
+  {
+   "id": "c8-chaat-glass",
+   "type": "grid",
+   "src": "c8-chaat-glass-side-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "cook/items/v3/chaat",
+   "names": [
+    "bowl-side-v2"
+   ],
+   "max": 900,
+   "soft": true
+  },
+  {
+   "id": "c9-knife",
+   "type": "grid",
+   "src": "c9-knife-t-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "cook/items",
+   "names": [
+    "tool-knife-t-v2"
+   ],
+   "max": 300
+  },
+  {
+   "id": "c10-daar",
+   "type": "grid",
+   "src": "c10-daar-bowl-trivet-t-v1.png",
+   "cells": [
+    2,
+    1
+   ],
+   "outdir": "cook/items/v3/daar",
+   "names": [
+    "daar-bowl-plain-t",
+    "trivet-t"
+   ],
+   "max": 360,
+   "register_scale": true,
+   "registered": []
+  },
+  {
+   "id": "c11-folds",
+   "type": "grid",
+   "src": "c11-samosa-fold-frames-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "outdir": "cook/items/v3/samosa",
+   "names": [
+    "fold-v2-1",
+    "fold-v2-2",
+    "fold-v2-3",
+    "fold-v2-4",
+    "fold-v2-5",
+    "fold-v2-6"
+   ],
+   "max": 570,
+   "register_scale": true,
+   "registered": [
+    {
+     "names": [
+      "fold-v2-1",
+      "fold-v2-2",
+      "fold-v2-3",
+      "fold-v2-4",
+      "fold-v2-5",
+      "fold-v2-6"
+     ],
+     "align": "topleft"
+    }
+   ]
+  },
+  {
+   "id": "d1-jar",
+   "type": "grid",
+   "src": "d1-coin-jar-levels-slot-v1.png",
+   "cells": [
+    5,
+    1
+   ],
+   "outdir": "cook/items/jar",
+   "names": [
+    "jar-slot-0",
+    "jar-slot-1",
+    "jar-slot-2",
+    "jar-slot-3",
+    "jar-slot-4"
+   ],
+   "max": 360,
+   "soft": true,
+   "register_scale": true,
+   "registered": [
+    {
+     "names": [
+      "jar-slot-0",
+      "jar-slot-1",
+      "jar-slot-2",
+      "jar-slot-3",
+      "jar-slot-4"
+     ],
+     "align": "base"
+    }
+   ]
+  },
+  {
+   "id": "d2-coins",
+   "type": "grid",
+   "src": "d2-coin-pile-v1.png",
+   "cells": [
+    2,
+    1
+   ],
+   "outdir": "cook/items/jar",
+   "names": [
+    "coin",
+    "coin-pile"
+   ],
+   "sizes": {
+    "coin": 128,
+    "coin-pile": 300
+   }
+  },
+  {
+   "id": "e1-cloth",
+   "type": "grid",
+   "src": "e1-cloth-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/cloth",
+   "names": [
+    "cloth-belt",
+    "cloth-tray",
+    "cloth-tool",
+    "cloth-dab",
+    "cloth-dab-3q",
+    "cloth-side",
+    "cloth-dab-wet",
+    "cloth-flat"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e2-plasters",
+   "type": "grid",
+   "src": "e2-plasters-flat-v1.png",
+   "cells": [
+    4,
+    3
+   ],
+   "outdir": "clinic/sheets/plaster-flat",
+   "names": [
+    "plaster-flat-red",
+    "plaster-flat-yellow",
+    "plaster-flat-blue",
+    "plaster-flat-green",
+    "plaster-flat-skin",
+    "plaster-flat-red-yellow",
+    "plaster-flat-red-blue",
+    "plaster-flat-red-green",
+    "plaster-flat-yellow-blue",
+    "plaster-flat-yellow-green",
+    "plaster-flat-blue-green",
+    null
+   ],
+   "max": 256
+  },
+  {
+   "id": "e3-plaster",
+   "type": "grid",
+   "src": "e3-plaster-views-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/plaster",
+   "names": [
+    "plaster-belt",
+    "plaster-tray",
+    "plaster-tool",
+    "plaster-knee",
+    "plaster-forearm",
+    "plaster-upperarm",
+    "plaster-side",
+    "plaster-peel"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e4-drop-bottle",
+   "type": "grid",
+   "src": "e4-drop-bottle-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/drop-bottle",
+   "names": [
+    "drop-bottle-belt",
+    "drop-bottle-tray",
+    "drop-bottle-tool",
+    "drop-bottle-use",
+    "drop-bottle-use-down",
+    "drop-bottle-side",
+    "drop-bottle-cap-off",
+    "drop-bottle-squeeze"
+   ],
+   "max": 384,
+   "soft": true
+  },
+  {
+   "id": "e5-toothbrush",
+   "type": "grid",
+   "src": "e5-toothbrush-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/toothbrush",
+   "names": [
+    "toothbrush-belt",
+    "toothbrush-tray",
+    "toothbrush-tool",
+    "toothbrush-use",
+    "toothbrush-use-down",
+    "toothbrush-side",
+    "toothbrush-use-up",
+    "toothbrush-paste"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e5b-brushing",
+   "type": "grid",
+   "src": "e5b-toothbrush-brushing-views-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "outdir": "clinic/sheets/brushing",
+   "names": [
+    "brushing-level",
+    "brushing-up",
+    "brushing-down",
+    "brushing-level-paste",
+    "brushing-up-paste",
+    "brushing-down-paste"
+   ],
+   "max": 512
+  },
+  {
+   "id": "e6-hand-fan",
+   "type": "grid",
+   "src": "e6-hand-fan-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/hand-fan",
+   "names": [
+    "hand-fan-room",
+    "hand-fan-tray",
+    "hand-fan-tool",
+    "hand-fan-use",
+    "hand-fan-use-left",
+    "hand-fan-use-right",
+    "hand-fan-side",
+    "hand-fan-three-q"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e7-desk-fan",
+   "type": "grid",
+   "src": "e7-desk-fan-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/desk-fan",
+   "names": [
+    "desk-fan-belt",
+    "desk-fan-three-q",
+    "desk-fan-top",
+    "desk-fan-use",
+    "desk-fan-use-3q",
+    "desk-fan-side",
+    "desk-fan-back",
+    "desk-fan-icon"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e8-hot-water-bottle",
+   "type": "grid",
+   "src": "e8-hot-water-bottle-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/hot-water-bottle",
+   "names": [
+    "hot-water-bottle-room",
+    "hot-water-bottle-tray",
+    "hot-water-bottle-tool",
+    "hot-water-bottle-use",
+    "hot-water-bottle-side",
+    "hot-water-bottle-lying",
+    "hot-water-bottle-back",
+    "hot-water-bottle-stopper-off"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e9-heater",
+   "type": "grid",
+   "src": "e9-heater-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/heater",
+   "names": [
+    "heater-3q-off",
+    "heater-3q-on",
+    "heater-front-off",
+    "heater-front-on",
+    "heater-side-off",
+    "heater-side-on",
+    "heater-top",
+    "heater-back"
+   ],
+   "max": 384,
+   "register_scale": true,
+   "registered": [
+    {
+     "names": [
+      "heater-3q-off",
+      "heater-3q-on"
+     ],
+     "align": "base"
+    },
+    {
+     "names": [
+      "heater-front-off",
+      "heater-front-on"
+     ],
+     "align": "base"
+    },
+    {
+     "names": [
+      "heater-side-off",
+      "heater-side-on"
+     ],
+     "align": "base"
+    }
+   ]
+  },
+  {
+   "id": "e10-alcohol-wipe",
+   "type": "grid",
+   "src": "e10-alcohol-wipe-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/wipe",
+   "names": [
+    "wipe-belt",
+    "wipe-tray",
+    "wipe-tool",
+    "wipe-torn",
+    "wipe-use",
+    "wipe-flat",
+    "wipe-side",
+    "wipe-three-q"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e11-syringe",
+   "type": "grid",
+   "src": "e11-syringe-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/syringe",
+   "names": [
+    "syringe-belt",
+    "syringe-tray",
+    "syringe-tool",
+    "syringe-upright",
+    "syringe-filled",
+    "syringe-use",
+    "syringe-side",
+    "syringe-pressed"
+   ],
+   "max": 384,
+   "soft": true
+  },
+  {
+   "id": "e12-tweezers",
+   "type": "grid",
+   "src": "e12-tweezers-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/tweezers",
+   "names": [
+    "tweezers-belt",
+    "tweezers-tray",
+    "tweezers-tool",
+    "tweezers-use",
+    "tweezers-use-45",
+    "tweezers-splinter",
+    "tweezers-side",
+    "tweezers-open"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e13-cotton-bud",
+   "type": "grid",
+   "src": "e13-cotton-bud-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/bud",
+   "names": [
+    "bud-pot-belt",
+    "bud-pot-tray",
+    "bud-flat",
+    "bud-use",
+    "bud-use-down",
+    "bud-ointment",
+    "bud-wax",
+    "bud-pot-side"
+   ],
+   "max": 384,
+   "glass": [
+    "bud-pot-belt",
+    "bud-pot-tray",
+    "bud-pot-side"
+   ]
+  },
+  {
+   "id": "e14-bin",
+   "type": "grid",
+   "src": "e14-waste-bin-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/bin",
+   "names": [
+    "bin-front",
+    "bin-three-q",
+    "bin-three-q-open",
+    "bin-top-open",
+    "bin-side",
+    "bin-tool",
+    "bin-kidney-3q",
+    "bin-kidney-top"
+   ],
+   "max": 384
+  },
+  {
+   "id": "e15-ear-bits",
+   "type": "grid",
+   "src": "e15-ear-bits-angled-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "outdir": "clinic/sheets/ear-bits",
+   "names": [
+    "ear-bits-wax-big",
+    "ear-bits-wax-mid",
+    "ear-bits-wax-small",
+    "ear-bits-seed",
+    "ear-bits-bud-wax",
+    "ear-bits-wax-drop"
+   ],
+   "max": 256
+  },
+  {
+   "id": "e16-jugs",
+   "type": "grid",
+   "src": "e16-jugs-sheet-v1.png",
+   "outdir": "clinic/sheets/jug",
+   "names": [
+    "jug-hot-belt",
+    "jug-cold-belt",
+    "jug-warm-belt",
+    "jug-hot-tray",
+    "jug-cold-tray",
+    "jug-warm-tray",
+    "jug-hot-pour",
+    "jug-cold-pour",
+    "jug-warm-pour"
+   ],
+   "max": 384,
+   "soft": true,
+   "boxes": {
+    "jug-hot-belt": [
+     100,
+     0,
+     500,
+     348
+    ],
+    "jug-cold-belt": [
+     600,
+     40,
+     960,
+     348
+    ],
+    "jug-warm-belt": [
+     1090,
+     40,
+     1450,
+     348
+    ],
+    "jug-hot-tray": [
+     100,
+     348,
+     500,
+     604
+    ],
+    "jug-cold-tray": [
+     590,
+     348,
+     970,
+     604
+    ],
+    "jug-warm-tray": [
+     1080,
+     348,
+     1460,
+     604
+    ],
+    "jug-hot-pour": [
+     60,
+     604,
+     490,
+     1024
+    ],
+    "jug-cold-pour": [
+     540,
+     604,
+     970,
+     1024
+    ],
+    "jug-warm-pour": [
+     1030,
+     604,
+     1460,
+     1024
+    ]
+   },
+   "_why_boxes": "the hot jug's steam joins its belt and tray views into one blob, so the blob count is off (brief: B1, E8, E16 by explicit boxes); B1 and E8 cut cleanly by cell centroid"
+  },
+  {
+   "id": "e17-thermometer",
+   "type": "grid",
+   "src": "e17-thermometer-sheet-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/sheets/thermometer",
+   "names": [
+    "thermometer-belt",
+    "thermometer-tray",
+    "thermometer-tool",
+    "thermometer-use",
+    "thermometer-use-down",
+    "thermometer-arm",
+    "thermometer-side",
+    "thermometer-read"
+   ],
+   "max": 384,
+   "soft": true
+  },
+  {
+   "id": "ro2-mouth-bits",
+   "type": "grid",
+   "src": "o2-mouth-bits-v2.png",
+   "cells": [
+    4,
+    2
+   ],
+   "outdir": "clinic/heal-v3",
+   "names": [
+    "spot-red-v2",
+    "spot-yellow-v2",
+    "spot-blue-v2",
+    "spot-green-v2",
+    "decay-1-v2",
+    "decay-2-v2",
+    "decay-3-v2",
+    "filling-patch-v2"
+   ]
+  },
+  {
+   "id": "girl-stand",
+   "type": "figure",
+   "data": "girl-stand",
+   "src": "girl-w11-standing-palms-v1.png",
+   "fig_h": 600,
+   "pad": 16,
+   "neck": 430,
+   "age": "child",
+   "poses": {
+    "wave": {
+     "src": "girl-w12-standing-wave-v1.png",
+     "band": [
+      0.78,
+      0.96
+     ]
+    }
+   },
+   "out": "clinic/patients/girl/girl-stand"
+  },
+  {
+   "id": "girl-mouth-brush",
+   "type": "closeup",
+   "data": "girl.mouth-brush",
+   "src": "girl-m3-mouth-brush-v1.png",
+   "exits": [
+    "top",
+    "left",
+    "right"
+   ],
+   "out": "clinic/closeups/girl/mouth-brush.webp",
+   "states": {
+    "plaque": {
+     "src": "girl-m4-mouth-plaque-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "child-upperarm-v2",
+   "type": "closeup",
+   "data": "child.upperarm-v2",
+   "src": "child-u1-upperarm-v2.png",
+   "exits": [
+    "left",
+    "bottom",
+    "top"
+   ],
+   "out": "clinic/closeups/child/upperarm-v2.webp"
+  },
+  {
+   "id": "girl-mouth-v2",
+   "type": "closeup",
+   "data": "girl.mouth-v2",
+   "src": "girl-m1-mouth-v2.png",
+   "exits": [
+    "top",
+    "left",
+    "right"
+   ],
+   "out": "clinic/closeups/girl/mouth-v2.webp"
+  },
+  {
+   "id": "girl-tongue-v2",
+   "type": "closeup",
+   "data": "girl.tongue-v2",
+   "src": "girl-m2-tongue-v2.png",
+   "exits": [
+    "top",
+    "left",
+    "right"
+   ],
+   "out": "clinic/closeups/girl/tongue-v2.webp"
+  },
+  {
+   "id": "girl-eyes-v2",
+   "type": "closeup",
+   "data": "girl.eyes-v2",
+   "src": "girl-y1-eyes-v2.png",
+   "exits": [
+    "top",
+    "left",
+    "right",
+    "bottom"
+   ],
+   "out": "clinic/closeups/girl/eyes-v2.webp",
+   "states": {
+    "sore": {
+     "src": "girl-y2-eye-sore-v2.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    },
+    "closed": {
+     "src": "girl-y3-eyes-closed-v2.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "girl-eyetest-a-v2",
+   "type": "closeup",
+   "data": "girl.eyetest-a-v2",
+   "src": "girl-t1-eyetest-a-v2.png",
+   "exits": [
+    "bottom",
+    "left"
+   ],
+   "out": "clinic/closeups/girl/eyetest-a-v2.webp"
+  },
+  {
+   "id": "girl-bottle-v2",
+   "type": "pose",
+   "data": "girl.bottle-v2",
+   "src": "girl-w10-bottle-v2.png",
+   "base": "sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png",
+   "band": [
+    0.74,
+    0.93
+   ],
+   "canvas_from": "data/clinic/heal-art.json#patients.girl",
+   "out": "clinic/patients/girl/girl-front-bottle-v2.webp"
+  }
+ ],
+ "report_beside_data": true
+}

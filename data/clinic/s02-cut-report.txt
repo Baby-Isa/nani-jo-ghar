@@ -1,0 +1,57 @@
+  trays (design px cx, cy, w, h): [[358, 652, 339, 58], [802, 652, 331, 58], [1251, 652, 332, 58]]
+  island-back-edge: source row 604 lands at 608.3 (old background 608)
+a1-kitchen: background 1600x900 from rows 20..884
+b1-served: 8 piece(s) by cell for 8 name(s)
+c1c2-pour: 1 piece(s) by cell for 1 name(s)
+c2-pour: 1 piece(s) by cell for 1 name(s)
+c3-glass-black: 3 piece(s) by cell for 3 name(s)
+  registered on one canvas 213x256: glass-black-empty, glass-black-half, glass-black-full
+c4-teaspoon: 1 piece(s) by cell for 1 name(s)
+c5-spice-jars: 4 piece(s) by cell for 4 name(s)
+c6-ginger: 2 piece(s) by cell for 2 name(s)
+c7-sekelo-plate: 1 piece(s) by cell for 1 name(s)
+c8-chaat-glass: 1 piece(s) by cell for 1 name(s)
+c9-knife: 1 piece(s) by cell for 1 name(s)
+c10-daar: 2 piece(s) by cell for 2 name(s)
+c11-folds: 6 piece(s) by cell for 6 name(s)
+  registered on one canvas 482x149: fold-v2-1, fold-v2-2, fold-v2-3, fold-v2-4, fold-v2-5, fold-v2-6
+d1-jar: 5 piece(s) by cell for 5 name(s)
+  registered on one canvas 209x360: jar-slot-0, jar-slot-1, jar-slot-2, jar-slot-3, jar-slot-4
+d2-coins: 2 piece(s) by cell for 2 name(s)
+e1-cloth: 8 piece(s) by cell for 8 name(s)
+e2-plasters: 11 piece(s) by cell for 11 name(s)
+e3-plaster: 8 piece(s) by cell for 8 name(s)
+e4-drop-bottle: 8 piece(s) by cell for 8 name(s)
+e5-toothbrush: 8 piece(s) by cell for 8 name(s)
+e5b-brushing: 6 piece(s) by cell for 6 name(s)
+e6-hand-fan: 8 piece(s) by cell for 8 name(s)
+e7-desk-fan: 8 piece(s) by cell for 8 name(s)
+e8-hot-water-bottle: 8 piece(s) by cell for 8 name(s)
+e9-heater: 8 piece(s) by cell for 8 name(s)
+  registered on one canvas 364x370: heater-3q-off, heater-3q-on
+  registered on one canvas 366x333: heater-front-off, heater-front-on
+  registered on one canvas 257x384: heater-side-off, heater-side-on
+e10-alcohol-wipe: 8 piece(s) by cell for 8 name(s)
+e11-syringe: 8 piece(s) by cell for 8 name(s)
+e12-tweezers: 8 piece(s) by cell for 8 name(s)
+e13-cotton-bud: 8 piece(s) by cell for 8 name(s)
+e14-bin: 8 piece(s) by cell for 8 name(s)
+e15-ear-bits: 6 piece(s) by cell for 6 name(s)
+e16-jugs: 9 piece(s) by box for 9 name(s)
+e17-thermometer: 8 piece(s) by cell for 8 name(s)
+ro2-mouth-bits: 8 piece(s) by cell for 8 name(s)
+  skin girl-stand base face: #F8995F ΔE 2.4 from the approved render
+  head band y 55..430
+  pose wave: shift -0.2,-0.4 px; leg-band alpha drift 0.08%
+girl-stand: figure cut, canvas 827x1460, 2 pose(s), 0 face layer(s)
+  plaque: shift -0.4,-0.1 px
+girl-mouth-brush: cut, exits top,left,right, 2 picture(s)
+child-upperarm-v2: cut, exits left,bottom,top, 1 picture(s)
+girl-mouth-v2: cut, exits top,left,right, 1 picture(s)
+girl-tongue-v2: cut, exits top,left,right, 1 picture(s)
+  sore: shift -0.4,+0.5 px
+  closed: shift -0.6,+2.0 px
+girl-eyes-v2: cut, exits top,left,right,bottom, 3 picture(s)
+girl-eyetest-a-v2: cut, exits bottom,left, 1 picture(s)
+  girl-bottle-v2: shift +1.4,-7.9 px, scale 0.998; leg-band alpha drift 0.18%
+girl-bottle-v2: pose on the figure's canvas 854x1464

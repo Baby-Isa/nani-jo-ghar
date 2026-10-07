@@ -1,0 +1,1193 @@
+{
+ "_about": "Sprint 2 art (pack s02), cut by build/tools/art/artcut.py from sources/art/s02/ (art plan s02 section 8; Session S02-E). Cook pieces under assets/cook/, clinic sheets under assets/clinic/sheets/<item>/, the girl's new poses and v2 close-ups beside the v1 files (never overwritten). Sizes are the drawn size x1.5 (decision 68).",
+ "patients": {
+  "girl-stand": {
+   "canvas": [
+    827,
+    1460
+   ],
+   "src": [
+    97,
+    18
+   ],
+   "w": 358,
+   "h": 632,
+   "front": "clinic/patients/girl/girl-stand-front.webp",
+   "wave": "clinic/patients/girl/girl-stand-front-wave.webp",
+   "faces": {},
+   "feet": 0.9733,
+   "anchors": {},
+   "heads": {
+    "neutral": "clinic/patients/girl/girl-stand-head-neutral.webp"
+   },
+   "age": "child"
+  }
+ },
+ "closeups": {
+  "girl.mouth-brush": {
+   "file": "clinic/closeups/girl/mouth-brush.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "exits": [
+    "top",
+    "left",
+    "right"
+   ],
+   "box": [
+    0.0,
+    0.0,
+    1.0,
+    0.8945
+   ],
+   "plaque": "clinic/closeups/girl/mouth-brush-plaque.webp"
+  },
+  "child.upperarm-v2": {
+   "file": "clinic/closeups/child/upperarm-v2.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "exits": [
+    "left",
+    "bottom",
+    "top"
+   ],
+   "box": [
+    0.0,
+    0.0,
+    0.6374,
+    1.0
+   ]
+  },
+  "girl.mouth-v2": {
+   "file": "clinic/closeups/girl/mouth-v2.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "exits": [
+    "top",
+    "left",
+    "right"
+   ],
+   "box": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ]
+  },
+  "girl.tongue-v2": {
+   "file": "clinic/closeups/girl/tongue-v2.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "exits": [
+    "top",
+    "left",
+    "right"
+   ],
+   "box": [
+    0.0,
+    0.0,
+    1.0,
+    0.9346
+   ]
+  },
+  "girl.eyes-v2": {
+   "file": "clinic/closeups/girl/eyes-v2.webp",
+   "size": [
+    1536,
+    1024
+   ],
+   "exits": [
+    "top",
+    "left",
+    "right",
+    "bottom"
+   ],
+   "box": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ],
+   "sore": "clinic/closeups/girl/eyes-v2-sore.webp",
+   "closed": "clinic/closeups/girl/eyes-v2-closed.webp"
+  },
+  "girl.eyetest-a-v2": {
+   "file": "clinic/closeups/girl/eyetest-a-v2.webp",
+   "size": [
+    1024,
+    1536
+   ],
+   "exits": [
+    "bottom",
+    "left"
+   ],
+   "box": [
+    0.0186,
+    0.1152,
+    0.9834,
+    1.0
+   ]
+  },
+  "girl.bottle-v2": {
+   "file": "clinic/patients/girl/girl-front-bottle-v2.webp",
+   "drift": 0.0018
+  }
+ },
+ "props": {
+  "kitchen": {
+   "file": "cook/bg/service-v2.webp",
+   "size": [
+    1600,
+    900
+   ],
+   "crop_y": 20,
+   "src_band": [
+    1536,
+    864
+   ],
+   "trays": [
+    [
+     358,
+     652,
+     339,
+     58
+    ],
+    [
+     802,
+     652,
+     331,
+     58
+    ],
+    [
+     1251,
+     652,
+     332,
+     58
+    ]
+   ],
+   "lines": {
+    "island-back-edge": {
+     "src": 604,
+     "at": 608.3,
+     "want": 608
+    }
+   }
+  },
+  "chai-milk": {
+   "file": "cook/items/served/chai-milk.webp",
+   "w": 246,
+   "h": 300
+  },
+  "chai-black": {
+   "file": "cook/items/served/chai-black.webp",
+   "w": 245,
+   "h": 300
+  },
+  "maani": {
+   "file": "cook/items/served/maani.webp",
+   "w": 300,
+   "h": 197
+  },
+  "daar": {
+   "file": "cook/items/served/daar.webp",
+   "w": 300,
+   "h": 256
+  },
+  "chaat": {
+   "file": "cook/items/served/chaat.webp",
+   "w": 300,
+   "h": 288
+  },
+  "samosa": {
+   "file": "cook/items/served/samosa.webp",
+   "w": 300,
+   "h": 257
+  },
+  "sekelo": {
+   "file": "cook/items/served/sekelo.webp",
+   "w": 300,
+   "h": 169
+  },
+  "pantry-basket": {
+   "file": "cook/items/served/pantry-basket.webp",
+   "w": 300,
+   "h": 279
+  },
+  "pan-pour-milk": {
+   "file": "cook/items/chai-v2/pan-pour-milk.webp",
+   "w": 611,
+   "h": 640
+  },
+  "pan-pour-black": {
+   "file": "cook/items/chai-v2/pan-pour-black.webp",
+   "w": 612,
+   "h": 640
+  },
+  "glass-black-empty": {
+   "file": "cook/items/chai-v2/glass-black-empty.webp",
+   "w": 213,
+   "h": 256
+  },
+  "glass-black-half": {
+   "file": "cook/items/chai-v2/glass-black-half.webp",
+   "w": 213,
+   "h": 256
+  },
+  "glass-black-full": {
+   "file": "cook/items/chai-v2/glass-black-full.webp",
+   "w": 213,
+   "h": 256
+  },
+  "teaspoon-t": {
+   "file": "cook/items/chai-v2/teaspoon-t.webp",
+   "w": 300,
+   "h": 84
+  },
+  "shelf-lasan-jar-v2-f": {
+   "file": "cook/items/shelf-lasan-jar-v2-f.webp",
+   "w": 176,
+   "h": 256
+  },
+  "shelf-aadu-jar-v2-f": {
+   "file": "cook/items/shelf-aadu-jar-v2-f.webp",
+   "w": 175,
+   "h": 256
+  },
+  "shelf-elchi-jar-v2-f": {
+   "file": "cook/items/shelf-elchi-jar-v2-f.webp",
+   "w": 176,
+   "h": 256
+  },
+  "shelf-loon-jar-v2-f": {
+   "file": "cook/items/shelf-loon-jar-v2-f.webp",
+   "w": 176,
+   "h": 256
+  },
+  "ginger-root-t": {
+   "file": "cook/items/chai-v2/ginger-root-t.webp",
+   "w": 256,
+   "h": 238
+  },
+  "ginger-slices-t": {
+   "file": "cook/items/chai-v2/ginger-slices-t.webp",
+   "w": 256,
+   "h": 229
+  },
+  "plate-plain-t": {
+   "file": "cook/items/v3/sekelo/plate-plain-t.webp",
+   "w": 780,
+   "h": 551
+  },
+  "bowl-side-v2": {
+   "file": "cook/items/v3/chaat/bowl-side-v2.webp",
+   "w": 900,
+   "h": 457
+  },
+  "tool-knife-t-v2": {
+   "file": "cook/items/tool-knife-t-v2.webp",
+   "w": 300,
+   "h": 63
+  },
+  "daar-bowl-plain-t": {
+   "file": "cook/items/v3/daar/daar-bowl-plain-t.webp",
+   "w": 360,
+   "h": 357
+  },
+  "trivet-t": {
+   "file": "cook/items/v3/daar/trivet-t.webp",
+   "w": 360,
+   "h": 358
+  },
+  "fold-v2-1": {
+   "file": "cook/items/v3/samosa/fold-v2-1.webp",
+   "w": 482,
+   "h": 149
+  },
+  "fold-v2-2": {
+   "file": "cook/items/v3/samosa/fold-v2-2.webp",
+   "w": 482,
+   "h": 149
+  },
+  "fold-v2-3": {
+   "file": "cook/items/v3/samosa/fold-v2-3.webp",
+   "w": 482,
+   "h": 149
+  },
+  "fold-v2-4": {
+   "file": "cook/items/v3/samosa/fold-v2-4.webp",
+   "w": 482,
+   "h": 149
+  },
+  "fold-v2-5": {
+   "file": "cook/items/v3/samosa/fold-v2-5.webp",
+   "w": 482,
+   "h": 149
+  },
+  "fold-v2-6": {
+   "file": "cook/items/v3/samosa/fold-v2-6.webp",
+   "w": 482,
+   "h": 149
+  },
+  "jar-slot-0": {
+   "file": "cook/items/jar/jar-slot-0.webp",
+   "w": 209,
+   "h": 360
+  },
+  "jar-slot-1": {
+   "file": "cook/items/jar/jar-slot-1.webp",
+   "w": 209,
+   "h": 360
+  },
+  "jar-slot-2": {
+   "file": "cook/items/jar/jar-slot-2.webp",
+   "w": 209,
+   "h": 360
+  },
+  "jar-slot-3": {
+   "file": "cook/items/jar/jar-slot-3.webp",
+   "w": 209,
+   "h": 360
+  },
+  "jar-slot-4": {
+   "file": "cook/items/jar/jar-slot-4.webp",
+   "w": 209,
+   "h": 360
+  },
+  "coin": {
+   "file": "cook/items/jar/coin.webp",
+   "w": 116,
+   "h": 128
+  },
+  "coin-pile": {
+   "file": "cook/items/jar/coin-pile.webp",
+   "w": 300,
+   "h": 240
+  },
+  "cloth-belt": {
+   "file": "clinic/sheets/cloth/cloth-belt.webp",
+   "w": 381,
+   "h": 294
+  },
+  "cloth-tray": {
+   "file": "clinic/sheets/cloth/cloth-tray.webp",
+   "w": 340,
+   "h": 329
+  },
+  "cloth-tool": {
+   "file": "clinic/sheets/cloth/cloth-tool.webp",
+   "w": 372,
+   "h": 178
+  },
+  "cloth-dab": {
+   "file": "clinic/sheets/cloth/cloth-dab.webp",
+   "w": 329,
+   "h": 324
+  },
+  "cloth-dab-3q": {
+   "file": "clinic/sheets/cloth/cloth-dab-3q.webp",
+   "w": 351,
+   "h": 329
+  },
+  "cloth-side": {
+   "file": "clinic/sheets/cloth/cloth-side.webp",
+   "w": 373,
+   "h": 144
+  },
+  "cloth-dab-wet": {
+   "file": "clinic/sheets/cloth/cloth-dab-wet.webp",
+   "w": 340,
+   "h": 320
+  },
+  "cloth-flat": {
+   "file": "clinic/sheets/cloth/cloth-flat.webp",
+   "w": 365,
+   "h": 348
+  },
+  "plaster-flat-red": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-red.webp",
+   "w": 256,
+   "h": 129
+  },
+  "plaster-flat-yellow": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-yellow.webp",
+   "w": 256,
+   "h": 129
+  },
+  "plaster-flat-blue": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-blue.webp",
+   "w": 256,
+   "h": 130
+  },
+  "plaster-flat-green": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-green.webp",
+   "w": 256,
+   "h": 131
+  },
+  "plaster-flat-skin": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+   "w": 256,
+   "h": 129
+  },
+  "plaster-flat-red-yellow": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-red-yellow.webp",
+   "w": 256,
+   "h": 130
+  },
+  "plaster-flat-red-blue": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-red-blue.webp",
+   "w": 256,
+   "h": 130
+  },
+  "plaster-flat-red-green": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-red-green.webp",
+   "w": 256,
+   "h": 130
+  },
+  "plaster-flat-yellow-blue": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-yellow-blue.webp",
+   "w": 256,
+   "h": 130
+  },
+  "plaster-flat-yellow-green": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-yellow-green.webp",
+   "w": 256,
+   "h": 130
+  },
+  "plaster-flat-blue-green": {
+   "file": "clinic/sheets/plaster-flat/plaster-flat-blue-green.webp",
+   "w": 256,
+   "h": 130
+  },
+  "plaster-belt": {
+   "file": "clinic/sheets/plaster/plaster-belt.webp",
+   "w": 368,
+   "h": 172
+  },
+  "plaster-tray": {
+   "file": "clinic/sheets/plaster/plaster-tray.webp",
+   "w": 377,
+   "h": 185
+  },
+  "plaster-tool": {
+   "file": "clinic/sheets/plaster/plaster-tool.webp",
+   "w": 382,
+   "h": 283
+  },
+  "plaster-knee": {
+   "file": "clinic/sheets/plaster/plaster-knee.webp",
+   "w": 364,
+   "h": 218
+  },
+  "plaster-forearm": {
+   "file": "clinic/sheets/plaster/plaster-forearm.webp",
+   "w": 384,
+   "h": 190
+  },
+  "plaster-upperarm": {
+   "file": "clinic/sheets/plaster/plaster-upperarm.webp",
+   "w": 289,
+   "h": 241
+  },
+  "plaster-side": {
+   "file": "clinic/sheets/plaster/plaster-side.webp",
+   "w": 375,
+   "h": 136
+  },
+  "plaster-peel": {
+   "file": "clinic/sheets/plaster/plaster-peel.webp",
+   "w": 364,
+   "h": 249
+  },
+  "drop-bottle-belt": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-belt.webp",
+   "w": 196,
+   "h": 384
+  },
+  "drop-bottle-tray": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-tray.webp",
+   "w": 245,
+   "h": 260
+  },
+  "drop-bottle-tool": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-tool.webp",
+   "w": 192,
+   "h": 384
+  },
+  "drop-bottle-use": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-use.webp",
+   "w": 329,
+   "h": 368
+  },
+  "drop-bottle-use-down": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-use-down.webp",
+   "w": 195,
+   "h": 384
+  },
+  "drop-bottle-side": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-side.webp",
+   "w": 191,
+   "h": 384
+  },
+  "drop-bottle-cap-off": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-cap-off.webp",
+   "w": 377,
+   "h": 305
+  },
+  "drop-bottle-squeeze": {
+   "file": "clinic/sheets/drop-bottle/drop-bottle-squeeze.webp",
+   "w": 242,
+   "h": 384
+  },
+  "toothbrush-belt": {
+   "file": "clinic/sheets/toothbrush/toothbrush-belt.webp",
+   "w": 369,
+   "h": 175
+  },
+  "toothbrush-tray": {
+   "file": "clinic/sheets/toothbrush/toothbrush-tray.webp",
+   "w": 108,
+   "h": 384
+  },
+  "toothbrush-tool": {
+   "file": "clinic/sheets/toothbrush/toothbrush-tool.webp",
+   "w": 384,
+   "h": 108
+  },
+  "toothbrush-use": {
+   "file": "clinic/sheets/toothbrush/toothbrush-use.webp",
+   "w": 318,
+   "h": 306
+  },
+  "toothbrush-use-down": {
+   "file": "clinic/sheets/toothbrush/toothbrush-use-down.webp",
+   "w": 103,
+   "h": 384
+  },
+  "toothbrush-side": {
+   "file": "clinic/sheets/toothbrush/toothbrush-side.webp",
+   "w": 384,
+   "h": 107
+  },
+  "toothbrush-use-up": {
+   "file": "clinic/sheets/toothbrush/toothbrush-use-up.webp",
+   "w": 267,
+   "h": 368
+  },
+  "toothbrush-paste": {
+   "file": "clinic/sheets/toothbrush/toothbrush-paste.webp",
+   "w": 372,
+   "h": 192
+  },
+  "brushing-level": {
+   "file": "clinic/sheets/brushing/brushing-level.webp",
+   "w": 490,
+   "h": 125
+  },
+  "brushing-up": {
+   "file": "clinic/sheets/brushing/brushing-up.webp",
+   "w": 471,
+   "h": 220
+  },
+  "brushing-down": {
+   "file": "clinic/sheets/brushing/brushing-down.webp",
+   "w": 472,
+   "h": 194
+  },
+  "brushing-level-paste": {
+   "file": "clinic/sheets/brushing/brushing-level-paste.webp",
+   "w": 491,
+   "h": 149
+  },
+  "brushing-up-paste": {
+   "file": "clinic/sheets/brushing/brushing-up-paste.webp",
+   "w": 473,
+   "h": 234
+  },
+  "brushing-down-paste": {
+   "file": "clinic/sheets/brushing/brushing-down-paste.webp",
+   "w": 473,
+   "h": 215
+  },
+  "hand-fan-room": {
+   "file": "clinic/sheets/hand-fan/hand-fan-room.webp",
+   "w": 382,
+   "h": 317
+  },
+  "hand-fan-tray": {
+   "file": "clinic/sheets/hand-fan/hand-fan-tray.webp",
+   "w": 379,
+   "h": 339
+  },
+  "hand-fan-tool": {
+   "file": "clinic/sheets/hand-fan/hand-fan-tool.webp",
+   "w": 276,
+   "h": 384
+  },
+  "hand-fan-use": {
+   "file": "clinic/sheets/hand-fan/hand-fan-use.webp",
+   "w": 282,
+   "h": 384
+  },
+  "hand-fan-use-left": {
+   "file": "clinic/sheets/hand-fan/hand-fan-use-left.webp",
+   "w": 330,
+   "h": 384
+  },
+  "hand-fan-use-right": {
+   "file": "clinic/sheets/hand-fan/hand-fan-use-right.webp",
+   "w": 346,
+   "h": 384
+  },
+  "hand-fan-side": {
+   "file": "clinic/sheets/hand-fan/hand-fan-side.webp",
+   "w": 66,
+   "h": 384
+  },
+  "hand-fan-three-q": {
+   "file": "clinic/sheets/hand-fan/hand-fan-three-q.webp",
+   "w": 332,
+   "h": 384
+  },
+  "desk-fan-belt": {
+   "file": "clinic/sheets/desk-fan/desk-fan-belt.webp",
+   "w": 332,
+   "h": 384
+  },
+  "desk-fan-three-q": {
+   "file": "clinic/sheets/desk-fan/desk-fan-three-q.webp",
+   "w": 301,
+   "h": 384
+  },
+  "desk-fan-top": {
+   "file": "clinic/sheets/desk-fan/desk-fan-top.webp",
+   "w": 351,
+   "h": 286
+  },
+  "desk-fan-use": {
+   "file": "clinic/sheets/desk-fan/desk-fan-use.webp",
+   "w": 339,
+   "h": 370
+  },
+  "desk-fan-use-3q": {
+   "file": "clinic/sheets/desk-fan/desk-fan-use-3q.webp",
+   "w": 321,
+   "h": 384
+  },
+  "desk-fan-side": {
+   "file": "clinic/sheets/desk-fan/desk-fan-side.webp",
+   "w": 245,
+   "h": 384
+  },
+  "desk-fan-back": {
+   "file": "clinic/sheets/desk-fan/desk-fan-back.webp",
+   "w": 338,
+   "h": 384
+  },
+  "desk-fan-icon": {
+   "file": "clinic/sheets/desk-fan/desk-fan-icon.webp",
+   "w": 286,
+   "h": 335
+  },
+  "hot-water-bottle-room": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-room.webp",
+   "w": 322,
+   "h": 384
+  },
+  "hot-water-bottle-tray": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-tray.webp",
+   "w": 251,
+   "h": 384
+  },
+  "hot-water-bottle-tool": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-tool.webp",
+   "w": 245,
+   "h": 384
+  },
+  "hot-water-bottle-use": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-use.webp",
+   "w": 292,
+   "h": 384
+  },
+  "hot-water-bottle-side": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-side.webp",
+   "w": 128,
+   "h": 384
+  },
+  "hot-water-bottle-lying": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-lying.webp",
+   "w": 384,
+   "h": 239
+  },
+  "hot-water-bottle-back": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-back.webp",
+   "w": 245,
+   "h": 384
+  },
+  "hot-water-bottle-stopper-off": {
+   "file": "clinic/sheets/hot-water-bottle/hot-water-bottle-stopper-off.webp",
+   "w": 359,
+   "h": 384
+  },
+  "heater-3q-off": {
+   "file": "clinic/sheets/heater/heater-3q-off.webp",
+   "w": 364,
+   "h": 370
+  },
+  "heater-3q-on": {
+   "file": "clinic/sheets/heater/heater-3q-on.webp",
+   "w": 364,
+   "h": 370
+  },
+  "heater-front-off": {
+   "file": "clinic/sheets/heater/heater-front-off.webp",
+   "w": 366,
+   "h": 333
+  },
+  "heater-front-on": {
+   "file": "clinic/sheets/heater/heater-front-on.webp",
+   "w": 366,
+   "h": 333
+  },
+  "heater-side-off": {
+   "file": "clinic/sheets/heater/heater-side-off.webp",
+   "w": 257,
+   "h": 384
+  },
+  "heater-side-on": {
+   "file": "clinic/sheets/heater/heater-side-on.webp",
+   "w": 257,
+   "h": 384
+  },
+  "heater-top": {
+   "file": "clinic/sheets/heater/heater-top.webp",
+   "w": 371,
+   "h": 241
+  },
+  "heater-back": {
+   "file": "clinic/sheets/heater/heater-back.webp",
+   "w": 367,
+   "h": 331
+  },
+  "wipe-belt": {
+   "file": "clinic/sheets/wipe/wipe-belt.webp",
+   "w": 369,
+   "h": 318
+  },
+  "wipe-tray": {
+   "file": "clinic/sheets/wipe/wipe-tray.webp",
+   "w": 320,
+   "h": 321
+  },
+  "wipe-tool": {
+   "file": "clinic/sheets/wipe/wipe-tool.webp",
+   "w": 307,
+   "h": 335
+  },
+  "wipe-torn": {
+   "file": "clinic/sheets/wipe/wipe-torn.webp",
+   "w": 300,
+   "h": 384
+  },
+  "wipe-use": {
+   "file": "clinic/sheets/wipe/wipe-use.webp",
+   "w": 347,
+   "h": 347
+  },
+  "wipe-flat": {
+   "file": "clinic/sheets/wipe/wipe-flat.webp",
+   "w": 384,
+   "h": 383
+  },
+  "wipe-side": {
+   "file": "clinic/sheets/wipe/wipe-side.webp",
+   "w": 74,
+   "h": 384
+  },
+  "wipe-three-q": {
+   "file": "clinic/sheets/wipe/wipe-three-q.webp",
+   "w": 370,
+   "h": 320
+  },
+  "syringe-belt": {
+   "file": "clinic/sheets/syringe/syringe-belt.webp",
+   "w": 372,
+   "h": 219
+  },
+  "syringe-tray": {
+   "file": "clinic/sheets/syringe/syringe-tray.webp",
+   "w": 384,
+   "h": 158
+  },
+  "syringe-tool": {
+   "file": "clinic/sheets/syringe/syringe-tool.webp",
+   "w": 384,
+   "h": 149
+  },
+  "syringe-upright": {
+   "file": "clinic/sheets/syringe/syringe-upright.webp",
+   "w": 129,
+   "h": 384
+  },
+  "syringe-filled": {
+   "file": "clinic/sheets/syringe/syringe-filled.webp",
+   "w": 129,
+   "h": 384
+  },
+  "syringe-use": {
+   "file": "clinic/sheets/syringe/syringe-use.webp",
+   "w": 384,
+   "h": 369
+  },
+  "syringe-side": {
+   "file": "clinic/sheets/syringe/syringe-side.webp",
+   "w": 384,
+   "h": 134
+  },
+  "syringe-pressed": {
+   "file": "clinic/sheets/syringe/syringe-pressed.webp",
+   "w": 341,
+   "h": 211
+  },
+  "tweezers-belt": {
+   "file": "clinic/sheets/tweezers/tweezers-belt.webp",
+   "w": 371,
+   "h": 194
+  },
+  "tweezers-tray": {
+   "file": "clinic/sheets/tweezers/tweezers-tray.webp",
+   "w": 377,
+   "h": 119
+  },
+  "tweezers-tool": {
+   "file": "clinic/sheets/tweezers/tweezers-tool.webp",
+   "w": 384,
+   "h": 73
+  },
+  "tweezers-use": {
+   "file": "clinic/sheets/tweezers/tweezers-use.webp",
+   "w": 109,
+   "h": 384
+  },
+  "tweezers-use-45": {
+   "file": "clinic/sheets/tweezers/tweezers-use-45.webp",
+   "w": 340,
+   "h": 338
+  },
+  "tweezers-splinter": {
+   "file": "clinic/sheets/tweezers/tweezers-splinter.webp",
+   "w": 377,
+   "h": 345
+  },
+  "tweezers-side": {
+   "file": "clinic/sheets/tweezers/tweezers-side.webp",
+   "w": 380,
+   "h": 64
+  },
+  "tweezers-open": {
+   "file": "clinic/sheets/tweezers/tweezers-open.webp",
+   "w": 364,
+   "h": 141
+  },
+  "bud-pot-belt": {
+   "file": "clinic/sheets/bud/bud-pot-belt.webp",
+   "w": 314,
+   "h": 379
+  },
+  "bud-pot-tray": {
+   "file": "clinic/sheets/bud/bud-pot-tray.webp",
+   "w": 330,
+   "h": 324
+  },
+  "bud-flat": {
+   "file": "clinic/sheets/bud/bud-flat.webp",
+   "w": 339,
+   "h": 75
+  },
+  "bud-use": {
+   "file": "clinic/sheets/bud/bud-use.webp",
+   "w": 286,
+   "h": 292
+  },
+  "bud-use-down": {
+   "file": "clinic/sheets/bud/bud-use-down.webp",
+   "w": 76,
+   "h": 370
+  },
+  "bud-ointment": {
+   "file": "clinic/sheets/bud/bud-ointment.webp",
+   "w": 349,
+   "h": 87
+  },
+  "bud-wax": {
+   "file": "clinic/sheets/bud/bud-wax.webp",
+   "w": 340,
+   "h": 81
+  },
+  "bud-pot-side": {
+   "file": "clinic/sheets/bud/bud-pot-side.webp",
+   "w": 313,
+   "h": 334
+  },
+  "bin-front": {
+   "file": "clinic/sheets/bin/bin-front.webp",
+   "w": 255,
+   "h": 363
+  },
+  "bin-three-q": {
+   "file": "clinic/sheets/bin/bin-three-q.webp",
+   "w": 258,
+   "h": 380
+  },
+  "bin-three-q-open": {
+   "file": "clinic/sheets/bin/bin-three-q-open.webp",
+   "w": 222,
+   "h": 384
+  },
+  "bin-top-open": {
+   "file": "clinic/sheets/bin/bin-top-open.webp",
+   "w": 243,
+   "h": 384
+  },
+  "bin-side": {
+   "file": "clinic/sheets/bin/bin-side.webp",
+   "w": 306,
+   "h": 355
+  },
+  "bin-tool": {
+   "file": "clinic/sheets/bin/bin-tool.webp",
+   "w": 227,
+   "h": 312
+  },
+  "bin-kidney-3q": {
+   "file": "clinic/sheets/bin/bin-kidney-3q.webp",
+   "w": 375,
+   "h": 220
+  },
+  "bin-kidney-top": {
+   "file": "clinic/sheets/bin/bin-kidney-top.webp",
+   "w": 361,
+   "h": 224
+  },
+  "ear-bits-wax-big": {
+   "file": "clinic/sheets/ear-bits/ear-bits-wax-big.webp",
+   "w": 256,
+   "h": 207
+  },
+  "ear-bits-wax-mid": {
+   "file": "clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
+   "w": 256,
+   "h": 211
+  },
+  "ear-bits-wax-small": {
+   "file": "clinic/sheets/ear-bits/ear-bits-wax-small.webp",
+   "w": 202,
+   "h": 182
+  },
+  "ear-bits-seed": {
+   "file": "clinic/sheets/ear-bits/ear-bits-seed.webp",
+   "w": 228,
+   "h": 218
+  },
+  "ear-bits-bud-wax": {
+   "file": "clinic/sheets/ear-bits/ear-bits-bud-wax.webp",
+   "w": 256,
+   "h": 249
+  },
+  "ear-bits-wax-drop": {
+   "file": "clinic/sheets/ear-bits/ear-bits-wax-drop.webp",
+   "w": 169,
+   "h": 256
+  },
+  "jug-hot-belt": {
+   "file": "clinic/sheets/jug/jug-hot-belt.webp",
+   "w": 336,
+   "h": 380
+  },
+  "jug-cold-belt": {
+   "file": "clinic/sheets/jug/jug-cold-belt.webp",
+   "w": 339,
+   "h": 313
+  },
+  "jug-warm-belt": {
+   "file": "clinic/sheets/jug/jug-warm-belt.webp",
+   "w": 341,
+   "h": 313
+  },
+  "jug-hot-tray": {
+   "file": "clinic/sheets/jug/jug-hot-tray.webp",
+   "w": 381,
+   "h": 285
+  },
+  "jug-cold-tray": {
+   "file": "clinic/sheets/jug/jug-cold-tray.webp",
+   "w": 381,
+   "h": 277
+  },
+  "jug-warm-tray": {
+   "file": "clinic/sheets/jug/jug-warm-tray.webp",
+   "w": 383,
+   "h": 276
+  },
+  "jug-hot-pour": {
+   "file": "clinic/sheets/jug/jug-hot-pour.webp",
+   "w": 367,
+   "h": 384
+  },
+  "jug-cold-pour": {
+   "file": "clinic/sheets/jug/jug-cold-pour.webp",
+   "w": 371,
+   "h": 384
+  },
+  "jug-warm-pour": {
+   "file": "clinic/sheets/jug/jug-warm-pour.webp",
+   "w": 372,
+   "h": 384
+  },
+  "thermometer-belt": {
+   "file": "clinic/sheets/thermometer/thermometer-belt.webp",
+   "w": 357,
+   "h": 132
+  },
+  "thermometer-tray": {
+   "file": "clinic/sheets/thermometer/thermometer-tray.webp",
+   "w": 368,
+   "h": 100
+  },
+  "thermometer-tool": {
+   "file": "clinic/sheets/thermometer/thermometer-tool.webp",
+   "w": 369,
+   "h": 83
+  },
+  "thermometer-use": {
+   "file": "clinic/sheets/thermometer/thermometer-use.webp",
+   "w": 354,
+   "h": 245
+  },
+  "thermometer-use-down": {
+   "file": "clinic/sheets/thermometer/thermometer-use-down.webp",
+   "w": 83,
+   "h": 384
+  },
+  "thermometer-arm": {
+   "file": "clinic/sheets/thermometer/thermometer-arm.webp",
+   "w": 260,
+   "h": 377
+  },
+  "thermometer-side": {
+   "file": "clinic/sheets/thermometer/thermometer-side.webp",
+   "w": 55,
+   "h": 384
+  },
+  "thermometer-read": {
+   "file": "clinic/sheets/thermometer/thermometer-read.webp",
+   "w": 360,
+   "h": 92
+  },
+  "spot-red-v2": {
+   "file": "clinic/heal-v3/spot-red-v2.webp",
+   "w": 224,
+   "h": 230
+  },
+  "spot-yellow-v2": {
+   "file": "clinic/heal-v3/spot-yellow-v2.webp",
+   "w": 222,
+   "h": 230
+  },
+  "spot-blue-v2": {
+   "file": "clinic/heal-v3/spot-blue-v2.webp",
+   "w": 222,
+   "h": 230
+  },
+  "spot-green-v2": {
+   "file": "clinic/heal-v3/spot-green-v2.webp",
+   "w": 223,
+   "h": 230
+  },
+  "decay-1-v2": {
+   "file": "clinic/heal-v3/decay-1-v2.webp",
+   "w": 250,
+   "h": 241
+  },
+  "decay-2-v2": {
+   "file": "clinic/heal-v3/decay-2-v2.webp",
+   "w": 285,
+   "h": 201
+  },
+  "decay-3-v2": {
+   "file": "clinic/heal-v3/decay-3-v2.webp",
+   "w": 212,
+   "h": 223
+  },
+  "filling-patch-v2": {
+   "file": "clinic/heal-v3/filling-patch-v2.webp",
+   "w": 228,
+   "h": 208
+  }
+ },
+ "_report": [
+  "  trays (design px cx, cy, w, h): [[358, 652, 339, 58], [802, 652, 331, 58], [1251, 652, 332, 58]]",
+  "  island-back-edge: source row 604 lands at 608.3 (old background 608)",
+  "a1-kitchen: background 1600x900 from rows 20..884",
+  "b1-served: 8 piece(s) by cell for 8 name(s)",
+  "c1c2-pour: 1 piece(s) by cell for 1 name(s)",
+  "c2-pour: 1 piece(s) by cell for 1 name(s)",
+  "c3-glass-black: 3 piece(s) by cell for 3 name(s)",
+  "  registered on one canvas 213x256: glass-black-empty, glass-black-half, glass-black-full",
+  "c4-teaspoon: 1 piece(s) by cell for 1 name(s)",
+  "c5-spice-jars: 4 piece(s) by cell for 4 name(s)",
+  "c6-ginger: 2 piece(s) by cell for 2 name(s)",
+  "c7-sekelo-plate: 1 piece(s) by cell for 1 name(s)",
+  "c8-chaat-glass: 1 piece(s) by cell for 1 name(s)",
+  "c9-knife: 1 piece(s) by cell for 1 name(s)",
+  "c10-daar: 2 piece(s) by cell for 2 name(s)",
+  "c11-folds: 6 piece(s) by cell for 6 name(s)",
+  "  registered on one canvas 482x149: fold-v2-1, fold-v2-2, fold-v2-3, fold-v2-4, fold-v2-5, fold-v2-6",
+  "d1-jar: 5 piece(s) by cell for 5 name(s)",
+  "  registered on one canvas 209x360: jar-slot-0, jar-slot-1, jar-slot-2, jar-slot-3, jar-slot-4",
+  "d2-coins: 2 piece(s) by cell for 2 name(s)",
+  "e1-cloth: 8 piece(s) by cell for 8 name(s)",
+  "e2-plasters: 11 piece(s) by cell for 11 name(s)",
+  "e3-plaster: 8 piece(s) by cell for 8 name(s)",
+  "e4-drop-bottle: 8 piece(s) by cell for 8 name(s)",
+  "e5-toothbrush: 8 piece(s) by cell for 8 name(s)",
+  "e5b-brushing: 6 piece(s) by cell for 6 name(s)",
+  "e6-hand-fan: 8 piece(s) by cell for 8 name(s)",
+  "e7-desk-fan: 8 piece(s) by cell for 8 name(s)",
+  "e8-hot-water-bottle: 8 piece(s) by cell for 8 name(s)",
+  "e9-heater: 8 piece(s) by cell for 8 name(s)",
+  "  registered on one canvas 364x370: heater-3q-off, heater-3q-on",
+  "  registered on one canvas 366x333: heater-front-off, heater-front-on",
+  "  registered on one canvas 257x384: heater-side-off, heater-side-on",
+  "e10-alcohol-wipe: 8 piece(s) by cell for 8 name(s)",
+  "e11-syringe: 8 piece(s) by cell for 8 name(s)",
+  "e12-tweezers: 8 piece(s) by cell for 8 name(s)",
+  "e13-cotton-bud: 8 piece(s) by cell for 8 name(s)",
+  "e14-bin: 8 piece(s) by cell for 8 name(s)",
+  "e15-ear-bits: 6 piece(s) by cell for 6 name(s)",
+  "e16-jugs: 9 piece(s) by box for 9 name(s)",
+  "e17-thermometer: 8 piece(s) by cell for 8 name(s)",
+  "ro2-mouth-bits: 8 piece(s) by cell for 8 name(s)",
+  "  skin girl-stand base face: #F8995F ΔE 2.4 from the approved render",
+  "  head band y 55..430",
+  "  pose wave: shift -0.2,-0.4 px; leg-band alpha drift 0.08%",
+  "girl-stand: figure cut, canvas 827x1460, 2 pose(s), 0 face layer(s)",
+  "  plaque: shift -0.4,-0.1 px",
+  "girl-mouth-brush: cut, exits top,left,right, 2 picture(s)",
+  "child-upperarm-v2: cut, exits left,bottom,top, 1 picture(s)",
+  "girl-mouth-v2: cut, exits top,left,right, 1 picture(s)",
+  "girl-tongue-v2: cut, exits top,left,right, 1 picture(s)",
+  "  sore: shift -0.4,+0.5 px",
+  "  closed: shift -0.6,+2.0 px",
+  "girl-eyes-v2: cut, exits top,left,right,bottom, 3 picture(s)",
+  "girl-eyetest-a-v2: cut, exits bottom,left, 1 picture(s)",
+  "  girl-bottle-v2: shift +1.4,-7.9 px, scale 0.998; leg-band alpha drift 0.18%",
+  "girl-bottle-v2: pose on the figure's canvas 854x1464"
+ ]
+}
