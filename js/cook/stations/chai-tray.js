@@ -748,10 +748,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Object.values(pan.layers).forEach((im) => im.setVisible(false));
       pan.bubbles.setVisible(false);
       if (pan.img.shadow) pan.img.shadow.setVisible(false);
-      S.tweens.add({ targets: tilt, alpha: 1, duration: 120 });
       const lx = w.x + 4;
       const ly = w.y - 44;
-      await S.fly(tilt, lx, ly, { duration: 520, arc: 70, scale: ps });
+      if (tiltKey !== "v2-pan-pour") {
+        // S02-E: the art run's tipped pan is drawn pouring (its stream painted in): it fades in over the glass, never
+        // pouring in mid-air on the way there
+        tilt.setPosition(lx, ly).setScale(ps);
+        await new Promise((r) => S.tweens.add({ targets: tilt, alpha: 1, duration: 260, onComplete: r }));
+      } else {
+        S.tweens.add({ targets: tilt, alpha: 1, duration: 120 });
+        await S.fly(tilt, lx, ly, { duration: 520, arc: 70, scale: ps });
+      }
       await new Promise((r) => S.tweens.add({ targets: tilt, angle: -14, duration: 200, onComplete: r }));
       const stream = S.track(S.add.graphics().setDepth(D.fx));
       const to = halves ? pan.poured + 1 : 2;

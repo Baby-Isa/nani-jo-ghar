@@ -168,6 +168,8 @@ async function checkPage(pg) {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 768 }, serviceWorkers: "block" });
   // nothing from outside the repo (web fonts); not when timing: intercepting requests turns the browser's cache off
   if (!TIME) await ctx.route(/^https?:\/\//, (route) => (route.request().url().startsWith(BASE) ? route.fallback() : route.abort()));
+  // the same orders every run (a seeded Math.random, as the sandbox's): a page's pictures don't vary run to run
+  await ctx.addInitScript(() => { let a = 1; Math.random = () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; });
   const page = await ctx.newPage();
   const errs = [];
   page.on("pageerror", (e) => errs.push(String(e.message || e)));

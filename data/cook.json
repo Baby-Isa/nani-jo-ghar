@@ -3802,9 +3802,9 @@
     "file": "assets/cook/items/chai-v2/pan-pour-milk.webp",
     "ready": true,
     "meta": {
-     "lipX": 0.057,
-     "lipY": 0.98,
-     "_about": "the origin is the painted stream's tip (it lands over the glass); scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
+     "lipX": 0.14,
+     "lipY": 0.8,
+     "_about": "the origin is on the painted stream at 80% down (the stream's last fifth runs on into the glass), so the tipped pan stays inside the view; scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
      "scale": 1.7
     },
     "station": "chai-tray",
@@ -3818,9 +3818,9 @@
     "file": "assets/cook/items/chai-v2/pan-pour-black.webp",
     "ready": true,
     "meta": {
-     "lipX": 0.057,
-     "lipY": 0.98,
-     "_about": "the origin is the painted stream's tip (it lands over the glass); scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
+     "lipX": 0.14,
+     "lipY": 0.8,
+     "_about": "the origin is on the painted stream at 80% down (the stream's last fifth runs on into the glass), so the tipped pan stays inside the view; scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
      "scale": 1.7
     },
     "station": "chai-tray",
@@ -4906,7 +4906,8 @@
       "assets/cook/items/samosa-v2/*",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/v3/samosa/*",
-      "assets/cook/items/vessel-thali-t.png"
+      "assets/cook/items/vessel-thali-t.png",
+      "assets/cook/items/v3/daar/chop-heap-*"
      ],
      "prefetch": [
       "assets/cook/items/chai-station/flame-high.webp",
@@ -4933,7 +4934,8 @@
       "assets/cook/items/vessel-thali-t.png",
       "assets/cook/props/chilli.webp",
       "assets/cook/props/onion.webp"
-     ]
+     ],
+     "_files": "the fillings reuse daar's chopped heaps (onion, chilli: whichever the order asks for)"
     },
     "mishkaki-grill": {
      "props": [

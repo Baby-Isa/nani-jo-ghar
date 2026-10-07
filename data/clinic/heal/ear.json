@@ -290,19 +290,22 @@
   },
   "bits": {
    "wax-big": {
-    "file": "assets/clinic/heal-v3/wax-big.webp",
-    "w": 349,
-    "h": 281
+    "file": "assets/clinic/sheets/ear-bits/ear-bits-wax-big.webp",
+    "w": 256,
+    "h": 207,
+    "file_v1": "assets/clinic/heal-v3/wax-big.webp"
    },
    "wax-mid": {
-    "file": "assets/clinic/heal-v3/wax-mid.webp",
+    "file": "assets/clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
     "w": 256,
-    "h": 220
+    "h": 211,
+    "file_v1": "assets/clinic/heal-v3/wax-mid.webp"
    },
    "wax-small": {
-    "file": "assets/clinic/heal-v3/wax-small.webp",
-    "w": 189,
-    "h": 164
+    "file": "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp",
+    "w": 202,
+    "h": 182,
+    "file_v1": "assets/clinic/heal-v3/wax-small.webp"
    },
    "tissue": {
     "file": "assets/clinic/heal-v3/tissue.webp",
@@ -316,11 +319,13 @@
     "h": 117
    },
    "bud-wax": {
-    "file": "assets/clinic/heal-v3/bud-wax.webp",
-    "w": 359,
-    "h": 117
+    "file": "assets/clinic/sheets/ear-bits/ear-bits-bud-wax.webp",
+    "w": 256,
+    "h": 249,
+    "file_v1": "assets/clinic/heal-v3/bud-wax.webp"
    },
-   "_a2": "A2 (5 Oct): O3's bud, clean and with wax (one canvas), the swab on the tip of the wipe"
+   "_a2": "A2 (5 Oct): O3's bud, clean and with wax (one canvas), the swab on the tip of the wipe",
+   "_s02": "S02-E (E15, CLN-101): the wax at the ear's angle (side-lit from the upper left, as it sits on an ear seen side-on) and on the bud's tip; the v1 files kept as file_v1"
   }
  },
  "hearing": {
@@ -345,6 +350,10 @@
   "assets/clinic/sheets/bin/bin-three-q-open.webp",
   "assets/clinic/sheets/bud/bud-pot-belt.webp",
   "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
+  "assets/clinic/sheets/ear-bits/ear-bits-bud-wax.webp",
+  "assets/clinic/sheets/ear-bits/ear-bits-wax-big.webp",
+  "assets/clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
+  "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp",
   "assets/clinic/sheets/tweezers/tweezers-tool.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
