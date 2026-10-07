@@ -42,13 +42,13 @@ const out = { rounds: N, seed: SEED, games, stages: {}, heal: {}, patient: {}, f
 let problems = 0;
 
 console.log(`Clinic pipeline leak bot: ${N} rounds per cell, seed ${SEED}. Registered healing games: ${games.join(", ")}`);
-console.log("Won = every tested row right. Taught-only rounds (D1 and E1 at level 1) count as not won.\n");
+console.log("Won = every tested row right. Taught-only rounds (D1 at every level, E1 at level 1) count as not won.\n");
 
 // ---- the stages ----
 // clinic v2: the waiting room's ladder has five levels (W4); D1b is D1's level 2; E3 is merged into E2
 const VARIANTS = {
   waiting: { 1: ["W1"], 2: ["W1", "W3"], 3: ["W1", "W3", "W4"], 4: ["W1", "W4"], 5: ["W1", "W4"] },
-  diagnosis: { 1: ["D2", "D3"], 2: ["D1", "D2", "D3"], 3: ["D2", "D3"] },
+  diagnosis: { 1: ["D2", "D3"], 2: ["D2", "D3"], 3: ["D2", "D3"] }, // D1 is taught at every level since decision 52 (no Found it / Next to grade)
   pharmacy: { 1: [null], 2: [null], 3: [null] },
   sendoff: { 1: ["E1"], 2: ["E2"], 3: ["E2", "E4"] },
 };
