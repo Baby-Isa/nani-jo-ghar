@@ -115,7 +115,9 @@
     "x": 0.668,
     "y": 0.455,
     "h": 0.075,
-    "w": 0.06
+    "w": 0.06,
+    "lie": true,
+    "_s03": "S03-C (FV4, FV5): lying flat on the bed, handle towards us (lie: tipped back in code), not standing face-on"
    },
    "ice-pack": {
     "x": 0.31,
@@ -124,11 +126,13 @@
     "w": 0.06
    },
    "heater": {
-    "x": 0.37,
-    "y": 0.92,
+    "x": 0.82,
+    "y": 0.9,
     "h": 0.16,
     "w": 0.11,
-    "_a2": "A2 (5 Oct): R1's heater on the open floor in front of the bed's left leg, clear of the toys and the rug (it stood on them at x 0.215)"
+    "_a2": "A2 (5 Oct): R1's heater on the open floor in front of the bed's left leg, clear of the toys and the rug (it stood on them at x 0.215)",
+    "_s03": "S03-C (FV5, CLN-105): on the floor to the right of the bed, turned to face her (flip), clear of the toys and the door (tablets clamp it into view)",
+    "flip": true
    },
    "bottle": {
     "x": 0.722,

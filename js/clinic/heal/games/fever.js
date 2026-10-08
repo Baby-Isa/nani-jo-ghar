@@ -162,6 +162,9 @@
     ".fv-mood[data-state=hot] .fv-hot,.fv-mood[data-state=cold] .fv-cold{display:block;animation:cl-pop .25s}",
     ".cl-patient-layer.pulse{animation:hs-pulse 1s ease-in-out infinite}",
     ".fv-thing.gone{visibility:hidden}",
+    // FV4, FV5 (CLN-105): a thing that lies on the bed (the hand fan) is tipped back flat, its handle towards us
+    ".fv-thing.flip>img,.fv-thing.flip>svg{transform:scaleX(-1)}", // FV5: the heater turned to face her
+    ".fv-thing.lie>img,.fv-thing.lie>svg{transform:perspective(420px) rotateX(58deg) rotate(-62deg);transform-origin:50% 85%}",
     ".fv-thing.painted .fv-frame,.fv-thing.painted .fv-shut{display:none}",
     ".fv-thing .fv-open{display:none}",
     ".fv-thing.on .fv-open{display:inline}",
@@ -521,6 +524,8 @@
           el.style.setProperty("--hang-h", `${(((a.y - pTop) / (B - T)) * 100).toFixed(2)}%`);
           return place(el, a.x, B, B - T, a.w);
         }
+        el.classList.toggle("lie", !!a.lie);
+        el.classList.toggle("flip", !!a.flip);
         let x = Math.max(v.x0 + halfW + pad, Math.min(v.x1 - halfW - pad, a.x));
         let y = a.y;
         let h = a.h;
