@@ -309,6 +309,33 @@
     } catch (e) {}
     currentSrc = null;
   };
+  /**
+   * PAN-12 (V5): the part of a clip worth playing, without the silence its recording left at either end (the gap
+   * between count words was mostly that): from just before the first sound to just after the last, measured once.
+   */
+  const spans = new WeakMap();
+  function spanOf(buf) {
+    if (spans.has(buf)) return spans.get(buf);
+    let span = { at: 0, dur: buf.duration };
+    try {
+      const data = buf.getChannelData(0);
+      let peak = 0;
+      for (let i = 0; i < data.length; i += 4) peak = Math.max(peak, Math.abs(data[i]));
+      const floor = Math.max(0.01, peak * 0.06);
+      let a = 0;
+      let b = data.length - 1;
+      while (a < b && Math.abs(data[a]) < floor) a++;
+      while (b > a && Math.abs(data[b]) < floor) b--;
+      const rate = buf.sampleRate;
+      const at = Math.max(0, a / rate - 0.04); // a breath before the first sound
+      const end = Math.min(buf.duration, b / rate + 0.09); // and the word's tail
+      if (peak > 0 && end - at > 0.12) span = { at, dur: end - at };
+    } catch (e) {
+      /* the whole clip */
+    }
+    spans.set(buf, span);
+    return span;
+  }
   /** Play a file's buffer through Web Audio; resolves when it ends (or at once if it can't load). */
   async function playURL(url) {
     if (!url) return false;
@@ -332,8 +359,9 @@
         }
       };
       src.onended = finish;
-      setTimeout(finish, (buf.duration * 1000) / Cook.speed + 150);
-      src.start();
+      const span = spanOf(buf);
+      setTimeout(finish, (span.dur * 1000) / Cook.speed + 150);
+      src.start(0, span.at, span.dur);
     });
   }
   /** Speak a line; resolves when it ends (or at once if there's no file). */

@@ -567,6 +567,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       } else if (id === "cook-khun") {
         if (pan.sugar >= (K.tallyMax || 6)) return;
         pan.sugar++;
+        pan.spoons = (pan.spoons || []).concat(id);
         UI.count(pan.sugar, { id: "cook-khun" });
         if (Cook.Hands) Cook.Hands.count(S, pan.sugar);
         // CHAI-16 (D5, rule E11): at level 1 the counted row turns gold the moment the count is reached
@@ -575,12 +576,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await spoonInto(pan, obj, id);
       } else {
         if (id === "cook-chai") pan.has.leaves++;
-        else if (id === "spi-16") {
+        else {
+          pan.spoons = (pan.spoons || []).concat(id); // CK-TB-01: a spoonful that can be taken back
+        }
+        if (id === "spi-16") {
           // the salt that looks like sugar: it just goes in (UX 11); the end check finds it
           pan.salt++;
           UI.count(pan.salt, { speak: false, id });
           zb.listen(false, `added ${id}, not cook-khun, for ${nameOf(pan.who)}`);
-        } else {
+        } else if (id !== "cook-chai") {
           if (!pan.extras.includes(id)) pan.extras.push(id);
           if (id === pan.p.extra && !pan.closed) UI.mission.tickItem(id, dishNo(), { for: pan.who });
           UI.count(1, { speak: false, id });
@@ -716,7 +720,50 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
       });
     };
+    /*
+     * CK-TB-01 (E14): a spoonful can be taken back until the pan is lit: tap the pan you're filling and the spoon lifts
+     * the last spoonful (sugar, the salt, a spice) back to its jar. Water, milk and leaves can't come out (the picture
+     * shows them mixed in). The first placement is the one scored: a spoonful taken back that was wrong still counts
+     * as a mistake for that cup (pan.firstWrong, judged at Done).
+     */
+    const canTakeBack = (pan) => !!pan && pan === sel && talked && !finished && !busy && !speaking && pan.state === "cold" && !pan.poured && !pan.closed && !!(pan.spoons || []).length && !Cook.paused;
+    Cook.undoAt = () => (canTakeBack(sel) ? at(sel.img) : null);
+    const takeBack = async (pan) => {
+      const id = pan.spoons.pop();
+      const obj = shelf[id];
+      busy++;
+      unglow();
+      zb.expect({ kind: "wait" });
+      const p = pan.p;
+      const wrong = id === "cook-khun" ? pan.sugar > (p.khun || 0) : id !== p.extra;
+      // (the salt was logged as it went in: only its row is marked at Done)
+      const why = id === "cook-khun" ? `${pan.sugar} cook-khun, they asked for ${p.khun || 0} (${nameOf(pan.who)})` : id === "spi-16" ? null : `added ${id} for ${nameOf(pan.who)}`;
+      if (wrong) pan.firstWrong = (pan.firstWrong || []).concat({ row: id === "spi-16" ? "cook-khun" : id, why });
+      if (id === "cook-khun") {
+        pan.sugar--;
+        // the counted row was gold at the count (CHAI-16): it opens again below it, and is gold again at it
+        if (pan.spoonsClosed && pan.sugar < (p.khun || 0)) {
+          pan.spoonsClosed = false;
+          UI.mission.reopen(["cook-khun"], dishNo(), { for: pan.who });
+        }
+      } else if (id === "spi-16") pan.salt--;
+      else if (!pan.spoons.includes(id)) {
+        pan.extras = pan.extras.filter((x) => x !== id);
+        if (id === p.extra) UI.mission.reopen([id], dishNo(), { for: pan.who });
+      }
+      UI.hideCount();
+      if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
+      if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
+      pan.extras.forEach((x) => UI.count(1, { speak: false, id: x }));
+      Cook.sfx.pop();
+      if (obj) await Cook.Spoon.spoon(zb, { bowl: pan.img, into: at(obj), word: id, ms: kCount.spoonMs });
+      if (id !== "cook-khun" && id !== "spi-16") fadeLook(pan, pan.shown);
+      if (id === "cook-khun" && level <= 1 && pan.sugar === (p.khun || 0)) closeSpoons(pan);
+      busy--;
+      refresh();
+    };
     const panTap = async (pan) => {
+      if (canTakeBack(pan)) return takeBack(pan);
       if (finished || busy) return;
       if (pan.state !== "ready" || pan.poured >= 2 || !talked) {
         if (sel !== pan) select(pan);
@@ -983,7 +1030,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      * glows). At the third wrong try the game shows the right way and moves on. The first try is the one scored. */
     let round = 0;
     const emptyPan = (pan) => {
-      Object.assign(pan, { level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [], heat: 0, state: "cold", poured: 0, closed: false, spoonsClosed: false });
+      Object.assign(pan, { level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [], spoons: [], heat: 0, state: "cold", poured: 0, closed: false, spoonsClosed: false });
       pan.redo = (pan.redo || 0) + 1;
       setKnob(pan, "off");
       if (pan.heatRing && pan.heatRing.g) pan.heatRing.g.clear();
@@ -1051,6 +1098,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (p.extra && !pan.extras.includes(p.extra)) why.push(`left out ${p.extra} for ${name}`);
         pan.extras.filter((id) => id !== p.extra).forEach((id) => why.push(`added ${id} for ${name}`));
         if (p.amount && got.chai && amount !== p.amount) why.push(`poured ${amount} for ${name}, not ${p.amount}`);
+        // CK-TB-01: a wrong spoonful taken back before Done is still this cup's first try (it's not redone, only marked)
+        const tookBack = !round && !why.length && !pan.salt ? pan.firstWrong || [] : [];
         const rows = personRows(lad, pan.who);
         const bad = [];
         rows.forEach((r) => {
@@ -1068,6 +1117,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // a wrong cup with no row of its own to blame (a plain chai with an extra in it): its person's first row
         if (!round && (why.length || pan.salt) && !bad.length && rows[0]) UI.mission.missItem(rows[0].ids[0], dish, { for: pan.who, no: rows[0].no });
         if (!round) why.forEach((w) => ctx.listen(false, w));
+        if (tookBack.length) {
+          tookBack.forEach((t) => t.why && ctx.listen(false, t.why));
+          // the row it was about (a spice nobody asked for: the person's extra row, or their first)
+          const r0 = rows.find((r) => tookBack.some((t) => t.row === r.ids[0])) || rows.find((r) => !r.no && r.ids[0] !== "cook-dudh" && r.ids[0] !== "cook-khun") || rows[0];
+          if (r0) UI.mission.missItem(r0.ids[0], dish, { for: pan.who, no: r0.no });
+        }
         if (!guided && !round) {
           (got.milk ? Cook.markRight : Cook.markMiss)("cook-dudh");
           if (p.khun) (got.sugar ? Cook.markRight : Cook.markMiss)(Cook.numId(p.khun));
