@@ -136,6 +136,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CHAI-14 | Ginger art reads as ginger, not gummies (`shelf-veg-14-jar-f.webp`) | **open** | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-10-06.md` C24 |
 | CHAI-15 | Everyone who orders comes in first; one pop-up with each person's order (tap to skip); then quiet in game (pending decision) | **open** | eye: 3-person chai | `docs/feedback/cook-playtest-2026-10-06.md` C27 |
 | CHAI-16 | A counted row at L1 turns gold at the count (D5 never built: hidden two sugars not ticked while milk ticked) | **open** | eye: chai L1, L2 · CMP-09 | `docs/feedback/cook-playtest-2026-10-06.md` C5 |
+| CHAI-17 | The tipped pan's handle touches the top edge while it pours (1366×768) | built, not re-played (S03, the painted pour isn't tipped further and is drawn smaller about its lip when its top would leave the screen) | eye: chai pour, 1366×768 and 844×390 | `build/reports/s02-review.md` flaw 2 |
 
 ## Cook: maani
 

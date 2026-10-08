@@ -801,12 +801,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // S02-E: the art run's tipped pan is drawn pouring (its stream painted in): it fades in over the glass, never
         // pouring in mid-air on the way there
         tilt.setPosition(lx, ly).setScale(ps);
+        // review flaw 2 (S02): its handle ran off the top edge at 1366x768. Its stream is painted in, so it isn't tipped
+        // further; and if its top would still leave the screen, it's drawn smaller about its lip (the lip stays on the glass)
+        const minTop = ((Cook.view && Cook.view.top) || 0) + 12;
+        const top = tilt.getBounds().y;
+        if (top < minTop && ly > minTop) tilt.setScale(ps * Math.max(0.6, (ly - minTop) / (ly - top)));
         await new Promise((r) => S.tweens.add({ targets: tilt, alpha: 1, duration: 260, onComplete: r }));
       } else {
         S.tweens.add({ targets: tilt, alpha: 1, duration: 120 });
         await S.fly(tilt, lx, ly, { duration: 520, arc: 70, scale: ps });
       }
-      await new Promise((r) => S.tweens.add({ targets: tilt, angle: -14, duration: 200, onComplete: r }));
+      if (tiltKey === "v2-pan-pour") await new Promise((r) => S.tweens.add({ targets: tilt, angle: -14, duration: 200, onComplete: r }));
       const stream = S.track(S.add.graphics().setDepth(D.fx));
       const to = halves ? pan.poured + 1 : 2;
       const from = pan.poured;
