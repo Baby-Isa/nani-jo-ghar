@@ -1,6 +1,6 @@
 # Sprint 02: play and fix Cook and the clinic
 
-**Status:** open (opens when Sprint 1 closes with the publish to `main`)
+**Status:** published 8 Oct 2026 (`main` f0f4613a); closes after Zafar's play
 **Opened:** 6 Oct 2026
 
 ## Goal
@@ -32,7 +32,11 @@ Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
 - 6 Oct, the clinic (notes 5, 7, 8): `docs/feedback/clinic-playtest-2026-10-06.md`. About 110 points, 14 decisions (§4), 31 new rows and 13 reopened. Root causes: L2+ steps close only by the next action, which isn't shown (stuck); the girl's art isn't in the story.
 
 ## Outcome
-Filled in at the close.
+- **On `main`:** f0f4613a (version 20261008T002526Z), 8 Oct 2026 ~01:25 UK. Review: `build/reports/s02-review.md` (full gate `s02-gate2`, then rechecks: CHECK PASSED).
+- **Done:** Sessions A–G (reports `build/reports/s02*.md`); the s02 art run cut and wired; modular loading (decision 68); 263 lines with blind-verified family takes as ok-auto (decision 70).
+- **Moved on to Sprint 3:** Mum's Round 5 lines; 289 lines to record again (USB mic, grammar first); the final manual approval of every recording before launch (decision 70); the fever room tidy; art redo list (B1, C10, E2); the review's open flaws (s02-review.md §1).
+- **Open rows:** 145 open or reopened, 138 built and not re-played (most of this sprint's fixes wait on Zafar's play).
+- **Spend:** about $270 against $270 agreed (sessions A–G, D2, art run API, review).
 
 ## Look back (three lines)
-Filled in at the close.
+Filled in at the close, after Zafar's play.

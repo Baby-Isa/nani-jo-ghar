@@ -8,19 +8,21 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (6 Oct 2026, written by the 5 Oct orchestrator):** Sprint 1 ("remedial and engine", `docs/sprints/S01-remedial-and-engine.md`) is closed: everything is published to `main` (PUBLISH_LINE). Cook and the clinic run on the shared core and the language engine; Cook is a host plug-in; the clinic runs on the girl's finished art; 18 scripts and 9 project skills are in use by default; the docs are rewritten (decisions 28–50). Reports for every session are in `build/reports/`; the final check is `build/reports/s01-review.md`.
+**Where things stand (8 Oct 2026, ~01:30 UK, written by the Sprint 2 orchestrator):** Sprint 2 ("play and fix Cook and the clinic", `docs/sprints/S02-play-and-fix-cook-clinic.md`) is **published**: `main` f0f4613a (version 20261008T002526Z), Pages build green. Sessions A–G are in (reports `build/reports/s02*.md`); the s02 art is cut and wired (kitchen trays, served dishes, slot-lid coin jar, toothbrush views, the girl's poses, clinic sprite sheets); Cook and the clinic load only what's on screen (decision 68); 263 lines play blind-verified family takes (ok-auto, decision 70). The final check is `build/reports/s02-review.md` (flaws first, §1). Spend about $270 of $270. Nothing is running.
 
-**This chat opens Sprint 2** ("play and fix Cook and the clinic", `docs/sprints/S02-play-and-fix-cook-clinic.md`). Run `/sprint` to open it with Zafar:
-1. **Play link:** https://baby-isa.github.io/nani-jo-ghar/labs.html (hard refresh first). What to play:
-   - **Cook:** chai, samosa, daar and the pantry at levels 1–3 (the counting rule: L1 written and counted along, L2 written, L3 heard only; undo before Done; Mum's words in the guide box: tap its speaker).
-   - **The clinic:** one full patient visit, then all nine heal games on the girl's art (fever room, eye test A and B, tooth fill, ear wax, the bud and *malam*).
-   - Listen for: the greetings ("thank you", *khuda-fis*), grey "to record" placeholders, anything in English for the child.
-2. **Zafar's feedback** (voice notes or text) goes into this chat → `/feedback` → a report and regression rows the same day.
-3. **Scope Sprint 2 together:** from his feedback plus the open rows (table below) pick what gets fixed this sprint; set the budget (money and days); then `/brief` the fix sessions (fast checks only, decision 50) and one `/review` + publish at the end.
-4. Also open, to schedule inside or after Sprint 2: the art redo list + part C in one faster run (`/art-run`; write the W11 standing-pose prompt first); the clash-list sheet for Zafar and Mum (`mumsheet.mjs`); Mum's 168 clips to ear-check; Cook's title/day/shop still on Cook's own screens (C4: the shell lacks them).
+**Next steps, in order:**
+1. **Zafar plays Sprint 2** (link below), feedback by voice note → `/feedback` → rows the same day. Then `/sprint` close: the three-line look back.
+2. **Open Sprint 3** (`/sprint`), proposed scope:
+   - **Voices (decision 70):** test the USB-mic set-up on the grammar first; then re-record the 289 lines with no good take (protocol: say the line's id, pause, the speaker says it twice with a pause); Mum's Round 5 (*Muke de*, *Muke chai lai de*, "oh oh oh", "ow", about 30 "to record" step lines); Hannah's grandad for the doctor and older men, Zafar and Hannah for the children (decision 66). The final manual approval of every recording happens once, before launch.
+   - **The fever room tidy.**
+   - **Art redo list** (`s02-redo-list.yaml`): B1 sekelo pepper, C10 daar bowl beads, E2 two-colour plasters; the standing girl bigger on phones (CLN-94).
+   - **The review's open flaws** (`s02-review.md` §1): pour pan's handle at the top edge, U1-v2 upper arm, Cook station code loaded at open, eye tool shelf at 4:3, waiting room L1 "tap a girl" leak, small samosa grid mounds, the 800x360 word list scroll.
+3. Waiting on Zafar: the list below, and anything his play raises.
+
+**Play link:** https://baby-isa.github.io/nani-jo-ghar/labs.html (hard refresh first). Play: Cook (every station at levels 1–3: the trays, redo one item, the call-back, the coin jar, pass-me) and the clinic (one full patient at L1 and L2, then the nine heal games: try the first-time help on a tablet).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-fcd9dddd-wnywzc`. Sprint 1 is closed and live. Open Sprint 2 with me (`/sprint`): give me the play link and what to play, then wait for my feedback; turn it into rows with `/feedback`, and propose the Sprint 2 scope and budget as a numbered list. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-a7370759-t0lee7` (restart it from `main` if its work is all merged). Sprint 2 is published to `main`; I'm playing it now. Wait for my feedback, turn it into rows with `/feedback`, close Sprint 2 (`/sprint`), then propose the Sprint 3 scope and budget as a numbered list (voices first: USB mic on the grammar, then re-records; Mum's Round 5; fever room tidy; art redos; the review's open flaws). Tell me before launching anything new.
 
 ---
 
@@ -52,13 +54,13 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 | First launch and shell | 1 | 0 |
 | Other modes | 2 | 0 |
 | Art | 9 | 2 |
-| Language and audio | 5 | 3 |
+| Language and audio | 6 | 3 |
 
 ---
 
 ## What is live (the game on `main`)
 
-The 1 Oct build plus art uploads: Cook (six stations on v3 and the pantry), the clinic v2 prototypes, first launch, the shared kit. Everything since (the core, the engine, Cook and the clinic on it, the girl's clinic art) is on the integration branch and goes live at the Sprint 1 publish. Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
+Sprint 2, published 8 Oct (f0f4613a): Cook and the clinic on the shared core and the language engine, with Sprint 2's fixes, the s02 art and modular loading. Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
 
 ### Where each part is (Claude's estimates, 5 Oct)
 
