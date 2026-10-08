@@ -37,3 +37,14 @@ Every sentence of both messages maps to Z1–Z13 or is chatter ("I'm just incred
 2. Fixes went into the game where the bug was seen, not the shared layer: the voice stop (clinic only), the knife (daar only), "move on by itself" (heal games only).
 3. His "everywhere" rules were single rows checked on one screen.
 4. The full gate plays with the sound off and diffs screenshots against the last approved set; it doesn't test his rules.
+
+## 6. Follow-up, 9 Oct ~00:40 UK (typed)
+
+| # | His words | Cause (checked) | Fix | Row |
+|---|---|---|---|---|
+| Z14 | "Nani leaning on the counter looks terrible. She's massive compared to the other characters. And her elbows aren't even on the table. Leave any art creation for a ChatGPT run that I'll supervise" | S04-C made her through the image API from a base about 12% bigger; the counter is painted over characters below y 611, so her forearms rested on its back edge | Reverted to her previous art; the redo goes in the supervised ChatGPT run at the others' scale, forearms on the counter top (decision 77) | ART-13 (reopened) |
+| Z15 | "my feedback for the bandage was implemented so poorly … the curved bandage doesn't go around the leg … the bandages just float around. They need to realistically go around the knee … in code … the back of the knee and the front of the knee" | S02's turns were thin quadratic curves between fixed offsets from the stand-in's knee (`knee.js` dotPos, ±78/92 × scale), not on K1's outline, so they ended mid-leg and floated | Every turn a band from anchors on K1's own outline (data `art.knee.wrap`), masked to the leg, tapered into the crease, crossing figure-of-eight; no new art | CLN-100 |
+| Z16 | "the sandbox that plays the games should check all the feedback and fixes that took place in that sprint" | The review checked changed screens and a sample, not the sprint's rows | The sprint check (`sprintcheck.mjs`) plays every row the sprint touched; Fable judges a sheet per row (decision 78) | PRC-07, PRC-06 |
+| Z17 | "How do we ensure that future feedback doesn't get messed up" | Rows narrowed or never written (coverage audits) | /feedback scope rule, a second Fable reader, repeats reopen (decision 78) | PRC-06 |
+| Z18 | "Can you do a full audit of all the remaining artwork … and create one massive prompt" | – | `docs/design-language/art-plans/s05-art-audit.md` and the paste block | – |
+| Z19 | Yes to the waiting room and diagnosis opening with the order pop-up, and to checks for the 27 'every game' rows | – | Contract-1 covers them; the 27 checks go to the fix round | SH-64, PRC-07 |
