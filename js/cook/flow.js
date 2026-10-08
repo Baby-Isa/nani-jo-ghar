@@ -701,7 +701,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const y = tray.y - 4;
       if (d.recipe === "chai" && Cook.Art.servedArt("chai") && s.textures.exists(Cook.Art.servedKey("chai"))) {
         for (let c = 0; c < d.count; c++) servedPic(s, servedRecipe(d, c), px + c * 56 - (d.count - 1) * 28, tray, c, (tray.w * 0.92) / Math.max(1, n));
-      } else if (d.recipe !== "chai" && d.recipe !== "mishkaki" && servedPic(s, servedRecipe(d), px, tray, i, (tray.w * 0.92) / Math.max(1, n)));
+      } else if (d.recipe !== "chai" && servedPic(s, servedRecipe(d), px, tray, i, (tray.w * 0.92) / Math.max(1, n)));
       else if (d.recipe === "chai") for (let c = 0; c < d.count; c++) s.prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "maani") {
         s.prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });

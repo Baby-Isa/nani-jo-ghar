@@ -162,6 +162,50 @@
     "total_tokens": 8801
    },
    "usd": 0.2514
+  },
+  {
+   "name": "S4",
+   "try": 2,
+   "usage": {
+    "input_tokens": 3392,
+    "input_tokens_details": {
+     "image_tokens": 3006,
+     "text_tokens": 386
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 10416
+   },
+   "usd": 0.313
+  },
+  {
+   "name": "G1",
+   "try": 2,
+   "usage": {
+    "note": "logged by hand: a parallel run overwrote the entry; the run printed $0.252"
+   },
+   "usd": 0.252
+  },
+  {
+   "name": "S4",
+   "try": 3,
+   "usage": {
+    "input_tokens": 2530,
+    "input_tokens_details": {
+     "image_tokens": 2115,
+     "text_tokens": 415
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 9554
+   },
+   "usd": 0.3042
   }
  ]
 }

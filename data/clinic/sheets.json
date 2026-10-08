@@ -1,5 +1,5 @@
 {
- "_about": "S02-E (decision 65): the clinic's items as sprite sheets (pack s02, build/tools/art/specs/s02.cut.json; E1-E17), one picture per view: views[item][view] -> file (belt: the pharmacy's belt, front and a little above; tray: top-down; tool: the heal games' tool column; use, use-down, ...: the working angle; the rest are spares). remap: an old single-view picture -> the sheet view that replaces it wherever the clinic draws it (Clinic.Kit.url, installed by js/clinic/main.js); the old files stay. Not remapped: the two-colour plasters (E2 split them across, not along: s02-redo-list.yaml) and the ceiling fan (R2 stays).",
+ "_about": "S02-E (decision 65): the clinic's items as sprite sheets (pack s02, build/tools/art/specs/s02.cut.json; E1-E17), one picture per view: views[item][view] -> file (belt: the pharmacy's belt, front and a little above; tray: top-down; tool: the heal games' tool column; use, use-down, ...: the working angle; the rest are spares). remap: an old single-view picture -> the sheet view that replaces it wherever the clinic draws it (Clinic.Kit.url, installed by js/clinic/main.js); the old files stay. The two-colour plasters are the s03 redo (split lengthwise, build/gen_s03.py S3; S03-D). Not remapped: the ceiling fan (R2 stays).",
  "views": {
   "bin": {
    "front": "assets/clinic/sheets/bin/bin-front.webp",
@@ -202,6 +202,12 @@
   "assets/clinic/items-v2/plaster-yellow.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp",
   "assets/clinic/items-v2/plaster-blue.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
   "assets/clinic/items-v2/plaster-green.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-green.webp",
-  "assets/clinic/items-v2/plaster-skin.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp"
+  "assets/clinic/items-v2/plaster-skin.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+  "assets/clinic/items-v2/plaster-red-yellow.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-red-yellow.webp",
+  "assets/clinic/items-v2/plaster-red-blue.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-red-blue.webp",
+  "assets/clinic/items-v2/plaster-red-green.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-red-green.webp",
+  "assets/clinic/items-v2/plaster-yellow-blue.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow-blue.webp",
+  "assets/clinic/items-v2/plaster-yellow-green.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow-green.webp",
+  "assets/clinic/items-v2/plaster-blue-green.webp": "assets/clinic/sheets/plaster-flat/plaster-flat-blue-green.webp"
  }
 }

@@ -9,6 +9,8 @@ The spend is logged from the API's usage to sources/art/s03/cost.json; the run s
   python3 build/gen_s03.py --dry                       # the estimate
   python3 build/gen_s03.py                             # try 1 of every image not yet drawn
   python3 build/gen_s03.py --only G1 --try 2 --prompt-file p.txt   # a redo with Fable's amended prompt
+  python3 build/tools/art/artcut.py build/tools/art/specs/s03.cut.json --out DIR && python3 build/gen_s03.py --fit DIR
+  python3 build/gen_s03.py --defringe assets/ui/results/tick-gold.webp   # ART-16
 """
 import argparse
 import base64
@@ -78,7 +80,8 @@ JOBS = {
            'Row 1, left to right: (1) top red, bottom yellow; (2) top red, bottom blue; (3) top red, bottom green. '
            'Row 2, left to right: (4) top yellow, bottom blue; (5) top yellow, bottom green; (6) top blue, bottom green. '
            'Colours exactly as the attached plasters: bright red, bright yellow, bright blue, bright green. ' + GROUND + ' ' + STYLE + ' ' + NEG),
-    'S4': ('1024x1024', [ANCHOR, A('assets/cook/items/v3/daar/pot-daar.webp'), A('assets/cook/items/v3/daar/ladle-v2.webp')], None,
+    # S4: try 3 on drops ladle-v2.webp (Fable: the old dipper anchored the shape)
+    'S4': ('1024x1024', [ANCHOR, A('assets/cook/items/v3/daar/pot-daar.webp')], None,
            'One Indian stainless-steel kadchi (a serving ladle for daar) for a children\'s cooking game, seen from directly '
            'above as it stands in a pot of daar: its deep, round, hemispherical bowl is at the LOWER LEFT, seen from above as '
            'a perfect circle with its polished inside showing, about 34% of the image width; its long, slim, flat steel '
@@ -172,13 +175,105 @@ def draw(n, tr, prompt, key):
     return n, tr, path, body.get('usage') or {}, None
 
 
+def _bbox(im):
+    return im.getchannel('A').point(lambda v: 255 if v > 24 else 0).getbbox()
+
+
+def _place(piece, canvas, box, q=90):
+    """The piece's visible part scaled into box (x0, y0, x1, y1, keeping its aspect, centred) on a clear canvas."""
+    pb = piece.crop(_bbox(piece))
+    bw, bh = box[2] - box[0], box[3] - box[1]
+    s = min(bw / pb.width, bh / pb.height)
+    pb = pb.resize((max(1, round(pb.width * s)), max(1, round(pb.height * s))), Image.LANCZOS)
+    cv = Image.new('RGBA', canvas, (0, 0, 0, 0))
+    cv.alpha_composite(pb, (round(box[0] + (bw - pb.width) / 2), round(box[1] + (bh - pb.height) / 2)))
+    return cv
+
+
+def defringe(path, px=2):
+    """A cut's rim takes the colour of the nearest solid inside pixel (no grey in the antialiasing), alpha pulled in a
+    pixel and re-softened (ART-16: the review tick)."""
+    import numpy as np
+    from scipy import ndimage as ndi
+    im = np.asarray(Image.open(path).convert('RGBA')).astype(float)
+    a = im[..., 3] / 255
+    solid = ndi.binary_erosion(a > 0.98, iterations=px + 1)
+    _, (iy, ix) = ndi.distance_transform_edt(~solid, return_indices=True)
+    rgb = im[..., :3].copy()
+    rim = ~solid & (a > 0)
+    rgb[rim] = im[..., :3][iy[rim], ix[rim]]
+    na = ndi.gaussian_filter(ndi.binary_erosion(a > 0.5, iterations=1).astype(float), 0.8) * a
+    Image.fromarray(np.dstack([rgb, np.clip(na * 255, 0, 255)]).astype(np.uint8), 'RGBA').save(path, 'WEBP', quality=92, method=6)
+
+
+def fit(stage):
+    """Place the staged cuts (artcut.py s03.cut.json --out <dir>; <dir>/stage) on the game's canvases. Prints the
+    measurements the data and code hookups need."""
+    st = lambda n: Image.open(os.path.join(stage, n)).convert('RGBA')
+    save = lambda im, rel, q=90: (im.save(A(rel), 'WEBP', quality=q, method=6), print('  wrote', rel, im.size))
+    # S1: the sekelo dish beside B1's (300 px on its long side, 10 px pad)
+    p = st('sekelo.webp')
+    p = p.crop(_bbox(p))
+    s = 280 / max(p.size)
+    p = p.resize((round(p.width * s), round(p.height * s)), Image.LANCZOS)
+    cv = Image.new('RGBA', (p.width + 20, p.height + 20), (0, 0, 0, 0))
+    cv.alpha_composite(p, (10, 10))
+    save(cv, 'assets/cook/items/served/sekelo.webp')
+    # S2: the bowl alone and the bowl on the trivet, on one canvas (daar.js TRIVET_PLAIN: 489 x 490); the bowl's rim
+    # at daar.js BOWL_IN (0.39 of the width from the centre); the trivet as trivet-t fills its canvas
+    W, H = 489, 490
+    cx, cy = W * 0.4991, H * 0.4971
+    tri = Image.open(A('assets/cook/items/v3/daar/trivet-t.webp')).convert('RGBA')
+    tb = _bbox(tri)
+    tr = max(tb[2] - tb[0], tb[3] - tb[1]) / 2
+    rt = min(cx, cy) - 4  # the trivet's radius on this canvas
+    tri = tri.crop(tb).resize((round(rt * 2), round(rt * 2)), Image.LANCZOS)
+    rb = 0.39 * W
+    bowl = _place(st('daar-bowl.webp'), (W, H), (cx - rb, cy - rb, cx + rb, cy + rb))
+    save(bowl, 'assets/cook/items/v3/daar/daar-bowl-plain-t.webp')
+    both = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    both.alpha_composite(tri, (round(cx - rt), round(cy - rt)))
+    both.alpha_composite(bowl)
+    save(both, 'assets/cook/items/v3/daar/daar-bowl-trivet-plain-v2.webp')
+    print('  TRIVET_PLAIN r = %.4f (trivet radius / width)' % (rt / W))
+    # S3: the two-colour plasters on the one-colour ones' canvas (256 x 129, the strip in the same box)
+    ref = Image.open(A('assets/clinic/sheets/plaster-flat/plaster-flat-red.webp')).convert('RGBA')
+    rb_ = _bbox(ref)
+    for n in ['red-yellow', 'red-blue', 'red-green', 'yellow-blue', 'yellow-green', 'blue-green']:
+        save(_place(st('plaster-flat-%s.webp' % n), ref.size, rb_), 'assets/clinic/sheets/plaster-flat/plaster-flat-%s.webp' % n)
+    # S5: the potato on the sekelo pieces' canvases, the visible box the old potato's (one size across raw/grilled/charred)
+    for n in ['potato-raw', 'potato-grilled', 'potato-charred', 'heap-potato']:
+        old = Image.open(A('assets/cook/items/v3/sekelo/%s.webp' % n)).convert('RGBA')
+        save(_place(st(n + '.webp'), old.size, _bbox(old)), 'assets/cook/items/v3/sekelo/%s.webp' % n)
+    # S4: the kadchi, trimmed with a 16 px pad at most 512 px; its bowl (the darkest-rimmed circle) measured by hand
+    p = st('ladle.webp')
+    p = p.crop(_bbox(p))
+    s = min(1, 480 / max(p.size))
+    p = p.resize((round(p.width * s), round(p.height * s)), Image.LANCZOS)
+    cv = Image.new('RGBA', (p.width + 32, p.height + 32), (0, 0, 0, 0))
+    cv.alpha_composite(p, (16, 16))
+    save(cv, 'assets/cook/items/v3/daar/ladle-v3.webp')
+    # G1-G4: the girl's face layers and corner heads (the cut's canvas is girl-front's own)
+    gd = os.path.join(stage, 'girl')
+    for f in ['hot', 'cold', 'pain', 'happy']:
+        for n in ['girl-face-%s.webp' % f, 'girl-face-%s@2x.webp' % f, 'girl-head-%s.webp' % f]:
+            Image.open(os.path.join(gd, n)).save(A('assets/clinic/patients/girl', n), 'WEBP', quality=92, method=6)
+            print('  wrote assets/clinic/patients/girl/' + n)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry', action='store_true')
     ap.add_argument('--only', default='')
     ap.add_argument('--try', dest='tr', type=int, default=1)
     ap.add_argument('--prompt-file', default='')
+    ap.add_argument('--fit', help='place the staged cut (artcut --out DIR): DIR/stage')
+    ap.add_argument('--defringe', nargs='*', help='clean the rim of these cut webps (ART-16)')
     a = ap.parse_args()
+    if a.fit:
+        return fit(os.path.join(a.fit, 'stage'))
+    if a.defringe:
+        return [defringe(A(f)) or print('  defringed', f) for f in a.defringe]
     os.makedirs(OUT, exist_ok=True)
     log_path = os.path.join(OUT, 'cost.json')
     log = json.load(open(log_path)) if os.path.exists(log_path) else {'model': MODEL, 'calls': []}

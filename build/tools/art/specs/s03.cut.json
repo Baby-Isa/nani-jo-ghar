@@ -1,0 +1,192 @@
+{
+ "pack": "s03",
+ "about": "Sprint 3 art (plan docs/design-language/art-plans/s03-art-plan.md), cut by build/tools/art/artcut.py from sources/art/s03/ (the try Fable passed) into a staging folder at source size; build/gen_s03.py --fit then places each piece on the game's registered canvas (the trivet's, the sekelo pieces', the one-colour plasters') and copies the girl's face layers and corner heads. Old files stay in git history.",
+ "src": "sources/art/s03",
+ "out": "assets",
+ "data": "sources/art/s03/cut-data.json",
+ "jobs": [
+  {
+   "id": "s1-sekelo-dish",
+   "type": "grid",
+   "src": "s1-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "stage",
+   "names": [
+    "sekelo"
+   ],
+   "max": 1024
+  },
+  {
+   "id": "s2-daar-bowl",
+   "type": "grid",
+   "src": "s2-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "stage",
+   "names": [
+    "daar-bowl"
+   ],
+   "max": 1024
+  },
+  {
+   "id": "s3-plasters",
+   "type": "grid",
+   "src": "s3-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "outdir": "stage",
+   "names": [
+    "plaster-flat-red-yellow",
+    "plaster-flat-red-blue",
+    "plaster-flat-red-green",
+    "plaster-flat-yellow-blue",
+    "plaster-flat-yellow-green",
+    "plaster-flat-blue-green"
+   ],
+   "max": 1024
+  },
+  {
+   "id": "s4-ladle",
+   "type": "grid",
+   "src": "s4-v3.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "stage",
+   "names": [
+    "ladle"
+   ],
+   "max": 1024
+  },
+  {
+   "id": "s5-potato",
+   "type": "grid",
+   "src": "s5-v1.png",
+   "cells": [
+    4,
+    1
+   ],
+   "outdir": "stage",
+   "names": [
+    "potato-raw",
+    "potato-grilled",
+    "potato-charred",
+    "heap-potato"
+   ],
+   "max": 1024
+  },
+  {
+   "id": "girl-wide",
+   "type": "figure",
+   "data": "girl",
+   "src": "../clinic-heal-v3/girl-w1-front-neutral-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 540,
+   "age": "child",
+   "faces": {
+    "happy": "g4-v1.png",
+    "pain": "g3-v1.png",
+    "hot": "g1-v2.png",
+    "cold": "g2-v1.png"
+   },
+   "out": "stage/girl/girl",
+   "anchors": {
+    "front": {
+     "forehead": [
+      512,
+      240
+     ],
+     "eyes": [
+      512,
+      330
+     ],
+     "mouth": [
+      512,
+      420
+     ],
+     "ear.left": [
+      700,
+      360
+     ],
+     "ear.right": [
+      322,
+      365
+     ],
+     "upperarm.left": [
+      690,
+      680
+     ],
+     "upperarm.right": [
+      332,
+      680
+     ],
+     "forearm.left": [
+      640,
+      850
+     ],
+     "forearm.right": [
+      384,
+      850
+     ],
+     "hand": [
+      512,
+      900
+     ],
+     "tummy": [
+      512,
+      790
+     ],
+     "knee.left": [
+      610,
+      1040
+     ],
+     "knee.right": [
+      414,
+      1040
+     ],
+     "foot.left": [
+      625,
+      1350
+     ],
+     "foot.right": [
+      395,
+      1350
+     ],
+     "head": [
+      512,
+      330
+     ],
+     "seat": [
+      512,
+      1040
+     ]
+    }
+   },
+   "poses": {
+    "blanket": {
+     "src": "../clinic-heal-v3/girl-w9-blanket-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    },
+    "bottle": {
+     "src": "../clinic-heal-v3/girl-w10-bottle-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    }
+   }
+  }
+ ]
+}

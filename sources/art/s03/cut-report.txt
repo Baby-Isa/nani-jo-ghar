@@ -1,0 +1,15 @@
+s1-sekelo-dish: 1 piece(s) by cell for 1 name(s)
+s2-daar-bowl: 1 piece(s) by cell for 1 name(s)
+s3-plasters: 6 piece(s) by cell for 6 name(s)
+s4-ladle: 1 piece(s) by cell for 1 name(s)
+s5-potato: 4 piece(s) by cell for 4 name(s)
+  skin girl-wide base face: #F4965F ΔE 1.5 from the approved render
+  head band y 57..540
+  face happy: shift +4.2,-2.3 px, leak outside the head 0.58%
+  face pain: shift +0.5,-0.1 px, leak outside the head 0.03%
+  face hot: shift +1.1,+1.2 px, leak outside the head 0.06%
+  face cold: shift +1.8,+0.1 px, leak outside the head 0.00%
+  pose blanket: shift -0.4,-0.5 px; leg-band alpha drift 0.11%
+  pose bottle: fitted by scale 0.995 on the legs (an interim; the redo list has it)
+  pose bottle: shift +1.1,-26.1 px; leg-band alpha drift 0.34%
+girl-wide: figure cut, canvas 854x1464, 3 pose(s), 4 face layer(s)

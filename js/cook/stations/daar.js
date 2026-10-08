@@ -89,17 +89,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // the served bowl on its trivet (528 x 563; its round body, trivet and all: r 0.4833 of w) and the ladle
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
   const TRIVET = { w: 528, h: 563, cx: 0.4928, cy: 0.4987, r: 0.4833 };
-  // 30 Sept (R3): ladle-v2, a deep steel dipper seen three-quarter on (its bowl: the biggest circle inside it)
-  const LADLE = { w: 833, h: 1039, cx: 0.3697, cy: 0.7016, r: 0.3501 };
+  // S03-D (DAAR-02): ladle-v3, a real kadchi from above (a deep round bowl, a flat strap handle rising to the upper
+  // right); its bowl: the biggest circle inside it, measured on the cut
+  const LADLE = { w: 469, h: 512, cx: 0.2217, cy: 0.7949, r: 0.1843 };
   // (R4 cell 6) the same bowl of plain daar, no tadka: it waits beside the pot and pours in (the tadka one is the review's)
-  const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4619 };
+  // S03-D (C10): the s03 bowl (matte daar) on trivet-t, one canvas with daar-bowl-plain-t (build/gen_s03.py --fit)
+  const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4899 };
   // (R8) the speed dial's four flat cream icons: stopped, slow (tortoise), fast (hare), too fast (a splash)
   const DIAL_ICONS = ["stopped", "slow", "fast", "spill"];
   // DAAR-13: the margin-safe knife's edge, tip to heel, as fractions of tool-knife-t.png (345 x 296)
   const KNIFE_BLADE = [0.07, 0.08, 0.5, 0.64];
-  // DAAR-11 (D6): the ladle's handle leaves its bowl about 57 degrees above the right (ladle-v2.webp); turned so it
+  // DAAR-11 (D6): the ladle's handle leaves its bowl about 48 degrees above the right (ladle-v3.webp); turned so it
   // always points out to the rim, hooked over it, as the ladle goes round
-  const LADLE_HANDLE = (-57 * Math.PI) / 180;
+  const LADLE_HANDLE = (-48 * Math.PI) / 180;
   /*
    * Where the chopped pieces wait (D4, Q4: "in bowls, or on the counter at the top right: try it and judge").
    * "counter": one small pile per piece, a row per vegetable, straight on the counter (chosen: it can be
@@ -157,8 +159,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const art = [
       ["dv2-knife", IT + "tool-knife-t.png"], // DAAR-13: the margin-safe cut (the webp touched its canvas edge: the tip was clipped)
       ["dv3-trivet", V3 + "daar-bowl-trivet.webp"],
-      ["dv3-ladle", V3 + "ladle-v2.webp"],
-      ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain.webp"],
+      ["dv3-ladle", V3 + "ladle-v3.webp"],
+      ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
     ]
       .concat(POTS.map((st) => [`dv3-pot-${st}`, `${V3}pot-${st}.webp`]))
