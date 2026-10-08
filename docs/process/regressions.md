@@ -102,7 +102,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| PAN-01 | **KNOWN BUG.** "Bring me these" headline clipped ("these" cut) and the growing highlighted row / gold done-outline clipped at the card edges (re-found 30 Sept 18:00 UK) | **reopened** (6 Oct play-test) | eye: 390×844 and 1366×768, each fetched row · TXT-01, TXT-04 | `docs/feedback/cook-playtest-2026-09-29.md` P3, P2; `docs/feedback/cook-playtest-2026-10-06.md` |
+| PAN-01 | **KNOWN BUG.** "Bring me these" headline clipped ("these" cut) and the growing highlighted row / gold done-outline clipped at the card edges (re-found 30 Sept 18:00 UK) | open (S03: not reproduced in code; needs the eye check at 390×844 at `/review`) | eye: 390×844 and 1366×768, each fetched row · TXT-01, TXT-04 | `docs/feedback/cook-playtest-2026-09-29.md` P3, P2; `docs/feedback/cook-playtest-2026-10-06.md` |
 | PAN-02 | **KNOWN BUG.** Spoken and written lines are fragments with no verb (*khun, ne daar, ne dudh*; "I want tea and milk. I want tea with two sugars…"); want one natural sentence per person, in every station. Needs the language engine | open (partly built, 4d) (4d, 5 Oct: the pantry asks in full sentences, one per thing, *Muke atto de.*, built by the engine; one sentence with a list, and the other stations' lists (*Pela …*, *Ne poi …*), wait for Mum's list and verb rules: gap list) | eye/ear: every order sentence · LNG-03 | `docs/feedback/cook-playtest-2026-09-29.md` X1 |
 | PAN-03 | Headline says "bring me these for {dish}", not "Muke dudh de." over atto with chai below (reads as if milk were a different kind of thing); Kutchi line still to record | fixed | eye: pantry card · LNG-04 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §1 |
 | PAN-04 | Counting voice and Nani's "next thing" line do not overlap (one speech queue per station) | built, not re-played | eye: ear | `docs/feedback/cook-playtest-2026-09-29.md` P1 |
@@ -110,11 +110,11 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | PAN-06 | Shelves side-on, not top-down bowls; clear labelled jars; meat in a fridge section; no generic metal jugs; three to four full shelves; nothing floating | fixed | eye: 1366×768 · ART-03 | `docs/archive/cook/cook-with-nani-phase-a-design.md` §2 |
 | PAN-07 | Basket is a tray with outlined spaces; front edge drawn over what sits on it; outline fades as the item lands; tally at most three across; pass-me pop-up side-on | fixed | eye: 1366×768 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §4 |
 | PAN-08 | "Next item" ring centred on the item (glow and bounce of the item itself) | fixed | eye: 1366×768 · CMP-10 | `docs/feedback/cook-ui-feedback-2026-09-28.md` §4 |
-| PAN-09 | Jar labels read at phone size: colour reads better than label; white-on-cream icons (salt) vanish | **reopened** (6 Oct play-test) | eye: 390×844 | `docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md` Status; `docs/feedback/cook-playtest-2026-10-06.md` |
-| PAN-10 | Pantry wording: card headline *Muke de* + items, Nani's box the task (*Muke chai lai de*, to check with Mum); she reads the card once at L1 (pending decision) | **open** | ear: pantry L1–L3 · LNG-04 | `docs/feedback/cook-playtest-2026-10-06.md` PA1, PA3, PA4 |
-| PAN-11 | A tap during her line pauses her, the count word plays, and she carries on (no garbled "Hakro…") | **open** | ear: tap mid-line · INT-01 | `docs/feedback/cook-playtest-2026-10-06.md` PA10 |
-| PAN-12 | Shorter gap between count words (trim clip silence) | **open** | ear: pantry count | `docs/feedback/cook-playtest-2026-10-06.md` V5 |
-| PAN-13 | Pantry/chai fatigue in the story days: pantry only the first time a dish is ever made; a new station sooner (pending decision) | **open** | eye: story days 1–3 | `docs/feedback/cook-playtest-2026-10-06.md` PA15 |
+| PAN-09 | Jar labels read at phone size: colour reads better than label; white-on-cream icons (salt) vanish | built, not re-played (S03 reconcile: S02-E jars with distinct lids, `art.s02` spice-jar-*, wired) | eye: 390×844 | `docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md` Status; `docs/feedback/cook-playtest-2026-10-06.md` |
+| PAN-10 | Pantry wording: card headline *Muke de* + items, Nani's box the task (*Muke chai lai de*, to check with Mum); she reads the card once at L1 (pending decision) | open (S03: needs Mum's *Muke de* / *Muke chai lai de*, Round 5; no Kutchi invented) | ear: pantry L1–L3 · LNG-04 | `docs/feedback/cook-playtest-2026-10-06.md` PA1, PA3, PA4 |
+| PAN-11 | A tap during her line pauses her, the count word plays, and she carries on (no garbled "Hakro…") | built, not re-played (S03 reconcile: the count word pauses her line and it carries on, `ui.js` over / `words.js`) | ear: tap mid-line · INT-01 | `docs/feedback/cook-playtest-2026-10-06.md` PA10 |
+| PAN-12 | Shorter gap between count words (trim clip silence) | built, not re-played (S03, Cook's player trims each clip's recorded silence at both ends, `core.js` spanOf) | ear: pantry count | `docs/feedback/cook-playtest-2026-10-06.md` V5 |
+| PAN-13 | Pantry/chai fatigue in the story days: pantry only the first time a dish is ever made; a new station sooner | built, not re-played (S03 reconcile: decision 60, the pantry only the first time a dish is ever made, `flow.js`) | eye: story days 1–3 | `docs/feedback/cook-playtest-2026-10-06.md` PA15 |
 
 ## Cook: chai
 
@@ -126,16 +126,16 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CHAI-04 | Everything is made in the pan, not partly in the glass; one card per person | built, not re-played | eye: 1366×768 | `docs/design-language/ui-design-system.md` §1.5 |
 | CHAI-05 | Sentence: *Muke aadu waari chai khape*, extras first, then *dudh*, *ba khun*; ginger phrase not last and not repeating *chai* | built, not re-played | eye/ear: orders · LNG-03 | `docs/feedback/cook-playtest-2026-09-29.md` C5 |
 | CHAI-06 | Pans centred on burners; no flame on a burner whose pan is away; gauge on the rim; boiling state shot in QA | built, not re-played | auto: `build/check_vessel_meta.py` · LAY-10; eye: boiling state | `docs/archive/process/VISUAL-QA.md` §5 |
-| CHAI-07 | Black-tea glass and tipped-pan art still open | **reopened** (6 Oct play-test) | eye: black-tea state | `docs/feedback/cook-playtest-2026-09-29.md` C8; `docs/feedback/cook-playtest-2026-10-06.md` |
-| CHAI-08 | v2 mock-up fixes: hob and tray about 15% bigger and lower, pans true top-down, tilted pan for the pour, real top-down glasses and liquids | open | eye: 1366×768 | `docs/design-language/ui-design-system.md` §10 |
+| CHAI-07 | Black-tea glass and tipped-pan art still open | built, not re-played (S03 reconcile: the art run's black-tea glasses and tipped pans, `art.s02` chai-*, wired) | eye: black-tea state | `docs/feedback/cook-playtest-2026-09-29.md` C8; `docs/feedback/cook-playtest-2026-10-06.md` |
+| CHAI-08 | v2 mock-up fixes: hob and tray about 15% bigger and lower, pans true top-down, tilted pan for the pour, real top-down glasses and liquids | open (S03: the true top-down pans, tipped pan and glasses are in; "hob and tray 15% bigger and lower" needs the side-by-side with the v2 mock-up at `/review`) | eye: 1366×768 | `docs/design-language/ui-design-system.md` §10 |
 | CHAI-09 | No leftover "1 1" tally at serving (orchestrator) | fixed | eye: serve state | `docs/process/overnight-log.md` 01:34–03:40 (orchestrator) |
-| CHAI-10 | Burner reaches the green zone about twice as fast at every level (now ~15 / 21 / 28 s) | **open** | eye: chai L1–L3 | `docs/feedback/cook-playtest-2026-10-06.md` C6 |
-| CHAI-11 | A wrong cup is redone: the other cups stay, that cup empties, its card reopens, the tick goes; the second try has help (pending decision) | **open** | eye: 2-person chai, one wrong | `docs/feedback/cook-playtest-2026-10-06.md` C20, Q2 |
-| CHAI-12 | Pan handle fully opaque over the hob rim (the heat ring draws over it) | **open** | eye: ×2 zoom, right pan | `docs/feedback/cook-playtest-2026-10-06.md` C19 |
-| CHAI-13 | A real teaspoon for the sugar stir (now drawn in code) | **open** | eye: sugar | `docs/feedback/cook-playtest-2026-10-06.md` C18 |
-| CHAI-14 | Ginger art reads as ginger, not gummies (`shelf-veg-14-jar-f.webp`) | **open** | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-10-06.md` C24 |
-| CHAI-15 | Everyone who orders comes in first; one pop-up with each person's order (tap to skip); then quiet in game (pending decision) | **open** | eye: 3-person chai | `docs/feedback/cook-playtest-2026-10-06.md` C27 |
-| CHAI-16 | A counted row at L1 turns gold at the count (D5 never built: hidden two sugars not ticked while milk ticked) | **open** | eye: chai L1, L2 · CMP-09 | `docs/feedback/cook-playtest-2026-10-06.md` C5 |
+| CHAI-10 | Burner reaches the green zone about twice as fast at every level (now ~15 / 21 / 28 s) | built, not re-played (S03 reconcile: twice as fast to the green, `chai-tray.js`) | eye: chai L1–L3 | `docs/feedback/cook-playtest-2026-10-06.md` C6 |
+| CHAI-11 | A wrong cup is redone: the other cups stay, that cup empties, its card reopens, the tick goes; the second try has help | built, not re-played (S03 reconcile: decision 51, a wrong cup is emptied and redone, its row reopens, help on the second try, `chai-tray.js`) | eye: 2-person chai, one wrong | `docs/feedback/cook-playtest-2026-10-06.md` C20, Q2 |
+| CHAI-12 | Pan handle fully opaque over the hob rim (the heat ring draws over it) | built, not re-played (S03 reconcile: the handle drawn over the heat ring, `chai-tray.js`) | eye: ×2 zoom, right pan | `docs/feedback/cook-playtest-2026-10-06.md` C19 |
+| CHAI-13 | A real teaspoon for the sugar stir (now drawn in code) | built, not re-played (S03 reconcile: the art run's teaspoon, `art.s02` teaspoon, `count.js`) | eye: sugar | `docs/feedback/cook-playtest-2026-10-06.md` C18 |
+| CHAI-14 | Ginger art reads as ginger, not gummies (`shelf-veg-14-jar-f.webp`) | built, not re-played (S03 reconcile: the art run's ginger root and slices, `art.s02` ginger-*) | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-10-06.md` C24 |
+| CHAI-15 | Everyone who orders comes in first; one pop-up with each person's order (tap to skip); then quiet in game | built, not re-played (S03 reconcile: decision 53, everyone comes in, then the shared request pop-up, `flow.js`, S03-A `request-popup.js`) | eye: 3-person chai | `docs/feedback/cook-playtest-2026-10-06.md` C27 |
+| CHAI-16 | A counted row at L1 turns gold at the count (D5 never built: hidden two sugars not ticked while milk ticked) | built, not re-played (S03 reconcile: the sugar row turns gold at the count at L1, and again after a take-back, `chai-tray.js`) | eye: chai L1, L2 · CMP-09 | `docs/feedback/cook-playtest-2026-10-06.md` C5 |
 | CHAI-17 | The tipped pan's handle touches the top edge while it pours (1366×768) | built, not re-played (S03, the painted pour isn't tipped further and is drawn smaller about its lip when its top would leave the screen) | eye: chai pour, 1366×768 and 844×390 | `build/reports/s02-review.md` flaw 2 |
 
 ## Cook: maani
@@ -150,32 +150,32 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | MAA-06 | Turner is a flat wooden turner, not "weird tweezers" | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` M6, Q15 |
 | MAA-07 | Tawa is high-resolution, not a 400 px upscale | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` M8 |
 | MAA-08 | Count badge does not overlap the hob; roll-tawa plate not cut off; tick not over the resting spatula (builder) | built, not re-played (C3, 5 Oct: rechecked at 1280×800 and 844×390, no count badge on the hob, plates whole, the tick clear of the turner; 915×375 is no longer in the matrix) | eye: 1280×800, 915×375 | `docs/archive/cook/cook-with-nani-todo.md` Wave 4 (builder) |
-| MAA-09 | Dough piles have no drop shadow (top-down) | **open** | eye: dough shelf | `docs/feedback/cook-playtest-2026-10-06.md` M2 |
-| MAA-10 | Maani lands on the thali's flat inner area, never the curled rim | **open** | eye: ×2 zoom, 3 maani | `docs/feedback/cook-playtest-2026-10-06.md` M5 |
-| MAA-11 | Sizzle plays only while something is on a lit tawa; the knob turns the flame off | **open** | ear: empty tawa, flame off | `docs/feedback/cook-playtest-2026-10-06.md` M6 |
-| MAA-12 | Rolling pin draws above the size ring; about 10% longer | **open** | eye: roll | `docs/feedback/cook-playtest-2026-10-06.md` M7, M12 |
-| MAA-13 | Ghost finger shows the tap after a pause until the move is made (not once per profile) | **open** | eye: second play | `docs/feedback/cook-playtest-2026-10-06.md` M3 |
-| MAA-14 | Nani's "pass me" on screen, pausing play, 3-second ring; not in the first plays of a mode (pending decision) | **open** | eye: story day 2+ | `docs/feedback/cook-playtest-2026-10-06.md` M9, M10 |
+| MAA-09 | Dough piles have no drop shadow (top-down) | built, not re-played (S03 reconcile: no pile shadow, `maani-line.js`) | eye: dough shelf | `docs/feedback/cook-playtest-2026-10-06.md` M2 |
+| MAA-10 | Maani lands on the thali's flat inner area, never the curled rim | built, not re-played (S03 reconcile: the thali's flat inner area, decision 56, `maani-line.js`) | eye: ×2 zoom, 3 maani | `docs/feedback/cook-playtest-2026-10-06.md` M5 |
+| MAA-11 | Sizzle plays only while something is on a lit tawa; the knob turns the flame off | built, not re-played (S03 reconcile: sizzle only on a lit tawa with something on it; the knob turns off, `maani-line.js`) | ear: empty tawa, flame off | `docs/feedback/cook-playtest-2026-10-06.md` M6 |
+| MAA-12 | Rolling pin draws above the size ring; about 10% longer | built, not re-played (S03 reconcile: the pin above the ring, 10% longer, `roll.js`) | eye: roll | `docs/feedback/cook-playtest-2026-10-06.md` M7, M12 |
+| MAA-13 | Ghost finger shows the tap after a pause until the move is made (not once per profile) | built, not re-played (S03 reconcile: the ghost finger repeats after a pause until the move, `maani-line.js`) | eye: second play | `docs/feedback/cook-playtest-2026-10-06.md` M3 |
+| MAA-14 | Nani's "pass me" on screen, pausing play, 3-second ring; not in the first plays of a mode | built, not re-played (S03 reconcile: on screen, pausing, 3 s ring, not in the first plays, `passme.js`, `flow.js`) | eye: story day 2+ | `docs/feedback/cook-playtest-2026-10-06.md` M9, M10 |
 
 ## Cook: daar
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | DAAR-01 | Swipe chop stays ("there's no game now" when it became tap crate, tap knife) | built, not re-played | auto: `build/test_cook.py`; eye: chop | `docs/feedback/cook-playtest-2026-09-29.md` D1, X15, Q4 |
-| DAAR-02 | Ladle: handle not up in the air, reads as a *kadchi*, not a dipper (still a dipper in the latest art) | **reopened** (6 Oct play-test) | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` D6; `docs/feedback/cook-playtest-2026-10-06.md` |
+| DAAR-02 | Ladle: handle not up in the air, reads as a *kadchi*, not a dipper (still a dipper in the latest art) | built, not re-played (S03 reconcile: S03-D cut the kadchi ladle) | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` D6; `docs/feedback/cook-playtest-2026-10-06.md` |
 | DAAR-03 | Stir shows speed and laps (speed dial, laps as Kutchi word) | built, not re-played | eye: stir | `docs/feedback/cook-playtest-2026-09-29.md` D7, Q10 |
 | DAAR-04 | Chopped rows reset at the pan and tick as each goes in | built, not re-played | auto: order-card state; eye · CMP-09 | `docs/feedback/cook-playtest-2026-09-29.md` D9 |
 | DAAR-05 | Ginger and added things are not white dots; stir turns the pictured contents (review bowl still shows dry chilli and curry leaves) | built, not re-played | eye: each stage | `docs/feedback/cook-playtest-2026-09-29.md` D3, D10 |
 | DAAR-06 | Finished daar is photoreal on a small wooden trivet | built, not re-played | eye: serve | `docs/feedback/cook-playtest-2026-09-29.md` D5 |
 | DAAR-07 | Pot and chopped-ingredient container are straight top-down | built, not re-played | eye: 1366×768 · ART-03 | `docs/feedback/cook-playtest-2026-09-29.md` D11 |
 | DAAR-08 | Chop card writes quantities at every level (open question: should L1 say *ba dungri* only?) | built, not re-played (C3, 5 Oct, decision 41: no written quantity from L3; her face replays the numbers) | eye: L1–L4 · INT-10 | `build/reports/daar-v3.md` (open question) |
-| DAAR-09 | A mistake redoes only the wrong step; after three wrong tries the game shows the right way (whole-game restart now) (pending decision) | **open** | eye: daar wrong spice | `docs/feedback/cook-playtest-2026-10-06.md` D9, T8 |
-| DAAR-10 | Trivet stays on the counter; only the bowl tips into the pot (one image now) | **open** | eye: daar in | `docs/feedback/cook-playtest-2026-10-06.md` D4 |
-| DAAR-11 | Ladle turns as it goes round so its handle stays on the rim | **open** | eye: stir | `docs/feedback/cook-playtest-2026-10-06.md` D6 |
-| DAAR-12 | Laps and speed on the card; asked speed green, the other yellow, spill red (pending decision) | **open** | eye: stir L1–L3 | `docs/feedback/cook-playtest-2026-10-06.md` D12, D13 |
-| DAAR-13 | Chop: knife smaller, clean cut (tip clipped: use the margin-safe cut), blade cuts; items spread; slower at L1; ghost finger drags the knife; row highlights at the right count | **open** | eye: chop L1 · ART-02 | `docs/feedback/cook-playtest-2026-10-06.md` D1, D10 |
-| DAAR-14 | Silver saucepan top edge not cut flat (which pot to find at review) | **open** | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-10-06.md` D7 |
-| DAAR-15 | Old Tadka station retired from the labs (pending decision) | **open** | eye: labs.html | `docs/feedback/cook-playtest-2026-10-06.md` TD1 |
+| DAAR-09 | A mistake redoes only the wrong step; after three wrong tries the game shows the right way (whole-game restart now) | built, not re-played (S03 reconcile: decision 51, only the wrong step is redone; the third try shows it, `daar.js`) | eye: daar wrong spice | `docs/feedback/cook-playtest-2026-10-06.md` D9, T8 |
+| DAAR-10 | Trivet stays on the counter; only the bowl tips into the pot (one image now) | built, not re-played (S03 reconcile: the trivet stays, only the bowl tips, `daar.js`) | eye: daar in | `docs/feedback/cook-playtest-2026-10-06.md` D4 |
+| DAAR-11 | Ladle turns as it goes round so its handle stays on the rim | built, not re-played (S03 reconcile: the ladle turns so its handle stays out over the rim, `daar.js`) | eye: stir | `docs/feedback/cook-playtest-2026-10-06.md` D6 |
+| DAAR-12 | Laps and speed on the card; asked speed green, the other yellow, spill red | built, not re-played (S03 reconcile: laps and speed on the card, the asked speed green, `daar.js`) | eye: stir L1–L3 | `docs/feedback/cook-playtest-2026-10-06.md` D12, D13 |
+| DAAR-13 | Chop: knife smaller, clean cut (tip clipped: use the margin-safe cut), blade cuts; items spread; slower at L1; ghost finger drags the knife; row highlights at the right count | built, not re-played (S03 reconcile: smaller margin-safe knife, slower and wider at L1, ghost drags it, row lights at the count, `chop.js`, `daar.js`) | eye: chop L1 · ART-02 | `docs/feedback/cook-playtest-2026-10-06.md` D1, D10 |
+| DAAR-14 | Silver saucepan top edge not cut flat (which pot to find at review) | open (S03: art; which pot to be found at `/review`) | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-10-06.md` D7 |
+| DAAR-15 | Old Tadka station retired from the labs | built, not re-played (S03 reconcile: decision 62, Tadka stays in the labs, out of the launch, `data/cook.json` lab.notInLaunch) | eye: labs.html | `docs/feedback/cook-playtest-2026-10-06.md` TD1 |
 
 ## Cook: chaat
 
@@ -183,13 +183,13 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 |---|---|---|---|---|
 | CHT-01 | Quantities are not only heard: card says *ba dungri* at L1 (counting rule) | built, not re-played | eye: L1 · INT-10 | `docs/feedback/cook-playtest-2026-09-29.md` T1 |
 | CHT-02 | Ingredient bowls side-on, not three-quarter | built, not re-played | eye: 1366×768 | `docs/feedback/cook-playtest-2026-09-29.md` T2 |
-| CHT-03 | Glass bowl fully side-on with layer strips (tomato pot is a recoloured stand-in) | **reopened** (6 Oct play-test) | auto: `build/check_vessel_meta.py` check_chaat; eye | `docs/feedback/cook-playtest-2026-09-29.md` T3, Q2; `docs/feedback/cook-playtest-2026-10-06.md` |
+| CHT-03 | Glass bowl fully side-on with layer strips (tomato pot is a recoloured stand-in) | built, not re-played (S03 reconcile: the art run's side-on glass bowl, `art.s02` chaat-glass) | auto: `build/check_vessel_meta.py` check_chaat; eye | `docs/feedback/cook-playtest-2026-09-29.md` T3, Q2; `docs/feedback/cook-playtest-2026-10-06.md` |
 | CHT-04 | Layers read as food, not liquid or flat rectangles; chilli layer not too thick; tidy ingredient grid with chips; no big red digit tally; card shows the order; bowl not huge | built, not re-played | eye: serve and build states | `docs/design-language/ui-design-system.md` §14 |
 | CHT-05 | Chop timer ring in the shared colours, not the old ones (verify) | built, not re-played | eye: chop phase · CMP-04 | `docs/design-language/ux-principles.md` §15 |
-| CHT-06 | Potato row ticks only at the second of two; the checker counts quantities (one potato passed for two) | **open** | eye: chaat L1–L3 | `docs/feedback/cook-playtest-2026-10-06.md` T3, T7 |
-| CHT-07 | Chaat flow: ask → pantry → chop → he says the sequence → bowl (pending decision) | **open** | eye: story chaat | `docs/feedback/cook-playtest-2026-10-06.md` T2 |
-| CHT-08 | On a retry the order is re-said on his own card with rows lit as spoken; no extra card | **open** | eye: chaat retry | `docs/feedback/cook-playtest-2026-10-06.md` T5 |
-| CHT-09 | *arre re* (never confirmed, not a family word) removed; find why it plays on correct layers | **open** | ear: chaat L1 | `docs/feedback/cook-playtest-2026-10-06.md` T9 |
+| CHT-06 | Potato row ticks only at the second of two; the checker counts quantities (one potato passed for two) | built, not re-played (S03 reconcile: the checker counts quantities; the row ticks at the last one, `assemble.js`) | eye: chaat L1–L3 | `docs/feedback/cook-playtest-2026-10-06.md` T3, T7 |
+| CHT-07 | Chaat flow: ask → pantry → chop → he says the sequence → bowl | built, not re-played (S03 reconcile: decision 53, the layer order said just before the bowl, `assemble.js`) | eye: story chaat | `docs/feedback/cook-playtest-2026-10-06.md` T2 |
+| CHT-08 | On a retry the order is re-said on his own card with rows lit as spoken; no extra card | built, not re-played (S03 reconcile: decision 51, only the wrong layer comes out; his own card re-says it, `assemble.js`) | eye: chaat retry | `docs/feedback/cook-playtest-2026-10-06.md` T5 |
+| CHT-09 | *arre re* (never confirmed, not a family word) removed; find why it plays on correct layers | built, not re-played (S03 reconcile: decision 61, *arre re* gone everywhere; a soft sound until Mum's "oh oh oh", `core.js`, `flow.js`) | ear: chaat L1 | `docs/feedback/cook-playtest-2026-10-06.md` T9 |
 
 ## Cook: samosa
 
@@ -199,17 +199,17 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | SAM-02 | Ingredients are top-down heaps, no bowls | built, not re-played | eye: 1366×768 | `docs/feedback/cook-playtest-2026-09-29.md` S2, X8 |
 | SAM-03 | Base filling (*chundo* or *bataato*) is always a row; one filling per order; base never zero | built, not re-played | auto: order probe (6,000 orders); eye | `docs/feedback/cook-playtest-2026-09-29.md` S3, S18 |
 | SAM-04 | Counter shown as you fill, per the counting rule | built, not re-played | eye: L1–L4 · INT-10 | `docs/feedback/cook-playtest-2026-09-29.md` S5 |
-| SAM-05 | Fold: fixed fold pictures; first fold does not hide the filling | **reopened** (6 Oct play-test) | eye: each fold | `docs/feedback/cook-playtest-2026-09-29.md` S8, S11, Q3; `docs/feedback/cook-playtest-2026-10-06.md` |
+| SAM-05 | Fold: fixed fold pictures; first fold does not hide the filling | built, not re-played (S03 reconcile: the art run's six fold frames, `art.s02` samosa-fold-*) | eye: each fold | `docs/feedback/cook-playtest-2026-09-29.md` S8, S11, Q3; `docs/feedback/cook-playtest-2026-10-06.md` |
 | SAM-06 | Second samosa starts empty when its filling differs from the first | built, not re-played | eye: L3 | `docs/feedback/cook-playtest-2026-09-29.md` S9 |
 | SAM-07 | Samosas sit inside the plate's rim | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` S10 |
 | SAM-08 | Frying area bigger: wide single burner, bigger karahi that does not cover the knob | built, not re-played | eye: 1366×768 | `docs/feedback/cook-playtest-2026-09-29.md` S19 |
 | SAM-09 | Jharo (slotted spoon) goes under the samosas, not over | built, not re-played | eye: fry | `docs/feedback/cook-playtest-2026-09-29.md` S20 |
 | SAM-10 | Filling reads as filling, not two dots on the fold line; fry layout centred (orchestrator) | built, not re-played | eye: fold, fry | `docs/process/overnight-log.md` 01:34–03:40 (orchestrator) |
-| SAM-11 | Card: one block per kind, head "*ba* samosa", fillings under it; no lone "samosa" row (pending decision) | **open** | eye: samosa L1–L3 · CMP-08 | `docs/feedback/cook-playtest-2026-10-06.md` A2 |
-| SAM-12 | Top level: all strips laid out, tap a strip to fill, then roll; no auto re-spoon (pending decision) | **open** | eye: samosa L3 | `docs/feedback/cook-playtest-2026-10-06.md` A5, A11 |
-| SAM-13 | Nani says "turn on the pan", then "fry"; the knob turns off and the sizzle stops | **open** | ear: fry | `docs/feedback/cook-playtest-2026-10-06.md` A6, A7 |
-| SAM-14 | Samosas sit inside the oil and the plate's flat area | **open** | eye: ×2 zoom, fry and plate | `docs/feedback/cook-playtest-2026-10-06.md` A8, M5 |
-| SAM-15 | Peas are *matar* (fresh green peas), not *watana* (fried peas) (pending decision; Zafar confirms spelling) | **open** | ear/eye: samosa chip | `docs/feedback/cook-playtest-2026-10-06.md` A1 |
+| SAM-11 | Card: one block per kind, head "*ba* samosa", fillings under it; no lone "samosa" row | built, not re-played (S03 reconcile: one block per kind, head "*ba* samosa", `order.js`, `data/cook.json` blockHeads) | eye: samosa L1–L3 · CMP-08 | `docs/feedback/cook-playtest-2026-10-06.md` A2 |
+| SAM-12 | Top level: all strips laid out, tap a strip to fill, then roll; no auto re-spoon | built, not re-played (S03 reconcile: from L3 every strip laid out, tap to fill, then fold, `samosa.js` grid; mounds bigger, SAM-16) | eye: samosa L3 | `docs/feedback/cook-playtest-2026-10-06.md` A5, A11 |
+| SAM-13 | Nani says "turn on the pan", then "fry"; the knob turns off and the sizzle stops | built, not re-played (S03 reconcile: the fire line, then the knob turns the fire off and the sizzle stops, `samosa.js`) | ear: fry | `docs/feedback/cook-playtest-2026-10-06.md` A6, A7 |
+| SAM-14 | Samosas sit inside the oil and the plate's flat area | built, not re-played (S03 reconcile: inside the oil and the plate's flat area, `samosa.js`) | eye: ×2 zoom, fry and plate | `docs/feedback/cook-playtest-2026-10-06.md` A8, M5 |
+| SAM-15 | Peas are *matar* (fresh green peas), not *watana* (fried peas) (Zafar confirms spelling) | built, not re-played (S03 reconcile: decision 61, green peas are *matar* in the engine, `data/lang/lexicon.json` n.green-peas) | ear/eye: samosa chip | `docs/feedback/cook-playtest-2026-10-06.md` A1 |
 | SAM-16 | Samosa L3+: the filling mounds on the laid-out strips are tiny (strips at about a third of full size) | built, not re-played (S03, the mounds on a laid-out strip are about twice as big, side by side from its end; at the fold they go back to the full-size strip's end) | eye: samosa L3, L4 grid, 1366×768 and 800×360 | `build/reports/s02-review.md` flaw 7 |
 
 ## Cook: sekelo
@@ -222,13 +222,13 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | SEK-04 | No bare "boga" skewers; a veg skewer names what is on it, in order | built, not re-played | auto: data check; eye | `docs/feedback/cook-playtest-2026-09-29.md` K4 |
 | SEK-05 | No duplicate pick in an order ("tameto, tameto") | fixed | auto: `build/test_cook.py --orders` | `docs/archive/cook/cook-with-nani-todo.md` Wave 1 |
 | SEK-06 | Onion and tomato are big and chunky, the same in the bowl and on the skewer, not oversized against the stick | built, not re-played | eye: ×2 zoom | `docs/feedback/cook-playtest-2026-09-29.md` K5 |
-| SEK-07 | Plate skewers drawn close together; skewer handle sits off the plate; plate lines up with grill and rack | **reopened** (6 Oct play-test) | eye: plate state | `docs/feedback/cook-playtest-2026-09-29.md` K8; `docs/feedback/cook-playtest-2026-10-06.md` |
+| SEK-07 | Plate skewers drawn close together; skewer handle sits off the plate; plate lines up with grill and rack | built, not re-played (S03 reconcile: the art run's plain plate, skewers laid close by code, `grill.js`) | eye: plate state | `docs/feedback/cook-playtest-2026-09-29.md` K8; `docs/feedback/cook-playtest-2026-10-06.md` |
 | SEK-08 | One job per phase (thread, then grill); no chips on the grill | fixed | eye: each phase | `docs/design-language/ux-principles.md` §5, §6 |
 | SEK-09 | Turning a skewer too soon shows nothing and costs nothing (too late not yet tested). An early turn should show the meat still uncooked; a late one burnt (charred art exists). **Decided (Zafar, 30 Sept):** a mistimed skewer goes back to the rack, filled and ready to grill again; the redo and its time are the whole cost (no score penalty). The family can react (undercooked / burnt). | built, not re-played (C3, 5 Oct: a turn before the green shows the raw side, a skewer left to char shows it charred; both go back to the rack to grill again, nothing scored; no family reaction yet) | eye: grill phase, turn early / on time / late, L1–L4 · INT-05 | Zafar, orchestrator chat 30 Sept |
-| SEK-10 | Count-along at L1 only (L2 still speaks every piece) | **open** | ear: sekelo L2 | `docs/feedback/cook-playtest-2026-10-06.md` S1 |
-| SEK-11 | Spoken order: each skewer's sequence follows it at once ("two mixed: first…, then…; one onion") | **open** | ear: L2–L3 | `docs/feedback/cook-playtest-2026-10-06.md` S3 |
-| SEK-12 | Quantity two written where said (with SH-52) | **open** | eye: L3 bulb | `docs/feedback/cook-playtest-2026-10-06.md` S4 |
-| SEK-13 | Card ticks each piece of a mixed skewer as it goes on | **open** | eye: mixed skewer | `docs/feedback/cook-playtest-2026-10-06.md` S5 |
+| SEK-10 | Count-along at L1 only (L2 still speaks every piece) | built, not re-played (S03 reconcile: the count-along at L1 only, `thread.js`) | ear: sekelo L2 | `docs/feedback/cook-playtest-2026-10-06.md` S1 |
+| SEK-11 | Spoken order: each skewer's sequence follows it at once ("two mixed: first…, then…; one onion") | built, not re-played (S03 reconcile: a mixed skewer's sequence said right after it, `order.js`) | ear: L2–L3 | `docs/feedback/cook-playtest-2026-10-06.md` S3 |
+| SEK-12 | Quantity two written where said (with SH-52) | built, not re-played (S03 reconcile: decision 57, a number is written the first times it is heard, `order.js`) | eye: L3 bulb | `docs/feedback/cook-playtest-2026-10-06.md` S4 |
+| SEK-13 | Card ticks each piece of a mixed skewer as it goes on | built, not re-played (S03 reconcile: a mixed skewer's pieces tick as they go on, `thread.js`) | eye: mixed skewer | `docs/feedback/cook-playtest-2026-10-06.md` S5 |
 
 ## Cook: general
 
@@ -253,15 +253,15 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CK-17 | Card and recipe text clears at each new order (no stale "Nani shows you") | fixed | eye: second order · INT-03 | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
 | CK-18 | A customer's bubble never covers their own face | fixed | eye: serve | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
 | CK-19 | Art is WebP and light (10 MB once became 2 MB) | fixed | auto: asset size budget (planned) | `docs/archive/build-logs/cook-with-nani-build-log.md` §3 (builder) |
-| CK-TB-01 | Take it back until Done (E14): 9 of 12 Cook stations offer no take-back (only chaat, assemble and sekelo do) | open | sandbox #takeback flows | `build/reports/step3-r4.md` (1 Oct) |
+| CK-TB-01 | Take it back until Done (E14): 9 of 12 Cook stations offer no take-back (only chaat, assemble and sekelo do) | built, not re-played (S03: chai takes a spoonful back until the pan is lit; the pantry, maani, sekelo, chaat and samosa already did. Chop, stir, tadka and daar have no take-back: every move there can't be undone (a slice, a spice in hot oil, a lap), so their safety net is decision 51's redo; question for Zafar in `build/reports/s03b-cook.md`) | sandbox #takeback flows | `build/reports/step3-r4.md` (1 Oct) |
 | CK-TAB-01 | Tablets: Cook's play items grow to use a 4:3 screen (decision 24); each station needs a 4:3 layout before the stage can grow them | open | sandbox 1024×768, 1180×820, 1366×1024 | `build/reports/step3-r3a.md` |
-| CK-20 | Rule: things inside a container sit on its flat inner area, never the rim or sides (thali, tray, oil, plate) | **open** | eye: every vessel · LAY-10 | `docs/feedback/cook-playtest-2026-10-06.md` M5, A8 |
-| CK-21 | Served dishes on the counter drawn at its angle, on a tray, shadows to the right (pending decision) | **open** | eye: every serve | `docs/feedback/cook-playtest-2026-10-06.md` K4 |
-| CK-22 | The closing line lists back what they got, then thank you / shabash (no repeated "give me") | **open** | ear: every serve | `docs/feedback/cook-playtest-2026-10-06.md` PA7, C23 |
-| CK-23 | A wrong item means redo just that item; second try with help; after three, show the right way (pending decision) | **open** | eye: every station | `docs/feedback/cook-playtest-2026-10-06.md` C20, D9, T8 |
-| CK-24 | Story days are clearly days (not levels 1–4) on Cook's home | **open** | eye: home | `docs/feedback/cook-playtest-2026-10-06.md` C26 |
+| CK-20 | Rule: things inside a container sit on its flat inner area, never the rim or sides (thali, tray, oil, plate) | built, not re-played (S03 reconcile: the rule is built in maani, samosa and the trays, decision 56; MAA-10, SAM-14) | eye: every vessel · LAY-10 | `docs/feedback/cook-playtest-2026-10-06.md` M5, A8 |
+| CK-21 | Served dishes on the counter drawn at its angle, on a tray, shadows to the right | built, not re-played (S03 reconcile: decision 64, each customer's own tray on the redrawn kitchen, `flow.js`) | eye: every serve | `docs/feedback/cook-playtest-2026-10-06.md` K4 |
+| CK-22 | The closing line lists back what they got, then thank you / shabash (no repeated "give me") | built, not re-played (S03 reconcile: decision 54, the chef's call-back, `flow.js`) | ear: every serve | `docs/feedback/cook-playtest-2026-10-06.md` PA7, C23 |
+| CK-23 | A wrong item means redo just that item; second try with help; after three, show the right way | built, not re-played (S03 reconcile: decision 51 in every station with items, `St.redo`) | eye: every station | `docs/feedback/cook-playtest-2026-10-06.md` C20, D9, T8 |
+| CK-24 | Story days are clearly days (not levels 1–4) on Cook's home | built, not re-played (S03 reconcile: a story day shows a sun over its number, `flow.js`) | eye: home | `docs/feedback/cook-playtest-2026-10-06.md` C26 |
 | CK-25 | Labs station pages load fast (10–12 s now): measure, then load per station | built, not re-played (S03, Cook loads only its own files and the pantry at open, ~500 KB of JS instead of ~1.07 MB; a station's code loads when it opens, or during the greeting for an order: `Cook.Mech.need`, js/cook/index.js PARTS; loadcheck 11/11) | auto: timing; eye | `docs/feedback/cook-playtest-2026-10-06.md` L1 |
-| CK-26 | The greeting: your wrong pick red, the other wrong ones grey, the right one clear against the brown, Nani's answer a thought bubble; meaning shown by gesture and pictures (pending decision) | **open** | eye: greeting | `docs/feedback/cook-playtest-2026-10-06.md` G1, G2 |
+| CK-26 | The greeting: your wrong pick red, the other wrong ones grey, the right one clear against the brown, Nani's answer a thought bubble; meaning shown by gesture and pictures | open (S03: needs the choice pills in `js/cook/ui.js` (Session A's file) and pictures on the pills, decision 58) | eye: greeting | `docs/feedback/cook-playtest-2026-10-06.md` G1, G2 |
 
 ## Clinic
 
