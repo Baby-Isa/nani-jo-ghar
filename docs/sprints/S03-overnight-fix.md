@@ -16,6 +16,8 @@ All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s03*.brief.t
 - **C, clinic** (Opus high): every code-only clinic row, the fever room tidy, the old drill back (decision 72). Owns heal games, the other stages, clinic data except art.
 - **D, art** (Opus high, Fable reviewing): the redo list (B1, C10, E2), art rows, the girl's states and poses (no other characters, decision 71) through the image API; cut and wire; audit that every Sprint 2 and heal-v3 source is wired. Owns `assets/**`, art data, minimal art hookups.
 
+Launched 8 Oct ~02:56 UK: A session_01NGEQ5G8MP5j85sHKBAemaF, B session_01VLuLT6G5yDMN2s56UMMHVm, C session_0181gDvogwZnBiHEbtcGCuvc, D session_01GsS5kQU7EuaP5x8MwTqpvt.
+
 ## Small decisions
 - 8 Oct: Zafar: ignore the waiting-room L1 leak (decision 74); square drill out (decision 72); art via the API with Fable (decision 71); voices (USB mic, re-records, Mum's Round 5) and his L2-L4 pass go to Sprint 4 with his play.
 
