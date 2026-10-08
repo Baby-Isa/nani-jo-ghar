@@ -48,6 +48,21 @@ export class Recorder {
     this.states.push({ name: unique, page: pg, shot: shotOk ? shot : null, findings: findings.map((f) => ({ ...f, page: pg })), note: opts.note || "", at: Date.now() - this.t0 });
     return unique;
   }
+  // the contract probe's moments (a bubble, the badges, a ✓ or Next, a pop-up, a stage boundary): a plain screenshot at once, so a
+  // contract break has the shot of its own moment (not linted, not a state). At most one per kind every 300 ms, 80 a page
+  contractShot(e) {
+    if (!e || e.type !== "c" || !/^(bubble|badges|buttons|popup|stage|input)$/.test(e.k)) return;
+    if (e.k === "buttons" && !(e.list && e.list.length)) return;
+    if (e.k === "input" && !e.next) return;
+    this.cshots = this.cshots || [];
+    this.clast = this.clast || {};
+    if (this.cshots.length >= 80 || (this.clast[e.k] && e.t - this.clast[e.k] < 300)) return;
+    this.clast[e.k] = e.t;
+    const shot = `c${String(this.cshots.length + 1).padStart(2, "0")}-${e.k}.png`;
+    const entry = { t: e.t, k: e.k, shot };
+    this.cshots.push(entry);
+    this.page.screenshot({ path: join(this.dir, shot), animations: "allow", timeout: 5000 }).catch(() => { entry.shot = null; });
+  }
   stop(reason) { this.stops.push(reason); }
   note(s) { if (!this.notes.includes(s)) this.notes.push(s); }
 }

@@ -82,7 +82,7 @@ if (has("--list")) {
 }
 // the route the contract run plays by default (--contract with no --flow): what Zafar played on 8 Oct and the places his rules
 // were caught, at laptop size. The orchestrator's /review runs the full contract pass (--gate or --all --check)
-const CONTRACT_ROUTE = ["cook:chop", "cook:chaat@L4", "cook:fetch", "lab:cook/round", "lab:cook/recipe-chaat@L4", "cook:day1", "clinic:waiting", "clinic:diagnosis", "clinic:diagnosis@L3", "clinic:heal-knee@L2", "clinic:morning"];
+const CONTRACT_ROUTE = ["cook:chop", "lab:cook/chop", "cook:chaat@L4", "cook:fetch#speed1", "lab:cook/round#speed1", "clinic:waiting", "clinic:diagnosis", "clinic:heal-knee@L2", "clinic:morning"];
 if (has("--contract") && !val("--flow") && !val("--touched") && !has("--all") && !has("--gate")) { argv.push("--flow", CONTRACT_ROUTE.join(",")); if (!has("--sizes") && !has("--every-size")) argv.push("--quick"); }
 
 function pick() {
@@ -153,6 +153,7 @@ if (fromRun) {
       const started = Date.now();
       const { ctx, page, errors, sound, touch } = await newPage(browser, size, { seed: hashSeed(flow.id), ...(has("--no-touch") ? { touch: false } : {}) });
       const rec = new Recorder({ flow: flow.id, size, dir: runDir, page });
+      sound.onEvent = (e) => rec.contractShot(e);
       const c = { page, rec, errors, size, browser, touch, timeoutMs: flow.timeoutMs || 300000, reachedEnd: false };
       let timer;
       try {
@@ -163,7 +164,7 @@ if (fromRun) {
       } finally { clearTimeout(timer); }
       await ctx.close().catch(() => {});
       const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
-      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), timeline: sound.timeline(), t0: rec.t0, ...(c.extra ? { extra: c.extra } : {}) };
+      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}) };
       writeFileSync(file, JSON.stringify(r));
       fresh.push(r);
       log(`${flow.id} @ ${size}: ${r.complete ? "end reached" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} distinct findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s`);

@@ -121,7 +121,10 @@ const normW = (s) => String(s || "").toLowerCase().normalize("NFC").replace(/[^\
 
 // the state (and its screenshot) nearest after t, else the last before it
 function stateAt(r, t) {
+  // the probe's own shot of that moment (taken as the bubble, badge, button, pop-up or stage change happened), else a state's
+  const c = (r.cshots || []).filter((x) => x.t >= t - 60 && x.t <= t + 700).sort((a, b) => Math.abs(a.t - t) - Math.abs(b.t - t))[0];
   const at = t - (r.t0 || 0);
+  if (c) { let s = null; for (const x of r.states || []) if (x.at != null && x.at <= at) s = x; return { state: s ? `after ${s.name}` : "start", shot: c.shot }; }
   const st = r.states || [];
   let s = st.find((x) => x.at != null && x.at >= at - 200) || st[st.length - 1];
   return s ? { state: s.name, shot: s.shot } : { state: "?", shot: null };
@@ -170,6 +173,8 @@ function check1(tl, segs, v, add) {
 // what the game expected says the step is decided: only the button is left
 export function decided(exp, sel) {
   if (!exp) return false;
+  // the shell between rounds (the end of a morning, the results, idle) is not a game's step: its buttons are the child's choice
+  if (exp.host && /^(done|results|idle)$/.test(exp.host)) return false;
   if (exp.cook) {
     if (["count", "more"].includes(exp.cook.kind) || exp.cook.intro) return false;
     if (exp.cook.kind === "click" && exp.cook.selector && !/njg-results|rs-|lab-list|#t-|#sum-|#shop|#fin-/.test(exp.cook.selector)) return !sel || sel.includes(exp.cook.selector.replace(/^#/, "#")) || /done-btn|go/.test(exp.cook.selector);
@@ -221,8 +226,8 @@ function headsFor(b, heads) {
 }
 export function bubbleOk(b, h, vw, vh) {
   const hw = h.box.r - h.box.l, hh = h.box.b - h.box.t;
-  const col = { l: h.box.l - hw * 0.25, r: h.box.r + hw * 0.25 };
-  const inCol = b.tail ? b.tail.x >= col.l && b.tail.x <= col.r : b.box.r >= col.l && b.box.l <= col.r;
+  // the tail must point into the head's own column; a bubble with no tail must at least overlap it
+  const inCol = b.tail ? b.tail.x >= h.box.l - 4 && b.tail.x <= h.box.r + 4 : b.box.r >= h.box.l - hw * 0.25 && b.box.l <= h.box.r + hw * 0.25;
   const reach = Math.max(120, hh * 1.5);
   const above = b.box.b <= h.box.t + hh * 0.5 && b.box.b >= h.box.t - reach;
   const below = b.box.t >= h.box.b - hh * 0.5 && b.box.t <= h.box.b + reach;

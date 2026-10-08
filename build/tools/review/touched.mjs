@@ -38,6 +38,7 @@ function pagesOf(id) {
   if (id === "house") return ["index.html"];
   if (id === "first") return ["index.html", "first.html", "cook.html"];
   if (id.startsWith("cook:")) return ["cook.html"];
+  if (id.startsWith("lab:cook")) return ["lab.html", "cook.html"]; // lab.html imports Cook's runtime (the files cook.html lists)
   if (id.startsWith("clinic:heal-extra")) return ["lab/clinic-heal-host.html"];
   if (id.startsWith("clinic:")) return ["clinic.html"];
   if (id.startsWith("mode:")) return [id.slice(5) + ".html"];
@@ -58,7 +59,7 @@ function pageLoads(p) {
 
 // ---------- the reach of one file ----------
 // returns {flows:Set, why:string} or null (unplaced) or "ignore"
-const cookIds = ids.filter((i) => i.startsWith("cook:")), clinicIds = ids.filter((i) => i.startsWith("clinic:"));
+const cookIds = ids.filter((i) => i.startsWith("cook:") || i.startsWith("lab:cook")), clinicIds = ids.filter((i) => i.startsWith("clinic:"));
 const stationNames = (n) => cookIds.filter((i) => i === `cook:${n}` || i === `cook:recipe:${n}`);
 function reach(f) {
   const out = new Set();
@@ -83,6 +84,9 @@ function reach(f) {
   if (!narrow) for (const id of ids.filter((i) => i !== "rotate-card")) for (const pg of pagesOf(id)) if (pageLoads(pg).has(f) || pg === f) out.add(id);
   if (/^css\//.test(f)) out.add("css"); // the static spacing lint reads every stylesheet
   if (/^(js\/shared\/(frame|app)|css\/shared\/(frame|app|tokens))/.test(f)) out.add("rotate-card");
+  // PRC-07 (decision 75): a change to a shared file (the host, the pop-up, the end screen, the voice) rechecks every game that uses it,
+  // for the contract checks, not only the pages that list it in a <script> tag (the host and the modes import it)
+  if (/^(js\/shared\/|css\/shared\/|js\/core\/voice)/.test(f)) take(ids.filter((i) => !i.startsWith("mode:") && !["css", "rotate-card", "house"].includes(i)));
   return out.size ? out : null;
 }
 

@@ -31,8 +31,16 @@ const GENERIC_HEAL = /every heal|each heal|all heal|heal game|heal card|every ga
 const COOK_SECTION = { fetch: "pantry", "chai-tray": "chai", chai: "chai", "maani-line": "maani", maani: "maani", daar: "daar", daal: "daar", chop: "chaat", tadka: "chaat", stir: "chaat", assemble: "chaat", chaat: "chaat", samosa: "samosa", "mishkaki-grill": "sekelo", mishkaki: "sekelo", grill: "sekelo" };
 const text = (r) => plain(`${r.issue} ${r.check}`);
 
+// the rows the contract run checks on every flow (decision 75; build/sandbox/lib/contract.mjs): a contract break names its check
+export const CONTRACT_ROWS = { "contract-1 popup": ["SH-64", "CHT-10", "CHAI-15", "CK-29"], "contract-2 moves-on": ["SH-40", "CLN-92", "CLN-110"], "contract-3 voice": ["SH-66"], "contract-4 bubble": ["SH-68", "CLN-86"], "contract-5 badges": ["SH-67"], "contract-6 old-art": ["DAAR-13", "ART-17", "ART-13"] };
 function pick(id) {
   const out = [];
+  // lab.html's Cook tiles (lab:cook/<game>) are Cook's own stations and recipes through the host
+  if (id.startsWith("lab:cook/")) {
+    const g = id.slice(9).replace(/^recipe-/, "");
+    if (g === "round") return [...new Set([...pick("cook:fetch"), ...pick("cook:chai")])];
+    return pick(`cook:${g}`);
+  }
   const inSec = (re, h3re) => rows.filter((r) => re.test(r.h2) && (!h3re || h3re.test(r.h3)));
   let m;
   if ((m = /^clinic:heal-(?:extra-)?(\w+)/.exec(id))) {
@@ -72,4 +80,5 @@ if (wantShared) {
   more(rs, MAX, line);
 }
 if (a.has("keep")) { const rs = rows.filter((r) => /^Keep/.test(r.h2)); console.log(`keep (liked, must not regress): ${rs.length} rows`); more(rs, MAX, line); }
+console.log(`checked by the contract run on every flow (--check fails on a break): ${Object.entries(CONTRACT_ROWS).map(([k, v]) => `${k}: ${v.join(", ")}`).join("; ")}`);
 console.log(`${total.size} distinct rows to recheck${wantShared ? "" : "; add --shared for the Shared components rows"}.`);

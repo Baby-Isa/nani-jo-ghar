@@ -93,7 +93,7 @@ export async function newPage(browser, sizeKey, { seed = 1, touch } = {}) {
   await ctx.addInitScript(SOUND_HOOK);
   await ctx.addInitScript(CONTRACT_HOOK);
   const sound = new SoundLog();
-  await ctx.exposeFunction("__njgLog", (e) => { sound.push(e); });
+  await ctx.exposeFunction("__njgLog", (e) => { sound.push(e); if (sound.onEvent) try { sound.onEvent(e); } catch (x) { /* a shot that failed */ } });
   const page = await ctx.newPage();
   if (useTouch) await installTouch(page, ctx);
   const errors = [];
