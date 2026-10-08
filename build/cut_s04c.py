@@ -35,7 +35,7 @@ import artlib as L  # noqa: E402
 
 TRAY_Y, TRAY_H = 652, 58          # data/cook.json art.s02 kitchen-trays (all three share y and h)
 BASE = TRAY_Y + TRAY_H * 0.18     # servedPic's base line
-SEAT = 650                        # the tray's floor line just behind its front rim (the rim's top edge is y 652)
+SEAT = 658                        # the tray floor line mid-floor, as the other dishes sit (Fable: 650 stood them against the back wall)
 
 # what passed Fable (sources/art/s04c/verdicts.md); the moods' paste masks are in masks.json
 PICK = json.load(open(os.path.join(SRC, 'pick.json'))) if os.path.exists(os.path.join(SRC, 'pick.json')) else {}
