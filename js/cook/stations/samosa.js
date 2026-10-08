@@ -474,10 +474,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
 
     /* a spoonful: a little heap lifts off its pile and lands on the strip's left end (the first fold covers it) */
+    // (sheet: the strip, or {x, y, scaleX}: where it is going)
     const fillAt = (sheet) => {
       const f = F.fill;
       const q = sheet.scaleX / z.L(STAGE_K); // SAM-12: a strip laid out on the board is smaller (q < 1)
-      return { x: sheet.x + (f.x - 0.5) * SW * z.k * q, y: sheet.y + (f.y - 0.5) * SH * z.k * q, r: f.r * SW * z.k * q };
+      // review flaw 7 (SAM-16): on a laid-out strip (about a third of full size) the mounds were dots; there they're
+      // drawn about twice as big, a little in from the end so they stay on the strip. Brought to the middle to be
+      // folded, the strip is full size and its mounds go back to the end, where the first fold covers them.
+      const g = q < 0.7 ? 2 : 1;
+      const fx = g > 1 ? Math.max(f.x, 0.3) : f.x;
+      const out = { x: sheet.x + (fx - 0.5) * SW * z.k * q, y: sheet.y + (f.y - 0.5) * SH * z.k * q, r: f.r * SW * z.k * q * g };
+      if (g > 1) Object.assign(out, { row: true, left: sheet.x - 0.5 * SW * z.k * q, w: SW * z.k * q });
+      return out;
     };
     async function spoon(sheet, id, { quiet = false, fast = false } = {}) {
       const obj = items[id];
@@ -544,6 +552,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     /** Where m fillings' mounds sit on the strip's end (world px): one big, two side by side, or a ring. */
     function mounds(pa, m) {
+      if (pa.row) {
+        // a laid-out strip (SAM-16): side by side along it from its end, never off its edges
+        const size = Math.min(pa.r * 1.25, (pa.w * 0.88) / m);
+        return Array.from({ length: m }, (_, i) => ({ x: pa.left + pa.w * 0.04 + size * (0.55 + i * 0.95), y: pa.y, size }));
+      }
       if (m <= 1) return [{ x: pa.x, y: pa.y, size: pa.r * 1.8 }];
       if (m === 2) return [-1, 1].map((k) => ({ x: pa.x + k * pa.r * 0.5, y: pa.y, size: pa.r * 1.25 }));
       return Array.from({ length: m }, (_, i) => {
@@ -902,7 +915,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const k1 = z.L(STAGE_K) / x.scaleX;
         const tx = z.X(P0.x);
         const ty = z.Y(P0.y);
-        x.blobs.forEach((bl) => S.tweens.add({ targets: bl, x: tx + (bl.x - x.x) * k1, y: ty + (bl.y - x.y) * k1, displayWidth: bl.displayWidth * k1, displayHeight: bl.displayHeight * k1, duration: 380, ease: "Cubic.easeInOut" }));
+        // its mounds go to the full-size strip's end (SAM-16: not the laid-out strip's bigger mounds, scaled up)
+        const bk = x.blobs.map((o) => o.wordId);
+        const bs = mounds(fillAt({ x: tx, y: ty, scaleX: z.L(STAGE_K) }), bk.length);
+        x.blobs.forEach((bl) => {
+          const sp = bs[bk.indexOf(bl.wordId)];
+          const size = sp.size * Math.min(1.3, 1 + 0.1 * ((bl.spoons || 1) - 1));
+          S.tweens.add({ targets: bl, x: sp.x, y: sp.y, displayWidth: size, displayHeight: size * 0.96, duration: 380, ease: "Cubic.easeInOut" });
+        });
         await new Promise((res) => S.tweens.add({ targets: x, x: tx, y: ty, scale: z.L(STAGE_K), duration: 380, ease: "Cubic.easeInOut", onComplete: res }));
         sheet = x;
         steps.to("samosa:fold", { id: `fold-${n}` }); // T17: Samosa waar!

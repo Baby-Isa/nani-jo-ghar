@@ -210,6 +210,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | SAM-13 | Nani says "turn on the pan", then "fry"; the knob turns off and the sizzle stops | **open** | ear: fry | `docs/feedback/cook-playtest-2026-10-06.md` A6, A7 |
 | SAM-14 | Samosas sit inside the oil and the plate's flat area | **open** | eye: ×2 zoom, fry and plate | `docs/feedback/cook-playtest-2026-10-06.md` A8, M5 |
 | SAM-15 | Peas are *matar* (fresh green peas), not *watana* (fried peas) (pending decision; Zafar confirms spelling) | **open** | ear/eye: samosa chip | `docs/feedback/cook-playtest-2026-10-06.md` A1 |
+| SAM-16 | Samosa L3+: the filling mounds on the laid-out strips are tiny (strips at about a third of full size) | built, not re-played (S03, the mounds on a laid-out strip are about twice as big, side by side from its end; at the fold they go back to the full-size strip's end) | eye: samosa L3, L4 grid, 1366×768 and 800×360 | `build/reports/s02-review.md` flaw 7 |
 
 ## Cook: sekelo
 
