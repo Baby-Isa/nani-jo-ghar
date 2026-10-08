@@ -8,23 +8,17 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (8 Oct 2026, ~01:30 UK, written by the Sprint 2 orchestrator):** Sprint 2 ("play and fix Cook and the clinic", `docs/sprints/S02-play-and-fix-cook-clinic.md`) is **published**: `main` f0f4613a (version 20261008T002526Z), Pages build green. Sessions A–G are in (reports `build/reports/s02*.md`); the s02 art is cut and wired (kitchen trays, served dishes, slot-lid coin jar, toothbrush views, the girl's poses, clinic sprite sheets); Cook and the clinic load only what's on screen (decision 68); 263 lines play blind-verified family takes (ok-auto, decision 70). The final check is `build/reports/s02-review.md` (flaws first, §1). Spend about $270 of $270. Nothing is running.
+**Where things stand (8 Oct 2026, ~05:30 UK, written by the Sprint 3 orchestrator):** Sprint 3 ("overnight fix", `docs/sprints/S03-overnight-fix.md`) is **published and closed**: `main` 1a6950df (version 20261008T043015Z). Sessions A–D are in (reports `build/reports/s03*.md`); the review is `build/reports/s03-review.md` (flaws first). Art now runs through the image API with Fable reviewing (decision 71). Nothing is running. Open rows: 31 open, 257 built and not re-played.
 
-**8 Oct, 02:30 UK:** Sprint 2 closed (look back in its file). **Sprint 3 open** (`docs/sprints/S03-overnight-fix.md`): sessions A-D running overnight to `ccr-a7370759-t0lee7`, then `/review` and publish; Sprint 4 is Zafar's play.
+**Next steps, in order (Sprint 4: Zafar's play and feedback):**
+1. **Zafar plays** (link below) and sends feedback (voice notes or typed) → `/feedback` → rows the same day; built rows he confirms become fixed, the rest reopen.
+2. Put to him with his feedback: (a) chop, stir, tadka and daar can't take a move back (a slice or spice can't be undone); the redo is their safety net: recommend accept; (b) the review's flaws (taste spots may read as felt balls, the girl's "cold" face reads as a wince, the kadchi handle a little stubby).
+3. Then propose Sprint 4's build scope from his feedback, plus: voices (USB mic on the grammar, then re-records; Mum's Round 5; decision 70), and the other characters' art through the API once he's happy with the girl (decision 71).
 
-**Next steps, in order:**
-1. **Zafar plays Sprint 2** (link below), feedback by voice note → `/feedback` → rows the same day. Then `/sprint` close: the three-line look back.
-2. **Open Sprint 3** (`/sprint`), proposed scope:
-   - **Voices (decision 70):** test the USB-mic set-up on the grammar first; then re-record the 289 lines with no good take (protocol: say the line's id, pause, the speaker says it twice with a pause); Mum's Round 5 (*Muke de*, *Muke chai lai de*, "oh oh oh", "ow", about 30 "to record" step lines); Hannah's grandad for the doctor and older men, Zafar and Hannah for the children (decision 66). The final manual approval of every recording happens once, before launch.
-   - **The fever room tidy.**
-   - **Art redo list** (`s02-redo-list.yaml`): B1 sekelo pepper, C10 daar bowl beads, E2 two-colour plasters; the standing girl bigger on phones (CLN-94).
-   - **The review's open flaws** (`s02-review.md` §1): pour pan's handle at the top edge, U1-v2 upper arm, Cook station code loaded at open, eye tool shelf at 4:3, waiting room L1 "tap a girl" leak, small samosa grid mounds, the 800x360 word list scroll.
-3. Waiting on Zafar: the list below, and anything his play raises.
-
-**Play link:** https://baby-isa.github.io/nani-jo-ghar/labs.html (hard refresh first). Play: Cook (every station at levels 1–3: the trays, redo one item, the call-back, the coin jar, pass-me) and the clinic (one full patient at L1 and L2, then the nine heal games: try the first-time help on a tablet).
+**Play link:** https://baby-isa.github.io/nani-jo-ghar/labs.html (hard refresh first). Play: the clinic (one full patient at L1 and L2: every heal game should open with the request pop-up and fold it into the sidebar; tap through it and the voice stops; finish a game fast and no voice reaches the send-off), the fever room, the tooth (old drill), the new art (the girl's hot/cold/sore/happy faces, the kadchi, the daar bowl, two-colour plasters, the taste spots); Cook every station at L1–L3 (chai take-back, the pour, the samosa mounds).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-a7370759-t0lee7` (restart it from `main` if its work is all merged). Sprint 2 is published to `main`; I'm playing it now. Wait for my feedback, turn it into rows with `/feedback`, close Sprint 2 (`/sprint`), then propose the Sprint 3 scope and budget as a numbered list (voices first: USB mic on the grammar, then re-records; Mum's Round 5; fever room tidy; art redos; the review's open flaws). Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-a7370759-t0lee7` (restart it from `main` if its work is all merged). Sprint 3 is published to `main` and closed; this chat is Sprint 4: I'm playing it now. Wait for my feedback, turn it into rows with `/feedback`, then propose the Sprint 4 build scope and budget as a numbered list. Tell me before launching anything new.
 
 ---
 
@@ -62,7 +56,7 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 
 ## What is live (the game on `main`)
 
-Sprint 2, published 8 Oct (f0f4613a): Cook and the clinic on the shared core and the language engine, with Sprint 2's fixes, the s02 art and modular loading. Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
+Sprint 3, published 8 Oct (1a6950df): the shared request pop-up and voice stop, Sprint 3's Cook and clinic fixes, the API art (the girl's states, the redo list) on top of Sprint 2 (f0f4613a). Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
 
 ### Where each part is (Claude's estimates, 5 Oct)
 

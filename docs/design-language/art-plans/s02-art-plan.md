@@ -1,6 +1,6 @@
 # Sprint 2 art: the kitchen, the served dishes, the Cook fixes, the coin jar, the clinic sprite sheets and the girl (pack `s02`)
 
-**Written:** 6 Oct 2026, for Sprint 2 item 5 (`docs/sprints/S02-play-and-fix-cook-clinic.md`). **Status:** ready for Zafar's go; nothing runs until he says so (decision 43).
+**Written:** 6 Oct 2026, for Sprint 2 item 5 (`docs/archive/sprints/S02-play-and-fix-cook-clinic.md`). **Status:** ready for Zafar's go; nothing runs until he says so (decision 43).
 **Built from:** `CLAUDE.md` (non-negotiables 13, 16), `.claude/skills/art-run/SKILL.md`, `docs/design-language/art-bible.md` (§1 style, §2 light, §3 cameras, §4 scale, §8 items), `docs/design-language/art-pipeline.md` (§1 grounds and export, §15 tools and the runner loop), the worked example `clinic-heal-art-plan.md`, `docs/feedback/cook-playtest-2026-10-06.md` §1b, `docs/feedback/clinic-playtest-2026-10-06.md` §1b, decisions 60–65, and the open lines of `clinic-heal-redo-list.yaml`.
 
 **How to use this page:** sections 1–3 are the thinking (D4, D5): what each image is for, how the game sees it, the camera and the light. Section 4 is the run order. Section 5 holds the prompt texts the runner pastes (one code box per ID). Section 6 names the generated block. Section 7 is the judging, 8 the cut, 9 the estimate, 10 the questions for Zafar.

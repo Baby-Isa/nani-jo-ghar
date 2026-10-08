@@ -1,6 +1,6 @@
 # Sprint 03: overnight fix (code, the art through the API, everything wired)
 
-**Status:** open
+**Status:** closed (8 Oct 2026, at the publish; Zafar's play is Sprint 4)
 **Opened:** 8 Oct 2026, 02:30 UK · **Closes at:** the publish to `main`; Zafar's play and `/feedback` are Sprint 4
 
 ## Goal
@@ -22,7 +22,13 @@ Launched 8 Oct ~02:56 UK: A session_01NGEQ5G8MP5j85sHKBAemaF, B session_01VLuLT6
 - 8 Oct: Zafar: ignore the waiting-room L1 leak (decision 74); square drill out (decision 72); art via the API with Fable (decision 71); voices (USB mic, re-records, Mum's Round 5) and his L2-L4 pass go to Sprint 4 with his play.
 
 ## Outcome
-Filled in at the publish.
+- **On `main`:** 1a6950df (version 20261008T043015Z), 8 Oct ~05:30 UK. Review: `build/reports/s03-review.md` (full gate `s03-gate`, recheck `fix-rq2`: CHECK PASSED).
+- **Done:** A (`s03a-shared.md`): one shared request pop-up before every heal game, Cook station and the pharmacy, the real voice stop; B (`s03b-cook.md`): Cook rows, per-station code loading, chai take-back, pour handle, samosa mounds; C (`s03c-clinic.md`): clinic rows, fever room, the old drill back; D (`s03d-art.md`): redo list B1, C10, E2, kadchi, potato, tick, served daar and tadka, taste spots, the girl's four states, all Sprint 2 and heal-v3 art wired. Review: pop-up fits short phones; every clinic stage change stops the voice.
+- **Moved on to Sprint 4:** Zafar's play and `/feedback`; voices (USB mic on the grammar, re-records, Mum's Round 5); the other characters' art once he's happy with the girl (decision 71); his L2-L4 pass; the review's flaws list.
+- **Open rows:** 31 open or reopened, 257 built and not re-played (`statuscounts.mjs`).
+- **Spend:** about $110 against about $280 (A $12, B $10, C $14, D $27, image API $4.48, orchestrator review and publish about $40).
 
 ## Look back (three lines)
-Filled in at the close.
+1. **Worked:** the API art loop with Fable reviewing: 16 calls, $4.48, three failures caught and re-prompted (kadchi, hot face, taste spots) without Zafar.
+2. **Cost more than it should:** sessions moved most rows to "built" by reading code in 30 minutes; the claims are unproven until Zafar plays, and the one real new bug (the pop-up scroll) came from the full gate, not the builders.
+3. **Process change:** none new; decision 73 (rows in the same commit) held. Keep the full gate before every publish.
