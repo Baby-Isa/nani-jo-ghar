@@ -288,3 +288,10 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 @media (prefers-reduced-motion: reduce) {
   .njg-rq-veil, .njg-rq-card { animation: none; }
 }
+/* short phones: the pop-up gives back padding first; if it still doesn't fit, request-popup.js shrinks the card as a
+   whole (--rq-k) and the speaking face keeps its full tap size (44 px, TAP-01) */
+@media (max-height: 420px) {
+  .njg-rq-veil { padding: var(--njg-s2); }
+  .njg-rq-card { padding: var(--njg-s3) var(--njg-s4); }
+}
+.njg-rq-card[data-fit] .face-say { zoom: calc(1 / var(--rq-k, 1)); }

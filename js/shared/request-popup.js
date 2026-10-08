@@ -111,6 +111,26 @@
   }
 
   let current = null;
+  /**
+   * No scroll inside the pop-up (non-negotiable 9, F7): a tall card on a short phone (tooth L3 at 800x360) shrinks as a
+   * whole to the veil's height instead of scrolling; nothing is clipped.
+   */
+  function fitCard(veil, cardEl) {
+    if (!veil || !cardEl) return;
+    cardEl.style.zoom = "";
+    cardEl.removeAttribute("data-fit");
+    const cs = root.getComputedStyle ? root.getComputedStyle(veil) : null;
+    const pad = cs ? parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) : 0;
+    const room = veil.clientHeight - pad;
+    const need = cardEl.scrollHeight;
+    if (room > 0 && need > room) {
+      const k = Math.max(0.5, Math.floor((room / need) * 100) / 100);
+      cardEl.style.zoom = String(k);
+      cardEl.style.setProperty("--rq-k", String(k));
+      cardEl.setAttribute("data-fit", "");
+    }
+  }
+
   function open(opts = {}) {
     if (current) current.fold(false);
     const wait = opts.wait || ((ms) => sleep(ms));
@@ -136,6 +156,7 @@
       veil.classList.remove("hidden");
     }
     veil.classList.add("njg-rq-open");
+    fitCard(veil, cardEl);
     return new Promise((resolve) => {
       let over = false;
       const me = {
