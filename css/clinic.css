@@ -580,6 +580,10 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* CLN-23, CLN-97: items sit ON the belt: the picture's bottom on the belt's surface, a contact shadow under it,
    and a coloured item without its own picture is coloured itself (no tinted disc floating behind it) */
 .cl-belt.v2 .cl-belt-dish .cl-item-img { object-position: 50% 100%; }
+/* S03 (CLN-97): a tall picture (the drops bottle) kept its own height in the item's grid and hung below the belt:
+   the one cell is the dish, so every item stands on the belt's surface */
+.cl-belt.v2 .cl-belt-dish .cl-item { height: var(--item, 96px); grid-template: 100% / 100%; }
+.cl-belt.v2 .cl-belt-dish .cl-item-img { min-width: 0; min-height: 0; }
 .cl-belt.v2 .cl-belt-dish::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -3%; height: 10%; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(20, 20, 20, .32), transparent 70%); z-index: -1; }
 .cl-belt.v2 .cl-belt-dish .cl-item[data-colour]:not(.own-colour) { background: none; }
 .cl-item[data-colour="green"]:not(.own-colour) .cl-item-img { filter: sepia(1) saturate(3) hue-rotate(60deg); }
