@@ -1,0 +1,61 @@
+SESSION NAME / MODE:  S04-C, art: the served chaat on its tray and Nani leaning on the counter (Sprint 4)
+MODEL AND EFFORT:     Opus, high effort (visual judgement; Fable reviews every image (decision 71))
+COST ESTIMATE:        about $25 plus image API about $10 (cap $20)
+HARD STOP:            9 Oct 2026, 08:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 7, 13, 16 only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. CLAUDE.md
+  6. docs/sprints/S04-feedback-sticks.md (the goal and who owns what)
+  7. docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
+  8. docs/decisions.md 52, 53, 64, 73, 75, 76
+  9. docs/process/rules.md C19, C20, A19
+  10. docs/decisions.md 64, 71
+  11. build/reports/s03d-art.md (how the API loop with Fable ran)
+  12. build/cut_counter_moods.py, build/cut_characters.py (the counter sheets and how characters are cut)
+  13. js/cook/stations.js addChar/setMood (read only: the keys nani-neutral, nani-happy, nani-talk, nani-point it swaps)
+
+FILES THIS SESSION OWNS (edit only these):
+  - assets/**, sources/art/**, build/tools/art/**, build/gen_*.py and cut scripts
+  - art blocks in data/cook.json
+  - the rows CK-21, CHT-11, ART-13 (art part) in docs/process/regressions.md
+  - build/reports/s04c-art.md
+READ-ONLY (never edit):
+  - js/** (Session B: you swap files under the same keys, no code)
+  - build/sandbox/** (Session A)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The served chaat (CK-21, CHT-11, Z3): redraw it at the counter tray's angle (side-on art if the tray reads side-on) with no baked drop shadow; then look at every served dish on its tray on the redrawn kitchen and redo any other at the wrong angle or with a baked shadow.
+     Accept: a contact sheet of every served dish on its tray at play size, Fable's verdict per dish
+  2. Nani leaning on the counter (decision 64, ART-13, Z9): use her counter character sheet (the leaning picture Zafar asked for) for every Cook service mood the code swaps (nani-neutral, nani-happy, nani-talk, nani-point), cut to the same frame and eye points as today so nothing jumps, placed so she leans on the new kitchen's counter. If no sheet exists for a mood, make it through the image API from her approved art with Fable reviewing. Swap the files under the same keys: no code change (rule J4).
+     Accept: shots of Cook service at 1366x768 and 844x390 with her leaning in each mood; Fable's verdict
+  3. Report spend; set the rows only with proof (decision 76).
+     Accept: report under 400 words, flaws first
+
+REGRESSION ROWS TO RECHECK (56 rows of docs/process/regressions.md; * = open or reopened):
+  cook:chaat (12): CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10*, CHT-11*, CK-TB-01
+  cook:chai-tray (17): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-08*, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-13, CHAI-14, CHAI-15, CHAI-16, CHAI-17
+  cook:day1 (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01, CK-TAB-01*, CK-20, CK-21*, CK-22, CK-23, CK-24, CK-25, CK-26*
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s04c-art` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8843.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s04c-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

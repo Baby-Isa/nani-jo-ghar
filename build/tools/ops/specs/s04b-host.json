@@ -1,0 +1,71 @@
+{
+  "name": "S04-B, the shared host runs every game's lifecycle: Zafar's 'everywhere' rules built once (Sprint 4)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a refactor of the shared layer both modes go through; correctness and feel, judged by eye and ear",
+  "cost": "about $60",
+  "stop": "9 Oct 2026, 08:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "8",
+    "11",
+    "12"
+  ],
+  "read": [
+    "CLAUDE.md",
+    "docs/sprints/S04-feedback-sticks.md (the goal and who owns what)",
+    "docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)",
+    "docs/decisions.md 52, 53, 64, 73, 75, 76",
+    "docs/process/rules.md C19, C20, A19",
+    "js/shared/host.js (designed for this: E17), js/shared/request-popup.js, js/core/voice.js, js/shared/say.js",
+    "js/cook/flow.js, ui.js, zone.js, station-lib.js, stations.js; js/clinic/kit.js (Voice), screen.js, heal/host.js, stages/*.js",
+    "docs/process/regressions.md rows SH-40, SH-64, SH-66, SH-67, SH-68, CHT-10, CLN-86, CLN-92, CLN-110, DAAR-13, ART-13, ART-17"
+  ],
+  "owns": [
+    "js/shared/**, css/shared/**, js/core/voice.js",
+    "js/cook/** (flow, ui, zone, station-lib, stations, mechanics, stations/*)",
+    "js/clinic/** (kit, screen, heal/host, stages, heal games only where a lifecycle call moves)",
+    "the rows listed above in docs/process/regressions.md (status only, with proof per decision 76)",
+    "build/reports/s04b-host.md"
+  ],
+  "readOnly": [
+    "build/sandbox/**, build/tools/review/** (Session A)",
+    "assets/**, art data blocks (Session C)",
+    "data/lang/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "THE CONTRACT (decision 75), the same list in Sessions A and B: (1) every play phase that gives an order opens with the shared request pop-up, read out, then folds into the sidebar; (2) where the outcome is obvious the game moves on by itself: no ✓, Next or stage button appears after a step is already complete; (3) every stage and game end stops all voice: no line starts or keeps playing after its stage ended; (4) every speech bubble sits above (or, without room, below) its speaker's head; (5) end-screen badges appear one, two, three in order; (6) no old art is drawn where a replacement exists (the old hand-and-knife, a standing Nani behind a cut-out counter). Build items 1-5 once, in the shared layer, so no game can skip them: the shared host (or one shared lifecycle module both Cook and the clinic call at every stage boundary) runs the pop-up before play, the auto-advance, the voice stop and the end screen; a game supplies only its play. Remove each game's own copy of these behaviours. Do not change what any mini-game asks the child to do (non-negotiable 2).",
+      "accept": "the report lists every place that had its own copy and now calls the shared one; grep shows no Cook or clinic file calling RequestPopup, VoiceStop or the end screen directly except through the shared lifecycle"
+    },
+    {
+      "do": "One voice layer for Cook and the clinic (js/core/voice.js or one shared module): Cook.Lang.speak and Kit.Voice both go through it, so one stop silences everything. Fixes the pantry voice spill (SH-66). One talk animation shared by Cook and the clinic: about a third of today's bob (today 6 px and 1.2° every 220 ms in js/cook/stations.js l.664 and flow.js l.412), slower (ART-13, Z10). One bubble placement for every mode: above the speaker's head, below when there's no room (SH-68, CLN-86; the diagnosis bubble sat top right).",
+      "accept": "ear and eye: pantry finished fast, then the next station: silence; diagnosis L1-L3 and waiting room bubbles at the heads at 1366x768 and 844x390; Cook service bob looked at"
+    },
+    {
+      "do": "Zafar's named fixes: chaat L4's order comes up in the pop-up and is read out (CHT-10); the waiting room moves on by itself after the right person is picked and greeted, no ✓ or room button (CLN-110, CLN-92, SH-40); the end-screen badges arrive one, two, three, the bulb not early (SH-67); the chop mechanic's default is the new knife with no hand, wherever it's run, the Chop tile included (DAAR-13, ART-17).",
+      "accept": "one shot or a short ear check each, in the exact state he saw it"
+    },
+    {
+      "do": "Rows: set each row above to 'built, not re-played (S04-B: what, with the shot path)' only after you looked at its state; the orchestrator's contract pass and Fable's audit confirm or reopen them (decision 76).",
+      "accept": "the report has a table: row, state looked at, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chaat@L4",
+    "cook-parts",
+    "cook:chai-tray",
+    "clinic:waiting",
+    "clinic:diagnosis",
+    "clinic:pharmacy",
+    "clinic:heal-cut"
+  ],
+  "shared": true,
+  "port": 8842,
+  "report": "s04b-host",
+  "publish": false
+}

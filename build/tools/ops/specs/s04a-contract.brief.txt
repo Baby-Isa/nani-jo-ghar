@@ -1,0 +1,64 @@
+SESSION NAME / MODE:  S04-A, the contract checks: the sandbox tests Zafar's rules in every game (Sprint 4)
+MODEL AND EFFORT:     Opus, high effort (the instrument the whole sprint is judged by; it must catch exactly what Zafar caught)
+COST ESTIMATE:        about $45
+HARD STOP:            9 Oct 2026, 08:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 3, 7, 14 only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. CLAUDE.md
+  6. docs/sprints/S04-feedback-sticks.md (the goal and who owns what)
+  7. docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
+  8. docs/decisions.md 52, 53, 64, 73, 75, 76
+  9. docs/process/rules.md C19, C20, A19
+  10. build/sandbox/README.md (it already plays every flow at every level and logs sound; you add checks, not a new player)
+  11. build/sandbox/lib/sound.mjs, recorder.mjs, results.mjs, flows/index.mjs
+  12. js/shared/host.js header (E17: a voice still talking is a finding)
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/sandbox/** (new check types, new flows, the contract report)
+  - build/tools/review/** (contract wiring into --check and regress)
+  - docs/architecture/testing.md (the contract checks section)
+  - build/reports/s04a-contract.md
+READ-ONLY (never edit):
+  - js/** (Session B), assets/** and art data (Session C)
+  - docs/process/regressions.md except the PRC rows' status
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. THE CONTRACT (decision 75), the same list in Sessions A and B: (1) every play phase that gives an order opens with the shared request pop-up, read out, then folds into the sidebar; (2) where the outcome is obvious the game moves on by itself: no ✓, Next or stage button appears after a step is already complete; (3) every stage and game end stops all voice: no line starts or keeps playing after its stage ended; (4) every speech bubble sits above (or, without room, below) its speaker's head; (5) end-screen badges appear one, two, three in order; (6) no old art is drawn where a replacement exists (the old hand-and-knife, a standing Nani behind a cut-out counter). Add one sandbox check per contract item, measured on screen and from the sound log, never from reading game code, so it holds whatever Session B changes. Each check names the flow, level, size and state of a break. Run it from --check (a break is exit 1, not ratcheted into the baseline) and as `node build/sandbox/run.mjs --contract` on its own.
+     Accept: the report lists each check with how it measures; a unit test per check on a recorded fixture
+  2. Voice: the sound log records stage boundaries (Cook station start and end, clinic stage change, end screen) and every line's real start and end with its duration, using the family clips' real lengths even where the test build is silent; check 3 flags a line playing after its stage ended. Bubbles: record each bubble's box and its speaker's head box (Cook characters, the clinic figure's head anchor) at every state; check 4 flags a bubble whose tail is not within its speaker's head column or that sits in a corner. Buttons: check 2 flags a ✓/Next/stage button that appears after the step's result is already decided (waiting room after the greeting; heal games after the last row). Badges: check 5 samples reveal order. Art: check 6 logs every texture/image drawn and flags any on a list of retired assets (data list you create from the art manifests' 'replaces' entries plus hand-and-knife and the standing nani-* sprites in Cook service).
+     Accept: on the current branch (before B's fixes land) the contract run reproduces every one of Zafar's 8 Oct points that a check covers: pantry voice spill, no pop-up before chaat L4's order, waiting-room button, diagnosis bubble, bulb badge early, old knife in the Chop tile, standing Nani. List each with its shot. If a check can't reproduce his point, say so plainly.
+  3. Make sure the flows cover what Zafar plays: every Labs tile (labs.html) at L1-L4 including the Cook parts (Chop, Pour, …), the chaat recipe at L4, the pantry to its end and into the next station, the clinic morning end to end at L1-L3. Add any missing flow.
+     Accept: `run.mjs --list` shows every Labs tile; the report names any tile that still has no flow and why
+  4. Keep within the 15-minute browser rule for your own checks (one --contract pass on the named flows at laptop size). The orchestrator runs the full contract pass.
+     Accept: report under 400 words, flaws first
+
+REGRESSION ROWS TO RECHECK (128 rows of docs/process/regressions.md; * = open or reopened):
+  cook:fetch (13): PAN-01*, PAN-02*, PAN-03, PAN-04, PAN-05, PAN-06, PAN-07, PAN-08, PAN-09, PAN-10*, PAN-11, PAN-12, PAN-13
+  cook:chaat@L4 (12): CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10*, CHT-11*, CK-TB-01
+  clinic:waiting (29): CLN-10, CLN-11, CLN-12, CLN-13, CLN-14*, CLN-15, CLN-90, CLN-91, CLN-92*, CLN-110*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08, CLN-09*, CLN-81, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86*, CLN-87, CLN-88, CLN-89, CLN-109
+  clinic:diagnosis (25): CLN-16, CLN-17, CLN-18, CLN-93, CLN-94, CLN-95, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08, CLN-09*, CLN-81, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86*, CLN-87, CLN-88, CLN-89, CLN-109
+  shared components (68): SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-53, SH-54, SH-55, SH-62, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56*, SH-57, SH-58, SH-59, SH-60, SH-63, SH-64*, SH-65*, SH-66*, SH-67*, SH-68*, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36, SH-37, SH-38*, SH-39, SH-40*, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s04a-contract` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8841.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s04a-contract.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

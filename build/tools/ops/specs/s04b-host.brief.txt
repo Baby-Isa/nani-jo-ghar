@@ -1,0 +1,69 @@
+SESSION NAME / MODE:  S04-B, the shared host runs every game's lifecycle: Zafar's 'everywhere' rules built once (Sprint 4)
+MODEL AND EFFORT:     Opus, high effort (a refactor of the shared layer both modes go through; correctness and feel, judged by eye and ear)
+COST ESTIMATE:        about $60
+HARD STOP:            9 Oct 2026, 08:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 8, 11, 12 only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. CLAUDE.md
+  6. docs/sprints/S04-feedback-sticks.md (the goal and who owns what)
+  7. docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
+  8. docs/decisions.md 52, 53, 64, 73, 75, 76
+  9. docs/process/rules.md C19, C20, A19
+  10. js/shared/host.js (designed for this: E17), js/shared/request-popup.js, js/core/voice.js, js/shared/say.js
+  11. js/cook/flow.js, ui.js, zone.js, station-lib.js, stations.js; js/clinic/kit.js (Voice), screen.js, heal/host.js, stages/*.js
+  12. docs/process/regressions.md rows SH-40, SH-64, SH-66, SH-67, SH-68, CHT-10, CLN-86, CLN-92, CLN-110, DAAR-13, ART-13, ART-17
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/**, css/shared/**, js/core/voice.js
+  - js/cook/** (flow, ui, zone, station-lib, stations, mechanics, stations/*)
+  - js/clinic/** (kit, screen, heal/host, stages, heal games only where a lifecycle call moves)
+  - the rows listed above in docs/process/regressions.md (status only, with proof per decision 76)
+  - build/reports/s04b-host.md
+READ-ONLY (never edit):
+  - build/sandbox/**, build/tools/review/** (Session A)
+  - assets/**, art data blocks (Session C)
+  - data/lang/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. THE CONTRACT (decision 75), the same list in Sessions A and B: (1) every play phase that gives an order opens with the shared request pop-up, read out, then folds into the sidebar; (2) where the outcome is obvious the game moves on by itself: no ✓, Next or stage button appears after a step is already complete; (3) every stage and game end stops all voice: no line starts or keeps playing after its stage ended; (4) every speech bubble sits above (or, without room, below) its speaker's head; (5) end-screen badges appear one, two, three in order; (6) no old art is drawn where a replacement exists (the old hand-and-knife, a standing Nani behind a cut-out counter). Build items 1-5 once, in the shared layer, so no game can skip them: the shared host (or one shared lifecycle module both Cook and the clinic call at every stage boundary) runs the pop-up before play, the auto-advance, the voice stop and the end screen; a game supplies only its play. Remove each game's own copy of these behaviours. Do not change what any mini-game asks the child to do (non-negotiable 2).
+     Accept: the report lists every place that had its own copy and now calls the shared one; grep shows no Cook or clinic file calling RequestPopup, VoiceStop or the end screen directly except through the shared lifecycle
+  2. One voice layer for Cook and the clinic (js/core/voice.js or one shared module): Cook.Lang.speak and Kit.Voice both go through it, so one stop silences everything. Fixes the pantry voice spill (SH-66). One talk animation shared by Cook and the clinic: about a third of today's bob (today 6 px and 1.2° every 220 ms in js/cook/stations.js l.664 and flow.js l.412), slower (ART-13, Z10). One bubble placement for every mode: above the speaker's head, below when there's no room (SH-68, CLN-86; the diagnosis bubble sat top right).
+     Accept: ear and eye: pantry finished fast, then the next station: silence; diagnosis L1-L3 and waiting room bubbles at the heads at 1366x768 and 844x390; Cook service bob looked at
+  3. Zafar's named fixes: chaat L4's order comes up in the pop-up and is read out (CHT-10); the waiting room moves on by itself after the right person is picked and greeted, no ✓ or room button (CLN-110, CLN-92, SH-40); the end-screen badges arrive one, two, three, the bulb not early (SH-67); the chop mechanic's default is the new knife with no hand, wherever it's run, the Chop tile included (DAAR-13, ART-17).
+     Accept: one shot or a short ear check each, in the exact state he saw it
+  4. Rows: set each row above to 'built, not re-played (S04-B: what, with the shot path)' only after you looked at its state; the orchestrator's contract pass and Fable's audit confirm or reopen them (decision 76).
+     Accept: the report has a table: row, state looked at, verdict
+
+REGRESSION ROWS TO RECHECK (172 rows of docs/process/regressions.md; * = open or reopened):
+  cook:fetch (13): PAN-01*, PAN-02*, PAN-03, PAN-04, PAN-05, PAN-06, PAN-07, PAN-08, PAN-09, PAN-10*, PAN-11, PAN-12, PAN-13
+  cook:chaat@L4 (12): CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10*, CHT-11*, CK-TB-01
+  cook:chai-tray (17): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-08*, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-13, CHAI-14, CHAI-15, CHAI-16, CHAI-17
+  clinic:waiting (29): CLN-10, CLN-11, CLN-12, CLN-13, CLN-14*, CLN-15, CLN-90, CLN-91, CLN-92*, CLN-110*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08, CLN-09*, CLN-81, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86*, CLN-87, CLN-88, CLN-89, CLN-109
+  clinic:diagnosis (25): CLN-16, CLN-17, CLN-18, CLN-93, CLN-94, CLN-95, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08, CLN-09*, CLN-81, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86*, CLN-87, CLN-88, CLN-89, CLN-109
+  clinic:pharmacy (27): CLN-19, CLN-20, CLN-21, CLN-22, CLN-23, CLN-24, CLN-96, CLN-97, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08, CLN-09*, CLN-81, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86*, CLN-87, CLN-88, CLN-89, CLN-109
+  clinic:heal-cut (28): CLN-02, CLN-03, CLN-08, CLN-81, CLN-82, CLN-84, CLN-85, CLN-87, CLN-109, CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-45, CLN-46, CLN-65, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99
+  shared components (68): SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-53, SH-54, SH-55, SH-62, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56*, SH-57, SH-58, SH-59, SH-60, SH-63, SH-64*, SH-65*, SH-66*, SH-67*, SH-68*, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36, SH-37, SH-38*, SH-39, SH-40*, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s04b-host` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8842.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s04b-host.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

@@ -1,0 +1,64 @@
+{
+  "name": "S04-A, the contract checks: the sandbox tests Zafar's rules in every game (Sprint 4)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the instrument the whole sprint is judged by; it must catch exactly what Zafar caught",
+  "cost": "about $45",
+  "stop": "9 Oct 2026, 08:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "3",
+    "7",
+    "14"
+  ],
+  "read": [
+    "CLAUDE.md",
+    "docs/sprints/S04-feedback-sticks.md (the goal and who owns what)",
+    "docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)",
+    "docs/decisions.md 52, 53, 64, 73, 75, 76",
+    "docs/process/rules.md C19, C20, A19",
+    "build/sandbox/README.md (it already plays every flow at every level and logs sound; you add checks, not a new player)",
+    "build/sandbox/lib/sound.mjs, recorder.mjs, results.mjs, flows/index.mjs",
+    "js/shared/host.js header (E17: a voice still talking is a finding)"
+  ],
+  "owns": [
+    "build/sandbox/** (new check types, new flows, the contract report)",
+    "build/tools/review/** (contract wiring into --check and regress)",
+    "docs/architecture/testing.md (the contract checks section)",
+    "build/reports/s04a-contract.md"
+  ],
+  "readOnly": [
+    "js/** (Session B), assets/** and art data (Session C)",
+    "docs/process/regressions.md except the PRC rows' status"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "THE CONTRACT (decision 75), the same list in Sessions A and B: (1) every play phase that gives an order opens with the shared request pop-up, read out, then folds into the sidebar; (2) where the outcome is obvious the game moves on by itself: no ✓, Next or stage button appears after a step is already complete; (3) every stage and game end stops all voice: no line starts or keeps playing after its stage ended; (4) every speech bubble sits above (or, without room, below) its speaker's head; (5) end-screen badges appear one, two, three in order; (6) no old art is drawn where a replacement exists (the old hand-and-knife, a standing Nani behind a cut-out counter). Add one sandbox check per contract item, measured on screen and from the sound log, never from reading game code, so it holds whatever Session B changes. Each check names the flow, level, size and state of a break. Run it from --check (a break is exit 1, not ratcheted into the baseline) and as `node build/sandbox/run.mjs --contract` on its own.",
+      "accept": "the report lists each check with how it measures; a unit test per check on a recorded fixture"
+    },
+    {
+      "do": "Voice: the sound log records stage boundaries (Cook station start and end, clinic stage change, end screen) and every line's real start and end with its duration, using the family clips' real lengths even where the test build is silent; check 3 flags a line playing after its stage ended. Bubbles: record each bubble's box and its speaker's head box (Cook characters, the clinic figure's head anchor) at every state; check 4 flags a bubble whose tail is not within its speaker's head column or that sits in a corner. Buttons: check 2 flags a ✓/Next/stage button that appears after the step's result is already decided (waiting room after the greeting; heal games after the last row). Badges: check 5 samples reveal order. Art: check 6 logs every texture/image drawn and flags any on a list of retired assets (data list you create from the art manifests' 'replaces' entries plus hand-and-knife and the standing nani-* sprites in Cook service).",
+      "accept": "on the current branch (before B's fixes land) the contract run reproduces every one of Zafar's 8 Oct points that a check covers: pantry voice spill, no pop-up before chaat L4's order, waiting-room button, diagnosis bubble, bulb badge early, old knife in the Chop tile, standing Nani. List each with its shot. If a check can't reproduce his point, say so plainly."
+    },
+    {
+      "do": "Make sure the flows cover what Zafar plays: every Labs tile (labs.html) at L1-L4 including the Cook parts (Chop, Pour, …), the chaat recipe at L4, the pantry to its end and into the next station, the clinic morning end to end at L1-L3. Add any missing flow.",
+      "accept": "`run.mjs --list` shows every Labs tile; the report names any tile that still has no flow and why"
+    },
+    {
+      "do": "Keep within the 15-minute browser rule for your own checks (one --contract pass on the named flows at laptop size). The orchestrator runs the full contract pass.",
+      "accept": "report under 400 words, flaws first"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chaat@L4",
+    "cook-parts",
+    "clinic:waiting",
+    "clinic:diagnosis"
+  ],
+  "shared": true,
+  "port": 8841,
+  "report": "s04a-contract",
+  "publish": false
+}

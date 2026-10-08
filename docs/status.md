@@ -10,6 +10,8 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **Where things stand (8 Oct 2026, ~05:30 UK, written by the Sprint 3 orchestrator):** Sprint 3 ("overnight fix", `docs/sprints/S03-overnight-fix.md`) is **published and closed**: `main` 1a6950df (version 20261008T043015Z). Sessions A–D are in (reports `build/reports/s03*.md`); the review is `build/reports/s03-review.md` (flaws first). Art now runs through the image API with Fable reviewing (decision 71). Nothing is running. Open rows: 31 open, 257 built and not re-played.
 
+**8 Oct, 23:50 UK:** Zafar played two minutes and found old feedback unbuilt and new bugs (`docs/feedback/playtest-2026-10-08-sprint3.md`). **Sprint 4 open** (`docs/sprints/S04-feedback-sticks.md`, decisions 75, 76): A (contract checks), B (shared host lifecycle), C (served chaat, Nani leaning) running to 08:00 UK; then the full contract run and Fable's audit of every row and every feedback document; the fix round goes to Zafar first.
+
 **Next steps, in order (Sprint 4: Zafar's play and feedback):**
 1. **Zafar plays** (link below) and sends feedback (voice notes or typed) → `/feedback` → rows the same day; built rows he confirms become fixed, the rest reopen.
 2. Put to him with his feedback: (a) chop, stir, tadka and daar can't take a move back (a slice or spice can't be undone); the redo is their safety net: recommend accept; (b) the review's flaws (taste spots may read as felt balls, the girl's "cold" face reads as a wince, the kadchi handle a little stubby).
@@ -43,13 +45,13 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 6 | 45 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 11 | 43 |
 | Cook: pantry | 3 | 6 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 1 / 0 / 0 / 0 / 3 | 12 / 14 / 14 / 9 / 16 / 10 / 15 |
-| Clinic | 5 | 104 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 2 / 2 / 0 / 0 / 4 | 12 / 14 / 13 / 9 / 16 / 10 / 14 |
+| Clinic | 8 | 102 |
 | First launch and shell | 1 | 0 |
 | Other modes | 2 | 0 |
-| Art | 2 | 9 |
+| Art | 4 | 8 |
 | Language and audio | 6 | 3 |
 
 ---

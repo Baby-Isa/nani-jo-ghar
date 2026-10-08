@@ -1,0 +1,60 @@
+{
+  "name": "S04-C, art: the served chaat on its tray and Nani leaning on the counter (Sprint 4)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "visual judgement; Fable reviews every image (decision 71)",
+  "cost": "about $25 plus image API about $10 (cap $20)",
+  "stop": "9 Oct 2026, 08:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "7",
+    "13",
+    "16"
+  ],
+  "read": [
+    "CLAUDE.md",
+    "docs/sprints/S04-feedback-sticks.md (the goal and who owns what)",
+    "docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)",
+    "docs/decisions.md 52, 53, 64, 73, 75, 76",
+    "docs/process/rules.md C19, C20, A19",
+    "docs/decisions.md 64, 71",
+    "build/reports/s03d-art.md (how the API loop with Fable ran)",
+    "build/cut_counter_moods.py, build/cut_characters.py (the counter sheets and how characters are cut)",
+    "js/cook/stations.js addChar/setMood (read only: the keys nani-neutral, nani-happy, nani-talk, nani-point it swaps)"
+  ],
+  "owns": [
+    "assets/**, sources/art/**, build/tools/art/**, build/gen_*.py and cut scripts",
+    "art blocks in data/cook.json",
+    "the rows CK-21, CHT-11, ART-13 (art part) in docs/process/regressions.md",
+    "build/reports/s04c-art.md"
+  ],
+  "readOnly": [
+    "js/** (Session B: you swap files under the same keys, no code)",
+    "build/sandbox/** (Session A)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "The served chaat (CK-21, CHT-11, Z3): redraw it at the counter tray's angle (side-on art if the tray reads side-on) with no baked drop shadow; then look at every served dish on its tray on the redrawn kitchen and redo any other at the wrong angle or with a baked shadow.",
+      "accept": "a contact sheet of every served dish on its tray at play size, Fable's verdict per dish"
+    },
+    {
+      "do": "Nani leaning on the counter (decision 64, ART-13, Z9): use her counter character sheet (the leaning picture Zafar asked for) for every Cook service mood the code swaps (nani-neutral, nani-happy, nani-talk, nani-point), cut to the same frame and eye points as today so nothing jumps, placed so she leans on the new kitchen's counter. If no sheet exists for a mood, make it through the image API from her approved art with Fable reviewing. Swap the files under the same keys: no code change (rule J4).",
+      "accept": "shots of Cook service at 1366x768 and 844x390 with her leaning in each mood; Fable's verdict"
+    },
+    {
+      "do": "Report spend; set the rows only with proof (decision 76).",
+      "accept": "report under 400 words, flaws first"
+    }
+  ],
+  "flows": [
+    "cook:chaat",
+    "cook:chai-tray",
+    "cook:day1"
+  ],
+  "shared": false,
+  "port": 8843,
+  "report": "s04c-art",
+  "publish": false
+}

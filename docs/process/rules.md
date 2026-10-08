@@ -59,7 +59,7 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 ### Plans, trackers and continuity
 - **`docs/status.md` is the master tracker:** update it at every milestone, structured by story arc, artwork as its own section (basic → initial → full → final), user testing left out. (A15)
 - **The orchestrator owns the regression list:** new feedback becomes a row the same day, every brief lists the rows for its screens, every step end reports open rows by mode in `docs/status.md`; Zafar never has to track it. During runs, a one-line update to Zafar at every check-in. (decision 16)
-- **A build session updates the status of every row it fixes in the same commit as the fix** (to "built, not re-played"), and drops a row's "pending decision" note once a decision answers it (decision 73, 8 Oct). (A19)
+- **A build session updates the status of every row it fixes in the same commit as the fix,** and drops a row's "pending decision" note once a decision answers it (decision 73). **A row moves to "built, not re-played" only with proof:** a route-run shot (or voice log) of the exact state in its Check column, at the size named, judged by Fable, not the builder, and linked in the row; no status from reading code (decision 76, 8 Oct). (A19)
 - **One rulebook, one place for reviews.** Don't scatter rules; check old handovers for rules before archiving them. (A18, A19)
 - **The orchestrator chat plans, reviews and delegates:** tight briefs or a clean instruction file per executing chat, lean context, agent reports under ~250 words without cutting findings. (A20, A23)
 - **Copy decisions Zafar made directly in a child session** (see `docs/process/overnight-log.md` and the dated files in `docs/process/overnight-log/`) into the design doc. (A21)
@@ -106,6 +106,8 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 ### Definition of done
 - **Tests passing isn't done for visual work.** Done is when someone has looked at every state and judged it the way Zafar will, and played every station through. (C1)
 - **Compare side by side with the approved mock-up, with Cook's shared screens, and item by item with Zafar's last feedback** (each ✅ or a note). (C5, C14)
+- **A rule Zafar gives for every game is code in the shared host plus a contract check, never a row against one screen.** The shared host runs every game's lifecycle (request pop-up → play → moves on by itself when the outcome is obvious → all voice stops → end screen); a game supplies only its play. One voice layer, one bubble placement, one talk animation for every mode. The contract checks run every game at every level and fail the build on a break (decision 75, 8 Oct). (C19)
+- **Zafar never finds a known bug first.** Before anything reaches him, the route run plays what he plays (every Labs tile and the clinic morning, L1–L4) with a voice log and a shot of every state; Fable checks it against every open and built row; he gets the list of what's still wrong up front (decision 76). (C20)
 - **Only tell Zafar it's live after** the Pages build ran for that commit and the fix shows after a hard refresh; send a screenshot. (C9)
 
 ### How to review
