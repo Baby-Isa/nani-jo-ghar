@@ -1,0 +1,157 @@
+{
+ "model": "gpt-image-2",
+ "calls": [
+  {
+   "name": "C1",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3018,
+    "input_tokens_details": {
+     "image_tokens": 2577,
+     "text_tokens": 441
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8506
+   },
+   "usd": 0.2475,
+   "base": null
+  },
+  {
+   "name": "N0",
+   "try": 1,
+   "usage": {
+    "input_tokens": 4577,
+    "input_tokens_details": {
+     "image_tokens": 4081,
+     "text_tokens": 496
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 11601
+   },
+   "usd": 0.3243,
+   "base": null
+  },
+  {
+   "name": "N1",
+   "try": 1,
+   "usage": {
+    "input_tokens": 2826,
+    "input_tokens_details": {
+     "image_tokens": 2560,
+     "text_tokens": 266
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 9850
+   },
+   "usd": 0.3079,
+   "base": "sources/art/s04c/n0-v1.png"
+  },
+  {
+   "name": "N2",
+   "try": 1,
+   "usage": {
+    "input_tokens": 2844,
+    "input_tokens_details": {
+     "image_tokens": 2560,
+     "text_tokens": 284
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 9868
+   },
+   "usd": 0.308,
+   "base": "sources/art/s04c/n0-v1.png"
+  },
+  {
+   "name": "N3",
+   "try": 1,
+   "usage": {
+    "input_tokens": 2898,
+    "input_tokens_details": {
+     "image_tokens": 2560,
+     "text_tokens": 338
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 9922
+   },
+   "usd": 0.3083,
+   "base": "sources/art/s04c/n0-v1.png"
+  },
+  {
+   "name": "N3",
+   "try": 2,
+   "usage": {
+    "input_tokens": 2900,
+    "input_tokens_details": {
+     "image_tokens": 2560,
+     "text_tokens": 340
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 9924
+   },
+   "usd": 0.3083,
+   "base": "sources/art/s04c/n0-v1.png"
+  },
+  {
+   "name": "N3b",
+   "try": 3,
+   "usage": {
+    "input_tokens": 1340,
+    "input_tokens_details": {
+     "image_tokens": 1024,
+     "text_tokens": 316
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 8364
+   },
+   "usd": 0.2928,
+   "base": "sources/art/s04c/n0-v1.png"
+  },
+  {
+   "name": "N3c",
+   "try": 4,
+   "usage": {
+    "input_tokens": 2864,
+    "input_tokens_details": {
+     "image_tokens": 2560,
+     "text_tokens": 304
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 9888
+   },
+   "usd": 0.3081,
+   "base": "sources/art/s04c/n2-on-n0.png"
+  }
+ ]
+}

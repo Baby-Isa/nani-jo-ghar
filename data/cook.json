@@ -3747,7 +3747,7 @@
     "file": "assets/cook/items/served/",
     "ready": true,
     "meta": {
-     "_about": "recipe -> its served picture (the counter's angle, light from the left; no shadow drawn in: code adds it to the right). h is the drawn height in design px on the tray. Sekelo (mishkaki) is the s03 redo of B1's cell 7 (no green pepper; build/gen_s03.py S1). A variant (of, when: noMilk) is the same recipe's picture for a cup with no milk (black tea, CHAI-07).",
+     "_about": "recipe -> its served picture (the counter's angle, light from the left; no shadow drawn in: code adds it to the right). S04-C (build/cut_s04c.py): chaat-v2 is the side-on glass bowl at the tray's low camera, and it and pantry-basket-v2 are seated (a clear strip under the dish puts its base on the tray's floor line, y 650, behind the front rim). h is the drawn height in design px on the tray. Sekelo (mishkaki) is the s03 redo of B1's cell 7 (no green pepper; build/gen_s03.py S1). A variant (of, when: noMilk) is the same recipe's picture for a cup with no milk (black tea, CHAI-07).",
      "dishes": {
       "chai": {
        "file": "assets/cook/items/served/chai-milk.webp",
@@ -3776,10 +3776,10 @@
        "drawH": 128
       },
       "chaat": {
-       "file": "assets/cook/items/served/chaat.webp",
-       "w": 300,
-       "h": 288,
-       "drawH": 140
+       "file": "assets/cook/items/served/chaat-v2.webp",
+       "w": 320,
+       "h": 217,
+       "drawH": 108.5
       },
       "samosa": {
        "file": "assets/cook/items/served/samosa.webp",
@@ -3788,10 +3788,10 @@
        "drawH": 128
       },
       "pantry": {
-       "file": "assets/cook/items/served/pantry-basket.webp",
-       "w": 300,
-       "h": 279,
-       "drawH": 150
+       "file": "assets/cook/items/served/pantry-basket-v2.webp",
+       "w": 296,
+       "h": 311,
+       "drawH": 144.2
       },
       "mishkaki": {
        "file": "assets/cook/items/served/sekelo.webp",
