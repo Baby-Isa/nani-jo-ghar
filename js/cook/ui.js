@@ -1102,11 +1102,6 @@
       if (m.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
       (UI.w6() ? readAlong(partsOf(m.line, introEls)) : Lang.speak(m.line)).then(() => faces().forEach((f) => f.classList.remove("on")));
     };
-    const onTap = (ev) => {
-      if (ev.target.closest(".ic-say, .oc-face")) return onSay(ev);
-      done();
-    };
-    el.addEventListener("click", onTap);
     const prevExpect = Cook.expect;
     Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
     card.classList.add("talk");
@@ -1130,51 +1125,41 @@
         await Cook.wait(160);
       }
     };
-    // Wave 6: read along: each part lights up on the card as it's said
-    const said = people && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
-    const talk = said.then(() => {
-      card.classList.remove("talk");
-      return Cook.wait(opts.pause != null ? opts.pause : 1400);
-    });
+    // S03-A (decision 53, SH-64): the shared request pop-up (js/shared/request-popup.js) runs it: read out while it's
+    // up; a tap anywhere but a face stops the voice at once (VoiceStop, UI.hush) and folds it into the sidebar
+    const read = () => {
+      // Wave 6: read along: each part lights up on the card as it's said
+      const said = people && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
+      return said.then(() => card.classList.remove("talk"));
+    };
     try {
-      await Promise.race([talk, tapped]);
+      await global.RequestPopup.open({
+        el,
+        card,
+        target: () => $("#mission"),
+        lead: 0,
+        hold: opts.pause != null ? opts.pause : 1400,
+        wait: (ms) => Cook.wait(ms),
+        ignore: (ev) => {
+          if (!ev.target.closest(".ic-say, .oc-face")) return false;
+          onSay(ev);
+          return true;
+        },
+        onTap: () => done(),
+        onStop: () => UI.hush(),
+        read,
+      });
     } finally {
-      el.removeEventListener("click", onTap);
       card.classList.remove("talk");
       stopReading();
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
     }
     Cook.checkRun(token);
-    await flyIn();
-  };
-  /** The big card shrinks into the small one's place in the sidebar. */
-  async function flyIn() {
-    const el = intro();
-    const card = el.querySelector(".ic-card");
     const target = $("#mission");
-    const a = card.getBoundingClientRect();
-    const b = target.getBoundingClientRect();
-    const reduced = global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduced && b.width && a.width && card.animate) {
-      const s = Math.min(b.width / a.width, 1);
-      const anim = card.animate(
-        [
-          { transform: "none", opacity: 1 },
-          { transform: `translate(${b.left - a.left}px, ${b.top - a.top}px) scale(${s})`, opacity: 0.3 },
-        ],
-        { duration: 480, easing: "cubic-bezier(.5,0,.3,1)", fill: "forwards" }
-      );
-      await new Promise((resolve) => {
-        anim.onfinish = resolve;
-        setTimeout(resolve, 700);
-      });
-    }
-    el.classList.add("hidden");
-    if (card.getAnimations) card.getAnimations().forEach((x) => x.cancel());
     target.classList.remove("arriving");
     target.classList.add("landed");
     setTimeout(() => target.classList.remove("landed"), 400);
-  }
+  };
   /** ↻ on the small card: the order big again, said again (a replay: help once its words are dots). */
   M.replay = async function () {
     if (!mission || introOpen() || $("#mission").classList.contains("stamped")) return;
@@ -1236,6 +1221,24 @@
     readToken++;
     document.querySelectorAll(".reading").forEach((e) => e.classList.remove("reading"));
   };
+  /**
+   * S03-A, the voice stop (SH-64, CLN-109): Cook's voice really stops: the read-along's chain (readToken), the core's
+   * channels (their lines already chained stay quiet) and the clip playing now (Cook.stopVoice). A tap through the
+   * request pop-up runs it (the shared VoiceStop.stop runs it too).
+   */
+  UI.hush = function () {
+    stopReading();
+    const V = Cook.core && Cook.core.voice;
+    if (V && V.stop) ["cook", "main", "word"].forEach((ch) => {
+      try {
+        V.stop(ch);
+      } catch (e) {
+        /* no channel */
+      }
+    });
+    if (Cook.stopVoice) Cook.stopVoice();
+  };
+  if (global.VoiceStop && !UI.hushHooked) UI.hushHooked = global.VoiceStop.onStop(() => UI.hush());
   /**
    * Read parts in turn, lighting each one's elements while it's said (the
    * voice file of that chunk, or a reading pause if it has none). A new

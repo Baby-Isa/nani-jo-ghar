@@ -231,6 +231,7 @@
   });
   const estimate = (text) => Math.max(900, Math.min(4200, 420 + 330 * String(text || "").split(/\s+/).length));
   Voice.tts = function (text, o = {}) {
+    if (!live(o.gen)) return Promise.resolve(true);
     if (Voice.quiet || !text || !global.speechSynthesis) return Promise.resolve(false);
     return new Promise((res) => {
       try {
@@ -249,13 +250,53 @@
       }
     });
   };
+  /*
+   * The voice stop (S03-A; SH-64, CLN-109): Voice.gen goes up at every stop (Voice.clear, a tap through the request
+   * pop-up: js/shared/request-popup.js VoiceStop). A line takes the generation when it's queued and plays only while
+   * it's unchanged, so the lines already chained on the queue fall silent too; the playing clip (Voice.playing) is
+   * paused and the device voice cancelled.
+   */
+  Voice.gen = 0;
+  Voice.playing = new Set(); // the family clips playing now
+  const VS = () => global.VoiceStop || null;
+  const live = (g) => g == null || g === Voice.gen;
+  const cutAll = () => {
+    Voice.gen++;
+    Voice.playing.forEach((a) => a._cut && a._cut());
+    Voice.playing.clear();
+    try {
+      global.speechSynthesis && global.speechSynthesis.cancel();
+    } catch (e) {
+      /* no voice */
+    }
+  };
+  if (VS()) VS().onStop(cutAll);
   Voice.audio = function (src, o = {}) {
+    if (!live(o.gen)) return Promise.resolve(true);
     return new Promise((res) => {
       try {
         const a = new Audio(Kit.url(src));
         if (o.soft) a.volume = 0.45; // a whisper (the ear's hearing check): the same family clip, quieter
         let done = false;
-        const end = (ok) => !done && ((done = true), res(ok));
+        let untrack = () => {};
+        const end = (ok) => {
+          if (done) return;
+          done = true;
+          Voice.playing.delete(a);
+          untrack();
+          res(ok);
+        };
+        // stopped: the clip pauses and the line counts as said (no device voice in its place)
+        a._cut = () => {
+          try {
+            a.pause();
+          } catch (e) {
+            /* gone */
+          }
+          end(true);
+        };
+        Voice.playing.add(a);
+        if (VS()) untrack = VS().track(a, a._cut);
         a.onended = () => end(true);
         a.onerror = () => end(false);
         a.play().catch(() => end(false));
@@ -279,6 +320,7 @@
     if (!plan || !plan.length) return false;
     let any = false;
     for (let i = 0; i < plan.length; i++) {
+      if (!live(o.gen)) return true; // stopped mid-line: the rest of it stays quiet
       const c = plan[i];
       let ok = false;
       if (c.file) ok = await Voice.audio(c.file, o);
@@ -297,19 +339,21 @@
     const w = typeof line === "string" ? { english: line, kutchi: null } : line || {};
     const who = opts.who || w.who || "doctor";
     Voice.log.push({ who, text: Kit.plain(w), t: Date.now() });
+    const gen = Voice.gen; // a stop before this line's turn (Voice.clear, a tap through the pop-up) skips it
     const run = async () => {
+      if (!live(gen)) return;
       Voice.busy = true;
       const bubble = opts.noBubble ? null : Voice.bubble(w, who, opts);
       const t0 = Date.now();
       let played = false;
-      const ao = { soft: !!opts.soft };
+      const ao = { soft: !!opts.soft, gen };
       if (w.audio) played = await Voice.audio(w.audio, ao);
       // the engine's clip plan: the family's recordings of each word (a placeholder piece has none)
       if (!played && w.kutchi && w.placeholder !== true && w.plan && w.plan.length) played = await Voice.plan(w.plan, ao);
       if (!played) await Voice.tts(Kit.plain(w), ao);
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
-      if (left > 0) await new Promise((r) => setTimeout(r, left));
-      setTimeout(() => bubble && bubble.remove(), Kit.fast ? 50 : 500);
+      if (left > 0 && live(gen)) await new Promise((r) => setTimeout(r, left));
+      setTimeout(() => bubble && bubble.remove(), live(gen) ? (Kit.fast ? 50 : 500) : 0);
       Voice.busy = false;
     };
     const p = (Voice.queue = Voice.queue.then(run, run));
@@ -319,7 +363,7 @@
   Voice.now = async function (w) {
     let played = false;
     const c = w && w.plan && w.plan.length === 1 ? w.plan[0] : null;
-    if (c && c.file) played = await Voice.audio(c.file);
+    if (c && c.file) played = await Voice.audio(c.file, { gen: Voice.gen });
     if (!played && !Voice.quiet && global.speechSynthesis) {
       try {
         const u = new global.SpeechSynthesisUtterance(Kit.plain(w));
@@ -330,13 +374,15 @@
       }
     }
   };
+  /**
+   * The voice stop: nothing queued or playing is heard any more (CLN-109: no heal-game line carries into the send-off).
+   * Every stage change and game end calls it; the shared VoiceStop (a tap through the pop-up) runs the same cut.
+   */
   Voice.clear = function () {
+    if (VS()) VS().stop("clinic");
+    else cutAll();
     Voice.queue = Promise.resolve();
-    try {
-      global.speechSynthesis && global.speechSynthesis.cancel();
-    } catch (e) {
-      /* no voice */
-    }
+    Voice.busy = false;
     document.querySelectorAll(".cl-bubble").forEach((b) => b.remove());
   };
   Voice.layer = null; // the element bubbles are placed in (the play area)
@@ -441,6 +487,7 @@
     el.innerHTML = "";
     this.rows = [];
     this.who = opts.who || "doctor";
+    this.big = !!opts.big; // the request pop-up's card at full size (the shared OrderCard {big: true})
     this.onReplay = opts.onReplay || null;
     this.faceEl = null;
     this.titleText = "";
@@ -492,7 +539,8 @@
     if (pending) data.done = false;
     card.rows.forEach((r) => (r.el = null));
     const opts = {
-      fold: this.fold,
+      big: this.big,
+      fold: this.big ? null : this.fold,
       foldAfter: 900,
       onEl: (key, rowEl) => {
         if (key === "__head") {
@@ -693,6 +741,7 @@
   /** The read-along: read the rows in order, lighting each as it plays (the card's face is the replay). */
   Kit.Card.prototype.speak = async function (only) {
     const tt = this.titleText;
+    const gen = Voice.gen; // a voice stop mid-card: the rows still to read stay quiet (SH-64)
     if (!only && tt && typeof tt === "object") {
       this.st.reading = "__head";
       if (this.headEl) this.headEl.classList.add("reading");
@@ -702,6 +751,7 @@
     }
     const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows.slice(0, this.progressive ? this.shown + 1 : this.rows.length);
     for (const r of rows) {
+      if (gen !== Voice.gen) break;
       if (!this.rows.includes(r)) continue;
       this.st.reading = r.id;
       if (r.el) r.el.classList.add("reading");

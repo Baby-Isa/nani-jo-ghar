@@ -35,6 +35,7 @@ export const NEEDS = {
     "js/shared/focus.js",
     "js/shared/guide.js",
     "js/shared/order-card.js",
+    "js/shared/request-popup.js",
     "js/shared/buttons.js",
   ],
   // all of cook.html's, in its order (the shared ones again after css/cook.css, so they win where they did there)

@@ -529,12 +529,22 @@
         },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),
-        speak: (ids) => card.speak(ids),
+        speak: (ids) => {
+          // the whole card is read only in the pop-up (SH-64): a game's own read of it (its opening, the scene's "why"
+          // beat) stays quiet; one step's rows (ids) are still said as they open, and the face replays the card
+          if (popped && !ids) return Promise.resolve();
+          return card.speak(ids);
+        },
         ordered: (on) => card.ordered(on),
         miss: (rowId) => card.miss(rowId),
         el: card.el,
       },
       say(lineId, o = {}) {
+        // S03-A (CLN-84, SH-64): the pop-up has just read the card: the game's opening repeat of a row stays quiet
+        if (quietStart() && lineId && typeof lineId === "object" && lineId.id && popRead.has(lineId.id)) {
+          popRead.delete(lineId.id);
+          return Promise.resolve();
+        }
         const l = HOST.line(lineId, data);
         return Kit.Voice.say(l, { who: o.who || l.who || "doctor", noBubble: !!o.noBubble, soft: !!o.soft });
       },
@@ -595,6 +605,8 @@
         if (finished) return;
         finished = true;
         ended = true;
+        // CLN-109 (the voice stop): the game's lines still queued or playing stop here; only the thank-you follows
+        Kit.Voice.clear();
         // CLN-70 (E17, INT-03): every game clears its own buttons and counts when it ends: the ✓ never lingers into
         // the zoom-out or the results card
         screen.clearActions();
@@ -690,11 +702,46 @@
       console.error(`Healing game "${def.id}" failed to mount`, e);
       throw e;
     }
+    // S03-A (decision 53, CLN-84 re-raised, SH-64): every heal game opens with the shared request pop-up, as Cook and
+    // the pharmacy do: the doctor's card at full size over the room, read out row by row; a tap anywhere stops the
+    // voice and folds it into the sidebar; then the game starts, quiet (its opening repeat of the card is skipped)
+    const popup = v2 && opts.popup !== false && !!global.RequestPopup && (card.rows.length > 0 || !!card.titleText);
+    const popRead = new Set();
+    let popped = false; // the pop-up has read the card
+    let popAt = 0;
+    // the game's opening repeat of a row the pop-up just read (within a few seconds of the fold) stays quiet
+    const quietStart = () => popped && Date.now() - popAt < (Kit.fast ? 1500 : 5000);
+    const showPopup = () => {
+      if (!popup) return Promise.resolve();
+      let big = null;
+      card.rows.forEach((r) => popRead.add(r.id));
+      return global.RequestPopup.open({
+        host: screen.main,
+        target: () => card.el,
+        fast: Kit.fast,
+        wait: (ms) => Kit.wait(ms),
+        build(box) {
+          big = new Kit.Card(box, { who: "doctor", big: true });
+          big.isOrdered = true;
+          big.titleText = card.titleText;
+          big.faceEl = face.cloneNode(true);
+          big.setRows(card.rows.map((r) => Object.assign({}, r, { el: null })));
+        },
+        read: () => big.speak(),
+        onStop: () => Kit.Voice.clear(),
+      }).then(() => {
+        popped = true;
+        popAt = Date.now();
+      });
+    };
     // start() may run for a while (the doctor reads the card): mount returns at once. The zoom in plays over the
     // game's opening (the close-up is live underneath: input never waits for it, E5)
-    if (staging) staging.in().catch(() => {});
-    const started = Promise.resolve()
-      .then(() => controller.start && controller.start())
+    const started = showPopup()
+      .then(() => {
+        if (finished) return null;
+        if (staging) staging.in().catch(() => {});
+        return controller.start && controller.start();
+      })
       .catch((e) => console.error(`Healing game "${def.id}" failed to start`, e));
     if (opts.autoHide !== false) {
       setTimeout(() => {
@@ -713,6 +760,7 @@
       figure: fig,
       destroy() {
         finished = true;
+        if (popup && global.RequestPopup && global.RequestPopup.isOpen()) global.RequestPopup.close();
         timers.forEach((t) => clearTimeout(t));
         listeners.forEach(([el, type, fn, o]) => el.removeEventListener(type, fn, o));
         try {

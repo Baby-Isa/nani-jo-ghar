@@ -24,42 +24,31 @@
   const PL = () => global.ClinicPipeline;
 
   /**
-   * The request pop-up (decision 53, T27): the doctor's card at full size over the play area, read out row by row (the
-   * read-along); a tap anywhere skips the rest. Then it folds into the sidebar. A stand-in for a shared clinic pop-up
-   * (Session A's Cook pop-up is Cook's own: reported).
+   * The request pop-up (decision 53, T27; S03-A, CLN-84, SH-64): the shared one (js/shared/request-popup.js), the same
+   * as Cook's and every heal game's. The doctor's card at full size over the play area, read out row by row (the
+   * read-along); a tap anywhere stops the voice at once and folds it into the sidebar; then the belt runs, quiet.
    */
-  function requestPopup(screen, { title, rows, ordered }) {
-    return new Promise((resolve) => {
-      const veil = h("div", "cl-req-veil", screen.main);
-      const el = h("div", "cl-card-big cl-req-pop", veil);
-      const card = new Kit.Card(el, { who: "doctor" });
-      card.isOrdered = !!ordered;
-      card.titleText = title || "";
-      card.faceEl = S.doctorFace();
-      card.setRows(rows.map((r) => Object.assign({}, r)));
-      let over = false;
-      const fold = async () => {
-        if (over) return;
-        over = true;
-        card.rows = [];
-        const to = screen.card.el.getBoundingClientRect();
-        const from = el.getBoundingClientRect();
-        el.style.transition = "transform .45s ease-in, opacity .45s ease-in";
-        el.style.transformOrigin = "0 0";
-        el.style.transform = `translate(${to.left - from.left - from.width / 2}px, ${to.top - from.top - from.height * 0.55}px) scale(${Math.max(0.2, to.width / Math.max(1, from.width))})`;
-        el.style.opacity = "0";
-        veil.classList.add("going");
-        await Kit.wait(Kit.fast ? 40 : 460);
-        veil.remove();
-        resolve();
-      };
-      veil.addEventListener("pointerdown", fold);
-      Kit.wait(Kit.fast ? 20 : 300)
-        .then(() => card.speak())
-        .then(() => Kit.wait(Kit.fast ? 20 : 700))
-        .then(fold);
+  S.requestPopup = function (screen, { title, rows, ordered, face }) {
+    const RP = global.RequestPopup;
+    if (!RP) return Promise.resolve({ skipped: false });
+    let card = null;
+    return RP.open({
+      host: screen.main,
+      target: () => screen.card.el,
+      fast: Kit.fast,
+      wait: (ms) => Kit.wait(ms),
+      build(box) {
+        card = new Kit.Card(box, { who: "doctor", big: true });
+        card.isOrdered = !!ordered;
+        card.titleText = title || "";
+        card.faceEl = face || S.doctorFace();
+        card.setRows(rows.map((r) => Object.assign({}, r)));
+      },
+      read: () => card.speak(),
+      onStop: () => Kit.Voice.clear(),
     });
-  }
+  };
+  const requestPopup = S.requestPopup;
 
   S.pharmacy = {
     async run(env, plan) {
@@ -350,6 +339,7 @@
       // decision 52 (P2): the tray is right, so it moves on by itself after a beat (no "To the bench" button)
       await Kit.wait(Kit.fast ? 60 : 1000);
       plan.words.forEach((w) => res.words.push(w.word));
+      Kit.Voice.clear(); // the voice stop at every stage end (CLN-109): nothing from the counter carries into the bench
       return res;
     },
   };
