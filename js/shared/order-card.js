@@ -119,6 +119,26 @@
     return r;
   }
 
+  /*
+   * SH-62 (S3, K5): the sequence line ends at the last row's centre, even when that row wraps to two lines: the list
+   * carries the last row's half height (--oc-seq-end), kept up to date as the rows fit and wrap.
+   */
+  let seqRO = null;
+  function seqEnd(list) {
+    const RO = typeof root !== "undefined" && root.ResizeObserver;
+    if (!RO) return;
+    if (!seqRO)
+      seqRO = new RO((entries) =>
+        entries.forEach((e) => {
+          const row = e.target;
+          const l = row.parentNode;
+          if (!row.isConnected || !l || l.lastElementChild !== row) return seqRO.unobserve(row);
+          l.style.setProperty("--oc-seq-end", `${row.offsetHeight / 2}px`);
+        })
+      );
+    if (list.lastElementChild) seqRO.observe(list.lastElementChild);
+  }
+
   function itemEl(it, opts) {
     const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.tint ? "tint" : "", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
     if (it.row) box.appendChild(rowEl(it, "oc-irow", opts));
@@ -128,6 +148,7 @@
       const list = el("div", ["oc-parts", it.ordered && it.parts.filter((p) => !p.no).length > 1 ? "oc-seq" : ""].filter(Boolean).join(" "));
       list.dataset.fitGroup = "";
       it.parts.forEach((p) => list.appendChild(rowEl(p, "oc-part", opts)));
+      if (list.classList.contains("oc-seq")) seqEnd(list);
       inner.appendChild(list);
       fold.appendChild(inner);
       box.appendChild(fold);

@@ -134,7 +134,8 @@
     const room = V && V.rooms && V.rooms.exam;
     const cfg = (V && V.exam) || null;
     const reduced = !!(global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    const ms = Kit.fast ? 120 : o.ms || 900;
+    // CLN-87 (Z1, 6 Oct): the zoom in and out take about 1.5 s
+    const ms = Kit.fast ? 120 : o.ms || 1500;
     const none = { wide: null, in: () => Promise.resolve(), out: () => Promise.resolve(), destroy() {} };
     if (!room || !cfg || !fig || !Clinic.Stages || !Clinic.Stages.fitScene) return none;
     const wide = h("div", "cl-zoom", stage);
@@ -241,15 +242,15 @@
         healed();
         if (z.top) layer.style.top = z.top;
         const a = z.at || anchor();
-        // CLN-77: the pull-out starts part of the way in, lightly softened: never a full-screen smear of a huge,
-        // blurred patient
-        const k0 = 1 + (a.k - 1) * 0.55;
+        // CLN-87 (Z2, 6 Oct; newer than CLN-77's part-way start): the pull-out starts from the full zoom on the healed
+        // part (where the push-in ended), lightly softened, and the room fades in over the close-up as it pulls back
+        const k0 = a.k;
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.remove("gone");
         wide.classList.add("on");
         await Promise.all([
           play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
-          play(box, [{ transform: `translate(${(a.dx || 0) * 0.55}px, ${(a.dy || 0) * 0.55}px) scale(${k0})`, filter: "blur(2px)" }, { transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
+          play(box, [{ transform: `translate(${a.dx || 0}px, ${a.dy || 0}px) scale(${k0})`, filter: "blur(2px)" }, { transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
         ]);
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },

@@ -291,6 +291,8 @@
    * as wide as its share of the words: one to three columns (then more rows), its width in proportion.
    */
   Results.wordCols = (n) => (n ? Math.min(3, n) : 0);
+  /** S03 (S02 review flaw 1, CLN-73): a side with more than two rows of three: the tiles go two lines on a short phone. */
+  const denseWords = (words) => Math.max(words.filter((w) => w.right === false).length, words.filter((w) => w.right !== false).length) > 6;
   function wordsHtml(words) {
     const card = (w, i) => `<button class="rs-word ${w.right === false ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
           ${w.kutchi ? `<b class="fit">${esc(w.kutchi)}</b>` : `<b class="rs-ph fit">${esc(w.english || "")}</b><small class="rs-rec">to record</small>`}<span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${w.kutchi ? `<span class="fit">${esc(w.english)}</span>` : ""}</span></button>`;
@@ -414,7 +416,7 @@
             <div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>
             ${steps.length ? stepsHtml(steps) : ""}
           </div>
-          ${words.length ? `<div class="rs-page rs-p2" data-page="2" aria-hidden="true"><div class="rs-words">${wordsHtml(words)}</div></div>` : ""}
+          ${words.length ? `<div class="rs-page rs-p2" data-page="2" aria-hidden="true"><div class="rs-words${denseWords(words) ? " dense" : ""}">${wordsHtml(words)}</div></div>` : ""}
         </div>
         ${words.length ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
         ${words.length ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}

@@ -398,6 +398,17 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   .njg-results .rs-word .rs-rec { white-space: normal; max-width: 100%; }
   .njg-results .rs-word { flex-direction: row; flex-wrap: wrap; column-gap: var(--njg-s2); row-gap: 0; min-height: var(--njg-tap); padding: var(--njg-s1) var(--njg-s2); }
   .njg-results .rs-word .rs-rec { order: 3; }
+  /* S03 (S02 review flaw 1): a side with more than six words (.dense, set by results.js) fits four rows without a scroll:
+     each tile is two lines, the word on the first, its speaker and English (or the "to record" flag and the speaker)
+     on the second; the sides give back a little padding so a flag fits beside its speaker */
+  .njg-results .rs-words.dense .rs-words-col { row-gap: var(--njg-s1); column-gap: var(--njg-s2); padding: 0 var(--njg-s2); }
+  .njg-results .rs-words.dense .rs-word { flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: center; column-gap: var(--njg-s1); row-gap: 0; min-height: var(--njg-tap); padding: var(--njg-s1); line-height: 1.15; }
+  .njg-results .rs-words.dense .rs-word b { flex: 0 0 100%; }
+  .njg-results .rs-words.dense .rs-word .rs-en { gap: var(--njg-s1); }
+  .njg-results .rs-words.dense .rs-word .rs-say { width: calc(var(--njg-icon) * 0.8); height: calc(var(--njg-icon) * 0.8); padding: 0; }
+  /* a word still to record: its flag takes the second line, the speaker sits on the tile's corner as a small badge */
+  .njg-results .rs-words.dense .rs-word:has(.rs-rec) .rs-say { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s3) * -1); box-shadow: var(--njg-shadow); }
+  .njg-results .rs-words.dense .rs-word .rs-rec { order: 0; padding: 0 var(--njg-s1); letter-spacing: 0; white-space: nowrap; max-width: none; line-height: 1.3; }
 }
 /* non-negotiable 9 (S02 review): a word tile's word and English shrink to fit on one line (js/shared/fit.js), then wrap */
 .rs-word b.fit, .rs-word .rs-en .fit { white-space: nowrap; overflow: visible; min-width: 0; max-width: 100%; }

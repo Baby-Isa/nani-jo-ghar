@@ -149,7 +149,7 @@
 .oc-card .oc-item.oc-direct .oc-parts { margin-top: 0; padding-left: 0; }
 .oc-card .oc-parts.oc-seq::before {
   content: ""; position: absolute; left: calc(var(--oc-indent) / 2 - var(--njg-line)); width: var(--njg-line-2); border-radius: var(--njg-line); background: var(--oc-grey);
-  top: calc(var(--oc-gap) * -1); bottom: calc(var(--oc-part-h) / 2 - var(--njg-line));
+  top: calc(var(--oc-gap) * -1); bottom: calc(var(--oc-seq-end, calc(var(--oc-part-h) / 2)) - var(--njg-line));
 }
 .oc-card .oc-parts.oc-seq > .oc-part::before {
   content: ""; position: absolute; top: calc(50% - var(--njg-line)); height: var(--njg-line-2); background: var(--oc-grey);
