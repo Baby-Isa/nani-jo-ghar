@@ -88,6 +88,9 @@
       Kit.Voice.layer = main;
       scr.clearStage = function () {
         // every stage clears its own UI (13f): pills, bubbles, pop-ups and fly-overs left in the play area go too
+        // CLN-109: no voice carries into the next stage (a heal game's lines never reach the send-off)
+        if (global.VoiceStop) global.VoiceStop.stop("stage");
+        else if (Kit.Voice && Kit.Voice.clear) Kit.Voice.clear();
         main.querySelectorAll(".cl-pills, .njg-pills, .cl-bubble, .cl-thought, .cl-card-big, .say-moment, .njg-say").forEach((n) => n.remove());
         document.querySelectorAll("body > .cl-fly").forEach((n) => n.remove());
         play.innerHTML = "";
