@@ -259,8 +259,11 @@
     if (!b || !head) return null;
     const M = o.margin != null ? o.margin : 8;
     const lr = layer && layer.getBoundingClientRect ? layer.getBoundingClientRect() : { left: 0, top: 0, width: root.innerWidth || 1000, height: root.innerHeight || 700 };
-    const r = head.getBoundingClientRect ? head.getBoundingClientRect() : head;
-    if (!r || !(r.width > 0) || !(r.height > 0)) return null;
+    const r0 = head.getBoundingClientRect ? head.getBoundingClientRect() : head;
+    // nothing to place by: no box, or an element not drawn (display: none gives an empty box at the corner)
+    if (!r0 || ![r0.left, r0.top, r0.width, r0.height].every(Number.isFinite) || (!r0.width && !r0.height && !r0.left && !r0.top)) return null;
+    // a point (an anchor with no size) is a head of one pixel there
+    const r = { left: r0.left, top: r0.top, width: Math.max(1, r0.width), height: Math.max(1, r0.height) };
     b.style.transform = "none";
     b.style.left = "0px";
     b.style.top = "0px";
