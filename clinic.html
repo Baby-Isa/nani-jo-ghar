@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>The doctor's clinic</title>
 <!-- the app frame: the house colour on first paint, cross-fades, the way home (js/shared/app.js) -->
-<link rel="stylesheet" href="css/shared/app.css?v=20261008T002526Z">
+<link rel="stylesheet" href="css/shared/app.css?v=20261008T043015Z">
 <!-- R3a: the design tokens and the frame, sized from data/layout.json by js/shared/frame.js -->
-<link rel="stylesheet" href="css/shared/tokens.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/shared/frame.css?v=20261008T002526Z">
+<link rel="stylesheet" href="css/shared/tokens.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/shared/frame.css?v=20261008T043015Z">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="css/shared/results.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/shared/onboard.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/shared/guide.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/shared/order-card.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/shared/buttons.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/shared/tally.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/shared/focus.css?v=20261008T002526Z">
-<link rel="stylesheet" href="css/clinic.css?v=20261008T002526Z">
+<link rel="stylesheet" href="css/shared/results.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/shared/onboard.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/shared/guide.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/shared/order-card.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/shared/buttons.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/shared/tally.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/shared/focus.css?v=20261008T043015Z">
+<link rel="stylesheet" href="css/clinic.css?v=20261008T043015Z">
 <!--
   The clinic (docs/archive/clinic/clinic-design-v1.md: the pipeline, after the quality pass).
   clinic.html                      a clinic morning (the saved session; the first ever is one tiny patient)
@@ -36,142 +36,142 @@
 <script type="importmap" data-njg="core">
 {
  "imports": {
-  "#clinic/main.js": "./js/clinic/main.js?v=20261008T002526Z",
-  "./js/clinic/main.js": "./js/clinic/main.js?v=20261008T002526Z",
-  "#cook/app.js": "./js/cook/app.js?v=20261008T002526Z",
-  "./js/cook/app.js": "./js/cook/app.js?v=20261008T002526Z",
-  "#cook/art.js": "./js/cook/art.js?v=20261008T002526Z",
-  "./js/cook/art.js": "./js/cook/art.js?v=20261008T002526Z",
-  "#cook/boot.js": "./js/cook/boot.js?v=20261008T002526Z",
-  "./js/cook/boot.js": "./js/cook/boot.js?v=20261008T002526Z",
-  "#cook/coach.js": "./js/cook/coach.js?v=20261008T002526Z",
-  "./js/cook/coach.js": "./js/cook/coach.js?v=20261008T002526Z",
-  "#cook/dom.js": "./js/cook/dom.js?v=20261008T002526Z",
-  "./js/cook/dom.js": "./js/cook/dom.js?v=20261008T002526Z",
-  "#cook/flow.js": "./js/cook/flow.js?v=20261008T002526Z",
-  "./js/cook/flow.js": "./js/cook/flow.js?v=20261008T002526Z",
-  "#cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261008T002526Z",
-  "./js/cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261008T002526Z",
-  "#cook/hands.js": "./js/cook/hands.js?v=20261008T002526Z",
-  "./js/cook/hands.js": "./js/cook/hands.js?v=20261008T002526Z",
-  "#cook/index.js": "./js/cook/index.js?v=20261008T002526Z",
-  "./js/cook/index.js": "./js/cook/index.js?v=20261008T002526Z",
-  "#cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261008T002526Z",
-  "./js/cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261008T002526Z",
-  "#cook/life.js": "./js/cook/life.js?v=20261008T002526Z",
-  "./js/cook/life.js": "./js/cook/life.js?v=20261008T002526Z",
-  "#cook/main.js": "./js/cook/main.js?v=20261008T002526Z",
-  "./js/cook/main.js": "./js/cook/main.js?v=20261008T002526Z",
-  "#cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261008T002526Z",
-  "./js/cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261008T002526Z",
-  "#cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261008T002526Z",
-  "./js/cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261008T002526Z",
-  "#cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261008T002526Z",
-  "./js/cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261008T002526Z",
-  "#cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261008T002526Z",
-  "./js/cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261008T002526Z",
-  "#cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261008T002526Z",
-  "./js/cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261008T002526Z",
-  "#cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261008T002526Z",
-  "./js/cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261008T002526Z",
-  "#cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261008T002526Z",
-  "./js/cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261008T002526Z",
-  "#cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261008T002526Z",
-  "./js/cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261008T002526Z",
-  "#cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261008T002526Z",
-  "./js/cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261008T002526Z",
-  "#cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261008T002526Z",
-  "./js/cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261008T002526Z",
-  "#cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261008T002526Z",
-  "./js/cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261008T002526Z",
-  "#cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261008T002526Z",
-  "./js/cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261008T002526Z",
-  "#cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261008T002526Z",
-  "./js/cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261008T002526Z",
-  "#cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261008T002526Z",
-  "./js/cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261008T002526Z",
-  "#cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261008T002526Z",
-  "./js/cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261008T002526Z",
-  "#cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261008T002526Z",
-  "./js/cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261008T002526Z",
-  "#cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261008T002526Z",
-  "./js/cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261008T002526Z",
-  "#cook/mount.js": "./js/cook/mount.js?v=20261008T002526Z",
-  "./js/cook/mount.js": "./js/cook/mount.js?v=20261008T002526Z",
-  "#cook/ns.js": "./js/cook/ns.js?v=20261008T002526Z",
-  "./js/cook/ns.js": "./js/cook/ns.js?v=20261008T002526Z",
-  "#cook/page.js": "./js/cook/page.js?v=20261008T002526Z",
-  "./js/cook/page.js": "./js/cook/page.js?v=20261008T002526Z",
-  "#cook/station-lib.js": "./js/cook/station-lib.js?v=20261008T002526Z",
-  "./js/cook/station-lib.js": "./js/cook/station-lib.js?v=20261008T002526Z",
-  "#cook/stations.js": "./js/cook/stations.js?v=20261008T002526Z",
-  "./js/cook/stations.js": "./js/cook/stations.js?v=20261008T002526Z",
-  "#cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261008T002526Z",
-  "./js/cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261008T002526Z",
-  "#cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261008T002526Z",
-  "./js/cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261008T002526Z",
-  "#cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261008T002526Z",
-  "./js/cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261008T002526Z",
-  "#cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261008T002526Z",
-  "./js/cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261008T002526Z",
-  "#cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261008T002526Z",
-  "./js/cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261008T002526Z",
-  "#cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261008T002526Z",
-  "./js/cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261008T002526Z",
-  "#cook/zone.js": "./js/cook/zone.js?v=20261008T002526Z",
-  "./js/cook/zone.js": "./js/cook/zone.js?v=20261008T002526Z",
-  "#core/content.js": "./js/core/content.js?v=20261008T002526Z",
-  "./js/core/content.js": "./js/core/content.js?v=20261008T002526Z",
-  "#core/context.js": "./js/core/context.js?v=20261008T002526Z",
-  "./js/core/context.js": "./js/core/context.js?v=20261008T002526Z",
-  "#core/env.js": "./js/core/env.js?v=20261008T002526Z",
-  "./js/core/env.js": "./js/core/env.js?v=20261008T002526Z",
-  "#core/index.js": "./js/core/index.js?v=20261008T002526Z",
-  "./js/core/index.js": "./js/core/index.js?v=20261008T002526Z",
-  "#core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261008T002526Z",
-  "./js/core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261008T002526Z",
-  "#core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261008T002526Z",
-  "./js/core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261008T002526Z",
-  "#core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261008T002526Z",
-  "./js/core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261008T002526Z",
-  "#core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261008T002526Z",
-  "./js/core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261008T002526Z",
-  "#core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261008T002526Z",
-  "./js/core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261008T002526Z",
-  "#core/lang/index.js": "./js/core/lang/index.js?v=20261008T002526Z",
-  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261008T002526Z",
-  "#core/log.js": "./js/core/log.js?v=20261008T002526Z",
-  "./js/core/log.js": "./js/core/log.js?v=20261008T002526Z",
-  "#core/progress.js": "./js/core/progress.js?v=20261008T002526Z",
-  "./js/core/progress.js": "./js/core/progress.js?v=20261008T002526Z",
-  "#core/save.js": "./js/core/save.js?v=20261008T002526Z",
-  "./js/core/save.js": "./js/core/save.js?v=20261008T002526Z",
-  "#core/score.js": "./js/core/score.js?v=20261008T002526Z",
-  "./js/core/score.js": "./js/core/score.js?v=20261008T002526Z",
-  "#core/settings.js": "./js/core/settings.js?v=20261008T002526Z",
-  "./js/core/settings.js": "./js/core/settings.js?v=20261008T002526Z",
-  "#core/types.js": "./js/core/types.js?v=20261008T002526Z",
-  "./js/core/types.js": "./js/core/types.js?v=20261008T002526Z",
-  "#core/unlocks.js": "./js/core/unlocks.js?v=20261008T002526Z",
-  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261008T002526Z",
-  "#core/voice.js": "./js/core/voice.js?v=20261008T002526Z",
-  "./js/core/voice.js": "./js/core/voice.js?v=20261008T002526Z",
-  "#core/wallet.js": "./js/core/wallet.js?v=20261008T002526Z",
-  "./js/core/wallet.js": "./js/core/wallet.js?v=20261008T002526Z",
-  "#demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261008T002526Z",
-  "./js/demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261008T002526Z",
-  "#demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261008T002526Z",
-  "./js/demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261008T002526Z",
-  "#demo/main.js": "./js/demo/main.js?v=20261008T002526Z",
-  "./js/demo/main.js": "./js/demo/main.js?v=20261008T002526Z",
-  "#demo/paths.js": "./js/demo/paths.js?v=20261008T002526Z",
-  "./js/demo/paths.js": "./js/demo/paths.js?v=20261008T002526Z",
-  "#shared/host.js": "./js/shared/host.js?v=20261008T002526Z",
-  "./js/shared/host.js": "./js/shared/host.js?v=20261008T002526Z",
-  "#shared/input.js": "./js/shared/input.js?v=20261008T002526Z",
-  "./js/shared/input.js": "./js/shared/input.js?v=20261008T002526Z",
-  "#shared/mode.js": "./js/shared/mode.js?v=20261008T002526Z",
-  "./js/shared/mode.js": "./js/shared/mode.js?v=20261008T002526Z"
+  "#clinic/main.js": "./js/clinic/main.js?v=20261008T043015Z",
+  "./js/clinic/main.js": "./js/clinic/main.js?v=20261008T043015Z",
+  "#cook/app.js": "./js/cook/app.js?v=20261008T043015Z",
+  "./js/cook/app.js": "./js/cook/app.js?v=20261008T043015Z",
+  "#cook/art.js": "./js/cook/art.js?v=20261008T043015Z",
+  "./js/cook/art.js": "./js/cook/art.js?v=20261008T043015Z",
+  "#cook/boot.js": "./js/cook/boot.js?v=20261008T043015Z",
+  "./js/cook/boot.js": "./js/cook/boot.js?v=20261008T043015Z",
+  "#cook/coach.js": "./js/cook/coach.js?v=20261008T043015Z",
+  "./js/cook/coach.js": "./js/cook/coach.js?v=20261008T043015Z",
+  "#cook/dom.js": "./js/cook/dom.js?v=20261008T043015Z",
+  "./js/cook/dom.js": "./js/cook/dom.js?v=20261008T043015Z",
+  "#cook/flow.js": "./js/cook/flow.js?v=20261008T043015Z",
+  "./js/cook/flow.js": "./js/cook/flow.js?v=20261008T043015Z",
+  "#cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261008T043015Z",
+  "./js/cook/frame-hookup.js": "./js/cook/frame-hookup.js?v=20261008T043015Z",
+  "#cook/hands.js": "./js/cook/hands.js?v=20261008T043015Z",
+  "./js/cook/hands.js": "./js/cook/hands.js?v=20261008T043015Z",
+  "#cook/index.js": "./js/cook/index.js?v=20261008T043015Z",
+  "./js/cook/index.js": "./js/cook/index.js?v=20261008T043015Z",
+  "#cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261008T043015Z",
+  "./js/cook/kitchen-kit.js": "./js/cook/kitchen-kit.js?v=20261008T043015Z",
+  "#cook/life.js": "./js/cook/life.js?v=20261008T043015Z",
+  "./js/cook/life.js": "./js/cook/life.js?v=20261008T043015Z",
+  "#cook/main.js": "./js/cook/main.js?v=20261008T043015Z",
+  "./js/cook/main.js": "./js/cook/main.js?v=20261008T043015Z",
+  "#cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261008T043015Z",
+  "./js/cook/mechanics/add.js": "./js/cook/mechanics/add.js?v=20261008T043015Z",
+  "#cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261008T043015Z",
+  "./js/cook/mechanics/assemble.js": "./js/cook/mechanics/assemble.js?v=20261008T043015Z",
+  "#cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261008T043015Z",
+  "./js/cook/mechanics/boil.js": "./js/cook/mechanics/boil.js?v=20261008T043015Z",
+  "#cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261008T043015Z",
+  "./js/cook/mechanics/chop.js": "./js/cook/mechanics/chop.js?v=20261008T043015Z",
+  "#cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261008T043015Z",
+  "./js/cook/mechanics/count.js": "./js/cook/mechanics/count.js?v=20261008T043015Z",
+  "#cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261008T043015Z",
+  "./js/cook/mechanics/fetch.js": "./js/cook/mechanics/fetch.js?v=20261008T043015Z",
+  "#cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261008T043015Z",
+  "./js/cook/mechanics/fill-fold.js": "./js/cook/mechanics/fill-fold.js?v=20261008T043015Z",
+  "#cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261008T043015Z",
+  "./js/cook/mechanics/fry.js": "./js/cook/mechanics/fry.js?v=20261008T043015Z",
+  "#cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261008T043015Z",
+  "./js/cook/mechanics/grill.js": "./js/cook/mechanics/grill.js?v=20261008T043015Z",
+  "#cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261008T043015Z",
+  "./js/cook/mechanics/knead.js": "./js/cook/mechanics/knead.js?v=20261008T043015Z",
+  "#cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261008T043015Z",
+  "./js/cook/mechanics/passme.js": "./js/cook/mechanics/passme.js?v=20261008T043015Z",
+  "#cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261008T043015Z",
+  "./js/cook/mechanics/pour.js": "./js/cook/mechanics/pour.js?v=20261008T043015Z",
+  "#cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261008T043015Z",
+  "./js/cook/mechanics/roll.js": "./js/cook/mechanics/roll.js?v=20261008T043015Z",
+  "#cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261008T043015Z",
+  "./js/cook/mechanics/stir.js": "./js/cook/mechanics/stir.js?v=20261008T043015Z",
+  "#cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261008T043015Z",
+  "./js/cook/mechanics/tadka.js": "./js/cook/mechanics/tadka.js?v=20261008T043015Z",
+  "#cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261008T043015Z",
+  "./js/cook/mechanics/tawa.js": "./js/cook/mechanics/tawa.js?v=20261008T043015Z",
+  "#cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261008T043015Z",
+  "./js/cook/mechanics/thread.js": "./js/cook/mechanics/thread.js?v=20261008T043015Z",
+  "#cook/mount.js": "./js/cook/mount.js?v=20261008T043015Z",
+  "./js/cook/mount.js": "./js/cook/mount.js?v=20261008T043015Z",
+  "#cook/ns.js": "./js/cook/ns.js?v=20261008T043015Z",
+  "./js/cook/ns.js": "./js/cook/ns.js?v=20261008T043015Z",
+  "#cook/page.js": "./js/cook/page.js?v=20261008T043015Z",
+  "./js/cook/page.js": "./js/cook/page.js?v=20261008T043015Z",
+  "#cook/station-lib.js": "./js/cook/station-lib.js?v=20261008T043015Z",
+  "./js/cook/station-lib.js": "./js/cook/station-lib.js?v=20261008T043015Z",
+  "#cook/stations.js": "./js/cook/stations.js?v=20261008T043015Z",
+  "./js/cook/stations.js": "./js/cook/stations.js?v=20261008T043015Z",
+  "#cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261008T043015Z",
+  "./js/cook/stations/chai-tray.js": "./js/cook/stations/chai-tray.js?v=20261008T043015Z",
+  "#cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261008T043015Z",
+  "./js/cook/stations/daar.js": "./js/cook/stations/daar.js?v=20261008T043015Z",
+  "#cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261008T043015Z",
+  "./js/cook/stations/maani-line.js": "./js/cook/stations/maani-line.js?v=20261008T043015Z",
+  "#cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261008T043015Z",
+  "./js/cook/stations/mishkaki-grill.js": "./js/cook/stations/mishkaki-grill.js?v=20261008T043015Z",
+  "#cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261008T043015Z",
+  "./js/cook/stations/roll-tawa.js": "./js/cook/stations/roll-tawa.js?v=20261008T043015Z",
+  "#cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261008T043015Z",
+  "./js/cook/stations/samosa.js": "./js/cook/stations/samosa.js?v=20261008T043015Z",
+  "#cook/zone.js": "./js/cook/zone.js?v=20261008T043015Z",
+  "./js/cook/zone.js": "./js/cook/zone.js?v=20261008T043015Z",
+  "#core/content.js": "./js/core/content.js?v=20261008T043015Z",
+  "./js/core/content.js": "./js/core/content.js?v=20261008T043015Z",
+  "#core/context.js": "./js/core/context.js?v=20261008T043015Z",
+  "./js/core/context.js": "./js/core/context.js?v=20261008T043015Z",
+  "#core/env.js": "./js/core/env.js?v=20261008T043015Z",
+  "./js/core/env.js": "./js/core/env.js?v=20261008T043015Z",
+  "#core/index.js": "./js/core/index.js?v=20261008T043015Z",
+  "./js/core/index.js": "./js/core/index.js?v=20261008T043015Z",
+  "#core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261008T043015Z",
+  "./js/core/lang/engine/clips.js": "./js/core/lang/engine/clips.js?v=20261008T043015Z",
+  "#core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261008T043015Z",
+  "./js/core/lang/engine/gaps.js": "./js/core/lang/engine/gaps.js?v=20261008T043015Z",
+  "#core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261008T043015Z",
+  "./js/core/lang/engine/index.js": "./js/core/lang/engine/index.js?v=20261008T043015Z",
+  "#core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261008T043015Z",
+  "./js/core/lang/engine/linearize.js": "./js/core/lang/engine/linearize.js?v=20261008T043015Z",
+  "#core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261008T043015Z",
+  "./js/core/lang/engine/validate.js": "./js/core/lang/engine/validate.js?v=20261008T043015Z",
+  "#core/lang/index.js": "./js/core/lang/index.js?v=20261008T043015Z",
+  "./js/core/lang/index.js": "./js/core/lang/index.js?v=20261008T043015Z",
+  "#core/log.js": "./js/core/log.js?v=20261008T043015Z",
+  "./js/core/log.js": "./js/core/log.js?v=20261008T043015Z",
+  "#core/progress.js": "./js/core/progress.js?v=20261008T043015Z",
+  "./js/core/progress.js": "./js/core/progress.js?v=20261008T043015Z",
+  "#core/save.js": "./js/core/save.js?v=20261008T043015Z",
+  "./js/core/save.js": "./js/core/save.js?v=20261008T043015Z",
+  "#core/score.js": "./js/core/score.js?v=20261008T043015Z",
+  "./js/core/score.js": "./js/core/score.js?v=20261008T043015Z",
+  "#core/settings.js": "./js/core/settings.js?v=20261008T043015Z",
+  "./js/core/settings.js": "./js/core/settings.js?v=20261008T043015Z",
+  "#core/types.js": "./js/core/types.js?v=20261008T043015Z",
+  "./js/core/types.js": "./js/core/types.js?v=20261008T043015Z",
+  "#core/unlocks.js": "./js/core/unlocks.js?v=20261008T043015Z",
+  "./js/core/unlocks.js": "./js/core/unlocks.js?v=20261008T043015Z",
+  "#core/voice.js": "./js/core/voice.js?v=20261008T043015Z",
+  "./js/core/voice.js": "./js/core/voice.js?v=20261008T043015Z",
+  "#core/wallet.js": "./js/core/wallet.js?v=20261008T043015Z",
+  "./js/core/wallet.js": "./js/core/wallet.js?v=20261008T043015Z",
+  "#demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261008T043015Z",
+  "./js/demo/cook-adapter.js": "./js/demo/cook-adapter.js?v=20261008T043015Z",
+  "#demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261008T043015Z",
+  "./js/demo/heal-adapter.js": "./js/demo/heal-adapter.js?v=20261008T043015Z",
+  "#demo/main.js": "./js/demo/main.js?v=20261008T043015Z",
+  "./js/demo/main.js": "./js/demo/main.js?v=20261008T043015Z",
+  "#demo/paths.js": "./js/demo/paths.js?v=20261008T043015Z",
+  "./js/demo/paths.js": "./js/demo/paths.js?v=20261008T043015Z",
+  "#shared/host.js": "./js/shared/host.js?v=20261008T043015Z",
+  "./js/shared/host.js": "./js/shared/host.js?v=20261008T043015Z",
+  "#shared/input.js": "./js/shared/input.js?v=20261008T043015Z",
+  "./js/shared/input.js": "./js/shared/input.js?v=20261008T043015Z",
+  "#shared/mode.js": "./js/shared/mode.js?v=20261008T043015Z",
+  "./js/shared/mode.js": "./js/shared/mode.js?v=20261008T043015Z"
  }
 }
 </script>
@@ -203,41 +203,41 @@
 </div>
 <pre class="cl-lab-out hidden" id="lab-out"></pre>
 
-<script src="js/version.js?v=20261008T002526Z"></script>
-<script src="js/shared/frame.js?v=20261008T002526Z"></script>
-<script src="js/shared/app.js?v=20261008T002526Z"></script>
-<script src="js/shared/family-voice.js?v=20261008T002526Z"></script>
-<script src="js/shared/uistore.js?v=20261008T002526Z"></script>
-<script src="js/shared/sfx.js?v=20261008T002526Z"></script>
-<script src="js/shared/results.js?v=20261008T002526Z"></script>
-<script src="js/shared/onboard.js?v=20261008T002526Z"></script>
-<script src="js/shared/guide.js?v=20261008T002526Z"></script>
-<script src="js/shared/fit.js?v=20261008T002526Z"></script>
-<script src="js/shared/stage.js?v=20261008T002526Z"></script>
-<script src="js/shared/bulb.js?v=20261008T002526Z"></script>
-<script src="js/shared/tally.js?v=20261008T002526Z"></script>
-<script src="js/shared/focus.js?v=20261008T002526Z"></script>
-<script src="js/shared/order-card.js?v=20261008T002526Z"></script>
-<script src="js/shared/request-popup.js?v=20261008T002526Z"></script>
-<script src="js/shared/buttons.js?v=20261008T002526Z"></script>
-<script src="js/shared/speech.js?v=20261008T002526Z"></script>
-<script src="js/shared/say.js?v=20261008T002526Z"></script>
-<script src="js/clinic/lang.js?v=20261008T002526Z"></script>
-<script src="js/clinic/body.js?v=20261008T002526Z"></script>
-<script src="js/clinic/kit.js?v=20261008T002526Z"></script>
-<script src="js/clinic/figure.js?v=20261008T002526Z"></script>
-<script src="js/clinic/screen.js?v=20261008T002526Z"></script>
-<script src="js/clinic/pipeline.js?v=20261008T002526Z"></script>
-<script src="js/clinic/heal/registry.js?v=20261008T002526Z"></script>
-<script src="js/clinic/heal/host.js?v=20261008T002526Z"></script>
-<script src="js/clinic/heal/scene.js?v=20261008T002526Z"></script>
-<script src="js/clinic/stages/common.js?v=20261008T002526Z"></script>
-<script src="js/clinic/stages/waiting.js?v=20261008T002526Z"></script>
-<script src="js/clinic/stages/diagnosis.js?v=20261008T002526Z"></script>
-<script src="js/clinic/stages/pharmacy.js?v=20261008T002526Z"></script>
-<script src="js/clinic/stages/heal.js?v=20261008T002526Z"></script>
-<script src="js/clinic/stages/sendoff.js?v=20261008T002526Z"></script>
-<script src="js/clinic/run.js?v=20261008T002526Z"></script>
+<script src="js/version.js?v=20261008T043015Z"></script>
+<script src="js/shared/frame.js?v=20261008T043015Z"></script>
+<script src="js/shared/app.js?v=20261008T043015Z"></script>
+<script src="js/shared/family-voice.js?v=20261008T043015Z"></script>
+<script src="js/shared/uistore.js?v=20261008T043015Z"></script>
+<script src="js/shared/sfx.js?v=20261008T043015Z"></script>
+<script src="js/shared/results.js?v=20261008T043015Z"></script>
+<script src="js/shared/onboard.js?v=20261008T043015Z"></script>
+<script src="js/shared/guide.js?v=20261008T043015Z"></script>
+<script src="js/shared/fit.js?v=20261008T043015Z"></script>
+<script src="js/shared/stage.js?v=20261008T043015Z"></script>
+<script src="js/shared/bulb.js?v=20261008T043015Z"></script>
+<script src="js/shared/tally.js?v=20261008T043015Z"></script>
+<script src="js/shared/focus.js?v=20261008T043015Z"></script>
+<script src="js/shared/order-card.js?v=20261008T043015Z"></script>
+<script src="js/shared/request-popup.js?v=20261008T043015Z"></script>
+<script src="js/shared/buttons.js?v=20261008T043015Z"></script>
+<script src="js/shared/speech.js?v=20261008T043015Z"></script>
+<script src="js/shared/say.js?v=20261008T043015Z"></script>
+<script src="js/clinic/lang.js?v=20261008T043015Z"></script>
+<script src="js/clinic/body.js?v=20261008T043015Z"></script>
+<script src="js/clinic/kit.js?v=20261008T043015Z"></script>
+<script src="js/clinic/figure.js?v=20261008T043015Z"></script>
+<script src="js/clinic/screen.js?v=20261008T043015Z"></script>
+<script src="js/clinic/pipeline.js?v=20261008T043015Z"></script>
+<script src="js/clinic/heal/registry.js?v=20261008T043015Z"></script>
+<script src="js/clinic/heal/host.js?v=20261008T043015Z"></script>
+<script src="js/clinic/heal/scene.js?v=20261008T043015Z"></script>
+<script src="js/clinic/stages/common.js?v=20261008T043015Z"></script>
+<script src="js/clinic/stages/waiting.js?v=20261008T043015Z"></script>
+<script src="js/clinic/stages/diagnosis.js?v=20261008T043015Z"></script>
+<script src="js/clinic/stages/pharmacy.js?v=20261008T043015Z"></script>
+<script src="js/clinic/stages/heal.js?v=20261008T043015Z"></script>
+<script src="js/clinic/stages/sendoff.js?v=20261008T043015Z"></script>
+<script src="js/clinic/run.js?v=20261008T043015Z"></script>
 <script type="module">
   // R5: the clinic runs through the one game host (js/shared/host.js) as a mode plug-in (js/clinic/main.js).
   // The URL entries below are the same as before; window.__clinic keeps its calls for the tests, next to window.njgTest.
