@@ -20,19 +20,21 @@ export async function openCook(ctx, { speed = 3, save } = {}) {
 // mode: "fair" (what the game asks), "mistake" (a wrong pick where the mini-game allows it, then on to the end), "hint" (the unguided lab:
 // waits for the hesitation hint and glow, presses the light bulb, peeks at a closed card) or "takeback" (E14: once something is placed
 // and the station offers it, take it back, then carry on to the end)
-export function cookStation(key, level = 1, { recipe = false, mode = "fair", group = "cook" } = {}) {
+// speed: Cook's test speed (3, the default, about 4x quicker to run); 1 plays at a child's pace, so the voice's timing
+// against the stage ends is the real one (S04-A, the contract's voice check: "#speed1")
+export function cookStation(key, level = 1, { recipe = false, mode = "fair", group = "cook", speed = 3 } = {}) {
   const labKey = recipe ? `recipe:${key}` : key;
   // a recipe is "cook:<id>" unless a station has the same key ("cook:recipe:<id>")
-  const id = `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}` + (level > 1 ? `@L${level}` : "") + (mode !== "fair" ? `#${mode}` : "");
+  const id = `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}` + (level > 1 ? `@L${level}` : "") + (mode !== "fair" ? `#${mode}` : "") + (speed !== 3 ? `#speed${speed}` : "");
   return {
     id,
     group,
     title: `Cook, Station lab: ${labKey}, level ${level}${mode !== "fair" ? `, ${mode} player` : ""}`,
-    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000 * (mode === "hint" ? 1.3 : 1),
+    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000 * (mode === "hint" ? 1.3 : 1) * (speed < 3 ? 2.5 : 1),
     async run(ctx) {
       const { page, rec } = ctx;
-      await openCook(ctx);
-      const P = new CookPlayer(page, rec, { mode });
+      await openCook(ctx, { speed });
+      const P = new CookPlayer(page, rec, { mode, speed });
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
       if (mode === "takeback") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
       await page.evaluate(([k, l, g]) => { __cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);

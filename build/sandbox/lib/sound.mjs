@@ -123,7 +123,24 @@ export const SOUND_HOOK = `(() => {
     w.__njgLine = true;
     obj[name] = w;
   }
+  // the voice stops (every voice layer's "cut it now"): a silent line (no clip could play in the test build) is cut by these
+  // too, so the contract's voice check can bound it by its words' real lengths and the stop
+  function wrapStop(obj, name, why) {
+    const orig = obj && obj[name];
+    if (typeof orig !== "function" || orig.__njgStop) return;
+    const w = function () { log({ type: "voice-stop", why }); return orig.apply(this, arguments); };
+    w.__njgStop = true;
+    obj[name] = w;
+  }
   const wrapAll = () => {
+    try {
+      wrapStop(window.VoiceStop, "stop", "VoiceStop.stop");
+      const CV = window.Cook && window.Cook.core && window.Cook.core.voice;
+      if (CV) wrapStop(CV, "stop", "core voice stop");
+      const KV = window.Clinic && window.Clinic.Kit && window.Clinic.Kit.Voice;
+      if (KV) wrapStop(KV, "clear", "clinic Voice.clear");
+      if (window.NjgVoice) wrapStop(window.NjgVoice, "stop", "NjgVoice.stop");
+    } catch (e) {}
     try {
       const C = window.Cook;
       if (C && C.Lang && C.Lang.plain) wrapLine(C.Lang, "speak", "cook", (l) => C.Lang.plain(l));
@@ -173,7 +190,7 @@ export class SoundLog {
   constructor() { this.events = []; }
   push(e) { this.events.push(e); }
   // the raw timeline the contract checks read (lib/contract.mjs): lines, plays and their ends, and the contract probe's events
-  timeline() { return this.events.filter((e) => e && /^(line|line-end|play|play-end|play-dur|c)$/.test(e.type)); }
+  timeline() { return this.events.filter((e) => e && /^(line|line-end|play|play-end|play-dur|voice-stop|c)$/.test(e.type)); }
   // -> { plays: [{kind, text, id, file, speaker, n}], lines: [{text, who, status, parts: [kinds], n}] }
   summary() {
     const lines = new Map(); // id -> {text, who, t0, t1, plays: []}

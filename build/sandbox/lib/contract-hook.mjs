@@ -63,18 +63,20 @@ export const CONTRACT_HOOK = `(() => {
   // ---- the stage: the end screen, a Cook station (its own count), the host's stage ----
   let station = 0, wasIn = false;
   const resultsUp = () => [...document.querySelectorAll(".njg-results")].some(shown);
+  // on lab.html both: the host's stage, then Cook's station inside it ("host:cook/order|cook:station2:marble")
   const stageKey = () => {
     if (resultsUp()) return "end";
+    const parts = [];
+    const h = safe(() => window.njgTest && window.njgTest.state && String(window.njgTest.state()));
+    // "<mode>/<game>/<state>": the stage is the mode and game; "idle", "results", "done": between them
+    if (h) { const p = h.split("/"); parts.push("host:" + (p.length >= 3 ? p.slice(0, -1).join("/") : p[0])); }
     const C = window.Cook;
     if (C && C.scene && "inStation" in C) {
       if (C.inStation && !wasIn) station++;
       wasIn = !!C.inStation;
-      return C.inStation ? "cook:station" + station + ":" + (C.scene.viewName || "?") : "cook:between" + station + ":" + (C.scene.viewName || "-");
+      parts.push(C.inStation ? "cook:station" + station + ":" + (C.scene.viewName || "?") : "cook:between" + station + ":" + (C.scene.viewName || "-"));
     }
-    const h = safe(() => window.njgTest && window.njgTest.state && String(window.njgTest.state()));
-    // "<mode>/<game>/<state>": the stage is the mode and game; "idle", "results", "done": between them
-    if (h) { const p = h.split("/"); return "host:" + (p.length >= 3 ? p.slice(0, -1).join("/") : p[0]); }
-    return "page";
+    return parts.length ? parts.join("|") : "page";
   };
 
   // ---- the request pop-up and the sidebar card ----
@@ -261,6 +263,11 @@ export const CONTRACT_HOOK = `(() => {
     }
   };
   setInterval(() => { try { sample(); } catch (e) {} }, 100);
+  // a pop-up, a button or a bubble can come and go between two samples (test speed): any class or style change samples at once
+  let queued = false;
+  const soon = () => { if (queued) return; queued = true; setTimeout(() => { queued = false; try { sample(); } catch (e) {} }, 0); };
+  const watch = () => { try { new MutationObserver(soon).observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ["class", "style", "hidden"] }); } catch (e) {} };
+  if (document.documentElement) watch(); else document.addEventListener("DOMContentLoaded", watch);
   setInterval(() => { try { scanArt(); } catch (e) {} }, 700);
   // the end screen's badges, fast while it is up
   setInterval(() => {

@@ -50,14 +50,18 @@ const center = (b) => ({ x: (b.l + b.r) / 2, y: (b.t + b.b) / 2 });
 export function segments(tl, tEnd) {
   const segs = [];
   for (const e of tl) if (e.type === "c" && e.k === "stage") {
-    if (segs.length) segs[segs.length - 1].t1 = e.t;
+    const prev = segs[segs.length - 1];
+    // the same stage, seen in more detail (Cook's station inside the host's stage once Cook's hook is there): not a boundary
+    if (prev && e.key.startsWith(prev.key + "|")) { prev.key = e.key; continue; }
+    if (prev) prev.t1 = e.t;
     segs.push({ key: e.key, t0: e.t, t1: null });
   }
   if (segs.length) segs[segs.length - 1].t1 = null;
   return segs;
 }
 const segAt = (segs, t) => { let s = null; for (const x of segs) if (x.t0 <= t) s = x; return s; };
-export const isPlayStage = (key) => /^cook:station/.test(key) || (/^host:/.test(key) && !/^host:(idle|results|done|page|loading|title|map|menu)$/.test(key) && key.includes("/"));
+// a stage the child plays in: a Cook station, or a host stage that is a game (not idle, results, done)
+export const isPlayStage = (key) => /(^|\|)cook:station/.test(key) || (!/cook:between/.test(key) && /^host:[^|]*\//.test(key));
 
 // lines and their clips: each clip's real interval
 export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
@@ -69,6 +73,7 @@ export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
     else if (e.type === "play-dur" && plays.has(e.pid)) plays.get(e.pid).dur = e.dur;
     else if (e.type === "play-end" && plays.has(e.pid)) { const p = plays.get(e.pid); if (p.end == null) { p.end = e.t; p.why = e.why; } }
   }
+  const stops = tl.filter((e) => e.type === "voice-stop").map((e) => e.t);
   for (const p of plays.values()) {
     if (p.dur == null && p.url) { p.dur = clip(root, p.url); p.fromFile = p.dur != null; }
     if (p.dur == null) { p.dur = 1; p.est = true; }
@@ -79,8 +84,40 @@ export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
     for (const l of lines.values()) if (l.t0 <= p.t0 + 5 && (l.t1 == null || p.t0 <= l.t1 + 60) && (!best || l.t0 >= best.t0)) best = l;
     if (best) { best.plays.push(p); p.line = best; }
   }
+  // a Cook line that played nothing (the test build had no clip it could play in time, or the next line replaced it before it
+  // loaded): it is said in real play, so its length is its words' family clips (or about 0.45 s a word), cut by the next Cook
+  // line (one channel: a new line replaces the old) or a voice stop
+  const cookLines = [...lines.values()].filter((l) => l.who === "cook");
+  for (const l of cookLines) {
+    if (l.plays.length || !(l.text || "").trim()) continue;
+    const est = l.t0 + lineSeconds(root, l.text, clip) * 1000;
+    const next = cookLines.find((x) => x.t0 > l.t0 && x.id !== l.id);
+    const stop = stops.find((t) => t > l.t0);
+    const t1 = Math.min(est, next ? next.t0 : Infinity, stop || Infinity);
+    plays.set(`line${l.id}`, { pid: `line${l.id}`, url: null, text: l.text, via: "silent line (its words' clip lengths)", t0: l.t0, dur: (est - l.t0) / 1000, est: true, t1, end: t1 < est ? t1 : null, why: t1 < est ? (next && next.t0 === t1 ? "the next line" : "a voice stop") : null, line: l });
+    l.plays.push(plays.get(`line${l.id}`));
+    l.silent = true;
+  }
   return { lines: [...lines.values()], plays: [...plays.values()] };
 }
+
+// a line's length from its words' clips: the family's recording of the word, else the placeholder file, else 0.45 s
+let famWords = null;
+export function lineSeconds(root, text, clip = clipSeconds) {
+  if (!famWords) {
+    famWords = new Map();
+    const p = join(root, "data", "family-audio.json");
+    if (existsSync(p)) for (const e of JSON.parse(readFileSync(p, "utf8"))) if (e && e.file && e.kutchi && e.checked !== "redo") { const k = normW(e.kutchi); if (!famWords.has(k)) famWords.set(k, e.file); }
+  }
+  let s = 0;
+  for (const w of String(text).split(/\s+/).map(normW).filter(Boolean)) {
+    const f = famWords.get(w) || (existsSync(join(root, "assets", "audio", "cook-tts", `${w}.mp3`)) ? `assets/audio/cook-tts/${w}.mp3` : null);
+    const d = f ? clip(root, f) : null;
+    s += (d || 0.45) + 0.04;
+  }
+  return Math.max(0.3, s);
+}
+const normW = (s) => String(s || "").toLowerCase().normalize("NFC").replace(/[^\p{L}\p{M}\p{N} ]/gu, "").trim();
 
 // the state (and its screenshot) nearest after t, else the last before it
 function stateAt(r, t) {
@@ -105,7 +142,7 @@ function check1(tl, segs, v, add) {
     if (!isPlayStage(s.key)) continue;
     const end = s.t1 == null ? Infinity : s.t1;
     const play = inputs.find((i) => i.t >= s.t0 && i.t < end && !i.popup && !i.side && !i.next && !(i.exp && i.exp.cook && i.exp.cook.intro));
-    if (!play) { windowStart = end; continue; }
+    if (!play) continue; // no play here (a stage the flow only passed through): the window runs on
     const card = sideAt(play.t);
     const outside = v.lines.filter((l) => l.t0 >= windowStart && l.t0 < play.t && (l.text || "").trim() && !pops.some((p) => p.t0 <= l.t0 + 50 && (p.t1 == null || l.t0 <= p.t1)));
     const newCard = card.n > 0 && card.rows !== lastRows;
@@ -204,7 +241,9 @@ function check4(tl, segs, add) {
       const hs = headsFor(b, e.heads || []);
       const area = e.play || { l: 0, t: 0, r: e.vw, b: e.vh };
       const corner = inCorner(b, { l: 0, t: 0, r: e.vw, b: e.vh }) || inCorner(b, area);
-      const res = hs.map((h) => ({ h, ...bubbleOk(b, h, e.vw, e.vh) }));
+      // nearest head first (Cook's bubbles name no speaker: the character it was put by is the nearest one)
+      const bc = b.tail || center(b.box);
+      const res = hs.map((h) => ({ h, d: Math.hypot(center(h.box).x - bc.x, center(h.box).y - bc.y), ...bubbleOk(b, h, e.vw, e.vh) })).sort((x, y) => x.d - y.d);
       const good = res.find((x) => x.ok);
       if (good && !corner) continue;
       if (good && corner) { const c = center(good.h.box); if (Math.abs(c.y - center(b.box).y) < 200) continue; }
@@ -241,7 +280,8 @@ function check5(tl, add) {
 }
 const shaCache = new Map();
 const shaOf = (root, f) => { if (shaCache.has(f)) return shaCache.get(f); const p = join(root, f); const h = existsSync(p) ? createHash("sha256").update(readFileSync(p)).digest("hex").slice(0, 16) : null; shaCache.set(f, h); return h; };
-const glob = (pat) => new RegExp("^" + pat.split("*").map((x) => x.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*") + "$");
+// a scope pattern matches any part of the stage key ("cook:*:service" matches "host:cook/order|cook:between1:service")
+const glob = (pat) => new RegExp("(^|\\|)" + pat.split("*").map((x) => x.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join("[^|]*") + "($|\\|)");
 function check6(tl, retired, root, add) {
   const seen = new Set();
   for (const e of tl) {

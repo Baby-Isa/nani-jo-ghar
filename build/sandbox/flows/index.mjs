@@ -48,6 +48,8 @@ export function allFlows() {
   for (const u of unit) flows.push(deep(cookStation(u.key, 1, { recipe: !!u.recipe, mode: "takeback" })));
   // ---- S04-A: what Zafar plays from labs.html: Cook on the game host (lab.html), every game at levels 1-4, the story round ----
   for (const f of labFlows()) flows.push(deep(f));
+  // the pantry and the Chop tile at a child's pace (speed 1): the voice check in real time
+  for (const k of ["fetch", "chop"]) flows.push(deep(cookStation(k, 1, { speed: 1 })));
   return flows.map((f) => ({ ...f, parked: false }));
 }
 export const flowSizes = (f) => f.sizes || ALL_SIZES;
