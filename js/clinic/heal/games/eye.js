@@ -88,7 +88,10 @@
   function mount(stage, ctx) {
     const data = ctx.data || {};
     const P = plan(ctx.level, ctx.rng);
-    const S = HS.make(stage, ctx, { place: "head", game: "eye" });
+    // S03 (review flaw 5): on a tablet (4:3, 1180x820) the close-up's crop cut the sore eye at the screen's edge: a
+    // wider safe area there keeps both eyes whole (and the tool shelf goes down to the cheek, below)
+    const tablet = (root.innerWidth || 0) / Math.max(1, root.innerHeight || 0) < 1.5;
+    const S = HS.make(stage, ctx, Object.assign({ place: "head", game: "eye" }, tablet ? { safe: [50, 790] } : {}));
     const { s } = S;
     const Kit0 = root.Clinic && root.Clinic.Kit;
     const url = (u) => (Kit0 && Kit0.url ? Kit0.url(u) : u);
@@ -627,6 +630,9 @@
     S.tools([{ id: "drops", glyph: "💧", img: "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
       if (id === "drops" && cur() && cur().kind === "drops") showDropper(sore, false);
     });
+    // S03 (review flaw 5): on a tablet the shelf, centred on the right, sat on the sore eye: it goes down to the cheek
+    const shelfEl = S.toolEls.drops && S.toolEls.drops.parentElement;
+    if (shelfEl && tablet) Object.assign(shelfEl.style, { top: "auto", bottom: "var(--njg-s4)", transform: "none" });
     const dropIn = async (at) => {
       await fallDrop(at);
       S.face("wince", 400);
