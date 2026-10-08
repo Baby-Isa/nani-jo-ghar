@@ -28,7 +28,7 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 | 2 Leave what he didn't comment on | A4, A5 | 10 Only real family voices | G14 |
 | 3 Fix it properly, once | A8, C6 | 11 Engine-built lines, family voices | G9, G10, G12 |
 | 4 Never invent Kutchi | G1 | 12 Nothing makes a child feel bad | E5, E10, E14, E30 |
-| 5 No written English for the child | E1, G15 | 13 Art via the image API, Fable reviewing (decision 71) | D1, D3 |
+| 5 No written English for the child | E1, G15 | 13 Art in ChatGPT runs Zafar supervises (decision 77) | D1, D3 |
 | 6 The Kutchi leak test | C10 | 14 Sessions | B1, B3, B4, B6, B7 |
 | 7 Done means looked at | C1, C3, C4 | 15 Cost-conscious | A11, A12 |
 | 8 Shared screens and buttons | F1 | 16 The family's faith | I1, I2 |
@@ -90,7 +90,7 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 - **Every brief is complete:** owned files, a hard stop time, links to `CLAUDE.md`, the rulebook sections it needs and `docs/process/qa-checklist.md` (`build/tools/ops/brief.mjs` writes it, so the generator is the truth), "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
 
 ### Git and publishing
-- **The release cycle runs in this order:** art finished (image API, Fable reviewing) → wired in → full checks on everything (the full QA matrix) → publish to `main` → Zafar plays and gives feedback → new art, art fixes and gameplay fixes from that feedback, then round again. Zafar plays only what is live on `main`, never a half-wired branch preview. The full checks cover only what changed since the last gate (plus screens reached by any shared-file change), never a repeat of unchanged screens. For the clinic, the girl's finished art (part B with its props) is enough; other patients are stitched in later. (B20, decisions 33, 34, 37)
+- **The release cycle runs in this order:** art finished (a ChatGPT run Zafar supervises) → wired in → full checks on everything (the full QA matrix) → publish to `main` → Zafar plays and gives feedback → new art, art fixes and gameplay fixes from that feedback, then round again. Zafar plays only what is live on `main`, never a half-wired branch preview. The full checks cover only what changed since the last gate (plus screens reached by any shared-file change), never a repeat of unchanged screens. For the clinic, the girl's finished art (part B with its props) is enough; other patients are stitched in later. (B20, decisions 33, 34, 37)
 - **Check `git log origin/main` before redoing work;** during a run, log a timestamped line in `docs/process/overnight-log.md` (`checkin.mjs --log` moves earlier days to `docs/process/overnight-log/<date>.md`) and push the branch every 20–30 minutes. (B6, B14)
 - **End every session with** a report in `build/reports/<id>-<topic>.md` (under 300 words), the QA checklist results (`docs/process/qa-checklist.md`), `bump_version` and ONE push to `main`. (B6)
 - **Run `python3 build/bump_version.py` before every push to `main`;** every asset URL built in code goes through `Cook.v()` / `njgV()`. (B7)
@@ -267,7 +267,7 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 ## 7. Art and assets
 
 ### Pipeline and cost
-- **Art is made through the image API** (OpenAI gpt-image, the style anchor and approved art attached as references), **with Fable reviewing every image** against its plan and the art bible and amending the prompt for each redo until it passes; estimate the spend first and report it. ChatGPT in Chrome stays a fallback. Characters other than the girl wait until her run is right (decision 71, 8 Oct; replaces the ChatGPT-only rule). (D1, D2)
+- **Art is made in ChatGPT runs that Zafar supervises** (decision 77, 9 Oct; replaces decision 71's image API): Claude audits what's needed, writes one paste block from the run spec (`/art-run`), he runs it and approves what lands; Claude judges every image against the plan and the art bible, cuts and wires it. No image-API art without his say-so. Characters stay at the same scale as each other in every scene they share. (D1, D2)
 - **One long paste block per run, needing no manual steps from Zafar:** generous batches, every attachment, a save-as name and check line per prompt. The runner works only inside Chrome: it fetches references from `raw.githubusercontent.com` into its cloud workspace and attaches them with its file-upload tool, and saves each kept image the same way (the image's address into the workspace, then the file-upload tool on GitHub's upload page) as one commit to `sources/art/<pack>/` on `main`; never Chrome downloads, file pickers, page `fetch()` or the clipboard (blocked on ChatGPT and GitHub); it reports pass/fail. (D3, decision 29)
 - **The Chrome runner** changes no settings, signs nothing in or out, uploads only listed files, logs-and-skips anything needing Zafar, and paces ~1 image a minute, 3 at once. (D24, D26)
 - **Judge every generated asset pass/fail and fix failures** before Zafar sees anything. (D25)
