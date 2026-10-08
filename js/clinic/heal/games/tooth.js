@@ -43,13 +43,6 @@
   // the tooth close-up's crown (svg units): decay is placed inside it
   const CROWN = { x0: 300, x1: 482, y0: 168, y1: 352 };
 
-  /** T7 (the square-drill trial, CLN-103): a square-edged patch, its corners nudged a little (data drill.square). */
-  function box(cx, cy, r, rng) {
-    const j = () => (rng() - 0.5) * r * 0.16;
-    const a = r * (0.8 + rng() * 0.25);
-    const b = r * (0.8 + rng() * 0.25);
-    return [[cx - a + j(), cy - b + j()], [cx + a + j(), cy - b + j()], [cx + a + j(), cy + b + j()], [cx - a + j(), cy + b + j()]].map(([x, y]) => [Math.round(x), Math.round(y)]);
-  }
   /** A jagged patch: points round (cx, cy), radius r +- 35 %. */
   function jag(cx, cy, r, rng) {
     const n = 9 + Math.floor(rng() * 4);
@@ -92,8 +85,7 @@
       const cx = CROWN.x0 + dk.r + rng() * (CROWN.x1 - CROWN.x0 - 2 * dk.r);
       const cy = CROWN.y0 + dk.r + rng() * (CROWN.y1 - CROWN.y0 - 2 * dk.r);
       if (patches.some((p) => Math.hypot(p.cx - cx, p.cy - cy) < dk.r * 2.3)) continue;
-      const square = !(data && data.drill && data.drill.square === false);
-      patches.push({ cx: Math.round(cx), cy: Math.round(cy), r: dk.r, square, pts: square ? box(cx, cy, dk.r, rng) : jag(cx, cy, dk.r, rng) });
+      patches.push({ cx: Math.round(cx), cy: Math.round(cy), r: dk.r, pts: jag(cx, cy, dk.r, rng) });
     }
     const steps = moves.map((m, i) => ({
       id: `b${i}`,
@@ -292,7 +284,6 @@
     drillEl.dataset.tipX = String(tipX);
     drillEl.dataset.tipY = String(tipY);
     const TIP_R = 17; // the bur's reach, svg units
-    const SQUARE = !(data.drill && data.drill.square === false); // T7: the square drill trial (Zafar: "try it how I suggested")
 
     /* ---------------- 3. the fill: the nozzle, the gauge, the big button ---------------- */
     const fillG = s("g", { opacity: 0 }, S.fx);
@@ -572,16 +563,15 @@
       if (!inTooth) return;
       // cut away the decay under the tip
       if (!drag || !drag.last || Math.hypot(p.x - drag.last.x, p.y - drag.last.y) > 4) {
-        // T7: a square bur cuts square (the trial), else round
-        if (SQUARE) s("rect", { x: p.x - TIP_R, y: p.y - TIP_R, width: TIP_R * 2, height: TIP_R * 2, fill: "#000" }, mask);
-        else s("circle", { cx: p.x, cy: p.y, r: TIP_R, fill: "#000" }, mask);
+        // decision 72: the round bur and jagged decay of before Sprint 2 (the square-drill trial is dropped)
+        s("circle", { cx: p.x, cy: p.y, r: TIP_R, fill: "#000" }, mask);
         if (drag) drag.last = p;
       }
       let onDecay = false;
       c.patches.forEach((pa) => {
         if (Math.hypot(p.x - pa.cx, p.y - pa.cy) < pa.r * 1.4 + TIP_R) {
           pa.samples.forEach(([x, y], i) => {
-            if (pa.left.has(i) && (SQUARE ? Math.max(Math.abs(p.x - x), Math.abs(p.y - y)) < TIP_R : Math.hypot(p.x - x, p.y - y) < TIP_R)) {
+            if (pa.left.has(i) && Math.hypot(p.x - x, p.y - y) < TIP_R) {
               pa.left.delete(i);
               onDecay = true;
             }
