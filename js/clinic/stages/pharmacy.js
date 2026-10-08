@@ -53,6 +53,7 @@
   S.pharmacy = {
     async run(env, plan) {
       const { screen, data } = env;
+      Kit.Voice.clear(); // the voice stop at the stage change (CLN-109): the diagnosis's last lines never queue ahead of the request
       const res = S.result("pharmacy");
       const stage = S.room(screen, "pharmacy");
       stage.classList.add("cl-pharmacy");

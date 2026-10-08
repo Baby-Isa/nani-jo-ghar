@@ -714,6 +714,7 @@
     const quietStart = () => popped && Date.now() - popAt < (Kit.fast ? 1500 : 5000);
     const showPopup = () => {
       if (!popup) return Promise.resolve();
+      Kit.Voice.clear(); // the stage change (CLN-109): nothing from before queues ahead of the request
       let big = null;
       card.rows.forEach((r) => popRead.add(r.id));
       return global.RequestPopup.open({
