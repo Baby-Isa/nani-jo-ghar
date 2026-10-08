@@ -11,7 +11,7 @@ Branch `ccr-a7370759-t0lee7`. Not reviewed (builder's notes). Game code changed:
 6. **Rows** (decision 73): clinic 47 open → 8 (`statuscounts.mjs` agrees). Each changed row names what was checked.
 
 ## Proof
-- `checks.mjs`: unit 229/229, words 0 literals, bump ok, load 21/21. `check_onboard` ok. Leak bots: see the last line.
+- `checks.mjs`: unit 229/229, words 0 literals, bump ok, load 21/21. `check_onboard` ok. Leak bots: clinic (L1 blind 0.04%) and all 12 heal bots PASS. Fever rechecked with A's voice stop: her line, face and gauge agree at every change.
 - Sandbox `s03c-quick` (17 flows, 1366×768): all reach their end, 0 page errors, **CHECK PASSED** (0 new, 195 fixed). Shotdiff: manifest empty (101 new).
 - Probes looked at: fever L1/L3 (1366, 1024), L2 (844); tooth L1; D3 L2 at 844×390, 800×360; eye L1 at 1024×768, 1180×820; pharmacy L2. About 14 min of browser time.
 
@@ -19,5 +19,4 @@ Branch `ccr-a7370759-t0lee7`. Not reviewed (builder's notes). Game code changed:
 - CLN-01: other patients and the doctor wait for art (decision 71). CLN-14 left (decision 74). CLN-07, CLN-09, CLN-41: old rows, untouched.
 - Belt still shows the tilted rough plaster and comb sprites: belt views wait on art (E2 two-colour plasters, Session D).
 - The eye close-up's lower edge shows on tablets (face art ends above the screen's foot).
-- Fever's stale "too hot" bubble over a green gauge: should be gone with A's voice stop; recheck in `/review`.
 - QA checklist ⬜, for `/review`.
