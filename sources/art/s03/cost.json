@@ -1,0 +1,167 @@
+{
+ "model": "gpt-image-2",
+ "calls": [
+  {
+   "name": "S2",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3912,
+    "input_tokens_details": {
+     "image_tokens": 3651,
+     "text_tokens": 261
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 10936
+   },
+   "usd": 0.3188
+  },
+  {
+   "name": "S1",
+   "try": 1,
+   "usage": {
+    "input_tokens": 4894,
+    "input_tokens_details": {
+     "image_tokens": 4578,
+     "text_tokens": 316
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 11918
+   },
+   "usd": 0.3283
+  },
+  {
+   "name": "S3",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3462,
+    "input_tokens_details": {
+     "image_tokens": 3057,
+     "text_tokens": 405
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8950
+   },
+   "usd": 0.2521
+  },
+  {
+   "name": "S4",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3329,
+    "input_tokens_details": {
+     "image_tokens": 3006,
+     "text_tokens": 323
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 10353
+   },
+   "usd": 0.3126
+  },
+  {
+   "name": "S5",
+   "try": 1,
+   "usage": {
+    "input_tokens": 4044,
+    "input_tokens_details": {
+     "image_tokens": 3692,
+     "text_tokens": 352
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 9532
+   },
+   "usd": 0.2582
+  },
+  {
+   "name": "G1",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3358,
+    "input_tokens_details": {
+     "image_tokens": 3072,
+     "text_tokens": 286
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8846
+   },
+   "usd": 0.2517
+  },
+  {
+   "name": "G2",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3335,
+    "input_tokens_details": {
+     "image_tokens": 3072,
+     "text_tokens": 263
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8823
+   },
+   "usd": 0.2516
+  },
+  {
+   "name": "G3",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3320,
+    "input_tokens_details": {
+     "image_tokens": 3072,
+     "text_tokens": 248
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8808
+   },
+   "usd": 0.2515
+  },
+  {
+   "name": "G4",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3313,
+    "input_tokens_details": {
+     "image_tokens": 3072,
+     "text_tokens": 241
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8801
+   },
+   "usd": 0.2514
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+# The run spec for pack s03 (Sprint 3: the redo list, the art rows, the girl's states; plan
+# docs/design-language/art-plans/s03-art-plan.md). Drawn by build/gen_s03.py through the image API (decision 71), not a
+# paste block; read by artjudge.py. The judge reads the latest try of each line from a folder of these save names
+# (build/gen_s03.py writes <id>-v<try>.png; the session copies the try under judgement to its save name).
+pack: s03
+title: Sprint 3 art
+plan: docs/design-language/art-plans/s03-art-plan.md
+dest: sources/art/s03/judge
+real_people: false
+refs:
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+  girl-w1-front-neutral-v1.png: sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  W1: {attach: [girl-w1-front-neutral-v1.png], save: w1.png, check: BASE}
+  S1: {attach: [style-anchor-v1.png], save: s1.png, check: DISH}
+  S2: {attach: [style-anchor-v1.png], save: s2.png, check: BOWL}
+  S3: {attach: [style-anchor-v1.png], save: s3.png, check: PLASTERS}
+  S4: {attach: [style-anchor-v1.png], save: s4.png, check: LADLE}
+  S5: {attach: [style-anchor-v1.png], save: s5.png, check: POTATO}
+  G1: {person: girl, attach: ["edit: kept:W1"], save: g1.png, check: FACE}
+  G2: {person: girl, attach: ["edit: kept:W1"], save: g2.png, check: FACE}
+  G3: {person: girl, attach: ["edit: kept:W1"], save: g3.png, check: FACE}
+  G4: {person: girl, attach: ["edit: kept:W1"], save: g4.png, check: FACE}
+parts:
+  - id: A
+    title: THE REDO LIST AND THE ART ROWS
+    items: [{lines: [W1, S1, S2, S3, S4, S5]}]
+  - id: G
+    title: THE GIRL'S STATES (masked face edits of W1)
+    items: [{lines: [G1, G2, G3, G4]}]
+checks:
+  BASE: {text: the approved seated picture, judge: {aspect: [2, 3], bg: flat}}
+  DISH: {text: the sekelo dish at B1's angle; meat, onion, tomato only, judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}}
+  BOWL: {text: the steel bowl top-down, matte daar, judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true, sweets: true}}
+  PLASTERS: {text: six two-colour plasters split lengthwise, judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}}
+  LADLE: {text: a kadchi top-down, handle rising to the upper right, judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}}
+  POTATO: {text: raw, grilled, charred potato chunks and a heap, judge: {aspect: [3, 2], bg: flat, pieces_min: 4, no_touch: true, sweets: true}}
+  FACE: {text: only the face changed, judge: {aspect: [2, 3], bg: flat, no_touch: true, edit: {allowed: [0.3, 0.13, 0.7, 0.35]}, skin_face: [0.35, 0.17, 0.65, 0.3]}}
