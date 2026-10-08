@@ -719,9 +719,9 @@
    "alias_of": "pillow"
   },
   "care-plaster": {
-   "file": "assets/clinic/rough/items/plaster.webp",
-   "w": 217,
-   "h": 140,
+   "file": "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+   "w": 256,
+   "h": 129,
    "group": "items",
    "alias_of": "plaster"
   },
@@ -2166,9 +2166,10 @@
    "sheet": "furniture"
   },
   "plaster": {
-   "file": "assets/clinic/rough/items/plaster.webp",
-   "w": 217,
-   "h": 140,
+   "file": "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+   "_s03": "S03-D (CLN-97): the s02 flat skin plaster replaces the rough tilted sprite (was assets/clinic/rough/items/plaster.webp, 217x140)",
+   "w": 256,
+   "h": 129,
    "group": "items",
    "sheet": "items-a",
    "aliases": [
@@ -2176,9 +2177,10 @@
    ]
   },
   "plaster-blue": {
-   "file": "assets/clinic/rough/items/plaster-blue.webp",
-   "w": 231,
-   "h": 211,
+   "file": "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
+   "_s03": "S03-D (CLN-97): the s02 flat blue plaster replaces the rough tilted sprite (was assets/clinic/rough/items/plaster-blue.webp, 231x211)",
+   "w": 256,
+   "h": 129,
    "group": "items",
    "sheet": "items-f"
   },

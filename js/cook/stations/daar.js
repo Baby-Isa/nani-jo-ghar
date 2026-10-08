@@ -90,8 +90,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
   const TRIVET = { w: 528, h: 563, cx: 0.4928, cy: 0.4987, r: 0.4833 };
   // S03-D (DAAR-02): ladle-v3, a real kadchi from above (a deep round bowl, a flat strap handle rising to the upper
-  // right); its bowl: the biggest circle inside it, measured on the cut
-  const LADLE = { w: 469, h: 512, cx: 0.2217, cy: 0.7949, r: 0.1843 };
+  // right, foreshortened by build/gen_s03.py); its bowl: the biggest circle inside it, measured on the cut
+  const LADLE = { w: 360, h: 389, cx: 0.2889, cy: 0.7301, r: 0.2401 };
   // (R4 cell 6) the same bowl of plain daar, no tadka: it waits beside the pot and pours in (the tadka one is the review's)
   // S03-D (C10): the s03 bowl (matte daar) on trivet-t, one canvas with daar-bowl-plain-t (build/gen_s03.py --fit)
   const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4899 };

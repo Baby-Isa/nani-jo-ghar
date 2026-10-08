@@ -206,6 +206,35 @@ def defringe(path, px=2):
     Image.fromarray(np.dstack([rgb, np.clip(na * 255, 0, 255)]).astype(np.uint8), 'RGBA').save(path, 'WEBP', quality=92, method=6)
 
 
+def foreshorten(im, k):
+    """The kadchi's handle rises toward the camera: past the bowl's rim it is shortened to k along its own line, so it
+    stays over the pot's rim and clear of the speed dial (S4, DAAR-02). The bowl (the biggest inside circle) is kept."""
+    import numpy as np
+    from scipy import ndimage as ndi
+    a = np.asarray(im).astype(float)
+    al = a[..., 3] > 128
+    d = ndi.distance_transform_edt(al)
+    cy, cx = np.unravel_index(d.argmax(), d.shape)
+    r = d.max()
+    ys, xs = np.nonzero(al)
+    i = np.argmax((xs - cx) ** 2 + (ys - cy) ** 2)
+    ux, uy = (xs[i] - cx), (ys[i] - cy)
+    L = np.hypot(ux, uy)
+    ux, uy = ux / L, uy / L
+    H, W = al.shape
+    gy, gx = np.mgrid[0:H, 0:W].astype(float)
+    t = (gx - cx) * ux + (gy - cy) * uy  # along the handle
+    r0 = r * 1.05
+    # inverse map: an output point at t > r0 samples the source at r0 + (t - r0) / k
+    ts = np.where(t > r0, r0 + (t - r0) / k, t)
+    sx, sy = gx + (ts - t) * ux, gy + (ts - t) * uy
+    out = np.stack([ndi.map_coordinates(a[..., c], [sy, sx], order=1, cval=0) for c in range(4)], -1)
+    o = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), 'RGBA')
+    bb = o.getchannel('A').point(lambda v: 255 if v > 8 else 0).getbbox()
+    o = o.crop((max(0, bb[0] - 16), max(0, bb[1] - 16), min(W, bb[2] + 16), min(H, bb[3] + 16)))
+    return o
+
+
 def fit(stage):
     """Place the staged cuts (artcut.py s03.cut.json --out <dir>; <dir>/stage) on the game's canvases. Prints the
     measurements the data and code hookups need."""
@@ -252,7 +281,7 @@ def fit(stage):
     p = p.resize((round(p.width * s), round(p.height * s)), Image.LANCZOS)
     cv = Image.new('RGBA', (p.width + 32, p.height + 32), (0, 0, 0, 0))
     cv.alpha_composite(p, (16, 16))
-    save(cv, 'assets/cook/items/v3/daar/ladle-v3.webp')
+    save(foreshorten(cv, 0.6), 'assets/cook/items/v3/daar/ladle-v3.webp')
     # G1-G4: the girl's face layers and corner heads (the cut's canvas is girl-front's own)
     gd = os.path.join(stage, 'girl')
     for f in ['hot', 'cold', 'pain', 'happy']:

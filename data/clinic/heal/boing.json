@@ -170,19 +170,19 @@
   },
   "machine": "assets/clinic/heal-v3/drop-machine.webp",
   "upperarm": {
-   "file": "assets/clinic/closeups/child/upperarm-v2-boing.webp",
+   "file": "assets/clinic/closeups/child/upperarm-v2.webp",
    "on": true,
    "has2x": true,
    "kinds": [
     "girl"
    ],
    "box": [
-    -57,
-    170,
-    768,
-    330
+    -50,
+    0,
+    753,
+    502
    ],
-   "why": "S03-D (review flaw 3, the s02 RU1): the girl's bare upper arm, sleeve pushed up, hanging; cropped at the stage's bottom edge; the jab spot (300, 395) on the upper arm"
+   "why": "S03-D (review flaw 3, the s02 RU1): the girl's bare upper arm, sleeve pushed up, hanging; it runs off the stage's top and bottom (the cut's exits); the jab spot (300, 395) on the upper arm"
   }
  },
  "lines": {
@@ -203,7 +203,7 @@
   }
  },
  "assets": [
-  "assets/clinic/closeups/child/upperarm-v2-boing*.webp",
+  "assets/clinic/closeups/child/upperarm-v2*.webp",
   "assets/clinic/heal-v3/drop-machine.webp",
   "assets/clinic/items-v2/apple.webp",
   "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
