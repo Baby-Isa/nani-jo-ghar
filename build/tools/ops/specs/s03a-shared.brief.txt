@@ -1,0 +1,67 @@
+SESSION NAME / MODE:  S03-A, the shared request pop-up, the voice stop and the shared-screen rows (Sprint 3)
+MODEL AND EFFORT:     Opus, high effort (one shared component every mode uses and the voice timing, judged by eye and ear)
+COST ESTIMATE:        about $45
+HARD STOP:            8 Oct 2026, 10:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S03-overnight-fix.md (the goal and who owns what)
+  6. docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)
+  7. docs/feedback/clinic-playtest-2026-10-08.md
+  8. build/reports/s02-review.md (flaws first)
+  9. js/clinic/stages/pharmacy.js requestPopup and js/cook/ui.js's requests pop-up (the two copies to replace)
+  10. js/shared/order-card.js (big: true), docs/design-language/guide-and-card.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/**, css/shared/** (new js/shared/request-popup.js and a shared voice stop)
+  - js/cook/ui.js
+  - js/clinic/kit.js (Voice), js/clinic/heal/host.js, js/clinic/stages/pharmacy.js
+  - the Shared components rows in docs/process/regressions.md
+  - build/reports/s03a-shared.md
+READ-ONLY (never edit):
+  - js/cook/** other than ui.js (Session B)
+  - js/clinic/heal/games/**, js/clinic/stages/** other than pharmacy.js (Session C)
+  - assets/**, data art blocks (Session D)
+  - data/lang/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Reconcile your area's rows first (decision 73): for each open/reopened row on your screens, check the code; if built, set it to 'built, not re-played (S03, <what>)'; drop a 'pending decision' note a decision row already answers; anything left is your task list. Commit the row changes with each fix after that.
+     Accept: the report lists every row of your area with its new status; node build/tools/review/statuscounts.mjs agrees
+  2. One shared request pop-up in js/shared/ (non-negotiable 8; decision 53; CLN-84 re-raised, SH-64): the person's/doctor's card at full size over the play area, read out row by row with the read-along; a tap anywhere folds it into the left sidebar card at once; then a quiet game. Cook's requests pop-up and the pharmacy's requestPopup both use it, and every heal game (scrape, knee, ear, eye, tooth, taste, fever, boing, foot) opens with it before play starts, in story and in the labs.
+     Accept: screens and a short ear check: scrape, fever and tooth L1 open with the pop-up, fold to the sidebar; Cook chai and the pharmacy unchanged in look
+  3. The voice stop (SH-64, CLN-109): Kit.Voice.clear() and Cook's voice really stop: a generation counter so lines already chained on the queue don't play, and the playing family clip (Audio) and TTS paused. The full card read-out happens only while the pop-up is up; a tap that clicks through cuts it at once. Every stage change and game end calls the stop, so no voice carries into the send-off or the next station.
+     Accept: probe: finish scrape L1 as fast as possible, enter the send-off: no doctor line from the heal game plays; tap through the pop-up in chai and pharmacy at once: silence
+  4. Every other open Shared components row (end screen, cards, help, layout) and clinic-wide host rows CLN-82, CLN-83, CLN-85, CLN-87 (host.js); the review's flaw 1 (800x360 word list scroll).
+     Accept: each row's Check column, looked at
+
+REGRESSION ROWS TO RECHECK (163 rows of docs/process/regressions.md; * = open or reopened):
+  cook:chai-tray (16): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07*, CHAI-08*, CHAI-09, CHAI-10*, CHAI-11*, CHAI-12*, CHAI-13*, CHAI-14*, CHAI-15*, CHAI-16*
+  cook:pantry (28): CK-01*, CK-02, CK-03, CK-04, CK-05, CK-06, CK-07, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-TB-01*, CK-TAB-01*, CK-20*, CK-21*, CK-22*, CK-23*, CK-24*, CK-25*, CK-26*
+  clinic:pharmacy (27): CLN-19, CLN-20, CLN-21, CLN-22, CLN-23*, CLN-24, CLN-96*, CLN-97*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*, CLN-109*
+  clinic:heal-cut (28): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-82*, CLN-84*, CLN-85*, CLN-87*, CLN-109*, CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-45, CLN-46, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99*
+  clinic:heal-fever (27): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-84*, CLN-85*, CLN-87*, CLN-109*, CLN-30, CLN-31*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-56, CLN-57*, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-105*
+  clinic:heal-tooth (29): CLN-02, CLN-03, CLN-08*, CLN-09*, CLN-81*, CLN-84*, CLN-85*, CLN-87*, CLN-109*, CLN-30, CLN-35*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-51, CLN-52, CLN-53, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103*
+  shared components (64): SH-01*, SH-02*, SH-03*, SH-04, SH-05, SH-06, SH-49*, SH-50*, SH-51*, SH-61*, SH-07, SH-08, SH-09, SH-10, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52*, SH-53*, SH-54*, SH-55*, SH-62*, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56*, SH-57*, SH-58*, SH-59*, SH-60*, SH-63*, SH-64*, SH-23, SH-24, SH-25, SH-26, SH-27*, SH-28*, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38*, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s03a-shared` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8831.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s03a-shared.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

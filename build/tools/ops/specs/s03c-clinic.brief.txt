@@ -1,0 +1,72 @@
+SESSION NAME / MODE:  S03-C, every code-only clinic row, the fever room tidy, the old drill back (Sprint 3)
+MODEL AND EFFORT:     Opus, high effort (visual judgement across nine heal games and the clinic stages)
+COST ESTIMATE:        about $55
+HARD STOP:            8 Oct 2026, 10:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 5 (Clinic) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S03-overnight-fix.md (the goal and who owns what)
+  6. docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)
+  7. docs/feedback/clinic-playtest-2026-10-08.md
+  8. build/reports/s02-review.md (flaws first)
+  9. build/reports/s02c-clinic.md, s02f-finish.md
+  10. docs/feedback/clinic-playtest-2026-10-06.md §2
+  11. docs/game-design/modes/clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/heal/games/**, js/clinic/stages/** except pharmacy.js (Session A), js/clinic/figure.js, body.js, pipeline.js, run.js, main.js, screen.js
+  - data/clinic/** except art references (Session D)
+  - the Clinic rows in docs/process/regressions.md
+  - build/reports/s03c-clinic.md
+READ-ONLY (never edit):
+  - js/shared/**, js/clinic/kit.js, js/clinic/heal/host.js, js/clinic/stages/pharmacy.js (Session A: pull often)
+  - assets/**, art references (Session D)
+  - data/lang/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: rows needing new art: Session D makes the girl's states and redos; leave the row open and say which art id it waits for
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Reconcile your area's rows first (decision 73): for each open/reopened row on your screens, check the code; if built, set it to 'built, not re-played (S03, <what>)'; drop a 'pending decision' note a decision row already answers; anything left is your task list. Commit the row changes with each fix after that.
+     Accept: the report lists every row of your area with its new status; node build/tools/review/statuscounts.mjs agrees
+  2. The tooth game goes back to the drill it had before Sprint 2 (decision 72: the square drill trial is dropped); keep the rest of Sprint 2's tooth fixes (plaque clears as you brush, brush into the mouth).
+     Accept: tooth L1-L3 screens: the old drill, the decay it fixes
+  3. The fever room tidy (CLN-105, CLN-31, CLN-57): one number model ±2/3/4, what she says, looks and the gauge agree; one green zone; tools in the column; tidy room; fan points down; no gust; small sweat/snowflake icons.
+     Accept: fever L1-L3 screens, flaws first
+  4. Every other open code-only clinic row (waiting room except the CLN-14 L1 leak, which stays as it is: decision 74; diagnosis; pharmacy items on the belt in data/CSS only; send-off; heal games); review flaw 5 (the eye tool shelf clear of the sore eye at 4:3; the standing girl bigger on phones, CLN-94).
+     Accept: each row's Check column, looked at; leak bots still pass
+
+REGRESSION ROWS TO RECHECK (100 rows of docs/process/regressions.md; * = open or reopened):
+  every flow here (8): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-84*, CLN-85*, CLN-87*, CLN-109*
+  clinic:waiting (20): CLN-10, CLN-11*, CLN-12, CLN-13*, CLN-14*, CLN-15, CLN-90*, CLN-91*, CLN-92*, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-09*, CLN-82*, CLN-83*, CLN-86*, CLN-88*, CLN-89*
+  clinic:diagnosis (17): CLN-16*, CLN-17, CLN-18*, CLN-93*, CLN-94*, CLN-95*, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-09*, CLN-82*, CLN-83*, CLN-86*, CLN-88*, CLN-89*
+  clinic:sendoff (17): CLN-25, CLN-26, CLN-27, CLN-28, CLN-29, CLN-98*, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-09*, CLN-82*, CLN-83*, CLN-86*, CLN-88*, CLN-89*
+  clinic:heal-cut (20): CLN-82*, CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-45, CLN-46, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99*
+  clinic:heal-knee (20): CLN-82*, CLN-30, CLN-33, CLN-42, CLN-43, CLN-44, CLN-45, CLN-47, CLN-48, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-100*
+  clinic:heal-ear (22): CLN-30, CLN-34*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-49, CLN-50, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-71, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-101*, CLN-102*
+  clinic:heal-eye (26): CLN-30, CLN-38, CLN-39*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-47, CLN-59, CLN-60, CLN-61*, CLN-62, CLN-63, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-107*
+  clinic:heal-tooth (21): CLN-09*, CLN-30, CLN-35*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-51, CLN-52, CLN-53, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103*
+  clinic:heal-taste (19): CLN-30, CLN-36, CLN-42, CLN-43, CLN-44, CLN-45, CLN-54, CLN-55, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-104*
+  clinic:heal-fever (19): CLN-30, CLN-31*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-56, CLN-57*, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-105*
+  clinic:heal-boing (20): CLN-82*, CLN-30, CLN-37, CLN-42, CLN-43, CLN-44, CLN-45, CLN-58, CLN-65*, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-106*
+  clinic:heal-foot (21): CLN-82*, CLN-30, CLN-40, CLN-42, CLN-43, CLN-44, CLN-45, CLN-47, CLN-64, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-75, CLN-76, CLN-77, CLN-79, CLN-108*
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s03c-clinic` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8833.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s03c-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

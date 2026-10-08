@@ -1,0 +1,58 @@
+{
+  "name": "S03-B, every code-only Cook row and the review's Cook flaws (Sprint 3)",
+  "model": "Opus",
+  "effort": "medium",
+  "why": "many known, local fixes across the six stations",
+  "cost": "about $55",
+  "stop": "8 Oct 2026, 10:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "5 (Cook)"
+  ],
+  "read": [
+    "docs/sprints/S03-overnight-fix.md (the goal and who owns what)",
+    "docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)",
+    "docs/feedback/clinic-playtest-2026-10-08.md",
+    "build/reports/s02-review.md (flaws first)",
+    "build/reports/s02b-cook.md, s02f-finish.md",
+    "docs/feedback/cook-playtest-2026-10-06.md \u00a72"
+  ],
+  "owns": [
+    "js/cook/** except js/cook/ui.js (Session A)",
+    "data/cook.json and data/stations/** except art blocks (Session D)",
+    "the Cook rows in docs/process/regressions.md",
+    "build/reports/s03b-cook.md"
+  ],
+  "readOnly": [
+    "js/shared/**, css/shared/** (Session A: call the shared pop-up and voice stop when they land; pull often)",
+    "assets/**, art blocks (Session D)",
+    "data/lang/** (missing Kutchi: grey placeholder, report the gap)"
+  ],
+  "stubs": "rows that need new art or Mum's words: leave open, list them in the report",
+  "tasks": [
+    {
+      "do": "Reconcile your area's rows first (decision 73): for each open/reopened row on your screens, check the code; if built, set it to 'built, not re-played (S03, <what>)'; drop a 'pending decision' note a decision row already answers; anything left is your task list. Commit the row changes with each fix after that.",
+      "accept": "the report lists every row of your area with its new status; node build/tools/review/statuscounts.mjs agrees"
+    },
+    {
+      "do": "Every open code-only Cook row (pantry, chai, maani, daar, chaat, samosa, sekelo, general), including take-back until Done in the 9 stations that lack it (CK-TB-01), CK-25 / review flaw 4 (Cook loads only the open station's code, decision 68; loadcheck passes), review flaw 2 (pour pan's handle off the top edge at 1366x768), flaw 7 (samosa L3 grid mounds bigger).",
+      "accept": "each row's Check column, looked at; loadcheck.mjs passes for every station"
+    }
+  ],
+  "flows": [
+    "cook:pantry",
+    "cook:chai-tray",
+    "cook:maani-line",
+    "cook:daar",
+    "cook:chaat",
+    "cook:samosa",
+    "cook:mishkaki-grill"
+  ],
+  "shared": false,
+  "port": 8832,
+  "report": "s03b-cook",
+  "publish": false
+}

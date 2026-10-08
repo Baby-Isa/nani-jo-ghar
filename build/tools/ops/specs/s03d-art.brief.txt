@@ -1,0 +1,69 @@
+SESSION NAME / MODE:  S03-D, the art through the image API with Fable reviewing, and every made image wired in (Sprint 3)
+MODEL AND EFFORT:     Opus, high effort (visual judgement on generated and cut art, plus wiring)
+COST ESTIMATE:        about $45 session + about $40 image API (hard cap $60 API; report spend)
+HARD STOP:            8 Oct 2026, 10:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 7 (Art) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S03-overnight-fix.md (the goal and who owns what)
+  6. docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)
+  7. docs/feedback/clinic-playtest-2026-10-08.md
+  8. build/reports/s02-review.md (flaws first)
+  9. docs/design-language/art-pipeline.md, art-bible.md, art-plans/s02-art-plan.md and s02-redo-list.yaml
+  10. build/gen_chai_v2.py (an existing OpenAI image API script: reuse its pattern; OPENAI_API_KEY is set)
+  11. build/tools/art/artjudge.py, artcut.py, artdiff.py; specs/s02.cut.json
+  12. build/reports/s02e-art-loading.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - assets/**, sources/art/s03/** (new), build/tools/art/specs/s03.* (new), build/gen_s03.py (new)
+  - art blocks in data/cook.json and data/stations/**, data/clinic/heal-art.json, data/clinic/sheets.json and other art references in data/clinic/**
+  - art hookup lines only in js/cook/** and js/clinic/** (minimal diffs; git pull --rebase before every push: B and C own those files)
+  - the Art rows in docs/process/regressions.md
+  - docs/design-language/art-plans/s03-*.md, build/reports/s03d-art.md
+READ-ONLY (never edit):
+  - js/shared/**
+  - data/lang/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: an image that won't pass after 4 tries keeps the old art and is listed with Fable's last verdict
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Reconcile your area's rows first (decision 73): for each open/reopened row on your screens, check the code; if built, set it to 'built, not re-played (S03, <what>)'; drop a 'pending decision' note a decision row already answers; anything left is your task list. Commit the row changes with each fix after that.
+     Accept: the report lists every row of your area with its new status; node build/tools/review/statuscounts.mjs agrees
+  2. Plan (decision 71): an s03 art plan and run spec covering the s02 redo list (B1 sekelo plate with no green pepper, C10 daar bowl with matte daar not beads, E2 two-colour plasters split lengthwise), every open Art row and art-waiting Cook/clinic row that new art fixes (DAAR-02 ladle as a real kadchi from the description; ART-11 potato cube not butter; ART-16 the review tick's clean cut; MAA-09 dough-pile shadow if art; ART-05 backgrounds at full resolution where a source exists), and the girl only among characters: her hot, cold, sore and happy states from one body (CLN-65) and any pose the clinic still lacks (send-off standing). No other characters (decision 71). Estimate the image count and spend in the plan first.
+     Accept: the plan file lists every image with what it fixes, its references and the estimate
+  3. Generate through the OpenAI image API (gpt-image, high quality, the style anchor sources/art/style-anchor-v1.png and the approved art it must match attached as references). Every image is reviewed by Fable: a subagent (Agent tool, model 'fable') sees the image, its plan line and the art bible, returns pass/fail and, on a fail, an amended prompt; redo up to 4 tries. artjudge.py runs first on every image. Non-negotiable 16 and the art bible hold (modest, no sweets as rewards).
+     Accept: report table: image, tries, Fable's verdict per try, final; the spend
+  4. Cut and wire every passing image (artcut, artdiff, x2 contact sheet you look at). Then audit everything from the last ChatGPT runs: every file in sources/art/s02 and clinic-heal-v3 is cut, and every cut asset is used by the game (U1-v2 upper arm, review flaw 3; anything ready:false that can be true). Wire what isn't, or list why not.
+     Accept: an audit table (source → asset → where it's used) with 0 unexplained gaps; screens of each newly wired piece at 1366x768
+
+REGRESSION ROWS TO RECHECK (129 rows of docs/process/regressions.md; * = open or reopened):
+  cook:chai-tray (16): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07*, CHAI-08*, CHAI-09, CHAI-10*, CHAI-11*, CHAI-12*, CHAI-13*, CHAI-14*, CHAI-15*, CHAI-16*
+  cook:daar (18): DAAR-01, DAAR-02*, DAAR-03, DAAR-04, DAAR-05, DAAR-06, DAAR-07, DAAR-08, DAAR-09*, DAAR-10*, DAAR-11*, DAAR-12*, DAAR-13*, DAAR-14*, DAAR-15*, CK-06, CK-08, CK-10
+  cook:chaat (10): CHT-01, CHT-02, CHT-03*, CHT-04, CHT-05, CHT-06*, CHT-07*, CHT-08*, CHT-09*, CK-TB-01*
+  cook:samosa (17): SAM-01, SAM-02, SAM-03, SAM-04, SAM-05*, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11*, SAM-12*, SAM-13*, SAM-14*, SAM-15*, CK-08, CK-09
+  cook:mishkaki-grill (13): SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-07*, SEK-08, SEK-09, SEK-10*, SEK-11*, SEK-12*, SEK-13*
+  clinic:pharmacy (27): CLN-19, CLN-20, CLN-21, CLN-22, CLN-23*, CLN-24, CLN-96*, CLN-97*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*, CLN-109*
+  clinic:heal-cut (28): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-82*, CLN-84*, CLN-85*, CLN-87*, CLN-109*, CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-45, CLN-46, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99*
+  clinic:heal-fever (27): CLN-02, CLN-03, CLN-08*, CLN-81*, CLN-84*, CLN-85*, CLN-87*, CLN-109*, CLN-30, CLN-31*, CLN-42, CLN-43, CLN-44, CLN-45, CLN-56, CLN-57*, CLN-65*, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-105*
+  clinic:sendoff (25): CLN-25, CLN-26, CLN-27, CLN-28, CLN-29, CLN-98*, CLN-01*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08*, CLN-09*, CLN-81*, CLN-82*, CLN-83*, CLN-84*, CLN-85*, CLN-86*, CLN-87*, CLN-88*, CLN-89*, CLN-109*
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s03d-art` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8834.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s03d-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

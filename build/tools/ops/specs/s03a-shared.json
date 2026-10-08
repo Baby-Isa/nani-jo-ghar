@@ -1,0 +1,67 @@
+{
+  "name": "S03-A, the shared request pop-up, the voice stop and the shared-screen rows (Sprint 3)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "one shared component every mode uses and the voice timing, judged by eye and ear",
+  "cost": "about $45",
+  "stop": "8 Oct 2026, 10:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S03-overnight-fix.md (the goal and who owns what)",
+    "docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)",
+    "docs/feedback/clinic-playtest-2026-10-08.md",
+    "build/reports/s02-review.md (flaws first)",
+    "js/clinic/stages/pharmacy.js requestPopup and js/cook/ui.js's requests pop-up (the two copies to replace)",
+    "js/shared/order-card.js (big: true), docs/design-language/guide-and-card.md"
+  ],
+  "owns": [
+    "js/shared/**, css/shared/** (new js/shared/request-popup.js and a shared voice stop)",
+    "js/cook/ui.js",
+    "js/clinic/kit.js (Voice), js/clinic/heal/host.js, js/clinic/stages/pharmacy.js",
+    "the Shared components rows in docs/process/regressions.md",
+    "build/reports/s03a-shared.md"
+  ],
+  "readOnly": [
+    "js/cook/** other than ui.js (Session B)",
+    "js/clinic/heal/games/**, js/clinic/stages/** other than pharmacy.js (Session C)",
+    "assets/**, data art blocks (Session D)",
+    "data/lang/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "Reconcile your area's rows first (decision 73): for each open/reopened row on your screens, check the code; if built, set it to 'built, not re-played (S03, <what>)'; drop a 'pending decision' note a decision row already answers; anything left is your task list. Commit the row changes with each fix after that.",
+      "accept": "the report lists every row of your area with its new status; node build/tools/review/statuscounts.mjs agrees"
+    },
+    {
+      "do": "One shared request pop-up in js/shared/ (non-negotiable 8; decision 53; CLN-84 re-raised, SH-64): the person's/doctor's card at full size over the play area, read out row by row with the read-along; a tap anywhere folds it into the left sidebar card at once; then a quiet game. Cook's requests pop-up and the pharmacy's requestPopup both use it, and every heal game (scrape, knee, ear, eye, tooth, taste, fever, boing, foot) opens with it before play starts, in story and in the labs.",
+      "accept": "screens and a short ear check: scrape, fever and tooth L1 open with the pop-up, fold to the sidebar; Cook chai and the pharmacy unchanged in look"
+    },
+    {
+      "do": "The voice stop (SH-64, CLN-109): Kit.Voice.clear() and Cook's voice really stop: a generation counter so lines already chained on the queue don't play, and the playing family clip (Audio) and TTS paused. The full card read-out happens only while the pop-up is up; a tap that clicks through cuts it at once. Every stage change and game end calls the stop, so no voice carries into the send-off or the next station.",
+      "accept": "probe: finish scrape L1 as fast as possible, enter the send-off: no doctor line from the heal game plays; tap through the pop-up in chai and pharmacy at once: silence"
+    },
+    {
+      "do": "Every other open Shared components row (end screen, cards, help, layout) and clinic-wide host rows CLN-82, CLN-83, CLN-85, CLN-87 (host.js); the review's flaw 1 (800x360 word list scroll).",
+      "accept": "each row's Check column, looked at"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray",
+    "cook:pantry",
+    "clinic:pharmacy",
+    "clinic:heal-cut",
+    "clinic:heal-fever",
+    "clinic:heal-tooth"
+  ],
+  "shared": true,
+  "port": 8831,
+  "report": "s03a-shared",
+  "publish": false
+}

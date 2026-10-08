@@ -10,6 +10,8 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **Where things stand (8 Oct 2026, ~01:30 UK, written by the Sprint 2 orchestrator):** Sprint 2 ("play and fix Cook and the clinic", `docs/sprints/S02-play-and-fix-cook-clinic.md`) is **published**: `main` f0f4613a (version 20261008T002526Z), Pages build green. Sessions A–G are in (reports `build/reports/s02*.md`); the s02 art is cut and wired (kitchen trays, served dishes, slot-lid coin jar, toothbrush views, the girl's poses, clinic sprite sheets); Cook and the clinic load only what's on screen (decision 68); 263 lines play blind-verified family takes (ok-auto, decision 70). The final check is `build/reports/s02-review.md` (flaws first, §1). Spend about $270 of $270. Nothing is running.
 
+**8 Oct, 02:30 UK:** Sprint 2 closed (look back in its file). **Sprint 3 open** (`docs/sprints/S03-overnight-fix.md`): sessions A-D running overnight to `ccr-a7370759-t0lee7`, then `/review` and publish; Sprint 4 is Zafar's play.
+
 **Next steps, in order:**
 1. **Zafar plays Sprint 2** (link below), feedback by voice note → `/feedback` → rows the same day. Then `/sprint` close: the three-line look back.
 2. **Open Sprint 3** (`/sprint`), proposed scope:

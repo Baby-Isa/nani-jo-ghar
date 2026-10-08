@@ -1,0 +1,72 @@
+{
+  "name": "S03-C, every code-only clinic row, the fever room tidy, the old drill back (Sprint 3)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "visual judgement across nine heal games and the clinic stages",
+  "cost": "about $55",
+  "stop": "8 Oct 2026, 10:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "5 (Clinic)"
+  ],
+  "read": [
+    "docs/sprints/S03-overnight-fix.md (the goal and who owns what)",
+    "docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)",
+    "docs/feedback/clinic-playtest-2026-10-08.md",
+    "build/reports/s02-review.md (flaws first)",
+    "build/reports/s02c-clinic.md, s02f-finish.md",
+    "docs/feedback/clinic-playtest-2026-10-06.md \u00a72",
+    "docs/game-design/modes/clinic.md"
+  ],
+  "owns": [
+    "js/clinic/heal/games/**, js/clinic/stages/** except pharmacy.js (Session A), js/clinic/figure.js, body.js, pipeline.js, run.js, main.js, screen.js",
+    "data/clinic/** except art references (Session D)",
+    "the Clinic rows in docs/process/regressions.md",
+    "build/reports/s03c-clinic.md"
+  ],
+  "readOnly": [
+    "js/shared/**, js/clinic/kit.js, js/clinic/heal/host.js, js/clinic/stages/pharmacy.js (Session A: pull often)",
+    "assets/**, art references (Session D)",
+    "data/lang/**"
+  ],
+  "stubs": "rows needing new art: Session D makes the girl's states and redos; leave the row open and say which art id it waits for",
+  "tasks": [
+    {
+      "do": "Reconcile your area's rows first (decision 73): for each open/reopened row on your screens, check the code; if built, set it to 'built, not re-played (S03, <what>)'; drop a 'pending decision' note a decision row already answers; anything left is your task list. Commit the row changes with each fix after that.",
+      "accept": "the report lists every row of your area with its new status; node build/tools/review/statuscounts.mjs agrees"
+    },
+    {
+      "do": "The tooth game goes back to the drill it had before Sprint 2 (decision 72: the square drill trial is dropped); keep the rest of Sprint 2's tooth fixes (plaque clears as you brush, brush into the mouth).",
+      "accept": "tooth L1-L3 screens: the old drill, the decay it fixes"
+    },
+    {
+      "do": "The fever room tidy (CLN-105, CLN-31, CLN-57): one number model \u00b12/3/4, what she says, looks and the gauge agree; one green zone; tools in the column; tidy room; fan points down; no gust; small sweat/snowflake icons.",
+      "accept": "fever L1-L3 screens, flaws first"
+    },
+    {
+      "do": "Every other open code-only clinic row (waiting room except the CLN-14 L1 leak, which stays as it is: decision 74; diagnosis; pharmacy items on the belt in data/CSS only; send-off; heal games); review flaw 5 (the eye tool shelf clear of the sore eye at 4:3; the standing girl bigger on phones, CLN-94).",
+      "accept": "each row's Check column, looked at; leak bots still pass"
+    }
+  ],
+  "flows": [
+    "clinic:waiting",
+    "clinic:diagnosis",
+    "clinic:sendoff",
+    "clinic:heal-cut",
+    "clinic:heal-knee",
+    "clinic:heal-ear",
+    "clinic:heal-eye",
+    "clinic:heal-tooth",
+    "clinic:heal-taste",
+    "clinic:heal-fever",
+    "clinic:heal-boing",
+    "clinic:heal-foot"
+  ],
+  "shared": false,
+  "port": 8833,
+  "report": "s03c-clinic",
+  "publish": false
+}

@@ -1,6 +1,6 @@
 # Sprint 02: play and fix Cook and the clinic
 
-**Status:** published 8 Oct 2026 (`main` f0f4613a); closes after Zafar's play
+**Status:** closed (8 Oct 2026)
 **Opened:** 6 Oct 2026
 
 ## Goal
@@ -37,6 +37,9 @@ Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
 - **Moved on to Sprint 3:** Mum's Round 5 lines; 289 lines to record again (USB mic, grammar first); the final manual approval of every recording before launch (decision 70); the fever room tidy; art redo list (B1, C10, E2); the review's open flaws (s02-review.md §1).
 - **Open rows:** 145 open or reopened, 138 built and not re-played (most of this sprint's fixes wait on Zafar's play).
 - **Spend:** about $270 against $270 agreed (sessions A–G, D2, art run API, review).
+- **Zafar's play (8 Oct):** `docs/feedback/clinic-playtest-2026-10-08.md`: heal games still open with no request pop-up (CLN-84 re-raised); the card's read-out carries into the send-off (SH-64, CLN-109). The square drill trial was worse (decision 72).
 
 ## Look back (three lines)
-Filled in at the close, after Zafar's play.
+1. **Worked:** the shared round flow (A) then Cook and clinic in parallel (B, C) cleared about 230 points in two days, and the blind-verified voice takes (decision 70) ended hand-picking 552 lines.
+2. **Cost more than it should:** the regression list went stale. Builders didn't move their rows, and 30 "pending decision" tags stayed after decisions 51-65 answered them, so the open count (145) overstated the real work. Sessions also ran 25-45 min of browser checks against the 15-minute cap.
+3. **Process change:** every build session updates its rows in the same commit as the fix (decision 73, rule under A19).
