@@ -37,6 +37,8 @@ PRICE = {'text': 5e-6, 'image': 10e-6, 'out': 40e-6}
 OUT_TOKENS = {'1024x1024': 4160, '1536x1024': 6240, '1024x1536': 6240}  # high quality
 REF_TOKENS = 1300
 FACE = (512, 368, 165, 140)  # the face ellipse on W1 (cx, cy, rx, ry), source px
+S8_BASE = os.path.join(OUT, 's8-base.png')  # the s03 bowl on its trivet (daar-bowl-trivet-plain-v2) x2 on grey, at (23, 22)
+DAAR = (511, 509, 330, 330)  # the daar's surface inside the bowl's rim on S8_BASE (cx, cy, rx, ry)
 
 GROUND = ('Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. '
           'No floor, no table, no gradient, no texture. NO shadows of any kind.')
@@ -125,6 +127,22 @@ JOBS = {
            'little paler. Muted, unsaturated, medical-looking colours, never candy colours: (1) dull pinkish-red; (2) pale sage, '
            'greenish-grey; (3) pale bluish-grey. No gloss, no shine, no highlights, no round sphere shading. It must never look '
            'like a sweet, a jelly, a gummy or a ball of modelling clay. ' + GROUND + ' ' + STYLE + ' ' + NEG),
+    'S7': ('1024x1024', [ANCHOR, A('sources/art/s02/b1-served-dishes-v1.png'), A('sources/art/s03/s2-v1.png')], None,
+           'Generate one served dish for a children\'s cooking game, as the fourth dish of the attached sheet of served dishes, '
+           'drawn at exactly the same camera angle, scale and light as those dishes: seen from the front and a little above, the '
+           'camera about at the rim\'s height looking about 15 degrees down, so a little of the inside shows. The dish: the same '
+           'plain brushed-steel bowl as on that sheet, full of cooked yellow lentil daar exactly like the attached bowl of daar: a '
+           'smooth, soft, creamy, MATTE golden-yellow surface like thick soup, with a small spoon of golden tempering on top (a few '
+           'black mustard seeds, two small green curry leaves, a little cumin). NO beads, NO balls, NO round droplets, NO glossy '
+           'spheres: it must never look like sweets or candy. Centred, filling about 65% of the image width, clear background all '
+           'round; it stands on its flat base and nothing is drawn under it. ' + GROUND + ' ' + STYLE + ' ' + NEG + ' Halal food only.'),
+    'S8': ('1024x1024', [S8_BASE, ANCHOR], 'daar',
+           'Edit the attached picture of a steel bowl of daar on a woven trivet, seen from directly above. Change ONLY the surface of '
+           'the daar inside the masked circle: add a small spoon of tempering (tadka) in the middle of the daar: a few black mustard '
+           'seeds, two or three small green curry leaves, one dried red chilli, a little cumin and a thin golden swirl of ghee. The '
+           'daar itself stays the same smooth, soft, matte golden-yellow; NO beads, NO balls, NO glossy spheres. Everything else '
+           'stays exactly as it is: the bowl, its rim, the trivet, the grey background, the size and position. Stylised 3D animated-'
+           'feature-film look, soft light from the upper left, no outlines. ' + NEG),
 }
 
 
@@ -137,11 +155,11 @@ def ref_png(path):
     return b.getvalue()
 
 
-def face_mask():
-    """Transparent where the edit may draw (the face ellipse), opaque elsewhere; the size of W1."""
-    w, h = Image.open(W1).size
+def face_mask(base=None, ell=None):
+    """Transparent where the edit may draw (the face ellipse, or ell on base), opaque elsewhere; the size of the base."""
+    w, h = Image.open(base or W1).size
     m = Image.new('RGBA', (w, h), (0, 0, 0, 255))
-    cx, cy, rx, ry = FACE
+    cx, cy, rx, ry = ell or FACE
     ImageDraw.Draw(m).ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=(0, 0, 0, 0))
     b = io.BytesIO()
     m.save(b, 'PNG')
@@ -162,6 +180,8 @@ def draw(n, tr, prompt, key):
     files = [('image[]', ('ref%d.png' % i, ref_png(p), 'image/png')) for i, p in enumerate(refs)]
     if mask == 'face':
         files.append(('mask', ('mask.png', face_mask(), 'image/png')))
+    if mask == 'daar':
+        files.append(('mask', ('mask.png', face_mask(S8_BASE, DAAR), 'image/png')))
     data = {'model': MODEL, 'prompt': prompt, 'quality': 'high', 'size': size, 'n': '1'}
     if mask is None:
         data['input_fidelity'] = 'high'
@@ -294,6 +314,23 @@ def fit(stage):
     # S6: the taste game's sore spots, each centred on a square canvas (taste.js draws it in a square of 2.5 x its radius)
     for c in ['red', 'green', 'blue']:
         save(_place(st('spot-%s.webp' % c), (230, 230), (20, 20, 210, 210)), 'assets/clinic/heal-v3/spot-%s-s03.webp' % c)
+    # S7: the served daar beside B1's dishes (as S1)
+    p = st('served-daar.webp')
+    p = p.crop(_bbox(p))
+    s = 280 / max(p.size)
+    p = p.resize((round(p.width * s), round(p.height * s)), Image.LANCZOS)
+    cv = Image.new('RGBA', (p.width + 20, p.height + 20), (0, 0, 0, 0))
+    cv.alpha_composite(p, (10, 10))
+    save(cv, 'assets/cook/items/served/daar-v2.webp')
+    # S8: the review's tadka bowl on its trivet, trimmed with a 16 px pad at most 528 px; daar.js TRIVET from its circle
+    p = st('daar-tadka.webp')
+    p = p.crop(_bbox(p))
+    s = min(1, 496 / max(p.size))
+    p = p.resize((round(p.width * s), round(p.height * s)), Image.LANCZOS)
+    cv = Image.new('RGBA', (p.width + 32, p.height + 32), (0, 0, 0, 0))
+    cv.alpha_composite(p, (16, 16))
+    save(cv, 'assets/cook/items/v3/daar/daar-bowl-trivet-v2.webp')
+    print('  TRIVET = { w: %d, h: %d, cx: %.4f, cy: %.4f, r: %.4f }' % (cv.width, cv.height, (16 + p.width / 2) / cv.width, (16 + p.height / 2) / cv.height, max(p.size) / 2 / cv.width))
     # G1-G4: the girl's face layers and corner heads (the cut's canvas is girl-front's own)
     gd = os.path.join(stage, 'girl')
     for f in ['hot', 'cold', 'pain', 'happy']:

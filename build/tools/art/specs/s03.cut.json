@@ -100,6 +100,34 @@
    "max": 1024
   },
   {
+   "id": "s7-served-daar",
+   "type": "grid",
+   "src": "s7-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "stage",
+   "names": [
+    "served-daar"
+   ],
+   "max": 1024
+  },
+  {
+   "id": "s8-daar-tadka",
+   "type": "grid",
+   "src": "s8-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "outdir": "stage",
+   "names": [
+    "daar-tadka"
+   ],
+   "max": 1024
+  },
+  {
    "id": "girl-wide",
    "type": "figure",
    "data": "girl",

@@ -242,6 +242,42 @@
     "total_tokens": 8958
    },
    "usd": 0.2522
+  },
+  {
+   "name": "S7",
+   "try": 1,
+   "usage": {
+    "input_tokens": 4406,
+    "input_tokens_details": {
+     "image_tokens": 4081,
+     "text_tokens": 325
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 11430
+   },
+   "usd": 0.3234
+  },
+  {
+   "name": "S8",
+   "try": 1,
+   "usage": {
+    "input_tokens": 2737,
+    "input_tokens_details": {
+     "image_tokens": 2545,
+     "text_tokens": 192
+    },
+    "output_tokens": 7024,
+    "output_tokens_details": {
+     "image_tokens": 7024,
+     "text_tokens": 0
+    },
+    "total_tokens": 9761
+   },
+   "usd": 0.3074
   }
  ]
 }
