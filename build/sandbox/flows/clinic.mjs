@@ -217,12 +217,18 @@ class ClinicPlayer {
   }
 }
 
-function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, onboard = false, done, extra, mode = "fair", sizes }) {
+function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, onboard = false, done, extra, mode = "fair", sizes, levels = null }) {
   return {
     id, group: "clinic", title, timeoutMs: mode === "hint" ? timeoutMs + 120000 : timeoutMs, ...(sizes ? { sizes } : {}),
     async run(ctx) {
       const { page, rec } = ctx;
       const q = `${query}&seed=${SEED}&quiet=1&fast=1&nonav=1&onboard=${onboard || mode === "hint" ? 1 : 0}`;
+      // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)
+      if (levels) {
+        await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1&fast=1`, { waitUntil: "load" });
+        await page.waitForFunction(() => window.__clinic && window.__clinic.ready && window.Clinic && Clinic.Run, null, { timeout: 30000 });
+        await page.evaluate((L) => { const s = Clinic.Run.state(); Clinic.Run.save({ ...s, levels: { waiting: L, diagnosis: L, pharmacy: L, heal: L, sendoff: L } }); }, levels);
+      }
       await page.goto(`${BASE}/clinic.html?${q}`, { waitUntil: "load" });
       await page.waitForFunction(() => window.__clinic && window.__clinic.ready, null, { timeout: 30000 });
       // adapter: some games' debug drivers ask `__heal.run` (the heal-host lab's hook); here the same thing lives in __clinic
@@ -308,6 +314,8 @@ export function clinicFlows() {
   f.push(clinicFlow({ id: "clinic:patient@L3", title: "Clinic: One patient, end to end, level 3", query: "patient=1&level=3&results=1", level: 3, timeoutMs: 420000 }));
   // R5: a clinic morning through the one game host (session 2: two patients, an end screen after each, then "close the clinic")
   f.push({ ...clinicFlow({ id: "clinic:morning", title: "Clinic: a morning (session 2: two patients through the host, then close the clinic)", query: "morning=1&session=2&nosave=1", timeoutMs: 600000 }), deep: true });
+  // S04-A (decision 76, the route run): the morning end to end at levels 2 and 3 (every stage's saved level)
+  for (const L of [2, 3]) f.push({ ...clinicFlow({ id: `clinic:morning@L${L}`, title: `Clinic: a morning (session 2) with every stage at level ${L}`, query: "morning=1&session=2&nosave=1", level: L, levels: L, timeoutMs: 600000 }), deep: true });
 
   // ---- the deeper paths (run at the deep sizes): every level, then the mistake and hint players ----
   const D = (o) => f.push({ ...clinicFlow(o), deep: true });

@@ -14,6 +14,8 @@ import { mergeSound } from "./lib/sound.mjs";
 import * as Baseline from "./lib/baseline.mjs";
 import { lintCssAll } from "../lint/css.mjs";
 import { allFlows, flowSizes, variantsOf } from "./flows/index.mjs";
+import { tiles, tileFlows } from "./flows/labs.mjs";
+import * as Contract from "./lib/contract.mjs";
 
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
@@ -35,7 +37,11 @@ if (has("--help") || has("-h") || !argv.length) {
   --update-baseline     rewrite the baseline with the fixed findings dropped (it only shrinks); --accept also adopts new findings (and creates the baseline); --append only ADDS findings and flows the baseline lacks and changes no existing entry
   --webgl               Phaser's WebGL renderer for Cook (software GL: about 4x slower; the default is canvas, which draws no tints)
   --from-run id         judge a finished run's saved data (no browser): with --check / --update-baseline
-  --list                list the flows and exit
+  --contract            the contract checks (decision 75: pop-up before play, moves on by itself, voice stops at every stage end,
+                        bubbles at the speaker's head, badges in order, no retired art) on the named flows (default: the
+                        route set CONTRACT_ROUTE at laptop size); writes contract.md and contract.json; exit 1 on any break.
+                        --check runs them too, on every page of the run (never ratcheted into the baseline)
+  --list                list the flows and the labs.html tiles they play, and exit
   --no-sheets           skip the contact sheets
   --run-id id           folder name under build/screenshots/sandbox/ (default: a timestamp)
   --resume id           continue run <id>: skip the pages already done`);
@@ -66,8 +72,18 @@ if (has("--gate") && !has("--chunk")) {
 const live = allFlows();
 if (has("--list")) {
   for (const f of live) console.log(`${f.id.padEnd(34)} ${(f.sizes ? f.sizes.join(",") : "all sizes").padEnd(26)} ${f.title}`);
+  // what Zafar plays: every labs.html tile and the flows that play it (decision 76)
+  console.log("\nlabs.html tiles -> flows");
+  for (const t of tiles()) {
+    const m = tileFlows(t, live);
+    console.log(`  ${t.title.slice(0, 44).padEnd(44)} ${m.gap ? `NO FLOW: ${m.gap}` : `${m.flows.length} flows: ${m.flows.slice(0, 4).join(", ")}${m.flows.length > 4 ? ` +${m.flows.length - 4}` : ""}${m.note ? ` (${m.note})` : ""}`}`);
+  }
   process.exit(0);
 }
+// the route the contract run plays by default (--contract with no --flow): what Zafar played on 8 Oct and the places his rules
+// were caught, at laptop size. The orchestrator's /review runs the full contract pass (--gate or --all --check)
+const CONTRACT_ROUTE = ["cook:chop", "cook:chaat@L4", "cook:fetch", "lab:cook/round", "lab:cook/recipe-chaat@L4", "cook:day1", "clinic:waiting", "clinic:diagnosis", "clinic:diagnosis@L3", "clinic:heal-knee@L2", "clinic:morning"];
+if (has("--contract") && !val("--flow") && !val("--touched") && !has("--all") && !has("--gate")) { argv.push("--flow", CONTRACT_ROUTE.join(",")); if (!has("--sizes") && !has("--every-size")) argv.push("--quick"); }
 
 function pick() {
   const named = (val("--flow") || val("--touched") || "").split(",").map((s) => s.trim()).filter(Boolean);
@@ -147,7 +163,7 @@ if (fromRun) {
       } finally { clearTimeout(timer); }
       await ctx.close().catch(() => {});
       const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
-      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), ...(c.extra ? { extra: c.extra } : {}) };
+      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), timeline: sound.timeline(), t0: rec.t0, ...(c.extra ? { extra: c.extra } : {}) };
       writeFileSync(file, JSON.stringify(r));
       fresh.push(r);
       log(`${flow.id} @ ${size}: ${r.complete ? "end reached" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} distinct findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s`);
@@ -229,6 +245,25 @@ for (const r of everything) {
 }
 if (!fromRun) writeFileSync(join(runDir, "summary.md"), md);
 
+// ---- the contract checks (decision 75): every page of this run; a break is never ratcheted ----
+const contract = Contract.report(everything, { root: ROOT });
+if (!fromRun || has("--contract")) {
+  writeFileSync(join(runDir, "contract.md"), `# Contract run ${runId}\n\n${contract.md}`);
+  writeFileSync(join(runDir, "contract.json"), JSON.stringify(contract.breaks, null, 1));
+}
+const contractLine = () => {
+  const by = {};
+  for (const b of contract.breaks) by[b.check] = (by[b.check] || 0) + 1;
+  for (const b of contract.breaks.slice(0, 60)) console.log(`BREAK ${b.check} ${b.flow} L${b.level} @ ${b.size} [${b.state}${b.shot ? " " + b.shot : ""}] ${b.at}s: ${b.measured}`);
+  if (contract.breaks.length > 60) console.log(`... and ${contract.breaks.length - 60} more in contract.md`);
+  console.log(contract.breaks.length ? `CONTRACT FAILED: ${contract.breaks.length} breaks (${Object.entries(by).map(([k, v]) => `${k} ${v}`).join(", ")})` : `CONTRACT PASSED: 0 breaks over ${everything.filter((r) => r.size !== "static").length} pages`);
+};
+if (has("--contract") && !has("--check")) {
+  contractLine();
+  log(`contract: ${join(runDir, "contract.md")}`);
+  process.exit(contract.breaks.length ? 1 : 0);
+}
+
 // ---- baseline actions ----
 console.log("");
 log(`findings: ${sum.findings.length} (${top(byCheck).map(([k, v]) => `${k} ${v}`).join(", ") || "none"})`);
@@ -249,8 +284,9 @@ if (has("--check")) {
   for (const fs of cmp.unbaselined) console.log(`not in the baseline yet: ${fs}${cmp.newIncomplete.includes(fs) ? "  (and it does not reach its end)" : ""}`);
   for (const e of cmp.newErrors) console.log(`NEW PAGE ERROR ${e}`);
   console.log(`${cmp.fixed.length} fixed (run --update-baseline to shrink the baseline)`);
-  const bad = cmp.added.length + cmp.incomplete.length + cmp.newErrors.length + cmp.newIncomplete.length;
-  console.log(bad ? `CHECK FAILED: ${cmp.added.length} new findings, ${cmp.incomplete.length + cmp.newIncomplete.length} flows do not reach their end, ${cmp.newErrors.length} new page errors` : `CHECK PASSED: 0 new findings (${cur.findings.length} known, ${cmp.moved.length} moved between flows, ${cmp.fixed.length} fixed)`);
+  contractLine();
+  const bad = cmp.added.length + cmp.incomplete.length + cmp.newErrors.length + cmp.newIncomplete.length + contract.breaks.length;
+  console.log(bad ? `CHECK FAILED: ${cmp.added.length} new findings, ${cmp.incomplete.length + cmp.newIncomplete.length} flows do not reach their end, ${cmp.newErrors.length} new page errors, ${contract.breaks.length} contract breaks` : `CHECK PASSED: 0 new findings (${cur.findings.length} known, ${cmp.moved.length} moved between flows, ${cmp.fixed.length} fixed)`);
   log(`summary: ${join(runDir, "summary.md")}`);
   process.exit(bad ? 1 : 0);
 }

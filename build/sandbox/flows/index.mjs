@@ -4,6 +4,7 @@ import { KEPT, RECIPES, PARTS, cookStation, cookTitle, cookDay, cookShop, cookOp
 import { clinicFlows, HEAL_GAMES } from "./clinic.mjs";
 import { MODE_FLOWS } from "./modes.mjs";
 import { rotateFlow, cssFlow } from "./extra.mjs";
+import { labFlows } from "./labs.mjs";
 import { ALL_SIZES } from "../lib/env.mjs";
 
 // Every flow: --all and --gate run them all. A flow's `sizes` says where it runs. The main flows (level 1 and the first level-3
@@ -45,6 +46,8 @@ export function allFlows() {
   flows.push(rotateFlow, cssFlow);
   // ---- R4: the take-back path of every Cook flow (E14: place something, take it back, carry on to the end), at level 1 ----
   for (const u of unit) flows.push(deep(cookStation(u.key, 1, { recipe: !!u.recipe, mode: "takeback" })));
+  // ---- S04-A: what Zafar plays from labs.html: Cook on the game host (lab.html), every game at levels 1-4, the story round ----
+  for (const f of labFlows()) flows.push(deep(f));
   return flows.map((f) => ({ ...f, parked: false }));
 }
 export const flowSizes = (f) => f.sizes || ALL_SIZES;

@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { CLICK_HOOK } from "../../lint/layout.mjs";
 import { PHASER_HOOK } from "../../lint/phaser.mjs";
 import { SOUND_HOOK, SoundLog } from "./sound.mjs";
+import { CONTRACT_HOOK } from "./contract-hook.mjs";
 import { installTouch } from "./touch.mjs";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -90,6 +91,7 @@ export async function newPage(browser, sizeKey, { seed = 1, touch } = {}) {
   await ctx.addInitScript(CLICK_HOOK);
   await ctx.addInitScript(PHASER_HOOK);
   await ctx.addInitScript(SOUND_HOOK);
+  await ctx.addInitScript(CONTRACT_HOOK);
   const sound = new SoundLog();
   await ctx.exposeFunction("__njgLog", (e) => { sound.push(e); });
   const page = await ctx.newPage();

@@ -1,0 +1,292 @@
+{
+ "_about": "Made by build/sandbox/lib/retired.mjs --write from the art manifests' replaces entries and Zafar's named items: don't hand-edit. Contract check 6 flags any of these files drawn with this content (scope: a stage pattern, null = anywhere).",
+ "list": [
+  {
+   "file": "assets/clinic/items-v2/eye-drops.webp",
+   "sha256": "d45a5c05cf06ebca",
+   "by": "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/tweezers.webp",
+   "sha256": "2af7e90d09606930",
+   "by": "assets/clinic/sheets/tweezers/tweezers-tool.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/cotton-buds.webp",
+   "sha256": "0052d5b74be59a94",
+   "by": "assets/clinic/sheets/bud/bud-pot-belt.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/thermometer.webp",
+   "sha256": "cb28ec21c5c98602",
+   "by": "assets/clinic/sheets/thermometer/thermometer-tool.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/toothbrush.webp",
+   "sha256": "cb4a637316c3bd31",
+   "by": "assets/clinic/sheets/toothbrush/toothbrush-tool.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/syringe.webp",
+   "sha256": "c1e1a15d43a0864a",
+   "by": "assets/clinic/sheets/syringe/syringe-tool.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/jug-hot.webp",
+   "sha256": "f7c1c56add29eb2d",
+   "by": "assets/clinic/sheets/jug/jug-hot-belt.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/jug-cold.webp",
+   "sha256": "2b8bd8ba39adf6f6",
+   "by": "assets/clinic/sheets/jug/jug-cold-belt.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/jug-lukewarm.webp",
+   "sha256": "65779d1ceb263fbc",
+   "by": "assets/clinic/sheets/jug/jug-warm-belt.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/cloth-blue.webp",
+   "sha256": "3a862efb3dd36b85",
+   "by": "assets/clinic/sheets/cloth/cloth-tool.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/desk-fan.webp",
+   "sha256": "fd3e0c4b888d0439",
+   "by": "assets/clinic/sheets/desk-fan/desk-fan-belt.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/room-items/hand-fan.webp",
+   "sha256": "69798e7930799f8d",
+   "by": "assets/clinic/sheets/hand-fan/hand-fan-room.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/room-items/heater-off.webp",
+   "sha256": "5e07cda6e72c4426",
+   "by": "assets/clinic/sheets/heater/heater-3q-off.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/room-items/heater-on.webp",
+   "sha256": "35572bd76972bb4a",
+   "by": "assets/clinic/sheets/heater/heater-3q-on.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/room-items/hot-water-bottle.webp",
+   "sha256": "b5ed45b2c0a06ec4",
+   "by": "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-room.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-red.webp",
+   "sha256": "dd127945794cba0b",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-red.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-yellow.webp",
+   "sha256": "de18c66b90dd1240",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-blue.webp",
+   "sha256": "3d113a64ec756c03",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-green.webp",
+   "sha256": "ca005a1132c01570",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-green.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-skin.webp",
+   "sha256": "caef31430fa82ec6",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-red-yellow.webp",
+   "sha256": "4954999fc58610fd",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-red-yellow.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-red-blue.webp",
+   "sha256": "d147eb99bb3f8bbb",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-red-blue.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-red-green.webp",
+   "sha256": "4f09ffdd454f8c9f",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-red-green.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-yellow-blue.webp",
+   "sha256": "53d460d81bfca613",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow-blue.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-yellow-green.webp",
+   "sha256": "a3314572ecb6a2df",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow-green.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/items-v2/plaster-blue-green.webp",
+   "sha256": "9b4dbd0937825645",
+   "by": "assets/clinic/sheets/plaster-flat/plaster-flat-blue-green.webp",
+   "why": "data/clinic/sheets.json remap",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/rough/rooms/waiting.webp",
+   "sha256": "7a8de4e1d3436b4f",
+   "by": "assets/clinic/rooms/bg-clinic-waiting-e-v1.webp",
+   "why": "data/clinic/rough-art.json final.replaces",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/rough/rooms/exam.webp",
+   "sha256": "27c254e50c978dd8",
+   "by": "assets/clinic/rooms/bg-clinic-room-e-v1.webp",
+   "why": "data/clinic/rough-art.json final.replaces",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/rough/rooms/pharmacy.webp",
+   "sha256": "e09625636ae677c2",
+   "by": "assets/clinic/rooms/bg-clinic-pharmacy-e-v1.webp",
+   "why": "data/clinic/rough-art.json final.replaces",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/rough/patients/nana/neutral.webp",
+   "sha256": "9d5371ec5b0edd11",
+   "by": "assets/clinic/patients/nana/nana-sit.webp",
+   "why": "data/clinic/rough-art.json final.replaces",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/rough/patients/ma/neutral.webp",
+   "sha256": "c850d4ee12af78fc",
+   "by": "assets/clinic/patients/ma/ma-sit.webp",
+   "why": "data/clinic/rough-art.json final.replaces",
+   "scope": null
+  },
+  {
+   "file": "assets/clinic/rough/patients/ali/neutral.webp",
+   "sha256": "7dc8973e667fedba",
+   "by": "assets/clinic/patients/ali/ali-sit.webp",
+   "why": "data/clinic/rough-art.json final.replaces",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/items/tool-knife-t.webp",
+   "sha256": "0cc84a15120f58fd",
+   "by": "assets/cook/items/tool-knife-t-v2.webp",
+   "why": "Z8 (8 Oct): the old knife in the hand; the new knife has no hand",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/items/tool-knife-t.png",
+   "sha256": "bf7441643967432e",
+   "by": "assets/cook/items/tool-knife-t-v2.webp",
+   "why": "Z8 (8 Oct): the old knife in the hand; the new knife has no hand",
+   "scope": null
+  },
+  {
+   "file": "assets/cook/hands/nani/b1-handle-grip-t.webp",
+   "sha256": "52d78f97d873894b",
+   "by": "assets/cook/items/tool-knife-t-v2.webp",
+   "why": "Z8 (8 Oct): the hand holding the old knife at the chopping board",
+   "scope": "cook:*:wood"
+  },
+  {
+   "file": "assets/cook/hands/player-boy/b1-handle-grip-t.webp",
+   "sha256": "a13cd1af22a8a459",
+   "by": "assets/cook/items/tool-knife-t-v2.webp",
+   "why": "Z8 (8 Oct): the hand holding the old knife at the chopping board",
+   "scope": "cook:*:wood"
+  },
+  {
+   "file": "assets/cook/hands/player-girl/b1-handle-grip-t.webp",
+   "sha256": "b934ae68384e5e6d",
+   "by": "assets/cook/items/tool-knife-t-v2.webp",
+   "why": "Z8 (8 Oct): the hand holding the old knife at the chopping board",
+   "scope": "cook:*:wood"
+  },
+  {
+   "file": "assets/cook/characters/nani-neutral.webp",
+   "sha256": "6d2565900651707c",
+   "by": "Nani leaning on the counter (decision 64, ART-13)",
+   "why": "Z9 (8 Oct): the standing Nani sprite in service",
+   "scope": "cook:*:service"
+  },
+  {
+   "file": "assets/cook/characters/nani-talk.webp",
+   "sha256": "6d2565900651707c",
+   "by": "Nani leaning on the counter (decision 64, ART-13)",
+   "why": "Z9 (8 Oct): the standing Nani sprite in service",
+   "scope": "cook:*:service"
+  },
+  {
+   "file": "assets/cook/characters/nani-happy.webp",
+   "sha256": "6d2565900651707c",
+   "by": "Nani leaning on the counter (decision 64, ART-13)",
+   "why": "Z9 (8 Oct): the standing Nani sprite in service",
+   "scope": "cook:*:service"
+  },
+  {
+   "file": "assets/cook/characters/nani-point.webp",
+   "sha256": "6d2565900651707c",
+   "by": "Nani leaning on the counter (decision 64, ART-13)",
+   "why": "Z9 (8 Oct): the standing Nani sprite in service",
+   "scope": "cook:*:service"
+  }
+ ]
+}

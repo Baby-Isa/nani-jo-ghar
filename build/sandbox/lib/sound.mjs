@@ -26,10 +26,25 @@ export const SOUND_HOOK = `(() => {
   const flush = setInterval(() => { if (window.__njgLog && window.__njgPending) { const p = window.__njgPending; window.__njgPending = null; p.forEach((e) => window.__njgLog(e)); } }, 100);
   const isAudio = (u) => /\\.(mp3|ogg|wav|m4a|webm)(\\?|$)/i.test(String(u || ""));
   const rel = (u) => { try { const x = new URL(u, location.href); return x.pathname.replace(/^\\//, ""); } catch (e) { return String(u); } };
-  // 1. <audio> / new Audio(url).play()
+  // 1. <audio> / new Audio(url).play(). Each play gets an id (pid) and its real length (dur, seconds) once the clip's metadata is in;
+  // "play-end" says when it stopped sounding (ended, paused or cut): the contract's voice check (check 3) reads these
+  let pidSeq = 0;
   const mp = HTMLMediaElement.prototype.play;
   HTMLMediaElement.prototype.play = function () {
-    try { const u = this.currentSrc || this.src; if (isAudio(u)) log({ type: "play", via: "audio", url: rel(u) }); } catch (e) {}
+    try {
+      const u = this.currentSrc || this.src;
+      if (isAudio(u)) {
+        const pid = ++pidSeq, el = this;
+        el.__njgPid = pid;
+        const d = isFinite(el.duration) ? el.duration : null;
+        log({ type: "play", via: "audio", url: rel(u), pid, dur: d, rate: el.playbackRate || 1 });
+        if (d == null) el.addEventListener("loadedmetadata", () => { if (el.__njgPid === pid && isFinite(el.duration)) log({ type: "play-dur", pid, dur: el.duration }); }, { once: true });
+        const end = (why) => () => { if (el.__njgPid === pid) { el.__njgPid = null; log({ type: "play-end", pid, why }); } };
+        el.addEventListener("ended", end("ended"), { once: true });
+        el.addEventListener("pause", end("pause"), { once: true });
+        el.addEventListener("error", end("error"), { once: true });
+      }
+    } catch (e) {}
     return mp.apply(this, arguments);
   };
   // 2. Web Audio: follow a buffer back to the file it was fetched from
@@ -47,17 +62,45 @@ export const SOUND_HOOK = `(() => {
     return p && p.then ? p.then(tag) : p;
   };
   const st = AudioBufferSourceNode.prototype.start;
-  AudioBufferSourceNode.prototype.start = function () {
-    try { const u = this.buffer && bufUrl.get(this.buffer); if (u) log({ type: "play", via: "webaudio", url: u }); } catch (e) {}
+  AudioBufferSourceNode.prototype.start = function (when, offset, duration) {
+    try {
+      const u = this.buffer && bufUrl.get(this.buffer);
+      if (u) {
+        const pid = ++pidSeq, node = this, rate = (this.playbackRate && this.playbackRate.value) || 1;
+        let d = this.buffer.duration - (offset || 0);
+        if (duration != null) d = Math.min(d, duration);
+        node.__njgPid = pid;
+        log({ type: "play", via: "webaudio", url: u, pid, dur: d / rate, rate });
+        node.addEventListener("ended", () => { if (node.__njgPid === pid) { node.__njgPid = null; log({ type: "play-end", pid, why: "ended" }); } });
+      }
+    } catch (e) {}
     return st.apply(this, arguments);
   };
+  const sp0 = AudioBufferSourceNode.prototype.stop;
+  AudioBufferSourceNode.prototype.stop = function () {
+    try { if (this.__njgPid) { log({ type: "play-end", pid: this.__njgPid, why: "stop" }); this.__njgPid = null; } } catch (e) {}
+    return sp0.apply(this, arguments);
+  };
+  // a source cut by disconnecting it (or its gain going to nothing) is not seen: the clip's real length still bounds it
   // 3. the device voice
   try {
     if (window.speechSynthesis) {
       const sp = window.speechSynthesis.speak;
+      const open = new Set();
       window.speechSynthesis.speak = function (u) {
-        try { log({ type: "play", via: "speechSynthesis", text: String(u && u.text || "") }); } catch (e) {}
+        try {
+          const pid = ++pidSeq, text = String(u && u.text || "");
+          open.add(pid);
+          // the device voice has no file: about 0.4 s a word at its rate (an estimate, marked so)
+          log({ type: "play", via: "speechSynthesis", text, pid, dur: Math.max(0.6, text.split(/\\s+/).length * 0.4 / ((u && u.rate) || 1)), est: true });
+          if (u && u.addEventListener) u.addEventListener("end", () => { if (open.delete(pid)) log({ type: "play-end", pid, why: "ended" }); });
+        } catch (e) {}
         return sp.apply(this, arguments);
+      };
+      const cancel = window.speechSynthesis.cancel;
+      window.speechSynthesis.cancel = function () {
+        try { open.forEach((pid) => log({ type: "play-end", pid, why: "cancel" })); open.clear(); } catch (e) {}
+        return cancel.apply(this, arguments);
       };
     }
   } catch (e) {}
@@ -129,6 +172,8 @@ export function classify(p) {
 export class SoundLog {
   constructor() { this.events = []; }
   push(e) { this.events.push(e); }
+  // the raw timeline the contract checks read (lib/contract.mjs): lines, plays and their ends, and the contract probe's events
+  timeline() { return this.events.filter((e) => e && /^(line|line-end|play|play-end|play-dur|c)$/.test(e.type)); }
   // -> { plays: [{kind, text, id, file, speaker, n}], lines: [{text, who, status, parts: [kinds], n}] }
   summary() {
     const lines = new Map(); // id -> {text, who, t0, t1, plays: []}
