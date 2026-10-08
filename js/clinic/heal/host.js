@@ -249,8 +249,9 @@
         wide.classList.remove("gone");
         wide.classList.add("on");
         await Promise.all([
-          play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
-          play(box, [{ transform: `translate(${a.dx || 0}px, ${a.dy || 0}px) scale(${k0})`, filter: "blur(2px)" }, { transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
+          // the room fades in over the first half (the close-up's drawing shows through while the room is at its biggest)
+          play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.5 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
+          play(box, [{ transform: `translate(${a.dx || 0}px, ${a.dy || 0}px) scale(${k0})`, filter: "blur(0px)" }, { transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
         ]);
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
