@@ -246,11 +246,7 @@
   "assets/clinic/closeups/child/knee.webp",
   "assets/clinic/items-v2/water-jug.webp",
   "assets/clinic/sheets/cloth/cloth-tool.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-green.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-red.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp"
+  "assets/clinic/sheets/plaster-flat/plaster-flat-*.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

@@ -116,6 +116,15 @@ JOBS = {
     'G4': ('1024x1536', [W1, SHEET], 'face',
            GIRL + 'Her new expression: she is HAPPY and better: a big warm open smile showing her top teeth, her eyes bright, '
            'wide and shining, her eyebrows relaxed and lifted, her cheeks lifted and a little rosy.' + GIRL_END),
+    'S6': ('1536x1024', [ANCHOR, A('assets/clinic/closeups/girl/tongue-v2.webp')], None,
+           'A sprite sheet for a children\'s doctor game: three small SORE PATCHES that sit flat on a child\'s tongue (the attached '
+           'tongue), in an invisible grid of 3 columns and 1 row of equal cells, one per cell, centred, each filling about 45% of its '
+           'cell\'s width, clear background all round; nothing touches a cell boundary. Seen from directly above. Each is a FLAT, '
+           'slightly raised, irregular soft patch like a mouth ulcer or a sore spot, NOT a ball, NOT a bead, NOT a lump: a low, '
+           'matte, slightly rough-textured inflamed patch with a soft pale-pink inflamed halo fading into its edge, and its middle a '
+           'little paler. Muted, unsaturated, medical-looking colours, never candy colours: (1) dull pinkish-red; (2) pale sage, '
+           'greenish-grey; (3) pale bluish-grey. No gloss, no shine, no highlights, no round sphere shading. It must never look '
+           'like a sweet, a jelly, a gummy or a ball of modelling clay. ' + GROUND + ' ' + STYLE + ' ' + NEG),
 }
 
 
@@ -282,6 +291,9 @@ def fit(stage):
     cv = Image.new('RGBA', (p.width + 32, p.height + 32), (0, 0, 0, 0))
     cv.alpha_composite(p, (16, 16))
     save(foreshorten(cv, 0.6), 'assets/cook/items/v3/daar/ladle-v3.webp')
+    # S6: the taste game's sore spots, each centred on a square canvas (taste.js draws it in a square of 2.5 x its radius)
+    for c in ['red', 'green', 'blue']:
+        save(_place(st('spot-%s.webp' % c), (230, 230), (20, 20, 210, 210)), 'assets/clinic/heal-v3/spot-%s-s03.webp' % c)
     # G1-G4: the girl's face layers and corner heads (the cut's canvas is girl-front's own)
     gd = os.path.join(stage, 'girl')
     for f in ['hot', 'cold', 'pain', 'happy']:

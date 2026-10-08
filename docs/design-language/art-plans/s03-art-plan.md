@@ -16,7 +16,7 @@
 | **S1** | The sekelo served dish: an oval steel plate with two straight parallel skewers of meat, onion and tomato only (no green pepper) | redo **B1** (s02 cell 7); CK-21 | Front and a little above (the counter's angle, as B1), 1024² | anchor, `s02/b1-served-dishes-v1.png` (the other seven dishes' angle and light), `s02/c7-sekelo-plate-plain-t-v1.png` (the plate) | `assets/cook/items/served/sekelo.webp`; `data/cook.json` art.s02 served-dishes `sekelo` |
 | **S2** | The daar bowl alone, top-down: the same steel bowl full of smooth matte yellow daar, a few lentil grains, no beads, no gloss | redo **C10**; DAAR-10 | T, 1024² | anchor, `s02/c10-daar-bowl-trivet-t-v1.png` (bowl and trivet), `assets/cook/items/v3/daar/pot-daar.webp` (the daar's look in the pot) | `v3/daar/daar-bowl-plain-t.webp` (radius about 0.8 of the trivet's); art.s02 `daar-bowl` ready true |
 | **S3** | The six two-colour plasters, split **lengthwise** (top half one colour, bottom half the other, the pad in both), 3×2 | redo **E2**; CLN-97 | T, 1536×1024 | anchor, `s02/e2-plasters-flat-v1.png` (shape, size, colours) | `assets/clinic/sheets/plaster-flat/plaster-flat-<a>-<b>.webp`; `data/clinic/sheets.json` remap |
-| **S4** | A real *kadchi*: a steel serving ladle, a deep round bowl and a long flat handle, top-down, the handle rising toward us out of the pot | **DAAR-02** | T (handle foreshortened), 1024² | anchor, `assets/cook/items/v3/daar/ladle-v2.webp` (the steel; the dipper is the fault), `v3/daar/pot-daar.webp` (the pot it stirs) | `v3/daar/ladle-v3.webp`; `js/cook/stations/daar.js` LADLE (file, bowl centre, radius, handle angle) |
+| **S4** | A real *kadchi*: a steel serving ladle, a deep round bowl and a long flat handle, top-down, the handle rising toward us out of the pot | **DAAR-02** | T (handle foreshortened), 1024² | anchor, `v3/daar/pot-daar.webp` (the pot it stirs); `ladle-v2.webp` attached on tries 1–2 only (Fable: the old dipper anchored the shape) | `v3/daar/ladle-v3.webp`; `js/cook/stations/daar.js` LADLE (file, bowl centre, radius, handle angle) |
 | **S5** | Potato chunks: raw (pale cream flesh with a strip of thin brown skin on one face, starchy matte), grilled, charred, and a heap of raw cubes, 4×1 | **ART-11** (not butter) | T, 1536×1024 | anchor, `cook-v3/k4-pieces-v1.png` (the other pieces' size and style), `v3/sekelo/potato-raw.webp` (the fault) | `v3/sekelo/potato-{raw,grilled,charred}.webp`, `heap-potato.webp` (same canvases, 404×396 and 374×368) |
 | **G1** | The girl, hot: flushed cheeks, one bead of sweat at the temple, tired droopy eyes, mouth a little open; **not crying, no tears** | **CLN-65**, FV10 ("the crying emoji is not the one") | Masked face edit of W1, 1024×1536 | W1 (the edited image), `s1-girl-sheet-v2.png` | `assets/clinic/patients/girl/girl-face-hot.webp`, `girl-head-hot.webp` |
 | **G2** | The girl, cold: shivering, pale lips with a hint of blue, eyes squeezed a little, teeth chattering | **CLN-65** | as G1 | as G1 | `girl-face-cold`, `girl-head-cold` |
@@ -37,3 +37,18 @@
 - S4: reads as a kadchi (a serving ladle), not a measuring cup or dipper; deep round bowl seen from above; long flat handle; whole ladle inside the frame.
 - S5: potato, never butter or cheese: pale cream starchy flesh, thin brown skin visible; grill marks on grilled, dark char on charred; the heap is the same cubes.
 - G1–G4: the same girl, same body, hair and clothes untouched; the feeling reads at 90 px; nothing gross; no tears for hot; modest; skin warm light tan.
+
+## 5. Results (8 Oct; spend $3.85 of the $60 cap, 14 calls, logged in `sources/art/s03/cost.json`)
+
+| ID | Tries | Fable, per try | Final |
+|---|---|---|---|
+| S1 sekelo dish | 1 | pass | `s1-v1` |
+| S2 daar bowl | 1 | pass (colour a touch duller than the pot's daar) | `s2-v1` |
+| S3 two-colour plasters | 1 | pass | `s3-v1` |
+| S4 kadchi | 3 | fail (a measuring scoop) · fail (still a scoop: the attached dipper anchored it) · pass | `s4-v3`, handle foreshortened in the cut |
+| S5 potato | 1 | pass (grilled could read as paneer at a glance) | `s5-v1` |
+| G1 hot | 2 | fail (read sad, the old fault) · pass | `g1-v2` |
+| G2 cold, G3 sore, G4 happy | 1 each | pass | `g2-v1`, `g3-v1`, `g4-v1` |
+| S6 taste sore spots (added: Fable judged the wired RO2 v2 green and blue lumps as jelly sweets, CUL-02) | 2 | fail (colours too muted to name) · pass | `s6-v2` |
+
+artjudge.py: 9 pass, 1 flag (S2's "disc" is the bowl itself). Cut: `build/tools/art/specs/s03.cut.json`, then `build/gen_s03.py --fit`.

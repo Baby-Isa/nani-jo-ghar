@@ -106,19 +106,19 @@
    "_s02": "S02-E (RM2, the redo: tighter, plain skin): the tongue sits within a few px of v1's (bbox 525-1003, 425-952 against 535-1009, 424-923), so the box stays"
   },
   "spot-red": {
-   "src": "assets/clinic/heal-v3/spot-red-v2.webp",
+   "src": "assets/clinic/heal-v3/spot-red-s03.webp",
    "ready": true,
-   "_s03": "S03-D: the s02 redo RO2 (matte, softly irregular, passed in the s02 run), wired; drawn at the spot's size by taste.js"
+   "_s03": "S03-D: s03 S6 (flat matte sore patch, clear colour; Fable passed; RO2 v2 held: its green and blue read as jelly sweets)"
   },
   "spot-green": {
-   "src": "assets/clinic/heal-v3/spot-green-v2.webp",
+   "src": "assets/clinic/heal-v3/spot-green-s03.webp",
    "ready": true,
-   "_s03": "S03-D: the s02 redo RO2 (matte, softly irregular, passed in the s02 run), wired; drawn at the spot's size by taste.js"
+   "_s03": "S03-D: s03 S6 (flat matte sore patch, clear colour; Fable passed; RO2 v2 held: its green and blue read as jelly sweets)"
   },
   "spot-blue": {
-   "src": "assets/clinic/heal-v3/spot-blue-v2.webp",
+   "src": "assets/clinic/heal-v3/spot-blue-s03.webp",
    "ready": true,
-   "_s03": "S03-D: the s02 redo RO2 (matte, softly irregular, passed in the s02 run), wired; drawn at the spot's size by taste.js"
+   "_s03": "S03-D: s03 S6 (flat matte sore patch, clear colour; Fable passed; RO2 v2 held: its green and blue read as jelly sweets)"
   },
   "budOintment": {
    "src": "assets/clinic/heal-v3/bud-ointment.webp",
@@ -165,11 +165,11 @@
  "assets": [
   "assets/clinic/closeups/girl/tongue-v2.webp",
   "assets/clinic/heal-v3/bud-ointment.webp",
+  "assets/clinic/heal-v3/spot-blue-s03.webp",
+  "assets/clinic/heal-v3/spot-green-s03.webp",
+  "assets/clinic/heal-v3/spot-red-s03.webp",
   "assets/clinic/items-v2/tumbler.webp",
-  "assets/clinic/sheets/bud/bud-pot-belt.webp",
-  "assets/clinic/heal-v3/spot-blue-v2.webp",
-  "assets/clinic/heal-v3/spot-green-v2.webp",
-  "assets/clinic/heal-v3/spot-red-v2.webp"
+  "assets/clinic/sheets/bud/bud-pot-belt.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

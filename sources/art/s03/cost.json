@@ -206,6 +206,42 @@
     "total_tokens": 9554
    },
    "usd": 0.3042
+  },
+  {
+   "name": "S6",
+   "try": 1,
+   "usage": {
+    "input_tokens": 3399,
+    "input_tokens_details": {
+     "image_tokens": 3057,
+     "text_tokens": 342
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8887
+   },
+   "usd": 0.2518
+  },
+  {
+   "name": "S6",
+   "try": 2,
+   "usage": {
+    "input_tokens": 3470,
+    "input_tokens_details": {
+     "image_tokens": 3057,
+     "text_tokens": 413
+    },
+    "output_tokens": 5488,
+    "output_tokens_details": {
+     "image_tokens": 5488,
+     "text_tokens": 0
+    },
+    "total_tokens": 8958
+   },
+   "usd": 0.2522
   }
  ]
 }
