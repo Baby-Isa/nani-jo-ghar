@@ -3770,9 +3770,9 @@
        "drawH": 124
       },
       "daal": {
-       "file": "assets/cook/items/served/daar.webp",
+       "file": "assets/cook/items/served/daar-v2.webp",
        "w": 300,
-       "h": 256,
+       "h": 234,
        "drawH": 128
       },
       "chaat": {
@@ -4736,7 +4736,7 @@
       "assets/cook/items/v3/daar/chop-piece-onion.webp",
       "assets/cook/items/v3/daar/chop-piece-tomato.webp",
       "assets/cook/items/v3/daar/daar-bowl-trivet-plain-v2.webp",
-      "assets/cook/items/v3/daar/daar-bowl-trivet.webp",
+      "assets/cook/items/v3/daar/daar-bowl-trivet-v2.webp",
       "assets/cook/items/v3/daar/dial-fast.webp",
       "assets/cook/items/v3/daar/dial-slow.webp",
       "assets/cook/items/v3/daar/dial-spill.webp",

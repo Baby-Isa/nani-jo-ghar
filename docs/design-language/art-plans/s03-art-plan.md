@@ -38,7 +38,7 @@
 - S5: potato, never butter or cheese: pale cream starchy flesh, thin brown skin visible; grill marks on grilled, dark char on charred; the heap is the same cubes.
 - G1–G4: the same girl, same body, hair and clothes untouched; the feeling reads at 90 px; nothing gross; no tears for hot; modest; skin warm light tan.
 
-## 5. Results (8 Oct; spend $3.85 of the $60 cap, 14 calls, logged in `sources/art/s03/cost.json`)
+## 5. Results (8 Oct; spend $4.48 of the $60 cap, 16 calls, logged in `sources/art/s03/cost.json`)
 
 | ID | Tries | Fable, per try | Final |
 |---|---|---|---|
@@ -49,6 +49,7 @@
 | S5 potato | 1 | pass (grilled could read as paneer at a glance) | `s5-v1` |
 | G1 hot | 2 | fail (read sad, the old fault) · pass | `g1-v2` |
 | G2 cold, G3 sore, G4 happy | 1 each | pass | `g2-v1`, `g3-v1`, `g4-v1` |
+| S7 served daar, S8 tadka bowl (added: the same beads fault on the daar's other two pictures) | 1 each | pass (S7's bowl a deeper shape than B1's; S8 re-rendered whole, cut whole) | `s7-v1`, `s8-v1` |
 | S6 taste sore spots (added: Fable judged the wired RO2 v2 green and blue lumps as jelly sweets, CUL-02) | 2 | fail (colours too muted to name) · pass | `s6-v2` |
 
 artjudge.py: 9 pass, 1 flag (S2's "disc" is the bowl itself). Cut: `build/tools/art/specs/s03.cut.json`, then `build/gen_s03.py --fit`.

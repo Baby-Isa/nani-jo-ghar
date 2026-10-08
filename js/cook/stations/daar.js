@@ -88,7 +88,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const MIX_POT = ["seeds", "onion", "tomato-only", "tomato", "chilli-only", "onion-chilli", "tomato-chilli", "chilli"];
   // the served bowl on its trivet (528 x 563; its round body, trivet and all: r 0.4833 of w) and the ladle
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
-  const TRIVET = { w: 528, h: 563, cx: 0.4928, cy: 0.4987, r: 0.4833 };
+  // S03-D (S8): the tadka bowl redrawn with matte daar (no beads), its own trivet circle measured on the cut
+  const TRIVET = { w: 528, h: 527, cx: 0.5, cy: 0.5, r: 0.4697 };
   // S03-D (DAAR-02): ladle-v3, a real kadchi from above (a deep round bowl, a flat strap handle rising to the upper
   // right, foreshortened by build/gen_s03.py); its bowl: the biggest circle inside it, measured on the cut
   const LADLE = { w: 360, h: 389, cx: 0.2889, cy: 0.7301, r: 0.2401 };
@@ -158,7 +159,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const vegAll = [...new Set(kinds.concat(no, pool))].filter((id) => VEG[id]);
     const art = [
       ["dv2-knife", IT + "tool-knife-t.png"], // DAAR-13: the margin-safe cut (the webp touched its canvas edge: the tip was clipped)
-      ["dv3-trivet", V3 + "daar-bowl-trivet.webp"],
+      ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
       ["dv3-ladle", V3 + "ladle-v3.webp"],
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
