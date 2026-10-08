@@ -93,8 +93,11 @@
     const A = { x: 300, y: 395 };
     const skin = S.skin || "#d9a57c";
     const armG = s("g", {}, S.layer);
-    s("path", { d: "M-40 330 L410 345 Q474 350 474 400 Q474 452 410 456 L-40 470 Z", fill: skin, stroke: S.skinDark || "#b9845c", "stroke-width": 4 }, armG);
-    s("path", { d: "M-40 322 L130 326 Q150 400 130 478 L-40 478 Z", fill: S.clothes || "#e25a5a", stroke: "rgba(0,0,0,.18)", "stroke-width": 3 }, armG); // the rolled sleeve
+    const armBody = s("g", {}, armG); // the stand-in drawing (S03-D: U1-v2's close-up swaps in for it, boing.json art.upperarm)
+    s("path", { d: "M-40 330 L410 345 Q474 350 474 400 Q474 452 410 456 L-40 470 Z", fill: skin, stroke: S.skinDark || "#b9845c", "stroke-width": 4 }, armBody);
+    s("path", { d: "M-40 322 L130 326 Q150 400 130 478 L-40 478 Z", fill: S.clothes || "#e25a5a", stroke: "rgba(0,0,0,.18)", "stroke-width": 3 }, armBody); // the rolled sleeve
+    const armArt = S.closeup("upperarm", armBody);
+    if (armArt) armG.insertBefore(armArt, armG.firstChild); // it moves with the arm (the jab's flinch)
     const spot = s("circle", { cx: A.x, cy: A.y, r: 16, fill: "none", stroke: "#2e8b7a", "stroke-width": 4, "stroke-dasharray": "5 5" }, armG);
     const shine = s("ellipse", { cx: A.x, cy: A.y, rx: 70, ry: 32, fill: "#fff", opacity: 0 }, armG);
     const markG = s("g", {}, armG);
