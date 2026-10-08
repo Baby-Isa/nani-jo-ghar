@@ -60,6 +60,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | SH-59 | No "?" pulse during a conversation; the pulse clears at each new order | **open** | eye: story day, pantry → order | `docs/feedback/cook-playtest-2026-10-06.md` C16 |
 | SH-60 | Help (line and glow) only after the pause, for the first item too; a new player sees every word ("Start over" clears learned words; "play as new" in "?") | **open** | eye: pantry L2, fresh profile · LNG-02 | `docs/feedback/cook-playtest-2026-10-06.md` PA5, PA12 |
 | SH-63 | The guide box vs the card: one rule and a table of every line in every Cook station and clinic stage (pending decision; first job of Sprint 2) | **open** | eye/ear: every game | `docs/feedback/clinic-playtest-2026-10-06.md` G1, D6, D13, FV7, B1, FT3 |
+| SH-64 | The whole card is read out only while the request pop-up is up; a tap that clicks through into the game cuts the read-out at once (now the pharmacy pop-up folds on a tap but the reading carries on); one shared pop-up from `js/shared/` for Cook and the clinic (non-negotiable 8) | **open** | ear: tap through the pop-up at once, Cook chai and clinic pharmacy, scrape | `docs/feedback/clinic-playtest-2026-10-08.md` P1, P2 |
 
 ### Buttons and sidebar
 
@@ -278,12 +279,13 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CLN-81 | The girl's finished art in the whole story: waiting room, diagnosis, send-off, sticker and card faces (rough sprites and the stand-in body now) | **open** | eye: clinic morning end to end | `docs/feedback/clinic-playtest-2026-10-06.md` CL1 |
 | CLN-82 | L2+: once a count is reached, the next step's row appears and its tool glows after a pause (stuck after dabs, kicks, wipes, jugs: scrape, knee, boing, foot) | **open** | eye: every heal game L2, L3 | `docs/feedback/clinic-playtest-2026-10-06.md` H1, K5, B5, FT4, TA3 |
 | CLN-83 | No extra click when the outcome is clear ("Found it", end ✓, stage buttons): it moves on after a beat (pending decision) | **open** | eye: diagnosis, pharmacy, scrape, ear | `docs/feedback/clinic-playtest-2026-10-06.md` D2, P2, S4, E9 |
-| CLN-84 | The request first in a pop-up, then a quiet game (pharmacy and every heal game) (pending decision) | **open** | eye/ear: pharmacy L3, tooth L2, boing L3 | `docs/feedback/clinic-playtest-2026-10-06.md` P1, P8, T5, B7 |
+| CLN-84 | The request first in a pop-up, then a quiet game (pharmacy and every heal game; decision 53). Re-raised 8 Oct: scrape and other heal games still open with no pop-up (only the pharmacy has one, `js/clinic/stages/pharmacy.js` `requestPopup`); every heal game opens with the same pop-up as Cook, which then folds into the left sidebar | **open** | eye/ear: pharmacy L3 and all nine heal games L1–L3 (scrape first) | `docs/feedback/clinic-playtest-2026-10-06.md` P1, P8, T5, B7 |
 | CLN-85 | Patient face top right in heal games (clear of the doctor's box); in the eye game her bubble under her mouth | **open** | eye: each heal game | `docs/feedback/clinic-playtest-2026-10-06.md` G2, EY5 |
 | CLN-86 | Dialogue in bubbles from the speaker's face (she says salaam, he replies; she says "too cold"); instructions in the doctor's box | **open** | eye/ear: waiting, fever | `docs/feedback/clinic-playtest-2026-10-06.md` CL2, FV3, D7 |
 | CLN-87 | Zoom in and out about 1.5 s; zoom-out from full zoom on the healed part | **open** | eye: any heal game | `docs/feedback/clinic-playtest-2026-10-06.md` Z1, Z2 |
 | CLN-88 | Clinic lab pages load fast (no serial JSON chain, games loaded on demand) | **open** | auto: timing | `docs/feedback/clinic-playtest-2026-10-06.md` FT1 |
 | CLN-89 | Labs point at the current clinic lab only (old clinic lab index still reachable) | **open** | eye: labs.html | `docs/feedback/clinic-playtest-2026-10-06.md` L1 |
+| CLN-109 | No voice carries over into the next stage: finishing a heal game quickly left the doctor still reading in the send-off. Cause: `Kit.Voice.clear()` (`js/clinic/kit.js`) resets the queue pointer but lines already chained still play, and a playing family clip has no handle to stop it | **open** | ear: scrape L1 finished fast, then send-off; every stage change | `docs/feedback/clinic-playtest-2026-10-08.md` P2 |
 
 ### Waiting room
 
