@@ -28,7 +28,8 @@ Always under the browser lock, on your own port. Never hold the lock for more th
 | `--no-touch` | run the touch sizes with mouse input (to tell a touch problem from a game problem) |
 | `--webgl` | Phaser's WebGL for Cook (canvas is the default: about 4x faster, no tints) |
 | `--from-run <id>` | judge a finished run's saved data (no browser): `--all --from-run <id> --check` |
-| `--list`, `--no-sheets`, `--run-id`, `--resume` | list flows (with their sizes); skip contact sheets; name the output folder; continue a run |
+| `--contract` | the six contract checks alone (default: the 8 Oct route at laptop size); exit 1 on any break |
+| `--list`, `--no-sheets`, `--run-id`, `--resume` | list flows (with their sizes) and the labs.html tiles they play; skip contact sheets; name the output folder; continue a run |
 
 ## What is covered
 
@@ -73,6 +74,10 @@ Each state is linted twice, 300 ms apart, and only what shows in both counts (an
 A hook in every page (`lib/sound.mjs`) wraps `HTMLMediaElement.play`, Web Audio buffer sources (followed back to the file they were fetched from), `speechSynthesis.speak`, and the games' own "say a line" functions (`Cook.Lang.speak`, `Cook.speak`, the clinic's `Voice.say` and `Voice.now`). Each play is classified against `data/family-audio.json`: **family-ok** (a checked family clip), **family-unchecked**, **tts** (a computer-voice placeholder, `assets/audio/cook-tts/`), **other** (the older `word` and `carrier` files, not family-listed) or **device-voice**. A line is attached to what played while it was open; a line that played nothing is **silent**.
 
 The run output (`summary.md`, `sound.json`, the console) has **the recording gap list** (every line never heard whole from family clips, with what played instead and where) and the list of played files that are not an approved family clip. It is informational in the test build (TTS never ships, rule 10): it never fails `--check`.
+
+## The contract checks (decision 75)
+
+Six checks of Zafar's "everywhere" rules on every page of every run, from what was on screen and heard (never from game code): `contract-1` the request pop-up before every play phase that gives an order (read out, then folded), `contract-2` no ✓/Next/stage button once the step is decided, `contract-3` no voice after its stage ended (every clip's real start, length and stop), `contract-4` every bubble above or below its speaker's head, `contract-5` end-screen badges in order, `contract-6` no retired art (`data/retired-art.json`). `--contract` runs them alone (default: the 8 Oct route at laptop size); `--check` runs them on every page and fails on any break (never ratcheted). Each break names the flow, level, size, the state and a shot of that moment (`c<NN>-<kind>.png`). `#speed1` flows (`cook:fetch#speed1`, `cook:chop#speed1`, `lab:cook/round#speed1`) play Cook at a child's pace so voice timing is real. The `lab:cook/*` flows are labs.html's Cook tiles on the game host (every game at levels 1-4, the story round, the errand, free play); `clinic:morning@L2`, `@L3` set every stage's saved level first. Details and how each check measures: `docs/architecture/testing.md`, "The contract checks".
 
 ## The ratchet
 

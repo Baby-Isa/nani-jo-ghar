@@ -16,9 +16,22 @@ export const RETIRED_FILE = join(ROOT, "build", "sandbox", "data", "retired-art.
 const sha = (f) => (existsSync(join(ROOT, f)) ? createHash("sha256").update(readFileSync(join(ROOT, f))).digest("hex").slice(0, 16) : null);
 const J = (f) => JSON.parse(readFileSync(join(ROOT, f), "utf8"));
 
+// Zafar's named items are pinned to the content they had on 8 Oct: a picture swapped in under the same name must never be
+// re-hashed into the list (S04-C redrew Nani under the same files, so hashing them today would retire the new leaning Nani)
+const PINNED = {
+  "assets/cook/items/tool-knife-t.webp": "0cc84a15120f58fd",
+  "assets/cook/items/tool-knife-t.png": "bf7441643967432e",
+  "assets/cook/hands/nani/b1-handle-grip-t.webp": "52d78f97d873894b",
+  "assets/cook/hands/player-boy/b1-handle-grip-t.webp": "a13cd1af22a8a459",
+  "assets/cook/hands/player-girl/b1-handle-grip-t.webp": "b934ae68384e5e6d",
+  "assets/cook/characters/nani-neutral.webp": "6d2565900651707c",
+  "assets/cook/characters/nani-talk.webp": "6d2565900651707c",
+  "assets/cook/characters/nani-happy.webp": "6d2565900651707c",
+  "assets/cook/characters/nani-point.webp": "6d2565900651707c",
+};
 export function build() {
   const out = [];
-  const add = (file, by, why, scope = null) => { if (!out.some((e) => e.file === file && e.scope === scope)) out.push({ file, sha256: sha(file), by, why, scope }); };
+  const add = (file, by, why, scope = null) => { if (!out.some((e) => e.file === file && e.scope === scope)) out.push({ file, sha256: PINNED[file] || sha(file), by, why, scope }); };
   // 1. the clinic's sheets: remap old single-view picture -> the sheet view that replaces it
   const sheets = J("data/clinic/sheets.json");
   for (const [old, now] of Object.entries(sheets.remap || {})) if (!old.startsWith("_")) add(old, now, "data/clinic/sheets.json remap");
