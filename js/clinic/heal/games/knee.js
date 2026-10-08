@@ -132,7 +132,36 @@
     const glowOn = () => sore.glow.setAttribute("opacity", 0);
     glowOn(true);
     const dotsG = s("g", {}, S.layer);
-    const dotPos = (d) => ({ x: sore.x + (d.s === "l" ? -78 : 92) * KS, y: KY + (-40 + d.y * 40) * KS });
+    // CLN-100 (9 Oct, Zafar: "the bandages just float around"): on the art, the wrap is measured on the leg itself.
+    // The data's anchors (art.knee.wrap, in the source picture's pixels) sit ON the leg's outline: three at the back
+    // of the bent knee (the thigh's underside, the crease, the shin's back) and three round its front (above the
+    // kneecap, the kneecap, below it), so every turn runs edge to edge round the joint, fanning out from the crease
+    // like a real knee bandage. The stand-in keeps its old dots.
+    const WA = KA && KA.wrap;
+    const fromSrc = WA ? (q) => ({ x: KA.box[0] + (q[0] * KA.box[2]) / WA.src[0], y: KA.box[1] + (q[1] * KA.box[3]) / WA.src[1] }) : null;
+    const dotPos = (d) => {
+      if (WA) return fromSrc((d.s === "l" ? WA.back : WA.front)[d.y]);
+      return { x: sore.x + (d.s === "l" ? -78 : 92) * KS, y: KY + (-40 + d.y * 40) * KS };
+    };
+    // the turns in front are drawn only where the leg is (the picture's own outline as an alpha mask, the trouser
+    // cuff left out), so a turn's ends stop exactly at the leg's edges and it reads as going round, never floating
+    if (WA && art) {
+      const mid = `${gid}-legmask`;
+      const m = s("mask", { id: mid, maskUnits: "userSpaceOnUse", x: -2000, y: -2000, width: 5000, height: 5000, "mask-type": "alpha", style: "mask-type: alpha" }, defs);
+      const mk = s("g", {}, m);
+      const im = art.cloneNode();
+      im.removeAttribute("clip-path");
+      im.removeAttribute("class");
+      const cut = `${gid}-skin`;
+      const cp = s("clipPath", { id: cut, clipPathUnits: "userSpaceOnUse" }, defs);
+      // the trouser cuff and its shadow are left out: the skin's edge, from the data, closed round the right
+      const edge = WA.skin.map(fromSrc);
+      const pts = [{ x: edge[0].x, y: -2000 }, ...edge, { x: edge[edge.length - 1].x, y: 3000 }, { x: 3000, y: 3000 }, { x: 3000, y: -2000 }];
+      s("polygon", { points: pts.map((q) => `${q.x},${q.y}`).join(" ") }, cp);
+      mk.setAttribute("clip-path", `url(#${cut})`);
+      mk.appendChild(im);
+      sore.wrap.setAttribute("mask", `url(#${mid})`);
+    }
     const dots = [];
     const drawDots = () => {
       S.clear(dotsG);
@@ -148,6 +177,69 @@
           dots.push({ s: sd, y, x: p.x, yy: p.y });
         })
       );
+    };
+    /**
+     * One turn of a crepe bandage on the art (CLN-100, 9 Oct). Every tap lays a band across the knee from the last dot
+     * to this one, so the turns cross over the kneecap like a real figure-of-eight knee bandage and fan into the
+     * crease behind it. The band is a filled strip: narrower at the back (it dives into the crease, seen edge-on)
+     * and full width over the front, bowed towards the shin as a band round a limb looks, run on past both dots so
+     * the leg's own outline (the mask) trims it exactly where the leg turns away; shaded darker at both ends, with
+     * its edges, the weave along it and a soft shadow under it.
+     */
+    const wrapTurn = (a, b) => {
+      const k = KA.box[2] / WA.src[0];
+      const back = a.s === "l" ? a : b;
+      const fr = a.s === "l" ? b : a;
+      const W = WA.band * k;
+      const dx = fr.x - back.x;
+      const dy = fr.yy - back.yy;
+      const L = Math.hypot(dx, dy) || 1;
+      const ux = dx / L;
+      const uy = dy / L;
+      let nx = -uy;
+      let ny = ux;
+      if (ny < 0) {
+        nx = -nx;
+        ny = -ny;
+      }
+      const p0 = { x: back.x - ux * W * 0.5, y: back.yy - uy * W * 0.5 };
+      const p1 = { x: fr.x + ux * W * 0.9, y: fr.yy + uy * W * 0.9 };
+      const bow = 0.11 * L;
+      const c = { x: (p0.x + p1.x) / 2 + nx * bow, y: (p0.y + p1.y) / 2 + ny * bow };
+      const at = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
+      const N = 24;
+      const side = (o) => {
+        const pts = [];
+        for (let i = 0; i <= N; i++) {
+          const t = i / N;
+          const q = at(t);
+          const q2 = at(Math.min(1, t + 0.01));
+          const q1 = at(Math.max(0, t - 0.01));
+          let tx = q2.x - q1.x;
+          let ty = q2.y - q1.y;
+          const tl = Math.hypot(tx, ty) || 1;
+          tx /= tl;
+          ty /= tl;
+          const w = (W * (0.55 + 0.45 * Math.min(1, t * 1.6))) / 2;
+          pts.push([q.x - ty * w * o, q.y + tx * w * o]);
+        }
+        return pts;
+      };
+      const A = side(1);
+      const B = side(-1);
+      const line = (pts) => pts.map((q, i) => `${i ? "L" : "M"}${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join(" ");
+      const shape = `${line(A)} ${line(B.slice().reverse()).replace(/^M/, "L")} Z`;
+      const t = s("g", { class: "knee-turn" }, sore.wrap);
+      const gidT = `${gid}-t${st.turns}`;
+      const gr = s("linearGradient", { id: gidT, gradientUnits: "userSpaceOnUse", x1: back.x, y1: back.yy, x2: fr.x, y2: fr.yy }, defs);
+      [["0", "#b9ab90"], ["0.22", "#efe8d8"], ["0.6", "#fcfaf3"], ["0.86", "#f1ebdd"], ["1", "#c9bca2"]].forEach(([o, col]) => s("stop", { offset: o, "stop-color": col }, gr));
+      s("path", { d: shape, fill: "#4a2c14", opacity: 0.16, transform: `translate(${(nx * 5).toFixed(1)} ${(ny * 6).toFixed(1)})` }, t);
+      s("path", { d: shape, fill: `url(#${gidT})`, stroke: "#b8ab92", "stroke-width": 2, "stroke-linejoin": "round" }, t);
+      [-0.25, 0.08, 0.38].forEach((f) => {
+        const pts = [];
+        for (let i = 0; i <= N; i++) pts.push([A[i][0] * (0.5 + f) + B[i][0] * (0.5 - f), A[i][1] * (0.5 + f) + B[i][1] * (0.5 - f)]);
+        s("path", { d: line(pts), fill: "none", stroke: "#d6cab3", "stroke-width": 1.4, "stroke-dasharray": "2 5", opacity: 0.85 }, t);
+      });
     };
     const active = () => P.steps[1].order[st.oi % P.steps[1].order.length];
     // 13i: once the last turn is wrapped, no dot flashes (the child presses ✓)
@@ -260,20 +352,22 @@
           ctx.log({ type: "extra", rowId: "wrap", detail: "not the flashing dot" });
           return;
         }
-        const from = st.last || { x: sore.x + (d.s === "l" ? 70 : -70) * KS, yy: d.yy, s: d.s === "l" ? "r" : "l" };
+        const from = st.last || (WA ? Object.assign({ s: d.s === "l" ? "r" : "l", y: d.y }, (({ x, y }) => ({ x, yy: y }))(dotPos({ s: d.s === "l" ? "r" : "l", y: d.y }))) : { x: sore.x + (d.s === "l" ? 70 : -70) * KS, yy: d.yy, s: d.s === "l" ? "r" : "l" });
         // K3 (CLN-100): the bandage goes ROUND the knee: a turn from the back (left dot) to the front (right dot)
         // passes over the kneecap, bowed down and across it (drawn on top); a turn from the front to the back passes
-        // behind the leg (drawn under the knee, so only its ends show at the edges), bowed up. Each turn sits a little
-        // lower, so the wrap builds down the knee diagonally
+        // behind the leg (drawn under the knee, so only its ends show at the edges), bowed up.
         const front = d.s === "r";
-        // the turns overlap like a real wrap: each a little lower, cycling over the knee's height
-        const lay = ((st.turns % 6) - 2.5) * 9 * KS;
-        const mx = (from.x + d.x) / 2;
-        const my = (from.yy + d.yy) / 2 + (front ? 30 : -24) * KS + lay;
-        const dpath = `M${from.x} ${from.yy + lay} Q${mx} ${my} ${d.x} ${d.yy + lay + (front ? 16 : -16) * KS}`;
-        const into = front ? sore.wrap : behind;
-        s("path", { d: dpath, fill: "none", stroke: front ? "#fbfaf4" : "#d9d3c4", "stroke-width": 22 * KS, "stroke-linecap": "round", opacity: front ? 0.97 : 0.9 }, into);
-        s("path", { d: dpath, fill: "none", stroke: "#cfc8b8", "stroke-width": 2, "stroke-dasharray": "4 6", opacity: front ? 1 : 0.6 }, into);
+        if (WA) wrapTurn(from, d);
+        else {
+          // the stand-in: each turn a little lower, so the wrap builds down the knee diagonally
+          const lay = ((st.turns % 6) - 2.5) * 9 * KS;
+          const mx = (from.x + d.x) / 2;
+          const my = (from.yy + d.yy) / 2 + (front ? 30 : -24) * KS + lay;
+          const dpath = `M${from.x} ${from.yy + lay} Q${mx} ${my} ${d.x} ${d.yy + lay + (front ? 16 : -16) * KS}`;
+          const into = front ? sore.wrap : behind;
+          s("path", { d: dpath, fill: "none", stroke: front ? "#fbfaf4" : "#d9d3c4", "stroke-width": 22 * KS, "stroke-linecap": "round", opacity: front ? 0.97 : 0.9 }, into);
+          s("path", { d: dpath, fill: "none", stroke: "#cfc8b8", "stroke-width": 2, "stroke-dasharray": "4 6", opacity: front ? 1 : 0.6 }, into);
+        }
         st.last = d;
         st.turns++;
         S.count(st.turns);

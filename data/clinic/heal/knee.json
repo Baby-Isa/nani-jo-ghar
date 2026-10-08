@@ -302,7 +302,85 @@
    "_a1": "A1 (5 Oct): K1 placed so its knee joint (730, 360 in the 1536 x 1024 source) sits on the game's knee (440, 250) at 0.66 (the knee about half the height, art plan 3.2); scale = how much bigger than the stand-in the knee is drawn (the dots, the wrap and the hammer follow it); split = the svg y where the shin starts (the kick swings K1's own shin until K2 is cut).",
    "kinds": [
     "girl"
-   ]
+   ],
+   "wrap": {
+    "_about": "CLN-100 (9 Oct): the wrap's anchors on K1's outline, in the source picture's pixels (src). back = the thigh's underside, the crease, the shin's back (top to bottom); front = above the kneecap, the kneecap, below it. Every turn runs from one to the other and is masked to the leg; skin = the skin's left edge (the trouser cuff and its shadow are never wrapped over), top to bottom; band = the bandage's width.",
+    "src": [
+     1536,
+     1024
+    ],
+    "back": [
+     [
+      530,
+      545
+     ],
+     [
+      548,
+      560
+     ],
+     [
+      544,
+      622
+     ]
+    ],
+    "front": [
+     [
+      902,
+      250
+     ],
+     [
+      946,
+      410
+     ],
+     [
+      938,
+      575
+     ]
+    ],
+    "skin": [
+     [
+      540,
+      100
+     ],
+     [
+      528,
+      200
+     ],
+     [
+      512,
+      300
+     ],
+     [
+      500,
+      400
+     ],
+     [
+      505,
+      480
+     ],
+     [
+      530,
+      545
+     ],
+     [
+      548,
+      560
+     ],
+     [
+      540,
+      640
+     ],
+     [
+      536,
+      700
+     ],
+     [
+      560,
+      1024
+     ]
+    ],
+    "band": 82
+   }
   },
   "knee-kick": {
    "file": "assets/clinic/closeups/child/knee-kick.webp",
