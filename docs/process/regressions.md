@@ -258,7 +258,7 @@ One Source per row: the document where it was first raised. Keep (liked) items a
 | CK-22 | The closing line lists back what they got, then thank you / shabash (no repeated "give me") | **open** | ear: every serve | `docs/feedback/cook-playtest-2026-10-06.md` PA7, C23 |
 | CK-23 | A wrong item means redo just that item; second try with help; after three, show the right way (pending decision) | **open** | eye: every station | `docs/feedback/cook-playtest-2026-10-06.md` C20, D9, T8 |
 | CK-24 | Story days are clearly days (not levels 1–4) on Cook's home | **open** | eye: home | `docs/feedback/cook-playtest-2026-10-06.md` C26 |
-| CK-25 | Labs station pages load fast (10–12 s now): measure, then load per station | **open** | auto: timing; eye | `docs/feedback/cook-playtest-2026-10-06.md` L1 |
+| CK-25 | Labs station pages load fast (10–12 s now): measure, then load per station | built, not re-played (S03, Cook loads only its own files and the pantry at open, ~500 KB of JS instead of ~1.07 MB; a station's code loads when it opens, or during the greeting for an order: `Cook.Mech.need`, js/cook/index.js PARTS; loadcheck 11/11) | auto: timing; eye | `docs/feedback/cook-playtest-2026-10-06.md` L1 |
 | CK-26 | The greeting: your wrong pick red, the other wrong ones grey, the right one clear against the brown, Nani's answer a thought bubble; meaning shown by gesture and pictures (pending decision) | **open** | eye: greeting | `docs/feedback/cook-playtest-2026-10-06.md` G1, G2 |
 
 ## Clinic

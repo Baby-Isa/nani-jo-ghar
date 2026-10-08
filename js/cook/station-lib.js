@@ -514,6 +514,63 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** Has the art run's picture for this id loaded into the scene? */
   S$.hasArt = (S, id) => !!(S$.art(id) && S.textures && S.textures.exists(S$.artKey(id)));
 
+  // (moved from js/cook/mechanics/assemble.js, CK-25: fill, fry, samosa and daar use them too)
+  /** A number from a knob: n, or [min, max] (random). */
+  const knobInt = (v) => (Array.isArray(v) ? v[0] + Math.floor(Math.random() * (v[1] - v[0] + 1)) : v);
+  S$.knobInt = knobInt;
+
+  /**
+   * One free pick: resolves {id, obj} when any item is tapped, or {done}
+   * when Done is pressed (offered if `doneOk`). `next` is what the order
+   * wants next (for the guided glow and the test only; never shown
+   * otherwise). Nothing is refused.
+   */
+  S$.freePick = (z, { items, next, doneOk, doneGlow, help = false }) =>
+    new Promise((resolve) => {
+      const S = z.S;
+      let over = false;
+      const finish = (r) => {
+        if (over) return;
+        over = true;
+        Object.values(items).forEach((o) => {
+          if (!o || !o.active) return;
+          S.untap(o);
+          S.glow(o, false);
+        });
+        UI.hideDone();
+        z.expect(null);
+        resolve(r);
+      };
+      Object.entries(items).forEach(([id, obj]) => obj && obj.active && S.tappable(obj, () => finish({ id, obj })));
+      if (doneOk) UI.done({ glow: !!doneGlow }).then(() => finish({ done: true }));
+      const target = next && items[next] && items[next].active ? items[next] : null;
+      if (target && (z.guided || help)) S.glow(target, true); // help: a redo's second try (decision 51)
+      if (target) {
+        const c = S.centre(target);
+        const wrongs = Object.keys(items)
+          .filter((k) => k !== next && items[k] && items[k].active)
+          .map((k) => S.centre(items[k]));
+        z.expect({ kind: "tap", x: c.x, y: c.y, key: next, wrongs });
+      } else if (doneOk) z.expect({ kind: "click", selector: "#done-btn" });
+      else z.expect({ kind: "wait" });
+    });
+
+  /** The customer speaks from the sidebar card (their face on it, never over the play area). */
+  S$.customerSay = async (ctx, line, opts = {}) => {
+    const face = document.querySelector("#nani-card .nc-face");
+    const who = ctx.order && ctx.order.who;
+    if (face && who && who !== "nani") {
+      face.dataset.nani = face.dataset.nani || face.getAttribute("src");
+      face.src = Cook.v(Cook.facePath(who));
+    }
+    return UI.say(line, { badge: true }, opts).catch(() => {});
+  };
+  S$.customerDone = () => {
+    const face = document.querySelector("#nani-card .nc-face");
+    UI.hideBubble();
+    if (face && face.dataset.nani) face.src = face.dataset.nani;
+  };
+
   S$.BURNER = BURNER;
   S$.STRIP_Y = STRIP_Y;
   S$.begin = begin;

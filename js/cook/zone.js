@@ -436,21 +436,30 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     def.combined = true;
     M.combos[id] = def;
     Cook.Stations[def.api || id] = (S, ctx, params = {}, opts = {}) => M.host(id, S, ctx, params, opts);
-    if (def.dataFile) {
-      Cook.onLoad.push(async (data) => {
-        const extra = await fetch(Cook.v(def.dataFile))
-          .then((r) => r.json())
-          .catch(() => null);
-        if (extra) {
-          data.mechanics = data.mechanics || {};
-          data.mechanics[id] = Object.assign({}, extra.mechanic || {}, data.mechanics[id] || {});
-          if (extra.station) data.stations[id] = Object.assign({}, extra.station, data.stations[id] || {});
-          // a station's own things (its item catalogue: pictures, heaps); their words are the engine's (aliases)
-          if (extra.words) Object.keys(extra.words).forEach((w) => Cook.item(w) || (Cook.data.words[w] = extra.words[w])); // item catalogue
-        }
-      });
-    }
+    if (def.dataFile) M.stationData(id, def.dataFile);
     return def;
+  };
+  /**
+   * A combined station's own data file (data/stations/<id>.json), merged into Cook.data when the data loads. js/cook/
+   * index.js asks for it at page load, before the station's code (CK-25: that code loads only when the station opens),
+   * so cards and orders find the station's words from the start; the station's own call is then a no-op.
+   */
+  const dataAsked = {};
+  M.stationData = function (id, file) {
+    if (dataAsked[id]) return;
+    dataAsked[id] = true;
+    Cook.onLoad.push(async (data) => {
+      const extra = await fetch(Cook.v(file))
+        .then((r) => r.json())
+        .catch(() => null);
+      if (extra) {
+        data.mechanics = data.mechanics || {};
+        data.mechanics[id] = Object.assign({}, extra.mechanic || {}, data.mechanics[id] || {});
+        if (extra.station) data.stations[id] = Object.assign({}, extra.station, data.stations[id] || {});
+        // a station's own things (its item catalogue: pictures, heaps); their words are the engine's (aliases)
+        if (extra.words) Object.keys(extra.words).forEach((w) => Cook.item(w) || (Cook.data.words[w] = extra.words[w])); // item catalogue
+      }
+    });
   };
 
   class Host {
@@ -527,11 +536,33 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return r;
   };
 
+  /* ---------------- a station's code, loaded when it opens (CK-25, decision 68) ----------------
+   * js/cook/index.js loads Cook's own files at page load and leaves each station's (and each mechanic's) code to
+   * load when that station is chosen: M.parts[key] is the files a lab entry or recipe step needs, in load order,
+   * M.importer loads one (a dynamic import from index.js, so the page's import map stamps it). need(key) loads
+   * them once; with no list (the parked pages, the Node harnesses) it's a no-op. needAll() loads every one (tools). */
+  M.parts = {};
+  M.importer = null;
+  const needing = {};
+  M.need = function (key) {
+    const files = M.parts[key];
+    if (!files || !M.importer) return Promise.resolve();
+    return (needing[key] = needing[key] || files.reduce((p, f) => p.then(() => M.importer(f)), Promise.resolve()));
+  };
+  M.needAll = () => Promise.all(Object.keys(M.parts).map(M.need));
+  /** A recipe's stations (data.recipes[id].run's "do" steps), so a dish's code can load ahead of it (the greeting). */
+  M.needRecipe = function (id) {
+    const r = ((Cook.data && Cook.data.recipes) || {})[id];
+    const keys = r ? [...new Set((JSON.stringify(r).match(/"do":\s*"([a-z-]+)"/g) || []).map((m) => m.split('"')[3]))] : [];
+    return Promise.all(keys.map(M.need));
+  };
+
   /* ---------------- the Station lab registry ----------------
    * Each mechanic file (and each combined station file) registers how the
    * lab tries it with a random order, so the lab list builds itself. */
   M.lab = function (key, { name, verb, run, after }) {
     M.labs[key] = { key, name, verb, run };
+    if (M.labOrder.includes(key)) return; // its place was kept when js/cook/index.js listed it before its code loaded
     const at = after ? M.labOrder.indexOf(after) : -1;
     if (at >= 0) M.labOrder.splice(at + 1, 0, key);
     else M.labOrder.push(key);
@@ -554,6 +585,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       card(d, ctx.steps);
       return R.run(S, ctx, d);
     }
+    await M.need(key);
     const entry = M.labs[key];
     if (!entry) throw new Error(`no lab entry ${key}`);
     ctx.level = level;

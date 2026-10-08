@@ -32,7 +32,7 @@
  * ONBOARDING (first time, §14): a ghost finger shows card row 1 -> the matching pot -> the drop into
  * the bowl -> the tick; then the child does row 2.
  *
- * St.freePick (below) is the shared "tap anything, or Done" step that the fill mechanic uses too:
+ * St.freePick (js/cook/station-lib.js) is the shared "tap anything, or Done" step that the fill mechanic uses too:
  * nothing is refused, so nothing gives the answer away; you're graded afterwards.
  */
 import { Cook as CookNS } from "../ns.js";
@@ -46,61 +46,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
-  /** A number from a knob: n, or [min, max] (random). */
-  const knobInt = (v) => (Array.isArray(v) ? v[0] + Math.floor(Math.random() * (v[1] - v[0] + 1)) : v);
-  St.knobInt = knobInt;
-
-  /**
-   * One free pick: resolves {id, obj} when any item is tapped, or {done}
-   * when Done is pressed (offered if `doneOk`). `next` is what the order
-   * wants next (for the guided glow and the test only; never shown
-   * otherwise). Nothing is refused.
-   */
-  St.freePick = (z, { items, next, doneOk, doneGlow, help = false }) =>
-    new Promise((resolve) => {
-      const S = z.S;
-      let over = false;
-      const finish = (r) => {
-        if (over) return;
-        over = true;
-        Object.values(items).forEach((o) => {
-          if (!o || !o.active) return;
-          S.untap(o);
-          S.glow(o, false);
-        });
-        UI.hideDone();
-        z.expect(null);
-        resolve(r);
-      };
-      Object.entries(items).forEach(([id, obj]) => obj && obj.active && S.tappable(obj, () => finish({ id, obj })));
-      if (doneOk) UI.done({ glow: !!doneGlow }).then(() => finish({ done: true }));
-      const target = next && items[next] && items[next].active ? items[next] : null;
-      if (target && (z.guided || help)) S.glow(target, true); // help: a redo's second try (decision 51)
-      if (target) {
-        const c = S.centre(target);
-        const wrongs = Object.keys(items)
-          .filter((k) => k !== next && items[k] && items[k].active)
-          .map((k) => S.centre(items[k]));
-        z.expect({ kind: "tap", x: c.x, y: c.y, key: next, wrongs });
-      } else if (doneOk) z.expect({ kind: "click", selector: "#done-btn" });
-      else z.expect({ kind: "wait" });
-    });
-
-  /** The customer speaks from the sidebar card (their face on it, never over the play area). */
-  St.customerSay = async (ctx, line, opts = {}) => {
-    const face = document.querySelector("#nani-card .nc-face");
-    const who = ctx.order && ctx.order.who;
-    if (face && who && who !== "nani") {
-      face.dataset.nani = face.dataset.nani || face.getAttribute("src");
-      face.src = Cook.v(Cook.facePath(who));
-    }
-    return UI.say(line, { badge: true }, opts).catch(() => {});
-  };
-  St.customerDone = () => {
-    const face = document.querySelector("#nani-card .nc-face");
-    UI.hideBubble();
-    if (face && face.dataset.nani) face.src = face.dataset.nani;
-  };
+  // knobInt, freePick and the customer's say are in js/cook/station-lib.js (CK-25: samosa and daar use them without
+  // this file, which now loads only with the chaat bowl)
+  const knobInt = St.knobInt;
 
   /** Where a list stands: the next thing it wants, and the first mistake in `got`. */
   function checker(sequence) {

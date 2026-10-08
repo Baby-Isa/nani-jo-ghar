@@ -604,9 +604,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const warmed = new Set();
   /** Start loading what these dishes' stations show (their props, sprites and declared files) and their served pictures. */
   Cook.prefetchDishes = function (recipes) {
+    const list = [].concat(recipes || []).filter(Boolean);
+    // CK-25: the dishes' station code too (it loads only when a station is chosen)
+    list.forEach((r) => Cook.Mech.needRecipe && Cook.Mech.needRecipe(r).catch(() => {}));
     const s = S();
     if (!s || !Cook.Art.prefetch) return;
-    const list = [].concat(recipes || []).filter(Boolean);
     const stations = [...new Set(list.flatMap(stationsOf))];
     Cook.Art.prefetch(s, stations.concat(list.map((r) => `served:${r}`)));
     // the files a station's own code loads (art.assets.stations[key].prefetch): into the browser's cache now

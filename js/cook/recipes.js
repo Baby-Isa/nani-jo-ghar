@@ -404,6 +404,7 @@
   };
   /** A mechanic, a combined station or a Phase A station function. */
   async function station(id, p, env) {
+    if (Mech.need) await Mech.need(id); // its code, the first time it opens (CK-25)
     const level = p.level || (env.d.levels || {})[id] || env.d.level || env.ctx.level;
     if (Mech.combos[id]) {
       env.zone = null;
