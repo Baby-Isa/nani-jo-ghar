@@ -27,5 +27,14 @@ description: Review a finished build session or any change before it goes to Zaf
 7. Start the report: `node build/tools/review/skeleton.mjs <name> --run <run id>`.
 8. Approve the shots only after looking (and from two runs where timing wobbles): `shotdiff.mjs --approve --also <run2>`.
 
+9. **The sprint check (decision 78), before every publish:** every row the sprint touched is played and judged, not just the changed screens.
+   ```
+   node build/tools/review/sprintcheck.mjs --plan          # the sprint's rows → flows; UNMAPPED rows must get a flow or a manual shot first
+   node build/tools/review/sprintcheck.mjs --run           # plays them, with the contract checks (a break fails)
+   node build/tools/review/sprintcheck.mjs --sheets        # one evidence sheet per row
+   node build/tools/review/sprintcheck.mjs --judge-prompt  # Fable judges every sheet against the row's words
+   ```
+   A row is built only on Fable's PASS of its sheet; a FAIL reopens it before Zafar plays. Zafar gets the list of what still fails before he plays (C20).
+
 ## Then
 Anything broken goes back to the builder as a numbered list; nothing reaches Zafar that breaks a written rule.

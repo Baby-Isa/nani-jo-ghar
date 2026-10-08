@@ -15,6 +15,9 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 - Small decisions go in the sprint file's "Small decisions". A lasting decision (one that will still hold next sprint) goes in `docs/decisions.md` as a numbered row with a one-line why and a date, and into `docs/process/rules.md` in the same commit.
 - Feedback becomes regression rows the same day (`/feedback`). Cut scope before the budget.
 
+## Before the publish (decision 78)
+The sprint check (`/review` step 9) has played every row the sprint touched and Fable has judged each sheet; every FAIL is fixed or reopened and listed for Zafar. A sprint whose rows are unproven doesn't publish.
+
 ## Close (after `/review`, `/publish` and Zafar's play)
 1. Fill **Outcome**: the commit on `main`, what was cut or moved on, open rows by mode (`statuscounts.mjs`), money spent against the budget.
 2. Write the **three-line look back**: what worked, what cost more than it should, one process change. If a line changes how we work, make it a rule (A-section) and a decision row.
