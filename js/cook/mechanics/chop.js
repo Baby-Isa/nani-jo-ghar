@@ -71,6 +71,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!ids.length) return {};
       ids.forEach((id) => Cook.markSeen(id));
       const hide = St.hideKnown(ctx);
+      // S04-B (DAAR-13, ART-17, Z8): the new knife (the art run's, no hand) is the mechanic's own default, wherever it's
+      // run (the Chop tile too, not only daar); the old hand-and-knife only if that art can't load
+      if (!knifeKey) {
+        const kit = St.art("knife");
+        if (kit) await Promise.race([St.load(S, [[St.artKey("knife"), kit.file]]), Cook.wait(4000)]);
+        if (St.hasArt(S, "knife")) {
+          knifeKey = St.artKey("knife");
+          blade = blade || (kit.meta || {}).blade || null;
+        }
+      }
       let knife;
       if (knifeKey && S.textures.exists(knifeKey)) {
         // the kit's knife on its own (no hand): blade up, it follows the finger

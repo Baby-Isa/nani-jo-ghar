@@ -1,6 +1,6 @@
 /*
- * One player for every voice in the game (target-model § 3.2; rules G14, G16, E5; PAN-04). Not wired to any
- * page yet: Cook (R4) and the clinic (R5) move onto it.
+ * One player for every voice in the game (target-model § 3.2; rules G14, G16, E5; PAN-04). Cook speaks through it;
+ * every voice registers with the shared lifecycle's voice layer (js/shared/request-popup.js), so one stop silences all.
  *
  * WHICH CLIP (chooseClip, pure): a recording marked `checked: "redo"` never plays. In the STORE app (path
  * "store") only clips Zafar marked `checked: "ok"` play, and never a computer voice. On the TEST path (GitHub
@@ -412,6 +412,17 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
     P.stop();
   };
   V.busy = (channel = "main") => !!(channels.get(channel) && channels.get(channel).playing);
+  // S04-B (SH-66, decision 75 (3)): the one voice layer. On a page with the shared lifecycle (js/shared/request-popup.js)
+  // every stop it makes (a stage end, the end screen, a tap through the request pop-up) silences every channel here too:
+  // Cook's lines and the clinic's core lines stop with the clinic's own Kit.Voice, from one call
+  const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
+  if (layer && layer.onStop) {
+    V.offLayer = layer.onStop(() => {
+      channels.forEach((c) => (c.token++, (c.playing = false)));
+      overTok++;
+      P.stop();
+    });
+  }
   return V;
 }
 

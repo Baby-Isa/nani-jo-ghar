@@ -25,14 +25,15 @@
 
   /**
    * The request pop-up (decision 53, T27; S03-A, CLN-84, SH-64): the shared one (js/shared/request-popup.js), the same
-   * as Cook's and every heal game's. The doctor's card at full size over the play area, read out row by row (the
+   * as Cook's and every heal game's, through the shared lifecycle (S04-B). The doctor's card at full size over the play area, read out row by row (the
    * read-along); a tap anywhere stops the voice at once and folds it into the sidebar; then the belt runs, quiet.
    */
   S.requestPopup = function (screen, { title, rows, ordered, face }) {
-    const RP = global.RequestPopup;
-    if (!RP) return Promise.resolve({ skipped: false });
+    const LC = global.Lifecycle; // S04-B: through the shared lifecycle (decision 75 (1))
+    if (!LC) return Promise.resolve({ skipped: false });
     let card = null;
-    return RP.open({
+    return LC.request({
+      reason: "clinic:pharmacy",
       host: screen.main,
       target: () => screen.card.el,
       fast: Kit.fast,

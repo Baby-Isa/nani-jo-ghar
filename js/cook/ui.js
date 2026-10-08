@@ -200,6 +200,17 @@
   function placeBubble() {
     const b = bubble();
     if (!bubbleAnchor || bubbleAnchor.badge || b.classList.contains("hidden")) return;
+    // S04-B (SH-68, decision 75 (4)): a speaker with a head (a character in the service view) gets the one shared
+    // placement: above the head, below it with no room (js/shared/request-popup.js Lifecycle.bubble)
+    const hd = bubbleAnchor.head;
+    if (hd && global.Lifecycle && document.querySelector("#game canvas")) {
+      const a = UI.worldToScreen(hd.x, hd.y);
+      const z = UI.worldToScreen(hd.x + hd.w, hd.y + hd.h);
+      b.classList.remove("tail-left");
+      b.style.maxWidth = "";
+      if (global.Lifecycle.bubble.place(b, { left: a.x, top: a.y, width: z.x - a.x, height: z.y - a.y }, $("#stage"))) return;
+    }
+    delete b.dataset.njgPlace;
     const p = UI.worldToStage(bubbleAnchor.x, bubbleAnchor.y);
     const stageW = p.stage ? p.stage.width : 1000;
     // G1: beside the speaker's face (side "left": the tail points back at the mouth), never hanging over their
@@ -1109,15 +1120,21 @@
     // decision 53: each person says their own card (their face lights: the card is their bubble), one after another
     let skipped = false;
     tapped.then(() => (skipped = true));
+    // M.request: only the revealed rows are read (the headline first, as a person's own card says it)
+    const only = opts.only || null;
+    const onlyRow = (p) => [].concat(p.row || [], (p.line && p.line.rows) || [], (p.line && p.line.row) || []).some((r) => only.includes(r));
+    const keep = (parts) => (only ? (parts.some(onlyRow) ? parts.filter((p, i) => i === 0 || onlyRow(p)) : []) : parts);
     const sayPeople = async () => {
-      const cards = [...intro().querySelectorAll(".ic-order .oc-card[data-who]")];
+      const cards = [...intro().querySelectorAll(only ? ".ic-order .oc-card" : ".ic-order .oc-card[data-who]")];
       for (const c of cards) {
         if (skipped || token !== Cook.run) return;
+        const parts = keep(c._parts ? c._parts() : []);
+        if (!parts.length) continue;
         const face = c.querySelector(".oc-face");
         c.classList.add("speaking");
         if (face) face.classList.add("on");
         try {
-          await readAlong(c._parts ? c._parts() : [], { min: 700 });
+          await readAlong(parts, { min: 700 });
         } finally {
           c.classList.remove("speaking");
           if (face) face.classList.remove("on");
@@ -1125,15 +1142,17 @@
         await Cook.wait(160);
       }
     };
-    // S03-A (decision 53, SH-64): the shared request pop-up (js/shared/request-popup.js) runs it: read out while it's
-    // up; a tap anywhere but a face stops the voice at once (VoiceStop, UI.hush) and folds it into the sidebar
+    // S03-A (decision 53, SH-64), S04-B: the shared lifecycle's request pop-up (js/shared/request-popup.js) runs it:
+    // read out while it's up; a tap anywhere but a face stops the voice at once (the one voice layer, UI.hush) and folds
+    // it into the sidebar. opts.only: a part of the order revealed mid-station (M.request): only its rows are read
     const read = () => {
       // Wave 6: read along: each part lights up on the card as it's said
-      const said = people && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(partsOf(m.line, introEls), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
+      const said = (people || only) && opts.speak !== false ? sayPeople() : UI.w6() && opts.speak !== false ? readAlong(keep(partsOf(m.line, introEls)), { min: 900 }) : voice ? Promise.all([Lang.speak(m.line), Cook.wait(900)]) : Cook.wait(Cook.readMs(Lang.plain(m.line)));
       return said.then(() => card.classList.remove("talk"));
     };
     try {
-      await global.RequestPopup.open({
+      await global.Lifecycle.request({
+        reason: opts.only ? "cook:reveal" : "cook:order",
         el,
         card,
         target: () => $("#mission"),
@@ -1224,7 +1243,7 @@
   /**
    * S03-A, the voice stop (SH-64, CLN-109): Cook's voice really stops: the read-along's chain (readToken), the core's
    * channels (their lines already chained stay quiet) and the clip playing now (Cook.stopVoice). A tap through the
-   * request pop-up runs it (the shared VoiceStop.stop runs it too).
+   * request pop-up runs it (every stop of the shared lifecycle's voice layer runs it too: Lifecycle.voice.onStop).
    */
   UI.hush = function () {
     stopReading();
@@ -1238,7 +1257,7 @@
     });
     if (Cook.stopVoice) Cook.stopVoice();
   };
-  if (global.VoiceStop && !UI.hushHooked) UI.hushHooked = global.VoiceStop.onStop(() => UI.hush());
+  if (global.Lifecycle && !UI.hushHooked) UI.hushHooked = global.Lifecycle.voice.onStop(() => UI.hush());
   /**
    * Read parts in turn, lighting each one's elements while it's said (the
    * voice file of that chunk, or a reading pause if it has none). A new
@@ -1905,6 +1924,25 @@
       // the part that just appeared (the tadka order) is the one to look at
       const late = [...document.querySelectorAll("#mission .lsec.late")].pop();
       if (late && late.scrollIntoView) late.scrollIntoView({ block: "nearest" });
+    }
+    return found;
+  };
+  /**
+   * S04-B (decision 75 (1), CHT-10, Z2): a part of the order that waits for its station (chaat's layer order, daar's
+   * tadka and stir) is a new order for a play phase, so it opens with the shared request pop-up: the card big, only
+   * the new rows read out (at every level, L4's closed card too), then folded into the sidebar. Every caller of
+   * ctx.nextStep (each station's begin) gets it; returns the revealed section, or null (nothing new: no pop-up).
+   */
+  M.request = async function (key) {
+    const found = M.reveal(key);
+    if (!found) return null;
+    const rows = found.s.groups.flat();
+    if (rows.length && global.Lifecycle && !introOpen()) {
+      try {
+        await M.introduce({ only: rows, pause: 900 });
+      } catch (e) {
+        if (!(e instanceof Cook.Abort)) throw e;
+      }
     }
     return found;
   };

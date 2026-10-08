@@ -4790,10 +4790,12 @@
       "daal-dry"
      ],
      "files": [
+      "assets/cook/items/tool-knife-t-v2.webp",
       "assets/cook/items/tool-knife-t.webp",
       "assets/cook/items/veg-*"
      ],
      "prefetch": [
+      "assets/cook/items/tool-knife-t-v2.webp",
       "assets/cook/items/tool-knife-t.webp",
       "assets/cook/items/veg-aadu-whole-t.webp",
       "assets/cook/items/veg-bataato-whole-t.webp",

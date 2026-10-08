@@ -7,7 +7,8 @@
  * For each stage the host: mounts the mini-game in the play area with a ctx (below); starts it; waits for
  * ctx.done(); calls its destroy(); CHECKS that it cleared its own UI and stopped its effects (E17: anything left
  * in the play area or the page, or a voice still talking, is a finding, and the host clears it so the next stage
- * starts clean); then moves on. Pause slots between stages (and ctx.pause inside one) are where the shell may
+ * starts clean); ends the stage through the shared lifecycle (js/shared/request-popup.js Lifecycle.stageEnd: every
+ * voice stops, every bubble goes; decision 75); then moves on. The end screen goes through Lifecycle.results too. Pause slots between stages (and ctx.pause inside one) are where the shell may
  * put a Conversation (H44). After the last stage: one round to the core's Score.finish (badges, the personal
  * best, pocket money, word evidence, the story log line) and the shared end screen; its answer (again / next /
  * list / home) goes back to the shell.
@@ -194,6 +195,8 @@ export function stubStage(el, scene) {
   };
 }
 
+/** The shared lifecycle (js/shared/request-popup.js, a classic script on every host page; decision 75): or null (Node). */
+const lifecycle = () => (typeof globalThis !== "undefined" && globalThis.Lifecycle) || null;
 const kids = (el) => (el && el.children ? Array.from(el.children) : []);
 const describe = (n) => (n ? `${(n.tagName || "node").toLowerCase()}${n.id ? "#" + n.id : ""}${n.className && typeof n.className === "string" ? "." + n.className.trim().split(/\s+/).join(".") : ""}` : "?");
 
@@ -291,7 +294,9 @@ export function createHost(opts = {}) {
     now.state = "results";
     if (kit.Results && kit.Results.show && opts.results !== false) {
       const store = { get: (s, k) => (s === "bests" && k === resKey(round) ? prevBest : undefined), set() {} };
-      const shown = kit.Results.show({
+      // the end screen through the shared lifecycle (decision 75 (3), (5)): every voice stops, then the badges step in
+      const LC = lifecycle();
+      const shown = (LC ? (o) => LC.results(kit.Results, o) : (o) => kit.Results.show(o))({
         mode: round.mode,
         game: round.game,
         level: round.level,
@@ -574,6 +579,10 @@ export function createHost(opts = {}) {
       finding({ stage: stageId, kind: "effect-left", what: `a voice line still playing after the stage ended (E17: a stage stops its effects)` });
       [...tracked].forEach((t) => core.voice && core.voice.stop && core.voice.stop(t.channel));
     }
+    // decision 75 (3), SH-66: every stage end stops all voice (every player on the page: the one voice layer) and
+    // takes every bubble, whatever the stage did itself
+    const LC = lifecycle();
+    if (LC && !info.left) LC.stageEnd(stageId);
     if (own && frame && frame.own) frame.own(false);
     return info;
   }

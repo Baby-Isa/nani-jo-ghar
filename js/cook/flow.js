@@ -148,13 +148,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // a step has closed: its rows tick, count rows too, right or not (UX 11; UI.mission.closeItem)
     ctx.closeItem = (ids, opts = {}) => UI.mission.closeItem(ids, ctx.dishAt, opts);
     ctx.nextStep = (name) => {
-      // a part of the order that waits for its station appears now (the
-      // tadka order, which Nani gives at the pan)
-      UI.mission.reveal(name);
+      // a part of the order that waits for its station appears now (the tadka order, which Nani gives at the pan),
+      // through the shared request pop-up (S04-B, decision 75 (1)): resolves once it has folded into the sidebar
+      const asked = UI.mission.request ? UI.mission.request(name) : Promise.resolve(UI.mission.reveal(name));
       // the goal behind the "?" (chai's steps inside one hob view each get their own)
       const stKey = { Tea: "add", Extra: "add", Boil: "watch", Milk: "pour", Sugar: "count", Pour: "pour" }[name] || name;
       const st = Cook.data.stations[stKey];
       if (st && st.goal && UI.helpText() !== st.goal) UI.gist(st.goal);
+      return asked;
     };
     // 28 Sept: one thing of several finished (a skewer): its mini card on the order ticks
     ctx.tickCard = (kind) => UI.mission.tickCard(kind, ctx.dishAt);
@@ -409,14 +410,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const img = s.chars[who];
     if (!img) return () => {};
     img.setTexture(who === "nani" ? "nani-talk" : `${who}-happy`);
-    const bob = s.tweens.add({ targets: img, y: img.baseY - 6, angle: who === "nani" ? -1.2 : 1.2, duration: 220, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+    // the one talk animation (S04-B, ART-13, Z10): a small, slow bob, the same as the clinic's
+    const stopBob = s.talkBob(img, who);
     return () => {
-      bob.stop();
-      if (img.active) {
-        img.y = img.baseY;
-        img.angle = 0;
-        s.setMood(who, "neutral");
-      }
+      stopBob();
+      if (img.active) s.setMood(who, "neutral");
     };
   }
   /**
@@ -571,7 +569,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const { round, prevBest } = scored;
     // the core wrote the best already: the end screen reads the best as it was before this round, writes nothing
     const store = Cook.core ? { get: (s, k) => (s === "bests" && k === R.bestKey(round.mode, round.game, round.level) ? prevBest : undefined), set() {} } : undefined;
-    const shown = R.show({
+    // S04-B (decision 75 (3)): the end screen through the shared lifecycle: every voice stops first
+    const show = (o) => (global.Lifecycle ? global.Lifecycle.results(R, o) : R.show(o));
+    const shown = show({
       mode: "cook",
       game: round.game,
       level: round.level,

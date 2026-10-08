@@ -295,3 +295,15 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
   .njg-rq-card { padding: var(--njg-s3) var(--njg-s4); }
 }
 .njg-rq-card[data-fit] .face-say { zoom: calc(1 / var(--rq-k, 1)); }
+
+/* ---------- the one bubble placement (S04-B; SH-68, CLN-86): Lifecycle.bubble.place sets data-njg-place ----------
+   above the speaker's head: the tail points down at it; below (no room above): the tail points up. Cook's #bubble and
+   the clinic's .cl-bubble share it. */
+#bubble[data-njg-place]::before,
+.cl-bubble[data-njg-place]::before {
+  content: ""; position: absolute; width: calc(18 * var(--njg-u)); height: calc(18 * var(--njg-u)); background: inherit;
+  border-radius: calc(3 * var(--njg-u)); left: var(--njg-tail-x, calc(24 * var(--njg-u))); transform: rotate(45deg);
+}
+#bubble[data-njg-place="above"]::before, .cl-bubble[data-njg-place="above"]::before { top: auto; bottom: calc(-9 * var(--njg-u)); }
+#bubble[data-njg-place="below"]::before, .cl-bubble[data-njg-place="below"]::before { top: calc(-9 * var(--njg-u)); bottom: auto; }
+.cl-bubble[data-njg-place] { transform: none; }

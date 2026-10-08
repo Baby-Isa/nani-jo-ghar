@@ -105,6 +105,9 @@
 /* tiers: the badge card's frame (gold border always means "the best of it") */
 .rs-badge.tier-gold { border-color: var(--njg-gold); box-shadow: 0 0 0 var(--njg-line) var(--njg-gold); }
 .rs-badge.tier-plain { opacity: 0.94; }
+/* SH-67 (Z4): a badge waiting its turn stays hidden whatever its tier (.tier-plain's opacity came later in the file and
+   showed the bulb before the first two); the badges step in one, two, three */
+.rs-badge.pre, .rs-badge.pre.tier-plain, .rs-badge.pre.tier-gold { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
 
 /* ---------- time: the stopwatch art, the time drawn over its empty face ---------- */
 .rs-watch { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }

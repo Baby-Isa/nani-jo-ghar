@@ -1,4 +1,26 @@
 /*
+ * THE SHARED LIFECYCLE (Sprint 4, S04-B; decision 75, rule C19; PRC-08): what every game goes through, built once here so
+ * no game can skip it. Cook (js/cook) and the clinic (js/clinic, through js/shared/host.js) call Lifecycle at every
+ * stage boundary and never RequestPopup, VoiceStop or the end screen on their own:
+ *
+ *   await Lifecycle.request(opts)   (1) a play phase that gives an order opens with the request pop-up (below), read out,
+ *                                   then folded into the sidebar
+ *   await Lifecycle.advance(o)      (2) the outcome is obvious: the game moves on by itself after a short beat (no ✓,
+ *                                   Next or stage button). o: {ready: Promise (capped, e.g. the line being said), ms, wait}
+ *   Lifecycle.stageEnd(reason)      (3) a stage or game ended: every voice stops (the one voice layer below), every speech
+ *                                   bubble goes, every onStageEnd hook runs
+ *   Lifecycle.results(R, opts)      (3)+(5) the end screen: stageEnd("end"), then R.show(opts) (js/shared/results.js
+ *                                   steps the badges in one, two, three)
+ *   Lifecycle.bubble.place(b, head, layer, {avoid})   (4) one bubble placement for every mode: above the speaker's head,
+ *                                   below it when there's no room above; sets data-njg-place and --njg-tail-x (the tail,
+ *                                   css/shared/order-card.css)
+ *   Lifecycle.talk                  one talk animation for every mode (ART-13, Z10): about a third of the old bob, slower.
+ *                                   talk.phaser(scene, img, {dir}) -> stop()   talk.dom(el) -> stop()   talk.SPEC
+ *   Lifecycle.voice                 THE ONE VOICE LAYER (SH-66): every player registers here (the core's js/core/voice.js
+ *                                   channels and <audio>, the clinic's Kit.Voice, Cook's read-along), so one stop silences
+ *                                   everything: voice.stop(reason) voice.gen() voice.track(audio, onCut) voice.onStop(fn)
+ *   Lifecycle.onStageEnd(fn) -> off()   Lifecycle.log   (what happened when: {what, reason, t}; the contract checks read it)
+ *
  * The request pop-up and the voice stop (Sprint 3, S03-A; decision 53, CLN-84, SH-64, CLN-109). One pop-up for every
  * mode: Cook's requests, the pharmacy's prescription and every heal game open with it before play starts.
  *
@@ -32,7 +54,8 @@
  *   VoiceStop.track(audio, onCut) -> untrack()   a playing HTMLAudioElement; stop() pauses it and calls onCut
  *   VoiceStop.onStop(fn) -> off()               a player's own stop (Cook's Web Audio source, the core's channels)
  *
- * Plain <script>: window.RequestPopup, window.VoiceStop (and Shared.requestPopup, Shared.voiceStop). Styles:
+ * Plain <script>: window.Lifecycle, window.RequestPopup, window.VoiceStop (and Shared.lifecycle, Shared.requestPopup,
+ * Shared.voiceStop). Styles:
  * css/shared/order-card.css ("the request pop-up"), the same look as Cook's #intro.
  */
 (function (root) {
@@ -210,9 +233,176 @@
     close: () => current && current.fold(false),
   };
 
+  /* ---------------- the lifecycle ---------------- */
+  const log = [];
+  const note = (what, reason) => {
+    log.push({ what, reason: reason || "", t: Date.now() });
+    if (log.length > 400) log.splice(0, log.length - 400);
+  };
+  const endHooks = new Set();
+  // the speech bubbles every mode draws (Cook's #bubble, the clinic's .cl-bubble): a stage that ended takes them all
+  const BUBBLES = ".cl-bubble, .njg-bubble";
+  function clearBubbles() {
+    if (typeof document === "undefined") return;
+    document.querySelectorAll(BUBBLES).forEach((b) => b.remove());
+    const cook = document.getElementById("bubble");
+    if (cook) cook.classList.add("hidden");
+  }
+
+  /**
+   * One bubble placement (SH-68, CLN-86, Z1): above the speaker's head, its tail pointing down at it; when there's no
+   * room above, below the head, its tail pointing up. Centred on the head, then kept inside the layer with a margin;
+   * a bubble that would land on another speaker (avoid) moves to the other side of the head. head: an element or a
+   * rect {left, top, width, height} in page px. Returns "above" | "below" (or null: no head to place by).
+   */
+  function placeBubble(b, head, layer, o = {}) {
+    if (!b || !head) return null;
+    const M = o.margin != null ? o.margin : 8;
+    const lr = layer && layer.getBoundingClientRect ? layer.getBoundingClientRect() : { left: 0, top: 0, width: root.innerWidth || 1000, height: root.innerHeight || 700 };
+    const r = head.getBoundingClientRect ? head.getBoundingClientRect() : head;
+    if (!r || !(r.width > 0) || !(r.height > 0)) return null;
+    b.style.transform = "none";
+    b.style.left = "0px";
+    b.style.top = "0px";
+    const bw = b.offsetWidth;
+    const bh = b.offsetHeight;
+    const W = lr.width;
+    const H = lr.height;
+    const hx = r.left - lr.left;
+    const hy = r.top - lr.top;
+    const cx = hx + r.width / 2;
+    const gap = o.gap != null ? o.gap : M + 6; // room for the tail
+    const above = hy - gap - bh;
+    const below = hy + r.height + gap;
+    const fitsAbove = above >= M;
+    const fitsBelow = below + bh <= H - M;
+    let side = fitsAbove || !fitsBelow ? "above" : "below";
+    const x = Math.max(M, Math.min(W - bw - M, cx - bw / 2));
+    const yOf = (sd) => Math.max(M, Math.min(H - bh - M, sd === "above" ? above : below));
+    let y = yOf(side);
+    const hits = (yy) =>
+      (o.avoid || []).some((el) => {
+        const q = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+        if (!q || !q.width || !q.height) return false;
+        const qx = q.left - lr.left;
+        const qy = q.top - lr.top;
+        return !(x >= qx + q.width || x + bw <= qx || yy >= qy + q.height || yy + bh <= qy);
+      });
+    if (hits(y)) {
+      const other = side === "above" ? "below" : "above";
+      if ((other === "above" ? fitsAbove : fitsBelow) && !hits(yOf(other))) {
+        side = other;
+        y = yOf(side);
+      }
+    }
+    b.style.left = `${Math.round(x)}px`;
+    b.style.top = `${Math.round(y)}px`;
+    b.dataset.njgPlace = side;
+    b.style.setProperty("--njg-tail-x", `${Math.round(Math.max(18, Math.min(bw - 30, cx - x - 9)))}px`);
+    return side;
+  }
+
+  /*
+   * One talk animation (ART-13, Z10: "less bobbing"). Was 6 px and 1.2 degrees every 220 ms in Cook (js/cook/stations.js,
+   * flow.js); now about a third of that, and slower. The same numbers drive Phaser (Cook) and the DOM (the clinic).
+   */
+  const TALK = { lift: 2, tilt: 0.4, ms: 380 };
+  const talk = {
+    SPEC: TALK,
+    /** A Phaser image talking: a small, slow bob from its baseY. Returns stop() (back to rest). */
+    phaser(scene, img, o = {}) {
+      if (!scene || !img || !scene.tweens) return () => {};
+      const y0 = img.baseY != null ? img.baseY : img.y;
+      const tw = scene.tweens.add({ targets: img, y: y0 - TALK.lift, angle: (o.dir || 1) * TALK.tilt, duration: TALK.ms, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+      return () => {
+        try {
+          tw.stop();
+        } catch (e) {
+          /* gone */
+        }
+        if (img.active !== false) {
+          img.y = y0;
+          img.angle = 0;
+        }
+      };
+    },
+    /** An element talking (the clinic's figures): the same bob in CSS. Returns stop(). */
+    dom(el, o = {}) {
+      if (!el || !el.classList) return () => {};
+      injectTalkCss();
+      el.style.setProperty("--njg-talk-dir", String(o.dir || 1));
+      el.classList.add("njg-talking");
+      return () => el.classList.remove("njg-talking");
+    },
+  };
+  function injectTalkCss() {
+    if (typeof document === "undefined" || document.getElementById("njg-talk-css")) return;
+    const st = document.createElement("style");
+    st.id = "njg-talk-css";
+    st.textContent = `@keyframes njg-talk{from{translate:0 0;rotate:0deg}to{translate:0 -${TALK.lift}px;rotate:calc(var(--njg-talk-dir,1) * ${TALK.tilt}deg)}}.njg-talking{animation:njg-talk ${TALK.ms}ms ease-in-out infinite alternate}@media (prefers-reduced-motion:reduce){.njg-talking{animation:none}}`;
+    (document.head || document.body).appendChild(st);
+  }
+
+  const voice = {
+    stop: (reason) => VoiceStop.stop(reason),
+    gen: () => VoiceStop.gen(),
+    track: (audio, onCut) => VoiceStop.track(audio, onCut),
+    onStop: (fn) => VoiceStop.onStop(fn),
+  };
+
+  const Lifecycle = {
+    log,
+    voice,
+    talk,
+    bubble: { place: placeBubble, clear: clearBubbles },
+    /** (1) The request pop-up before a play phase that gives an order (RequestPopup.open's options). */
+    request(opts = {}) {
+      note("request", opts.reason || "");
+      return open(opts);
+    },
+    isOpen: () => !!current,
+    close: () => current && current.fold(false),
+    fly,
+    /**
+     * (2) The outcome is obvious: the game moves on by itself (decision 52, E36; CLN-110, SH-40). Waits for what's under
+     * way (o.ready, e.g. the greeting being said; capped at o.cap ms so nothing hangs), then a short beat.
+     */
+    async advance(o = {}) {
+      const w = o.wait || ((ms) => sleep(ms));
+      note("advance", o.reason || "");
+      if (o.ready) await Promise.race([Promise.resolve(o.ready).catch(() => {}), w(o.cap != null ? o.cap : 6000)]);
+      await w(o.ms != null ? o.ms : 500);
+    },
+    /** (3) A stage or game ended: every voice stops, every bubble goes, the hooks run (the clinic's queue, Cook's read-along). */
+    stageEnd(reason) {
+      note("stage-end", reason || "");
+      VoiceStop.stop(`stage:${reason || ""}`);
+      clearBubbles();
+      endHooks.forEach((fn) => {
+        try {
+          fn(reason);
+        } catch (e) {
+          /* the hook's problem */
+        }
+      });
+    },
+    onStageEnd(fn) {
+      endHooks.add(fn);
+      return () => endHooks.delete(fn);
+    },
+    /** (3)+(5) The end screen: the voice stops first, then the shared end screen (or a host's stand-in with show()). */
+    results(R, opts = {}) {
+      Lifecycle.stageEnd("end");
+      note("results", (opts && opts.game) || "");
+      return R.show(opts);
+    },
+  };
+
+  root.Lifecycle = Lifecycle;
   root.RequestPopup = RequestPopup;
   root.VoiceStop = VoiceStop;
   root.Shared = root.Shared || {};
+  root.Shared.lifecycle = Lifecycle;
   root.Shared.requestPopup = RequestPopup;
   root.Shared.voiceStop = VoiceStop;
 })(typeof self !== "undefined" ? self : this);

@@ -224,8 +224,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (Cook.Coach) Cook.Coach.stop(false);
     // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
     St.coach(ctx, "daar-cook");
-    if (ctx.nextStep) ctx.nextStep("tadka");
-    UI.mission.reveal("tadka");
+    // the tadka order comes up in the shared request pop-up before the tadka (S04-B, decision 75 (1))
+    if (ctx.nextStep) await ctx.nextStep("tadka");
+    else await UI.mission.request("tadka");
     // 29 Sept (D9, Zafar): the chopped things still have to go in, so their rows go back to "to do"
     // here and tick again as each pile goes into the pot (cook())
     const Lc = ladderOf(ctx);
@@ -734,8 +735,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (sizzle && sizzle.stop) sizzle.stop();
     if (ctx.nextStep) ctx.nextStep("Stir");
     if (K.stirLine && !retry) UI.gist(K.stirLine);
-    // T14 (DAAR-12): the stir row (the laps and the speed) shows on the card now
-    UI.mission.reveal("stir");
+    // T14 (DAAR-12): the stir row (the laps and the speed) shows on the card now, through the shared request pop-up
+    // before the stir (S04-B, decision 75 (1))
+    await UI.mission.request("stir");
 
     // 4. stir: drag the ladle round (or tap the pot: one turn); the speed dial, the laps as the Kutchi word.
     // Decision 51: the wrong number of stirs is stirred again (the laps start at nothing), with help; the third

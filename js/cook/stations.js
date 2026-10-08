@@ -661,19 +661,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!img) return UI.say(line, { badge: true }, opts);
       const prev = img.mood;
       img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : `${who}-happy`);
-      const bob = this.tweens.add({ targets: img, y: img.baseY - 6, angle: who === "nani" ? -1.2 : 1.2, duration: 220, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
-      // G1: the bubble sits beside the face at eye level, its tail at the mouth (not under the chin, over the body)
-      const anchor = who === "nani" ? { x: img.x + 110, y: img.baseY + 110, side: "left" } : { x: img.x + 120, y: img.baseY + 100, side: "left" };
+      const stopBob = this.talkBob(img, who);
+      // S04-B (SH-68, decision 75 (4)): the bubble sits above the speaker's head (below it with no room), placed by
+      // the shared lifecycle; head: the top of the picture, in world px (UI.placeBubble maps it to the page)
+      const anchor = { head: this.headBox(img), x: img.x, y: img.baseY };
       try {
         await UI.say(line, anchor, who === "nani" ? Object.assign({ nani: true }, opts) : opts);
       } finally {
-        bob.stop();
-        if (img.active) {
-          img.y = img.baseY;
-          img.angle = 0;
-          this.setMood(who, opts.after || (prev === "talk" ? "neutral" : prev));
-        }
+        stopBob();
+        if (img.active) this.setMood(who, opts.after || (prev === "talk" ? "neutral" : prev));
       }
+    }
+    /** The one talk animation (S04-B, ART-13, Z10: the shared lifecycle's small, slow bob). Returns stop(). */
+    talkBob(img, who) {
+      const L = global.Lifecycle;
+      if (L) return L.talk.phaser(this, img, { dir: who === "nani" ? -1 : 1 });
+      return () => {};
+    }
+    /** A character's head, in world px: the top of its picture, about a third of its width, centred on it. */
+    headBox(img) {
+      const w = img.displayWidth || 300;
+      const top = img.baseY != null ? img.baseY : img.y;
+      return { x: img.x - w * 0.2, y: top + w * 0.04, w: w * 0.4, h: w * 0.42 };
     }
     async leaveChar(who) {
       const img = this.chars[who];

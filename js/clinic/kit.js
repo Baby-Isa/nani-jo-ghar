@@ -251,14 +251,15 @@
     });
   };
   /*
-   * The voice stop (S03-A; SH-64, CLN-109): Voice.gen goes up at every stop (Voice.clear, a tap through the request
-   * pop-up: js/shared/request-popup.js VoiceStop). A line takes the generation when it's queued and plays only while
-   * it's unchanged, so the lines already chained on the queue fall silent too; the playing clip (Voice.playing) is
-   * paused and the device voice cancelled.
+   * The voice stop (S03-A; SH-64, CLN-109; S04-B, SH-66): the clinic's voice is part of the shared lifecycle's one voice
+   * layer (js/shared/request-popup.js Lifecycle.voice): every stop it makes (a stage end, the end screen, a tap through
+   * the request pop-up) runs cutAll here. Voice.gen goes up; a line takes the generation when it's queued and plays only
+   * while it's unchanged, so the lines already chained on the queue fall silent too; the playing clip (Voice.playing)
+   * is paused and the device voice cancelled.
    */
   Voice.gen = 0;
   Voice.playing = new Set(); // the family clips playing now
-  const VS = () => global.VoiceStop || null;
+  const VS = () => (global.Lifecycle && global.Lifecycle.voice) || null;
   const live = (g) => g == null || g === Voice.gen;
   const cutAll = () => {
     Voice.gen++;
@@ -271,6 +272,11 @@
     }
   };
   if (VS()) VS().onStop(cutAll);
+  // a stage that ended takes the queue with it (the next stage starts silent)
+  if (global.Lifecycle) global.Lifecycle.onStageEnd(() => {
+    Voice.queue = Promise.resolve();
+    Voice.busy = false;
+  });
   Voice.audio = function (src, o = {}) {
     if (!live(o.gen)) return Promise.resolve(true);
     return new Promise((res) => {
@@ -344,6 +350,17 @@
       if (!live(gen)) return;
       Voice.busy = true;
       const bubble = opts.noBubble ? null : Voice.bubble(w, who, opts);
+      // the one talk animation (S04-B, ART-13): a speaker drawn as one picture bobs a little while the line plays
+      let stopTalk = null;
+      if (bubble && global.Lifecycle) {
+        let el = null;
+        try {
+          el = Voice.speakers[who] && Voice.speakers[who]();
+        } catch (e) {
+          /* no speaker */
+        }
+        if (el && el.tagName === "IMG") stopTalk = global.Lifecycle.talk.dom(el);
+      }
       const t0 = Date.now();
       let played = false;
       const ao = { soft: !!opts.soft, gen };
@@ -353,6 +370,7 @@
       if (!played) await Voice.tts(Kit.plain(w), ao);
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
       if (left > 0 && live(gen)) await new Promise((r) => setTimeout(r, left));
+      if (stopTalk) stopTalk();
       setTimeout(() => bubble && bubble.remove(), live(gen) ? (Kit.fast ? 50 : 500) : 0);
       Voice.busy = false;
     };
@@ -376,7 +394,8 @@
   };
   /**
    * The voice stop: nothing queued or playing is heard any more (CLN-109: no heal-game line carries into the send-off).
-   * Every stage change and game end calls it; the shared VoiceStop (a tap through the pop-up) runs the same cut.
+   * Every stage change and game end calls it; every stop of the shared lifecycle's voice layer (a stage end, a tap through
+   * the pop-up) runs the same cut.
    */
   Voice.clear = function () {
     if (VS()) VS().stop("clinic");
@@ -421,10 +440,14 @@
     return b;
   };
   /**
-   * CLN-71 (2 Oct): a speaker's bubble always sits wholly inside the play area. Above the speaker when it fits;
-   * else beside it (the close-up's round face, top left), else below it; then clamped to the layer with a margin.
+   * S04-B (SH-68, CLN-86, Z1; decision 75 (4)): the one placement every mode uses (js/shared/request-popup.js
+   * Lifecycle.bubble.place): above the speaker's head, below it when there's no room, inside the play area, off the
+   * other speakers. The old rule below (CLN-71: above, else beside, else below) is only for a page without the
+   * shared lifecycle.
    */
   Voice.place = function (b, anchor, layer, avoid = []) {
+    const L = global.Lifecycle;
+    if (L && L.bubble && L.bubble.place(b, anchor, layer, { avoid })) return;
     const M = 8;
     const lr = layer.getBoundingClientRect();
     const r = anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : anchor;

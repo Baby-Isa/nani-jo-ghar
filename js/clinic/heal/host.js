@@ -707,7 +707,7 @@
     // S03-A (decision 53, CLN-84 re-raised, SH-64): every heal game opens with the shared request pop-up, as Cook and
     // the pharmacy do: the doctor's card at full size over the room, read out row by row; a tap anywhere stops the
     // voice and folds it into the sidebar; then the game starts, quiet (its opening repeat of the card is skipped)
-    const popup = v2 && opts.popup !== false && !!global.RequestPopup && (card.rows.length > 0 || !!card.titleText);
+    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText);
     const popRead = new Set();
     let popped = false; // the pop-up has read the card
     let popAt = 0;
@@ -718,7 +718,8 @@
       Kit.Voice.clear(); // the stage change (CLN-109): nothing from before queues ahead of the request
       let big = null;
       card.rows.forEach((r) => popRead.add(r.id));
-      return global.RequestPopup.open({
+      return global.Lifecycle.request({
+        reason: `clinic:heal/${def.id}`,
         host: screen.main,
         target: () => card.el,
         fast: Kit.fast,
@@ -763,7 +764,7 @@
       figure: fig,
       destroy() {
         finished = true;
-        if (popup && global.RequestPopup && global.RequestPopup.isOpen()) global.RequestPopup.close();
+        if (popup && global.Lifecycle && global.Lifecycle.isOpen()) global.Lifecycle.close();
         timers.forEach((t) => clearTimeout(t));
         listeners.forEach(([el, type, fn, o]) => el.removeEventListener(type, fn, o));
         try {

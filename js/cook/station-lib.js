@@ -118,7 +118,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     Cook.inStation = true;
     Cook.quietUntil = Date.now() + ((Cook.data.calm || {}).quietMs || 0);
     Cook.save.seenStation[key] = true;
-    if (ctx.nextStep) ctx.nextStep(key);
+    // a part of the order that waits for this station comes up in the shared request pop-up before play (S04-B)
+    if (ctx.nextStep) await ctx.nextStep(key);
     // Wave 6: the first time here, dim all but the next thing and show the move (js/cook/coach.js).
     // Only in a guided run (a dish's first order; the lab's "Nani helps"): the spotlight can be the answer
     if (Cook.Coach && UI.w6() && ctx.guided) Cook.Coach.start(key);
@@ -131,6 +132,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (Cook.Coach && UI.w6() && ctx && ctx.guided) Cook.Coach.start(key);
   }
   function end() {
+    // S04-B (decision 75 (3), SH-66, Z5): a station's end is a stage end: every voice stops (the pantry's lines never
+    // reach the next station or the serve), every bubble goes
+    if (global.Lifecycle) global.Lifecycle.stageEnd("cook:station");
     if (Cook.Coach) Cook.Coach.stop();
     Cook.inStation = false;
     UI.hideVoice();

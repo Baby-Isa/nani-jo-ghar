@@ -1111,24 +1111,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (ctx.intro) await ctx.intro;
       /*
        * CHT-07 (decision 53, T15): each instruction just before the game that needs it. The layer order waited on
-       * his card (data: the list's `when: "assemble"`); now he comes back and says it, his card's rows lit one by one
-       * as he says them (level 4: from memory, heard only).
+       * his card (data: the list's `when: "assemble"`). S04-B (CHT-10, Z2; decision 75 (1)): it comes up in the shared
+       * request pop-up, read out, at every level (L4 too: his card then folds closed), never said with no card (the
+       * station's begin has usually opened it already; then there's nothing new here)
        */
-      const rv = UI.mission.reveal ? UI.mission.reveal("assemble") : null;
-      if (rv && rv.s) {
-        const seqRows = rv.s.groups.flat();
-        const seqLine = Lang.join(seqRows.map((r) => r.line).filter(Boolean));
-        z.expect({ kind: "wait" });
-        let said = false;
-        if (level < 4 && UI.mission.sayPerson) said = await Promise.race([UI.mission.sayPerson(who, seqRows), Cook.wait(12000).then(() => true)]);
-        if (!said && seqLine.segs.length) {
-          if (level >= 4) await Promise.race([Lang.speak(seqLine).catch(() => {}), Cook.wait(9000)]);
-          else {
-            await Promise.race([St.customerSay(ctx, seqLine, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
-            St.customerDone();
-          }
-        }
-      }
+      z.expect({ kind: "wait" });
+      await UI.mission.request("assemble");
       const unfold = foldCard(level >= 4);
 
       let tries = 0;

@@ -113,23 +113,6 @@
    * CL3, CLN-92 (T23): the way out of the waiting room is a picture of the doctor's room (the exam room's own
    * picture, small), no words: it is a place, not "where does it hurt". The shared → Next button with the picture.
    */
-  function roomButton(screen) {
-    return new Promise((res) => {
-      const btn = screen.go("", () => {
-        if (btn.disabled) return;
-        btn.disabled = true;
-        if (global.Sfx && global.Sfx.tap) try { global.Sfx.tap(); } catch (e) { /* no sound */ }
-        res(btn);
-      }, "throb cl-room-btn");
-      btn.dataset.go = "doctor's room";
-      const t = btn.querySelector(".njg-next-t") || btn;
-      t.textContent = "";
-      const pic = h("span", "cl-room-pic", t);
-      const room = Clinic.Scenes && Clinic.Scenes.rooms && Clinic.Scenes.rooms.exam;
-      if (room) pic.style.backgroundImage = `url("${Kit.url(room.src)}")`;
-    });
-  }
-
   S.waiting = {
     async run(env, plan) {
       const { screen, data } = env;
@@ -183,7 +166,7 @@
           const want = rows[picks.length];
           return { stage: "waiting", kind: "tap", target: `.cl-wtick[data-seat="${want.answer}"]`, wrong: `.cl-wtick:not([data-seat="${want.answer}"]):not(.locked):not(.picked)` };
         }
-        if (!r) return { stage: "waiting", kind: "button" };
+        if (!r) return { stage: "waiting", kind: "wait" }; // everyone called: it moves on by itself (S04-B, CLN-110)
         if (r.voice) return { stage: "waiting", kind: "say", choice: plan.bench[r.answer].who };
         return { stage: "waiting", kind: "tap", target: `.cl-wtick[data-seat="${r.answer}"]`, wrong: `.cl-wtick:not([data-seat="${r.answer}"]):not(.locked)` };
       });
@@ -355,9 +338,11 @@
       if (plan.variant === "W4") seats.forEach((s) => s.ring && s.ring.addEventListener("animationiteration", () => s.wrap.classList.add("rock")));
 
       await done;
-      S.current = null;
       S.endOnboard();
-      await roomButton(screen);
+      // S04-B (CLN-110, CLN-92, SH-40, Z7; decision 52, 75 (2)): the right person picked and greeted is an obvious
+      // outcome: the room moves on by itself once the greeting has been said, no room button (the shared lifecycle)
+      if (global.Lifecycle) await global.Lifecycle.advance({ reason: "clinic:waiting", ready: Kit.Voice.queue, cap: Kit.fast ? 1500 : 6000, ms: Kit.fast ? 60 : 600, wait: (ms) => Kit.wait(ms) });
+      S.current = null;
       res.words.push(plan.calls[plan.calls.length - 1].say);
       return res;
     },
