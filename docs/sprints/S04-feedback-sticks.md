@@ -21,6 +21,8 @@ All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s04*.brief.t
 
 Launched 8 Oct ~23:46 UK: A session_01A5BjhwAX18NJCqkcq9kEwW, C session_018V7iXuCWkXhirFUUgkPWXz. B blocked by the orchestrator session's launch permission; Zafar to launch it (brief `s04b-host.brief.txt`). Coverage audit (two Fable readers, this chat): `build/reports/s04-coverage-cook.md`, `s04-coverage-clinic.md`.
 
+9 Oct ~00:15 UK: A done (`s04a-contract.md`: six checks; 8 of tonight's points reproduced on the pre-fix build, the diagnosis bubble breaks but not in the corner; 27 'contract check' rows have no check yet), about $11. C done (`s04c-art.md`: chaat side-on without a shadow, Nani leaning in four moods; CK-21 open for the code's shadow), about $11 + $2.41 API. Coverage audit applied (`8904458`: 28 rows added, 46 rewritten, 25 reopened); now 96 open, 227 built.
+
 ## Small decisions
 - 8 Oct: Zafar said yes to the five-point plan (no new features until this is done; shared rules plus checks; proof for "built"; the route run before he plays; tonight's fixes in the shared layer), plus the full audit of the regression list and every feedback document.
 
