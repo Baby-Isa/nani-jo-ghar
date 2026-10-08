@@ -7,9 +7,8 @@
   "stop": "9 Oct 2026, 08:00 UK",
   "branch": "ccr-a7370759-t0lee7",
   "rules": [
-    "3",
-    "7",
-    "14"
+    "2",
+    "3"
   ],
   "read": [
     "CLAUDE.md",

@@ -6,7 +6,7 @@ BRANCH:               ccr-a7370759-t0lee7. Never push to main.
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 2, 3, 8, 11, 12 only
+  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
   5. CLAUDE.md

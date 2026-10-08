@@ -8,9 +8,9 @@
   "branch": "ccr-a7370759-t0lee7",
   "rules": [
     "2",
+    "3",
     "7",
-    "13",
-    "16"
+    "9"
   ],
   "read": [
     "CLAUDE.md",
