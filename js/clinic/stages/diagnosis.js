@@ -42,12 +42,17 @@
       const box = stage.scene;
       const cfg = stage.sceneCfg || {};
       const layer = h("div", "cl-patient-layer", box || stage);
+      // S03 (CLN-94, review flaw 5): on a phone (a short screen) the standing patient is drawn bigger (scenes-v2.json
+      // stand.phone), her feet nearer the bottom, so her hands, arms and knees are easy to tap
+      const phone = standing && cfg.phone && (global.innerHeight || 999) < 480;
+      const figCfg = phone ? Object.assign({}, cfg.fig, cfg.phone.fig) : cfg.fig;
+      const docCfg = phone && cfg.doctor ? Object.assign({}, cfg.doctor, cfg.phone.doctor) : cfg.doctor;
       if (box && cfg.fig) {
         // the figure's box on the bed's edge (or the floor), in shares of the picture
         layer.classList.add("v2");
-        S.place(layer, { x: cfg.fig.x, y: cfg.fig.bottom, h: cfg.fig.h, w: cfg.fig.h * (620 / 900) / 1.5, z: 3 });
-        if (cfg.doctor) {
-          const docEl = S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
+        S.place(layer, { x: figCfg.x, y: figCfg.bottom, h: figCfg.h, w: figCfg.h * (620 / 900) / 1.5, z: 3 });
+        if (docCfg) {
+          const docEl = S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: docCfg.x, y: docCfg.y, h: docCfg.h, z: 2 });
           // UX 16 (the staging hook): the doctor is turned three-quarter to the patient while they talk;
           // on the child's turn (the card is up, a moment later) he turns to the player
           S.pose(docEl, "talk", { facing: "left" });
@@ -59,7 +64,7 @@
       layer.appendChild(fig.el);
       fig.pose(standing ? "stand" : "sit");
       // D1, CLN-93 (6 Oct): a bigger patient so her parts are easy to tap (her seat stays on the bed's edge)
-      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(standArt || artSpec, { view: "front", figH: standArt ? cfg.fig.h : cfg.fig.h / BIG }));
+      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(standArt || artSpec, { view: "front", figH: standArt ? figCfg.h : cfg.fig.h / BIG }));
       if (art) fig.tapAnchors = true;
       // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher); the art
       // sits by its measured seat line (the backs of the thighs on the mattress), as in the heal games
@@ -413,6 +418,13 @@
           const parts = it.label === null || it.parts.length ? it.parts : [{ label: it.label, done: it.done, key: it.key, miss: it.miss }];
           return Object.assign({}, it, { label: Kit.rowHtml(head), parts, ordered: false, key: undefined, done: parts.every((p) => p.done) });
         });
+        // S03 (CLN-94): one tool's block is drawn "direct" by the order card (its parts straight under the headline,
+        // its own head dropped), so the tool's line becomes the headline: "[Use your hand]" over "arm", "hand"
+        if (data.items.length === 1 && data.items[0].label && data.headline) {
+          const r = rows.find((x) => x.seq && heads[x.seq]);
+          const head = r && heads[r.seq];
+          if (head) data = Object.assign({}, data, { headline: { html: Kit.rowHtml(head), key: "__head", rec: !head.kutchi || head.placeholder === true } });
+        }
         return orig(data, opts);
       };
       try {

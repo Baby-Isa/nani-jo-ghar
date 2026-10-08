@@ -39,6 +39,7 @@
   "stand": {
     "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right.",
     "fig": { "x": 0.5, "bottom": 0.86, "h": 0.64 },
+    "phone": { "fig": { "bottom": 0.9, "h": 0.74 }, "doctor": { "y": 0.95, "h": 0.84 }, "_about": "S03 (CLN-94): on a short screen (under 480 px) she and the doctor stand bigger, their feet lower (she stays a child beside him)" },
     "doctor": { "x": 0.72, "y": 0.92, "h": 0.66 }
   },
   "pharmacy": {
