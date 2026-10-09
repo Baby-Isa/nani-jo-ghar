@@ -695,16 +695,41 @@
       s("path", { d: `M24 ${Y - 74} Q54 ${Y} 24 ${Y + 74} L72 ${Y + 70} Q96 ${Y} 72 ${Y - 70}Z`, fill: HS.shade(S.clothes, -0.15) }, limb); // its rolled cuff
     }
 
-    const limbArt = S.closeup(legPart ? "knee-graze" : "forearm-graze", limb);
+    const artKey = legPart ? "knee-graze" : "forearm-graze";
+    const limbArt = S.closeup(artKey, limb);
+    // CLN-121: the close-up is the grazed picture (K3, F2), so the wound is the art's own. Its data says where each
+    // plaster's patch sits (source px, by plaster count); a patch on the art's own graze draws nothing, any other gets
+    // the graze cut from the same art (a multiply stain), and the code draws no graze of its own over the picture
+    const la = limbArt ? ctx.data.art[artKey] : null;
+    const woundPts = la && la.wounds && la.wounds[String(n)];
+    const wk = woundPts ? la.box[2] / (la.size || [1536])[0] : 0;
+    const woundSvg = (w) => ({ x: la.box[0] + w[0] * wk, y: la.box[1] + w[1] * wk });
 
-    // the scrape: one red patch per plaster, each a soft irregular graze with scratch lines
+    // the scrape: one red patch per plaster, each a soft irregular graze with scratch lines (the stand-in), or the art's
+    // own graze. CLN-121: the patches, the dirt and the wet sit in one group that moves with the picture when it slides
+    const scrapeG = s("g", { class: "cut-scrape" }, S.layer);
     const patches = [];
-    const patchG = s("g", { class: "cut-patches" }, S.layer);
+    const patchG = s("g", { class: "cut-patches" }, scrapeG);
     // CLN-74: the scrape sits a little left of the old middle, so the wrist and hand have room before the tool column
-    const PX = n === 1 ? [310] : [235, 385];
-    PX.forEach((x, k) => {
-      const y = Y + (k % 2 ? 6 : -6);
+    // patchDy (source px): the plaster's patch sits that far below each graze's centre, so a plaster on a graze near the
+    // arm's top edge stays on the arm and still covers the whole graze
+    const dyP = woundPts ? (la.patchDy || 0) * wk : 0;
+    const PX = woundPts ? woundPts.map((w) => woundSvg(w)).map((q) => ({ x: q.x, y: q.y + dyP })) : (n === 1 ? [310] : [235, 385]).map((x, k) => ({ x, y: Y + (k % 2 ? 6 : -6) }));
+    PX.forEach(({ x, y }, k) => {
       const R = SCRAPE.patch;
+      if (woundPts) {
+        const g = s("g", {}, patchG);
+        const w = woundPts[k];
+        const own = la.wound && w[0] === la.wound[0] && w[1] === la.wound[1];
+        if (!own && la.stain) {
+          const [sw, sh] = la.stain.size;
+          const gy = y - dyP; // the graze's own centre
+          const im = s("image", { href: url(la.stain.file), x: (x - (sw / 2) * wk).toFixed(1), y: (gy - (sh / 2) * wk).toFixed(1), width: (sw * wk).toFixed(1), height: (sh * wk).toFixed(1), preserveAspectRatio: "none", class: "cut-graze" }, g);
+          im.style.mixBlendMode = "multiply"; // the stain darkens the skin under it, so it takes that skin's tone
+        }
+        patches.push({ k, x, y, rx: R.rx, ry: R.ry, g, cover: null, full: false, firstAt: null });
+        return;
+      }
       const pts = [];
       for (let a = 0; a < 12; a++) {
         const t = (a / 12) * Math.PI * 2;
@@ -718,7 +743,7 @@
       patches.push({ k, x, y, rx: R.rx, ry: R.ry, g, cover: null, full: false, firstAt: null });
     });
     // the dirt: specks over and round the patches, washed away where the water goes (a reveal)
-    const dirtG = s("g", { class: "cut-dirt" }, S.layer);
+    const dirtG = s("g", { class: "cut-dirt" }, scrapeG);
     const specks = [];
     patches.forEach((p) => {
       for (let q = 0; q < 16; q++) {
@@ -731,7 +756,7 @@
       }
     });
     // the water the wash leaves (the cloth dabs it dry)
-    const wetG = s("g", { class: "cut-wet", opacity: 0 }, S.layer);
+    const wetG = s("g", { class: "cut-wet", opacity: 0 }, scrapeG);
     patches.forEach((p) => [-1, 0, 1].forEach((d) => s("ellipse", { cx: p.x + d * 26, cy: p.y - 20 + Math.abs(d) * 8, rx: 6, ry: 8, fill: "#bfe2f6", stroke: "#8cc4e8", "stroke-width": 1.5 }, wetG)));
     const plasterG = s("g", { class: "cut-plasters" }, S.layer);
 
@@ -762,7 +787,7 @@
       if (c.kind === "wash") {
         const a = specks.reduce((m, q) => (q.x < m.x ? q : m), specks[0]);
         const b = specks.reduce((m, q) => (q.x > m.x ? q : m), specks[0]);
-        S.cue("wash", CUES.wash, S.toolEls.paani, { gesture: "drag", target: { x: a.x, y: Y, r: 56 }, to: { x: b.x, y: Y, r: 56 } });
+        S.cue("wash", CUES.wash, S.toolEls.paani, { gesture: "drag", target: { x: a.x, y: patches[0].y, r: 56 }, to: { x: b.x, y: patches[patches.length - 1].y, r: 56 } });
       } else if (c.kind === "dab") S.cue("dab", CUES.dab, S.toolEls.cloth, { x: patches[0].x, y: patches[0].y });
       else S.cue("plaster", Object.assign({ to: patchTarget }, CUES.plaster), S.toolEls["pl-" + P.key(c.seq[0])]);
     };
@@ -814,6 +839,9 @@
     // A2 (5 Oct): the slide is always from the game's own view, never added again on each re-layout (a tablet, where
     // the hand can't clear the column, re-laid out until the graze left the screen and the round could not end)
     const vb0 = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
+    // how near the screen's left edge the first patch may come (svg units). CLN-121: on the art's graze the patch moves
+    // with the picture, so it keeps a whole plaster's half and a margin on screen (the stand-in keeps A2's 70)
+    const EDGE = woundPts ? SCRAPE.plaster.w / 2 + 22 : 70;
     const slideView = (over) => {
       if (vb0.length !== 4) return;
       // never so far that the first patch leaves the screen (a 4:3 tablet crops the close-up's sides): the round
@@ -824,9 +852,23 @@
         const q = S.svg.createSVGPoint();
         q.x = Math.max(stage.getBoundingClientRect().left, S.svg.getBoundingClientRect().left);
         q.y = 0;
-        cap = Math.max(0, patches[0].x - 70 - q.matrixTransform(m.inverse()).x);
+        cap = Math.max(0, patches[0].x - EDGE - q.matrixTransform(m.inverse()).x);
       }
       S.svg.setAttribute("viewBox", `${(vb0[0] + Math.min(cap, Math.max(0, over))).toFixed(1)} ${vb0[1]} ${vb0[2]} ${vb0[3]}`);
+    };
+    // CLN-121: the picture slid by dx from its box: the patches, the dirt and the wet go with it (the group's transform
+    // moves what's drawn; the patches' and specks' own points move so the plasters and the water still find them)
+    let artDX = 0;
+    const shiftScrape = (dx) => {
+      const d = dx - artDX;
+      if (Math.abs(d) < 0.05) return;
+      artDX = dx;
+      scrapeG.setAttribute("transform", `translate(${dx.toFixed(1)} 0)`);
+      patches.forEach((p) => {
+        p.x += d;
+        if (p.cover) (p.cover.x += d), drawPlaster(p.cover);
+      });
+      specks.forEach((q) => (q.x += d));
     };
     const placeArt = () => {
       if (!fa || !fa.tip || !S.shelf) return;
@@ -839,10 +881,21 @@
       const E = p.matrixTransform(m.inverse()).x - 14;
       const [x0, , w] = fa.box;
       const k = w / fa.size[0];
-      const last = patches[patches.length - 1];
-      const lo = last.x + 50 - fa.wrist * k; // the leftmost the picture may go (the wrist past the last plaster)
+      let lo;
+      if (woundPts) {
+        // CLN-121: the patches are on the picture's own graze and move with it, so the leftmost the picture may go is
+        // where the first patch would leave the screen (as the view's slide below, 70 units in)
+        const q = S.svg.createSVGPoint();
+        q.x = Math.max(stage.getBoundingClientRect().left, S.svg.getBoundingClientRect().left);
+        q.y = 0;
+        lo = q.matrixTransform(m.inverse()).x + EDGE - (patches[0].x - artDX) + x0;
+      } else {
+        const last = patches[patches.length - 1];
+        lo = last.x + 50 - fa.wrist * k; // the leftmost the picture may go (the wrist past the last plaster)
+      }
       const X = Math.max(lo, Math.min(x0, E - fa.tip * k));
       limbArt.setAttribute("x", X.toFixed(1));
+      if (woundPts) shiftScrape(X - x0);
       slideView(X + fa.tip * k - E);
     };
     const placeHand = () => {
@@ -1071,7 +1124,7 @@
     });
 
     /* ---- taps and sweeps on the close-up ---- */
-    const onScrape = (p) => Math.abs(p.x - 335) < 260 && Math.abs(p.y - Y) < 90;
+    const onScrape = (p) => Math.abs(p.x - artDX - 335) < 260 && Math.abs(p.y - Y) < 90;
     ctx.on(S.svg, "pointerdown", (e) => {
       if (!S.ready) return;
       const p = S.pt(e);
