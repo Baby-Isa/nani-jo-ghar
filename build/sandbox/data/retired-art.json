@@ -259,34 +259,6 @@
    "by": "assets/cook/items/tool-knife-t-v2.webp",
    "why": "Z8 (8 Oct): the hand holding the old knife at the chopping board",
    "scope": "cook:*:wood"
-  },
-  {
-   "file": "assets/cook/characters/nani-neutral.webp",
-   "sha256": "6d2565900651707c",
-   "by": "Nani leaning on the counter (decision 64, ART-13)",
-   "why": "Z9 (8 Oct): the standing Nani sprite in service",
-   "scope": "cook:*:service"
-  },
-  {
-   "file": "assets/cook/characters/nani-talk.webp",
-   "sha256": "6d2565900651707c",
-   "by": "Nani leaning on the counter (decision 64, ART-13)",
-   "why": "Z9 (8 Oct): the standing Nani sprite in service",
-   "scope": "cook:*:service"
-  },
-  {
-   "file": "assets/cook/characters/nani-happy.webp",
-   "sha256": "6d2565900651707c",
-   "by": "Nani leaning on the counter (decision 64, ART-13)",
-   "why": "Z9 (8 Oct): the standing Nani sprite in service",
-   "scope": "cook:*:service"
-  },
-  {
-   "file": "assets/cook/characters/nani-point.webp",
-   "sha256": "6d2565900651707c",
-   "by": "Nani leaning on the counter (decision 64, ART-13)",
-   "why": "Z9 (8 Oct): the standing Nani sprite in service",
-   "scope": "cook:*:service"
   }
  ]
 }

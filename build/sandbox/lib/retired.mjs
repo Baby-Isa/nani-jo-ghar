@@ -44,7 +44,9 @@ export function build() {
   for (const who of ["nani", "player-boy", "player-girl"]) add(`assets/cook/hands/${who}/b1-handle-grip-t.webp`, "assets/cook/items/tool-knife-t-v2.webp", "Z8 (8 Oct): the hand holding the old knife at the chopping board", "cook:*:wood");
   // 4. named by Zafar, 8 Oct (Z9, decision 64): Nani standing behind a cut-out counter in Cook's service view; she leans on
   // the counter (her counter sheet). Matched by content: S04-C swaps the leaning picture in under the same keys
-  for (const m of ["neutral", "talk", "happy", "point"]) add(`assets/cook/characters/nani-${m}.webp`, "Nani leaning on the counter (decision 64, ART-13)", "Z9 (8 Oct): the standing Nani sprite in service", "cook:*:service");
+  // 9 Oct (decision 77): S04-C's API lean was rejected and reverted, so no replacement exists yet: the standing Nani is
+  // the only picture until the s05 art run's part A lands (ART-13 stays reopened and on the art list). Put these back then.
+  if (process.env.NJG_RETIRE_STANDING_NANI) for (const m of ["neutral", "talk", "happy", "point"]) add(`assets/cook/characters/nani-${m}.webp`, "Nani leaning on the counter (decision 64, ART-13)", "Z9 (8 Oct): the standing Nani sprite in service", "cook:*:service");
   return out.filter((e) => e.sha256);
 }
 
