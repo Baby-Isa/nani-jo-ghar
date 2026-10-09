@@ -23,33 +23,8 @@
   const h = Kit.h;
   const PL = () => global.ClinicPipeline;
 
-  /**
-   * The request pop-up (decision 53, T27; S03-A, CLN-84, SH-64): the shared one (js/shared/request-popup.js), the same
-   * as Cook's and every heal game's, through the shared lifecycle (S04-B). The doctor's card at full size over the play area, read out row by row (the
-   * read-along); a tap anywhere stops the voice at once and folds it into the sidebar; then the belt runs, quiet.
-   */
-  S.requestPopup = function (screen, { title, rows, ordered, face }) {
-    const LC = global.Lifecycle; // S04-B: through the shared lifecycle (decision 75 (1))
-    if (!LC) return Promise.resolve({ skipped: false });
-    let card = null;
-    return LC.request({
-      reason: "clinic:pharmacy",
-      host: screen.main,
-      target: () => screen.card.el,
-      fast: Kit.fast,
-      wait: (ms) => Kit.wait(ms),
-      build(box) {
-        card = new Kit.Card(box, { who: "doctor", big: true });
-        card.isOrdered = !!ordered;
-        card.titleText = title || "";
-        card.faceEl = face || S.doctorFace();
-        card.setRows(rows.map((r) => Object.assign({}, r)));
-      },
-      read: () => card.speak(),
-      onStop: () => Kit.Voice.clear(),
-    });
-  };
-  const requestPopup = S.requestPopup;
+  // the request pop-up: the clinic's shared one (S.requestPopup, stages/common.js; S04-F1 moved it there from here)
+  const requestPopup = (screen, o) => S.requestPopup(screen, Object.assign({ reason: "clinic:pharmacy" }, o));
 
   S.pharmacy = {
     async run(env, plan) {

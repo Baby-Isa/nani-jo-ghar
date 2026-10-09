@@ -149,7 +149,11 @@
       S.say(S.line(env, "why-waiting"), "doctor");
       // from level 3 the card is closed: the call is heard, not read; a tap on it is the paid peek (13a, 13c)
       const closed = plan.level >= 3;
-      await S.request(screen, { title: "", rows: plan.card, closed, onPeek: () => screen.peek("waiting-card"), look: "bulb" }); // S02-A hook: decision 57
+      // S04-F1 (decision 53, CLN-84): the call first, in the shared pop-up, read out (a tap skips it); it folds into
+      // the sidebar and the room is quiet. The pop-up shows the card exactly as the sidebar will: closed from level 3,
+      // and at level 1 the same face-only card (decision 74)
+      await S.requestPopup(screen, { reason: "clinic:waiting", title: "", rows: plan.card, closed });
+      await S.request(screen, { title: "", rows: plan.card, closed, onPeek: () => screen.peek("waiting-card"), look: "bulb", read: false }); // S02-A hook: decision 57
       let callIdx = 0;
       const rows = plan.rows;
       const W4 = plan.variant === "W4";

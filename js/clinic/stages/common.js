@@ -260,6 +260,52 @@
   };
 
   /**
+   * The request pop-up (decision 53, T27; S03-A, CLN-84, SH-64; S04-F1: every clinic stage): the shared one
+   * (js/shared/request-popup.js), the same as Cook's and every heal game's, through the shared lifecycle (S04-B,
+   * decision 75 (1)). The doctor's card at full size over the play area, read out row by row (the read-along); a tap
+   * anywhere stops the voice at once and folds it into the sidebar; then the game is quiet. The stage then sets the
+   * sidebar card with S.request(..., {read: false}). The pop-up never shows more than that sidebar card: a closed
+   * card (from level 3: heard, not read) is closed here too. prep(card): the stage's own drawing of its card (the
+   * check-up's tool blocks), applied before the rows are set.
+   */
+  S.requestPopup = function (screen, { reason, title, rows, ordered, face, closed = false, prep = null }) {
+    const LC = global.Lifecycle;
+    if (!LC) return Promise.resolve({ skipped: false });
+    let card = null;
+    const fill = (c, withRows) => {
+      if (prep) prep(c);
+      c.isOrdered = !!ordered;
+      c.titleText = withRows ? title || "" : "";
+      c.faceEl = face || S.doctorFace();
+      c.setRows(withRows ? (rows || []).map((r) => Object.assign({}, r)) : []);
+    };
+    return LC.request({
+      reason: reason || "clinic",
+      host: screen.main,
+      target: () => screen.card.el,
+      fast: Kit.fast,
+      wait: (ms) => Kit.wait(ms),
+      build(box) {
+        const shown = new Kit.Card(box, { who: "doctor", big: true });
+        if (!closed) {
+          fill(shown, true);
+          card = shown;
+          return;
+        }
+        // a closed card (from level 3): the pop-up shows only the doctor's face, as the closed sidebar card does (the
+        // shared order card draws a big card open whatever it's told), and the call is heard from a card never drawn
+        fill(shown, false);
+        card = new Kit.Card(document.createElement("div"), { who: "doctor", big: true });
+        fill(card, true);
+      },
+      // the read-out starts once the pop-up is on screen: at real speed its own 300 ms lead covers the 0.2 s fade in;
+      // at test speed (a 20 ms lead) it waits for the fade, so the first line is never said before the card shows
+      read: () => (Kit.fast ? new Promise((r) => setTimeout(r, 220)) : Promise.resolve()).then(() => card.speak()),
+      onStop: () => Kit.Voice.clear(),
+    });
+  };
+
+  /**
    * The staging hook (UX 16, 13e): while two characters talk they stand three-quarter turned to each other
    * ("talk"); when it's the child's turn to act they turn to face the player ("front"): that turn is the
    * "your turn" cue. A swap between two drawn poses with a quick crossfade, never an animation. The art

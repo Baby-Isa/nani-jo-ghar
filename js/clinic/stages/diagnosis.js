@@ -147,7 +147,9 @@
     const { screen, data } = env;
     // T24 (decision 55): the card's headline is the job, [Ask where it hurts]; the doctor's [Does it hurt here?] and her
     // Ha / Na are bubbles at their faces. D1 is taught at every level (decision 52: no Found it, no Next)
-    await S.request(screen, { title: S.line(env, "ask-where"), rows: [] });
+    // S04-F1 (decision 53, CLN-84): the request first, in the shared pop-up, read out; then the sidebar card, quiet
+    await S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "ask-where"), rows: [] });
+    await S.request(screen, { title: S.line(env, "ask-where"), rows: [], read: false });
     let dots = plan.probes.map((p) => {
       const side = p === plan.part ? plan.side : data.sided.includes(p) ? (env.rng() < 0.5 ? "left" : "right") : null;
       const d = h("button", "cl-probe", top);
@@ -235,7 +237,8 @@
     const { screen } = env;
     const row = plan.rows[0];
     // T25: the card's headline [Find where it hurts]; her [My {part} hurts] in her bubble; his [That's it]; it moves on
-    await S.request(screen, { title: S.line(env, "find-where"), rows: [] });
+    await S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "find-where"), rows: [] }); // S04-F1
+    await S.request(screen, { title: S.line(env, "find-where"), rows: [], read: false });
     S.say(row.patientSays, "patient"); // input is live at once (13i): a tap during the line goes ahead
     let busy = false;
     let finish;
@@ -294,7 +297,9 @@
     const heads = {};
     order.forEach((t) => (heads[`tool-${t}`] = S.line(env, `use-${t}`)));
     blockCard(screen.card, heads);
-    await S.request(screen, { title: S.line(env, "check-over"), rows: calls.map(partRow) });
+    // S04-F1 (decision 53, CLN-84): the whole check-up card in the shared pop-up first (the same tool blocks), read out
+    await S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "check-over"), rows: calls.map(partRow), prep: (c) => blockCard(c, heads) });
+    await S.request(screen, { title: S.line(env, "check-over"), rows: calls.map(partRow), read: false });
     const kit = h("div", "cl-kit", stage);
     let tool = null;
     const btns = {};
