@@ -576,7 +576,11 @@
         nextUp(level >= 2 && o.next && o.of && n >= o.of ? o.next : null);
         // D7: from level 2 the ✓ closes a counted step once it has begun; at level 1 the step closes itself (D5).
         // SH-40 (2 Oct): a step the child's next action closes (the next tool: o.next) never shows the ✓
-        if (n > 0 && level >= 2 && !o.next) showDone(true);
+        // decision 79 (SH-40): a counted step that can't go past its count (o.capped: the knee's wrap stops at it) is an
+        // obvious finish at the count: it moves on by itself (ctx.ready), no ✓; an uncapped count keeps its ✓ (the
+        // child decides when it's enough: moving on at the target would give the answer away, C10)
+        if (o.capped && o.of && n >= o.of && level >= 2) ctx.ready(true);
+        else if (n > 0 && level >= 2 && !o.next) showDone(true);
         if (level <= 1 && n > 0 && n <= 5) Kit.Voice.now(LANG().num(n));
       },
       /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */

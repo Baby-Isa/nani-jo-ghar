@@ -373,7 +373,7 @@
         st.last = d;
         st.turns++;
         S.count(st.turns);
-        ctx.tally("bandage", st.turns);
+        ctx.tally("bandage", st.turns, { of: c.count, capped: true }); // the wrap stops at its count: it moves on by itself (decision 79)
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (ctx.level === 1 && st.turns >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
         ctx.sfx("tap");
