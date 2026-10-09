@@ -304,37 +304,37 @@
     "girl"
    ],
    "wrap": {
-    "_about": "CLN-100 (9 Oct): the wrap's anchors on K1's outline, in the source picture's pixels (src). back = the thigh's underside, the crease, the shin's back (top to bottom); front = above the kneecap, the kneecap, below it. Every turn runs from one to the other and is masked to the leg; skin = the skin's left edge (the trouser cuff and its shadow are never wrapped over), top to bottom; band = the bandage's width.",
+    "_about": "CLN-100 (9 Oct): the wrap's anchors on K1's outline, in the source picture's pixels (src). back = the thigh's underside, the crease, the shin's back (top to bottom); front = above the kneecap, the kneecap, below it. Every turn runs from one dot to the other, ending on the dots (Zafar, 9 Oct), the dots at least 60 px apart so no two overlap, and is masked to the leg; skin = the skin's left edge (the trouser cuff and its shadow are never wrapped over), top to bottom; band = the bandage's width.",
     "src": [
      1536,
      1024
     ],
     "back": [
      [
-      530,
-      545
+      490,
+      538
      ],
      [
-      548,
-      560
+      550,
+      566
      ],
      [
-      544,
-      622
+      541,
+      660
      ]
     ],
     "front": [
      [
-      902,
-      250
+      900,
+      248
      ],
      [
       946,
-      410
+      412
      ],
      [
-      938,
-      575
+      936,
+      600
      ]
     ],
     "skin": [
@@ -351,20 +351,20 @@
       300
      ],
      [
-      500,
+      498,
       400
      ],
      [
-      505,
-      480
+      484,
+      470
      ],
      [
-      530,
-      545
+      474,
+      530
      ],
      [
-      548,
-      560
+      540,
+      566
      ],
      [
       540,

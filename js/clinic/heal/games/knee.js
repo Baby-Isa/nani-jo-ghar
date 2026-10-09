@@ -181,10 +181,10 @@
     /**
      * One turn of a crepe bandage on the art (CLN-100, 9 Oct). Every tap lays a band across the knee from the last dot
      * to this one, so the turns cross over the kneecap like a real figure-of-eight knee bandage and fan into the
-     * crease behind it. The band is a filled strip: narrower at the back (it dives into the crease, seen edge-on)
-     * and full width over the front, bowed towards the shin as a band round a limb looks, run on past both dots so
-     * the leg's own outline (the mask) trims it exactly where the leg turns away; shaded darker at both ends, with
-     * its edges, the weave along it and a soft shadow under it.
+     * crease behind it. The band is a filled strip from dot to dot: narrower at the back (it dives into the crease,
+     * seen edge-on) and full width over the front, bowed towards the shin as a band round a limb looks, masked to
+     * the leg's own outline; shaded darker at both ends where it turns away, with its edges, the weave along it and
+     * a soft shadow under it.
      */
     const wrapTurn = (a, b) => {
       const k = KA.box[2] / WA.src[0];
@@ -202,8 +202,10 @@
         nx = -nx;
         ny = -ny;
       }
-      const p0 = { x: back.x - ux * W * 0.5, y: back.yy - uy * W * 0.5 };
-      const p1 = { x: fr.x + ux * W * 0.9, y: fr.yy + uy * W * 0.9 };
+      // the band ends on the two dots the child tapped (Zafar, 9 Oct: "the bandages should go to where the tapping
+      // circles are"); the dots sit on the leg's outline, so it still ends where the leg turns away
+      const p0 = { x: back.x, y: back.yy };
+      const p1 = { x: fr.x, y: fr.yy };
       const bow = 0.11 * L;
       const c = { x: (p0.x + p1.x) / 2 + nx * bow, y: (p0.y + p1.y) / 2 + ny * bow };
       const at = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
