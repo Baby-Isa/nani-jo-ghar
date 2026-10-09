@@ -31,6 +31,7 @@ node build/tools/review/sprintcheck.mjs --judge-prompt [--run-id id]
                   --from-run <id>: the sheets from a sandbox run that already played the flows (the gate before a publish:
                   nothing is played again; a flow it lacks shows as "not played")
   --judge-prompt  prints the prompt for the reviewer (Fable): judge each sheet, flaws first, PASS/FAIL + one line into the report.
+  --all-rows      every live row of the list, not just the sprint's (the full audit, decision 76)
   --rows a,b      only these of the sprint's rows      --quick  every flow at 1366x768 only (the rotate card at its own size)
   --sizes a,b     every flow at these sizes            --json   the plan as JSON
   Port: COOK_TEST_PORT (default 8843). No network.`;
@@ -57,7 +58,8 @@ async function makePlan() {
   const since = a.val("since") ? { ref: a.val("since"), why: "--since" } : defaultSince();
   const sha = git("rev-parse", "--verify", "-q", `${since.ref}^{commit}`);
   if (!sha) die(`Unknown git ref "${since.ref}".`);
-  const oldText = git("show", `${sha}:docs/process/regressions.md`) || "";
+  // --all-rows: every live row of the list, as if all were added (the full audit, decision 76)
+  const oldText = a.has("all-rows") ? "" : git("show", `${sha}:docs/process/regressions.md`) || "";
   const newText = readFileSync(REGRESSIONS, "utf8");
   let { rows, removed } = sprintRows(oldText, newText);
   if (a.val("rows")) { const want = new Set(a.val("rows").split(",").map((s) => s.trim())); rows = rows.filter((r) => want.has(r.id)); removed = removed.filter((r) => want.has(r.id)); }
