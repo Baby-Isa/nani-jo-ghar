@@ -1,4 +1,4 @@
-// The contract probe (decision 75, rule C19): what a child sees and hears, sampled on screen, for the six contract checks
+// The contract probe (decision 75, rule C19): what a child sees and hears, sampled on screen, for the contract checks
 // (lib/contract.mjs). Injected into every page (addInitScript) next to the sound hook; it changes no game file and reads
 // no game code: it looks at the DOM, the Phaser display list, the drawn pixels' sources and the games' own test hooks
 // (__cook, __clinic, njgTest: the same calls the players use), and reports changes through window.__njgLog as
@@ -7,14 +7,28 @@
 //   k: "stage"   {key}                      a stage boundary: a Cook station starts or ends (Cook.inStation), the host's
 //                                          stage changes (njgTest.state()), the end screen shows ("end")
 //   k: "popup"   {open, box}               the shared request pop-up (.njg-rq-open, Cook's #intro) up or down
-//   k: "side"    {n, rows, done}           order cards in the sidebar (not the pop-up's), and their rows done
+//   k: "side"    {n, rows, done, closed}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
 //   k: "buttons" {list: [{sel, text, box}], exp}   the ✓ / Next / stage buttons on screen, with what the game expects
 //   k: "bubble"  {list: [{who, text, box, tail}], heads: [{who, box, src}], play}   speech bubbles and the speakers' heads
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
 //   k: "art"     {src, via, key}           an image drawn for the first time in this stage (canvas drawImage, Phaser
 //                                          texture, <img>, CSS background)
-//   k: "input"   {x, y, on, exp, popup}    a real tap or press (trusted pointerdown): what it landed on, what the game
-//                                          expected then
+//   k: "input"   {x, y, on, exp, popup, poses}   a real tap or press (trusted pointerdown): what it landed on, what the
+//                                          game expected then, the staged talkers' poses (data-pose) at that moment
+//   k: "life"    {what, reason, at}        an entry of the shared lifecycle's own log (window.Lifecycle.log: request,
+//                                          advance, stage-end, results) at its own time (at), not the sampler's
+//   k: "hl"      {n, list}                 the next-thing highlights on screen: Cook's glowing pictures (glowFx), the
+//                                          clinic's next-up / pulsing tools (one group per tool family: the plasters)
+//   k: "greyed"  {list: [{sel, text, why}]}   ✓ / Next / stage buttons shown greyed (disabled or dimmed), not hidden
+//   k: "stale"   {sel, text, from}         a reply pill first seen in an earlier stage, still on screen 600 ms into this one
+//   k: "talk"    {list, spec}              the talk animations running: Cook's character tweens that repeat (lift, tilt,
+//                                          ms) and the play area's CSS talk or bob animations, with Lifecycle.talk.SPEC
+//   k: "bg"      {src, via, sx, sy, dpr}   a background (a picture covering half the screen or the canvas): screen px per
+//                                          source px across (sx) and down (sy)
+//
+// What the game expected (exp) also carries, for contract-2: Cook's take-back (undo: its expectation offers one), the live
+// play inputs (live: Cook's pictures still taking taps), the heal game's last count (heal.count: {n, of, capped}, read from
+// the heal host's ctx.tally as the game calls it: a read-only wrap, the call goes through unchanged).
 export const CONTRACT_HOOK = `(() => {
   if (window.__njgContractHook) return;
   window.__njgContractHook = true;
@@ -43,6 +57,8 @@ export const CONTRACT_HOOK = `(() => {
   const opac = (el) => { let o = 1; for (let x = el; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden") return 0; o *= parseFloat(cs.opacity); } return o; };
   const desc = (el) => { if (!el || el.nodeType !== 1) return String(el); const c = typeof el.className === "string" ? el.className.trim().split(/\\s+/).filter(Boolean).slice(0, 3).join(".") : ""; return el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + (c ? "." + c : ""); };
   const safe = (f, d = null) => { try { return f(); } catch (e) { return d; } };
+  const phaserGames = () => { const games = (window.__njgGames || []).slice(); if (!games.length && window.Cook && window.Cook.game) games.push(window.Cook.game); return games.filter((g) => g && g.canvas && g.canvas.isConnected && g.scene); };
+  const isChar = (k) => { const chars = safe(() => Object.keys(window.Cook.CHARS || {}), []) || []; const w = String(k || "").split("-")[0]; return chars.includes(w) || /^(nani|nana|ma|ali|bapa|masi|kaka|kaki|dada|dadi|guest)$/.test(w); };
 
   // ---- what the game expects now (its own test hooks; the players read the same) ----
   const exp = () => {
@@ -54,10 +70,37 @@ export const CONTRACT_HOOK = `(() => {
     const h = safe(() => window.njgTest && window.njgTest.state && String(window.njgTest.state()));
     if (h) o.host = h;
     const hx = safe(() => window.njgTest && window.njgTest.expect && window.njgTest.expect());
-    if (hx && typeof hx === "object") o.hostExp = { kind: hx.kind || hx.do || null };
-    const heal = safe(() => { const r = window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal && window.__clinic.Stages.heal.current; return r && r.controller && r.controller.debug ? r.controller.debug.next() : null; });
-    if (heal) o.heal = { do: heal.do };
+    if (hx && typeof hx === "object") o.hostExp = { kind: hx.kind || hx.do || null, ...(hx.undo ? { undo: true } : {}) };
+    if (ce && ce.undo && o.cook) o.cook.undo = true;
+    const run = healRun();
+    watchTally(run);
+    const heal = safe(() => run && run.controller && run.controller.debug ? run.controller.debug.next() : null);
+    if (heal) o.heal = { do: heal.do, ...(run.ctx && run.ctx.__njgCount ? { count: run.ctx.__njgCount } : {}) };
+    const live = safe(livePlay, 0);
+    if (live) o.live = live;
     return o;
+  };
+  // the heal game running (the clinic's heal stage, or the heal host lab's)
+  const healRun = () => safe(() => (window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal && window.__clinic.Stages.heal.current) || (window.Clinic && window.Clinic.HealHost && window.Clinic.HealHost.current) || null);
+  // the heal game's own count, as it reports it to its host (ctx.tally(item, n, {of, capped, next})): read-only, the call
+  // goes through unchanged; a new step (ctx.card.now) clears it
+  const watchTally = (run) => safe(() => {
+    const ctx = run && run.ctx;
+    if (!ctx || ctx.__njgTally) return;
+    ctx.__njgTally = true;
+    const t = ctx.tally;
+    if (typeof t === "function") ctx.tally = function (item, n, op) { try { ctx.__njgCount = { item: item == null ? null : String(item), n: +n || 0, of: (op && op.of) || null, capped: !!(op && op.capped), next: !!(op && op.next) }; } catch (e) {} return t.apply(this, arguments); };
+    const card = ctx.card;
+    if (card && typeof card.now === "function") { const nw = card.now; card.now = function (id) { try { if (id !== ctx.__njgStep) ctx.__njgCount = null; ctx.__njgStep = id; } catch (e) {} return nw.apply(this, arguments); }; }
+  });
+  // Cook's pictures still taking taps (an image with its input on, not a character): more taps still change the result
+  const livePlay = () => {
+    let n = 0;
+    for (const g of phaserGames()) for (const sc of g.scene.getScenes(true)) {
+      const walk = (list) => { for (const o of list) { if (!o || o.visible === false || o.alpha === 0) continue; if (o.list) { walk(o.list); continue; } if (o.input && o.input.enabled && o.texture && o.texture.key && !isChar(o.texture.key) && /Image|Sprite/.test(o.type || "")) n++; } };
+      safe(() => walk(sc.children.list));
+    }
+    return n;
   };
 
   // ---- the stage: the end screen, a Cook station (its own count), the host's stage ----
@@ -118,13 +161,8 @@ export const CONTRACT_HOOK = `(() => {
   // Cook's characters: the Phaser images whose texture is a person (<who>-<mood>); the head is the top of the figure
   const phaserHeads = () => {
     const out = [];
-    const games = (window.__njgGames || []).slice();
-    if (!games.length && window.Cook && window.Cook.game) games.push(window.Cook.game);
-    const chars = safe(() => Object.keys(window.Cook.CHARS || {}), []) || [];
-    const isChar = (k) => { const w = String(k || "").split("-")[0]; return chars.includes(w) || /^(nani|nana|ma|ali|bapa|masi|kaka|kaki|dada|dadi|guest)$/.test(w); };
-    for (const g of games) {
-      const cv = g && g.canvas;
-      if (!cv || !cv.isConnected) continue;
+    for (const g of phaserGames()) {
+      const cv = g.canvas;
       const cr = cv.getBoundingClientRect();
       const kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
       for (const sc of g.scene.getScenes(true)) {
@@ -151,6 +189,27 @@ export const CONTRACT_HOOK = `(() => {
   };
   // DOM speakers: the clinic's figures (their art's head: the measured head anchor when the art has one) and every
   // speaker element the voice layer anchors to (the doctor's face, the round close-up)
+  const headAnchor = (f) => safe(() => {
+    const base = f.querySelector(".fig-art-base");
+    if (!base || !shown(base)) return null;
+    const r = base.getBoundingClientRect();
+    if (r.height < 8) return null;
+    // the figure object itself when the heal game's is this one (its own artSpot), else the art's spec by kind and view
+    const run = healRun();
+    const fig = run && run.figure && run.figure.el === f ? run.figure : null;
+    let at = fig && fig.artSpot ? safe(() => fig.artSpot("head")) : null;
+    if (!at) {
+      const HA = (window.Clinic && window.Clinic.HealHost && window.Clinic.HealHost.healArt) || (window.Clinic && window.Clinic.Stages && window.Clinic.Stages._healArt);
+      const spec = HA && HA.patients && HA.patients[f.dataset.kind];
+      const box = base.closest(".fig-art");
+      const V = spec && (box && box.classList.contains("view-side") && spec.side ? spec.side : spec);
+      const a = V && V.anchors && V.anchors.head;
+      if (!a) return null;
+      at = { x: r.left + a[0] * r.width, y: r.top + a[1] * r.height, r: 0.12 * r.height };
+    }
+    if (!at || !isFinite(at.x) || !isFinite(at.y) || !(at.r > 0)) return null;
+    return { l: Math.round(at.x - at.r), t: Math.round(at.y - at.r), r: Math.round(at.x + at.r), b: Math.round(at.y + at.r) };
+  });
   const domHeads = () => {
     const out = [];
     safe(() => {
@@ -164,6 +223,10 @@ export const CONTRACT_HOOK = `(() => {
       const art = f.querySelector(".fig-art, img, svg");
       const fr = (art && shown(art) ? art : f).getBoundingClientRect();
       if (head && shown(head)) { out.push({ who: "patient", src: "fig-head", box: R(head.getBoundingClientRect()), fig: R(fr) }); continue; }
+      // painted art with a measured head anchor (data/clinic/heal-art.json: the head's centre as a share of the art, its
+      // radius 0.12 of the art's height, as the figure's own artSpot("head") gives it): her drawn head, not the art box's top
+      const ha = headAnchor(f);
+      if (ha) { out.push({ who: "patient", src: "fig-head-anchor", box: ha, fig: R(fr) }); continue; }
       // a painted figure: its head is the top of its picture (about the top fifth, the middle half)
       out.push({ who: "patient", src: "fig-art", box: { l: Math.round(fr.left + fr.width * 0.25), t: Math.round(fr.top), r: Math.round(fr.right - fr.width * 0.25), b: Math.round(fr.top + fr.height * 0.22) }, fig: R(fr) });
     }
@@ -240,19 +303,197 @@ export const CONTRACT_HOOK = `(() => {
     });
   };
 
+  // ---- the shared lifecycle's own log (js/shared/request-popup.js Lifecycle.log: {what, reason, t}), each entry once ----
+  const lifeSeen = new WeakSet();
+  const lifeLog = () => {
+    const L = window.Lifecycle && window.Lifecycle.log;
+    if (!L || !L.length) return;
+    for (const x of L) { if (!x || typeof x !== "object" || lifeSeen.has(x)) continue; lifeSeen.add(x); emit({ k: "life", what: String(x.what || ""), reason: String(x.reason || ""), at: +x.t || Date.now() }); }
+  };
+
+  // ---- the next-thing highlight: Cook's glowing pictures (the shared glow, glowFx), the clinic's next-up and pulsing tools
+  // (a tool family is one highlight: every plaster glows together, never just the right colour) ----
+  const highlights = () => {
+    const out = [];
+    for (const g of phaserGames()) for (const sc of g.scene.getScenes(true)) {
+      const walk = (list) => { for (const o of list) { if (!o || o.visible === false || o.alpha === 0) continue; if (o.list) walk(o.list); if (o.glowFx && o.active !== false) out.push("cook:" + ((o.texture && o.texture.key) || o.type)); } };
+      safe(() => walk(sc.children.list));
+    }
+    const fam = new Set();
+    for (const t of document.querySelectorAll(".hs-tool.next-up, .hs-tool.pulse")) if (shown(t)) fam.add("tool:" + String(t.dataset.tool || desc(t)).replace(/-.*$/, "-"));
+    return [...out.sort(), ...[...fam].sort()];
+  };
+
+  // ---- ✓ / Next / stage buttons shown greyed (disabled, aria-disabled, dimmed or greyscale) instead of hidden ----
+  const greyed = () => [...document.querySelectorAll("button, " + BTN)].filter((b) => isNextBtn(b)).map((b) => {
+    if (!b.isConnected || b.closest(".hidden")) return null;
+    const r = b.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2 || r.right < 0 || r.bottom < 0 || r.left > innerWidth || r.top > innerHeight) return null;
+    const o = opac(b);
+    if (o <= 0.05) return null;
+    const cs = getComputedStyle(b);
+    const gs = /grayscale\\(([\\d.]+)(%?)/.exec(cs.filter || "");
+    const grey = gs ? parseFloat(gs[1]) / (gs[2] ? 100 : 1) : 0;
+    const why = b.disabled ? "disabled" : b.getAttribute("aria-disabled") === "true" ? "aria-disabled" : o < 0.6 ? "dimmed to " + Math.round(o * 100) + "%" : grey > 0.3 ? "greyscale" : null;
+    return why ? { sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), why } : null;
+  }).filter(Boolean);
+
+  // ---- reply pills left from an earlier stage (each pill element remembers the stage it was first seen in) ----
+  let stageSince = Date.now();
+  const pillStage = new WeakMap(), pillTold = new WeakSet();
+  const PILLS = ".cl-pill, .njg-pill, .cv-pill, .st-reply, .st-choice, .cl-pills .pill, .njg-pills .pill";
+  const stalePills = () => {
+    for (const p of document.querySelectorAll(PILLS)) {
+      if (p.closest(".oc-card, .cl-card, .ng-card, #side, .cl-side, .njg-results, .njg-rq-veil, #intro") || !shown(p)) continue;
+      if (!pillStage.has(p)) { pillStage.set(p, stage); continue; }
+      const from = pillStage.get(p);
+      if (from === stage || stage.startsWith(from + "|") || pillTold.has(p) || Date.now() - stageSince < 600) continue;
+      pillTold.add(p);
+      emit({ k: "stale", sel: desc(p), text: (p.textContent || "").trim().slice(0, 30), from, stage });
+    }
+  };
+
+  // ---- the talk animation: Cook's characters' repeating tweens (lift, tilt, ms), the play area's CSS talk or bob ----
+  const talking = () => {
+    const out = [];
+    for (const g of phaserGames()) for (const sc of g.scene.getScenes(true)) {
+      const tw = safe(() => sc.tweens.getTweens(), []) || [];
+      for (const t of tw) {
+        if (!t || (t.isPlaying && !t.isPlaying())) continue;
+        const targets = t.targets || [];
+        const ch = targets.find((o) => o && o.texture && isChar(o.texture.key));
+        if (!ch) continue;
+        const data = t.data || [];
+        const rep = data.some((d) => d && (d.repeat === -1 || d.repeat > 2) && d.yoyo);
+        if (!rep) continue;
+        let dy = 0, da = 0, ms = 0;
+        for (const d of data) {
+          if (!d) continue;
+          const span = Math.abs((+d.end || 0) - (+d.start || 0));
+          if (d.key === "y") dy = Math.max(dy, span);
+          if (d.key === "angle") da = Math.max(da, span);
+          if ((d.key === "y" || d.key === "angle") && d.duration) ms = ms ? Math.min(ms, d.duration) : d.duration;
+        }
+        if (dy || da) out.push({ via: "phaser", who: String(ch.texture.key).split("-")[0], dy: Math.round(dy * 10) / 10, da: Math.round(da * 100) / 100, ms: Math.round(ms) });
+      }
+    }
+    const anims = safe(() => document.getAnimations(), []) || [];
+    for (const a of anims) {
+      const name = a.animationName || "";
+      const el = a.effect && a.effect.target;
+      if (!name || !el || !el.closest || !/talk|bob/i.test(name)) continue;
+      if (el.closest(".oc-card, .cl-card, .ng-card, #nani-card, .njg-guide, #intro, #passme, .njg-rq-veil, #side, .cl-side, .njg-results")) continue;
+      const tm = safe(() => a.effect.getTiming(), {}) || {};
+      if (tm.iterations !== Infinity) continue;
+      out.push({ via: "css", who: desc(el), name, ms: Math.round(+tm.duration || 0) });
+    }
+    return out;
+  };
+  setInterval(() => {
+    try {
+      const t = talking();
+      if (!same("talk", t)) if (t.length) emit({ k: "talk", list: t, spec: safe(() => window.Lifecycle.talk.SPEC) || null });
+    } catch (e) {}
+  }, 400);
+
+  // ---- backgrounds: a picture covering half the screen (or Cook's canvas): screen px per source px, across and down ----
+  const natural = new Map();
+  const natOf = (u) => {
+    if (natural.has(u)) return natural.get(u);
+    natural.set(u, null);
+    const im = new Image();
+    im.onload = () => natural.set(u, { w: im.naturalWidth, h: im.naturalHeight });
+    im.src = u;
+    return null;
+  };
+  const bgSeen = new Set();
+  const bgEmit = (src, via, sx, sy) => {
+    if (!src || !(sx > 0) || !(sy > 0)) return;
+    const s = rel(src), k = stage + "|" + s + "|" + sx.toFixed(2) + "|" + sy.toFixed(2);
+    if (bgSeen.has(k)) return;
+    bgSeen.add(k);
+    emit({ k: "bg", src: s, via, sx: Math.round(sx * 1000) / 1000, sy: Math.round(sy * 1000) / 1000, dpr: window.devicePixelRatio || 1, stage });
+  };
+  const bgSize = (spec, W, H, nw, nh) => {
+    const v = String(spec || "auto").split(",")[0].trim();
+    if (v === "cover") { const s = Math.max(W / nw, H / nh); return [s, s]; }
+    if (v === "contain") { const s = Math.min(W / nw, H / nh); return [s, s]; }
+    const parts = v.split(/\\s+/);
+    const len = (x, full) => (/%$/.test(x) ? (parseFloat(x) / 100) * full : /px$/.test(x) ? parseFloat(x) : null);
+    const w = len(parts[0] || "auto", W), h = len(parts[1] || "auto", H);
+    if (w != null && h != null) return [w / nw, h / nh];
+    if (w != null) return [w / nw, w / nw];
+    if (h != null) return [h / nh, h / nh];
+    return [1, 1];
+  };
+  const scanBg = () => {
+    const VA = innerWidth * innerHeight;
+    for (const im of document.images) {
+      if (!shown(im) || !im.naturalWidth) continue;
+      const r = im.getBoundingClientRect();
+      if (r.width * r.height < VA * 0.5) continue;
+      const fit = getComputedStyle(im).objectFit;
+      const fx = r.width / im.naturalWidth, fy = r.height / im.naturalHeight;
+      const [sx, sy] = fit === "cover" ? [Math.max(fx, fy), Math.max(fx, fy)] : fit === "contain" || fit === "scale-down" ? [Math.min(fx, fy), Math.min(fx, fy)] : fit === "none" ? [1, 1] : [fx, fy];
+      bgEmit(im.currentSrc || im.src, "img", sx, sy);
+    }
+    for (const el of document.querySelectorAll("body *")) {
+      const cs = getComputedStyle(el);
+      const bi = cs.backgroundImage;
+      if (!bi || bi === "none") continue;
+      const m = bi.match(/url\\(["']?([^"')]+)["']?\\)/);
+      if (!m || /^data:/.test(m[1])) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width * r.height < VA * 0.5 || !shown(el)) continue;
+      const n = natOf(m[1]);
+      if (!n || !n.w) continue;
+      const [sx, sy] = bgSize(cs.backgroundSize, r.width, r.height, n.w, n.h);
+      bgEmit(m[1], "css", sx, sy);
+    }
+    for (const g of phaserGames()) {
+      const cr = g.canvas.getBoundingClientRect();
+      const kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+      const GA = g.scale.gameSize.width * g.scale.gameSize.height;
+      for (const sc of g.scene.getScenes(true)) {
+        const zoom = sc.cameras.main.zoom || 1;
+        const walk = (list) => { for (const o of list) {
+          if (!o || o.visible === false || o.alpha === 0) continue;
+          if (o.list) { walk(o.list); continue; }
+          if (!o.frame || !o.texture || !/Image|Sprite/.test(o.type || "") || isChar(o.texture.key)) continue;
+          const fw = o.frame.realWidth || o.frame.width, fh = o.frame.realHeight || o.frame.height;
+          if (!fw || !fh || o.displayWidth * o.displayHeight * zoom * zoom < GA * 0.5) continue;
+          const im = o.texture.source && o.texture.source[0] && o.texture.source[0].image;
+          bgEmit((im && im.src) || o.texture.key, "phaser", Math.abs(o.scaleX) * zoom * kx, Math.abs(o.scaleY) * zoom * ky);
+        } };
+        safe(() => walk(sc.children.list));
+      }
+    }
+  };
+  setInterval(() => { try { scanBg(); } catch (e) {} }, 700);
+
+  // the staged talkers (the clinic's staging hook: data-pose talk / front) on screen
+  const poses = () => [...document.querySelectorAll(".cl-staged[data-pose]")].filter((x) => x.dataset && x.dataset.pose && shown(x)).map((x) => ({ who: desc(x), pose: x.dataset.pose, facing: x.dataset.facing || null }));
+
   // ---- the sampler ----
   let last = {};
   const same = (k, v) => { const j = JSON.stringify(v); if (last[k] === j) return true; last[k] = j; return false; };
   const sample = () => {
     const key = safe(stageKey, "page");
-    if (key !== stage) { stage = key; emit({ k: "stage", key }); }
+    if (key !== stage) { stage = key; stageSince = Date.now(); emit({ k: "stage", key }); }
+    safe(lifeLog);
+    const hl = safe(highlights, []);
+    if (!same("hl", hl)) emit({ k: "hl", n: hl.length, list: hl });
+    const gr = safe(greyed, []);
+    if (!same("greyed", gr.map((b) => b.sel + b.why))) emit({ k: "greyed", list: gr });
+    safe(stalePills);
     const pops = popupEls();
     const pop = { open: pops.length > 0, box: pops.length ? R(pops[0].getBoundingClientRect()) : null };
     if (!same("popup", pop.open)) emit({ k: "popup", ...pop });
     const cards = sideCards();
     const rows = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row, .oc-item, li").length, 0);
     const done = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row.done, .oc-item.done, .done, .ticked, .is-done").length, 0);
-    const sd = { n: cards.length, rows, done };
+    // closed: the card is closed (from L3 the call is heard, not read: OrderCard's "closed", folded or peeking)
+    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length };
     if (!same("side", sd)) emit({ k: "side", ...sd });
     const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()) }));
     if (!same("buttons", bl.map((b) => b.sel))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
@@ -283,7 +524,7 @@ export const CONTRACT_HOOK = `(() => {
       if (!ev.isTrusted) return;
       const t = ev.target;
       const btn = t && t.closest ? t.closest("button, " + BTN) : null;
-      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), stage });
+      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage });
     } catch (e) {}
   }, true);
 })();`;

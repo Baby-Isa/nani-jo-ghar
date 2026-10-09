@@ -38,7 +38,7 @@ if (has("--help") || has("-h") || !argv.length) {
   --webgl               Phaser's WebGL renderer for Cook (software GL: about 4x slower; the default is canvas, which draws no tints)
   --from-run id         judge a finished run's saved data (no browser): with --check / --update-baseline
   --contract            the contract checks (decision 75: pop-up before play, moves on by itself, voice stops at every stage end,
-                        bubbles at the speaker's head, badges in order, no retired art) on the named flows (default: the
+                        bubbles at the speaker's head, badges in order, no retired art, and contract-7 to 14: lib/contract.mjs) on the named flows (default: the
                         route set CONTRACT_ROUTE at laptop size); writes contract.md and contract.json; exit 1 on any break.
                         --check runs them too, on every page of the run (never ratcheted into the baseline)
   --list                list the flows and the labs.html tiles they play, and exit

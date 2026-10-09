@@ -2,7 +2,7 @@
 /*
  * The standard check command (R7): every fast, no-browser check in one run, one line each, exit 1 if any fails.
  *   node build/tools/review/checks.mjs [--only unit,words,bump] [--list]
- * unit   node --test over the shared kit, core, host, css lint and review-tool tests
+ * unit   node --test over the shared kit, core, host, css lint, sandbox (the contract checks on fixtures) and review-tool tests
  * words  the word lint's strict gate (check A, string literals in game code) on the folders in build/lint/words-gate.json "enforce";
  *        "ready" folders are reported but not enforced until their engine step reports 0 literals
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
@@ -25,7 +25,7 @@ const results = [];
 const note = (name, ok, text) => { results.push(ok); console.log(`${ok ? "ok  " : "FAIL"} ${name.padEnd(6)} ${text}`); };
 
 if (only.includes("unit")) {
-  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", "build/tools/review/review.test.mjs"];
+  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs"];
   if (a.has("list")) console.log(files.join("\n"));
   const r = run(process.execPath, ["--test", ...files]);
   const n = (k) => Number((new RegExp(`^# ${k} (\\d+)`, "m").exec(r.stdout) || [0, 0])[1]);

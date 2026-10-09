@@ -25,7 +25,7 @@ export const plain = (s) => s.replace(/\*\*|`|\*/g, "").replace(/\s+/g, " ").tri
 export const statusKind = (s) => { const t = plain(s).toLowerCase(); return t.startsWith("reopened") ? "reopened" : t.startsWith("open") ? "open" : t.startsWith("built") ? "built" : t.startsWith("fixed") ? "fixed" : t.startsWith("retired") ? "retired" : t.startsWith("keep") ? "keep" : "other"; };
 
 // the rows the contract run checks on every flow (decision 75; build/sandbox/lib/contract.mjs): a contract break names its check
-export const CONTRACT_ROWS = { "contract-1 popup": ["SH-64", "CHT-10", "CHAI-15", "CK-29"], "contract-2 moves-on": ["SH-40", "CLN-92", "CLN-110"], "contract-3 voice": ["SH-66"], "contract-4 bubble": ["SH-68", "CLN-86"], "contract-5 badges": ["SH-67"], "contract-6 old-art": ["DAAR-13", "ART-17", "ART-13"] };
+export const CONTRACT_ROWS = { "contract-1 popup": ["SH-64", "CHT-10", "CHAI-15", "CK-29"], "contract-2 moves-on": ["SH-40", "CLN-92", "CLN-110"], "contract-3 voice": ["SH-66"], "contract-4 bubble": ["SH-68", "CLN-86"], "contract-5 badges": ["SH-67"], "contract-6 old-art": ["DAAR-13", "ART-17", "ART-13"], "contract-7 one-voice": ["PAN-04"], "contract-8 highlight": ["SH-53"], "contract-9 closed-card": ["CLN-114"], "contract-10 your-turn": ["SH-71"], "contract-11 background": ["PAN-14", "ART-05"], "contract-12 greyed": ["SH-23"], "contract-13 stale-ui": ["CLN-06"], "contract-14 talk": ["ART-18"] };
 // row id -> the contract checks that cover it ("contract-1" ...)
 export function contractChecksOf(id) { return Object.entries(CONTRACT_ROWS).filter(([, ids]) => ids.includes(id)).map(([k]) => k.split(" ")[0]); }
 

@@ -134,6 +134,29 @@ test("sprintcheck: one run.mjs invocation per size set; shots: contract breaks f
   assert.deepEqual(pickShots({ words: ["sidebar"] }, { states }).map((s) => s.shot), ["02-heal-knee-start.png", "04-heal-knee-mid.png", "05-results-badges.png"]);
 });
 
+test("regressions on the repo: every row whose Check says 'contract check' or names a contract-N is covered by that check (CONTRACT_ROWS)", async () => {
+  const { loadRegressions, CONTRACT_ROWS, contractChecksOf, statusKind } = await import("./lib/regressions.mjs");
+  const { CHECKS } = await import("../../sandbox/lib/contract.mjs");
+  for (const k of Object.keys(CONTRACT_ROWS)) assert.ok(CHECKS[k.split(" ")[0]] && CHECKS[k.split(" ")[0]].item === k.split(" ")[1], `CONTRACT_ROWS key ${k} names a check that exists`);
+  const bad = [];
+  for (const r of loadRegressions()) {
+    if (statusKind(r.status) === "retired") continue;
+    const named = [...r.check.matchAll(/\bcontract-(\d+)\b/g)].map((m) => `contract-${m[1]}`);
+    const mine = contractChecksOf(r.id);
+    if (/contract check/i.test(r.check) && !mine.length) bad.push(`${r.id}: says "contract check" but no check covers it`);
+    for (const n of named) if (!CHECKS[n] || !mine.includes(n)) bad.push(`${r.id}: names ${n}, ${CHECKS[n] ? "not in CONTRACT_ROWS under it" : "no such check"}`);
+  }
+  assert.deepEqual(bad, []);
+});
+
+test("PRC-08 on the repo: no per-game copy of the shared lifecycle (RequestPopup., VoiceStop., Results.show( only through Lifecycle)", () => {
+  const ROOT = join(HERE, "..", "..", "..");
+  const files = execFileSync("git", ["ls-files", "js/cook", "js/clinic"], { cwd: ROOT, encoding: "utf8" }).split("\n").filter((f) => /\.js$/.test(f));
+  const hits = [];
+  for (const f of files) readFileSync(join(ROOT, f), "utf8").split("\n").forEach((l, i) => { if (/\b(RequestPopup|VoiceStop)\.|\bResults\.show\(/.test(l) && !/^\s*(\/\/|\*)/.test(l)) hits.push(`${f}:${i + 1}: ${l.trim().slice(0, 100)}`); });
+  assert.deepEqual(hits, [], "a game calls the pop-up, the voice stop or the end screen itself: go through Lifecycle (js/shared/request-popup.js)");
+});
+
 test("sprintcheck on the repo: since cdad804~1 the knee bandage row (CLN-100) maps to the knee game's levels", () => {
   const r = run("sprintcheck.mjs", "--since", "cdad804~1", "--rows", "CLN-100", "--json");
   if (r.status !== 0 && /Unknown git ref/.test(r.stderr)) return; // a shallow clone without that history
