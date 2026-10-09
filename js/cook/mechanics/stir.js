@@ -379,7 +379,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           clearTimeout(quiet);
           if (count >= 1) {
             UI.done({ glow: z.guided && count >= laps }).then(finish);
-            z.expect({ kind: "click", selector: "#done-btn" });
+            // open: stirring on still counts, the child says when it's enough (C10; moving on at the right count would
+            // give the answer away, NN6); the player is steered to Done, the step isn't decided (contract-2, s04-fxc)
+            z.expect({ kind: "click", selector: "#done-btn", open: true });
           }
         };
         z.on("pointerdown", grab);

@@ -407,7 +407,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      * never on the picture and its label together. WebGL: a glow that follows the picture's own
      * outline; canvas: a soft halo behind the picture's opaque part.
      */
-    glow(obj, on = true, { bounce = false } = {}) {
+    glow(obj, on = true, opts = {}) {
+      if (!obj) return;
+      /*
+       * SH-53 (s04-fxc): one highlight at a time, in every station. Every glow asked for is kept in order; only the
+       * latest still standing shows, and when it goes the one before it comes back (maani's next dough waits while the
+       * maani on the tawa is in its band; two samosas golden at once glow one after the other). A picture destroyed
+       * without its glow off drops out.
+       */
+      const st = (this._glows = (this._glows || []).filter((g) => g.obj.active && g.obj.scene));
+      const i = st.findIndex((g) => g.obj === obj);
+      if (i >= 0) st.splice(i, 1);
+      if (on && obj.active) st.push({ obj, opts });
+      else this.glowDraw(obj, false);
+      const top = st.length ? st[st.length - 1] : null;
+      st.forEach((g) => g !== top && g.obj.glowFx && this.glowDraw(g.obj, false));
+      if (top && (!top.obj.glowFx || top.obj === obj)) this.glowDraw(top.obj, true, top.opts);
+    }
+    /** The glow itself, drawn or taken off (glow() decides which one shows). */
+    glowDraw(obj, on = true, { bounce = false } = {}) {
       if (!obj) return;
       if (obj.glowFx) {
         const g = obj.glowFx;

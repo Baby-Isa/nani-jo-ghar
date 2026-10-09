@@ -836,7 +836,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (ctx.guided || helping) S.glow(empty[0], true, { bounce: true });
             const c = S.centre(empty[0]);
             z.expect({ kind: "tap", x: c.x, y: c.y, key: "strip", wrongs: [] });
-          } else if (filled) z.expect({ kind: "click", selector: "#done-btn" });
+          } else if (filled) z.expect({ kind: "click", selector: "#done-btn", open: empty.length > 0 }); // open: an empty strip still makes another (C10)
           else z.expect({ kind: "wait" });
         });
       const emptyStrip = (x) => {

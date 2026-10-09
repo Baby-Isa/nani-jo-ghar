@@ -1013,7 +1013,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           requestAnimationFrame(step);
         });
       const post = () =>
-        z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "click", selector: "#done-btn" });
+        // past the laps the player is steered to Done, but the step stays open: stirring on still counts, the child says
+        // when it's enough (C10, NN6; contract-2, s04-fxc)
+        z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "click", selector: "#done-btn", open: true });
       const place = () => {
         ladle.setPosition(cx + Math.cos(ang) * trackR, cy + Math.sin(ang) * trackR);
         ladle.setRotation(ang - LADLE_HANDLE); // DAAR-11: the handle points out over the rim, wherever the ladle is

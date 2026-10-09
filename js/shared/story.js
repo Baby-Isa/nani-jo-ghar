@@ -256,6 +256,9 @@
         (p.items || []).forEach((it) => (html += img(it.img, `st-item ${it.cls || ""}`, `left:${it.x}%;top:${it.y}%;width:${it.w}%`)));
         if (p.child) html += `<div class="st-item st-pchild" style="left:${p.child.x}%;top:${p.child.y}%;width:${p.child.w}%">${childSvg()}</div>`;
         pic.innerHTML = html;
+        // ART-18 (s04-fxc): a bobbing guest bobs with the one shared talk animation (Lifecycle.talk), never its own
+        const L = global.Lifecycle;
+        if (L && L.talk) pic.querySelectorAll(".st-item.bob").forEach((x) => (x.classList.remove("bob"), L.talk.dom(x)));
         const old = frame.firstChild;
         frame.appendChild(pic);
         requestAnimationFrame(() => pic.classList.add("in"));

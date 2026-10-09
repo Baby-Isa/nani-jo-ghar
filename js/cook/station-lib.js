@@ -116,6 +116,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     else UI.hideGist();
     UI.hideBubble();
     Cook.inStation = true;
+    if (global.Lifecycle && global.Lifecycle.stageStart) global.Lifecycle.stageStart("cook:station");
     Cook.quietUntil = Date.now() + ((Cook.data.calm || {}).quietMs || 0);
     Cook.save.seenStation[key] = true;
     // a part of the order that waits for this station comes up in the shared request pop-up before play (S04-B)
@@ -555,7 +556,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           .filter((k) => k !== next && items[k] && items[k].active)
           .map((k) => S.centre(items[k]));
         z.expect({ kind: "tap", x: c.x, y: c.y, key: next, wrongs });
-      } else if (doneOk) z.expect({ kind: "click", selector: "#done-btn" });
+      } else if (doneOk) z.expect({ kind: "click", selector: "#done-btn", open: Object.values(items).some((o) => o && o.active) }); // open: a pick still changes it
       else z.expect({ kind: "wait" });
     });
 

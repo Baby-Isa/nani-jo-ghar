@@ -186,8 +186,12 @@
   let speechTail = Promise.resolve();
   // (a clip that never ends can't hold the queue: each waits at most 4 s for the one before)
   const queued = (fn) => {
+    // SH-66 (s04-fxc): a line queued before a voice stop (a station's end, a tap through the pop-up) never starts after
+    // it: the shared voice layer's generation is taken now and checked when its turn comes (js/shared/request-popup.js)
+    const V = global.Lifecycle && global.Lifecycle.voice;
+    const gen = V ? V.gen() : 0;
     const before = Promise.race([speechTail.catch(() => {}), new Promise((r) => setTimeout(r, 4000))]);
-    const mine = before.then(fn);
+    const mine = before.then(() => (V && V.gen() !== gen ? undefined : fn()));
     speechTail = mine.catch(() => {});
     return mine;
   };
@@ -1193,6 +1197,38 @@
     } finally {
       if (relaxed) Cook.paused = wasPaused;
     }
+  };
+  /**
+   * s04-fxc (decision 53, 75 (1), contract-1): a phase that gives Nani's own order with no request pop-up since the
+   * last stage ended (the chop again, only the vegetables that were wrong: "Kali ba mirchi.") opens with the shared
+   * request pop-up: her card, the line read out, folding into her box; then the station is quiet. Resolves {asked}:
+   * false when a pop-up already opened this phase (the line is said as before).
+   */
+  M.askLine = async function (line, { who = "nani", hide } = {}) {
+    const L = global.Lifecycle;
+    const OC = OCard();
+    if (!line || !L || !L.asked || L.asked() || introOpen() || !OC) return { asked: false };
+    const el = intro();
+    const card = el.querySelector(".ic-card");
+    const box = el.querySelector(".ic-order");
+    if (!card || !box) return { asked: false };
+    box.innerHTML = "";
+    card.classList.remove("people", "crowd", "c4", "wide");
+    const rec = line.ok === false;
+    box.appendChild(OC.card({ person: { id: who, face: faceUrl(who), name: who === "nani" ? "Nani" : "" }, headline: { html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide }), rec }, items: [] }, { big: true }));
+    UI.closeHelp();
+    const token = Cook.run;
+    const prevExpect = Cook.expect;
+    Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
+    const read = () => (!UI.naniMuted() && Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line))));
+    try {
+      await L.request({ reason: "cook:station-order", el, card, target: () => $("#guide") || $("#mission"), lead: 0, hold: 900, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read });
+    } finally {
+      stopReading();
+      if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
+    }
+    Cook.checkRun(token);
+    return { asked: true };
   };
   M.introOpen = introOpen;
   M.peopleSaid = () => !!(mission && mission.peopleSaid);

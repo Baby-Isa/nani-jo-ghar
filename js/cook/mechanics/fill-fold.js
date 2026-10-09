@@ -143,7 +143,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the two-hand fold follows the finger (js/cook/hands.js)
       if (Cook.Hands) offs.push(...Cook.Hands.drag(z, "fold", { k: z.k * 0.55 }));
       if (doneOk) UI.done({ glow: doneGlow }).then(() => finish("done"));
-      z.expect(doneExpect ? { kind: "click", selector: "#done-btn" } : { kind: "swipe", x1, y1, x2, y2 });
+      // open: another swipe still folds another, the child says how many (C10, NN6; contract-2, s04-fxc)
+      z.expect(doneExpect ? { kind: "click", selector: "#done-btn", open: true } : { kind: "swipe", x1, y1, x2, y2 });
     });
   }
 

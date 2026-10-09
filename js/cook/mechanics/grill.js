@@ -1715,6 +1715,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let resolveDone;
       const done = new Promise((r) => (resolveDone = r));
       let doneShown = false;
+      let autoDone = false; // the plate can't change any more: it moved on by itself (s04-fxc)
       const complete = () => {
         const n = {};
         plate.forEach((p) => p.cls.ok && (n[p.cls.kind] = (n[p.cls.kind] || 0) + 1));
@@ -1800,7 +1801,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const allIn = Object.keys(n).every((w) => n[w] <= 0) && !grilling.length && plate.length;
         const threading = line.threading && line.threading();
         if (allIn && !threading && offerChips && chipsOn !== !!params.chips) return z.expect({ kind: "tap", x: chips.x, y: chips.y, key: "chips" });
-        if (allIn && !threading && doneShown) return z.expect({ kind: "click", selector: "#done-btn" });
+        if (allIn && !threading && doneShown) {
+          // another skewer still to thread, one still on the rack or the chips still change the plate: the child says
+          // when it's finished (open: C10; moving on at the right plate would give the answer away, NN6). Nothing left
+          // that could change it: the plate is what it is, so the grill moves on by itself (decision 52, 79; s04-fxc)
+          const more = !!z.in || rack.some(Boolean) || !!offerChips;
+          if (more) return z.expect({ kind: "click", selector: "#done-btn", open: true });
+          if (!autoDone) {
+            autoDone = true;
+            UI.hideDone();
+            const L = global.Lifecycle;
+            (L ? L.advance({ reason: "cook:grill", ms: 600, wait: (ms) => Cook.wait(ms) }) : Cook.wait(600)).then(() => !finished && resolveDone(), () => {});
+          }
+        }
         z.expect({ kind: "wait" });
       };
 

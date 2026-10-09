@@ -416,8 +416,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         phase = r;
         roundT = 0;
         if (r.i === 0) {
-          // the ring starts once she's said it; after that, the switch comes while things fly
-          await z.say(orderLine(r.targets, true), { hide }).catch(() => {});
+          // the ring starts once she's said it; after that, the switch comes while things fly. s04-fxc (decision 75 (1),
+          // contract-1): a new order with no pop-up yet this phase (the chop again, only the wrong ones) comes up in the
+          // shared request pop-up first, read out; her box then shows it quietly
+          const line = orderLine(r.targets, true);
+          const a = UI.mission && UI.mission.askLine ? await UI.mission.askLine(line, { hide }) : { asked: false };
+          if (a.asked) z.say(line, { hide, silent: true, ms: 10, keep: true }).catch(() => {});
+          else await z.say(line, { hide }).catch(() => {});
           running = true;
           spawnT = 0;
         } else {

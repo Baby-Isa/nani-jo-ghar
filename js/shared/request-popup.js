@@ -7,6 +7,9 @@
  *                                   then folded into the sidebar; the game under it is inert and its bubbles hidden
  *   await Lifecycle.advance(o)      (2) the outcome is obvious: the game moves on by itself after a short beat (no ✓,
  *                                   Next or stage button). o: {ready: Promise (capped, e.g. the line being said), ms, wait}
+ *   Lifecycle.asked()               has a request pop-up opened since the last stage end? (a phase that gives a new
+ *                                   order without one opens it: Cook's chop redo, UI.mission.askLine)
+ *   Lifecycle.stageStart(reason)    a stage starts (only logged: the checks read when, to the millisecond)
  *   Lifecycle.stageEnd(reason)      (3) a stage or game ended: every voice stops (the one voice layer below), every speech
  *                                   bubble goes, every onStageEnd hook runs
  *   Lifecycle.results(R, opts)      (3)+(5) the end screen: stageEnd("end"), then R.show(opts) (js/shared/results.js
@@ -240,6 +243,8 @@
     if (log.length > 400) log.splice(0, log.length - 400);
   };
   const endHooks = new Set();
+  let ends = 1; // stage ends so far (from 1), and the count when the last request opened (0: never)
+  let asks = 0;
   // the speech bubbles every mode draws (Cook's #bubble, the clinic's .cl-bubble): a stage that ended takes them all
   const BUBBLES = ".cl-bubble, .njg-bubble";
   function clearBubbles() {
@@ -321,7 +326,18 @@
     phaser(scene, img, o = {}) {
       if (!scene || !img || !scene.tweens) return () => {};
       const y0 = img.baseY != null ? img.baseY : img.y;
-      const tw = scene.tweens.add({ targets: img, y: y0 - TALK.lift, angle: (o.dir || 1) * TALK.tilt, duration: TALK.ms, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+      // from its rest, always: a talk that starts mid-hop (a guest still hopping in) would bob from the hop's height
+      // (12 px in the open kitchen, s04-fxc). The hop (a tween of y alone) ends as the talk starts; the walk (x) goes on
+      try {
+        (scene.tweens.getTweensOf(img) || []).forEach((t) => {
+          const keys = (t.data || []).map((d) => d && d.key);
+          if (keys.length && keys.every((k) => k === "y")) t.stop();
+        });
+      } catch (e) {
+        /* an older Phaser: the from below still holds */
+      }
+      img.y = y0;
+      const tw =scene.tweens.add({ targets: img, y: { from: y0, to: y0 - TALK.lift }, angle: { from: 0, to: (o.dir || 1) * TALK.tilt }, duration: TALK.ms, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
       return () => {
         try {
           tw.stop();
@@ -371,6 +387,7 @@
      */
     request(opts = {}) {
       note("request", opts.reason || "");
+      asks = ends;
       const host = opts.host || null;
       const held = [];
       if (host && host.classList) {
@@ -394,6 +411,8 @@
         }
       );
     },
+    /** Has a request pop-up opened since the last stage ended? (A phase's order says so: one pop-up per phase.) */
+    asked: () => asks === ends && asks > 0,
     isOpen: () => !!current,
     close: () => current && current.fold(false),
     fly,
@@ -410,6 +429,7 @@
     /** (3) A stage or game ended: every voice stops, every bubble goes, the hooks run (the clinic's queue, Cook's read-along). */
     stageEnd(reason) {
       note("stage-end", reason || "");
+      ends++;
       VoiceStop.stop(`stage:${reason || ""}`);
       clearBubbles();
       endHooks.forEach((fn) => {
@@ -419,6 +439,13 @@
           /* the hook's problem */
         }
       });
+    },
+    /**
+     * A stage (a Cook station) starts: only logged (Lifecycle.log, at its own millisecond), so a line the stage says as
+     * it opens is known to be its own, not the last stage's (the contract checks read it; s04-fxc).
+     */
+    stageStart(reason) {
+      note("stage-start", reason || "");
     },
     onStageEnd(fn) {
       endHooks.add(fn);
