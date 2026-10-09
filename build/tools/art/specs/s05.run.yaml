@@ -1,0 +1,923 @@
+# The run spec for pack s05 (Sprint 5 art: the supervised ChatGPT run, decision 77: Nani at the counter, the doctor, the
+# drop machine, the sole, the sekelo plate, the girl's life frames, the man's and the woman's wide poses, the old man's and
+# old woman's eye close-ups, the adult limbs, five belt sheets). Read by build/tools/art/artblock.py (the paste block) and
+# artjudge.py. The prompts stay in the audit (section 5: docs/design-language/art-plans/s05-art-audit.md). Edit this file,
+# then regenerate the block; never hand-edit the block. Zafar runs it himself in ChatGPT (audit section 2).
+pack: s05
+title: 'Sprint 5 art: the supervised ChatGPT run'
+plan: docs/design-language/art-plans/s05-art-audit.md
+plan_branch: ccr-a7370759-t0lee7
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: main
+dest: sources/art/s05
+real_people: true
+runner:
+  windows: 3
+  send_gap_seconds: 60
+  stall_minutes: 6
+  hard_minutes: 10
+  redos: 2
+  commit_batch: 6
+  flush_minutes: 25
+refs:
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+  nani-sheet-v2-approved.png: sources/art/characters/nani-sheet-v2-approved.png
+  nana-neutral.webp: assets/cook/characters/nana-neutral.webp
+  bg-cook-service-v2.webp: assets/cook/bg/service-v2.webp
+  customers-sheet.webp: sources/cook/customers-sheet.webp
+  s1-girl-sheet-v2.png: sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+  s3-oldman-sheet-v2.png: sources/art/clinic-heal-v3/s3-oldman-sheet-v2.png
+  s4-oldwoman-sheet-v2.png: sources/art/clinic-heal-v3/s4-oldwoman-sheet-v2.png
+  s5-man-sheet-v1.png: sources/art/clinic-heal-v3/s5-man-sheet-v1.png
+  s6-woman-sheet-v1.png: sources/art/clinic-heal-v3/s6-woman-sheet-v1.png
+  girl-w1-front-neutral-v1.png: sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
+  child-p1-sole-v1.png: sources/art/clinic-heal-v3/child-p1-sole-v1.png
+  ci1-care-kit-v1.png: sources/art/clinic-v2/items/ci1-care-kit-v1.png
+  ci2-tools-comfort-v1.png: sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+  bandage-roll.webp: assets/clinic/items-v2/bandage-roll.webp
+  c7-sekelo-plate-plain-t-v1.png: sources/art/s02/c7-sekelo-plate-plain-t-v1.png
+  sekelo-stick.webp: assets/cook/items/v3/sekelo/stick.webp
+people:
+  man:
+    sheet: s5-man-sheet-v1.png
+    set: adult
+  woman:
+    sheet: s6-woman-sheet-v1.png
+    set: adult
+  oldman:
+    sheet: s3-oldman-sheet-v2.png
+    set: adult
+  oldwoman:
+    sheet: s4-oldwoman-sheet-v2.png
+    set: adult
+limb_sets:
+  adult: s5-man-sheet-v1.png
+templates:
+  W1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <p>-w1-front-neutral-v1.png
+    check: W1
+  W2:
+    attach:
+    - 'edit: kept:<p>-W1'
+    save: <p>-w2-front-happy-v1.png
+    check: FACE
+  W3:
+    attach:
+    - 'edit: kept:<p>-W1'
+    save: <p>-w3-front-sad-v1.png
+    check: FACE
+  W4:
+    attach:
+    - 'edit: kept:<p>-W1'
+    save: <p>-w4-front-pain-v1.png
+    check: FACE
+  W5:
+    attach:
+    - 'edit: kept:<p>-W1'
+    save: <p>-w5-front-hot-v1.png
+    check: FACE
+  W6:
+    attach:
+    - 'edit: kept:<p>-W1'
+    save: <p>-w6-front-cold-v1.png
+    check: FACE
+  W7:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <p>-w7-side-neutral-v1.png
+    check: W7
+  W8:
+    attach:
+    - 'edit: kept:<p>-W7'
+    save: <p>-w8-side-happy-v1.png
+    check: FACE
+    note: compare with <p>-W7
+  W9:
+    attach:
+    - kept:<p>-W1
+    - <sheet>
+    save: <p>-w9-blanket-v1.png
+    check: W9
+  W10:
+    attach:
+    - kept:<p>-W1
+    - <sheet>
+    save: <p>-w10-bottle-v1.png
+    check: W10
+  M1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <p>-m1-mouth-v1.png
+    check: M1
+  M2:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <p>-m2-tongue-v1.png
+    check: M2
+  Y1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <p>-y1-eyes-v1.png
+    check: Y1
+  Y2:
+    attach:
+    - 'edit: kept:<p>-Y1'
+    save: <p>-y2-eye-sore-v1.png
+    check: Y2
+  Y3:
+    attach:
+    - 'edit: kept:<p>-Y1'
+    save: <p>-y3-eyes-closed-v1.png
+    check: Y3
+  T1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <p>-t1-eyetest-a-v1.png
+    check: T1
+  T2:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <p>-t2-eyetest-b-v1.png
+    check: T2
+limb_templates:
+  K1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <set>-k1-knee-v1.png
+    check: K1
+  K2:
+    attach:
+    - kept:<set>-K1
+    - <sheet>
+    save: <set>-k2-knee-kick-v1.png
+    check: K2
+  K3:
+    attach:
+    - 'edit: kept:<set>-K1'
+    save: <set>-k3-knee-graze-v1.png
+    check: K3
+  F1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <set>-f1-forearm-v1.png
+    check: F1
+  F2:
+    attach:
+    - 'edit: kept:<set>-F1'
+    save: <set>-f2-forearm-graze-v1.png
+    check: F2
+  F4:
+    attach:
+    - 'edit: kept:<set>-F1'
+    save: <set>-f4-forearm-cut-v1.png
+    check: F4
+  U1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <set>-u1-upperarm-v1.png
+    check: U1
+  P1:
+    attach:
+    - style-anchor-v1.png
+    - <sheet>
+    save: <set>-p1-sole-v1.png
+    check: P1
+lines:
+  N1:
+    attach:
+    - nani-sheet-v2-approved.png
+    - nana-neutral.webp
+    - bg-cook-service-v2.webp
+    - style-anchor-v1.png
+    save: nani-n1-lean-neutral-v1.png
+    check: NANI
+    note: 'REDO of S04-C''s leaning Nani: last time far too big next to the others and her elbows not on the counter; Nana is attached for her scale and render, the kitchen for the camera only'
+  N2:
+    attach:
+    - 'edit: kept:N1'
+    save: nani-n2-lean-happy-v1.png
+    check: NFACE
+  N3:
+    attach:
+    - 'edit: kept:N1'
+    save: nani-n3-lean-talk-v1.png
+    check: NFACE
+  N4:
+    attach:
+    - kept:N1
+    - nani-sheet-v2-approved.png
+    save: nani-n4-lean-point-v1.png
+    check: NPOINT
+  N5:
+    attach:
+    - 'edit: kept:N1'
+    save: nani-n5-lean-blink-v1.png
+    check: NFACE
+  DS1:
+    attach:
+    - style-anchor-v1.png
+    - customers-sheet.webp
+    save: doctor-s1-sheet-v1.png
+    check: DSHEET
+    note: 'ALSO attach the doctor''s photos (doctor-01 to doctor-04 in sources/private, never in the repo): Zafar attaches them himself'
+  DW1:
+    attach:
+    - style-anchor-v1.png
+    - kept:DS1
+    save: doctor-w1-stand-3q-neutral-v1.png
+    check: DW1
+  DW2:
+    attach:
+    - 'edit: kept:DW1'
+    save: doctor-w2-stand-3q-talk-v1.png
+    check: DFACE
+  DW3:
+    attach:
+    - 'edit: kept:DW1'
+    save: doctor-w3-stand-3q-happy-v1.png
+    check: DFACE
+  DW4:
+    attach:
+    - kept:DW1
+    - kept:DS1
+    save: doctor-w4-stand-3q-point-v1.png
+    check: DW4
+  DW5:
+    attach:
+    - 'edit: kept:DW1'
+    save: doctor-w5-stand-3q-blink-v1.png
+    check: DFACE
+  DD1:
+    attach:
+    - style-anchor-v1.png
+    - kept:DS1
+    save: doctor-d1-door-v1.png
+    check: DD1
+  DM1:
+    attach:
+    - style-anchor-v1.png
+    - ci2-tools-comfort-v1.png
+    save: dm1-drop-machine-v1.png
+    check: DM1
+  DM2:
+    attach:
+    - style-anchor-v1.png
+    - kept:DM1
+    save: dm2-levers-drops-v1.png
+    check: DM2
+  RP1:
+    attach:
+    - style-anchor-v1.png
+    - s1-girl-sheet-v2.png
+    - child-p1-sole-v1.png
+    save: child-p1-sole-v2.png
+    check: SOLE
+    note: 'REDO of the clinic pack''s child-P1: last time the toes sloped down to the little toe, so foot level 3 kept a stand-in'
+  SK2:
+    attach:
+    - style-anchor-v1.png
+    - c7-sekelo-plate-plain-t-v1.png
+    - sekelo-stick.webp
+    save: sk2-sekelo-plate-skewers-v1.png
+    check: PLATE4
+  GB1:
+    person: girl
+    attach:
+    - 'edit: girl-w1-front-neutral-v1.png'
+    save: girl-b1-front-blink-v1.png
+    check: GBLINK
+  GM1:
+    person: girl
+    attach:
+    - 'edit: girl-w1-front-neutral-v1.png'
+    save: girl-m5-front-mouth-open-v1.png
+    check: GMOUTH
+  E18:
+    attach:
+    - style-anchor-v1.png
+    - bandage-roll.webp
+    save: e18-bandage-roll-sheet-v1.png
+    check: SHEET8
+  E19:
+    attach:
+    - style-anchor-v1.png
+    - ci1-care-kit-v1.png
+    save: e19-thread-reel-sheet-v1.png
+    check: SHEET8
+  E20:
+    attach:
+    - style-anchor-v1.png
+    - ci1-care-kit-v1.png
+    save: e20-filling-tube-sheet-v1.png
+    check: SHEET8
+  E21:
+    attach:
+    - style-anchor-v1.png
+    - ci2-tools-comfort-v1.png
+    save: e21-reflex-hammer-sheet-v1.png
+    check: SHEET8
+  E22:
+    attach:
+    - style-anchor-v1.png
+    - ci2-tools-comfort-v1.png
+    save: e22-eye-patch-sheet-v1.png
+    check: SHEET8
+parts:
+- id: A
+  title: 'COOK: NANI AT THE COUNTER (P1; Zafar approves each one)'
+  intro: 'N1 first: every other Nani line edits it or attaches it. Judge N1 against the attached Nana for scale and render before anything else: if her head reads bigger than his, or her face more photographic,
+    redo it.'
+  items:
+  - lines:
+    - N1
+    - N2
+    - N3
+    - N4
+    - N5
+- id: B
+  title: 'THE CLINIC: THE DOCTOR (P1; a real person: Zafar attaches the photos and approves each one)'
+  intro: 'DS1 first: every doctor line attaches it. The photos never go into the repo.'
+  items:
+  - lines:
+    - DS1
+    - DW1
+    - DW2
+    - DW3
+    - DW4
+    - DW5
+    - DD1
+- id: C
+  title: 'THE CLINIC AND COOK: THE GAPS (P1 and P2)'
+  intro: DM2 attaches the kept DM1. RP1, SK2, GB1 and GM1 attach repo files only.
+  items:
+  - lines:
+    - DM1
+    - DM2
+    - RP1
+    - SK2
+    - GB1
+    - GM1
+- id: D
+  title: 'THE CLINIC: THE MAN AND THE WOMAN, THEIR WIDE POSES (W1 is P1; the rest P2)'
+  compact: true
+  intro: 'For each person, run these lines with that person''s prefix and sheet (the sheet is a repo file, already kept in the clinic pack):'
+  items:
+  - who: man
+    ids:
+    - W1
+    - W2
+    - W3
+    - W4
+    - W5
+    - W6
+    - W7
+    - W8
+    - W9
+    - W10
+  - who: woman
+    ids:
+    - W1
+    - W2
+    - W3
+    - W4
+    - W5
+    - W6
+    - W9
+    - W10
+    note: 'front only: none of her games is side-on'
+- id: E
+  title: 'THE CLINIC: HEAD CLOSE-UPS AND THE ADULT LIMBS (P2)'
+  compact: true
+  intro: 'The games each person plays (clinic plan 3.2): the old man and the old woman the eye games, the man the tooth, the woman the sore spots; the adult limbs are drawn from the man''s sheet and shared
+    by every adult patient.'
+  items:
+  - who: oldman
+    ids:
+    - Y1
+    - Y2
+    - Y3
+    - T1
+    - T2
+  - who: oldwoman
+    ids:
+    - Y1
+    - Y2
+    - Y3
+    - T1
+    - T2
+  - who: man
+    ids:
+    - M1
+  - who: woman
+    ids:
+    - M2
+  - set: adult
+    ids:
+    - K1
+    - K2
+    - K3
+    - F1
+    - F2
+    - F4
+    - U1
+    - P1
+- id: F
+  title: THE PHARMACY BELT SHEETS (P2; only if the pharmacy shot at /review shows the rough sprite for that item)
+  intro: One sheet per item, the same object in eight views; judge the views against section 3.6 of the audit.
+  items:
+  - lines:
+    - E18
+    - E19
+    - E20
+    - E21
+    - E22
+checks:
+  NANI:
+    text: 'Nani leaning: both forearms flat on a plain marble counter, elbows ON it, one over the other; the counter''s back edge one straight horizontal line across the whole image at about 82% down, marble
+      below it, flat grey above; head a normal size for her body (the sheet''s proportions, never a big head); rendered as chunky and simplified as the attached Nana, not more photographic; glasses, red
+      dupatta, cream embroidered kurta, bracelet and rings as the sheet, no bangles; nothing of her below the counter''s back edge but the arms on it; clear grey left and right of her'
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: none
+  NFACE:
+    text: only the face changed (the mood asked); glasses, dupatta, arms, hands, counter, size and position identical; compare with N1
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: none
+      edit:
+        allowed:
+        - 0.25
+        - 0.1
+        - 0.75
+        - 0.42
+  NPOINT:
+    text: the same Nani, size, framing and counter line as N1 (compare them side by side); her left forearm (viewer's right) still flat on the counter; her right hand up beside her face, index finger pointing
+      down to the viewer's right, elbow on the counter; five fingers
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: none
+  DSHEET:
+    text: 'eight panels in two rows of four, nothing touching; the same man in every panel: bald, neat white beard, clear-framed glasses, white shirt under a checked blazer, stethoscope, steel watch; panel
+      2 turned three-quarters to the viewer''s LEFT; panels 3-5 neutral, talking, laughing; a likeness of the photos that survives the stylising (Zafar decides); never a white coat; warm light tan skin'
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces_min: 8
+      no_touch: true
+  DW1:
+    text: the doctor standing, full body, turned three-quarters to the viewer's LEFT, both feet on one level, neutral kind face, mouth closed; as the sheet in every feature; fills about 85% of the height,
+      touches no edge; no floor drawn; five fingers on each hand
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      fill_h:
+      - 0.75
+      - 0.95
+      no_touch: true
+      skin_face:
+      - 0.25
+      - 0.0
+      - 0.75
+      - 0.2
+  DFACE:
+    text: only the face changed (the expression asked); glasses, beard, clothes, hands, stethoscope, size and position identical; compare with DW1
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      no_touch: true
+      edit:
+        allowed:
+        - 0.3
+        - 0.0
+        - 0.7
+        - 0.25
+      skin_face:
+      - 0.25
+      - 0.0
+      - 0.75
+      - 0.2
+  DW4:
+    text: the same doctor, size, framing and feet as DW1 (compare them side by side); only the near arm raised, the index finger pointing to the viewer's left at chest height; five fingers; touches no edge
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      fill_h:
+      - 0.75
+      - 0.95
+      no_touch: true
+      like: DW1
+  DD1:
+    text: the doctor's head, shoulders and one raised beckoning hand leaning in from the RIGHT edge only; NO door, frame or wall drawn; a big open calling smile; the head about 40% of the height, a little
+      left of centre; as the sheet in every feature; five fingers
+    judge:
+      aspect:
+      - 1
+      - 1
+      bg: flat
+      exits:
+      - right
+      skin_obj: true
+  DM1:
+    text: a white and steel machine, four tall tubes of red, yellow, blue and green LIQUID (no balls or beads), a drip spout under each, a chute to one opening at the bottom, empty lever sockets, no levers
+      · looks like a medicine dispenser, not a sweet, gumball or jelly-bean machine
+    judge:
+      soft_edges: true
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      pieces: 1
+      no_touch: true
+      sweets: true
+  DM2:
+    text: 'six things in a 3 by 2 grid: a lever UP, the same lever DOWN at the same size and place, then four falling teardrop drops (red, yellow, blue, green), matte and softly translucent, the same size
+      and shape, never glossy balls, beads or sweets; nothing crosses a cell boundary'
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 6
+      no_touch: true
+      sweets: true
+      soft_edges: true
+  SOLE:
+    text: the same sole as the attached picture (size, framing, the white trouser leg off the bottom), but the five toes in a LEVEL row, tips at about one height, clearly separate; smooth, no marks; touches
+      the bottom edge only
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+  PLATE4:
+    text: four times the SAME plain oval steel plate from directly above, at the same size and place in each of the 2 by 2 cells, with ONE, TWO, THREE, FOUR bare skewers (as the attached stick, no food)
+      lying STRAIGHT and PARALLEL left to right, close together, evenly spaced, handles to the RIGHT sticking past the rim; never fanned or bending; nothing touches a cell boundary
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 4
+      no_touch: true
+  GBLINK:
+    text: only the eyes changed, to gently closed; everything else identical to the attached seated picture (compare them)
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      no_touch: true
+      edit:
+        allowed:
+        - 0.3
+        - 0.13
+        - 0.7
+        - 0.35
+  GMOUTH:
+    text: only the mouth changed, open a little mid-word; eyes and everything else identical to the attached seated picture (compare them)
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      no_touch: true
+      edit:
+        allowed:
+        - 0.3
+        - 0.13
+        - 0.7
+        - 0.35
+  W1:
+    text: the same person as their sheet · front-on, facing us · thighs level, both feet flat at one level · hands on the lap, neutral face, mouth closed · fills about 85% of the height, touches no edge
+      · no bed or stool drawn
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      fill_h:
+      - 0.75
+      - 0.95
+      skin_face:
+      - 0.25
+      - 0.0
+      - 0.75
+      - 0.24
+      no_touch: true
+  FACE:
+    text: only the face changed (body, hands, clothes, hair, size and position identical to the original) · the expression asked for, readable at thumbnail size · nothing upsetting, no tears, sweat drops
+      or symbols
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      edit:
+        allowed:
+        - 0
+        - 0
+        - 1
+        - 0.45
+  W7:
+    text: 'exactly side-on, facing right · legs as the prompt says (child: hanging free; adult: feet flat on an invisible floor) · the same person · touches no edge'
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      fill_h:
+      - 0.7
+      - 0.95
+      no_touch: true
+  W9:
+    text: the same person, size and framing as the attached front picture · a plain deep-red blanket round the shoulders, held at the chest · legs and feet in the same place as in the front picture · a
+      cosy, relieved face · touches no edge
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      like: W1
+      no_touch: true
+  W10:
+    text: the same person, size and framing as the attached front picture · a teal knitted hot-water bottle hugged against the tummy · legs and feet in the same place as in the front picture · a comforted
+      face · touches no edge
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      like: W1
+      no_touch: true
+  K1:
+    text: three-quarter side view of a knee · plain white cloth rolled just above the knee · the thigh enters from the left edge, the shin leaves the bottom edge, no foot · the knee about half the height
+      · clean skin, no marks
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - bottom
+      skin_obj: true
+  K2:
+    text: 'the same framing as the attached K1: thigh in from the left, the knee at the same size and place · the shin kicked forward to the right · no foot, no motion lines'
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - bottom
+      like: K1
+      skin_obj: true
+  K3:
+    text: one gentle pink graze on the kneecap, no blood · nothing else changed
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - bottom
+      edit:
+        allowed:
+        - 0.2
+        - 0.2
+        - 0.8
+        - 0.8
+      skin_obj: true
+  F1:
+    text: the forearm held out palm down, in from the left edge · white sleeve rolled below the elbow · the whole hand inside the image, five fingers · clean skin
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      skin_obj: true
+  F2:
+    text: one gentle pink graze mid-forearm, no blood · nothing else changed
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      edit:
+        allowed:
+        - 0.1
+        - 0.1
+        - 0.9
+        - 0.9
+      skin_obj: true
+  F4:
+    text: one short, thin pink line, no blood, nothing open · nothing else changed
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      edit:
+        allowed:
+        - 0.1
+        - 0.1
+        - 0.9
+        - 0.9
+      skin_obj: true
+  Y2:
+    text: only the eye on the viewer's right is sore (pink) · the other eye unchanged · no tears
+    judge:
+      allow_touch:
+      - top
+      - bottom
+      side_hair: 0.08
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      edit:
+        allowed:
+        - 0.05
+        - 0.2
+        - 0.95
+        - 0.8
+      skin_obj: true
+  Y3:
+    text: both eyes gently closed · nothing else changed
+    judge:
+      allow_touch:
+      - top
+      - bottom
+      side_hair: 0.08
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      edit:
+        allowed:
+        - 0.05
+        - 0.2
+        - 0.95
+        - 0.8
+      skin_obj: true
+  T2:
+    text: waist up, exactly side-on facing right, the body running off the bottom edge · looking ahead and slightly up · hands on the lap
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+  M1:
+    text: only the lower face · the cheeks run off the LEFT and RIGHT edges, no ears, hair, headscarf edge or collar · mouth wide open "aah", top and bottom teeth clear, white and healthy
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      allow_touch:
+      - top
+      - bottom
+      side_hair: 0.08
+      skin_obj: true
+  M2:
+    text: 'only the lower face · the cheeks run off the LEFT and RIGHT edges · tongue out and down, plain pink, no spots · PLAIN skin with no blush: the tongue is the only pink'
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      allow_touch:
+      - top
+      - bottom
+      side_hair: 0.08
+      skin_obj: true
+  Y1:
+    text: from the mid-forehead to below the nose tip · the head's SIDES run off the LEFT and RIGHT edges, no ears · both eyes open, clear, looking at us, across the middle
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - right
+      allow_touch:
+      - top
+      - bottom
+      side_hair: 0.08
+      skin_obj: true
+  T1:
+    text: head and shoulders front-on, the shoulders running off the BOTTOM edge only · one hand flat over the eye on the viewer's RIGHT, five fingers · the otthe eye LOOKING A LITTLE TO OUR RIGHT, past
+      us (not at us, not away to the left) · the same girl as the sheet
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+  U1:
+    text: a bare upper arm, the sleeve PUSHED UP to the shoulder and clearly in view · the arm leaves the BOTTOM edge, the top's side at the LEFT edge · NOTHING of the head, neck, chin, hair or headscarf
+      · clean skin
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      exits:
+      - left
+      - bottom
+      skin_obj: true
+      sleeve: true
+  P1:
+    text: the sole straight on, toes at the top · five separate toes · smooth and clean, no lines or marks · the leg leaves the bottom edge · the five toes in a LEVEL row, tips at about one height
+    judge:
+      aspect:
+      - 2
+      - 3
+      bg: flat
+      exits:
+      - bottom
+      skin_obj: true
+  SHEET8:
+    text: eight views of the SAME object in a 4 by 2 grid, in the order and at the angles the plan's prompt lists (belt view front-and-above, top-down, front, the in-use angle, then the spares) · the same
+      object, colours and materials as the attached clinic things in every cell · "exactly side-on" and "from directly above" drawn so, not at an angle · lit from the upper left in every cell · nothing
+      but the object (no hands, skin or body parts)
+    judge:
+      aspect:
+      - 3
+      - 2
+      bg: flat
+      pieces: 8
+      no_touch: true
+passfail:
+- Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare (the kitchen A1 included).
+- The background isn't one flat mid-grey (A1 excepted); there's a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head or body runs off that edge (A1 fills the whole image).
+- The wrong number of things, things in the wrong order, the wrong view in a cell, or extra objects, people, hands or animals (in a sprite sheet, a hand holding the item is a fail).
+- 'Hands: not five fingers on each visible hand, fused or extra fingers.'
+- The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals), or looking older or younger.
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest clothes, or any religious marker (bindi, tilak, sindoor, deities, temple items); any person drawn in the kitchen.
+- Anything scary, bloody, gory or gross; a bare needle on the syringe.
+- 'Anything that looks like sweets, lollies, gumballs or jelly beans: coins or spots drawn as glossy discs, ginger drawn as gummies.'
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left, or cells of one sheet lit from different sides; a second light; "seen exactly side-on" or "from directly above" drawn at an angle; circles drawn as ovals where
+  "from directly above" was asked (the tipped pan excepted).
+- A registered set (the three glasses, the five jars, the six fold frames, the heater's pairs, a row of jugs) whose object moves or changes size between cells.
+- 'Nani or the doctor not matching their sheet, or a likeness Zafar has not approved (real people: his yes is the pass).'
+- Nani's head drawn bigger than Nana's for her body, or her face rendered more photographic than his.
