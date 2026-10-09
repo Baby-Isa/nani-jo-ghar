@@ -272,10 +272,12 @@
     }
   };
   if (VS()) VS().onStop(cutAll);
-  // a stage that ended takes the queue with it (the next stage starts silent)
+  // a stage that ended takes the queue with it (the next stage starts silent), and its speakers (a speaker of the last
+  // stage is gone from the screen: its bubble must never be placed by an element that isn't there any more)
   if (global.Lifecycle) global.Lifecycle.onStageEnd(() => {
     Voice.queue = Promise.resolve();
     Voice.busy = false;
+    Object.keys(Voice.speakers).forEach((k) => delete Voice.speakers[k]);
   });
   Voice.audio = function (src, o = {}) {
     if (!live(o.gen)) return Promise.resolve(true);
@@ -349,7 +351,10 @@
     const run = async () => {
       if (!live(gen)) return;
       Voice.busy = true;
-      const bubble = opts.noBubble ? null : Voice.bubble(w, who, opts);
+      // decision 55 (F26), S04-B (SH-68): the doctor with no face on screen (the pharmacy belt) speaks by his green box
+      // at the top left, never from a bubble with no head under it
+      const offGuide = !opts.noBubble && who === "doctor" && Voice.toGuide && !Voice.onScreen(who) ? Voice.toGuide(w) : null;
+      const bubble = opts.noBubble || offGuide ? null : Voice.bubble(w, who, opts);
       // the one talk animation (S04-B, ART-13): a speaker drawn as one picture bobs a little while the line plays
       let stopTalk = null;
       if (bubble && global.Lifecycle) {
@@ -371,6 +376,7 @@
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
       if (left > 0 && live(gen)) await new Promise((r) => setTimeout(r, left));
       if (stopTalk) stopTalk();
+      if (offGuide) offGuide();
       setTimeout(() => bubble && bubble.remove(), live(gen) ? (Kit.fast ? 50 : 500) : 0);
       Voice.busy = false;
     };
@@ -405,6 +411,19 @@
     document.querySelectorAll(".cl-bubble").forEach((b) => b.remove());
   };
   Voice.layer = null; // the element bubbles are placed in (the play area)
+  Voice.toGuide = null; // screen.js: (line) -> restore(): the line in the doctor's green box while it's said
+  /** A speaker with something drawn on the page to speak from (an element still on screen, with a size). */
+  Voice.onScreen = function (who) {
+    let el = null;
+    try {
+      el = Voice.speakers[who] && Voice.speakers[who]();
+    } catch (e) {
+      return false;
+    }
+    if (!el || !el.isConnected || !el.getBoundingClientRect) return false;
+    const r = el.getBoundingClientRect();
+    return r.width > 0 || r.height > 0;
+  };
   Voice.bubble = function (w, who, opts = {}) {
     const layer = opts.layer || Voice.layer || document.body;
     // the speaker's last bubble (kept for half a second after its line) goes when they speak again: two bubbles never
@@ -434,8 +453,13 @@
           })
           .filter((el) => el && el.isConnected && el.getBoundingClientRect);
       Voice.place(b, anchor, layer, others());
-      // the words can settle a frame later (fonts, fitting): place it again then
+      // the words can settle a frame later (fonts, fitting): place it again then; and while it's up it follows its
+      // speaker (S04-B, SH-68: a camera still zooming out moves the head after the bubble came up)
       if (global.requestAnimationFrame) global.requestAnimationFrame(() => b.isConnected && Voice.place(b, anchor, layer, others()));
+      const follow = setInterval(() => {
+        if (!b.isConnected || !anchor.isConnected) return clearInterval(follow);
+        Voice.place(b, anchor, layer, others());
+      }, 150);
     } else b.classList.add("top");
     return b;
   };

@@ -86,6 +86,13 @@
         },
       });
       Kit.Voice.layer = main;
+      // decision 55: the doctor off screen says his line from his green box (the line there while it's said, then back)
+      Kit.Voice.toGuide = (w) => {
+        if (!nani) return null;
+        const prev = scr.naniLine;
+        scr.setNani(w);
+        return () => scr.naniLine === w && scr.setNani(prev);
+      };
       scr.clearStage = function () {
         // every stage clears its own UI (13f): pills, bubbles, pop-ups and fly-overs left in the play area go too
         // CLN-109, S04-B (decision 75 (3)): a stage end through the shared lifecycle: every voice stops (a heal game's

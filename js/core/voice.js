@@ -238,6 +238,7 @@ export function browserPlayer() {
   let over = null;
   let overDone = Promise.resolve();
   let held = null;
+  let stopGen = 0;
   const resumeHeld = () => {
     const h = held;
     held = null;
@@ -270,8 +271,10 @@ export function browserPlayer() {
     },
     resume: resumeHeld,
     async play(url) {
-      // the line's next clip waits for an interjection still playing (then carries on)
+      // the line's next clip waits for an interjection still playing (then carries on); a stop meanwhile cancels it
+      const g = stopGen;
       if (over) await overDone;
+      if (g !== stopGen) return false;
       return new Promise((resolve) => {
         try {
           if (audio) audio.pause();
@@ -286,6 +289,7 @@ export function browserPlayer() {
       });
     },
     stop() {
+      stopGen++;
       try {
         held = null;
         if (over) over.pause();

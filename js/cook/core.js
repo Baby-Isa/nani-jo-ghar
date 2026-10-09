@@ -303,7 +303,10 @@
     const url = Cook.tts[Cook.norm(plain)]; // parked pages only
     if (url && ctx) loadBuffer(url);
   };
+  // S04-B (SH-66): a stop also cancels a clip still loading (its buffer arrives after the stop: it never starts)
+  let stopGen = 0;
   Cook.stopVoice = () => {
+    stopGen++;
     try {
       if (currentSrc) currentSrc.stop();
     } catch (e) {}
@@ -341,8 +344,9 @@
     if (!url) return false;
     Cook.unlockAudio();
     if (!ctx) return false;
+    const gen = stopGen;
     const buf = await loadBuffer(url);
-    if (!buf) return false;
+    if (!buf || gen !== stopGen) return false;
     Cook.stopVoice();
     return new Promise((resolve) => {
       const src = ctx.createBufferSource();

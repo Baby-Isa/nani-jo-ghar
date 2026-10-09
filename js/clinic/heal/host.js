@@ -581,11 +581,13 @@
       },
       /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */
       ready(on) {
-        if (v2) showDone(on);
-        // decision 52 (CLN-83): where the outcome is obvious (the last plaster is on) it moves on by itself after a
-        // beat, with no ✓ to press; a step the child can still change (on false again) cancels it
+        // decision 52 (CLN-83), S04-B (SH-40, decision 75 (2)): where the outcome is obvious (the last plaster is on) it
+        // moves on by itself after a beat and the ✓ never shows (it was shown for that beat); a step the child can
+        // still change (on false again) cancels it. A counted step's ✓ (step() above) stays: there the child decides
+        // when the count is enough, and moving on at the target would give the answer away (C10)
+        if (v2) showDone(false);
         clearTimeout(readyT);
-        if (v2 && on) readyT = setTimeout(() => !finished && done.on && done.btn && done.btn.isConnected && done.btn.click(), Kit.fast ? 200 : 1200);
+        if (v2 && on) readyT = setTimeout(() => !finished && done.btn && done.btn.isConnected && done.btn.click(), Kit.fast ? 200 : 1200);
       },
       log(entry) {
         const e = Object.assign({ t: Date.now() - t0, game: def.id }, entry);
