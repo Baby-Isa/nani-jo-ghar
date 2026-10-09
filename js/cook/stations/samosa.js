@@ -195,7 +195,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       // the wide hob (S19): one big burner, landscape; the karahi is this station's own (v3, 1.5x)
       .concat(Cook.Kit ? Cook.Kit.art(1, [], { wide: true }) : []);
-    await Promise.race([St.load(S, art), Cook.wait(12000)]);
+    await St.loadArt(S, art);
 
     /*
      * Decision 51 (CK-23, S02-B): a mistake redoes only that samosa, never the whole game. A wrong filling empties

@@ -287,6 +287,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
   };
   /**
+   * s04-fxc: a station's art, loaded before it starts, with a safety cap in real time (never Cook.wait: at test speed
+   * a 5 s cap became 1 s and maani's millet pile drew as Phaser's missing square, a tap target nobody could hit; a slow
+   * connection did the same at 5 s). The cap only stops a dead file hanging the game.
+   */
+  S$.loadArt = (S, list, ms = 20000) => Promise.race([S$.load(S, list), new Promise((r) => setTimeout(r, ms))]);
+  /**
    * A spoon stir in a vessel (anything with a rim and a surface): a spoon dips in,
    * goes round twice with a swirl on the liquid, and lifts out.
    */

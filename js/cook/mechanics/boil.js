@@ -186,7 +186,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     profile: (p) => p.profile,
     async run(z, { vessel, knobAt, needOn = false, canPost, onLit, ready, quiet }, k) {
       const S = z.S;
-      await Promise.race([St.load(S, ART), Cook.wait(2500)]);
+      await St.loadArt(S, ART);
       const at = St.pt(knobAt, { x: vessel.rim.x / z.k - z.ox / z.k + 200, y: 588 });
       const K = knob(z, vessel, at, k.knobR);
       if (needOn) {

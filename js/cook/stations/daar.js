@@ -172,7 +172,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
       .concat(St.artLoad(["knife", "daar-bowl", "daar-trivet"])); // S02-B: the art run's knife and split bowl/trivet, once they land
-    await Promise.race([St.load(S, art), Cook.wait(12000)]);
+    await St.loadArt(S, art);
 
     /*
      * Decision 51 (CK-23, DAAR-09): a mistake redoes only that step, never the whole game. A wrong chop count chops

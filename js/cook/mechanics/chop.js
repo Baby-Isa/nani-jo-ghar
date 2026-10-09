@@ -75,7 +75,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // run (the Chop tile too, not only daar); the old hand-and-knife only if that art can't load
       if (!knifeKey) {
         const kit = St.art("knife");
-        if (kit) await Promise.race([St.load(S, [[St.artKey("knife"), kit.file]]), Cook.wait(4000)]);
+        if (kit) await St.loadArt(S, [[St.artKey("knife"), kit.file]]);
         if (St.hasArt(S, "knife")) {
           knifeKey = St.artKey("knife");
           blade = blade || (kit.meta || {}).blade || null;

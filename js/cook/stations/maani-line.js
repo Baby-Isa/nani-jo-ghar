@@ -128,7 +128,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const rate2 = kTawa.rate2 * speedUp;
     const types = Object.keys(K.doughs || { "cook-maani": {} });
     const who = (ctx.order && ctx.order.who) || null;
-    await Promise.race([St.load(S, ART.concat(Cook.Kit.faceArt(who))), Cook.wait(5000)]);
+    await St.loadArt(S, ART.concat(Cook.Kit.faceArt(who)));
     const texOf = (t, state) => {
       const key = `mv-${state}-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
       return S.textures.exists(key) ? key : { ball: "dough-ball", raw: "chapati-raw", half: "chapati-half", cooked: "chapati-puffed", burnt: "chapati-puffed" }[state];

@@ -16,13 +16,23 @@ const hostState = (page) => page.evaluate("window.njgTest ? String(njgTest.state
 
 // one Cook plan on lab.html: every stage the host runs (the player hands Cook's own hook over, as test_cook_host.mjs does),
 // then the one end screen
-export function labCook({ id, title, query, timeoutS = 400, speed = 3 }) {
+export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone = false }) {
   return {
     id, group: "labs", title, timeoutMs: timeoutS * 1000 * (speed < 3 ? 2.5 : 1),
     async run(ctx) {
       const { page, rec } = ctx;
       await page.goto(`${BASE}/lab.html`, { waitUntil: "load" });
       await page.evaluate(() => localStorage.clear());
+      if (firstDone) {
+        // a story arc opens after the first-launch story (s04-fxc: the cleared save showed the lab's lock, 0 stages played)
+        await page.goto(`${BASE}/lab/shared.html`, { waitUntil: "load" }).catch(() => {});
+        await page.waitForFunction(() => window.Save, null, { timeout: 15000 });
+        await page.evaluate(() => {
+          Save.init();
+          Save.update("story", (d) => ((d["first-launch"] = Object.assign({}, d["first-launch"], { done: true })), d));
+          Save.setFlag("firstDone", true);
+        });
+      }
       await page.goto(`${BASE}/lab.html?${query}&${Q}&speed=${speed}`, { waitUntil: "load" });
       const t0 = Date.now();
       let stages = 0, results = 0;
@@ -71,7 +81,7 @@ export function labFlows() {
   for (const L of [1, 2, 3, 4]) f.push(labCook({ id: `lab:cook/round${L > 1 ? `@L${L}` : ""}`, title: `labs.html: Cook story round (the pantry, then the chai order), level ${L}`, query: `mode=cook&level=${L}`, timeoutS: 700 }));
   // at a child's pace (speed 1): the voice against the stage ends in real time (the pantry's voice spill, Z5)
   f.push(labCook({ id: "lab:cook/round#speed1", title: "labs.html: Cook story round at a child's pace (speed 1): the pantry's voice into the order", query: "mode=cook&level=1", timeoutS: 700, speed: 1 }));
-  f.push(labCook({ id: "lab:cook/story-birthday", title: "labs.html: Story, birthday, cook-guests (chapter 1)", query: "mode=cook&play=story&arc=birthday&chapter=1&errand=cook-guests", timeoutS: 900 }));
+  f.push(labCook({ id: "lab:cook/story-birthday", title: "labs.html: Story, birthday, cook-guests (chapter 1)", query: "mode=cook&play=story&arc=birthday&chapter=1&errand=cook-guests", timeoutS: 900, firstDone: true }));
   f.push(labCook({ id: "lab:cook/free", title: "labs.html: Cook free play (as the map starts it)", query: "mode=cook&play=free", timeoutS: 500 }));
   return f;
 }
