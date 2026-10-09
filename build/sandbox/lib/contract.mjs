@@ -27,6 +27,10 @@ export const CHECKS = {
   "contract-6": { item: "old-art", title: "no retired art", how: "Every image drawn (canvas drawImage, offscreen canvases a rig draws from, <img>, CSS backgrounds, Phaser WebGL textures) by file; a file on the retired list with the same content (sha256), in its scope, is a break." },
 };
 
+// the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
+// rules were caught. Also the sample build/tools/review/sprintcheck.mjs plays for a row about every game
+export const CONTRACT_ROUTE = ["cook:chop", "lab:cook/chop", "cook:chaat@L4", "cook:fetch#speed1", "lab:cook/round#speed1", "clinic:waiting", "clinic:diagnosis", "clinic:heal-knee@L2", "clinic:morning"];
+
 const TOL = 250; // ms a voice may run past its stage end (one audio frame of fade, the sampling)
 
 // ---- the clip's own length, when the page could not say (a silent build, metadata never loaded) ----

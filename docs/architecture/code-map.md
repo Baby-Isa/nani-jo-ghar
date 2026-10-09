@@ -41,7 +41,7 @@ As built on 6 Oct 2026. The model behind it is `target-model.md`; the module API
 |---|---|
 | `build/sandbox/` | plays the real flows at every size and level, records each state and lints it (`run.mjs`, `flows/`, `lib/`; README inside) |
 | `build/lint/` | the screen lint (`layout.mjs`), the CSS lint (`css.mjs`), the word lint (`words.mjs`), the baseline |
-| `build/tools/review/` | `checks.mjs`, `touched.mjs`, `shotdiff.mjs`, `regress.mjs`, `statuscounts.mjs`, `skeleton.mjs`, `leak.mjs` and its configs |
+| `build/tools/review/` | `checks.mjs`, `touched.mjs`, `shotdiff.mjs`, `regress.mjs`, `sprintcheck.mjs` (decision 78), `statuscounts.mjs`, `skeleton.mjs`, `leak.mjs` and its configs |
 | `build/tools/ops/` | `brief.mjs`, `checkin.mjs`, `feedback.mjs`, `publish.mjs`, `mumround.mjs`, `mumsheet.mjs`, `mumitems.mjs`, and `specs/` (the briefs) |
 | `build/tools/art/` | `artblock.py`, `artcut.py`, `artdiff.py`, `artjudge.py` for the Chrome art runs |
 | `build/lang/` | the engine's importers and tools: `import_all.mjs` (rebuild `data/lang/`; `--check`), `gap-report.mjs`, the golden tests |

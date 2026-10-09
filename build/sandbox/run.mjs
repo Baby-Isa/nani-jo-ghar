@@ -82,7 +82,7 @@ if (has("--list")) {
 }
 // the route the contract run plays by default (--contract with no --flow): what Zafar played on 8 Oct and the places his rules
 // were caught, at laptop size. The orchestrator's /review runs the full contract pass (--gate or --all --check)
-const CONTRACT_ROUTE = ["cook:chop", "lab:cook/chop", "cook:chaat@L4", "cook:fetch#speed1", "lab:cook/round#speed1", "clinic:waiting", "clinic:diagnosis", "clinic:heal-knee@L2", "clinic:morning"];
+const { CONTRACT_ROUTE } = Contract; // lib/contract.mjs (sprintcheck.mjs uses it for rows about every game)
 if (has("--contract") && !val("--flow") && !val("--touched") && !has("--all") && !has("--gate")) { argv.push("--flow", CONTRACT_ROUTE.join(",")); if (!has("--sizes") && !has("--every-size")) argv.push("--quick"); }
 
 function pick() {

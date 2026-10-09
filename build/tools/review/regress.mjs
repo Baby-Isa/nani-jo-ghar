@@ -2,7 +2,7 @@
 // Regression lookup: given screens/flows (or the mapper's output), list the regression rows to recheck (id, status, one line).
 import { readFileSync } from "node:fs";
 import { args, help, die, more } from "./lib/common.mjs";
-import { loadRegressions, plain, statusKind } from "./lib/regressions.mjs";
+import { loadRegressions, plain, statusKind, rowsForFlow, CONTRACT_ROWS } from "./lib/regressions.mjs";
 
 const HELP = `
 node build/tools/review/regress.mjs <flow,flow,...> [--shared] [--keep] [--status open,built] [--all-rows] [--max N]
@@ -25,45 +25,9 @@ const rows = loadRegressions();
 const kinds = a.val("status") ? new Set(a.val("status").split(",")) : null;
 const MAX = +a.val("max", 40);
 
-const HEAL = { cut: /scrape|plaster|\bcut\b|graze/i, knee: /knee|bandage|wrap/i, ear: /\bear\b|wax|cotton/i, tooth: /tooth|teeth|brush/i, taste: /taste|drink|soothing|thundo/i, fever: /fever|thermometer|\bfan\b/i, boing: /boing|lolli|bead/i, eye: /\beye\b|veg/i, foot: /\bfoot\b|toes|tweezer|splinter/i, tummy: /tummy/i, hic: /\bhic\b/i, hair: /\bhair\b/i };
-const CANON = { cut: /scrape|\bcut\b/i, knee: /\bknee\b/i, ear: /\bear\b/i, tooth: /\btooth\b/i, taste: /\btaste\b|drinks/i, fever: /\bfever\b/i, boing: /\bboing\b/i, eye: /\beye\b/i, foot: /\bfoot\b/i, tummy: /\btummy\b/i, hic: /\bhic\b/i, hair: /\bhair\b/i };
-const GENERIC_HEAL = /every heal|each heal|all heal|heal game|heal card|every game|each game/i;
-const COOK_SECTION = { fetch: "pantry", "chai-tray": "chai", chai: "chai", "maani-line": "maani", maani: "maani", daar: "daar", daal: "daar", chop: "chaat", tadka: "chaat", stir: "chaat", assemble: "chaat", chaat: "chaat", samosa: "samosa", "mishkaki-grill": "sekelo", mishkaki: "sekelo", grill: "sekelo" };
-const text = (r) => plain(`${r.issue} ${r.check}`);
-
-// the rows the contract run checks on every flow (decision 75; build/sandbox/lib/contract.mjs): a contract break names its check
-export const CONTRACT_ROWS = { "contract-1 popup": ["SH-64", "CHT-10", "CHAI-15", "CK-29"], "contract-2 moves-on": ["SH-40", "CLN-92", "CLN-110"], "contract-3 voice": ["SH-66"], "contract-4 bubble": ["SH-68", "CLN-86"], "contract-5 badges": ["SH-67"], "contract-6 old-art": ["DAAR-13", "ART-17", "ART-13"] };
-function pick(id) {
-  const out = [];
-  // lab.html's Cook tiles (lab:cook/<game>) are Cook's own stations and recipes through the host
-  if (id.startsWith("lab:cook/")) {
-    const g = id.slice(9).replace(/^recipe-/, "");
-    if (g === "round") return [...new Set([...pick("cook:fetch"), ...pick("cook:chai")])];
-    return pick(`cook:${g}`);
-  }
-  const inSec = (re, h3re) => rows.filter((r) => re.test(r.h2) && (!h3re || h3re.test(r.h3)));
-  let m;
-  if ((m = /^clinic:heal-(?:extra-)?(\w+)/.exec(id))) {
-    const g = m[1], me = HEAL[g], mine = CANON[g], others = Object.entries(CANON).filter(([k]) => k !== g).map(([, v]) => v);
-    for (const r of inSec(/^Clinic$/, /Heal games|Clinic-wide/)) {
-      const t = plain(r.issue), namesOther = others.some((o) => o.test(t));
-      if (mine && mine.test(t)) out.push(r);
-      else if (GENERIC_HEAL.test(t)) out.push(r);
-      else if (namesOther) continue;
-      else if ((me && me.test(t)) || r.h3 === "Heal games" || (/heal|zoom|card|help/i.test(t))) out.push(r);
-    }
-  } else if ((m = /^clinic:(waiting|diagnosis|pharmacy|sendoff)/.exec(id))) {
-    const names = { waiting: /Waiting room/, diagnosis: /Diagnosis/, pharmacy: /Pharmacy/, sendoff: /Send-off/ };
-    out.push(...inSec(/^Clinic$/, names[m[1]]), ...inSec(/^Clinic$/, /Clinic-wide/));
-  } else if (id === "clinic:patient" || id === "clinic:morning") out.push(...inSec(/^Clinic$/, /Clinic-wide/));
-  else if ((m = /^cook:(?:recipe:)?([\w-]+)/.exec(id)) && COOK_SECTION[m[1]]) {
-    const sec = COOK_SECTION[m[1]], key = new RegExp(`\\b${m[1].replace("-", "[- ]")}\\b`, "i");
-    out.push(...rows.filter((r) => r.h2 === `Cook: ${sec}`), ...rows.filter((r) => r.h2 === "Cook: general" && key.test(text(r))));
-  } else if (id.startsWith("cook:")) out.push(...rows.filter((r) => r.h2 === "Cook: general"));
-  else if (id === "first" || id === "house" || id === "rotate-card") out.push(...rows.filter((r) => /^First launch/.test(r.h2)));
-  else if (id.startsWith("mode:")) out.push(...rows.filter((r) => /^Other modes/.test(r.h2)));
-  return [...new Set(out)];
-}
+// the flow -> rows mapping lives in lib/regressions.mjs (sprintcheck.mjs inverts it: rows -> flows)
+export { CONTRACT_ROWS };
+const pick = (id) => rowsForFlow(id, rows);
 const line = (r) => `  ${r.id.padEnd(7)} ${statusKind(r.status).padEnd(8)} ${plain(r.check).slice(0, 38).padEnd(38)} ${plain(r.issue).slice(0, 96)}`;
 let total = new Set();
 for (const id of flowIds) {

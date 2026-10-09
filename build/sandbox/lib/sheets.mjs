@@ -3,8 +3,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { BASE, ROOT, SIZES } from "./env.mjs";
 
-const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+export const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+export const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const PER_SHEET = 16;
 
 export async function makeSheets(browser, runDir, results, log = () => {}) {
@@ -38,14 +38,23 @@ export async function makeSheets(browser, runDir, results, log = () => {}) {
       <p>${esc(r.title)}. ${r.complete ? "Reached its end." : "Did not reach its end."} ${r.states.length} states, ${r.findingCount} distinct findings, ${(r.ms / 1000).toFixed(0)} s.</p>${stops}
       <div class="grid">${cells}</div>`;
       const htmlName = `${slug(r.flow)}__${r.size}${parts.length > 1 ? `__${pi + 1}` : ""}`;
-      writeFileSync(join(outDir, htmlName + ".html"), html);
-      await page.goto(`${BASE}/${relative(ROOT, join(outDir, htmlName + ".html"))}`, { waitUntil: "load" });
-      await page.waitForFunction(() => Array.from(document.images).every((i) => i.complete), null, { timeout: 30000 }).catch(() => {});
-      await page.screenshot({ path: join(outDir, htmlName + ".png"), fullPage: true });
+      await htmlToPng(page, join(outDir, htmlName + ".html"), html);
       files.push(htmlName + ".png");
     }
   }
   await page.close();
   log(`${files.length} contact sheets in ${outDir}`);
   return files;
+}
+
+// writes the page, serves it from the sandbox's static server (so an <img> path is BASE/<repo path>, shotUrl) and shoots it whole:
+// <name>.html -> <name>.png beside it. Also build/tools/review/sprintcheck.mjs's per-row evidence sheets
+export const shotUrl = (file) => `${BASE}/${relative(ROOT, file)}`;
+export async function htmlToPng(page, htmlFile, html) {
+  writeFileSync(htmlFile, html);
+  await page.goto(shotUrl(htmlFile), { waitUntil: "load" });
+  await page.waitForFunction(() => Array.from(document.images).every((i) => i.complete), null, { timeout: 30000 }).catch(() => {});
+  const png = htmlFile.replace(/\.html$/, ".png");
+  await page.screenshot({ path: png, fullPage: true });
+  return png;
 }
