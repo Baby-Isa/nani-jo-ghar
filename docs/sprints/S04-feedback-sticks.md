@@ -26,6 +26,8 @@ Launched 8 Oct ~23:46 UK: A session_01A5BjhwAX18NJCqkcq9kEwW, C session_018V7iXu
 ## Small decisions
 - 8 Oct: Zafar said yes to the five-point plan (no new features until this is done; shared rules plus checks; proof for "built"; the route run before he plays; tonight's fixes in the shared layer), plus the full audit of the regression list and every feedback document.
 
+- 9 Oct: Zafar: yes to the waiting room and diagnosis opening with the pop-up, checks for the 27 'every game' rows, and the art run's four choices (decision 79); knee dots never overlap, bands run dot to dot.
+
 ## Outcome
 (at close)
 
