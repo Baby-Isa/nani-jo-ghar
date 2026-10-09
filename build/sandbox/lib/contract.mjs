@@ -415,6 +415,9 @@ function check11(tl, add) {
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "bg" || !(e.sx > 0) || !(e.sy > 0)) continue;
+    // a figure's art pushed in by a heal game's zoom is not a background (the probe now skips figures; runs recorded before it
+    // carried them by file)
+    if (/\/(patients|characters)\//.test(e.src || "")) continue;
     const ratio = Math.max(e.sx, e.sy) / Math.min(e.sx, e.sy);
     const up = Math.max(e.sx, e.sy) * (e.dpr || 1);
     const what = [];

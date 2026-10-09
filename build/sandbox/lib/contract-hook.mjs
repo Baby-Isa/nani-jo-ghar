@@ -429,7 +429,8 @@ export const CONTRACT_HOOK = `(() => {
   const scanBg = () => {
     const VA = innerWidth * innerHeight;
     for (const im of document.images) {
-      if (!shown(im) || !im.naturalWidth) continue;
+      // a figure's art (the patient, pushed in by a heal game's zoom) is not a background
+      if (!shown(im) || !im.naturalWidth || im.closest(".cl-fig, .fig-art, [data-fig], .cl-staged")) continue;
       const r = im.getBoundingClientRect();
       if (r.width * r.height < VA * 0.5) continue;
       const fit = getComputedStyle(im).objectFit;
