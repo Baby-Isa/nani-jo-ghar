@@ -139,6 +139,8 @@
       level, side, seed, kind: $("lab-kind").value, tray,
       // &ailment= (e.g. the cut's stitches: ?game=cut&ailment=cut), only for the game it was given with
       ailment: Q.get("ailment") && game === Q.get("game") ? Q.get("ailment") : undefined,
+      // &part= (e.g. the scrape on the knee: ?game=cut&part=knee), only for the game it was given with
+      part: Q.get("part") && game === Q.get("game") ? Q.get("part") : undefined,
       onLog: (e) => { H.log.push(e); print(`log ${JSON.stringify(e)}`); },
     }));
     print(`mounted ${game} L${level} side=${side} seed=${seed} tray=[${run.ctx.tray.map((t) => t.id).join(", ")}]`);

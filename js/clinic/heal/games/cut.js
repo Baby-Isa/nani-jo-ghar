@@ -704,6 +704,13 @@
     const woundPts = la && la.wounds && la.wounds[String(n)];
     const wk = woundPts ? la.box[2] / (la.size || [1536])[0] : 0;
     const woundSvg = (w) => ({ x: la.box[0] + w[0] * wk, y: la.box[1] + w[1] * wk });
+    // the plaster on this picture (data, measured from the art: cut.json art[...].plaster): turn 90 lays it along a
+    // graze taller than it is wide (the knee's, on the curve of the kneecap), so it covers the graze and stays on the
+    // leg; scale draws it a little bigger to cover the graze's faint edge. The hit test turns with it (the patch is the
+    // graze's shape: the same tolerance, along the other axis); the drawn size never changes what counts as covered
+    const lp = (la && la.plaster) || {};
+    const TURN = woundPts && lp.turn === 90;
+    const PK = woundPts && lp.scale ? lp.scale : 1;
 
     // the scrape: one red patch per plaster, each a soft irregular graze with scratch lines (the stand-in), or the art's
     // own graze. CLN-121: the patches, the dirt and the wet sit in one group that moves with the picture when it slides
@@ -727,7 +734,7 @@
           const im = s("image", { href: url(la.stain.file), x: (x - (sw / 2) * wk).toFixed(1), y: (gy - (sh / 2) * wk).toFixed(1), width: (sw * wk).toFixed(1), height: (sh * wk).toFixed(1), preserveAspectRatio: "none", class: "cut-graze" }, g);
           im.style.mixBlendMode = "multiply"; // the stain darkens the skin under it, so it takes that skin's tone
         }
-        patches.push({ k, x, y, rx: R.rx, ry: R.ry, g, cover: null, full: false, firstAt: null });
+        patches.push({ k, x, y, rx: TURN ? R.ry : R.rx, ry: TURN ? R.rx : R.ry, g, cover: null, full: false, firstAt: null });
         return;
       }
       const pts = [];
@@ -838,7 +845,7 @@
     const fa = limbArt && !legPart ? ctx.data.art["forearm-graze"] : null;
     // A2 (5 Oct): the slide is always from the game's own view, never added again on each re-layout (a tablet, where
     // the hand can't clear the column, re-laid out until the graze left the screen and the round could not end)
-    const vb0 = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
+    let vb0 = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
     // how near the screen's left edge the first patch may come (svg units). CLN-121: on the art's graze the patch moves
     // with the picture, so it keeps a whole plaster's half and a margin on screen (the stand-in keeps A2's 70)
     const EDGE = woundPts ? SCRAPE.plaster.w / 2 + 22 : 70;
@@ -894,12 +901,40 @@
         lo = last.x + 50 - fa.wrist * k; // the leftmost the picture may go (the wrist past the last plaster)
       }
       const X = Math.max(lo, Math.min(x0, E - fa.tip * k));
+      // CLN-74 (S04 fix): where even the slide can't bring the fingertips clear of the tool column (a 4:3 tablet; a
+      // laptop at a big zoom), the view steps back just enough that the whole play, the first plaster's place to the
+      // fingertips, fits left of the column: the hand never goes under the tools. Measured on every layout, from the
+      // game's own view; a screen with room keeps that view (and its tablet item scale)
+      if (woundPts && X + fa.tip * k > E + 0.5 && vb0.length === 4) {
+        const sv = S.svg.getBoundingClientRect();
+        const leftPx = Math.max(stage.getBoundingClientRect().left, sv.left);
+        const p0 = patches[0].x - artDX; // the first patch where the picture's own box puts it
+        const span = x0 + fa.tip * k - (p0 - EDGE);
+        const nz = (sr.left - 14 * m.a - leftPx) / span;
+        if (nz > 0 && nz < m.a) {
+          const kk = m.a / nz;
+          const vw = vb0[2] * kk;
+          const vh = vb0[3] * kk;
+          const vx = p0 - EDGE - (leftPx - sv.left) / nz;
+          const vy = vb0[1] + vb0[3] / 2 - vh / 2;
+          S.svg.setAttribute("viewBox", `${vx.toFixed(1)} ${vy.toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`);
+          limbArt.setAttribute("x", x0.toFixed(1));
+          shiftScrape(0);
+          return;
+        }
+      }
       limbArt.setAttribute("x", X.toFixed(1));
       if (woundPts) shiftScrape(X - x0);
       slideView(X + fa.tip * k - E);
     };
     const placeHand = () => {
-      slideView(0); // measure in the game's own view
+      // measure in the game's own view: the scene's fit for this screen now (a resize changes it), never a view this
+      // game already slid or stepped back
+      if (S.fitView && limbArt) {
+        S.fitView();
+        vb0 = S.svg.getAttribute("viewBox").split(/\s+/).map(Number);
+      }
+      slideView(0);
       placeArt();
       if (limbArt || !handG || !armPath || !S.shelf) return;
       const sr = S.shelf.getBoundingClientRect();
@@ -975,6 +1010,27 @@
     /* ---- 3. the plasters: dragged from the shelf (or a laid one dragged again) ---- */
     const PW = SCRAPE.plaster.w;
     const PH = SCRAPE.plaster.h;
+    // the plaster's box on the close-up as laid (turned on the knee: upright)
+    const BW = TURN ? PH : PW;
+    const BH = TURN ? PW : PH;
+    // a plaster's picture at (x, y): drawn PK times its size, turned about its centre when TURN
+    const plasterBox = (el, x, y) => {
+      el.setAttribute("x", (x - (PW * PK) / 2).toFixed(1));
+      el.setAttribute("y", (y - (PH * PK) / 2).toFixed(1));
+      el.setAttribute("width", (PW * PK).toFixed(1));
+      el.setAttribute("height", (PH * PK).toFixed(1));
+      if (TURN) el.setAttribute("transform", `rotate(90 ${x.toFixed(1)} ${y.toFixed(1)})`);
+    };
+    // the laid plasters stay on the limb: masked by the picture's own outline (its alpha), so a plaster can never hang
+    // past the knee's edge into the room, wherever it was dropped
+    if (woundPts && limbArt) {
+      const aid = `cut-limb-art-${Math.floor(ctx.rng() * 1e6)}`;
+      limbArt.setAttribute("id", aid);
+      const mk = s("mask", { id: `${aid}-mask`, maskUnits: "userSpaceOnUse", x: -4000, y: -4000, width: 9000, height: 9000, "mask-type": "alpha" }, defs);
+      mk.style.maskType = "alpha";
+      s("use", { href: `#${aid}` }, mk);
+      plasterG.setAttribute("mask", `url(#${aid}-mask)`);
+    }
     // how much of a patch a plaster at (x, y) covers: the share of the patch's points under the plaster's pad
     const coverage = (p, x, y) => {
       let tot = 0;
@@ -985,13 +1041,14 @@
           const py = p.y + (j / 3) * p.ry;
           if ((i / 4) ** 2 + (j / 3) ** 2 > 1) continue;
           tot++;
-          if (Math.abs(px - x) <= PW / 2 - 6 && Math.abs(py - y) <= PH / 2 - 4) inn++;
+          if (Math.abs(px - x) <= BW / 2 - (TURN ? 4 : 6) && Math.abs(py - y) <= BH / 2 - (TURN ? 6 : 4)) inn++;
         }
       return tot ? inn / tot : 0;
     };
     const drawPlaster = (pl) => {
       if (pl.el) pl.el.remove();
-      pl.el = s("image", { href: url(plasterFile(pl.opt)), x: pl.x - PW / 2, y: pl.y - PH / 2, width: PW, height: PH, class: "cut-plaster", "data-plaster": P.key(pl.opt) }, plasterG);
+      pl.el = s("image", { href: url(plasterFile(pl.opt)), class: "cut-plaster", "data-plaster": P.key(pl.opt) }, plasterG);
+      plasterBox(pl.el, pl.x, pl.y);
     };
     const laid = () => patches.filter((p) => p.cover);
     const fullN = () => patches.filter((p) => p.full).length;
@@ -1064,13 +1121,10 @@
       pl.el = null;
       refresh();
     };
-    const plasterAt = (p) => laid().map((q) => q.cover).find((pl) => Math.abs(p.x - pl.x) < PW / 2 && Math.abs(p.y - pl.y) < PH / 2) || null;
+    const plasterAt = (p) => laid().map((q) => q.cover).find((pl) => Math.abs(p.x - pl.x) < BW / 2 && Math.abs(p.y - pl.y) < BH / 2) || null;
     // the plaster in the hand: an svg picture that follows the finger
     const held = s("image", { width: PW, height: PH, opacity: 0, class: "cut-held" }, S.fx);
-    const holdAt = (p) => {
-      held.setAttribute("x", p.x - PW / 2);
-      held.setAttribute("y", p.y - PH / 2);
-    };
+    const holdAt = (p) => plasterBox(held, p.x, p.y);
     const startCarry = (opt, e, from) => {
       if (cur() && cur().kind === "dab") close(); // SH-40: the plaster is the next action: it closes the dab step
       const c = cur();

@@ -315,7 +315,12 @@
      395
     ],
     "_about": "CLN-121 (9 Oct): build/cut_graze_stain.py cuts the art's own graze out as a multiply stain (graze over plain, feathered); the game lays it on bare skin for the second plaster at L2 and L3 (the art has one graze). size: in source px; at: the graze centre it was cut round"
-   }
+   },
+   "plaster": {
+    "turn": 90,
+    "scale": 1.1
+   },
+   "_plaster": "CLN-121 follow-up (S04 fix, 9 Oct): laid across, the 2:1 plaster hung past the knee's front edge (its right end at source x ~1030, the edge at ~946) and was too short for the graze (the graze, faint edge included, is x 801-928, y 310-473: 127 wide, 163 tall; the plaster's pad 118 tall). Turned upright (turn 90) and drawn 1.1x (scale; the hit test keeps its size) its pad is about 130 x 287 source px round the graze centre (865, 395): it covers the whole graze and stays inside the knee (the edge is x 928-948 for y 300-480). The laid plasters are also masked by the picture's outline, so none can hang off the leg. Measured from knee-graze.webp's alpha and knee-graze-stain.webp's darkness (min channel < 245)."
   }
  },
  "assets": [
