@@ -72,6 +72,8 @@ export const CONTRACT_HOOK = `(() => {
     const hx = safe(() => window.njgTest && window.njgTest.expect && window.njgTest.expect());
     if (hx && typeof hx === "object") o.hostExp = { kind: hx.kind || hx.do || null, ...(hx.undo ? { undo: true } : {}) };
     if (ce && ce.undo && o.cook) o.cook.undo = true;
+    // a Done the station steers its player to while the step is still open (more stirs, folds or skewers still change it)
+    if (ce && ce.open && o.cook) o.cook.open = true;
     const run = healRun();
     watchTally(run);
     const heal = safe(() => run && run.controller && run.controller.debug ? run.controller.debug.next() : null);

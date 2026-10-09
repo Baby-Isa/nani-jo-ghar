@@ -32,7 +32,7 @@ import { join } from "node:path";
 
 export const CHECKS = {
   "contract-1": { item: "popup", title: "pop-up before play", how: "Splits the flow into stages (a Cook station from Cook.inStation, else the game host's stage) and finds each stage's first real tap in the play area. A stage that gives an order (a line said before that tap outside a pop-up, a new order card in the sidebar, or the first stage with a card) must have had the request pop-up (.njg-rq-open, Cook's #intro) on screen since the last stage ended; a line must start while it is up (read out) unless a tap closed it at once; within 2 s of closing an order card must show in the sidebar (folded)." },
-  "contract-2": { item: "moves-on", title: "moves on by itself", how: "Every ✓, Next or stage button seen on screen (.cl-go, #done-btn, a button reading ✓ or →, aria 'next'/'done') and every press of one is judged with what the game expected at that moment: if it expected only that button (the clinic between stages or kind 'button', a heal game's 'button' step, Cook clicking that selector), the step was already decided, so the button is a break. A ✓/Done that lets the child take things back until Done (non-negotiable 12) is not: Cook's count or 'more' step, an expectation that offers a take-back (undo), Cook's pictures still taking taps (live: chaat's bowl, where more taps still change the result), a heal game's count it reported uncapped (ctx.tally without capped: the child decides when it's enough, C10). A capped count (ctx.tally {capped}) that stopped taking input and still shows its ✓ is a break (decision 79)." },
+  "contract-2": { item: "moves-on", title: "moves on by itself", how: "Every ✓, Next or stage button seen on screen (.cl-go, #done-btn, a button reading ✓ or →, aria 'next'/'done') and every press of one is judged with what the game expected at that moment: if it expected only that button (the clinic between stages or kind 'button', a heal game's 'button' step, Cook clicking that selector), the step was already decided, so the button is a break. A ✓/Done that lets the child take things back until Done (non-negotiable 12) is not: Cook's count or 'more' step, an open count Cook steers its player to end with Done (expectation 'open': more stirs, folds or skewers still change it), an expectation that offers a take-back (undo), Cook's pictures still taking taps (live: chaat's bowl, where more taps still change the result), a heal game's count it reported uncapped (ctx.tally without capped: the child decides when it's enough, C10). A capped count (ctx.tally {capped}) that stopped taking input and still shows its ✓ is a break (decision 79)." },
   "contract-3": { item: "voice", title: "voice stops at every stage end", how: "Every clip's real start, length (the decoded buffer or the file's own length) and stop (ended, stop, pause, cancel) from the sound log; each belongs to the line (and so the stage) it was said for. A stage ends when the shared lifecycle logged its stage-end (Lifecycle.log, at its own millisecond; else the sampled stage change), so a line queued after the stop belongs to the next stage. A clip still sounding 250 ms after its stage ended, or started after it, is a break." },
   "contract-4": { item: "bubble", title: "bubble at the speaker's head", how: "Every speech bubble's box and tail (its ::after / ::before) against its speaker's head on screen: a Cook character's sprite (the top quarter of the figure), the clinic figure's head (its measured head anchor on the art, data/clinic/heal-art.json, else the art's top fifth), the doctor's figure. The tail (or the bubble) must be in the head's column and the bubble above it (or below it); a bubble beside the head, away from it or in a corner of the screen is a break." },
   "contract-5": { item: "badges", title: "badges in order", how: "While the end screen is up, every 40 ms: does anything of each badge show (its parts' opacity, or a picture on its spot from outside it). Each must first show after the one before it." },
@@ -86,7 +86,8 @@ export function segments(tl, tEnd) {
   // the real end of a stage: the shared lifecycle's own stage-end (Lifecycle.log, at its own millisecond: the voice stop),
   // the latest one in the 1.5 s before the sampler saw the stage change, not the sample (100 ms apart). A line queued after
   // the stop then belongs to the next stage, not to the one that ended
-  const ends = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "stage-end").map((e) => e.t);
+  // (and its stage-start, Lifecycle.stageStart: a Cook station opens; the line it opens with is its own, s04-fxc)
+  const ends = tl.filter((e) => e.type === "c" && e.k === "life" && (e.what === "stage-end" || e.what === "stage-start")).map((e) => e.t);
   if (ends.length) for (let i = 1; i < segs.length; i++) {
     const s = segs[i], prev = segs[i - 1];
     const c = ends.filter((t) => t <= s.t0 + 20 && t > prev.t0 && t >= s.t0 - 1500);
@@ -101,12 +102,17 @@ export const isPlayStage = (key) => /(^|\|)cook:station/.test(key) || (!/cook:be
 // lines and their clips: each clip's real interval
 export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
   const lines = new Map(), plays = new Map();
+  // ids count from 1 on every page a flow opens (the story, then cook.html, then the story again): keyed by page and load, a
+  // later page's line 1 never overwrites an earlier page's (s04-fxc)
+  let load = 0, lastPage = null;
+  const key = (e, id) => `${load}|${id}`;
   for (const e of tl) {
-    if (e.type === "line") lines.set(e.id, { id: e.id, text: e.text, who: e.who, t0: e.t, t1: null, plays: [] });
-    else if (e.type === "line-end" && lines.has(e.id)) lines.get(e.id).t1 = e.t;
-    else if (e.type === "play" && e.pid) plays.set(e.pid, { pid: e.pid, url: e.url || null, text: e.text || null, via: e.via, t0: e.t, dur: e.dur, est: !!e.est, end: null, why: null });
-    else if (e.type === "play-dur" && plays.has(e.pid)) plays.get(e.pid).dur = e.dur;
-    else if (e.type === "play-end" && plays.has(e.pid)) { const p = plays.get(e.pid); if (p.end == null) { p.end = e.t; p.why = e.why; } }
+    if (e.page && e.page !== lastPage && (e.type === "line" || e.type === "play")) { if (lastPage != null) load++; lastPage = e.page; }
+    if (e.type === "line") { if (lines.has(key(e, e.id))) load++; lines.set(key(e, e.id), { id: key(e, e.id), text: e.text, who: e.who, t0: e.t, t1: null, plays: [] }); }
+    else if (e.type === "line-end" && lines.has(key(e, e.id))) lines.get(key(e, e.id)).t1 = e.t;
+    else if (e.type === "play" && e.pid) { if (plays.has(key(e, e.pid))) load++; plays.set(key(e, e.pid), { pid: key(e, e.pid), url: e.url || null, text: e.text || null, via: e.via, t0: e.t, dur: e.dur, est: !!e.est, end: null, why: null }); }
+    else if (e.type === "play-dur" && plays.has(key(e, e.pid))) plays.get(key(e, e.pid)).dur = e.dur;
+    else if (e.type === "play-end" && plays.has(key(e, e.pid))) { const p = plays.get(key(e, e.pid)); if (p.end == null) { p.end = e.t; p.why = e.why; } }
   }
   const stops = tl.filter((e) => e.type === "voice-stop").map((e) => e.t);
   for (const p of plays.values()) {
@@ -170,9 +176,15 @@ function check1(tl, segs, v, add) {
   const side = tl.filter((e) => e.type === "c" && e.k === "side");
   const sideAt = (t) => { let s = { n: 0, rows: 0 }; for (const e of side) if (e.t <= t) s = e; else break; return s; };
   const pops = [];
+  // the pop-up opened when the shared lifecycle's request was logged (Lifecycle.log, at its own millisecond), not when the
+  // probe next sampled it (up to 100 ms later): the read-out's first line starts in between (s04-fxc)
+  const asks = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "request").map((e) => e.t);
   for (const e of tl) if (e.type === "c" && e.k === "popup") {
-    if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) pops.push({ t0: e.t, t1: null });
-    else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
+    if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) {
+      const after = pops.length ? pops[pops.length - 1].t1 : -Infinity;
+      const ask = asks.filter((t) => t <= e.t && t >= e.t - 500 && t >= after);
+      pops.push({ t0: ask.length ? ask[0] : e.t, t1: null });
+    } else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
   }
   const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
   let windowStart = tl.length ? tl[0].t : 0, first = true, lastRows = 0;
@@ -190,7 +202,8 @@ function check1(tl, segs, v, add) {
       if (!mine.length) add("contract-1", play.t, `${s.key}: the play phase starts with no request pop-up${outside.length ? ` (said outside it: "${outside.map((l) => l.text).slice(0, 2).join(" / ")}")` : ""}; first tap at ${play.x},${play.y}`);
       else {
         const p = mine[mine.length - 1];
-        const said = v.lines.some((l) => l.t0 >= p.t0 - 100 && (p.t1 == null || l.t0 <= p.t1) && (l.text || "").trim());
+        // read out: a line said, or a family clip played (the read-along plays its chunks' clips without a line of its own)
+        const said = v.lines.some((l) => l.t0 >= p.t0 - 100 && (p.t1 == null || l.t0 <= p.t1) && (l.text || "").trim()) || v.plays.some((q) => !q.est && q.url && q.t0 >= p.t0 - 100 && (p.t1 == null || q.t0 <= p.t1));
         const tappedAtOnce = inputs.some((i) => i.t >= p.t0 && i.t <= p.t0 + 600);
         if (!said && !tappedAtOnce) add("contract-1", p.t0, `${s.key}: the request pop-up was not read out (no line while it was up)`);
         if (p.t1 != null) {
@@ -199,7 +212,9 @@ function check1(tl, segs, v, add) {
         }
       }
     }
-    lastRows = card.n > 0 ? card.rows : lastRows;
+    // the card as this stage left it (a part revealed mid-stage, with its own pop-up, is not the next stage's new order)
+    const left = end === Infinity ? card : sideAt(end - 1);
+    lastRows = left.n > 0 ? left.rows : card.n > 0 ? card.rows : lastRows;
     first = false;
     windowStart = end;
   }
@@ -213,6 +228,9 @@ export function decided(exp, sel) {
   // non-negotiable 12: the child can take it back until Done. A take-back on offer, or pictures still taking taps that change
   // the result (chaat's bowl), leave the step open: its Done is the child's choice, not a decided step
   if (exp.live > 0 || (exp.cook && exp.cook.undo) || (exp.hostExp && exp.hostExp.undo)) return false;
+  // an open count the station steers its player to end (Cook's expectation `open`: more stirs, folds or skewers still change
+  // the result, the child decides when it's enough, C10; moving on at the right count would give the answer away, NN6)
+  if (exp.cook && exp.cook.open) return false;
   if (exp.cook) {
     if (["count", "more"].includes(exp.cook.kind) || exp.cook.intro) return false;
     if (exp.cook.kind === "click" && exp.cook.selector && !/njg-results|rs-|lab-list|#t-|#sum-|#shop|#fin-/.test(exp.cook.selector)) return !sel || sel.includes(exp.cook.selector.replace(/^#/, "#")) || /done-btn|go/.test(exp.cook.selector);
@@ -422,7 +440,8 @@ function check11(tl, add) {
     const up = Math.max(e.sx, e.sy) * (e.dpr || 1);
     const what = [];
     if (ratio > 1.03) what.push(`stretched: ${e.sx.toFixed(2)} across, ${e.sy.toFixed(2)} down (${Math.round((ratio - 1) * 100)}% out of proportion)`);
-    if (up > 1.5) what.push(`low-res: ${up.toFixed(2)} screen px per source px`);
+    // an SVG is drawn at the screen's own resolution (its "source px" is only its viewBox): never low-res (s04-fxc)
+    if (up > 1.5 && !/\.svg$/i.test(String(e.src || "").split("?")[0])) what.push(`low-res: ${up.toFixed(2)} screen px per source px`);
     if (!what.length) continue;
     const k = `${e.src}|${what.map((w) => w.split(":")[0]).join("+")}`;
     if (seen.has(k)) continue;
