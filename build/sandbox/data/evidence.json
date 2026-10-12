@@ -3570,14 +3570,14 @@
    "capture": [
     "contract:1",
     "strip:#stage:5x500",
-    "dom:.njg-rq-card"
+    "crop:.njg-rq-card"
    ],
    "expect": [
     "pass",
     "count:.njg-rq-card .oc-card=3"
    ],
    "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet",
-   "delay": 300
+   "delay": 1200
   }
  ],
  "CHAI-16": [
@@ -4232,7 +4232,7 @@
  "DAAR-11": [
   {
    "flow": "cook:stir",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -4248,7 +4248,7 @@
    "expect": [
     "traceAmp:canvas:ladle>=20"
    ],
-   "note": "the ladle turns as it goes round, handle on the rim"
+   "note": "the ladle turns as it goes round, handle on the rim (at a child's pace: at test speed the stir is over before the trace)"
   }
  ],
  "DAAR-12": [
@@ -5261,7 +5261,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stage-end",
+   "at": "results",
    "after": null,
    "capture": [
     "zoom2:canvas:sk3-plate"

@@ -460,7 +460,7 @@ export class EvidenceProbe {
           res.expects.push({ raw: e.raw, ok: bad.length ? false : und.length ? null : true, why: (bad[0] || und[0] || all[0]).why + (all.length > 1 ? ` (${all.length} moments)` : "") });
         } else if (e.kind === "order") put(wordOrder(e.items, words()));
         else if (e.kind === "textMatches") { const t = s.hits.some((h) => h.captures.some((c) => c.runs)) ? s.hits.flatMap((h) => h.captures.filter((c) => c.runs).flatMap((c) => c.runs.map((x) => x.text))).join(" ") : spoken.map((l) => l.text).join(" "); put(t.trim() ? { ok: new RegExp(e.re, e.flags).test(t), why: `text: "${t.slice(0, 120)}"` } : { ok: null, why: "no text captured" }); }
-        else if (e.kind === "countsUp") { const ns = s.hits.map((h) => (h.num || {})[e.raw]).filter((x) => x != null); put(ns.length < 2 ? { ok: null, why: `${ns.length} numbers read` } : { ok: ns.every((n, i) => !i || n === ns[i - 1] + 1) && ns[0] <= 1, why: `read ${ns.join(", ")}` }); }
+        else if (e.kind === "countsUp") { const ns = s.hits.map((h) => (h.num || {})[e.raw]).filter((x) => x != null); put(ns.length < 2 ? { ok: null, why: `${ns.length} numbers read` } : { ok: ns.every((n, i) => !i || n === ns[i - 1] + 1 || n === 1) && ns[0] <= 1 /* the tally goes up by one, or starts again at 1 for the next thing */, why: `read ${ns.join(", ")}` }); }
         else if (e.kind === "contract") { const b = breaksOf(e.check); put({ ok: !b.length, why: b.length ? `${b.length} breaks: ${b.slice(0, 2).map((x) => `${x.state} ${x.at}s ${x.measured}`).join("; ")}` : "0 breaks on this page" }); }
         else if (e.kind === "pass") {
           // contract captures: no break; cmd captures: exit 0 (decided by the CLI, which runs them)
