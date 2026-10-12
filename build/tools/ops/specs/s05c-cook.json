@@ -1,0 +1,83 @@
+{
+  "name": "S05-C, Cook stations: fit, counts, the pot, chai, daar and chop, flow and service (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "game code judged by eye and ear",
+  "cost": "about $35-45",
+  "stop": "13 Oct 2026, 06:30 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-plan.md (Flaws and risks, and your package)",
+    "docs/architecture/evidence-loop.md (how a row is proven)",
+    "docs/decisions.md rows 75-87 only",
+    "docs/process/regressions.md: the rows named in your tasks"
+  ],
+  "owns": [
+    "js/cook/** except words.js, lang.js, order.js, recipes.js and mechanics/fetch.js (package B)",
+    "css/cook/**, Cook data (data/cook/** if present)",
+    "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
+    "build/reports/s05c-cook.md"
+  ],
+  "readOnly": [
+    "js/shared/**, css/shared/**, js/core/voice.js (package S)",
+    "js/core/lang/**, data/lang/**, build/lang/**, js/cook/{words,lang,order,recipes}.js, js/cook/mechanics/fetch.js (package B)",
+    "js/clinic/**, css/clinic/** (package D)",
+    "build/tools/**, build/sandbox/** (package T)",
+    "assets/** (art waits for the s05 run)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: `pip install scipy playwright` (if the SessionStart hook hasn't). Pull the branch. Then one red run of all your rows: `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-37,SEK-07,MAA-08,CHAI-08,SH-15,SH-39,SH-32,DAAR-04,SEK-13,CK-06,DAAR-05,CK-27,SAM-10,SAM-05,SAM-02,CHAI-07,CHAI-17,CHAI-18,CHAI-15,DAAR-11,DAAR-13,DAAR-07,CHT-05,PAN-05,CHT-07,SEK-08,MAA-14,CK-07,CK-21,CK-24,SAM-08,CK-09` (`--resume <id>` after an exit 75). Record which fail. The SH-33, CHAI-06, MAA-10, CK-02, CK-12, CK-20, SEK-05, MOD-01, CHT-03 rows: package T's report (build/reports/s05t-tools.md, once pushed) lists any that still fail on the game; those are yours too.",
+      "accept": "the red run's id and its failing rows in the report"
+    },
+    {
+      "do": "Stage fits its screen: rows SH-37, SEK-07, MAA-08, CHAI-08. Fix each failing row in your own files, then `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-37,SEK-07,MAA-08,CHAI-08`.",
+      "accept": "the group's probe green (a row with no machine expect: its sheet path left for the orchestrator to judge); push after the group"
+    },
+    {
+      "do": "Counts and ticks where the thing goes: rows SH-15, SH-39, SH-32, DAAR-04, SEK-13. Fix each failing row in your own files, then `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-15,SH-39,SH-32,DAAR-04,SEK-13`.",
+      "accept": "the group's probe green (a row with no machine expect: its sheet path left for the orchestrator to judge); push after the group"
+    },
+    {
+      "do": "What's in the pot, and one puff effect: rows CK-06, DAAR-05, CK-27, SAM-10, SAM-05, SAM-02. Fix each failing row in your own files, then `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows CK-06,DAAR-05,CK-27,SAM-10,SAM-05,SAM-02`.",
+      "accept": "the group's probe green (a row with no machine expect: its sheet path left for the orchestrator to judge); push after the group"
+    },
+    {
+      "do": "Chai pour and tray: rows CHAI-07, CHAI-17, CHAI-18, CHAI-15. Fix each failing row in your own files, then `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows CHAI-07,CHAI-17,CHAI-18,CHAI-15`.",
+      "accept": "the group's probe green (a row with no machine expect: its sheet path left for the orchestrator to judge); push after the group"
+    },
+    {
+      "do": "Daar and chop tools (DAAR-13 includes the throws that cross): rows DAAR-11, DAAR-13, DAAR-07, CHT-05. Fix each failing row in your own files, then `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows DAAR-11,DAAR-13,DAAR-07,CHT-05`.",
+      "accept": "the group's probe green (a row with no machine expect: its sheet path left for the orchestrator to judge); push after the group"
+    },
+    {
+      "do": "Flow and service. Decision 87: CHT-07 chaat asks for the dish first, the prep games next, and says the layer order just before the bowl; CK-21 served dishes sit in their tray with the tray's front edge redrawn over them, like the pantry tray: rows PAN-05, CHT-07, SEK-08, MAA-14, CK-07, CK-21, CK-24, SAM-08, CK-09. Fix each failing row in your own files, then `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows PAN-05,CHT-07,SEK-08,MAA-14,CK-07,CK-21,CK-24,SAM-08,CK-09`.",
+      "accept": "the group's probe green (a row with no machine expect: its sheet path left for the orchestrator to judge); push after the group"
+    },
+    {
+      "do": "Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path; the rest stay open with what failed and why.",
+      "accept": "the report has a table: row, red run, green run, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray",
+    "cook:chaat@L4"
+  ],
+  "port": 8893,
+  "report": "s05c-cook",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.",
+    "Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit."
+  ]
+}
