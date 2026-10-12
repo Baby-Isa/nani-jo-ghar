@@ -16,7 +16,7 @@ import { lintCssAll } from "../lint/css.mjs";
 import { allFlows, flowSizes, variantsOf, resolveFlow } from "./flows/index.mjs";
 import { CookPlayer } from "./lib/cook-player.mjs";
 import { ClinicPlayer } from "./flows/clinic.mjs";
-import { EvidenceProbe, EVIDENCE_HOOK, installHooks } from "./lib/evidence-probe.mjs";
+import { REC_HOOK, EvidenceProbe, EVIDENCE_HOOK, installHooks } from "./lib/evidence-probe.mjs";
 import { lexiconWords, pageKey, watchList } from "./lib/evidence.mjs";
 import { tiles, tileFlows } from "./flows/labs.mjs";
 import * as Contract from "./lib/contract.mjs";
@@ -196,7 +196,7 @@ if (fromRun) {
       const { ctx, page, errors, sound, touch } = await newPage(await browserFor(ev), size, { seed: seed != null ? hashSeed(flow.id) + seed : hashSeed(flow.id), dpr: (ev && ev.dpr) || 1, ...(has("--no-touch") ? { touch: false } : {}) });
       const rec = new Recorder({ flow: flow.id, size, dir: runDir, page, sub: (ev && ev.variant) || "" });
       const probe = ev ? new EvidenceProbe(page, ev, { dir: runDir, size, lexicon, armed: ev.profile !== "second-play" }) : null;
-      if (probe) await ctx.addInitScript(EVIDENCE_HOOK(watchList(ev.probes)));
+      if (probe) { await ctx.addInitScript(EVIDENCE_HOOK(watchList(ev.probes))); await ctx.addInitScript(REC_HOOK); }
       sound.onEvent = (e) => { rec.contractShot(e); if (probe) probe.onEvent(e); };
       const c = { page, rec, errors, size, browser, touch, timeoutMs: (flow.timeoutMs || 300000) * (ev && ev.profile === "second-play" ? 2 : 1), reachedEnd: false, ...(seed != null ? { seed } : {}), ...(ev && ev.profile ? { profile: ev.profile } : {}) };
       let timer, wantMiss = null;
@@ -217,7 +217,7 @@ if (fromRun) {
         }
       } finally { clearTimeout(timer); }
       if (wantMiss) { await ctx.close().catch(() => {}); if (!quiet) log(`${flow.id} @ ${size} seed ${seed}: ${wantMiss}`); return { wantMiss }; }
-      if (probe) await probe.chain.catch(() => {});
+      if (probe) { await probe.chain.catch(() => {}); await probe.collectRec(); }
       await ctx.close().catch(() => {});
       const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
       const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}), ...(ev ? { variant: ev.variant || "", evKey: ev.key, ...(seed != null ? { seed } : {}) } : {}) };

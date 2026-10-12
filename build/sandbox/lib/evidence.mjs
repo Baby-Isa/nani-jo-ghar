@@ -361,7 +361,7 @@ export function lexiconWords(root, { tags = false } = {}) {
   const read = (f) => { try { return JSON.parse(readFileSync(join(root, f), "utf8")); } catch (e) { return null; } };
   const TAG = { Num: "number", PN: "name" };
   const lex = read("data/lang/lexicon.json");
-  for (const e of (lex && lex.entries) || []) { const tag = TAG[e.pos] || null; add(e.lemma, tag); walk(e.forms || {}, tag); walk(e.aliases || [], tag); if (e.say) walk(e.say, tag); }
+  for (const e of (lex && lex.entries) || []) { const tag = e.loan === "en" ? "loan" : TAG[e.pos] || null; /* decision 87: loan: "en" is Kutchi */ add(e.lemma, tag); walk(e.forms || {}, tag); walk(e.aliases || [], tag); if (e.say) walk(e.say, tag); }
   const fam = read("data/family-audio.json");
   for (const e of Array.isArray(fam) ? fam : []) add(e.kutchi);
   const clips = read("data/lang/clips.json");

@@ -182,6 +182,15 @@ export function installHooks({ Recorder, CookPlayer, ClinicPlayer }) {
   };
 }
 
+const recKey = (t) => String(t || "").toLowerCase().replace(/[^\p{L}\p{N} ]/gu, " ").replace(/\s+/g, " ").trim();
+// a spoken line whose text is a to-record placeholder on screen (decision 84): not a leak, not a missing family clip
+export const isToRecord = (text, recSet) => { const k = recKey(text); return !!k && [...recSet].some((r) => r === k || (r.length > 3 && (r.includes(k) || k.includes(r)))); };
+// every to-record placeholder that was ever on screen (decision 84: the tag is hidden in the markup; the line text is its container's or its sibling's)
+export const REC_HOOK = `(() => { const SEL = ${JSON.stringify(NOT_FOR_CHILD_SEL)}; window.__njgRec = []; const seen = new Set();
+  const scan = () => { try { for (const el of document.querySelectorAll(SEL)) { const own = /(^|-)rec$|(^| )rec( |$)/.test(String(el.className || "")) && !/(rs-ph)/.test(String(el.className));
+    const host = own && el.tagName !== "SMALL" ? el : el.parentElement; if (!host) continue; const c = host.cloneNode(true); c.querySelectorAll(SEL).forEach((x) => { if (x !== c) x.remove(); }); if (el.tagName === "SMALL") { for (const x of c.querySelectorAll("small")) x.remove(); }
+    const t = (c.textContent || "").replace(/\\s+/g, " ").trim(); if (t && !seen.has(t)) { seen.add(t); window.__njgRec.push(t); } } } catch (e) {} };
+  setInterval(scan, 150); document.addEventListener("DOMContentLoaded", scan); })()`;
 export class WantMiss extends Error { constructor(m) { super(m); this.wantMiss = true; } }
 // one wanted item against the order's text and speech: "people:N", "said:<item>", "/regex/flags", else words (any case)
 export function wantHas(w, text, people = 0, said = text) {
@@ -354,6 +363,7 @@ export class EvidenceProbe {
     if (p.capture.some((c) => ["crop", "zoom2", "strip", "trace"].includes(c.kind))) await takeRoom();
     // the expects decided on screen at this moment
     const domText = (tagged = false) => hit.captures.filter((c) => c.runs).flatMap((c) => c.runs.filter((x) => !tagged || x.tag === "" || x.tag === "canvas").map((x) => x.text)).join(" ");
+    // decision 84: lines shown as a hidden-tagged "to record" placeholder are allowed English; remember them for familyOnly
     for (const e of p.expect) {
       const put = (r) => hit.expects.push(negate(e, { raw: e.raw, ...r }));
       try {
@@ -397,6 +407,7 @@ export class EvidenceProbe {
     }
   }
   // the page is over (r: run.mjs's page result, with its timeline and sound summary): voice, contract, the expects over the whole page
+  async collectRec() { try { this.recList = (await this.page.evaluate("window.__njgRec || []")) || []; } catch (e) { this.recList = this.recList || []; } }
   async finish(r, { root = "." } = {}) {
     await this.chain.catch(() => {});
     const out = [];
@@ -468,7 +479,8 @@ export class EvidenceProbe {
           const vals = tr.map((c) => c.stats[key]);
           put({ ok: vals.some((x) => x == null) ? null : vals.every((x) => cmp(x, e.op, e.n)), why: `${key} ${vals.map((x) => (x == null ? "none (still)" : x)).join(", ")}` });
         } else if (e.kind === "familyOnly" || e.kind === "clipClass") {
-          const lines = (r.sound && r.sound.lines) || [];
+          const rec = new Set((this.recList || []).map(recKey));
+          const lines = ((r.sound && r.sound.lines) || []).filter((l) => !(e.kind === "familyOnly" && isToRecord(l.text, rec)));
           const want = e.kind === "familyOnly" ? "family-ok" : e.cls;
           const bad = lines.filter((l) => l.status !== want);
           put({ ok: lines.length ? !bad.length : null, why: lines.length ? (bad.length ? `${bad.length} of ${lines.length} lines not ${want}: ${bad.slice(0, 4).map((l) => `"${l.text}" ${l.status}`).join("; ")}` : `${lines.length} lines, all ${want}`) : "no line said" });

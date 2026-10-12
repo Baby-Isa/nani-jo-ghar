@@ -2,6 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
+import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
 import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts } from "./lib/evidence.mjs";
 import { blank, encodePng } from "./lib/png.mjs";
@@ -199,4 +200,24 @@ test("s04-tf: page:start answers only itself; a 'heal:' prefix; obsolete rows; w
   assert.equal(wantHas("said:/samosa[\\s\\S]*samosa/", "Muke samosa khape. samosa samosa", 0, "Muke samosa khape, with trae chunda."), false);
   assert.equal(wantHas("said:/samosa[\\s\\S]*samosa/", "", 0, "Muke ba samosa khape, ne hakro samosa"), true);
   assert.equal(wantHas("aadu waari chai", "Muke  aadu waari chai khape"), true);
+});
+
+test("S05-T: to-record placeholders are skipped by familyOnly; loan words are Kutchi; module errors are tool failures", async () => {
+  const rec = new Set(["let s clean it", "take the wax out"]);
+  assert.equal(isToRecord("Let's clean it.", rec), true);
+  assert.equal(isToRecord("Muke chai khape,", rec), false);
+  assert.equal(isToRecord("", rec), false);
+  // the lexicon expect reads only untagged text: a "ph"-tagged run is not a word the child must read as Kutchi
+  const lex = new Set(["muke", "chai", "khape"]);
+  const runs = [{ tag: "", text: "Muke chai khape" }, { tag: "ph", text: "Take the wax out" }];
+  assert.deepEqual(unknownWords(runs.filter((x) => x.tag === "").map((x) => x.text).join(" "), lex), []);
+  // loan: "en" (decision 87): thank you stays Kutchi
+  const { lexiconWords } = await import("../../sandbox/lib/evidence.mjs");
+  assert.ok(lexiconWords(new URL("../../..", import.meta.url).pathname).has("thank"));
+  // evidence.mjs: a cmd whose output is an import error is a tool failure (code null), never a FAIL
+  const { spawnSync } = await import("node:child_process");
+  const r = spawnSync(process.execPath, ["-e", "require('nonexistent-mod-xyz')"], { encoding: "utf8" });
+  assert.match(r.stderr, /Cannot find module/);
+  const src = (await import("node:fs")).readFileSync(new URL("./evidence.mjs", import.meta.url), "utf8");
+  assert.match(src, /ModuleNotFoundError\|ImportError\|Cannot find module\|ERR_MODULE_NOT_FOUND/);
 });
