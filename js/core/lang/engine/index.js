@@ -78,14 +78,19 @@ export function createEngine({ data, audio = [], voice = null, path = null, phra
       const c = L.classify(v, typeof v === "number" ? { type: "Num" } : null, {});
       const e = L.lexOf(c.id) || L.byRef.get(String(v));
       if (!e) return v;
-      return (number === "pl" && e.glossPl) || e.gloss || e.id;
+      const g = (number === "pl" && e.glossPl) || e.gloss || e.id;
+      // a verb in a sentence is its first sense ("put in, add" -> "put in"; the rest are alternatives for Mum's sheet)
+      return e.pos === "V" ? String(g).split(/[,(;]/)[0].trim() : g;
     }
     const abs = functions[v.fn];
     if (!abs || !abs.en) return v.fn;
     const num = v.number || (v.n != null && Number(v.n) !== 1 ? "pl" : null);
+    // the grown-ups' English (the bulb, SH-52): "put it in!", never "put in it !"
     return abs.en
       .replace(/\{(\w+)\}/g, (_, a) => enOf(v[a], num))
       .replace(/\s+/g, " ")
+      .replace(/\b(\w+) (in|out|on|off|up|down|back|away) it\b/g, "$1 it $2")
+      .replace(/\s+([!?.,])/g, "$1")
       .trim();
   }
 

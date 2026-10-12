@@ -171,7 +171,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: Cook word "cupboard" (ph-pantry); Cook word "cupboard" (ph-pantry), more than one.
 29. One vegetable, two vegetables. (Or: "I'd like some vegetable, please", said politely.) Ask: L45.
    - Needed by: Cook word "vegetable" (ph-veg); Cook word "vegetable" (ph-veg), more than one.
-30. One mixed, two mixeds. (Or: "I'd like some mixed, please", said politely.) Ask: new.
+30. One mixed, two mixed. (Or: "I'd like some mixed, please", said politely.) Ask: new.
    - Needed by: Cook word "mixed" (ph-mixed); Cook word "mixed" (ph-mixed), more than one.
 
 ### We know the word but have no recording of it (90)

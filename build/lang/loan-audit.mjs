@@ -4,16 +4,12 @@
 // decision 87 is not marked, or the dropped draft 'aabhar aanjo' is back.
 //   node build/lang/loan-audit.mjs [--md]      (--md: a table for a report)
 import { readJSON } from "./lib.mjs";
-import { LOANS } from "./hand/loans.mjs";
+import { LOANS, SOUTH_ASIAN, OWN } from "./hand/loans.mjs";
 
 const entries = readJSON("data/lang/lexicon.json").entries;
-// words English took from South Asia (a checker may read them as English; they are not loans from English)
-const SOUTH_ASIAN = new Set(["chai", "chaat", "chutney", "ghee", "kebab", "keema", "samosa", "sev", "tawa", "bhajiya", "garam", "masalo"]);
-// the game's own Kutchi names for its dishes and a sound: their gloss is the word itself, not English
-const OWN = new Set(["mishkaki", "sekelo", "mmm"]);
 const rows = [];
 for (const e of entries) {
-  // words only: a phrase is made of words, and a loan inside it is its word's (cup in wadho cup khanech)
+  // words only: a phrase is made of words, and a loan inside it is its word's
   if (!e.lemma || e.status === "to-record" || e.pos === "PN" || e.pos === "Phrase" || OWN.has(String(e.lemma).toLowerCase())) continue;
   const head = String(e.gloss || "").toLowerCase().split("(")[0];
   const gw = new Set(head.match(/[a-z]+/g) || []);

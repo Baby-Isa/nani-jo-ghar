@@ -10,6 +10,10 @@ export const LOANS = [
   ["phrase.thank-you-the-english-words-the-family-says-them", "thank you: Zafar 26 Sept (Conversations), decisions 81 and 87"],
   ["phrase.no-thank-you", "na, thank you: grammar-notes §23 (the English 'thank you'), decisions 81 and 87"],
 ];
+// for the borrowing audit (build/lang/loan-audit.mjs): words English took from South Asia (a checker may read them as
+// English; they are not loans from English), and the game's own names whose gloss is the word itself
+export const SOUTH_ASIAN = new Set(["chai", "chaat", "chutney", "ghee", "kebab", "keema", "samosa", "sev", "tawa", "bhajiya", "garam", "masalo"]);
+export const OWN = new Set(["mishkaki", "sekelo", "mmm"]);
 // decision 87 (3): the unconfirmed draft 'aabhar aanjo' for Thank you goes; its game lines are the family's "thank you"
 const DROP = { id: "phrase.thank-you", into: "phrase.thank-you-the-english-words-the-family-says-them" };
 
@@ -23,6 +27,10 @@ export function apply(S) {
     e.loan = "en";
     e.src = [...new Set([...(Array.isArray(e.src) ? e.src : [e.src].filter(Boolean)), `${D87}; ${why}`])];
   }
+  // the grown-ups' English (the bulb, Mum's sheet): "mixed" has no English plural ("two skewers of mixed", never
+  // "mixeds", SH-52); the automatic -s plural is made only where none is given
+  const mixed = S.entries.get("n.mixed");
+  if (mixed) mixed.glossPl = "mixed";
   const old = S.entries.get(DROP.id);
   const into = S.entries.get(DROP.into);
   if (old && into) {

@@ -966,9 +966,9 @@
     "dom:#side"
    ],
    "expect": [
-    "!textMatches:\\s[!?.,]|put in, add it"
+    "!textMatches:(?i)[a-z] [!.,]|put in, add it"
    ],
-   "note": "the chaat guide line flips to whole English, no broken text"
+   "note": "the chaat guide line flips to whole English, no broken text (the sidebar's own '?' button is not text: no '?' in the mark set)"
   }
  ],
  "SH-53": [
@@ -2786,12 +2786,12 @@
    "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
-    "dom:#mission"
+    "dom:#mission .oc-headline"
    ],
    "expect": [
-    "!textMatches:(?i)^Muke dudh de"
+    "!textMatches:(?i)^\\s*Muke dudh de"
    ],
-   "note": "the pantry headline is 'bring me these for {dish}', not 'Muke dudh de.' over atto"
+   "note": "the headline is never one item's sentence ('Muke dudh de.' over atto); Nani's step line is her strip on top of the card (decision 84)"
   }
  ],
  "PAN-04": [
@@ -3257,14 +3257,13 @@
    "at": "request",
    "after": null,
    "capture": [
-    "voice",
-    "dom:#intro .ic-card"
+    "voice"
    ],
    "expect": [
     "textMatches:Muke aadu waari chai khape",
-    "!textMatches:chai.*chai.*aadu|aadu\\W*$"
+    "!textMatches:Muke[^.]*\\baadu[,\\s]*\\.|Muke aadu[^.]*\\bchai\\b[^.]*\\bchai\\b"
    ],
-   "note": "extras first, then dudh, ba khun; ginger phrase not last, chai said once"
+   "note": "extras first, then dudh, ba khun; within the ginger order's sentence: ginger not last, chai said once (the voice of the order lines)"
   }
  ],
  "CHAI-06": [
@@ -3602,8 +3601,7 @@
    "at": "request",
    "after": null,
    "capture": [
-    "voice",
-    "dom:#intro .ic-card"
+    "voice"
    ],
    "expect": [
     "textMatches:Muke hakri bajr ji maani khape",
@@ -4655,7 +4653,7 @@
     "dom:#mission"
    ],
    "expect": [
-    "textMatches:(?i)chundo|bataato"
+    "textMatches:(?i)\\bchund[oa]\\b|\\bbataat[oa]\\b"
    ],
    "note": "a base filling row in every order"
   }

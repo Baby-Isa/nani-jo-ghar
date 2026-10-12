@@ -315,15 +315,15 @@ test("clip plan: per-word family recordings, store path only OK clips, the rest 
   const maani = r.clipPlan.find((c) => c.text === "maani");
   assert.equal(maani.kind, "word");
   assert.equal(maani.source, "family-ok");
-  assert.match(maani.file, /family\/(mum|zafar)\/maani\.mp3$/);
+  assert.match(maani.file, /family\/(mum|zafar)\/maani(-rc)?\.mp3$/);
   assert.equal(r.tokens[maani.tokens[0]].t, "maani");
   assert.equal(r.segments[maani.segs[0]].t, "maani");
   assert.deepEqual(r.clipPlan.filter((c) => c.kind === "missing").map((c) => c.text), ["muke", "hakri", "khape"]);
   assert.deepEqual(r.gaps.filter((g) => g.kind === "audio").map((g) => g.t), ["muke", "hakri", "khape"]);
   assert.equal(r.ok, true, "a missing recording alone never stops a line");
-  // cup: Mum's take is marked redo, Zafar's OK: the store path plays Zafar's
+  // cup: Mum's first take was marked redo; her re-clipped take (S02-D2, -rc) is OK now, else Zafar's: the store path plays an OK one
   const cup = E.say(Item("n.cup", { n: 2 })).clipPlan.find((c) => c.text === "cup");
-  assert.match(cup.file, /zafar\/cup\.mp3$/);
+  assert.match(cup.file, /(mum\/cup-rc|zafar\/cup)\.mp3$/);
   // laal: unchecked; the store path never plays it, the test path may
   assert.equal(E.say(Item("n.cup", { mods: ["a.red"] })).clipPlan[0].source, "missing");
   const test = engine({ path: "test" }).say(Item("n.cup", { mods: ["a.red"] }));

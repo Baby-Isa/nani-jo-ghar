@@ -293,8 +293,9 @@ test("the placeholder voices' words (data/cook-tts.json) are all in the lexicon,
   }
   const missing = new Set();
   for (const k of Object.keys(J("data/cook-tts.json").lines)) if (!k.startsWith("en|")) for (const w of k.split(" ")) if (!known.has(w)) missing.add(w);
-  // daal, hikdo, dine, vatana and lal are superseded spellings (rules G4, G5, decision 32), kept only in the test-only voice index
-  assert.deepEqual(Array.from(missing).sort(), ["daal", "dine", "hikdo", "lal", "vatana"]);
+  // daal, hikdo, dine, vatana and lal are superseded spellings (rules G4, G5, decision 32), and aabhar aanjo the dropped draft
+  // for Thank you (decision 87), kept only in the test-only voice index
+  assert.deepEqual(Array.from(missing).sort(), ["aabhar", "aanjo", "daal", "dine", "hikdo", "lal", "vatana"]);
 });
 
 /* ---------------- the recordings ---------------- */

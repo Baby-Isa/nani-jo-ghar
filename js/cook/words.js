@@ -366,7 +366,14 @@
       segs.push(...l.segs);
       plan.push(...(l.plan || []));
     });
-    return { segs, en: lines.map((l) => l.en).join(" "), parts: lines, plan, ok: lines.every((l) => l.ok !== false) };
+    // the English (the bulb's): each line a sentence of its own, as the Kutchi is ("Chana. Wiji chad!" -> "Chickpeas. Put it in!")
+    const enOf = (l) => {
+      const e = String(l.en || "").trim();
+      if (!e || lines.length < 2) return e;
+      const mark = (/[.!?]$/.exec(Lang.plain(l).trim()) || [""])[0];
+      return e.charAt(0).toUpperCase() + e.slice(1) + (mark && !/[.!?]$/.test(e) ? mark : "");
+    };
+    return { segs, en: lines.map(enOf).filter(Boolean).join(" "), parts: lines, plan, ok: lines.every((l) => l.ok !== false) };
   };
   Lang.plain = (line) => line.segs.map((s) => s.t).join("");
   /**
