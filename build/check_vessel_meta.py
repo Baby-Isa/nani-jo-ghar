@@ -155,8 +155,8 @@ def check_daar():
         m = re.search(rf"const {name} = \{{([^}}]*)\}}", src)
         return {k: float(v) for k, v in re.findall(r"(\w+): ([\d.]+)", m.group(1))}
 
-    pairs = [("POT", "pot-empty", ("w", "h", "cx", "cy", "r")), ("TRIVET", "daar-bowl-trivet", ("w", "h", "cx", "cy", "r")),
-             ("LADLE", "ladle-v2", ("w", "h", "bowl_cx", "bowl_cy", "bowl_r")), ("TRIVET_PLAIN", "daar-bowl-trivet-plain", ("w", "h", "cx", "cy", "r"))]
+    pairs = [("POT", "pot-empty", ("w", "h", "cx", "cy", "r")), ("TRIVET", "daar-bowl-trivet-v2", ("w", "h", "cx", "cy", "r")),
+             ("LADLE", "ladle-v3", ("w", "h", "bowl_cx", "bowl_cy", "bowl_r")), ("TRIVET_PLAIN", "daar-bowl-trivet-plain-v2", ("w", "h", "cx", "cy", "r"))]
     for name, key, fields in pairs:
         c = const(name)
         m = meta[key]

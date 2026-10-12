@@ -329,5 +329,33 @@
   "sheet": "r8-dial-icons-v1.png",
   "what": "flat cream icon (R8)",
   "colour": "#F5E6C8"
+ },
+ "daar-bowl-trivet-v2": {
+  "w": 528,
+  "h": 527,
+  "sheet": "daar-bowl-trivet-v2.webp",
+  "cx": 0.5,
+  "cy": 0.5,
+  "r": 0.4697,
+  "note": "S05-T2: the cut daar.js loads; the opaque bbox measured from the PNG is 0.4688 wide-radius, centre (0.499, 0.499)"
+ },
+ "ladle-v3": {
+  "w": 360,
+  "h": 389,
+  "sheet": "ladle-v3.webp",
+  "bowl_cx": 0.2889,
+  "bowl_cy": 0.7301,
+  "bowl_r": 0.2401,
+  "bowl_fit": "inscribed",
+  "note": "S05-T2: the cut daar.js loads (S03-D, a kadchi from above); size measured from the PNG, the bowl circle as daar.js places it (the handle rises from its upper right)"
+ },
+ "daar-bowl-trivet-plain-v2": {
+  "w": 489,
+  "h": 490,
+  "sheet": "daar-bowl-trivet-plain-v2.webp",
+  "cx": 0.4991,
+  "cy": 0.4971,
+  "r": 0.4899,
+  "note": "S05-T2: the cut daar.js loads; the opaque bbox measured from the PNG is 0.4888 wide-radius, centre (0.497, 0.496)"
  }
 }
