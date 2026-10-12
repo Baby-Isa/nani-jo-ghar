@@ -1,0 +1,70 @@
+{
+  "name": "S05-S2, the shared layer round 2: every shared row still failing in the game (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared layer every game goes through; correctness and feel",
+  "cost": "about $15-25",
+  "stop": "none: finish every fixable row (decision 89); if context passes about 70%, push, report what is left and stop",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-red-then-green.md (the plan to the finish)",
+    "build/reports/s05s-shared.md (round 1: what was done, what failed and why)",
+    "build/reports/s05t2-probes.md once it is pushed (T2's list of rows failing in the game, with owners)",
+    "docs/architecture/evidence-loop.md",
+    "docs/decisions.md rows 57, 75-90 only",
+    "docs/process/rules.md E25, E12, F9"
+  ],
+  "owns": [
+    "js/shared/**, css/shared/**, js/core/voice.js",
+    "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
+    "build/reports/s05s2-shared.md"
+  ],
+  "readOnly": [
+    "js/cook/**, js/clinic/** (packages C and D: a change you need there goes in your report as a request)",
+    "js/core/lang/**, data/**, build/lang/** (package B)",
+    "build/tools/**, build/sandbox/** (package T)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: pull the branch. SH-16 (decision 57, Zafar 13 Oct): on spoken cards, the closed card's peek is a small bulb with no counter, not the eye (.oc-look). Where the card is written (not spoken), the eye and its counted look stay (E25). Find which cards are spoken in the clinic and Cook, and apply it in the shared order card. Probe SH-16 red then green.",
+      "accept": "the closed clinic heal card at L3 shows the small bulb, no eye, no counter; the sheet path is left for the orchestrator to judge"
+    },
+    {
+      "do": "At L3 the pop-up writes every row of a closed order (E12, package C saw it): from level 3 the order is spoken and the card is closed, so the pop-up must not write the rows. Check the rule (E12, F9) and fix it in the shared pop-up. Add a probe if no row covers it.",
+      "accept": "red then green on a Cook and a clinic L3 pop-up"
+    },
+    {
+      "do": "Every shared row T2's report lists as failing in the game, and every row round 1 left open on a probe that T2 has now fixed: SH-01, SH-09, SH-48, SH-17, SH-36, SH-44, SH-19, SH-51, SH-64 (at the child's pace), ART-18, SEK-03, SH-41, SH-58, PAN-01. Pull T2's pushes first. If T2's report isn't pushed yet, start with SH-16 and the pop-up and check again. Fix each in js/shared or css/shared, red then green. A fix that needs Cook or clinic code goes to the orchestrator as a request (C or D own those files).",
+      "accept": "each row green, or open with its exact cause and owner"
+    },
+    {
+      "do": "Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path.",
+      "accept": "the report has a table: row, red run, green run, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray",
+    "clinic:waiting",
+    "clinic:diagnosis"
+  ],
+  "shared": true,
+  "port": 8891,
+  "report": "s05s2-shared",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).",
+    "Browser runs only in chunks of at most 13 minutes under the shared lock (four packages share it); one red run at the start, one green run per group.",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group."
+  ],
+  "live": true
+}

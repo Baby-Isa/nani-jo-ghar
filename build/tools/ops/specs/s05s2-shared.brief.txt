@@ -1,0 +1,71 @@
+SESSION NAME / MODE:  S05-S2, the shared layer round 2: every shared row still failing in the game (Sprint 5)
+MODEL AND EFFORT:     Opus, high effort (the shared layer every game goes through; correctness and feel)
+COST ESTIMATE:        about $15-25
+HARD STOP:            none: finish every fixable row (decision 89); if context passes about 70%, push, report what is left and stop. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s05s2-shared.context.md (1723 words: the last 15 decisions and the rules this task names, pasted; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S05-red-then-green.md (the plan to the finish)
+  6. build/reports/s05s-shared.md (round 1: what was done, what failed and why)
+  7. build/reports/s05t2-probes.md once it is pushed (T2's list of rows failing in the game, with owners)
+  8. docs/architecture/evidence-loop.md
+  9. docs/decisions.md rows 57, 75-90 only
+  10. docs/process/rules.md E25, E12, F9
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/**, css/shared/**, js/core/voice.js
+  - the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)
+  - build/reports/s05s2-shared.md
+READ-ONLY (never edit):
+  - js/cook/**, js/clinic/** (packages C and D: a change you need there goes in your report as a request)
+  - js/core/lang/**, data/**, build/lang/** (package B)
+  - build/tools/**, build/sandbox/** (package T)
+  - assets/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. FIRST: pull the branch. SH-16 (decision 57, Zafar 13 Oct): on spoken cards, the closed card's peek is a small bulb with no counter, not the eye (.oc-look). Where the card is written (not spoken), the eye and its counted look stay (E25). Find which cards are spoken in the clinic and Cook, and apply it in the shared order card. Probe SH-16 red then green.
+     Accept: the closed clinic heal card at L3 shows the small bulb, no eye, no counter; the sheet path is left for the orchestrator to judge
+  2. At L3 the pop-up writes every row of a closed order (E12, package C saw it): from level 3 the order is spoken and the card is closed, so the pop-up must not write the rows. Check the rule (E12, F9) and fix it in the shared pop-up. Add a probe if no row covers it.
+     Accept: red then green on a Cook and a clinic L3 pop-up
+  3. Every shared row T2's report lists as failing in the game, and every row round 1 left open on a probe that T2 has now fixed: SH-01, SH-09, SH-48, SH-17, SH-36, SH-44, SH-19, SH-51, SH-64 (at the child's pace), ART-18, SEK-03, SH-41, SH-58, PAN-01. Pull T2's pushes first. If T2's report isn't pushed yet, start with SH-16 and the pop-up and check again. Fix each in js/shared or css/shared, red then green. A fix that needs Cook or clinic code goes to the orchestrator as a request (C or D own those files).
+     Accept: each row green, or open with its exact cause and owner
+  4. Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path.
+     Accept: the report has a table: row, red run, green run, verdict
+
+REGRESSION ROWS TO RECHECK (145 rows of docs/process/regressions.md; * = open or reopened):
+  cook:fetch (15): PAN-01*, PAN-02*, PAN-03, PAN-04, PAN-05, PAN-06*, PAN-07, PAN-08, PAN-09*, PAN-10*, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15
+  cook:chai-tray (18): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06*, CHAI-07, CHAI-08, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-13*, CHAI-14, CHAI-15*, CHAI-16, CHAI-17, CHAI-18
+  clinic:waiting (34): CLN-10, CLN-11*, CLN-12*, CLN-13, CLN-14*, CLN-15, CLN-90*, CLN-91, CLN-92, CLN-110, CLN-115*, CLN-01*, CLN-02, CLN-03*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-81*, CLN-82, CLN-83, CLN-84, CLN-85*, CLN-86*, CLN-87*, CLN-88, CLN-89, CLN-109, CLN-111*, CLN-112*, CLN-113*, CLN-114
+  clinic:diagnosis (30): CLN-16, CLN-17*, CLN-18, CLN-93, CLN-94*, CLN-95, CLN-116*, CLN-01*, CLN-02, CLN-03*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-81*, CLN-82, CLN-83, CLN-84, CLN-85*, CLN-86*, CLN-87*, CLN-88, CLN-89, CLN-109, CLN-111*, CLN-112*, CLN-113*, CLN-114
+  shared components (71): SH-01*, SH-02, SH-03*, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51*, SH-61, SH-07, SH-08, SH-09*, SH-10*, SH-11, SH-12, SH-13*, SH-14, SH-15*, SH-16*, SH-17*, SH-52, SH-53, SH-54, SH-55, SH-62, SH-69*, SH-70*, SH-18, SH-19*, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58*, SH-59, SH-60, SH-63, SH-64*, SH-65, SH-66*, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33*, SH-34, SH-35, SH-36*, SH-37, SH-38, SH-39, SH-40, SH-41*, SH-42, SH-43, SH-44*, SH-45*, SH-46, SH-47, SH-48*, SH-71
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s05s2-shared` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8891.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s05s2-shared.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.
+The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).
+Browser runs only in chunks of at most 13 minutes under the shared lock (four packages share it); one red run at the start, one green run per group.
+Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.
