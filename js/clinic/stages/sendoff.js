@@ -165,6 +165,7 @@
           expected: "howfeel",
           word: (id) => S.line(env, id),
           caption: Kit.plain(S.line(env, "cap-askthem")).replace(/[.!?]$/, ""), // a caption, no full stop
+          captionRec: !S.line(env, "cap-askthem").kutchi,
           character: { act: async (id) => fig.react(id === "howfeel" ? "relief" : "idle") },
           accept: (id) => {
             res.judge(r, id === "howfeel");
@@ -344,6 +345,9 @@
       }
       await done;
       cards.remove(); // the stage clears its own UI before the next thing (13f)
+      // CLN-111 (S05-D): the feeling is picked: the doctor's box no longer says "pick how she feels" (it stayed behind
+      // the end card)
+      if (screen.setNani) screen.setNani(null);
       S.stage(docEl, layer, "talk");
 
       // the goodbye, in the scene (from level 2: E2 and E3 merged); the reply pills only now, when a reply is
@@ -358,6 +362,7 @@
           expected: plan.goodbye,
           word: (id) => PL().goodbye(data, id),
           caption: Kit.plain(S.line(env, "cap-sayit")).replace(/[.!?]$/, ""), // a caption, no full stop
+          captionRec: !S.line(env, "cap-sayit").kutchi,
           character: { act: async (id) => { waveOn(); fig.pose("wave"); await S.say(PL().goodbye(data, id), "patient"); } },
           accept: (id) => {
             res.judge(r, id === plan.goodbye);

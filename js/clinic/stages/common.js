@@ -394,7 +394,7 @@
       // no speaking kit: the pills alone, through the same shape
       return S.pillsOnly(env, opts);
     }
-    return global.Say.moment(Object.assign({
+    const out = global.Say.moment(Object.assign({
       mode: "clinic",
       container: env.screen.main,
       grandparent: !!env.grandparent,
@@ -404,6 +404,24 @@
       timeoutMs: 4000,
       label: (id) => Kit.plain(opts.word(id)),
     }, opts));
+    // decision 84 (CLN-117, S05-D): a pill or caption the engine has no Kutchi for yet is its English in grey italic,
+    // tagged "to record" in the markup (the shared Say knows only Cook's words); "Thank you" is the family's (decision 81)
+    const say = [...env.screen.main.querySelectorAll(".njg-say")].pop();
+    if (say) {
+      say.querySelectorAll(".pill[data-choice]").forEach((b) => {
+        const w = opts.word(b.dataset.choice);
+        if (w && typeof w === "object" && !w.kutchi) {
+          b.classList.add("ph");
+          b.dataset.rec = "to record";
+        }
+      });
+      const cap = say.querySelector(".cap");
+      if (cap && opts.captionRec) {
+        cap.classList.add("ph");
+        cap.dataset.rec = "to record";
+      }
+    }
+    return out;
   };
   /** The pills on their own (no mic): the same {choice, via} result. */
   S.pillsOnly = function (env, opts) {

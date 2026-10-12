@@ -643,3 +643,6 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 
 /* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
 .cl-rec, .bubble-rec { display: none !important; }
+
+/* decision 84 (CLN-117): a speaking moment's caption still to record is grey italic, like its pills */
+.njg-say .cap.ph { font-style: italic; color: #8a7a6a; }

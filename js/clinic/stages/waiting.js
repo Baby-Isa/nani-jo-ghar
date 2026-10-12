@@ -100,8 +100,14 @@
       tick.style.marginTop = "";
       const view = box.parentElement;
       if (!view || !tick.isConnected) return;
-      const over = tick.getBoundingClientRect().bottom - (view.getBoundingClientRect().bottom - 4);
-      if (over > 0) tick.style.marginTop = `${-Math.ceil(over)}px`;
+      // CLN-90 (S05-D): on a short screen the tick (never under 48 px) grew up over the person's shoes: it moves down
+      // until it clears their feet, then (below) back up only as far as the screen's edge needs
+      const feet = (wrap.querySelector(".cl-wp-img") || wrap).getBoundingClientRect().bottom;
+      const clash = feet + 4 - tick.getBoundingClientRect().top;
+      let m = clash > 0 ? Math.ceil(clash) : 0;
+      const over = tick.getBoundingClientRect().bottom + m - (view.getBoundingClientRect().bottom - 4);
+      if (over > 0) m -= Math.ceil(over);
+      if (m) tick.style.marginTop = `${m}px`;
     };
     box.addEventListener("scenefit", keepIn);
     if (global.requestAnimationFrame) global.requestAnimationFrame(keepIn);

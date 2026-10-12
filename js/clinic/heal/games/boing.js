@@ -55,18 +55,18 @@
     const groupM = (g) => Lg.item(g.c, { n: g.n });
     const dropW = L < 3 ? say(Lg.join(["cl-drops", ",", Lg.count(drops.length)]), { cap: true }) : say(Lg.join(["cl-drops", ":", ...groups.flatMap((g, i) => (i ? [",", groupM(g)] : [groupM(g)]))]), { cap: true });
     const steps = [
-      { id: "wipe", kind: "wipe", count: wipes, row: Object.assign({ id: "wipe" }, say(Lg.join(["cl-wipe", ",", Lg.count(wipes)]), { cap: true })) },
+      { id: "wipe", kind: "wipe", count: wipes, row: Object.assign({ id: "wipe", seq: "steps" }, say(Lg.join(["cl-wipe", ",", Lg.count(wipes)]), { cap: true })) },
       {
         id: "drops",
         kind: "drops",
         drops,
-        row: Object.assign({ id: "drops" }, dropW),
-        // L3: the colours in order are a sequence on the card (13h): one part per colour
-        rows: L < 3 ? null : groups.map((g, i) => Object.assign({ id: `drops${i}`, seq: "drops" }, say(i ? Lg.then(groupM(g), { lower: true }) : groupM(g)))),
+        row: Object.assign({ id: "drops", seq: "steps" }, dropW),
+        // L3: the colours in order are a sequence on the card (13h): one part per colour (in the job's one sequence)
+        rows: L < 3 ? null : groups.map((g, i) => Object.assign({ id: `drops${i}`, seq: "steps" }, say(i ? Lg.then(groupM(g), { lower: true }) : groupM(g)))),
       },
-      { id: "press", kind: "press", row: Object.assign({ id: "press" }, say(Lg.item("boing-press"), { cap: true })) },
+      { id: "press", kind: "press", row: Object.assign({ id: "press", seq: "steps" }, say(Lg.item("boing-press"), { cap: true })) },
       { id: "boing", kind: "boing", row: null },
-      { id: "plaster", kind: "plaster", row: Object.assign({ id: "plaster" }, say(Lg.item("cl-plaster"), { cap: true })) },
+      { id: "plaster", kind: "plaster", row: Object.assign({ id: "plaster", seq: "steps" }, say(Lg.item("cl-plaster"), { cap: true })) },
     ];
     const rows = [{ id: "wipe-count", options: K.wipes[L], answer: wipes }];
     if (L < 3) rows.push({ id: "drop-count", options: K.drops[L], answer: drops.length });
@@ -86,8 +86,11 @@
     const st = { i: 0, wipes: 0, drops: [], judged: {}, over: false, busy: false, slip: false, wrongColour: false, max: 0 };
     const cur = () => P.steps[st.i] || null;
     const ART = (ctx.data && ctx.data.art) || {};
-    // the card: one instruction at a time (D8): the first step's row; each next row joins as its step opens
-    ctx.card.setRows(P.steps[0].rows || [P.steps[0].row]);
+    // CLN-113 (S05-D): the job is one sequence on the shared card, like the scrape's (the line, the grey band, ticking
+    // parts): every step's row from the start, the ones to come greyed; one instruction at a time (D8, SH-45): each
+    // step opens, and is said, as it comes (the host's progressive card)
+    ctx.card.ordered(false);
+    ctx.card.setRows([].concat(...P.steps.map((x) => x.rows || (x.row ? [x.row] : []))));
 
     // the upper arm across the bottom left (U1's close-up swaps in); the jab spot
     const A = { x: 300, y: 395 };
@@ -197,16 +200,9 @@
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
     const TOOL = { wipe: "cotton", plaster: "plaster-skin" };
-    const addRows = (c) => {
-      (c.rows || [c.row]).filter(Boolean).forEach((r) => ctx.card.addRow(r));
-    };
     const open = () => {
       const c = cur();
-      if (c.kind !== "boing" && st.i > 0) {
-        addRows(c);
-        ctx.card.now(c.id);
-        ctx.say(c.row);
-      } else if (c.kind !== "boing") ctx.card.now(c.id);
+      if (c.kind !== "boing") ctx.card.now(c.id); // SH-45: the card opens the step's row and says it then (once)
       spot.setAttribute("opacity", c.kind === "plaster" || c.kind === "wipe" ? 1 : 0);
       glow.setAttribute("opacity", 0);
       if (c.kind === "boing") {

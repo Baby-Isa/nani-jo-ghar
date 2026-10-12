@@ -696,9 +696,9 @@
       drawWear();
       // one instruction at a time (D8): this exchange's line joins the card as it opens; the patient says how they
       // feel, then the doctor says the line (input is live throughout, E5)
-      // the temperature's row has done its job: the card keeps to the exchanges (it fits the shortest phone)
-      if (ctx.card.el && st.i === 1) ctx.card.setRows([c.row]);
-      else ctx.card.addRow(c.row);
+      // SH-10 (S05-D): the rows tick as each step closes and stay: the temperature's row stays, ticked, above the
+      // exchanges (it used to be dropped here, so it vanished instead of ticking)
+      ctx.card.addRow(c.row);
       ctx.card.now(c.id);
       st.busy = true;
       ctx.after(fast() ? 120 : 600, () => (st.busy = false));

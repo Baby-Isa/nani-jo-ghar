@@ -35,11 +35,14 @@
     const side = sideIn || (rng() < 0.5 ? "left" : "right");
     const kicks = HS.pick(K.kicks[L], rng);
     const turns = HS.pick(K.turns[L], rng);
-    // the flash order: sides alternate; heights random from level 2
+    // the flash order: sides alternate; heights random from level 2. CLN-100 (S05-D): at level 1 the heights step
+    // in a fixed order (middle, top, bottom ...), so every turn is a new band across the kneecap and into the crease
+    // (on one height each turn lay on the last one and the wrap looked like a single band)
+    const L1Y = [1, 0, 2];
     const order = [];
     let s = rng() < 0.5 ? "l" : "r";
     for (let i = 0; i < 12; i++) {
-      order.push(L === 1 ? { s, y: 1 } : { s, y: Math.floor(rng() * 3) });
+      order.push(L === 1 ? { s, y: L1Y[i % 3] } : { s, y: Math.floor(rng() * 3) });
       s = s === "l" ? "r" : "l";
     }
     // words, numbers and joins from data through the seam (R5); D10 (1 Oct): sides are said and tested in the
@@ -167,7 +170,7 @@
       S.clear(dotsG);
       dots.length = 0;
       if (!cur() || cur().kind !== "wrap" || S.sel !== "bandage") return;
-      const ys = P.level === 1 ? [1] : [0, 1, 2];
+      const ys = [0, 1, 2]; // CLN-100: every level has the three heights (level 1 lights them in a fixed order)
       ["l", "r"].forEach((sd) =>
         ys.forEach((y) => {
           const p = dotPos({ s: sd, y });
