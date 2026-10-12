@@ -84,26 +84,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const [dx, dy] = SLOTS[slot++ % SLOTS.length];
         return { x: kadai.rim.x + z.L(dx), y: kadai.rim.y + z.L(dy) };
       };
-      const ringG = S.track(S.add.graphics().setDepth(D.fx + 1));
+      // SH-53: no station draws its own ring: each frying piece's timer is the kitchen kit's shared heat ring (the clock
+      // ring the chai pans and samosa's karahi use: a dark track, the sage "now" band, the sweep, a white dot), never a
+      // gold ring of its own that reads as a second highlight
+      const Kit = Cook.Kit;
       const R = z.L(56);
+      const rings = new Map();
+      const ringOf = (f) => rings.get(f) || (rings.set(f, Kit.heatRing(S, { depth: D.fx + 1, width: z.L(6) })), rings.get(f));
+      const clearRings = () => rings.forEach((r) => r.clear());
       const drawRings = () => {
-        ringG.clear();
-        frying.forEach((f) => {
-          if (f.out) return;
-          const a0 = -Math.PI / 2;
-          ringG.lineStyle(z.L(9), 0xfffaf1, 0.8);
-          ringG.beginPath();
-          ringG.arc(f.x, f.y, R, 0, Math.PI * 2);
-          ringG.strokePath();
-          ringG.lineStyle(z.L(9), 0x7d9a78, 1);
-          ringG.beginPath();
-          ringG.arc(f.x, f.y, R, a0 + lo * Math.PI * 2, a0 + hi * Math.PI * 2);
-          ringG.strokePath();
-          ringG.lineStyle(z.L(6), f.v > hi ? 0xb24a3a : 0xc9973a, 1);
-          ringG.beginPath();
-          ringG.arc(f.x, f.y, R, a0, a0 + Math.min(1, f.v) * Math.PI * 2);
-          ringG.strokePath();
-        });
+        frying.forEach((f) => (f.out ? rings.has(f) && rings.get(f).clear() : ringOf(f).draw(f.x, f.y, R, f.v, lo, hi)));
       };
       const [r0, r1] = k.rate;
       const fry = (img, p, { leave = false, v = 0 } = {}) => {
@@ -197,7 +187,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             doneShown = true;
             UI.done({ glow: ctx.guided && lifted >= count }).then(() => {
               stop();
-              ringG.clear();
+              clearRings();
               z.expect(null);
               resolve();
             });
