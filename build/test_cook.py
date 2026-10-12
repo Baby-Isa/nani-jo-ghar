@@ -557,7 +557,7 @@ def open_page(pw, vp, speed, busy, seed_save=None):
     else:
         page.evaluate("localStorage.clear()")
     page.goto(f"http://127.0.0.1:{PORT}/cook.html?speed={speed}")
-    page.wait_for_selector("#panel h1", timeout=15000)
+    page.wait_for_selector("#panel h1", state="attached", timeout=15000)  # hidden on purpose now (no English for the child, S05)
     if busy:
         page.click("[data-mode=busy]")
     return browser, page, errors
@@ -664,7 +664,7 @@ ORDERS_JS = r"""
       if (!L.head || cardRows.length !== rows.length) out.errors.push(id + ": the card ladder has every recipe row " + JSON.stringify([cardRows.length, rows.length]));
       const said = Cook.Lang.plain(Cook.Order.speech([L]));
       const seqs = L.sections.filter((s) => s.seq && !s.when);
-      const then = Cook.data.lines[Cook.Lang.frames().seq].k.split("{x}")[0].trim();
+      const then = "ne poi"; // the sequence linker (grammar-notes §7, confirmed); data.lines no longer holds the frames
       if (seqs.length && !said.includes(then)) out.errors.push(id + ": a sequence is said with " + then + ": " + said);
       if (!seqs.length && said.includes(then)) out.errors.push(id + ": no sequence, no " + then + ": " + said);
     }
