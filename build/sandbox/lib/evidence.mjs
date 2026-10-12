@@ -418,7 +418,7 @@ export function silentAfter(plays, times, slack = 150, bounds = []) {
   const bad = [];
   for (const t of times) {
     // the window ends at the next stage-start or request after the moment (a new stage may speak), else 4 s (as contract-3)
-    const next = bounds.filter((b) => b > t + 50).sort((a, b) => a - b)[0];
+    const next = bounds.filter((b) => b >= t - 5).sort((a, b) => a - b)[0];
     const end = next != null ? Math.min(next, t + 4000) : t + 4000;
     for (const p of plays) if ((p.t0 > t + slack && p.t0 < end) || (p.t0 <= t && p.t1 > t + slack)) bad.push(`${p.url || p.text || p.via} at ${((p.t0 - t) / 1000).toFixed(2)} s`);
   }

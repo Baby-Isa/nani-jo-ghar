@@ -120,6 +120,9 @@ test("expects decided after the page", () => {
   assert.equal(m.ok, false); assert.match(m.why, /after a button press/);
   assert.equal(silentAfter([{ t0: 0, t1: 1100, url: "a.mp3" }], [1000]).ok, true);
   assert.equal(silentAfter([{ t0: 0, t1: 1400, url: "a.mp3" }], [1000]).ok, false);
+  // a stage that starts at the very instant the last one ends (the clinic): the new stage owns what plays after, only a clip still sounding fails
+  assert.equal(silentAfter([{ t0: 1500, t1: 2000, url: "next.mp3" }], [1000], 150, [1000]).ok, true, "a clip of the next stage");
+  assert.equal(silentAfter([{ t0: 0, t1: 1400, url: "old.mp3" }], [1000], 150, [1000]).ok, false, "a clip of the old stage still sounding");
   assert.equal(gapMs([{ name: "life:stage-end", t: 100 }, { name: "life:request", t: 700 }], "stage-end", "request", momentMatches).ms, 600);
   const s = Array.from({ length: 40 }, (_, i) => ({ t: i * 50, x: 10, y: 100 + 2 * Math.sin((i * 50 * 2 * Math.PI) / 400) }));
   const st = traceStats(s);
