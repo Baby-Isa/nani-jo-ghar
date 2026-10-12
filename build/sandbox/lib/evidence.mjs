@@ -361,7 +361,11 @@ export function lexiconWords(root, { tags = false } = {}) {
   const read = (f) => { try { return JSON.parse(readFileSync(join(root, f), "utf8")); } catch (e) { return null; } };
   const TAG = { Num: "number", PN: "name" };
   const lex = read("data/lang/lexicon.json");
-  for (const e of (lex && lex.entries) || []) { const tag = e.loan === "en" ? "loan" : TAG[e.pos] || null; /* decision 87: loan: "en" is Kutchi */ add(e.lemma, tag); walk(e.forms || {}, tag); walk(e.aliases || [], tag); if (e.say) walk(e.say, tag); }
+  // the engine inflects at play time (chundo -> chunda, S05-T2): expand each entry's paradigm cells ({stem} / {lemma}) so an inflected form the game writes is known
+  const par = (read("data/lang/paradigms.json") || {}).paradigms || {};
+  const inflected = (e) => { const pd = par[e.paradigm]; if (!pd || !e.lemma) return []; let stem = e.lemma; const dr = pd.stem && pd.stem.drop; if (dr && stem.endsWith(dr)) stem = stem.slice(0, -dr.length);
+    return Object.values(pd.cells || {}).map((c) => (c && typeof c === "object" ? c.make : c)).filter((m) => typeof m === "string").map((m) => m.replace(/\{stem\}/g, stem).replace(/\{lemma\}/g, e.lemma)); };
+  for (const e of (lex && lex.entries) || []) { const tag = e.loan === "en" ? "loan" : TAG[e.pos] || null; /* decision 87: loan: "en" is Kutchi */ add(e.lemma, tag); inflected(e).forEach((f) => add(f, tag)); walk(e.forms || {}, tag); walk(e.aliases || [], tag); if (e.say) walk(e.say, tag); }
   const fam = read("data/family-audio.json");
   for (const e of Array.isArray(fam) ? fam : []) add(e.kutchi);
   const clips = read("data/lang/clips.json");

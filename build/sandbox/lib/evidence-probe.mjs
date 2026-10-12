@@ -97,7 +97,7 @@ const TRACE = `async ([sel, ms]) => {
   return out;
 }`;
 // the layout measures for count/inside/noOverlap/centredOn/order/noClip/lines/minFont/minSize
-const MEASURE = `([kind, sel, box]) => {
+export const MEASURE = `([kind, sel, box]) => {
   const boxes = ${BOXES};
   const B = (s) => boxes(s);
   if (kind === "noClip") {
@@ -115,7 +115,10 @@ const MEASURE = `([kind, sel, box]) => {
   }
   if (kind === "lines" || kind === "minFont") {
     let els; try { els = Array.from(document.querySelectorAll(sel)).filter((e) => e.getBoundingClientRect().height > 1); } catch (e) { return { error: "bad selector" }; }
-    if (kind === "lines") return { n: els.length, vals: els.map((e) => { const r = document.createRange(); r.selectNodeContents(e); const ys = new Set(Array.from(r.getClientRects()).filter((x) => x.width > 1).map((x) => Math.round(x.top))); return ys.size; }) };
+    // text lines, not element boxes (S05-T2): the line boxes of the element's own Kutchi text nodes, one per visible line; the icon, tick, English gloss and "to record" tag are other boxes and do not count
+    if (kind === "lines") return { n: els.length, vals: els.map((e) => { const ys = new Set(); const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT); let t;
+      while ((t = w.nextNode())) { if (!t.nodeValue.trim() || t.parentElement.closest("small, .rs-en, .rs-rec, .rs-ph, .oc-rec, [data-rec], .rec")) continue; const r = document.createRange(); r.selectNodeContents(t); for (const x of Array.from(r.getClientRects())) if (x.width > 1 && x.height > 1) ys.add(Math.round(x.top / 4)); }
+      return ys.size; }) };
     const vals = []; for (const e of els) { const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT); let t; while ((t = w.nextNode())) if (t.nodeValue.trim()) { let s = parseFloat(getComputedStyle(t.parentElement).fontSize); const m = t.parentElement.getBoundingClientRect(), o = t.parentElement.offsetHeight; if (o) s *= m.height / o; vals.push(Math.round(s * 10) / 10); } }
     return { n: els.length, vals };
   }

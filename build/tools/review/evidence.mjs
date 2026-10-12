@@ -44,7 +44,8 @@ const OUT = join(ROOT, "build", "screenshots", "evidence");
 const SANDBOX = join(ROOT, "build", "screenshots", "sandbox");
 const CACHE = join(ROOT, "build", "tools", "review", "data", "verdicts.json");
 const git = (...x) => { try { return execFileSync("git", x, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], maxBuffer: 1 << 26 }).trim(); } catch (e) { return null; } };
-const stamp = () => new Date().toISOString().replace(/[-:]/g, "").slice(0, 13).replace("T", "-");
+// minutes, seconds and a random suffix: four sessions share the branch and one minute is not unique (S05-T2)
+const stamp = () => new Date().toISOString().replace(/[-:]/g, "").slice(0, 15).replace("T", "-") + "-" + Math.random().toString(36).slice(2, 5);
 const log = (dir) => (s) => { const l = `${new Date().toTimeString().slice(0, 8)} ${s}`; console.log(l); if (dir) appendFileSync(join(dir, "run.log"), l + "\n"); };
 
 // ---------- the rows ----------

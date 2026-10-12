@@ -1,7 +1,7 @@
 // node --test build/tools/review/evidence.test.mjs : the evidence loop (decision 82) on fixtures, no browser.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
+import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, lexiconWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
 import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
 import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts, applyGuard } from "./lib/evidence.mjs";
@@ -226,4 +226,27 @@ test("S05-T: --apply refuses a run without verdicts in the cache", () => {
   const index = { rows: { "A-01": { fp: { x: 1 }, tool: [] } } };
   assert.match(applyGuard(index, {}), /no verdict cache/);
   assert.match(applyGuard(index, { "B-02": { verdict: "PASS" } }), /none of this run's 1 rows/);
+});
+
+test("lines: counts text lines, not the element boxes of icons, ticks and the English (S05-T2, SH-01/09/48)", async () => {
+  const { createRequire } = await import("node:module"); const { execSync } = await import("node:child_process");
+  const req = createRequire(import.meta.url); let pw; try { pw = req("playwright"); } catch (e) { pw = req(execSync("npm root -g").toString().trim() + "/playwright"); }
+  const { chromium } = pw;
+  const { MEASURE } = await import("../../sandbox/lib/evidence-probe.mjs");
+  const b = await chromium.launch({});
+  try {
+    const p = await b.newPage({ viewport: { width: 400, height: 300 } });
+    await p.setContent(`<style>.w{width:120px;font:16px sans-serif}</style>
+      <div class="w oc-row" id=a><span class="oc-t">ba bataata</span><svg width=14 height=14></svg></div>
+      <div class="w rs-word" id=b><b>fudino ji chutney bhari</b><span class="rs-en"><span class="rs-say"><svg width=20 height=20></svg></span><span>potato</span></span><small class="rs-rec">to record</small></div>`);
+    const lines = (sel) => p.evaluate(`(${MEASURE})(["lines", ${JSON.stringify(sel)}, null])`);
+    assert.deepEqual((await lines("#a")).vals, [1], "one text line with a tick beside it");
+    assert.deepEqual((await lines("#b")).vals, [2], "the Kutchi wraps to two lines; the icon and the English are not lines");
+  } finally { await b.close(); }
+});
+
+test("lexicon: engine-inflected forms and the bulb's English (S05-T2)", () => {
+  const lex = lexiconWords(new URL("../../..", import.meta.url).pathname);
+  assert.deepEqual(unknownWords("Muke chunda de", lex), [], "chunda is chundo inflected by the engine's paradigm");
+  assert.deepEqual(unknownWords("Muke zzqx de", lex), ["zzqx"], "a made-up word is still unknown");
 });
