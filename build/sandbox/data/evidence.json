@@ -25,7 +25,8 @@
   "traceRepeats:<selector><op><n>": "over a trace capture: how many times the element appears or the motion repeats (a ghost finger shown again after each pause)",
   "clipClass:<class>": "every line in the voice timeline has this class (family-ok, tts, silent): familyOnly = clipClass:family-ok",
   "liveInput": "the probe's driver tapped the expected thing while a line was playing and the game accepted it before the line ended",
-  "pass": "the probe's contract:<n> or cmd: capture reports no break (contract) or exits 0 (cmd)"
+  "pass": "the probe's contract:<n> or cmd: capture reports no break (contract) or exits 0 (cmd)",
+  "times:<moment><op><n>": "how many times the moment came while the probe was armed, repeats included (each ghost-finger play is a life:ghost moment: SH-46, MAA-13)"
  },
  "_capture": {
   "shot": "the whole screen (last resort: only rows about the whole layout)",
@@ -38,7 +39,7 @@
   "ref:<path|css-token|retired-art id>": "Fable 12: the reference pasted beside the crop (a source PNG, a colour token swatch, the shared ring, a retired asset)",
   "contract:<n>": "EXTENSION: contract check n over this probe's play, its breaks as text (build/sandbox/lib/contract.mjs: 1 pop-up, 2 moves-on, 3 voice stops at stage end, 4 bubble, 5 badge order, 6 old art, 7 one voice, 8 one highlight, 9 closed card, 10 your turn, 11 background, 12 greyed, 13 stale UI, 14 talk); 'cover' = the player's covered-tap findings",
   "cmd:<command>": "EXTENSION: a repo script's output (run from the repo root, at most 60 s); with expect 'pass' its exit code decides",
-  "<selector>": "a CSS selector; 'canvas:<name>' instead names a Phaser display object by texture key prefix (Fable 7: canvas:tawa, canvas:ladle, canvas:karahi, canvas:thali, canvas:chakla, canvas:velan, canvas:rack, canvas:hob, canvas:pan, canvas:pot); 'tool:<id>' a heal game's tool element (S.toolEls[id]); '<selector>@<moment>' the element as it was at another moment of the same play. zoom2 = re-rendered at deviceScaleFactor 2 (Fable 6), never an upscaled crop"
+  "<selector>": "a CSS selector; 'canvas:<name>' instead names a Phaser display object by texture key prefix (Fable 7: canvas:tawa, canvas:ladle, canvas:karahi, canvas:thali, canvas:chakla, canvas:velan, canvas:rack, canvas:hob, canvas:pan, canvas:pot); 'tool:<id>' a heal game's tool element (S.toolEls[id]); '<selector>@<moment>' the element as it was at another moment of the same play. zoom2 = re-rendered at deviceScaleFactor 2 (Fable 6), never an upscaled crop 'hook:cook.<fn>' / 'hook:heal.<fn>': the boxes a game's own read-only test hook reports (s04-hooks): hook:cook.glowing (the highlighted picture), hook:cook.gauge (where the gauge is drawn), hook:heal.glowing (the glowing tools), hook:heal.dropper and hook:heal.soreEye (the eye game, CLN-62)."
  },
  "_at": {
   "request / stage-start / stage-end / results / popup-fold": "Lifecycle events (js/shared/request-popup.js); popup-fold = the request pop-up folds into the sidebar",
@@ -48,7 +49,8 @@
   "visible:<selector>": "NEW: the first moment the element is visible",
   "only:<selector>": "NEW: the moment the game's expectation is a click on that element alone (it is the only thing left)",
   "every:<moment>": "each time the moment happens (one capture each): every:placed (an item or step accepted), every:step (a new step or row opens), every:onboard (a first-time help appears), every:bubble, every:request, every:view, every:your-turn (the hand-over to the child), every:stage-start, every:order-card-in-sidebar, every:visible:<sel>, every:step:<id>",
-  "<named moment>": "NEW named moments (Fable 2: served, fold, pour, fill, hearing-test, ...), each defined in _moments; the driver change that reaches it lands with the spec"
+  "<named moment>": "NEW named moments (Fable 2: served, fold, pour, fill, hearing-test, ...), each defined in _moments; the driver change that reaches it lands with the spec",
+  "life:ghost": "s04-hooks: the ghost finger played once (Onboard's kit, Cook's S.ghost, the first conversation's pill: Lifecycle.ghost logs each play; every:life:ghost = each play)"
  },
  "_moments": {
   "after-mute": "the first clinic heal step after the guide box was muted in Cook",
@@ -2614,13 +2616,12 @@
    "at": "idle",
    "after": null,
    "capture": [
-    "trace:.ob-ghost:4000",
     "crop:.cl-heal"
    ],
    "expect": [
-    "traceRepeats:.ob-ghost>=1"
+    "times:life:ghost>=1"
    ],
-   "note": "second play: after a pause the ghost finger shows the drag again"
+   "note": "second play: after a pause the ghost finger shows the drag again (each play is a life:ghost moment: Lifecycle.ghost)"
   }
  ],
  "SH-47": [
@@ -2978,10 +2979,13 @@
    "at": "hint-glow",
    "after": null,
    "capture": [
+    "zoom2:hook:cook.glowing",
     "zoom2:#stage"
    ],
-   "expect": null,
-   "note": "the next-item glow and bounce centred on the item itself",
+   "expect": [
+    "count:hook:cook.glowing=1"
+   ],
+   "note": "the next-item glow and bounce centred on the item itself (__cook.glowing(): one highlighted picture, its own box)",
    "webgl": true
   }
  ],
@@ -3362,12 +3366,13 @@
    "at": "exp:lift",
    "after": null,
    "capture": [
-    "crop:#stage"
+    "crop:#stage",
+    "crop:hook:cook.gauge@phase:slow"
    ],
    "expect": [
     "gapMs:exp:knob-on,exp:lift<=16000"
    ],
-   "note": "the burner reaches green about twice as fast (~15/21/28 s at L1/L2/L3)"
+   "note": "the burner reaches green about twice as fast (~15/21/28 s at L1/L2/L3); the heat ring at the turn-down (__cook.gauge().box)"
   }
  ],
  "CHAI-11": [
@@ -3905,13 +3910,12 @@
    "at": "idle",
    "after": null,
    "capture": [
-    "trace:.ob-ghost:20000",
     "crop:#stage"
    ],
    "expect": [
-    "traceRepeats:.ob-ghost>=2"
+    "times:life:ghost>=2"
    ],
-   "note": "second play: the ghost finger shows the tap after each pause until the move is made"
+   "note": "second play: the ghost finger shows the tap after each pause until the move is made (Cook's S.ghost logs each play: life:ghost)"
   }
  ],
  "MAA-14": [
@@ -8553,10 +8557,13 @@
    "at": "after-wrong",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal"
+    "zoom2:.cl-heal",
+    "zoom2:hook:heal.dropper"
    ],
-   "expect": null,
-   "note": "after na the dropper sits over the eye"
+   "expect": [
+    "centredOn:hook:heal.dropper,hook:heal.soreEye"
+   ],
+   "note": "after na the dropper sits over the eye (debug.dropper() and debug.soreEye(): the bottle centred over her open eye)"
   },
   {
    "flow": "clinic:heal-eye",
@@ -9113,16 +9120,17 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "idle",
+   "at": "life:ghost",
    "after": null,
    "capture": [
     "trace:.ob-ghost:4000",
     "zoom2:.hs-tools"
    ],
    "expect": [
-    "traceAmp:.ob-ghost>=40"
+    "traceAmp:.ob-ghost>=40",
+    "times:life:ghost>=1"
    ],
-   "note": "the ghost finger drags the tweezers to a bin; the drop bottle nozzle down"
+   "note": "the ghost finger drags the tweezers to a bin (the trace starts as it plays: life:ghost); the drop bottle nozzle down"
   },
   {
    "flow": "clinic:heal-ear",

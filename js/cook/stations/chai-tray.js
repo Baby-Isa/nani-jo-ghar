@@ -236,6 +236,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const panScale = panR / (pm.r * pm.w);
     const rIn = pm.rIn * pm.w * panScale;
     const rimR = pm.body * pm.w * panScale;
+    // where a pan's heat ring is (the gauge's place for the test hook __cook.gauge().box; s04-hooks): the ring and its track
+    const ringAt = (pan) => ({ x: pan.x, y: pan.y, r: rimR + 10 });
     const pans = people.map((p, i) => {
       const x = burners[i];
       const y = kHob.burners[i].y;
@@ -698,7 +700,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
       });
       if (steamT > 0.3) steamT = 0;
-      if (gaugePan && gaugePan.state === "heating") zb.gauge({ level: gaugePan.heat, lo, hi });
+      if (gaugePan && gaugePan.state === "heating") zb.gauge({ level: gaugePan.heat, lo, hi, at: ringAt(gaugePan) });
     });
 
     /* ---------- pouring: a ready pan tips into its person's glass ---------- */
@@ -963,7 +965,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       const nx = plan();
       gaugePan = nx && nx.gauge ? nx.gauge : null;
-      if (gaugePan) zb.gauge({ level: gaugePan.heat, lo, hi });
+      if (gaugePan) zb.gauge({ level: gaugePan.heat, lo, hi, at: ringAt(gaugePan) });
       zb.expect(nx ? nx.e : null);
       if (nx) phase(nx.phase, nx.pid); // S02-B: nothing to do -> the box is empty (R2)
       // the focal rule: the next generic step pulses (a person's choice only when Nani helps)

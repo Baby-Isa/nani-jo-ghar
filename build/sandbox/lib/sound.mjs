@@ -104,6 +104,19 @@ export const SOUND_HOOK = `(() => {
       };
     }
   } catch (e) {}
+  // 3b. a game's synthesized loop (no file: Cook's sizzle, MAA-11): the game's own "njg-sfx" start and stop events
+  // (js/cook/core.js sfxEvent) as a play of "sfx/<name>" and its end. via "sfx": a sound effect, never a voice (the contract's
+  // voice checks and the sound summary leave it out; the evidence voice timeline lists it on its own rows)
+  try {
+    const sfxPid = new Map();
+    window.addEventListener("njg-sfx", (ev) => {
+      try {
+        const d = (ev && ev.detail) || {};
+        if (d.on) { const pid = ++pidSeq; sfxPid.set(d.id, pid); log({ type: "play", via: "sfx", url: "sfx/" + String(d.name || "?"), pid, dur: null, quiet: !!d.quiet }); }
+        else if (sfxPid.has(d.id)) { log({ type: "play-end", pid: sfxPid.get(d.id), why: "stop" }); sfxPid.delete(d.id); }
+      } catch (x) {}
+    });
+  } catch (e) {}
   // 4. lines: wrap the games' own "say a line" functions as they appear
   let seq = 0;
   function wrapLine(obj, name, who, textOf) {
@@ -201,7 +214,7 @@ export class SoundLog {
     for (const e of this.events) {
       if (e.type === "line") lines.set(e.id, { id: e.id, text: e.text, who: e.who, t0: e.t, t1: null, plays: [], page: e.page });
       else if (e.type === "line-end" && lines.has(e.id)) lines.get(e.id).t1 = e.t;
-      else if (e.type === "play") plays.push({ ...e, c: classify(e) });
+      else if (e.type === "play" && e.via !== "sfx") plays.push({ ...e, c: classify(e) }); // a sound effect is not a line's voice
     }
     for (const p of plays) {
       // the line that was open when it played: the latest one that had started and had not ended (+ a little slack)

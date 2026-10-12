@@ -23,6 +23,9 @@
  *                                   channels and <audio>, the clinic's Kit.Voice, Cook's read-along), so one stop silences
  *                                   everything: voice.stop(reason) voice.gen() voice.track(audio, onCut) voice.onStop(fn)
  *   Lifecycle.onStageEnd(fn) -> off()   Lifecycle.log   (what happened when: {what, reason, t}; the contract checks read it)
+ *   Lifecycle.ghost(step, info)     TEST HOOK (only logged, s04-hooks): the ghost finger played once (Onboard's kit, Cook's
+ *                                   S.ghost): {what: "ghost", reason: step, step, ...info} in Lifecycle.log, so a probe counts
+ *                                   plays (SH-46, MAA-13, CLN-101) instead of catching frames
  *
  * The request pop-up and the voice stop (Sprint 3, S03-A; decision 53, CLN-84, SH-64, CLN-109). One pop-up for every
  * mode: Cook's requests, the pharmacy's prescription and every heal game open with it before play starts.
@@ -446,6 +449,15 @@
      */
     stageStart(reason) {
       note("stage-start", reason || "");
+    },
+    /** TEST HOOK (read-only for the game: only logged): the ghost finger played once; step names what it showed. */
+    ghost(step, info) {
+      note("ghost", step == null ? "" : String(step));
+      try {
+        if (info && typeof info === "object") Object.assign(log[log.length - 1], info, { what: "ghost", step: step == null ? "" : String(step) });
+      } catch (e) {
+        /* only a log */
+      }
     },
     onStageEnd(fn) {
       endHooks.add(fn);

@@ -809,6 +809,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         let pouring = false;
         let level = 0;
         let loop = null;
+        // where the gauge is (the test hook's box, __cook.gauge(); s04-hooks): the thing being poured
+        const boxOf = () => {
+          const b = obj.getBounds();
+          return { x: b.x, y: b.y, w: b.width, h: b.height };
+        };
         const start = () => {
           if (pouring) return;
           pouring = true;
@@ -849,7 +854,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             return finish();
           }
           onLevel && onLevel(level);
-          io.gauge({ level, lo, hi });
+          io.gauge({ level, lo, hi, at: boxOf });
           if (level >= 1.08) {
             pouring = false;
             loop && loop.stop();
@@ -857,7 +862,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             finish();
           }
         });
-        io.gauge({ level: 0, lo, hi });
+        io.gauge({ level: 0, lo, hi, at: boxOf });
         const c = this.centre(obj);
         io.expect({ kind: "hold", x: c.x, y: c.y });
       });
@@ -925,18 +930,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (nowIn) Cook.sfx.click();
           }
           onLevel && onLevel(v);
-          io.gauge({ level: v, lo, hi });
+          io.gauge({ level: v, lo, hi, at: { x, y, r: r + 8 } });
           draw();
           if (v >= 1) hit();
         });
         draw();
-        io.gauge({ level: 0, lo, hi });
+        io.gauge({ level: 0, lo, hi, at: { x, y, r: r + 8 } });
         io.expect({ kind: "timing", x: c.x, y: c.y });
       });
     }
 
-    /** A see-through fingertip that demonstrates a gesture until the player starts. */
-    ghost(points, { duration = 1100, delay = 0 } = {}) {
+    /**
+     * A see-through fingertip that demonstrates a gesture until the player starts. step: what it shows, for the test
+     * log only (each play is logged to Lifecycle.log as {what: "ghost", step, at}: MAA-13; s04-hooks).
+     */
+    ghost(points, { duration = 1100, delay = 0, step = null } = {}) {
       const dot = this.track(this.add.circle(0, 0, 26, 0xffffff, 0.75).setStrokeStyle(5, 0x3a2410, 0.35).setDepth(D.top).setVisible(false));
       // Nani's see-through finger shows the move (js/cook/hands.js), once her hand has loaded
       let nh = null;
@@ -946,6 +954,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!alive || !dot.active) return;
         if (!nh && Cook.Hands) nh = Cook.Hands.ghost(this);
         dot.setVisible(!nh);
+        // TEST HOOK (s04-hooks; only logged): each play in Lifecycle.log, so a probe counts plays (MAA-13)
+        try {
+          const L = window.Lifecycle;
+          if (L && L.ghost) {
+            const p0 = points.circle ? points.circle : { x: points[0][0], y: points[0][1] };
+            const at = UI.worldToScreen ? UI.worldToScreen(p0.x, p0.y) : p0;
+            L.ghost(step || `cook:${this.viewName || (this.sys && this.sys.settings.key) || "?"}`, { gesture: points.circle ? "circle" : "path", at: { x: Math.round(at.x), y: Math.round(at.y) } });
+          }
+        } catch (e) {
+          /* only a log */
+        }
         tw = this.tweens.addCounter({
           from: 0,
           to: 1,

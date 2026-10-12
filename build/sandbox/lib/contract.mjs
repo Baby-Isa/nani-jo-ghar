@@ -107,6 +107,7 @@ export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
   let load = 0, lastPage = null;
   const key = (e, id) => `${load}|${id}`;
   for (const e of tl) {
+    if (e.type === "play" && e.via === "sfx") continue; // a sound effect (Cook's sizzle loop: lib/sound.mjs 3b), never a voice
     if (e.page && e.page !== lastPage && (e.type === "line" || e.type === "play")) { if (lastPage != null) load++; lastPage = e.page; }
     if (e.type === "line") { if (lines.has(key(e, e.id))) load++; lines.set(key(e, e.id), { id: key(e, e.id), text: e.text, who: e.who, role: e.role || null, t0: e.t, t1: null, plays: [] }); }
     else if (e.type === "line-end" && lines.has(key(e, e.id))) lines.get(key(e, e.id)).t1 = e.t;

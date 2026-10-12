@@ -25,7 +25,8 @@ export const PROFILES = ["fresh", "seen", "second-play"];
 export const KINDS = ["layout", "detail", "art", "motion", "text", "voice"];
 
 // ---------- selectors ----------
-// a CSS selector; canvas:<name> (a Phaser display object whose texture key or name contains it); tool:<id> (a heal game's tool)
+// a CSS selector; canvas:<name> (a Phaser display object whose texture key or name contains it); tool:<id> (a heal game's tool);
+// hook:cook.<fn> / hook:heal.<fn> (the boxes a game's own test hook reports: lib/evidence-probe.mjs BOXES)
 export const cssOf = (sel) => (/^tool:/.test(sel) ? `.hs-tool[data-tool="${sel.slice(5).replace(/"/g, "")}"]` : sel);
 
 // ---------- capture strings ----------
@@ -89,7 +90,7 @@ export function parseCmd(s) {
 
 // ---------- expect strings (the machine assertions; anything else is read by the reviewer) ----------
 // The words of the spec file's _expect list. "!" in front negates (true <-> false; undecided stays undecided).
-export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRepeats:", "clipClass:", "liveInput", "pass"];
+export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRepeats:", "clipClass:", "liveInput", "pass"];
 const OP = "(>=|<=|=|<|>)";
 export function parseExpect(s, { contractChecks = null } = {}) {
   let t = String(s || "").trim(), not = false;
@@ -126,6 +127,8 @@ function parseExpectOne(t, contractChecks) {
   if (t === "familyOnly" || t === "family-voice") return { kind: "familyOnly" };
   if ((m = new RegExp(`^gapMs:(.+?),(.+?)${OP}(\\d+)$`).exec(t))) return { kind: "gapMs", a: m[1].trim(), b: m[2].trim(), op: m[3], n: +m[4] };
   if ((m = /^moves-on:(\d+)-(\d+)$/.exec(t))) return { kind: "movesOn", min: +m[1], max: +m[2] };
+  // times:<moment><op><n>: how many times the moment came while the probe was armed (each ghost-finger play: life:ghost)
+  if ((m = new RegExp(`^times:(.+?)${OP}(\\d+)$`).exec(t))) return { kind: "times", moment: m[1].trim(), op: m[2], n: +m[3] };
   if ((m = new RegExp(`^lastsMs:(.+?)${OP}(\\d+)$`).exec(t))) return { kind: "lastsMs", sel: m[1].trim(), op: m[2], n: +m[3] };
   if ((m = new RegExp(`^(traceAmp|tracePeriod|traceRepeats|amp|period):(.+?)${OP}(\\d+(?:\\.\\d+)?)$`).exec(t))) return { kind: { amp: "traceAmp", period: "tracePeriod" }[m[1]] || m[1], sel: m[2].trim(), op: m[3], n: +m[4] };
   if ((m = /^clipClass:([\w-]+)$/.exec(t))) return { kind: "clipClass", cls: m[1] };

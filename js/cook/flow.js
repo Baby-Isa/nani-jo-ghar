@@ -1595,9 +1595,50 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       delete out.wrongs;
       return out;
     },
+    /** box (s04-hooks; PAN-08, CHAI-10): where the gauge is drawn, client px {left, top, width, height}, when its station says (g.at) */
     gauge() {
       const g = Cook.gauge;
-      return g ? { level: g.level, lo: g.lo, hi: g.hi } : null;
+      if (!g) return null;
+      let box = null;
+      try {
+        const a = typeof g.at === "function" ? g.at() : g.at;
+        if (a) {
+          const x0 = a.r != null ? a.x - a.r : a.x;
+          const y0 = a.r != null ? a.y - a.r : a.y;
+          const p = UI.worldToScreen(x0, y0);
+          const q = UI.worldToScreen(a.r != null ? a.x + a.r : a.x + a.w, a.r != null ? a.y + a.r : a.y + a.h);
+          box = { left: p.x, top: p.y, width: q.x - p.x, height: q.y - p.y };
+        }
+      } catch (e) {
+        box = null;
+      }
+      return { level: g.level, lo: g.lo, hi: g.hi, box };
+    },
+    /**
+     * TEST HOOK (s04-hooks; read-only; PAN-08, CHAI-10): what is highlighted now: every picture wearing the
+     * "this one" glow (CookScene.glow: one at a time, SH-53), each {key, name, bounce, box: client px}; [] when none.
+     */
+    glowing() {
+      const out = [];
+      const g = Cook.game;
+      if (!g || !g.scene) return out;
+      const walk = (list) => {
+        for (const o of list || []) {
+          if (!o || o.visible === false) continue;
+          if (o.list) walk(o.list);
+          if (!o.glowFx || o.active === false || !o.getBounds) continue;
+          const b = o.getBounds();
+          const p = UI.worldToScreen(b.x, b.y);
+          const q = UI.worldToScreen(b.right, b.bottom);
+          out.push({ key: (o.texture && o.texture.key) || o.type, name: o.name || "", bounce: o.glowFx.y != null, box: { left: p.x, top: p.y, width: q.x - p.x, height: q.y - p.y } });
+        }
+      };
+      try {
+        g.scene.getScenes(true).forEach((sc) => walk(sc.children && sc.children.list));
+      } catch (e) {
+        /* a test hook only */
+      }
+      return out;
     },
     state() {
       return {

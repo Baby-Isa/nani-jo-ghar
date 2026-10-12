@@ -446,6 +446,36 @@
     src.start(t);
     return { src, g };
   }
+  /*
+   * TEST HOOK (s04-hooks, MAA-11; read-only: what plays is unchanged): a synthesized loop has no file, so the sandbox's
+   * sound hook cannot see it. Its start and its stop go out as a window "njg-sfx" event ({name, id, on, quiet: no audio
+   * context}); the sound hook logs them as a play of "sfx/<name>" and its end, like the other sound events.
+   */
+  let sfxSeq = 0;
+  function sfxEvent(name, h) {
+    try {
+      const id = ++sfxSeq;
+      const quiet = !ctx;
+      const tell = (on) => global.dispatchEvent(new CustomEvent("njg-sfx", { detail: { name, id, on, quiet } }));
+      tell(true);
+      const stop = h.stop;
+      let told = false;
+      h.stop = function () {
+        if (!told) {
+          told = true;
+          try {
+            tell(false);
+          } catch (e) {
+            /* only a log */
+          }
+        }
+        return stop.apply(this, arguments);
+      };
+    } catch (e) {
+      /* only a log */
+    }
+    return h;
+  }
   // a looping noise (pouring, sizzling) that the caller stops
   function loopNoise({ gain = 0.15, freq = 1200, q = 1, type = "bandpass", wobble = 0 } = {}) {
     if (!ctx) return { stop() {} };
@@ -560,7 +590,7 @@
       return loopNoise({ gain: 0.12, freq: 900, q: 0.7, wobble: 7 });
     },
     sizzleLoop() {
-      return loopNoise({ gain: 0.07, freq: 6000, q: 0.4, type: "highpass" });
+      return sfxEvent("sizzle-loop", loopNoise({ gain: 0.07, freq: 6000, q: 0.4, type: "highpass" }));
     },
     boilLoop() {
       return loopNoise({ gain: 0.05, freq: 400, q: 2, wobble: 5 });

@@ -715,6 +715,22 @@
       console.error(`Healing game "${def.id}" failed to mount`, e);
       throw e;
     }
+    // TEST HOOK (s04-hooks; read-only, CLN-82, CLN-104): debug.glowing() -> the tools glowing now (the next-up reveal, a
+    // game's own pulse), each {tool, nextUp, box: {left, top, width, height} in client px}; [] when nothing glows
+    if (controller.debug && typeof controller.debug === "object" && !("glowing" in controller.debug)) {
+      try {
+        Object.defineProperty(controller.debug, "glowing", {
+          configurable: true,
+          value: () =>
+            [...stage.querySelectorAll(".hs-tool.pulse, .hs-tool.next-up")]
+              .map((b) => ({ b, r: b.getBoundingClientRect() }))
+              .filter((x) => x.r.width > 1 && x.r.height > 1)
+              .map(({ b, r }) => ({ tool: b.dataset.tool || "", nextUp: b.classList.contains("next-up"), box: { left: r.left, top: r.top, width: r.width, height: r.height } })),
+        });
+      } catch (e) {
+        /* a test hook only */
+      }
+    }
     // S03-A (decision 53, CLN-84 re-raised, SH-64): every heal game opens with the shared request pop-up, as Cook and
     // the pharmacy do: the doctor's card at full size over the room, read out row by row; a tap anywhere stops the
     // voice and folds it into the sidebar; then the game starts, quiet (its opening repeat of the card is skipped)

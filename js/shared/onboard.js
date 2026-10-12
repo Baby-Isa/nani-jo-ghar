@@ -382,6 +382,13 @@
       }
       const keys = Onboard.path(st.ghost.gesture, centre(fromR), centre(toR), fromR);
       const dur = st.ghost.ms || DUR[st.ghost.gesture];
+      // TEST HOOK (s04-hooks; only logged): each play in Lifecycle.log, so a probe counts plays (SH-46, CLN-101)
+      try {
+        const box = (r) => (r ? { left: r.x, top: r.y, width: r.w, height: r.h } : null);
+        if (root.Lifecycle && root.Lifecycle.ghost) root.Lifecycle.ghost(`${id}#${s.index}`, { id, index: s.index, gesture: st.ghost.gesture, replay: s.replays, from: box(fromR), to: box(toR) });
+      } catch (e) {
+        /* only a log */
+      }
       const tf = (p) => `translate(${p.x - hot[0]}px, ${p.y - hot[1]}px) scale(${p.press ? 0.88 : 1})`;
       ghost.classList.add("on");
       ghost.classList.toggle("hold", st.ghost.gesture === "hold");

@@ -370,7 +370,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         ghostT = null;
         if (waiting !== w || onTawa || finished) return;
         const c = S.centre(w.sprite);
-        ghostOn = { it: w, g: S.ghost([[c.x, c.y], [c.x, c.y + 2]], { duration: 900 }) };
+        ghostOn = { it: w, g: S.ghost([[c.x, c.y], [c.x, c.y + 2]], { duration: 900, step: "maani-tap" }) };
       });
     }
 

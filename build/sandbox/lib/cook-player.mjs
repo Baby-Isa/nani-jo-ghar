@@ -9,15 +9,8 @@ import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWord
 // fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
 const VOICE_MODES = new Set(["tap-during-speech", "tap-during-pause", "tap-quick"]);
 const CALM = ["tap", "hold", "count", "more", "swipe", "roll", "knead", "stir"];
-// the page side of tawa-empty-then-off (MAA-11): Cook's sizzle is a synthesized loop (no file), so the sound hook never sees it;
-// this logs each loop's start and stop as a play ("sfx/sizzle-loop") into the same timeline, so the voice capture shows it
-const SIZZLE = `(() => {
-  const C = window.Cook; if (!C || !C.sfx || !C.sfx.sizzleLoop || C.sfx.sizzleLoop.__drv) return !!(C && C.sfx && C.sfx.sizzleLoop && C.sfx.sizzleLoop.__drv);
-  const orig = C.sfx.sizzleLoop; let n = 0;
-  const log = (e) => { e.t = Date.now(); e.page = location.pathname.replace(/^\\//, ""); try { window.__njgLog && window.__njgLog(e); } catch (x) {} };
-  const w = function () { const h = orig.apply(this, arguments); const pid = 900000 + ++n; log({ type: "play", via: "sfx", url: "sfx/sizzle-loop", pid, dur: null }); const st = h && h.stop; if (h && st) h.stop = function () { log({ type: "play-end", pid, why: "stop" }); return st.apply(this, arguments); }; return h; };
-  w.__drv = true; C.sfx.sizzleLoop = w; return true;
-})()`;
+// tawa-empty-then-off (MAA-11): Cook's sizzle loop is in the sound log as "sfx/sizzle-loop" on every page (the game's own
+// "njg-sfx" event, lib/sound.mjs 3b; s04-hooks), so this driver no longer wraps it
 
 const STIR = { slow: 0.45, quick: 1.4, default: 0.7, spill: 3.4 };
 
@@ -532,7 +525,6 @@ export class CookPlayer {
     const t0 = Date.now();
     let lastKind = null, lastView = null, idle = 0, closed = false;
     if (VOICE_MODES.has(this.mode)) this.voice = await watchVoice(this.page);
-    if (this.mode === "tawa-empty-then-off") await this.page.evaluate(SIZZLE).catch(() => false);
     if (this.mode === "tap-quick") {
       // tap-quick (PAN-12): each count word as it starts (drv:count-word), so the gap between them is measured
       const nums = await numberWords(ROOT), since = await this.voice.now(), marked = new Set();

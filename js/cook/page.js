@@ -4,7 +4,7 @@
  * opens Cook here (?app=1, js/cook/app.js); the game host mounts the same plug-in for labs and rounds (js/cook/main.js).
  *
  * TEST HOOK (marked). window.__cook is Cook's test hook, as before (flow.js Cook.testHook: lab, order, expectation,
- * state...). Under automation only (navigator.webdriver: the sandbox's player, the leak bot and the canvas lint, which
+ * gauge (with its screen box), glowing (what is highlighted now), state...). Under automation only (navigator.webdriver: the sandbox's player, the leak bot and the canvas lint, which
  * are not Cook's files, still read Cook.speed, Cook.UI, Cook.save, Cook.Order ...), Cook's namespace is also
  * window.Cook. No other Cook global: the rest of the page reaches Cook through this module.
  */

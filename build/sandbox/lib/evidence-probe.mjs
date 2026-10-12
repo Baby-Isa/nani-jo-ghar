@@ -38,7 +38,8 @@ export const EVIDENCE_HOOK = (watch = []) => `(() => {
 })();`;
 
 // ---- the in-page measuring helpers (one function source, evaluated with its arguments) ----
-// boxes(sel): the visible matches of a CSS selector, or of canvas:<name> (a Phaser display object whose name or texture key contains it)
+// boxes(sel): the visible matches of a CSS selector, or of canvas:<name> (a Phaser display object whose name or texture key contains it),
+// or the boxes a game's test hook reports (hook:cook.<fn>, hook:heal.<fn>)
 const BOXES = `(sel) => {
   const vis = (el) => { const r = el.getBoundingClientRect(); if (r.width < 2 || r.height < 2 || r.right < 0 || r.bottom < 0 || r.left > innerWidth || r.top > innerHeight) return null;
     let o = 1; for (let x = el; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden") return null; o *= parseFloat(cs.opacity); } return o > 0.05 ? r : null; };
@@ -52,6 +53,18 @@ const BOXES = `(sel) => {
           const b = o.getBounds(); out.push({ l: cr.left + (b.x - cam.scrollX) * z * kx, t: cr.top + (b.y - cam.scrollY) * z * ky, r: cr.left + (b.right - cam.scrollX) * z * kx, b: cr.top + (b.bottom - cam.scrollY) * z * ky }); } };
         walk(sc.children.list); } }
     return out;
+  }
+  // hook:<game>.<fn>: a game's own read-only test hook that returns a box, a {box} or a list of them in client px (s04-hooks):
+  // hook:cook.glowing, hook:cook.gauge (__cook), hook:heal.glowing, hook:heal.dropper, hook:heal.soreEye (the heal game's debug)
+  if (sel.startsWith("hook:")) {
+    const m = /^hook:(cook|heal)\\.(\\w+)$/.exec(sel); if (!m) return { error: "bad hook " + sel + " (hook:cook.<fn> or hook:heal.<fn>)" };
+    let obj = null;
+    if (m[1] === "cook") obj = window.__cook || (window.Cook && window.Cook.testHook);
+    else { const st = window.__clinic && window.__clinic.Stages && window.__clinic.Stages.heal, r = (st && st.current) || (window.__heal && window.__heal.run); obj = r && r.controller && r.controller.debug; }
+    if (!obj || typeof obj[m[2]] !== "function") return [];
+    let v = null; try { v = obj[m[2]](); } catch (e) { return []; }
+    return (Array.isArray(v) ? v : v ? [v] : []).map((x) => x && (x.box || x)).filter((b) => b && isFinite(b.left) && isFinite(b.top) && b.width > 0 && b.height > 0)
+      .map((b) => ({ l: b.left, t: b.top, r: b.left + b.width, b: b.top + b.height }));
   }
   let els = []; try { els = Array.from(document.querySelectorAll(sel)); } catch (e) { return { error: "bad selector " + sel }; }
   return els.map(vis).filter(Boolean).map((r) => ({ l: r.left, t: r.top, r: r.right, b: r.bottom }));
@@ -76,7 +89,7 @@ const TRACE = `async ([sel, ms]) => {
   while (performance.now() - t0 < ms) {
     const bs = boxes(sel); if (bs && bs.error) return [{ error: bs.error }];
     let o = 1, tr = "";
-    if (bs.length && !sel.startsWith("canvas:")) { const el = Array.from(document.querySelectorAll(sel)).find((e) => e.getBoundingClientRect().height > 1); if (el) { const cs = getComputedStyle(el); o = parseFloat(cs.opacity); tr = cs.transform === "none" ? "" : cs.transform; } }
+    if (bs.length && !sel.startsWith("canvas:") && !sel.startsWith("hook:")) { const el = Array.from(document.querySelectorAll(sel)).find((e) => e.getBoundingClientRect().height > 1); if (el) { const cs = getComputedStyle(el); o = parseFloat(cs.opacity); tr = cs.transform === "none" ? "" : cs.transform; } }
     const b = bs[0];
     out.push(b ? { t: Math.round(performance.now() - t0), x: Math.round(((b.l + b.r) / 2) * 10) / 10, y: Math.round(((b.t + b.b) / 2) * 10) / 10, o: Math.round(o * 100) / 100, tr } : { t: Math.round(performance.now() - t0), x: NaN, y: NaN, o: 0, tr: "" });
     await new Promise((r) => setTimeout(r, 50));
@@ -180,6 +193,7 @@ export class EvidenceProbe {
     this.t0 = Date.now();
     this.armed = armed;           // second-play: armed for the second play only
     this.seen = [];               // every moment name, in order (consecutive repeats once)
+    this.counts = {};             // how many times each moment came while armed (repeats too: the times: expect)
     this.chain = Promise.resolve();
     this.want = spec.want ? { list: spec.want, ok: null } : null;
     this.abort = new Promise((_, rej) => { this.reject = rej; });
@@ -200,6 +214,7 @@ export class EvidenceProbe {
     const t = Date.now() - this.t0;
     if (this.seen[this.seen.length - 1]?.name !== name && this.seen.length < 800) this.seen.push({ name, t });
     if (this.want && this.want.ok == null) await this.checkWant(name);
+    if (this.armed) this.counts[name] = (this.counts[name] || 0) + 1;
     if (!this.armed) return;
     const jobs = [];
     for (const s of this.state) {
@@ -378,6 +393,7 @@ export class EvidenceProbe {
           put({ ok: o.ok, why: `${o.why} (rows: ${h.rows[e.raw].map((x) => x.replace(/\s+/g, " ").slice(0, 30)).join(" | ")})` });
         } else if (e.kind === "movesOn") put(movesOn(tl, e.min, e.max, s.hits.length ? T0 + s.hits[0].t - 50 : 0));
         else if (e.kind === "silentAfter") put(silentAfter(plays, timesOf(e.moment)));
+        else if (e.kind === "times") { const n = Object.entries(this.counts).filter(([k]) => momentMatches(e.moment, k)).reduce((a, [, v]) => a + v, 0); put({ ok: cmp(n, e.op, e.n), why: `${e.moment} came ${n} times` }); }
         else if (e.kind === "gapMs") { const g = gapMs(this.seen, e.a, e.b, momentMatches); put(g.ms == null ? { ok: null, why: g.why } : { ok: cmp(g.ms, e.op, e.n), why: g.why }); }
         else if (e.kind === "lastsMs") {
           const sel = cssOf(e.sel), on = this.seen.find((x) => x.name === `visible:${sel}`);
@@ -416,6 +432,12 @@ function voiceText(r, tl, hits, { root, T0 }) {
   const rows = [];
   for (const e of tl) if (e.type === "c" && e.k === "life") rows.push([e.t, `${T(e.t)}  ---- ${e.what}${e.reason ? ` (${e.reason})` : ""}`]);
   for (const e of tl) if (e.type === "c" && e.k === "input") rows.push([e.t, `${T(e.t)}  tap on ${e.on}${e.next ? " (a ✓/Next)" : ""}`]);
+  // a sound effect's loop (Cook's sizzle: the game's own njg-sfx event, lib/sound.mjs 3b), its start and stop on rows of their own
+  const sfxOn = new Map();
+  for (const e of tl) {
+    if (e.type === "play" && e.via === "sfx") { sfxOn.set(e.pid, e.url); rows.push([e.t, `${T(e.t)}  sfx ${e.url} starts${e.quiet ? " (no audio context: nothing heard)" : ""}`]); }
+    else if (e.type === "play-end" && sfxOn.has(e.pid)) { rows.push([e.t, `${T(e.t)}  sfx ${sfxOn.get(e.pid)} stops`]); sfxOn.delete(e.pid); }
+  }
   let n = 0;
   for (const l of v.lines) {
     if (!(l.text || "").trim()) continue;

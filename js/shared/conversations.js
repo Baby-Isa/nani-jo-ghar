@@ -947,6 +947,13 @@
     const r = target.getBoundingClientRect();
     g.style.left = `${r.left + r.width / 2}px`;
     g.style.top = `${r.top + r.height / 2}px`;
+    // TEST HOOK (s04-hooks; only logged): the ghost finger's play in Lifecycle.log
+    try {
+      const L = typeof window !== "undefined" ? window.Lifecycle : null;
+      if (L && L.ghost) L.ghost("conversation:pill", { gesture: "tap", from: { left: r.left, top: r.top, width: r.width, height: r.height } });
+    } catch (e) {
+      /* only a log */
+    }
     for (let i = 0; i < 2; i++) {
       g.classList.remove("tap");
       void g.offsetWidth;

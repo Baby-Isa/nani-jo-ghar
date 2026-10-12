@@ -739,6 +739,21 @@
         get redrop() {
           return !!st.redrop;
         },
+        /** TEST HOOK (CLN-62; read-only): the hanging dropper's bottle, client px ({left, top, width, height}), or null */
+        dropper() {
+          if (!dropperAt || dropper.getAttribute("opacity") === "0") return null;
+          const r = (dropper.querySelector("image") || dropper).getBoundingClientRect();
+          return r.width > 0 ? { left: r.left, top: r.top, width: r.width, height: r.height } : null;
+        },
+        /** TEST HOOK (CLN-62; read-only): the sore eye, client px: the close-up's sore eye, or her open eye in the eye test */
+        soreEye() {
+          const e = st.view === "test" ? readEye : sore;
+          if (!e) return null;
+          const h = st.view === "test" ? { rx: 30, ry: 20 } : { rx: 92, ry: 54 }; // the eye's half size, svg units
+          const a = S.client(e.x - h.rx, e.y - h.ry);
+          const b = S.client(e.x + h.rx, e.y + h.ry);
+          return { left: a.x, top: a.y, width: b.x - a.x, height: b.y - a.y };
+        },
         version,
         next() {
           if (!S.ready) return { do: "wait" };
