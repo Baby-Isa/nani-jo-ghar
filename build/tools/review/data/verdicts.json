@@ -1,1 +1,979 @@
-{}
+{
+ "ART-13": {
+  "hash": "b65cc2959ccf66c27ff6",
+  "dhash": [
+   "0000000000000000"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "ART-17": {
+  "hash": "3b8237efa67a7b59c702",
+  "dhash": [
+   "5858540244400000"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CHT-08": {
+  "hash": "91161f8da0a4f8077fef",
+  "dhash": [
+   "c083a44241412302"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:#mission .oc-card=1 (1 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CHT-09": {
+  "hash": "2a7b815d724964a3173b",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:(?i)arre re (not (text: \"Muke chaat khape. Kali hakro bataato. hakro bataato Bas! Muke chaat khape. Pela chana. chana chana Bataato. Wiji chad! b\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CHT-10": {
+  "hash": "43dac28f1d1eede3d842",
+  "dhash": [
+   "e6019595134101b0"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-17": {
+  "hash": "4258f9e60e33dcf5c1c2",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:(?i)nani shows you (not (text: \"Muke maani khape. hakri maani\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-19": {
+  "hash": "784590207276b55a14eb",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (pass: the cmd's exit code (the CLI); node build/tools/review/loadcheck.mjs --time: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-20": {
+  "hash": "489f64f0fa9f1cd39030",
+  "dhash": [
+   "c4ceca8e8a8c8cc4"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: CK-20-p1-L1-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-22": {
+  "hash": "93f522a912dac41a1a5e",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: CK-22-p2-L1-1366x768: lexicon: not in the family lexicon: lab",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-25": {
+  "hash": "088be5e9583ae4b91440",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (pass: the cmd's exit code (the CLI); node build/tools/review/loadcheck.mjs --time --only cook: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-26": {
+  "hash": "66631db6e73a07399be9",
+  "dhash": [
+   "6e7e7f6f69edead3",
+   "d2c33567233527dc"
+  ],
+  "verdict": "PASS",
+  "line": "machine: lexicon (9 words, all in the lexicon)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-28": {
+  "hash": "fb6468235905f26d4ba0",
+  "dhash": [
+   "c8409488d21008e0"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:h2>=3 (3 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CK-29": {
+  "hash": "02e3036cf4abcef8d85a",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-109": {
+  "hash": "f278dd6d6aadba845306",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); silentAfter:stage-end (13 moments, silent after each)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-110": {
+  "hash": "ad6cc22f7445d9e6f91c",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); count:.njg-done=0 (0 visible); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-20": {
+  "hash": "06f919ee97acd5e9f9b8",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:\\d+\\s*s\\b (not (text: \"Plaster. Good. Bring me ?\")); !textMatches:\\d+\\s*s\\b (not (text: \"Bring me thermometer Bring me ?\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-27": {
+  "hash": "cb532720d5bb5913d3c3",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:(?i)lolly|lollipop|🍭 (not (text: \"?\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-31": {
+  "hash": "4d323f8ddf5611e38019",
+  "dhash": [
+   "cfe5a9cac6ccc8c2"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-33": {
+  "hash": "fe3d2b429f5f1a9d8558",
+  "dhash": [
+   "9173b1a6e1e7a6e6",
+   "9173b1a2e1e7a6e6"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (pass: the cmd's exit code (the CLI); node build/tools/review/leak.mjs clinic-heal-knee --rounds 300: exit 0); pass (pass: the cmd's exit code (the CLI); node build/tools/review/leak.mjs clinic-heal-knee --rounds 300: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-39": {
+  "hash": "6c55c48ffa2952ab46c2",
+  "dhash": [
+   "e165d3c3c3c3d0d2",
+   "c1c5a18581c160a3"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.cl-heal [data-undo]=0 (0 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-44": {
+  "hash": "764b4a8e40e9c41c6823",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: textMatches:\\S (text: \"Let's soothe the sore spots. Let's soothe the sore spots. Let's soothe the sore spots. Let's soothe the sore spots. Let'\")",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-48": {
+  "hash": "eb38e7c73a43daa40c38",
+  "dhash": [
+   "9173b1a6a5e3d3f0",
+   "9173b1a6a1e7e6e6"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: CLN-48-p1-L2-1366x768: count:.cl-heal .cl-ring=1: 0 visible (8 moments); CLN-48-p1-L3-1366x768: count:.cl-heal .cl-ring=1: 0 visible (6 moments)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-66": {
+  "hash": "d7bd0b797dc6ddfdfab1",
+  "dhash": [
+   "c363e2e4e0e2f3f6",
+   "83e7c6d0c4c26aee"
+  ],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:🍭 (not (text: \"Wipe, ba Time for the jab. Wipe, ba ?\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-68": {
+  "hash": "c991091e6ecc2211e067",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:\\s, (not (text: \"Wipe, ba Time for the jab. Wipe, ba\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-70": {
+  "hash": "d9a0f297219bea128f03",
+  "dhash": [
+   "6660808080036363",
+   "9e83010101062686",
+   "40430303030603c0",
+   "0003038303060300"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.njg-done=0 (0 visible); count:.njg-done=0 (0 visible); count:.njg-done=0 (0 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-73": {
+  "hash": "b06d7dba3a7edd1ffa7b",
+  "dhash": [
+   "6f250d1d19074b43",
+   "2f1d1d0d0d03074b"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:.rs-card (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-83": {
+  "hash": "b59be125f082e91b9926",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); gapMs:stage-end,request<=1500 (stage-end -> request: 1 ms)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-88": {
+  "hash": "2503fd00445d8872ef2b",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (pass: the cmd's exit code (the CLI); node build/tools/review/loadcheck.mjs --time --only clinic:morning: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "CLN-89": {
+  "hash": "46dbb0d0b4b5ba33eb63",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: textMatches:(?i)clinic (text: \"Game labs Grey-box versions of the new modes, for trying the mechanics. Every lab has level and game pickers at the top.\")",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "DAAR-08": {
+  "hash": "a6e09ba4b8ad76c5dc2d",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: hasWord:number (number: ba); hasWord:number (number: trae, ba); hasWord:number (number: trae, hakro)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "DAAR-11": {
+  "hash": "0a9b3ac9bb9e2bdcd7dd",
+  "dhash": [
+   "ff8f9a5a04028fc3"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: DAAR-11-p1-L1-1366x768: traceAmp:canvas:ladle>=20: amp 0",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "DAAR-15": {
+  "hash": "e73d264792d46f41a609",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:(?i)\\btadka\\b(?!.*lab only) (not (text: \"Game labs Grey-box versions of the new modes, for trying the mechanics. Every lab has level and game pickers at the top.\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "FL-01": {
+  "hash": "e488377841b110b66915",
+  "dhash": [
+   "97f7f3b9989988ba"
+  ],
+  "verdict": "PASS",
+  "line": "machine: traceAmp:.st-no>=4 (amp 15.1)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "LNG-02": {
+  "hash": "4587614831a97e4494ec",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: LNG-02-p2-repo: pass: node build/tools/review/leak.mjs clinic --rounds 300: exit 1",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "LNG-03": {
+  "hash": "de8be56eb5636007ecee",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: LNG-03-p1-L4-1366x768: lexicon: not in the family lexicon: tomatoes",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "LNG-06": {
+  "hash": "39f74835858acfecbdec",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: LNG-06-p1-L1-1366x768: familyOnly: 14 of 14 lines not family-ok: \"Let's clean it.\" silent; \"Take the wax out\" silent; \"Ne poi cotton bud\" silent; \"Ne poi chando, char\" silent; LNG-06-p1-L2-1366x768: familyOnly: 11 of 11 lines not family-ok: \"Let's clean it.\" silent; \"pela nindho wax\" family-unchecked; \"ne poi wadho\" silent; \"Ne poi cotton bud\" silent",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "LNG-09": {
+  "hash": "3096cadaf8bb3771256c",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: textMatches:ATEMPO = 1\\.0 (the script's output matches /ATEMPO = 1\\.0/)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "LNG-10": {
+  "hash": "e60667c7bfa1b0ce4c50",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: LNG-10-p1-L1-1366x768: familyOnly: 13 of 13 lines not family-ok: \"Muke kari chai khape,\" silent; \"dudh na,\" family-unchecked; \"with hakro khun.\" silent; \"paani\" silent; LNG-10-p1-L2-1366x768: familyOnly: 12 of 12 lines not family-ok: \"Tu ki aiye?\" silent; \"Muke chai khape,\" silent; \"with dudh,\" silent; \"ba khun.\" silent",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "MAA-02": {
+  "hash": "94509388321bb3b68a77",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: MAA-02-p1-L1-1366x768: textMatches:Muke hakri bajr ji maani khape: text: \"Muke maani khape. hakri bajr ji maani\"",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "MOD-01": {
+  "hash": "856a6ea44b8f46e4d366",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: MOD-01-p1-repo: pass: python3 build/bg_align_check.py: exit 1",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PAN-03": {
+  "hash": "72480fde276420c5c9d6",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: PAN-03-p1-L1-1366x768: !textMatches:(?i)^Muke dudh de: not (text: \"Muke dudh de. Bring me these dudh daar khun\")",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PAN-04": {
+  "hash": "93a4ce9875abf908770f",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PAN-14": {
+  "hash": "88cc61e25d539033226e",
+  "dhash": [
+   "3f7fdfdcf9f8ffef",
+   "7f7fdfd4f8f8fdef",
+   "7f5e7c7878787f6f"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PRC-02": {
+  "hash": "d8bb793c0321e5f4d28e",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: PRC-02-p1-repo: textMatches:1440x900: the script's output does not match /1440x900/",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PRC-03": {
+  "hash": "792a23b46749df6139e2",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/ops/publish.mjs --pages main --timeout 60: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PRC-05": {
+  "hash": "00a6df497b29a4ec1505",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/check_onboard.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PRC-06": {
+  "hash": "98ed37bfb403dc732b1e",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/evidence.mjs --plan --all: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PRC-07": {
+  "hash": "c0fd4c289b42cc1c50db",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/sandbox/contract.test.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PRC-08": {
+  "hash": "25cbbf37b2c5643f2d21",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/review.test.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "PRC-09": {
+  "hash": "f77e704ccbb3c48c7c53",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: PRC-09-p1-repo: pass: ls .claude/skills/game-mode-design/SKILL.md .claude/skills/game-mode-design/references/fun-patterns.md: exit 2",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SAM-03": {
+  "hash": "99fd23414cb7add6830c",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: SAM-03-p1-L1-1366x768: textMatches:(?i)chundo|bataato: text: \"Muke samosa khape. samosa ba bataata\"; SAM-03-p1-L2-1366x768: textMatches:(?i)chundo|bataato: text: \"Muke samosa khape. ba samosa ba chunda ba dungri\"",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SEK-01": {
+  "hash": "97293f79d419d0833e80",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: textMatches:Muke sekelo khape (text: \"Muke sekelo khape.\")",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SEK-04": {
+  "hash": "c525d8144071d8d92b1d",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:(?i)\\bboga\\b\\s*$ (not (text: \"Muke sekelo khape. hakri lakri tameto\")); !textMatches:(?i)\\bboga\\b\\s*$ (not (text: \"Muke sekelo khape. hakri lakri tameto hakri lakri gos\")); !textMatches:(?i)\\bboga\\b\\s*$ (not (text: \"Muke sekelo khape. hakri lakri mixed mishkaki dungri mishkaki tameto ba lakri tameto\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SEK-05": {
+  "hash": "cfdbaa7313f35f8e7398",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: SEK-05-p1-L2-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/test_cook.py --orders: exit 1; SEK-05-p1-L4-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/test_cook.py --orders: exit 1",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SEK-10": {
+  "hash": "e18f5acc3678ecba0c5a",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !hasWord:number (not (no number word in the text) (8 moments))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-03": {
+  "hash": "d9feee64afe3b633165e",
+  "dhash": [
+   "00102b0b0f0760a4",
+   "69ea461515030703",
+   "0859571d1d075350",
+   "09a35d0d1d030713"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-03-p1-L2-1366x768: lexicon: not in the family lexicon: three, cardamom; SH-03-p1-L2-800x360: lexicon: not in the family lexicon: three, cardamom",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-05": {
+  "hash": "a5669e89b1bc2525bba3",
+  "dhash": [
+   "00331d151b0623a4"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:#panel .title-wrap=0 (0 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-06": {
+  "hash": "b38cf622ed773ada9d3d",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: !textMatches:\\d+[.,]\\d+\\s*% (not (text: \"21s 21s 3 /3 × 1\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-07": {
+  "hash": "6e2b40d8c5c0e832fff7",
+  "dhash": [
+   "38587070786164e5",
+   "018a81418a8a8181"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:#mission (1 clean); !textMatches:Nani laide (not (text: \"Muke chai khape. dudh trae khun Muke chai khape. dudh ba khun\"))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-09": {
+  "hash": "5870ab3ae3a4a6f51937",
+  "dhash": [
+   "00b081c18181a090",
+   "28a889418191a0b0",
+   "0541a1818101c181"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-09-p1-L4-800x360: noClip:#mission: .card scrolls down; SH-09-p1-L4-800x360: lines:.oc-row<=1: lines 2",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-11": {
+  "hash": "7a4d97f3316837546e5f",
+  "dhash": [
+   "32484c4c68690080",
+   "00008185a8810100",
+   "38183aba1a190890",
+   "01884382a282c281"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:#mission .oc-done-tk=0 (0 visible); count:#mission .oc-done-tk=0 (0 visible); noClip:.oc-headline (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-13": {
+  "hash": "5fce6ecd61354e0b831d",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: SH-13-p3-L3-1366x768: !hasWord:number: not (number: trae, ba, hakro)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-19": {
+  "hash": "5934acc6f7c9d24e7149",
+  "dhash": [
+   "0038782438040606",
+   "0040482438180200"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-19-p1-L1-1366x768: count:.ob-ghost>=1: 0 visible (2 moments)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-25": {
+  "hash": "715ac9413b5bbab8f4a3",
+  "dhash": [
+   "0142347474000178",
+   "c281c1610100008a"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:#side (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-27": {
+  "hash": "9231297f8e6bd3860cfe",
+  "dhash": [
+   "8a8a8181a1a01292"
+  ],
+  "verdict": "PASS",
+  "line": "machine: minSize:#side button>=32 (minSize 48); lines:.njg-guide<=4 (lines 2)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-29": {
+  "hash": "4ff64a70fd600cd60317",
+  "dhash": [
+   "7f7fdfd4f8f8fdef",
+   "7f5e7c7878787f6f"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-30": {
+  "hash": "edc9d8488a5317404397",
+  "dhash": [
+   "3f7fdfdcf9f8ffef",
+   "7f7fdfd4f8f8fdef"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-31": {
+  "hash": "b83be72b807602950582",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-33": {
+  "hash": "e0df82fd812f988b0cf3",
+  "dhash": [
+   "ff7f35b1f1f1fb9b"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-33-p1-L1-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-36": {
+  "hash": "0f9b55e49650a4532f3b",
+  "dhash": [
+   "9089c18d4191c181"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-36-p1-L3-1366x768: centredOn:.oc-t,.oc-face: centres 90.5 px across, 47.7 px down",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-40": {
+  "hash": "a9c1544fbe138f46de3a",
+  "dhash": [
+   "d354f4ccc6c6f2fe",
+   "2b91d50101010101",
+   "e97179f8d8fcc7e6",
+   "9a81c50101010101"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.njg-done=0 (0 visible); pass (0 contract breaks); count:.njg-done=0 (0 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-42": {
+  "hash": "4f33b7b953111398a6f8",
+  "dhash": [
+   "80a8aaaaaaa8aaa2"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.rs-looks=1 (1 visible); count:.rs-looks=0 (0 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-44": {
+  "hash": "3bf51fa613c13e09063f",
+  "dhash": [
+   "00583b0f17071090",
+   "15aec21515030703"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-44-p1-L1-1366x768: count:.rs-step>=1: 0 visible",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-48": {
+  "hash": "57eadce60bbe7558e2bf",
+  "dhash": [
+   "00ac81a189a28181",
+   "00a48181a0a68181"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-48-p1-L2-800x360: lines:.oc-row<=1: lines 2; SH-48-p1-L2-844x390: lines:.oc-row<=1: lines 2",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-49": {
+  "hash": "7013a7b2ed156708ad16",
+  "dhash": [
+   "7f7f2f1b0733edeb",
+   "23191e1303070351",
+   "00743d130b0760a4",
+   "361c1b1911030703"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.rs-words-bad .rs-word=0 (0 visible); count:.rs-words-bad .rs-word=0 (0 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-50": {
+  "hash": "3efbd4e64a500613b310",
+  "dhash": [
+   "00132b1b1b0723a4",
+   "612e551b11110703",
+   "00582b0b170720e8",
+   "21a8441513030703"
+  ],
+  "verdict": "PASS",
+  "line": "machine: count:.rs-words-bad .rs-word>=1 (1 visible); count:.rs-words-bad .rs-word>=1 (2 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-54": {
+  "hash": "96fa3b458890ab6b6e74",
+  "dhash": [
+   "667f035303072bf6",
+   "85a1820202000005"
+  ],
+  "verdict": "FAIL",
+  "line": "machine: SH-54-p1-L1-1366x768: noClip:#side: .oc-in scrolls down",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-66": {
+  "hash": "c0a6d844408efd8a02e8",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: SH-66-p1-L1-1366x768: silentAfter:stage-end: 1 clips after it: assets/audio/family/mum/shabash-rc.mp3 at 0.39 s; SH-66-p2-L1-1366x768: silentAfter:stage-end: 2 clips after it: assets/audio/family/mum/laal.mp3 at 0.51 s; assets/audio/family/mum/laal.mp3 at 3.73 s",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-70": {
+  "hash": "f89b36a4d8a7e2fef7ec",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: SH-70-p1-L1-1366x768: textMatches:^Muke\\b.*\\b(de|khape)\\.?$: text: \"Bring me these\"",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ }
+}
