@@ -4,6 +4,7 @@
   "lexicon": "Fable 10: every visible word in the probe's dom text is in the family lexicon (the language engine's words and recorded phrases) or inside a placeholder (grey italic 'to record' tag: a class ending in -rec); no English dictionary (chai, dai, loon are Kutchi); 'Thank you!' is in the lexicon (decision 81). Nothing from the '?' pop-up counts as child-facing",
   "!<expect>": "negation: any expect with a leading ! must be false (e.g. !lexicon after a bulb press: the English flip is showing)",
   "textMatches:<regex>": "the probe's dom text (or, for a voice capture, the words of its timeline joined by spaces) matches the JavaScript regex; (?i) at the start = case-insensitive",
+  "hasWord:<tag>": "the text holds a word the family lexicon tags with this (number, side, colour, name, body-part); used so no spec hand-writes Kutchi (rule 4)",
   "count:<selector><op><n>": "the number of visible elements matching the selector at the moment; op is =, <= or >=",
   "inside:<a>,<b>": "every visible a lies inside a visible b (its box, 1 px tolerance)",
   "noOverlap:<a>,<b>": "no visible a box intersects a visible b box",
@@ -54,17 +55,24 @@
   "after-start-over": "the pantry card after 'Start over'",
   "after-wrong": "1 s after the driver's wrong move is taken",
   "daar-in": "the bowl of daar tips into the pot",
+  "every:step:<id>": "each heal debug step with this 'what' (dot = each knee wrap turn, wax = each blob, drop = each bead)",
   "fold": "a samosa fold frame is on the board (every:fold = each fold)",
   "greeting": "the first meeting's greeting with its reply pills (first launch; Cook's greeting before an order)",
+  "hearing-test": "the ear game's hearing check is up (the doctor's 'I'm telling you ___', her reply, the picture choices)",
   "idle": "8 s with no input at the current step (the ghost finger's pause)",
   "labs": "labs.html is open (the house's grown-ups' labs link)",
   "pass-me": "Nani's pass-me pop-up is up (#passme visible)",
   "retry": "a retried station restarts and its order is re-said",
-  "served": "the service view with the dish on the counter and the customer's review face up"
+  "served": "the service view with the dish on the counter and the customer's review face up",
+  "taught": "the taught first round of a heal game for a fresh profile (shown, then copied)",
+  "zoom-in": "a heal game's opening zoom from the patient on the bed to the sore part (from its start to zoom-in-end)",
+  "zoom-out": "a heal game's pull-out after the last step, before the end screen"
  },
  "_drivers": {
   "force-passme": "a story day 2+ round with Nani's pass-me forced on at its first chance in each station (a test hook or seed), answered right after the ring",
+  "heal-fast": "a morning where the heal game is finished as fast as the driver can (no waits between steps), straight into the send-off",
   "idle-twice": "second play: waits 8 s at the first step (ghost finger), makes no move, waits another 8 s (ghost finger again), then plays fair",
+  "lab-log-on": "opens the clinic stage with its lab debug log showing (the lab bar's log toggle), then plays fair",
   "mute-across-modes": "taps Nani's guide box to mute in a Cook round, opens the clinic (clinic.html) and plays to the first heal step, then back to Cook: the mute holds in both",
   "serve-combined": "a story day with a combined order for one person (chai + maani): plays both dishes fair to the service view",
   "start-over": "plays a pantry round, uses 'Start over' (and 'play as new' in '?'), then starts the pantry again at L2 as the new player",
@@ -348,7 +356,7 @@
    ],
    "profile": "seen",
    "want": {
-    "order": "ba bataaka"
+    "order": "two potatoes"
    },
    "at": "results-words",
    "after": null,
@@ -720,7 +728,7 @@
     "voice"
    ],
    "expect": [
-    "textMatches:(?i)\\b(ek|be|ba|tre|trae|char|panj)\\b"
+    "hasWord:number"
    ],
    "note": "L1: the number written and counted aloud"
   },
@@ -739,7 +747,7 @@
     "dom:.njg-rq-card"
    ],
    "expect": [
-    "textMatches:(?i)\\b(ek|be|ba|tre|trae|char|panj)\\b"
+    "hasWord:number"
    ],
    "note": "L2: written"
   },
@@ -758,7 +766,7 @@
     "dom:#mission"
    ],
    "expect": [
-    "!textMatches:(?i)\\b(ek|be|tre|trae|char|panj)\\b"
+    "!hasWord:number"
    ],
    "note": "L3+: heard only, no number in headline or rows"
   }
@@ -1189,7 +1197,7 @@
     "voice"
    ],
    "expect": [
-    "!textMatches:(?i)\\b(nana|nani|ma|ali|mamu|masi)\\b"
+    "!hasWord:name"
    ],
    "note": "a later order: no name on the card or in the order line"
   },
@@ -1208,7 +1216,7 @@
     "dom:.cl-side"
    ],
    "expect": [
-    "!textMatches:(?i)\\b(zara|amina|the girl)\\b"
+    "!hasWord:name"
    ],
    "note": "the clinic card: no patient name label"
   }
@@ -4128,7 +4136,7 @@
     "dom:#mission"
    ],
    "expect": [
-    "textMatches:(?i)\\b(ek|be|ba|tre|trae|char|panj)\\b"
+    "hasWord:number"
    ],
    "note": "the chop card writes quantities at every level"
   }
@@ -4510,7 +4518,7 @@
    ],
    "profile": "seen",
    "want": {
-    "order": "ba bataaka"
+    "order": "two potatoes"
    },
    "at": "every:placed",
    "after": null,
@@ -5254,7 +5262,7 @@
     "voice"
    ],
    "expect": [
-    "!textMatches:(?i)\\b(ek|be|tre|char)\\b"
+    "!hasWord:number"
    ],
    "note": "L2: no count-along"
   }
@@ -6139,5 +6147,3374 @@
    ],
    "note": "sekelo (chai, daar, maani: the same probe)"
   }
- ]
+ ],
+ "CLN-01": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "each room with its real art (waiting, diagnosis, pharmacy, heal, send-off)"
+  }
+ ],
+ "CLN-02": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:11"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "six rooms' backgrounds; nothing faded"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-knee-mid",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a heal game has a background, soft, not washed out"
+  }
+ ],
+ "CLN-03": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-side"
+   ],
+   "expect": null,
+   "note": "the shared order card as patient card, guide box, spacing"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    1,
+    3,
+    5
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "centredOn:.rs-card,.cl-stage"
+   ],
+   "note": "the end pop-up in one place at every level (not over the sidebar at L3/L5)"
+  }
+ ],
+ "CLN-04": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "dom:.njg-rq-card",
+    "voice"
+   ],
+   "expect": [
+    "lexicon",
+    "!textMatches:…"
+   ],
+   "note": "the ladder: man, woman, boy, girl; old, young; tall, short; colours; with the baby; no '...' cards"
+  }
+ ],
+ "CLN-05": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .njg-guide",
+    "ref:assets/clinic/patients"
+   ],
+   "expect": [
+    "count:#nani-card=0"
+   ],
+   "note": "no Nani box; the guide box face is the doctor's (not an old-man stand-in)"
+  }
+ ],
+ "CLN-06": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "contract:13",
+    "crop:.cl-stage"
+   ],
+   "expect": [
+    "pass",
+    "count:.cl-pill=0"
+   ],
+   "note": "each stage clears its own UI: no reply pills left from the round before"
+  }
+ ],
+ "CLN-07": [
+  {
+   "flow": "clinic:waiting",
+   "path": "lab-log-on",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "waiting-tap",
+   "after": null,
+   "capture": [
+    "shot",
+    "crop:.cl-lab-out"
+   ],
+   "expect": [
+    "noOverlap:.cl-lab-out,.cl-pills"
+   ],
+   "note": "the lab debug log never overlaps the pills or counter"
+  }
+ ],
+ "CLN-08": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-fever-mid",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the heal close-up background blurred; the certificate frame blurred to match"
+  }
+ ],
+ "CLN-09": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x1024",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-tooth-mid",
+   "after": null,
+   "capture": [
+    "cmd:python3 build/check_hotspots.py",
+    "zoom2:.cl-heal"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the tooth at least 1 cm (iPad); trolley objects about 60 px on a phone; replay timer clear of a recast line"
+  }
+ ],
+ "CLN-81": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-staged"
+   ],
+   "expect": null,
+   "note": "the girl's finished art in the waiting room, diagnosis, send-off (no stand-in body)"
+  },
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "zoom2:.rs-card"
+   ],
+   "expect": null,
+   "note": "the sticker and card faces"
+  }
+ ],
+ "CLN-82": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "trace:.ng-tools:3000",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": [
+    "traceRepeats:.ng-tools>=1"
+   ],
+   "note": "after the count the next row appears and its tool glows after a pause (scrape)"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "trace:.ng-tools:3000",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": [
+    "traceRepeats:.ng-tools>=1"
+   ],
+   "note": "knee after the kicks (boing after wipes, foot after jugs: the same probe)"
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "trace:.ng-tools:3000"
+   ],
+   "expect": [
+    "traceRepeats:.ng-tools>=1"
+   ],
+   "note": "foot after the jugs"
+  }
+ ],
+ "CLN-83": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-end",
+   "after": null,
+   "capture": [
+    "voice",
+    "contract:2"
+   ],
+   "expect": [
+    "pass",
+    "gapMs:stage-end,request<=1500"
+   ],
+   "note": "no extra click when the outcome is clear: it moves on after a beat (diagnosis, pharmacy, scrape, ear)"
+  }
+ ],
+ "CLN-84": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "contract:1",
+    "strip:.njg-rq-card:4x500",
+    "voice"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the scrape opens with the shared pop-up, read out, then folds into the sidebar"
+  },
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:request",
+   "after": null,
+   "capture": [
+    "contract:1"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every heal game and the pharmacy (all nine through clinic:heal-* in the gate)"
+  }
+ ],
+ "CLN-85": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "inside:.cl-face-card,.cl-side-top"
+   ],
+   "note": "the person served sits top right in diagnosis, pharmacy and heal games, clear of the doctor's box"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-mid",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-bubble"
+   ],
+   "expect": null,
+   "note": "in the eye game her bubble under her mouth"
+  }
+ ],
+ "CLN-86": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "greeting",
+   "after": null,
+   "capture": [
+    "voice",
+    "contract:4",
+    "crop:.cl-stage"
+   ],
+   "expect": [
+    "pass",
+    "order:salaam,reply"
+   ],
+   "note": "she says salaam, he replies: the two clips are the right speakers (voice timeline speaker ids)"
+  },
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "voice",
+    "crop:.cl-bubble"
+   ],
+   "expect": null,
+   "note": "'too cold' in her bubble; instructions in the doctor's box"
+  }
+ ],
+ "CLN-87": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-in",
+   "after": null,
+   "capture": [
+    "strip:.cl-zoom:6x250",
+    "trace:.cl-zoom:2000"
+   ],
+   "expect": [
+    "gapMs:zoom-in,zoom-in-end<=1800"
+   ],
+   "note": "zoom in about 1.5 s with her finished poses; the swap to close-up"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-out",
+   "after": null,
+   "capture": [
+    "strip:.cl-zoom:6x250",
+    "zoom2:.cl-staged"
+   ],
+   "expect": null,
+   "note": "zoom out from full zoom on the healed part; her pull-out pose"
+  }
+ ],
+ "CLN-88": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/loadcheck.mjs --time --only clinic:morning"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "clinic lab pages load fast (no serial JSON chain)"
+  }
+ ],
+ "CLN-89": [
+  {
+   "flow": "house",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "labs",
+   "after": null,
+   "capture": [
+    "dom:body"
+   ],
+   "expect": [
+    "textMatches:(?i)clinic"
+   ],
+   "note": "labs point at the current clinic lab; the old index tagged old"
+  }
+ ],
+ "CLN-109": [
+  {
+   "flow": "clinic:morning",
+   "path": "heal-fast",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-end",
+   "after": null,
+   "capture": [
+    "voice",
+    "contract:3"
+   ],
+   "expect": [
+    "pass",
+    "silentAfter:stage-end"
+   ],
+   "note": "a scrape finished fast: the doctor is not still reading in the send-off"
+  }
+ ],
+ "CLN-111": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "dom:.rs-actions",
+    "crop:.rs-actions"
+   ],
+   "expect": [
+    "count:.rs-again=1",
+    "count:.rs-actions button>=3"
+   ],
+   "note": "the end screen offers Again, Next and All patients"
+  },
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "end",
+   "after": null,
+   "capture": [
+    "dom:.rs-actions",
+    "shot"
+   ],
+   "expect": [
+    "count:.rs-again=1"
+   ],
+   "note": "after a morning: Again and All patients, no placeholder button"
+  }
+ ],
+ "CLN-112": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "every heal game lists its take-back (plasters, wax, beads, drinks, splinters, bandage turns) until Done"
+  },
+  {
+   "flow": "clinic:pharmacy",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "crop:.cl-tray",
+    "dom:.rs-badges@results-badges"
+   ],
+   "expect": null,
+   "note": "the pharmacy: a placed item put back; the first pick is scored"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "takeback",
+   "level": 4,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "crop:.cl-room"
+   ],
+   "expect": null,
+   "note": "waiting room L4 take-back"
+  }
+ ],
+ "CLN-113": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "every ordered instruction is a sequence on the shared card (line, grey band, ticking parts)"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "boing's sequence card (and every heal game's)"
+  }
+ ],
+ "CLN-114": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "contract:9",
+    "zoom2:.cl-side"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "from L3 the card is closed with the small bulb, looks counted"
+  }
+ ],
+ "CLN-10": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "not too wide; front half not empty; something says 'doctor's'"
+  }
+ ],
+ "CLN-11": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "crop:.cl-room"
+   ],
+   "expect": [
+    "count:.cl-seat=6"
+   ],
+   "note": "one large bench, six seats, no armchairs"
+  }
+ ],
+ "CLN-12": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "waiting-tap",
+   "after": null,
+   "capture": [
+    "strip:.cl-room:5x200",
+    "zoom2:.cl-wtick"
+   ],
+   "expect": null,
+   "note": "no walking; a tick under each person; the picked person rises off the seat"
+  }
+ ],
+ "CLN-13": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    4,
+    5
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "crop:.cl-room"
+   ],
+   "expect": [
+    "count:.cl-seat-who<=6"
+   ],
+   "note": "at most six people"
+  }
+ ],
+ "CLN-14": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "dom:.cl-side .oc-card",
+    "voice",
+    "cmd:node build/tools/review/leak.mjs clinic --rounds 300"
+   ],
+   "expect": [
+    "pass",
+    "!textMatches:[A-Za-z]{3,}"
+   ],
+   "note": "the card shows a round face with no text; the call heard from L3; the leak bot cannot win"
+  }
+ ],
+ "CLN-15": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    4,
+    5
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "end",
+   "after": null,
+   "capture": [
+    "crop:.cl-room",
+    "dom:.cl-wtick"
+   ],
+   "expect": [
+    "textMatches:\\d"
+   ],
+   "note": "L4: pick everyone, judged at the end; ticks show numbers; L5 the same"
+  }
+ ],
+ "CLN-90": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-room"
+   ],
+   "expect": [
+    "noOverlap:.cl-seat,.cl-ask-card"
+   ],
+   "note": "selector circles and call boxes spaced cleanly"
+  }
+ ],
+ "CLN-91": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": [
+    "count:.cl-side .ng-bulb=1",
+    "count:.cl-hint-n=0"
+   ],
+   "note": "the closed card's eye is a small bulb, no counter"
+  }
+ ],
+ "CLN-92": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "end",
+   "after": null,
+   "capture": [
+    "crop:.njg-btn",
+    "dom:.njg-btn"
+   ],
+   "expect": null,
+   "note": "'To the doctor's room' (a location), not 'where does it hurt'"
+  }
+ ],
+ "CLN-110": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "end",
+   "after": null,
+   "capture": [
+    "contract:2",
+    "voice"
+   ],
+   "expect": [
+    "pass",
+    "count:.njg-done=0"
+   ],
+   "note": "moves on by itself once picked and greeted: no check or stage button"
+  }
+ ],
+ "CLN-115": {
+  "needsDecision": "The waiting room's call: from the doctor at his half-open door (head leaning out, 'bring in so-and-so'), or does the sidebar box replace it? (CLN-05 moved him into the guide box without asking)",
+  "probes": [
+   {
+    "flow": "clinic:waiting",
+    "path": "fair",
+    "level": [
+     1,
+     3,
+     5
+    ],
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "request",
+    "after": null,
+    "capture": [
+     "shot",
+     "voice"
+    ],
+    "expect": null,
+    "note": "where the call comes from today"
+   }
+  ]
+ },
+ "CLN-16": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "diagnosis-point",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage",
+    "dom:.njg-btn"
+   ],
+   "expect": null,
+   "note": "the 'Found it' and Next variant at L2 explains itself"
+  }
+ ],
+ "CLN-17": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "patient on the bed edge, doctor beside, three-quarter turned; no anatomy poster"
+  }
+ ],
+ "CLN-18": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "diagnosis-tap",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-kit"
+   ],
+   "expect": [
+    "count:.cl-kit-tool>=2"
+   ],
+   "note": "torch looks like a torch, thermometer like one; one cue per tool; two tools at L1"
+  }
+ ],
+ "CLN-93": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "mistake",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "wrong-diagnosis",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-fig",
+    "voice"
+   ],
+   "expect": null,
+   "note": "bigger patient, small centred dots; a tried dot goes grey after 'no', never green; she says yes, the doctor names the part"
+  }
+ ],
+ "CLN-94": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card",
+    "strip:.cl-stage:4x400"
+   ],
+   "expect": null,
+   "note": "D3: the sekelo-style card (tool head, parts ticking); the torch zooms on the face by itself; one highlight; a headline"
+  }
+ ],
+ "CLN-95": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "diagnosis-point",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-fig"
+   ],
+   "expect": null,
+   "note": "no swirl icon over the sore part"
+  }
+ ],
+ "CLN-116": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-room-pic",
+    "shot"
+   ],
+   "expect": null,
+   "note": "the certificate frame on the right wall (grey and flagged until the photo arrives); toys bottom left; no anatomy poster"
+  },
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the same wall in the send-off"
+  }
+ ],
+ "CLN-19": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pharmacy-belt",
+   "after": null,
+   "capture": [
+    "crop:.cl-belt"
+   ],
+   "expect": null,
+   "note": "items not at 45 degrees; the painted belt, not a code-drawn one"
+  }
+ ],
+ "CLN-20": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pharmacy-belt",
+   "after": null,
+   "capture": [
+    "trace:.cl-belt-dish:3000",
+    "dom:.cl-side"
+   ],
+   "expect": [
+    "!textMatches:\\d+\\s*s\\b"
+   ],
+   "note": "L3 harder by a faster belt or closer items, no timer; 'filling' is a tube"
+  }
+ ],
+ "CLN-21": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "dom:.njg-rq-card",
+    "voice"
+   ],
+   "expect": [
+    "!textMatches:(?i)muke plaster khape"
+   ],
+   "note": "the doctor's line is '[bring me] the plaster', not the customer's 'Muke plaster khape'"
+  }
+ ],
+ "CLN-22": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-tray",
+    "strip:.cl-tray:4x150"
+   ],
+   "expect": null,
+   "note": "the pantry's tray: outlined spaces, front edge over items, outline fades, at most three across"
+  },
+  {
+   "flow": "clinic:pharmacy",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-tray"
+   ],
+   "expect": null,
+   "note": "a placed item can be put back; the first pick is scored"
+  }
+ ],
+ "CLN-23": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pharmacy-belt",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-belt"
+   ],
+   "expect": null,
+   "note": "items sit on the belt with a contact shadow, not floating or tilted"
+  }
+ ],
+ "CLN-24": [
+  {
+   "flow": "clinic:patient",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-heal",
+   "after": null,
+   "capture": [
+    "crop:.ng-tools",
+    "dom:.rs-badges@results-badges"
+   ],
+   "expect": [
+    "count:.ng-tools [disabled]=0"
+   ],
+   "note": "the tray feeds the heal game; a wrong pick costs score, nothing greyed"
+  }
+ ],
+ "CLN-96": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "mistake",
+   "level": 2,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": {
+    "order": "lilo plaster"
+   },
+   "at": "wrong-pharmacy",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "a wrong colour plaster never ticks (red for lilo)"
+  }
+ ],
+ "CLN-97": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pharmacy-belt",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-belt"
+   ],
+   "expect": null,
+   "note": "green bottle on the belt; jugs cut cleanly; red plaster red all the way"
+  }
+ ],
+ "CLN-25": [
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "door half open, doctor beside; both stand left in the free wall space, not over the green cross"
+  }
+ ],
+ "CLN-26": [
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "sendoff-tap",
+   "after": null,
+   "capture": [
+    "shot",
+    "dom:.cl-feel"
+   ],
+   "expect": [
+    "lexicon"
+   ],
+   "note": "L1 face + thought bubble of four feelings; L2 she says it, no picture; L3 a tray of helps (blanket, fan, apple); goodbye from L2"
+  },
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "sendoff-say",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "goodbye said in the scene from L2"
+  }
+ ],
+ "CLN-27": [
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "sendoff-tap",
+   "after": null,
+   "capture": [
+    "dom:body",
+    "cmd:grep -rniE \"lolly|lollipop\" js data"
+   ],
+   "expect": [
+    "!textMatches:(?i)lolly|lollipop|🍭"
+   ],
+   "note": "an apple, never a lolly"
+  }
+ ],
+ "CLN-28": [
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": [
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the doctor's card does not list every line up front or repeat them; no script card"
+  }
+ ],
+ "CLN-29": [
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "sendoff-tap",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noOverlap:.cl-tray,.cl-pills"
+   ],
+   "note": "help items and reply pills never on top of each other; pills only when needed"
+  }
+ ],
+ "CLN-98": [
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "sendoff-say",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage",
+    "voice"
+   ],
+   "expect": null,
+   "note": "she says how she feels in her bubble on her real art, then the child picks"
+  }
+ ],
+ "CLN-117": [
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "sendoff-say",
+   "after": null,
+   "capture": [
+    "dom:.cl-ask-card",
+    "voice",
+    "zoom2:.cl-ask-card"
+   ],
+   "expect": [
+    "lexicon",
+    "!textMatches:(?i)nani"
+   ],
+   "note": "E4: the child asks 'how do you feel?' first; the doctor cues it; the card shows her face with '?'"
+  }
+ ],
+ "CLN-30": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "dom:.cl-bubble",
+    "shot",
+    "cmd:node build/check_onboard.mjs"
+   ],
+   "expect": [
+    "pass",
+    "lexicon"
+   ],
+   "note": "one 'why' beat per game, no English in bubbles (all nine through check_onboard)"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the ear's why beat"
+  }
+ ],
+ "CLN-31": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:cover"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "fever: first-time help does not block taps; fan unlike the strip; hot and cold to just right"
+  }
+ ],
+ "CLN-32": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal",
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "not too clicky; plasters in clear colours and order; the sequence on the shared card"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "a plaster can be taken off"
+  }
+ ],
+ "CLN-33": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:dot",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal",
+    "cmd:node build/tools/review/leak.mjs clinic-heal-knee --rounds 300"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "bandage shows every tap; flashing stops when done; L3 left and right clear; leak bot"
+  }
+ ],
+ "CLN-34": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:wax",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x200",
+    "dom:.njg-rq-card@request"
+   ],
+   "expect": [
+    "!textMatches:(?i)wadho|nindho"
+   ],
+   "note": "L1 not too hard; wax dragged to a tissue; pop-up wax stays"
+  }
+ ],
+ "CLN-35": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "tap-during-speech",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal",
+    "voice"
+   ],
+   "expect": [
+    "liveInput"
+   ],
+   "note": "brushing clear; voice-overs, input live and the sidebar work"
+  }
+ ],
+ "CLN-36": {
+  "human": "Is the taste (soothing drinks) game understandable to a child on first play?"
+ },
+ "CLN-37": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:drop",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the dispenser of 3-4 coloured tubes with a lever drops a blob; each drop counted; L3 the colour said; medicine, not sweets"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal@stage-end",
+    "dom:body"
+   ],
+   "expect": [
+    "!textMatches:(?i)apple|🍎"
+   ],
+   "note": "boing ends on the plaster and hands over no apple"
+  }
+ ],
+ "CLN-38": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:eyetest",
+   "after": null,
+   "capture": [
+    "dom:.cl-heal",
+    "cmd:node build/tools/review/heal-marks.mjs --pool eye"
+   ],
+   "expect": null,
+   "note": "the chart's item pool includes household nouns (bed, table), not only fruit and veg"
+  }
+ ],
+ "CLN-39": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": [
+    "count:.cl-heal [data-undo]=0"
+   ],
+   "note": "the eye cover cannot be taken back"
+  }
+ ],
+ "CLN-40": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the swirly part understood; toes, tweezers, plaster position clear; buzz-wire splinters; both feet at L3"
+  }
+ ],
+ "CLN-41": [
+  {
+   "flow": "clinic:heal-extra-tummy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "tummy, hic, hair still on the old help (parked: decide later)"
+  }
+ ],
+ "CLN-42": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-mid",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": [
+    "!textMatches:🩺"
+   ],
+   "note": "no stethoscope badge bottom left, no gold half-circle on tools, no glove on the syringe"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-mid",
+   "after": null,
+   "capture": [
+    "zoom2:.ng-tools"
+   ],
+   "expect": null,
+   "note": "no unexplained icons on the scrape's tools"
+  }
+ ],
+ "CLN-43": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-in",
+   "after": null,
+   "capture": [
+    "strip:.cl-stage:6x250"
+   ],
+   "expect": null,
+   "note": "opens by zooming from the patient on the bed to the sore part; never a lone limb; background soft"
+  }
+ ],
+ "CLN-44": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "dom:.cl-side .oc-card .oc-headline"
+   ],
+   "expect": [
+    "textMatches:\\S"
+   ],
+   "note": "every heal card has a headline and folds to it with the check (all nine)"
+  }
+ ],
+ "CLN-45": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "dom:.njg-rq-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "one new thing per level; L3 heard only, at most two things to remember per step"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "dom:.njg-rq-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the knee's ladder (the same probe for every heal game: one panel per level)"
+  }
+ ],
+ "CLN-46": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:wipe",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x200"
+   ],
+   "expect": null,
+   "note": "the scrape needs a skill, not just taps"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:wax",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x200"
+   ],
+   "expect": null,
+   "note": "the cotton bud needs a skill"
+  }
+ ],
+ "CLN-47": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-knee-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the close-up shows the one sore knee (foot, eye the same at L3); sides said only in diagnosis"
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-foot-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal",
+    "voice"
+   ],
+   "expect": [
+    "!hasWord:side"
+   ],
+   "note": "no side said in the foot game"
+  }
+ ],
+ "CLN-48": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:dot",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "trace:.cl-heal:2000"
+   ],
+   "expect": [
+    "count:.cl-heal .cl-ring=1"
+   ],
+   "note": "one dot lit at a time, waiting for the tap; nothing moves by itself"
+  }
+ ],
+ "CLN-49": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:wax",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the blob you aim at is the one you pick up"
+  }
+ ],
+ "CLN-50": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-ear-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "more wax from the start, spawning as removed, a bigger ear"
+  }
+ ],
+ "CLN-51": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:drill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the drill's tip under the finger"
+  }
+ ],
+ "CLN-52": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:drill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "drilled inside the mouth; decay jagged and scattered by level"
+  }
+ ],
+ "CLN-53": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:fill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "trace:tool:fill:2000"
+   ],
+   "expect": null,
+   "note": "a clear fill button; a green zone with red either side; harder by level",
+   "webgl": true
+  }
+ ],
+ "CLN-54": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-taste-start",
+   "after": null,
+   "capture": [
+    "dom:.cl-side .oc-card",
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": [
+    "!hasWord:number",
+    "lexicon"
+   ],
+   "note": "L1: recipe rows under a headline, no counts"
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:pour",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x200"
+   ],
+   "expect": null,
+   "note": "the pour shown"
+  }
+ ],
+ "CLN-55": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "dom:.njg-rq-card"
+   ],
+   "expect": null,
+   "note": "never a three-recipe memory test: one drink"
+  }
+ ],
+ "CLN-56": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": {
+    "order": "cold"
+   },
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the blanket over the shoulders, never the face"
+  }
+ ],
+ "CLN-57": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal",
+    "dom:.njg-guide"
+   ],
+   "expect": null,
+   "note": "always clear what next; a live thermometer with a zone"
+  }
+ ],
+ "CLN-58": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:give",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x150",
+    "trace:tool:syringe:1500"
+   ],
+   "expect": null,
+   "note": "the jab starts from the syringe's end; a tap on the syringe never takes beads out"
+  }
+ ],
+ "CLN-59": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the sore eye is clear"
+  }
+ ],
+ "CLN-60": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x500",
+    "voice"
+   ],
+   "expect": null,
+   "note": "first-time help never presses haa on a misread row"
+  }
+ ],
+ "CLN-61": {
+  "needsDecision": "Eye test layout: (A) split screen or (B) the patient side-on at the left with a big chart at the right: both shown side by side, which is kept?",
+  "probes": [
+   {
+    "flow": "clinic:heal-eye",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "step:eyetest",
+    "after": null,
+    "capture": [
+     "shot"
+    ],
+    "expect": null,
+    "note": "layout B as built"
+   }
+  ]
+ },
+ "CLN-62": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-wrong",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": [
+    "inside:tool:drops,.cl-eye-zone"
+   ],
+   "note": "after na the dropper sits over the eye"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-end",
+   "after": null,
+   "capture": [
+    "strip:.cl-stage:6x300",
+    "voice"
+   ],
+   "expect": [
+    "order:happy,see,zoom-out,results"
+   ],
+   "note": "after the last row she looks up happy and says 'I can see' before the pull-out and end screen"
+  }
+ ],
+ "CLN-63": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "dom:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "L3: no hidden first step without a row or a line"
+  }
+ ],
+ "CLN-64": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the sole; a path with turns"
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "mistake",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-badges",
+   "after": null,
+   "capture": [
+    "dom:.rs-badges"
+   ],
+   "expect": null,
+   "note": "touching the side is a scored mistake"
+  }
+ ],
+ "CLN-65": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "strip:.cl-staged:6x500"
+   ],
+   "expect": null,
+   "note": "her body alternates visibly as the room swings hot or cold (hugging a hot-water bottle, under the blanket)"
+  },
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-staged"
+   ],
+   "expect": null,
+   "note": "hot, cold, happy, sad, sore and neutral from one body; send-off"
+  }
+ ],
+ "CLN-66": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-in",
+   "after": null,
+   "capture": [
+    "dom:body",
+    "crop:.cl-stage"
+   ],
+   "expect": [
+    "!textMatches:🍭"
+   ],
+   "note": "no lollipop on the boing wide shot's tool list"
+  }
+ ],
+ "CLN-67": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-mid",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-face",
+    "zoom2:.cl-face-card"
+   ],
+   "expect": null,
+   "note": "the round face matches the patient (girl, not a boy)"
+  }
+ ],
+ "CLN-68": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-start",
+   "after": null,
+   "capture": [
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": [
+    "!textMatches:\\s,"
+   ],
+   "note": "no stray space before a comma ('Wipe , ba')"
+  }
+ ],
+ "CLN-69": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the results card sits over the room, never a bare cream stage"
+  }
+ ],
+ "CLN-70": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": [
+    "count:.njg-done=0"
+   ],
+   "note": "every heal game clears its own buttons on done (the scrape's check lingered)"
+  }
+ ],
+ "CLN-71": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage",
+    "contract:4"
+   ],
+   "expect": [
+    "pass",
+    "inside:.cl-bubble,.cl-stage"
+   ],
+   "note": "speech bubbles inside the play area (the ear's sat off the top)"
+  }
+ ],
+ "CLN-72": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the first-time help's light is a soft centred glow, never beige squares",
+   "webgl": true
+  }
+ ],
+ "CLN-73": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.rs-card",
+    "dom:.rs-words"
+   ],
+   "expect": [
+    "noClip:.rs-card"
+   ],
+   "note": "the word review never scrolls or clips at 800x360"
+  }
+ ],
+ "CLN-74": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": [
+    "noOverlap:.cl-hand,.ng-tools"
+   ],
+   "note": "the scrape's hand clear of the tool strip"
+  }
+ ],
+ "CLN-75": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:wash",
+   "after": null,
+   "capture": [
+    "zoom2:.ng-tools"
+   ],
+   "expect": null,
+   "note": "hot, cold, lukewarm jugs read at a glance (steam, ice)"
+  }
+ ],
+ "CLN-76": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "dom:.cl-side",
+    "dom:.njg-guide"
+   ],
+   "expect": [
+    "lexicon"
+   ],
+   "note": "English the child sees is a grey placeholder (help state too), never dark bold"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-mid",
+   "after": null,
+   "capture": [
+    "dom:.cl-side"
+   ],
+   "expect": [
+    "lexicon"
+   ],
+   "note": "play states"
+  }
+ ],
+ "CLN-77": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-out",
+   "after": null,
+   "capture": [
+    "strip:.cl-stage:6x200"
+   ],
+   "expect": null,
+   "note": "no full-screen smear or ghost close-up UI on the pull-out"
+  }
+ ],
+ "CLN-78": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "hearing-test",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "dom:.cl-heal"
+   ],
+   "expect": [
+    "!textMatches:[🌀-🫿]"
+   ],
+   "note": "the hearing check's pictures fit the scene, no emoji"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:eyetest",
+   "after": null,
+   "capture": [
+    "dom:.cl-heal"
+   ],
+   "expect": [
+    "!textMatches:[🌀-🫿]"
+   ],
+   "note": "the eye chart's pictures, no emoji"
+  }
+ ],
+ "CLN-79": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "dom:.cl-tally"
+   ],
+   "expect": [
+    "!textMatches:[-–]"
+   ],
+   "note": "the tick badge always reads, never '-'"
+  }
+ ],
+ "CLN-80": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:eyetest",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-pills"
+   ],
+   "expect": [
+    "minSize:.cl-pill>=48"
+   ],
+   "note": "haa/na pills at least 48 px on phones"
+  }
+ ],
+ "CLN-99": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card",
+    "dom:.cl-bubble"
+   ],
+   "expect": [
+    "!textMatches:(?i)cold!"
+   ],
+   "note": "a dabbing cloth; connector to the last row; plasters in the sequence; no 'Cold!' mid-step"
+  }
+ ],
+ "CLN-100": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:dot",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "cmd:node build/tools/review/shoot_knee_wrap.mjs"
+   ],
+   "expect": null,
+   "note": "each turn wraps round the knee edge to edge, crossing the kneecap and crease; no yellow ellipse; 4-6 / 5-8 / 6-10 turns"
+  }
+ ],
+ "CLN-101": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "idle",
+   "after": null,
+   "capture": [
+    "trace:.ob-ghost:4000",
+    "zoom2:.ng-tools"
+   ],
+   "expect": [
+    "traceAmp:.ob-ghost>=40"
+   ],
+   "note": "the ghost finger drags the tweezers to a bin; the drop bottle nozzle down"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-end",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "smears where blobs were; sore skin cleared at the end; wax at the ear's angle"
+  }
+ ],
+ "CLN-102": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "hearing-test",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:.cl-bubble",
+    "crop:.cl-stage"
+   ],
+   "expect": [
+    "order:telling,told"
+   ],
+   "note": "the doctor says 'I'm telling you ___', she says 'you told me...', the child picks"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-wrong",
+   "after": null,
+   "capture": [
+    "voice",
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "wrong: more drops, asked again"
+  }
+ ],
+ "CLN-103": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "strip:.cl-heal:4x200"
+   ],
+   "expect": null,
+   "note": "brush turned into the mouth following the finger; plaque clears; mouth less open; off-white filling; fill button on the tool column; the old drill"
+  }
+ ],
+ "CLN-104": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stage-end",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the tongue's purple holes cleared on the fix"
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:pour",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x200",
+    "trace:.ng-tools:3000"
+   ],
+   "expect": [
+    "traceRepeats:.ng-tools>=1"
+   ],
+   "note": "real liquid, level rising; the next step cued"
+  }
+ ],
+ "CLN-105": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "dom:.cl-bubble",
+    "dom:.cl-gauge",
+    "zoom2:.cl-heal",
+    "voice"
+   ],
+   "expect": null,
+   "note": "one number model: what she says, her look and the gauge agree; one green zone; tools in the column; fan points down; 'just right?' a question clip"
+  }
+ ],
+ "CLN-106": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "strip:.cl-heal:5x200"
+   ],
+   "expect": null,
+   "note": "alcohol wipe with a wipe motion; a funny jab; a plaster choice; new arm and drop machine art"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "bulb-heal",
+   "after": "bulb",
+   "capture": [
+    "dom:.cl-side"
+   ],
+   "expect": null,
+   "note": "the bulb shows the next step"
+  }
+ ],
+ "CLN-107": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "mistake",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-wrong",
+   "after": null,
+   "capture": [
+    "strip:.cl-pills:5x100",
+    "voice",
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "a wrong yes/no shakes red, the doctor names the row with pictures; a misread gets a drop and a right re-read"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-in",
+   "after": null,
+   "capture": [
+    "shot",
+    "dom:.cl-bubble"
+   ],
+   "expect": null,
+   "note": "'to the eye test' button bottom right; L1 her word a fading bubble; chart items shrink, one big at top"
+  }
+ ],
+ "CLN-108": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:wash",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x250"
+   ],
+   "expect": null,
+   "note": "water washes the dirt off to show the splinter; no flooding"
+  }
+ ],
+ "CLN-118": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "taught",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x600",
+    "dom:.cl-side"
+   ],
+   "expect": [
+    "!textMatches:\\d"
+   ],
+   "note": "the first play is a taught round: shown, then copied, one step at a time; no counts, nothing scored (all nine games)"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "taught",
+   "after": null,
+   "capture": [
+    "dom:.rs-badges@results"
+   ],
+   "expect": [
+    "count:.rs-badges=0"
+   ],
+   "note": "nothing scored in the taught round"
+  }
+ ],
+ "CLN-119": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/heal-marks.mjs"
+   ],
+   "expect": null,
+   "note": "the words each game marks in ctx.mark, listed per game (scrape colours and first/then; knee body parts; ...)"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "dom:.njg-rq-card",
+    "voice"
+   ],
+   "expect": [
+    "lexicon"
+   ],
+   "note": "the scrape's plaster colours in Kutchi, not 'yellow plaster'"
+  }
+ ],
+ "CLN-120": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:.njg-rq-card"
+   ],
+   "expect": null,
+   "note": "L1-L2 the doctor names the thing; L3 only 'fix it' and the child chooses"
+  }
+ ],
+ "CLN-121": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal",
+    "ref:assets/clinic/closeups"
+   ],
+   "expect": null,
+   "note": "the cut and graze redrawn realistic (comical, not gory)"
+  }
+ ],
+ "CLN-122": {
+  "needsDecision": "The knee close-up's framing: is the chosen zoom level right at play size (Zafar's yes)?",
+  "probes": [
+   {
+    "flow": "clinic:heal-knee",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768",
+     "844x390"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "heal-knee-start",
+    "after": null,
+    "capture": [
+     "shot"
+    ],
+    "expect": null,
+    "note": "the close-up framing at both sizes"
+   }
+  ]
+ }
 }
