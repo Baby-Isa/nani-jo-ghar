@@ -376,6 +376,10 @@ export function createHost(opts = {}) {
     let resolveDone;
     const done = new Promise((r) => (resolveDone = r));
     const tStart = T.now();
+    // S05-S1 (SH-66): every host stage marks its own start in the lifecycle log (the clinic marked none), so a line the
+    // next stage says as it opens is known to be its own, never the last stage's carrying over
+    const LC0 = lifecycle();
+    if (LC0 && LC0.stageStart) LC0.stageStart(stageId);
     let tAct = null; // the stage's first action: its time runs from here to Done (pauses and Conversations don't count)
     const info = { game: def.id, level, tStart, tEnd: null, timeMs: 0, left: false, words: null, tasks: 0, result: null };
 
