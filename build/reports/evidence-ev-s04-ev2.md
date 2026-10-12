@@ -221,3 +221,17 @@ Next: `node build/tools/review/evidence.mjs --judge --run-id ev-s04-ev2`, the re
 - CLN-92: the waiting room has no 'To the doctor's room' button any more: it moves on by itself after the pick (life:advance; js/clinic/stages/waiting.js builds no button)
 - CLN-16: decision 52: the diagnosis has no 'Found it' and no Next at any level (js/clinic/stages/diagnosis.js D1 note); the button the row asks about is gone
 - CLN-41: tummy, hic and hair are parked on the heal host lab page; the sandbox must mark their first-time help seen so its scripted taps land, so the old help is never shown
+
+## EVIDENCE lines from the reviewers (the tool owner's list)
+
+- SH-47: both panels catch the card before any headline renders (face, "…" and the bulb only; the expects say .oc-headline is not on screen), so the headline's shrink/wrap and the flag's clearance can't be judged (Fable (orchestrator subagent))
+- DAAR-06: the trivet crop is a 25px sliver of a woven rim on grey with no daar bowl in it; either the trivet sits mostly off-screen or behind the results card (which would be a FAIL) or the crop target is wrong, the tool owner should check which (Fable (orchestrator subagent))
+- SAM-09: the crop shows the jharo in a hand over dark hob with no samosas in frame, so under/over can't be judged (the flat cartoon hand on a photoreal spoon is a style clash worth noting) (Fable (orchestrator subagent))
+- CLN-15: both panels are taken before any pick, every selector circle is empty, so the numbered ticks at L4/L5 are not shown (Fable (orchestrator subagent))
+- ART-08: neither panel shows a review face circle: A is an empty tray corner, B the tray with two badge faces cut off at the bottom edge (round-256 "not on screen" at 5 of 7 moments) (Fable (orchestrator subagent))
+- ART-14: A shows the pan flat and empty on the hob at cook-done:tap; no tipped pan and no black-tea glass in frame (the tipped pour appears only on CHAI-02's strip) (Fable (orchestrator subagent))
+- CHT-06: the strips cannot resolve the two potato taps: at L1 and L2 the "ba bataata" row flips unticked→ticked across one captured moment (frames 3→4) and at L3 two rows tick in one frame (4→5); a per-tap capture is needed (Fable (orchestrator subagent))
+- CLN-08: A is the fever game, a full sharp room scene, not a close-up; no heal close-up blur or certificate frame is on the sheet (Fable (orchestrator subagent))
+- ART-18: text only, no filmstrip of the bob moving in Cook service, the waiting room or diagnosis; contract-14 reads 0 breaks and Nani's bob 2.4 px / 1382 ms, but the waiting-room trace reads amplitude 0 (no bob at all?), which needs a strip to judge (Fable (orchestrator subagent))
+- CLN-38: the chart's item pool was never listed (build/tools/review/heal-marks.mjs --pool eye died MODULE_NOT_FOUND in the worktree) and the text captures show only "ha / na / paani", so no household noun (bed, table) is visible at L1, L2 or L3 (Sonnet (orchestrator subagent))
+

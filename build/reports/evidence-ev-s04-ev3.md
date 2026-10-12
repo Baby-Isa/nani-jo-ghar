@@ -46,3 +46,10 @@ Next: `node build/tools/review/evidence.mjs --judge --run-id ev-s04-ev3`, the re
 - SH-17: SH-17-p3-L1-1366x768: strip:.cl-side .oc-card:6x400 at life:request (hit 1): ".cl-side .oc-card" is not on screen at life:request
 - CLN-85: CLN-85-p2-L1-1366x768: zoom2:.cl-bubble at bubble (hit 1): ".cl-bubble" is not on screen at bubble
 - CLN-22: CLN-22-p3-L1-1366x768: strip:.cl-tray:6x250 at clinic:pharmacy/belt (hit 1): the filmstrip of ".cl-tray" did not change over 6 frames (250 ms apart) · CLN-22-p3-L2-1366x768: strip:.cl-tray:6x250 at clinic:pharmacy/belt (hit 1): the filmstrip of ".cl-tray" did not change over 6 frames (250 ms apart) · CLN-22-p3-L3-1366x768: strip:.cl-tray:6x250 at clinic:pharmacy/belt (hit 1): the filmstrip of ".cl-tray" did not change over 6 frames (250 ms apart)
+
+## EVIDENCE lines from the reviewers (the tool owner's list)
+
+- CHT-11: the sheet has no service/tray view (the probe says the lab has no service view); A is the station's cv3-bowl under the results overlay, washed out so pale that neither its angle nor a baked shadow can be read. (Fable (orchestrator subagent))
+- CLN-67: A is the speaker chip on the instruction card (.oc-card .oc-face: grey hair, glasses, the same chip that sits beside 'Let's clean it…' on CLN-99's cards), not the patient's round face on the close-up, and no patient body is in frame to match it against. (Fable (orchestrator subagent))
+- SAM-04: the running-count label on the board (L1 frames 2-3, 7; L2 2-5) and above the stage (L3 3-7, L4 3-7) is about 8 px tall on the sheet and unreadable, every #stage text capture holds no words (the label is canvas-drawn), and the probe's source crops are not on disk; whether it is a Kutchi word at L1-2 and nothing written (or dots) at L3+ cannot be judged here. Note: L3 and L4 do show a white text label, which the counting rule would not allow if it is a written count. (Fable (orchestrator subagent))
+
