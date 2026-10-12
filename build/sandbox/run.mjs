@@ -86,6 +86,7 @@ if (has("--list")) {
     const m = tileFlows(t, live);
     console.log(`  ${t.title.slice(0, 44).padEnd(44)} ${m.gap ? `NO FLOW: ${m.gap}` : `${m.flows.length} flows: ${m.flows.slice(0, 4).join(", ")}${m.flows.length > 4 ? ` +${m.flows.length - 4}` : ""}${m.note ? ` (${m.note})` : ""}`}`);
   }
+  console.log(`\nviewports ("all sizes"): ${ALL_SIZES.map((k) => `${k} ${SIZES[k].label}`).join("; ")}`);
   process.exit(0);
 }
 // the route the contract run plays by default (--contract with no --flow): what Zafar played on 8 Oct and the places his rules

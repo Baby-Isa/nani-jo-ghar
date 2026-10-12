@@ -3193,14 +3193,14 @@
   "date": "2026-10-12"
  },
  "PRC-02": {
-  "hash": "d8bb793c0321e5f4d28e",
+  "hash": "4a44534cd048cebe077f",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "machine: PRC-02-p1-repo: textMatches:1440x900: the script's output does not match /1440x900/",
+  "verdict": "PASS",
+  "line": "machine: textMatches:1440x900 (the script's output matches /1440x900/)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
+  "run": "ev-20261012-2148",
+  "commit": "31ecc7b",
   "date": "2026-10-12"
  },
  "PRC-03": {
@@ -3259,14 +3259,14 @@
   "date": "2026-10-12"
  },
  "PRC-09": {
-  "hash": "f77e704ccbb3c48c7c53",
+  "hash": "3e58dd732e4708895ad8",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "machine: PRC-09-p1-repo: pass: ls .claude/skills/game-mode-design/SKILL.md .claude/skills/game-mode-design/references/fun-patterns.md: exit 2",
+  "verdict": "PASS",
+  "line": "machine: pass (ls .claude/skills/game-mode-design/SKILL.md .claude/skills/game-mode-design/references/fun-patterns.md: exit 0)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
+  "run": "ev-20261012-2148",
+  "commit": "31ecc7b",
   "date": "2026-10-12"
  },
  "SAM-01": {
