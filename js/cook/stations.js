@@ -524,10 +524,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     /** A small soft puff where something lands in a pot or a glass (28 Sept, s8). */
     puff(x, y, color = 0xffffff, size = 40) {
-      for (let i = 0; i < 5; i++) {
-        const a = (i / 5) * Math.PI * 2 + Math.random() * 0.6;
-        const c = this.track(this.add.ellipse(x, y, size * 0.6, size * 0.4, i % 2 ? 0xffffff : color, 0.45).setDepth(D.fx));
-        this.tweens.add({ targets: c, x: x + Math.cos(a) * size * 0.8, y: y + Math.sin(a) * size * 0.35 - size * 0.3, scale: 1.8, alpha: 0, duration: 420 + Math.random() * 160, ease: "Cubic.easeOut", onComplete: () => c.destroy() });
+      // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa): a soft puff that reads on a
+      // light pan or a dark one (each cloud has a faint warm edge); never a spray of dots (CK-06)
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * Math.PI * 2 + Math.random() * 0.5;
+        const c = this.track(this.add.ellipse(x, y, size * 0.7, size * 0.48, i % 2 ? 0xffffff : color, 0.72).setDepth(D.fx).setStrokeStyle(1.5, 0x8a6a48, 0.35));
+        this.tweens.add({ targets: c, x: x + Math.cos(a) * size * 0.9, y: y + Math.sin(a) * size * 0.4 - size * 0.35, scale: 1.9, alpha: 0, duration: 650 + Math.random() * 200, ease: "Cubic.easeOut", onComplete: () => c.destroy() });
       }
     }
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */

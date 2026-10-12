@@ -1067,8 +1067,16 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .jar-drop .jar-card { margin: 0; box-shadow: 0 6px 18px rgba(40, 25, 10, 0.18); }
 .jar-drop .jar-coin { position: absolute; left: 50%; top: 70%; width: 22px; height: 22px; }
 .jar-today .pill { font-size: clamp(20px, 3vw, 30px); }
-.day-dot .day-sun { display: block; width: 18px; height: 18px; margin: 0 auto calc(var(--njg-line-2) * -1); color: #c9962e; }
+/* CK-24 (S05-C): a story day is a sun: the number sits in the sun's disc with its rays all round (a locked day is a
+   pale sun with its lock), never a level token with a speck above it */
+.day-dot { position: relative; width: 84px; }
+.day-dot .day-sun { position: absolute; top: -18px; left: 50%; width: 80px; height: 80px; margin: 0; transform: translateX(-50%); color: #c9962e; pointer-events: none; }
 .day-dot .day-sun svg { width: 100%; height: 100%; }
+.day-dot b { position: relative; z-index: 1; margin-top: 0; }
+.day-dot:not(.done):not(.next) b { background: #f3e2b6; }
+.day-dot[disabled] .day-sun { color: #d9cdb8; }
+.day-dot[disabled] b { background: #efe6d6; color: var(--ink-soft); }
+.title-wrap .day-dots { gap: 4px; margin-top: 26px; row-gap: 30px; }
 
 /* T19 (MAA-14, S02-B): Nani's "pass me" comes ON SCREEN over the play area (the game is paused), her bubble asks,
    three pictures, a 3-second ring with a tick-tock; out of time she looks impatient (a shake) and goes */

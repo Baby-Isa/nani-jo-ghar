@@ -2193,7 +2193,7 @@
     const kt = shared();
     if (kt) {
       if (!tally.size) return kt.clear();
-      tally.forEach((t, key) => kt.counts[key] !== t.n && kt.set(key, t.n, { icon: t.icon }));
+      tally.forEach((t, key) => kt.counts[key] !== tallyLabel(t, key) && kt.set(key, tallyLabel(t, key), { icon: t.icon }));
       return;
     }
     const b = $("#count-badge");
@@ -2209,9 +2209,22 @@
       .map(([key, t]) => `<span class="tl" data-k="${esc(key)}">${t.icon ? `<img src="${esc(t.icon)}" alt="">` : ""}<b class="count-digit">${t.n}</b></span>`)
       .join("");
   }
+  /*
+   * SH-39 (D6, clinic play-test P23/P26; S05-C): the running count reads as the Kutchi number word at levels 1-2
+   * ("tran", agreeing with its thing: hakri dungri) and as dots from level 3 (the child hears "panj" and sees five
+   * dots: they must know panj is five); never a digit to match. The station puts the tally on the tool in use
+   * (UI.tallyAt), never in a card row or a far corner.
+   */
+  function tallyLabel(t, key) {
+    if (t.lv >= 3) return "\u25cf".repeat(Math.max(0, Math.min(t.n, 12)));
+    const ws = key && key !== "_" ? String(key).split("+") : [];
+    const g = ws.length && Lang.gender ? Lang.gender(ws[ws.length - 1]) : null;
+    const w = t.n >= 1 && t.n <= 10 && Lang.num ? (Lang.num(t.n, g)[0] || {}).t : null;
+    return w || String(t.n);
+  }
   UI.count = function (n, { speak = true, id = "_", icon = null, state = null } = {}) {
     const prev = tally.get(id);
-    tally.set(id, { n, icon: icon || (prev && prev.icon) || iconFor(id === "_" ? null : id, state) });
+    tally.set(id, { n, lv: mission ? mission.level : orderLevel(), icon: icon || (prev && prev.icon) || iconFor(id === "_" ? null : id, state) });
     drawTally();
     const el = $(`#count-badge .tl[data-k="${CSS.escape(id)}"]`);
     if (el) bumpEl(el); // (the shared tally bumps its own chip)

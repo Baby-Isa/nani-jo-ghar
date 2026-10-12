@@ -334,7 +334,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- one order ---------------- */
-  async function runOrder(order, day, { demo } = {}) {
+  async function runOrder(order, day, { demo, asked } = {}) {
     const who = order.who;
     const ctx = makeCtx(order);
     // no "pass me" in the first order of a session; at most one at level 1
@@ -354,12 +354,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await serviceView(null);
       await Cook.wait(500);
     } else if (!demo) {
-      await serviceView(who, { enter: true });
-      await Cook.wait(900);
-      await exchange(who, EX("salaam"));
-      if (Math.random() < 0.35) await exchange(who, EX("howareyou"));
-      // the order card is always the short form (Sidebar v2), so the polite ask can come first at any level
-      if (Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
+      // CHT-07: a customer who asked before the pantry trip is still at the counter: straight to the order
+      await serviceView(who, { enter: !asked || !S().chars[who] });
+      await Cook.wait(asked ? 400 : 900);
+      if (!asked) {
+        await exchange(who, EX("salaam"));
+        if (Math.random() < 0.35) await exchange(who, EX("howareyou"));
+        // the order card is always the short form (Sidebar v2), so the polite ask can come first at any level
+        if (Math.random() < 0.3) await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(order.dishes[0].recipe)]) });
+      }
       // decision 53 (CHAI-15): everyone who orders comes in before the requests pop-up (the chai tray's other cups)
       const others = [...new Set(order.dishes.flatMap((d) => (d.cups || []).map((c) => c.who)))].filter((w) => w && w !== who && w !== "nani" && Cook.CHARS[w] && !S().chars[w]);
       const base = Cook.CHARS[who] ? Cook.CHARS[who].x : 940;
@@ -465,6 +468,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   Cook.callBack = callBack;
   const shabash = () => Lang.say({ fn: "Exclaim", x: "intj.well-done" });
+  // SH-66 (S05-C, S's S1 request): the chef's call-back and Shabash (decision 54) come after the station's
+  // Lifecycle.stageEnd stopped every voice; they open a stage of their own so they are never read as voice carrying over
+  const closingBeat = () => global.Lifecycle && global.Lifecycle.stageStart && global.Lifecycle.stageStart("cook:closing");
 
   /* ---------------- the end of a round: the shared screen (UX 9) ----------------
    * js/shared/results.js: page 1 is three badges (time with the personal best
@@ -664,9 +670,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const h = a.drawH * k;
     const w = (h * a.w) / a.h;
     const base = t.y + t.h * 0.18;
-    s.track(s.add.ellipse(x + w * 0.1, base - h * 0.02, w * 0.9, Math.max(10, h * 0.14), 0x2a1a0a, 0.2).setDepth(Cook.D.occ + 1.9 + i * 0.01));
+    // CK-21: the contact shadow on the tray's floor, falling to the right (light from the left)
+    s.track(s.add.ellipse(x + w * 0.16, t.y - t.h * 0.06, w * 0.95, Math.max(10, h * 0.16), 0x2a1a0a, 0.26).setDepth(Cook.D.occ + 1.9 + i * 0.01));
     s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
+    trayFront(s, t);
     return true;
+  }
+  /*
+   * CK-21 (decision 87): a served dish sits IN its tray: the painted tray's front wall, cut from the service picture
+   * itself (from the floor's front line down), is drawn again over the dish, as the pantry tray's front edge is (PAN-07).
+   * A drawn tray (no painted kitchen) keeps its own drawing.
+   */
+  function trayFront(s, t) {
+    if (!t.painted || !s.bg || !s.bg.texture || s.bg.texture.key !== "bg-service") return;
+    const fx = Math.round(t.x - t.w / 2 - 4);
+    const fy = Math.round(t.y - 1);
+    const fw = Math.round(t.w + 8);
+    const fh = Math.round(t.h / 2 + 6);
+    return s.track(s.add.image(s.bg.x, s.bg.y, "bg-service").setOrigin(0).setScale(s.bg.scaleX, s.bg.scaleY).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
   }
   // a chai cup with no milk (CHAI-07) is served as black tea
   const servedRecipe = (d, c = 0) => Cook.Art.servedName(d.recipe, { noMilk: Array.isArray(d.cups) && !!d.cups[c] && d.cups[c].dudh === false });
@@ -734,6 +755,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // decision 54: Nani calls back what was made; a row that went wrong (a station not yet redoing on the spot,
     // decision 51) is said again by the customer, that row only (never the whole order as "I want…")
     const missedRows = (ctx.ladders || []).some((L) => Cook.Order.rows(L, { all: true }).some((r) => r.miss));
+    // SH-66 (S05-C): the serve is its own beat after the station's stage end, so its call-back, Shabash and thanks
+    // are its own lines, never the station's voice carrying over
+    closingBeat();
     const back = callBack(ctx);
     if (back) await S().talk("nani", back, { after: "happy" });
     if (missedRows && who !== "nani") {
@@ -774,7 +798,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.hideBubble();
     if (who !== "nani") await S().leaveChar(who);
     // the others who came in with the order (decision 53) go too
-    for (const w of Object.keys(S().chars || {})) if (w !== "nani") await S().leaveChar(w);
+    for (const w of Object.keys(S().chars || {})) if (w !== "nani" && w !== state.waiting) await S().leaveChar(w);
     // Wave 6b: the shared end-of-round screen (time, accuracy, hints; then the words)
     await roundEnd(ctx, { scored });
     state.ordersServed = (state.ordersServed || 0) + 1;
@@ -814,12 +838,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (next) setTimeout(() => Cook.prefetchDishes(next.dishes), 6000);
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
-      if (!free) for (const dish of spec.dishes) if (!fetched.has(dish) && pantryFirst(dish) && !fetchedEver(dish)) {
+      const trips = free ? [] : spec.dishes.filter((dish) => !fetched.has(dish) && pantryFirst(dish) && !fetchedEver(dish));
+      // CHT-07 (decisions 53, 87): chaat is asked for first (the dish, not its layers); the pantry and the prep come
+      // next, and the layer order is said just before the bowl (assemble's sequence). The customer waits at the counter.
+      const asked = trips.some((dish) => ASK_FIRST.includes(dish)) && spec.who && spec.who !== "nani" ? await askDish(spec) : false;
+      for (const dish of trips) {
         fetched.add(dish);
         markFetched(dish);
         await runOrder(pantryFor(dish, spec), day);
       }
-      await runOrder(buildOrder(spec), day);
+      state.waiting = null;
+      await runOrder(buildOrder(spec), day, { asked });
       // the app shell (js/cook/app.js): a first launch goes home after Nani's pantry round
       if (Cook.afterOrder && (await Cook.afterOrder(spec, day, { free })) === "leave") return;
     }
@@ -830,6 +859,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * that day, it starts with a pantry trip for that dish's things (data.recipes.pantry.forDish): Nani's
    * list, "Bring me these for chai", in her order. A second one that day doesn't; free play and the lab skip it.
    */
+  // CHT-07 (decision 87): dishes whose customer asks before the pantry trip (the dish only; its order comes later)
+  const ASK_FIRST = ["chaat"];
+  /** The customer comes in, greets and asks for the dish by name; they wait at the counter while the pantry is fetched. */
+  async function askDish(spec) {
+    const who = spec.who;
+    await serviceView(who, { enter: true });
+    await Cook.wait(900);
+    await exchange(who, EX("salaam"));
+    const dish = spec.dishes.find((d) => ASK_FIRST.includes(d)) || spec.dishes[0];
+    await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(dish)]) });
+    UI.hideBubble();
+    state.waiting = who;
+    return true;
+  }
   const pantryFirst = (dish) => !!(((Cook.data.recipes.pantry || {}).forDish || {})[dish] && R.pantry);
   function pantryFor(dish, spec) {
     const lv = spec.level && typeof spec.level === "object" ? spec.level[dish] : spec.level;
@@ -1218,8 +1261,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const asker = !Array.isArray(what) && what && (what.who === "nani" || what.recipe === "pantry") ? "nani" : "nana";
       order.who = asker;
       UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana (lab)", ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
+      // CHAI-15 (decision 53, S05-C): everyone who orders comes in first, in the lab too: each person on the card walks
+      // up to their own tray at the counter, then the one request pop-up shows every order
+      const people = asker === "nani" ? [] : [...new Set((ctx.ladders || []).flatMap((L) => (L.sections || []).map((x) => x.for)).filter(Boolean))];
+      if (asker !== "nani" && !people.length) people.push(asker);
+      const spots = traySpots().map((t) => t[0]);
+      const came = people.filter((w) => w !== "nani" && Cook.CHARS[w] && s.textures.exists(`${w}-neutral`) && !(s.chars || {})[w]);
+      if (came.length) s.occluder(); // the counter's front, over them (as at a day's service)
+      came.forEach((w, i) => s.addChar(w, { enter: true, x: spots.length ? spots[Math.min(spots.length - 1, came.length === 1 ? 1 : i)] : undefined }));
       // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
-      ctx.intro = UI.mission.introduce()
+      ctx.intro = (came.length ? Cook.wait(1100) : Promise.resolve())
+        .then(() => UI.mission.introduce())
         .catch(() => {})
         .then(() => {
           ctx.t0 = Date.now();
@@ -1240,6 +1292,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // decision 54 (T4, T7): the chef's call-back of what was made, then Shabash, in the guide's box (she's off
     // screen at a station; her card's strip in the pantry); a part tried on its own has nothing to call back
     if (keptKeys().includes(key) || /^recipe:/.test(key)) {
+      closingBeat(); // SH-66: the closing lines are their own beat, after the station's stage end
       const back = callBack(ctx);
       if (back) await UI.guideSay(back).catch(() => {});
       await UI.guideSay(shabash(), { ms: 900 }).catch(() => {});

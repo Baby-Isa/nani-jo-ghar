@@ -72,6 +72,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const FONT = "Nunito, sans-serif";
 
   const Kit = {
+    /** the shared ring and badge colours (the heat ring's; CHT-05: the chop timer uses them too) */
+    INK,
     /** F2: the scale at which `px` canvas text renders at 14 CSS px (the canvas is shown smaller than its game size on a phone; TXT-05) */
     textFloor(S, px) {
       return 14.2 / (px * (S.scale.displaySize.height / S.scale.gameSize.height) * S.cameras.main.zoom);

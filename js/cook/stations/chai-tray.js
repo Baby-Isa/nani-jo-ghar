@@ -209,13 +209,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const hobH0 = Cook.Kit.HOB.h[n - 1];
     // the widest scale that fits the hob and the tray (which shrinks with the hob) in the row
     const room = 1600 - 2 * 56 - GAP;
-    const k = Math.min(HOB_K, room - TRAY_D >= hobW * HOB_K ? HOB_K : Math.max((room - TRAY_D) / hobW, room / (hobW + hobH0 * 0.78)));
+    const k0 = Math.min(HOB_K, room - TRAY_D >= hobW * HOB_K ? HOB_K : Math.max((room - TRAY_D) / hobW, room / (hobW + hobH0 * 0.78)));
+    // CHAI-08 (v2 mock-up, S05-C): hob and tray about 15% bigger and lower, where the row and the stage's height allow
+    // (a taller stage's extra worktop goes into size, not into empty marble under the hob)
+    const ey = (Cook.view && Cook.view.ey) || 0;
+    const SHELF_GAP = 28;
+    const k = Math.max(k0, Math.min(k0 * 1.15, room / (hobW + hobH0 * 0.78), (SHELF_TOP + ey - SHELF_GAP - 40) / hobH0));
     const hobH = hobH0 * k;
-    const trayD = Math.min(TRAY_D, hobH * 0.78);
+    const trayD = Math.min(TRAY_D * (k / k0), hobH * 0.78);
     const total = hobW * k + GAP + trayD;
     const hobX = Math.max(48, (1600 - total) / 2);
-    // low (§10), with some breathing space above the shelf; raised into the middle of a taller stage's worktop
-    const hobY = SHELF_TOP - 56 - hobH - Cook.lift();
+    // low (§10), just above the shelf; raised only a little into a taller stage's worktop
+    const hobY = Math.max(-ey + 40, SHELF_TOP - SHELF_GAP - hobH - Cook.lift(0.2));
     // the shared kitchen kit's hob: one burner per person (the burner rule)
     const kHob = Cook.Kit.hob(S, { n, x: hobX, y: hobY, k });
     const hob = kHob.img;
@@ -267,12 +272,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         handle.setMask(mg.createGeometryMask());
       }
       layers.handle = handle;
+      // SH-32 (S05-C): what was spooned in shows in the pan (sugar heaps, elchi pods) until it boils in
+      const bits = S.track(S.add.graphics().setDepth(D.item + 0.3));
+      layers.bits = bits;
       const bubbles = S.track(S.add.graphics().setDepth(D.item + 0.5));
       const heatRing = Cook.Kit.heatRing(S);
       const sel = S.track(S.add.graphics().setDepth(D.item - 0.5));
       const selRing = S.track(S.add.graphics().setDepth(D.item + 0.95));
       const pan = {
-        i, p, who: p.who, x, y, img, mix, shown: "empty", layers, bubbles, ring: heatRing.g, heatRing, burner: b, sel, selRing, face, knob, kOff, kOn, knobHit, flameHi, flameLo,
+        i, p, who: p.who, x, y, img, mix, shown: "empty", layers, bits, bubbles, ring: heatRing.g, heatRing, burner: b, sel, selRing, face, knob, kOff, kOn, knobHit, flameHi, flameLo,
         level: 0, has: { water: 0, leaves: 0, milk: 0 }, sugar: 0, salt: 0, extras: [],
         heat: 0, state: "cold", poured: 0, closed: false, spoonsClosed: false, look: 0,
       };
@@ -287,7 +295,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const d = (WELL_D * trayD) / META.glassR;
       const glass = {};
       ["empty", "half", "full"].forEach((st) => (glass[st] = S.track(S.add.image(wx, wy, `v2-glass-${st}`).setDisplaySize(d, d).setDepth(D.item + 0.5).setAlpha(st === "empty" ? 1 : 0))));
-      const face = S.track(S.add.image(wx, wy + (WELL_D * trayD) / 2 + 2, roundBadge(S, p.who)).setDisplaySize(46, 46).setDepth(D.item + 1));
+      // CHAI-18 (S05-C): the orderer's face on the tray's rim beside their glass (the outer rim, level with the cut-out),
+      // never over the cup
+      const left = fx < 0.5;
+      const fd = Math.min(46, trayD * 0.11);
+      const face = S.track(S.add.image(trayX + (left ? 0.058 : 0.942) * trayD, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.item + 1));
       return { x: wx, y: wy, glass, face, fill: 0 };
     });
     pans.forEach((pan, i) => (pan.well = wells[i]));
@@ -406,6 +418,59 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!milk || h <= hi) return [calm, boil, Cook.clamp((h - boilAt) / (lo - boilAt), 0, 1)];
       return ["boil-milky", "foam", Cook.clamp((h - hi) / (1 - hi), 0, 1)];
     };
+    /*
+     * SH-32: each spoonful lies on the pan's surface where it went (no invisible counters): a small heap of sugar (the
+     * salt that looks like it, the same), an elchi pod, a little heap of any other spice; it sinks in as the pan comes
+     * to the boil. Spots go round the middle by the golden angle, so heaps never stack on one another.
+     */
+    const drawBits = (pan) => {
+      const g = pan.bits;
+      if (!g || !g.active) return;
+      g.clear();
+      if (!(pan.has.water > 0 || pan.has.milk > 0)) return;
+      const heaps = pan.sugar + pan.salt;
+      const spot = (i) => {
+        const a = i * 2.39996 - 0.6;
+        const r = rIn * (0.22 + 0.2 * ((i * 0.618) % 1));
+        return { x: pan.x + Math.cos(a) * r, y: pan.y + Math.sin(a) * r };
+      };
+      let i = 0;
+      for (let k = 0; k < heaps; k++, i++) {
+        const q = spot(i);
+        const w = rIn * 0.26;
+        g.fillStyle(0x6b4a2a, 0.18).fillEllipse(q.x + w * 0.06, q.y + w * 0.1, w, w * 0.62);
+        g.fillStyle(0xf4ecdc, 1).fillEllipse(q.x, q.y, w, w * 0.6);
+        g.fillStyle(0xffffff, 1).fillEllipse(q.x - w * 0.08, q.y - w * 0.08, w * 0.62, w * 0.34);
+        g.lineStyle(1.5, 0xcbbd9f, 0.9).strokeEllipse(q.x, q.y, w, w * 0.6);
+      }
+      pan.extras.forEach((id) => {
+        const q = spot(i++);
+        const pod = id === "spi-10" || /elchi|cardamom/i.test(String(Cook.english ? Cook.english(id) : ""));
+        if (pod) {
+          // two little green pods, ridged
+          [[-0.05, 0, 0.5], [0.07, 0.05, -0.4]].forEach(([dx, dy, a]) => {
+            const cx = q.x + dx * rIn, cy = q.y + dy * rIn, L = rIn * 0.17, W = rIn * 0.085;
+            const pts = [];
+            for (let t = 0; t < 16; t++) {
+              const u = (t / 16) * Math.PI * 2;
+              const px = Math.cos(u) * L * 0.5, py = Math.sin(u) * W * 0.5;
+              pts.push({ x: cx + px * Math.cos(a) - py * Math.sin(a), y: cy + px * Math.sin(a) + py * Math.cos(a) });
+            }
+            g.fillStyle(0x6f8a3c, 1).fillPoints(pts, true);
+            g.lineStyle(1.5, 0x4b6226, 1).strokePoints(pts, true);
+            g.lineStyle(1, 0xa9c06e, 0.9).lineBetween(cx - Math.cos(a) * L * 0.3, cy - Math.sin(a) * L * 0.3, cx + Math.cos(a) * L * 0.3, cy + Math.sin(a) * L * 0.3);
+          });
+        } else {
+          const col = St.heapColor(id, 0xb07a3a);
+          const w = rIn * 0.22;
+          g.fillStyle(0x3a2410, 0.2).fillEllipse(q.x + w * 0.06, q.y + w * 0.1, w, w * 0.6);
+          g.fillStyle(col, 1).fillEllipse(q.x, q.y, w, w * 0.58);
+        }
+      });
+      // it sinks in as the pan comes to the boil (the picture's own colour carries the spice from there)
+      const h = pan.heat || 0;
+      g.setAlpha(pan.state === "ready" ? 0 : pan.state === "heating" ? Cook.clamp(1 - (h - boilAt * 0.6) / (boilAt * 0.5), 0, 1) : 1);
+    };
     const tex = (im, key) => im.texture.key !== `v3-pan-${key}` && im.setTexture(`v3-pan-${key}`);
     // fade: { from, u } while something goes in (the last picture, then the new one over it)
     const setLook = (pan, fade) => {
@@ -416,6 +481,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       tex(pan.img, a);
       if (b) tex(pan.mix, b);
       pan.mix.setAlpha(b ? u : 0);
+      drawBits(pan);
     };
     const fadeLook = (pan, from, ms = 450) => {
       pan.fading = true;
@@ -454,6 +520,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (UI.mission.focus) UI.mission.focus(pan.who);
       drawSel();
       UI.hideCount();
+      // SH-39 (D6): the running count sits on the pan in use, over its rim on the side away from the handle
+      if (UI.tallyAt) UI.tallyAt([pan.x - panR * 0.35, pan.y - panR * 1.02]);
       if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
       if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
       pan.extras.forEach((id) => UI.count(1, { speak: false, id }));
@@ -576,6 +644,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (level <= 1 && pan.sugar === (pan.p.khun || 0)) closeSpoons(pan);
         pop(id, at.x, at.y, { speak: false });
         await spoonInto(pan, obj, id);
+        drawBits(pan);
       } else {
         if (id === "cook-chai") pan.has.leaves++;
         else {
@@ -593,6 +662,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         pop(id, at.x, at.y);
         await spoonInto(pan, obj, id);
+        drawBits(pan);
         // the leaves (or a spice) land: the next picture fades in
         if (id === "cook-chai" && pan.level < 0.05) pan.level = 0.12;
         fadeLook(pan, look);
@@ -758,6 +828,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
       pan.extras.forEach((x) => UI.count(1, { speak: false, id: x }));
       Cook.sfx.pop();
+      drawBits(pan); // SH-32: the spoonful comes back out of the pan
       if (obj) await Cook.Spoon.spoon(zb, { bowl: pan.img, into: at(obj), word: id, ms: kCount.spoonMs });
       if (id !== "cook-khun" && id !== "spi-16") fadeLook(pan, pan.shown);
       if (id === "cook-khun" && level <= 1 && pan.sugar === (p.khun || 0)) closeSpoons(pan);

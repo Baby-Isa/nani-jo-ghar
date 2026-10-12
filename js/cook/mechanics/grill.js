@@ -1362,7 +1362,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const quiet = SK.shelf(S, z, shelfIds, { level: z.level });
       Object.values(quiet).forEach((b) => {
         b.setAlpha(0.5);
-        if (b.chip) b.chip.setAlpha(0.6);
+        // SEK-08 (S05-C): one job per phase: the threading's word chips go in the grill phase (the bowls stay, quiet)
+        if (b.chip) b.chip.setVisible(false);
       });
       const gw = GRILL.w;
       const grillImg = S.track(S.add.image(X(GRILL.x), Y(GRILL.y), v3 ? "sk3-grill" : S.textures.exists("sk2-grill") ? "sk2-grill" : SK.tex(S, `grill:${gw}x${Math.round(gw * 0.56)}`)).setDepth(D.item - 3));

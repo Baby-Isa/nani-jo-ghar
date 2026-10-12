@@ -162,15 +162,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const f = Math.max(0, left / total);
         const warn = left <= T.warn;
         ring.clear();
-        ring.fillStyle(0x2a1a10, 0.18).fillCircle(x + z.L(4), y + z.L(6), r + z.L(8));
-        ring.fillStyle(0xfff6e4, 1).fillCircle(x, y, r + z.L(8));
-        ring.lineStyle(z.L(4), 0x7a5230, 1).strokeCircle(x, y, r + z.L(8));
+        // CHT-05 (S05-C): the shared ring's colours (Cook.Kit.INK, the heat ring's): the cream track, sage time
+        // left, gold at the end (never a warning red), a dark ink rim and knob
+        const ink = (Cook.Kit && Cook.Kit.INK) || { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, text: 0x2a2522 };
+        ring.fillStyle(ink.text, 0.18).fillCircle(x + z.L(4), y + z.L(6), r + z.L(8));
+        ring.fillStyle(ink.track, 1).fillCircle(x, y, r + z.L(8));
+        ring.lineStyle(z.L(4), ink.text, 0.55).strokeCircle(x, y, r + z.L(8));
         if (f > 0) {
-          ring.fillStyle(warn ? 0xe0772e : 0x4f9a3a, 1);
+          ring.fillStyle(warn ? ink.gold : ink.sage, 1);
           ring.slice(x, y, r, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * f), false).fillPath();
         }
         // the knob on top, like a kitchen timer
-        ring.fillStyle(0x7a5230, 1).fillRoundedRect(x - z.L(14), y - r - z.L(26), z.L(28), z.L(16), z.L(5));
+        ring.fillStyle(ink.text, 0.8).fillRoundedRect(x - z.L(14), y - r - z.L(26), z.L(28), z.L(16), z.L(5));
       };
       drawRing();
       const ringScale = (s) => ring.setScale(s).setPosition(z.X(T.x) * (1 - s), z.Y(T.y) * (1 - s));

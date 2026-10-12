@@ -600,7 +600,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await S.fly(jar, cx + bodyR * 0.45, cy - bodyR * 0.95, { duration: 340, arc: z.L(110) });
       await Cook.tween(S, { targets: jar, angle: -75, duration: 160, ease: "Quad.easeOut" });
       Cook.sfx.sizzle(0.8);
-      S.burst(cx, cy - bodyR * 0.2, [col, 0xfff0c0], 12, z.L(50));
+      // CK-06 / DAAR-05 / CK-27 (S05-C): the one shared "it went in" puff, never a spray of white dots in the oil
+      S.puff(cx, cy - bodyR * 0.2, col, z.L(50));
       if (stage(state) < 1) setPot("seeds");
       await Cook.tween(S, { targets: jar, alpha: 0, angle: 0, duration: 220 });
       jar.destroy();

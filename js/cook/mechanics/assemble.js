@@ -114,10 +114,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // the side-on glass bowl, as build/check_vessel_meta.py measured it (v3/chaat/meta.json "bowl-side"): the
   // rim's and the inside floor's front lines, how flat a level's ellipse is there, and the inside wall's
   // [left, right] at 41 heights of the sprite (all fractions of the sprite's width / height)
-  let BOWL = { w: 1214, h: 618, cx: 0.4992, rim: 0.0599, floor: 0.8285, eryRim: 0.025, eryFloor: 0.1504, floorTop: 0.6489, floorHw: 0.304 };
+  const BOWL = { w: 1214, h: 618, cx: 0.4992, rim: 0.0599, floor: 0.8285, eryRim: 0.025, eryFloor: 0.1504, floorTop: 0.6489, floorHw: 0.304 };
   // prettier-ignore
-  let BOWL_INSIDE = [[0.0346,0.9646],[0.0346,0.9646],[0.0346,0.9646],[0.0372,0.962],[0.0445,0.9539],[0.0477,0.9507],[0.0509,0.9483],[0.0549,0.9443],[0.0581,0.9411],[0.0613,0.9379],[0.0653,0.9347],[0.0685,0.9299],[0.0733,0.9259],[0.0773,0.9218],[0.0813,0.9178],[0.0854,0.913],[0.0902,0.9081],[0.095,0.9033],[0.0999,0.8985],[0.1055,0.8928],[0.1112,0.8871],[0.1177,0.8807],[0.1242,0.8742],[0.1315,0.8677],[0.1396,0.8595],[0.1469,0.8514],[0.1567,0.8425],[0.1657,0.8327],[0.1763,0.8221],[0.1885,0.8106],[0.2002,0.799],[0.2125,0.7858],[0.2273,0.7718],[0.2446,0.7545],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504]];
-  let GLASS = { w: BOWL.w, h: BOWL.h, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, inside: BOWL_INSIDE };
+  const BOWL_INSIDE = [[0.0346,0.9646],[0.0346,0.9646],[0.0346,0.9646],[0.0372,0.962],[0.0445,0.9539],[0.0477,0.9507],[0.0509,0.9483],[0.0549,0.9443],[0.0581,0.9411],[0.0613,0.9379],[0.0653,0.9347],[0.0685,0.9299],[0.0733,0.9259],[0.0773,0.9218],[0.0813,0.9178],[0.0854,0.913],[0.0902,0.9081],[0.095,0.9033],[0.0999,0.8985],[0.1055,0.8928],[0.1112,0.8871],[0.1177,0.8807],[0.1242,0.8742],[0.1315,0.8677],[0.1396,0.8595],[0.1469,0.8514],[0.1567,0.8425],[0.1657,0.8327],[0.1763,0.8221],[0.1885,0.8106],[0.2002,0.799],[0.2125,0.7858],[0.2273,0.7718],[0.2446,0.7545],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504],[0.2479,0.7504]];
+  // the bowl in use: the v3 bowl above, or the art run's (useBowlArt); BOWL stays the v3 measures the check reads
+  let GLASS = { w: BOWL.w, h: BOWL.h, cx: BOWL.cx, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, floorTop: BOWL.floorTop, floorHw: BOWL.floorHw, inside: BOWL_INSIDE };
   // the side-on pots (the pantry jars' look): one canvas, standing on its measured bottom-centre (meta.json)
   const POT = { w: 356, h: 370, anchor: [0.5, 0.9514] };
   // the food inside a pot, below the jar's own highlights and above its thick base (the layers' texture)
@@ -154,9 +155,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const a = St.art("chaat-glass");
     const m = a && a.meta && a.meta.bowl;
     if (!m) return;
-    BOWL = { w: m.w, h: m.h, cx: m.cx, rim: m.rim, floor: m.floor, eryRim: m.eryRim, eryFloor: m.eryFloor, floorTop: m.floorTop, floorHw: m.floorHw };
-    BOWL_INSIDE = m.inside;
-    GLASS = { w: BOWL.w, h: BOWL.h, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, inside: BOWL_INSIDE };
+    GLASS = { w: m.w, h: m.h, cx: m.cx, rim: m.rim, floor: m.floor, eryRim: m.eryRim, eryFloor: m.eryFloor, floorTop: m.floorTop, floorHw: m.floorHw, inside: m.inside };
     GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
     bowlUrl = a.file;
   }
@@ -401,9 +400,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const x = cv.getContext("2d");
       x.drawImage(src, 0, 0);
       x.globalCompositeOperation = "destination-out";
-      const ry = ((GLASS.floor - BOWL.floorTop) * cv.height) / 2;
-      x.translate(BOWL.cx * cv.width, GLASS.floor * cv.height - ry);
-      x.scale(BOWL.floorHw * cv.width * 1.04, ry * 1.1);
+      const ry = ((GLASS.floor - GLASS.floorTop) * cv.height) / 2;
+      x.translate(GLASS.cx * cv.width, GLASS.floor * cv.height - ry);
+      x.scale(GLASS.floorHw * cv.width * 1.04, ry * 1.1);
       const gr = x.createRadialGradient(0, 0, 0, 0, 0, 1);
       gr.addColorStop(0, "rgba(0,0,0,0.8)");
       gr.addColorStop(0.8, "rgba(0,0,0,0.8)");

@@ -42,8 +42,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const p = into.surface ? into.surface() : into;
     await S.fly(sp, p.x + (Math.random() - 0.5) * z.L(30), p.y - z.L(10), { duration: ms, arc: z.L(90) });
     S.tweens.add({ targets: sp, angle: -70, duration: 120 });
-    S.burst(p.x, p.y, col, 6, z.L(30));
-    S.puff(p.x, p.y, col, z.L(32));
+    S.puff(p.x, p.y, col, z.L(36)); // CK-27: the one shared puff (no spray of dots, CK-06)
     await Cook.wait(130);
     sp.destroy();
     // into a pot or a glass: a quick stir (28 Sept, s8)
