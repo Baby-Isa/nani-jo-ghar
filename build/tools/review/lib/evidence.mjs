@@ -113,3 +113,13 @@ export function applyVerdicts(md, verdicts, run) {
   }
   return { text: lines.join("\n"), changed, skipped };
 }
+
+// cost-and-speed change 3: --apply refuses a run that has no verdicts in the cache (judge and collect first), so nothing is written
+// from a run nobody judged. Returns null when fine, else the reason.
+export function applyGuard(index, cache) {
+  const rows = Object.entries((index && index.rows) || {}).filter(([, r]) => r.fp && !(r.tool && r.tool.length));
+  if (!cache || !Object.keys(cache).length) return "there is no verdict cache (build/tools/review/data/verdicts.json): run --judge and --collect first";
+  const hit = rows.filter(([rid, r]) => cache[rid] && cacheHit(cache[rid], r.fp));
+  if (rows.length && !hit.length) return `none of this run's ${rows.length} rows has a verdict in the cache: run --judge and --collect first`;
+  return null;
+}

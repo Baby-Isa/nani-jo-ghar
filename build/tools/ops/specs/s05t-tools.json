@@ -17,7 +17,7 @@
     "docs/decisions.md rows 82-87 only"
   ],
   "owns": [
-    "build/tools/**, build/sandbox/**, build/lint/**, .claude/**, build/*.py checks (check_*.py)",
+    "build/tools/** except build/tools/review/leak.mjs (package B: pantry config only; B tells T in its report)",
     "docs/architecture/testing.md, docs/architecture/evidence-loop.md",
     "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
     "build/reports/s05t-tools.md"
@@ -64,5 +64,6 @@
     "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).",
     "Browser runs only in chunks of at most 13 minutes under the shared lock; push after every task (others pull your tool fixes).",
     "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (four sessions push to this branch); never force-push."
-  ]
+  ],
+  "live": true
 }

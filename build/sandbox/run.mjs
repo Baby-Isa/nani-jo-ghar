@@ -12,6 +12,8 @@ import { Recorder } from "./lib/recorder.mjs";
 import { makeSheets } from "./lib/sheets.mjs";
 import { mergeSound } from "./lib/sound.mjs";
 import * as Baseline from "./lib/baseline.mjs";
+import { planGate, loadCache, saveCache } from "./lib/gatecache.mjs";
+import { pruneSandbox, recordApproved } from "./lib/prune.mjs";
 import { lintCssAll } from "../lint/css.mjs";
 import { allFlows, flowSizes, variantsOf, resolveFlow } from "./flows/index.mjs";
 import { CookPlayer } from "./lib/cook-player.mjs";
@@ -120,6 +122,7 @@ const sizesOf = (f) => (f.static ? ["static"] : sizeOpt ? sizeOpt.filter((s) => 
 
 const runId = val("--run-id") || val("--resume") || val("--from-run") || new Date().toISOString().replace(/[-:]/g, "").slice(0, 13).replace("T", "-");
 const runDir = join(ROOT, "build", "screenshots", "sandbox", runId);
+if (!val("--from-run")) { const gone = pruneSandbox({ current: runId }); if (gone.length) console.log(`[prune] ${gone.length} sandbox run(s) older than the last approved run deleted: ${gone.slice(0, 5).join(", ")}${gone.length > 5 ? " ..." : ""}`); }
 const dataDir = join(runDir, "data");
 mkdirSync(dataDir, { recursive: true });
 const dataFile = (flow, size, variant = "") => join(dataDir, `${flow.replace(/[^a-z0-9@#]+/gi, "_")}__${size}${variant ? `__${variant}` : ""}.json`);
@@ -132,8 +135,17 @@ const results = [];
 function hashSeed(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
 
 // the job list: every (flow, size), minus what a resumed run already has
-const jobs = [];
+let jobs = [];
 for (const flow of flows) for (const size of sizesOf(flow)) jobs.push({ flow, size, file: dataFile(flow.id, size) });
+// cost-and-speed change 3: the gate replays only pages whose flow, size or mode tree hash changed since the last approved gate
+// (--force-all plays everything; the cache is written when a gate's --check passes)
+let gateHashes = null;
+if (has("--gate") && !fromRun) {
+  const plan = planGate(jobs, has("--force-all") ? {} : loadCache());
+  gateHashes = plan.hashes;
+  if (plan.skipped.length) console.log(`[gate] ${plan.skipped.length} of ${jobs.length} pages unchanged since the last approved gate: not replayed (--force-all plays them)`);
+  jobs = plan.todo;
+}
 
 const order = new Map(flows.map((f, i) => [f.id, i]));
 if (evOnly) for (const p of evPlan.pages) if (!order.has(p.flow)) order.set(p.flow, order.size);
@@ -349,6 +361,12 @@ if (has("--check")) {
   const bad = cmp.added.length + cmp.incomplete.length + cmp.newErrors.length + cmp.newIncomplete.length + contract.breaks.length;
   console.log(bad ? `CHECK FAILED: ${cmp.added.length} new findings, ${cmp.incomplete.length + cmp.newIncomplete.length} flows do not reach their end, ${cmp.newErrors.length} new page errors, ${contract.breaks.length} contract breaks` : `CHECK PASSED: 0 new findings (${cur.findings.length} known, ${cmp.moved.length} moved between flows, ${cmp.fixed.length} fixed)`);
   log(`summary: ${join(runDir, "summary.md")}`);
+  if (!bad && gateHashes && !leftover) { // an approved gate: remember each completed page's hash
+    const cache = loadCache();
+    for (const r of results) if (r.complete && gateHashes[`${r.flow}@${r.size}`]) cache[`${r.flow}@${r.size}`] = gateHashes[`${r.flow}@${r.size}`];
+    saveCache(cache);
+  }
+  if (!bad && !leftover && (has("--gate") || has("--all"))) recordApproved(runId); // retention keeps this run (lib/prune.mjs)
   process.exit(bad ? 1 : 0);
 }
 log(`summary: ${join(runDir, "summary.md")}`);

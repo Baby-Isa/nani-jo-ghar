@@ -7,7 +7,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
 import { parseRegressions, REGRESSIONS, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
-import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts, sha, TEXT_KINDS } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts, applyGuard, sha, TEXT_KINDS } from "./lib/evidence.mjs";
 
 const HELP = `
 node build/tools/review/evidence.mjs --plan  [--rows a,b | --all | --sprint [--since ref]] [--json]
@@ -471,6 +471,8 @@ function apply() {
   const dir = runFolder(a.val("run-id")), P = loadPlan(dir), id = P.run;
   const index = JSON.parse(readFileSync(join(dir, "index.json"), "utf8"));
   const cache = loadCache();
+  const refuse = applyGuard(index, cache);
+  if (refuse) die(`--apply refused for ${id}: ${refuse}`, 2);
   const v = new Map();
   for (const [rid, r] of Object.entries(index.rows)) {
     const c = cache[rid];

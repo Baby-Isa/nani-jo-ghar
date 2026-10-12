@@ -2,9 +2,11 @@
 // Brief generator: a small JSON spec -> a complete session brief in the template's shape, with the standing boilerplate added.
 import { readFileSync, writeFileSync } from "node:fs";
 import { args, help, die, sh } from "./lib.mjs";
+import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs } from "./briefpack.mjs";
 
 const HELP = `
-node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows]
+node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows] [--no-pack]
+node build/tools/ops/brief.mjs --live-check
   Fills docs/process/session-brief-template.md from a spec and adds the standing lines every brief needs (rules B3, B4, B16, B17:
   read-first list, no helpers, don't remove mechanics, proof via touched mapper + shotdiff, the regression rows for the flows
   it touches via regress.mjs, finish rules). Prints the brief (paste it as the session's first message) or writes --out.
@@ -15,13 +17,28 @@ node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows]
     permissions                                             what to grant up front
     tasks: [{do, accept}]                                   numbered, each with its acceptance criterion
     flows: ["clinic:heal-cut", ...], shared: true          regression rows to list (regress.mjs); "touched" lets the session map them
+    kind: art|design|review|code|shared|spec|driver|tools|docs|verdicts|report|text|counts|logs   picks the default model and effort
+                          from the table (Fable: art, design, the review before main; Opus high: code, shared; Sonnet medium: specs,
+                          drivers, docs, verdicts, reports; Haiku: text-only expects, counts, logs). "model" in the spec still wins.
+    live: true                                               this brief is running: two live briefs may not own one path (exit 1)
     port, browser: true|false                               browser tests and the session's own COOK_TEST_PORT
     report, publish: false|true, extra: [...]               finish: the report name; whether this session ends with the push to main
-  --no-rows   skip the regress.mjs lookup (rows are then left for the session to look up). No network.`;
+  --no-rows   skip the regress.mjs lookup (rows are then left for the session to look up). No network.
+  --no-pack   do not write the context pack (<spec>.context.md: under 2k words, the last 15 decisions and the rules the task names, pasted).
+  --live-check  only check the live specs in build/tools/ops/specs for overlapping "owns"; exit 1 on an overlap.`;
 const a = args(); help(HELP, a);
+// two live briefs must not own one path (cost-and-speed change 5)
+const clash = overlaps(liveSpecs());
+if (a.has("live-check")) {
+  const n = liveSpecs().filter((x) => x.live).length;
+  if (clash.length) { for (const c of clash) console.error(`OVERLAP: "${c.a}" owns ${c.pathA}; "${c.b}" owns ${c.pathB}`); die(`${clash.length} overlap(s) between live briefs.`, 1); }
+  console.log(`${n} live briefs, no overlap.`); process.exit(0);
+}
 if (!a.pos[0]) die("Give a spec file. --help shows the fields.");
 const s = JSON.parse(readFileSync(a.pos[0], "utf8"));
-for (const k of ["name", "model", "cost", "stop", "branch", "owns", "tasks"]) if (s[k] == null) die(`Spec is missing "${k}".`);
+if (!s.model && s.kind) { const m = modelFor(s.kind); if (!m) die(`Unknown kind "${s.kind}". Known: ${Object.keys(MODEL_TABLE).join(", ")}.`); s.model = m.model; s.effort = s.effort || m.effort; s.why = s.why || m.why; }
+for (const k of ["name", "model", "cost", "stop", "branch", "owns", "tasks"]) if (s[k] == null) die(`Spec is missing "${k}" (or give "kind" for the model).`);
+if (s.live && clash.length) { for (const c of clash) console.error(`OVERLAP: "${c.a}" owns ${c.pathA}; "${c.b}" owns ${c.pathB}`); die(`${clash.length} overlap(s) between live briefs: one owner per path; the other brief lists it read-only (an edit there goes in the report as a request).`, 1); }
 
 const L = [], add = (...x) => L.push(...x), list = (xs) => (xs || []).map((x) => `  - ${x}`);
 const report = s.report || s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -32,6 +49,13 @@ add(`SESSION NAME / MODE:  ${s.name}`,
   `HARD STOP:            ${s.stop}. Push the branch every 30-40 minutes.`,
   `BRANCH:               ${s.branch}. ${s.publish ? "Push to main only as the last step, per FINISH." : "Never push to main."}`, "");
 
+add(`MODEL TABLE (defaults by kind of work): ${modelTableText()}`, "");
+const packFile = a.pos[0].replace(/\.json$/, "") + ".context.md";
+if (!a.has("no-pack")) {
+  const pack = contextPack(s);
+  writeFileSync(packFile, pack);
+  add(`CONTEXT PACK: ${packFile.replace(process.cwd() + "/", "")} (${pack.split(/\s+/).filter(Boolean).length} words: the last 15 decisions and the rules this task names, pasted; paste it after this brief)`, "");
+}
 add("READ FIRST (in this order):",
   "  1. CLAUDE.md (all of it: the working agreement and non-negotiables)",
   `  2. docs/process/rules.md: sections ${(s.rules || ["2", "3"]).join(", ")} only`,

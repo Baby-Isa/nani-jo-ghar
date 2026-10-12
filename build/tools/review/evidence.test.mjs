@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
 import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
-import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts, applyGuard } from "./lib/evidence.mjs";
 import { blank, encodePng } from "./lib/png.mjs";
 
 test("captures: every kind, a capture at another moment, refusals", () => {
@@ -220,4 +220,10 @@ test("S05-T: to-record placeholders are skipped by familyOnly; loan words are Ku
   assert.match(r.stderr, /Cannot find module/);
   const src = (await import("node:fs")).readFileSync(new URL("./evidence.mjs", import.meta.url), "utf8");
   assert.match(src, /ModuleNotFoundError\|ImportError\|Cannot find module\|ERR_MODULE_NOT_FOUND/);
+});
+
+test("S05-T: --apply refuses a run without verdicts in the cache", () => {
+  const index = { rows: { "A-01": { fp: { x: 1 }, tool: [] } } };
+  assert.match(applyGuard(index, {}), /no verdict cache/);
+  assert.match(applyGuard(index, { "B-02": { verdict: "PASS" } }), /none of this run's 1 rows/);
 });

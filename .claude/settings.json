@@ -10,6 +10,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node build/tools/ops/unpushed.mjs 2>/dev/null; exit 0",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }
