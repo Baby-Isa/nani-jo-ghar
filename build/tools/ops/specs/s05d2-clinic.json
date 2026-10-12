@@ -1,0 +1,70 @@
+{
+  "name": "S05-D2, the clinic round 2: every clinic row still fixable (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "game code judged by eye and ear",
+  "cost": "about $15-25",
+  "stop": "none: finish every fixable row (decision 89); if context passes about 70%, push, report what is left and stop",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-red-then-green.md (the plan to the finish and the queues)",
+    "build/reports/s05d-clinic.md (round 1: what was done, what is open and why)",
+    "build/reports/s05t2-probes.md (T2's probe fixes and the game failures it found, with owners)",
+    "docs/architecture/evidence-loop.md (incl. Probe pitfalls)",
+    "docs/decisions.md rows 75-92 only"
+  ],
+  "owns": [
+    "js/clinic/** except js/clinic/lang.js (package B)",
+    "css/clinic/**, data/clinic/**",
+    "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
+    "build/reports/s05d2-clinic.md"
+  ],
+  "readOnly": [
+    "js/shared/**, css/shared/**, js/core/voice.js (package S; the results-card rows SH-01, SH-44, SH-51, CLN-69 are S's: pull its S2 pushes before your Ends group)",
+    "js/core/lang/**, data/lang/**, build/lang/**, js/clinic/lang.js (package B)",
+    "js/cook/**, css/cook/** (package C)",
+    "build/tools/**, build/sandbox/** (package T)",
+    "assets/** (art waits for the s05 run)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: pull the branch. One red run of your known rows: `COOK_TEST_PORT=8894 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows CLN-54`.",
+      "accept": "the red run's id in the report"
+    },
+    {
+      "do": "CLN-54: the drinks recipe on separate rows under a headline, each row a full engine sentence. Package B confirmed the calls (build/reports/s05b-words.md, CLN-54; commit b2cca43): the liquid row {fn:'DoIt', verb:'v.fill', obj:THINGS[d.liquid].lex}; the thing row at L1 {fn:'DoIt', verb:'v.put-in', obj:THINGS[d.add].lex}; from L2 with a count {fn:'DoIt', verb:'v.put-in', obj:{fn:'Unit', n, unit:'cl-chamchi', of:THINGS[d.add].lex}}, through ClinicLang.show / E.show in js/clinic/heal/games/taste.js. Honey stays the grey to-record placeholder; no stir row. No counts at L1. Show the pour.",
+      "accept": "CLN-54 red then green; the rows read as whole sentences; the pour shows at a child's pace"
+    },
+    {
+      "do": "Every clinic row package T2's report (build/reports/s05t2-probes.md) lists as a game FAIL with owner D, as T2 pushes them (pull before each group; T2 is still running): expected among CLN-11, CLN-12, CLN-45, CLN-48, CLN-117, SH-41, LNG-02. Fix each in your files, red then green.",
+      "accept": "each row green, or open with its exact cause and owner"
+    },
+    {
+      "do": "Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path.",
+      "accept": "the report has a table: row, red run, green run, verdict"
+    }
+  ],
+  "flows": [
+    "clinic:waiting",
+    "clinic:diagnosis",
+    "clinic:pharmacy",
+    "clinic:heal-cut"
+  ],
+  "port": 8894,
+  "report": "s05d2-clinic",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.",
+    "Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit."
+  ],
+  "live": true
+}

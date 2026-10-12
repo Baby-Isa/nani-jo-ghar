@@ -1,0 +1,73 @@
+{
+  "name": "S05-C2, Cook round 2: every Cook row still fixable (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "game code judged by eye and ear",
+  "cost": "about $15-25",
+  "stop": "none: finish every fixable row (decision 89); if context passes about 70%, push, report what is left and stop",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-red-then-green.md (the plan to the finish and the queues)",
+    "build/reports/s05c-cook.md (round 1: what was done, what is open and why)",
+    "build/reports/s05t2-probes.md (T2's probe fixes and the game failures it found, with owners)",
+    "docs/architecture/evidence-loop.md (incl. Probe pitfalls)",
+    "docs/decisions.md rows 75-92 only"
+  ],
+  "owns": [
+    "js/cook/** except words.js, lang.js, order.js, recipes.js and mechanics/fetch.js (package B)",
+    "css/cook/**, Cook data (data/cook/** if present)",
+    "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
+    "build/reports/s05c2-cook.md"
+  ],
+  "readOnly": [
+    "js/shared/**, css/shared/**, js/core/voice.js (package S)",
+    "js/core/lang/**, data/lang/**, build/lang/**, js/cook/{words,lang,order,recipes}.js, js/cook/mechanics/fetch.js (package B)",
+    "js/clinic/**, css/clinic/** (package D)",
+    "build/tools/**, build/sandbox/** (package T)",
+    "assets/** (art waits for the s05 run)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: pull the branch. One red run of your known rows: `COOK_TEST_PORT=8893 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-44,SH-19,SEK-03`.",
+      "accept": "the red run's id in the report"
+    },
+    {
+      "do": "SH-44: Cook passes no `steps` to the shared results card; pass them. SH-19: samosa uses its own finger, not the shared ghost (`.ob-ghost`) the other stations use; use the shared one. SEK-03: sekelo L4 stops on a repeated rack tap (find whether the game or the driver), and the group boxes show behind the L3+ closed card after a peek.",
+      "accept": "each red then green"
+    },
+    {
+      "do": "The pantry's hesitation hint (stations.js S.step → UI.voice) writes the ask after a pause from L3, where the card is closed. Check whether it costs a hint like the bulb (decision 80 kept the pharmacy's because it is a paid hint). If it is free, it is a waiting leak (non-negotiable 6): make it voice-only from L3. Probe it with PAN-17's probe or a new row.",
+      "accept": "red then green, or the report shows it is counted as a hint"
+    },
+    {
+      "do": "Every Cook row package T2's report (build/reports/s05t2-probes.md) lists as a game FAIL with owner C, as T2 pushes them (pull before each group; T2 is still running): expected among SH-58, PAN-01, SEK-05 (the pantry ladder 4 rows vs 3, if B finds it's yours), DAAR-11, CHAI-15, SEK-07. Also the legacy Roll and Fill tiles still draw the old art: point them at the current art where it exists (decision 77: no new art).",
+      "accept": "each row green, or open with its exact cause and owner"
+    },
+    {
+      "do": "Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path.",
+      "accept": "the report has a table: row, red run, green run, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray",
+    "cook:chaat@L4"
+  ],
+  "port": 8893,
+  "report": "s05c2-cook",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.",
+    "Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit."
+  ],
+  "live": true
+}

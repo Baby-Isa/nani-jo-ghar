@@ -1,0 +1,73 @@
+SESSION NAME / MODE:  S05-D2, the clinic round 2: every clinic row still fixable (Sprint 5)
+MODEL AND EFFORT:     Opus, high effort (game code judged by eye and ear)
+COST ESTIMATE:        about $15-25
+HARD STOP:            none: finish every fixable row (decision 89); if context passes about 70%, push, report what is left and stop. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s05d2-clinic.context.md (1633 words: the last 15 decisions and the rules this task names, pasted; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S05-red-then-green.md (the plan to the finish and the queues)
+  6. build/reports/s05d-clinic.md (round 1: what was done, what is open and why)
+  7. build/reports/s05t2-probes.md (T2's probe fixes and the game failures it found, with owners)
+  8. docs/architecture/evidence-loop.md (incl. Probe pitfalls)
+  9. docs/decisions.md rows 75-92 only
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/** except js/clinic/lang.js (package B)
+  - css/clinic/**, data/clinic/**
+  - the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)
+  - build/reports/s05d2-clinic.md
+READ-ONLY (never edit):
+  - js/shared/**, css/shared/**, js/core/voice.js (package S; the results-card rows SH-01, SH-44, SH-51, CLN-69 are S's: pull its S2 pushes before your Ends group)
+  - js/core/lang/**, data/lang/**, build/lang/**, js/clinic/lang.js (package B)
+  - js/cook/**, css/cook/** (package C)
+  - build/tools/**, build/sandbox/** (package T)
+  - assets/** (art waits for the s05 run)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. FIRST: pull the branch. One red run of your known rows: `COOK_TEST_PORT=8894 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows CLN-54`.
+     Accept: the red run's id in the report
+  2. CLN-54: the drinks recipe on separate rows under a headline, each row a full engine sentence. Package B confirmed the calls (build/reports/s05b-words.md, CLN-54; commit b2cca43): the liquid row {fn:'DoIt', verb:'v.fill', obj:THINGS[d.liquid].lex}; the thing row at L1 {fn:'DoIt', verb:'v.put-in', obj:THINGS[d.add].lex}; from L2 with a count {fn:'DoIt', verb:'v.put-in', obj:{fn:'Unit', n, unit:'cl-chamchi', of:THINGS[d.add].lex}}, through ClinicLang.show / E.show in js/clinic/heal/games/taste.js. Honey stays the grey to-record placeholder; no stir row. No counts at L1. Show the pour.
+     Accept: CLN-54 red then green; the rows read as whole sentences; the pour shows at a child's pace
+  3. Every clinic row package T2's report (build/reports/s05t2-probes.md) lists as a game FAIL with owner D, as T2 pushes them (pull before each group; T2 is still running): expected among CLN-11, CLN-12, CLN-45, CLN-48, CLN-117, SH-41, LNG-02. Fix each in your files, red then green.
+     Accept: each row green, or open with its exact cause and owner
+  4. Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path.
+     Accept: the report has a table: row, red run, green run, verdict
+
+REGRESSION ROWS TO RECHECK (71 rows of docs/process/regressions.md; * = open or reopened):
+  every flow here (12): CLN-02, CLN-03, CLN-08, CLN-81*, CLN-82, CLN-84, CLN-85, CLN-87, CLN-109, CLN-112, CLN-113, CLN-114
+  clinic:waiting (22): CLN-10, CLN-11*, CLN-12*, CLN-13, CLN-14*, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-115*, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-83, CLN-86, CLN-88, CLN-89, CLN-111*
+  clinic:diagnosis (18): CLN-16, CLN-17*, CLN-18, CLN-93, CLN-94, CLN-95, CLN-116*, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-83, CLN-86, CLN-88, CLN-89, CLN-111*
+  clinic:pharmacy (19): CLN-19, CLN-20, CLN-21, CLN-22, CLN-23, CLN-24, CLN-96, CLN-97, CLN-01*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-83, CLN-86, CLN-88, CLN-89, CLN-111*
+  clinic:heal-cut (22): CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-45*, CLN-46, CLN-62, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99, CLN-118, CLN-119*, CLN-121
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s05d2-clinic` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8894.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s05d2-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.
+The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).
+Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.
+Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit.
