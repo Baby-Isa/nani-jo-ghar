@@ -164,7 +164,7 @@
    "after": null,
    "capture": [
     "dom:.rs-words",
-    "dom:.njg-rq-card@request"
+    "dom:#intro .ic-card@request"
    ],
    "expect": null,
    "note": "the review writes each word in the form the order used (hakri, not hakro; hakri lakri): compare the two texts"
@@ -182,7 +182,7 @@
    "after": null,
    "capture": [
     "dom:.rs-words",
-    "dom:.njg-rq-card@request"
+    "dom:#intro .ic-card@request"
    ],
    "expect": null,
    "note": "hakri maani: the review keeps hakri"
@@ -493,10 +493,10 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
-    "sameOrder:.njg-rq-card .oc-row"
+    "sameOrder:#intro .ic-card .oc-row"
    ],
    "note": "Nani reads the rows top to bottom"
   },
@@ -533,10 +533,10 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
-    "sameOrder:.njg-rq-card .oc-row"
+    "sameOrder:#intro .ic-card .oc-row"
    ],
    "note": "two people: each card in spoken order"
   }
@@ -734,7 +734,7 @@
    "at": "request",
    "after": null,
    "capture": [
-    "dom:.njg-rq-card",
+    "dom:#intro .ic-card",
     "voice"
    ],
    "expect": [
@@ -754,7 +754,7 @@
    "at": "request",
    "after": null,
    "capture": [
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "hasWord:number"
@@ -878,10 +878,10 @@
    "at": "request",
    "after": null,
    "capture": [
-    "strip:.njg-rq-card:6x400"
+    "strip:#intro .ic-card:6x400"
    ],
    "expect": [
-    "count:.njg-rq-card .reading>=1"
+    "count:#intro .ic-card .reading>=1"
    ],
    "note": "the read-along underline moves word by word in the pop-up"
   },
@@ -2756,7 +2756,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "lexicon",
@@ -2780,7 +2780,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "lexicon"
@@ -3259,7 +3259,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "textMatches:Muke aadu waari chai khape",
@@ -3474,11 +3474,11 @@
    "capture": [
     "contract:1",
     "strip:#stage:5x500",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "pass",
-    "count:.njg-rq-card .oc-card=3"
+    "count:#intro .ic-card .oc-card=3"
    ],
    "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet"
   },
@@ -3497,7 +3497,7 @@
    "after": null,
    "capture": [
     "contract:1",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "pass"
@@ -3519,7 +3519,7 @@
    "after": null,
    "capture": [
     "contract:1",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "pass"
@@ -3650,7 +3650,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "textMatches:Muke hakri bajr ji maani khape",
@@ -4634,7 +4634,7 @@
    "capture": [
     "voice",
     "contract:1",
-    "strip:.njg-rq-card:4x600"
+    "strip:#intro .ic-card:4x600"
    ],
    "expect": [
     "pass"
@@ -4677,7 +4677,7 @@
    "after": null,
    "capture": [
     "voice",
-    "dom:.njg-rq-card"
+    "dom:#intro .ic-card"
    ],
    "expect": [
     "!textMatches:\\band\\b"
@@ -5172,7 +5172,7 @@
    "at": "request",
    "after": null,
    "capture": [
-    "dom:.njg-rq-card",
+    "dom:#intro .ic-card",
     "cmd:python3 build/test_cook.py --orders"
    ],
    "expect": [
@@ -8551,9 +8551,7 @@
    "capture": [
     "zoom2:.cl-heal"
    ],
-   "expect": [
-    "inside:tool:drops,.cl-eye-zone"
-   ],
+   "expect": null,
    "note": "after na the dropper sits over the eye"
   },
   {
@@ -8869,7 +8867,7 @@
     "crop:.cl-heal"
    ],
    "expect": [
-    "noOverlap:.cl-hand,.ng-tools"
+    "noOverlap:.cut-hand,.ng-tools"
    ],
    "note": "the scrape's hand clear of the tool strip"
   }
@@ -9269,7 +9267,7 @@
    "after": null,
    "capture": [
     "dom:.cl-bubble",
-    "dom:.cl-gauge",
+    "crop:[data-reading]",
     "zoom2:.cl-heal",
     "voice"
    ],

@@ -72,7 +72,6 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
 // the order card once both are done (every word shows again)
 async function startOver(ctx, { labKey, level, speed }) {
   const { page, rec } = ctx;
-  page.on("dialog", (d) => d.accept().catch(() => {}));
   await page.goto(`${BASE}/cook.html?speed=${speed}`, { waitUntil: "load" });
   await page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
   await page.click("#gu-btn").catch(() => rec.stop("start-over: no grown-ups' \"?\" (#gu-btn) on the title"));
