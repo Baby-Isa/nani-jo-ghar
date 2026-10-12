@@ -899,15 +899,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
-    "strip:.cl-side .oc-card:6x400"
+    "strip:.njg-rq-card:6x400"
    ],
    "expect": [
     "count:.reading>=1"
    ],
-   "note": "the clinic card read along (at the clinic's real pace: in fast mode its lines take a fraction of a second)"
+   "note": "the clinic card read along in its pop-up (at the clinic real pace: in fast mode the pop-up folds within a second)"
   }
  ],
  "SH-52": [
@@ -6510,7 +6510,7 @@
   },
   {
    "flow": "clinic:heal-eye",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -6523,7 +6523,7 @@
     "zoom2:.cl-bubble"
    ],
    "expect": null,
-   "note": "in the eye game her bubble under her mouth",
+   "note": "in the eye game her bubble under her mouth (at real pace: in fast mode her one bubble is gone within a beat)",
    "max": 3
   }
  ],
@@ -7389,10 +7389,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "pharmacy-belt",
+   "at": "rec:pharmacy-belt",
    "after": null,
    "capture": [
-    "strip:.cl-tray:6x250"
+    "strip:.cl-tray:6x300"
    ],
    "expect": null,
    "note": "the outline fades as an item lands (filmed from the belt pick on)"
