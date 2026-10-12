@@ -8,19 +8,22 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (8 Oct 2026, ~05:30 UK, written by the Sprint 3 orchestrator):** Sprint 3 ("overnight fix", `docs/sprints/S03-overnight-fix.md`) is **published and closed**: `main` 1a6950df (version 20261008T043015Z). Sessions A–D are in (reports `build/reports/s03*.md`); the review is `build/reports/s03-review.md` (flaws first). Art now runs through the image API with Fable reviewing (decision 71). Nothing is running. Open rows: 31 open, 257 built and not re-played.
+**Where things stand (12 Oct 2026, ~11:00 UTC, Sprint 4 orchestrator):** Sprint 4 ("your feedback sticks", `docs/sprints/S04-feedback-sticks.md`, decisions 75–79) is **open, not published**. `main` is still Sprint 3 (1a6950df). Everything is on `ccr-a7370759-t0lee7`. Work stalled 9–12 Oct on the account's usage limits (helpers stopped mid-task; resumed 12 Oct).
 
-**8 Oct, 23:50 UK:** Zafar played two minutes and found old feedback unbuilt and new bugs (`docs/feedback/playtest-2026-10-08-sprint3.md`). **Sprint 4 open** (`docs/sprints/S04-feedback-sticks.md`, decisions 75, 76): A (contract checks), B (shared host lifecycle), C (served chaat, Nani leaning) running to 08:00 UK; then the full contract run and Fable's audit of every row and every feedback document; the fix round goes to Zafar first.
+**Done on the branch:** the shared lifecycle every game goes through (pop-up first, moves on by itself, one voice stop, one bubble placement, smaller bob; S04-B, `build/reports/s04b-host.md`); contract checks 1–14 in the sandbox (`build/sandbox/lib/contract.mjs`); the sprint check (`build/tools/review/sprintcheck.mjs`, decision 78, `--all-rows` for the full audit); knee bandage wrap on the leg (CLN-100); waiting room and diagnosis open with the pop-up; closed big card in clinic pop-ups from L3 (no leak); scrape uses the landed graze art, plasters on the leg, hand clear of tools; Cook fixes (voice queue, one glow, chop-again pop-up, grill moves on, maani art wait); coverage audits applied to `regressions.md` (28 added, 46 rewritten, 25 reopened); Nani's API art reverted (decision 77: art only in ChatGPT runs Zafar supervises); the s05 art audit and paste block (`docs/design-language/art-plans/s05-*`).
 
-**Next steps, in order (Sprint 4: Zafar's play and feedback):**
-1. **Zafar plays** (link below) and sends feedback (voice notes or typed) → `/feedback` → rows the same day; built rows he confirms become fixed, the rest reopen.
-2. Put to him with his feedback: (a) chop, stir, tadka and daar can't take a move back (a slice or spice can't be undone); the redo is their safety net: recommend accept; (b) the review's flaws (taste spots may read as felt balls, the girl's "cold" face reads as a wince, the kadchi handle a little stubby).
-3. Then propose Sprint 4's build scope from his feedback, plus: voices (USB mic on the grammar, then re-records; Mum's Round 5; decision 70), and the other characters' art through the API once he's happy with the girl (decision 71).
+**In progress:** the full audit of every row against evidence sheets (`build/screenshots/sprintcheck/s04-audit/`, index `build/reports/sprintcheck-s04-audit.md`). Quarter 4 judged (`build/reports/s04-audit-verdicts-4.md`: 31 PASS, 57 FAIL). Quarters 1–3 re-split into 30-row batches `jb-1a..3c` (orchestrator scratchpad; regenerate with `sprintcheck.mjs --judge-prompt --run-id s04-audit` if lost) and being judged by Opus (Fable hit its limit); verdict files `build/reports/s04-audit-verdicts-<batch>.md`.
 
-**Play link:** https://baby-isa.github.io/nani-jo-ghar/labs.html (hard refresh first). Play: the clinic (one full patient at L1 and L2: every heal game should open with the request pop-up and fold it into the sidebar; tap through it and the voice stops; finish a game fast and no voice reaches the send-off), the fever room, the tooth (old drill), the new art (the girl's hot/cold/sore/happy faces, the kadchi, the daar bowl, two-colour plasters, the taste spots); Cook every station at L1–L3 (chai take-back, the pour, the samosa mounds).
+**Next steps, in order:**
+1. Finish judging (batches 1a–3c); merge every verdict into `regressions.md` (FAIL → reopened with the one-line reason; PASS → built with the sheet path).
+2. Fix round 2 (code only) on the FAILs; known already: scrape first-time help writes English (non-negotiable 5), chop L3/L4 headline dots and English pill words (LNG-03), fever speech/look/gauge disagree (CLN-105), eye layout/dropper/end (CLN-61/62), tooth brush angle and no drill (CLN-103), Cook L3+ pop-up must use the shared closed big card, contract-11/14 residues, `morning@L3` flow forces L1, knee per-turn shots into the knee flow.
+3. Full gate (`run.mjs --gate`), sprint check sheets, `/review`, then `/publish` and `/sprint` close.
+4. Then Zafar plays; his supervised art run (s05 block, parts A–C first).
+
+**Waiting on Zafar:** samosa "next kind" button (item 11, recommend the button); 15a how-to line and "pass me" outside the pop-up (recommend leave, check skips them); the pharmacy hesitation hint writes the item's name (recommend keep).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-a7370759-t0lee7` (restart it from `main` if its work is all merged). Sprint 3 is published to `main` and closed; this chat is Sprint 4: I'm playing it now. Wait for my feedback, turn it into rows with `/feedback`, then propose the Sprint 4 build scope and budget as a numbered list. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-a7370759-t0lee7`. Sprint 4 is open: finish the audit judging, merge the verdicts into the regression list, run fix round 2 on the FAILs, then the full gate, `/review`, `/publish` and close the sprint. Tell me before launching anything new.
 
 ---
 
