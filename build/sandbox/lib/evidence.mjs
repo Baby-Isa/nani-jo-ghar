@@ -409,11 +409,16 @@ export function movesOn(tl, min, max, from = 0) {
   return { ok: out.every((x) => x.ok), why: `${out.length} stage ends: ${out.map((x) => `${x.ms} ms${x.pressed ? " after a button press" : ""}`).join(", ")}` };
 }
 // silentAfter: plays [{t0, t1}] and the moment times -> nothing starts, or still sounds, more than 150 ms after each moment
-export function silentAfter(plays, times, slack = 150) {
+export function silentAfter(plays, times, slack = 150, bounds = []) {
   if (!times.length) return { ok: null, why: "the moment never came" };
   const bad = [];
-  for (const t of times) for (const p of plays) if ((p.t0 > t + slack && p.t0 < t + 4000) || (p.t0 <= t && p.t1 > t + slack)) bad.push(`${p.url || p.text || p.via} at ${((p.t0 - t) / 1000).toFixed(2)} s`);
-  return { ok: !bad.length, why: bad.length ? `${bad.length} clips after it: ${bad.slice(0, 3).join("; ")}` : `${times.length} moments, silent after each` };
+  for (const t of times) {
+    // the window ends at the next stage-start or request after the moment (a new stage may speak), else 4 s (as contract-3)
+    const next = bounds.filter((b) => b > t + 50).sort((a, b) => a - b)[0];
+    const end = next != null ? Math.min(next, t + 4000) : t + 4000;
+    for (const p of plays) if ((p.t0 > t + slack && p.t0 < end) || (p.t0 <= t && p.t1 > t + slack)) bad.push(`${p.url || p.text || p.via} at ${((p.t0 - t) / 1000).toFixed(2)} s`);
+  }
+  return { ok: !bad.length, why: bad.length ? `${bad.length} clips after it: ${bad.slice(0, 3).join("; ")}` : `${times.length} moments, silent after each${bounds.length ? " (to the next stage-start or request)" : ""}` };
 }
 // gapMs: the time from moment a to the next moment b. seen: [{name, t}]
 export function gapMs(seen, a, b, matches) {

@@ -36,7 +36,7 @@ export class ClinicPlayer {
   async tapThrough() {
     if (this.mode !== "tap-through-popup" || this.drv.tapped || !(await popupOpen(this.page))) return false;
     this.drv.tapped = true;
-    await sleep(250);
+    await sleep(60); // at test speed the pop-up folds within ~0.25 s: tap as soon as it is seen open
     if (!(await popupOpen(this.page))) { this.rec.note("tap-through-popup: the pop-up folded by itself within 0.25 s"); return false; }
     await mark(this.page, "tapped-through", { block: false });
     await tapPopup(this.page);

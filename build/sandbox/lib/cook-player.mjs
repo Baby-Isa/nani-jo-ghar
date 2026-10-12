@@ -247,8 +247,8 @@ export class CookPlayer {
     // tap-through-popup (SH-64): the request pop-up is tapped 0.25 s after it opens (at test speed it folds by itself within a
     // second); a probe of its card takes it at "popup-open"
     if (this.mode === "tap-through-popup") {
-      await until(() => popupOpen(p), 3000, 30);
-      await sleep(250);
+      await until(() => popupOpen(p), 3000, 15);
+      await sleep(60); // at test speed it folds within ~0.25 s: tap as soon as it is seen open
       if (await popupOpen(p)) {
         await mark(p, "tapped-through", { block: false });
         await tapPopup(p);

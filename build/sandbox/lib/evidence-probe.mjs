@@ -229,7 +229,9 @@ export class EvidenceProbe {
     if (e.type === "m") this.moment(e.name);
     // the request is logged as the pop-up starts to open: its card is up a moment later
     else if (e.type === "c" && e.k === "life") this.moment(`life:${e.what}`, { settle: e.what === "request" ? 450 : 0 });
-    else if (e.type === "c" && e.k === "popup") this.moment(e.open ? "life:popup-open" : "life:popup-fold");
+    else if (e.type === "c" && e.k === "popup") { // a "closed" sample before the pop-up ever opened is not a fold (SH-64)
+      if (e.open) { this.popupWasOpen = true; this.moment("life:popup-open"); } else if (this.popupWasOpen) { this.popupWasOpen = false; this.moment("life:popup-fold"); }
+    }
     // a bubble is logged as it starts to fade in: its words are readable a beat later
     else if (e.type === "c" && e.k === "bubble" && e.list && e.list.length) this.moment("bubble", { settle: 250 });
   }
@@ -463,7 +465,7 @@ export class EvidenceProbe {
           const o = voiceOrder(h.rows[e.raw], spoken.map((l) => l.text));
           put({ ok: o.ok, why: `${o.why} (rows: ${h.rows[e.raw].map((x) => x.replace(/\s+/g, " ").slice(0, 30)).join(" | ")})` });
         } else if (e.kind === "movesOn") put(movesOn(tl, e.min, e.max, s.hits.length ? T0 + s.hits[0].t - 50 : 0));
-        else if (e.kind === "silentAfter") put(silentAfter(plays, timesOf(e.moment)));
+        else if (e.kind === "silentAfter") put(silentAfter(plays, timesOf(e.moment), 150, [...timesOf("life:stage-start"), ...timesOf("life:request")]));
         else if (e.kind === "times") { const n = Object.entries(this.counts).filter(([k]) => momentMatches(e.moment, k)).reduce((a, [, v]) => a + v, 0); put({ ok: cmp(n, e.op, e.n), why: `${e.moment} came ${n} times` }); }
         else if (e.kind === "gapMs") { const g = gapMs(this.seen, e.a, e.b, momentMatches); put(g.ms == null ? { ok: null, why: g.why } : { ok: cmp(g.ms, e.op, e.n), why: g.why }); }
         else if (e.kind === "lastsMs") {
