@@ -61,14 +61,17 @@
   "hearing-test": "the ear game's hearing check is up (the doctor's 'I'm telling you ___', her reply, the picture choices)",
   "idle": "8 s with no input at the current step (the ghost finger's pause)",
   "labs": "labs.html is open (the house's grown-ups' labs link)",
+  "now": "flow 'repo': no play; the probe is only its cmd captures, run from the repo root",
   "pass-me": "Nani's pass-me pop-up is up (#passme visible)",
   "retry": "a retried station restarts and its order is re-said",
+  "scene": "the Find it scene named in want is on screen",
   "served": "the service view with the dish on the counter and the customer's review face up",
   "taught": "the taught first round of a heal game for a fresh profile (shown, then copied)",
   "zoom-in": "a heal game's opening zoom from the patient on the bed to the sore part (from its start to zoom-in-end)",
   "zoom-out": "a heal game's pull-out after the last step, before the end screen"
  },
  "_drivers": {
+  "find-scene": "Find it: goes to the scene named in want (sitting room 3.2) and waits for it to settle",
   "force-passme": "a story day 2+ round with Nani's pass-me forced on at its first chance in each station (a test hook or seed), answered right after the ring",
   "heal-fast": "a morning where the heal game is finished as fast as the driver can (no waits between steps), straight into the send-off",
   "idle-twice": "second play: waits 8 s at the first step (ghost finger), makes no move, waits another 8 s (ghost finger again), then plays fair",
@@ -76,6 +79,7 @@
   "mute-across-modes": "taps Nani's guide box to mute in a Cook round, opens the clinic (clinic.html) and plays to the first heal step, then back to Cook: the mute holds in both",
   "serve-combined": "a story day with a combined order for one person (chai + maani): plays both dishes fair to the service view",
   "start-over": "plays a pantry round, uses 'Start over' (and 'play as new' in '?'), then starts the pantry again at L2 as the new player",
+  "tap-during-pause": "taps the play area during a pause in Nani's reading; records whether the reading skipped on",
   "tap-during-speech": "taps the expected item while the opening line (Nani's or the doctor's) is still playing, then plays fair; records whether the tap was taken before the line ended",
   "tap-quick": "taps each counted item as soon as it is asked, so the count words follow each other at the game's own pace",
   "tap-through-popup": "taps through the request pop-up the instant it opens (into the game), then plays fair",
@@ -85,6 +89,10 @@
   "wrong-extra-person": "in a 2-person chai (chai-tray L2) puts an unasked ingredient (aadu) into one person's pan, then finishes fair",
   "wrong-spice-thrice": "daar: puts the wrong spice in three times at the same step, then follows the shown right way",
   "wrong-thrice": "picks a wrong item three times at the same step (Cook station or heal game), then follows the help and the shown right way"
+ },
+ "_tools": {
+  "build/tools/review/evidence.mjs": "the evidence loop itself (--plan --all exits 1 on any live row with no spec: PRC-06); being built in parallel",
+  "build/tools/review/heal-marks.mjs": "prints, per heal game and level, the words it marks in ctx.mark (CLN-119) and, with --pool eye, the eye chart's item pool per level (CLN-38); exit 0"
  },
  "SH-01": [
   {
@@ -9516,5 +9524,1253 @@
     "note": "the close-up framing at both sizes"
    }
   ]
- }
+ },
+ "FL-01": [
+  {
+   "flow": "first",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "yes-no",
+   "after": null,
+   "capture": [
+    "strip:.njg-pills:5x120",
+    "trace:.njg-pill:1000",
+    "voice"
+   ],
+   "expect": [
+    "traceAmp:.njg-pill>=4"
+   ],
+   "note": "a wrong reply pill shakes; the person is embarrassed and asks again"
+  }
+ ],
+ "FL-02": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "title",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noOverlap:#btn-home,.title-wrap"
+   ],
+   "note": "the home button clear of Cook's title card on a phone"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noOverlap:.njg-home,.cl-side .oc-card"
+   ],
+   "note": "clear of the clinic's task card"
+  },
+  {
+   "flow": "rotate-card",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "390x844"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "upright phone: the rotate card only"
+  }
+ ],
+ "MOD-01": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:python3 build/bg_align_check.py"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "Find it relights 8.2 and 8.3 are a relight, not a redraw (needs scipy in the sandbox)"
+  }
+ ],
+ "MOD-02": [
+  {
+   "flow": "mode:find",
+   "path": "find-scene",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": {
+    "scene": "3.2 sitting room"
+   },
+   "at": "scene",
+   "after": null,
+   "capture": [
+    "zoom2:#stage"
+   ],
+   "expect": null,
+   "note": "sitting room 3.2: the sofa not too high"
+  }
+ ],
+ "ART-01": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "title",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "does not look old: no airbrushed Nani, glossy clip-art, skeuomorphic wood, emoji icons, system font"
+  }
+ ],
+ "ART-02": [
+  {
+   "flow": "cook:fry",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:karahi",
+    "ref:assets/cook/props"
+   ],
+   "expect": null,
+   "note": "the karahi handle cut clean on cream, no grey leftover"
+  },
+  {
+   "flow": "cook:grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:grill"
+   ],
+   "expect": null,
+   "note": "the charcoal grill's corners and gaps clean"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:hob"
+   ],
+   "expect": null,
+   "note": "the hob's handles and corners"
+  }
+ ],
+ "ART-03": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-pantry",
+   "after": null,
+   "capture": [
+    "zoom2:#stage"
+   ],
+   "expect": null,
+   "note": "items sit on surfaces with contact shadows, never floating or on the lip"
+  }
+ ],
+ "ART-04": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-pantry",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "no painted produce or objects that look tappable in the background (every background: the gate's sweep)"
+  }
+ ],
+ "ART-05": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1440x900",
+    "1280x800"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "contract:11",
+    "shot"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "backgrounds full resolution (screen px per source px)"
+  },
+  {
+   "flow": "first",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1440x900"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "contract:11"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "first launch's Eid panel and the taste game"
+  }
+ ],
+ "ART-06": [
+  {
+   "flow": "lab:cook/order",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "strip:#stage:6x150",
+    "trace:canvas:customer:2000"
+   ],
+   "expect": [
+    "traceAmp:canvas:customer<=3"
+   ],
+   "note": "poses share one canvas so they do not jump; a blink does not redraw the whole character; cut by the scene, not the screen edge"
+  }
+ ],
+ "ART-07": [
+  {
+   "flow": "lab:cook/order",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "people lean on the counter, not floating heads"
+  }
+ ],
+ "ART-08": [
+  {
+   "flow": "lab:cook/order",
+   "path": "mistake",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:face"
+   ],
+   "expect": null,
+   "note": "face close-ups: eyes level, filling the circle; face, happy, frown"
+  }
+ ],
+ "ART-09": [
+  {
+   "flow": "house",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "house-with-character",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-staged"
+   ],
+   "expect": null,
+   "note": "no bindi, tilak or sindoor; no grey hair under the dupatta (every character: the asset-keyed art check)"
+  },
+  {
+   "flow": "lab:cook/order",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:customer"
+   ],
+   "expect": null,
+   "note": "Cook's family"
+  }
+ ],
+ "ART-10": [
+  {
+   "flow": "cook:day2",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "zoom2:#nani-card"
+   ],
+   "expect": null,
+   "note": "Nani's four cooking moods (not one image); Nana, Ma, Ali impatient faces do not smile smugly"
+  },
+  {
+   "flow": "cook:day3",
+   "path": "force-passme",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pass-me",
+   "after": null,
+   "capture": [
+    "zoom2:#passme"
+   ],
+   "expect": null,
+   "note": "the impatient face"
+  }
+ ],
+ "ART-11": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:bataato"
+   ],
+   "expect": null,
+   "note": "the potato cube does not read as butter"
+  }
+ ],
+ "ART-12": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "diagnosis-point",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "7.1 'where it hurts' has neck, back and hair parts"
+  },
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pharmacy-belt",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "belt and rail not too high"
+  }
+ ],
+ "ART-13": [
+  {
+   "flow": "lab:cook/order",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1440x900"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:6"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the kitchen full size, Nani leaning on the counter; no doubled strip under the sink"
+  }
+ ],
+ "ART-14": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": {
+    "order": "kari chai (black tea)"
+   },
+   "at": "phase:pour",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pan"
+   ],
+   "expect": null,
+   "note": "the tipped pan not clipped (black-tea version); black-tea glass"
+  }
+ ],
+ "ART-15": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:fold",
+   "after": null,
+   "capture": [
+    "strip:canvas:samosa:6x200",
+    "trace:canvas:samosa:1500"
+   ],
+   "expect": [
+    "traceAmp:canvas:samosa<=2"
+   ],
+   "note": "fold frames on one baseline at a constant height, folding diagonally"
+  }
+ ],
+ "ART-16": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "zoom2:.rs-tick-gold"
+   ],
+   "expect": null,
+   "note": "the review tick cut clean (no grey fringe top left and right)"
+  }
+ ],
+ "ART-17": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "station-lab-list",
+   "after": null,
+   "capture": [
+    "contract:6",
+    "zoom2:.lab-grid"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no old art where a replacement exists: the Chop tile"
+  }
+ ],
+ "ART-18": [
+  {
+   "flow": "lab:cook/order",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "contract:14",
+    "trace:canvas:customer:3000"
+   ],
+   "expect": [
+    "pass",
+    "traceAmp:canvas:customer<=2",
+    "tracePeriod:canvas:customer>=380"
+   ],
+   "note": "Cook service: one talk animation, about a third of the old bob, slower"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "contract:14",
+    "trace:.cl-staged:3000"
+   ],
+   "expect": [
+    "pass",
+    "traceAmp:.cl-staged<=2"
+   ],
+   "note": "the clinic waiting room (and diagnosis)"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "contract:14"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the eye game's talk"
+  }
+ ],
+ "ART-19": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "strip:.cl-face-card:8x120",
+    "trace:.cl-staged:3000"
+   ],
+   "expect": [
+    "traceRepeats:.cl-staged>=1"
+   ],
+   "note": "while a line plays: blink, two or three mouth frames, breathing (the eye test first)"
+  },
+  {
+   "flow": "lab:cook/order",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "strip:canvas:customer:8x120"
+   ],
+   "expect": null,
+   "note": "Cook service: mouth shapes while speaking"
+  }
+ ],
+ "ART-20": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"sprite sheet\\|views\" docs/game-design/modes/clinic.md"
+   ],
+   "expect": null,
+   "note": "the table of every clinic item and the views it needs"
+  },
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pharmacy-belt",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-belt"
+   ],
+   "expect": null,
+   "note": "the belt's tilted plaster and comb; boing's drop machine"
+  }
+ ],
+ "LNG-01": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/check_onboard.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no English instruction text or audio for the child"
+  },
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "dom:body",
+    "voice"
+   ],
+   "expect": [
+    "lexicon",
+    "familyOnly"
+   ],
+   "note": "every clinic stage's visible text and voice"
+  },
+  {
+   "flow": "cook:recipe:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "dom:body",
+    "voice"
+   ],
+   "expect": [
+    "lexicon",
+    "familyOnly"
+   ],
+   "note": "a Cook recipe"
+  }
+ ],
+ "LNG-02": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/leak.mjs cook --rounds 300"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the leak bot cannot win Cook without Kutchi"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/leak.mjs clinic --rounds 300"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "nor the clinic"
+  }
+ ],
+ "LNG-03": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "dom:#mission"
+   ],
+   "expect": [
+    "lexicon",
+    "!textMatches:•|(?i)\\b(mixed|boga)\\b"
+   ],
+   "note": "no English or dot placeholders in pills or cards"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "dom:#mission"
+   ],
+   "expect": [
+    "lexicon",
+    "!textMatches:•"
+   ],
+   "note": "the chop L3 headline: no '...' for a number"
+  }
+ ],
+ "LNG-04": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:python3 build/lines_needing_family.py"
+   ],
+   "expect": null,
+   "note": "English placeholders still waiting for Mum: the 'with' join, ph-turner, sekelo, the plaster line"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-start",
+   "after": null,
+   "capture": [
+    "dom:.cl-side"
+   ],
+   "expect": [
+    "lexicon"
+   ],
+   "note": "the plaster line is a grey placeholder or Kutchi"
+  }
+ ],
+ "LNG-05": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "dom:.cl-pills",
+    "voice"
+   ],
+   "expect": [
+    "!textMatches:\\bnar\\b"
+   ],
+   "note": "na, not nar, in diagnosis answers"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:eyetest",
+   "after": null,
+   "capture": [
+    "dom:.cl-pills"
+   ],
+   "expect": [
+    "!textMatches:\\bnar\\b"
+   ],
+   "note": "and the eye chart"
+  }
+ ],
+ "LNG-06": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": [
+    "familyOnly"
+   ],
+   "note": "family voices only, no device voice (the 'which'); speed is the family's own"
+  }
+ ],
+ "LNG-07": [
+  {
+   "flow": "cook:fetch",
+   "path": "tap-during-pause",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": [
+    "liveInput"
+   ],
+   "note": "a tap during Nani's reading pause skips it"
+  }
+ ],
+ "LNG-08": {
+  "human": "Blind A/B of 10 of Mum's clips, cleaned vs raw: do the cleaned ones sound clean and still like her?"
+ },
+ "LNG-09": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"^ATEMPO\" build/build_cook_tts.py"
+   ],
+   "expect": [
+    "textMatches:ATEMPO = 1\\.0"
+   ],
+   "note": "the test voice at normal speed (test-only; never ships)"
+  }
+ ],
+ "LNG-10": [
+  {
+   "flow": "lab:cook/order",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": [
+    "familyOnly",
+    "!textMatches:(?i)arre re"
+   ],
+   "note": "'thank you' and 'oh dear' are family clips; arre re out"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:python3 build/lines_needing_family.py"
+   ],
+   "expect": [
+    "!textMatches:(?i)arre re"
+   ],
+   "note": "arre re no longer a draft line"
+  }
+ ],
+ "LNG-11": {
+  "human": "Mum confirms *Muke de* and *Muke chai lai de* (next mum-round sheet); Zafar records her answer"
+ },
+ "LNG-12": {
+  "human": "In the clip picker: does each candidate say only the target word, in the right family voice?"
+ },
+ "PRC-01": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "844x390",
+    "1440x900"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the review sizes include a phone and a 16:10 laptop"
+  }
+ ],
+ "PRC-02": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/sandbox/run.mjs --list"
+   ],
+   "expect": [
+    "textMatches:1440x900"
+   ],
+   "note": "the sandbox has 16:10 viewports"
+  }
+ ],
+ "PRC-03": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/ops/publish.mjs --pages main --timeout 60"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "reported live only after the Pages build: the live URL's version equals main's"
+  }
+ ],
+ "PRC-04": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -L \"echanics changed\" build/reports/s04*.md"
+   ],
+   "expect": null,
+   "note": "build reports carry a 'mechanics changed' section (the files listed lack one: the reviewer reads the list)"
+  }
+ ],
+ "PRC-05": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/check_onboard.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "first-time help is on in the help-path checks"
+  }
+ ],
+ "PRC-06": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/evidence.mjs --plan --all"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every live row has an evidence spec (decision 82)"
+  }
+ ],
+ "PRC-07": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/sandbox/contract.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every contract check runs on every page of every --check"
+  }
+ ],
+ "PRC-08": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/review.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no RequestPopup., VoiceStop. or Results.show( in js/cook or js/clinic"
+  }
+ ],
+ "PRC-09": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:ls .claude/skills/game-mode-design/SKILL.md .claude/skills/game-mode-design/references/fun-patterns.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the game-mode-design skill and its fun-patterns pool exist"
+  }
+ ]
 }
