@@ -108,7 +108,8 @@
     const version = (() => {
       let v = (data.test && data.test.version) || "A";
       try {
-        const q = new URLSearchParams(root.location.search).get("eyetest");
+        const qs = new URLSearchParams(root.location.search);
+        const q = qs.get("eyeLayout") || qs.get("eyetest"); // decision 83: ?eyeLayout=A|B (or the older ?eyetest=a|b) to compare
         if (q) v = q;
       } catch (e) {
         /* no page */
