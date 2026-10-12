@@ -3,6 +3,7 @@
 // Hooks: window.__story.state(), __charmaker.choices(), __first, __home. The Cook rounds are played by CookPlayer.
 import { BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
+import { mark } from "../drivers/index.mjs";
 
 const SPEED = 3;
 const PICKS = { body: "girl", skin: "s4", hair: "h3", eyes: "e4", top: "t4", bottom: "b5" };
@@ -93,6 +94,8 @@ export async function firstLaunch(ctx, { picks = PICKS } = {}) {
   await page.waitForSelector(".st-choice.in .st-no", { timeout: 40000 });
   await page.waitForTimeout(400);
   await rec.state("yes-no");
+  // the evidence loop's "tap-no" (FL-01): the moment the No is tapped, so a probe's trace and filmstrip catch its shake
+  await mark(page, "tap-no", { block: false });
   await page.locator(".st-no").click(); // No shakes, Nani asks again (UX 14)
   await page.waitForTimeout(500);
   await rec.state("no-shakes");

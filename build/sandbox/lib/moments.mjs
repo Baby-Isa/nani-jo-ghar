@@ -6,6 +6,7 @@
 // commit as the spec that asks for it.
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { DRIVERS, FAIR_MOMENTS } from "../drivers/catalog.mjs";
 
 const LIFE = ["step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "page:end", "page:start", "bubble"];
 // the spec's named moments (evidence.json _moments, _at's every:<x>) that an existing signal answers; `delay` waits after it.
@@ -16,11 +17,35 @@ export const ALIASES = {
   "pass-me": { pats: ["visible:#passme"] },
   idle: { pats: ["rec:idle-hint", "rec:hint-glow"] },
   "after-wrong": { pats: ["rec:wrong"], delay: 1000 },
-  pour: { pats: ["step:pour"] },
+  // the pour: the foot's jug, the taste game's milk or water jug tipping into the tumbler
+  pour: { pats: ["step:pour", "step:milk", "step:water"] },
   fill: { pats: ["step:fill"] },
   placed: { pats: ["cook-done", "heal-done"] },
   onboard: { pats: ["visible:.njg-onboard"] },
   view: { pats: ["rec:view"] },
+  // the heal host's zoom (js/clinic/heal/host.js HOST.stage): the push-in turns the room layer .cl-zoom "on" and hands over to the
+  // close-up by 60 % (zoom-in-end: it fades out); the pull-out marks the stage .cl-outro
+  "zoom-in": { pats: ["visible:.cl-zoom.on"] },
+  "zoom-in-end": { pats: ["hidden:.cl-zoom.on"] },
+  "zoom-out": { pats: ["visible:.cl-outro"] },
+  // a fresh child's first round of a heal game (D13: shown, then copied): flows/clinic.mjs records taught-<game>
+  taught: { pats: ["rec:taught"] },
+  // the reply pills of a greeting: Cook's #choices (first launch's chai round, a customer before an order), the clinic's say pills
+  greeting: { pats: ["visible:#choices .choice", "rec:waiting-say", "rec:say-pills"] },
+  // the ear game's hearing check: the doctor has said it, she has replied, the picture choices are up (before the pick)
+  "hearing-test": { pats: ["heal:picture"] },
+  // the drivers' bare moments (drivers/index.mjs mark: drv:<name>)
+  labs: { pats: ["drv:labs"] },
+  retry: { pats: ["drv:retry"] },
+  "your-turn": { pats: ["drv:your-turn"] },
+  "daar-in": { pats: ["drv:daar-in"] },
+  "tap-no": { pats: ["drv:tap-no"] },
+  "count-word": { pats: ["drv:count-word"] },
+  "knob-off": { pats: ["drv:knob-off"] },
+  "tawa-empty": { pats: ["drv:tawa-empty"] },
+  "after-mute": { pats: ["rec:after-mute"] },
+  "after-start-over": { pats: ["rec:after-start-over"] },
+  scene: { pats: ["rec:scene"] },
 };
 const HOST = ["host:*", "host:*/*", "host:*/*/*", "host:results", "host:done", "host:idle", "host:loading"];
 const COOK_REC = ["rec:start", "rec:result", "rec:order-card-big", "rec:order-card-in-sidebar", "rec:results-badges", "rec:results-words", "rec:view-*", "rec:view-*-*", "rec:kind-*", "rec:stir-mid", "rec:help-open"];
@@ -38,8 +63,15 @@ export function healSteps(root, game) {
   const f = join(root, "js", "clinic", "heal", "games", `${game}.js`);
   if (!existsSync(f)) return [];
   const src = readFileSync(f, "utf8"), out = new Set(["button", "tap", "drag", "hold"]);
-  for (const m of src.matchAll(/what:\s*"([a-z][a-z -]*)"/g)) out.add(m[1].trim().replace(/\s+/g, "-"));
+  const add = (s) => { const w = s.trim().replace(/\s+/g, "-"); if (w) out.add(w); };
+  for (const m of src.matchAll(/what:\s*"([a-z][a-z -]*)"/g)) add(m[1]);
+  // a step named in a template ("lever ${want}": step:lever-0) or given to the game's own at(x, y, "wipe") helper
+  for (const m of src.matchAll(/what:\s*`([a-z][a-z ]*?)\s*\$\{/g)) add(`${m[1]} *`);
+  for (const m of src.matchAll(/\bat\([^;()]*?,\s*"([a-z][a-z -]*)"\)/g)) add(m[1]);
+  for (const m of src.matchAll(/\bat\([^;()]*?,\s*`([a-z][a-z ]*?)\s*\$\{/g)) add(`${m[1]} *`);
   for (const m of src.matchAll(/\{\s*id:\s*"([a-z][a-z-]*)",\s*img:/g)) out.add(m[1]);
+  // tools made from an item table (the taste game's milk, water, turmeric ...: { lex: ..., img: ... })
+  for (const m of src.matchAll(/^\s+([a-z][a-z-]*):\s*\{\s*lex:\s*"/gm)) out.add(m[1]);
   for (const m of src.matchAll(/do:\s*"([a-z]+)"/g)) if (m[1] !== "wait") out.add(m[1]);
   return [...out];
 }
@@ -58,10 +90,14 @@ export { SEEN_FILE };
 
 // flowId ("clinic:heal-knee@L2#hint") -> the moment patterns its drivers can reach
 export function momentsFor(root, flowId, { kindOf = () => null, seen = null } = {}) {
-  const m = /^(.*?)(?:@L(\d))?(?:#(\w+))?$/.exec(flowId), base = m[1], path = m[3] || "fair";
+  const m = /^(.*?)(?:@L(\d))?(?:#([\w-]+))?$/.exec(flowId), base = m[1], path = m[3] || "fair";
   const k = kindOf(base);
   const out = [...LIFE, ...HOST, "rec:*", "rec:*-*"].filter((x) => !/^rec:\*/.test(x)); // rec:* is not a free pass
-  const kind = k ? k.kind : base.startsWith("cook:") ? "cook-other" : base.startsWith("clinic:heal-extra") ? "heal-extra" : base.startsWith("mode:") ? "mode" : base;
+  // k.moments: the kind whose moments it reaches when it is built through another kind's branch (a story day, Find it's scene)
+  const kind = k ? k.moments || k.kind : base.startsWith("cook:") ? "cook-other" : base.startsWith("clinic:heal-extra") ? "heal-extra" : base.startsWith("mode:") ? "mode" : base;
+  // the fair path's bare moments (your turn, a retry, the daar going in, the labs page ...) and the path's driver's own
+  out.push(...(FAIR_MOMENTS[kind] || []));
+  if (DRIVERS[path] && DRIVERS[path].kinds.some((x) => x === kind || x === (k && k.kind))) out.push(...DRIVERS[path].moments);
   if (kind === "cook" || kind === "lab-cook") {
     out.push(...COOK_REC, ...(COOK_PATH[path] || []));
     for (const x of cookKinds(root)) out.push(`cook:${x}`, `cook-done:${x}`);

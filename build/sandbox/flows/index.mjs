@@ -6,6 +6,7 @@ import { MODE_FLOWS } from "./modes.mjs";
 import { rotateFlow, cssFlow } from "./extra.mjs";
 import { labFlows, labCook } from "./labs.mjs";
 import { ALL_SIZES } from "../lib/env.mjs";
+import { driverPaths } from "../drivers/catalog.mjs";
 
 // Every flow: --all and --gate run them all. A flow's `sizes` says where it runs. The main flows (level 1 and the first level-3
 // ones) run at the eight sizes; the deeper paths (levels 2 and 4, the mistake and hint players, the parts, the days) run at the sizes
@@ -62,17 +63,24 @@ export { HEAL_GAMES };
 // cook:fetch@L2#hint, which the gate does not run). "base@L2#hint" -> the flow, or null. What each kind of flow can do:
 const CLINIC_STAGES = ["waiting", "diagnosis", "pharmacy", "sendoff"];
 const CLINIC_NAME = { waiting: "Waiting room", diagnosis: "Diagnosis", pharmacy: "Pharmacy (belt)", sendoff: "Send-off" };
+// The evidence loop's named drivers (drivers/catalog.mjs) are paths too: each kind lists the ones that play on it. `moments` (when
+// set) is the kind whose moments the flow reaches (lib/moments.mjs), where the builder below differs: a story day is built through
+// the Cook branch (flows/cook.mjs cookStation hands cook:dayN to cookDay), Find it's sitting room through the game-host branch
+// (flows/labs.mjs labCook hands mode:find#find-scene to its own flow)
+const withDrivers = (kind, own) => [...new Set([...own, ...driverPaths(kind)])];
 export function flowKind(base) {
   const m = /^cook:(?:recipe:)?([\w-]+)$/.exec(base);
-  if (m && (KEPT.includes(m[1]) || PARTS.includes(m[1]) || RECIPES.includes(m[1]))) return { kind: "cook", levels: [1, 2, 3, 4], paths: ["fair", "mistake", "hint", "takeback", "speed1"] };
-  if (CLINIC_STAGES.some((s) => base === `clinic:${s}`)) return { kind: "clinic-stage", levels: base === "clinic:waiting" ? [1, 2, 3, 4, 5] : [1, 2, 3], paths: ["fair", "mistake", "hint"] };
-  if (HEAL_GAMES.some((g) => base === `clinic:heal-${g}`)) return { kind: "heal", levels: [1, 2, 3], paths: ["fair", "mistake", "hint"] };
+  if (m && (KEPT.includes(m[1]) || PARTS.includes(m[1]) || RECIPES.includes(m[1]))) return { kind: "cook", levels: [1, 2, 3, 4], paths: withDrivers("cook", ["fair", "mistake", "hint", "takeback", "speed1"]) };
+  if (/^cook:day[1-6]$/.test(base)) return { kind: "cook", moments: "cook-other", levels: [1], paths: withDrivers("cook-other", ["fair"]) };
+  if (CLINIC_STAGES.some((s) => base === `clinic:${s}`)) return { kind: "clinic-stage", levels: base === "clinic:waiting" ? [1, 2, 3, 4, 5] : [1, 2, 3], paths: withDrivers("clinic-stage", ["fair", "mistake", "hint"]) };
+  if (HEAL_GAMES.some((g) => base === `clinic:heal-${g}`)) return { kind: "heal", levels: [1, 2, 3], paths: withDrivers("heal", ["fair", "mistake", "hint"]) };
   if (base === "clinic:patient") return { kind: "patient", levels: [1, 2, 3], paths: ["fair", "mistake", "hint"] };
-  if (base === "clinic:morning") return { kind: "morning", levels: [1, 2, 3], paths: ["fair"] };
-  if (/^lab:cook\/[\w-]+$/.test(base) && !/story-birthday|free/.test(base)) return { kind: "lab-cook", levels: [1, 2, 3, 4], paths: ["fair", "speed1"] };
+  if (base === "clinic:morning") return { kind: "morning", levels: [1, 2, 3], paths: withDrivers("morning", ["fair"]) };
+  if (/^lab:cook\/[\w-]+$/.test(base) && !/story-birthday|free/.test(base)) return { kind: "lab-cook", levels: [1, 2, 3, 4], paths: withDrivers("lab-cook", ["fair", "speed1"]) };
+  if (base === "mode:find") return { kind: "lab-cook", moments: "mode", levels: [1], paths: ["fair", "find-scene"] };
   return null;
 }
-export const splitFlowId = (id) => { const m = /^(.*?)(?:@L(\d))?(?:#(\w+))?$/.exec(id); return { base: m[1], level: m[2] ? +m[2] : 1, path: m[3] || "fair" }; };
+export const splitFlowId = (id) => { const m = /^(.*?)(?:@L(\d))?(?:#([\w-]+))?$/.exec(id); return { base: m[1], level: m[2] ? +m[2] : 1, path: m[3] || "fair" }; };
 export const flowIdOf = (base, level = 1, path = "fair") => `${base}${level > 1 ? `@L${level}` : ""}${path && path !== "fair" ? `#${path}` : ""}`;
 export function resolveFlow(id, live = allFlows()) {
   const have = live.find((f) => f.id === id);

@@ -54,41 +54,48 @@
   "after-mute": "the first clinic heal step after the guide box was muted in Cook",
   "after-start-over": "the pantry card after 'Start over'",
   "after-wrong": "1 s after the driver's wrong move is taken",
-  "daar-in": "the bowl of daar tips into the pot",
+  "daar-in": "the daar station's bowl tapped: it tips into the pot (drv:daar-in, as the tap lands)",
   "every:step:<id>": "each heal debug step with this 'what' (dot = each knee wrap turn, wax = each blob, drop = each bead)",
   "fold": "a samosa fold frame is on the board (every:fold = each fold)",
-  "greeting": "the first meeting's greeting with its reply pills (first launch; Cook's greeting before an order)",
-  "hearing-test": "the ear game's hearing check is up (the doctor's 'I'm telling you ___', her reply, the picture choices)",
+  "greeting": "the reply pills of a greeting (Cook's #choices; the clinic's say pills)",
+  "hearing-test": "the ear game's hearing check is up: the step before its picture pick (heal:picture)",
   "idle": "8 s with no input at the current step (the ghost finger's pause)",
-  "labs": "labs.html is open (the house's grown-ups' labs link)",
+  "labs": "labs.html opened from the house's grown-ups' 'Game labs' link (house flow, evidence runs only)",
   "now": "flow 'repo': no play; the probe is only its cmd captures, run from the repo root",
   "pass-me": "Nani's pass-me pop-up is up (#passme visible)",
-  "retry": "a retried station restarts and its order is re-said",
-  "scene": "the Find it scene named in want is on screen",
+  "retry": "after a mistake, the order card's ticked rows open again (the station redoes the step)",
+  "scene": "find-scene: the scene settled (scene-<id>)",
   "served": "the service view with the dish on the counter and the customer's review face up",
-  "taught": "the taught first round of a heal game for a fresh profile (shown, then copied)",
-  "zoom-in": "a heal game's opening zoom from the patient on the bed to the sore part (from its start to zoom-in-end)",
-  "zoom-out": "a heal game's pull-out after the last step, before the end screen"
+  "taught": "the taught first round of a heal game for a fresh profile (the heal run's ctx.taught): taught-<game> at its start",
+  "zoom-in": "a heal game's opening zoom: the room layer .cl-zoom turns 'on' (zoom-in-end: it hands over to the close-up)",
+  "zoom-out": "a heal game's pull-out after the last step: the stage is marked .cl-outro, before the end screen",
+  "your-turn": "the child's turn: Cook's reply pills up; the clinic's first ask of each kind in each stage (your-turn-<stage>-<kind>)",
+  "tap-no": "first launch: the moment the No reply is tapped (its shake)",
+  "count-word": "tap-quick: a count word starts",
+  "knob-off": "tawa-empty-then-off: the maani knob turned to off with the tawa empty",
+  "tawa-empty": "tawa-empty-then-off: the tawa lit with nothing on it",
+  "pour": "a pour: the foot's jug (step pour), the taste game's milk or water jug (step milk, step water)"
  },
  "_drivers": {
-  "find-scene": "Find it: goes to the scene named in want (sitting room 3.2) and waits for it to settle",
-  "force-passme": "a story day 2+ round with Nani's pass-me forced on at its first chance in each station (a test hook or seed), answered right after the ring",
-  "heal-fast": "a morning where the heal game is finished as fast as the driver can (no waits between steps), straight into the send-off",
-  "idle-twice": "second play: waits 8 s at the first step (ghost finger), makes no move, waits another 8 s (ghost finger again), then plays fair",
-  "lab-log-on": "opens the clinic stage with its lab debug log showing (the lab bar's log toggle), then plays fair",
-  "mute-across-modes": "taps Nani's guide box to mute in a Cook round, opens the clinic (clinic.html) and plays to the first heal step, then back to Cook: the mute holds in both",
-  "serve-combined": "a story day with a combined order for one person (chai + maani): plays both dishes fair to the service view",
-  "start-over": "plays a pantry round, uses 'Start over' (and 'play as new' in '?'), then starts the pantry again at L2 as the new player",
-  "tap-during-pause": "taps the play area during a pause in Nani's reading; records whether the reading skipped on",
-  "tap-during-speech": "taps the expected item while the opening line (Nani's or the doctor's) is still playing, then plays fair; records whether the tap was taken before the line ended",
-  "tap-quick": "taps each counted item as soon as it is asked, so the count words follow each other at the game's own pace",
-  "tap-through-popup": "taps through the request pop-up the instant it opens (into the game), then plays fair",
-  "tawa-empty-then-off": "maani: turns the tawa on with nothing on it (2 s), cooks fair, then turns the knob off with the tawa empty (2 s)",
-  "turn-early-late": "sekelo grill: turns one skewer too early, then one too late, then grills fair",
-  "wrong-count": "in a counted step (chaat potatoes, chai sugar) puts one fewer than asked and closes the step, then finishes fair",
-  "wrong-extra-person": "in a 2-person chai (chai-tray L2) puts an unasked ingredient (aadu) into one person's pan, then finishes fair",
-  "wrong-spice-thrice": "daar: puts the wrong spice in three times at the same step, then follows the shown right way",
-  "wrong-thrice": "picks a wrong item three times at the same step (Cook station or heal game), then follows the help and the shown right way"
+  "find-scene": "Find it: the 'Where is it?' game at level 3 (the level that brings the sitting room, data/find.json) through __find.lab; scene-<id> once it has settled, then played to its end",
+  "force-passme": "a story day with every dish played often enough (the save) and Nani's pass-me chance set to 1 in Cook's own data at run time: she asks at her first chance in each station (passme-forced), answered after her ring",
+  "heal-fast": "a morning whose heal game is played with no waits between steps (heal-fast-done when it ends), straight into the send-off",
+  "idle-twice": "at the first move: waits 8 s (idle-hint: the ghost finger), makes no move, waits another 8 s (idle-again), then plays fair; with profile second-play, in the second play",
+  "lab-log-on": "opens the clinic stage with &lab=1 (the lab bar and its log showing: lab-log-on), then plays fair",
+  "mute-across-modes": "Cook on the game host: in the first stage Nani's guide box is muted (muted-in-cook); the clinic (clinic.html, the scrape) opened on the same save, after-mute at its first heal step; back on the game host (after-mute-cook) and the round played to its end",
+  "serve-combined": "a story day played fair, recording the service view of an order of two dishes once both cards are stamped (served-combined): day 2's third order is Nana's maani + chai",
+  "start-over": "plays a round fair, then the title's grown-ups' 'Start over' (started-over), the same station again at the same level, and in it the '?' pop-up's 'Play as new'; after-start-over is the order card then",
+  "tap-during-pause": "while the request pop-up reads the order: in a pause between two of Nani's lines, a tap on the play area (tap-during-pause); then pause-skipped (the pop-up folded) or pause-kept",
+  "tap-during-speech": "taps the first thing asked while a line (Nani's or the doctor's) is being said (waits up to 8 s for one): tap-taken-while-speaking when the game took it before the line ended, tap-held-till-quiet when it waited",
+  "tap-quick": "plays without the '?' round, each count word marked as it starts (count-word), so the gap between them is the game's own pace",
+  "tap-through-popup": "taps the request pop-up 0.7 s after it opens (its card up, the read-out begun: the probe's request capture comes first), then plays fair",
+  "tawa-empty-then-off": "maani: at the first move, the tawa lit with nothing on it (2 s: tawa-empty), the knob turned high, low, off (2 s: knob-off), on again, then cooks fair. The sizzle loop (synthesized, no file) is logged into the voice timeline as sfx/sizzle-loop",
+  "turn-early-late": "sekelo grill: turns the first skewer before its green (wrong-early), the next after it (wrong-late), then grills fair",
+  "wrong-count": "in the first counted step (a count or 'one more' step) puts one fewer than asked and closes the step (wrong-count), then finishes fair",
+  "wrong-extra-person": "in a 2-person chai (chai-tray L2): the last person's pan, once everything they asked for is in, gets a spice from the shelf they did not ask for (aadu when it is on the shelf); then Done, the redo (wrong-redo) and fair",
+  "wrong-spice-thrice": "daar: a wrong spice in the tadka on three tries (each try the whole tadka: the game takes it out and asks again), wrong-1..3; then the game shows the right way (shown-right)",
+  "wrong-thrice": "three wrong picks in a row at the same step (Cook: the expectation's own wrong items; a heal game: its debug slip(), else another tool than the one asked for), wrong-1..3; then the help and the right way (shown-right)",
+  "takeback": "the clinic's take-back (like Cook's #takeback): the first thing placed is tapped again (a heal game's placement, the pharmacy tray's dish, a waiting-room tick): before-takeback, after-takeback"
  },
  "_tools": {
   "build/tools/review/evidence.mjs": "the evidence loop itself (--plan --all exits 1 on any live row with no spec: PRC-06); being built in parallel",
@@ -340,10 +347,7 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "people": 2,
-    "order": "no aadu for one person"
-   },
+   "want": null,
    "at": "results-words",
    "after": null,
    "capture": [
@@ -363,9 +367,7 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "two potatoes"
-   },
+   "want": null,
    "at": "results-words",
    "after": null,
    "capture": [
@@ -375,7 +377,7 @@
    "expect": [
     "count:.rs-words-bad .rs-word>=1"
    ],
-   "note": "one potato short: the count shows on the left"
+   "note": "one fewer than asked in the first counted step, then closed: the count shows on the left"
   }
  ],
  "SH-51": [
@@ -1048,17 +1050,15 @@
  ],
  "SH-54": [
   {
-   "flow": "cook:day3",
+   "flow": "cook:day2",
    "path": "serve-combined",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "chai + maani for one person"
-   },
-   "at": "view-service",
+   "want": null,
+   "at": "served-combined",
    "after": null,
    "capture": [
     "crop:#mission",
@@ -1069,7 +1069,7 @@
     "count:#mission .oc-done-tk>=2",
     "noClip:#mission"
    ],
-   "note": "chai + maani order served: a picture stamp on every card, no English word, not clipped"
+   "note": "day 2, Nana's chai + maani served (both cards stamped): a picture stamp on every card, no English word, not clipped"
   }
  ],
  "SH-55": [
@@ -1182,7 +1182,7 @@
    "at": "greeting",
    "after": null,
    "capture": [
-    "dom:.njg-pills",
+    "dom:#choices",
     "crop:#side",
     "voice"
    ],
@@ -2605,7 +2605,7 @@
  "SH-46": [
   {
    "flow": "clinic:heal-ear",
-   "path": "fair",
+   "path": "idle-twice",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -3386,17 +3386,15 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "people": 2
-   },
-   "at": "after-wrong",
+   "want": null,
+   "at": "wrong-redo",
    "after": null,
    "capture": [
     "crop:#stage",
     "crop:#mission"
    ],
    "expect": null,
-   "note": "a wrong cup is redone: other cups stay, that cup empties, its card reopens, the tick goes; second try has help"
+   "note": "a wrong cup is redone: other cups stay, that cup empties, its card reopens, the tick goes; second try has help (the driver's unasked spice in the last person's pan, then Done)"
   }
  ],
  "CHAI-12": [
@@ -3854,16 +3852,32 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "tawa-empty",
    "after": null,
    "capture": [
-    "voice"
+    "voice",
+    "strip:#stage:4x500"
    ],
-   "expect": [
-    "!textMatches:sizzle@tawa-empty",
-    "silentAfter:knob-off"
+   "expect": null,
+   "note": "the tawa lit with nothing on it for 2 s: no sfx/sizzle-loop starts in the voice timeline"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "tawa-empty-then-off",
+   "level": 1,
+   "sizes": [
+    "1366x768"
    ],
-   "note": "sizzle only while food is on a lit tawa; the knob turns the flame (and sizzle) off"
+   "profile": "seen",
+   "want": null,
+   "at": "knob-off",
+   "after": null,
+   "capture": [
+    "voice",
+    "strip:#stage:4x500"
+   ],
+   "expect": null,
+   "note": "the knob turned to off (high, low, off): the flame goes out; any sizzle loop stops (its play ends in the timeline)"
   }
  ],
  "MAA-12": [
@@ -3955,15 +3969,16 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:pass-me",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
-    "dom:#passme"
+    "shot"
    ],
    "expect": [
     "count:#passme=0"
    ],
-   "note": "never in a mode's first plays"
+   "note": "never in a mode's first plays: day 1, fresh, no pass-me at any move",
+   "max": 4
   }
  ],
  "DAAR-01": [
@@ -6006,16 +6021,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "greeting",
+   "at": "wrong-choice",
    "after": null,
    "capture": [
-    "crop:.njg-pills",
-    "dom:.njg-pills"
+    "crop:#choices",
+    "dom:#choices"
    ],
    "expect": [
     "lexicon"
    ],
-   "note": "your wrong pick red, the others grey, the right one clear; Nani's answer a thought bubble; 'Thank you!' is Kutchi",
+   "note": "the mistake player's wrong reply: your wrong pick red, the others grey, the right one clear; Nani's answer a thought bubble; 'Thank you!' is Kutchi",
    "webgl": true
   }
  ],
@@ -7550,8 +7565,7 @@
    "level": [
     1,
     2,
-    3,
-    4
+    3
    ],
    "sizes": [
     "1366x768"
@@ -7618,8 +7632,7 @@
    "path": "fair",
    "level": [
     2,
-    3,
-    4
+    3
    ],
    "sizes": [
     "1366x768"
@@ -7892,14 +7905,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step:drop",
+   "at": "every:step:lever",
    "after": null,
    "capture": [
     "zoom2:.cl-heal",
     "dom:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "the dispenser of 3-4 coloured tubes with a lever drops a blob; each drop counted; L3 the colour said; medicine, not sweets"
+   "note": "each drop is a lever pulled (step lever-<colour>): the dispenser of 3-4 coloured tubes drops a blob; each drop counted; L3 the colour said; medicine, not sweets"
   },
   {
    "flow": "clinic:heal-boing",
@@ -8143,13 +8156,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step:wipe",
+   "at": "every:step:wash",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
    ],
    "expect": null,
-   "note": "the scrape needs a skill, not just taps"
+   "note": "the scrape's wash drag (the skill), not just taps"
   },
   {
    "flow": "clinic:heal-ear",
@@ -8371,13 +8384,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:pour",
+   "at": "pour",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
    ],
    "expect": null,
-   "note": "the pour shown"
+   "note": "the milk or water jug poured into the tumbler (step milk / water)"
   }
  ],
  "CLN-55": [
@@ -8453,14 +8466,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:give",
+   "at": "step:press-the-glowing-end",
    "after": null,
    "capture": [
-    "strip:.cl-heal:6x150",
-    "trace:tool:syringe:1500"
+    "strip:.cl-heal:6x150"
    ],
    "expect": null,
-   "note": "the jab starts from the syringe's end; a tap on the syringe never takes beads out"
+   "note": "the jab starts from the syringe's glowing end (no syringe tool: it stands in the scene); a tap on the barrel never takes beads out"
   }
  ],
  "CLN-59": [
@@ -8874,13 +8886,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:wash",
+   "at": "step:pour",
    "after": null,
    "capture": [
     "zoom2:.ng-tools"
    ],
    "expect": null,
-   "note": "hot, cold, lukewarm jugs read at a glance (steam, ice)"
+   "note": "hot, cold, lukewarm jugs read at a glance (steam, ice): the tools at the first jug poured"
   }
  ],
  "CLN-76": [
@@ -9092,7 +9104,7 @@
  "CLN-101": [
   {
    "flow": "clinic:heal-ear",
-   "path": "fair",
+   "path": "idle-twice",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -9227,7 +9239,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:pour",
+   "at": "pour",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200",
@@ -9365,7 +9377,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:wash",
+   "at": "step:pour",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x250"
@@ -9404,15 +9416,15 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "taught",
+   "at": "results",
    "after": null,
    "capture": [
-    "dom:.rs-badges@results"
+    "crop:.rs-card"
    ],
    "expect": [
-    "count:.rs-badges=0"
+    "count:.rs-badges .rs-badge=0"
    ],
-   "note": "nothing scored in the taught round"
+   "note": "nothing scored in the taught round (fresh child, knee L1): no badges on the end card"
   }
  ],
  "CLN-119": [
@@ -9528,24 +9540,24 @@
  "FL-01": [
   {
    "flow": "first",
-   "path": "mistake",
+   "path": "fair",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "yes-no",
+   "at": "tap-no",
    "after": null,
    "capture": [
-    "strip:.njg-pills:5x120",
-    "trace:.njg-pill:1000",
+    "trace:.st-no:1000",
+    "strip:.st-choice:5x120",
     "voice"
    ],
    "expect": [
-    "traceAmp:.njg-pill>=4"
+    "traceAmp:.st-no>=4"
    ],
-   "note": "a wrong reply pill shakes; the person is embarrassed and asks again"
+   "note": "a wrong reply (No) shakes; Nani is not upset and asks again"
   }
  ],
  "FL-02": [
@@ -9637,16 +9649,14 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "scene": "3.2 sitting room"
-   },
+   "want": null,
    "at": "scene",
    "after": null,
    "capture": [
     "zoom2:#stage"
    ],
    "expect": null,
-   "note": "sitting room 3.2: the sofa not too high"
+   "note": "Find it's sitting room (Where is it?, level 3, the level's own scene): the sofa not too high"
   }
  ],
  "ART-01": [
@@ -9859,29 +9869,30 @@
    "at": "served",
    "after": null,
    "capture": [
-    "zoom2:canvas:face"
+    "zoom2:canvas:badge"
    ],
    "expect": null,
-   "note": "face close-ups: eyes level, filling the circle; face, happy, frown"
+   "note": "face close-ups in the review circle (textures <who>-badge-<mood>): eyes level, filling the circle; face, happy, frown"
   }
  ],
  "ART-09": [
   {
-   "flow": "house",
+   "flow": "first",
    "path": "fair",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "house-with-character",
    "after": null,
    "capture": [
-    "zoom2:.cl-staged"
+    "crop:#who",
+    "shot"
    ],
    "expect": null,
-   "note": "no bindi, tilak or sindoor; no grey hair under the dupatta (every character: the asset-keyed art check)"
+   "note": "the child's character on the house (no bindi, tilak or sindoor; no grey hair under the dupatta)"
   },
   {
    "flow": "lab:cook/order",
@@ -9892,13 +9903,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "your-turn",
    "after": null,
    "capture": [
-    "zoom2:canvas:customer"
+    "zoom2:canvas:nani",
+    "crop:#stage"
    ],
    "expect": null,
-   "note": "Cook's family"
+   "note": "Cook's family: Nani (textures nani-*) and the customer at the greeting"
   }
  ],
  "ART-10": [
@@ -10360,7 +10372,7 @@
    ],
    "expect": [
     "lexicon",
-    "!textMatches:•|(?i)\\b(mixed|boga)\\b"
+    "!textMatches:(?i)•|\\b(mixed|boga)\\b"
    ],
    "note": "no English or dot placeholders in pills or cards"
   },
@@ -10771,6 +10783,99 @@
     "pass"
    ],
    "note": "the game-mode-design skill and its fun-patterns pool exist"
+  }
+ ],
+ "CK-TB-01": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "chai: a spoonful taken back before the pan is lit"
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-takeback",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "the pantry: a thing on the tray taken back"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "result",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "a station with no take-back (chop, stir, tadka, daar: a slice can't be undone): the round still ends; the sandbox notes 'this station offered none'"
+  }
+ ],
+ "CK-TAB-01": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768",
+    "1180x820",
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "tablets: do the pantry's play items grow to use a 4:3 screen (not a laptop layout with empty bands)?"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768",
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the chai station on a 4:3 tablet"
   }
  ]
 }

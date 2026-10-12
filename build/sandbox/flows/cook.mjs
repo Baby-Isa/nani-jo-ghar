@@ -24,6 +24,9 @@ export async function openCook(ctx, { speed = 3, save } = {}) {
 // speed: Cook's test speed (3, the default, about 4x quicker to run); 1 plays at a child's pace, so the voice's timing
 // against the stage ends is the real one (S04-A, the contract's voice check: "#speed1")
 export function cookStation(key, level = 1, { recipe = false, mode = "fair", group = "cook", speed = 3 } = {}) {
+  // a story day's path (cook:day2#force-passme): flows/index.mjs resolveFlow builds every Cook path through here (flowKind)
+  const day = /^day(\d)$/.exec(key);
+  if (day) return cookDay(+day[1], { mode });
   const labKey = recipe ? `recipe:${key}` : key;
   // a recipe is "cook:<id>" unless a station has the same key ("cook:recipe:<id>")
   const id = `cook:${recipe && KEPT.includes(key) ? "recipe:" : ""}${key}` + (level > 1 ? `@L${level}` : "") + (mode !== "fair" ? `#${mode}` : "") + (speed !== 3 ? `#speed${speed}` : "");
@@ -31,11 +34,12 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
     id,
     group,
     title: `Cook, Station lab: ${labKey}, level ${level}${mode !== "fair" ? `, ${mode} player` : ""}`,
-    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000 * (mode === "hint" ? 1.3 : 1) * (speed < 3 ? 2.5 : 1),
+    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000 * (mode === "hint" ? 1.3 : mode === "start-over" ? 2.2 : 1) * (speed < 3 ? 2.5 : 1),
     async run(ctx) {
       const { page, rec } = ctx;
       await openCook(ctx, { speed });
-      const P = new CookPlayer(page, rec, { mode, speed });
+      // start-over (SH-60): this first round is played fair; then the grown-ups' "Start over" and the station again (below)
+      const P = new CookPlayer(page, rec, { mode: mode === "start-over" ? "fair" : mode, speed });
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
       // ctx.profile "seen" (the evidence loop): the coaches count as seen too
       if (mode === "takeback" || ctx.profile === "seen") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
@@ -57,9 +61,44 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       // #takeback (E14, R4): the station took something back and the round still ran to its end; a station that never
       // offers a take-back is noted (a gap for the regression list), not failed
       if (mode === "takeback" && !P.tookBack) rec.note("take-back: this station offered none (no __cook.expectation().undo before Done)");
+      if (mode === "start-over") await startOver(ctx, { labKey, level, speed });
       ctx.reachedEnd = true;
     },
   };
+}
+
+// start-over (SH-60, the evidence loop's driver): after a round, the title's grown-ups' "Start over" (its confirm accepted), then the
+// same station at the same level as the new player, and in that round the "?" pop-up's "Play as new" too; "after-start-over" is
+// the order card once both are done (every word shows again)
+async function startOver(ctx, { labKey, level, speed }) {
+  const { page, rec } = ctx;
+  page.on("dialog", (d) => d.accept().catch(() => {}));
+  await page.goto(`${BASE}/cook.html?speed=${speed}`, { waitUntil: "load" });
+  await page.waitForSelector("#panel .title-wrap", { timeout: 20000 });
+  await page.click("#gu-btn").catch(() => rec.stop("start-over: no grown-ups' \"?\" (#gu-btn) on the title"));
+  await sleep(300);
+  await page.click("#t-reset").catch(() => rec.stop("start-over: no \"Start over\" (#t-reset) behind the title's \"?\""));
+  await sleep(600);
+  await rec.state("started-over");
+  await page.evaluate(([k, l]) => { __cook.lab(k, true, { level: l }); }, [labKey, level]);
+  await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
+  await sleep(500);
+  const P = new CookPlayer(page, rec, { mode: "start-over", speed, prefix: "again-" });
+  P.afterIntro = async () => {
+    if (await page.$("#btn-help")) {
+      await page.click("#btn-help", { force: true }).catch(() => {});
+      await sleep(300);
+      const b = await page.$("#help-pop .hp-new button");
+      if (b) { await b.click().catch(() => {}); await sleep(600); } else rec.note("start-over: no \"Play as new\" in the \"?\" pop-up");
+      if (await page.$("#help-pop:not(.hidden)")) await page.click("#btn-help", { force: true }).catch(() => {});
+      await sleep(300);
+    } else rec.note("start-over: no \"?\" (#btn-help) in the round");
+    await rec.state("after-start-over");
+  };
+  try {
+    await P.play(() => page.evaluate("(() => { const b = document.querySelector('.njg-results #lab-list'); return !!b && b.offsetParent !== null; })()"), { timeout: ctx.timeoutMs / 2 });
+  } finally { for (const c of P.covers) rec.note(`covered tap: ${c}`); }
+  await rec.state("again-result");
 }
 
 export const cookTitle = {
@@ -91,16 +130,24 @@ const RECIPE_IDS = ["chai", "maani", "daal", "chaat", "samosa", "mishkaki"];
 const saveAt = (day, extra = {}) => ({ v: 1, mode: "relaxed", coins: 0, day, best: {}, owned: [], slots: [], words: {}, taught: Object.fromEntries(RECIPE_IDS.slice(0, Math.max(0, day - 1)).map((r) => [r, true])), finished: false, freeRounds: 0, rulesSeen: day > 1, playDays: [], ...extra });
 
 // a story day, from the title: start it, play every order in it, the day's summary, the shop, back to the title.
-export function cookDay(n) {
+// mode (the evidence loop's drivers on a day): "mistake" (the mistake player), "serve-combined" (fair; records the service view
+// of an order of two dishes, both stamped), "force-passme" (Nani's pass-me at its first chance in every station: every dish
+// already played often enough and her chance set to 1 through Cook's own data, read at run time; answered after her ring)
+const PLAYED = Object.fromEntries(["chai", "maani", "daal", "chaat", "samosa", "mishkaki", "pantry"].map((r) => [r, 5]));
+export function cookDay(n, { mode = "fair" } = {}) {
   return {
-    id: `cook:day${n}`,
+    id: `cook:day${n}${mode !== "fair" ? `#${mode}` : ""}`,
     group: "cook",
-    title: `Cook, story day ${n}: from the title, every order, the summary, the shop`,
+    title: `Cook, story day ${n}: from the title, every order, the summary, the shop${mode !== "fair" ? ` (${mode})` : ""}`,
     timeoutMs: 1500 * 1000,
     async run(ctx) {
       const { page, rec } = ctx;
-      await openCook(ctx, { save: saveAt(n, { coins: 20 }) });
-      const P = new CookPlayer(page, rec);
+      await openCook(ctx, { save: saveAt(n, { coins: 20, ...(mode === "force-passme" ? { plays: PLAYED } : {}) }) });
+      if (mode === "force-passme") {
+        const ok = await page.evaluate(() => { const c = window.Cook && Cook.data && Cook.data.calm; if (!c) return false; c.passMeChance = { relaxed: 1, busy: 1, level1: 1 }; c.passMeAfterPlays = 0; return true; });
+        if (!ok) rec.stop("force-passme: Cook.data.calm is not loaded");
+      }
+      const P = new CookPlayer(page, rec, { mode });
       await rec.state("title");
       await page.click("#t-start");
       await sleep(500);

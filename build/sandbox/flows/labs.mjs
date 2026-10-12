@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { ROOT, BASE, sleep } from "../lib/env.mjs";
 import { CookPlayer } from "../lib/cook-player.mjs";
 import { waitBadges, readBadges } from "../lib/results.mjs";
+import { MODE_DRIVER_FLOWS } from "./modes.mjs";
 
 const COOK_GAMES = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa", "recipe-chai", "recipe-maani", "recipe-daal", "recipe-chaat", "recipe-samosa", "recipe-mishkaki", "order"];
 const Q = "nonav=1&seed=7";
@@ -16,7 +17,14 @@ const hostState = (page) => page.evaluate("window.njgTest ? String(njgTest.state
 
 // one Cook plan on lab.html: every stage the host runs (the player hands Cook's own hook over, as test_cook_host.mjs does),
 // then the one end screen
-export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone = false }) {
+// mode: "fair", "mistake" (the mistake player, CK-07), or the evidence loop's "mute-across-modes" (SH-22: in the first stage Nani's
+// guide box is muted; the clinic (clinic.html, a heal game) is opened on the same save and "after-mute" recorded at its first heal
+// step; then back on the game host, "after-mute-cook", and the round played to its end)
+export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone = false, mode = null }) {
+  // flows/index.mjs resolveFlow builds a lab-cook path (lab:cook/order#mistake) without naming its mode: the id carries it
+  if (mode == null) { const m = /#([a-z][\w-]*)$/.exec(id || ""); mode = m && m[1] !== "speed1" ? m[1] : "fair"; }
+  // a mode's driver flow built through this kind (flowKind: mode:find#find-scene)
+  if (MODE_DRIVER_FLOWS[id]) return { ...MODE_DRIVER_FLOWS[id], id };
   return {
     id, group: "labs", title, timeoutMs: timeoutS * 1000 * (speed < 3 ? 2.5 : 1),
     async run(ctx) {
@@ -35,7 +43,7 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
       }
       await page.goto(`${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`, { waitUntil: "load" });
       const t0 = Date.now();
-      let stages = 0, results = 0;
+      let stages = 0, results = 0, muted = false;
       const badges = [];
       while (Date.now() - t0 < ctx.timeoutMs - 30000) {
         await page.waitForFunction(() => /\/playing|results|done|idle/.test(String(window.njgTest && njgTest.state())), null, { timeout: 60000 });
@@ -46,7 +54,8 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           await page.evaluate(() => import("./js/cook/mount.js").then((m) => { window.__cook = m.Cook.testHook; window.Cook = m.Cook; }));
           await sleep(400);
           await rec.state(`${game.split("/").pop()}-start`, { settle: 200 });
-          const P = new CookPlayer(page, rec, { prefix: `${game.split("/").pop()}-` });
+          if (mode === "mute-across-modes" && !muted) { muted = true; await muteAcross(ctx, `${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`); continue; }
+          const P = new CookPlayer(page, rec, { prefix: `${game.split("/").pop()}-`, mode: mode === "mistake" ? "mistake" : "fair" });
           P.helped = true;
           try { await P.play(async () => !(await hostState(page)).startsWith(game + "/"), { timeout: ctx.timeoutMs - (Date.now() - t0) - 30000 }); }
           finally { for (const c of P.covers) rec.note(`covered tap: ${c}`); }
@@ -72,6 +81,28 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
       ctx.reachedEnd = results > 0;
     },
   };
+}
+
+// mute-across-modes (SH-22): Nani's guide box muted in Cook (its .ng-mute), the clinic opened on the same save (the scrape, its
+// first heal step), then the game host again: the mute is one setting for every mode (the Save flag "naniMuted")
+async function muteAcross(ctx, backUrl) {
+  const { page, rec } = ctx;
+  await page.waitForSelector(".njg-guide .ng-mute", { state: "visible", timeout: 15000 }).catch(() => {});
+  const m = await page.$(".njg-guide .ng-mute");
+  if (!m) { rec.stop("mute-across-modes: no mute button in Nani's guide box (.njg-guide .ng-mute)"); return; }
+  await m.click({ force: true });
+  await sleep(500);
+  await rec.state("muted-in-cook");
+  await page.goto(`${BASE}/clinic.html?stage=heal&game=cut&level=1&seed=7&quiet=1&fast=1&nonav=1&onboard=0`, { waitUntil: "load" });
+  await page.waitForFunction(() => window.__clinic && window.__clinic.ready, null, { timeout: 30000 });
+  // the first heal step: the game's debug driver asks for its first move
+  await page.waitForFunction(() => { const r = window.__clinic.Stages && window.__clinic.Stages.heal && window.__clinic.Stages.heal.current; const a = r && r.controller && r.controller.debug ? r.controller.debug.next() : null; return !!a && a.do !== "wait"; }, null, { timeout: 30000 }).catch(() => rec.note("mute-across-modes: the scrape's first step did not come in 30 s"));
+  await sleep(600);
+  await rec.state("after-mute");
+  await page.goto(backUrl, { waitUntil: "load" });
+  await page.waitForFunction(() => /\/playing/.test(String(window.njgTest && njgTest.state())), null, { timeout: 60000 });
+  await sleep(1200);
+  await rec.state("after-mute-cook");
 }
 
 export function labFlows() {

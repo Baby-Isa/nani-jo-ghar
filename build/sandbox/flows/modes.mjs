@@ -234,16 +234,35 @@ export const findFlow = {
   group: "modes",
   title: "Find it: Nani's list (the first mini-game), to its end",
   timeoutMs: 300000,
-  async run(ctx) {
+  run: (ctx) => findRun(ctx),
+};
+// the evidence loop's find-scene driver (MOD-02): Find it in the sitting room (the "Where is it?" game at level 3, the level that
+// brings its own scene: data/find.json mechanics.where), through the page's own lab hook (__find.lab), "scene-<id>" once it has
+// settled, then played to its end like the first game
+export const findSceneFlow = {
+  id: "mode:find#find-scene",
+  group: "modes",
+  title: "Find it: the sitting room (Where is it?, level 3), to its end",
+  timeoutMs: 300000,
+  run: (ctx) => findRun(ctx, { lab: "where", level: 3 }),
+};
+async function findRun(ctx, { lab = null, level = 1 } = {}) {
+  {
     const { page, rec } = ctx;
     await page.goto(`${BASE}/find.html?speed=6`, { waitUntil: "load" });
     await page.evaluate(() => localStorage.clear());
     await page.goto(`${BASE}/find.html?speed=6`, { waitUntil: "load" });
     await page.waitForSelector("#panel h1", { timeout: 15000 });
     await rec.state("title");
-    await page.click("#t-start");
+    if (lab) await page.evaluate(([k, L]) => window.__find.lab(k, { level: L }), [lab, level]);
+    else await page.click("#t-start");
     await page.waitForFunction("__find.state().items > 0", null, { timeout: 15000 });
     await sleep(400);
+    if (lab) {
+      const scene = await page.evaluate(([k, L]) => { try { return (window.Find && Find.knobs ? Find.knobs(k, L).scene : null) || "bazaar"; } catch (e) { return "bazaar"; } }, [lab, level]);
+      await sleep(1100);
+      await rec.state(`scene-${scene}`);
+    }
     const seen = new Set(); const mark = once(rec, seen);
     const exp = () => page.evaluate("__find.expectation()");
     const t0 = Date.now();
@@ -285,8 +304,8 @@ export const findFlow = {
     await rec.state("result");
     await results(page, rec, ctx);
     ctx.reachedEnd = true;
-  },
-};
+  }
+}
 
 // ---------------------------------------------------------------- Tidy up: Put it away (shelves), level 1
 export const tidyFlow = {
@@ -400,3 +419,5 @@ export const tidyFlow = {
 };
 
 export const MODE_FLOWS = [tidyFlow, whoFlow, dressFlow, monsoonFlow, snapFlow, findFlow];
+// the evidence loop's driver flows on a mode (not in the gate): flows/labs.mjs labCook hands mode:find#find-scene here (flowKind)
+export const MODE_DRIVER_FLOWS = { "mode:find#find-scene": findSceneFlow };

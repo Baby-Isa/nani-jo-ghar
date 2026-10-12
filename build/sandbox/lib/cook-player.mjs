@@ -1,8 +1,23 @@
 // A fair Cook player: reads __cook.expectation() (what the game wants next) and does it with real pointer
 // events at screen coordinates. A Node port of build/test_cook.py's Player, without the deliberate mistakes.
 // It records each new view and each new kind of expectation as a state, once.
-import { sleep } from "./env.mjs";
+import { sleep, ROOT } from "./env.mjs";
 import { waitBadges, readBadges } from "./results.mjs";
+import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWords, isCountLine } from "../drivers/index.mjs";
+
+// the evidence loop's named drivers this player plays (drivers/catalog.mjs, build/sandbox/data/evidence.json _drivers): each plays
+// fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
+const VOICE_MODES = new Set(["tap-during-speech", "tap-during-pause", "tap-quick"]);
+const CALM = ["tap", "hold", "count", "more", "swipe", "roll", "knead", "stir"];
+// the page side of tawa-empty-then-off (MAA-11): Cook's sizzle is a synthesized loop (no file), so the sound hook never sees it;
+// this logs each loop's start and stop as a play ("sfx/sizzle-loop") into the same timeline, so the voice capture shows it
+const SIZZLE = `(() => {
+  const C = window.Cook; if (!C || !C.sfx || !C.sfx.sizzleLoop || C.sfx.sizzleLoop.__drv) return !!(C && C.sfx && C.sfx.sizzleLoop && C.sfx.sizzleLoop.__drv);
+  const orig = C.sfx.sizzleLoop; let n = 0;
+  const log = (e) => { e.t = Date.now(); e.page = location.pathname.replace(/^\\//, ""); try { window.__njgLog && window.__njgLog(e); } catch (x) {} };
+  const w = function () { const h = orig.apply(this, arguments); const pid = 900000 + ++n; log({ type: "play", via: "sfx", url: "sfx/sizzle-loop", pid, dur: null }); const st = h && h.stop; if (h && st) h.stop = function () { log({ type: "play-end", pid, why: "stop" }); return st.apply(this, arguments); }; return h; };
+  w.__drv = true; C.sfx.sizzleLoop = w; return true;
+})()`;
 
 const STIR = { slow: 0.45, quick: 1.4, default: 0.7, spill: 3.4 };
 
@@ -19,7 +34,8 @@ export class CookPlayer {
     this.tookBack = 0;
     this.hints = mode === "hint";
     this.seen = new Set();
-    this.lastKey = null; this.repeats = 0; this.helped = this.hints; this.intros = 0;
+    // the "?" and bulb round (tryHelp) is the fair, mistake and take-back players' own: a driver's timing must not wait for it
+    this.lastKey = null; this.repeats = 0; this.helped = this.hints || !["fair", "mistake", "takeback"].includes(mode); this.intros = 0;
     this.covers = new Set();
     this.taps = 0;
     this.made = new Set();   // the mistakes already made, by kind
@@ -27,6 +43,151 @@ export class CookPlayer {
     this.bulbs = 0;          // bulb presses in hint mode
     this.peeks = 0;
     this.badges = [];        // what the end card showed, for the report
+    // the drivers' bookkeeping: wrongs made (n) and at which step (key), the chai pans' asked items, the last page flags
+    this.drv = { n: 0, key: null, pan: null, panKeys: {}, poured: {}, choices: 0, choicesUp: false, doneRows: null, counted: false };
+    this.voice = null;
+    this.afterIntro = null;  // a flow's own move once the first order card is in the sidebar (start-over)
+  }
+  onboardUp() { return this.page.evaluate("!!document.querySelector('.njg-onboard')").catch(() => false); }
+
+  // ---- the drivers ----
+  // what the page shows, each turn of the play loop: the fair path's moments (your turn, a retry, the daar going in) and the
+  // drivers' records (the combined order served, a forced pass-me, a redone cup, the right way shown)
+  async driverWatch(view) {
+    const p = this.page, d = this.drv, m = this.mode;
+    const s = await p.evaluate(() => {
+      const C = window.Cook;
+      const pm = document.querySelector("#passme");
+      return {
+        choices: !!document.querySelector("#choices:not(.hidden) .choice"),
+        passme: !!pm && !pm.classList.contains("hidden") && pm.getBoundingClientRect().height > 2,
+        doneRows: document.querySelectorAll("#mission .oc-row.done").length,
+        stamps: document.querySelectorAll("#mission .oc-done-tk").length,
+        pans: C && C.chaiPans ? C.chaiPans() : null,
+        daar: C ? C.daarPhase || null : null,
+      };
+    }).catch(() => null);
+    if (!s) return;
+    // the child's turn to answer (a greeting's reply pills): SH-71's every:your-turn
+    if (s.choices && !d.choicesUp) { d.choices++; await mark(p, `your-turn-${d.choices}`); }
+    d.choicesUp = s.choices;
+    // a retry after a mistake (decision 51): the card's ticked rows open again (CHT-08)
+    if (this.made.size !== (d.madeN || 0)) { d.madeN = this.made.size; d.madeView = view; }
+    else if (this.made.size && d.doneRows != null && s.doneRows < d.doneRows && view === d.madeView && !d.retried) { d.retried = true; await mark(p, "retry", { settle: 250 }); }
+    d.doneRows = s.doneRows;
+    if (m === "serve-combined" && view === "service" && s.stamps >= 2) await this.once("served-combined", { settle: 300 });
+    if (m === "force-passme" && s.passme) await this.once("passme-forced", { settle: 0 });
+    if (s.pans) for (const q of s.pans) {
+      // wrong-extra-person: a poured cup that comes back empty and cold is the wrong cup being redone (CHAI-11)
+      if (m === "wrong-extra-person" && d.extraDone && (d.poured[q.who] || 0) > 0 && q.poured === 0 && q.state === "cold") await this.once("wrong-redo", { settle: 400 });
+      d.poured[q.who] = Math.max(d.poured[q.who] || 0, q.poured || 0);
+    }
+    if (m === "wrong-spice-thrice" && d.n >= 3 && s.daar && s.daar !== "hot") await this.once("shown-right", { settle: 0 });
+  }
+  // a driver's own move instead of the expectation (true: done, the loop reads the next expectation)
+  async driverMove(e) {
+    const p = this.page, d = this.drv, m = this.mode;
+    if (!e || e.intro || e.kind === "wait") return false;
+    // idle-twice (MAA-13): at the first move, wait 8 s (the ghost finger), still no move, 8 s more, then play
+    if (m === "idle-twice" && !d.idled && CALM.includes(e.kind)) {
+      d.idled = true;
+      await sleep(8000);
+      await this.once("idle-hint", { settle: 0 });
+      await sleep(8000);
+      await this.once("idle-again", { settle: 0 });
+      return true;
+    }
+    // wrong-thrice (CK-23): three wrong picks at the same step, one after the other, then the help and the right way
+    if (m === "wrong-thrice") {
+      if (e.kind === "tap" && d.n < 3 && e.swrongs && e.swrongs.length && (d.key == null || d.key === e.key)) {
+        d.key = e.key;
+        const w = e.swrongs[d.n % e.swrongs.length];
+        d.n++;
+        await this.tap(w.x, w.y, "wrong item");
+        await sleep(450);
+        await this.once(`wrong-${d.n}`, { settle: 0 });
+        this.made.add("wrong-thrice");
+        return true;
+      }
+      if (d.n >= 3 && e.key !== d.key) await this.once("shown-right", { settle: 0 });
+    }
+    // wrong-spice-thrice (DAAR-09): a wrong spice in the tadka on three tries (each try is the whole tadka again: the game
+    // takes the seeds out and asks again), then the game shows the right way
+    if (m === "wrong-spice-thrice" && e.kind === "tap" && e.swrongs && e.swrongs.length && d.n < 3 && (await p.evaluate("window.Cook && Cook.daarPhase").catch(() => null)) === "hot") {
+      if (d.key == null) d.key = e.key;
+      if (e.key === d.key && d.rightK) { d.rightK = false; d.inTry = false; }
+      if (!d.inTry && e.key === d.key) {
+        d.inTry = true;
+        const w = e.swrongs[d.n % e.swrongs.length];
+        d.n++;
+        await this.tap(w.x, w.y, "wrong spice");
+        await sleep(450);
+        await this.once(`wrong-${d.n}`, { settle: 0 });
+        return true;
+      }
+      if (e.key === d.key && d.inTry) d.rightK = true;
+    }
+    // wrong-extra-person (SH-50, CHAI-11): the last person's pan, once everything they asked for is in (the knob is next),
+    // gets a spice from the shelf they did not ask for
+    if (m === "wrong-extra-person" && e.kind === "tap" && e.key) {
+      if (/^pan-/.test(e.key)) d.pan = e.key.slice(4);
+      else if (d.pan && !/^(knob|pour)/.test(e.key)) (d.panKeys[d.pan] = d.panKeys[d.pan] || []).push(e.key);
+      if (!d.extraDone && /^knob-on-/.test(e.key)) {
+        const who = e.key.slice(8);
+        const pans = await p.evaluate("window.Cook && Cook.chaiPans ? Cook.chaiPans() : []").catch(() => []);
+        if (pans.length > 1 && pans[pans.length - 1].who === who) {
+          const asked = new Set(d.panKeys[who] || []);
+          const jars = (await canvasObjects(p, /^jar-/)).filter((j) => j.alpha > 0.05).map((j) => ({ ...j, id: j.key.slice(4) }));
+          const free = jars.filter((j) => !/^cook-/.test(j.id) && j.id !== "spi-16" && !asked.has(j.id));
+          const pick = free.find((j) => /aadu|veg-14/.test(j.id)) || free[0];
+          d.extraDone = true;
+          if (pick) {
+            await this.tap(pick.x, pick.y, `unasked ${pick.id}`);
+            await sleep(900);
+            await this.once("wrong-extra-person", { settle: 0 });
+            this.rec.note(`wrong-extra-person: put ${pick.id} in ${who}'s pan (they asked for ${[...asked].join(", ")})`);
+            this.made.add("wrong-extra-person");
+            return true;
+          }
+          this.rec.note(`wrong-extra-person: no spice jar ${who} did not ask for (jars: ${jars.map((j) => j.id).join(", ")})`);
+        }
+      }
+    }
+    // tap-during-speech (SH-20, PAN-11): the first thing asked is tapped while a line is still being said
+    if (m === "tap-during-speech" && !d.spoke && e.kind === "tap" && !(await this.onboardUp())) {
+      d.spoke = true;
+      const came = await until(() => this.voice.speaking(), 8000);
+      const cur = await this.exp();
+      const t = cur && cur.kind === "tap" ? cur : e;
+      await mark(p, "tap-during-speech", { block: false });
+      await this.tap(t.sx, t.sy, t.key || "item");
+      const still = await this.voice.speaking();
+      const moved = await until(async () => JSON.stringify(await this.exp()) !== JSON.stringify(t), 900, 30);
+      await this.once(!came ? "tap-during-speech" : moved && still ? "tap-taken-while-speaking" : moved ? "tap-during-speech" : "tap-held-till-quiet", { settle: 0 });
+      if (!came) this.rec.note("tap-during-speech: no line was being said in the 8 s before the first tap");
+      if (moved) await this.waitChange(t, 3000);
+      return true;
+    }
+    // tawa-empty-then-off (MAA-11): the tawa lit with nothing on it (2 s), the knob turned off (high, low, off: 2 s), on again
+    if (m === "tawa-empty-then-off" && !d.tawa && CALM.includes(e.kind)) {
+      d.tawa = true;
+      await mark(p, "tawa-empty", { block: false });
+      await sleep(2000);
+      await this.once("tawa-empty", { settle: 0 });
+      const knob = (await canvasObjects(p, /^kit-knob-off$/))[0];
+      if (!knob) { this.rec.note("tawa-empty-then-off: no burner knob (kit-knob-off) on the canvas"); return false; }
+      await this.tap(knob.x, knob.y, "the knob (low)");
+      await sleep(450);
+      await this.tap(knob.x, knob.y, "the knob (off)");
+      await sleep(300);
+      await mark(p, "knob-off", { block: false });
+      await sleep(2000);
+      await this.once("knob-off", { settle: 0 });
+      await this.tap(knob.x, knob.y, "the knob (high again)");
+      await sleep(450);
+      return true;
+    }
+    return false;
   }
   exp() { this.tExp = Date.now(); return this.page.evaluate("__cook.expectation()"); }
   gauge() { return this.page.evaluate("__cook.gauge()"); }
@@ -55,12 +216,49 @@ export class CookPlayer {
 
   async intro() {
     this.intros++;
+    const p = this.page;
+    // tap-through-popup (SH-64): the request pop-up is tapped as soon as its card is up and the read-out has begun (the probe's
+    // "request" capture is taken first, about 450 ms in)
+    if (this.mode === "tap-through-popup") {
+      await until(() => popupOpen(p), 3000, 30);
+      await sleep(700);
+      if (await popupOpen(p)) {
+        await mark(p, "tapped-through", { block: false });
+        await tapPopup(p);
+        await sleep(250);
+        await this.once("tapped-through", { settle: 0 });
+      } else this.rec.note("tap-through-popup: the pop-up folded by itself before 0.7 s");
+      await sleep(600);
+      if (this.intros === 1) await this.once("order-card-in-sidebar");
+      if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
+      return;
+    }
+    // tap-during-pause (LNG-07): a tap on the play area in a pause of Nani's reading (one line ended, the next not begun)
+    if (this.mode === "tap-during-pause" && this.intros === 1) {
+      await until(() => popupOpen(p), 3000, 30);
+      let said = false, gap = false;
+      const t0 = Date.now();
+      while (Date.now() - t0 < 15000 && (await popupOpen(p))) {
+        if (await this.voice.speaking()) said = true;
+        else if (said) { await sleep(50); if (!(await this.voice.speaking()) && (await popupOpen(p))) { gap = true; break; } }
+        await sleep(25);
+      }
+      if (gap) {
+        const at = await p.evaluate("(() => { const s = document.querySelector('#stage') || document.body; const r = s.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height * 0.75 }; })()");
+        await mark(p, "tap-during-pause", { block: false });
+        await p.mouse.click(at.x, at.y);
+        await sleep(450);
+        await this.once("tap-during-pause", { settle: 0 });
+        await this.once((await popupOpen(p)) ? "pause-kept" : "pause-skipped", { settle: 0 });
+      } else this.rec.note(`tap-during-pause: no pause in the reading while the pop-up was up (${said ? "a line was said" : "no line was said"})`);
+    }
     await sleep(120);
     if (this.intros === 1) await this.once("order-card-big", { settle: 150 });
     await sleep(400);
     if (await this.page.$("#intro:not(.hidden) .ic-card")) { try { await this.page.click("#intro .ic-card", { force: true, timeout: 2000 }); } catch (e) { /* it flew in by itself */ } }
     await sleep(600);
     if (this.intros === 1) await this.once("order-card-in-sidebar");
+    if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
   }
 
   // the "?" and the order card's helpers, once per run (the first tap-kind moment)
@@ -115,6 +313,8 @@ export class CookPlayer {
         await sleep(500);
       }
       await this.tap(e.sx, e.sy, e.key || "item");
+      // the daar station's bowl tipped into the pot (DAAR-10: the trivet stays on the counter)
+      if (e.key === "daar") await mark(p, "daar-in", { settle: 60 });
     } else if (k === "hold") {
       await this.cover(e.sx, e.sy, "hold");
       await p.mouse.move(e.sx, e.sy); await p.mouse.down();
@@ -122,6 +322,29 @@ export class CookPlayer {
       while (Date.now() - t0 < 15000) { const g = await this.gauge(); if (g && g.level >= (g.lo + g.hi) / 2) break; await sleep(15); }
       await p.mouse.up();
     } else if (k === "timing") {
+      // turn-early-late (SEK-09): the first skewer turned before its green, the next one after it, then fair
+      if (this.mode === "turn-early-late" && e.key === "turn" && !this.drv.late) {
+        if (!this.drv.early) {
+          this.drv.early = true;
+          await this.tap(e.sx, e.sy, "turn too early");
+          await sleep(500);
+          await this.once("wrong-early", { settle: 0 });
+          return;
+        }
+        const t1 = Date.now();
+        while (Date.now() - t1 < 15000) {
+          const g = await this.gauge();
+          if (g && g.level >= g.hi + 0.06) break;
+          const cur = await this.exp();
+          if (!cur || cur.kind !== "timing" || cur.x !== e.x || cur.y !== e.y) break;
+          await sleep(15);
+        }
+        this.drv.late = true;
+        await this.tap(e.sx, e.sy, "turn too late");
+        await sleep(500);
+        await this.once("wrong-late", { settle: 0 });
+        return;
+      }
       const t0 = Date.now();
       while (Date.now() - t0 < 30000) {
         const g = await this.gauge();
@@ -133,11 +356,21 @@ export class CookPlayer {
       }
       await this.tap(e.sx, e.sy, "timing");
     } else if (k === "count") {
-      for (let i = 0; i < Math.max(0, e.target - (e.count || 0)); i++) { await this.tap(e.sx, e.sy, "count"); await sleep(350); }
+      // wrong-count (SH-50): the first counted step gets one fewer than asked, and is closed
+      const short = this.mode === "wrong-count" && !this.drv.counted && e.target >= 2;
+      if (short) this.drv.counted = true;
+      for (let i = 0; i < Math.max(0, e.target - (e.count || 0) - (short ? 1 : 0)); i++) { await this.tap(e.sx, e.sy, "count"); await sleep(350); }
       await sleep(300);
       await p.click("#done-btn").catch(() => {});
+      if (short) { await sleep(400); await this.once("wrong-count", { settle: 0 }); this.made.add("wrong-count"); }
     } else if (k === "more") {
-      if (e.count < e.target) await this.tap(e.sx, e.sy, "another");
+      if (this.mode === "wrong-count" && !this.drv.counted && e.target >= 2 && e.count === e.target - 1) {
+        this.drv.counted = true;
+        await p.click("#done-btn").catch(() => {});
+        await sleep(500);
+        await this.once("wrong-count", { settle: 0 });
+        this.made.add("wrong-count");
+      } else if (e.count < e.target) await this.tap(e.sx, e.sy, "another");
       else if (this.mistakes && e.extra && !this.made.has("more-extra")) {
         // one more than they asked for (the Maani line)
         this.made.add("more-extra");
@@ -275,8 +508,24 @@ export class CookPlayer {
 
   // play until until() says so. Records `view-<name>` and `kind-<kind>` once each.
   async play(until, { timeout = 300000, closeKitchenAfter = null } = {}) {
+    try { return await this.playLoop(until, { timeout, closeKitchenAfter }); } finally { if (this.drv.poll) clearInterval(this.drv.poll); }
+  }
+  async playLoop(until, { timeout = 300000, closeKitchenAfter = null } = {}) {
     const t0 = Date.now();
     let lastKind = null, lastView = null, idle = 0, closed = false;
+    if (VOICE_MODES.has(this.mode)) this.voice = await watchVoice(this.page);
+    if (this.mode === "tawa-empty-then-off") await this.page.evaluate(SIZZLE).catch(() => false);
+    if (this.mode === "tap-quick") {
+      // tap-quick (PAN-12): each count word as it starts (drv:count-word), so the gap between them is measured
+      const nums = await numberWords(ROOT), since = await this.voice.now(), marked = new Set();
+      let busy = false;
+      this.drv.poll = setInterval(async () => {
+        if (busy) return;
+        busy = true;
+        try { for (const l of await this.voice.lines(since)) { const k = `${l.t0}|${l.text}`; if (!marked.has(k) && isCountLine(l.text, nums)) { marked.add(k); await mark(this.page, "count-word", { block: false }); } } } catch (e) { /* the page moved on */ }
+        busy = false;
+      }, 40);
+    }
     while (!(await until())) {
       // open kitchen (free cooking): close it ourselves once enough customers have been served
       if (closeKitchenAfter != null && !closed) {
@@ -297,6 +546,7 @@ export class CookPlayer {
         const ex = await this.exp();
         if (!ex || !["timing", "hold", "slice"].includes(ex.kind)) await this.once(`view-${view}`);
       }
+      await this.driverWatch(view);
       const e = await this.exp();
       if (!e) { await sleep(100); if (++idle > 600) { await this.once("stuck"); throw new Error("no expectation for 60 s"); } continue; }
       idle = 0;
@@ -312,6 +562,7 @@ export class CookPlayer {
         continue;
       }
       if (this.hints && !(await this.page.evaluate("!!document.querySelector('.njg-onboard')"))) await this.hintMoves(e);
+      if (this.mode !== "fair" && (await this.driverMove(e))) { lastKind = e.kind; continue; }
       if (e.kind !== "wait" && e.kind !== lastKind) await this.once(`kind-${e.kind}`, { settle: ["timing", "hold", "slice", "stir", "roll"].includes(e.kind) ? 0 : 150 });
       lastKind = e.kind;
       // a swipe has no x/y, only x1..y2: leave them out and a round with more than 8 swipes in a row (3 samosas, 3 folds each) looks stuck

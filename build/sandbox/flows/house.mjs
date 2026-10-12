@@ -2,6 +2,7 @@
 // the player picker with its add form, and the grown-ups' panel (press and hold the cog).
 // Hook: __home.state(). The save is seeded through the app's own Save API (no game code changes).
 import { BASE, sleep } from "../lib/env.mjs";
+import { mark } from "../drivers/index.mjs";
 
 export const houseFlow = {
   id: "house",
@@ -55,6 +56,16 @@ export const houseFlow = {
     await page.waitForSelector("#grown:not([hidden])", { timeout: 5000 }).catch(() => rec.stop("the grown-ups' panel did not open on a 1.5 s hold"));
     await sleep(400);
     await rec.state("grown-ups-panel");
+    // the evidence loop's "labs" (DAAR-15, CK-25, CK-28, CLN-89): the grown-ups' panel's "Game labs" link, labs.html open. Only
+    // when a probe asks (the gate's house flow ends at the panel as before)
+    if (page.__njgEvidence) {
+      const link = page.locator('#grown a[href="labs.html"]').first();
+      if (await link.count()) await link.click(); else { rec.note("labs: no \"Game labs\" link in the grown-ups' panel"); await page.goto(`${BASE}/labs.html`, { waitUntil: "load" }); }
+      await page.waitForURL((u) => u.pathname.endsWith("/labs.html"), { timeout: 15000 });
+      await page.waitForLoadState("load");
+      await sleep(600);
+      await mark(page, "labs");
+    }
     ctx.reachedEnd = true;
   },
 };
