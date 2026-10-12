@@ -48,9 +48,37 @@ export class CookPlayer {
     this.voice = null;
     // from the first moment (the request pop-up reads before the play loop starts)
     if (VOICE_MODES.has(mode)) watchVoice(page).then((v) => { this.voice = this.voice || v; }).catch(() => {});
+    if (mode === "tap-during-pause") this.drv.pause = this.pauseWatch().catch(() => null);
     this.afterIntro = null;  // a flow's own move once the first order card is in the sidebar (start-over)
   }
   onboardUp() { return this.page.evaluate("!!document.querySelector('.njg-onboard')").catch(() => false); }
+  // tap-during-pause (LNG-07): from the start, watches the request pop-up's read-out (the probe's own events) and taps the play
+  // area in the first pause of it: a line has ended, none is open for 80 ms, the pop-up is still up. Then pause-skipped (the
+  // pop-up folded on the tap) or pause-kept
+  async pauseWatch() {
+    const p = this.page;
+    const v = await watchVoice(p);
+    this.voice = this.voice || v;
+    const V = v.state();
+    if (!V) { this.rec.note("tap-during-pause: no evidence probe on the page to hear the reading"); return null; }
+    const t0 = Date.now();
+    while (Date.now() - t0 < 90000) {
+      if (V.popup && V.open.size === 0 && V.lastEnd > V.popupAt && Date.now() - V.lastEnd >= 80) {
+        const at = await p.evaluate("(() => { const s = document.querySelector('#stage') || document.body; const r = s.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height * 0.75 }; })()").catch(() => null);
+        if (at && V.popup && V.open.size === 0) {
+          await mark(p, "tap-during-pause", { block: false });
+          await p.mouse.click(at.x, at.y);
+          await sleep(450);
+          await this.once("tap-during-pause", { settle: 0 });
+          await this.once((await popupOpen(p)) ? "pause-kept" : "pause-skipped", { settle: 0 });
+          return true;
+        }
+      }
+      await sleep(15);
+    }
+    this.rec.note("tap-during-pause: no pause in the pop-up's reading came");
+    return null;
+  }
 
   // ---- the drivers ----
   // what the page shows, each turn of the play loop: the fair path's moments (your turn, a retry, the daar going in) and the
@@ -159,9 +187,9 @@ export class CookPlayer {
     // tap-during-speech (SH-20, PAN-11): the first thing asked is tapped while a line is still being said
     if (m === "tap-during-speech" && !d.spoke && e.kind === "tap" && !(await this.onboardUp())) {
       d.spoke = true;
-      const came = await until(() => this.voice.speaking(), 8000);
-      const cur = await this.exp();
-      const t = cur && cur.kind === "tap" ? cur : e;
+      // a line's start is an event (a silent test-build line is open about 140 ms): tap at once, where the item already is
+      const came = (await this.voice.speaking()) || !!(await this.voice.nextLine(8000));
+      const cur = came ? e : await this.exp(); const t = cur && cur.kind === "tap" ? cur : e;
       await mark(p, "tap-during-speech", { block: false });
       await this.tap(t.sx, t.sy, t.key || "item");
       const still = await this.voice.speaking();
@@ -236,25 +264,9 @@ export class CookPlayer {
       if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
       return;
     }
-    // tap-during-pause (LNG-07): a tap on the play area in a pause of Nani's reading (one line ended, the next not begun)
-    if (this.mode === "tap-during-pause" && this.intros === 1) {
-      await until(() => popupOpen(p), 3000, 30);
-      let said = false, gap = false;
-      const t0 = Date.now();
-      while (Date.now() - t0 < 15000 && (await popupOpen(p))) {
-        if (await this.voice.speaking()) said = true;
-        else if (said) { await sleep(50); if (!(await this.voice.speaking()) && (await popupOpen(p))) { gap = true; break; } }
-        await sleep(25);
-      }
-      if (gap) {
-        const at = await p.evaluate("(() => { const s = document.querySelector('#stage') || document.body; const r = s.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height * 0.75 }; })()");
-        await mark(p, "tap-during-pause", { block: false });
-        await p.mouse.click(at.x, at.y);
-        await sleep(450);
-        await this.once("tap-during-pause", { settle: 0 });
-        await this.once((await popupOpen(p)) ? "pause-kept" : "pause-skipped", { settle: 0 });
-      } else this.rec.note(`tap-during-pause: no pause in the reading while the pop-up was up (${said ? "a line was said" : "no line was said"})`);
-    }
+    // tap-during-pause: its tap is the watcher's (pauseWatch); the pop-up may already have folded on it
+    if (this.mode === "tap-during-pause" && this.drv.pause) await Promise.race([this.drv.pause, sleep(1500)]);
+    if (this.mode === "tap-during-pause" && !(await popupOpen(p))) return;
     await sleep(120);
     if (this.intros === 1) await this.once("order-card-big", { settle: 150 });
     await sleep(400);

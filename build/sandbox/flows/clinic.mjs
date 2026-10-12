@@ -292,8 +292,8 @@ export class ClinicPlayer {
     }
     if (m === "tap-during-speech" && !d.spoke) {
       d.spoke = true;
-      const came = await until(() => this.voice.speaking(), 6000);
-      const b = came ? await next() : a;
+      const came = (await this.voice.speaking()) || !!(await this.voice.nextLine(6000));
+      const b = came ? a : await next();
       const act = b && b.do !== "wait" ? b : a;
       await mark(this.page, "tap-during-speech", { block: false });
       await this.healAct(act);

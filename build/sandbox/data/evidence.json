@@ -6673,8 +6673,7 @@
    "at": "zoom-in",
    "after": null,
    "capture": [
-    "strip:.cl-zoom:6x250",
-    "trace:.cl-zoom:2000"
+    "strip:.cl-zoom:6x250"
    ],
    "expect": [
     "gapMs:zoom-in,zoom-in-end<=1800"
@@ -6697,7 +6696,8 @@
     "zoom2:.cl-stage"
    ],
    "expect": null,
-   "note": "zoom out from full zoom on the healed part; her pull-out pose"
+   "note": "zoom out from full zoom on the healed part; her pull-out pose",
+   "delay": 200
   }
  ],
  "CLN-88": [
@@ -9125,10 +9125,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stage-end",
+   "at": "zoom-out",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal"
+    "zoom2:.cl-stage"
    ],
    "expect": null,
    "note": "smears where blobs were; sore skin cleared at the end; wax at the ear's angle"
@@ -9406,7 +9406,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "results",
+   "at": "results-badges",
    "after": null,
    "capture": [
     "crop:.rs-card"
@@ -9914,7 +9914,7 @@
    "at": "every:cook-done",
    "after": null,
    "capture": [
-    "zoom2:#nani-card"
+    "zoom2:canvas:nani"
    ],
    "expect": null,
    "note": "Nani's four cooking moods (not one image); Nana, Ma, Ali impatient faces do not smile smugly",

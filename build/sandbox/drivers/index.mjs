@@ -43,11 +43,14 @@ export async function watchVoice(page) {
   const ev = page.__njgEvidence;
   if (ev) {
     if (!page.__drvVoice) {
-      const V = { open: new Map(), plays: new Set(), lines: [] };
+      // the test build's lines are often silent (no clip: about 140 ms open), so a driver waits for the line event itself
+      // (nextLine) rather than polling for one; popup: the request pop-up's open state (the contract probe's events)
+      const V = { open: new Map(), plays: new Set(), lines: [], waiters: [], popup: false, popupAt: 0, lastEnd: 0 };
       const feed = (e) => {
         if (!e) return;
-        if (e.type === "line") { V.open.set(e.id, e); V.lines.push({ id: e.id, text: String(e.text || ""), t0: e.t || Date.now(), t1: null }); if (V.lines.length > 400) V.lines.shift(); }
-        else if (e.type === "line-end") { V.open.delete(e.id); const l = V.lines.find((x) => x.id === e.id); if (l) l.t1 = e.t || Date.now(); }
+        if (e.type === "line") { V.open.set(e.id, e); const l = { id: e.id, text: String(e.text || ""), t0: e.t || Date.now(), t1: null }; V.lines.push(l); if (V.lines.length > 400) V.lines.shift(); const w = V.waiters.splice(0); w.forEach((f) => f(l)); }
+        else if (e.type === "line-end") { V.open.delete(e.id); V.lastEnd = Date.now(); const l = V.lines.find((x) => x.id === e.id); if (l) l.t1 = e.t || Date.now(); }
+        else if (e.type === "c" && e.k === "popup") { V.popup = !!e.open; if (e.open) V.popupAt = Date.now(); }
         else if (e.type === "play" && e.via !== "sfx") V.plays.add(e.pid);
         else if (e.type === "play-end") V.plays.delete(e.pid);
       };
@@ -57,6 +60,9 @@ export async function watchVoice(page) {
         speaking: async () => V.open.size > 0 || V.plays.size > 0,
         lines: async (since = 0) => V.lines.filter((l) => l.t0 >= since).map((l) => ({ text: l.text, t0: l.t0, t1: l.t1 })),
         now: async () => Date.now(),
+        // the next line to start (or null after ms)
+        nextLine: (ms) => new Promise((res) => { const f = (l) => { clearTimeout(t); res(l); }; const t = setTimeout(() => { const i = V.waiters.indexOf(f); if (i >= 0) V.waiters.splice(i, 1); res(null); }, ms); V.waiters.push(f); }),
+        state: () => V,
       };
     }
     return page.__drvVoice;
@@ -67,6 +73,8 @@ export async function watchVoice(page) {
     speaking: () => page.evaluate("(() => { const V = window.__drvVoice; return !!V && (V.open.size > 0 || V.plays.size > 0); })()").catch(() => false),
     lines: (since = 0) => page.evaluate((s) => { const V = window.__drvVoice; return V ? V.lines.filter((l) => l.t0 >= s).map((l) => ({ text: l.text, t0: l.t0, t1: l.t1 })) : []; }, since).catch(() => []),
     now: () => page.evaluate("Date.now()").catch(() => Date.now()),
+    async nextLine(ms) { const s = await this.now(); const t0 = Date.now(); while (Date.now() - t0 < ms) { const l = await this.lines(s); if (l.length) return l[0]; await sleep(30); } return null; },
+    state: () => null,
   };
 }
 // wait until fn() is true (polled), at most ms; returns whether it came
