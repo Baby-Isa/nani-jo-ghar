@@ -469,3 +469,11 @@ test("a plural built on a defaulted gender is a draft; a confirmed-gender noun's
   assert.equal(ok.tokens[0].defaulted, undefined);
   assert.equal(ok.drafts.length, 0);
 });
+
+test("a drink's recipe rows are whole sentences from Mum's own frame (CLN-54: paani bhari chad, wiji chad)", () => {
+  const E = engine({ data: loadData({}), path: "test" });
+  assert.equal(E.say({ fn: "DoIt", verb: "v.fill", obj: "cook-dudh" }).text, "Dudh bhari chad!");
+  assert.equal(E.say({ fn: "DoIt", verb: "v.put-in", obj: { fn: "Unit", n: 2, unit: "cl-chamchi", of: "spi-01" } }).text, "Ba chamchi hardar wiji chad!");
+  // honey has no Kutchi yet: the row is the engine's to-record gap, never a guess
+  assert.equal(E.say({ fn: "DoIt", verb: "v.put-in", obj: "cl-honey" }).ok, false);
+});

@@ -143,5 +143,7 @@ Against Zafar's last feedback: <item ✅ / note>
 
 **PAN-16 (decision 89, from package C):** the pantry said each line twice at L1 (her step line, then the guided step again). Fixed in `fetch.js`; red ev-s05b-p16r, green ev-s05b-p16g (PAN-04 still passes).
 
+**CLN-54 (decision 89, for package D):** the engine already builds each drinks-recipe row as a whole sentence from Mum's confirmed frame (DoIt: *paani bhari chad*, §38 I16), so no new Kutchi and no engine change are needed. D's call: `ClinicLang.show({ fn: "DoIt", verb: "v.fill", obj: "cook-dudh" })` gives "Dudh bhari chad!", and `{ fn: "DoIt", verb: "v.put-in", obj: { fn: "Unit", n: 2, unit: "cl-chamchi", of: "spi-01" } }` gives "Ba chamchi hardar wiji chad!". Honey (cl-honey) is still Mum's gap, so it shows as the grey to-record placeholder. A lang test now locks this in (58/58 pass).
+
 ## Left open
 SH-03: the English under each word stays as designed (Zafar, 12 Oct, F14); row noted, layout is S's. Checks: `checks.mjs` passed (265 unit tests, 0 literals, load 21/21), `import_all.mjs --check` passed, lang tests 57/57, `leak.mjs cook` passed. Touched run `s05b-touched` covered 5 flows at 1366x768 (about 6 min; the full touched list is everything, left to `/review`).
