@@ -828,7 +828,7 @@
    "expect": [
     "count:.oc-look:not(.bulb)=0",
     "count:.cl-side .oc-card.closed .oc-look.bulb=1",
-    "inside:.ng-say,.ng-face"
+    "inside:.oc-face .say-badge,.oc-face"
    ],
    "note": "decision 57/89: the closed spoken card's peek is a small bulb (no eye, no counter); the speaker icon inside the face circle"
   },
@@ -1227,7 +1227,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "order-card-in-sidebar",
+   "at": "visible:#mission .oc-headline",
    "after": null,
    "capture": [
     "dom:#mission .oc-headline"
@@ -1246,7 +1246,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:order-card-in-sidebar",
+   "at": "visible:#mission .oc-headline",
    "after": null,
    "capture": [
     "dom:#mission .oc-headline"

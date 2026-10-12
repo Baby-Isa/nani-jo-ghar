@@ -436,6 +436,8 @@ export function traceStats(samples) {
   const s = (samples || []).filter((x) => x && isFinite(x.y));
   if (s.length < 3) return { amp: null, period: null, repeats: null, n: s.length };
   const range = (k) => Math.max(...s.map((x) => x[k])) - Math.min(...s.map((x) => x[k]));
+  // a character crossing the screen (Nani's pass-me, 400+ px) is a walk, not a talk bob: no measure (S05-T2, ART-18)
+  if (range("x") > 40 || range("y") > 80) return { amp: null, period: null, repeats: null, walk: true, n: s.length };
   const amp = Math.max(range("x"), range("y"));
   const mid = (Math.max(...s.map((x) => x.y)) + Math.min(...s.map((x) => x.y))) / 2;
   const ups = [];
@@ -448,3 +450,11 @@ export function traceStats(samples) {
 // a "to record" placeholder (grey italic + the grown-ups' flag) and the grown-ups' own places (the "?" pop-up, the lab bar)
 export const NOT_FOR_CHILD_SEL = ".rs-ph, .rs-rec, .oc-rec, .oc-headline.rec, .rec, [data-rec], [class$=\"-rec\"], [class*=\"-rec \"]";
 export const GROWNUP_SEL = ".gu-pop, .gu-btn, #gu-btn, .njg-grownup, .cl-lab-bar, .cl-lab-out, #lab, #lab-out";
+
+// traceAmp/tracePeriod/traceRepeats over the traces of an every: probe (S05-T2): a trace with nothing moving (null) is no measure of a period or a
+// repeat, and satisfies a ceiling on the amplitude; the moving traces decide. ok: null when none moved (for the period and repeats) .
+export function traceDecision(kind, vals, op, n) {
+  const moved = vals.filter((x) => x != null);
+  if (kind === "traceAmp") { const all = vals.map((x) => (x == null ? 0 : x)); return all.length ? all.every((x) => cmp(x, op, n)) : null; }
+  return moved.length ? moved.every((x) => cmp(x, op, n)) : null;
+}

@@ -1,7 +1,7 @@
 // node --test build/tools/review/evidence.test.mjs : the evidence loop (decision 82) on fixtures, no browser.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, lexiconWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
+import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, lexiconWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceDecision, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
 import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
 import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts, applyGuard } from "./lib/evidence.mjs";
@@ -249,4 +249,19 @@ test("lexicon: engine-inflected forms and the bulb's English (S05-T2)", () => {
   const lex = lexiconWords(new URL("../../..", import.meta.url).pathname);
   assert.deepEqual(unknownWords("Muke chunda de", lex), [], "chunda is chundo inflected by the engine's paradigm");
   assert.deepEqual(unknownWords("Muke zzqx de", lex), ["zzqx"], "a made-up word is still unknown");
+});
+
+test("trace expects: a still trace is no measure of a period and keeps a ceiling on the bob (S05-T2, ART-18)", () => {
+  assert.equal(traceDecision("traceAmp", [2.4, 3.3, null, null], "<=", 2), false, "a bob over the ceiling fails even if other bubbles had nobody moving");
+  assert.equal(traceDecision("traceAmp", [1.5, null], "<=", 2), true);
+  assert.equal(traceDecision("tracePeriod", [1333, null, null], ">=", 380), true, "the traces that moved decide");
+  assert.equal(traceDecision("tracePeriod", [null, null], ">=", 380), null, "nothing moved: for the reviewer");
+});
+
+test("traceStats: a walk across the screen is no bob (S05-T2)", () => {
+  const walk = Array.from({ length: 10 }, (_, i) => ({ t: i * 50, x: 100 + i * 50, y: 300, o: 1 }));
+  assert.equal(traceStats(walk).amp, null);
+  assert.equal(traceStats(walk).walk, true);
+  const bob = Array.from({ length: 12 }, (_, i) => ({ t: i * 50, x: 100, y: 300 + (i % 4 < 2 ? 0 : 2), o: 1 }));
+  assert.equal(traceStats(bob).amp, 2);
 });

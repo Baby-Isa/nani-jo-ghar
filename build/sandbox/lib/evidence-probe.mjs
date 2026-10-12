@@ -11,7 +11,7 @@
 // colour, a text capture is not empty, a filmstrip changed between frames. A failed check is a TOOL failure, never evidence.
 import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
+import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, traceDecision, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
 import { decodePng } from "../../tools/review/lib/png.mjs";
 import * as Contract from "./contract.mjs";
 
@@ -482,7 +482,7 @@ export class EvidenceProbe {
           const key = { traceAmp: "amp", tracePeriod: "period", traceRepeats: "repeats" }[e.kind];
           if (!tr.length) { put({ ok: null, why: "no trace" }); continue; }
           const vals = tr.map((c) => c.stats[key]);
-          put({ ok: vals.some((x) => x == null) ? null : vals.every((x) => cmp(x, e.op, e.n)), why: `${key} ${vals.map((x) => (x == null ? "none (still)" : x)).join(", ")}` });
+          put({ ok: traceDecision(e.kind, vals, e.op, e.n), why: `${key} ${vals.map((x) => (x == null ? "none (still)" : x)).join(", ")}` });
         } else if (e.kind === "familyOnly" || e.kind === "clipClass") {
           const rec = new Set((this.recList || []).map(recKey));
           const lines = ((r.sound && r.sound.lines) || []).filter((l) => !(e.kind === "familyOnly" && isToRecord(l.text, rec)));
