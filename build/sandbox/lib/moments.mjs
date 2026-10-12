@@ -63,7 +63,7 @@ const COOK_PATH = {
 };
 const CLINIC_REC = ["rec:stage-*", "rec:*-tap", "rec:*-act", "rec:*-point", "rec:*-belt", "rec:*-say", "rec:say-pills", "rec:between-stages", "rec:results-badges", "rec:results-words", "rec:results-end", "rec:end", "clinic:*", "clinic:*/*"];
 const CLINIC_PATH = { hint: ["rec:idle-hint-*", "rec:peek-*", "rec:bulb-*"], mistake: ["rec:wrong-*"] };
-const HEAL_REC = ["rec:heal-*-start", "rec:heal-*-mid", "rec:heal-*-slip", "rec:heal-eye-redrop", "rec:heal-eye-can-see"]; // the eye's two (flows/clinic.mjs eyeMoments)
+const HEAL_REC = ["rec:heal-*-start", "rec:heal-*-mid", "rec:heal-*-slip", "rec:heal-eye-redrop", "rec:heal-eye-can-see", "rec:heal-knee-turn-*", "rec:heal-fever-change-*"]; // the eye's two (flows/clinic.mjs eyeMoments)
 
 // a heal game's debug step ids: its `what` strings, its tool ids, its `do` kinds (read from js/clinic/heal/games/<g>.js)
 export function healSteps(root, game) {

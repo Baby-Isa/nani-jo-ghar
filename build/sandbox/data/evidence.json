@@ -9116,14 +9116,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step:dot",
+   "at": "every:rec:heal-knee-turn",
    "after": null,
    "capture": [
     "zoom2:.cl-heal",
     "cmd:node build/tools/review/shoot_knee_wrap.mjs"
    ],
    "expect": null,
-   "note": "each turn wraps round the knee edge to edge, crossing the kneecap and crease; no yellow ellipse; 4-6 / 5-8 / 6-10 turns"
+   "note": "each turn wraps round the knee edge to edge, crossing the kneecap and crease; no yellow ellipse; 4-6 / 5-8 / 6-10 turns",
+   "max": 12
   }
  ],
  "CLN-101": [
