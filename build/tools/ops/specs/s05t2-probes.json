@@ -1,0 +1,61 @@
+{
+  "name": "S05-T2, tools round 2: the probes packages S and B found wrong (Sprint 5)",
+  "model": "Sonnet",
+  "effort": "medium",
+  "why": "tool and driver fixes, mechanical; no game judgement",
+  "cost": "about $6-10",
+  "stop": "13 Oct 2026, 03:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3"
+  ],
+  "read": [
+    "docs/sprints/S05-red-then-green.md",
+    "build/reports/s05s-shared.md and build/reports/s05b-words.md (the requests to T)",
+    "build/reports/s05t-tools.md (round 1)",
+    "docs/architecture/evidence-loop.md"
+  ],
+  "owns": [
+    "build/tools/** except build/tools/review/leak.mjs (package B: pantry config only; B tells T in its report)",
+    "docs/architecture/testing.md, docs/architecture/evidence-loop.md",
+    "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
+    "build/reports/s05t-tools.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/**, assets/** (packages S, B, C, D)",
+    "build/lang/** (package B)"
+  ],
+  "stubs": "none",
+  "permissions": "git push to the branch; Node, Python, pip install",
+  "tasks": [
+    {
+      "do": "FIRST: pull the branch. Fix package S's probe requests (build/reports/s05s-shared.md, Requests, T): `lines:` counts element boxes, not text lines (SH-01, SH-09, SH-48); the strips need a 500 ms delay (SH-17); SH-36 needs a fold moment and `.oc-headline`; SH-44 reads `.rs-steps`; a day-2 greeting bubble probe at 800x360 (with its driver); evidence run ids must not collide across sessions (add seconds and a random suffix).",
+      "accept": "a unit test per expect change; each probe, run with `COOK_TEST_PORT=8895 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows <ID>`, reaches its state and fails or passes on the game, not on the probe"
+    },
+    {
+      "do": "Fix package B's probe requests (build/reports/s05b-words.md, Handed on, T): the `lexicon` expect accepts engine-inflected forms (chunda) and skips the bulb's English; a numbers-known profile for SH-13.",
+      "accept": "a unit test each; `EV8895 SH-13,PAN-02,SH-70` reports on the game"
+    },
+    {
+      "do": "SH-64 at the child's pace: the probe plays at real speed (#speed1) and taps during the read-out, so a cut-off would show. CK-12 and MOD-01: give `bg_align_check.py` its `day relights` arguments in the spec.",
+      "accept": "`EV8895 SH-64,CK-12,MOD-01` decided on the game"
+    },
+    {
+      "do": "Then re-run every row S and B left open on a probe: `EV8895 SH-01,SH-09,SH-48,SH-17,SH-36,SH-44,SH-13,SH-64,ART-18,SH-19,SH-51,SH-16,SEK-03,PAN-02,SH-70`. List which now fail on the game, with the owning package (S: js/shared; C: Cook; D: clinic), in your report. Change no game code.",
+      "accept": "the report has a table: row, run id, game FAIL or PASS, owner"
+    }
+  ],
+  "flows": [],
+  "browser": true,
+  "port": 8895,
+  "report": "s05t2-probes",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).",
+    "Browser runs only in chunks of at most 13 minutes under the shared lock; push after every task (others pull your tool fixes).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (four sessions push to this branch); never force-push."
+  ],
+  "live": true
+}
