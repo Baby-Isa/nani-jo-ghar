@@ -596,7 +596,14 @@
           s("image", { href: worn("hand-fan"), x: hand[0] - 0.92 * 230, y: hand[1] - 0.92 * 203, width: 230, height: 203 }, fg);
         } else s("path", { d: `M${hand[0] - 10} ${hand[1] - 40} L${hand[0] - 120} ${hand[1] - 230} A140 140 0 0 1 ${hand[0] + 50} ${hand[1] - 260} Z`, fill: "#7fc4c0", stroke: "#3d8f8a", "stroke-width": 5 }, fg);
       }
-      if (st.measured) s("rect", { x: 640 + 8, y: 186, width: 70, height: 10, rx: 5, fill: "#ffffff", stroke: "#8a8f98", "stroke-width": 3, transform: "rotate(-14 648 190)" }, wear);
+      // the thermometer in the corner of her mouth (CLN-105, s04-r2k: a plain white bar there read as clenched teeth): a
+      // glass stick with its red line and a dark cap, sticking out sideways, so it reads as the thermometer
+      if (st.measured) {
+        const tg = s("g", { transform: "rotate(-14 648 190)" }, wear);
+        s("rect", { x: 640 + 8, y: 185, width: 92, height: 12, rx: 6, fill: "#eef6fb", stroke: "#7d8792", "stroke-width": 3 }, tg);
+        s("rect", { x: 640 + 18, y: 189.5, width: 56, height: 3.5, rx: 1.75, fill: "#d8343c" }, tg);
+        s("rect", { x: 640 + 84, y: 183, width: 18, height: 16, rx: 5, fill: "#3b6fb6", stroke: "#2a4f86", "stroke-width": 2.5 }, tg);
+      }
       const r = st.measured ? reading() : null;
       if (r != null && r > cfg.k.zone) [[560, 120], [722, 108]].forEach(([x, y], i) => {
         const d = s("path", { class: "fv-sweat", d: `M${x} ${y} q8 14 0 20 q-8 -6 0 -20Z`, fill: "#6bb7ea" }, wear);
@@ -679,6 +686,9 @@
       c.live = e;
       c.row = Object.assign({ id: c.id }, lineOf(e, cfg));
       st.body = (e.hot ? 1 : -1) * e.gap - (reading() - st.body);
+      // CLN-105 (FV8, s04-r2k): the swing changes how she looks and the gauge, so her last words ("just right") go with
+      // it: her bubble never says barabar beside a snowflake or a cold gauge
+      if (Kit && Kit.Voice && Kit.Voice.clear) Kit.Voice.clear();
       st.start = Object.assign({}, on);
       st.first = null;
       showReading(reading());
@@ -713,11 +723,16 @@
       st.busy = true;
       st.hot = !st.hot;
       fig.react("happy", 0);
-      say("fever-just-right").then(() => {});
-      ctx.after(fast() ? 150 : 1300, () => {
+      // CLN-105: the next swing waits for her "just right" to be said (and a beat to see it), never cutting across it
+      let went = false;
+      const go = () => {
+        if (went || st.over) return;
+        went = true;
         st.busy = false;
         next();
-      });
+      };
+      say("fever-just-right").then(() => ctx.after(fast() ? 150 : 700, go), () => ctx.after(fast() ? 150 : 700, go));
+      ctx.after(fast() ? 1500 : 2600, go); // a line that never ends (a stalled clip) still moves on
     };
     const tapThing = (id) => {
       if (!S.ready || st.over) return;
