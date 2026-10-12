@@ -123,7 +123,8 @@
     });
     h("div", "cl-receipt-coins", r, `🪙 ${o.coins || 0}`);
     const Res = global.Results;
-    const acts = o.actions || [{ id: "again", icon: "again", label: "Again" }, { id: "next", icon: "next", label: "Next", primary: true }, { id: "list", icon: "grid", label: "All patients" }];
+    // the end buttons come from the caller (the shared kit's endActions: its labels, for screen readers only); else plain ids
+    const acts = o.actions || ["again", "next", "list"].map((id) => ({ id, icon: id === "list" ? "grid" : id, primary: id === "next" }));
     let action = "next";
     if (Res && Res.show) {
       const opts = { mode: "clinic", game: "morning", body: r, actions: acts, container: document.body };
