@@ -160,6 +160,10 @@ export function momentMatches(want, name) {
   const sel = /^(visible|only|hidden):(.+)$/.exec(want);
   if (sel) return name === want;
   if (/^(visible|only|hidden):/.test(name)) return false;
+  // "heal:" / "cook:" (a word and a colon): every name that starts so (each move of a heal game, just before it)
+  if (/^[a-z-]+:$/.test(want)) return name.startsWith(want);
+  // page:start comes before the flow has opened its page (a blank tab, then a navigation): it answers only itself, never "start"
+  if (name === "page:start" && want !== "page:start") return false;
   const w = words(want), n = words(name);
   if (!w.length || w.length > n.length) return false;
   for (let i = 0; i + w.length <= n.length; i++) if (w.every((x, j) => n[i + j] === x)) return true;
@@ -239,8 +243,10 @@ export function normalizeProbe(p, ctx, where, rowText = "") {
   if (!(max >= 1 && max <= 20)) err(`max ${p.max}: 1 to 20`);
   const profile = p.profile == null ? null : String(p.profile);
   if (profile && !PROFILES.includes(profile)) err(`unknown profile "${profile}" (${PROFILES.join(", ")})`);
-  const want = p.want == null ? null : typeof p.want === "string" ? [p.want] : Array.isArray(p.want) ? p.want.map(String) : typeof p.want === "object" ? Object.values(p.want).flat().map(String) : null;
+  // want: words the order must hold, "/regex/flags", "people:N", "said:<words or regex>" (what was said only); or {order, people}
+  const want = p.want == null ? null : typeof p.want === "string" ? [p.want] : Array.isArray(p.want) ? p.want.map(String) : typeof p.want === "object" ? [...[].concat(p.want.order ?? []).map(String), ...(p.want.people != null ? [`people:${+p.want.people}`] : [])] : null;
   if (p.want != null && !(want && want.length)) err(`want: a string, a list of strings or {order, people}`);
+  for (const w of want || []) { const re = /^\/(.+)\/([a-z]*)$/.exec(w.replace(/^said:/, "")); if (re) try { new RegExp(re[1], re[2]); } catch (e) { err(`want ${w}: not a regex (${e.message})`); } }
   const seed = p.seed == null ? null : +p.seed;
   if (seed != null && !(Number.isInteger(seed) && seed >= 0)) err(`seed ${p.seed} is not a whole number`);
   // a driver of the spec's _drivers that the sandbox does not have yet
@@ -272,8 +278,8 @@ export function inferKind(capture) {
   return "layout";
 }
 export function normalizeSpec(spec, ctx) {
-  const rows = {}, human = {}, decision = {}, rowErrors = {}, errors = [], warnings = [];
-  if (!spec || typeof spec !== "object" || Array.isArray(spec)) return { rows, human, decision, rowErrors, errors: ["the spec is an object keyed by row id"], warnings };
+  const rows = {}, human = {}, decision = {}, obsolete = {}, rowErrors = {}, errors = [], warnings = [];
+  if (!spec || typeof spec !== "object" || Array.isArray(spec)) return { rows, human, decision, obsolete, rowErrors, errors: ["the spec is an object keyed by row id"], warnings };
   const drivers = Object.keys(spec._drivers || {});
   const c2 = { ...ctx, drivers: ctx.drivers || drivers };
   for (const [id, entry] of Object.entries(spec)) {
@@ -283,6 +289,8 @@ export function normalizeSpec(spec, ctx) {
     if (entry && !Array.isArray(entry) && typeof entry === "object") {
       if (entry.human) { human[id] = String(entry.human); continue; }
       if (entry.needsDecision) { decision[id] = String(entry.needsDecision); continue; }
+      // {obsolete: why}: the row asks about a state the game no longer has (no page, no sheet; listed for its owner)
+      if (entry.obsolete) { obsolete[id] = String(entry.obsolete); continue; }
       arr = [entry];
     }
     if (!arr || !arr.length) { errors.push(`${id}: no probes`); continue; }
@@ -295,7 +303,7 @@ export function normalizeSpec(spec, ctx) {
       for (const x of r.probes) rows[id].push({ ...x, i });
     });
   }
-  return { rows, human, decision, rowErrors, errors, warnings };
+  return { rows, human, decision, obsolete, rowErrors, errors, warnings };
 }
 export function loadSpec(root) {
   const f = SPEC_FILE(root);

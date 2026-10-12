@@ -180,3 +180,23 @@ test("apply: FAIL reopens, PASS marks built, keep rows untouched, applying twice
   const again = applyVerdicts(out.text, new Map([["SH-49", { verdict: "PASS", line: "C, still kept" }]]), "r2");
   assert.match(again.text, /\| SH-49 \| Ticks \| built \(evidence PASS r2: C, still kept\) · earlier: \*\*reopened\*\* \(S04 audit FAIL\)/);
 });
+
+test("s04-tf: page:start answers only itself; a 'heal:' prefix; obsolete rows; wanted orders", async () => {
+  const { wantHas } = await import("../../sandbox/lib/evidence-probe.mjs");
+  assert.equal(momentMatches("start", "page:start"), false);
+  assert.equal(momentMatches("page:start", "page:start"), true);
+  assert.equal(momentMatches("start", "rec:start"), true);
+  assert.equal(momentMatches("heal:", "heal:wash"), true);
+  assert.equal(momentMatches("heal:", "heal-done:wash"), false);
+  assert.equal(momentMatches("eye-test", "heal:no"), true);
+  assert.equal(reachable("heal:", ["heal:*"]), true);
+  const n = normalizeSpec({ "CLN-1": { obsolete: "gone", was: [] } }, { resolve: () => null, sizes: {} });
+  assert.equal(n.obsolete["CLN-1"], "gone");
+  assert.deepEqual(Object.keys(n.rows), []);
+  assert.equal(wantHas("people:2", "", 2), true);
+  assert.equal(wantHas("people:3", "", 2), false);
+  assert.equal(wantHas("/\\b(ba|trae) bataat/", "Muke chaat khape. ba bataato"), true);
+  assert.equal(wantHas("said:/samosa[\\s\\S]*samosa/", "Muke samosa khape. samosa samosa", 0, "Muke samosa khape, with trae chunda."), false);
+  assert.equal(wantHas("said:/samosa[\\s\\S]*samosa/", "", 0, "Muke ba samosa khape, ne hakro samosa"), true);
+  assert.equal(wantHas("aadu waari chai", "Muke  aadu waari chai khape"), true);
+});

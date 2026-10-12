@@ -93,12 +93,12 @@ async function makePlan() {
   const ids = rows.map((r) => r.id);
   // a row whose entry is {human} (Zafar's ear or feel) or {needsDecision} (docs/status.md) gets no page; a row with a spec error
   // gets none either: it is a tool failure until its spec or its driver is fixed
-  const playable = ids.filter((id) => !norm.human[id] && !norm.decision[id]);
+  const playable = ids.filter((id) => !norm.human[id] && !norm.decision[id] && !(norm.obsolete || {})[id]);
   const { pages, repo, noSpec } = S.planPages(playable, norm.rows);
   const errRows = Object.fromEntries(Object.entries(norm.rowErrors).filter(([id]) => ids.includes(id)));
   const unknownRows = Object.keys(norm.rows).filter((id) => !all.some((r) => r.id === id));
   const pick = (o) => Object.fromEntries(Object.entries(o).filter(([id]) => ids.includes(id)));
-  return { created: new Date().toISOString(), head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
+  return { created: new Date().toISOString(), head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), obsolete: pick(norm.obsolete || {}), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
 }
 function printPlan(P) {
   const L = log(null);
@@ -258,6 +258,7 @@ async function sheets(dirArg) {
     byRow.get(q.row).push(res);
   }
   for (const row of P.rows) {
+    if ((P.obsolete || {})[row.id]) { index.rows[row.id] = { kind: "obsolete", png: null, md: null, panels: [], tool: [], expect: null, expectLine: P.obsolete[row.id], fp: null, probes: 0, reached: 0 }; continue; }
     if ((P.human || {})[row.id] || P.decision.includes(row.id)) {
       const human = (P.human || {})[row.id];
       index.rows[row.id] = { kind: human ? "human" : "decision", png: null, md: null, panels: [], tool: [], expect: null, expectLine: human || (P.decisionText || {})[row.id] || "", fp: null, probes: 0, reached: 0 };
@@ -325,7 +326,7 @@ async function sheets(dirArg) {
     let md = `# ${row.id} (${row.kind}) · ${row.section}\n\n**Issue:** ${row.issue}\n\n**Check:** ${row.check}\n\n**Source:** ${row.source}\n\n**Status now:** ${row.status}\n\n`;
     if (outcome.tool.length) md += `## TOOL FAILURE (not evidence: the tool owner fixes the driver or the spec)\n\n${outcome.tool.map((t) => `- ${t}`).join("\n")}\n\n`;
     if (outcome.expect) md += `## Machine verdict: ${outcome.expect}\n\n${outcome.line}\n\n`;
-    md += `## Probes\n\n${probes.map((p) => `- ${p.id}: ${p.flow} L${p.level} @ ${p.size}${p.variant ? ` [${p.variant}]` : ""}, at ${p.every ? "every " : ""}${p.at}${p.after ? ` after ${p.after}` : ""}: ${p.reached ? `reached ${p.hits.length}x (${p.hits.map((h) => `${h.name} ${(h.t / 1000).toFixed(1)}s`).slice(0, 6).join(", ")})` : "NOT reached"}${p.note ? ` · ${p.note}` : ""}${(p.expects || []).map((e) => `\n  - expect ${e.raw}: ${e.ok === true ? "PASS" : e.ok === false ? "FAIL" : "undecided"} (${e.why})`).join("")}`).join("\n")}\n\n`;
+    md += `## Probes\n\n${probes.map((p) => `- ${p.id}: ${p.flow} L${p.level} @ ${p.size}${p.variant ? ` [${p.variant}]` : ""}, at ${p.every ? "every " : ""}${p.at}${p.after ? ` after ${p.after}` : ""}: ${p.reached ? `reached ${p.hits.length}x (${p.hits.map((h) => `${h.name} ${(h.t / 1000).toFixed(1)}s`).slice(0, 6).join(", ")})` : "NOT reached"}${p.note ? ` · ${p.note}` : ""}${(p.expects || []).map((e) => `\n  - expect ${e.raw}: ${e.ok === true ? "PASS" : e.ok === false ? "FAIL" : "undecided"} (${e.why})`).join("")}${(p.notes || []).slice(0, 8).map((n) => `\n  - note (an every: moment where it was not on screen): ${n}`).join("")}`).join("\n")}\n\n`;
     if (panels.length) md += `## Panels${png ? ` (\`${rel(png)}\`)` : ""}\n\n${panels.map((p) => `- **${p.letter}**: ${p.label}`).join("\n")}${extra.length ? `\n- (${extra.length} more not on the sheet: ${extra.map((p) => p.label).join("; ")})` : ""}\n\n`;
     if (texts.length) md += `## Text captures\n\n${texts.join("\n\n")}\n`;
     writeFileSync(join(dir, `${row.id}.md`), md);
@@ -367,8 +368,8 @@ function sheetHtml(row, panels, shotUrl) {
 }
 function writeReport(dir, P, index) {
   const id = P.run, rows = Object.entries(index.rows);
-  const human = rows.filter(([, r]) => r.kind === "human"), dec = rows.filter(([, r]) => r.kind === "decision");
-  const judged = rows.filter(([, r]) => r.kind !== "human" && r.kind !== "decision");
+  const human = rows.filter(([, r]) => r.kind === "human"), dec = rows.filter(([, r]) => r.kind === "decision"), obs = rows.filter(([, r]) => r.kind === "obsolete");
+  const judged = rows.filter(([, r]) => !["human", "decision", "obsolete"].includes(r.kind));
   const tool = judged.filter(([, r]) => r.tool.length), mach = judged.filter(([, r]) => !r.tool.length && r.expect), eye = judged.filter(([, r]) => !r.tool.length && !r.expect);
   let md = `# Evidence run ${id}\n\nCommit ${index.commit}. ${P.rows.length} rows: ${eye.length} for a reviewer, ${mach.length} decided by the machine, ${tool.length} TOOL FAILURES (never evidence; fix the driver or the spec), ${P.noSpec.length} with no spec. ${P.pages.length} pages. Sheets and text: \`${rel(dir)}/<ROW>.png|.md\`.\n\nNext: \`node build/tools/review/evidence.mjs --judge --run-id ${id}\`, the reviewer fills the batch files, then \`--collect\` and \`--apply\`.\n\n`;
   md += `| row | kind | probes reached | machine | sheet | panels |\n|---|---|---|---|---|---|\n`;
@@ -376,6 +377,7 @@ function writeReport(dir, P, index) {
   md += `\n## Tool failures (${tool.length}): for the tool owner, never a FAIL in regressions.md\n\n${tool.map(([rid, r]) => `- ${rid}: ${r.tool.slice(0, 3).join(" · ").replace(/\n/g, " ").slice(0, 600)}`).join("\n") || "none"}\n`;
   if (P.noSpec.length) md += `\n## No spec (${P.noSpec.length})\n\n${P.noSpec.join(", ")}\n`;
   if (human.length) md += `\n## Zafar's ear or feel (${human.length}): only he can judge these\n\n${human.map(([rid, r]) => `- ${rid}: ${r.expectLine}`).join("\n")}\n`;
+  if (obs.length) md += `\n## Obsolete probes (${obs.length}): the row asks about a state the game no longer has (its owner rewrites the check or retires the row)\n\n${obs.map(([rid, r]) => `- ${rid}: ${r.expectLine}`).join("\n")}\n`;
   if (dec.length) md += `\n## Needs a decision (${dec.length}): docs/status.md, never a sheet\n\n${dec.map(([rid, r]) => `- ${rid}: ${r.expectLine}`).join("\n")}\n`;
   const evFile = join(dir, "evidence-lines.md");
   if (existsSync(evFile)) md += `\n## EVIDENCE lines from the reviewers (the tool owner's list)\n\n${readFileSync(evFile, "utf8")}\n`;
@@ -396,7 +398,7 @@ function judge() {
   const cache = loadCache(), today = new Date().toISOString().slice(0, 10);
   const todo = [], cached = [], machine = [], tool = [];
   for (const [rid, r] of Object.entries(index.rows)) {
-    if (r.kind === "human" || r.kind === "decision") continue;
+    if (["human", "decision", "obsolete"].includes(r.kind)) continue;
     if (r.tool.length) { tool.push(rid); continue; }
     if (r.expect) { cache[rid] = { ...r.fp, verdict: r.expect, line: r.expectLine, panel: null, judge: "expect", run: id, commit: index.commit, date: today }; machine.push(rid); continue; }
     if (cacheHit(cache[rid], r.fp)) { cached.push(rid); continue; }

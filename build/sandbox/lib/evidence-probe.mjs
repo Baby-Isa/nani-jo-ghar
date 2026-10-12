@@ -9,7 +9,7 @@
 //     life:popup-fold), a speech bubble (bubble). These capture as soon as they arrive (tens of ms late).
 // Every capture is checked as it is made (Fable 3): the moment came, the selector matched something visible, a crop is not one flat
 // colour, a text capture is not empty, a filmstrip changed between frames. A failed check is a TOOL failure, never evidence.
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
 import { decodePng } from "../../tools/review/lib/png.mjs";
@@ -183,6 +183,16 @@ export function installHooks({ Recorder, CookPlayer, ClinicPlayer }) {
 }
 
 export class WantMiss extends Error { constructor(m) { super(m); this.wantMiss = true; } }
+// one wanted item against the order's text and speech: "people:N", "said:<item>", "/regex/flags", else words (any case)
+export function wantHas(w, text, people = 0, said = text) {
+  const p = /^people:(\d+)$/.exec(w);
+  if (p) return people >= +p[1];
+  // "said:<item>": in what was said only (the card at level 3 is closed; its text is the first block only)
+  if (/^said:/.test(w)) return wantHas(w.slice(5), said, people);
+  const re = /^\/(.+)\/([a-z]*)$/.exec(w);
+  if (re) { try { return new RegExp(re[1], re[2]).test(text); } catch (e) { return false; } }
+  return text.toLowerCase().replace(/\s+/g, " ").includes(String(w).toLowerCase());
+}
 
 // one page's probes. page: the Playwright page; spec: {key, flow, size, want, profile, probes: [...]}; dir: the run folder
 export class EvidenceProbe {
@@ -195,7 +205,8 @@ export class EvidenceProbe {
     this.seen = [];               // every moment name, in order (consecutive repeats once)
     this.counts = {};             // how many times each moment came while armed (repeats too: the times: expect)
     this.chain = Promise.resolve();
-    this.want = spec.want ? { list: spec.want, ok: null } : null;
+    this.want = spec.want ? { list: spec.want, ok: null, text: "", people: 0, asked: false } : null;
+    this.spoken = [];             // every line said on the page so far (the wanted order is heard from level 3: a closed card)
     this.abort = new Promise((_, rej) => { this.reject = rej; });
     this.abort.catch(() => {});
     this.state = spec.probes.map((p) => ({ p, id: probeId(p.row, p.i, p.level, spec.size) + (p.sub ? `@${p.sub}` : ""), armed: !p.after, hits: [], afterAt: null }));
@@ -204,11 +215,14 @@ export class EvidenceProbe {
   // a sound-log event (run.mjs chains it after the recorder's contract shots)
   onEvent(e) {
     if (!e) return;
+    // a line starts (its speaker: line:<who>, the moment the read-along runs)
+    if (e.type === "line" && e.text) { this.spoken.push(String(e.text)); this.moment(`line:${String(e.who || "x").toLowerCase().replace(/[^a-z0-9-]+/g, "-")}`); }
     if (e.type === "m") this.moment(e.name);
     // the request is logged as the pop-up starts to open: its card is up a moment later
     else if (e.type === "c" && e.k === "life") this.moment(`life:${e.what}`, { settle: e.what === "request" ? 450 : 0 });
     else if (e.type === "c" && e.k === "popup") this.moment(e.open ? "life:popup-open" : "life:popup-fold");
-    else if (e.type === "c" && e.k === "bubble" && e.list && e.list.length) this.moment("bubble");
+    // a bubble is logged as it starts to fade in: its words are readable a beat later
+    else if (e.type === "c" && e.k === "bubble" && e.list && e.list.length) this.moment("bubble", { settle: 250 });
   }
   async moment(name, { block = false, settle = 0 } = {}) {
     const t = Date.now() - this.t0;
@@ -218,24 +232,47 @@ export class EvidenceProbe {
     if (!this.armed) return;
     const jobs = [];
     for (const s of this.state) {
-      if (!s.armed && s.p.after && momentMatches(s.p.after, name)) { s.armed = true; s.afterAt = { name, t }; continue; }
+      // armed by its "after"; the same moment can be its "at" too (after "bulb", at "bulb-english": rec:bulb-english is both)
+      if (!s.armed && s.p.after && momentMatches(s.p.after, name)) { s.armed = true; s.afterAt = { name, t }; }
       if (!s.armed || !momentMatches(s.p.at, name)) continue;
       if (s.hits.length >= (s.p.every ? s.p.max : 1)) continue;
       const hit = { name, t, n: s.hits.length + 1, captures: [], expects: [] };
       s.hits.push(hit);
-      jobs.push(() => this.capture(s, hit, settle));
+      jobs.push({ s, go: () => this.capture(s, hit, settle) });
     }
     if (!jobs.length) return;
-    const run = this.chain.then(async () => { for (const j of jobs) await j().catch(() => {}); });
+    const run = this.chain.then(async () => { for (const j of jobs) await j.go().catch(() => {}); });
     this.chain = run.catch(() => {});
-    if (block) await run.catch(() => {});
+    // a filmstrip or a trace at the moment just before a move (heal:<step>, cook:<kind>) films the move itself: the player goes on
+    // while it runs (a heal game's drag or pour takes a few hundred ms; blocked, the strip saw only the still before it)
+    const filmsTheMove = /^(heal|cook):/.test(name) && jobs.every((j) => j.s.p.capture.length && j.s.p.capture.every((c) => c.kind === "strip" || c.kind === "trace"));
+    if (block && !filmsTheMove) await run.catch(() => {});
   }
+  // the wanted order (Fable 5): what the request showed (its card's text, its people) and what was said, gathered while the order is
+  // asked, decided once it has been shown and said (the card folded into the sidebar, the station or stage started). Each wanted item:
+  // words the order's text or speech must hold, "/regex/flags" over the same, or "people:N" (at least N person cards in the request).
+  // The request is logged as the pop-up starts to open and the clinic's folds within a second in fast mode, so one look is not enough
   async checkWant(name) {
-    if (!/^(life:request|life:popup-open|rec:order-card|rec:start|rec:stage-)/.test(name)) return;
-    const text = await this.page.evaluate(`(${TEXTS})(["body", "", ""])`).then((r) => r.map((x) => x.text).join(" ").toLowerCase()).catch(() => "");
-    const hit = this.want.list.filter((w) => text.includes(w.toLowerCase()));
-    if (hit.length === this.want.list.length) { this.want.ok = true; return; }
-    if (name === "life:request" || name === "life:popup-open" || /^rec:order-card/.test(name)) { this.want.ok = false; this.reject(new WantMiss(`the order did not have ${this.want.list.filter((w) => !hit.includes(w)).join(", ")}`)); }
+    const W = this.want;
+    const look = async () => {
+      const r = await this.page.evaluate(`(() => { const t = (${TEXTS})(["body", "", ""]).map((x) => x.text).join(" "); const c = document.querySelector("#intro .ic-card, .njg-rq-card"); const vis = c && c.getBoundingClientRect().height > 1; return { t, people: vis ? c.querySelectorAll(".oc-card").length : 0 }; })()`).catch(() => null);
+      if (r) { W.text += " " + r.t; W.people = Math.max(W.people, r.people); }
+    };
+    if (/^(life:request|life:popup-open|rec:start|rec:order-card-big)$/.test(name)) {
+      W.asked = true;
+      await look();
+      if (name === "life:request") setTimeout(() => { if (W.ok == null) look(); }, 500);
+      return;
+    }
+    const decide = W.asked && /^(life:popup-fold|life:stage-start|rec:order-card-in-sidebar|rec:stage-|rec:heal-[\w-]+-start)/.test(name);
+    if (!decide) return;
+    W.ok = false; // decided once (a second decision moment while this one waits is not another look)
+    await sleep(800); // an order said in two lines ("Muke samosa khape," then "with trae chunda.")
+    await look();
+    const text = `${W.text} ${this.spoken.join(" ")}`;
+    const miss = W.list.filter((w) => !wantHas(w, text, W.people, this.spoken.join(" ")));
+    if (!miss.length) { W.ok = true; return; }
+    this.reject(new WantMiss(`the order did not have ${miss.join(", ")}${W.list.some((w) => /^people:/.test(w)) ? ` (${W.people} people)` : ""}`));
   }
   file(s, hit, ci, kind, frame = null) { return `${slug(s.id)}-h${hit.n}-c${ci + 1}-${kind}${frame != null ? `-f${String(frame).padStart(2, "0")}` : ""}.png`; }
   async boxes(sel) { return this.page.evaluate(`(${BOXES})(${JSON.stringify(cssOf(sel))})`).catch((e) => ({ error: String(e.message || e).split("\n")[0] })); }
@@ -254,7 +291,15 @@ export class EvidenceProbe {
       const out = { kind: c.kind, raw: c.raw, files: [], text: null, fail: null };
       hit.captures.push(out);
       try {
-        if (c.kind === "shot") { await takeRoom(); if (hit.room) { out.files.push(hit.room); out.box = { x: 0, y: 0, width: vw, height: vh }; } else out.fail = `no screenshot (${hit.roomError || "?"})`; }
+        if (c.kind === "shot") {
+          await takeRoom();
+          if (hit.room) {
+            out.files.push(hit.room); out.box = { x: 0, y: 0, width: vw, height: vh };
+            // a whole screen of one colour (the blank tab before the page, a covered screen) is not evidence either
+            const fl = flatness(readFileSync(join(this.dir, hit.room)));
+            if (fl != null && fl < 1.5) out.fail = `the screen is one flat colour at ${hit.name} (nothing drawn yet)`;
+          } else out.fail = `no screenshot (${hit.roomError || "?"})`;
+        }
         else if (c.kind === "crop" || c.kind === "zoom2" || c.kind === "strip") {
           const bs = await this.boxes(c.sel);
           if (bs.error) { out.fail = bs.error; continue; }
@@ -293,7 +338,13 @@ export class EvidenceProbe {
           const runs = await this.texts(c.sel);
           if (runs[0] && runs[0].tag === "error") { out.fail = runs[0].text; continue; }
           out.runs = runs; out.text = runs.map((x) => `${x.tag ? `[${x.tag}] ` : ""}${x.text}`).join("\n");
-          if (!runs.length) out.fail = `no text on screen in "${c.sel}" at ${hit.name}`;
+          // no text: a blank only when nothing of it is on screen; an element that is there with no words (a picture card, the
+          // icon buttons, an empty guide box) is what the screen shows, said as such
+          if (!runs.length) {
+            const bs = await this.boxes(c.sel);
+            if (!bs.error && bs.length) out.text = `(on screen, ${bs.length > 1 ? `${bs.length} of them, ` : ""}no words in it)`;
+            else out.fail = `no text on screen in "${c.sel}" at ${hit.name}`;
+          }
         }
       } catch (e) { out.fail = `capture failed: ${String(e.message || e).split("\n")[0]}`; }
     }
@@ -327,6 +378,7 @@ export class EvidenceProbe {
         else if (e.kind === "lexicon") {
           const text = hit.captures.some((c) => c.runs) ? domText(true) : (await this.texts("body")).filter((x) => x.tag === "" || x.tag === "canvas").map((x) => x.text).join(" ");
           if (!this.lexicon) put({ ok: null, why: "no lexicon loaded" });
+          else if (!text.trim()) put({ ok: null, why: "no words to check" });
           else { const bad = unknownWords(text, this.lexicon); put({ ok: !bad.length, why: bad.length ? `not in the family lexicon: ${bad.slice(0, 12).join(", ")}` : `${text.split(/\s+/).filter(Boolean).length} words, all in the lexicon` }); }
         } else if (e.kind === "hasWord") {
           const set = this.tags[e.tag];
@@ -353,13 +405,16 @@ export class EvidenceProbe {
     const spoken = v.lines.filter((l) => (l.text || "").trim()).sort((a, b) => a.t0 - b.t0);
     const plays = v.plays.filter((p) => p.t0 != null);
     for (const s of this.state) {
-      const p = s.p, tool = [];
-      const res = { row: p.row, i: p.i, id: s.id, sub: p.sub || null, level: p.level, size: this.size, flow: this.spec.flow, variant: this.spec.variant || "", page: this.spec.key, at: p.at, every: p.every, after: p.after, kind: p.kind, note: p.note, reached: s.hits.length > 0, hits: s.hits, expects: [], voice: null, contract: [], tool, dir: this.dir };
+      const p = s.p, tool = [], notes = [];
+      const res = { row: p.row, i: p.i, id: s.id, sub: p.sub || null, level: p.level, size: this.size, flow: this.spec.flow, variant: this.spec.variant || "", page: this.spec.key, at: p.at, every: p.every, after: p.after, kind: p.kind, note: p.note, reached: s.hits.length > 0, hits: s.hits, expects: [], voice: null, contract: [], tool, notes, dir: this.dir };
       if (!s.hits.length) {
         const near = [...new Set(this.seen.map((x) => x.name))];
         tool.push(`${p.after && !s.armed ? `"after" ${p.after} never came` : `the moment "${p.at}" never came`}${r.complete ? "" : ` (the flow stopped: ${(r.stops || [])[0] || "?"})`}; moments seen: ${near.slice(0, 40).join(", ")}${near.length > 40 ? ` +${near.length - 40}` : ""}`);
       }
-      for (const h of s.hits) for (const c of h.captures) if (c.fail) tool.push(`${c.raw} at ${h.name} (hit ${h.n}): ${c.fail}`);
+      // an every: probe (each time the moment comes): a capture that worked at some of its moments is evidence there; where the thing
+      // was not on screen (a count badge only while counting, a bubble only while someone speaks) it is a note, not a tool failure
+      const worked = new Set(s.hits.flatMap((h) => h.captures.filter((c) => !c.fail).map((c) => c.raw)));
+      for (const h of s.hits) for (const c of h.captures) if (c.fail) (p.every && worked.has(c.raw) ? notes : tool).push(`${c.raw} at ${h.name} (hit ${h.n}): ${c.fail}`);
       if (p.capture.some((c) => c.kind === "voice")) {
         res.voice = voiceText(r, tl, s.hits, { root, T0 });
         if (!res.voice.lines) tool.push("voice: no line was said on this page");
@@ -373,8 +428,10 @@ export class EvidenceProbe {
       for (const e of p.expect) {
         const put = (x) => res.expects.push(negate(e, { raw: e.raw, ...x }));
         if (["count", "inside", "noOverlap", "centredOn", "noClip", "lines", "minFont", "minSize", "lexicon", "hasWord"].includes(e.kind) || (e.kind === "order" && e.sels)) {
-          const all = s.hits.map((h) => h.expects.find((x) => x.raw === e.raw)).filter(Boolean);
+          let all = s.hits.map((h) => h.expects.find((x) => x.raw === e.raw)).filter(Boolean);
           if (!all.length) { put({ ok: null, why: "the moment never came" }); continue; }
+          // an every: probe decides on the moments where its thing was on screen (the others are notes, above)
+          if (p.every && all.some((x) => x.ok != null)) all = all.filter((x) => x.ok != null);
           const bad = all.filter((x) => x.ok === false), und = all.filter((x) => x.ok == null);
           res.expects.push({ raw: e.raw, ok: bad.length ? false : und.length ? null : true, why: (bad[0] || und[0] || all[0]).why + (all.length > 1 ? ` (${all.length} moments)` : "") });
         } else if (e.kind === "order") put(wordOrder(e.items, words()));

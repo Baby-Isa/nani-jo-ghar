@@ -8,7 +8,7 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { DRIVERS, FAIR_MOMENTS } from "../drivers/catalog.mjs";
 
-const LIFE = ["step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "page:end", "page:start", "bubble"];
+const LIFE = ["line:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "page:end", "page:start", "bubble"];
 // the spec's named moments (evidence.json _moments, _at's every:<x>) that an existing signal answers; `delay` waits after it.
 // A named moment with no entry here has no driver yet: --plan refuses it (the driver lands with the spec, Fable 2)
 export const ALIASES = {
@@ -21,6 +21,11 @@ export const ALIASES = {
   "after-wrong": { pats: ["rec:wrong", "slip", "wrong-choice", "wrong-tap", "wrong-extra", "wrong-slice", "wrong-stir"], delay: 1000 },
   // the pour: the foot's jug, the taste game's milk or water jug tipping into the tumbler
   pour: { pats: ["step:pour", "step:milk", "step:water"] },
+  // the same pour from just before the move: a filmstrip there films the jug tipping (lib/evidence-probe.mjs: the player goes on)
+  pouring: { pats: ["heal:pour", "heal:milk", "heal:water"] },
+  // the eye chart up with its haa / na pills: from level 2 after "to the eye test" (step:eyetest), at level 1 it opens by itself
+  // after the drops, so its first judgement (before the tap) is the moment
+  "eye-test": { pats: ["step:eyetest", "heal:yes", "heal:no"] },
   fill: { pats: ["step:fill"] },
   placed: { pats: ["cook-done", "heal-done"] },
   onboard: { pats: ["visible:.njg-onboard"] },

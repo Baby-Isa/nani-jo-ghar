@@ -174,6 +174,27 @@ export function cookDay(n, { mode = "fair" } = {}) {
   };
 }
 
+// Nani's recipe book with something in it (SH-28: its word chips on a phone; the title flow opens it on an empty save, where it has
+// none): a save with every recipe taught, the book from the title, closed again
+export const cookBook = {
+  id: "cook:book",
+  group: "cook",
+  title: "Cook: Nani's recipe book with every recipe taught (its chips)",
+  timeoutMs: 90000,
+  sizes: ["800x360", "844x390", "1366x768"],
+  async run(ctx) {
+    const { page, rec } = ctx;
+    await openCook(ctx, { save: saveAt(7, { finished: true, taught: Object.fromEntries(RECIPE_IDS.map((r) => [r, true])) }) });
+    await rec.state("title");
+    await page.click("#t-book");
+    await sleep(500);
+    await rec.state("recipe-book");
+    await page.click("#book-close").catch(() => rec.stop("no #book-close in the recipe book"));
+    await sleep(300);
+    ctx.reachedEnd = true;
+  },
+};
+
 // the shop on its own: with coins, buy, buy again, leave
 export const cookShop = {
   id: "cook:shop",

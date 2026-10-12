@@ -272,13 +272,25 @@ export class ClinicPlayer {
         await sleep(700);
         await this.once("after-takeback", { settle: 0 });
       }
-      if (!mid && steps > 6 && a.do !== "wait") { mid = true; await this.once(`heal-${game}-mid`); }
+      // the game's middle: seven moves in, or (the short games: the scrape, the tooth, the fever have four to six moves) the side card's
+      // open row past half its rows
+      if (!mid && a.do !== "wait" && (steps > 6 || (await this.pastHalf()))) { mid = true; await this.once(`heal-${game}-mid`); }
       if (game === "knee") await this.kneeTurn();
       if (game === "fever") await this.feverChange();
       if (game === "eye") await this.eyeMoments();
     }
     if (this.fast) await mark(this.page, "heal-fast-done", { block: false });
     if (this.mode === "tap-during-speech" && !this.drv.spoke) this.rec.note("tap-during-speech: no line was said within 1.5 s of any move of this heal game");
+  }
+  // is the heal game's side card on a row past half its rows (its open row: .oc-row.next)?
+  pastHalf() {
+    return this.ev(() => {
+      const card = Array.from(document.querySelectorAll(".cl-side .oc-card")).find((c) => !c.closest(".njg-rq-card, .njg-rq") && c.getBoundingClientRect().height > 1);
+      if (!card) return false;
+      const rows = Array.from(card.querySelectorAll(".oc-row"));
+      const i = rows.findIndex((r) => r.classList.contains("next"));
+      return rows.length >= 2 && i >= Math.ceil(rows.length / 2);
+    }).catch(() => false);
   }
   // a driver's own move in a heal game instead of debug.next()'s (true: done, the loop asks again)
   async healDriver(game, a, next, tools) {
@@ -479,7 +491,9 @@ export function clinicFlows() {
   D({ id: "clinic:patient#hint", title: "Clinic: One patient, level 1, hint player (the end card's dimmed bulb)", query: "patient=1&level=1&results=1", mode: "hint", timeoutMs: 600000 });
   D({ id: "clinic:patient@L2", title: "Clinic: One patient, end to end, level 2", query: "patient=1&level=2&results=1", level: 2, timeoutMs: 420000 });
   // mistake player: one wrong pick per stage, then on to the end (loud at level 1, quiet from level 2); heal games use their own slip
-  for (const st of ["waiting", "diagnosis", "pharmacy", "sendoff"]) for (const L of [1, 3]) D({ id: `clinic:${st}${L > 1 ? `@L${L}` : ""}#mistake`, title: `Clinic: ${STAGE_NAME[st]}, level ${L}, mistake player`, query: `stage=${st}&level=${L}`, level: L, mode: "mistake" });
+  // the diagnosis at level 1 is the fair flow's D1 (dots; its expect offers a wrong dot: CLN-93): without it the stage points, and a
+  // point has no wrong pick, so the mistake player made none
+  for (const st of ["waiting", "diagnosis", "pharmacy", "sendoff"]) for (const L of [1, 3]) D({ id: `clinic:${st}${L > 1 ? `@L${L}` : ""}#mistake`, title: `Clinic: ${STAGE_NAME[st]}, level ${L}, mistake player`, query: `stage=${st}&level=${L}${st === "diagnosis" && L === 1 ? "&variant=D1" : ""}`, level: L, mode: "mistake" });
   for (const g of HEAL_GAMES) D({ id: `clinic:heal-${g}#mistake`, title: `Clinic: heal game ${g}, level 1, mistake player (its own slip)`, query: `stage=heal&game=${g}&level=1`, mode: "mistake", timeoutMs: 200000 });
   // hint player: the idle hint, the light bulb's English flip, a peek at a closed card (from level 3: the waiting room and the pharmacy)
   for (const st of ["waiting", "diagnosis", "pharmacy", "sendoff"]) D({ id: `clinic:${st}#hint`, title: `Clinic: ${STAGE_NAME[st]}, level 1, hint player`, query: `stage=${st}&level=1`, mode: "hint" });

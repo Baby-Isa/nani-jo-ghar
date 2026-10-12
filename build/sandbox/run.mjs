@@ -177,13 +177,13 @@ if (fromRun) {
     const queue = todo.slice();
     const runJob = async (job) => {
       if (!job.ev || !job.ev.want) return runOne(job);
-      // a wanted order (Fable 5): try seeds until the order has it (at most 20), keep the page that did
+      // a wanted order (Fable 5): try seeds until the order has it (at most 40: a rarer order, ba dungri at chaat L1, comes about once in 16), keep the page that did
       const first = job.ev.seed != null ? job.ev.seed : 1;
-      for (let k = 0; k < 20; k++) {
-        const r = await runOne({ ...job, seed: first + k, quiet: k < 19 });
+      for (let k = 0; k < 40; k++) {
+        const r = await runOne({ ...job, seed: first + k, quiet: k < 39 });
         if (!r || !r.wantMiss) { if (r) log(`${job.flow.id} @ ${job.size}: the wanted order (${job.ev.want.join(", ")}) came with seed ${first + k}`); return; }
       }
-      log(`${job.flow.id} @ ${job.size}: no seed of ${first}..${first + 19} gave an order with ${job.ev.want.join(", ")}`);
+      log(`${job.flow.id} @ ${job.size}: no seed of ${first}..${first + 39} gave an order with ${job.ev.want.join(", ")}`);
     };
     const runOne = async ({ flow, size, file, ev, seed: evSeed, quiet }) => {
       if (flow.static) {

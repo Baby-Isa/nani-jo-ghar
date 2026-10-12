@@ -1,6 +1,6 @@
 import { houseFlow } from "./house.mjs";
 import { firstFlow } from "./first.mjs";
-import { KEPT, RECIPES, PARTS, cookStation, cookTitle, cookDay, cookShop, cookOpenKitchen } from "./cook.mjs";
+import { KEPT, RECIPES, PARTS, cookStation, cookTitle, cookDay, cookShop, cookOpenKitchen, cookBook } from "./cook.mjs";
 import { clinicFlows, clinicFlow, HEAL_GAMES } from "./clinic.mjs";
 import { MODE_FLOWS } from "./modes.mjs";
 import { rotateFlow, cssFlow } from "./extra.mjs";
@@ -82,8 +82,10 @@ export function flowKind(base) {
 }
 export const splitFlowId = (id) => { const m = /^(.*?)(?:@L(\d))?(?:#([\w-]+))?$/.exec(id); return { base: m[1], level: m[2] ? +m[2] : 1, path: m[3] || "fair" }; };
 export const flowIdOf = (base, level = 1, path = "fair") => `${base}${level > 1 ? `@L${level}` : ""}${path && path !== "fair" ? `#${path}` : ""}`;
+// flows only the evidence loop plays (never in the gate: no baseline of their own): SH-28's recipe book with its chips
+export const EVIDENCE_FLOWS = [cookBook];
 export function resolveFlow(id, live = allFlows()) {
-  const have = live.find((f) => f.id === id);
+  const have = live.find((f) => f.id === id) || EVIDENCE_FLOWS.find((f) => f.id === id);
   if (have) return have;
   const { base, level, path } = splitFlowId(id);
   const k = flowKind(base);

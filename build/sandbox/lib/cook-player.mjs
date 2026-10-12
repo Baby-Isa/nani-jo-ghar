@@ -465,7 +465,8 @@ export class CookPlayer {
       }
       await p.mouse.move(cx + r * Math.cos(a), cy + r * Math.sin(a));
       const cur = await this.exp();
-      if (!cur || cur.kind !== "stir") break;
+      // the slosh spilled and the stir stopped to say so (Nani speaks; the stir comes back after): that is the wrong stir's moment
+      if (!cur || cur.kind !== "stir") { if (mistake && !shot && Date.now() - t0 < 1500) { shot = true; await this.once("wrong-stir", { settle: 0 }); } break; }
       if ((cur.count || 0) >= 1 && count < 1) await this.once("stir-mid");
       count = cur.count != null ? cur.count : count;
       speed = cur.speed;

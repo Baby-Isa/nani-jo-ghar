@@ -442,7 +442,7 @@
    "note": "the in-play check is flat: no shadow or lip behind the gold tick"
   },
   {
-   "flow": "clinic:heal-cut",
+   "flow": "clinic:morning",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -450,13 +450,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.njg-done",
+   "at": "heal:button",
    "after": null,
    "capture": [
     "zoom2:.njg-done"
    ],
    "expect": null,
-   "note": "the same flat check in the clinic"
+   "note": "the same flat check in the clinic (the heal game's ✓ in a morning: at level 1 a counted step closes itself, so the lab's lone game shows none)"
   }
  ],
  "SH-07": [
@@ -822,7 +822,8 @@
    "expect": [
     "countsUp:#count-badge"
    ],
-   "note": "the badge shows 1, 2, 3 as they go in, not the target"
+   "note": "the badge shows 1, 2, 3 as they go in, not the target",
+   "max": 12
   }
  ],
  "SH-16": [
@@ -897,15 +898,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "hint-nani-says",
+   "at": "every:line",
    "after": null,
    "capture": [
-    "strip:.njg-guide:6x400"
+    "strip:.njg-guide:6x200"
    ],
-   "expect": [
-    "count:.njg-guide .reading>=1"
-   ],
-   "note": "the guide box's spoken line underlined"
+   "expect": null,
+   "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays)",
+   "max": 4
   },
   {
    "flow": "clinic:waiting",
@@ -1181,15 +1181,15 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "greeting",
+   "at": "rec:arrive",
    "after": null,
    "capture": [
-    "dom:#choices",
-    "crop:#side",
+    "shot",
+    "dom:body",
     "voice"
    ],
    "expect": null,
-   "note": "the first meeting: the name shown and heard once; 'Thank you!' on a pill is Kutchi (decision 81)"
+   "note": "the first meeting (Nani's arrival in the first launch: the name shown and heard once); 'Thank you!' on a pill is Kutchi (decision 81)"
   },
   {
    "flow": "cook:day2",
@@ -1301,7 +1301,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "pantry-start",
+   "at": "pantry-round-view-pantry",
    "after": null,
    "capture": [
     "shot"
@@ -1503,7 +1503,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "dom:.njg-guide",
@@ -1512,7 +1512,8 @@
    "expect": [
     "!textMatches:(?i)make each pan|^\\s*$"
    ],
-   "note": "the guide says the next step, one line per step, in step with the highlight"
+   "note": "the guide says the next step, one line per step, in step with the highlight",
+   "max": 10
   },
   {
    "flow": "cook:daar",
@@ -1543,7 +1544,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "dom:.njg-guide",
@@ -1552,7 +1553,8 @@
    "expect": [
     "!textMatches:(?i)cook it the way they said"
    ],
-   "note": "samosa: 'turn on the pan' line; never empty mid-step (and maani L1 the same)"
+   "note": "samosa: 'turn on the pan' line; never empty mid-step (and maani L1 the same)",
+   "max": 10
   }
  ],
  "SH-57": [
@@ -1587,7 +1589,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "only:.njg-done",
+   "at": "only:#done-btn",
    "after": null,
    "capture": [
     "strip:.njg-done:4x300"
@@ -1607,7 +1609,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "only:.njg-done",
+   "at": "only:#done-btn",
    "after": null,
    "capture": [
     "strip:.njg-done:4x300"
@@ -1651,16 +1653,17 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "kind-tap",
+   "at": "view-pantry",
    "after": null,
    "capture": [
     "voice",
-    "strip:#stage:6x1000"
+    "strip:#stage:8x1000"
    ],
    "expect": [
-    "gapMs:kind-tap,hint-glow>=4000"
+    "gapMs:view-pantry,hint-glow>=4000"
    ],
-   "note": "fresh profile, L2: line and glow only after the pause, the first item too"
+   "note": "fresh profile, L2: line and glow only after the pause, the first item too (the hint player waits at the pantry: the strip runs from it)",
+   "webgl": true
   },
   {
    "flow": "cook:fetch",
@@ -1708,7 +1711,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "dom:.njg-guide",
@@ -1949,7 +1952,7 @@
  ],
  "SH-23": [
   {
-   "flow": "clinic:patient",
+   "flow": "clinic:morning",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -1968,7 +1971,7 @@
     "pass",
     "noClip:.njg-btn"
    ],
-   "note": "Done, Next, Found it, to the bench: one kit, hidden until usable, never greyed or cut"
+   "note": "Done, Next, to the bench: one kit, hidden until usable, never greyed or cut (a morning: the heal ✓ and 'close the clinic')"
   },
   {
    "flow": "cook:mishkaki-grill",
@@ -2076,7 +2079,7 @@
  ],
  "SH-28": [
   {
-   "flow": "cook:chaat",
+   "flow": "cook:book",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -2085,7 +2088,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "kind-tap",
+   "at": "recipe-book",
    "after": null,
    "capture": [
     "zoom2:.chips",
@@ -2094,7 +2097,7 @@
    "expect": [
     "minFont:.chips>=14"
    ],
-   "note": "chip words on a phone are readable"
+   "note": "the chips (Nani's recipe book: the in-play step chips are gone) readable on a phone"
   }
  ],
  "SH-29": [
@@ -2252,10 +2255,11 @@
    "at": "exp:dough",
    "after": null,
    "capture": [
-    "zoom2:canvas:shelf"
+    "crop:#stage",
+    "zoom2:canvas:mv-pile"
    ],
    "expect": null,
-   "note": "room above the dough containers"
+   "note": "room above the dough containers (the piles: mv-pile-*)"
   }
  ],
  "SH-35": [
@@ -2635,7 +2639,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-waiting",
    "after": null,
    "capture": [
     "zoom2:.cl-side .oc-card"
@@ -2749,9 +2753,7 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "people": 2
-   },
+   "want": null,
    "at": "request",
    "after": null,
    "capture": [
@@ -2762,7 +2764,7 @@
     "lexicon",
     "!textMatches:(?i)^\\s*(ne\\s+\\w+|khun)[.,]?\\s*$"
    ],
-   "note": "one natural sentence per person, written and said; no verbless fragments (khun, ne daar, ne dudh)"
+   "note": "one natural sentence per person, written and said; no verbless fragments (chai cups by level: 1, 2, 3 people)"
   },
   {
    "flow": "cook:recipe:samosa",
@@ -2796,7 +2798,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "voice",
@@ -2942,11 +2944,11 @@
    "at": "every:placed",
    "after": null,
    "capture": [
-    "strip:canvas:basket:4x150",
-    "zoom2:canvas:basket"
+    "strip:#stage:4x150",
+    "crop:#stage"
    ],
    "expect": null,
-   "note": "tray with outlined spaces; front edge over what sits on it; outline fades as an item lands; at most three across"
+   "note": "tray with outlined spaces (the pantry's bottom shelf: drawn, no texture of its own); front edge over what sits on it; outline fades as an item lands; at most three across"
   },
   {
    "flow": "cook:passme",
@@ -3018,7 +3020,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -3168,7 +3170,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "phase:pour",
+   "at": "exp:pour",
    "after": null,
    "capture": [
     "shot"
@@ -3187,13 +3189,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "phase:pour",
-   "after": null,
+   "at": "cook-done:tap",
+   "after": "exp:pour",
    "capture": [
     "strip:canvas:pan:5x200"
    ],
    "expect": null,
-   "note": "the pour moves; knobs wired"
+   "note": "the pour moves (the tipped pan, just after the pour tap); knobs wired"
   }
  ],
  "CHAI-03": [
@@ -3206,7 +3208,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "phase:pour",
+   "at": "cook-done:tap",
    "after": null,
    "capture": [
     "strip:#stage:4x300",
@@ -3225,9 +3227,7 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "people": 2
-   },
+   "want": null,
    "at": "every:placed",
    "after": null,
    "capture": [
@@ -3249,9 +3249,10 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "aadu waari chai with dudh and ba khun"
-   },
+   "want": [
+    "aadu waari chai",
+    "ba khun"
+   ],
    "at": "request",
    "after": null,
    "capture": [
@@ -3275,7 +3276,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:lift",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:hob",
@@ -3296,13 +3297,14 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "kari chai (black tea)"
-   },
-   "at": "phase:pour",
-   "after": null,
+   "want": [
+    "/dudh na|kari chai/"
+   ],
+   "at": "cook-done:tap",
+   "after": "exp:pour",
    "capture": [
-    "zoom2:canvas:glass"
+    "zoom2:canvas:glass",
+    "zoom2:canvas:pan"
    ],
    "expect": null,
    "note": "black-tea glass and tipped-pan art"
@@ -3318,7 +3320,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "shot",
@@ -3338,15 +3340,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-service",
+   "at": "stage-end",
    "after": null,
    "capture": [
-    "crop:#stage"
+    "crop:#stage",
+    "dom:#stage"
    ],
    "expect": [
     "!textMatches:\\b1\\s+1\\b"
    ],
-   "note": "no leftover '1 1' tally at serving"
+   "note": "no leftover '1 1' tally at serving (the station's end, after its Done: the lab has no service view)"
   }
  ],
  "CHAI-10": [
@@ -3363,16 +3366,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:lift",
+   "at": "cook:timing",
    "after": null,
    "capture": [
     "crop:#stage",
-    "crop:hook:cook.gauge@phase:slow"
+    "crop:hook:cook.gauge"
    ],
    "expect": [
-    "gapMs:exp:knob-on,exp:lift<=16000"
+    "gapMs:exp:knob-on,cook:timing<=16000"
    ],
-   "note": "the burner reaches green about twice as fast (~15/21/28 s at L1/L2/L3); the heat ring at the turn-down (__cook.gauge().box)"
+   "note": "the burner reaches green about twice as fast (~15/21/28 s at L1/L2/L3): knob on to the turn-down's timing tap; the heat ring then (__cook.gauge().box)"
   }
  ],
  "CHAI-11": [
@@ -3405,7 +3408,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:lift",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:pan"
@@ -3424,13 +3427,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:stir",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "zoom2:canvas:teaspoon"
    ],
    "expect": null,
-   "note": "a real teaspoon for the sugar stir"
+   "note": "a real teaspoon for the sugar stir (it shows while the cups are filled)"
   }
  ],
  "CHAI-14": [
@@ -3445,7 +3448,7 @@
    "want": {
     "order": "aadu"
    },
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "zoom2:canvas:jar-veg-14",
@@ -3464,9 +3467,7 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "people": 3
-   },
+   "want": null,
    "at": "request",
    "after": null,
    "capture": [
@@ -3479,50 +3480,6 @@
     "count:#intro .ic-card .oc-card=3"
    ],
    "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet"
-  },
-  {
-   "flow": "cook:maani-line",
-   "path": "fair",
-   "level": 3,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": {
-    "people": 2
-   },
-   "at": "request",
-   "after": null,
-   "capture": [
-    "contract:1",
-    "dom:#intro .ic-card"
-   ],
-   "expect": [
-    "pass"
-   ],
-   "note": "multi-person maani (samosa, sekelo the same probe)"
-  },
-  {
-   "flow": "cook:mishkaki-grill",
-   "path": "fair",
-   "level": 3,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": {
-    "people": 2
-   },
-   "at": "request",
-   "after": null,
-   "capture": [
-    "contract:1",
-    "dom:#intro .ic-card"
-   ],
-   "expect": [
-    "pass"
-   ],
-   "note": "multi-person sekelo"
   }
  ],
  "CHAI-16": [
@@ -3560,8 +3517,8 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "phase:pour",
-   "after": null,
+   "at": "cook-done:tap",
+   "after": "exp:pour",
    "capture": [
     "zoom2:canvas:pan"
    ],
@@ -3579,16 +3536,14 @@
     "844x390"
    ],
    "profile": "seen",
-   "want": {
-    "people": 2
-   },
-   "at": "view-service",
+   "want": null,
+   "at": "stage-end",
    "after": null,
    "capture": [
     "zoom2:canvas:tray"
    ],
    "expect": null,
-   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup"
+   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup (L2: always two people)"
   },
   {
    "flow": "cook:chai-tray",
@@ -3599,16 +3554,14 @@
     "844x390"
    ],
    "profile": "seen",
-   "want": {
-    "people": 3
-   },
-   "at": "exp:lift",
+   "want": null,
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:hob"
    ],
    "expect": null,
-   "note": "each pan on the hob has its orderer's badge"
+   "note": "each pan on the hob has its orderer's badge (L3: always three people)"
   }
  ],
  "MAA-01": [
@@ -3687,10 +3640,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:dough",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
-    "zoom2:canvas:dough",
+    "zoom2:canvas:mv-pile",
     "strip:#stage:4x200"
    ],
    "expect": null,
@@ -3759,7 +3712,7 @@
   {
    "flow": "cook:maani-line",
    "path": "fair",
-   "level": 1,
+   "level": 2,
    "sizes": [
     "1280x800",
     "844x390"
@@ -3775,7 +3728,7 @@
    "expect": [
     "noOverlap:#count-badge,canvas:hob"
    ],
-   "note": "count badge clear of the hob (915x375 maps to 844x390)"
+   "note": "count badge clear of the hob (L2: two maani, so the count shows; 915x375 maps to 844x390)"
   },
   {
    "flow": "cook:roll-tawa",
@@ -3790,10 +3743,10 @@
    "at": "results",
    "after": null,
    "capture": [
-    "zoom2:canvas:plate"
+    "zoom2:canvas:chaat-bowl"
    ],
    "expect": null,
-   "note": "roll-tawa plate not cut off; tick not over the resting spatula"
+   "note": "roll-tawa's serving dish (vessel:serving = chaat-bowl.empty) not cut off; tick not over the resting spatula"
   }
  ],
  "MAA-09": [
@@ -3809,7 +3762,7 @@
    "at": "exp:dough",
    "after": null,
    "capture": [
-    "zoom2:canvas:dough"
+    "zoom2:canvas:mv-pile"
    ],
    "expect": null,
    "note": "dough piles have no drop shadow (top-down)"
@@ -3824,20 +3777,18 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "3 maani"
-   },
+   "want": null,
    "at": "results",
    "after": null,
    "capture": [
-    "zoom2:canvas:thali",
+    "zoom2:canvas:mv-thali",
     "cmd:python3 build/check_vessel_meta.py"
    ],
    "expect": [
     "pass",
-    "inside:canvas:maani,canvas:thali"
+    "inside:canvas:mv-cooked,canvas:mv-thali"
    ],
-   "note": "stacked maani on the thali's flat inner area, never the curled rim"
+   "note": "stacked maani on the thali's flat inner area, never the curled rim (L4: two to four maani)"
   }
  ],
  "MAA-11": [
@@ -3891,10 +3842,10 @@
    "at": "kind-roll",
    "after": null,
    "capture": [
-    "zoom2:canvas:velan"
+    "zoom2:canvas:pin"
    ],
    "expect": null,
-   "note": "the rolling pin draws above the size ring; about 10% longer"
+   "note": "the rolling pin (texture 'pin' in the roll part) draws above the size ring; about 10% longer"
   }
  ],
  "MAA-13": [
@@ -4069,13 +4020,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "zoom2:canvas:pot"
    ],
    "expect": null,
-   "note": "each stage's contents pictured (no white dots); the stir turns the pictured contents"
+   "note": "each stage's contents pictured (no white dots): the pot (dv3-pot-*) after each thing goes in",
+   "max": 10
   },
   {
    "flow": "cook:daar",
@@ -4085,16 +4037,16 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "no dry chilli, no curry leaves"
-   },
+   "want": [
+    "/ na\\b/"
+   ],
    "at": "results-words",
    "after": null,
    "capture": [
     "zoom2:.rs-card"
    ],
    "expect": null,
-   "note": "the review bowl shows only what was in the order"
+   "note": "an order with something left out (X na): the review bowl shows only what was in the order"
   }
  ],
  "DAAR-06": [
@@ -4107,13 +4059,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "results",
    "after": null,
    "capture": [
     "zoom2:canvas:trivet"
    ],
    "expect": null,
-   "note": "finished daar photoreal on a small wooden trivet"
+   "note": "finished daar photoreal on a small wooden trivet (s02-daar-trivet at the station's end)"
   }
  ],
  "DAAR-07": [
@@ -4295,7 +4247,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:lift",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:saucepan"
@@ -4334,17 +4286,18 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "dungri na, no tomato"
-   },
-   "at": "every:step",
+   "want": [
+    "/(dungri|tameto) na/"
+   ],
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "zoom2:canvas:pot",
     "dom:#mission"
    ],
    "expect": null,
-   "note": "the pot never shows onion or tomato that was not asked, at every stage incl. stir and the bowl"
+   "note": "an order without onion or tomato: the pot never shows what was not asked, at every stage incl. stir and the bowl",
+   "max": 10
   }
  ],
  "DAAR-17": [
@@ -4419,7 +4372,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -4438,7 +4391,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "zoom2:canvas:bowl",
@@ -4494,13 +4447,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "stage-end",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "note": "the serve state"
+   "note": "the serve state (the station's end: the lab has no service view)"
   }
  ],
  "CHT-05": [
@@ -4537,16 +4490,16 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "two potatoes"
-   },
+   "want": [
+    "/\\b(ba|trae) bataat/"
+   ],
    "at": "every:placed",
    "after": null,
    "capture": [
     "crop:#mission"
    ],
    "expect": null,
-   "note": "the potato row ticks only at the second of two"
+   "note": "an order with two potatoes (ba bataato, the chop's own count): the potato row ticks only at the second of two"
   }
  ],
  "CHT-07": [
@@ -4558,9 +4511,7 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "chaat"
-   },
+   "want": null,
    "at": "every:stage-start",
    "after": null,
    "capture": [
@@ -4570,7 +4521,8 @@
    "expect": [
     "order:ask,pantry,chop,sequence,bowl"
    ],
-   "note": "ask, pantry, chop, he says the sequence, bowl"
+   "note": "day 4 teaches chaat: ask, pantry, chop, he says the sequence, bowl",
+   "max": 12
   }
  ],
  "CHT-08": [
@@ -4649,13 +4601,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "stage-end",
    "after": null,
    "capture": [
-    "zoom2:canvas:served"
+    "zoom2:canvas:cv3-bowl"
    ],
    "expect": null,
-   "note": "served chaat at the tray's angle, no baked drop shadow"
+   "note": "the finished chaat bowl at the station's end (the lab has no service view: no s02-served-chaat on screen)"
   }
  ],
  "SAM-01": [
@@ -4667,9 +4619,9 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "trae marchu"
-   },
+   "want": [
+    "/(ba|trae|char) (marcha|marchu|mirchi)/"
+   ],
    "at": "request",
    "after": null,
    "capture": [
@@ -4679,7 +4631,7 @@
    "expect": [
     "!textMatches:\\band\\b"
    ],
-   "note": "'with three chillies', all ingredients listed; 'with' a grey placeholder until recorded"
+   "note": "'with three chillies' (any counted chillies), all ingredients listed; 'with' a grey placeholder until recorded"
   }
  ],
  "SAM-02": [
@@ -4692,7 +4644,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -4762,10 +4714,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:fold",
+   "at": "every:cook-done:swipe",
    "after": null,
    "capture": [
-    "zoom2:canvas:samosa"
+    "zoom2:canvas:sv3-fold"
    ],
    "expect": null,
    "note": "fixed fold pictures; the first fold does not hide the filling"
@@ -4780,9 +4732,9 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "two kinds"
-   },
+   "want": [
+    "said:/samosa[\\s\\S]*samosa/"
+   ],
    "at": "every:step",
    "after": null,
    "capture": [
@@ -4823,7 +4775,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -4845,10 +4797,10 @@
    "at": "kind-tap",
    "after": null,
    "capture": [
-    "zoom2:canvas:jharo"
+    "zoom2:canvas:spoon"
    ],
    "expect": null,
-   "note": "the jharo goes under the samosas"
+   "note": "the jharo (the fry part's hand tool: spr@hand:spoon) goes under the samosas"
   }
  ],
  "SAM-10": [
@@ -4861,10 +4813,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "fold",
+   "at": "cook-done:swipe",
    "after": null,
    "capture": [
-    "zoom2:canvas:samosa"
+    "zoom2:canvas:sv3-fold"
    ],
    "expect": null,
    "note": "filling reads as filling, not two dots on the fold line"
@@ -4878,7 +4830,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "shot"
@@ -4893,16 +4845,13 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3
+    2
    ],
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "two kinds"
-   },
+   "want": null,
    "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
@@ -4912,7 +4861,29 @@
    "expect": [
     "!textMatches:^samosa$"
    ],
-   "note": "one tinted group box per kind, head 'ba samosa', fillings under it, no label per block"
+   "note": "one tinted group box per kind, head 'ba samosa', fillings under it, no label per block (L1, L2: one kind)"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": [
+    "said:/samosa[\\s\\S]*samosa/"
+   ],
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission",
+    "dom:#mission"
+   ],
+   "expect": [
+    "!textMatches:^samosa$"
+   ],
+   "note": "L3, an order of two kinds: a tinted box each"
   }
  ],
  "SAM-12": [
@@ -4958,7 +4929,7 @@
  ],
  "SAM-14": [
   {
-   "flow": "cook:fry",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -4969,12 +4940,12 @@
    "at": "kind-timing",
    "after": null,
    "capture": [
-    "zoom2:canvas:karahi"
+    "zoom2:canvas:sv3-karahi"
    ],
    "expect": [
-    "inside:canvas:samosa,canvas:karahi"
+    "inside:canvas:sv2-fry,canvas:sv3-karahi"
    ],
-   "note": "samosas inside the oil (and the plate's flat area)"
+   "note": "samosas inside the oil (the samosa station's fry: the fry part has no timing step)"
   }
  ],
  "SAM-15": [
@@ -5079,16 +5050,14 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "three skewers"
-   },
+   "want": null,
    "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "each skewer a plain tinted group box, alternating, no label"
+   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four)"
   },
   {
    "flow": "cook:samosa",
@@ -5098,16 +5067,16 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "two kinds"
-   },
+   "want": [
+    "said:/samosa[\\s\\S]*samosa/"
+   ],
    "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "samosa kinds the same"
+   "note": "samosa kinds the same (an order of two kinds: the second block is said as its own)"
   },
   {
    "flow": "clinic:heal-cut",
@@ -5192,7 +5161,7 @@
    "at": "every:placed",
    "after": null,
    "capture": [
-    "zoom2:canvas:skewer"
+    "zoom2:canvas:stick"
    ],
    "expect": null,
    "note": "onion and tomato big and chunky, the same in bowl and on skewer"
@@ -5210,16 +5179,14 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "2-4 skewers"
-   },
+   "want": null,
    "at": "results",
    "after": null,
    "capture": [
-    "zoom2:canvas:plate"
+    "zoom2:canvas:sk3-plate"
    ],
    "expect": null,
-   "note": "plate skewers straight, parallel, left to right, close; handle off the plate; plate lined up with grill and rack"
+   "note": "plate skewers straight, parallel, left to right, close; handle off the plate (L2 two skewers, L4 three or four)"
   }
  ],
  "SEK-08": [
@@ -5232,13 +5199,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:kind",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "note": "one job per phase (thread, then grill); no chips on the grill"
+   "note": "one job per phase (thread, then grill): a screen at each new kind of move; no chips on the grill"
   }
  ],
  "SEK-09": [
@@ -5291,24 +5258,19 @@
   {
    "flow": "cook:mishkaki-grill",
    "path": "fair",
-   "level": [
-    2,
-    3
-   ],
+   "level": 4,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "two mixed + one onion"
-   },
+   "want": null,
    "at": "request",
    "after": null,
    "capture": [
     "voice"
    ],
    "expect": null,
-   "note": "each skewer's sequence follows it at once (two mixed: first ..., then ...; one onion)"
+   "note": "each skewer's sequence follows it at once (L4: always two mixed and one or two plain)"
   }
  ],
  "SEK-12": [
@@ -5336,21 +5298,19 @@
   {
    "flow": "cook:mishkaki-grill",
    "path": "fair",
-   "level": 1,
+   "level": 3,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "mixed skewer"
-   },
+   "want": null,
    "at": "every:placed",
    "after": null,
    "capture": [
     "crop:#mission"
    ],
    "expect": null,
-   "note": "the card ticks each piece of a mixed skewer as it goes on"
+   "note": "the card ticks each piece of a mixed skewer as it goes on (L3: one or two mixed)"
   }
  ],
  "SEK-14": {
@@ -5395,7 +5355,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "zoom2:canvas:hob",
@@ -5436,16 +5396,14 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "people": 4
-   },
-   "at": "exp:lift",
+   "want": null,
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:hob"
    ],
    "expect": null,
-   "note": "4-pan hob: small flames always on with the knob, never touching neighbours; heat gauge readable",
+   "note": "the L4 hob: small flames always on with the knob, never touching neighbours; heat gauge readable (L4 orders three cups: data/cook.json chai cups byLevel 1,2,3,3)",
    "webgl": true
   }
  ],
@@ -5495,13 +5453,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "zoom2:canvas:pot"
    ],
    "expect": null,
-   "note": "contents look real (daar oil, chai liquid), not white or swirling dots"
+   "note": "contents look real (daar oil, chai liquid), not white or swirling dots",
+   "max": 10
   },
   {
    "flow": "cook:chai-tray",
@@ -5512,7 +5471,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:lift",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:pan"
@@ -5534,19 +5493,20 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "every:cook-done:click",
    "after": null,
    "capture": [
     "crop:#stage",
     "dom:#mission"
    ],
    "expect": null,
-   "note": "one review at serve: large face circle over the dish, happy or frown; wrong marks the wrong row; no pretend eating"
+   "note": "one review at serve (the station's Done: the face circle over the dish), happy or frown; wrong marks the wrong row",
+   "max": 6
   }
  ],
  "CK-08": [
   {
-   "flow": "cook:fry",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -5561,7 +5521,7 @@
     "voice"
    ],
    "expect": null,
-   "note": "no oil-heating ring; sizzle means ready (samosa and daar)",
+   "note": "no oil-heating ring; sizzle means ready (the samosa station's fry; daar the same)",
    "webgl": true
   }
  ],
@@ -5579,7 +5539,7 @@
    "after": null,
    "capture": [
     "zoom2:canvas:chakla",
-    "zoom2:canvas:velan"
+    "zoom2:canvas:pin"
    ],
    "expect": null,
    "note": "one dark walnut chakla, no board on a board; the velan the same rich wood; not low-res"
@@ -5593,7 +5553,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "zoom2:canvas:chakla"
@@ -5654,7 +5614,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "cmd:python3 build/check_vessel_meta.py",
@@ -5663,7 +5623,8 @@
    "expect": [
     "pass"
    ],
-   "note": "contents inside the rim"
+   "note": "contents inside the rim",
+   "max": 10
   }
  ],
  "CK-13": [
@@ -5676,7 +5637,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:lift",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:hob"
@@ -5860,13 +5821,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "every:bubble",
    "after": null,
    "capture": [
     "zoom2:canvas:served"
    ],
    "expect": null,
-   "note": "each dish type served"
+   "note": "each dish type served (lab order: the counter after cooking, s02-served-<recipe>)",
+   "max": 8
   }
  ],
  "CK-22": [
@@ -6178,7 +6140,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "shot"
@@ -6197,7 +6159,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "shot",
@@ -6236,7 +6198,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "crop:.cl-side"
@@ -6284,7 +6246,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "dom:.njg-rq-card",
@@ -6307,7 +6269,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "zoom2:.cl-side .njg-guide",
@@ -6329,7 +6291,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "contract:13",
@@ -6416,7 +6378,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "zoom2:.cl-staged"
@@ -6532,7 +6494,7 @@
  "CLN-84": [
   {
    "flow": "clinic:heal-cut",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2,
@@ -6543,7 +6505,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "contract:1",
@@ -6588,7 +6550,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "shot"
@@ -6607,13 +6569,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "heal-eye-mid",
+   "at": "every:bubble",
    "after": null,
    "capture": [
     "zoom2:.cl-bubble"
    ],
    "expect": null,
-   "note": "in the eye game her bubble under her mouth"
+   "note": "in the eye game her bubble under her mouth",
+   "max": 3
   }
  ],
  "CLN-86": [
@@ -6626,7 +6589,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "greeting",
+   "at": "every:bubble",
    "after": null,
    "capture": [
     "voice",
@@ -6637,7 +6600,8 @@
     "pass",
     "order:salaam,reply"
    ],
-   "note": "she says salaam, he replies: the two clips are the right speakers (voice timeline speaker ids)"
+   "note": "she says salaam, he replies: the two clips are the right speakers (voice timeline speaker ids)",
+   "max": 4
   },
   {
    "flow": "clinic:heal-fever",
@@ -6725,7 +6689,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage",
    "after": null,
    "capture": [
     "cmd:node build/tools/review/loadcheck.mjs --time --only clinic:morning"
@@ -6790,7 +6754,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "results-badges",
    "after": null,
    "capture": [
     "dom:.rs-actions",
@@ -6811,7 +6775,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "end",
+   "at": "morning-end",
    "after": null,
    "capture": [
     "dom:.rs-actions",
@@ -6888,7 +6852,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "zoom2:.cl-side .oc-card"
@@ -6924,7 +6888,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "contract:9",
@@ -6946,7 +6910,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-waiting",
    "after": null,
    "capture": [
     "shot"
@@ -6965,7 +6929,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-waiting",
    "after": null,
    "capture": [
     "crop:.cl-room"
@@ -7015,7 +6979,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-waiting",
    "after": null,
    "capture": [
     "crop:.cl-room"
@@ -7039,7 +7003,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-waiting",
    "after": null,
    "capture": [
     "dom:.cl-side .oc-card",
@@ -7066,16 +7030,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "end",
+   "at": "waiting-tap",
    "after": null,
    "capture": [
-    "crop:.cl-room",
-    "dom:.cl-wtick"
+    "zoom2:.cl-room"
    ],
-   "expect": [
-    "textMatches:\\d"
-   ],
-   "note": "L4: pick everyone, judged at the end; ticks show numbers; L5 the same"
+   "expect": null,
+   "note": "L4/L5: the picked ticks (their numbers are drawn by CSS, attr(data-n): read off the zoom)"
   }
  ],
  "CLN-90": [
@@ -7089,7 +7050,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-waiting",
    "after": null,
    "capture": [
     "zoom2:.cl-room"
@@ -7110,7 +7071,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-waiting",
    "after": null,
    "capture": [
     "zoom2:.cl-side .oc-card"
@@ -7122,26 +7083,29 @@
    "note": "the closed card's eye is a small bulb, no counter"
   }
  ],
- "CLN-92": [
-  {
-   "flow": "clinic:waiting",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "end",
-   "after": null,
-   "capture": [
-    "crop:.njg-btn",
-    "dom:.njg-btn"
-   ],
-   "expect": null,
-   "note": "'To the doctor's room' (a location), not 'where does it hurt'"
-  }
- ],
+ "CLN-92": {
+  "obsolete": "the waiting room has no 'To the doctor's room' button any more: it moves on by itself after the pick (life:advance; js/clinic/stages/waiting.js builds no button)",
+  "was": [
+   {
+    "flow": "clinic:waiting",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "end",
+    "after": null,
+    "capture": [
+     "crop:.njg-btn",
+     "dom:.njg-btn"
+    ],
+    "expect": null,
+    "note": "'To the doctor's room' (a location), not 'where does it hurt'"
+   }
+  ]
+ },
  "CLN-110": [
   {
    "flow": "clinic:waiting",
@@ -7156,7 +7120,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "end",
+   "at": "rec:end",
    "after": null,
    "capture": [
     "contract:2",
@@ -7196,26 +7160,29 @@
    }
   ]
  },
- "CLN-16": [
-  {
-   "flow": "clinic:diagnosis",
-   "path": "fair",
-   "level": 2,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "diagnosis-point",
-   "after": null,
-   "capture": [
-    "crop:.cl-stage",
-    "dom:.njg-btn"
-   ],
-   "expect": null,
-   "note": "the 'Found it' and Next variant at L2 explains itself"
-  }
- ],
+ "CLN-16": {
+  "obsolete": "decision 52: the diagnosis has no 'Found it' and no Next at any level (js/clinic/stages/diagnosis.js D1 note); the button the row asks about is gone",
+  "was": [
+   {
+    "flow": "clinic:diagnosis",
+    "path": "fair",
+    "level": 2,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "diagnosis-point",
+    "after": null,
+    "capture": [
+     "crop:.cl-stage",
+     "dom:.njg-btn"
+    ],
+    "expect": null,
+    "note": "the 'Found it' and Next variant at L2 explains itself"
+   }
+  ]
+ },
  "CLN-17": [
   {
    "flow": "clinic:diagnosis",
@@ -7226,7 +7193,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-diagnosis",
    "after": null,
    "capture": [
     "shot"
@@ -7239,7 +7206,7 @@
   {
    "flow": "clinic:diagnosis",
    "path": "fair",
-   "level": 3,
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
@@ -7253,17 +7220,14 @@
    "expect": [
     "count:.cl-kit-tool>=2"
    ],
-   "note": "torch looks like a torch, thermometer like one; one cue per tool; two tools at L1"
+   "note": "torch looks like a torch, thermometer like one; one cue per tool (the kit is tapped at L2; L3 points only)"
   }
  ],
  "CLN-93": [
   {
    "flow": "clinic:diagnosis",
    "path": "mistake",
-   "level": [
-    1,
-    2
-   ],
+   "level": 1,
    "sizes": [
     "1366x768"
    ],
@@ -7276,7 +7240,7 @@
     "voice"
    ],
    "expect": null,
-   "note": "bigger patient, small centred dots; a tried dot goes grey after 'no', never green; she says yes, the doctor names the part"
+   "note": "D1 dots (the mistake player taps a wrong dot): bigger patient, small centred dots; a tried dot goes grey after 'no', never green"
   }
  ],
  "CLN-94": [
@@ -7292,19 +7256,20 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:clinic:diagnosis",
    "after": null,
    "capture": [
     "zoom2:.cl-side .oc-card",
     "strip:.cl-stage:4x400"
    ],
    "expect": null,
-   "note": "D3: the sekelo-style card (tool head, parts ticking); the torch zooms on the face by itself; one highlight; a headline"
+   "note": "D3: the sekelo-style card (tool head, parts ticking); the torch zooms on the face by itself; one highlight; a headline",
+   "max": 6
   }
  ],
  "CLN-95": [
   {
-   "flow": "clinic:diagnosis",
+   "flow": "clinic:patient",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -7318,7 +7283,7 @@
     "zoom2:.cl-fig"
    ],
    "expect": null,
-   "note": "no swirl icon over the sore part"
+   "note": "no swirl icon over the sore part (a whole patient: its diagnosis points; the lab's L1 is D1, dots)"
   }
  ],
  "CLN-116": [
@@ -7331,7 +7296,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-diagnosis",
    "after": null,
    "capture": [
     "zoom2:.cl-room-pic",
@@ -7349,7 +7314,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-sendoff",
    "after": null,
    "capture": [
     "shot"
@@ -7412,7 +7377,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "dom:.njg-rq-card",
@@ -7438,14 +7403,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:clinic:pharmacy",
    "after": null,
    "capture": [
     "zoom2:.cl-tray",
     "strip:.cl-tray:4x150"
    ],
    "expect": null,
-   "note": "the pantry's tray: outlined spaces, front edge over items, outline fades, at most three across"
+   "note": "the pantry's tray: outlined spaces, front edge over items, outline fades, at most three across",
+   "max": 4
   },
   {
    "flow": "clinic:pharmacy",
@@ -7557,7 +7523,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:stage-sendoff",
    "after": null,
    "capture": [
     "shot"
@@ -7584,12 +7550,12 @@
    "after": null,
    "capture": [
     "shot",
-    "dom:.cl-feel"
+    "dom:.cl-stage"
    ],
    "expect": [
     "lexicon"
    ],
-   "note": "L1 face + thought bubble of four feelings; L2 she says it, no picture; L3 a tray of helps (blanket, fan, apple); goodbye from L2"
+   "note": "L1 face + thought bubble of four feelings (pictures: no words); L2 she says it; L3 a tray of helps; goodbye from L2"
   },
   {
    "flow": "clinic:sendoff",
@@ -7647,13 +7613,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:clinic:sendoff",
    "after": null,
    "capture": [
-    "dom:.cl-side .oc-card"
+    "dom:.cl-side"
    ],
    "expect": null,
-   "note": "the doctor's card does not list every line up front or repeat them; no script card"
+   "note": "the doctor's card does not list every line up front or repeat them; no script card (the side at each send-off step)",
+   "max": 4
   }
  ],
  "CLN-29": [
@@ -7690,14 +7657,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "sendoff-say",
+   "at": "every:bubble",
    "after": null,
    "capture": [
     "crop:.cl-stage",
     "voice"
    ],
    "expect": null,
-   "note": "she says how she feels in her bubble on her real art, then the child picks"
+   "note": "she says how she feels in her bubble on her real art, then the child picks",
+   "max": 4
   }
  ],
  "CLN-117": [
@@ -7713,15 +7681,15 @@
    "at": "sendoff-say",
    "after": null,
    "capture": [
-    "dom:.cl-ask-card",
+    "dom:.cl-stage",
     "voice",
-    "zoom2:.cl-ask-card"
+    "crop:.cl-stage"
    ],
    "expect": [
     "lexicon",
     "!textMatches:(?i)nani"
    ],
-   "note": "E4: the child asks 'how do you feel?' first; the doctor cues it; the card shows her face with '?'"
+   "note": "E4: the child asks 'how do you feel?' first; the doctor cues it (the send-off's say step: the bubbles and pills)"
   }
  ],
  "CLN-30": [
@@ -7737,7 +7705,7 @@
    "at": "every:onboard",
    "after": null,
    "capture": [
-    "dom:.cl-bubble",
+    "dom:.cl-stage",
     "shot",
     "cmd:node build/check_onboard.mjs"
    ],
@@ -7862,11 +7830,11 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step:wax",
+   "at": "every:heal:wax",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200",
-    "dom:.njg-rq-card@request"
+    "dom:.njg-rq-card@popup-open"
    ],
    "expect": [
     "!textMatches:(?i)wadho|nindho"
@@ -7934,7 +7902,7 @@
    "at": "results",
    "after": null,
    "capture": [
-    "crop:.cl-heal@stage-end",
+    "crop:.cl-heal@zoom-out",
     "dom:body"
    ],
    "expect": [
@@ -7957,7 +7925,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:eyetest",
+   "at": "eye-test",
    "after": null,
    "capture": [
     "dom:.cl-heal",
@@ -8010,25 +7978,28 @@
    "note": "the swirly part understood; toes, tweezers, plaster position clear; buzz-wire splinters; both feet at L3"
   }
  ],
- "CLN-41": [
-  {
-   "flow": "clinic:heal-extra-tummy",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "fresh",
-   "want": null,
-   "at": "every:onboard",
-   "after": null,
-   "capture": [
-    "shot"
-   ],
-   "expect": null,
-   "note": "tummy, hic, hair still on the old help (parked: decide later)"
-  }
- ],
+ "CLN-41": {
+  "obsolete": "tummy, hic and hair are parked on the heal host lab page; the sandbox must mark their first-time help seen so its scripted taps land, so the old help is never shown",
+  "was": [
+   {
+    "flow": "clinic:heal-extra-tummy",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "fresh",
+    "want": null,
+    "at": "every:onboard",
+    "after": null,
+    "capture": [
+     "shot"
+    ],
+    "expect": null,
+    "note": "tummy, hic, hair still on the old help (parked: decide later)"
+   }
+  ]
+ },
  "CLN-42": [
   {
    "flow": "clinic:heal-boing",
@@ -8122,7 +8093,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "dom:.njg-rq-card",
@@ -8144,7 +8115,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "dom:.njg-rq-card",
@@ -8164,7 +8135,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step:wash",
+   "at": "every:heal:wash",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
@@ -8181,7 +8152,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step:wax",
+   "at": "every:heal:wax",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
@@ -8353,11 +8324,32 @@
    "at": "step:fill",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal",
-    "trace:tool:fill:2000"
+    "zoom2:.cl-heal"
    ],
    "expect": null,
    "note": "a clear fill button; a green zone with red either side; harder by level",
+   "webgl": true
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:fill",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x300"
+   ],
+   "expect": null,
+   "note": "the fill held: the zone and the fill as it goes (filmed from just before the move)",
    "webgl": true
   }
  ],
@@ -8392,7 +8384,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "pour",
+   "at": "pouring",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
@@ -8429,16 +8421,14 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "cold"
-   },
+   "want": null,
    "at": "every:step",
    "after": null,
    "capture": [
     "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "the blanket over the shoulders, never the face"
+   "note": "the blanket over the shoulders, never the face (seed 7 puts the blanket on)"
   }
  ],
  "CLN-57": [
@@ -8567,14 +8557,14 @@
   },
   {
    "flow": "clinic:heal-eye",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "stage-end",
+   "at": "heal-eye-can-see",
    "after": null,
    "capture": [
     "strip:.cl-stage:6x300",
@@ -8583,7 +8573,7 @@
    "expect": [
     "order:happy,see,zoom-out,results"
    ],
-   "note": "after the last row she looks up happy and says 'I can see' before the pull-out and end screen"
+   "note": "after the last row she looks up happy and says 'I can see' before the pull-out and end screen (real pace)"
   }
  ],
  "CLN-63": [
@@ -8661,10 +8651,10 @@
    "at": "every:step",
    "after": null,
    "capture": [
-    "strip:.cl-staged:6x500"
+    "strip:.cl-fig:6x500"
    ],
    "expect": null,
-   "note": "her body alternates visibly as the room swings hot or cold (hugging a hot-water bottle, under the blanket)"
+   "note": "her body alternates visibly as the room swings hot or cold (the heal game's figure, .cl-fig, its pose class)"
   },
   {
    "flow": "clinic:patient",
@@ -8675,7 +8665,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "zoom2:.cl-staged"
@@ -9004,7 +8994,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:eyetest",
+   "at": "eye-test",
    "after": null,
    "capture": [
     "dom:.cl-heal"
@@ -9017,17 +9007,22 @@
  ],
  "CLN-79": [
   {
-   "flow": "clinic:heal-cut",
+   "flow": "clinic:pharmacy",
    "path": "fair",
-   "level": 1,
+   "level": [
+    2,
+    3
+   ],
    "sizes": [
     "1366x768",
     "844x390",
     "1024x768"
    ],
    "profile": "seen",
-   "want": null,
-   "at": "every:placed",
+   "want": [
+    "/\\b(ba|trae|char) /"
+   ],
+   "at": "every:visible:.cl-tally",
    "after": null,
    "capture": [
     "dom:.cl-tally"
@@ -9035,7 +9030,8 @@
    "expect": [
     "!textMatches:[-–]"
    ],
-   "note": "the tick badge always reads, never '-'"
+   "note": "the tick badge always reads, never '-' (the clinic's tally counts the pharmacy's counted items; the heal games have none)",
+   "max": 4
   }
  ],
  "CLN-80": [
@@ -9049,13 +9045,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:eyetest",
+   "at": "eye-test",
    "after": null,
    "capture": [
-    "zoom2:.cl-pills"
+    "zoom2:.hs-judge"
    ],
    "expect": [
-    "minSize:.cl-pill>=48"
+    "minSize:.hs-judge .njg-pill>=48"
    ],
    "note": "haa/na pills at least 48 px on phones"
   }
@@ -9077,13 +9073,34 @@
    "at": "every:step",
    "after": null,
    "capture": [
-    "zoom2:.cl-side .oc-card",
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "a dabbing cloth; connector to the last row; plasters in the sequence; no 'Cold!' mid-step"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
     "dom:.cl-bubble"
    ],
    "expect": [
     "!textMatches:(?i)cold!"
    ],
-   "note": "a dabbing cloth; connector to the last row; plasters in the sequence; no 'Cold!' mid-step"
+   "note": "no 'Cold!' bubble mid-step",
+   "max": 6
   }
  ],
  "CLN-100": [
@@ -9248,7 +9265,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "pour",
+   "at": "pouring",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
@@ -9297,14 +9314,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step",
+   "at": "every:heal:",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal",
     "strip:.cl-heal:5x200"
    ],
    "expect": null,
-   "note": "alcohol wipe with a wipe motion; a funny jab; a plaster choice; new arm and drop machine art"
+   "note": "alcohol wipe with a wipe motion; a funny jab; a plaster choice: each move filmed as it is made"
   },
   {
    "flow": "clinic:heal-boing",
@@ -9322,6 +9338,28 @@
    ],
    "expect": null,
    "note": "the bulb shows the next step"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "new arm and drop machine art",
+   "max": 4
   }
  ],
  "CLN-107": [
@@ -9338,15 +9376,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "after-wrong",
+   "at": "heal:misjudge",
    "after": null,
    "capture": [
-    "strip:.cl-pills:5x100",
-    "voice",
-    "zoom2:.cl-heal"
+    "strip:.hs-judge:5x100"
    ],
    "expect": null,
-   "note": "a wrong yes/no shakes red, the doctor names the row with pictures; a misread gets a drop and a right re-read"
+   "note": "a wrong yes/no shakes red (filmed from just before the misjudged tap)"
   },
   {
    "flow": "clinic:heal-eye",
@@ -9364,10 +9400,32 @@
    "after": null,
    "capture": [
     "shot",
-    "dom:.cl-bubble"
+    "dom:.cl-stage"
    ],
    "expect": null,
    "note": "'to the eye test' button bottom right; L1 her word a fading bubble; chart items shrink, one big at top"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "mistake",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-slip",
+   "after": null,
+   "capture": [
+    "voice",
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the doctor names the row with pictures; a misread gets a drop and a right re-read"
   }
  ],
  "CLN-108": [
@@ -9383,7 +9441,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:pour",
+   "at": "every:heal:pour",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x250"
@@ -9462,7 +9520,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "dom:.njg-rq-card",
@@ -9488,7 +9546,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "voice",
@@ -9614,7 +9672,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "rec:index-upright",
    "after": null,
    "capture": [
     "shot"
@@ -9692,10 +9750,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
-    "zoom2:canvas:karahi",
+    "zoom2:canvas:kadai",
     "ref:assets/cook/props"
    ],
    "expect": null,
@@ -9710,7 +9768,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "zoom2:canvas:grill"
@@ -9727,7 +9785,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view",
    "after": null,
    "capture": [
     "zoom2:canvas:hob"
@@ -9785,7 +9843,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "contract:11",
@@ -9830,10 +9888,10 @@
    "after": null,
    "capture": [
     "strip:#stage:6x150",
-    "trace:canvas:-happy:2000"
+    "trace:canvas:nani-:2000"
    ],
    "expect": [
-    "traceAmp:canvas:-happy<=3"
+    "traceAmp:canvas:nani-<=3"
    ],
    "note": "poses share one canvas so they do not jump; a blink does not redraw the whole character; cut by the scene, not the screen edge"
   }
@@ -9848,7 +9906,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view-service",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -9870,13 +9928,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "every:cook-done:click",
    "after": null,
    "capture": [
-    "zoom2:canvas:badge"
+    "zoom2:canvas:round-256"
    ],
    "expect": null,
-   "note": "face close-ups in the review circle (textures <who>-badge-<mood>): eyes level, filling the circle; face, happy, frown"
+   "note": "face close-ups in the review circle (<who>-badge-<mood>-v2round-256): eyes level, filling the circle",
+   "max": 6
   }
  ],
  "ART-09": [
@@ -9967,10 +10026,10 @@
    "at": "kind-tap",
    "after": null,
    "capture": [
-    "zoom2:canvas:bataato"
+    "zoom2:canvas:veg-01"
    ],
    "expect": null,
-   "note": "the potato cube does not read as butter"
+   "note": "the potato (veg-01, bataato) cube in the bowl does not read as butter"
   }
  ],
  "ART-12": [
@@ -10019,7 +10078,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "start",
+   "at": "view-service",
    "after": null,
    "capture": [
     "shot",
@@ -10040,11 +10099,11 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": {
-    "order": "kari chai (black tea)"
-   },
-   "at": "phase:pour",
-   "after": null,
+   "want": [
+    "/dudh na|kari chai/"
+   ],
+   "at": "cook-done:tap",
+   "after": "exp:pour",
    "capture": [
     "zoom2:canvas:pan"
    ],
@@ -10062,14 +10121,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:fold",
+   "at": "every:cook:swipe",
    "after": null,
    "capture": [
-    "strip:canvas:samosa:6x200",
-    "trace:canvas:samosa:1500"
+    "strip:canvas:sv3-fold:6x200",
+    "trace:canvas:sv3-fold:1500"
    ],
    "expect": [
-    "traceAmp:canvas:samosa<=2"
+    "traceAmp:canvas:sv3-fold<=2"
    ],
    "note": "fold frames on one baseline at a constant height, folding diagonally"
   }
@@ -10087,10 +10146,10 @@
    "at": "results-words",
    "after": null,
    "capture": [
-    "zoom2:.rs-tick-gold"
+    "zoom2:.rs-done"
    ],
    "expect": null,
-   "note": "the review tick cut clean (no grey fringe top left and right)"
+   "note": "the gold review tick (assets/ui/results/tick-gold.webp, the end card's Done) cut clean: no grey fringe"
   }
  ],
  "ART-17": [
@@ -10129,12 +10188,12 @@
    "after": null,
    "capture": [
     "contract:14",
-    "trace:canvas:-happy:3000"
+    "trace:canvas:nani-:3000"
    ],
    "expect": [
     "pass",
-    "traceAmp:canvas:-happy<=2",
-    "tracePeriod:canvas:-happy>=380"
+    "traceAmp:canvas:nani-<=2",
+    "tracePeriod:canvas:nani->=380"
    ],
    "note": "Cook service: one talk animation, about a third of the old bob, slower"
   },
@@ -10195,13 +10254,10 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "strip:.cl-face-card:8x120",
-    "trace:.cl-staged:3000"
+    "strip:.cl-heal:8x120"
    ],
-   "expect": [
-    "traceRepeats:.cl-staged>=1"
-   ],
-   "note": "while a line plays: blink, two or three mouth frames, breathing (the eye test first)"
+   "expect": null,
+   "note": "while a line plays: blink, two or three mouth frames, breathing (the eye game draws her face itself: a filmstrip of the game)"
   },
   {
    "flow": "lab:cook/order",
@@ -10215,7 +10271,7 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "strip:canvas:-happy:8x120"
+    "strip:canvas:nani-:8x120"
    ],
    "expect": null,
    "note": "Cook service: mouth shapes while speaking"
@@ -10286,7 +10342,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:rec:stage",
    "after": null,
    "capture": [
     "dom:body",
@@ -10453,16 +10509,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:bubble",
    "after": null,
    "capture": [
-    "dom:.cl-pills",
+    "dom:.cl-bubble",
     "voice"
    ],
    "expect": [
     "!textMatches:\\bnar\\b"
    ],
-   "note": "na, not nar, in diagnosis answers"
+   "note": "na, not nar, in diagnosis answers (ha / na are bubbles at their faces)",
+   "max": 6
   },
   {
    "flow": "clinic:heal-eye",
@@ -10473,10 +10530,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:eyetest",
+   "at": "eye-test",
    "after": null,
    "capture": [
-    "dom:.cl-pills"
+    "dom:.hs-judge"
    ],
    "expect": [
     "!textMatches:\\bnar\\b"
@@ -10882,5 +10939,10 @@
    "expect": null,
    "note": "the chai station on a 4:3 tablet"
   }
- ]
+ ],
+ "_obsolete": {
+  "_about": "Probes dropped because the game no longer has their state (s04-tf, build/reports/evidence-toolfix.md), each with why. A whole row in that case is {obsolete: why, was: [its old probes]}: no page, no sheet; listed in the run's index for its owner (rewrite the check or retire the row).",
+  "CHAI-15 cook:mishkaki-grill at request": "multi-person sekelo: mishkaki orders have one person (data/cook.json: only chai's cups slot is per person)",
+  "CHAI-15 cook:maani-line at request": "multi-person maani: maani orders have one person (data/cook.json: only chai's cups slot is per person)"
+ }
 }
