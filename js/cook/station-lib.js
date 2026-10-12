@@ -39,7 +39,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const nani = (line, opts = {}) => UI.voice(line, opts);
   const oops = () => Cook.oops(Cook.ctx); // R6: the family's "oh oh oh" or a soft sound (S02-A hook; arre re is gone)
   // C3 (decision 41, E12): from level 3 a number is heard, never written: in Nani's box it shows as dots too
-  const hideKnown = (ctx) => (id) => (!ctx.guided && Cook.cardHidden(id)) || ((ctx.level || 1) >= 3 && /^num-/.test(String(id)));
+  // from level 3 a number is heard, not written (E12), except the first times it is heard (decision 57, as the card)
+  const hideKnown = (ctx) => (id) => (!ctx.guided && Cook.cardHidden(id)) || ((ctx.level || 1) >= 3 && /^num-/.test(String(id)) && !(Cook.timesHeard && Cook.timesHeard(id) < 3));
   S$.nani = nani;
   S$.oops = oops;
 

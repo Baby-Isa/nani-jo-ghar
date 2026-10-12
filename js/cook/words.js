@@ -289,6 +289,28 @@
     else if (m.fn === "Join") m.parts = m.parts.filter((p) => p.fn !== "Count");
     return Lang.say(m, { row: true });
   };
+  /**
+   * A whole line with its counts left unsaid, built again by the engine (LNG-03, E12): from level 3 the number is only
+   * heard, so where a line is written (Nani's step line "Kali trae dungri.") it is written "Kali dungri.", a full
+   * sentence from the same frame, never a dot placeholder ("Kali ••• dungri."). The noun takes its one-form (the leak
+   * test, C10). A line with no count, or one not built from a meaning, comes back as it is.
+   */
+  const stripCounts = (m) => {
+    if (Array.isArray(m)) return m.map(stripCounts);
+    if (!m || typeof m !== "object") return m;
+    const out = {};
+    for (const k of Object.keys(m)) out[k] = k === "fn" ? m[k] : stripCounts(m[k]);
+    if ((out.fn === "Item" || out.fn === "Unit") && out.n != null) delete out.n;
+    if (out.fn === "Join") out.parts = out.parts.filter((p) => !(p && p.fn === "Count"));
+    return out;
+  };
+  const hasCount = (m) => !!m && typeof m === "object" && (Array.isArray(m) ? m.some(hasCount) : m.fn === "Count" || ((m.fn === "Item" || m.fn === "Unit") && m.n != null) || Object.keys(m).some((k) => k !== "fn" && hasCount(m[k])));
+  Lang.uncounted = (line) => {
+    if (!line) return line;
+    if (line.parts && line.parts.length) return Object.assign(Lang.join(line.parts.map(Lang.uncounted)), line.key ? { key: line.key } : {});
+    if (!line.m || !hasCount(line.m)) return line;
+    return Object.assign(Lang.say(stripCounts(line.m)), line.key ? { key: line.key } : {});
+  };
   /** Cook's frame keys, by role (the meanings are data: data/cook.json `meanings`). */
   Lang.frames = () => ({ first: "need", more: "and", any: "and", seq: "then", seqFirst: "first", no: "no", seq_word: "lnk-nepoi", for: "for" });
   Lang.orderFrame = (i) => (i === 0 ? "need" : "and");
@@ -368,6 +390,13 @@
    * a row has a number in it (audit, Wave 4: the Chai tray's rows).
    */
   Lang.html = (line, opts = {}) => {
+    // LNG-03: a hidden number is never a dot placeholder: the line is written without it (Lang.uncounted, the engine's
+    // own sentence); other hidden words keep their dots
+    const isNum = (s) => s && s.w && /^num-/.test(String(s.w));
+    if (opts.hide && line && line.segs && line.segs.some((s) => isNum(s) && opts.hide(s.w))) {
+      const u = Lang.uncounted(line);
+      if (u !== line && !(u.segs || []).some((s) => isNum(s) && opts.hide(s.w))) return Lang.html(u, opts);
+    }
     const hidden = (s) => s && s.w && opts.hide && opts.hide(s.w);
     const out = [];
     let dots = false;
