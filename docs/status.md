@@ -8,22 +8,23 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (12 Oct 2026, ~11:00 UTC, Sprint 4 orchestrator):** Sprint 4 ("your feedback sticks", `docs/sprints/S04-feedback-sticks.md`, decisions 75–79) is **open, not published**. `main` is still Sprint 3 (1a6950df). Everything is on `ccr-a7370759-t0lee7`. Work stalled 9–12 Oct on the account's usage limits (helpers stopped mid-task; resumed 12 Oct).
+**Where things stand (12 Oct 2026, evening UTC, Sprint 4 orchestrator):** Sprint 4 is **closed without a publish** (`docs/sprints/S04-feedback-sticks.md`, outcome and look back). `main` is still Sprint 3 (1a6950df); everything since is on `ccr-a7370759-t0lee7`. The regression list is now **proven by the game** (evidence loop, decision 82): 144 open or reopened, 188 built with evidence. **Sprint 5 is planned, not launched:** `docs/sprints/S05-plan.md`.
 
-**Done on the branch:** the shared lifecycle every game goes through (pop-up first, moves on by itself, one voice stop, one bubble placement, smaller bob; S04-B, `build/reports/s04b-host.md`); contract checks 1–14 in the sandbox (`build/sandbox/lib/contract.mjs`); the sprint check (`build/tools/review/sprintcheck.mjs`, decision 78, `--all-rows` for the full audit); knee bandage wrap on the leg (CLN-100); waiting room and diagnosis open with the pop-up; closed big card in clinic pop-ups from L3 (no leak); scrape uses the landed graze art, plasters on the leg, hand clear of tools; Cook fixes (voice queue, one glow, chop-again pop-up, grill moves on, maani art wait); coverage audits applied to `regressions.md` (28 added, 46 rewritten, 25 reopened); Nani's API art reverted (decision 77: art only in ChatGPT runs Zafar supervises); the s05 art audit and paste block (`docs/design-language/art-plans/s05-*`).
+**Read first in the new chat:** `docs/sprints/S05-plan.md` (packages, first hour, risks), `docs/process/cost-and-speed.md` (how to run cheaply), `docs/architecture/evidence-loop.md` (how a row is proven), decisions 75–86 (esp. 84 placeholders, 86 red then green).
 
-**In progress:** the full audit of every row against evidence sheets (`build/screenshots/sprintcheck/s04-audit/`, index `build/reports/sprintcheck-s04-audit.md`). Quarter 4 judged (`build/reports/s04-audit-verdicts-4.md`: 31 PASS, 57 FAIL). Quarters 1–3 re-split into 30-row batches `jb-1a..3c` (orchestrator scratchpad; regenerate with `sprintcheck.mjs --judge-prompt --run-id s04-audit` if lost) and being judged by Opus (Fable hit its limit); verdict files `build/reports/s04-audit-verdicts-<batch>.md`.
+**Do not run** `build/lang/import_all.mjs` until package B makes it safe (it would demote 8 confirmed words to draft).
 
 **Next steps, in order:**
-1. Finish judging (batches 1a–3c); merge every verdict into `regressions.md` (FAIL → reopened with the one-line reason; PASS → built with the sheet path).
-2. Fix round 2 (code only) on the FAILs; known already: scrape first-time help writes English (non-negotiable 5), chop L3/L4 headline dots and English pill words (LNG-03), fever speech/look/gauge disagree (CLN-105), eye layout/dropper/end (CLN-61/62), tooth brush angle and no drill (CLN-103), Cook L3+ pop-up must use the shared closed big card, contract-11/14 residues, `morning@L3` flow forces L1, knee per-turn shots into the knee flow.
-3. Full gate (`run.mjs --gate`), sprint check sheets, `/review`, then `/publish` and `/sprint` close.
-4. Then Zafar plays; his supervised art run (s05 block, parts A–C first).
+1. Zafar answers the S05 plan's seven decisions (below).
+2. Launch the packages per the plan (at most four at once; briefs via `/brief`, each row's red-then-green probe in the brief; push after every fix).
+3. Judge changed rows only (`evidence.mjs --run --rows …` then `--judge`, Fable image batches of 8–10, Sonnet text batches of 30), `--apply`.
+4. Full gate (touched flows), `/review`, `/publish`, close Sprint 5; Zafar plays with the six human-only checks.
+5. Zafar's art run, parts A–C, during wave 2 (doctor's photos for part B); Mum's Round 5.
 
-**Answered 12 Oct (decision 80):** the samosa 'next kind' button stays; the how-to line and 'pass me' stay outside the pop-up (the contract skips them); the pharmacy hint stays.
+**Waiting on Zafar (the S05 plan's seven, with recommendations):** (1) budget about $175–215, yes; (2) 4:3 tablet layouts (CK-TAB-01) to Sprint 6, yes; (3) knee framing closed as it is, yes; (4) the word review's English under each word: the planner suggests pictures instead, but it is your own design (rule F14), so *recommend keep as is*; (5) add the kadchi, teaspoon and potato cube to the art block as part G, yes; (6) multi-language prep in Sprint 6, yes; (7) samosa's final ✓ goes when the result is already decided, yes. "All patients" in the shipped app: left for later (Zafar, 12 Oct).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-a7370759-t0lee7`. Sprint 4 is open: finish the audit judging, merge the verdicts into the regression list, run fix round 2 on the FAILs, then the full gate, `/review`, `/publish` and close the sprint. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first), then `docs/sprints/S05-plan.md` and `docs/process/cost-and-speed.md`. Branch `ccr-a7370759-t0lee7`. Sprint 4 is closed; this chat is Sprint 5: run the fixes in the plan's packages, red then green per row (decision 86), judge only changed rows, then the full check, `/review`, `/publish` and close. My answers to the plan's seven decisions: <paste>. Tell me before launching anything new.
 
 ---
 

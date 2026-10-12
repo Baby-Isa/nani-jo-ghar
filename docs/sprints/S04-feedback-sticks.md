@@ -1,6 +1,6 @@
 # Sprint 04: your feedback sticks
 
-**Status:** open
+**Status:** closed (12 Oct 2026, without a publish: Zafar moved the fixes to a new chat as Sprint 5; everything is on `ccr-a7370759-t0lee7`)
 **Opened:** 8 Oct 2026, 23:50 UK · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -29,7 +29,13 @@ Launched 8 Oct ~23:46 UK: A session_01A5BjhwAX18NJCqkcq9kEwW, C session_018V7iXu
 - 9 Oct: Zafar: yes to the waiting room and diagnosis opening with the pop-up, checks for the 27 'every game' rows, and the art run's four choices (decision 79); knee dots never overlap, bands run dot to dot.
 
 ## Outcome
-(at close)
+- **Not published:** `main` is still Sprint 3 (1a6950df). The branch carries all of Sprint 4.
+- **Built:** the shared lifecycle every game goes through (pop-up first, moves on by itself, one voice stop, one bubble placement, smaller bob); round 2 Cook and clinic fixes; the knee wrap; the closed big card from L3 (no pop-up leak); the graze art; eye layout A kept; decisions 75–86.
+- **The checking system:** contract checks 1–14 in the sandbox; the sprint check; the evidence loop (docs/architecture/evidence-loop.md, Fable-reviewed): an evidence spec for all 373 rows, 21 drivers, test hooks, cropped sheets, a verdict cache. Every row was played and judged (Fable image batches, Sonnet text batches, machine expects): the list is now proven, not claimed: 144 open or reopened, 188 built with evidence.
+- **Moved on to Sprint 5:** `docs/sprints/S05-plan.md` (Opus planner): 105 code rows in four packages (T tools, S shared, B words and leaks, C Cook, D clinic), 12 art, 6 Mum, 7 Zafar, 13 tool; the s05 art run (Zafar, supervised); the cost-and-speed changes (`docs/process/cost-and-speed.md`).
+- **Spend:** roughly $330 this sprint (sessions A–C ~$37, B ~$14, helpers and judges the rest), plus 3 days lost to usage limits.
 
 ## Look back (three lines)
-(at close)
+1. **Worked:** proving rows with the game itself. The evidence loop found that ~110 "built" rows were never built, 7 had "passed" on blank screens, and the chai voice bug survived several "fixes"; it now can't be marked done until the probe goes green.
+2. **Cost more than it should:** whole-screen sheets judged 88 at a time (context blowouts, done twice), helpers undoing each other in shared files (pantry box, "Thank you", word-review English), screenshot runs filling the disk, and usage limits stopping everyone mid-task.
+3. **Process change:** red, then green, per row (decision 86); Fable's cost and speed defaults (model per task, text before pixels, touched-only runs, a decisions digest every worker reads, one owner per file, push often).
