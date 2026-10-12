@@ -77,10 +77,10 @@ const SEED_SCRIPT = (seed) => `(() => { let a = ${seed >>> 0}; Math.random = fun
 const fontsCss = () => readFileSync(join(FONTS_DIR, "fonts.css"), "utf8").replaceAll("__FONTS__", `${BASE}/__fonts`);
 
 // A fresh context + page: the size, no network beyond the local server, the real fonts from build/sandbox/fonts.
-export async function newPage(browser, sizeKey, { seed = 1, touch } = {}) {
+export async function newPage(browser, sizeKey, { seed = 1, touch, dpr = 1 } = {}) {
   const size = SIZES[sizeKey];
   const useTouch = touch === undefined ? !!size.touch : touch;
-  const ctx = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: 1, serviceWorkers: "block", ...(useTouch ? { hasTouch: true, isMobile: true } : {}) });
+  const ctx = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: dpr, serviceWorkers: "block", ...(useTouch ? { hasTouch: true, isMobile: true } : {}) });
   await ctx.route(/^https?:\/\//, (route) => {
     const u = route.request().url();
     if (u.startsWith(BASE)) return route.fallback();

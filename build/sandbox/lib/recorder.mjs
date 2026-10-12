@@ -7,9 +7,10 @@ import { lintPhaser } from "../../lint/phaser.mjs";
 const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
 
 export class Recorder {
-  constructor({ flow, size, dir, page }) {
+  // sub: a variant of the same flow and size (the evidence loop's profile, seed, renderer or pixel ratio) keeps its own folder
+  constructor({ flow, size, dir, page, sub = "" }) {
     this.flow = flow; this.size = size; this.page = page;
-    this.dir = join(dir, slug(flow), size);
+    this.dir = join(dir, slug(flow), size + (sub ? `--${sub}` : ""));
     mkdirSync(this.dir, { recursive: true });
     this.states = [];
     this.t0 = Date.now();

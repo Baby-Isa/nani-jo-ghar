@@ -12,7 +12,8 @@ const LONG = { "maani-line": 600, samosa: 900, daar: 900, mishkaki: 900, "recipe
 export async function openCook(ctx, { speed = 3, save } = {}) {
   const { page } = ctx;
   await page.goto(`${BASE}/cook.html?speed=${speed}`, { waitUntil: "load" });
-  await page.evaluate((s) => { localStorage.clear(); if (s) localStorage.setItem("njg-cook-v1", JSON.stringify(s)); }, save || null);
+  // ctx.keepStorage (the evidence loop's second play): the first play's save stays, so the second is a returning child's
+  if (!ctx.keepStorage) await page.evaluate((s) => { localStorage.clear(); if (s) localStorage.setItem("njg-cook-v1", JSON.stringify(s)); }, save || null);
   await page.goto(`${BASE}/cook.html?speed=${speed}`, { waitUntil: "load" });
   await page.waitForSelector("#panel .title-wrap", { timeout: 20000 }); // R4: the title has no visible heading (E1)
 }
@@ -36,7 +37,8 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       await openCook(ctx, { speed });
       const P = new CookPlayer(page, rec, { mode, speed });
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
-      if (mode === "takeback") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
+      // ctx.profile "seen" (the evidence loop): the coaches count as seen too
+      if (mode === "takeback" || ctx.profile === "seen") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
       await page.evaluate(([k, l, g]) => { __cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);
       await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
       await sleep(500);

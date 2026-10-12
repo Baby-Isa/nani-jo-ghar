@@ -13,7 +13,11 @@ import { makeSheets } from "./lib/sheets.mjs";
 import { mergeSound } from "./lib/sound.mjs";
 import * as Baseline from "./lib/baseline.mjs";
 import { lintCssAll } from "../lint/css.mjs";
-import { allFlows, flowSizes, variantsOf } from "./flows/index.mjs";
+import { allFlows, flowSizes, variantsOf, resolveFlow } from "./flows/index.mjs";
+import { CookPlayer } from "./lib/cook-player.mjs";
+import { ClinicPlayer } from "./flows/clinic.mjs";
+import { EvidenceProbe, EVIDENCE_HOOK, installHooks } from "./lib/evidence-probe.mjs";
+import { lexiconWords, pageKey, watchList } from "./lib/evidence.mjs";
 import { tiles, tileFlows } from "./flows/labs.mjs";
 import * as Contract from "./lib/contract.mjs";
 
@@ -44,7 +48,11 @@ if (has("--help") || has("-h") || !argv.length) {
   --list                list the flows and the labs.html tiles they play, and exit
   --no-sheets           skip the contact sheets
   --run-id id           folder name under build/screenshots/sandbox/ (default: a timestamp)
-  --resume id           continue run <id>: skip the pages already done`);
+  --resume id           continue run <id>: skip the pages already done
+  --evidence plan.json  the evidence loop (decision 82, build/tools/review/evidence.mjs writes the plan): at each probe's moment on a
+                        page it plays, capture what the probe asks (crops, zoom, filmstrips, traces, text, voice) into
+                        <run>/evidence/ and its page data. With --gate or --flow the probes ride on the pages they match (one run, not
+                        two); --evidence-only plays exactly the plan's pages (any level, path, profile, seed, renderer, pixel ratio)`);
   process.exit(0);
 }
 
@@ -93,12 +101,17 @@ function pick() {
   for (const n of named) {
     let m = live.filter((f) => f.id === n || f.group === n || (n.endsWith(":") && f.id.startsWith(n)) || (n.endsWith("*") && f.id.startsWith(n.slice(0, -1))));
     if (has("--touched")) m = [...new Set(m.flatMap((f) => variantsOf(live, f.id)))];
+    if (!m.length) { const b = resolveFlow(n, live); if (b) m = [b]; } // any level or path of a flow, built on demand (cook:fetch@L2#hint)
     if (!m.length) { console.error(`No flow "${n}". --list shows them.`); process.exit(2); }
     for (const f of m) if (!out.includes(f)) out.push(f);
   }
   return out;
 }
-const flows = pick();
+// ---- the evidence loop: the plan's pages (evidence.mjs --run writes it) ----
+const evPlan = val("--evidence") ? JSON.parse(readFileSync(val("--evidence"), "utf8")) : null;
+const evOnly = has("--evidence-only");
+if (evOnly && !evPlan) { console.error("--evidence-only needs --evidence <plan.json>."); process.exit(2); }
+const flows = evOnly ? [] : pick();
 if (has("--quick") && (has("--all") || has("--gate"))) { console.error("--quick is for named flows only."); process.exit(2); }
 const sizeOpt = has("--quick") ? [QUICK_SIZE] : val("--sizes") ? val("--sizes").split(",") : null;
 for (const s of sizeOpt || []) if (!SIZES[s]) { console.error(`Unknown size ${s}. Known: ${Object.keys(SIZES).join(", ")}`); process.exit(2); }
@@ -108,7 +121,7 @@ const runId = val("--run-id") || val("--resume") || val("--from-run") || new Dat
 const runDir = join(ROOT, "build", "screenshots", "sandbox", runId);
 const dataDir = join(runDir, "data");
 mkdirSync(dataDir, { recursive: true });
-const dataFile = (flow, size) => join(dataDir, `${flow.replace(/[^a-z0-9@#]+/gi, "_")}__${size}.json`);
+const dataFile = (flow, size, variant = "") => join(dataDir, `${flow.replace(/[^a-z0-9@#]+/gi, "_")}__${size}${variant ? `__${variant}` : ""}.json`);
 const parallel = Math.max(1, +(val("--parallel") || 1));
 const budgetMs = val("--budget-min") ? +val("--budget-min") * 60000 : Infinity;
 
@@ -120,7 +133,23 @@ function hashSeed(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeA
 // the job list: every (flow, size), minus what a resumed run already has
 const jobs = [];
 for (const flow of flows) for (const size of sizesOf(flow)) jobs.push({ flow, size, file: dataFile(flow.id, size) });
+
 const order = new Map(flows.map((f, i) => [f.id, i]));
+if (evOnly) for (const p of evPlan.pages) if (!order.has(p.flow)) order.set(p.flow, order.size);
+if (evPlan) {
+  const byKey = new Map(evPlan.pages.map((p) => [p.key, p]));
+  // probes on the pages this run plays anyway (the gate's pages: no profile, seed, renderer or pixel ratio of their own)
+  for (const j of jobs) { const p = byKey.get(pageKey(j.flow.id, j.size, "")); if (p) { j.ev = p; byKey.delete(p.key); } }
+  // --evidence-only: the plan's own pages (the ones a gate does not play)
+  if (evOnly) for (const p of byKey.values()) {
+    const flow = live.find((f) => f.id === p.flow) || resolveFlow(p.flow, live);
+    if (!flow) { console.error(`evidence: no flow ${p.flow}`); process.exit(2); }
+    if (!order.has(flow.id)) order.set(flow.id, order.size);
+    jobs.push({ flow, size: p.size, file: dataFile(flow.id, p.size, p.variant), ev: p });
+  }
+  installHooks({ Recorder, CookPlayer, ClinicPlayer });
+}
+const lexicon = evPlan ? lexiconWords(ROOT, { tags: true }) : null;
 let leftover = 0;
 
 if (fromRun) {
@@ -143,31 +172,60 @@ if (fromRun) {
   if (todo.length) {
     const server = await startServer();
     const browser = await launch({ webgl: has("--webgl") });
+    let glBrowser = null; // an evidence probe with webgl: true (glows, tints) gets Phaser's WebGL in a browser of its own
+    const browserFor = async (ev) => (ev && ev.webgl && !has("--webgl") ? (glBrowser = glBrowser || (await launch({ webgl: true }))) : browser);
     const queue = todo.slice();
-    const runJob = async ({ flow, size, file }) => {
+    const runJob = async (job) => {
+      if (!job.ev || !job.ev.want) return runOne(job);
+      // a wanted order (Fable 5): try seeds until the order has it (at most 20), keep the page that did
+      const first = job.ev.seed != null ? job.ev.seed : 1;
+      for (let k = 0; k < 20; k++) {
+        const r = await runOne({ ...job, seed: first + k, quiet: k < 19 });
+        if (!r || !r.wantMiss) { if (r) log(`${job.flow.id} @ ${job.size}: the wanted order (${job.ev.want.join(", ")}) came with seed ${first + k}`); return; }
+      }
+      log(`${job.flow.id} @ ${job.size}: no seed of ${first}..${first + 19} gave an order with ${job.ev.want.join(", ")}`);
+    };
+    const runOne = async ({ flow, size, file, ev, seed: evSeed, quiet }) => {
       if (flow.static) {
         const findings = flow.static();
         const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: true, stops: [], notes: [], errors: [], states: [{ name: flow.id, page: flow.id, shot: null, findings: findings.map((f) => ({ ...f, page: flow.id })), note: "" }], findingCount: findings.length, ms: 0, sound: null };
         writeFileSync(file, JSON.stringify(r)); fresh.push(r); log(`${flow.id} @ ${size}: ${findings.length} findings`); return;
       }
       const started = Date.now();
-      const { ctx, page, errors, sound, touch } = await newPage(browser, size, { seed: hashSeed(flow.id), ...(has("--no-touch") ? { touch: false } : {}) });
-      const rec = new Recorder({ flow: flow.id, size, dir: runDir, page });
-      sound.onEvent = (e) => rec.contractShot(e);
-      const c = { page, rec, errors, size, browser, touch, timeoutMs: flow.timeoutMs || 300000, reachedEnd: false };
-      let timer;
+      const seed = evSeed != null ? evSeed : ev && ev.seed != null ? ev.seed : null;
+      const { ctx, page, errors, sound, touch } = await newPage(await browserFor(ev), size, { seed: seed != null ? hashSeed(flow.id) + seed : hashSeed(flow.id), dpr: (ev && ev.dpr) || 1, ...(has("--no-touch") ? { touch: false } : {}) });
+      const rec = new Recorder({ flow: flow.id, size, dir: runDir, page, sub: (ev && ev.variant) || "" });
+      const probe = ev ? new EvidenceProbe(page, ev, { dir: runDir, size, lexicon, armed: ev.profile !== "second-play" }) : null;
+      if (probe) await ctx.addInitScript(EVIDENCE_HOOK(watchList(ev.probes)));
+      sound.onEvent = (e) => { rec.contractShot(e); if (probe) probe.onEvent(e); };
+      const c = { page, rec, errors, size, browser, touch, timeoutMs: (flow.timeoutMs || 300000) * (ev && ev.profile === "second-play" ? 2 : 1), reachedEnd: false, ...(seed != null ? { seed } : {}), ...(ev && ev.profile ? { profile: ev.profile } : {}) };
+      let timer, wantMiss = null;
       try {
-        await Promise.race([flow.run(c), new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`flow timed out after ${Math.round(c.timeoutMs / 1000)} s`)), c.timeoutMs); })]);
+        const play = async () => {
+          if (probe) await probe.moment("page:start");
+          // second-play (Fable 5): play once, then again on the same save; the probes are armed for the second play only
+          if (ev && ev.profile === "second-play") { await flow.run(c); c.reachedEnd = false; c.keepStorage = true; probe.armed = true; await probe.moment("page:start"); }
+          await flow.run(c);
+          if (probe) await probe.moment("page:end", { block: true });
+        };
+        await Promise.race([play(), new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`flow timed out after ${Math.round(c.timeoutMs / 1000)} s`)), c.timeoutMs); }), ...(probe ? [probe.abort] : [])]);
       } catch (e) {
-        rec.stop(String(e.message || e).split("\n")[0].slice(0, 300));
-        try { await Promise.race([rec.state("stopped-here"), new Promise((r) => setTimeout(r, 20000))]); } catch (e2) { /* the page is gone */ }
+        if (e && e.wantMiss) wantMiss = e.message;
+        else {
+          rec.stop(String(e.message || e).split("\n")[0].slice(0, 300));
+          try { await Promise.race([rec.state("stopped-here"), new Promise((r) => setTimeout(r, 20000))]); } catch (e2) { /* the page is gone */ }
+        }
       } finally { clearTimeout(timer); }
+      if (wantMiss) { await ctx.close().catch(() => {}); if (!quiet) log(`${flow.id} @ ${size} seed ${seed}: ${wantMiss}`); return { wantMiss }; }
+      if (probe) await probe.chain.catch(() => {});
       await ctx.close().catch(() => {});
       const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
-      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}) };
+      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}), ...(ev ? { variant: ev.variant || "", evKey: ev.key, ...(seed != null ? { seed } : {}) } : {}) };
+      if (probe) { r.evidence = await probe.finish(r, { root: ROOT }); r.moments = probe.seen; }
       writeFileSync(file, JSON.stringify(r));
       fresh.push(r);
-      log(`${flow.id} @ ${size}: ${r.complete ? "end reached" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} distinct findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s`);
+      log(`${flow.id} @ ${size}${ev && ev.variant ? ` (${ev.variant})` : ""}: ${r.complete ? "end reached" : "STOPPED: " + (r.stops[0] || "?")} | ${r.states.length} states, ${findingCount} distinct findings, ${r.errors.length} page errors, ${(r.ms / 1000).toFixed(0)} s${r.evidence ? ` | evidence: ${r.evidence.filter((x) => x.reached).length}/${r.evidence.length} probes reached their moment` : ""}`);
+      return r;
     };
     const worker = async () => {
       while (queue.length) {
@@ -181,6 +239,7 @@ if (fromRun) {
     // ---- contact sheets (this invocation's pages) ----
     if (!has("--no-sheets") && fresh.length) await makeSheets(browser, runDir, fresh.filter((r) => r.size !== "static"), log);
     await browser.close();
+    if (glBrowser) await glBrowser.close();
     server.close();
   }
 }

@@ -1,10 +1,10 @@
 import { houseFlow } from "./house.mjs";
 import { firstFlow } from "./first.mjs";
 import { KEPT, RECIPES, PARTS, cookStation, cookTitle, cookDay, cookShop, cookOpenKitchen } from "./cook.mjs";
-import { clinicFlows, HEAL_GAMES } from "./clinic.mjs";
+import { clinicFlows, clinicFlow, HEAL_GAMES } from "./clinic.mjs";
 import { MODE_FLOWS } from "./modes.mjs";
 import { rotateFlow, cssFlow } from "./extra.mjs";
-import { labFlows } from "./labs.mjs";
+import { labFlows, labCook } from "./labs.mjs";
 import { ALL_SIZES } from "../lib/env.mjs";
 
 // Every flow: --all and --gate run them all. A flow's `sizes` says where it runs. The main flows (level 1 and the first level-3
@@ -57,3 +57,46 @@ export const flowSizes = (f) => f.sizes || ALL_SIZES;
 export const variantsOf = (flows, id) => flows.filter((f) => f.id === id || f.id.startsWith(id + "@") || f.id.startsWith(id + "#"));
 export function parkedFlows() { return []; }
 export { HEAL_GAMES };
+
+// ---- any level and path of a flow, built on demand (the evidence loop, build/tools/review/evidence.mjs: a probe can ask for
+// cook:fetch@L2#hint, which the gate does not run). "base@L2#hint" -> the flow, or null. What each kind of flow can do:
+const CLINIC_STAGES = ["waiting", "diagnosis", "pharmacy", "sendoff"];
+const CLINIC_NAME = { waiting: "Waiting room", diagnosis: "Diagnosis", pharmacy: "Pharmacy (belt)", sendoff: "Send-off" };
+export function flowKind(base) {
+  const m = /^cook:(?:recipe:)?([\w-]+)$/.exec(base);
+  if (m && (KEPT.includes(m[1]) || PARTS.includes(m[1]) || RECIPES.includes(m[1]))) return { kind: "cook", levels: [1, 2, 3, 4], paths: ["fair", "mistake", "hint", "takeback", "speed1"] };
+  if (CLINIC_STAGES.some((s) => base === `clinic:${s}`)) return { kind: "clinic-stage", levels: base === "clinic:waiting" ? [1, 2, 3, 4, 5] : [1, 2, 3], paths: ["fair", "mistake", "hint"] };
+  if (HEAL_GAMES.some((g) => base === `clinic:heal-${g}`)) return { kind: "heal", levels: [1, 2, 3], paths: ["fair", "mistake", "hint"] };
+  if (base === "clinic:patient") return { kind: "patient", levels: [1, 2, 3], paths: ["fair", "mistake", "hint"] };
+  if (base === "clinic:morning") return { kind: "morning", levels: [1, 2, 3], paths: ["fair"] };
+  if (/^lab:cook\/[\w-]+$/.test(base) && !/story-birthday|free/.test(base)) return { kind: "lab-cook", levels: [1, 2, 3, 4], paths: ["fair", "speed1"] };
+  return null;
+}
+export const splitFlowId = (id) => { const m = /^(.*?)(?:@L(\d))?(?:#(\w+))?$/.exec(id); return { base: m[1], level: m[2] ? +m[2] : 1, path: m[3] || "fair" }; };
+export const flowIdOf = (base, level = 1, path = "fair") => `${base}${level > 1 ? `@L${level}` : ""}${path && path !== "fair" ? `#${path}` : ""}`;
+export function resolveFlow(id, live = allFlows()) {
+  const have = live.find((f) => f.id === id);
+  if (have) return have;
+  const { base, level, path } = splitFlowId(id);
+  const k = flowKind(base);
+  if (!k || !k.levels.includes(level) || !k.paths.includes(path)) return null;
+  const sizes = (live.find((f) => f.id === base) || {}).sizes;
+  let f = null;
+  if (k.kind === "cook") {
+    const m = /^cook:(recipe:)?([\w-]+)$/.exec(base), key = m[2];
+    const recipe = !!m[1] || (RECIPES.includes(key) && !KEPT.includes(key));
+    f = cookStation(key, level, { recipe, ...(path === "speed1" ? { speed: 1 } : path !== "fair" ? { mode: path } : {}) });
+    if (PARTS.includes(key)) f = { ...f, group: "cook-parts" };
+  } else if (k.kind === "clinic-stage" || k.kind === "heal" || k.kind === "patient") {
+    const st = base.slice(7);
+    const query = k.kind === "heal" ? `stage=heal&game=${st.slice(5)}&level=${level}` : k.kind === "patient" ? `patient=1&level=${level}&results=1` : `stage=${st}&level=${level}`;
+    const title = `Clinic: ${k.kind === "heal" ? `heal game ${st.slice(5)}` : k.kind === "patient" ? "One patient" : CLINIC_NAME[st]}, level ${level}${path !== "fair" ? `, ${path} player` : ""}`;
+    f = clinicFlow({ id, title, query, level, mode: path, timeoutMs: k.kind === "patient" ? 600000 : k.kind === "heal" ? 200000 : 240000 });
+  } else if (k.kind === "morning") {
+    f = clinicFlow({ id, title: `Clinic: a morning (session 2) with every stage at level ${level}`, query: "morning=1&session=2&nosave=1", level, levels: level > 1 ? level : null, timeoutMs: 600000 });
+  } else if (k.kind === "lab-cook") {
+    const g = base.slice(9);
+    f = labCook({ id, title: `labs.html: Cook on the game host, ${g}, level ${level}${path === "speed1" ? " at a child's pace" : ""}`, query: g === "round" ? `mode=cook&level=${level}` : `mode=cook&game=${g}&level=${level}`, timeoutS: g === "round" ? 700 : 900, ...(path === "speed1" ? { speed: 1 } : {}) });
+  }
+  return f ? { ...f, id, ...(sizes ? { sizes } : {}), parked: false, built: true } : null;
+}

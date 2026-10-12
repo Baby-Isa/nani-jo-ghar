@@ -12,7 +12,7 @@ export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boi
 // mode: "fair" does what the stage asks. "mistake" makes one wrong pick per stage where the stage offers one (e.wrong: a wrong dish, probe,
 // seat, card), and in a healing game the game's own deliberate slip (debug.slip()), then goes on to the end. "hint" asks for help: it
 // leaves the first thing alone for the first-time help's idle hint, presses the light bulb (the English flip), and peeks at a closed card.
-class ClinicPlayer {
+export class ClinicPlayer {
   constructor(page, rec, { mode = "fair" } = {}) {
     this.page = page; this.rec = rec; this.seen = new Set(); this.covers = new Set();
     this.mode = mode; this.mistakes = mode === "mistake"; this.hints = mode === "hint";
@@ -217,12 +217,15 @@ class ClinicPlayer {
   }
 }
 
-function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, onboard = false, done, extra, mode = "fair", sizes, levels = null }) {
+export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, onboard = false, done, extra, mode = "fair", sizes, levels = null }) {
   return {
     id, group: "clinic", title, timeoutMs: mode === "hint" ? timeoutMs + 120000 : timeoutMs, ...(sizes ? { sizes } : {}),
     async run(ctx) {
       const { page, rec } = ctx;
-      const q = `${query}&seed=${SEED}&quiet=1&fast=1&nonav=1&onboard=${onboard || mode === "hint" ? 1 : 0}`;
+      // the evidence loop's spec can set the seed (a wanted order) and the profile: fresh (storage cleared, first-time help on) or seen (help off)
+      const help = ctx.profile === "fresh" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
+      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=1&nonav=1&onboard=${help}`;
+      if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)
       if (levels) {
         await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1&fast=1`, { waitUntil: "load" });

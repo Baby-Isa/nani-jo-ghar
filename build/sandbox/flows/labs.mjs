@@ -22,7 +22,7 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
     async run(ctx) {
       const { page, rec } = ctx;
       await page.goto(`${BASE}/lab.html`, { waitUntil: "load" });
-      await page.evaluate(() => localStorage.clear());
+      if (!ctx.keepStorage) await page.evaluate(() => localStorage.clear());
       if (firstDone) {
         // a story arc opens after the first-launch story (s04-fxc: the cleared save showed the lab's lock, 0 stages played)
         await page.goto(`${BASE}/lab/shared.html`, { waitUntil: "load" }).catch(() => {});
@@ -33,7 +33,7 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           Save.setFlag("firstDone", true);
         });
       }
-      await page.goto(`${BASE}/lab.html?${query}&${Q}&speed=${speed}`, { waitUntil: "load" });
+      await page.goto(`${BASE}/lab.html?${query}&${ctx.seed != null ? Q.replace(/seed=\d+/, `seed=${ctx.seed}`) : Q}&speed=${speed}`, { waitUntil: "load" });
       const t0 = Date.now();
       let stages = 0, results = 0;
       const badges = [];
