@@ -10,7 +10,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **Where things stand (12 Oct 2026, evening UTC, Sprint 4 orchestrator):** Sprint 4 is **closed without a publish** (`docs/archive/sprints/S04-feedback-sticks.md`, outcome and look back). `main` is still Sprint 3 (1a6950df); everything since is on `ccr-a7370759-t0lee7`. The regression list is now **proven by the game** (evidence loop, decision 82): 144 open or reopened, 188 built with evidence. **Sprint 5 is planned, not launched:** `docs/sprints/S05-plan.md`.
 
-**12 Oct, 22:15 UK:** Zafar said yes to all seven decisions (the fourth, the word review's English, is being confirmed with him). **Sprint 5 open** (`docs/sprints/S05-red-then-green.md`): wave 1 (T, S, B) launching to `ccr-a7370759-t0lee7`; C and D follow after T's environment push and S1.
+**12 Oct, 22:15 UK:** Zafar said yes to all seven decisions (the word review keeps its English, F14; C and D launch when T's environment and S1 land). **Sprint 5 open** (`docs/sprints/S05-red-then-green.md`): wave 1 (T, S, B) launching to `ccr-a7370759-t0lee7`; C and D follow after T's environment push and S1.
 
 **Read first in the new chat:** `docs/sprints/S05-plan.md` (packages, first hour, risks), `docs/process/cost-and-speed.md` (how to run cheaply), `docs/architecture/evidence-loop.md` (how a row is proven), decisions 75–86 (esp. 84 placeholders, 86 red then green).
 

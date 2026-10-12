@@ -14,12 +14,12 @@ All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s05*.brief.t
 - **T, tools** (Sonnet medium, port 8895): the environment (scipy, Python playwright, a SessionStart hook), import errors as tool failures, probes that can't reach their state, the cost-and-speed tooling. Report `s05t-tools.md`.
 - **S, shared layer** (Opus high, port 8891): S1 voice after a stop pushed first; talk, bubbles, help; S2 the results and order cards, the ✓. Report `s05s-shared.md`.
 - **B, words and leaks** (Opus high, port 8892): the pantry leak (PAN-15), English written for the child, engine data safety, sentences, numbers, borrowed words. Report `s05b-words.md`.
-- **C, Cook** (Opus high, port 8893) and **D, clinic** (Opus high, port 8894): wave 2, after T's environment push and S1.
+- **C, Cook** (Opus high, port 8893) and **D, clinic** (Opus high, port 8894): wave 2, after T's environment push and S1; Zafar: launch them when ready (12 Oct).
 
 Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVnUz6sJiRfmtqDkY8Fn, B session_01XWRyqDADPqVzsoa8hyEzTw.
 
 ## Small decisions
-- 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review's English glosses (SH-03): his "yes" is being confirmed, because the plan recommended a picture and the handover recommended keeping his own design (F14); B leaves it until he answers; (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
+- 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
 
 ## Outcome
