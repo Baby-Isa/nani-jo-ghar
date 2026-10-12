@@ -96,9 +96,22 @@
     b.setAttribute("aria-label", o.label || "Done");
     if (o.id) b.id = o.id;
     b.innerHTML = '<span class="njg-done-tick" aria-hidden="true"></span>';
+    pulseWithGlow(b);
     if (parent) parent.appendChild(b);
     return wire(b, onPress);
   };
+  /*
+   * SH-58 (S05-S): a glowing ✓ (the only thing left) pulses with the one focal pulse every mode uses (css/shared/focus.css
+   * .njg-pulse, rule F17), whoever sets its glow (B.glow, or a mode toggling the class itself, e.g. Cook's UI.done)
+   */
+  function pulseWithGlow(b) {
+    const sync = () => {
+      const on = b.classList.contains("glow") && !b.classList.contains("hidden");
+      if (on !== b.classList.contains("njg-pulse")) b.classList.toggle("njg-pulse", on);
+    };
+    sync();
+    if (typeof root.MutationObserver === "function") new root.MutationObserver(sync).observe(b, { attributes: true, attributeFilter: ["class"] });
+  }
   /** → Next: the flat pill with a gold icon and a short label, bottom right of the play area. */
   B.next = function (parent, label, onPress, o = {}) {
     const b = doc().createElement("button");

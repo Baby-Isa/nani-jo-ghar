@@ -9,7 +9,8 @@
  *
  *   const b = Bulb.create(btn, {level, ms, speed, fast, targets, bodyClass, onUse, onOn, onOff})
  *       ms: [5000, 3000, 2000, 1000] by level (default Bulb.MS), a number, or a function -> number
- *       speed: a number or function (Cook's test speed); fast: true -> 300 ms (the clinic's ?fast=1)
+ *       speed: accepted but ignored since S05 (SH-41: a test speed never shortens reading time); fast: true -> 300 ms
+ *       (the clinic's ?fast=1)
  *       targets: () -> elements that show English while it's on
  *   b.use([btn]) -> true if it turned on      b.off()      b.on      b.uses      b.level      b.destroy()
  *   Bulb.MS                                     the level table (E25)
@@ -42,7 +43,9 @@
       const t = o.targets ? Array.from(o.targets()) : [];
       t.forEach(fn);
     };
-    b.duration = () => (o.fast ? 300 : B.msFor(o.ms, b.level) / (val(o.speed) || 1));
+    // SH-41 (S05-S): the bulb's time is reading time, so a test speed never shortens it (a child, or a probe, gets the
+    // whole of it: 8 s on a closed card); only a host's explicit fast mode (the clinic's ?fast=1) does
+    b.duration = () => (o.fast ? 300 : B.msFor(o.ms, b.level));
     b.use = function (el) {
       if (el) b.btn = el;
       if (b.on) return false;

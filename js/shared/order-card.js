@@ -26,7 +26,9 @@
  *     strip:    {html, rec?} | null,             R4: the guide's next-step line when the asker is the guide (one
  *                                                face: Nani's pantry list); a thin band across the card's top
  *     items: [{ label: html | null, count: 1, parts: [{label, done, next?, no?, key?}],
- *               ordered: false, done?: bool, key? }],
+ *               ordered: false, done?: bool, key?, group?: bool }],
+ *               group: one of several groups of the same kind (each skewer, each samosa kind): a plain box of its
+ *               pieces with no label row, alternate groups tinted; ordered: drawn as a little skewer (SEK-03)
  *     done?: bool }                               default: every item done
  *
  *   `key` is anything the host wants handed back with the element drawn for it (read-along).
@@ -88,7 +90,16 @@
     // one item, one of it, with a recipe: its parts straight under the headline
     const direct = items.length === 1 && items[0].count <= 1 && items[0].parts.length > 0;
     let k = 0;
+    let g = 0;
     items.forEach((it) => {
+      // SEK-03 (S05-S): a group (one skewer of several, one samosa kind): a plain box of its pieces, no label row (the
+      // headline gives the summary); alternate groups tinted so they stand apart
+      if (it.group) {
+        it.row = false;
+        it.tint = g++ % 2 === 1;
+        it.folded = false;
+        return;
+      }
       it.row = it.label != null && !direct;
       it.tint = it.row && k++ % 2 === 1;
       it.folded = it.row && it.done && !big;
@@ -142,6 +153,7 @@
   }
 
   function itemEl(it, opts) {
+    if (it.group) return groupEl(it, opts);
     const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.tint ? "tint" : "", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
     if (it.row) box.appendChild(rowEl(it, "oc-irow", opts));
     if (it.parts.length) {
@@ -155,6 +167,23 @@
       fold.appendChild(inner);
       box.appendChild(fold);
     }
+    return box;
+  }
+
+  /**
+   * SEK-03 (S05-S; Zafar, 28 Sept §2, §9): a group box: its pieces as pills in a row, no label; an ordered group (a
+   * skewer) is drawn as a little skewer: the pills threaded on a stick, read left to right, with a pointed tip and no
+   * numbers or arrows. The item's label (if any) is kept for screen readers only.
+   */
+  function groupEl(it, opts) {
+    const seq = it.ordered && it.parts.filter((p) => !p.no).length > 1;
+    const box = el("div", ["oc-item", "oc-group", seq ? "oc-skewer" : "", it.tint ? "tint" : "", it.done ? "done" : ""].filter(Boolean).join(" "));
+    if (it.label != null) box.setAttribute("aria-label", String(it.label).replace(/<[^>]*>/g, ""));
+    if (it.key != null && opts.onEl) opts.onEl(it.key, box);
+    const list = el("div", "oc-parts oc-group-parts");
+    it.parts.forEach((p) => list.appendChild(rowEl(p, "oc-part", opts)));
+    box.appendChild(list);
+    if (opts.decorate) opts.decorate(box, it);
     return box;
   }
 

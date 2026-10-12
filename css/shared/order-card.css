@@ -99,6 +99,13 @@
 .oc-card .oc-items { display: flex; flex-direction: column; gap: var(--njg-card-gap); margin-top: var(--njg-card-gap); min-width: 0; }
 .oc-card.folded .oc-body { grid-template-rows: 0fr; }
 .oc-card.folded .oc-in { opacity: 0; }
+/* S05-S (SH-54, PAN-01): a folded body is gone, not clipped: hidden once its fold has run (the fade still plays), so a
+   folded card or item never leaves its rows scrolled away inside it. The clipping boxes keep a little inner room
+   (padding, given back as a negative margin, so nothing moves): a row's gold ring and sub-pixel edges are never cut */
+.oc-card .oc-in, .oc-card .oc-fold-in { padding: var(--njg-line-2); margin: calc(var(--njg-line-2) * -1); }
+.oc-card .oc-in { transition: opacity 0.3s ease, visibility 0s linear 0s; }
+.oc-card.folded .oc-in { visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.42s; }
+.oc-card .oc-item.folded > .oc-fold > .oc-fold-in { visibility: hidden; transition: visibility 0s linear 0.42s; }
 .oc-card.folded .oc-done-tk { opacity: 1; transform: none; }
 .oc-card.still, .oc-card.still * { transition: none !important; }
 /* closed (not finished: the phase fold, a start-folded card): face + headline only, no check; a tap peeks */
@@ -257,6 +264,11 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
   html[data-ff="phone"] .oc-card:not(.oc-big) .oc-headline { line-height: 1.15; }
   html[data-ff="phone"] .oc-card:not(.oc-big) .oc-headline.rec .oc-rec { margin-top: 0; }
   html[data-ff="phone"] .oc-card:not(.oc-big) .oc-items, html[data-ff="phone"] .oc-card:not(.oc-big) .oc-parts { gap: calc(var(--njg-s1) / 2); }
+  /* SH-09 (S05-S): a card with a two-line headline, four rows and the waiting people's faces under it (chai L4) was 7 px
+     taller than the sidebar: the card's padding and the gap under its head give back a little more */
+  html[data-ff="phone"] .oc-card:not(.oc-big):not(.oc-mini) { padding: calc(var(--njg-card-pad) * 0.75); }
+  html[data-ff="phone"] .oc-card:not(.oc-big) .oc-items { margin-top: var(--njg-s1); }
+  html[data-ff="phone"] .oc-card:not(.oc-big) > .oc-strip { margin: calc(var(--njg-card-pad) * -0.75) calc(var(--njg-card-pad) * -0.75) var(--njg-s1); padding-inline: calc(var(--njg-card-pad) * 0.75); }
 }
 
 /* R4 (guide-and-card, decision 55): the guide's next-step line as the card's top strip, when the asker is the guide
@@ -326,3 +338,23 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 
 /* decision 84: the to-record flag is a hidden tag (see above) */
 .oc-card .oc-rec, .oc-card .oc-strip .oc-rec { display: none !important; }
+
+/* ---------- SEK-03 (S05-S): groups (several skewers, samosa kinds): each a plain box of its pieces, no label row (the
+   headline gives the summary), alternate groups tinted; an ordered group is a little skewer: the pieces threaded on a
+   stick left to right, a pointed tip at the end, no numbers, no arrows ---------- */
+.oc-card .oc-item.oc-group { padding: var(--njg-s1); border-radius: var(--njg-radius); border: var(--njg-line) solid var(--oc-edge); background: var(--oc-card); }
+.oc-card .oc-item.oc-group.tint { background: var(--oc-tint); border-color: var(--oc-tint-edge); }
+.oc-card .oc-item.oc-group .oc-group-parts { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--njg-s1); margin: 0; padding: 0; }
+.oc-card .oc-item.oc-group .oc-part { flex: 0 1 auto; max-width: 100%; border-radius: var(--njg-round); padding: 0 var(--njg-s2); }
+.oc-card .oc-item.oc-group .oc-part .oc-t { flex: 0 1 auto; }
+.oc-card .oc-item.oc-skewer .oc-group-parts { position: relative; flex-wrap: nowrap; padding-right: calc(var(--njg-s3) + var(--njg-s1)); }
+.oc-card .oc-item.oc-skewer .oc-group-parts::before {
+  content: ""; position: absolute; z-index: 0; left: calc(var(--njg-s1) * -1); right: var(--njg-s1); top: calc(50% - var(--njg-line));
+  height: var(--njg-line-2); border-radius: var(--njg-line); background: #b08a5a;
+}
+.oc-card .oc-item.oc-skewer .oc-group-parts::after {
+  content: ""; position: absolute; right: 0; top: calc(50% - var(--njg-s1)); width: var(--njg-s3); height: var(--njg-s2);
+  background: #b08a5a; clip-path: polygon(0 25%, 100% 50%, 0 75%);
+}
+.oc-card .oc-item.oc-skewer .oc-part { position: relative; z-index: 1; min-width: 0; }
+.oc-card .oc-item.oc-skewer .oc-part::before { display: none; }
