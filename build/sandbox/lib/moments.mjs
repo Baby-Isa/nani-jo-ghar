@@ -13,10 +13,12 @@ const LIFE = ["step:row-*", "life:request", "life:advance", "life:stage-start", 
 // A named moment with no entry here has no driver yet: --plan refuses it (the driver lands with the spec, Fable 2)
 export const ALIASES = {
   "popup-fold": { pats: ["life:popup-fold"] },
-  served: { pats: ["rec:view-service"] },
+  // (the game host's Cook player names its states after the game: rec:order-view-service, rec:order-wrong-choice; a pattern without
+  // "rec:" in front matches them too)
+  served: { pats: ["view-service"] },
   "pass-me": { pats: ["visible:#passme"] },
   idle: { pats: ["rec:idle-hint", "rec:hint-glow"] },
-  "after-wrong": { pats: ["rec:wrong"], delay: 1000 },
+  "after-wrong": { pats: ["rec:wrong", "wrong-choice", "wrong-tap", "wrong-extra", "wrong-slice", "wrong-stir"], delay: 1000 },
   // the pour: the foot's jug, the taste game's milk or water jug tipping into the tumbler
   pour: { pats: ["step:pour", "step:milk", "step:water"] },
   fill: { pats: ["step:fill"] },
