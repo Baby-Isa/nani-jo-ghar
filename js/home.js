@@ -81,22 +81,25 @@
   }
 
   /* ---------------- the house ---------------- */
+  // FL-03 (non-negotiable 5): nothing written in English for the child. A door is its picture alone (the room's name is
+  // only for a screen reader); a player is their character, and the name a grown-up typed (never the made-up "Player 1")
   function door(d, soon) {
     const href = App.link(d.url);
-    return `<a class="door${soon ? " is-soon" : ""}" href="${esc(href)}" data-door="${d.id}">
+    return `<a class="door${soon ? " is-soon" : ""}" href="${esc(href)}" data-door="${d.id}" aria-label="${esc(d.name)}">
       <span class="arch"><img alt="" loading="lazy" src="${esc(v(`assets/shell/door-${d.id}.webp`))}">${soon ? '<span class="ribbon">Coming soon</span>' : ""}</span>
-      <span class="label">${esc(d.name)}</span>
     </a>`;
   }
+  /** The name a child sees: a grown-up's typed name, never the one the app made up on a first launch. */
+  const shownName = (p) => (p && !p.auto ? p.name : "");
   function render() {
     const p = Save.current();
     if (p) {
-      $("#who .dot").textContent = initial(p.name);
+      $("#who .dot").textContent = shownName(p) ? initial(p.name) : "";
       $("#who .dot").style.background = p.colour;
       $("#who .dot").classList.remove("has-char");
       // the player's own character, once they've made one (js/shared/character.js)
       if (global.Character) global.Character.badge($("#who .dot"), p.id);
-      $("#who .nm").textContent = p.name;
+      $("#who .nm").textContent = shownName(p);
     }
     $("#doors").innerHTML = DOORS.map((d) => door(d)).join("");
     const ld = $("#lab-doors");
@@ -131,9 +134,12 @@
       players
         .map(
           (p) => `<button type="button" class="tile${p.id === Save.currentId() ? " on" : ""}" data-id="${esc(p.id)}">
-          <span class="dot" style="background:${esc(p.colour)}">${esc(initial(p.name))}</span><span class="nm">${esc(p.name)}</span></button>`
+          <span class="dot" style="background:${esc(p.colour)}">${esc(shownName(p) ? initial(p.name) : "")}</span><span class="nm">${esc(shownName(p))}</span></button>`
         )
-        .join("") + `<button type="button" class="tile add-tile" aria-label="Add a player"><span class="dot plus">+</span><span class="nm">Add</span></button>`;
+        .join("") + `<button type="button" class="tile add-tile" aria-label="Add a player"><span class="dot plus">+</span></button>`;
+    // the heading is for a screen reader only (FL-03: the faces are the question)
+    const h = $("h2", sheet);
+    if (h) h.hidden = true;
     if (global.Character) sheet.querySelectorAll(".tile[data-id] .dot").forEach((d) => global.Character.badge(d, d.closest(".tile").dataset.id));
     sheet.querySelectorAll(".tile[data-id]").forEach((t) =>
       t.addEventListener("click", () => {

@@ -63,9 +63,9 @@
       $("#letterbox").style.backgroundImage = "none";
     }
     $("#stage").style.background = scene.letterbox || "#e9dcc4";
-    // a greybox scene (no art yet, design 4.4): each anchor a labelled grey box on a plain floor,
+    // a greybox scene (no art yet, design 4.4): each anchor a grey box on a plain floor (unlabelled: S05-B),
     // and the occluders (a sofa's skirt, the curtain) drawn over the things, so under and behind
-    // really hide part of them. Labels are on scenery only, never on things.
+    // really hide part of them.
     if (scene.greybox) {
       world.classList.add("greybox");
       const floor = el("div", "w-grey-floor", world);
@@ -74,7 +74,8 @@
         const [x1, y1, x2, y2] = a.rect;
         const b = el("div", `w-grey w-grey-${id}`, world);
         Object.assign(b.style, { left: `${x1}px`, top: `${y1}px`, width: `${x2 - x1}px`, height: `${y2 - y1}px` });
-        b.innerHTML = `<span>${a.en || id}</span>`;
+        // FL-03 / LNG-01 (non-negotiable 5): no written English on the scenery; the box's name is for a screen reader only
+        b.setAttribute("aria-label", a.en || id);
       });
       (scene.occluders || []).forEach((o) => {
         const [x1, y1, x2, y2] = o.rect;

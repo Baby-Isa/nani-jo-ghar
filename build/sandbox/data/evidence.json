@@ -9682,6 +9682,67 @@
    "note": "upright phone: the rotate card only"
   }
  ],
+ "FL-03": [
+  {
+   "flow": "house",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "house",
+   "after": null,
+   "capture": [
+    "dom:body",
+    "shot"
+   ],
+   "expect": [
+    "!textMatches:(?i)cook with|find it|the clinic|player|coming soon"
+   ],
+   "note": "the house: pictures only, no room names, no 'Player 1' (the visible text of the whole page)"
+  },
+  {
+   "flow": "house",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "picker",
+   "after": null,
+   "capture": [
+    "dom:#picker"
+   ],
+   "expect": [
+    "!textMatches:(?i)who's playing|\\badd\\b|player \\d"
+   ],
+   "note": "the picker: faces and the grown-ups' typed names only"
+  },
+  {
+   "flow": "first",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "house-with-character",
+   "after": null,
+   "capture": [
+    "dom:#topbar",
+    "dom:#doors"
+   ],
+   "expect": [
+    "!textMatches:(?i)player|cook with|find it|clinic"
+   ],
+   "note": "after the first launch: no 'Player 1', no door names"
+  }
+ ],
  "MOD-01": [
   {
    "flow": "repo",
