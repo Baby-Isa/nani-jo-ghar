@@ -855,7 +855,7 @@
  "SH-17": [
   {
    "flow": "cook:chai",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -868,9 +868,9 @@
     "strip:#intro .ic-card:6x400"
    ],
    "expect": [
-    "count:#intro .ic-card .reading>=1"
+    "lastsMs:#intro .ic-card .reading>=200"
    ],
-   "note": "the read-along underline moves word by word in the pop-up"
+   "note": "the read-along underline moves word by word in the pop-up (at a child's pace: at test speed a line is over in 56 ms)"
   },
   {
    "flow": "cook:fetch",
@@ -903,12 +903,13 @@
    "at": "visible:.njg-rq-card .reading",
    "after": null,
    "capture": [
-    "strip:.njg-rq-card:6x400"
+    "crop:.njg-rq-card",
+    "dom:.njg-rq-card .reading"
    ],
    "expect": [
-    "count:.reading>=1"
+    "lastsMs:.njg-rq-card .reading>=200"
    ],
-   "note": "the clinic card read along in its pop-up (at the clinic real pace: in fast mode the pop-up folds within a second)"
+   "note": "the clinic card read along in its pop-up (real pace): the underline shows and lasts the line; a single-part line has nothing to move, so no filmstrip"
   }
  ],
  "SH-52": [
