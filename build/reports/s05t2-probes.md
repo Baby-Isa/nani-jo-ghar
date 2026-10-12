@@ -27,5 +27,15 @@ Branch `ccr-a7370759-t0lee7`. No game code changed. Final run **ev-20261012-2328
 
 SEK-03: `cook:mishkaki-grill@L4` stops on a repeated rack tap (C or driver).
 
-## Open
-Orchestrator's extra items (SH-66 window, vessel meta, SEK-05, legacy-lab re-points, `--lint-specs`) were queued during this run; see the overnight log for what landed.
+## Orchestrator's extra items
+| Item | Run | Result |
+|---|---|---|
+| SH-66 (silentAfter bound includes a stage starting at the same instant) | ev-20261012-234117-ria | PASS |
+| SH-33, CHAI-06, MAA-10, CK-02, CK-20, CK-12 (`check_vessel_meta.py` reads the loaded cuts; 3 meta entries) | ev-20261012-234353-9al | PASS |
+| SEK-05 (`test_cook.py` waits attached) | ev-20261012-234636-yyj | game FAIL: pantry ladder 4 rows vs 3 (C/B) |
+| SAM-02/08/10, CK-09, SEK-13, DAAR-04, CHAI-18, MAA-08 re-pointed or `max` 16 | ev-20261012-234811-hs4 | sheets for a reviewer |
+| SH-15 (words, dots), CHT-07 (markers) | -234811-hs4, -235519-b5z | PASS |
+| DAAR-11, CHAI-15, SEK-07 | ev-20261012-235701-b64 | still tool failures (ladle still at speed 1; pop-up cards not found; `sk3-plate` never on screen): next T |
+| `--lint-specs` + Probe pitfalls + brief line | checks `specs` | 33 flagged at first: end-card 17, legacy 9, expect 5, flow 1, cmd 1; baseline now 26 |
+
+Open: SEK-03 L4 stops on a repeated rack tap (C or driver).

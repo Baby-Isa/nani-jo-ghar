@@ -26,3 +26,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-13 00:40 UK · S05-D follow-ups (orchestrator): SH-41 clinic bulb (on/off never called; full 8 s; red 232242-0d8), clinic audit table build/reports/s05d-clinic-audit.md (CLN-113, CLN-112 to judge), pharmacy patient face top right (CLN-85 part)
 23:38 S05-T2: probes fixed, final run ev-20261012-232804-aql; extra orchestrator items next (report build/reports/s05t2-probes.md)
 - 2026-10-13 00:46 UK · S05-C round 2 (S/B items, PAN-06): CK-22 built; SH-56, PAN-09, PAN-06 sheets to judge; cards closed from L3; SH-58/SH-44/SEK-03/SH-19/PAN-01 wait on T's probes, SH-09 on S's card, the fridge on Mum
+23:58 S05-T2: extra items done (SH-66, vessel meta, SEK-05, re-points, --lint-specs); DAAR-11, CHAI-15, SEK-07 still tool failures
