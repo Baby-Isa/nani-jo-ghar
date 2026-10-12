@@ -18,6 +18,8 @@ All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s05*.brief.t
 
 Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVnUz6sJiRfmtqDkY8Fn, B session_01XWRyqDADPqVzsoa8hyEzTw.
 
+12 Oct ~22:50 UK check-in: T's environment push and S1 are in (S1: the voice layer stops everything; what remains is Cook's call-back after stage-end, sent to C, and a probe window fix, sent to T). C launched: session_01K5WMF1REU4yapBpc1zDJtA (with the vessel-meta and test_cook rows T's run left failing on the game). D launches when T finishes (at most four at once).
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
