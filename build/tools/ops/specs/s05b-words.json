@@ -1,0 +1,73 @@
+{
+  "name": "S05-B, words and leaks: the pantry leak, English written for the child, engine data safety, sentences, numbers, borrowed words (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the language engine and the Kutchi leak test; judgement about what a child can read",
+  "cost": "about $22-30",
+  "stop": "13 Oct 2026, 03:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "5 (language)"
+  ],
+  "read": [
+    "docs/sprints/S05-plan.md (Flaws and risks, and package B)",
+    "docs/architecture/evidence-loop.md (how a row is proven)",
+    "docs/decisions.md rows 79-87 only",
+    "docs/process/regressions.md: the rows named in your tasks"
+  ],
+  "owns": [
+    "js/core/lang/**, data/lang/**, build/lang/**",
+    "js/cook/{words,lang,order,recipes}.js, js/cook/mechanics/fetch.js, js/clinic/lang.js, js/home.js, js/first.js, js/find/**",
+    "build/tools/review/leak.mjs pantry config only (tell package T in your report)",
+    "the rows named in your tasks in docs/process/regressions.md (rows, specs and status, with evidence per decision 86)",
+    "build/reports/s05b-words.md"
+  ],
+  "readOnly": [
+    "js/shared/**, css/shared/** (package S)",
+    "the rest of js/cook/**, js/clinic/** (packages C and D)",
+    "build/sandbox/**, the rest of build/tools/** (package T)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: `pip install scipy playwright`. Never run `build/lang/import_all.mjs` until task 4 has made it safe. Then one red run of all your rows: `COOK_TEST_PORT=8892 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows PAN-06,PAN-09,LNG-01,LNG-03,SH-56,SH-70,PAN-02,PAN-03,MAA-02,CHAI-05,SAM-03,SAM-15,SEK-11,CK-22,SH-69,SH-13,SH-52,SEK-12,LNG-13` (`--resume <id>` after an exit 75).",
+      "accept": "the red run's id and its failing rows in the report"
+    },
+    {
+      "do": "The pantry leak (non-negotiable 6): the shelf labels follow `Cook.labelMode`, so the unlabelled jars are the order. Write row PAN-15 with its evidence spec first, add a pantry config to `leak.mjs`, see it go red, then label every jar by one rule whatever the order. Also PAN-06, PAN-09. Push this group first.",
+      "accept": "PAN-15 red then green; `node build/tools/review/leak.mjs cook --rounds 300` shows no pantry leak"
+    },
+    {
+      "do": "English written for the child (non-negotiable 5): the first-launch house doors, 'Player 1', the Find it greybox labels (pictures, or nothing; English only behind '?'); pill and card English (plan item 9, LNG-01, LNG-03). Add an FL row and probe for the house. SH-03's English under each word in the word review: LEAVE IT for now; Zafar's answer is pending and the orchestrator will message you.",
+      "accept": "the new FL row red then green; LNG-01, LNG-03 green"
+    },
+    {
+      "do": "Engine data safety: move the 8 hand confirmations (n.mince, n.onion, n.tomato, phrase.ali, phrase.nana, phrase.nani, phrase.here-by-you, phrase.there-over-there) into `build/lang/hand/`; make `import_all.mjs` refuse to demote a confirmed entry. SH-56 / decision 79 and Zafar's yes (12 Oct): samosa's 'tap ✓' goes where the result is already decided, so it needs no line; if a line is still needed and the engine can't say it, report the gap, never hand-write it.",
+      "accept": "the in-memory diff is 0 and `import_all.mjs --check` passes; SH-56 green"
+    },
+    {
+      "do": "Sentences and forms (SH-70, PAN-02, PAN-03, MAA-02, CHAI-05, SAM-03, SAM-15, SEK-11, CK-22, SH-69); numbers by level (SH-13, SH-52, SEK-12); borrowed words (decision 87, LNG-13): `loan: \"en\"` on confirmed loans (mixed, cup, film; thank you, dropping the draft 'aabhar aanjo') via `build/lang/hand/`, never a raw data edit; a borrowing audit list of every English-looking lexicon word for Zafar and Mum in your report. Never invent Kutchi (non-negotiable 4): a gap is reported, not filled.",
+      "accept": "each group's probe green or the gap named; `node build/tools/review/checks.mjs` and `import_all.mjs --check` pass"
+    },
+    {
+      "do": "Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path (the orchestrator judges changed rows). Wave 3 (multi-language prep) is NOT in this session: Zafar moved it to Sprint 6.",
+      "accept": "the report has a table: row, red run, green run, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "first-launch"
+  ],
+  "port": 8892,
+  "report": "s05b-words",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).",
+    "Browser runs only in chunks of at most 13 minutes under the shared lock; one red run at the start, one green run per group.",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group."
+  ]
+}

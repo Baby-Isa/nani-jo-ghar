@@ -1,0 +1,61 @@
+SESSION NAME / MODE:  S05-T, tools: the environment, the evidence tool, the cost-and-speed tooling (Sprint 5)
+MODEL AND EFFORT:     Sonnet, medium effort (tool and driver fixes, mechanical; no game judgement)
+COST ESTIMATE:        about $10-14
+HARD STOP:            13 Oct 2026, 02:00 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3 only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S05-plan.md (all of it; you are package T)
+  6. docs/process/cost-and-speed.md (changes 1, 3, 4, 5, 7, 8)
+  7. docs/architecture/evidence-loop.md
+  8. docs/decisions.md rows 82-87 only
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/**, build/sandbox/**, build/lint/**, .claude/**, build/*.py checks (check_*.py)
+  - docs/architecture/testing.md, docs/architecture/evidence-loop.md
+  - the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)
+  - build/reports/s05t-tools.md
+READ-ONLY (never edit):
+  - js/**, css/**, data/**, assets/** (packages S, B, C, D)
+  - build/lang/** (package B)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python, pip install; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. FIRST, before anything else: `pip install scipy playwright` (no `playwright install`; Chromium is at /opt/pw-browsers). Then make it permanent for every future session: a SessionStart hook in `.claude/settings.json` that runs the same pip install quietly (idempotent, under 60 s, never fails the session). Make `evidence.mjs` count an import error or missing module in a `cmd:` capture (ModuleNotFoundError, ImportError, 'Cannot find module', ERR_MODULE_NOT_FOUND) as a TOOL FAILURE, never a FAIL. Then run `COOK_TEST_PORT=8895 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-33,CHAI-06,MAA-10,CK-02,CK-12,CK-20,SEK-05,MOD-01,CHT-03` (use `--resume <id>` after an exit 75). Push as soon as this task is done, alone, with a commit message starting 'S05-T env:', because packages C and D wait for it.
+     Accept: red (the import error as it was) and green (the same command now passes or fails on the game itself); the report lists which of the 9 rows still fail on the game (those go to package C)
+  2. Make the `lexicon` and `familyOnly` expects skip lines carrying the hidden to-record tag (decision 84 allows them). Read `loan: "en"` (decision 87) in the lexicon expect and in the evidence judge prompt: a word marked as a loan is Kutchi, never flagged as English.
+     Accept: a unit test each; LNG-06/LNG-10 no longer fail only because of tagged placeholders
+  3. Restore `heal-marks.mjs`, then `EV8895 CLN-38,CLN-119`. Fix CLN-22 p3 L2 (capture a later moment). Make the knee driver reach CLN-100's turn counts, then `EV8895 CLN-100`. Respecify and run CLN-07, CLN-65, ART-12 (the probe must reach the state). Re-judge the six PASSes that cite no panel (SH-55, MAA-05, CLN-74, FL-02, ART-09, CLN-77): they need a panel or stay unjudged.
+     Accept: each probe reaches its state (the panel shows it); verdicts follow what the panel shows, game failures go back to the owning package in the report
+  4. PRC-02 (16:10 output) and PRC-09 (write `.claude/skills/game-mode-design/SKILL.md` from the existing mode docs: how a new mode is designed against the rulebook).
+     Accept: PRC-02's probe green; the skill is under 120 lines
+  5. Cost-and-speed tooling: (1) `brief.mjs` carries a default model table (Fable: art judgement, design, the review before main; Opus high: game code and the shared layer; Sonnet medium: specs, drivers, docs, verdict merging, reports; Haiku: text-only expects, counts, log scraping) and writes a context pack under 2k words with a decisions digest (the last 15 decisions from docs/decisions.md and the rules the task names, pasted); (2) `brief.mjs` exits 1 when two live briefs (a `live: true` field in specs) own the same path; (3) `evidence.mjs --apply` refuses a run without the verdict cache, and the gate replays only pages whose flow, size or mode tree hash changed; (4) `run.mjs` deletes screenshots older than the last approved run and the current one at start; (5) a hook warning when work has gone 30 minutes unpushed.
+     Accept: a unit test or a dry run for each; brief.mjs on the S05 specs gives no overlap
+  6. Close the `knead.js` literal item: `node build/tools/review/checks.mjs --only words` gives 0 literals; say so in the report. Recount `node build/tools/review/statuscounts.mjs --write`.
+     Accept: the command output pasted in the report
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s05t-tools` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8895.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s05t-tools.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.
+The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).
+Browser runs only in chunks of at most 13 minutes under the shared lock; push after every task (others pull your tool fixes).
+Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (four sessions push to this branch); never force-push.

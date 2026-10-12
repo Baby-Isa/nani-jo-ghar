@@ -1,0 +1,68 @@
+{
+  "name": "S05-T, tools: the environment, the evidence tool, the cost-and-speed tooling (Sprint 5)",
+  "model": "Sonnet",
+  "effort": "medium",
+  "why": "tool and driver fixes, mechanical; no game judgement",
+  "cost": "about $10-14",
+  "stop": "13 Oct 2026, 02:00 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3"
+  ],
+  "read": [
+    "docs/sprints/S05-plan.md (all of it; you are package T)",
+    "docs/process/cost-and-speed.md (changes 1, 3, 4, 5, 7, 8)",
+    "docs/architecture/evidence-loop.md",
+    "docs/decisions.md rows 82-87 only"
+  ],
+  "owns": [
+    "build/tools/**, build/sandbox/**, build/lint/**, .claude/**, build/*.py checks (check_*.py)",
+    "docs/architecture/testing.md, docs/architecture/evidence-loop.md",
+    "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
+    "build/reports/s05t-tools.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/**, assets/** (packages S, B, C, D)",
+    "build/lang/** (package B)"
+  ],
+  "stubs": "none",
+  "permissions": "git push to the branch; Node, Python, pip install",
+  "tasks": [
+    {
+      "do": "FIRST, before anything else: `pip install scipy playwright` (no `playwright install`; Chromium is at /opt/pw-browsers). Then make it permanent for every future session: a SessionStart hook in `.claude/settings.json` that runs the same pip install quietly (idempotent, under 60 s, never fails the session). Make `evidence.mjs` count an import error or missing module in a `cmd:` capture (ModuleNotFoundError, ImportError, 'Cannot find module', ERR_MODULE_NOT_FOUND) as a TOOL FAILURE, never a FAIL. Then run `COOK_TEST_PORT=8895 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-33,CHAI-06,MAA-10,CK-02,CK-12,CK-20,SEK-05,MOD-01,CHT-03` (use `--resume <id>` after an exit 75). Push as soon as this task is done, alone, with a commit message starting 'S05-T env:', because packages C and D wait for it.",
+      "accept": "red (the import error as it was) and green (the same command now passes or fails on the game itself); the report lists which of the 9 rows still fail on the game (those go to package C)"
+    },
+    {
+      "do": "Make the `lexicon` and `familyOnly` expects skip lines carrying the hidden to-record tag (decision 84 allows them). Read `loan: \"en\"` (decision 87) in the lexicon expect and in the evidence judge prompt: a word marked as a loan is Kutchi, never flagged as English.",
+      "accept": "a unit test each; LNG-06/LNG-10 no longer fail only because of tagged placeholders"
+    },
+    {
+      "do": "Restore `heal-marks.mjs`, then `EV8895 CLN-38,CLN-119`. Fix CLN-22 p3 L2 (capture a later moment). Make the knee driver reach CLN-100's turn counts, then `EV8895 CLN-100`. Respecify and run CLN-07, CLN-65, ART-12 (the probe must reach the state). Re-judge the six PASSes that cite no panel (SH-55, MAA-05, CLN-74, FL-02, ART-09, CLN-77): they need a panel or stay unjudged.",
+      "accept": "each probe reaches its state (the panel shows it); verdicts follow what the panel shows, game failures go back to the owning package in the report"
+    },
+    {
+      "do": "PRC-02 (16:10 output) and PRC-09 (write `.claude/skills/game-mode-design/SKILL.md` from the existing mode docs: how a new mode is designed against the rulebook).",
+      "accept": "PRC-02's probe green; the skill is under 120 lines"
+    },
+    {
+      "do": "Cost-and-speed tooling: (1) `brief.mjs` carries a default model table (Fable: art judgement, design, the review before main; Opus high: game code and the shared layer; Sonnet medium: specs, drivers, docs, verdict merging, reports; Haiku: text-only expects, counts, log scraping) and writes a context pack under 2k words with a decisions digest (the last 15 decisions from docs/decisions.md and the rules the task names, pasted); (2) `brief.mjs` exits 1 when two live briefs (a `live: true` field in specs) own the same path; (3) `evidence.mjs --apply` refuses a run without the verdict cache, and the gate replays only pages whose flow, size or mode tree hash changed; (4) `run.mjs` deletes screenshots older than the last approved run and the current one at start; (5) a hook warning when work has gone 30 minutes unpushed.",
+      "accept": "a unit test or a dry run for each; brief.mjs on the S05 specs gives no overlap"
+    },
+    {
+      "do": "Close the `knead.js` literal item: `node build/tools/review/checks.mjs --only words` gives 0 literals; say so in the report. Recount `node build/tools/review/statuscounts.mjs --write`.",
+      "accept": "the command output pasted in the report"
+    }
+  ],
+  "flows": [],
+  "browser": true,
+  "port": 8895,
+  "report": "s05t-tools",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).",
+    "Browser runs only in chunks of at most 13 minutes under the shared lock; push after every task (others pull your tool fixes).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (four sessions push to this branch); never force-push."
+  ]
+}

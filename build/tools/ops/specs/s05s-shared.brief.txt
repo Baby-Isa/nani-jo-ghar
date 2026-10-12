@@ -1,0 +1,67 @@
+SESSION NAME / MODE:  S05-S, the shared layer: voice after a stop, talk and bubbles, help, the results and order cards, the check button (Sprint 5)
+MODEL AND EFFORT:     Opus, high effort (the shared layer every game goes through; correctness and feel)
+COST ESTIMATE:        about $28-35
+HARD STOP:            13 Oct 2026, 03:30 UK. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S05-plan.md (Flaws and risks, and package S)
+  6. docs/architecture/evidence-loop.md (how a row is proven)
+  7. docs/decisions.md rows 75-87 only
+  8. docs/process/regressions.md: the rows named in your tasks
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/**, css/shared/**, js/core/voice.js
+  - the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)
+  - build/reports/s05s-shared.md
+READ-ONLY (never edit):
+  - js/cook/**, js/clinic/** (packages C and D: a change you need there goes in your report as a request)
+  - js/core/lang/**, data/**, build/lang/** (package B)
+  - build/tools/**, build/sandbox/** (package T)
+  - assets/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. FIRST: `pip install scipy playwright`. Then one red run of all your rows: `COOK_TEST_PORT=8891 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-66,SH-64,ART-18,SH-17,SH-19,SH-58,SH-41,SH-01,SH-03,SH-44,SH-67,SH-51,CLN-69,SH-09,SH-48,PAN-01,SH-36,SH-16,SH-54,SEK-03,SH-61` (`--resume <id>` after an exit 75). Record which fail.
+     Accept: the red run's id and its failing rows in the report
+  2. S1, voice after a stop (SH-66, SH-64): one stop at fold, stage end and game end silences every channel, including a clip still loading and the chef's call-back that starts 6-12 ms after the stop. Push this group alone as soon as it is green, commit message starting 'S05-S1 voice:', because C and D wait for it.
+     Accept: `EV8891 SH-66,SH-64` green (the voice log shows no clip after the stop)
+  3. S1, talk, bubble, read-along (ART-18, SH-17, and the day-2 greeting bubble: add a probe for it at 800x360 if none exists, as a request to T in your report if it needs a driver); help, the ✓ glow, the bulb (SH-19, SH-58, SH-41).
+     Accept: `EV8891 ART-18,SH-17` and `EV8891 SH-19,SH-58,SH-41` green, or (no machine expect) the sheet path left for the orchestrator to judge
+  4. S2, the results card: layout, order, actions, the room behind it (SH-01, SH-03 layout only (its English text belongs to package B and waits on Zafar), SH-44, SH-67, SH-51, CLN-69, plan item 10, the tooth end card). The order card: fit, centre, speaker, stamp, groups (SH-09, SH-48, PAN-01, SH-36, SH-16, SH-54, SEK-03). The ✓ button (SH-61). Decision 79: a ✓ after an already-decided finish goes.
+     Accept: each group's probe green; push after each group
+  5. Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path (the orchestrator judges changed rows); the rest stay open with what failed.
+     Accept: the report has a table: row, red run, green run, verdict
+
+REGRESSION ROWS TO RECHECK (144 rows of docs/process/regressions.md; * = open or reopened):
+  cook:fetch (14): PAN-01*, PAN-02*, PAN-03*, PAN-04, PAN-05*, PAN-06*, PAN-07, PAN-08, PAN-09*, PAN-10*, PAN-11, PAN-12, PAN-13, PAN-14
+  cook:chai-tray (18): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05*, CHAI-06*, CHAI-07*, CHAI-08*, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-13*, CHAI-14, CHAI-15*, CHAI-16, CHAI-17*, CHAI-18*
+  clinic:waiting (34): CLN-10, CLN-11*, CLN-12*, CLN-13, CLN-14*, CLN-15, CLN-90*, CLN-91, CLN-92, CLN-110, CLN-115*, CLN-01*, CLN-02, CLN-03*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08, CLN-09, CLN-81*, CLN-82, CLN-83, CLN-84, CLN-85*, CLN-86*, CLN-87*, CLN-88, CLN-89, CLN-109, CLN-111*, CLN-112*, CLN-113*, CLN-114
+  clinic:diagnosis (30): CLN-16, CLN-17*, CLN-18, CLN-93, CLN-94*, CLN-95, CLN-116*, CLN-01*, CLN-02, CLN-03*, CLN-04, CLN-05, CLN-06, CLN-07*, CLN-08, CLN-09, CLN-81*, CLN-82, CLN-83, CLN-84, CLN-85*, CLN-86*, CLN-87*, CLN-88, CLN-89, CLN-109, CLN-111*, CLN-112*, CLN-113*, CLN-114
+  shared components (71): SH-01*, SH-02, SH-03*, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51*, SH-61*, SH-07, SH-08, SH-09*, SH-10*, SH-11, SH-12, SH-13*, SH-14, SH-15*, SH-16*, SH-17*, SH-52*, SH-53, SH-54*, SH-55, SH-62, SH-69*, SH-70*, SH-18, SH-19*, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58*, SH-59, SH-60, SH-63, SH-64*, SH-65, SH-66*, SH-67*, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32*, SH-33*, SH-34, SH-35, SH-36*, SH-37*, SH-38, SH-39*, SH-40, SH-41*, SH-42, SH-43, SH-44*, SH-45*, SH-46, SH-47, SH-48*, SH-71
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s05s-shared` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8891.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s05s-shared.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.
+The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).
+Browser runs only in chunks of at most 13 minutes under the shared lock (four packages share it); one red run at the start, one green run per group.
+Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.

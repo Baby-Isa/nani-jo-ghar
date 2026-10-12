@@ -1,0 +1,71 @@
+{
+  "name": "S05-S, the shared layer: voice after a stop, talk and bubbles, help, the results and order cards, the check button (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared layer every game goes through; correctness and feel",
+  "cost": "about $28-35",
+  "stop": "13 Oct 2026, 03:30 UK",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-plan.md (Flaws and risks, and package S)",
+    "docs/architecture/evidence-loop.md (how a row is proven)",
+    "docs/decisions.md rows 75-87 only",
+    "docs/process/regressions.md: the rows named in your tasks"
+  ],
+  "owns": [
+    "js/shared/**, css/shared/**, js/core/voice.js",
+    "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
+    "build/reports/s05s-shared.md"
+  ],
+  "readOnly": [
+    "js/cook/**, js/clinic/** (packages C and D: a change you need there goes in your report as a request)",
+    "js/core/lang/**, data/**, build/lang/** (package B)",
+    "build/tools/**, build/sandbox/** (package T)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: `pip install scipy playwright`. Then one red run of all your rows: `COOK_TEST_PORT=8891 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-66,SH-64,ART-18,SH-17,SH-19,SH-58,SH-41,SH-01,SH-03,SH-44,SH-67,SH-51,CLN-69,SH-09,SH-48,PAN-01,SH-36,SH-16,SH-54,SEK-03,SH-61` (`--resume <id>` after an exit 75). Record which fail.",
+      "accept": "the red run's id and its failing rows in the report"
+    },
+    {
+      "do": "S1, voice after a stop (SH-66, SH-64): one stop at fold, stage end and game end silences every channel, including a clip still loading and the chef's call-back that starts 6-12 ms after the stop. Push this group alone as soon as it is green, commit message starting 'S05-S1 voice:', because C and D wait for it.",
+      "accept": "`EV8891 SH-66,SH-64` green (the voice log shows no clip after the stop)"
+    },
+    {
+      "do": "S1, talk, bubble, read-along (ART-18, SH-17, and the day-2 greeting bubble: add a probe for it at 800x360 if none exists, as a request to T in your report if it needs a driver); help, the ✓ glow, the bulb (SH-19, SH-58, SH-41).",
+      "accept": "`EV8891 ART-18,SH-17` and `EV8891 SH-19,SH-58,SH-41` green, or (no machine expect) the sheet path left for the orchestrator to judge"
+    },
+    {
+      "do": "S2, the results card: layout, order, actions, the room behind it (SH-01, SH-03 layout only (its English text belongs to package B and waits on Zafar), SH-44, SH-67, SH-51, CLN-69, plan item 10, the tooth end card). The order card: fit, centre, speaker, stamp, groups (SH-09, SH-48, PAN-01, SH-36, SH-16, SH-54, SEK-03). The ✓ button (SH-61). Decision 79: a ✓ after an already-decided finish goes.",
+      "accept": "each group's probe green; push after each group"
+    },
+    {
+      "do": "Rows: set each to built only with its green probe cited (run id); a row with no machine expect is left 'built, sheet to judge' with its sheet path (the orchestrator judges changed rows); the rest stay open with what failed.",
+      "accept": "the report has a table: row, red run, green run, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray",
+    "clinic:waiting",
+    "clinic:diagnosis"
+  ],
+  "shared": true,
+  "port": 8891,
+  "report": "s05s-shared",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling, the lock is shared by four sessions).",
+    "Browser runs only in chunks of at most 13 minutes under the shared lock (four packages share it); one red run at the start, one green run per group.",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group."
+  ]
+}
