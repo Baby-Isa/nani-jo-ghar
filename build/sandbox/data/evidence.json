@@ -754,7 +754,7 @@
    "sizes": [
     "1366x768"
    ],
-   "profile": "seen",
+   "profile": "numbers-known",
    "want": null,
    "at": "order-card-in-sidebar",
    "after": null,
@@ -764,7 +764,7 @@
    "expect": [
     "!hasWord:number"
    ],
-   "note": "L3+: heard only, no number in headline or rows"
+   "note": "L3+: heard only, no number in headline or rows (on a save where the numbers are known: decision 57 writes a number the first times it is heard)"
   }
  ],
  "SH-14": [
@@ -862,7 +862,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "visible:#intro .ic-card .reading",
    "after": null,
    "capture": [
     "strip:#intro .ic-card:6x400"
@@ -888,7 +888,8 @@
    ],
    "expect": null,
    "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays)",
-   "max": 4
+   "max": 4,
+   "delay": 500
   },
   {
    "flow": "clinic:waiting",
@@ -899,7 +900,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "popup-open",
+   "at": "visible:.njg-rq-card .reading",
    "after": null,
    "capture": [
     "strip:.njg-rq-card:6x400"
@@ -1933,6 +1934,26 @@
     "pass"
    ],
    "note": "Cook service bubbles"
+  },
+  {
+   "flow": "cook:day2",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "bubble",
+   "after": null,
+   "capture": [
+    "contract:4",
+    "shot"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "story day 2's greeting bubble at 800x360 (the tightest phone): above its speaker's head, not clipped"
   }
  ],
  "SH-23": [
@@ -2254,15 +2275,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "order-card-in-sidebar",
+   "at": "visible:#mission .oc-card.folded",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": [
-    "centredOn:.oc-t,.oc-face"
+    "centredOn:.oc-headline,.oc-face"
    ],
-   "note": "collapsed card: one line of text centred on the character icon"
+   "note": "collapsed card (a folded card, at the moment it folds): one line of text centred on the character icon"
   }
  ],
  "SH-37": [
