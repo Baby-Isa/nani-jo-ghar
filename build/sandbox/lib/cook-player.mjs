@@ -184,18 +184,21 @@ export class CookPlayer {
         }
       }
     }
-    // tap-during-speech (SH-20, PAN-11): the first thing asked is tapped while a line is still being said
+    // tap-during-speech (SH-20, PAN-11): a thing asked is tapped while a line is still being said. Nani speaks after a move (the
+    // pantry's next "Muke ... de."): at each of the first ten taps, up to 3 s for her next line, else the tap as usual
     if (m === "tap-during-speech" && !d.spoke && e.kind === "tap" && !(await this.onboardUp())) {
-      d.spoke = true;
+      d.tries = (d.tries || 0) + 1;
       // a line's start is an event (a silent test-build line is open about 140 ms): tap at once, where the item already is
-      const came = (await this.voice.speaking()) || !!(await this.voice.nextLine(8000));
+      const came = (await this.voice.speaking()) || !!(await this.voice.nextLine(3000));
+      if (!came && d.tries < 10) return false;
+      d.spoke = true;
       const cur = came ? e : await this.exp(); const t = cur && cur.kind === "tap" ? cur : e;
       await mark(p, "tap-during-speech", { block: false });
       await this.tap(t.sx, t.sy, t.key || "item");
       const still = await this.voice.speaking();
       const moved = await until(async () => JSON.stringify(await this.exp()) !== JSON.stringify(t), 900, 30);
       await this.once(!came ? "tap-during-speech" : moved && still ? "tap-taken-while-speaking" : moved ? "tap-during-speech" : "tap-held-till-quiet", { settle: 0 });
-      if (!came) this.rec.note("tap-during-speech: no line was being said in the 8 s before the first tap");
+      if (!came) this.rec.note("tap-during-speech: no line was said within 3 s of any of the first ten taps");
       if (moved) await this.waitChange(t, 3000);
       return true;
     }

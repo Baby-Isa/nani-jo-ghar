@@ -278,6 +278,7 @@ export class ClinicPlayer {
       if (game === "eye") await this.eyeMoments();
     }
     if (this.fast) await mark(this.page, "heal-fast-done", { block: false });
+    if (this.mode === "tap-during-speech" && !this.drv.spoke) this.rec.note("tap-during-speech: no line was said within 1.5 s of any move of this heal game");
   }
   // a driver's own move in a heal game instead of debug.next()'s (true: done, the loop asks again)
   async healDriver(game, a, next, tools) {
@@ -291,8 +292,11 @@ export class ClinicPlayer {
       return true;
     }
     if (m === "tap-during-speech" && !d.spoke) {
+      // the doctor speaks between moves: at each move, up to 1.5 s for her next line (twenty moves at most), then the move at once
+      d.tries = (d.tries || 0) + 1;
+      const came = (await this.voice.speaking()) || !!(await this.voice.nextLine(1500));
+      if (!came && d.tries < 20) return false;
       d.spoke = true;
-      const came = (await this.voice.speaking()) || !!(await this.voice.nextLine(6000));
       const b = came ? a : await next();
       const act = b && b.do !== "wait" ? b : a;
       await mark(this.page, "tap-during-speech", { block: false });
@@ -300,7 +304,7 @@ export class ClinicPlayer {
       const still = await this.voice.speaking();
       const moved = await until(async () => JSON.stringify(await next()) !== JSON.stringify(act), 900, 30);
       await this.once(!came ? "tap-during-speech" : moved && still ? "tap-taken-while-speaking" : moved ? "tap-during-speech" : "tap-held-till-quiet", { settle: 0 });
-      if (!came) this.rec.note("tap-during-speech: no line was being said in the 6 s before the first move");
+      if (!came) this.rec.note("tap-during-speech: no line was said within 1.5 s of any of the first twenty moves");
       return true;
     }
     if (m === "wrong-thrice" && d.wrongs < 3) {

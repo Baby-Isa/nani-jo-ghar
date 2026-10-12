@@ -1041,7 +1041,7 @@
    "after": null,
    "capture": [
     "contract:8",
-    "zoom2:.ng-tools"
+    "zoom2:.hs-tools"
    ],
    "expect": [
     "pass"
@@ -6454,12 +6454,10 @@
    "at": "every:step",
    "after": null,
    "capture": [
-    "trace:.ng-tools:3000",
+    "crop:.hs-tools",
     "dom:.cl-side .oc-card"
    ],
-   "expect": [
-    "traceRepeats:.ng-tools>=1"
-   ],
+   "expect": null,
    "note": "after the count the next row appears and its tool glows after a pause (scrape)"
   },
   {
@@ -6477,12 +6475,10 @@
    "at": "every:step",
    "after": null,
    "capture": [
-    "trace:.ng-tools:3000",
+    "crop:.hs-tools",
     "dom:.cl-side .oc-card"
    ],
-   "expect": [
-    "traceRepeats:.ng-tools>=1"
-   ],
+   "expect": null,
    "note": "knee after the kicks (boing after wipes, foot after jugs: the same probe)"
   },
   {
@@ -6500,11 +6496,9 @@
    "at": "every:step",
    "after": null,
    "capture": [
-    "trace:.ng-tools:3000"
+    "crop:.hs-tools"
    ],
-   "expect": [
-    "traceRepeats:.ng-tools>=1"
-   ],
+   "expect": null,
    "note": "foot after the jugs"
   }
  ],
@@ -6692,11 +6686,28 @@
    "at": "zoom-out",
    "after": null,
    "capture": [
-    "strip:.cl-zoom:6x250",
     "zoom2:.cl-stage"
    ],
    "expect": null,
-   "note": "zoom out from full zoom on the healed part; her pull-out pose",
+   "note": "the pull-out starts from full zoom on the healed part, her pull-out pose (2x, at its first frame)",
+   "delay": 200
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-out",
+   "after": null,
+   "capture": [
+    "strip:.cl-zoom:6x250"
+   ],
+   "expect": null,
+   "note": "the pull-out as it plays (a 1x page: its frames 250 ms apart)",
    "delay": 200
   }
  ],
@@ -7482,11 +7493,11 @@
    "at": "stage-heal",
    "after": null,
    "capture": [
-    "crop:.ng-tools",
+    "crop:.hs-tools",
     "dom:.rs-badges@results-badges"
    ],
    "expect": [
-    "count:.ng-tools [disabled]=0"
+    "count:.hs-tools [disabled]=0"
    ],
    "note": "the tray feeds the heal game; a wrong pick costs score, nothing greyed"
   }
@@ -8046,7 +8057,7 @@
    "at": "heal-cut-mid",
    "after": null,
    "capture": [
-    "zoom2:.ng-tools"
+    "zoom2:.hs-tools"
    ],
    "expect": null,
    "note": "no unexplained icons on the scrape's tools"
@@ -8860,7 +8871,7 @@
     "crop:.cl-heal"
    ],
    "expect": [
-    "noOverlap:.cut-hand,.ng-tools"
+    "noOverlap:.cut-hand,.hs-tools"
    ],
    "note": "the scrape's hand clear of the tool strip"
   }
@@ -8880,7 +8891,7 @@
    "at": "step:pour",
    "after": null,
    "capture": [
-    "zoom2:.ng-tools"
+    "zoom2:.hs-tools"
    ],
    "expect": null,
    "note": "hot, cold, lukewarm jugs read at a glance (steam, ice): the tools at the first jug poured"
@@ -9106,7 +9117,7 @@
    "after": null,
    "capture": [
     "trace:.ob-ghost:4000",
-    "zoom2:.ng-tools"
+    "zoom2:.hs-tools"
    ],
    "expect": [
     "traceAmp:.ob-ghost>=40"
@@ -9115,7 +9126,7 @@
   },
   {
    "flow": "clinic:heal-ear",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2
@@ -9232,12 +9243,9 @@
    "at": "pour",
    "after": null,
    "capture": [
-    "strip:.cl-heal:5x200",
-    "trace:.ng-tools:3000"
+    "strip:.cl-heal:5x200"
    ],
-   "expect": [
-    "traceRepeats:.ng-tools>=1"
-   ],
+   "expect": null,
    "note": "real liquid, level rising; the next step cued"
   }
  ],
@@ -9914,10 +9922,10 @@
    "at": "every:cook-done",
    "after": null,
    "capture": [
-    "zoom2:canvas:nani"
+    "zoom2:.njg-guide"
    ],
    "expect": null,
-   "note": "Nani's four cooking moods (not one image); Nana, Ma, Ali impatient faces do not smile smugly",
+   "note": "Nani's four cooking moods (not one image) in her guide box at each move; Nana, Ma, Ali impatient faces do not smile smugly",
    "max": 8
   },
   {

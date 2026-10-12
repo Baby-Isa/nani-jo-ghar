@@ -58,11 +58,20 @@ For sound rows, which clip plays, when and in what order is checked by machine w
 | CLN-61 | Eye test: layout A or B? |
 | CLN-122 | Knee close-up framing: is it right? |
 
-## Drivers needed (paths, in `_drivers`): 18
+## Drivers (paths, in `_drivers`): all 18 built (s04-e3, 12 Oct)
 
-wrong-extra-person, wrong-count, serve-combined, tap-during-speech, tap-during-pause, mute-across-modes, start-over, tap-through-popup, tap-quick, tawa-empty-then-off, idle-twice, force-passme, wrong-spice-thrice, turn-early-late, wrong-thrice, lab-log-on, heal-fast, find-scene.
+Each is a sandbox path (`build/sandbox/drivers/catalog.mjs`: the kinds of flow it plays on and the moments it records; `flows/index.mjs flowKind` lists them; flow ids may carry a hyphenated path, `cook:fetch#tap-during-speech`). Each plays fair except for its one move, through the games' own hooks only (`__cook.expectation()`, `__clinic.expect()`, the heal games' `debug.next()`/`slip()`, `RequestPopup`, the probe's own sound and Lifecycle events). Their descriptions in `_drivers` say what each does as built. Three more paths the specs needed: the clinic's `takeback`, `real-pace` (the clinic without `&fast=1`, where its zooms take 120 ms) and `mistake` on the game host and story days.
 
-There are also 18 named moments in `_moments`. Some are general forms: `exp:<key>`, `phase:<p>`, `step:<id>`, `visible:<sel>`, `only:<sel>` and `every:<moment>`. The rest are named states: served, fold, pass-me, greeting, zoom-in, zoom-out, hearing-test, taught, daar-in, retry, after-wrong, after-mute, after-start-over, idle, labs and scene.
+Smoked (runs ev-e3smoke1..3, 1366x768): wrong-extra-person, wrong-count (SH-50), serve-combined (SH-54), tap-during-speech (SH-20, PAN-11, CLN-35), tap-during-pause (LNG-07), mute-across-modes (SH-22), start-over (SH-60), tap-through-popup (SH-64), tap-quick (PAN-12), tawa-empty-then-off (MAA-11), idle-twice (MAA-13, SH-46, CLN-101), force-passme (ART-10), wrong-spice-thrice (DAAR-09), turn-early-late (SEK-09 L1–L4), wrong-thrice (CK-23), lab-log-on (CLN-07), heal-fast (CLN-109), find-scene (MOD-02), takeback (CLN-112).
+
+**Named moments mapped** (`lib/moments.mjs` ALIASES): zoom-in (`.cl-zoom.on` shows), zoom-in-end, zoom-out (`.cl-outro`), taught (a fresh child's taught heal round: `taught-<game>`), greeting (Cook's `#choices`, the clinic's say pills), hearing-test (`heal:picture`), labs (the house's "Game labs" link, evidence runs only), retry (ticked rows reopen after a mistake), your-turn (Cook's reply pills; each clinic stage's first ask of a kind), daar-in, tap-no (first launch's No), pour (`step:pour`, the taste game's milk or water), after-mute, after-start-over, scene, count-word, knob-off, tawa-empty; served and after-wrong also match the game host's game-named states, and a heal slip answers after-wrong.
+
+## Game-hook requests (what a driver cannot prove without one)
+
+1. **The ghost finger's replays** (SH-46, MAA-13, CLN-101): in a second play, and at the ear's first step on a fresh play, no `.ob-ghost` was on screen during 4–20 s idle traces. Either no ghost comes after a pause (then the row's finding), or it plays too briefly to sample. Wanted: `Onboard` logs each ghost play to `Lifecycle.log` (`{what: "ghost", step}`), so a probe counts plays instead of catching frames.
+2. **The dropper over the eye** (CLN-62): no element per eye. Wanted: the eye game's `debug.dropper()` and `debug.soreEye()` boxes (client px), so `inside:` decides it (the reviewer reads the zoom until then).
+3. **The glowing next thing** (PAN-08, CHAI-10, CHT-05 in Cook: Phaser effects and drawn graphics, not textures; CLN-82, CLN-104 in the heal games: the tool strip never moves, a glow is on one tool): wanted `__cook.glowing()` and `debug.glowing()` (the glowing object or tool and its screen box) and a screen box on `__cook.gauge()`. The reviewer reads crops until then.
+4. **Cook's sizzle** (MAA-11): a synthesized loop the sound hook cannot see; the driver wraps `Cook.sfx.sizzleLoop` at run time and logs it as `sfx/sizzle-loop`. A `Cook.sfx` event into the sound log would make it a first-class check.
 
 ## Tools needed (in `_tools`)
 
@@ -71,7 +80,7 @@ There are also 18 named moments in `_moments`. Some are general forms: `exp:<key
 
 ## Notes for the tool builder
 
-- Selectors come from `css/shared` and `css/cook*`. Cook uses `#mission`, `#side`, `#stage`, `#count-badge`, `#passme` and `#btn-bulb`. The clinic uses `.cl-side`, `.cl-heal`, `.cl-stage`, `.ng-tools` and `.ng-bulb`. Shared screens use `.njg-guide`, `.njg-rq-card`, `.rs-words` and `.njg-done`.
-- A few class names are inferred and not confirmed: `.oc-row.done`, `.cl-hand`, `.cl-gauge`, `.cl-eye-zone`, `.njg-home`. If one does not match, it fails as a tool failure (Fable 3); fix the spec.
+- Selectors come from `css/shared` and `css/cook*`. Cook uses `#mission`, `#side`, `#stage`, `#count-badge`, `#passme` and `#btn-bulb`. The clinic uses `.cl-side`, `.cl-heal`, `.cl-stage`, `.hs-tools` (the heal tool strip; `.ng-tools` is the guide box's bulb and mute) and `.ng-bulb`. Shared screens use `.njg-guide`, `.njg-rq-card`, `.rs-words` and `.njg-done`.
+- The inferred class names are resolved (s04-e3): the scrape's hand is `.cut-hand`, the fever gauge `[data-reading]`, CLN-62's eye zone has no element (game-hook request 2). Cook's request pop-up is `#intro .ic-card`; `.njg-rq-card` is the clinic's. The clinic's ✓ is `.njg-done.cl-go`.
 - `canvas:<name>` resolves by texture-key prefix through the Phaser display-list walk, the same walk as `build/lint/phaser.mjs`.
 - `cmd:python3 build/bg_align_check.py` (MOD-01) needs scipy in the sandbox.
