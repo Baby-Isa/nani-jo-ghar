@@ -44,7 +44,9 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       const P = new CookPlayer(page, rec, { mode: mode === "start-over" ? "fair" : mode, speed });
       // #takeback: the first-time coaches count as seen (the grown-ups' skip), so the take-back is tested, not the coach (4d)
       // ctx.profile "seen" (the evidence loop): the coaches count as seen too
-      if (mode === "takeback" || ctx.profile === "seen") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
+      if (mode === "takeback" || ctx.profile === "seen" || ctx.profile === "numbers-known") await page.evaluate(() => window.__cook.coachesSeen && window.__cook.coachesSeen());
+      // ctx.profile "numbers-known" (SH-13, decision 57): every number word has been heard three times, as after a few plays
+      if (ctx.profile === "numbers-known") await page.evaluate(() => { const C = window.Cook; for (let n = 1; n <= 12; n++) for (let i = 0; i < 3; i++) C.markSeen(C.numId(n)); });
       await page.evaluate(([k, l, g]) => { __cook.lab(k, g, { level: l }); }, [labKey, level, mode !== "hint"]);
       await page.waitForFunction("document.querySelector('#overlay').classList.contains('hidden')", null, { timeout: 15000 });
       await sleep(500);

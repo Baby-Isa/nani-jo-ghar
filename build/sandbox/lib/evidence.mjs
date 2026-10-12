@@ -21,7 +21,7 @@ export const DEFAULT_SIZE = "1366x768";
 export const PHONE_SIZES = ["844x390", "800x360"];
 export const MAX_EVERY = 8;      // an every:<moment> probe captures at most this many times (a probe's "max" changes it)
 export const MAX_STRIP = 12;     // frames in one filmstrip
-export const PROFILES = ["fresh", "seen", "second-play"];
+export const PROFILES = ["fresh", "seen", "second-play", "numbers-known"]; // numbers-known: help seen, and every number word already heard 3 times (decision 57: then L3 drops the written number; SH-13)
 export const KINDS = ["layout", "detail", "art", "motion", "text", "voice"];
 
 // ---------- selectors ----------
