@@ -167,14 +167,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const toA = (v) => Math.PI + Cook.clamp(v / k.dialMax, 0, 1) * Math.PI;
       const dial = S.track(S.add.graphics().setDepth(D.item));
       const needle = S.track(S.add.graphics().setDepth(D.item + 1));
-      const BANDS = [
+      // DAAR-12 (D13): the asked speed's band is green, the other yellow, the spill red (as daar's own dial); nothing
+      // asked (level 1): slow green, quick yellow. Drawn again when she changes the speed mid-stir (level 3)
+      const GREEN = 0x8fb087;
+      const YELLOW = 0xe8c25a;
+      const SPILL = 0xc0503f;
+      const bandsFor = (a) => [
         [0, e1, 0xd8cfc0],
-        [e1, e2, 0xf6ead2],
-        [e2, e3, 0xf6ead2],
-        [e3, k.dialMax, 0xc0503f],
+        [e1, e2, a === "quick" ? YELLOW : GREEN],
+        [e2, e3, a === "quick" ? GREEN : YELLOW],
+        [e3, k.dialMax, SPILL],
       ];
-      (() => {
+      let BANDS = bandsFor(asked);
+      const drawDial = () => {
         const g = dial;
+        g.clear();
+        BANDS = bandsFor(asked);
         // the gauge's face: a cream card standing on the spare burner
         const bx = dx0 - DR - DW * 1.2;
         const by = dy0 - DR - DW * 1.4;
@@ -213,7 +221,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         hare(g, p.x + z.L(6), p.y + z.L(10), s * 0.95);
         p = at((e3 + k.dialMax) / 2, DR);
         splash(g, p.x, p.y + z.L(4), s * 0.75);
-      })();
+      };
+      drawDial();
 
       /* ---------- the order ---------- */
       const parts = [Lang.numLine(laps)];
@@ -316,6 +325,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const next = Math.random() < k.switch.sameChance ? asked : asked === "slow" ? "quick" : "slow";
             later(() => {
               asked = next;
+              drawDial();
               phases.push(newPhase(asked));
               wrongT = 0;
               graceUntil = performance.now() + k.graceMs;
@@ -539,7 +549,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     verb: "Count and speed",
     async run(L) {
       const R = Cook.Recipes;
-      const d = R.daal.make();
+      // DAAR-12: the speed is on the card whenever she asks one (from level 2): an order that names it
+      let d = R.daal.make("nana", { level: L.level });
+      for (let i = 0; i < 30 && L.level >= 2 && !d.speed; i++) d = R.daal.make("nana", { level: L.level });
       L.card(d, ["Stir"]);
       await L.station("stir", { laps: d.laps, speed: d.speed });
     },

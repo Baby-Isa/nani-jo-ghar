@@ -264,7 +264,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // 30 Sept (Zafar, Q7): from level 3 the chop card is words only ("dungri"); how many is heard, as on the order card
     const parts = (id) => Lang.countParts(want[id], id);
     // (from level 3 the noun keeps the form its count gave it: "trae dungri" is written "dungri")
-    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(level >= 3 ? Lang.phraseUncounted(parts(id)) : Lang.phrase(parts(id))), done: doneIds.includes(id) }));
+    // DAAR-08, decision 57 (as the order card, js/cook/order.js): a number is still written the first times it is heard
+    const written = (id) => level < 3 || !!(Cook.timesHeard && Cook.numId && Cook.timesHeard(Cook.numId(want[id])) < 3);
+    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(written(id) ? Lang.phrase(parts(id)) : Lang.phraseUncounted(parts(id))), done: doneIds.includes(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
     no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))))), done: false, no: true }));
@@ -805,8 +807,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       [e2, e3, asked === "quick" ? GREEN : YELLOW],
       [e3, max, 0xd0604a],
     ];
+    // (the bands clearly in their colours on the dark glass: the asked one green, the spill red, DAAR-12)
     BANDS.forEach(([a, b, col]) => {
-      g.lineStyle(BW, col, 0.3);
+      g.lineStyle(BW, col, 0.72);
       g.beginPath();
       g.arc(0, ay, R, toA(a) + 0.02, toA(b) - 0.02);
       g.strokePath();
@@ -860,7 +863,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             [BW + 26, 0.1],
             [BW + 14, 0.2],
           ].forEach(([w, a]) => {
-            lit.lineStyle(w, 0xffa94d, a);
+            // the glow in the band's own colour (an orange glow made the green band read gold)
+            lit.lineStyle(w, band[2], a);
             lit.beginPath();
             lit.arc(0, ay, R, toA(band[0]) + 0.02, toA(Math.min(band[1], max)) - 0.02);
             lit.strokePath();
