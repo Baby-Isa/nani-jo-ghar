@@ -551,7 +551,10 @@
     const t = document.createElement("span");
     t.className = "cl-row-text";
     Kit.text(r, t);
-    return `${t.outerHTML}<span class="cl-row-en" aria-hidden="true">${esc(r.english || "")}</span>`;
+    // CLN-76 (E1, G2): a line with no Kutchi yet stays a flagged placeholder under the bulb too (grey italic), never
+    // the bulb's dark translation colour: there is nothing to translate
+    const ph = !r.kutchi || r.placeholder === true;
+    return `${t.outerHTML}<span class="cl-row-en${ph ? " ph" : ""}" aria-hidden="true">${esc(r.english || "")}</span>`;
   };
   Kit.Card.prototype.render = function () {
     const card = this;
