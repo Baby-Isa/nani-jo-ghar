@@ -1213,7 +1213,9 @@
     const box = el.querySelector(".ic-order");
     if (!card || !box) return { asked: false };
     box.innerHTML = "";
-    card.classList.remove("people", "crowd", "c4", "wide");
+    // the card carries its own face (as renderIntro6's people cards do): the pop-up's own head stays hidden
+    card.classList.remove("crowd", "c4", "wide");
+    card.classList.add("people");
     const rec = line.ok === false;
     box.appendChild(OC.card({ person: { id: who, face: faceUrl(who), name: who === "nani" ? "Nani" : "" }, headline: { html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide }), rec }, items: [] }, { big: true }));
     UI.closeHelp();
