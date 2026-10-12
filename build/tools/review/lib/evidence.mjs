@@ -76,7 +76,7 @@ export function parseVerdicts(text) {
     if ((m = /^judge:\s*(.+)$/i.exec(l))) { out.judge = m[1].trim(); continue; }
     if (!(m = /^\|?\s*([A-Z][A-Z]*-[A-Z0-9-]*\d+)\s*\|\s*(PASS|FAIL|EVIDENCE)\s*:\s*(.+?)\s*\|?$/.exec(l))) continue;
     const [, id, verdict, line] = m;
-    const pm = /^(?:panel\s+)?([A-D](?:\s*(?:,|and|\+|&)\s*[A-D])*)\b\s*[,:;.)-]/i.exec(line);
+    const pm = /^(?:panel\s+)?([A-D](?:\s*(?:,|and|\+|&)\s*[A-D])*|text|voice|t|p\d+)\b\s*(?:\([^)]*\))?\s*[,:;.)-]/i.exec(line); // a text-only row cites its text ("PASS: text, ...")
     const panel = pm ? pm[1].toUpperCase().replace(/\s+/g, "") : null;
     if (verdict === "PASS" && !panel) { out.rejected.push({ id, why: "a PASS must name the panel it saw first (\"PASS: B, ...\")", line }); continue; }
     out.lines.push({ id, verdict, line, panel });
