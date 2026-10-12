@@ -1722,9 +1722,10 @@
     "voice"
    ],
    "expect": [
+    "times:tapped-through>=1",
     "silentAfter:popup-fold"
    ],
-   "note": "tap through the pop-up at once: the read-out stops"
+   "note": "tap through the pop-up at once: the read-out stops (at a child's pace; the tap lands half a second into the first line, so a cut-off would show)"
   },
   {
    "flow": "clinic:pharmacy",
@@ -1741,9 +1742,10 @@
     "voice"
    ],
    "expect": [
+    "times:tapped-through>=1",
     "silentAfter:popup-fold"
    ],
-   "note": "the pharmacy pop-up folds on a tap and the reading stops"
+   "note": "the pharmacy pop-up folds on a tap and the reading stops (at a child's pace; the tap lands half a second into the first line, so a cut-off would show)"
   },
   {
    "flow": "clinic:heal-cut",
@@ -1761,9 +1763,10 @@
     "dom:.njg-rq-card@popup-open"
    ],
    "expect": [
+    "times:tapped-through>=1",
     "silentAfter:popup-fold"
    ],
-   "note": "scrape: the same shared pop-up as Cook (its card's words taken as it opens), tapped through: the reading stops"
+   "note": "scrape: the same shared pop-up as Cook (its card's words taken as it opens), tapped through: the reading stops (at a child's pace; the tap lands half a second into the first line, so a cut-off would show)"
   }
  ],
  "SH-65": [
@@ -9774,12 +9777,14 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:python3 build/bg_align_check.py"
+    "cmd:python3 build/bg_align_check.py assets/backgrounds/bg-bigma-room-e-v1.png assets/backgrounds/bg-bigma-room-e-evening-v1.png assets/backgrounds/bg-bigma-room-e-night-v1.png",
+    "cmd:python3 build/bg_align_check.py assets/backgrounds/bg-nani-kitchen-e-v1.png assets/backgrounds/bg-nani-kitchen-e-evening-v1.png assets/backgrounds/bg-nani-kitchen-e-night-v1.png",
+    "cmd:python3 build/bg_align_check.py assets/backgrounds/bg-bazaar-stall-e-v1.png assets/backgrounds/bg-bazaar-stall-e-evening-v1.png assets/backgrounds/bg-bazaar-stall-e-night-v1.png"
    ],
    "expect": [
     "pass"
    ],
-   "note": "Find it relights 8.2 and 8.3 are a relight, not a redraw (needs scipy in the sandbox)"
+   "note": "every background with a day, an evening and a night picture (the day first, then its relights) is a relight, not a redraw (needs scipy in the sandbox)"
   }
  ],
  "MOD-02": [

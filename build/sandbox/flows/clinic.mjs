@@ -36,7 +36,9 @@ export class ClinicPlayer {
   async tapThrough() {
     if (this.mode !== "tap-through-popup" || this.drv.tapped || !(await popupOpen(this.page))) return false;
     this.drv.tapped = true;
-    await sleep(60); // at test speed the pop-up folds within ~0.25 s: tap as soon as it is seen open
+    // the clinic plays at its real pace for this driver (S05-T2): tap half a second into the first line, so a cut-off would show
+    const v = await watchVoice(this.page);
+    if (await v.speaking() || await v.nextLine(3000)) await sleep(500); else this.rec.note("tap-through-popup: no line was said within 3 s of the pop-up opening");
     if (!(await popupOpen(this.page))) { this.rec.note("tap-through-popup: the pop-up folded by itself within 0.25 s"); return false; }
     await mark(this.page, "tapped-through", { block: false });
     await tapPopup(this.page);
@@ -382,7 +384,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       // second-play keeps the help on (SH-46: help met in the first play is shown again after a pause in the second; with
       // &onboard=0 the heal games' ghost finger never plays at all: s04-hooks, Lifecycle.ghost counted 0)
       const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
-      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" ? 0 : 1}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
+      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" || mode === "tap-through-popup" ? 0 : 1}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
       if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)
       if (levels) {

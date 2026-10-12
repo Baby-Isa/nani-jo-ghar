@@ -248,7 +248,12 @@ export class CookPlayer {
     // second); a probe of its card takes it at "popup-open"
     if (this.mode === "tap-through-popup") {
       await until(() => popupOpen(p), 3000, 15);
-      await sleep(60); // at test speed it folds within ~0.25 s: tap as soon as it is seen open
+      // at a child's pace (speed 1, S05-T2) the read-out is tapped half a second into the first line, so a cut-off would show;
+      // at test speed it folds within ~0.25 s: tap as soon as it is seen open
+      if (this.speed === 1) {
+        const v = await watchVoice(p);
+        if (await v.speaking() || await v.nextLine(3000)) await sleep(500); else this.rec.note("tap-through-popup: no line was said within 3 s of the pop-up opening");
+      } else await sleep(60);
       if (await popupOpen(p)) {
         await mark(p, "tapped-through", { block: false });
         await tapPopup(p);
