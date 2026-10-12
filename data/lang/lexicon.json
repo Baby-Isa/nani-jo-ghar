@@ -1958,7 +1958,8 @@
    "gloss": "chips (the English word: the family says it too)",
    "status": "confirmed",
    "src": [
-    "grammar-notes §26 B28 (chips, or tarela bataata)"
+    "grammar-notes §26 B28 (chips, or tarela bataata)",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
    ],
    "ask": {
     "gender": [
@@ -1970,7 +1971,8 @@
      "q": "chips or tarela bataata: the family says both; which does Nani say in the game?",
      "src": "grammar-notes §26 B28"
     }
-   ]
+   ],
+   "loan": "en"
   },
   {
    "id": "n.chutney",
@@ -3445,7 +3447,8 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §38 I20 (glass dho, cup dho)",
-    "data/tidy.json words.placeholders.ph-glass: an English placeholder, to record"
+    "data/tidy.json words.placeholders.ph-glass: an English placeholder, to record",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
    ],
    "aliases": [
     "ph-glass"
@@ -3454,7 +3457,8 @@
     "gender": [
      "L49"
     ]
-   }
+   },
+   "loan": "en"
   },
   {
    "id": "n.glasses",
@@ -5136,7 +5140,13 @@
     "gender": [
      "new"
     ]
-   }
+   },
+   "open": [
+    {
+     "q": "Is 'peach' the word the family uses (an English loan), or is there a Kutchi word? (borrowing audit, Zafar 12 Oct)",
+     "src": "S05-B borrowing audit; Zafar, 12 Oct"
+    }
+   ]
   },
   {
    "id": "n.pear",
@@ -5915,7 +5925,8 @@
    "src": [
     "grammar-notes §15 (shelf je mathe ai)",
     "data/tidy.json words.placeholders.ph-t-shelf: an English placeholder, to record",
-    "data/find.json words.placeholders.ph-shelf: an English placeholder, to record"
+    "data/find.json words.placeholders.ph-shelf: an English placeholder, to record",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
    ],
    "aliases": [
     "ph-t-shelf",
@@ -5925,7 +5936,8 @@
     "gender": [
      "new"
     ]
-   }
+   },
+   "loan": "en"
   },
   {
    "id": "n.shirt",
@@ -6535,11 +6547,13 @@
    "src": [
     "grammar-notes §35 C6 (hakro table, ba table: a he-word that doesn't change)",
     "grammar-notes §15 (cup table je mathe ai)",
-    "data/find.json words.placeholders.ph-table: an English placeholder, to record"
+    "data/find.json words.placeholders.ph-table: an English placeholder, to record",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
    ],
    "aliases": [
     "ph-table"
-   ]
+   ],
+   "loan": "en"
   },
   {
    "id": "n.tablespoon",
@@ -7229,13 +7243,15 @@
    "gloss": "time (the English word)",
    "status": "confirmed",
    "src": [
-    "grammar-notes §19 (time pati vyo: time's up)"
+    "grammar-notes §19 (time pati vyo: time's up)",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
    ],
    "ask": {
     "gender": [
      "new"
     ]
-   }
+   },
+   "loan": "en"
   },
   {
    "id": "n.times",
@@ -9425,8 +9441,10 @@
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §33 S1 (Tu muke help kar de?)"
-   ]
+    "grammar-notes §33 S1 (Tu muke help kar de?)",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
+   ],
+   "loan": "en"
   },
   {
    "id": "v.knead",
@@ -9625,8 +9643,10 @@
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §38 I13 (people also say mix kari chad with the English word)"
-   ]
+    "grammar-notes §38 I13 (people also say mix kari chad with the English word)",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
+   ],
+   "loan": "en"
   },
   {
    "id": "v.open",
@@ -11177,8 +11197,10 @@
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §38 I3 (slow kar: English slow + kar; not aste thi kar)"
-   ]
+    "grammar-notes §38 I3 (slow kar: English slow + kar; not aste thi kar)",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
+   ],
+   "loan": "en"
   },
   {
    "id": "adv.slowly",

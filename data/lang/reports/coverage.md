@@ -40,7 +40,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 | lexicon.md §6 | 69 |
 | data/content.json (handout) | 65 |
 | conversations / story | 38 |
-| other | 19 |
+| other | 27 |
 | decisions / rulebook | 9 |
 
 ## Grammar

@@ -32,6 +32,8 @@ Red run: **ev-20261012-2108** (19 rows; failing: SH-13, SH-52, SH-70, PAN-02, PA
 | SH-69, SEK-11, PAN-06, PAN-09 | sheets | g3 / 2124 | sheet to judge |
 
 ### Borrowing audit (for Zafar and Mum; 22 words)
+**Zafar, 12 Oct: yes.** Now marked loan en (`build/lang/hand/loans.mjs`): chips, glass, shelf, table, time, help, mix, slow (11 marked words in all); peach stays a draft with a question on Mum's list; the South Asian words stay unmarked. `import_all.mjs --check` passed, diff 0, lang tests 57/57.
+
 Marked: cup, film, mixed (and the phrases thank you, na thank you). The source already says "the English word", so mark them (recommend yes to all): chips, glass, shelf, table, time, help, mix, slow. To confirm: peach (draft). Words English took from South Asia, not loans (no mark): bhajiya, chaat, chai, chutney, garam masalo, ghee, kebab, samosa, sev, tawa.
 
 ## Proof (from the run; do not retype)
