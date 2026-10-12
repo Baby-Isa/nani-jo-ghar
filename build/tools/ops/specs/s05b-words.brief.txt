@@ -26,6 +26,7 @@ READ-ONLY (never edit):
   - build/sandbox/**, the rest of build/tools/** (package T)
   - assets/**
   - js/shared/**, build/tools/** and every other session's files unless listed above
+NOTE: the generated READ-ONLY line 'build/tools/**' is a default; you may edit the pantry config in build/tools/review/leak.mjs only.
 SHARED PIECES NEEDED BUT MISSING: none
 
 DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.

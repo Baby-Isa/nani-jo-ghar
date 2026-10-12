@@ -23,6 +23,7 @@ READ-ONLY (never edit):
   - js/**, css/**, data/**, assets/** (packages S, B, C, D)
   - build/lang/** (package B)
   - js/shared/**, build/tools/** and every other session's files unless listed above
+NOTE: the generated READ-ONLY line 'js/shared/**, build/tools/**' is a default; you OWN build/tools/** as listed above.
 SHARED PIECES NEEDED BUT MISSING: none
 
 DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
