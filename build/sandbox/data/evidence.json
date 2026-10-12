@@ -3120,6 +3120,44 @@
    "note": "the pantry background never stretched non-uniformly; cropped or extended at 16:10 and on phones"
   }
  ],
+ "PAN-15": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/leak-games/cook.mjs --only pantry --pantry 8"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the pantry leak bot on a returning child's save: the jars with no label, with a label, or whose label text is on the card are not the order (each under 10%, L1-L4)"
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-pantry",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "the shelf at L3: every jar labelled by the same rule"
+  }
+ ],
  "CHAI-01": {
   "human": "Does the chai station feel fun enough for the second thing a new player sees? (play one chai round from a fresh start)"
  },

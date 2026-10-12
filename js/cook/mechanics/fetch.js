@@ -46,6 +46,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (L && Cook.Order) Cook.Order.rows(L, { all: true }).forEach((r) => r.no && r.ids.forEach((id) => Cook.item(id) && out.add(id)));
     return [...out];
   }
+  /**
+   * PAN-15 (non-negotiable 6, S05-B): every jar on the shelf is labelled by one rule, whatever the order. A word label
+   * that followed the word's stage (Cook.labelMode) left the words already ordered unlabelled, so the bare jars were
+   * this order. The rule: no word label on any jar; a jar's own label is its painted sticker of what is inside (PAN-06,
+   * H52), and the word is on the card's face (tap it to hear it). A new word is still taught by Nani's line and its glow.
+   */
+  const shelfLabel = (S, obj, id) => S.label(obj, id, { mode: "none" });
   /** Every word in the current order (pass me in the pantry never asks for one). */
   function inOrder(ctx) {
     const out = new Set();
@@ -84,7 +91,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // in the fridge the small things (a yoghurt tub) come up nearer a milk carton's size, to be seen
         const f = slot.zone === "fridge" ? Math.max(Cook.Art.shelfSize(id), P.fridgeMin || 0) : Cook.Art.shelfSize(id);
         items[id] = S.prop(key, z.X(slot.x), z.Y(slot.y), z.L(slot.w * f), z.L(slot.h * f));
-        items[id].label = S.label(items[id], id);
+        items[id].wordId = id; // what it is (as S.ingredient marks it): the pantry leak bot reads the shelf by it
+        items[id].label = shelfLabel(S, items[id], id);
         // where it lives, so a thing taken back off the tray goes home (E14)
         items[id].home = { x: items[id].x, y: items[id].y, scale: items[id].scale, depth: items[id].depth };
       });
@@ -194,7 +202,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const h = e.obj.home;
         S.fly(e.obj, h.x, h.y, { scale: h.scale, depth: h.depth, duration: k.flyMs }).then(() => {
           if (!e.obj.active || !fetching) return;
-          e.obj.label = S.label(e.obj, e.id);
+          e.obj.label = shelfLabel(S, e.obj, e.id);
           items[e.id] = e.obj;
           // the waiting step starts again, with it back on the shelf
           if (step.cancel) step.cancel();
@@ -291,7 +299,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           S.wiggle(e.obj);
           await Cook.wait(260);
           await S.fly(e.obj, h.x, h.y, { scale: h.scale, depth: h.depth, duration: k.flyMs });
-          if (e.obj.active) e.obj.label = S.label(e.obj, e.id);
+          if (e.obj.active) e.obj.label = shelfLabel(S, e.obj, e.id);
         }
         tray.forEach((x, i) => {
           const t = trayAt(i, x.id, x.obj);
