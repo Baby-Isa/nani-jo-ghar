@@ -70,5 +70,5 @@
     "Browser runs only in chunks of at most 13 minutes under the shared lock; one red run at the start, one green run per group.",
     "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group."
   ],
-  "live": true
+  "live": false
 }

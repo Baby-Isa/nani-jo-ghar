@@ -65,5 +65,5 @@
     "Browser runs only in chunks of at most 13 minutes under the shared lock; push after every task (others pull your tool fixes).",
     "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (four sessions push to this branch); never force-push."
   ],
-  "live": true
+  "live": false
 }

@@ -20,7 +20,7 @@
     "build/tools/** except build/tools/review/leak.mjs (package B: pantry config only; B tells T in its report)",
     "docs/architecture/testing.md, docs/architecture/evidence-loop.md",
     "the rows named in your tasks in docs/process/regressions.md (status only, with evidence per decision 86)",
-    "build/reports/s05t-tools.md"
+    "build/reports/s05t2-probes.md"
   ],
   "readOnly": [
     "js/**, css/**, data/**, assets/** (packages S, B, C, D)",
