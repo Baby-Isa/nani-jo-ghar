@@ -138,6 +138,8 @@ export class ClinicPlayer {
         return;
       }
       if (await this.resultsVisible()) {
+        // CLN-111 (s04-r2k2): the end of the morning, the receipt in the shared end pop-up with its end buttons
+        if (await this.ev(() => !!document.querySelector(".njg-results .cl-receipt"))) { await sleep(500); await this.once("morning-end"); await this.results(); continue; }
         const badges = !!(await this.centre(".rs-next"));
         if (badges) { await waitBadges(page); this.badges = await readBadges(page); } else await sleep(500);
         await this.once("results-" + (badges ? "badges" : "words"));
@@ -213,7 +215,40 @@ export class ClinicPlayer {
       lastA = a;
       steps++;
       if (!mid && steps > 6 && a.do !== "wait") { mid = true; await this.once(`heal-${game}-mid`); }
+      if (game === "knee") await this.kneeTurn();
+      if (game === "fever") await this.feverChange();
+      if (game === "eye") await this.eyeMoments();
     }
+  }
+  // CLN-62 evidence (s04-r2k2): the dropper over her eye after a "na", and the "I can see" moment before the pull-out
+  async eyeMoments() {
+    const s = await this.ev(() => { const r = window.__clinic.Stages.heal.current; const d = r && r.controller.debug; return d ? { redrop: !!d.redrop, seeing: !!d.seeing } : {}; });
+    if (s.redrop) await this.once("heal-eye-redrop", { settle: 0 });
+    if (s.seeing) { await sleep(150); await this.once("heal-eye-can-see", { settle: 0 }); }
+  }
+  // CLN-100 evidence (s04-r2k2): a state after every bandage turn the knee draws
+  async kneeTurn() {
+    const n = await this.ev(() => document.querySelectorAll(".knee-turn").length);
+    if (n > (this.turns || 0)) { this.turns = n; await this.once(`heal-knee-turn-${String(n).padStart(2, "0")}`, { settle: 0 }); }
+  }
+  // CLN-105 evidence (s04-r2k2): a state at every change of the gauge or her look, and a note when her bubble still says
+  // "just right" while the gauge and her look say hot or cold (what she says, looks and the gauge must agree)
+  async feverChange() {
+    const s = await this.ev(() => {
+      const g = document.querySelector("[data-reading]");
+      const m = document.querySelector(".fv-mood");
+      const b = Array.from(document.querySelectorAll(".cl-bubble")).map((e) => e.textContent.trim()).join(" / ");
+      let ok = null;
+      try { const L = window.Clinic.HealScene.L; const w = L.show(L.word("fever-just-right")); ok = (w.kutchi || w.english || "").replace(/[[\]]/g, "").trim(); } catch (e) { /* no engine */ }
+      return { reading: g ? g.dataset.reading : "", mood: m ? m.dataset.state || "" : "", bubble: b, ok };
+    });
+    const sig = `${s.reading}|${s.mood}`;
+    if (sig !== this.feverSig) {
+      this.feverSig = sig;
+      this.feverN = (this.feverN || 0) + 1;
+      await this.once(`heal-fever-change-${String(this.feverN).padStart(2, "0")}`, { settle: 0 });
+    }
+    if (s.ok && s.mood && s.bubble.includes(s.ok)) this.rec.note(`CLN-105: she says "${s.ok}" while she looks ${s.mood} (gauge ${s.reading})`);
   }
 }
 
@@ -318,7 +353,8 @@ export function clinicFlows() {
   // R5: a clinic morning through the one game host (session 2: two patients, an end screen after each, then "close the clinic")
   f.push({ ...clinicFlow({ id: "clinic:morning", title: "Clinic: a morning (session 2: two patients through the host, then close the clinic)", query: "morning=1&session=2&nosave=1", timeoutMs: 600000 }), deep: true });
   // S04-A (decision 76, the route run): the morning end to end at levels 2 and 3 (every stage's saved level)
-  for (const L of [2, 3]) f.push({ ...clinicFlow({ id: `clinic:morning@L${L}`, title: `Clinic: a morning (session 2) with every stage at level ${L}`, query: "morning=1&session=2&nosave=1", level: L, levels: L, timeoutMs: 600000 }), deep: true });
+  // s04-r2k2: session 3, two patients (session 2's own entry sets every stage to level 1, so it never played L2 or L3)
+  for (const L of [2, 3]) f.push({ ...clinicFlow({ id: `clinic:morning@L${L}`, title: `Clinic: a morning (session 3, two patients) with every stage at level ${L}`, query: "morning=1&session=3&patients=2&nosave=1", level: L, levels: L, timeoutMs: 600000 }), deep: true });
 
   // ---- the deeper paths (run at the deep sizes): every level, then the mistake and hint players ----
   const D = (o) => f.push({ ...clinicFlow(o), deep: true });
