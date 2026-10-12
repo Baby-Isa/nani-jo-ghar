@@ -6,6 +6,7 @@
  * words  the word lint's strict gate (check A, string literals in game code) on the folders in build/lint/words-gate.json "enforce";
  *        "ready" folders are reported but not enforced until their engine step reports 0 literals
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
+ * specs  evidence.mjs --lint-specs: the static pass over build/sandbox/data/evidence.json (no browser; new flags only, a baseline holds the known ones)
  * load   build/tools/review/loadcheck.mjs (decision 68, J11): every Cook station and clinic game page loads only the pictures
  *        in its manifest (never another game's); a browser check, so it runs under the browser lock (B16), about 3 minutes
  * Other browser checks are not run here (one at a time under the lock, rule B16): build/check_stamps.mjs, build/lint/layout.test.mjs, the sandbox
@@ -18,14 +19,14 @@ import { args, help, ROOT } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
-const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "bump", "load"];
+const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "bump", "specs", "load"];
 const run = (cmd, argv) => spawnSync(cmd, argv, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
 const ls = (dir, ok) => readdirSync(join(ROOT, dir)).filter(ok).map((f) => join(dir, f));
 const results = [];
 const note = (name, ok, text) => { results.push(ok); console.log(`${ok ? "ok  " : "FAIL"} ${name.padEnd(6)} ${text}`); };
 
 if (only.includes("unit")) {
-  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs"];
+  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs", "build/tools/review/evidence.test.mjs", "build/tools/review/lintspecs.test.mjs"];
   if (a.has("list")) console.log(files.join("\n"));
   const r = run(process.execPath, ["--test", ...files]);
   const n = (k) => Number((new RegExp(`^# ${k} (\\d+)`, "m").exec(r.stdout) || [0, 0])[1]);
@@ -42,6 +43,11 @@ if (only.includes("words")) {
 if (only.includes("bump")) {
   const r = run("python3", ["build/bump_version.py", "--dry-run"]);
   note("bump", r.status === 0 && !/Traceback/.test(r.stderr), r.status === 0 ? `dry run lists ${((r.stdout.split("\n")[0].match(/\.html|\.css|\.js/g)) || []).length} files, ${(/import map: (\d+) modules/.exec(r.stdout) || [0, "?"])[1]} modules` : "bump_version.py failed");
+}
+if (only.includes("specs")) {
+  const r = run(process.execPath, ["build/tools/review/evidence.mjs", "--lint-specs"]);
+  note("specs", r.status === 0, (r.stdout.trim().split("\n").find((l) => /^lint-specs:/.test(l)) || `lint-specs exited ${r.status}`));
+  if (r.status !== 0) console.log((r.stdout.match(/^ {2}NEW .*$/gm) || []).slice(0, 10).map((l) => "     " + l.trim()).join("\n"));
 }
 if (only.includes("load")) {
   const r = run("flock", ["-w", "1800", "/tmp/njg-browser.lock", "timeout", "900", process.execPath, "build/tools/review/loadcheck.mjs"]);

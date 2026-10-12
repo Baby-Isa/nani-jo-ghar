@@ -80,3 +80,21 @@ Read as the future judge, against the 86 "no evidence" lines of the S04 audit an
 
 ## S05-T changes (13 Oct)
 Missing-module output in a `cmd:` capture is a TOOL FAILURE. `familyOnly` skips hidden-tagged to-record lines; `loan: "en"` words are Kutchi (decisions 84, 87). `--apply` refuses a run without cached verdicts. A probe's moment that no driver reaches is registered in `build/sandbox/lib/moments.mjs` / `drivers/catalog.mjs` (`rec:heal-knee-turn-*`, the rotate-card `rec:<page>-upright` states). Text-only rows (cmd output) can be judged FAIL from the text; a PASS still needs a panel.
+
+## Probe pitfalls (S05, 12–13 Oct; each found by a probe that failed for the wrong reason)
+
+`node build/tools/review/evidence.mjs --lint-specs` (in `checks.mjs` as `specs`) catches the static ones; a baseline (`build/tools/review/data/lint-specs-known.json`) holds today's known flags, so only a new one fails. Before any fix is judged, the first red run must show the probe **reached its state** (the panel shows it).
+
+- **A missing module counted as FAIL** (scipy, playwright): a `cmd:` whose output holds a module error is a TOOL FAILURE; the SessionStart hook installs the modules.
+- **A probe playing a legacy lab flow** (`cook:fill`, `cook:fry`, `cook:roll`): point it at the current samosa or maani flow (`--lint-specs`, kind `legacy`).
+- **A capture taken under the end card**: take it at the row's own moment (`@<moment>`), not at `results*`, unless the row is about the end (`--lint-specs`, kind `end-card`).
+- **A stale selector** (`.ng-say`, `.rs-step` in a hidden list): grep `js/` and `css/` for the class first (`--lint-specs`, kind `selector`).
+- **`max` set too low**: an `every:` probe that must see every turn or row needs `max` above their count (SEK-13, DAAR-04: 16).
+- **`lines:` counting element boxes**: it now counts text lines of the element's own Kutchi text; icons, ticks, English and to-record boxes are not lines.
+- **A `silentAfter` window with no bound**: it ends at the next `stage-start` or `request` (cap 4 s).
+- **`popup-fold` matching before the pop-up opened**: it is emitted only after a `popup-open`.
+- **A fast-mode PASS that can't show a cut-off**: at test speed a line is over before the tap. Play at a child's pace (`#speed1`; the clinic's `real-pace`), tap half a second into the first line, and add `times:tapped-through>=1`.
+- **A check reading superseded art keys** (`check_vessel_meta.py` against `daar-bowl-trivet`): the check's table must name the cuts the code loads.
+- **A test waiting on a hidden element** (`#panel h1`, hidden on purpose): wait for the element as attached.
+- **Run ids colliding**: ids now carry seconds and a random suffix (four sessions, one minute).
+- Also: a moment only a fast-folding pop-up opens (`order-card-in-sidebar`) is missed at test speed; use `visible:<selector>`. A read-along or bob is gone before an expect that follows a long capture: use the moment `visible:…` or `lastsMs:`. A trace of a character that walks across the screen is no bob (`traceStats` ignores it).

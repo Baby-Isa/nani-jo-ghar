@@ -489,6 +489,30 @@ function apply() {
 }
 
 // ---------- main ----------
+if (a.has("lint-specs")) {
+  const { lintSpecs, LEGACY_FLOWS } = await import("./lib/lintspecs.mjs");
+  const { lexiconWords } = await import("../../sandbox/lib/evidence.mjs");
+  const { execFileSync: ex } = await import("node:child_process");
+  const { readdirSync, statSync } = await import("node:fs");
+  const flows = new Set(ex(process.execPath, ["build/sandbox/run.mjs", "--list"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 }).split("\n").map((l) => l.split(/\s+/)[0]).filter(Boolean));
+  let corpus = "";
+  const walk = (d) => { for (const f of readdirSync(join(ROOT, d))) { const p = `${d}/${f}`; if (statSync(join(ROOT, p)).isDirectory()) walk(p); else if (/\.(js|css|html)$/.test(f)) corpus += readFileSync(join(ROOT, p), "utf8") + "\n"; } };
+  ["js", "css"].forEach(walk); for (const f of readdirSync(ROOT)) if (f.endsWith(".html")) corpus += readFileSync(join(ROOT, f), "utf8");
+  // the words the family says (data/family-audio.json): an order: marker must be one of these, a selector or a /regex/
+  const kutchiWords = () => { const set = new Set(); for (const e of JSON.parse(readFileSync(join(ROOT, "data/family-audio.json"), "utf8"))) for (const w of String(e.kutchi || "").toLowerCase().match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []) set.add(w); return set; };
+  const rowText = {}; for (const r of parseRegressions(readFileSync(REGRESSIONS, "utf8"))) rowText[r.id] = `${r.issue} ${r.check}`;
+  const found = lintSpecs(JSON.parse(readFileSync(join(ROOT, "build/sandbox/data/evidence.json"), "utf8")), { flows, legacy: new Set(LEGACY_FLOWS), corpus, exists: (p) => existsSync(join(ROOT, p)), lexicon: kutchiWords(), rowText });
+  const by = {}; for (const f of found) (by[f.kind] = by[f.kind] || []).push(f);
+  for (const [k, v] of Object.entries(by)) { console.log(`${k}: ${v.length}`); for (const f of v.slice(0, a.has("all-errors") ? 999 : 12)) console.log(`  ${f.row} p${f.probe}: ${f.msg}`); }
+  // a baseline of the known flags (data/lint-specs-known.json: row:probe:kind), like the layout lint's: only a NEW flag fails
+  const KNOWN = join(ROOT, "build/tools/review/data/lint-specs-known.json");
+  const key = (f) => `${f.row}:p${f.probe}:${f.kind}`;
+  if (a.has("write-baseline")) { writeFileSync(KNOWN, JSON.stringify([...new Set(found.map(key))].sort(), null, 1) + "\n"); console.log(`lint-specs: baseline written (${found.length} known)`); process.exit(0); }
+  const known = new Set(existsSync(KNOWN) ? JSON.parse(readFileSync(KNOWN, "utf8")) : []);
+  const fresh = found.filter((f) => !known.has(key(f)));
+  console.log(`lint-specs: ${found.length} flagged, ${found.length - fresh.length} known, ${fresh.length} new${fresh.length ? ":\n" + fresh.map((f) => `  NEW ${f.row} p${f.probe} ${f.kind}: ${f.msg}`).join("\n") : ""}`);
+  process.exit(fresh.length ? 1 : 0);
+}
 if (a.has("run")) await run();
 else if (a.has("sheets")) await sheets();
 else if (a.has("judge")) judge();
