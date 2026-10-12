@@ -390,8 +390,11 @@
     if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
+    // a row the "what's next" cue (decision 52, below) has just said is not said again when its step opens (SH-45)
+    const saidNext = new Set();
     card.setProgressive(v2, (ids) => {
-      if (!finished) card.speak(ids);
+      const fresh = ids.filter((id) => !saidNext.delete(id));
+      if (!finished && fresh.length) card.speak(fresh);
     });
     card.setRows([]);
     // R4 / T29 (decision 55): the doctor is the card's asker and the off-screen guide: one face (the card's), his
@@ -495,7 +498,10 @@
         if (rowEl) rowEl.classList.add("next-up");
         if (id && screen.setGuide) screen.setGuide(stripRow(card.row(id)));
         // the doctor (off screen: his box) says the next step's line, once
-        if (id) card.speak([id]);
+        if (id) {
+          saidNext.add(id);
+          card.speak([id]);
+        }
       }, Kit.fast ? 300 : 2000);
     };
 
@@ -744,7 +750,10 @@
       if (!popup) return Promise.resolve();
       Kit.Voice.clear(); // the stage change (CLN-109): nothing from before queues ahead of the request
       let big = null;
-      card.rows.forEach((r) => popRead.add(r.id));
+      // SH-45 (D8, S05-D): the pop-up reads the goal and the FIRST step only (what the card has opened); every later
+      // step is said as it opens (Card.reveal), never the whole job up front
+      const opened = card.progressive ? card.rows.slice(0, card.shown + 1) : card.rows;
+      opened.forEach((r) => popRead.add(r.id));
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
         host: screen.main,
@@ -759,7 +768,7 @@
           big.isOrdered = true;
           big.titleText = card.titleText;
           big.faceEl = face.cloneNode(true);
-          big.setRows(card.rows.map((r) => Object.assign({}, r, { el: null })));
+          big.setRows(opened.map((r) => Object.assign({}, r, { el: null })));
         },
         read: () => big.speak(),
         onStop: () => Kit.Voice.clear(),

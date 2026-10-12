@@ -643,6 +643,9 @@
 
   function mountScrape(stage, ctx) {
     const P = planScrape(ctx.level, ctx.rng);
+    // CLN-118 (S05-D): the taught round (D13: nothing scored) carries no count: the cloth's row is "then the cloth" and
+    // the child copies the ghost finger's dabs; the step still closes by itself at the plan's count (level 1, D5)
+    if (ctx.taught) P.steps[1].row = Object.assign({ id: "dab", seq: "steps" }, say(LG().then("cl-cloth")));
     // the forearm is long and thin in the 800 x 500 drawing: push in on the scrape so it fills more of the screen
     const S = HS.make(stage, ctx, { place: "limb", game: "cut", zoom: 1.35, focus: [330, 335], safe: [120, 540] });
     const { s } = S;
@@ -788,7 +791,7 @@
     const open = () => {
       const c = cur();
       if (!c) return;
-      if (st.i > 0) ctx.say(c.row);
+      // SH-45 (S05-D): the step's row is said as the card opens it (Card.reveal: the host's onReveal), once
       // D8: the plaster step opens its first plaster's row (the next one opens as each goes on)
       ctx.card.now(c.kind === "plaster" ? "plaster0" : c.id);
       if (c.kind === "wash") {

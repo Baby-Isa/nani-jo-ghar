@@ -8,7 +8,7 @@
  *   level 3: the feeling shows; the child picks WHAT HELPS (cold: the blanket,
  *      hot: the fan, sad: the apple).
  *   E4 (level 3): the child asks [How do you feel?] first (a speaking moment);
- *      the first time Nani whispers the idea and the question card shows the
+ *      the first time the doctor cues it (CLN-117, never Nani) and the question card shows the
  *      patient's face with a "?".
  * Not happy at levels 1-2: one more thing, in the scene (the feeling's help:
  * the apple, not a lolly), then the question again: it always ends happy.
@@ -139,7 +139,7 @@
       screen.card.setRows([]);
 
       const rowOf = (id) => plan.rows.find((r) => r.id === id);
-      // E4: the child asks first (Nani's whisper and the question card the first time)
+      // E4: the child asks first (the doctor's cue and the question card the first time: CLN-117)
       if (plan.variant === "E4") {
         const r = rowOf("ask");
         let seen = false;
@@ -179,7 +179,9 @@
       // the feeling: shown (level 1 and 3) or only said (level 2)
       const feel = data.feelings[plan.feeling];
       const moodOf = (f) => (f === "happy" ? "happy" : data.feelings[f].mood);
-      fig.react(moodOf(plan.feeling), 0);
+      // CLN-26 (S05-D): level 2 is heard only: she SAYS it and her face stays as it was (her art's face would give the
+      // card away); levels 1 and 3 show it
+      fig.react(plan.mode === "said" ? "idle" : moodOf(plan.feeling), 0);
       if (plan.mode !== "said") showFeel(plan.feeling);
       void feel;
       S.say(feelLine(plan.feeling), "patient");

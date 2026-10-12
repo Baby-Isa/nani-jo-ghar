@@ -174,6 +174,8 @@
           const on = !wrapped() && active() && active().s === sd && active().y === y;
           const c = s("circle", { cx: p.x, cy: p.y, r: on ? 17 : 11, fill: on ? "#f0a030" : "#fff", stroke: "#8a5a2a", "stroke-width": 3 }, dotsG);
           if (on) c.animate([{ opacity: 1 }, { opacity: 0.45 }, { opacity: 1 }], { duration: 500, iterations: Infinity });
+          // CLN-48 (S05-D): the one lit dot is the step's tap ring (one at a time; the checks count .cl-ring)
+          if (on) c.setAttribute("class", "cl-ring knee-dot");
           dots.push({ s: sd, y, x: p.x, yy: p.y });
         })
       );

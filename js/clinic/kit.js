@@ -682,7 +682,7 @@
     this.rows = (rows || []).map((r, i) => Object.assign({ id: r.id || `r${i}` }, r, { el: null }));
     this.st = { done: new Set(), miss: new Set(), pulse: null, now: null, reading: null, counts: {} };
     this.fold = {};
-    this.shown = this.progressive ? this.groupEnd(0) : this.rows.length - 1;
+    this.shown = this.progressive ? this.stepEnd(0) : this.rows.length - 1;
     return this.render();
   };
   Kit.Card.prototype.addRow = function (r) {
@@ -698,7 +698,7 @@
   Kit.Card.prototype.setProgressive = function (on = true, onReveal = null) {
     this.progressive = !!on;
     this.onReveal = onReveal;
-    this.shown = this.progressive ? this.groupEnd(0) : this.rows.length - 1;
+    this.shown = this.progressive ? this.stepEnd(0) : this.rows.length - 1;
     return this;
   };
   /** The last index of the step group that starts at i (rows sharing the first row's `seq`). */
@@ -707,6 +707,20 @@
     const r = this.rows[i];
     let j = i;
     if (r && r.seq) while (j + 1 < this.rows.length && this.rows[j + 1].seq === r.seq) j++;
+    return j;
+  };
+  /**
+   * SH-45 (S05-D): the last index of the STEP that starts at i (its row, or its parts <step>0, <step>1 ...). A sequence
+   * (`seq`) may run across several steps (the scrape: the wash, the cloth, each plaster on one line): it is drawn as
+   * one sequence, but each step still opens, and is said, on its own (never the whole job up front).
+   */
+  Kit.Card.prototype.stepEnd = function (i) {
+    const r = this.rows[i];
+    if (!r) return this.rows.length ? 0 : -1;
+    const base = String(r.id).replace(/\d+$/, "");
+    let j = i;
+    const part = new RegExp(`^${base.replace(/[^\w-]/g, "")}\\d*$`);
+    while (j + 1 < this.rows.length && part.test(String(this.rows[j + 1].id)) && base !== String(r.id)) j++;
     return j;
   };
   /** The rows of a step: its own row, or its parts (<step>0, <step>1 ...). */
@@ -718,7 +732,7 @@
     if (!this.progressive || stepId == null) return [];
     const mine = this.stepRows(stepId);
     if (!mine.length) return [];
-    const last = Math.max(...mine.map((r) => this.groupEnd(this.rows.indexOf(r))));
+    const last = Math.max(...mine.map((r) => this.rows.indexOf(r))); // the step's own rows only (SH-45)
     if (last <= this.shown) return [];
     const fresh = this.rows.slice(this.shown + 1, last + 1).map((r) => r.id);
     this.shown = last;
@@ -727,7 +741,7 @@
   /** Decision 52 (CLN-82): the step after the open one (its first row id), for the L2+ "what's next" reveal. */
   Kit.Card.prototype.nextStepId = function () {
     const cur = this.st.now ? this.rows.findIndex((r) => r.id === this.st.now) : -1;
-    const from = cur >= 0 ? this.groupEnd(cur) + 1 : this.shown + 1;
+    const from = cur >= 0 ? this.stepEnd(cur) + 1 : this.shown + 1;
     const r = this.rows.slice(Math.max(0, from)).find((x) => !this.st.done.has(x.id));
     return r ? r.id : null;
   };

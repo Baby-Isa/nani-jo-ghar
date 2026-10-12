@@ -561,7 +561,8 @@
         const steps = build();
         return steps.length ? global.Onboard.run(id, steps, o) : Promise.resolve("skipped");
       };
-      start({ force: force === "1", idleMs: 6000 })
+      // CLN-118 (S05-D): the taught round (D13) always shows the move with the ghost finger, seen before or not
+      start({ force: force === "1" || (!!ctx.taught && force !== "0"), idleMs: 6000 })
         .then((how) => {
           // SH-46 (1 Oct, P32): a move the child has met before but isn't doing now is shown again after a pause,
           // not only the first time ever
