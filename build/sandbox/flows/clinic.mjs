@@ -364,8 +364,10 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
     id, group: "clinic", title, timeoutMs: mode === "hint" ? timeoutMs + 120000 : timeoutMs, ...(sizes ? { sizes } : {}),
     async run(ctx) {
       const { page, rec } = ctx;
-      // the evidence loop's spec can set the seed (a wanted order) and the profile: fresh (storage cleared, first-time help on) or seen (help off)
-      const help = ctx.profile === "fresh" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
+      // the evidence loop's spec can set the seed (a wanted order) and the profile: fresh (storage cleared, first-time help on) or seen (help off);
+      // second-play keeps the help on (SH-46: help met in the first play is shown again after a pause in the second; with
+      // &onboard=0 the heal games' ghost finger never plays at all: s04-hooks, Lifecycle.ghost counted 0)
+      const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
       const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" ? 0 : 1}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
       if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)

@@ -8554,7 +8554,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "after-wrong",
+   "at": "heal-eye-redrop",
    "after": null,
    "capture": [
     "zoom2:.cl-heal",
@@ -8563,7 +8563,7 @@
    "expect": [
     "centredOn:hook:heal.dropper,hook:heal.soreEye"
    ],
-   "note": "after na the dropper sits over the eye (debug.dropper() and debug.soreEye(): the bottle centred over her open eye)"
+   "note": "after a right na (she misread the row) the dropper sits over the eye (debug.dropper() and debug.soreEye(): the bottle centred over her open eye)"
   },
   {
    "flow": "clinic:heal-eye",
