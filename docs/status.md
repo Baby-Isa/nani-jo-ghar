@@ -12,6 +12,8 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **12 Oct, 22:15 UK:** Zafar said yes to all seven decisions (the word review keeps its English, F14; C and D launch when T's environment and S1 land). **Sprint 5 open** (`docs/sprints/S05-red-then-green.md`): wave 1 (T, S, B) launching to `ccr-a7370759-t0lee7`; C and D follow after T's environment push and S1.
 
+**13 Oct, 00:00 UK:** Zafar: no publish until every fixable row is fixed (decision 89, A30). Running: C, D, T2; next S round 2 after T2. Progress and plan in `docs/sprints/S05-red-then-green.md`.
+
 **Read first in the new chat:** `docs/sprints/S05-plan.md` (packages, first hour, risks), `docs/process/cost-and-speed.md` (how to run cheaply), `docs/architecture/evidence-loop.md` (how a row is proven), decisions 75–86 (esp. 84 placeholders, 86 red then green).
 
 **Do not run** `build/lang/import_all.mjs` until package B makes it safe (it would demote 8 confirmed words to draft).

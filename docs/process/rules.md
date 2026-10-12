@@ -85,6 +85,7 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 - **Use the tools by default:** the project skills (`.claude/skills/`) and scripts (`build/tools/`, `build/lang/`, `build/lint/`) are used whenever a task matches, without Zafar asking; a missing or broken tool is fixed, not worked round. (B21, decision 46)
 
 - **Work in sprints:** one goal and a budget per sprint; small decisions in the sprint file (`docs/sprints/`), lasting ones as rules with a why; each sprint ends with one `/review`, a publish, Zafar's play and a short look back. The orchestrator steers new work into a sprint. (A29, decision 49)
+- **Nothing reaches `main` while a fixable row is still open:** a sprint publishes only when every row it can fix is fixed and proven red then green; only rows waiting on Mum, art or Zafar may stay open, listed for him. Never cut a fix short to hit a play time. (A30, decision 89)
 
 ### Briefs
 - **Every brief is complete:** owned files, a hard stop time, links to `CLAUDE.md`, the rulebook sections it needs and `docs/process/qa-checklist.md` (`build/tools/ops/brief.mjs` writes it, so the generator is the truth), "don't remove mechanics", "no helpers", and the permissions it needs asked for up front. To redirect, interrupt and relaunch. (A24, B3, B4)
