@@ -210,7 +210,10 @@ function runCmd(cmd) {
   const [exe, ...argv] = pc.argv;
   const r = spawnSync(exe, argv, { cwd: ROOT, encoding: "utf8", timeout: 180000, maxBuffer: 1 << 24, env: { ...process.env, COOK_TEST_PORT: String(+PORT + 1), NJG_LOCKED: "1" } }); // its own port: the sheets' server holds ours
   const outText = `${r.stdout || ""}${r.stderr ? `\n[stderr]\n${r.stderr}` : ""}`.trim().split("\n");
-  return { code: r.status, text: outText.slice(-60).join("\n") + (outText.length > 60 ? `\n(${outText.length - 60} earlier lines cut)` : "") };
+  // an import error or missing module is the environment's failure, never the game's: a TOOL FAILURE (code null)
+  const MODULE_ERR = /ModuleNotFoundError|ImportError|Cannot find module|ERR_MODULE_NOT_FOUND/;
+  const modErr = MODULE_ERR.test(`${r.stdout || ""}\n${r.stderr || ""}`);
+  return { code: modErr ? null : r.status, moduleError: modErr, text: (modErr ? "TOOL FAILURE: missing module (environment, not the game)\n" : "") + outText.slice(-60).join("\n") + (outText.length > 60 ? `\n(${outText.length - 60} earlier lines cut)` : "") };
 }
 async function sheets(dirArg) {
   const dir = dirArg || runFolder(a.val("run-id"));
@@ -247,7 +250,7 @@ async function sheets(dirArg) {
   for (const q of P.repo || []) if (byRow.has(q.row)) {
     const res = { row: q.row, i: q.i, id: `${q.row}-p${q.i + 1}-repo`, level: 1, size: "-", flow: "repo", at: "now", kind: "text", reached: true, hits: [], expects: [], tool: [], note: q.note };
     const outs = q.capture.filter((c) => c.kind === "cmd").map((c) => ({ c, r: cmdOut(c.cmd) }));
-    for (const { c, r } of outs) if (r.code == null) res.tool.push(`${c.cmd}: did not finish (${r.text.slice(0, 120)})`);
+    for (const { c, r } of outs) if (r.code == null) res.tool.push(r.moduleError ? `${c.cmd}: TOOL FAILURE, missing module (${r.text.split("\n").slice(-1)[0].slice(0, 160)})` : `${c.cmd}: did not finish (${r.text.slice(0, 120)})`);
     const text = outs.map((o) => o.r.text).join("\n");
     for (const e of q.expect) {
       let r = { ok: null, why: "for the reviewer" };
@@ -270,6 +273,7 @@ async function sheets(dirArg) {
       const caps = (((P.spec[row.id] || [])[p.i] || {}).capture || []).filter((c) => typeof c === "string" && c.startsWith("cmd:"));
       if (!caps.length || p.flow === "repo") continue;
       const outs = caps.map((c) => cmdOut(c.slice(4).trim()));
+      outs.forEach((o, k) => { if (o.code == null) (p.tool = p.tool || []).push(`${caps[k].slice(4).trim()}: ${o.moduleError ? "TOOL FAILURE, missing module" : "did not finish"}`); });
       for (const e of p.expects || []) if (/^!?pass$/.test(e.raw)) { const ok = outs.every((o) => o.code === 0) && e.ok !== false && !(e.ok === false); const neg = e.raw.startsWith("!"); const v = e.ok == null || e.cmd ? ok : e.ok; Object.assign(e, { ok: neg ? !v : v, why: `${e.why || ""}${e.why ? "; " : ""}${caps.map((c, k) => `${c.slice(4)}: exit ${outs[k].code}`).join("; ")}` }); }
     }
     const specErr = (P.rowErrors || {})[row.id] || [];

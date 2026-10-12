@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "(timeout 55 pip install -q scipy playwright >/dev/null 2>&1 || true); exit 0",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}
