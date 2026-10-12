@@ -514,6 +514,13 @@
     guideKey = key || null;
     if (guide && !guide.el.classList.contains("talk")) showGuide();
   };
+  /** Nothing to do (the day's coin jar, between screens): her box is empty, not a station's old instruction (R2). */
+  UI.guideClear = function () {
+    guideKey = null;
+    guideLine = null;
+    if (stepper) stepper.close();
+    if (guide) guide.set("");
+  };
   /** Which data.guide key a goal text belongs to (a station's goal, or one of its phases). */
   function guideKeyOf(text) {
     const st = (Cook.data && Cook.data.stations) || {};

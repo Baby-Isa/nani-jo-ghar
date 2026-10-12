@@ -181,9 +181,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         let key = texFor(pick);
         const v = (k.variants || {})[pick];
         if (v && phase.kinds.some((x) => (v.near || []).includes(x)) && Math.random() < v.chance) key = variantTex(pick, v.color);
-        // DAAR-13 (D1): spread wider across the board (each throw away from the last one)
+        // DAAR-13 (D1): spread wider across the board: each throw away from the last one AND from everything still in
+        // the air (where each will be when this one is up), so two never lie on each other (S04 audit: chilli on garlic)
+        const air = flying.filter((o) => o.active && !o.sliced).map((o) => (o.x - z.X(0)) / z.k + (o.vx / z.k) * flight * 0.5);
+        if (lastX != null) air.push(lastX);
         let x0 = 180 + Math.random() * 1200;
-        if (lastX != null && Math.abs(x0 - lastX) < 300) x0 = lastX < 780 ? Math.min(1380, lastX + 300 + Math.random() * 300) : Math.max(180, lastX - 300 - Math.random() * 300);
+        let best = -1;
+        for (let t = 0; t < 10; t++) {
+          const c = 180 + Math.random() * 1200;
+          const d = air.length ? Math.min(...air.map((a) => Math.abs(a - c))) : Infinity;
+          if (d > best) {
+            best = d;
+            x0 = c;
+          }
+        }
         lastX = x0;
         const img = S.track(S.add.image(z.X(x0), z.Y(990), key).setDepth(D.item + 2));
         img.setScale(S.fitScale(key, z.L(size), z.L(size)));

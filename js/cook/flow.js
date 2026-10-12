@@ -971,8 +971,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   function showSummary(day, { free } = {}) {
     UI.clearStage();
-    // the last station's instruction goes from Nani's box (the day is over)
-    if (UI.guideFor) UI.guideFor(null);
+    // the last station's instruction goes from Nani's box (the day is over): it is empty (R2), never the default line
+    if (UI.guideClear) UI.guideClear();
+    else if (UI.guideFor) UI.guideFor(null);
     const last = day.finale && !free;
     const total = Cook.coins();
     let shown = Math.max(0, total - (state.dayCoins || 0));

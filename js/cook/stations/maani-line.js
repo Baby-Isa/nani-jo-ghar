@@ -60,6 +60,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
   // maani-v2/thali.webp: the flat floor is a circle 0.42 of the picture's width across from its centre.
   const THALI_FLAT = 0.42;
+  // S04 audit (MAA-10 at L4): the largest maani, stacked and fanned, still reached the curled rim. A maani on a plate is
+  // a little smaller (0.26 of the plate, was 0.3) and keeps a margin from the rim (the art's edge is not a perfect circle,
+  // and each one sits a little askew), so the whole fanned stack stays on the flat floor
+  const PLATE_MAANI = 0.26;
+  const RIM_MARGIN = 0.05; // of the plate's width
+  /** On its kind's plate: the maani's radius and how far its centre may sit off the plate's centre (MAA-10). */
+  const onPlate = (sizeF) => {
+    const pr = PLATE_D * PLATE_MAANI * sizeF;
+    return { pr, room: Math.max(0, PLATE_D * (THALI_FLAT - RIM_MARGIN) - pr) };
+  };
   const CHIP_Y = 860;
   const PIN_W = 484; // MAA-12 (M12): a real velan is a little wider than the board: the v3 pin about 10% longer (was 440)
   // 30 Sept (M3, M9 / Q14): the dough piles stand straight on the band (no tray), on this line just above
@@ -566,8 +576,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       sp.setDepth(D.item + 2 + j * 0.01);
       S.tweens.add({ targets: sp, angle: Math.random() * 24 - 12, duration: 450 });
       turnerHomeTween();
-      const pr = PLATE_D * 0.3 * it.sizeF;
-      const room = Math.max(0, PLATE_D * THALI_FLAT - pr - 3); // how far its centre may sit off the thali's centre
+      const { pr, room } = onPlate(it.sizeF); // how far its centre may sit off the thali's centre
       const [f0x, f0y] = FAN[j % FAN.length];
       const fk = Math.min(1, room / Math.max(1, Math.hypot(f0x, f0y)));
       const [fx, fy] = [f0x * fk, f0y * fk];
@@ -667,8 +676,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const from = pl ? S.centre(pl) : { x: CH.x, y: CH.y };
       it.sprite = S.track(S.add.image(from.x, from.y, tex).setDepth(D.item + 2 + j * 0.01).setScale(0.05));
       items.push(it);
-      const pr = PLATE_D * 0.3 * it.sizeF;
-      const room = Math.max(0, PLATE_D * THALI_FLAT - pr - 3);
+      const { pr, room } = onPlate(it.sizeF);
       const [f0x, f0y] = FAN[j % FAN.length];
       const fk = Math.min(1, room / Math.max(1, Math.hypot(f0x, f0y)));
       await S.fly(it.sprite, d.x + f0x * fk, d.y + f0y * fk, { scale: discScale(tex, pr), duration: 520, arc: 120 });

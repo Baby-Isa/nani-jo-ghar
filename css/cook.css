@@ -1055,6 +1055,11 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 /* SH-51 (S02-B): the coin-jar day summary (js/cook/flow.js showSummary): the jar, a card landing on it, today's
    coins beside it and the jar's total under it */
 .jar-sum { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 4vw, 48px); margin: 4px 0 clamp(64px, 12vh, 96px); flex-wrap: wrap; }
+/* SH-51: balanced: the jar in the middle of the panel, today's coins beside it, the buttons centred under it */
+.jar-sum { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+.jar-sum > .jar-col { grid-column: 2; }
+.jar-sum > .jar-today { grid-column: 3; justify-self: start; }
+#panel:has(.jar-sum) .pic-row { justify-content: center; }
 .jar-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .jar-stage { position: relative; width: clamp(96px, 20vh, 170px); padding-top: clamp(56px, 11vh, 96px); }
 .jar-pic .jar-svg, .jar-pic .jar-img { display: block; width: 100%; height: auto; }
