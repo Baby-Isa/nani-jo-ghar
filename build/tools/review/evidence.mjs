@@ -98,7 +98,7 @@ async function makePlan() {
   const errRows = Object.fromEntries(Object.entries(norm.rowErrors).filter(([id]) => ids.includes(id)));
   const unknownRows = Object.keys(norm.rows).filter((id) => !all.some((r) => r.id === id));
   const pick = (o) => Object.fromEntries(Object.entries(o).filter(([id]) => ids.includes(id)));
-  return { created: new Date().toISOString(), head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), noSpec, errors: norm.errors, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
+  return { created: new Date().toISOString(), head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
 }
 function printPlan(P) {
   const L = log(null);
@@ -208,7 +208,7 @@ function runCmd(cmd) {
   const pc = parseCmd(cmd);
   if (pc.error) return { code: null, text: `not run: ${pc.error}` };
   const [exe, ...argv] = pc.argv;
-  const r = spawnSync(exe, argv, { cwd: ROOT, encoding: "utf8", timeout: 180000, maxBuffer: 1 << 24, env: { ...process.env, COOK_TEST_PORT: PORT } });
+  const r = spawnSync(exe, argv, { cwd: ROOT, encoding: "utf8", timeout: 180000, maxBuffer: 1 << 24, env: { ...process.env, COOK_TEST_PORT: String(+PORT + 1), NJG_LOCKED: "1" } }); // its own port: the sheets' server holds ours
   const outText = `${r.stdout || ""}${r.stderr ? `\n[stderr]\n${r.stderr}` : ""}`.trim().split("\n");
   return { code: r.status, text: outText.slice(-60).join("\n") + (outText.length > 60 ? `\n(${outText.length - 60} earlier lines cut)` : "") };
 }
