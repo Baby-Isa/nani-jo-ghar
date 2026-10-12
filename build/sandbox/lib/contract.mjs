@@ -31,8 +31,8 @@ import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 
 export const CHECKS = {
-  "contract-1": { item: "popup", title: "pop-up before play", how: "Splits the flow into stages (a Cook station from Cook.inStation, else the game host's stage) and finds each stage's first real tap in the play area. A stage that gives an order (a line said before that tap outside a pop-up, a new order card in the sidebar, or the first stage with a card) must have had the request pop-up (.njg-rq-open, Cook's #intro) on screen since the last stage ended; a line must start while it is up (read out) unless a tap closed it at once; within 2 s of closing an order card must show in the sidebar (folded)." },
-  "contract-2": { item: "moves-on", title: "moves on by itself", how: "Every ✓, Next or stage button seen on screen (.cl-go, #done-btn, a button reading ✓ or →, aria 'next'/'done') and every press of one is judged with what the game expected at that moment: if it expected only that button (the clinic between stages or kind 'button', a heal game's 'button' step, Cook clicking that selector), the step was already decided, so the button is a break. A ✓/Done that lets the child take things back until Done (non-negotiable 12) is not: Cook's count or 'more' step, an open count Cook steers its player to end with Done (expectation 'open': more stirs, folds or skewers still change it), an expectation that offers a take-back (undo), Cook's pictures still taking taps (live: chaat's bowl, where more taps still change the result), a heal game's count it reported uncapped (ctx.tally without capped: the child decides when it's enough, C10). A capped count (ctx.tally {capped}) that stopped taking input and still shows its ✓ is a break (decision 79)." },
+  "contract-1": { item: "popup", title: "pop-up before play", how: "Splits the flow into stages (a Cook station from Cook.inStation, else the game host's stage) and finds each stage's first real tap in the play area. A stage that gives an order (a line said before that tap outside a pop-up, a new order card in the sidebar, or the first stage with a card) must have had the request pop-up (.njg-rq-open, Cook's #intro) on screen since the last stage ended; a line must start while it is up (read out) unless a tap closed it at once; within 2 s of closing an order card must show in the sidebar (folded). Nani's how-to step line and her 'pass me' (the game tags them howto / passme) are not orders (decision 80)." },
+  "contract-2": { item: "moves-on", title: "moves on by itself", how: "Every ✓, Next or stage button seen on screen (.cl-go, #done-btn, a button reading ✓ or →, aria 'next'/'done') and every press of one is judged with what the game expected at that moment: if it expected only that button (the clinic between stages or kind 'button', a heal game's 'button' step, Cook clicking that selector), the step was already decided, so the button is a break. A ✓/Done that lets the child take things back until Done (non-negotiable 12) is not: Cook's count or 'more' step, an open count Cook steers its player to end with Done (expectation 'open': more stirs, folds or skewers still change it), an expectation that offers a take-back (undo), Cook's pictures still taking taps (live: chaat's bowl, where more taps still change the result), a heal game's count it reported uncapped (ctx.tally without capped: the child decides when it's enough, C10). A capped count (ctx.tally {capped}) that stopped taking input and still shows its ✓ is a break (decision 79). A button that starts the next part of the order (samosa's 'next kind', expectation choice) is the child's own move (decision 80)." },
   "contract-3": { item: "voice", title: "voice stops at every stage end", how: "Every clip's real start, length (the decoded buffer or the file's own length) and stop (ended, stop, pause, cancel) from the sound log; each belongs to the line (and so the stage) it was said for. A stage ends when the shared lifecycle logged its stage-end (Lifecycle.log, at its own millisecond; else the sampled stage change), so a line queued after the stop belongs to the next stage. A clip still sounding 250 ms after its stage ended, or started after it, is a break." },
   "contract-4": { item: "bubble", title: "bubble at the speaker's head", how: "Every speech bubble's box and tail (its ::after / ::before) against its speaker's head on screen: a Cook character's sprite (the top quarter of the figure), the clinic figure's head (its measured head anchor on the art, data/clinic/heal-art.json, else the art's top fifth), the doctor's figure. The tail (or the bubble) must be in the head's column and the bubble above it (or below it); a bubble beside the head, away from it or in a corner of the screen is a break." },
   "contract-5": { item: "badges", title: "badges in order", how: "While the end screen is up, every 40 ms: does anything of each badge show (its parts' opacity, or a picture on its spot from outside it). Each must first show after the one before it." },
@@ -108,7 +108,7 @@ export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
   const key = (e, id) => `${load}|${id}`;
   for (const e of tl) {
     if (e.page && e.page !== lastPage && (e.type === "line" || e.type === "play")) { if (lastPage != null) load++; lastPage = e.page; }
-    if (e.type === "line") { if (lines.has(key(e, e.id))) load++; lines.set(key(e, e.id), { id: key(e, e.id), text: e.text, who: e.who, t0: e.t, t1: null, plays: [] }); }
+    if (e.type === "line") { if (lines.has(key(e, e.id))) load++; lines.set(key(e, e.id), { id: key(e, e.id), text: e.text, who: e.who, role: e.role || null, t0: e.t, t1: null, plays: [] }); }
     else if (e.type === "line-end" && lines.has(key(e, e.id))) lines.get(key(e, e.id)).t1 = e.t;
     else if (e.type === "play" && e.pid) { if (plays.has(key(e, e.pid))) load++; plays.set(key(e, e.pid), { pid: key(e, e.pid), url: e.url || null, text: e.text || null, via: e.via, t0: e.t, dur: e.dur, est: !!e.est, end: null, why: null }); }
     else if (e.type === "play-dur" && plays.has(key(e, e.pid))) plays.get(key(e, e.pid)).dur = e.dur;
@@ -172,6 +172,8 @@ function stateAt(r, t) {
 }
 
 // ---- the checks ----
+// lines that give no order (decision 80): Nani's how-to step line and her "pass me" (and its thank-you) stay outside the pop-up
+export const NOT_ORDER = new Set(["howto", "passme"]);
 function check1(tl, segs, v, add) {
   const side = tl.filter((e) => e.type === "c" && e.k === "side");
   const sideAt = (t) => { let s = { n: 0, rows: 0 }; for (const e of side) if (e.t <= t) s = e; else break; return s; };
@@ -194,7 +196,8 @@ function check1(tl, segs, v, add) {
     const play = inputs.find((i) => i.t >= s.t0 && i.t < end && !i.popup && !i.side && !i.next && !(i.exp && i.exp.cook && i.exp.cook.intro));
     if (!play) continue; // no play here (a stage the flow only passed through): the window runs on
     const card = sideAt(play.t);
-    const outside = v.lines.filter((l) => l.t0 >= windowStart && l.t0 < play.t && (l.text || "").trim() && !pops.some((p) => p.t0 <= l.t0 + 50 && (p.t1 == null || l.t0 <= p.t1)));
+    // decision 80: Nani's how-to step line and her "pass me" (role "howto" / "passme" in the sound log) are not orders
+    const outside = v.lines.filter((l) => l.t0 >= windowStart && l.t0 < play.t && (l.text || "").trim() && !NOT_ORDER.has(l.role) && !pops.some((p) => p.t0 <= l.t0 + 50 && (p.t1 == null || l.t0 <= p.t1)));
     const newCard = card.n > 0 && card.rows !== lastRows;
     const order = card.n > 0 && (first || outside.length > 0 || newCard);
     if (order) {
@@ -231,6 +234,9 @@ export function decided(exp, sel) {
   // an open count the station steers its player to end (Cook's expectation `open`: more stirs, folds or skewers still change
   // the result, the child decides when it's enough, C10; moving on at the right count would give the answer away, NN6)
   if (exp.cook && exp.cook.open) return false;
+  // decision 80: a button that starts the next part of the order (samosa's 'next kind', expectation `choice`) is the child's
+  // own move: moving on when the first count is made would give the count away
+  if (exp.cook && exp.cook.choice) return false;
   if (exp.cook) {
     if (["count", "more"].includes(exp.cook.kind) || exp.cook.intro) return false;
     if (exp.cook.kind === "click" && exp.cook.selector && !/njg-results|rs-|lab-list|#t-|#sum-|#shop|#fin-/.test(exp.cook.selector)) return !sel || sel.includes(exp.cook.selector.replace(/^#/, "#")) || /done-btn|go/.test(exp.cook.selector);

@@ -369,6 +369,18 @@
     return { segs, en: lines.map((l) => l.en).join(" "), parts: lines, plan, ok: lines.every((l) => l.ok !== false) };
   };
   Lang.plain = (line) => line.segs.map((s) => s.t).join("");
+  /**
+   * Decision 80: what a line is for, when it is not an order. "howto": Nani's how-to step line ("Chulo bar!", "Bhar!",
+   * "Samosa waar!"); "passme": her "pass me" ask and its thank-you. They stay outside the request pop-up (they are not
+   * orders), and the contract check (contract-1) reads the role from the sound log. Marks the line and its parts.
+   */
+  Lang.role = (line, role) => {
+    if (line && typeof line === "object") {
+      line.role = role;
+      (line.parts || []).forEach((p) => Lang.role(p, role));
+    }
+    return line;
+  };
   /** A line as a card row (F10, TXT-07): lower case, no final mark ("dungri na"). */
   Lang.asRow = (line) => {
     const segs = line.segs.slice();

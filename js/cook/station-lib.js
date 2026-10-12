@@ -489,7 +489,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!key) return g.done();
         if (id === cur && !o.force) return null;
         cur = id;
-        const line = o.line || S$.guideLine(key);
+        // decision 80: the guide key's own line is her how-to line (not an order); a station's own line says so itself
+        const line = o.line ? (o.role ? Lang.role(o.line, o.role) : o.line) : Lang.role(S$.guideLine(key), "howto");
         if (UI.step) return UI.step(line, { glow: o.glow || null, hide: o.hide || (ctx ? hideKnown(ctx) : undefined), quiet: !!o.quiet, ids: o.ids });
         if (UI.guideFor) UI.guideFor(key);
         return null;

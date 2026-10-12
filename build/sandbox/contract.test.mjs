@@ -57,6 +57,38 @@ test("contract-2: the waiting room's next button after the greeting (Z7); withou
   assert.equal(decided({ heal: { do: "button" } }, "button.cl-go"), true);
 });
 
+test("contract-1 / contract-2 (decision 80): samosa's how-to lines and its 'next kind' button; tagged by the game, they pass", () => {
+  const r = fx("samosa");
+  const out = run(r);
+  // as recorded (s04-fxc, before the tags): "Chulo bar!" counts as an order said outside a pop-up, the 'next kind' button as decided
+  assert.ok(of(out, "contract-1").some((b) => /no request pop-up.*Chulo bar!/.test(b.measured)), JSON.stringify(of(out, "contract-1")));
+  assert.ok(of(out, "contract-2").some((b) => /samosa-next/.test(b.measured)));
+  // the game now says what they are: her how-to step lines carry role "howto" (St.steps, Lang.role), the button's
+  // expectation `choice` (the child's own move, decision 80)
+  const m = clone(r);
+  const HOWTO = /^(Bhar!|Bataato\.|Samosa waar!|Chulo bar!|Tar!)$/;
+  for (const e of m.timeline) {
+    if (e.type === "line" && HOWTO.test(e.text)) e.role = "howto";
+    if (e.exp && e.exp.cook && e.exp.cook.selector === "#samosa-next") e.exp.cook.choice = true;
+  }
+  const mended = run(m);
+  assert.equal(of(mended, "contract-1").filter((b) => /Chulo bar!|Bhar!|Samosa waar!/.test(b.measured)).length, 0, JSON.stringify(of(mended, "contract-1")));
+  assert.equal(of(mended, "contract-2").filter((b) => /samosa-next/.test(b.measured)).length, 0);
+  // the 'next kind' button is skipped only when the game says it is the child's choice
+  assert.equal(decided({ cook: { kind: "click", selector: "#samosa-next" } }, "button#samosa-next"), true);
+  assert.equal(decided({ cook: { kind: "click", selector: "#samosa-next", choice: true } }, "button#samosa-next"), false);
+});
+
+test("contract-1 (decision 80): a pass-me line is not an order; an untagged line said outside a pop-up still is", () => {
+  const r = fx("samosa");
+  const m = clone(r);
+  const chulo = m.timeline.find((e) => e.type === "line" && e.text === "Chulo bar!");
+  chulo.role = "passme";
+  assert.equal(of(run(m), "contract-1").filter((b) => /Chulo bar!/.test(b.measured)).length, 0);
+  chulo.role = "order";
+  assert.ok(of(run(m), "contract-1").some((b) => /Chulo bar!/.test(b.measured)));
+});
+
 test("contract-3: a clip still sounding after its station ended (chaat L4's Bas!); stopped at the end, it passes", () => {
   const r = fx("chaat-l4");
   const b = of(run(r), "contract-3");

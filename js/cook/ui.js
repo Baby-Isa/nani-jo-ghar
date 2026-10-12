@@ -722,7 +722,8 @@
   UI.passMe = function (want, options, opts = {}) {
     const box = $("#passme");
     options = passMeOptions(want, options);
-    const line = Lang.line("give", Lang.phrase([want]));
+    // decision 80: her "pass me" stays outside the request pop-up (not an order; contract-1 skips it)
+    const line = Lang.role(Lang.line("give", Lang.phrase([want])), "passme");
     box.querySelector(".pm-say").innerHTML = "";
     box.querySelector(".pm-say").appendChild(UI.pill(line, { hide: opts.hide, onHear: opts.onHear, noTranslate: UI.w6(), onTranslate: () => Cook.onHelp && Cook.onHelp("translate", { ids: [want], passMe: true }) }));
     const tray = box.querySelector(".pm-tray");
@@ -828,7 +829,7 @@
               setTimeout(() => {
                 box.classList.add("hidden");
                 putBack();
-                UI.voice(Lang.line("thanks"), { ms: 900 }).catch(() => {});
+                UI.voice(Lang.role(Lang.line("thanks"), "passme"), { ms: 900 }).catch(() => {});
                 resolve({ misses });
               }, 300);
             }, 450);

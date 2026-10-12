@@ -113,7 +113,10 @@ export const SOUND_HOOK = `(() => {
       const id = ++seq;
       let text = "";
       try { text = String(textOf.apply(null, arguments) || ""); } catch (e) {}
-      log({ type: "line", id, who, text, name });
+      // what the line is for, when the game says (decision 80: Cook's "howto" and "passme" lines are not orders)
+      let role = null;
+      try { role = arguments[0] && typeof arguments[0] === "object" && arguments[0].role ? String(arguments[0].role) : null; } catch (e) {}
+      log(role ? { type: "line", id, who, text, name, role } : { type: "line", id, who, text, name });
       const done = () => log({ type: "line-end", id });
       let r;
       try { r = orig.apply(this, arguments); } catch (e) { done(); throw e; }

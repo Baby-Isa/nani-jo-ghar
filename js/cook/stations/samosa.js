@@ -610,7 +610,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       for (;;) {
         const next = kindsB.find((id) => (got[id] || 0) < wantB[id]) || null;
         // T17: "Bhar!" and the next filling (at level 1 said as it opens; later after a pause, with the glow)
-        if (next) steps.to("samosa:fill", { id: `fill-${block}-${order.length}-${next}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([next]))]) });
+        if (next) steps.to("samosa:fill", { id: `fill-${block}-${order.length}-${next}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([next]))]), role: "howto" });
         else steps.done();
         const r = await St.freePick(z, { items, next, doneOk: order.length > 0, doneGlow: (ctx.guided || help) && !next, help });
         steps.poke();
@@ -1180,7 +1180,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const stage = document.querySelector("#stage");
       if (offerGo && global.NjgButtons && stage) nextBtn = global.NjgButtons.next(stage, goLabel.text, () => finish("go"), { id: "samosa-next", glow: !!glowGo });
       else if (offerGo) UI.go(goLabel.text, { glow: !!glowGo, rec: goLabel.rec }).then(() => finish("go"));
-      z.expect(expectGo ? { kind: "click", selector: nextBtn ? "#samosa-next" : "#go-btn" } : { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+      // decision 80: the 'next kind' button stays (moving on once the count is made would give the count away): the
+      // child's own choice (`choice`, contract-2 reads it)
+      z.expect(expectGo ? { kind: "click", selector: nextBtn ? "#samosa-next" : "#go-btn", choice: true } : { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
     });
   }
 

@@ -74,6 +74,8 @@ export const CONTRACT_HOOK = `(() => {
     if (ce && ce.undo && o.cook) o.cook.undo = true;
     // a Done the station steers its player to while the step is still open (more stirs, folds or skewers still change it)
     if (ce && ce.open && o.cook) o.cook.open = true;
+    // decision 80: a button that starts the next part (samosa's 'next kind') is the child's choice
+    if (ce && ce.choice && o.cook) o.cook.choice = true;
     const run = healRun();
     watchTally(run);
     const heal = safe(() => run && run.controller && run.controller.debug ? run.controller.debug.next() : null);
