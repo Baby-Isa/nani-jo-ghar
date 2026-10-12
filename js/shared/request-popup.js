@@ -48,6 +48,8 @@
  *     ignore(ev),    // true: this tap is not a tap-through (Cook's face = replay)
  *     onStop(),      // a tap-through: the host's own stop (its read-along token) besides VoiceStop.stop()
  *     onTap(ev),     // any tap on it (before the fold)
+ *     level,         // the play's level: from 3 the order is heard, never written; every big card drawn is closed (SH-72)
+ *     closed,        // the same, whatever the level
  *   });            // -> {skipped}: resolves once the card is in the sidebar
  *   RequestPopup.isOpen()   RequestPopup.close()  (the open one folds now, as a tap would, without the voice stop)
  *   RequestPopup.fly(cardEl, targetEl, {fast})   the fold animation alone (Promise)
@@ -160,6 +162,23 @@
     }
   }
 
+  /**
+   * SH-72 (rules E12, F9): from level 3 the order is heard, never written. With opts.level >= 3 (or opts.closed) every big
+   * order card in the pop-up is the closed big card (OrderCard.closeBig: face, headline, one row of dots), whatever the
+   * host drew, and stays so if the host redraws it while it's up. Returns the undo (stops watching).
+   */
+  function closeOrder(cardEl, opts) {
+    const OC = root.OrderCard;
+    const on = !!opts.closed || (opts.level != null && Number(opts.level) >= 3);
+    if (!on || !cardEl || !OC || !OC.closeBig) return () => {};
+    const sweep = () => cardEl.querySelectorAll(".oc-card.oc-big:not(.oc-closed-big)").forEach((c) => OC.closeBig(c));
+    sweep();
+    if (!root.MutationObserver) return () => {};
+    const mo = new root.MutationObserver(sweep);
+    mo.observe(cardEl, { childList: true, subtree: true });
+    return () => mo.disconnect();
+  }
+
   function open(opts = {}) {
     if (current) current.fold(false);
     const wait = opts.wait || ((ms) => sleep(ms));
@@ -185,6 +204,7 @@
       veil.classList.remove("hidden");
     }
     veil.classList.add("njg-rq-open");
+    const unclose = closeOrder(cardEl, opts);
     fitCard(veil, cardEl);
     return new Promise((resolve) => {
       let over = false;
@@ -194,6 +214,7 @@
         async fold(skipped) {
           if (over) return;
           over = true;
+          unclose();
           veil.removeEventListener("click", onTap);
           if (current === me) current = null;
           veil.classList.add("going");
@@ -390,6 +411,7 @@
      */
     request(opts = {}) {
       note("request", opts.reason || "");
+      if (opts.level != null) log[log.length - 1].level = Number(opts.level);
       asks = ends;
       const host = opts.host || null;
       const held = [];

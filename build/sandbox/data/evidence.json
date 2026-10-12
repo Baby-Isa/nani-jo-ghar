@@ -826,10 +826,11 @@
     "zoom2:.cl-side"
    ],
    "expect": [
-    "count:.oc-look=0",
+    "count:.oc-look:not(.bulb)=0",
+    "count:.cl-side .oc-card.closed .oc-look.bulb=1",
     "inside:.ng-say,.ng-face"
    ],
-   "note": "no eye button on the card; the speaker icon inside the face circle"
+   "note": "decision 57/89: the closed spoken card's peek is a small bulb (no eye, no counter); the speaker icon inside the face circle"
   },
   {
    "flow": "cook:chai-tray",
@@ -847,7 +848,7 @@
    ],
    "expect": [
     "count:#mission .oc-row button=0",
-    "count:.oc-look=0"
+    "count:.oc-look:not(.bulb)=0"
    ],
    "note": "no per-line speaker, translate or eye buttons; face = replay"
   }
@@ -11081,6 +11082,74 @@
     "pass"
    ],
    "note": "the loans Zafar named (mixed, cup, film, thank you) are marked loan: en, the draft 'aabhar aanjo' is gone, and the borrowing audit lists every English-looking word"
+  }
+ ],
+ "SH-72": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-open",
+   "after": null,
+   "capture": [
+    "crop:#intro .ic-card",
+    "dom:#intro .ic-card"
+   ],
+   "expect": [
+    "count:#intro .ic-card .oc-row:not(.oc-ph-row)=0"
+   ],
+   "note": "from L3 the order is heard, never written: the pop-up shows face, headline and one row of dots (E12, F9)",
+   "delay": 300
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-open",
+   "after": null,
+   "capture": [
+    "crop:.njg-rq-card",
+    "dom:.njg-rq-card"
+   ],
+   "expect": [
+    "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
+   ],
+   "note": "the clinic's L3 pop-up: the closed big card, no rows written",
+   "delay": 300
+  },
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-open",
+   "after": null,
+   "capture": [
+    "crop:.njg-rq-card",
+    "dom:.njg-rq-card"
+   ],
+   "expect": [
+    "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
+   ],
+   "note": "the pharmacy's L3 pop-up: the closed big card, no rows written",
+   "delay": 300
   }
  ]
 }

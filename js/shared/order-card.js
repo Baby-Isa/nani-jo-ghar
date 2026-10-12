@@ -47,11 +47,14 @@
  *                       With opts.big: the closed big card (the request pop-up from level 3): face + headline and one
  *                       row of dots; the order is heard, never written (CLN-114)
  *       opts.open       with opts.closed: the card is open for now (the light bulb's time, D11), not folded
- *       opts.onPeek(cardEl)  with opts.closed: a tap (on the card or its small eye, D12) opens the card for opts.peekMs (default 3500) and calls
+ *       opts.look       with opts.onPeek: the peek's sign: the small bulb, no counter (default: a closed order is spoken,
+ *                       decision 57/89), or "eye" for a closed card whose order is written (D12, E25)
+ *       opts.onPeek(cardEl)  with opts.closed: a tap (on the card or its small bulb or eye) opens the card for opts.peekMs (default 3500) and calls
  *                       this (the host counts it as a hint); without it a tap just opens and closes it
  *       opts.onEl(key, el)           each element drawn for a keyed node (headline, rows, parts)
  *       opts.decorate(el, node)      after a row or part is drawn (a mode's own bit)
  *   OrderCard.render(box, cards, opts)   several cards into box (replaces its content); returns the elements
+ *   OrderCard.closeBig(cardEl)       a big card drawn open, closed as {big, closed} draws it (the pop-up from level 3, SH-72)
  *   OrderCard.CHECK                  the small flat gold check (svg)
  *   OrderCard.redo({max})            decision 51 (CK-23), one rule for every game: a wrong item is redone on the spot.
  *       r.wrong(key) -> {tries, action}  action "redo" (empty that item, reopen its row, try again with help) or, at
@@ -313,25 +316,18 @@
     }
     head.insertAdjacentHTML("beforeend", `<span class="oc-done-tk">${OC.CHECK}</span>`);
     // D12 (1 Oct, decision 27): on a closed card a small eye says "tap to look" (a look has its own badge)
-    // decision 57 (CLN-91): on a spoken card (opts.look "bulb": the waiting room's call) it is a small bulb, no counter
-    if (opts.closed && opts.onPeek && !opts.big) head.insertAdjacentHTML("beforeend", `<span class="oc-look${opts.look === "bulb" ? " bulb" : ""}" aria-hidden="true">${opts.look === "bulb" ? OC.BULB : OC.EYE}</span>`);
+    // decision 57 (CLN-91), decision 89 (SH-16): on a spoken card the peek is a small bulb with no counter, not the eye.
+    // A closed order is a spoken one (rules F9, E12: from level 3 nothing is written, the order is heard), so the bulb is
+    // the default; a host whose closed card is written passes opts.look "eye" and keeps the eye and its counted look (E25)
+    if (opts.closed && opts.onPeek && !opts.big) {
+      const eye = opts.look === "eye";
+      head.insertAdjacentHTML("beforeend", `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.BULB}</span>`);
+    }
     c.appendChild(head);
     // the closed big card (CLN-114, decision 27; S04): from level 3 the pop-up shows no more than the closed sidebar card:
     // the face (= the speaker) and the headline, and one row of dots where the order would be. The order is heard (the
     // host's read-out), never written; one row whatever the order's length, so its size gives nothing away
-    if (opts.big && opts.closed) {
-      c.classList.add("closed", "oc-closed-big");
-      const body = el("div", "oc-body");
-      const inner = el("div", "oc-in");
-      const list = el("div", "oc-items");
-      const ph = el("div", "oc-item oc-ph");
-      ph.appendChild(el("div", "oc-row oc-irow oc-ph-row", `<span class="oc-t" aria-hidden="true">\u00b7\u00b7\u00b7</span>`));
-      list.appendChild(ph);
-      inner.appendChild(list);
-      body.appendChild(inner);
-      c.appendChild(body);
-      return c;
-    }
+    if (opts.big && opts.closed) return OC.closeBig(c);
     if (sh.items.length) {
       const body = el("div", "oc-body");
       const inner = el("div", "oc-in");
@@ -350,6 +346,27 @@
         foldable(c, opts.fold, sh.done, opts);
       }
     }
+    return c;
+  };
+
+  /**
+   * The closed big card's body (CLN-114, SH-72): the written rows go and one row of dots takes their place, whatever the
+   * order's length. OrderCard.card draws it for {big, closed}; the request pop-up applies it from level 3 to a big card a
+   * host drew open (Lifecycle.request({level})), so no pop-up writes a closed order. Returns the card.
+   */
+  OC.closeBig = function (c) {
+    if (!c || c.classList.contains("oc-closed-big")) return c;
+    c.classList.add("closed", "oc-closed-big");
+    c.querySelectorAll(":scope > .oc-body").forEach((b) => b.remove());
+    const body = el("div", "oc-body");
+    const inner = el("div", "oc-in");
+    const list = el("div", "oc-items");
+    const ph = el("div", "oc-item oc-ph");
+    ph.appendChild(el("div", "oc-row oc-irow oc-ph-row", `<span class="oc-t" aria-hidden="true">\u00b7\u00b7\u00b7</span>`));
+    list.appendChild(ph);
+    inner.appendChild(list);
+    body.appendChild(inner);
+    c.appendChild(body);
     return c;
   };
 
