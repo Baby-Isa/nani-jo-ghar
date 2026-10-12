@@ -770,6 +770,11 @@
     };
     const putBack = () => {
       box.classList.remove("onscreen", "late");
+      const fi = box.querySelector(".pm-face img");
+      if (fi && fi.dataset.home) {
+        fi.src = fi.dataset.home;
+        delete fi.dataset.home;
+      }
       if (home && box.parentNode !== home) home.insertBefore(box, next);
     };
     const said = UI.naniMuted() ? Promise.resolve() : Promise.resolve(Lang.speak(line)).catch(() => {});
@@ -786,6 +791,12 @@
           over = true;
           stopClock();
           box.classList.add("late");
+          // MAA-14: out of time she looks impatient (her own frown face), then goes; her usual face comes back with her
+          const fi = box.querySelector(".pm-face img");
+          if (fi && !fi.dataset.home) {
+            fi.dataset.home = fi.getAttribute("src");
+            fi.src = Cook.v(Cook.facePath("nani", "frown"));
+          }
           if (Cook.expect && String(Cook.expect.selector || "").startsWith("#passme")) Cook.expect = null;
           setTimeout(() => {
             box.classList.add("leaving");

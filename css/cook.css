@@ -1080,7 +1080,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 
 /* T19 (MAA-14, S02-B): Nani's "pass me" comes ON SCREEN over the play area (the game is paused), her bubble asks,
    three pictures, a 3-second ring with a tick-tock; out of time she looks impatient (a shake) and goes */
-#stage #passme.onscreen { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 60; width: min(560px, 92%); padding: 16px; background: #fffaf2; border-radius: 22px; box-shadow: 0 18px 50px rgba(40, 25, 10, 0.35); animation: pmIn .35s cubic-bezier(.2,.8,.3,1.2); }
+#stage #passme.onscreen { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 60; width: min(560px, 92%); padding: 16px; background: #fffaf2; border-radius: 22px; box-shadow: 0 18px 50px rgba(40, 25, 10, 0.35); animation: pmCross .7s cubic-bezier(.2,.8,.3,1); }
 #stage #passme.onscreen.hidden { display: none; }
 #stage #passme.onscreen .pm-nani { display: flex; align-items: center; gap: 12px; position: relative; }
 #stage #passme.onscreen .pm-face { width: 84px; height: 84px; flex: none; }
@@ -1109,6 +1109,11 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 @keyframes pmRing { to { stroke-dashoffset: 100.5; } }
 @keyframes pmIn { from { opacity: 0; transform: translate(-50%, -40%) scale(.92); } }
 @keyframes pmHuff { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+/* MAA-14 (S05-C): she comes across the screen from the side, interrupting (not a card fading in where it stands);
+   her 3-second ring is a clear gold band round her face */
+@keyframes pmCross { from { opacity: .4; transform: translate(70vw, -50%); } 70% { opacity: 1; transform: translate(-56%, -50%); } to { transform: translate(-50%, -50%); } }
+#passme .pm-ring circle { stroke-width: 4.6; }
+#passme .pm-ring .pm-ring-bg { stroke: rgba(201, 150, 46, 0.28); }
 
 /* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
 .bubble-rec, .md-rec { display: none !important; }

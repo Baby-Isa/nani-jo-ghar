@@ -437,11 +437,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let i = 0;
       for (let k = 0; k < heaps; k++, i++) {
         const q = spot(i);
-        const w = rIn * 0.26;
-        g.fillStyle(0x6b4a2a, 0.18).fillEllipse(q.x + w * 0.06, q.y + w * 0.1, w, w * 0.62);
-        g.fillStyle(0xf4ecdc, 1).fillEllipse(q.x, q.y, w, w * 0.6);
-        g.fillStyle(0xffffff, 1).fillEllipse(q.x - w * 0.08, q.y - w * 0.08, w * 0.62, w * 0.34);
-        g.lineStyle(1.5, 0xcbbd9f, 0.9).strokeEllipse(q.x, q.y, w, w * 0.6);
+        const w = rIn * 0.24;
+        // a small wet patch where it landed, then the mound: fine crystals, lit from the top left (a seeded scatter,
+        // so the same spoonful looks the same every frame)
+        g.fillStyle(0x5a3a1c, 0.16).fillEllipse(q.x + w * 0.05, q.y + w * 0.08, w * 1.05, w * 0.66);
+        let seed = (i + 1) * 9301;
+        const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+        for (let c = 0; c < 46; c++) {
+          const a = rnd() * Math.PI * 2;
+          const rr = Math.sqrt(rnd());
+          const cx = q.x + Math.cos(a) * rr * w * 0.5;
+          const cy = q.y + Math.sin(a) * rr * w * 0.3 - (1 - rr) * w * 0.08;
+          const lit = Math.cos(a + 2.4) * 0.5 + 0.5;
+          const col = lit > 0.6 ? 0xffffff : lit > 0.3 ? 0xf1ece2 : 0xd9d1c2;
+          const sz = Math.max(1.4, w * (0.035 + rnd() * 0.03));
+          g.fillStyle(col, 1).fillRect(cx - sz / 2, cy - sz / 2, sz, sz);
+        }
+      }
+      // (an extra the pan's own picture already shows from the milky stage on: the spiced chai pictures its spices)
+      if (pan.shown === "spiced" || pan.shown === "boil-milky" || pan.shown === "foam") {
+        const h0 = pan.heat || 0;
+        g.setAlpha(pan.state === "ready" ? 0 : pan.state === "heating" ? Cook.clamp(1 - (h0 - boilAt * 0.6) / (boilAt * 0.5), 0, 1) : 1);
+        return;
       }
       pan.extras.forEach((id) => {
         const q = spot(i++);
@@ -1073,8 +1090,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const ws = pans.map((q) => q.well);
       let gap = 400;
       ws.forEach((a, i) => ws.forEach((b, j) => j > i && (gap = Math.min(gap, Math.hypot(a.x - b.x, a.y - b.y)))));
-      const size = Math.max(110, Math.min(190, gap * 0.95));
-      const d = (WELL_D * trayD) / META.glassR;
+      const size = Math.max(110, Math.min(pans.length > 1 ? 190 : 230, gap * 0.95));
       const allOk = !wrongPans.length;
       // the praise card goes right of the last face; at 4 people that face is the tray's bottom right and
       // the card would run off the view (30 Sept), so then it goes left of the leftmost face instead
@@ -1092,8 +1108,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             who: pan.who,
             ok: !wrongPans.includes(pan),
             x: pan.well.x,
-            // one glass: the face just above it; several (the tray's grid): each face on its own glass
-            y: pans.length > 1 ? pan.well.y - size * 0.12 : pan.well.y - d * 0.5 - size * 0.42,
+            // CK-07 (§14a, S05-C): the large face circle over the dish itself: each face on its own glass
+            y: pans.length > 1 ? pan.well.y - size * 0.12 : pan.well.y,
             size,
             side: i === praise ? side : "right",
             line: allOk && i === praise ? undefined : false,
