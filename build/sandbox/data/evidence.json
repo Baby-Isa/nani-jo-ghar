@@ -3208,6 +3208,53 @@
    "note": "each of Nani's pantry lines is said once per ask, never twice back to back (the pop-up or her step line, then the same line again)"
   }
  ],
+ "PAN-17": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:view-pantry",
+   "after": null,
+   "capture": [
+    "dom:#side"
+   ],
+   "expect": [
+    "!textMatches:(?i)\\bMuke [a-z]+ de\\b"
+   ],
+   "note": "from L3 the card is closed: Nani's step line is heard, never written with the item (her strip and her box show no 'Muke X de.')"
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:tap",
+   "after": null,
+   "max": 4,
+   "capture": [
+    "dom:#side"
+   ],
+   "expect": [
+    "!textMatches:(?i)\\bMuke [a-z]+ de\\b"
+   ],
+   "note": "from L3 the card is closed: Nani's step line is heard, never written with the item (her strip and her box show no 'Muke X de.')"
+  }
+ ],
  "CHAI-01": {
   "human": "Does the chai station feel fun enough for the second thing a new player sees? (play one chai round from a fresh start)"
  },

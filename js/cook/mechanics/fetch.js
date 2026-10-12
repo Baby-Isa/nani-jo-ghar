@@ -222,10 +222,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let showFor = null;
       while (remaining.length) {
         const expected = remaining[0];
-        const guided = UI.stepOpen ? UI.stepOpen(ask(expected, n === 0), { ctx }) : ctx.guided || Cook.wordStage(expected) === 1; // S02-A hook: R2/T2, help after the pause
+        // PAN-17 (F9, E12): from data.calm.closedFrom (level 3) the card is closed and the order heard, never written: her
+        // step line is said, not shown (no "Muke elchi de." in her strip); below it the step line is shown and said
+        const closed = Cook.roundLevel(ctx) >= ((Cook.data.calm || {}).closedFrom || 3);
+        if (closed && UI.stepDone) UI.stepDone();
+        // (said through the one voice queue, never written: UI.voice would put it in her strip)
+        const muted = global.NaniGuide && global.NaniGuide.muted && global.NaniGuide.muted();
+        if (closed && !muted) (UI.queueSpeech || ((f) => f()))(() => Lang.speak(ask(expected, n === 0))).catch(() => {});
+        const guided = closed ? !!ctx.guided : UI.stepOpen ? UI.stepOpen(ask(expected, n === 0), { ctx }) : ctx.guided || Cook.wordStage(expected) === 1; // S02-A hook: R2/T2, help after the pause
         // PAN-16: at level 1 the step line is shown and said at once by Nani's step (UI.step), so the guided step doesn't
         // say it again; her later hesitation help (unguided) still says it
-        const saidByStep = !!UI.stepOpen && guided && Cook.roundLevel(ctx) === 1;
+        const saidByStep = (closed || !!UI.stepOpen) && guided && (closed || Cook.roundLevel(ctx) === 1);
         Cook.markSeen(expected);
         const r = await S.step({
           items,
