@@ -48,6 +48,9 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
       } finally {
         for (const c of P.covers) rec.note(`covered tap: ${c}`);
       }
+      // the end card's second page (the word review): the lab's round ends on it, so the player's loop stops before naming it.
+      // Record it (the evidence loop's "results-words": SH-49 and every row about the review after a bulb, a mistake, a take-back)
+      if (await page.evaluate("(() => { const w = document.querySelector('.njg-results .rs-words'); return !!w && w.getBoundingClientRect().height > 1; })()").catch(() => false)) await P.once("results-words", { settle: 600 });
       await sleep(400);
       await rec.state("result");
       ctx.extra = { badges: P.badges, bulbs: P.bulbs, peeks: P.peeks, mistakes: [...P.made], tookBack: P.tookBack };

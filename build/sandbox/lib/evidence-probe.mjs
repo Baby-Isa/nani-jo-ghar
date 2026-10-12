@@ -16,7 +16,7 @@ import { decodePng } from "../../tools/review/lib/png.mjs";
 import * as Contract from "./contract.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9@#]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80); // no # or @: these are URL paths on the sheets
 
 // ---- the page side: host and clinic states and watched selectors on each change, as {type: "m", name} through the sound log ----
 export const EVIDENCE_HOOK = (watch = []) => `(() => {
@@ -191,7 +191,8 @@ export class EvidenceProbe {
   onEvent(e) {
     if (!e) return;
     if (e.type === "m") this.moment(e.name);
-    else if (e.type === "c" && e.k === "life") this.moment(`life:${e.what}`);
+    // the request is logged as the pop-up starts to open: its card is up a moment later
+    else if (e.type === "c" && e.k === "life") this.moment(`life:${e.what}`, { settle: e.what === "request" ? 450 : 0 });
     else if (e.type === "c" && e.k === "popup") this.moment(e.open ? "life:popup-open" : "life:popup-fold");
     else if (e.type === "c" && e.k === "bubble" && e.list && e.list.length) this.moment("bubble");
   }
@@ -231,15 +232,14 @@ export class EvidenceProbe {
     if (settle) await sleep(settle);
     if (p.delay) await sleep(p.delay);
     const vw = page.viewportSize().width, vh = page.viewportSize().height;
-    // one whole screen per hit for the crop's room (Fable 14: a layout row's panel shows where the crop sits)
-    if (p.capture.some((c) => ["crop", "zoom2", "strip", "trace", "shot"].includes(c.kind))) {
-      try { const buf = await this.shot(null); const room = this.file(s, hit, -1, "room"); writeFileSync(join(this.dir, room), buf); hit.room = room; } catch (e) { hit.roomError = String(e.message || e).split("\n")[0]; }
-    }
+    // one whole screen per hit for the crop's room (Fable 14: a layout row's panel shows where the crop sits): after the crops,
+    // so the crops are taken first, nearest the moment (a game that moves on 400 ms after the last turn)
+    const takeRoom = async () => { if (hit.room || hit.roomError) return; try { const buf = await this.shot(null); const room = this.file(s, hit, -1, "room"); writeFileSync(join(this.dir, room), buf); hit.room = room; } catch (e) { hit.roomError = String(e.message || e).split("\n")[0]; } };
     for (const [ci, c] of p.capture.entries()) {
       const out = { kind: c.kind, raw: c.raw, files: [], text: null, fail: null };
       hit.captures.push(out);
       try {
-        if (c.kind === "shot") { if (hit.room) { out.files.push(hit.room); out.box = { x: 0, y: 0, width: vw, height: vh }; } else out.fail = `no screenshot (${hit.roomError || "?"})`; }
+        if (c.kind === "shot") { await takeRoom(); if (hit.room) { out.files.push(hit.room); out.box = { x: 0, y: 0, width: vw, height: vh }; } else out.fail = `no screenshot (${hit.roomError || "?"})`; }
         else if (c.kind === "crop" || c.kind === "zoom2" || c.kind === "strip") {
           const bs = await this.boxes(c.sel);
           if (bs.error) { out.fail = bs.error; continue; }
@@ -282,6 +282,7 @@ export class EvidenceProbe {
         }
       } catch (e) { out.fail = `capture failed: ${String(e.message || e).split("\n")[0]}`; }
     }
+    if (p.capture.some((c) => ["crop", "zoom2", "strip", "trace"].includes(c.kind))) await takeRoom();
     // the expects decided on screen at this moment
     const domText = (tagged = false) => hit.captures.filter((c) => c.runs).flatMap((c) => c.runs.filter((x) => !tagged || x.tag === "" || x.tag === "canvas").map((x) => x.text)).join(" ");
     for (const e of p.expect) {

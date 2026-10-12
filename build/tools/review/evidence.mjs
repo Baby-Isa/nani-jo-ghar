@@ -236,7 +236,8 @@ async function sheets(dirArg) {
   for (const [f, list] of Object.entries(seenMoments)) old[f] = [...new Set([...(old[f] || []), ...list])].slice(0, 600);
   mkdirSync(dirname(seenFile), { recursive: true }); writeFileSync(seenFile, JSON.stringify(old));
   const { startServer, launch } = await import("../../sandbox/lib/env.mjs");
-  const { htmlToPng, shotUrl } = await import("../../sandbox/lib/sheets.mjs");
+  const { htmlToPng, shotUrl: rawUrl } = await import("../../sandbox/lib/sheets.mjs");
+  const shotUrl = (f) => rawUrl(f).replace(/#/g, "%23").replace(/ /g, "%20");
   const server = await startServer(), browser = await launch({ webgl: false });
   const page = await browser.newPage({ viewport: { width: 1200, height: 800 } });
   const cmdCache = new Map();
@@ -336,35 +337,32 @@ async function sheets(dirArg) {
   writeReport(dir, P, index);
 }
 function sheetHtml(row, panels, shotUrl) {
-  const W = 1168; // the sheet is 1200 px wide with a 16 px gutter
+  // at most 1200 x ~1200 px (about 1.9k image tokens at full resolution, under the API's downscale): panels side by side, two to a
+  // row; a filmstrip or a lone zoom spans the row. Crops at 1:1 CSS px when they fit their column, else scaled down to fit
+  const wide = (p) => p.type === "frames" || (p.zoom && panels.length === 1) || panels.length === 1;
   const fig = (p) => {
-    if (p.type === "frames") {
-      const n = p.frames.length, gap = 4;
-      const each = Math.floor((W - 16 - gap * (n - 1)) / n);
-      return `<div class="frames">${p.frames.map((f) => `<figure class="fr"><img src="${esc(shotUrl(f.src))}" style="max-width:${each}px" data-dpr="${f.dpr}" class="${p.zoom ? "z" : "n"}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
-    }
-    if (p.type === "room") {
-      // the whole screen at about 800 px wide with the crop outlined
-      return `<div class="room" data-box="${esc(JSON.stringify(p.box))}" data-dpr="${p.dpr}"><img src="${esc(shotUrl(p.src))}"><i class="box"></i></div>`;
-    }
-    return `<img class="${p.zoom ? "z" : "n"}" data-dpr="${p.dpr}" src="${esc(shotUrl(p.src))}" style="max-width:${W - 16}px">`;
+    if (p.type === "frames") return `<div class="frames">${p.frames.map((f) => `<figure class="fr"><img src="${esc(shotUrl(f.src))}" data-dpr="${f.dpr}" class="${p.zoom ? "z" : "n"}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
+    if (p.type === "room") return `<div class="room" data-box="${esc(JSON.stringify(p.box))}" data-dpr="${p.dpr}"><img src="${esc(shotUrl(p.src))}"><i class="box"></i></div>`;
+    return `<img class="${p.zoom ? "z" : "n"} one" data-dpr="${p.dpr}" src="${esc(shotUrl(p.src))}">`;
   };
   return `<!doctype html><meta charset="utf-8"><style>
-    body{margin:0;padding:16px;background:#f3ece0;font:15px/1.3 Nunito,system-ui,sans-serif;color:#2a1f14;width:1168px}
-    header{background:#fff;border:2px solid #2a1f14;border-radius:8px;padding:8px 12px;margin-bottom:10px}
-    h1{font-size:24px;margin:0 0 4px} h1 small{font-size:14px;font-weight:600;color:#6b5a45;margin-left:8px}
-    header p{margin:2px 0;font-size:15px} .k{font-weight:800}
-    section{background:#fff;border:2px solid #cdbfa8;border-radius:8px;padding:6px 8px;margin:0 0 10px;display:inline-block;max-width:1152px;vertical-align:top}
-    .lab{font-size:22px;font-weight:900;margin-right:8px} .cap{font-size:14px;font-weight:700;color:#4a3a28}
-    section img{display:block;margin-top:4px;image-rendering:auto} .frames{display:flex;gap:4px;flex-wrap:nowrap;margin-top:4px}
-    .fr{margin:0} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
-    .room{position:relative;width:800px;margin-top:4px} .room img{width:800px} .room .box{position:absolute;border:3px solid #e0201a;box-shadow:0 0 0 2px #fff}
-  </style><header><h1>${esc(row.id)}<small>${esc(row.section)}</small></h1><p><span class="k">Issue:</span> ${esc(row.issue.slice(0, 420))}</p><p><span class="k">Check:</span> ${esc(row.check.slice(0, 260))}</p></header>
-  ${panels.map((p) => `<section><span class="lab">${p.letter}</span><span class="cap">${esc(p.label)}</span>${fig(p)}</section>`).join("\n")}
+    body{margin:0;padding:12px 16px;background:#f3ece0;font:15px/1.3 Nunito,system-ui,sans-serif;color:#2a1f14;width:1168px}
+    header{background:#fff;border:2px solid #2a1f14;border-radius:8px;padding:6px 12px;margin-bottom:8px}
+    h1{font-size:22px;margin:0 0 2px} h1 small{font-size:14px;font-weight:600;color:#6b5a45;margin-left:8px}
+    header p{margin:1px 0;font-size:14px} .k{font-weight:800}
+    .grid{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
+    section{background:#fff;border:2px solid #cdbfa8;border-radius:8px;padding:4px 6px;box-sizing:border-box;width:580px}
+    section.wide{width:1168px}
+    .lab{font-size:22px;font-weight:900;margin-right:6px} .cap{font-size:13px;font-weight:700;color:#4a3a28}
+    section img{display:block;margin-top:3px;max-width:100%} img.one{max-height:520px;object-fit:contain}
+    .frames{display:flex;gap:4px;margin-top:3px} .fr{margin:0;flex:1 1 0;min-width:0} .fr img{width:100%;max-height:420px;object-fit:contain} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
+    .room{position:relative;margin-top:3px} .room img{width:100%} .room .box{position:absolute;border:3px solid #e0201a;box-shadow:0 0 0 2px #fff}
+  </style><header><h1>${esc(row.id)}<small>${esc(row.section)}</small></h1><p><span class="k">Issue:</span> ${esc(row.issue.slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(row.check.slice(0, 220))}</p></header>
+  <div class="grid">${panels.map((p) => `<section class="${wide(p) ? "wide" : ""}"><span class="lab">${p.letter}</span><span class="cap">${esc(p.label)}</span>${fig(p)}</section>`).join("\n")}</div>
   <script>
-    // 1:1 CSS px: a DPR-2 crop shows at half its pixels, unless it is the zoom (then at its real pixels, 2x)
-    for (const im of document.querySelectorAll("img[data-dpr]")) im.addEventListener("load", () => { const d = +im.dataset.dpr || 1; const w = im.classList.contains("z") ? im.naturalWidth : im.naturalWidth / d; im.style.width = Math.min(w, parseFloat(im.style.maxWidth) || 1152) + "px"; });
-    for (const r of document.querySelectorAll(".room")) { const im = r.querySelector("img"), b = JSON.parse(r.dataset.box || "null"), d = +r.dataset.dpr || 1; const go = () => { if (!b) return; const k = 800 / (im.naturalWidth / d); Object.assign(r.querySelector(".box").style, { left: b.x * k + "px", top: b.y * k + "px", width: b.width * k + "px", height: b.height * k + "px" }); }; im.complete ? go() : im.addEventListener("load", go); }
+    // 1:1 CSS px where it fits: a DPR-2 crop shows at half its pixels, unless it is the zoom (then at its real pixels, 2x)
+    for (const im of document.querySelectorAll("img.one")) { const go = () => { const d = +im.dataset.dpr || 1; im.style.width = (im.classList.contains("z") ? im.naturalWidth : im.naturalWidth / d) + "px"; }; im.complete ? go() : im.addEventListener("load", go); }
+    for (const r of document.querySelectorAll(".room")) { const im = r.querySelector("img"), b = JSON.parse(r.dataset.box || "null"), d = +r.dataset.dpr || 1; const go = () => { if (!b) return; const k = im.clientWidth / (im.naturalWidth / d); Object.assign(r.querySelector(".box").style, { left: b.x * k + "px", top: b.y * k + "px", width: b.width * k + "px", height: b.height * k + "px" }); }; im.complete ? go() : im.addEventListener("load", go); }
   </script>`;
 }
 function writeReport(dir, P, index) {
