@@ -20,4 +20,22 @@
 | SH-33, CHAI-06, MAA-10, CK-02, CK-12, CK-20, SEK-05, MOD-01 | 2151 | — | open: check (T) |
 | DAAR-07 | 2151 | 2225 | open: Zafar |
 
+## Round 2 (the orchestrator's S/B items, PAN-06)
+
+Red ev-20261012-2255, green ev-20261012-232939-gvn and 234304-cng. **Built:** CK-22 (machine). Sheets to judge: SH-56 (samosa moves on when every strip is filled), PAN-09 (bigger spice jars) and PAN-06 (full shelves from L2; leak test ok).
+
+**Open:**
+- SH-58: chai's ✓ glows at once and daar's passes; the chai count is read after the press (T).
+- SH-44: steps passed; the probe must tap the tick badge (T).
+- SEK-03: group boxes are behind the L3+ closed card (T: capture after a peek).
+- SH-19: samosa shows the shared help; the count misses it (T).
+- PAN-01: the 844×390 page stalls (T).
+- SH-09: the shared card's closed headlines wrap to three lines on short phones (S).
+- SH-41: the clinic half (D/T).
+- The fridge waits on Mum's words.
+
+**Also fixed:** cards are closed from L3 (`data.calm.closedFrom`); chai L4 had been written (F9/E12). A lone ✓ now counts its play once per order.
+
+**Still not mine:** the daar vessel lines wait on T or art meta for the -v2 cuts. SEK-05 is T/B. At L4 the pantry's header still writes the next item ("Muke elchi de."): B/S.
+
 **QA checklist.** Fast checks only (C8). Every changed state was looked at on the sheets. The full matrix, sizes and sound are left for `/review`.
