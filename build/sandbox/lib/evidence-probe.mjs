@@ -241,12 +241,15 @@ export class EvidenceProbe {
       jobs.push({ s, go: () => this.capture(s, hit, settle) });
     }
     if (!jobs.length) return;
-    const run = this.chain.then(async () => { for (const j of jobs) await j.go().catch(() => {}); });
-    this.chain = run.catch(() => {});
-    // a filmstrip or a trace at the moment just before a move (heal:<step>, cook:<kind>) films the move itself: the player goes on
-    // while it runs (a heal game's drag or pour takes a few hundred ms; blocked, the strip saw only the still before it)
-    const filmsTheMove = /^(heal|cook):/.test(name) && jobs.every((j) => j.s.p.capture.length && j.s.p.capture.every((c) => c.kind === "strip" || c.kind === "trace"));
-    if (block && !filmsTheMove) await run.catch(() => {});
+    // each probe captures in its own queue: a bubble's crop never waits behind another probe's 3 s filmstrip (it would find the bubble
+    // gone); one probe's moments stay in order
+    const runs = jobs.map((j) => { const r = (j.s.queue || Promise.resolve()).then(() => j.go()).catch(() => {}); j.s.queue = r; return r; });
+    const run = Promise.all(runs);
+    this.chain = Promise.all([this.chain, run]).catch(() => {});
+    // a filmstrip or a trace films what happens next: the player goes on while it runs (at heal:<step> or cook:<kind>, the move itself:
+    // a heal game's drag or pour takes a few hundred ms; blocked, the strip saw only the still before it)
+    const filmsTheMove = jobs.every((j) => j.s.p.capture.length && j.s.p.capture.every((c) => c.kind === "strip" || c.kind === "trace"));
+    if (block && !filmsTheMove) await run;
   }
   // the wanted order (Fable 5): what the request showed (its card's text, its people) and what was said, gathered while the order is
   // asked, decided once it has been shown and said (the card folded into the sidebar, the station or stage started). Each wanted item:

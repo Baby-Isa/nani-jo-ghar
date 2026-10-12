@@ -453,11 +453,12 @@ export class CookPlayer {
       const now = Date.now();
       let want = STIR[speed == null ? "default" : speed];
       const wiggle = mistake && now - t0 < 1200;
+      // the slosh's moment, once it has gone on 0.7 s (a slow page can step past the wiggle's window: record it on the next turn)
+      if (mistake && !shot && now - t0 > 700) { shot = true; await this.once("wrong-stir", { settle: 0 }); }
       if (mistake && !wiggle && speed && count < target - 1 && now - t0 < 3800) want = STIR[speed === "slow" ? "quick" : "slow"];
       if (wiggle) {
         a = 0.9 * Math.sin(2 * Math.PI * 5 * (now - t0) / 1000);
         anchorT = now; anchorA = a; curWant = null;
-        if (!shot && now - t0 > 700) { shot = true; await this.once("wrong-stir", { settle: 0 }); }
       } else {
         if (want !== curWant) { curWant = want; anchorT = now; anchorA = a; }
         const goal = anchorA + 2 * Math.PI * want * (now - anchorT) / 1000;

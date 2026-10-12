@@ -259,6 +259,8 @@ export class ClinicPlayer {
       if (a.do !== "wait" && this.mode !== "fair" && (await this.healDriver(game, a, next, tools))) continue;
       // while the first-time overlay runs it ignores taps for about 450 ms between its steps: go at a child's pace
       if (a.do !== "wait" && !this.fast && (await this.page.$(".njg-onboard"))) await sleep(700);
+      // the middle, looked for before the move too (the open row's mark can land a beat after the move that opened it)
+      if (!mid && a.do !== "wait" && steps > 0 && (await this.pastHalf())) { mid = true; await this.once(`heal-${game}-mid`); }
       await this.healAct(a);
       lastA = a;
       steps++;

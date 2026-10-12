@@ -440,23 +440,6 @@
    ],
    "expect": null,
    "note": "the in-play check is flat: no shadow or lip behind the gold tick"
-  },
-  {
-   "flow": "clinic:morning",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "heal:button",
-   "after": null,
-   "capture": [
-    "zoom2:.njg-done"
-   ],
-   "expect": null,
-   "note": "the same flat check in the clinic (the heal game's ✓ in a morning: at level 1 a counted step closes itself, so the lab's lone game shows none)"
   }
  ],
  "SH-07": [
@@ -909,7 +892,7 @@
   },
   {
    "flow": "clinic:waiting",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -924,7 +907,7 @@
    "expect": [
     "count:.reading>=1"
    ],
-   "note": "the clinic card read along"
+   "note": "the clinic card read along (at the clinic's real pace: in fast mode its lines take a fraction of a second)"
   }
  ],
  "SH-52": [
@@ -1612,12 +1595,12 @@
    "at": "only:#done-btn",
    "after": null,
    "capture": [
-    "strip:.njg-done:4x300"
+    "zoom2:.njg-done"
    ],
    "expect": [
     "count:.njg-done.njg-pulse=1"
    ],
-   "note": "daar L1: the same",
+   "note": "daar L1: the same (a still: the pulse class decides)",
    "webgl": true
   }
  ],
@@ -1866,7 +1849,8 @@
     "order:.rs-badge:nth-child(1),.rs-badge:nth-child(2),.rs-badge:nth-child(3)",
     "pass"
    ],
-   "note": "badges come in one, two, three; the bulb after"
+   "note": "badges come in one, two, three; the bulb after",
+   "delay": 700
   },
   {
    "flow": "clinic:heal-cut",
@@ -1885,7 +1869,8 @@
    "expect": [
     "order:.rs-badge:nth-child(1),.rs-badge:nth-child(2),.rs-badge:nth-child(3)"
    ],
-   "note": "with a bulb used: it never shows before the first two"
+   "note": "with a bulb used: it never shows before the first two",
+   "delay": 700
   }
  ],
  "SH-68": [
@@ -1951,28 +1936,6 @@
   }
  ],
  "SH-23": [
-  {
-   "flow": "clinic:morning",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768",
-    "844x390"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:visible:.njg-btn",
-   "after": null,
-   "capture": [
-    "contract:12",
-    "zoom2:.njg-btn"
-   ],
-   "expect": [
-    "pass",
-    "noClip:.njg-btn"
-   ],
-   "note": "Done, Next, to the bench: one kit, hidden until usable, never greyed or cut (a morning: the heal ✓ and 'close the clinic')"
-  },
   {
    "flow": "cook:mishkaki-grill",
    "path": "fair",
@@ -3468,7 +3431,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "popup-open",
    "after": null,
    "capture": [
     "contract:1",
@@ -3479,7 +3442,8 @@
     "pass",
     "count:#intro .ic-card .oc-card=3"
    ],
-   "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet"
+   "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet",
+   "delay": 300
   }
  ],
  "CHAI-16": [
@@ -3709,27 +3673,6 @@
   }
  ],
  "MAA-08": [
-  {
-   "flow": "cook:maani-line",
-   "path": "fair",
-   "level": 2,
-   "sizes": [
-    "1280x800",
-    "844x390"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:placed",
-   "after": null,
-   "capture": [
-    "shot",
-    "zoom2:#count-badge"
-   ],
-   "expect": [
-    "noOverlap:#count-badge,canvas:hob"
-   ],
-   "note": "count badge clear of the hob (L2: two maani, so the count shows; 915x375 maps to 844x390)"
-  },
   {
    "flow": "cook:roll-tawa",
    "path": "fair",
@@ -4250,10 +4193,10 @@
    "at": "kind-timing",
    "after": null,
    "capture": [
-    "zoom2:canvas:saucepan"
+    "zoom2:canvas:v3-pan"
    ],
    "expect": null,
-   "note": "the silver saucepan's top edge is not cut flat"
+   "note": "the silver saucepan's (v3-pan-*) top edge is not cut flat"
   }
  ],
  "DAAR-15": [
@@ -4391,7 +4334,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view",
+   "at": "kind-tap",
    "after": null,
    "capture": [
     "zoom2:canvas:bowl",
@@ -4601,7 +4544,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stage-end",
+   "at": "results",
    "after": null,
    "capture": [
     "zoom2:canvas:cv3-bowl"
@@ -4620,7 +4563,7 @@
    ],
    "profile": "seen",
    "want": [
-    "/(ba|trae|char) (marcha|marchu|mirchi)/"
+    "/mirchi|marcha|marchu/"
    ],
    "at": "request",
    "after": null,
@@ -4631,7 +4574,7 @@
    "expect": [
     "!textMatches:\\band\\b"
    ],
-   "note": "'with three chillies' (any counted chillies), all ingredients listed; 'with' a grey placeholder until recorded"
+   "note": "an order with chillies (mirchi, veg-12): all ingredients listed, 'with' a grey placeholder until recorded (three chillies cannot come at L1: two kinds share two or three spoons)"
   }
  ],
  "SAM-02": [
@@ -4698,10 +4641,10 @@
    "after": null,
    "capture": [
     "crop:#stage",
-    "dom:#count-badge"
+    "dom:#stage"
    ],
    "expect": null,
-   "note": "the counter shown as you fill, per the counting rule"
+   "note": "the counter shown as you fill, per the counting rule (the count badge's number, when it shows, is in the stage's text)"
   }
  ],
  "SAM-05": [
@@ -4735,13 +4678,14 @@
    "want": [
     "said:/samosa[\\s\\S]*samosa/"
    ],
-   "at": "every:step",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "note": "the second samosa starts empty when its filling differs"
+   "note": "the second samosa starts empty when its filling differs",
+   "max": 10
   }
  ],
  "SAM-07": [
@@ -4852,7 +4796,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "order-card-in-sidebar",
+   "at": "stage-start",
    "after": null,
    "capture": [
     "zoom2:#mission",
@@ -4861,7 +4805,8 @@
    "expect": [
     "!textMatches:^samosa$"
    ],
-   "note": "one tinted group box per kind, head 'ba samosa', fillings under it, no label per block (L1, L2: one kind)"
+   "note": "one tinted group box per kind, head 'ba samosa', fillings under it, no label per block (L1, L2: one kind)",
+   "delay": 1500
   },
   {
    "flow": "cook:samosa",
@@ -4874,7 +4819,7 @@
    "want": [
     "said:/samosa[\\s\\S]*samosa/"
    ],
-   "at": "order-card-in-sidebar",
+   "at": "stage-start",
    "after": null,
    "capture": [
     "zoom2:#mission",
@@ -4883,7 +4828,8 @@
    "expect": [
     "!textMatches:^samosa$"
    ],
-   "note": "L3, an order of two kinds: a tinted box each"
+   "note": "L3, an order of two kinds: a tinted box each",
+   "delay": 1500
   }
  ],
  "SAM-12": [
@@ -4960,7 +4906,7 @@
    "want": {
     "order": "matar"
    },
-   "at": "order-card-in-sidebar",
+   "at": "stage-start",
    "after": null,
    "capture": [
     "dom:#mission",
@@ -4970,7 +4916,8 @@
     "textMatches:matar",
     "!textMatches:watana"
    ],
-   "note": "peas are matar"
+   "note": "peas are matar",
+   "delay": 1500
   }
  ],
  "SAM-16": [
@@ -5553,13 +5500,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view",
+   "at": "kind-swipe",
    "after": null,
    "capture": [
-    "zoom2:canvas:chakla"
+    "zoom2:canvas:plate"
    ],
    "expect": null,
-   "note": "samosa's board"
+   "note": "samosa's board (the fill part's pastry board: spr:plate.top, from its fold)"
   }
  ],
  "CK-10": [
@@ -6233,7 +6180,7 @@
  "CLN-04": [
   {
    "flow": "clinic:waiting",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2,
@@ -6256,7 +6203,8 @@
     "lexicon",
     "!textMatches:…"
    ],
-   "note": "the ladder: man, woman, boy, girl; old, young; tall, short; colours; with the baby; no '...' cards"
+   "note": "the ladder: man, woman, boy, girl; old, young; tall, short; colours; with the baby; no '...' cards",
+   "delay": 300
   }
  ],
  "CLN-05": [
@@ -6395,7 +6343,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "results-badges",
    "after": null,
    "capture": [
     "zoom2:.rs-card"
@@ -6509,7 +6457,7 @@
    "after": null,
    "capture": [
     "contract:1",
-    "strip:.njg-rq-card:4x500",
+    "strip:.njg-rq-card:6x800",
     "voice"
    ],
    "expect": [
@@ -7299,11 +7247,10 @@
    "at": "rec:stage-diagnosis",
    "after": null,
    "capture": [
-    "zoom2:.cl-room-pic",
     "shot"
    ],
    "expect": null,
-   "note": "the certificate frame on the right wall (grey and flagged until the photo arrives); toys bottom left; no anatomy poster"
+   "note": "the certificate frame on the right wall (grey and flagged until the photo arrives); toys bottom left; no anatomy poster (the room as drawn: no .cl-room-pic element now)"
   },
   {
    "flow": "clinic:sendoff",
@@ -7406,8 +7353,7 @@
    "at": "every:clinic:pharmacy",
    "after": null,
    "capture": [
-    "zoom2:.cl-tray",
-    "strip:.cl-tray:4x150"
+    "zoom2:.cl-tray"
    ],
    "expect": null,
    "note": "the pantry's tray: outlined spaces, front edge over items, outline fades, at most three across",
@@ -7429,6 +7375,27 @@
    ],
    "expect": null,
    "note": "a placed item can be put back; the first pick is scored"
+  },
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "pharmacy-belt",
+   "after": null,
+   "capture": [
+    "strip:.cl-tray:6x250"
+   ],
+   "expect": null,
+   "note": "the outline fades as an item lands (filmed from the belt pick on)"
   }
  ],
  "CLN-23": [
@@ -8709,8 +8676,7 @@
    "at": "heal-cut-mid",
    "after": null,
    "capture": [
-    "zoom2:.cl-side .oc-face",
-    "zoom2:.cl-face-card"
+    "zoom2:.cl-side .oc-face"
    ],
    "expect": null,
    "note": "the round face matches the patient (girl, not a boy)"
@@ -9007,31 +8973,26 @@
  ],
  "CLN-79": [
   {
-   "flow": "clinic:pharmacy",
+   "flow": "clinic:heal-cut",
    "path": "fair",
-   "level": [
-    2,
-    3
-   ],
+   "level": 1,
    "sizes": [
     "1366x768",
     "844x390",
     "1024x768"
    ],
    "profile": "seen",
-   "want": [
-    "/\\b(ba|trae|char) /"
-   ],
-   "at": "every:visible:.cl-tally",
+   "want": null,
+   "at": "results-badges",
    "after": null,
    "capture": [
-    "dom:.cl-tally"
+    "dom:.rs-badges",
+    "zoom2:.rs-badges"
    ],
    "expect": [
     "!textMatches:[-–]"
    ],
-   "note": "the tick badge always reads, never '-' (the clinic's tally counts the pharmacy's counted items; the heal games have none)",
-   "max": 4
+   "note": "the tick badge (the end card's) always reads, never '-': a round with nothing to judge shows a whole gold tick"
   }
  ],
  "CLN-80": [
@@ -9094,12 +9055,12 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "dom:.cl-bubble"
+    "dom:.cl-stage"
    ],
    "expect": [
     "!textMatches:(?i)cold!"
    ],
-   "note": "no 'Cold!' bubble mid-step",
+   "note": "no 'Cold!' bubble mid-step (the scene's text at each bubble)",
    "max": 6
   }
  ],
@@ -9248,7 +9209,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stage-end",
+   "at": "zoom-out",
    "after": null,
    "capture": [
     "zoom2:.cl-heal"
@@ -9535,7 +9496,7 @@
  "CLN-120": [
   {
    "flow": "clinic:heal-fever",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2,
@@ -9553,7 +9514,8 @@
     "dom:.njg-rq-card"
    ],
    "expect": null,
-   "note": "L1-L2 the doctor names the thing; L3 only 'fix it' and the child chooses"
+   "note": "L1-L2 the doctor names the thing; L3 only 'fix it' and the child chooses",
+   "delay": 300
   }
  ],
  "CLN-121": [
@@ -10143,13 +10105,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results-words",
+   "at": "results-badges",
    "after": null,
    "capture": [
-    "zoom2:.rs-done"
+    "zoom2:.rs-disc"
    ],
    "expect": null,
-   "note": "the gold review tick (assets/ui/results/tick-gold.webp, the end card's Done) cut clean: no grey fringe"
+   "note": "the review tick (the end card's tick badge: grey and gold tick art) cut clean, no grey fringe top left and right"
   }
  ],
  "ART-17": [
@@ -10943,6 +10905,9 @@
  "_obsolete": {
   "_about": "Probes dropped because the game no longer has their state (s04-tf, build/reports/evidence-toolfix.md), each with why. A whole row in that case is {obsolete: why, was: [its old probes]}: no page, no sheet; listed in the run's index for its owner (rewrite the check or retire the row).",
   "CHAI-15 cook:mishkaki-grill at request": "multi-person sekelo: mishkaki orders have one person (data/cook.json: only chai's cups slot is per person)",
-  "CHAI-15 cook:maani-line at request": "multi-person maani: maani orders have one person (data/cook.json: only chai's cups slot is per person)"
+  "CHAI-15 cook:maani-line at request": "multi-person maani: maani orders have one person (data/cook.json: only chai's cups slot is per person)",
+  "SH-61 clinic:morning at heal:button": "the clinic's heal games never show their ✓ now (s04-tf: hidden at every step of the scrape L1-L3, the knee, the morning; the counted steps close themselves): no flat check in the clinic to look at",
+  "SH-23 clinic:morning at every:visible:.njg-btn": "the clinic shows none of these buttons now: the heal games' ✓ stays hidden, the diagnosis has no Found it or Next (decision 52), the waiting room moves on by itself (no 'to the doctor's room'); a morning shows no .njg-btn at all",
+  "MAA-08 cook:maani-line at every:placed": "the maani station shows no count badge (s04-tf: #count-badge never on screen at L1 or L2, every move, 1280x800 and 844x390), so there is no badge to keep clear of the hob"
  }
 }
