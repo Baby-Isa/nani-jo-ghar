@@ -646,3 +646,8 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 
 /* decision 84 (CLN-117): a speaking moment's caption still to record is grey italic, like its pills */
 .njg-say .cap.ph { font-style: italic; color: #8a7a6a; }
+/* CLN-22 (S05-D): the pharmacy tray is the pantry's tray (PAN-07): its front edge is drawn over what sits on it (a
+   flat lip across the bottom, above the items), and a space's outline fades as the item lands */
+.cl-counter-tray.v2 .cl-dish { position: relative; z-index: 1; transition: border-color .35s ease, background-color .35s ease; }
+.cl-counter-tray.v2::after { content: ""; position: absolute; left: -2px; right: -2px; bottom: -2px; height: 17%; z-index: 2; pointer-events: none; background: rgb(251, 244, 230); border: 2px solid rgba(201, 150, 46, .55); border-top-color: rgba(201, 150, 46, .8); border-radius: 0 0 18px 18px; }
+.cl-counter-tray.v2 .cl-dish.full .cl-item { transform: translateY(16%); }
