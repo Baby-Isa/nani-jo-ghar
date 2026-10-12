@@ -223,13 +223,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       while (remaining.length) {
         const expected = remaining[0];
         const guided = UI.stepOpen ? UI.stepOpen(ask(expected, n === 0), { ctx }) : ctx.guided || Cook.wordStage(expected) === 1; // S02-A hook: R2/T2, help after the pause
+        // PAN-16: at level 1 the step line is shown and said at once by Nani's step (UI.step), so the guided step doesn't
+        // say it again; her later hesitation help (unguided) still says it
+        const saidByStep = !!UI.stepOpen && guided && Cook.roundLevel(ctx) === 1;
         Cook.markSeen(expected);
         const r = await S.step({
           items,
           expected,
           word: expected,
           guided,
-          sayLine: ask(expected, n === 0),
+          sayLine: saidByStep ? null : ask(expected, n === 0),
           allowAny: (key) => remaining.includes(key),
           quiet: z.quiet,
           onWrong: (key, m) => {

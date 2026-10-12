@@ -141,5 +141,7 @@ Against Zafar's last feedback: <item ✅ / note>
 - [ ] MOD-01 · reopened · auto: build/bg_align_check.py · ART-04 · Find it relights 8.2 and 8.3 are a relight, not a redraw
 - [ ] MOD-02 · open · eye: Find it · Sitting room 3.2: sofa too high
 
+**PAN-16 (decision 89, from package C):** the pantry said each line twice at L1 (her step line, then the guided step again). Fixed in `fetch.js`; red ev-s05b-p16r, green ev-s05b-p16g (PAN-04 still passes).
+
 ## Left open
 SH-03: the English under each word stays as designed (Zafar, 12 Oct, F14); row noted, layout is S's. Checks: `checks.mjs` passed (265 unit tests, 0 literals, load 21/21), `import_all.mjs --check` passed, lang tests 57/57, `leak.mjs cook` passed. Touched run `s05b-touched` covered 5 flows at 1366x768 (about 6 min; the full touched list is everything, left to `/review`).

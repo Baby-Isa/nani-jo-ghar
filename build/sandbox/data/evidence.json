@@ -3183,6 +3183,30 @@
    "note": "the shelf at L3: every jar labelled by the same rule"
   }
  ],
+ "PAN-16": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": [
+    "!textMatches:(Muke [a-z]+ de\\.)\\s+\\1"
+   ],
+   "note": "each of Nani's pantry lines is said once per ask, never twice back to back (the pop-up or her step line, then the same line again)"
+  }
+ ],
  "CHAI-01": {
   "human": "Does the chai station feel fun enough for the second thing a new player sees? (play one chai round from a fresh start)"
  },
