@@ -470,7 +470,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const shabash = () => Lang.say({ fn: "Exclaim", x: "intj.well-done" });
   // SH-66 (S05-C, S's S1 request): the chef's call-back and Shabash (decision 54) come after the station's
   // Lifecycle.stageEnd stopped every voice; they open a stage of their own so they are never read as voice carrying over
-  const closingBeat = () => global.Lifecycle && global.Lifecycle.stageStart && global.Lifecycle.stageStart("cook:closing");
+  // (a short quiet at its start, as every stage has: E27)
+  const closingBeat = async () => {
+    if (global.Lifecycle && global.Lifecycle.stageStart) global.Lifecycle.stageStart("cook:closing");
+    await Cook.wait(450);
+  };
 
   /* ---------------- the end of a round: the shared screen (UX 9) ----------------
    * js/shared/results.js: page 1 is three badges (time with the personal best
@@ -757,7 +761,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const missedRows = (ctx.ladders || []).some((L) => Cook.Order.rows(L, { all: true }).some((r) => r.miss));
     // SH-66 (S05-C): the serve is its own beat after the station's stage end, so its call-back, Shabash and thanks
     // are its own lines, never the station's voice carrying over
-    closingBeat();
+    await closingBeat();
     const back = callBack(ctx);
     if (back) await S().talk("nani", back, { after: "happy" });
     if (missedRows && who !== "nani") {
@@ -1292,7 +1296,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // decision 54 (T4, T7): the chef's call-back of what was made, then Shabash, in the guide's box (she's off
     // screen at a station; her card's strip in the pantry); a part tried on its own has nothing to call back
     if (keptKeys().includes(key) || /^recipe:/.test(key)) {
-      closingBeat(); // SH-66: the closing lines are their own beat, after the station's stage end
+      // SH-66: the closing lines are their own beat, a breath after the station's stage end
+      await Cook.wait(900);
+      await closingBeat();
       const back = callBack(ctx);
       if (back) await UI.guideSay(back).catch(() => {});
       await UI.guideSay(shabash(), { ms: 900 }).catch(() => {});
