@@ -847,8 +847,9 @@
               setTimeout(() => {
                 box.classList.add("hidden");
                 putBack();
-                UI.voice(Lang.role(Lang.line("thanks"), "passme"), { ms: 900 }).catch(() => {});
-                resolve({ misses });
+                // contract-3 (S05-C): her "Thank you!" finishes before play (and the next station) goes on, never under it
+                const thanks = UI.voice(Lang.role(Lang.line("thanks"), "passme"), { ms: 900 }).catch(() => {});
+                Promise.race([thanks, Cook.wait(1600)]).then(() => resolve({ misses }));
               }, 300);
             }, 450);
           } else {
