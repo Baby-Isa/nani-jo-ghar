@@ -1,8 +1,8 @@
-# S05-D clinic (13 Oct)
+# S05-D clinic
 
 **Changed** (js/clinic, css/clinic.css, data/clinic). Each room logs its stage-start after its clean-up (SH-66). Heal-game steps open and are said one at a time: the pop-up reads the goal plus the first step, with no repeat after the next-step cue (SH-45). Taught scrape: no count, ghost finger forced (CLN-118). L2 send-off face stays neutral (CLN-26). E4 cue is the doctor's; placeholder pills and caption are grey italic and tagged (CLN-117). Doctor's box clears after the pick (CLN-111). Knee: lit dot is `.cl-ring` (CLN-48), and L1 turns step through three heights (CLN-100). Boing's card is one sequence (CLN-113). Fever keeps its temperature row (SH-10). Waiting ticks clear the feet (CLN-90). Pharmacy tray has a front lip (CLN-22).
 
-**Proof.** Red run ev-20261012-2209. Greens: 2238 (group 1), 2250 (groups 2–3, index `evidence-ev-20261012-2250-s05d.md`), 2259 (heal), 2314 (tray). SH-66's clinic probe went from FAIL to PASS. `checks.mjs`: unit 268/268, 0 word literals, bump ok, load 21/21. check_onboard ok. The quick sandbox pass on 14 clinic flows (20261012-2317) reached every end with 0 findings, but **CHECK FAILED**: 2 contract-11 breaks, from the heal push-in sampled mid-zoom (T). Touched lists 122 rows: covered by the contract run and my probes only; the rest is left to /review.
+**Proof.** Red run ev-20261012-2209. Greens: 2238 (group 1), 2250 (groups 2–3, index `evidence-ev-20261012-2250-s05d.md`), 2259 (heal), 2314 (tray). SH-66's clinic probe went from FAIL to PASS. `checks.mjs`: unit 268/268, 0 word literals, bump ok, load 21/21. check_onboard ok. The quick sandbox pass on 14 clinic flows (20261012-2317) reached every end with 0 findings, but **CHECK FAILED**: 2 contract-11 breaks, from the heal push-in sampled mid-zoom (T). Touched's 122 rows: contract run and my probes only; the rest is for /review.
 
 | Verdict | Rows |
 |---|---|
