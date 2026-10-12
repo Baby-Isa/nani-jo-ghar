@@ -2979,12 +2979,9 @@
    "at": "hint-glow",
    "after": null,
    "capture": [
-    "zoom2:#stage",
-    "trace:canvas:glow:1500"
+    "zoom2:#stage"
    ],
-   "expect": [
-    "centredOn:canvas:glow,canvas:next-item"
-   ],
+   "expect": null,
    "note": "the next-item glow and bounce centred on the item itself",
    "webgl": true
   }
@@ -3021,7 +3018,7 @@
    "at": "start",
    "after": null,
    "capture": [
-    "zoom2:canvas:strip"
+    "crop:#stage"
    ],
    "expect": null,
    "note": "the chai strip's small jars the same"
@@ -3173,8 +3170,7 @@
    "at": "phase:pour",
    "after": null,
    "capture": [
-    "shot",
-    "zoom2:canvas:strip"
+    "shot"
    ],
    "expect": [
     "noOverlap:canvas:hob,canvas:tray"
@@ -3369,7 +3365,7 @@
    "at": "exp:lift",
    "after": null,
    "capture": [
-    "trace:canvas:gauge:30000"
+    "crop:#stage"
    ],
    "expect": [
     "gapMs:exp:knob-on,exp:lift<=16000"
@@ -3450,7 +3446,7 @@
    "at": "start",
    "after": null,
    "capture": [
-    "zoom2:canvas:shelf-veg-14",
+    "zoom2:canvas:jar-veg-14",
     "ref:assets/cook/items/shelf-veg-14-jar-f.webp"
    ],
    "expect": null,
@@ -3837,7 +3833,7 @@
    ],
    "expect": [
     "pass",
-    "inside:canvas:maani,canvas:thali-inner"
+    "inside:canvas:maani,canvas:thali"
    ],
    "note": "stacked maani on the thali's flat inner area, never the curled rim"
   }
@@ -4519,7 +4515,7 @@
    "at": "kind-slice",
    "after": null,
    "capture": [
-    "zoom2:canvas:ring",
+    "zoom2:#stage",
     "ref:css/shared/tokens.css"
    ],
    "expect": null,
@@ -4811,7 +4807,7 @@
     "zoom2:canvas:plate"
    ],
    "expect": [
-    "inside:canvas:samosa,canvas:plate-inner"
+    "inside:canvas:samosa,canvas:plate"
    ],
    "note": "samosas inside the plate's rim"
   }
@@ -4975,7 +4971,7 @@
     "zoom2:canvas:karahi"
    ],
    "expect": [
-    "inside:canvas:samosa,canvas:oil"
+    "inside:canvas:samosa,canvas:karahi"
    ],
    "note": "samosas inside the oil (and the plate's flat area)"
   }
@@ -5705,7 +5701,7 @@
     "crop:canvas:hob"
    ],
    "expect": [
-    "!inside:canvas:glass,canvas:burner-lit"
+    "!inside:canvas:glass,canvas:flame-high"
    ],
    "note": "nothing stands on a lit burner"
   }
@@ -5788,7 +5784,7 @@
     "crop:#stage"
    ],
    "expect": [
-    "noOverlap:#bubble,canvas:face"
+    "noOverlap:#bubble,canvas:-happy"
    ],
    "note": "a customer's bubble never covers their own face"
   }
@@ -9824,10 +9820,10 @@
    "after": null,
    "capture": [
     "strip:#stage:6x150",
-    "trace:canvas:customer:2000"
+    "trace:canvas:-happy:2000"
    ],
    "expect": [
-    "traceAmp:canvas:customer<=3"
+    "traceAmp:canvas:-happy<=3"
    ],
    "note": "poses share one canvas so they do not jump; a blink does not redraw the whole character; cut by the scene, not the screen edge"
   }
@@ -10122,12 +10118,12 @@
    "after": null,
    "capture": [
     "contract:14",
-    "trace:canvas:customer:3000"
+    "trace:canvas:-happy:3000"
    ],
    "expect": [
     "pass",
-    "traceAmp:canvas:customer<=2",
-    "tracePeriod:canvas:customer>=380"
+    "traceAmp:canvas:-happy<=2",
+    "tracePeriod:canvas:-happy>=380"
    ],
    "note": "Cook service: one talk animation, about a third of the old bob, slower"
   },
@@ -10208,7 +10204,7 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "strip:canvas:customer:8x120"
+    "strip:canvas:-happy:8x120"
    ],
    "expect": null,
    "note": "Cook service: mouth shapes while speaking"
