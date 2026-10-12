@@ -24,6 +24,7 @@ import * as handWords from "./hand/words.mjs";
 import * as handRules from "./hand/rules.mjs";
 import * as handResolutions from "./hand/resolutions.mjs";
 import * as handLate from "./hand/late.mjs";
+import * as handConfirmed from "./hand/confirmed.mjs";
 import { importLexiconMd } from "./import_lexicon_md.mjs";
 import { importCook } from "./import_cook.mjs";
 import { importClinic } from "./import_clinic.mjs";
@@ -52,6 +53,7 @@ export function buildStore() {
   log.phrases = phrasify(S);
   log.audio = importAudio(S);
   log.clashes = S.settle();
+  handConfirmed.apply(S);
   return { S, log };
 }
 
@@ -67,6 +69,34 @@ export function dataOf(S) {
   };
 }
 
+/**
+ * The built data against the committed data/lang/*.json: every changed field, and the status demotions among them (a
+ * confirmed entry or form cell coming out as draft, unknown or to-record). A rebuild must never demote a confirmation
+ * silently (S05 plan, flaw 2): a confirmation lives in a source or build/lang/hand/, never only in data/lang/.
+ */
+export function compare(built) {
+  const rank = { confirmed: 3, draft: 1, unknown: 0, "to-record": 0 };
+  const out = [];
+  const walk = (a, b, p) => {
+    if (JSON.stringify(a) === JSON.stringify(b)) return;
+    if (a && b && typeof a === "object" && typeof b === "object" && !Array.isArray(a) && !Array.isArray(b)) {
+      for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) walk(a[k], b[k], `${p}.${k}`);
+      return;
+    }
+    out.push({ p, was: a, now: b });
+  };
+  const byId = (o) => {
+    const x = Object.assign({}, o);
+    delete x._about;
+    for (const k of Object.keys(x)) if (Array.isArray(x[k]) && x[k].every((e) => e && e.id)) x[k] = Object.fromEntries(x[k].map((e) => [e.id, e]));
+    return x;
+  };
+  for (const f of ["lexicon", "paradigms", "abstract", "concrete", "clips"]) walk(byId(readJSON(`data/lang/${f}.json`)), byId(built[f]), f);
+  // a confirmed entry that is gone, or whose status went down
+  const demotions = out.filter((d) => (/\.status$/.test(d.p) && d.was === "confirmed" && (rank[d.now] ?? 0) < 3) || (d.was && typeof d.was === "object" && d.was.status === "confirmed" && !(d.now && d.now.status === "confirmed")));
+  return { out, demotions };
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   const check = process.argv.includes("--check");
   const { S, log } = buildStore();
@@ -78,6 +108,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   S.errors.slice(0, 40).forEach((e) => console.log("  store:", e));
   console.log(`validator: ${v.errors.length} errors, ${v.warnings.length} warnings`);
   v.errors.slice(0, 60).forEach((e) => console.log(`  ERROR ${e.where}: ${e.msg}`));
+  // never demote a confirmation (S05 B): refuse unless the person running it says why (--allow-demote "<why>")
+  const { demotions } = compare(data);
+  const allow = process.argv.includes("--allow-demote");
+  if (demotions.length) {
+    console.log(`${allow ? "ALLOWED" : "REFUSED"}: ${demotions.length} confirmed entries or forms would be demoted:`);
+    demotions.forEach((d) => console.log(`  ${d.p}: ${JSON.stringify(d.was)} -> ${JSON.stringify(d.now)}`));
+    if (!allow) {
+      console.error("not writing: put the confirmation in a source or build/lang/hand/confirmed.mjs (node build/lang/diff.mjs lists them), or pass --allow-demote \"<why>\"");
+      process.exit(1);
+    }
+  }
   if (!check) {
     if (v.errors.length || S.errors.length) {
       console.error("not writing: fix the errors above first");

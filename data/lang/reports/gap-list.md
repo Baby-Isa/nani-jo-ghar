@@ -10,7 +10,7 @@ The minimum for step 4c (decision 38 c). **No frequency ranking and no simulator
 | Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 30 | 4 |
 | We know the word but have no recording of it | 91 | 39 |
 
-Lines and words checked: Cook 230, clinic 391. A recording counts here if any take exists; 17 more words have a take that is not yet ticked OK in `lab/family-audio.html` (only OK takes ship, rule G16).
+Lines and words checked: Cook 230, clinic 391. A recording counts here if any take exists; 14 more words have a take that is not yet ticked OK in `lab/family-audio.html` (only OK takes ship, rule G16).
 
 Gaps are listed once, however many lines need them: closing a word closes it everywhere. The words and lines that exist only in the parked modes (dress, who, snap, tidy, find, monsoon, relations) are in the lexicon as to-record entries and are not repeated here.
 
@@ -1136,10 +1136,7 @@ A game file still shows an English placeholder (`kutchi: null`) for something th
 - no OK recording of "laal"
 - no OK recording of "kar"
 - no OK recording of "slow"
-- no OK recording of "gund"
 - no OK recording of "firai"
-- no OK recording of "nindha"
-- no OK recording of "bhar"
 - no OK recording of "chulo"
 - no OK recording of "bar"
 - no OK recording of "kan"
