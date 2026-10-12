@@ -72,19 +72,18 @@ The more cautious status is used (a draft shows flagged until Zafar ticks it). T
 Cook's own flag on a line against the status the engine finds from its words and rule (the engine marks a line draft when any word, form or rule in it is a draft).
 
 1. Cook line `greet-reply` ("Wa alaikum salaam!"): Cook does not flag it draft; the engine says draft (wa alaikum salaam) for "Wa alaikum salaam!".
-2. Cook line `thanks` ("Aabhar aanjo!"): Cook does not flag it draft; the engine says draft (aabhar aanjo) for "Aabhar aanjo!".
-3. Cook line `bye` ("Achija!"): Cook does not flag it draft; the engine says draft (achija) for "Achija!".
-4. Cook line `oops` ("Arre re!"): Cook does not flag it draft; the engine says draft (arre re) for "Arre re!".
-5. Cook line `hey` ("Hedo!"): Cook does not flag it draft; the engine says draft (hedo) for "Hedo!".
-6. Cook line `here` ("Ghan."): Cook does not flag it draft; the engine says draft (ghan) for "Ghan.".
-7. Cook line `canyou` ("Tu muke {x} banai dinda?"): Cook does not flag it draft; the engine says draft (dinda) for "Tu muke chai banai dinda?".
-8. Cook line `need_waari` ("Muke {x} waari chai khape."): Cook flags it draft; the engine says confirmed for "Muke dudh waari chai khape.".
-9. Cook line `waari` ("{x} waari chai."): Cook flags it draft; the engine says confirmed for "dudh waari chai".
-10. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
-11. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
-12. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-13. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-14. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+2. Cook line `bye` ("Achija!"): Cook does not flag it draft; the engine says draft (achija) for "Achija!".
+3. Cook line `oops` ("Arre re!"): Cook does not flag it draft; the engine says draft (arre re) for "Arre re!".
+4. Cook line `hey` ("Hedo!"): Cook does not flag it draft; the engine says draft (hedo) for "Hedo!".
+5. Cook line `here` ("Ghan."): Cook does not flag it draft; the engine says draft (ghan) for "Ghan.".
+6. Cook line `canyou` ("Tu muke {x} banai dinda?"): Cook does not flag it draft; the engine says draft (dinda) for "Tu muke chai banai dinda?".
+7. Cook line `need_waari` ("Muke {x} waari chai khape."): Cook flags it draft; the engine says confirmed for "Muke dudh waari chai khape.".
+8. Cook line `waari` ("{x} waari chai."): Cook flags it draft; the engine says confirmed for "dudh waari chai".
+9. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
+10. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+11. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+12. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+13. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
 
 ## 6. Recordings that are not linked to any entry
 

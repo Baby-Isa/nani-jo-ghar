@@ -2,9 +2,9 @@
 
 Every word in bold or italic in `grammar-notes.md`, `lexicon.md` and the 5 Oct report that is not a form of some entry. Re-run `node build/lang/import_all.mjs` after adding Mum's next answers to the notes and the hand files: a word she gave that nobody loaded shows up under **to review**. Words are grouped by why they are not loaded (never a silent skip).
 
-## To review (1)
+## To review (3)
 
-corrections
+aabhar, aanjo, corrections
 
 ## a spelling variant of an entry, kept as an open question or a clash row (data/lang/reports/clash-list.md) (7)
 

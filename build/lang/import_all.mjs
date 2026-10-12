@@ -25,6 +25,7 @@ import * as handRules from "./hand/rules.mjs";
 import * as handResolutions from "./hand/resolutions.mjs";
 import * as handLate from "./hand/late.mjs";
 import * as handConfirmed from "./hand/confirmed.mjs";
+import * as handLoans from "./hand/loans.mjs";
 import { importLexiconMd } from "./import_lexicon_md.mjs";
 import { importCook } from "./import_cook.mjs";
 import { importClinic } from "./import_clinic.mjs";
@@ -54,6 +55,7 @@ export function buildStore() {
   log.audio = importAudio(S);
   log.clashes = S.settle();
   handConfirmed.apply(S);
+  handLoans.apply(S);
   return { S, log };
 }
 

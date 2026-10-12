@@ -10495,9 +10495,9 @@
    ],
    "expect": [
     "lexicon",
-    "!textMatches:(?i)•|\\b(mixed|boga)\\b"
+    "!textMatches:(?i)•|\\bboga\\b"
    ],
-   "note": "no English or dot placeholders in pills or cards"
+   "note": "no English or dot placeholders in pills or cards ('mixed' is Kutchi: decision 87, a marked loan)"
   },
   {
    "flow": "cook:chop",
@@ -11009,5 +11009,26 @@
   "SH-61 clinic:morning at heal:button": "the clinic's heal games never show their ✓ now (s04-tf: hidden at every step of the scrape L1-L3, the knee, the morning; the counted steps close themselves): no flat check in the clinic to look at",
   "SH-23 clinic:morning at every:visible:.njg-btn": "the clinic shows none of these buttons now: the heal games' ✓ stays hidden, the diagnosis has no Found it or Next (decision 52), the waiting room moves on by itself (no 'to the doctor's room'); a morning shows no .njg-btn at all",
   "MAA-08 cook:maani-line at every:placed": "the maani station shows no count badge (s04-tf: #count-badge never on screen at L1 or L2, every move, 1280x800 and 844x390), so there is no badge to keep clear of the hob"
- }
+ },
+ "LNG-13": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/lang/loan-audit.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the loans Zafar named (mixed, cup, film, thank you) are marked loan: en, the draft 'aabhar aanjo' is gone, and the borrowing audit lists every English-looking word"
+  }
+ ]
 }

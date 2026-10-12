@@ -2459,7 +2459,8 @@
     "§41 C30 (wadhe cup me)",
     "data/conversations/lines.json nouns words.cup: §25 B27 ('cup is just cup')",
     "data/clinic.json items.cup: the pharmacy tray's placeholder (English, to record)",
-    "data/tidy.json words.placeholders.ph-cup: an English placeholder, to record"
+    "data/tidy.json words.placeholders.ph-cup: an English placeholder, to record",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; cup: grammar-notes §35 C1, §40 C24 (wadha cup), named by Zafar in decision 87"
    ],
    "aliases": [
     "cup",
@@ -2470,7 +2471,8 @@
     "gender": [
      "new"
     ]
-   }
+   },
+   "loan": "en"
   },
   {
    "id": "n.cupboard",
@@ -3101,8 +3103,10 @@
    "glossPl": "films",
    "status": "confirmed",
    "src": [
-    "grammar-notes Zafar's corrections to A5-A7 (film khalas thai vai: film is a she-word)"
-   ]
+    "grammar-notes Zafar's corrections to A5-A7 (film khalas thai vai: film is a she-word)",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; film: grammar-notes, Zafar's corrections to A5-A7 (film khalas thai vai), named by Zafar in decision 87"
+   ],
+   "loan": "en"
   },
   {
    "id": "n.finger",
@@ -4746,7 +4750,8 @@
    "glossPl": "mixeds",
    "status": "confirmed",
    "src": [
-    "data/stations/mishkaki-grill.json words.ph-mixed: Mum 26 Sept (Section B, B18; docs/language/grammar-notes.md §25): mixed, the English word"
+    "data/stations/mishkaki-grill.json words.ph-mixed: Mum 26 Sept (Section B, B18; docs/language/grammar-notes.md §25): mixed, the English word",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; mixed: Mum 26 Sept (B18), named by Zafar in decision 87"
    ],
    "aliases": [
     "ph-mixed"
@@ -4765,7 +4770,8 @@
      "change": "was an English placeholder",
      "src": "data/stations/mishkaki-grill.json words.ph-mixed: Mum 26 Sept (Section B, B18; docs/language/grammar-notes.md §25): mixed, the English word"
     }
-   ]
+   ],
+   "loan": "en"
   },
   {
    "id": "n.moon",
@@ -16476,11 +16482,13 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §23 (na, thank you: the English 'thank you')",
-    "data/conversations/lines.json lines.na-thank-you: §23 A8.2 [family]"
+    "data/conversations/lines.json lines.na-thank-you: §23 A8.2 [family]",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; na, thank you: grammar-notes §23 (the English 'thank you'), decisions 81 and 87"
    ],
    "aliases": [
     "conversation.line.na-thank-you"
-   ]
+   ],
+   "loan": "en"
   },
   {
    "id": "phrase.no-thanks",
@@ -18154,31 +18162,6 @@
    }
   },
   {
-   "id": "phrase.thank-you",
-   "pos": "Phrase",
-   "lemma": "aabhar aanjo",
-   "gloss": "Thank you!",
-   "forms": {
-    "-": "aabhar aanjo"
-   },
-   "status": "draft",
-   "src": [
-    "data/cook.json lines.thanks: no source given",
-    "data/clinic/pipeline.json lines.goodbye-aabhar: data/clinic/pipeline.json goodbyes",
-    "data/clinic/pipeline.json lines.pipeline.thanks: data/clinic/pipeline.json",
-    "data/content.json sentences.snt-11: handout (shopkeeper; never confirmed by Mum)"
-   ],
-   "aliases": [
-    "cook.line.thanks",
-    "clinic.line.goodbye-aabhar",
-    "clinic.line.pipeline.thanks",
-    "content.snt-11"
-   ],
-   "notes": [
-    "not analysed into words yet: aabhar, aanjo are not in the lexicon (build/lang/phrases.mjs)"
-   ]
-  },
-  {
    "id": "phrase.thank-you-i-feel-better",
    "pos": "Phrase",
    "gloss": "Thank you, I feel better!",
@@ -18211,14 +18194,27 @@
     "grammar-notes Zafar, 26 Sept (Conversations decisions: thank you)",
     "grammar-notes §23 (na, thank you)",
     "rule G6",
-    "data/conversations/lines.json lines.thank-you: §10a.1 (the family says the English 'thank you'); §23 [family]"
+    "data/conversations/lines.json lines.thank-you: §10a.1 (the family says the English 'thank you'); §23 [family]",
+    "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; thank you: Zafar 26 Sept (Conversations), decisions 81 and 87"
    ],
    "aliases": [
-    "conversation.line.thank-you"
+    "conversation.line.thank-you",
+    "cook.line.thanks",
+    "clinic.line.goodbye-aabhar",
+    "clinic.line.pipeline.thanks",
+    "content.snt-11"
    ],
    "notes": [
     "not analysed into words yet: thank, you are not in the lexicon (build/lang/phrases.mjs)"
-   ]
+   ],
+   "history": [
+    {
+     "date": "2026-10-12",
+     "change": "took over the lines of the dropped draft 'aabhar aanjo' (cook.line.thanks, clinic.line.goodbye-aabhar, clinic.line.pipeline.thanks, content.snt-11)",
+     "src": "decisions 81 and 87"
+    }
+   ],
+   "loan": "en"
   },
   {
    "id": "phrase.that",
