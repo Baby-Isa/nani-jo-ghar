@@ -101,8 +101,8 @@
 .oc-card.folded .oc-in { opacity: 0; }
 /* S05-S (SH-54, PAN-01): a folded body is gone, not clipped: hidden once its fold has run (the fade still plays), so a
    folded card or item never leaves its rows scrolled away inside it. The clipping boxes keep a little inner room
-   (padding, given back as a negative margin, so nothing moves): a row's gold ring and sub-pixel edges are never cut */
-.oc-card .oc-in, .oc-card .oc-fold-in { padding: var(--njg-line-2); margin: calc(var(--njg-line-2) * -1); }
+   (above and below: padding, given back as a negative margin, so nothing moves; the rings are inset, so the sides need none): a row's gold ring and sub-pixel edges are never cut */
+.oc-card .oc-in, .oc-card .oc-fold-in { padding-block: var(--njg-line-2); margin-block: calc(var(--njg-line-2) * -1); }
 .oc-card .oc-in { transition: opacity 0.3s ease, visibility 0s linear 0s; }
 .oc-card.folded .oc-in { visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.42s; }
 .oc-card .oc-item.folded > .oc-fold > .oc-fold-in { visibility: hidden; transition: visibility 0s linear 0.42s; }
