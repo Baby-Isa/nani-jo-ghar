@@ -56,7 +56,7 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 | First launch and shell | 0 | 1 |
 | Other modes | 2 | 0 |
 | Art | 7 | 8 |
-| Language and audio | 9 | 2 |
+| Language and audio | 10 | 2 |
 
 ---
 

@@ -92,6 +92,7 @@ Two more lines in the budget: judging (Fable image batches of 8–10, Sonnet tex
 | Engine data safety: move the 8 confirmations into `build/lang/hand/`; `import_all.mjs` refuses to demote a confirmed entry; SH-56 samosa "tap ✓" line (if the engine can't say it, report the gap; don't hand-write it) | item 2, SH-56 · also: the in-memory diff is 0, `import_all.mjs --check` |
 | Sentences and forms | SH-70, PAN-02, PAN-03, MAA-02, CHAI-05, SAM-03, SAM-15, SEK-11, CK-22, SH-69 |
 | Numbers by level | SH-13, SH-52, SEK-12 |
+| Borrowed words (decision 87): `loan: "en"` on confirmed English loans (mixed, cup, film; thank you replacing the draft *aabhar aanjo*), the lexicon expect and the evidence judge prompt read it; a borrowing audit (every English-looking lexicon word: 22 found, e.g. peach, chutney) for Zafar/Mum | LNG-13 (via `build/lang/hand/`, never a raw data edit) |
 | Wave 3: multi-language prep (a `lang` key in the save; `data/lang/kutchi/`; no second pack) | item 12 · also: `node build/tools/review/checks.mjs`, `import_all.mjs --check` |
 
 ### C: Cook stations (port 8893); after T step 1 and S1
@@ -114,6 +115,11 @@ Two more lines in the budget: judging (Fable image batches of 8–10, Sonnet tex
 | People and rooms | CLN-81, CLN-85, CLN-86, CLN-11, CLN-12, CLN-90, CLN-94, ART-05 (exam-room background at full resolution) |
 | Heal games | CLN-48, CLN-100, CLN-53 (and the bristles), CLN-54, CLN-58, CLN-64 (L1–L2), CLN-74, CLN-101, CLN-104, CLN-105, CLN-107, CLN-38 |
 | Pharmacy and take-back | CLN-22, CLN-112 |
+
+## Added by Zafar, 12 Oct (decision 87)
+- CHT-07 (package C): the dish asked first, prep games, the layer order just before the bowl.
+- CK-21 (package C, with S's tray drawing): served dishes sit in the tray, its front edge redrawn over them, like the pantry tray.
+- LNG-13 (package B, plus package T for the judge prompt): borrowed English words are Kutchi.
 
 ## First hour
 
