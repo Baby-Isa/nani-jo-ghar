@@ -151,8 +151,8 @@ The 16 non-negotiables are in `CLAUDE.md`, the one file every session loads (dec
 - **Never make the child wait for speech:** input is live, a tap goes ahead, the line can be replayed; a tap pauses the line, the count plays, and the line carries on. (E5)
 - **Requests come first:** everyone who orders comes in and one pop-up shows each order (or the doctor's request), read out, tap to skip; it folds to the sidebar and the game is quiet; each instruction comes just before the game that needs it. (E37, decision 53)
 - **The guide box says the next step, in step with the highlight;** the card is what's wanted and the box never repeats it; exact lines per game in the guide-vs-card table. (F26, decision 55)
-
 - **A face circle only for someone off screen:** in the clinic the patient's circle shows only in the heal close-ups and the pharmacy (her reactions and the replay); where she is on screen in full there is no circle. (R4, decision 92)
+
 ### Help and hints
 - **The light bulb is the help:** it flips the text to English for 5/3/2/1 s by level and **costs a lightbulb on the hints badge**; the face is the one replay; no per-line translate buttons. (E25, decision 1)
 - **The bulb is for language, the eye is for reading:** the bulb translates (one bulb per use); opening a closed card is a look, counted on its own eye badge at closed-card levels. (E25, F9, decision 27)
