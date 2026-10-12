@@ -607,6 +607,9 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 /* CLN-85 (G2, T30): in the heal games the patient's round face sits top RIGHT (as in Cook, the person served is top
    right), clear of the doctor's box; her bubbles come from it. The eye game puts her bubble under her mouth instead */
 .cl-heal .hs-face { left: auto; right: var(--njg-s2); }
+/* CLN-85 (S05-D): the pharmacy's patient face sits where the heal games' does: the top right of the play area */
+.cl-pharmacy .cl-ph-face { left: auto; right: var(--njg-s2); }
+.cl-ph-face .cl-face { width: 100%; height: 100%; }
 .cl-main:has(.cl-heal) .cl-tally { right: calc(var(--njg-big-face) * 1.2 + var(--njg-s4)); }
 /* CLN-107 (EY5, EY7, T32): her words under her mouth in the eye test (L1 written, fading; L2+ a talking bubble) */
 .eye-said { position: absolute; z-index: 9; transform: translate(-50%, 0); max-width: 40%; padding: var(--njg-s2) var(--njg-s3); background: #fffaf1; border: 2px solid #e2d3bb; border-radius: 16px; font: 800 var(--njg-t3, 18px) var(--cl-head); color: var(--cl-ink); box-shadow: var(--njg-shadow); pointer-events: none; transition: opacity .6s; }

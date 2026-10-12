@@ -58,6 +58,21 @@
       fitBelt();
       if (box) box.addEventListener("scenefit", fitBelt);
       screen.trayWrap.classList.add("hidden");
+      // CLN-85 (S05-D): the one being served is at the top right, as in the heal games and Cook's customer: her round
+      // face (her art's head when it is cut, else the stand-in face)
+      const kind = env.fig && env.fig.kind;
+      if (kind) {
+        const who = h("div", "hs-face cl-ph-face", stage);
+        who.dataset.kind = kind;
+        const art = await S.artFor(kind);
+        const head = art && art.heads && (art.heads.neutral || Object.values(art.heads)[0]);
+        if (head) {
+          who.classList.add("has-art");
+          const im = h("img", "hs-face-art", who);
+          im.alt = "";
+          im.src = Kit.url(head);
+        } else who.appendChild(Clinic.Figure.face(kind, "neutral"));
+      }
       const st = PL().beltState(plan);
       const wordOf = (it) => PL().itemWord(data, it.id, it);
 
