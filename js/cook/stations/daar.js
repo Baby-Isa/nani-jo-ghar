@@ -1035,6 +1035,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         dial.laps(count);
         if (!(UI.naniMuted && UI.naniMuted())) Lang.speak(Lang.numLine(count)).catch(() => {});
         z.progress({ lap: count });
+        // SH-58: the laps are done: the ✓ is the only thing left, and glows (a station's first plays; level 1 only: later the glow would give the count away)
+        if (count === laps && Cook.roundLevel(ctx) <= 1 && UI.doneGlows && UI.doneGlows()) UI.glowDone(true);
         post();
       };
       const turn = (da) => {

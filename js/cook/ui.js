@@ -2322,16 +2322,28 @@
     // SH-58 (C8, D5): when the ✓ is the only thing left it glows (the first plays of a station:
     // its first five rounds), not only in a guided round
     clearTimeout(doneGlowT);
-    const st = (Cook.ctx && Cook.ctx.order && Cook.ctx.order.dishes && (Cook.ctx.order.dishes[Cook.ctx.dishAt || 0] || {}).recipe) || "lab";
-    const plays = (Cook.save.donePlays = Cook.save.donePlays || {});
-    // (S05-C, S's request: at once, the moment it is the only thing left, as every other focal glow)
-    if (opts.glow !== false && (plays[st] || 0) < 5) b.classList.add("glow");
-    plays[st] = (plays[st] || 0) + 1;
+    // (S05-C, S's request: at once, the moment it is the only thing left, as every other focal glow; a play counts
+    // once per order, however often a station shows its ✓: chai's showed it on every refresh, so the five plays were
+    // used up in the first round)
+    if (opts.glow !== false && UI.doneGlows()) b.classList.add("glow");
     return new Promise((resolve) => {
       doneResolve = resolve;
     });
   };
   UI.glowDone = (on) => $("#done-btn").classList.toggle("glow", on);
+  /** SH-58: still in a station's first plays (its first five orders), when a lone ✓ glows. Counted once per order. */
+  const doneCounted = new WeakSet();
+  UI.doneGlows = function () {
+    const c = Cook.ctx;
+    const st = (c && c.order && c.order.dishes && (c.order.dishes[c.dishAt || 0] || {}).recipe) || "lab";
+    const plays = (Cook.save.donePlays = Cook.save.donePlays || {});
+    const early = (plays[st] || 0) < 5;
+    if (c && !doneCounted.has(c)) {
+      doneCounted.add(c);
+      plays[st] = (plays[st] || 0) + 1;
+    }
+    return early;
+  };
   /**
    * Wave 6: the big button between two jobs of one station ("Go to the
    * barbecue"), bottom right under the thumb. Resolves when it's pressed.
