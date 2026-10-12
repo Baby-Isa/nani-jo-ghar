@@ -1421,7 +1421,9 @@
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));
             const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, key: r, src: ps ? src(ps) : [] });
             rowsShown.push(r);
-            if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(item(rowText(text6(oneOf(r), rowHide(r))), ps)));
+            // SEK-03 (S05-C, the shared group box): several different skewers, one plain box each (no label row; the
+            // headline gives the summary), alternate boxes tinted, each drawn as a little skewer
+            if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), ps), { group: true })));
             else {
               const it = item(rowText(text6(fullLine(r), rowHide(r))), mixes[0] || null);
               it.count = r.qty || 1;
@@ -1603,7 +1605,11 @@
    */
   M.closeCards = function (on, opts = {}) {
     if (!mission) return;
-    mission.closed = on ? { peek: !!opts.peek, who: opts.who || null } : null;
+    // F9 (S05-C): an order closed for its level (opts.level) stays closed: a station's phase fold opening it again
+    // (closeCards(false)) goes back to the level's closed card, never to the written one
+    if (opts.level) mission.levelClosed = !!on;
+    if (!on && mission.levelClosed) on = true;
+    mission.closed = on ? { peek: !!(opts.peek || mission.levelClosed), who: opts.who || null } : null;
     Object.values(mission.folds || {}).forEach((st) => { st.peekUntil = 0; st.opened = false; });
     renderOrder();
   };
@@ -1698,7 +1704,7 @@
 
   /* ---- the light bulb: the shared one (js/shared/bulb.js; C3, decision 38d: no Cook shim) ---- */
   UI.bulbMs = () => {
-    const ms = ((Cook.data && Cook.data.calm) || {}).bulbMs || [5000, 3000, 2000, 1000];
+    const ms = ((Cook.data && Cook.data.calm) || {}).bulbMs || [8000, 8000, 8000, 8000];
     const lv = mission ? mission.level : orderLevel();
     return ms[Math.min(ms.length, Math.max(1, lv)) - 1];
   };
@@ -2313,12 +2319,13 @@
     const b = $("#done-btn");
     b.classList.remove("hidden");
     b.classList.toggle("glow", !!opts.glow);
-    // SH-58 (C8, D5): when the ✓ is the only thing left it glows after a short beat (the first plays of a station:
+    // SH-58 (C8, D5): when the ✓ is the only thing left it glows (the first plays of a station:
     // its first five rounds), not only in a guided round
     clearTimeout(doneGlowT);
     const st = (Cook.ctx && Cook.ctx.order && Cook.ctx.order.dishes && (Cook.ctx.order.dishes[Cook.ctx.dishAt || 0] || {}).recipe) || "lab";
     const plays = (Cook.save.donePlays = Cook.save.donePlays || {});
-    if (opts.glow !== false && (plays[st] || 0) < 5) doneGlowT = setTimeout(() => !b.classList.contains("hidden") && b.classList.add("glow"), 2000 / (Cook.speed || 1));
+    // (S05-C, S's request: at once, the moment it is the only thing left, as every other focal glow)
+    if (opts.glow !== false && (plays[st] || 0) < 5) b.classList.add("glow");
     plays[st] = (plays[st] || 0) + 1;
     return new Promise((resolve) => {
       doneResolve = resolve;

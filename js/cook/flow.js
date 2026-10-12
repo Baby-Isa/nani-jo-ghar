@@ -374,6 +374,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
     UI.hideBubble();
     UI.mission.open({ who, name, ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: howFor(order.dishes) });
+    closedCards(Math.max(...order.dishes.map((d) => d.level || 1)), demo);
     const stop = talking(who);
     try {
       await UI.mission.introduce();
@@ -407,6 +408,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return serve(order, ctx);
   }
 
+  /**
+   * F9 / E12 (S05-C; S saw chai L4 cards open): from level 3 (data.calm.closedFrom) the order is heard, never written:
+   * the card starts folded (face + headline) before the request pop-up, which then shows the same closed card; a peek
+   * costs a hint (the shared eye). A demo (Nani shows it) stays open.
+   */
+  function closedCards(level, demo) {
+    const at = (Cook.data.calm || {}).closedFrom || 3;
+    if (!demo && level >= at && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true, level: true });
+  }
   /** The character bobs as if talking (while the intro card says their order). */
   function talking(who) {
     const s = S();
@@ -571,6 +581,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
     return out;
   }
+  /** SH-44: each order row as a step: its Kutchi line (the English under it, as the word review has), right or not. */
+  function reviewSteps(ctx) {
+    const out = [];
+    (ctx.ladders || []).forEach((L) =>
+      Cook.Order.rows(L, { all: true }).forEach((r) => {
+        if (r.head || !r.line) return;
+        out.push({ label: { kutchi: Lang.plain(r.line), english: r.line.en || "" }, ok: !r.miss });
+      })
+    );
+    return out;
+  }
   async function roundEnd(ctx, { scored, actions }) {
     // inside the game host (js/cook/main.js) the host catches the end screen: it shows the one for the whole plan
     const R = Cook.hostResults || global.Results;
@@ -591,6 +612,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       marks: round.marks,
       hints: round.hints,
       words: reviewWords(ctx),
+      // SH-44 (D14, S05-C): the steps the round asked for, each with its gold or grey tick (tap the tick badge)
+      steps: reviewSteps(ctx),
       speak: (w) => (w.kutchi ? Lang.speak(Lang.formLine(w.id, w.kutchi, w.cell)) : Lang.speakWord(w.id)),
       sound: true,
       store,
@@ -1264,7 +1287,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // R4: Nani's own list (the pantry) is her card, with her face; every other station's is Nana's order
       const asker = !Array.isArray(what) && what && (what.who === "nani" || what.recipe === "pantry") ? "nani" : "nana";
       order.who = asker;
-      UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana (lab)", ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
+      UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana" /* CK-22: no "(lab)" written for the child */, ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
+      closedCards(level);
       // CHAI-15 (decision 53, S05-C): everyone who orders comes in first, in the lab too: each person on the card walks
       // up to their own tray at the counter, then the one request pop-up shows every order
       const people = asker === "nani" ? [] : [...new Set((ctx.ladders || []).flatMap((L) => (L.sections || []).map((x) => x.for)).filter(Boolean))];

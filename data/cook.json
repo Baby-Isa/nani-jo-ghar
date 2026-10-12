@@ -2174,7 +2174,7 @@
  "mechanics": {
   "_about": "Difficulty as data. Each mechanic's levels: level 1 is the Phase A game exactly; each later level lists only what changes. `profiles` hold settings for one use of a mechanic (pour into a cup). Upgrades change knobs through upgrades[].knobs. Timings are fractions of a ring (0-1) and rates are ring-fills per second. A combined station's own levels can live in data/stations/<id>.json.",
   "fetch": {
-   "_about": "Pantry v3 (29 Sept): positions measured from assets/cook/bg/bg-pantry-v3-1600.webp in the 1600x900 world (the shelves, the fridge's three levels and the long tray laid out from sources/art/pantry-v2/pantry-v3-layout-sketch.png). slots: where an item stands (x centre, y its base, w/h its box before the item's shelf size); zone shelf or fridge. fridge: the items that only ever go in the fridge (everything else goes on the shelves). tray: the row of spaces on the tray (x0/x1 its inside, y the base, w/h an item's box there, gap between spaces; front: the tray's front edge [x, y, w, h] in the picture, drawn again over what's on the tray). tally: the tally's centre in the pantry, on the fridge's steel base, clear of everything. fridgeMin: the smallest size a thing is drawn at in the fridge.",
+   "_about": "Pantry v3 (29 Sept): positions measured from assets/cook/bg/bg-pantry-v3-1600.webp in the 1600x900 world (the shelves, the fridge's three levels and the long tray laid out from sources/art/pantry-v2/pantry-v3-layout-sketch.png). slots: where an item stands (x centre, y its base, w/h its box before the item's shelf size); zone shelf or fridge. fridge: the items that only ever go in the fridge (everything else goes on the shelves). tray: the row of spaces on the tray (x0/x1 its inside, y the base, w/h an item's box there, gap between spaces; front: the tray's front edge [x, y, w, h] in the picture, drawn again over what's on the tray). tally: the tally's centre in the pantry, on the fridge's steel base, clear of everything. fridgeMin: the smallest size a thing is drawn at in the fridge. levels[].shelf (PAN-06, Zafar 12 Oct): from level 2 more candidates than the 21 slots, so every slot is filled (data.pantry_decoys: words with side-on art only, no sweets; the fridge has 4 such words for its 6 slots until Mum records juice, butter, cheese, cream, eggs).",
    "slots": [
     {
      "x": 143,
@@ -2365,15 +2365,15 @@
      "passMe": 0.5
     },
     {
-     "shelf": 11,
+     "shelf": 28,
      "minDecoys": 5
     },
     {
-     "shelf": 13,
+     "shelf": 28,
      "lookalikes": 3
     },
     {
-     "shelf": 14,
+     "shelf": 28,
      "minDecoys": 7
     }
    ]
@@ -5206,21 +5206,7 @@
    ]
   }
  ],
- "pantry_decoys": [
-  "cook-atto",
-  "cook-daal",
-  "cook-chai",
-  "cook-dudh",
-  "cook-khun",
-  "spi-10",
-  "veg-02",
-  "veg-03",
-  "veg-13",
-  "veg-12",
-  "spi-16",
-  "veg-14",
-  "veg-01"
- ],
+ "pantry_decoys": ["cook-atto", "cook-daal", "cook-chai", "cook-dudh", "cook-khun", "spi-10", "veg-02", "veg-03", "veg-13", "veg-12", "spi-16", "veg-14", "veg-01", "ph-chana", "ph-sev", "spi-01", "spi-02", "spi-05", "spi-04", "spi-11", "spi-09", "ph-amli", "ph-lili", "ph-ghee", "veg-10", "ph-pepper", "ph-dhana", "fru-01", "fru-02", "fru-04", "fru-05", "veg-04", "ph-dahi", "ph-keema", "ph-meat"],
  "lookalikes": {
   "cook-khun": [
    "spi-16",
@@ -5554,7 +5540,7 @@
   ]
  },
  "calm": {
-  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: bulbMs = how long the light bulb shows English, by the order's level (5, 3, 2, 1 s); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
+  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: bulbMs = how long the light bulb shows English, by the order's level (SH-41, D11: 8 s at every level to start); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
   "quietMs": 4000,
   "hintMs": [
    7000,
@@ -5567,12 +5553,8 @@
    "busy": 0.55,
    "level1": 0.2
   },
-  "bulbMs": [
-   5000,
-   3000,
-   2000,
-   1000
-  ],
+  "bulbMs": [8000, 8000, 8000, 8000],
+  "closedFrom": 3,
   "coachSteps": 4,
   "uiAfter": {
    "bulb": 2

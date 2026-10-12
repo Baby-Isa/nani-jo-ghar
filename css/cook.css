@@ -1117,3 +1117,9 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 
 /* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
 .bubble-rec, .md-rec { display: none !important; }
+
+/* SH-09 / PAN-01 (S05-C, S's request): on a short phone the stamped card ran 7 px past the sidebar and scrolled;
+   its padding tightens there (the rows and the headline keep their size) */
+@media (max-height: 420px) {
+  #mission { padding: 4px 8px 4px; }
+}

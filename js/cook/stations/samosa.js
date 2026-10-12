@@ -831,6 +831,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           };
           empty.forEach((x) => S.tappable(x, () => fin({ strip: x })));
           const nb = nextBlock();
+          // SH-56 (decision 79, Zafar's yes to status item 7): every strip filled, nothing left to choose: the result is
+          // already decided, so it moves on by itself after a beat (decision 52), no ✓; with an empty strip left the ✓
+          // stays (how many to make is the child's call)
+          if (filled && !empty.length) {
+            z.expect({ kind: "wait" });
+            Cook.wait(700).then(() => fin({ done: true }));
+            return;
+          }
           if (filled) UI.done({ glow: !!((ctx.guided || helping) && !nb) }).then(() => fin({ done: true }));
           if (nb && empty[0]) {
             if (ctx.guided || helping) S.glow(empty[0], true, { bounce: true });

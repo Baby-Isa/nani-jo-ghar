@@ -67,7 +67,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // true relative heights (Zafar, 28 Sept, late): the bottle and carton stand tall, the chai and
   // sugar jars medium, the spice jars short, all on one shelf line (the scale per group of the
   // pantry-v2 canvases: liquids | jars | spices)
-  const SHELF_K = [0.425, 0.33, 0.33];
+  // PAN-09 (S05-C): the small spice jars (elchi, aadu, lasan, loon) drawn as big as the band allows (St.shelfFit caps
+  // them at its padding), so their contents read at phone size
+  const SHELF_K = [0.425, 0.33, 0.5];
   const PITCH = 150;
   const GROUP_GAP = 44;
   const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 }; // the tap area: as big as the band allows
