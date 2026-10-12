@@ -7430,7 +7430,7 @@
    "at": "rec:pharmacy-belt",
    "after": null,
    "capture": [
-    "strip:.cl-tray:6x300"
+    "strip:.cl-tray:12x400"
    ],
    "expect": null,
    "note": "the outline fades as an item lands (filmed from the belt pick on)"
