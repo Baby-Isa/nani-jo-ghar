@@ -528,7 +528,12 @@
       const m = mouthAt();
       if (!m) return;
       const el = S.h("div", `eye-said${text ? "" : " talk"}`, S.root, text || "");
-      if (!text) el.innerHTML = '<i></i><i></i><i></i>';
+      if (!text) {
+        el.innerHTML = '<i></i><i></i><i></i>';
+        // ART-18 (contract-14): the talking dots move by the one shared talk animation (Lifecycle.talk), each a beat apart
+        const T = root.Lifecycle && root.Lifecycle.talk;
+        if (T) el.querySelectorAll("i").forEach((d) => T.dom(d));
+      }
       const c = S.client(m.x, m.y);
       const rr = S.root.getBoundingClientRect();
       el.style.left = `${c.x - rr.left}px`;

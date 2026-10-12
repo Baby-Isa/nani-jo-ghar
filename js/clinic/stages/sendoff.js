@@ -157,6 +157,8 @@
           h("span", "cl-ask-q", qcard, "?");
           S.say(S.line(env, "whisper-ask"), "guide");
         }
+        // the child's turn (E4: they ask her): both turn to face the player (UX 16, SH-71; contract-10)
+        S.stage(docEl, layer, "player");
         S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: "howfeel" }));
         const out = await S.moment(env, {
           choices: r.options,
