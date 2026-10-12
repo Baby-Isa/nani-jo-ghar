@@ -50,4 +50,5 @@ export const FAIR_MOMENTS = {
   house: ["drv:labs"],
   first: ["drv:tap-no", "drv:your-turn-*"],
   mode: [],
+  "rotate-card": ["rec:index-upright", "rec:first-upright", "rec:cook-upright", "rec:clinic-upright", "rec:tidy-upright", "rec:who-upright", "rec:dress-upright", "rec:monsoon-upright", "rec:snap-upright", "rec:find-upright"], // flows/extra.mjs: one state per page
 };

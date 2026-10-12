@@ -100,6 +100,23 @@
   "png": "build/screenshots/evidence/ev-s04-ev2/ART-07.png",
   "date": "2026-10-12"
  },
+ "ART-09": {
+  "hash": "34e79197bd7904e4b7a3",
+  "dhash": [
+   "11e0d4ccc8eca000",
+   "00c3c1d0c9c38200",
+   "11e0d4ccc8eca000",
+   "236969e9686568d4"
+  ],
+  "verdict": "PASS",
+  "line": "D, Nani zoomed x2 has no bindi, tilak or sindoor and no grey hair under the red dupatta; A, the three house characters show none either (other characters not on this sheet)",
+  "panel": "D",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2141",
+  "commit": "f94ce30",
+  "png": "build/screenshots/evidence/ev-20261012-2141/ART-09.png",
+  "date": "2026-10-12"
+ },
  "ART-10": {
   "hash": "e4d9807da7840838cb92",
   "dhash": [
@@ -271,14 +288,14 @@
  "CHAI-06": {
   "hash": "58d2c1161865c4881f8f",
   "dhash": [
-   "fcd09aa286d69686"
+   "fcd09aa2c6d49696"
   ],
   "verdict": "FAIL",
   "line": "machine: CHAI-06-p1-L1-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "CHAI-07": {
@@ -591,8 +608,8 @@
   "line": "machine: CK-02-p1-L1-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1; CK-02-p1-L3-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "CK-03": {
@@ -715,14 +732,14 @@
  "CK-12": {
   "hash": "1a57bf54dde04f91ee8d",
   "dhash": [
-   "8e92d6c6ce96968e"
+   "8e96d6c6ce96968e"
   ],
   "verdict": "FAIL",
   "line": "machine: CK-12-p1-L1-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "CK-13": {
@@ -812,8 +829,8 @@
   "line": "machine: CK-20-p1-L1-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "CK-21": {
@@ -1041,6 +1058,22 @@
   "commit": "804b21c1",
   "date": "2026-10-12"
  },
+ "CLN-07": {
+  "hash": "443736f6554e3a11cb29",
+  "dhash": [
+   "4f57dfdbd4d6cede",
+   "4f57dfdbd4d6cede",
+   "00000268e8028000"
+  ],
+  "verdict": "PASS",
+  "line": "B, with the lab log on it sits bottom-left under the sidebar, clear of the help button; no pills or counter are on the waiting screen to collide with",
+  "panel": "B",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2140",
+  "commit": "43ad56b",
+  "png": "build/screenshots/evidence/ev-20261012-2140/CLN-07.png",
+  "date": "2026-10-12"
+ },
  "CLN-09": {
   "hash": "2345d3ce9dd07ed198c0",
   "dhash": [
@@ -1070,19 +1103,19 @@
   "date": "2026-10-12"
  },
  "CLN-100": {
-  "hash": "5cc4cabdf75952dd1efb",
+  "hash": "2e5b7bd6bf7a59d7bee8",
   "dhash": [
    "9173b1a6a1e7e6e6",
    "9173b1a6a5e3d3f0",
-   "9173b1a6a1e7e6e6"
+   "9173b1a6a1e7d3f0"
   ],
   "verdict": "FAIL",
-  "line": "A, L1 after three dot steps is still one flat band below the kneecap (needs 4-6 turns, crossing the kneecap and crease); B frame 7 and C frame 5 reach only three bands (needs 5-8 / 6-10) and in C the right-hand dots and band ends sit on the shin inside the leg's outline, not edge to edge; the bands do cross the kneecap at L2-L3 and there is no yellow ellipse at any level",
+  "line": "A, L1 draws only 3 bandage turns before Done (needs 4-6); C, L3 shows 5 turns (needs 6-10); B, L2 reaches 7 and the bands cross the kneecap and crease; no yellow ellipse at any level",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/CLN-100.png",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2137",
+  "commit": "9128310",
+  "png": "build/screenshots/evidence/ev-20261012-2137/CLN-100.png",
   "date": "2026-10-12"
  },
  "CLN-101": {
@@ -1345,14 +1378,14 @@
   "date": "2026-10-12"
  },
  "CLN-119": {
-  "hash": "2cc3d4324fb1a4a71899",
+  "hash": "8ceac37990357bc6de7f",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "text, the scrape's plaster colours are still English at every level (\"ne poi yellow plaster\" L1, \"yellow plaster\" L2, \"blue ne yellow plaster\" L3; only \"laal\" and \"lilo\" are Kutchi) even though the lexicon expect says PASS, heal-marks.mjs never ran (MODULE_NOT_FOUND), and only the scrape is on the sheet, not the other eight games' strands",
+  "line": "text, heal-marks.mjs shows only the cut game has Kutchi for paani; cloth, plaster, thread, stitches, dabs and boing words (up/down, colours, numbers) are English placeholders, not a Kutchi strand per game",
   "panel": "TEXT",
-  "judge": "Sonnet (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2132",
+  "commit": "07cbe59",
   "png": null,
   "date": "2026-10-12"
  },
@@ -1692,6 +1725,18 @@
   "run": "ev-s04-ev2",
   "commit": "804b21c1",
   "png": "build/screenshots/evidence/ev-s04-ev2/CLN-37.png",
+  "date": "2026-10-12"
+ },
+ "CLN-38": {
+  "hash": "94e60b348b1c1339a192",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "text, heal-marks.mjs --pool eye lists 9 items: 7 fruit/veg and milk and water; 0 household nouns (bed, table...), so the chart still draws only food and drink",
+  "panel": "TEXT",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2132",
+  "commit": "07cbe59",
+  "png": null,
   "date": "2026-10-12"
  },
  "CLN-39": {
@@ -2108,6 +2153,22 @@
   "commit": "b66ad4ff",
   "date": "2026-10-12"
  },
+ "CLN-74": {
+  "hash": "ff2eb5b7315f092ef06e",
+  "dhash": [
+   "c78481090564fce8",
+   "8180828b868bf6e8",
+   "898121010141e8f9"
+  ],
+  "verdict": "PASS",
+  "line": "B, at 1366x768 the plaster strip sits right of the hand and the fingertips end clear of it in every step; A (1024x768) and C (844x390) agree, the strip never covers the fingers",
+  "panel": "B",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2141",
+  "commit": "f94ce30",
+  "png": "build/screenshots/evidence/ev-20261012-2141/CLN-74.png",
+  "date": "2026-10-12"
+ },
  "CLN-75": {
   "hash": "099ad1c834bd7ecbaf38",
   "dhash": [
@@ -2133,6 +2194,22 @@
   "judge": "expect",
   "run": "ev-s04-ev3",
   "commit": "7812e59a",
+  "date": "2026-10-12"
+ },
+ "CLN-77": {
+  "hash": "0596ca4df2189c7a52fb",
+  "dhash": [
+   "84c4c0bd87e4fcec",
+   "c4c4e59c87a7f668",
+   "88c8cadb8fefedf9"
+  ],
+  "verdict": "PASS",
+  "line": "B, the pull-out at 1366x768 is a 0.4 s dissolve from the hand close-up to the whole girl; no close-up UI or tool strip ghosts over the room, same in A (1024x768) and C (844x390)",
+  "panel": "B",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2141",
+  "commit": "f94ce30",
+  "png": "build/screenshots/evidence/ev-20261012-2141/CLN-77.png",
   "date": "2026-10-12"
  },
  "CLN-78": {
@@ -2639,7 +2716,7 @@
   "date": "2026-10-12"
  },
  "FL-02": {
-  "hash": "997d271072de80e28cba",
+  "hash": "403ad3bf5fd200823cdb",
   "dhash": [
    "bc3b81898dc141dc",
    "3c32819185c141d4",
@@ -2647,12 +2724,12 @@
    "fd7d7cecc464747c"
   ],
   "verdict": "PASS",
-  "line": "D, no home button is on screen in the clinic heal game at 844×390 (probe: .njg-home not on screen) so the task card is clear; B, Cook's title card at 844×390 has only the \"?\" at its corner, nothing overlaps it; note the sheet proves no overlap only because no home button is drawn on either screen",
+  "line": "D, at 844x390 no home button sits on the heal game task card, only the help button at its corner; B, Cook title card at 844x390 is clear too (the 390x844 rotate card is not on the sheet)",
   "panel": "D",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/FL-02.png",
+  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
+  "run": "ev-20261012-2146",
+  "commit": "f94ce30",
+  "png": "build/screenshots/evidence/ev-20261012-2146/FL-02.png",
   "date": "2026-10-12"
  },
  "LNG-01": {
@@ -2844,14 +2921,14 @@
  "MAA-10": {
   "hash": "d01b5b1bf01c86918dfd",
   "dhash": [
-   "c4cecacccccc8cc4"
+   "444e4a44c484a444"
   ],
   "verdict": "FAIL",
   "line": "machine: MAA-10-p1-L4-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "MAA-11": {
@@ -2919,11 +2996,11 @@
   "hash": "856a6ea44b8f46e4d366",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "machine: MOD-01-p1-repo: pass: python3 build/bg_align_check.py: exit 1",
+  "line": "machine: MOD-01-p1-repo: pass: python3 build/bg_align_check.py: exit 2",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "PAN-01": {
@@ -3432,8 +3509,8 @@
   "line": "machine: SEK-05-p1-L2-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/test_cook.py --orders: exit 1; SEK-05-p1-L4-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/test_cook.py --orders: exit 1",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "SEK-06": {
@@ -3976,8 +4053,8 @@
   "line": "machine: SH-33-p1-L1-1366x768: pass: pass: the cmd's exit code (the CLI); python3 build/check_vessel_meta.py: exit 1",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
+  "run": "ev-20261012-2120",
+  "commit": "2c5da93",
   "date": "2026-10-12"
  },
  "SH-34": {
@@ -4272,6 +4349,21 @@
   "judge": "expect",
   "run": "ev-s04-ev1",
   "commit": "b66ad4ff",
+  "date": "2026-10-12"
+ },
+ "SH-55": {
+  "hash": "2254c0a54c516a248095",
+  "dhash": [
+   "00b0898d02c18101",
+   "00819481c1017101",
+   "a0d08680d0d0c440"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:#mission .oc-in (1 clean (2 moments)); noClip:#mission .oc-in (1 clean (3 moments)); noClip:.cl-side .oc-card (1 clean (7 moments))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261012-2141",
+  "commit": "f94ce30",
   "date": "2026-10-12"
  },
  "SH-56": {
