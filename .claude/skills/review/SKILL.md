@@ -27,14 +27,16 @@ description: Review a finished build session or any change before it goes to Zaf
 7. Start the report: `node build/tools/review/skeleton.mjs <name> --run <run id>`.
 8. Approve the shots only after looking (and from two runs where timing wobbles): `shotdiff.mjs --approve --also <run2>`.
 
-9. **The sprint check (decision 78), before every publish:** every row the sprint touched is played and judged, not just the changed screens.
+9. **The evidence loop (decisions 78, 82), before every publish:** every row the sprint touched is proven by the game and judged on small sheets, not just the changed screens.
    ```
-   node build/tools/review/sprintcheck.mjs --plan          # the sprint's rows → flows; UNMAPPED rows must get a flow or a manual shot first
-   node build/tools/review/sprintcheck.mjs --run           # plays them, with the contract checks (a break fails)
-   node build/tools/review/sprintcheck.mjs --sheets        # one evidence sheet per row
-   node build/tools/review/sprintcheck.mjs --judge-prompt  # Fable judges every sheet against the row's words
+   node build/tools/review/evidence.mjs --plan --sprint      # specs validated; a row with no spec, a spec error or an unreachable moment fails here (fix the spec or the driver first)
+   COOK_TEST_PORT=88xx flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --sprint   # plays, captures, decides the expects; exit 75: --resume <id>
+   node build/tools/review/evidence.mjs --judge              # batch files for the rows a reviewer must see (not machine-decided, not cached, not a tool failure)
+   #   one reviewer call per build/screenshots/evidence/<run>/judge/batch-NN.md (Fable; Opus when Fable is at its limit; never the builder)
+   node build/tools/review/evidence.mjs --collect            # the verdict files -> the cache
+   node build/tools/review/evidence.mjs --apply              # FAIL -> reopened, PASS -> built, in regressions.md
    ```
-   A row is built only on Fable's PASS of its sheet; a FAIL reopens it before Zafar plays. Zafar gets the list of what still fails before he plays (C20).
+   A row is built only on a PASS of its evidence (a machine expect or a reviewer citing a panel); a FAIL reopens it before Zafar plays. Tool failures (moment never reached, blank crop, spec error) go back to the tool owner, never to Zafar. Zafar gets the FAIL list, the audit disagreements and the `human` rows (his ear or feel) before he plays (C20). At sprint close: `--run --all`, then `--judge --audit 10`. (`sprintcheck.mjs` stays for the row → flow mapping of rows with no spec.)
 
 ## Then
 Anything broken goes back to the builder as a numbered list; nothing reaches Zafar that breaks a written rule.
