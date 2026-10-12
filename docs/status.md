@@ -20,7 +20,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 3. Full gate (`run.mjs --gate`), sprint check sheets, `/review`, then `/publish` and `/sprint` close.
 4. Then Zafar plays; his supervised art run (s05 block, parts A–C first).
 
-**Waiting on Zafar:** samosa "next kind" button (item 11, recommend the button); 15a how-to line and "pass me" outside the pop-up (recommend leave, check skips them); the pharmacy hesitation hint writes the item's name (recommend keep).
+**Answered 12 Oct (decision 80):** the samosa 'next kind' button stays; the how-to line and 'pass me' stay outside the pop-up (the contract skips them); the pharmacy hint stays.
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first). Branch `ccr-a7370759-t0lee7`. Sprint 4 is open: finish the audit judging, merge the verdicts into the regression list, run fix round 2 on the FAILs, then the full gate, `/review`, `/publish` and close the sprint. Tell me before launching anything new.
@@ -95,12 +95,10 @@ Each has Claude's recommendation. Answer any time with "yes to all except …".
 8. **A skip for spoken replies in Conversations?** *Recommend yes, behind the "?".*
 9. **Pocket-money receipts** in the old mode designs (+5 ear, +3 craft…): replace them all with the one model (decision 10)? *Recommend yes.*
 10. **Hands:** kept only for first-person scenes outside Cook (Find it, the clinic)? *Recommend: parked until a mode needs them.*
-11. **Samosa:** does the second kind start once the first count is made (which gives the count away), or with a "next kind" button? *Recommend: the button.*
 12. **Maani:** do the dough piles never run out? *Recommend yes.*
 13. **Chai art to make:** black-tea glasses, the tipped pan, in-between pan states; the daar ladle came out as a dipper (redo from a photo of a real *kadchi*); the sekelo plate cell. *Recommend: one art batch with the clinic redo list.*
 14. **The Word copies of Mum's rounds:** does she still read them? *Recommend: yes, keep building them.*
 15. **Busy and Relaxed Cook modes** (idea 28): gone? *Recommend: gone; timers come from the level.*
-15a. **Cook's how-to line and Nani's "pass me" in the pop-up?** (s04-fxc, contract-1.) At L1 a station opens with Nani's how-to line in her box ("Chulo bar!" at the fry, "Bhar!" at the fill: decision 55's guide step, help after a pause from L2), and "pass me" asks in her own tray card ("Muke limu de."). The contract counts both as an order said outside the request pop-up. Put them through the pop-up too, or are they decision 53's "instruction just before the game"? *Recommend: leave both as they are (a how-to line is not an order; a pop-up per step would make every station start with a card), and let the contract skip the guide's step line and the "pass me" card.*
 
 ### Older open decisions (defaults were taken on 25 Sept, never confirmed one by one)
 16. **Who did it?** Can Nana, Nani or baby Isa be culprits, and Kasuku a silent suspect? A "Prove it" step for 8+? *Recommend: yes to family culprits and Kasuku; Prove it optional at the top level.*
