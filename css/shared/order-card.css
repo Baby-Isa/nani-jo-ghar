@@ -207,6 +207,12 @@
 .oc-card.oc-big .oc-head { gap: var(--njg-s3); }
 .oc-card.oc-big .oc-items { gap: var(--njg-s2); margin-top: var(--njg-s3); }
 .oc-card.oc-big .oc-row { padding: 0 var(--njg-s2) 0 var(--njg-s4); }
+/* the closed big card (from level 3, CLN-114; js/shared/order-card.js): face + headline and one row of dots where the
+   order would be, the closed sidebar card's dots at the pop-up's size: the order is heard, not read */
+.oc-card.oc-closed-big { cursor: inherit; }
+.oc-card.oc-closed-big .oc-ph-row { justify-content: center; padding: 0 var(--njg-s4); background: var(--oc-tint, var(--oc-card)); border-style: dashed; }
+.oc-card.oc-closed-big .oc-ph-row .oc-t { flex: none; font-size: calc(var(--oc-i) * 1.4); line-height: 1; letter-spacing: 0.2em; color: var(--njg-ink-soft); }
+.oc-card.oc-closed-big .oc-head:not(:has(.oc-headline)) { min-height: var(--oc-face); }
 
 /* phones (<html data-ff="phone">, js/shared/frame.js): a long part list (a mixed skewer's four pieces) takes two
    columns, read left to right, so the order fits without scrolling */
@@ -276,6 +282,9 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
   transition: background .4s;
 }
 .njg-rq-veil.going { background: rgba(45, 32, 24, 0); }
+/* while the pop-up is up the game under it is quiet (Lifecycle.request: the host's other children are inert): its speech
+   bubbles and the controls a game marks data-rq-hide (the diagnosis's magnifier) are hidden */
+.njg-rq-under :is(.cl-bubble, .njg-bubble, .cl-thought, [data-rq-hide]) { visibility: hidden; }
 @keyframes njgRqFade { from { opacity: 0; } }
 .njg-rq-card {
   width: min(calc(var(--njg-s7) * 15.5), 92%); max-height: 100%; overflow-y: auto; border-radius: calc(var(--njg-radius) * 2);

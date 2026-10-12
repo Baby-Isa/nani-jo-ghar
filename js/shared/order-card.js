@@ -41,7 +41,9 @@
  *       opts.foldAfter  ms before a finished card folds (default 700)
  *       opts.onFace(ev, cardEl)      the face was tapped (replay)
  *       opts.closed     the card is folded though not finished: face + headline, no check (the phase-fold rule,
- *                       design system 13: a card you can't act on now; the start-folded card, 14a). Needs opts.fold
+ *                       design system 13: a card you can't act on now; the start-folded card, 14a). Needs opts.fold.
+ *                       With opts.big: the closed big card (the request pop-up from level 3): face + headline and one
+ *                       row of dots; the order is heard, never written (CLN-114)
  *       opts.open       with opts.closed: the card is open for now (the light bulb's time, D11), not folded
  *       opts.onPeek(cardEl)  with opts.closed: a tap (on the card or its small eye, D12) opens the card for opts.peekMs (default 3500) and calls
  *                       this (the host counts it as a hint); without it a tap just opens and closes it
@@ -285,6 +287,22 @@
     // decision 57 (CLN-91): on a spoken card (opts.look "bulb": the waiting room's call) it is a small bulb, no counter
     if (opts.closed && opts.onPeek && !opts.big) head.insertAdjacentHTML("beforeend", `<span class="oc-look${opts.look === "bulb" ? " bulb" : ""}" aria-hidden="true">${opts.look === "bulb" ? OC.BULB : OC.EYE}</span>`);
     c.appendChild(head);
+    // the closed big card (CLN-114, decision 27; S04): from level 3 the pop-up shows no more than the closed sidebar card:
+    // the face (= the speaker) and the headline, and one row of dots where the order would be. The order is heard (the
+    // host's read-out), never written; one row whatever the order's length, so its size gives nothing away
+    if (opts.big && opts.closed) {
+      c.classList.add("closed", "oc-closed-big");
+      const body = el("div", "oc-body");
+      const inner = el("div", "oc-in");
+      const list = el("div", "oc-items");
+      const ph = el("div", "oc-item oc-ph");
+      ph.appendChild(el("div", "oc-row oc-irow oc-ph-row", `<span class="oc-t" aria-hidden="true">\u00b7\u00b7\u00b7</span>`));
+      list.appendChild(ph);
+      inner.appendChild(list);
+      body.appendChild(inner);
+      c.appendChild(body);
+      return c;
+    }
     if (sh.items.length) {
       const body = el("div", "oc-body");
       const inner = el("div", "oc-in");

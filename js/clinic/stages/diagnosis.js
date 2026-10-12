@@ -92,6 +92,7 @@
       if (plan.variant === "D2" && levelParts.some((p) => FACE.includes(p))) {
         zoom.el = h("button", "cl-mag", stage, "🔍");
         zoom.el.type = "button";
+        zoom.el.dataset.rqHide = ""; // hidden while the request pop-up is up (Lifecycle.request)
         zoom.el.setAttribute("aria-label", "Look closer at the face");
         zoom.el.addEventListener("click", async (e) => {
           e.stopPropagation();

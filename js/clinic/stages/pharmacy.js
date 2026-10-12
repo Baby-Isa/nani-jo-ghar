@@ -63,9 +63,10 @@
 
       // T27, decision 53 (P1, P8, CLN-84): the request first. The doctor's [Bring me] ... comes up in a pop-up over the
       // counter and is read out (a tap skips it); then it folds into the sidebar and the belt starts, quiet.
-      // From level 3 the sidebar card is closed: the counts and the order are heard, not read (13c, Q7)
+      // From level 3 the sidebar card is closed: the counts and the order are heard, not read (13c, Q7); the pop-up
+      // then shows the closed big card, never more than the sidebar (CLN-114: it wrote the whole order)
       screen.setNani(null);
-      await requestPopup(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq) });
+      await requestPopup(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq), closed: plan.level >= 3 });
       await S.request(screen, { title: plan.cardHead || "", rows: plan.card, ordered: plan.card.some((r) => r.seq), closed: plan.level >= 3, onPeek: () => screen.peek("pharmacy-card"), read: false });
 
       // the belt: dishes enter on the right every everyMs, cross in crossMs, loop through plan.loop

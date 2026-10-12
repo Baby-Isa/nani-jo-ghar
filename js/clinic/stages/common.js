@@ -272,12 +272,12 @@
     const LC = global.Lifecycle;
     if (!LC) return Promise.resolve({ skipped: false });
     let card = null;
-    const fill = (c, withRows) => {
+    const fill = (c) => {
       if (prep) prep(c);
       c.isOrdered = !!ordered;
-      c.titleText = withRows ? title || "" : "";
+      c.titleText = title || "";
       c.faceEl = face || S.doctorFace();
-      c.setRows(withRows ? (rows || []).map((r) => Object.assign({}, r)) : []);
+      c.setRows((rows || []).map((r) => Object.assign({}, r)));
     };
     return LC.request({
       reason: reason || "clinic",
@@ -286,17 +286,11 @@
       fast: Kit.fast,
       wait: (ms) => Kit.wait(ms),
       build(box) {
-        const shown = new Kit.Card(box, { who: "doctor", big: true });
-        if (!closed) {
-          fill(shown, true);
-          card = shown;
-          return;
-        }
-        // a closed card (from level 3): the pop-up shows only the doctor's face, as the closed sidebar card does (the
-        // shared order card draws a big card open whatever it's told), and the call is heard from a card never drawn
-        fill(shown, false);
-        card = new Kit.Card(document.createElement("div"), { who: "doctor", big: true });
-        fill(card, true);
+        card = new Kit.Card(box, { who: "doctor", big: true });
+        // a closed card (from level 3, CLN-114): the shared closed big card (js/shared/order-card.js), the doctor's face,
+        // the headline the closed sidebar card shows and a row of dots; the rows are read out, never drawn
+        if (closed) card.closed = { onPeek: null, look: null };
+        fill(card);
       },
       // the read-out starts once the pop-up is on screen: at real speed its own 300 ms lead covers the 0.2 s fade in;
       // at test speed (a 20 ms lead) it waits for the fade, so the first line is never said before the card shows

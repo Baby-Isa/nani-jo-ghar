@@ -652,7 +652,12 @@
         if (opts.onDone) opts.onDone(out);
         // D1: the zoom back out, and the patient's "thank you, I feel better" (a line to record), then the result
         const thanks = HOST.line("thanks-better", data);
-        const outro = staging ? staging.out().then(() => Kit.Voice.say(thanks, { who: "patient" })) : Promise.resolve();
+        // contract-4 (SH-68, CLN-86): on the room screen her bubble comes from her head on the art (its measured head
+        // anchor), never from the close-up's corner face or the whole figure's box
+        const atHead = () => {
+          Kit.Voice.speakers.patient = () => (fig.art && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
+        };
+        const outro = staging ? staging.out().then(() => (atHead(), Kit.Voice.say(thanks, { who: "patient" }))) : Promise.resolve();
         Promise.race([outro, new Promise((r) => setTimeout(r, Kit.fast ? 600 : 4000))]).then(() => resolveResult(out));
       },
       // --- additions ---
@@ -732,6 +737,9 @@
         wait: (ms) => Kit.wait(ms),
         build(box) {
           big = new Kit.Card(box, { who: "doctor", big: true });
+          // from level 3 the sidebar card is closed: the pop-up is the shared closed big card (face, goal, a row of
+          // dots), the steps heard, never written (CLN-114)
+          if (card.closed) big.closed = { onPeek: null, look: null };
           big.isOrdered = true;
           big.titleText = card.titleText;
           big.faceEl = face.cloneNode(true);

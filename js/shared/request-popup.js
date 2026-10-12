@@ -4,7 +4,7 @@
  * stage boundary and never RequestPopup, VoiceStop or the end screen on their own:
  *
  *   await Lifecycle.request(opts)   (1) a play phase that gives an order opens with the request pop-up (below), read out,
- *                                   then folded into the sidebar
+ *                                   then folded into the sidebar; the game under it is inert and its bubbles hidden
  *   await Lifecycle.advance(o)      (2) the outcome is obvious: the game moves on by itself after a short beat (no ✓,
  *                                   Next or stage button). o: {ready: Promise (capped, e.g. the line being said), ms, wait}
  *   Lifecycle.stageEnd(reason)      (3) a stage or game ended: every voice stops (the one voice layer below), every speech
@@ -363,10 +363,36 @@
     voice,
     talk,
     bubble: { place: placeBubble, clear: clearBubbles },
-    /** (1) The request pop-up before a play phase that gives an order (RequestPopup.open's options). */
+    /**
+     * (1) The request pop-up before a play phase that gives an order (RequestPopup.open's options). While it's up the
+     * game under it is quiet: everything already in the play area (opts.host) is inert, and its speech bubbles and the
+     * controls a game marks data-rq-hide (the diagnosis's magnifier) are hidden (class njg-rq-under on the host,
+     * css/shared/order-card.css); all of it comes back as the card folds into the sidebar.
+     */
     request(opts = {}) {
       note("request", opts.reason || "");
-      return open(opts);
+      const host = opts.host || null;
+      const held = [];
+      if (host && host.classList) {
+        host.__njgRq = (host.__njgRq || 0) + 1;
+        host.classList.add("njg-rq-under");
+        [...host.children].forEach((el) => {
+          if (el.classList.contains("njg-rq-veil") || el.inert) return;
+          el.inert = true;
+          held.push(el);
+        });
+      }
+      const back = () => {
+        held.forEach((el) => (el.inert = false));
+        if (host && host.classList && !(host.__njgRq = Math.max(0, (host.__njgRq || 1) - 1))) host.classList.remove("njg-rq-under");
+      };
+      return open(opts).then(
+        (r) => (back(), r),
+        (e) => {
+          back();
+          throw e;
+        }
+      );
     },
     isOpen: () => !!current,
     close: () => current && current.fold(false),

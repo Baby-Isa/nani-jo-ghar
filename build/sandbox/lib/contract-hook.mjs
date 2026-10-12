@@ -125,7 +125,9 @@ export const CONTRACT_HOOK = `(() => {
   // ---- the request pop-up and the sidebar card ----
   const popupEls = () => [...document.querySelectorAll(".njg-rq-open, .njg-rq-veil:not(.hidden), #intro:not(.hidden)")].filter(shown);
   const inPopup = (el) => !!(el && el.closest && el.closest(".njg-rq-veil, #intro, .njg-rq-card"));
-  const sideCards = () => [...document.querySelectorAll(".oc-card, .cl-card, .ng-card")].filter((c) => !inPopup(c) && !c.closest(".njg-results") && shown(c));
+  // a clinic card (.cl-card) is the box the shared order card (.oc-card) is drawn in: one card, counted once (the inner
+  // one carries "closed"; counting the box too read every closed card as "1 of 2 open", contract-9)
+  const sideCards = () => [...document.querySelectorAll(".oc-card, .cl-card, .ng-card")].filter((c) => !inPopup(c) && !c.closest(".njg-results") && shown(c) && !(c.matches(".cl-card") && c.querySelector(".oc-card")));
 
   // ---- ✓ / Next / stage buttons (not the end screen, the pop-up, the grown-ups' "?", the bulb, word pills) ----
   const BTN = ".cl-go, #done-btn, .njg-go, .njg-next, .stage-go, [data-contract=next]";
