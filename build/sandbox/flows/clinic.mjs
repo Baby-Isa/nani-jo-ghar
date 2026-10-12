@@ -17,6 +17,7 @@ const SEED = 7;
 //   takeback            the first thing placed is tapped again (a heal game's placement, the pharmacy tray, a waiting-room tick)
 //   lab-log-on          the stage with the lab bar and its log showing (&lab=1: CLN-07)
 //   heal-fast           a morning whose heal game is played with no waits between steps (CLN-109)
+//   real-pace           the clinic without &fast=1: the zooms and waits take their real time (CLN-87)
 export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 
 // mode: "fair" does what the stage asks. "mistake" makes one wrong pick per stage where the stage offers one (e.wrong: a wrong dish, probe,
@@ -31,12 +32,12 @@ export class ClinicPlayer {
     this.drv = { turns: new Set(), wrongs: 0, tapped: false, tookBack: false, spoke: false };
     this.voice = null;
   }
-  // tap-through-popup: the open request pop-up tapped 0.7 s after it opens (its card is up, the read-out has begun)
+  // tap-through-popup: the open request pop-up tapped 0.25 s after it opens (its card is up, the read-out has begun)
   async tapThrough() {
     if (this.mode !== "tap-through-popup" || this.drv.tapped || !(await popupOpen(this.page))) return false;
     this.drv.tapped = true;
-    await sleep(700);
-    if (!(await popupOpen(this.page))) { this.rec.note("tap-through-popup: the pop-up folded by itself before 0.7 s"); return false; }
+    await sleep(250);
+    if (!(await popupOpen(this.page))) { this.rec.note("tap-through-popup: the pop-up folded by itself within 0.25 s"); return false; }
     await mark(this.page, "tapped-through", { block: false });
     await tapPopup(this.page);
     await sleep(250);
@@ -361,7 +362,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       const { page, rec } = ctx;
       // the evidence loop's spec can set the seed (a wanted order) and the profile: fresh (storage cleared, first-time help on) or seen (help off)
       const help = ctx.profile === "fresh" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
-      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=1&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
+      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" ? 0 : 1}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
       if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)
       if (levels) {

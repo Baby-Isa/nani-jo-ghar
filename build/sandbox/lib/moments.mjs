@@ -18,7 +18,7 @@ export const ALIASES = {
   served: { pats: ["view-service"] },
   "pass-me": { pats: ["visible:#passme"] },
   idle: { pats: ["rec:idle-hint", "rec:hint-glow"] },
-  "after-wrong": { pats: ["rec:wrong", "wrong-choice", "wrong-tap", "wrong-extra", "wrong-slice", "wrong-stir"], delay: 1000 },
+  "after-wrong": { pats: ["rec:wrong", "slip", "wrong-choice", "wrong-tap", "wrong-extra", "wrong-slice", "wrong-stir"], delay: 1000 },
   // the pour: the foot's jug, the taste game's milk or water jug tipping into the tumbler
   pour: { pats: ["step:pour", "step:milk", "step:water"] },
   fill: { pats: ["step:fill"] },

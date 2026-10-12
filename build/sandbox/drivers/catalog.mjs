@@ -30,6 +30,8 @@ export const DRIVERS = {
   "find-scene": { kinds: ["mode"], moments: ["rec:scene-*", "rec:scene-*-*"] },
   // not in _drivers (a path the spec already used): the clinic's take-back, like Cook's #takeback (CLN-112, CK-TB-01)
   takeback: { kinds: ["heal", "clinic-stage"], moments: ["rec:before-takeback", "rec:after-takeback"] },
+  // the clinic at its real pace (no &fast=1): the zooms take their 1.5 s (CLN-87, CLN-43, CLN-77)
+  "real-pace": { kinds: ["heal"], moments: [] },
   // the mistake player on more kinds of flow (CK-07, ART-08 on the game host; CK-26 in a story day)
   mistake: { kinds: ["lab-cook", "cook-other"], moments: ["rec:wrong-choice", "rec:wrong-tap", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"] },
 };

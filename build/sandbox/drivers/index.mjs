@@ -38,6 +38,29 @@ const VOICE = `(() => {
   return true;
 })()`;
 export async function watchVoice(page) {
+  // on an evidence page the probe already receives every sound-log event (run.mjs: sound.onEvent -> probe.onEvent): read them
+  // there, from the page's first moment and across navigations
+  const ev = page.__njgEvidence;
+  if (ev) {
+    if (!page.__drvVoice) {
+      const V = { open: new Map(), plays: new Set(), lines: [] };
+      const feed = (e) => {
+        if (!e) return;
+        if (e.type === "line") { V.open.set(e.id, e); V.lines.push({ id: e.id, text: String(e.text || ""), t0: e.t || Date.now(), t1: null }); if (V.lines.length > 400) V.lines.shift(); }
+        else if (e.type === "line-end") { V.open.delete(e.id); const l = V.lines.find((x) => x.id === e.id); if (l) l.t1 = e.t || Date.now(); }
+        else if (e.type === "play" && e.via !== "sfx") V.plays.add(e.pid);
+        else if (e.type === "play-end") V.plays.delete(e.pid);
+      };
+      const orig = ev.onEvent.bind(ev);
+      ev.onEvent = (e) => { try { feed(e); } catch (x) { /* never in the way of the probe */ } return orig(e); };
+      page.__drvVoice = {
+        speaking: async () => V.open.size > 0 || V.plays.size > 0,
+        lines: async (since = 0) => V.lines.filter((l) => l.t0 >= since).map((l) => ({ text: l.text, t0: l.t0, t1: l.t1 })),
+        now: async () => Date.now(),
+      };
+    }
+    return page.__drvVoice;
+  }
   await page.evaluate(VOICE).catch(() => false);
   return {
     // a line is open or a clip is sounding

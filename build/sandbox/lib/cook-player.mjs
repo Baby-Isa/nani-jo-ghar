@@ -46,6 +46,8 @@ export class CookPlayer {
     // the drivers' bookkeeping: wrongs made (n) and at which step (key), the chai pans' asked items, the last page flags
     this.drv = { n: 0, key: null, pan: null, panKeys: {}, poured: {}, choices: 0, choicesUp: false, doneRows: null, counted: false };
     this.voice = null;
+    // from the first moment (the request pop-up reads before the play loop starts)
+    if (VOICE_MODES.has(mode)) watchVoice(page).then((v) => { this.voice = this.voice || v; }).catch(() => {});
     this.afterIntro = null;  // a flow's own move once the first order card is in the sidebar (start-over)
   }
   onboardUp() { return this.page.evaluate("!!document.querySelector('.njg-onboard')").catch(() => false); }
@@ -62,7 +64,8 @@ export class CookPlayer {
         choices: !!document.querySelector("#choices:not(.hidden) .choice"),
         passme: !!pm && !pm.classList.contains("hidden") && pm.getBoundingClientRect().height > 2,
         doneRows: document.querySelectorAll("#mission .oc-row.done").length,
-        stamps: document.querySelectorAll("#mission .oc-done-tk").length,
+        // the done stamps on screen (a card folded away or a hidden sidebar does not count)
+        stamps: Array.from(document.querySelectorAll(".oc-done-tk")).filter((e) => { const r = e.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return false; for (let x = e; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden" || +cs.opacity < 0.05) return false; } return true; }).length,
         pans: C && C.chaiPans ? C.chaiPans() : null,
         daar: C ? C.daarPhase || null : null,
       };
@@ -217,17 +220,17 @@ export class CookPlayer {
   async intro() {
     this.intros++;
     const p = this.page;
-    // tap-through-popup (SH-64): the request pop-up is tapped as soon as its card is up and the read-out has begun (the probe's
-    // "request" capture is taken first, about 450 ms in)
+    // tap-through-popup (SH-64): the request pop-up is tapped 0.25 s after it opens (at test speed it folds by itself within a
+    // second); a probe of its card takes it at "popup-open"
     if (this.mode === "tap-through-popup") {
       await until(() => popupOpen(p), 3000, 30);
-      await sleep(700);
+      await sleep(250);
       if (await popupOpen(p)) {
         await mark(p, "tapped-through", { block: false });
         await tapPopup(p);
         await sleep(250);
         await this.once("tapped-through", { settle: 0 });
-      } else this.rec.note("tap-through-popup: the pop-up folded by itself before 0.7 s");
+      } else this.rec.note("tap-through-popup: the pop-up folded by itself within 0.25 s");
       await sleep(600);
       if (this.intros === 1) await this.once("order-card-in-sidebar");
       if (this.intros === 1 && this.afterIntro) await this.afterIntro(this);
