@@ -140,4 +140,4 @@ Against Zafar's last feedback: <item ✅ / note>
 - [ ] MOD-02 · open · eye: Find it · Sitting room 3.2: sofa too high
 
 ## Left open
-SH-03 (word review English) waits for the orchestrator's word. Checks: `checks.mjs` passed (265 unit tests, 0 literals, load 21/21), `import_all.mjs --check` passed, lang tests 57/57, `leak.mjs cook` passed. Touched run `s05b-touched` covered 5 flows at 1366x768 (about 6 min; the full touched list is everything, left to `/review`).
+SH-03: the English under each word stays as designed (Zafar, 12 Oct, F14); row noted, layout is S's. Checks: `checks.mjs` passed (265 unit tests, 0 literals, load 21/21), `import_all.mjs --check` passed, lang tests 57/57, `leak.mjs cook` passed. Touched run `s05b-touched` covered 5 flows at 1366x768 (about 6 min; the full touched list is everything, left to `/review`).
