@@ -17,7 +17,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 1. **Discuss first; act only when told.** (above)
 2. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his explicit OK.
 3. **Fix it properly, once.** Every past feedback item is on `docs/process/regressions.md` and is rechecked at every review.
-4. **Never invent Kutchi.** Mum is the authority (Masi second opinion; Zafar confirms spellings). Two AIs agreeing is not evidence. Missing Kutchi is a grey-italic English placeholder flagged "to record".
+4. **Never invent Kutchi.** Mum is the authority (Masi second opinion; Zafar confirms spellings). Two AIs agreeing is not evidence. Missing Kutchi is its English in grey italic, tagged "to record" in the markup only (no visible flag; decision 84).
 5. **No written English for the child, ever.** Spoken English is allowed only in story mode, said first and then repeated in Kutchi where needed, mainly early on to carry longer exposition; keep it rare with simple lines and visuals. Games and help use no English at all. Written English for grown-ups lives only in the "?" pop-up.
 6. **Pass the Kutchi leak test:** someone who knows no Kutchi can't win by reading, matching, eliminating, patterns or waiting.
 7. **Done means looked at, not tests passed.** Every state is screenshotted and judged, flaws listed first, by someone other than the builder.

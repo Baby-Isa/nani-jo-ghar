@@ -304,7 +304,7 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 
 ### Authority
 - **Never invent Kutchi.** Mum is the authority, Masi the dialect tie-break, Zafar confirms spellings; handout vocabulary is fine but their text is never shipped. (G1, G21)
-- **Missing Kutchi gets a grey-italic English placeholder flagged "to record",** listed for Mum; drafts carry `draft: true`; never English inside item pills. (G2, G3)
+- **Missing Kutchi shows as its English in grey italic, with a hidden "to record" tag** (no visible flag, so the screen keeps its live spacing; the tools list every tag for Mum; decision 84, 12 Oct); drafts carry `draft: true`; never English inside item pills. (G2, G3)
 - **An unconfirmed noun gender takes the Kutchi he-form** (Mum's rule of thumb), tops Mum's list, shows the grown-ups' "to check" flag on the test site, is never recorded as a whole phrase and never ships in the store app. (G2, decision 21)
 
 ### Spelling and settled words

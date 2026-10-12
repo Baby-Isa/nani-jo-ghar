@@ -106,3 +106,8 @@
 .njg-guide.ng-strip::before { display: none; }
 .njg-guide.ng-strip .ng-face,
 .njg-guide.ng-strip .ng-say { display: none; }
+
+/* decision 84 (Zafar, 12 Oct): a line or word still to record shows as its English in grey italic only; no visible
+   "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in
+   the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */
+.njg-guide .ng-rec { display: none !important; }

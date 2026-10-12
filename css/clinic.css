@@ -638,3 +638,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-probe.asking::before { border-color: #c9962e; background: rgba(255, 226, 150, .55); box-shadow: 0 0 0 6px rgba(201, 150, 46, .25); }
 .cl-probe.tried::before { border-color: rgba(120, 110, 100, .55); background: rgba(200, 195, 188, .45); }
 .cl-probe.found::before { border-color: #c9962e; background: rgba(242, 193, 78, .6); }
+
+/* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
+.cl-rec, .bubble-rec { display: none !important; }

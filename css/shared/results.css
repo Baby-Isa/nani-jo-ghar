@@ -415,3 +415,8 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
 }
 /* non-negotiable 9 (S02 review): a word tile's word and English shrink to fit on one line (js/shared/fit.js), then wrap */
 .rs-word b.fit, .rs-word .rs-en .fit { white-space: nowrap; overflow: visible; min-width: 0; max-width: 100%; }
+
+/* decision 84 (Zafar, 12 Oct): a line or word still to record shows as its English in grey italic only; no visible
+   "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in
+   the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */
+.rs-results .rs-rec, .rs-rec { display: none !important; }

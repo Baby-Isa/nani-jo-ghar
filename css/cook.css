@@ -1101,3 +1101,6 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 @keyframes pmRing { to { stroke-dashoffset: 100.5; } }
 @keyframes pmIn { from { opacity: 0; transform: translate(-50%, -40%) scale(.92); } }
 @keyframes pmHuff { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+
+/* decision 84 (12 Oct): a line still to record is grey italic English only; the "to record" flag is a hidden tag */
+.bubble-rec, .md-rec { display: none !important; }
