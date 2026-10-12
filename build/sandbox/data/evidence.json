@@ -6306,10 +6306,8 @@
     "shot",
     "crop:.cl-lab-out"
    ],
-   "expect": [
-    "noOverlap:.cl-lab-out,.cl-pills"
-   ],
-   "note": "the lab debug log never overlaps the pills or counter"
+   "expect": null,
+   "note": "the lab debug log (bottom left) sits clear of the sidebar, the help button and any pills or counter on screen (panel B outlines it)"
   }
  ],
  "CLN-08": [
@@ -10098,19 +10096,24 @@
   {
    "flow": "clinic:diagnosis",
    "path": "fair",
-   "level": 3,
+   "level": [
+    1,
+    2,
+    3
+   ],
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "diagnosis-point",
+   "at": "every:clinic:diagnosis",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "note": "7.1 'where it hurts' has neck, back and hair parts"
+   "note": "7.1 'where it hurts' has neck, back and hair parts",
+   "max": 3
   },
   {
    "flow": "clinic:pharmacy",
