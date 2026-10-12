@@ -38,6 +38,8 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~00:50 UK: decision 92 (face circles only where she's off screen; CLN-85 closed). **C round 2 in** (f3fbc44): CK-22 built; SH-56, PAN-09, PAN-06 sheets to judge; cards closed from L3 (F9), bulb 8 s at every level, ✓ glows at once, sekelo groups. Routed: SH-58, SH-44, SEK-03, SH-19, PAN-01, SH-41 probes → T2; SH-09 at 800×360 → S2; the L4 pantry header writing the item → B. Fridge shows 4 of 6 until Mum records juice, butter, cheese, cream, eggs.
 
+13 Oct ~00:55 UK: B fixed PAN-17 (9129115): from L3 the pantry's ask is heard, not written. For `/review`: her hesitation hint after a pause still writes the line (stations.js, C's file); it stays only if it costs a hint like the bulb (decision 80 kept the pharmacy's); if it's free, it's a waiting leak (non-negotiable 6) and goes voice-only in C2.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
