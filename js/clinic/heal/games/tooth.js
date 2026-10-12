@@ -183,7 +183,11 @@
     const hy = (BR.head[1] / BR.size[1]) * bH;
     // T1 (CLN-103): the brush turned so its head lies across the front teeth, the handle out of the corner of the mouth
     // (art id "toothbrush-in-mouth" from the art run, once ready: the bristles into the mouth)
-    const brushImg = s("image", { href: url(brushIn ? brushIn.src : BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH, transform: brushIn ? null : `rotate(-12 ${M.x} ${M.y - 60})` }, brushG);
+    // CLN-103 (T1, s04-r2k2): with the brusher's view, the brush is turned INTO the mouth: its head on the front teeth
+    // (the bristles against them, its back to us) and the handle coming towards us, foreshortened, down out of the
+    // mouth over the lower lip; never lying flat across the teeth
+    const IN_MOUTH = data.brushTurn || { a: 38, k: 0.8 };
+    const brushImg = s("image", { href: url(brushIn ? brushIn.src : BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH, transform: brushIn ? `translate(${M.x} ${M.y - 60}) rotate(${IN_MOUTH.a}) scale(${IN_MOUTH.k} 1) translate(${-M.x} ${-(M.y - 60)})` : `rotate(-12 ${M.x} ${M.y - 60})` }, brushG);
     void brushImg;
     // T9 (CLN-103): plaque on the teeth that clears where the brush goes (and the last of it when the brushing is done)
     const plaqueG = s("g", { class: "tooth-plaque" }, mouthG);
@@ -414,6 +418,13 @@
     const pullOut = async () => {
       drawSpecks(true);
       setVB(zoomBox());
+      // CLN-103 (S04 audit: "the mouth wide open" at the end): she ends with the brushing's less open mouth, the plaque
+      // gone and the brush put away, not the drill's wide-open one
+      if (brushFace) {
+        brushFace.setAttribute("opacity", 1);
+        if (plaqueImg) plaqueImg.setAttribute("opacity", 0);
+        brushG.setAttribute("opacity", 0);
+      }
       mouthG.setAttribute("opacity", 1);
       toothG.setAttribute("opacity", 0);
       fillG.setAttribute("opacity", 0);
@@ -439,6 +450,7 @@
         const p = c.patches[0];
         S.cue("drill", { gesture: "drag", to: { x: p.cx + p.r * 0.6, y: p.cy } }, { x: p.cx - p.r * 0.6, y: p.cy });
         if (c.timer) timer = S.timer(c.timer * (fast() ? 2 : 1), () => cur() === c && close());
+        parkDrill();
       }
       if (c.kind === "fill") {
         drawPaste();
@@ -512,7 +524,7 @@
       brushMove(DIRS.find((d) => SCREEN[d][0] === scr[0] && SCREEN[d][1] === scr[1]));
     });
     const up = () => {
-      if (drag && drag.drill) drillEl.setAttribute("opacity", 0);
+      if (drag && drag.drill) parkDrill();
       if (drag && !drag.drill) brushG.setAttribute("transform", "");
       drag = null;
       if (st.holding) stopFill();
@@ -551,6 +563,16 @@
         st.busy = false;
         if (cur() === c) close();
       });
+    };
+    // CLN-103 (decision 72, s04-r2k2): the drill of before Sprint 2 is there for its whole step: it rests beside the
+    // tooth, its bur by the crown's lower right, until the finger takes it (its tip under the finger), and goes back
+    const DRILL_REST = { x: 548, y: 372 };
+    const parkDrill = () => {
+      const c = cur();
+      if (!c || c.kind !== "drill" || st.over) return drillEl.setAttribute("opacity", 0);
+      drillEl.setAttribute("x", DRILL_REST.x - tipX);
+      drillEl.setAttribute("y", DRILL_REST.y - tipY);
+      drillEl.setAttribute("opacity", 1);
     };
     const drillAt = (p) => {
       const c = cur();
