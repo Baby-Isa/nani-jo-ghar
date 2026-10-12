@@ -121,7 +121,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // Nani's list (PAN-02, step 4d): every thing its own full sentence, "Muke atto de. Muke khun de." (give me: the
       // family's words); one sentence with a list waits for Mum's list rule (the engine's gap list: Fetch, L29)
       const ask = (id) => Lang.line("give", Lang.phrase([id]));
-      if (ctx.guided && askLines) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
+      // (the taught first time, her whole list said again, only when no request pop-up has read it out this stage:
+      // R2, her box never reads the whole card, and the pantry header at L3/L4 crammed five sentences into a tiny font)
+      const LC = global.Lifecycle;
+      if (ctx.guided && askLines && !(LC && LC.asked && LC.asked())) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
       const remaining = need.slice();
       const fetched = new Set();
       let n = 0;

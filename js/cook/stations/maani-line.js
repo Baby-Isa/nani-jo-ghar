@@ -61,10 +61,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // maani-v2/thali.webp: the flat floor is a circle 0.42 of the picture's width across from its centre.
   const THALI_FLAT = 0.42;
   // S04 audit (MAA-10 at L4): the largest maani, stacked and fanned, still reached the curled rim. A maani on a plate is
-  // a little smaller (0.26 of the plate, was 0.3) and keeps a margin from the rim (the art's edge is not a perfect circle,
+  // a little smaller (0.25 of the plate, was 0.3) and keeps a 9% margin from the rim (the art's edge is not a perfect circle,
   // and each one sits a little askew), so the whole fanned stack stays on the flat floor
-  const PLATE_MAANI = 0.26;
-  const RIM_MARGIN = 0.05; // of the plate's width
+  const PLATE_MAANI = 0.25;
+  const RIM_MARGIN = 0.09; // of the plate's width
   /** On its kind's plate: the maani's radius and how far its centre may sit off the plate's centre (MAA-10). */
   const onPlate = (sizeF) => {
     const pr = PLATE_D * PLATE_MAANI * sizeF;

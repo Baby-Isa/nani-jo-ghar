@@ -50,8 +50,11 @@
 /* LNG-03 (non-negotiable 4): a word Mum hasn't given yet (the engine's English placeholder, e.g. the plural of tameto)
    is never styled as Kutchi: grey italic, and its row carries the grown-ups' "to record" flag */
 .oc-card .ph, .oc-card .word.ph { color: var(--njg-ink-soft); font-style: italic; font-family: var(--njg-font); }
+/* (the flag goes on its own line under the words, so the words keep the row's whole width and size) */
+.oc-card .oc-row:has(> .oc-t .ph) { flex-wrap: wrap; row-gap: 0; padding-bottom: var(--njg-line-2); }
+.oc-card .oc-row:has(> .oc-t .ph) > .oc-t { flex-basis: calc(100% - var(--oc-part-h)); }
 .oc-card .oc-row:has(> .oc-t .ph)::after {
-  content: "to record"; flex: none; padding: 0 var(--njg-s1); border-radius: var(--njg-round); white-space: nowrap;
+  content: "to record"; order: 3; flex: none; margin: 0 0 var(--njg-line-2); padding: 0 var(--njg-s1); border-radius: var(--njg-round); white-space: nowrap;
   font-style: normal; font-size: var(--njg-flag-t); line-height: 1.35; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
   color: var(--njg-flag); background: var(--njg-flag-bg); border: var(--njg-line) solid var(--njg-flag-edge);
 }
