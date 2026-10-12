@@ -7,7 +7,7 @@
 Every code row in `S05-plan.md`'s packages is fixed and proven by its own probe (red before the fix, green after: decision 86), the changed rows are judged, and the result passes `/review` and goes live on `main`.
 
 ## Budget
-Approved 12 Oct: about $175–215 and a working day (plan, decision 1). Sessions T $10–14, S $28–35, B $22–30, C $35–45, D $40–50; judging about $15; `/review` and publish about $25. Scope is cut before the budget.
+Approved 12 Oct: about $175–215 and a working day (plan, decision 1); raised 13 Oct to about $270 (decision 90). Sessions T $10–14, S $28–35, B $22–30, C $35–45, D $40–50; judging about $15; `/review` and publish about $25. Scope is cut before the budget.
 
 ## Sessions
 All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s05*.brief.txt`; owned files disjoint (the plan's table). At most four at once.
@@ -24,7 +24,7 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 12 Oct ~23:31 UK check-in: **S finished** (`s05s-shared.md`, $13.3): SH-54, SH-67 built; CLN-69, SH-61 sheets to judge; 14 rows still red, mostly on probes (T) or Cook (C). **B finished** (`s05b-words.md`, $16.1): PAN-15, FL-03, LNG-03, LNG-13, SH-52, SEK-12, SAM-15 built, 5 spec fixes; SH-13, SH-70, PAN-02, CK-22, LNG-01 still red (T, Mum, C). Their requests went to C (nine items) and D (SH-41). The probe requests have no owner since T finished: T2 brief written (`s05t2-probes.brief.txt`), put to Zafar. C and D running.
 
-12 Oct ~23:50 UK: Zafar: yes to all. T2 launched: session_015wpUQ61qwSUMFnDWiD6TCK (Sonnet). Decision 88 sent to C (PAN-06) and B (the borrowings). Art parts G (kadchi, teaspoon, potato cube) and H (jar picture stickers) to be written into `s05-paste-block.txt` before his art run. SH-16 held back: the closed card's eye is the counted 'look' of rule E25, a mechanic, so it goes back to Zafar before anything is removed. Count: 130 open or reopened, 205 built (was 145 / 188).
+12 Oct ~23:50 UK: Zafar: yes to all. T2 launched: session_015wpUQ61qwSUMFnDWiD6TCK (Sonnet). Decision 88 sent to C (PAN-06) and B (the borrowings). Art parts G (kadchi, teaspoon, potato cube, and the daar chopped-veg bowl: decision 90) and H (jar picture stickers) to be written into `s05-paste-block.txt` before his art run. SH-16 held back: the closed card's eye is the counted 'look' of rule E25, a mechanic, so it goes back to Zafar before anything is removed. Count: 130 open or reopened, 205 built (was 145 / 188).
 
 12 Oct ~23:58 UK, Zafar (decision 89, rule A30): no publish until every fixable row is fixed and proven; no play-time deadline. C and D told: their stop times aren't deadlines; relaunch fresh if context runs long. SH-16: the closed card's peek becomes a small bulb with no counter (decision 57), so it goes to S round 2. **Plan to the finish:** T2 sorts probe faults from game faults → S round 2 (shared: SH-16 and every real shared failure T2 finds) → a C2 or D2 round for anything C or D leave fixable → judge changed rows → full check, `/review` → publish only when nothing fixable is left.
 
