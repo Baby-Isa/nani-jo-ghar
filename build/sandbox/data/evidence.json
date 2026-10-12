@@ -3570,11 +3570,11 @@
    "capture": [
     "contract:1",
     "strip:#stage:5x500",
-    "dom:#intro .ic-card"
+    "dom:.njg-rq-card"
    ],
    "expect": [
     "pass",
-    "count:#intro .ic-card .oc-card=3"
+    "count:.njg-rq-card .oc-card=3"
    ],
    "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet",
    "delay": 300
@@ -3816,7 +3816,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "stage-end",
    "after": null,
    "capture": [
     "zoom2:canvas:chaat-bowl"
@@ -4083,7 +4083,8 @@
     "crop:#mission"
    ],
    "expect": null,
-   "note": "chopped rows reset at the pan and tick as each goes in"
+   "note": "chopped rows reset at the pan and tick as each goes in",
+   "max": 16
   }
  ],
  "DAAR-05": [
@@ -4595,9 +4596,9 @@
     "voice"
    ],
    "expect": [
-    "order:ask,pantry,chop,sequence,bowl"
+    "order:chaat khape,ne poi"
    ],
-   "note": "day 4 teaches chaat: ask, pantry, chop, he says the sequence, bowl",
+   "note": "day 4 teaches chaat: he asks for the chaat first (Muke chaat khape), the prep games follow, and the layer order is said with ne poi just before the bowl",
    "max": 12
   }
  ],
@@ -4712,7 +4713,7 @@
  ],
  "SAM-02": [
   {
-   "flow": "cook:fill",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -4844,7 +4845,7 @@
  ],
  "SAM-08": [
   {
-   "flow": "cook:fry",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -4852,7 +4853,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -4899,7 +4900,7 @@
    "note": "filling reads as filling, not two dots on the fold line"
   },
   {
-   "flow": "cook:fry",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -4907,7 +4908,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "shot"
@@ -5260,7 +5261,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "stage-end",
    "after": null,
    "capture": [
     "zoom2:canvas:sk3-plate"
@@ -5390,7 +5391,8 @@
     "crop:#mission"
    ],
    "expect": null,
-   "note": "the card ticks each piece of a mixed skewer as it goes on (L3: one or two mixed)"
+   "note": "the card ticks each piece of a mixed skewer as it goes on (L3: one or two mixed)",
+   "max": 16
   }
  ],
  "SEK-14": {
@@ -5607,7 +5609,7 @@
  ],
  "CK-09": [
   {
-   "flow": "cook:roll",
+   "flow": "cook:roll-tawa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -5615,7 +5617,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "kind-roll",
+   "at": "view",
    "after": null,
    "capture": [
     "zoom2:canvas:chakla",
@@ -5625,7 +5627,7 @@
    "note": "one dark walnut chakla, no board on a board; the velan the same rich wood; not low-res"
   },
   {
-   "flow": "cook:fill",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [

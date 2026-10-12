@@ -392,7 +392,12 @@ export class EvidenceProbe {
           if (m.error || !m.n || !(m.vals || []).length) { put({ ok: null, why: m.error || `${e.sel} not on screen` }); continue; }
           const bad = m.vals.filter((v) => !cmp(v, e.op, e.n));
           put({ ok: !bad.length, why: `${e.kind} ${[...new Set(m.vals)].slice(0, 8).join(", ")}` });
-        } else if (e.kind === "countsUp") { const t = await this.texts(e.sel); const num = (t.map((x) => x.text).join(" ").match(/\d+/) || [null])[0]; hit.num = hit.num || {}; hit.num[e.raw] = num == null ? null : +num; }
+        } else if (e.kind === "countsUp") { const t = await this.texts(e.sel); const txt = t.map((x) => x.text).join(" ");
+          // the tally is a digit, a Kutchi number word (Cook.numWord) or a row of dots (SH-39, S05-T2)
+          let num = (txt.match(/\d+/) || [null])[0];
+          if (num == null) { const dots = (txt.match(/[•·●⚫◦]/g) || []).length; if (dots) num = dots; }
+          if (num == null && txt.trim()) num = await this.page.evaluate((x) => { const C = window.Cook; if (!C || !C.numWord) return null; const ws = x.toLowerCase().match(/[\p{L}\p{M}']+/gu) || []; for (let n = 1; n <= 12; n++) { const w = String(C.numWord(n) || "").toLowerCase(); if (w && ws.includes(w)) return n; } return null; }, txt).catch(() => null);
+          hit.num = hit.num || {}; hit.num[e.raw] = num == null ? null : +num; }
         else if (e.kind === "lexicon") {
           const text = hit.captures.some((c) => c.runs) ? domText(true) : (await this.texts("body")).filter((x) => x.tag === "" || x.tag === "canvas").map((x) => x.text).join(" ");
           if (!this.lexicon) put({ ok: null, why: "no lexicon loaded" });
