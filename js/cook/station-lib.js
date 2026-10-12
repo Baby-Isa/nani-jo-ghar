@@ -97,7 +97,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   S$.hideKnown = hideKnown;
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
-  async function begin(S, ctx, key, view) {
+  async function begin(S, ctx, key, view, { closed = false } = {}) {
     // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar
     if (ctx && ctx.intro) {
       await ctx.intro;
@@ -119,6 +119,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (global.Lifecycle && global.Lifecycle.stageStart) global.Lifecycle.stageStart("cook:station");
     Cook.quietUntil = Date.now() + ((Cook.data.calm || {}).quietMs || 0);
     Cook.save.seenStation[key] = true;
+    // a station whose card starts folded at this level (§14a, chaat's L4: Mech.define closedFrom) folds it before the
+    // pop-up below, so that pop-up is the shared closed big card: the order heard, never written (non-negotiable 6)
+    if (closed && UI.mission && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true });
     // a part of the order that waits for this station comes up in the shared request pop-up before play (S04-B)
     if (ctx.nextStep) await ctx.nextStep(key);
     // Wave 6: the first time here, dim all but the next thing and show the move (js/cook/coach.js).

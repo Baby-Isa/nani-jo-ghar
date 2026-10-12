@@ -224,6 +224,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (Cook.Coach) Cook.Coach.stop(false);
     // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
     St.coach(ctx, "daar-cook");
+    // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint. It folds before the
+    // tadka's pop-up, so the pop-up is the shared closed big card (the order heard, never written; non-negotiable 6)
+    const peek = K.ladder === "closed" && UI.mission.closeCards;
+    if (peek) UI.mission.closeCards(true, { peek: true });
     // the tadka order comes up in the shared request pop-up before the tadka (S04-B, decision 75 (1))
     if (ctx.nextStep) await ctx.nextStep("tadka");
     else await UI.mission.request("tadka");
@@ -238,9 +242,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       UI.mission.refresh();
     }
-    // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint
-    const peek = K.ladder === "closed" && UI.mission.closeCards;
-    if (peek) UI.mission.closeCards(true, { peek: true });
     if (phases.cook) UI.gist(phases.cook);
     const kz = Mech.zone(S, ctx, { id: "cook", level });
     const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps });

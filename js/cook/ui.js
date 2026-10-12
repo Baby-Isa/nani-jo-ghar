@@ -1464,7 +1464,11 @@
     const idle = big ? new Set() : idlePeople(cards);
     const minis = big ? new Set() : miniPeople(cards);
     return extra.concat(cards.map((c) => {
-      const phase = !big && !!closed && (!closed.who || closed.who === c.who);
+      // the pop-up never shows more than the sidebar card it folds into: a start-folded card (§14a, M.closeCards with
+      // peek: the order is to be remembered) is the shared closed big card there (js/shared/order-card.js big + closed:
+      // face, headline, one row of dots; the order is heard in full, never written; non-negotiable 6, as the clinic).
+      // A phase fold (a card you can't act on now) is still drawn open in the pop-up
+      const phase = !!closed && (!big || !!closed.peek) && (!closed.who || closed.who === c.who);
       const el = OC.card(c.data, {
         big,
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
@@ -1472,7 +1476,7 @@
         // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress
         // fold to face + headline too (a tap opens one; the face is still the replay)
         closed: phase || idle.has(c.key),
-        onPeek: phase && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
+        onPeek: !big && phase && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
         peekMs: 3500 / (Cook.speed || 1),
         foldAfter: 700 / (Cook.speed || 1),
         onEl: (key, e) => addEl(map, key, e),

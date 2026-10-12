@@ -763,6 +763,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("assemble", {
     station: "assemble",
     view: "marble",
+    // level 4 (§14a): his card starts folded, before the begin's pop-up (the closed big card there)
+    closedFrom: 4,
     async run(z, { sequence: seq0, exclude = [], pool, decoyPool, qty = null }, k) {
       const S = z.S;
       const ctx = z.ctx;

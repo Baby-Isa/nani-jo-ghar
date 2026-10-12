@@ -409,7 +409,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   M.station = async function (id, S, ctx, params = {}, opts = {}) {
     const def = M.defs[id];
     const station = typeof def.station === "function" ? def.station(params) : def.station;
-    if (station && def.view && !opts.noBegin) await Cook.Stations.begin(S, ctx, station, def.view);
+    // def.closedFrom: from this level the station's card starts folded (§14a), before its begin's request pop-up
+    const lv = Math.max(Number(opts.level || params.level || (ctx && ctx.level)) || 1, Cook.roundLevel(ctx));
+    const closed = !!def.closedFrom && lv >= def.closedFrom;
+    if (station && def.view && !opts.noBegin) await Cook.Stations.begin(S, ctx, station, def.view, { closed });
     const z = opts.zone || new Zone(S, ctx, { id, level: opts.level || params.level || (ctx && ctx.level), region: opts.region, footprint: def.footprint });
     const r = await M.run(id, z, params);
     if (!opts.zone) z.close();
