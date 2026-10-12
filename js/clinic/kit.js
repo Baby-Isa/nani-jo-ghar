@@ -652,6 +652,8 @@
     if (!rows.length && !this.faceEl && !this.titleText) c.classList.add("cl-empty");
     this.el.appendChild(c);
     this.ocEl = c;
+    // SH-41 (S05-D): the card in English for the bulb's time is the card itself (the shared .oc-card), redrawn or not
+    if (this.el.classList.contains("english")) c.classList.add("english");
     if (global.FitText && global.FitText.run) try { global.FitText.run(c); } catch (e) { /* no fitting */ }
     return this;
   };
@@ -799,10 +801,17 @@
   Kit.Card.prototype.bulbOpen = function (on) {
     if (!!this.bulbOn === !!on) return;
     this.bulbOn = !!on;
+    // SH-41 (S05-D): a look (peek) running when the bulb is pressed ends now: its timer would fold the card the bulb
+    // holds open (the shared card's fold state is this card's own)
+    if (on && this.fold) {
+      clearTimeout(this.fold.timer);
+      this.fold.peekUntil = 0;
+    }
     if (this.closed) this.render();
   };
   Kit.Card.prototype.english = function (on) {
     this.el.classList.toggle("english", !!on);
+    if (this.ocEl) this.ocEl.classList.toggle("english", !!on);
   };
   /** The read-along: read the rows in order, lighting each as it plays (the card's face is the replay). */
   Kit.Card.prototype.speak = async function (only) {
@@ -835,6 +844,10 @@
     this.btn = btn;
     this.level = opts.level || 1;
     this.onUse = opts.onUse || null;
+    // SH-41 (S05-D): the bulb's on and off reach the card (a closed card opens, in English, for the bulb's time); these
+    // were passed by the screen and never called
+    this.onOn = opts.onOn || null;
+    this.onOff = opts.onOff || null;
     this.targets = opts.targets || (() => document.querySelectorAll(".cl-card"));
     this.uses = 0;
     this._h = () => this.use();
@@ -852,17 +865,30 @@
     const ms = Kit.BULB_MS[this.level] || 3000;
     const cards = Array.from(this.targets());
     cards.forEach((c) => c.classList.add("english"));
+    if (this.onOn) this.onOn();
+    // the card drawn inside (the shared order card) shows it too, also when it is redrawn while the bulb is on
+    cards.forEach((c) => c.querySelectorAll(".oc-card").forEach((o) => o.classList.add("english")));
     document.body.classList.add("cl-english");
     this.btn.classList.add("lit");
     if (this.onUse) this.onUse(this.uses);
     clearTimeout(this._t);
-    this._t = setTimeout(() => {
+    // SH-41 (S05-D): the bulb's whole time (data, 8 s), never cut by the test speed: it is a reading time (as the shared bulb)
+    this._off = () => {
+      this._off = null;
       cards.forEach((c) => c.classList.remove("english"));
+      cards.forEach((c) => c.querySelectorAll(".oc-card").forEach((o) => o.classList.remove("english")));
       document.body.classList.remove("cl-english");
       this.btn.classList.remove("lit");
       this.on = false;
-    }, Kit.fast ? 300 : ms);
+      if (this.onOff) this.onOff();
+    };
+    this._t = setTimeout(() => this._off && this._off(), ms);
     return true;
+  };
+  /** The stage ended: the English flip ends with it (it never carries into the next stage's card). */
+  Kit.Bulb.prototype.off = function () {
+    clearTimeout(this._t);
+    if (this._off) this._off();
   };
   Kit.Bulb.prototype.destroy = function () {
     clearTimeout(this._t);

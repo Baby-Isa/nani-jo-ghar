@@ -102,6 +102,7 @@
         // SH-66 (S05-D): a fresh room is the next stage starting: mark it, so its own opening lines (the heal game's
         // request pop-up) are known to be its own, never the last stage's carrying over
         if (global.Lifecycle && global.Lifecycle.stageStart) global.Lifecycle.stageStart("clinic:stage");
+        if (scr.bulb && scr.bulb.off) scr.bulb.off(); // SH-41: the bulb's English ends with its stage
         main.querySelectorAll(".cl-pills, .njg-pills, .cl-bubble, .cl-thought, .cl-card-big, .say-moment, .njg-say").forEach((n) => n.remove());
         document.querySelectorAll("body > .cl-fly").forEach((n) => n.remove());
         play.innerHTML = "";
