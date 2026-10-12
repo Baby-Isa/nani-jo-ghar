@@ -24,7 +24,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
 - **D14:** the end review shows which step went wrong (e.g. tap a tick to see more); Mum asked for this ("I don't know what I got wrong"), Cook's serve too.
 - **D15c ear:** more wax appears as you clean (the fun); the whispered-word check needs explaining first.
 - **D15e drinks:** a cotton bud dabbed in a soothing ointment (*malam*), not a pin, so children never copy it with needles.
-- **D15f fever:** keep different-sized effects (up to three sizes: window big, ceiling fan medium, hand fan small); the doctor names which to use at first, later he just says "fix it" and the child works it out.
+- **D15f fever:** keep different-sized effects (up to three sizes: window big, ceiling fan medium, hand fan small); the doctor names which to use at first, later he just says "fix it" and the child works it out. At level 3 the doctor still names the effect in fever, because "fix it" alone is winnable from the thermometer (leak test); "fix it" starts at level 4, or when a sound or word clue tells the child which effect (decision 91).
 - **D15g boing:** the drop machine is three or four vertical dispensers with a lever that drops a blob (not sweets) into the syringe; then press the syringe's glowing end.
 - **D15h eye test:** prototype two versions: (A) a split screen, the patient close up covering one eye and looking over the viewer's shoulder, the chart on the right; (B) the patient side-on at the left, a big chart close to them at the right, quarter-turned towards both patient and viewer.
 - **D18:** each game's own vocabulary from its scene, plus a sentence pattern where it fits.
