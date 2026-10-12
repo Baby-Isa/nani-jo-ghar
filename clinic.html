@@ -303,9 +303,14 @@
     print(`-- ${o.what} L${o.level || 1}${o.variant ? " " + o.variant : ""}${o.game ? " " + o.game : ""}`);
     try {
       if (o.what === "morning") {
-        const r = await CM.playMorning({ mode, host, core, session: +o.session || null, seed: +o.seed || null, noSave: Q.get("nosave") === "1", endActions, onRound: (res) => (C.round = res) });
+        const play = (more) => CM.playMorning(Object.assign({ mode, host, core, session: +o.session || null, seed: +o.seed || null, noSave: Q.get("nosave") === "1", endActions, onRound: (res) => (C.round = res), patients: +Q.get("patients") || null }, more));
+        let r = await play({});
+        // CLN-111: the end of the morning's Again plays the same morning again (its progress was saved the first time)
+        while (r && r.action === "again") r = await play({ session: r.session, seed: r.seed, noSave: true });
         C.last = r;
         print(`morning done: ${r.outs.map((x) => `${x.plan.kind}/${x.plan.ailment} ${x.right}/${x.total}`).join(", ")}`);
+        // All patients: the list of every patient and game, like Cook's "All" (the lab list)
+        if (r && r.action === "list") go("labs.html");
         return r;
       }
       const entry = entryOf(o);

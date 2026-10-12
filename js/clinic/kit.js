@@ -559,6 +559,8 @@
   Kit.Card.prototype.render = function () {
     const card = this;
     const st = this.st;
+    // the end of the morning hides the empty card (CLN-111); it comes back as soon as it has something to show
+    if (this.el.style.display === "none" && (this.titleText || this.rows.length)) this.el.style.display = "";
     const OC = global.OrderCard;
     // D8 (1 Oct) / T29 (6 Oct, decision 55): a progressive card shows the WHOLE step list from the start, the rows
     // still to come greyed ("later") until their step opens, so the child sees what's coming

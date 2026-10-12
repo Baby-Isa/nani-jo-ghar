@@ -389,6 +389,8 @@
    *   3. on that last step, the action buttons at the bottom of the card.
    * opts.actions: [{id, label?, icon? ("again", "next", "check", "grid"), primary?, elId?}] replaces the
    * default Play again / Done; the promise resolves with out.action = the tapped action's id.
+   * opts.body: a DOM node shown in place of the badges (a summary over several rounds, e.g. the clinic's end of the
+   * morning: CLN-111, CLN-03), in the same card, at the same place, with the same action buttons under it.
    */
   Results.show = function (opts) {
     opts = opts || {};
@@ -413,7 +415,7 @@
       <div class="rs-card" data-step="1">
         <div class="rs-steps">
           <div class="rs-page rs-p1" data-page="1">
-            <div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>
+            ${opts.body ? '<div class="rs-body"></div>' : `<div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>`}
             ${steps.length ? stepsHtml(steps) : ""}
           </div>
           ${words.length ? `<div class="rs-page rs-p2" data-page="2" aria-hidden="true"><div class="rs-words${denseWords(words) ? " dense" : ""}">${wordsHtml(words)}</div></div>` : ""}
@@ -421,6 +423,7 @@
         ${words.length ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
         ${words.length ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
       </div>`;
+    if (opts.body) el.querySelector(".rs-body").appendChild(opts.body);
     host.appendChild(el);
     // a page can hide what must not show behind the pop-up (Cook: the old menu card; design system 10)
     document.documentElement.classList.add("njg-results-open");

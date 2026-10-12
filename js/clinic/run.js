@@ -97,13 +97,20 @@
     return res;
   };
 
-  /** "Close the clinic": the receipt (patients seen, stickers, pocket money). */
+  /**
+   * The end of the morning: the receipt (patients seen, stickers, pocket money) in the one shared end pop-up, at its
+   * one place (CLN-03), with the shared end buttons: Again (the same morning), Next (the next morning) and All patients
+   * (CLN-111). Nothing of the last stage is left: the doctor's box says nothing and the empty request card goes.
+   * o.actions: the end buttons (NjgButtons.endActions); resolves with the tapped one's id ("again" | "next" | "list").
+   */
   R.close = async function (screen, outs, o = {}) {
-    const stage = screen.clearStage();
+    screen.clearStage();
     screen.clearActions();
-    screen.card.setTitle("", S.doctorFace());
+    if (screen.setNani) screen.setNani(null);
+    screen.card.setTitle("", null);
     screen.card.setRows([]);
-    const r = h("div", "cl-receipt", stage);
+    screen.card.el.style.display = "none"; // no empty request card beside the receipt
+    const r = h("div", "cl-receipt", null);
     h("div", "cl-receipt-title", r, "🏥");
     const list = h("div", "cl-receipt-list", r);
     outs.forEach((o) => {
@@ -115,6 +122,19 @@
       mark.innerHTML = global.OrderCard && global.OrderCard.CHECK ? global.OrderCard.CHECK : "&#10003;";
     });
     h("div", "cl-receipt-coins", r, `🪙 ${o.coins || 0}`);
-    await S.button(screen, S.line({ data: R.data }, "close"));
+    const Res = global.Results;
+    const acts = o.actions || [{ id: "again", icon: "again", label: "Again" }, { id: "next", icon: "next", label: "Next", primary: true }, { id: "list", icon: "grid", label: "All patients" }];
+    let action = "next";
+    if (Res && Res.show) {
+      const opts = { mode: "clinic", game: "morning", body: r, actions: acts, container: document.body };
+      const LC = global.Lifecycle;
+      const out = await (LC && LC.results ? LC.results(Res, opts) : Res.show(opts));
+      action = (out && out.action) || "next";
+    } else {
+      // no shared end screen on the page (a test page): the old single button
+      screen.clearStage().appendChild(r);
+      await S.button(screen, S.line({ data: R.data }, "close"));
+    }
+    return action; // the card comes back with the next thing it shows (Kit.Card render)
   };
 })(typeof self !== "undefined" ? self : this);

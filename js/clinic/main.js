@@ -327,15 +327,23 @@ export default {
  * save namespace (UIStore "clinic"/"state": session and levels only; the coins are the one purse's).
  *   playMorning({mode, host, core, session?, seed?, noSave?, endActions?}) -> {morning, outs, state}
  */
-export async function playMorning({ mode, host, core, session: sess = null, seed = null, noSave = false, endActions = null, onRound = null } = {}) {
+export async function playMorning({ mode, host, core, session: sess = null, seed = null, noSave = false, endActions = null, onRound = null, patients = null } = {}) {
   const Clinic = G().Clinic;
   const R = Clinic.Run;
   const P = G().ClinicPipeline;
   if (!R.data) await R.load();
   const st = R.state();
   const n0 = sess || st.session;
-  const rng = P.rng(seed || Math.floor(Math.random() * 1e9));
-  const m = P.morning(R.data, { session: n0, levels: st.levels, rng, games: R.games(), speak: R.opts.speak });
+  const seed0 = seed || Math.floor(Math.random() * 1e9) + 1; // kept: Again plays this same morning (CLN-111)
+  const rng = P.rng(seed0);
+  // patients: a lab's number of patients (the sandbox's morning at a level: a later session, two patients)
+  const m = P.morning(R.data, { session: n0, levels: st.levels, rng, games: R.games(), speak: R.opts.speak, patients: patients || null });
+  // CLN-111 (13l): every end screen of the morning offers Again (the same patient), Next and All patients, like Cook;
+  // Next stays the main one (the morning goes on)
+  const ends = (ids) => {
+    const a = endActions ? endActions(Object.fromEntries(ids.map((x) => [x, x === "list" ? "All patients" : true]))) : ids.map((x) => ({ id: x, label: x === "list" ? "All patients" : x, icon: x === "list" ? "grid" : x }));
+    return a.map((x) => Object.assign({}, x, { primary: x.id === "next" }));
+  };
   R.morningPlan = session.morning = m;
   const outs = [];
   for (let i = 0; i < m.patients.length; i++) {
@@ -344,17 +352,17 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
     const nextPlan = m.patients[i + 1];
     if (nextPlan && nextPlan.stages && nextPlan.stages.heal) G().setTimeout(() => prefetchGame(nextPlan.stages.heal.game), 8000);
     const stages = patientStages({ seed: Math.floor(rng() * 1e9) + 1, morning: i, levels: plan.levels });
-    const acts = i < m.patients.length - 1 ? ["again", "next"] : ["again", "next"];
-    const actions = endActions ? endActions(Object.fromEntries(acts.map((a) => [a, true]))) : acts.map((a, k) => ({ id: a, label: a, primary: k === acts.length - 1 }));
+    const actions = ends(["again", "next", "list"]);
     // the light bulb stays hidden through the first-ever patient (UI that appears when first needed, UX s8)
     if (i === 0 && G().Onboard && session.screen) {
       if (m.entry.first) G().Onboard.await(session.screen.bulb.btn, "clinic/bulb");
       else G().Onboard.fadeIn(session.screen.bulb.btn, "clinic/bulb");
     }
     const res = await host.run({ mode, plan: { game: plan.ailment, stages }, play: { play: "free", place: "clinic" }, level: plan.level, actions });
-    if (res.left) return { morning: m, outs, left: true };
+    if (res.left) return { morning: m, outs, left: true, seed: seed0 };
     const out = { plan, results: session.round ? session.round.results : {}, right: res.round.right, total: res.round.total, coins: res.finish && res.finish.pay ? res.finish.pay.coins : 0 };
     if (onRound) onRound(res, out);
+    if (res.out && res.out.action === "list") return { morning: m, outs: outs.concat([out]), left: true, action: "list", seed: seed0 };
     if (res.out && res.out.action === "again") {
       i--; // the same patient again (H34)
       continue;
@@ -374,6 +382,6 @@ export async function playMorning({ mode, host, core, session: sess = null, seed
     st.session = n0 + 1;
     R.save(st);
   }
-  if (session.screen) await R.close(session.screen, outs, { coins: core && core.wallet ? core.wallet.coins() : 0 });
-  return { morning: m, outs, state: st };
+  const action = session.screen ? await R.close(session.screen, outs, { coins: core && core.wallet ? core.wallet.coins() : 0, actions: ends(["again", "next", "list"]) }) : "next";
+  return { morning: m, outs, state: st, action, seed: seed0, session: n0 };
 }

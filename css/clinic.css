@@ -265,6 +265,15 @@ body.clinic button { font-family: inherit; color: inherit; }
 
 /* close the clinic: the receipt */
 .cl-receipt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(90%, 440px); background: #fff; border-radius: 22px; padding: var(--njg-s4) var(--njg-s4); box-shadow: 0 8px 30px rgba(0, 0, 0, .15); text-align: center; }
+/* CLN-111, CLN-03 (s04-r2k2): the receipt is the body of the one shared end pop-up, at its one place: no card of its own */
+.njg-results .cl-receipt { position: static; transform: none; width: min(100%, 520px); margin: 0 auto; background: none; box-shadow: none; padding: 0; }
+@media (max-height: 430px) {
+  .njg-results .cl-receipt-title { font-size: 28px; line-height: 1; }
+  .njg-results .cl-receipt-row { padding: 2px 0; }
+  .njg-results .cl-receipt-row .cl-face, .njg-results .cl-receipt-item { width: 40px; height: 40px; }
+  .njg-results .cl-receipt-mark { width: var(--njg-s5); height: var(--njg-s5); }
+  .njg-results .cl-receipt-coins { font-size: 22px; margin-top: 2px; }
+}
 .cl-receipt-title { font-size: 44px; }
 .cl-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: 2px dashed #eadcc6; }
 .cl-receipt-row .cl-face { width: 56px; height: 56px; flex: none; }
