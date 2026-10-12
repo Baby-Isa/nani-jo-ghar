@@ -198,25 +198,32 @@
     const ring = s("circle", { cx: 0, cy: 34, r: 40, fill: "none", stroke: "#f0b43c", "stroke-width": 6, opacity: 0 }, dropper); // round the eye
     let dropperAt = null;
     let bob = 0;
-    const showDropper = (at, pulse) => {
+    // where the bottle hangs: `lift` units above the eye at scale `k` (the ring stays centred on the eye). The drops'
+    // close-up hangs it high over a big eye; the eye test's redrop (CLN-62) hangs it smaller, its nozzle just over the
+    // open eye, never up on the forehead
+    const HANG = { drops: { lift: 34, k: 1 }, redrop: { lift: 16, k: 0.78 } };
+    const tipOf = (h) => h.lift * h.k + 10 * h.k; // the nozzle's height over the eye
+    const showDropper = (at, pulse, hang = HANG.drops) => {
       dropperAt = at;
       dropper.setAttribute("opacity", at ? 1 : 0);
       ring.setAttribute("opacity", 0);
       if (!at) return;
+      ring.setAttribute("cy", hang.lift);
       const id = ++bob;
       const t0 = Date.now();
       const step = () => {
         if (id !== bob || st.gone || !dropperAt) return;
         const t = (Date.now() - t0) / 1000;
-        dropper.setAttribute("transform", `translate(${at.x} ${at.y - 34 + Math.sin(t * 3) * 4})`);
+        dropper.setAttribute("transform", `translate(${at.x} ${at.y - hang.lift * hang.k + Math.sin(t * 3) * 4 * hang.k}) scale(${hang.k})`);
         if (pulse) ring.setAttribute("opacity", 0.35 + 0.35 * Math.sin(t * 6));
         if (root.requestAnimationFrame && !fast()) root.requestAnimationFrame(step);
       };
       step();
     };
-    const fallDrop = (at) => {
-      const d = s("path", { d: "M0 -12 Q8 0 0 6 Q-8 0 0 -12Z", fill: "#7cc4f0", transform: `translate(${at.x} ${at.y - 40})` }, S.fx);
-      return tween(320, (u) => d.setAttribute("transform", `translate(${at.x} ${at.y - 40 + 38 * u})`)).then(() => d.remove());
+    const fallDrop = (at, hang = HANG.drops) => {
+      const top = Math.max(18, tipOf(hang) - 4);
+      const d = s("path", { d: "M0 -12 Q8 0 0 6 Q-8 0 0 -12Z", fill: "#7cc4f0", transform: `translate(${at.x} ${at.y - top})` }, S.fx);
+      return tween(320, (u) => d.setAttribute("transform", `translate(${at.x} ${at.y - top + (top - 2) * u})`)).then(() => d.remove());
     };
     const blink = () => {
       blinkEls.forEach((b) => b.setAttribute("opacity", 1));
@@ -580,8 +587,8 @@
       if (!saysRight) {
         // CLN-62: the dropper hangs over the eye and pulses: one tap, then they read the row again
         st.redrop = { i };
-        showDropper(readEye, true);
-        S.cue("redrop", CUES.redrop, { x: readEye.x, y: readEye.y - 50, r: 50 });
+        showDropper(readEye, true, HANG.redrop);
+        S.cue("redrop", CUES.redrop, { x: readEye.x, y: readEye.y - tipOf(HANG.redrop) / 2, r: 52 });
         return;
       }
       // she read it right and the child said so: the row ticks, a pause, then the next row
@@ -620,16 +627,29 @@
       S.uncue();
       advance();
     };
-    const finish = () => {
+    const finish = async () => {
       st.over = true;
       S.uncue();
       showJudge(false);
       showDropper(null);
       ctx.card.tick("chart");
       ctx.card.now(null);
+      // CLN-62 (P88: "then the game just ended… weird"): after the last row she looks up from the chart, both eyes open
+      // and clear, happy, and says "I can see!"; only then the pull-out and the end screen
+      S.root.querySelectorAll(".eye-said, .eye-name").forEach((n) => n.remove());
+      if (soreEl) soreEl.setAttribute("opacity", eyesArt ? 1 : 0);
+      await tween(450, (u) => {
+        testG.setAttribute("opacity", 1 - u);
+        dropsG.setAttribute("opacity", u);
+      });
+      st.view = "drops";
       S.face("happy");
-      S.say("eye-better", "patient");
-      ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
+      blink();
+      const said = S.say("eye-better", "patient");
+      await Promise.race([Promise.resolve(said).catch(() => {}), new Promise((r) => ctx.after(fast() ? 1200 : 4000, r))]);
+      await new Promise((r) => ctx.after(900, r));
+      if (st.gone) return;
+      ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words });
     };
 
     S.tools([{ id: "drops", glyph: "💧", img: "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
@@ -638,8 +658,8 @@
     // S03 (review flaw 5): on a tablet the shelf, centred on the right, sat on the sore eye: it goes down to the cheek
     const shelfEl = S.toolEls.drops && S.toolEls.drops.parentElement;
     if (shelfEl && tablet) Object.assign(shelfEl.style, { top: "auto", bottom: "var(--njg-s4)", transform: "none" });
-    const dropIn = async (at) => {
-      await fallDrop(at);
+    const dropIn = async (at, hang) => {
+      await fallDrop(at, hang);
       S.face("wince", 400);
       blink();
     };
@@ -654,7 +674,7 @@
         st.redrop = null;
         S.uncue();
         st.busy = true;
-        dropIn(readEye).then(() => {
+        dropIn(readEye, HANG.redrop).then(() => {
           showDropper(null);
           st.busy = false;
           readRow(i, true);
@@ -709,6 +729,14 @@
         },
         get cues() {
           return S.cueLog.slice();
+        },
+        /** the "I can see" moment is on screen (CLN-62: the sandbox shoots it) */
+        get seeing() {
+          return st.over && st.view === "drops";
+        },
+        /** the redrop is up: the dropper over her open eye (CLN-62) */
+        get redrop() {
+          return !!st.redrop;
         },
         version,
         next() {
