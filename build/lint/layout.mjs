@@ -259,6 +259,9 @@ export async function pageLint(opts) {
         const x = Math.min(vw - 1, Math.max(0, r.left + r.width * fx)), y = Math.min(vh - 1, Math.max(0, r.top + r.height * fy));
         const top = document.elementFromPoint(x, y);
         if (!top || top === cv || cv.contains(top) || inScrim(top) || modalLike(top) || seenTop.has(top)) continue;
+        // a speech bubble by its speaker's head (contract-4 places it there) is the scene talking, not a control over the
+        // play (SH-80, S05-C3: the greeting's "Salamun alaykum" bubble on a story day)
+        if (top.closest && top.closest("#bubble, .njg-bubble, .cl-bubble, .cv-bubble")) continue;
         seenTop.add(top);
         add("covers-play-area", top, `on top of the play area at (${Math.round(x)},${Math.round(y)})`);
         moving.push([out[out.length - 1], top, top.getBoundingClientRect()]);

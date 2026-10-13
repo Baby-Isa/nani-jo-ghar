@@ -235,7 +235,7 @@
       <div class="rs-disc">${watchImg(t.tier)}<span class="rs-big${t.seconds >= 100 ? " long" : ""}" data-to="${t.seconds}">${esc(Results.clock(t.timeMs))}</span>
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
       <div class="rs-foot">${bestLine}</div>
-      <div class="rs-ribbon" ${t.newBest ? "" : "hidden"}>New best!</div>
+      <div class="rs-ribbon" ${t.newBest ? "" : "hidden"} aria-hidden="true">${img("rs-cap-icon", "icon-crown")}</div>
     </div>`;
   }
   function accuracyBadge(a) {

@@ -12573,5 +12573,28 @@
    ],
    "note": "the house's 'Coming soon' ribbon at the 14 px floor (text for grown-ups is English by design)"
   }
+ ],
+ "SH-84": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "second-play",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "zoom2:.njg-results .rs-time",
+    "dom:.njg-results .rs-badges"
+   ],
+   "expect": [
+    "!textMatches:(?i)new best"
+   ],
+   "note": "a second play: the 'new best' ribbon (if this play was faster) shows the crown, no English words",
+   "delay": 2800
+  }
  ]
 }
