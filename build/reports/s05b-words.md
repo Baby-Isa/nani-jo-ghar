@@ -147,5 +147,7 @@ Against Zafar's last feedback: <item ✅ / note>
 
 **PAN-17 (decision 89, from package C):** from L3 (cards closed) the pantry's ask is heard and not written in her strip; red ev-s05b-p17r2, green ev-s05b-p17g2. Her hesitation hint still writes it, because it's a paid hint.
 
+**SH-01 / SH-70 (from T2):** SH-01's word data is fine: *fudino ji chutney* is confirmed and is a layer in 22% of L4 chaat orders, and noClip passes. Its wanted order fails in the tool (T). SH-70's only failure is the pantry placeholder "Bring me these" (Mum's *Muke de*, decision 83), so the row is marked waiting on Mum.
+
 ## Left open
 SH-03: the English under each word stays as designed (Zafar, 12 Oct, F14); row noted, layout is S's. Checks: `checks.mjs` passed (265 unit tests, 0 literals, load 21/21), `import_all.mjs --check` passed, lang tests 57/57, `leak.mjs cook` passed. Touched run `s05b-touched` covered 5 flows at 1366x768 (about 6 min; the full touched list is everything, left to `/review`).
