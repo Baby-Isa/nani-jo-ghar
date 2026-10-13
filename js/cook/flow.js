@@ -587,7 +587,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     (ctx.ladders || []).forEach((L) =>
       Cook.Order.rows(L, { all: true }).forEach((r) => {
         if (r.head || !r.line) return;
-        out.push({ label: { kutchi: Lang.plain(r.line), english: r.line.en || "" }, ok: !r.miss });
+        // a word still to record ("tomatoes") goes in brackets: the shared list draws it grey italic (G2, decision 84),
+        // never as if it were Kutchi; a line with no Kutchi at all is its English placeholder
+        const segs = r.line.segs || [];
+        const kutchi = segs.some((s) => s.lang && s.lang !== "e" && s.t.trim()) ? segs.map((s) => (s.lang === "e" ? `[${s.t}]` : s.t)).join("") : "";
+        out.push({ label: { kutchi, english: r.line.en || "" }, ok: !r.miss });
       })
     );
     return out;

@@ -130,6 +130,8 @@ function cookStage(id, { label, gestures = ["tap"], levels = LEVELS, run }) {
             tasks: out && out.tasks,
             // the words in the forms the order used (SH-02); Cook's own word records feed word progress already
             words: (r.words || []).map((x) => ({ id: x.id, kutchi: x.kutchi, english: x.english, right: x.right })),
+            // SH-44 (D14): the steps the round asked for, each right or not, for the end review's "what went wrong"
+            steps: Array.isArray(r.steps) && r.steps.length ? r.steps : undefined,
           });
         },
         /** Cook's own expectation (Cook draws on this page now: its coordinates are the page's). */
