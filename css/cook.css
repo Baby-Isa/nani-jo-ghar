@@ -1067,6 +1067,15 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .jar-drop .jar-card { margin: 0; box-shadow: 0 6px 18px rgba(40, 25, 10, 0.18); }
 .jar-drop .jar-coin { position: absolute; left: 50%; top: 70%; width: 22px; height: 22px; }
 .jar-today .pill { font-size: clamp(20px, 3vw, 30px); }
+/* SH-51 (S05-C2): a short phone (844x390, 800x360): the summary fits the panel, so the sticky buttons never sit over the
+   jar's total (844x390: 394 px of summary in a 366 px panel; the empty gap under it goes and the landing card's room
+   above the jar halves: the card overlaps the lid a little more as it lands, then rises and fades) */
+@media (max-height: 500px) {
+  /* the sticky button row rides up by the panel's padding (its negative margin doesn't hold under sticky): that much room */
+  .jar-sum { margin-bottom: calc(var(--panel-pad, 20px) + var(--njg-s2)); }
+  .jar-stage { padding-top: 24px; width: clamp(76px, 21vh, 96px); }
+  .jar-col { gap: 4px; }
+}
 /* CK-24 (S05-C): a story day is a sun: the number sits in the sun's disc with its rays all round (a locked day is a
    pale sun with its lock), never a level token with a speck above it */
 .day-dot { position: relative; width: 70px; }
