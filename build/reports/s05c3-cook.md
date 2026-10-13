@@ -16,6 +16,7 @@ SH-74 PASS, SH-75 PASS (2nd try), SH-76 machine (c3-labdaal-1→-2), SH-77 machi
 - Not started or tool gaps: CK-31, CK-32 (no wrong-serve driver), DAAR-20, SH-81 (not reproduced), DAAR-22 (fix in, unjudged), DAAR-23 (the chop player misses under capture load), SH-69 (heard proven; the name bubble passes between captures).
 - Decision 97 (7), bubble tails at the mouth: not started. The shared `placeBubble` gets only a head anchor; each host must hand a mouth point (the clinic's is D3's, CLN-127).
 - D3's items: speaker ids and the capture lag done; CLN-141 is likely covered by SEK-17's stick between pills (D3 to re-probe); CLN-118, CLN-138 not started.
+- From the orchestrator's last look (ev-20261013-184310-4hz), not started (cap): MAA-14 B, the right pass-me card gold before any tap: the pop-up itself lights it only after two misses (js/cook/ui.js passMe), so the lead is the coach's first-plays guided glow or the bot's pointer; prove which before calling it a leak. SH-74 D, the sidebar card's done tick over the end of "Muke daar khape.": lead, on a compact card (`.oc-mini`) the tick is absolutely placed top-right (css/shared/order-card.css:263) with no room kept in the head. Probe failures: SH-44 (steps list text empty at its moment), SH-77 (lab:cook/daar page not played), CLN-112/CLN-22 (tray strip unchanged over 6x200).
 - Found by judges, not mine to fix: Nani's pocket-money line is English in a brown italic, not the grey to-record style (data/lang); the bulb gloss "chai with cardamom it in" (engine).
 
 ## Checks
