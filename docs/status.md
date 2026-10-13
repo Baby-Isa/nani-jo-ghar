@@ -10,10 +10,7 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 **Where things stand (13 Oct 2026, ~13:55 UK, Sprint 5 orchestrator, handing over at 77% context):** Sprint 5 is **open, not yet published** (`docs/sprints/S05-red-then-green.md`: full log, budget, small decisions). `main` is still Sprint 3 (1a6950df); all work is on `ccr-a7370759-t0lee7`. **37 open or reopened, 302 built.** The open rows are sorted in `build/reports/s05-open-triage.md` (most wait on art, Mum or Zafar). Decisions 88–95 were added this sprint; rule A30 (decision 89): no publish while a fixable row is open.
 
-**Running (each pushes to the branch and writes its report there; no send_message):**
-- **G** `session_016NZrvhe7bFqxYff8QG94Pb` (Opus): SH-17, the Cook chai pop-up's read-along (89 ms a word, floor 200 ms), red then green. Report `build/reports/s05g-game.md`.
-- **P** `session_01VTxgPqxtwkp5jSBm4B1Wsy` (Sonnet): SAM-16's probe at a tighter crop of the folding strip. Report `build/reports/s05p-probes.md`.
-- Finished: T, S, B, C, D, T2, S2, C2, D2 (D2 round 4: the heal ladders, `s05d2-clinic.md`). A check-in fires at 14:18 UTC (`trig_01TS4KSZEPAiDU5zNTSYNeKP`).
+**Nothing is running (14:25 UK).** Every build session is finished: T, S, B, C, D, T2, S2, C2, D2, G, P. Last in: G fixed SH-17 (the Cook pop-up's read-along holds each part at least ~220 ms a word: red P ev-20261013-124219-w8t, green ev-20261013-134938-xow, 1ffdc85); P filmed SAM-16's folds closer (ev-20261013-134819-70s, sheet to judge). No check-in is armed.
 
 **Next steps, in order:**
 1. When G and P have pushed: pull, read their report lines.
