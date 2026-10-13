@@ -1,6 +1,6 @@
 # S05-G: the last game fixes
 
-Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); greens `ev-20261013-120505-1x2`, `ev-20261013-121224-b6k`; sandbox `s05g-touched`. Game code changed: yes (below). Proof files: `build/reports/s05g/`.
+Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); greens `ev-20261013-120505-1x2`, `ev-20261013-121224-b6k`; sandbox `s05g-touched`. Game code changed: yes (below). Proof files: `build/reports/s05g/` (text committed; the PNGs, e.g. daar11-film.png and chip-green.png, are local only, B19).
 
 ## What changed
 - **Chaat chips** (`js/cook/mechanics/assemble.js`): word laid out first, never under 14 px (was 13.1 px at 1366x768, 7.1 px at 800x360); pots spread when a word needs a wider slot. 14.2 px at four sizes; 13 baseline findings fixed.
