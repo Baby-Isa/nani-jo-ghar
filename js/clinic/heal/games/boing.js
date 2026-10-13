@@ -92,8 +92,11 @@
     // CLN-113 (S05-D): the job is one sequence on the shared card, like the scrape's (the line, the grey band, ticking
     // parts): every step's row from the start, the ones to come greyed; one instruction at a time (D8, SH-45): each
     // step opens, and is said, as it comes (the host's progressive card)
+    // SH-45 (S05-D3): never the whole job up front at level 1: as the scrape's, the card starts with the first step and
+    // each step's row joins it as the step opens; from level 2 (the scrape's upFront) the whole sequence from the start
+    const rowsOfStep = (x) => x.rows || (x.row ? [x.row] : []);
     ctx.card.ordered(false);
-    ctx.card.setRows([].concat(...P.steps.map((x) => x.rows || (x.row ? [x.row] : []))));
+    ctx.card.setRows(P.level >= 2 ? [].concat(...P.steps.map(rowsOfStep)) : rowsOfStep(P.steps[0]));
 
     // the upper arm across the bottom left (U1's close-up swaps in); the jab spot
     const A = { x: 300, y: 395 };
@@ -213,6 +216,7 @@
     };
     const open = () => {
       const c = cur();
+      if (P.level < 2 && st.i > 0 && ctx.card.addRow) rowsOfStep(c).forEach((r) => ctx.card.addRow(r)); // SH-45: L1 grows step by step
       if (c.kind !== "boing") ctx.card.now(c.id); // SH-45: the card opens the step's row and says it then (once)
       spot.setAttribute("opacity", c.kind === "plaster" || c.kind === "wipe" ? 1 : 0);
       glow.setAttribute("opacity", 0);

@@ -324,11 +324,19 @@
       if (!S.cuesOn || twGhost) return;
       const doc = S.root.ownerDocument;
       const twArt = Kit && Kit.view ? Kit.view("tweezers", "use-45") : null;
-      twGhost = doc.createElement("img");
+      const H = twArt ? 96 : 46;
+      twGhost = doc.createElement("div");
       twGhost.className = "ear-ghost-tw";
-      twGhost.alt = "";
-      twGhost.src = url(twArt || "assets/clinic/items-v2/tweezers.webp");
-      Object.assign(twGhost.style, { position: "fixed", zIndex: 10001, width: "96px", height: twArt ? "96px" : "46px", pointerEvents: "none", display: "none", transform: twArt ? "none" : "rotate(-30deg)" });
+      Object.assign(twGhost.style, { position: "fixed", zIndex: 10001, width: "96px", height: `${H}px`, pointerEvents: "none", display: "none" });
+      const im = doc.createElement("img");
+      im.alt = "";
+      im.src = url(twArt || "assets/clinic/items-v2/tweezers.webp");
+      Object.assign(im.style, { position: "absolute", inset: "0", width: "100%", height: "100%", transform: twArt ? "none" : "rotate(-30deg)" });
+      // the blob it carries, held in the tips (the tips sit at the picture's lower left)
+      const blob = doc.createElement("i");
+      Object.assign(blob.style, { position: "absolute", left: "-9px", bottom: "-9px", width: "22px", height: "22px", borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, #f6cf6a, #c8902a 60%, #8a6010)", boxShadow: "0 1px 2px rgba(0,0,0,.35)" });
+      twGhost.appendChild(im);
+      twGhost.appendChild(blob);
       doc.body.appendChild(twGhost);
       const tick = () => {
         if (!twGhost) return;

@@ -6348,21 +6348,21 @@
   },
   {
    "flow": "clinic:pharmacy",
-   "path": "fair",
+   "path": "real-pace",
    "level": 2,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.cl-dish.lifted",
+   "at": "visible:.cl-review",
    "after": null,
    "capture": [
     "crop:.cl-stage"
    ],
    "expect": null,
-   "note": "the review face: at the handover her round face reacts (happy, or a frown at a wrong pick), as Cook's review face",
-   "delay": 300
+   "note": "real pace: the review face at the handover: her big round face over the tray (happy, or a frown at a wrong pick), as Cook's review face",
+   "delay": 250
   }
  ],
  "CLN-04": [
@@ -8192,7 +8192,7 @@
  "CLN-45": [
   {
    "flow": "clinic:heal-cut",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2
@@ -8209,11 +8209,12 @@
     "voice"
    ],
    "expect": null,
-   "note": "one new thing per level; L3 heard only, at most two things to remember per step"
+   "note": "one new thing per level; L3 heard only, at most two things to remember per step",
+   "delay": 300
   },
   {
    "flow": "clinic:heal-knee",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2
@@ -8230,7 +8231,8 @@
     "voice"
    ],
    "expect": null,
-   "note": "the knee's ladder (the same probe for every heal game: one panel per level)"
+   "note": "the knee's ladder (the same probe for every heal game: one panel per level)",
+   "delay": 300
   },
   {
    "flow": "clinic:heal-cut",
@@ -11868,20 +11870,22 @@
  "CLN-130": [
   {
    "flow": "clinic:heal-fever",
-   "path": "hint",
+   "path": "fair",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "idle-hint-heal",
+   "at": "every:step",
    "after": null,
+   "delay": 700,
+   "max": 4,
    "capture": [
-    "zoom2:.cl-heal"
+    "crop:.cl-heal"
    ],
    "expect": null,
-   "note": "the hint glow on the named thing (the window): no flat yellow rectangle on the wall"
+   "note": "each change's row opens and, a beat later, its named thing in the room glows (window, fan, blanket, heater): the glow round the thing, never a flat yellow rectangle"
   }
  ],
  "CLN-131": {
