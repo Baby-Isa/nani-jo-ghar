@@ -9,7 +9,7 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. docs/sprints/S05-plan.md (Flaws and risks, and your package)
+  5. docs/archive/sprints/S05-plan.md (Flaws and risks, and your package)
   6. docs/architecture/evidence-loop.md (how a row is proven)
   7. docs/decisions.md rows 75-87 only
   8. docs/process/regressions.md: the rows named in your tasks

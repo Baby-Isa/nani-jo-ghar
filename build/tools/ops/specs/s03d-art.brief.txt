@@ -9,21 +9,21 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 2, 3, 7 (Art) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. docs/sprints/S03-overnight-fix.md (the goal and who owns what)
+  5. docs/archive/sprints/S03-overnight-fix.md (the goal and who owns what)
   6. docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)
-  7. docs/feedback/clinic-playtest-2026-10-08.md
-  8. build/reports/s02-review.md (flaws first)
+  7. docs/archive/feedback/clinic-playtest-2026-10-08.md
+  8. build/reports/archive/s02-review.md (flaws first)
   9. docs/design-language/art-pipeline.md, art-bible.md, art-plans/s02-art-plan.md and s02-redo-list.yaml
   10. build/gen_chai_v2.py (an existing OpenAI image API script: reuse its pattern; OPENAI_API_KEY is set)
   11. build/tools/art/artjudge.py, artcut.py, artdiff.py; specs/s02.cut.json
-  12. build/reports/s02e-art-loading.md
+  12. build/reports/archive/s02e-art-loading.md
 
 FILES THIS SESSION OWNS (edit only these):
   - assets/**, sources/art/s03/** (new), build/tools/art/specs/s03.* (new), build/gen_s03.py (new)
   - art blocks in data/cook.json and data/stations/**, data/clinic/heal-art.json, data/clinic/sheets.json and other art references in data/clinic/**
   - art hookup lines only in js/cook/** and js/clinic/** (minimal diffs; git pull --rebase before every push: B and C own those files)
   - the Art rows in docs/process/regressions.md
-  - docs/design-language/art-plans/s03-*.md, build/reports/s03d-art.md
+  - docs/design-language/art-plans/s03-*.md, build/reports/archive/s03d-art.md
 READ-ONLY (never edit):
   - js/shared/**
   - data/lang/**
@@ -66,4 +66,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8834.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s03d-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s03d-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

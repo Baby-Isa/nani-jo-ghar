@@ -1,6 +1,6 @@
 # Transcript: Zafar's clinic play-test voice note, part 2 of 2, 29 Sept 2026 (18 min)
 
-Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "dabi, jamna, mata" = *dabo / jamno* (left / right) and *mathe* (top); "nin-do tooth" = *nindho* (small) tooth; "impella limu" = *pela limu* (first the lemon); "Tell a BA marka. Any poi BA loon" = *pela ba marcha, ne poi ba loon*; "Any poi shot" = *ne poi …*; "B8 times" = 8 times?; "koso / nokoso" = the family words for hot / lukewarm (to check); "things that we kissed on" = unclear. The report: docs/feedback/clinic-playtest-2026-09-29.md.
+Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "dabi, jamna, mata" = *dabo / jamno* (left / right) and *mathe* (top); "nin-do tooth" = *nindho* (small) tooth; "impella limu" = *pela limu* (first the lemon); "Tell a BA marka. Any poi BA loon" = *pela ba marcha, ne poi ba loon*; "Any poi shot" = *ne poi …*; "B8 times" = 8 times?; "koso / nokoso" = the family words for hot / lukewarm (to check); "things that we kissed on" = unclear. The report: docs/archive/feedback/clinic-playtest-2026-09-29.md.
 
 - **0:00** okay we're looking at clinic feedback, clinic feedback, heal, tooth, level one,
 - **0:09** brush, down, down, up, I'm not sure what that means though, does it mean like brush

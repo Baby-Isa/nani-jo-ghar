@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sprint 3 art (pack s03; plan docs/design-language/art-plans/s03-art-plan.md): the s02 redo list (B1 sekelo dish,
+"""Sprint 3 art (pack s03; plan docs/archive/art-plans/s03-art-plan.md): the s02 redo list (B1 sekelo dish,
 C10 daar bowl, E2 two-colour plasters), the kadchi ladle (DAAR-02), the potato chunks (ART-11) and the girl's hot,
 cold, sore and happy faces as masked edits of her approved seated picture (CLN-65: one body).
 gpt-image-2 via /images/edits, quality high, the style anchor and the approved art attached; flat #808080 ground.

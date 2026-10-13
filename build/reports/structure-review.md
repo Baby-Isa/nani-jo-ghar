@@ -1,6 +1,6 @@
 # Structure review, 13 Oct 2026 (decision 98)
 
-Read-only review of the docs against the structure set out on 1 Oct (`docs/archive/process/step1/step1-mapping.md`) and 5 Oct (`docs/process/audits/2026-10-05-docs-audit.md`). Token figures are chars ÷ 3.8. The repo clone is shallow (63 commits, all 13 Oct), so "then" sizes come from the 5 Oct audit, not git.
+Read-only review of the docs against the structure set out on 1 Oct (`docs/archive/process/step1/step1-mapping.md`) and 5 Oct (`docs/archive/process/2026-10-05-docs-audit.md`). Token figures are chars ÷ 3.8. The repo clone is shallow (63 commits, all 13 Oct), so "then" sizes come from the 5 Oct audit, not git.
 
 ## 1. Flaws first
 
@@ -176,7 +176,7 @@ Regressions: each `## ` section goes whole, heading included and unchanged, into
 | Keep (things Zafar liked: must not regress) | `regressions/keep.md` |
 | Retired | `regressions/retired.md` |
 
-Archived (git mv to `docs/archive/`): `docs/process/regressions.md` is not kept (git has it); `docs/sprints/S05-plan.md` → `archive/sprints/`; the 25 pasted check-ins in `S05-red-then-green.md` "Sessions" → `docs/process/overnight-log/2026-10-13.md` (appended, word for word) leaving one line per session; `status.md` "Where each part is" table → `archive/handovers/status-parts-2026-10-05.md`. Nothing else is archived in this item (`find-it.md`, `ideas.md`, `art-plans/` are Q6).
+Archived (git mv to `docs/archive/`): `docs/process/regressions.md` is not kept (git has it); `docs/archive/sprints/S05-plan.md` → `archive/sprints/`; the 25 pasted check-ins in `S05-red-then-green.md` "Sessions" → `docs/process/overnight-log/2026-10-13.md` (appended, word for word) leaving one line per session; `status.md` "Where each part is" table → `archive/handovers/status-parts-2026-10-05.md`. Nothing else is archived in this item (`find-it.md`, `ideas.md`, `art-plans/` are Q6).
 
 ## 7. Tool changes
 

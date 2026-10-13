@@ -12,7 +12,7 @@
   }
  },
  "camera": {
-  "_about": "D15f: the fever room plays in the wide shot itself (no zoom to a close-up). 'room' asks the heal host to skip the zoom (proposal in build/reports/heal-C.md); until it does, the game removes the zoom layer itself.",
+  "_about": "D15f: the fever room plays in the wide shot itself (no zoom to a close-up). 'room' asks the heal host to skip the zoom (proposal in build/reports/archive/heal-C.md); until it does, the game removes the zoom layer itself.",
   "wide": "room"
  },
  "rules": {

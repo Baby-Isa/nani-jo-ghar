@@ -1,6 +1,6 @@
 # ChatGPT art prompts: the clinic's backgrounds (29 Sept)
 
-Six backgrounds for the clinic, from `docs/feedback/clinic-playtest-2026-09-29.md` (§10). They're built to the recommended answers CQ1 (the wider waiting room), CQ3 (the exam room with the bed) and CQ4 (the pharmacy at 45°); if Zafar answered differently, Claude edits this page before it's pasted. **Backgrounds only:** people, the doctor and the medical items come later, once the mechanics have been prototyped on these.
+Six backgrounds for the clinic, from `docs/archive/feedback/clinic-playtest-2026-09-29.md` (§10). They're built to the recommended answers CQ1 (the wider waiting room), CQ3 (the exam room with the bed) and CQ4 (the pharmacy at 45°); if Zafar answered differently, Claude edits this page before it's pasted. **Backgrounds only:** people, the doctor and the medical items come later, once the mechanics have been prototyped on these.
 
 ## Paste this one block into Claude in Chrome
 ```

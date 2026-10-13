@@ -13,7 +13,7 @@
     "6 (UI)"
   ],
   "read": [
-    "docs/sprints/S05-plan.md (Flaws and risks, and package S)",
+    "docs/archive/sprints/S05-plan.md (Flaws and risks, and package S)",
     "docs/architecture/evidence-loop.md (how a row is proven)",
     "docs/decisions.md rows 75-87 only",
     "docs/process/regressions.md: the rows named in your tasks"

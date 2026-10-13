@@ -489,7 +489,7 @@ Every storage access is wrapped in try/catch. Tests: `node --test build/test_sha
 
 What makes the separate pages one app. Load `css/shared/app.css` first in the `<head>` (render-blocking: the house colour is the first paint) and `js/shared/app.js` right after `save.js`.
 
-- **Navigation is by page.** The house (`index.html`) opens a mode with `?app=1`; the way home goes back to `index.html?from=<page>`. Pages cross-fade (cross-document view transitions where the browser has them, else a 150 ms fade-out). Why pages and not in-page mounting: `build/reports/shell.md`.
+- **Navigation is by page.** The house (`index.html`) opens a mode with `?app=1`; the way home goes back to `index.html?from=<page>`. Pages cross-fade (cross-document view transitions where the browser has them, else a 150 ms fade-out). Why pages and not in-page mounting: `build/reports/archive/shell.md`.
 - **The way home.** With `?app=1`, the mode's own ⌂ rail button (`#btn-home`) goes home instead of to the mode's menu, and a ⌂ in the player's colour (`#njg-home`) sits in the top-left corner whenever the mode isn't mid-round (always, where a mode has no rail ⌂). Mid-round, leaving asks first. Both are handled on the window in the capture phase, so the onboarding kit's blocker can't swallow them. Without `?app=1` a page behaves as before.
 
 | Call | Does |
@@ -508,7 +508,7 @@ A save migrated from before the shell (any Cook orders, words or UI data) counts
 
 ## 13. The first launch: `first.html`, `js/shared/story.js`, `js/shared/character.js` (26 Sept 2026)
 
-`FIRST` in `js/home.js` is now `first.html?app=1`: make your character, arrive at Nani's, Cook's pantry round, "Can you make me chai?", Cook's chai round, Nani sips, the story hook's picture story (Eid today; the Birthday next), Yes/No, home (`docs/game-design/modes/first-launch.md`; report `build/reports/first-launch.md`).
+`FIRST` in `js/home.js` is now `first.html?app=1`: make your character, arrive at Nani's, Cook's pantry round, "Can you make me chai?", Cook's chai round, Nani sips, the story hook's picture story (Eid today; the Birthday next), Yes/No, home (`docs/game-design/modes/first-launch.md`; report `build/reports/archive/first-launch.md`).
 
 **The save.** New namespaces: `character` (`{v: 1, choices: {body, skin, hair, eyes, top, bottom}, hands: "player-boy" | "player-girl", updated}`: swatch ids, not colours, so the palette can be retuned) and `story` (`{"first-launch": {at: <scene id> | null, started, done?}}`). `firstDone` is set by the story's `end` scene. Device-wide grown-ups' settings live in the root: `Save.setting(name)` / `Save.setSetting(name, value)` (`storyHelp`: `"en-k"`, the default, or `"k"`); a save file carries players, not settings.
 

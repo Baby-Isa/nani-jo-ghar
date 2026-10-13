@@ -14,9 +14,9 @@
     "6 (UI)"
   ],
   "read": [
-    "build/reports/s02a-round-flow.md (the shared APIs you call: redo, requests pop-up, guide lines per step, bulb, verdict pictures)",
+    "build/reports/archive/s02a-round-flow.md (the shared APIs you call: redo, requests pop-up, guide lines per step, bulb, verdict pictures)",
     "docs/design-language/guide-and-card.md (approved: rows T1-T21 are yours to fill per station)",
-    "docs/feedback/cook-playtest-2026-10-06.md (every point, cause file:line, section 1a)",
+    "docs/archive/feedback/cook-playtest-2026-10-06.md (every point, cause file:line, section 1a)",
     "docs/decisions.md 51-65; docs/sprints/S02-play-and-fix-cook-clinic.md"
   ],
   "owns": [
@@ -24,7 +24,7 @@
     "data/cook.json, data/stations/** (lines through the language engine only)",
     "css/cook.css and css/cook-side-v2.css for station-only rules (Session A is finished; keep its shared rules)",
     "labs.html (Cook entries)",
-    "build/reports/s02b-cook.md"
+    "build/reports/archive/s02b-cook.md"
   ],
   "readOnly": [
     "js/shared/**, js/core/** (Session A's; call them, report any gap)",
@@ -66,7 +66,7 @@
       "accept": "L2 thread is silent per piece; spoken order matches the card order"
     },
     {
-      "do": "The coin-jar day summary (Zafar's design, docs/feedback/cook-playtest-2026-10-06.md C11): each card (face, task, coins) lands on the jar, coins drop in with a ching, the card rises and fades, the next comes in; this game's total beside, the jar's total below; Next is the primary button; jar fill pictures from the art run (five levels) (SH-51).",
+      "do": "The coin-jar day summary (Zafar's design, docs/archive/feedback/cook-playtest-2026-10-06.md C11): each card (face, task, coins) lands on the jar, coins drop in with a ching, the card rises and fades, the next comes in; this game's total beside, the jar's total below; Next is the primary button; jar fill pictures from the art run (five levels) (SH-51).",
       "accept": "a 3-order day plays the sequence; screenshot at 390x844 and 1366x768"
     },
     {

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshots of the 29 Sept review face and first-time coaches (build/reports/cook-shared-fixes.md;
+"""Screenshots of the 29 Sept review face and first-time coaches (build/reports/archive/cook-shared-fixes.md;
 docs/archive/process/VISUAL-QA.md 5).
 
   python3 build/shoot_review.py --station daar --mood happy          # the review face, right

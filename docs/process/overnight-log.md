@@ -2,7 +2,7 @@
 
 One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`: `- YYYY-MM-DD HH:MM UK · <session> · what's done / what's next`. Days before today are moved to `docs/process/overnight-log/<date>.md` the next time `checkin.mjs --log` runs. Sessions never read this log except the orchestrator (rule A21).
 
-2026-10-05T14:36Z step3-gate: run gate-20261005-1208 done (493 pages, all reached end); check FAILED, 17 new Cook findings; baseline untouched; report build/reports/step3-gate.md
+2026-10-05T14:36Z step3-gate: run gate-20261005-1208 done (493 pages, all reached end); check FAILED, 17 new Cook findings; baseline untouched; report build/reports/archive/step3-gate.md
 - 20:56 UK · 4d: Cook's and the clinic's words in data/lang/seed/ (the importer's own source; engine output unchanged; data/clinic/lang.json deleted); parked pages fixed (find, who) and pass; Cook quick sandbox: every page ends, 0 page errors. Next: full proof at four sizes, sound run, report.
 - 21:48 UK · 4d done: Cook on the engine; Cook's and the clinic's words in data/lang/seed/; word gate strict on js/cook and js/clinic; tests, leaks, onboard and host pass; laptop pass stopped at 86 pages (all end, 0 page errors). Report build/reports/step4d-cook-engine.md.
 

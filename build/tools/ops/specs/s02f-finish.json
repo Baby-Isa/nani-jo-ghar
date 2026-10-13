@@ -8,14 +8,14 @@
   "branch": "ccr-a7370759-t0lee7",
   "rules": ["2", "3", "4", "5 (Cook, Clinic)"],
   "read": [
-    "build/reports/s02b-cook.md and build/reports/s02c-clinic.md (their Open lists are your tasks)",
-    "build/reports/s02a-round-flow.md (OrderCard.redo, St.steps, the guide lines)",
+    "build/reports/archive/s02b-cook.md and build/reports/archive/s02c-clinic.md (their Open lists are your tasks)",
+    "build/reports/archive/s02a-round-flow.md (OrderCard.redo, St.steps, the guide lines)",
     "docs/design-language/guide-and-card.md; docs/decisions.md 51-68"
   ],
   "owns": [
     "js/cook/stations/maani-line.js, js/cook/mechanics/fetch.js, js/cook/stations/samosa.js, js/cook/mechanics/fill-fold.js, js/cook/stations/mishkaki-grill.js, js/cook/mechanics/thread.js, js/cook/mechanics/grill.js",
     "js/clinic/stages/diagnosis.js, js/clinic/stages/waiting.js, js/clinic/pipeline.js, data/clinic/pipeline.json, js/clinic/heal/host.js (the L3 strip count only)",
-    "build/reports/s02f-finish.md"
+    "build/reports/archive/s02f-finish.md"
   ],
   "readOnly": ["js/shared/**, js/core/** (call, don't change)", "assets/** art (Session E wires the new art later)", "data/lang/**"],
   "stubs": "none",

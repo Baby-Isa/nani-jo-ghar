@@ -40,7 +40,7 @@ PASS on seeds 1 and 7: fair bot 100% ear (and voice where there's a slot); every
 | named ailment | 3.8 | 3.0 | 4.6 | 3.0 | 6.6 | 3.6 | 0 | 2.6 | 3.0 | 4.8 | 0 | 0 |
 | treatment round | 0.4 | 1.0 | 3.2 | 0.6 | 2.0 | 2.8 | 0 | 1.8 | 0.6 | 1.2 | 1.0 | 0.4 |
 
-Voice star (mumble / random word said): V0 L1 3.8 / 2.0; V3 L2 1.2 / 3.2; V4 L2 0.0 / 2.4; pills and silence 0. Highest anywhere: 6.6% (repeat, V3 L1). Full table: `build/reports/clinic-leak.json`. **Every row is an English placeholder: not yet a Kutchi test.**
+Voice star (mumble / random word said): V0 L1 3.8 / 2.0; V3 L2 1.2 / 3.2; V4 L2 0.0 / 2.4; pills and silence 0. Highest anywhere: 6.6% (repeat, V3 L1). Full table: `build/reports/archive/clinic-leak.json`. **Every row is an English placeholder: not yet a Kutchi test.**
 
 Speaking paths (tell core): all seven checks pass (accepted; wrong hearing acted on as a miss; null → one "say it again?" → pills, no voice star; grown-up again/yes; level-1 pills from the start; sets over 8 refused).
 

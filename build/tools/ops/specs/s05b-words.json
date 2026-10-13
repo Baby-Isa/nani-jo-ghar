@@ -12,7 +12,7 @@
     "5 (language)"
   ],
   "read": [
-    "docs/sprints/S05-plan.md (Flaws and risks, and package B)",
+    "docs/archive/sprints/S05-plan.md (Flaws and risks, and package B)",
     "docs/architecture/evidence-loop.md (how a row is proven)",
     "docs/decisions.md rows 79-87 only",
     "docs/process/regressions.md: the rows named in your tasks"

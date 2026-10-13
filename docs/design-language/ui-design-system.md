@@ -90,14 +90,14 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 
 ## Additions from Zafar's Cook UI feedback, 28 Sept
 
-> from: docs/feedback/cook-ui-feedback-2026-09-28.md § §3 Nani the guide: her own box at the top of the sidebar, in every mode (includes the mute button)
+> from: docs/archive/feedback/cook-ui-feedback-2026-09-28.md § §3 Nani the guide: her own box at the top of the sidebar, in every mode (includes the mute button)
 
 ### 3. Nani the guide: her own box at the top of the sidebar, in every mode
 - She's always there: her face, and the instruction for what to do **now**, in Kutchi. Sometimes it's spoken, sometimes only written.
 - **Her colour (decide).** Recommendation: the cream of her kurta, with a band of her red embroidery along the left edge. It's distinct from the plain cream recipe cards, without looking like a danger red.
 - **Tap her box to mute or unmute her voice** (remembered for every mode), plus a replay button. The light bulb (translate) moves into her box row, drawn with the new bulb art, which frees the lonely top row.
 
-> from: docs/feedback/cook-ui-feedback-2026-09-28.md § §6 The word review (page 2 of the end-of-round screen): the layout
+> from: docs/archive/feedback/cook-ui-feedback-2026-09-28.md § §6 The word review (page 2 of the end-of-round screen): the layout
 
 ### 6. The word review (page 2 of the end-of-round screen)
 - **Centred vertically**, not pushed to the top.

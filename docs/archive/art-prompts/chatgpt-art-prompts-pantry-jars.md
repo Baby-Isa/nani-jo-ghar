@@ -21,7 +21,7 @@ You're making 16 images in ChatGPT for a children's game called Nani jo Ghar. Wo
 
 **What happens next:** Zafar bulk-uploads the 16 files as they are to `sources/art/pantry-v2/`; Claude matches them to the prompts (from Chrome's list, the download order and the pictures themselves), renames them and processes them (see "For Claude" below).
 
-**For:** Cook's pantry round (`js/cook/mechanics/fetch.js`), redrawn to Zafar's 28 Sept decisions (`docs/feedback/cook-ui-feedback-2026-09-28.md` §4). **The problem:** the shelves were angled and the items on them were top-down bowls, which looks wrong on a side-on shelf. **The fix:** a new pantry background seen dead straight on, with a glass-door fridge and a tray, and every item redrawn as a side-on container from one family: clear containers with the food visible inside, and a round label sticker (about a third of the container's height) showing ONE single piece of the item drawn big (one chickpea, one potato). The existing top-down art stays for the cooking stations.
+**For:** Cook's pantry round (`js/cook/mechanics/fetch.js`), redrawn to Zafar's 28 Sept decisions (`docs/archive/feedback/cook-ui-feedback-2026-09-28.md` §4). **The problem:** the shelves were angled and the items on them were top-down bowls, which looks wrong on a side-on shelf. **The fix:** a new pantry background seen dead straight on, with a glass-door fridge and a tray, and every item redrawn as a side-on container from one family: clear containers with the food visible inside, and a round label sticker (about a third of the container's height) showing ONE single piece of the item drawn big (one chickpea, one potato). The existing top-down art stays for the cooking stations.
 
 **Labels are added by Claude, not ChatGPT.** ChatGPT draws the containers bare (no label at all), one blank sticker, and each item as a single picture. Claude puts the picture on the sticker and the sticker on the container. So every label is the same size, in the same place on every container of a type, with exactly one item on it; a wrong picture is fixed by redrawing one cell, not a sheet; the single-item pictures double as UI icons (the request card's picture rows, the tally, the word review); and the bare containers stay available for other views later (a bottle turned round, say).
 
@@ -422,7 +422,7 @@ Cell order matches P7: I7 cell *k* is the label for P7 cell *k* (same game id).
 - New ids are added to `data/cook.json`'s `words` only when a round first uses them (Kutchi from the family; English placeholder until then).
 
 ### The background and the slots
-- Serve `pantry-v2-bg.png` at full quality: trim the top and bottom 8% to 16:9, upscale to 1600×900 and, if still soft on a laptop at 2×, keep a 3200×1800 version (`docs/feedback/cook-ui-feedback-2026-09-28.md` §4).
+- Serve `pantry-v2-bg.png` at full quality: trim the top and bottom 8% to 16:9, upscale to 1600×900 and, if still soft on a laptop at 2×, keep a 3200×1800 version (`docs/archive/feedback/cook-ui-feedback-2026-09-28.md` §4).
 - Measure the real positions from the delivered picture (shelf-board tops, bay centres, fridge shelves, tray), in the game's 1600×900 world, and replace `rows`/`xs` in `js/cook/mechanics/fetch.js` with a `slots` list in `data/cook.json` (`mechanics.fetch.slots`), each `{x, y, h, zone}`. Expected shape:
   - **shelves:** 3 unbroken shelves × 5 evenly spaced positions = 15 slots, `zone: "shelf"`, the item's base on the board;
   - **fridge:** 4 levels × 2 = 8 slots, `zone: "fridge"`.

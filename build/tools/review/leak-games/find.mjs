@@ -11,7 +11,7 @@
  *
  *   node build/tools/review/leak-games/find.mjs                      # every game, levels 1-4, stages 2 and 3, 400 rounds each
  *   node build/tools/review/leak-games/find.mjs --n 1000 --game whichone --level 1 --stage 2
- *   node build/tools/review/leak-games/find.mjs --md build/reports/find-leak.md
+ *   node build/tools/review/leak-games/find.mjs --md build/reports/archive/find-leak.md
  *
  * Games:
  *   list      F1 Nani's list + Check the bag: noun strategy x size strategy

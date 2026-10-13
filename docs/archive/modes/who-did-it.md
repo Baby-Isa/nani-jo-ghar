@@ -338,7 +338,7 @@ Onboarding is by showing (UX 8): the ghost finger does the lens drag once, then 
 
 ### P6 What survives from the current build
 
-The phases 0–1 build (`build/reports/who-build.md`, branch `claude/build-who`) is the middle of this pipeline. Concretely:
+The phases 0–1 build (`build/reports/archive/who-build.md`, branch `claude/build-who`) is the middle of this pipeline. Concretely:
 
 | File | Verdict | What changes |
 |---|---|---|
@@ -364,7 +364,7 @@ Gone: the mini-game as the top-level unit (G1–G5 are now variants 3a-L1, 3a, 3
 
 ### P7 Words needed (priority order)
 
-"Asked" is in `docs/language/mum-questions/Questions for Mum (Combined, for the visit).md` (not edited). "Heard" is on the 25 Sept recordings (`docs/language/grammar-notes.md`) and needs only Zafar's spelling check. Spelling rule from Zafar: no V, so the drafts are *wadho / nindho*.
+"Asked" is in `docs/archive/mum-questions/Questions for Mum (Combined, for the visit).md` (not edited). "Heard" is on the 25 Sept recordings (`docs/language/grammar-notes.md`) and needs only Zafar's spelling check. Spelling rule from Zafar: no V, so the drafts are *wadho / nindho*.
 
 | # | Kutchi needed | For | Status |
 |---|---|---|---|
@@ -430,7 +430,7 @@ The first three tasks are unchanged in spirit from section 12.4: task 1 is `plan
 
 ## Deep dive, 25 Sept 2026: mini-games and mechanics
 
-Follows `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md` and Zafar's principles of 25 Sept (mini-games; modular mechanics as files; speaking as a core part; all modes built at once; the Sceptic). Addresses every critique in `docs/feedback/modes-review-2026-09-25.md` (D7). Drafted words from `data/cook.json` (*vadho, nindho, nar*) are shown in italics with "(draft)".
+Follows `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md` and Zafar's principles of 25 Sept (mini-games; modular mechanics as files; speaking as a core part; all modes built at once; the Sceptic). Addresses every critique in `docs/archive/feedback/modes-review-2026-09-25.md` (D7). Drafted words from `data/cook.json` (*vadho, nindho, nar*) are shown in italics with "(draft)".
 
 ### D1 Pitch and the kinds of round
 
@@ -566,7 +566,7 @@ A child feels it as: *she names it → she describes it → she says what it isn
 
 ### D8 Words needed (first set, priority order)
 
-"Asked" means it's in `docs/language/mum-questions/Questions for Mum (Combined, for the visit).md` already; nothing there is edited.
+"Asked" means it's in `docs/archive/mum-questions/Questions for Mum (Combined, for the visit).md` already; nothing there is edited.
 
 | # | Kutchi needed | For | Status |
 |---|---|---|---|

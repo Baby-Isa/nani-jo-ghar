@@ -9,7 +9,7 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 2, 3, 8 (Language, Kutchi and voice) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. build/reports/s02d-reclip.md (what D built: build/tools/audio/*) and decisions 66-67
+  5. build/reports/archive/s02d-reclip.md (what D built: build/tools/audio/*) and decisions 66-67
   6. build/tools/audio/listen-pilot-20.json and listen_pilot.py: the orchestrator's pilot on the first 20 lines. Whisper (not told the target) catches the junk; gpt-audio-1.5 TOLD the target 'hears' it anyway ('P-11' passed as cup) - so every check must be BLIND
   7. data/family-audio.json and sources/audio/**
 
@@ -17,7 +17,7 @@ FILES THIS SESSION OWNS (edit only these):
   - build/tools/audio/**
   - assets/audio/family-candidates/** (replace D's candidates entirely)
   - data/family-audio-candidates.json
-  - build/reports/s02d2-reclip-verified.md
+  - build/reports/archive/s02d2-reclip-verified.md
 READ-ONLY (never edit):
   - js/**, data/cook.json, data/clinic/**
   - data/lang/**
@@ -53,4 +53,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8826.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s02d2-reclip-verified.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s02d2-reclip-verified.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

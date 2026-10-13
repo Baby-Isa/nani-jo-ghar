@@ -9,7 +9,7 @@
 > - Pocket money, coins, receipts, hint costs in coins → decision 10 (upgrades) and decision 1 (the light bulb costs a lightbulb)
 
 **Date:** 25 Sept 2026
-**Status:** proposal for Zafar, deepened on 25 Sept, **redesigned as a pipeline on 25 Sept (evening)** and **sharpened by the mini-game quality pass (written 26 Sept)**: the quality pass at the top is current where it and the pipeline design conflict; the pipeline design supersedes the deep dive and the older sections where they conflict. Phases 0–1 of the deep dive's build brief exist (`js/monsoon/`, `build/reports/monsoon-build.md`). It follows `docs/archive/mode-briefs/MODE-DESIGN-BRIEF.md` and builds on `docs/archive/design-v1/game-modes-v2.md` (mode 7), `docs/game-design/modes/find-it.md` (the model), the Cook audit (`docs/archive/cook/cook-with-nani-kutchi-audit.md`) and Zafar's playtest waves (`docs/archive/cook/cook-with-nani-todo.md`).
+**Status:** proposal for Zafar, deepened on 25 Sept, **redesigned as a pipeline on 25 Sept (evening)** and **sharpened by the mini-game quality pass (written 26 Sept)**: the quality pass at the top is current where it and the pipeline design conflict; the pipeline design supersedes the deep dive and the older sections where they conflict. Phases 0–1 of the deep dive's build brief exist (`js/monsoon/`, `build/reports/archive/monsoon-build.md`). It follows `docs/archive/mode-briefs/MODE-DESIGN-BRIEF.md` and builds on `docs/archive/design-v1/game-modes-v2.md` (mode 7), `docs/game-design/modes/find-it.md` (the model), the Cook audit (`docs/archive/cook/cook-with-nani-kutchi-audit.md`) and Zafar's playtest waves (`docs/archive/cook/cook-with-nani-todo.md`).
 **Placeholder rule:** the only Kutchi below is what is already in `data/content.json` or `data/cook.json`. Anything written `[EN: under]` has no Kutchi yet: in the game it's an English placeholder in grey italic until the family gives the word. **Never invent Kutchi.** Section 6.6 lists every word needed.
 
 ---
@@ -468,7 +468,7 @@ The onboarding kit (principle 8) spotlights one pot and a ghost finger in S2a, o
 
 ### P.6 What survives from the current build
 
-The build (`build/reports/monsoon-build.md`, `docs/archive/build-logs/monsoon-build-log.md`) is **stage 3 of the pipeline, finished to greybox**, plus the engine every other stage grades through. Nothing is thrown away; the pipeline wraps around it.
+The build (`build/reports/archive/monsoon-build.md`, `docs/archive/build-logs/monsoon-build-log.md`) is **stage 3 of the pipeline, finished to greybox**, plus the engine every other stage grades through. Nothing is thrown away; the pipeline wraps around it.
 
 | File | Verdict | What changes |
 |---|---|---|

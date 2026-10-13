@@ -15,7 +15,7 @@
   "read": [
     "CLAUDE.md",
     "docs/sprints/S04-feedback-sticks.md (the goal and who owns what)",
-    "docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)",
+    "docs/archive/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)",
     "docs/decisions.md 52, 53, 64, 73, 75, 76",
     "docs/process/rules.md C19, C20, A19",
     "js/shared/host.js (designed for this: E17), js/shared/request-popup.js, js/core/voice.js, js/shared/say.js",
@@ -27,7 +27,7 @@
     "js/cook/** (flow, ui, zone, station-lib, stations, mechanics, stations/*)",
     "js/clinic/** (kit, screen, heal/host, stages, heal games only where a lifecycle call moves)",
     "the rows listed above in docs/process/regressions.md (status only, with proof per decision 76)",
-    "build/reports/s04b-host.md"
+    "build/reports/archive/s04b-host.md"
   ],
   "readOnly": [
     "build/sandbox/**, build/tools/review/** (Session A)",

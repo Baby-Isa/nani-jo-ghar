@@ -1,6 +1,6 @@
 /*
  * cook.html, Cook's own page (C4, decision 45): Cook mounted in the page's one element, with its own title, story
- * days, shop and book (the shell has no shared screens for them yet: build/reports/c4-cook-host.md, task 3). The house
+ * days, shop and book (the shell has no shared screens for them yet: build/reports/archive/c4-cook-host.md, task 3). The house
  * opens Cook here (?app=1, js/cook/app.js); the game host mounts the same plug-in for labs and rounds (js/cook/main.js).
  *
  * TEST HOOK (marked). window.__cook is Cook's test hook, as before (flow.js Cook.testHook: lab, order, expectation,

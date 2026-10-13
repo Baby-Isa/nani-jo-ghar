@@ -39,7 +39,7 @@ def log(*a):
     print(s)
 
 
-# judged a fail and not cut (the redo list in build/reports/a1-clinic-art.md): the stand-in stays for that piece
+# judged a fail and not cut (the redo list in build/reports/archive/a1-clinic-art.md): the stand-in stays for that piece
 FAILED = {
     "child-u1-upperarm-v1.png": "sleeveless vest, bare shoulder; chin and plait in frame (modesty, I1)",
 }

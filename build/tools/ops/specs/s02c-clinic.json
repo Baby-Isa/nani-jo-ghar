@@ -14,9 +14,9 @@
     "6 (UI)"
   ],
   "read": [
-    "build/reports/s02a-round-flow.md (the shared APIs: redo, next step visible, requests pop-up, guide lines, bulb)",
+    "build/reports/archive/s02a-round-flow.md (the shared APIs: redo, next step visible, requests pop-up, guide lines, bulb)",
     "docs/design-language/guide-and-card.md (approved: rows T22-T34 are yours)",
-    "docs/feedback/clinic-playtest-2026-10-06.md (every point, cause file:line, section 1a)",
+    "docs/archive/feedback/clinic-playtest-2026-10-06.md (every point, cause file:line, section 1a)",
     "docs/decisions.md 51-65; docs/sprints/S02-play-and-fix-cook-clinic.md"
   ],
   "owns": [
@@ -24,7 +24,7 @@
     "data/clinic/** (lines through the language engine only)",
     "css/clinic.css for game-only rules (keep Session A's shared rules)",
     "lab/clinic-core.html, labs.html (clinic entries)",
-    "build/reports/s02c-clinic.md"
+    "build/reports/archive/s02c-clinic.md"
   ],
   "readOnly": [
     "js/shared/**, js/core/**, js/clinic/kit.js, js/clinic/heal/host.js, js/clinic/stages/common.js (Session A's; call them, report any gap)",

@@ -89,4 +89,4 @@ const outDir = path.join(ROOT, "build/reports");
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, "voice-coverage.md"), md.join("\n") + "\n");
 console.log(`words: Mum ${wc.Mum || 0}, Zafar ${wc.Zafar || 0}, fallback ${wc.Fallback || 0} (of ${wordRows.length})`);
-console.log("wrote build/reports/voice-coverage.md");
+console.log("wrote build/reports/archive/voice-coverage.md");

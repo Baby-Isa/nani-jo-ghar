@@ -11,7 +11,7 @@ READ FIRST (in this order):
   4. docs/status.md ("Next chat")
   5. CLAUDE.md
   6. docs/sprints/S04-feedback-sticks.md (the goal and who owns what)
-  7. docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
+  7. docs/archive/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
   8. docs/decisions.md 52, 53, 64, 73, 75, 76
   9. docs/process/rules.md C19, C20, A19
   10. js/shared/host.js (designed for this: E17), js/shared/request-popup.js, js/core/voice.js, js/shared/say.js
@@ -23,7 +23,7 @@ FILES THIS SESSION OWNS (edit only these):
   - js/cook/** (flow, ui, zone, station-lib, stations, mechanics, stations/*)
   - js/clinic/** (kit, screen, heal/host, stages, heal games only where a lifecycle call moves)
   - the rows listed above in docs/process/regressions.md (status only, with proof per decision 76)
-  - build/reports/s04b-host.md
+  - build/reports/archive/s04b-host.md
 READ-ONLY (never edit):
   - build/sandbox/**, build/tools/review/** (Session A)
   - assets/**, art data blocks (Session C)
@@ -66,4 +66,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8842.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s04b-host.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s04b-host.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

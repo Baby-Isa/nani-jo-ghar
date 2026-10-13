@@ -107,8 +107,8 @@ Sequenced sessions, **one at a time**, each checked by the new flow tests and la
 
 ## 5. Current state (30 Sept, 18:30 UK)
 - **Live** at https://baby-isa.github.io/nani-jo-ghar/:
-  - **Cook:** all six stations on v3 (chai, maani, chaat, daar, samosa, sekelo; reports `build/reports/<station>-v3.md`), plus the v3.1 art and follow-ups (`build/reports/art-v3-1.md`).
-  - **Clinic:** v2 prototypes with Zafar's play fixes (`build/reports/clinic-v2-fixes.md`).
+  - **Cook:** all six stations on v3 (chai, maani, chaat, daar, samosa, sekelo; reports `build/reports/<station>-v3.md`), plus the v3.1 art and follow-ups (`build/reports/archive/art-v3-1.md`).
+  - **Clinic:** v2 prototypes with Zafar's play fixes (`build/reports/archive/clinic-v2-fixes.md`).
   - The clinic's item art is cut but not wired (`assets/clinic/items-v2/`).
 - **Known open bugs:**
   - pantry card clipping (headline and growing row);
@@ -137,7 +137,7 @@ Sequenced sessions, **one at a time**, each checked by the new flow tests and la
   - `docs/design-language/ui-design-system.md`, `docs/design-language/ux-principles.md`, `docs/archive/process/VISUAL-QA.md`;
   - `docs/archive/design-v1/Roadmap and Story Structure.md`;
   - Art Bible, Cast, Game Design, Technical Plan, all under `docs/Nani jo Ghar — *.md`.
-- **Feedback:** `docs/feedback/cook-playtest-2026-09-29.md`, `docs/feedback/clinic-playtest-2026-09-29.md`.
+- **Feedback:** `docs/archive/feedback/cook-playtest-2026-09-29.md`, `docs/archive/feedback/clinic-playtest-2026-09-29.md`.
 - **Modes:** `docs/modes/*.md`.
 - **Language:** `docs/language/grammar-notes.md`, the "Questions for Mum" rounds, `content/…Content Master.xlsx`, `data/*.json`.
 - **Shared code API:** `docs/architecture/shared-api.md`.

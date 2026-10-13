@@ -8,11 +8,11 @@
   "branch": "ccr-a7370759-t0lee7",
   "rules": ["2", "3", "8 (Language, Kutchi and voice)"],
   "read": [
-    "build/reports/s02d-reclip.md (what D built: build/tools/audio/*) and decisions 66-67",
+    "build/reports/archive/s02d-reclip.md (what D built: build/tools/audio/*) and decisions 66-67",
     "build/tools/audio/listen-pilot-20.json and listen_pilot.py: the orchestrator's pilot on the first 20 lines. Whisper (not told the target) catches the junk; gpt-audio-1.5 TOLD the target 'hears' it anyway ('P-11' passed as cup) - so every check must be BLIND",
     "data/family-audio.json and sources/audio/**"
   ],
-  "owns": ["build/tools/audio/**", "assets/audio/family-candidates/** (replace D's candidates entirely)", "data/family-audio-candidates.json", "build/reports/s02d2-reclip-verified.md"],
+  "owns": ["build/tools/audio/**", "assets/audio/family-candidates/** (replace D's candidates entirely)", "data/family-audio-candidates.json", "build/reports/archive/s02d2-reclip-verified.md"],
   "readOnly": ["js/**, data/cook.json, data/clinic/**", "data/lang/**", "assets/audio/family/** (never overwrite)", "data/family-audio.json (only apply_picks writes it, after Zafar's picks)"],
   "stubs": "none; a line with no verified take says 'record again'",
   "tasks": [

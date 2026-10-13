@@ -7,7 +7,7 @@ Plays the station in the Station lab with build/test_cook.py's Player and saves 
   stir-start, stir-mid, serve               the stir (the count as the Kutchi word), the bowl
   taste-right / taste-wrong, end            serve and taste (--wrong: one vegetable too many), the end pop-up
   python3 build/shoot_daar_v2.py                 # laptop, level 1 (iterating)
-  python3 build/shoot_daar_v2.py --matrix        # phone + laptop, levels, into build/reports/daar-v2/
+  python3 build/shoot_daar_v2.py --matrix        # phone + laptop, levels, into build/reports/archive/daar-v2/
 """
 import argparse
 import json

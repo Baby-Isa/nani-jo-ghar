@@ -113,7 +113,7 @@ Each line: pose, camera, frames, and what it's used for. Games: **C** Cook, **F*
 
 ### 1.4 Totals and cost
 
-**Actual, hands v1 (24–25 Sept 2026; full report `build/reports/art-hands-v1.md`):**
+**Actual, hands v1 (24–25 Sept 2026; full report `build/reports/archive/art-hands-v1.md`):**
 
 - **Player master set:** 56 images (A1–F5, every camera and frame; F3 and F5 are aliases of B3 and C1). After two review rounds, **47 pass** and **9 still fail** (a2, b1, c2, c3-t, c3-e, d3, d6-f1, e3-count-4, e5). Every master is skin-matched and scaled to the reference forearm (250 px).
 - **Characters are made in code, not generated** (`build/skin_hands.py`, data in `data/hand-skins.json` and `data/hand-anchors.json`): each passing master gets its skin recoloured, its sleeve recoloured and jewellery sprites placed at per-pose anchors (wrist and ring finger). Baked: **player-boy 47**, **player-girl 47** (dusty-pink sleeve, three glass bangles), **Nani 88** (47 right hands + 41 left hands; deep-red sleeve, her skin, aqiq ring and tennis bracelet on the right, solitaire on the left, no bangles). **player-girl-eid** waits for the mehndi overlay texture. Rebuilding every character takes minutes and costs nothing.

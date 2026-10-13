@@ -13,18 +13,18 @@
     "5 (Cook)"
   ],
   "read": [
-    "docs/sprints/S03-overnight-fix.md (the goal and who owns what)",
+    "docs/archive/sprints/S03-overnight-fix.md (the goal and who owns what)",
     "docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)",
-    "docs/feedback/clinic-playtest-2026-10-08.md",
-    "build/reports/s02-review.md (flaws first)",
-    "build/reports/s02b-cook.md, s02f-finish.md",
-    "docs/feedback/cook-playtest-2026-10-06.md \u00a72"
+    "docs/archive/feedback/clinic-playtest-2026-10-08.md",
+    "build/reports/archive/s02-review.md (flaws first)",
+    "build/reports/archive/s02b-cook.md, s02f-finish.md",
+    "docs/archive/feedback/cook-playtest-2026-10-06.md \u00a72"
   ],
   "owns": [
     "js/cook/** except js/cook/ui.js (Session A)",
     "data/cook.json and data/stations/** except art blocks (Session D)",
     "the Cook rows in docs/process/regressions.md",
-    "build/reports/s03b-cook.md"
+    "build/reports/archive/s03b-cook.md"
   ],
   "readOnly": [
     "js/shared/**, css/shared/** (Session A: call the shared pop-up and voice stop when they land; pull often)",

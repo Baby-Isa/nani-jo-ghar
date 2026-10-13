@@ -3,7 +3,7 @@
 
 No more hand images from the image API: every character's hands are made
 here from the approved master set (the 47 passing masters in
-build/reports/data/hands-master-v2-review.json).
+build/reports/archive/data/hands-master-v2-review.json).
 
 For each master pose and each character in data/hand-skins.json:
   (a) skin: the masked skin is recoloured to the character's tone (skin

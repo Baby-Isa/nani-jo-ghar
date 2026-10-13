@@ -265,7 +265,7 @@ Full orders the prototype builds, for recording as whole sentences:
 4. **Kinship.** The customers are shown as Nana, Ma and Ali (a cousin). What does a child call their mother, and a cousin, in Kutchi?
 5. **Nani's look.** In the new art, Nani's grey hair shows at the front of her headscarf. Is that right for the family?
 6. **Dishes.** Are chai, maani and daal (with a jeeru and rai tadka) how Nani would really cook them? What would she add?
-7. **The 25 Sept phonetic drafts.** *nar* (no), *aastethi* (slowly), *jaldi* (quickly), *adh* (half), *bharelo* (full), *vadho* (big), *nindho* (small): please confirm the spelling and pronunciation (see `docs/language/mum-questions/Questions for Mum (Round 2 — Cooking).md`).
+7. **The 25 Sept phonetic drafts.** *nar* (no), *aastethi* (slowly), *jaldi* (quickly), *adh* (half), *bharelo* (full), *vadho* (big), *nindho* (small): please confirm the spelling and pronunciation (see `docs/archive/mum-questions/Questions for Mum (Round 2 — Cooking).md`).
 
 
 ## 3. Words the modes are waiting for (priority order)
@@ -327,7 +327,7 @@ Nouns need a singular and a plural form in the data, and the game should say the
 
 Source: `grammar-notes.md` §38–§55; recordings in `sources/audio/mum-2026-10-05/` (file, then mm:ss). **Status:** *confirmed* = Mum said it clearly (spelling still Zafar's to tick where marked ⚠); ⚠ = heard once or unclear, a draft (G2, G3). Gender: **he** / **she** / – (doesn't apply). Clips: `data/family-audio.json` (source `sources/audio/mum-2026-10-05/…`), unchecked.
 
-**Spellings confirmed by Zafar, 5 Oct (decision 31; `build/reports/mum-2026-10-05.md`, "yes to all"):** *wadho / wadha / wadhi / wadhe*, *nindho*; *ain*, *aiya*, *aiye*; *pa*, *asa*, *asanjo*, *panjo*; *iloka*, *mare*; the *-yu* plurals *chokriyu, kursiyu, pacheriyu*; *firai*, *bego kari chad*, *wiji chad*, *kadhi chad*, *kapi chad*; *jhino / jhini*, *jadi*, ***thundo*** (cold; not *thandu*); *chapri*, *welan*, *chulo*; *dayo / dayi*, *saro / sari*; *ginech*, *khanech*; *Nana je cup je andar*. Rows below say "spelling ✓ 5 Oct".
+**Spellings confirmed by Zafar, 5 Oct (decision 31; `build/reports/archive/mum-2026-10-05.md`, "yes to all"):** *wadho / wadha / wadhi / wadhe*, *nindho*; *ain*, *aiya*, *aiye*; *pa*, *asa*, *asanjo*, *panjo*; *iloka*, *mare*; the *-yu* plurals *chokriyu, kursiyu, pacheriyu*; *firai*, *bego kari chad*, *wiji chad*, *kadhi chad*, *kapi chad*; *jhino / jhini*, *jadi*, ***thundo*** (cold; not *thandu*); *chapri*, *welan*, *chulo*; *dayo / dayi*, *saro / sari*; *ginech*, *khanech*; *Nana je cup je andar*. Rows below say "spelling ✓ 5 Oct".
 
 ### 6.1 Cooking verbs (bare command to a child)
 | Kutchi | English | Notes | Source | Status |

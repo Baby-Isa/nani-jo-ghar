@@ -28,16 +28,16 @@ Agreed with Zafar, 6 Oct (decisions 51–65; his answers to both reports' §4):
 - 7 Oct: the robot voice test is closed (decision 66): family voices stay; Mum's cleaned clips won. Next: test recording set-ups, then retakes; Hannah's grandad records the doctor and older-man lines; Zafar and Hannah the children.
 
 ## Feedback in
-- 6 Oct, Cook (four voice notes): `docs/feedback/cook-playtest-2026-10-06.md`. About 120 points, 22 decisions waiting (§4), 66 new rows and 10 reopened. 
-- 6 Oct, the clinic (notes 5, 7, 8): `docs/feedback/clinic-playtest-2026-10-06.md`. About 110 points, 14 decisions (§4), 31 new rows and 13 reopened. Root causes: L2+ steps close only by the next action, which isn't shown (stuck); the girl's art isn't in the story.
+- 6 Oct, Cook (four voice notes): `docs/archive/feedback/cook-playtest-2026-10-06.md`. About 120 points, 22 decisions waiting (§4), 66 new rows and 10 reopened. 
+- 6 Oct, the clinic (notes 5, 7, 8): `docs/archive/feedback/clinic-playtest-2026-10-06.md`. About 110 points, 14 decisions (§4), 31 new rows and 13 reopened. Root causes: L2+ steps close only by the next action, which isn't shown (stuck); the girl's art isn't in the story.
 
 ## Outcome
-- **On `main`:** f0f4613a (version 20261008T002526Z), 8 Oct 2026 ~01:25 UK. Review: `build/reports/s02-review.md` (full gate `s02-gate2`, then rechecks: CHECK PASSED).
+- **On `main`:** f0f4613a (version 20261008T002526Z), 8 Oct 2026 ~01:25 UK. Review: `build/reports/archive/s02-review.md` (full gate `s02-gate2`, then rechecks: CHECK PASSED).
 - **Done:** Sessions A–G (reports `build/reports/s02*.md`); the s02 art run cut and wired; modular loading (decision 68); 263 lines with blind-verified family takes as ok-auto (decision 70).
 - **Moved on to Sprint 3:** Mum's Round 5 lines; 289 lines to record again (USB mic, grammar first); the final manual approval of every recording before launch (decision 70); the fever room tidy; art redo list (B1, C10, E2); the review's open flaws (s02-review.md §1).
 - **Open rows:** 145 open or reopened, 138 built and not re-played (most of this sprint's fixes wait on Zafar's play).
 - **Spend:** about $270 against $270 agreed (sessions A–G, D2, art run API, review).
-- **Zafar's play (8 Oct):** `docs/feedback/clinic-playtest-2026-10-08.md`: heal games still open with no request pop-up (CLN-84 re-raised); the card's read-out carries into the send-off (SH-64, CLN-109). The square drill trial was worse (decision 72).
+- **Zafar's play (8 Oct):** `docs/archive/feedback/clinic-playtest-2026-10-08.md`: heal games still open with no request pop-up (CLN-84 re-raised); the card's read-out carries into the send-off (SH-64, CLN-109). The square drill trial was worse (decision 72).
 
 ## Look back (three lines)
 1. **Worked:** the shared round flow (A) then Cook and clinic in parallel (B, C) cleared about 230 points in two days, and the blind-verified voice takes (decision 70) ended hand-picking 552 lines.

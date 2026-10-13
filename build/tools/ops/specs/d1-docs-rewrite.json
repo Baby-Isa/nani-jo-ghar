@@ -3,8 +3,8 @@
   "model": "Sonnet", "effort": "high", "why": "mostly mechanical moving and tightening, but every cut must keep the meaning; Fable reviews after",
   "cost": "about $18-25", "stop": "6 Oct 2026, 08:00 UK", "branch": "docs-rewrite (created from ccr-fcd9dddd-wnywzc; merge back only on Zafar's go)",
   "rules": ["1", "2", "3"],
-  "read": ["docs/process/audits/2026-10-05-docs-audit.md (your plan: follow its 11-step migration, with the changes below)", "docs/decisions.md 26-49", "docs/architecture/testing.md (Tools)", ".claude/skills/*/SKILL.md", "build/reports/ for step 3, 4a-4e, C3, C4, R7, T1-T3, E1 (what the code now is)"],
-  "owns": ["docs/** (all of it, on the docs-rewrite branch)", "CLAUDE.md", ".claude/skills/** (add /sprint; trim others only to remove duplication)", "build/tools/ops/checkin.mjs (dated overnight-log path only)", "data/lang/test-seed/paradigms.json and data/lang/seed/ (only to move the real paradigms out of test-seed, E1's follow-up; rerun build/lang/import_all.mjs --check and node --test build/lang/)", "build/reports/d1-docs-rewrite.md"],
+  "read": ["docs/archive/process/2026-10-05-docs-audit.md (your plan: follow its 11-step migration, with the changes below)", "docs/decisions.md 26-49", "docs/architecture/testing.md (Tools)", ".claude/skills/*/SKILL.md", "build/reports/ for step 3, 4a-4e, C3, C4, R7, T1-T3, E1 (what the code now is)"],
+  "owns": ["docs/** (all of it, on the docs-rewrite branch)", "CLAUDE.md", ".claude/skills/** (add /sprint; trim others only to remove duplication)", "build/tools/ops/checkin.mjs (dated overnight-log path only)", "data/lang/test-seed/paradigms.json and data/lang/seed/ (only to move the real paradigms out of test-seed, E1's follow-up; rerun build/lang/import_all.mjs --check and node --test build/lang/)", "build/reports/archive/d1-docs-rewrite.md"],
   "readOnly": ["all game code and other data (js/**, css/**, data/** except the paradigm move above)", "build/** except the two items above"],
   "permissions": "git push to the docs-rewrite branch; Node",
   "tasks": [

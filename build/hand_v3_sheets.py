@@ -4,7 +4,7 @@
     python3 build/hand_v3_sheets.py contact      # build/contact-sheets/hands-v3-<set>.png, verdict under each image
     python3 build/hand_v3_sheets.py review       # build/contact-sheets/hands-v3-review-*.png, before/after jewellery close-ups
 
-Contact sheets read build/reports/data/hands-v3-qa.json ("after" verdicts):
+Contact sheets read build/reports/archive/data/hands-v3-qa.json ("after" verdicts):
 a green PASS or a red FAIL tag under each image, with the reason's first
 words. Review sheets put the v2 skins (from git, commit BEFORE) next to the
 v3 ones, cropped round each ring and wrist anchor at the same place and scale.

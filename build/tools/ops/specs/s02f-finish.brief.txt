@@ -9,14 +9,14 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 2, 3, 4, 5 (Cook, Clinic) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. build/reports/s02b-cook.md and build/reports/s02c-clinic.md (their Open lists are your tasks)
-  6. build/reports/s02a-round-flow.md (OrderCard.redo, St.steps, the guide lines)
+  5. build/reports/archive/s02b-cook.md and build/reports/archive/s02c-clinic.md (their Open lists are your tasks)
+  6. build/reports/archive/s02a-round-flow.md (OrderCard.redo, St.steps, the guide lines)
   7. docs/design-language/guide-and-card.md; docs/decisions.md 51-68
 
 FILES THIS SESSION OWNS (edit only these):
   - js/cook/stations/maani-line.js, js/cook/mechanics/fetch.js, js/cook/stations/samosa.js, js/cook/mechanics/fill-fold.js, js/cook/stations/mishkaki-grill.js, js/cook/mechanics/thread.js, js/cook/mechanics/grill.js
   - js/clinic/stages/diagnosis.js, js/clinic/stages/waiting.js, js/clinic/pipeline.js, data/clinic/pipeline.json, js/clinic/heal/host.js (the L3 strip count only)
-  - build/reports/s02f-finish.md
+  - build/reports/archive/s02f-finish.md
 READ-ONLY (never edit):
   - js/shared/**, js/core/** (call, don't change)
   - assets/** art (Session E wires the new art later)
@@ -59,4 +59,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8825.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s02f-finish.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s02f-finish.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

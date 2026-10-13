@@ -61,7 +61,7 @@ def main():
         return sid
 
     final = {
-        "_about": ("Final art (ChatGPT batch 3, dump 3: build/reports/chatgpt-batch-3-dump-3.md), added beside the "
+        "_about": ("Final art (ChatGPT batch 3, dump 3: build/reports/archive/chatgpt-batch-3-dump-3.md), added beside the "
                    "rough placeholders, which stay as they are. Not wired: `rooms`, `patients` and `alias` above still "
                    "name the rough art. rooms: as `rooms`. patients: kind -> pose -> sprite id (seated full body on an "
                    "invisible seat: sit, sit-head, sit-tummy, sit-knee, for after the answer only; waist-<colour>: the "

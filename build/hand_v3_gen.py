@@ -15,7 +15,7 @@ sprite.
     python3 build/hand_v3_gen.py JOB [JOB...]              # run (asks nothing; stops at the cap)
 
 Every image is written to build/hand-v3-raw/<job>-v<k>.png (nothing is
-overwritten: k counts up), and the spend to build/reports/data/hands-v3-spend.json.
+overwritten: k counts up), and the spend to build/reports/archive/data/hands-v3-spend.json.
 """
 import argparse
 import json

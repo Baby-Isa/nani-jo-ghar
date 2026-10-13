@@ -89,7 +89,7 @@ Full orders the prototype builds, for recording as whole sentences:
 4. **Kinship.** The customers are shown as Nana, Ma and Ali (a cousin). What does a child call their mother, and a cousin, in Kutchi?
 5. **Nani's look.** In the new art, Nani's grey hair shows at the front of her headscarf. Is that right for the family?
 6. **Dishes.** Are chai, maani and daal (with a jeeru and rai tadka) how Nani would really cook them? What would she add?
-7. **The 25 Sept phonetic drafts.** *nar* (no), *aastethi* (slowly), *jaldi* (quickly), *adh* (half), *bharelo* (full), *vadho* (big), *nindho* (small): please confirm the spelling and pronunciation (see `docs/language/mum-questions/Questions for Mum (Round 2 — Cooking).md`).
+7. **The 25 Sept phonetic drafts.** *nar* (no), *aastethi* (slowly), *jaldi* (quickly), *adh* (half), *bharelo* (full), *vadho* (big), *nindho* (small): please confirm the spelling and pronunciation (see `docs/archive/mum-questions/Questions for Mum (Round 2 — Cooking).md`).
 
 ## 4. Recording list (in the order the prototype needs them)
 

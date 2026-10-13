@@ -7,7 +7,7 @@
  *
  *   node build/tools/review/leak-games/snap.mjs --unit          the evaluator fixtures
  *   node build/tools/review/leak-games/snap.mjs --fair [N]      N seeds per mini-game x level: every row has an achievable frame, >= 3 kinds
- *   node build/tools/review/leak-games/snap.mjs --leakbot [N]   every strategy, N rounds per mini-game x level; writes build/reports/snap-leakbot.md
+ *   node build/tools/review/leak-games/snap.mjs --leakbot [N]   every strategy, N rounds per mini-game x level; writes build/reports/archive/snap-leakbot.md
  *   node build/tools/review/leak-games/snap.mjs --leakbot N --game g4   one mini-game only
  *   node build/tools/review/leak-games/snap.mjs                 all three (N = data/snap.json leakbot.rounds, 500)
  *
@@ -227,7 +227,7 @@ ${voice.join("\n")}
   const dir = path.join(ROOT, "build/reports");
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, "snap-leakbot.md"), md);
-  console.log("  wrote build/reports/snap-leakbot.md");
+  console.log("  wrote build/reports/archive/snap-leakbot.md");
 }
 
 const t0 = Date.now();

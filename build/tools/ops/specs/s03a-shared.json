@@ -13,10 +13,10 @@
     "6 (UI)"
   ],
   "read": [
-    "docs/sprints/S03-overnight-fix.md (the goal and who owns what)",
+    "docs/archive/sprints/S03-overnight-fix.md (the goal and who owns what)",
     "docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)",
-    "docs/feedback/clinic-playtest-2026-10-08.md",
-    "build/reports/s02-review.md (flaws first)",
+    "docs/archive/feedback/clinic-playtest-2026-10-08.md",
+    "build/reports/archive/s02-review.md (flaws first)",
     "js/clinic/stages/pharmacy.js requestPopup and js/cook/ui.js's requests pop-up (the two copies to replace)",
     "js/shared/order-card.js (big: true), docs/design-language/guide-and-card.md"
   ],
@@ -25,7 +25,7 @@
     "js/cook/ui.js",
     "js/clinic/kit.js (Voice), js/clinic/heal/host.js, js/clinic/stages/pharmacy.js",
     "the Shared components rows in docs/process/regressions.md",
-    "build/reports/s03a-shared.md"
+    "build/reports/archive/s03a-shared.md"
   ],
   "readOnly": [
     "js/cook/** other than ui.js (Session B)",

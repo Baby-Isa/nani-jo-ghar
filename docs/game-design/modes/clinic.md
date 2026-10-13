@@ -1,6 +1,6 @@
 # The clinic: design sheets and build status
 
-The clinic is Hannah's granddad's; the child is his helper (H25). This file holds where the clinic is now, the standing rules and the v2 design sheets (29 Sept, with Zafar's 1 Oct heal-game decisions, decision 27). The original v1 design (25 Sept), its live parts and the first build log are history, in `docs/archive/modes/clinic-design-v1-live-parts.md`; the 1 Oct report with the heal-game design is `docs/feedback/clinic-playtest-2026-10-01.md`.
+The clinic is Hannah's granddad's; the child is his helper (H25). This file holds where the clinic is now, the standing rules and the v2 design sheets (29 Sept, with Zafar's 1 Oct heal-game decisions, decision 27). The original v1 design (25 Sept), its live parts and the first build log are history, in `docs/archive/modes/clinic-design-v1-live-parts.md`; the 1 Oct report with the heal-game design is `docs/archive/feedback/clinic-playtest-2026-10-01.md`.
 
 ## Where the clinic is now (6 Oct 2026)
 
@@ -12,7 +12,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
 
 ## Heal-game decisions (Zafar, 1 Oct, decision 27)
 
-"Yes to all" on the 1 Oct report §10 (`docs/feedback/clinic-playtest-2026-10-01.md`), with these changes:
+"Yes to all" on the 1 Oct report §10 (`docs/archive/feedback/clinic-playtest-2026-10-01.md`), with these changes:
 
 - **D1 zoom:** zoom in from the patient on the bed, swap to the HD close-up at the peak, then zoom back out for "thank you, I feel better".
 - **D2 camera:** two wide shots, front-on and side-on, chosen by the angle each close-up needs.
@@ -45,7 +45,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
 
 ---
 
-**What this is:** step 2 of the token plan (`docs/feedback/clinic-playtest-2026-09-29.md` §11). There's one short, buildable sheet per changed part of the clinic, so the two prototype sessions build rather than research.
+**What this is:** step 2 of the token plan (`docs/archive/feedback/clinic-playtest-2026-09-29.md` §11). There's one short, buildable sheet per changed part of the clinic, so the two prototype sessions build rather than research.
 
 **Sources:** Zafar's play-test report (items G, W, D, P, E, H), his answers (§9 and the two answer blocks under it), `docs/archive/clinic/clinic-design-v1.md` (the original design), and the Cook design system (`docs/design-language/ui-design-system.md`), which the clinic now follows.
 

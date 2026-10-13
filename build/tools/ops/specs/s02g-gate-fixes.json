@@ -9,9 +9,9 @@
   "rules": ["2", "3"],
   "read": [
     "build/screenshots/sandbox/s02-gate/summary.md and the gate log lines quoted below",
-    "build/reports/s02e-art-loading.md (the art and loading changes that caused these)"
+    "build/reports/archive/s02e-art-loading.md (the art and loading changes that caused these)"
   ],
-  "owns": ["js/clinic/**, data/clinic/** (diagnosis D3 standing-pose hit areas, eye game drop)", "js/shared/** for the help pop-up link and the pass-me tray only", "css/** for those two only", "build/sandbox/** drivers only if the game is right and the driver is wrong (say which in the report)", "build/reports/s02g-gate-fixes.md"],
+  "owns": ["js/clinic/**, data/clinic/** (diagnosis D3 standing-pose hit areas, eye game drop)", "js/shared/** for the help pop-up link and the pass-me tray only", "css/** for those two only", "build/sandbox/** drivers only if the game is right and the driver is wrong (say which in the report)", "build/reports/archive/s02g-gate-fixes.md"],
   "readOnly": ["assets/**", "data/lang/**", "data/family-audio.json"],
   "stubs": "none",
   "tasks": [

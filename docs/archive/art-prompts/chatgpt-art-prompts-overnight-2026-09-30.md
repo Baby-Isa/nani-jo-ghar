@@ -1,7 +1,7 @@
 # ChatGPT art prompts: overnight 29–30 Sept (Cook redos + clinic items)
 
 Thirteen prompts, free (ChatGPT). They don't wait on more feedback:
-- **Cook redos (R1–R8):** the fixes the Cook art session and the station sessions found (`build/reports/cook-v3-art.md` §6, `build/reports/sekelo-v3.md` §6, `build/reports/daar-v3.md` §6).
+- **Cook redos (R1–R8):** the fixes the Cook art session and the station sessions found (`build/reports/archive/cook-v3-art.md` §6, `build/reports/archive/sekelo-v3.md` §6, `build/reports/archive/daar-v3.md` §6).
 - **Clinic items (CI1–CI5):** the objects the pharmacy belt and the heal games use. They don't depend on where people stand, so they can go ahead now.
 - **Not in this run:** the clinic's people (patients, the doctor's poses, the body close-ups). Those wait for the people-and-placement plan and the overlay test (VISUAL-QA §2b).
 - **Samosa redos** wait for its report.

@@ -1,6 +1,6 @@
 {
  "pack": "s03",
- "about": "Sprint 3 art (plan docs/design-language/art-plans/s03-art-plan.md), cut by build/tools/art/artcut.py from sources/art/s03/ (the try Fable passed) into a staging folder at source size; build/gen_s03.py --fit then places each piece on the game's registered canvas (the trivet's, the sekelo pieces', the one-colour plasters') and copies the girl's face layers and corner heads. Old files stay in git history.",
+ "about": "Sprint 3 art (plan docs/archive/art-plans/s03-art-plan.md), cut by build/tools/art/artcut.py from sources/art/s03/ (the try Fable passed) into a staging folder at source size; build/gen_s03.py --fit then places each piece on the game's registered canvas (the trivet's, the sekelo pieces', the one-colour plasters') and copies the girl's face layers and corner heads. Old files stay in git history.",
  "src": "sources/art/s03",
  "out": "assets",
  "data": "sources/art/s03/cut-data.json",

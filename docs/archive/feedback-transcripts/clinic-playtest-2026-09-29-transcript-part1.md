@@ -1,6 +1,6 @@
 # Transcript: Zafar's clinic play-test voice note, part 1 of 2, 29 Sept 2026 (24 min)
 
-Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "N-A-R" = *nar* (no); "Sutra" (19:13) is unclear; "Namani" (19:42) = the maani (rolling); "Stick of the Plaster" = stick the plaster on; "developing Kutchi" (16:02) = developing Cook. The report is written once part 2 arrives: docs/feedback/clinic-playtest-2026-09-29.md.
+Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "N-A-R" = *nar* (no); "Sutra" (19:13) is unclear; "Namani" (19:42) = the maani (rolling); "Stick of the Plaster" = stick the plaster on; "developing Kutchi" (16:02) = developing Cook. The report is written once part 2 arrives: docs/archive/feedback/clinic-playtest-2026-09-29.md.
 
 - **0:00** Feedback on the clinic, waiting room, variant, W1.
 - **0:07** Visual-wise, let's just do a check to make sure the background is up to the high quality of the rest of the backgrounds.

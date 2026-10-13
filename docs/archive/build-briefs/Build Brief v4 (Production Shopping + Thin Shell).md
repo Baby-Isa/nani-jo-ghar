@@ -146,7 +146,7 @@ Add to each errand in `data/errands.json`:
 
 ## 7. Reports to produce
 
-- `build/reports/lines-needing-family.md`: every sentence used by any errand whose Kutchi is blank or draft, with its English and where it's used.
+- `build/reports/archive/lines-needing-family.md`: every sentence used by any errand whose Kutchi is blank or draft, with its English and where it's used.
 - The basket angle verdict from section 1.
 - A note on whether the curtain colour shift was needed, with the before and after preview.
 

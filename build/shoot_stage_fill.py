@@ -2,7 +2,7 @@
 """Stage-fill screenshots (docs/archive/process/VISUAL-QA.md): every v2 Cook station, start + mid-cook, at any viewport.
 
 Checks the stage has no dead cream strip: the worktop reaches the stage's top edge, the shelf band the
-bottom edge, and nothing is letterboxed at the sides (build/reports/stage-fill.md).
+bottom edge, and nothing is letterboxed at the sides (build/reports/archive/stage-fill.md).
 
   python3 build/shoot_stage_fill.py                                  # laptop, all seven stations
   python3 build/shoot_stage_fill.py --vp phone-landscape --only daar

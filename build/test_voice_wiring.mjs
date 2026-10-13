@@ -60,7 +60,7 @@ for (const url of ["index.html", "first.html", "cook.html", "clinic.html", "lab/
 }
 
 // the grill's own vocabulary (data.stations.mishkaki-grill / grill: ph-meat "gos", ph-mishkaki
-// "mishkaki", both now Mum's clips per build/reports/voice-coverage.md): speaking them must
+// "mishkaki", both now Mum's clips per build/reports/archive/voice-coverage.md): speaking them must
 // request the family mp3, not just the placeholder voice.
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });

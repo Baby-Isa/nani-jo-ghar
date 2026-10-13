@@ -11,7 +11,7 @@ Built to `docs/archive/mode-briefs/BUILD-COMMON.md` and `docs/game-design/modes/
 - Browser: `snap.html`, `css/snap.css`, `js/snap/core.js`, `adapters.js`, `prints.js`, `mechanics/viewfinder.js`, `mechanics/handin.js`, `mechanics/ali-camera.js`, `round.js`, `bot.js`, `flow.js`.
 - Tests: `build/leak_snap.mjs`, `build/test_snap.py`; reports in `build/reports/`.
 
-### Leak-bot numbers (Node, 500 rounds per strategy per level; `build/reports/snap-leakbot.md`)
+### Leak-bot numbers (Node, 500 rounds per strategy per level; `build/reports/archive/snap-leakbot.md`)
 | | Oracle ear | Blind pooled | Worst blind |
 |---|---|---|---|
 | G1 L1 / L2 / L3 | 100 / 100 / 100% | 1.1 / 0.1 / 0.0% | onePerKind 2.8% |

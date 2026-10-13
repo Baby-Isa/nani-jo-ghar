@@ -9,10 +9,10 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. docs/sprints/S03-overnight-fix.md (the goal and who owns what)
+  5. docs/archive/sprints/S03-overnight-fix.md (the goal and who owns what)
   6. docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)
-  7. docs/feedback/clinic-playtest-2026-10-08.md
-  8. build/reports/s02-review.md (flaws first)
+  7. docs/archive/feedback/clinic-playtest-2026-10-08.md
+  8. build/reports/archive/s02-review.md (flaws first)
   9. js/clinic/stages/pharmacy.js requestPopup and js/cook/ui.js's requests pop-up (the two copies to replace)
   10. js/shared/order-card.js (big: true), docs/design-language/guide-and-card.md
 
@@ -21,7 +21,7 @@ FILES THIS SESSION OWNS (edit only these):
   - js/cook/ui.js
   - js/clinic/kit.js (Voice), js/clinic/heal/host.js, js/clinic/stages/pharmacy.js
   - the Shared components rows in docs/process/regressions.md
-  - build/reports/s03a-shared.md
+  - build/reports/archive/s03a-shared.md
 READ-ONLY (never edit):
   - js/cook/** other than ui.js (Session B)
   - js/clinic/heal/games/**, js/clinic/stages/** other than pharmacy.js (Session C)
@@ -64,4 +64,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8831.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s03a-shared.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s03a-shared.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

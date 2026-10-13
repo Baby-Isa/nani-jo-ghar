@@ -1,6 +1,6 @@
 /*
  * Nani's house: the app shell's home screen (index.html). "One app, one
- * save", phase B; build/reports/shell.md has the why.
+ * save", phase B; build/reports/archive/shell.md has the why.
  *
  * LAUNCH
  *   - nobody on this device yet (a first launch): make "Player 1" and go

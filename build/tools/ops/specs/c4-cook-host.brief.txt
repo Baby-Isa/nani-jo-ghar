@@ -12,11 +12,11 @@ READ FIRST (in this order):
   5. docs/architecture/target-model.md
   6. docs/architecture/shared-api.md
   7. docs/architecture/building-games.md
-  8. build/reports/step3-r3b.md
-  9. build/reports/step3-r4.md
-  10. build/reports/c3-cook-ready.md
-  11. build/reports/step4d-cook-engine.md
-  12. build/reports/r7-leftovers.md
+  8. build/reports/archive/step3-r3b.md
+  9. build/reports/archive/step3-r4.md
+  10. build/reports/archive/c3-cook-ready.md
+  11. build/reports/archive/step4d-cook-engine.md
+  12. build/reports/archive/r7-leftovers.md
   13. js/shared/host.js and js/shared/mode.js (how the clinic and conversations mount as plug-ins)
 
 FILES THIS SESSION OWNS (edit only these):
@@ -28,7 +28,7 @@ FILES THIS SESSION OWNS (edit only these):
   - build/test_cook*
   - build/leak_cook.mjs
   - js/clinic/heal/games/hic.js, tummy.js, hair.js (task 4 only)
-  - build/reports/c4-cook-host.md
+  - build/reports/archive/c4-cook-host.md
   - docs/process/overnight-log.md (append only)
   - docs/process/regressions.md (status column of rows you build)
 READ-ONLY (never edit):
@@ -69,6 +69,6 @@ PROOF (rule C8, decision 48: fast checks only; the orchestrator's /review runs t
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8818.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/c4-cook-host.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/c4-cook-host.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
 Do NOT remove or change any mechanic: this is plumbing only; the game must look and play exactly as after 4d.
 Proof is fast checks only (decision 48): tests, leak scripts, checks.mjs, check_onboard, one --touched pass at 1366x768 plus the six parked flows; the orchestrator runs the full matrix once before publishing.

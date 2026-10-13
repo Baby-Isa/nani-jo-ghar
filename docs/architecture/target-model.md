@@ -204,7 +204,7 @@ Within one mini-game the gesture for a kind of action never changes between leve
 
 ### 4.5 The shell: hub, arcs, bookshelf, Conversations
 
-- **Pages stay pages.** The house (`index.html`) opens a mode's page, and the mode comes back (`js/shared/app.js`, why: `build/reports/shell.md`). This works the same inside Capacitor.
+- **Pages stay pages.** The house (`index.html`) opens a mode's page, and the mode comes back (`js/shared/app.js`, why: `build/reports/archive/shell.md`). This works the same inside Capacitor.
 - **Arcs are data** (`data/arcs/<arc>.json`; built: the Birthday skeleton with Cook's errand playable, a demo arc, `index.json`; `build/host/check_arcs.mjs` checks them): chapters, errands (each = a mode, an entry and its settings), the beats between them and where Conversations may slot in. The hub reads the arc and the save to light the next errand and fill the house (H36–H40).
 - **The bookshelf** (decision 4) and **Story by the Fire** read the story log.
 - **Conversations** (`js/shared/conversations.js`, built, not wired) is placed by the shell, not by modes: a mode only announces natural pauses (`ctx.pause("after-serve")`) and the shell decides whether a conversation goes there (H44).

@@ -10,7 +10,7 @@
   "rules": ["2", "3", "5 (Clinic)", "8 (Language)"],
   "read": [
     "docs/game-design/modes/clinic.md",
-    "docs/language/engine-spec.md and build/reports/step4a-engine-core.md, step4b-engine-fill.md",
+    "docs/language/engine-spec.md and build/reports/archive/step4a-engine-core.md, step4b-engine-fill.md",
     "data/lang/reports/gap-list.md (Clinic) and clash-list.md",
     "docs/decisions.md 36, 40, 42"
   ],

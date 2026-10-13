@@ -13,19 +13,19 @@
     "5 (Clinic)"
   ],
   "read": [
-    "docs/sprints/S03-overnight-fix.md (the goal and who owns what)",
+    "docs/archive/sprints/S03-overnight-fix.md (the goal and who owns what)",
     "docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)",
-    "docs/feedback/clinic-playtest-2026-10-08.md",
-    "build/reports/s02-review.md (flaws first)",
-    "build/reports/s02c-clinic.md, s02f-finish.md",
-    "docs/feedback/clinic-playtest-2026-10-06.md \u00a72",
+    "docs/archive/feedback/clinic-playtest-2026-10-08.md",
+    "build/reports/archive/s02-review.md (flaws first)",
+    "build/reports/archive/s02c-clinic.md, s02f-finish.md",
+    "docs/archive/feedback/clinic-playtest-2026-10-06.md \u00a72",
     "docs/game-design/modes/clinic.md"
   ],
   "owns": [
     "js/clinic/heal/games/**, js/clinic/stages/** except pharmacy.js (Session A), js/clinic/figure.js, body.js, pipeline.js, run.js, main.js, screen.js",
     "data/clinic/** except art references (Session D)",
     "the Clinic rows in docs/process/regressions.md",
-    "build/reports/s03c-clinic.md"
+    "build/reports/archive/s03c-clinic.md"
   ],
   "readOnly": [
     "js/shared/**, js/clinic/kit.js, js/clinic/heal/host.js, js/clinic/stages/pharmacy.js (Session A: pull often)",

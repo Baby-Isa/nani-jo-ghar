@@ -326,7 +326,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     label(obj, id, { mode } = {}) {
       mode = mode || Cook.labelMode(id);
       if (mode === "none") return null;
-      // Sidebar v3 (28 Sept, late; docs/feedback/cook-ui-feedback-2026-09-28.md 10): an item whose word is
+      // Sidebar v3 (28 Sept, late; docs/archive/feedback/cook-ui-feedback-2026-09-28.md 10): an item whose word is
       // hidden shows no label at all, never a lone speaker bubble (its word is on the card's face = replay)
       if (mode !== "text") return null;
       const c = this.centre(obj);

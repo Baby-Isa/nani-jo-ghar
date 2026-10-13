@@ -239,7 +239,7 @@ Read against the "Pipeline design" sections of the clinic, Monsoon rush, Snap, D
 
 **Quality pass, 25 Sept 2026 (late):** the section above supersedes P.2, P.3 and the named lines of P.6, P.8 and P.9. Nine mini-games and nine places are kept; controls are tap-tap throughout; the card auto-ticks.
 
-**What this is.** The mode rebuilt to `docs/archive/mode-briefs/PIPELINE-BRIEF.md`: a **pipeline of five stages** that runs from "What a mess!" to the knock at the door, each stage a set of mini-game variants, stitched into one short story. It sits on the deep dive below (D.1–D.9) and the build that exists (`js/tidy/`, `data/tidy.json`, `build/reports/tidy-build.md`): the current engine becomes **stage 3** of the pipeline, and the kinds of round K1–K5 become that stage's variants. **It supersedes D.1's backbone, D.5's first set and ladder, D.6, D.9 and section 12 where they conflict.** The guards G1–G8, the data model (8.1), the hint ladder, word-stage fading, recasts, the stars, D.3's mechanics and D.4's speaking moments all stand, and are referred to rather than repeated. Kutchi that exists is written as such (*santra, limu, hardar, trae, Muke {x} de*); everything else is `[EN: …]` and stays a grey placeholder. **No Kutchi is invented.**
+**What this is.** The mode rebuilt to `docs/archive/mode-briefs/PIPELINE-BRIEF.md`: a **pipeline of five stages** that runs from "What a mess!" to the knock at the door, each stage a set of mini-game variants, stitched into one short story. It sits on the deep dive below (D.1–D.9) and the build that exists (`js/tidy/`, `data/tidy.json`, `build/reports/archive/tidy-build.md`): the current engine becomes **stage 3** of the pipeline, and the kinds of round K1–K5 become that stage's variants. **It supersedes D.1's backbone, D.5's first set and ladder, D.6, D.9 and section 12 where they conflict.** The guards G1–G8, the data model (8.1), the hint ladder, word-stage fading, recasts, the stars, D.3's mechanics and D.4's speaking moments all stand, and are referred to rather than repeated. Kutchi that exists is written as such (*santra, limu, hardar, trae, Muke {x} de*); everything else is `[EN: …]` and stays a grey placeholder. **No Kutchi is invented.**
 
 ### P.1 The pipeline: a tidy afternoon
 
@@ -407,7 +407,7 @@ Sources: [Toca House (Common Sense Media)](https://www.commonsensemedia.org/app-
 
 ### P.6 What survives from the current build
 
-Measured against `js/tidy/` (3,047 lines), `data/tidy.json`, `tidy.html`, `build/leak_tidy.mjs`, `build/test_tidy.py` and `build/reports/tidy-build.md`. The short answer: **the engine, the generator, all six mechanics and the three boards carry over as stage 3; the pipeline is a new runner above them, and stages 1, 2, 4 and 5 are mostly new rounds on existing mechanics.**
+Measured against `js/tidy/` (3,047 lines), `data/tidy.json`, `tidy.html`, `build/leak_tidy.mjs`, `build/test_tidy.py` and `build/reports/archive/tidy-build.md`. The short answer: **the engine, the generator, all six mechanics and the three boards carry over as stage 3; the pipeline is a new runner above them, and stages 1, 2, 4 and 5 are mostly new rounds on existing mechanics.**
 
 | File | Verdict | What changes |
 |---|---|---|
@@ -451,7 +451,7 @@ Mechanics count after the redesign (as edited by the quality pass, Q.8): **T (ex
 
 ### P.9 Build brief (rewritten for the pipeline; phased, own files first)
 
-**Read first:** P.1–P.8, then D.3, D.4, 8.1 (guards and data model), `build/reports/tidy-build.md` and `docs/archive/build-logs/tidy-up-build-log.md`, `docs/design-language/ux-principles.md` (all ten points), `docs/archive/mode-briefs/BUILD-COMMON.md`. **Never invent Kutchi.** Phases A–C touch **only** the files this mode owns; the shared pieces are assumed, not built.
+**Read first:** P.1–P.8, then D.3, D.4, 8.1 (guards and data model), `build/reports/archive/tidy-build.md` and `docs/archive/build-logs/tidy-up-build-log.md`, `docs/design-language/ux-principles.md` (all ten points), `docs/archive/mode-briefs/BUILD-COMMON.md`. **Never invent Kutchi.** Phases A–C touch **only** the files this mode owns; the shared pieces are assumed, not built.
 
 **Files this mode owns** (as edited by the quality pass: no `fold`, no `belt`). `tidy.html` · `css/tidy.css` · `js/tidy/{engine,rules,bot,lab,pipeline}.js` · `js/tidy/mechanics/{place,pack,stack,check,paw,tell,pair}.js` · `js/tidy/games/*.js` (one per place) · `js/tidy/stubs/{fetch,passme}.js` · `data/tidy.json` · `data/scenes/{kitchen,sitting-room,worktop,doorway-floor,bedroom}-tidy.json` · `build/leak_tidy.mjs` · `build/test_tidy.py` · `docs/archive/build-logs/tidy-up-build-log.md`.
 
@@ -475,7 +475,7 @@ Mechanics count after the redesign (as edited by the quality pass, Q.8): **T (ex
 
 ## Deep dive, 25 Sept 2026: mini-games and mechanics
 
-**What this is.** The mode rebuilt to the shape of `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md`: a set of mini-games (the way Cook is a set of stations), each on modular mechanics with levels and rounds as data, with speaking as a core part, built in isolation first. **It supersedes sections 3, 4, 8.2 and 12 below where they conflict**; the guards G1–G8, the data model (8.1), the hint ladder, fading, recasts, stars and the art list stand. It also answers `docs/feedback/modes-review-2026-09-25.md` (D.7) and Zafar's note on the pill organiser (T6).
+**What this is.** The mode rebuilt to the shape of `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md`: a set of mini-games (the way Cook is a set of stations), each on modular mechanics with levels and rounds as data, with speaking as a core part, built in isolation first. **It supersedes sections 3, 4, 8.2 and 12 below where they conflict**; the guards G1–G8, the data model (8.1), the hint ladder, fading, recasts, stars and the art list stand. It also answers `docs/archive/feedback/modes-review-2026-09-25.md` (D.7) and Zafar's note on the pill organiser (T6).
 
 ### D.1 Pitch and the kinds of round
 
@@ -1214,7 +1214,7 @@ The Sceptic cannot win the ear star by reading (no labels, Kutchi rows), matchin
 
 ## 12. Build brief for a future agent (rewritten 25 Sept, to match the deep dive)
 
-**Read first:** the deep dive at the top of this doc (D.1–D.9), then 8.1 (data model and guards), 6.2–6.4, 7; `docs/architecture/cook-recipes-guide.md` §1, 5, 6 and `js/cook/mechanics/{count,fetch,passme}.js`; `docs/feedback/modes-review-2026-09-25.md` (Tidy up and Cross-mode); Wave 5 in `docs/archive/cook/cook-with-nani-todo.md`. **Never invent Kutchi**: every missing word is `kutchi: null` with its English. You are one of several build agents working at once: **phases 0–1 touch only the files below** and nothing in `js/cook/`, `js/shared/`, `data/scenes/kitchen.json`, `data/relations.json` or the shell.
+**Read first:** the deep dive at the top of this doc (D.1–D.9), then 8.1 (data model and guards), 6.2–6.4, 7; `docs/architecture/cook-recipes-guide.md` §1, 5, 6 and `js/cook/mechanics/{count,fetch,passme}.js`; `docs/archive/feedback/modes-review-2026-09-25.md` (Tidy up and Cross-mode); Wave 5 in `docs/archive/cook/cook-with-nani-todo.md`. **Never invent Kutchi**: every missing word is `kutchi: null` with its English. You are one of several build agents working at once: **phases 0–1 touch only the files below** and nothing in `js/cook/`, `js/shared/`, `data/scenes/kitchen.json`, `data/relations.json` or the shell.
 
 **Files this mode owns.** `tidy.html` · `css/tidy.css` · `js/tidy/{engine,rules,bot,lab}.js` · `js/tidy/mechanics/{place,pack,check,stack,pair,order,paw,tell}.js` · `js/tidy/games/{putaway,dastarkhwan,box,ali}.js` (one combined mini-game each, Cook's `stations/` pattern) · `data/tidy.json` · `data/scenes/kitchen-tidy.json`, `sitting-room-tidy.json`, `worktop-tidy.json` (sidecars: spots, tags, neighbours; merged into the scene files by the foundation agent later) · `build/leak_tidy.mjs` · `build/test_tidy.py` · `docs/archive/build-logs/tidy-up-build-log.md`.
 

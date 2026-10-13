@@ -6,7 +6,7 @@ overlay's see-through hand shows too) with build/test_cook.py's player, and
 takes a picture just after a tap lands (the hand pressing) and part way
 through every drag (the knife, the ladle, the rolling pin, the fold). It
 also records the hand textures in memory at each station
-(Cook.Hands.loaded()) into build/reports/data/cook-hands-textures.json.
+(Cook.Hands.loaded()) into build/reports/archive/data/cook-hands-textures.json.
 
 Usage (one browser at a time):
   COOK_TEST_PORT=8870 python3 build/shoot_cook_hands.py --viewport flip5-landscape [--hands player-girl] [--stations chop,stir]

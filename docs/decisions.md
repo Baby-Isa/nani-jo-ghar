@@ -2,7 +2,7 @@
 
 Zafar's decisions that still stand, numbered as they were made, each with its date, a one-line why and the rule it became. **The newest word from Zafar wins:** if a new decision clashes with one here, strike the old one through and point to the new one. A decision that changes a rule updates `docs/process/rules.md` in the same commit.
 
-**What goes where (decision 49).** A lasting decision becomes a rule and a line here. A small decision (a sprint's own choices, a number, a one-off) lives in that sprint's file, `docs/sprints/Snn-<name>.md`. The numbers below skip the sprint-only ones; they are in `docs/sprints/S01-remedial-and-engine.md` (decisions 19, 21b, 23b, 28, 30–32, 35, 37, 38, 42–45). Everything before 5 Oct, in full, with Claude's working assumptions, is in `docs/archive/decisions/`.
+**What goes where (decision 49).** A lasting decision becomes a rule and a line here. A small decision (a sprint's own choices, a number, a one-off) lives in that sprint's file, `docs/sprints/Snn-<name>.md`. The numbers below skip the sprint-only ones; they are in `docs/archive/sprints/S01-remedial-and-engine.md` (decisions 19, 21b, 23b, 28, 30–32, 35, 37, 38, 42–45). Everything before 5 Oct, in full, with Claude's working assumptions, is in `docs/archive/decisions/`.
 
 To add one: a new row at the end, `| n | date | decision | why | rule |`.
 

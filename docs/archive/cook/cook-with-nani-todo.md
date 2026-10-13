@@ -116,7 +116,7 @@ Brief: `docs/archive/mode-briefs/MODE-DESIGN-BRIEF.md`. Each agent does research
 | Monsoon rush | `docs/game-design/modes/monsoon-rush.md` | ☑ designed | Go with changes |
 | Snap | `docs/game-design/modes/snap.md` | ☑ designed | Go with changes |
 
-## Wave 6: Zafar's grill playtest, 25 Sept (see `docs/design-language/ux-principles.md`) ☑ (branch `claude/build-cook-wave6`, report `build/reports/cook-wave6.md`)
+## Wave 6: Zafar's grill playtest, 25 Sept (see `docs/design-language/ux-principles.md`) ☑ (branch `claude/build-cook-wave6`, report `build/reports/archive/cook-wave6.md`)
 - ☑ Request card with read-along highlighting, by recorded chunk: each spoken line has its own voice file, and its row or card lights up while it plays. It shows the recipe's plain-English `how`, then shrinks into the sidebar. (Word-by-word highlighting inside a chunk waits for per-word timings from the family's recordings.)
 - ☑ Sidebar on the **left** (`<body class="w6">` in cook.html; Find it and the other pages sharing `js/cook/ui.js` keep the Wave 5 card until they opt in); Done and "Go to the barbecue" bottom right
 - ☑ One card per item, fixed shape: a card per skewer (always four dots; a mixed one names its pieces on its dots), per maani, per cup (face, *Nana lai.*, then milk / sugar / which chai; an empty slot for plain; half/full only when asked). Data: `cards`, `cardOf`, a recipe's `card`
@@ -129,7 +129,7 @@ Brief: `docs/archive/mode-briefs/MODE-DESIGN-BRIEF.md`. Each agent does research
 - ☐ Placeholder voice for the new words: `build/build_cook_tts.py` knows them now (Gujarati spellings added) but Google TTS is blocked here; run it on a machine with network. Until then the new words use the device's own voice, or are silent
 - ☐ For Zafar: one card per skewer / maani shows the count (see the audit, "After Wave 6"); ordering *for* others by name at the Chai tray (*Nana lai*) is the next Chai tray pass
 
-## Wave 6b: UX principles §9–§13 ☑ (branch `claude/build-cook-wave6b`, report `build/reports/cook-wave6b.md`)
+## Wave 6b: UX principles §9–§13 ☑ (branch `claude/build-cook-wave6b`, report `build/reports/archive/cook-wave6b.md`)
 - ☑ The shared end-of-round screen (`js/shared/results.js`) after every order and every Station lab round: time with a personal best per game and level, accuracy (the order's rows, plus one red slot per mistake that isn't a row), hints (`ctx.help`, the bulb counts); then the word review. Mapped to the stars (accuracy gold ⇔ ear, hints gold ⇔ no help)
 - ☑ Picture tally, top right, in every station where you make several things (pantry, chop, the Chai tray per cup, maani, skewers threaded and plated, tadka, chaat layers, samosa fillings, folds and fried, stir laps): what you did, never the target; it never takes a tap
 - ☑ Auto-tick at every level: count rows tick when their step closes (the chop ring runs out, Done, the cup is full), right or not; the tadka's hidden order comes back row by row as it's ticked. `--orders` checks it: 0% of count rows tick at their number

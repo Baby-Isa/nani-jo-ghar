@@ -178,7 +178,7 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 ## Part 3. Layout and the pantry (Zafar's feedback, 28 Sept)
 
 
-> from: docs/feedback/cook-ui-feedback-2026-09-28.md § §4 The pantry: redo the art and the layout
+> from: docs/archive/feedback/cook-ui-feedback-2026-09-28.md § §4 The pantry: redo the art and the layout
 
 ### 4. The pantry: redo the art and the layout
 - **The shelves:** straight on, at eye level, horizontal. Every item is drawn side-on at the same eye level. No angled shelves, and no top-down bowls on side-on shelves.
@@ -194,7 +194,7 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 - **The backgrounds look low-resolution** next to the characters (kitchen, pantry, and the rest). Serve them at full resolution and quality. If the ChatGPT originals (1536 px) are still soft at laptop 2× resolution, upscale them.
 
 
-> from: docs/feedback/cook-ui-feedback-2026-09-28.md § §8 The chai station (the chai layout)
+> from: docs/archive/feedback/cook-ui-feedback-2026-09-28.md § §8 The chai station (the chai layout)
 
 ### 8. The chai station (Zafar, 28 Sept, evening), with Claude's recommendations
 - **Layout:** the hob and the chai tray sit side by side along the top, level top and bottom. The hob is turned to be wider (about 5/8 of the width) and the tray takes about 3/8. Below them runs a clean strip for the ingredients, and **nothing overlaps the hob**.

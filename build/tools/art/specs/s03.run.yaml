@@ -1,10 +1,10 @@
 # The run spec for pack s03 (Sprint 3: the redo list, the art rows, the girl's states; plan
-# docs/design-language/art-plans/s03-art-plan.md). Drawn by build/gen_s03.py through the image API (decision 71), not a
+# docs/archive/art-plans/s03-art-plan.md). Drawn by build/gen_s03.py through the image API (decision 71), not a
 # paste block; read by artjudge.py. The judge reads the latest try of each line from a folder of these save names
 # (build/gen_s03.py writes <id>-v<try>.png; the session copies the try under judgement to its save name).
 pack: s03
 title: Sprint 3 art
-plan: docs/design-language/art-plans/s03-art-plan.md
+plan: docs/archive/art-plans/s03-art-plan.md
 dest: sources/art/s03/judge
 real_people: false
 refs:

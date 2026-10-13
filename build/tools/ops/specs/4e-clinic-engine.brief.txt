@@ -10,7 +10,7 @@ READ FIRST (in this order):
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
   5. docs/game-design/modes/clinic.md
-  6. docs/language/engine-spec.md and build/reports/step4a-engine-core.md, step4b-engine-fill.md
+  6. docs/language/engine-spec.md and build/reports/archive/step4a-engine-core.md, step4b-engine-fill.md
   7. data/lang/reports/gap-list.md (Clinic) and clash-list.md
   8. docs/decisions.md 36, 40, 42
 

@@ -11,7 +11,7 @@
     "3"
   ],
   "read": [
-    "docs/sprints/S05-plan.md (all of it; you are package T)",
+    "docs/archive/sprints/S05-plan.md (all of it; you are package T)",
     "docs/process/cost-and-speed.md (changes 1, 3, 4, 5, 7, 8)",
     "docs/architecture/evidence-loop.md",
     "docs/decisions.md rows 82-87 only"

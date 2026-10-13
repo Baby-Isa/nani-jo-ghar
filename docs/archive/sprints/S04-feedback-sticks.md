@@ -19,7 +19,7 @@ All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s04*.brief.t
 - **B, shared host** (Opus high): the shared lifecycle every game goes through; one voice layer, one bubble placement, one talk animation (smaller bob); tonight's named fixes. Owns `js/**`.
 - **C, art** (Opus high, Fable reviewing): the served chaat at the tray's angle without a baked shadow (and every served dish checked); Nani leaning on the counter in every mood, swapped under the same keys. Owns `assets/**`, art data.
 
-Launched 8 Oct ~23:46 UK: A session_01A5BjhwAX18NJCqkcq9kEwW, C session_018V7iXuCWkXhirFUUgkPWXz. B blocked by the orchestrator session's launch permission; Zafar to launch it (brief `s04b-host.brief.txt`). Coverage audit (two Fable readers, this chat): `build/reports/s04-coverage-cook.md`, `s04-coverage-clinic.md`.
+Launched 8 Oct ~23:46 UK: A session_01A5BjhwAX18NJCqkcq9kEwW, C session_018V7iXuCWkXhirFUUgkPWXz. B blocked by the orchestrator session's launch permission; Zafar to launch it (brief `s04b-host.brief.txt`). Coverage audit (two Fable readers, this chat): `build/reports/archive/s04-coverage-cook.md`, `s04-coverage-clinic.md`.
 
 9 Oct ~00:15 UK: A done (`s04a-contract.md`: six checks; 8 of tonight's points reproduced on the pre-fix build, the diagnosis bubble breaks but not in the corner; 27 'contract check' rows have no check yet), about $11. C done (`s04c-art.md`: chaat side-on without a shadow, Nani leaning in four moods; CK-21 open for the code's shadow), about $11 + $2.41 API. Coverage audit applied (`8904458`: 28 rows added, 46 rewritten, 25 reopened); now 96 open, 227 built.
 
@@ -32,7 +32,7 @@ Launched 8 Oct ~23:46 UK: A session_01A5BjhwAX18NJCqkcq9kEwW, C session_018V7iXu
 - **Not published:** `main` is still Sprint 3 (1a6950df). The branch carries all of Sprint 4.
 - **Built:** the shared lifecycle every game goes through (pop-up first, moves on by itself, one voice stop, one bubble placement, smaller bob); round 2 Cook and clinic fixes; the knee wrap; the closed big card from L3 (no pop-up leak); the graze art; eye layout A kept; decisions 75–86.
 - **The checking system:** contract checks 1–14 in the sandbox; the sprint check; the evidence loop (docs/architecture/evidence-loop.md, Fable-reviewed): an evidence spec for all 373 rows, 21 drivers, test hooks, cropped sheets, a verdict cache. Every row was played and judged (Fable image batches, Sonnet text batches, machine expects): the list is now proven, not claimed: 144 open or reopened, 188 built with evidence.
-- **Moved on to Sprint 5:** `docs/sprints/S05-plan.md` (Opus planner): 105 code rows in four packages (T tools, S shared, B words and leaks, C Cook, D clinic), 12 art, 6 Mum, 7 Zafar, 13 tool; the s05 art run (Zafar, supervised); the cost-and-speed changes (`docs/process/cost-and-speed.md`).
+- **Moved on to Sprint 5:** `docs/archive/sprints/S05-plan.md` (Opus planner): 105 code rows in four packages (T tools, S shared, B words and leaks, C Cook, D clinic), 12 art, 6 Mum, 7 Zafar, 13 tool; the s05 art run (Zafar, supervised); the cost-and-speed changes (`docs/process/cost-and-speed.md`).
 - **Spend:** roughly $330 this sprint (sessions A–C ~$37, B ~$14, helpers and judges the rest), plus 3 days lost to usage limits.
 
 ## Look back (three lines)

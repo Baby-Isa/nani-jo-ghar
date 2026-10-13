@@ -1,6 +1,6 @@
 # The 30 Sept decisions log and open questions (1–27), as they stood in rules.md until 5 Oct 2026
 
-Archived by the docs rewrite (D1). The lasting ones are in `docs/decisions.md`; the rest are in `docs/sprints/S01-remedial-and-engine.md`.
+Archived by the docs rewrite (D1). The lasting ones are in `docs/decisions.md`; the rest are in `docs/archive/sprints/S01-remedial-and-engine.md`.
 
 ## Decisions log, 30 Sept
 

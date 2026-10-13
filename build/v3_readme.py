@@ -96,7 +96,7 @@ def main():
            "**v3.1 (30 Sept):** the redos R1-R8 (`docs/archive/art-prompts/chatgpt-art-prompts-overnight-2026-09-30.md`, `sources/art/cook-v3-1/`) are",
            "cut by `python3 build/cut_cook_v3_1.py` (the same method, this script's functions) into the same folders, next to",
            "the v3 files, with `-v2` where one replaces a v3 file. R4's pots are scaled and placed on D1's pot canvas (their",
-           "rims on D1's); R6's plates share one canvas on the rim. The report: `build/reports/art-v3-1.md`.", ""]
+           "rims on D1's); R6's plates share one canvas on the rim. The report: `build/reports/archive/art-v3-1.md`.", ""]
     for name, prompts, what, purpose in GROUPS:
         meta = json.load(open(os.path.join(V3, name, "meta.json")))
         out += [f"## {name}/ ({prompts})", "", what, "", "| file | px | what it is | measured |", "|---|---|---|---|"]

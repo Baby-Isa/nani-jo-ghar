@@ -536,7 +536,7 @@ Still open from this list: whether *randhnu no khapdo* (Zafar's try in S6) is a 
 
 ## 5 Oct 2026: Mum and Zafar, Round 4 Section I, Questions I1–I35 (cooking words; 8 min, `sources/audio/mum-2026-10-05/I1-I35.m4a`)
 
-**Spellings confirmed by Zafar, 5 Oct (decision 31):** all eleven items in `build/reports/mum-2026-10-05.md` ("Spellings to confirm"): *wadho / wadha / wadhi / wadhe*, *nindho*; *ain*, *aiya*, *aiye*; *pa*, *asa*, *asanjo*, *panjo*; *iloka*, *mare*; *chokriyu, kursiyu, pacheriyu*; *firai*, *bego kari chad*, *wiji chad*, *kadhi chad*, *kapi chad*; *jhino / jhini*, *jadi*, ***thundo*** (cold, not *thandu*); *chapri*, *welan*, *chulo*; *dayo / dayi*, *saro / sari*; *ginech*, *khanech*; *Nana je cup je andar*. They apply to §38–§55 below; a ⚠ left there is about the meaning or a word not on that list.
+**Spellings confirmed by Zafar, 5 Oct (decision 31):** all eleven items in `build/reports/archive/mum-2026-10-05.md` ("Spellings to confirm"): *wadho / wadha / wadhi / wadhe*, *nindho*; *ain*, *aiya*, *aiye*; *pa*, *asa*, *asanjo*, *panjo*; *iloka*, *mare*; *chokriyu, kursiyu, pacheriyu*; *firai*, *bego kari chad*, *wiji chad*, *kadhi chad*, *kapi chad*; *jhino / jhini*, *jadi*, ***thundo*** (cold, not *thandu*); *chapri*, *welan*, *chulo*; *dayo / dayi*, *saro / sari*; *ginech*, *khanech*; *Nana je cup je andar*. They apply to §38–§55 below; a ⚠ left there is about the meaning or a word not on that list.
 
 **Which round:** Round 4. Section I exists only in the Round 4 sheet (Round 5 has no I-numbers), and on the tape Zafar opens with "This is I, cooking words. I1, pour" and reads the Round 4 English line by line (I21 "thin, like a maani", I26 "cassava (mogo)", I28 "skewer"). The same check was done for the other two files below.
 

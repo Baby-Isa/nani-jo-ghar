@@ -17,7 +17,7 @@
     "build/tools/audio/** (new: the re-clipper, the review page builder, the apply-picks script)",
     "assets/audio/family-candidates/** (new: ranked takes; old clips under assets/audio/family/ are never deleted or overwritten)",
     "data/family-audio-candidates.json (new) and, only through the apply-picks script after Zafar's picks, data/family-audio.json",
-    "build/reports/s02d-reclip.md"
+    "build/reports/archive/s02d-reclip.md"
   ],
   "readOnly": ["js/**, css/**, data/cook.json, data/clinic/** (Sessions B and C are running)", "data/lang/**", "assets/audio/family/** existing files (read only; never overwrite)"],
   "stubs": "none; a line with no take above the bar is listed as 'record again' in the report",

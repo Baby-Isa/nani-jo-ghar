@@ -512,7 +512,7 @@ What none of them has, and we keep from our own design: one patient reacting liv
 
 ### P9 What survives from the current build
 
-The phase-1 build (`build/reports/clinic-build.md`, `docs/archive/build-logs/clinic-build-log.md`) is a set of mechanics and a visit generator. The pipeline keeps almost all of the mechanics, retires the visit-as-a-unit, and adds the belt and the healing games.
+The phase-1 build (`build/reports/archive/clinic-build.md`, `docs/archive/build-logs/clinic-build-log.md`) is a set of mechanics and a visit generator. The pipeline keeps almost all of the mechanics, retires the visit-as-a-unit, and adds the belt and the healing games.
 
 | File | Verdict | Notes for the next build agent |
 |---|---|---|

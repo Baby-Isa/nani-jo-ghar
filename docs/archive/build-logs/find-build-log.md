@@ -30,7 +30,7 @@ Branch `claude/build-find`. Built from `docs/game-design/modes/find-it.md` (deep
 6. **Pills live at once outside the lab** (no family recordings yet for the recogniser, so `Say` hides the mic); in the lab the mic is a picker ("what did the child say?").
 7. **A round that breaks a rule is dealt again** (at most 40 times; mean 1.0–1.6 deals, except F3 level 4, size and where on six calls: mean 2.7, max 15 in 500).
 
-### Leak bot (`node build/leak_find.mjs --n 1000`, full table in `build/reports/find-leak.md`)
+### Leak bot (`node build/leak_find.mjs --n 1000`, full table in `build/reports/archive/find-leak.md`)
 
 Ear-star rate of a player who knows no Kutchi, mean over strategies (worst single strategy in brackets).
 

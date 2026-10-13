@@ -248,7 +248,7 @@ An errand, start to finish, about three to four minutes at level 2 and about nin
 
 ### P2 The stages and their mini-games
 
-Levels are the player's (per word stage), not doors; a stage's variant is chosen by level and by the errand's data (`pipelines[].stages[].variants`). "Reuses" names the mechanic file. Blind-bot figures are from `build/reports/find-leak.md` where a variant is built, estimates otherwise.
+Levels are the player's (per word stage), not doors; a stage's variant is chosen by level and by the errand's data (`pipelines[].stages[].variants`). "Reuses" names the mechanic file. Blind-bot figures are from `build/reports/archive/find-leak.md` where a variant is built, estimates otherwise.
 
 #### Stage 1 · The errand (the request card)
 
@@ -397,7 +397,7 @@ Round two adds the sidebar and a second row; round three the bag's swap; the lig
 
 ### P6 What survives from the current build
 
-The build session on `claude/build-find` has delivered phases 0–1 of section 8 (its report: `build/reports/find-build.md`; log: `docs/archive/build-logs/find-build-log.md`; leak table: `build/reports/find-leak.md`). **Almost all of it carries over.** The pipeline is a change to the *runner* and to the *data*, not to the mechanics. The Node leak bot passes at 0.0–1.8% for F1–F3 (positions hidden), and nothing below should move those numbers, which is the acceptance test for the refactor.
+The build session on `claude/build-find` has delivered phases 0–1 of section 8 (its report: `build/reports/archive/find-build.md`; log: `docs/archive/build-logs/find-build-log.md`; leak table: `build/reports/archive/find-leak.md`). **Almost all of it carries over.** The pipeline is a change to the *runner* and to the *data*, not to the mechanics. The Node leak bot passes at 0.0–1.8% for F1–F3 (positions hidden), and nothing below should move those numbers, which is the acceptance test for the refactor.
 
 | File (on `claude/build-find`) | Fate | What changes |
 |---|---|---|
@@ -1012,7 +1012,7 @@ Branch `claude/build-find`. Built from `docs/game-design/modes/find-it.md` (deep
 6. **Pills live at once outside the lab** (no family recordings yet for the recogniser, so `Say` hides the mic); in the lab the mic is a picker ("what did the child say?").
 7. **A round that breaks a rule is dealt again** (at most 40 times; mean 1.0–1.6 deals, except F3 level 4, size and where on six calls: mean 2.7, max 15 in 500).
 
-#### Leak bot (`node build/leak_find.mjs --n 1000`, full table in `build/reports/find-leak.md`)
+#### Leak bot (`node build/leak_find.mjs --n 1000`, full table in `build/reports/archive/find-leak.md`)
 
 Ear-star rate of a player who knows no Kutchi, mean over strategies (worst single strategy in brackets).
 

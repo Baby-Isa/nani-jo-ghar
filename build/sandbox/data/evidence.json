@@ -11143,7 +11143,7 @@
   }
  ],
  "_obsolete": {
-  "_about": "Probes dropped because the game no longer has their state (s04-tf, build/reports/evidence-toolfix.md), each with why. A whole row in that case is {obsolete: why, was: [its old probes]}: no page, no sheet; listed in the run's index for its owner (rewrite the check or retire the row).",
+  "_about": "Probes dropped because the game no longer has their state (s04-tf, build/reports/archive/evidence-toolfix.md), each with why. A whole row in that case is {obsolete: why, was: [its old probes]}: no page, no sheet; listed in the run's index for its owner (rewrite the check or retire the row).",
   "CHAI-15 cook:mishkaki-grill at request": "multi-person sekelo: mishkaki orders have one person (data/cook.json: only chai's cups slot is per person)",
   "CHAI-15 cook:maani-line at request": "multi-person maani: maani orders have one person (data/cook.json: only chai's cups slot is per person)",
   "SH-61 clinic:morning at heal:button": "the clinic's heal games never show their ✓ now (s04-tf: hidden at every step of the scrape L1-L3, the knee, the morning; the counted steps close themselves): no flat check in the clinic to look at",

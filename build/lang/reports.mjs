@@ -330,7 +330,7 @@ export function sourceCoverageMarkdown(data) {
       for (const c of Object.values(p.cells)) if (c.make) known.add(norm(c.make.replace("{stem}", stem).replace("{lemma}", e.lemma)));
     }
   }
-  const files = ["docs/language/grammar-notes.md", "docs/language/lexicon.md", "build/reports/mum-2026-10-05.md"];
+  const files = ["docs/language/grammar-notes.md", "docs/language/lexicon.md", "build/reports/archive/mum-2026-10-05.md"];
   const ignore = new Map();
   for (const [why, list] of Object.entries(NOT_LOADED)) for (const w of list.split(/\s+/)) if (w) ignore.set(w, why);
   const missing = new Map();

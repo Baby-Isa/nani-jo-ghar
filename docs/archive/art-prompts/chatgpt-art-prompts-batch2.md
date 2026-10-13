@@ -1,6 +1,6 @@
 # ChatGPT art prompts, batch 2: the copy-paste pack
 
-**Started:** 25 Sept 2026. **For:** the second ChatGPT run, which fills the gaps batch 1 left for Cook. **Built from:** `build/reports/chatgpt-batch-1.md` (section 5: the fails and their re-prompts; section 6: what Cook still needs and the suggested next sheets), `docs/archive/art-prompts/chatgpt-art-prompts.md` (the batch 1 pack: its tips, style lines and character prompts still apply), `docs/design-language/art-bible.md` (the rules win if anything here disagrees), `docs/game-design/cast.md` and `build/slice_sheet.py`.
+**Started:** 25 Sept 2026. **For:** the second ChatGPT run, which fills the gaps batch 1 left for Cook. **Built from:** `build/reports/archive/chatgpt-batch-1.md` (section 5: the fails and their re-prompts; section 6: what Cook still needs and the suggested next sheets), `docs/archive/art-prompts/chatgpt-art-prompts.md` (the batch 1 pack: its tips, style lines and character prompts still apply), `docs/design-language/art-bible.md` (the rules win if anything here disagrees), `docs/game-design/cast.md` and `build/slice_sheet.py`.
 
 It works like batch 1. Each prompt is one fenced block: copy it, attach what the **attach:** line says, send. Keep the result only if it passes the **check:** line, then download it and name it as the **save as:** line says. The **slices to:** line is for Claude: the grid it's cut on, the key colour, and the sprite names.
 

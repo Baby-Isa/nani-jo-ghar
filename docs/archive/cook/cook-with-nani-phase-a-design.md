@@ -402,7 +402,7 @@ A station earns its place only if **it's fun on its own and at least one of its 
 
 **After each step:** the "can you win without Kutchi?" audit and Zafar's feedback.
 
-**Words needed from the family** (English placeholders until then) are in `docs/language/mum-questions/Questions for Mum (Round 2 — Cooking).md`.
+**Words needed from the family** (English placeholders until then) are in `docs/archive/mum-questions/Questions for Mum (Round 2 — Cooking).md`.
 
 ---
 

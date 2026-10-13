@@ -41,7 +41,7 @@
 
 ## Status
 
-Designed in step 2b (1 Oct 2026; decision 17). **Engine core built in step 4a (5 Oct 2026)**, not wired to any game: `js/core/lang/index.js` (the seam) still answers every caller until 4d (Cook) and 4e (the clinic). Report: `build/reports/step4a-engine-core.md`. **Filled in step 4b (5 Oct 2026; decision 40): see "What is filled" below.** Step 2b's outputs: `engine-design.md`, `grammar-kb.md`, `mum-questions/Questions for Mum (Round 5).md`, `fill-the-engine.md`, `build/reports/step-2b.md`.
+Designed in step 2b (1 Oct 2026; decision 17). **Engine core built in step 4a (5 Oct 2026)**, not wired to any game: `js/core/lang/index.js` (the seam) still answers every caller until 4d (Cook) and 4e (the clinic). Report: `build/reports/archive/step4a-engine-core.md`. **Filled in step 4b (5 Oct 2026; decision 40): see "What is filled" below.** Step 2b's outputs: `engine-design.md`, `grammar-kb.md`, `mum-questions/Questions for Mum (Round 5).md`, `fill-the-engine.md`, `build/reports/archive/step-2b.md`.
 
 ## What is built (step 4a)
 
@@ -98,7 +98,7 @@ An entry with no source; an English-only word not flagged to-record; a to-record
 
 ## What is filled (step 4b, 5 Oct 2026; decision 40, rule G27)
 
-The engine is the one home of the Kutchi that is known. `data/lang/{lexicon,paradigms,abstract,concrete,clips}.json` are **built, not typed**: `node build/lang/import_all.mjs` reads every source and rewrites them (and the reports), and is re-run after each of Mum's rounds. Report: `build/reports/step4b-engine-fill.md`. Reports written each run, in `data/lang/reports/`: `gap-list.md` (the minimum 4c: what Cook and the clinic say that the engine cannot say or has no recording for, grouped for Mum), `clash-list.md` (every place two sources disagree), `coverage.md` (the counts) and `source-coverage.md` (emphasised words in the notes the lexicon cannot say: a word Mum gave that nobody loaded shows up there).
+The engine is the one home of the Kutchi that is known. `data/lang/{lexicon,paradigms,abstract,concrete,clips}.json` are **built, not typed**: `node build/lang/import_all.mjs` reads every source and rewrites them (and the reports), and is re-run after each of Mum's rounds. Report: `build/reports/archive/step4b-engine-fill.md`. Reports written each run, in `data/lang/reports/`: `gap-list.md` (the minimum 4c: what Cook and the clinic say that the engine cannot say or has no recording for, grouped for Mum), `clash-list.md` (every place two sources disagree), `coverage.md` (the counts) and `source-coverage.md` (emphasised words in the notes the lexicon cannot say: a word Mum gave that nobody loaded shows up there).
 
 **Counts (5 Oct).** 857 lexicon entries: 336 confirmed, 163 draft, 358 to record (English only); 338 phrases (153 are fixed expressions made of other words), 325 nouns, 56 verbs, 40 describing words, 26 postpositions. 5 word classes, 113 meanings, 112 rules (38 confirmed, 12 draft, 62 unknown with the questions that settle them), 4 exceptions. 417 distinct recordings (395 with a file): 593 rows in `clips.json` (158 word forms, 258 fixed phrases, 177 sentences the rules build, each exactly what Mum said); 30 recordings are not linked, and each is explained in the clash list § 6. The data check: 0 errors, 0 warnings. `node --test build/lang/`: 56 pass (the 34 of 4a, 22 for the fill: re-runnable, golden sentences checked against Mum's recordings, exceptions, ids, no Kutchi in code, every Cook and clinic id resolves).
 

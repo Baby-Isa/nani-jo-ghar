@@ -359,7 +359,7 @@ Each line: pose, camera, frames, and what it's used for. Games: **C** Cook, **F*
 
 ### 1.4 Totals and cost
 
-**Actual, hands v1 (24–25 Sept 2026; full report `build/reports/art-hands-v1.md`):**
+**Actual, hands v1 (24–25 Sept 2026; full report `build/reports/archive/art-hands-v1.md`):**
 
 - **Player master set:** 56 images (A1–F5, every camera and frame; F3 and F5 are aliases of B3 and C1). After two review rounds, **47 pass** and **9 still fail** (a2, b1, c2, c3-t, c3-e, d3, d6-f1, e3-count-4, e5). Every master is skin-matched and scaled to the reference forearm (250 px).
 - **Characters are made in code, not generated** (`build/skin_hands.py`, data in `data/hand-skins.json` and `data/hand-anchors.json`): each passing master gets its skin recoloured, its sleeve recoloured and jewellery sprites placed at per-pose anchors (wrist and ring finger). Baked: **player-boy 47**, **player-girl 47** (dusty-pink sleeve, three glass bangles), **Nani 88** (47 right hands + 41 left hands; deep-red sleeve, her skin, aqiq ring and tennis bracelet on the right, solitaire on the left, no bangles). **player-girl-eid** waits for the mehndi overlay texture. Rebuilding every character takes minutes and costs nothing.
@@ -511,7 +511,7 @@ Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel 
 - New ids are added to `data/cook.json`'s `words` only when a round first uses them (Kutchi from the family; English placeholder until then).
 
 ### The background and the slots
-- Serve `pantry-v2-bg.png` at full quality: trim the top and bottom 8% to 16:9, upscale to 1600×900 and, if still soft on a laptop at 2×, keep a 3200×1800 version (`docs/feedback/cook-ui-feedback-2026-09-28.md` §4).
+- Serve `pantry-v2-bg.png` at full quality: trim the top and bottom 8% to 16:9, upscale to 1600×900 and, if still soft on a laptop at 2×, keep a 3200×1800 version (`docs/archive/feedback/cook-ui-feedback-2026-09-28.md` §4).
 - Measure the real positions from the delivered picture (shelf-board tops, bay centres, fridge shelves, tray), in the game's 1600×900 world, and replace `rows`/`xs` in `js/cook/mechanics/fetch.js` with a `slots` list in `data/cook.json` (`mechanics.fetch.slots`), each `{x, y, h, zone}`. Expected shape:
   - **shelves:** 3 unbroken shelves × 5 evenly spaced positions = 15 slots, `zone: "shelf"`, the item's base on the board;
   - **fridge:** 4 levels × 2 = 8 slots, `zone: "fridge"`.
@@ -580,7 +580,7 @@ still 1.5%, unchanged).
 
 ## 11. Character animation research
 
-> from: docs/feedback/playtest-2026-09-23.md §4 Character animation: options, and what's realistic
+> from: docs/archive/feedback/playtest-2026-09-23.md §4 Character animation: options, and what's realistic
 
 ## 4. Character animation: options, and what's realistic
 

@@ -1,6 +1,6 @@
 # ChatGPT art prompts: Cook v3, from Zafar's play-test (29 Sept)
 
-Everything Cook needs from `docs/feedback/cook-playtest-2026-09-29.md`, in one run: 28 prompts. Free (ChatGPT). The order matters: the hob prompts H2–H6 attach the H1 picture you made.
+Everything Cook needs from `docs/archive/feedback/cook-playtest-2026-09-29.md`, in one run: 28 prompts. Free (ChatGPT). The order matters: the hob prompts H2–H6 attach the H1 picture you made.
 
 **Built to Zafar's answers (29 Sept, report §10):** A1–A2 faces in three expressions (Q12, also the review faces, Q1); T1–T2 chaat fully side-on (Q2b); S1 filled on the flat strip, and the first fold covers it (Q3); S5 top-down fillings with no bowls (Zafar's own samosa note); M5 a flat wooden turner (Q15). Nothing else changes look: chai's and daar's side-on jars stay (Q2a).
 

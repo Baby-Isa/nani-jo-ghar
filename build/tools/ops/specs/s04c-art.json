@@ -15,11 +15,11 @@
   "read": [
     "CLAUDE.md",
     "docs/sprints/S04-feedback-sticks.md (the goal and who owns what)",
-    "docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)",
+    "docs/archive/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)",
     "docs/decisions.md 52, 53, 64, 73, 75, 76",
     "docs/process/rules.md C19, C20, A19",
     "docs/decisions.md 64, 71",
-    "build/reports/s03d-art.md (how the API loop with Fable ran)",
+    "build/reports/archive/s03d-art.md (how the API loop with Fable ran)",
     "build/cut_counter_moods.py, build/cut_characters.py (the counter sheets and how characters are cut)",
     "js/cook/stations.js addChar/setMood (read only: the keys nani-neutral, nani-happy, nani-talk, nani-point it swaps)"
   ],
@@ -27,7 +27,7 @@
     "assets/**, sources/art/**, build/tools/art/**, build/gen_*.py and cut scripts",
     "art blocks in data/cook.json",
     "the rows CK-21, CHT-11, ART-13 (art part) in docs/process/regressions.md",
-    "build/reports/s04c-art.md"
+    "build/reports/archive/s04c-art.md"
   ],
   "readOnly": [
     "js/** (Session B: you swap files under the same keys, no code)",

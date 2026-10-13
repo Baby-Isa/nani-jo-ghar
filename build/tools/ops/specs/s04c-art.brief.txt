@@ -11,11 +11,11 @@ READ FIRST (in this order):
   4. docs/status.md ("Next chat")
   5. CLAUDE.md
   6. docs/sprints/S04-feedback-sticks.md (the goal and who owns what)
-  7. docs/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
+  7. docs/archive/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
   8. docs/decisions.md 52, 53, 64, 73, 75, 76
   9. docs/process/rules.md C19, C20, A19
   10. docs/decisions.md 64, 71
-  11. build/reports/s03d-art.md (how the API loop with Fable ran)
+  11. build/reports/archive/s03d-art.md (how the API loop with Fable ran)
   12. build/cut_counter_moods.py, build/cut_characters.py (the counter sheets and how characters are cut)
   13. js/cook/stations.js addChar/setMood (read only: the keys nani-neutral, nani-happy, nani-talk, nani-point it swaps)
 
@@ -23,7 +23,7 @@ FILES THIS SESSION OWNS (edit only these):
   - assets/**, sources/art/**, build/tools/art/**, build/gen_*.py and cut scripts
   - art blocks in data/cook.json
   - the rows CK-21, CHT-11, ART-13 (art part) in docs/process/regressions.md
-  - build/reports/s04c-art.md
+  - build/reports/archive/s04c-art.md
 READ-ONLY (never edit):
   - js/** (Session B: you swap files under the same keys, no code)
   - build/sandbox/** (Session A)
@@ -58,4 +58,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8843.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s04c-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s04c-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

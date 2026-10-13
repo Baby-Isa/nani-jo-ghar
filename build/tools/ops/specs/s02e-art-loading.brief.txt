@@ -9,10 +9,10 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 2, 3, 6 (UI), 7 (Art), 10 (Platform: J11) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. docs/design-language/art-plans/s02-art-plan.md (what each image is for; §3.5 the clinic item → place → view → cell table) and build/tools/art/specs/s02.run.yaml
+  5. docs/archive/art-plans/s02-art-plan.md (what each image is for; §3.5 the clinic item → place → view → cell table) and build/tools/art/specs/s02.run.yaml
   6. sources/art/s02/ on main (49 images incl. Zafar's extras: e5b toothbrush brushing views, d1 coin jar with a slot in the lid); git checkout origin/main -- sources/art/s02 to get them
   7. docs/design-language/art-pipeline.md (artcut, artdiff), build/tools/art/specs/clinic-heal-v3.cut.json (worked cut spec)
-  8. build/reports/s02b-cook.md, s02c-clinic.md, s02f-finish.md (the art ids each station waits for: data/cook.json art.s02 ready:false, clinic ids cloth-dab, ear-bin, alcohol-wipe, brushInMouth, standing pose)
+  8. build/reports/archive/s02b-cook.md, s02c-clinic.md, s02f-finish.md (the art ids each station waits for: data/cook.json art.s02 ready:false, clinic ids cloth-dab, ear-bin, alcohol-wipe, brushInMouth, standing pose)
   9. docs/decisions.md 64, 65, 68; docs/process/rules.md J11; docs/architecture/building-games.md 'Loading'
 
 FILES THIS SESSION OWNS (edit only these):
@@ -20,13 +20,13 @@ FILES THIS SESSION OWNS (edit only these):
   - data/cook.json art blocks and data/stations/**, data/clinic/heal-art.json and data/clinic/** art references
   - js/cook/stations.js, js/cook/art.js, js/cook/station-lib.js, js/cook/boot.js and the stations' art hookups; js/clinic/heal/host.js, js/clinic/main.js, js/clinic/run.js, js/clinic/lang.js loading only
   - build/tools/review/loadcheck.mjs (new) and its line in build/tools/review/checks.mjs
-  - build/reports/s02e-art-loading.md
+  - build/reports/archive/s02e-art-loading.md
 READ-ONLY (never edit):
   - js/shared/**, js/core/** (except a shared asset-loader helper in js/shared/assets.js if needed, documented)
   - data/lang/**
   - data/family-audio.json
   - js/shared/**, build/tools/** and every other session's files unless listed above
-SHARED PIECES NEEDED BUT MISSING: an image that can't be cut cleanly keeps the old art and goes on docs/design-language/art-plans/s02-redo-list.yaml (B1 sekelo green pepper is already there)
+SHARED PIECES NEEDED BUT MISSING: an image that can't be cut cleanly keeps the old art and goes on docs/archive/art-plans/s02-redo-list.yaml (B1 sekelo green pepper is already there)
 
 DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
 LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
@@ -63,4 +63,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8827.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s02e-art-loading.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s02e-art-loading.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

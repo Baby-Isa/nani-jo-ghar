@@ -5,7 +5,7 @@ One design agent per mode. Each takes its mode's existing design doc to the dept
 ## Read first
 - `docs/archive/mode-briefs/MODE-DESIGN-BRIEF.md`: personas (Layla 5, Zayn 8, Maryam 11, Zafar, Farah, Nani), the Sceptic's "win without the Kutchi?" test, the Builder.
 - `docs/archive/clinic/clinic-design-v1.md`: its top section "Revision 2, 25 Sept 2026" is **the model of depth and shape** for this deep dive (kinds of round as the backbone, a scored library, a first set, a level ladder, direct agreement and disagreement).
-- `docs/feedback/modes-review-2026-09-25.md`: the independent review. Address every critique of your mode, adopting it or saying why not.
+- `docs/archive/feedback/modes-review-2026-09-25.md`: the independent review. Address every critique of your mode, adopting it or saying why not.
 - `docs/architecture/cook-recipes-guide.md` sections 1, 5 and 6, and the file list of `js/cook/mechanics/` (add, assemble, boil, chop, count, fetch, fill-fold, fry, grill, knead, passme, pour, roll, stir, tadka, tawa, thread): this is how Cook is built, and every mode now follows the same pattern.
 - `docs/archive/design-v1/Game Design.md`, the section on speaking (stage two: closed-set classification from a few family recordings per word).
 - Your mode's own design doc, in full.
@@ -26,7 +26,7 @@ Add a new top section to your mode's design doc, **"Deep dive, 25 Sept 2026: min
 5. **The first set** (3–5 mini-games) and why; **the level ladder** (what makes level 2, 3, 4 harder, in terms of what the Kutchi instruction carries).
 6. **Story home** per mini-game, and one free-play entry.
 7. **The review's critiques**: a short table, critique → what you did.
-8. **Words needed**: the Kutchi the first set needs, in priority order, marking which are already in the Questions for Mum doc (`docs/language/mum-questions/Questions for Mum (Combined, for the visit).md`; don't edit it).
+8. **Words needed**: the Kutchi the first set needs, in priority order, marking which are already in the Questions for Mum doc (`docs/archive/mum-questions/Questions for Mum (Combined, for the visit).md`; don't edit it).
 9. **Decisions for Zafar**, only ones that block the build, each with your default.
 Then update the doc's **build brief** at the end to match (phased, own-files-first, shared pieces listed).
 

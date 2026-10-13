@@ -10,7 +10,7 @@ visibly fills up with Eid decorations as you go.
 **This is the Build Brief v4 pass** (production Shopping + thin shell) -
 see `docs/archive/design-v1/Roadmap and Story Structure.md` for the current
 master plan and `docs/build-briefs/` for the brief itself. Earlier history:
-`docs/feedback/playtest-2026-09-23.md` (playtest 2 findings) and the "What playtest 2
+`docs/archive/feedback/playtest-2026-09-23.md` (playtest 2 findings) and the "What playtest 2
 changed" / "What v2 got wrong" tables below, from the original **Build
 Brief v3** Phaser rebuild after the first CSS/DOM version failed on a real
 phone.
@@ -23,7 +23,7 @@ phone.
 > - 16 stations, and six dishes: chai, maani, daal, chaat bowl, samosa, mishkaki
 > - a **Station lab** on the title screen to try each station
 >
-> Design, decisions and audit: `docs/archive/cook/cook-with-nani-phase-a-design.md`. Questions for the family: `docs/language/mum-questions/Questions for Mum (Round 2 — Cooking).md`. Test: `python3 build/test_cook.py --lab` (every station) or `--days 7` (the whole story).
+> Design, decisions and audit: `docs/archive/cook/cook-with-nani-phase-a-design.md`. Questions for the family: `docs/archive/mum-questions/Questions for Mum (Round 2 — Cooking).md`. Test: `python3 build/test_cook.py --lab` (every station) or `--days 7` (the whole story).
 
 **Open `cook.html`** (a separate page; the fruit errand and hub are untouched). It's a
 separate, self-contained prototype of the flagship game mode from
@@ -195,7 +195,7 @@ user gesture.
   from the content master's handouts, never invented. A few lines have
   no Kutchi at all yet ("What would you like?", "Well done!", the two new
   story-beat lines) and are shown in English only — never spoken. See
-  `build/reports/lines-needing-family.md` for the full list.
+  `build/reports/archive/lines-needing-family.md` for the full list.
 - **One errand only.** `data/errands.json` defines just `bowl-01`, so the
   hub's "Nani needs you" button always leads to it; `in_progress` and
   `errands_done` are tracked per the schema regardless. Cook-along and Put
@@ -237,7 +237,7 @@ user gesture.
   `build/contact_sheet.py` makes the black/white QA contact sheets;
   `build/bg_align_check.py` checks a background's lighting states line up.
 - `build/lines_needing_family.py` — writes
-  `build/reports/lines-needing-family.md`: every sentence or word used by
+  `build/reports/archive/lines-needing-family.md`: every sentence or word used by
   an errand with no Kutchi yet, or still a draft, and where it's used.
 - `build/build_audio.py` — generates placeholder MP3s via `espeak-ng`.
 - `build/build_audio_manifest.py` — scans `assets/audio/` and writes

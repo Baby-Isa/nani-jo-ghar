@@ -9,9 +9,9 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 2, 3, 4, 5 (Cook), 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. build/reports/s02a-round-flow.md (the shared APIs you call: redo, requests pop-up, guide lines per step, bulb, verdict pictures)
+  5. build/reports/archive/s02a-round-flow.md (the shared APIs you call: redo, requests pop-up, guide lines per step, bulb, verdict pictures)
   6. docs/design-language/guide-and-card.md (approved: rows T1-T21 are yours to fill per station)
-  7. docs/feedback/cook-playtest-2026-10-06.md (every point, cause file:line, section 1a)
+  7. docs/archive/feedback/cook-playtest-2026-10-06.md (every point, cause file:line, section 1a)
   8. docs/decisions.md 51-65; docs/sprints/S02-play-and-fix-cook-clinic.md
 
 FILES THIS SESSION OWNS (edit only these):
@@ -19,7 +19,7 @@ FILES THIS SESSION OWNS (edit only these):
   - data/cook.json, data/stations/** (lines through the language engine only)
   - css/cook.css and css/cook-side-v2.css for station-only rules (Session A is finished; keep its shared rules)
   - labs.html (Cook entries)
-  - build/reports/s02b-cook.md
+  - build/reports/archive/s02b-cook.md
 READ-ONLY (never edit):
   - js/shared/**, js/core/** (Session A's; call them, report any gap)
   - js/clinic/**, data/clinic/** (Session C, running at the same time)
@@ -48,7 +48,7 @@ TASKS (each with its acceptance criterion):
      Accept: L3 two kinds read as two blocks; strips filled by tapping
   8. Sekelo: count-along only at L1; each skewer's sequence said right after it; quantity written where said; pieces tick as they go on; straight skewers left to right on the plate (new plate art when it lands) (SEK-10 to SEK-13, SEK-07).
      Accept: L2 thread is silent per piece; spoken order matches the card order
-  9. The coin-jar day summary (Zafar's design, docs/feedback/cook-playtest-2026-10-06.md C11): each card (face, task, coins) lands on the jar, coins drop in with a ching, the card rises and fades, the next comes in; this game's total beside, the jar's total below; Next is the primary button; jar fill pictures from the art run (five levels) (SH-51).
+  9. The coin-jar day summary (Zafar's design, docs/archive/feedback/cook-playtest-2026-10-06.md C11): each card (face, task, coins) lands on the jar, coins drop in with a ching, the card rises and fades, the next comes in; this game's total beside, the jar's total below; Next is the primary button; jar fill pictures from the art run (five levels) (SH-51).
      Accept: a 3-order day plays the sequence; screenshot at 390x844 and 1366x768
   10. The counter: three tray spots for served dishes, one per customer, right items on the right tray, shadows to the right (kitchen art from the art run); story days labelled as days; pantry only the first time a dish is ever made; Tadka stays in the labs but out of the first-launch list (CK-21, CK-24, PAN-13, DAAR-15).
      Accept: a 3-person chai serves onto three trays
@@ -73,4 +73,4 @@ PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /revie
 TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8822.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/s02b-cook.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/s02b-cook.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

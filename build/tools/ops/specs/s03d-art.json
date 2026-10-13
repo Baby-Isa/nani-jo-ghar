@@ -12,21 +12,21 @@
     "7 (Art)"
   ],
   "read": [
-    "docs/sprints/S03-overnight-fix.md (the goal and who owns what)",
+    "docs/archive/sprints/S03-overnight-fix.md (the goal and who owns what)",
     "docs/decisions.md 51-74 (51-65 answer most rows still tagged 'pending decision'; 71 art via API; 72 square drill dropped; 73 rows updated in the same commit)",
-    "docs/feedback/clinic-playtest-2026-10-08.md",
-    "build/reports/s02-review.md (flaws first)",
+    "docs/archive/feedback/clinic-playtest-2026-10-08.md",
+    "build/reports/archive/s02-review.md (flaws first)",
     "docs/design-language/art-pipeline.md, art-bible.md, art-plans/s02-art-plan.md and s02-redo-list.yaml",
     "build/gen_chai_v2.py (an existing OpenAI image API script: reuse its pattern; OPENAI_API_KEY is set)",
     "build/tools/art/artjudge.py, artcut.py, artdiff.py; specs/s02.cut.json",
-    "build/reports/s02e-art-loading.md"
+    "build/reports/archive/s02e-art-loading.md"
   ],
   "owns": [
     "assets/**, sources/art/s03/** (new), build/tools/art/specs/s03.* (new), build/gen_s03.py (new)",
     "art blocks in data/cook.json and data/stations/**, data/clinic/heal-art.json, data/clinic/sheets.json and other art references in data/clinic/**",
     "art hookup lines only in js/cook/** and js/clinic/** (minimal diffs; git pull --rebase before every push: B and C own those files)",
     "the Art rows in docs/process/regressions.md",
-    "docs/design-language/art-plans/s03-*.md, build/reports/s03d-art.md"
+    "docs/design-language/art-plans/s03-*.md, build/reports/archive/s03d-art.md"
   ],
   "readOnly": [
     "js/shared/**",

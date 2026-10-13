@@ -3,7 +3,7 @@
 # judge). The prompts stay in the art plan (section 5). Edit this file, then regenerate the block; never hand-edit the block.
 pack: s02
 title: Sprint 2 art
-plan: docs/design-language/art-plans/s02-art-plan.md
+plan: docs/archive/art-plans/s02-art-plan.md
 plan_branch: ccr-a7370759-t0lee7      # the block reads the plan from this branch until it reaches main
 repo: Baby-Isa/nani-jo-ghar
 raw_branch: main

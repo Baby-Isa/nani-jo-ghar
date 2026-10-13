@@ -10,7 +10,7 @@
 > - Pocket money, coins, receipts, hint costs in coins → decision 10 (upgrades) and decision 1 (the light bulb costs a lightbulb)
 
 **Date:** 25 Sept 2026
-**Status:** proposal for Zafar; phases 0–1 of the deep dive's brief are built (`build/reports/dress-build.md`). **The pipeline design (25 Sept, evening) is current and supersedes the deep dive and the sections below wherever they conflict; the mini-game quality pass above it (25–26 Sept) sharpens the pipeline design and wins where the two differ** (the eight table games, the merged stage variants, the controls audit); P.8 as amended by Q.8 is the build brief that the next build agent follows (section 12 is kept for reference). Follows `docs/archive/mode-briefs/MODE-DESIGN-BRIEF.md` and `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md`. Builds on `docs/archive/design-v1/game-modes-v2.md` (mode 4), `docs/game-design/modes/find-it.md` (the model), `docs/archive/cook/cook-with-nani-phase-a-design.md`, `docs/archive/cook/cook-with-nani-kutchi-audit.md`, `docs/archive/cook/cook-with-nani-todo.md` (Waves 1–5) and the Art Bible.
+**Status:** proposal for Zafar; phases 0–1 of the deep dive's brief are built (`build/reports/archive/dress-build.md`). **The pipeline design (25 Sept, evening) is current and supersedes the deep dive and the sections below wherever they conflict; the mini-game quality pass above it (25–26 Sept) sharpens the pipeline design and wins where the two differ** (the eight table games, the merged stage variants, the controls audit); P.8 as amended by Q.8 is the build brief that the next build agent follows (section 12 is kept for reference). Follows `docs/archive/mode-briefs/MODE-DESIGN-BRIEF.md` and `docs/archive/mode-briefs/DEEP-DIVE-BRIEF.md`. Builds on `docs/archive/design-v1/game-modes-v2.md` (mode 4), `docs/game-design/modes/find-it.md` (the model), `docs/archive/cook/cook-with-nani-phase-a-design.md`, `docs/archive/cook/cook-with-nani-kutchi-audit.md`, `docs/archive/cook/cook-with-nani-todo.md` (Waves 1–5) and the Art Bible.
 **Placeholder rule:** the Kutchi below uses only words and frames already in `data/content.json` or `data/cook.json`. Anything written `[EN: red]` has no Kutchi yet and shows in the game as a grey italic English placeholder until the family gives the word. **Never invent Kutchi.** Right now the repo has **no Kutchi for any clothes, colour, pattern or weather word**, so every decision word in this mode starts as a placeholder (section 6.6 is the ask list).
 
 ---
@@ -351,7 +351,7 @@ Blocked pages: `play.google.com`, `apps.apple.com`, `commonsensemedia.org`, `gam
 
 ### P.6 What survives from the current build
 
-The build (`build/reports/dress-build.md`: phases 0–1, branch `claude/build-dress`) is a set of **four standalone games on one round engine**. Almost all of it carries over; what changes is the shape around it: a *route* runs stages in sequence, and each existing game becomes a stage variant.
+The build (`build/reports/archive/dress-build.md`: phases 0–1, branch `claude/build-dress`) is a set of **four standalone games on one round engine**. Almost all of it carries over; what changes is the shape around it: a *route* runs stages in sequence, and each existing game becomes a stage variant.
 
 | File | Verdict | What changes |
 |---|---|---|

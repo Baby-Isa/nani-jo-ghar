@@ -1,6 +1,6 @@
 # Transcript: Zafar's Cook play-test voice note, 29 Sept 2026 (31 min)
 
-Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "chendol" / "chundo" = chundo (mince); "bhaji ja maani" = bajr ji maani; "chart making mode" = chaat; "Mushkaki" = mishkaki; "the uncle testing it" = Nana tasting it. The report is docs/feedback/cook-playtest-2026-09-29.md.
+Rough draft by Whisper, transcribed in short pieces. Mis-hearings: "chendol" / "chundo" = chundo (mince); "bhaji ja maani" = bajr ji maani; "chart making mode" = chaat; "Mushkaki" = mishkaki; "the uncle testing it" = Nana tasting it. The report is docs/archive/feedback/cook-playtest-2026-09-29.md.
 
 - **0:00** Feedback for the pantry mode. Currently the audio overlaps, so the counting audio overlaps with the audio that says what's the next item to get, so that needs working out.
 - **0:17** Also I can see that

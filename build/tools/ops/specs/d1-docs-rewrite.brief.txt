@@ -9,7 +9,7 @@ READ FIRST (in this order):
   2. docs/process/rules.md: sections 1, 2, 3 only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. docs/process/audits/2026-10-05-docs-audit.md (your plan: follow its 11-step migration, with the changes below)
+  5. docs/archive/process/2026-10-05-docs-audit.md (your plan: follow its 11-step migration, with the changes below)
   6. docs/decisions.md 26-49
   7. docs/architecture/testing.md (Tools)
   8. .claude/skills/*/SKILL.md
@@ -21,7 +21,7 @@ FILES THIS SESSION OWNS (edit only these):
   - .claude/skills/** (add /sprint; trim others only to remove duplication)
   - build/tools/ops/checkin.mjs (dated overnight-log path only)
   - data/lang/test-seed/paradigms.json and data/lang/seed/ (only to move the real paradigms out of test-seed, E1's follow-up; rerun build/lang/import_all.mjs --check and node --test build/lang/)
-  - build/reports/d1-docs-rewrite.md
+  - build/reports/archive/d1-docs-rewrite.md
 READ-ONLY (never edit):
   - all game code and other data (js/**, css/**, data/** except the paradigm move above)
   - build/** except the two items above
@@ -53,6 +53,6 @@ PROOF (rule C8, decision 48: fast checks only; the orchestrator's /review runs t
 TESTS: no browser needed.
 
 GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
-FINISH: build/reports/d1-docs-rewrite.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+FINISH: build/reports/archive/d1-docs-rewrite.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
 Work on branch docs-rewrite only (git checkout -b docs-rewrite from the integration branch after pulling it; push -u origin docs-rewrite). The orchestrator merges it after a Fable review and Zafar's go.
 Plain British English, short sentences, Zafar's style: no jargon. Archive, never delete.
