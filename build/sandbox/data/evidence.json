@@ -3575,12 +3575,11 @@
    "after": null,
    "capture": [
     "contract:1",
-    "strip:#stage:5x500",
-    "crop:.njg-rq-card"
+    "shot"
    ],
    "expect": [
     "pass",
-    "count:.njg-rq-card .oc-card=3"
+    "count:.oc-closed-big=3"
    ],
    "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet",
    "delay": 1200

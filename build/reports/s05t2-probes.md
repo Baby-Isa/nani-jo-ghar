@@ -1,41 +1,30 @@
 # s05t2-probes
 
-Branch `ccr-a7370759-t0lee7`. No game code changed. Final run **ev-20261012-232804-aql** (15 rows).
+Branch `ccr-a7370759-t0lee7`. No game code changed. Tools, drivers and specs only (also `build/sandbox/**`, `build/test_cook.py`, `check_vessel_meta.py`, the daar `meta.json`).
 
-## What changed (tools and specs only)
-- `evidence.mjs`: run ids carry seconds and a random suffix.
-- `evidence-probe.mjs`: `lines:` counts text lines of the element's own Kutchi text (not icon, tick, English, to-record boxes); trace expects decide on the traces that moved, and a walk across the screen is no bob (`traceDecision`, `traceStats`).
-- `evidence.mjs`: `lexicon` knows engine-inflected forms (paradigms: chundo, chunda); new profile `numbers-known` (`flows/cook.mjs`).
-- Drivers: SH-64 plays at a child's pace and taps half a second into the first line (Cook, clinic); `times:tapped-through>=1` proves the tap.
-- Specs: SH-17 (starts when the underline shows; child's pace), SH-36 (folded-card moment, `.oc-headline`), SH-13, SH-16, SH-70 (robust moment), MOD-01 (day + relight arguments for the three backgrounds), SH-68 (day-2 greeting bubble at 800x360).
-- Unit tests: 18 pass (one per expect change).
+## What changed
+- Run ids carry seconds and a suffix. `lines:` counts text lines. `lexicon` knows engine inflections. Profile `numbers-known`.
+- Layout expects (`count`, `inside`, `centredOn`, `noClip`, `lines`, `minFont`) are decided at the moment, before the captures.
+- Trace expects: a walk is no talk bob (ceilings ignore it). `silentAfter` bound includes a same-instant stage start. `countsUp` reads words and dots.
+- Drivers: SH-64 at a child's pace; `open-steps` (SH-44); the clinic hint driver holds the pick while the bulb is open.
+- Leak: heal L1 judged by a Wilson bound (LNG-02: taste 10.3% in noise, no leak).
+- `evidence.mjs --lint-specs` (checks `specs`; baseline now 0), "Probe pitfalls" in `evidence-loop.md`, a standing brief line. 21 unit tests.
 
-## Rows (final run)
-| Row | Result | Owner |
+## Rows
+| Row | Run | Result / owner |
 |---|---|---|
-| SH-48, SH-36, SH-13, SH-16, PAN-02 | PASS | — |
-| SH-64 | PASS, weak: the test build's pop-up lines are silent and 0.4 s each, the clinic's said nothing | S/Mum |
-| SH-01 | FAIL: "fudino ji chutney" is not in the chaat words | C/B (data) |
-| SH-09 | FAIL: `#mission` scrolls at 800x360/844x390 | C |
-| SH-44 | FAIL: Cook passes no steps | C |
-| SH-70 | FAIL: pantry headline "Bring me these" | B/Mum |
-| SH-19 | FAIL: samosa uses Cook's own finger, not `.ob-ghost` | C |
-| ART-18 | FAIL: Nani's talk bob 2.4–3.8 px (limit 2) | S |
-| SH-17, SH-51, SEK-03 | sheets for a reviewer | — |
-| MOD-01 | PASS (earlier run ev-20261012-231013-cx8) | — |
-| CK-12 | FAIL: `check_vessel_meta.py` (daar cuts) | C/T (queued) |
-
-SEK-03: `cook:mishkaki-grill@L4` stops on a repeated rack tap (C or driver).
-
-## Orchestrator's extra items
-| Item | Run | Result |
-|---|---|---|
-| SH-66 (silentAfter bound includes a stage starting at the same instant) | ev-20261012-234117-ria | PASS |
-| SH-33, CHAI-06, MAA-10, CK-02, CK-20, CK-12 (`check_vessel_meta.py` reads the loaded cuts; 3 meta entries) | ev-20261012-234353-9al | PASS |
-| SEK-05 (`test_cook.py` waits attached) | ev-20261012-234636-yyj | game FAIL: pantry ladder 4 rows vs 3 (C/B) |
-| SAM-02/08/10, CK-09, SEK-13, DAAR-04, CHAI-18, MAA-08 re-pointed or `max` 16 | ev-20261012-234811-hs4 | sheets for a reviewer |
-| SH-15 (words, dots), CHT-07 (markers) | -234811-hs4, -235519-b5z | PASS |
-| DAAR-11, CHAI-15, SEK-07 | ev-20261012-235701-b64 | still tool failures (ladle still at speed 1; pop-up cards not found; `sk3-plate` never on screen): next T |
-| `--lint-specs` + Probe pitfalls + brief line | checks `specs` | 33 flagged at first: end-card 17, legacy 9, expect 5, flow 1, cmd 1; baseline now 26 |
-
-Open: SEK-03 L4 stops on a repeated rack tap (C or driver).
+| SH-13, SH-16, SH-36, SH-48, PAN-02, SH-15, SH-44, SH-58, CHAI-15, CHT-07 | final runs | PASS |
+| SH-66, SH-33, CHAI-06, MAA-10, CK-02, CK-12, CK-20, CLN-11, CLN-12, CLN-48, MOD-01, LNG-02 | various | PASS |
+| SH-64 | ev-…232804 | PASS, weak (silent test clips) |
+| SH-01 | | game: no "fudino ji chutney" in the words (C/B) |
+| SH-09, PAN-01 | ev-…004029 | game: `#mission` scrolls at 800x360/844x390 (C) |
+| SH-19 | ev-…004611 | game: samosa shows no finger at +0.3 s (C); daar PASS |
+| SH-70 | | game: "Bring me these" (B/Mum) |
+| ART-18 | ev-…005916 | game: talk bob 2.4 px, limit 2 (S) |
+| SEK-05 | | game: pantry ladder 4 rows vs 3 (C/B) |
+| SH-41 | ev-…001230 | clinic English lasts 0.4 s under the driver though it holds the pick (D to check); Cook PASS |
+| DAAR-11 | ev-…010052 | game: `canvas:ladle` still at stir-mid (C) |
+| SEK-03, SEK-07, SH-17, SH-51, SAM-02/07/08/09/10, CK-09, CHAI-18, MAA-08/12, ART-02, CLN-45/62/86/102, SEK-13, DAAR-04 | | sheets for a reviewer |
+| CLN-117 | | tool: 12 seeds never drew E4; needs a driver |
+| SEK-03 L4 stop | | not reproduced in a plain run (37 s to the end); only at DPR 2 (driver/perf) |
+Not done: contract-11 sampling after the push-in settles.

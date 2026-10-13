@@ -29,3 +29,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 23:58 S05-T2: extra items done (SH-66, vessel meta, SEK-05, re-points, --lint-specs); DAAR-11, CHAI-15, SEK-07 still tool failures
 - 2026-10-13 01:24 UK · S05-S2 shared round 2: SH-16 (small bulb), SH-72 (new: no written rows in the L3 pop-up), SH-09, PAN-01, SH-36, SH-48, SH-64 built with red/green runs; SH-01, SH-16 sheets to judge; SH-17, SH-19, SH-41, SH-44, SH-51, SH-58, SEK-03, ART-18 open with cause and owner (report build/reports/s05s2-shared.md)
 - 2026-10-13 00:45 UK · S05-D2 clinic round 2: CLN-54 recipe rows (red mb6/green 53r), SH-41 clinic bulb 8 s (fyl/an4), Say tags, closed-card '···' gone; CLN-11/-45/-48/-117, LNG-02, CLN-111 open on specs (T); report build/reports/s05d2-clinic.md
+01:13 S05-T2: clinic and round-2 probe items done; lint-specs baseline 0; open: CLN-117 driver, contract-11 settle, SH-41 clinic English
