@@ -20,6 +20,9 @@ Rows split one claim each (CLN-123..142; CLN-100 and CLN-53 reworded to Zafar's 
 - **Two FAILs:** CLN-100 (3le: L1 3 bands; ny2: L3 closes at 4 turns, L2 turn events with no new band), CLN-133 (3le: ghost during the zoom; ny2: demos moves the player made during the zoom), CLN-136 (3le: calm face at "my leg hurts"; ny2: L2 beams at "A scrape"), SH-45 (3le: boing card up front; ki1: L1 second line not said: fixed after, unjudged). Sheets: `build/screenshots/evidence/<run>/<ROW>.png`.
 - **Decisions:** CLN-123 (W3 boxes), CLN-131 (card fold, as SH-78), CLN-137 (neutral face: art), CLN-139 (patient card where she's on screen), CLN-127 (tail at her head is the shared above-the-head rule), CLN-45 (FAIL 1: ear L3 side, fever L3 fix step, parked games add two things).
 
+## Open from the full gate (added after the round, not fixed)
+CLN-143..145 (contract-8: eye L2, taste, knee L2: next row lit with a tool), CLN-146 (morning 800x360 "Thank you." bubble beside her head), CLN-147 (short-screen receipt 2 px spacing), CLN-148 (fever card scroll at 800x360). Each has its spec; none is started.
+
 ## For C3
 CLN-118 (Results: no badges for a taught round), CLN-138 (take-back driver: first undoable placement), CLN-141 (card line through rows), speaker ids in the voice timeline, capture lag on `every:bubble`, `checks.mjs` unit fail (order card recipe rows).
 

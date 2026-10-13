@@ -12414,5 +12414,129 @@
    "note": "the count station: one lit thing (the bowl's glow, never with a .njg-pulse)",
    "max": 4
   }
+ ],
+ "CLN-143": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:8"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-8: one highlight at a time through the eye game at L2"
+  }
+ ],
+ "CLN-144": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1180x820"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:8"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-8: one highlight at a time through the taste game"
+  }
+ ],
+ "CLN-145": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:8"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-8: one highlight at a time through the knee game at L2"
+  }
+ ],
+ "CLN-146": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:4"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-4: every bubble from its speaker's face, the send-off's \"Thank you.\" included"
+  }
+ ],
+ "CLN-147": [
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.cl-receipt",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-receipt"
+   ],
+   "expect": null,
+   "note": "the receipt on a short screen: rows and coins on the spacing grid",
+   "delay": 400
+  }
+ ],
+ "CLN-148": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:.cl-side"
+   ],
+   "expect": null,
+   "note": "the fever card at each change at 800x360: whole, no scroll",
+   "max": 6
+  }
  ]
 }
