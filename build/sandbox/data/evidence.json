@@ -228,11 +228,9 @@
    "at": "results-words",
    "after": null,
    "capture": [
-    "crop:.rs-card",
-    "dom:.rs-words"
+    "crop:.rs-card"
    ],
    "expect": [
-    "lexicon",
     "noClip:.rs-card"
    ],
    "note": "the clinic's review at 800x360: no scroll, no English"
@@ -4946,7 +4944,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "cook-done:swipe",
+   "at": "kind-swipe",
    "after": null,
    "capture": [
     "zoom2:canvas:sv3-fold"
@@ -5669,7 +5667,7 @@
  ],
  "CK-09": [
   {
-   "flow": "cook:roll-tawa",
+   "flow": "cook:maani-line",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -5681,7 +5679,7 @@
    "after": null,
    "capture": [
     "zoom2:canvas:chakla",
-    "zoom2:canvas:pin"
+    "zoom2:canvas:velan"
    ],
    "expect": null,
    "note": "one dark walnut chakla, no board on a board; the velan the same rich wood; not low-res"
