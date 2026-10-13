@@ -12250,14 +12250,43 @@
    "max": 10
   }
  ],
+<<<<<<< HEAD
  "CLN-142": [
   {
    "flow": "clinic:heal-cut",
    "path": "real-pace",
+=======
+ "SH-79": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "contract:8",
+    "crop:#mission"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "one lit thing on the card: the next row's highlight never together with the read-along's lit row",
+   "max": 4
+  },
+  {
+   "flow": "cook:assemble",
+   "path": "mistake",
+>>>>>>> 2d494a7 (S05-C3: rows for the full gate's C3 findings (SH-79..82, CK-33, CK-34) with their probes; the house's 'Coming soon' (index.html, js/home.js) is outside C3's files)
    "level": 1,
    "sizes": [
     "1366x768"
    ],
+<<<<<<< HEAD
    "profile": "fresh",
    "want": null,
    "at": "results-badges",
@@ -12267,6 +12296,123 @@
    ],
    "expect": null,
    "note": "the taught scrape at a child's pace reaches its end screen (the plaster help ends once every patch is covered)"
+=======
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "contract:8",
+    "crop:#mission"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chaat assemble with a mistake: contract-8 clean to the end card",
+   "max": 4
+  }
+ ],
+ "SH-80": [
+  {
+   "flow": "cook:day2",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:kind-click",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the greeting's reply pills ('Salamun alaykum') sit clear of the play area on a story day",
+   "max": 3
+  }
+ ],
+ "SH-81": [
+  {
+   "flow": "cook:daar",
+   "path": "hint",
+   "level": 3,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:#mission .oc-card.peek",
+   "after": null,
+   "capture": [
+    "shot",
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "a peeked closed card: its face button fully on screen",
+   "delay": 300
+  }
+ ],
+ "SH-82": [
+  {
+   "flow": "rotate-card",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "390x844"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:clinic-upright",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the upright clinic page: the rotate card over a request pop-up whose card does not scroll"
+  }
+ ],
+ "CK-33": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"day-dots\" css/cook.css"
+   ],
+   "expect": null,
+   "note": "the title's day dots on the spacing grid (0, 4, 8, 12 or a multiple of 8)"
+  }
+ ],
+ "CK-34": [
+  {
+   "flow": "cook:count",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "contract:8",
+    "crop:#stage"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the count station: one lit thing (the bowl's glow, never with a .njg-pulse)",
+   "max": 4
+>>>>>>> 2d494a7 (S05-C3: rows for the full gate's C3 findings (SH-79..82, CK-33, CK-34) with their probes; the house's 'Coming soon' (index.html, js/home.js) is outside C3's files)
   }
  ]
 }
