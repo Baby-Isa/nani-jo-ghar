@@ -54,10 +54,10 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 6 | 54 |
-| Cook: pantry | 3 | 12 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 3 / 0 / 1 / 4 / 5 | 14 / 14 / 14 / 11 / 16 / 10 / 17 |
-| Clinic | 24 | 98 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 6 | 63 |
+| Cook: pantry | 2 | 13 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 7 / 0 / 0 / 2 / 10 | 16 / 14 / 15 / 11 / 19 / 14 / 17 |
+| Clinic | 30 | 115 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 1 |
 | Art | 6 | 9 |

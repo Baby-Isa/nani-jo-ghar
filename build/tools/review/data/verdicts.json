@@ -464,34 +464,34 @@
   "date": "2026-10-13"
  },
  "CHAI-18": {
-  "hash": "49af59857fd32491ad7c",
+  "hash": "d173a829eafe51c0c0ca",
   "dhash": [
    "a2b2929acc9a98a0",
    "e0b2929ac89a98b0",
-   "8eac6d6dcde8e8b0",
-   "8eac6d6dcde8ea92"
+   "b6a4696de9e8c8b0",
+   "9e8c6d6dcde8ea92"
   ],
   "verdict": "PASS",
-  "line": "A, real tray art at L2 1366×768 with Nana's round face badge left of the left glass and the boy's right of the right glass, each on the tray's outer rim with clear wood between badge and glass and nothing over either cup; B now shows the same tray readable at 844×390 (no stage-end wash this time), badges on the rim beside their glasses, cups uncovered; C/D at L3 the three pans on the hob each have their orderer's face badge (Nana, boy, girl) beside their knob at both sizes. Flaws off the point: each tray badge overhangs the tray's outer edge by about half its width (half the disc sits on the stage background, not the rim); the kind-timing pill (cup + dots) overlaps the top of the middle pan's gauge ring in C and the hob's top edge in D; the phone size captured is 844×390 landscape, not the 390×844 the Check names.",
+  "line": "A, the real wood tray art at L2 1366x768 with Nana's round face badge on the outer rim left of the left glass and the boy's right of the right glass, wood between badge and glass, nothing over either cup; B the same at 844x390; C and D at L3 each of the three pans on the hob has its orderer's badge (Nana, boy, girl) beside its knob at both sizes",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-161554-mqx",
-  "commit": "9b216fd",
-  "png": "build/screenshots/evidence/ev-20261013-161554-mqx/CHAI-18.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CHAI-18.png",
   "date": "2026-10-13"
  },
  "CHAI-19": {
-  "hash": "214271bfc3cd580f8d92",
+  "hash": "48823f908d0b2fe71887",
   "dhash": [
    "31b8d2d2daf0d040"
   ],
   "verdict": "PASS",
-  "line": "A, frames 2-4 and 6-8 the word pill (\"paani\", \"chai\", \"dudh\", \"khun\", \"khun\", \"aadu\") sits inside the hob on the first pan's upper half, below the hob's top rim and clear of the count badge, no pill over the rim and no \"elchi\" loose above the hob. Flaw: frame 8 the two-group count badge is clipped at the stage's left edge (above; SH-39's badge, new finding).",
+  "line": "A, frames 2-8 the word pill (paani, chai, dudh, khun, khun, khun, aadu) sits inside the first pan's upper half, below the hob's top rim; no loose pill over the rim and no \"elchi\" above the hob; frame 8's two-group dots badge (cup three dots, ginger one dot) whole and clear of the stage's left edge",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-172804-m74",
-  "commit": "de2a1e1",
-  "png": "build/screenshots/evidence/ev-20261013-172804-m74/CHAI-19.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CHAI-19.png",
   "date": "2026-10-13"
  },
  "CHAI-20": {
@@ -968,17 +968,17 @@
   "date": "2026-10-12"
  },
  "CK-30": {
-  "hash": "e5ea381644b94c3de728",
+  "hash": "7e7199d2e544dd92d33b",
   "dhash": [
-   "cefeff979399d6d7"
+   "cefebf979399d62b"
   ],
   "verdict": "PASS",
-  "line": "A, frame 4: both review faces sit inside the tray's top two wells and the small orderer badge at the right rim is within the tray's edge, nothing hanging off. Flaw: the big review faces half-cover the small orderer badges beside them (left and right); frames 1-3 clean (frame 2's bubble points at the child who says it).",
+  "line": "A, frame 4 both big review faces sit inside the tray's top two wells and the small orderer badges on the tray's left and right rims are within the tray's edge, nothing hanging off the right edge; frames 1-3 the serve not yet reviewed",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/CK-30.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CK-30.png",
   "date": "2026-10-13"
  },
  "CK-33": {
@@ -1057,18 +1057,18 @@
   "date": "2026-10-12"
  },
  "CLN-03": {
-  "hash": "dbb63544987578f5b23e",
+  "hash": "4405875522abe0543dcf",
   "dhash": [
    "7676f2cecee6d2db",
    "e6aea69edeef36b1"
   ],
   "verdict": "PASS",
-  "line": "B, at the L2 pharmacy handover her big round smiling face sits in its circle over the tray (paani jug, blue plaster), Cook's review face; the order card reads \"paani\" and \"ne blue plaster\" (ne = and), both on the tray, so a happy face is the right verdict; A shows the same inside the outlined .cl-stage with the guide box \"Paani. Good.\" (Good. grey-italic to-record). No clipping, no English for the child beyond to-record lines. The sheet carries no frown case (a wrong pick), so only the happy face is proven.",
+  "line": "B, at the L2 pharmacy handover her big round smiling face sits in its circle over the belt, above the order tray (jug and blue plaster), Cook's review face; A shows the same inside the outlined .cl-stage with the guide \"Paani. Good.\" (Good. grey-italic to-record). Only the happy face is proven; no frown case on the sheet",
   "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-173342-ny2",
-  "commit": "5658b93",
-  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-03.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-03.png",
   "date": "2026-10-13"
  },
  "CLN-04": {
@@ -1169,19 +1169,19 @@
   "date": "2026-10-13"
  },
  "CLN-101": {
-  "hash": "c9c276360a628559ab1f",
+  "hash": "ce3918282fe6f99ccc77",
   "dhash": [
-   "e666666361627270",
+   "809898848489c9c1",
    "8890909880848488",
    "8890909880848488"
   ],
   "verdict": "PASS",
-  "line": "A, frame 1 [0 ms] the ghost finger fades in with its fingertip on the glowing wax lump's lower edge, the tweezers' faint ghost standing over it with its tips at the wax; frames 2-5 [572-1260 ms] the finger carries the tweezers with a yellow blob held in their tips from beside the ear down and right to the bin, arriving over its open mouth at 1155 and 1260 ms; B 1211 ms and C 1050-1332 ms show the same drag ending at the bin on the 2nd and 3rd life:ghost; the p1 trace runs the ghost from [860,382] by the wax at [855,335] to [1165,654] at the bin at opacity 0.95, amp 306.8 px, 12 plays. Caveat: frames 2-5 of every panel are the page re-laid-out by the clipped capture [see Flaws], so only frame 1 and the trace prove the start on the wax; and the tweezers are in hand from the first visible frame, never picked from the tool column [by design, ear.js:50].",
-  "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-171611-ac1",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-171611-ac1/CLN-101.png",
+  "line": "C, at 355 ms the ghost finger holds the tweezers beside the ear, at 658 ms a yellow blob is in their tips, at 1020 ms the finger carries it over the bin's open mouth and at 1283 ms the blob is at the bin; B 348-940 ms shows the same drag ending above the bin; A 0 ms shows the finger with the tweezers' tips on the glowing wax lump (trace amp 303.9 px from the wax to the bin, 8 plays). Caveat: the tweezers are in the ghost's hand from its first visible frame, never picked from the tool column (by design per the earlier note); if Zafar meant a pick-up from the column, this is not it.",
+  "panel": "C",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-101.png",
   "date": "2026-10-13"
  },
  "CLN-102": {
@@ -1219,34 +1219,34 @@
   "date": "2026-10-12"
  },
  "CLN-104": {
-  "hash": "aeaa97a6fddfea753ef0",
+  "hash": "b2135eb2cbf868428510",
   "dhash": [
    "e1c0cc5484ceccd0",
    "e0d6ece4a8c6ccd0"
   ],
-  "verdict": "PASS",
-  "line": "A, at .hs-healed the tongue is clear with no purple holes and the next tray item (the spoon) is outlined teal as the cue; B, water pours from the steel jug into the cup from 500 ms and its level rises in the cup at 1000 and 1250 ms; the \"My tongue feels better!\" bubble is grey italic (to record)",
-  "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-104.png",
+  "verdict": "FAIL",
+  "line": "B, no level rises: at 587 ms the cup is still the empty steel cup, at 1053 ms (the first frame with the stream) its whole body has already turned pale blue-white with the water surface at the rim, and 1600 and 2030 ms look the same; the sheet shows a one-step swap from empty to full, not a rising level (the 587->1053 ms gap holds no frame; if the rise lives there it must be filmed); A does prove the rest: the tongue clear of purple holes at .hs-healed, the spoon tile outlined teal as the cue, \"My tongue feels better!\" grey italic",
+  "panel": "B",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-104.png",
   "date": "2026-10-13"
  },
  "CLN-105": {
-  "hash": "b3f4ca12bddb6b105922",
+  "hash": "889ba6be10ff42b3012e",
   "dhash": [
    "bf8d95978e9c1237",
-   "bf9d95978e9c1237",
-   "bf8d95978e9c1237"
+   "bf8d95978e9c1237",
+   "bf9d91978e9c1237"
   ],
   "verdict": "PASS",
-  "line": "C, all 8 L3 frames agree: \"I'm too hot!\" with the sweat drop, flushed face and red gauge (1, 6), \"barabar\" with her smile and the green gauge (3, 7), \"I'm too cold!\" with the snowflake, clenched face and blue gauge (8), no bubble where the look and gauge sit between lines; A frames 1–2 and B frame 5 the same at L1/L2; one green band on the gauge, the hand fan lying flat on the bed, no gust lines, the room tidy; \"barabar\" only ever in her bubble, no \"just right?\" from the doctor on screen. Caveat A frame 3: the next \"I'm too hot!\" fades in at half opacity over her blanketed smile and green gauge, one transition frame",
+  "line": "C, all 8 L3 frames agree: \"I'm too cold!\" with the blue gauge (3, 7 \"Still too cold!\"), \"I'm too hot!\" with the red gauge and the blanket she is wearing (5), \"barabar\" with her smile and the green gauge (2, 4, 6, 8); B frames 2–6 the same at L2 (heater on/off, blanket), A frames 1, 3, 4 at L1; one green band on the gauge, the ceiling fan points down, no gust, tools in the column, tidy room, \"barabar\" only ever in her bubble, the doctor's box says \"Let's get you just right.\" (a statement, no \"just right?\" question on screen). Tool flaw, not the game: A frame 2 is a crop of the left column (doctor's box, \"?\"), not the stage",
   "panel": "C",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-105.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-105.png",
   "date": "2026-10-13"
  },
  "CLN-106": {
@@ -1369,19 +1369,19 @@
   "date": "2026-10-13"
  },
  "CLN-113": {
-  "hash": "dcca91026fbe3333f51a",
+  "hash": "d386a2d7b56c33937e0c",
   "dhash": [
-   "a0a8902decc44411",
+   "90a8902decec4411",
    "88889290e4888a80",
    "a080969402aa2101"
   ],
   "verdict": "PASS",
-  "line": "A, the tooth card is one sequence on a line with a grey band (Pela down, ne poi right, Drill the bad bits ticked; Fill it to the green current); B the knee the same (Hammer hakro ticked; Ne poi bandage char turns current), C the fever the same (Take the temperature ticked; Open window current); the text capture (grep audit table, build/reports/s05d3-clinic-audit.md) now has one line per game (13: Scrape to Send-off) with a column per rule (first-time help, take back, card sequence, stale UI, shared Done/Next) and every card-sequence cell is ✅",
+  "line": "A, the tooth card is one sequence on the line (Pela down ticked, ne poi right ticked, Drill the bad bits current, Fill it to the green greyed); B the knee (Hammer hakro ticked, Ne poi bandage char turns current) and C the fever (Take the temperature ticked, Open window current) the same; the text capture has the audit table with one line per game (13, Scrape to Send-off) and a column per rule, every card-sequence cell ticked",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-173342-ny2",
-  "commit": "5658b93",
-  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-113.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-113.png",
   "date": "2026-10-13"
  },
  "CLN-114": {
@@ -1472,14 +1472,14 @@
   "date": "2026-10-13"
  },
  "CLN-120": {
-  "hash": "955c57f31ce14e6fbc81",
+  "hash": "ec5be1ffedc1bf2c869d",
   "dhash": [],
   "verdict": "PASS",
-  "line": "CLN-120-p1-L3-1366x768 voice, at L3 the doctor names the thing before each exchange (\"Give hand fan\" 8.27, \"Put on blanket\" 13.57, \"Switch on ceiling fan\" 19.31) and says only \"Fix it\" (22.43) after the word clue \"Still too cold!\" (22.16), as the row allows; L1 (\"Open window\", \"Put on blanket\", \"Switch on ceiling fan\") and L2 (\"Switch on heater\", \"Switch off heater\", \"Put on blanket\") name the thing every time",
+  "line": "CLN-120-p1-L3-1366x768 voice, at L3 the doctor names the thing before each exchange (\"Give hand fan\" 8.44, \"Put on blanket\" 15.19, \"Switch on ceiling fan\" 19.80) and says only \"Fix it\" (24.40) after the word clue \"Still too cold!\" (24.07), as the row allows; CLN-120-p1-L1-1366x768 voice names \"Open window\", \"Put on blanket\", \"Switch on ceiling fan\" and CLN-120-p1-L2-1366x768 voice names \"Switch on heater\", \"Switch off heater\", \"Put on blanket\" every time.",
   "panel": "CLN-120-p1-L3-1366x768 voice",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
   "png": null,
   "date": "2026-10-13"
  },
@@ -1498,45 +1498,45 @@
   "date": "2026-10-12"
  },
  "CLN-124": {
-  "hash": "88329e55b2cfe37532f7",
+  "hash": "1314d2d6f548fda84620",
   "dhash": [
-   "3c3c1e0f07030301"
+   "110101b9ca2109a8"
   ],
   "verdict": "PASS",
-  "line": "A, bubble 2 \"Thank you, I feel better!\" is grey italic (dom: \"[ph] Thank you, I feel better!\"), no dark upright English; hit 1 is a crop of hair with no bubble drawn (an every: hit before the bubble). Also found: bubble 2's tail sits on top of her hair, as CLN-127's",
+  "line": "A, the ×2 bubble reads \"Thank you, I feel better!\" in grey italic on a cream bubble, no dark upright English; dom capture CLN-124-p1-L1-1366x768 \"[ph] Thank you, I feel better!\" carries the hidden to-record tag",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-124.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-124.png",
   "date": "2026-10-13"
  },
  "CLN-125": {
-  "hash": "e73603c72d9f613d5b0c",
+  "hash": "539fdd4a6424b7d539e7",
   "dhash": [
    "df57dfdbd4d6cede"
   ],
   "verdict": "PASS",
-  "line": "A, frames 3 (pharmacy) and 4 (heal close-up, the knee) have her face circle at the top right of the stage, clear of the doctor's box in the left column; frames 1 (waiting room), 2 (diagnosis) and 5 (send-off), where she is on screen in full, have none",
+  "line": "A, frames 3 (pharmacy) and 4 (knee close-up) have her face circle at the top right of the stage, clear of the doctor's box in the left column; frames 1 (waiting room), 2 (diagnosis) and 5 (send-off), where she is on screen in full, have none",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-125.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-125.png",
   "date": "2026-10-13"
  },
  "CLN-126": {
-  "hash": "920aa6a6996ab7911d3a",
+  "hash": "7af4a829fa028481c0b7",
   "dhash": [
-   "0003030755010fce"
+   "0003014675010fd6"
   ],
-  "verdict": "PASS",
-  "line": "A, frames 1 and 5 \"I'm too cold!\" (with the snowflake), frame 3 \"I'm too hot!\", frames 4 and 6 \"barabar\", each in her bubble (the full frames show every bubble tailed to the patient's head); frame 2 is an empty crop between lines. Note: the [s11] patient is a placeholder figure, and \"still cold\" is not an L1 line",
+  "verdict": "FAIL",
+  "line": "A, frames 4 and 5 are bubble moments with no bubble: 5 has her snowflake (the cold look) up beside her head and an empty bubble-sized crop where her words should be, 4 is bare wall; the probe also reports hits 7–14 with no .cl-bubble on screen, and the sheet carries no voice timeline to tie the moments to her lines, so only too cold (1), barabar (2), too hot (3) and barabar (6) are shown with their bubble",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-126.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-126.png",
   "date": "2026-10-13"
  },
  "CLN-127": {
@@ -1554,34 +1554,34 @@
   "date": "2026-10-13"
  },
  "CLN-128": {
-  "hash": "f81c7458f9547dbc78a8",
+  "hash": "eae8761e5fde06e63278",
   "dhash": [
    "3303030303030303",
    "3111111111111185",
    "3303030303030303"
   ],
   "verdict": "PASS",
-  "line": "B, its third capture (B3, L2, two items: jug and plaster) shows the filled tray with the items on the shelf, no outline and no dim, the same look as A3 (one plaster, L1) and C3 (one thermometer, L3); an empty space keeps the dashed outline at every level (A1-2, B1-2, C1-2)",
+  "line": "B, its third tray (L2, jug and blue plaster) shows the items on the shelf with no outline and no dim, the same filled look as A3 (one plaster, L1) and C3 (one thermometer, L3); the empty spaces keep the dashed outline at every level (A1-2, B1-2, C1-2)",
   "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-173342-ny2",
-  "commit": "5658b93",
-  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-128.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-128.png",
   "date": "2026-10-13"
  },
  "CLN-129": {
-  "hash": "c3a1388357c0460fe8c9",
+  "hash": "5db87a464762899f5d16",
   "dhash": [
    "814d4d4d4d4d0f81",
    "814d4d4d4d4d0f81"
   ],
   "verdict": "PASS",
-  "line": "A and B, the fill gauge sits in the dark gum band below all three teeth (its top edge is a clear gap under the teeth's bottom edge, its right end stops short of the right-hand tooth) at L1 and L3",
-  "panel": "AANDB",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-129.png",
+  "line": "A, the fill gauge sits in the dark gum band below all three teeth with a clear gap under the middle tooth's bottom edge and its right end stopping left of the right-hand tooth; B the same at L3",
+  "panel": "A",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-129.png",
   "date": "2026-10-13"
  },
  "CLN-13": {
@@ -1601,32 +1601,32 @@
   "date": "2026-10-12"
  },
  "CLN-130": {
-  "hash": "d0783508bcdc8ab58364",
+  "hash": "1870663bc76fa2e17671",
   "dhash": [
-   "bf9d95968e9c1237"
+   "bf9d95978e9c1237"
   ],
   "verdict": "PASS",
-  "line": "A, frames 2 and 3 (the first exchange's row open, window named): the window's hint is a soft warm light washing the panes and fading out at the frame, no edge on the wall beside it; a pixel diff of frame 3 against frame 1 changes only the window itself (plus her face, the gauge and the tool), nothing on the wall; frame 4 (window tapped, open) shows the glow gone",
+  "line": "A, frames 2 and 3 (row open, window named): the window's panes carry a soft warm wash that fades at the frame, and a pixel diff of frames 2 and 3 against frame 1 changes only the window (mean diff 3–14) with the wall beside it unchanged (mean diff under 1); no flat yellow rectangle on the wall in any frame; frame 4 the window open after the tap, glow gone",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-171950-ki1",
-  "commit": "a6ac85e",
-  "png": "build/screenshots/evidence/ev-20261013-171950-ki1/CLN-130.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-130.png",
   "date": "2026-10-13"
  },
  "CLN-132": {
-  "hash": "0da040d54c720febd2b1",
+  "hash": "bfd65a862401d67786c6",
   "dhash": [
-   "090b8189819b81a9",
-   "0b0ba1819b878b0b"
+   "098989978ba9a181",
+   "a6a7b78607000000"
   ],
   "verdict": "PASS",
-  "line": "B, at 0 ms of heal-done:patient (the thermometer on her) the \"Take the temperature\" row already carries its tick and the headline has moved on to \"Open window\" (the next row still plain); A at 0 ms of the pick-up shows the row plain. Flaw in A: from 269 to 1000 ms the card's box shrinks to the headline and the doctor's line, clipping \"Let's get you just right.\" mid-line with the \"?\" button right under the cut, so the row is hidden for the rest of the strip; B 751 ms the \"Open window\" headline goes pale for a frame.",
-  "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-132.png",
+  "line": "A, at 0 ms of the thermometer's pick-up the \"Take the temperature\" row is plain, and by 250 ms it carries its tick with the headline already on \"Open window\"; B, at 0 ms of heal-done:patient the row is ticked. The tick is not late; no frame shows the thermometer on her, so \"as it goes in\" rests on the 6.6 s / 7.3 s timing, not on a picture.",
+  "panel": "A",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-132.png",
   "date": "2026-10-13"
  },
  "CLN-133": {
@@ -1647,33 +1647,33 @@
   "date": "2026-10-13"
  },
  "CLN-134": {
-  "hash": "2266466685f90d137e36",
+  "hash": "7428c7c72b8e5ad57fcc",
   "dhash": [
    "0331032933333313"
   ],
   "verdict": "PASS",
-  "line": "A, third tool tile: the drop bottle stands cap and clear body up, ridged collar and tapered nozzle tip pointing down, ×2 on the tool column",
+  "line": "A, third tool tile ×2: the drop bottle stands with its clear cap and body up, ridged collar below and the tapered nozzle tip pointing down",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-134.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-134.png",
   "date": "2026-10-13"
  },
  "CLN-135": {
-  "hash": "7a78ee07c3f81aa79e80",
+  "hash": "4be4a8b8b51bea79a124",
   "dhash": [
    "9898989c948ccac4",
    "98989894948ccac4",
    "98989894948ccac4"
   ],
   "verdict": "PASS",
-  "line": "A, B, C; A: three wax lumps shaded and shadowed to lie on the tilted ear (not flat front-lit), B at heal:wipe: olive smears exactly where the three lumps were with the pink sore spot still there, C at .hs-healed before the pull-out: ear clean, no smears and the pink sore spot gone",
-  "panel": "A,B,C",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-135.png",
+  "line": "C, at .hs-healed before the pull-out the ear is clean with no smears and the pink sore spot gone; B at heal:wipe shows three olive smears exactly where A's three lumps were with the sore spot still there; A's lumps are shaded and shadowed to lie on the tilted ear; note: the check names L1 and L2 but the sheet films L1 only",
+  "panel": "C",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-135.png",
   "date": "2026-10-13"
  },
  "CLN-136": {
@@ -1722,18 +1722,18 @@
   "date": "2026-10-12"
  },
  "CLN-142": {
-  "hash": "04f14d2650ea76b5e942",
+  "hash": "34b013547174bc6232c0",
   "dhash": [
-   "cfaf8bab8383c9ca",
-   "039b931297170313"
+   "40018b8b838381c0",
+   "019a929296160303"
   ],
   "verdict": "PASS",
-  "line": "A, the taught scrape at real pace from a fresh profile reaches the results-badges end screen (card outlined, 15s timer badge, tick, bulb x0, Next arrow), recorded at 18.3s instead of timing out after plaster demos",
+  "line": "A, the taught scrape at real pace from a fresh profile reaches the results-badges end screen (.rs-card outlined: 24s timer badge, tick, bulb x 0, Next arrow), recorded at 27.5s instead of timing out after plaster demos",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-175553-umz",
-  "commit": "913f993",
-  "png": "build/screenshots/evidence/ev-20261013-175553-umz/CLN-142.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-142.png",
   "date": "2026-10-13"
  },
  "CLN-147": {
@@ -1875,19 +1875,19 @@
   "date": "2026-10-12"
  },
  "CLN-26": {
-  "hash": "987470c77db97cfe8888",
+  "hash": "7613e2d5ae3ba8621a12",
   "dhash": [
-   "cfefebcbc9cdcedb",
+   "cfefefcbc9c9cec3",
    "cfebfbcbc5cdcec3",
    "cfe9ebcbc1cdced5"
   ],
-  "verdict": "PASS",
-  "line": "B, at L2 there is no thought bubble from her head and the four feeling cards (hot, sad, happy, cold) are a plain row along the bottom of the scene; A, at L1 her face is the happy one and the thought bubble from her head holds the four faces with no words; C, at L3 the tray along the bottom is blanket, fan, apple and her face shows the feeling; goodbye from L2 is in the timeline only (\"Say bye.\" then \"Khuda-fis\" before stage-end at L2 and L3), L4 on no panel",
-  "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-26.png",
+  "verdict": "FAIL",
+  "line": "A, at L1 the patient is not in the scene at all: the bed is empty and the four-face thought bubble floats over it with its dots trailing to nobody, so the feeling cannot show on her face (B at L2 is right: no thought bubble, four cards in a plain row; C at L3 the tray along the bottom is blanket, fan, apple and her face is sad; L4 is on no panel)",
+  "panel": "A",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-26.png",
   "date": "2026-10-13"
  },
  "CLN-27": {
@@ -2209,7 +2209,7 @@
   "date": "2026-10-12"
  },
  "CLN-53": {
-  "hash": "acc1d8a1cc0e07611936",
+  "hash": "5e9ec0ef96a97eede7e5",
   "dhash": [
    "814d4d4d4d4d0f81",
    "814d4d6d4d4d0f81",
@@ -2217,12 +2217,12 @@
    "806d6d65654d8f81"
   ],
   "verdict": "PASS",
-  "line": "B, the L2 green zone is ~49 px of the 287 px gauge against ~77 px at L1 in A, red either side, the blue button clear; C (L3) matches B exactly, which is the row's own ladder (L3 = L2 heard only; the narrower L4 zone 0.67-0.80 is in tooth.json); D the L1 fill climbs the gauge 0-1500 ms with the zone fixed",
+  "line": "B, the L2 green zone is about 49 px of a 290 px gauge against about 76 px at L1 in A, red either side, the blue button clear; C (L3) matches B exactly (L3 = L2 heard only); D the L1 fill climbs from the left (0 to about 43 percent over 0-2015 ms) with the zone fixed",
   "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-173342-ny2",
-  "commit": "5658b93",
-  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-53.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-53.png",
   "date": "2026-10-13"
  },
  "CLN-54": {
@@ -2343,20 +2343,20 @@
   "date": "2026-10-12"
  },
  "CLN-64": {
-  "hash": "213d1ace8b3543969276",
+  "hash": "3c3548253fa9c7bee369",
   "dhash": [
-   "b1f1e88303f484cc",
+   "b1f1e99303f484cc",
    "91f9e88b03f884cc",
    "91f9f57570e4cccc",
    "4040c3c7c7c4c0c0"
   ],
   "verdict": "PASS",
-  "line": "B, frames 6–8 the L3 sole (toes at the top, heel below) with a channel path of right-angle turns from each splinter at the toe-line down the sole, A frames 6–8 the same at L2 with three channels; C, at heal:off-the-channel the red \"ow\" ring on the right splinter with \"Ow!\" on her face circle (150–450 ms) and at 601–750 ms the splinter back at its start; D, the end review has the \"Pela middle toe\" pull step unticked in a red box (\"hakro\") with every other step ticked, so the side touch was scored",
+  "line": "B, frames 6–8 the L3 sole (toes up, heel down) with a channel path of right-angle turns from each splinter down the sole, A frames 6–8 the same at L2; C, at 150 ms the red \"ow\" ring on the right splinter, from 452 ms the splinter back at its start; D, the end review has \"Pela middle toe\" unticked in a red box marked \"hakro\" with every other step ticked, so the side touch was scored",
   "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-64.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-64.png",
   "date": "2026-10-13"
  },
  "CLN-65": {
@@ -2626,50 +2626,50 @@
   "date": "2026-10-12"
  },
  "CLN-85": {
-  "hash": "d7d23779e24a59ff054c",
+  "hash": "49ce695dc3800ac77b9c",
   "dhash": [
-   "c1c5a125a14560a0"
+   "c1c5a125a14560a3"
   ],
   "verdict": "PASS",
-  "line": "A, the \"paani\" bubble sits under her chin with its tail up to her mouth as she reads the chart; the face circle at the top right is CLN-125's, not judged here",
+  "line": "A, the \"paani\" bubble sits under her chin with its tail pointing up to her mouth as she reads the chart (the face circle at the top right is CLN-125's, not judged)",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-85.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-85.png",
   "date": "2026-10-13"
  },
  "CLN-86": {
-  "hash": "8baa5889bb68fc774fb1",
+  "hash": "910cd5c2fb60bed5771c",
   "dhash": [
-   "df55dfdfd4d6cede",
+   "df57dfdfd4d6cede",
    "3fa33fa6aaae1efe",
-   "cf53818181838fde",
+   "df55dbdfd4d6cede",
    "3ba137a6aaae1efe"
   ],
   "verdict": "PASS",
-  "line": "B, her \"Salamun alaykum.\" bubble sits above her head on the sofa with its tail down onto her hair; D, his \"Wa alaikum salaam.\" bubble at his face in the doorway, tail onto his head, and the timeline has her clip 9.31–10.40 then his 10.40–11.81 in that order; which family voice is on each clip is not readable (no speaker ids, both silent), for Zafar's ear",
+  "line": "B, her \"Salamun alaykum.\" bubble sits above her head on the sofa, tail down onto her hair; D, his \"Wa alaikum salaam.\" bubble at his face in the doorway, tail onto his cap; the timeline has her line 7.63–8.73 then his 8.73–10.14, in that order. Which voice is on each clip is not readable (both lines are \"clinic:\" and [silent: nothing played], no speaker ids): the ear check stays with Zafar",
   "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-86.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-86.png",
   "date": "2026-10-13"
  },
  "CLN-87": {
-  "hash": "8a672c33c6024a5c6ebc",
+  "hash": "0a0be6c078a1f6fad8de",
   "dhash": [
-   "bf9d9d9f9a98908f",
-   "f0e4cccec6b2c3e6",
-   "e4f4f0fc989c9cbc"
+   "fe7efc7d787c7e7e",
+   "e0ecccc6c6f683c2",
+   "31b8bcaee4ce8ece"
   ],
   "verdict": "PASS",
-  "line": "A, the whole room with her sitting (finished art) at 0 and 373 ms, the swap at 525 ms, the knee close-up complete at 1262 ms (trace zoom-in → zoom-in-end 1612 ms, within about 1.5 s); C, the pull-out starts at 0 ms on the bandaged knee close-up, passes through her finished sitting art at 250–750 ms and is the full room by 1250 ms (about 1.25 s); B, her sitting pose at 2× is painted finished art, no stand-in body. Note for Zafar's eye, not a fail on the row's words: the swap frames (A 525 ms, C 0 ms) are a double exposure of her two arts, her leggings-clad leg and the bare/bandaged knee showing through each other, the bandage floating translucent over her shin in C 0 ms.",
+  "line": "A, the whole room with her sitting (finished art) at 0 ms, the knee close-up by 1060 ms and crisp at 1656 ms (trace zoom-in to zoom-in-end 1674 ms, about 1.5 s); C, the pull-out starts at 0 ms on the bandaged knee (cross-fading into her sitting mid-shot), passes her finished sitting art at 276 and 500 ms and is the full room by 864 ms; B, her sitting pose at 2x is finished painted art, no stand-in body. For Zafar's eye: the swap frames (A 1060 ms, C 0 ms) are a double exposure of her two arts, the bandage floating translucent over her leggings at C 0 ms.",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-87.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-87.png",
   "date": "2026-10-13"
  },
  "CLN-88": {
@@ -2695,18 +2695,18 @@
   "date": "2026-10-12"
  },
  "CLN-90": {
-  "hash": "2f8b26b2b2cb83765c8b",
+  "hash": "d711a4582bc47631f7da",
   "dhash": [
    "3f233faa9a1a3c7e",
    "262e2f9a981a0cfd"
   ],
   "verdict": "PASS",
-  "line": "B, at 844x390 the four selector circles are one even row below the bench, each clear under its own person's feet with even padding to the seats; A at 1366x768 the same",
+  "line": "B, at 844x390 the four selector circles are one even row on the floor below the bench, each clear under its own person's feet; A the same at 1366x768. No separate \"call them in\" boxes are on the sheet (the circles are the call-in ticks)",
   "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-90.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-90.png",
   "date": "2026-10-13"
  },
  "CLN-91": {
@@ -2737,17 +2737,17 @@
   "date": "2026-10-12"
  },
  "CLN-94": {
-  "hash": "34b54f7e0e259ea9cf42",
+  "hash": "69ce7c73a604643c102f",
   "dhash": [
-   "8d8db5aa8a8b9db5"
+   "8d8db5b28a8b8d95"
   ],
   "verdict": "PASS",
-  "line": "A, at 0 ms she stands full-figure, big, torch selected in the kit; 301 and 500 ms the view zooms on its own and at 806 and 1000 ms her face fills the stage with no tap; at 806 ms the sekelo-style card sits whole inside the panel (doctor avatar, headline \"Check her over.\", \"Use the torch.\" and \"Use your hand.\" each with a part word under it, one cream highlight on the current part), its left border not cut; the doctor is finished art.",
+  "line": "A, at 0 ms she stands full-figure and big with the torch selected in the kit, at 273 and 529 ms the view zooms by itself and at 804 and 1131 ms her face fills the stage; at 1131 ms the sekelo-style card is whole (doctor avatar, headline \"Check her over.\", \"Use the torch.\" with its part word under it on one cream highlight, \"Use your hand.\" with its part word plain). Not on the strip: that no eye tap was needed is inferred from the probe (no tap between the torch select and the zoom), not seen.",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-94.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-94.png",
   "date": "2026-10-13"
  },
  "CLN-95": {
@@ -3241,20 +3241,20 @@
   "date": "2026-10-12"
  },
  "MAA-08": {
-  "hash": "b24147c2739459d59533",
+  "hash": "d92550d9ac76da5980c3",
   "dhash": [
-   "c4cccacece8c8cc4",
+   "c4cccccccc8c8cc4",
    "c26cececec6c4c4c",
-   "40cccacc4cccccc4",
+   "40cccccc4cccccc4",
    "3c6cecececec4c4c"
   ],
   "verdict": "PASS",
-  "line": "D, the whole 844×390 stage at the ✓: the spatula rests on the counter right of the hob with the ✓ well below and right of it in the tray strip, not touching; no count badge anywhere on the hob (the one disc on its front panel is Nana's orderer face badge beside the knob, the CHAI-18 hob badge); the two serving plates in the tray strip are whole. A and C show both plates (empty thali, thali with one maani) uncut at 1280×800 and 844×390; B at 1280×800 shows the same hob and resting spatula with nothing over it (the ✓ falls outside B's crop, so the tick claim at 1280×800 rests on D only). Flaws off the point: a sliver of the left-hand panel (white rounded tabs, a cut \"...\" pill) leaks into the left edge of the B and D stage crops; 915×375 was not captured (the probe ran 844×390).",
+  "line": "D, the whole 844x390 stage at the tick: both serving plates whole in the tray strip, the tick bottom right well below and right of the spatula resting beside the hob, no count badge on the hob (the one disc on its front panel is the orderer's face badge by the knob); B the same at 1280x800; A and C show both thali plates uncut at x2",
   "panel": "D",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-161554-mqx",
-  "commit": "9b216fd",
-  "png": "build/screenshots/evidence/ev-20261013-161554-mqx/MAA-08.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/MAA-08.png",
   "date": "2026-10-13"
  },
  "MAA-09": {
@@ -3330,19 +3330,19 @@
   "date": "2026-10-12"
  },
  "MAA-14": {
-  "hash": "5581d0df9508a7c2851b",
+  "hash": "11a8741e78c1e2acefbc",
   "dhash": [
-   "8d8111555455154d",
-   "c98181d4d6d45103",
-   "7b73f3f3f860e1df"
+   "8da101d5d454114d",
+   "c98181d6ded65101",
+   "7f7ff4f8f860e8ce"
   ],
   "verdict": "PASS",
-  "line": "A, the shared pop-up sits boxed with a gold ring round her avatar from 0 to 2401 ms, her frown face at 3001 ms, the pop-up fading at 3599 ms and gone by 4202 ms; B, the same pop-up with \"Muke atto de.\", \"Muke mirchi de.\", \"Muke lasan de.\" in three day-3 stations; C, no pop-up at any of four day-1 moments (expect 0 PASS). The walk-in itself is not on the strip (see flaws), so the crossing is still unseen, not failed.",
+  "line": "A, the shared pop-up sits boxed where she lands with a gold ring round her avatar from 0 to 1801 ms, her frown face at 2401 and 3000 ms, the pop-up gone by 3600 ms (the stove behind it at 4200 ms); B, the same pop-up with \"Muke matar de.\", \"Muke rai de.\", \"Muke tarela bataata de.\" in three day-3 stations; C, no pop-up at any of four day-1 moments (expect 0 PASS). The walk-in itself is still not on the strip (A starts after it), so the crossing and the pause are unseen, not failed.",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-164227-oez",
-  "commit": "caaa8ca",
-  "png": "build/screenshots/evidence/ev-20261013-164227-oez/MAA-14.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/MAA-14.png",
   "date": "2026-10-13"
  },
  "MOD-01": {
@@ -3405,17 +3405,17 @@
   "date": "2026-10-12"
  },
  "PAN-05": {
-  "hash": "cb0c3797c9d93dd03714",
+  "hash": "2266885dd0f96dbbf29b",
   "dhash": [
-   "0081888a81810100"
+   "81a88a01a1010000"
   ],
   "verdict": "PASS",
-  "line": "A, frame 2: before the first chai the pantry card (\"Bring me these\" in grey italic, Nani's face) lists chai, dudh, khun, elchi; frame 1 maani came first with no trip (maani has no pantry list); frames 3-4 the later chai orders carry no trip. Minor: frame 1's crop cuts the card's top edge; frame 2 is captured under the pop-up's dimming.",
+  "line": "A, frame 2: \"Muke chai de.\" then the pantry card (Nani, \"Bring me these\" grey-italic to-record) lists chai, dudh, khun, elchi before the first chai is made; frame 1 maani (no pantry list) came first with no trip; frames 3-4 the later chai orders carry no trip",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/PAN-05.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/PAN-05.png",
   "date": "2026-10-13"
  },
  "PAN-06": {
@@ -3662,17 +3662,17 @@
   "date": "2026-10-12"
  },
  "SAM-05": {
-  "hash": "1c1bf47e58b2f0a90eac",
+  "hash": "3f5ef6ecf88e7fc83f48",
   "dhash": [
    "3f3b37373733333f"
   ],
   "verdict": "PASS",
-  "line": "A, swipes 1-3 show the fixed fold pictures on a textured pastry strip (diced filling at 1, the first fold covering the filling at 2, the second fold at 3), the pastry present at swipe 3; no code-drawn flat strip and no white teardrop",
+  "line": "A, swipes 1-3 show the fixed fold pictures on the textured pastry strip (diced filling at 1, the first fold over it at 2, the second fold at 3), the pastry present at every swipe, no code-drawn strip",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SAM-05.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SAM-05.png",
   "date": "2026-10-13"
  },
  "SAM-06": {
@@ -3819,31 +3819,31 @@
   "date": "2026-10-12"
  },
  "SAM-18": {
-  "hash": "46e451cbe0daee0f9637",
+  "hash": "9542699f5fc49354b381",
   "dhash": [
    "70f0d8d8f8112020"
   ],
   "verdict": "PASS",
-  "line": "A, frame 3: after the third swipe the folded samosa (a small triangle) sits on the plate and the board is empty; frames 1-2 show the strip with its first and second fold. Flaws: frame 3 the \"samosa\" word pill sits at the board's top-left corner, away from the samosa on the plate; the triangle on the plate is far smaller than the strip it was folded from.",
+  "line": "A, frames 1-3 the strip is on the board with its first, second and third fold (a triangle at the strip's end each time); frame 4 after the last swipe the folded samosa (a triangle) sits on the plate, never an empty board mid-fold",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SAM-18.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SAM-18.png",
   "date": "2026-10-13"
  },
  "SAM-19": {
-  "hash": "061d6357a7a6654b7842",
+  "hash": "9b7b7e9a1dcbbdd53af4",
   "dhash": [
    "ff0f070707031f7f"
   ],
   "verdict": "PASS",
-  "line": "A, filling sits on the strip at 0-885 ms, the triangle folds over it from 1207 ms, and at 1937, 2133 and 2281 ms the flap with its crease covers the left end and the filling is gone (filling shows through the flap at 1207-1749 ms, noted above)",
+  "line": "A, the filling sits at the left end of the strip at 0 ms, the triangle folds over it from 251 ms, and at 500 and 751 ms the flap with its crease covers the left end and the filling is gone; at 251 ms the filling still shows through the flap (translucent), and frames 1002-1875 ms are not the canvas (capture lost the element).",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SAM-19.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SAM-19.png",
   "date": "2026-10-13"
  },
  "SEK-01": {
@@ -3873,20 +3873,20 @@
   "date": "2026-10-12"
  },
  "SEK-03": {
-  "hash": "33e801ad8a7bc4f28245",
+  "hash": "f37b12eb2a5916dc1fa9",
   "dhash": [
-   "818af01111311131",
-   "aa82000000000000",
-   "8196412151216171",
+   "8293010100000000",
+   "a883311131113131",
+   "818c814161710161",
    "a082948021c8c090"
   ],
   "verdict": "PASS",
-  "line": "A, L3 each skewer its own plain white box with no label row, four pills joined by the skewer line ending in a pointed tip; C the samosa kinds in two plain boxes with no label row; D the clinic card the same with its skewer line. Not on the sheet: L4's boxes (B shows the closed card, the peek missed) and chaat; A's second box is cut by the panel edge (tool owner to confirm it is the crop, not the game clipping).",
-  "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-171625-ng0",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-171625-ng0/SEK-03.png",
+  "line": "B, at L4 each mixed skewer is its own plain white group box (no tint, no label row) of four pills joined by the thin skewer line ending in a pointed tip, with a plain single pill (hakri lakri gos) above them; C the samosa kinds in two plain untinted boxes with no label row; D the clinic card in the same box with its line. A (L3) caught the closed card, so the L3 boxes are not on the sheet",
+  "panel": "B",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SEK-03.png",
   "date": "2026-10-13"
  },
  "SEK-04": {
@@ -3941,17 +3941,17 @@
   "date": "2026-10-12"
  },
  "SEK-08": {
-  "hash": "de0bb01c79822d6d1a63",
+  "hash": "fa4a2263bc790fa944af",
   "dhash": [
    "70e0e06c60617060"
   ],
   "verdict": "PASS",
-  "line": "A, frame 3: the grill phase shows only the skewer, the coals and the plate, no ingredient piles; frames 1-2 the thread phase is one job (board, skewer rack, the three piles). Flaw: frames 1-2 the tameto pile's label is a bare speaker icon with no word (SEK-16).",
+  "line": "A, frame 3 the grill phase shows only the loaded skewer in its rack, the coals and the plate, no ingredient piles or chips; frames 1-2 the thread phase is one job (board, skewer rack, the three piles)",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SEK-08.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SEK-08.png",
   "date": "2026-10-13"
  },
  "SEK-09": {
@@ -4020,31 +4020,31 @@
   "date": "2026-10-12"
  },
  "SEK-16": {
-  "hash": "45ebd25c132394404191",
+  "hash": "0adc459b58707be9a1ab",
   "dhash": [
    "70e0e06c60617060"
   ],
   "verdict": "PASS",
-  "line": "A, frames 2-5 after each piece lands the stage's far left and the marble beside the board are empty, the only word pills being the three chips under their own bowls (mishkaki, dungri, the tameto chip in its hidden-word state), and frame 6 the grill phase carries no pile or pill; the pop over the bowl itself (1.5 s) is not caught on any frame.",
+  "line": "A, frames 1-5 the stage's far left and the marble beside the board are empty; the only pills are the three chips under their own bowls (mishkaki, dungri, the tameto chip's icon) and the \"tameto\" pop in frames 2 and 4 sits directly over the third bowl; frame 6 the grill phase carries no pill",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-172804-m74",
-  "commit": "de2a1e1",
-  "png": "build/screenshots/evidence/ev-20261013-172804-m74/SEK-16.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SEK-16.png",
   "date": "2026-10-13"
  },
  "SEK-17": {
-  "hash": "b96a0b295656caf3d54e",
+  "hash": "c4aa40ae9404ef90f77e",
   "dhash": [
    "a082948021c8c090"
   ],
   "verdict": "PASS",
-  "line": "A, the scrape's three steps (Pela paani, Ne poi cloth ba dabs, ne poi yellow plaster) sit in one plain group box joined by the thin centre line ending in a pointed tip below the last pill, no bracket line, no label row, the same drawing as the sekelo card in SEK-03 A.",
+  "line": "A, the scrape's three steps (Pela paani, Ne poi cloth ba dabs, ne poi yellow plaster) sit in one plain group box joined by the thin centre line ending in a pointed tip below the last pill, no label row, the same drawing as the sekelo box in SEK-03 B",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-171625-ng0",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-171625-ng0/SEK-17.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SEK-17.png",
   "date": "2026-10-13"
  },
  "SH-01": {
@@ -4556,19 +4556,19 @@
   "date": "2026-10-12"
  },
  "SH-39": {
-  "hash": "909044d6fa296dc9d801",
+  "hash": "b2a04ca3a1a39a40e742",
   "dhash": [
    "70e0ccc8e8e45050",
    "4144444c6462d0c6",
    "31b8d2d2daf0d040"
   ],
   "verdict": "PASS",
-  "line": "A, frames 5-8 the count sits on the pan in use as the Kutchi word (\"hakro\", \"ba\", \"trae\", \"trae hakro\") on the rim's left, the \"khun\"/\"elchi\" label pill whole beside it, no digit and nothing in a corner or card row; B, the same at 844x390 (frames 5-8, the badge now clear of the \"khun\" pill that it covered last run); C, L3 at 844x390 the dots badge (frames 4-7: one, two, three dots with the sugar cup) on the first pan's rim, the \"khun\" pill whole below it. Flaw outside these panels: with two count groups the same badge runs off the stage's left edge (CHAI-19 A frame 8, above).",
+  "line": "A, frames 5-8 the count sits on the hob of the pan in use as the Kutchi word (hakro, ba, trae, trae hakro) at its top-left, the \"khun\"/\"elchi\" label pill whole inside the pan, no digit, nothing in a corner or card row; B the same at 844x390, frame 8's two-group badge whole; C at L3 844x390 the dots badge (one, two, three dots with the sugar cup, frames 4-7) on the first pan's hob, the \"khun\" pill whole below it",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-172804-m74",
-  "commit": "de2a1e1",
-  "png": "build/screenshots/evidence/ev-20261013-172804-m74/SH-39.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SH-39.png",
   "date": "2026-10-13"
  },
  "SH-40": {
@@ -4860,17 +4860,17 @@
   "date": "2026-10-12"
  },
  "SH-61": {
-  "hash": "5cbb4d5c1327f0a1837a",
+  "hash": "3c863f65e872a308b99f",
   "dhash": [
    "04060b2971330604"
   ],
   "verdict": "PASS",
-  "line": "A, at x2 the gold tick sits on a flat cream disc with only a 2px rim, no drop shadow or lip anywhere round it (pixels go rim [230,213,184] straight to background [239,229,214] on all four sides); clinic covered by the text capture (kit.js:1030 uses the shared NB.done)",
+  "line": "A, at x2 the gold tick sits on a flat cream disc with only a thin 1-2 px rim, no drop shadow and no lip anywhere round it (the bevel is the tick art's own); the clinic draws the same shared NB.done per the kit.js:1030 text capture",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SH-61.png",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SH-61.png",
   "date": "2026-10-13"
  },
  "SH-62": {
@@ -5009,37 +5009,37 @@
   "date": "2026-10-12"
  },
  "SH-74": {
-  "hash": "18740ead2cfdd3d1f536",
+  "hash": "843a3a9c33a8c368633f",
   "dhash": [
    "cf538595958387de",
    "cfaf8bab8b83c9cb",
-   "6f050b0b0b030b47",
-   "00190b2a03030190"
-  ],
-  "verdict": "PASS",
-  "line": "C, at 844x390 the card's white spans x 208-835 (measured on the full-size shot): its left edge is 8px right of the sidebar (ends x 200) and 9px inside the stage's right edge, three badges and Next whole; A and B at 1366x768 the card spans x 313-1312, centred in the play area (53px each side), 55px clear of the sidebar (ends x 258), the four-badge L3 card in A and the three-badge heal card in B both whole, no badge or edge cut; D Cook's card sits at the same x 313-1312 over the stage, clear of the sidebar; the tool's inside-checks agree (3 of 3 inside)",
-  "panel": "C",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-161223-2i4",
-  "commit": "af07783",
-  "png": "build/screenshots/evidence/ev-20261013-161223-2i4/SH-74.png",
-  "date": "2026-10-13"
- },
- "SH-75": {
-  "hash": "ab91c073de68055f1c25",
-  "dhash": [
-   "cfefefc7c6cfc8ca",
-   "31616955612c3e2f",
-   "cfefefc7c6cfc8ca",
+   "6f070b0b0b030b47",
    "00190b2a0b030190"
   ],
   "verdict": "PASS",
-  "line": "A and B, the clinic heal card on its steps page is about 428 px wide at 1366x768 (the .rs-card crop is 428x360), hugging its three step lines and the two action buttons, no empty band either side, against the ~1000 px three-badge width last run; D, Cook's three badges fill their card. Not on a panel: a two-badge page and the morning receipt (p3 captured but dropped from the sheet); a one-badge page does not exist (results.js:423 makes n2, n3 or n4 only), so the one-badge card the row names can only be the step-in.",
-  "panel": "AANDB",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-172804-m74",
-  "commit": "de2a1e1",
-  "png": "build/screenshots/evidence/ev-20261013-172804-m74/SH-75.png",
+  "line": "C, at 844x390 the heal card's left edge sits right of the sidebar and its right edge inside the stage, three badges and Next whole; A, B and D at 1366x768 the card is centred in the play area well clear of the sidebar (the four-badge waiting L3 card, the three-badge heal card, Cook's card over the hob), no edge cut",
+  "panel": "C",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SH-74.png",
+  "date": "2026-10-13"
+ },
+ "SH-75": {
+  "hash": "005ca2160f0bac19238f",
+  "dhash": [
+   "cfefebcbc6cdc8db",
+   "31616955612c3e2f",
+   "cfefebcbc6cdc8db",
+   "00190b2a0b030190"
+  ],
+  "verdict": "PASS",
+  "line": "B, the heal game's steps page card is about 428 px wide and hugs its three step lines and two buttons, no empty band either side, against the ~1000 px three-badge card in D whose three badges fill the width; the card is sized to its content. Not on the sheet: a settled two-badge card (the only two-badge capture, the off-sheet morning shot, is mid step-in and inconclusive)",
+  "panel": "B",
+  "judge": "Fable, independent subagent (orchestrator final look)",
+  "run": "ev-20261013-184310-4hz",
+  "commit": "09b5676",
+  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SH-75.png",
   "date": "2026-10-13"
  },
  "SH-76": {
