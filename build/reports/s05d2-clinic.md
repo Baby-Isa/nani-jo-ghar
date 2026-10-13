@@ -17,3 +17,5 @@ Branch `ccr-a7370759-t0lee7`. Game code changed: yes.
 Runs `ev-20261013-…`; real-pace sheets in `build/screenshots/evidence/s05d2-real-pace/`.
 
 **Open.** T2 pushed no clinic game FAILs; the rows it named are spec faults (causes in the rows). For `/review`: the pharmacy's hesitation hint writes the item at L3 (kept by decision 80). The CLN-54 pour probe should run at real pace.
+
+**Orchestrator's asks.** Say tagging handed to the shared Say (cc53311); CLN-117 grey tags hold (ev-20261013-003222-odz); LNG-06 (ev-20261013-004051-y2u) fails only on familyOnly (no family clips: Mum). CLN-111: the current plan runs p1 only (no morning-end page planned): T. SH-41 stays open only on its `!lexicon` expect (T); its time is green (ev-20261013-001636-an4).
