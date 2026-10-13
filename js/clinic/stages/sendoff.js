@@ -135,7 +135,9 @@
       showFeel(null);
       // 13e: no card listing every line up front (no script cards, UX 16): the doctor's box says the one
       // line now; the scene makes the rest clear
-      screen.card.setTitle("", null);
+      // CLN-139 (decision 97 (6)): her patient card stays in the sidebar here, as at every stage: the one step asked now
+      // as its headline (no face circle: she is on screen, decision 92); it never lists every line up front (13e)
+      screen.card.setTitle(S.line(env, plan.mode === "helps" ? "helps" : "pick-feel"), null);
       screen.card.setRows([]);
 
       const rowOf = (id) => plan.rows.find((r) => r.id === id);
@@ -356,7 +358,9 @@
       // needed, with nothing else on screen (13f)
       if (plan.goodbye) {
         const r = rowOf("bye");
-        S.say(plan.card.find((x) => x.id === "bye"), "doctor");
+        const bye = plan.card.find((x) => x.id === "bye");
+        if (bye) screen.card.setTitle(bye, null); // CLN-139: the card's step is the goodbye now
+        S.say(bye, "doctor");
         S.stage(docEl, layer, "player");
         S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: plan.goodbye }));
         const out = await S.moment(env, {
