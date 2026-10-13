@@ -875,7 +875,7 @@
   },
   {
    "flow": "cook:fetch",
-   "path": "hint",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -891,7 +891,7 @@
    "expect": [
     "count:#mission .oc-strip .ra-on>=1"
    ],
-   "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays)",
+   "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays) (at a child's pace)",
    "max": 4,
    "delay": 150
   },
@@ -1312,7 +1312,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "every:visible:.ob-ghost, .co-finger",
    "after": null,
    "capture": [
     "shot"
@@ -1320,8 +1320,9 @@
    "expect": [
     "count:.ob-ghost,.co-finger>=1"
    ],
-   "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase (the shared .ob-ghost or Cook's own coach finger .co-finger)",
-   "delay": 300
+   "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase (counted once the ghost is visible, not at its 0-opacity first frame)",
+   "delay": 0,
+   "max": 6
   },
   {
    "flow": "cook:daar",
@@ -1332,7 +1333,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "every:visible:.ob-ghost, .co-finger",
    "after": null,
    "capture": [
     "shot"
@@ -1340,8 +1341,9 @@
    "expect": [
     "count:.ob-ghost,.co-finger>=1"
    ],
-   "note": "daar: every phase has its help; nothing dimmed with nothing lit",
-   "delay": 300
+   "note": "daar: every phase has its help; nothing dimmed with nothing lit (counted once the ghost is visible, not at its 0-opacity first frame)",
+   "delay": 0,
+   "max": 6
   }
  ],
  "SH-20": [
@@ -5147,7 +5149,7 @@
    ],
    "expect": null,
    "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card)",
-   "delay": 450
+   "delay": 150
   },
   {
    "flow": "cook:samosa",
@@ -5167,7 +5169,7 @@
    ],
    "expect": null,
    "note": "samosa kinds the same (an order of two kinds: the second block is said as its own)",
-   "delay": 450
+   "delay": 150
   },
   {
    "flow": "clinic:heal-cut",
