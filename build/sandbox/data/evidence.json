@@ -5434,21 +5434,22 @@
  "SEK-13": [
   {
    "flow": "cook:mishkaki-grill",
-   "path": "fair",
-   "level": 4,
+   "path": "hint",
+   "level": 3,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:peek-open",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "the card ticks each piece of a mixed skewer as it goes on (L3: one or two mixed)",
-   "max": 16
+   "max": 4,
+   "delay": 500,
+   "note": "the card opened by a peek at L3 while the skewers go on: each piece of a mixed skewer ticks as it is placed"
   }
  ],
  "SEK-14": {
