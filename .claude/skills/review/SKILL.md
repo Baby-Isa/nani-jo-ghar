@@ -7,6 +7,7 @@ description: Review a finished build session or any change before it goes to Zaf
 **For:** whoever did not build it (C4, C17). Rules: `docs/process/rules.md` §3; checklist `docs/process/qa-checklist.md`.
 
 ## Steps
+0. The fast checks, docs limits included: `node build/tools/review/checks.mjs` (exit 1 stops the review).
 1. What the change reaches:
    ```
    node build/tools/review/touched.mjs --base <last reviewed commit>
@@ -32,9 +33,9 @@ description: Review a finished build session or any change before it goes to Zaf
    node build/tools/review/evidence.mjs --plan --sprint      # specs validated; a row with no spec, a spec error or an unreachable moment fails here (fix the spec or the driver first)
    COOK_TEST_PORT=88xx flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --sprint   # plays, captures, decides the expects; exit 75: --resume <id>
    node build/tools/review/evidence.mjs --judge              # batch files for the rows a reviewer must see (not machine-decided, not cached, not a tool failure)
-   #   one reviewer call per build/screenshots/evidence/<run>/judge/batch-NN.md (Fable; Opus when Fable is at its limit; never the builder)
+   #   one `judge` agent call per build/screenshots/evidence/<run>/judge/batch-NN.md (.claude/agents/judge.md; on the orchestrator's model, never the builder)
    node build/tools/review/evidence.mjs --collect            # the verdict files -> the cache
-   node build/tools/review/evidence.mjs --apply              # FAIL -> reopened, PASS -> built, in regressions.md
+   node build/tools/review/evidence.mjs --apply              # FAIL -> reopened (back to the fix list), PASS -> built (to the archive)
    ```
    A row is built only on a PASS of its evidence (a machine expect or a reviewer citing a panel); a FAIL reopens it before Zafar plays. Tool failures (moment never reached, blank crop, spec error) go back to the tool owner, never to Zafar. Zafar gets the FAIL list, the audit disagreements and the `human` rows (his ear or feel) before he plays (C20). At sprint close: `--run --all`, then `--judge --audit 10`. (`sprintcheck.mjs` stays for the row → flow mapping of rows with no spec.)
 
