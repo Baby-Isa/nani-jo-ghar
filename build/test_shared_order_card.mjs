@@ -32,7 +32,7 @@ test("the same recipe several times is one row, parts once; different recipes ar
     ],
   });
   assert.deepEqual(diff.items.map((it) => it.row), [true, true, true]);
-  assert.deepEqual(diff.items.map((it) => it.tint), [false, true, false], "alternate item rows tinted");
+  assert.deepEqual(diff.items.map((it) => it.tint), [false, false, false], "no alternate tints (decision 95)");
   assert.deepEqual(diff.items.map((it) => it.parts.length), [0, 4, 4], "an item with no recipe has no parts");
 });
 
