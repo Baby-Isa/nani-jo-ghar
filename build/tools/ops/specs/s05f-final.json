@@ -1,0 +1,74 @@
+{
+  "name": "S05-F, the last fixable rows before /review (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "game code judged by eye and ear",
+  "cost": "about $15-20",
+  "stop": "none: finish these rows (decision 89); push after each",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-red-then-green.md (the log, last entries)",
+    "build/reports/s05t2-probes.md (the final run ev-20261013-095159-oh3 and its notes)",
+    "build/reports/s05c2-cook.md and build/reports/s05s2-shared.md (round 3 and 4)",
+    "docs/architecture/evidence-loop.md (incl. Probe pitfalls)",
+    "docs/decisions.md rows 89-95 only"
+  ],
+  "owns": [
+    "every file a row below needs (all other S05 sessions have finished): js/cook/**, js/shared/**, css/**, build/tools/review/**, build/sandbox/**, data/cook.json; never data/lang/** or build/lang/** (the engine: report a word gap, never invent Kutchi)",
+    "the rows below in docs/process/regressions.md",
+    "build/reports/s05f-final.md"
+  ],
+  "readOnly": [
+    "data/lang/**, build/lang/**, js/core/lang/**",
+    "assets/**",
+    "js/clinic/** (the clinic is finished)"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: pull. One red run: `COOK_TEST_PORT=8897 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows DAAR-11,SH-17,SH-19,SH-01,ART-18,SH-58`. For each, decide first whether the game or the probe is wrong (Probe pitfalls), then fix whichever it is.",
+      "accept": "the red run's id and each row's cause in the report"
+    },
+    {
+      "do": "DAAR-11 (decision 94): C2 made the ladle turn with its path (e1afa2d), but the probe's `traceRot` reads 0 and the ladle looks static in the trace window. Find whether the probe traces the wrong object or the ladle really doesn't turn in play, and fix that. The handle must always point outward and rest on the rim, with no hand.",
+      "accept": "green, with a filmstrip showing the handle turning round the rim"
+    },
+    {
+      "do": "SH-17: the read-along. Words must light one by one as they're said, in the pop-up and in the pantry strip (`.ra-on`), at a child's pace with real clips. T2 saw 73 ms (silent test clips) and no `.ra-on` in the strip. SH-19: samosa's shared ghost finger flickers (visible in one run, not the next): make it steady.",
+      "accept": "both green at speed 1"
+    },
+    {
+      "do": "SH-01: B says 'fudino ji chutney' (Mum-confirmed) is a layer in 22% of sampled L4 chaat orders, but no seed 1..40 plays one. Find why the played orders never include it (the chaat order data in data/cook.json or the seeding), fix it in the game data or code, and probe it.",
+      "accept": "SH-01 green on an L4 chaat that asks for the fudino layer, with the card fitting (noClip)"
+    },
+    {
+      "do": "ART-18: the probe can't tell Nani speaking from breathing (every Cook line is `line:cook`). Put the speaker in the sound hook, then trace only her talk bob at speed 1. If it's really over 2 px, make the shared talk smaller. SH-58: re-run (the browser closed mid-page last time).",
+      "accept": "both decided on the game, green or fixed"
+    },
+    {
+      "do": "Rows: each built only with its green run cited; anything left open says exactly why and who (Mum, art, Zafar).",
+      "accept": "the report table: row, red, green, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray",
+    "cook:chaat@L4"
+  ],
+  "port": 8897,
+  "report": "s05f-final",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.",
+    "Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit."
+  ],
+  "live": true
+}
