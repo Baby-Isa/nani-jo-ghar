@@ -44,3 +44,10 @@ contract-8 now counts every lit thing (Phaser glows, the next row, the row being
 
 ## C2/D2 probe items (13 Oct)
 SH-19 PASS (ev-20261013-091913-ib4: counted once the ghost is visible; samosa and daar). SEK-03 now shows the open card during the peek (ev-20261013-091531-eor): sekelo L3/L4 pills break words across lines ("mis/hka/ki", SH-73: S2). DAAR-11 still amp 0: the walk filter only touches ceilings, so the `canvas:ladle` object is truly still (C or the wrong object). SH-17 p2 at speed 1: the guide strip does not change over 1.2 s (tool failure; S2/C to say whether the strip animates). SH-44 clinic probes (cut L1, pharmacy) and the no-tap steps page wait for decision 93 to be built: `.rs-steps-list` is still a hidden dialog in `js/shared/results.js`.
+
+## Final run of every row (ev-20261013-095159-oh3, 52 rows; SH-44 not run: S2's steps page not pushed)
+- **PASS:** SH-09, SH-13, SH-15, SH-16, SH-33, SH-36, SH-41, SH-48, SH-66, PAN-01, PAN-02, CHAI-06, CHAI-15, MAA-10, CHT-07, SEK-05, CK-02, CK-12, CK-20, CLN-11, CLN-12, CLN-48, CLN-111, CLN-117, MOD-01, LNG-02. (SH-09, PAN-01 and SEK-05 turned green: C fixed them.)
+- **Game FAIL:** SH-70 (B/Mum), ART-18 (S: speaker not in the hook), SH-17 (S2/C: the pop-up read-along lasts 73 ms at speed 1 with silent test clips; the pantry strip shows no `.ra-on`), DAAR-11 (C2: `traceRot` reads 0, the ladle is static in the trace window; the probe measures rotation now), SH-19 (C2: samosa 0 visible in this run, PASS in the one before: the ghost flickers; daar PASS).
+- **Tool failure:** SH-01 (no seed gives a fudino layer: B), SH-58 (the browser closed mid-page in this chunked run: re-run), CLN-45 (the pop-up card has no text at that moment: text-only row for a reviewer).
+- **Sheets for a reviewer:** SH-51, SH-64, SEK-03, SEK-07, SEK-13, DAAR-04, SAM-02/07/08/09/10, CK-09, CHAI-18, MAA-08, CLN-54.
+- contract-8 on `cook:mishkaki-grill@L3`, `@L4`, `cook:daar`: 0 breaks (bulb `.lit` excluded, the card's next row merged into the stage glow, frames before the first paint ignored).
