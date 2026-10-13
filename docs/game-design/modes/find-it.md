@@ -1031,3 +1031,6 @@ F4 by pills only: all pills right first time 24% at L1 (one pick from five), 0% 
 
 `python3 build/test_find.py` (port 8801): the story round (now with the bowl), lab rounds, F2, F3 at levels 1 and 3 (sitting room), F4 through the mic stand-in (speaking bonus), pills only (no speaking bonus), a parent's ✓ (speaking bonus), level 4 of every game. `--leak N` still runs the in-page bot.
 
+## Zafar's answers, 14 Oct
+
+- **4d Simba's mischief is Arc 1's hide-and-seek beat** (find the sweets the cat scattered). (Zafar, 14 Oct)

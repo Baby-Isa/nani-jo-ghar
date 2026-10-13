@@ -7,3 +7,7 @@
 - **Story home:** every day-out destination (H36–H39).
 - **Full design (written 25 Sept, with its old wording):** `docs/archive/modes/snap.md`. Read it for the mini-games, the leak analysis and the build brief; where it disagrees with the rulebook (`docs/archive/process/rules-2026-10-13.md`), the rulebook wins: three badges instead of stars (H5), one pocket-money model (decision 10), no written English for the child (E1), the settled spellings (G4, G5: *na*, *hakro/hakri*, *ba*, *wadho*, *daar*, *khuda-fis*), no hands (H13), and the current arcs.
 - **When this mode is rebuilt:** audit its screens, draft Claude's feedback, get Zafar's approval, then build; rewrite the design doc here to match the code (as `cook.md` and `clinic.md` do), and keep the archived copy as history.
+
+## Zafar's answers, 14 Oct
+
+- **Undecided until Snap is rebuilt:** young Nani in old photos, and instant camera or phone. His idea to weigh then: the children develop the photos in a dark room, then place each one in the right place in the book with Nani, next to the description of what they did. (Zafar, 14 Oct)

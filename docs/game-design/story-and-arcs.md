@@ -288,3 +288,7 @@ The Eid dressing is re-homed: the hub is dressed for the Birthday (H36) and the 
 | **Fairy-light glow** | The bulb glow has blended into the magenta key colour at the slicing step. Needs a clean cut plus a code-added glow effect (same class of fix as the known `item-vermicelli.png` magenta-fringe defect in the Asset Naming Convention doc), not a regeneration |
 | **Bunting length** | Only 3 flags, too short to span a shelf edge on its own. Tiled/repeated in code along the shelf edge with varied flag colours, rather than regenerated wider |
 | **Story mapping** | Lantern → Errand 1 intro beat. Bunting → after Errand 1 (patch 1). Fairy lights → after Errand 2 (patch 2). Crescent and star → end of Chapter 1. Dates → Chapter 2. Prayer mat → held back for Chapter 5, Eid morning itself, rather than used as kitchen dressing now |
+
+## Zafar's answers, 14 Oct
+
+- **Arc 1's hide-and-seek beat** (the cat scatters the mithai; find the sweets) is Find it's **Simba's mischief** round (4d), not a Who did it? case. (Zafar, 14 Oct)

@@ -2,13 +2,11 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
-4. **"Hide and seek" in Arc 1.** The Birthday has a beat where the cat scatters the mithai and the child finds the sweets. Build it as Find it's **Simba's mischief** round (designed: the sweets hide behind a curtain, a cushion, a lid, a drawer; the call names where to look; tap to open; a tail, a bell or paw prints point to the cat, not always to the sweet) or as a small **Who did it?** case (follow clues to who took them)? *Recommend Simba's mischief: it is designed, partly built, and teaches "behind / under / in".*
-19. **Snap** (the photo mode for day trips, parked). Nani finds her old camera and the family photograph the trip. Two choices: (a) do some album photos show **young Nani** in old family pictures? (b) is the camera her **old instant camera** (the print comes out pale and develops in the child's hand, a whole stage of play is built on shaking it) or **a phone**? *Recommend: young Nani yes; the instant camera, because the design's best stage depends on it (this replaces my earlier "phone"); or leave both until Snap is rebuilt.*
-
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.
 22. Ungraded creative choices (Dress up themes, extra placing in Tidy up).
+19. Snap: young Nani in old photos; instant camera or phone (his dark-room idea is in `modes/snap.md`).
 
 ### For Mum, not Zafar: Claude's working assumptions (unconfirmed Kutchi; Mum settles each)
 - Order rows use the short *{x} na* (*Dudh na.*), not the polite *Muke {x} na khape*; Mum called the short form "very informal".
