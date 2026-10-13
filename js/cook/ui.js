@@ -1346,7 +1346,9 @@
       if (token !== readToken) return;
       p.els.forEach((e) => e.classList.add("reading"));
       try {
-        if (Lang.hasVoice(p.line)) await Promise.all([Lang.speak(p.line), Cook.wait(260)]);
+        // SH-17 (S05-G): a part stays lit while it is said and at least ~220 ms a word (up to 0.9 s): a part whose clip is
+        // short ('elchi' in 'Muke elchi waari chai khape.') lit for under 150 ms, too fast to follow at a child's pace
+        if (Lang.hasVoice(p.line)) await Promise.all([Lang.speak(p.line), Cook.wait(Math.max(260, Math.min(900, 220 * Lang.plain(p.line).split(/\s+/).length)))]);
         else await Cook.wait(Math.max(700, Cook.readMs(Lang.plain(p.line)) * 0.55));
       } finally {
         p.els.forEach((e) => e.classList.remove("reading"));

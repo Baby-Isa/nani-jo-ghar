@@ -38,3 +38,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 12:32 S05-G: SAM-16 samosa folds are diagonal swipes in fold order with a 30 deg gate (scratch red/green L1, L2; SH-19 ev-20261013-122741-xc8 PASS).
 12:40 S05-G: contract-8 on cook:day2 fixed (maani's ready glow cleared on lift): red s05g-c8a 1 break, green s05g-c8b 0.
 12:47 S05-G: first launch opens with the child's 'Nani!' (Zafar's yes): red s05g-touched, green s05g-nani.
+13:52 S05-G: SH-17 Cook pop-up read-along holds ~220 ms a word: red ev-20261013-134818-bh4 143 ms, green ev-20261013-134938-xow 819 ms.

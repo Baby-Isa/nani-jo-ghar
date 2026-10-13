@@ -19,7 +19,7 @@ Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); 
 | ART-18 | P ev-…yrf 1.4/1.9 px | | built, no change |
 | SH-66 | P ev-…8ie FAIL | ev-…b6k PASS | built (watch: race) |
 | SH-69 | ev-…9br English | ev-…1x2 Kutchi only | built, sheet to judge |
-| SH-17 | ev-…9br 0 lit | scratch 640 ms | open: P (capture late, after bulb) |
+| SH-17 | ev-…9br 0 lit; round 2 ev-20261013-134818-bh4 pop-up 143 ms | scratch 640 ms; ev-20261013-134938-xow pop-up 819 ms, strip and clinic PASS | built (strip filmstrip tool note: P) |
 | DAAR-11 | ev-…9br rot 0 | scratch film, full turn | open: P (stir stopped in trace) |
 | SH-01 | tool failure | word fits (12-result.png); chip 14.2 px | open: P (want before layers; results-words) |
 | SEK-11 | tap-through cut | engine says it (8 seeds) | open: P (no tap-through) |
