@@ -4882,13 +4882,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "kind-tap",
+   "at": "kind-timing",
    "after": null,
    "capture": [
-    "zoom2:canvas:spoon"
+    "crop:#stage"
    ],
    "expect": null,
-   "note": "the jharo (the fry part's hand tool: spr@hand:spoon) goes under the samosas"
+   "note": "the jharo (the fry part's hand tool: spr@hand:spoon) goes under the samosas (the whole fry screen: the spoon is not a named canvas object while it is held)"
   }
  ],
  "SAM-10": [
@@ -9931,7 +9931,7 @@
    "at": "kind-timing",
    "after": null,
    "capture": [
-    "zoom2:canvas:kadai",
+    "zoom2:canvas:karahi",
     "ref:assets/cook/props"
    ],
    "expect": null,
@@ -9963,7 +9963,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:hob"
