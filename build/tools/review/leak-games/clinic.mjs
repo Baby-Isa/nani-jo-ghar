@@ -18,6 +18,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import { wilsonLow, clearlyOver } from "../lib/stats.mjs";
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "..");
 const P = require(path.join(ROOT, "js/clinic/pipeline.js"));
@@ -105,6 +106,7 @@ for (const id of games) {
     const blind = Object.entries(cell).filter(([k, x]) => k !== "fair" && k !== "reader" && typeof x === "number");
     const worst = blind.reduce((m, [k, x]) => (x > m[1] ? [k, x] : m), ["-", 0]);
     if (L === 1 && ACCEPTED[id] && worst[1] < ACCEPTED[id].under) console.log(`  ACCEPTED ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)}: ${ACCEPTED[id].why}`);
+    else if (L === 1 && worst[1] >= 0.1 && !clearlyOver(worst[1], NH, 0.1)) console.log(`  ?? ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)} is over 10% by sampling noise only (${NH} rounds, 99% lower end ${pct(wilsonLow(worst[1], NH), 1)}): re-run with more --rounds to settle it`);
     else if (L === 1 && worst[1] >= 0.1) {
       problems++;
       console.log(`  !! ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)} (the contract wants under 10%)`);

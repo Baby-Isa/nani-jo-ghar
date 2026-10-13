@@ -19,3 +19,11 @@ test("each pitfall is flagged once with its kind", () => {
   const kinds = lintSpecs(spec, ctx).map((f) => `${f.row}${f.probe}:${f.kind}`);
   assert.deepEqual(kinds, ["A11:legacy", "A12:flow", "A13:selector", "A14:end-card", "A15:cmd", "A16:expect"]);
 });
+
+import { wilsonLow, clearlyOver } from "./lib/stats.mjs";
+test("leak judgement: noise near the limit is not a leak, a clear excess is (LNG-02)", () => {
+  assert.equal(clearlyOver(0.103, 8000, 0.1), false, "taste L1: 10.3% in 8000 rounds, exact odds 8.3%");
+  assert.equal(clearlyOver(0.13, 8000, 0.1), true);
+  assert.equal(clearlyOver(0.09, 8000, 0.1), false);
+  assert.ok(wilsonLow(0.5, 100) < 0.5);
+});

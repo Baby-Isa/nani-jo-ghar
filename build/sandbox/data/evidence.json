@@ -7019,9 +7019,10 @@
     "crop:.cl-room"
    ],
    "expect": [
-    "count:.cl-seat=6"
+    "count:.cl-wp>=1",
+    "count:.cl-wp<=6"
    ],
-   "note": "one large bench, six seats, no armchairs"
+   "note": "one large bench, six seats, no armchairs (the people are .cl-wp on the painted bench, never more than six)"
   }
  ],
  "CLN-12": [
@@ -7040,14 +7041,18 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "waiting-tap",
+   "at": "visible:.cl-wp.risen",
    "after": null,
    "capture": [
-    "strip:.cl-room:5x200",
+    "zoom2:.cl-room",
     "zoom2:.cl-wtick"
    ],
-   "expect": null,
-   "note": "no walking; a tick under each person; the picked person rises off the seat"
+   "expect": [
+    "count:.cl-wp.risen=1",
+    "lastsMs:.cl-wp.risen>=800"
+   ],
+   "note": "no walking; a tick under each person; the picked person rises off the seat and stays raised (taken when the .risen class appears)",
+   "delay": 200
   }
  ],
  "CLN-13": [
@@ -8316,7 +8321,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:step:dot",
+   "at": "every:visible:.cl-heal .cl-ring",
    "after": null,
    "capture": [
     "zoom2:.cl-heal",
@@ -8325,7 +8330,9 @@
    "expect": [
     "count:.cl-heal .cl-ring=1"
    ],
-   "note": "one dot lit at a time, waiting for the tap; nothing moves by itself"
+   "note": "one dot lit at a time, waiting for the tap; nothing moves by itself",
+   "delay": 100,
+   "max": 8
   }
  ],
  "CLN-49": [

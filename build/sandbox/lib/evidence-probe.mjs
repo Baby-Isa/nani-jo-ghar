@@ -304,6 +304,60 @@ export class EvidenceProbe {
     // one whole screen per hit for the crop's room (Fable 14: a layout row's panel shows where the crop sits): after the crops,
     // so the crops are taken first, nearest the moment (a game that moves on 400 ms after the last turn)
     const takeRoom = async () => { if (hit.room || hit.roomError) return; try { const buf = await this.shot(null); const room = this.file(s, hit, -1, "room"); writeFileSync(join(this.dir, room), buf); hit.room = room; } catch (e) { hit.roomError = String(e.message || e).split("\n")[0]; } };
+    // the expects decided on screen: the ones about layout at the moment itself (S05-T2: after a long capture the thing may be gone), the rest after the captures
+    const domText = (tagged = false) => hit.captures.filter((c) => c.runs).flatMap((c) => c.runs.filter((x) => !tagged || x.tag === "" || x.tag === "canvas").map((x) => x.text)).join(" ");
+    // decision 84: lines shown as a hidden-tagged "to record" placeholder are allowed English; remember them for familyOnly
+    const decide = async (only) => {
+      for (const e of p.expect) {
+      if (only && !only(e)) continue;
+        const put = (r) => hit.expects.push(negate(e, { raw: e.raw, ...r }));
+        try {
+          if (e.kind === "count") { const bs = await this.boxes(e.sel); put(bs.error ? { ok: null, why: bs.error } : { ok: cmp(bs.length, e.op, e.n), why: `${bs.length} visible` }); }
+          else if (e.kind === "inside" || e.kind === "noOverlap" || e.kind === "centredOn") {
+            const m = await this.measure(e.kind, e.sel, e.box);
+            if (m.error || (m.a && m.a.error) || (m.b && m.b.error)) { put({ ok: null, why: m.error || "bad selector" }); continue; }
+            if (!m.a.length || !m.b.length) { put({ ok: null, why: `${!m.a.length ? e.sel : e.box} not on screen` }); continue; }
+            if (e.kind === "inside") { const b = union(m.b), out = m.a.filter((x) => x.l < b.l - 1 || x.r > b.r + 1 || x.t < b.t - 1 || x.b > b.b + 1); put({ ok: !out.length, why: out.length ? `${out.length} of ${m.a.length} outside` : `${m.a.length} inside` }); }
+            else if (e.kind === "noOverlap") { const hits = m.a.filter((x) => m.b.some((y) => x.l < y.r - 0.5 && x.r > y.l + 0.5 && x.t < y.b - 0.5 && x.b > y.t + 0.5)); put({ ok: !hits.length, why: hits.length ? `${hits.length} overlap` : "no overlap" }); }
+            else { const A = m.a[0], B = m.b[0], dx = Math.abs((A.l + A.r) / 2 - (B.l + B.r) / 2), dy = Math.abs((A.t + A.b) / 2 - (B.t + B.b) / 2); put({ ok: Math.min(dx, dy) <= 3, why: `centres ${dx.toFixed(1)} px across, ${dy.toFixed(1)} px down` }); }
+          } else if (e.kind === "order" && e.sels) {
+            const m = await this.measure("order", e.items);
+            const bs = m.boxes || [];
+            if (bs.some((b) => !b)) { put({ ok: null, why: `not on screen: ${e.items.filter((_, i) => !bs[i]).join(", ")}` }); continue; }
+            const ok = bs.every((b, i) => !i || b.t > bs[i - 1].b - 2 || (Math.abs(b.t - bs[i - 1].t) < 8 && b.l >= bs[i - 1].l));
+            put({ ok, why: ok ? "in reading order" : "out of reading order" });
+          } else if (e.kind === "noClip") { const m = await this.measure("noClip", e.sel); put(m.error ? { ok: null, why: m.error } : !m.n ? { ok: null, why: `${e.sel} not on screen` } : { ok: !m.bad.length, why: m.bad.length ? m.bad.join("; ") : `${m.n} clean` }); }
+          else if (e.kind === "lines" || e.kind === "minFont" || e.kind === "minSize") {
+            const m = await this.measure(e.kind, e.sel);
+            if (m.error || !m.n || !(m.vals || []).length) { put({ ok: null, why: m.error || `${e.sel} not on screen` }); continue; }
+            const bad = m.vals.filter((v) => !cmp(v, e.op, e.n));
+            put({ ok: !bad.length, why: `${e.kind} ${[...new Set(m.vals)].slice(0, 8).join(", ")}` });
+          } else if (e.kind === "countsUp") { const t = await this.texts(e.sel); const txt = t.map((x) => x.text).join(" ");
+            // the tally is a digit, a Kutchi number word (Cook.numWord) or a row of dots (SH-39, S05-T2)
+            let num = (txt.match(/\d+/) || [null])[0];
+            if (num == null) { const dots = (txt.match(/[•·●⚫◦]/g) || []).length; if (dots) num = dots; }
+            if (num == null && txt.trim()) num = await this.page.evaluate((x) => { const C = window.Cook; if (!C || !C.numWord) return null; const ws = x.toLowerCase().match(/[\p{L}\p{M}']+/gu) || []; for (let n = 1; n <= 12; n++) { const w = String(C.numWord(n) || "").toLowerCase(); if (w && ws.includes(w)) return n; } return null; }, txt).catch(() => null);
+            hit.num = hit.num || {}; hit.num[e.raw] = num == null ? null : +num; }
+          else if (e.kind === "lexicon") {
+            const text = hit.captures.some((c) => c.runs) ? domText(true) : (await this.texts("body")).filter((x) => x.tag === "" || x.tag === "canvas").map((x) => x.text).join(" ");
+            if (!this.lexicon) put({ ok: null, why: "no lexicon loaded" });
+            else if (!text.trim()) put({ ok: null, why: "no words to check" });
+            else { const bad = unknownWords(text, this.lexicon); put({ ok: !bad.length, why: bad.length ? `not in the family lexicon: ${bad.slice(0, 12).join(", ")}` : `${text.split(/\s+/).filter(Boolean).length} words, all in the lexicon` }); }
+          } else if (e.kind === "hasWord") {
+            const set = this.tags[e.tag];
+            if (!set) { put({ ok: null, why: `the lexicon has no "${e.tag}" tag (number and name only)` }); continue; }
+            const ws = (domText(true).toLowerCase().match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).filter((w) => set.has(w));
+            put({ ok: ws.length > 0, why: ws.length ? `${e.tag}: ${[...new Set(ws)].join(", ")}` : `no ${e.tag} word in the text` });
+          } else if (e.kind === "sameOrder") {
+            const t = await this.texts(e.sel);
+            const rows = []; for (const x of t) { rows[x.el] = (rows[x.el] ? rows[x.el] + " " : "") + x.text; }
+            hit.rows = hit.rows || {}; hit.rows[e.raw] = rows.filter(Boolean);
+          }
+        } catch (x) { put({ ok: null, why: `could not measure: ${String(x.message || x).split("\n")[0]}` }); }
+      }
+    };
+    const EARLY = new Set(["count", "inside", "noOverlap", "centredOn", "noClip", "lines", "minFont", "minSize"]);
+    await decide((e) => EARLY.has(e.kind));
     for (const [ci, c] of p.capture.entries()) {
       const out = { kind: c.kind, raw: c.raw, files: [], text: null, fail: null };
       hit.captures.push(out);
@@ -366,55 +420,7 @@ export class EvidenceProbe {
       } catch (e) { out.fail = `capture failed: ${String(e.message || e).split("\n")[0]}`; }
     }
     if (p.capture.some((c) => ["crop", "zoom2", "strip", "trace"].includes(c.kind))) await takeRoom();
-    // the expects decided on screen at this moment
-    const domText = (tagged = false) => hit.captures.filter((c) => c.runs).flatMap((c) => c.runs.filter((x) => !tagged || x.tag === "" || x.tag === "canvas").map((x) => x.text)).join(" ");
-    // decision 84: lines shown as a hidden-tagged "to record" placeholder are allowed English; remember them for familyOnly
-    for (const e of p.expect) {
-      const put = (r) => hit.expects.push(negate(e, { raw: e.raw, ...r }));
-      try {
-        if (e.kind === "count") { const bs = await this.boxes(e.sel); put(bs.error ? { ok: null, why: bs.error } : { ok: cmp(bs.length, e.op, e.n), why: `${bs.length} visible` }); }
-        else if (e.kind === "inside" || e.kind === "noOverlap" || e.kind === "centredOn") {
-          const m = await this.measure(e.kind, e.sel, e.box);
-          if (m.error || (m.a && m.a.error) || (m.b && m.b.error)) { put({ ok: null, why: m.error || "bad selector" }); continue; }
-          if (!m.a.length || !m.b.length) { put({ ok: null, why: `${!m.a.length ? e.sel : e.box} not on screen` }); continue; }
-          if (e.kind === "inside") { const b = union(m.b), out = m.a.filter((x) => x.l < b.l - 1 || x.r > b.r + 1 || x.t < b.t - 1 || x.b > b.b + 1); put({ ok: !out.length, why: out.length ? `${out.length} of ${m.a.length} outside` : `${m.a.length} inside` }); }
-          else if (e.kind === "noOverlap") { const hits = m.a.filter((x) => m.b.some((y) => x.l < y.r - 0.5 && x.r > y.l + 0.5 && x.t < y.b - 0.5 && x.b > y.t + 0.5)); put({ ok: !hits.length, why: hits.length ? `${hits.length} overlap` : "no overlap" }); }
-          else { const A = m.a[0], B = m.b[0], dx = Math.abs((A.l + A.r) / 2 - (B.l + B.r) / 2), dy = Math.abs((A.t + A.b) / 2 - (B.t + B.b) / 2); put({ ok: Math.min(dx, dy) <= 3, why: `centres ${dx.toFixed(1)} px across, ${dy.toFixed(1)} px down` }); }
-        } else if (e.kind === "order" && e.sels) {
-          const m = await this.measure("order", e.items);
-          const bs = m.boxes || [];
-          if (bs.some((b) => !b)) { put({ ok: null, why: `not on screen: ${e.items.filter((_, i) => !bs[i]).join(", ")}` }); continue; }
-          const ok = bs.every((b, i) => !i || b.t > bs[i - 1].b - 2 || (Math.abs(b.t - bs[i - 1].t) < 8 && b.l >= bs[i - 1].l));
-          put({ ok, why: ok ? "in reading order" : "out of reading order" });
-        } else if (e.kind === "noClip") { const m = await this.measure("noClip", e.sel); put(m.error ? { ok: null, why: m.error } : !m.n ? { ok: null, why: `${e.sel} not on screen` } : { ok: !m.bad.length, why: m.bad.length ? m.bad.join("; ") : `${m.n} clean` }); }
-        else if (e.kind === "lines" || e.kind === "minFont" || e.kind === "minSize") {
-          const m = await this.measure(e.kind, e.sel);
-          if (m.error || !m.n || !(m.vals || []).length) { put({ ok: null, why: m.error || `${e.sel} not on screen` }); continue; }
-          const bad = m.vals.filter((v) => !cmp(v, e.op, e.n));
-          put({ ok: !bad.length, why: `${e.kind} ${[...new Set(m.vals)].slice(0, 8).join(", ")}` });
-        } else if (e.kind === "countsUp") { const t = await this.texts(e.sel); const txt = t.map((x) => x.text).join(" ");
-          // the tally is a digit, a Kutchi number word (Cook.numWord) or a row of dots (SH-39, S05-T2)
-          let num = (txt.match(/\d+/) || [null])[0];
-          if (num == null) { const dots = (txt.match(/[•·●⚫◦]/g) || []).length; if (dots) num = dots; }
-          if (num == null && txt.trim()) num = await this.page.evaluate((x) => { const C = window.Cook; if (!C || !C.numWord) return null; const ws = x.toLowerCase().match(/[\p{L}\p{M}']+/gu) || []; for (let n = 1; n <= 12; n++) { const w = String(C.numWord(n) || "").toLowerCase(); if (w && ws.includes(w)) return n; } return null; }, txt).catch(() => null);
-          hit.num = hit.num || {}; hit.num[e.raw] = num == null ? null : +num; }
-        else if (e.kind === "lexicon") {
-          const text = hit.captures.some((c) => c.runs) ? domText(true) : (await this.texts("body")).filter((x) => x.tag === "" || x.tag === "canvas").map((x) => x.text).join(" ");
-          if (!this.lexicon) put({ ok: null, why: "no lexicon loaded" });
-          else if (!text.trim()) put({ ok: null, why: "no words to check" });
-          else { const bad = unknownWords(text, this.lexicon); put({ ok: !bad.length, why: bad.length ? `not in the family lexicon: ${bad.slice(0, 12).join(", ")}` : `${text.split(/\s+/).filter(Boolean).length} words, all in the lexicon` }); }
-        } else if (e.kind === "hasWord") {
-          const set = this.tags[e.tag];
-          if (!set) { put({ ok: null, why: `the lexicon has no "${e.tag}" tag (number and name only)` }); continue; }
-          const ws = (domText(true).toLowerCase().match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).filter((w) => set.has(w));
-          put({ ok: ws.length > 0, why: ws.length ? `${e.tag}: ${[...new Set(ws)].join(", ")}` : `no ${e.tag} word in the text` });
-        } else if (e.kind === "sameOrder") {
-          const t = await this.texts(e.sel);
-          const rows = []; for (const x of t) { rows[x.el] = (rows[x.el] ? rows[x.el] + " " : "") + x.text; }
-          hit.rows = hit.rows || {}; hit.rows[e.raw] = rows.filter(Boolean);
-        }
-      } catch (x) { put({ ok: null, why: `could not measure: ${String(x.message || x).split("\n")[0]}` }); }
-    }
+    await decide((e) => !EARLY.has(e.kind));
   }
   // the page is over (r: run.mjs's page result, with its timeline and sound summary): voice, contract, the expects over the whole page
   async collectRec() { try { this.recList = (await this.page.evaluate("window.__njgRec || []")) || []; } catch (e) { this.recList = this.recList || []; } }
