@@ -1,0 +1,21 @@
+SAM-16 scratch check (build/screenshots/s05g-tmp/sam16.mjs, samosa lab, speed 1, 1366x768), output copied from the runs.
+
+RED (before, L1 and L2 the same):
+fold 1: asks a swipe at 0 deg (0 = straight right, up is +), 132 px
+   straight sideways swipe: FOLDED (it moved on)
+fold 2: asks a swipe at 0 deg, 151 px
+   straight sideways swipe: FOLDED (it moved on)
+fold 3: asks a swipe at -180 deg, 284 px
+   straight sideways swipe: FOLDED (it moved on)
+
+GREEN (after, L1 and L2 the same; fold 3 moved onto the triangle's edge, run green2 at L2):
+fold 1: asks a swipe at 42 deg, 166 px
+   straight sideways swipe: nothing happened
+   the asked swipe: folded
+fold 2: asks a swipe at -40 deg, 173 px
+   straight sideways swipe: nothing happened
+   the asked swipe: folded
+fold 3: asks a swipe at 40 deg, 173 px
+   straight sideways swipe: nothing happened
+   the asked swipe: folded
+errors none

@@ -35,3 +35,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 
 13:00 S05-P: ART-18 traced on Nani's talk alone (1.4/1.9 px); 17 rows built on ev-20261013-113508-8ie; SH-03, SAM-02/08/10, CK-09, SEK-07 decided; MAA-08, SH-66, CLN-65 are game faults for G; SEK-13, ART-12, CLN-45 still open; CLN-122 closed; 45 open, 294 built.
 12:30 S05-G: chaat chips 14 px at every size, scrape L3 one new thing, clinic placeholders tagged, read-along holds, first-meeting names, story card Kutchi only; built SH-19, SH-58, CLN-14, ART-18, SH-66, SH-69 (sheet); open for P: SH-17, DAAR-11, SH-01, SEK-11, MAA-08; CLN-45 to Zafar (build/reports/s05g-game.md).
+12:32 S05-G: SAM-16 samosa folds are diagonal swipes in fold order with a 30 deg gate (scratch red/green L1, L2; SH-19 ev-20261013-122741-xc8 PASS).

@@ -63,24 +63,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       h: 297,
       fill: { x: 0.175, y: 0.655, r: 0.1 },
       swipes: [
-        { steps: [1, 2], sweep: [0.03, 0.46], from: [0.14, 0.66], to: [0.46, 0.66], glow: [0.048, 0.43, 0.34, 0.87] },
-        { steps: [2, 3, 4], sweep: [0.03, 0.62], from: [0.2, 0.66], to: [0.6, 0.66], glow: [0.05, 0.36, 0.42, 0.9] },
-        { steps: [4, 5, 6], sweep: [0.1, 0.99], from: [0.3, 0.66], to: [0.9, 0.66], glow: [0.11, 0.26, 0.6, 0.94] },
+        { steps: [1, 2], sweep: [0.03, 0.46], from: [0.05, 0.88], to: [0.3, 0.45], glow: [0.048, 0.43, 0.34, 0.87] },
+        { steps: [2, 3, 4], sweep: [0.03, 0.62], from: [0.08, 0.45], to: [0.36, 0.88], glow: [0.05, 0.36, 0.42, 0.9] },
+        { steps: [4, 5, 6], sweep: [0.1, 0.99], from: [0.15, 0.88], to: [0.45, 0.45], glow: [0.11, 0.26, 0.6, 0.94] },
       ],
       // the finished samosa (fold-6): its own middle and width on the canvas (it flies to the plate by it)
       done: { x: 0.7, y: 0.401, w: 274 },
     },
+    // SAM-16 (S05-G, Zafar 13 Oct Z3, 6 Oct A4): each fold is its own diagonal swipe in the order the samosa folds: the left
+    // end up (bottom left to top right), the triangle rolled over (top left to bottom right), rolled again (bottom left to
+    // top right), never one straight swipe along the strip; the swipe's from/to are those diagonals on the triangle, the
+    // pictures and their wipe (sweep) are unchanged (SAM-05, ART-15)
     // SAM-05 (S02-E): the art run's frames (C11), registered on the strip's left end, top and bottom lines: the first two
     // folds roll the triangle in from the left end (left to right); then the strip's far end wraps onto it (the third
-    // swipe goes right to left, sweep from 0.97 down: the strip shortens from its right end into the triangle)
+    // wipe runs right to left, sweep from 0.97 down: the strip shortens from its right end into the triangle)
     foldS02: {
       w: 482,
       h: 149,
       fill: { x: 0.14, y: 0.5, r: 0.085 },
       swipes: [
-        { steps: [1, 2], sweep: [0.03, 0.33], from: [0.08, 0.5], to: [0.36, 0.5], glow: [0.03, 0.1, 0.34, 0.9] },
-        { steps: [2, 3], sweep: [0.03, 0.97], from: [0.16, 0.5], to: [0.48, 0.5], glow: [0.03, 0.1, 0.46, 0.9] },
-        { steps: [3, 4, 5, 6], sweep: [0.97, 0.03], from: [0.9, 0.5], to: [0.3, 0.5], glow: [0.3, 0.1, 0.97, 0.9] },
+        { steps: [1, 2], sweep: [0.03, 0.33], from: [0.04, 0.88], to: [0.3, 0.12], glow: [0.03, 0.1, 0.34, 0.9] },
+        { steps: [2, 3], sweep: [0.03, 0.97], from: [0.06, 0.12], to: [0.34, 0.88], glow: [0.03, 0.1, 0.46, 0.9] },
+        { steps: [3, 4, 5, 6], sweep: [0.97, 0.03], from: [0.28, 0.88], to: [0.56, 0.12], glow: [0.3, 0.1, 0.97, 0.9] },
       ],
       done: { x: 0.206, y: 0.5, w: 166 },
     },
@@ -1162,7 +1166,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }),
         z.on("pointermove", (p) => {
           if (!start || over) return;
-          const v = ((p.worldX - start.x) * dx + (p.worldY - start.y) * dy) / (len * len);
+          const mx = p.worldX - start.x;
+          const my = p.worldY - start.y;
+          // SAM-16: a fold starts only on a drag within about 30 degrees of its diagonal; any other way does nothing and
+          // costs nothing (non-negotiable 12): lift and try again
+          if (t === 0) {
+            const m = Math.hypot(mx, my);
+            if (m < 14 * z.k) return;
+            if ((mx * dx + my * dy) / (m * len) < Math.cos(Math.PI / 6)) {
+              start = null;
+              return;
+            }
+          }
+          const v = (mx * dx + my * dy) / (len * len);
           if (v > 0.02 || t > 0) {
             if (onDrag) onDrag();
             show(v);

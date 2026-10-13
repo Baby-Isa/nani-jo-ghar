@@ -7,6 +7,7 @@ Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); 
 - **CLN-45** (`cut.js`): scrape L3 plasters are L2's, one colour each; heard only is L3's one new thing.
 - **CLN-14** (`js/clinic/kit.js`): clinic placeholders carry the hidden `data-rec` tag.
 - **SH-17** (`js/cook/ui.js`): the part being said stays lit through a redraw, about 220 ms a word. Pantry strip: 1 frame → 640 ms.
+- **SAM-16** (`js/cook/stations/samosa.js`, from the orchestrator, Zafar 13 Oct Z3): each fold is its own diagonal swipe in fold order; only a drag within 30° folds, any other does nothing.
 - **SH-69** (`flow.js`, `data/cook.json`, `css/first.css`): Nani says a customer's name at their first visit ("Ali!" heard on day 2); the story card writes only the Kutchi.
 
 ## Rows
@@ -24,6 +25,7 @@ Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); 
 | SEK-11 | tap-through cut | engine says it (8 seeds) | open: P (no tap-through) |
 | MAA-08 | P: roll-tawa | maani-line plates whole | open: P (legacy lab) |
 | CLN-45 | plans: 2-colour L3 | one colour | open: Zafar |
+| SAM-16 (fold) | scratch: straight swipes fold | diagonals 42/-40/40 deg, 30 deg gate; SH-19 ev-…xc8 PASS | built, sheet to judge |
 
 ## For Zafar (yes to all except…)
 1. Other heal ladders jump two things at L2 or L3 (boing drop colours, foot toe order, tooth, taste, eye, knee). Recommend: move each new thing to L2, keep L3 heard only.
@@ -31,7 +33,7 @@ Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); 
 3. Nani's name at first launch needs a story line. Recommend: the child says "Nani!" (clip exists).
 
 ## For P
-SH-17, DAAR-11, SH-01, SEK-11, MAA-08 above; CLN-14's `!textMatches` counts `[ph]`; SH-19 `max 6` never samples fry.
+SH-17, DAAR-11, SH-01, SEK-11, MAA-08 above; CLN-14's `!textMatches` counts `[ph]`; SH-19 `max 6` never samples fry; SAM-16 needs a probe filming each fold's ghost and swipe. Two rows share the id SAM-16 (the fold, and the L3 mounds): renumber one.
 
 ## Not done / seen
 Contract-8 on cook:day2 (two highlights twice), not checked against the old code. Story English is spoken by device TTS (rule 10). Mum: "Ma!", the pantry frame "Muke … de". Regressions: touched run only (0 new); full recheck is `/review`'s.
