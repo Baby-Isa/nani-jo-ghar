@@ -862,18 +862,18 @@
   "date": "2026-10-13"
  },
  "CK-21": {
-  "hash": "93b0a27e307b7e2d7dda",
+  "hash": "2cc14b3fa05c0e6dc92c",
   "dhash": [
-   "0e170eb6e637d801",
-   "e54f37270e3f0e00"
+   "0e170fb6e637d801",
+   "615f37270e3f0300"
   ],
   "verdict": "FAIL",
-  "line": "B, the day-2 dishes are not IN their trays: in B4/B5 the maani plate's steel foot is painted over the tray's front rim line (the rim stops at the plate, about 5 px of plate below it, no wall over the dish) and in B10 both chai glasses' faceted bases are likewise drawn over the front rim, one at the far left end of the left tray and one at the far right end of the right tray, each overlapping the tray's end; only A7 (day 3, 1x) is right: the daar bowl's base is cut flat by the tray's front wall with the shadow on the floor to its right. Lead for the builder, not judged: B is the DPR-2 run (p-seen_x2) and A is 1x; the trayFront crop in js/cook/flow.js:753 (setCrop in design px on a scaled bg-service image) may miss at 2x.",
+  "line": "B, the day-2 chai glasses still stand ON the tray rim, not in the tray: in B10/B11 each glass's full faceted base and bottom edge are drawn over the front wall (left glass at the left tray's left end, right glass at the right tray's right end) with wood showing below them and no cut, and no contact shadow to the right; and in every panel the \"tray front\" redrawn over the dish is a chunk of the wrong picture: a grey post, a pale-blue block and a diagonal beam (a window), not the tray's wood, pasted over the middle tray's right half and the marble between the middle and right trays (visible right of the daar bowl's base in A7-A9, under the maani plate in B4, under the right chai glass in B10/B11, on the empty counter in A1/A2/A10/A11 and B5/B6). What is right: the dish base is now cut flat by the wall at 2x too (B4 maani plate, B6 basket) and at 1x (A1/A2 basket, A7-A9 daar bowl).",
   "panel": "B",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-161554-mqx",
-  "commit": "9b216fd",
-  "png": "build/screenshots/evidence/ev-20261013-161554-mqx/CK-21.png",
+  "run": "ev-20261013-185411-hda",
+  "commit": "3af9889",
+  "png": "build/screenshots/evidence/ev-20261013-185411-hda/CK-21.png",
   "date": "2026-10-13"
  },
  "CK-22": {
@@ -3011,6 +3011,20 @@
   "commit": "b66ad4ff",
   "png": "build/screenshots/evidence/ev-s04-ev1/DAAR-17.png",
   "date": "2026-10-12"
+ },
+ "DAAR-18": {
+  "hash": "747c868420cf66522d3b",
+  "dhash": [
+   "1481818181a1c5d5"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 9 (cook-done:stir, 42.7 s) shows the daar card open with all rows and ticks (ba dungri ✓, hakro mirchi ✓, hakro tameto ✓, rai ✓ → lasan ✓, stir row \"ba\"); the stir-begin and stir-mid state shots (39.9 s, 42.0 s) show the same open card beside the gauge; it folds to the headline only in frames 11-12, the results card after Done",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-185838-q5n",
+  "commit": "3af9889",
+  "png": "build/screenshots/evidence/ev-20261013-185838-q5n/DAAR-18.png",
+  "date": "2026-10-13"
  },
  "DAAR-21": {
   "hash": "fb0817b2a04257eb296c",
