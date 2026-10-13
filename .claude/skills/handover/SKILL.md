@@ -18,7 +18,7 @@ description: Rewrite the "Next chat" section of docs/status.md so a fresh chat c
    - **Next steps, in order**, each with the decision number that set it; the next launch with its model, effort and cost.
    - **Open questions to Zafar**, numbered.
    - **Starting prompt for a new chat**, ready to paste (read CLAUDE.md, then status "Next chat", the rulebook sections for the work; the branch; "tell me before launching anything new").
-3. Update the "Open feedback" table: `node build/tools/review/statuscounts.mjs --write`, then fix the prose it lists by hand.
+3. Update the "The fix list" table: `node build/tools/review/statuscounts.mjs --write`, then fix the prose it lists by hand.
 4. Overnight: write the morning report, and log one line (`/checkin --log`).
 5. Commit `docs/status.md` alone ("status: handover <time>") and push the branch.
 6. Tell Zafar in one line, and recommend a fresh chat at this step boundary.

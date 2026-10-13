@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Status counts: rebuild the numbers of the "Open feedback" table in docs/status.md from docs/process/regressions.md.
+// Status counts: rebuild the numbers of the "The fix list" table in docs/status.md from docs/process/regressions.md.
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { args, help, ROOT, die } from "./lib/common.mjs";
@@ -7,7 +7,7 @@ import { loadRegressions, statusKind } from "./lib/regressions.mjs";
 
 const HELP = `
 node build/tools/review/statuscounts.mjs [--write]
-  Counts the rows of docs/process/regressions.md per area (open or reopened; built, not re-played) and prints the "Open feedback" table of
+  Counts the rows of docs/process/regressions.md per area (open or reopened; built, not re-played) and prints the "The fix list" table of
   docs/status.md with the numbers rebuilt. Only the leading number of each cell (or of each "a / b / c" part) changes; the words after it
   ("including ...") stay as written. Prints which cells changed. --write updates docs/status.md. Retired and keep rows are not counted.`;
 const a = args(); help(HELP, a);
@@ -28,8 +28,8 @@ const AREAS = [
 ];
 const file = join(ROOT, "docs", "status.md");
 const lines = readFileSync(file, "utf8").split("\n");
-const start = lines.findIndex((l) => /^## Open feedback/.test(l));
-if (start < 0) die("No '## Open feedback' section in docs/status.md.");
+const start = lines.findIndex((l) => /^## (Open feedback|The fix list)/.test(l));
+if (start < 0) die("No '## The fix list' section in docs/status.md.");
 const retab = (cell, nums) => { // replace the leading integer of each " / " part
   const parts = cell.split(" / ");
   if (parts.length !== nums.length) return nums.length === 1 ? cell.replace(/^\d+/, String(nums[0])) : nums.join(" / ");
