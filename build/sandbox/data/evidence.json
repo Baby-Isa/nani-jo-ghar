@@ -5444,11 +5444,11 @@
    "at": "every:peek-open",
    "after": null,
    "capture": [
-    "zoom2:#mission"
+    "shot"
    ],
    "expect": null,
-   "max": 4,
-   "delay": 500,
+   "max": 2,
+   "delay": 900,
    "note": "the card opened by a peek at L3 while the skewers go on: each piece of a mixed skewer ticks as it is placed"
   }
  ],

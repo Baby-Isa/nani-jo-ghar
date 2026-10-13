@@ -6,6 +6,12 @@
 - **Probe faults:** SH-03 (gloss left out of the lexicon check, clinic card no longer asks for a word list) PASS; SAM-02, 08, 10, CK-09 (now cook:maani-line, canvases chakla/velan), SEK-07 judged by eye PASS (S05-P judged: /review rechecks). MAA-08: **game fail for G** (844x390 roll-tawa plate cut by the top edge). CLN-65: game and art, only hot, happy and cold exist. CLN-45: probe reads the card now; ladder judgement open. SEK-13: still open (the #mission crop shows no piece rows; T). ART-12: the neck/back/hair screen is on no frame; needs naming.
 - **CLN-122** closed as is (decision 83). Counts: 45 open or reopened, 294 built.
 
+## Round 2 (orchestrator's three items)
+- **SEK-13:** peek at L3 (run ev-20261013-120457-te9) shows the closed one-line card, no piece rows; a mixed skewer only comes at L3+, where cards are closed. Question for G: should a peek open the rows? Still open.
+- **ART-12:** "7.1" is a stale 30 Sept art-batch label; no screen shows separate neck, back and hair parts: art or design gap, waiting.
+- **CLN-45:** ladder judged from the level data: one-thing-per-level holds in ear L2, hair L3, tummy L2; breaks at L2 in eye, foot, knee and at L3 in boing, taste, tooth and more. Reopened for G and D19.
+- **CLN-65:** marked waiting on art.
+
 ## Not done
 `touched.mjs` maps only evidence.json (tools change), i.e. a full sandbox pass, so I skipped it and shotdiff/regress (brief: never a full pass). Checks: 293 unit tests, words, specs, load all ok.
 
