@@ -4238,7 +4238,7 @@
  "DAAR-11": [
   {
    "flow": "cook:stir",
-   "path": "speed1",
+   "path": "fair",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -4249,12 +4249,12 @@
    "after": null,
    "capture": [
     "trace:canvas:ladle:3000",
-    "strip:canvas:pot:6x200"
+    "zoom2:canvas:pot"
    ],
    "expect": [
     "traceAmp:canvas:ladle>=20"
    ],
-   "note": "the ladle turns as it goes round, handle on the rim (at a child's pace: at test speed the stir is over before the trace)"
+   "note": "the ladle turns as it goes round, handle on the rim"
   }
  ],
  "DAAR-12": [

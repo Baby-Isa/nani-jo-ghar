@@ -477,7 +477,7 @@ export class CookPlayer {
       const cur = await this.exp();
       // the slosh spilled and the stir stopped to say so (Nani speaks; the stir comes back after): that is the wrong stir's moment
       if (!cur || cur.kind !== "stir") { if (mistake && !shot && Date.now() - t0 < 1500) { shot = true; await this.once("wrong-stir", { settle: 0 }); } break; }
-      if ((cur.count || 0) >= 1 && count < 1) await this.once("stir-mid", { block: false }); // the stir goes on while a trace or filmstrip is taken (DAAR-11: a still ladle is no trace)
+      if ((cur.count || 0) >= 1 && count < 1) await this.once("stir-mid", { block: false }); // the stir goes on while a trace is taken (DAAR-11)
       count = cur.count != null ? cur.count : count;
       speed = cur.speed;
       await sleep(5);

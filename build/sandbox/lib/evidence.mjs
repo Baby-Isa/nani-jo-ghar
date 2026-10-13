@@ -437,7 +437,7 @@ export function traceStats(samples) {
   if (s.length < 3) return { amp: null, period: null, repeats: null, n: s.length };
   const range = (k) => Math.max(...s.map((x) => x[k])) - Math.min(...s.map((x) => x[k]));
   // a character crossing the screen (Nani's pass-me, 400+ px) is a walk, not a talk bob: no measure (S05-T2, ART-18)
-  if (range("x") > 40 || range("y") > 80) return { amp: null, period: null, repeats: null, walk: true, n: s.length };
+  const walk = range("x") > 40 || range("y") > 80; // expects with a ceiling ignore it (traceDecision callers)
   const amp = Math.max(range("x"), range("y"));
   const mid = (Math.max(...s.map((x) => x.y)) + Math.min(...s.map((x) => x.y))) / 2;
   const ups = [];
@@ -445,7 +445,7 @@ export function traceStats(samples) {
   const gaps = ups.slice(1).map((t, i) => t - ups[i]);
   const moving = amp > 0.5;
   const period = moving && gaps.length ? Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length) : null;
-  return { amp: Math.round(amp * 10) / 10, period, repeats: moving ? ups.length : 0, n: s.length };
+  return { amp: Math.round(amp * 10) / 10, period, repeats: moving ? ups.length : 0, walk, n: s.length };
 }
 // a "to record" placeholder (grey italic + the grown-ups' flag) and the grown-ups' own places (the "?" pop-up, the lab bar)
 export const NOT_FOR_CHILD_SEL = ".rs-ph, .rs-rec, .oc-rec, .oc-headline.rec, .rec, [data-rec], [class$=\"-rec\"], [class*=\"-rec \"]";

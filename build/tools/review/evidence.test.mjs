@@ -263,8 +263,8 @@ test("trace expects: a still trace is no measure of a period and keeps a ceiling
 
 test("traceStats: a walk across the screen is no bob (S05-T2)", () => {
   const walk = Array.from({ length: 10 }, (_, i) => ({ t: i * 50, x: 100 + i * 50, y: 300, o: 1 }));
-  assert.equal(traceStats(walk).amp, null);
-  assert.equal(traceStats(walk).walk, true);
+  assert.equal(traceStats(walk).amp, 450, "the amplitude is still measured (DAAR-11's floor counts it)");
+  assert.equal(traceStats(walk).walk, true, "flagged, so a ceiling on the talk bob ignores it");
   const bob = Array.from({ length: 12 }, (_, i) => ({ t: i * 50, x: 100, y: 300 + (i % 4 < 2 ? 0 : 2), o: 1 }));
   assert.equal(traceStats(bob).amp, 2);
 });

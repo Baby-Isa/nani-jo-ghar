@@ -492,7 +492,7 @@ export class EvidenceProbe {
           const tr = s.hits.flatMap((h) => h.captures.filter((c) => c.kind === "trace" && c.stats && c.raw.startsWith(`trace:${e.sel}:`)));
           const key = { traceAmp: "amp", tracePeriod: "period", traceRepeats: "repeats" }[e.kind];
           if (!tr.length) { put({ ok: null, why: "no trace" }); continue; }
-          const vals = tr.map((c) => c.stats[key]);
+          const vals = tr.map((c) => (c.stats.walk && /^<=?$/.test(e.op) ? null : c.stats[key])); // a walk across the screen is no talk bob: a ceiling ignores it (ART-18), a floor counts it (DAAR-11)
           put({ ok: traceDecision(e.kind, vals, e.op, e.n), why: `${key} ${vals.map((x) => (x == null ? "none (still)" : x)).join(", ")}` });
         } else if (e.kind === "familyOnly" || e.kind === "clipClass") {
           const rec = new Set((this.recList || []).map(recKey));
