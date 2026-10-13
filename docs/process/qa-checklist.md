@@ -74,7 +74,7 @@ A reviewer who is not the builder fills in the results, flaws first.
 | CMP-06 | Guide box is sage, top of the sidebar; speech bubbles solid cream with dark text | F11, F24 | eye |
 | CMP-07 | One white card per person: face + headline + stacked rows; no name label, no cards in cards, no scroll bar | E21, F8 | eye · layout lint `scroll-container` |
 | CMP-08 | Order model: person → items → parts, max three tiers; rows and the spoken sentence share one source and order | F9, F10 | eye |
-| CMP-09 | "Don't" rows are dashed with a no-sign; finished items fold to a gold line; "next" in grey, never numbered | F9 | eye |
+| CMP-09 | "Don't" rows are dashed with a no-sign; finished items fold to a gold line; one thing lit at a time, in the focal glow's colour, never numbered (decision 95) | F9 | eye |
 | CMP-10 | The focal thing pulses with a centred glow and bounce; inactive things dim ~10% | F17 | eye |
 | CMP-11 | End screen steps through badges → Next → word review → actions, over the game scene | F12 | eye |
 | CMP-12 | Badges: gold = perfect; stopwatch with crowned best; gold/grey tick with "7/10"; bulb dims and cracks per hint. No stars anywhere | F13, H5 | eye · auto: `build/test_shared_ui.mjs` (badge tiers) |

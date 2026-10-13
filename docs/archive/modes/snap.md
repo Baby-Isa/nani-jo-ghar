@@ -1,6 +1,6 @@
 # Snap: design (mode id `snap`)
 
-> **Stale points (what `docs/process/rules.md` now overrides).** Text below is left as written.
+> **Stale points (what `docs/archive/process/rules-2026-10-13.md` now overrides).** Text below is left as written.
 > - Stars, the ear star, the voice star, craft stars, `star_sets` and `minTested` → three badges: time, accuracy, hints (H5, J7, decisions 1–3) (lens iris)
 > - Quilt patches and quilt grids as the progress object → a bookshelf, one named book per finished arc (decision 4); quilt-making becomes a Big Ma arc
 > - *nar* for "no" → ***na*** (*nar* means "look") (G5, decision 5)

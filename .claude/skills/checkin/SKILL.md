@@ -4,7 +4,7 @@ description: The 30-40 minute check-in while build sessions run. Use when a send
 ---
 # /checkin: one look at the run, one line to Zafar
 
-**For:** the orchestrator during runs. Rules: B11, B12, B13, A17 (`docs/process/rules.md` §1-2).
+**For:** the orchestrator during runs. `checkin.mjs` does the counting; the standing lines are at the end of this file.
 
 ## Steps
 1. What landed:
@@ -23,3 +23,9 @@ description: The 30-40 minute check-in while build sessions run. Use when a send
 
 ## When a session has ended
 Read its report, recheck its screens (`/review`), then launch the next queued step only if Zafar already said go for it (A2).
+
+## Standing lines
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **After a usage limit or restart, carry on without re-asking:** check every session and relaunch stopped ones as continuations. (B11)

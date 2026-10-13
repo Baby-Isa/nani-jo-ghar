@@ -773,3 +773,8 @@ Branch `claude/conversations-mvp` (from `claude/nifty-rubin-c0d431`). Design: `d
 - Wiring doc `docs/game-design/modes/conversations-wiring.md`: exact hooks and snippets for FL2–FL8 (a `talk` field on story scenes + a small helper in story.js), CK1/CK2/CK7/CK9/CK11 (flow.js, chai-tray.js), CL1/CL2/CL3/CL9 (run.js, waiting.js, sendoff.js). Notes: the clinic has no family patients yet (CL3 waits on that); FL7 recommended to stay on the story's Yes/No until line 8 is recorded; the first-ever ghost finger is built into the module (not Onboard.run, which blocks taps outside its light).
 - Report: `build/reports/archive/conversations-mvp.md`. Done.
 
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Decision 58 (6 Oct):** Greetings are learned by watching: characters greet each other with visible gestures (a wave on *salaam* and *khuda-fis*, a hand out for "how are you"), answer pills carry small pictures (wave, tick or cross, faces), and the meaning is said once in spoken English in story mode. No written English.

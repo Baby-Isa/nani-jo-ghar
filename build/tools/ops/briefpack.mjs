@@ -27,14 +27,19 @@ export const modelTableText = () => Object.entries(MODEL_TABLE).map(([k, v]) => 
 const words = (s) => String(s).split(/\s+/).filter(Boolean);
 const clip = (s, n) => { const w = words(s); return w.length <= n ? s.trim() : w.slice(0, n).join(" ") + " ..."; };
 
-// the last n decisions of docs/decisions.md, each clipped (a table row: | N | date | decision | who | cites |)
-export function decisionsDigest(n = 15, perRow = 45, file = join(ROOT, "docs", "decisions.md")) {
-  let text = ""; try { text = readFileSync(file, "utf8"); } catch (e) { return []; }
+// the last n decisions, each clipped (a table row: | N | date | decision | ... |): the live log plus decisions 1-99 in the archive
+export const DECISION_FILES = [join(ROOT, "docs", "decisions.md"), join(ROOT, "docs", "archive", "decisions", "decisions-1-to-99.md")];
+export function decisionsDigest(n = 15, perRow = 45, files = DECISION_FILES) {
+  let text = ""; for (const f of [].concat(files)) { try { text += readFileSync(f, "utf8") + "\n"; } catch (e) { /* a missing file adds nothing */ } }
+  if (!text) return [];
   const rows = text.split("\n").map((l) => /^\|\s*(\d+)\s*\|\s*([^|]*)\|\s*([^|]*)\|/.exec(l)).filter(Boolean).map((m) => ({ n: +m[1], date: m[2].trim(), text: m[3].trim() }));
-  return rows.sort((a, b) => a.n - b.n).slice(-n).map((r) => `- **${r.n}** (${r.date}): ${clip(r.text, perRow)}`);
+  const byN = new Map(rows.map((r) => [r.n, r])); // the live log wins over the archive for the same number
+  return [...byN.values()].sort((a, b) => a.n - b.n).slice(-n).map((r) => `- **${r.n}** (${r.date}): ${clip(r.text, perRow)}`);
 }
 // rulebook sections ("2" -> "## 2. ..." up to the next "## ") as bullets; budget in words per call, bullets dropped from the end
-export function ruleSections(secs, budget, file = join(ROOT, "docs", "process", "rules.md")) {
+// the rulebook was retired on 13 Oct (decision 99); its text is kept whole in the archive and lives word for word in the design docs
+export const RULEBOOK = join(ROOT, "docs", "archive", "process", "rules-2026-10-13.md");
+export function ruleSections(secs, budget, file = RULEBOOK) {
   let text = ""; try { text = readFileSync(file, "utf8"); } catch (e) { return []; }
   const parts = text.split(/^## /m).slice(1), out = [];
   const per = Math.max(60, Math.floor(budget / Math.max(1, secs.length)));
@@ -50,7 +55,7 @@ export function ruleSections(secs, budget, file = join(ROOT, "docs", "process", 
   return out;
 }
 // bullets of the rulebook that cite a rule ID the task text names, e.g. (E5) or (H1, H2); IDs like B3, C8, E32
-export function namedRules(taskText, file = join(ROOT, "docs", "process", "rules.md")) {
+export function namedRules(taskText, file = RULEBOOK) {
   const ids = [...new Set(String(taskText).match(/\b[A-J]\d{1,2}\b/g) || [])];
   if (!ids.length) return [];
   let text = ""; try { text = readFileSync(file, "utf8"); } catch (e) { return []; }
@@ -64,13 +69,15 @@ export function namedRules(taskText, file = join(ROOT, "docs", "process", "rules
 }
 export function contextPack(spec, { maxWords = 2000 } = {}) {
   const taskText = (spec.tasks || []).map((t) => `${t.do} ${t.accept || ""}`).join(" ");
-  const L = [`# Context pack: ${spec.name}`, "", "Pasted, not linked: the facts a launch used to re-read the whole rulebook for. The full rulebook only where this names a section.", ""];
-  L.push("## The last 15 decisions (docs/decisions.md; the newest wins)", ...decisionsDigest(15), "");
+  const L = [`# Context pack: ${spec.name}`, "", "Pasted, not linked: the latest decisions, the rules this task names and the checks it must pass. The design facts are in the area docs the brief lists.", ""];
+  L.push("## The last 15 decisions (docs/decisions.md and its archive; the newest wins)", ...decisionsDigest(15), "");
   const named = namedRules(taskText);
-  if (named.length) L.push("## Rules this task names", ...named, "");
-  let used = words(L.join("\n")).length;
-  L.push("## Rulebook sections this task reads");
-  L.push(...ruleSections((spec.rules || ["2", "3"]).map(String), Math.max(120, maxWords - used - 60)));
+  if (named.length) L.push("## Rules this task names (their text now lives in the design docs)", ...named, "");
+  L.push("## The checks this session must pass (they are the rules; docs/tools.md)",
+    "- `node build/tools/review/checks.mjs` before every push (unit tests, words, bump, specs, docs limits, picture loads).",
+    "- Red then green per fix-list row: `node build/tools/review/evidence.mjs --run --rows <ID>` fails before the fix and passes after; the judge is never you.",
+    "- The sandbox with its contract checks on the flows you touched: `node build/tools/review/touched.mjs` prints the command.", "");
+  if (spec.rules && spec.rules.length) { const used = words(L.join("\n")).length; L.push("## Archived rulebook sections this spec asks for", ...ruleSections(spec.rules.map(String), Math.max(120, maxWords - used - 60))); }
   let out = L.join("\n") + "\n";
   while (words(out).length > maxWords && L.length > 8) { L.splice(L.length - 1, 1); out = L.join("\n") + "\n"; } // never over budget
   return out;

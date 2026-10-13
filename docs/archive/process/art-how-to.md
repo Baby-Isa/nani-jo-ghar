@@ -2,7 +2,7 @@
 
 # Art how-to: running art through ChatGPT via Claude in Chrome
 
-> **Stale points (the rulebook, `docs/process/rules.md`, wins).** Blocks below are copied word for word from the 26–30 Sept packs; read them with these overrides:
+> **Stale points (the rulebook, `docs/archive/process/rules-2026-10-13.md`, wins).** Blocks below are copied word for word from the 26–30 Sept packs; read them with these overrides:
 > - "No private photos" / "Mum's, Big Ma's, the doctor's and the cats' photos stay in `sources/private/` and never go into the repo" → family photos may be attached for likeness; all consent is given (D12, decision 9). The 26 Sept run-me already says so; the rule's short form is in `rules.md` §7.
 > - "Download", "Drag the PNGs into the Claude Code chat", "Zafar uploads" and "drag them in" → the current method needs no manual steps and no downloads: the runner moves files through its cloud workspace and file-upload tool: references from `raw.githubusercontent.com` into ChatGPT, kept images from ChatGPT into GitHub's upload page, one commit each to `sources/art/<pack>/` on `main` (page fetch() and the clipboard are blocked, 5 Oct). The template is the "MOVING IMAGES WITHOUT DOWNLOADING" section of `docs/design-language/art-plans/clinic-heal-chrome-block.txt` (D3, decision 29); Claude then cuts and reviews.
 > - "Zafar watches / signs off" a sheet → only for characters based on real people (Nani, Big Ma, the doctor); all other art is judged by the runner and Claude (D12, decision 29).

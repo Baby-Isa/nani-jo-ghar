@@ -2,6 +2,15 @@
 
 Open questions, each with Claude's recommendation; answer any time with "yes to all except …". An answered question leaves this file the same day (its answer goes to `decisions.md` or the doc it changes). Moved out of `status.md` on 13 Oct (decision 99).
 
+### From Sprint 5 and the reset (13 Oct)
+A. **Story English** plays by device TTS, and TTS never ships (non-negotiable 10): who records the English story lines? *Recommend: you, in one short session once the story lines are fixed.*
+B. **Two strikes, to Sprint 6:** the taste cup's water drawn wider than the cup (CLN-104); the knee bands (CLN-100); her face matching her words needs a sore-face picture (CLN-136). *Recommend: CLN-104 and CLN-100 as code fixes in Sprint 6's first goal; the sore face in the next art run.*
+C. **The ear's L3 is harder than L2 and the ear has no L4 (CLN-45):** move the extras to a new L4 (a mechanic change)? *Recommend yes.*
+D. **Her card at the send-off needs the request pop-up first (CLN-139, reverted):** a design call in Sprint 6. *Recommend: decide when you play the clinic next.*
+E. **"Go through `ideas.md` before calling a mode finished" (old rule A14):** keep it as a step when a sprint closes? *Recommend yes; it costs a minute.*
+F. **The leak bots at every level, not only level 1** (the fever leak was found at L3)? *Recommend yes; it becomes check 19 in `docs/process/checks-to-build.md`.*
+G. **Children's voices:** the old rules said the child's model reply is you (boy) or Mum (girl) and children's voices never ship; decision 66 says you and Hannah record the children. *Recommend: decision 66 stands (it is newer); the old lines are archived.*
+
 ### For Mum (fold into the next recording)
 1. **Words and forms (Round 5 / 6):** "with" for food and "and" between two kinds of one dish; the cooking verbs still missing (roll, pour, sprinkle, serve, oil, a board, each verb's polite and "for me" form); the he-word plural before "with / in / on", "the boys' cup", *iloka*, *mare*, *tapelo* or *sufuria*, *indo* or *mayai*, *koso*/*garam*, *thundo*/*thadhu* (`grammar-notes.md` §55 "For Mum next time"); *kere karein*, green pepper, *moikyo*, *Muke sekelo khape*, the *mirchi* plural, *watana*/*matar*, *sambusa*, *dinda*/*dinde*, *khan*/*khanij*; the handout words never confirmed (*atto, lasan, aadu, hardar, jeeru, rai, elchi, loon, trae, char, panj*). *Recommend: Round 5 Part A.*
 2. **Re-takes with no good clip yet:** Mum: *cup*, *ambo*/*amba je mathe*, *chokra*/*chokri*/*Nana sathe*. Zafar: *hakro cup*, *salamun alaykum*, *na, muke na khape*, *trae bateta*, *hakri lakri*, *chokre sathe*. *Recommend: five minutes at the start.*

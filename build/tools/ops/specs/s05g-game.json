@@ -13,7 +13,7 @@
     "6 (UI)"
   ],
   "read": [
-    "docs/sprints/S05-red-then-green.md (the log's last entries)",
+    "docs/archive/sprints/S05-red-then-green.md (the log's last entries)",
     "build/reports/s05-open-triage.md (the sort of the open rows)",
     "build/reports/s05t2-probes.md (T2's final run ev-20261013-095159-oh3 and notes)",
     "docs/architecture/evidence-loop.md (incl. Probe pitfalls)",

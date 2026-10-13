@@ -17,3 +17,9 @@ Each mode has one file in this folder (parked modes keep a short stub pointing t
 | **Snap** (`snap.md`, stub) | Aim and capture | Parked, designed | Every day-out destination |
 
 Arcs and trips are in `docs/game-design/story-and-arcs.md`; scoring and pocket money in `progression-and-scoring.md`.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Decision 39 (5 Oct):** The roadmap: finish Cook and the clinic; finish Arc 1's modes; story glue; the beach trip as template; other trips; the sewing arc.

@@ -278,3 +278,9 @@ Stage three is a long game. An app used by enough families, with consent, become
 - **Commercial model: TBC** (decision 7; `process/rules.md` Open questions).
 - **Is Grandparent mode still planned?** It is in the old Game Design but nowhere in the rulebook. Recommendation: keep it on `ideas.md` and carry the design intent (the elder is inside the loop) into every mode's speaking moments. For Zafar to decide.
 - **Is the notebook still planned?** Recorded in `ideas.md` (notebook tab). For Zafar to decide.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Success is Mum enjoying the recording and a child asking to play again,** not downloads or streaks. (J9)

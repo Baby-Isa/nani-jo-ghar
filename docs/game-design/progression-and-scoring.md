@@ -1,6 +1,6 @@
 # Progression and scoring
 
-How a child's words advance, how the skills are checked, what scores and unlocks there are, and how errands are generated. The badge rules themselves are in `docs/process/rules.md` (H5, J7) and are not restated here.
+How a child's words advance, how the skills are checked, what scores and unlocks there are, and how errands are generated. The badge rules themselves are in `docs/archive/process/rules-2026-10-13.md` (H5, J7) and are not restated here.
 
 ## Part 1. Per-word stages, the notebook and adopted mechanics (Game Design)
 

@@ -13,12 +13,12 @@
     "6 (UI)"
   ],
   "read": [
-    "docs/sprints/S05-red-then-green.md (the plan to the finish)",
+    "docs/archive/sprints/S05-red-then-green.md (the plan to the finish)",
     "build/reports/s05s-shared.md (round 1: what was done, what failed and why)",
     "build/reports/s05t2-probes.md once it is pushed (T2's list of rows failing in the game, with owners)",
     "docs/architecture/evidence-loop.md",
     "docs/decisions.md rows 57, 75-90 only",
-    "docs/process/rules.md E25, E12, F9"
+    "docs/archive/process/rules-2026-10-13.md E25, E12, F9"
   ],
   "owns": [
     "js/shared/**, css/shared/**, js/core/voice.js",

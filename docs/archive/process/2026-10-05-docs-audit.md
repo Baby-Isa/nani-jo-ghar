@@ -39,7 +39,7 @@ Together: the always-read set drops from ~7,600 to ~4,000 tokens per session, an
 - 22–30 Sept sections (~14,000 tokens) are history; 19 entries are struck through. The working assumptions (:293–315) belong in status.md "Waiting on Zafar".
 - :218–234 decision 27 (clinic heal games, 17 sub-points) is a design and belongs in `modes/clinic.md`.
 
-### docs/process/rules.md (~12,100 tokens)
+### docs/archive/process/rules-2026-10-13.md (~12,100 tokens)
 - §1–3 (~2,500 tokens, what briefs cite) are sound. §5 holds station designs; the decisions log ends at 27; "Open questions" (:389–394) duplicates status.md; :5 and :7 point at the harvest.
 - :76 (A15/A28 read list) contradicts CLAUDE.md:98; :98 brief read list includes `ux-principles.md`, which `brief.mjs`:35–39 omits. The generator is the truth; align the rule.
 
@@ -76,7 +76,7 @@ Together: the always-read set drops from ~7,600 to ~4,000 tokens per session, an
 |---|---|---|
 | `CLAUDE.md` | Who Zafar is, the three-line working agreement, "Top rules are rules.md §0", where things live, the skills list, how to start | 1,200 tokens |
 | `docs/status.md` | Next chat (one dated block, ≤600 tokens), the plan table, the generated feedback table (numbers only), open questions to Zafar (numbered, none answered) | 2,000 |
-| `docs/process/rules.md` | §0 Top rules; §1–3 process (cited by every brief); §4 design rules for every mode; §6–10 as now. No station designs, no decisions log, no open questions | 8,000 (§1–3 ≤1,500) |
+| `docs/archive/process/rules-2026-10-13.md` | §0 Top rules; §1–3 process (cited by every brief); §4 design rules for every mode; §6–10 as now. No station designs, no decisions log, no open questions | 8,000 (§1–3 ≤1,500) |
 | `docs/decisions.md` | Numbered decisions from the current chapter only (28 onward), one line each; older ones archived once folded into rules | 2,500 |
 | `docs/process/qa-checklist.md` | As now, with tablets and the real tool names | 3,500 |
 | `docs/process/regressions.md` | ID / Issue / Status / Check / one Source; four statuses only | 10,000 |

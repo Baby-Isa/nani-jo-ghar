@@ -50,3 +50,11 @@ Stage three is a long game. An app used by enough families, with consent, become
 > from: docs/archive/art/Asset Building Plan.md § 7. Big Ma's room (new scene, decided 24 Sept 2026)
 
 - **Audio:** she **sings a song while she sews** — a new audio asset, recorded by Zafar's wife, alongside the family's other spoken-word recordings.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Consent:** contributors know where their voice is used and can have it removed; children's voices never ship and stay on the device. (I15)
+- **Decision 66 (7 Oct):** The voices stay family: Mum's cleaned clips beat the robot. Lines are retaken with a better recording set-up (set-ups tested first). The cast: Mum (Nani); Hannah's grandad (the doctor and the older-man Kutchi voices); Zafar and Hannah (the children's voices). The robot test is closed.
+- **Decision 69 (7 Oct):** No audio clip is offered to Zafar or shipped without a blind listening check (two transcribers not told the target; only the target, one voice), and a random-sample audit by the orchestrator before any picker goes out.

@@ -2,7 +2,7 @@
 
 # Step 1a, batch C: art, language, Cook docs, technical
 
-Read-only pass. Repo paths are relative to `/home/user/nani-jo-ghar`. 35 files. All of `docs/process/rules.md` read first.
+Read-only pass. Repo paths are relative to `/home/user/nani-jo-ghar`. 35 files. All of `docs/archive/process/rules-2026-10-13.md` read first.
 
 How deep I read: Art Bible, Asset Building Plan, Asset Naming Convention, Chapter 1 Art Prompts, art-direction-options, art-run-tonight, grammar notes, cook-with-nani-words, cook-with-nani-kutchi-audit, cook-word-changes-B, cook-with-nani-todo, Technical Plan, clinic-heal-api and speech-recognition-plan: read in full. Skimmed: the 10 `chatgpt-art-prompts*.md` (headers, run instructions, rules, notes sections, not each prompt), the five Questions for Mum files (headings, how-to-answer block, where answers are recorded), cook-with-nani-phase-a-design (read §1–§14 and Q3–Q9 selectively, not every line), cook-with-nani-recipes-guide (first 60 lines plus §5–§9), shared-api.md (headings plus §3, §6, §7, §11, §15, §16).
 

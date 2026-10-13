@@ -4,7 +4,7 @@ description: Review a finished build session or any change before it goes to Zaf
 ---
 # /review: done means looked at
 
-**For:** whoever did not build it (C4, C17). Rules: `docs/process/rules.md` §3; checklist `docs/process/qa-checklist.md`.
+**For:** whoever did not build it (C4, C17). The checks are the rules (`docs/tools.md`); checklist `docs/process/qa-checklist.md`.
 
 ## Steps
 0. The fast checks, docs limits included: `node build/tools/review/checks.mjs` (exit 1 stops the review).

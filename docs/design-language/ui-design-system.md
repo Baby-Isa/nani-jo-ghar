@@ -195,3 +195,13 @@ The spice cupboard is in the MVP because Chapter 1's daar needs spices. Buying s
 - Buttons hidden until usable, never shown greyed-out as "…".
 - Later: the list moves into the world (a handwritten list tied to the basket handle), freeing the whole screen.
 
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Never make the child wait for speech:** input is live, a tap goes ahead, the line can be replayed; a tap pauses the line, the count plays, and the line carries on. (E5)
+- **Give clear feedback while an action is under way** (e.g. too-fast/too-slow zones on the stir dial). (E34)
+- **Decision 25 (1 Oct):** The sidebar and its text scale with the screen; the order card can lay short rows out as pills, set per screen size in data.
+- **Decision 56 (6 Oct):** Things inside a container sit on its flat inner area (thali, tray, oil, plate), never on the rim or sides.
+- **Decision 57 (6 Oct):** The bulb also translates the guide line, and always shows the full order with numbers at every level; a number is written the first times it is heard, at any level. On spoken cards the closed card's eye becomes a small bulb, no counter. Amends decisions 27 and 41 (the card itself still drops numbers from L3).
+- **Decision 97 (13 Oct):** Sprint 5 fix round answers: (1) one last bounded push for C3 and D3 in their own sessions (about 1.5 h, about $35; ceiling about $480): the full check's 12 findings, the four Cook rows now judged on reached states, the order-card unit test and D3's items for C3; anything left after it is listed and the publish goes ahead; (2) the two-strike rows: the taught round's ghost finger (CLN-133) and boing's L1 card (SH-45) get a third try in this push; the knee bandage bands (CLN-100) and her face matching her words (CLN-136, needs a sore-face picture) go to Sprint 6 with their pictures; (3) a card stays open from its dish's first step to its last (chai stays open through the pour), in Cook and the clinic; cards for dishes not in play fold; (4) a learnt word's shelf chip may be its speaker alone (SEK-15 closed by design); (5) W3, the waiting room's speaking-pill variant, is retired with its row (CLN-123); (6) diagnosis and send-off keep her patient card in the sidebar, without a face circle (decision 92); (7) every speech bubble's tail ends at the speaker's mouth; (8) heal ladders: any game still adding two things at one level moves the extra one to L4 (ear L3 side, fever L3 fix step, the parked games).

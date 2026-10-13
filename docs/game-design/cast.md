@@ -49,7 +49,7 @@ Zafar's wife's great-grandma. She's the warm senior pillar of the family — her
 
 An **African grey**, a common East African household parrot. It gives cheap, funny review:
 - **"Salamun alaykum!"** when the player comes in the door; it has heard it so often.
-- It repeats words and **"Arre re!"** in idle moments only, never during a task (I9).
+- It repeats words in idle moments only, never during a task (I9). Not "Arre re!": it is not a family word (decision 61).
 - Now and then it repeats a **word the player met recently**, favouring the weakest ones. Tap it to hear the word again, which gives spaced review for free.
 - **Its voice is the family's own recordings**, pitch-shifted, with a squawk added. No extra recording is needed.
 - **Rule:** it speaks only in idle moments (the hub, arriving, between orders), **never during a task**, so it can't give an answer away.
@@ -181,7 +181,7 @@ Replaces the tailor's shop in Big Ma's mending story (Roadmap). Big Ma is the fa
 
 | Character | Trait | What it's for |
 | --- | --- | --- |
-| Nani | Warm, says "Arre re!" on a miss | **The child's guide, not a kitchen-bound character** (28 Sept): she leads every arc and every place, not only Cook. Her fixed frames are still the grammar backbone |
+| Nani | Warm, says Mum's "oh oh oh" on a miss (decision 61: not "Arre re!") | **The child's guide, not a kitchen-bound character** (28 Sept): she leads every arc and every place, not only Cook. Her fixed frames are still the grammar backbone |
 | The cat | Steals and hides things | Runs every Hide and seek errand; a running gag, no peril, endless postpositions |
 | Nana | Dozes, tells stories | The past-tense narrator; arrives once a trip needs retelling a past event |
 | Older cousin | Always losing things, eventually asks the player to explain | Role reversal: the player gives the instruction |

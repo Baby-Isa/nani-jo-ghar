@@ -6,14 +6,14 @@ BRANCH:               ccr-a7370759-t0lee7. Never push to main.
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  2. docs/archive/process/rules-2026-10-13.md: sections 2, 3, 4, 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
   5. CLAUDE.md
   6. docs/sprints/S04-feedback-sticks.md (the goal and who owns what)
   7. docs/archive/feedback/playtest-2026-10-08-sprint3.md (Zafar's feedback tonight, every point with its cause)
   8. docs/decisions.md 52, 53, 64, 73, 75, 76
-  9. docs/process/rules.md C19, C20, A19
+  9. docs/archive/process/rules-2026-10-13.md C19, C20, A19
   10. js/shared/host.js (designed for this: E17), js/shared/request-popup.js, js/core/voice.js, js/shared/say.js
   11. js/cook/flow.js, ui.js, zone.js, station-lib.js, stations.js; js/clinic/kit.js (Voice), screen.js, heal/host.js, stages/*.js
   12. docs/process/regressions.md rows SH-40, SH-64, SH-66, SH-67, SH-68, CHT-10, CLN-86, CLN-92, CLN-110, DAAR-13, ART-13, ART-17

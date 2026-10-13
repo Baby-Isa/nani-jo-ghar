@@ -2,7 +2,7 @@
 
 Step 3, R3b, 1 Oct 2026; updated 6 Oct 2026 (Cook and the clinic are now real plug-ins). How to add a mini-game, a mode, an arc and a map place by plugging existing parts together, so that new games and arcs are built from the mechanics and modes we already have (decisions 22 to 24). The worked example throughout is the **demo mode** (`js/demo/`), which runs one of Cook's stations and one of the clinic's healing games through the one game host without changing a line of either.
 
-The shapes are written once, in code comments at the top of `js/shared/host.js` (the mini-game and its `ctx`), `js/shared/mode.js` (the mode, the entry, the shell loop), `js/shared/input.js` (gestures) and `build/host/check_arcs.mjs` (the arc file). This guide says how to use them; the rules themselves live in `docs/process/rules.md` and are linked by ID, not repeated. Where this guide and the rulebook disagree, the rulebook wins.
+The shapes are written once, in code comments at the top of `js/shared/host.js` (the mini-game and its `ctx`), `js/shared/mode.js` (the mode, the entry, the shell loop), `js/shared/input.js` (gestures) and `build/host/check_arcs.mjs` (the arc file). This guide says how to use them; the rules themselves live in `docs/archive/process/rules-2026-10-13.md` and are linked by ID, not repeated. Where this guide and the rulebook disagree, the rulebook wins.
 
 ## The parts, in one picture
 
@@ -158,3 +158,9 @@ Every mode and mini-game lists its own assets in its data (one manifest per game
 - `node build/host/check_arcs.mjs`, `node build/check_onboard.mjs`, `node build/gen_labs.mjs --check`.
 - The browser proof and the sandbox on the screens you touched (one browser at a time: `flock -w 1800 /tmp/njg-browser.lock timeout …`, your own `COOK_TEST_PORT`).
 - Then the rest of the definition of done (C1 to C4): every state screenshotted and looked at by someone else, flaws first, and the regression rows for the screens you touched.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **A mode session edits only its own mode's files;** missing shared pieces become marked stubs with the same API; persistence only through the progress/storage API. (B17)

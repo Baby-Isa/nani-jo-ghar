@@ -12,7 +12,7 @@ node build/tools/ops/brief.mjs --live-check
   it touches via regress.mjs, finish rules). Prints the brief (paste it as the session's first message) or writes --out.
   Spec fields (see build/tools/ops/specs/4e-clinic-engine.json):
     name, model, effort, why, cost, stop, branch            the header lines
-    rules: ["2","3",...]  rulebook sections;  read: [...]   extra read-first docs after the standard four
+    read: [...]  the area design docs (required; e.g. docs/game-design/modes/clinic.md);  rules: [...] archived rulebook sections, only if needed
     owns: [...], readOnly: [...], stubs                     files
     permissions                                             what to grant up front
     tasks: [{do, accept}]                                   numbered, each with its acceptance criterion
@@ -54,14 +54,14 @@ const packFile = a.pos[0].replace(/\.json$/, "") + ".context.md";
 if (!a.has("no-pack")) {
   const pack = contextPack(s);
   writeFileSync(packFile, pack);
-  add(`CONTEXT PACK: ${packFile.replace(process.cwd() + "/", "")} (${pack.split(/\s+/).filter(Boolean).length} words: the last 15 decisions and the rules this task names, pasted; paste it after this brief)`, "");
+  add(`CONTEXT PACK: ${packFile.replace(process.cwd() + "/", "")} (${pack.split(/\s+/).filter(Boolean).length} words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)`, "");
 }
 add("READ FIRST (in this order):",
   "  1. CLAUDE.md (all of it: the working agreement and non-negotiables)",
-  `  2. docs/process/rules.md: sections ${(s.rules || ["2", "3"]).join(", ")} only`,
+  "  2. docs/tools.md (the checks are the rules) and the context pack",
   "  3. docs/process/qa-checklist.md (definition of done)",
-  "  4. docs/status.md (\"Next chat\")");
-(s.read || []).forEach((r, i) => add(`  ${i + 5}. ${r}`));
+  "  4. the design doc(s) for this area:");
+(s.read || []).forEach((r, i) => add(`     ${r}`));
 add("");
 
 add("FILES THIS SESSION OWNS (edit only these):", ...list(s.owns),

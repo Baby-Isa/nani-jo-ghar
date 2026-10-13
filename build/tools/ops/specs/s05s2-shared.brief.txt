@@ -10,15 +10,15 @@ CONTEXT PACK: build/tools/ops/specs/s05s2-shared.context.md (1723 words: the las
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  2. docs/archive/process/rules-2026-10-13.md: sections 2, 3, 4, 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. docs/sprints/S05-red-then-green.md (the plan to the finish)
+  5. docs/archive/sprints/S05-red-then-green.md (the plan to the finish)
   6. build/reports/s05s-shared.md (round 1: what was done, what failed and why)
   7. build/reports/s05t2-probes.md once it is pushed (T2's list of rows failing in the game, with owners)
   8. docs/architecture/evidence-loop.md
   9. docs/decisions.md rows 57, 75-90 only
-  10. docs/process/rules.md E25, E12, F9
+  10. docs/archive/process/rules-2026-10-13.md E25, E12, F9
 
 FILES THIS SESSION OWNS (edit only these):
   - js/shared/**, css/shared/**, js/core/voice.js

@@ -1,6 +1,6 @@
 # Cook with Nani: design and build status
 
-The single home for Cook's design: where Cook is now, the standing rules, the station specs (moved here from `docs/design-language/ui-design-system.md`, which keeps the tokens, grid, inventory, feedback, order model and shared components) and the layout and pantry. The older Phase A design, the dishes and Kutchi questions of 24–26 Sept and the first build status are history, in `docs/archive/modes/cook-design-v1.md`. The look and the shared components are in `docs/design-language/ui-design-system.md`; the rules are in `docs/process/rules.md`; how to add dishes and stations is `docs/architecture/cook-recipes-guide.md`.
+The single home for Cook's design: where Cook is now, the standing rules, the station specs (moved here from `docs/design-language/ui-design-system.md`, which keeps the tokens, grid, inventory, feedback, order model and shared components) and the layout and pantry. The older Phase A design, the dishes and Kutchi questions of 24–26 Sept and the first build status are history, in `docs/archive/modes/cook-design-v1.md`. The look and the shared components are in `docs/design-language/ui-design-system.md`; the rules are in `docs/archive/process/rules-2026-10-13.md`; how to add dishes and stations is `docs/architecture/cook-recipes-guide.md`.
 
 ## Where Cook is now (6 Oct 2026)
 
@@ -219,3 +219,9 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
   - (B) a brass service bell for Cook ("order's ready!", with a ding), plus A everywhere else;
   - (C) a big gold arrow.
 - **The opening game screen** is weak; that's parked until later (Zafar).
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Decision 64 (6 Oct):** The kitchen is redrawn at full size with three small trays on the counter (one per customer) and Nani leaning on the counter (her existing leaning picture), with a smaller bob.

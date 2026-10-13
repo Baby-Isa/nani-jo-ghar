@@ -15,7 +15,7 @@ SESSION NAME / MODE, MODEL AND EFFORT (and why), COST ESTIMATE, HARD STOP (UK ti
 
 READ FIRST (in this order):
   1. CLAUDE.md
-  2. docs/process/rules.md: the sections listed (default 2 and 3)
+  2. docs/archive/process/rules-2026-10-13.md: the sections listed (default 2 and 3)
   3. docs/process/qa-checklist.md
   4. docs/status.md ("Next chat")
   5+. the mode doc and design-language docs it touches (named in the spec)

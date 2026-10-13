@@ -2,7 +2,7 @@
 
 # Gap analysis and the step 3 refactor plan
 
-Step 2a, 1 Oct 2026, for Zafar's approval. It compares today's code (commit `a57a3a6`) with the target in [`target-model.md`](target-model.md) and orders the work for step 3. Rule IDs point to `docs/process/rules.md`; row IDs (SH-01…) to `docs/process/regressions.md`.
+Step 2a, 1 Oct 2026, for Zafar's approval. It compares today's code (commit `a57a3a6`) with the target in [`target-model.md`](target-model.md) and orders the work for step 3. Rule IDs point to `docs/archive/process/rules-2026-10-13.md`; row IDs (SH-01…) to `docs/process/regressions.md`.
 
 **How the numbers were found:** `wc`, `grep` and small scripts over the repo, reading the main files, running the shared unit tests (118 pass) and three leak bots (clinic, Find it: pass), and a quick layout probe in a headless browser on six live pages at three sizes (scratch only; nothing written to the repo). Counts from `grep` are approximate (± a few); every one names where it came from so a session can re-run it.
 

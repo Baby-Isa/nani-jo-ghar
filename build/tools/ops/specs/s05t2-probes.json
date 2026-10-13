@@ -11,7 +11,7 @@
     "3"
   ],
   "read": [
-    "docs/sprints/S05-red-then-green.md",
+    "docs/archive/sprints/S05-red-then-green.md",
     "build/reports/s05s-shared.md and build/reports/s05b-words.md (the requests to T)",
     "build/reports/s05t-tools.md (round 1)",
     "docs/architecture/evidence-loop.md"

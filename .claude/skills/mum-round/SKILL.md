@@ -4,7 +4,7 @@ description: Process a new round of Mum's recordings into clips, the family-audi
 ---
 # /mum-round: from Mum's recordings to the engine, and the next sheet
 
-**For:** language work. Rules: non-negotiables 4, 10, 11; G1, G16, G21, decision 40 (`docs/process/rules.md` §8). Mum is the authority; never invent Kutchi; two AIs agreeing is not evidence.
+**For:** language work. Rules: non-negotiables 4, 10, 11; the language rules in `docs/language/lexicon.md` and `engine-spec.md`. Mum is the authority; never invent Kutchi; two AIs agreeing is not evidence.
 
 ## After a recording (folder `sources/audio/mum-YYYY-MM-DD/`)
 1. Dry run (reads and measures only):

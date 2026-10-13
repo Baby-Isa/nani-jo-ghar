@@ -51,7 +51,7 @@ Receiving containers (bowl, basket, pot, thali, tray) are two layers: **back** (
 
 ### Grounds: magenta for food, grey for everything else
 
-- **Art is made in ChatGPT via Claude in Chrome (D1, D3), which gives no alpha.** Every prompt asks for a flat ground, which is then keyed out (D22): magenta `#FF00FF` for food, neutral grey `#808080` for steel, brass, glass, wood, tools, characters and badges. A paid image API is only for a rapid prototype under $2 when Zafar can't respond (non-negotiable 13).
+- **Art is made in ChatGPT via Claude in Chrome (D1, D3), which gives no alpha.** Every prompt asks for a flat ground, which is then keyed out (D22): magenta `#FF00FF` for food, neutral grey `#808080` for steel, brass, glass, wood, tools, characters and badges. No image-API art without Zafar's say-so (decision 77, non-negotiable 13).
 - **Never use magenta for steel, brass, glass, glowing or wispy items:** the 3D look makes metal and glass pick up a magenta tint in their reflections. Use the grey ground.
 - **Glass and steam need partial alpha,** so they are cut with colour-to-alpha against the measured grey ground, never a hard key. Slice sheets with the method in the Naming Convention (`build/cut_tick_v2.py`; whole blobs by centroid, 2 px erode).
 
@@ -802,3 +802,9 @@ STALLS. A tab is stalled when its screen shows no change (no progress text, no i
 <!-- runner-loop:end -->
 
 **Judging at speed.** The runner judges in one look. If its workspace has the repo and python, `artjudge.py --dir <saved images> --only <ID>` gives numbers first (a FAIL is a redo; a FLAG says where to look). Claude's stricter pass (plan section 7) still happens after upload, from contact sheets, and `artjudge.py` over the whole folder is its first step. The judge never measures gaze, anatomy, fingers, likeness or style; text is only found on the flat ground, not on an object.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Decision 65 (6 Oct):** Each item gets one sprite sheet with every view it needs plus spares (top-down, belt, side-on, in use; 6–8 views), planned by Fable.

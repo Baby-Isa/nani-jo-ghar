@@ -10,12 +10,12 @@ CONTEXT PACK: build/tools/ops/specs/s05c3-cook.context.md (1695 words: the last 
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  2. docs/archive/process/rules-2026-10-13.md: sections 2, 3, 4, 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
   5. build/reports/s05-fixround-verdicts.md (your section: 'C3: Cook and shared', and 'Also found')
   6. docs/decisions.md row 96 (done means an independent picture) and rows 86-95
-  7. docs/sprints/S05-red-then-green.md (the last three log entries)
+  7. docs/archive/sprints/S05-red-then-green.md (the last three log entries)
   8. docs/architecture/evidence-loop.md (incl. Probe pitfalls)
 
 FILES THIS SESSION OWNS (edit only these):

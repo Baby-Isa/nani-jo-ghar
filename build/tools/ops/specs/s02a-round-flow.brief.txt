@@ -6,12 +6,12 @@ BRANCH:               ccr-a7370759-t0lee7. Never push to main.
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 2, 3, 4 (Instructions, Help, Counting, Interaction, Feedback), 6 (UI) only
+  2. docs/archive/process/rules-2026-10-13.md: sections 2, 3, 4 (Instructions, Help, Counting, Interaction, Feedback), 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
   5. docs/design-language/guide-and-card.md (approved in full: rules R1-R6, rows T1-T34; this session builds the shared parts)
   6. docs/archive/feedback/cook-playtest-2026-10-06.md and docs/archive/feedback/clinic-playtest-2026-10-06.md (sections 1a and 3; causes are cited file:line)
-  7. docs/decisions.md 51-65 and docs/process/rules.md section 4
+  7. docs/decisions.md 51-65 and docs/archive/process/rules-2026-10-13.md section 4
   8. docs/sprints/S02-play-and-fix-cook-clinic.md
 
 FILES THIS SESSION OWNS (edit only these):

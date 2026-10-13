@@ -13,7 +13,7 @@
     "6 (UI)"
   ],
   "read": [
-    "docs/sprints/S05-red-then-green.md (the plan to the finish and the queues)",
+    "docs/archive/sprints/S05-red-then-green.md (the plan to the finish and the queues)",
     "build/reports/s05d-clinic.md (round 1: what was done, what is open and why)",
     "build/reports/s05t2-probes.md (T2's probe fixes and the game failures it found, with owners)",
     "docs/architecture/evidence-loop.md (incl. Probe pitfalls)",

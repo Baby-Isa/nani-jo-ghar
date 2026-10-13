@@ -1,7 +1,7 @@
 # Sprint 3 art: the redo list, the art rows, the girl's states (pack `s03`)
 
 **Written:** 8 Oct 2026, by S03-D (`build/tools/ops/specs/s03d-art.brief.txt`). **Status:** approved by Zafar in the session launch (decision 71: image API, Fable reviewing; spend cap $60).
-**Built from:** `CLAUDE.md` (13, 16), `docs/process/rules.md` §7, `art-bible.md` §1–4 and §8, `art-pipeline.md` §1, `s02-art-plan.md` (the prompts these redo), `s02-redo-list.yaml`, the open Art rows and the art-waiting Cook and clinic rows.
+**Built from:** `CLAUDE.md` (13, 16), `docs/archive/process/rules-2026-10-13.md` §7, `art-bible.md` §1–4 and §8, `art-pipeline.md` §1, `s02-art-plan.md` (the prompts these redo), `s02-redo-list.yaml`, the open Art rows and the art-waiting Cook and clinic rows.
 
 ## 1. How the run works
 - **Generator:** `build/gen_s03.py` calls the OpenAI image API (`gpt-image-2`, quality high, `/images/edits`) with the style anchor `sources/art/style-anchor-v1.png` and the approved art each image must match attached. The girl's states are **masked edits of her approved seated picture** (`girl-w1-front-neutral-v1.png`): only the face is redrawn, so every state is the same body (CLN-65).

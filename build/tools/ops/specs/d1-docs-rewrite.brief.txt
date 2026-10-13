@@ -6,7 +6,7 @@ BRANCH:               docs-rewrite (created from ccr-fcd9dddd-wnywzc; merge back
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 1, 2, 3 only
+  2. docs/archive/process/rules-2026-10-13.md: sections 1, 2, 3 only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
   5. docs/archive/process/2026-10-05-docs-audit.md (your plan: follow its 11-step migration, with the changes below)

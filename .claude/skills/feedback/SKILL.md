@@ -4,7 +4,7 @@ description: Turn Zafar's voice-note or play-test feedback into the full report 
 ---
 # /feedback: a voice note becomes a report and regression rows
 
-**For:** the orchestrator. Rules: A5, A6, D10 (the report), A18, A19 (rows the same day) (`docs/process/rules.md` §1); the 1 Oct clinic report (`docs/archive/feedback/clinic-playtest-2026-10-01.md`) is the model.
+**For:** the orchestrator. Every point gets a report line and a fix-list row the same day; the 1 Oct clinic report (`docs/archive/feedback/clinic-playtest-2026-10-01.md`) is the model.
 
 ## Steps
 1. Transcript with times: `python3 build/transcribe_family.py <voice.m4a> <out.md>` (Whisper via the API), or use the one Zafar sent.

@@ -10,10 +10,10 @@ CONTEXT PACK: build/tools/ops/specs/s05d2-clinic.context.md (1633 words: the las
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  2. docs/archive/process/rules-2026-10-13.md: sections 2, 3, 4, 6 (UI) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
-  5. docs/sprints/S05-red-then-green.md (the plan to the finish and the queues)
+  5. docs/archive/sprints/S05-red-then-green.md (the plan to the finish and the queues)
   6. build/reports/s05d-clinic.md (round 1: what was done, what is open and why)
   7. build/reports/s05t2-probes.md (T2's probe fixes and the game failures it found, with owners)
   8. docs/architecture/evidence-loop.md (incl. Probe pitfalls)

@@ -2,7 +2,7 @@
 
 How a session adds words, forms and rules to the language engine, how the engine asks Mum for what it lacks, and how her answers get in. The engine itself is `engine-design.md`; what it knows today is `grammar-kb.md`.
 
-The rules themselves live in `docs/process/rules.md` § 8 and are linked here by ID, not restated: **G1** (Mum is the authority), **G2** and **G3** (gaps and drafts), **G4** (spelling), **G9**–**G13** (the engine), **G14** and **G16** (voices and recording practice), **G18** (nouns carry gender, singular and plural), **G21** (handouts), **G24** and **G25** (the family's spellings; provisional words).
+The rules themselves live in `docs/archive/process/rules-2026-10-13.md` § 8 and are linked here by ID, not restated: **G1** (Mum is the authority), **G2** and **G3** (gaps and drafts), **G4** (spelling), **G9**–**G13** (the engine), **G14** and **G16** (voices and recording practice), **G18** (nouns carry gender, singular and plural), **G21** (handouts), **G24** and **G25** (the family's spellings; provisional words).
 
 ---
 

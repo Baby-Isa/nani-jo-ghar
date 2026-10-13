@@ -16,7 +16,7 @@ Where two sources disagree the engine never chooses silently: it uses the higher
 
 ### Already settled by a rule or a decision (2)
 
-10. **one** (`num.1`): the spelling or the word. The engine uses "hakro" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "hikdo" (data/content.json). **Settled:** the handout's hikdo for 'one' is superseded: the family says hakro / hakri by gender (grammar-notes §2; rule G5 (docs/process/rules.md § 8); docs/language/lexicon.md stale points).
+10. **one** (`num.1`): the spelling or the word. The engine uses "hakro" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "hikdo" (data/content.json). **Settled:** the handout's hikdo for 'one' is superseded: the family says hakro / hakri by gender (grammar-notes §2; rule G5 (docs/archive/process/rules-2026-10-13.md § 8); docs/language/lexicon.md stale points).
 11. **two** (`num.2`): the spelling or the word. The engine uses "ba" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "bo" (data/content.json). **Settled:** the handout's bo for 'two' is superseded: the family says ba (voiced ber) (grammar-notes §3, §35; rule G5; docs/language/lexicon.md stale points).
 
 ## 2. Two words for one thing (6)

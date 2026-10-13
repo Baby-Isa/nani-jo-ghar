@@ -131,3 +131,14 @@ When two characters talk (the doctor and a patient, Nani and a guest, a customer
 
 ## 17. You can take it back until you press Done (Zafar, 29 Sept)
 Anything the child places, picks or adds (an item on the pharmacy tray, a plaster, a person's tick, a cup's ingredient where the game allows it) can be **tapped to take it back** until the step is committed with ✓ Done (or the step closes by itself). The **first** placement is what's scored: a mistake taken back still counts in the end review. That lets a child fix a misclick without letting them fish for the tick. It applies to every mode. Where a game truly can't allow it (something already cooked, poured or cut), the art or the action shows that it can't be undone.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **The light bulb is the help:** it flips the text to English for 5/3/2/1 s by level and **costs a lightbulb on the hints badge**; the face is the one replay; no per-line translate buttons. (E25, decision 1)
+- **The bulb is for language, the eye is for reading:** the bulb translates (one bulb per use); opening a closed card is a look, counted on its own eye badge at closed-card levels. (E25, F9, decision 27)
+- **The bulb translates the guide line too, and always shows the full order with numbers;** on spoken cards the closed card's eye is a small bulb with no counter. (E25, decision 57)
+- **A glow is a hint, not a giveaway:** only after a wrong tap or ~5 s of hesitation (the first item too), never on a hidden word after its first hidden showing, and never at the top level for what the words should tell. (E16, E28)
+- **A wrong item is redone on the spot:** the rest stays done, that item empties and its row reopens; the second try has help; after three wrong tries the game shows the right way; never a whole-game restart. (E35, decision 51)
+- **Decision 51 (6 Oct):** A wrong item is redone on the spot: the rest stays done, that item (cup, layer, skewer, plaster) empties and its card row reopens; the second try has help; after three wrong tries the game shows the right way. Replaces the whole-game restart.

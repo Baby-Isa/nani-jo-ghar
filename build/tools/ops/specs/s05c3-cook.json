@@ -57,7 +57,7 @@
   "read": [
     "build/reports/s05-fixround-verdicts.md (your section: 'C3: Cook and shared', and 'Also found')",
     "docs/decisions.md row 96 (done means an independent picture) and rows 86-95",
-    "docs/sprints/S05-red-then-green.md (the last three log entries)",
+    "docs/archive/sprints/S05-red-then-green.md (the last three log entries)",
     "docs/architecture/evidence-loop.md (incl. Probe pitfalls)"
   ],
   "port": 8893,

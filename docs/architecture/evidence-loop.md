@@ -98,3 +98,9 @@ Missing-module output in a `cmd:` capture is a TOOL FAILURE. `familyOnly` skips 
 - **A test waiting on a hidden element** (`#panel h1`, hidden on purpose): wait for the element as attached.
 - **Run ids colliding**: ids now carry seconds and a random suffix (four sessions, one minute).
 - Also: a moment only a fast-folding pop-up opens (`order-card-in-sidebar`) is missed at test speed; use `visible:<selector>`. A read-along or bob is gone before an expect that follows a long capture: use the moment `visible:…` or `lastsMs:`. A trace of a character that walks across the screen is no bob (`traceStats` ignores it).
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Decision 96 (13 Oct):** Done means an independent picture, nothing else. A row is built only on an independent judge's PASS on its new evidence: a Fable subagent given only the standard batch file (the row's words and the sheet), never the builder's account; a FAIL goes straight back to the same session. 'No change' is not a result: a probe that isn't red before the fix means the row isn't started (fix the probe first). A row that fails twice stops and goes to Zafar with its picture. A row holds one claim (rows with several are split before a brief goes out). For Sprint 5's fix round only: the Cook-and-shared session owns every shared file and goes first; each fix session runs its own mode's gate pages once at the end (the 15-minute limit is lifted for that); if the final look still fails more than three rows the sessions called done, stop and rethink, no more money; ceiling about $420.

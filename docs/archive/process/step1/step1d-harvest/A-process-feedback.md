@@ -2,7 +2,7 @@
 
 # Step 1a, batch A: process, status, handovers, feedback
 
-Read-only pass over `/home/user/nani-jo-ghar` (nothing changed in the repo). `docs/process/rules.md` read first. Files under 300 lines were read fully. Skimmed or classified only, as the brief allowed: the two long transcripts and two clinic transcripts (raw Whisper text, RECORD), `external-review-chatgpt` (716 lines: read headings, intro and the closing "changes I would make first"), the four `rules-harvest*` files (heads only), the 28 Cook v3 build-report open sections (only "Open for Zafar" sections read), and `docs/superseded/` v3 brief (first 40 lines plus headings).
+Read-only pass over `/home/user/nani-jo-ghar` (nothing changed in the repo). `docs/archive/process/rules-2026-10-13.md` read first. Files under 300 lines were read fully. Skimmed or classified only, as the brief allowed: the two long transcripts and two clinic transcripts (raw Whisper text, RECORD), `external-review-chatgpt` (716 lines: read headings, intro and the closing "changes I would make first"), the four `rules-harvest*` files (heads only), the 28 Cook v3 build-report open sections (only "Open for Zafar" sections read), and `docs/superseded/` v3 brief (first 40 lines plus headings).
 
 Abbreviations used in sections 2 to 7 (all paths relative to the repo root):
 - **PT23** `docs/playtest-2026-09-23.md` · **ANT** `docs/alive-nani-test-2026-09-23.md` · **UI28** `docs/cook-ui-feedback-2026-09-28.md`

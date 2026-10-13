@@ -87,3 +87,11 @@ Three belts, each turning family-made material into bundled assets.
 **Apple's thin-wrapper rejection** does not apply: images, audio and logic are bundled and the app works offline once wrapped.
 
 **First release.** Arc 1, *The Birthday*, finished end to end, is the release candidate; the store launch carries Arcs 1–5 (H36–H41). The commercial model is open (decision 7). The current plan and what is next are in `docs/status.md`; the sprints are in `docs/sprints/`.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Decision 6 (30 Sept):** Everything stays public (repo, recordings) until the game or landing page is published; then revisit.
+- **A landing page (with a sign-up list) and a code-built trailer from in-game footage** are in the plan. (J5)
+- **Decision 33 (5 Oct):** The release cycle: art finished → wired → full checks → publish to `main` → Zafar plays → fixes → round again. He plays only what is live on `main`.

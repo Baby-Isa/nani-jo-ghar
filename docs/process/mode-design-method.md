@@ -279,3 +279,9 @@ UK English. Tables and short bullets. No filler. Sections:
    - seated patients and a first-person "lap view" of the player's own knees (clinic);
    - scenery strips (Snap);
    - the courtyard shared by Find it and Monsoon rush.
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Fix things properly the first time** (new art if that's what it takes), and apply one game's lessons to its sibling games before he plays them. (A8, A16)

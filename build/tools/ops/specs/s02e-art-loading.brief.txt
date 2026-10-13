@@ -6,14 +6,14 @@ BRANCH:               ccr-a7370759-t0lee7. Never push to main.
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
-  2. docs/process/rules.md: sections 2, 3, 6 (UI), 7 (Art), 10 (Platform: J11) only
+  2. docs/archive/process/rules-2026-10-13.md: sections 2, 3, 6 (UI), 7 (Art), 10 (Platform: J11) only
   3. docs/process/qa-checklist.md (definition of done)
   4. docs/status.md ("Next chat")
   5. docs/archive/art-plans/s02-art-plan.md (what each image is for; §3.5 the clinic item → place → view → cell table) and build/tools/art/specs/s02.run.yaml
   6. sources/art/s02/ on main (49 images incl. Zafar's extras: e5b toothbrush brushing views, d1 coin jar with a slot in the lid); git checkout origin/main -- sources/art/s02 to get them
   7. docs/design-language/art-pipeline.md (artcut, artdiff), build/tools/art/specs/clinic-heal-v3.cut.json (worked cut spec)
   8. build/reports/archive/s02b-cook.md, s02c-clinic.md, s02f-finish.md (the art ids each station waits for: data/cook.json art.s02 ready:false, clinic ids cloth-dab, ear-bin, alcohol-wipe, brushInMouth, standing pose)
-  9. docs/decisions.md 64, 65, 68; docs/process/rules.md J11; docs/architecture/building-games.md 'Loading'
+  9. docs/decisions.md 64, 65, 68; docs/archive/process/rules-2026-10-13.md J11; docs/architecture/building-games.md 'Loading'
 
 FILES THIS SESSION OWNS (edit only these):
   - build/tools/art/specs/s02.cut.json (new), assets/cook/** and assets/clinic/** new files from the cut (never overwrite old art; new names)

@@ -4,7 +4,7 @@ The definition of done is `docs/process/qa-checklist.md`. This file is the pract
 
 ## The rule on browser tests (by ID)
 
-**B16** (`docs/process/rules.md`): browser tests run one at a time (`flock -w 1800 … timeout`, own `COOK_TEST_PORT`, `--canvas` for `--days`, split by `--stations`); discard rewritten screenshots unless intended.
+**B16** (`docs/archive/process/rules-2026-10-13.md`): browser tests run one at a time (`flock -w 1800 … timeout`, own `COOK_TEST_PORT`, `--canvas` for `--days`, split by `--stations`); discard rewritten screenshots unless intended.
 
 The quick (non-browser) tests for the shared modules are `build/test_shared_*.mjs` (for example `node --test build/test_shared_save.mjs`); the onboarding check is `check_onboard`.
 

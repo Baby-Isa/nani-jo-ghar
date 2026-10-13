@@ -1,10 +1,10 @@
 # Rules harvest: every standing rule Zafar has given (30 Sept 2026)
 
-The readable, de-duplicated rulebook is docs/process/rules.md; this file is the source record.
+The readable, de-duplicated rulebook is docs/archive/process/rules-2026-10-13.md; this file is the source record.
 
 > **Merge summary (30 Sept 2026).** All four orchestrator-chat harvests are merged (the 4th chat plus O1, O2 and O3). **264 rules** in all: A 28 · B 18 · C 18 · D 31 · E 34 · F 26 · G 25 · H 57 · I 16 · J 11. **33** came only from the three older chats and are tagged **[old chats only]**. The rest of O1–O3 either duplicated or refined existing rules (sources appended, detail folded in) or was superseded (Conflicts #47–#66, and sources added to older rows).
 >
-> **NEEDS ZAFAR: all resolved 30 Sept (19:30 UTC); see the decisions log in `docs/process/rules.md`.** Two stay open: #42 (commercial model TBC, no rule yet) and #25 (*mirchi* only is provisional until Zafar confirms with Mum). Affected rule lines below are marked "(updated 30 Sept)".
+> **NEEDS ZAFAR: all resolved 30 Sept (19:30 UTC); see the decisions log in `docs/archive/process/rules-2026-10-13.md`.** Two stay open: #42 (commercial model TBC, no rule yet) and #25 (*mirchi* only is provisional until Zafar confirms with Mum). Affected rule lines below are marked "(updated 30 Sept)".
 
 **What this is.** A complete harvest of Zafar's standing instructions, preferences, quality bars and durable product decisions, gathered from every handover, design doc, play-test report, the current (4th) orchestrator chat and the harvests of the three earlier orchestrator chats (O1–O3). All four chat harvests were merged on 30 Sept. It feeds one tight rulebook (`CLAUDE.md`) that every future session loads. Completeness wins over brevity here; `CLAUDE.md` takes the "Candidate CLAUDE.md core" at the end plus pointers.
 

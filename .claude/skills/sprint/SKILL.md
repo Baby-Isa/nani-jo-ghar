@@ -4,16 +4,16 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 ---
 # /sprint: open and close a sprint
 
-**For:** the orchestrator. Rules: A29, decision 49. Files: `docs/sprints/Snn-<name>.md` from `docs/sprints/TEMPLATE.md`.
+**For:** the orchestrator. A sprint is one to three days with one goal Zafar can play at the end (decision 99); one build session at a time, small fixes in the orchestrator's chat. Files: `docs/sprints/Snn-<name>.md` from `docs/sprints/TEMPLATE.md`.
 
-## Open (propose, then wait for Zafar's go: A1)
-1. If new work arrives outside a sprint, steer it in: "This looks like Sprint nn. Goal: …. Budget: … (ceiling and days). Sessions: …. Yes?" Give a model, effort and cost for every session (A11).
-2. On his go: copy the template to `docs/sprints/Snn-<name>.md`; fill goal, budget, planned sessions; status "open". Backlog = open rows (`node build/tools/review/statuscounts.mjs`) and `docs/ideas.md`; nothing else is queued.
+## Open (propose, then wait for Zafar's go)
+1. If new work arrives outside a sprint, steer it in: "This looks like Sprint nn. Goal: …. Budget: … (ceiling and days). Sessions: …. Yes?" Give a model, effort and cost for every session.
+2. On his go: copy the template to `docs/sprints/Snn-<name>.md`; fill goal, budget, planned sessions; status "open". Backlog = the fix list (`docs/process/regressions.md`), `docs/process/checks-to-build.md` and `docs/ideas.md`; nothing else is queued.
 3. Add one line to `docs/status.md` "Next chat" and commit.
 
 ## During
-- Small decisions go in the sprint file's "Small decisions". A lasting decision (one that will still hold next sprint) goes in `docs/decisions.md` as a numbered row with a one-line why and a date, and into `docs/process/rules.md` in the same commit.
-- Feedback becomes regression rows the same day (`/feedback`). Cut scope before the budget.
+- Small decisions go in the sprint file's "Small decisions". A lasting decision (one that will still hold next sprint) goes into the doc or check it changes, plus one numbered line in `docs/decisions.md`, in the same commit; one line per answer. Never paste check-ins into the sprint file (`checkin.mjs --log` keeps them in `docs/process/overnight-log.md`).
+- Feedback becomes fix-list rows the same day (`/feedback`). Cut scope before the budget.
 
 ## Before the publish (decision 78)
 The sprint check (`/review` step 9) has played every row the sprint touched and Fable has judged each sheet; every FAIL is fixed or reopened and listed for Zafar. A sprint whose rows are unproven doesn't publish.

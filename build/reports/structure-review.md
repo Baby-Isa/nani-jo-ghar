@@ -70,7 +70,7 @@ docs/
 .claude/skills/…
 ```
 
-Every area doc gets two sections, appended as its last sections: `## Standing rules (from docs/process/rules.md §n, moved 14 Oct; the IDs are anchors other docs cite)` holding the bullets word for word with their `###` sub-headings, and `## Decisions (from docs/decisions.md; the numbers are the index)` holding the rows word for word with the same five columns.
+Every area doc gets two sections, appended as its last sections: `## Standing rules (from docs/archive/process/rules-2026-10-13.md §n, moved 14 Oct; the IDs are anchors other docs cite)` holding the bullets word for word with their `###` sub-headings, and `## Decisions (from docs/decisions.md; the numbers are the index)` holding the rows word for word with the same five columns.
 
 **The overarching file.** `CLAUDE.md` stays `CLAUDE.md` (the harness loads it by that name; nothing else is automatic). Full draft; the 16 non-negotiables are copied unchanged from today's file and are two-thirds of it, so ~760 words / ~1.2k tokens is the floor (~650 if the Working agreement goes, Q1):
 
@@ -87,11 +87,11 @@ Every area doc gets two sections, appended as its last sections: `## Standing ru
 > *(1–16, word for word as today; in 3 "docs/process/regressions.md" becomes "docs/process/regressions/")*
 >
 > ## Where things live
-> Each area has one design doc holding its **Standing rules** (IDs like A1, E5) and its **Decisions** (numbered), and one regression file. `docs/decisions.md` is the index of every decision number. The process area is `docs/process/rules.md` (§1 Zafar, §2 sessions and git, §3 quality).
+> Each area has one design doc holding its **Standing rules** (IDs like A1, E5) and its **Decisions** (numbered), and one regression file. `docs/decisions.md` is the index of every decision number. The process area is `docs/archive/process/rules-2026-10-13.md` (§1 Zafar, §2 sessions and git, §3 quality).
 >
 > | Area | Design doc | Regression file (`docs/process/regressions/`) |
 > |---|---|---|
-> | Process | `docs/process/rules.md` | `process.md` |
+> | Process | `docs/archive/process/rules-2026-10-13.md` | `process.md` |
 > | Every mode: teaching, help, levels, feedback | `docs/design-language/ux-principles.md` | – |
 > | Shared UI: cards, end screen, buttons, text | `docs/design-language/ui-design-system.md` | `shared.md` |
 > | Cook | `docs/game-design/modes/cook.md` | `cook.md` |

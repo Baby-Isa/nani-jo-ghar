@@ -33,3 +33,10 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
    python3 build/tools/art/artdiff.py --help
    ```
 4. Wiring is a separate build session (`/brief`), then `/review`.
+
+## Standing lines
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Only make art for items the game will use;** reuse approved art where it fits, but say so. (D10, D23)
+- **Decision 29 (5 Oct):** Zafar approves art only for characters based on real people; everything else is judged pass/fail by the runner and Claude; art runs need no manual steps.

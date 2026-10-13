@@ -245,3 +245,11 @@ Everything above that's in [brackets] or marked "to record":
 Check against Round 4 Section G (G1–G127) before the visit, and add what's missing.
 
 ---
+
+## Moved from the rulebook and decisions log (13 Oct, decision 99)
+
+Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
+
+- **Each stage clears its own UI and stops its effects when done;** reply pills appear only when needed and never overlap (the knee's done-flash is the one exception). (E17, E18, E19)
+- **Decision 59 (6 Oct):** Wrong judging moments in the eye and ear tests are teachable: a wrong yes/no shakes red and the doctor names the row with pictures. A gentle exception to "no verdicts mid-round", like the conversation reply.
+- **Decision 92 (13 Oct):** In the clinic the patient's face circle appears only where she is off screen (the heal-game close-ups and the pharmacy), where it carries her reaction bubbles and is the replay button; where she is on screen in full (waiting room, diagnosis, send-off) there is no circle (one face per person, R4). Closes CLN-85 as built.
