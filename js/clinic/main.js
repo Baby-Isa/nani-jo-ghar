@@ -79,7 +79,24 @@ function hookShared(Clinic) {
   if (Kit.__hooked) return;
   Kit.__hooked = true;
   // the shared bulb and tally behind the Kit's names (R3a), and the scene box from the shared stage
-  if (G().Bulb && G().Bulb.KitBulb) Kit.Bulb = G().Bulb.KitBulb(Kit);
+  if (G().Bulb && G().Bulb.KitBulb) {
+    const Shim = G().Bulb.KitBulb(Kit);
+    // SH-41 (S05-D2): the shim reads the lab's fast mode once, when the screen is built (so a probe that turns fast
+    // mode off for its press still got 0.3 s), and has no off(), so the English outlived its stage: the time is read
+    // at the press, and the stage end (screen.clearStage) turns it off
+    Kit.Bulb = function (btn, opts) {
+      Shim.call(this, btn, opts);
+      const b = this._b;
+      if (!b) return;
+      const table = () => [1, 2, 3, 4].map((l) => (Kit.BULB_MS && Kit.BULB_MS[l]) || G().Bulb.MS[l - 1]);
+      b.duration = () => (Kit.fast ? 300 : G().Bulb.msFor(table, b.level));
+    };
+    Kit.Bulb.prototype = Object.create(Shim.prototype);
+    Kit.Bulb.prototype.constructor = Kit.Bulb;
+    Kit.Bulb.prototype.off = function () {
+      if (this._b) this._b.off();
+    };
+  }
   if (G().Tally && G().Tally.KitTally) Kit.Tally = G().Tally.KitTally(Kit);
   if (G().Stage && S.useStage) S.useStage(G().Stage);
   // S02-E (decision 65): the items' sprite sheets (data/clinic/sheets.json, loaded by Run.load): an old single-view
