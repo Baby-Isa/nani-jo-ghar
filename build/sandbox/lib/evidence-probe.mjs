@@ -394,7 +394,9 @@ export class EvidenceProbe {
           out.box = clip; out.n = bs.length;
           if (c.kind !== "strip") {
             // zoom2: the plan gives a zoom probe its own page at deviceScaleFactor 2, so this crop is the real 2x render (Fable 6)
-            const buf = await this.shot(clip);
+            // a plain crop from the compositor (fast: a 1.1 s bubble was gone before a full screenshot landed, SH-69); a zoom2
+            // crop keeps the full screenshot (its page's real 2x render)
+            const buf = c.kind === "crop" ? await this.fastShot(clip) : await this.shot(clip);
             const f = this.file(s, hit, ci, c.kind); writeFileSync(join(this.dir, f), buf); out.files.push(f);
             const fl = flatness(buf); out.flat = fl == null ? null : Math.round(fl * 10) / 10;
             if (fl != null && fl < 1.5) out.fail = `the crop of "${c.sel}" is one flat colour (covered or blank)`;

@@ -351,7 +351,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #choices .choice:active { transform: scale(.96); }
 #choices .choice .wp button { padding: 7px; min-height: 0; box-shadow: none; border: none; border-radius: 50%; background: #efe4d2; width: 36px; height: 36px; font-size: 0; }
 /* C3 (LAY-04, F1's tap-small): the bubble's and a choice's speaker are a full tap target; the icon stays 24 px */
-#bubble .wp .wp-say, #choices .choice .wp .wp-say { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: var(--njg-s3, 12px); }
+#bubble .wp .wp-say, #choices .choice .wp .wp-say { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); padding: var(--njg-s3, 12px); flex: none; min-width: var(--njg-tap, 48px); min-height: var(--njg-tap, 48px); box-sizing: border-box; } /* (never squeezed under the 48 px tap, end check c3-end97) */
 /* (the bigger target takes no room: the bubble and the choices keep their size, so they never reach into the play area) */
 #bubble .wp .wp-say, #choices .choice .wp .wp-say { margin: calc(-1 * var(--njg-s2, 8px)); }
 #choices .choice.glow { border-color: var(--brass); animation: glowPulse 1s ease-in-out infinite; }

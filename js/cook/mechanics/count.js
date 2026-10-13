@@ -91,6 +91,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (z.guided) {
             S.glow(bowl, count < n);
             UI.glowDone(count >= n);
+          } else if (count >= n && UI.doneGlows && UI.doneGlows()) {
+            S.glow(bowl, false);
+            UI.glowDone(true);
           }
         });
         // the look-alikes are real choices: a spoon of salt goes in too
@@ -104,7 +107,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             z.oops();
           })
         );
-        UI.done().then(finish);
+        // CK-34 (contract-8): the ✓ waits unlit while the bowl is the thing to tap; it lights once the count is reached
+        UI.done({ glow: false }).then(finish);
         post();
       });
       UI.hideCount();
