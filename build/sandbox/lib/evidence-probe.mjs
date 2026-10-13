@@ -295,7 +295,8 @@ export class EvidenceProbe {
   }
   file(s, hit, ci, kind, frame = null) { return `${slug(s.id)}-h${hit.n}-c${ci + 1}-${kind}${frame != null ? `-f${String(frame).padStart(2, "0")}` : ""}.png`; }
   async boxes(sel) { return this.page.evaluate(`(${BOXES})(${JSON.stringify(cssOf(sel))})`).catch((e) => ({ error: String(e.message || e).split("\n")[0] })); }
-  async texts(sel) { return this.page.evaluate(`(${TEXTS})(${JSON.stringify([cssOf(sel), NOT_FOR_CHILD_SEL, GROWNUP_SEL])})`); }
+  // the results tile's English gloss (.rs-en) stays by decision F14 (Zafar, 12 Oct): the lexicon check leaves it out
+  async texts(sel) { return this.page.evaluate(`(${TEXTS})(${JSON.stringify([cssOf(sel), NOT_FOR_CHILD_SEL + ", .rs-en", GROWNUP_SEL])})`); }
   async measure(kind, sel, box) { return this.page.evaluate(`(${MEASURE})(${JSON.stringify([kind, Array.isArray(sel) ? sel.map(cssOf) : cssOf(sel), box ? cssOf(box) : null])})`).catch((e) => ({ error: String(e.message || e).split("\n")[0] })); }
   async shot(clip) { return this.page.screenshot({ ...(clip ? { clip } : {}), animations: "allow", timeout: 10000 }); }
   async capture(s, hit, settle) {
