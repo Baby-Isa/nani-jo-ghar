@@ -355,7 +355,7 @@
   "assets/clinic/sheets/ear-bits/ear-bits-wax-big.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp",
-  "assets/clinic/sheets/tweezers/tweezers-tool.webp"
+  "assets/clinic/sheets/tweezers/tweezers-tool.webp", "assets/clinic/sheets/tweezers/tweezers-use-45.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }
