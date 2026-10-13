@@ -20,7 +20,7 @@ const STIR = { slow: 0.45, quick: 1.4, default: 0.7, spill: 3.4 };
 export class CookPlayer {
   constructor(page, rec, { speed = 3, prefix = "", mode = "fair" } = {}) {
     this.page = page; this.rec = rec; this.speed = speed; this.prefix = prefix; this.mode = mode;
-    this.mistakes = mode === "mistake";
+    this.mistakes = mode === "mistake" || mode === "open-steps";
     // "takeback" (E14, R4): once something has been placed and the station offers to take it back
     // (__cook.expectation().undo), tap it back, then carry on to the end
     this.takeback = mode === "takeback";
@@ -314,7 +314,11 @@ export class CookPlayer {
       }
       await p.waitForSelector(sel, { state: "visible", timeout: 10000 });
       if (sel.includes(".njg-results")) {
-        if (sel.includes("rs-next")) { await waitBadges(p); this.badges = await readBadges(p); } else await sleep(600);
+        if (sel.includes("rs-next")) {
+          await waitBadges(p); this.badges = await readBadges(p);
+          // open-steps (SH-44, D14): the tick badge is tapped and the steps list recorded (or that the card has none)
+          if (this.mode === "open-steps") { const acc = await p.$(".njg-results .rs-acc.rs-tappable"); if (acc) { await acc.click({ force: true }).catch(() => {}); await sleep(350); await this.once("steps-open"); } else await this.once("steps-none"); }
+        } else await sleep(600);
         await this.once("results-" + (sel.includes("rs-next") ? "badges" : "words"));
       }
       await p.click(sel);

@@ -1318,9 +1318,10 @@
     "shot"
    ],
    "expect": [
-    "count:.ob-ghost>=1"
+    "count:.ob-ghost,.co-finger>=1"
    ],
-   "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase"
+   "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase (the shared .ob-ghost or Cook's own coach finger .co-finger)",
+   "delay": 300
   },
   {
    "flow": "cook:daar",
@@ -1337,9 +1338,10 @@
     "shot"
    ],
    "expect": [
-    "count:.ob-ghost>=1"
+    "count:.ob-ghost,.co-finger>=1"
    ],
-   "note": "daar: every phase has its help; nothing dimmed with nothing lit"
+   "note": "daar: every phase has its help; nothing dimmed with nothing lit",
+   "delay": 300
   }
  ],
  "SH-20": [
@@ -2542,23 +2544,24 @@
  "SH-44": [
   {
    "flow": "cook:daar",
-   "path": "mistake",
+   "path": "open-steps",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "results-words",
+   "at": "results-badges",
    "after": null,
    "capture": [
     "crop:.rs-card",
-    "dom:.rs-steps"
+    "dom:.rs-steps-list"
    ],
    "expect": [
     "count:.rs-step>=1"
    ],
-   "note": "the review shows which step went wrong, asked vs done, pictured"
+   "note": "the review shows which step went wrong, asked vs done, pictured (the tick badge tapped to open the list)",
+   "delay": 900
   }
  ],
  "SH-45": [
@@ -5125,7 +5128,7 @@
  "SEK-03": [
   {
    "flow": "cook:mishkaki-grill",
-   "path": "fair",
+   "path": "hint",
    "level": [
     3,
     4
@@ -5135,13 +5138,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "order-card-in-sidebar",
+   "at": "peek-open",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four)"
+   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card)"
   },
   {
    "flow": "cook:samosa",
