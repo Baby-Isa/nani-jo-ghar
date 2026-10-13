@@ -1232,18 +1232,19 @@
   "date": "2026-10-12"
  },
  "CLN-104": {
-  "hash": "b2135eb2cbf868428510",
+  "hash": "94be0cdd5fed8d78be88",
   "dhash": [
-   "e1c0cc5484ceccd0",
+   "f1e0f4f4c0e6e6ea",
+   "e1d0cc4484c4ecd2",
    "e0d6ece4a8c6ccd0"
   ],
   "verdict": "FAIL",
-  "line": "B, no level rises: at 587 ms the cup is still the empty steel cup, at 1053 ms (the first frame with the stream) its whole body has already turned pale blue-white with the water surface at the rim, and 1600 and 2030 ms look the same; the sheet shows a one-step swap from empty to full, not a rising level (the 587->1053 ms gap holds no frame; if the rise lives there it must be filmed); A does prove the rest: the tongue clear of purple holes at .hs-healed, the spoon tile outlined teal as the cue, \"My tongue feels better!\" grey italic",
-  "panel": "B",
-  "judge": "Fable, independent subagent (orchestrator final look)",
-  "run": "ev-20261013-184310-4hz",
-  "commit": "09b5676",
-  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-104.png",
+  "line": "C, the level does now rise (a pale water band at the cup's base at 791 ms, higher at 1038 ms, higher again at 1268 ms, with the stream from the jug landing inside the rim), but the water is not inside the cup: the band is a flat pale ellipse wider than the steel body that sticks out past both tapered walls at 1038 and 1268 ms, and at 791 ms it sits at the base edge over the tray below the cup's bottom rather than in it; a child sees a pale disc around the cup, not real liquid filling it. The rest of the row is proven: B shows the tongue at .hs-healed clean pink with no purple holes or faint pits, the cup back to empty steel; A shows the spoon tile outlined teal as the next-step cue, \"My tongue feels better!\" and the sidebar \"Let's soothe the sore spots.\" / \"Pop laal spots\" / \"Make aadu ne paani\" in grey italic (decision 84), bubble beside the Nani avatar, no clipping or overlap. Note for the builder, not a fail: in A and B the cup is empty steel at the healed moment, after the water was poured at 10.5 s; if the water is meant to stay in the cup until the spoon step, it has vanished.",
+  "panel": "C",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-192304-b2d",
+  "commit": "0dbb496",
+  "png": "build/screenshots/evidence/ev-20261013-192304-b2d/CLN-104.png",
   "date": "2026-10-13"
  },
  "CLN-105": {

@@ -9400,11 +9400,11 @@
    "at": "visible:.hs-healed",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal"
+    "crop:.cl-heal"
    ],
    "expect": null,
-   "note": "the close-up at the end, before the pull-out: the tongue's purple holes cleared",
-   "delay": 950
+   "note": "the close-up the moment the job is done, before the pull-out starts: the tongue's purple holes cleared",
+   "delay": 250
   },
   {
    "flow": "clinic:heal-taste",
