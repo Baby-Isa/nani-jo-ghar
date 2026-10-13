@@ -47,8 +47,10 @@
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice); one gesture
   // per thing (P32): the wax is a drag, the wipe a drag, the drops a tap, the check a tap
   const CUES = {
-    // E1 (CLN-101): the ghost finger picks the tweezers, then drags a blob with them into the bin
-    wax: { gesture: "tap", then: { gesture: "drag" } },
+    // E1 (CLN-101, S05-D3): one move, as the child's (P32: pressing on a blob takes the tweezers): the ghost finger drags
+    // a blob into the bin with the tweezers riding on it (it used to tap the tool first and wait, so a child who
+    // waited never saw the drag)
+    wax: { gesture: "drag" },
     wipe: { gesture: "tap", then: { gesture: "drag" } },
     drops: { gesture: "tap", then: "tap" },
     hear: { watch: true },
@@ -315,6 +317,40 @@
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
     const bigOrSmall = () => blobs.find((b) => !b.out && (b.size === "big" || b.size === "small"));
+    // E1 (CLN-101): while the help's ghost finger plays the wax drag, the tweezers ride on it (tips at the fingertip),
+    // as they do on the child's own drag; gone with the ghost
+    let twGhost = null;
+    const carryTweezers = () => {
+      if (!S.cuesOn || twGhost) return;
+      const doc = S.root.ownerDocument;
+      const twArt = Kit && Kit.view ? Kit.view("tweezers", "use-45") : null;
+      twGhost = doc.createElement("img");
+      twGhost.className = "ear-ghost-tw";
+      twGhost.alt = "";
+      twGhost.src = url(twArt || "assets/clinic/items-v2/tweezers.webp");
+      Object.assign(twGhost.style, { position: "fixed", zIndex: 10001, width: "96px", height: twArt ? "96px" : "46px", pointerEvents: "none", display: "none", transform: twArt ? "none" : "rotate(-30deg)" });
+      doc.body.appendChild(twGhost);
+      const tick = () => {
+        if (!twGhost) return;
+        const c = cur();
+        const g = doc.querySelector(".ob-ghost");
+        const r = g && g.getBoundingClientRect();
+        const on = !!(r && r.width && c && c.kind === "wax" && !st.drag && !st.over && +getComputedStyle(g).opacity > 0.05);
+        twGhost.style.display = on ? "block" : "none";
+        if (on) {
+          twGhost.style.left = `${r.left + r.width * 0.3}px`;
+          twGhost.style.top = `${r.top - (twArt ? 84 : 40)}px`;
+          twGhost.style.opacity = getComputedStyle(g).opacity;
+        }
+        if (!c || c.kind !== "wax" || st.over) {
+          twGhost.remove();
+          twGhost = null;
+          return;
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
     const open = () => {
       const c = cur();
       if (!c) return;
@@ -328,7 +364,8 @@
           const b = (c.order && blobs.find((q) => !q.out && q.size === c.order[0])) || inEar()[0];
           return b ? { x: b.x, y: b.y, r: b.r + 10 } : null;
         };
-        S.cue("wax", CUES.wax, S.toolEls.tweezers, { gesture: "drag", target: first, to: { x: TISSUE.x, y: TISSUE.y, r: 50 } });
+        S.cue("wax", Object.assign({ to: { x: TISSUE.x, y: TISSUE.y, r: 50 } }, CUES.wax), first);
+        carryTweezers();
       } else if (c.kind === "wipe") {
         if (!smears.length) return close(); // nothing left to wipe (never a dead step)
         const a = smears[0].pts[0];
@@ -458,7 +495,7 @@
       [
         { id: "tweezers", img: "assets/clinic/items-v2/tweezers.webp" },
         { id: "bud", img: "assets/clinic/items-v2/cotton-buds.webp" },
-        { id: "drops", img: "assets/clinic/items-v2/eye-drops.webp" },
+        { id: "drops", img: "assets/clinic/items-v2/eye-drops.webp", turn: 180 }, // CLN-134: nozzle down
       ],
       (id) => {
         if (st.over) return;
@@ -576,6 +613,8 @@
       },
       destroy() {
         if (pics) pics.remove();
+        if (twGhost) twGhost.remove();
+        twGhost = null;
         S.destroy();
       },
       debug: {

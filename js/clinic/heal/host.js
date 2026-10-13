@@ -217,10 +217,13 @@
         z.top = layer.style.top; // the seated position, kept for the pull-out (the figure moves away in between)
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.add("on");
-        const zoom = play(box, [{ transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }, { transform: `translate(${a.dx}px, ${a.dy}px) scale(${a.k})`, filter: "blur(4px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
+        // CLN-87 (S05-D3): the push-in the child sees lasts about 1.5 s: the room is handed over at 60 % of the move
+        // (CLN-77), so the move itself runs 1.5 s / 0.6
+        const inMs = Kit.fast ? ms : Math.round(ms / 0.6);
+        const zoom = play(box, [{ transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }, { transform: `translate(${a.dx}px, ${a.dy}px) scale(${a.k})`, filter: "blur(4px)" }], { duration: inMs, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
         // CLN-77 (2 Oct): the room hands over to the close-up early (gone by 60 % of the push-in), so the
         // late frames are never a full-screen smear of a blurred, hugely scaled room
-        const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.3 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }], { duration: ms, easing: "ease-in-out", fill: "forwards" });
+        const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.3 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }], { duration: inMs, easing: "ease-in-out", fill: "forwards" });
         await Promise.all([zoom, fade]);
         if (z.leaving) return; // the game already ended (a very quick round): the pull-out owns the layer now
         wide.classList.remove("on");

@@ -140,6 +140,24 @@
       Kit.Voice.speakers.doctor = () => dimg;
       const used = {};
       const seats = plan.bench.map((b, i) => personEl(box, cfg, b, i, used));
+      // CLN-90 (S05-D3): the ticks on one bench stand in one even row: each first clears its own person's feet
+      // (keepIn), then all of them go down to the lowest one (the girl's sat higher than the grown-ups')
+      const alignTicks = () => {
+        const rows = {};
+        seats.forEach((s) => (rows[s.tick.style.top] = rows[s.tick.style.top] || []).push(s));
+        Object.values(rows).forEach((g) => {
+          if (g.length < 2) return;
+          const tops = g.map((s) => s.tick.getBoundingClientRect().top);
+          const low = Math.max(...tops);
+          g.forEach((s, k) => {
+            const add = low - tops[k];
+            if (add > 0.5) s.tick.style.marginTop = `${(parseFloat(s.tick.style.marginTop) || 0) + add}px`;
+          });
+        });
+      };
+      box.addEventListener("scenefit", alignTicks);
+      if (global.requestAnimationFrame) global.requestAnimationFrame(() => global.requestAnimationFrame(alignTicks));
+      else alignTicks();
       if (plan.variant === "W4") {
         seats.forEach((s) => {
           const ring = h("div", "cl-ring", s.wrap);

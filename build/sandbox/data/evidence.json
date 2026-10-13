@@ -6717,15 +6717,32 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "bubble",
    "after": null,
    "capture": [
     "crop:.cl-stage",
     "voice"
    ],
    "expect": null,
-   "note": "she says salaam (her bubble at her head), he replies (his at his face in the door)",
-   "max": 4
+   "note": "her salaam, in her bubble at her head (the first bubble of the page)"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:advance",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": null,
+   "note": "his reply (Wa alaikum salaam), in his bubble at his face in the door",
+   "delay": 250
   }
  ],
  "CLN-87": [
@@ -7357,20 +7374,22 @@
  "CLN-94": [
   {
    "flow": "clinic:diagnosis",
-   "path": "fair",
+   "path": "real-pace",
    "level": 2,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/torch/i"
+   ],
    "at": "visible:.cl-kit-tool.sel[data-tool=\"torch\"]",
    "after": null,
    "capture": [
-    "strip:.cl-stage:5x300"
+    "strip:.cl-stage:5x250"
    ],
    "expect": null,
-   "note": "D3: the torch picked, the view zooms to her face by itself"
+   "note": "D3 at real pace (a check-up that asks for the torch): the torch picked, the view zooms to her face by itself"
   }
  ],
  "CLN-95": [
@@ -8607,11 +8626,27 @@
    "at": "heal:press-the-glowing-end",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal",
-    "strip:.cl-heal:6x150"
+    "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "just before the press: the syringe's end glows; the strip: the press starts the jab"
+   "note": "just before the press: the syringe's end glows"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:press-the-glowing-end",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x200"
+   ],
+   "expect": null,
+   "note": "the press on the glowing end starts the jab (filmed from just before the press)"
   }
  ],
  "CLN-59": [
@@ -9289,16 +9324,32 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:life:ghost",
+   "at": "life:ghost",
    "after": null,
    "capture": [
-    "strip:.cl-heal:5x250",
     "trace:.ob-ghost:4000"
    ],
    "expect": [
     "traceAmp:.ob-ghost>=40",
     "times:life:ghost>=1"
    ],
+   "note": "the ghost finger plays (its trace)"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "idle-twice",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:life:ghost",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x250"
+   ],
+   "expect": null,
    "note": "the ghost finger picks up the tweezers and drags a blob with them to the bin",
    "max": 3
   }
@@ -11845,26 +11896,29 @@
    "note": "the hint glow on the named thing (the window): no flat yellow rectangle on the wall"
   }
  ],
- "CLN-131": [
-  {
-   "flow": "clinic:heal-fever",
-   "path": "real-pace",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:placed",
-   "after": null,
-   "capture": [
-    "crop:.cl-side .oc-card"
-   ],
-   "expect": null,
-   "note": "real pace: the card keeps every row; each change's row ticks as it goes in",
-   "max": 8
-  }
- ],
+ "CLN-131": {
+  "needsDecision": "The fever card folds to its headline with one tick when the round is finished (design system §12 folds a finished card; the same question as SH-78 for the chai pour): keep the fold, or keep every row?",
+  "probes": [
+   {
+    "flow": "clinic:heal-fever",
+    "path": "real-pace",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "every:placed",
+    "after": null,
+    "capture": [
+     "crop:.cl-side .oc-card"
+    ],
+    "expect": null,
+    "note": "the card at each change",
+    "max": 8
+   }
+  ]
+ },
  "CLN-132": [
   {
    "flow": "clinic:heal-fever",
@@ -11938,12 +11992,12 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "crop:.cl-stage",
-    "voice"
+    "crop:.cl-bubble"
    ],
    "expect": null,
-   "note": "every line she says (too hot, too cold, still cold, just right) gets her bubble",
-   "max": 8
+   "note": "her own page (the bubble moments are not shared with other probes' captures): every line she says gets her bubble",
+   "seed": 11,
+   "max": 16
   }
  ],
  "CLN-127": [
@@ -11963,6 +12017,7 @@
    ],
    "expect": null,
    "note": "her bubble comes from her face, its tail at her head, never on top of her hair",
+   "seed": 12,
    "max": 4
   }
  ],
@@ -11988,7 +12043,7 @@
  "CLN-133": [
   {
    "flow": "clinic:heal-cut",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -11998,15 +12053,15 @@
    "at": "every:life:ghost",
    "after": null,
    "capture": [
-    "strip:.cl-heal:5x250"
+    "strip:.cl-heal:6x200"
    ],
    "expect": null,
-   "note": "the taught round: the ghost finger shows each new step first, then the child copies it",
-   "max": 3
+   "note": "the taught round at a child's pace: the ghost finger shows each new step first, then the child copies it",
+   "max": 2
   },
   {
    "flow": "clinic:heal-knee",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -12016,7 +12071,7 @@
    "at": "every:life:ghost",
    "after": null,
    "capture": [
-    "strip:.cl-heal:5x250"
+    "strip:.cl-heal:6x200"
    ],
    "expect": null,
    "note": "the same in the knee",
@@ -12026,7 +12081,7 @@
  "CLN-136": [
   {
    "flow": "clinic:diagnosis",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2
@@ -12036,13 +12091,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:clinic:diagnosis",
+   "at": "every:bubble",
    "after": null,
    "capture": [
     "crop:.cl-stage"
    ],
    "expect": null,
-   "note": "her faces through the diagnosis: never a wink (one eye shut)",
+   "note": "real pace: her faces at each line of the diagnosis (her yes, the doctor naming it): never a wink (one eye shut)",
    "max": 6
   }
  ],
@@ -12072,11 +12127,42 @@
  "CLN-135": [
   {
    "flow": "clinic:heal-ear",
-   "path": "real-pace",
-   "level": [
-    1,
-    2
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
    ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-ear-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the wax at the ear's angle, before the first move"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:wipe",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "after the wax is out, before the wipe: smears where the blobs were"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "real-pace",
+   "level": 1,
    "sizes": [
     "1366x768"
    ],
@@ -12088,7 +12174,7 @@
     "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "the ear close-up at the end, before the pull-out: smears where blobs were, the sore skin cleared, the wax at the ear's angle",
+   "note": "the close-up's last look before the pull-out: the sore skin cleared",
    "delay": 950
   }
  ]

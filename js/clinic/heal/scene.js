@@ -400,6 +400,8 @@
           im.alt = "";
           im.draggable = false;
           im.src = Kit && Kit.url ? Kit.url(t.img) : t.img;
+          // CLN-134 (E: the ear's drops): a tool held the way it is used (the drop bottle nozzle down)
+          if (t.turn) im.style.transform = `rotate(${t.turn}deg)`;
         } else if (t.colours) {
           const sw = h("span", "g sw", b);
           t.colours.forEach((c) => {

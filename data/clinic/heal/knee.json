@@ -179,10 +179,9 @@
     4
    ],
    "turns": [
-    2,
-    3,
     4,
-    5
+    5,
+    6
    ],
    "side_heard": false,
    "read": "line"
@@ -199,10 +198,10 @@
     4
    ],
    "turns": [
-    2,
-    3,
-    4,
-    5
+    5,
+    6,
+    7,
+    8
    ],
    "clonks": [
     1,
@@ -256,10 +255,10 @@
     ]
    ],
    "turns": [
-    2,
-    3,
-    4,
-    5
+    5,
+    6,
+    7,
+    8
    ],
    "clonks": [
     1,
@@ -268,7 +267,8 @@
    ],
    "side_heard": true,
    "read": "list"
-  }
+  },
+  "_turns": "CLN-100 (S05-D3): the turns follow Zafar's heal ladder (13 Oct): about 4-6 at L1, 5-8 at L2 and L3 (L3 is L2 heard only), 6-10 at L4. The game's own table (js/clinic/heal/games/knee.js K.turns) is what plays; these lists mirror it (they read 2-5 at every level before)."
  },
  "fun": "The reflex kick: the whole leg jerks, the dishes rattle, Kasuku squawks; the bone with a face goes clonk; the hop-off on crutches.",
  "colours": {

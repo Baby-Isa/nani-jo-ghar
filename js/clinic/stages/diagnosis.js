@@ -23,6 +23,7 @@
 
   const FACE = ["eye", "ear", "nose", "mouth", "tooth", "throat"];
   const BIG = 1.3; // the art's size over its room size in the diagnosis (D1: "maybe make her bigger")
+  const HURT = "sad"; // CLN-136: the diagnosis's sore face (never the pain face: it reads as a wink)
   const FINDS = { hand: "👀", torch: "✨", stethoscope: "〰️", thermometer: "🔥" };
 
   S.diagnosis = {
@@ -128,7 +129,8 @@
       if (zoom.on) await fig.focus(null, null, 1, Kit.fast ? 60 : 350);
       if (zoom.el) zoom.el.remove();
       // decision 52 (D2, CLN-83): the outcome is clear, so no "To the counter" click: the doctor names it and it moves on
-      fig.react("ouch", 0);
+      // CLN-136 (S05-D3): her sore face here is the sad one: the art's pain face (one eye screwed shut) read as a wink
+      fig.react(HURT, 0);
       await S.say(plan.name, "doctor");
       await Kit.wait(Kit.fast ? 60 : 900);
       // S02-F (C open item): the end screen comes up over this room, and a stage played alone hands its patient
@@ -199,7 +201,7 @@
         S.signal("clinic-probe");
         await S.say(S.line(env, "here"), "doctor");
         const yes = d.part === plan.part;
-        fig.react(yes ? "ouch" : "idle", 0);
+        fig.react(yes ? HURT : "idle", 0);
         // the patient's answer: the data's line for yes / no (haa / na, G9), in her bubble
         await S.say(S.line(env, (data.answer_lines || {})[yes ? "yes" : "no"] || (yes ? "yes" : "no")), "patient");
         d.el.classList.remove("asking");
@@ -370,7 +372,7 @@
       f.style.left = `${q.x}px`;
       f.style.top = `${q.y}px`;
       setTimeout(() => f.remove(), 900);
-      if (sore) fig.react("ouch", 0);
+      if (sore) fig.react(HURT, 0);
       else fig.react(tool === "hand" ? "giggle" : "idle");
       await Kit.wait(Kit.fast ? 60 : 700);
       if (ok) {

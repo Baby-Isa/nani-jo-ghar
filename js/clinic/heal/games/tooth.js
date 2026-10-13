@@ -10,7 +10,7 @@
  *    lip below: CLN-52, P43). The decay is jagged and scattered by level (L1 one patch, L2-3 two, L4 four small ones:
  *    P44). Drag the drill over it; its tip is the finger (CLN-51). Drilling the white too long chips the tooth.
  * 3. Fill: hold the big round button (it goes down while pressed); the nozzle squeezes paste into the holes and the
- *    gauge beside the tooth rises: let go in the green, with red either side. The green narrows and the fill speeds
+ *    gauge under the teeth fills (CLN-129): let go in the green, with red either side. The green narrows and the fill speeds
  *    up by level (data: fill.ms, fill.zone; CLN-53, P45). Letting go below the green just pauses (press again);
  *    past it is too much.
  * Rows: the brush order (the words decide it); the drill and the fill are hand-skill rows.
@@ -292,19 +292,20 @@
 
     /* ---------------- 3. the fill: the nozzle, the gauge, the big button ---------------- */
     const fillG = s("g", { opacity: 0 }, S.fx);
-    const G = { x: 600, y0: 120, y1: 380, w: 34 }; // the gauge: bottom = empty, top = MAX
-    const gy = (f) => G.y1 - (f / FILL.max) * (G.y1 - G.y0);
-    s("rect", { x: G.x - 8, y: G.y0 - 8, width: G.w + 16, height: G.y1 - G.y0 + 16, rx: 16, fill: "#fff", stroke: "#bfae94", "stroke-width": 4 }, fillG);
-    s("rect", { x: G.x, y: gy(FILL.max), width: G.w, height: gy(zone[1]) - gy(FILL.max), fill: "#e0574f" }, fillG); // too much
-    s("rect", { x: G.x, y: gy(zone[1]), width: G.w, height: gy(zone[0]) - gy(zone[1]), fill: "#4cae5c" }, fillG); // just right
-    s("rect", { x: G.x, y: gy(zone[0]), width: G.w, height: G.y1 - gy(zone[0]), fill: "#e0574f" }, fillG); // not enough
-    const level = s("rect", { x: G.x + 6, y: G.y1, width: G.w - 12, height: 0, rx: 6, fill: "#fbfbff", stroke: "#9aa3b5", "stroke-width": 2 }, fillG);
-    const marker = s("path", { d: "", fill: "#2a2522" }, fillG);
+    // CLN-129 (S05-D3): the gauge lies in the open mouth under the teeth, beside the button, filling to the right; standing
+    // up beside the tooth it covered the next tooth in every frame
+    const G = { x0: 150, x1: 560, y: 414, h: 32 }; // the gauge: left = empty, right = MAX
+    const gx = (f) => G.x0 + (f / FILL.max) * (G.x1 - G.x0);
+    s("rect", { x: G.x0 - 8, y: G.y - 8, width: G.x1 - G.x0 + 16, height: G.h + 16, rx: 16, fill: "#fff", stroke: "#bfae94", "stroke-width": 4 }, fillG);
+    s("rect", { x: G.x0, y: G.y, width: gx(zone[0]) - G.x0, height: G.h, fill: "#e0574f" }, fillG); // not enough
+    s("rect", { x: gx(zone[0]), y: G.y, width: gx(zone[1]) - gx(zone[0]), height: G.h, fill: "#4cae5c" }, fillG); // just right
+    s("rect", { x: gx(zone[1]), y: G.y, width: G.x1 - gx(zone[1]), height: G.h, fill: "#e0574f" }, fillG); // too much
+    const level = s("rect", { x: G.x0, y: G.y + 6, width: 0, height: G.h - 12, rx: 6, fill: "#fbfbff", stroke: "#9aa3b5", "stroke-width": 2 }, fillG);
+    const marker = s("path", { d: "", fill: "#fbfbff", stroke: "#2a2522", "stroke-width": 2 }, fillG);
     const setMarker = (f) => {
-      const y = gy(Math.min(FILL.max, f));
-      marker.setAttribute("d", `M${G.x - 22} ${y - 11} L${G.x - 4} ${y} L${G.x - 22} ${y + 11}Z`);
-      level.setAttribute("y", y);
-      level.setAttribute("height", Math.max(0, G.y1 - y));
+      const x = gx(Math.min(FILL.max, f));
+      marker.setAttribute("d", `M${x - 11} ${G.y - 26} L${x} ${G.y - 6} L${x + 11} ${G.y - 26}Z`);
+      level.setAttribute("width", Math.max(0, x - G.x0));
     };
     setMarker(0);
     // the nozzle over the tooth (B1: art once ready; a drawn white-and-steel pen until then)

@@ -191,7 +191,9 @@
       // levels 1-2: the four feeling cards in a thought bubble rising from the patient's head, opening out to
       // the right (13d); level 3: the help items in a tray along the bottom of the screen (13e)
       let cards;
-      if (plan.mode === "helps") cards = h("div", "cl-help-tray", stage);
+      // CLN-26 (S05-D3): level 2 is "she says it, no picture": the four cards are a plain row along the bottom (as level
+      // 3's tray), never a thought bubble out of her head
+      if (plan.mode === "helps" || plan.mode === "said") cards = h("div", "cl-help-tray", stage);
       else {
         cards = h("div", "cl-thought", box);
         const hb = headBox();

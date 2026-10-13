@@ -61,10 +61,12 @@
       // CLN-85 (S05-D): the one being served is at the top right, as in the heal games and Cook's customer: her round
       // face (her art's head when it is cut, else the stand-in face)
       const kind = env.fig && env.fig.kind;
+      let faceHeads = null;
       if (kind) {
         const who = h("div", "hs-face cl-ph-face", stage);
         who.dataset.kind = kind;
         const art = await S.artFor(kind);
+        faceHeads = (art && art.heads) || null;
         const head = art && art.heads && (art.heads.neutral || Object.values(art.heads)[0]);
         if (head) {
           who.classList.add("has-art");
@@ -258,10 +260,29 @@
         void dishIdx;
       };
 
+      // CLN-03 (G3, S05-D3): Cook's review face at the handover: her big round face over the tray, happy when the tray
+      // is right, a frown when something in it is wrong; it goes after a beat
+      const review = (ok) => {
+        if (!kind) return;
+        stage.querySelectorAll(".cl-review").forEach((n) => n.remove());
+        const el = h("div", `cl-review ${ok ? "happy" : "frown"}`, stage);
+        const head = faceHeads && (ok ? faceHeads.happy : faceHeads.sad);
+        if (head) {
+          const im = h("img", null, el);
+          im.alt = "";
+          im.src = Kit.url(head);
+        } else el.appendChild(Clinic.Figure.face(kind, ok ? "happy" : "sad"));
+        const tr = trayBox.getBoundingClientRect();
+        const sr = stage.getBoundingClientRect();
+        el.style.left = `${tr.left - sr.left + tr.width / 2}px`;
+        el.style.top = `${tr.top - sr.top}px`;
+        setTimeout(() => el.remove(), Kit.fast ? 900 : 2200);
+      };
       const handover = async () => {
         busy = true;
         paused++;
         const out = PL().beltHandover(plan, st);
+        review(out.every((r) => r.ok));
         for (const r of out) {
           const dish = tray.slots[r.dish].el;
           dish.classList.add("lifted");

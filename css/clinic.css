@@ -131,7 +131,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-bubble.who-doctor { background: #eef8f5; border: 3px solid #bfe0d7; }
 @keyframes cl-pop { from { opacity: 0; } to { opacity: 1; } }
 /* CLN-76 (E1, G2): a line with no Kutchi yet: grey italic, flagged "to record" for the grown-ups, never dark text */
-.cl-bubble.rec { font-style: italic; color: var(--njg-ink-soft); }
+/* CLN-124 (S05-D3; decisions 81, 84): a line still to record is its English in the one placeholder style the card uses
+   (the body font, grey italic, not the bubble's bold display face), so it never reads as dark text to be read */
+.cl-bubble.rec { font-family: var(--njg-font); font-style: italic; font-weight: 600; color: var(--njg-ink-soft); }
 .cl-bubble.rec .ph { color: var(--njg-ink-soft); }
 .cl-bubble .cl-rec { display: block; width: max-content; margin-top: var(--njg-s1); padding: 0 var(--njg-s2); border-radius: var(--njg-round); white-space: nowrap; font: 800 var(--njg-flag-t) / 1.35 var(--njg-font); font-style: normal; letter-spacing: .04em; text-transform: uppercase; color: var(--njg-flag); background: var(--njg-flag-bg); border: var(--njg-line) solid var(--njg-flag-edge); }
 /* CLN-77: the pull-out hides the close-up's own UI first (tools, face, panels, pills, counts): no ghost rectangles */
@@ -653,3 +655,14 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-counter-tray.v2 .cl-dish { position: relative; z-index: 1; transition: border-color .35s ease, background-color .35s ease; }
 .cl-counter-tray.v2::after { content: ""; position: absolute; left: -2px; right: -2px; bottom: -2px; height: 17%; z-index: 2; pointer-events: none; background: rgb(251, 244, 230); border: 2px solid rgba(201, 150, 46, .55); border-top-color: rgba(201, 150, 46, .8); border-radius: 0 0 18px 18px; }
 .cl-counter-tray.v2 .cl-dish.full .cl-item { transform: translateY(16%); }
+
+/* CLN-03 (G3, S05-D3): Cook's review face at the pharmacy handover: her big round face over the tray, happy or a frown */
+.cl-review { position: absolute; z-index: 30; width: clamp(84px, 9vw, 128px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: #fff; border: 4px solid #f1d9ae; box-shadow: 0 6px 18px rgba(40, 25, 10, .22); transform: translate(-50%, -112%); pointer-events: none; animation: cl-review-in .32s cubic-bezier(.3, 1.5, .5, 1) both; }
+.cl-review.frown { border-color: #d9c6ad; }
+.cl-review img, .cl-review svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+@keyframes cl-review-in { from { transform: translate(-50%, -80%) scale(.4); opacity: 0; } to { transform: translate(-50%, -112%) scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .cl-review { animation: none; } }
+/* CLN-128 (S05-D3): one look for a filled tray space at every level: at the handover only the item lifts, never its
+   dish (a lifted dish carried its fading outline up with it, so one level showed a box and another none) */
+.cl-counter-tray .cl-dish.lifted { transform: none; box-shadow: none; }
+.cl-counter-tray .cl-dish.lifted .cl-item { transform: translateY(calc(16% - 18px)) scale(1.08); transition: transform .2s ease-out; }

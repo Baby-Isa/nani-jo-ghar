@@ -155,12 +155,18 @@
     ".fv-thing{position:absolute;z-index:4;transform:translate(-50%,-100%);min-width:var(--njg-tap);min-height:var(--njg-tap);padding:0;margin:0;border:0;background:none;cursor:pointer;display:block;-webkit-tap-highlight-color:transparent}",
     ".fv-thing svg,.fv-thing img{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}",
     ".fv-thing img{object-fit:contain}",
-    ".fv-thing.pulse{animation:hs-pulse 1s ease-in-out infinite}",
+    // CLN-130 (S05-D3): the hint glow follows the thing's own shape (the one focal glow's colour), never a flat yellow
+    // rectangle round its button; a thing painted on the room (no picture of its own) glows as a soft round light
+    ".fv-thing.pulse{animation:fv-glow 1s ease-in-out infinite}",
+    "@keyframes fv-glow{0%,100%{filter:drop-shadow(0 0 0 rgba(224,166,58,0))}50%{filter:drop-shadow(0 0 7px var(--njg-focus,#e0a63a)) drop-shadow(0 0 3px var(--njg-focus,#e0a63a))}}",
+    ".fv-thing.painted.pulse::after{content:'';position:absolute;inset:-8%;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(224,166,58,.45),rgba(224,166,58,0));animation:fv-soft 1s ease-in-out infinite}",
+    "@keyframes fv-soft{0%,100%{opacity:.2}50%{opacity:1}}",
+    "@media (prefers-reduced-motion: reduce){.fv-thing.pulse{animation:none;filter:drop-shadow(0 0 6px var(--njg-focus,#e0a63a))}.fv-thing.painted.pulse::after{animation:none}}",
     ".fv-thing.held,.hs-tool.held{filter:drop-shadow(0 0 6px #2e8b7a)}",
     ".fv-mood{position:absolute;z-index:6;width:clamp(26px,3.2vw,44px);aspect-ratio:1;transform:translate(-20%,-60%);pointer-events:none}",
     ".fv-mood svg{display:none;width:100%;height:100%}",
     ".fv-mood[data-state=hot] .fv-hot,.fv-mood[data-state=cold] .fv-cold{display:block;animation:cl-pop .25s}",
-    ".cl-patient-layer.pulse{animation:hs-pulse 1s ease-in-out infinite}",
+    ".cl-patient-layer.pulse{animation:fv-glow 1s ease-in-out infinite}", // CLN-130: round her shape, not a box
     ".fv-thing.gone{visibility:hidden}",
     // FV4, FV5 (CLN-105): a thing that lies on the bed (the hand fan) is tipped back flat, its handle towards us
     ".fv-thing.flip>img,.fv-thing.flip>svg{transform:scaleX(-1)}", // FV5: the heater turned to face her

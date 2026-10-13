@@ -203,6 +203,14 @@
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
     const TOOL = { wipe: "cotton", plaster: "plaster-skin" };
+    // the syringe's end (the plunger's top) lit and pulsing: the thing to press next
+    const lightEnd = (on) => {
+      glow.getAnimations && glow.getAnimations().forEach((a) => a.cancel());
+      glow.setAttribute("opacity", on ? 0.75 : 0);
+      if (!on) return;
+      plunger.setAttribute("opacity", 1);
+      if (glow.animate) glow.animate([{ opacity: 0.35 }, { opacity: 0.85 }, { opacity: 0.35 }], { duration: 1100, iterations: Infinity });
+    };
     const open = () => {
       const c = cur();
       if (c.kind !== "boing") ctx.card.now(c.id); // SH-45: the card opens the step's row and says it then (once)
@@ -219,9 +227,7 @@
         return;
       }
       if (c.kind === "press") {
-        plunger.setAttribute("opacity", 1);
-        glow.setAttribute("opacity", 0.75);
-        glow.animate && glow.animate([{ opacity: 0.35 }, { opacity: 0.85 }, { opacity: 0.35 }], { duration: 1100, iterations: Infinity });
+        lightEnd(true);
         S.cue("press", CUES.press, { x: syCx, y: SY.y - 47, r: 40 });
         return;
       }
@@ -364,6 +370,9 @@
       else land();
       if (!anim) drawDrops();
       ctx.tally("drops", st.drops.length, { next: "press", of: d.drops.length }); // S02-A hook: decision 52, the next step shows at L2+
+      // CLN-58 (S05-D3): from level 2 the press is the next action (no ✓, D7): the end glows from the first drop in (never
+      // at the count, which would give the count away)
+      if (P.level >= 2 && st.drops.length === 1) lightEnd(true);
       ctx.sfx("pop");
       // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
       if (P.level === 1 && st.drops.length >= d.drops.length) S.when(() => (!cur() || cur().kind !== "drops" || st.over ? "stop" : !st.busy), close, 450);
@@ -411,6 +420,7 @@
         if (up.animate) up.animate([{ transform: "translate(0,0)", opacity: 0.72 }, { transform: `translate(${lv.x - syCx}px, ${M.y + 120 - slotY(k)}px)`, opacity: 0 }], { duration: fast() ? 40 : 380, fill: "forwards" }).finished.then(() => up.remove(), () => up.remove());
         else up.remove();
         ctx.tally("drops", st.drops.length);
+        if (!st.drops.length) lightEnd(false); // nothing in it: nothing to press
         ctx.sfx("tap");
         ctx.log({ type: "takeback", detail: "a drop" });
         return;
