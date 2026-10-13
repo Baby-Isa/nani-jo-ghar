@@ -4,6 +4,7 @@
 //   ctx: {flows:Set of run.mjs --list ids, legacy:Set, corpus:string (js/ and css/ text), exists(path)->bool, lexicon:Set (the words the family says), rowText:{ID: text}}
 // kinds: flow (unknown flow), legacy (a legacy lab), selector (absent from js/ and css/), end-card (a moment after the end card for a
 // row that is not about it), cmd (script missing), expect (an expect with no markers)
+export const EVIDENCE_ONLY_FLOWS = ["cook:book"]; // played only by the evidence loop (never in the gate)
 export const LEGACY_FLOWS = ["cook:fill", "cook:fry", "cook:roll"]; // the old Station labs; the current samosa and maani flows replace them
 const END_MOMENTS = /^(?:every:)?(?:rec:)?(?:results|result|page:end)(?:-|$)|^(?:every:)?life:results/;
 const ABOUT_END = /\b(end|result|results|review|badge|badges|score|star|stars|tick|ticks|word review|summary|finale)\b/i;
@@ -36,14 +37,16 @@ export function lintSpecs(spec, ctx) {
       const flow = baseFlow(pr.flow);
       if (flow && flow !== "repo") {
         if (ctx.legacy.has(flow)) add("legacy", `${pr.flow} is a legacy lab: point the probe at the current samosa or maani flow`);
-        else if (!ctx.flows.has(flow) && !ctx.flows.has(String(pr.flow)) && !/^cook:recipe:/.test(flow) && !/^lab:/.test(flow)) add("flow", `${pr.flow} is not in run.mjs --list`);
+        else if (!ctx.flows.has(flow) && !EVIDENCE_ONLY_FLOWS.includes(flow) && !ctx.flows.has(String(pr.flow)) && !/^cook:recipe:/.test(flow) && !/^lab:/.test(flow)) add("flow", `${pr.flow} is not in run.mjs --list`);
       }
       const seen = new Set();
       for (const sel of selectorsOf(pr)) for (const t of selectorTokens(sel)) {
         if (seen.has(t)) continue; seen.add(t);
         if (!ctx.corpus.includes(t.slice(1))) add("selector", `${t} is in no js/ or css/ file (${sel})`);
       }
-      const ends = [pr.at, pr.after, ...(pr.capture || []).map((c) => (/@([\w:-]+)$/.exec(c) || [])[1])].filter((m) => m && END_MOMENTS.test(m));
+      // only a picture taken after the end card opens is "under the end card"; voice, contract, dom and cmd captures read the whole run
+      const visual = (pr.capture || []).some((c) => /^(crop|zoom2|strip|shot|trace)\b/.test(c) && !/@/.test(c));
+      const ends = [visual ? pr.at : null, visual ? pr.after : null, ...(pr.capture || []).filter((c) => /^(crop|zoom2|strip|shot|trace)\b/.test(c)).map((c) => (/@([\w:-]+)$/.exec(c) || [])[1])].filter((m) => m && END_MOMENTS.test(m));
       if (ends.length && !ABOUT_END.test(`${(ctx.rowText || {})[row] || ""} ${pr.note || ""}`)) add("end-card", `${ends.join(", ")} is after the end card but the row is not about the end`);
       for (const c of pr.capture || []) if (/^cmd:/.test(c)) for (const tok of c.slice(4).split(/\s+/)) if (/^(?:build|docs|data|assets|js|css)\/[^\s*]+\.(?:py|mjs|js|json|md|png|webp)$/.test(tok) && !ctx.exists(tok)) add("cmd", `${tok} does not exist`);
       for (const e of pr.expect || []) {

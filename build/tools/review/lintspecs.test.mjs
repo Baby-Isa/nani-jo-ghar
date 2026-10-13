@@ -13,7 +13,7 @@ test("selectors: classes and ids, no pseudo, attribute or canvas names", () => {
 });
 test("each pitfall is flagged once with its kind", () => {
   const spec = {
-    A1: [P({ flow: "cook:fry" }), P({ flow: "cook:nope" }), P({ capture: ["crop:.gone-class"] }), P({ at: "results-words" }), P({ capture: ["cmd:python3 build/missing.py"] }), P({ expect: ["order:ask,bowl"] })],
+    A1: [P({ flow: "cook:fry" }), P({ flow: "cook:nope" }), P({ capture: ["crop:.gone-class"] }), P({ at: "results-words", capture: ["crop:.rs-words"] }), P({ capture: ["cmd:python3 build/missing.py"] }), P({ expect: ["order:ask,bowl"] })],
     A2: [P({ at: "results-words", capture: ["crop:.rs-words"] }), P({ capture: ["cmd:python3 build/check_x.py", "crop:#mission"], expect: ["order:.oc-card,#mission", "order:chai,dudh"] })],
   };
   const kinds = lintSpecs(spec, ctx).map((f) => `${f.row}${f.probe}:${f.kind}`);

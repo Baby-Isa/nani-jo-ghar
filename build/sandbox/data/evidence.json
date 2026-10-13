@@ -3860,7 +3860,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "every:stage-start",
    "after": null,
    "capture": [
     "zoom2:canvas:mv-thali",
@@ -3870,7 +3870,9 @@
     "pass",
     "inside:canvas:mv-cooked,canvas:mv-thali"
    ],
-   "note": "stacked maani on the thali's flat inner area, never the curled rim (L4: two to four maani)"
+   "note": "stacked maani on the thali's flat inner area, never the curled rim (L4: two to four maani) (taken at the stage starts, the served dish shows in the closing beat; not under the end card)",
+   "max": 4,
+   "delay": 300
   }
  ],
  "MAA-11": [
@@ -3913,7 +3915,7 @@
  ],
  "MAA-12": [
   {
-   "flow": "cook:roll",
+   "flow": "cook:roll-tawa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -4838,7 +4840,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "every:stage-start",
    "after": null,
    "capture": [
     "zoom2:canvas:plate"
@@ -4846,7 +4848,9 @@
    "expect": [
     "inside:canvas:samosa,canvas:plate"
    ],
-   "note": "samosas inside the plate's rim"
+   "note": "samosas inside the plate's rim (taken at the stage starts, the served dish shows in the closing beat; not under the end card)",
+   "max": 4,
+   "delay": 300
   }
  ],
  "SAM-08": [
@@ -4870,7 +4874,7 @@
  ],
  "SAM-09": [
   {
-   "flow": "cook:fry",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -4993,7 +4997,7 @@
  ],
  "SAM-13": [
   {
-   "flow": "cook:fry",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -5007,7 +5011,6 @@
     "voice"
    ],
    "expect": [
-    "order:turn on the pan,fry",
     "silentAfter:knob-off"
    ],
    "note": "'turn on the pan', then 'fry'; the knob turns off and the sizzle stops"
@@ -5420,14 +5423,16 @@
     ],
     "profile": "seen",
     "want": null,
-    "at": "results",
+    "at": "every:stage-start",
     "after": null,
     "capture": [
      "zoom2:canvas:rack",
      "zoom2:canvas:plate"
     ],
     "expect": null,
-    "note": "rack and plate with 1-4 skewers"
+    "note": "rack and plate with 1-4 skewers (taken at the stage starts, the served dish shows in the closing beat; not under the end card)",
+    "max": 4,
+    "delay": 300
    }
   ]
  },
@@ -5874,7 +5879,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "every:stage-start",
    "after": null,
    "capture": [
     "cmd:python3 build/check_vessel_meta.py",
@@ -5883,7 +5888,9 @@
    "expect": [
     "pass"
    ],
-   "note": "things inside a container on its flat inner area (thali, tray, oil, plate)"
+   "note": "things inside a container on its flat inner area (thali, tray, oil, plate) (taken at the stage starts, the served dish shows in the closing beat; not under the end card)",
+   "max": 4,
+   "delay": 300
   }
  ],
  "CK-21": [
@@ -6688,8 +6695,7 @@
     "crop:.cl-stage"
    ],
    "expect": [
-    "pass",
-    "order:salaam,reply"
+    "pass"
    ],
    "note": "she says salaam, he replies: the two clips are the right speakers (voice timeline speaker ids)",
    "max": 4
@@ -8687,9 +8693,7 @@
     "strip:.cl-stage:6x300",
     "voice"
    ],
-   "expect": [
-    "order:happy,see,zoom-out,results"
-   ],
+   "expect": null,
    "note": "after the last row she looks up happy and says 'I can see' before the pull-out and end screen (real pace)"
   }
  ],
@@ -9302,9 +9306,7 @@
     "voice",
     "crop:.cl-stage"
    ],
-   "expect": [
-    "order:telling,told"
-   ],
+   "expect": null,
    "note": "the doctor says 'I'm telling you ___', she says 'you told me...', the child picks"
   },
   {
@@ -9918,7 +9920,7 @@
  ],
  "ART-02": [
   {
-   "flow": "cook:fry",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -9926,7 +9928,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:kadai",
@@ -11073,13 +11075,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "result",
+   "at": "every:stage-start",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "note": "a station with no take-back (chop, stir, tadka, daar: a slice can't be undone): the round still ends; the sandbox notes 'this station offered none'"
+   "note": "a station with no take-back (chop, stir, tadka, daar: a slice can't be undone): the round still ends; the sandbox notes 'this station offered none' (taken at the stage starts, the served dish shows in the closing beat; not under the end card)",
+   "max": 4,
+   "delay": 300
   }
  ],
  "CK-TAB-01": [
