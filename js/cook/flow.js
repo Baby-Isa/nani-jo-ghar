@@ -746,10 +746,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   function trayFront(s, t) {
     if (!t.painted || !s.bg || !s.bg.texture || s.bg.texture.key !== "bg-service") return;
-    const fx = Math.round(t.x - t.w / 2 - 4);
-    const fy = Math.round(t.y - 1);
-    const fw = Math.round(t.w + 8);
-    const fh = Math.round(t.h / 2 + 6);
+    // (CK-21, S05-C3: setCrop takes the texture's own pixels: on a hi-res picture (a 2x screen) world px are scaled by the
+    // background's scale, else the wall was cut from the wrong place and the dish sat on top of the tray)
+    const kx = s.bg.scaleX || 1;
+    const ky = s.bg.scaleY || 1;
+    const fx = Math.round((t.x - t.w / 2 - 4 - s.bg.x) / kx);
+    const fy = Math.round((t.y - 1 - s.bg.y) / ky);
+    const fw = Math.round((t.w + 8) / kx);
+    const fh = Math.round((t.h / 2 + 6) / ky);
     return s.track(s.add.image(s.bg.x, s.bg.y, "bg-service").setOrigin(0).setScale(s.bg.scaleX, s.bg.scaleY).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
   }
   // a chai cup with no milk (CHAI-07) is served as black tea

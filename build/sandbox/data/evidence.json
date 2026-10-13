@@ -12563,7 +12563,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "page:end",
+   "at": "visible:.ribbon",
    "after": null,
    "capture": [
     "dom:.ribbon"
