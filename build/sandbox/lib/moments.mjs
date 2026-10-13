@@ -113,6 +113,7 @@ export function momentsFor(root, flowId, { kindOf = () => null, seen = null } = 
   } else if (kind === "cook-other") out.push("rec:title", "rec:title-after", "rec:shop", "rec:shop-bought", "rec:shop-after", "rec:shop-grown-ups", "rec:day-summary", "rec:finale", "rec:kitchen-open", "rec:summary", "rec:close-kitchen", "rec:recipe-book", "rec:station-lab-list", "rec:station-lab-parts-open", "rec:title-grown-ups", ...COOK_REC, ...cookKinds(root).flatMap((x) => [`cook:${x}`, `cook-done:${x}`]));
   else if (kind === "clinic-stage" || kind === "patient" || kind === "morning" || kind === "heal") {
     out.push(...CLINIC_REC, ...(CLINIC_PATH[path] || []), ...HEAL_REC);
+    if (kind === "morning") out.push("rec:morning-end"); // the receipt in the shared end pop-up (flows/clinic.mjs, CLN-111)
     const games = kind === "heal" ? [base.slice("clinic:heal-".length)] : readdirSync(join(root, "js", "clinic", "heal", "games")).map((f) => f.replace(/\.js$/, ""));
     for (const g of games) for (const s of healSteps(root, g)) out.push(`heal:${s}`, `heal-done:${s}`, `step:${s}`);
   } else if (kind === "heal-extra") out.push("rec:heal-*-start", "rec:heal-*-mid", "rec:heal-*-*", "rec:end");

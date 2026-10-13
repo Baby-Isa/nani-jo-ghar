@@ -28,3 +28,10 @@ Branch `ccr-a7370759-t0lee7`. No game code changed. Tools, drivers and specs onl
 | CLN-117 | | tool: 12 seeds never drew E4; needs a driver |
 | SEK-03 L4 stop | | not reproduced in a plain run (37 s to the end); only at DPR 2 (driver/perf) |
 contract-11: no background is judged while a heal push-in is running (`contract-hook.mjs`); heal-cut sandbox run: 0 breaks (t2-c11).
+
+## Late items (orchestrator, 13 Oct)
+| Row | Result |
+|---|---|
+| SH-01 | tool fixed (the wanted order reads the order's own surfaces, not the whole page). The earlier "match" was the *na* row (`fudino ji chutney na.`). Asking for a layer (`/fudino ji chutney(?!\s+na)/i`): no seed 1..40 gives one at L4 chaat, so B's 22% is not what plays: B/C |
+| CLN-111 | PASS (ev-20261013-012257-dgq): the morning end is a registered moment; Next is not expected on the one-patient lab |
+| ART-18 | still FAIL 2.4 px: every Cook line is `line:cook`, so the probe cannot tell Nani speaking from breathing; needs the speaker in the sound hook (T next) |

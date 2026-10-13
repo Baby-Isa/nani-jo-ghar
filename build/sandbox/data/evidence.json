@@ -6857,10 +6857,9 @@
     "crop:.rs-actions"
    ],
    "expect": [
-    "count:.rs-again=1",
-    "count:.rs-actions button>=3"
+    "count:.rs-again=1"
    ],
-   "note": "the end screen offers Again, Next and All patients"
+   "note": "the end screen offers Again, Next and All patients (the one-patient lab has no Next)"
   },
   {
    "flow": "clinic:morning",
@@ -6878,9 +6877,10 @@
     "shot"
    ],
    "expect": [
-    "count:.rs-again=1"
+    "count:.rs-again=1",
+    "count:.rs-actions button>=2"
    ],
-   "note": "after a morning: Again and All patients, no placeholder button"
+   "note": "after a morning: Again and All patients (and Next between patients), no placeholder button"
   }
  ],
  "CLN-112": [
@@ -10366,7 +10366,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:line:cook",
    "after": null,
    "capture": [
     "contract:14",
@@ -10377,7 +10377,8 @@
     "traceAmp:canvas:nani-<=2",
     "tracePeriod:canvas:nani->=380"
    ],
-   "note": "Cook service: one talk animation, about a third of the old bob, slower"
+   "note": "Cook service: one talk animation, about a third of the old bob, slower (traced only while Nani is the one speaking)",
+   "max": 6
   },
   {
    "flow": "clinic:waiting",
