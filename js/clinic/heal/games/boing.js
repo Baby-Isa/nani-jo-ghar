@@ -216,7 +216,11 @@
     };
     const open = () => {
       const c = cur();
-      if (P.level < 2 && st.i > 0 && ctx.card.addRow) rowsOfStep(c).forEach((r) => ctx.card.addRow(r)); // SH-45: L1 grows step by step
+      // SH-45: L1 grows step by step; a row added this way is said here (as the ear's), the card's own reveal does not say it
+      if (P.level < 2 && st.i > 0 && ctx.card.addRow) {
+        rowsOfStep(c).forEach((r) => ctx.card.addRow(r));
+        if (c.row && c.kind !== "boing") ctx.say(c.row);
+      }
       if (c.kind !== "boing") ctx.card.now(c.id); // SH-45: the card opens the step's row and says it then (once)
       spot.setAttribute("opacity", c.kind === "plaster" || c.kind === "wipe" ? 1 : 0);
       glow.setAttribute("opacity", 0);

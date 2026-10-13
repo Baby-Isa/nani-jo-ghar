@@ -1062,6 +1062,8 @@
       if (m < n) ctx.card.now(`plaster${m}`);
       // D7: the ✓ shows once every patch is covered (it commits them; until then a plaster can come off again)
       if (ctx.ready) ctx.ready(m >= n);
+      // CLN-142 (S05-D3): every patch covered: the plaster's help ends, so its re-shown spotlight never hides the ✓
+      if (m >= n) S.uncue();
     };
     const drop = (opt, p) => {
       // the patch it lands on: the uncovered one it covers most

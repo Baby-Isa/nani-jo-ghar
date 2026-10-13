@@ -12249,5 +12249,24 @@
    "note": "the count badge (two groups at L3) whole on screen, never cut by the stage's left edge",
    "max": 10
   }
+ ],
+ "CLN-142": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results-badges",
+   "after": null,
+   "capture": [
+    "crop:.rs-card"
+   ],
+   "expect": null,
+   "note": "the taught scrape at a child's pace reaches its end screen (the plaster help ends once every patch is covered)"
+  }
  ]
 }

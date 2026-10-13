@@ -1045,19 +1045,18 @@
   "date": "2026-10-12"
  },
  "CLN-03": {
-  "hash": "6aa0af99308119b92438",
+  "hash": "dbb63544987578f5b23e",
   "dhash": [
-   "8b81010101010101",
    "7676f2cecee6d2db",
    "e6aea69edeef36b1"
   ],
-  "verdict": "FAIL",
-  "line": "A, the patient card is still absent at diagnosis [2] and send-off [5] (only Nani's guide bubble shows there; frames 1, 3, 4 have the shared card); A frame 4, a thin vertical step-arrow is drawn straight down through the card's list rows, crossing the text \"cloth, ba\" and \"laal\" (overlap), and the top guide box is gone at that stage (only the lightbulb and speaker buttons remain; Nani's line sits inside the heal card instead), a different shape from frames 1, 2, 3, 5; C passes its own part: at the pharmacy handover her big round smiling face sits over the tray (paani jug, blue plaster) as Cook's review face, and B shows it inside the outlined .cl-stage with the side card \"paani\" ticked; the end pop-up and its width (SH-75) are on no panel, so that part is unjudged (tool owner: add an end-pop-up panel); no English for the child beyond grey-italic to-record lines; no clipping seen",
-  "panel": "A",
+  "verdict": "PASS",
+  "line": "B, at the L2 pharmacy handover her big round smiling face sits in its circle over the tray (paani jug, blue plaster), Cook's review face; the order card reads \"paani\" and \"ne blue plaster\" (ne = and), both on the tray, so a happy face is the right verdict; A shows the same inside the outlined .cl-stage with the guide box \"Paani. Good.\" (Good. grey-italic to-record). No clipping, no English for the child beyond to-record lines. The sheet carries no frown case (a wrong pick), so only the happy face is proven.",
+  "panel": "B",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-171611-ac1",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-171611-ac1/CLN-03.png",
+  "run": "ev-20261013-173342-ny2",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-03.png",
   "date": "2026-10-13"
  },
  "CLN-04": {
@@ -1142,19 +1141,19 @@
   "date": "2026-10-12"
  },
  "CLN-100": {
-  "hash": "35aca3a082f12b491b8a",
+  "hash": "ab05d252578fb45e3990",
   "dhash": [
    "9173b1a6e1e7a6e6",
-   "9173b1a6a5e393f0",
+   "9173b1a6e5efa6e6",
    "9173b1a2e1e7a6e6"
   ],
   "verdict": "FAIL",
-  "line": "A, L1 pictures 3 bands (frames 1–3) and frame 4, the capture at rec:heal-knee-turn-04, is the send-off room, so the 4th turn and the wrap closing by itself at the count are never seen (asked 4–6); C, L3 the same: 4 bands at frames 1–4 and the room at frame 5 (asked 5–8, the script reports 5). If the 4th/5th turn is laid, the capture fires after the stage has left: the sheet needs the knee after the last turn before the stage moves on. B passes: L2 lays 7 turns, each band dot to dot on the leg's outline, crossing the kneecap and into the crease, no yellow ellipse at any level, no ✓ at L1",
-  "panel": "A",
+  "line": "C, L3 closes with 4 turns: frames 1-4 add one band each (4 bands at frame 4, the lit dot at the kneecap top asking for a 5th), frame 5 is the closed wrap with \"That feels better!\" and no new band (a pixel diff of 4 vs 5 shows only the dots gone and the bubble), so the wrap ends at 4 against the 5-8 asked; B, L2 lays 5 bands by frame 5 (in range) but rec:heal-knee-turn fires three more times with no band: frames 6, 7, 8 are band-for-band identical to frame 5, only the lit dot moves (top at 6, left at 7, none at 8) and the ✓ is gone at 8 while the dots stay, so turns 6-8 either draw nothing or lie exactly on an earlier band. A passes: L1 lays 4 bands over 4 frames, each dot to dot on the leg's outline over the kneecap and into the crease, no yellow ellipse at any level, no ✓ at L1, and frame 4 is the wrap closed by itself with the dots gone. Also: the text capture of shoot_knee_wrap.mjs says \"turns drawn: 0\", so the script the Check names drew nothing (tool owner).",
+  "panel": "C",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-100.png",
+  "run": "ev-20261013-173342-ny2",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-100.png",
   "date": "2026-10-13"
  },
  "CLN-101": {
@@ -1341,19 +1340,19 @@
   "date": "2026-10-13"
  },
  "CLN-113": {
-  "hash": "6a140c64cfe9fd88f567",
+  "hash": "dcca91026fbe3333f51a",
   "dhash": [
    "a0a8902decc44411",
    "88889290e4888a80",
    "a080969402aa2101"
   ],
-  "verdict": "FAIL",
-  "line": "text (the audit table), it has one line per game for two rules only (card sequence, take back); first-time help, stale UI and shared Done/Next are one clinic-wide bullet each, not a line per game as the row asks. The cards stand: A the tooth is one sequence on a line (Pela down, ne poi right, Drill the bad bits ticked, Fill it to the green current), B the knee (Hammer hakro ticked, Ne poi bandage char turns current), C the fever (Take the temperature ticked, Open window current); English on them grey italic",
-  "panel": "text",
+  "verdict": "PASS",
+  "line": "A, the tooth card is one sequence on a line with a grey band (Pela down, ne poi right, Drill the bad bits ticked; Fill it to the green current); B the knee the same (Hammer hakro ticked; Ne poi bandage char turns current), C the fever the same (Take the temperature ticked; Open window current); the text capture (grep audit table, build/reports/s05d3-clinic-audit.md) now has one line per game (13: Scrape to Send-off) with a column per rule (first-time help, take back, card sequence, stale UI, shared Done/Next) and every card-sequence cell is ✅",
+  "panel": "A",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-113.png",
+  "run": "ev-20261013-173342-ny2",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-113.png",
   "date": "2026-10-13"
  },
  "CLN-114": {
@@ -1526,19 +1525,19 @@
   "date": "2026-10-13"
  },
  "CLN-128": {
-  "hash": "82862c81791a711727f0",
+  "hash": "f81c7458f9547dbc78a8",
   "dhash": [
    "3303030303030303",
    "3111111111111185",
    "3303030303030303"
   ],
-  "verdict": "FAIL",
-  "line": "A-C, three looks for a filled space: A3 (L1, plaster) lost every outline and sits under a grey dim, B3 (L2) has no outline round the jug but a faint solid outline round the plaster, C3 (L3, thermometer) keeps a faint solid outline with no dim",
-  "panel": null,
+  "verdict": "PASS",
+  "line": "B, its third capture (B3, L2, two items: jug and plaster) shows the filled tray with the items on the shelf, no outline and no dim, the same look as A3 (one plaster, L1) and C3 (one thermometer, L3); an empty space keeps the dashed outline at every level (A1-2, B1-2, C1-2)",
+  "panel": "B",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-128.png",
+  "run": "ev-20261013-173342-ny2",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-128.png",
   "date": "2026-10-13"
  },
  "CLN-129": {
@@ -1572,6 +1571,20 @@
   "commit": "804b21c1",
   "date": "2026-10-12"
  },
+ "CLN-130": {
+  "hash": "d0783508bcdc8ab58364",
+  "dhash": [
+   "bf9d95968e9c1237"
+  ],
+  "verdict": "PASS",
+  "line": "A, frames 2 and 3 (the first exchange's row open, window named): the window's hint is a soft warm light washing the panes and fading out at the frame, no edge on the wall beside it; a pixel diff of frame 3 against frame 1 changes only the window itself (plus her face, the gauge and the tool), nothing on the wall; frame 4 (window tapped, open) shows the glow gone",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-171950-ki1",
+  "commit": "a6ac85e",
+  "png": "build/screenshots/evidence/ev-20261013-171950-ki1/CLN-130.png",
+  "date": "2026-10-13"
+ },
  "CLN-132": {
   "hash": "0da040d54c720febd2b1",
   "dhash": [
@@ -1588,20 +1601,19 @@
   "date": "2026-10-13"
  },
  "CLN-133": {
-  "hash": "632ebe2094dd4597df4b",
+  "hash": "d70b71873b057f9920f1",
   "dhash": [
-   "4058584b47564f6e",
-   "848080908888c0f8",
-   "e767e76666664449",
-   "8480e0c8ccccecac"
+   "81c1e0bcb6a6d6e8",
+   "8180606c66628680",
+   "8170b2a2a1a686e6"
   ],
   "verdict": "FAIL",
-  "line": "A and C, the tool step's ghost finger is never seen: at the first life:ghost the 0 ms frame is the undimmed room, 231–799 ms (C) and 458 ms (A) are the dimmed zoom with only a halo on the tray tool and no hand, and when the close-up arrives (A 1520–2984 ms, C 1517–1672 ms) the halo sits on the jug/hammer with no finger for the rest of the strip, the 1.5 s tap having run during the zoom. Only the second step shows a finger: D 0–202 ms the drawn hand taps the lit knee spot, then the hammer lands at 1210–1311 ms; B shows the jug pouring on the wrist with a ring at the drop, no hand. One step at a time does hold (B 0 ms and D 0 ms the tool is already in hand before the second ghost).",
-  "panel": "AANDC",
+  "line": "A, the first step is done before any finger shows: at A 0 ms the jug is already pouring on the wrist with the tap ring on the wound and no hand (the room's card already has \"Pela paani\" ticked), the wash ghost finger only fades in under the wound at A 277 ms while the pour runs (a demo of a move already made), and the jug's own tray tap is never demonstrated; the timeline says why: the close-up takes taps during the zoom-in (the player tapped the jug at ~6.0 s and the wound at ~7.2 s, the first life:ghost came at 8.5 s once the zoom landed), and the game then plays the stale demo instead of dropping it. C 0 ms shows the same in the knee: one bandage turn is already drawn and the tool badge reads \"hakro\" before the first ghost (the hammer step logged no ghost at all, only wrap#0). What does hold, for the record: A 1017–1145 ms the ghost finger taps the tray cloth with the cloth still unselected, B 0 ms the cloth is in hand and the halo is on the wound, B 425 ms the finger taps the wound, B 938 ms the cloth lands with the \"hakro\" badge (ghost first, then the copy, one step at a time); C 308–671 ms the finger taps the lit dot and C 886 ms the second turn lands. Also off the row's point, from the run data: the fresh-profile cut never finished at real pace (stop: \"timed out playing\", next {\"do\":\"button\"}, onboard clinic/heal-cut-plaster on): the plaster help replayed every 8.3 s (13 plaster#0 ghosts) after the card's rows were all done and its overlay kept the Done button out of the light.",
+  "panel": "A",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-133.png",
+  "run": "ev-20261013-173342-ny2",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-133.png",
   "date": "2026-10-13"
  },
  "CLN-134": {
@@ -1635,19 +1647,19 @@
   "date": "2026-10-13"
  },
  "CLN-136": {
-  "hash": "03d593ddb8800ea6e37f",
+  "hash": "d229467258b778e35ff0",
   "dhash": [
-   "8fb3959b8b9b1437",
+   "9fb3959b8b9b1437",
    "c54dd9d6cbcbcccf",
    "8d8bb5ba8a8b1d1d"
   ],
   "verdict": "FAIL",
-  "line": "A, frame 1 her face is a calm half-smile while her own bubble says \"My leg hurts\" (the feeling is hurt, the face is content); the hurt face arrives only at frame 3 under the doctor's \"A scrape.\". The wink claim holds: both eyes open in all of A 1–3 and in C (L2, arms out, smiling under \"A scrape.\"), no one-eye-shut face anywhere",
-  "panel": "A",
+  "line": "C, at L2 under the doctor's \"A scrape.\" she beams with both arms spread, a pleased face at the moment he names her hurt (D9 asks for her own sore look), the same line that gets a sore face at L1; the wink claim holds everywhere (both eyes open in A 1-2 and in B/C, no one-eye-shut face). A passes: L1 frames 1 and 2 show a sore face (brows drawn up, mouth turned down, hands in her lap) with both eyes open. Also: A frame 3, labelled a bubble capture, is the end pop-up (13s, ✓ 1/1, →) over the stage, not a bubble, and frame 1 shows no bubble inside the crop, so the line her face answers there is not on the sheet (tool owner).",
+  "panel": "C",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-136.png",
+  "run": "ev-20261013-173342-ny2",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-136.png",
   "date": "2026-10-13"
  },
  "CLN-14": {
@@ -2029,16 +2041,16 @@
   "date": "2026-10-12"
  },
  "CLN-45": {
-  "hash": "892448267d1ac0d361d3",
+  "hash": "5c00f781eec80248d8c3",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "text, cut L2 to L3 changes several things at once: heard-only (card \"···\") plus dabs 3 to 4 plus two-colour steps (\"ne poi blue ne yellow plaster\", \"blue ne lilo plaster\") and a new colour (lilo), against L2's single new thing (laal plaster); knee L2 adds no new thing, only bigger counts (hakro to panj, char to ath); only 2 of the 9 games are on the sheet",
-  "panel": "TEXT",
-  "judge": "Sonnet (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
+  "line": "text, the sheet covers only cut and knee and what it shows is consistent (CLN-45-p3-L3 and -p4-L3: .njg-rq-card count 0, the same two/three steps as L2, two things per step; the count and colour differences L2 vs L3 (trae/char dabs, laal/lilo, panj/trae kicks, ath/panj turns) are random draws from pools that cut.js SCRAPE.dabs and knee.js K share across L2-L3, which no text capture can show; knee L2's one new thing, the random flash heights, is not capturable as text either); the nine-game side-by-side the check asks for is not on the sheet, and read from the level data the games play (data/clinic/heal/*.json via D.levels, and each game's K table) the 13 Oct ladder (L3 = L2 heard only) holds for cut/scrape, knee, boing, taste, tooth, eye, foot but NOT for the others: tummy L3 adds two things (the hot-water bottle AND a random pela/ne poi order), hic L3 adds the random order, hair L3 adds the shampoo step, ear L3 adds the side heard in the patient's voice, fever L3 adds the fix step (K.fixFrom 3) on top of a fourth exchange; none of those L3s is \"L2 heard only\"",
+  "panel": "text",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-171950-ki1",
+  "commit": "a6ac85e",
   "png": null,
-  "date": "2026-10-12"
+  "date": "2026-10-13"
  },
  "CLN-46": {
   "hash": "0811c776d3c25d8ac05a",
@@ -2121,20 +2133,20 @@
   "date": "2026-10-12"
  },
  "CLN-53": {
-  "hash": "bf95d493c96ad69777cd",
+  "hash": "acc1d8a1cc0e07611936",
   "dhash": [
    "814d4d4d4d4d0f81",
    "814d4d6d4d4d0f81",
    "814d4d4d4d4d0f81",
    "806d6d65654d8f81"
   ],
-  "verdict": "FAIL",
-  "line": "C, the L3 green zone is 49 px wide on a 287 px gauge, the same as L2's (B, 49 px; L1 in A is 77 px), so L2 to L3 is no harder (data/clinic/heal/tooth.json: zone and ms identical for 2 and 3). The blue button and the green zone with red either side are clear in A-C; D shows the fill climbing 0-1501 ms",
-  "panel": "C",
+  "verdict": "PASS",
+  "line": "B, the L2 green zone is ~49 px of the 287 px gauge against ~77 px at L1 in A, red either side, the blue button clear; C (L3) matches B exactly, which is the row's own ladder (L3 = L2 heard only; the narrower L4 zone 0.67-0.80 is in tooth.json); D the L1 fill climbs the gauge 0-1500 ms with the zone fixed",
+  "panel": "B",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-53.png",
+  "run": "ev-20261013-173342-ny2",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-53.png",
   "date": "2026-10-13"
  },
  "CLN-54": {
@@ -4542,14 +4554,14 @@
   "date": "2026-10-13"
  },
  "SH-45": {
-  "hash": "a0b8a8c59f38532ad2d5",
+  "hash": "d7ce7ba50e0c296daddb",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "SH-45-p1-L1-1366x768 dom at step:row-0-0, boing's side card shows all four step rows (\"Wipe, ba\", \"Chando, char\", \"Press it\", \"Plaster\") up front at 1.05 s and keeps them at every later moment, against \"each step's line and row appear as it opens\"; the ear side passes on both probes (boing: \"Time for the jab.\" 0.95 + \"Wipe, ba\" 1.10, then \"Chando, char\" 5.01, \"Press it\" 7.71, \"Plaster\" 8.96, each once; scrape: goal 0.74 + \"Pela paani\" 0.90, \"Ne poi cloth, char dabs\" 5.92 once, \"ne poi lilo plaster\" 7.05, \"ne poi yellow plaster\" 7.68, nothing read ahead, no repeat) and scrape's card adds each row as it opens",
-  "panel": "SH-45-p1-L1",
+  "line": "SH-45-p1-L1-1366x768 voice, boing L1's second step is never said: the opener reads only \"Time for the jab.\" + \"Wipe, ba\" (0.59-0.91 s, correct), but when the drops row opens (step:row-0-1 at 3.78 s, the card now reads \"Chando, char\") no line is requested; the next voice is the taps' counts (hakro, ba, trae, char) and the countdown, so by ear the child never hears that step (the timeline logs even silent requests, so this is not a mute, it is no request); p2 (scrape L3) is right: opener = headline + \"Pela paani\" (1.60-1.94 s), \"Ne poi cloth, char dabs\" once at 4.89 s as the dab step opens, \"ne poi lilo plaster\" 5.88 s and \"ne poi yellow plaster\" 6.39 s each as its plaster step opens, nothing read up front",
+  "panel": "SH-45-p1-L1-1366x768 voice",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
+  "run": "ev-20261013-171950-ki1",
+  "commit": "a6ac85e",
   "png": null,
   "date": "2026-10-13"
  },
