@@ -9,7 +9,7 @@
  *    the child's own (the time badge rewards it). Stop after N turns (the count said).
  *    L1: 2 dots (behind, in front) at one height, alternating.
  *    L2: 3 dots each side at different heights, in a set order.
- *    L3: more turns, heard only (the closed card). One knee, side-on (D10, D2: the side is the diagnosis's test).
+ *    L3: the same, heard only (the closed card); L4: more turns (Zafar's heal ladder, 13 Oct). One knee, side-on (D10, D2: the side is the diagnosis's test).
  * Rows (the Kutchi decides): the kick count, the turns. Mistakes are logged
  * silently and show in the end review.
  */
@@ -19,9 +19,10 @@
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
   const K = {
-    kicks: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
+    kicks: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] },
     // K6 (CLN-100): higher numbers, "the whole fun of it": about 4-6 / 5-8 / 6-10 turns
-    turns: { 1: [4, 5, 6], 2: [5, 6, 7, 8], 3: [6, 7, 8, 9, 10] },
+    // Zafar's heal ladder (13 Oct): L3 adds only heard (the closed card); the bigger counts are L4's
+    turns: { 1: [4, 5, 6], 2: [5, 6, 7, 8], 3: [5, 6, 7, 8], 4: [6, 7, 8, 9, 10] },
   };
   const WHY = { problem: "knee-why", goal: "knee-goal" }; // line keys in data/clinic/heal/knee.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
@@ -31,7 +32,7 @@
   };
 
   function plan(level, rng, sideIn) {
-    const L = Math.max(1, Math.min(3, level));
+    const L = Math.max(1, Math.min(4, level));
     const side = sideIn || (rng() < 0.5 ? "left" : "right");
     const kicks = HS.pick(K.kicks[L], rng);
     const turns = HS.pick(K.turns[L], rng);
@@ -453,7 +454,7 @@
     items: ["hammer", "bandage"],
     itemsFor: { "knee-bump": ["hammer", "bandage"], "leg-break": ["hammer", "bandage"] },
     gestures: ["tap"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // L4: more turns (Zafar, 13 Oct)
     plan,
     mount,
     bot,

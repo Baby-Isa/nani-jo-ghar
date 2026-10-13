@@ -53,7 +53,7 @@
       if (working.length > 1) out.push(`gestures: at most one working gesture besides tap (has ${working.join(", ")})`);
       if (gs.some((x) => /hold|press/.test(x))) out.push("gestures: no press-and-hold (quality pass Q1)");
     }
-    if (def.levels && (!Array.isArray(def.levels) || def.levels.some((l) => ![1, 2, 3].includes(l)))) out.push("levels: 1-3");
+    if (def.levels && (!Array.isArray(def.levels) || def.levels.some((l) => ![1, 2, 3, 4].includes(l)))) out.push("levels: 1-4"); // L4: the harder variety (Zafar, 13 Oct)
     if (def.bot != null && typeof def.bot !== "function") out.push("bot: not a function");
     return out;
   };

@@ -599,6 +599,9 @@
       if (it.label === null && it.parts.length === 1) items[i] = Object.assign({ parts: [] }, it.parts[0]);
     });
     if (headed) items.forEach((it) => it.parts.forEach((p) => (p.next = !!it.headed && !it.done && st.now === p.key)));
+    // decision 95 (contract-8, SH-53): one thing lit at a time: while a row is being read aloud (its read-along light),
+    // the next-step band waits (it comes back when the reading ends)
+    if (st.reading) items.forEach((it) => it.parts.forEach((p) => (p.next = false)));
     const tt = this.titleText;
     const headHtml = !tt ? null : typeof tt === "string" ? esc(tt) : Kit.rowHtml(tt);
     // a headline still to record (the heal games' goal, D9) carries the grown-ups' "to record" flag (G2)
@@ -649,6 +652,9 @@
     this.el.innerHTML = "";
     if (!OC) return this;
     const c = OC.card(data, opts);
+    // decision 95 (contract-8, SH-53): one thing lit at a time. The drink's recipe (CLN-54) is the card's second item, so
+    // the shared card tints its box, and a tinted box round the row now lit reads as a second highlight: no tint here
+    if (headed) c.querySelectorAll(".oc-item.tint").forEach((x) => x.classList.remove("tint"));
     // the person's face (= replay), drawn by the clinic (a stand-in face element, not a picture file)
     if (this.faceEl) {
       const f = document.createElement("button");
@@ -832,23 +838,34 @@
   /** The read-along: read the rows in order, lighting each as it plays (the card's face is the replay). */
   Kit.Card.prototype.speak = async function (only) {
     const tt = this.titleText;
+    // decision 95 (contract-8, SH-53): one thing lit at a time: the next-step band waits while a line is read aloud
+    const hold = (on) => {
+      // every clinic card's band (the sidebar card's shows under the request pop-up's big card as it reads)
+      const doc = this.el.ownerDocument || document;
+      if (on) doc.querySelectorAll(".oc-row.next").forEach((x) => (x.classList.remove("next"), (x.dataset.nextHeld = "1")));
+      else doc.querySelectorAll("[data-next-held]").forEach((x) => (delete x.dataset.nextHeld, x.isConnected && x.classList.add("next")));
+    };
     const gen = Voice.gen; // a voice stop mid-card: the rows still to read stay quiet (SH-64)
     if (!only && tt && typeof tt === "object") {
       this.st.reading = "__head";
+      hold(true);
       if (this.headEl) this.headEl.classList.add("reading");
       await Voice.say(tt, { who: this.who, noBubble: true });
       if (this.st.reading === "__head") this.st.reading = null;
       if (this.headEl) this.headEl.classList.remove("reading");
+      hold(false);
     }
     const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows.slice(0, this.progressive ? this.shown + 1 : this.rows.length);
     for (const r of rows) {
       if (gen !== Voice.gen) break;
       if (!this.rows.includes(r)) continue;
       this.st.reading = r.id;
+      hold(true);
       if (r.el) r.el.classList.add("reading");
       await Voice.say(r, { who: r.who || this.who, noBubble: true });
       if (this.st.reading === r.id) this.st.reading = null;
       if (r.el) r.el.classList.remove("reading");
+      hold(false);
     }
   };
 

@@ -52,7 +52,9 @@ const HEAL_GESTURES = { cut: ["tap"], knee: ["tap"], ear: ["tap", "drag"], tooth
 const LABEL = { cut: "The scrape", knee: "The knee", ear: "The ear", tooth: "The tooth", taste: "Sore spots (tongue)", fever: "Fever", boing: "The jab (boing)", eye: "The eye", foot: "The foot", tummy: "Tummy ache", hic: "Hiccups", hair: "Itchy hair" };
 const STAGES = ["waiting", "diagnosis", "pharmacy", "heal", "sendoff"];
 const STAGE_LABEL = { waiting: "Waiting room", diagnosis: "Diagnosis", pharmacy: "Pharmacy (the belt)", heal: "Heal (the patient's game)", sendoff: "Send-off" };
-const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5] };
+const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5], heal: [1, 2, 3, 4] };
+// the heal games with a level 4 (their harder variety: Zafar's heal ladder, 13 Oct); the rest stop at 3 (their plans clamp)
+const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee"];
 
 const G = () => globalThis;
 const stamp = (u) => (typeof G().njgV === "function" ? G().njgV(u) : u);
@@ -293,7 +295,7 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
 
 const games = {};
 STAGES.forEach((s) => (games[s] = stageGame(s, { stage: s, gestures: s === "heal" ? ["tap", "drag"] : ["tap"], levels: STAGE_LEVELS[s] || [1, 2, 3], label: STAGE_LABEL[s] })));
-HEAL.concat(PARKED).forEach((g) => (games[g] = stageGame(g, { stage: "heal", heal: g, gestures: HEAL_GESTURES[g], label: LABEL[g] })));
+HEAL.concat(PARKED).forEach((g) => (games[g] = stageGame(g, { stage: "heal", heal: g, gestures: HEAL_GESTURES[g], label: LABEL[g], levels: HEAL_L4.includes(g) ? [1, 2, 3, 4] : undefined })));
 
 /* ---------------- the mode ---------------- */
 

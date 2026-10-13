@@ -565,15 +565,15 @@
    */
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
   const SCRAPE = {
-    dabs: { 1: [2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
+    dabs: { 1: [2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] },
     colours: ["red", "blue", "green", "yellow"],
     // CLN-45 (1 Oct, P14/P17; S05-G): at most two things to hold per step at L3, and L2 -> L3 adds one thing (heard only):
     // two plasters at L2 and L3, one colour each, each plaster's row said as it opens (D8)
-    plasters: { 1: 1, 2: 2, 3: 2 },
-    washRadius: { 1: 46, 2: 40, 3: 36 }, // svg units round the water's point that it washes
+    plasters: { 1: 1, 2: 2, 3: 2, 4: 2 },
+    washRadius: { 1: 46, 2: 40, 3: 36, 4: 36 }, // svg units round the water's point that it washes
     washDone: 0.85, // the share of the dirt washed when the rest rinses off by itself
     full: 0.97, // a patch this covered counts as covered
-    settle: { 1: 0.45, 2: 0, 3: 0 }, // L1: a plaster this near settles on straight (a help, never a judgement)
+    settle: { 1: 0.45, 2: 0, 3: 0, 4: 0 }, // L1: a plaster this near settles on straight (a help, never a judgement)
     plaster: { w: 156, h: 78 }, // the plaster on the close-up, svg units (the art is 2:1)
     patch: { rx: 40, ry: 18 },
   };
@@ -600,12 +600,15 @@
     plaster: { gesture: "drag" },
   };
   function planScrape(level, rng) {
-    const L = Math.max(1, Math.min(3, level));
+    const L = Math.max(1, Math.min(4, level));
     const dab = HS.pick(SCRAPE.dabs[L], rng);
     const n = SCRAPE.plasters[L];
     // CLN-45 (S05-G, P17 and §8D: each level adds one thing): L3's one new thing is that it's heard only (the closed card),
     // so its plasters are L2's, one colour each; the two-colour plasters (L3 until S05) made the L2 -> L3 jump two things
-    const options = SCRAPE.colours.map((c) => [c]);
+    // Zafar (13 Oct): the two-colour plasters come back at level 4 and up ("fine in later harder levels")
+    const options = [];
+    if (L < 4) SCRAPE.colours.forEach((c) => options.push([c]));
+    else SCRAPE.colours.forEach((a, i) => SCRAPE.colours.slice(i + 1).forEach((b) => options.push([a, b])));
     const seq = HS.shuffle(options, rng).slice(0, n);
     // 13h: the plasters' order is a sequence on the shared card: one part per plaster (pela ..., ne poi ...),
     // the next one in the grey band, each ticking as it goes on. The colours are the clinic's colour words (col-*:
@@ -1317,7 +1320,7 @@
     items: ["paani", "cloth", "thread", "plaster"],
     itemsFor: { scrape: ["paani", "cloth", "plaster"], cut: ["paani", "thread", "plaster"] },
     gestures: ["tap", "drag"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // L4: the scrape's two-colour plasters (the cut plays its L3)
     plan,
     mount,
     bot,

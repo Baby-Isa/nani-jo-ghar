@@ -28,9 +28,22 @@
     2,
     3
    ],
-   "_note": "two colours, the drink with a spoon count (written)"
+   "_note": "not the colour said (na): pop the other two (the level's one new thing, with the drink's spoon count, written)"
   },
   "3": {
+   "pop": 2,
+   "each": 2,
+   "decoys": 2,
+   "upMs": 2100,
+   "maxUp": 4,
+   "counts": [
+    1,
+    2,
+    3
+   ],
+   "_note": "level 2 heard only (the closed card) (Zafar's heal ladder, 13 Oct)"
+  },
+  "4": {
    "each": 2,
    "decoys": 3,
    "upMs": 1500,
@@ -40,7 +53,7 @@
     2,
     3
    ],
-   "_note": "not the colour said (na): pop the other two; faster; heard only (the closed card)"
+   "_note": "harder variety (level 4, Zafar 13 Oct): faster, a third decoy of each other colour; heard only"
   }
  },
  "colours": {

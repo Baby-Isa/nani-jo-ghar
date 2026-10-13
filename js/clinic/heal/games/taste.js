@@ -9,9 +9,9 @@
  *    pour look: the jug flies over, tips, a stream, the level rises), adds its one thing (by the spoon from level 2:
  *    "ba chamchi hardar waaro dudh"), stirs, and gives it: the patient drinks and the spots left fade away.
  *    The wrong drink: the patient pulls a face, the spots stay, and another can be made (the first given is scored).
- * Levels (each adds one thing, E6): L1 one colour + the drink (the first play is the guided round, D13); L2 two
- * colours, the drink with a spoon count; L3 "not the red ones" (*na*: pop every colour but the one said), faster
- * spots, heard only (the closed card). The colours are English placeholders until the recording (to record).
+ * Levels (each adds one thing, E6; Zafar's heal ladder, 13 Oct: all new things by L2, L3 heard only, harder from L4):
+ * L1 one colour + the drink (the first play is the guided round, D13); L2 "not the red ones" (*na*: pop every colour
+ * but the one said), the drink with a spoon count; L3 the same, heard only (the closed card); L4 faster, more decoys. The colours are English placeholders until the recording (to record).
  * Rows (the words decide): the spots popped (only the colours said) and the drink given first.
  * Art swaps in by file name: data art.* (the art plan's M2 tongue, O2 spots, O3 bud) once ready.
  */
@@ -49,13 +49,14 @@
     return d.join === "with" ? Lg.join([head, "cl-waaro", THINGS[d.liquid].lex]) : Lg.join([head, Lg.also(THINGS[d.liquid].lex)]);
   };
   const K = {
-    pop: { 1: 1, 2: 2, 3: 2 }, // colours to pop (L3: every colour but the one said)
-    each: { 1: 3, 2: 2, 3: 2 }, // spots of each popping colour
-    decoys: { 1: 2, 2: 2, 3: 3 }, // spots of each other colour
-    upMs: { 1: 2600, 2: 2100, 3: 1500 },
-    maxUp: { 1: 3, 2: 4, 3: 4 },
-    counts: { 2: [1, 2, 3], 3: [1, 2, 3] },
+    pop: { 1: 1, 2: 2, 3: 2, 4: 2 }, // colours to pop (from L2: every colour but the one said)
+    each: { 1: 3, 2: 2, 3: 2, 4: 2 }, // spots of each popping colour
+    decoys: { 1: 2, 2: 2, 3: 2, 4: 3 }, // spots of each other colour
+    upMs: { 1: 2600, 2: 2100, 3: 2100, 4: 1500 },
+    maxUp: { 1: 3, 2: 4, 3: 4, 4: 4 },
+    counts: { 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] },
   };
+  const NA = 2; // the level "not the ... ones" (na) arrives
   const WHY = { problem: "taste-why", goal: "taste-goal" }; // line keys in data/clinic/heal/taste.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -66,14 +67,14 @@
   };
 
   function plan(level, rng, data) {
-    const L = Math.max(1, Math.min(3, level));
+    const L = Math.max(1, Math.min(4, level));
     const lv = (data && data.levels && data.levels[L]) || {};
     const Lg = HS.L;
     const colours = HS.shuffle(Object.keys(COLS), rng);
     const nPop = lv.pop || K.pop[L];
-    // L3: the doctor names the one colour NOT to pop
-    const not = L === 3 ? colours[0] : null;
-    const targets = L === 3 ? colours.slice(1) : colours.slice(0, nPop);
+    // from L2: the doctor names the one colour NOT to pop
+    const not = L >= NA ? colours[0] : null;
+    const targets = L >= NA ? colours.slice(1) : colours.slice(0, nPop);
     const spots = [];
     colours.forEach((c) => {
       const n = targets.includes(c) ? lv.each || K.each[L] : lv.decoys || K.decoys[L];
@@ -99,7 +100,7 @@
     // the blind player's choices: which colours to pop (one of the colour sets), which drink (and how many spoons)
     // (in a fixed order: the screen shows the colours mixed over the tongue, never in the order said)
     const all = Object.keys(COLS);
-    const sets = L === 1 ? all.map((c) => [c]) : L === 2 ? all.flatMap((a, i) => all.slice(i + 1).map((b) => [a, b].sort())) : all.map((c) => all.filter((x) => x !== c).sort());
+    const sets = L < NA ? all.map((c) => [c]) : all.map((c) => all.filter((x) => x !== c).sort());
     const dOpts = [].concat(...Object.keys(DRINKS).map((d) => (counts ? counts.map((k) => `${d}x${k}`) : [d])));
     const rows = [
       { id: "pop", options: sets.map((x) => x.join("+")), answer: targets.slice().sort().join("+"), placeholder: true }, // the colours wait for the recording
@@ -627,7 +628,7 @@
     ailments: ["coated-tongue"],
     items: ["dudh", "limu", "honey", "paani", "spoon"],
     gestures: ["tap"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // L4: faster, a third decoy (Zafar, 13 Oct)
     plan,
     mount,
     bot,

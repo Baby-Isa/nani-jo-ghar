@@ -575,7 +575,8 @@
   /* ================= stage 4: heal ================= */
   P.heal = function (data, level, rng, o = {}) {
     const ail = data.ailments[o.ailment];
-    return { stage: "heal", level: clampL(level), game: ail.game, ailment: o.ailment, side: o.side || null, part: o.part || ail.part, tray: o.tray || ail.items.map((id) => ({ id })) };
+    // the heal games go to level 4 (their harder variety, Zafar 13 Oct); the game's own plan clamps to the levels it has
+    return { stage: "heal", level: Math.max(1, Math.min(P.MAX_LEVEL.heal, level | 0 || 1)), game: ail.game, ailment: o.ailment, side: o.side || null, part: o.part || ail.part, tray: o.tray || ail.items.map((id) => ({ id })) };
   };
 
   /* ================= stage 5: the send-off ================= */
@@ -711,9 +712,10 @@
   };
   /**
    * After a morning: a stage whose tested rows were all right goes up one
-   * level (max 3; the waiting room's ladder max 5). results = [{stage: [{ok, tested}]}] per patient.
+   * level (max 3; the waiting room's ladder max 5, the heal games' 4). results = [{stage: [{ok, tested}]}] per patient.
    */
-  P.MAX_LEVEL = { waiting: 5 }; // the waiting room's language ladder has five rungs (W4); the rest stop at 3
+  P.MAX_LEVEL = { waiting: 5, heal: 4 }; // the waiting room's language ladder has five rungs (W4); the heal games' L4 is
+  // their harder variety (Zafar, 13 Oct: new things by L2, L3 heard only, e.g. two-colour plasters from L4); the rest stop at 3
   P.levelUp = function (levels, results) {
     const out = Object.assign({}, levels);
     STAGES.forEach((s) => {

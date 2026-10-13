@@ -7,12 +7,12 @@
  * 2. The splinters, seen on the sole (toes up, the leg off the bottom): each sits in a lighter channel that runs with
  *    square turns to the edge of the foot. Drag the splinter along its channel; touching the side is an "ow": it
  *    slides back to the last turn and is a scored hand-skill mistake (the "steady" row).
- *    L1 one straight channel; L2 two, with one or two turns; L3 three, from three toes, three turns each and
- *    narrower, and the toes named for the order (pela [big toe], ne poi ...: the Kutchi decides it).
+ *    L1 one straight channel; L2 three, from three toes, three turns each, the toes named for the order (pela [big
+ *    toe], ne poi ...: the Kutchi decides it); L3 the same, heard only; L4 the channels narrower (Zafar, 13 Oct).
  * 3. A plaster on each spot.
  * Sides are said and tested in the diagnosis only (D10): one sore foot here. The channels are drawn in code over
  * the art plan's sole (P1, closeups/<set>/sole.webp, swapped in by file name when it exists).
- * Rows: the soak (which water, how many jugs), the toe order at L3, and the steady hand (a skill row: no words).
+ * Rows: the soak (which water, how many jugs), the toe order from L2, and the steady hand (a skill row: no words).
  */
 (function (root) {
   "use strict";
@@ -22,7 +22,11 @@
   const TEMPS = ["hot", "cold", "lukewarm"];
   // the water's word by id (G26): Mum's garam and thundo; lukewarm is a data entry to record
   const TEMP_ID = { hot: "feel-hot", cold: "feel-cold", lukewarm: "feel-lukewarm" };
-  const K = { jugs: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4] }, halfW: { 1: 30, 2: 25, 3: 19 }, slackPx: 8, len: 44 };
+  // Zafar (13 Oct, the heal ladder): each level adds one thing, all by level 2; level 3 only closes the card; harder
+  // variety at level 4. So the toe order (the toes named, three splinters) is level 2's new thing, level 3 is level 2
+  // heard only, and the narrow channels (level 3's until now) are level 4's
+  const K = { jugs: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4] }, halfW: { 1: 30, 2: 25, 3: 25, 4: 19 }, slackPx: 8, len: 44 };
+  const ORDER = 2;
   const TOES = ["big toe", "middle toe", "little toe"];
   const TOE_ID = { "big toe": "cl-big-toe", "middle toe": "foot-middle-toe", "little toe": "cl-little-toe" };
   const WHY = { problem: "foot-why", goal: "foot-goal" }; // line keys in data/clinic/heal/foot.json (the engine says them)
@@ -73,17 +77,17 @@
   };
 
   function plan(level, rng) {
-    const L = Math.max(1, Math.min(3, level));
+    const L = Math.max(1, Math.min(4, level));
     const temp = HS.pick(TEMPS, rng);
     const jugs = HS.pick(K.jugs[L], rng);
     const flip = rng() < 0.5;
-    const set = HS.pick(PATHS[L], rng);
+    const set = HS.pick(L >= ORDER ? PATHS[3] : PATHS[1], rng); // the toe channels from level 2 (PATHS[2]: the two unnamed splinters, unused since)
     const splinters = set.map((q, i) => {
       const raw = Array.isArray(q) ? q : q.pts;
       const pts = flip ? mirror(raw) : raw.map((p) => p.slice());
       return { id: `s${i}`, toe: q.toe || null, pts, lens: lens(pts), turns: pts.length - 2 };
     });
-    const order = L === 3 ? HS.shuffle(TOES, rng) : null;
+    const order = L >= ORDER ? HS.shuffle(TOES, rng) : null;
     // words, numbers and joins from data through the seam (R5)
     const Lg = HS.L;
     const say = (m, o) => Lg.show(m, o);
@@ -504,7 +508,7 @@
     items: ["paani", "loon", "tweezers", "plaster"],
     itemsFor: { "sore-feet": ["paani", "loon", "tweezers", "plaster"] },
     gestures: ["tap", "drag"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // L4: the narrow channels (Zafar, 13 Oct: harder variety from level 4)
     plan,
     mount,
     bot,

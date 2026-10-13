@@ -14,7 +14,8 @@
  *    rows (the "now" band; gold when judged: CLN-61). After na the dropper hangs over the eye and pulses: one tap,
  *    then the patient reads that row again (CLN-62, the redrop Zafar liked). No hidden first step (CLN-63): sides
  *    are said only in the diagnosis (D10).
- *    L1: one picture a row, what they say also written by them; L2 heard only; L3 two or three pictures a row.
+ *    L1: one picture a row, what they say also written by them; L2 heard only, up to three pictures a row; L3 the same
+ *    with the card closed; L4 up to four pictures a row (Zafar's heal ladder, 13 Oct).
  * The help never presses haa on a row read wrong (CLN-60): its first row is shown with the right answer, unscored.
  * Rows (the words decide): the drop count, each chart row's judgement.
  * Art swaps in by file name: data art.* (the art plan's Y1-Y3 eyes, T1/T2 eye tests, C1/C2 charts) once ready.
@@ -35,7 +36,9 @@
   const word = (t) => W(t).kutchi || `[${W(t).english}]`;
   // EY12 (decision 12 of the 6 Oct report, CLN-107): a real eye chart: one big picture at the top, more and smaller
   // ones lower down; per[L][row] = the pictures in that row
-  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4 }, per: { 1: [1, 1, 2], 2: [1, 2, 2, 3], 3: [1, 2, 3, 4] }, wrongP: 0.45 };
+  // Zafar's heal ladder (13 Oct): all new things by L2, L3 heard only (the closed card), harder variety from L4: the
+  // four-picture row (L3's until now) is L4's
+  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4, 4: 4 }, per: { 1: [1, 1, 2], 2: [1, 2, 2, 3], 3: [1, 2, 2, 3], 4: [1, 2, 3, 4] }, wrongP: 0.45 };
   const WHY = { problem: "eye-why", goal: "eye-goal" }; // line keys in data/clinic/heal/eye.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -46,7 +49,7 @@
   };
 
   function plan(level, rng) {
-    const L = Math.max(1, Math.min(3, level));
+    const L = Math.max(1, Math.min(4, level));
     // D10 (1 Oct): sides are said and tested in the diagnosis only: no side row, no "cover the other eye"
     const side = null;
     const drops = HS.pick(K.drops[L], rng);
@@ -800,7 +803,7 @@
     items: ["drops-green", "pointer", "patch"],
     itemsFor: { "sore-eye": ["drops-green", "pointer", "patch"] },
     gestures: ["tap"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // L4: up to four pictures a row (Zafar, 13 Oct)
     plan,
     mount,
     bot,

@@ -300,7 +300,8 @@
     const def = Heal.get(gameId);
     if (!def) throw new Error(`No healing game "${gameId}" is registered`);
     const data = await HOST.gameData(gameId);
-    const level = Math.max(1, Math.min(3, opts.level || 1));
+    // a game's own levels (L4: the harder variety, Zafar 13 Oct), never past them
+    const level = Math.max(1, Math.min(Math.max(...(def.levels || [3])), opts.level || 1));
     const seed = opts.seed != null ? opts.seed : Math.floor(Math.random() * 1e9);
     const rng = opts.rng || Kit.rng(seed);
     const side = opts.side === undefined ? null : opts.side;

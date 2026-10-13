@@ -7,12 +7,12 @@
  *    into the upright syringe below, counted on the syringe (D6). The drops are teardrop-shaped, matte and see-through
  *    (never a glossy ball, never sweets: I2, art plan question 9). A drop is taken back by tapping THAT drop in the
  *    syringe, never by tapping the barrel (CLN-58); the first go is the one scored (E14).
- *    L1 one dispenser, the count written and said; L2 one dispenser, more drops (the count written only);
- *    L3 three or four dispensers and the colours said, in order ("ba [red], ne poi hakro [blue]").
+ *    L1 one dispenser, the count written and said; L2 four dispensers and the colours said, in order ("ba [red],
+ *    ne poi hakro [blue]"); L3 the same, heard only (the closed card: Zafar's ladder, 13 Oct).
  * 3. The syringe's end glows: pressing it starts the jab (no ✓, D7): the doctor counts down, BOING (a starburst, no
  *    written word), the patient jumps.
  * 4. A plaster on the spot. The apple is only at the send-off (H33), not here.
- * Rows (the words decide): the wipes; the drops (count, and at L3 the colours in order).
+ * Rows (the words decide): the wipes; the drops (the count at L1, the colours in order from L2).
  * The art swaps in by file name (boing.json `art`: the art plan's D1 and D2); a missing file keeps the stand-in.
  */
 (function (root) {
@@ -20,7 +20,10 @@
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
-  const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, drops: { 1: [2, 3, 4], 2: [3, 4, 5] }, colours: ["red", "yellow", "blue", "green"], tubes: { 3: 4 }, one: "purple", maxDrops: 5 };
+  const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, drops: { 1: [2, 3, 4] }, colours: ["red", "yellow", "blue", "green"], tubes: 4, one: "purple", maxDrops: 5 };
+  // Zafar (13 Oct, the heal ladder): each level adds one thing, all by level 2; level 3 only closes the card. So the
+  // drops' colours, in order, are level 2's new thing (they were level 3's, with the closed card: two at once)
+  const COL = 2;
   // line keys in data/clinic/heal/boing.json (the engine says them); T34: the headline is [Time for the jab] (to record)
   const WHY = { problem: "boing-why", goal: "boing-jab-goal" };
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
@@ -38,11 +41,11 @@
     const wipes = HS.pick(K.wipes[L], rng);
     let drops;
     let tubes;
-    if (L < 3) {
+    if (L < COL) {
       drops = Array(HS.pick(K.drops[L], rng)).fill(K.one);
       tubes = [K.one];
     } else {
-      tubes = HS.shuffle(K.colours, rng).slice(0, K.tubes[3]);
+      tubes = HS.shuffle(K.colours, rng).slice(0, K.tubes);
       const [a, b] = HS.shuffle(tubes, rng);
       const na = 1 + Math.floor(rng() * 2);
       const nb = 1 + Math.floor(rng() * 2);
@@ -53,7 +56,7 @@
     const Lg = HS.L; // words, numbers and joins from data through the seam (R5)
     const say = (m, o) => Lg.show(m, o);
     const groupM = (g) => Lg.item(g.c, { n: g.n });
-    const dropW = L < 3 ? say(Lg.join(["cl-drops", ",", Lg.count(drops.length)]), { cap: true }) : say(Lg.join(["cl-drops", ":", ...groups.flatMap((g, i) => (i ? [",", groupM(g)] : [groupM(g)]))]), { cap: true });
+    const dropW = L < COL ? say(Lg.join(["cl-drops", ",", Lg.count(drops.length)]), { cap: true }) : say(Lg.join(["cl-drops", ":", ...groups.flatMap((g, i) => (i ? [",", groupM(g)] : [groupM(g)]))]), { cap: true });
     const steps = [
       { id: "wipe", kind: "wipe", count: wipes, row: Object.assign({ id: "wipe", seq: "steps" }, say(Lg.join(["cl-wipe", ",", Lg.count(wipes)]), { cap: true })) },
       {
@@ -62,18 +65,18 @@
         drops,
         row: Object.assign({ id: "drops", seq: "steps" }, dropW),
         // L3: the colours in order are a sequence on the card (13h): one part per colour (in the job's one sequence)
-        rows: L < 3 ? null : groups.map((g, i) => Object.assign({ id: `drops${i}`, seq: "steps" }, say(i ? Lg.then(groupM(g), { lower: true }) : groupM(g)))),
+        rows: L < COL ? null : groups.map((g, i) => Object.assign({ id: `drops${i}`, seq: "steps" }, say(i ? Lg.then(groupM(g), { lower: true }) : groupM(g)))),
       },
       { id: "press", kind: "press", row: Object.assign({ id: "press", seq: "steps" }, say(Lg.item("boing-press"), { cap: true })) },
       { id: "boing", kind: "boing", row: null },
       { id: "plaster", kind: "plaster", row: Object.assign({ id: "plaster", seq: "steps" }, say(Lg.item("cl-plaster"), { cap: true })) },
     ];
     const rows = [{ id: "wipe-count", options: K.wipes[L], answer: wipes }];
-    if (L < 3) rows.push({ id: "drop-count", options: K.drops[L], answer: drops.length });
+    if (L < COL) rows.push({ id: "drop-count", options: K.drops[L], answer: drops.length });
     else rows.push({ id: "drop-colours", seq: tubes, answer: drops, placeholder: true });
     const words = [Lg.num(wipes), Lg.w("cl-wipe"), Lg.w("cl-drops"), Lg.w("cl-plaster")];
     groups.forEach((g) => words.push(Lg.num(g.n)));
-    if (L >= 3) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"));
+    if (L >= COL) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"));
     return { level: L, steps, rows, words, tubes };
   }
 
@@ -231,7 +234,7 @@
       if (c.kind === "drops") {
         // a drop taken back counts only if the child had gone past the count (the first go is scored)
         const over = st.slip && st.max > c.drops.length;
-        if (P.level < 3) judge("drop-count", !over && st.drops.length === c.drops.length, `${st.drops.length} of ${c.drops.length}`);
+        if (P.level < COL) judge("drop-count", !over && st.drops.length === c.drops.length, `${st.drops.length} of ${c.drops.length}`);
         else judge("drop-colours", !st.wrongColour && JSON.stringify(st.drops) === JSON.stringify(c.drops), st.drops.join(" "));
         badge(0);
       }
@@ -347,7 +350,7 @@
       const k = st.drops.length;
       st.drops.push(colour);
       st.max = Math.max(st.max, st.drops.length);
-      if (P.level >= 3 && d.drops[k] !== colour) st.wrongColour = true;
+      if (P.level >= COL && d.drops[k] !== colour) st.wrongColour = true;
       // the drop falls from the spout into the barrel
       const fall = tear(fallG, lv.x, M.y + 136, 11, colour);
       const dy = slotY(k) - (M.y + 136);

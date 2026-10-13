@@ -3,10 +3,11 @@
  *
  * Why: "My tooth hurts." / "Let's brush, fix it and fill it."
  * 1. Brush: the toothbrush rests in the open mouth. The doctor calls ONE move at a time (its row appears as it's said,
- *    D8: never the whole order up front, R5's "6 shown at once" fixed); drag the brush that way. L1 2 moves, L2 4,
- *    L3 6 (left / right are the patient's own: dabo / jamno at L3, mirrored on screen).
+ *    D8: never the whole order up front, R5's "6 shown at once" fixed); drag the brush that way. L1 2 moves; L2 4,
+ *    left / right the patient's own (dabo / jamno, mirrored on screen); L3 the same, heard only; L4 6 (Zafar's heal
+ *    ladder, 13 Oct: each level one new thing, all by L2, L3 heard only, harder variety from L4).
  * 2. Drill: the camera pushes in on the sore tooth, still in the mouth (gum above, the neighbours either side, the
- *    lip below: CLN-52, P43). The decay is jagged and scattered by level (L1 one patch, L2 two, L3 four small ones:
+ *    lip below: CLN-52, P43). The decay is jagged and scattered by level (L1 one patch, L2-3 two, L4 four small ones:
  *    P44). Drag the drill over it; its tip is the finger (CLN-51). Drilling the white too long chips the tooth.
  * 3. Fill: hold the big round button (it goes down while pressed); the nozzle squeezes paste into the holes and the
  *    gauge beside the tooth rises: let go in the green, with red either side. The green narrows and the fill speeds
@@ -22,11 +23,11 @@
 
   // the defaults; data/clinic/heal/tooth.json (levels, fill, drill) overrides them in the browser
   const K = {
-    moves: { 1: 2, 2: 4, 3: 6 },
-    decay: { 1: { n: 1, r: 52 }, 2: { n: 2, r: 38 }, 3: { n: 4, r: 25 } },
+    moves: { 1: 2, 2: 4, 3: 4, 4: 6 },
+    decay: { 1: { n: 1, r: 52 }, 2: { n: 2, r: 38 }, 3: { n: 2, r: 38 }, 4: { n: 4, r: 25 } },
     chipAt: 16, // healthy enamel points drilled before the tooth chips
-    drillMs: { 3: 16000 },
-    fill: { ms: { 1: 3400, 2: 2600, 3: 2000 }, zone: { 1: [0.55, 0.86], 2: [0.62, 0.82], 3: [0.67, 0.8] }, max: 1.15 },
+    drillMs: { 4: 16000 },
+    fill: { ms: { 1: 3400, 2: 2600, 3: 2600, 4: 2000 }, zone: { 1: [0.55, 0.86], 2: [0.62, 0.82], 3: [0.62, 0.82], 4: [0.67, 0.8] }, max: 1.15 },
   };
   const WHY = { problem: "tooth-why", goal: "tooth-goal" }; // line keys in data/clinic/heal/tooth.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
@@ -65,7 +66,7 @@
   };
 
   function plan(level, rng, data) {
-    const L = Math.max(1, Math.min(3, level));
+    const L = Math.max(1, Math.min(4, level));
     const lv = (data && data.levels && data.levels[L]) || {};
     const nMoves = lv.chain || K.moves[L];
     const moves = [];
@@ -76,7 +77,7 @@
       moves.push(m);
     }
     const Lg = HS.L;
-    const dirM = (m) => (L === 3 && (m === "left" || m === "right") ? Lg.item(Lg.sideId(m)) : Lg.item(DIR_ID[m]));
+    const dirM = (m) => (L >= 2 && (m === "left" || m === "right") ? Lg.item(Lg.sideId(m)) : Lg.item(DIR_ID[m]));
     // the decay: jagged patches scattered over the crown, never overlapping
     const dk = Object.assign({}, K.decay[L], lv.decay || {});
     const patches = [];
@@ -102,7 +103,7 @@
       { id: "fill-line", skill: true, answer: true },
     ];
     const words = [Lg.w("tooth-up"), Lg.w("tooth-down"), Lg.w("body-tooth"), Lg.w("tooth-brush")];
-    if (L === 3) words.push(Lg.w(Lg.sideId("left")), Lg.w(Lg.sideId("right")));
+    if (L >= 2) words.push(Lg.w(Lg.sideId("left")), Lg.w(Lg.sideId("right")));
     else words.push(Lg.w("tooth-left"), Lg.w("tooth-right"));
     return { level: L, moves, steps, rows, words };
   }
@@ -761,7 +762,7 @@
     ailments: ["sugar-bug", "cracked-tooth"],
     items: ["toothbrush", "drill", "paste"],
     gestures: ["tap", "drag"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // L4: six moves, four small patches, the timer, the narrow green (Zafar, 13 Oct)
     plan,
     mount,
     bot,
