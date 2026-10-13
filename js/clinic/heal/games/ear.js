@@ -372,7 +372,7 @@
           const b = (c.order && blobs.find((q) => !q.out && q.size === c.order[0])) || inEar()[0];
           return b ? { x: b.x, y: b.y, r: b.r + 10 } : null;
         };
-        S.cue("wax", Object.assign({ to: { x: TISSUE.x, y: TISSUE.y, r: 50 } }, CUES.wax), first);
+        S.cue("wax", Object.assign({ to: { x: TISSUE.x, y: TISSUE.y, r: 50 }, also: [S.toolEls.tweezers] }, CUES.wax), first);
         carryTweezers();
       } else if (c.kind === "wipe") {
         if (!smears.length) return close(); // nothing left to wipe (never a dead step)

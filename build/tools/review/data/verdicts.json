@@ -1339,6 +1339,23 @@
   "commit": "48f64ae",
   "date": "2026-10-13"
  },
+ "CLN-112": {
+  "hash": "45cf2b8ef65e331549c1",
+  "dhash": [
+   "7676f2cedffbd6d7",
+   "71131313131301c6",
+   "7676f2ceceebd6d7",
+   "713b43c3c3c301c6"
+  ],
+  "verdict": "PASS",
+  "line": "D, the jug sits in the first tray space at before-takeback, and B, the same space is empty at after-takeback (tray tap put it back); the s05d3 audit table names every game's take-back (scrape, fever, boing, pharmacy, waiting L4) or its reason (knee, ear, tooth, taste, eye, foot, diagnosis, send-off)",
+  "panel": "D",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-174442-8et",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-174442-8et/CLN-112.png",
+  "date": "2026-10-13"
+ },
  "CLN-113": {
   "hash": "dcca91026fbe3333f51a",
   "dhash": [
@@ -1674,6 +1691,21 @@
   "png": null,
   "date": "2026-10-12"
  },
+ "CLN-142": {
+  "hash": "04f14d2650ea76b5e942",
+  "dhash": [
+   "cfaf8bab8383c9ca",
+   "039b931297170313"
+  ],
+  "verdict": "PASS",
+  "line": "A, the taught scrape at real pace from a fresh profile reaches the results-badges end screen (card outlined, 15s timer badge, tick, bulb x0, Next arrow), recorded at 18.3s instead of timing out after plaster demos",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-175553-umz",
+  "commit": "913f993",
+  "png": "build/screenshots/evidence/ev-20261013-175553-umz/CLN-142.png",
+  "date": "2026-10-13"
+ },
  "CLN-17": {
   "hash": "a66008768accb8c43b70",
   "dhash": [
@@ -1739,20 +1771,20 @@
   "date": "2026-10-12"
  },
  "CLN-22": {
-  "hash": "278536aaad40f293e3b9",
+  "hash": "5cb315c00187be33eca1",
   "dhash": [
    "3303030303030303",
-   "71111111111111c7",
    "3303030303030303",
-   "1101012169710103"
+   "7676f2cecefed6d7",
+   "71131313131301c6"
   ],
-  "verdict": "FAIL",
-  "line": "D, at rec:after-takeback the plaster still sits on the tray under a grey dim and no empty outlined space has come back, so a put-back is not shown (D is also drawn smaller than A-C); A-C are right: dashed outlines, one or two spaces, the outline gone as the item lands (A3, B3, C3), the front lip drawn over the jug's base (B3)",
+  "verdict": "PASS",
+  "line": "D, at rec:after-takeback the tray shows two empty dashed-outlined spaces and no item, where the off-sheet before-takeback crop (cln-22-p2-l2-1366x768-before-takeback-h1-c1-crop.png) had the jug seated in the left space, its outline gone and the front lip drawn over its base; A3/B3 show the outline gone as the plaster/thermometer lands, A1-2/B1-2 the dashed spaces; L3's space count is not visible in the x2 zoom and first-pick scoring is CLN-128's",
   "panel": "D",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/CLN-22.png",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-174442-8et",
+  "commit": "5658b93",
+  "png": "build/screenshots/evidence/ev-20261013-174442-8et/CLN-22.png",
   "date": "2026-10-13"
  },
  "CLN-23": {

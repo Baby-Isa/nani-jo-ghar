@@ -539,7 +539,9 @@
           /* no first step */
         } else if (g === "drag" && sp.to) {
           const to = rectOf(sp.to);
-          steps.push({ spotlight: [first, to], ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
+          // sp.also: more things lit with the move, still tappable during the help (the ear's tweezers tile: a child who
+          // picks the tool first is never blocked by the help's light)
+          steps.push({ spotlight: [first, to].concat((sp.also || []).map(rectOf)), ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
         } else if (first()) steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
         const nx = then || sp.then;
         if (nx) {
