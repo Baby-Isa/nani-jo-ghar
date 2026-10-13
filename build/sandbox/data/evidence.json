@@ -885,12 +885,15 @@
    "at": "every:line",
    "after": null,
    "capture": [
-    "strip:.njg-guide:6x200"
+    "strip:.njg-guide:6x200",
+    "strip:#mission .oc-strip:6x200"
    ],
-   "expect": null,
+   "expect": [
+    "count:#mission .oc-strip .ra-on>=1"
+   ],
    "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays)",
    "max": 4,
-   "delay": 500
+   "delay": 150
   },
   {
    "flow": "clinic:waiting",

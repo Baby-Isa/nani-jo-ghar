@@ -360,14 +360,36 @@
       } catch (e) {
         /* an older Phaser: the from below still holds */
       }
+      // ART-18 (S05-S2): while it talks the talk is its only motion: an idle loop of its own (Cook's breathing, a scaleY
+      // yoyo) is paused, so the two never add up to more bob than the talk's (2.4-3.8 px measured); it goes on after
+      const held = [];
+      try {
+        (scene.tweens.getTweensOf(img) || []).forEach((t) => {
+          const endless = t && !t.njgTalk && (t.loop === -1 || (t.data || []).some((d) => d && d.repeat === -1));
+          if (endless && typeof t.pause === "function" && !(t.isPaused && t.isPaused())) {
+            t.pause();
+            held.push(t);
+          }
+        });
+      } catch (e) {
+        /* an older Phaser: the breath goes on */
+      }
       img.y = y0;
-      const tw =scene.tweens.add({ targets: img, y: { from: y0, to: y0 - TALK.lift }, angle: { from: 0, to: (o.dir || 1) * TALK.tilt }, duration: TALK.ms, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+      const tw = scene.tweens.add({ targets: img, y: { from: y0, to: y0 - TALK.lift }, angle: { from: 0, to: (o.dir || 1) * TALK.tilt }, duration: TALK.ms, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+      tw.njgTalk = true; // (another talk on the same image is never held by this one)
       return () => {
         try {
           tw.stop();
         } catch (e) {
           /* gone */
         }
+        held.forEach((t) => {
+          try {
+            t.resume();
+          } catch (e) {
+            /* gone with its scene */
+          }
+        });
         if (img.active !== false) {
           img.y = y0;
           img.angle = 0;
