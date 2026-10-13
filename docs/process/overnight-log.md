@@ -32,3 +32,5 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 01:13 S05-T2: clinic and round-2 probe items done; lint-specs baseline 0; open: CLN-117 driver, contract-11 settle, SH-41 clinic English
 09:15 S05-C2: SH-44 (Cook half), SEK-03, SH-51, SH-17 and the legacy Roll art fixed and proven; SH-09, PAN-01, SH-58, CHAI-15 pass; SH-19, SH-17 probes and DAAR-11 trace to T; DAAR-11 handle and the Fill fold to Zafar. Report build/reports/s05c2-cook.md.
 11:05 S05-C2 round 3: DAAR-11 radial ladle, Fill fold on the strip art, the day-1 green square, contract-3 'Thank you!' fixed and proven; the English bubble is a tagged placeholder; blank frames and contract-8 to T/S2.
+
+13:00 S05-P: ART-18 traced on Nani's talk alone (1.4/1.9 px); 17 rows built on ev-20261013-113508-8ie; SH-03, SAM-02/08/10, CK-09, SEK-07 decided; MAA-08, SH-66, CLN-65 are game faults for G; SEK-13, ART-12, CLN-45 still open; CLN-122 closed; 45 open, 294 built.
