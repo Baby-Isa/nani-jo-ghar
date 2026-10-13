@@ -27,3 +27,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 23:38 S05-T2: probes fixed, final run ev-20261012-232804-aql; extra orchestrator items next (report build/reports/s05t2-probes.md)
 - 2026-10-13 00:46 UK · S05-C round 2 (S/B items, PAN-06): CK-22 built; SH-56, PAN-09, PAN-06 sheets to judge; cards closed from L3; SH-58/SH-44/SEK-03/SH-19/PAN-01 wait on T's probes, SH-09 on S's card, the fridge on Mum
 23:58 S05-T2: extra items done (SH-66, vessel meta, SEK-05, re-points, --lint-specs); DAAR-11, CHAI-15, SEK-07 still tool failures
+- 2026-10-13 01:24 UK · S05-S2 shared round 2: SH-16 (small bulb), SH-72 (new: no written rows in the L3 pop-up), SH-09, PAN-01, SH-36, SH-48, SH-64 built with red/green runs; SH-01, SH-16 sheets to judge; SH-17, SH-19, SH-41, SH-44, SH-51, SH-58, SEK-03, ART-18 open with cause and owner (report build/reports/s05s2-shared.md)
