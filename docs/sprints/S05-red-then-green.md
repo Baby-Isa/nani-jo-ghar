@@ -58,6 +58,8 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~10:25 UK: D2: the whole-patient end screen already gathers the heal game's steps (host stepsOf); cut L1 patient shows 3 steps. For `/review`: the cut step reads 'Ne poi cloth, ba dabs': check 'cloth' and 'dabs' are grey to-record placeholders, not English written as Kutchi.
 
+13 Oct ~10:52 UK check-in: **70 open, 268 built.** Decision 94 done by C2 (the ladle turns with its path, e1afa2d; the Fill tile on the strip art, 6b09712); decision 95 (one highlight, one colour) amends F9, ui-design-system §12, SEK-03. S2 building the steps page; D2 done (whole-patient steps); T2 answered (bulb .lit counts if it adds colour; SH-17 animates; SH-44 probes at the new page), last round. C2 on day 1's items. Spend about $205 of $270.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
