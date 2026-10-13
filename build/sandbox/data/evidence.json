@@ -5138,17 +5138,18 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "peek-open",
+   "at": "visible:#mission .oc-card.peek",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card)"
+   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card)",
+   "delay": 450
   },
   {
    "flow": "cook:samosa",
-   "path": "fair",
+   "path": "hint",
    "level": 3,
    "sizes": [
     "1366x768"
@@ -5157,13 +5158,14 @@
    "want": [
     "said:/samosa[\\s\\S]*samosa/"
    ],
-   "at": "order-card-in-sidebar",
+   "at": "visible:#mission .oc-card.peek",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "samosa kinds the same (an order of two kinds: the second block is said as its own)"
+   "note": "samosa kinds the same (an order of two kinds: the second block is said as its own)",
+   "delay": 450
   },
   {
    "flow": "clinic:heal-cut",
