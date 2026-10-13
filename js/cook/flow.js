@@ -641,7 +641,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const last = actions ? `.njg-results #${(actions.find((a) => a.primary) || actions[0]).elId}` : ".njg-results .rs-done";
     const next = shown.el && shown.el.querySelector(".rs-next");
     Cook.expect = { kind: "click", selector: next ? ".njg-results .rs-next" : last };
-    if (next) next.addEventListener("click", () => (Cook.expect = { kind: "click", selector: last }));
+    // decision 93: there may be a third page (the steps); Next again until the last page's buttons show (the shared
+    // handler runs first and hides .rs-first on the last page)
+    if (next)
+      next.addEventListener("click", () => {
+        const more = shown.el && shown.el.querySelector(".rs-first");
+        Cook.expect = { kind: "click", selector: more && !more.hidden ? ".njg-results .rs-next" : last };
+      });
     const out = await shown;
     Cook.expect = null;
     ctx.results = out;
