@@ -36,7 +36,7 @@ Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); 
 SH-17, DAAR-11, SH-01, SEK-11, MAA-08 above; CLN-14's `!textMatches` counts `[ph]`; SH-19 `max 6` never samples fry; SAM-16 needs a probe filming each fold's ghost and swipe. Two rows share the id SAM-16 (the fold, and the L3 mounds): renumber one.
 
 ## Not done / seen
-Contract-8 on cook:day2 (two highlights twice), not checked against the old code. Story English is spoken by device TTS (rule 10). Mum: "Ma!", the pantry frame "Muke … de". Regressions: touched run only (0 new); full recheck is `/review`'s.
+Contract-8 on cook:day2: fixed (`maani-line.js`: a cooked maani's ready glow stayed on after the lift, beside the ✓ pulse): red sandbox s05g-c8a 1 break (1324 ms), green s05g-c8b 0 breaks on day2 and maani-line; the card-tint + reading break did not recur on the latest branch. The red run also showed a 45 px bubble speaker (tap-small) on day 2's service view, not seen in green. Story English is spoken by device TTS (rule 10). Mum: "Ma!", the pantry frame "Muke … de". Regressions: touched run only (0 new); full recheck is `/review`'s.
 
 ## Proof (from the run; do not retype)
 - **Pages run:** 9 (flow x size): 9 flows at 1366x768. 9 reach their end, 0 stop short.

@@ -530,6 +530,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       zt.expect(null);
       const it = t.it;
       const sp = it.sprite;
+      // contract-8 (decision 95, S05-G): its "ready now" glow goes when it is tapped; it used to stay on, so a cooked
+      // maani kept glowing on its plate beside the ✓'s pulse (two things lit at once)
+      glowOn(sp, false);
+      inBand = false;
       const v = t.v;
       const burnt = v >= 1;
       if (t.side === 1) {
