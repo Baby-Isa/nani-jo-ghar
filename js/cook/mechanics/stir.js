@@ -124,6 +124,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ].forEach(([dx, dy, r]) => g.fillCircle(x + dx * s, y + dy * s, r * s));
   }
 
+  // the daar's ladle (js/cook/stations/daar.js, measured on ladle-v3.webp): its bowl's centre and radius, and the handle
+  // leaving the bowl about 48 degrees above the right
+  const LADLE_KEY = "dv3-ladle";
+  const LADLE = { w: 360, h: 389, cx: 0.2889, cy: 0.7301, r: 0.2401 };
+  const LADLE_HANDLE = (-48 * Math.PI) / 180;
+
   Mech.define("stir", {
     station: "stir",
     view: "hob",
@@ -156,7 +162,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       const ring = S.track(S.add.circle(cx + RT, cy, z.L(48), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.hand - 1));
       S.tweens.add({ targets: ring, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
-      const ladle = S.hand("ladle", { x: cx + RT, y: cy, k: z.k });
+      // DAAR-11 (decision 94, Zafar 13 Oct): no hand: the daar's own ladle (ladle-v3), its bowl on the track and the
+      // whole ladle turning with its path, so the handle always points out from the pot's centre and rests on the rim
+      await St.loadArt(S, [[LADLE_KEY, "assets/cook/items/v3/daar/ladle-v3.webp"]]);
+      const radial = S.textures.exists(LADLE_KEY);
+      const ladle = radial ? S.track(S.add.image(cx + RT, cy, LADLE_KEY).setOrigin(LADLE.cx, LADLE.cy).setDepth(D.hand)) : S.hand("ladle", { x: cx + RT, y: cy, k: z.k });
+      if (radial) ladle.setScale((RL * 0.3) / (LADLE.r * LADLE.w));
       const shoulder = { x: cx + z.L(60), y: z.Y(1250) };
 
       /* ---------- the speed dial: fixed bands, no target ---------- */
@@ -291,7 +302,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const x = cx + Math.cos(ang) * RT;
         const y = cy + Math.sin(ang) * RT;
         ladle.setPosition(x, y);
-        ladle.setAngle((Math.atan2(-(shoulder.x - x), shoulder.y - y) * 180) / Math.PI);
+        if (radial) ladle.setRotation(ang - LADLE_HANDLE);
+        else ladle.setAngle((Math.atan2(-(shoulder.x - x), shoulder.y - y) * 180) / Math.PI);
         ring.setPosition(x, y);
       };
       place();
