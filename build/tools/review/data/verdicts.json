@@ -2924,6 +2924,19 @@
   "png": "build/screenshots/evidence/ev-s04-ev1/DAAR-17.png",
   "date": "2026-10-12"
  },
+ "DAAR-21": {
+  "hash": "fb0817b2a04257eb296c",
+  "dhash": [
+   "707068707074756a"
+  ],
+  "verdict": "PASS",
+  "line": "machine: times:ghost>=1 (ghost came 1 times)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-162800-d91",
+  "commit": "caaa8ca",
+  "date": "2026-10-13"
+ },
  "DAAR-22": {
   "hash": "7936f59b7bf0f4ee1ad8",
   "dhash": [
