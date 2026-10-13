@@ -76,10 +76,15 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~14:25 UK check-in: G fixed SH-17 (green ev-20261013-134938-xow, 1ffdc85); P filmed SAM-16 closer (ev-20261013-134819-70s). Every build session is finished; nothing is running. Next: judge the 61 sheet rows, `/review`, `/publish` (in a fresh orchestrator chat).
 
+13 Oct ~15:00 UK (new orchestrator chat): G and P finished (G ~$31, P ~$5). Evidence run ev-20261013-135717-7pn (62 rows, 137 pages) judged by Fable subagents (picture batches) and Sonnet (text): **18 PASS, 26 FAIL, 11 evidence misses, 5 tool failures, 2 text PASSes refused (no panel)**; 9 of the failing rows had the builder's note 'no change'. Re-run of the 5 tool failures (ev-20261013-144954-gf4, three specs fixed): SH-53 machine FAIL (contract-8, sekelo L2), CLN-45 reaches every level, SH-17, SH-44 (390x844 is only the rotate card), DAAR-05 still tool failures. The full gate (gate-20261013-1447, 572 pages, ~3 h) is running: every Cook lab page with steps stops after the word review; 'mustard seeds' spills its word tile. Count 62 open or reopened, 277 built. Spend about $290.
+
+13 Oct ~15:30 UK, Zafar: 'why are these simple failures occurring and not getting fixed first time?' Fable's review (go with its recommendation): **decision 96** (done = an independent judge's picture; 'no change' is not a result; two strikes to Zafar; one claim per row), hold the publish, the gate runs on, a fix round of two owners (C3 Cook and shared, first; D3 clinic), ceiling about $420, half a day, stop if more than three 'done' rows still fail. Reworded to their decisions: PAN-05 (60), CLN-85 (92), SEK-03 (95). Waiting on art (Sprint 6): CK-06, CLN-107, PAN-06, SH-37, CK-24.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - 13 Oct ~00:15 UK, Zafar: the ceiling rises to about $270 so every fixable row is done; ~12:30 UK: to about $310 for the last two sessions (G and P).
 - 13 Oct, Zafar: the old Fill practice tile re-lays its fold on the samosa strip art (no new art); the jar stickers and the daar bowl join the s05 art run.
+- 13 Oct ~15:30 UK, Zafar (via Fable's recommendation): the ceiling rises to about $420 for one fix round (C3, D3); each fix session may run its own mode's gate pages once at the end (the 15-minute limit lifted for this round); C3 owns every shared file.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
 
 ## Outcome
