@@ -22,6 +22,8 @@ export const DRIVERS = {
   "open-steps": { kinds: ["cook"], moments: ["rec:steps-open", "rec:steps-none", "rec:wrong-choice", "rec:wrong-tap", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"] },
   // the send-off's E4 (the child asks first, 1 in 4 at L3 by draw): the clinic page with &variant=E4 (CLN-117)
   "variant-e4": { kinds: ["clinic-stage"], moments: [] },
+  // the request pop-up is never tapped: the spoken order plays out to its end (SEK-11)
+  "listen-through": { kinds: ["cook"], moments: [] },
   "tap-quick": { kinds: ["cook"], moments: ["drv:count-word"] },
   "tawa-empty-then-off": { kinds: ["cook"], moments: ["rec:tawa-empty", "rec:knob-off", "drv:knob-off", "drv:tawa-empty"] },
   "idle-twice": { kinds: ["cook", "heal"], moments: ["rec:idle-hint", "rec:idle-again"] },

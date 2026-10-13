@@ -3430,23 +3430,6 @@
   "commit": "7812e59a",
   "date": "2026-10-12"
  },
- "SAM-16": {
-  "hash": "1cb3e0efee105608d19c",
-  "dhash": [
-   "70f0d0f0f0116060",
-   "31f8d0f0f1606062",
-   "70f8c8d8d8116060",
-   "31c8c8c8c9606872"
-  ],
-  "verdict": "PASS",
-  "line": "A, C, the filling mounds on the first laid-out strip are about the strip's height and the same size as the tray bowls at both 1366x768 and 800x360 (B, D), readable at a glance; note the napkin square's corners stick out past the plate circle in every panel",
-  "panel": "A,C",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/SAM-16.png",
-  "date": "2026-10-12"
- },
  "SEK-01": {
   "hash": "97293f79d419d0833e80",
   "dhash": [],
@@ -4580,6 +4563,23 @@
   "run": "ev-s04-ev1",
   "commit": "b66ad4ff",
   "png": "build/screenshots/evidence/ev-s04-ev1/SH-71.png",
+  "date": "2026-10-12"
+ },
+ "SAM-17": {
+  "hash": "1cb3e0efee105608d19c",
+  "dhash": [
+   "70f0d0f0f0116060",
+   "31f8d0f0f1606062",
+   "70f8c8d8d8116060",
+   "31c8c8c8c9606872"
+  ],
+  "verdict": "PASS",
+  "line": "A, C, the filling mounds on the first laid-out strip are about the strip's height and the same size as the tray bowls at both 1366x768 and 800x360 (B, D), readable at a glance; note the napkin square's corners stick out past the plate circle in every panel",
+  "panel": "A,C",
+  "judge": "Fable (orchestrator subagent)",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "png": "build/screenshots/evidence/ev-s04-ev1/SAM-16.png",
   "date": "2026-10-12"
  }
 }

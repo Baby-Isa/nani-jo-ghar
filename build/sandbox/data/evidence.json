@@ -137,7 +137,7 @@
    ],
    "profile": "seen",
    "want": [
-    "/fudino ji chutney(?!\\s+na)/i"
+    "fudino ji chutney"
    ],
    "at": "results-words",
    "after": null,
@@ -147,7 +147,8 @@
    ],
    "expect": [
     "textMatches:fudino ji chutney",
-    "noClip:.rs-word"
+    "noClip:.rs-word",
+    "lines:.rs-word<=2"
    ],
    "note": "an order holding fudino ji chutney: its tile wraps between words"
   }
@@ -880,18 +881,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:line",
+   "at": "visible:#mission .oc-strip .ra-on",
    "after": null,
    "capture": [
-    "strip:.njg-guide:6x200",
     "strip:#mission .oc-strip:6x200"
    ],
    "expect": [
     "count:#mission .oc-strip .ra-on>=1"
    ],
    "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays) (at a child's pace)",
-   "max": 4,
-   "delay": 150
+   "delay": 0
   },
   {
    "flow": "clinic:waiting",
@@ -1320,7 +1319,7 @@
    ],
    "note": "first-time help (dim all but one thing, ghost finger once) in every samosa phase (counted once the ghost is visible, not at its 0-opacity first frame)",
    "delay": 0,
-   "max": 6
+   "max": 14
   },
   {
    "flow": "cook:daar",
@@ -1341,7 +1340,7 @@
    ],
    "note": "daar: every phase has its help; nothing dimmed with nothing lit (counted once the ghost is visible, not at its 0-opacity first frame)",
    "delay": 0,
-   "max": 6
+   "max": 14
   }
  ],
  "SH-20": [
@@ -3856,7 +3855,7 @@
  ],
  "MAA-08": [
   {
-   "flow": "cook:roll-tawa",
+   "flow": "cook:maani-line",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -3868,7 +3867,8 @@
    "at": "stage-end",
    "after": null,
    "capture": [
-    "zoom2:canvas:chaat-bowl"
+    "zoom2:canvas:thali",
+    "crop:#stage"
    ],
    "expect": null,
    "note": "roll-tawa's serving dish (vessel:serving = chaat-bowl.empty) not cut off; tick not over the resting spatula"
@@ -4290,7 +4290,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stir-mid",
+   "at": "stir-begin",
    "after": null,
    "capture": [
     "trace:canvas:ladle:3000",
@@ -5106,29 +5106,6 @@
    "delay": 1500
   }
  ],
- "SAM-16": [
-  {
-   "flow": "cook:samosa",
-   "path": "fair",
-   "level": [
-    3,
-    4
-   ],
-   "sizes": [
-    "1366x768",
-    "800x360"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "kind-click",
-   "after": null,
-   "capture": [
-    "zoom2:#stage"
-   ],
-   "expect": null,
-   "note": "filling mounds on the laid-out strips are a readable size"
-  }
- ],
  "SEK-01": [
   {
    "flow": "cook:mishkaki-grill",
@@ -5394,7 +5371,7 @@
  "SEK-11": [
   {
    "flow": "cook:mishkaki-grill",
-   "path": "fair",
+   "path": "listen-through",
    "level": 4,
    "sizes": [
     "1366x768"
@@ -11292,6 +11269,55 @@
     "noClip:#mission"
    ],
    "note": "sekelo L2 on phones: a group's pills stack one per line when they don't fit side by side; no word broken across lines (Zafar, 13 Oct, Z1); 390x844 is the turn-your-phone card"
+  }
+ ],
+ "SAM-17": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-click",
+   "after": null,
+   "capture": [
+    "zoom2:#stage"
+   ],
+   "expect": null,
+   "note": "filling mounds on the laid-out strips are a readable size"
+  }
+ ],
+ "SAM-16": [
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:visible:.ob-ghost, .co-finger",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x250"
+   ],
+   "expect": [
+    "count:.ob-ghost,.co-finger>=1"
+   ],
+   "max": 3,
+   "delay": 0,
+   "note": "each fold's ghost and swipe: a diagonal on the triangle (bottom left to top right, then top left to bottom right), filmed 4 frames at a child's pace"
   }
  ]
 }

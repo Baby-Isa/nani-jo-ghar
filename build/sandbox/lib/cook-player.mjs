@@ -271,6 +271,8 @@ export class CookPlayer {
     await sleep(120);
     if (this.intros === 1) await this.once("order-card-big", { settle: 150 });
     await sleep(400);
+    // listen-through (SEK-11): the pop-up is not tapped: the spoken order plays out and the pop-up folds by itself
+    if (this.mode === "listen-through") { await until(async () => !(await popupOpen(p)), 60000, 100); await sleep(300); return; }
     if (await this.page.$("#intro:not(.hidden) .ic-card")) { try { await this.page.click("#intro .ic-card", { force: true, timeout: 2000 }); } catch (e) { /* it flew in by itself */ } }
     await sleep(600);
     if (this.intros === 1) await this.once("order-card-in-sidebar");
@@ -456,6 +458,7 @@ export class CookPlayer {
     const mistake = this.mistakes && !this.made.has("stir");
     if (mistake) this.made.add("stir");
     await p.mouse.move(cx + r, cy); await p.mouse.down();
+    await this.once("stir-begin", { block: false }); // the whole stir is in a trace taken from here (DAAR-11: from stir-mid the stir ended inside the window)
     const t0 = Date.now();
     let anchorT = t0, anchorA = 0, curWant = null, shot = false;
     while (count < target && Date.now() - t0 < 90000) {
