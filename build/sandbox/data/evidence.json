@@ -10405,14 +10405,14 @@
  "ART-18": [
   {
    "flow": "lab:cook/order",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:line:cook",
+   "at": "every:talk:nani",
    "after": null,
    "capture": [
     "contract:14",
@@ -10423,7 +10423,7 @@
     "traceAmp:canvas:nani-<=2",
     "tracePeriod:canvas:nani->=380"
    ],
-   "note": "Cook service: one talk animation, about a third of the old bob, slower (traced only while Nani is the one speaking)",
+   "note": "Cook service: one talk animation, about a third of the old bob, slower (traced only while Nani is the one speaking, at speed 1)",
    "max": 6
   },
   {

@@ -86,7 +86,9 @@ const TEXTS = `([sel, ph, gu]) => {
 const TRACE = `async ([sel, ms]) => {
   const boxes = ${BOXES};
   const out = [], t0 = performance.now();
+  const follow = sel.startsWith("canvas:") && window.__njgTalkOn === true; // a trace begun as a character starts to talk ends when the talk does (ART-18: the breath after it is no bob)
   while (performance.now() - t0 < ms) {
+    if (follow && window.__njgTalkOn === false) break;
     const bs = boxes(sel); if (bs && bs.error) return [{ error: bs.error }];
     let o = 1, tr = "";
     if (bs.length && !sel.startsWith("canvas:") && !sel.startsWith("hook:")) { const el = Array.from(document.querySelectorAll(sel)).find((e) => e.getBoundingClientRect().height > 1); if (el) { const cs = getComputedStyle(el); o = parseFloat(cs.opacity); tr = cs.transform === "none" ? "" : cs.transform; } }

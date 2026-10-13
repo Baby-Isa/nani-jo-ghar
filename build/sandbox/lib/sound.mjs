@@ -167,6 +167,24 @@ export const SOUND_HOOK = `(() => {
         wrapLine(K.Voice, "now", "clinic", (l) => K.plain(l));
       }
     } catch (e) {}
+    // the speaker (ART-18): Cook's lines all say "cook", so the shared talk's start names who bobs (talk:nani, talk:ma ...) as a moment
+    try {
+      const T = window.Lifecycle && window.Lifecycle.talk;
+      if (T && typeof T.phaser === "function" && !T.phaser.__njgTalk) {
+        const orig = T.phaser;
+        const w = function (scene, img) {
+          try {
+            const key = String((img && img.texture && img.texture.key) || "x");
+            log({ type: "m", name: "talk:" + key.split("-")[0].toLowerCase().replace(/[^a-z0-9]+/g, "-") });
+          } catch (e) {}
+          window.__njgTalkOn = true;
+          const stop = orig.apply(this, arguments);
+          return typeof stop === "function" ? function () { window.__njgTalkOn = false; return stop.apply(this, arguments); } : stop;
+        };
+        w.__njgTalk = true;
+        T.phaser = w;
+      }
+    } catch (e) {}
   };
   setInterval(wrapAll, 150);
   window.__njgSoundOff = () => clearInterval(flush);
