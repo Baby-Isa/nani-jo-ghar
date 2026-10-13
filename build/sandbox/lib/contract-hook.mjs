@@ -433,6 +433,9 @@ export const CONTRACT_HOOK = `(() => {
     return [1, 1];
   };
   const scanBg = () => {
+    // a heal game's push-in (and its pull-out) scales the room on purpose: no background is judged until it has settled (S05-T2, D's false breaks)
+    if (document.querySelector(".cl-zoom.on, .cl-outro, .cl-zooming")) return;
+    for (const a of document.getAnimations ? document.getAnimations() : []) { const t = a.effect && a.effect.target; if (t && t.closest && t.closest(".cl-zoom, .cl-stage") && a.playState === "running" && /transform|scale/.test(String((a.effect.getKeyframes && a.effect.getKeyframes()[0] && Object.keys(a.effect.getKeyframes()[0]).join()) || a.transitionProperty || ""))) return; }
     const VA = innerWidth * innerHeight;
     for (const im of document.images) {
       // a figure's art (the patient, pushed in by a heal game's zoom) is not a background

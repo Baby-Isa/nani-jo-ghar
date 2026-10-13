@@ -27,4 +27,4 @@ Branch `ccr-a7370759-t0lee7`. No game code changed. Tools, drivers and specs onl
 | SEK-03, SEK-07, SH-17, SH-51, SAM-02/07/08/09/10, CK-09, CHAI-18, MAA-08/12, ART-02, CLN-45/62/86/102, SEK-13, DAAR-04 | | sheets for a reviewer |
 | CLN-117 | | tool: 12 seeds never drew E4; needs a driver |
 | SEK-03 L4 stop | | not reproduced in a plain run (37 s to the end); only at DPR 2 (driver/perf) |
-Not done: contract-11 sampling after the push-in settles.
+contract-11: no background is judged while a heal push-in is running (`contract-hook.mjs`); heal-cut sandbox run: 0 breaks (t2-c11).
