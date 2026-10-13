@@ -4241,7 +4241,7 @@
  "DAAR-11": [
   {
    "flow": "cook:stir",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
