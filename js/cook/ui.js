@@ -180,7 +180,9 @@
     for (let i = 0; i < parts.length; i++) {
       const off = hold(parts.length > 1 ? i : null);
       try {
-        if (Lang.hasVoice(parts[i])) await Lang.speak(parts[i]);
+        // SH-17 (S05-G): a part whose voice is one short clip ("Muke chai de." says only chai, 140 ms, until Mum records
+        // the frame) stays lit long enough to be seen at a child's pace, as the pop-up's read-along does
+        if (Lang.hasVoice(parts[i])) await Promise.all([Lang.speak(parts[i]), Cook.wait(Math.min(900, 220 * Lang.plain(parts[i]).split(/\s+/).length))]);
         else await Cook.wait(Math.max(500, Cook.readMs(Lang.plain(parts[i])) * 0.5));
       } finally {
         off();
