@@ -5269,13 +5269,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "every:stage-start",
    "after": null,
    "capture": [
     "zoom2:canvas:sk3-plate"
    ],
    "expect": null,
-   "note": "plate skewers straight, parallel, left to right, close; handle off the plate (L2 two skewers, L4 three or four)"
+   "note": "plate skewers straight, parallel, left to right, close; handle off the plate (L2 two skewers, L4 three or four)",
+   "max": 4,
+   "delay": 300
   }
  ],
  "SEK-08": [
