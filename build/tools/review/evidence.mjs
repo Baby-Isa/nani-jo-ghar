@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSy
 import { join, dirname } from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
-import { parseRegressions, REGRESSIONS, plain, statusKind } from "./lib/regressions.mjs";
+import { parseRegressions, REGRESSIONS, REGRESSIONS_DONE, readAllRegressions, gitRegressions, moveRows, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
 import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS } from "./lib/evidence.mjs";
 
@@ -59,12 +59,12 @@ function defaultSince() {
   return git("rev-parse", "--verify", "-q", `${created}~1`) ? `${created}~1` : created;
 }
 function selectRows() {
-  const text = readFileSync(REGRESSIONS, "utf8");
+  const text = readAllRegressions();
   const all = parseRegressions(text);
   let rows;
   if (a.has("sprint")) {
     const ref = a.val("since") || defaultSince();
-    const old = git("show", `${ref}:docs/process/regressions.md`) || "";
+    const old = gitRegressions(ref);
     rows = sprintRows(old, text).rows;
   } else rows = all;
   // live rows: not retired, not the keep-checks (never touched by the loop)
@@ -483,11 +483,23 @@ function apply() {
     if (c.verdict === "PASS" && c.judge !== "expect" && !c.panel) continue; // a PASS that cites nothing is not applied (Fable 17)
     v.set(rid, { verdict: c.verdict, line: `${c.judge === "expect" ? "" : `${c.judge}: `}${c.line}`, png: r.png });
   }
-  const text = readFileSync(REGRESSIONS, "utf8");
-  const out = applyVerdicts(text, v, id);
-  for (const c of out.changed) console.log(`  ${c.id}: ${c.from} -> ${c.to}`);
-  console.log(`apply ${id}: ${out.changed.length} rows changed, ${out.skipped.length} left (${[...new Set(out.skipped.map((s) => s.why))].join(", ") || "none"})${a.has("dry") ? " [dry run: nothing written]" : ""}`);
-  if (!a.has("dry") && out.changed.length) writeFileSync(REGRESSIONS, out.text);
+  // both files (decision 99): the live fix list and the done archive; a FAIL on an archived row moves it back to the live list,
+  // a PASS on a live row moves it to the archive; the replaced statuses go to the history file
+  const live = applyVerdicts(readFileSync(REGRESSIONS, "utf8"), v, id);
+  const done = applyVerdicts(existsSync(REGRESSIONS_DONE) ? readFileSync(REGRESSIONS_DONE, "utf8") : "", v, id);
+  const changed = [...live.changed, ...done.changed], skipped = [...live.skipped, ...done.skipped].filter((s) => s.why !== "already applied" || !changed.some((c) => c.id === s.id));
+  for (const c of changed) console.log(`  ${c.id}: ${c.from} -> ${c.to}`);
+  const reopen = done.changed.filter((c) => /reopened/.test(c.to)).map((c) => c.id);
+  const close = live.changed.filter((c) => /^(built|fixed)/.test(c.to)).map((c) => c.id);
+  let liveText = live.text, doneText = done.text;
+  if (reopen.length) { const m = moveRows(liveText, doneText, reopen); liveText = m.live; doneText = m.done; }
+  if (close.length) { const m = moveRows(doneText, liveText, close); doneText = m.live; liveText = m.done; }
+  console.log(`apply ${id}: ${changed.length} rows changed (${reopen.length} back to the fix list, ${close.length} to the archive), ${skipped.length} left (${[...new Set(skipped.map((s) => s.why))].join(", ") || "none"})${a.has("dry") ? " [dry run: nothing written]" : ""}`);
+  if (!a.has("dry") && changed.length) {
+    writeFileSync(REGRESSIONS, liveText); writeFileSync(REGRESSIONS_DONE, doneText);
+    const hist = [...live.history, ...done.history];
+    if (hist.length) appendFileSync(join(ROOT, "build/tools/review/data/status-history.jsonl"), hist.map((h) => JSON.stringify(h)).join("\n") + "\n");
+  }
 }
 
 // ---------- main ----------
@@ -504,7 +516,7 @@ if (a.has("lint-specs")) {
   ["js", "css"].forEach(walk); for (const f of readdirSync(ROOT)) if (f.endsWith(".html")) corpus += readFileSync(join(ROOT, f), "utf8");
   // the words the family says (data/family-audio.json): an order: marker must be one of these, a selector or a /regex/
   const kutchiWords = () => { const set = new Set(); for (const e of JSON.parse(readFileSync(join(ROOT, "data/family-audio.json"), "utf8"))) for (const w of String(e.kutchi || "").toLowerCase().match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []) set.add(w); return set; };
-  const rowText = {}; for (const r of parseRegressions(readFileSync(REGRESSIONS, "utf8"))) rowText[r.id] = `${r.issue} ${r.check}`;
+  const rowText = {}; for (const r of parseRegressions(readAllRegressions())) rowText[r.id] = `${r.issue} ${r.check}`;
   const found = lintSpecs(JSON.parse(readFileSync(join(ROOT, "build/sandbox/data/evidence.json"), "utf8")), { flows, legacy: new Set(LEGACY_FLOWS), corpus, exists: (p) => existsSync(join(ROOT, p)), lexicon: kutchiWords(), rowText });
   const by = {}; for (const f of found) (by[f.kind] = by[f.kind] || []).push(f);
   for (const [k, v] of Object.entries(by)) { console.log(`${k}: ${v.length}`); for (const f of v.slice(0, a.has("all-errors") ? 999 : 12)) console.log(`  ${f.row} p${f.probe}: ${f.msg}`); }

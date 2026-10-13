@@ -6,7 +6,8 @@
 //   cacheHit(entry, fp)                does a cached verdict still stand for this evidence?
 //   batches(rows, {visual, text})      rows to judge -> batches of 8-10 visual rows grouped by kind, text-only rows up to 30
 //   parseVerdicts(text)                a reviewer's batch file -> {judge, lines: [{id, verdict, line, panel}], rejected: [...]}
-//   applyVerdicts(md, verdicts, run)   regressions.md text -> new text: FAIL reopens, PASS marks built (keep and retired rows untouched)
+//   applyVerdicts(md, verdicts, run)   regressions text -> new text: FAIL reopens, PASS marks built (keep and retired rows untouched);
+//                                      the replaced statuses come back as `history` for build/tools/review/data/status-history.jsonl
 import { createHash } from "node:crypto";
 import { decodePng } from "./png.mjs";
 import { parseRegressions, statusKind, plain } from "./regressions.mjs";
@@ -100,11 +101,10 @@ export function passRefusal(l, hasSheet) {
 
 // ---------- regressions.md ----------
 const clean = (s) => String(s || "").replace(/\|/g, "/").replace(/\(/g, "[").replace(/\)/g, "]").replace(/\s+/g, " ").trim();
-const PREV = /^(?:\*\*reopened\*\*|built|fixed) \(evidence (?:PASS|FAIL) [^)]*\) · earlier: /;
 // verdicts: Map id -> {verdict: PASS|FAIL, line, png}; run: the evidence run id -> {text, changed: [{id, from, to}], skipped: [{id, why}]}
 export function applyVerdicts(md, verdicts, run) {
   const rows = new Map(parseRegressions(md).map((r) => [r.id, r]));
-  const changed = [], skipped = [];
+  const changed = [], skipped = [], history = [];
   const lines = md.split("\n");
   for (let i = 0; i < lines.length; i++) {
     const m = /^\| ([A-Z][A-Z]*-[A-Z0-9-]*\d+) \|/.exec(lines[i]);
@@ -115,17 +115,18 @@ export function applyVerdicts(md, verdicts, run) {
     if (kind === "keep" || kind === "retired") { skipped.push({ id, why: kind }); continue; }
     if (v.verdict !== "PASS" && v.verdict !== "FAIL") { skipped.push({ id, why: v.verdict }); continue; }
     if (r.status.includes(`evidence ${v.verdict} ${run}`)) { skipped.push({ id, why: "already applied" }); continue; }
-    const old = r.status.replace(PREV, "");
     const note = `evidence ${v.verdict} ${run}: ${clean(v.line)}${v.png ? `; \`${v.png}\`` : ""}`;
     const head = v.verdict === "FAIL" ? "**reopened**" : kind === "fixed" ? "fixed" : "built";
-    const status = `${head} (${note}) · earlier: ${old}`;
+    // the status is the current state only (decision 99): the old one goes to the history file, not after "· earlier:"
+    const status = `${head} (${note})`;
+    history.push({ id, run, earlier: r.status });
     const cells = lines[i].replace(/^\|\s*/, "").replace(/\s*\|\s*$/, "").split(/ \| /);
     if (cells.length < 4) { skipped.push({ id, why: "row has fewer than four cells" }); continue; }
     cells[2] = status;
     lines[i] = `| ${cells.join(" | ")} |`;
     changed.push({ id, from: plain(r.status).slice(0, 60), to: `${head} (${v.verdict})` });
   }
-  return { text: lines.join("\n"), changed, skipped };
+  return { text: lines.join("\n"), changed, skipped, history };
 }
 
 // cost-and-speed change 3: --apply refuses a run that has no verdicts in the cache (judge and collect first), so nothing is written

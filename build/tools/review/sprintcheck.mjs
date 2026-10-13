@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSy
 import { join } from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
-import { parseRegressions, REGRESSIONS } from "./lib/regressions.mjs";
+import { parseRegressions, readAllRegressions, gitRegressions, REGRESSION_PATHS } from "./lib/regressions.mjs";
 import { sprintRows, planRows, groupJobs, pagesOf, pickShots } from "./lib/sprint.mjs";
 
 const HELP = `
@@ -59,8 +59,8 @@ async function makePlan() {
   const sha = git("rev-parse", "--verify", "-q", `${since.ref}^{commit}`);
   if (!sha) die(`Unknown git ref "${since.ref}".`);
   // --all-rows: every live row of the list, as if all were added (the full audit, decision 76)
-  const oldText = a.has("all-rows") ? "" : git("show", `${sha}:docs/process/regressions.md`) || "";
-  const newText = readFileSync(REGRESSIONS, "utf8");
+  const oldText = a.has("all-rows") ? "" : gitRegressions(sha);
+  const newText = readAllRegressions();
   let { rows, removed } = sprintRows(oldText, newText);
   if (a.val("rows")) { const want = new Set(a.val("rows").split(",").map((s) => s.trim())); rows = rows.filter((r) => want.has(r.id)); removed = removed.filter((r) => want.has(r.id)); }
   const { allFlows, flowSizes } = await import("../../sandbox/flows/index.mjs");
@@ -73,7 +73,7 @@ async function makePlan() {
   const sizes = a.val("sizes") ? a.val("sizes").split(",") : null;
   for (const s of sizes || []) if (!SIZES[s]) die(`Unknown size ${s}. Known: ${Object.keys(SIZES).join(", ")}`);
   const groups = groupJobs(plan, flowInfo, { quick: a.has("quick"), sizes, quickSize: QUICK_SIZE }).map((g) => ({ ...g, pages: pagesOf(g, flowInfo) }));
-  return { since: since.ref, sinceWhy: since.why, sinceSha: sha, head: git("rev-parse", "--short", "HEAD"), dirty: !!git("status", "--porcelain", "--", "docs/process/regressions.md"), options: { quick: a.has("quick"), sizes }, rows: plan, removed: removed.map((r) => ({ id: r.id, issue: r.issue })), groups };
+  return { since: since.ref, sinceWhy: since.why, sinceSha: sha, head: git("rev-parse", "--short", "HEAD"), dirty: !!git("status", "--porcelain", "--", ...REGRESSION_PATHS), options: { quick: a.has("quick"), sizes }, rows: plan, removed: removed.map((r) => ({ id: r.id, issue: r.issue })), groups };
 }
 const runCmd = (g, runId) => `COOK_TEST_PORT=${PORT} flock -w 1800 ${LOCK} timeout 1200 node build/sandbox/run.mjs --flow ${g.flows.join(",")}${g.sizes ? ` --sizes ${g.sizes.join(",")}` : ""} --parallel ${a.val("parallel", "3")} --budget-min ${a.val("budget-min", "13")} --check --no-sheets --run-id ${runId} --resume ${runId}`;
 const mapped = (P) => P.rows.filter((p) => p.flows.length);

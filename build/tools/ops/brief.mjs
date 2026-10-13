@@ -91,7 +91,7 @@ if (s.flows?.length && !a.has("no-rows")) {
   const flowGroups = groups.filter((g) => g.flow !== "shared components");
   const common = flowGroups.length > 1 ? flowGroups[0].ids.filter((id) => flowGroups.every((g) => g.ids.includes(id))) : [];
   const total = new Set(groups.flatMap((g) => g.ids)).size;
-  add(`REGRESSION ROWS TO RECHECK (${total} rows of docs/process/regressions.md; * = open or reopened):`);
+  add(`REGRESSION ROWS TO RECHECK (${total} rows of the fix list and its done archive; * = open or reopened):`);
   if (common.length) add(`  every flow here (${common.length}): ${common.join(", ")}`);
   for (const g of groups) { const own = g.ids.filter((id) => !common.includes(id)); if (own.length) add(`  ${g.flow} (${own.length}): ${own.join(", ")}`); }
   if (!groups.length) add("  none found for these flows: run `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`");

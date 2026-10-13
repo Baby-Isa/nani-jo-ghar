@@ -1,10 +1,53 @@
-// Parser for docs/process/regressions.md: rows with their section, status and check; and the flow -> rows mapping that
-// regress.mjs prints and sprintcheck.mjs inverts (rows -> flows).
-import { readFileSync } from "node:fs";
+// Parser for the regression rows: the live fix list (docs/process/regressions.md: open, reopened, waiting, keep) and the done
+// archive (docs/archive/regressions-done.md: built, fixed, retired; decision 99). Rows with their section, status and check; and the
+// flow -> rows mapping that regress.mjs prints and sprintcheck.mjs inverts (rows -> flows). Every reader sees both files.
+import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { execFileSync } from "node:child_process";
 import { ROOT } from "./common.mjs";
 
 export const REGRESSIONS = join(ROOT, "docs", "process", "regressions.md");
+export const REGRESSIONS_DONE = join(ROOT, "docs", "archive", "regressions-done.md");
+export const REGRESSION_PATHS = ["docs/process/regressions.md", "docs/archive/regressions-done.md"];
+// both files as one text (the live list first); a missing archive reads as empty
+export function readAllRegressions() { return [REGRESSIONS, REGRESSIONS_DONE].map((f) => existsSync(f) ? readFileSync(f, "utf8") : "").join("\n"); }
+// the same at a git ref (before the 13 Oct split the archive did not exist, so the old single file is the whole list)
+export function gitRegressions(ref) {
+  const show = (p) => { try { return execFileSync("git", ["show", `${ref}:${p}`], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 28, stdio: ["ignore", "pipe", "ignore"] }); } catch { return ""; } };
+  return REGRESSION_PATHS.map(show).join("\n");
+}
+const ROWLINE = /^\| ([A-Z][A-Z]*-[A-Z0-9-]*\d+) \|/;
+// move the rows `ids` from the archive text to the live text, each under its own ## / ### heading (added at the end of the live
+// list, before Keep, when the live list has no such section). Returns {live, done, moved}.
+export function moveRows(liveText, doneText, ids) {
+  const want = new Set(ids), moved = [];
+  const dl = doneText.split("\n"), keepDone = [], take = [];
+  let h2 = "", h3 = "", header = [];
+  for (const l of dl) {
+    let m;
+    if ((m = /^## (.*)/.exec(l))) { h2 = l; h3 = ""; keepDone.push(l); continue; }
+    if (/^### /.test(l)) { h3 = l; keepDone.push(l); continue; }
+    if (/^\| ID \||^\|---/.test(l)) { header = header.length >= 2 ? [l] : [...header, l]; keepDone.push(l); continue; }
+    if ((m = ROWLINE.exec(l)) && want.has(m[1])) { take.push({ h2, h3, header: [...header], line: l }); moved.push(m[1]); continue; }
+    keepDone.push(l);
+  }
+  let ll = liveText.split("\n");
+  for (const t of take) {
+    // find the live section: the ### under the ## if any, else the ##
+    let i2 = ll.indexOf(t.h2), at = -1;
+    if (i2 >= 0) {
+      let end = ll.findIndex((l, k) => k > i2 && /^## /.test(l)); if (end < 0) end = ll.length;
+      let start = i2;
+      if (t.h3) { const i3 = ll.findIndex((l, k) => k > i2 && k < end && l === t.h3); if (i3 >= 0) { start = i3; const e3 = ll.findIndex((l, k) => k > i3 && /^#{2,3} /.test(l)); end = e3 < 0 ? end : Math.min(end, e3); } else start = -1; }
+      if (start >= 0) { for (let k = start; k < end; k++) if (ROWLINE.test(ll[k]) || /^\|---/.test(ll[k])) at = k; }
+    }
+    if (at >= 0) { ll.splice(at + 1, 0, t.line); continue; }
+    const block = ["", t.h2, ...(t.h3 ? ["", t.h3] : []), "", ...t.header, t.line];
+    const keep = ll.findIndex((l) => /^## Keep/.test(l));
+    ll.splice(keep < 0 ? ll.length : keep, 0, ...block, "");
+  }
+  return { live: ll.join("\n").replace(/\n{3,}/g, "\n\n"), done: keepDone.join("\n"), moved };
+}
 export function parseRegressions(text) {
   const rows = [];
   let h2 = "", h3 = "";
@@ -19,9 +62,9 @@ export function parseRegressions(text) {
   }
   return rows;
 }
-export function loadRegressions(file = REGRESSIONS) { return parseRegressions(readFileSync(file, "utf8")); }
+export function loadRegressions(file) { return parseRegressions(file ? readFileSync(file, "utf8") : readAllRegressions()); }
 export const plain = (s) => s.replace(/\*\*|`|\*/g, "").replace(/\s+/g, " ").trim();
-// "open", "reopened", "built, not re-played", "fixed", "open (unverified)", "retired" ...
+// "open", "reopened", "waiting on art", "built, not re-played", "fixed", "open (unverified)", "retired" ...
 export const statusKind = (s) => { const t = plain(s).toLowerCase(); return t.startsWith("reopened") ? "reopened" : t.startsWith("open") ? "open" : t.startsWith("built") ? "built" : t.startsWith("fixed") ? "fixed" : t.startsWith("retired") ? "retired" : t.startsWith("keep") ? "keep" : "other"; };
 
 // the rows the contract run checks on every flow (decision 75; build/sandbox/lib/contract.mjs): a contract break names its check

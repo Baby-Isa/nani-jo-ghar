@@ -193,13 +193,29 @@ test("apply: FAIL reopens, PASS marks built, keep rows untouched, applying twice
   const v = new Map([["SH-08", { verdict: "FAIL", line: "A, the sugar row (2) is said first | x", png: "build/screenshots/evidence/r1/SH-08.png" }], ["SH-49", { verdict: "PASS", line: "B, every tick kept" }], ["KEEP-01", { verdict: "FAIL", line: "A" }]]);
   const out = applyVerdicts(md, v, "r1");
   assert.deepEqual(out.changed.map((c) => c.id), ["SH-08", "SH-49"]);
-  assert.match(out.text, /\| SH-08 \| Card order \| \*\*reopened\*\* \(evidence FAIL r1: A, the sugar row \[2\] is said first \/ x; `build\/screenshots\/evidence\/r1\/SH-08.png`\) · earlier: built, not re-played/);
-  assert.match(out.text, /\| SH-49 \| Ticks \| built \(evidence PASS r1: B, every tick kept\) · earlier: \*\*reopened\*\* \(S04 audit FAIL\)/);
+  assert.match(out.text, /\| SH-08 \| Card order \| \*\*reopened\*\* \(evidence FAIL r1: A, the sugar row \[2\] is said first \/ x; `build\/screenshots\/evidence\/r1\/SH-08.png`\) \|/);
+  assert.match(out.text, /\| SH-49 \| Ticks \| built \(evidence PASS r1: B, every tick kept\) \|/);
+  // the replaced statuses come back as history (decision 99: no "· earlier:" chain in the row)
+  assert.deepEqual(out.history.map((h) => [h.id, h.earlier]), [["SH-08", "built, not re-played (S04 audit: no evidence yet)"], ["SH-49", "**reopened** (S04 audit FAIL)"]]);
+  assert.doesNotMatch(out.text, /earlier:/);
   assert.match(out.text, /\| KEEP-01 \| Underline \| keep \|/);
   assert.equal(applyVerdicts(out.text, v, "r1").changed.length, 0);
-  // a later run replaces the earlier evidence note instead of stacking it
+  // a later run replaces the evidence note; the one it replaced goes to history
   const again = applyVerdicts(out.text, new Map([["SH-49", { verdict: "PASS", line: "C, still kept" }]]), "r2");
-  assert.match(again.text, /\| SH-49 \| Ticks \| built \(evidence PASS r2: C, still kept\) · earlier: \*\*reopened\*\* \(S04 audit FAIL\)/);
+  assert.match(again.text, /\| SH-49 \| Ticks \| built \(evidence PASS r2: C, still kept\) \|/);
+  assert.match(again.history[0].earlier, /evidence PASS r1/);
+});
+
+test("moveRows: a row goes back to the live list under its own section, or a new section before Keep", async () => {
+  const { moveRows, parseRegressions } = await import("./lib/regressions.mjs");
+  const H = ["| ID | Issue | Status | Check | Source |", "|---|---|---|---|---|"];
+  const live = ["# Fix list", "", "## Shared", "", ...H, "| SH-01 | A | **open** | eye | x |", "", "## Keep", "", ...H, "| KEEP-01 | K | keep | eye | x |"].join("\n");
+  const done = ["# Done", "", "## Shared", "", ...H, "| SH-02 | B | **reopened** (evidence FAIL r) | eye | x |", "", "## Clinic", "", "### Pharmacy", "", ...H, "| CLN-09 | C | **reopened** (r) | eye | x |", "| CLN-10 | D | built | eye | x |"].join("\n");
+  const m = moveRows(live, done, ["SH-02", "CLN-09"]);
+  assert.deepEqual(m.moved, ["SH-02", "CLN-09"]);
+  const rows = parseRegressions(m.live);
+  assert.deepEqual(rows.map((r) => [r.id, r.h2, r.h3]), [["SH-01", "Shared", ""], ["SH-02", "Shared", ""], ["CLN-09", "Clinic", "Pharmacy"], ["KEEP-01", "Keep", ""]]);
+  assert.deepEqual(parseRegressions(m.done).map((r) => r.id), ["CLN-10"]);
 });
 
 test("s04-tf: page:start answers only itself; a 'heal:' prefix; obsolete rows; wanted orders", async () => {

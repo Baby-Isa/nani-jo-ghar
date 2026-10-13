@@ -75,7 +75,8 @@ points.forEach((p, i) => (p.id = `P${i + 1}`));
 const pointOf = new Map(); points.forEach((p) => p.lines.forEach((n) => pointOf.set(n, p.id)));
 
 // ---- next free regression ids
-const regs = readFileSync(join(ROOT, "docs", "process", "regressions.md"), "utf8");
+// both the live fix list and the done archive: IDs are never reused (decision 99)
+const regs = ["docs/process/regressions.md", "docs/archive/regressions-done.md"].map((p) => { try { return readFileSync(join(ROOT, p), "utf8"); } catch { return ""; } }).join("\n");
 const maxId = {};
 for (const m of regs.matchAll(/^\| ([A-Z]+)-(\d+)\b/gm)) maxId[m[1]] = Math.max(maxId[m[1]] || 0, +m[2]);
 const prefixOf = (scr) => (SCREENS.find(([s]) => s === scr) || [, "CK"])[1];

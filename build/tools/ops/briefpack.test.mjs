@@ -29,8 +29,7 @@ test("two live briefs that own one path are an overlap; an 'except' carve-out is
   assert.equal(overlaps([{ ...A, live: false }, { ...C, owns: ["js/cook/ui.js"] }]).length, 0, "only live briefs count");
   assert.deepEqual(ownedPaths(["js/cook/{a,b}.js"]).map((o) => o.path), ["js/cook/a.js", "js/cook/b.js"]);
 });
-test("the S05 specs give no overlap", () => {
-  const live = liveSpecs().filter((s) => s.file.startsWith("s05") && s.live);
-  assert.ok(live.length >= 5);
-  assert.deepEqual(overlaps(live), []);
+test("the live specs give no overlap", () => {
+  // Sprint 5 closed on 13 Oct, so its specs are no longer live; whatever is live now must not overlap
+  assert.deepEqual(overlaps(liveSpecs().filter((s) => s.live)), []);
 });
