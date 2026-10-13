@@ -11586,27 +11586,30 @@
    "note": "the first fold: the filling on the strip, then the first triangle folds over it and hides it (Zafar S11)"
   }
  ],
- "SEK-15": [
-  {
-   "flow": "cook:mishkaki-grill",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": [
-    "tameto"
-   ],
-   "at": "kind-tap",
-   "after": null,
-   "capture": [
-    "zoom2:#stage"
-   ],
-   "expect": null,
-   "note": "each bowl's word chip: the Kutchi word beside its speaker (tameto included)"
-  }
- ],
+ "SEK-15": {
+  "obsolete": "decision 97 (4): a learnt word's chip may be its speaker alone (retired)",
+  "was": [
+   {
+    "flow": "cook:mishkaki-grill",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": [
+     "tameto"
+    ],
+    "at": "kind-tap",
+    "after": null,
+    "capture": [
+     "zoom2:#stage"
+    ],
+    "expect": null,
+    "note": "each bowl's word chip: the Kutchi word beside its speaker (tameto included)"
+   }
+  ]
+ },
  "SEK-16": [
   {
    "flow": "cook:mishkaki-grill",
@@ -11667,52 +11670,46 @@
    "max": 8
   }
  ],
- "SH-78": {
-  "needsDecision": "cook.md's rule for every mode folds a card you can't act on in the current phase to face + headline, so the chai card folds for the pour (and daar's for the stir, DAAR-18) and its ticks go out of sight; the S05 judges failed that as ticks vanishing. Keep the phase fold, or keep a card open through its own dish's last step (the pour, the stir)?",
-  "probes": [
-   {
-    "flow": "cook:chai-tray",
-    "path": "fair",
-    "level": 1,
-    "sizes": [
-     "1366x768"
-    ],
-    "profile": "seen",
-    "want": null,
-    "at": "every:placed",
-    "after": null,
-    "capture": [
-     "crop:#mission"
-    ],
-    "expect": null,
-    "note": "the chai card through the pour: a person's card is finished only with their dish (ui.js 'queue item 8'), so it folds after their pour, not when the last row ticks",
-    "max": 10
-   }
-  ]
- },
- "DAAR-18": {
-  "needsDecision": "As SH-78: hold the daar card open through the stir, or fold it once every row is ticked (§12)?",
-  "probes": [
-   {
-    "flow": "cook:daar",
-    "path": "fair",
-    "level": 1,
-    "sizes": [
-     "1366x768"
-    ],
-    "profile": "seen",
-    "want": null,
-    "at": "every:placed",
-    "after": null,
-    "capture": [
-     "crop:#mission"
-    ],
-    "expect": null,
-    "note": "the daar card through the stir",
-    "max": 16
-   }
-  ]
- },
+ "SH-78": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "decision 97 (3): the chai card stays open, rows and ticks, through the pour; it folds once the cup is poured",
+   "max": 10
+  }
+ ],
+ "DAAR-18": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "decision 97 (3): the daar card stays open, rows and ticks, through the stir",
+   "max": 16
+  }
+ ],
  "DAAR-19": [
   {
    "flow": "cook:daar",
@@ -12537,6 +12534,27 @@
    "expect": null,
    "note": "the fever card at each change at 800x360: whole, no scroll",
    "max": 6
+  }
+ ],
+ "SH-83": [
+  {
+   "flow": "house",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "dom:.ribbon"
+   ],
+   "expect": [
+    "minFont:.ribbon>=14"
+   ],
+   "note": "the house's 'Coming soon' ribbon at the 14 px floor (text for grown-ups is English by design)"
   }
  ]
 }

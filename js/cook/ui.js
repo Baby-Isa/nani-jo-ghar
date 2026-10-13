@@ -1345,6 +1345,9 @@
     for (const p of parts) {
       if (token !== readToken) return;
       p.els.forEach((e) => e.classList.add("reading"));
+      // SH-79 (decision 95, contract-8): one lit thing on the card: while a row is read out, the next row's mark waits
+      const held = [...document.querySelectorAll(".oc-row.next, .oc-item.next")].filter((e) => !p.els.includes(e));
+      held.forEach((e) => e.classList.remove("next"));
       try {
         // SH-17 (S05-G): a part stays lit while it is said and at least ~220 ms a word (up to 0.9 s): a part whose clip is
         // short ('elchi' in 'Muke elchi waari chai khape.') lit for under 150 ms, too fast to follow at a child's pace
@@ -1352,6 +1355,7 @@
         else await Cook.wait(Math.max(700, Cook.readMs(Lang.plain(p.line)) * 0.55));
       } finally {
         p.els.forEach((e) => e.classList.remove("reading"));
+        held.forEach((e) => e.isConnected && e.classList.add("next"));
       }
       if (token === readToken) await Cook.wait(120);
     }
@@ -1410,7 +1414,12 @@
       if (people.length) {
         people.forEach(({ s, rows }) => {
           const placed = rows.slice().sort((a, b) => Order().slotOf(L, a.r) - Order().slotOf(L, b.r));
-          cards.push({ key: `${L.dish || 0}:${s.for}`, who: s.for, L, rows: placed.map((x) => x.r), data: { person: person(s.for), headline: s.head ? headNode(s.head) : headline, items: [{ label: null, parts: placed.map((x) => partNode(x.r, x.gi)) }] } });
+          // decision 97 (3), SH-78: a person's card stays open from their dish's first step to its last: every row ticked
+          // is not finished while their dish is still being made (chai: their pour); the station closes them ({all, for})
+          const parts = placed.map((x) => partNode(x.r, x.gi));
+          const rowsDone = parts.length > 0 && parts.every((p) => p.done || p.no);
+          const dishDone = !!(L.closedAll || (L.closedFor && L.closedFor[s.for]));
+          cards.push({ key: `${L.dish || 0}:${s.for}`, who: s.for, L, rows: placed.map((x) => x.r), data: { person: person(s.for), headline: s.head ? headNode(s.head) : headline, items: [{ label: null, parts }], done: rowsDone && dishDone } });
         });
         return;
       }
@@ -1885,6 +1894,9 @@
     // the head (the dish itself: "trae samosa", Nana's "daar") closes when the station says the dish is
     // made: opts.head, everything closed ({all} for the whole order), or its own word when no row has it
     const H = L.head;
+    // decision 97 (3): the station says a person's dish (or the whole order) is made: their card may fold once its rows are done
+    if (opts.all && opts.for) (L.closedFor = L.closedFor || {})[opts.for] = true;
+    if (opts.all && !opts.for) L.closedAll = true;
     if (H && !H.done && !H.rec && (opts.head || (opts.all && !opts.for) || (!rows.length && want.length && (H.ids || []).some((id) => want.includes(id))))) rows.push(H);
     rows.forEach(markDone);
     if (rows.length) {
@@ -1974,6 +1986,9 @@
   M.reopen = function (ids, dish = 0, opts = {}) {
     const L = ladderFor(dish);
     if (!L) return [];
+    // a cup made again: that person's dish is not made any more (decision 97 (3))
+    if (opts.for && L.closedFor) delete L.closedFor[opts.for];
+    if (!opts.for) L.closedAll = false;
     const want = ids == null ? null : [].concat(ids);
     const rows = Order()
       .rows(L, { all: true })

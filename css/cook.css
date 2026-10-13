@@ -1086,7 +1086,7 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 .day-dot:not(.done):not(.next) b { background: #f3e2b6; }
 .day-dot[disabled] .day-sun { color: #d9cdb8; }
 .day-dot[disabled] b { background: #efe6d6; color: var(--ink-soft); }
-.title-wrap .day-dots { gap: 2px; margin-top: 18px; row-gap: 24px; flex-wrap: nowrap; }
+.title-wrap .day-dots { gap: 4px; margin-top: 16px; row-gap: 24px; flex-wrap: nowrap; } /* (CK-33: on the spacing grid) */
 
 /* T19 (MAA-14, S02-B): Nani's "pass me" comes ON SCREEN over the play area (the game is paused), her bubble asks,
    three pictures, a 3-second ring with a tick-tock; out of time she looks impatient (a shake) and goes */

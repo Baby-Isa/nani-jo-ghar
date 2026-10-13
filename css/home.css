@@ -113,8 +113,8 @@ button { font: inherit; color: inherit; }
 .doors.soon .label { font-size: clamp(13px, 1.6vw, 17px); }
 .ribbon {
   position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
-  background: var(--roof); color: #fff; font-weight: 800; font-size: 12px; white-space: nowrap;
-  padding: 3px 10px; border-radius: 999px;
+  background: var(--roof); color: #fff; font-weight: 800; font-size: 14px; white-space: nowrap; /* (the 14 px floor, TXT-05; S05-C3) */
+  padding: 4px 12px; border-radius: 999px;
 }
 /* upright tablets and phones: the doors grow taller */
 @media (orientation: portrait) {
