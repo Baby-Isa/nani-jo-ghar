@@ -20,8 +20,8 @@ const C = (t, k, o = {}) => ({ type: "c", k, t, ...o });
 const stage = (t, key) => C(t, "stage", { key });
 const T = 1e6;
 
-test("the checks: fourteen, each with an item, a title and how it measures", () => {
-  assert.equal(Object.keys(CHECKS).length, 14);
+test("the checks: fifteen, each with an item, a title and how it measures", () => {
+  assert.equal(Object.keys(CHECKS).length, 15);
   for (const [k, c] of Object.entries(CHECKS)) assert.ok(/^contract-\d+$/.test(k) && c.item && c.title && c.how.length > 40, k);
 });
 
@@ -152,4 +152,23 @@ test("contract-14 talk: the old 6 px bob and a stage's own CSS talk animation (A
   const ok = clone(tl);
   ok[1].list = [{ via: "phaser", who: "nani", dy: 2, da: 0.4, ms: 380 }, { via: "css", who: "img.cl-wp-img", name: "njg-talk", ms: 380 }];
   assert.equal(of(run(page("cook:day1", ok)), "contract-14").length, 0);
+});
+
+test("contract-8 highlight: the next row and a tinted group lit together, in two colours (Zafar 13 Oct); one lit thing passes", () => {
+  const two = [stage(T, "cook:station1:grill"), C(T + 100, "hl", { n: 2, list: ["dom:.oc-item.tint[0]#rgb(240, 232, 218)", "dom:.oc-row.next[0]#rgb(255, 244, 214)"] }), C(T + 900, "hl", { n: 0, list: [] })];
+  const b = of(run(page("cook:mishkaki-grill@L2", two, "390x844")), "contract-8");
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /2 highlights at once.*in 2 colours/);
+  const one = [stage(T, "cook:station1:grill"), C(T + 100, "hl", { n: 1, list: ["dom:.oc-row.next[0]#rgb(255, 244, 214)"] }), C(T + 900, "hl", { n: 0, list: [] })];
+  assert.equal(of(run(page("cook:mishkaki-grill@L2", one, "390x844")), "contract-8").length, 0);
+});
+
+test("contract-15 words-whole: a word broken across lines in a card (SH-73); a swap within a sample, or whole words, pass", () => {
+  const tl = [stage(T, "cook:station1:grill"), C(T + 100, "wrap", { n: 1, list: ["dungri"] }), C(T + 900, "wrap", { n: 0, list: [] })];
+  const b = of(run(page("cook:mishkaki-grill@L2", tl, "390x844")), "contract-15");
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /1 word broken across lines for 800 ms \(dungri\)/);
+  const quick = clone(tl);
+  quick[2].t = T + 200;
+  assert.equal(of(run(page("cook:mishkaki-grill@L2", quick, "390x844")), "contract-15").length, 0);
 });

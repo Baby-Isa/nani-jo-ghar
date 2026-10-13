@@ -15,7 +15,7 @@
 // eye checks on the sprint check sheets):
 //
 //   contract-7 one-voice    one voice at a time: no two lines' clips sound over each other (PAN-04)
-//   contract-8 highlight    one next-thing highlight at a time (SH-53)
+//   contract-8 highlight    one next-thing highlight at a time, in one colour: the stage's glows and every lit thing on a card (SH-53)
 //   contract-9 closed-card  from L3 the card is closed in the waiting room, the pharmacy and every heal game (CLN-114)
 //   contract-10 your-turn   the staged talkers face the player when it is the child's turn (SH-71)
 //   contract-11 background  no background stretched out of proportion (PAN-14) or drawn low-res (ART-05)
@@ -44,6 +44,7 @@ export const CHECKS = {
   "contract-11": { item: "background", title: "backgrounds in proportion and sharp", how: "Every picture covering half the screen or Cook's canvas (<img>, CSS background, Phaser image): screen px per source px across and down. Across and down differing by more than 3% is stretched (PAN-14); more than 1.5 screen px per source px (times the page's pixel ratio) is low-res (ART-05). Either is a break." },
   "contract-12": { item: "greyed", title: "buttons hidden until usable", how: "A ✓, Next or stage button on screen while disabled, aria-disabled, dimmed under 60% or greyscale, for 400 ms or more and not just pressed (1.5 s before), is a break: hidden until usable, never greyed (SH-23)." },
   "contract-13": { item: "stale-ui", title: "each stage clears its own UI", how: "Each reply pill (.cl-pill, .njg-pill, .cv-pill, .st-reply, .st-choice; not the sidebar's) remembers the stage it was first seen in; still on screen 600 ms into a later play stage is a break (CLN-06)." },
+  "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
 };
 
@@ -400,7 +401,22 @@ function check8(tl, segs, add) {
     const s = segAt(segs, e.t), k = `${s && s.key}|${e.list.join(",")}`;
     if (seen.has(k)) return;
     seen.add(k);
-    add("contract-8", e.t, `${s ? s.key : "?"}: ${e.n} highlights at once for ${Math.round(until - e.t)} ms (${e.list.join(", ")}); one at a time`);
+    const cols = [...new Set(e.list.map((x) => (/#(.+)$/.exec(x) || [])[1]).filter(Boolean))];
+    add("contract-8", e.t, `${s ? s.key : "?"}: ${e.n} highlights at once for ${Math.round(until - e.t)} ms (${e.list.join(", ")})${cols.length > 1 ? `, in ${cols.length} colours (${cols.join(" / ")})` : ""}; one at a time, in one colour`);
+  });
+}
+// 15 (SH-73, non-negotiable 9): a word broken across lines in a card, held 300 ms or more
+function check15(tl, segs, add) {
+  const ws = tl.filter((e) => e.type === "c" && e.k === "wrap");
+  const seen = new Set();
+  ws.forEach((e, i) => {
+    if (!(e.n > 0)) return;
+    const until = i + 1 < ws.length ? ws[i + 1].t : tl[tl.length - 1].t;
+    if (until - e.t < 300) return;
+    const s = segAt(segs, e.t), k = `${s && s.key}|${e.list.join(",")}`;
+    if (seen.has(k)) return;
+    seen.add(k);
+    add("contract-15", e.t, `${s ? s.key : "?"}: ${e.n} word${e.n > 1 ? "s" : ""} broken across lines for ${Math.round(until - e.t)} ms (${e.list.slice(0, 6).join(", ")})`);
   });
 }
 // 9 (CLN-114): from L3 the card is closed in the waiting room, the pharmacy and every heal game
@@ -542,6 +558,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check12(tl, segs, add);
   check13(tl, add);
   check14(tl, segs, add);
+  check15(tl, segs, add);
   return out;
 }
 

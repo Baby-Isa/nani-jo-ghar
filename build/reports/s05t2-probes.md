@@ -38,3 +38,6 @@ contract-11: no background is judged while a heal push-in is running (`contract-
 
 ## Last items (13 Oct, run ev-20261013-081647-4eq)
 CLN-117 PASS (new `variant-e4` driver plays `&variant=E4`: "Ask them how they feel." is said first). SH-41 PASS (Cook 7753 ms, clinic 8181 ms; the bulb's English is not lexicon-checked). CLN-111 PASS (morning end, 3 buttons). CLN-54: sheet, at the clinic's real pace. ART-18 and SH-01 stay as above (speaker in the sound hook; B/C data). A single re-run of every row in the table was not done; each row's last run id is above.
+
+## Contract checks (Zafar 13 Oct)
+contract-8 now counts every lit thing (Phaser glows, the next row, the row being read, the active tinted group, `.lit`, `.glow`, `.njg-pulse`; one element once) and flags more than one at once or in more than one colour, held 300 ms. New contract-15 (SH-73): a word of 4+ letters whose letters sit on two lines in a card, request card or word tile. Unit tests in `contract-rows.test.mjs` (24 pass). Run on `cook:mishkaki-grill@L2` at 844x390 (the contract run skips the upright 390x844): contract-8 red (3 breaks, e.g. the active group tint and the row being read lit together at order-card-big); contract-15 0 breaks (S2's phone wrap is not at this size). Also red on `cook:chai` (the bulb's `.lit` row with a glowing picture, 4 s): S2/C to decide.

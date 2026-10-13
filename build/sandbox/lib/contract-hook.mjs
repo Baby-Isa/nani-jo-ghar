@@ -19,6 +19,7 @@
 //                                          advance, stage-end, results) at its own time (at), not the sampler's
 //   k: "hl"      {n, list}                 the next-thing highlights on screen: Cook's glowing pictures (glowFx), the
 //                                          clinic's next-up / pulsing tools (one group per tool family: the plasters)
+//   k: "wrap"    {n, list}                 words whose letters sit on two lines in a card (.oc-card, the request card, a word tile)
 //   k: "greyed"  {list: [{sel, text, why}]}   ✓ / Next / stage buttons shown greyed (disabled or dimmed), not hidden
 //   k: "stale"   {sel, text, from}         a reply pill first seen in an earlier stage, still on screen 600 ms into this one
 //   k: "talk"    {list, spec}              the talk animations running: Cook's character tweens that repeat (lift, tilt,
@@ -325,9 +326,39 @@ export const CONTRACT_HOOK = `(() => {
       const walk = (list) => { for (const o of list) { if (!o || o.visible === false || o.alpha === 0) continue; if (o.list) walk(o.list); if (o.glowFx && o.active !== false) out.push("cook:" + ((o.texture && o.texture.key) || o.type)); } };
       safe(() => walk(sc.children.list));
     }
+    // SH-53 / Zafar 13 Oct (S05-T2): every lit thing on a card and the stage counts, in the one colour token it is lit with: the next row, the row
+    // being read, a tinted group box that holds the lit row (the tints alternate by design; the active one is lit), the shared pulse. "dom:<selector>[i]#<colour>"
+    const LIT = [".oc-row.next", ".oc-row.reading", ".oc-item.tint", ".oc-item.next", ".oc-item.lit", ".njg-pulse", ".glow", ".lit"];
+    const colourOf = (el) => { const lit = (x) => { const bg = getComputedStyle(x).backgroundColor; return bg && !/rgba\\(0, 0, 0, 0\\)|transparent/.test(bg) ? bg : null; }; const row = el.querySelector(":scope > .oc-irow"); return lit(el) || (row && lit(row)) || getComputedStyle(el).borderTopColor; };
+    const litSeen = new Set(); // one element carrying two lit classes (the ✓ is .glow and .njg-pulse) is one lit thing
+    for (const sel of LIT) { let i = 0; for (const el of document.querySelectorAll(sel)) if (!litSeen.has(el) && litSeen.add(el) && shown(el) && (sel !== ".oc-item.tint" || el.querySelector(".oc-row.next, .oc-row.reading"))) out.push("dom:" + sel + "[" + (i++) + "]#" + colourOf(el)); }
     const fam = new Set();
     for (const t of document.querySelectorAll(".hs-tool.next-up, .hs-tool.pulse")) if (shown(t)) fam.add("tool:" + String(t.dataset.tool || desc(t)).replace(/-.*$/, "-"));
     return [...out.sort(), ...[...fam].sort()];
+  };
+
+  // ---- a word broken across lines in a card (SH-73, non-negotiable 9): the letters of one word sit on two lines ----
+  const brokenWords = () => {
+    const out = [];
+    for (const card of document.querySelectorAll(".oc-card, .njg-rq-card, .rs-word")) {
+      if (!shown(card)) continue;
+      const w = document.createTreeWalker(card, NodeFilter.SHOW_TEXT);
+      let t;
+      while ((t = w.nextNode())) {
+        const txt = t.nodeValue;
+        if (!txt.trim() || (t.parentElement && t.parentElement.closest("[hidden], .hidden"))) continue;
+        const re = /\S+/g;
+        let m;
+        while ((m = re.exec(txt))) {
+          if (m[0].length < 4 || /[-\u2013]/.test(m[0])) continue; // a hyphen may break a word
+          const r = document.createRange();
+          r.setStart(t, m.index); r.setEnd(t, m.index + m[0].length);
+          const tops = new Set(Array.from(r.getClientRects()).filter((x) => x.width > 1).map((x) => Math.round(x.top / 3)));
+          if (tops.size > 1) out.push(m[0]);
+        }
+      }
+    }
+    return [...new Set(out)].sort();
   };
 
   // ---- ✓ / Next / stage buttons shown greyed (disabled, aria-disabled, dimmed or greyscale) instead of hidden ----
@@ -493,6 +524,8 @@ export const CONTRACT_HOOK = `(() => {
     safe(lifeLog);
     const hl = safe(highlights, []);
     if (!same("hl", hl)) emit({ k: "hl", n: hl.length, list: hl });
+    const bw = safe(brokenWords, []);
+    if (!same("wrap", bw)) emit({ k: "wrap", n: bw.length, list: bw });
     const gr = safe(greyed, []);
     if (!same("greyed", gr.map((b) => b.sel + b.why))) emit({ k: "greyed", list: gr });
     safe(stalePills);
