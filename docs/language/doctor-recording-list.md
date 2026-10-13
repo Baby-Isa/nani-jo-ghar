@@ -2,7 +2,7 @@
 
 13 Oct 2026 · These are the lines you say as the doctor in the children's clinic game, so they hear your own voice. **Say each line's number first ("A1"), then say the line twice, the way you'd say it to a grandchild, with a two-second pause after each.** Say it your own way, not word for word: a Kutchi word in the third column is how Mum says it, only a guide. If you'd just use the English word, say so; not sure, say "skip". One long recording in a quiet room is fine, on the set-up Zafar tested (decision 66).
 
-*The English is only the meaning. "·" means say each part, one after the other. Section D is a few questions only you can answer.*
+*The English is only the meaning. "·" means say each part, one after the other. Section D is a few questions only you can answer; section E is the old man's lines, for when you play the patient.*
 
 ---
 
@@ -79,42 +79,41 @@
 | A50 | What will help? | | the send-off, level 3 |
 | A51 | One more thing. | | the send-off, levels 1–2 |
 | A52 | Pick how she feels. · Pick how he feels. | | his box at level 1 |
-| A53 | Ask them how they feel. | | a whisper, level 3 |
-| A54 | Say bye. | | the goodbye cue, level 2+ |
-| A55 | Say thank you to the doctor. | | the goodbye cue |
-| A56 | Say get well soon. | | the goodbye cue |
+| A53 | Say bye. | | the goodbye cue, level 2+ |
+| A54 | Say thank you. | *thank you* (the family says it in English) | the goodbye cue |
+| A55 | Say get well soon. | | the goodbye cue |
 
 ### His other questions and instructions (Round 4 Section G, from G94; not every visit, but they teach the game how he talks)
 
 | ID | English meaning | Mum's Kutchi (say it your own way) | Where it's used |
 |---|---|---|---|
-| A57 | or · Chai, or milk? | *dudh* = milk | G94 |
-| A58 | Is it your knee, or your hand? | | G96 |
-| A59 | The knee. · This one. · Yes, this one. | *ha* = yes | G98 |
-| A60 | You first! | | G99 |
-| A61 | That's it. Will you help me? | | G100 |
-| A62 | Let me see. | | G101 |
-| A63 | Bring me the blanket. | | G102 |
-| A64 | All better! | | G103 |
-| A65 | Well done, my helper! | *shabash* = well done | G104 (see D2) |
-| A66 | Check the head. · Check the tummy. · Check the arm. · Check the leg. · Check the hand. · Check the foot. | | G108 |
-| A67 | Let's check everything. · Now the knee. · The knee again. · The other one. | | G109 |
-| A68 | Open your mouth, say aah. · Tap the knee. | | G110 |
-| A69 | He's hot. · She's fine. | *garam* = hot (to touch) | G111 |
-| A70 | Nothing wrong there! · Nothing wrong there. What else? | | G113 |
-| A71 | A bandage, round twice. · Round the foot, round the ankle, round the foot. | | G114 |
-| A72 | The green bandage. · The red one. · The big one. | *lilo* = green; *laal* = red; *wadho* = big | G115 |
-| A73 | Two drops in the left eye. · One drop in the right ear. | *ba* = two; *chando* = drops; *dabo* = left; *kan* = ear | G116 |
-| A74 | Bring me the green bottle. · Two of the small ones. · The one on the top shelf. | *lilo* = green; *nindho* = small | G117 |
-| A75 | Show me your left hand. · Does your left knee hurt? | *dabo* = left | G118 |
-| A76 | What's wrong with Nani? | | G121 |
-| A77 | What have you brought? | | G122 |
-| A78 | Say it again? | | G123 |
-| A79 | The bandage. The knee. Twice. | | G124 |
-| A80 | Two drops. | *ba* = two; *chando* = drops | G127 |
-| A81 | What's this? | Mum: *hi kuro ai* | the check-up |
-| A82 | Nothing there. Where? | | the check-up |
-| A83 | How do you feel? | | G83; the send-off's question |
+| A56 | or · Chai, or milk? | *dudh* = milk | G94 |
+| A57 | Is it your knee, or your hand? | | G96 |
+| A58 | The knee. · This one. · Yes, this one. | *ha* = yes | G98 |
+| A59 | You first! | | G99 |
+| A60 | That's it. Will you help me? | | G100 |
+| A61 | Let me see. | | G101 |
+| A62 | Bring me the blanket. | | G102 |
+| A63 | All better! | | G103 |
+| A64 | Well done, my helper! | *shabash* = well done | G104 (see D2) |
+| A65 | Check the head. · Check the tummy. · Check the arm. · Check the leg. · Check the hand. · Check the foot. | | G108 |
+| A66 | Let's check everything. · Now the knee. · The knee again. · The other one. | | G109 |
+| A67 | Open your mouth, say aah. · Tap the knee. | | G110 |
+| A68 | He's hot. · She's fine. | *garam* = hot (to touch) | G111 |
+| A69 | Nothing wrong there! · Nothing wrong there. What else? | | G113 |
+| A70 | A bandage, round twice. · Round the foot, round the ankle, round the foot. | | G114 |
+| A71 | The green bandage. · The red one. · The big one. | *lilo* = green; *laal* = red; *wadho* = big | G115 |
+| A72 | Two drops in the left eye. · One drop in the right ear. | *ba* = two; *chando* = drops; *dabo* = left; *kan* = ear | G116 |
+| A73 | Bring me the green bottle. · Two of the small ones. · The one on the top shelf. | *lilo* = green; *nindho* = small | G117 |
+| A74 | Show me your left hand. · Does your left knee hurt? | *dabo* = left | G118 |
+| A75 | What's wrong with Nani? | | G121 |
+| A76 | What have you brought? | | G122 |
+| A77 | Say it again? | | G123 |
+| A78 | The bandage. The knee. Twice. | | G124 |
+| A79 | Two drops. | *ba* = two; *chando* = drops | G127 |
+| A80 | What's this? | Mum: *hi kuro ai* | the check-up |
+| A81 | Nothing there. Where? | | the check-up |
+| A82 | How do you feel? | | G83; the send-off's question |
 
 ---
 
@@ -130,7 +129,7 @@
 | B2 | First, the water. | | step 1 |
 | B3 | Then the cloth: dab it three times. | *ne poi* = and then; *trae* = three | step 2 (1–4 dabs) |
 | B4 | Then the red plaster. · Then the green plaster. | *laal* = red; *lilo* = green | step 3 (the plasters in order) |
-| B5 | Then the plaster that's half red and half green. | *laal* = red; *lilo* = green | step 3, level 3 |
+| B5 | Then the plaster that's half red and half green. | *laal* = red; *lilo* = green | step 3, the harder levels |
 | B6 | Then the thread: three stitches. | *trae* = three | the cut, level 2 |
 | B7 | Then the thread: first the big one, three stitches; then the small one, one stitch. | *wadho* = big; *nindho* = small; *hakro* = one | the cut, level 3 |
 | B8 | Then a plaster. | | the cut, last step |
@@ -320,21 +319,45 @@
 
 ---
 
+## E. The old man's lines (when you play the patient)
+
+*The patient's lines, for the old man who comes to the clinic (decision 66). Say them as a poorly grandad would.*
+
+| ID | English meaning | Mum's Kutchi (say it your own way) | Where it's used |
+|---|---|---|---|
+| E1 | Salamun alaykum. | Mum: *salamun alaykum* | his greeting in the waiting room |
+| E2 | My knee hurts. · My arm hurts. · My foot hurts. | | where it hurts (G120) |
+| E3 | My left knee. · My right eye. | *dabo* = left | where it hurts, level 3; the eye's drops |
+| E4 | My knee. | | naming the sore part |
+| E5 | Yes. · No. | *ha* = yes; *na* = no | answering "Does it hurt here?" |
+| E6 | I don't feel well. · I don't know why. | | the check-up (G112) |
+| E7 | I fell over and scraped my arm. | | the scrape, why he's here |
+| E8 | My ear feels blocked. · My tooth hurts. · My tongue is sore. | | the ear, the tooth, the drinks: why he's here |
+| E9 | I can't see well. · Ow, something's in my foot! · Time for my jab. | | the eye, the foot, the jab: why he's here |
+| E10 | I feel hot… no, cold! | | the fever room, why he's here |
+| E11 | Too hot! · Still too hot! · Too cold! · Still too cold! · Just right! | *barabar* = just right | the fever room |
+| E12 | Ow! · That tickles! | | heal-game reactions |
+| E13 | That feels better! · I can hear again! · I can see! · It doesn't hurt now! · My tongue feels better! | | the end of a heal game |
+| E14 | Thank you, I feel better! | *thank you* (the family says it in English) | after every heal game |
+| E15 | I feel happy. · I feel sad. · I feel hot. · I feel cold. | | the send-off |
+| E16 | Thank you! · Bye! | *thank you* (the family says it in English) | the goodbye at the door |
+
+---
+
 ## For Zafar
 
-**Count:** A 83 · B 63 · C 64 · D 10 · **220 lines**. A1–A56 are what a visit says, most of it at every visit (A1, A2–A7, A12, A13, one of A29–A41, A42–A45, A49): record those whole first. If his time is short, do A1–A56, then B, then C, then D.
+**Count:** A 82 · B 63 · C 64 · D 10 · E 16 · **235 lines**. A1–A55 are what a visit says, most of it at every visit (A1, A2–A7, A12, A13, one of A29–A41, A42–A45, A49): record those whole first. If his time is short, do A1–A55, then B, then C, then E, then D.
 
 **Where it came from:** `data/clinic/pipeline.json` lines (who speaks: `js/clinic/stages/*.js`), `data/clinic/heal/*.json` (lines marked doctor) and each heal game's card rows (built from `js/clinic/heal/games/*.js` at levels 1–4), `data/lang/lexicon.json`, `node build/lang/gap-report.mjs` over the clinic's 360 lexicon entries (312 words with no Kutchi, 112 he-or-she unknown, 40 with no OK recording, 1 missing form), Round 4 Section G and E102 (Round 5 holds no clinic items: it leaves Section G for the doctor). Kutchi is shown only where the lexicon has it **confirmed** from Mum (or the family's own English, *cup*); Mum's sentences B34 and B35 are grammar-notes §38 I16 and I4.
 
-**Not sure these belong:**
-1. **The patients' lines are left out** (about 45: "My knee hurts", "I don't feel well", the feelings, the heal-game reactions). Decision 66 makes him the older-man voice too, so the old man's lines could be his. Add them?
-2. **A55 "Say thank you to the doctor"** is cued in his own voice (`pipeline.json` goodbyes). Odd from him; maybe "Say thank you".
-3. **A53 "Ask them how they feel"**: `pipeline.json` marks it the doctor's; `clinic.md` E4 says Nani whispers it.
-4. **A36:** the data has the doctor saying "Sore spots on *my* tongue!"; written here as "on the tongue".
-5. **A57–A83** (Round 4 G94–G127 and the old `data/clinic.json` lines) aren't said by today's game; kept because they give the engine his sentence shapes.
-6. **Buttons and captions left out** (Next, Done, Next patient, Close the clinic, To the bench, To the counter, Say it, Call them in, Ask them): they have no speaker in the code.
-7. **The parked games** (tummy, hic, hair) are left out; hic has two doctor lines ("Boo!", "Ha ha ha! All gone!").
-8. **`knee.json`** still holds the broken leg's X-ray and cast lines and a side line; the knee game never uses them, so they're left out.
-9. **Mum's draft words are left blank** (heard once, or not yet confirmed): *pela* (first), *paani* (water), *gutan* (knee), *hath* (hand), *akh* (eye), *pag* (foot), *jamni* (right), *panj* (five), *achija*, *wa alaikum salaam*, *waaro* (with), and the class-handout food words. *dungri* and *tameto* are marked confirmed in the lexicon but sourced only to the handout, so also blank. Add any you're sure of.
-10. ***trae* and *char*** are confirmed in the lexicon from Mum's Round 3 sentences, but `status.md` ("For Mum", item 1) still lists them as never confirmed. They're shown here.
-11. **`docs/status.md` has no recording protocol**; the intro uses the Round 4 and 5 "How to answer" steps, changed to "twice", and the tested set-up (decision 66, rule G17).
+**Zafar's answers (13 Oct):** the old man's lines are section E (patients' lines from the clinic data only); his goodbye cue is now "Say thank you" (A54), and "Say thank you to the doctor" stays in `pipeline.json` for another voice, off his list; "Ask them how they feel" is Nani's line and is off his list; the numbers 1–10 all stay (C44, C45), Mum's word shown only where it's confirmed (*hakro*, *ba*, *trae*, *char*); two-colour plasters stay, at the harder levels (B5).
+
+**Still not sure these belong:**
+1. **A36:** the data has the doctor saying "Sore spots on *my* tongue!"; written here as "on the tongue".
+2. **A56–A82** (Round 4 G94–G127 and the old `data/clinic.json` lines) aren't said by today's game; kept because they give the engine his sentence shapes.
+3. **Buttons and captions left out** (Next, Done, Next patient, Close the clinic, To the bench, To the counter, Say it, Call them in, Ask them): they have no speaker in the code.
+4. **The parked games** (tummy, hic, hair) are left out; hic has two doctor lines ("Boo!", "Ha ha ha! All gone!"), and tummy and hair have patient lines.
+5. **`knee.json`** still holds the broken leg's X-ray and cast lines and a side line; the knee game never uses them, so they're left out.
+6. **Mum's draft words are left blank** (heard once, or not yet confirmed): *pela* (first), *paani* (water), *gutan* (knee), *hath* (hand), *akh* (eye), *pag* (foot), *jamni* (right), *panj* (five), *achija*, *wa alaikum salaam*, *waaro* (with), and the class-handout food words. *dungri* and *tameto* are marked confirmed in the lexicon but sourced only to the handout, so also blank. Add any you're sure of.
+7. **`docs/status.md` has no recording protocol**; the intro uses the Round 4 and 5 "How to answer" steps, changed to "twice", and the tested set-up (decision 66, rule G17).
+8. **Section E** gives the old man every patient line the nine heal games use; the other patients (the girl, the boy, the women) still need their own voices.
