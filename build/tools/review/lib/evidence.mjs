@@ -76,12 +76,26 @@ export function parseVerdicts(text) {
     if ((m = /^judge:\s*(.+)$/i.exec(l))) { out.judge = m[1].trim(); continue; }
     if (!(m = /^\|?\s*([A-Z][A-Z]*-[A-Z0-9-]*\d+)\s*\|\s*(PASS|FAIL|EVIDENCE)\s*:\s*(.+?)\s*\|?$/.exec(l))) continue;
     const [, id, verdict, line] = m;
-    const pm = /^(?:panel\s+)?([A-D](?:\s*(?:,|and|\+|&)\s*[A-D])*|text|voice|t|p\d+)\b\s*(?:\([^)]*\))?\s*[,:;.)-]/i.exec(line); // a text-only row cites its text ("PASS: text, ...")
-    const panel = pm ? pm[1].toUpperCase().replace(/\s+/g, "") : null;
+    // a text-only row cites its text capture: "PASS: text, ...", or by its label in the .md ("SH-45-p1-L1-1366x768 dom: ...",
+    // "p1-L2 voice, ..."); passFor() below keeps the A-D rule for a row that has a sheet
+    const pm = /^(?:panel\s+)?([A-D](?:\s*(?:,|and|\+|&)\s*[A-D])*(?![\w-])|(?:[A-Z]+-\d+-)?p\d+(?:-L\d+)?(?:-(?:\d+x\d+|repo))?(?:\s+(?:dom|voice|cmd|contract|text|stage list))?|(?:the\s+)?(?:text|voice|dom|cmd|t)(?:\s+(?:capture|timeline))?)\b\s*(?:\([^)]*\))?\s*[,:;.)-]/i.exec(line);
+    const panel = pm ? pm[1].replace(/^the\s+/i, "").replace(/\s+/g, " ").trim().replace(/^([A-D](?:\s*(?:,|and|\+|&)\s*[A-D])*)$/i, (s) => s.toUpperCase().replace(/\s+/g, "")) : null;
     if (verdict === "PASS" && !panel) { out.rejected.push({ id, why: "a PASS must name the panel it saw first (\"PASS: B, ...\")", line }); continue; }
     out.lines.push({ id, verdict, line, panel });
   }
   return out;
+}
+
+// A PASS stands on what it cites: a row with a sheet (a PNG) names a panel A-D; a text-only row (no sheet) names its text
+// capture (decision 96, S05-C3: the text judge's PASSes on SH-45, CLN-120 were refused for naming no panel that could exist).
+// -> null when it stands, else why not
+export function passRefusal(l, hasSheet) {
+  if (!l || l.verdict !== "PASS") return null;
+  if (!l.panel) return "a PASS must name the panel it saw first (\"PASS: B, ...\")";
+  const lettered = /^[A-D](?:[,&+]|AND|$)/.test(l.panel);
+  if (hasSheet && !lettered) return `the row has a sheet: a PASS names its panel A-D, not "${l.panel}"`;
+  if (!hasSheet && lettered) return `the row has no sheet (text only): a PASS names its text capture, not panel ${l.panel}`;
+  return null;
 }
 
 // ---------- regressions.md ----------

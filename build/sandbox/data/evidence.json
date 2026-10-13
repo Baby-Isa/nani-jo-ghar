@@ -11345,5 +11345,145 @@
    "delay": 0,
    "note": "each fold's ghost and swipe: a diagonal on the triangle (bottom left to top right, then top left to bottom right), filmed 4 frames at a child's pace"
   }
+ ],
+ "SH-74": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the end card sits inside the play area: never off the stage's left edge, never over the sidebar (S05 judges: CLN-03 B-D)"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "inside:.njg-results .rs-card in .cl-main"
+   ],
+   "note": "a heal game's end card inside the play area, clear of the sidebar (CLN-69)"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "inside:.njg-results .rs-card in #stage"
+   ],
+   "note": "Cook's end card inside the play area too (the one shared card)"
+  }
+ ],
+ "SH-75": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "crop:.njg-results .rs-card"
+   ],
+   "expect": null,
+   "note": "the card fits its badges: with one or two badges it is narrower, never the three-badge width with empty room"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "crop:.njg-results .rs-card"
+   ],
+   "expect": null,
+   "note": "three badges: the card as wide as they need"
+  }
+ ],
+ "SH-76": [
+  {
+   "flow": "lab:cook/recipe-daal",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-steps",
+   "after": null,
+   "capture": [
+    "crop:.njg-results .rs-card",
+    "dom:.njg-results .rs-steps-list"
+   ],
+   "expect": [
+    "count:.njg-results .rs-p3 .rs-step>=1"
+   ],
+   "note": "a lab page with steps goes past the word review to the steps page and on to its end (gate-20261013-1447 stopped every one at the word review)"
+  }
+ ],
+ "SH-77": [
+  {
+   "flow": "lab:cook/daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": [
+    "rai"
+   ],
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "zoom2:.njg-results .rs-words",
+    "dom:.njg-results .rs-words"
+   ],
+   "expect": [
+    "noClip:.njg-results .rs-word"
+   ],
+   "note": "each word tile holds its English gloss ('mustard seeds' under rai): shrink, then wrap; never over the speaker icon (non-negotiable 9)"
+  }
  ]
 }

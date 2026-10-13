@@ -67,7 +67,16 @@ export function labCook({ id, title, query, timeoutS = 400, speed = 3, firstDone
           await waitBadges(page);
           badges.push(await readBadges(page));
           await rec.state("results-badges");
-          if (await page.$(".njg-results .rs-next")) { await page.click(".njg-results .rs-next"); await sleep(900); await rec.state("results-words"); }
+          // → through every page after the badges: the word review, then the steps (decision 93); the actions show only on
+          // the last page, so clicking one while → is still up waits on a hidden button (gate-20261013-1447)
+          for (let pg = 0; pg < 3 && (await page.isVisible(".njg-results .rs-next").catch(() => false)); pg++) {
+            const step = await page.$eval(".njg-results .rs-card", (c) => c.dataset.step).catch(() => "");
+            await page.click(".njg-results .rs-next");
+            await sleep(900);
+            const now = await page.$eval(".njg-results .rs-card", (c) => c.dataset.step).catch(() => "");
+            if (now === step) break;
+            await rec.state(now === "3" ? "results-steps" : "results-words");
+          }
           const act = (await page.$('.njg-results [data-act="list"]')) || (await page.$(".njg-results .rs-act.primary")) || (await page.$(".njg-results .rs-act"));
           if (act) await act.click();
           await sleep(900);

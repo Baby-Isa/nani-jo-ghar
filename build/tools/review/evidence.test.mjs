@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, lexiconWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceDecision, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
 import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
-import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, applyVerdicts, applyGuard } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard } from "./lib/evidence.mjs";
 import { blank, encodePng } from "./lib/png.mjs";
 
 test("captures: every kind, a capture at another moment, refusals", () => {
@@ -166,6 +166,23 @@ test("verdict files: a PASS must cite its panel; EVIDENCE is kept apart", () => 
   assert.equal(v.judge, "Fable 5, session abc");
   assert.deepEqual(v.lines.map((l) => [l.id, l.verdict, l.panel]), [["CLN-100", "PASS", "B"], ["SH-08", "FAIL", "A"], ["SH-61", "EVIDENCE", null], ["ART-18", "PASS", "C"]]);
   assert.deepEqual(v.rejected.map((r) => r.id), ["SH-49"]);
+});
+
+test("verdict files: a text-only row's PASS cites its text capture; a row with a sheet still needs A-D", () => {
+  const v = parseVerdicts("judge: Sonnet, text batch\nSH-45 | PASS: SH-45-p1-L1-1366x768 dom: the line reads Muke chai khape.\nCLN-120 | PASS: p2-L3 voice, the doctor names the effect\nPAN-05 | PASS: text, stage 4's card lists its rows\nSH-08 | PASS: the voice timeline, the lines in card order\nSH-61 | PASS: A, the tick casts a shadow\nCK-07 | PASS: B, the frown");
+  assert.deepEqual(v.lines.map((l) => [l.id, l.panel]), [["SH-45", "SH-45-p1-L1-1366x768 dom"], ["CLN-120", "p2-L3 voice"], ["PAN-05", "text"], ["SH-08", "voice timeline"], ["SH-61", "A"], ["CK-07", "B"]]);
+  const L = Object.fromEntries(v.lines.map((l) => [l.id, l]));
+  // text only (no PNG): a text label stands, a panel letter does not (there is no panel)
+  assert.equal(passRefusal(L["SH-45"], false), null);
+  assert.equal(passRefusal(L["CLN-120"], false), null);
+  assert.equal(passRefusal(L["PAN-05"], false), null);
+  assert.match(passRefusal(L["SH-61"], false), /no sheet/);
+  // a sheet: only A-D stands
+  assert.equal(passRefusal(L["SH-61"], true), null);
+  assert.match(passRefusal(L["SH-45"], true), /A-D/);
+  // FAIL and EVIDENCE are never refused here
+  assert.equal(passRefusal({ verdict: "FAIL", panel: null }, true), null);
+  assert.match(passRefusal({ verdict: "PASS", panel: null }, false), /name the panel/);
 });
 
 test("apply: FAIL reopens, PASS marks built, keep rows untouched, applying twice changes nothing", () => {

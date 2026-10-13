@@ -109,7 +109,7 @@ export function momentsFor(root, flowId, { kindOf = () => null, seen = null } = 
     out.push(...COOK_REC, ...(COOK_PATH[path] || []));
     for (const x of cookKinds(root)) out.push(`cook:${x}`, `cook-done:${x}`);
     out.push("exp:*", "exp:*-*", "exp:*-*-*", "phase:*", "phase:*-*", "only:*");
-    if (kind === "lab-cook") out.push("rec:*-start", "rec:end", "rec:*-results-words", "rec:*-results-badges");
+    if (kind === "lab-cook") out.push("rec:*-start", "rec:end", "rec:*-results-words", "rec:*-results-badges", "rec:results-steps");
   } else if (kind === "cook-other") out.push("rec:title", "rec:title-after", "rec:shop", "rec:shop-bought", "rec:shop-after", "rec:shop-grown-ups", "rec:day-summary", "rec:finale", "rec:kitchen-open", "rec:summary", "rec:close-kitchen", "rec:recipe-book", "rec:station-lab-list", "rec:station-lab-parts-open", "rec:title-grown-ups", ...COOK_REC, ...cookKinds(root).flatMap((x) => [`cook:${x}`, `cook-done:${x}`]));
   else if (kind === "clinic-stage" || kind === "patient" || kind === "morning" || kind === "heal") {
     out.push(...CLINIC_REC, ...(CLINIC_PATH[path] || []), ...HEAL_REC);
