@@ -3,6 +3,14 @@
   "id": "first-launch",
   "flag": "firstDone",
   "lines": {
+    "name-nani": {
+      "en": "Nani!",
+      "kutchi": "Nani!",
+      "clip": "nani",
+      "speaker": "zafar",
+      "who": "child",
+      "note": "SH-69 (Zafar 13 Oct, S05-G): the first meeting names her: the child calls 'Nani!' as they arrive (K14, Zafar's take so it isn't Nani's own voice, as 'Ha!')."
+    },
     "help-me": {
       "en": "Can you help me?",
       "kutchi": "Tu muke help kar de?",
@@ -80,7 +88,7 @@
       "bg": "assets/backgrounds/bg-courtyard-e-v1.webp",
       "child": { "x": 8, "walk": true },
       "nani": { "img": "assets/cook/characters/nani-happy.webp", "x": 56 },
-      "lines": ["help-me", "pantry-ask"]
+      "lines": ["name-nani", "help-me", "pantry-ask"]
     },
     { "id": "pantry", "kind": "cook", "url": "cook.html?app=1&first=pantry" },
     {

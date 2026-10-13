@@ -37,3 +37,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 12:30 S05-G: chaat chips 14 px at every size, scrape L3 one new thing, clinic placeholders tagged, read-along holds, first-meeting names, story card Kutchi only; built SH-19, SH-58, CLN-14, ART-18, SH-66, SH-69 (sheet); open for P: SH-17, DAAR-11, SH-01, SEK-11, MAA-08; CLN-45 to Zafar (build/reports/s05g-game.md).
 12:32 S05-G: SAM-16 samosa folds are diagonal swipes in fold order with a 30 deg gate (scratch red/green L1, L2; SH-19 ev-20261013-122741-xc8 PASS).
 12:40 S05-G: contract-8 on cook:day2 fixed (maani's ready glow cleared on lift): red s05g-c8a 1 break, green s05g-c8b 0.
+12:47 S05-G: first launch opens with the child's 'Nani!' (Zafar's yes): red s05g-touched, green s05g-nani.

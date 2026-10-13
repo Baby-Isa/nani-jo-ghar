@@ -30,7 +30,7 @@ Branch `ccr-a7370759-t0lee7`. Red run `ev-20261013-113205-9br` (all nine rows); 
 ## For Zafar (yes to all except…)
 1. Other heal ladders jump two things at L2 or L3 (boing drop colours, foot toe order, tooth, taste, eye, knee). Recommend: move each new thing to L2, keep L3 heard only.
 2. Two-colour plasters no longer appear. Recommend: leave them out.
-3. Nani's name at first launch needs a story line. Recommend: the child says "Nani!" (clip exists).
+3. Nani's name at first launch needs a story line. Recommend: the child says "Nani!" (clip exists). **Zafar: yes to all; 1 and 2 went to D2; 3 built** (the arrive scene opens with the child's "Nani!", Zafar's take: red s05g-touched no name, green s05g-nani at 5.2 s).
 
 ## For P
 SH-17, DAAR-11, SH-01, SEK-11, MAA-08 above; CLN-14's `!textMatches` counts `[ph]`; SH-19 `max 6` never samples fry; SAM-16 needs a probe filming each fold's ghost and swipe. Two rows share the id SAM-16 (the fold, and the L3 mounds): renumber one.
