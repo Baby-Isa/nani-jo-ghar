@@ -41,6 +41,7 @@ One line per doc. Start with `CLAUDE.md`, then `docs/status.md`. Superseded docs
 - `grammar-kb.md`: what's known, guessed and unknown about each grammar feature, and the question that settles it.
 - `fill-the-engine.md`: how to add words and rules, and how gaps become Mum's questions.
 - `mum-questions/`: every round of Questions for Mum (a record; `README.md` says which are answered).
+- `doctor-recording-list.md` (and `.docx`): the doctor's lines for the clinic, numbered and ready to read aloud (13 Oct).
 - `sources/`: outside material (the Gemini blueprints, research notes); hypotheses only, never evidence.
 
 ## Architecture (`architecture/`)
