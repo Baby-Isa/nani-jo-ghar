@@ -39,3 +39,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 12:40 S05-G: contract-8 on cook:day2 fixed (maani's ready glow cleared on lift): red s05g-c8a 1 break, green s05g-c8b 0.
 12:47 S05-G: first launch opens with the child's 'Nani!' (Zafar's yes): red s05g-touched, green s05g-nani.
 13:52 S05-G: SH-17 Cook pop-up read-along holds ~220 ms a word: red ev-20261013-134818-bh4 143 ms, green ev-20261013-134938-xow 819 ms.
+17:50 S05-C3: Cook and shared fix round: 24 rows built on independent Fable PASS or machine (SH-74/75/76/77 first, pushed early for D3), no row at two strikes; For Zafar SH-78/DAAR-18, SEK-15; tool gaps CK-31/32, DAAR-22/23, SH-69; report build/reports/s05c3-cook.md.
