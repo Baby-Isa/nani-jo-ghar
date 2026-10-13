@@ -502,6 +502,15 @@
       const want = P.rows.find((r) => r.id === "drink").answer;
       const ok = key === want;
       judge("drink", ok, { gave: key });
+      // decision 93 (SH-44): each recipe row's own verdict for the steps page (the drink row above is the score)
+      if (!st.judgedParts) {
+        st.judgedParts = true;
+        const dk = DRINKS[c.drink];
+        const adds = Object.keys(gl.adds);
+        const nAdd = gl.adds[dk.add] || 0;
+        ctx.log({ type: gl.liquid === dk.liquid ? "right" : "wrong", rowId: "drink-pour", detail: { liquid: gl.liquid } });
+        ctx.log({ type: adds.length === 1 && nAdd === (P.n || 1) ? "right" : "wrong", rowId: "drink-add", detail: P.n != null && adds.length === 1 && adds[0] === dk.add ? String(nAdd) : { adds: gl.adds } });
+      }
       st.busy = true;
       S.uncue();
       // the tumbler goes up to the mouth and tips

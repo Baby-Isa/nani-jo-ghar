@@ -636,15 +636,32 @@
           const base = String(id).replace(/-[a-z]+$/, "");
           return card.rows.find((x) => x.id === id) || card.rows.find((x) => x.id === base) || card.rows.find((x) => x.id.indexOf(base) === 0) || null;
         };
-        const seen = new Set();
-        const steps = [];
+        // decision 93 (SH-44, ui-design-system.md 6a): the steps page after the word review: the doctor's instruction
+        // list in order, one entry per instruction (the card's rows), each its engine line ({kutchi, english}; a line still to record stays English, grey), what was asked,
+        // what was done and whether it was right. Only a game with an instruction list (the v2 games) and two steps or more
+        const judged = {};
         log.forEach((e) => {
-          if ((e.type !== "right" && e.type !== "wrong") || !e.rowId || seen.has(e.rowId)) return;
-          seen.add(e.rowId);
+          if ((e.type !== "right" && e.type !== "wrong") || !e.rowId) return;
           const row = rowFor(e.rowId);
           if (!row) return;
-          steps.push({ id: e.rowId, label: { kutchi: row.kutchi || null, english: row.english || "", plan: row.plan }, ok: e.type === "right", done: e.detail != null && typeof e.detail !== "object" ? String(e.detail).replace(/^(\d+) of \d+$/, "$1") : null });
+          const j = judged[row.id] || (judged[row.id] = { ok: true, done: null });
+          if (e.type === "wrong") j.ok = false;
+          // what was done, only as a count (a game's own detail in English never reaches the child: non-negotiable 5)
+          const m = j.done == null && e.detail != null && typeof e.detail !== "object" && /^(\d+)( of \d+)?$/.exec(String(e.detail));
+          if (m) j.done = Kit.num(+m[1]);
         });
+        // a headed group (the drink under its name) is its recipe rows, each judged by the game (the name is no step)
+        const headed = new Set(card.rows.filter((x) => x.head && x.seq && card.rows.some((y) => y.seq === x.seq && !y.head)).map((x) => x.seq));
+        let steps = !v2 ? [] : card.rows
+          .filter((x) => !(x.head && headed.has(x.seq)))
+          .map((x) => {
+            // each step stands on its own line here, so a sequence's "ne poi ..." starts with a capital, as the first does
+            const cap = (t) => (t ? String(t).replace(/^(\[?)(\S)/, (a, b, c) => b + c.toUpperCase()) : t);
+            const label = { kutchi: cap(x.kutchi) || null, english: cap(x.english) || "", plan: x.plan };
+            const j = judged[x.id];
+            return { id: x.id, label, asked: label, done: j ? j.done : null, ok: j ? j.ok : card.st.done.has(x.id) };
+          });
+        if (steps.length < 2) steps = [];
         if (taught && US) US.set("clinic-taught", def.id, true);
         if (taught) r = Object.assign({}, r, { right: 0, total: 0, taught: true });
         const out = Object.assign({ right: 0, total: 0, words: [] }, r, {
