@@ -2545,25 +2545,26 @@
  "SH-44": [
   {
    "flow": "cook:daar",
-   "path": "open-steps",
+   "path": "mistake",
    "level": 1,
    "sizes": [
-    "1366x768"
+    "1366x768",
+    "390x844"
    ],
    "profile": "seen",
    "want": null,
-   "at": "results-badges",
+   "at": "visible:.njg-results .rs-p3 .rs-step",
    "after": null,
    "capture": [
     "crop:.rs-card",
-    "dom:.rs-steps-list"
+    "dom:.njg-results .rs-steps-list"
    ],
    "expect": [
-    "count:.rs-step>=1",
+    "count:.njg-results .rs-p3 .rs-step>=1",
     "noClip:.rs-card"
    ],
-   "note": "the review shows which step went wrong, asked vs done, pictured (the tick badge tapped to open the list)",
-   "delay": 900
+   "note": "decision 93: after the word review the steps page comes by itself (no tap): Kutchi with English under, right gold, wrong red, asked vs done; no inner scroll",
+   "delay": 600
   }
  ],
  "SH-45": [

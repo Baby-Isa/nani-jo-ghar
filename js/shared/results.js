@@ -271,8 +271,9 @@
     </div>`;
   }
   /**
-   * D14 (1 Oct, decision 27; Mum: "I don't know what I got wrong"): the steps a round asked for, tapped open from
-   * the tick badge: each step's line with a gold or grey tick, and for a wrong one what was done.
+   * D14 (1 Oct, decision 27; Mum: "I don't know what I got wrong"), decision 93 (13 Oct): the steps a round asked for, as
+   * page 3 after the word review (no tap): each step's Kutchi with the English under, right gold, wrong red, and for a
+   * wrong one what was done. A game passes steps only when its round has them (ui-design-system.md §6a).
    * steps: [{label: {kutchi, english}, ok, done?}]
    */
   function stepsHtml(steps) {
@@ -283,8 +284,9 @@
       const k = l.kutchi ? `<b>${ph(l.kutchi)}</b>` : `<b class="rs-ph">${esc(l.english || "")}</b>`;
       return `<li class="rs-step ${x.ok ? "ok" : "bad"}"><span class="rs-step-tick" aria-hidden="true">&#10003;</span><span class="rs-step-text">${k}${l.kutchi && l.english ? `<small>${esc(l.english)}</small>` : ""}</span>${!x.ok && x.done != null ? `<span class="rs-step-done">${esc(x.done)}</span>` : ""}</li>`;
     };
-    // SH-44 (S05-S2): more than four steps go in two columns, so the list fits the card without a scroll
-    return `<div class="rs-steps-list${steps.length > 4 ? " two" : ""}" hidden role="dialog" aria-label="The steps"><ul>${steps.map(row).join("")}</ul></div>`;
+    // decision 93 (SH-44): the steps are page 3, after the word review, by themselves; more than four in two columns,
+    // so they fit the card without a scroll
+    return `<div class="rs-page rs-p3" data-page="3" aria-hidden="true"><div class="rs-steps-list${steps.length > 4 ? " two" : ""}" aria-label="The steps"><ul>${steps.map(row).join("")}</ul></div></div>`;
   }
   /**
    * Page 2: right words outlined gold, grouped on the right; wrong words outlined red, grouped on
@@ -411,19 +413,20 @@
     el.setAttribute("role", "dialog");
     el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-label", "End of the round");
-    // no words: the badges step is the last one, so the actions sit under the badges
+    // the pages after the badges: the word review, then the steps (decision 93); none: the actions sit under the badges
+    const more = words.length > 0 || steps.length > 0;
     const acts = `<div class="rs-actions rs-last">${actionsHtml(opts)}</div>`;
     el.innerHTML = `
       <div class="rs-card" data-step="1">
         <div class="rs-steps">
           <div class="rs-page rs-p1" data-page="1">
             ${opts.body ? '<div class="rs-body"></div>' : `<div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>`}
-            ${steps.length ? stepsHtml(steps) : ""}
           </div>
           ${words.length ? `<div class="rs-page rs-p2" data-page="2" aria-hidden="true"><div class="rs-words${denseWords(words) ? " dense" : ""}">${wordsHtml(words)}</div></div>` : ""}
+          ${steps.length ? stepsHtml(steps) : ""}
         </div>
-        ${words.length ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
-        ${words.length ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
+        ${more ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
+        ${more ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
       </div>`;
     if (opts.body) el.querySelector(".rs-body").appendChild(opts.body);
     host.appendChild(el);
@@ -452,19 +455,26 @@
     };
     current = { el, close, page: () => +card.dataset.step };
 
-    const toWords = () => {
-      const p1 = el.querySelector(".rs-p1");
-      const p2 = el.querySelector(".rs-p2");
-      // the card takes the words' own height (balanced, no empty band above the buttons), easing from the badges' height
+    // the pages in turn: the badges, the word review (if any words), the steps (if any steps; decision 93)
+    const pages = [1].concat(words.length ? [2] : [], steps.length ? [3] : []);
+    const toPage = (n) => {
+      const from = el.querySelector(`.rs-p${card.dataset.step}`);
+      const to = el.querySelector(`.rs-p${n}`);
+      // the card takes the page's own height (balanced, no empty band above the buttons), easing from the last one's
       const h0 = card.getBoundingClientRect().height;
-      card.dataset.step = "2";
-      p1.setAttribute("aria-hidden", "true");
-      p2.removeAttribute("aria-hidden");
+      card.dataset.step = String(n);
+      if (from) from.setAttribute("aria-hidden", "true");
+      to.removeAttribute("aria-hidden");
       // non-negotiable 9: a long word (e.g. "thermometer") shrinks to fit its tile, then wraps; never clipped
-      if (root.FitText) root.FitText.run(p2);
+      if (root.FitText) root.FitText.run(to);
+      if (n === 3) fitSteps(to);
       const h1 = card.getBoundingClientRect().height;
       if (!reduced() && card.animate && Math.abs(h1 - h0) > 2) card.animate([{ height: `${h0}px` }, { height: `${h1}px` }], { duration: 280, easing: "cubic-bezier(.3,.7,.2,1)" });
-      p2.classList.add("enter");
+      to.classList.add("enter");
+      if (n !== pages[pages.length - 1]) {
+        if (opts.sound !== false) sfx("whoosh");
+        return;
+      }
       el.querySelector(".rs-first").hidden = true;
       const last = el.querySelector(".rs-last");
       last.hidden = false;
@@ -477,7 +487,8 @@
     if (next)
       next.addEventListener("click", () => {
         if (opts.sound !== false) sfx("tap");
-        toWords();
+        const at = pages.indexOf(+card.dataset.step);
+        if (at >= 0 && at < pages.length - 1) toPage(pages[at + 1]);
       });
     el.querySelectorAll(".rs-last [data-act]").forEach((btn) => btn.addEventListener("click", () => finish(btn.dataset.act)));
     el.querySelectorAll(".rs-word").forEach((btn) =>
@@ -489,30 +500,15 @@
           .then(() => btn.classList.remove("on"));
       })
     );
-    // D14: tap the tick badge to see the steps (which went wrong); tap again (or the list) to close it
-    const acc = el.querySelector(".rs-acc");
-    const list = el.querySelector(".rs-steps-list");
-    if (acc && list) {
-      acc.classList.add("rs-tappable");
-      acc.setAttribute("role", "button");
-      acc.setAttribute("tabindex", "0");
-      // SH-44 (S05-S2, non-negotiable 9): open, the list takes the badges' place in the card (the card grows to it), never
-      // a box that scrolls; a card that would still pass the screen shrinks the list as a whole, as the request pop-up does
-      const fitList = () => {
-        list.style.zoom = "";
-        if (list.hidden) return;
-        const r = card.getBoundingClientRect();
-        const room = (root.innerHeight || 0) - 2 * Math.max(0, Math.min(r.top, 16));
-        if (room > 0 && r.height > room) list.style.zoom = String(Math.max(0.6, Math.floor((1 - (r.height - room) / Math.max(1, list.offsetHeight)) * 100) / 100));
-      };
-      const toggle = () => {
-        list.hidden = !list.hidden;
-        acc.classList.toggle("open", !list.hidden);
-        card.classList.toggle("rs-steps-on", !list.hidden);
-        fitList();
-      };
-      acc.addEventListener("click", toggle);
-      list.addEventListener("click", toggle);
+    // decision 93 (SH-44): the steps are their own page (no tap on the tick badge, no overlay). Non-negotiable 9: a card
+    // that would still pass the screen shrinks the list as a whole, as the request pop-up does; never an inner scroll
+    function fitSteps(page) {
+      const list = page.querySelector(".rs-steps-list");
+      if (!list) return;
+      list.style.zoom = "";
+      const r = card.getBoundingClientRect();
+      const room = (root.innerHeight || 0) - 2 * Math.max(0, Math.min(r.top, 16));
+      if (room > 0 && r.height > room) list.style.zoom = String(Math.max(0.6, Math.floor((1 - (r.height - room) / Math.max(1, list.offsetHeight)) * 100) / 100));
     }
     // focus into the dialog (the card itself, so no button shows a ring before it's needed)
     card.setAttribute("tabindex", "-1");
