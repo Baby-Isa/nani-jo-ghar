@@ -4351,19 +4351,19 @@
   "date": "2026-10-12"
  },
  "SH-53": {
-  "hash": "7e4a670d9f2a0f9199d2",
+  "hash": "8cf4c6b30d0a7e4cce2c",
   "dhash": [
-   "70f0d0f0f0117070",
+   "70f0d0f0f0115060",
    "0081a88181818100",
-   "3133056979696969"
+   "3133456979696969"
   ],
-  "verdict": "PASS",
-  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "verdict": "FAIL",
+  "line": "machine: SH-53-p2-L2-1366x768: pass: 1 contract breaks",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "date": "2026-10-12"
+  "run": "ev-20261013-144954-gf4",
+  "commit": "53d6fbd",
+  "date": "2026-10-13"
  },
  "SH-54": {
   "hash": "96fa3b458890ab6b6e74",
