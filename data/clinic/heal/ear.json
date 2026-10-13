@@ -251,9 +251,10 @@
     3,
     4
    ],
-   "side_heard": true,
-   "drops_voice": "patient"
-  }
+   "side_heard": false,
+   "drops_voice": "doctor"
+  },
+  "_ladder": "decision 97 (8), CLN-45: one new thing per level: L3 is L2 heard only, so the side heard and the drops said in her voice are L4's (none of these per-level fields is read by js/clinic/heal/games/ear.js today; the game plays L1-L3)"
  },
  "fun": "Each pull has its own noise (the sock squeaks); the patient giggles 'that tickles!'; the torch beam lights the cave; at the end the cousin shakes his head and hears again.",
  "camera": {

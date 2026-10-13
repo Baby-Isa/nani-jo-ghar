@@ -373,6 +373,12 @@
      */
     S.begin = (why) => {
       S.ready = true;
+      // CLN-133 (decision 97 (2)): the taught round shows each step before the child does it: its input opens once the
+      // push-in has landed and the first demo can play (any other round's input is live at once, E5)
+      if (ctx.taught && ctx.zoomed) {
+        S.ready = false;
+        Promise.resolve(ctx.zoomed).then(() => (S.ready = true));
+      }
       const talk = (why ? S.why(why.problem, why.goal) : Promise.resolve()).then(() => ctx.card.speak && ctx.card.speak());
       return talk.catch(() => {});
     };
@@ -567,7 +573,8 @@
       };
       // CLN-118 (S05-D): the taught round (D13) always shows the move with the ghost finger, seen before or not
       Promise.resolve(ctx.zoomed)
-        .then(() => start({ force: force === "1" || (!!ctx.taught && force !== "0"), idleMs: 6000 }))
+        // CLN-133: a move the child has already made while the camera came in is never demonstrated after the fact
+        .then(() => (S.lastDid > asked ? "skipped" : start({ force: force === "1" || (!!ctx.taught && force !== "0"), idleMs: 6000 })))
         .then((how) => {
           // SH-46 (1 Oct, P32): a move the child has met before but isn't doing now is shown again after a pause,
           // not only the first time ever

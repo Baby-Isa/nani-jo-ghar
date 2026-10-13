@@ -40,7 +40,9 @@
     bottle: { side: "warm", size: 3, verbs: ["fever-give", "fever-take-away"], word: "fever-bottle" },
     blanket: { side: "warm", size: 2, verbs: ["fever-put-on", "fever-take-off"], word: "fever-blanket" },
   };
-  const K = { zone: 1, max: 8, exchanges: { 1: [3], 2: [3, 4], 3: [4] }, fixFrom: 3, fixLast: { 3: 1 }, gaps: { 1: [3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, fixGaps: [5, 6, 7], icePack: false };
+  // decision 97 (8), CLN-45: one new thing per level: L3 is L2 heard only; the fix step ("fix it", the child chooses) and the
+  // fourth exchange are L4's (decision 91)
+  const K = { zone: 1, max: 8, exchanges: { 1: [3], 2: [3, 4], 3: [3, 4], 4: [4] }, fixFrom: 4, fixLast: { 4: 1 }, gaps: { 1: [3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] }, fixGaps: [5, 6, 7], icePack: false };
   const WHY = { problem: "fever-why", goal: "fever-goal" }; // line keys in data/clinic/heal/fever.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -124,7 +126,7 @@
   }
 
   function plan(level, rng, data) {
-    const Lv = Math.max(1, Math.min(3, level));
+    const Lv = Math.max(1, Math.min(4, level));
     const cfg = cfgOf(data);
     const n = HS.pick(cfg.k.exchanges[Lv], rng);
     let hot = rng() < 0.5;
@@ -943,7 +945,7 @@
     ailments: ["fever"],
     items: ["thermometer"],
     gestures: ["tap"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // decision 97 (8): the fix step is L4's
     plan,
     mount,
     bot,

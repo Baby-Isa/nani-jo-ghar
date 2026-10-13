@@ -1,39 +1,24 @@
-# S05-C3: Cook and shared fixes, judged independently (13 Oct)
+# S05-C3: Cook and shared fixes, judged independently (13 Oct; decision 97 push to ~20:15)
 
-Branch `ccr-a7370759-t0lee7`. Every verdict below is a Fable subagent's on the standard batch file (`judge: Fable, independent subagent`), or a machine expect; builder `NJG_BUILDER=S05-C3` on every run.
+Branch `ccr-a7370759-t0lee7`. Every verdict is a Fable subagent's on the standard batch file (`judge: Fable, independent subagent`) or a machine expect; `NJG_BUILDER=S05-C3` on every run. No row reached two strikes.
 
 ## What changed
-- **Shared:** the end card sits over the play area and takes its page's width (`js/shared/results.js`, `css/shared/results.css`); the word tile's gloss shrinks then wraps; no tint class (decision 95); an ordered step list draws as the little skewer in a box, samosa kinds boxed, the stick only between pills (`js/shared/order-card.js`, `css/shared/order-card.css`).
-- **Cook:** count badge on the pan's left rim, kept on screen; word pop inside the pan; tray badges inset; grill screen without the bowls; sekelo word over its bowl; no travelling light on the samosa fold; chop halves part, then fall.
-- **Tools:** `--collect` takes a text-only row's PASS that cites its text capture (unit test); fast strip frames (CDP); the Cook player names the end card's page; the lab player steps through the steps page; force-passme lets her first ask run out; `shoot_ref.mjs`; about 15 probes fixed.
+- **Shared:** the end card sits over the play area and takes its page's width; the word tile's gloss shrinks, then wraps; no tint class (decision 95); ordered steps draw as the little skewer in a box, samosa kinds are boxed, and the stick sits only between pills.
+- **Cook:** a chai person's card stays open until their pour (decision 97 (3)); the read-along holds the next row's mark (one lit thing); the count badge sits on the pan's left rim and stays on screen; the word pop sits inside the pan; tray badges inset; the grill screen without the bowls; the sekelo word over its bowl; no travelling light on the samosa fold; chop halves part, then fall; day dots on the grid; the house ribbon at 14 px (`css/home.css`: outside the two house files I was given; one line).
+- **Tools:** `--collect` takes a text-only row's PASS that cites its text capture (unit test; CK-33 used it); fast strip frames; the Cook player names the end card's page; the lab player steps through the steps page; force-passme lets her first ask run out; `shoot_ref.mjs`; CONTRACT_ROWS (checks.mjs unit green); about 20 probes fixed.
 
-## Rows (red → green → verdict)
-| Row | Red | Green | Verdict |
-|---|---|---|---|
-| SH-74 | 160829-92h | 161223-2i4 | PASS C |
-| SH-75 | 161223-2i4 (FAIL 1) | 172804-m74 | PASS A/B |
-| SH-76 | c3-labdaal-1 | c3-labdaal-2 | machine |
-| SH-77 | 160829-92h | 161223-2i4 | machine |
-| SH-39 | 162800-d91 | 172804-m74 (FAIL 1 at y9n) | PASS A/B/C |
-| SH-53 | 162800-d91 | 165008-qsn | machine |
-| SH-61 | (reworded to Zafar's words) | 170537-y9n | PASS A |
-| SEK-03, SEK-17 | 162800-d91 | 171625-ng0 | PASS A/C/D |
-| SEK-08 | 162800-d91 | 170537-y9n | PASS A |
-| SEK-16 | 162800-d91 | 172804-m74 (FAIL 1 at y9n) | PASS A |
-| SAM-05, SAM-18, SAM-19 | 162800-d91 | 170537-y9n | PASS A |
-| CK-30 | 162800-d91 | 170537-y9n | PASS A |
-| CHAI-19 | 170537-y9n | 172804-m74 | PASS A |
-| CHAI-20 (judge's find) | 172804-m74 | 173942-geu | machine |
-| PAN-05 | (probe moved) | 170537-y9n | PASS A |
+## Built (red → green → verdict; ids `ev-20261013-…`)
+SH-74 (92h→2i4, PASS), SH-75 (2i4 FAIL→m74 PASS), SH-76 (c3-labdaal-1→-2, machine), SH-77 (92h→2i4, machine), SH-39 (d91→y9n FAIL→m74 PASS), SH-53 (d91→qsn, machine), SH-61 (y9n PASS, reworded to Zafar's words), SH-78 (oez→nd9 PASS), SH-79 (gate→nd9, machine), SH-83 (gate→1hw, machine), DAAR-18 (→q5n PASS), SEK-03, SEK-17 (d91→ng0 PASS), SEK-08 (d91→y9n PASS), SEK-16 (y9n FAIL→m74 PASS), SAM-05, SAM-18, SAM-19 (d91→y9n PASS), CK-30 (d91→y9n PASS), CHAI-19 (y9n→m74 PASS), CHAI-20 (m74→geu, machine), CK-33 (gate→nd9, text PASS), PAN-05 (y9n PASS). Task 2's re-probed rows: MAA-14, CHAI-18, MAA-08 PASS; SH-17, SH-44, DAAR-21 machine. SEK-15 retired (decision 97 (4)).
 
-Run ids are `ev-20261013-<id>`. Probes reaching their state (Task 2): MAA-14, CHAI-18, MAA-08 PASS; SH-17, SH-44, DAAR-21 machine PASS; CK-21, CHAI-08 (art), CK-27, DAAR-05 judged FAIL on now-reached states (not this round's fixes).
+## Open, with why
+- CK-21: strike 1 (my crop fix cut the wrong part of the picture, reverted); at 2× the chai glasses stand on the tray rim (drawServed's people path).
+- CHAI-08, DAAR-05: waiting on art (side-on filled glass; the stirred pot's finished picture).
+- CK-27: the shared puff exists everywhere but is too small and quick for the strips: a size/time call.
+- DAAR-19: the "ba" is the stir row (laps); it needs the stir word from Mum.
+- DAAR-20: not reproduced. CK-31, CK-32: no driver serves a wrong cup. DAAR-22 (fix in, not judged), DAAR-23: the chop player misses under capture load. SH-69: heard is proven; the 1.1 s name bubble falls between captures (bubble captures lag ~1.5 s).
+- SH-80, SH-81, SH-82, CK-34 (the full gate's findings): rows and probes in, not started (time).
+- Decision 97 (7) bubble tails at the mouth: not started. The shared `placeBubble` (conversations.js, request-popup.js) gets only a head anchor; each host must hand a mouth point (the clinic's is D3's: CLN-127).
+- D3's items for me (CLN-118, CLN-138, CLN-141, speaker ids, every:bubble lag): not started.
 
-## For Zafar
-1. SH-78 / DAAR-18: cook.md folds a card you can't act on in the current phase, so the chai card folds for the pour (red `164227-oez` frame 5). Recommend: keep a card open through its own dish's last step.
-2. SEK-15: a learnt word's shelf chip is a speaker alone (word stages) vs Sidebar v3 "never a lone speaker". Recommend: keep the speaker chip.
-
-## Open (not started, no strike)
-CK-31, CK-32 (no driver serves a wrong cup), DAAR-22, DAAR-23 (the chop player misses under capture load), SH-69 (name bubble falls between captures; heard proven), DAAR-19, DAAR-20 (not reproduced). Tool note: `--apply` of an older run overrides a newer verdict.
-
-## Final pass
-(below)
+## Checks
+Final Cook pass `c3-final2` (before decision 97): 228 of 325 pages reached their end, none stopped (3 killed by me to start the push). End check `c3-end97` (Cook, Cook labs and the house, 1366x768): see below. Unit, spec lint and loadcheck clean. Tool note: `--apply` of an older run overrides a newer verdict (SH-53 had to be re-applied). The evidence.json conflict commit (210fe97) was repaired a minute later (eb5984e).

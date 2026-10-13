@@ -934,7 +934,7 @@
     items: ["cup", "hot-water-bottle"],
     itemsFor: { "too-many-sweets": ["cup", "hot-water-bottle"] },
     gestures: ["tap", "drag"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // decision 97 (8): L3 is L2 heard only; the old L3 is L4
     mount,
     bot,
     strategies: STRATEGIES,
