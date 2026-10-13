@@ -5435,7 +5435,7 @@
   {
    "flow": "cook:mishkaki-grill",
    "path": "fair",
-   "level": 3,
+   "level": 4,
    "sizes": [
     "1366x768"
    ],
@@ -5444,7 +5444,7 @@
    "at": "every:placed",
    "after": null,
    "capture": [
-    "crop:#mission"
+    "zoom2:#mission"
    ],
    "expect": null,
    "note": "the card ticks each piece of a mixed skewer as it goes on (L3: one or two mixed)",
