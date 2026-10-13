@@ -45,3 +45,9 @@ Screens (flaws first): clinic closed card @ 844x390: its own "…" column narrow
 Checklist: TXT ✅ (SH-09, SH-01) · LAY ✅ · CMP ⚠ SH-44, SEK-03 · INT ⚠ SH-58 · others ⬜ for /review
 Regressions rechecked: 22 rows by probe (table above); the 139 rows of regress.mjs are left to /review
 ```
+
+## Round 3 (13 Oct, Zafar's screenshot of sekelo L2)
+- **SH-73** (new): a group's pills stack one per line when they don't fit side by side at their own size, measured from each word's one-line width. The skewer's stick stands upright, tip at the bottom; no pill word breaks. Red `085403-rhj` (4–5 lines a pill at 800×360, 844×390), green `090620-0xp` (1 line, no clip). L2 draws no mixed skewer in the lab, so the probe plays L3 with `want: mixed`. Built.
+- **SH-53**: one highlight in one colour. The card's next piece and the read-along share `--njg-focus` (the focal glow's amber ring); the grey `next` fill and the beige alternate tint on rows and groups are gone, all from `css/shared` (not Cook). Red/green on the peeked sekelo card (grey + beige, then one amber ring); contract-8 passes but reads the stage only (T: add the card). Sheet to judge. **Clash:** SEK-03 asked for alternate groups tinted; rules F9 ("next in grey") and design system 12 (tinted rows) need the newest word recorded.
+- **SH-44**: the steps list fits the card with no inner scroll (in the flow, two columns above four steps, shrinks as a whole if still too tall). Red `092112-xxb`, green `092229-zi0`. Opening by itself and the wrong steps' colour wait on Zafar.
+- Risk: stacked skewers make an open sekelo card tall; with two mixed skewers `#mission` still fits 800×360 without a scroll (L4's up to four skewers are closed cards).

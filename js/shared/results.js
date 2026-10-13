@@ -283,7 +283,8 @@
       const k = l.kutchi ? `<b>${ph(l.kutchi)}</b>` : `<b class="rs-ph">${esc(l.english || "")}</b>`;
       return `<li class="rs-step ${x.ok ? "ok" : "bad"}"><span class="rs-step-tick" aria-hidden="true">&#10003;</span><span class="rs-step-text">${k}${l.kutchi && l.english ? `<small>${esc(l.english)}</small>` : ""}</span>${!x.ok && x.done != null ? `<span class="rs-step-done">${esc(x.done)}</span>` : ""}</li>`;
     };
-    return `<div class="rs-steps-list" hidden role="dialog" aria-label="The steps"><ul>${steps.map(row).join("")}</ul></div>`;
+    // SH-44 (S05-S2): more than four steps go in two columns, so the list fits the card without a scroll
+    return `<div class="rs-steps-list${steps.length > 4 ? " two" : ""}" hidden role="dialog" aria-label="The steps"><ul>${steps.map(row).join("")}</ul></div>`;
   }
   /**
    * Page 2: right words outlined gold, grouped on the right; wrong words outlined red, grouped on
@@ -495,9 +496,20 @@
       acc.classList.add("rs-tappable");
       acc.setAttribute("role", "button");
       acc.setAttribute("tabindex", "0");
+      // SH-44 (S05-S2, non-negotiable 9): open, the list takes the badges' place in the card (the card grows to it), never
+      // a box that scrolls; a card that would still pass the screen shrinks the list as a whole, as the request pop-up does
+      const fitList = () => {
+        list.style.zoom = "";
+        if (list.hidden) return;
+        const r = card.getBoundingClientRect();
+        const room = (root.innerHeight || 0) - 2 * Math.max(0, Math.min(r.top, 16));
+        if (room > 0 && r.height > room) list.style.zoom = String(Math.max(0.6, Math.floor((1 - (r.height - room) / Math.max(1, list.offsetHeight)) * 100) / 100));
+      };
       const toggle = () => {
         list.hidden = !list.hidden;
         acc.classList.toggle("open", !list.hidden);
+        card.classList.toggle("rs-steps-on", !list.hidden);
+        fitList();
       };
       acc.addEventListener("click", toggle);
       list.addEventListener("click", toggle);
