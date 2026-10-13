@@ -18,14 +18,17 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 - 373 old reports and 47 old docs (the old feedback reports, sources, Mum rounds 1–4, old sprints, the s02/s03 art plans, the rulebook and decisions 1–99) went to the archives. The live docs dropped from about 487k words in 113 files to about 253k in 66.
 - Checks: unit 295 pass, words, bump, specs, docs all green. The tool tests are green too.
 
-**Next steps, in order:**
-1. **Zafar plays** `https://baby-isa.github.io/nani-jo-ghar/labs.html` (hard refresh) and names his top 5–10 things; `/feedback` turns them into rows.
-2. **Answer `docs/questions.md` A–G** (from Sprint 5 and the reset).
-3. **Sprint 6 proposal** (Fable runs the orchestrator chat from here; Opus if its limit runs low). The goal: close every open row code can fix (about 40), one mode at a time, small fixes in the chat, each with a check so it can't come back. Build checks 1–3 from `checks-to-build.md` first (the red-then-green gate in `evidence.mjs --apply`, the publish gate, zero tolerance for clipped or scrolled text). Art, Mum and decision rows go to Zafar as one list. This branch merges to `main` with Sprint 6's publish.
-4. **Measure:** in a fresh chat after the starting prompt, read `/context` and compare with 13 Oct's ~60k fixed + ~3k reads (decision 98, `docs/process/cost-and-speed.md`).
+**Next steps, in order (decision 100: Zafar won't play this sprint; Opus orchestrates):**
+1. **Zafar answers `docs/questions.md`** (A–G first, then 1–25; "yes to all except …"). Each answer goes into its doc or check plus a log line; the question leaves the file.
+2. **Sprint 6, in the orchestrator's chat (Opus), one session at most for big pieces:**
+   - **Rows:** triage the 70 open rows into code / art / Mum / Zafar (about 40 are code), then fix the code ones one mode at a time, red then green, the `judge` agent passing each picture. Art, Mum and Zafar rows go to him as one list.
+   - **Checks:** build every check in `docs/process/checks-to-build.md` that code can do, top three first (red-then-green gate, publish gate, zero tolerance for clipped or scrolled text); each one's rule text leaves the file when it lands.
+   - **Docs:** finish the cut-down: `find-it.md` (28k words: keep the current design, archive the three old passes); `ideas.md` to one line per idea; `art-plans/` to what the next clinic art run needs; `qa-checklist.md` trimmed where a check now covers a line; old one-off `build/*.py` cut scripts and old `build/tools/ops/specs/` to an archive folder; the inline rule IDs in the skills; word limits in `docs.mjs` for the mode and design docs.
+   - Close: `/review`, publish (this branch with the reset), Zafar plays then.
+3. **Measure** `/context` in the new chat after the starting prompt (13 Oct: ~60k fixed + ~3k reads; `docs/process/cost-and-speed.md`).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `ccr-a7370759-t0lee7` (`main` = 8559d610, Sprint 5 live). First task: put the Sprint 6 proposal to me (step 3), with model, effort and cost; tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `ccr-a7370759-t0lee7` (`main` = 8559d610, Sprint 5 live). First task: take my answers to `docs/questions.md` if I've given them, then open Sprint 6 (step 2) with a budget; Opus orchestrates; tell me before launching anything new.
 
 ---
 
