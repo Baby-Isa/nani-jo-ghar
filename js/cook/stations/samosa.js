@@ -736,8 +736,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       glowG.clear();
       if (!glowOn) return;
       glowT += dt / 1000;
-      const { poly, a, b } = glowOn;
-      // the flap's edge glows (a soft gold light, breathing), and a light travels the way it folds
+      const { poly } = glowOn;
+      // the flap's edge glows (a soft gold light, breathing)
       const pulse = 0.5 + 0.5 * Math.sin(glowT * 4);
       const outline = () => {
         glowG.beginPath();
@@ -752,14 +752,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         outline();
         glowG.strokePath();
       });
-      const u = 0.15 + ((glowT * 0.6) % 1) * 0.85;
-      for (let i = 0; i < 10; i++) {
-        const v = u - i * 0.03;
-        if (v < 0 || v > 1) continue;
-        const e = Math.sin(Math.PI * v);
-        glowG.fillStyle(0xffe7a8, 0.3 * e * (1 - i / 10));
-        glowG.fillCircle(a.x + (b.x - a.x) * v, a.y + (b.y - a.y) * v, z.L(16 - i * 1.1));
-      }
+      // (SAM-05, S05-C3: no light travelling along the fold: a second lit thing (decision 95) that two judges read as a
+      // glossy filling on the pastry; the flap's own glow and the ghost finger's diagonal (SAM-16) show the way)
     });
     let n = 0;
     let nA = 0; // (two kinds: how many of each were made)

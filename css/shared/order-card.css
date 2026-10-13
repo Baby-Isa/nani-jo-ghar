@@ -353,6 +353,8 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
    headline gives the summary), alternate groups tinted; an ordered group is a little skewer: the pieces threaded on a
    stick left to right, a pointed tip at the end, no numbers, no arrows ---------- */
 .oc-card .oc-item.oc-group { padding: var(--njg-s1); border-radius: var(--njg-radius); border: var(--njg-line) solid var(--oc-edge); background: var(--oc-card); }
+/* SEK-03 (S05-C3): one kind of several (a samosa kind): the same plain group box round its count row and its fillings */
+.oc-card .oc-item.oc-box { padding: var(--njg-s1); border-radius: var(--njg-radius); border: var(--njg-line) solid var(--oc-edge); background: var(--oc-card); }
 .oc-card .oc-item.oc-group.tint { background: var(--oc-card); border-color: var(--oc-edge); } /* SH-53: no tint (above) */
 .oc-card .oc-item.oc-group .oc-group-parts { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--njg-s1); margin: 0; padding: 0; }
 .oc-card .oc-item.oc-group .oc-part { flex: 0 1 auto; max-width: 100%; border-radius: var(--njg-round); padding: 0 var(--njg-s2); }

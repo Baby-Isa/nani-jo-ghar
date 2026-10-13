@@ -79,6 +79,15 @@
 .rs-card:not([data-step="3"]) .rs-p3 { display: none; }
 .rs-card[data-step="3"] :is(.rs-p1, .rs-p2) { display: none; }
 .rs-card { overflow: hidden; }
+/* SH-75: a page narrower than three badges (the steps list, two badges, a body such as the clinic's receipt) takes its own
+   width, never the three-badge width with wide empty bands either side; never narrower than its action buttons */
+.rs-card[data-step="3"],
+.rs-card[data-step="1"]:has(> .rs-steps .rs-badges.n2),
+.rs-card[data-step="1"]:has(> .rs-steps .rs-body) {
+  width: auto;
+  min-width: min(100%, calc(var(--rs-btn) * 5.5));
+  max-width: min(100%, var(--njg-end-card));
+}
 .rs-page.enter, .rs-actions.enter { animation: rs-slide 0.3s ease-out both; }
 /* ---------- page 1: the three badges ---------- */
 .rs-badges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--njg-s5); align-items: stretch; }

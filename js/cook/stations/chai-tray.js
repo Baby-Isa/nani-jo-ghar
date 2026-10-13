@@ -301,7 +301,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // never over the cup
       const left = fx < 0.5;
       const fd = Math.min(46, trayD * 0.11);
-      const face = S.track(S.add.image(trayX + (left ? 0.058 : 0.942) * trayD, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.item + 1));
+      // CK-30 (S05-C3): its centre at least its radius in from the tray's edge, so it never hangs half off the tray
+      const inset = Math.max(0.058 * trayD, fd / 2 + 6);
+      const face = S.track(S.add.image(left ? trayX + inset : trayX + trayD - inset, wy, roundBadge(S, p.who)).setDisplaySize(fd, fd).setDepth(D.item + 1));
       return { x: wx, y: wy, glass, face, fill: 0 };
     });
     pans.forEach((pan, i) => (pan.well = wells[i]));
@@ -540,7 +542,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       drawSel();
       UI.hideCount();
       // SH-39 (D6): the running count sits on the pan in use, over its rim on the side away from the handle
-      if (UI.tallyAt) UI.tallyAt([pan.x - panR * 0.35, pan.y - panR * 1.02]);
+      // (anchored by its right edge just left of the middle: at a phone's size the badge grew over the word on the rim, S05-C3)
+      if (UI.tallyAt) UI.tallyAt([pan.x - panR * 0.05, pan.y - panR * 1.02], { anchor: "right" });
       if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
       if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
       pan.extras.forEach((id) => UI.count(1, { speak: false, id }));

@@ -827,6 +827,7 @@ body.w6.ui-stars #mission .m-stars, body.w6.ui-bulb .side-top { animation: fadeI
 /* placed on a point of the picture (UI.tallyAt), e.g. the pantry's fridge base (R4: the shared tally on Cook's page too: only its place) */
 #count-badge.njg-tally.at { right: auto; justify-content: center; max-width: none; transform: translate(-50%, -100%); }
 #count-badge:not(.njg-tally).at { right: auto; transform: translate(-50%, -50%); gap: 4px 8px; padding: 4px 8px; }
+#count-badge:not(.njg-tally).at.at-r { transform: translate(-100%, -50%); }
 #count-badge:not(.njg-tally).at .tl img { width: clamp(22px, 2.5vw, 36px); height: clamp(22px, 2.5vw, 36px); }
 #count-badge:not(.njg-tally).at .tl .count-digit { font-size: clamp(18px, 2.1vw, 28px); }
 #count-badge:not(.njg-tally) .tl { display: inline-flex; align-items: center; gap: 4px; }

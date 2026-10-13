@@ -478,15 +478,16 @@
       const from = el.querySelector(`.rs-p${card.dataset.step}`);
       const to = el.querySelector(`.rs-p${n}`);
       // the card takes the page's own height (balanced, no empty band above the buttons), easing from the last one's
-      const h0 = card.getBoundingClientRect().height;
+      const r0 = card.getBoundingClientRect(), h0 = r0.height, w0 = r0.width;
       card.dataset.step = String(n);
       if (from) from.setAttribute("aria-hidden", "true");
       to.removeAttribute("aria-hidden");
       // non-negotiable 9: a long word (e.g. "thermometer") shrinks to fit its tile, then wraps; never clipped
       if (root.FitText) root.FitText.run(to);
       if (n === 3) fitSteps(to);
-      const h1 = card.getBoundingClientRect().height;
-      if (!reduced() && card.animate && Math.abs(h1 - h0) > 2) card.animate([{ height: `${h0}px` }, { height: `${h1}px` }], { duration: 280, easing: "cubic-bezier(.3,.7,.2,1)" });
+      const r1 = card.getBoundingClientRect(), h1 = r1.height, w1 = r1.width;
+      // SH-75: a page may also take its own width (the steps list): the card eases to it
+      if (!reduced() && card.animate && (Math.abs(h1 - h0) > 2 || Math.abs(w1 - w0) > 2)) card.animate([{ height: `${h0}px`, width: `${w0}px` }, { height: `${h1}px`, width: `${w1}px` }], { duration: 280, easing: "cubic-bezier(.3,.7,.2,1)" });
       to.classList.add("enter");
       if (n !== pages[pages.length - 1]) {
         if (opts.sound !== false) sfx("whoosh");

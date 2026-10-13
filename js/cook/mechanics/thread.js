@@ -179,7 +179,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await Cook.tween(S, { targets: [img, img.marks], y: slot, duration: 180 + (slot + 250) * 0.6, ease: "Quad.easeIn" });
         // the word pops by the skewer as the piece settles, and the family clip plays
         // SEK-10 (S1, decision 41): the count-along (each piece's word said) is level 1 only; later the word just pops
-        SK.pop(S, z, id, z.X(BOARD.x - BOARD.w / 2 - 130), z.Y(SKY + slot * SKS), { speak: Cook.roundLevel(ctx) <= 1 });
+        // (SEK-16: against the board's left edge, level with the piece, not 130 px out on the marble)
+        SK.pop(S, z, id, z.X(BOARD.x - BOARD.w / 2 - 12), z.Y(SKY + slot * SKS), { speak: Cook.roundLevel(ctx) <= 1, anchor: "right" });
         // SEK-13 (S5): a mixed skewer's piece rows tick as each piece goes on, while it follows a mix still to make
         const pj = pats.findIndex((x, j) => !madePat[j] && x.length === n && sk.ids.every((p, q) => p === x[q]));
         sk.ticked = sk.ticked || [];

@@ -1424,7 +1424,7 @@
           const parts = flat.map((x) => partNode(x.r, x.gi));
           // SAM-11 (T16): a block's head is always its own row ("ba samosa", its fillings under it), even when it's the
           // only block (count 2: never the shared card's "direct" shape, which drops the head)
-          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head });
+          items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 2, parts, ordered: false, at: 0, src: flat, key: s.head, box: true });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;
         }
@@ -2326,11 +2326,15 @@
     const st = $("#stage").getBoundingClientRect();
     const p = UI.worldToScreen(tallyPt[0], tallyPt[1]);
     b.classList.add("at");
+    // SH-39: a tally anchored by its right edge grows to the left, away from the word that pops on the pan's other side
+    b.classList.toggle("at-r", tallyAnchor === "right");
     b.style.left = `${p.x - st.left}px`;
     b.style.top = `${p.y - st.top}px`;
   }
-  UI.tallyAt = function (pt) {
+  let tallyAnchor = null;
+  UI.tallyAt = function (pt, { anchor = null } = {}) {
     tallyPt = pt || null;
+    tallyAnchor = anchor;
     placeTally();
   };
   if (!Cook.life) pageWide();

@@ -92,19 +92,18 @@
       });
     // one item, one of it, with a recipe: its parts straight under the headline
     const direct = items.length === 1 && items[0].count <= 1 && items[0].parts.length > 0;
-    let k = 0;
-    let g = 0;
     items.forEach((it) => {
       // SEK-03 (S05-S): a group (one skewer of several, one samosa kind): a plain box of its pieces, no label row (the
-      // headline gives the summary); alternate groups tinted so they stand apart
+      // headline gives the summary). Decision 95 (SH-53): no alternate tints; the boxes alone keep them apart, and a
+      // leftover "tint" class read as a second highlight (contract-8, sekelo L2)
       if (it.group) {
         it.row = false;
-        it.tint = g++ % 2 === 1;
+        it.tint = false;
         it.folded = false;
         return;
       }
       it.row = it.label != null && !direct;
-      it.tint = it.row && k++ % 2 === 1;
+      it.tint = false; // decision 95: no alternate row tints
       it.folded = it.row && it.done && !big;
     });
     // the next part: the host's own, else the first open part of the first open ordered item
@@ -157,7 +156,12 @@
 
   function itemEl(it, opts) {
     if (it.group) return groupEl(it, opts);
-    const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.tint ? "tint" : "", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
+    // SEK-03, SEK-17 (S05-C3): a dish's own ordered steps (no row of their own: chaat's layers, the clinic's instruction
+    // list) are shown as the little skewer in a plain group box, as a skewer is, never a bracket line down the side
+    if (!it.row && it.ordered && it.parts.filter((p) => !p.no).length > 1) return groupEl(it, opts);
+    // SEK-03 (S05-C3): a kind of several (it.box: samosa's "trae samosa" and its fillings) sits in a plain group box, its
+    // count row kept (SAM-11: the number is heard and read there)
+    const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.box ? "oc-box" : "", it.tint ? "tint" : "", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
     if (it.row) box.appendChild(rowEl(it, "oc-irow", opts));
     if (it.parts.length) {
       const fold = el("div", "oc-fold");

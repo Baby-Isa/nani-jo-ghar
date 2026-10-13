@@ -423,7 +423,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.njg-done",
+   "at": "heal:button",
    "after": null,
    "capture": [
     "zoom2:.njg-done"
@@ -1159,14 +1159,14 @@
    "profile": "fresh",
    "want": null,
    "at": "every:bubble",
-   "after": null,
+   "after": "served",
    "capture": [
     "crop:#stage",
     "voice"
    ],
    "expect": null,
-   "note": "the first meeting: a fresh save's first customer, Nani names them in her bubble and says it (flow.js firstMeeting, once per save); 'Thank you!' on a pill is Kutchi (decision 81)",
-   "max": 4
+   "note": "the first meeting: a fresh save's first customer, Nani names them in her bubble and says it (flow.js firstMeeting, once per save); 'Thank you!' on a pill is Kutchi (decision 81) (the bubbles after the counter's first service view: the first customer arrives there)",
+   "max": 3
   },
   {
    "flow": "cook:day2",
@@ -2932,13 +2932,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:popup-fold",
    "after": null,
    "capture": [
-    "dom:#mission"
+    "dom:#mission",
+    "crop:#mission"
    ],
    "expect": null,
-   "note": "story mode: the pantry comes first only the first time each dish is made that day (read the stage list)"
+   "note": "story mode (decision 60): the pantry trip before the first time a dish with a pantry list is made; its card lists what to bring (read after each request pop-up folds into the sidebar: at stage-start the card is not filled yet)",
+   "delay": 400,
+   "max": 8
   }
  ],
  "PAN-06": [
@@ -4870,13 +4873,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:cook-done:swipe",
+   "at": "every:cook:swipe",
    "after": null,
    "capture": [
     "zoom2:canvas:sv3-fold"
    ],
    "expect": null,
-   "note": "fixed fold pictures; the first fold does not hide the filling"
+   "note": "the fixed fold pictures (the art run's frames), filmed just before each swipe: the strip with its filling, then each fold",
+   "max": 3
   }
  ],
  "SAM-06": [
@@ -11460,8 +11464,11 @@
  "CK-31": [
   {
    "flow": "cook:chai-tray",
-   "path": "wrong-extra-person",
-   "level": 2,
+   "path": "wrong-count",
+   "level": [
+    1,
+    2
+   ],
    "sizes": [
     "1366x768"
    ],
@@ -11473,7 +11480,7 @@
     "crop:#stage"
    ],
    "expect": null,
-   "note": "a wrong cup served (a spice they did not ask for): the review face over it frowns",
+   "note": "a wrong cup served (one spoon of sugar short): the review face over it frowns",
    "max": 4,
    "delay": 700
   }
@@ -11481,8 +11488,11 @@
  "CK-32": [
   {
    "flow": "cook:chai-tray",
-   "path": "wrong-extra-person",
-   "level": 2,
+   "path": "wrong-count",
+   "level": [
+    1,
+    2
+   ],
    "sizes": [
     "1366x768"
    ],
@@ -11495,7 +11505,7 @@
     "dom:#mission"
    ],
    "expect": null,
-   "note": "a wrong cup served: the wrong row marked on the card, the card open to show it",
+   "note": "a wrong cup served (one spoon of sugar short): the sugar row marked on the card, the card open to show it",
    "max": 4,
    "delay": 1200
   }
@@ -11533,10 +11543,10 @@
    "at": "kind-swipe",
    "after": null,
    "capture": [
-    "strip:#stage:5x250"
+    "strip:canvas:sv3-fold:8x250"
    ],
    "expect": null,
-   "note": "the first fold: the filling stays in view as the first triangle folds"
+   "note": "the first fold: the filling on the strip, then the first triangle folds over it and hides it (Zafar S11)"
   }
  ],
  "SEK-15": [
@@ -11619,26 +11629,29 @@
    "max": 8
   }
  ],
- "SH-78": [
-  {
-   "flow": "cook:chai-tray",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:placed",
-   "after": null,
-   "capture": [
-    "crop:#mission"
-   ],
-   "expect": null,
-   "note": "the chai card through the pour: a person's card is finished only with their dish (ui.js 'queue item 8'), so it folds after their pour, not when the last row ticks",
-   "max": 10
-  }
- ],
+ "SH-78": {
+  "needsDecision": "cook.md's rule for every mode folds a card you can't act on in the current phase to face + headline, so the chai card folds for the pour (and daar's for the stir, DAAR-18) and its ticks go out of sight; the S05 judges failed that as ticks vanishing. Keep the phase fold, or keep a card open through its own dish's last step (the pour, the stir)?",
+  "probes": [
+   {
+    "flow": "cook:chai-tray",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "every:placed",
+    "after": null,
+    "capture": [
+     "crop:#mission"
+    ],
+    "expect": null,
+    "note": "the chai card through the pour: a person's card is finished only with their dish (ui.js 'queue item 8'), so it folds after their pour, not when the last row ticks",
+    "max": 10
+   }
+  ]
+ },
  "DAAR-18": {
   "needsDecision": "As SH-78: hold the daar card open through the stir, or fold it once every row is ticked (§12)?",
   "probes": [
@@ -11733,14 +11746,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:cook-done:slice",
+   "at": "cook:slice",
    "after": null,
    "capture": [
-    "zoom2:#stage"
+    "strip:#stage:6x120"
    ],
    "expect": null,
-   "note": "after each swipe the item shows a clean cut (pieces), not swapped out whole",
-   "max": 4
+   "note": "the first swipe filmed as it happens: the blade crosses the item and it splits cleanly (after the move the halves have already gone)"
   }
  ],
  "DAAR-23": [
@@ -11759,8 +11771,8 @@
     "crop:#mission"
    ],
    "expect": null,
-   "note": "the row in progress lit until its count is cut, then the next",
-   "max": 8
+   "note": "every slice: a row highlights when its count has been cut (ba dungri at the second onion), not before, not never",
+   "max": 14
   }
  ],
  "CLN-123": {
