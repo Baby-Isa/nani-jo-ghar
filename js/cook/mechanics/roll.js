@@ -22,9 +22,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
+  /*
+   * The legacy Roll lab (S05-C2, decision 77: no new art): the maani line's painted chakla, velan and dough
+   * (assets/cook/items/v3/maani/), measured as the maani line measures them; the drawn ones only if a picture fails.
+   */
+  const V3 = "assets/cook/items/v3/maani/";
+  const V3_ART = [
+    ["mv-chakla", V3 + "chakla.webp"],
+    ["mv-velan", V3 + "velan.webp"],
+    ["mv-ball-maani", V3 + "dough-ball-wheat.webp"],
+    ["mv-raw-maani", V3 + "maani-wheat-raw.webp"],
+  ];
+  const CHAKLA = { cx: 0.4988, cy: 0.4988, r: 0.4746 }; // the maani line's (measured from the art)
+  const DISC_R = 0.44; // a maani state's disc radius (of the width)
+  const BALL_R = 0.437; // a dough ball's
+
   Mech.define("roll", {
     station: "roll",
-    view: "wood",
+    view: "marble",
     footprint: { x: 150, y: 180, w: 1300, h: 660 },
     async run(z, { count, at, spareAt, stackAt }, k) {
       const S = z.S;
@@ -32,16 +47,36 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       at = St.pt(at, { x: 780, y: 430 });
       const sp = St.pt(spareAt, { x: 230, y: 760 });
       const sk = St.pt(stackAt, { x: 1330, y: 700 });
+      // (alone only: Roll -> Tawa hands its maani to the tawa, which draws the next states in its own art)
+      if (!z.out) await St.loadArt(S, V3_ART);
+      const v3 = !z.out && V3_ART.every(([key]) => S.textures.exists(key));
+      const ball = v3 ? "mv-ball-maani" : "dough-ball";
+      const raw = v3 ? "mv-raw-maani" : "chapati-raw";
+      const fit = (img, w) => img.setScale(z.L(w) / ((img.texture.key === raw && v3 ? 2 * DISC_R : img.texture.key === ball && v3 ? 2 * BALL_R : 1) * S.texSize(img.texture.key).w));
+      let one = {};
+      if (v3) {
+        // the chakla stays (rollOne rolls on it): placed by its round body, as on the maani line
+        const D_CH = z.L(500);
+        const board = S.track(S.add.image(z.X(at.x), z.Y(at.y), "mv-chakla").setOrigin(CHAKLA.cx, CHAKLA.cy).setDepth(D.item - 2));
+        board.setScale(D_CH / 2 / (CHAKLA.r * board.width));
+        if (S.contactShadow) board.shadow = S.contactShadow(board);
+        // the maani line's target too: a faint gold ring that glows at the right size, not the white dashed circle
+        one = { board: false, tex: { ball, raw }, pinTex: "mv-velan", pinW: 520, body: (key) => (key === raw ? DISC_R : key === ball ? BALL_R : 0.5), gold: true };
+      }
       const rolled = [];
-      const spare = S.track(S.add.image(z.X(sp.x), z.Y(sp.y), "dough-ball").setScale(0.45 * z.k).setDepth(D.item));
-      spare.baseScale = 0.45 * z.k;
+      const spare = S.track(S.add.image(z.X(sp.x), z.Y(sp.y), ball).setDepth(D.item));
+      if (v3) fit(spare, 120);
+      else spare.setScale(0.45 * z.k);
+      spare.baseScale = spare.scale;
       const stack = [];
       for (;;) {
         spare.setVisible(false);
-        const score = await rollOne(z, k, at);
+        const score = await rollOne(z, k, at, v3 ? Object.assign({}, one, { dough: S.track(S.add.image(z.X(at.x), z.Y(at.y), ball)) }) : {});
         rolled.push(score);
         z.skill(score, "roll");
-        const done = S.track(S.add.image(z.X(sk.x), z.Y(sk.y) - z.L(stack.length * 10), "chapati-raw").setScale(0.36 * z.k).setDepth(D.item + stack.length));
+        const done = S.track(S.add.image(z.X(sk.x), z.Y(sk.y) - z.L(stack.length * 10), raw).setDepth(D.item + stack.length));
+        if (v3) fit(done, 230);
+        else done.setScale(0.36 * z.k);
         stack.push(done);
         UI.count(rolled.length, { id: "cook-maani", state: "raw" });
         z.emit({ kind: "maani", sprite: z.out ? done : null, score, n: rolled.length });
