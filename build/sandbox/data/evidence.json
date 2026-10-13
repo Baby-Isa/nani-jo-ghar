@@ -107,7 +107,7 @@
  "SH-01": [
   {
    "flow": "cook:chaat",
-   "path": "fair",
+   "path": "mistake",
    "level": 4,
    "sizes": [
     "800x360",
@@ -129,7 +129,7 @@
   },
   {
    "flow": "cook:chaat",
-   "path": "fair",
+   "path": "mistake",
    "level": 4,
    "sizes": [
     "800x360",
@@ -884,7 +884,7 @@
    "at": "visible:#mission .oc-strip .ra-on",
    "after": null,
    "capture": [
-    "strip:#mission .oc-strip:6x200"
+    "strip:#mission .oc-strip:5x100"
    ],
    "expect": [
     "count:#mission .oc-strip .ra-on>=1"
@@ -4293,13 +4293,29 @@
    "at": "stir-begin",
    "after": null,
    "capture": [
-    "trace:canvas:ladle:3000",
-    "zoom2:canvas:pot"
+    "trace:canvas:ladle:3000"
    ],
    "expect": [
     "traceRot:canvas:ladle>=300"
    ],
    "note": "the ladle turns with its path round the pot (its angle sweeps the circle; handle on the rim)"
+  },
+  {
+   "flow": "cook:stir",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pot"
+   ],
+   "expect": null,
+   "note": "the pot at the stir's first lap (kept from the old probe)"
   }
  ],
  "DAAR-12": [
