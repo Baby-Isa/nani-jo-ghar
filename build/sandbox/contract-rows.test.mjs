@@ -172,3 +172,10 @@ test("contract-15 words-whole: a word broken across lines in a card (SH-73); a s
   quick[2].t = T + 200;
   assert.equal(of(run(page("cook:mishkaki-grill@L2", quick, "390x844")), "contract-15").length, 0);
 });
+
+test("contract-8: frames before the first paint are not findings (S05-T2)", () => {
+  const tl = [stage(T, "page"), C(T + 100, "hl", { n: 2, list: ["dom:.glow[0]#a", "dom:.oc-row.reading[0]#b"] }), C(T + 900, "art", { src: "title.webp", via: "img", key: "title" }), C(T + 1000, "hl", { n: 0, list: [] }), C(T + 3000, "hl", { n: 0, list: [] })];
+  assert.equal(of(run(page("cook:title", tl)), "contract-8").length, 0);
+  const late = clone(tl); late[1].t = T + 1100; late.sort((a, z) => a.t - z.t);
+  assert.equal(of(run(page("cook:title", late)), "contract-8").length, 1);
+});

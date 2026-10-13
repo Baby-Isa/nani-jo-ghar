@@ -4255,9 +4255,9 @@
     "zoom2:canvas:pot"
    ],
    "expect": [
-    "traceAmp:canvas:ladle>=20"
+    "traceRot:canvas:ladle>=300"
    ],
-   "note": "the ladle turns as it goes round, handle on the rim"
+   "note": "the ladle turns with its path round the pot (its angle sweeps the circle; handle on the rim)"
   }
  ],
  "DAAR-12": [

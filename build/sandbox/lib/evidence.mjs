@@ -90,7 +90,7 @@ export function parseCmd(s) {
 
 // ---------- expect strings (the machine assertions; anything else is read by the reviewer) ----------
 // The words of the spec file's _expect list. "!" in front negates (true <-> false; undecided stays undecided).
-export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRepeats:", "clipClass:", "liveInput", "pass"];
+export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRot:", "traceRepeats:", "clipClass:", "liveInput", "pass"];
 const OP = "(>=|<=|=|<|>)";
 export function parseExpect(s, { contractChecks = null } = {}) {
   let t = String(s || "").trim(), not = false;
@@ -130,7 +130,7 @@ function parseExpectOne(t, contractChecks) {
   // times:<moment><op><n>: how many times the moment came while the probe was armed (each ghost-finger play: life:ghost)
   if ((m = new RegExp(`^times:(.+?)${OP}(\\d+)$`).exec(t))) return { kind: "times", moment: m[1].trim(), op: m[2], n: +m[3] };
   if ((m = new RegExp(`^lastsMs:(.+?)${OP}(\\d+)$`).exec(t))) return { kind: "lastsMs", sel: m[1].trim(), op: m[2], n: +m[3] };
-  if ((m = new RegExp(`^(traceAmp|tracePeriod|traceRepeats|amp|period):(.+?)${OP}(\\d+(?:\\.\\d+)?)$`).exec(t))) return { kind: { amp: "traceAmp", period: "tracePeriod" }[m[1]] || m[1], sel: m[2].trim(), op: m[3], n: +m[4] };
+  if ((m = new RegExp(`^(traceAmp|tracePeriod|traceRepeats|traceRot|amp|period):(.+?)${OP}(\\d+(?:\\.\\d+)?)$`).exec(t))) return { kind: { amp: "traceAmp", period: "tracePeriod" }[m[1]] || m[1], sel: m[2].trim(), op: m[3], n: +m[4] };
   if ((m = /^clipClass:([\w-]+)$/.exec(t))) return { kind: "clipClass", cls: m[1] };
   if ((m = /^contract-(\d+)$/.exec(t))) {
     if (contractChecks && !contractChecks.includes(t)) return { error: `unknown contract check "${t}"` };
@@ -445,7 +445,8 @@ export function traceStats(samples) {
   const gaps = ups.slice(1).map((t, i) => t - ups[i]);
   const moving = amp > 0.5;
   const period = moving && gaps.length ? Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length) : null;
-  return { amp: Math.round(amp * 10) / 10, period, repeats: moving ? ups.length : 0, walk, n: s.length };
+  const rots = s.map((x) => x.rot).filter((x) => x != null && isFinite(x)); const rot = rots.length ? Math.round((Math.max(...rots) - Math.min(...rots)) * 10) / 10 : null; // the turn's range in degrees
+  return { amp: Math.round(amp * 10) / 10, period, repeats: moving ? ups.length : 0, walk, rot, n: s.length };
 }
 // a "to record" placeholder (grey italic + the grown-ups' flag) and the grown-ups' own places (the "?" pop-up, the lab bar)
 export const NOT_FOR_CHILD_SEL = ".rs-ph, .rs-rec, .oc-rec, .oc-headline.rec, .rec, [data-rec], [class$=\"-rec\"], [class*=\"-rec \"]";

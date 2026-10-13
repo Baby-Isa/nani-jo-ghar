@@ -268,3 +268,11 @@ test("traceStats: a walk across the screen is no bob (S05-T2)", () => {
   const bob = Array.from({ length: 12 }, (_, i) => ({ t: i * 50, x: 100, y: 300 + (i % 4 < 2 ? 0 : 2), o: 1 }));
   assert.equal(traceStats(bob).amp, 2);
 });
+
+test("traceRot: the turn of an object is measured (DAAR-11: the ladle turns with its path)", () => {
+  assert.equal(parseExpect("traceRot:canvas:ladle>=300").kind, "traceRot");
+  const turn = Array.from({ length: 20 }, (_, i) => ({ t: i * 50, x: 400, y: 300, o: 1, rot: i * 18 }));
+  assert.equal(traceStats(turn).rot, 342);
+  assert.equal(traceStats(turn).amp, 0, "still in place, turning");
+  assert.equal(traceDecision("traceRot", [traceStats(turn).rot], ">=", 300), true);
+});

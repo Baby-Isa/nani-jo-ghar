@@ -328,10 +328,12 @@ export const CONTRACT_HOOK = `(() => {
     }
     // SH-53 / Zafar 13 Oct (S05-T2): every lit thing on a card and the stage counts, in the one colour token it is lit with: the next row, the row
     // being read, a tinted group box that holds the lit row (the tints alternate by design; the active one is lit), the shared pulse. "dom:<selector>[i]#<colour>"
-    const LIT = [".oc-row.next", ".oc-row.reading", ".oc-item.tint", ".oc-item.next", ".oc-item.lit", ".njg-pulse", ".glow", ".lit"];
+    const LIT = [".oc-row.next", ".oc-row.reading", ".oc-item.tint", ".oc-item.next", ".oc-item.lit", ".njg-pulse", ".glow"]; // not .lit: the bulb button's own on-state (decision 95)
     const colourOf = (el) => { const lit = (x) => { const bg = getComputedStyle(x).backgroundColor; return bg && !/rgba\\(0, 0, 0, 0\\)|transparent/.test(bg) ? bg : null; }; const row = el.querySelector(":scope > .oc-irow"); return lit(el) || (row && lit(row)) || getComputedStyle(el).borderTopColor; };
     const litSeen = new Set(); // one element carrying two lit classes (the ✓ is .glow and .njg-pulse) is one lit thing
     for (const sel of LIT) { let i = 0; for (const el of document.querySelectorAll(sel)) if (!litSeen.has(el) && litSeen.add(el) && shown(el) && (sel !== ".oc-item.tint" || el.querySelector(".oc-row.next, .oc-row.reading"))) out.push("dom:" + sel + "[" + (i++) + "]#" + colourOf(el)); }
+    // SH-53: the card's next row and the stage's glow on the same thing are one highlight: with a stage glow up, the next row is not counted again
+    if (out.some((x) => x.startsWith("cook:"))) for (let i = out.length - 1; i >= 0; i--) if (out[i].startsWith("dom:.oc-row.next")) out.splice(i, 1);
     const fam = new Set();
     for (const t of document.querySelectorAll(".hs-tool.next-up, .hs-tool.pulse")) if (shown(t)) fam.add("tool:" + String(t.dataset.tool || desc(t)).replace(/-.*$/, "-"));
     return [...out.sort(), ...[...fam].sort()];

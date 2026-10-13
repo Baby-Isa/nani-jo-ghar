@@ -50,7 +50,7 @@ const BOXES = `(sel) => {
       for (const sc of g.scene.getScenes(true)) { const cam = sc.cameras.main, z = cam.zoom || 1;
         const walk = (list) => { for (const o of list) { if (!o || o.visible === false || o.alpha === 0) continue; if (o.list) walk(o.list);
           const key = String((o.texture && o.texture.key) || "") + " " + String(o.name || ""); if (!key.toLowerCase().includes(name) || !o.getBounds || o.list) continue;
-          const b = o.getBounds(); out.push({ l: cr.left + (b.x - cam.scrollX) * z * kx, t: cr.top + (b.y - cam.scrollY) * z * ky, r: cr.left + (b.right - cam.scrollX) * z * kx, b: cr.top + (b.bottom - cam.scrollY) * z * ky }); } };
+          const b = o.getBounds(); let rot = o.rotation || 0; for (let c = o.parentContainer; c; c = c.parentContainer) rot += c.rotation || 0; out.push({ l: cr.left + (b.x - cam.scrollX) * z * kx, t: cr.top + (b.y - cam.scrollY) * z * ky, r: cr.left + (b.right - cam.scrollX) * z * kx, b: cr.top + (b.bottom - cam.scrollY) * z * ky, rot: Math.round(rot * 57.2958 * 10) / 10 }); } }; // rot: the object's own turn in degrees (DAAR-11: the ladle turns with its path)
         walk(sc.children.list); } }
     return out;
   }
@@ -91,7 +91,7 @@ const TRACE = `async ([sel, ms]) => {
     let o = 1, tr = "";
     if (bs.length && !sel.startsWith("canvas:") && !sel.startsWith("hook:")) { const el = Array.from(document.querySelectorAll(sel)).find((e) => e.getBoundingClientRect().height > 1); if (el) { const cs = getComputedStyle(el); o = parseFloat(cs.opacity); tr = cs.transform === "none" ? "" : cs.transform; } }
     const b = bs[0];
-    out.push(b ? { t: Math.round(performance.now() - t0), x: Math.round(((b.l + b.r) / 2) * 10) / 10, y: Math.round(((b.t + b.b) / 2) * 10) / 10, o: Math.round(o * 100) / 100, tr } : { t: Math.round(performance.now() - t0), x: NaN, y: NaN, o: 0, tr: "" });
+    out.push(b ? { t: Math.round(performance.now() - t0), x: Math.round(((b.l + b.r) / 2) * 10) / 10, y: Math.round(((b.t + b.b) / 2) * 10) / 10, o: Math.round(o * 100) / 100, tr, rot: b.rot } : { t: Math.round(performance.now() - t0), x: NaN, y: NaN, o: 0, tr: "" });
     await new Promise((r) => setTimeout(r, 50));
   }
   return out;
@@ -490,7 +490,7 @@ export class EvidenceProbe {
           put({ ok: cmp(ms, e.op, e.n), why: `on screen ${ms} ms${off ? "" : " (still at the end)"}` });
         } else if (/^trace/.test(e.kind)) {
           const tr = s.hits.flatMap((h) => h.captures.filter((c) => c.kind === "trace" && c.stats && c.raw.startsWith(`trace:${e.sel}:`)));
-          const key = { traceAmp: "amp", tracePeriod: "period", traceRepeats: "repeats" }[e.kind];
+          const key = { traceAmp: "amp", tracePeriod: "period", traceRepeats: "repeats", traceRot: "rot" }[e.kind];
           if (!tr.length) { put({ ok: null, why: "no trace" }); continue; }
           const vals = tr.map((c) => (c.stats.walk && /^<=?$/.test(e.op) ? null : c.stats[key])); // a walk across the screen is no talk bob: a ceiling ignores it (ART-18), a floor counts it (DAAR-11)
           put({ ok: traceDecision(e.kind, vals, e.op, e.n), why: `${key} ${vals.map((x) => (x == null ? "none (still)" : x)).join(", ")}` });

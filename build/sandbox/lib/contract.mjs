@@ -392,7 +392,9 @@ function check7(segs, v, add) {
 }
 // 8 (SH-53): more than one highlight at once, held 300 ms or more
 function check8(tl, segs, add) {
-  const hs = tl.filter((e) => e.type === "c" && e.k === "hl");
+  // frames sampled before the first paint (the title not yet drawn) are not findings (C2's blank frames at 0.2 s and 0.9 s)
+  const paint = tl.find((e) => e.type === "c" && e.k === "art");
+  const hs = tl.filter((e) => e.type === "c" && e.k === "hl" && (!paint || e.t >= paint.t));
   const seen = new Set();
   hs.forEach((e, i) => {
     if (!(e.n > 1)) return;
