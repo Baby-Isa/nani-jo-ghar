@@ -62,5 +62,5 @@
     "Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit.",
     "Nobody can approve permission prompts. Write scratch files with the Write tool and keep Bash to simple single commands (node build/tools/..., flock ... evidence.mjs, git); no heredoc-plus-run compound commands. Don't message the orchestrator with send_message: put everything in your report and push."
   ],
-  "live": true
+  "live": false
 }

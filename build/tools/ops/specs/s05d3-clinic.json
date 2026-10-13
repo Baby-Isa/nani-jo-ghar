@@ -1,0 +1,76 @@
+{
+  "name": "S05-D3, clinic fixes, judged independently (Sprint 5 fix round)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "clinic game code judged by eye",
+  "cost": "about $50-60",
+  "stop": "none: finish every row (decision 89/96); if context passes about 70%, push and report what is left",
+  "owns": [
+    "js/clinic/**, css/clinic.css, data/clinic/**",
+    "your rows' entries only in build/sandbox/data/evidence.json (C3 owns the rest of build/tools and build/sandbox: a tool fault goes in your report for C3)",
+    "your rows in docs/process/regressions.md",
+    "build/reports/s05d3-clinic.md"
+  ],
+  "readOnly": [
+    "js/shared/**, css/shared/**, js/core/** (C3 owns every shared file this round: put a shared request in your report and pull after C3's shared pushes; the results card overflow is already C3's first task)",
+    "js/cook/**, data/cook.json",
+    "data/lang/**, build/lang/**, js/core/lang/** (never invent Kutchi)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: pull. Red run of every D3 row in s05-fixround-verdicts.md ('D3: clinic' and 'Also found'), split to one claim each. Start with the EVIDENCE rows' probes (CLN-113, CLN-90, CLN-53, CLN-104, CLN-105, CLN-112, CLN-58, and CLN-22's take-back moment): each must reach the state its row names before anything is judged.",
+      "accept": "the red run id; each row's cause (game or probe)"
+    },
+    {
+      "do": "Clinic rows, one claim each, red then green then judged: SH-10's fever half (the fever card has no rows at the blanket; the temperature row ticks late), CLN-85 (reworded to decision 92: the eye-game bubble under her mouth, not on her hair) and the English 'Thank you, I feel better!' in her bubble (dark upright English: grey-italic to-record if it isn't recorded; decisions 81, 84), CLN-86 ('I'm too cold!' gets no bubble; the doctor's 'barabar' bubble sits on her hair), CLN-87 (the zoom-in is 0.9 s, the row asks about 1.5 s), CLN-94 (the torch zooms on her face by itself; the wink), CLN-22 (a take-back shown), CLN-26 (at L2 the four feeling faces still show), CLN-64 (a side touch is scored, shown), CLN-100 (L1's missing Done/tick button; settle the turn counts against the clinic.md ladder and the data, see 'Also found'), CLN-101 (the drop bottle nozzle up; no ghost finger, tweezers or bin; the outro hides the ear), CLN-118 (the taught first round is still timed and scored, no ghost finger), CLN-03 (no review faces; the end pop-up's width is C3's), CLN-53's gauge over the tooth, CLN-105's yellow rectangle, the missing 'call them in' box (CLN-90).",
+      "accept": "each an independent PASS, or on For Zafar after two FAILs"
+    },
+    {
+      "do": "After C3's collect fix lands (pull): get CLN-45, SH-45 and CLN-120 judged by the independent text judge (they reach their states; SH-45 and CLN-120 were passed by text and refused only for having no panel).",
+      "accept": "three verdicts collected and applied"
+    },
+    {
+      "do": "End: one pass of the clinic's gate pages with --check: `node build/sandbox/run.mjs --touched <every clinic flow from touched.mjs --base origin/main> --parallel 3 --budget-min 13 --check` in chunks (--resume). Every page reaches its end; fix any new finding your changes caused.",
+      "accept": "the run id, 0 stopped pages, 0 new findings (or each explained)"
+    }
+  ],
+  "flows": [
+    "clinic:heal-cut",
+    "clinic:heal-knee",
+    "clinic:heal-fever",
+    "clinic:heal-eye",
+    "clinic:heal-ear",
+    "clinic:waiting",
+    "clinic:patient",
+    "clinic:pharmacy"
+  ],
+  "report": "s05d3-clinic",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "build/reports/s05-fixround-verdicts.md (your section: 'D3: clinic', and 'Also found')",
+    "docs/decisions.md row 96 (done means an independent picture) and rows 86-95",
+    "docs/sprints/S05-red-then-green.md (the last three log entries)",
+    "docs/architecture/evidence-loop.md (incl. Probe pitfalls)"
+  ],
+  "port": 8894,
+  "publish": false,
+  "live": true,
+  "extra": [
+    "Decision 96 is the rule this round exists for. A row is built ONLY on an independent judge's PASS on its new evidence. The judge is a Fable subagent (Agent tool, model fable) given ONLY the standard batch file that `evidence.mjs --judge` writes: never your notes, your report, your description of the fix or a leading prompt. Its verdict file's first line is `judge: Fable, independent subagent`. Run every evidence probe with `NJG_BUILDER=S05-D3` so --collect refuses you as judge. This subagent judge is the one helper allowed (decision 96).",
+    "'No change' is not a result. Before any fix, run the row's probe and see it RED (the panel shows the state and the fault). A probe that is not red, or does not reach its state, means the row is not started: fix the probe first, then run red.",
+    "Two strikes: a row whose fix fails the independent judge twice stops. Put it in the report's 'For Zafar' list with the sheet path and the two FAIL lines; do not try a third time.",
+    "One claim per row: before fixing, split any row whose failing line (in s05-fixround-verdicts.md) names several claims into one row per claim (the next free id in its area, the same Source column, each with its own evidence spec in build/sandbox/data/evidence.json). Never weaken Zafar's words; never remove or replace a mechanic (non-negotiable 2): a claim that needs a mechanic changed goes to 'For Zafar'.",
+    "Browser: every run under the lock with your own port: `COOK_TEST_PORT=8894 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node ...` (13-minute chunks; exit 75 = run again with --resume <id>). The 15-minute limit is lifted for this round only for ONE final pass of your mode's gate pages at the end (decision 96); while iterating, run only your rows' probes.",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (C3 and D3 push to the same branch; never force-push). Push after every group of rows and at least every 30 minutes.",
+    "Nobody can approve permission prompts. Write scratch files with the Write tool and keep Bash to simple single commands (node build/tools/..., flock ... evidence.mjs, git); no heredoc-plus-run compound commands. Don't message the orchestrator with send_message: everything goes in your report, pushed.",
+    "Finish line (decision 96): when every row is an independent PASS or on the For Zafar list, write the report table (row, red run, green run, judge verdict line) and stop. Never mark a row built from reading code."
+  ]
+}
