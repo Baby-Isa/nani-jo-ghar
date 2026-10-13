@@ -314,6 +314,12 @@ export class CookPlayer {
         await sleep(500);
         await this.once("wrong-choice");
       }
+      // force-passme (MAA-14): her first ask is left to run out (the 3 s ring, her impatient face, she goes); later ones answered
+      if (this.mode === "force-passme" && String(sel).startsWith("#passme") && !this.made.has("passme-waited")) {
+        this.made.add("passme-waited");
+        await sleep(5500);
+        if (!(await p.isVisible(sel).catch(() => false))) return;
+      }
       await p.waitForSelector(sel, { state: "visible", timeout: 10000 });
       if (sel.includes(".njg-results")) {
         if (sel.includes("rs-next")) {
@@ -321,7 +327,10 @@ export class CookPlayer {
           // open-steps (SH-44, D14): the tick badge is tapped and the steps list recorded (or that the card has none)
           if (this.mode === "open-steps") { const acc = await p.$(".njg-results .rs-acc.rs-tappable"); if (acc) { await acc.click({ force: true }).catch(() => {}); await sleep(350); await this.once("steps-open"); } else await this.once("steps-none"); }
         } else await sleep(600);
-        await this.once("results-" + (sel.includes("rs-next") ? "badges" : "words"));
+        // the page the card is on (decision 93: the word review's → is .rs-next too, before the steps page), not the button
+        const step = await p.$eval(".njg-results .rs-card", (c) => c.dataset.step).catch(() => null);
+        if (step && sel.includes("rs-next") && step !== "1") await sleep(600);
+        await this.once("results-" + ({ 1: "badges", 2: "words", 3: "steps" }[step] || (sel.includes("rs-next") ? "badges" : "words")));
       }
       await p.click(sel);
     } else if (k === "tap") {

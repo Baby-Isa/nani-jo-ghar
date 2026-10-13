@@ -55,7 +55,7 @@ export const ALIASES = {
   scene: { pats: ["rec:scene"] },
 };
 const HOST = ["host:*", "host:*/*", "host:*/*/*", "host:results", "host:done", "host:idle", "host:loading"];
-const COOK_REC = ["rec:start", "rec:result", "rec:order-card-big", "rec:order-card-in-sidebar", "rec:results-badges", "rec:results-words", "rec:view-*", "rec:view-*-*", "rec:kind-*", "rec:stir-begin", "rec:stir-mid", "rec:help-open"];
+const COOK_REC = ["rec:start", "rec:result", "rec:order-card-big", "rec:order-card-in-sidebar", "rec:results-badges", "rec:results-words", "rec:results-steps", "rec:view-*", "rec:view-*-*", "rec:kind-*", "rec:stir-begin", "rec:stir-mid", "rec:help-open"];
 const COOK_PATH = {
   hint: ["rec:hint-nani-says", "rec:hint-glow", "rec:peek-open", "rec:bulb-english", "rec:help-open"],
   mistake: ["rec:wrong-choice", "rec:wrong-tap", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"],

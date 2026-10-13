@@ -1150,7 +1150,7 @@
  ],
  "SH-69": [
   {
-   "flow": "first",
+   "flow": "cook:day1",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -1158,15 +1158,15 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "rec:arrive",
+   "at": "every:bubble",
    "after": null,
    "capture": [
-    "shot",
-    "dom:body",
+    "crop:#stage",
     "voice"
    ],
    "expect": null,
-   "note": "the first meeting (Nani's arrival in the first launch: the name shown and heard once); 'Thank you!' on a pill is Kutchi (decision 81)"
+   "note": "the first meeting: a fresh save's first customer, Nani names them in her bubble and says it (flow.js firstMeeting, once per save); 'Thank you!' on a pill is Kutchi (decision 81)",
+   "max": 4
   },
   {
    "flow": "cook:day2",
@@ -3475,7 +3475,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "phase:pour",
+   "at": "exp:pour",
    "after": null,
    "capture": [
     "strip:#stage:4x250"
@@ -6152,7 +6152,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "placed",
+   "at": "cook-done:tap",
    "after": null,
    "capture": [
     "strip:#stage:4x100"
@@ -6169,7 +6169,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "placed",
+   "at": "cook-done:tap",
    "after": null,
    "capture": [
     "strip:#stage:4x100"
@@ -6186,7 +6186,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "placed",
+   "at": "cook-done:tap",
    "after": null,
    "capture": [
     "strip:#stage:4x100"
@@ -11456,14 +11456,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "visible:.njg-results .rs-p3 .rs-step",
    "after": null,
    "capture": [
-    "crop:.njg-results .rs-card"
+    "crop:.njg-results .rs-card",
+    "shot"
    ],
    "expect": null,
-   "note": "the card fits its badges: with one or two badges it is narrower, never the three-badge width with empty room",
-   "delay": 2800
+   "note": "the steps page: the card as wide as its list, no wide empty bands",
+   "delay": 700
   },
   {
    "flow": "cook:daar",
@@ -11480,7 +11481,7 @@
     "crop:.njg-results .rs-card"
    ],
    "expect": null,
-   "note": "three badges: the card as wide as they need",
+   "note": "three badges: the card as wide as they need (after the badges have stepped in)",
    "delay": 2800
   }
  ],
@@ -11552,12 +11553,9 @@
  ],
  "CK-31": [
   {
-   "flow": "lab:cook/order",
-   "path": "mistake",
-   "level": [
-    1,
-    2
-   ],
+   "flow": "cook:chai-tray",
+   "path": "wrong-extra-person",
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
@@ -11569,18 +11567,16 @@
     "crop:#stage"
    ],
    "expect": null,
-   "note": "a wrong serve: the review face frowns",
-   "max": 6
+   "note": "a wrong cup served (a spice they did not ask for): the review face over it frowns",
+   "max": 4,
+   "delay": 700
   }
  ],
  "CK-32": [
   {
-   "flow": "lab:cook/order",
-   "path": "mistake",
-   "level": [
-    1,
-    2
-   ],
+   "flow": "cook:chai-tray",
+   "path": "wrong-extra-person",
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
@@ -11593,8 +11589,9 @@
     "dom:#mission"
    ],
    "expect": null,
-   "note": "a wrong serve: the wrong row marked red on the open card",
-   "max": 6
+   "note": "a wrong cup served: the wrong row marked on the card, the card open to show it",
+   "max": 4,
+   "delay": 1200
   }
  ],
  "SAM-18": [
@@ -11716,29 +11713,26 @@
    "max": 8
   }
  ],
- "SH-78": {
-  "needsDecision": "Design system §12 folds a person's card to face + headline + ✓ once every row is done; at the chai pour (and daar's stir, DAAR-18) every row is done but the dish is still being made, so the ticks fold away. Keep §12 as it is, or hold each card open until its dish leaves the station (poured, stirred, served)?",
-  "probes": [
-   {
-    "flow": "cook:chai-tray",
-    "path": "fair",
-    "level": 1,
-    "sizes": [
-     "1366x768"
-    ],
-    "profile": "seen",
-    "want": null,
-    "at": "every:placed",
-    "after": null,
-    "capture": [
-     "crop:#mission"
-    ],
-    "expect": null,
-    "note": "the chai card through the pour",
-    "max": 10
-   }
-  ]
- },
+ "SH-78": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "the chai card through the pour: a person's card is finished only with their dish (ui.js 'queue item 8'), so it folds after their pour, not when the last row ticks",
+   "max": 10
+  }
+ ],
  "DAAR-18": {
   "needsDecision": "As SH-78: hold the daar card open through the stir, or fold it once every row is ticked (§12)?",
   "probes": [
