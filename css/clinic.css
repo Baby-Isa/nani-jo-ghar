@@ -42,9 +42,6 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-hint-n { display: none !important; }
 
 /* ---------- the instruction card ---------- */
-/* the clinic's closed card ends its head with its own "···",
-   which already keeps the headline clear of the eye (the eye sits under it), so it needs no extra room */
-.cl-card { --oc-look-room: 0px; }
 .cl-card { background: #fff; border-radius: var(--cl-r); box-shadow: 0 2px 0 #e7d8c0, 0 6px 14px rgba(80, 60, 30, .08); padding: var(--njg-s2) var(--njg-s2) var(--njg-s2); flex: 0 1 auto; min-height: 0; overflow: auto; }
 .cl-card-head { display: flex; align-items: center; gap: var(--njg-s2); margin-bottom: var(--njg-s1); }
 .cl-card-face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex: none; background: #d6b08c; }
@@ -438,7 +435,9 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-card .cl-row-count { margin-left: var(--njg-s2); font-size: 15px; }
 .cl-card .oc-row .oc-t::first-letter { text-transform: none; }
 .cl-card .oc-card.closed { cursor: pointer; }
-.cl-card .oc-card.closed.folded .oc-head::after { content: "···"; font: 800 22px var(--cl-head); color: #b8a88f; margin-left: var(--njg-s2); letter-spacing: 2px; }
+/* S05-D2 (SH-09, rule 8): the clinic's own "···" column after a closed card's head is gone: it narrowed the headline to
+   four lines on a phone (the eye test's "Drops first, then let's test your eyes."); the shared card's small bulb, at
+   the end of the headline's last line, is the closed card's one sign, as in Cook */
 /* 13f: the doctor's box (the shared guide box, in the clinic's teal: Nani isn't at the clinic) */
 .cl-docbox { --nani-sage: #4f9a8a; }
 .cl-docbox .ng-face img { object-position: center; }
