@@ -35,3 +35,7 @@ Design now, while there is one language: a `lang` key in the save and on every d
 ## Verdict: is what we have enough?
 
 The architecture is: the shared host, contract checks and evidence loop are the right shape, and the engine is already language-neutral. What is missing is discipline around them: models chosen per task, text evidence before pixels, caches and touched-only runs mandatory, a 2k-word pack with a decisions digest for every worker, and push-often resumable tasks. That is about a day of tooling and a process line each, and together should roughly halve a sprint's spend and bring a gate under an hour, without touching scope.
+
+## Starting cost, measured (13 Oct, decision 98)
+
+Claude Code's `/context` panel in an orchestrator chat on 13 Oct, before the reset: about 60k tokens fixed before any project file (system tools 22k, MCP tools 17.3k, system prompt 11k, skills 6.6k, CLAUDE.md 1.9k, MCP server instructions 1.3k), plus about 3k of starting reads (`CLAUDE.md` and status "Next chat"). Most of it is the harness: fewer skills and connectors cut it; the docs can cut only the reads. Measure again in a fresh chat after the starting prompt and write the number here.
