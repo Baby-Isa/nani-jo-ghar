@@ -7797,7 +7797,7 @@
     "lexicon",
     "!textMatches:(?i)nani"
    ],
-   "note": "E4: the child asks 'how do you feel?' first; the doctor cues it (the send-off's say step: the bubbles and pills)"
+   "note": "E4: the child asks 'how do you feel?' first; the doctor cues it (the send-off's say step: the bubbles and pills) (needs a driver that draws E4: 1 in 4 at L3; 12 seeds drew E2 every time)"
   }
  ],
  "CLN-30": [
@@ -8201,7 +8201,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "popup-open",
+   "at": "visible:.njg-rq-card",
    "after": null,
    "capture": [
     "dom:.njg-rq-card",
@@ -8223,7 +8223,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "popup-open",
+   "at": "visible:.njg-rq-card",
    "after": null,
    "capture": [
     "dom:.njg-rq-card",

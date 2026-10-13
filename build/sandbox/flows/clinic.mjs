@@ -82,6 +82,8 @@ export class ClinicPlayer {
         await sleep(150);
         await this.once(`bulb-${stage}`, { settle: 0 });
         await sleep(400);
+        // hold the pick while the bulb's English is open (SH-41: its 8 s must be measurable before the stage moves on and ends it)
+        for (let i = 0; i < 100 && (await p.evaluate(() => !!document.querySelector(".oc-card.english, .cl-side.english, #side.english")).catch(() => false)); i++) await sleep(100);
       }
     }
   }
