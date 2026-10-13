@@ -7,7 +7,7 @@
 Every code row in `S05-plan.md`'s packages is fixed and proven by its own probe (red before the fix, green after: decision 86), the changed rows are judged, and the result passes `/review` and goes live on `main`.
 
 ## Budget
-Approved 12 Oct: about $175–215 and a working day (plan, decision 1); raised 13 Oct to about $270 (decision 90). Sessions T $10–14, S $28–35, B $22–30, C $35–45, D $40–50; judging about $15; `/review` and publish about $25. Scope is cut before the budget.
+Approved 12 Oct: about $175–215 and a working day (plan, decision 1); raised 13 Oct to about $270 (decision 90), then about $310 for the last fixes (decision 96). Sessions T $10–14, S $28–35, B $22–30, C $35–45, D $40–50; judging about $15; `/review` and publish about $25. Scope is cut before the budget.
 
 ## Sessions
 All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s05*.brief.txt`; owned files disjoint (the plan's table). At most four at once.
@@ -63,6 +63,8 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 13 Oct ~11:05 UK: **C2 round 3 done** (bc318ab): DAAR-11 ladle turns with its path, no hand; the Fill fold on the strip art; day 1's green square (a missing old chai prop) and the 'Thank you!' overlap fixed; the day-1 English bubble is a tagged to-record line (decision 84). contract-8 calls sent to T2: the bulb's own on-state isn't a lit task item; the card row and stage glow on the same thing in one colour are one highlight (SH-53); frames before first paint aren't findings.
 
 13 Oct ~11:23 UK: **S2 built the steps page** (af28cd2, decision 93): page 3 after the word review, by itself, Kutchi with English under, right gold, wrong red with what was done, two columns past four, no inner scroll, no page without steps. C2 adding Cook's page-3 test listener (flow.js). T2's final all-rows run in progress. Spend about $230 of $270; judging and `/review` to be kept lean.
+
+13 Oct ~12:30 UK: the open rows sorted (`build/reports/s05-open-triage.md`): 68 = fix now 35 (18 only need a fresh green run and the row updated, 10 probe faults, 6 game faults, 1 to close), art 17, Mum 7, Zafar 5, later 4; plus 4 known (DAAR-11, SH-17, SH-01, the chaat chip label) and CLN-14's 'Bring in man'. Zafar: launch both (ceiling about $310, decision 96). **G** session_016NZrvhe7bFqxYff8QG94Pb (Opus, game fixes) and **P** session_01VTxgPqxtwkp5jSBm4B1Wsy (Sonnet, probes and the row paperwork).
 
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
