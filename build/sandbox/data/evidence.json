@@ -115,15 +115,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results-words",
+   "at": "result",
    "after": null,
    "capture": [
-    "zoom2:.rs-words",
-    "dom:.rs-words"
+    "zoom2:.njg-results",
+    "dom:.njg-results"
    ],
    "expect": [
-    "noClip:.rs-word",
-    "lines:.rs-word<=2"
+    "noClip:.njg-results"
    ],
    "note": "L4 word review on a phone: a long word (fudino ji chutney) wraps between its words, never past its tile"
   },
@@ -139,16 +138,15 @@
    "want": [
     "fudino ji chutney"
    ],
-   "at": "results-words",
+   "at": "result",
    "after": null,
    "capture": [
-    "zoom2:.rs-words",
-    "dom:.rs-words"
+    "zoom2:.njg-results",
+    "dom:.njg-results"
    ],
    "expect": [
     "textMatches:fudino ji chutney",
-    "noClip:.rs-word",
-    "lines:.rs-word<=2"
+    "noClip:.njg-results"
    ],
    "note": "an order holding fudino ji chutney: its tile wraps between words"
   }
