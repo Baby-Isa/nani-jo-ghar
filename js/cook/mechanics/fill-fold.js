@@ -110,6 +110,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   });
 
   // the three folds of a samosa, in design coords (the pastry centred at 800, 330)
+  /*
+   * Decision 94 (Zafar, 13 Oct): the Phase A fold on the samosa strip's painted art (no new art; the mini-game kept):
+   * the samosa station's board and fold pictures and its three swipe lines (js/cook/stations/samosa.js META.fold /
+   * foldS02, measured on the pictures); each fold steps to the next picture. The drawn sheet only if a picture fails.
+   */
+  const SAMOSA = "assets/cook/items/v3/samosa/";
+  const STRIP = {
+    v3: { w: 517, h: 297, fill: { x: 0.175, y: 0.655 }, swipes: [{ steps: [1, 2], from: [0.14, 0.66], to: [0.46, 0.66] }, { steps: [2, 3, 4], from: [0.2, 0.66], to: [0.6, 0.66] }, { steps: [4, 5, 6], from: [0.3, 0.66], to: [0.9, 0.66] }], done: { x: 0.7, y: 0.401, w: 274 } },
+    s02: { w: 482, h: 149, fill: { x: 0.14, y: 0.5 }, swipes: [{ steps: [1, 2], from: [0.08, 0.5], to: [0.36, 0.5] }, { steps: [2, 3], from: [0.16, 0.5], to: [0.48, 0.5] }, { steps: [3, 4, 5, 6], from: [0.9, 0.5], to: [0.3, 0.5] }], done: { x: 0.206, y: 0.5, w: 166 } },
+  };
+  const STRIP_K = 1.42; // design px per fold-canvas px (the samosa station's)
+  const STRIP_AT = { x: 800, y: 336 };
+  const BOARD = { w: 750, h: 750 * (847 / 1397) }; // the samosa station's board (820 wide there), a little narrower: the plate sits clear of it
+  async function stripArt(S) {
+    const F = St.art("samosa-fold-1") ? STRIP.s02 : STRIP.v3;
+    const file = (i) => (St.art(`samosa-fold-${i}`) ? St.art(`samosa-fold-${i}`).file : `${SAMOSA}fold-${i}.webp`);
+    const list = [["sv3-board", SAMOSA + "board.webp"]].concat([1, 2, 3, 4, 5, 6].map((i) => [`sv3-fold-${i}`, file(i)]));
+    await St.loadArt(S, list);
+    return list.every(([key]) => S.textures.exists(key)) ? F : null;
+  }
+
   const FOLDS = [
     [[640, 470], [860, 210]],
     [[960, 470], [740, 210]],
@@ -180,21 +201,37 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.flat(painted, plate.x, plate.y, z.L(300), z.L(300), { depth: D.item - 0.2 });
       } else if (count) S.track(S.add.ellipse(plate.x, plate.y, z.L(330), z.L(150), 0xf3eee6, 1).setStrokeStyle(z.L(6), 0xb24a3a).setDepth(D.item - 0.2));
       const kinds = [...new Set(blobs.map((b) => b.wordId).filter(Boolean))];
-      const folds = FOLDS.slice(0, k.folds);
+      const F = await stripArt(S);
+      // a strip-canvas point (fractions): in design px (the fold lines, as FOLDS), and in world px
+      const spD = (fx, fy) => [STRIP_AT.x + (fx - 0.5) * F.w * STRIP_K, STRIP_AT.y + (fy - 0.5) * F.h * STRIP_K];
+      const sp = (fx, fy) => [z.X(spD(fx, fy)[0]), z.Y(spD(fx, fy)[1])];
+      if (F) {
+        const board = S.track(S.add.image(z.X(STRIP_AT.x), z.Y(STRIP_AT.y - 4), "sv3-board").setDepth(D.item - 1));
+        board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
+        if (S.contactShadow) board.shadow = S.contactShadow(board);
+        if (sheet) {
+          sheet.destroy();
+          sheet = null;
+        }
+      }
+      const folds = F ? F.swipes.map((sw) => [spD(...sw.from), spD(...sw.to)]) : FOLDS.slice(0, k.folds);
       const g = S.track(S.add.graphics().setDepth(D.fx));
       const most = count ? count + k.maxExtra : 1;
       let made = 0;
       const done = [];
       while (made < most) {
         const fresh = !sheet || made > 0;
-        if (fresh) sheet = S.track(S.add.image(z.X(800), z.Y(330), S.tex("pastry:0")).setScale(1.1 * z.k).setDepth(D.item));
+        if (fresh && F) sheet = S.track(S.add.image(z.X(STRIP_AT.x), z.Y(STRIP_AT.y), "sv3-fold-1").setScale(z.L(STRIP_K)).setDepth(D.item));
+        else if (fresh) sheet = S.track(S.add.image(z.X(800), z.Y(330), S.tex("pastry:0")).setScale(1.1 * z.k).setDepth(D.item));
         // a scoop of the filling onto this pastry
         const scoop = [];
         if (bowl && kinds.length) {
           kinds.forEach((id, i) => {
             const s = S.track(S.add.image(bowlAt.x, bowlAt.y, S.tex(`layer:${id}`)).setScale(0.18 * z.k).setDepth(D.item + 1));
             scoop.push(s);
-            S.fly(s, z.X(800 + (i - (kinds.length - 1) / 2) * 34), z.Y(360 - (i % 2) * 14), { scale: 0.26 * z.k, duration: 360, arc: z.L(90) });
+            // on the strip's flat end, where the first fold's triangle covers it (the art), or the sheet's middle
+            const [fx, fy] = F ? sp(F.fill.x, F.fill.y) : [z.X(800), z.Y(360)];
+            S.fly(s, fx + z.L((i - (kinds.length - 1) / 2) * 30), fy - z.L((i % 2) * 12), { scale: (F ? 0.18 : 0.26) * z.k, duration: 360, arc: z.L(90) });
           });
           await Cook.wait(380);
         } else if (!bowl && made === 0) blobs.forEach((b) => scoop.push(b));
@@ -217,9 +254,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             break;
           }
           Cook.sfx.flip();
-          sheet.setTexture(S.tex(`pastry:${f + 1}`));
+          if (F) {
+            // the next picture, a quick cross-fade from the last
+            const steps = F.swipes[f].steps;
+            const ghostOld = S.track(S.add.image(sheet.x, sheet.y, sheet.texture.key).setScale(sheet.scaleX).setDepth(D.item + 0.1));
+            sheet.setTexture(`sv3-fold-${steps[steps.length - 1]}`);
+            S.tweens.add({ targets: ghostOld, alpha: 0, duration: 220, onComplete: () => ghostOld.destroy() });
+          } else sheet.setTexture(S.tex(`pastry:${f + 1}`));
           if (f === 0) scoop.forEach((o) => o.setVisible(false));
-          S.tweens.add({ targets: sheet, scaleX: 1.02 * z.k, duration: 90, yoyo: true });
+          S.tweens.add({ targets: sheet, scaleX: sheet.scaleX * 1.02, duration: 90, yoyo: true });
           z.progress((f + 1) / folds.length);
         }
         g.clear();
@@ -231,12 +274,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         made++;
         if (count) UI.count(made, { id: "ph-samosa", state: "folded" });
-        S.sparkle(z.X(800), z.Y(330));
+        S.sparkle(z.X(F ? STRIP_AT.x : 800), z.Y(F ? STRIP_AT.y : 330));
         z.skill(100, "fold");
         if (!count) break;
         // onto the plate (a picture of what you made, never a count to aim for)
         const at = { x: plate.x + ((made - 1) % 3 - 1) * z.L(90), y: plate.y - Math.floor((made - 1) / 3) * z.L(40) };
-        await S.fly(sheet, at.x, at.y, { scale: 0.34 * z.k, duration: 380, arc: z.L(80) });
+        if (F) {
+          // the folded samosa flies by its own middle (the picture's canvas is the whole strip), onto the plate's flat
+          // middle: closer together than the drawn ones (two or three side by side, then a row behind)
+          const [mx, my] = sp(F.done.x, F.done.y);
+          sheet.setOrigin(F.done.x, F.done.y).setPosition(mx, my);
+          at.x = plate.x + (((made - 1) % 3) - 1) * z.L(62);
+          at.y = plate.y + z.L(20) - Math.floor((made - 1) / 3) * z.L(46);
+        }
+        // the last fold's little scaleX pulse yoyos back to its start: stopped first, or it stretches the flown samosa wide
+        S.tweens.killTweensOf(sheet);
+        sheet.setScale(sheet.scaleY);
+        await S.fly(sheet, at.x, at.y, { scale: F ? z.L(105) / F.done.w : 0.34 * z.k, duration: 380, arc: z.L(80) });
         done.push(sheet);
       }
       g.destroy();
