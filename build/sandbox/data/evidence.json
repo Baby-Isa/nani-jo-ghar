@@ -2728,8 +2728,8 @@
     "noClip:#mission",
     "!textMatches:…|\\.\\.\\."
    ],
-   "note": "the headline whole; the growing highlighted row and gold done-outline never clipped at the card edges",
-   "webgl": true
+   "note": "the headline whole; the growing highlighted row and gold done-outline never clipped at the card edges (no WebGL: the card is DOM, and software WebGL at 2x stalls the 800x360 page)",
+   "webgl": false
   }
  ],
  "PAN-02": [
