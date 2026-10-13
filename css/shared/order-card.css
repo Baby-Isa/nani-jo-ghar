@@ -320,6 +320,8 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
   background: var(--njg-card); padding: var(--njg-s5) var(--njg-s6);
   box-shadow: var(--njg-shadow-lift); animation: njgRqIn .3s cubic-bezier(.2, 1.3, .4, 1);
 }
+/* SH-82 (S05-C3): upright, the turn-your-phone card covers the page: the pop-up under it never scrolls (no inner scroll) */
+html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visible; }
 @keyframes njgRqIn { from { transform: scale(.8) translateY(var(--njg-s4)); opacity: 0; } }
 .njg-rq-body > .oc-card, .njg-rq-body .cl-card > .oc-card { margin: 0; box-shadow: none; }
 .njg-rq-card .oc-card.oc-big { border-radius: calc(var(--njg-radius) * 2); }
