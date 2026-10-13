@@ -657,11 +657,14 @@ ORDERS_JS = r"""
     for (let n = 0; n < 50; n++) {
       const d = R[id].make(["nana", "ma", "cousin"][n % 3]);
       const rows = R[id].ladder(d, n % 2);
-      if (!rows.length || rows[0].kind !== "dish" || rows[0].dot !== 1) out.errors.push(id + ": first row is the dish, dot 1");
+      // a list with its own headline (the pantry's, 28 Sept: "bring me these", Muke de to record) has no dish row: the
+      // card's headline row stands in for it (js/cook/order.js O.headline), so the card has one row more than the recipe
+      const listHead = !!Cook.data.recipes[id].headline;
+      if (!listHead && (!rows.length || rows[0].kind !== "dish" || rows[0].dot !== 1)) out.errors.push(id + ": first row is the dish, dot 1");
       // the mission card's ladder (js/cook/order.js) is built from those same rows
       const L = Cook.Order.ladder(d, n % 2);
       const cardRows = Cook.Order.rows(L, { all: true });
-      if (!L.head || cardRows.length !== rows.length) out.errors.push(id + ": the card ladder has every recipe row " + JSON.stringify([cardRows.length, rows.length]));
+      if (!L.head || cardRows.length !== rows.length + (listHead ? 1 : 0)) out.errors.push(id + ": the card ladder has every recipe row " + JSON.stringify([cardRows.length, rows.length]));
       const said = Cook.Lang.plain(Cook.Order.speech([L]));
       const seqs = L.sections.filter((s) => s.seq && !s.when);
       const then = "ne poi"; // the sequence linker (grammar-notes §7, confirmed); data.lines no longer holds the frames
@@ -686,7 +689,9 @@ ORDERS_JS = r"""
         const m = R.mishkaki.make("nana", { level });
         const tot = Object.values(m.skewers).reduce((a, b) => a + b, 0);
         const ok = level === 1 ? tot === 1 : level === 2 ? tot === 2 : level === 3 ? tot >= 2 && tot <= 3 : tot >= 3 && tot <= 4;
-        if (!ok || (m.skewers["ph-mixed"] || 0) > [0, 0, 1, 2][level - 1]) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
+        // the most mixed skewers by level is the recipe's own data (30 Sept, the sekelo session: level 3 may have two mixed)
+        const maxMixed = ((((Cook.data.recipes.mishkaki.slots || {}).skewers || {}).max || {})["ph-mixed"] || { byLevel: [0, 0, 1, 2] }).byLevel;
+        if (!ok || (m.skewers["ph-mixed"] || 0) > maxMixed[level - 1]) out.errors.push("byLevel: mishkaki level " + level + " " + JSON.stringify(m.skewers));
         if (m.chips !== undefined) out.errors.push("mishkaki: no chips on the grill (Wave 6)");
         if (level === 1) seen.skew.add(JSON.stringify(m.skewers));
       }
