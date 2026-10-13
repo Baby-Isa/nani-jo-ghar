@@ -566,6 +566,7 @@
       inRun: !!opts.inRun,
       onboardOn: opts.onboard !== false,
       taught, // D13: the guided first round (nothing scored)
+      zoomed: Promise.resolve(), // the push-in done (set as the game starts)
       interject(k) {
         if (k === "arre") {
           if (level <= 1 && !ctx.oopsed && global.Sfx && global.Sfx.play) global.Sfx.play("oops");
@@ -805,7 +806,9 @@
     const started = showPopup()
       .then(() => {
         if (finished) return null;
-        if (staging) staging.in().catch(() => {});
+        // CLN-133 (S05-D3): the first-time help's ghost finger waits for the close-up (ctx.zoomed): played during the
+        // push-in, its first demo was over before the child could see it
+        ctx.zoomed = staging ? staging.in().catch(() => {}) : Promise.resolve();
         return controller.start && controller.start();
       })
       .catch((e) => console.error(`Healing game "${def.id}" failed to start`, e));

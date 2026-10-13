@@ -6328,23 +6328,6 @@
  ],
  "CLN-03": [
   {
-   "flow": "clinic:patient",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:rec:stage",
-   "after": null,
-   "capture": [
-    "crop:.cl-side"
-   ],
-   "expect": null,
-   "note": "the shared order card as patient card, guide box, spacing"
-  },
-  {
    "flow": "clinic:pharmacy",
    "path": "real-pace",
    "level": 2,
@@ -6897,25 +6880,6 @@
  ],
  "CLN-112": [
   {
-   "flow": "clinic:heal-boing",
-   "path": "takeback",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "after-takeback",
-   "after": null,
-   "capture": [
-    "crop:.cl-heal@before-takeback",
-    "crop:.cl-heal",
-    "cmd:grep -A14 \"| Game |\" build/reports/s05d-clinic-audit.md"
-   ],
-   "expect": null,
-   "note": "a heal game's take-back: a drop in the syringe tapped goes back; the audit table names every game's take-back or its reason"
-  },
-  {
    "flow": "clinic:pharmacy",
    "path": "takeback",
    "level": 2,
@@ -6924,14 +6888,31 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "after-takeback",
+   "at": "before-takeback",
    "after": null,
    "capture": [
-    "crop:.cl-tray@before-takeback",
-    "crop:.cl-tray"
+    "strip:.cl-tray:6x200",
+    "cmd:grep -A16 \"| Game |\" build/reports/s05d3-clinic-audit.md"
    ],
    "expect": null,
-   "note": "the pharmacy: a placed item put back (L2: the tray not yet full)"
+   "note": "the pharmacy's take-back filmed (L2: the tray not yet full); the audit table names every game's take-back or its reason"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "takeback",
+   "level": 4,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "before-takeback",
+   "after": null,
+   "capture": [
+    "strip:.cl-room:6x200"
+   ],
+   "expect": null,
+   "note": "the waiting room L4: a numbered tick tapped again comes off"
   }
  ],
  "CLN-113": [
@@ -6948,10 +6929,10 @@
    "after": null,
    "capture": [
     "zoom2:.cl-side .oc-card",
-    "cmd:grep -A14 \"| Game |\" build/reports/s05d-clinic-audit.md"
+    "cmd:grep -A16 \"| Game |\" build/reports/s05d3-clinic-audit.md"
    ],
    "expect": null,
-   "note": "the tooth's card mid-game: one sequence (line, grey band, ticking); the audit table as text"
+   "note": "the tooth's card mid-game: one sequence (line, grey band, ticking); the audit table (one line per game, one column per rule) as text"
   },
   {
    "flow": "clinic:heal-knee",
@@ -7529,14 +7510,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "after-takeback",
+   "at": "before-takeback",
    "after": null,
    "capture": [
-    "zoom2:.cl-tray@before-takeback",
-    "zoom2:.cl-tray"
+    "strip:.cl-tray:6x200"
    ],
    "expect": null,
-   "note": "L2 (two spaces: the tray is not full after the first pick): a placed item tapped goes back and its outlined space returns"
+   "note": "L2 (two spaces): filmed from just before the take-back tap: the placed item, the tap, the item gone and its outlined space back"
   }
  ],
  "CLN-23": [
@@ -9279,7 +9259,7 @@
  "CLN-100": [
   {
    "flow": "clinic:heal-knee",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2,
@@ -9297,7 +9277,7 @@
     "cmd:node build/tools/review/shoot_knee_wrap.mjs"
    ],
    "expect": null,
-   "note": "each turn wraps round the knee edge to edge, crossing the kneecap and crease; no yellow ellipse; 4-6 / 5-8 / 5-8 turns",
+   "note": "each turn wraps round the knee edge to edge, crossing the kneecap and crease; no yellow ellipse; 4-6 / 5-8 / 5-8 turns (real pace: L1 closes itself at the count, so its last turn is filmed before the room)",
    "max": 12
   }
  ],
@@ -11840,7 +11820,7 @@
  "CLN-128": [
   {
    "flow": "clinic:pharmacy",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2,
@@ -11857,7 +11837,8 @@
     "zoom2:.cl-tray"
    ],
    "expect": null,
-   "note": "one look for a filled tray: the outlines go the same way at every level, with one item or two",
+   "note": "real pace, 0.6 s after each pick (the outline's fade done): one look for a filled tray at every level",
+   "delay": 600,
    "max": 4
   }
  ],
@@ -12185,6 +12166,66 @@
    "expect": null,
    "note": "the close-up's last look before the pull-out: the sore skin cleared",
    "delay": 950
+  }
+ ],
+ "CLN-139": {
+  "needsDecision": "Diagnosis (D1, D2) and send-off show no patient card in the sidebar (only the doctor's box): she is on screen in full there (decision 92). Should the sidebar still carry her order card (face, headline, rows) as Cook's customer card does?",
+  "probes": [
+   {
+    "flow": "clinic:patient",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "every:rec:stage",
+    "after": null,
+    "capture": [
+     "crop:.cl-side"
+    ],
+    "expect": null,
+    "note": "the sidebar at every stage"
+   }
+  ]
+ },
+ "CLN-140": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:rec:stage",
+   "after": null,
+   "capture": [
+    "crop:.cl-side"
+   ],
+   "expect": null,
+   "note": "the heal stage keeps the doctor's box at the top like the other stages"
+  }
+ ],
+ "CLN-141": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the card's sequence line runs beside the rows, never through their text"
   }
  ]
 }

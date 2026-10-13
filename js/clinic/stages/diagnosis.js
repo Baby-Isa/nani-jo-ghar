@@ -242,6 +242,7 @@
     // T25: the card's headline [Find where it hurts]; her [My {part} hurts] in her bubble; his [That's it]; it moves on
     await S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "find-where"), rows: [] }); // S04-F1
     await S.request(screen, { title: S.line(env, "find-where"), rows: [], read: false });
+    fig.react(HURT, 0); // CLN-136 (S05-D3): she looks sore as she says it hurts (her face reads as the feeling)
     S.say(row.patientSays, "patient"); // input is live at once (13i): a tap during the line goes ahead
     let busy = false;
     let finish;
@@ -291,6 +292,7 @@
   async function d3(env, plan, res, { stage, top, fig, at, tapPart }) {
     const { screen, data } = env;
     const tools = data.stages.diagnosis.tools;
+    fig.react(HURT, 0); // CLN-136: she looks unwell as she says it
     S.say(S.line(env, "unwell-short"), "patient");
     // the card: each call's row is "[the part]" under its tool's block (rows sharing a seq are one block)
     const order = [];
