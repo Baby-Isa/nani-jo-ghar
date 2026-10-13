@@ -1424,6 +1424,19 @@
             // SEK-03 (S05-C, the shared group box): several different skewers, one plain box each (no label row; the
             // headline gives the summary), alternate boxes tinted, each drawn as a little skewer
             if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), ps), { group: true })));
+            // SEK-03 (S05-C2): several skewers of one mix ("ba lakri mix") are a box each too, the same little skewer
+            // twice, not one label row over a list of its pieces (a skewer's mix is a sequence; maani's fillings are not)
+            // The pieces tick along the one mix for the first skewer; a later box is done when its skewer is (M.tickCard)
+            else if (mixes.length === 1 && mixes[0].seq)
+              for (let u = 0; u < (r.qty || 1); u++) {
+                const it = Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), mixes[0]), { group: true });
+                const unit = !!(r.units && r.units[u]) || !!r.done;
+                if (u > 0 || unit) {
+                  it.parts = it.parts.map((p) => Object.assign({}, p, { done: unit, next: false }));
+                  it.done = unit;
+                }
+                items.push(it);
+              }
             else {
               const it = item(rowText(text6(fullLine(r), rowHide(r))), mixes[0] || null);
               it.count = r.qty || 1;
