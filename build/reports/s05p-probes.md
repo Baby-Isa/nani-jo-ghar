@@ -12,6 +12,13 @@
 - **CLN-45:** ladder judged from the level data: one-thing-per-level holds in ear L2, hair L3, tummy L2; breaks at L2 in eye, foot, knee and at L3 in boing, taste, tooth and more. Reopened for G and D19.
 - **CLN-65:** marked waiting on art.
 
+## Round 3 (G's rows, the probe side)
+Fixes: `stir-begin` moment (DAAR-11), `listen-through` driver (SEK-11), the maani-line plate (MAA-08), `textMatches` counts only what a child sees (CLN-14), SH-19 max 14, SH-01 at `result`, SAM-16 film, mounds row renumbered SAM-17.
+- Built: DAAR-11 (347.6 deg), SEK-11, SH-01, CLN-14, SH-19.
+- SH-17 reopened: the Cook chai pop-up read-along lasts 89 ms a word (shared order card).
+- MAA-08 open: plates whole; a face disc on the hob, orchestrator to judge.
+- SAM-16: filmed; the diagonal is too small at stage size.
+
 ## Not done
 `touched.mjs` maps only evidence.json (tools change), i.e. a full sandbox pass, so I skipped it and shotdiff/regress (brief: never a full pass). Checks: 293 unit tests, words, specs, load all ok.
 

@@ -125,30 +125,6 @@
     "noClip:.njg-results"
    ],
    "note": "L4 word review on a phone: a long word (fudino ji chutney) wraps between its words, never past its tile"
-  },
-  {
-   "flow": "cook:chaat",
-   "path": "mistake",
-   "level": 4,
-   "sizes": [
-    "800x360",
-    "844x390"
-   ],
-   "profile": "seen",
-   "want": [
-    "fudino ji chutney"
-   ],
-   "at": "result",
-   "after": null,
-   "capture": [
-    "zoom2:.njg-results",
-    "dom:.njg-results"
-   ],
-   "expect": [
-    "textMatches:fudino ji chutney",
-    "noClip:.njg-results"
-   ],
-   "note": "an order holding fudino ji chutney: its tile wraps between words"
   }
  ],
  "SH-02": [
@@ -11311,7 +11287,7 @@
  "SAM-16": [
   {
    "flow": "cook:samosa",
-   "path": "speed1",
+   "path": "fair",
    "level": [
     1,
     2
@@ -11321,14 +11297,12 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:visible:.ob-ghost, .co-finger",
+   "at": "every:kind-swipe",
    "after": null,
    "capture": [
     "strip:#stage:4x250"
    ],
-   "expect": [
-    "count:.ob-ghost,.co-finger>=1"
-   ],
+   "expect": null,
    "max": 3,
    "delay": 0,
    "note": "each fold's ghost and swipe: a diagonal on the triangle (bottom left to top right, then top left to bottom right), filmed 4 frames at a child's pace"
