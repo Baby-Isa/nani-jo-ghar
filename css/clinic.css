@@ -268,10 +268,10 @@ body.clinic button { font-family: inherit; color: inherit; }
 .njg-results .cl-receipt { position: static; transform: none; width: min(100%, 520px); margin: 0 auto; background: none; box-shadow: none; padding: 0; }
 @media (max-height: 430px) {
   .njg-results .cl-receipt-title { font-size: 28px; line-height: 1; }
-  .njg-results .cl-receipt-row { padding: 2px 0; }
+  .njg-results .cl-receipt-row { padding: var(--njg-s1) 0; } /* CLN-147: on the spacing grid */
   .njg-results .cl-receipt-row .cl-face, .njg-results .cl-receipt-item { width: 40px; height: 40px; }
   .njg-results .cl-receipt-mark { width: var(--njg-s5); height: var(--njg-s5); }
-  .njg-results .cl-receipt-coins { font-size: 22px; margin-top: 2px; }
+  .njg-results .cl-receipt-coins { font-size: 22px; margin-top: var(--njg-s1); }
 }
 .cl-receipt-title { font-size: 44px; }
 .cl-receipt-row { display: flex; align-items: center; gap: var(--njg-s3); padding: var(--njg-s2) 0; border-bottom: 2px dashed #eadcc6; }

@@ -820,7 +820,7 @@
     items: ["cup", "paani"],
     itemsFor: { hiccups: ["cup", "paani"] },
     gestures: ["tap"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // decision 97 (8): L3 is L2 heard only; the old L3 is L4
     mount,
     bot,
     strategies: STRATEGIES,

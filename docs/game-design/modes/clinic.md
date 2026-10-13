@@ -36,7 +36,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
 - **The clinic is Hannah's granddad's; the child is his helper.** The doctor's box replaces Nani's unless a story brings her. (H25)
 - **Pretend care only:** comical, never gory; the child hands things to the doctor, who gives any medicine. (H26)
 - **Pipeline: waiting room → diagnosis → pharmacy belt → heal game → send-off;** a wrong pick costs score, nothing is greyed out. (H27)
-- **Waiting room:** at most 6 people, a picked person rises, a describing-word ladder, the call heard not read from level 3, no speaking. (H28)
+- **Waiting room:** at most 6 people, a picked person rises, a describing-word ladder, the call heard not read from level 3, no speaking. (H28) W3 (the speaking-pill variant) is retired (decision 97 (5)).
 - **Diagnosis and pharmacy stay calm:** no countdowns (the belt gets faster from level 3); a straight-on painted belt with no hatches. (H29, H30)
 - **Heal games:** scrape, knee, ear, tooth, drinks, fever, boing, eye, foot (details in the harvest); tummy, hic and hair wait; the "why" explainer only standalone or in the lab. (H31, H32)
 - **Send-off:** feelings in a thought bubble, fixes by level, goodbye in the scene, and **an apple, never a lolly**. (H33, decision 8)
@@ -125,7 +125,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
 ## B. The heal games (prototype session B, on CB6b)
 Each game is a close-up (knee, arm, ear, mouth, eye, foot) over the blurred bed. **Placement on CB6b (approved 29 Sept):** limb close-ups (knee, foot, the scraped arm, boing's arm) **lie on the white paper strip** in the lower half, as if resting on the bed; head close-ups (ear, eye, mouth/tongue) **sit in the upper half against the plain wall**, as if sitting up. CB6b came out only slightly soft, so **blur it more in code** (a pre-blurred copy, or a Phaser blur) so the room never competes with the close-up; the frame on its right wall takes the doctor's certificate, blurred to match. The patient's round face sits in a corner and reacts (neutral, ouch, happy).
 
-**Every heal game's level ladder (Zafar, 13 Oct):** each level adds one new thing. A heal game's new things (more steps, a colour, an order, a count) all arrive by level 2; level 3 adds only that the instructions are heard, not written (the closed card). Harder variety (e.g. two-colour plasters in the scrape) comes back at level 4 and up. Fever keeps the doctor naming the effect through level 3 (decision 91).
+**Every heal game's level ladder (Zafar, 13 Oct):** each level adds one new thing. A heal game's new things (more steps, a colour, an order, a count) all arrive by level 2; level 3 adds only that the instructions are heard, not written (the closed card). Harder variety (e.g. two-colour plasters in the scrape) comes back at level 4 and up. Fever keeps the doctor naming the effect through level 3 (decision 91). Decision 97 (8): any game that still added two things at one level moves the extra one to level 4: the fever's fix step ("fix it", the child chooses) and its fourth exchange, the ear's side heard, and the parked tummy (bottle, order), hic (order) and hair (shampoo); their level 3 is level 2 heard only.
 
 ### H-scrape (was "cut", the scrape variant) (CQ7)
 - **Why:** "I fell over and scraped my arm." / "Let's clean it and put plasters on."

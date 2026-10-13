@@ -87,7 +87,14 @@
       "list": true
     },
     "3": {
-      "_note": "+ ne poi [shampoo], a count of rubs (tap the head).",
+      "_note": "L3 is L2 heard only (decision 97 (8), CLN-45: one new thing per level; the extra thing moved to L4)",
+      "comb": [2, 3, 4, 5],
+      "catches": [[1, 2, 3], [1, 2, 3]],
+      "shampoo": null,
+      "list": true
+    },
+    "4": {
+      "_note": "L4 (decision 97 (8); was L3): + ne poi [shampoo], a count of rubs (tap the head).",
       "comb": [2, 3, 4, 5],
       "catches": [[1, 2, 3], [1, 2, 3]],
       "shampoo": [2, 3, 4, 5],

@@ -123,7 +123,15 @@
       "list": true
     },
     "3": {
-      "_note": "+ the order: the drink (fill + sips) and the count come as Pela ... ne poi ... in a random order; the row that says ne poi is right only if its step was started second.",
+      "_note": "L3 is L2 heard only (decision 97 (8), CLN-45: one new thing per level; the extra thing moved to L4)",
+      "sips": [1, 2, 3],
+      "hold": [2, 3, 4, 5],
+      "fill": ["half", "full"],
+      "order": false,
+      "list": true
+    },
+    "4": {
+      "_note": "L4 (decision 97 (8); was L3): + the order: the drink (fill + sips) and the count come as Pela ... ne poi ... in a random order; the row that says ne poi is right only if its step was started second.",
       "sips": [1, 2, 3],
       "hold": [2, 3, 4, 5],
       "fill": ["half", "full"],

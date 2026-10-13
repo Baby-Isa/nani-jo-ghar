@@ -94,7 +94,14 @@
       "list": true
     },
     "3": {
-      "_note": "+ the hot-water bottle and a random order of the last two steps: 'Pela [the bottle]', 'Ne poi {drink}' or 'Pela {drink}', 'Ne poi [the bottle]'. The second row is right only if its step was done second.",
+      "_note": "L3 is L2 heard only (decision 97 (8), CLN-45: one new thing per level; the extra thing moved to L4)",
+      "bubbles": [2, 3, 4, 5],
+      "amount": true,
+      "bottle": false,
+      "list": true
+    },
+    "4": {
+      "_note": "L4 (decision 97 (8); was L3): + the hot-water bottle and a random order of the last two steps: 'Pela [the bottle]', 'Ne poi {drink}' or 'Pela {drink}', 'Ne poi [the bottle]'. The second row is right only if its step was done second.",
       "bubbles": [2, 3, 4, 5],
       "amount": true,
       "bottle": true,
