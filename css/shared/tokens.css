@@ -23,6 +23,7 @@
   --njg-tint: #f4ecdf;        /* alternate rows */
   --njg-tint-edge: #e6dac6;
   --njg-next: #efebe4;        /* the next step's light grey fill */
+  --njg-focus: #e0a63a;       /* the one highlight colour: the focal glow (css/shared/focus.css), the card's next and read-along (SH-53) */
   --njg-sage: #7f9b7c;        /* Nani's guide box (everything else in it is mixed from this) */
   --njg-wrong: #c0443c;       /* the end review only */
   --njg-cream: #fffaf0;       /* the round buttons' face */

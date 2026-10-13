@@ -2557,7 +2557,8 @@
     "dom:.rs-steps-list"
    ],
    "expect": [
-    "count:.rs-step>=1"
+    "count:.rs-step>=1",
+    "noClip:.rs-card"
    ],
    "note": "the review shows which step went wrong, asked vs done, pictured (the tick badge tapped to open the list)",
    "delay": 900
@@ -11219,6 +11220,33 @@
    ],
    "note": "the pharmacy's L3 pop-up: the closed big card, no rows written",
    "delay": 300
+  }
+ ],
+ "SH-73": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "800x360",
+    "844x390",
+    "390x844"
+   ],
+   "profile": "seen",
+   "want": [
+    "mixed"
+   ],
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission",
+    "dom:#mission"
+   ],
+   "expect": [
+    "lines:#mission .oc-group .oc-part<=1",
+    "noClip:#mission"
+   ],
+   "note": "sekelo L2 on phones: a group's pills stack one per line when they don't fit side by side; no word broken across lines (Zafar, 13 Oct, Z1); 390x844 is the turn-your-phone card"
   }
  ]
 }

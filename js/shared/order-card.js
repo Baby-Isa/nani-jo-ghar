@@ -186,8 +186,54 @@
     const list = el("div", "oc-parts oc-group-parts");
     it.parts.forEach((p) => list.appendChild(rowEl(p, "oc-part", opts)));
     box.appendChild(list);
+    stackWhenTight(box, list);
     if (opts.decorate) opts.decorate(box, it);
     return box;
+  }
+
+  /*
+   * SH-73 (Zafar, 13 Oct: "those words are never going to fit nicely side by side I think they need to stack
+   * vertically"): a group whose pills don't fit side by side at their own size stacks them, one per line (a skewer's
+   * stick turns upright, its tip at the bottom), so no word is ever broken across lines. Measured from each word's
+   * one-line width (not the laid-out boxes), so stacking can't flip it back; again whenever the box or the fonts change.
+   */
+  let measureCtx = null;
+  const textWidth = (text, font) => {
+    if (!measureCtx) {
+      const cv = typeof document !== "undefined" && document.createElement("canvas");
+      measureCtx = cv && cv.getContext ? cv.getContext("2d") : null;
+    }
+    if (!measureCtx) return 0;
+    measureCtx.font = font;
+    return measureCtx.measureText(text).width;
+  };
+  const px = (v) => parseFloat(v) || 0;
+  OC.groupFits = function (list) {
+    const pills = [...list.children];
+    if (pills.length < 2 || !list.clientWidth) return true;
+    const ls = getComputedStyle(list);
+    let need = px(ls.paddingLeft) + (list._tipRoom != null ? list._tipRoom : px(ls.paddingRight)) + px(ls.columnGap) * (pills.length - 1);
+    pills.forEach((p) => {
+      const ps = getComputedStyle(p);
+      const t = p.querySelector(".oc-t");
+      const tk = p.querySelector(".oc-tk");
+      // the pill's own size, not one fit.js has shrunk the word to
+      const font = `${ps.fontStyle} ${getComputedStyle(t || p).fontWeight} ${ps.fontSize} ${ps.fontFamily}`;
+      need += textWidth((t || p).textContent.trim(), font) + px(ps.paddingLeft) + px(ps.paddingRight) + px(ps.borderLeftWidth) + px(ps.borderRightWidth);
+      if (tk && tk.getBoundingClientRect().width) need += tk.getBoundingClientRect().width + px(ps.columnGap);
+    });
+    return need <= list.clientWidth + 0.5;
+  };
+  function stackWhenTight(box, list) {
+    if (typeof root.ResizeObserver !== "function" || typeof getComputedStyle !== "function") return;
+    const check = () => {
+      if (!list.isConnected || !list.clientWidth) return;
+      if (!box.classList.contains("oc-stack") && list._tipRoom == null) list._tipRoom = px(getComputedStyle(list).paddingRight);
+      box.classList.toggle("oc-stack", !OC.groupFits(list));
+    };
+    const ro = new root.ResizeObserver(check);
+    ro.observe(list);
+    if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(check);
   }
 
   /** Fold a finished card a beat after its last tick; a tap opens (and closes) it again. */

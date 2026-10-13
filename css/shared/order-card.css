@@ -142,8 +142,10 @@
 .oc-card .oc-row .oc-t { flex: 1 1 auto; min-width: 0; font-weight: 700; font-size: var(--oc-p); line-height: 1.2; padding: var(--njg-line-2) 0; }
 .oc-card .oc-irow { min-height: var(--oc-row-h); }
 .oc-card .oc-irow .oc-t { font-weight: 800; font-size: var(--oc-i); }
-/* alternate item rows lightly tinted, so different items stand apart */
-.oc-card .oc-item.tint > .oc-irow { background: var(--oc-tint); border-color: var(--oc-tint-edge); }
+/* SH-53 (Zafar, 13 Oct: "only one thing should be highlighted at once and all highlighted items should be the same
+   colour"): alternate rows and groups are no longer tinted (a beige row read as a second highlight); items stand apart
+   by their own edged boxes. (.tint stays on the element for the hosts; it draws nothing) */
+.oc-card .oc-item.tint > .oc-irow { background: var(--oc-card); border-color: var(--oc-edge); }
 .oc-card .oc-tk { flex: none; width: calc(var(--oc-part-h) * 0.56); height: calc(var(--oc-part-h) * 0.56); display: inline-flex; }
 .oc-card .oc-tk:empty { display: none; }
 .oc-card .oc-tk svg { display: block; width: 100%; height: 100%; }
@@ -152,12 +154,12 @@
 /* done: the same row, a flat 2px gold outline (1px border + 1px ring, so nothing shifts). 29 Sept (P2): the ring is
    inset, so the clipped (folding) body never cuts it at the sides or at the first and last row */
 .oc-card .oc-row.done { background: var(--oc-card); border-color: var(--oc-gold); box-shadow: inset 0 0 0 var(--njg-line) var(--oc-gold); }
-/* next (an ordered job's next part, while playing): a light grey fill */
-.oc-card .oc-row.next { background: var(--oc-next); border-color: var(--oc-grey); }
+/* next (an ordered job's next part, while playing): the one highlight, in the one colour (the focal glow's, SH-53):
+   an amber edge with a soft glow inside, never a fill of its own (a done row is the flat gold ring with its tick) */
+.oc-card .oc-row.next { background: var(--oc-card); border-color: var(--njg-focus); box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(224, 166, 58, 0.35); }
 /* read-along: flat, the gold edge (never a yellow box) */
 /* (!important: a page's own generic .reading, e.g. Cook's yellow box, must not reach the card) */
-.oc-card .oc-row.reading { background: var(--oc-card) !important; border-color: var(--oc-gold) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--oc-gold) !important; }
-.oc-card .oc-item.tint > .oc-irow.reading { background: var(--oc-tint) !important; }
+.oc-card .oc-row.reading { background: var(--oc-card) !important; border-color: var(--njg-focus) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(224, 166, 58, 0.35) !important; }
 .oc-card .oc-headline.reading { background: none !important; box-shadow: none !important; text-decoration: underline calc(var(--njg-line-2) * 1.5) var(--oc-gold); text-underline-offset: var(--njg-s1); text-decoration-skip-ink: none; }
 /* G1 (C1's review): a headline still to record underlines its line only, never its "to record" flag */
 .oc-card .oc-headline.rec.reading { text-decoration: none; }
@@ -351,7 +353,7 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
    headline gives the summary), alternate groups tinted; an ordered group is a little skewer: the pieces threaded on a
    stick left to right, a pointed tip at the end, no numbers, no arrows ---------- */
 .oc-card .oc-item.oc-group { padding: var(--njg-s1); border-radius: var(--njg-radius); border: var(--njg-line) solid var(--oc-edge); background: var(--oc-card); }
-.oc-card .oc-item.oc-group.tint { background: var(--oc-tint); border-color: var(--oc-tint-edge); }
+.oc-card .oc-item.oc-group.tint { background: var(--oc-card); border-color: var(--oc-edge); } /* SH-53: no tint (above) */
 .oc-card .oc-item.oc-group .oc-group-parts { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--njg-s1); margin: 0; padding: 0; }
 .oc-card .oc-item.oc-group .oc-part { flex: 0 1 auto; max-width: 100%; border-radius: var(--njg-round); padding: 0 var(--njg-s2); }
 .oc-card .oc-item.oc-group .oc-part .oc-t { flex: 0 1 auto; }
@@ -366,3 +368,13 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 }
 .oc-card .oc-item.oc-skewer .oc-part { position: relative; z-index: 1; min-width: 0; }
 .oc-card .oc-item.oc-skewer .oc-part::before { display: none; }
+/* SH-73 (Zafar, 13 Oct): pills that don't fit side by side stack, one per line, each word whole; a skewer stands upright
+   (the stick down the middle behind the pills, its tip at the bottom), still read as a sequence, top to bottom */
+.oc-card .oc-item.oc-group:not(.oc-stack) .oc-part { flex: none; }
+.oc-card .oc-item.oc-group .oc-part .oc-t { overflow-wrap: normal; word-break: keep-all; }
+.oc-card .oc-item.oc-group.oc-stack .oc-group-parts { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+.oc-card .oc-item.oc-group.oc-stack .oc-part { justify-content: center; }
+.oc-card .oc-item.oc-group.oc-stack .oc-part .oc-t { flex: 0 1 auto; text-align: center; }
+.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts { padding: 0 0 calc(var(--njg-s3) + var(--njg-s1)); }
+.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::before { left: calc(50% - var(--njg-line)); right: auto; top: calc(var(--njg-s1) * -1); bottom: var(--njg-s1); width: var(--njg-line-2); height: auto; }
+.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after { right: auto; left: calc(50% - var(--njg-s1)); top: auto; bottom: 0; width: var(--njg-s2); height: var(--njg-s3); clip-path: polygon(25% 0, 75% 0, 50% 100%); }
