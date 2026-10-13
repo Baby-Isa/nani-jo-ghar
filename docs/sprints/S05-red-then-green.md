@@ -70,6 +70,8 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~13:35 UK: **41 open, 298 built.** G done (`s05g-game.md`): SAM-16 diagonal folds, chaat chips ≥14 px, CLN-45, CLN-14 tagged, SH-17, SH-66, SH-69, SH-19 built or game-fixed; five rows wait only on their probes (P, resumed). G checks contract-8 on cook:day2. P (round 1) built 17 of 18 rows, fixed most probe faults. The doctor's recording list is done (`docs/language/doctor-recording-list.md`, 220 lines), with four questions to Zafar; G's three questions to Zafar too.
 
+13 Oct ~13:45 UK, Zafar: yes to G's three and the doctor-list questions, except: the doctor's list keeps the numbers 1–10 (trae, char included); two-colour plasters stay, at the later harder levels. The heal ladder goes in clinic.md (the new rule: a decision lives in its area's doc). Sent: the ladders to D2; Nani's name line ('Nani!' said by the child at first launch) to G; the list edits to the doctor-list builder.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - 13 Oct ~00:15 UK, Zafar: the ceiling rises to about $270 so every fixable row is done; ~12:30 UK: to about $310 for the last two sessions (G and P).
