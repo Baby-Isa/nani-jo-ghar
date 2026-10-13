@@ -52,6 +52,10 @@
       "accept": "both decided on the game, green or fixed"
     },
     {
+      "do": "Chaat's chip label 'amli ji chutney' is canvas text at 13.1 px; the floor is 14 (C2 saw it). Fix it at every size the layout lint covers (text shrinks, then wraps, never below the floor).",
+      "accept": "the layout lint's canvas-text-small finding for it is gone"
+    },
+    {
       "do": "Rows: each built only with its green run cited; anything left open says exactly why and who (Mum, art, Zafar).",
       "accept": "the report table: row, red, green, verdict"
     }

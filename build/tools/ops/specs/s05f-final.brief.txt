@@ -47,7 +47,9 @@ TASKS (each with its acceptance criterion):
      Accept: SH-01 green on an L4 chaat that asks for the fudino layer, with the card fitting (noClip)
   5. ART-18: the probe can't tell Nani speaking from breathing (every Cook line is `line:cook`). Put the speaker in the sound hook, then trace only her talk bob at speed 1. If it's really over 2 px, make the shared talk smaller. SH-58: re-run (the browser closed mid-page last time).
      Accept: both decided on the game, green or fixed
-  6. Rows: each built only with its green run cited; anything left open says exactly why and who (Mum, art, Zafar).
+  6. Chaat's chip label 'amli ji chutney' is canvas text at 13.1 px; the floor is 14 (C2 saw it). Fix it at every size the layout lint covers (text shrinks, then wraps, never below the floor).
+     Accept: the layout lint's canvas-text-small finding for it is gone
+  7. Rows: each built only with its green run cited; anything left open says exactly why and who (Mum, art, Zafar).
      Accept: the report table: row, red, green, verdict
 
 REGRESSION ROWS TO RECHECK (49 rows of docs/process/regressions.md; * = open or reopened):
