@@ -481,17 +481,30 @@
   "date": "2026-10-13"
  },
  "CHAI-19": {
-  "hash": "0a5d40d1920c1717c075",
+  "hash": "214271bfc3cd580f8d92",
   "dhash": [
    "31b8d2d2daf0d040"
   ],
-  "verdict": "FAIL",
-  "line": "A, frames 2-4 and 6-7: a word pill sits over the hob's top rim above the first pan at 844x390 (\"paani\", \"chai\", then \"khun\" half under the dots badge as \"hun\", \"un\", \"n\"); frame 8 the count badge's cup icon is cut off by the stage's left edge.",
+  "verdict": "PASS",
+  "line": "A, frames 2-4 and 6-8 the word pill (\"paani\", \"chai\", \"dudh\", \"khun\", \"khun\", \"aadu\") sits inside the hob on the first pan's upper half, below the hob's top rim and clear of the count badge, no pill over the rim and no \"elchi\" loose above the hob. Flaw: frame 8 the two-group count badge is clipped at the stage's left edge (above; SH-39's badge, new finding).",
   "panel": "A",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/CHAI-19.png",
+  "run": "ev-20261013-172804-m74",
+  "commit": "de2a1e1",
+  "png": "build/screenshots/evidence/ev-20261013-172804-m74/CHAI-19.png",
+  "date": "2026-10-13"
+ },
+ "CHAI-20": {
+  "hash": "5cc1f9008f8e1f4bfbd9",
+  "dhash": [
+   "31b8d2d2daf0d040"
+  ],
+  "verdict": "PASS",
+  "line": "machine: inside:#count-badge in #stage (1 inside (5 moments))",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-173942-geu",
+  "commit": "de2a1e1",
   "date": "2026-10-13"
  },
  "CHT-01": {
@@ -3892,17 +3905,17 @@
   "date": "2026-10-12"
  },
  "SEK-16": {
-  "hash": "3ce8297faa1efbd392b1",
+  "hash": "45ebd25c132394404191",
   "dhash": [
    "70e0e06c60617060"
   ],
-  "verdict": "FAIL",
-  "line": "A, frame 3: a \"tameto\" word pill floats at the board's left (about x 170 of the 1122-wide stage), away from the tameto pile whose label below reads only a speaker icon; frames 1, 2, 4-6 that pile's label stays wordless while mishkaki and dungri have theirs.",
+  "verdict": "PASS",
+  "line": "A, frames 2-5 after each piece lands the stage's far left and the marble beside the board are empty, the only word pills being the three chips under their own bowls (mishkaki, dungri, the tameto chip in its hidden-word state), and frame 6 the grill phase carries no pile or pill; the pop over the bowl itself (1.5 s) is not caught on any frame.",
   "panel": "A",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SEK-16.png",
+  "run": "ev-20261013-172804-m74",
+  "commit": "de2a1e1",
+  "png": "build/screenshots/evidence/ev-20261013-172804-m74/SEK-16.png",
   "date": "2026-10-13"
  },
  "SEK-17": {
@@ -4428,19 +4441,19 @@
   "date": "2026-10-12"
  },
  "SH-39": {
-  "hash": "567df0f70da92c5f26c0",
+  "hash": "909044d6fa296dc9d801",
   "dhash": [
    "70e0ccc8e8e45050",
    "4144444c6462d0c6",
    "31b8d2d2daf0d040"
   ],
-  "verdict": "FAIL",
-  "line": "B, frames 5-7 the count badge (\"hakro\", \"ba\", \"trae\") sits on the pan but on top of the \"khun\" label pill, which shows as \"hun\"/half a word; C, frames 4, 6, 7 the L3 dots badge does the same (\"hun\", \"un\", \"n\" peeking out). A at 1366x768 is right: the Kutchi word on the pan in frames 5-8, the label pill clear beside it, nothing in a corner or card row.",
-  "panel": "B",
+  "verdict": "PASS",
+  "line": "A, frames 5-8 the count sits on the pan in use as the Kutchi word (\"hakro\", \"ba\", \"trae\", \"trae hakro\") on the rim's left, the \"khun\"/\"elchi\" label pill whole beside it, no digit and nothing in a corner or card row; B, the same at 844x390 (frames 5-8, the badge now clear of the \"khun\" pill that it covered last run); C, L3 at 844x390 the dots badge (frames 4-7: one, two, three dots with the sugar cup) on the first pan's rim, the \"khun\" pill whole below it. Flaw outside these panels: with two count groups the same badge runs off the stage's left edge (CHAI-19 A frame 8, above).",
+  "panel": "A",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SH-39.png",
+  "run": "ev-20261013-172804-m74",
+  "commit": "de2a1e1",
+  "png": "build/screenshots/evidence/ev-20261013-172804-m74/SH-39.png",
   "date": "2026-10-13"
  },
  "SH-40": {
@@ -4898,20 +4911,20 @@
   "date": "2026-10-13"
  },
  "SH-75": {
-  "hash": "6184cdd39d8ad178adb7",
+  "hash": "ab91c073de68055f1c25",
   "dhash": [
-   "cfef8991938fc8ca",
-   "9711010101011118",
-   "00190b0d01030190",
-   "319a929292130303"
+   "cfefefc7c6cfc8ca",
+   "31616955612c3e2f",
+   "cfefefc7c6cfc8ca",
+   "00190b2a0b030190"
   ],
-  "verdict": "FAIL",
-  "line": "A, the clinic heal card at 1366x768 keeps the three-badge width (x 313-1312, ~1000px) on its steps page while its content is a ~230px-wide column of three step lines centred in it, a ~380px empty band on each side: exactly the \"three-badge width with a wide empty band\" the row forbids. The one- or two-badge badge page the row names is on no panel: both probes are timed rounds (three badges in B of SH-74 and in D here), so \"narrower with one or two badges\" is unproven; the CSS still gives .rs-card a fixed width (min(100%, --njg-end-card)) and only centres .rs-badges.n2 inside it. B is blank: the crop of .rs-card shows a white card with no content (tool: the crop misses the page's contents). D (three Cook badges filling the card) and C (the word review filling the card) are fine as far as they go.",
-  "panel": "A",
+  "verdict": "PASS",
+  "line": "A and B, the clinic heal card on its steps page is about 428 px wide at 1366x768 (the .rs-card crop is 428x360), hugging its three step lines and the two action buttons, no empty band either side, against the ~1000 px three-badge width last run; D, Cook's three badges fill their card. Not on a panel: a two-badge page and the morning receipt (p3 captured but dropped from the sheet); a one-badge page does not exist (results.js:423 makes n2, n3 or n4 only), so the one-badge card the row names can only be the step-in.",
+  "panel": "AANDB",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-161223-2i4",
-  "commit": "af07783",
-  "png": "build/screenshots/evidence/ev-20261013-161223-2i4/SH-75.png",
+  "run": "ev-20261013-172804-m74",
+  "commit": "de2a1e1",
+  "png": "build/screenshots/evidence/ev-20261013-172804-m74/SH-75.png",
   "date": "2026-10-13"
  },
  "SH-77": {

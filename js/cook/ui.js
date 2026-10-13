@@ -2278,6 +2278,7 @@
     const prev = tally.get(id);
     tally.set(id, { n, lv: mission ? mission.level : orderLevel(), icon: icon || (prev && prev.icon) || iconFor(id === "_" ? null : id, state) });
     drawTally();
+    if (tallyPt && tallyAnchor === "right") placeTally(); // CHAI-20: a wider badge (a second group) is kept on screen
     const el = $(`#count-badge .tl[data-k="${CSS.escape(id)}"]`);
     if (el) bumpEl(el); // (the shared tally bumps its own chip)
     // Counting aloud teaches the number words (stages 1-2). From stage 3
@@ -2330,6 +2331,13 @@
     b.classList.toggle("at-r", tallyAnchor === "right");
     b.style.left = `${p.x - st.left}px`;
     b.style.top = `${p.y - st.top}px`;
+    // CHAI-20 (S05-C3): a badge anchored by its right edge that grows past the stage's left edge (two count groups at L3 on
+    // the first pan) is pushed back on screen, never cut (non-negotiable 9)
+    if (tallyAnchor === "right") {
+      const w = b.getBoundingClientRect().width;
+      const gap = 8;
+      if (p.x - st.left - w < gap) b.style.left = `${w + gap}px`;
+    }
   }
   let tallyAnchor = null;
   UI.tallyAt = function (pt, { anchor = null } = {}) {

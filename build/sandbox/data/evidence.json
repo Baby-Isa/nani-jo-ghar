@@ -12227,5 +12227,27 @@
    "expect": null,
    "note": "the card's sequence line runs beside the rows, never through their text"
   }
+ ],
+ "CHAI-20": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": [
+    "inside:#count-badge in #stage"
+   ],
+   "note": "the count badge (two groups at L3) whole on screen, never cut by the stage's left edge",
+   "max": 10
+  }
  ]
 }
