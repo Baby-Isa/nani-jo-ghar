@@ -5121,5 +5121,17 @@
   "run": "ev-20261013-185307-1hw",
   "commit": "2f909cb",
   "date": "2026-10-13"
+ },
+ "SH-84": {
+  "hash": "8af5849776f0177c28af",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "text, grep \"rs-ribbon\" (exit 0): results.js:238 renders the ribbon as the crown img (alt=\"\", aria-hidden) with no text node, and results.css has no content: string for .rs-ribbon, so a faster second play's end card shows the crown, never \"New best!\"",
+  "panel": "text",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-192923-re4",
+  "commit": "7c1531e",
+  "png": null,
+  "date": "2026-10-13"
  }
 }
