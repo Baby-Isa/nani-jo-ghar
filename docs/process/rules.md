@@ -245,7 +245,7 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 ### Cards and the order model
 - **One white card per person:** face (the replay) + headline + stacked rows; no name label, no cards in cards, no scroll bar, no script: only the current need. (E21, F8)
 - **The order model everywhere:** person → items → parts, max three tiers, Kutchi number words, lower case, no full stop; rows and the spoken sentence share one data source and order. (F9, F10)
-- **"Don't" rows are dashed with a no-sign;** finished items fold to a gold line; sequences look the same everywhere with "next" in grey, never numbered. (F9)
+- **"Don't" rows are dashed with a no-sign;** finished items fold to a gold line; sequences look the same everywhere, never numbered; the next piece wears the one focal highlight (one colour, one thing lit at a time across card and stage: SH-53, decision 95), never a grey fill or alternating tints. (F9, decision 95)
 - **The request card appears over the play area, read aloud, then shrinks into the sidebar;** read-along underline wherever a line is spoken. (E4)
 - **Flat tallies only where kept:** show what you did, never the target, never take a tap. (F25)
 
