@@ -129,7 +129,10 @@ export const SOUND_HOOK = `(() => {
       // what the line is for, when the game says (decision 80: Cook's "howto" and "passme" lines are not orders)
       let role = null;
       try { role = arguments[0] && typeof arguments[0] === "object" && arguments[0].role ? String(arguments[0].role) : null; } catch (e) {}
-      log(role ? { type: "line", id, who, text, name, role } : { type: "line", id, who, text, name });
+      // the speaker: a function of the call's arguments where the game passes one (the clinic's Voice.say(line, {who}))
+      let by = who;
+      try { by = typeof who === "function" ? String(who.apply(null, arguments) || "") : who; } catch (e) { by = String(who); }
+      log(role ? { type: "line", id, who: by, text, name, role } : { type: "line", id, who: by, text, name });
       const done = () => log({ type: "line-end", id });
       let r;
       try { r = orig.apply(this, arguments); } catch (e) { done(); throw e; }
@@ -163,8 +166,10 @@ export const SOUND_HOOK = `(() => {
       if (C && C.speak) wrapLine(C, "speak", "cook", (p) => p);
       const K = window.Clinic && window.Clinic.Kit;
       if (K && K.Voice && K.plain) {
-        wrapLine(K.Voice, "say", "clinic", (l) => K.plain(typeof l === "string" ? { english: l } : l));
-        wrapLine(K.Voice, "now", "clinic", (l) => K.plain(l));
+        // (D3's ask, S05-C3: each clinic line names its speaker, "clinic:doctor", "clinic:child" ..., not "clinic" alone)
+        const clinicWho = (l, o) => "clinic:" + ((o && o.who) || (l && typeof l === "object" && l.who) || "doctor");
+        wrapLine(K.Voice, "say", clinicWho, (l) => K.plain(typeof l === "string" ? { english: l } : l));
+        wrapLine(K.Voice, "now", clinicWho, (l) => K.plain(l));
       }
     } catch (e) {}
     // the speaker (ART-18): Cook's lines all say "cook", so the shared talk's start names who bobs (talk:nani, talk:ma ...) as a moment
