@@ -74,6 +74,9 @@
   box-shadow: 0 0 0 var(--njg-line-2) var(--njg-card); pointer-events: none;
 }
 .oc-card .oc-face.on .say-badge { background-color: var(--oc-gold); }
+/* SH-09 (S05-S2): the face's tap area is its own box (48 px, the badge inside it); a page's wider tap area (Cook's
+   .face-say::after reached 10 px below) poked past the last card and scrolled a short phone's sidebar 7 px */
+.oc-card .oc-face::after { inset: 0; }
 .oc-card .oc-face:active { transform: scale(0.95); }
 .oc-card .oc-headline { flex: 1 1 auto; min-width: 0; font-weight: 800; font-size: var(--oc-h); line-height: 1.25; }
 /* the headline is the family's line and can't be shortened: shrink, then wrap, never "..." */
@@ -122,6 +125,11 @@
 /* SH-47: the headline (and a "to record" flag under it) keeps clear of the eye: the head leaves the eye's corner
    free, so a long line shrinks first, then wraps at the largest two-line size (js/shared/fit.js), never under it */
 .oc-card.closed.folded:has(> .oc-head > .oc-look) .oc-head { padding-right: var(--oc-look-room, calc(var(--njg-icon) * 0.85 + var(--njg-s1))); }
+/* SH-09 (S05-S2): inside the headline the sign floats at the end of its last line: it takes room on that line only (a
+   reserved column beside every line wrapped "Muke elchi waari chai khape." to three lines and scrolled a phone's
+   sidebar); a last line too full for it puts it on a line of its own, never over the words. One line high, so it adds
+   no height to a line it fits on */
+.oc-card .oc-headline .oc-look { position: static; float: right; width: 1.15em; height: 1.15em; margin-left: var(--njg-s1); }
 
 /* ---------- rows: an item row (tier 2) and a part (tier 3), one line (shrunk, then wrapped), a flat gold tick when done ---------- */
 .oc-card .oc-item { display: flex; flex-direction: column; min-width: 0; }

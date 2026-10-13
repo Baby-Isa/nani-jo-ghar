@@ -319,9 +319,14 @@
     // decision 57 (CLN-91), decision 89 (SH-16): on a spoken card the peek is a small bulb with no counter, not the eye.
     // A closed order is a spoken one (rules F9, E12: from level 3 nothing is written, the order is heard), so the bulb is
     // the default; a host whose closed card is written passes opts.look "eye" and keeps the eye and its counted look (E25)
+    // SH-09 (S05-S2): it sits at the end of the headline's last line (floated right inside it), so it takes room on that
+    // line only and the headline keeps its full width (three closed cards fit an 800x360 sidebar); no headline: the corner
     if (opts.closed && opts.onPeek && !opts.big) {
       const eye = opts.look === "eye";
-      head.insertAdjacentHTML("beforeend", `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.BULB}</span>`);
+      const sign = `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.BULB}</span>`;
+      const hl = head.querySelector(".oc-headline");
+      const at = hl ? hl.querySelector(".oc-rec-line") || hl : head;
+      at.insertAdjacentHTML("beforeend", sign);
     }
     c.appendChild(head);
     // the closed big card (CLN-114, decision 27; S04): from level 3 the pop-up shows no more than the closed sidebar card:
