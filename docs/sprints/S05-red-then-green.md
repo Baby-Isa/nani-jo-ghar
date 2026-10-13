@@ -1,6 +1,6 @@
 # Sprint 05: fix the reopened list, red then green
 
-**Status:** open
+**Status:** published 13 Oct (8559d610); closes at Zafar's play and `/feedback`
 **Opened:** 12 Oct 2026, 22:15 UK · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -93,7 +93,9 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
 
 ## Outcome
-(At close.)
+Published 13 Oct ~22:00 UK: `main` 8559d610, version 20261013T205739Z (Pages deployed). Rows: 302 built at the start of the last day became 318 built, 70 open or reopened (rows split one claim each under decision 96, and the full check's findings added, so the open count rose). The fix round (C3, D3) had 45+ rows independently passed; the orchestrator's final look passed 43 of 46 judged rows and the last push's 7 of 8. Short check before the publish: unit, words, load, specs and leak bots green; contract route 0 breaks; clinic pages at 1366x768 all reach their end. Left open (fixable, listed in `docs/status.md` Next chat and the C3/D3 reports): SH-74 D, CLN-143/144/146/148, CK-21, CHAI-08, CK-27, DAAR-05, CLN-26, CLN-87, the bulb gloss; tool gaps. To Sprint 6 by two strikes: CLN-100, CLN-104, CLN-136. Waiting on art: CK-06, CLN-107, PAN-06, SH-37, CK-24, ART-05. Money: about $500 against a ceiling raised to about $480 (12 Oct $175-215; the fix round alone cost $176 of C3 and D3 against Fable's $110-130).
 
 ## Look back (three lines)
-(At close.)
+1. **Worked:** the independent judge inside each session (decision 96): a FAIL went straight back to its builder, and the final look agreed with it on 43 of 46 rows.
+2. **Cost more than it should:** builders marked their own rows 'built, sheet to judge' (9 of the 26 failures said 'no change'), so the independent look came only at the end and found 26 failures at once; nine sessions handed rows between them; probes missed their moment on 26% of rows at first (10% by the end).
+3. **Process change:** decision 96 (done = an independent picture; two strikes; one claim per row) is now rule C23; next, the Fable structure review cuts what every chat and session reads.

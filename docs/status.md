@@ -8,28 +8,26 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (13 Oct 2026, ~13:55 UK, Sprint 5 orchestrator, handing over at 77% context):** Sprint 5 is **open, not yet published** (`docs/sprints/S05-red-then-green.md`: full log, budget, small decisions). `main` is still Sprint 3 (1a6950df); all work is on `ccr-a7370759-t0lee7`. **37 open or reopened, 302 built.** The open rows are sorted in `build/reports/s05-open-triage.md` (most wait on art, Mum or Zafar). Decisions 88–95 were added this sprint; rule A30 (decision 89): no publish while a fixable row is open.
+**Where things stand (13 Oct 2026, ~22:10 UK):** **Sprint 5 is published** (`main` = 8559d610, version 20261013T205739Z; Pages deployed; github.io isn't reachable from the container, so nobody has looked at the live site yet). Zafar plays next. The sprint file `docs/sprints/S05-red-then-green.md` has the outcome and look back. **70 open or reopened, 318 built** (rows were split one claim each, so the open count rose while 300+ rows are built). Nothing is running.
 
-**Nothing is running (14:25 UK).** Every build session is finished: T, S, B, C, D, T2, S2, C2, D2, G, P. Last in: G fixed SH-17 (the Cook pop-up's read-along holds each part at least ~220 ms a word: red P ev-20261013-124219-w8t, green ev-20261013-134938-xow, 1ffdc85); P filmed SAM-16's folds closer (ev-20261013-134819-70s, sheet to judge). No check-in is armed.
+How it ended: the independent judges failed 26 of 52 builder-marked rows, so **decision 96** (done = an independent judge's picture; 'no change' is not a result; two strikes go to Zafar; one claim per row) and a fix round: C3 (Cook and shared, $89, `build/reports/s05c3-cook.md`) and D3 (clinic, $87, `build/reports/s05d3-clinic.md`); then **decision 97** (Zafar's eight answers and a last bounded push). Final independent look: 43 of 46 judged rows passed, then the last push's 7 of 8; short check before the publish: unit, words, load, specs, leak bots green, contract route 0 breaks, clinic pages at 1366x768 all reach their end (3 known contract-8 breaks).
 
 **Next steps, in order:**
-1. When G and P have pushed: pull, read their report lines.
-2. Run the evidence for the 61 rows marked "built, sheet to judge" (`grep "built, sheet to judge" docs/process/regressions.md`), in 13-minute chunks under the lock (decision 86); judge them: Fable image batches of 8–10, Sonnet text batches of 30 (cost-and-speed change 2); `--apply`. Judge MAA-08 too (P: a round face disc sits on the hob's front panel; is it the count badge overlapping the hob?).
-3. A row that fails its judging goes back to a fix session (decision 89) before the publish.
-4. Full check, `/review` (touched flows); tell Zafar the review has started; `/publish` (`python3 build/bump_version.py`, the one push to `main`); close the sprint (`/sprint`, look back).
-5. After the publish (Zafar, 13 Oct): a **Fable review against the structure it first set out** (where we veered, why, how to stop it, what to change, how to get back on course), then **Opus implements it**: one small overarching file; rules and decisions live in each area's design doc; sessions read the overarching file plus their area's docs. Sprint-only decisions stay in the sprint file.
-6. Sprint 6: move the game forward, with as much clinic art as possible; the doctor's recordings (`docs/language/doctor-recording-list.md`, 235 lines, sent to Zafar); multi-language prep; 4:3 tablet layouts (CK-TAB-01).
+1. Zafar plays `https://baby-isa.github.io/nani-jo-ghar/labs.html` (hard refresh first; first look at the live site); `/feedback` on his notes, rows the same day.
+2. **The Fable structure review, then Opus implements it** (Zafar 13 Oct ~13:00 and ~21:00): where we veered from the structure Fable first set out, why, how to stop it, how to get back. Targets: one small overarching file; each area's rules and decisions in its own design doc; `docs/process/regressions.md` (62,000 words, ~100k tokens) split per area; sprint-only decisions stay in the sprint file. Add the token cuts: the starting prompt reads only this section and the overarching file (not the sprint log); a narrow `judge` agent in `.claude/agents/` (Read and Write only, short prompt) for evidence judging; measure a new chat's starting tokens before and after. Fable high for the review (~$10), then one Opus session for the edits (~$25-35). Put the plan to Zafar before launching.
+3. Sprint 6 proposal: the leftover list (below), as much clinic art as possible, the doctor's recordings (`docs/language/doctor-recording-list.md`), multi-language prep, 4:3 tablet layouts (CK-TAB-01). Under decision 96.
 
-**Spend:** about $270 of the $310 ceiling. Keep the judging and `/review` lean (about $25–35).
+**Left open from Sprint 5 (fixable; detail in the C3 and D3 reports):** SH-74 D (the dish badge hides the end of "Muke daar khape." on the compact card), CLN-143/144 (contract-8 in taste and eye), CLN-146 (send-off bubble beside her head), CLN-148 (fever card scrolls at 800x360), CK-21, CHAI-08, CK-27, DAAR-05 (judged FAIL on reached states), CLN-26 (empty bed at L1, intermittent), CLN-87 (zoom swap shows both arts for a frame), the bulb's garbled gloss "I'd like chai with cardamom it in." (engine). Tool: CK-31/32, DAAR-22/23, SH-69, CLN-126, SH-82, CLN-58, SH-44, SH-77, CLN-112, CLN-22 (probes and timing captures).
 
-**For `/review` and Zafar:**
-1. Story English plays via device TTS. Rule 10 says TTS never ships, so the English story lines need a family recording (who records them?).
-2. Foot L2 now shows the stand-in sole, because the sole art doesn't fit the toe channels. This needs art (Sprint 6 art run).
-3. The cut step reads "Ne poi cloth, ba dabs": check that "cloth" and "dabs" are grey to-record placeholders.
-4. The pharmacy's hesitation hint writes the item at L3 (kept by decision 80).
+**For Zafar:**
+1. Story English plays by device TTS; rule 10 says TTS never ships: who records the English story lines?
+2. Two strikes, to Sprint 6: the taste cup's surface is drawn wider than the cup (CLN-104); the knee bands (CLN-100); her face matching her words, needs a sore-face picture (CLN-136).
+3. The ear's L3 is still harder than L2 and the ear has no L4 (CLN-45): move it to L4 (a mechanic change)? *Recommend yes.*
+4. Her card at the send-off needs the request pop-up first (CLN-139, reverted): design call in Sprint 6.
+5. Cut a new chat's starting tokens: turn off the connectors and skills this project doesn't use in claude.ai settings (the harness's tool and skill text is most of the ~100k).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first), then `docs/sprints/S05-red-then-green.md` (the last few log entries) and `docs/process/cost-and-speed.md`. Branch `ccr-a7370759-t0lee7`. This chat continues Sprint 5: check G and P have finished, run and judge the evidence for every "built, sheet to judge" row, then the full check, `/review`, `/publish` and close; then the Fable structure review. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Branch `ccr-a7370759-t0lee7` (Sprint 5 is live on `main`, 8559d610). First task: the Fable structure review (step 2): plan it, put it to me with a model, effort and cost, and tell me before launching anything new.
 
 ---
 
@@ -67,7 +65,7 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 
 ## What is live (the game on `main`)
 
-Sprint 3, published 8 Oct (1a6950df): the shared request pop-up and voice stop, Sprint 3's Cook and clinic fixes, the API art (the girl's states, the redo list) on top of Sprint 2 (f0f4613a). Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
+Sprint 5, published 13 Oct (8559d610, 20261013T205739Z): Sprint 5's fixes, judged independently (decisions 86, 96, 97), on top of Sprint 3, published 8 Oct (1a6950df): the shared request pop-up and voice stop, Sprint 3's Cook and clinic fixes, the API art (the girl's states, the redo list) on top of Sprint 2 (f0f4613a). Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
 
 ### Where each part is (Claude's estimates, 5 Oct)
 
