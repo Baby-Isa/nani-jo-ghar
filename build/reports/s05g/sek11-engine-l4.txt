@@ -1,0 +1,16 @@
+1 | I'd like sekelo, With one skewer (a stick) of tomato, Two skewers of mixed. First tomato. And then mishkaki. And then onion. And then mishkaki. First mishkaki. And then tomato. And then onion. And then mishkaki. 
+     any: veg-03[cards x1],ph-mixed[cards x2]  ;  list2(cardOf ph-mixed): veg-03 | ph-mishkaki | veg-02 | ph-mishkaki  ;  list3(cardOf ph-mixed): ph-mishkaki | veg-03 | veg-02 | ph-mishkaki
+2 | I'd like sekelo, With two skewers of mixed. First tomato. And then mishkaki. And then onion. And then mishkaki. And one skewer (a stick) of meat. 
+     any: ph-mixed[cards x2],ph-meat[cards x1]  ;  list2(cardOf ph-mixed): veg-03 | ph-mishkaki | veg-02 | ph-mishkaki
+3 | I'd like sekelo, With two skewers of mixed. First mishkaki. And then onion. And then mishkaki. And then tomato. And one skewer (a stick) of meat. 
+     any: ph-mixed[cards x2],ph-meat[cards x1]  ;  list2(cardOf ph-mixed): ph-mishkaki | veg-02 | ph-mishkaki | veg-03
+4 | I'd like sekelo, With two skewers of mixed. First mishkaki. And then onion. And then mishkaki. And then tomato. First mishkaki. And then tomato. And then onion. And then mishkaki. And one skewer (a stick) of meat. 
+     any: ph-mixed[cards x2],ph-meat[cards x1]  ;  list2(cardOf ph-mixed): ph-mishkaki | veg-02 | ph-mishkaki | veg-03  ;  list3(cardOf ph-mixed): ph-mishkaki | veg-03 | veg-02 | ph-mishkaki
+5 | I'd like sekelo, With one skewer (a stick) of tomato, One skewer (a stick) of meat, Two skewers of mixed. First mishkaki. And then onion. And then mishkaki. And then tomato. 
+     any: veg-03[cards x1],ph-meat[cards x1],ph-mixed[cards x2]  ;  list2(cardOf ph-mixed): ph-mishkaki | veg-02 | ph-mishkaki | veg-03
+6 | I'd like sekelo, With two skewers of mixed. First mishkaki. And then onion. And then mishkaki. And then tomato. And one skewer (a stick) of tomato. 
+     any: ph-mixed[cards x2],veg-03[cards x1]  ;  list2(cardOf ph-mixed): ph-mishkaki | veg-02 | ph-mishkaki | veg-03
+7 | I'd like sekelo, With two skewers of mixed. First mishkaki. And then tomato. And then onion. And then mishkaki. First mishkaki. And then onion. And then tomato. And then mishkaki. And one skewer (a stick) of onion. 
+     any: ph-mixed[cards x2],veg-02[cards x1]  ;  list2(cardOf ph-mixed): ph-mishkaki | veg-03 | veg-02 | ph-mishkaki  ;  list3(cardOf ph-mixed): ph-mishkaki | veg-02 | veg-03 | ph-mishkaki
+8 | I'd like sekelo, With two skewers of mixed. First mishkaki. And then onion. And then tomato. And then mishkaki. And one skewer (a stick) of onion. And one skewer (a stick) of meat. 
+     any: ph-mixed[cards x2],veg-02[cards x1],ph-meat[cards x1]  ;  list2(cardOf ph-mixed): ph-mishkaki | veg-02 | veg-03 | ph-mishkaki

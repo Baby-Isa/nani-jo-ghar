@@ -1,0 +1,10 @@
+    16 ms  Cook it the way they said.to record on=0/0 (pop-up)
+  3434 ms  Cook it the way they said.to record on=0/0
+  3699 ms  Muke chai de. on=1/1
+  3852 ms  Muke chai de. on=0/1
+frames with a lit strip part: 1 of 318 with a strip
+    19 ms  Cook it the way they said.to record on=0/0 (pop-up)
+  3453 ms  Cook it the way they said.to record on=0/0
+  3743 ms  Muke chai de. on=1/1
+  4382 ms  Muke chai de. on=0/1
+frames with a lit strip part: 9 of 316 with a strip

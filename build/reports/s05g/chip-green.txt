@@ -1,0 +1,12 @@
+800x360 L1: 3 chip texts; under 14 px: none; smallest 14.2px
+800x360 L2: 6 chip texts; under 14 px: none; smallest 14.2px
+    'fudino ji / chutney' 14.2px
+844x390 L1: 3 chip texts; under 14 px: none; smallest 14.2px
+844x390 L2: 6 chip texts; under 14 px: none; smallest 14.2px
+    'fudino ji / chutney' 14.2px
+1024x768 L1: 3 chip texts; under 14 px: none; smallest 14.2px
+1024x768 L2: 6 chip texts; under 14 px: none; smallest 14.2px
+    'fudino ji / chutney' 14.2px
+1366x768 L1: 3 chip texts; under 14 px: none; smallest 15.8px
+1366x768 L2: 6 chip texts; under 14 px: none; smallest 14.2px
+    'fudino ji / chutney' 14.2px

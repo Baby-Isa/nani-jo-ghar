@@ -1,0 +1,12 @@
+800x360 L1: 3 chip texts; under 14 px: 'mirchi' 9.4px, 'chana' 9.4px; smallest 9.4px
+800x360 L2: 6 chip texts; under 14 px: 'sev' 9.4px, 'fudino ji / chutney' 7.1px, 'mirchi' 9.4px, 'chana' 9.4px; smallest 7.1px
+    'fudino ji / chutney' 7.1px
+844x390 L1: 3 chip texts; under 14 px: 'mirchi' 10.1px, 'chana' 10.1px; smallest 10.1px
+844x390 L2: 6 chip texts; under 14 px: 'sev' 10.1px, 'fudino ji / chutney' 7.6px, 'mirchi' 10.1px, 'chana' 10.1px; smallest 7.6px
+    'fudino ji / chutney' 7.6px
+1024x768 L1: 3 chip texts; under 14 px: 'mirchi' 12px, 'chana' 12px; smallest 12px
+1024x768 L2: 6 chip texts; under 14 px: 'sev' 12px, 'fudino ji / chutney' 9.1px, 'mirchi' 12px, 'chana' 12px; smallest 9.1px
+    'fudino ji / chutney' 9.1px
+1366x768 L1: 3 chip texts; under 14 px: none; smallest 15.8px
+1366x768 L2: 6 chip texts; under 14 px: 'fudino ji / chutney' 13.1px; smallest 13.1px
+    'fudino ji / chutney' 13.1px

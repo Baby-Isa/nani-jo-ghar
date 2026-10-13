@@ -1,0 +1,126 @@
+
+=== cut (levels 1,2,3)
+  L1 s1: wash | dab | plaster
+         ear rows: dab-count: 3 of 3; plasters: ["yellow"] of 4
+  L1 s2: wash | dab | plaster
+         ear rows: dab-count: 4 of 3; plasters: ["green"] of 4
+  L2 s1: wash | dab | plaster
+         ear rows: dab-count: 4 of 4; plasters: ["yellow","green"] of 12
+  L2 s2: wash | dab | plaster
+         ear rows: dab-count: 4 of 4; plasters: ["green","yellow"] of 12
+  L3 s1: wash | dab | plaster
+         ear rows: dab-count: 4 of 4; plasters: ["green+red","green+yellow"] of 30
+  L3 s2: wash | dab | plaster
+         ear rows: dab-count: 4 of 4; plasters: ["blue+red","blue+yellow"] of 30
+
+=== knee (levels 1,2,3)
+  L1 s1: kick | wrap
+         ear rows: kick-count: 1 of 4; wrap-turns: 5 of 3
+  L1 s2: kick | wrap
+         ear rows: kick-count: 2 of 4; wrap-turns: 4 of 3
+  L2 s1: kick | wrap
+         ear rows: kick-count: 2 of 4; wrap-turns: 7 of 4
+  L2 s2: kick | wrap
+         ear rows: kick-count: 3 of 4; wrap-turns: 6 of 4
+  L3 s1: kick | wrap
+         ear rows: kick-count: 2 of 4; wrap-turns: 8 of 5
+  L3 s2: kick | wrap
+         ear rows: kick-count: 3 of 4; wrap-turns: 7 of 5
+
+=== boing (levels 1,2,3)
+  L1 s1: wipe | drops | press | boing | plaster
+         ear rows: wipe-count: 4 of 5; drop-count: 2 of 3
+  L1 s2: wipe | drops | press | boing | plaster
+         ear rows: wipe-count: 4 of 5; drop-count: 2 of 3
+  L2 s1: wipe | drops | press | boing | plaster
+         ear rows: wipe-count: 4 of 4; drop-count: 3 of 3
+  L2 s2: wipe | drops | press | boing | plaster
+         ear rows: wipe-count: 4 of 4; drop-count: 3 of 3
+  L3 s1: wipe | drops | press | boing | plaster
+         ear rows: wipe-count: 4 of 4; drop-colours: ["yellow","yellow","blue"] of ?
+  L3 s2: wipe | drops | press | boing | plaster
+         ear rows: wipe-count: 4 of 4; drop-colours: ["red","blue","blue"] of ?
+
+=== ear (levels 1,2,3)
+  L1 s1: wax | wipe | drops | hear
+         ear rows: wipe-gentle: true of 2; drops-count: 1 of 4; hear-word: "fru-02" of 3
+  L1 s2: wax | wipe | drops | hear
+         ear rows: wipe-gentle: true of 2; drops-count: 2 of 4; hear-word: "veg-03" of 3
+  L2 s1: wax | wipe | drops | hear
+         ear rows: wax-order: ["small","big"] of 2; wipe-gentle: true of 2; drops-count: 2 of 4; hear-word: "fru-02" of 3
+  L2 s2: wax | wipe | drops | hear
+         ear rows: wax-order: ["small","big"] of 2; wipe-gentle: true of 2; drops-count: 3 of 4; hear-word: "veg-03" of 3
+  L3 s1: wax | wipe | drops | hear
+         ear rows: wax-order: ["small","big"] of 2; wipe-gentle: true of 2; drops-count: 2 of 4; hear-word: "veg-02" of 4
+  L3 s2: wax | wipe | drops | hear
+         ear rows: wax-order: ["small","big"] of 2; wipe-gentle: true of 2; drops-count: 3 of 4; hear-word: "cook-paani" of 4
+
+=== eye (levels 1,2,3)
+  L1 s1: drops | read | read | read
+         ear rows: drops-count: 2 of 3; chart-a: true of 2; chart-b: true of 2; chart-c: true of 2
+  L1 s2: drops | read | read | read
+         ear rows: drops-count: 3 of 3; chart-a: false of 2; chart-b: false of 2; chart-c: false of 2
+  L2 s1: drops | read | read | read | read
+         ear rows: drops-count: 2 of 3; chart-a: true of 2; chart-b: true of 2; chart-c: true of 2; chart-d: false of 2
+  L2 s2: drops | read | read | read | read
+         ear rows: drops-count: 3 of 3; chart-a: false of 2; chart-b: false of 2; chart-c: true of 2; chart-d: false of 2
+  L3 s1: drops | read | read | read | read
+         ear rows: drops-count: 2 of 3; chart-a: true of 2; chart-b: true of 2; chart-c: true of 2; chart-d: false of 2
+  L3 s2: drops | read | read | read | read
+         ear rows: drops-count: 3 of 3; chart-a: false of 2; chart-b: false of 2; chart-c: true of 2; chart-d: false of 2
+
+=== tooth (levels 1,2,3)
+  L1 s1: brush | brush | drill | fill
+         ear rows: b-order: ["left","up"] of ?; drill-care: true of ?; fill-line: true of ?
+  L1 s2: brush | brush | drill | fill
+         ear rows: b-order: ["left","down"] of ?; drill-care: true of ?; fill-line: true of ?
+  L2 s1: brush | brush | brush | brush | drill | fill
+         ear rows: b-order: ["left","up","left","right"] of ?; drill-care: true of ?; fill-line: true of ?
+  L2 s2: brush | brush | brush | brush | drill | fill
+         ear rows: b-order: ["left","down","left","right"] of ?; drill-care: true of ?; fill-line: true of ?
+  L3 s1: brush | brush | brush | brush | brush | brush | drill | fill
+         ear rows: b-order: ["left","up","left","right","down","left"] of ?; drill-care: true of ?; fill-line: true of ?
+  L3 s2: brush | brush | brush | brush | brush | brush | drill | fill
+         ear rows: b-order: ["left","down","left","right","left","down"] of ?; drill-care: true of ?; fill-line: true of ?
+
+=== foot (levels 1,2,3)
+  L1 s1: soak | pull | plaster
+         ear rows: soak-water: "cold" of 3; soak-jugs: 1 of 5; pull-steady: undefined of ?
+  L1 s2: soak | pull | plaster
+         ear rows: soak-water: "lukewarm" of 3; soak-jugs: 2 of 5; pull-steady: undefined of ?
+  L2 s1: soak | pull | plaster
+         ear rows: soak-water: "cold" of 3; soak-jugs: 2 of 4; pull-steady: undefined of ?
+  L2 s2: soak | pull | plaster
+         ear rows: soak-water: "lukewarm" of 3; soak-jugs: 3 of 4; pull-steady: undefined of ?
+  L3 s1: soak | pull | plaster
+         ear rows: soak-water: "cold" of 3; soak-jugs: 2 of 3; toe-order: ["middle toe","big toe","little toe"] of ?; pull-steady: undefined of ?
+  L3 s2: soak | pull | plaster
+         ear rows: soak-water: "lukewarm" of 3; soak-jugs: 2 of 3; toe-order: ["big toe","middle toe","little toe"] of ?; pull-steady: undefined of ?
+
+=== fever (levels 1,2,3)
+  L1 s1: temp | named | named | named
+         ear rows: ex0: "on:ceiling-fan" of 3; ex1: "on:blanket" of 4; ex2: "on:hand-fan" of 3
+  L1 s2: temp | named | named | named
+         ear rows: ex0: "on:window" of 3; ex1: "on:bottle" of 4; ex2: "on:hand-fan" of 3
+  L2 s1: temp | named | named | named | named
+         ear rows: ex0: "on:ceiling-fan" of 3; ex1: "on:blanket" of 4; ex2: "off:blanket" of 3; ex3: "on:heater" of 4
+  L2 s2: temp | named | named | named | named
+         ear rows: ex0: "on:window" of 3; ex1: "on:blanket" of 4; ex2: "on:hand-fan" of 3; ex3: "off:hand-fan" of 4
+  L3 s1: temp | named | named | named | fix
+         ear rows: ex0: "on:ceiling-fan" of 3; ex1: "on:blanket" of 4; ex2: "off:blanket" of 3; ex3: undefined of ?
+  L3 s2: temp | named | named | named | fix
+         ear rows: ex0: "on:window" of 3; ex1: "on:blanket" of 4; ex2: "on:hand-fan" of 3; ex3: undefined of ?
+
+=== taste (levels 1,2,3)
+  L1 s1: pop | drink
+         ear rows: pop: "blue" of 3; drink: "ginger-water" of 4
+  L1 s2: pop | drink
+         ear rows: pop: "green" of 3; drink: "honey-milk" of 4
+  L2 s1: pop | drink
+         ear rows: pop: "blue+red" of 3; drink: "ginger-waterx3" of 12
+  L2 s2: pop | drink
+         ear rows: pop: "green+red" of 3; drink: "honey-milkx2" of 12
+  L3 s1: pop | drink
+         ear rows: pop: "green+red" of 3; drink: "ginger-waterx3" of 12
+  L3 s2: pop | drink
+         ear rows: pop: "blue+red" of 3; drink: "honey-milkx2" of 12

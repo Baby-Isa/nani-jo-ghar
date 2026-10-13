@@ -1,0 +1,23 @@
+player: click #intro .ic-card
+player: click #intro .ic-card
+stir {"sx":615.9937500000001,"sy":411.985,"srx":137.918200000005,"target":2}
+at rest [["dv3-ladle",48,754,266]]
+drag angle -> ladle rotation (deg), pivot
+  102 ms  drag   7  rot    54.7  at 753,282  (1 ladle objects)
+  435 ms  drag  34  rot    82.3  at 730,344  (1 ladle objects)
+  796 ms  drag  62  rot   110.1  at 680,388  (1 ladle objects)
+ 1248 ms  drag  89  rot   137.6  at 617,404  (1 ladle objects)
+ 1616 ms  drag 117  rot   165.3  at 553,389  (1 ladle objects)
+ 2200 ms  drag 144  rot  -167.3  at 503,346  (1 ladle objects)
+ 2511 ms  drag 172  rot  -139.9  at 479,285  (1 ladle objects)
+ 3082 ms  drag 199  rot  -112.7  at 486,220  (1 ladle objects)
+ 3395 ms  drag 227  rot   -85.2  at 521,166  (1 ladle objects)
+ 3822 ms  drag 254  rot   -57.9  at 578,134  (1 ladle objects)
+ 4156 ms  drag 282  rot   -30.3  at 644,131  (1 ladle objects)
+ 4644 ms  drag 309  rot    -2.9  at 703,159  (1 ladle objects)
+ 4963 ms  drag 337  rot    24.4  at 742,211  (1 ladle objects)
+ 5269 ms  drag   4  rot    52.2  at 754,276  (1 ladle objects)
+ 5755 ms  drag  32  rot    79.6  at 733,338  (1 ladle objects)
+ 6138 ms  drag  59  rot   107.3  at 686,385  (1 ladle objects)
+ 6670 ms  drag  87  rot   135.1  at 623,404  (1 ladle objects)
+rot range -174.4 178.9 errors none
