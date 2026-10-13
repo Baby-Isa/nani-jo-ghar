@@ -1,0 +1,69 @@
+SESSION NAME / MODE:  S05-P, the last probe fixes and the row paperwork (Sprint 5)
+MODEL AND EFFORT:     Sonnet, medium effort (tool and probe fixes and status updates, mechanical)
+COST ESTIMATE:        about $6-8
+HARD STOP:            none: finish the list; if context passes about 70%, push and report what is left. Push the branch every 30-40 minutes.
+BRANCH:               ccr-a7370759-t0lee7. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s05p-probes.context.md (1665 words: the last 15 decisions and the rules this task names, pasted; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/process/rules.md: sections 2, 3, 4, 6 (UI) only
+  3. docs/process/qa-checklist.md (definition of done)
+  4. docs/status.md ("Next chat")
+  5. docs/sprints/S05-red-then-green.md (the log's last entries)
+  6. build/reports/s05-open-triage.md (the sort of the open rows)
+  7. build/reports/s05t2-probes.md (T2's final run ev-20261013-095159-oh3 and notes)
+  8. docs/architecture/evidence-loop.md (incl. Probe pitfalls)
+  9. docs/decisions.md rows 86-95 only
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/**, build/sandbox/** (incl. build/sandbox/data/evidence.json)
+  - the rows below in docs/process/regressions.md (status only)
+  - build/reports/s05p-probes.md
+READ-ONLY (never edit):
+  - js/**, css/**, data/** (package G runs alongside you: a game fault goes in your report for G)
+  - assets/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+NOTE: the generated READ-ONLY line 'build/tools/**' is a default; you OWN build/tools/** and build/sandbox/** as listed above.
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. FIRST: pull. ART-18 first, because G waits on it: put the speaker in the sound hook (every Cook line is `line:cook` today, so the probe can't tell Nani speaking from breathing), then trace only her talk bob at speed 1. Push this alone, with a commit message starting 'S05-P ART-18:'.
+     Accept: ART-18 decided on her talk alone (the px in the report)
+  2. Mark built with a fresh green run (T2's final run had them green, but the rows were never updated): `COOK_TEST_PORT=8898 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-13,SH-15,SH-33,SH-41,SH-66,PAN-02,CHAI-06,CHAI-15,MAA-10,CK-02,CK-12,CK-20,CLN-11,CLN-48,CLN-111,CLN-117,MOD-01,LNG-02`. Set each row that passes to built, citing the run id. Any that fail stay open, with the cause, for G.
+     Accept: each row's status cites the run
+  3. Probe faults: SH-03 (the probe flags the English gloss, which decision F14 and Zafar keep); MAA-08 and SEK-07 (capture moments); SAM-02, SAM-08, SAM-10 (point at cook:samosa); SEK-13 (frame cap 16); CK-09 (point at cook:maani-line); ART-12; CLN-65; CLN-45's probe part. Fix each spec or driver, lint it (`evidence.mjs --lint-specs`), then run it.
+     Accept: each reaches its state and is decided on the game (PASS, or a game FAIL named for G)
+  4. CLN-122: close it as is (decision 83; Zafar 12 Oct kept the knee framing). Then recount `node build/tools/review/statuscounts.mjs --write`.
+     Accept: the counts in the report
+
+REGRESSION ROWS TO RECHECK (49 rows of docs/process/regressions.md; * = open or reopened):
+  cook:fetch (17): PAN-01, PAN-02*, PAN-03, PAN-04, PAN-05, PAN-06, PAN-07, PAN-08, PAN-09, PAN-10*, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15, PAN-16, PAN-17
+  cook:chai-tray (18): CHAI-01*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06*, CHAI-07, CHAI-08, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-13*, CHAI-14, CHAI-15*, CHAI-16, CHAI-17, CHAI-18
+  cook:chaat@L4 (14): CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01, CK-27, CK-29
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s05p-probes` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8898.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s05p-probes.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
+Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.
+The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).
+Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.
+Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit.
+Nobody can approve permission prompts. Write scratch files with the Write tool and keep Bash to simple single commands (node build/tools/..., flock ... evidence.mjs, git); no heredoc-plus-run compound commands. Don't message the orchestrator with send_message: put everything in your report and push.

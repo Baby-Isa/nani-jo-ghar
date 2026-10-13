@@ -1,0 +1,79 @@
+{
+  "name": "S05-G, the last game fixes (Sprint 5)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "game code judged by eye and ear",
+  "cost": "about $20-25",
+  "stop": "none: finish every row below (decision 89); if context passes about 70%, push and report what is left",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-red-then-green.md (the log's last entries)",
+    "build/reports/s05-open-triage.md (the sort of the open rows)",
+    "build/reports/s05t2-probes.md (T2's final run ev-20261013-095159-oh3 and notes)",
+    "docs/architecture/evidence-loop.md (incl. Probe pitfalls)",
+    "docs/decisions.md rows 86-95 only"
+  ],
+  "owns": [
+    "js/** and css/** for the rows below (all earlier S05 sessions have finished), data/cook.json; never data/lang/**, build/lang/** or js/core/lang/** (report a word gap; never invent Kutchi)",
+    "the rows below in docs/process/regressions.md",
+    "build/reports/s05g-game.md"
+  ],
+  "readOnly": [
+    "build/tools/**, build/sandbox/** (package P runs alongside you: a probe fault goes in your report for P)",
+    "data/lang/**, build/lang/**, js/core/lang/**",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: pull. One red run: `COOK_TEST_PORT=8897 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows DAAR-11,SH-17,SH-19,SH-01,SH-58,SEK-11,CLN-45,SH-69,CLN-14`. For each row decide first whether the game or the probe is wrong (Probe pitfalls). Probe faults go to P via your report.",
+      "accept": "the red run's id and each row's cause in the report"
+    },
+    {
+      "do": "DAAR-11 (decision 94): the ladle turns with its path, so its handle always points outward and rests on the rim; there is no hand. T2's traceRot reads 0 and the ladle looks static in the trace window. Find out whether play really doesn't turn it or the probe traces the wrong object, then fix the game, or report the probe fault for P.",
+      "accept": "a filmstrip of the handle going round the rim; DAAR-11 green"
+    },
+    {
+      "do": "SH-17, the read-along: words light one by one as they're said, in the pop-up and in the pantry strip (`.ra-on`), at a child's pace. SH-19: samosa's shared ghost finger flickers (visible in one run, not the next); make it steady. SH-58: re-run, and fix if the game is at fault.",
+      "accept": "each green at speed 1"
+    },
+    {
+      "do": "SH-01: 'fudino ji chutney' is Mum-confirmed and B measured it as a layer in 22% of sampled L4 chaat orders, but no played seed asks for it. Find why (the chaat order data or the seeding) and fix it. Also: chaat's chip label 'amli ji chutney' is canvas text at 13.1 px against a floor of 14; fix it at every size (shrink, then wrap, never below the floor).",
+      "accept": "SH-01 green on an L4 chaat asking for the fudino layer, card fits; the canvas-text-small finding gone"
+    },
+    {
+      "do": "SEK-11: the plain skewer's spoken line is never said (js/cook/order.js; each skewer's sequence follows it at once, e.g. 'two mixed: first…, then…; one onion'), engine sentences only. CLN-45: the cut L2→L3 jump (see the row). SH-69: judge the sheet against the row and fix if it fails. CLN-14: the evidence shows written English 'Bring in man' at L1; if it isn't a grey italic to-record line (decision 84), fix it.",
+      "accept": "each red then green, or the exact reason it can't be"
+    },
+    {
+      "do": "ART-18, the game part: once P has put the speaker in the sound hook and the probe traces only Nani's talk, if her talk bob is still over 2 px, make the shared talk smaller (js/shared). Pull P's push first.",
+      "accept": "ART-18 green, or the measured px with P's run id"
+    },
+    {
+      "do": "Rows: each set to built only with its green run cited; anything left open says exactly why and who.",
+      "accept": "the report table: row, red, green, verdict"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray",
+    "cook:chaat@L4"
+  ],
+  "port": 8897,
+  "report": "s05g-game",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.",
+    "Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit.",
+    "Nobody can approve permission prompts. Write scratch files with the Write tool and keep Bash to simple single commands (node build/tools/..., flock ... evidence.mjs, git); no heredoc-plus-run compound commands. Don't message the orchestrator with send_message: put everything in your report and push."
+  ],
+  "live": true
+}

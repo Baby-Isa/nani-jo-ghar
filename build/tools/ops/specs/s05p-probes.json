@@ -1,0 +1,66 @@
+{
+  "name": "S05-P, the last probe fixes and the row paperwork (Sprint 5)",
+  "model": "Sonnet",
+  "effort": "medium",
+  "why": "tool and probe fixes and status updates, mechanical",
+  "cost": "about $6-8",
+  "stop": "none: finish the list; if context passes about 70%, push and report what is left",
+  "branch": "ccr-a7370759-t0lee7",
+  "rules": [
+    "2",
+    "3",
+    "4",
+    "6 (UI)"
+  ],
+  "read": [
+    "docs/sprints/S05-red-then-green.md (the log's last entries)",
+    "build/reports/s05-open-triage.md (the sort of the open rows)",
+    "build/reports/s05t2-probes.md (T2's final run ev-20261013-095159-oh3 and notes)",
+    "docs/architecture/evidence-loop.md (incl. Probe pitfalls)",
+    "docs/decisions.md rows 86-95 only"
+  ],
+  "owns": [
+    "build/tools/**, build/sandbox/** (incl. build/sandbox/data/evidence.json)",
+    "the rows below in docs/process/regressions.md (status only)",
+    "build/reports/s05p-probes.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/** (package G runs alongside you: a game fault goes in your report for G)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "FIRST: pull. ART-18 first, because G waits on it: put the speaker in the sound hook (every Cook line is `line:cook` today, so the probe can't tell Nani speaking from breathing), then trace only her talk bob at speed 1. Push this alone, with a commit message starting 'S05-P ART-18:'.",
+      "accept": "ART-18 decided on her talk alone (the px in the report)"
+    },
+    {
+      "do": "Mark built with a fresh green run (T2's final run had them green, but the rows were never updated): `COOK_TEST_PORT=8898 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows SH-13,SH-15,SH-33,SH-41,SH-66,PAN-02,CHAI-06,CHAI-15,MAA-10,CK-02,CK-12,CK-20,CLN-11,CLN-48,CLN-111,CLN-117,MOD-01,LNG-02`. Set each row that passes to built, citing the run id. Any that fail stay open, with the cause, for G.",
+      "accept": "each row's status cites the run"
+    },
+    {
+      "do": "Probe faults: SH-03 (the probe flags the English gloss, which decision F14 and Zafar keep); MAA-08 and SEK-07 (capture moments); SAM-02, SAM-08, SAM-10 (point at cook:samosa); SEK-13 (frame cap 16); CK-09 (point at cook:maani-line); ART-12; CLN-65; CLN-45's probe part. Fix each spec or driver, lint it (`evidence.mjs --lint-specs`), then run it.",
+      "accept": "each reaches its state and is decided on the game (PASS, or a game FAIL named for G)"
+    },
+    {
+      "do": "CLN-122: close it as is (decision 83; Zafar 12 Oct kept the knee framing). Then recount `node build/tools/review/statuscounts.mjs --write`.",
+      "accept": "the counts in the report"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray",
+    "cook:chaat@L4"
+  ],
+  "port": 8898,
+  "report": "s05p-probes",
+  "publish": false,
+  "extra": [
+    "Red then green per row (decision 86): run a row's probe and see it fail before the fix, the same probe pass after it. Nothing is reported done from reading code.",
+    "The 15-minute browser limit above covers sandbox and touched runs; your own rows' evidence probes are outside it but run in chunks of at most 13 minutes each (timeout 1200 is the ceiling).",
+    "Before each push: `git pull --rebase origin ccr-a7370759-t0lee7` (several sessions push to this branch); never force-push. Push after every group.",
+    "Shared-layer changes from package S (js/shared/**) keep landing: pull before each group. A change you need in another package's files goes in your report as a request, never an edit.",
+    "Nobody can approve permission prompts. Write scratch files with the Write tool and keep Bash to simple single commands (node build/tools/..., flock ... evidence.mjs, git); no heredoc-plus-run compound commands. Don't message the orchestrator with send_message: put everything in your report and push."
+  ],
+  "live": true
+}
