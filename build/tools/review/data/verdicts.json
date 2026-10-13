@@ -314,18 +314,20 @@
   "date": "2026-10-13"
  },
  "CHAI-08": {
-  "hash": "9b36f16d0ef5c2330b48",
+  "hash": "23756f7c2b84f326bd56",
   "dhash": [
-   "38347434303164e5"
+   "3830743434306cec",
+   "083272f272715032",
+   "7c6c6868686468c0"
   ],
   "verdict": "FAIL",
-  "line": "A, the hob and tray sit at mid-height with a wide empty marble band under them, so \"about 15% bigger and lower\" is not seen; pans true top-down and a top-down glass are in; no tipped pan in this shot",
-  "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CHAI-08.png",
-  "date": "2026-10-12"
+  "line": "C, the glass is not top-down once it holds liquid: at 0 ms the tilted pan pours into a top-down glass (rings, the stream landing in it), but at 507 ms and 821 ms the filled glass on the tray is a side-view tumbler (vertical walls, flat base, a tea level seen from the side), which is not \"real top-down glasses and liquids\"; and at 821 ms the still-tilted pan sits back over the burner with its stream falling on the hob, not in the glass. The rest of the row's words are in and seen: A at 1366×768 has the hob and tray sitting low in the stage (a narrow marble band under them, the wide band of the last FAIL gone) at about two thirds of the stage height, the pan on the hob true top-down (a disc with its handle) and the empty glass top-down (rings) with Nana's badge beside it, matching B's mock-up view; C at 0 ms and 507 ms has the tilted pan for the pour. Also wrong in C: the 250 ms frame of the #stage strip is a grid of thirty-odd identical ticked \"Muke elchi waari chai khape.\" cards tiled over the whole stage (a capture glitch or a real render, the builder must check), and the 821 ms frame is at a smaller scale than 507 ms (whole scene shrunk, a wide empty marble band to the right), so the strip is not four frames of one view.",
+  "panel": "C",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-164227-oez",
+  "commit": "caaa8ca",
+  "png": "build/screenshots/evidence/ev-20261013-164227-oez/CHAI-08.png",
+  "date": "2026-10-13"
  },
  "CHAI-09": {
   "hash": "f6b59d4cc34dc9de5f57",
@@ -462,20 +464,34 @@
   "date": "2026-10-13"
  },
  "CHAI-18": {
-  "hash": "bb1bf607b6ad705d28c5",
+  "hash": "49af59857fd32491ad7c",
   "dhash": [
    "a2b2929acc9a98a0",
-   "000000000000000c",
-   "b6a4696de9e8e8b0",
-   "9e8c6d6dede8ea92"
+   "e0b2929ac89a98b0",
+   "8eac6d6dcde8e8b0",
+   "8eac6d6dcde8ea92"
   ],
   "verdict": "PASS",
-  "line": "A, real tray art at L2 1366×768; each glass's face badge (Nana left, boy right) sits on the tray's outer rim beside its glass with a clear gap to the glass, never over the cup; C/D each pan on the hob has its orderer's badge beside its knob at both sizes. B (844×390 tray) is washed white by the stage-end overlay and proves nothing: the phone-size tray is unproven, for the tool owner.",
+  "line": "A, real tray art at L2 1366×768 with Nana's round face badge left of the left glass and the boy's right of the right glass, each on the tray's outer rim with clear wood between badge and glass and nothing over either cup; B now shows the same tray readable at 844×390 (no stage-end wash this time), badges on the rim beside their glasses, cups uncovered; C/D at L3 the three pans on the hob each have their orderer's face badge (Nana, boy, girl) beside their knob at both sizes. Flaws off the point: each tray badge overhangs the tray's outer edge by about half its width (half the disc sits on the stage background, not the rim); the kind-timing pill (cup + dots) overlaps the top of the middle pan's gauge ring in C and the hob's top edge in D; the phone size captured is 844×390 landscape, not the 390×844 the Check names.",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/CHAI-18.png",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-161554-mqx",
+  "commit": "9b216fd",
+  "png": "build/screenshots/evidence/ev-20261013-161554-mqx/CHAI-18.png",
+  "date": "2026-10-13"
+ },
+ "CHAI-19": {
+  "hash": "0a5d40d1920c1717c075",
+  "dhash": [
+   "31b8d2d2daf0d040"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frames 2-4 and 6-7: a word pill sits over the hob's top rim above the first pan at 844x390 (\"paani\", \"chai\", then \"khun\" half under the dots badge as \"hun\", \"un\", \"n\"); frame 8 the count badge's cup icon is cut off by the stage's left edge.",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/CHAI-19.png",
   "date": "2026-10-13"
  },
  "CHT-01": {
@@ -833,20 +849,19 @@
   "date": "2026-10-13"
  },
  "CK-21": {
-  "hash": "2ef9c34c7b7d57f713ba",
+  "hash": "93b0a27e307b7e2d7dda",
   "dhash": [
-   "eefec7c7e6cfeaf6",
-   "cefe8787879fd6d5",
-   "035c1cbd8fcd8ccf"
+   "0e170eb6e637d801",
+   "e54f37270e3f0e00"
   ],
   "verdict": "FAIL",
-  "line": "C, the two chai glasses stand on the counter beside the trays, not on them, with no contact shadow to the right; A/B the day-3 service counter shows three empty trays and no served dish",
-  "panel": "C",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CK-21.png",
-  "date": "2026-10-12"
+  "line": "B, the day-2 dishes are not IN their trays: in B4/B5 the maani plate's steel foot is painted over the tray's front rim line (the rim stops at the plate, about 5 px of plate below it, no wall over the dish) and in B10 both chai glasses' faceted bases are likewise drawn over the front rim, one at the far left end of the left tray and one at the far right end of the right tray, each overlapping the tray's end; only A7 (day 3, 1x) is right: the daar bowl's base is cut flat by the tray's front wall with the shadow on the floor to its right. Lead for the builder, not judged: B is the DPR-2 run (p-seen_x2) and A is 1x; the trayFront crop in js/cook/flow.js:753 (setCrop in design px on a scaled bg-service image) may miss at 2x.",
+  "panel": "B",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-161554-mqx",
+  "commit": "9b216fd",
+  "png": "build/screenshots/evidence/ev-20261013-161554-mqx/CK-21.png",
+  "date": "2026-10-13"
  },
  "CK-22": {
   "hash": "93f522a912dac41a1a5e",
@@ -900,21 +915,20 @@
   "date": "2026-10-12"
  },
  "CK-27": {
-  "hash": "d107b2a7690d882c0aa3",
+  "hash": "c0dd1509dece29c7c669",
   "dhash": [
-   "70e8e8606060e042",
-   "70e8e860606060c2",
-   "70e8e868606060c2",
-   "71e8e868606060c2"
+   "70c0c8486864e840",
+   "70b2fa7a70302020",
+   "70b0e87068101030"
   ],
   "verdict": "FAIL",
-  "line": "A, the bottle stands by the pan at 0 ms and is simply gone by 567 ms with no puff or sprinkle over the pan; B, C and D the same for chai, khun and elchi; daar, chaat and samosa are not on the sheet",
-  "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CK-27.png",
-  "date": "2026-10-12"
+  "line": "C, the bataato lands (yellow piece at the bowl's centre at 0 ms, full layer by 188 ms) with no puff or sprinkle in any of the four frames; A, the paani goes in (bottle tilted at 0 and 174 ms, pan turned blue by 335 ms, bottle back beside the pan at 475 ms) with only a single blue pour-drop at 335 ms, not the shared puff; the grey puff is visible only in B (two translucent blobs at the daar pan's rim at 0 ms, a dark dot and smudge at 265 ms). Samosa is not on the sheet. Frames are 170-270 ms apart, so if the puff is shorter than that the tool must sample faster before this is re-judged.",
+  "panel": "C",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-164227-oez",
+  "commit": "caaa8ca",
+  "png": "build/screenshots/evidence/ev-20261013-164227-oez/CK-27.png",
+  "date": "2026-10-13"
  },
  "CK-28": {
   "hash": "fb6468235905f26d4ba0",
@@ -939,6 +953,20 @@
   "run": "ev-s04-ev1",
   "commit": "b66ad4ff",
   "date": "2026-10-12"
+ },
+ "CK-30": {
+  "hash": "e5ea381644b94c3de728",
+  "dhash": [
+   "cefeff979399d6d7"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 4: both review faces sit inside the tray's top two wells and the small orderer badge at the right rim is within the tray's edge, nothing hanging off. Flaw: the big review faces half-cover the small orderer badges beside them (left and right); frames 1-3 clean (frame 2's bubble points at the child who says it).",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/CK-30.png",
+  "date": "2026-10-13"
  },
  "CK-TAB-01": {
   "hash": "2f582bbe2b379cf77a54",
@@ -2563,19 +2591,20 @@
   "date": "2026-10-13"
  },
  "DAAR-05": {
-  "hash": "6604a60338055d207b0c",
+  "hash": "aeca9c113953c08a24c0",
   "dhash": [
-   "8e92d6c6ce96968e",
-   "552f131919030703"
+   "8e82c6c6ce96968e",
+   "cc9686aea29296cc",
+   "70b0b2f676312020"
   ],
   "verdict": "FAIL",
-  "line": "A, stage 2 (the first thing in) shows the added item as a cluster of small white-grey dots in the oil, the exact fault; stages 3–7 picture real seeds, onion, tomato and chilli; the review bowl the row names is not on the sheet (B is the word-review card, English under each word per F14)",
-  "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/DAAR-05.png",
-  "date": "2026-10-12"
+  "line": "B, after the stir the pot swaps to a generic daar picture (yellow balls, black seeds, red chilli flakes); the tomato chunks and green chilli of stages 5-7 are gone and the red flakes never went in, so the stir does not turn the pictured contents and the dry-chilli garnish the row complains of is now in the pot; the review bowl itself is not captured (B and C are before Done). A is clean: no white dots at any of the 7 stages.",
+  "panel": "B",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-171625-ng0",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-171625-ng0/DAAR-05.png",
+  "date": "2026-10-13"
  },
  "DAAR-07": {
   "hash": "f4764cc4ed66711944c4",
@@ -2716,6 +2745,20 @@
   "commit": "b66ad4ff",
   "png": "build/screenshots/evidence/ev-s04-ev1/DAAR-17.png",
   "date": "2026-10-12"
+ },
+ "DAAR-22": {
+  "hash": "7936f59b7bf0f4ee1ad8",
+  "dhash": [
+   "c0c0a0b090e2eea8"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the blade crosses the tomato at 766 ms and 1018 ms and the tomato is whole in both frames with no cut line; at 1189 ms the knife has moved on and a whole tomato sits lower on the board, no halves anywhere in the six frames",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/DAAR-22.png",
+  "date": "2026-10-13"
  },
  "FL-01": {
   "hash": "e488377841b110b66915",
@@ -2905,20 +2948,20 @@
   "date": "2026-10-12"
  },
  "MAA-08": {
-  "hash": "e07f8c5c1e4d939050f9",
+  "hash": "b24147c2739459d59533",
   "dhash": [
-   "c4cccccccc8c8cc4",
+   "c4cccacece8c8cc4",
    "c26cececec6c4c4c",
-   "0100cccc4ccccc44",
-   "2c6c646465034f4c"
+   "40cccacc4cccccc4",
+   "3c6cecececec4c4c"
   ],
   "verdict": "PASS",
-  "line": "B, the whole 1280×800 stage at stage-end: no count badge anywhere (the only disc on the hob's front panel is the orderer's face badge beside the knob, the CHAI-18 hob badge, which belongs there), both serving plates whole (A), no tick drawn on the stage (the tick is inside the shared end card, D). C/D at 844×390 are captured after the end card: the card's lower edge covers the tops of the plates, which is also what the ev-s04-ev3 \"cut flat by the scene's top edge\" was; the plates below the card are intact. 915×375 was not captured.",
-  "panel": "B",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/MAA-08.png",
+  "line": "D, the whole 844×390 stage at the ✓: the spatula rests on the counter right of the hob with the ✓ well below and right of it in the tray strip, not touching; no count badge anywhere on the hob (the one disc on its front panel is Nana's orderer face badge beside the knob, the CHAI-18 hob badge); the two serving plates in the tray strip are whole. A and C show both plates (empty thali, thali with one maani) uncut at 1280×800 and 844×390; B at 1280×800 shows the same hob and resting spatula with nothing over it (the ✓ falls outside B's crop, so the tick claim at 1280×800 rests on D only). Flaws off the point: a sliver of the left-hand panel (white rounded tabs, a cut \"...\" pill) leaks into the left edge of the B and D stage crops; 915×375 was not captured (the probe ran 844×390).",
+  "panel": "D",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-161554-mqx",
+  "commit": "9b216fd",
+  "png": "build/screenshots/evidence/ev-20261013-161554-mqx/MAA-08.png",
   "date": "2026-10-13"
  },
  "MAA-09": {
@@ -2994,20 +3037,20 @@
   "date": "2026-10-12"
  },
  "MAA-14": {
-  "hash": "133de5212469f0899fc6",
+  "hash": "5581d0df9508a7c2851b",
   "dhash": [
-   "018196d6d6171363",
-   "01819795d2969682",
-   "7f4fceccd460e1df"
+   "8d8111555455154d",
+   "c98181d4d6d45103",
+   "7b73f3f3f860e1df"
   ],
-  "verdict": "FAIL",
-  "line": "A, across 0-2000 ms the pop-up is already in place at 0 ms (no crossing seen), there is no 3-second ring anywhere and Nani wears her usual smile, not an impatient face; B shows the same shared pop-up in three day-3 stations (loon, rai, atto) and C shows no pop-up in four day-1 moments (expect 0 PASS). The pop-ups here are #force-passme, so natural firing in the pantry, chai, daar, chaat and sekelo is still unproven",
+  "verdict": "PASS",
+  "line": "A, the shared pop-up sits boxed with a gold ring round her avatar from 0 to 2401 ms, her frown face at 3001 ms, the pop-up fading at 3599 ms and gone by 4202 ms; B, the same pop-up with \"Muke atto de.\", \"Muke mirchi de.\", \"Muke lasan de.\" in three day-3 stations; C, no pop-up at any of four day-1 moments (expect 0 PASS). The walk-in itself is not on the strip (see flaws), so the crossing is still unseen, not failed.",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/MAA-14.png",
-  "date": "2026-10-12"
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-164227-oez",
+  "commit": "caaa8ca",
+  "png": "build/screenshots/evidence/ev-20261013-164227-oez/MAA-14.png",
+  "date": "2026-10-13"
  },
  "MOD-01": {
   "hash": "bf03526caddb6f8a26c8",
@@ -3069,15 +3112,17 @@
   "date": "2026-10-12"
  },
  "PAN-05": {
-  "hash": "7707e641ecf3646c56c1",
-  "dhash": [],
-  "verdict": "FAIL",
-  "line": "PAN-05-p1-L1 stage list (text), the row says the pantry is fetched first, the first time each dish is made that day, but the first dish of day 2 is maani (stage-start 1 \"Muke maani khape. hakri maani\", stage-start 2 \"Muke maani khape.\") and neither has any \"Bring me these\" pantry card before it; the pantry appears only at stage 3 for chai (rows chai/dudh/khun/elchi), so maani's first time that day has no pantry fetch; stage 4 \"Muke elchi de. [ph] Bring me these\" shows a pantry card with no rows at all, the same empty-card flaw as the earlier fail; the sheet's own reading (\"first time ever\") is not the row's words (\"that day\")",
-  "panel": null,
-  "judge": "Sonnet, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": null,
+  "hash": "cb0c3797c9d93dd03714",
+  "dhash": [
+   "0081888a81810100"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 2: before the first chai the pantry card (\"Bring me these\" in grey italic, Nani's face) lists chai, dudh, khun, elchi; frame 1 maani came first with no trip (maani has no pantry list); frames 3-4 the later chai orders carry no trip. Minor: frame 1's crop cuts the card's top edge; frame 2 is captured under the pop-up's dimming.",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/PAN-05.png",
   "date": "2026-10-13"
  },
  "PAN-06": {
@@ -3324,17 +3369,17 @@
   "date": "2026-10-12"
  },
  "SAM-05": {
-  "hash": "b0c4fb3fa80911b066ec",
+  "hash": "1c1bf47e58b2f0a90eac",
   "dhash": [
-   "3f1d5f1b1f1f1b3f"
+   "3f3b37373733333f"
   ],
-  "verdict": "FAIL",
-  "line": "A, swipe 3 shows an empty board (the pastry has vanished); swipes 1–2 are a flat code-drawn strip with one corner flipped and the filling a glossy white teardrop sitting on top of the pastry (at swipe 2 in the middle of the unfolded strip), not the fixed fold pictures.",
+  "verdict": "PASS",
+  "line": "A, swipes 1-3 show the fixed fold pictures on a textured pastry strip (diced filling at 1, the first fold covering the filling at 2, the second fold at 3), the pastry present at swipe 3; no code-drawn flat strip and no white teardrop",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SAM-05.png",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SAM-05.png",
   "date": "2026-10-13"
  },
  "SAM-06": {
@@ -3480,6 +3525,34 @@
   "png": "build/screenshots/evidence/ev-s04-ev1/SAM-16.png",
   "date": "2026-10-12"
  },
+ "SAM-18": {
+  "hash": "46e451cbe0daee0f9637",
+  "dhash": [
+   "70f0d8d8f8112020"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 3: after the third swipe the folded samosa (a small triangle) sits on the plate and the board is empty; frames 1-2 show the strip with its first and second fold. Flaws: frame 3 the \"samosa\" word pill sits at the board's top-left corner, away from the samosa on the plate; the triangle on the plate is far smaller than the strip it was folded from.",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SAM-18.png",
+  "date": "2026-10-13"
+ },
+ "SAM-19": {
+  "hash": "061d6357a7a6654b7842",
+  "dhash": [
+   "ff0f070707031f7f"
+  ],
+  "verdict": "PASS",
+  "line": "A, filling sits on the strip at 0-885 ms, the triangle folds over it from 1207 ms, and at 1937, 2133 and 2281 ms the flap with its crease covers the left end and the filling is gone (filling shows through the flap at 1207-1749 ms, noted above)",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SAM-19.png",
+  "date": "2026-10-13"
+ },
  "SEK-01": {
   "hash": "97293f79d419d0833e80",
   "dhash": [],
@@ -3507,20 +3580,20 @@
   "date": "2026-10-12"
  },
  "SEK-03": {
-  "hash": "470907a23e60ba2ff582",
+  "hash": "33e801ad8a7bc4f28245",
   "dhash": [
-   "aa92311131111131",
-   "aa83103131115131",
-   "818cc1e151016141",
-   "20a08290e0484040"
+   "818af01111311131",
+   "aa82000000000000",
+   "8196412151216171",
+   "a082948021c8c090"
   ],
-  "verdict": "FAIL",
-  "line": "A, the two skewer group boxes are both plain white on the cream card (sampled 255,255,255 inside each): no alternate tint, so they are told apart only by the gap between them; C the samosa kinds are a label pill (\"trae samosa\", \"ba samosa\") over indented pills with no box at all; D the clinic sequence card still joins its steps with a left bracket line, not a little skewer, and has no group box. The little skewer (centre line, pointed tip) and no-label part is right in A/B.",
+  "verdict": "PASS",
+  "line": "A, L3 each skewer its own plain white box with no label row, four pills joined by the skewer line ending in a pointed tip; C the samosa kinds in two plain boxes with no label row; D the clinic card the same with its skewer line. Not on the sheet: L4's boxes (B shows the closed card, the peek missed) and chaat; A's second box is cut by the panel edge (tool owner to confirm it is the crop, not the game clipping).",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SEK-03.png",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-171625-ng0",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-171625-ng0/SEK-03.png",
   "date": "2026-10-13"
  },
  "SEK-04": {
@@ -3575,17 +3648,17 @@
   "date": "2026-10-12"
  },
  "SEK-08": {
-  "hash": "4c15f7947b3e243132bc",
+  "hash": "de0bb01c79822d6d1a63",
   "dhash": [
    "70e0e06c60617060"
   ],
-  "verdict": "FAIL",
-  "line": "A, frame 3 (grill phase) the three ingredient piles (mishkaki, dungri, tameto) still sit under the grill, dimmed with their labels removed; the grill screen is not clear of chips. Frames 1-2 the thread phase is one job.",
+  "verdict": "PASS",
+  "line": "A, frame 3: the grill phase shows only the skewer, the coals and the plate, no ingredient piles; frames 1-2 the thread phase is one job (board, skewer rack, the three piles). Flaw: frames 1-2 the tameto pile's label is a bare speaker icon with no word (SEK-16).",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SEK-08.png",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SEK-08.png",
   "date": "2026-10-13"
  },
  "SEK-09": {
@@ -3652,6 +3725,34 @@
   "commit": "804b21c1",
   "png": "build/screenshots/evidence/ev-s04-ev2/SEK-13.png",
   "date": "2026-10-12"
+ },
+ "SEK-16": {
+  "hash": "3ce8297faa1efbd392b1",
+  "dhash": [
+   "70e0e06c60617060"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frame 3: a \"tameto\" word pill floats at the board's left (about x 170 of the 1122-wide stage), away from the tameto pile whose label below reads only a speaker icon; frames 1, 2, 4-6 that pile's label stays wordless while mishkaki and dungri have theirs.",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SEK-16.png",
+  "date": "2026-10-13"
+ },
+ "SEK-17": {
+  "hash": "b96a0b295656caf3d54e",
+  "dhash": [
+   "a082948021c8c090"
+  ],
+  "verdict": "PASS",
+  "line": "A, the scrape's three steps (Pela paani, Ne poi cloth ba dabs, ne poi yellow plaster) sit in one plain group box joined by the thin centre line ending in a pointed tip below the last pill, no bracket line, no label row, the same drawing as the sekelo card in SEK-03 A.",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-171625-ng0",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-171625-ng0/SEK-17.png",
+  "date": "2026-10-13"
  },
  "SH-01": {
   "hash": "ad68887514c8535cfa52",
@@ -4162,19 +4263,19 @@
   "date": "2026-10-12"
  },
  "SH-39": {
-  "hash": "0bf8ae737b0452f20c96",
+  "hash": "567df0f70da92c5f26c0",
   "dhash": [
    "70e0ccc8e8e45050",
-   "41444c4c6462d0c6",
+   "4144444c6462d0c6",
    "31b8d2d2daf0d040"
   ],
   "verdict": "FAIL",
-  "line": "B, frames 5-6 the count badge (\"hakro\", \"ba\") sits on the pan but covers the \"khun\" label pill so the word is half hidden; C, frames 4-6 the L3 dots badge does the same (\"khun\" clipped to \"hun\"). A at 1366x768 is right: the Kutchi word on the pan frames 5-8, nothing in a corner or card row.",
+  "line": "B, frames 5-7 the count badge (\"hakro\", \"ba\", \"trae\") sits on the pan but on top of the \"khun\" label pill, which shows as \"hun\"/half a word; C, frames 4, 6, 7 the L3 dots badge does the same (\"hun\", \"un\", \"n\" peeking out). A at 1366x768 is right: the Kutchi word on the pan in frames 5-8, the label pill clear beside it, nothing in a corner or card row.",
   "panel": "B",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SH-39.png",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SH-39.png",
   "date": "2026-10-13"
  },
  "SH-40": {
@@ -4353,18 +4454,18 @@
   "date": "2026-10-12"
  },
  "SH-53": {
-  "hash": "8cf4c6b30d0a7e4cce2c",
+  "hash": "f6491f7e9c496676af10",
   "dhash": [
-   "70f0d0f0f0115060",
+   "40f0d0f0f0005060",
    "0081a88181818100",
    "3133456979696969"
   ],
-  "verdict": "FAIL",
-  "line": "machine: SH-53-p2-L2-1366x768: pass: 1 contract breaks",
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261013-144954-gf4",
-  "commit": "53d6fbd",
+  "run": "ev-20261013-165008-qsn",
+  "commit": "43b706f",
   "date": "2026-10-13"
  },
  "SH-54": {
@@ -4466,17 +4567,17 @@
   "date": "2026-10-12"
  },
  "SH-61": {
-  "hash": "1a1117664bee5fad84e8",
+  "hash": "5cbb4d5c1327f0a1837a",
   "dhash": [
    "04060b2971330604"
   ],
-  "verdict": "FAIL",
-  "line": "A, at x2 the gold tick sits on a flat cream disc: the pixels go from the disc's thin rim (230,213,184) straight to the page background (239,229,214) with no shadow gradient or lip anywhere around it; only the tick art's own bevel is there. Clinic not shown (Cook only).",
+  "verdict": "PASS",
+  "line": "A, at x2 the gold tick sits on a flat cream disc with only a 2px rim, no drop shadow or lip anywhere round it (pixels go rim [230,213,184] straight to background [239,229,214] on all four sides); clinic covered by the text capture (kit.js:1030 uses the shared NB.done)",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SH-61.png",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-170537-y9n",
+  "commit": "76623db",
+  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/SH-61.png",
   "date": "2026-10-13"
  },
  "SH-62": {
@@ -4659,6 +4760,20 @@
   "judge": "expect",
   "run": "ev-20261013-161223-2i4",
   "commit": "af07783",
+  "date": "2026-10-13"
+ },
+ "SH-78": {
+  "hash": "720d89c3a8323531a6f8",
+  "dhash": [
+   "008aa98141c18101"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the card still folds the moment its last row ticks, not with the pour: frame 4 has the open card with hakro khun ticked and elchi / dudh na still plain, frame 5 is already the headline alone with no tick, and frames 6-9 (four more placements, which include the pour) show the folded headline with one tick; frame 10 is the same folded card greyed under the end overlay. No frame keeps the rows and their ticks through the pour.",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-164227-oez",
+  "commit": "caaa8ca",
+  "png": "build/screenshots/evidence/ev-20261013-164227-oez/SH-78.png",
   "date": "2026-10-13"
  }
 }

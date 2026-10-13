@@ -214,7 +214,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const { w, h } = S.texSize(key);
         [0, 1].forEach((side) => {
           const half = S.track(S.add.image(img.x, img.y, key).setScale(img.scale).setDepth(D.item + 3).setCrop(side ? w / 2 : 0, 0, w / 2, h));
-          S.tweens.add({ targets: half, x: img.x + z.L(side ? 120 : -120), y: img.y + z.L(240), angle: side ? 60 : -60, alpha: 0, duration: 700, onComplete: () => half.destroy() });
+          // DAAR-22 (S05-C3): the cut reads first: the halves part a little along a clean line and hold, then fall away
+          const dx = side ? 1 : -1;
+          S.tweens.add({ targets: half, x: img.x + z.L(18 * dx), angle: 6 * dx, duration: 140, ease: "Quad.easeOut" });
+          S.tweens.add({ targets: half, x: img.x + z.L(120 * dx), y: img.y + z.L(240), angle: 60 * dx, alpha: 0, delay: 420, duration: 600, ease: "Quad.easeIn", onComplete: () => half.destroy() });
         });
       };
       const sliceIt = (img) => {

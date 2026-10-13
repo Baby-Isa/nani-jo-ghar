@@ -379,4 +379,11 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 .oc-card .oc-item.oc-group.oc-stack .oc-part .oc-t { flex: 0 1 auto; text-align: center; }
 .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts { padding: 0 0 calc(var(--njg-s3) + var(--njg-s1)); }
 .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::before { left: calc(50% - var(--njg-line)); right: auto; top: calc(var(--njg-s1) * -1); bottom: var(--njg-s1); width: var(--njg-line-2); height: auto; }
+/* S05-C3 (SEK-17): upright, the stick is drawn only in the gaps between the pills and down to the tip, never behind a word
+   (a host that fades its later steps made the pills see-through and the stick crossed the words) */
+.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::before { display: none; }
+.oc-card .oc-item.oc-skewer.oc-stack .oc-part:not(.no)::after {
+  content: ""; position: absolute; left: calc(50% - var(--njg-line)); top: 100%; width: var(--njg-line-2); height: var(--njg-s1);
+  background: #b08a5a; border-radius: var(--njg-line);
+}
 .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after { right: auto; left: calc(50% - var(--njg-s1)); top: auto; bottom: 0; width: var(--njg-s2); height: var(--njg-s3); clip-path: polygon(25% 0, 75% 0, 50% 100%); }

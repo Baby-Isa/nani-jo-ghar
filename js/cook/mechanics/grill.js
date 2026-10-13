@@ -1109,7 +1109,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return img;
   };
   /** The word pop (§4: learning happens during the action): `🔊 word` rises by the action, the clip plays. */
-  SK.pop = function (S, z, id, x, y, { speak = true, anchor = null } = {}) {
+  SK.pop = function (S, z, id, x, y, { speak = true } = {}) {
     const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(Math.max(z.k, Cook.Kit.textFloor(S, 36)))); // never under 14px as rendered
     const t = S.add.text(0, 0, Cook.display(id), { fontFamily: V2.FONT, fontSize: "36px", fontStyle: "800", color: V2.INK.kutchi }).setOrigin(0, 0.5);
     const w = 34 + 10 + t.width + 36;
@@ -1121,8 +1121,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     SK.speaker(g, -w / 2 + 30, 0, 26);
     t.x = -w / 2 + 50;
     c.add([g, t]);
-    // SEK-16: anchor "right": x is the pill's right edge (it sits against the board, level with its piece, never loose)
-    if (anchor === "right") c.x = x - (w / 2) * c.scaleX;
     S.tweens.add({ targets: c, alpha: 1, y: y - z.L(18), duration: 180, ease: "Back.easeOut" });
     S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: 1500, duration: 320, onComplete: () => c.destroy() });
     if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.speakWord(id);

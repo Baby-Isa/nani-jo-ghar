@@ -542,8 +542,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       drawSel();
       UI.hideCount();
       // SH-39 (D6): the running count sits on the pan in use, over its rim on the side away from the handle
-      // (anchored by its right edge just left of the middle: at a phone's size the badge grew over the word on the rim, S05-C3)
-      if (UI.tallyAt) UI.tallyAt([pan.x - panR * 0.05, pan.y - panR * 1.02], { anchor: "right" });
+      // (anchored by its right edge at the left of the rim, away from the word that pops right of the middle (popAt): the
+      // DOM badge keeps its size on a phone while the pan shrinks, so it grew over the word, S05-C3)
+      if (UI.tallyAt) UI.tallyAt([pan.x - panR * 0.7, pan.y - panR * 1.02], { anchor: "right" });
       if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
       if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
       pan.extras.forEach((id) => UI.count(1, { speak: false, id }));
@@ -578,7 +579,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       S.tweens.add({ targets: c, alpha: 0, y: y - 46, delay: 1900, duration: 320, onComplete: () => c.destroy() });
       if (speak && !UI.naniMuted()) Lang.speakWord(id);
     };
-    const popAt = (pan) => ({ x: Math.min(1500, pan.x + panR * 0.9), y: pan.y - panR - 58 });
+    // CHAI-19 (S05-C3): the word pops over the pan's own upper right, inside the hob (above the rim it sat loose over the
+    // hob's top edge at 844x390), right of the count badge on the rim's left (SH-39)
+    const popAt = (pan) => ({ x: Math.min(1500, pan.x + panR * 0.35), y: pan.y - panR * 0.3 });
 
     /* ---------- using the shelf: pour a bottle, or a spoonful ---------- */
     const pourInto = async (pan, obj, color, toLevel, look) => {
