@@ -360,6 +360,7 @@
       // E5 (CLN-101): the sore pink skin is gone at the end (healed by the drops)
       soreG.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fast() ? 100 : 900, fill: "forwards" });
       ctx.card.now(null);
+      S.root.classList.add("hs-healed"); // the close-up's last look before the pull-out (the evidence probes' moment)
       S.face("happy");
       S.say("ear-better", "patient");
       S.markSeen();

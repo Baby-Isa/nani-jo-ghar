@@ -6356,27 +6356,22 @@
    "note": "the shared order card as patient card, guide box, spacing"
   },
   {
-   "flow": "clinic:waiting",
+   "flow": "clinic:pharmacy",
    "path": "fair",
-   "level": [
-    1,
-    3,
-    5
-   ],
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "visible:.cl-dish.lifted",
    "after": null,
    "capture": [
-    "shot"
+    "crop:.cl-stage"
    ],
-   "expect": [
-    "centredOn:.rs-card,.cl-stage"
-   ],
-   "note": "the end pop-up in one place at every level (not over the sidebar at L3/L5)"
+   "expect": null,
+   "note": "the review face: at the handover her round face reacts (happy, or a frown at a wrong pick), as Cook's review face",
+   "delay": 300
   }
  ],
  "CLN-04": [
@@ -6690,26 +6685,27 @@
  ],
  "CLN-85": [
   {
-   "flow": "clinic:patient",
-   "path": "fair",
+   "flow": "clinic:heal-eye",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:rec:stage",
+   "at": "visible:.eye-said",
    "after": null,
    "capture": [
-    "shot"
+    "zoom2:.cl-heal"
    ],
-   "expect": [
-    "inside:.cl-face-card,.cl-side-top"
-   ],
-   "note": "the person served sits top right in diagnosis, pharmacy and heal games, clear of the doctor's box"
-  },
+   "expect": null,
+   "note": "the eye test: her bubble under her mouth as she reads",
+   "delay": 150
+  }
+ ],
+ "CLN-86": [
   {
-   "flow": "clinic:heal-eye",
+   "flow": "clinic:waiting",
    "path": "real-pace",
    "level": 1,
    "sizes": [
@@ -6720,53 +6716,12 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "zoom2:.cl-bubble"
+    "crop:.cl-stage",
+    "voice"
    ],
    "expect": null,
-   "note": "in the eye game her bubble under her mouth (at real pace: in fast mode her one bubble is gone within a beat)",
-   "max": 3
-  }
- ],
- "CLN-86": [
-  {
-   "flow": "clinic:waiting",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:bubble",
-   "after": null,
-   "capture": [
-    "voice",
-    "contract:4",
-    "crop:.cl-stage"
-   ],
-   "expect": [
-    "pass"
-   ],
-   "note": "she says salaam, he replies: the two clips are the right speakers (voice timeline speaker ids)",
+   "note": "she says salaam (her bubble at her head), he replies (his at his face in the door)",
    "max": 4
-  },
-  {
-   "flow": "clinic:heal-fever",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:bubble",
-   "after": null,
-   "capture": [
-    "voice",
-    "crop:.cl-bubble"
-   ],
-   "expect": null,
-   "note": "'too cold' in her bubble; instructions in the doctor's box"
   }
  ],
  "CLN-87": [
@@ -6936,7 +6891,7 @@
  ],
  "CLN-112": [
   {
-   "flow": "clinic:heal-cut",
+   "flow": "clinic:heal-boing",
    "path": "takeback",
    "level": 1,
    "sizes": [
@@ -6947,16 +6902,17 @@
    "at": "after-takeback",
    "after": null,
    "capture": [
+    "crop:.cl-heal@before-takeback",
     "crop:.cl-heal",
-    "dom:.cl-side .oc-card"
+    "cmd:grep -A14 \"| Game |\" build/reports/s05d-clinic-audit.md"
    ],
    "expect": null,
-   "note": "every heal game lists its take-back (plasters, wax, beads, drinks, splinters, bandage turns) until Done"
+   "note": "a heal game's take-back: a drop in the syringe tapped goes back; the audit table names every game's take-back or its reason"
   },
   {
    "flow": "clinic:pharmacy",
    "path": "takeback",
-   "level": 1,
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
@@ -6965,33 +6921,16 @@
    "at": "after-takeback",
    "after": null,
    "capture": [
-    "crop:.cl-tray",
-    "dom:.rs-badges@results-badges"
+    "crop:.cl-tray@before-takeback",
+    "crop:.cl-tray"
    ],
    "expect": null,
-   "note": "the pharmacy: a placed item put back; the first pick is scored"
-  },
-  {
-   "flow": "clinic:waiting",
-   "path": "takeback",
-   "level": 4,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "after-takeback",
-   "after": null,
-   "capture": [
-    "crop:.cl-room"
-   ],
-   "expect": null,
-   "note": "waiting room L4 take-back"
+   "note": "the pharmacy: a placed item put back (L2: the tray not yet full)"
   }
  ],
  "CLN-113": [
   {
-   "flow": "clinic:patient",
+   "flow": "clinic:heal-tooth",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -6999,16 +6938,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:rec:stage",
+   "at": "heal-tooth-mid",
    "after": null,
    "capture": [
-    "zoom2:.cl-side .oc-card"
+    "zoom2:.cl-side .oc-card",
+    "cmd:grep -A14 \"| Game |\" build/reports/s05d-clinic-audit.md"
    ],
    "expect": null,
-   "note": "every ordered instruction is a sequence on the shared card (line, grey band, ticking parts)"
+   "note": "the tooth's card mid-game: one sequence (line, grey band, ticking); the audit table as text"
   },
   {
-   "flow": "clinic:heal-boing",
+   "flow": "clinic:heal-knee",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -7016,13 +6956,30 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "heal-boing-start",
+   "at": "heal-knee-mid",
    "after": null,
    "capture": [
     "zoom2:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "boing's sequence card (and every heal game's)"
+   "note": "the knee's card mid-game"
+  },
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-fever-mid",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the fever's card mid-game"
   }
  ],
  "CLN-114": [
@@ -7207,10 +7164,8 @@
    "capture": [
     "zoom2:.cl-room"
    ],
-   "expect": [
-    "noOverlap:.cl-seat,.cl-ask-card"
-   ],
-   "note": "selector circles and call boxes spaced cleanly"
+   "expect": null,
+   "note": "the selector circles: one even row, clear of everyone's feet"
   }
  ],
  "CLN-91": [
@@ -7399,24 +7354,19 @@
   {
    "flow": "clinic:diagnosis",
    "path": "fair",
-   "level": [
-    1,
-    2
-   ],
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:clinic:diagnosis",
+   "at": "visible:.cl-kit-tool.sel[data-tool=\"torch\"]",
    "after": null,
    "capture": [
-    "zoom2:.cl-side .oc-card",
-    "strip:.cl-stage:4x400"
+    "strip:.cl-stage:5x300"
    ],
    "expect": null,
-   "note": "D3: the sekelo-style card (tool head, parts ticking); the torch zooms on the face by itself; one highlight; a headline",
-   "max": 6
+   "note": "D3: the torch picked, the view zooms to her face by itself"
   }
  ],
  "CLN-95": [
@@ -7546,7 +7496,6 @@
    "path": "fair",
    "level": [
     1,
-    2,
     3
    ],
    "sizes": [
@@ -7560,13 +7509,13 @@
     "zoom2:.cl-tray"
    ],
    "expect": null,
-   "note": "the pantry's tray: outlined spaces, front edge over items, outline fades, at most three across",
+   "note": "the pantry's tray: outlined spaces, the outline gone as an item lands, at most three across",
    "max": 4
   },
   {
    "flow": "clinic:pharmacy",
    "path": "takeback",
-   "level": 1,
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
@@ -7575,31 +7524,11 @@
    "at": "after-takeback",
    "after": null,
    "capture": [
+    "zoom2:.cl-tray@before-takeback",
     "zoom2:.cl-tray"
    ],
    "expect": null,
-   "note": "a placed item can be put back; the first pick is scored"
-  },
-  {
-   "flow": "clinic:pharmacy",
-   "path": "fair",
-   "level": [
-    1,
-    2,
-    3
-   ],
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "rec:pharmacy-belt",
-   "after": null,
-   "capture": [
-    "strip:.cl-tray:12x400"
-   ],
-   "expect": null,
-   "note": "the outline fades as an item lands (filmed from the belt pick on)"
+   "note": "L2 (two spaces: the tray is not full after the first pick): a placed item tapped goes back and its outlined space returns"
   }
  ],
  "CLN-23": [
@@ -8532,23 +8461,19 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:fill",
+   "at": "heal:fill",
    "after": null,
    "capture": [
     "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "a clear fill button; a green zone with red either side; harder by level",
+   "note": "just before the fill: the button, the green zone with red either side, narrower by level",
    "webgl": true
   },
   {
    "flow": "clinic:heal-tooth",
    "path": "fair",
-   "level": [
-    1,
-    2,
-    3
-   ],
+   "level": 1,
    "sizes": [
     "1366x768"
    ],
@@ -8560,7 +8485,7 @@
     "strip:.cl-heal:6x300"
    ],
    "expect": null,
-   "note": "the fill held: the zone and the fill as it goes (filmed from just before the move)",
+   "note": "the fill held: the zone and the fill as it goes",
    "webgl": true
   }
  ],
@@ -8675,13 +8600,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:press-the-glowing-end",
+   "at": "heal:press-the-glowing-end",
    "after": null,
    "capture": [
+    "zoom2:.cl-heal",
     "strip:.cl-heal:6x150"
    ],
    "expect": null,
-   "note": "the jab starts from the syringe's glowing end (no syringe tool: it stands in the scene); a tap on the barrel never takes beads out"
+   "note": "just before the press: the syringe's end glows; the strip: the press starts the jab"
   }
  ],
  "CLN-59": [
@@ -8835,13 +8761,31 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results-badges",
+   "at": "heal:off-the-channel",
    "after": null,
    "capture": [
-    "dom:.rs-badges"
+    "strip:.cl-heal:6x150"
    ],
    "expect": null,
-   "note": "touching the side is a scored mistake"
+   "note": "the side touched: the ow ring, the splinter slides back"
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "mistake",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.rs-steps-list",
+   "after": null,
+   "capture": [
+    "crop:.rs-steps"
+   ],
+   "expect": null,
+   "note": "the end review's steps: the pull step marked wrong (the side touch scored)",
+   "delay": 600
   }
  ],
  "CLN-65": [
@@ -9323,11 +9267,11 @@
    "at": "every:rec:heal-knee-turn",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal",
+    "crop:.cl-heal",
     "cmd:node build/tools/review/shoot_knee_wrap.mjs"
    ],
    "expect": null,
-   "note": "each turn wraps round the knee edge to edge, crossing the kneecap and crease; no yellow ellipse; 4-6 / 5-8 / 6-10 turns",
+   "note": "each turn wraps round the knee edge to edge, crossing the kneecap and crease; no yellow ellipse; 4-6 / 5-8 / 5-8 turns",
    "max": 12
   }
  ],
@@ -9341,37 +9285,18 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:ghost",
+   "at": "every:life:ghost",
    "after": null,
    "capture": [
-    "trace:.ob-ghost:4000",
-    "zoom2:.hs-tools"
+    "strip:.cl-heal:5x250",
+    "trace:.ob-ghost:4000"
    ],
    "expect": [
     "traceAmp:.ob-ghost>=40",
     "times:life:ghost>=1"
    ],
-   "note": "the ghost finger drags the tweezers to a bin (the trace starts as it plays: life:ghost); the drop bottle nozzle down"
-  },
-  {
-   "flow": "clinic:heal-ear",
-   "path": "real-pace",
-   "level": [
-    1,
-    2
-   ],
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "zoom-out",
-   "after": null,
-   "capture": [
-    "zoom2:.cl-stage"
-   ],
-   "expect": null,
-   "note": "smears where blobs were; sore skin cleared at the end; wax at the ear's angle"
+   "note": "the ghost finger picks up the tweezers and drags a blob with them to the bin",
+   "max": 3
   }
  ],
  "CLN-102": [
@@ -9443,24 +9368,25 @@
  "CLN-104": [
   {
    "flow": "clinic:heal-taste",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "zoom-out",
+   "at": "visible:.hs-healed",
    "after": null,
    "capture": [
     "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "the tongue's purple holes cleared on the fix"
+   "note": "the close-up at the end, before the pull-out: the tongue's purple holes cleared",
+   "delay": 950
   },
   {
    "flow": "clinic:heal-taste",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -9470,16 +9396,16 @@
    "at": "pouring",
    "after": null,
    "capture": [
-    "strip:.cl-heal:5x200"
+    "strip:.cl-heal:6x250"
    ],
    "expect": null,
-   "note": "real liquid, level rising; the next step cued"
+   "note": "real liquid, level rising (real pace); the next step cued"
   }
  ],
  "CLN-105": [
   {
    "flow": "clinic:heal-fever",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2,
@@ -9490,16 +9416,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:bubble",
    "after": null,
    "capture": [
+    "crop:.cl-heal",
     "dom:.cl-bubble",
-    "crop:[data-reading]",
-    "zoom2:.cl-heal",
     "voice"
    ],
    "expect": null,
-   "note": "one number model: what she says, her look and the gauge agree; one green zone; tools in the column; fan points down; 'just right?' a question clip"
+   "note": "at each of her lines (real pace): her words, her look and the gauge in one frame; one green zone; tools in the column; fan points down",
+   "max": 8
   }
  ],
  "CLN-106": [
@@ -9654,26 +9580,6 @@
  ],
  "CLN-118": [
   {
-   "flow": "clinic:heal-cut",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "fresh",
-   "want": null,
-   "at": "taught",
-   "after": null,
-   "capture": [
-    "crop:.cl-heal",
-    "dom:.cl-side"
-   ],
-   "expect": [
-    "!textMatches:\\d"
-   ],
-   "note": "the first play is a taught round: shown, then copied, one step at a time; no counts, nothing scored (all nine games)"
-  },
-  {
    "flow": "clinic:heal-knee",
    "path": "fair",
    "level": 1,
@@ -9688,7 +9594,7 @@
     "crop:.rs-card"
    ],
    "expect": null,
-   "note": "nothing scored in the taught round (fresh child, knee L1): the accuracy badge has no count"
+   "note": "the end badges of the taught round (fresh child, knee L1): nothing scored or timed"
   }
  ],
  "CLN-119": [
@@ -11855,6 +11761,323 @@
    "expect": null,
    "note": "the row in progress lit until its count is cut, then the next",
    "max": 8
+  }
+ ],
+ "CLN-123": {
+  "needsDecision": "The \"call them in\" boxes are W3's speaking pills (clinic-playtest-2026-09-29 13a: W3 \"Call them in\"); W3 left the waiting room's mix (clinic.md W, 13) and is reached only with &variant=W3, which no sandbox flow plays: retire the row with W3, or bring W3 back?",
+  "probes": []
+ },
+ "CLN-128": [
+  {
+   "flow": "clinic:pharmacy",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:clinic:pharmacy",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-tray"
+   ],
+   "expect": null,
+   "note": "one look for a filled tray: the outlines go the same way at every level, with one item or two",
+   "max": 4
+  }
+ ],
+ "CLN-129": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:fill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the fill gauge stands clear of the teeth",
+   "webgl": true
+  }
+ ],
+ "CLN-130": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "idle-hint-heal",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the hint glow on the named thing (the window): no flat yellow rectangle on the wall"
+  }
+ ],
+ "CLN-131": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "real pace: the card keeps every row; each change's row ticks as it goes in",
+   "max": 8
+  }
+ ],
+ "CLN-132": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "strip:.cl-side .oc-card:5x250"
+   ],
+   "expect": null,
+   "note": "the temperature row: plain at the thermometer's pick-up, ticked as it goes in (on her)",
+   "max": 2
+  }
+ ],
+ "CLN-124": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-bubble",
+    "dom:.cl-bubble"
+   ],
+   "expect": null,
+   "note": "her \"thank you, I feel better\" after the pull-out: a line to record, so grey italic English, never dark upright text",
+   "max": 3
+  }
+ ],
+ "CLN-125": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:rec:stage",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "her face circle only where she is off screen (pharmacy, heal close-ups), at the top right; none in the waiting room, diagnosis, send-off (decision 92)"
+  }
+ ],
+ "CLN-126": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage",
+    "voice"
+   ],
+   "expect": null,
+   "note": "every line she says (too hot, too cold, still cold, just right) gets her bubble",
+   "max": 8
+  }
+ ],
+ "CLN-127": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-bubble"
+   ],
+   "expect": null,
+   "note": "her bubble comes from her face, its tail at her head, never on top of her hair",
+   "max": 4
+  }
+ ],
+ "CLN-138": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "takeback",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "before-takeback",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x200"
+   ],
+   "expect": null,
+   "note": "a tap on a drop in the syringe takes only that drop back up; the barrel never empties by surprise"
+  }
+ ],
+ "CLN-133": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:life:ghost",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x250"
+   ],
+   "expect": null,
+   "note": "the taught round: the ghost finger shows each new step first, then the child copies it",
+   "max": 3
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:life:ghost",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:5x250"
+   ],
+   "expect": null,
+   "note": "the same in the knee",
+   "max": 2
+  }
+ ],
+ "CLN-136": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:clinic:diagnosis",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": null,
+   "note": "her faces through the diagnosis: never a wink (one eye shut)",
+   "max": 6
+  }
+ ],
+ "CLN-137": {
+  "needsDecision": "Waits on art: a neutral face for the girl (her art's resting face smiles, so at send-off L2 her face shows a feeling). Add to the next art run?",
+  "probes": []
+ },
+ "CLN-134": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-ear-start",
+   "after": null,
+   "capture": [
+    "zoom2:.hs-tools"
+   ],
+   "expect": null,
+   "note": "the drop bottle in the tool column, nozzle down"
+  }
+ ],
+ "CLN-135": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "real-pace",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.hs-healed",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the ear close-up at the end, before the pull-out: smears where blobs were, the sore skin cleared, the wax at the ear's angle",
+   "delay": 950
   }
  ]
 }

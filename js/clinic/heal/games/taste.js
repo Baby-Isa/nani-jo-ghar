@@ -545,6 +545,7 @@
       st.over = true;
       S.uncue();
       ctx.card.now(null);
+      S.root.classList.add("hs-healed"); // the close-up's last look before the pull-out (the evidence probes' moment)
       S.say("taste-better", "patient");
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
