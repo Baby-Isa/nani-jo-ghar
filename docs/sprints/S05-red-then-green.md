@@ -82,11 +82,14 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~17:05 UK: **C3 launched** session_01AphiPGMx4jpdUJY6bZ8nMk (Opus high, Cook and every shared file, the tools; shared results card and the stuck lab pages first; about $55-65) and **D3 launched** session_017Vs4oJraP7YVudhiUyUH1A (Opus high, clinic; about $50-60). Briefs `build/tools/ops/specs/s05c3-cook.brief.txt`, `s05d3-clinic.brief.txt`; rows and claims `build/reports/s05-fixround-verdicts.md`. Both under decision 96 (independent Fable judge in-session, two strikes, one claim per row). Gate gate-20261013-1447 still running here.
 
+13 Oct ~19:45 UK: C3 ($62) and D3 ($67) reported: about 45 rows independently PASSed; open: the full check's 12 findings (rows SH-79..82, CK-33, CK-34, CLN-143..148), four Cook rows FAIL on now-reached states (CK-21, CHAI-08, CK-27, DAAR-05), D3's items for C3 (CLN-118, CLN-138, CLN-141, speaker ids, capture lag, a checks.mjs unit failure), tool gaps (CK-31, CK-32, DAAR-22, DAAR-23, SH-69). Final independent look on the 51 rows called done running (ev on final-rows). Zafar: **decision 97** (yes to all eight; a third try at CLN-133 and SH-45). Spend about $430.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - 13 Oct ~00:15 UK, Zafar: the ceiling rises to about $270 so every fixable row is done; ~12:30 UK: to about $310 for the last two sessions (G and P).
 - 13 Oct, Zafar: the old Fill practice tile re-lays its fold on the samosa strip art (no new art); the jar stickers and the daar bowl join the s05 art run.
 - 13 Oct ~15:30 UK, Zafar (via Fable's recommendation): the ceiling rises to about $420 for one fix round (C3, D3); each fix session may run its own mode's gate pages once at the end (the 15-minute limit lifted for this round); C3 owns every shared file.
+- 13 Oct ~19:50 UK, Zafar (decision 97): one last bounded push for C3 and D3 (about 1.5 h, about $35); ceiling about $480; whatever is left after it is listed and the publish goes ahead.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
 
 ## Outcome

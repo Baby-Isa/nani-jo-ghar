@@ -230,7 +230,7 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 ## 6. UI and visual design
 
 ### Look and layout
-- **Speech bubbles:** a character on screen speaks from a bubble next to their face (above or below, where there's room); an off-screen guide (Nani, the doctor in heal games) speaks by the green box at the top left. (F26, decision 55)
+- **Speech bubbles:** a character on screen speaks from a bubble next to their face (above or below, where there's room), its tail ending at the speaker's mouth (decision 97); an off-screen guide (Nani, the doctor in heal games) speaks by the green box at the top left. (F26, decision 55)
 - **Use only the design tokens** (CDS §2): the colour set, Nunito L1–L4, 8-pt spacing, radii 12 or full circle, one soft shadow, tap targets ≥48 px. (F2)
 - **The UI is flat material against the 3D art:** white pills, flat gold done outline, no gradients or 3D text; no step counters, internal numbers or English support text. (F3, F23)
 - **Left sidebar ~22%** (guide box, cards, ? · ⌂ · book dock); **play area ~78%** with the shelf band; big buttons bottom right under the thumb. (F4, F5)
