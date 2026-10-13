@@ -8,27 +8,31 @@ The orchestrator updates this file at every milestone and rewrites **Next chat**
 
 ## Next chat
 
-**Where things stand (12 Oct 2026, evening UTC, Sprint 4 orchestrator):** Sprint 4 is **closed without a publish** (`docs/archive/sprints/S04-feedback-sticks.md`, outcome and look back). `main` is still Sprint 3 (1a6950df); everything since is on `ccr-a7370759-t0lee7`. The regression list is now **proven by the game** (evidence loop, decision 82): 144 open or reopened, 188 built with evidence. **Sprint 5 is planned, not launched:** `docs/sprints/S05-plan.md`.
+**Where things stand (13 Oct 2026, ~13:55 UK, Sprint 5 orchestrator, handing over at 77% context):** Sprint 5 is **open, not yet published** (`docs/sprints/S05-red-then-green.md`: full log, budget, small decisions). `main` is still Sprint 3 (1a6950df); all work is on `ccr-a7370759-t0lee7`. **37 open or reopened, 302 built.** The open rows are sorted in `build/reports/s05-open-triage.md` (most wait on art, Mum or Zafar). Decisions 88–95 were added this sprint; rule A30 (decision 89): no publish while a fixable row is open.
 
-**12 Oct, 22:15 UK:** Zafar said yes to all seven decisions (the word review keeps its English, F14; C and D launch when T's environment and S1 land). **Sprint 5 open** (`docs/sprints/S05-red-then-green.md`): wave 1 (T, S, B) launching to `ccr-a7370759-t0lee7`; C and D follow after T's environment push and S1.
-
-**13 Oct, 00:00 UK:** Zafar: no publish until every fixable row is fixed (decision 89, A30). Running: C, D, T2; next S round 2 after T2. Progress and plan in `docs/sprints/S05-red-then-green.md`.
-
-**Read first in the new chat:** `docs/sprints/S05-plan.md` (packages, first hour, risks), `docs/process/cost-and-speed.md` (how to run cheaply), `docs/architecture/evidence-loop.md` (how a row is proven), decisions 75–86 (esp. 84 placeholders, 86 red then green).
-
-**Do not run** `build/lang/import_all.mjs` until package B makes it safe (it would demote 8 confirmed words to draft).
+**Running (each pushes to the branch and writes its report there; no send_message):**
+- **G** `session_016NZrvhe7bFqxYff8QG94Pb` (Opus): SH-17, the Cook chai pop-up's read-along (89 ms a word, floor 200 ms), red then green. Report `build/reports/s05g-game.md`.
+- **P** `session_01VTxgPqxtwkp5jSBm4B1Wsy` (Sonnet): SAM-16's probe at a tighter crop of the folding strip. Report `build/reports/s05p-probes.md`.
+- Finished: T, S, B, C, D, T2, S2, C2, D2 (D2 round 4: the heal ladders, `s05d2-clinic.md`). A check-in fires at 14:18 UTC (`trig_01TS4KSZEPAiDU5zNTSYNeKP`).
 
 **Next steps, in order:**
-1. Zafar answers the S05 plan's seven decisions (below).
-2. Launch the packages per the plan (at most four at once; briefs via `/brief`, each row's red-then-green probe in the brief; push after every fix).
-3. Judge changed rows only (`evidence.mjs --run --rows …` then `--judge`, Fable image batches of 8–10, Sonnet text batches of 30), `--apply`.
-4. Full gate (touched flows), `/review`, `/publish`, close Sprint 5; Zafar plays with the six human-only checks.
-5. Zafar's art run, parts A–C, during wave 2 (doctor's photos for part B); Mum's Round 5.
+1. When G and P have pushed: pull, read their report lines.
+2. Run the evidence for the 61 rows marked "built, sheet to judge" (`grep "built, sheet to judge" docs/process/regressions.md`), in 13-minute chunks under the lock (decision 86); judge them: Fable image batches of 8–10, Sonnet text batches of 30 (cost-and-speed change 2); `--apply`. Judge MAA-08 too (P: a round face disc sits on the hob's front panel; is it the count badge overlapping the hob?).
+3. A row that fails its judging goes back to a fix session (decision 89) before the publish.
+4. Full check, `/review` (touched flows); tell Zafar the review has started; `/publish` (`python3 build/bump_version.py`, the one push to `main`); close the sprint (`/sprint`, look back).
+5. After the publish (Zafar, 13 Oct): a **Fable review against the structure it first set out** (where we veered, why, how to stop it, what to change, how to get back on course), then **Opus implements it**: one small overarching file; rules and decisions live in each area's design doc; sessions read the overarching file plus their area's docs. Sprint-only decisions stay in the sprint file.
+6. Sprint 6: move the game forward, with as much clinic art as possible; the doctor's recordings (`docs/language/doctor-recording-list.md`, 235 lines, sent to Zafar); multi-language prep; 4:3 tablet layouts (CK-TAB-01).
 
-**Waiting on Zafar (the S05 plan's seven, with recommendations):** (1) budget about $175–215, yes; (2) 4:3 tablet layouts (CK-TAB-01) to Sprint 6, yes; (3) knee framing closed as it is, yes; (4) the word review's English under each word: the planner suggests pictures instead, but it is your own design (rule F14), so *recommend keep as is*; (5) add the kadchi, teaspoon and potato cube to the art block as part G, yes; (6) multi-language prep in Sprint 6, yes; (7) samosa's final ✓ goes when the result is already decided, yes. "All patients" in the shipped app: left for later (Zafar, 12 Oct).
+**Spend:** about $270 of the $310 ceiling. Keep the judging and `/review` lean (about $25–35).
+
+**For `/review` and Zafar:**
+1. Story English plays via device TTS. Rule 10 says TTS never ships, so the English story lines need a family recording (who records them?).
+2. Foot L2 now shows the stand-in sole, because the sole art doesn't fit the toe channels. This needs art (Sprint 6 art run).
+3. The cut step reads "Ne poi cloth, ba dabs": check that "cloth" and "dabs" are grey to-record placeholders.
+4. The pharmacy's hesitation hint writes the item at L3 (kept by decision 80).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first), then `docs/sprints/S05-plan.md` and `docs/process/cost-and-speed.md`. Branch `ccr-a7370759-t0lee7`. Sprint 4 is closed; this chat is Sprint 5: run the fixes in the plan's packages, red then green per row (decision 86), judge only changed rows, then the full check, `/review`, `/publish` and close. My answers to the plan's seven decisions: <paste>. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` ("Next chat" first), then `docs/sprints/S05-red-then-green.md` (the last few log entries) and `docs/process/cost-and-speed.md`. Branch `ccr-a7370759-t0lee7`. This chat continues Sprint 5: check G and P have finished, run and judge the evidence for every "built, sheet to judge" row, then the full check, `/review`, `/publish` and close; then the Fable structure review. Tell me before launching anything new.
 
 ---
 
@@ -56,7 +60,7 @@ Every row is in `docs/process/regressions.md`. The orchestrator rechecks the row
 | Shared components (end screen, cards, onboarding, buttons, layout) | 1 | 59 |
 | Cook: pantry | 1 | 14 |
 | Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 1 / 2 / 0 / 0 / 2 / 2 | 14 / 13 / 15 / 11 / 17 / 12 / 20 |
-| Clinic | 13 | 109 |
+| Clinic | 12 | 110 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 1 |
 | Art | 6 | 9 |
