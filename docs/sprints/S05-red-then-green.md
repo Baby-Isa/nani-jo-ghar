@@ -7,7 +7,7 @@
 Every code row in `S05-plan.md`'s packages is fixed and proven by its own probe (red before the fix, green after: decision 86), the changed rows are judged, and the result passes `/review` and goes live on `main`.
 
 ## Budget
-Approved 12 Oct: about $175–215 and a working day (plan, decision 1); raised 13 Oct to about $270 (decision 90), then about $310 for the last fixes (decision 96). Sessions T $10–14, S $28–35, B $22–30, C $35–45, D $40–50; judging about $15; `/review` and publish about $25. Scope is cut before the budget.
+Approved 12 Oct: about $175–215 and a working day (plan, decision 1); raised 13 Oct to about $270, then about $310 for the last fixes (Zafar, small decisions below). Sessions T $10–14, S $28–35, B $22–30, C $35–45, D $40–50; judging about $15; `/review` and publish about $25. Scope is cut before the budget.
 
 ## Sessions
 All push to `ccr-a7370759-t0lee7`; briefs in `build/tools/ops/specs/s05*.brief.txt`; owned files disjoint (the plan's table). At most four at once.
@@ -30,7 +30,7 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~00:10 UK: **C round 1 in** (`s05c-cook.md`): 21 rows built as sheets to judge, 20 open (17 on probes or checks, sent to T2; SH-66 window, T2; DAAR-07 to Zafar: counter piles or a bowl). C now on S's nine requests and PAN-06. B did the eight borrowings (fa8124d). For round 2 (no owner yet): at L3 the pop-up writes every row (E12; shared, S2); the pantry reads its lines twice (fetch.js, B's file); the legacy Roll and Fill tiles still use drawn art.
 
-13 Oct ~00:15 UK: Zafar: yes to all (decision 90). S2 launched: session_01PAVt2vAGXM7KqifqYCrBrj (Opus high; SH-16 as a small bulb, the L3 pop-up rows, then T2's list of real shared failures). B resumed for the pantry's double read. T2 also makes the tool lessons permanent: a 'Probe pitfalls' section in evidence-loop.md, `evidence.mjs --lint-specs` in checks.mjs, and a standing brief line (a new spec must lint clean and its first red run must show it reached its state). C2/D2 are pre-approved within the ceiling and launch from the check-ins as needed.
+13 Oct ~00:15 UK: Zafar: yes to all (ceiling about $270; decision 90 for the daar bowl). S2 launched: session_01PAVt2vAGXM7KqifqYCrBrj (Opus high; SH-16 as a small bulb, the L3 pop-up rows, then T2's list of real shared failures). B resumed for the pantry's double read. T2 also makes the tool lessons permanent: a 'Probe pitfalls' section in evidence-loop.md, `evidence.mjs --lint-specs` in checks.mjs, and a standing brief line (a new spec must lint clean and its first red run must show it reached its state). C2/D2 are pre-approved within the ceiling and launch from the check-ins as needed.
 
 13 Oct ~00:35 UK: **D finished** (`s05d-clinic.md`): 20 rows to judge; SH-41's clinic half fixed (the bulb never opened a closed card). Open, routed: probes LNG-02, SH-41, CLN-11, -12, -45, -48, -117 and contract-11's mid push-in samples → T2; CLN-111's `.rs-again` and Say's placeholder tags → S2; CLN-54 (recipe rows need an engine form) → B; art: CLN-25, CLN-81 (doctor, part B), CLN-38 (household item pictures), ART-05 (Cook's chai marble worktop at 1.59 px/px); Zafar: CLN-120, CLN-85. B fixed the pantry's double read (PAN-16).
 
@@ -64,10 +64,12 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~11:23 UK: **S2 built the steps page** (af28cd2, decision 93): page 3 after the word review, by itself, Kutchi with English under, right gold, wrong red with what was done, two columns past four, no inner scroll, no page without steps. C2 adding Cook's page-3 test listener (flow.js). T2's final all-rows run in progress. Spend about $230 of $270; judging and `/review` to be kept lean.
 
-13 Oct ~12:30 UK: the open rows sorted (`build/reports/s05-open-triage.md`): 68 = fix now 35 (18 only need a fresh green run and the row updated, 10 probe faults, 6 game faults, 1 to close), art 17, Mum 7, Zafar 5, later 4; plus 4 known (DAAR-11, SH-17, SH-01, the chaat chip label) and CLN-14's 'Bring in man'. Zafar: launch both (ceiling about $310, decision 96). **G** session_016NZrvhe7bFqxYff8QG94Pb (Opus, game fixes) and **P** session_01VTxgPqxtwkp5jSBm4B1Wsy (Sonnet, probes and the row paperwork).
+13 Oct ~12:30 UK: the open rows sorted (`build/reports/s05-open-triage.md`): 68 = fix now 35 (18 only need a fresh green run and the row updated, 10 probe faults, 6 game faults, 1 to close), art 17, Mum 7, Zafar 5, later 4; plus 4 known (DAAR-11, SH-17, SH-01, the chaat chip label) and CLN-14's 'Bring in man'. Zafar: launch both (ceiling about $310). **G** session_016NZrvhe7bFqxYff8QG94Pb (Opus, game fixes) and **P** session_01VTxgPqxtwkp5jSBm4B1Wsy (Sonnet, probes and the row paperwork).
 
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
+- 13 Oct ~00:15 UK, Zafar: the ceiling rises to about $270 so every fixable row is done; ~12:30 UK: to about $310 for the last two sessions (G and P).
+- 13 Oct, Zafar: the old Fill practice tile re-lays its fold on the samosa strip art (no new art); the jar stickers and the daar bowl join the s05 art run.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
 
 ## Outcome
