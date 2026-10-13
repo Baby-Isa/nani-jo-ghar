@@ -430,6 +430,22 @@
       </div>`;
     if (opts.body) el.querySelector(".rs-body").appendChild(opts.body);
     host.appendChild(el);
+    // SH-74: the card sits over the play area, never off its left edge or over the sidebar; the dim still covers the whole
+    // screen. The play area is the frame's (.njg-play: Cook) or the clinic's own grid (.cl-main); opts.area overrides
+    const area = opts.area || (host === document.body ? document.querySelector(".njg-play, [data-njg-play], .cl-main") : null);
+    const place = () => {
+      el.style.paddingLeft = el.style.paddingRight = "";
+      if (!area || !area.isConnected) return;
+      const W = root.innerWidth || 0, H = root.innerHeight || 0;
+      const r = area.getBoundingClientRect();
+      // upright (the turn-your-phone card) or a play area that is the whole screen: the overlay's own centring
+      if (H > W || r.width < 240 || r.width > W - 8) return;
+      const gap = (root.getComputedStyle && parseFloat(root.getComputedStyle(el).paddingTop)) || 8;
+      el.style.paddingLeft = `${Math.round(Math.max(0, r.left) + gap)}px`;
+      el.style.paddingRight = `${Math.round(Math.max(0, W - r.right) + gap)}px`;
+    };
+    place();
+    root.addEventListener("resize", place);
     // a page can hide what must not show behind the pop-up (Cook: the old menu card; design system 10)
     document.documentElement.classList.add("njg-results-open");
     if (root.Sfx) root.Sfx.unlock();
@@ -448,6 +464,7 @@
     };
     const close = () => {
       if (!el.isConnected) return;
+      root.removeEventListener("resize", place);
       el.classList.add("leaving");
       setTimeout(() => el.remove(), reduced() ? 0 : 220);
       if (current && current.el === el) current = null;

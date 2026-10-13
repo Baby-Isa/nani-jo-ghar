@@ -302,7 +302,10 @@
 /* the word big and centred; a small speaker beside its English underneath.
    Design system 10: the speaker is neutral (a charcoal icon on a light cream circle) for right and wrong
    words alike; the colour stays only in the card's outline (gold right, red wrong). */
-.rs-p2 .rs-word .rs-en { display: inline-flex; align-items: center; gap: var(--njg-s2); }
+.rs-p2 .rs-word .rs-en { display: inline-flex; align-items: center; gap: var(--njg-s2); max-width: 100%; min-width: 0; }
+/* SH-77 (non-negotiable 9): the gloss takes the room left beside its speaker, so FitText shrinks it, then wraps it
+   ("mustard seeds" under rai spilled over the speaker at 1024x768) */
+.rs-p2 .rs-word .rs-en > .fit { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: visible; text-align: left; overflow-wrap: normal; }
 .rs-p2 .rs-word .rs-say { flex: none; width: calc(var(--njg-icon) * 1.1); height: calc(var(--njg-icon) * 1.1); padding: var(--njg-s1); }
 .rs-say { grid-row: 1 / 3; width: var(--njg-tap); height: var(--njg-tap); padding: var(--njg-s2); border-radius: 50%; background: var(--rs-say-bg); color: var(--rs-ink); }
 .rs-word.ok .rs-say, .rs-word.bad .rs-say { background: var(--rs-say-bg); color: var(--rs-ink); }

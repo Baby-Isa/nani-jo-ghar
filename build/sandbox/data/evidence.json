@@ -412,7 +412,24 @@
     "zoom2:.njg-done"
    ],
    "expect": null,
-   "note": "the in-play check is flat: no shadow or lip behind the gold tick"
+   "note": "Zafar wants the ✓ flat (no drop shadow, no lip on the cream disc); the gold tick art's own bevel is the art"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.njg-done",
+   "after": null,
+   "capture": [
+    "zoom2:.njg-done"
+   ],
+   "expect": null,
+   "note": "the clinic's ✓: the same flat disc, no shadow or lip"
   }
  ],
  "SH-07": [
@@ -2520,7 +2537,7 @@
    "level": 1,
    "sizes": [
     "1366x768",
-    "390x844"
+    "844x390"
    ],
    "profile": "seen",
    "want": null,
@@ -2543,7 +2560,7 @@
    "level": 1,
    "sizes": [
     "1366x768",
-    "390x844"
+    "844x390"
    ],
    "profile": "seen",
    "want": null,
@@ -3444,10 +3461,27 @@
    "after": null,
    "capture": [
     "shot",
-    "ref:lab/chai-v2-mockup.html"
+    "ref:build/sandbox/data/refs/chai-v2-mockup.png"
    ],
    "expect": null,
    "note": "v2 mock-up: hob and tray about 15% bigger and lower, pans true top-down, tilted pan for the pour, real top-down glasses"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "phase:pour",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x250"
+   ],
+   "expect": null,
+   "note": "the pour: the pan tilts over the glass and the liquid shows in the top-down glasses (the reference panel is the v2 mock-up, shot by build/tools/review/shoot_ref.mjs)"
   }
  ],
  "CHAI-09": [
@@ -3657,13 +3691,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stage-end",
+   "at": "visible:#done-btn",
    "after": null,
    "capture": [
     "zoom2:canvas:tray"
    ],
    "expect": null,
-   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup (L2: always two people)"
+   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup (L2: always two people) (at the ✓, before the end card: S05 judges saw C under the end card)",
+   "delay": 400
   },
   {
    "flow": "cook:chai-tray",
@@ -3838,14 +3873,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stage-end",
+   "at": "visible:#done-btn",
    "after": null,
    "capture": [
     "zoom2:canvas:thali",
     "crop:#stage"
    ],
    "expect": null,
-   "note": "roll-tawa's serving dish (vessel:serving = chaat-bowl.empty) not cut off; tick not over the resting spatula"
+   "note": "roll-tawa's serving dish (vessel:serving = chaat-bowl.empty) not cut off; tick not over the resting spatula (at the ✓, before the end card)",
+   "delay": 400
   }
  ],
  "MAA-09": [
@@ -3980,16 +4016,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "pass-me",
+   "at": "visible:#stage #passme.onscreen",
    "after": null,
    "capture": [
-    "strip:#passme:6x400",
+    "strip:#passme:8x600",
     "voice"
    ],
    "expect": [
     "count:#passme=1"
    ],
-   "note": "Nani crosses the screen, play pauses, 3 s ring, impatient face"
+   "note": "Nani crosses the screen, play pauses, 3 s ring, impatient face (after her 0.7 s walk-in: the crop is boxed where she lands; frames 600 ms apart over the ring)",
+   "delay": 800
   },
   {
    "flow": "cook:day3",
@@ -4000,14 +4037,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:pass-me",
+   "at": "every:visible:#stage #passme.onscreen",
    "after": null,
    "capture": [
     "crop:#passme",
     "dom:#passme"
    ],
    "expect": null,
-   "note": "the same shared pop-up in each station she can ask in (pantry, chai, daar, chaat, samosa, sekelo, maani)"
+   "note": "the same shared pop-up in each station she can ask in (pantry, chai, daar, chaat, samosa, sekelo, maani) (after her walk-in)",
+   "delay": 800
   },
   {
    "flow": "cook:day1",
@@ -5914,18 +5952,19 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "every:bubble",
    "after": null,
    "capture": [
-    "crop:#stage"
+    "crop:canvas:s02-served"
    ],
    "expect": null,
-   "note": "served dishes on a tray at the counter's angle, shadows to the right"
+   "note": "served dishes on a tray at the counter's angle, shadows to the right: the served dish after each serve (Nani's call-back bubble comes after it is drawn; the view-service moment came before any serve)",
+   "max": 12
   },
   {
-   "flow": "lab:cook/order",
+   "flow": "cook:day2",
    "path": "fair",
-   "level": 2,
+   "level": 1,
    "sizes": [
     "1366x768"
    ],
@@ -5934,11 +5973,11 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "zoom2:canvas:served"
+    "zoom2:canvas:s02-served"
    ],
    "expect": null,
-   "note": "each dish type served (lab order: the counter after cooking, s02-served-<recipe>)",
-   "max": 8
+   "note": "each dish type served (story day 2: maani and chai on the counter after cooking)",
+   "max": 12
   }
  ],
  "CK-22": [
@@ -6113,7 +6152,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "placed",
    "after": null,
    "capture": [
     "strip:#stage:4x100"
@@ -6130,7 +6169,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "placed",
    "after": null,
    "capture": [
     "strip:#stage:4x100"
@@ -6147,7 +6186,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "placed",
    "after": null,
    "capture": [
     "strip:#stage:4x100"
@@ -11362,7 +11401,8 @@
     "shot"
    ],
    "expect": null,
-   "note": "the end card sits inside the play area: never off the stage's left edge, never over the sidebar (S05 judges: CLN-03 B-D)"
+   "note": "the end card sits inside the play area: never off the stage's left edge, never over the sidebar (S05 judges: CLN-03 B-D)",
+   "delay": 2800
   },
   {
    "flow": "clinic:heal-cut",
@@ -11382,7 +11422,8 @@
    "expect": [
     "inside:.njg-results .rs-card in .cl-main"
    ],
-   "note": "a heal game's end card inside the play area, clear of the sidebar (CLN-69)"
+   "note": "a heal game's end card inside the play area, clear of the sidebar (CLN-69)",
+   "delay": 2800
   },
   {
    "flow": "cook:daar",
@@ -11401,7 +11442,8 @@
    "expect": [
     "inside:.njg-results .rs-card in #stage"
    ],
-   "note": "Cook's end card inside the play area too (the one shared card)"
+   "note": "Cook's end card inside the play area too (the one shared card)",
+   "delay": 2800
   }
  ],
  "SH-75": [
@@ -11420,7 +11462,8 @@
     "crop:.njg-results .rs-card"
    ],
    "expect": null,
-   "note": "the card fits its badges: with one or two badges it is narrower, never the three-badge width with empty room"
+   "note": "the card fits its badges: with one or two badges it is narrower, never the three-badge width with empty room",
+   "delay": 2800
   },
   {
    "flow": "cook:daar",
@@ -11437,7 +11480,8 @@
     "crop:.njg-results .rs-card"
    ],
    "expect": null,
-   "note": "three badges: the card as wide as they need"
+   "note": "three badges: the card as wide as they need",
+   "delay": 2800
   }
  ],
  "SH-76": [
@@ -11484,6 +11528,339 @@
     "noClip:.njg-results .rs-word"
    ],
    "note": "each word tile holds its English gloss ('mustard seeds' under rai): shrink, then wrap; never over the speaker icon (non-negotiable 9)"
+  }
+ ],
+ "CK-30": [
+  {
+   "flow": "lab:cook/order",
+   "path": "mistake",
+   "level": 2,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:click",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "the serve's review face sits on the tray, never a small badge half off its right edge",
+   "max": 6
+  }
+ ],
+ "CK-31": [
+  {
+   "flow": "lab:cook/order",
+   "path": "mistake",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:click",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "a wrong serve: the review face frowns",
+   "max": 6
+  }
+ ],
+ "CK-32": [
+  {
+   "flow": "lab:cook/order",
+   "path": "mistake",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:click",
+   "after": null,
+   "capture": [
+    "crop:#mission",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "a wrong serve: the wrong row marked red on the open card",
+   "max": 6
+  }
+ ],
+ "SAM-18": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:swipe",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "after each fold swipe the pastry is still there (strip or folded triangle), never an empty board",
+   "max": 6
+  }
+ ],
+ "SAM-19": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-swipe",
+   "after": null,
+   "capture": [
+    "strip:#stage:5x250"
+   ],
+   "expect": null,
+   "note": "the first fold: the filling stays in view as the first triangle folds"
+  }
+ ],
+ "SEK-15": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": [
+    "tameto"
+   ],
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "zoom2:#stage"
+   ],
+   "expect": null,
+   "note": "each bowl's word chip: the Kutchi word beside its speaker (tameto included)"
+  }
+ ],
+ "SEK-16": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "no word pill loose at the stage's far left: each word with its bowl",
+   "max": 6
+  }
+ ],
+ "SEK-17": [
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the scrape's sequence card: the order as the little skewer, in a plain group box (decision 95)"
+  }
+ ],
+ "CHAI-19": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "no loose word pill over the hob's top rim at 844x390",
+   "max": 8
+  }
+ ],
+ "SH-78": {
+  "needsDecision": "Design system §12 folds a person's card to face + headline + ✓ once every row is done; at the chai pour (and daar's stir, DAAR-18) every row is done but the dish is still being made, so the ticks fold away. Keep §12 as it is, or hold each card open until its dish leaves the station (poured, stirred, served)?",
+  "probes": [
+   {
+    "flow": "cook:chai-tray",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "every:placed",
+    "after": null,
+    "capture": [
+     "crop:#mission"
+    ],
+    "expect": null,
+    "note": "the chai card through the pour",
+    "max": 10
+   }
+  ]
+ },
+ "DAAR-18": {
+  "needsDecision": "As SH-78: hold the daar card open through the stir, or fold it once every row is ticked (§12)?",
+  "probes": [
+   {
+    "flow": "cook:daar",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "every:placed",
+    "after": null,
+    "capture": [
+     "crop:#mission"
+    ],
+    "expect": null,
+    "note": "the daar card through the stir",
+    "max": 16
+   }
+  ]
+ },
+ "DAAR-19": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "no stray plain row under rai and lasan once every row ticks",
+   "max": 16
+  }
+ ],
+ "DAAR-20": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-slice",
+   "after": null,
+   "capture": [
+    "strip:#stage:8x250"
+   ],
+   "expect": null,
+   "note": "the board never dims dark brown between cuts"
+  }
+ ],
+ "DAAR-21": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "ghost",
+   "after": null,
+   "capture": [
+    "strip:#stage:5x200"
+   ],
+   "expect": [
+    "times:ghost>=1"
+   ],
+   "note": "a fresh child's first chop: the ghost finger drags the knife across an item"
+  }
+ ],
+ "DAAR-22": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:slice",
+   "after": null,
+   "capture": [
+    "zoom2:#stage"
+   ],
+   "expect": null,
+   "note": "after each swipe the item shows a clean cut (pieces), not swapped out whole",
+   "max": 4
+  }
+ ],
+ "DAAR-23": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:slice",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "the row in progress lit until its count is cut, then the next",
+   "max": 8
   }
  ]
 }

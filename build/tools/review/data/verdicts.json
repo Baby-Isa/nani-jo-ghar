@@ -4611,5 +4611,52 @@
   "commit": "b66ad4ff",
   "png": "build/screenshots/evidence/ev-s04-ev1/SH-71.png",
   "date": "2026-10-12"
+ },
+ "SH-74": {
+  "hash": "18740ead2cfdd3d1f536",
+  "dhash": [
+   "cf538595958387de",
+   "cfaf8bab8b83c9cb",
+   "6f050b0b0b030b47",
+   "00190b2a03030190"
+  ],
+  "verdict": "PASS",
+  "line": "C, at 844x390 the card's white spans x 208-835 (measured on the full-size shot): its left edge is 8px right of the sidebar (ends x 200) and 9px inside the stage's right edge, three badges and Next whole; A and B at 1366x768 the card spans x 313-1312, centred in the play area (53px each side), 55px clear of the sidebar (ends x 258), the four-badge L3 card in A and the three-badge heal card in B both whole, no badge or edge cut; D Cook's card sits at the same x 313-1312 over the stage, clear of the sidebar; the tool's inside-checks agree (3 of 3 inside)",
+  "panel": "C",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-161223-2i4",
+  "commit": "af07783",
+  "png": "build/screenshots/evidence/ev-20261013-161223-2i4/SH-74.png",
+  "date": "2026-10-13"
+ },
+ "SH-75": {
+  "hash": "6184cdd39d8ad178adb7",
+  "dhash": [
+   "cfef8991938fc8ca",
+   "9711010101011118",
+   "00190b0d01030190",
+   "319a929292130303"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the clinic heal card at 1366x768 keeps the three-badge width (x 313-1312, ~1000px) on its steps page while its content is a ~230px-wide column of three step lines centred in it, a ~380px empty band on each side: exactly the \"three-badge width with a wide empty band\" the row forbids. The one- or two-badge badge page the row names is on no panel: both probes are timed rounds (three badges in B of SH-74 and in D here), so \"narrower with one or two badges\" is unproven; the CSS still gives .rs-card a fixed width (min(100%, --njg-end-card)) and only centres .rs-badges.n2 inside it. B is blank: the crop of .rs-card shows a white card with no content (tool: the crop misses the page's contents). D (three Cook badges filling the card) and C (the word review filling the card) are fine as far as they go.",
+  "panel": "A",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-161223-2i4",
+  "commit": "af07783",
+  "png": "build/screenshots/evidence/ev-20261013-161223-2i4/SH-75.png",
+  "date": "2026-10-13"
+ },
+ "SH-77": {
+  "hash": "189bd7564331fae55a27",
+  "dhash": [
+   "040e1c0410181804"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:.njg-results .rs-word (5 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-161223-2i4",
+  "commit": "af07783",
+  "date": "2026-10-13"
  }
 }
