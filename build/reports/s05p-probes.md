@@ -19,6 +19,8 @@ Fixes: `stir-begin` moment (DAAR-11), `listen-through` driver (SEK-11), the maan
 - MAA-08 open: plates whole; a face disc on the hob, orchestrator to judge.
 - SAM-16: filmed; the diagonal is too small at stage size.
 
+- **SAM-16 (round 4):** the probe films canvas:sv3-fold on a fresh profile at L1 and L2, 4 frames at 200 ms (run ev-20261013-134819-70s): the ghost and the first fold's diagonal are clear. Status stays 'built, sheet to judge' for the orchestrator.
+
 ## Not done
 `touched.mjs` maps only evidence.json (tools change), i.e. a full sandbox pass, so I skipped it and shotdiff/regress (brief: never a full pass). Checks: 293 unit tests, words, specs, load all ok.
 

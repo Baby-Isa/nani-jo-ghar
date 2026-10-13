@@ -11295,12 +11295,12 @@
    "sizes": [
     "1366x768"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "every:kind-swipe",
    "after": null,
    "capture": [
-    "strip:#stage:4x250"
+    "strip:canvas:sv3-fold:4x200"
    ],
    "expect": null,
    "max": 3,
