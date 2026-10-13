@@ -558,8 +558,8 @@
    *    The cloth dries the water the wash left.
    * 3. The plasters, in the colours and order said: DRAG each from the shelf onto a red patch so it covers the red
    *    (a corner left showing makes the patient wince; drag it again to fix it, tap it to take it off until ✓).
-   *    L1 one plaster (it settles on when it's nearly right); L2 two in order, one colour each; L3 two in order, each
-   *    two colours (CLN-45: never more than two things to hold in one step).
+   *    L1 one plaster (it settles on when it's nearly right); L2 two in order, one colour each; L3 the same, heard only
+   *    (CLN-45: never more than two things to hold in one step, and one new thing per level).
    * Rows (the Kutchi decides): the dab count; the plasters' colours and order (colours: English placeholders, to
    * record). The cut (the stitches) above is unchanged.
    */
@@ -567,8 +567,8 @@
   const SCRAPE = {
     dabs: { 1: [2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
     colours: ["red", "blue", "green", "yellow"],
-    // CLN-45 (1 Oct, P14/P17): at most two things to hold per step at L3, and L2 -> L3 adds one thing: two plasters
-    // at L2 and L3 (one colour each at L2, two at L3), each plaster's row said as it opens (D8)
+    // CLN-45 (1 Oct, P14/P17; S05-G): at most two things to hold per step at L3, and L2 -> L3 adds one thing (heard only):
+    // two plasters at L2 and L3, one colour each, each plaster's row said as it opens (D8)
     plasters: { 1: 1, 2: 2, 3: 2 },
     washRadius: { 1: 46, 2: 40, 3: 36 }, // svg units round the water's point that it washes
     washDone: 0.85, // the share of the dirt washed when the rest rinses off by itself
@@ -603,12 +603,9 @@
     const L = Math.max(1, Math.min(3, level));
     const dab = HS.pick(SCRAPE.dabs[L], rng);
     const n = SCRAPE.plasters[L];
-    let options;
-    if (L < 3) options = SCRAPE.colours.map((c) => [c]);
-    else {
-      options = [];
-      SCRAPE.colours.forEach((a, i) => SCRAPE.colours.slice(i + 1).forEach((b) => options.push([a, b])));
-    }
+    // CLN-45 (S05-G, P17 and §8D: each level adds one thing): L3's one new thing is that it's heard only (the closed card),
+    // so its plasters are L2's, one colour each; the two-colour plasters (L3 until S05) made the L2 -> L3 jump two things
+    const options = SCRAPE.colours.map((c) => [c]);
     const seq = HS.shuffle(options, rng).slice(0, n);
     // 13h: the plasters' order is a sequence on the shared card: one part per plaster (pela ..., ne poi ...),
     // the next one in the grey band, each ticking as it goes on. The colours are the clinic's colour words (col-*:

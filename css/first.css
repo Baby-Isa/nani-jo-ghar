@@ -169,6 +169,10 @@ button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-c
 .st-text .chunk.on { color: var(--ink); background: #ffe9a8; }
 .st-text .chunk.k.on { color: var(--clay); }
 .st-text .chunk.placeholder { text-decoration: underline dotted rgba(181, 82, 59, .35); text-underline-offset: 4px; }
+/* SH-69 (S05-G, non-negotiable 5): story mode says a line in English first, but never writes it for the child: the card
+   shows only the Kutchi. A line with no Kutchi yet keeps its English as the grey-italic to-record line (decision 84). */
+.st-text .chunk.en:not(:only-child) { display: none; }
+.st-text .chunk.en:only-child { color: rgba(58, 36, 24, .5); font-style: italic; font-weight: 600; }
 .st-speak {
   width: 48px; height: 48px; border-radius: 50%; border: 0; padding: 10px;
   background: #f3e2c7; color: var(--ink); display: grid; place-items: center;

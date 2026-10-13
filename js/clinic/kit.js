@@ -34,19 +34,26 @@
 
   /* ---------------- words ---------------- */
   /** A word or row as DOM: Kutchi in plain text, placeholders grey italic. */
+  // decision 84 (CLN-14, S05-G): a placeholder keeps its hidden "to record" tag in the markup (data-rec), as Cook's and the
+  // shared Say's do, so the tools can tell it from words the child reads
+  const ph = (parent, text) => {
+    const n = h("span", "ph", parent, text);
+    n.dataset.rec = "to record";
+    return n;
+  };
   Kit.text = function (w, parent) {
     const span = h("span", "cl-words", parent);
     if (!w) return span;
     const k = w.kutchi;
     if (!k || w.placeholder === true) {
-      h("span", "ph", span, w.english || "");
+      ph(span, w.english || "");
       return span;
     }
     String(k)
       .split(/(\[[^\]]*\])/)
       .filter((seg) => seg && seg.trim()) // the space between two segments is the CSS margin (no double gap)
       .forEach((seg) => {
-        if (seg.startsWith("[")) return h("span", "ph", span, seg.slice(1, -1).replace(/^EN:\s*/, ""));
+        if (seg.startsWith("[")) return ph(span, seg.slice(1, -1).replace(/^EN:\s*/, ""));
         // CLN-68: punctuation that follows a word ("[Wipe], ba") joins that word, so there's never a space before a
         // comma; the words after it keep their gap (the CSS margin between spans)
         // (it rides on the word before it, so it's never a tiny span of its own under the 14 px floor)

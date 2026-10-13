@@ -259,6 +259,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return r.misses;
   }
   const EX = (id) => Cook.data.exchanges.find((e) => e.id === id);
+  /**
+   * SH-69 (S05-G): a person's name is shown and heard only the first time they are met: Nani greets them by name in her
+   * bubble (data/cook.json meanings name-<who>), once per save; their card never names them (SH-07).
+   */
+  async function firstMeeting(who) {
+    const met = (Cook.save.met = Cook.save.met || {});
+    if (met[who] || !(Cook.data.meanings && Cook.data.meanings[`name-${who}`])) return;
+    met[who] = true;
+    Cook.writeSave();
+    await S().talk("nani", Lang.line(`name-${who}`), { ms: 1100 });
+  }
 
   /* ---------------- service view ---------------- */
   async function serviceView(who, { enter } = {}) {
@@ -358,6 +369,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await serviceView(who, { enter: !asked || !S().chars[who] });
       await Cook.wait(asked ? 400 : 900);
       if (!asked) {
+        await firstMeeting(who);
         await exchange(who, EX("salaam"));
         if (Math.random() < 0.35) await exchange(who, EX("howareyou"));
         // the order card is always the short form (Sidebar v2), so the polite ask can come first at any level
@@ -922,6 +934,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const who = spec.who;
     await serviceView(who, { enter: true });
     await Cook.wait(900);
+    await firstMeeting(who);
     await exchange(who, EX("salaam"));
     const dish = spec.dishes.find((d) => ASK_FIRST.includes(d)) || spec.dishes[0];
     await exchange(who, EX("canyou"), { dishPhrase: Lang.phrase([R.dishWord(dish)]) });

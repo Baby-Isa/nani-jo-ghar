@@ -464,6 +464,19 @@
    "fn": "Exclaim",
    "x": "cook.line.greet"
   },
+  "_name": "SH-69 (S05-G): the first time a customer is met, Nani greets them by name (shown in her bubble and heard), never again: name-<customer id>, the family's own name calls (Mum 28 Sept, Round 3 K14)",
+  "name-nana": {
+   "fn": "Exclaim",
+   "x": "phrase.nana"
+  },
+  "name-cousin": {
+   "fn": "Exclaim",
+   "x": "phrase.ali"
+  },
+  "name-ma": {
+   "fn": "Exclaim",
+   "x": "pn.ma"
+  },
   "greet-reply": {
    "fn": "Exclaim",
    "x": "cook.line.greet-reply"

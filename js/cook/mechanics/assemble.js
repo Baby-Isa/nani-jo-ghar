@@ -815,16 +815,53 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- the shelf: identical side-on pots (the pantry jars' look), a chip under each ---------- */
       const n = ids.length;
-      const pitch = Math.min(PITCH, (1600 - 190 - 60) / Math.max(1, n));
+      // §4, §14: the word on the chip at levels 1-2, the speaker alone from level 3 (the same chip)
+      const showWord = () => level < 3;
+      // the chips' words first: each is never under the 14px floor as rendered (TXT-05), so on a small screen a word can be
+      // wider than the usual slot; the pots then spread out over the shelf (their size stays) so every chip fits its slot
+      const labels = {};
+      if (showWord()) ids.forEach((id) => (labels[id] = chipLabel(id)));
+      const needW = Math.max(0, ...Object.values(labels).map((t) => t.displayWidth + 44 + 8));
+      const pitch = Math.min(Math.max(PITCH, needW), (1600 - 190 - 60) / Math.max(1, n));
       const width = n * pitch;
       const x0 = Math.max(30, (1600 - 190 - width) / 2); // clear of the tick, bottom right
       const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
       plank.fillStyle(INK.grey, 1);
       plank.fillRoundedRect(z.X(x0 + 10), z.Y(BASE - 2), z.L(width - 20), z.L(10), z.L(5));
       const items = {};
-      // §4, §14: the word on the chip at levels 1-2, the speaker alone from level 3 (the same chip)
-      const showWord = () => level < 3;
       ids.forEach((id, i) => (items[id] = slot(id, x0 + pitch * (i + 0.5), Math.min(PREP_W, pitch - 22))));
+      /**
+       * A chip's word (chip units = design px): one line at 25px, shrunk to fit the chip but never under the 14px floor as
+       * rendered (the chip's own scale counts: z.k < 1 on a small canvas); a long name that won't fit on one line wraps
+       * between its words at 19px (fudino ji chutney, amli ji chutney), the same floor. The chaat chip's 'amli ji chutney'
+       * drew 13.1px at 1366x768 and 7px on a phone before S05-G.
+       */
+      function chipLabel(id) {
+        const style = (px) => ({ fontFamily: FONT, fontSize: `${px}px`, fontStyle: "800", color: INK.kutchi, align: "left", lineSpacing: -4 });
+        const maxT = CHIP.w - 44;
+        const word = Cook.display(id);
+        const make = (text, px) => {
+          const t = S.add.text(0, 0, text, style(px)).setOrigin(0, 0.5);
+          return t.setScale(Math.max(Math.min(1, maxT / t.width), floorK(px) / z.k));
+        };
+        const one = make(word, 25);
+        if (one.displayWidth <= maxT + 0.5 && one.scaleX >= 0.8) return one;
+        if (!word.includes(" ")) return one;
+        const words = word.split(" ");
+        let best = null;
+        for (let b = 1; b < words.length; b++) {
+          const two = [words.slice(0, b).join(" "), words.slice(b).join(" ")];
+          const w = Math.max(...two.map((x) => x.length));
+          if (!best || w < best.w) best = { w, two };
+        }
+        const two = make(best.two.join("\n"), 19);
+        if (two.displayWidth < one.displayWidth || one.scaleX < 0.8) {
+          one.destroy();
+          return two;
+        }
+        two.destroy();
+        return one;
+      }
       function slot(id, x, w) {
         const key = `cv3-pot-${id}`;
         let img;
@@ -854,38 +891,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         img.wordId = id;
         img.home = { x: img.x, y: img.y };
         // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place)
+        const t = labels[id] || null;
+        // a word at the floor may be wider or taller than the usual chip: the chip grows to hold it (up to its slot), and a
+        // taller one stays on the screen (its bottom above the stage's edge)
+        const cw = t ? Math.min(pitch - 4, Math.max(Math.min(CHIP.w, pitch - 12), t.displayWidth + 44)) : Math.min(CHIP.w, pitch - 12);
+        const ch = t ? Math.max(CHIP.h, t.displayHeight + 8) : CHIP.h;
         const chip = S.track(
           S.add
-            .container(z.X(x), z.Y(CHIP.y))
+            .container(z.X(x), z.Y(Math.min(CHIP.y, 897 - ch / 2)))
             .setDepth(D.item + 2)
             .setScale(z.k),
         );
         const bg = S.add.graphics();
-        const cw = Math.min(CHIP.w, pitch - 12);
-        bg.fillStyle(0x28190a, 0.1);
-        bg.fillRoundedRect(-cw / 2, -CHIP.h / 2 + 2, cw, CHIP.h, 12);
-        bg.fillStyle(INK.card, 1);
-        bg.fillRoundedRect(-cw / 2, -CHIP.h / 2, cw, CHIP.h, 12);
-        chip.add(bg);
         const icon = S.add.graphics();
-        if (showWord(id)) {
-          // one line (shrunk down to ~20px), or two lines for a long name (fudino ji chutney)
-          const style = (px) => ({ fontFamily: FONT, fontSize: `${px}px`, fontStyle: "800", color: INK.kutchi, align: "left", lineSpacing: -4 });
-          const maxT = cw - 44;
-          let t = S.add.text(0, 0, Cook.display(id), style(25)).setOrigin(0, 0.5);
-          if (t.width * 0.8 > maxT && Cook.display(id).includes(" ")) {
-            const words = Cook.display(id).split(" ");
-            let best = null;
-            for (let b = 1; b < words.length; b++) {
-              const two = [words.slice(0, b).join(" "), words.slice(b).join(" ")];
-              const w = Math.max(...two.map((x) => x.length));
-              if (!best || w < best.w) best = { w, two };
-            }
-            t.destroy();
-            t = S.add.text(0, 0, best.two.join("\n"), style(19)).setOrigin(0, 0.5);
-          }
-          // the floor is 14px as rendered, so the chip's own scale counts (z.k < 1 on a small canvas)
-          if (t.width > maxT) t.setScale(Math.max(floorK(parseFloat(t.style.fontSize)) / z.k, maxT / t.width));
+        bg.fillStyle(0x28190a, 0.1);
+        bg.fillRoundedRect(-cw / 2, -ch / 2 + 2, cw, ch, 12);
+        bg.fillStyle(INK.card, 1);
+        bg.fillRoundedRect(-cw / 2, -ch / 2, cw, ch, 12);
+        chip.add(bg);
+        if (t) {
           const tw = 22 + 8 + t.displayWidth;
           speaker(icon, -tw / 2 + 10, 0, 24);
           t.x = -tw / 2 + 30;

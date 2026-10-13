@@ -158,23 +158,32 @@
     const boxes = () => [box].concat(box && guide && box === guide.el && mission && mission.stripMode ? [...document.querySelectorAll("#mission .oc-strip")] : []).filter(Boolean);
     const spans = (i) => [].concat(...boxes().map((b) => [...b.querySelectorAll(i == null ? ".ra" : `.ra[data-ra="${i}"]`)]));
     const lit = (els, on) => els.forEach((e) => e.classList.toggle("ra-on", on));
+    // SH-17 (S05-G): the strip (and the box) can be redrawn while a part is said (the card re-renders, OC.setStrip replaces
+    // the strip): the part being said stays lit on whatever spans are on screen now, not only the ones there when it began
+    const hold = (i) => {
+      lit(spans(i), true);
+      const t = setInterval(() => lit(spans(i), true), 60);
+      return () => {
+        clearInterval(t);
+        lit(spans(i), false);
+      };
+    };
     if (Lang.hasWhole && Lang.hasWhole(line)) {
-      lit(spans(), true);
+      const off = hold(null);
       try {
         return await Lang.speak(line);
       } finally {
-        lit(spans(), false);
+        off();
       }
     }
     const parts = raParts(line);
     for (let i = 0; i < parts.length; i++) {
-      const els = spans(parts.length > 1 ? i : null);
-      lit(els, true);
+      const off = hold(parts.length > 1 ? i : null);
       try {
         if (Lang.hasVoice(parts[i])) await Lang.speak(parts[i]);
         else await Cook.wait(Math.max(500, Cook.readMs(Lang.plain(parts[i])) * 0.5));
       } finally {
-        lit(els, false);
+        off();
       }
     }
     return true;
