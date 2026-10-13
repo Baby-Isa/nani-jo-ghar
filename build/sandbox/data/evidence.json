@@ -858,12 +858,12 @@
    "at": "visible:#mission .oc-strip .ra-on",
    "after": null,
    "capture": [
-    "strip:#mission .oc-strip:5x100"
+    "strip:#mission .oc-strip:6x300"
    ],
    "expect": [
     "count:#mission .oc-strip .ra-on>=1"
    ],
-   "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays) (at a child's pace)",
+   "note": "the guide box's spoken line underlined: a filmstrip from each line's start (the read-along runs only while a line plays) (at a child's pace) (frames 300 ms apart: since S05-G each part stays lit at least ~640 ms, so 100 ms frames never change)",
    "delay": 0
   },
   {
@@ -999,7 +999,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "heal-cut-mid",
+   "at": "heal-cut-start",
    "after": null,
    "capture": [
     "contract:8",
@@ -1008,7 +1008,7 @@
    "expect": [
     "pass"
    ],
-   "note": "the clinic tool strip uses the same glow token, no ring of its own"
+   "note": "the clinic tool strip uses the same glow token, no ring of its own (at the scrape start: L1 has no mid moment)"
   }
  ],
  "SH-54": [
@@ -8217,8 +8217,7 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3
+    2
    ],
    "sizes": [
     "1366x768"
@@ -8239,8 +8238,7 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3
+    2
    ],
    "sizes": [
     "1366x768"
@@ -8255,6 +8253,46 @@
    ],
    "expect": null,
    "note": "the knee's ladder (the same probe for every heal game: one panel per level)"
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-cut-start",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": [
+    "count:.njg-rq-card=0"
+   ],
+   "note": "L3 is L2 heard only (Zafar, 13 Oct): no pop-up card; the steps are heard, the sidebar card is closed"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-knee-start",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": [
+    "count:.njg-rq-card=0"
+   ],
+   "note": "the knee at L3: heard only, the same as L2 otherwise"
   }
  ],
  "CLN-46": [

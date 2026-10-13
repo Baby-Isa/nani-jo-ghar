@@ -550,16 +550,15 @@
   "date": "2026-10-12"
  },
  "CHT-07": {
-  "hash": "de3aab7a6cc06f8a63b1",
+  "hash": "6e33a1c5fecf53a5ae7b",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "text, the voice timeline runs the pantry first (4.56-15.73, \"Muke bataato de... sev de\") and only afterwards the boy asks (\"Tu muke chaat banai dinda?\" 23.5, \"Muke chaat khape.\" 24.8), then chop (26.3), the sequence (\"Pela bataato. Ne poi chana...\" 34.4), bowl: the order is pantry, ask, chop, sequence, bowl, not ask, pantry, chop, sequence, bowl; the expect order also came back undecided (markers not found)",
-  "panel": "TEXT",
-  "judge": "Sonnet (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": null,
-  "date": "2026-10-12"
+  "verdict": "PASS",
+  "line": "machine: order:chaat khape,ne poi (chaat khape < ne poi)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-135717-7pn",
+  "commit": "1ffdc85",
+  "date": "2026-10-13"
  },
  "CHT-08": {
   "hash": "91161f8da0a4f8077fef",
@@ -1389,21 +1388,20 @@
   "date": "2026-10-12"
  },
  "CLN-12": {
-  "hash": "2b378372163badb903dc",
+  "hash": "892e2f1736f3e0701f19",
   "dhash": [
-   "0000002c2e220713",
-   "bfb33fae9a9a1ebe",
-   "010100b3bb4d0f07",
-   "bfb33f56aaca1ebe"
+   "1f23232323078f7e",
+   "0000002c2e22175b",
+   "1f23232323070f7e",
+   "010000bb1b072a17"
   ],
-  "verdict": "FAIL",
-  "line": "B, the picked man (leftmost) gets a green tick under him at 7903 ms but sits exactly where he was, not risen off the seat; D, the same for the picked girl at L2 (13956 ms). No walking, and a tick circle under every person (A/C), are shown",
-  "panel": "B",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/CLN-12.png",
-  "date": "2026-10-12"
+  "verdict": "PASS",
+  "line": "machine: count:.cl-wp.risen=1 (1 visible); lastsMs:.cl-wp.risen>=800 (on screen 15233 ms (still at the end)); count:.cl-wp.risen=1 (1 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-135717-7pn",
+  "commit": "1ffdc85",
+  "date": "2026-10-13"
  },
  "CLN-120": {
   "hash": "013581d9ecfd4042d92f",
@@ -3430,6 +3428,23 @@
   "commit": "7812e59a",
   "date": "2026-10-12"
  },
+ "SAM-17": {
+  "hash": "1cb3e0efee105608d19c",
+  "dhash": [
+   "70f0d0f0f0116060",
+   "31f8d0f0f1606062",
+   "70f8c8d8d8116060",
+   "31c8c8c8c9606872"
+  ],
+  "verdict": "PASS",
+  "line": "A, C, the filling mounds on the first laid-out strip are about the strip's height and the same size as the tray bowls at both 1366x768 and 800x360 (B, D), readable at a glance; note the napkin square's corners stick out past the plate circle in every panel",
+  "panel": "A,C",
+  "judge": "Fable (orchestrator subagent)",
+  "run": "ev-s04-ev1",
+  "commit": "b66ad4ff",
+  "png": "build/screenshots/evidence/ev-s04-ev1/SAM-16.png",
+  "date": "2026-10-12"
+ },
  "SEK-01": {
   "hash": "97293f79d419d0833e80",
   "dhash": [],
@@ -3604,20 +3619,18 @@
   "date": "2026-10-12"
  },
  "SH-01": {
-  "hash": "44a85b0626d829d3bbef",
+  "hash": "ad68887514c8535cfa52",
   "dhash": [
-   "a8ad4dad08081818",
-   "a889cca808081818",
-   "c84d4d4d08081818",
-   "48490c4800081818"
+   "2131312131210303",
+   "0131313131310317"
   ],
-  "verdict": "FAIL",
-  "line": "machine: SH-01-p1-L4-800x360: lines:.rs-word<=2: lines 4; SH-01-p1-L4-844x390: lines:.rs-word<=2: lines 4",
+  "verdict": "PASS",
+  "line": "machine: noClip:.njg-results (1 clean); noClip:.njg-results (1 clean)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "date": "2026-10-12"
+  "run": "ev-20261013-135717-7pn",
+  "commit": "1ffdc85",
+  "date": "2026-10-13"
  },
  "SH-02": {
   "hash": "04b443d46397b4b7c9a5",
@@ -3798,20 +3811,19 @@
   "date": "2026-10-13"
  },
  "SH-16": {
-  "hash": "bd70f0dea6f2cd0a24f8",
+  "hash": "1e90835356378b8df593",
   "dhash": [
-   "4ba3010101010101",
-   "1381a18301010181",
-   "0aaa918181a9a090"
+   "4ba5010101010101",
+   "138185c301010181",
+   "00aa9bac83a2a29b"
   ],
-  "verdict": "FAIL",
-  "line": "A, B, the clinic card at heal-eye L3 still carries an eye button at its bottom-right (and a \"...\" more button) and the top bar has a standalone speaker button beside the bulb, outside any face circle; C is clean (speaker inside each face circle, no per-line buttons); the 390x844 portrait the check asks for is not shown",
-  "panel": "A,B",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/SH-16.png",
-  "date": "2026-10-12"
+  "verdict": "PASS",
+  "line": "machine: count:.oc-look:not(.bulb)=0 (0 visible); count:.cl-side .oc-card.closed .oc-look.bulb=1 (1 visible); inside:.oc-face .say-badge,.oc-face (1 inside)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-135717-7pn",
+  "commit": "1ffdc85",
+  "date": "2026-10-13"
  },
  "SH-17": {
   "hash": "3238a8e193ad9dea41e1",
@@ -4348,15 +4360,15 @@
   "date": "2026-10-12"
  },
  "SH-56": {
-  "hash": "b22859c7115275237f79",
+  "hash": "0e070cac08ab82b66e62",
   "dhash": [],
   "verdict": "PASS",
-  "line": "machine: !textMatches:(?i)make each pan|^\\s*$ (not (text: \"Put water in the pan. Dudh . Wiji chad! Dudh . Wiji chad! Khun . Wiji chad! Khun . Wiji chad! Elchi . Wiji chad! Chulo b\")); !textMatches:(?i)first jeeru then lasan (not (text: \"Add the spices, in order. Chulo bar ! Pela rai . Ne poi lasan .\")); !textMatches:(?i)cook it the way they said (not (text: \"Bhar ! Chundo . Bhar ! Chundo . Samosa waar ! Samosa waar ! Samosa waar ! Samosa waar ! Samosa waar ! Chulo bar ! Tar !\"))",
+  "line": "machine: !textMatches:(?i)make each pan|^\\s*$ (not (text: \"Dudh . Wiji chad! Dudh . Wiji chad! Khun . Wiji chad! Khun . Wiji chad! Elchi . Wiji chad! Chulo bar !\")); !textMatches:(?i)first jeeru then lasan (not (text: \"Chulo bar ! Pela rai . Ne poi lasan .\")); !textMatches:(?i)cook it the way they said (not (text: \"Bhar ! Chundo . Fill! Mince. Bhar ! Chundo . Bhar ! Chundo . Samosa waar ! Samosa waar ! Samosa waar ! Samosa waar ! Sam\"))",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "date": "2026-10-12"
+  "run": "ev-20261013-135717-7pn",
+  "commit": "1ffdc85",
+  "date": "2026-10-13"
  },
  "SH-57": {
   "hash": "ee5dc75a7a98b8bfa030",
@@ -4563,23 +4575,6 @@
   "run": "ev-s04-ev1",
   "commit": "b66ad4ff",
   "png": "build/screenshots/evidence/ev-s04-ev1/SH-71.png",
-  "date": "2026-10-12"
- },
- "SAM-17": {
-  "hash": "1cb3e0efee105608d19c",
-  "dhash": [
-   "70f0d0f0f0116060",
-   "31f8d0f0f1606062",
-   "70f8c8d8d8116060",
-   "31c8c8c8c9606872"
-  ],
-  "verdict": "PASS",
-  "line": "A, C, the filling mounds on the first laid-out strip are about the strip's height and the same size as the tray bowls at both 1366x768 and 800x360 (B, D), readable at a glance; note the napkin square's corners stick out past the plate circle in every panel",
-  "panel": "A,C",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/SAM-16.png",
   "date": "2026-10-12"
  }
 }
