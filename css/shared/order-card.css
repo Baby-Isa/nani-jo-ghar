@@ -368,7 +368,7 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
   content: ""; position: absolute; right: 0; top: calc(50% - var(--njg-s1)); width: var(--njg-s3); height: var(--njg-s2);
   background: #b08a5a; clip-path: polygon(0 25%, 100% 50%, 0 75%);
 }
-.oc-card .oc-item.oc-skewer .oc-part { position: relative; z-index: 1; min-width: 0; }
+.oc-card .oc-item.oc-skewer .oc-part { position: relative; z-index: 1; min-width: 0; background-color: var(--njg-card, #fff); } /* (an opaque pill: the stick never shows through a word, S05-C3) */
 .oc-card .oc-item.oc-skewer .oc-part::before { display: none; }
 /* SH-73 (Zafar, 13 Oct): pills that don't fit side by side stack, one per line, each word whole; a skewer stands upright
    (the stick down the middle behind the pills, its tip at the bottom), still read as a sequence, top to bottom */

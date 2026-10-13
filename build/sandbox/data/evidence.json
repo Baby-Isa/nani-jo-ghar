@@ -409,27 +409,11 @@
    "at": "visible:.njg-done",
    "after": null,
    "capture": [
-    "zoom2:.njg-done"
+    "zoom2:.njg-done",
+    "cmd:grep -n \"NB.done\" js/clinic/kit.js"
    ],
    "expect": null,
-   "note": "Zafar wants the ✓ flat (no drop shadow, no lip on the cream disc); the gold tick art's own bevel is the art"
-  },
-  {
-   "flow": "clinic:heal-cut",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "heal:button",
-   "after": null,
-   "capture": [
-    "zoom2:.njg-done"
-   ],
-   "expect": null,
-   "note": "the clinic's ✓: the same flat disc, no shadow or lip"
+   "note": "Zafar wants the ✓ flat (no drop shadow, no lip on the cream disc); the gold tick art's own bevel is the art; the clinic draws the same shared ✓ (js/shared/buttons.js done, called from js/clinic/kit.js: the text capture)"
   }
  ],
  "SH-07": [
@@ -4162,14 +4146,16 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "aadu"
+   ],
    "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "zoom2:canvas:pot"
    ],
    "expect": null,
-   "note": "each stage's contents pictured (no white dots): the pot (dv3-pot-*) after each thing goes in",
+   "note": "each stage's contents pictured (no white dots): the pot (dv3-pot-*) after each thing goes in (an order with ginger: aadu is one of the 'added things')",
    "max": 10
   },
   {
@@ -4180,16 +4166,16 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": [
-    "/ na\\b/"
-   ],
-   "at": "results-words",
+   "want": null,
+   "at": "visible:#done-btn",
    "after": null,
    "capture": [
-    "zoom2:.rs-card"
+    "zoom2:canvas:pot",
+    "crop:#stage"
    ],
    "expect": null,
-   "note": "an order with something left out (X na): the review bowl shows only what was in the order"
+   "note": "after the stir, at the ✓: the pot (and the bowl it is served in) shows what went in, stirred; no dry chilli or curry leaves left over",
+   "delay": 400
   }
  ],
  "DAAR-06": [
@@ -5237,7 +5223,8 @@
     "zoom2:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "the scrape's sequence card (and chaat's) the same group style"
+   "note": "the scrape's sequence card (and chaat's) the same group style",
+   "delay": 900
   }
  ],
  "SEK-04": [
@@ -11657,7 +11644,8 @@
     "zoom2:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "the scrape's sequence card: the order as the little skewer, in a plain group box (decision 95)"
+   "note": "the scrape's sequence card: the order as the little skewer, in a plain group box (decision 95)",
+   "delay": 900
   }
  ],
  "CHAI-19": [

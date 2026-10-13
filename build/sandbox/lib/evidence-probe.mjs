@@ -299,13 +299,13 @@ export class EvidenceProbe {
   async texts(sel) { return this.page.evaluate(`(${TEXTS})(${JSON.stringify([cssOf(sel), NOT_FOR_CHILD_SEL + ", .rs-en", GROWNUP_SEL])})`); }
   async measure(kind, sel, box) { return this.page.evaluate(`(${MEASURE})(${JSON.stringify([kind, Array.isArray(sel) ? sel.map(cssOf) : cssOf(sel), box ? cssOf(box) : null])})`).catch((e) => ({ error: String(e.message || e).split("\n")[0] })); }
   async shot(clip) { return this.page.screenshot({ ...(clip ? { clip } : {}), animations: "allow", timeout: 10000 }); }
-  // a filmstrip frame: straight from the compositor (CDP, optimizeForSpeed), ~30-80 ms instead of Playwright's 0.5-1.8 s
+  // a filmstrip frame: straight from the compositor (CDP; optimizeForSpeed dropped: a judge saw a tiled frame), ~30-80 ms instead of Playwright's 0.5-1.8 s
   // screenshot, so a 4x100 ms strip's frames land about 100 ms apart (CK-27: a short puff fell between frames). Falls back to shot().
   async fastShot(clip) {
     try {
       if (this._cdp === undefined) this._cdp = await this.page.context().newCDPSession(this.page).catch(() => null);
       if (!this._cdp) return this.shot(clip);
-      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", optimizeForSpeed: true, fromSurface: true, captureBeyondViewport: false, clip: { ...clip, scale: 1 } });
+      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false, clip: { ...clip, scale: 1 } });
       return Buffer.from(r.data, "base64");
     } catch (e) { return this.shot(clip); }
   }

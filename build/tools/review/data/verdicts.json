@@ -3861,20 +3861,20 @@
   "date": "2026-10-13"
  },
  "SH-17": {
-  "hash": "3238a8e193ad9dea41e1",
+  "hash": "fc4bb6c8bd2103dbec70",
   "dhash": [
-   "9b978b0101010130",
-   "0105010201050101",
-   "730181810101014d"
+   "c581b9010101012a",
+   "01050b0a01010001",
+   "dfd3dfcbc3d6cede",
+   "7101818101010149"
   ],
-  "verdict": "FAIL",
-  "line": "C, the clinic card 'Bring in chokri' shows no read-along underline in any of six frames over 2.7 s (.reading count 0); A, the chai pop-up 'Muke elchi waari chai khape.' has no underline at 0 ms and is gone by 400 ms (.reading count 0); B, the guide-box strip shows only the bulb and speaker buttons with no line text at all, unchanged over every frame.",
-  "panel": "C",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev4",
-  "commit": "7812e59a",
-  "png": "build/screenshots/evidence/ev-s04-ev4/SH-17.png",
-  "date": "2026-10-12"
+  "verdict": "PASS",
+  "line": "machine: lastsMs:#intro .ic-card .reading>=200 (on screen 693 ms); count:#mission .oc-strip .ra-on>=1 (1 visible); lastsMs:.njg-rq-card .reading>=200 (on screen 2151 ms)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-161554-mqx",
+  "commit": "9b216fd",
+  "date": "2026-10-13"
  },
  "SH-18": {
   "hash": "2b2cff845cf24eb13349",
@@ -4234,18 +4234,20 @@
   "date": "2026-10-12"
  },
  "SH-44": {
-  "hash": "3bf51fa613c13e09063f",
+  "hash": "c1b99a36f7b8dbfd5de9",
   "dhash": [
-   "00583b0f17071090",
-   "15aec21515030703"
+   "00583a262e0e1090",
+   "51497165573e3e41",
+   "14090b0b070c0350",
+   "694d416565141c0c"
   ],
-  "verdict": "FAIL",
-  "line": "machine: SH-44-p1-L1-1366x768: count:.rs-step>=1: 0 visible",
+  "verdict": "PASS",
+  "line": "machine: count:.njg-results .rs-p3 .rs-step>=1 (2 visible); noClip:.rs-card (1 clean); count:.njg-results .rs-p3 .rs-step>=1 (2 visible)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "date": "2026-10-12"
+  "run": "ev-20261013-161554-mqx",
+  "commit": "9b216fd",
+  "date": "2026-10-13"
  },
  "SH-45": {
   "hash": "bbaa406faa0e96317a9c",
