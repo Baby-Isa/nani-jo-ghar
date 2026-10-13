@@ -12250,12 +12250,25 @@
    "max": 10
   }
  ],
-<<<<<<< HEAD
  "CLN-142": [
   {
    "flow": "clinic:heal-cut",
    "path": "real-pace",
-=======
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results-badges",
+   "after": null,
+   "capture": [
+    "crop:.rs-card"
+   ],
+   "expect": null,
+   "note": "the taught scrape at a child's pace reaches its end screen (the plaster help ends once every patch is covered)"
+  }
+ ],
  "SH-79": [
   {
    "flow": "cook:maani-line",
@@ -12281,22 +12294,10 @@
   {
    "flow": "cook:assemble",
    "path": "mistake",
->>>>>>> 2d494a7 (S05-C3: rows for the full gate's C3 findings (SH-79..82, CK-33, CK-34) with their probes; the house's 'Coming soon' (index.html, js/home.js) is outside C3's files)
    "level": 1,
    "sizes": [
     "1366x768"
    ],
-<<<<<<< HEAD
-   "profile": "fresh",
-   "want": null,
-   "at": "results-badges",
-   "after": null,
-   "capture": [
-    "crop:.rs-card"
-   ],
-   "expect": null,
-   "note": "the taught scrape at a child's pace reaches its end screen (the plaster help ends once every patch is covered)"
-=======
    "profile": "seen",
    "want": null,
    "at": "every:placed",
@@ -12412,7 +12413,6 @@
    ],
    "note": "the count station: one lit thing (the bowl's glow, never with a .njg-pulse)",
    "max": 4
->>>>>>> 2d494a7 (S05-C3: rows for the full gate's C3 findings (SH-79..82, CK-33, CK-34) with their probes; the house's 'Coming soon' (index.html, js/home.js) is outside C3's files)
   }
  ]
 }
