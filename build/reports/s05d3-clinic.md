@@ -24,4 +24,4 @@ Rows split one claim each (CLN-123..142; CLN-100 and CLN-53 reworded to Zafar's 
 CLN-118 (Results: no badges for a taught round), CLN-138 (take-back driver: first undoable placement), CLN-141 (card line through rows), speaker ids in the voice timeline, capture lag on `every:bubble`, `checks.mjs` unit fail (order card recipe rows).
 
 ## Proof
-Final gate `20261013-1756` (217 clinic pages, --check, resumed once): 1 stop (heal-ear#hint, caused by the wax help: fixed, both sizes re-run to their end); 1 new finding (fever 800x360 card scroll 235>230) and 4 contract-8 breaks (knee L2, taste, eye L2: card "next" row + tool glow), in code this round did not touch. Fast checks: words, bump, specs ok; check_onboard ok; leak bots run.
+Final gate `20261013-1756` (217 clinic pages, --check, resumed once): 1 stop (heal-ear#hint, caused by the wax help: fixed, both sizes re-run to their end); 1 new finding (fever 800x360 card scroll 235>230) and 4 contract-8 breaks (knee L2, taste, eye L2: card "next" row + tool glow), in code this round did not touch. Fast checks: words, bump, specs ok; check_onboard ok; leak bots clinic, heal-a, heal-b, heal-c PASS.
