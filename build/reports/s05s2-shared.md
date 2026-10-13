@@ -5,6 +5,7 @@ Branch `ccr-a7370759-t0lee7`, commits `ad8e921`, `8808501`, `da84a28`. Game code
 ## What changed
 - **order-card.js/.css:** a closed card's peek is the small bulb with no counter (decisions 57, 89). `look: "eye"` keeps the eye for a written closed card. The bulb floats at the end of the headline's last line, so it no longer reserves a column. The face's tap area stays inside its own 48 px box. `OrderCard.closeBig`.
 - **request-popup.js:** `Lifecycle.request({level})` closes every big card from level 3, even through a host's redraws. The shared talk pauses a speaker's idle loops while it talks.
+- **results.js:** a mode's own Again action carries `.rs-again` too (CLN-111). **say.js:** `isPlaceholder(id)` and `captionRec` tag a pill or caption still to record (grey italic, `data-rec`), so D's after-the-fact tagging can go.
 - **Specs** (`evidence.json`): SH-16 follows decision 89. New row and probe SH-72. SH-17 also films the pantry strip.
 
 ## Proof
@@ -26,6 +27,8 @@ Branch `ccr-a7370759-t0lee7`, commits `ad8e921`, `8808501`, `da84a28`. Game code
 | ART-18 | 000712-3ky | clinic passes | open: T/C (breathing measured, talk ≈0.8 px) |
 | SEK-03 | 233511-asw | — | open: T (cards closed from L3 hide the groups) |
 | SH-44 | 233511-asw | — | open: needs a call |
+| CLN-111 | 002523-6a3 | 002601-sne (.rs-again) | open: T/D (button count, morning probe) |
+| Say tags (D's request) | scratch page: no tag | tagged | done: `isPlaceholder`, `captionRec` |
 
 Run ids are `ev-20261012-…` or `ev-20261013-…`.
 

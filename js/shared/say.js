@@ -25,6 +25,7 @@
  *   Say.tell(opts)            the same, under the names Who did it / Find it
  *                             designed against (actor, onHeard / onChoice)
  *   Say.pills(el, ids, opts)  the shared pill builder on its own
+ *   opts.isPlaceholder(id), opts.captionRec: a pill or the caption still to record (grey italic, data-rec; decision 84)
  *   Say.machine(opts)         the pure state machine under moment() (tests, bots)
  *   Say.isListening()         a mode's audio must not play a voice line while true
  *
@@ -172,6 +173,7 @@
 .njg-say.hint .pill{opacity:.6}
 .njg-say.live .pill{opacity:1;pointer-events:auto;cursor:pointer}
 .njg-say .pill.ph{font-style:italic;color:#8a7a6a}
+.njg-say .cap.ph{font-style:italic;color:#8a7a6a}
 .njg-say .parent{display:flex;gap:8px;font-size:13px}
 .njg-say .parent button{min-height:36px;padding:4px 12px;border-radius:18px;border:1px solid #b9a07a;background:#f7eedd;font:inherit}
 @keyframes njg-pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,85,61,.5),0 4px 0 #8e3526}50%{box-shadow:0 0 0 14px rgba(200,85,61,0),0 4px 0 #8e3526}}
@@ -206,7 +208,11 @@
     const buttons = {};
     for (const id of ids) {
       const b = doc.createElement("button");
-      b.className = "pill" + (isPlaceholder(id) ? " ph" : "");
+      // decision 84 (S05-S2): a word still to record is its English in grey italic, tagged "to record" in the markup only;
+      // a mode with its own words says which (opts.isPlaceholder: the clinic), else Cook's word list decides
+      const ph = opts.isPlaceholder ? !!opts.isPlaceholder(id) : isPlaceholder(id);
+      b.className = "pill" + (ph ? " ph" : "");
+      if (ph) b.dataset.rec = "to record";
       b.type = "button";
       b.setAttribute("data-choice", id);
       b.textContent = (opts.label || defaultLabel)(id);
@@ -250,6 +256,11 @@
       const cap = doc.createElement("div");
       cap.className = "cap";
       cap.textContent = opts.caption;
+      // (a caption still to record: grey italic, tagged in the markup only, decision 84)
+      if (opts.captionRec) {
+        cap.classList.add("ph");
+        cap.dataset.rec = "to record";
+      }
       box.appendChild(cap);
     }
     const mic = doc.createElement("button");
@@ -260,7 +271,7 @@
     box.appendChild(mic);
     let resolveOut;
     const done = new Promise((r) => (resolveOut = r));
-    const pills = Say.pills(box, choices, { label: opts.label, onPick: (id) => onPick(id) });
+    const pills = Say.pills(box, choices, { label: opts.label, isPlaceholder: opts.isPlaceholder, onPick: (id) => onPick(id) });
     async function onPick(id) {
       const st = M.pill(id);
       if (st.phase !== "acting") return;

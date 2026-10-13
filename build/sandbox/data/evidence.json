@@ -6838,7 +6838,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results-badges",
+   "at": "results-words",
    "after": null,
    "capture": [
     "dom:.rs-actions",

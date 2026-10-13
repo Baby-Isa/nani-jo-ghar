@@ -373,7 +373,8 @@
         .map((a) => {
           // E1 (no written English for the child): the actions are pictures; a label is for grown-ups' screen readers only (R3a)
           const icon = ICON[a.icon] || ICON[{ list: "grid", home: "home" }[a.id] || a.id] || "";
-          const cls = ["rs-btn", "rs-act", `rs-act-${esc(a.id)}`, a.primary ? "primary" : ""].filter(Boolean).join(" ");
+          // CLN-111 (S05-S2): a mode's own Again is the same Again as the default one (.rs-again), whichever path drew it
+          const cls = ["rs-btn", "rs-act", `rs-act-${esc(a.id)}`, a.id === "again" ? "rs-again" : "", a.primary ? "primary" : ""].filter(Boolean).join(" ");
           return `<button class="${cls}" type="button" data-act="${esc(a.id)}"${a.elId ? ` id="${esc(a.elId)}"` : ""} aria-label="${esc(a.label || a.id)}" title="${esc(a.label || a.id)}">${icon}</button>`;
         })
         .join("");
