@@ -44,6 +44,8 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~01:00 UK: T2's extras in: SH-66 PASS (the window bound), the vessel-meta rows SH-33, CHAI-06, MAA-10, CK-02, CK-20, CK-12 PASS, SH-15 and CHT-07 PASS; SEK-05 is a game FAIL (pantry ladder 4 rows vs 3; B checking whose); `--lint-specs`, Probe pitfalls and the brief line landed (26 specs still flagged, T2 working them down). T2 carries on with the clinic and round-2 probes. **D2 launched**: session_01BNft4fjfECbj3XBiuy7vpy (CLN-54 plus T2's clinic failures). C2 brief ready (`s05c2-cook.brief.txt`); launches when B goes idle (four at once).
 
+13 Oct ~01:17 UK: B: SH-01's word is confirmed (Mum, 26 Sept); the fault is the wanted-order tool → T2. SH-70 waits on Mum (*Muke de*). SEK-05 PASS (ed7e0cf: the 4th row is the pantry headline by design; B updated the out-of-date test_cook.py, outside its file list, noted). **C2 launched**: session_01VhgWJHNX8Md5bEdFsPL4UW. Running: T2, S2, D2, C2.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
