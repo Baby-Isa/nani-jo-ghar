@@ -2456,10 +2456,9 @@
     "strip:.cl-side .oc-card:5x2000"
    ],
    "expect": [
-    "lastsMs:.oc-card.english>=7500",
-    "!lexicon"
+    "lastsMs:.oc-card.english>=7500"
    ],
-   "note": "the bulb opens a closed card in English for about 8 s"
+   "note": "the bulb opens a closed card in English for about 8 s (the bulb's English is meant to be English: no lexicon check)"
   },
   {
    "flow": "cook:chai-tray",
@@ -6878,7 +6877,7 @@
    ],
    "expect": [
     "count:.rs-again=1",
-    "count:.rs-actions button>=2"
+    "count:.rs-actions button>=3"
    ],
    "note": "after a morning: Again and All patients (and Next between patients), no placeholder button"
   }
@@ -7791,7 +7790,7 @@
  "CLN-117": [
   {
    "flow": "clinic:sendoff",
-   "path": "fair",
+   "path": "variant-e4",
    "level": 3,
    "sizes": [
     "1366x768"
@@ -7809,7 +7808,7 @@
     "lexicon",
     "!textMatches:(?i)nani"
    ],
-   "note": "E4: the child asks 'how do you feel?' first; the doctor cues it (the send-off's say step: the bubbles and pills) (needs a driver that draws E4: 1 in 4 at L3; 12 seeds drew E2 every time)"
+   "note": "E4: the child asks 'how do you feel?' first; the doctor cues it (the send-off's say step: the bubbles and pills) (played with &variant=E4)"
   }
  ],
  "CLN-30": [
@@ -8499,7 +8498,7 @@
   },
   {
    "flow": "clinic:heal-taste",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -8512,7 +8511,7 @@
     "strip:.cl-heal:5x200"
    ],
    "expect": null,
-   "note": "the milk or water jug poured into the tumbler (step milk / water)"
+   "note": "the milk or water jug poured into the tumbler (step milk / water) (at the clinic's real pace: in fast mode the pour is too quick to film)"
   }
  ],
  "CLN-55": [

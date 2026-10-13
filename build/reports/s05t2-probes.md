@@ -35,3 +35,6 @@ contract-11: no background is judged while a heal push-in is running (`contract-
 | SH-01 | tool fixed (the wanted order reads the order's own surfaces, not the whole page). The earlier "match" was the *na* row (`fudino ji chutney na.`). Asking for a layer (`/fudino ji chutney(?!\s+na)/i`): no seed 1..40 gives one at L4 chaat, so B's 22% is not what plays: B/C |
 | CLN-111 | PASS (ev-20261013-012257-dgq): the morning end is a registered moment; Next is not expected on the one-patient lab |
 | ART-18 | still FAIL 2.4 px: every Cook line is `line:cook`, so the probe cannot tell Nani speaking from breathing; needs the speaker in the sound hook (T next) |
+
+## Last items (13 Oct, run ev-20261013-081647-4eq)
+CLN-117 PASS (new `variant-e4` driver plays `&variant=E4`: "Ask them how they feel." is said first). SH-41 PASS (Cook 7753 ms, clinic 8181 ms; the bulb's English is not lexicon-checked). CLN-111 PASS (morning end, 3 buttons). CLN-54: sheet, at the clinic's real pace. ART-18 and SH-01 stay as above (speaker in the sound hook; B/C data). A single re-run of every row in the table was not done; each row's last run id is above.

@@ -20,6 +20,8 @@ export const DRIVERS = {
   "tap-through-popup": { kinds: ["cook", "heal", "clinic-stage"], moments: ["rec:tapped-through", "drv:tapped-through"] },
   // the mistake player, then the end card's tick badge tapped to open the steps list (SH-44, D14)
   "open-steps": { kinds: ["cook"], moments: ["rec:steps-open", "rec:steps-none", "rec:wrong-choice", "rec:wrong-tap", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"] },
+  // the send-off's E4 (the child asks first, 1 in 4 at L3 by draw): the clinic page with &variant=E4 (CLN-117)
+  "variant-e4": { kinds: ["clinic-stage"], moments: [] },
   "tap-quick": { kinds: ["cook"], moments: ["drv:count-word"] },
   "tawa-empty-then-off": { kinds: ["cook"], moments: ["rec:tawa-empty", "rec:knob-off", "drv:knob-off", "drv:tawa-empty"] },
   "idle-twice": { kinds: ["cook", "heal"], moments: ["rec:idle-hint", "rec:idle-again"] },
