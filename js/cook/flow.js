@@ -739,6 +739,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   function drawServed(ctx, x0) {
     const s = S();
     const n = ctx.served.length;
+    // a drawn stand-in only when its picture is loaded (never Phaser's green missing-texture box on the tray)
+    const prop = (key, ...rest) => (s.textures.exists(key) ? s.prop(key, ...rest) : null);
     const tray = trayFor(x0);
     // CK-21: an order for several people (the chai tray's cups) serves each person's glass onto their own tray
     const people = ctx.served.length === 1 && ctx.served[0].recipe === "chai" && Array.isArray(ctx.served[0].cups) && ctx.served[0].cups.length > 1 ? ctx.served[0].cups : null;
@@ -755,7 +757,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         used.add(j);
         const t = { x: spots[j][0], y: spots[j][1], w: spots[j][2], h: spots[j][3], painted: !!(kt && kt.ready) };
         drawTray(s, t);
-        if (!servedPic(s, Cook.Art.servedName(ctx.served[0].recipe, { noMilk: p.dudh === false }), t.x, t, 0)) s.prop("glass-chai", t.x, t.y - 4, 100, 130, { depth: Cook.D.occ + 2 });
+        if (!servedPic(s, Cook.Art.servedName(ctx.served[0].recipe, { noMilk: p.dudh === false }), t.x, t, 0)) prop("glass-chai", t.x, t.y - 4, 100, 130, { depth: Cook.D.occ + 2 });
         s.steam(t.x, 560, 1);
       });
       return;
@@ -768,11 +770,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (d.recipe === "chai" && Cook.Art.servedArt("chai") && s.textures.exists(Cook.Art.servedKey("chai"))) {
         for (let c = 0; c < d.count; c++) servedPic(s, servedRecipe(d, c), px + c * 56 - (d.count - 1) * 28, tray, c, (tray.w * 0.92) / Math.max(1, n));
       } else if (d.recipe !== "chai" && servedPic(s, servedRecipe(d), px, tray, i, (tray.w * 0.92) / Math.max(1, n)));
-      else if (d.recipe === "chai") for (let c = 0; c < d.count; c++) s.prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
+      else if (d.recipe === "chai") for (let c = 0; c < d.count; c++) prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "maani") {
-        s.prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });
+        prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });
         for (let k = 0; k < d.count; k++) s.track(s.add.image(px, 690 - k * 9, "chapati-puffed").setScale(0.25).setDepth(Cook.D.occ + 3));
-      } else if (d.recipe === "daal") s.prop("pot-daal", px, y, 180, 130, { depth: Cook.D.occ + 2 });
+      } else if (d.recipe === "daal") prop("pot-daal", px, y, 180, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "chaat") {
         s.prop(s.tex("vessel:serving"), px, y + 10, 210, 150, { depth: Cook.D.occ + 2 });
         (d.seq || []).forEach((id, k) => s.track(s.add.image(px, 660 - k * 3, s.tex(`layer:${id}`)).setScale(0.45).setDepth(Cook.D.occ + 3 + k * 0.01)));
@@ -793,7 +795,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (busy && state.patience != null && state.patience < 0.35) S().setMood(who, "impatient");
     // the served pictures were prefetched with the order; a slow one gets a moment, then the drawing stands in
     await Promise.race([Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), Cook.wait(1200)]);
-    if (order.dishes.some((d) => d.recipe !== "mishkaki" && !Cook.Art.servedArt(d.recipe))) await Promise.race([Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), Cook.wait(800)]);
+    // the drawn stand-ins when a served picture is missing OR still loading (a slow one: the stand-in was drawn unloaded,
+    // Phaser's green missing-texture box on the tray, S05-C2)
+    const unserved = (d) => !Cook.Art.servedArt(d.recipe) || !S().textures.exists(Cook.Art.servedKey(Cook.Art.servedName(d.recipe)));
+    if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Promise.race([Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), Cook.wait(800)]);
     drawServed(ctx, Cook.CHARS[who].x);
     Cook.sfx.pop();
     await Cook.wait(600);
@@ -937,7 +942,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await S().talk("nani", Lang.line("pocket"), { ms: 3800 });
     await runOrder({ who: "nani", dishes: [R.chai.make("nani")] }, state.day, { demo: true });
     await serviceView(null);
-    S().prop("glass-chai", 470, 712, 100, 130, { depth: Cook.D.occ + 2 });
+    // her chai on her tray, as every served dish is (CK-21): the served picture, never the old "glass-chai" prop, which
+    // nothing loads now (Phaser drew its green missing-texture box there, S05-C2)
+    await Promise.race([Cook.Art.loadServed(S(), "chai"), Cook.wait(1200)]);
+    drawServed({ served: [{ recipe: "chai", count: 1 }] }, Cook.CHARS.nani.x);
     S().setMood("nani", "happy");
     Cook.sfx.fanfare();
     // for grown-ups only, behind the "?" (E1): the pause stays
