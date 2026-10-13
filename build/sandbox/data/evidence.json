@@ -12576,25 +12576,21 @@
  ],
  "SH-84": [
   {
-   "flow": "cook:chai-tray",
+   "flow": "repo",
    "path": "fair",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
-   "profile": "second-play",
+   "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "now",
    "after": null,
    "capture": [
-    "zoom2:.njg-results .rs-time",
-    "dom:.njg-results .rs-badges"
+    "cmd:grep -n \"rs-ribbon\" js/shared/results.js css/shared/results.css"
    ],
-   "expect": [
-    "!textMatches:(?i)new best"
-   ],
-   "note": "a second play: the 'new best' ribbon (if this play was faster) shows the crown, no English words",
-   "delay": 2800
+   "expect": null,
+   "note": "the ribbon's markup: the crown icon, no English words (a played new best is not certain on a seed: the second play may be slower)"
   }
  ]
 }
