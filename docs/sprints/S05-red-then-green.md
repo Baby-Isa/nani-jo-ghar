@@ -62,6 +62,8 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~11:05 UK: **C2 round 3 done** (bc318ab): DAAR-11 ladle turns with its path, no hand; the Fill fold on the strip art; day 1's green square (a missing old chai prop) and the 'Thank you!' overlap fixed; the day-1 English bubble is a tagged to-record line (decision 84). contract-8 calls sent to T2: the bulb's own on-state isn't a lit task item; the card row and stage glow on the same thing in one colour are one highlight (SH-53); frames before first paint aren't findings.
 
+13 Oct ~11:23 UK: **S2 built the steps page** (af28cd2, decision 93): page 3 after the word review, by itself, Kutchi with English under, right gold, wrong red with what was done, two columns past four, no inner scroll, no page without steps. C2 adding Cook's page-3 test listener (flow.js). T2's final all-rows run in progress. Spend about $230 of $270; judging and `/review` to be kept lean.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
