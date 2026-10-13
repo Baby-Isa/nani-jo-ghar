@@ -321,7 +321,8 @@
       });
       await tween(220, (u) => g.setAttribute("transform", `translate(${to.x} ${to.y}) rotate(${-100 * u})`));
       const stream = s("path", { d: `M${to.x - 50} ${to.y - 10} Q${TOP.x + 20} ${to.y + 10} ${TOP.x} ${TOP.y}`, stroke: t.liquid, "stroke-width": 9, fill: "none", "stroke-linecap": "round", opacity: id === "water" ? 0.75 : 0.95 }, S.fx);
-      await tween(760, (u) => level(u, t.liquid, opOf(id)));
+      // CLN-104 (S05-D3): the level rises slowly enough to see it rise (it read as one jump at 760 ms)
+      await tween(1500, (u) => level(u, t.liquid, opOf(id)));
       stream.remove();
       await tween(180, (u) => g.setAttribute("transform", `translate(${to.x} ${to.y}) rotate(${-100 * (1 - u)})`));
       await tween(300, (u) => {
