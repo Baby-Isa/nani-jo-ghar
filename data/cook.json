@@ -4825,10 +4825,12 @@
       "daal-dry"
      ],
      "files": [
-      "assets/cook/items/tool-ladle-t.webp"
+      "assets/cook/items/tool-ladle-t.webp",
+      "assets/cook/items/v3/daar/ladle-v3.webp"
      ],
      "prefetch": [
       "assets/cook/items/tool-ladle-t.webp",
+      "assets/cook/items/v3/daar/ladle-v3.webp",
       "assets/cook/props/chilli.webp",
       "assets/cook/props/daal-dry.webp",
       "assets/cook/props/garlic.webp",
@@ -4860,14 +4862,20 @@
       "onion",
       "chilli"
      ],
-     "files": []
+     "files": [
+      "assets/cook/items/v3/samosa/board.webp",
+      "assets/cook/items/v3/samosa/fold-*"
+     ]
     },
     "fold": {
      "props": [
       "onion",
       "chilli"
      ],
-     "files": []
+     "files": [
+      "assets/cook/items/v3/samosa/board.webp",
+      "assets/cook/items/v3/samosa/fold-*"
+     ]
     },
     "fry": {
      "props": [

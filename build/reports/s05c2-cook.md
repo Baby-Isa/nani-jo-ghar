@@ -31,6 +31,20 @@ Red run ev-20261013-001738-bc3; touched run `s05c2-touched`.
 - Five contract-8 double highlights (S/C).
 - Flaws seen (not mine): see the QA section.
 
+## Round 3 (orchestrator, decisions 93-95)
+
+| item | red | green | verdict |
+|---|---|---|---|
+| DAAR-11 (decision 94): radial ladle, no hand (stir.js uses daar's ladle-v3) | ev-20261013-084420-7jh (hand, -17..+9 deg) | trace 48, 117, -174, -105, -37 deg; filmstrip | built, sheet to judge. Probe amp 0 is T2's walk filter (T) |
+| Fill fold on the samosa strip art (decision 94) | drawn triangle (scratch shot) | board, strip pictures, samosa's 3 swipe lines, samosas on the plate | built, sheet to judge. The flip pulse had been stretching the flown samosa; fixed |
+| Day 1 green square | 1 missing texture (glass-chai, chaiDemo) | 0, also with served art 3 s late | built: served chai on Nani's tray |
+| contract-3, day 1 "Thank you!" | s05c2-touched | s05c2-r3a: no break | built |
+| Day 1 English bubble | — | — | no change: the "pocket" line is a story-mode English line to record, drawn grey italic with data-rec (decision 84) |
+| Day 1 blank frames | — | — | not the game: contract samples at 0.2 and 0.9 s, before the title draws (T) |
+| contract-8 (5 left, s05c2-r3a) | — | — | not Cook: the bulb's on-state `.lit` counted as a highlight (grill L3, L4), and the card row plus the stage glow of one thing counted as two (daar), which SH-53 calls one highlight (T/S2) |
+
+The manifests list the new pictures: stir gets ladle-v3; fill and fold get the samosa board and fold pictures. loadcheck 21/21. checks.mjs all ok.
+
 ## Proof (from the run; do not retype)
 - **Pages run:** 7 (flow x size): 7 flows at 1366x768. 7 reach their end, 0 stop short.
 - **Page errors:** 0.

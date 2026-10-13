@@ -31,3 +31,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-13 00:45 UK · S05-D2 clinic round 2: CLN-54 recipe rows (red mb6/green 53r), SH-41 clinic bulb 8 s (fyl/an4), Say tags, closed-card '···' gone; CLN-11/-45/-48/-117, LNG-02, CLN-111 open on specs (T); report build/reports/s05d2-clinic.md
 01:13 S05-T2: clinic and round-2 probe items done; lint-specs baseline 0; open: CLN-117 driver, contract-11 settle, SH-41 clinic English
 09:15 S05-C2: SH-44 (Cook half), SEK-03, SH-51, SH-17 and the legacy Roll art fixed and proven; SH-09, PAN-01, SH-58, CHAI-15 pass; SH-19, SH-17 probes and DAAR-11 trace to T; DAAR-11 handle and the Fill fold to Zafar. Report build/reports/s05c2-cook.md.
+11:05 S05-C2 round 3: DAAR-11 radial ladle, Fill fold on the strip art, the day-1 green square, contract-3 'Thank you!' fixed and proven; the English bubble is a tagged placeholder; blank frames and contract-8 to T/S2.
