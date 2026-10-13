@@ -48,6 +48,8 @@ Launched 12 Oct ~22:08 UK: T session_01EK7j3VrkA8wFN1zCVHhmmL, S session_01XUSVn
 
 13 Oct ~01:30 UK: **S2 finished** (`s05s2-shared.md`, 700f2f5): SH-09, SH-16 (small bulb), SH-72 (new: no written rows in the L3 pop-up), PAN-01, SH-36, SH-48, SH-64 built; CLN-111 `.rs-again`; Say tags placeholders itself. Routed: SH-17, SH-58, SH-51, SH-19 → C2; Say tagging clean-up, CLN-111 → D2; ART-18 trace and CLN-111 probe → T2. SH-44 (does the steps list open by itself on the results card when a step went wrong?) → Zafar.
 
+13 Oct ~01:38 UK check-in: **75 open or reopened, 262 built** (was 145 / 188 at the start). D2 has pushed the shared-Say tagging and the closed card's single sign. Running: T2, D2, C2.
+
 ## Small decisions
 - 12 Oct, Zafar: yes to all seven of the plan's decisions: (1) the budget; (2) CK-TAB-01 (4:3 tablet layouts) moves to Sprint 6; (3) CLN-122 closed with the knee framing as it is (decision 83); (4) the word review keeps the English gloss under each word, as designed (F14; confirmed 12 Oct, 22:20 UK; B told); (5) the kadchi, teaspoon and potato cube join the s05 art block as part G (3 images); (6) the multi-language prep moves to Sprint 6; (7) samosa's final ✓ goes where the outcome is already decided (decision 79), so it needs no line.
 - The Python modules the probes need (scipy, playwright) are installed by each session and then by a SessionStart hook (T), rather than the cloud environment's setup script, which sessions can't edit.
