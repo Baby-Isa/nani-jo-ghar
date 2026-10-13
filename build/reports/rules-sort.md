@@ -63,7 +63,7 @@ Not coded, and left that way: A1–A4, A7, A9 (how Zafar works with Claude), C1/
 3. **Non-negotiable 14** mixes a standing limit (one build session at a time, two at most, decision 99) with tool detail (bump_version, push to main) that `publish.mjs` enforces. Keep the session count (now 1–2, not ~4) and drop the tool names.
 4. **Working agreement, "Work in sprints (decision 49, /sprint)"**: add decision 99's "one to three days, one playable goal". The "at most ~4 at once" in 14 contradicts decision 99 (one, two at most).
 5. **Non-negotiable 13** cites decision 77 (ChatGPT runs) which is right; drop the "No image-API art without his say-so" clause only if Zafar wants the API back (ASK: he said no on 9 Oct; leave).
-6. **"Where a new fact goes"** says a yes/no goes to `docs/decisions.md` and `rules.md` in the same commit; after the chop it is "a one-line log entry in `decisions.md`, the fact itself in its area doc or check". Fix the sentence.
+6. **"Where a new fact goes"** says a yes/no goes to `docs/archive/decisions/decisions-1-to-99.md` and `rules.md` in the same commit; after the chop it is "a one-line log entry in `decisions.md`, the fact itself in its area doc or check". Fix the sentence.
 7. **"Tools and skills"** lists `/handover` "every step end" and `/checkin`: fine. Add "`node build/tools/review/checks.mjs` before any report" so builders can't skip it; or better, make it the brief's hard line (CODE-TO-DO 14).
 8. **"Starting a chat"** names `docs/process/rules.md` as the rulebook; remove once deleted; point to the area table instead (structure review §5).
 9. Nothing in CLAUDE.md is wrong on the family or language rules. Non-negotiables 4, 5, 6, 8, 9, 10, 11, 12, 16 stand word for word.

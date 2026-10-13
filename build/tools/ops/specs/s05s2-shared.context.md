@@ -2,7 +2,7 @@
 
 Pasted, not linked: the facts a launch used to re-read the whole rulebook for. The full rulebook only where this names a section.
 
-## The last 15 decisions (docs/decisions.md; the newest wins)
+## The last 15 decisions (docs/archive/decisions/decisions-1-to-99.md; the newest wins)
 - **76** (8 Oct): Sprint 4 is "your feedback sticks": no new features or art beyond his named items until it's done. A route run plays what Zafar plays (every Labs tile and the clinic morning, L1–L4, voice log and a shot of every state); Fable audits every open, ...
 - **77** (9 Oct): Art is made in ChatGPT runs Zafar supervises: Claude audits what's needed and writes one paste block; no image-API art without his say-so (replaces decision 71's API default). S04-C's leaning Nani is reverted to her previous art.
 - **78** (9 Oct): Feedback is captured at his full strength and checked by the game: /feedback writes every shared or 'everywhere' point as a Shared row with a contract check, quotes his words, and a second Fable reader checks the rows for missing or weakened points before they ...

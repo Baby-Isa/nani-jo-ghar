@@ -12,7 +12,8 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 3. Add one line to `docs/status.md` "Next chat" and commit.
 
 ## During
-- Small decisions go in the sprint file's "Small decisions". A lasting decision (one that will still hold next sprint) goes into the doc or check it changes, plus one numbered line in `docs/decisions.md`, in the same commit; one line per answer. Never paste check-ins into the sprint file (`checkin.mjs --log` keeps them in `docs/process/overnight-log.md`).
+- Small decisions go in the sprint file's "Small decisions". A lasting decision (one that will still hold next sprint) goes into the doc, row or check it changes, the commit saying "Zafar, <date>"; one answer, one place. Never paste check-ins into the sprint file (`checkin.mjs --log` keeps them in `docs/process/overnight-log.md`).
+- At close: any mode called finished gets a pass through `docs/ideas.md` with Zafar first (Zafar, 14 Oct).
 - Feedback becomes fix-list rows the same day (`/feedback`). Cut scope before the budget.
 
 ## Before the publish (decision 78)

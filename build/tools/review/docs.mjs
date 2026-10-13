@@ -21,7 +21,6 @@ help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s
 export const LIMITS = {
   "CLAUDE.md": 900,
   "docs/status.md": 1500,
-  "docs/decisions.md": 1500,
   "docs/process/regressions.md": 12000,
   "docs/README.md": 700,
   "docs/tools.md": 1000,

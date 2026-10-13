@@ -2,7 +2,7 @@
 
 Pasted, not linked: the facts a launch used to re-read the whole rulebook for. The full rulebook only where this names a section.
 
-## The last 15 decisions (docs/decisions.md; the newest wins)
+## The last 15 decisions (docs/archive/decisions/decisions-1-to-99.md; the newest wins)
 - **73** (8 Oct): Every build session updates the status of each regression row it fixes, in the same commit as the fix; the 'pending decision' note is removed once a decision row answers it.
 - **74** (8 Oct): The waiting-room L1 'tap a girl' leak is left as it is until the other patients' art exists.
 - **75** (8 Oct): A rule Zafar gives for every game is built once in the shared host and enforced by a contract check over every game and level, never as a per-game fix: the request pop-up before every play phase, moving on by itself when the outcome is ...

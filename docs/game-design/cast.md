@@ -188,3 +188,6 @@ Replaces the tailor's shop in Big Ma's mending story (Roadmap). Big Ma is the fa
 | Big Ma | The family's seamstress; sings while she sews | Recurring at the Birthday, dinners and gatherings; solves problems in her room (e.g. mends a kurta) |
 | The shopkeeper | Sometimes hands over the wrong thing | The player's first taste of correcting someone in Kutchi |
 
+## Zafar's answers, 14 Oct
+
+- **The doctor** voices his own lines (Round 4 Section G) and the children call him by his family's name for him. (Zafar, 14 Oct)

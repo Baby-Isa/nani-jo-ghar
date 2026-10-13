@@ -13,7 +13,7 @@ Money (a ceiling) and time. Scope is cut, never the budget overrun. Record what 
 One line each: id, what it does, model and effort, report in `build/reports/`.
 
 ## Small decisions
-Choices that only matter to this sprint (numbers, one-offs, an order of work). Lasting ones go to `docs/decisions.md` and `docs/archive/process/rules-2026-10-13.md` with a one-line why and a date, and are not repeated here.
+Choices that only matter to this sprint (numbers, one-offs, an order of work). Lasting ones go to `docs/archive/decisions/decisions-1-to-99.md` and `docs/archive/process/rules-2026-10-13.md` with a one-line why and a date, and are not repeated here.
 
 ## Outcome
 What shipped (the commit on `main`), what was cut or moved to the next sprint, the open regression rows by mode (`node build/tools/review/statuscounts.mjs`).

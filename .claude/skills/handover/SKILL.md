@@ -24,4 +24,4 @@ description: Rewrite the "Next chat" section of docs/status.md so a fresh chat c
 6. Tell Zafar in one line, and recommend a fresh chat at this step boundary.
 
 ## Keep it short
-Facts and pointers, no history: the reports, the fix list and `docs/decisions.md` hold the detail. Answered questions leave `docs/questions.md` the same day.
+Facts and pointers, no history: the reports, the fix list and the design docs hold the detail. Answered questions leave `docs/questions.md` the same day.

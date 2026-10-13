@@ -58,3 +58,8 @@ Word for word from the retired rulebook and decisions log (`docs/archive/process
 - **Consent:** contributors know where their voice is used and can have it removed; children's voices never ship and stay on the device. (I15)
 - **Decision 66 (7 Oct):** The voices stay family: Mum's cleaned clips beat the robot. Lines are retaken with a better recording set-up (set-ups tested first). The cast: Mum (Nani); Hannah's grandad (the doctor and the older-man Kutchi voices); Zafar and Hannah (the children's voices). The robot test is closed.
 - **Decision 69 (7 Oct):** No audio clip is offered to Zafar or shipped without a blind listening check (two transcribers not told the target; only the target, one voice), and a random-sample audit by the orchestrator before any picker goes out.
+
+## Zafar's answers, 14 Oct
+
+- **The English story lines** (story mode, the only spoken English) are voiced by whoever voices that character's Kutchi, so each character keeps one voice. (Zafar, 14 Oct)
+- **Children's voices:** decision 66 stands: Zafar and Hannah record the children's lines; the older "children's voices never ship" line above is superseded. (Zafar, 14 Oct)

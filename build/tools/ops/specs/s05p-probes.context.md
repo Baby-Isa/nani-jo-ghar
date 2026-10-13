@@ -2,7 +2,7 @@
 
 Pasted, not linked: the facts a launch used to re-read the whole rulebook for. The full rulebook only where this names a section.
 
-## The last 15 decisions (docs/decisions.md; the newest wins)
+## The last 15 decisions (docs/archive/decisions/decisions-1-to-99.md; the newest wins)
 - **81** (12 Oct): 'Thank you!' is the family's own Kutchi response (said in Kutchi speech as 'thank you'), not English: it stays as a greeting answer and as the pass-me reply, in the Kutchi style. Reviewers and the word lint must not flag it.
 - **82** (12 Oct): The evidence loop (docs/architecture/evidence-loop.md): every row gets an evidence spec (the flow, level, size and moment that show it, captured as crops, filmstrips, voice timelines or element text, with machine assertions where possible); the sandbox reaches every moment; reviewers judge small cropped sheets in batches ...
 - **83** (12 Oct): The waiting room's call comes from the doctor leaning out of his half-open door (built when his s05 art lands); the eye test's layout A (split screen) is built as a prototype beside layout B for Zafar to choose; the knee close-up framing stays as ...

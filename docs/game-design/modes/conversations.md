@@ -778,3 +778,8 @@ Branch `claude/conversations-mvp` (from `claude/nifty-rubin-c0d431`). Design: `d
 Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
 
 - **Decision 58 (6 Oct):** Greetings are learned by watching: characters greet each other with visible gestures (a wave on *salaam* and *khuda-fis*, a hand out for "how are you"), answer pills carry small pictures (wave, tick or cross, faces), and the meaning is said once in spoken English in story mode. No written English.
+
+## Zafar's answers, 14 Oct
+
+- **Show the answer by example first, as often as possible:** someone enters and speaks to whoever is there (Ali comes in and asks Nani "how are you?"; Nani answers), then the same person turns to the player and asks them the same. The child has just heard the answer modelled. (Zafar, 14 Oct)
+- **Skipping:** tapping again and again skips the dialogue. (Zafar, 14 Oct)

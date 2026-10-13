@@ -225,3 +225,8 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
 
 - **Decision 64 (6 Oct):** The kitchen is redrawn at full size with three small trays on the counter (one per customer) and Nani leaning on the counter (her existing leaning picture), with a smaller bob.
+
+## Zafar's answers, 14 Oct
+
+- **Maani:** the dough piles never run out. (Zafar, 14 Oct)
+- **No Busy or Relaxed modes:** timers come from the level; level 1's timing windows widen (CK-35). (Zafar, 14 Oct)

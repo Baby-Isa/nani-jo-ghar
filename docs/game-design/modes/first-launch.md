@@ -181,3 +181,7 @@ The spec is `docs/game-design/modes/first-launch.md` ("Character creation", "Zaf
 > from: docs/archive/handovers/HANDOVER-2026-09-26.md § Decided on 26 Sept
 
 - **Character creation:** the person on the left, swatches on the right (gender, skin, hair, eyes, clothing colours), built from data-driven layers.
+
+## Zafar's answers, 14 Oct
+
+- **First launch's lines are re-worded for the Birthday** (they were built on Eid) before Mum records them. (Zafar, 14 Oct)

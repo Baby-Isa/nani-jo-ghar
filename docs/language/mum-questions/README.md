@@ -20,3 +20,7 @@ Recordings are cut into clips and indexed in `data/family-audio.json` (question 
 ## How the rounds are answered (the method, unchanged)
 
 Mum records one long voice file; before each part she says its name and each line's number; word lists are said twice (🎤 words three times), sentences once. Zafar types what she said beside each question and sends it back to her to check.
+
+## For the next round
+
+- After Arc 1's game modes are built (Zafar, 14 Oct), with the story-mode recording: the missing words and forms ("with" and "and" for food; roll, pour, sprinkle, serve, oil, a board, each verb's polite and "for me" form; the rest of `grammar-notes.md` §55); five minutes of re-takes at the start (Mum: *cup*, *ambo*/*amba je mathe*, *chokra*/*chokri*/*Nana sathe*; Zafar: *hakro cup*, *salamun alaykum*, *na, muke na khape*, *trae bateta*, *hakri lakri*, *chokre sathe*); which sweets go in Nani's sweet box; *topi* or *kofia*, and what the family really wears.

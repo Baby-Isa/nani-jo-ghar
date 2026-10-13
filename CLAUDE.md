@@ -2,7 +2,7 @@
 
 A game that teaches young children Kutchi through play at Nani's house, voiced only by the real family. Zafar owns it and decides. It runs as a web app on GitHub Pages (`main` is the live site) and will be wrapped for the app stores.
 
-**The newest word from Zafar wins.** When he clashes with a doc, follow him, then change that doc or check and log a line in `docs/decisions.md`, in one commit.
+**The newest word from Zafar wins.** When he clashes with a doc, follow him and change that doc or check in the same commit ("Zafar, <date>").
 
 ## Working agreement
 
@@ -35,7 +35,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 ## Where things live
 
-Each area's design and decisions live in its own doc (shared screens and art in `docs/design-language/`, modes in `docs/game-design/modes/`, language in `docs/language/`). A yes or no from Zafar → that doc or check, plus a line in `docs/decisions.md`. Feedback → a fix-list row the same day (`/feedback`). An idea → `docs/ideas.md`. A question for him → `docs/questions.md`. A session's work → `build/reports/`. Index: `docs/README.md`; tools: `docs/tools.md`.
+Each area's design and decisions live in its own doc (shared screens and art in `docs/design-language/`, modes in `docs/game-design/modes/`, language in `docs/language/`). A yes or no from Zafar → the doc, row or check it changes (sprint-only → the sprint file). Feedback → a fix-list row the same day (`/feedback`). An idea → `docs/ideas.md`. A question for him → `docs/questions.md`. A session's work → `build/reports/`. Index: `docs/README.md`; tools: `docs/tools.md`.
 
 ## Tools and skills: use them by default
 

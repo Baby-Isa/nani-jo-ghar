@@ -6,7 +6,7 @@ Start with `CLAUDE.md`, then `docs/status.md` "Next chat". Open anything else on
 - `status.md`: Next chat (the handover), the fix-list counts, what is live.
 - `regressions.md` in `process/`: **the fix list**, the genuine things still to fix plus the keep list. Done rows: `archive/regressions-done.md`.
 - `questions.md`: open questions for Zafar, each with a recommendation.
-- `decisions.md`: the decisions log, one line each (1–99 in `archive/decisions/`).
+- Decisions live in the doc, row or check they change (the commit says "Zafar, <date>"); the old log, 1–99, is in `archive/decisions/`.
 - `tools.md`: every tool in one table. The checks are the rules: `node build/tools/review/checks.mjs`.
 - `process/checks-to-build.md`: the rules that should become checks, ranked; their text stays there until each check exists.
 

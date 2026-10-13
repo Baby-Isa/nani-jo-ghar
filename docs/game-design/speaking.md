@@ -88,3 +88,7 @@ The per-child tracker decides, word by word. A frame becomes speakable (rung 1) 
 1. ~~Echo at rung 1?~~ **Yes (Zafar, 29 Sept), with no whisper recordings; the text is written and underlined at the start.**
 2. ~~Which mode first?~~ **Cook's ordering, as the pilot (Zafar agrees it fits; the clinic's patient conversations next).**
 3. Should speaking ever be required to progress, or always optional, with correct speaking earning more pocket money (decision 2)? Claude suggests optional, because of the mic, shy children and noisy rooms.
+
+## Zafar's answers, 14 Oct
+
+- **Speaking is always optional;** nothing ever blocks on recognition. (Zafar, 14 Oct)

@@ -808,3 +808,7 @@ STALLS. A tab is stalled when its screen shows no change (no progress text, no i
 Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
 
 - **Decision 65 (6 Oct):** Each item gets one sprite sheet with every view it needs plus spares (top-down, belt, side-on, in use; 6–8 views), planned by Fable.
+
+## Zafar's answers, 14 Oct
+
+- **Next art run** (one batch with the clinic redo list): black-tea glasses, the tipped chai pan and its in-between states, a real *kadchi* ladle from a photo (DAAR-02), the sekelo plate cell, her sore face (CLN-136). (Zafar, 14 Oct)

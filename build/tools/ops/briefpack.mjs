@@ -28,7 +28,7 @@ const words = (s) => String(s).split(/\s+/).filter(Boolean);
 const clip = (s, n) => { const w = words(s); return w.length <= n ? s.trim() : w.slice(0, n).join(" ") + " ..."; };
 
 // the last n decisions, each clipped (a table row: | N | date | decision | ... |): the live log plus decisions 1-99 in the archive
-export const DECISION_FILES = [join(ROOT, "docs", "decisions.md"), join(ROOT, "docs", "archive", "decisions", "decisions-1-to-99.md")];
+export const DECISION_FILES = [join(ROOT, "docs", "archive", "decisions", "decisions-log-99.md"), join(ROOT, "docs", "archive", "decisions", "decisions-1-to-99.md")]; // the log stopped at 99 (Zafar, 14 Oct): decisions now live in their docs
 export function decisionsDigest(n = 15, perRow = 45, files = DECISION_FILES) {
   let text = ""; for (const f of [].concat(files)) { try { text += readFileSync(f, "utf8") + "\n"; } catch (e) { /* a missing file adds nothing */ } }
   if (!text) return [];
@@ -70,7 +70,7 @@ export function namedRules(taskText, file = RULEBOOK) {
 export function contextPack(spec, { maxWords = 2000 } = {}) {
   const taskText = (spec.tasks || []).map((t) => `${t.do} ${t.accept || ""}`).join(" ");
   const L = [`# Context pack: ${spec.name}`, "", "Pasted, not linked: the latest decisions, the rules this task names and the checks it must pass. The design facts are in the area docs the brief lists.", ""];
-  L.push("## The last 15 decisions (docs/decisions.md and its archive; the newest wins)", ...decisionsDigest(15), "");
+  L.push("## The last 15 decisions (logged to 13 Oct; later ones live in the design docs; the newest wins)", ...decisionsDigest(15), "");
   const named = namedRules(taskText);
   if (named.length) L.push("## Rules this task names (their text now lives in the design docs)", ...named, "");
   L.push("## The checks this session must pass (they are the rules; docs/tools.md)",

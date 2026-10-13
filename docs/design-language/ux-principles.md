@@ -142,3 +142,7 @@ Word for word from the retired rulebook and decisions log (`docs/archive/process
 - **A glow is a hint, not a giveaway:** only after a wrong tap or ~5 s of hesitation (the first item too), never on a hidden word after its first hidden showing, and never at the top level for what the words should tell. (E16, E28)
 - **A wrong item is redone on the spot:** the rest stays done, that item empties and its row reopens; the second try has help; after three wrong tries the game shows the right way; never a whole-game restart. (E35, decision 51)
 - **Decision 51 (6 Oct):** A wrong item is redone on the spot: the rest stays done, that item (cup, layer, skewer, plaster) empties and its card row reopens; the second try has help; after three wrong tries the game shows the right way. Replaces the whole-game restart.
+
+## Zafar's answers, 14 Oct
+
+- **Model it, then ask:** wherever a character asks the child something, first let the child hear the same question asked and answered between two characters, then the asker turns to the child (Conversations does this as often as possible). (Zafar, 14 Oct)

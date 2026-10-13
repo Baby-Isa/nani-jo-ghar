@@ -200,3 +200,7 @@ The prototype shows most upgrades as a gilded "special" version of the ordinary 
 
 **Design rule kept:** no upgrade touches the Kutchi. Fetching the right thing, the counts, the tadka order and "the usual" are always the player's job.
 
+## Zafar's answers, 14 Oct
+
+- **No streaks for now;** at most one gentle "today" hub (streaks are idea 47). (Zafar, 14 Oct)
+- **One pocket-money model** (decision 10) replaces every per-mode receipt in the old mode designs (+5 ear, +3 craft …). (Zafar, 14 Oct)

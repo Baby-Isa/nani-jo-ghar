@@ -253,3 +253,8 @@ Word for word from the retired rulebook and decisions log (`docs/archive/process
 - **Each stage clears its own UI and stops its effects when done;** reply pills appear only when needed and never overlap (the knee's done-flash is the one exception). (E17, E18, E19)
 - **Decision 59 (6 Oct):** Wrong judging moments in the eye and ear tests are teachable: a wrong yes/no shakes red and the doctor names the row with pictures. A gentle exception to "no verdicts mid-round", like the conversation reply.
 - **Decision 92 (13 Oct):** In the clinic the patient's face circle appears only where she is off screen (the heal-game close-ups and the pharmacy), where it carries her reaction bubbles and is the replay button; where she is on screen in full (waiting room, diagnosis, send-off) there is no circle (one face per person, R4). Closes CLN-85 as built.
+
+## Zafar's answers, 14 Oct
+
+- **Ear:** level 3 is level 2 heard only; its extra difficulty (more blobs, smears, sore patches and a fourth picture) moves to a new level 4. (Zafar, 14 Oct; CLN-45)
+- **Feelings** are "sad" or "scared", always resolved gently. (Zafar, 14 Oct)
