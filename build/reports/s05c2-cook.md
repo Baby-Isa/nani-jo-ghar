@@ -45,6 +45,8 @@ Red run ev-20261013-001738-bc3; touched run `s05c2-touched`.
 
 The manifests list the new pictures: stir gets ladle-v3; fill and fold get the samosa board and fold pictures. loadcheck 21/21. checks.mjs all ok.
 
+**Round 4 (S2's steps page, af28cd2):** Cook's test expectation now presses Next while there is another page, then the last buttons (flow.js). Cook's player reaches the last buttons in daar#mistake, the pantry (fair and #mistake) and chaat#mistake (run s05c2-r4). SH-44 ev-20261013-102231-vs6: PASS at 1366x768 (the steps page by itself, 2 steps, no clip). 390x844 timed out on the upright phone's rotate card (T: a size the flow can't play). d771dbb holds on the latest branch: steps come only from chaat, daar and sekelo. Daar's tadka now records what went in, so a wrong step shows it ("jeeru / done: hardar", scratch). Seen in s05c2-r4, not mine: chaat's chip "amli ji chutney" is canvas text at 13.1 px (the floor is 14).
+
 ## Proof (from the run; do not retype)
 - **Pages run:** 7 (flow x size): 7 flows at 1366x768. 7 reach their end, 0 stop short.
 - **Page errors:** 0.

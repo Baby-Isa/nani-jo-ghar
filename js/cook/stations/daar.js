@@ -625,7 +625,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         tadkaWrong = tadkaWrong || why;
         if (!retry && !help) {
           z.listen(false, why);
-          if (flat.includes(expected)) UI.mission.missItem(expected, ctx.dishAt || 0);
+          // decision 93: what went in instead, for the steps page's "done"
+          if (flat.includes(expected)) UI.mission.missItem(expected, ctx.dishAt || 0, { did: id });
           Cook.markMiss(expected);
         }
       }
