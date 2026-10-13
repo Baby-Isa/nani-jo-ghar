@@ -1930,7 +1930,7 @@
     return units[i] || null;
   };
   /** Something went wrong for this item (a word id, or a compound kind's ids): mark its row (shown on the result card). */
-  M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null, block = null } = {}) {
+  M.missItem = function (id, dish = 0, { no = null, counted = false, for: forWho = null, block = null, did = null } = {}) {
     const L = ladderFor(dish);
     if (!L) return null;
     const want = [].concat(id);
@@ -1946,6 +1946,8 @@
       rows.find((x) => has(x) && (no == null || !!x.no === no)) ||
       (counted ? rows.find(num) : null);
     if (r) r.miss = true;
+    // decision 93: what went in instead (a word id), for the steps page's "done" (the first try's, kept)
+    if (r && did && !r.did) r.did = did;
     return r;
   };
   /**

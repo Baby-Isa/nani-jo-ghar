@@ -12,7 +12,7 @@ Branch `ccr-a7370759-t0lee7`. Game code changed: yes (js/cook main, flow, ui, me
 ## Rows
 | row | red | green | verdict |
 |---|---|---|---|
-| SH-44 | 0 steps (lab.html, scratch) | 6 steps | Cook half built; list open waits on decision 93 (S) |
+| SH-44 | pantry 3 steps, chaat no done (lab.html, scratch) | pantry 0, samosa 0; chaat 3 layers (wrong one shows what went in), daar 3 tadka | Cook half built (decision 93: sequence steps only); the page is S's |
 | SEK-03 | 081608-cum | peek2 scratch | built, sheet to judge; pills break mid-word (S) |
 | SH-51 | 081608-cum | 083919-3ny | built, sheet to judge |
 | SH-17 | strip on=0 | on=1 (scratch, speed 1) | built; probe too fast (T) |

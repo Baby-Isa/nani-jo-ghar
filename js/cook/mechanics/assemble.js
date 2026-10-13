@@ -984,7 +984,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         z.listen(false, why);
         if (m.expected) Cook.markMiss(m.expected);
         if (wrong && exclude.includes(wrong)) UI.mission.missItem(wrong, dishNo(), { no: true });
-        else if (m.expected) UI.mission.missItem(m.expected, dishNo());
+        else if (m.expected) UI.mission.missItem(m.expected, dishNo(), { did: wrong || null });
       };
       /**
        * §17 (29 Sept): tap the bowl to take the top layer back, until Done. It shrinks out of the bowl and a

@@ -581,20 +581,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
     return out;
   }
-  /** SH-44: each order row as a step: its Kutchi line (the English under it, as the word review has), right or not. */
+  /**
+   * SH-44, decision 93 (ui-design-system.md 6a): the steps page shows only where the ORDER was part of the ask: an
+   * order's sequence sections (chaat's layers, daar's tadka, each skewer's pieces). An any-order set (the pantry, the
+   * chai cups, maani and samosa counts and kinds) and the timing games have none, and nor does a round of one step.
+   * Each step: its Kutchi (engine words; a word still to record in brackets: grey italic, never as if it were Kutchi),
+   * the English under it, asked, what was done instead when known (the word put in), ok.
+   */
+  const kutchiOf = (line) => {
+    const segs = (line && line.segs) || [];
+    return segs.some((s) => s.lang && s.lang !== "e" && s.t.trim()) ? segs.map((s) => (s.lang === "e" ? `[${s.t}]` : s.t)).join("").trim() : "";
+  };
   function reviewSteps(ctx) {
     const out = [];
     (ctx.ladders || []).forEach((L) =>
-      Cook.Order.rows(L, { all: true }).forEach((r) => {
-        if (r.head || !r.line) return;
-        // a word still to record ("tomatoes") goes in brackets: the shared list draws it grey italic (G2, decision 84),
-        // never as if it were Kutchi; a line with no Kutchi at all is its English placeholder
-        const segs = r.line.segs || [];
-        const kutchi = segs.some((s) => s.lang && s.lang !== "e" && s.t.trim()) ? segs.map((s) => (s.lang === "e" ? `[${s.t}]` : s.t)).join("") : "";
-        out.push({ label: { kutchi, english: r.line.en || "" }, ok: !r.miss });
-      })
+      (L.sections || [])
+        .filter((s) => s.seq && s.groups.length > 1)
+        .forEach((s) =>
+          s.groups.forEach((g) =>
+            g.forEach((r) => {
+              if (!r || r.head || r.no || !r.line) return;
+              const kutchi = kutchiOf(r.line);
+              const did = r.miss && r.did ? kutchiOf(Lang.phrase([r.did])) : null;
+              out.push({ label: { kutchi, english: r.line.en || "" }, asked: kutchi || r.line.en || "", done: did || null, ok: !r.miss });
+            })
+          )
+        )
     );
-    return out;
+    return out.length >= 2 ? out : [];
   }
   async function roundEnd(ctx, { scored, actions }) {
     // inside the game host (js/cook/main.js) the host catches the end screen: it shows the one for the whole plan
