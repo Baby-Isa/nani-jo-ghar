@@ -105,6 +105,35 @@ Person → items → parts. At most three tiers, and a word is never repeated ac
 - **The layout:** wrong words on the left, right words on the right. Each side's width is proportional to its count, with a minimum of one column. At most three across per side, stacking into rows.
 
 
+### 6a. The steps page (page 3 of the end-of-round screen; decision 93, Zafar 13 Oct)
+After the word review, by itself (no tap), the round's steps in order: each step's Kutchi with its English under, right steps gold, wrong steps red (as the word review), what was asked against what was done. Then the actions. Every round of a game that has steps, all right or not.
+
+**Show the steps page when** the round asked for two or more separate steps and either:
+1. the **order** was part of the ask (data `order: "sequence"`; a doctor's instruction list said one at a time), or
+2. each step is **its own action** the child can miss, skip or do wrongly, and the word review alone wouldn't show which.
+
+**Don't show it when** the round was:
+1. an **unordered set** (data `order: "any"`: the pantry fetch, the pharmacy belt, samosa kinds), so the word review already says which were right;
+2. a **single pick or answer** (the waiting-room call, a greeting answer, the send-off feeling);
+3. a **timing or skill game with no spoken steps** (the grill's turns, the tawa flip, a boil): the badges cover it;
+4. a round with **one step** only.
+
+| Game | Steps page | Why |
+|---|---|---|
+| Cook: chaat | yes | the layer order (CHT-07) |
+| Cook: daar | yes | the tadka order |
+| Cook: sekelo (threading) | yes | each skewer's pieces in order; several skewers |
+| Cook: pantry | no | an any-order set |
+| Cook: chai tray | no | per-cup choices, no order; the word review covers them |
+| Cook: maani, samosa (kinds and counts) | no | counts and any-order kinds |
+| Cook: grill, tawa, boil, fry | no | timing, no spoken steps |
+| Clinic: heal games with an instruction list (cut, tooth, knee, eye, ear, foot, boing, taste, fever's named effects) | yes | one instruction at a time (SH-45) |
+| Clinic: waiting room, send-off | no | a single pick |
+| Clinic: diagnosis | no | the check-up parts tick on the card as they're done; the word review covers them |
+| Clinic: pharmacy | no | an any-order set |
+
+A new game says in its mode doc which side it's on; a game that gets a sequence later moves to "yes".
+
 ## Layout contract v2 (23 Sept, from the Roadmap)
 
 > from: docs/archive/design-v1/Roadmap and Story Structure.md § Layout contract v2

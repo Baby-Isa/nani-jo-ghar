@@ -261,9 +261,10 @@ The station and game rules moved to the mode docs, keeping their IDs as anchors:
 - **Stage it like a play:** talkers stand three-quarter to each other and face the player on the child's turn (a pose swap); gentle ambient motion keeps scenes alive. (E20, F26)
 
 ### The end screen
-- **One card that steps through:** three badges → Next → the word review → actions (Again / All … / Next …), over the game scene only. (F12)
+- **One card that steps through:** three badges → Next → the word review → the steps page (games with steps only) → actions (Again / All … / Next …), over the game scene only. (F12, decision 93)
 - **Badges read without reading or counting:** gold = perfect; stopwatch with seconds and a crowned best; chunky gold/grey tick with "7/10"; the bulb dims and cracks per hint. (F13, decision 3)
-- **Word review:** Kutchi with English under; right on the right (gold outline), wrong on the left (red outline, allowed only here). (F14)
+- **Word review:** Kutchi with English under; right on the right (gold outline), wrong on the left (red outline, allowed only here and on the steps page). (F14)
+- **The steps page:** after the word review, by itself, in games whose round asked for an order or for separate steps (chaat, daar's tadka, sekelo threading, the clinic's instruction lists); never for an any-order set, a single pick or a timing game; Kutchi with English under, right gold, wrong red; the list of which games is in `ui-design-system.md` §6a. (decision 93)
 - **The serve review:** a large face circle over the dish; happy with praise when right, a gentle frown and redo when wrong. (F20)
 
 ---
