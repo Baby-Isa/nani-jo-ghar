@@ -272,7 +272,7 @@ export class EvidenceProbe {
   async checkWant(name) {
     const W = this.want;
     const look = async () => {
-      const r = await this.page.evaluate(`(() => { const t = (${TEXTS})(["body", "", ""]).map((x) => x.text).join(" "); const c = document.querySelector("#intro .ic-card, .njg-rq-card"); const vis = c && c.getBoundingClientRect().height > 1; return { t, people: vis ? c.querySelectorAll(".oc-card").length : 0 }; })()`).catch(() => null);
+      const r = await this.page.evaluate(`(() => { const t = (${TEXTS})(["#intro .ic-card, .njg-rq-card, #mission, .cl-side", "", ""]).map((x) => x.text).join(" "); const c = document.querySelector("#intro .ic-card, .njg-rq-card"); const vis = c && c.getBoundingClientRect().height > 1; return { t, people: vis ? c.querySelectorAll(".oc-card").length : 0 }; })()`).catch(() => null);
       if (r) { W.text += " " + r.t; W.people = Math.max(W.people, r.people); }
     };
     if (/^(life:request|life:popup-open|rec:start|rec:order-card-big)$/.test(name)) {

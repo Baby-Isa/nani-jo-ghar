@@ -137,7 +137,7 @@
    ],
    "profile": "seen",
    "want": [
-    "fudino ji chutney"
+    "/fudino ji chutney(?!\\s+na)/i"
    ],
    "at": "results-words",
    "after": null,
