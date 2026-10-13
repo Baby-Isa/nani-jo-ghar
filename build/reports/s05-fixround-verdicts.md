@@ -77,3 +77,20 @@ Run `ev-20261013-135717-7pn` (62 rows), judged by Fable subagents (picture batch
 - CLN-120's flaw: "Still too cold!" overlaps "Fix it" in the voice timeline (17.81-19.27 s vs 18.53 s).
 
 **Dismissed (by design):** the English on the daar card is the paid bulb hint (rule E25, decision 1); CLN-26/94/107 grey-italic English headlines are to-record lines (decision 84).
+
+## The full gate (gate-20261013-1447, played on 1ffdc85 before C3/D3; 572 pages; exit 1)
+
+Not reaching their end: the 32 Cook lab pages (SH-76, C3) and one clinic page killed mid-play. Contract-11 (low-res Cook backgrounds, 179 breaks) is ART-05, waiting on art. The rest, each to become its own row if your fix doesn't already cover it:
+
+**C3:**
+- contract-8 (two highlights at once, ~0.4-0.7 s) on the shared order card: `.oc-item.tint` or `.oc-row.next` lit together with the read-along `.oc-row.reading` (cook:maani-line@L2 1024x768 at start, cook:mishkaki-grill@L2 800x360 order-card-big, cook:assemble#mistake and @L2#mistake at results-badges, cook:chaat@L2#mistake at results-badges, lab:cook/maani-line@L2, lab:cook/recipe-maani@L2). Probably SH-17's longer read-along hold meeting decision 95's one highlight: the read-along must not count as a second lit thing, or the next-row tint waits for it. cook:count 800x360: the khun bowl and a `.njg-pulse` lit together for 4 s.
+- NEW covers-play-area: the "Salamun alaykum" word pill over the play area (cook:day2, day4, open-kitchen at 800x360; day6 at 1024x768) at kind-click.
+- NEW tap-offscreen: cook:daar@L3#hint 800x360 peek-open: the order card's face button 2 px off screen.
+- NEW text-small: the house's "Coming soon" ribbon 12 px at 844x390.
+- NEW spacing-grid: css/cook.css `.title-wrap .day-dots` gap 2px, margin-top 18px.
+- rotate-card 390x844 clinic upright: the shared request pop-up card scrolls (104 > 102 px, "Bring in chokri / Bring in girl"): shared card, C3 (tell D3 if the clinic card body causes it).
+
+**D3:**
+- contract-8: clinic:heal-eye@L2 1024x768 (`.glow` with `.oc-row.next`), clinic:heal-taste#hint 800x360 at results-badges (`.oc-row.next` with the spoon tool).
+- contract-4: clinic:morning 800x360 send-off: her "Thank you." bubble sits in her head's column beside the head, not from her face.
+- NEW spacing-grid: css/clinic.css `@media (max-height: 430px) .njg-results .cl-receipt-row` padding 2px, `.cl-receipt-coins` margin-top 2px.
