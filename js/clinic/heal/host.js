@@ -424,7 +424,9 @@
       if (!nums.length) return row;
       const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       let k = row.kutchi;
-      if (k) nums.forEach((id) => (k = k.replace(new RegExp(`(^|\\s)${esc(numWords[id])}(?=[\\s,.!?]|$)\\s*`, "i"), "$1")));
+      // a number agrees with its noun ("hakri chamchi": hakro's -o, -i, -a, -e forms), so its inflected form goes too
+      const form = (w) => (/o$/i.test(w) ? `${esc(w.slice(0, -1))}[oiae]` : esc(w));
+      if (k) nums.forEach((id) => (k = k.replace(new RegExp(`(^|\\s)${form(numWords[id])}(?=[\\s,.!?]|$)\\s*`, "i"), "$1")));
       if (k) k = k.trim().replace(/^(\[?)(\S)/, (a, b, c) => b + c.toUpperCase());
       return Object.assign({}, row, { kutchi: k, english: String(row.english || "").replace(NUM_EN, "").trim() });
     };

@@ -86,8 +86,16 @@
     const n = counts ? HS.pick(counts, rng) : null;
     const steps = [
       { id: "pop", kind: "pop", targets, not, row: Object.assign({ id: "pop" }, Lg.show(popM, { cap: true })) },
-      { id: "drink", kind: "drink", drink, n, row: Object.assign({ id: "drink" }, Lg.show(Lg.join(["cl-make", drinkName(drink, n)]), { cap: true })) },
+      { id: "drink", kind: "drink", drink, n, row: Object.assign({ id: "drink", seq: "drink", head: true }, Lg.show(Lg.join(["cl-make", drinkName(drink, null)]), { cap: true })) },
     ];
+    // CLN-54 (P47, decision 89): the recipe under the drink's name, one row per step, each a whole sentence from Mum's
+    // DoIt frame (package B, b2cca43): "Paani bhari chad!", "Aadu wiji chad!" (from L2 the count: "Ba chamchi hardar
+    // wiji chad!"). No stir row; honey stays the grey to-record word. Each row opens, and is said, as its step comes.
+    const dk = DRINKS[drink];
+    const recipe = [
+      { id: "drink-pour", what: "pour", m: { fn: "DoIt", verb: "v.fill", obj: THINGS[dk.liquid].lex } },
+      { id: "drink-add", what: "add", m: { fn: "DoIt", verb: "v.put-in", obj: n != null ? { fn: "Unit", n, unit: "cl-chamchi", of: THINGS[dk.add].lex } : THINGS[dk.add].lex } },
+    ].map((r) => Object.assign({ id: r.id, seq: "drink", what: r.what }, Lg.show(r.m, { cap: true })));
     // the blind player's choices: which colours to pop (one of the colour sets), which drink (and how many spoons)
     // (in a fixed order: the screen shows the colours mixed over the tongue, never in the order said)
     const all = Object.keys(COLS);
@@ -100,7 +108,7 @@
     const words = [Lg.w("taste-spots"), ...colours.map((c) => Lg.w(COLS[c].lex)), Lg.w(THINGS[DRINKS[drink].add].lex), Lg.w(THINGS[DRINKS[drink].liquid].lex)];
     if (not) words.push(Lg.w(Lg.noId()));
     if (n != null) words.push(Lg.w("cl-chamchi"), Lg.num(n));
-    return { level: L, colours, targets, not, spots, drink, n, steps, rows, words, upMs: lv.upMs || K.upMs[L], maxUp: lv.maxUp || K.maxUp[L] };
+    return { level: L, colours, targets, not, spots, drink, n, steps, recipe, rows, words, upMs: lv.upMs || K.upMs[L], maxUp: lv.maxUp || K.maxUp[L] };
   }
 
   function mount(stage, ctx) {
@@ -122,7 +130,12 @@
     const hexOf = (c) => (data.colours && data.colours[c]) || COLS[c].hex;
     const st = { i: 0, judged: {}, over: false, busy: false, glass: null, gave: false, wrongDab: false, gone: false };
     const cur = () => P.steps[st.i] || null;
-    ctx.card.setRows(P.steps.map((x) => x.row));
+    ctx.card.setRows(P.steps.map((x) => x.row).concat(P.recipe));
+    // the recipe row the child is on (progress, never a verdict: any liquid poured moves it on, C10)
+    const recipeNow = (what) => {
+      const r = P.recipe.find((x) => x.what === what);
+      if (r && cur() && cur().kind === "drink") ctx.card.now(r.id);
+    };
 
     // a small tween on the frame clock (attributes, not styles): fn(u) for u 0 -> 1
     const tween = (ms, fn) =>
@@ -399,6 +412,7 @@
       if (c.kind === "drink") {
         drinkTools();
         glassG.setAttribute("opacity", 1);
+        recipeNow("pour");
         S.cue("drink", CUES.pour, S.toolEls[DRINKS[c.drink].liquid]);
       }
     };
@@ -450,6 +464,7 @@
         gl.stirred = false;
         S.uncue();
         await pour(id);
+        recipeNow("add");
         if (cur() === c) S.cue("add", { gesture: "tap" }, S.toolEls[DRINKS[c.drink].add]);
         return;
       }
@@ -511,6 +526,7 @@
         S.face("sour", 900);
         S.say("taste-notthat", "patient");
         st.busy = false;
+        recipeNow("pour");
         ctx.after(fast() ? 50 : 900, () => cur() === c && S.cue("drink", CUES.pour, S.toolEls[DRINKS[c.drink].liquid]));
       }
     };

@@ -569,12 +569,20 @@
     const part = (r) => ({ label: Kit.rowHtml(r), done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
     const items = [];
     const groups = {};
+    // CLN-54 (P47): a row marked `head` names its `seq` group (a drink, its recipe rows under it: the order card's
+    // item with parts); the group's parts are marked on the row the child is on (now), never ticked one by one
+    let headed = false;
     rows.forEach((r) => {
       const g = r.seq || (this.isOrdered ? "__all" : null);
       if (g) {
         if (!groups[g]) {
           groups[g] = { label: null, ordered: true, parts: [] };
           items.push(groups[g]);
+        }
+        if (r.head) {
+          headed = true;
+          Object.assign(groups[g], { label: Kit.rowHtml(r), key: r.id, done: st.done.has(r.id), miss: st.miss.has(r.id), headed: true });
+          return;
         }
         groups[g].parts.push(part(r));
       } else items.push({ label: Kit.rowHtml(r), parts: [], done: st.done.has(r.id), key: r.id, miss: st.miss.has(r.id) });
@@ -583,6 +591,7 @@
     items.forEach((it, i) => {
       if (it.label === null && it.parts.length === 1) items[i] = Object.assign({ parts: [] }, it.parts[0]);
     });
+    if (headed) items.forEach((it) => it.parts.forEach((p) => (p.next = !!it.headed && !it.done && st.now === p.key)));
     const tt = this.titleText;
     const headHtml = !tt ? null : typeof tt === "string" ? esc(tt) : Kit.rowHtml(tt);
     // a headline still to record (the heal games' goal, D9) carries the grown-ups' "to record" flag (G2)
