@@ -11701,13 +11701,13 @@
    "profile": "seen",
    "want": null,
    "at": "every:placed",
-   "after": null,
+   "after": "kind-tap",
    "capture": [
     "crop:#mission"
    ],
    "expect": null,
-   "note": "decision 97 (3): the daar card stays open, rows and ticks, through the stir",
-   "max": 16
+   "note": "decision 97 (3): the daar card stays open, rows and ticks, through the stir (from the tadka on: the chop's frames used up the probe before)",
+   "max": 12
   }
  ],
  "DAAR-19": [

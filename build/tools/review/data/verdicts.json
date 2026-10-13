@@ -981,6 +981,18 @@
   "png": "build/screenshots/evidence/ev-20261013-170537-y9n/CK-30.png",
   "date": "2026-10-13"
  },
+ "CK-33": {
+  "hash": "fec4038088c64aba24a5",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "text, grep \"day-dots\" css/cook.css line 1089 reads `.title-wrap .day-dots { gap: 4px; margin-top: 16px; row-gap: 24px; }` (was gap 2px, margin-top 18px); 4, 16 and 24 are all on the grid (4, or a multiple of 8), base rule line 221 is gap 8px / margin 8px, and line 1000's margin-right is token-built (--njg-tap 48px + --njg-s2 8px); repo re-grep matches the capture",
+  "panel": "text",
+  "judge": "Fable, independent subagent",
+  "run": "ev-20261013-185046-nd9",
+  "commit": "2f909cb",
+  "png": null,
+  "date": "2026-10-13"
+ },
  "CK-TAB-01": {
   "hash": "2f582bbe2b379cf77a54",
   "dhash": [
@@ -5030,17 +5042,42 @@
   "date": "2026-10-13"
  },
  "SH-78": {
-  "hash": "720d89c3a8323531a6f8",
+  "hash": "4f45b095285d201d8a21",
   "dhash": [
    "008aa98141c18101"
   ],
-  "verdict": "FAIL",
-  "line": "A, the card still folds the moment its last row ticks, not with the pour: frame 4 has the open card with hakro khun ticked and elchi / dudh na still plain, frame 5 is already the headline alone with no tick, and frames 6-9 (four more placements, which include the pour) show the folded headline with one tick; frame 10 is the same folded card greyed under the end overlay. No frame keeps the rows and their ticks through the pour.",
+  "verdict": "PASS",
+  "line": "A, frame 8 is the pour itself (room frame: the pan tipped over the glass, tea mid-stream, guide line \"Pour it into their glass.\") and the card is still open with its rows, elchi ✓ and hakro khun ✓, dudh na plain; frame 7 (the pour's guide line up, pan still on the hob) is the same open card; frame 9, the poured glass with Shabash, is the first folded one (face + headline with one ✓); frame 10 the same under the end overlay. Flaws off the point: frames 2-5 are the bulb's English flip (allowed, E25) but its line reads \"I'd like chai with cardamom it in.\" (garbled gloss; lead for the engine, not this row).",
   "panel": "A",
   "judge": "Fable, independent subagent",
-  "run": "ev-20261013-164227-oez",
-  "commit": "caaa8ca",
-  "png": "build/screenshots/evidence/ev-20261013-164227-oez/SH-78.png",
+  "run": "ev-20261013-185046-nd9",
+  "commit": "2f909cb",
+  "png": "build/screenshots/evidence/ev-20261013-185046-nd9/SH-78.png",
+  "date": "2026-10-13"
+ },
+ "SH-79": {
+  "hash": "d504833259390a10ee76",
+  "dhash": [
+   "00818641a951a101",
+   "0198813b32616101"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-185046-nd9",
+  "commit": "2f909cb",
+  "date": "2026-10-13"
+ },
+ "SH-83": {
+  "hash": "0f33e296e02eb8d5ebe6",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: minFont:.ribbon>=14 (minFont 14)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261013-185307-1hw",
+  "commit": "2f909cb",
   "date": "2026-10-13"
  }
 }
