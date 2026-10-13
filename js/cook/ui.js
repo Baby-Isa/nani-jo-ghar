@@ -154,7 +154,9 @@
   const raParts = (line) => (line && line.parts && line.parts.length > 1 ? line.parts : [line]);
   const raHtml = (line, opts = {}) => raParts(line).map((p, i) => `<span class="ra" data-ra="${i}">${Lang.html(p, opts)}</span>`).join(" ");
   async function speakAlong(line, box) {
-    const spans = (i) => (box ? [...box.querySelectorAll(i == null ? ".ra" : `.ra[data-ra="${i}"]`)] : []);
+    // SH-17 (S05-C2): while Nani's line is her card's top strip (R4, the pantry), the strip's words light up too
+    const boxes = () => [box].concat(box && guide && box === guide.el && mission && mission.stripMode ? [...document.querySelectorAll("#mission .oc-strip")] : []).filter(Boolean);
+    const spans = (i) => [].concat(...boxes().map((b) => [...b.querySelectorAll(i == null ? ".ra" : `.ra[data-ra="${i}"]`)]));
     const lit = (els, on) => els.forEach((e) => e.classList.toggle("ra-on", on));
     if (Lang.hasWhole && Lang.hasWhole(line)) {
       lit(spans(), true);
