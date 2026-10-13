@@ -850,8 +850,12 @@
                 box.classList.add("hidden");
                 putBack();
                 // contract-3 (S05-C): her "Thank you!" finishes before play (and the next station) goes on, never under it
-                const thanks = UI.voice(Lang.role(Lang.line("thanks"), "passme"), { ms: 900 }).catch(() => {});
-                Promise.race([thanks, Cook.wait(1600)]).then(() => resolve({ misses }));
+                const thanksLine = Lang.role(Lang.line("thanks"), "passme");
+                const thanks = UI.voice(thanksLine, { ms: 900 }).catch(() => {});
+                // (S05-C2) and at least as long as it is said (about 0.45 s a word, real time): a line with no clip yet
+                // ends at once, and the next beat must not start under it once it is recorded
+                const said = new Promise((r) => setTimeout(r, Math.max(900, Lang.plain(thanksLine).split(/\s+/).filter(Boolean).length * 450)));
+                Promise.race([Promise.all([thanks, said]), new Promise((r) => setTimeout(r, 1600))]).then(() => resolve({ misses }));
               }, 300);
             }, 450);
           } else {
