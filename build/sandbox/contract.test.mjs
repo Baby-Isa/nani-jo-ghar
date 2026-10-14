@@ -202,3 +202,17 @@ test("contract-16 English for the child (checks-to-build 4): every text is a lex
   assert.equal(b.length, 1);
   assert.match(b[0].measured, /"Pour the paani" .*pour, the/);
 });
+
+test("contract-19 counting rule (checks-to-build 7): from L3 no number written on a card (words seen before); from L2 no counting along", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const numbers = new Set(["hakro", "ba", "trae", "char"]);
+  const run = (flow, variant, extra) => analyse({ flow, variant, size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "chai", t: 1000 }, { type: "c", k: "input", x: 1, y: 1, on: "canvas", t: 1500 }, ...extra] }, { numbers, lexicon: new Set() }).filter((b) => b.check === "contract-19");
+  const side = (words) => ({ type: "c", k: "side", n: 1, rows: 2, done: 0, closed: 0, words, t: 1600 });
+  const line = (text, t) => [{ type: "line", id: t, text, t }, { type: "line-end", id: t, t: t + 300 }];
+  assert.match(run("cook:chai-tray@L3", "p-seen", [side(["ba elchi", "dudh"])])[0].measured, /"ba elchi"/);
+  assert.equal(run("cook:chai-tray@L3", "", [side(["ba elchi"])]).length, 0, "a first-time player sees the number written (decision 57)");
+  assert.equal(run("cook:chai-tray@L2", "p-seen", [side(["ba elchi"])]).length, 0);
+  assert.match(run("cook:chai-tray@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/);
+  assert.equal(run("cook:chai-tray", "p-seen", line("Ba!", 2000)).length, 0, "L1 counts along");
+  assert.equal(run("cook:chai-tray@L2", "p-seen", line("Ba!", 1200)).length, 0, "the order said before the first tap is not counting along");
+});

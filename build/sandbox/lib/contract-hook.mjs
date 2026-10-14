@@ -7,7 +7,7 @@
 //   k: "stage"   {key}                      a stage boundary: a Cook station starts or ends (Cook.inStation), the host's
 //                                          stage changes (njgTest.state()), the end screen shows ("end")
 //   k: "popup"   {open, box}               the shared request pop-up (.njg-rq-open, Cook's #intro) up or down
-//   k: "side"    {n, rows, done, closed}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
+//   k: "side"    {n, rows, done, closed, words}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
 //   k: "buttons" {list: [{sel, text, box}], exp}   the ✓ / Next / stage buttons on screen, with what the game expects
 //   k: "bubble"  {list: [{who, text, box, tail}], heads: [{who, box, src}], play}   speech bubbles and the speakers' heads
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
@@ -588,7 +588,9 @@ export const CONTRACT_HOOK = `(() => {
     const rows = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row, .oc-item, li").length, 0);
     const done = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row.done, .oc-item.done, .done, .ticked, .is-done").length, 0);
     // closed: the card is closed (from L3 the call is heard, not read: OrderCard's "closed", folded or peeking)
-    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length };
+    // the rows' words (contract-19, the counting rule: from L3 no number written on a card)
+    const words = cards.flatMap((c) => [...c.querySelectorAll(".oc-row .oc-t, .oc-item .oc-t, .oc-row, li")].filter(shown).map((x) => (x.textContent || "").trim().slice(0, 40))).filter(Boolean).slice(0, 24);
+    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, words: [...new Set(words)] };
     if (!same("side", sd)) emit({ k: "side", ...sd });
     const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()) }));
     if (!same("buttons", bl.map((b) => b.sel))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });

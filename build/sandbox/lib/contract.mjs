@@ -24,6 +24,9 @@
 //   contract-14 talk        one talk animation: no bob bigger or faster than the shared one, no other talk animation (ART-18)
 //   contract-16 english     no written English for the child: every text on screen is a lexicon form (loan: en included), a
 //                           number, a to-record placeholder, the bulb's English or grown-ups' text (checks-to-build 4)
+//   contract-19 counting    the counting rule: from L3 no number word written on a card (for a player who has heard the words:
+//                           a "seen" profile; decision 57 writes a number the first times); from L2 no counting along aloud
+//                           (a line that is only a number word after the stage's first tap) (checks-to-build 7)
 //   contract-20 one-face    one face per person: no patient face circle while she stands on screen in full (decision 92),
 //                           never two face circles or two cards of one person (R4; checks-to-build 8)
 //   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
@@ -38,6 +41,7 @@ import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
 
 export const CHECKS = {
+  "contract-19": { item: "counting", title: "the counting rule", how: "From level 3, on a page whose profile has heard the words (variant p-seen), no order-card row (the side sample's words) holds a Kutchi number word (the lexicon's Num entries); from level 2, no line that is only a number word (counting along) starts after the stage's first tap. Level 1 counts along and writes the number." },
   "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
@@ -545,6 +549,28 @@ function lexiconFor(root) {
   if (!LEXICA.has(root)) LEXICA.set(root, existsSync(join(root, "data/lang/lexicon.json")) ? lexiconWords(root) : null);
   return LEXICA.get(root);
 }
+const NUMS = new Map();
+function numbersFor(root) {
+  if (!NUMS.has(root)) NUMS.set(root, existsSync(join(root, "data/lang/lexicon.json")) ? (lexiconWords(root, { tags: true }).tags.number || new Set()) : null);
+  return NUMS.get(root);
+}
+function check19(r, tl, segs, v, nums, add) {
+  if (!nums || !nums.size) return;
+  const level = levelOf(r.flow || "");
+  const split = (s) => String(s || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
+  const seen = new Set();
+  if (level >= 3 && /seen/.test(r.variant || "")) for (const e of tl) {
+    if (e.type !== "c" || e.k !== "side") continue;
+    for (const w of e.words || []) if (split(w).some((x) => nums.has(x)) && !seen.has(w)) { seen.add(w); add("contract-19", e.t, `"${w}" writes a number on the card at L${level}`); }
+  }
+  if (level >= 2) {
+    const firstTap = (t) => { const s = segAt(segs, t); const from = s ? s.t0 : -Infinity; const i = tl.find((e) => e.type === "c" && e.k === "input" && !e.popup && e.t >= from); return i ? i.t : Infinity; };
+    for (const l of v.lines) {
+      const ws = split(l.text);
+      if (ws.length && ws.length <= 2 && ws.every((x) => nums.has(x)) && l.t0 > firstTap(l.t0) && !seen.has(l.text + l.t0)) { seen.add(l.text + l.t0); add("contract-19", l.t0, `"${l.text}" is counting along at L${level}`); }
+    }
+  }
+}
 function check16(tl, lex, add) {
   if (!lex) return;
   const seen = new Set();
@@ -588,7 +614,7 @@ export function timeline(r) {
   return (r.timeline || []).map((e) => (e && e.type === "c" && e.k === "life" && e.at ? { ...e, t: e.at } : e)).sort((a, b) => a.t - b.t);
 }
 
-export function analyse(r, { root = ".", retired = loadRetired(root), clip = clipSeconds, lexicon = null } = {}) {
+export function analyse(r, { root = ".", retired = loadRetired(root), clip = clipSeconds, lexicon = null, numbers = null } = {}) {
   const tl = timeline(r);
   const out = [];
   if (!tl.length) return out;
@@ -613,6 +639,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check17(r, tl, add);
   check20(tl, add);
   check16(tl, lexicon || lexiconFor(root), add);
+  check19(r, tl, segs, v, numbers || numbersFor(root), add);
   return out;
 }
 
