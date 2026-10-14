@@ -344,6 +344,9 @@ export class CookPlayer {
   // the "?" and the order card's helpers, once per run (the first tap-kind moment)
   async tryHelp() {
     if (this.helped || !(await this.page.$("#btn-help"))) return;
+    // an evidence page presses them only for a probe about the "?" or the bulb (lib/evidence-probe.mjs wantsHelp: SH-10, PAN-10)
+    const ev = this.page.__njgEvidence;
+    if (ev && ev.wantsHelp && !ev.wantsHelp()) { this.helped = true; return; }
     await sleep(400);
     if (await this.page.$(".njg-onboard")) return;
     this.helped = true;
