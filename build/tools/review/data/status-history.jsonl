@@ -447,3 +447,6 @@
 {"id":"MOD-03","run":"ev-20261014-144157-8oo","earlier":"**open** (found by the leak bots at every level, S06 check 19, 14 Oct)"}
 {"id":"MOD-04","run":"ev-20261014-144157-8oo","earlier":"**open** (found by gate s06-gate (S06 full check, 14 Oct))"}
 {"id":"CK-43","run":"ev-20261014-154328-weu","earlier":"**open** (found by the S06 touched-flows check, 14 Oct; in build: s06-r9)"}
+{"id":"CK-40","run":"ev-20261014-160921-s7f","earlier":"built (evidence PASS ev-20261014-134153-rhd: machine: pass [0 contract breaks])"}
+{"id":"CK-37","run":"ev-20261014-160921-s7f","earlier":"built (evidence PASS ev-20261014-144157-8oo: machine: noFinding:scroll-container [no scroll-container]; noClip:div#panel [1 clean]; `build/screenshots/evidence/ev-20261014-144157-8oo/CK-37.png`)"}
+{"id":"CK-43","run":"ev-20261014-160921-s7f","earlier":"built (evidence PASS ev-20261014-154328-weu: machine: pass [0 contract breaks])"}

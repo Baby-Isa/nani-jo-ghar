@@ -1071,17 +1071,17 @@
   "date": "2026-10-14"
  },
  "CK-37": {
-  "hash": "65dd1b23eddd3d0036fc",
+  "hash": "0157cf6c184600c7c3cd",
   "dhash": [
-   "7301313111d1c175",
-   "7101313111d1c171"
+   "7341313111d1c175",
+   "3141313111d1c171"
   ],
   "verdict": "PASS",
   "line": "machine: noFinding:scroll-container (no scroll-container); noClip:div#panel (1 clean)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-144157-8oo",
-  "commit": "902f018d",
+  "run": "ev-20261014-160921-s7f",
+  "commit": "a642b770",
   "date": "2026-10-14"
  },
  "CK-38": {
@@ -1115,14 +1115,14 @@
   "date": "2026-10-14"
  },
  "CK-40": {
-  "hash": "f0f6569b17495bb3aee2",
+  "hash": "319769b6dbf662d6cf9e",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-134153-rhd",
-  "commit": "4e39c9ef",
+  "run": "ev-20261014-160921-s7f",
+  "commit": "a642b770",
   "date": "2026-10-14"
  },
  "CK-41": {
@@ -1137,14 +1137,14 @@
   "date": "2026-10-14"
  },
  "CK-43": {
-  "hash": "c5d18fd6ef5e8cecd6c5",
+  "hash": "d0b3f433fce2fa1a7368",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-154328-weu",
-  "commit": "d4ecc1a5",
+  "run": "ev-20261014-160921-s7f",
+  "commit": "a642b770",
   "date": "2026-10-14"
  },
  "CK-TAB-01": {
