@@ -1712,11 +1712,12 @@
       raf(() => {
         if (!mission || (mission.compact || 0) >= 3 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
         if (side.scrollHeight <= side.clientHeight + 1) return;
-        // (with fewer than two people, steps 1 and 2 fold nothing: a station's card and one person go straight to pills)
-        if (orderCards().filter((c) => c.who).length + (mission.extra || []).length < 2) return;
         // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face,
-        // 3 flows the open card's rows as pills
-        mission.compact = (mission.compact || 0) + 1;
+        // 3 flows the open card's rows as pills. With fewer than two people steps 1 and 2 fold nothing: one person (and a
+        // station's card) go straight to pills. CK-38: that step was never taken (it returned), so one person's order
+        // opened by a peek (sekelo L3: both skewers) ran past a 360 px sidebar
+        const one = orderCards().filter((c) => c.who).length + (mission.extra || []).length < 2;
+        mission.compact = one ? 3 : (mission.compact || 0) + 1;
         renderOrder();
       })
     );
