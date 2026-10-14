@@ -25,7 +25,7 @@
   --njg-next: #efebe4;        /* the next step's light grey fill */
   --njg-focus: #e0a63a;       /* the one highlight colour: the focal glow (css/shared/focus.css), the card's next and read-along (SH-53) */
   --njg-sage: #7f9b7c;        /* Nani's guide box (everything else in it is mixed from this) */
-  --njg-wrong: #c0443c;       /* the end review only */
+  --njg-wrong: #c0443c;       /* the end review, and a wrong serve's row on the card at the review (CK-32) */
   --njg-cream: #fffaf0;       /* the round buttons' face */
   --njg-cream-edge: #e6d5b8;
   --njg-cream-lip: #e0cba6;

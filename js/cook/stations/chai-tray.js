@@ -1095,6 +1095,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     /** The review faces, one over each glass (sized to the tray's spacing); the praise is said once, when all are right. */
     async function review(wrongPans) {
+      // CK-07: one face per person at the review: the big face over their glass stands in for its small rim badge
+      pans.forEach((q) => q.well.face && q.well.face.setVisible(false));
       const ws = pans.map((q) => q.well);
       let gap = 400;
       ws.forEach((a, i) => ws.forEach((b, j) => j > i && (gap = Math.min(gap, Math.hypot(a.x - b.x, a.y - b.y)))));
@@ -1218,6 +1220,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         // a wrong cup with no row of its own to blame (a plain chai with an extra in it): its person's first row
         if (!round && (why.length || pan.salt) && !bad.length && rows[0]) UI.mission.missItem(rows[0].ids[0], dish, { for: pan.who, no: rows[0].no });
+        // CK-32: at the review the rows found wrong are red on that person's card (it stays open to show them), every try
+        if ((why.length || pan.salt) && UI.mission.serveWrong) UI.mission.serveWrong((bad.length ? bad : rows.slice(0, 1)).map((r) => r.ids[0]), dish, { for: pan.who });
         if (!round) why.forEach((w) => ctx.listen(false, w));
         if (tookBack.length) {
           tookBack.forEach((t) => t.why && ctx.listen(false, t.why));
@@ -1249,6 +1253,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
       }
       await Promise.all(looks.map((l) => l.close()));
+      pans.forEach((q) => q.well.face && q.well.face.active && q.well.face.setVisible(true));
       if (!recasts.length || !ctx.redo) break;
       // decision 51: each wrong cup is redone, or (its third wrong try) shown the right way
       const again = [];

@@ -94,6 +94,8 @@
   "tawa-empty-then-off": "maani: at the first move, the tawa lit with nothing on it (2 s: tawa-empty), the knob turned high, low, off (2 s: knob-off), on again, then cooks fair. The sizzle loop (synthesized, no file) is logged into the voice timeline as sfx/sizzle-loop",
   "turn-early-late": "sekelo grill: turns the first skewer before its green (wrong-early), the next after it (wrong-late), then grills fair",
   "wrong-count": "in the first counted step (a count or 'one more' step) puts one fewer than asked and closes the step (wrong-count), then finishes fair",
+  "serve-wrong": "a dish served wrong (CK-31, CK-32): at the first step that offers a look-alike (chai's sugar: the salt jar beside it), the look-alike goes in once and is left in (serve-wrong; no take-back), then fair, so the cup is served wrong at Done",
+  "peek-every-tap": "from level 3 the card is closed: before every tap a closed (folded) card is peeked open (a tap on its headline: the paid peek, peek-for-tap the first time), so each tap's moment shows what the card's rows do as the thing goes in (SEK-13: the pieces of a mixed skewer ticking one by one)",
   "wrong-extra-person": "in a 2-person chai (chai-tray L2): the last person's pan, once everything they asked for is in, gets a spice from the shelf they did not ask for (aadu when it is on the shelf); then Done, the redo (wrong-redo) and fair",
   "wrong-spice-thrice": "daar: a wrong spice in the tadka on three tries (each try the whole tadka: the game takes it out and asks again), wrong-1..3; then the game shows the right way (shown-right)",
   "wrong-thrice": "three wrong picks in a row at the same step (Cook: the expectation's own wrong items; a heal game: its debug slip(), else another tool than the one asked for), wrong-1..3; then the help and the right way (shown-right)",
@@ -1134,13 +1136,13 @@
  ],
  "SH-69": [
   {
-   "flow": "cook:day1",
-   "path": "fair",
+   "flow": "lab:cook/round",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
    "at": "every:bubble",
    "after": null,
@@ -1149,8 +1151,8 @@
     "voice"
    ],
    "expect": null,
-   "note": "the first meeting: on a fresh save Nani names each new customer in her bubble and says it (flow.js firstMeeting, once per save); the first customer arrives about a minute in, after the pantry; 'Thank you!' on a pill is Kutchi (decision 81)",
-   "max": 12
+   "note": "the first meeting, at a child's pace (speed 1: Nani's name bubble stays its real 1.1 s; at the sandbox's test speed 3 it is gone in 0.37 s, before a crop lands, which is why the day-2 run heard 'Ali!' at 2.99 s but the frame shows the salaam): on a save that has met no one (Cook.save.met empty), Nani greets the new customer by name in her bubble and says it (flow.js firstMeeting, once per save), then their salaam",
+   "max": 4
   },
   {
    "flow": "cook:day2",
@@ -1164,6 +1166,7 @@
    "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
+    "crop:#mission",
     "dom:#mission",
     "voice"
    ],
@@ -1184,6 +1187,7 @@
    "at": "heal-cut-start",
    "after": null,
    "capture": [
+    "crop:.cl-side",
     "dom:.cl-side"
    ],
    "expect": [
@@ -3046,7 +3050,7 @@
   }
  ],
  "PAN-10": {
-  "needsDecision": "Pantry wording: card *Muke de* + items, Nani's box the task (*Muke chai lai de*, to check with Mum), and from L2 her box folds to a minimised state (pending decision)",
+  "needsDecision": "Pantry wording: card *Muke de* + items, Nani's box the task (*Muke chai lai de*, to check with Mum): waits for Mum's Round 5 (decision 83). The code part is built (S06): L1 one item at a time after the card is read once; from L2 her box folded to her face, a tap opens the fuller instruction (its English, grey italic, to record)",
   "probes": [
    {
     "flow": "cook:fetch",
@@ -3061,15 +3065,15 @@
     ],
     "profile": "seen",
     "want": null,
-    "at": "request",
+    "at": "kind-tap",
     "after": null,
     "capture": [
+     "crop:#side",
      "voice",
-     "dom:#mission",
      "dom:.njg-guide"
     ],
     "expect": null,
-    "note": "L1: she reads the card once, then names items one at a time as the child goes; L2+: the guide box folded"
+    "note": "L1: the card read once (the request pop-up), then Nani names each thing as the child goes (her box open); L2+: her box folded to her face and tools (no line), a tap on it opens the fuller instruction for 5 s"
    }
   ]
  },
@@ -3561,20 +3565,23 @@
  "CHAI-13": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/(hakro|ba|trae) khun/"
+   ],
    "at": "every:cook-done:tap",
    "after": null,
    "capture": [
-    "zoom2:canvas:teaspoon"
+    "strip:canvas:hob:3x250"
    ],
    "expect": null,
-   "note": "a real teaspoon for the sugar stir (it shows while the cups are filled)"
+   "note": "the code part of CHAI-13 (the real teaspoon picture is art), at a child's pace: at each sugar tap the drawn teaspoon flies in with its heap and goes round the pan twice (0.9 s), over its puff, never hidden by it",
+   "max": 6
   }
  ],
  "CHAI-14": [
@@ -5438,12 +5445,30 @@
    "at": "every:peek-open",
    "after": null,
    "capture": [
-    "shot"
+    "crop:#mission"
    ],
    "expect": null,
    "max": 2,
-   "delay": 900,
-   "note": "the card opened by a peek at L3 while the skewers go on: each piece of a mixed skewer ticks as it is placed"
+   "delay": 150,
+   "note": "the card opened by a peek at L3 (a mixed skewer first comes at L3, where cards are closed): its piece rows show (each skewer drawn as its little skewer of pieces)"
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "peek-every-tap",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:tap",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": null,
+   "max": 10,
+   "note": "the card peeked open before each tap while the skewers are threaded: each piece of the mixed skewer ticks as it goes on, one by one, in order (never all at once, never before it is on)"
   }
  ],
  "SEK-14": {
@@ -6134,7 +6159,7 @@
  "CK-27": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -6144,14 +6169,14 @@
    "at": "cook-done:tap",
    "after": null,
    "capture": [
-    "strip:#stage:4x100"
+    "strip:canvas:hob:8x170"
    ],
    "expect": null,
-   "note": "a small puff or sprinkle as an item goes in"
+   "note": "chai at a child's pace (speed 1: the puff holds about 0.9 s; at test speed 3 it is gone in 0.3 s): the water's pour lands about 0.85 s after the tap, then the shared puff (white clouds with a warm edge, the item's colour at their heart, rising over the rim)"
   },
   {
    "flow": "cook:daar",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -6161,14 +6186,14 @@
    "at": "cook-done:tap",
    "after": null,
    "capture": [
-    "strip:#stage:4x100"
+    "strip:canvas:hob:7x160"
    ],
    "expect": null,
-   "note": "daar"
+   "note": "daar: the same puff as a thing goes into the pot"
   },
   {
    "flow": "cook:assemble",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -6178,10 +6203,27 @@
    "at": "cook-done:tap",
    "after": null,
    "capture": [
-    "strip:#stage:4x100"
+    "strip:canvas:cv3-bowl:7x160"
    ],
    "expect": null,
-   "note": "chaat (samosa: the same probe)"
+   "note": "chaat: the same puff as a layer goes into the bowl"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "cook-done:tap",
+   "after": null,
+   "capture": [
+    "strip:#stage:7x160"
+   ],
+   "expect": null,
+   "note": "samosa: the same puff as the filling goes onto the pastry (the whole stage: the fold's own picture changes as it fills, so a crop on it jumps)"
   }
  ],
  "CK-28": [
@@ -11501,7 +11543,7 @@
  "CK-31": [
   {
    "flow": "cook:chai-tray",
-   "path": "wrong-count",
+   "path": "serve-wrong",
    "level": [
     1,
     2
@@ -11510,14 +11552,16 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/(hakro|ba|trae|char) khun/"
+   ],
    "at": "every:cook-done:click",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "note": "a wrong cup served (one spoon of sugar short): the review face over it frowns",
+   "note": "a wrong cup served (a spoon of the salt that looks like sugar left in it): the review face over that glass frowns, never happy (at L2 the other, right cup's face is happy)",
    "max": 4,
    "delay": 700
   }
@@ -11525,7 +11569,7 @@
  "CK-32": [
   {
    "flow": "cook:chai-tray",
-   "path": "wrong-count",
+   "path": "serve-wrong",
    "level": [
     1,
     2
@@ -11534,7 +11578,9 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/(hakro|ba|trae|char) khun/"
+   ],
    "at": "every:cook-done:click",
    "after": null,
    "capture": [
@@ -11542,9 +11588,9 @@
     "dom:#mission"
    ],
    "expect": null,
-   "note": "a wrong cup served (one spoon of sugar short): the sugar row marked on the card, the card open to show it",
+   "note": "a wrong cup served (salt left in it): the sugar row marked on that person's card (red), the card staying open to show it (700 ms after Done: the review is up and the person says their order again; by 1.2 s at test speed 3 the cup is already being redone and its rows open again, plain)",
    "max": 4,
-   "delay": 1200
+   "delay": 700
   }
  ],
  "SAM-18": [
@@ -11793,7 +11839,7 @@
  "DAAR-23": [
   {
    "flow": "cook:chop",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -11806,7 +11852,7 @@
     "crop:#mission"
    ],
    "expect": null,
-   "note": "every slice: a row highlights when its count has been cut (ba dungri at the second onion), not before, not never",
+   "note": "every slice, at a child's pace (speed 1): a row highlights when its count has been cut (ba dungri at the second onion), not before, not never. At the sandbox's test speed 3 each blocking capture let about three throws fly by uncut (a wanted vegetable flies its count plus two spares), so the player landed 1 of 5 and no row reached its count (S05-C3's tool gap); at speed 1 a capture costs under one throw",
    "max": 14
   }
  ],
@@ -12427,6 +12473,27 @@
    ],
    "note": "the count station: one lit thing (the bowl's glow, never with a .njg-pulse)",
    "max": 4
+  }
+ ],
+ "CK-35": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_cook_levels.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the level data test for the boil and tawa windows (data/cook.json, read as Mech.knobs reads it): level 1 at least 1.6 s (boil) and 1.3 s (tawa, and the maani station's tawa), each level above about 15% quicker (0.7x-0.87x), the chai tray's own windows unchanged"
   }
  ],
  "CLN-143": [

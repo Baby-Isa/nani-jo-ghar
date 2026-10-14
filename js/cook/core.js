@@ -74,7 +74,6 @@
   Cook.hasAudio = (id) => !!id && (Cook.audioManifest.word || []).includes(id);
 
   /* ---------------- save ---------------- */
-  const SAVE_KEY = "njg-cook-v1";
   const blankSave = () => ({
     v: 1,
     mode: "relaxed",
@@ -91,10 +90,11 @@
   Cook.save = blankSave();
   Cook.storageOK = true;
 
-  // "One app, one save" (js/shared/save.js): every page loads the one save, and
-  // Cook.save is the current player's "cook" namespace (the old njg-cook-v1 key was
-  // migrated into it). Find it, Dress up and Snap share Cook.save, so they follow.
-  // Without save.js (an old lab page) it falls back to the old key.
+  // "One app, one save" (js/core/save.js, or js/shared/save.js on the parked pages): every page loads the one save,
+  // and Cook.save is the current player's "cook" namespace (the old njg-cook-v1 key is migrated into it by the save
+  // itself, so old saves still load). Find it, Dress up and Snap share Cook.save, so they follow. Storage is the save's
+  // alone (checks-to-build 17: nothing else touches the browser storage): with no save loaded (no page does that today:
+  // js/cook/boot.js imports it, the parked pages load js/shared/save.js) Cook plays on an in-memory save.
   const oneSave = () => (global.Save && typeof global.Save.get === "function" ? global.Save : null);
   Cook.loadSave = function () {
     try {
@@ -102,10 +102,7 @@
       if (S) {
         Cook.save = Object.assign(blankSave(), S.get("cook"));
         Cook.storageOK = S.persistent();
-      } else {
-        const raw = localStorage.getItem(SAVE_KEY);
-        if (raw) Cook.save = Object.assign(blankSave(), JSON.parse(raw));
-      }
+      } else Cook.storageOK = false;
     } catch (e) {
       Cook.storageOK = false;
     }
@@ -115,7 +112,7 @@
     try {
       const S = oneSave();
       if (S) Cook.storageOK = S.set("cook", Cook.save) && S.persistent();
-      else localStorage.setItem(SAVE_KEY, JSON.stringify(Cook.save));
+      else Cook.storageOK = false;
     } catch (e) {
       Cook.storageOK = false;
     }

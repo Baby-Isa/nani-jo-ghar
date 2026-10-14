@@ -520,6 +520,20 @@
     UI.step(line, { helpAfter: false });
     return !!(ctx && ctx.guided);
   };
+  /**
+   * PAN-10 (Zafar, 6 Oct PA3): from level 2 Nani's box folds to her face and tools; a tap opens the fuller instruction
+   * (the station's guide line: data.guide[key] through the engine, else its to-record English, grey italic) for a few
+   * seconds. Level 1 keeps her box open: she reads the card once (the request pop-up) and names each thing as it comes.
+   */
+  UI.guideFold = function (on, key = guideKey) {
+    if (!guide || !guide.fold) return;
+    if (!on) return guide.fold(false);
+    const G = (Cook.data && Cook.data.guide) || {};
+    const k = [key, String(key || "").split(":")[0]].find((x) => x && G[x]);
+    if (!k) return guide.fold(true);
+    const line = Lang.guideLine(k, G[k]);
+    guide.fold(true, line.ok ? { full: raHtml(line) } : { full: esc(Lang.plain(line)), rec: true });
+  };
   /** R4 (S02-B, T12): while Nani asks on a card of her own (daar's chop list) her box keeps only its tools (one face). */
   UI.guideStrip = (on) => guide && guide.strip && guide.strip(!!on || !!(mission && mission.stripMode));
   /** The station (or station:phase) whose instruction the box shows. */
@@ -1386,7 +1400,7 @@
   const rowText = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
   // decision 57 (SH-52): the bulb's English is the full order, numbers too ("two chapati"), whatever the card drops
   const fullLine = (r) => (mission && mission.english && r.phrase && !r.no ? r.phrase : r.line);
-  const partNode = (r, gi) => ({ label: rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, key: r, gi, next: false });
+  const partNode = (r, gi) => ({ label: rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false });
   /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
   const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
   /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */
@@ -1447,7 +1461,7 @@
           .forEach(({ r }) => {
             const mixes = L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || y.shown));
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));
-            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, key: r, src: ps ? src(ps) : [] });
+            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, wrong: !!r.wrong, key: r, src: ps ? src(ps) : [] });
             rowsShown.push(r);
             // SEK-03 (S05-C, the shared group box): several different skewers, one plain box each (no label row; the
             // headline gives the summary), alternate boxes tinted, each drawn as a little skewer
@@ -1459,8 +1473,11 @@
               for (let u = 0; u < (r.qty || 1); u++) {
                 const it = Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), mixes[0]), { group: true });
                 const unit = !!(r.units && r.units[u]) || !!r.done;
+                // SEK-13 (S06): a later skewer of the same mix ticks its own pieces as they go on (M.tickPiece), never
+                // all at once when it is finished
+                const got = (r.unitGot && r.unitGot[u]) || 0;
                 if (u > 0 || unit) {
-                  it.parts = it.parts.map((p) => Object.assign({}, p, { done: unit, next: false }));
+                  it.parts = it.parts.map((p, pi) => Object.assign({}, p, { done: unit || pi < got, next: false }));
                   it.done = unit;
                 }
                 items.push(it);
@@ -1828,6 +1845,7 @@
   const ladderFor = (dish) => (mission ? mission.ladders.find((L) => L.dish === dish) || mission.ladders[0] : null);
   function markDone(r) {
     r.done = true;
+    r.wrong = false; // CK-32: a row done again (redone right, or shown) is no longer the wrong one
     // a finished row shows its words again
   }
   /**
@@ -1942,6 +1960,26 @@
     renderOrder();
     return r;
   };
+  /**
+   * SEK-13 (S06): a piece went on (n: how many pieces are on now; 0 after the last came off) on a skewer of a mix
+   * already made once (the same mix again: "ba lakri mixed"): the box of the skewer being threaded (its kind's first
+   * unit not yet made) ticks that many of its pieces. kind: the mix's word id (as M.tickCard).
+   */
+  M.tickPiece = function (kind, n, dish = 0) {
+    const L = ladderFor(dish);
+    if (!L || !kind) return null;
+    const want = String(kind).split("+");
+    const r = Order()
+      .rows(L)
+      .find((x) => x.units && want.every((id) => x.ids.includes(id)) && x.units.some((u) => !u));
+    if (!r) return null;
+    const u = r.units.indexOf(false);
+    r.unitGot = r.unitGot || [];
+    if ((r.unitGot[u] || 0) === n) return r;
+    r.unitGot[u] = n;
+    renderOrder();
+    return r;
+  };
   /** A step of the dish's ordered job was taken (a chaat layer went in): its "next" row moves on. */
   M.advance = function (dish = 0) {
     const L = ladderFor(dish);
@@ -1980,6 +2018,22 @@
     return r;
   };
   /**
+   * CK-32 (Zafar, 29 Sept: "the card marks the wrong row"): at a wrong serve's review, the rows the serve found wrong are
+   * drawn red on the card (the shared card's `wrong`), and the card stays open to show them, until they are redone
+   * (M.reopen) or shown (a tick). Never mid-round: only a station's serve calls it. Returns the rows marked.
+   */
+  M.serveWrong = function (ids, dish = 0, { for: forWho = null } = {}) {
+    const L = ladderFor(dish);
+    if (!L) return [];
+    const want = [].concat(ids);
+    const rows = Order()
+      .rows(L, { all: true })
+      .filter((r) => !r.head && (!forWho || r.for === forWho) && r.ids.some((id) => want.includes(id)));
+    rows.forEach((r) => (r.wrong = true));
+    if (rows.length) renderOrder();
+    return rows;
+  };
+  /**
    * Decision 51 (CK-23): a wrong item is redone on the spot: its rows open again (opts.for: one person's), the first
    * try's mark (r.miss) kept for the end review. Returns the rows reopened.
    */
@@ -1996,6 +2050,7 @@
     rows.forEach((r) => {
       r.done = false;
       r.got = 0;
+      r.wrong = false; // CK-32: open again, plain (the red was the review's)
     });
     if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
     renderOrder();
@@ -2120,6 +2175,7 @@
     stopReading();
     UI.stepDone();
     if (guide && guide.strip) guide.strip(false);
+    if (guide && guide.fold) guide.fold(false); // PAN-10: a folded box never outlives its order
     $("#mission").classList.add("hidden");
     $("#mission").classList.remove("arriving");
     intro().classList.add("hidden");

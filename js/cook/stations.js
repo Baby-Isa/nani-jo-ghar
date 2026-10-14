@@ -526,10 +526,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     puff(x, y, color = 0xffffff, size = 40) {
       // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa): a soft puff that reads on a
       // light pan or a dark one (each cloud has a faint warm edge); never a spray of dots (CK-06)
+      // S06 (CK-27 reopened: the puff did not read on chaat's yellow layer or chai's water, where its white and item-coloured
+      // clouds matched what they landed on): every cloud is white with a clear warm edge, the item's colour only at its
+      // heart; they rise above the rim, so the puff reads over the food, the pan or the glass, and it holds for about 0.9 s
+      const s = size * 1.3;
+      const ring = this.track(this.add.ellipse(x, y, s * 0.9, s * 0.45).setDepth(D.fx).setStrokeStyle(3, 0xffffff, 0.9));
+      this.tweens.add({ targets: ring, scale: 2.1, alpha: 0, duration: 420, ease: "Cubic.easeOut", onComplete: () => ring.destroy() });
       for (let i = 0; i < 7; i++) {
         const a = (i / 7) * Math.PI * 2 + Math.random() * 0.5;
-        const c = this.track(this.add.ellipse(x, y, size * 0.7, size * 0.48, i % 2 ? 0xffffff : color, 0.72).setDepth(D.fx).setStrokeStyle(1.5, 0x8a6a48, 0.35));
-        this.tweens.add({ targets: c, x: x + Math.cos(a) * size * 0.9, y: y + Math.sin(a) * size * 0.4 - size * 0.35, scale: 1.9, alpha: 0, duration: 650 + Math.random() * 200, ease: "Cubic.easeOut", onComplete: () => c.destroy() });
+        const c = this.track(this.add.ellipse(x, y, s * 0.72, s * 0.5, 0xffffff, 0.9).setDepth(D.fx).setStrokeStyle(2.5, 0x8a6a48, 0.6));
+        const tx = x + Math.cos(a) * s * 0.85;
+        const ty = y + Math.sin(a) * s * 0.35 - s * 0.55;
+        this.tweens.add({ targets: c, x: tx, y: ty, scale: 1.7, duration: 360, ease: "Cubic.easeOut" });
+        this.tweens.add({ targets: c, alpha: 0, scale: 2, y: ty - s * 0.25, delay: 360, duration: 520 + Math.random() * 160, ease: "Sine.easeIn", onComplete: () => c.destroy() });
+        if (i % 2) continue;
+        const h = this.track(this.add.ellipse(x, y, s * 0.3, s * 0.21, color, 0.9).setDepth(D.fx + 0.01));
+        this.tweens.add({ targets: h, x: tx, y: ty, scale: 1.7, duration: 360, ease: "Cubic.easeOut" });
+        this.tweens.add({ targets: h, alpha: 0, scale: 2, y: ty - s * 0.25, delay: 360, duration: 520, ease: "Sine.easeIn", onComplete: () => h.destroy() });
       }
     }
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */

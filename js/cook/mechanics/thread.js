@@ -188,6 +188,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const pos = pats.slice(0, pj).reduce((a, x) => a + x.length, 0) + sk.ids.length - 1;
           ctx.tickItem(pos);
           sk.ticked.push({ pos, id });
+        } else if (pj < 0 && ctx.tickPiece && pats.some((x, j) => madePat[j] && x.length === n && sk.ids.every((p, q) => p === x[q]))) {
+          // SEK-13 (S06): the same mix again (its rows are already ticked): its own box ticks this piece
+          sk.pieces = sk.ids.length;
+          ctx.tickPiece(mixedW, sk.pieces);
         }
         if (exp && exp.w) sk.target = exp.w;
         if (sk.ids.length >= n) await finish();
@@ -209,6 +213,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const t = sk.ticked.pop();
           if (UI.mission.untickItem) UI.mission.untickItem(t.id, ctx.dishAt || 0);
         }
+        if (sk.pieces > sk.ids.length && ctx.tickPiece) ctx.tickPiece(mixedW, (sk.pieces = sk.ids.length));
         const back = S.track(S.add.image(wx, wy, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.soft();
         await S.fly(back, bowls[id].x, bowls[id].y, { duration: 280, arc: z.L(60) });
@@ -235,6 +240,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (!pre.some((t) => t.pos === at + i)) ctx.tickItem(at + i);
           });
         } else if (pre.length && UI.mission.untickItem) pre.forEach((t) => UI.mission.untickItem(t.id, ctx.dishAt || 0)); // it wasn't that mix after all
+        // SEK-13: a later skewer's own box: its pieces ticked as they went on; a wrong one opens them again
+        if (sk.pieces && ctx.tickPiece && !(c.ok && c.kind === mixedW)) ctx.tickPiece(mixedW, 0);
+        sk.pieces = 0;
         if (c.ok && c.kind === mixedW && c.pat >= 0) madePat[c.pat]++;
         z.progress({ threaded: sk.ids.slice(), kind: c.kind });
         await Cook.wait(250);
