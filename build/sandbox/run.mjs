@@ -94,7 +94,8 @@ if (has("--list")) {
 // the route the contract run plays by default (--contract with no --flow): what Zafar played on 8 Oct and the places his rules
 // were caught, at laptop size. The orchestrator's /review runs the full contract pass (--gate or --all --check)
 const { CONTRACT_ROUTE } = Contract; // lib/contract.mjs (sprintcheck.mjs uses it for rows about every game)
-if (has("--contract") && !val("--flow") && !val("--touched") && !has("--all") && !has("--gate")) { argv.push("--flow", CONTRACT_ROUTE.join(",")); if (!has("--sizes") && !has("--every-size")) argv.push("--quick"); }
+const routeRun = has("--contract") && !val("--flow") && !val("--touched") && !has("--all") && !has("--gate");
+if (routeRun) { argv.push("--flow", CONTRACT_ROUTE.join(",")); if (!has("--sizes") && !has("--every-size")) argv.push("--quick"); }
 
 function pick() {
   const named = (val("--flow") || val("--touched") || "").split(",").map((s) => s.trim()).filter(Boolean);
@@ -323,6 +324,9 @@ const contract = Contract.report(everything, { root: ROOT });
 if (!fromRun || has("--contract")) {
   writeFileSync(join(runDir, "contract.md"), `# Contract run ${runId}\n\n${contract.md}`);
   writeFileSync(join(runDir, "contract.json"), JSON.stringify(contract.breaks, null, 1));
+  // what the publish gate reads (checks-to-build 2): which commit, what scope, finished or not
+  const head = spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).stdout.trim();
+  writeFileSync(join(runDir, "contract-meta.json"), JSON.stringify({ commit: head, scope: has("--gate") ? "gate" : has("--all") ? "all" : routeRun ? "route" : "flows", complete: !leftover, pages: everything.filter((r) => r.size !== "static").length, breaks: contract.breaks.length, date: new Date().toISOString() }, null, 1));
 }
 const contractLine = () => {
   const by = {};

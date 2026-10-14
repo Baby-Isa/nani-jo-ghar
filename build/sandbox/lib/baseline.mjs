@@ -14,6 +14,9 @@ export const ignored = (f) => IGNORE.some((i) => i.check === f.check && f.select
 export const keyOf = (f) => `${f.check}|${f.flow}|${f.size}|${f.selector}`;
 export const looseKey = (f) => `${f.check}|${f.size}|${f.selector}`;
 const fsKey = (flow, size) => `${flow}@${size}`;
+// zero tolerance (checks-to-build 3; non-negotiables 9 and 12): these fail on ANY finding, known to the baseline or not, and the
+// baseline never adopts them. Only size, tap and spacing findings and timing noise ratchet.
+export const STRICT = new Set(["text-clipped", "ellipsis", "word-broken", "scroll-container", "covered", "text-offscreen", "canvas-text-offscreen", "canvas-text-covered"]);
 
 // results -> flat findings (one per key, with the states it showed in) and per flow-size facts
 export function flatten(results) {
@@ -57,8 +60,8 @@ export function compare(base, cur, scope) {
   const baseLoose = new Set(baseAll.map(looseKey));
   const curF = new Map(cur.findings.map((f) => [f.key, f]));
   const curLoose = new Set(cur.findings.map(looseKey));
-  const unknown = cur.findings.filter((f) => !baseF.has(f.key));
-  const added = unknown.filter((f) => !baseLoose.has(looseKey(f)));
+  const unknown = cur.findings.filter((f) => !baseF.has(f.key) && !STRICT.has(f.check));
+  const added = [...cur.findings.filter((f) => STRICT.has(f.check)), ...unknown.filter((f) => !baseLoose.has(looseKey(f)))];
   const moved = unknown.filter((f) => baseLoose.has(looseKey(f)));
   const fixed = [...baseF.values()].filter((f) => !curF.has(f.key) && !curLoose.has(looseKey(f)));
   const incomplete = [];
@@ -78,7 +81,7 @@ export function append(base, cur, { path } = {}) {
   const out = JSON.parse(JSON.stringify(base));
   const have = new Set(out.findings.map((f) => f.key));
   let added = 0;
-  for (const f of cur.findings) if (!have.has(f.key)) { out.findings.push(f); have.add(f.key); added++; }
+  for (const f of cur.findings) if (!have.has(f.key) && !STRICT.has(f.check)) { out.findings.push(f); have.add(f.key); added++; }
   for (const [fs, v] of Object.entries(cur.flows)) if (!out.flows[fs]) out.flows[fs] = v;
   out.findings.sort((a, b) => a.key.localeCompare(b.key));
   out.generated = base.generated; // an append is not a regeneration
@@ -88,7 +91,7 @@ export function append(base, cur, { path } = {}) {
 }
 
 // write a new baseline. shrinkOnly: keep only what the old one had (drop the fixed); accept: adopt the run's findings
-export function update(base, cur, scope, { accept }) {
+export function update(base, cur, scope, { accept, path } = {}) {
   const out = base ? JSON.parse(JSON.stringify(base)) : { version: 1, findings: [], flows: {} };
   const inScope = (x) => scope.has(fsKey(x.flow, x.size));
   const curF = new Map(cur.findings.map((f) => [f.key, f]));
@@ -103,7 +106,7 @@ export function update(base, cur, scope, { accept }) {
     else if (accept) { /* adopted run replaces it */ }
   }
   if (accept) { const have = new Set(kept.map((f) => f.key)); for (const f of cur.findings) if (!have.has(f.key)) kept.push(f); }
-  out.findings = kept.sort((a, b) => a.key.localeCompare(b.key));
+  out.findings = kept.filter((f) => !STRICT.has(f.check)).sort((a, b) => a.key.localeCompare(b.key));
   for (const fs of scope) {
     const c = cur.flows[fs]; if (!c) continue;
     const b = out.flows[fs];
@@ -111,6 +114,6 @@ export function update(base, cur, scope, { accept }) {
     else out.flows[fs] = { complete: b.complete || c.complete, states: c.states, errors: (b.errors || []).filter((e) => c.errors.includes(e)) };
   }
   out.generated = new Date().toISOString();
-  save(out);
+  save(out, path);
   return out;
 }

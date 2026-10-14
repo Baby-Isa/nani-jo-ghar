@@ -309,3 +309,32 @@ test("traceRot: the turn of an object is measured (DAAR-11: the ladle turns with
   assert.equal(traceStats(turn).amp, 0, "still in place, turning");
   assert.equal(traceDecision("traceRot", [traceStats(turn).rot], ">=", 300), true);
 });
+
+test("red then green (checks-to-build 1): a PASS marks built only after a FAIL on the same probe from an earlier run; two FAILs since built: Zafar", async () => {
+  const { redGreen, legacyReds, specHash } = await import("./lib/evidence.mjs");
+  const S1 = specHash({ probes: [1] }), S2 = specHash({ probes: [2] });
+  const kinds = { "A-01": "open", "A-02": "reopened", "A-03": "open", "A-04": "built", "A-05": "open", "A-06": "open" };
+  const specs = { "A-01": S1, "A-02": S1, "A-03": S1, "A-04": S1, "A-05": S2, "A-06": S1 };
+  const log = [
+    { id: "A-01", run: "r0", verdict: "FAIL", spec: S1 },            // red on this probe, earlier run: the PASS stands
+    { id: "A-03", run: "r1", verdict: "FAIL", spec: S1 },            // red in the same run as the PASS: not before it
+    { id: "A-05", run: "r0", verdict: "FAIL", spec: S1 },            // red on an older probe (the spec changed since): not this probe
+    { id: "A-06", run: "r0", verdict: "FAIL", spec: S1 }, { id: "A-06", run: "r0", event: "built" },
+    { id: "A-06", run: "r0b", verdict: "FAIL", spec: S1 },
+  ];
+  const v = new Map([["A-01", { verdict: "PASS" }], ["A-02", { verdict: "PASS" }], ["A-03", { verdict: "PASS" }], ["A-04", { verdict: "PASS" }], ["A-05", { verdict: "PASS" }], ["A-06", { verdict: "FAIL" }]]);
+  const out = redGreen(v, { kinds, specs, log, run: "r1", legacy: [{ id: "A-02", run: "ev-old", verdict: "FAIL", spec: "legacy" }] });
+  assert.deepEqual([...out.verdicts.keys()].sort(), ["A-01", "A-02", "A-04", "A-06"]);   // A-02 by its legacy red; A-04 is already built
+  assert.deepEqual(out.refused.map((r) => r.id).sort(), ["A-03", "A-05"]);
+  assert.match(out.refused[0].why, /no red first/);
+  assert.equal(out.verdicts.get("A-06").twoStrikes, true);                                // r0b and r1 since the built mark
+  assert.deepEqual(out.strikes, ["A-06"]);
+  // legacy reds come from the fix list's statuses and the history file, except runs the log already holds
+  const md = "| B-01 | x | **reopened** (evidence FAIL ev-20261013-1-abc: Fable, y) | c | s |\n| B-02 | x | built (evidence PASS r9: z) | c | s |";
+  const hist = [{ id: "B-02", run: "r9", earlier: "**reopened** (evidence FAIL ev-s04-ev2: Fable, q)" }];
+  assert.deepEqual(legacyReds([md], hist, [{ id: "B-01", run: "ev-20261013-1-abc", verdict: "FAIL", spec: S1 }]).map((e) => `${e.id} ${e.run}`), ["B-02 ev-s04-ev2"]);
+  // a two-strikes FAIL writes the open status Zafar's list reads
+  const { applyVerdicts } = await import("./lib/evidence.mjs");
+  const t = applyVerdicts("| A-06 | x | **reopened** (y) | c | s |", new Map([["A-06", { verdict: "FAIL", line: "B, still", twoStrikes: true }]]), "r1").text;
+  assert.match(t, /\| A-06 \| x \| \*\*open \(two strikes: Zafar\)\*\* \(evidence FAIL r1: B, still\) \|/);
+});

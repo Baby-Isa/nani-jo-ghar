@@ -55,14 +55,27 @@ test("append adds the findings and pages the baseline lacks and changes nothing 
   {
     const base = flatten([run("a", "1366x768", true, [f("tap-small", "button#x")])]);
     // an existing flow-size gains a finding of a new kind; a new flow-size appears
-    const cur = flatten([run("a", "1366x768", true, [f("tap-small", "button#x"), f("covered", "button#y")]), run("b", "800x360", true, [f("text-small", "span.z")])]);
+    const cur = flatten([run("a", "1366x768", true, [f("tap-small", "button#x"), f("spacing-grid", "button#y")]), run("b", "800x360", true, [f("text-small", "span.z")])]);
     const out = append({ version: 1, generated: "then", flows: base.flows, findings: base.findings.map((x) => ({ key: x.key, measured: x.measured })) }, cur, { path: join(dir, "b.json") });
     assert.equal(out.added, 2);
     assert.equal(out.generated, "then");
-    assert.deepEqual(out.findings.map((x) => x.key).sort(), ["covered|a|1366x768|button#y", "tap-small|a|1366x768|button#x", "text-small|b|800x360|span.z"]);
+    assert.deepEqual(out.findings.map((x) => x.key).sort(), ["spacing-grid|a|1366x768|button#y", "tap-small|a|1366x768|button#x", "text-small|b|800x360|span.z"]);
     assert.deepEqual(Object.keys(out.flows).sort(), ["a@1366x768", "b@800x360"]);
     assert.deepEqual(out.flows["a@1366x768"], base.flows["a@1366x768"]); // untouched
     const written = JSON.parse(readFileSync(join(dir, "b.json"), "utf8"));
     assert.equal(written.findings.length, 3);
   }
+});
+
+test("zero tolerance (checks-to-build 3): a clipped, ellipsised, broken, scrolled, covered or off-screen text finding fails even when the baseline knows it, and is never adopted", async () => {
+  const { STRICT, update } = await import("./lib/baseline.mjs");
+  for (const c of ["text-clipped", "ellipsis", "word-broken", "scroll-container", "covered", "text-offscreen", "canvas-text-offscreen", "canvas-text-covered"]) assert.ok(STRICT.has(c), c);
+  for (const c of ["text-small", "tap-small", "spacing-grid", "canvas-text-small"]) assert.ok(!STRICT.has(c), c);
+  const base = flatten([run("a", "1366x768", true, [f("text-clipped", "div.card"), f("tap-small", "button#x")])]);
+  const cur = flatten([run("a", "1366x768", true, [f("text-clipped", "div.card"), f("tap-small", "button#x")])]);
+  const c = compare(base, cur, new Set(["a@1366x768"]));
+  assert.deepEqual(c.added.map((x) => x.check), ["text-clipped"]);       // known, but strict: still a failure
+  const { mkdtempSync } = await import("node:fs"), { tmpdir } = await import("node:os"), { join } = await import("node:path");
+  const out = update(null, cur, new Set(["a@1366x768"]), { accept: true, path: join(mkdtempSync(join(tmpdir(), "bl-")), "b.json") });
+  assert.deepEqual(out.findings.map((x) => x.check), ["tap-small"]);      // --accept never adopts a strict finding
 });

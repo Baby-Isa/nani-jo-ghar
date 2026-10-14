@@ -7,8 +7,8 @@ Every tool in one table. Run one when the job needs it; each prints its own `--h
 | Tool | What it does | When |
 |---|---|---|
 | `node build/tools/review/checks.mjs` | Every fast check in one run, one line each, exit 1 on any failure: unit tests, the word lint, the version-bump dry run, the evidence-spec lint, the picture-load check | Before every push |
-| `node build/sandbox/run.mjs --flow <ids> --check` | Plays the game's flows in a browser, shoots every state, runs the 15 contract checks (one thing lit, the pop-up, voices, bubbles, words whole, …); exit 1 on a break | After a change to a screen; the full set only in `/review` |
-| `node build/tools/review/evidence.mjs --run --rows <IDs>` | Red then green for a fix-list row: plays the row's probe and makes its evidence sheet; `--judge`/`--collect` for the independent verdict; `--apply` writes it (a FAIL reopens, a PASS moves the row to the archive) | Before and after every fix |
+| `node build/sandbox/run.mjs --flow <ids> --check` | Plays the game's flows in a browser, shoots every state, runs the 15 contract checks (one thing lit, the pop-up, voices, bubbles, words whole, …); exit 1 on a break, and on any clipped, ellipsised, broken, scrolled, covered or off-screen text (never baselined) | After a change to a screen; the full set only in `/review` |
+| `node build/tools/review/evidence.mjs --run --rows <IDs>` | Red then green for a fix-list row (`--apply` refuses a PASS with no earlier FAIL on the same probe, `data/verdict-log.jsonl`; two FAILs since built make the row Zafar's): plays the row's probe and makes its evidence sheet; `--judge`/`--collect` for the independent verdict; `--apply` writes it (a FAIL reopens, a PASS moves the row to the archive) | Before and after every fix |
 | `node build/tools/review/sprintcheck.mjs` | Plays every row a sprint touched, one evidence sheet each | `/review` before a publish |
 | `node build/tools/review/touched.mjs` | From a git diff, the flows to rerun (shared files included) | After any change |
 | `node build/tools/review/regress.mjs <flows>` | The rows (fix list and archive) to recheck for those flows | With `touched.mjs` |
@@ -25,7 +25,7 @@ Every tool in one table. Run one when the job needs it; each prints its own `--h
 | `node build/tools/ops/brief.mjs <spec.json>` | A complete session brief from a small spec, with its fix-list rows | `/brief`, before any launch |
 | `node build/tools/ops/checkin.mjs [--log]` | What landed since the last check-in | `/checkin` |
 | `node build/tools/ops/feedback.mjs <transcript>` | A voice note -> the feedback report skeleton and draft rows (next free IDs) | `/feedback` |
-| `node build/tools/ops/publish.mjs` | Bump the version, push to `main`, wait for Pages, shoot the live page | `/publish`, orchestrator only |
+| `node build/tools/ops/publish.mjs` | The publish gate first (`publishgate.mjs`: refuses while a fixable row is open, checks are red, or the last contract or evidence run is older than the game files), then bump the version, push to `main`, wait for Pages, shoot the live page | `/publish`, orchestrator only |
 | `node build/tools/ops/mumround.mjs <folder>` | Mum's recordings -> clips, manifest, engine, gap counts | `/mum-round` |
 | `node build/tools/ops/mumsheet.mjs` | The engine's gaps -> the next question sheet for Mum | `/mum-round` |
 | `node build/tools/ops/unpushed.mjs` | Hook: warns after 30 minutes unpushed | Automatic |

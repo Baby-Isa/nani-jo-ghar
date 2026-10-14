@@ -4,12 +4,17 @@ import { readFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { createRequire } from "node:module";
 import { ROOT, args, help, die, sh, git, gitSoft, branch, logLine, pagesDeployed } from "./lib.mjs";
+import { gather, gateProblems } from "./publishgate.mjs";
 
 const HELP = `
-node build/tools/ops/publish.mjs [--go] [--site URL] [--timeout 900] [--via site|api|auto] [--allow-dirty] [--log] [--trailer TEXT]
+node build/tools/ops/publish.mjs [--go] [--force] [--no-checks] [--site URL] [--timeout 900] [--via site|api|auto] [--allow-dirty] [--log] [--trailer TEXT]
 node build/tools/ops/publish.mjs --pages <sha|main> [--timeout 900]     only wait for Pages to deploy that commit (the API path; no push)
   Dry run by default: checks the branch, the tree, whether origin/main is already in this branch, what bump_version would
   stamp and how many commits would reach main; prints the steps; changes nothing and uses no network beyond git fetch.
+  The publish gate (checks-to-build 2) runs first, in the dry run too: it refuses --go while a fix-list row is open without a
+  "waiting on Mum/art/Zafar" note, checks.mjs is red, the last full contract run has a break or is older than the game files, or
+  the last evidence run is older than the game files or has rows not judged or verdicts not collected; it prints the list for
+  Zafar. --force publishes anyway (only on Zafar's word); --no-checks skips running checks.mjs in a dry run.
   --go publishes (rules B7-B9; only when Zafar has approved publishing):
     1. python3 build/bump_version.py, commit "Publish: version <stamp>"
     2. git push -u origin <branch>, then git push origin HEAD:main (network errors retried at 2, 4, 8, 16 s)
@@ -61,6 +66,12 @@ const problems = [];
 if (behind) problems.push("merge origin/main first (git merge origin/main; on ?v= conflicts take the real side; then re-run)");
 if (dirty.length && !a.has("allow-dirty")) problems.push("commit or stash the uncommitted changes (or --allow-dirty to include them in the publish commit)");
 if (!ahead) problems.push("nothing to publish: main already has this branch");
+// ---- the publish gate (checks-to-build 2)
+const G = gather({ checks: GO || !a.has("no-checks") });
+const gate = gateProblems(G);
+say(gate.length ? `  publish gate: ${gate.length} problem(s)${a.has("force") ? " (--force: publishing anyway)" : ""}:\n${gate.map((p) => `    - ${p}`).join("\n")}` : "  publish gate: clear");
+if (G.waiting.length) say(`  for Zafar (open, waiting on Mum, art or him): ${G.waiting.join(", ")}`);
+if (gate.length && !a.has("force")) problems.push(`the publish gate (${gate.length} problem(s) above)`);
 if (!GO) {
   say("Steps --go would run: bump_version -> commit -> push branch -> push HEAD:main -> poll js/version.js -> screenshot labs.html");
   say(problems.length ? `Blockers: ${problems.join("; ")}` : "Ready: re-run with --go once Zafar has approved publishing.");

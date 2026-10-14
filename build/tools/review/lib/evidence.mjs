@@ -116,7 +116,7 @@ export function applyVerdicts(md, verdicts, run) {
     if (v.verdict !== "PASS" && v.verdict !== "FAIL") { skipped.push({ id, why: v.verdict }); continue; }
     if (r.status.includes(`evidence ${v.verdict} ${run}`)) { skipped.push({ id, why: "already applied" }); continue; }
     const note = `evidence ${v.verdict} ${run}: ${clean(v.line)}${v.png ? `; \`${v.png}\`` : ""}`;
-    const head = v.verdict === "FAIL" ? "**reopened**" : kind === "fixed" ? "fixed" : "built";
+    const head = v.verdict === "FAIL" ? (v.twoStrikes ? "**open (two strikes: Zafar)**" : "**reopened**") : kind === "fixed" ? "fixed" : "built";
     // the status is the current state only (decision 99): the old one goes to the history file, not after "· earlier:"
     const status = `${head} (${note})`;
     history.push({ id, run, earlier: r.status });
@@ -137,4 +137,41 @@ export function applyGuard(index, cache) {
   const hit = rows.filter(([rid, r]) => cache[rid] && cacheHit(cache[rid], r.fp));
   if (rows.length && !hit.length) return `none of this run's ${rows.length} rows has a verdict in the cache: run --judge and --collect first`;
   return null;
+}
+
+// ---------- red then green (checks-to-build 1, rule C22) ----------
+// The verdict log (build/tools/review/data/verdict-log.jsonl) is append-only: {id, run, verdict: PASS|FAIL, spec, judge, date} per
+// verdict, {id, run, event: "built", date} when --apply marks a row built. spec is specHash(the row's evidence spec): a fix that
+// weakens the probe gets no credit for the old probe's red.
+export const specHash = (spec) => sha(spec || null);
+const RED = /evidence FAIL ([A-Za-z0-9][\w-]*)/g;
+// The reds written before the log existed, from the fix list's statuses and the history file's earlier statuses; spec "legacy"
+// (unknown, so any probe). A run the log already holds is the log's.
+export function legacyReds(texts, history, log) {
+  const have = new Set(log.map((e) => `${e.id} ${e.run}`)), out = [], seen = new Set();
+  const add = (id, status) => { for (const m of String(status || "").matchAll(RED)) { const k = `${id} ${m[1]}`; if (have.has(k) || seen.has(k)) continue; seen.add(k); out.push({ id, run: m[1], verdict: "FAIL", spec: "legacy" }); } };
+  for (const t of texts) for (const r of parseRegressions(t)) add(r.id, r.status);
+  for (const h of history) add(h.id, h.earlier);
+  return out;
+}
+// verdicts: Map id -> {verdict, ...}; kinds: id -> statusKind; specs: id -> specHash; log: the verdict log; run: this run.
+// -> {verdicts (the ones that may be applied; a FAIL carries twoStrikes), refused: [{id, why}], strikes: [id]}
+export function redGreen(verdicts, { kinds, specs, log, run, legacy = [] }) {
+  const out = new Map(), refused = [], strikes = [];
+  for (const [id, v] of verdicts) {
+    const mine = log.filter((e) => e.id === id);
+    const at = mine.findIndex((e) => e.run === run);
+    const before = at < 0 ? mine : mine.slice(0, at);
+    if (v.verdict === "PASS" && !["built", "fixed"].includes(kinds[id])) {
+      const red = legacy.some((e) => e.id === id) || before.some((e) => e.verdict === "FAIL" && e.run !== run && e.spec === specs[id]);
+      if (!red) { refused.push({ id, why: "no red first: run this row's probe before the fix and see it fail (a FAIL on this probe from an earlier run)" }); continue; }
+    }
+    if (v.verdict === "FAIL") {
+      let b = -1; mine.forEach((e, i) => { if (e.event === "built") b = i; });
+      const runs = new Set(mine.slice(b + 1).filter((e) => e.verdict === "FAIL").map((e) => e.run)); runs.add(run);
+      if (runs.size >= 2) { strikes.push(id); out.set(id, { ...v, twoStrikes: true }); continue; }
+    }
+    out.set(id, v);
+  }
+  return { verdicts: out, refused, strikes };
 }

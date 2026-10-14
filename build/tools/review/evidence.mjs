@@ -7,7 +7,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
 import { parseRegressions, REGRESSIONS, REGRESSIONS_DONE, readAllRegressions, gitRegressions, moveRows, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
-import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds } from "./lib/evidence.mjs";
 
 const HELP = `
 node build/tools/review/evidence.mjs --plan  [--rows a,b | --all | --sprint [--since ref]] [--json]
@@ -394,6 +394,11 @@ function writeReport(dir, P, index) {
 // ---------- the cache ----------
 const loadCache = () => { try { return JSON.parse(readFileSync(CACHE, "utf8")); } catch (e) { return {}; } };
 const saveCache = (c) => { mkdirSync(dirname(CACHE), { recursive: true }); writeFileSync(CACHE, JSON.stringify(Object.fromEntries(Object.entries(c).sort()), null, 1) + "\n"); };
+// the verdict log (red then green, checks-to-build 1): append-only, one line per verdict and per built mark
+const VLOG = join(ROOT, "build", "tools", "review", "data", "verdict-log.jsonl");
+const loadLog = () => { try { return readFileSync(VLOG, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l)); } catch (e) { return []; } };
+const appendLog = (entries) => { if (entries.length) { mkdirSync(dirname(VLOG), { recursive: true }); appendFileSync(VLOG, entries.map((e) => JSON.stringify(e)).join("\n") + "\n"); } };
+const logged = (log, id, run, verdict) => log.some((e) => e.id === id && e.run === run && e.verdict === verdict);
 
 // ---------- --judge ----------
 function judge() {
@@ -401,16 +406,16 @@ function judge() {
   const f = join(dir, "index.json"); if (!existsSync(f)) die(`No sheets yet: node build/tools/review/evidence.mjs --sheets --run-id ${id}`);
   const index = JSON.parse(readFileSync(f, "utf8"));
   const cache = loadCache(), today = new Date().toISOString().slice(0, 10);
-  const todo = [], cached = [], machine = [], tool = [];
+  const todo = [], cached = [], machine = [], tool = [], vlog = loadLog(), newLog = [];
   for (const [rid, r] of Object.entries(index.rows)) {
     if (["human", "decision", "obsolete"].includes(r.kind)) continue;
     if (r.tool.length) { tool.push(rid); continue; }
-    if (r.expect) { cache[rid] = { ...r.fp, verdict: r.expect, line: r.expectLine, panel: null, judge: "expect", run: id, commit: index.commit, date: today }; machine.push(rid); continue; }
+    if (r.expect) { cache[rid] = { ...r.fp, verdict: r.expect, line: r.expectLine, panel: null, judge: "expect", run: id, commit: index.commit, date: today }; machine.push(rid); if (!logged(vlog, rid, id, r.expect)) newLog.push({ id: rid, run: id, verdict: r.expect, spec: specHash(P.spec[rid]), judge: "expect", date: today }); continue; }
     if (cacheHit(cache[rid], r.fp)) { cached.push(rid); continue; }
     const row = P.rows.find((x) => x.id === rid);
     todo.push({ id: rid, kind: r.kind, row, r });
   }
-  saveCache(cache);
+  saveCache(cache); appendLog(newLog);
   // --audit N: N% of the cached PASSes (not the machine's) judged again by a different model (Fable 16)
   const auditPct = +(a.val("audit") || 0);
   const pool = cached.filter((rid) => cache[rid].verdict === "PASS" && cache[rid].judge !== "expect");
@@ -442,7 +447,7 @@ function collect() {
   const builder = a.val("builder") || index.builder || process.env.NJG_BUILDER || null;
   const jdir = join(dir, "judge");
   const cache = loadCache(), today = new Date().toISOString().slice(0, 10);
-  let n = 0; const evidence = [], refused = [], disagree = [];
+  let n = 0; const evidence = [], refused = [], disagree = [], vlog = loadLog(), newLog = [];
   for (const f of existsSync(jdir) ? readdirSync(jdir).filter((x) => /\.verdicts\.md$/.test(x)).sort() : []) {
     const v = parseVerdicts(readFileSync(join(jdir, f), "utf8"));
     if (!v.lines.length) continue;
@@ -457,10 +462,11 @@ function collect() {
       if (l.verdict === "EVIDENCE") { evidence.push(`- ${l.id}: ${l.line} (${v.judge})`); continue; }
       if (f.startsWith("audit-") && cache[l.id] && cache[l.id].verdict !== l.verdict) { disagree.push(`- ${l.id}: ${cache[l.id].judge} said ${cache[l.id].verdict} (${cache[l.id].line}); ${v.judge} says ${l.verdict}: ${l.line}`); cache[l.id] = { ...cache[l.id], audit: { verdict: l.verdict, line: l.line, judge: v.judge, date: today } }; continue; }
       cache[l.id] = { ...r.fp, verdict: l.verdict, line: l.line, panel: l.panel, judge: v.judge, run: id, commit: index.commit, png: r.png, date: today };
+      if (!logged(vlog, l.id, id, l.verdict)) newLog.push({ id: l.id, run: id, verdict: l.verdict, spec: specHash(P.spec[l.id]), judge: v.judge, date: today });
       n++;
     }
   }
-  saveCache(cache);
+  saveCache(cache); appendLog(newLog);
   if (evidence.length) writeFileSync(join(dir, "evidence-lines.md"), evidence.join("\n") + "\n");
   if (disagree.length) writeFileSync(join(dir, "audit-disagreements.md"), `# Audit disagreements (for Zafar's list)\n\n${disagree.join("\n")}\n`);
   writeReport(dir, P, index);
@@ -483,6 +489,19 @@ function apply() {
     if (c.verdict === "PASS" && c.judge !== "expect" && !c.panel) continue; // a PASS that cites nothing is not applied (Fable 17)
     v.set(rid, { verdict: c.verdict, line: `${c.judge === "expect" ? "" : `${c.judge}: `}${c.line}`, png: r.png });
   }
+  // red then green (checks-to-build 1, rule C22): a PASS marks a row built only after a FAIL on the same probe from an earlier run;
+  // two FAILs since the row was last built make it Zafar's (open, two strikes)
+  const liveMd = readFileSync(REGRESSIONS, "utf8"), doneMd = existsSync(REGRESSIONS_DONE) ? readFileSync(REGRESSIONS_DONE, "utf8") : "";
+  const kinds = Object.fromEntries([...parseRegressions(doneMd), ...parseRegressions(liveMd)].map((r) => [r.id, statusKind(r.status)]));
+  const vlog = loadLog();
+  const HIST = join(ROOT, "build/tools/review/data/status-history.jsonl");
+  const hist = existsSync(HIST) ? readFileSync(HIST, "utf8").split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch (e) { return null; } }).filter(Boolean) : [];
+  const legacy = legacyReds([liveMd, doneMd], hist, vlog);
+  const specs = Object.fromEntries([...v.keys()].map((rid) => [rid, specHash(P.spec[rid])]));
+  const rg = redGreen(v, { kinds, specs, log: vlog, run: id, legacy });
+  for (const r of rg.refused) console.log(`  ${r.id}: refused, ${r.why}`);
+  if (rg.strikes.length) console.log(`  two strikes (open, Zafar's list in docs/status.md): ${rg.strikes.join(", ")}`);
+  v.clear(); for (const [k, x] of rg.verdicts) v.set(k, x);
   // both files (decision 99): the live fix list and the done archive; a FAIL on an archived row moves it back to the live list,
   // a PASS on a live row moves it to the archive; the replaced statuses go to the history file
   const live = applyVerdicts(readFileSync(REGRESSIONS, "utf8"), v, id);
@@ -497,8 +516,10 @@ function apply() {
   console.log(`apply ${id}: ${changed.length} rows changed (${reopen.length} back to the fix list, ${close.length} to the archive), ${skipped.length} left (${[...new Set(skipped.map((s) => s.why))].join(", ") || "none"})${a.has("dry") ? " [dry run: nothing written]" : ""}`);
   if (!a.has("dry") && changed.length) {
     writeFileSync(REGRESSIONS, liveText); writeFileSync(REGRESSIONS_DONE, doneText);
-    const hist = [...live.history, ...done.history];
-    if (hist.length) appendFileSync(join(ROOT, "build/tools/review/data/status-history.jsonl"), hist.map((h) => JSON.stringify(h)).join("\n") + "\n");
+    const hist2 = [...live.history, ...done.history];
+    if (hist2.length) appendFileSync(join(ROOT, "build/tools/review/data/status-history.jsonl"), hist2.map((h) => JSON.stringify(h)).join("\n") + "\n");
+    const today = new Date().toISOString().slice(0, 10);
+    appendLog(changed.filter((c) => /^(built|fixed)/.test(c.to)).map((c) => ({ id: c.id, run: id, event: "built", date: today })));
   }
 }
 
