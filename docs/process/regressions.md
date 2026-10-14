@@ -18,6 +18,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | SH-37 | Cook screens have one focal thing; UI and world look like one product; identical shelf slots; design tokens only | **open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the chop screen mixes three art styles (flat timer, photoreal garlic, flat chilli)) | eye: 1366×768 · CMP-10, CMP-04 | `docs/design-language/ui-design-system.md` §1.1–1.4 |
+| SH-88 | The end-of-round word review with the English under its words overflows sideways by 2 px at 800x360 and 844x390 (div.rs-page > div.dense.gloss-under 562>560, 606>604: cook:chop, daar, stir, tadka, chai, chai-tray@L3/L4) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: zero-tolerance lint, scroll-container on those flows at 800x360 and 844x390 | css/shared/results.css |
 
 ## Cook: pantry
 
@@ -58,6 +59,12 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | CK-TAB-01 | Tablets: Cook's play items grow to use a 4:3 screen (decision 24); each station needs a 4:3 layout before the stage can grow them | **waiting on Zafar** (14 Oct: a design pass first, one 4:3 mock-up per station, built next sprint) | sandbox 1024×768, 1180×820, 1366×1024 | `build/reports/step3-r3a.md` |
 | CK-24 | Story days are clearly days (not levels 1–4) on Cook's home | **open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the day suns read as numbered, locked level tokens; they need day art) | eye: home | `docs/archive/feedback/cook-playtest-2026-10-06.md` C26 |
 | CK-31 | A wrong serve shows the review face frowning (never happy) over the dish (split from CK-07) | **open, waiting on Zafar's play** (S06: not reproducible as a red: the review face already frowned with fix 8d19bac reverted, run ev-20261014-071258-24n; the independent judge passed the frown at L1 and L2, ev-20261014-071456-yen) | eye: lab:cook/order #mistake, the serve · CMP-13 | `docs/design-language/ui-design-system.md` §14a |
+| CK-36 | Cook's title screen panels (the station lab's list and parts, the grown-ups' title and shop panels) scroll inside #panel at every size and run text off screen at 800x360 and 844x390 | **open** (found by gate s06-gate (S06 full check, 14 Oct): 7 scroll-container, 4 text-offscreen) | auto: zero-tolerance lint on cook:title at every size | gate summary.md |
+| CK-37 | Day 6's finale panel scrolls at 800x360 (div#panel 376>336) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: zero-tolerance lint, cook:day6 at 800x360 | gate summary.md |
+| CK-38 | Mishkaki-grill L3's peek (the hint) makes the sidebar scroll at 800x360 (aside#side 429>360) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: zero-tolerance lint, cook:mishkaki-grill@L3#hint at 800x360 | gate summary.md |
+| CK-39 | A card row's words are clipped on cook:chaat (view-marble) and cook:assemble (order card in the sidebar) at 1366x1024 (span.oc-t cut by 34-37 px) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: zero-tolerance lint, text-clipped on those flows | gate summary.md |
+| CK-40 | Day 6 shows two cards and two faces for one person (the cousin, ma) and two Nani faces at once (contract-20) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: contract-20 on cook:day6 | gate contract.md |
+| CK-41 | Roll-tawa lights two things at once for 337 ms (the raw chapati's glow and a .njg-pulse: contract-8) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: contract-8 on cook:roll-tawa | gate contract.md |
 
 ## Clinic
 
@@ -67,6 +74,9 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 |---|---|---|---|---|
 | CLN-01 | Rough stand-in art made judging hard ("so overwhelmed by how terrible the visuals were"); real art after prototypes | **reopened** (evidence FAIL ev-s04-ev2: Fable [orchestrator subagent]: A, the rooms, the girl and the doctor are real art now [frames 1–4], but frame 5's "how she feels" card is four flat emoji-style faces and the sidebar's guide-box doctor is still the flat glasses icon; `build/screenshots/evidence/ev-s04-ev2/CLN-01.png`) | eye: each room | `docs/archive/feedback/clinic-playtest-2026-09-29.md` G2; `docs/archive/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-81 | The girl's finished art in the whole story: waiting room, diagnosis, send-off, sticker and card faces (rough sprites and the stand-in body now) | **open** (S05-D ev-20261012-2250: art: the doctor is still the flat stand-in in the diagnosis and send-off; the girl's art is in every stage; red ev-20261012-2209) | eye: clinic morning end to end | `docs/archive/feedback/clinic-playtest-2026-10-06.md` CL1 |
+| CLN-151 | A heal card scrolls inside its box: heal-foot's request pop-up card by 2 px at 800x360, 1180x820, 1280x800 (div.njg-rq-card > div.cl-card.njg-rq-body 92>90 ...); the parked hair game's sidebar card at 800x360 (section.cl-card 92>54) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: zero-tolerance lint on clinic:heal-foot and clinic:heal-extra-hair at those sizes | gate summary.md |
+| CLN-152 | A tap during a line in the fever and eye games logs no act: the child's tap is not handed to the game at once (contract-21: button.fv-thing.hang, button.njg-pill); route them through the host's act | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: contract-21 on clinic:heal-fever and clinic:heal-eye | gate contract.md |
+| CLN-153 | The patient flow's end breaks "thermometer" across two lines (contract-15) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: contract-15 on clinic:patient | gate contract.md |
 
 ### Waiting room
 
@@ -113,6 +123,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 |---|---|---|---|---|
 | MOD-02 | Sitting room 3.2: sofa too high | open (S04 audit: no evidence yet; no evidence: the Find it flow shows the fruit stall, never sitting room 3.2; on Zafar's play checklist) | eye: Find it | `docs/status.md` §7 Artwork |
 | MOD-03 | Tidy up's fruit box at level 3 can be won blind: the generator puts fru-05 in the corners 1.67x its fair share (z=4.3), so a player who knows no Kutchi wins by guessing corners (non-negotiable 6) | **open** (found by the leak bots at every level, S06 check 19, 14 Oct) | auto: `node build/tools/review/leak.mjs tidy` | build/tools/review/leak-games/tidy.mjs |
+| MOD-04 | Tidy up's result panel scrolls at 800x360 (div#panel 357>331) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: zero-tolerance lint, mode:tidy at 800x360 | gate summary.md |
 
 ## Art (cuts, style, backgrounds, characters)
 
