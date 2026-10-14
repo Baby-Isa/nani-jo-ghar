@@ -98,3 +98,25 @@ table.leak tr.bad td { color: var(--madder); font-weight: 800; }
   body.dress #side { display: flex; flex-direction: column; }
   body.dress .side-rail { justify-content: flex-start; }
 }
+
+/* MOD-05: the Dress lab lays out wide (settings | games and the leak check) under Ma and the title, so it never scrolls,
+   on a laptop or a phone held sideways (non-negotiable 9); a grown-up's paragraphs sit behind the panel's "?" */
+body.dress .title-wrap h1 { margin: 0; }
+body.dress .dl-links { margin: 4px 0 0; }
+body.dress .dl-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; margin-top: 8px; }
+body.dress .dl-set h2 { margin: 0 0 4px; }
+body.dress .dl-play .lab-grid { margin: 0 0 8px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+body.dress .dl-leak { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+body.dress .dl-leak h3 { margin: 0; }
+@media (max-height: 430px) {
+  body.dress #panel:has(> .dl-cols) { --panel-pad: 12px; }
+  body.dress .title-wrap { gap: 12px; }
+  body.dress .title-wrap img { width: 56px; }
+  body.dress .title-wrap h1 { font-size: 28px; }
+  body.dress .dl-cols { gap: 12px; margin-top: 4px; }
+  body.dress .dl-set .lab-row { margin: 4px 0; gap: 8px; }
+  body.dress .dl-set .seg button { padding: 4px 8px; }
+  body.dress .dl-set .lab-check { margin: 4px 0; }
+  body.dress .dl-play .lab-grid { gap: 4px; }
+  body.dress .dl-play .lab-grid button { padding: 4px 8px; }
+}

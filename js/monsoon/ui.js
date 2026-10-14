@@ -266,7 +266,7 @@
       .map((w) => {
         const d = M.words[w.id] || {};
         const mark = w.missed ? `<span class="wr-miss">missed ${w.missed}</span>` : w.taught && !w.heard ? `<span class="wr-new">new</span>` : `<span class="wr-ok">✓</span>`;
-        return `<li><button type="button" class="wr-hear" data-w="${esc(w.id)}" aria-label="Hear it">${ICON.speaker}</button><span class="${d.kutchi ? "k" : "ph"}">${esc(d.kutchi || d.english || w.id)}</span><span class="en">${esc(d.english || "")}</span>${mark}</li>`;
+        return `<li><button type="button" class="wr-hear" data-w="${esc(w.id)}" aria-label="Hear it">${ICON.speaker}</button><span class="${d.kutchi ? "k" : "ph"}">${esc(d.kutchi || d.english || w.id)}</span><span class="en english">${esc(d.english || "")}</span>${mark}</li>`;
       })
       .join("");
     const t = res.tally;
@@ -313,9 +313,13 @@
       })
     );
     const m = Calls.median(rts);
-    box.innerHTML = `<b>Lab</b> seed ${s.seed} · ${s.candidates.length} candidates · wave ${run.session.results.length}/${s.waves.length}${run.bot ? ` · bot <b>${esc(run.bot.name)}</b>` : ""}
+    // MOD-07: the readout is a grown-up's lab line that folds open (a tap on its first line): on a phone held sideways it
+    // starts folded, so the sidebar never scrolls; on a taller screen it starts open. It stays as the grown-up left it.
+    if (UI.readoutOpen == null) UI.readoutOpen = !global.matchMedia("(max-height: 430px)").matches;
+    box.innerHTML = `<details class="ro"${UI.readoutOpen ? " open" : ""}><summary><b>Lab</b> seed ${s.seed} · ${s.candidates.length} candidates · wave ${run.session.results.length}/${s.waves.length}${run.bot ? ` · bot <b>${esc(run.bot.name)}</b>` : ""}</summary>
       <div>targets: ${Object.entries(tgt).map(([k, v]) => `${esc((M.words[k] || {}).kutchi || (M.words[k] || {}).english || k)} ${v}`).join(", ") || "–"}</div>
       <div>outcomes: ${Object.entries(out).map(([k, v]) => `${k} ${v}`).join(", ") || "–"}</div>
-      <div>median reaction: ${m == null ? "–" : m.toFixed(2) + " s"}</div>`;
+      <div>median reaction: ${m == null ? "–" : m.toFixed(2) + " s"}</div></details>`;
+    box.querySelector("details").addEventListener("toggle", (e) => (UI.readoutOpen = e.target.open));
   };
 })(window);

@@ -1,0 +1,24 @@
+/* The parked modes' own result card (Dress up, Find it, Snap: css/cook.css's #panel with a .res-card) on a short landscape
+   screen. Nothing scrolls inside the panel and no text goes off screen (non-negotiable 9): the panel lays out wide instead
+   of tall. Layout only: colours and the shared kit stay where they are. MOD-05, MOD-06, MOD-08. */
+
+/* the coins sit in the card's top corner: the name beside the face keeps clear of them */
+#panel .res-card .cc-head { padding-right: 64px; }
+
+@media (max-height: 430px) and (orientation: landscape) {
+  /* the title across the top, the card on the left, the words and the buttons beside it */
+  #panel:has(> .cards > .res-card) {
+    --panel-pad: 12px;
+    display: grid; grid-template-columns: minmax(0, 1fr) fit-content(18rem); column-gap: 12px; align-content: start; align-items: start;
+  }
+  #panel:has(> .cards > .res-card) > * { grid-column: 2; }
+  #panel:has(> .cards > .res-card) > h2 { grid-column: 1 / -1; }
+  #panel:has(> .cards > .res-card) > .cards { grid-column: 1; grid-row: 2 / span 8; margin: 0; }
+  #panel:has(> .cards > .res-card) > h3 { margin: 0 0 4px; }
+  #panel:has(> .cards > .res-card) > .btn-row { margin-top: 8px; }
+  /* only the buttons beside the card (Find it: its words are in the card): they stack, as narrow as the widest */
+  #panel:has(> .cards > .res-card):not(:has(> h3)) > .btn-row { flex-direction: column; align-items: stretch; }
+  /* the receipt keeps room for "Understood (ear star) +5" on one line */
+  #panel:has(> .cards > .res-card) .rcard { gap: 8px; grid-template-columns: minmax(12rem, .9fr) minmax(0, 2fr); }
+  #panel:has(> .cards > .res-card) .rc-right { padding-left: 8px; gap: 8px; }
+}

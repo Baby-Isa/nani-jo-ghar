@@ -226,3 +226,36 @@ button { font: inherit; color: inherit; cursor: pointer; }
   #nani-card { min-height: 44px; padding: 6px 10px; }
   #nani-card .nc-face { width: 36px; height: 36px; }
 }
+
+/* MOD-07: nothing scrolls on a phone held sideways (non-negotiable 9).
+   The lab readout folds to its first line (a tap opens it); a closed fold takes no room at all */
+#readout .ro summary { cursor: pointer; }
+#readout .ro:not([open]) > :not(summary) { display: none; }
+/* the lab: the storm's own settings, then the lab's finer ones (one panel on a tall screen) */
+.lab .lg-more { margin-top: 8px; }
+.lab .lab-grid { grid-template-columns: 7.5rem minmax(0, 1fr); }
+.lab-more-btn { display: none; }
+@media (max-height: 430px) and (orientation: landscape) {
+  #readout { padding: 4px 8px; }
+  /* the lab: two pages turned by "More settings", each in two columns of label and choices */
+  #overlay.lab-open { padding: 4px; }
+  #overlay.lab-open #panel { width: 100%; max-height: 100%; }
+  .lab .lab-grid { grid-template-columns: max-content minmax(0, 1fr) max-content minmax(0, 1fr); }
+  .lab .lg-more { margin-top: 0; }
+  .lab .lg-more > label:has(+ [data-name="bot"]) { grid-column: 1; }
+  .lab .lg-more > [data-name="bot"] { grid-column: 2 / -1; }
+  .lab:not(.more) .lg-more, .lab:not(.more) .lab-foot, .lab.more .lg-main, .lab.more .lab-note { display: none; }
+  .lab-more-btn { display: inline-flex; align-items: center; }
+  .lab .lab-go { justify-content: space-between; align-items: center; margin-top: 8px; }
+  .lab .lab-row { gap: 4px; }
+  .lab .lab-row input[type="number"], .lab .lab-row input[type="text"] { width: 104px; padding: 4px 8px; }
+  .lab .lab-note { margin: 4px 0; }
+  .lab .lab-foot { margin: 4px 0 0; }
+  /* the storm's end: the stars and the sums on the left, the words and the buttons on the right */
+  .result { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: 12px; align-items: center; }
+  .result > * { grid-column: 1; }
+  .result > .word-review, .result > .r-btns { grid-column: 2; }
+  .result > .word-review { grid-row: 1 / span 4; margin: 0; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); }
+  .result > .r-btns { grid-row: 5; }
+  .result > p { margin: 4px 0; }
+}

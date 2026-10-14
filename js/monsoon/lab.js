@@ -43,15 +43,19 @@
     const twists = state.game === "g1" ? ["single", "double", "sequence", "switch"] : state.game === "g2" ? ["single", "double"] : [];
     const panel = $("#panel");
     panel.innerHTML = `
-      <div class="lab">
+      <div class="lab${Lab.more ? " more" : ""}">
         <h1>Rush lab <small>Monsoon rush · greybox</small></h1>
-        <div class="lab-grid">
+        <!-- MOD-07: the storm's own settings, then the lab's finer ones; on a phone held sideways they are two pages of
+             the panel (the "More settings" chip turns between them), so the panel never scrolls -->
+        <div class="lab-grid lg-main">
           <label>Mini-game</label>${radio("game", games, state.game)}
           <label>Level</label>${radio("level", [[1, "1 One word"], [2, "2 Two things"], [3, "3 Order and switch"]], state.level)}
           <label>Tempo</label>${radio("mode", [["drizzle", "Drizzle (waits)"], ["busy", "Busy (the beat)"]], state.mode)}
+          <label>Words</label>${radio("words", [["fresh", "fresh (stage 1)"], ["learning", "learning (2)"], ["known", "known (3)"], ["strong", "strong (4)"], ["played", "as played"]], state.words)}
+        </div>
+        <div class="lab-grid lg-more">
           <label>bpm</label><div class="lab-row"><input id="lab-bpm" type="number" min="40" max="140" step="2" placeholder="${cfg.bpm} (level)" value="${state.bpm}"></div>
           ${twists.length ? `<label>Twists</label><div class="lab-row" id="lab-twists">${twists.map((t) => `<label class="tw"><input type="checkbox" data-t="${t}" ${state.frames[t] === true || (state.frames[t] !== false && (cfg.frames || {})[t]) ? "checked" : ""}> ${t}</label>`).join("")}</div>` : ""}
-          <label>Words</label>${radio("words", [["fresh", "fresh (stage 1)"], ["learning", "learning (2)"], ["known", "known (3)"], ["strong", "strong (4)"], ["played", "as played"]], state.words)}
           <label>Stage-1 words</label>${radio("stage1", [["true", "on"], ["false", "off"]], state.stage1)}
           <label>Reveal markers</label>${radio("markers", [["false", "off"], ["true", "on (lab only)"]], Lab.markers)}
           <label>Bot</label>${radio("bot", botNames, state.bot)}
@@ -59,7 +63,7 @@
           <label>Seed</label><div class="lab-row"><input id="lab-seed" type="text" placeholder="random" value="${state.seed}"></div>
         </div>
         <p class="lab-note">${M.data.games[state.game].goal}</p>
-        <div class="lab-go"><button type="button" class="btn primary" id="lab-play">Play the storm</button></div>
+        <div class="lab-go"><button type="button" class="chip lab-more-btn" id="lab-more" aria-expanded="${Lab.more ? "true" : "false"}">${Lab.more ? "Back" : "More settings"}</button><button type="button" class="btn primary" id="lab-play">Play the storm</button></div>
         <p class="lab-foot">G4 forecast and G6 cats run headless only for now (<code>node build/leak_monsoon.mjs</code>); their courtyard station is phase 3.</p>
       </div>`;
     panel.querySelectorAll(".lab-row[data-name] .chip").forEach((b) =>
@@ -78,6 +82,13 @@
     );
     panel.querySelectorAll("#lab-twists input").forEach((c) => c.addEventListener("change", () => (state.frames[c.dataset.t] = c.checked)));
     $("#lab-play").addEventListener("click", Lab.play);
+    $("#lab-more").addEventListener("click", () => {
+      // keep what was typed (bpm, seed) across the page turn
+      state.bpm = ($("#lab-bpm") || {}).value || "";
+      state.seed = ($("#lab-seed") || {}).value || "";
+      Lab.more = !Lab.more;
+      Lab.show();
+    });
     $("#overlay").classList.remove("hidden");
     $("#overlay").classList.add("lab-open");
   };
