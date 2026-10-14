@@ -13155,8 +13155,7 @@
    "at": "visible:.rs-p2.enter",
    "after": null,
    "capture": [
-    "strip:.rs-card:8x100",
-    "dom:.rs-p2"
+    "strip:.rs-card:8x100"
    ],
    "expect": null,
    "note": "the words page as it opens (eight frames 100 ms apart): every word whole"
