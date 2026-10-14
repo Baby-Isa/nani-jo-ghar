@@ -301,49 +301,75 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * A spoon stir in a vessel (anything with a rim and a surface): a spoon dips in,
    * goes round twice with a swirl on the liquid, and lifts out.
    */
-  S$.stirIn = (S, vessel, { ms = 700, turns = 2 } = {}) => {
-    if (!vessel || !vessel.rim || !vessel.active || vessel.stirring) return Promise.resolve();
+  /** Where a stir's teaspoon starts (its bowl at the top of its round) and its size: Cook.Spoon lands a spoonful there. */
+  S$.stirStart = (vessel) => {
+    const p = vessel.surface ? vessel.surface() : vessel.rim;
+    return { x: p.x, y: p.y - vessel.rim.ry * 0.45, L: vessel.rim.rx / 60 };
+  };
+  /*
+   * CHAI-13 (S06 round 3): dipped: the spoon is already in (a spoonful just landed there, S$.stirStart), so it goes round
+   * at once, never lifting out and dipping in again. A spoonful while the spoon is still going round sends it round again
+   * (it was skipped: two quick sugars stirred once, and the second spoonful's stir never showed).
+   */
+  S$.stirIn = (S, vessel, { ms = 700, turns = 2, dipped = false } = {}) => {
+    if (!vessel || !vessel.rim || !vessel.active) return Promise.resolve();
+    if (vessel.stirring) {
+      vessel.stirAgain = (vessel.stirAgain || 0) + 1;
+      return Promise.resolve();
+    }
     vessel.stirring = true;
+    vessel.stirAgain = 0;
     const p = vessel.surface ? vessel.surface() : vessel.rim;
     const rx = vessel.rim.rx * 0.45;
     const ry = vessel.rim.ry * 0.45;
     const L = vessel.rim.rx / 60;
     const sp = S.track(S.add.graphics().setDepth(D.fx + 1)); // CHAI-13 (S06): the stirring teaspoon over the puff, never hidden by it
     const sw = S.track(S.add.graphics().setDepth(D.item + 0.5));
+    let first = true;
+    const draw = (u) => {
+      const a = -Math.PI / 2 + u * turns * Math.PI * 2;
+      const x = p.x + Math.cos(a) * rx;
+      const y = p.y + Math.sin(a) * ry;
+      // dips in (unless it is already in), lifts out at the last round's end
+      const lift = Math.max(first && !dipped ? 1 - u * 8 : 0, vessel.stirAgain > 0 ? 0 : 1 - (1 - u) * 8, 0);
+      sp.clear().setAlpha(1 - lift * 0.7);
+      // the handle leans out to the lower right (the hand's side), the bowl in the liquid (CHAI-13: a teaspoon)
+      S$.teaspoon(sp, x, y - lift * L * 20, x + L * 70, y + L * 38 - lift * L * 20, L);
+      // the swirl it leaves on the surface
+      sw.clear();
+      for (let i = 0; i < 3; i++) {
+        const b = a - 0.6 - i * 0.5;
+        sw.lineStyle(Math.max(1, L * 2), 0xffffff, 0.22 - i * 0.06);
+        sw.beginPath();
+        sw.arc(p.x, p.y, rx * (0.7 + i * 0.2), b - 0.9, b, false);
+        sw.strokePath();
+      }
+      // squash the swirl to the surface's ellipse
+      sw.setScale(1, ry / rx).setPosition(0, p.y - p.y * (ry / rx));
+    };
+    draw(0); // in this frame: a spoonful's spoon hands over to it with no gap
     return new Promise((resolve) => {
-      S.tweens.addCounter({
-        from: 0,
-        to: 1,
-        duration: ms,
-        ease: "Sine.easeInOut",
-        onUpdate: (tw) => {
-          const u = tw.getValue();
-          const a = -Math.PI / 2 + u * turns * Math.PI * 2;
-          const x = p.x + Math.cos(a) * rx;
-          const y = p.y + Math.sin(a) * ry;
-          const lift = Math.max(0, 1 - Math.min(u, 1 - u) * 8); // dips in, lifts out
-          sp.clear().setAlpha(1 - lift * 0.7);
-          // the handle leans out to the lower right (the hand's side), the bowl in the liquid (CHAI-13: a teaspoon)
-          S$.teaspoon(sp, x, y - lift * L * 20, x + L * 70, y + L * 38 - lift * L * 20, L);
-          // the swirl it leaves on the surface
-          sw.clear();
-          for (let i = 0; i < 3; i++) {
-            const b = a - 0.6 - i * 0.5;
-            sw.lineStyle(Math.max(1, L * 2), 0xffffff, 0.22 - i * 0.06);
-            sw.beginPath();
-            sw.arc(p.x, p.y, rx * (0.7 + i * 0.2), b - 0.9, b, false);
-            sw.strokePath();
-          }
-          // squash the swirl to the surface's ellipse
-          sw.setScale(1, ry / rx).setPosition(0, p.y - p.y * (ry / rx));
-        },
-        onComplete: () => {
-          vessel.stirring = false;
-          sp.destroy();
-          S.tweens.add({ targets: sw, alpha: 0, duration: 300, onComplete: () => sw.destroy() });
-          resolve();
-        },
-      });
+      const round = () =>
+        S.tweens.addCounter({
+          from: 0,
+          to: 1,
+          duration: ms,
+          ease: "Linear",
+          onUpdate: (tw) => draw(tw.getValue()),
+          onComplete: () => {
+            if (vessel.stirAgain > 0 && sp.active) {
+              vessel.stirAgain--;
+              first = false;
+              round();
+              return;
+            }
+            vessel.stirring = false;
+            sp.destroy();
+            S.tweens.add({ targets: sw, alpha: 0, duration: 300, onComplete: () => sw.destroy() });
+            resolve();
+          },
+        });
+      round();
     });
   };
 
