@@ -29,6 +29,10 @@
 //                           (a line that is only a number word after the stage's first tap) (checks-to-build 7)
 //   contract-20 one-face    one face per person: no patient face circle while she stands on screen in full (decision 92),
 //                           never two face circles or two cards of one person (R4; checks-to-build 8)
+//   contract-18 card-rows   a card row ticks only within 1 s after the game logged that step closed (Lifecycle step-close for
+//                           its key); no row changes its words mid-stage (the bulb's English aside) (checks-to-build 6)
+//   contract-21 input-live  a real tap in the play area while a line is voiced, where the game expected one, is handed to the
+//                           game (Lifecycle act) within 150 ms (E5; checks-to-build 20)
 //   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
 //                           TTS, no unchecked or redo clip, no unknown audio (non-negotiable 10; checks-to-build 5)
 //
@@ -45,6 +49,8 @@ export const CHECKS = {
   "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
+  "contract-18": { item: "card-rows", title: "card rows tick when their step closes", how: "Every rows sample (lib/contract-hook.mjs: each sidebar card row with its key, words and tick) against the shared lifecycle's step-close log (Lifecycle.note: the order card's tick path and the heal host, at their own millisecond, with the step's key): a row that turns ticked with no step-close for its key (any step-close for a row with no key) in the 1.1 s before is a break; a row whose words change while it stays in the same stage (not to or from a row with no letters, not under the bulb's English) is a break." },
+  "contract-21": { item: "input-live", title: "input is live while a line plays", how: "Every real tap (trusted pointerdown) in the play area (not the sidebar, the pop-up or a ✓/Next button) while a line is being said (a clip of it sounding, or the line between its start and end in the sound log) and the game expected a tap, a pick or a drag: the shared lifecycle must log an act (Lifecycle.note from js/shared/host.js onAct and the heal host's input) within 150 ms. None is a break (E5: input never waits for the voice)." },
   "contract-1": { item: "popup", title: "pop-up before play", how: "Splits the flow into stages (a Cook station from Cook.inStation, else the game host's stage) and finds each stage's first real tap in the play area. A stage that gives an order (a line said before that tap outside a pop-up, a new order card in the sidebar, or the first stage with a card) must have had the request pop-up (.njg-rq-open, Cook's #intro) on screen since the last stage ended; a line must start while it is up (read out) unless a tap closed it at once; within 2 s of closing an order card must show in the sidebar (folded). Nani's how-to step line and her 'pass me' (the game tags them howto / passme) are not orders (decision 80)." },
   "contract-2": { item: "moves-on", title: "moves on by itself", how: "Every ✓, Next or stage button seen on screen (.cl-go, #done-btn, a button reading ✓ or →, aria 'next'/'done') and every press of one is judged with what the game expected at that moment: if it expected only that button (the clinic between stages or kind 'button', a heal game's 'button' step, Cook clicking that selector), the step was already decided, so the button is a break. A ✓/Done that lets the child take things back until Done (non-negotiable 12) is not: Cook's count or 'more' step, an open count Cook steers its player to end with Done (expectation 'open': more stirs, folds or skewers still change it), an expectation that offers a take-back (undo), Cook's pictures still taking taps (live: chaat's bowl, where more taps still change the result), a heal game's count it reported uncapped (ctx.tally without capped: the child decides when it's enough, C10). A capped count (ctx.tally {capped}) that stopped taking input and still shows its ✓ is a break (decision 79). A button that starts the next part of the order (samosa's 'next kind', expectation choice) is the child's own move (decision 80)." },
   "contract-3": { item: "voice", title: "voice stops at every stage end", how: "Every clip's real start, length (the decoded buffer or the file's own length) and stop (ended, stop, pause, cancel) from the sound log; each belongs to the line (and so the stage) it was said for. A stage ends when the shared lifecycle logged its stage-end (Lifecycle.log, at its own millisecond; else the sampled stage change), so a line queued after the stop belongs to the next stage. A clip still sounding 250 ms after its stage ended, or started after it, is a break." },
@@ -405,14 +411,14 @@ function check7(segs, v, add) {
   }
 }
 // 8 (SH-53): more than one highlight at once, held 300 ms or more
-function check8(tl, segs, add) {
+function check8(tl, segs, add, tEnd = tl[tl.length - 1].t) {
   // frames sampled before the first paint (the title not yet drawn) are not findings (C2's blank frames at 0.2 s and 0.9 s)
   const paint = tl.find((e) => e.type === "c" && e.k === "art");
   const hs = tl.filter((e) => e.type === "c" && e.k === "hl" && (!paint || e.t >= paint.t));
   const seen = new Set();
   hs.forEach((e, i) => {
     if (!(e.n > 1)) return;
-    const until = i + 1 < hs.length ? hs[i + 1].t : tl[tl.length - 1].t;
+    const until = i + 1 < hs.length ? hs[i + 1].t : tEnd;
     if (until - e.t < 300) return;
     const s = segAt(segs, e.t), k = `${s && s.key}|${e.list.join(",")}`;
     if (seen.has(k)) return;
@@ -422,12 +428,12 @@ function check8(tl, segs, add) {
   });
 }
 // 15 (SH-73, non-negotiable 9): a word broken across lines in a card, held 300 ms or more
-function check15(tl, segs, add) {
+function check15(tl, segs, add, tEnd = tl[tl.length - 1].t) {
   const ws = tl.filter((e) => e.type === "c" && e.k === "wrap");
   const seen = new Set();
   ws.forEach((e, i) => {
     if (!(e.n > 0)) return;
-    const until = i + 1 < ws.length ? ws[i + 1].t : tl[tl.length - 1].t;
+    const until = i + 1 < ws.length ? ws[i + 1].t : tEnd;
     if (until - e.t < 300) return;
     const s = segAt(segs, e.t), k = `${s && s.key}|${e.list.join(",")}`;
     if (seen.has(k)) return;
@@ -489,14 +495,14 @@ function check11(tl, add) {
   }
 }
 // 12 (SH-23): a ✓ / Next / stage button shown greyed for 400 ms or more, not just pressed
-function check12(tl, segs, add) {
+function check12(tl, segs, add, tEnd = tl[tl.length - 1].t) {
   const gs = tl.filter((e) => e.type === "c" && e.k === "greyed");
   const presses = tl.filter((e) => e.type === "c" && e.k === "input" && (e.next || e.btn));
   const seen = new Set();
   gs.forEach((e, i) => {
     for (const b of e.list || []) {
       // how long this button stayed greyed: until an event without it
-      let until = tl[tl.length - 1].t;
+      let until = tEnd;
       for (let j = i + 1; j < gs.length; j++) if (!(gs[j].list || []).some((x) => x.sel === b.sel && x.why === b.why)) { until = gs[j].t; break; }
       if (until - e.t < 400) continue;
       if (presses.some((p) => p.t <= e.t + 50 && p.t >= e.t - 1500)) continue; // pressed: the button on its way out
@@ -600,6 +606,60 @@ function check20(tl, add) {
     for (const [w, n] of Object.entries(cs)) if (n > 1) say(`two cards for ${w}`);
   }
 }
+// 18 (checks-to-build 6): a row ticks only after its step closed; a row keeps its words through its stage
+export const TICK_AFTER = 1000; // ms a row may tick after its step-close
+function check18(tl, segs, add) {
+  const closes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "step-close").map((e) => ({ t: e.t, step: e.step != null ? String(e.step) : String(e.reason || "") }));
+  const letters = (x) => /\p{L}/u.test(x || "");
+  const prev = new Map();
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "rows") continue;
+    const s = segAt(segs, e.t);
+    for (const x of e.list || []) {
+      const p = prev.get(x.id);
+      prev.set(x.id, { ...x, seg: s });
+      if (!p || p.seg !== s) continue;
+      if (!p.done && x.done) {
+        // the sampler sees a tick up to 100 ms after it is drawn; the log is at its own millisecond
+        const ok = closes.some((c) => c.t <= e.t + 30 && c.t >= e.t - TICK_AFTER - 100 && (x.key == null || c.step === String(x.key)));
+        const k = `tick|${s && s.key}|${x.id}`;
+        if (!ok && !seen.has(k)) { seen.add(k); add("contract-18", e.t, `${s ? s.key : "?"}: the row "${x.text}"${x.key ? ` (${x.key})` : ""} ticked with no step-close logged for it in the ${TICK_AFTER / 1000} s before`); }
+      }
+      if (!x.en && !p.en && letters(p.text) && letters(x.text) && p.text !== x.text) {
+        const k = `words|${s && s.key}|${x.id}|${p.text}|${x.text}`;
+        if (!seen.has(k)) { seen.add(k); add("contract-18", e.t, `${s ? s.key : "?"}: the row${x.key ? ` ${x.key}` : ""} changed its words mid-stage, "${p.text}" to "${x.text}"`); }
+      }
+    }
+  }
+}
+// 21 (checks-to-build 20, E5): a tap in the play area while a line is voiced is handed to the game within 150 ms
+export const ACT_MS = 150;
+const expectsInput = (exp) => {
+  if (!exp) return false;
+  if (exp.heal) return /^(tap|drag|hold)$/.test(exp.heal.do || "");
+  if (exp.clinic) return !!exp.clinic.kind && !/^(wait|button)$/.test(exp.clinic.kind);
+  if (exp.cook) return !!exp.cook.kind && !/^(wait|idle)$/.test(exp.cook.kind) && !exp.cook.intro;
+  if (exp.hostExp) return !!exp.hostExp.kind && !/^(wait|button)$/.test(exp.hostExp.kind);
+  return false;
+};
+function check21(tl, segs, v, add) {
+  const acts = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "act").map((e) => e.t);
+  // a line being said: a clip of it sounding, or the line itself between its start and its end (a line with no clip yet is
+  // still said, at its words' pace)
+  const sounding = (t) => (v.plays.find((p) => !p.est && p.line && p.t0 <= t && t <= p.t1) || {}).line || v.lines.find((l) => l.t1 != null && (l.text || "").trim() && l.t0 <= t && t <= l.t1);
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "input" || !e.play || e.popup || e.side || e.next || !expectsInput(e.exp)) continue;
+    const line = sounding(e.t);
+    if (!line) continue;
+    if (acts.some((t) => t >= e.t - 30 && t <= e.t + ACT_MS)) continue;
+    const s = segAt(segs, e.t), k = `${s && s.key}|${e.on}`;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    add("contract-21", e.t, `${s ? s.key : "?"}: a tap on ${e.on} at ${e.x},${e.y} while "${line.text}" was being said: no act logged within ${ACT_MS} ms (the game expected ${JSON.stringify(e.exp)})`);
+  }
+}
 function check17(r, tl, add) {
   if (!r.store || !r.sound) return;
   for (const p of r.sound.plays || []) if (p.kind !== "family-ok") add("contract-17", r.t0 || (tl[0] && tl[0].t) || 0, `${p.kind}: ${p.file || p.text || "?"}${p.n > 1 ? ` x${p.n}` : ""}`);
@@ -620,6 +680,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   if (!tl.length) return out;
   const segs = segments(tl);
   const v = voice(tl, { root, clip });
+  // the page's real end (its start plus its length): the probe samples only on a change, so a state that lasts to the end
+  // (the end screen's word review) has no event after it; the timeline's last event is not the end (SH-86)
+  const tEnd = Math.max(tl[tl.length - 1].t, r.t0 && r.ms ? r.t0 + r.ms : 0);
   const add = (check, t, measured) => out.push({ check, item: CHECKS[check].item, flow: r.flow, level: levelOf(r.flow), size: r.size, ...stateAt(r, t), at: Math.round((t - (r.t0 || tl[0].t)) / 100) / 10, measured });
   check1(tl, segs, v, add);
   check2(tl, segs, add);
@@ -628,16 +691,18 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check5(tl, add);
   check6(tl, retired, root, add);
   check7(segs, v, add);
-  check8(tl, segs, add);
+  check8(tl, segs, add, tEnd);
   check9(tl, segs, levelOf(r.flow || ""), add);
   check10(tl, segs, add);
   check11(tl, add);
-  check12(tl, segs, add);
+  check12(tl, segs, add, tEnd);
   check13(tl, add);
   check14(tl, segs, add);
-  check15(tl, segs, add);
+  check15(tl, segs, add, tEnd);
   check17(r, tl, add);
   check20(tl, add);
+  check18(tl, segs, add);
+  check21(tl, segs, v, add);
   check16(tl, lexicon || lexiconFor(root), add);
   check19(r, tl, segs, v, numbers || numbersFor(root), add);
   return out;

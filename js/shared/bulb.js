@@ -8,7 +8,7 @@
  *   - every use counts (onUse(uses)), then onOn(ms); after ms (divided by speed) it turns off and calls onOff().
  *
  *   const b = Bulb.create(btn, {level, ms, speed, fast, targets, bodyClass, onUse, onOn, onOff})
- *       ms: [5000, 3000, 2000, 1000] by level (default Bulb.MS), a number, or a function -> number
+ *       ms: [8000, 8000, 8000, 8000] by level (8 s at every level: SH-86) (default Bulb.MS), a number, or a function -> number
  *       speed: accepted but ignored since S05 (SH-41: a test speed never shortens reading time); fast: true -> 300 ms
  *       (the clinic's ?fast=1)
  *       targets: () -> elements that show English while it's on
@@ -27,7 +27,7 @@
   }
 })(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (root) {
   "use strict";
-  const B = { MS: [5000, 3000, 2000, 1000] };
+  const B = { MS: [8000, 8000, 8000, 8000] }; // SH-86 (Zafar, D11 / SH-41): every bulb shows its English for 8 s at every level
   const val = (v) => (typeof v === "function" ? v() : v);
 
   B.msFor = function (ms, level) {

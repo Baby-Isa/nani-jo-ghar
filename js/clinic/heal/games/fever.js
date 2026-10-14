@@ -643,6 +643,8 @@
     }
     const feel = (r) => {
       mood.dataset.state = r == null || inZone(r, cfg.k) ? "" : r > 0 ? "hot" : "cold";
+      // CLN-127: her bubble (beside her face) never covers the drop or the snowflake: it takes her other side
+      mood.toggleAttribute("data-njg-avoid", !!mood.dataset.state);
       placeMood();
       if (r == null) return fig.react("idle", 0);
       if (inZone(r, cfg.k)) return fig.react("happy", 0);

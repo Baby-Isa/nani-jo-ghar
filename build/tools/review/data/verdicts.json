@@ -1484,18 +1484,18 @@
   "date": "2026-10-13"
  },
  "CLN-118": {
-  "hash": "95d019cd191ff3ea038d",
+  "hash": "f00218d3a389df3bf6ae",
   "dhash": [
-   "40818bab838381c0",
-   "039a929296160303"
+   "4040878d8b83c0c0",
+   "011c1a1913030303"
   ],
   "verdict": "FAIL",
-  "line": "B, the fresh profile's first knee round (the taught round) still ends scored and timed: a 10s stopwatch badge with a crown \"10s\" count and a bulb \"x 0\" count; only the tick card has no count. Only the knee is on the sheet, not all nine heal games",
+  "line": "B, the fresh knee round's end card now has no stopwatch, crown or bulb counts, but its left half is an empty white block where the badges were, and the word cards carry written English glosses for the child (\"one\", \"four\", \"and then\", \"knee\"). The sheet also shows only the knee's end card: none of the other eight heal games, and no step of the taught round itself (counts, sizes or sides during play).",
   "panel": "B",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-021334-3v9",
-  "commit": "257b7e4",
-  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-118.png",
+  "run": "ev-20261014-033140-49j",
+  "commit": "5e36689",
+  "png": "build/screenshots/evidence/ev-20261014-033140-49j/CLN-118.png",
   "date": "2026-10-14"
  },
  "CLN-119": {
@@ -1581,31 +1581,31 @@
   "date": "2026-10-13"
  },
  "CLN-126": {
-  "hash": "7af4a829fa028481c0b7",
+  "hash": "f43464379acbdf3fdbf6",
   "dhash": [
-   "0003014675010fd6"
+   "78030155550103c1"
   ],
-  "verdict": "FAIL",
-  "line": "A, frames 4 and 5 are bubble moments with no bubble: 5 has her snowflake (the cold look) up beside her head and an empty bubble-sized crop where her words should be, 4 is bare wall; the probe also reports hits 7–14 with no .cl-bubble on screen, and the sheet carries no voice timeline to tie the moments to her lines, so only too cold (1), barabar (2), too hot (3) and barabar (6) are shown with their bubble",
-  "panel": "A",
-  "judge": "Fable, independent subagent (orchestrator final look)",
-  "run": "ev-20261013-184310-4hz",
-  "commit": "09b5676",
-  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-126.png",
-  "date": "2026-10-13"
- },
- "CLN-127": {
-  "hash": "6c2282eeee22d79d247f",
-  "dhash": [
-   "90010186d40109e8"
-  ],
-  "verdict": "FAIL",
-  "line": "A, in hit 1 the bubble's tail points down onto the top of her hair at the parting, not at her face. In hit 3 the bubble sits across the top of her hair. Hit 4 is her hair top with no bubble, and hit 2 never captured the bubble. The bubble is still anchored above her head.",
+  "verdict": "PASS",
+  "line": "A, at L1 1366x768 real pace all 5 bubble moments carry her bubble with her words in it (\"I'm too cold!\", \"barabar\", \"I'm too hot!\", \"I'm too cold!\", \"barabar\"), and no frame is empty or shows bare wall. Flaws, off the point: the crops cut her head off, so only a sliver of her face or hair sits at each tail. Her 4th line (barabar after \"too hot\") has no frame and rests on the fever_bubbles capture alone (\"6 lines of hers, 0 without a bubble\", 19/19 samples). No \"still cold\" line came up in this run. The English lines are grey italic, which is allowed (decision 84).",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-021334-3v9",
-  "commit": "257b7e4",
-  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-127.png",
+  "run": "ev-20261014-052855-o2a",
+  "commit": "78366ac4",
+  "png": "build/screenshots/evidence/ev-20261014-052855-o2a/CLN-126.png",
+  "date": "2026-10-14"
+ },
+ "CLN-127": {
+  "hash": "01f41d0972cf416cd63b",
+  "dhash": [
+   "860c9d5d89e9e979"
+  ],
+  "verdict": "PASS",
+  "line": "A, in all 5 frames (×2 crops holding her head) the bubble sits beside her face at eye and cheek height, left for \"too cold\"/\"too hot\" and right for \"barabar\", with its tail ending at her cheek and mouth. None of the bubbles sits on top of her hair. This matches fever_bubbles: \"tip at her face\" for all 6 lines. Flaws, off the point: the crop edge cuts her snowflake and sweat-drop icons in frames 1, 3 and 4 (a crop artefact, not game clipping). The English lines are grey italic, which is allowed (decision 84).",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-052855-o2a",
+  "commit": "78366ac4",
+  "png": "build/screenshots/evidence/ev-20261014-052855-o2a/CLN-127.png",
   "date": "2026-10-14"
  },
  "CLN-128": {
@@ -1845,25 +1845,25 @@
   "date": "2026-10-14"
  },
  "CLN-144": {
-  "hash": "de02bcda1f8fd2872217",
+  "hash": "0d3fa1a69ce3d49a7cf1",
   "dhash": [],
   "verdict": "PASS",
-  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-031151-81u",
-  "commit": "287a056",
+  "run": "ev-20261014-051949-fho",
+  "commit": "7cbdafde",
   "date": "2026-10-14"
  },
  "CLN-145": {
-  "hash": "ba7182b9ae1ab7a314e4",
+  "hash": "626fad57da4c46a915f2",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-031151-81u",
-  "commit": "287a056",
+  "run": "ev-20261014-051022-jv0",
+  "commit": "7cbdafde",
   "date": "2026-10-14"
  },
  "CLN-146": {
@@ -1903,6 +1903,17 @@
   "run": "ev-20261014-003211-we8",
   "commit": "c99fba0",
   "png": "build/screenshots/evidence/ev-20261014-003211-we8/CLN-148.png",
+  "date": "2026-10-14"
+ },
+ "CLN-149": {
+  "hash": "8a6da2037a7e200a9bdd",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-052119-vgy",
+  "commit": "78366ac4",
   "date": "2026-10-14"
  },
  "CLN-17": {
@@ -2173,21 +2184,21 @@
   "date": "2026-10-12"
  },
  "CLN-37": {
-  "hash": "9f508bcd5304062d0a58",
+  "hash": "e36d92a3dede585cd57c",
   "dhash": [
-   "c3c7c6c8c2d25aec",
-   "c3c7c6c8c2d25aec",
-   "c3c9cbd8c2d25aec",
-   "cfefebcfc6cdc8db"
+   "c3cbcbd8c2d25aec",
+   "c3c9cbd2c2d25aec",
+   "c3c9cbd2c2d25aec",
+   "83e3cad8c6c848ee"
   ],
-  "verdict": "FAIL",
-  "line": "A, at L1 (and B, L2) the dispenser is a single purple tube with one lever, not three or four coloured tubes; C (L3) has four coloured tubes and the drops are blobs not sweets, but the syringe at C4 holds green and yellow drops mixed; the plaster end-step is on no panel (D is the outro room with no plaster visible); no apple",
+  "verdict": "PASS",
+  "line": "A, at L1 the dispenser is four upright coloured tubes (blue, red, yellow, green) with a knob under each, and the syringe fills one teardrop medicine blob per step (1 to 4), with a count tag beside it; B (L2) and C (L3) show the same four-tube dispenser with the tubes in a new order, the syringe filling two of one colour then two of another (the L2 card says \"ba [blue] ne poi ba laal\", and at L3 the card is hidden so the colour is heard only); D1 the plaster tool is picked with a dashed target on the jab spot, D2 the plaster sits on the arm as the last step; no apple on any panel (the no-apple text check passed); nothing looks like sweets; no clipping and no English for the child (the [ph] lines are grey-italic to-record placeholders, decision 84)",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CLN-37.png",
-  "date": "2026-10-12"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-052119-vgy",
+  "commit": "78366ac4",
+  "png": "build/screenshots/evidence/ev-20261014-052119-vgy/CLN-37.png",
+  "date": "2026-10-14"
  },
  "CLN-38": {
   "hash": "94e60b348b1c1339a192",
@@ -5358,5 +5369,21 @@
   "commit": "7c1531e",
   "png": null,
   "date": "2026-10-13"
+ },
+ "SH-86": {
+  "hash": "ee6c27fc64b7a337c331",
+  "dhash": [
+   "00000c0c0e070058",
+   "01191d1d091e0606",
+   "300b0b0c0a0b0310",
+   "611d1d1d15170752"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:.njg-results .rs-card (1 clean); pass (0 contract breaks); noClip:.njg-results .rs-card (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-050352-q9c",
+  "commit": "8eece4b4",
+  "date": "2026-10-14"
  }
 }

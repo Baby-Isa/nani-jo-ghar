@@ -34,8 +34,13 @@ try {
           if (b && b.getBoundingClientRect().width > 0) {
             rec.seen++;
             const r = b.getBoundingClientRect();
-            const tx = parseFloat(b.style.getPropertyValue("--njg-tail-x")) || r.width / 2;
-            rec.tail = { x: Math.round(r.left + tx + 9), y: Math.round(b.dataset.njgPlace === "below" ? r.top : r.bottom), place: b.dataset.njgPlace || "" };
+            // the tail's tip from its own drawn box (::before): CLN-127's face placement draws it out of the bubble's side
+            const cs = getComputedStyle(b, "::before");
+            const tl = parseFloat(cs.left), tt = parseFloat(cs.top), tw = parseFloat(cs.width) || 0, th = parseFloat(cs.height) || 0;
+            const pl = b.dataset.njgPlace || "";
+            const bl = parseFloat(getComputedStyle(b).borderLeftWidth) || 0, bt = parseFloat(getComputedStyle(b).borderTopWidth) || 0;
+            const x0 = r.left + bl + (isNaN(tl) ? r.width / 2 : tl), y0 = r.top + bt + (isNaN(tt) ? 0 : tt);
+            rec.tail = pl === "face-right" ? { x: Math.round(x0), y: Math.round(y0 + th), place: pl } : pl === "face-left" ? { x: Math.round(x0 + tw), y: Math.round(y0 + th), place: pl } : { x: Math.round(x0 + tw / 2), y: Math.round(pl === "below" ? y0 : y0 + th), place: pl };
             const sp = V.speakers.patient && V.speakers.patient();
             if (sp) { const q = sp.getBoundingClientRect(); rec.face = { l: Math.round(q.left), t: Math.round(q.top), r: Math.round(q.right), b: Math.round(q.bottom) }; }
           }
@@ -60,7 +65,9 @@ try {
   for (const l of lines) {
     const ok = l.seen > 0;
     if (!ok) bad++;
-    console.log(`${ok ? "bubble" : "NO BUBBLE"}  "${l.text}"  on screen ${l.seen}/${l.samples} samples  tail ${l.tail ? `${l.tail.x},${l.tail.y} (${l.tail.place})` : "-"}  her head anchor ${l.face ? `${l.face.l},${l.face.t}-${l.face.r},${l.face.b}` : "-"}`);
+    // CLN-127: where the tip lands on her head: hair (its top third), face (eyes to chin) or off her head
+    const at = !l.tail || !l.face ? "-" : l.tail.x < l.face.l - 2 || l.tail.x > l.face.r + 2 || l.tail.y > l.face.b + 2 ? "off her head" : l.tail.y < l.face.t + (l.face.b - l.face.t) / 3 ? "on her hair" : "at her face";
+    console.log(`${ok ? "bubble" : "NO BUBBLE"}  "${l.text}"  on screen ${l.seen}/${l.samples} samples  tail tip ${l.tail ? `${l.tail.x},${l.tail.y} (${l.tail.place})` : "-"}  her head anchor ${l.face ? `${l.face.l},${l.face.t}-${l.face.r},${l.face.b}` : "-"}  tip ${at}`);
   }
   console.log(`${lines.length} lines of hers, ${bad} without a bubble`);
 } finally { await browser.close(); srv.close(); }

@@ -12,7 +12,7 @@
 import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, traceDecision, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
-import { decodePng } from "../../tools/review/lib/png.mjs";
+import { decodePng, encodePng } from "../../tools/review/lib/png.mjs";
 import * as Contract from "./contract.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -305,8 +305,17 @@ export class EvidenceProbe {
     try {
       if (this._cdp === undefined) this._cdp = await this.page.context().newCDPSession(this.page).catch(() => null);
       if (!this._cdp) return this.shot(clip);
-      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false, clip: { ...clip, scale: 1 } });
-      return Buffer.from(r.data, "base64");
+      // the whole surface, cut here: with a clip, the compositor now and then returned the page's top-left corner at the
+      // clip's size (CLN-126, CLN-127: the doctor's box where her bubble should be)
+      const r = await this._cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false });
+      const img = decodePng(Buffer.from(r.data, "base64"));
+      const k = img.w / (this.page.viewportSize().width || img.w);
+      const x0 = Math.max(0, Math.round(clip.x * k)), y0 = Math.max(0, Math.round(clip.y * k));
+      const w = Math.min(img.w - x0, Math.round(clip.width * k)), h = Math.min(img.h - y0, Math.round(clip.height * k));
+      if (!(w > 0 && h > 0)) return this.shot(clip);
+      const data = Buffer.alloc(w * h * 4);
+      for (let y = 0; y < h; y++) img.data.copy(data, y * w * 4, ((y0 + y) * img.w + x0) * 4, ((y0 + y) * img.w + x0 + w) * 4);
+      return encodePng({ w, h, data });
     } catch (e) { return this.shot(clip); }
   }
   async capture(s, hit, settle) {

@@ -23,6 +23,8 @@
  *                                   channels and <audio>, the clinic's Kit.Voice, Cook's read-along), so one stop silences
  *                                   everything: voice.stop(reason) voice.gen() voice.track(audio, onCut) voice.onStop(fn)
  *   Lifecycle.onStageEnd(fn) -> off()   Lifecycle.log   (what happened when: {what, reason, t}; the contract checks read it)
+ *   Lifecycle.note(what, info)      TEST HOOK (only logged): {what, ...info} in Lifecycle.log: "step-close" {step} (the order
+ *                                   card's tick, the heal host; contract-18), "act" {during} (an input handed on; contract-21)
  *   Lifecycle.ghost(step, info)     TEST HOOK (only logged, s04-hooks): the ghost finger played once (Onboard's kit, Cook's
  *                                   S.ghost): {what: "ghost", reason: step, step, ...info} in Lifecycle.log, so a probe counts
  *                                   plays (SH-46, MAA-13, CLN-101) instead of catching frames
@@ -283,6 +285,11 @@
    * room above, below the head, its tail pointing up. Centred on the head, then kept inside the layer with a margin;
    * a bubble that would land on another speaker (avoid) moves to the other side of the head. head: an element or a
    * rect {left, top, width, height} in page px. Returns "above" | "below" (or null: no head to place by).
+   *
+   * CLN-127 (fever, CL2/FV3: "her bubble comes from her face, never anchored on top of her hair"): a head that is a
+   * whole painted head (o.face, or the element's data-njg-face: the clinic figure's head anchor) gets its bubble BESIDE
+   * the head, its bottom at her eye line, its tail out of its near side pointing at her cheek: "face-right" (the bubble
+   * right of her head) | "face-left". With no room either side it falls back to above / below.
    */
   function placeBubble(b, head, layer, o = {}) {
     if (!b || !head) return null;
@@ -301,6 +308,7 @@
     b.style.transform = "none";
     b.style.left = "0px";
     b.style.top = "0px";
+    delete b.dataset.njgPlace;
     const bw = b.offsetWidth;
     const bh = b.offsetHeight;
     const W = lr.width;
@@ -308,6 +316,14 @@
     const hx = r.left - lr.left;
     const hy = r.top - lr.top;
     const cx = hx + r.width / 2;
+    const face = o.face != null ? !!o.face : !!(head.dataset && head.dataset.njgFace != null);
+    if (face) {
+      // anything a game marks data-njg-avoid (the fever's sweat drop or snowflake by her head) sends the bubble to her
+      // other side, as another speaker does (only beside her face: above or below, dodging it put the bubble on her body)
+      const marked = typeof document !== "undefined" && document.querySelectorAll ? [...document.querySelectorAll("[data-njg-avoid]")] : [];
+      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr }, (o.avoid || []).concat(marked));
+      if (sd) return sd;
+    }
     const gap = o.gap != null ? o.gap : M + 6; // room for the tail
     const above = hy - gap - bh;
     const below = hy + r.height + gap;
@@ -337,6 +353,44 @@
     b.dataset.njgPlace = side;
     b.style.setProperty("--njg-tail-x", `${Math.round(Math.max(18, Math.min(bw - 30, cx - x - 9)))}px`);
     return side;
+  }
+
+  /** CLN-127: beside a painted head, the tail out of the near side at her cheek; null when neither side has room. */
+  function placeByFace(b, g, avoid) {
+    const { hx, hy, w, h, bw, bh, W, H, M, lr } = g;
+    // where the tail's middle sits outside the bubble's edge (css/shared/order-card.css [data-njg-place^="face-"]::before:
+    // it hangs out of the side), read from the drawn tail once the side is set
+    b.dataset.njgPlace = "face-right";
+    const cs = root.getComputedStyle ? root.getComputedStyle(b, "::before") : null;
+    const bs = root.getComputedStyle ? root.getComputedStyle(b) : null;
+    const tw = (cs && parseFloat(cs.width)) || 22;
+    const off = cs && isFinite(parseFloat(cs.left)) ? -parseFloat(cs.left) - ((bs && parseFloat(bs.borderLeftWidth)) || 0) - tw / 2 : 5;
+    // the tail's middle just inside her head's edge
+    const m = 3; // the bubble clears her hair; the tip, half a tail further in, lands on her cheek
+    const cy = hy + h / 2; // her eye line (the head anchor's centre)
+    const y = Math.round(cy - 2 - bh);
+    if (y < M || cy - 2 > H - M) return null;
+    const xs = { "face-right": hx + w - m + off, "face-left": hx + m - off - bw };
+    const fits = (sd) => xs[sd] >= M && xs[sd] + bw <= W - M;
+    const hits = (sd) =>
+      (avoid || []).some((el) => {
+        const q = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+        if (!q || !q.width || !q.height) return false;
+        const qx = q.left - lr.left;
+        const qy = q.top - lr.top;
+        return !(xs[sd] >= qx + q.width || xs[sd] + bw <= qx || y >= qy + q.height || y + bh <= qy);
+      });
+    // towards the middle of the play area first (the room the other side may not have)
+    const order = hx + w / 2 <= W / 2 ? ["face-right", "face-left"] : ["face-left", "face-right"];
+    const sd = order.find((k) => fits(k) && !hits(k)) || order.find(fits);
+    if (!sd) {
+      delete b.dataset.njgPlace;
+      return null;
+    }
+    b.style.left = `${Math.round(xs[sd])}px`;
+    b.style.top = `${y}px`;
+    b.dataset.njgPlace = sd;
+    return sd;
   }
 
   /*
@@ -493,6 +547,19 @@
      */
     stageStart(reason) {
       note("stage-start", reason || "");
+    },
+    /**
+     * TEST HOOK (only logged; checks-to-build 6 and 20): what a game did, with its own fields, for the contract checks:
+     * {what: "step-close", step} a step closed (the shared order card's tick, the heal host), contract-18;
+     * {what: "act", during} an input the host handed to the game, during: a voice was speaking then, contract-21.
+     */
+    note(what, info) {
+      note(what, info && info.step != null ? String(info.step) : "");
+      try {
+        if (info && typeof info === "object") Object.assign(log[log.length - 1], info, { what });
+      } catch (e) {
+        /* only a log */
+      }
     },
     /** TEST HOOK (read-only for the game: only logged): the ghost finger played once; step names what it showed. */
     ghost(step, info) {

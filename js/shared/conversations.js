@@ -45,7 +45,7 @@
   const STAGES = ["S1", "S2", "S3", "S4", "S5", "S6"];
   const STAGE_MAX_RUNG = { S1: 3, S2: 4, S3: 5, S4: 5, S5: 5, S6: 5 };
   const REACTIONS = ["embarrassed", "scratch", "puzzled", "sigh"]; // the same four as story.js's Yes/No (UX §14)
-  const BULB_MS = { 1: 5000, 2: 3000, 3: 2000, 4: 1000, 5: 1000 };
+  const BULB_MS = { 1: 8000, 2: 8000, 3: 8000, 4: 8000, 5: 8000 }; // SH-86 (Zafar, D11 / SH-41): 8 s at every level
   const BOX_GAP = [0, 1, 2, 4, 8]; // sessions until a mastered type is due again (§5.3)
   const REG_LEVELS = ["heard", "choose", "say", "start"];
   const GAP_MS = 2 * 60 * 1000; // §10a.9: one every 2 minutes on top of one per visit
@@ -288,7 +288,7 @@
         break;
       case "bulb":
         m.bulbs++;
-        fx.push({ fx: "english", ms: BULB_MS[m.rung] || 2000 });
+        fx.push({ fx: "english", ms: BULB_MS[m.rung] || 8000 });
         break;
       case "skip":
       case "timeout": {

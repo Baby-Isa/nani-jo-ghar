@@ -216,3 +216,37 @@ test("contract-19 counting rule (checks-to-build 7): from L3 no number written o
   assert.equal(run("cook:chai-tray", "p-seen", line("Ba!", 2000)).length, 0, "L1 counts along");
   assert.equal(run("cook:chai-tray@L2", "p-seen", line("Ba!", 1200)).length, 0, "the order said before the first tap is not counting along");
 });
+
+test("contract-18 card rows (checks-to-build 6): a row ticks only within 1 s after its step-close log; no row changes its words mid-stage", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const run = (extra) => analyse({ flow: "clinic:heal-boing", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "host:clinic/heal-boing", t: 1000 }, ...extra] }, { lexicon: new Set(), numbers: new Set() }).filter((b) => b.check === "contract-18");
+  const rows = (t, list) => ({ type: "c", k: "rows", t, list });
+  const row = (id, text, done, o = {}) => ({ id, key: id, text, done, en: false, ...o });
+  const close = (t, step) => ({ type: "c", k: "life", what: "step-close", reason: step, step, at: t, t: t + 500 });
+  const open = rows(1200, [row("wipe", "Wipe, ba", false), row("drops", "Chando, char", false)]);
+  // ticked on the count alone (no step closed): a break; ticked 300 ms after its step closed: none
+  assert.match(run([open, rows(2000, [row("wipe", "Wipe, ba", true), row("drops", "Chando, char", false)])])[0].measured, /"Wipe, ba" \(wipe\) ticked with no step-close/);
+  assert.equal(run([open, close(1700, "wipe"), rows(2000, [row("wipe", "Wipe, ba", true), row("drops", "Chando, char", false)])]).length, 0);
+  // another row's step closing does not count; nor does one closed 2 s before
+  assert.equal(run([open, close(1700, "drops"), rows(2000, [row("wipe", "Wipe, ba", true), row("drops", "Chando, char", false)])]).length, 1);
+  assert.equal(run([open, close(500, "wipe"), rows(2000, [row("wipe", "Wipe, ba", true), row("drops", "Chando, char", false)])]).length, 1);
+  // a row's words change mid-stage: a break; the bulb's English, a dots row turning into words, or a new stage: none
+  assert.match(run([open, rows(2000, [row("wipe", "Wipe, trae", false), row("drops", "Chando, char", false)])])[0].measured, /changed its words mid-stage, "Wipe, ba" to "Wipe, trae"/);
+  assert.equal(run([open, rows(2000, [row("wipe", "Wipe, two", false, { en: true }), row("drops", "Chando, char", false)])]).length, 0);
+  assert.equal(run([rows(1200, [row("0:0", "···", false, { key: null })]), rows(2000, [row("0:0", "Chando, char", false, { key: null })])]).length, 0);
+  assert.equal(run([open, { type: "c", k: "stage", key: "host:clinic/sendoff", t: 1800 }, rows(2000, [row("wipe", "Ane mile!", false)])]).length, 0);
+});
+
+test("contract-21 input live (checks-to-build 20): a tap in the play area while a line is said is handed on (act) within 150 ms", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const run = (extra) => analyse({ flow: "clinic:heal-knee@L2", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "host:clinic/heal-knee", t: 1000 }, { type: "line", id: 1, text: "Hammer, ba", who: "doctor", t: 1500 }, { type: "line-end", id: 1, t: 2600 }, ...extra] }, { lexicon: new Set(), numbers: new Set() }).filter((b) => b.check === "contract-21");
+  const tap = (t, o = {}) => ({ type: "c", k: "input", x: 400, y: 300, on: "svg.hs-svg", play: true, popup: false, side: false, next: false, exp: { heal: { do: "tap" } }, t, ...o });
+  const act = (t) => ({ type: "c", k: "life", what: "act", reason: "", during: true, at: t, t: t + 400 });
+  assert.match(run([tap(2000)])[0].measured, /tap on svg.hs-svg .* while "Hammer, ba" was being said: no act logged within 150 ms/);
+  assert.equal(run([tap(2000), act(2040)]).length, 0);
+  assert.equal(run([tap(2000), act(2300)]).length, 1, "handed on too late");
+  assert.equal(run([tap(3000)]).length, 0, "no line being said");
+  assert.equal(run([tap(2000, { side: true })]).length, 0, "the sidebar");
+  assert.equal(run([tap(2000, { play: false })]).length, 0, "outside the play area");
+  assert.equal(run([tap(2000, { exp: { clinic: { kind: "wait" } } })]).length, 0, "the game expected nothing");
+});

@@ -192,6 +192,20 @@ test("an adapter's own score becomes marks; its evidence feeds word progress; it
   assert.ok(core.progress.get("cook-chai").right >= 1);
 });
 
+test("CLN-118 (D13): a round whose every stage is taught has no time and no best; a taught stage among others is timed", async () => {
+  const taughtGame = (id) => ({ id, gestures: ["tap"], levels: [1], mount: (el, ctx) => ({ start: () => ctx.done({ right: 0, total: 0, taught: true }) }) });
+  const core = makeCore();
+  const { host } = newHost({ core });
+  const res = await host.run({ mode: { id: "fake", games: { knee: taughtGame("knee") } }, plan: [{ game: "knee" }], play: { play: "free" } });
+  assert.equal(res.round.timeMs, undefined);
+  assert.equal(res.round.taught, true);
+  assert.equal(res.finish.badges.time, null);
+  assert.equal(core.score.best("fake", "knee", 1), undefined);
+  const mixed = await host.run({ mode: { id: "fake", games: { knee: taughtGame("knee"), one: fakeGame("one") } }, plan: { game: "patient", stages: [{ game: "one" }, { game: "knee" }] }, play: { play: "free" } });
+  assert.equal(typeof mixed.round.timeMs, "number");
+  assert.equal(mixed.round.taught, undefined);
+});
+
 test("leave(): the current stage is destroyed, its waits reject, and run() resolves as left", async () => {
   const log = [];
   const game = {
