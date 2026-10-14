@@ -1034,7 +1034,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         count++;
         Cook.sfx.bubble ? Cook.sfx.bubble() : Cook.sfx.soft();
         dial.laps(count);
-        if (!(UI.naniMuted && UI.naniMuted())) Lang.speak(Lang.numLine(count)).catch(() => {});
+        // DAAR-24 retired (Zafar, 14 Oct, D12): the laps are said aloud at every level, the stir's own exception to the
+        // counting rule; the line carries role "laps" so the counting check (contract-19) knows it is not counting along
+        if (!(UI.naniMuted && UI.naniMuted())) Lang.speak(Lang.role(Lang.numLine(count), "laps")).catch(() => {});
         z.progress({ lap: count });
         // SH-58: the laps are done: the ✓ is the only thing left, and glows (a station's first plays; level 1 only: later the glow would give the count away)
         if (count === laps && Cook.roundLevel(ctx) <= 1 && UI.doneGlows && UI.doneGlows()) UI.glowDone(true);

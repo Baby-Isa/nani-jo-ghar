@@ -45,7 +45,7 @@ import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
 
 export const CHECKS = {
-  "contract-19": { item: "counting", title: "the counting rule", how: "From level 3, on a page whose profile has heard the words (variant p-seen), no order-card row (the side sample's words) holds a Kutchi number word (the lexicon's Num entries); from level 2, no line that is only a number word (counting along) starts after the stage's first tap. Level 1 counts along and writes the number." },
+  "contract-19": { item: "counting", title: "the counting rule", how: "From level 3, on a page whose profile has heard the words (variant p-seen), no order-card row (the side sample's words) holds a Kutchi number word (the lexicon's Num entries); from level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number." },
   "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
@@ -572,8 +572,9 @@ function check19(r, tl, segs, v, nums, add) {
   if (level >= 2) {
     const firstTap = (t) => { const s = segAt(segs, t); const from = s ? s.t0 : -Infinity; const i = tl.find((e) => e.type === "c" && e.k === "input" && !e.popup && e.t >= from); return i ? i.t : Infinity; };
     for (const l of v.lines) {
-      // a count-down the game says on its own (the boing jab: the doctor counts down to it) is not counting along
-      if (l.role === "countdown") continue;
+      // a count-down the game says on its own (the boing jab: the doctor counts down to it) is not counting along; nor are
+      // the daar stir's laps, said aloud at every level (DAAR-24 retired, Zafar 14 Oct: the exception D12 asked for)
+      if (l.role === "countdown" || l.role === "laps") continue;
       const ws = split(l.text);
       if (ws.length && ws.length <= 2 && ws.every((x) => nums.has(x)) && l.t0 > firstTap(l.t0) && !seen.has(l.text + l.t0)) { seen.add(l.text + l.t0); add("contract-19", l.t0, `"${l.text}" is counting along at L${level}`); }
     }

@@ -219,6 +219,11 @@ test("contract-19 counting rule (checks-to-build 7): from L3 no number written o
   const countdown = (text, t) => [{ type: "line", id: t, text, t, role: "countdown" }, { type: "line-end", id: t, t: t + 300 }];
   assert.equal(run("clinic:heal-boing@L2", "p-seen", [...countdown("Char!", 2000), ...countdown("Trae!", 2400), ...countdown("Ba!", 2800), ...countdown("Hakro!", 3200)]).length, 0, "the doctor's count-down is not counting along");
   assert.match(run("clinic:heal-boing@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/, "a number said with no role still is");
+  // DAAR-24 retired (Zafar, 14 Oct, D12): the daar stir's laps are said aloud at every level (role "laps" in the sound log)
+  const lapLine = (text, t) => [{ type: "line", id: t, text, t, role: "laps" }, { type: "line-end", id: t, t: t + 300 }];
+  assert.equal(run("cook:daar@L2", "p-seen", [...lapLine("Hakro!", 2000), ...lapLine("Ba!", 2600), ...lapLine("Trae!", 3200)]).length, 0, "the stir's laps said aloud are not counting along");
+  assert.equal(run("cook:daar@L3", "p-seen", lapLine("Ba!", 2000)).length, 0, "at every level");
+  assert.match(run("cook:daar@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/, "a number with no role still is");
 });
 
 test("contract-18 card rows (checks-to-build 6): a row ticks only within 1 s after its step-close log; no row changes its words mid-stage", async () => {
