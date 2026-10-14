@@ -16,7 +16,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 - Checks built (each listed at the top of `docs/process/checks-to-build.md`): 1 red-then-green gate, 2 publish gate, 3 zero tolerance, 4/5/7/8 as contract-16/17/19/20, 9-11/13/17/18/21 (`build/lint/static.mjs`), 12, 14, 16 (`artcheck.mjs`), 19 (leak bots every level), 22, 23, 24. Debt they found sits in known lists that may only shrink.
 - Rows built through the gate: CLN-146, CLN-148. New rows: MOD-03 (Tidy leak), LNG-14 (store build plays unchecked clips).
 
-**Running (in-chat Opus builders, own worktrees, never judge their own work):** Clinic builder on `s06-clinic` (CLN-140, 143, 45 committed so far; report `build/reports/s06-clinic.md`); Cook+shared builder on `s06-cook` (CK-35, SH-10, SH-69, SH-81, CK-07/31/32 so far; report `s06-cook.md`). A container restart stopped them once; they were resumed with `--parallel 1`.
+**Running (in-chat Opus builders, own worktrees, never judge their own work):** Clinic builder on `s06-clinic` (CLN-140, 143, 45 committed so far; report s06-clinic.md when it lands); Cook+shared builder on `s06-cook` (CK-35, SH-10, SH-69, SH-81, CK-07/31/32 so far; report s06-cook.md). A container restart stopped them once; they were resumed with `--parallel 1`.
 
 **Next steps, in order:**
 1. When each builder hands back: in its worktree, `evidence.mjs --judge`, one `judge` agent per batch, `--collect`, `--apply`; then merge the branch, run `checks.mjs`.
