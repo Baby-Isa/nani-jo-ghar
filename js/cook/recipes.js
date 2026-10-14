@@ -345,7 +345,8 @@
       // "blockHead": the head of a second block of the dish ("and trae samosa": samosa's second kind, 30 Sept)
       const kind = e.blockHead && e.block ? "bhead" : e.personHead && forWho ? "phead" : e.frame === "order" || (e.head && !lead) ? "dish" : e.frame === "no" ? "no" : "item";
       if (kind !== "no" && kind !== "phead" && (e.dot === "next" || (kind === "dish" && !rows.length) || lead)) dot++;
-      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" || kind === "bhead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead, block: e.block || null, frame });
+      // pic (DAAR-19): a step row's own tool beside its words (the stir row's ladle: "ba" alone read as a stray row)
+      rows.push({ kind, ids: ps.filter((x) => typeof x === "string"), qty: ps.find((x) => typeof x === "number") || 1, dot: kind === "no" || kind === "phead" || kind === "bhead" ? null : dot, group: "any", for: forWho, line, parts: ps, sec, when, lead, block: e.block || null, frame, pic: e.pic || null });
     };
     (def.say || []).forEach((e, k) => walk(e, e.for ? res(e.for, env) : undefined, k));
     return { lines, rows };

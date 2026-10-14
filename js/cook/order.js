@@ -91,6 +91,8 @@
       units: r.cards ? Array(r.qty || 1).fill(false) : null,
       // 30 Sept: which block of the dish (samosa's second kind is block 2; null: the dish's own rows)
       block: r.block || null,
+      // DAAR-19: a step row's tool, drawn before its words (the stir row's ladle)
+      pic: r.pic || null,
     };
   }
   O.row = row;

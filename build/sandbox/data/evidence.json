@@ -11815,21 +11815,23 @@
   {
    "flow": "cook:daar",
    "path": "fair",
-   "level": 1,
+   "level": [
+    1,
+    2
+   ],
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "stir-mid",
    "after": null,
    "capture": [
-    "crop:#mission",
+    "zoom2:#mission",
     "dom:#mission"
    ],
    "expect": null,
-   "note": "no stray plain row under rai and lasan once every row ticks",
-   "max": 16
+   "note": "the tadka card large while the child stirs, every tadka row ticked (S06's frames were too small to read): the row under rai and lasan is the stir row (DAAR-12, Zafar 6 Oct D12: the laps on Nani's card), the laps as the Kutchi number word alone at L1 (Mum's own 'Trae!' for 'stir three times', docs/language/lexicon.md), the number and the speed word from L2; it must read as the stir's row (the ladle beside it), not as a stray plain row"
   }
  ],
  "DAAR-20": [
