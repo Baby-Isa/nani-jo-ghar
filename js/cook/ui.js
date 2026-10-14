@@ -1282,9 +1282,14 @@
     // the pop-up is that card shown big, so it leaves the sidebar while the pop-up is up and the pop-up folds back into it
     const mine = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who) || null;
     if (mine) mine.style.visibility = "hidden";
+    // CK-40 (R4, contract-20: one face per person): while her card is up in the pop-up, her box keeps only its tools (no
+    // second Nani face beside it, as while her chop card is in the sidebar); her face comes back as the pop-up folds
+    const own = who === "nani" && !!UI.guideStrip;
+    if (own) UI.guideStrip(true);
     try {
       await L.request({ reason: "cook:station-order", el, card, target: () => (mine && mine.isConnected ? mine : $("#guide") || $("#mission")), lead: 0, hold: 900, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read });
     } finally {
+      if (own) UI.guideStrip(!!mine && mine.isConnected);
       if (mine) mine.style.visibility = "";
       stopReading();
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
@@ -1584,13 +1589,19 @@
     const cards = orderCards();
     const idle = big ? new Set() : idlePeople(cards);
     const minis = big ? new Set() : miniPeople(cards);
+    // CK-40 (R4, contract-20: one card and one face per person): a person who orders two dishes (day 6: the cousin's
+    // mishkaki and chaat) gets ONE card: the first dish's card wears their face, each later dish is a continuation of it
+    // (its headline and rows, no second face), joined to it in one .oc-person outline
+    const firstOf = new Map();
     return extra.concat(cards.map((c) => {
+      const lead = c.who ? firstOf.get(c.who) : null;
+      if (c.who && !lead) firstOf.set(c.who, c);
       // the pop-up never shows more than the sidebar card it folds into: a start-folded card (§14a, M.closeCards with
       // peek: the order is to be remembered) is the shared closed big card there (js/shared/order-card.js big + closed:
       // face, headline, one row of dots; the order is heard in full, never written; non-negotiable 6, as the clinic).
       // A phase fold (a card you can't act on now) is still drawn open in the pop-up
       const phase = !!closed && (!big || !!closed.peek) && (!closed.who || closed.who === c.who);
-      const el = OC.card(c.data, {
+      const el = OC.card(lead ? Object.assign({}, c.data, { person: null }) : c.data, {
         big,
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
         // the phase fold / a start-folded card (M.closeCards): face + headline; a peek may cost a hint
@@ -1628,8 +1639,22 @@
         el.addEventListener("click", (ev) => !ev.target.closest(".oc-face") && M.focus(c.who));
         let row = box.querySelector(":scope > .oc-minis");
         if (!row) row = box.appendChild(Object.assign(document.createElement("div"), { className: "oc-minis" }));
-        row.appendChild(el);
+        // a continuation of someone who is just their face shows nothing more (CK-40)
+        if (!lead) row.appendChild(el);
+      } else if (lead && lead.el && lead.el.parentNode) {
+        // CK-40: under its person's first card, in one outline (the pop-up's crowd grid keeps it in that person's column)
+        let wrap = lead.el.parentNode.classList && lead.el.parentNode.classList.contains("oc-person") ? lead.el.parentNode : null;
+        if (!wrap) {
+          wrap = document.createElement("div");
+          wrap.className = "oc-person";
+          wrap.dataset.person = c.who;
+          lead.el.parentNode.insertBefore(wrap, lead.el);
+          wrap.appendChild(lead.el);
+        }
+        el.classList.add("oc-cont");
+        wrap.appendChild(el);
       } else box.appendChild(el);
+      if (c.who && !lead) c.el = el;
       return el;
     }));
   }
@@ -1783,7 +1808,7 @@
     const card = intro().querySelector(".ic-card");
     card.classList.add("people");
     // decision 53: several people's orders side by side (one column each, two by two at four), never off the screen
-    const n = box.querySelectorAll(":scope > .oc-card[data-who]").length;
+    const n = box.querySelectorAll(":scope > .oc-card[data-who], :scope > .oc-person").length; // one column per person (CK-40)
     card.classList.toggle("crowd", n >= 2);
     card.classList.toggle("c4", n >= 4);
     card.style.setProperty("--crowd-cols", String(n >= 4 ? 2 : Math.max(1, n)));
