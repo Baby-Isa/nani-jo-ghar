@@ -39,12 +39,49 @@
     // the flash order: sides alternate; heights random from level 2. CLN-100 (S05-D): at level 1 the heights step
     // in a fixed order (middle, top, bottom ...), so every turn is a new band across the kneecap and into the crease
     // (on one height each turn lay on the last one and the wrap looked like a single band)
+    // CLN-100 (S06): from level 2 the heights are random, but each turn is a new band where one can be: turns 6-8 at L2
+    // and the fifth at L3 lay exactly on earlier bands (the same back and front dots), so the wrap seemed to stop
+    // drawing. A band's key is its back (left) and front (right) height; the first turn's from-dot is the same height
+    // on the other side. The six dots make a K3,3, whose longest trail with no band twice is seven, so the first
+    // min(turns, 7) turns are all new bands (a small search over the heights); a turn past that crosses two dots
+    // already joined and bows across the kneecap at another height (wrapTurn), so it is still a new turn on the leg.
+    // Level 1 keeps its fixed order (middle, top, bottom ...: six new bands, its most turns).
     const L1Y = [1, 0, 2];
-    const order = [];
-    let s = rng() < 0.5 ? "l" : "r";
-    for (let i = 0; i < 12; i++) {
-      order.push(L === 1 ? { s, y: L1Y[i % 3] } : { s, y: Math.floor(rng() * 3) });
-      s = s === "l" ? "r" : "l";
+    const s0 = rng() < 0.5 ? "l" : "r";
+    const other = (sd) => (sd === "l" ? "r" : "l");
+    const key = (a, b) => (a.s === "l" ? `${a.y}-${b.y}` : `${b.y}-${a.y}`);
+    const sideAt = (i) => (i % 2 ? other(s0) : s0);
+    let order = [];
+    if (L === 1) for (let i = 0; i < 12; i++) order.push({ s: sideAt(i), y: L1Y[i % 3] });
+    else {
+      // the first min(turns, 7) turns: every band new (a search over the heights: K3,3 always has such a trail)
+      const want = Math.min(turns, 7);
+      const seq = [];
+      const used = new Set();
+      const dfs = () => {
+        const i = seq.length;
+        if (i === want) return true;
+        return HS.shuffle([0, 1, 2], rng).some((y) => {
+          const d = { s: sideAt(i), y };
+          const k = key(seq[i - 1] || { s: other(d.s), y }, d);
+          if (used.has(k)) return false;
+          seq.push(d);
+          used.add(k);
+          if (dfs()) return true;
+          used.delete(k);
+          seq.pop();
+          return false;
+        });
+      };
+      dfs();
+      order = seq;
+      // the rest (L4's 8-10 turns, and the spare flashes): any height but the one that would retrace the last band
+      for (let i = order.length; i < 12; i++) {
+        const prev = order[i - 1];
+        const lastKey = i > 1 ? key(order[i - 2], prev) : null;
+        const ok = [0, 1, 2].filter((y) => key(prev, { s: sideAt(i), y }) !== lastKey);
+        order.push({ s: sideAt(i), y: ok[Math.floor(rng() * ok.length)] });
+      }
     }
     // words, numbers and joins from data through the seam (R5); D10 (1 Oct): sides are said and tested in the
     // diagnosis only, so the close-up's rows never name the side
@@ -192,6 +229,7 @@
      * the leg's own outline; shaded darker at both ends where it turns away, with its edges, the weave along it and
      * a soft shadow under it.
      */
+    const drawn = {}; // how many bands each back-front pair of dots has had (CLN-100)
     const wrapTurn = (a, b) => {
       const k = KA.box[2] / WA.src[0];
       const back = a.s === "l" ? a : b;
@@ -212,7 +250,11 @@
       // circles are"); the dots sit on the leg's outline, so it still ends where the leg turns away
       const p0 = { x: back.x, y: back.yy };
       const p1 = { x: fr.x, y: fr.yy };
-      const bow = 0.11 * L;
+      // a band that must run between two dots already joined (K3,3 has no trail through all nine pairs, and L4 asks
+      // for up to ten turns) bows across the kneecap at another height, so it is still a new turn, its ends on the dots
+      const k2 = `${back.y}-${fr.y}`;
+      const again = (drawn[k2] = (drawn[k2] || 0) + 1) - 1;
+      const bow = (0.11 + [0, 0.13, -0.07, 0.24][again % 4]) * L;
       const c = { x: (p0.x + p1.x) / 2 + nx * bow, y: (p0.y + p1.y) / 2 + ny * bow };
       const at = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
       const N = 24;
