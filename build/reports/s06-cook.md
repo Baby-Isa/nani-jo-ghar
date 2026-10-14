@@ -20,3 +20,7 @@ Runs ev-20261014-…: c97 (red), 06w, sqj, odn (green). Picture rows are for the
 Also: core.js localStorage fallback removed (run static.mjs --write-known after merge); 800x360 word review fixed (broken words, scroll).
 
 Checks: checks.mjs all pass; clinic + Cook at 800x360/1366x768: CHECK PASSED, 0 contract breaks.
+
+## Proof
+
+Runs ev-20261014-005632-c97 (red), ev-20261014-011029-06w, ev-20261014-014202-sqj, ev-20261014-020634-odn (green); verdicts by the orchestrator's judges.

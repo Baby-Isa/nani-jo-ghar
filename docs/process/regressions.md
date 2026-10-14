@@ -19,6 +19,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 |---|---|---|---|---|
 | SH-37 | Cook screens have one focal thing; UI and world look like one product; identical shelf slots; design tokens only | **open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the chop screen mixes three art styles (flat timer, photoreal garlic, flat chilli)) | eye: 1366×768 · CMP-10, CMP-04 | `docs/design-language/ui-design-system.md` §1.1–1.4 |
 | SH-81 | A closed order card's face button stays on screen when it is peeked open (2 px off at cook:daar@L3#hint 800x360; tap-offscreen, gate-20261013-1447) | open (S05-C3: not reproduced: ev-20261013-191648-4o1, the peeked card's face fully on screen at 800x360) | auto: the layout lint, cook:daar@L3#hint 800x360 peek-open | `build/reports/s05-fixround-verdicts.md` The full gate |
+| SH-85 | After Cook's help button the order cards show written English in dark upright type for ~8 s (the chai card "I'd like chai with cardamom it in.", rows "cardamom / no milk / one sugar"; the daar tadka card "I'd like daal.", "two onions"), longer than the bulb's 5 s at L1 and not the grey to-record form (non-negotiable 5) | **open** (found by the S06 judges: ev-20261014-004527-3br SH-10 frames 2-6 at 15.6-18.5 s after #btn-help at 9.1/10.2 s; ev-20261014-005632-c97 DAAR-19 frames 9-15) | auto: contract-16 on cook:chai-tray and cook:daar | build/sandbox/lib/contract.mjs contract-16 |
 
 ## Cook: pantry
 

@@ -52,7 +52,6 @@
  "kit|css/cook.css|.njg-results-open #overlay",
  "ladder|data/clinic/heal/hic.json|L2 sips down",
  "ladder|data/clinic/heal/taste.json|L2 each down",
- "privacy|js/cook/core.js|localStorage",
  "tokens|css/clinic.css|gradient|--tint: #e9dfcf; width: 78%; height: 78%; max-width: 88px; max-height: 88px; bor",
  "tokens|css/clinic.css|gradient|-webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 36%, #00",
  "tokens|css/clinic.css|gradient|-webkit-mask-image: var(--mask), linear-gradient(to bottom, transparent 57%, #00",
