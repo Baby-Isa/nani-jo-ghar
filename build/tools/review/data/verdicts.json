@@ -1485,20 +1485,26 @@
   "date": "2026-10-13"
  },
  "CLN-118": {
-  "hash": "74db9874c0c119f15c74",
+  "hash": "ffb9319a7b2e8cd0a229",
   "dhash": [
    "8188812361155100",
-   "01a4912121691180",
+   "01a4912121691101",
    "0181018181018101",
-   "899181e161416101"
+   "8195813141413101",
+   "2181818101414141",
+   "008800809000b400",
+   "008000848100c001",
+   "018d892131311101",
+   "8191812931211101",
+   "cbebcd87c7cdc8cb"
   ],
-  "verdict": "FAIL",
-  "line": "D, the tooth's fresh taught round still names sides: its step rows read \"Pela down\" and \"ne poi right\" at every step (1-6), so this first round is not free of sides. Flaws: in B the \"Hammer\" step is in plain dark type, not grey italic, so it may be written English for the child. A and B steps 2-6 and C step 1 sit under a dark overlay. The boing voice timeline (p7) has the doctor counting \"Char, Trae, Ba, Hakro\" in its taught round. The sheet shows 4 of the nine games (taste, fever, boing, eye and foot are not on it).",
+  "verdict": "PASS",
+  "line": "D, the tooth's fresh taught round now reads \"Brush\", \"Drill the bad bits\", \"Fill it to the green\" at every step (1-6), with no side left (the earlier \"Pela down\"/\"ne poi right\" are gone). The other eight games' first rounds also show no count, size or side at any step: A cut \"Pela paani / Ne poi cloth / ne poi yellow plaster\", B knee \"Hammer / Ne poi bandage\", C ear \"Take the wax out\", E taste \"Pop laal spots / Make aadu ne paani\", F fever \"Take the temperature / Open window\", G boing \"Wipe / Chando\", H eye \"Chando / The eye test\", I foot \"Paani garam / Splinters / Plaster\". J, the knee's end card, shows three word tiles and an arrow, with no score, number or time. The voice timelines p1-p9 have no counting (the boing count \"Char, Trae, Ba, Hakro\" is gone). Flaws: most step captures sit under a dark overlay (A2, A4-6, B2-6, C1, D2-6, E1-2, E5-6, F1-5, G1-2, G4-6, H2-3, H5-6, I2-3, I5-6). A2 and F2-5 have a white light band across the card. In E4 the doctor's face is a blank circle. C's card lists only one step (\"Take the wax out\") at every capture, while the other games list all their steps. In A1, B1, D1, H1 and I1 the card has no top strip. In B1, D1 and F2-6 the step rows \"Hammer\", \"Brush\" and \"Open window\" look like upright type, not clearly grey italic; at this size I can't tell whether they are tagged to-record.",
   "panel": "D",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-103732-xxj",
-  "commit": "c84199ac",
-  "png": "build/screenshots/evidence/ev-20261014-103732-xxj/CLN-118.png",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent, session ad16ad29-ed75-5367-93f4-f73deedfff00; not the builder",
+  "run": "ev-20261014-120206-258",
+  "commit": "16614f86",
+  "png": "build/screenshots/evidence/ev-20261014-120206-258/CLN-118.png",
   "date": "2026-10-14"
  },
  "CLN-119": {
@@ -1794,17 +1800,17 @@
   "date": "2026-10-12"
  },
  "CLN-140": {
-  "hash": "93db3c2b3c2443e15def",
+  "hash": "225235ef85e4bca2c8e6",
   "dhash": [
    "0b81d10101010101"
   ],
   "verdict": "FAIL",
-  "line": "A, step 2 (diagnosis) has no top strip: the doctor's face and \"Find where it hurts.\" share one bare row, so not every stage shows his current-step line as the card's top strip followed by the goal headline and steps. The other stages (1, 3, 4, 5) do have the strip, and the bulb and sound row above has no face. Flaws: in 1 and 5 the face stands alone with no goal headline beside it; in 3 the headline \"Bring me\" reads as a fragment, with \"plaster\" split off into the step.",
+  "line": "A, stages 2 (diagnosis: strip \"Where does it hurt?\", headline \"Find where it hurts.\") and 5 (sendoff: strip \"Pick how she feels.\", headline \"Is everything okay now?\") have no step rows under the headline, whereas 1, 3 and 4 do (\"Bring in chokri\", \"plaster\", the three heal steps), so not every stage shows \"then the goal headline and the steps\". All five stages do show one card at the top with the face once and a top strip, and the bulb and sound row above has no face. Flaws: stage 5's headline is in clearly smaller type than the other stages'. In stage 2 the strip and the headline say nearly the same thing. In stage 4 the later step rows are very faint pink and hard to read.",
   "panel": "A",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-103732-xxj",
-  "commit": "c84199ac",
-  "png": "build/screenshots/evidence/ev-20261014-103732-xxj/CLN-140.png",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent, session ad16ad29-ed75-5367-93f4-f73deedfff00; not the builder",
+  "run": "ev-20261014-120206-258",
+  "commit": "16614f86",
+  "png": "build/screenshots/evidence/ev-20261014-120206-258/CLN-140.png",
   "date": "2026-10-14"
  },
  "CLN-141": {
@@ -1917,6 +1923,20 @@
   "judge": "expect",
   "run": "ev-20261014-071816-c9g",
   "commit": "defcdaf7",
+  "date": "2026-10-14"
+ },
+ "CLN-153": {
+  "hash": "510ff2f592b378d53a9e",
+  "dhash": [
+   "0d0b0b09090d0307"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 800x360 L3 the words page shows \"thermometer\" whole on one line in its card from 0 ms (fading in) through 600 ms, never split across lines; matches CLN-153-p1-L3-800x360 contract-15 \"0 breaks on this page\". Flaw off the row's point: the 700 ms frame is an empty white card with no words (the page blanks or leaves mid-strip), worth a look by the tool owner. The grey-italic English (head, heater, Thank you) sits on the grown-up end-of-round page and is not a flaw.",
+  "panel": "A",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00",
+  "run": "ev-20261014-125029-oat",
+  "commit": "51f9057e",
+  "png": "build/screenshots/evidence/ev-20261014-125029-oat/CLN-153.png",
   "date": "2026-10-14"
  },
  "CLN-17": {
@@ -3711,20 +3731,22 @@
   "date": "2026-10-13"
  },
  "PAN-10": {
-  "hash": "e5ea7fc4fe8d7eb90e9a",
+  "hash": "e9d221923f139ab56c31",
   "dhash": [
    "7f7ffee8e9e9fdcf",
-   "0a8581010101010d",
+   "028581010101010d",
    "7f7fe6f4f4edfdcf",
-   "0a8d01810101010d"
+   "02a501010101010d",
+   "7f7ff6d4c4d1fdd7",
+   "029401010101010d"
   ],
-  "verdict": "FAIL",
-  "line": "B, the card headline reads \"Give me milk.\" in plain dark English (no to-record tag in the dom capture, not grey italic), where it should read Muke de + the items, and the item rows \"milk / daal / sugar\" are also plain written English for the child; D shows the same at L2 (\"Give me chai.\", \"chai / milk / cardamom / sugar\"). Only the strip's \"Bring me these\" is the allowed grey to-record placeholder. The one-face strip at L2 (D) does match Zafar's 14 Oct decision.",
+  "verdict": "PASS",
+  "line": "B, at L1 the card headline reads \"Muke dudh de.\" over Kutchi rows dudh / daar / khun, and Nani's strip \"Bring me these\" is the allowed grey-italic placeholder ([ph] in the dom capture). The L1 voice reads the card once (dudh, daar, khun) and then names each item in turn as the child goes. D shows the same one-face card at L2 (\"Muke chai de.\", chai / dudh / elchi / khun) with no folded box, which follows Zafar's 14 Oct one-face decision quoted in the probe; contract-20 has 0 breaks at L1-L3. Flaws: none clipped. At L3 (F) the headline and strip are both grey-italic placeholders. The kind-tap aside \"Muke loon de.\" / \"Thank you!\" (loan) comes between the items.",
   "panel": "B",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-102915-exg",
-  "commit": "132e3536",
-  "png": "build/screenshots/evidence/ev-20261014-102915-exg/PAN-10.png",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00",
+  "run": "ev-20261014-113637-e5c",
+  "commit": "427ef241",
+  "png": "build/screenshots/evidence/ev-20261014-113637-e5c/PAN-10.png",
   "date": "2026-10-14"
  },
  "PAN-11": {
@@ -4417,20 +4439,22 @@
   "date": "2026-10-12"
  },
  "SH-10": {
-  "hash": "c5f9f7294acc79aa964d",
+  "hash": "7339ee04d92a6aadc8a0",
   "dhash": [
    "008aa98141c18101",
-   "014de8e1c1211181",
-   "0001d44494b50000",
-   "006880c031211180"
+   "81859149e0413111",
+   "00a800929081f400",
+   "10889588c0313101",
+   "21e98991a1694141",
+   "01c001858181c101"
   ],
   "verdict": "FAIL",
-  "line": "A, frames 2-5 the chai order card still swaps to written English in dark upright type, not grey-italic to-record (\"I'd like chai with cardamom it in.\", rows \"cardamom / no milk / one sugar\"), so the child reads English while the rows tick (ticks do build and stay: sugar 4, cardamom 5, all three by 6-8); B tooth and C fever tick one by one, D foot ticks jug, splinters, plaster in order, but drinks (taste) and boing L1 are not on the sheet",
-  "panel": "A",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-100949-2q0",
-  "commit": "e3f4dbf3",
-  "png": "build/screenshots/evidence/ev-20261014-100949-2q0/SH-10.png",
+  "line": "F, the boing count rows do not count up as each thing goes in. \"Wipe, ba\" is unchanged across frames 2-3, the two wipes. \"Chando, char\" is identical in frames 4-7, the lever-blue drops, and only ticks when the card collapses at frame 8. E is the same: \"Pop laal spots\" is unchanged across the pops in frames 2-3 and ticks only at frame 4, and the nested \"Paani bhari chad!\" and \"Aadu wiji chad!\" rows show no tick in frames 5-7. A (chai elchi / hakro khun tick, now in Kutchi), B (tooth, one by one), C (fever) and D (foot) do tick. Flaws: the B, C and D rows and the Nani lines are English in grey italic, with no dom capture to confirm the to-record tag. F frame 8 has a faint header that reads \"Trae\". The E and F crops are too small to read with confidence.",
+  "panel": "F",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00",
+  "run": "ev-20261014-113637-e5c",
+  "commit": "427ef241",
+  "png": "build/screenshots/evidence/ev-20261014-113637-e5c/SH-10.png",
   "date": "2026-10-14"
  },
  "SH-11": {

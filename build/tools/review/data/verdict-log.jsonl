@@ -124,3 +124,11 @@
 {"id":"CLN-140","run":"ev-20261014-103732-xxj","verdict":"FAIL","spec":"0016ce3613257958d336","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
 {"id":"ART-20","run":"ev-20261014-105914-fsz","verdict":"FAIL","spec":"da7403dd9c5f546813e6","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
 {"id":"CLN-26","run":"ev-20261014-100949-2q0","event":"built","date":"2026-10-14"}
+{"id":"SH-10","run":"ev-20261014-113637-e5c","verdict":"FAIL","spec":"d637922b7ce30994c763","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00","date":"2026-10-14"}
+{"id":"PAN-10","run":"ev-20261014-113637-e5c","verdict":"PASS","spec":"79a515ca943ef73f33af","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00","date":"2026-10-14"}
+{"id":"CLN-140","run":"ev-20261014-114157-mcy","verdict":"FAIL","spec":"0016ce3613257958d336","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00","date":"2026-10-14"}
+{"id":"CLN-118","run":"ev-20261014-120206-258","verdict":"PASS","spec":"0886609ff2acc055f894","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent, session ad16ad29-ed75-5367-93f4-f73deedfff00; not the builder","date":"2026-10-14"}
+{"id":"CLN-140","run":"ev-20261014-120206-258","verdict":"FAIL","spec":"0016ce3613257958d336","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent, session ad16ad29-ed75-5367-93f4-f73deedfff00; not the builder","date":"2026-10-14"}
+{"id":"CLN-153","run":"ev-20261014-125029-oat","verdict":"PASS","spec":"589a8a3984617de170a1","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00","date":"2026-10-14"}
+{"id":"PAN-10","run":"ev-20261014-113637-e5c","event":"built","date":"2026-10-14"}
+{"id":"CLN-118","run":"ev-20261014-120206-258","event":"built","date":"2026-10-14"}
