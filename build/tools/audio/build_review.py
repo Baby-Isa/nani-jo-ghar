@@ -10,34 +10,67 @@ the browser between visits (localStorage, a convenience only).
 
 Usage: python3 build/tools/audio/build_review.py
 """
-import html, json, os
+import html, json, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UP = "../../../"
+sys.path.insert(0, HERE)
+from blindmatch import STRONG, verdict  # noqa: E402
 
 
-def main():
-    data = json.load(open(os.path.join(ROOT, "data", "family-audio-candidates.json")))
+def why_not(c, target):
+    """LNG-12: why a take can't be offered for this target, or None. The picker checks every take itself, whatever
+    tool wrote the file (reclip.py's takes were never blind-checked: 'Okay' for amli, 'P-10 Cup' for cup): both
+    blind transcripts must say the target and nothing else (blindmatch.verdict, decision 69)."""
+    blind = {m: (v or {}).get("text", "") for m, v in (c.get("blind") or {}).items()}
+    if len(blind) < 2:
+        return "not blind-checked by two transcribers"
+    ok, out = verdict(blind, target)
+    if ok:
+        return None
+    return "; ".join(f"{m}: '{v['text']}' {', '.join(v['reasons']) or 'too weak a match'}" for m, v in out.items()
+                     if v["reasons"] or v["strength"] < STRONG)
+
+
+def picker_items(data):
+    """The picker's lines, current clip first and then the takes it offers (x: the takes it refused, and why)."""
     rows = sorted(data["lines"], key=lambda r: (bool(r["current"]["blind_ok"]), r["key"]))
     items = []
     for r in rows:
         cur = r["current"]["blind"]
+        offer, refused = [], []
+        for c in r.get("candidates") or []:
+            why = why_not(c, r["kutchi"])
+            if why:
+                refused.append({"r": c["rank"], "why": why})
+                continue
+            offer.append({"r": c["rank"], "f": UP + c["file"], "sc": c["score"],
+                          "src": os.path.basename(c["source"]) + f" {c['start']:.1f}s",
+                          "h": " / ".join(v["text"] for v in c["blind"].values()),
+                          "same": c.get("same_as_current", False)})
         items.append({
             "k": r["key"], "t": r["kutchi"], "e": r.get("english") or "", "q": r.get("qid") or "",
             "s": r["speaker"], "ck": r.get("checked") or "", "o": UP + r["file"],
             "ok": bool(r["current"]["blind_ok"]),
             "h": " / ".join(v["text"] for v in cur.values()),
-            "c": [{"r": c["rank"], "f": UP + c["file"], "sc": c["score"],
-                   "src": os.path.basename(c["source"]) + f" {c['start']:.1f}s",
-                   "h": " / ".join(v["text"] for v in c["blind"].values()),
-                   "same": c.get("same_as_current", False)} for c in r["candidates"]]})
+            "c": offer, "x": refused})
+    return items
+
+
+def main():
+    data = json.load(open(os.path.join(ROOT, "data", "family-audio-candidates.json")))
+    items = picker_items(data)
     with_c = [d for d in items if d["c"]]
     missing = [d for d in items if not d["c"]]
     page = TEMPLATE.replace("__DATA__", json.dumps(with_c + missing, ensure_ascii=False).replace("</", "<\\/")) \
         .replace("__N__", str(len(with_c))).replace("__MISSING__", str(len(missing)))
     open(os.path.join(HERE, "review.html"), "w").write(page)
-    print(f"review.html: {len(with_c)} lines with verified takes; {len(missing)} with none (record again)")
+    refused = [(d["k"], x) for d in items for x in d["x"]]
+    for k, x in refused:
+        print(f"  refused {k} take {x['r']}: {x['why']}")
+    print(f"review.html: {len(with_c)} lines with verified takes; {len(missing)} with none (record again); "
+          f"{len(refused)} takes refused (not the target word alone)")
 
 
 TEMPLATE = """<!doctype html>
