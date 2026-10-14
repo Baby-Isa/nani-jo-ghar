@@ -1934,18 +1934,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
     // (Phaser adds it in Game.start, after its "ready" event: the first frame is after it)
     Cook.game.events.once("poststep", unpatch);
-    // checks-to-build 20 (contract-21, E5): every tap the game's canvas takes is logged as an act, as the shared host's
-    // onAct does (js/shared/host.js). Here, on the DOM, before Phaser: a game object that stops the event's propagation
-    // (the kit's chips) cuts the scene's own pointerdown, never this one
-    // (once per element: a second boot in the same screen keeps the one listener)
-    if (!parent.__njgActs) {
-      parent.__njgActs = true;
-      parent.addEventListener(
+    // checks-to-build 20 (contract-21, E5): every tap Cook's play area takes is logged as an act, as the shared host's
+    // onAct does (js/shared/host.js): the canvas while its scene takes input, and the play area's own controls (the reply
+    // pills, #choices .choice; CK-43: a pill tapped while the question was still sounding was handed on but never logged).
+    // Here, on the DOM, before Phaser: a game object that stops the event's propagation (the kit's chips) cuts the scene's
+    // own pointerdown, never this one (once per element: a second boot in the same screen keeps the one listener)
+    const play = parent.closest(".njg-play") || parent;
+    const liveControl = (t) => {
+      const c = t.closest && t.closest("button, [role='button']");
+      if (!c || !play.contains(c) || c.disabled || c.getAttribute("aria-disabled") === "true") return false;
+      return !c.closest(".hidden");
+    };
+    if (!play.__njgActs) {
+      play.__njgActs = true;
+      play.addEventListener(
         "pointerdown",
         (ev) => {
-          if (!Cook.game || Cook.paused || !ev.target || ev.target.tagName !== "CANVAS") return;
-          const S = Cook.scene;
-          if (!S || !S.input || !S.input.enabled) return;
+          const t = ev.target;
+          if (!Cook.game || !t) return;
+          if (t.tagName === "CANVAS") {
+            const S = Cook.scene;
+            if (Cook.paused || !S || !S.input || !S.input.enabled) return;
+          } else if (!liveControl(t)) return;
           const L = global.Lifecycle;
           if (L && L.note) L.note("act", { during: !!(Cook.voiceBusy && Cook.voiceBusy()), stage: Cook.inStation ? "cook:station" : "cook" });
         },
