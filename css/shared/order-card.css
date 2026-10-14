@@ -64,6 +64,9 @@
   position: relative; flex: none;
   width: max(var(--oc-face), var(--njg-face-hit)); height: max(var(--oc-face), var(--njg-face-hit));
   margin: calc((var(--oc-face) - max(var(--oc-face), var(--njg-face-hit))) / 2);
+  /* SH-81 (S06): the tap area may reach into the card's padding but never past the card's own edge (at 800x360 the face
+     is small, its 48 px tap area hung 2 px off the screen's left edge, peeked open or not) */
+  margin-left: max(calc((var(--oc-face) - max(var(--oc-face), var(--njg-face-hit))) / 2), calc(-1 * var(--oc-pad)));
   padding: calc((max(var(--oc-face), var(--njg-face-hit)) - var(--oc-face)) / 2);
   border: none; border-radius: 50%; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
