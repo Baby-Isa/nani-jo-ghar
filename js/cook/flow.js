@@ -1287,7 +1287,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   function showFinale() {
     Cook.sfx.fanfare();
     const p = UI.panel(`
-      <h1>Eid Mubarak!</h1>
+      <h1 class="ph" data-rec>Eid Mubarak!</h1>
       <div class="finale-row">
         <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
       </div>

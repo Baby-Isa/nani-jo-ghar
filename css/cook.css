@@ -309,6 +309,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .wp .wp-text { font-family: var(--kutchi-font); font-weight: 800; line-height: 1.15; min-width: 0; word-break: normal; overflow-wrap: break-word; }
 .wp .word { color: var(--madder); }
 #go-btn .ph { font-style: italic; } /* a to-record label (the engine's English placeholder), step 4d */
+#panel h1.ph { color: var(--ink-soft); font-style: italic; } /* LNG-15: a heading still to record (decision 84) */
 .wp .ph { color: #8a7d70; font-style: italic; font-family: var(--ui-font); font-weight: 700; }
 .wp .word.ph { color: #8a6a5c; }
 .wp .dots { letter-spacing: 2px; color: var(--ink-soft); }
