@@ -8251,6 +8251,28 @@
     "count:.njg-rq-card=0"
    ],
    "note": "the knee at L3: heard only, the same as L2 otherwise"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": [
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-ear-start",
+   "after": null,
+   "capture": [
+    "shot",
+    "dom:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the ear's ladder (Zafar, 14 Oct): L3 is L2 heard only (the same ear: as many blobs and sore patches, the card closed); the busier ear (more blobs and sore skin) is L4's"
   }
  ],
  "CLN-46": [

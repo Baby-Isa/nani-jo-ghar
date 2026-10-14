@@ -21,16 +21,18 @@
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
   const K = {
-    drops: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] },
-    start: { 1: 3, 2: 4, 3: 5 }, // blobs in the ear at the start (big and small among them from L2)
-    spawnCap: { 1: 3, 2: 5, 3: 7 }, // how many more can pop out in all
-    smears: { 1: 3, 2: 4, 3: 5 }, // the first blobs out leave a smear each, for the bud
-    sore: { 1: 1, 2: 2, 3: 3 }, // sore pink patches the bud must miss
+    // CLN-45 (Zafar's heal ladder, 13 Oct; 14 Oct: the ear's L3 extras move to a new L4): L3 is L2 heard only (the
+    // closed card); the busier ear (more blobs, more pop-outs, more smears, more sore skin, a fourth picture) is L4's
+    drops: { 1: [1, 2, 3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] },
+    start: { 1: 3, 2: 4, 3: 4, 4: 5 }, // blobs in the ear at the start (big and small among them from L2)
+    spawnCap: { 1: 3, 2: 5, 3: 5, 4: 7 }, // how many more can pop out in all
+    smears: { 1: 3, 2: 4, 3: 4, 4: 5 }, // the first blobs out leave a smear each, for the bud
+    sore: { 1: 1, 2: 2, 3: 2, 4: 3 }, // sore pink patches the bud must miss
     budR: 20, // the bud's tip, svg units
   };
   // D15c: the whispered-word check. Words the child knows from Cook (ids the engine knows, data/lang/lexicon.json; their
   // pictures are Cook's icons). The data file can switch it off (hearing.on) or change the words.
-  const HEAR = { on: true, words: ["fru-02", "veg-02", "veg-03", "cook-paani"], choices: { 1: 3, 2: 3, 3: 4 } };
+  const HEAR = { on: true, words: ["fru-02", "veg-02", "veg-03", "cook-paani"], choices: { 1: 3, 2: 3, 3: 3, 4: 4 } };
   const hearDefaults = () => {
     // Node (the leak bot): the same flag as the game, from the data file
     if (typeof require === "function" && typeof __dirname === "string" && !(root.Clinic && root.Clinic.Kit)) {
@@ -66,7 +68,7 @@
   const R = { big: 32, small: 13, mid: [19, 23] };
 
   function plan(level, rng, o = {}) {
-    const L = Math.max(1, Math.min(3, level));
+    const L = Math.max(1, Math.min(4, level));
     const H = Object.assign({}, hearDefaults(), o.hearing || {});
     const bigFirst = rng() < 0.5;
     const order = bigFirst ? ["big", "small"] : ["small", "big"];
@@ -699,7 +701,7 @@
     ailments: ["seed-in-ear"],
     items: ["torch", "tweezers", "cotton-bud", "drops"],
     gestures: ["tap", "drag"],
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 4], // CLN-45 (Zafar, 14 Oct): L4 is the busier ear (L3 is L2 heard only)
     plan,
     mount,
     bot,
