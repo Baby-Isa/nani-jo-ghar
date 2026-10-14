@@ -11588,9 +11588,9 @@
     "dom:#mission"
    ],
    "expect": null,
-   "note": "a wrong cup served (salt left in it): the sugar row marked on that person's card (red), the card staying open to show it",
+   "note": "a wrong cup served (salt left in it): the sugar row marked on that person's card (red), the card staying open to show it (700 ms after Done: the review is up and the person says their order again; by 1.2 s at test speed 3 the cup is already being redone and its rows open again, plain)",
    "max": 4,
-   "delay": 1200
+   "delay": 700
   }
  ],
  "SAM-18": [
