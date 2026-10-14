@@ -178,3 +178,4 @@
 {"id":"MOD-04","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}
 {"id":"CK-43","run":"ev-20261014-153921-t2z","verdict":"FAIL","spec":"3c8af8d65aab20848442","judge":"expect","date":"2026-10-14"}
 {"id":"CK-43","run":"ev-20261014-154328-weu","verdict":"PASS","spec":"3c8af8d65aab20848442","judge":"expect","date":"2026-10-14"}
+{"id":"CK-43","run":"ev-20261014-154328-weu","event":"built","date":"2026-10-14"}

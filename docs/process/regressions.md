@@ -50,7 +50,6 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| CK-43 | A tap on a between-station answer pill (day 6's "Tu muke samosa banai dinda?") while the question is said is sometimes not handled at once (contract-21, 1 in 3 runs; non-negotiable 12: never make them wait for speech) | **open** (found by the S06 touched-flows check, 14 Oct; in build: s06-r9) | auto: contract-21 on cook:day6 | S06 touched-flows check, run 20261014-1518 |
 | CK-01 | Levels 2–4 of every station (Cook and clinic) not yet played by Zafar; needs his pass | open · **waiting on Zafar's play (levels 2-4)** (S06 publish triage, 14 Oct) | eye: L2–L4 · INT-11 | `docs/archive/feedback/cook-playtest-2026-09-29.md` K11 |
 | CK-06 | Things inside pots and pans look real (chai liquid, daar oil, contents), not white dots or swirling dots | **open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the daal ginger-garlic and onion are code-drawn blobs and dots; they need painted pieces) | eye: each cooking state | `docs/archive/feedback/cook-playtest-2026-09-29.md` X9, C8, D2 |
 | CK-TAB-01 | Tablets: Cook's play items grow to use a 4:3 screen (decision 24); each station needs a 4:3 layout before the stage can grow them | **waiting on Zafar** (14 Oct: a design pass first, one 4:3 mock-up per station, built next sprint) | sandbox 1024×768, 1180×820, 1366×1024 | `build/reports/step3-r3a.md` |

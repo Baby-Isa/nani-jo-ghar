@@ -446,3 +446,4 @@
 {"id":"CLN-151","run":"ev-20261014-144157-8oo","earlier":"**open** (found by gate s06-gate (S06 full check, 14 Oct))"}
 {"id":"MOD-03","run":"ev-20261014-144157-8oo","earlier":"**open** (found by the leak bots at every level, S06 check 19, 14 Oct)"}
 {"id":"MOD-04","run":"ev-20261014-144157-8oo","earlier":"**open** (found by gate s06-gate (S06 full check, 14 Oct))"}
+{"id":"CK-43","run":"ev-20261014-154328-weu","earlier":"**open** (found by the S06 touched-flows check, 14 Oct; in build: s06-r9)"}
