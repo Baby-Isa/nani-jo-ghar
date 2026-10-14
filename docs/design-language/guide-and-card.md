@@ -19,6 +19,8 @@
 
 **R4, the alternative:** keep two boxes, with the guide box showing no face (a small bulb or pot icon) when Nani is also the asker. *Recommend R4 as written:* one card is calmer.
 
+**R4 in the clinic (Zafar, 14 Oct):** the doctor is always both the guide and the asker, so in every stage he has one card: his face once, his current-step line as its top strip (T22, T29), then the goal headline and the steps; the bulb and sound buttons sit in a small row above with no face. The patient's own card (diagnosis, send-off) sits under his, with no face circle while she is on screen (decision 92).
+
 ---
 
 ## Cook
