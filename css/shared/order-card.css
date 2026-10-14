@@ -332,6 +332,9 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visible; }
 @keyframes njgRqIn { from { transform: scale(.8) translateY(var(--njg-s4)); opacity: 0; } }
 .njg-rq-body > .oc-card, .njg-rq-body .cl-card > .oc-card { margin: 0; box-shadow: none; }
+/* CLN-151: the card inside the pop-up is never a scroller of its own (the clinic's .cl-card scrolls in the sidebar):
+   the pop-up card fits it whole (request-popup.js fitCard shrinks the card when it is too tall); it scrolled by 2 px */
+.njg-rq-card .njg-rq-body { overflow: visible; }
 .njg-rq-card .oc-card.oc-big { border-radius: calc(var(--njg-radius) * 2); }
 @media (prefers-reduced-motion: reduce) {
   .njg-rq-veil, .njg-rq-card { animation: none; }
