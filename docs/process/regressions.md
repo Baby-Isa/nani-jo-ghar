@@ -18,6 +18,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | SH-37 | Cook screens have one focal thing; UI and world look like one product; identical shelf slots; design tokens only | **open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the chop screen mixes three art styles (flat timer, photoreal garlic, flat chilli)) | eye: 1366×768 · CMP-10, CMP-04 | `docs/design-language/ui-design-system.md` §1.1–1.4 |
+| SH-88 | The house (non-negotiable 9): at 800x360 the "Who's playing?" card scrolls with its add form open (345>336), the grown-ups' panel scrolls at 800x360 and 844x390 (589>336), and the house scrolls with the coming-soon doors shown (459>308) | **open** (the full gate s06-gate, 14 Oct; red run s06-r5-red) | auto: sandbox lint, the house flow at 800x360, 844x390, 1366x768: no scrolled text | `build/screenshots/sandbox/s06-gate/summary.md` (full gate, 14 Oct) |
 
 ## Cook: pantry
 
@@ -113,6 +114,11 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 |---|---|---|---|---|
 | MOD-02 | Sitting room 3.2: sofa too high | open (S04 audit: no evidence yet; no evidence: the Find it flow shows the fruit stall, never sitting room 3.2; on Zafar's play checklist) | eye: Find it | `docs/status.md` §7 Artwork |
 | MOD-03 | Tidy up's fruit box at level 3 can be won blind: the generator puts fru-05 in the corners 1.67x its fair share (z=4.3), so a player who knows no Kutchi wins by guessing corners (non-negotiable 6) | **open** (found by the leak bots at every level, S06 check 19, 14 Oct) | auto: `node build/tools/review/leak.mjs tidy` | build/tools/review/leak-games/tidy.mjs |
+| MOD-04 | Who did it? (non-negotiable 9): in the line-up each suspect's body is covered by its own hands (two overlapping tap targets; covered at 800x360 and 1366x768, ui-pick); the closed Case lab's controls still lie under the sidebar (covered, clipped and off-screen text) | **open** (the full gate s06-gate, 14 Oct; red run s06-r5-red) | auto: sandbox lint, the mode's flow at 800x360, 844x390, 1366x768: no clipped, scrolled, covered or off-screen text | `build/screenshots/sandbox/s06-gate/summary.md` (full gate, 14 Oct) |
+| MOD-05 | Dress up (non-negotiable 9): the title's Dress lab and the result card scroll inside the panel (861>744 at 1366x768, 762>336 at 800x360) and put text off screen | **open** (the full gate s06-gate, 14 Oct; red run s06-r5-red) | auto: sandbox lint, the mode's flow at 800x360, 844x390, 1366x768: no clipped, scrolled, covered or off-screen text | `build/screenshots/sandbox/s06-gate/summary.md` (full gate, 14 Oct) |
+| MOD-06 | Find it (non-negotiable 9): the order card's rows scroll by 2-3 px (1366x768, 800x360) and the title and result panels scroll at 800x360 (407>336) | **open** (the full gate s06-gate, 14 Oct; red run s06-r5-red) | auto: sandbox lint, the mode's flow at 800x360, 844x390, 1366x768: no clipped, scrolled, covered or off-screen text | `build/screenshots/sandbox/s06-gate/summary.md` (full gate, 14 Oct) |
+| MOD-07 | Monsoon rush (non-negotiable 9): the sidebar scrolls at 800x360 (415>360), the lab and storm-passed panels scroll and their buttons and readout sit off screen; at 844x390 the ? and home buttons are off screen | **open** (the full gate s06-gate, 14 Oct; red run s06-r5-red) | auto: sandbox lint, the mode's flow at 800x360, 844x390, 1366x768: no clipped, scrolled, covered or off-screen text | `build/screenshots/sandbox/s06-gate/summary.md` (full gate, 14 Oct) |
+| MOD-08 | Snap (non-negotiable 9): the result panel scrolls at 800x360 (460>336) | **open** (the full gate s06-gate, 14 Oct; red run s06-r5-red) | auto: sandbox lint, the mode's flow at 800x360, 844x390, 1366x768: no clipped, scrolled, covered or off-screen text | `build/screenshots/sandbox/s06-gate/summary.md` (full gate, 14 Oct) |
 
 ## Art (cuts, style, backgrounds, characters)
 
