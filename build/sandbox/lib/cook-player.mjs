@@ -134,6 +134,22 @@ export class CookPlayer {
       this.made.add("serve-wrong");
       return true;
     }
+    // peek-every-tap (SEK-13): from level 3 the card is closed; before each tap a closed (folded) card is peeked open (a tap on
+    // its headline, the paid peek), so what the card does as each piece goes on is on screen at the tap's moment
+    if (m === "peek-every-tap" && e.kind === "tap") {
+      const at = await p.evaluate(() => {
+        const c = document.querySelector("#mission .oc-card.closed.folded .oc-headline");
+        if (!c) return null;
+        const r = c.getBoundingClientRect();
+        return r.width > 2 && r.height > 2 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null;
+      }).catch(() => null);
+      if (at) {
+        await p.mouse.click(at.x, at.y);
+        await sleep(200);
+        if (!d.peeked) { d.peeked = true; await this.once("peek-for-tap", { settle: 0 }); }
+      }
+      return false;
+    }
     // wrong-thrice (CK-23): three wrong picks at the same step, one after the other, then the help and the right way
     if (m === "wrong-thrice") {
       if (e.kind === "tap" && d.n < 3 && e.swrongs && e.swrongs.length && (d.key == null || d.key === e.key)) {

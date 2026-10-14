@@ -159,6 +159,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
     // 28 Sept: one thing of several finished (a skewer): its mini card on the order ticks
     ctx.tickCard = (kind) => UI.mission.tickCard(kind, ctx.dishAt);
+    // SEK-13: the pieces on a later skewer of a mix already made (its box ticks them as they go on)
+    ctx.tickPiece = (kind, n) => UI.mission.tickPiece && UI.mission.tickPiece(kind, n, ctx.dishAt);
     ctx.tickItem = (id) => {
       if (typeof id === "number") {
         // a position in the dish's sequence (a mixed skewer's piece): that row, not a count row with the same word

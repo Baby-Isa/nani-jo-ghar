@@ -1459,8 +1459,11 @@
               for (let u = 0; u < (r.qty || 1); u++) {
                 const it = Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), mixes[0]), { group: true });
                 const unit = !!(r.units && r.units[u]) || !!r.done;
+                // SEK-13 (S06): a later skewer of the same mix ticks its own pieces as they go on (M.tickPiece), never
+                // all at once when it is finished
+                const got = (r.unitGot && r.unitGot[u]) || 0;
                 if (u > 0 || unit) {
-                  it.parts = it.parts.map((p) => Object.assign({}, p, { done: unit, next: false }));
+                  it.parts = it.parts.map((p, pi) => Object.assign({}, p, { done: unit || pi < got, next: false }));
                   it.done = unit;
                 }
                 items.push(it);
@@ -1940,6 +1943,26 @@
       .find((x) => x.units && want.every((id) => x.ids.includes(id)) && x.units.some((u) => !u));
     if (!r) return null;
     r.units[r.units.indexOf(false)] = true;
+    renderOrder();
+    return r;
+  };
+  /**
+   * SEK-13 (S06): a piece went on (n: how many pieces are on now; 0 after the last came off) on a skewer of a mix
+   * already made once (the same mix again: "ba lakri mixed"): the box of the skewer being threaded (its kind's first
+   * unit not yet made) ticks that many of its pieces. kind: the mix's word id (as M.tickCard).
+   */
+  M.tickPiece = function (kind, n, dish = 0) {
+    const L = ladderFor(dish);
+    if (!L || !kind) return null;
+    const want = String(kind).split("+");
+    const r = Order()
+      .rows(L)
+      .find((x) => x.units && want.every((id) => x.ids.includes(id)) && x.units.some((u) => !u));
+    if (!r) return null;
+    const u = r.units.indexOf(false);
+    r.unitGot = r.unitGot || [];
+    if ((r.unitGot[u] || 0) === n) return r;
+    r.unitGot[u] = n;
     renderOrder();
     return r;
   };
