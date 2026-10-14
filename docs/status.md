@@ -8,24 +8,22 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (14 Oct 2026, ~08:30 UK):** Sprint 6 "Fix and guard" (`docs/sprints/S06-fix-and-guard.md`). `main` is still 8559d610; all work is on `ccr-a7370759-t0lee7`, `checks.mjs` green.
+**Where things stand (14 Oct 2026, ~17:45 UK):** Sprint 6 "Fix and guard" is closed (`docs/sprints/S06-fix-and-guard.md`, Outcome and Look back). Published to `main` as 6fa99ea4 (version 20261014T162111Z); GitHub's Pages deploy timed out on its side and was re-run once: confirm it served before telling Zafar it is live. Branch `ccr-a7370759-t0lee7`, `checks.mjs` green.
 
-**Done:**
-- Docs cut-down (`build/reports/s06-docs.md`): live docs 248k -> 205k words.
-- 22 of 24 checks built (top of `docs/process/checks-to-build.md`); their debt is in known lists that may only shrink.
-- Three build rounds merged (reports `s06-cook`, `s06-clinic`, `s06-r2-cook`, `s06-r2-shared`, `s06-r3` in `build/reports/`); every row judged by Opus `judge` agents and applied through the red-then-green gate. 28 rows built this sprint.
-- Zafar's list: two strikes CK-27 (now built), CLN-140, CLN-106, CLN-118, CHAI-13, CK-21; CK-31 for his play; DAAR-24; `docs/questions.md` 28-34.
+**Done:** the fix list went from 75 open to 37, every one waiting on art, Mum's recordings or Zafar's play (no code-fixable row left). Rounds 6-9 reports: `build/reports/s06-r6.md` to `s06-r9.md`. Final check, selective at Zafar's word (14 Oct): the contract route (9 pages) and the changed flows (heal-taste, heal-foot, heal-boing, cook:day6), 0 breaks; publish gate clear.
 
-**Running:** the full sandbox gate `s06-gate` (every flow, level and size; the contract checks and the zero-tolerance lint).
+**Zafar's 14 Oct calls (in the docs):** CLN-139 retired (no patient card); CLN-140 (a one-action stage has no step list); English marked to record passes until launch and fails on the store build (contract-16 with `--store`, the judge); LNG-15 ("Eid Mubarak!" to record until Mum confirms it).
 
 **Next steps, in order:**
-1. Gate findings into rows or fixes (a scroll-container at 800x360 was seen on chai-tray in round 3).
-2. `evidence.mjs --run --sprint`, judge, collect, apply; then `publish.mjs` (the gate) and publish; Zafar plays.
+1. Confirm the Pages deploy for 6fa99ea4; then Zafar plays and sends `/feedback`.
+2. His feedback into rows (`/feedback`); the next sprint opened with `/sprint` (likely candidates: the art run for the 37 waiting rows' art, a Mum round for the recordings).
 
-**Open questions to Zafar:** `docs/questions.md` 28-34.
+**For Zafar to look at when he plays (judge's notes, not rows yet):** the send-off headline is smaller than the others; the heal card's later steps are very faint pink with a stray "!" (likely CLN-141); the diagnosis strip and headline say nearly the same thing.
+
+**Open questions to Zafar:** none new; `docs/questions.md` holds the deferred ones.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `ccr-a7370759-t0lee7` (`main` = 8559d610). Sprint 6 is mid-way: carry on from "Next steps"; tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `ccr-a7370759-t0lee7` (`main` = 6fa99ea4, Sprint 6 published). First: confirm the site is live, then take my play feedback; tell me before launching anything new.
 
 ## The fix list
 
@@ -33,20 +31,20 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 2 | 70 |
-| Cook: pantry | 2 | 13 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 4 / 0 / 0 / 1 / 7 | 16 / 14 / 19 / 11 / 19 / 15 / 21 |
-| Clinic | 20 | 126 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 1 | 73 |
+| Cook: pantry | 1 | 14 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 1 / 0 / 3 / 0 / 0 / 1 / 4 | 16 / 14 / 19 / 11 / 19 / 15 / 30 |
+| Clinic | 14 | 133 |
 | First launch and shell | 0 | 2 |
-| Other modes | 2 | 1 |
-| Art | 6 | 9 |
-| Language and audio | 8 | 5 |
+| Other modes | 1 | 9 |
+| Art | 4 | 9 |
+| Language and audio | 7 | 5 |
 
 ---
 
 ## What is live (the game on `main`)
 
-Sprint 5, published 13 Oct (8559d610, 20261013T205739Z): Sprint 5's fixes, judged independently (decisions 86, 96, 97), on top of Sprint 3, published 8 Oct (1a6950df): the shared request pop-up and voice stop, Sprint 3's Cook and clinic fixes, the API art (the girl's states, the redo list) on top of Sprint 2 (f0f4613a). Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
+Sprint 6, published 14 Oct (6fa99ea4, 20261014T162111Z): every code-fixable row fixed and judged, the new checks (`docs/sprints/S06-fix-and-guard.md`), on top of Sprint 5, published 13 Oct (8559d610, 20261013T205739Z): Sprint 5's fixes, judged independently (decisions 86, 96, 97), on top of Sprint 3, published 8 Oct (1a6950df): the shared request pop-up and voice stop, Sprint 3's Cook and clinic fixes, the API art (the girl's states, the redo list) on top of Sprint 2 (f0f4613a). Per-session detail is in `build/reports/`; the old tracker is `docs/archive/handovers/STATUS-TRACKER-2026-09-30.md`.
 
 ## How we work now (decision 99)
 

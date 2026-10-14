@@ -1,6 +1,6 @@
 # Sprint 6: Fix and guard
 
-**Status:** open
+**Status:** closed (published 14 Oct, version 20261014T162111Z)
 **Opened:** 14 Oct 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -24,7 +24,9 @@ None planned. Everything runs in the orchestrator's chat (Opus), with in-chat su
 - 14 Oct: the stale local copy of this branch (an S04 checkout, 50 commits not on origin) was renamed `stale/local-s04-a7370759` in the container, not deleted.
 
 ## Outcome
-(at close)
+Published to `main` on 14 Oct (version 20261014T162111Z). The fix list went from 75 rows open to 37, and every one of the 37 waits on art, Mum's recordings or Zafar's play: no code-fixable row is left. Every row built this sprint has a red then green on record and, for pictures, an Opus judge's PASS. Checks built: red-then-green, the publish gate, zero tolerance for clipped text, contract checks 16-21 (English for the child, store voices, card rows, the counting rule, one face per person, input live), static, art, load and doc-path checks, leak bots at every level. Zafar's 14 Oct calls: CLN-139 retired (no patient card), CLN-140 (a one-action stage has no step list), English marked to record passes until launch and fails on the store build, the selective final check (route plus the changed flows, not the full gate). Reports: `build/reports/s06-r6.md` to `s06-r9.md`.
 
 ## Look back (three lines)
-(at close)
+- In-chat builders with an independent judge kept work moving overnight without permission stalls; worktrees and the browser lock held.
+- Rows fixed in round 4 stayed open until round 8 because they had no evidence spec: give every gate-found row its spec when it is opened.
+- A judge FAIL on a row's loose wording (SH-10's "count up", CLN-140's "the steps") cost two rounds: match each row's words to Zafar's rule before judging.
