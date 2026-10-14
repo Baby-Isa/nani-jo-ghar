@@ -609,8 +609,12 @@
     /**
      * D5 (SH-38): close a step by itself once it can (level 1 at the count): test() -> true (now), false (wait a
      * beat: the game is busy), or "stop" (the step moved on).
+     * SH-10 (UX 11): the step HAS closed at that count (level 1 closes it itself), so its row (rowId) ticks now, with the
+     * thing that closed it (the last jug's pour, the last wipe), never a beat later; fn moves on to the next step after
+     * the beat (its own tick of the row is then a no-op).
      */
-    S.when = (test, fn, first = 300) => {
+    S.when = (test, fn, first = 300, rowId = null) => {
+      if (rowId != null) ctx.card.tick(rowId);
       const tick = () => {
         const r = test();
         if (r === "stop") return;

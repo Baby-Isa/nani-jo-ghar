@@ -129,13 +129,27 @@
       return Object.assign({}, a, { src: a.src.replace("{kind}", kind).replace(two ? /\.webp$/ : /$^/, "@2x.webp") });
     };
     const hexOf = (c) => (data.colours && data.colours[c]) || COLS[c].hex;
-    const st = { i: 0, judged: {}, over: false, busy: false, glass: null, gave: false, wrongDab: false, gone: false };
+    const st = { i: 0, judged: {}, over: false, busy: false, glass: null, gave: false, wrongDab: false, gone: false, parts: {} };
     const cur = () => P.steps[st.i] || null;
     ctx.card.setRows(P.steps.map((x) => x.row).concat(P.recipe));
-    // the recipe row the child is on (progress, never a verdict: any liquid poured moves it on, C10)
-    const recipeNow = (what) => {
+    // SH-10 (UX 11): each recipe row is a step of its own (not a count): it ticks as its thing goes in. The pour ticks
+    // as the liquid is in; the add as its thing goes in at level 1 (no count), and from level 2 (a count: "Ba chamchi
+    // ...") when its step closes, by the child's next move (the stir or the pour), never as the number is reached.
+    // Progress, never a verdict (C10): any liquid, anything added; the drink's own row is the verdict, as she drinks it
+    const partDone = (what) => {
       const r = P.recipe.find((x) => x.what === what);
-      if (r && cur() && cur().kind === "drink") ctx.card.now(r.id);
+      if (!r || st.parts[what]) return;
+      st.parts[what] = true;
+      ctx.card.tick(r.id);
+    };
+    const counted = P.n != null;
+    const closeAdd = () => counted && Object.keys(st.glass.adds).length && partDone("add");
+    // the recipe row the child is on: the first not yet done; once both are in, the drink itself (stir it, give it)
+    const recipeNow = () => {
+      const c = cur();
+      if (!c || c.kind !== "drink") return;
+      const r = P.recipe.find((x) => !st.parts[x.what]);
+      ctx.card.now(r ? r.id : c.id);
     };
 
     // a small tween on the frame clock (attributes, not styles): fn(u) for u 0 -> 1
@@ -431,7 +445,7 @@
       if (c.kind === "drink") {
         drinkTools();
         glassG.setAttribute("opacity", 1);
-        recipeNow("pour");
+        recipeNow();
         S.cue("drink", CUES.pour, S.toolEls[DRINKS[c.drink].liquid]);
       }
     };
@@ -482,8 +496,10 @@
         gl.liquid = id;
         gl.stirred = false;
         S.uncue();
+        closeAdd(); // a counted add put in before the liquid: the pour is the next move, it closes that step
         await pour(id);
-        recipeNow("add");
+        partDone("pour");
+        recipeNow();
         if (cur() === c) S.cue("add", { gesture: "tap" }, S.toolEls[DRINKS[c.drink].add]);
         return;
       }
@@ -493,6 +509,10 @@
         if (P.level >= 2) ctx.tally(id, gl.adds[id]);
         S.uncue();
         await addIn(id);
+        if (!counted) {
+          partDone("add");
+          recipeNow();
+        }
         // TA3 (CLN-104): the next step is cued: the spoon glows after a short pause (stir it)
         nudge(S.toolEls.spoon, () => !st.glass.stirred);
         return;
@@ -500,6 +520,8 @@
       if (id === "spoon") {
         if (!gl.liquid && !Object.keys(gl.adds).length) return;
         S.uncue();
+        closeAdd(); // the stir is the move after the counted add: its step has closed
+        recipeNow();
         await stir();
         if (cur() === c) S.cue("give", CUES.give, { x: GL.x + GL.w / 2, y: GL.y + GL.h / 2, r: GL.w * 0.6 });
         // then the glass glows: give it to her
@@ -554,7 +576,10 @@
         S.face("sour", 900);
         S.say("taste-notthat", "patient");
         st.busy = false;
-        recipeNow("pour");
+        // the glass is empty again: its recipe rows open again for the new go (redo on the spot, decision 51)
+        P.recipe.forEach((r) => ctx.card.untick(r.id));
+        st.parts = {};
+        recipeNow();
         ctx.after(fast() ? 50 : 900, () => cur() === c && S.cue("drink", CUES.pour, S.toolEls[DRINKS[c.drink].liquid]));
       }
     };

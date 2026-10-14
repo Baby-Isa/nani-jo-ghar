@@ -556,7 +556,7 @@
           ctx.tally("drops", st.drops);
         }
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (!more && ctx.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
+        if (!more && ctx.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600, c.id);
         // E8 (CLN-101): the bottle nozzle DOWN over the canal; the drop falls from the nozzle
         // S02-E (E4): the art run's bottle held nozzle down (sheets.json drop-bottle "use-down"), else the old one turned over
         const downArt = Kit && Kit.view ? Kit.view("drop-bottle", "use-down") : null;

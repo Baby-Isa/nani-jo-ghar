@@ -396,7 +396,7 @@
       if (P.level >= 2 && st.drops.length === 1) lightEnd(true);
       ctx.sfx("pop");
       // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
-      if (P.level === 1 && st.drops.length >= d.drops.length) S.when(() => (!cur() || cur().kind !== "drops" || st.over ? "stop" : !st.busy), close, 450);
+      if (P.level === 1 && st.drops.length >= d.drops.length) S.when(() => (!cur() || cur().kind !== "drops" || st.over ? "stop" : !st.busy), close, 450, d.id);
     };
     const press = () => {
       const c = cur();
@@ -452,7 +452,7 @@
         S.count(st.wipes);
         ctx.tally("cotton", st.wipes, { next: "lever", of: c.count }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
+        if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450, c.id);
         // B4 (CLN-106, S06): the wipe in the hand rubs to and fro across the spot, twice, for about a second (a wipe, not
         // a dab: it was one 450 ms sweep, over before anyone saw it, and only a grey smudge stayed); the skin it passes
         // over shines wet, a sheen that follows the wipe and settles (the spot cleaner with each wipe)

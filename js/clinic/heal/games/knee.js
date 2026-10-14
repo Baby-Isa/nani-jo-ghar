@@ -372,7 +372,7 @@
         S.count(st.kicks);
         ctx.tally("hammer", st.kicks, { next: "bandage", of: c.count }); // SH-40: the bandage (the next action) closes this step; // S02-A hook: decision 52, the next step shows at L2+
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.kicks >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
+        if (ctx.level === 1 && st.kicks >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450, c.id);
         const hm = s("image", { href: (root.Clinic.Kit ? root.Clinic.Kit.url : (u) => u)("assets/clinic/items-v2/reflex-hammer.webp"), x: KX + 40 * KS, y: KY + 10 * KS, width: 150 * KS, height: 100 * KS }, S.fx);
         hm.style.transformBox = "fill-box";
         hm.style.transformOrigin = "100% 50%";
@@ -430,7 +430,7 @@
         S.count(st.turns);
         ctx.tally("bandage", st.turns, { of: c.count, capped: true }); // the wrap stops at its count: it moves on by itself (decision 79)
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.turns >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
+        if (ctx.level === 1 && st.turns >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450, c.id);
         ctx.sfx("tap");
         st.oi++;
         armFlash();
