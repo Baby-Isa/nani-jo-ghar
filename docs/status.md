@@ -8,29 +8,26 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (13 Oct 2026, ~late UK):** Sprint 5 is live on `main` (8559d610), not yet played. Tonight the docs were cut down (decision 99, "the reset"), on branch `ccr-a7370759-t0lee7`; nothing new is on `main`.
+**Where things stand (14 Oct 2026, ~03:00 UK):** Sprint 6 "Fix and guard" is open (`docs/sprints/S06-fix-and-guard.md`, Zafar's yes 14 Oct: ceiling $350, nothing left out for budget, everything in the orchestrator's chat). `main` is still 8559d610 (Sprint 5); all work is on `ccr-a7370759-t0lee7`.
 
-**What the reset did:**
-- **The fix list** (`docs/process/regressions.md`) holds only the genuine things to fix: 70 open or reopened, 5 waiting (art, Mum, Sprint 6), plus the 15 keep rows. 368 built, fixed or retired rows are in `docs/archive/regressions-done.md`. The tools read both, so those rows are still checked; one that fails again moves back by itself (`evidence.mjs --apply`).
-- **The rulebook and decisions 1–99 are retired to `docs/archive/`.** Their content lives in the design docs (35 rules and 18 decisions were moved there word for word tonight) or in the checks. The 22 rules that should be code are in `docs/process/checks-to-build.md`, ranked, with their text kept until each check exists. `docs/archive/decisions/decisions-1-to-99.md` is now a one-line log.
-- **CLAUDE.md** now covers: the fix list, done meaning an independent picture, one or two sessions, small fixes in this chat, keep it small. **`docs/tools.md`** lists every tool, **`docs/questions.md`** holds every open question, and **`.claude/agents/judge.md`** is the judge.
-- **`docs.mjs`** (inside `checks.mjs`) fails on any doc past its limit, a done row left in the fix list, a history chain in a row, or a duplicate ID.
-- 373 old reports and 47 old docs (the old feedback reports, sources, Mum rounds 1–4, old sprints, the s02/s03 art plans, the rulebook and decisions 1–99) went to the archives. The live docs dropped from about 487k words in 113 files to about 253k in 66.
-- Checks: unit 295 pass, words, bump, specs, docs all green. The tool tests are green too.
+**Done so far:**
+- Triage of the 75 open rows (in the sprint file): ~37 code, art, Mum and Zafar lists.
+- Docs cut-down (`build/reports/s06-docs.md`): live docs 248k -> 205k words.
+- Checks built (each listed at the top of `docs/process/checks-to-build.md`): 1 red-then-green gate, 2 publish gate, 3 zero tolerance, 4/5/7/8 as contract-16/17/19/20, 9-11/13/17/18/21 (`build/lint/static.mjs`), 12, 14, 16 (`artcheck.mjs`), 19 (leak bots every level), 22, 23, 24. Debt they found sits in known lists that may only shrink.
+- Rows built through the gate: CLN-146, CLN-148. New rows: MOD-03 (Tidy leak), LNG-14 (store build plays unchecked clips).
 
-**Next steps, in order** (Zafar, 14 Oct: he won't play this sprint; Opus orchestrates for token use):
-1. **Done:** Zafar answered `docs/questions.md` (14 Oct); each answer is in its doc. Decisions now go straight into the doc they change.
-2. **Sprint 6 is open** (`docs/sprints/S06-fix-and-guard.md`, Zafar's yes 14 Oct; ceiling $350, nothing left out for budget; all in the orchestrator's chat, Opus). Write `docs/sprints/S06-<name>.md` first (goal, budget, these three parts):
-   - **Rows:** triage the open rows into code / art / Mum / Zafar (about 40 are code, including CLN-104, CLN-100, CLN-45's ear L4 and the new CK-35), then fix the code ones one mode at a time, red then green, the `judge` agent passing each picture. Art, Mum and Zafar rows go to him as one list.
-   - **Checks:** build every check in `docs/process/checks-to-build.md` that code can do, top three first (red-then-green gate, publish gate, zero tolerance for clipped or scrolled text); each one's rule text leaves the file when it lands.
-   - **Docs:** finish the cut-down: `find-it.md` (28k words: keep the current design, archive the three old passes); `ideas.md` to one line per idea; `art-plans/` to what the next art run needs; `qa-checklist.md` trimmed where a check covers a line; old one-off `build/*.py` scripts and old specs archived; skills' inline rule IDs; word limits for the mode and design docs.
-   - Close: `/review`, publish (this branch with the reset), then Zafar plays.
-3. **Measure** `/context` in the new chat after the starting prompt (13 Oct: ~60k fixed + ~3k reads; `docs/process/cost-and-speed.md`).
+**Running (in-chat Opus builders, own worktrees, never judge their own work):** Clinic builder on `s06-clinic` (CLN-140, 143, 45 committed so far; report `build/reports/s06-clinic.md`); Cook+shared builder on `s06-cook` (CK-35, SH-10, SH-69, SH-81, CK-07/31/32 so far; report `s06-cook.md`). A container restart stopped them once; they were resumed with `--parallel 1`.
+
+**Next steps, in order:**
+1. When each builder hands back: in its worktree, `evidence.mjs --judge`, one `judge` agent per batch, `--collect`, `--apply`; then merge the branch, run `checks.mjs`.
+2. Checks still to build: 6 (card rows: the games must log each step closing), 20 (input live: the host must log each act) once `js/shared` is merged; 15 (load check on every page, oversize pictures) is written, its first run pending.
+3. The contract route run (`s06-route`) and the load check are queued: turn their findings into rows.
+4. `/review` at the full matrix, the publish gate, publish, then Zafar plays.
+
+**Open questions to Zafar:** `docs/questions.md` 28 (English under the words on the end-of-round review) and 29 (263 clips he picked but never marked OK).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `ccr-a7370759-t0lee7` (`main` = 8559d610, Sprint 5 live). First task: open Sprint 6 (step 2) with a budget for my yes; Opus orchestrates; tell me before launching anything new.
-
----
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `ccr-a7370759-t0lee7` (`main` = 8559d610). Sprint 6 is mid-way: carry on from "Next steps"; tell me before launching anything new.
 
 ## The fix list
 
@@ -40,12 +37,12 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 |---|---|---|
 | Shared components (end screen, cards, onboarding, buttons, layout) | 4 | 66 |
 | Cook: pantry | 2 | 13 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 7 / 0 / 0 / 2 / 9 | 16 / 14 / 15 / 11 / 19 / 14 / 18 |
-| Clinic | 30 | 115 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 7 / 0 / 0 / 2 / 10 | 16 / 14 / 15 / 11 / 19 / 14 / 18 |
+| Clinic | 25 | 117 |
 | First launch and shell | 0 | 2 |
-| Other modes | 1 | 1 |
+| Other modes | 2 | 1 |
 | Art | 6 | 9 |
-| Language and audio | 7 | 5 |
+| Language and audio | 8 | 5 |
 
 ---
 
