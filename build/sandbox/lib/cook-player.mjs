@@ -257,23 +257,25 @@ export class CookPlayer {
       if (moved) await this.waitChange(t, 3000);
       return true;
     }
-    // answer-while-asked (CK-43, E5): the first reply pills whose question is voiced (its bubble has a speaker): the right pill's
-    // word is tapped while the question is being said. Still sounding as the pills come up: tapped at once; else the question is
-    // heard again from its bubble's speaker and the pill tapped as that line starts. A silent question is answered fair
+    // answer-while-asked (CK-43, E5): the first reply pills whose question is heard from a clip: the right pill's word is tapped
+    // while that clip is sounding. Still sounding as the pills come up: tapped at once; else the question is heard again from its
+    // bubble's speaker and the pill tapped once its clip sounds. A question with no clip (a silent test-build line) is answered fair
+    // and the next pills are tried
     if (m === "answer-while-asked" && !d.answered && e.kind === "click" && /^#choices /.test(e.selector || "")) {
-      const still = await this.voice.speaking();
-      const say = still ? null : await p.evaluate(() => {
-        const b = document.querySelector("#bubble:not(.hidden) .wp-say");
-        const r = b && b.getBoundingClientRect();
-        return r && r.width > 2 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null;
-      }).catch(() => null);
-      if (!still && !say) return false;
-      d.answered = true;
-      let came = still;
+      const V = this.voice.state ? this.voice.state() : null;
+      const clipOn = async () => (V ? V.plays.size > 0 : await this.voice.speaking());
+      const still = await clipOn();
       if (!still) {
-        const next = this.voice.nextLine(2500);
+        if (d.askTried === d.choices) return false;
+        d.askTried = d.choices;
+        const say = await p.evaluate(() => {
+          const b = document.querySelector("#bubble:not(.hidden) .wp-say");
+          const r = b && b.getBoundingClientRect();
+          return r && r.width > 2 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null;
+        }).catch(() => null);
+        if (!say) return false;
         await p.mouse.click(say.x, say.y);
-        came = !!(await next);
+        if (!(await until(clipOn, 1500, 10))) { d.silent = (d.silent || 0) + 1; return false; }
       }
       const at = await p.evaluate((sel) => {
         const el = document.querySelector(sel);
@@ -281,13 +283,13 @@ export class CookPlayer {
         return r && r.width > 2 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null;
       }, e.selector).catch(() => null);
       if (!at) { this.rec.note("answer-while-asked: the right pill was not on screen"); return false; }
-      const speaking = came && (await this.voice.speaking());
+      d.answered = true;
+      const speaking = await clipOn();
       await mark(p, "answer-while-asked", { block: false });
       await p.mouse.click(at.x, at.y);
       await sleep(450);
       await this.once(speaking ? "answer-while-asked" : "answer-after-asked", { settle: 0 });
-      if (!speaking) this.rec.note("answer-while-asked: the question was no longer being said when the pill was tapped");
-      this.rec.note(`answer-while-asked: ${e.selector} tapped ${still ? "as the question was still being said" : "while the question was heard again"}`);
+      this.rec.note(`answer-while-asked: ${e.selector} tapped ${!speaking ? "after the question's clip had ended" : still ? "as the question's clip was still sounding" : "while the question's clip was heard again"}${d.silent ? ` (${d.silent} silent question${d.silent > 1 ? "s" : ""} before it answered fair)` : ""}`);
       await this.waitChange(e, 3000);
       return true;
     }
