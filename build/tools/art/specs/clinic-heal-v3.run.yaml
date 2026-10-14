@@ -3,7 +3,7 @@
 # (section 5); its PEOPLE table gives the slots. Edit this file, then regenerate the block; never hand-edit the block.
 pack: clinic-heal-v3
 title: clinic heal games
-plan: docs/design-language/art-plans/clinic-heal-art-plan.md
+plan: docs/archive/art-plans/clinic-heal-art-plan.md
 plan_branch: ccr-fcd9dddd-wnywzc      # the block reads the plan from this branch until it reaches main
 repo: Baby-Isa/nani-jo-ghar
 raw_branch: main
