@@ -20,7 +20,7 @@ description: Turn Zafar's voice-note or play-test feedback into the full report 
 5b. **A second reader before the rows land.** A fresh Fable agent reads the transcript and your drafted rows only (not your reasoning) and returns every point it finds MISSING or WEAKENED (the S04 coverage audits are the model: `build/reports/s04-coverage-*.md`). Fix every one; the report's §4 records both readers: 0 unmapped, 0 weakened.
 5c. **Old feedback coming back.** If a point repeats an earlier row, the row is **reopened** (not a new row), and §5 of the report says why it slipped (a code reading marked it built, a one-game fix, a narrowed row...).
 6. Put decisions to him as a numbered list with recommendations, "yes to all except …".
-7. Same day: add the checked rows to the fix list, `docs/process/regressions.md` (next free ID across it and `docs/archive/regressions-done.md`; one row per point; a status is the current state in a line, no history), then `node build/tools/review/statuscounts.mjs --write` for the status table.
+7. The gate first: `node build/tools/ops/feedback.mjs --check build/reports/feedback-<name>.md` must pass (every line mapped, every point's cause as file:line or "not code: ..."). Same day: add the checked rows to the fix list, `docs/process/regressions.md` (next free ID across it and `docs/archive/regressions-done.md`; one row per point; a status is the current state in a line, no history), then `node build/tools/review/statuscounts.mjs --write` for the status table.
 8. Move the final report to `docs/feedback/<mode>-playtest-<date>.md`.
 
 ## Don't
