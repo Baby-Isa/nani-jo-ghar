@@ -30,3 +30,11 @@ test("publish gate: game files are code, data, art and pages; docs and tools are
   for (const f of ["js/clinic/knee.js", "css/shared/card.css", "data/cook.json", "assets/clinic/bg/room.webp", "labs.html"]) assert.ok(GAME_FILE.test(f), f);
   for (const f of ["docs/status.md", "build/tools/review/evidence.mjs", "CLAUDE.md", "docs/x.html"]) assert.ok(!GAME_FILE.test(f), f);
 });
+
+test("publish gate: a contract break covered by a row that waits on Zafar does not block; one whose row is fixable does", async () => {
+  const { openBreaks } = await import("./publishgate.mjs");
+  const md2 = "| ID | Issue | Status | Check | Source |\n|---|---|---|---|---|\n| D-24 | x | **waiting on Zafar** | c | s |\n| D-25 | x | **open** | c | s |";
+  const breaks = [{ check: "contract-19", flow: "cook:daar@L2" }, { check: "contract-20", flow: "cook:daar" }, { check: "contract-4", flow: "clinic:x" }];
+  const known = [{ check: "contract-19", flow: "cook:daar*", row: "D-24" }, { check: "contract-20", flow: "cook:daar", row: "D-25" }];
+  assert.deepEqual(openBreaks(breaks, known, md2).map((b) => b.check), ["contract-20", "contract-4"]);
+});

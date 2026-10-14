@@ -48,11 +48,23 @@ const newest = (dir, file, ok = () => true) => {
   const c = readdirSync(dir).map((d) => join(dir, d, file)).filter((p) => existsSync(p)).map((p) => ({ p, t: statSync(p).mtimeMs })).filter((x) => { try { return ok(JSON.parse(readFileSync(x.p, "utf8"))); } catch (e) { return false; } });
   return c.sort((a, b) => b.t - a.t)[0]?.p || null;
 };
+// a contract break a fix-list row covers while it waits on Mum, art or Zafar (build/tools/review/data/contract-known.json:
+// [{check, flow, row}]) does not block a publish, as the row itself doesn't; the row must still say it waits
+export function openBreaks(breaks, known, md) {
+  const waits = new Set(parseRegressions(md).filter((r) => WAITS.test(plain(r.status))).map((r) => r.id));
+  return breaks.filter((b) => !known.some((k) => k.check === b.check && (k.flow === b.flow || (k.flow.endsWith("*") && b.flow.startsWith(k.flow.slice(0, -1)))) && waits.has(k.row)));
+}
 export function lastContract() {
   const p = newest(join(ROOT, "build/screenshots/sandbox"), "contract-meta.json", (m) => ["gate", "all", "route"].includes(m.scope) && m.complete !== false);
   if (!p) return null;
   const m = JSON.parse(readFileSync(p, "utf8"));
-  return { ...m, changed: changedSince(m.commit) };
+  let breaks = m.breaks;
+  try {
+    const list = JSON.parse(readFileSync(join(p, "..", "contract.json"), "utf8"));
+    const known = existsSync(join(ROOT, "build/tools/review/data/contract-known.json")) ? JSON.parse(readFileSync(join(ROOT, "build/tools/review/data/contract-known.json"), "utf8")) : [];
+    breaks = openBreaks(list, known, readFileSync(REGRESSIONS, "utf8")).length;
+  } catch (e) { /* no list: count them all */ }
+  return { ...m, breaks, changed: changedSince(m.commit) };
 }
 export function lastEvidence() {
   const p = newest(join(ROOT, "build/screenshots/evidence"), "index.json");
