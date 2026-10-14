@@ -6140,7 +6140,7 @@
  "CK-27": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -6150,14 +6150,14 @@
    "at": "cook-done:tap",
    "after": null,
    "capture": [
-    "strip:#stage:4x100"
+    "strip:canvas:hob:8x170"
    ],
    "expect": null,
-   "note": "a small puff or sprinkle as an item goes in"
+   "note": "chai at a child's pace (speed 1: the puff holds about 0.9 s; at test speed 3 it is gone in 0.3 s): the water's pour lands about 0.85 s after the tap, then the shared puff (white clouds with a warm edge, the item's colour at their heart, rising over the rim)"
   },
   {
    "flow": "cook:daar",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -6167,14 +6167,14 @@
    "at": "cook-done:tap",
    "after": null,
    "capture": [
-    "strip:#stage:4x100"
+    "strip:canvas:hob:7x160"
    ],
    "expect": null,
-   "note": "daar"
+   "note": "daar: the same puff as a thing goes into the pot"
   },
   {
    "flow": "cook:assemble",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -6184,10 +6184,27 @@
    "at": "cook-done:tap",
    "after": null,
    "capture": [
-    "strip:#stage:4x100"
+    "strip:canvas:cv3-bowl:7x160"
    ],
    "expect": null,
-   "note": "chaat (samosa: the same probe)"
+   "note": "chaat: the same puff as a layer goes into the bowl"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "cook-done:tap",
+   "after": null,
+   "capture": [
+    "strip:#stage:7x160"
+   ],
+   "expect": null,
+   "note": "samosa: the same puff as the filling goes onto the pastry (the whole stage: the fold's own picture changes as it fills, so a crop on it jumps)"
   }
  ],
  "CK-28": [
