@@ -462,11 +462,19 @@
       Voice.place(b, anchor, layer, others());
       // the words can settle a frame later (fonts, fitting): place it again then; and while it's up it follows its
       // speaker (S04-B, SH-68: a camera still zooming out moves the head after the bubble came up)
-      if (global.requestAnimationFrame) global.requestAnimationFrame(() => b.isConnected && Voice.place(b, anchor, layer, others()));
-      const follow = setInterval(() => {
-        if (!b.isConnected || !anchor.isConnected) return clearInterval(follow);
-        Voice.place(b, anchor, layer, others());
-      }, 150);
+      // CLN-146: every frame, not every 150 ms: her figure steps down at the send-off (about 115 px at 800x360) and a bubble a
+      // tick behind sat on her face; it re-places only when the head has moved
+      let last = "";
+      const follow = () => {
+        if (!b.isConnected || !anchor.isConnected) return;
+        const r = anchor.getBoundingClientRect();
+        const key = `${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.width)},${Math.round(r.height)},${b.offsetWidth},${b.offsetHeight}`;
+        if (key !== last) { last = key; Voice.place(b, anchor, layer, others()); }
+        if (global.requestAnimationFrame) global.requestAnimationFrame(follow);
+        else setTimeout(follow, 16);
+      };
+      if (global.requestAnimationFrame) global.requestAnimationFrame(follow);
+      else setTimeout(follow, 16);
     } else b.classList.add("top");
     return b;
   };

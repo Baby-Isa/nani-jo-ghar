@@ -12469,6 +12469,25 @@
     "pass"
    ],
    "note": "contract-8: one highlight at a time through the taste game"
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:8"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-8 at #hint 800x360, the full gate’s second finding"
   }
  ],
  "CLN-145": [

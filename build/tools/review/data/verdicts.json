@@ -1735,6 +1735,34 @@
   "png": null,
   "date": "2026-10-12"
  },
+ "CLN-140": {
+  "hash": "450649cd5bac84ffb691",
+  "dhash": [
+   "8b81010101010101"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frame 4 (heal) has no doctor's box at the top of the sidebar (only the hint and sound buttons float there); his line \"Let's clean it and put plasters on.\" still sits inside the \"Pela paani\" card, which is a different shape from frames 1, 2, 3 and 5; the card's last option row is also cut off at the bottom (only a stray mark shows)",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-001722-cc1",
+  "commit": "9376780",
+  "png": "build/screenshots/evidence/ev-20261014-001722-cc1/CLN-140.png",
+  "date": "2026-10-14"
+ },
+ "CLN-141": {
+  "hash": "8be00c9b3d71a18efb88",
+  "dhash": [
+   "a082948021c8c090"
+  ],
+  "verdict": "PASS",
+  "line": "A, at L1 x2 on the card the sequence line shows only in the gaps between the rows (below \"Pela paani\", between the two \"poi\" rows, and as the arrow under the last row); it does not cross \"cloth, ba dabs\" or \"yellow plaster\" (flaws seen off the point: \"Ne poi\" / \"ne poi\" capitals differ; the end arrow points into empty space below the last row; the grey-italic English lines are allowed under decision 84)",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-001722-cc1",
+  "commit": "9376780",
+  "png": "build/screenshots/evidence/ev-20261014-001722-cc1/CLN-141.png",
+  "date": "2026-10-14"
+ },
  "CLN-142": {
   "hash": "34b013547174bc6232c0",
   "dhash": [
@@ -1750,6 +1778,50 @@
   "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-142.png",
   "date": "2026-10-13"
  },
+ "CLN-143": {
+  "hash": "9e9f12bf1015421f2cd1",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "machine: CLN-143-p1-L2-1024x768: pass: 1 contract breaks",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-001722-cc1",
+  "commit": "9376780",
+  "date": "2026-10-14"
+ },
+ "CLN-144": {
+  "hash": "5a0286c5b71c7785c56d",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-002208-25n",
+  "commit": "9376780",
+  "date": "2026-10-14"
+ },
+ "CLN-145": {
+  "hash": "8c1e0a7820574531a89c",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-002208-25n",
+  "commit": "9376780",
+  "date": "2026-10-14"
+ },
+ "CLN-146": {
+  "hash": "2aff7aa0fc699926991d",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-002728-b0g",
+  "commit": "9376780",
+  "date": "2026-10-14"
+ },
  "CLN-147": {
   "hash": "c7310a4f599dce9a5773",
   "dhash": [
@@ -1763,6 +1835,20 @@
   "commit": "7ebd7d7",
   "png": "build/screenshots/evidence/ev-20261013-203335-a7k/CLN-147.png",
   "date": "2026-10-13"
+ },
+ "CLN-148": {
+  "hash": "db6ec4fa9b9ae9e4ee55",
+  "dhash": [
+   "15c9878101010181"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frame 5 (\"Switch on ceiling fan\") shows the card cut off just below the arrow: the inner list and the outer card have no bottom border, unlike frame 4, so the card does not fit whole at 800x360; the .md also records no layout-lint scroll-container result",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-001722-cc1",
+  "commit": "9376780",
+  "png": "build/screenshots/evidence/ev-20261014-001722-cc1/CLN-148.png",
+  "date": "2026-10-14"
  },
  "CLN-17": {
   "hash": "a66008768accb8c43b70",
