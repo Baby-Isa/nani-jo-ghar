@@ -274,6 +274,7 @@ export class ClinicPlayer {
         this.drv.tookBack = true;
         await sleep(500);
         await this.once("before-takeback", { settle: 0 });
+        await sleep(450); // the strip films the two drops in first (it runs alongside: the tap must not beat its first frame)
         const at = await this.ev(() => { const d = document.querySelector('.bo-drop[data-k="0"]'); const r = d && d.getBoundingClientRect(); return r ? [r.left + r.width / 2, r.top + r.height / 2] : null; }).catch(() => null);
         if (at) await this.healAct({ do: "tap", x: at[0], y: at[1], what: "take a drop back" });
         await sleep(700);

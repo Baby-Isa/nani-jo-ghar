@@ -271,7 +271,7 @@
 
     /* ---------------- the drink: the tumbler, the pour, the spoon ---------------- */
     const GL = { x: 150, y: 330, w: 116, h: 150 }; // the tumbler (its art: 278 x 359)
-    const glassG = s("g", { opacity: 0 }, S.layer);
+    const glassG = s("g", { class: "taste-glass", opacity: 0 }, S.layer);
     // a small wooden tray for it to stand on (a flat base, a contact shadow)
     s("rect", { x: GL.x - 34, y: GL.y + GL.h - 12, width: GL.w + 68, height: 26, rx: 12, fill: "#b78a55", stroke: "#93683c", "stroke-width": 3 }, glassG);
     s("ellipse", { cx: GL.x + GL.w / 2, cy: GL.y + GL.h - 4, rx: GL.w * 0.48, ry: 7, fill: "#000", opacity: 0.18 }, glassG); // contact shadow

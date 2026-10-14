@@ -8003,13 +8003,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "step:plaster",
+   "at": "every:step:plaster",
    "after": null,
    "capture": [
     "crop:.cl-heal"
    ],
    "expect": null,
-   "note": "boing ends on the plaster: the plaster on the jab spot (the last step)"
+   "note": "boing ends on the plaster: the plaster tool picked, then the plaster on the jab spot (the last step; step:plaster also matches the tool pick, plaster-skin)",
+   "max": 2
   },
   {
    "flow": "clinic:heal-boing",
@@ -9473,10 +9474,10 @@
    "at": "pouring",
    "after": null,
    "capture": [
-    "strip:.cl-heal:6x250"
+    "strip:.taste-glass:6x400"
    ],
    "expect": null,
-   "note": "real liquid, level rising (real pace); the next step cued"
+   "note": "real liquid inside the tumbler, its level rising (real pace, the glass close: the pour runs about 2 s); the next step cued"
   }
  ],
  "CLN-105": [
@@ -9515,14 +9516,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:heal:",
+   "at": "heal:wipe",
    "after": null,
    "capture": [
-    "strip:.cl-heal:5x200"
+    "strip:.cl-heal:6x170"
    ],
    "expect": null,
-   "note": "alcohol wipe with a wipe motion (to and fro, about a second); a funny jab; a plaster choice: each move filmed as it is made, at real pace (fast mode plays the wipe in 60 ms)",
-   "max": 12
+   "note": "the alcohol wipe rubs to and fro across the spot (about a second), filmed from the first wipe at real pace (fast mode plays it in 60 ms; one moment, so no other strip queues ahead of it)"
   },
   {
    "flow": "clinic:heal-boing",
