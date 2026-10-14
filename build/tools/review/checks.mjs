@@ -3,6 +3,7 @@
  * The standard check command (R7): every fast, no-browser check in one run, one line each, exit 1 if any fails.
  *   node build/tools/review/checks.mjs [--only unit,words,bump] [--list]
  * unit   node --test over the shared kit, core, host, css lint, sandbox (the contract checks on fixtures) and review-tool tests
+ * static the static checks (build/lint/static.mjs): shared-kit identity, design tokens, level ladders, banned forms, privacy, rewards, the bulb; a finding not in build/lint/static-known.json fails
  * words  the word lint's strict gate (check A, string literals in game code) on the folders in build/lint/words-gate.json "enforce";
  *        "ready" folders are reported but not enforced until their engine step reports 0 literals
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
@@ -20,14 +21,14 @@ import { args, help, ROOT } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
-const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "bump", "specs", "docs", "load"];
+const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "bump", "specs", "docs", "load"];
 const run = (cmd, argv) => spawnSync(cmd, argv, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
 const ls = (dir, ok) => readdirSync(join(ROOT, dir)).filter(ok).map((f) => join(dir, f));
 const results = [];
 const note = (name, ok, text) => { results.push(ok); console.log(`${ok ? "ok  " : "FAIL"} ${name.padEnd(6)} ${text}`); };
 
 if (only.includes("unit")) {
-  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs", "build/tools/review/evidence.test.mjs", "build/tools/review/lintspecs.test.mjs", "build/tools/review/docs.test.mjs", ...ls("build/tools/ops", (f) => /\.test\.mjs$/.test(f))];
+  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", "build/lint/static.test.mjs", ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs", "build/tools/review/evidence.test.mjs", "build/tools/review/lintspecs.test.mjs", "build/tools/review/docs.test.mjs", ...ls("build/tools/ops", (f) => /\.test\.mjs$/.test(f))];
   if (a.has("list")) console.log(files.join("\n"));
   const r = run(process.execPath, ["--test", ...files]);
   const n = (k) => Number((new RegExp(`^# ${k} (\\d+)`, "m").exec(r.stdout) || [0, 0])[1]);
@@ -40,6 +41,12 @@ if (only.includes("words")) {
   const r = run(process.execPath, ["build/lint/words.mjs", "--strict", "--only", "a", "--dirs", gate.enforce.join(",")]);
   note("words", r.status === 0, `strict on ${gate.enforce.join(", ")}: ${count(gate.enforce)} literals${r.status === 0 ? "" : " (node build/lint/words.mjs --only a --dirs " + gate.enforce.join(",") + " lists them)"}`);
   for (const d of gate.ready) console.log(`     ready, not enforced: ${d} has ${count([d])} literals (build/lint/words-gate.json)`);
+}
+if (only.includes("static")) {
+  // checks-to-build 9, 10, 11, 13, 17, 18, 21: shared-kit identity, tokens, level ladders, banned forms, privacy, rewards, the bulb
+  const r = run(process.execPath, ["build/lint/static.mjs"]);
+  note("static", r.status === 0, (r.stdout.trim().split("\n").pop() || `static.mjs exited ${r.status}`));
+  if (r.status !== 0) console.log((r.stdout.match(/^NEW .*$/gm) || []).slice(0, 10).map((l) => "     " + l).join("\n"));
 }
 if (only.includes("bump")) {
   const r = run("python3", ["build/bump_version.py", "--dry-run"]);
