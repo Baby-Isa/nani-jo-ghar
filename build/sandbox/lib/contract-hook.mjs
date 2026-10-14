@@ -559,7 +559,8 @@ export const CONTRACT_HOOK = `(() => {
       if (t.toLowerCase() === "to record") continue;
       const grown = !!el.closest("[class*='help'], [id*='help'], [class*='grown'], [class*='lab-'], [id*='lab'], [data-lab], .njg-act, [role='dialog'][aria-label*='elp']");
       const rec = !!el.closest(".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line");
-      const en = !!el.closest(".english, .cl-row-en, .bulb-en, [data-bulb-en]");
+      // .rs-en and the steps page's small English: the end-of-round review shows each word's English under it (ui-design-system §6, §6a), pending Zafar's answer (docs/questions.md, 14 Oct)
+      const en = !!el.closest(".english, .cl-row-en, .bulb-en, [data-bulb-en], .rs-en, .rs-step-text small");
       const key = t + "|" + rec + en + grown;
       if (!out.has(key)) { out.set(key, { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }); k++; }
     }

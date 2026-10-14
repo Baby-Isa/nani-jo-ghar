@@ -2,6 +2,10 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
+### Sprint 6 (14 Oct, from the new checks)
+28. **English under the words at the end of a round.** The word review and the steps page show each word's English under its Kutchi (ui-design-system §6, §6a), but non-negotiable 5 says no written English for the child, ever. *Recommend:* keep it on the review pages only, as a grown-up's reading aid, and write that exception into non-negotiable 5; or hide it behind the bulb there too. Until you answer, the English check (contract-16) allows it on those two pages only.
+29. **Clips you picked but never marked OK.** 263 of Mum's and your clips say "Zafar picked take 1" but aren't marked `checked: ok`, so the store app may not play them (it plays *na* and *shabash* today anyway: row LNG-14). *Recommend:* mark the picked takes OK in one pass (I list them for you), then the store app has its words.
+
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.
