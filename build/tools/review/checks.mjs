@@ -29,7 +29,7 @@ const results = [];
 const note = (name, ok, text) => { results.push(ok); console.log(`${ok ? "ok  " : "FAIL"} ${name.padEnd(6)} ${text}`); };
 
 if (only.includes("unit")) {
-  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", "build/lint/static.test.mjs", ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs", "build/tools/review/evidence.test.mjs", "build/tools/review/lintspecs.test.mjs", "build/tools/review/docs.test.mjs", ...ls("build/tools/ops", (f) => /\.test\.mjs$/.test(f))];
+  const files = [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/lint/css.test.mjs", "build/lint/static.test.mjs", "build/tools/art/artcheck.test.mjs", ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs", "build/tools/review/evidence.test.mjs", "build/tools/review/lintspecs.test.mjs", "build/tools/review/docs.test.mjs", ...ls("build/tools/ops", (f) => /\.test\.mjs$/.test(f))];
   if (a.has("list")) console.log(files.join("\n"));
   const r = run(process.execPath, ["--test", ...files]);
   const n = (k) => Number((new RegExp(`^# ${k} (\\d+)`, "m").exec(r.stdout) || [0, 0])[1]);
