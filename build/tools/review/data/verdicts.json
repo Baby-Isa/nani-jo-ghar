@@ -5340,5 +5340,21 @@
   "commit": "7c1531e",
   "png": null,
   "date": "2026-10-13"
+ },
+ "SH-86": {
+  "hash": "ee6c27fc64b7a337c331",
+  "dhash": [
+   "00000c0c0e070058",
+   "01191d1d091e0606",
+   "300b0b0c0a0b0310",
+   "611d1d1d15170752"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:.njg-results .rs-card (1 clean); pass (0 contract breaks); noClip:.njg-results .rs-card (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-050352-q9c",
+  "commit": "8eece4b4",
+  "date": "2026-10-14"
  }
 }

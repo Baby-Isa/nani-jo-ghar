@@ -438,6 +438,14 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   .njg-results .rs-words.dense .rs-word .rs-en > .fit { flex: 1 1 100%; text-align: center; }
   .njg-results .rs-words.dense .rs-word .rs-rec { order: 0; padding: 0 var(--njg-s1); letter-spacing: 0; white-space: nowrap; max-width: none; line-height: 1.3; }
 }
+/* SH-86: a tile too narrow for its English beside the speaker (results.js fitPage: it had to wrap there): every tile's
+   English goes under its speaker, centred, with the tile's whole width, so it shrinks, then wraps between its words */
+.njg-results .rs-p2 .rs-words.gloss-under .rs-word .rs-en { flex-wrap: wrap; justify-content: center; row-gap: 0; }
+.njg-results .rs-p2 .rs-words.gloss-under .rs-word .rs-en > .fit { flex: 1 1 100%; text-align: center; }
+/* and, as on a short phone, the halves and the tiles give back their side padding (the halves stay the same width each,
+   SH-03), so "cardamom" fits its tile whole at 1024x768 */
+.njg-results .rs-words.gloss-under .rs-words-col { padding: 0 var(--njg-s1); }
+.njg-results .rs-p2 .rs-words.gloss-under .rs-word { padding-left: var(--njg-s1); padding-right: var(--njg-s1); }
 /* non-negotiable 9 (S02 review): a word tile's word and English shrink to fit on one line (js/shared/fit.js), then wrap */
 .rs-word b.fit, .rs-word .rs-en .fit { white-space: nowrap; overflow: visible; min-width: 0; max-width: 100%; }
 

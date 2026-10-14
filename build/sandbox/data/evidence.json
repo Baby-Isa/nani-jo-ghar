@@ -7683,8 +7683,28 @@
   {
    "flow": "clinic:sendoff",
    "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.cl-thought",
+   "after": null,
+   "capture": [
+    "shot",
+    "dom:.cl-stage"
+   ],
+   "expect": [
+    "lexicon"
+   ],
+   "note": "L1, the moment the thought bubble of four feelings is up (before it fades): the patient on the bed with the feeling on her face, the bubble from her head (pictures, no words). The send-off has no level 4 (its levels are 1-3: js/clinic/main.js), so the Check should drop L4",
+   "delay": 250
+  },
+  {
+   "flow": "clinic:sendoff",
+   "path": "fair",
    "level": [
-    1,
     2,
     3
    ],
@@ -7702,7 +7722,7 @@
    "expect": [
     "lexicon"
    ],
-   "note": "L1 face + thought bubble of four feelings (pictures: no words); L2 she says it; L3 a tray of helps; goodbye from L2"
+   "note": "L2 she says it (no thought bubble: a plain row of four cards); L3 a tray of helps along the bottom; goodbye from L2"
   },
   {
    "flow": "clinic:sendoff",
@@ -8020,7 +8040,8 @@
    "path": "fair",
    "level": [
     1,
-    2
+    2,
+    3
    ],
    "sizes": [
     "1366x768"
@@ -8034,7 +8055,7 @@
     "dom:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "each drop is a lever pulled (step lever-<colour>): the dispenser of four coloured tubes with a lever each at every level drops a blob; each drop counted; the colour said from L2 (Zafar’s ladder, 13 Oct: L3 is L2 heard only); medicine, not sweets"
+   "note": "each drop is a lever pulled (step lever-<colour>): the dispenser of four coloured tubes with a lever each at every level drops a blob; each drop counted; the colour said from L2 (Zafar’s ladder, 13 Oct: L3 is L2 heard only); medicine, not sweets; L3 is on its own panel (the colour heard only)"
   },
   {
    "flow": "clinic:heal-boing",
@@ -12074,16 +12095,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:visible:.cl-bubble.who-patient",
    "after": null,
    "capture": [
-    "crop:.cl-bubble",
+    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor",
     "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 11"
    ],
    "expect": null,
-   "note": "her own page: every line she says gets her bubble. The crops at every bubble lag (each waits 250 ms and queues behind the last), so some find her bubble already gone; fever_bubbles.mjs samples her bubble every 50 ms through each of her lines",
+   "note": "her own page: every line she says gets her bubble: a crop of her bubble with her head at each one (the crops were cut from the compositor at the clip and could come back as the sidebar: now cut from the whole screen); fever_bubbles.mjs samples her bubble every 50 ms through each of her lines",
    "seed": 11,
-   "max": 16
+   "max": 16,
+   "delay": 300
   }
  ],
  "CLN-127": [
@@ -12694,6 +12716,46 @@
    "max": 6
   }
  ],
+ "CLN-149": [
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:20"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-20 (one face per person) over the diagnosis: the doctor face once, in his box; his card carries no second face"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:20"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-20 over the knee at L2 (the heal card)"
+  }
+ ],
  "SH-83": [
   {
    "flow": "house",
@@ -12732,6 +12794,58 @@
    ],
    "expect": null,
    "note": "the ribbon's markup: the crown icon, no English words (a played new best is not certain on a seed: the second play may be slower)"
+  }
+ ],
+ "SH-86": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "800x360",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.njg-results .rs-card",
+    "contract:15"
+   ],
+   "expect": [
+    "noClip:.njg-results .rs-card",
+    "pass"
+   ],
+   "note": "the word review at both sizes: every tile whole, no word cut or overlapping; contract-15 (no word of four letters or more broken across lines in a word tile or a card, held 300 ms) over the play decides the English under each word (never letter by letter)",
+   "delay": 600
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "800x360",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-badges",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": [
+    "noClip:#mission"
+   ],
+   "note": "the sidebar card at the end: its served badge (the done tick) beside the headline, never over a word (it covered waari)",
+   "delay": 300
   }
  ]
 }

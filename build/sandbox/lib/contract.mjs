@@ -411,14 +411,14 @@ function check7(segs, v, add) {
   }
 }
 // 8 (SH-53): more than one highlight at once, held 300 ms or more
-function check8(tl, segs, add) {
+function check8(tl, segs, add, tEnd = tl[tl.length - 1].t) {
   // frames sampled before the first paint (the title not yet drawn) are not findings (C2's blank frames at 0.2 s and 0.9 s)
   const paint = tl.find((e) => e.type === "c" && e.k === "art");
   const hs = tl.filter((e) => e.type === "c" && e.k === "hl" && (!paint || e.t >= paint.t));
   const seen = new Set();
   hs.forEach((e, i) => {
     if (!(e.n > 1)) return;
-    const until = i + 1 < hs.length ? hs[i + 1].t : tl[tl.length - 1].t;
+    const until = i + 1 < hs.length ? hs[i + 1].t : tEnd;
     if (until - e.t < 300) return;
     const s = segAt(segs, e.t), k = `${s && s.key}|${e.list.join(",")}`;
     if (seen.has(k)) return;
@@ -428,12 +428,12 @@ function check8(tl, segs, add) {
   });
 }
 // 15 (SH-73, non-negotiable 9): a word broken across lines in a card, held 300 ms or more
-function check15(tl, segs, add) {
+function check15(tl, segs, add, tEnd = tl[tl.length - 1].t) {
   const ws = tl.filter((e) => e.type === "c" && e.k === "wrap");
   const seen = new Set();
   ws.forEach((e, i) => {
     if (!(e.n > 0)) return;
-    const until = i + 1 < ws.length ? ws[i + 1].t : tl[tl.length - 1].t;
+    const until = i + 1 < ws.length ? ws[i + 1].t : tEnd;
     if (until - e.t < 300) return;
     const s = segAt(segs, e.t), k = `${s && s.key}|${e.list.join(",")}`;
     if (seen.has(k)) return;
@@ -495,14 +495,14 @@ function check11(tl, add) {
   }
 }
 // 12 (SH-23): a ✓ / Next / stage button shown greyed for 400 ms or more, not just pressed
-function check12(tl, segs, add) {
+function check12(tl, segs, add, tEnd = tl[tl.length - 1].t) {
   const gs = tl.filter((e) => e.type === "c" && e.k === "greyed");
   const presses = tl.filter((e) => e.type === "c" && e.k === "input" && (e.next || e.btn));
   const seen = new Set();
   gs.forEach((e, i) => {
     for (const b of e.list || []) {
       // how long this button stayed greyed: until an event without it
-      let until = tl[tl.length - 1].t;
+      let until = tEnd;
       for (let j = i + 1; j < gs.length; j++) if (!(gs[j].list || []).some((x) => x.sel === b.sel && x.why === b.why)) { until = gs[j].t; break; }
       if (until - e.t < 400) continue;
       if (presses.some((p) => p.t <= e.t + 50 && p.t >= e.t - 1500)) continue; // pressed: the button on its way out
@@ -680,6 +680,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   if (!tl.length) return out;
   const segs = segments(tl);
   const v = voice(tl, { root, clip });
+  // the page's real end (its start plus its length): the probe samples only on a change, so a state that lasts to the end
+  // (the end screen's word review) has no event after it; the timeline's last event is not the end (SH-86)
+  const tEnd = Math.max(tl[tl.length - 1].t, r.t0 && r.ms ? r.t0 + r.ms : 0);
   const add = (check, t, measured) => out.push({ check, item: CHECKS[check].item, flow: r.flow, level: levelOf(r.flow), size: r.size, ...stateAt(r, t), at: Math.round((t - (r.t0 || tl[0].t)) / 100) / 10, measured });
   check1(tl, segs, v, add);
   check2(tl, segs, add);
@@ -688,14 +691,14 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check5(tl, add);
   check6(tl, retired, root, add);
   check7(segs, v, add);
-  check8(tl, segs, add);
+  check8(tl, segs, add, tEnd);
   check9(tl, segs, levelOf(r.flow || ""), add);
   check10(tl, segs, add);
   check11(tl, add);
-  check12(tl, segs, add);
+  check12(tl, segs, add, tEnd);
   check13(tl, add);
   check14(tl, segs, add);
-  check15(tl, segs, add);
+  check15(tl, segs, add, tEnd);
   check17(r, tl, add);
   check20(tl, add);
   check18(tl, segs, add);

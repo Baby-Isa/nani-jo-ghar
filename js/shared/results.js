@@ -487,7 +487,7 @@
       if (from) from.setAttribute("aria-hidden", "true");
       to.removeAttribute("aria-hidden");
       // non-negotiable 9: a long word (e.g. "thermometer") shrinks to fit its tile, then wraps; never clipped
-      if (root.FitText) root.FitText.run(to);
+      fitPage(to);
       if (n === 3) fitSteps(to);
       const r1 = card.getBoundingClientRect(), h1 = r1.height, w1 = r1.width;
       // SH-75: a page may also take its own width (the steps list): the card eases to it
@@ -522,6 +522,20 @@
           .then(() => btn.classList.remove("on"));
       })
     );
+    // non-negotiable 9: every word and its English shrink to fit, then wrap. SH-86 (cook:chai-tray 1024x768: "cardamom"
+    // broke letter by letter beside its speaker in a narrow tile): when an English line has to wrap beside its speaker,
+    // every tile's English goes under its speaker, centred, with the tile's whole width (the same for all tiles)
+    function fitPage(page) {
+      if (!root.FitText) return;
+      const box = page.querySelector(".rs-words");
+      if (box) box.classList.remove("gloss-under");
+      root.FitText.run(page);
+      if (!box) return;
+      const wrapped = [...box.querySelectorAll(".rs-en > .fit")].some((f) => f.style.whiteSpace === "normal");
+      if (!wrapped) return;
+      box.classList.add("gloss-under");
+      root.FitText.run(page);
+    }
     // decision 93 (SH-44): the steps are their own page (no tap on the tick badge, no overlay). Non-negotiable 9: a card
     // that would still pass the screen shrinks the list as a whole, as the request pop-up does; never an inner scroll
     function fitSteps(page) {
@@ -536,7 +550,7 @@
     if (first !== 1) {
       const pg = el.querySelector(`.rs-p${first}`);
       pg.removeAttribute("aria-hidden");
-      if (root.FitText) root.FitText.run(pg);
+      fitPage(pg);
       if (first === 3) fitSteps(pg);
     }
     // focus into the dialog (the card itself, so no button shows a ring before it's needed)
