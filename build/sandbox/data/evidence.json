@@ -12619,7 +12619,8 @@
    "path": "hint",
    "level": 1,
    "sizes": [
-    "800x360"
+    "800x360",
+    "1366x768"
    ],
    "profile": "seen",
    "want": null,
@@ -12631,7 +12632,7 @@
    "expect": [
     "pass"
    ],
-   "note": "contract-8 at #hint 800x360, the full gate’s second finding"
+   "note": "contract-8 on taste#hint: 800x360 (the full gate’s second finding) and 1366x768 (where the red s06c-final caught the spoon lit with the card’s band, 641 ms)"
   }
  ],
  "CLN-145": [

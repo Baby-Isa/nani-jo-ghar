@@ -1830,25 +1830,25 @@
   "date": "2026-10-14"
  },
  "CLN-144": {
-  "hash": "de02bcda1f8fd2872217",
+  "hash": "0d3fa1a69ce3d49a7cf1",
   "dhash": [],
   "verdict": "PASS",
-  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-031151-81u",
-  "commit": "287a056",
+  "run": "ev-20261014-051949-fho",
+  "commit": "7cbdafde",
   "date": "2026-10-14"
  },
  "CLN-145": {
-  "hash": "ba7182b9ae1ab7a314e4",
+  "hash": "626fad57da4c46a915f2",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-031151-81u",
-  "commit": "287a056",
+  "run": "ev-20261014-051022-jv0",
+  "commit": "7cbdafde",
   "date": "2026-10-14"
  },
  "CLN-146": {
