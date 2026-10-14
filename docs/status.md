@@ -8,18 +8,19 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (14 Oct 2026, ~05:00 UK):** Sprint 6 "Fix and guard" (`docs/sprints/S06-fix-and-guard.md`; ceiling $350, nothing left out for budget, everything in the orchestrator's chat). `main` is still 8559d610; all work is on `ccr-a7370759-t0lee7`.
+**Where things stand (14 Oct 2026, ~08:30 UK):** Sprint 6 "Fix and guard" (`docs/sprints/S06-fix-and-guard.md`). `main` is still 8559d610; all work is on `ccr-a7370759-t0lee7`, `checks.mjs` green.
 
 **Done:**
 - Docs cut-down (`build/reports/s06-docs.md`): live docs 248k -> 205k words.
-- 20 of 24 checks built (listed at the top of `docs/process/checks-to-build.md`); their debt sits in known lists that may only shrink.
-- Round 1 builders merged (`build/reports/s06-cook.md`, `build/reports/s06-clinic.md`), every row judged by Opus `judge` agents, applied through the red-then-green gate. Built: CLN-45, 100, 104, 116, 143, 146, 148; SH-69, DAAR-22, SEK-13, CK-35. New rows from the checks: MOD-03, LNG-14, SH-85, CLN-149, CLN-150.
+- 22 of 24 checks built (top of `docs/process/checks-to-build.md`); their debt is in known lists that may only shrink.
+- Three build rounds merged (reports `s06-cook`, `s06-clinic`, `s06-r2-cook`, `s06-r2-shared`, `s06-r3` in `build/reports/`); every row judged by Opus `judge` agents and applied through the red-then-green gate. 28 rows built this sprint.
+- Zafar's list: two strikes CK-27 (now built), CLN-140, CLN-106, CLN-118, CHAI-13, CK-21; CK-31 for his play; DAAR-24; `docs/questions.md` 28-34.
 
-**Running:** round 2, two in-chat Opus builders in worktrees: `s06-r2-shared` (CLN-118, CLN-127, the results screen's clipped tiles, boing's untagged English, checks 6 and 20, reds for CLN-138/144/145, probes for CLN-26/37/126/149) and `s06-r2-cook` (SH-85, DAAR-13, DAAR-19, probes for CK-21/31, CHAI-13, CK-27's samosa, reds for CK-32, SH-81, DAAR-23).
+**Running:** the full sandbox gate `s06-gate` (every flow, level and size; the contract checks and the zero-tolerance lint).
 
 **Next steps, in order:**
-1. When each hands back: in its worktree `evidence.mjs --judge`, one `judge` agent per batch, `--collect`, `--apply` (oldest run first); merge; `checks.mjs`.
-2. `/review` at the full matrix (sandbox `--gate`, the contract route, `evidence.mjs --run --sprint`), the publish gate (`publish.mjs` dry run), publish, then Zafar plays.
+1. Gate findings into rows or fixes (a scroll-container at 800x360 was seen on chai-tray in round 3).
+2. `evidence.mjs --run --sprint`, judge, collect, apply; then `publish.mjs` (the gate) and publish; Zafar plays.
 
 **Open questions to Zafar:** `docs/questions.md` 28-34.
 
@@ -32,10 +33,10 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 4 | 67 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 2 | 70 |
 | Cook: pantry | 2 | 13 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 6 / 0 / 0 / 1 / 9 | 16 / 14 / 16 / 11 / 19 / 15 / 19 |
-| Clinic | 24 | 122 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 4 / 0 / 0 / 1 / 7 | 16 / 14 / 19 / 11 / 19 / 15 / 21 |
+| Clinic | 20 | 126 |
 | First launch and shell | 0 | 2 |
 | Other modes | 2 | 1 |
 | Art | 6 | 9 |
