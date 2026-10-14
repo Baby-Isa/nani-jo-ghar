@@ -139,6 +139,8 @@
       // now?], as its headline (his face on it, his step line, [Pick how she feels] at L1, as its strip)
       screen.card.setTitle(S.line(env, "okay-now"), null);
       screen.card.setRows([]);
+      screen.card.howto = true; // his question is asked in his bubble, on screen: the card is his how-to, not an order
+      screen.card.render();
 
       const rowOf = (id) => plan.rows.find((r) => r.id === id);
       // E4: the child asks first (the doctor's cue and the question card the first time: CLN-117)
