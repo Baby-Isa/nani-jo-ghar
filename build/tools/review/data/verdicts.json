@@ -998,18 +998,19 @@
   "date": "2026-10-14"
  },
  "CK-32": {
-  "hash": "e90e8bb40ae0b6382937",
+  "hash": "4956a9f9055953ae0eae",
   "dhash": [
-   "0084a9814181c101",
-   "888181c1808141c1"
+   "38603c3c3c3468e8",
+   "0084a98242824301",
+   "3818727072786cec",
+   "00a8934243038681"
   ],
   "verdict": "PASS",
-  "line": "A, frame 2 (the wrong serve's Done): the card stays open with \"aadu\" and \"dudh\" ticked and the \"trae khun\" row outlined red; B frame 2 shows the same at L2 (\"elchi\", \"dudh na\" ticked, \"trae khun\" red). Flaw off the point: in the dimmed frame 4 of A and B a circled icon sits on the cards, and in B it covers the end of \"waari\" on both headlines",
-  "panel": "A",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-050235-4w2",
-  "commit": "4ffc7ee9",
-  "png": "build/screenshots/evidence/ev-20261014-050235-4w2/CK-32.png",
+  "line": "machine: count:#mission .oc-row.wrong>=1 (1 visible); count:#mission .oc-row.wrong>=1 (1 visible)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-071456-yen",
+  "commit": "bdadffeb",
   "date": "2026-10-14"
  },
  "CK-33": {

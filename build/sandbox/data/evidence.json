@@ -11657,16 +11657,16 @@
    "want": [
     "/(hakro|ba|trae|char) khun/"
    ],
-   "at": "every:cook-done:click",
+   "at": "drv:review-face",
    "after": null,
    "capture": [
     "crop:#mission",
     "dom:#mission"
    ],
-   "expect": null,
-   "note": "a wrong cup served (salt left in it): the sugar row marked on that person's card (red), the card staying open to show it (700 ms after Done: the review is up and the person says their order again; by 1.2 s at test speed 3 the cup is already being redone and its rows open again, plain)",
-   "max": 4,
-   "delay": 700
+   "expect": [
+    "count:#mission .oc-row.wrong>=1"
+   ],
+   "note": "a wrong cup served (salt left in it): at the review (drv:review-face, the face fully in and held: the last probe, 700 ms after the Done tap, caught only the tap), the sugar row on that person's card is marked red (.oc-row.wrong: the red outline, no tick) and the card is open to show it (a folded card shows no row, so a visible wrong row is an open card)"
   }
  ],
  "SAM-18": [
