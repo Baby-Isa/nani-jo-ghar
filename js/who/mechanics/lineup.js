@@ -112,10 +112,9 @@
           Cook.sfx.click && Cook.sfx.click();
         }
       };
-      items.forEach((it, i) => {
-        it.fig.addEventListener("click", () => tap(i));
-        it.hands.addEventListener("click", () => tap(i));
-      });
+      // one tap target per suspect: the body and the hands held in front of it are one person, so the click is heard on the
+      // suspect's own box (.sus), never on two overlapping targets where the hands cover the body (MOD-04)
+      items.forEach((it, i) => it.el.addEventListener("click", () => tap(i)));
       doneBtn.onclick = () => {
         if (ctl.mode !== "many") return;
         const w = ctl.waiter;

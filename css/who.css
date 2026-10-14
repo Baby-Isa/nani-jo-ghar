@@ -71,6 +71,8 @@ html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink
 .tell-parent { width: 100%; font-size: 13px; }
 
 #lab summary { font-weight: 800; cursor: pointer; }
+/* the closed lab is gone, not merely unpainted: its controls take no space and no taps under the sidebar (MOD-04) */
+#lab:not([open]) > :not(summary) { display: none; }
 .lab-grid { display: grid; grid-template-columns: 1fr; gap: 4px; margin-top: 6px; font-size: 13px; }
 .lab-grid label { display: flex; justify-content: space-between; gap: 6px; align-items: center; }
 .lab-grid select, .lab-grid input[type=number] { max-width: 60%; font-size: 13px; }
