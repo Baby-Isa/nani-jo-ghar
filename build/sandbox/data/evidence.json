@@ -7393,7 +7393,7 @@
     "shot"
    ],
    "expect": null,
-   "note": "the certificate frame on the right wall (grey and flagged until the photo arrives); toys bottom left; no anatomy poster (the room as drawn: no .cl-room-pic element now)"
+   "note": "the certificate frame on the right wall, above the doctor (grey, flagged in the markup only, until the photo arrives: .cl-cert); toys bottom left; no anatomy poster"
   },
   {
    "flow": "clinic:sendoff",
@@ -7411,6 +7411,23 @@
    ],
    "expect": null,
    "note": "the same wall in the send-off"
+  },
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-fever-start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the heal games wide shot (the fever room is the exam room itself): the same certificate frame on the right wall, clear of the wall thermometer"
   }
  ],
  "CLN-19": [
@@ -7961,8 +7978,7 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3
+    2
    ],
    "sizes": [
     "1366x768"
@@ -7976,7 +7992,24 @@
     "dom:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "each drop is a lever pulled (step lever-<colour>): the dispenser of 3-4 coloured tubes drops a blob; each drop counted; L3 the colour said; medicine, not sweets"
+   "note": "each drop is a lever pulled (step lever-<colour>): the dispenser of four coloured tubes with a lever each at every level drops a blob; each drop counted; the colour said from L2 (Zafar’s ladder, 13 Oct: L3 is L2 heard only); medicine, not sweets"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:plaster",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "boing ends on the plaster: the plaster on the jab spot (the last step)"
   },
   {
    "flow": "clinic:heal-boing",
@@ -9475,24 +9508,21 @@
  "CLN-106": [
   {
    "flow": "clinic:heal-boing",
-   "path": "fair",
-   "level": [
-    1,
-    2,
-    3
-   ],
+   "path": "real-pace",
+   "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:heal:",
+   "at": "every:heal-done:",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
    ],
    "expect": null,
-   "note": "alcohol wipe with a wipe motion; a funny jab; a plaster choice: each move filmed as it is made"
+   "note": "alcohol wipe with a wipe motion (to and fro, about a second); a funny jab; a plaster choice: each move filmed just after it is made, at real pace (fast mode plays the wipe in 60 ms)",
+   "max": 12
   },
   {
    "flow": "clinic:heal-boing",

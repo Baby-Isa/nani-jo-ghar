@@ -65,6 +65,7 @@
       cap.style.backgroundImage = url;
       stage.scene = box;
       stage.sceneCfg = V[name] || {};
+      S.certificate(box, stage.sceneCfg.certificate);
       S.fitScene(stage, box, cap, room, V.aspect || 1.5);
       return stage;
     }
@@ -211,6 +212,24 @@
     if (w != null) el.style.width = `${w * 100}%`;
     if (z != null) el.style.zIndex = String(z);
     return el;
+  };
+
+  /**
+   * CLN-116 (29 Sept, CB2b review): the exam room's right wall holds the real doctor's certificate, a photo Zafar will
+   * supply, added in code as a framed picture (scenes-v2.json exam.certificate: the frame's centre x, bottom y, width
+   * and height as shares of the room, and src). Until the photo comes it is a grey frame, flagged in the markup only
+   * (data-rec, decision 84: nothing written for the child). It sits in the scene box, so it moves and scales with the room.
+   */
+  S.certificate = function (box, spec) {
+    if (!box || !spec) return null;
+    const f = S.place(h("div", `cl-cert${spec.src ? "" : " rec"}`, box), { x: spec.x, y: spec.y, w: spec.w, h: spec.h, z: 1 });
+    f.setAttribute("aria-hidden", "true");
+    if (spec.src) {
+      const im = h("img", "", f);
+      im.alt = "";
+      im.src = Kit.url(spec.src);
+    } else f.dataset.rec = "certificate photo: Zafar to supply";
+    return f;
   };
 
   /** The doctor's face for the card (no sprite yet: a greybox face). */

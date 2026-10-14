@@ -145,6 +145,7 @@
     const url = `url("${Kit.url(room.src)}")`;
     box.style.backgroundImage = url;
     cap.style.backgroundImage = url;
+    if (Clinic.Stages.certificate) Clinic.Stages.certificate(box, cfg.certificate); // CLN-116: the room's certificate frame
     const layer = h("div", "cl-patient-layer v2", box);
     // A1 (5 Oct): the patient's real art when it's cut (heal-art.json), front-on or side-on by the game's camera
     // (D2); side-on, the patient sits on the bed's right-hand end (scenes-v2 exam.side)

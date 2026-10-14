@@ -315,6 +315,9 @@
     const url = `url("${Kit ? Kit.url(room.src) : room.src}")`;
     box.style.backgroundImage = url;
     cap.style.backgroundImage = url;
+    // CLN-116: the exam room's certificate frame, as in the diagnosis (the clinic's stages draw it; the heal-host lab has none)
+    const Stg0 = root.Clinic && root.Clinic.Stages;
+    if (Stg0 && Stg0.certificate) Stg0.certificate(box, ec.certificate);
     const fitBox = () => {
       // the shared fit when the clinic's stages are loaded; else the same cover maths here (the heal-host lab)
       const W = roomEl.clientWidth;
