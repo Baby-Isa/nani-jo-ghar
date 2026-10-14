@@ -7,7 +7,6 @@ Rules become code (decision 99): each item below is a check that will make a rul
 | # | Check | What it checks | Where | Size | Retires | Guards (open rows) |
 |---|---|---|---|---|---|---|
 | 6 | **Card-row contract check (contract-18)** | A card row ticks only after the Lifecycle logs that step closed (Cook `cook-done:<kind>`, heal `step:<step>`), never on the count alone (L1 counted rows may turn gold at the count: D5); a finished item folds to one gold line; no row changes its words mid-round; at L2+ the next row appears and its tool glows after the count. | `contract.mjs` reading the contract probe's card samples + Lifecycle log | L | E11, E36, F9 (fold), decision 52, 57, R1 (guide-and-card) | SH-10, SEK-13, DAAR-19, DAAR-23, CLN-131, CLN-141 |
-| 15 | **Load-only-on-screen for every page** | `loadcheck.mjs` covers Cook and the clinic; add first launch, the hub and each moved mode's lab; fail on any picture outside the manifest (exists) and on any asset over its drawn size ×1.5 (D21/J11 "images at drawn size"). | `build/tools/review/loadcheck.mjs` | S | J11, decision 68 (the rest) | — |
 | 20 | **Input-live contract check (contract-21)** | A tap during a line acts within 150 ms (the host logs `onActDuringSpeech`; the clinic and Cook log the tap and the state change); a line replay never blocks input. | `contract.mjs` | S | E5, INT-01 (the eye half) | — |
 
 ## The rules these checks replace (word for word, until their check exists)
