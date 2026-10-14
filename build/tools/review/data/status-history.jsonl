@@ -436,3 +436,4 @@
 {"id":"CK-40","run":"ev-20261014-134153-rhd","earlier":"**open** (found by gate s06-gate (S06 full check, 14 Oct))"}
 {"id":"CK-41","run":"ev-20261014-134153-rhd","earlier":"**open** (found by gate s06-gate (S06 full check, 14 Oct))"}
 {"id":"CLN-152","run":"ev-20261014-134153-rhd","earlier":"**open** (found by gate s06-gate (S06 full check, 14 Oct))"}
+{"id":"CLN-153","run":"ev-20261014-135157-o4m","earlier":"**open** (found by gate s06-gate (S06 full check, 14 Oct))"}

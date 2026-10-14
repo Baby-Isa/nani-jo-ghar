@@ -1989,17 +1989,17 @@
   "date": "2026-10-14"
  },
  "CLN-153": {
-  "hash": "460f97e00981fe70872e",
+  "hash": "34ee748d4ed4c37dd9be",
   "dhash": [
-   "0d090d0909090307"
+   "0d19151919110307"
   ],
-  "verdict": "FAIL",
-  "line": "A, the end-of-round words page (800x360, L3) still breaks the top-right card's word across two lines in frames 100-600 ms; the CLN-153-p1-L3-800x360 contract-15 capture confirms \"1 word broken across lines for 585 ms (thermometer)\", and expect pass is FAIL",
+  "verdict": "PASS",
+  "line": "A, at 800x360 L3 the end-of-round words page opens over eight frames (0 to 700 ms) and \"thermometer\" sits whole on one line in its wide card in every frame, faded-in through settled; the contract-15 text capture (CLN-153-p1-L3-800x360) agrees with 0 breaks. Off-point flaw: the word cards are packed into the top-right third of the white page and the left two-thirds stay empty; the frames are too small to read the smaller cards' text.",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), session ad16ad29-ed75-5367-93f4-f73deedfff00",
-  "run": "ev-20261014-134041-3zc",
-  "commit": "c0bbdf8a",
-  "png": "build/screenshots/evidence/ev-20261014-134041-3zc/CLN-153.png",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00",
+  "run": "ev-20261014-135157-o4m",
+  "commit": "e10e06e4",
+  "png": "build/screenshots/evidence/ev-20261014-135157-o4m/CLN-153.png",
   "date": "2026-10-14"
  },
  "CLN-17": {
