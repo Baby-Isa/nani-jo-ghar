@@ -568,9 +568,12 @@
     t.className = "cl-row-text";
     Kit.text(r, t);
     // CLN-76 (E1, G2): a line with no Kutchi yet stays a flagged placeholder under the bulb too (grey italic), never
-    // the bulb's dark translation colour: there is nothing to translate
-    const ph = !r.kutchi || r.placeholder === true;
-    return `${t.outerHTML}<span class="cl-row-en${ph ? " ph" : ""}" aria-hidden="true">${esc(r.english || "")}</span>`;
+    // the bulb's dark translation colour: there is nothing to translate. Boing (S06 r2): so does a row only part Kutchi
+    // ("[Wipe], ba": its English "Wipe, two" read as a whole translation, with no to-record tag): the same rule as the
+    // guide's box (screen.js setGuide: a line with a bracketed placeholder is to record). The tag is the hidden one
+    // (data-rec, decision 84); data-bulb-en marks the bulb's English for the tools
+    const ph = !r.kutchi || r.placeholder === true || /\[/.test(String(r.kutchi));
+    return `${t.outerHTML}<span class="cl-row-en${ph ? " ph" : ""}" aria-hidden="true" data-bulb-en=""${ph ? ' data-rec="to record"' : ""}>${esc(r.english || "")}</span>`;
   };
   Kit.Card.prototype.render = function () {
     const card = this;
