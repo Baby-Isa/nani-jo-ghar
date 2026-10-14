@@ -916,7 +916,5 @@
  "tokens|css/who.css|rgb colour|border-radius: 50%; border: 3px solid rgba(0, 0, 0, 0.15); }",
  "tokens|css/who.css|rgb colour|position: absolute; border-radius: 50%; border: 2px solid rgba(0, 0, 0, 0.18); }",
  "tokens|css/who.css|rgb colour|position: absolute; z-index: 7; border-radius: 50%; border: 10px solid #6b5a48; ",
- "tokens|css/who.css|rgb colour|position: fixed; inset: 0; background: rgba(59, 42, 30, 0.35); display: flex; al",
- "words|data/clinic/pipeline.json|goodbyes.aabhar.kutchi|'aabhar aanjo' was dropped: the family says 'thank you' (decision 87)",
- "words|data/clinic/pipeline.json|lines.thanks.kutchi|'aabhar aanjo' was dropped: the family says 'thank you' (decision 87)"
+ "tokens|css/who.css|rgb colour|position: fixed; inset: 0; background: rgba(59, 42, 30, 0.35); display: flex; al"
 ]

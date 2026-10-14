@@ -609,7 +609,8 @@
     if (headed) items.forEach((it) => it.parts.forEach((p) => (p.next = !!it.headed && !it.done && st.now === p.key)));
     // decision 95 (contract-8, SH-53): one thing lit at a time: while a row is being read aloud (its read-along light),
     // the next-step band waits (it comes back when the reading ends)
-    if (st.reading) items.forEach((it) => it.parts.forEach((p) => (p.next = false)));
+    // CLN-144, CLN-145: and while a tool's hint glows (the next tool, a game's nudge), the band steps back (hush)
+    if (st.reading || st.hush) items.forEach((it) => it.parts.forEach((p) => (p.next = false)));
     const tt = this.titleText;
     const headHtml = !tt ? null : typeof tt === "string" ? esc(tt) : Kit.rowHtml(tt);
     // a headline still to record (the heal games' goal, D9) carries the grown-ups' "to record" flag (G2)
@@ -699,6 +700,16 @@
     const c = this.el.querySelector(".oc-card");
     if (OC && OC.setStrip && c) OC.setStrip(c, this.strip);
     return this;
+  };
+  /**
+   * CLN-144, CLN-145 (decision 95, contract-8: one thing lit at a time): while a tool glows to say "this next" (the host's
+   * next-tool reveal, a game's nudge), the card's next-step band steps back; hush(false) brings it back. A new set of
+   * rows clears it.
+   */
+  Kit.Card.prototype.hush = function (on = true) {
+    if (!!this.st.hush === !!on) return this;
+    this.st.hush = !!on;
+    return this.render();
   };
   Kit.Card.prototype.ordered = function (on = true) {
     this.isOrdered = !!on;

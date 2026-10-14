@@ -145,6 +145,7 @@
     const url = `url("${Kit.url(room.src)}")`;
     box.style.backgroundImage = url;
     cap.style.backgroundImage = url;
+    if (Clinic.Stages.certificate) Clinic.Stages.certificate(box, cfg.certificate); // CLN-116: the room's certificate frame
     const layer = h("div", "cl-patient-layer v2", box);
     // A1 (5 Oct): the patient's real art when it's cut (heal-art.json), front-on or side-on by the game's camera
     // (D2); side-on, the patient sits on the bed's right-hand end (scenes-v2 exam.side)
@@ -390,7 +391,10 @@
     // they were: the goal in the doctor's box, the whole card at once, no zoom, the ✓ always there
     const v2 = !!def.cues;
     const goal = def.why && def.why.goal ? HOST.line(def.why.goal, data) : "";
-    card.setTitle(v2 ? goal : "", face);
+    // CLN-140 (G3, T29): the doctor's box stays at the top of the sidebar as in every other stage: his face and his
+    // line for the step now live there (he's off screen), so the card carries no second face of his (R4, one face per
+    // person): the card is the goal and the steps. The parked games keep their goal in his box (no headline).
+    card.setTitle(v2 ? goal : "", null); // CLN-149: the parked games too (their goal is in his box)
     if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
@@ -401,9 +405,8 @@
       if (!finished && fresh.length) card.speak(fresh);
     });
     card.setRows([]);
-    // R4 / T29 (decision 55): the doctor is the card's asker and the off-screen guide: one face (the card's), his
-    // line for the step now as the card's top strip; the box keeps only the bulb and the mute
-    if (v2 && screen.stripMode) screen.stripMode(true);
+    // T29 (CLN-140, was R4's strip): the doctor's line for the step now is in his box at the top, never a strip on the
+    // card (the box keeps its shape in every stage)
     // decision 41 (S02-F, C open item): from level 3 a count is heard, never read: the strip shows the step's line
     // without its number word (the doctor still says it whole)
     const NUM_EN = /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\b\s*/gi;
@@ -487,6 +490,7 @@
       stage.querySelectorAll(".hs-tool.next-up").forEach((b) => b.classList.remove("pulse", "next-up"));
       card.el.querySelectorAll(".cl-row.next-up").forEach((r) => r.classList.remove("next-up"));
       nextOn = null;
+      card.hush(false);
     };
     const nextUp = (tool) => {
       if (!tool) return nextOff();
@@ -496,18 +500,24 @@
         nextT = null;
         if (finished || card.st.now !== at) return;
         const id = card.nextStepId();
-        nextOn = { tool, id };
-        // the next tool (an exact id, or every tool its id starts with: all the plasters, never just the right colour)
-        const t = String(tool);
-        [...stage.querySelectorAll(".hs-tool")].filter((b) => b.dataset.tool === t || (t.endsWith("-") && String(b.dataset.tool || "").startsWith(t))).forEach((b) => b.classList.add("pulse", "next-up"));
+        const on = (nextOn = { tool, id });
+        // CLN-144, CLN-145 (decision 95: one thing lit at a time, contract-8): the card's band steps back, the next row
+        // is said (its read-along light), and only then the tool glows: never the band, the row and the tool at once
+        card.hush(true);
         const rowEl = id && card.row(id) && card.row(id).el;
         if (rowEl) rowEl.classList.add("next-up");
         if (id && screen.setGuide) screen.setGuide(stripRow(card.row(id)));
+        // the next tool (an exact id, or every tool its id starts with: all the plasters, never just the right colour)
+        const t = String(tool);
+        const glow = () => {
+          if (nextOn !== on || finished) return;
+          [...stage.querySelectorAll(".hs-tool")].filter((b) => b.dataset.tool === t || (t.endsWith("-") && String(b.dataset.tool || "").startsWith(t))).forEach((b) => b.classList.add("pulse", "next-up"));
+        };
         // the doctor (off screen: his box) says the next step's line, once
         if (id) {
           saidNext.add(id);
-          card.speak([id]);
-        }
+          Promise.resolve(card.speak([id])).then(glow, glow);
+        } else glow();
       }, Kit.fast ? 300 : 2000);
     };
 
@@ -530,6 +540,7 @@
           card.tick(rowId);
         },
         pulse: (rowId, on) => card.pulse(rowId, on),
+        hush: (on) => card.hush(on), // CLN-144: a game's own tool nudge: the card's band steps back while it glows
         // additions
         now: (rowId) => {
           if (rowId !== card.st.now) {

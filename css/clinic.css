@@ -308,6 +308,9 @@ body.clinic button { font-family: inherit; color: inherit; }
 /* A2: the square exam room (R3): the whole picture, running past the room box's top and bottom (stages/common.js) */
 .cl-scene-sq { position: absolute; left: 0; width: 100%; z-index: 0; background-size: 100% 100%; background-repeat: no-repeat; pointer-events: none; }
 .cl-placed { position: absolute; transform: translate(-50%, -100%); }
+/* CLN-116: the certificate on the exam room's right wall (a grey frame until the photo comes) */
+.cl-cert { box-sizing: border-box; border: clamp(3px, 0.45vw, 7px) solid var(--njg-ink-soft); border-radius: 2px; background: var(--njg-grey); box-shadow: var(--njg-shadow), inset 0 0 0 clamp(4px, 0.6vw, 9px) var(--cl-paper); pointer-events: none; overflow: hidden; }
+.cl-cert img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* W: the waiting room on CB1b */
 .cl-wdoc { overflow: hidden; aspect-ratio: .62; transform-origin: 50% 100%; }

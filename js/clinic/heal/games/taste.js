@@ -271,31 +271,42 @@
 
     /* ---------------- the drink: the tumbler, the pour, the spoon ---------------- */
     const GL = { x: 150, y: 330, w: 116, h: 150 }; // the tumbler (its art: 278 x 359)
-    const glassG = s("g", { opacity: 0 }, S.layer);
+    const glassG = s("g", { class: "taste-glass", opacity: 0 }, S.layer);
     // a small wooden tray for it to stand on (a flat base, a contact shadow)
     s("rect", { x: GL.x - 34, y: GL.y + GL.h - 12, width: GL.w + 68, height: 26, rx: 12, fill: "#b78a55", stroke: "#93683c", "stroke-width": 3 }, glassG);
     s("ellipse", { cx: GL.x + GL.w / 2, cy: GL.y + GL.h - 4, rx: GL.w * 0.48, ry: 7, fill: "#000", opacity: 0.18 }, glassG); // contact shadow
     s("image", { href: url("assets/clinic/items-v2/tumbler.webp"), x: GL.x, y: GL.y, width: GL.w, height: GL.h }, glassG);
-    const TOP = { x: GL.x + GL.w / 2, y: GL.y + GL.h * 0.14, rx: GL.w * 0.4, ry: GL.h * 0.055 };
-    // TA2 (CLN-104): the drink fills the glass from the bottom up and looks like what's in it (milk white and opaque,
-    // water clear and pale blue, the mixed drinks their own colour); its surface rides up with it
-    const BOT = GL.y + GL.h * 0.9;
+    // CLN-104 (S06): the tumbler is opaque steel, so the drink is seen only inside its mouth: the surface is an ellipse
+    // the shape of the opening (measured on the art: centre 139.5, 65; half-axes 117.5 x 45 of 278 x 359), lower and a
+    // little narrower the emptier the glass (the walls taper), clipped to the opening, so as it fills the far edge of the
+    // liquid rises up the inside of the back wall and the surface widens to the rim (it was a painted rect over the
+    // cup's outside and an unclipped ellipse wider than the cup, below its base when empty)
+    const ax = GL.w / 278;
+    const ay = GL.h / 359;
+    const MOUTH = { x: GL.x + 139.5 * ax, y: GL.y + 65 * ay, rx: 117.5 * ax, ry: 45 * ay };
+    const DEEP = 125 * ay; // how far the surface sits below the rim when the glass is empty (out of sight)
+    const surf = (u) => {
+      const k = 1 - 0.25 * (1 - u);
+      return { x: MOUTH.x, y: MOUTH.y + 0.18 * MOUTH.ry + (1 - u) * DEEP, rx: MOUTH.rx * k * 0.97, ry: MOUTH.ry * k * 0.97 };
+    };
+    const TOP = surf(1); // the full glass's surface: where the stream lands, the thing goes in and the spoon stirs
     const cid = `taste-glass-${Math.floor(ctx.rng() * 1e6)}`;
     const clip = s("clipPath", { id: cid }, s("defs", {}, S.svg));
-    s("path", { d: `M${GL.x + GL.w * 0.1} ${TOP.y} L${GL.x + GL.w * 0.9} ${TOP.y} L${GL.x + GL.w * 0.84} ${BOT} Q${TOP.x} ${BOT + 8} ${GL.x + GL.w * 0.16} ${BOT}Z` }, clip);
-    const body = s("rect", { x: GL.x, y: BOT, width: GL.w, height: 0, fill: "#fff", opacity: 0, "clip-path": `url(#${cid})` }, glassG);
-    const liquid = s("ellipse", { cx: TOP.x, cy: TOP.y + 4, rx: TOP.rx, ry: TOP.ry, fill: "#fff", opacity: 0 }, glassG);
+    s("ellipse", { cx: MOUTH.x, cy: MOUTH.y, rx: MOUTH.rx, ry: MOUTH.ry }, clip);
+    const drinkG = s("g", { class: "taste-drink", "clip-path": `url(#${cid})` }, glassG);
+    const liquid = s("ellipse", { cx: TOP.x, cy: TOP.y, rx: TOP.rx, ry: TOP.ry, fill: "#fff", opacity: 0 }, drinkG);
+    // the shine on the surface (a soft lighter band near its far edge) and the shadow the back wall casts on it
+    const shine = s("ellipse", { cx: TOP.x, cy: TOP.y, rx: TOP.rx * 0.7, ry: TOP.ry * 0.35, fill: "#fff", opacity: 0 }, drinkG);
     const level = (u, col, op) => {
-      const y = BOT - (BOT - TOP.y - 4) * u;
-      body.setAttribute("y", y);
-      body.setAttribute("height", Math.max(0, BOT - y + 10));
-      liquid.setAttribute("cy", y);
-      if (col) {
-        body.setAttribute("fill", col);
-        liquid.setAttribute("fill", col);
-      }
-      body.setAttribute("opacity", u > 0 ? op : 0);
+      const q = surf(u);
+      [["cx", q.x], ["cy", q.y], ["rx", q.rx], ["ry", q.ry]].forEach(([k, v]) => liquid.setAttribute(k, v.toFixed(1)));
+      shine.setAttribute("cx", q.x.toFixed(1));
+      shine.setAttribute("cy", (q.y - q.ry * 0.45).toFixed(1));
+      shine.setAttribute("rx", (q.rx * 0.7).toFixed(1));
+      shine.setAttribute("ry", (q.ry * 0.3).toFixed(1));
+      if (col) liquid.setAttribute("fill", col);
       liquid.setAttribute("opacity", u > 0 ? Math.min(1, op + 0.15) : 0);
+      shine.setAttribute("opacity", u > 0 ? 0.35 : 0);
     };
     const opOf = (id) => (id === "water" ? 0.55 : 0.95);
     const blob = s("ellipse", { cx: TOP.x - 6, cy: TOP.y + 3, rx: TOP.rx * 0.45, ry: TOP.ry * 0.6, fill: "#fff", opacity: 0 }, glassG);
@@ -367,8 +378,14 @@
     const nudge = (el, still) => {
       clearTimeout(nudgeT);
       [S.toolEls.spoon, glassG].forEach((x) => x && x.classList.remove("pulse"));
+      // CLN-144 (decision 95, contract-8): while the nudge glows, the card's next-step band steps back (one thing lit)
+      if (ctx.card.hush) ctx.card.hush(false);
       if (!el) return;
-      nudgeT = setTimeout(() => !st.over && still() && el.classList.add("pulse"), fast() ? 200 : 1800);
+      nudgeT = setTimeout(() => {
+        if (st.over || !still()) return;
+        if (ctx.card.hush) ctx.card.hush(true);
+        el.classList.add("pulse");
+      }, fast() ? 200 : 1800);
     };
     const emptyGlass = () => {
       st.glass = { liquid: null, adds: {}, stirred: false, slip: false };

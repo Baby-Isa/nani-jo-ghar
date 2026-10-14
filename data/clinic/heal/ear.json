@@ -254,7 +254,7 @@
    "side_heard": false,
    "drops_voice": "doctor"
   },
-  "_ladder": "decision 97 (8), CLN-45: one new thing per level: L3 is L2 heard only, so the side heard and the drops said in her voice are L4's (none of these per-level fields is read by js/clinic/heal/games/ear.js today; the game plays L1-L3)"
+  "_ladder": "decision 97 (8), CLN-45 (Zafar, 14 Oct): one new thing per level: L3 is L2 heard only; the busier ear (more blobs, pop-outs, smears and sore skin, a fourth picture in the hearing check) is L4's, in js/clinic/heal/games/ear.js K and hearing.choices. The side heard and the drops said in her voice are also L4's (none of these per-level fields is read by ear.js today)"
  },
  "fun": "Each pull has its own noise (the sock squeaks); the patient giggles 'that tickles!'; the torch beam lights the cave; at the end the cousin shakes his head and hears again.",
  "camera": {
@@ -341,7 +341,8 @@
   "choices": {
    "1": 3,
    "2": 3,
-   "3": 4
+   "3": 3,
+   "4": 4
   }
  },
  "assets": [
@@ -355,7 +356,8 @@
   "assets/clinic/sheets/ear-bits/ear-bits-wax-big.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp",
-  "assets/clinic/sheets/tweezers/tweezers-tool.webp", "assets/clinic/sheets/tweezers/tweezers-use-45.webp"
+  "assets/clinic/sheets/tweezers/tweezers-tool.webp",
+  "assets/clinic/sheets/tweezers/tweezers-use-45.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

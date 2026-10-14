@@ -268,8 +268,20 @@ export class ClinicPlayer {
       await this.healAct(a);
       lastA = a;
       steps++;
+      // CLN-138: the boing's takeback is a drop in the syringe, tapped where it sits (a lever tapped again adds one): once two
+      // drops are in, the first (the bottom one) is tapped, so the strip shows that drop going back up and the other staying
+      if (this.mode === "takeback" && game === "boing" && !this.drv.tookBack && /^lever/.test(String(a.what || "")) && (await this.ev(() => document.querySelectorAll(".bo-drop").length).catch(() => 0)) >= 2) {
+        this.drv.tookBack = true;
+        await sleep(500);
+        await this.once("before-takeback", { settle: 0 });
+        await sleep(450); // the strip films the two drops in first (it runs alongside: the tap must not beat its first frame)
+        const at = await this.ev(() => { const d = document.querySelector('.bo-drop[data-k="0"]'); const r = d && d.getBoundingClientRect(); return r ? [r.left + r.width / 2, r.top + r.height / 2] : null; }).catch(() => null);
+        if (at) await this.healAct({ do: "tap", x: at[0], y: at[1], what: "take a drop back" });
+        await sleep(700);
+        await this.once("after-takeback", { settle: 0 });
+      }
       // takeback (CLN-112): the first thing placed (not a tool pick, not the ✓) is tapped again where it went
-      if (this.mode === "takeback" && !this.drv.tookBack && ["tap", "drag"].includes(a.do) && !(await tools()).includes(a.what)) {
+      if (this.mode === "takeback" && game !== "boing" && !this.drv.tookBack && ["tap", "drag"].includes(a.do) && !(await tools()).includes(a.what)) {
         this.drv.tookBack = true;
         await sleep(400);
         await this.once("before-takeback", { settle: 0 });
@@ -491,6 +503,8 @@ export function clinicFlows() {
   for (const st of ["waiting", "diagnosis", "pharmacy", "sendoff"]) D({ id: `clinic:${st}@L2`, title: `Clinic: ${STAGE_NAME[st]}, level 2`, query: `stage=${st}&level=2`, level: 2 });
   for (const L of [4, 5]) D({ id: `clinic:waiting@L${L}`, title: `Clinic: Waiting room, level ${L} (the waiting room's own levels)`, query: `stage=waiting&level=${L}`, level: L });
   for (const g of HEAL_GAMES) for (const L of [2, 3]) D({ id: `clinic:heal-${g}@L${L}`, title: `Clinic: heal game ${g}, level ${L}`, query: `stage=heal&game=${g}&level=${L}`, level: L, timeoutMs: 200000 });
+  // CLN-45 (Zafar, 14 Oct): the ear's busier round moved to a new level 4 (L3 is L2 heard only)
+  D({ id: "clinic:heal-ear@L4", title: "Clinic: heal game ear, level 4", query: "stage=heal&game=ear&level=4", level: 4, timeoutMs: 200000 });
   for (const g of HEAL_EXTRA) f.push({ ...healExtraFlow(g), deep: true });
   // the end card with its grey ticks (mistakes) and dimmed bulb (hints) comes from a whole patient
   D({ id: "clinic:patient#mistake", title: "Clinic: One patient, level 1, mistake player (the end review with its wrong words)", query: "patient=1&level=1&results=1", mode: "mistake", timeoutMs: 600000 });

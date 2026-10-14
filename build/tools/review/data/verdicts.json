@@ -1193,20 +1193,20 @@
   "date": "2026-10-12"
  },
  "CLN-100": {
-  "hash": "ab05d252578fb45e3990",
+  "hash": "6c9798aad12e9345db42",
   "dhash": [
    "9173b1a6e1e7a6e6",
-   "9173b1a6e5efa6e6",
-   "9173b1a2e1e7a6e6"
+   "9173b1a2e1e7a6e6",
+   "9173b1a6e5efa6e6"
   ],
-  "verdict": "FAIL",
-  "line": "C, L3 closes with 4 turns: frames 1-4 add one band each (4 bands at frame 4, the lit dot at the kneecap top asking for a 5th), frame 5 is the closed wrap with \"That feels better!\" and no new band (a pixel diff of 4 vs 5 shows only the dots gone and the bubble), so the wrap ends at 4 against the 5-8 asked; B, L2 lays 5 bands by frame 5 (in range) but rec:heal-knee-turn fires three more times with no band: frames 6, 7, 8 are band-for-band identical to frame 5, only the lit dot moves (top at 6, left at 7, none at 8) and the ✓ is gone at 8 while the dots stay, so turns 6-8 either draw nothing or lie exactly on an earlier band. A passes: L1 lays 4 bands over 4 frames, each dot to dot on the leg's outline over the kneecap and into the crease, no yellow ellipse at any level, no ✓ at L1, and frame 4 is the wrap closed by itself with the dots gone. Also: the text capture of shoot_knee_wrap.mjs says \"turns drawn: 0\", so the script the Check names drew nothing (tool owner).",
-  "panel": "C",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-173342-ny2",
-  "commit": "5658b93",
-  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-100.png",
-  "date": "2026-10-13"
+  "verdict": "PASS",
+  "line": "A, L1 wraps in 4 turns, each band running from one edge of the leg's outline to the other, crossing from the crease up over the kneecap, no yellow ellipse and no ✓ (frame 4 closes on its own); B shows L2 with 8 turns, a band added at every frame including 6-8; C shows L3 with 5 turns, all edge to edge, none floating. Flaw off the point: the CLN-100.md probe line for L2 says \"reached 8x\" but lists only 6 timestamps",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-013834-y6h",
+  "commit": "cab063c",
+  "png": "build/screenshots/evidence/ev-20261014-013834-y6h/CLN-100.png",
+  "date": "2026-10-14"
  },
  "CLN-101": {
   "hash": "ce3918282fe6f99ccc77",
@@ -1259,20 +1259,20 @@
   "date": "2026-10-12"
  },
  "CLN-104": {
-  "hash": "94be0cdd5fed8d78be88",
+  "hash": "a58ad889a22599b672c3",
   "dhash": [
    "f1e0f4f4c0e6e6ea",
    "e1d0cc4484c4ecd2",
-   "e0d6ece4a8c6ccd0"
+   "0cd4d4545419f080"
   ],
-  "verdict": "FAIL",
-  "line": "C, the level does now rise (a pale water band at the cup's base at 791 ms, higher at 1038 ms, higher again at 1268 ms, with the stream from the jug landing inside the rim), but the water is not inside the cup: the band is a flat pale ellipse wider than the steel body that sticks out past both tapered walls at 1038 and 1268 ms, and at 791 ms it sits at the base edge over the tray below the cup's bottom rather than in it; a child sees a pale disc around the cup, not real liquid filling it. The rest of the row is proven: B shows the tongue at .hs-healed clean pink with no purple holes or faint pits, the cup back to empty steel; A shows the spoon tile outlined teal as the next-step cue, \"My tongue feels better!\" and the sidebar \"Let's soothe the sore spots.\" / \"Pop laal spots\" / \"Make aadu ne paani\" in grey italic (decision 84), bubble beside the Nani avatar, no clipping or overlap. Note for the builder, not a fail: in A and B the cup is empty steel at the healed moment, after the water was poured at 10.5 s; if the water is meant to stay in the cup until the spoon step, it has vanished.",
-  "panel": "C",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-192304-b2d",
-  "commit": "0dbb496",
-  "png": "build/screenshots/evidence/ev-20261013-192304-b2d/CLN-104.png",
-  "date": "2026-10-13"
+  "verdict": "PASS",
+  "line": "B, at .hs-healed the tongue is a clean, even pink with no purple holes left; C shows real water (a translucent pale-blue stream) pouring into the steel tumbler, with the level rising inside the cup's walls from empty (0-400 ms) to a surface inside the rim (1599-2000 ms), not spilling past the walls or below the base; A shows the next step cued: the spoon tile ringed in teal on the tray, and both sidebar steps ticked",
+  "panel": "B",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-031151-81u",
+  "commit": "287a056",
+  "png": "build/screenshots/evidence/ev-20261014-031151-81u/CLN-104.png",
+  "date": "2026-10-14"
  },
  "CLN-105": {
   "hash": "889ba6be10ff42b3012e",
@@ -1291,21 +1291,21 @@
   "date": "2026-10-13"
  },
  "CLN-106": {
-  "hash": "284fa051945215d885e7",
+  "hash": "eb48f5fedeb5697b90d2",
   "dhash": [
-   "83e3c6d4c4c2eaec",
-   "83e3c6d4c4c2eaec",
-   "83e3c6d4c7c8e8ec",
-   "8f9f97a7970793b7"
+   "83a39390ccc2ebbc",
+   "c3cbcbd8c2c24aec",
+   "83c9cb8283c2cae8",
+   "b797979f8e98303f"
   ],
   "verdict": "FAIL",
-  "line": "A, the drop machine (purple drop in a rounded box) and the bead tube are still flat vector stand-ins beside a real arm; B, the wipe step shows only a static grey smudge on the arm over 1.3 s, no wipe motion; no jab and no plaster choice anywhere on the sheet",
-  "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CLN-106.png",
-  "date": "2026-10-12"
+  "line": "B, at x2 the drop machine (four flat test-tube shapes with coloured dots in a rounded white box) and the syringe are still the same flat vector stand-ins beside the real arm, unchanged in C and D (L2, L3); A shows the wipe rubbing across the spot (404-882 ms), but no jab and no plaster choice appear anywhere on the sheet. Flaws: C1's hint bubble sits mid-arm with no speaker next to it, and its second line \"Wipe, two\" (dom capture: \"Wipe, two / Drops, four\") reads as English with no [ph] to-record tag",
+  "panel": "B",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-021334-3v9",
+  "commit": "257b7e4",
+  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-106.png",
+  "date": "2026-10-14"
  },
  "CLN-107": {
   "hash": "ac9ab1ff382797f9cdef",
@@ -1439,19 +1439,20 @@
   "date": "2026-10-12"
  },
  "CLN-116": {
-  "hash": "858259422d8f45566f43",
+  "hash": "7f154c0f9510005c3d1a",
   "dhash": [
-   "cffbebcbc5cdcedb",
-   "cfefebcbc9cdcedb"
+   "cbfbebcbc5cdcedb",
+   "cbebebcbc9cdcedb",
+   "cbebe9cec6cdc8db"
   ],
-  "verdict": "FAIL",
-  "line": "A, the exam room's right wall is bare: no certificate frame and no grey flagged placeholder (the probe notes no .cl-room-pic element); B the same at the send-off. Toys bottom left and no anatomy poster are right. Flaw off the point: the doctor is a flat vector stand-in beside the rendered girl.",
+  "verdict": "PASS",
+  "line": "A, at diagnosis a grey empty frame hangs on the wall right of centre above the doctor (placeholder until the photo arrives; the flag is markup-only so it can't be seen), teddy, blocks, car and ball on a rug bottom left, no anatomy poster; B (send-off) and C (fever wide shot, frame clear of the wall thermometer) show the same wall. Flaws off the point: the doctor is still a flat vector stand-in next to the rendered girl (A, B); the sidebar hint lines are grey-italic English (to-record, allowed)",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev3",
-  "commit": "7812e59a",
-  "png": "build/screenshots/evidence/ev-s04-ev3/CLN-116.png",
-  "date": "2026-10-12"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-021334-3v9",
+  "commit": "257b7e4",
+  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-116.png",
+  "date": "2026-10-14"
  },
  "CLN-117": {
   "hash": "7ce905cf69dd3cc0b16d",
@@ -1468,21 +1469,19 @@
   "date": "2026-10-13"
  },
  "CLN-118": {
-  "hash": "61e72bf1331b0332d680",
+  "hash": "95d019cd191ff3ea038d",
   "dhash": [
-   "c140c0ccc6c2c2e0",
-   "8180808c84828688",
-   "cf6f1b570b074bca",
-   "039a92929317038b"
+   "40818bab838381c0",
+   "039a929296160303"
   ],
   "verdict": "FAIL",
-  "line": "D, the knee's taught round is still scored: timer badge 17s with crown and bulb x0 shown (only the tick has no count); A/B show no ghost finger, only the jug spotlit on a dimmed stage, and no \"shown first, then copied\" step; the card has no counts (good) but only two of the nine games are on the sheet",
-  "panel": "D",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/CLN-118.png",
-  "date": "2026-10-13"
+  "line": "B, the fresh profile's first knee round (the taught round) still ends scored and timed: a 10s stopwatch badge with a crown \"10s\" count and a bulb \"x 0\" count; only the tick card has no count. Only the knee is on the sheet, not all nine heal games",
+  "panel": "B",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-021334-3v9",
+  "commit": "257b7e4",
+  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-118.png",
+  "date": "2026-10-14"
  },
  "CLN-119": {
   "hash": "8ceac37990357bc6de7f",
@@ -1581,18 +1580,18 @@
   "date": "2026-10-13"
  },
  "CLN-127": {
-  "hash": "4722baa23729b062c3b3",
+  "hash": "6c2282eeee22d79d247f",
   "dhash": [
-   "00000000083072f0"
+   "90010186d40109e8"
   ],
   "verdict": "FAIL",
-  "line": "A, bubble 2 \"barabar\" sits above her head with its tail on the top of her hair at the parting, not at her face; hits 1 and 3 are crops of her hair top with no bubble (the every: hits either side of it)",
+  "line": "A, in hit 1 the bubble's tail points down onto the top of her hair at the parting, not at her face. In hit 3 the bubble sits across the top of her hair. Hit 4 is her hair top with no bubble, and hit 2 never captured the bubble. The bubble is still anchored above her head.",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170427-3le",
-  "commit": "b77e704",
-  "png": "build/screenshots/evidence/ev-20261013-170427-3le/CLN-127.png",
-  "date": "2026-10-13"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-021334-3v9",
+  "commit": "257b7e4",
+  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-127.png",
+  "date": "2026-10-14"
  },
  "CLN-128": {
   "hash": "eae8761e5fde06e63278",
@@ -1733,6 +1732,20 @@
   "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-136.png",
   "date": "2026-10-13"
  },
+ "CLN-138": {
+  "hash": "ee78a6c0be72e8f955dd",
+  "dhash": [
+   "87ebc1d2c4c2eaec"
+  ],
+  "verdict": "PASS",
+  "line": "A, the barrel holds two drops at 0-400 ms; after the tap, one drop stays at the bottom of the barrel from 600 to 1000 ms, so only the tapped drop went back up and the barrel never emptied (small strip with no zoom; the off-point flaw is the same flat vector machine and syringe stand-ins)",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-021334-3v9",
+  "commit": "257b7e4",
+  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-138.png",
+  "date": "2026-10-14"
+ },
  "CLN-139": {
   "hash": "77cc3a270492c46d5e70",
   "dhash": [
@@ -1763,17 +1776,17 @@
   "date": "2026-10-12"
  },
  "CLN-140": {
-  "hash": "450649cd5bac84ffb691",
+  "hash": "83cb4ae1638f05a152b0",
   "dhash": [
    "8b81010101010101"
   ],
   "verdict": "FAIL",
-  "line": "A, frame 4 (heal) has no doctor's box at the top of the sidebar (only the hint and sound buttons float there); his line \"Let's clean it and put plasters on.\" still sits inside the \"Pela paani\" card, which is a different shape from frames 1, 2, 3 and 5; the card's last option row is also cut off at the bottom (only a stray mark shows)",
+  "line": "A, frame 4 (heal) now has a box at the top of the same shape, but it holds \"Pela paani\" in bold, not the doctor's line; his line \"Let's clean it and put plasters on.\" still sits inside the heal card below, and a stray clipped mark still shows under the card's last option row (\"ne poi laal plaster\")",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-001722-cc1",
-  "commit": "9376780",
-  "png": "build/screenshots/evidence/ev-20261014-001722-cc1/CLN-140.png",
+  "run": "ev-20261014-013834-y6h",
+  "commit": "cab063c",
+  "png": "build/screenshots/evidence/ev-20261014-013834-y6h/CLN-140.png",
   "date": "2026-10-14"
  },
  "CLN-141": {
@@ -1806,36 +1819,36 @@
   "date": "2026-10-13"
  },
  "CLN-143": {
-  "hash": "9e9f12bf1015421f2cd1",
-  "dhash": [],
-  "verdict": "FAIL",
-  "line": "machine: CLN-143-p1-L2-1024x768: pass: 1 contract breaks",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261014-001722-cc1",
-  "commit": "9376780",
-  "date": "2026-10-14"
- },
- "CLN-144": {
-  "hash": "5a0286c5b71c7785c56d",
-  "dhash": [],
-  "verdict": "PASS",
-  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261014-002208-25n",
-  "commit": "9376780",
-  "date": "2026-10-14"
- },
- "CLN-145": {
-  "hash": "8c1e0a7820574531a89c",
+  "hash": "bdee1fa6df4efc3a44f4",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-002208-25n",
-  "commit": "9376780",
+  "run": "ev-20261014-031151-81u",
+  "commit": "287a056",
+  "date": "2026-10-14"
+ },
+ "CLN-144": {
+  "hash": "de02bcda1f8fd2872217",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-031151-81u",
+  "commit": "287a056",
+  "date": "2026-10-14"
+ },
+ "CLN-145": {
+  "hash": "ba7182b9ae1ab7a314e4",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-031151-81u",
+  "commit": "287a056",
   "date": "2026-10-14"
  },
  "CLN-146": {
@@ -2244,16 +2257,20 @@
   "date": "2026-10-12"
  },
  "CLN-45": {
-  "hash": "a81bcc974c320e3055c8",
-  "dhash": [],
-  "verdict": "FAIL",
-  "line": "text, the two games on the sheet hold (cut L1 \"ba dabs\" + one plaster, L2 + a second plaster \"laal, yellow\", L3 the same with no pop-up card [count 0] and random draws \"char dabs\", \"lilo, yellow\" from the pools cut.js SCRAPE shares across L2-L3; knee L1 \"Hammer, hakro / char turns\", L2 \"panj / ath\", L3 \"trae / panj\" with no pop-up, knee.js K.kicks and K.turns identical at L2 and L3), and read side by side from the level data the 13 Oct ladder [L3 = L2 heard only, extras to L4] now holds for scrape, knee, boing (K.wipes 2 = 3, colours from L2), foot (K.jugs/halfW 2 = 3, ORDER 2), tooth and taste (json levels 2 = 3), eye (K.rows/per 2 = 3), tummy/hic/hair (D.levels: bottle/order/shampoo off at L3, on at L4) and fever (fever.js K: exchanges 2 = 3 = [3,4], fixFrom 4) — but NOT for the ear: js/clinic/heal/games/ear.js K jumps from L2 to L3 in four knobs at once (start blobs 4 -> 5, spawnCap 5 -> 7, smears 4 -> 5, sore patches 2 -> 3) and data/clinic/heal/ear.json hearing.choices goes 3 -> 4 pictures at L3 (read by the game via ctx.data.hearing), so L3 is the closed card PLUS harder variety, the same kind of extra the knee's bigger counts and taste's third decoy were moved to L4 for; ear.js has no L4 (levels [1, 2, 3]) and the D3 push touched only ear.json's unread side_heard/drops_voice fields. Lesser, not what plays: data/clinic/heal/fever.json still carries the old ladder in its top-level rules (fixFrom 3, exchanges 3: [4], fixLast {3: 1}) and _about (\"from level 3 the last exchange is 'fix it'\"); fever.js cfgOf reads only data.room.rules, which does not exist, so the code's K wins, but the data file contradicts it.",
-  "panel": "text",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-185109-ykv",
-  "commit": "09b5676",
-  "png": null,
-  "date": "2026-10-13"
+  "hash": "3d31be9467187167a96c",
+  "dhash": [
+   "ccccccccccc6e0e4",
+   "ccccccccccc6e0e4",
+   "ccccccccc8c6e0e4"
+  ],
+  "verdict": "PASS",
+  "line": "B, the ear at L3 has the same ear as L2 in A (4 wax blobs, 2 sore patches, same three tools), and the only change is that the step card is closed (the sidebar shows just the grey-italic to-record intro, so the steps are heard only). So the L2 to L3 jump is one thing. C (L4) is the busier ear (5 blobs), so the extras have moved off L3. The text captures p3/p4 (cut and knee at L3) also show no pop-up card (expect count 0: PASS). Flaws: in A, under \"ne poi wadho\" in the open card, there is a stray row showing only \"(\", which may be a cut-off third line (needs a closer look). The sheet shows only the ear: the \"all nine games side by side\" level-data review is not in this evidence.",
+  "panel": "B",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-010700-31u",
+  "commit": "31033c4",
+  "png": "build/screenshots/evidence/ev-20261014-010700-31u/CLN-45.png",
+  "date": "2026-10-14"
  },
  "CLN-46": {
   "hash": "0811c776d3c25d8ac05a",

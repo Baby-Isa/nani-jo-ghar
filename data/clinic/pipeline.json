@@ -1,5 +1,5 @@
 {
-  "_about": "The clinic's pipeline (docs/archive/clinic/clinic-design-v1.md: the Mini-game quality pass Q1-Q7 over the Pipeline design P1-P13). One patient = waiting room -> diagnosis -> pharmacy (the belt) -> heal (a registered healing game, docs/architecture/clinic-heal-api.md) -> send-off. Read by js/clinic/pipeline.js in the browser and in Node (build/leak_clinic.mjs). Real Kutchi only where the family gave it (docs/language/grammar-notes.md and the list at the top of the pipeline design): Muke {x} khape, ne, pela ... ne poi ..., the numbers, haa, na (G9: no is na, not nar), wadho/nindho (he-forms), Salamun alaykum, Aabhar aanjo, Achija. Everything in [brackets] is an English placeholder, shown grey italic. Never invent Kutchi.",
+  "_about": "The clinic's pipeline (docs/archive/clinic/clinic-design-v1.md: the Mini-game quality pass Q1-Q7 over the Pipeline design P1-P13). One patient = waiting room -> diagnosis -> pharmacy (the belt) -> heal (a registered healing game, docs/architecture/clinic-heal-api.md) -> send-off. Read by js/clinic/pipeline.js in the browser and in Node (build/leak_clinic.mjs). Real Kutchi only where the family gave it (docs/language/grammar-notes.md and the list at the top of the pipeline design): Muke {x} khape, ne, pela ... ne poi ..., the numbers, haa, na (G9: no is na, not nar), wadho/nindho (he-forms), Salamun alaykum, thank you (the English words, decision 87: the engine's phrase), Achija. Everything in [brackets] is an English placeholder, shown grey italic. Never invent Kutchi.",
 
   "kinds": {
     "_about": "P2: kinds of person, not names (the lesson). `who` = the waiting room's ladder word (man / woman / boy / girl: W4, Zafar); `age` = old / young for the adults (rung 2). `he` = a he-word for wadho/nindho (the she-forms are not confirmed). `elder` = the formal greeting. Every word here is an English placeholder, to record (the doctor's session, Round 4 Section G).",
@@ -110,7 +110,7 @@
   },
   "goodbyes": {
     "achija": { "lex": "phrase.goodbye-khuda-hafiz", "kutchi": "Achija!", "english": "Good! (bye)", "cue": { "english": "Say bye." } },
-    "aabhar": { "lex": "phrase.thank-you-the-english-words-the-family-says-them", "kutchi": "Aabhar aanjo!", "english": "Thank you!", "cue": { "english": "Say thank you to the doctor." } },
+    "aabhar": { "lex": "phrase.thank-you-the-english-words-the-family-says-them", "english": "Thank you!", "cue": { "english": "Say thank you to the doctor." } },
     "getwell": { "kutchi": null, "english": "Get well soon!", "cue": { "english": "Say get well soon." } }
   },
   "extras": {
@@ -162,7 +162,7 @@
     "saybye": { "kutchi": "[Say bye.]", "english": "Say bye." },
     "howfeel": { "kutchi": "[How do you feel?]", "english": "How do you feel?" },
     "onemore": { "kutchi": "[One more thing]", "english": "One more thing" },
-    "thanks": { "lex": "phrase.thank-you-the-english-words-the-family-says-them", "kutchi": "Aabhar aanjo!", "english": "Thank you!" },
+    "thanks": { "lex": "phrase.thank-you-the-english-words-the-family-says-them", "english": "Thank you!" },
     "found": { "kutchi": "[Found it]", "english": "Found it" },
     "next": { "kutchi": "[Next]", "english": "Next" },
     "done": { "kutchi": "[Done]", "english": "Done" },

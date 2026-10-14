@@ -54,7 +54,7 @@ const STAGES = ["waiting", "diagnosis", "pharmacy", "heal", "sendoff"];
 const STAGE_LABEL = { waiting: "Waiting room", diagnosis: "Diagnosis", pharmacy: "Pharmacy (the belt)", heal: "Heal (the patient's game)", sendoff: "Send-off" };
 const STAGE_LEVELS = { waiting: [1, 2, 3, 4, 5], heal: [1, 2, 3, 4] };
 // the heal games with a level 4 (their harder variety: Zafar's heal ladder, 13 Oct); the rest stop at 3 (their plans clamp)
-const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee", "fever"]; // fever: decision 97 (8)
+const HEAL_L4 = ["cut", "tooth", "taste", "foot", "eye", "knee", "fever", "ear"]; // fever: decision 97 (8); ear: CLN-45 (Zafar, 14 Oct)
 
 const G = () => globalThis;
 const stamp = (u) => (typeof G().njgV === "function" ? G().njgV(u) : u);
@@ -277,6 +277,9 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           ctx.done({
             words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right, plan: w.plan || [] })),
             steps: hl && hl.steps ? hl.steps : undefined, // D14: the heal game's steps, for "what went wrong"
+            // CLN-118 (D13): the heal game's first, taught round: nothing scored or timed. The shared host (js/shared/host.js)
+            // does not read this yet: it times every round and the end card shows its badges (the proposed patch: S06 report)
+            taught: hl && hl.taught ? true : undefined,
           });
         },
         expect() {

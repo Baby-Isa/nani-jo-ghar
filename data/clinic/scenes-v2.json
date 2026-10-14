@@ -34,7 +34,8 @@
     "seat": 0.535,
     "floor": 0.88,
     "side": { "_about": "A1 (5 Oct), the art plan section 3.1 W7: side-on, the patient sits on the bed's right-hand end in profile, facing right (the knee, ear and eye test B zooms); x = the seat anchor across, seat = the mattress top it sits on.", "x": 0.7, "seat": 0.535 },
-    "doctor": { "x": 0.735, "y": 0.9, "h": 0.66 }
+    "doctor": { "x": 0.735, "y": 0.9, "h": 0.66 },
+    "certificate": { "src": null, "x": 0.68, "y": 0.215, "w": 0.125, "h": 0.14, "_about": "CLN-116 (CB2b review, 29 Sept): the real doctor's certificate on the right wall, a photo Zafar supplies (src: then a framed picture); a grey frame flagged in the markup until then. x = the frame's centre, y = its bottom, w and h = its size, as shares of the room (1536 x 1024): above the doctor's head (doctor), clear of the door and of the fever room's wall thermometer (x 0.76-0.84)" }
   },
   "stand": {
     "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right.",
