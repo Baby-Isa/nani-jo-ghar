@@ -754,7 +754,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const base = t.y + t.h * 0.18;
     // CK-21: the contact shadow on the tray's floor, falling to the right (light from the left): it reaches past the dish's
     // right side, so it shows beside the base and is not all hidden under the dish
-    s.track(s.add.ellipse(x + w * 0.3, t.y - t.h * 0.08, w * 1.0, Math.max(10, h * 0.16), 0x2a1a0a, 0.3).setDepth(Cook.D.occ + 1.9 + i * 0.01));
+    // (S06 round 3: one flat ellipse at 0.3 of a warm brown read as the tray's own brown on the dark walnut floor: a flat
+    // darkening looks like darker wood. Now it fades: darkest at the dish's right foot, lighter as it falls away right,
+    // stacked rings of near-black, so the eye reads a shadow by its edge)
+    const shH = Math.max(12, Math.min(t.h * 0.3, h * 0.2));
+    const shY = t.y - t.h * 0.1;
+    [1.3, 1.08, 0.86, 0.66, 0.48].forEach((f, n) =>
+      s.track(s.add.ellipse(x + w * (0.22 + f * 0.2), shY, w * f, shH * (0.55 + f * 0.45), 0x000000, 0.13).setDepth(Cook.D.occ + 1.9 + i * 0.01 + n * 0.001))
+    );
     const img = s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
     trayFront(s, t);
     // (for the test hook servedTray: each served picture with its tray, in the order drawn; evidence CK-21)
@@ -863,6 +870,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Promise.race([Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), Cook.wait(800)]);
     drawServed(ctx, Cook.CHARS[who].x);
     Cook.sfx.pop();
+    // TEST HOOK (only the evidence player sets it, as Cook.tasteHold): the served dishes stay on the counter this long in
+    // real time before the call-back and the end card, so a 2x crop of a tray lands before the end card covers it (CK-21)
+    if (Cook.serveHold) await new Promise((r) => setTimeout(r, Cook.serveHold));
     await Cook.wait(600);
     // decision 54: Nani calls back what was made; a row that went wrong (a station not yet redoing on the spot,
     // decision 51) is said again by the customer, that row only (never the whole order as "I want…")
