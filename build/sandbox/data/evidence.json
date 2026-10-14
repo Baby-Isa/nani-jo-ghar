@@ -4370,8 +4370,11 @@
  "DAAR-13": [
   {
    "flow": "cook:chop",
-   "path": "fair",
-   "level": 1,
+   "path": "speed1",
+   "level": [
+    1,
+    2
+   ],
    "sizes": [
     "1366x768"
    ],
@@ -4381,10 +4384,10 @@
    "after": null,
    "capture": [
     "zoom2:#stage",
-    "strip:#stage:5x200"
+    "strip:#stage:6x250"
    ],
    "expect": null,
-   "note": "L1 chop: knife smaller, tip intact, clean cut, items spread, slower; ghost finger drags the knife; row highlights at the right count"
+   "note": "the chop at a child's pace (speed 1: the sandbox's test speed 3 threw everything three times as fast, which is what S06's red strip showed), one panel per level: L1 slower than L2 (a throw about 3.3 s in the air at L1, 2.9 s at L2); knife smaller, tip intact, clean cut, items spread; nothing cut off by the board's bottom edge (a vegetable fades in clear of it and out before it, a cut half stops short of it); the ghost finger drags the knife"
   }
  ],
  "DAAR-14": [

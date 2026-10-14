@@ -2610,7 +2610,7 @@
    "levels": [
     {
      "phases": 1,
-     "slow": 0.8,
+     "slow": 0.67,
      "knifePx": 190,
      "every": 0.7,
      "fasterPerStage": 0.06,
@@ -2662,7 +2662,7 @@
     },
     {
      "phases": 2,
-     "slow": 1,
+     "slow": 0.76,
      "every": 0.6,
      "throwSpeed": [
       1330,
@@ -2672,6 +2672,7 @@
     },
     {
      "phases": 3,
+     "slow": 0.86,
      "every": 0.5,
      "decoys": 4,
      "spare": 1,
