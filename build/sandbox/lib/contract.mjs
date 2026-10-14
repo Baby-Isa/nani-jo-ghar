@@ -46,7 +46,7 @@ import { lexiconWords } from "./evidence.mjs";
 
 export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 3, on a page whose profile has heard the words (variant p-seen), no order-card row (the side sample's words) holds a Kutchi number word (the lexicon's Num entries); from level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number." },
-  "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
+  "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): a to-record placeholder passes until launch (Zafar, 14 Oct) and is a break on the store build (--store); every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
   "contract-18": { item: "card-rows", title: "card rows tick when their step closes", how: "Every rows sample (lib/contract-hook.mjs: each sidebar card row with its key, words and tick) against the shared lifecycle's step-close log (Lifecycle.note: the order card's tick path and the heal host, at their own millisecond, with the step's key): a row that turns ticked with no step-close for its key (any step-close for a row with no key) in the 1.1 s before is a break; a row whose words change while it stays in the same stage (not to or from a row with no letters, not under the bulb's English) is a break." },
@@ -589,12 +589,15 @@ function check19(r, tl, segs, v, nums, add) {
     }
   }
 }
-function check16(tl, lex, add) {
+// Zafar, 14 Oct: until launch, English marked to record passes (it will be recorded in Kutchi); on the store build (run.mjs
+// --store) a to-record placeholder is a break, so nothing ships with one
+function check16(tl, lex, add, store) {
   if (!lex) return;
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "texts") continue;
     for (const x of e.list || []) {
+      if (x.rec && store && !x.grown && !seen.has("rec:" + x.t)) { seen.add("rec:" + x.t); add("contract-16", e.t, `"${x.t}" (${x.sel}): a to-record placeholder on the store build`); continue; }
       if (x.rec || x.en || x.grown) continue;
       const words = (String(x.t).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).map((w) => w.replace(/’/g, "'")).filter((w) => w.length > 1 && !lex.has(w));
       if (!words.length) continue;
@@ -717,7 +720,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check20(tl, add);
   check18(tl, segs, add);
   check21(tl, segs, v, add);
-  check16(tl, lexicon || lexiconFor(root), add);
+  check16(tl, lexicon || lexiconFor(root), add, !!r.store);
   check19(r, tl, segs, v, numbers || numbersFor(root), add);
   return out;
 }

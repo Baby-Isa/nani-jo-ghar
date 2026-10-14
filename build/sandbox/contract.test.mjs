@@ -201,6 +201,10 @@ test("contract-16 English for the child (checks-to-build 4): every text is a lex
   const b = run([{ t: "Pour the paani", sel: "div.cl-row" }]);
   assert.equal(b.length, 1);
   assert.match(b[0].measured, /"Pour the paani" .*pour, the/);
+  // Zafar, 14 Oct: English marked to record passes now, and is a break on the store build
+  const store = analyse({ flow: "cook:chai-tray", size: "1366x768", t0: 1000, store: true, states: [], timeline: [{ type: "c", k: "stage", key: "chai", t: 1000 }, { type: "c", k: "texts", t: 1200, list: [{ t: "Bring me these", rec: true, sel: "span" }, { t: "Play as new", grown: true, rec: true, sel: "button" }] }] }, { lexicon }).filter((x) => x.check === "contract-16");
+  assert.equal(store.length, 1);
+  assert.match(store[0].measured, /to-record placeholder on the store build/);
 });
 
 test("contract-19 counting rule (checks-to-build 7): from L3 no number written on a card (words seen before); from L2 no counting along", async () => {
