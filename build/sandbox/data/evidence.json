@@ -3574,14 +3574,13 @@
    "want": [
     "/(hakro|ba|trae) khun/"
    ],
-   "at": "every:cook-done:tap",
+   "at": "exp:cook-khun",
    "after": null,
    "capture": [
-    "strip:canvas:hob:3x250"
+    "strip:hook:cook.focus:6x300"
    ],
    "expect": null,
-   "note": "the code part of CHAI-13 (the real teaspoon picture is art), at a child's pace: at each sugar tap the drawn teaspoon flies in with its heap and goes round the pan twice (0.9 s), over its puff, never hidden by it",
-   "max": 6
+   "note": "the code part of CHAI-13 (the real teaspoon picture is art), at a child's pace: one strip from the first SUGAR tap (exp:cook-khun: S06's strips caught the water, milk and elchi taps), cropped to the pan in hand, 1.8 s: the drawn teaspoon flies in from the jar with its sugar heap, lands with its puff and goes round the pan twice (0.9 s), over the puff, never hidden by it, never left lying on the hob"
   }
  ],
  "CHAI-14": [
@@ -5961,24 +5960,6 @@
  ],
  "CK-21": [
   {
-   "flow": "cook:day3",
-   "path": "fair",
-   "level": 1,
-   "sizes": [
-    "1366x768"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:bubble",
-   "after": null,
-   "capture": [
-    "crop:canvas:s02-served"
-   ],
-   "expect": null,
-   "note": "served dishes on a tray at the counter's angle, shadows to the right: the served dish after each serve (Nani's call-back bubble comes after it is drawn; the view-service moment came before any serve)",
-   "max": 12
-  },
-  {
    "flow": "cook:day2",
    "path": "fair",
    "level": 1,
@@ -5987,14 +5968,32 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:drv:dish-served",
    "after": null,
    "capture": [
-    "zoom2:canvas:s02-served"
+    "zoom2:hook:cook.servedTray"
    ],
    "expect": null,
-   "note": "each dish type served (story day 2: maani and chai on the counter after cooking)",
-   "max": 12
+   "note": "story day 2 at 2x, one crop per serve, the first dish and its whole tray (S06's crops were the whole counter, so the glasses were 20 px slivers): the maani plate, Nani's pantry basket, then the chai glass (day 2's chai is one glass). Each must stand IN its tray, the tray's front wall drawn over its base (never standing on the rim, wood showing under it), its contact shadow falling to the right",
+   "max": 3
+  },
+  {
+   "flow": "cook:day3",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:drv:dish-served",
+   "after": null,
+   "capture": [
+    "zoom2:hook:cook.servedTray"
+   ],
+   "expect": null,
+   "note": "story day 3's dishes, each on its tray at 2x: in the tray, the front wall over the base, shadow to the right",
+   "max": 3
   }
  ],
  "CK-22": [
@@ -6220,13 +6219,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "cook-done:tap",
+   "at": "cook:tap",
    "after": null,
    "capture": [
-    "strip:#stage:7x160"
+    "strip:hook:cook.focus:7x100"
    ],
    "expect": null,
-   "note": "samosa: the same puff as the filling goes onto the pastry (the whole stage: the fold's own picture changes as it fills, so a crop on it jumps)"
+   "note": "samosa: the same puff as the first spoonful of filling lands on the pastry, cropped to the strip's filling end (S06's strip was the whole stage: the pastry 60 px wide, the filling 10 px); 100 ms apart from the tap: the spoonful flies in, lands (about 450 ms) and puffs (about 550-600 ms); in this lab the screen moves on about 0.6-0.7 s after the first spoonful, so a longer strip ends on another screen"
   }
  ],
  "CK-28": [
@@ -11610,15 +11609,14 @@
    "want": [
     "/(hakro|ba|trae|char) khun/"
    ],
-   "at": "every:cook-done:click",
+   "at": "every:drv:review-face",
    "after": null,
    "capture": [
-    "crop:#stage"
+    "zoom2:canvas:v2round-256"
    ],
    "expect": null,
-   "note": "a wrong cup served (a spoon of the salt that looks like sugar left in it): the review face over that glass frowns, never happy (at L2 the other, right cup's face is happy)",
-   "max": 4,
-   "delay": 700
+   "note": "a wrong cup served (a spoon of the salt that looks like sugar left in it), the review faces at 2x the moment they are fully in (S06's crops were the whole stage, the face 40 px): the face over the wrong glass frowns, never happy; at L2 the other, right cup's face is happy. The second capture is the redone cup's review (right this time: happy)",
+   "max": 2
   }
  ],
  "CK-32": [

@@ -99,6 +99,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   async function begin(S, ctx, key, view, { closed = false } = {}) {
+    Cook.focusBox = null; // the last station's test crop box (flow.js hook focus) goes with it
     // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar
     if (ctx && ctx.intro) {
       await ctx.intro;

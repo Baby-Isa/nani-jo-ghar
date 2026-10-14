@@ -89,6 +89,10 @@ export class CookPlayer {
         stamps: Array.from(document.querySelectorAll(".oc-done-tk")).filter((e) => { const r = e.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return false; for (let x = e; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden" || +cs.opacity < 0.05) return false; } return true; }).length,
         pans: C && C.chaiPans ? C.chaiPans() : null,
         daar: C ? C.daarPhase || null : null,
+        // the review face fully in (Cook.Kit.review sets Cook.tasted after its grow-in; the serve-wrong driver clears it)
+        tasted: C ? C.tasted || null : null,
+        // how many times dishes have been put on the counter (flow.js drawServed: Cook.servedN)
+        servedN: C ? C.servedN || 0 : 0,
       };
     }).catch(() => null);
     if (!s) return;
@@ -101,6 +105,19 @@ export class CookPlayer {
     d.doneRows = s.doneRows;
     if (m === "serve-combined" && view === "service" && s.stamps >= 2) await this.once("served-combined", { settle: 300 });
     if (m === "force-passme" && s.passme) await this.once("passme-forced", { settle: 0 });
+    // the dishes just put on the counter (every path): drv:dish-served and drv:counter-<n> (the n-th time) (CK-21's 2x crops of a tray)
+    if (s.servedN > (d.servedN || 0)) {
+      d.servedN = s.servedN;
+      d.dishes = (d.dishes || 0) + 1;
+      await mark(p, "dish-served", { block: true, settle: 250 });
+      await mark(p, `counter-${d.dishes}`, { block: true }); // (not dish-served-<n>: a moment pattern matches by prefix, so every:drv:dish-served took both)
+    }
+    // serve-wrong (CK-31): each review face, the moment it is fully in (held 2.5 s by Cook.tasteHold, the screenshot scripts'
+    // hook, so a 2x crop of it lands): a bare moment, drv:review-face; cleared to catch the next cup's
+    if (m === "serve-wrong" && d.served && s.tasted) {
+      await p.evaluate("Cook.tasted = null").catch(() => {});
+      await mark(p, "review-face", { block: true });
+    }
     if (s.pans) for (const q of s.pans) {
       // wrong-extra-person: a poured cup that comes back empty and cold is the wrong cup being redone (CHAI-11)
       if (m === "wrong-extra-person" && d.extraDone && (d.poured[q.who] || 0) > 0 && q.poured === 0 && q.state === "cold") await this.once("wrong-redo", { settle: 400 });
@@ -128,6 +145,8 @@ export class CookPlayer {
       d.served = true;
       const w = e.swrongs[0];
       await this.tap(w.x, w.y, "look-alike, kept");
+      // the review faces at the serve hold 2.5 s (Cook.tasteHold, the screenshot scripts' hook) for drv:review-face's crop
+      await p.evaluate("Cook.tasted = null; Cook.tasteHold = 2500").catch(() => {});
       await sleep(700);
       await this.once("serve-wrong", { settle: 0 });
       this.rec.note(`serve-wrong: the look-alike put in at ${e.key} and left in`);

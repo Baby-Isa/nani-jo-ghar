@@ -755,8 +755,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // CK-21: the contact shadow on the tray's floor, falling to the right (light from the left): it reaches past the dish's
     // right side, so it shows beside the base and is not all hidden under the dish
     s.track(s.add.ellipse(x + w * 0.3, t.y - t.h * 0.08, w * 1.0, Math.max(10, h * 0.16), 0x2a1a0a, 0.3).setDepth(Cook.D.occ + 1.9 + i * 0.01));
-    s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
+    const img = s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
     trayFront(s, t);
+    // (for the test hook servedTray: each served picture with its tray, in the order drawn; evidence CK-21)
+    (Cook.servedLog = Cook.servedLog || []).push({ img, t });
     return true;
   }
   /*
@@ -778,10 +780,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const fh = Math.round(r.h / 2 + 6 * k);
     return s.track(s.add.image(0, 0, "bg-service").setOrigin(0).setScale(1 / k).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
   }
+  /** A world box as client px (the test hooks' boxes). */
+  function clientBox(x0, y0, x1, y1) {
+    const p = UI.worldToScreen(x0, y0);
+    const q = UI.worldToScreen(x1, y1);
+    return { left: p.x, top: p.y, width: q.x - p.x, height: q.y - p.y };
+  }
+  /** The i'th served picture and its tray together, client px (the test hook servedTray); null when there is none. */
+  function servedBox(i) {
+    const e = (Cook.servedLog || []).filter((x) => x.img && x.img.active)[i];
+    if (!e) return null;
+    const b = e.img.getBounds();
+    const t = e.t;
+    return clientBox(Math.min(b.x, t.x - t.w / 2), Math.min(b.y, t.y - t.h / 2), Math.max(b.right, t.x + t.w / 2), Math.max(b.bottom, t.y + t.h / 2));
+  }
   // a chai cup with no milk (CHAI-07) is served as black tea
   const servedRecipe = (d, c = 0) => Cook.Art.servedName(d.recipe, { noMilk: Array.isArray(d.cups) && !!d.cups[c] && d.cups[c].dudh === false });
   function drawServed(ctx, x0) {
     const s = S();
+    Cook.servedLog = [];
+    Cook.servedN = (Cook.servedN || 0) + 1; // (a test signal: the players' drv:dish-served)
     const n = ctx.served.length;
     // a drawn stand-in only when its picture is loaded (never Phaser's green missing-texture box on the tray)
     const prop = (key, ...rest) => (s.textures.exists(key) ? s.prop(key, ...rest) : null);
@@ -1767,6 +1785,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         box = null;
       }
       return { level: g.level, lo: g.lo, hi: g.hi, box };
+    },
+    /**
+     * TEST HOOKS (read-only; the evidence loop's crops, S06 r2): servedTray / servedTray2: the first (second) served picture
+     * on the counter with its whole tray, client px (CK-21: a glass in its tray, large enough to see in or on and the shadow
+     * side); focus: the box the station in play publishes as where the action is (Cook.focusBox: the chai tray's pan in hand,
+     * samosa's filling end of the strip), so a filmstrip is cropped there and not to the whole stage (CHAI-13, CK-27).
+     */
+    servedTray: () => servedBox(0),
+    servedTray2: () => servedBox(1),
+    focus() {
+      try {
+        const b = typeof Cook.focusBox === "function" ? Cook.focusBox() : null;
+        return b ? clientBox(b.x, b.y, b.x + b.w, b.y + b.h) : null;
+      } catch (e) {
+        return null;
+      }
     },
     /**
      * TEST HOOK (s04-hooks; read-only; PAN-08, CHAI-10): what is highlighted now: every picture wearing the
