@@ -19,8 +19,8 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 - Checks: unit 295 pass, words, bump, specs, docs all green. The tool tests are green too.
 
 **Next steps, in order** (Zafar, 14 Oct: he won't play this sprint; Opus orchestrates for token use):
-1. **Done:** Zafar answered `docs/questions.md` (14 Oct); each answer is in its doc, row or check. 16, 17, 19, 22 deferred; nothing else open. The decisions log is retired: decisions go straight into the doc they change.
-2. **Sprint 6, in the orchestrator's chat (Opus), one session at most for big pieces.** Write `docs/sprints/S06-<name>.md` first (goal, budget, these three parts):
+1. **Done:** Zafar answered `docs/questions.md` (14 Oct); each answer is in its doc. Decisions now go straight into the doc they change.
+2. **Sprint 6 is open** (`docs/sprints/S06-fix-and-guard.md`, Zafar's yes 14 Oct; ceiling $350, nothing left out for budget; all in the orchestrator's chat, Opus). Write `docs/sprints/S06-<name>.md` first (goal, budget, these three parts):
    - **Rows:** triage the open rows into code / art / Mum / Zafar (about 40 are code, including CLN-104, CLN-100, CLN-45's ear L4 and the new CK-35), then fix the code ones one mode at a time, red then green, the `judge` agent passing each picture. Art, Mum and Zafar rows go to him as one list.
    - **Checks:** build every check in `docs/process/checks-to-build.md` that code can do, top three first (red-then-green gate, publish gate, zero tolerance for clipped or scrolled text); each one's rule text leaves the file when it lands.
    - **Docs:** finish the cut-down: `find-it.md` (28k words: keep the current design, archive the three old passes); `ideas.md` to one line per idea; `art-plans/` to what the next art run needs; `qa-checklist.md` trimmed where a check covers a line; old one-off `build/*.py` scripts and old specs archived; skills' inline rule IDs; word limits for the mode and design docs.
