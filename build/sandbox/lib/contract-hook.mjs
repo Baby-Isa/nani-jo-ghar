@@ -593,7 +593,9 @@ export const CONTRACT_HOOK = `(() => {
     const pops = popupEls();
     const pop = { open: pops.length > 0, box: pops.length ? R(pops[0].getBoundingClientRect()) : null };
     if (!same("popup", pop.open)) emit({ k: "popup", ...pop });
-    const cards = sideCards();
+    // a card that carries an order (a headline or rows); one with only the guide's face and her top strip is the guide's
+    // box under R4 (the clinic's doctor card between his asks, CLN-140): his how-to line, not an order (decision 80)
+    const cards = sideCards().filter((c) => c.querySelector(".oc-headline, .oc-row, .oc-item, li"));
     const rows = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row, .oc-item, li").length, 0);
     const done = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row.done, .oc-item.done, .done, .ticked, .is-done").length, 0);
     // closed: the card is closed (from L3 the call is heard, not read: OrderCard's "closed", folded or peeking)
