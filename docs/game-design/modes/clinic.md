@@ -225,6 +225,8 @@ Each game is a close-up (knee, arm, ear, mouth, eye, foot) over the blurred bed.
 - **The swirl** (which foot) goes; the patient says which foot.
 
 ### Tummy, hic, hair
+
+**Hic's ladder (Zafar, 14 Oct):** level 1 keeps sips 1-5 (narrowing to 1-3 lifts the blind-guess chance to ~11%, over the 10% leak limit); its L2 adds the fill step.
 Unchanged for now (CQ14). Zafar looks at them in the prototype round.
 
 ---

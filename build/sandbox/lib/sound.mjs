@@ -217,7 +217,9 @@ export function classify(p) {
   const url = String(p.url || "").split("?")[0];
   if (fam.has(url)) {
     const e = fam.get(url);
-    return { kind: e.checked === "ok" ? "family-ok" : e.checked === "redo" ? "family-redo" : "family-unchecked", speaker: e.speaker, id: e.id, text: e.kutchi, file: url };
+    // the same OK set as js/core/voice.js chooseClip: ok, ok-zafar (picked by Zafar, decision 67), ok-auto (decision 70; Zafar,
+    // 14 Oct: all 263 play until his re-recording)
+    return { kind: ["ok", "ok-zafar", "ok-auto"].includes(e.checked) ? "family-ok" : e.checked === "redo" ? "family-redo" : "family-unchecked", speaker: e.speaker, id: e.id, text: e.kutchi, file: url };
   }
   if (tts.has(url)) return { kind: "tts", text: tts.get(url), file: url };
   if (/assets\/audio\/cook-tts\//.test(url)) return { kind: "tts", text: url.split("/").pop().replace(/\.mp3$/, ""), file: url };

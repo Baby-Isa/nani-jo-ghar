@@ -8,7 +8,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 - Discuss first; propose, wait for an explicit go, then act. Approval for one thing is not approval for the next. Never launch while a question to him is open; an agreed overnight run goes ahead.
 - Work in sprints (`/sprint`): one to three days, one goal he can play, a budget; `/review` and publish at the end. Steer new work into a sprint.
-- Small fixes happen in the orchestrator's chat (red then green, an independent judge, Zafar sees the picture); build sessions only for big pieces.
+- Work runs in the orchestrator's chat and its subagents, so nothing stalls on a permission prompt (Zafar, 14 Oct).
 - Decisions go to him as a numbered list, each with a recommendation, answerable "yes to all except …".
 - When he says more is coming, collect and list; plan nothing. Improve on his ideas: research, push back where warranted.
 - Short, plain replies; don't assume he remembers IDs. Hand him exactly what to do, ready to paste. Every launch: a model, effort and cost.
@@ -20,7 +20,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 2. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his explicit OK.
 3. **Fix it properly, once.** Every genuine thing still to fix is on the fix list (`docs/process/regressions.md`); done rows stay checked and come back if they fail.
 4. **Never invent Kutchi.** Mum is the authority (Masi second opinion; Zafar confirms spellings). Two AIs agreeing is not evidence. Missing Kutchi is its English in grey italic, tagged "to record" in the markup only (no visible flag; decision 84).
-5. **No written English for the child, ever.** Spoken English is allowed only in story mode, said first and then repeated in Kutchi where needed, mainly early on to carry longer exposition; keep it rare with simple lines and visuals. Games and help use no English at all. Written English for grown-ups lives only in the "?" pop-up.
+5. **No written English for the child, ever.** Spoken English is allowed only in story mode, said first and then repeated in Kutchi where needed, mainly early on to carry longer exposition; keep it rare with simple lines and visuals. Games and help use no English at all. Written English for grown-ups lives only in the "?" pop-up and the end-of-round review (Zafar, 14 Oct).
 6. **Pass the Kutchi leak test:** someone who knows no Kutchi can't win by reading, matching, eliminating, patterns or waiting.
 7. **Done means an independent picture, not tests passed.** Red then green: the row's check fails before the fix and passes after, and a judge who isn't the builder (the `judge` agent) passes the picture, flaws first.
 8. **The same shared screens and buttons in every mode,** from `js/shared/`, never restyled per mode.
@@ -29,7 +29,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 11. **Every line is a full, natural sentence built by the language engine, and every word the child hears is a real family voice.** The most frequent phrases (found by statistical analysis of simulated play) are recorded whole; the rest are assembled from recorded words. Never hand-written fragments or hand fixes: if the engine can't say it, report the gap.
 12. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can take it back until Done.
 13. **Art is made in ChatGPT runs that Zafar supervises** (decision 77): Claude plans the run and writes one paste block; he runs it and approves what lands; Claude judges, cuts and wires. No image-API art without his say-so.
-14. **Sessions:** one build session at a time, two at most on different files; no helper sessions; complete briefs (`/brief`). A build session pushes its branch only and runs fast checks; the orchestrator alone runs the full check and publishes (`/publish`).
+14. **Sessions:** builders are in-chat subagents in their own worktrees, two at most on different files; they never judge their own work or push; the orchestrator judges, merges, runs the full check and publishes (`/publish`).
 15. **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
 16. **The family is Khoja Shia Ithna'asheri Muslim** (internal note only; never named in anything players or the public read): halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
 
