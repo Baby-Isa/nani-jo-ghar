@@ -602,6 +602,60 @@
    ],
    "expect": null,
    "note": "fever L1 count rows tick as each change goes in (and foot, drinks, boing: same probe in their rows)"
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "foot L1: each count row ticks or counts up as its step goes in (the salt spoons, the splinters)",
+   "max": 8
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "the soothing drinks (taste) L1: each row ticks or counts up as its thing goes in",
+   "max": 8
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "boing L1: the wipes and the drops count up on their rows as each goes in",
+   "max": 8
   }
  ],
  "SH-11": [
@@ -3051,34 +3105,54 @@
    "note": "the chai strip's small jars the same"
   }
  ],
- "PAN-10": {
-  "needsDecision": "Pantry wording: card *Muke de* + items, Nani's box the task (*Muke chai lai de*, to check with Mum): waits for Mum's Round 5 (decision 83). The code part is built (S06): L1 one item at a time after the card is read once; from L2 her box folded to her face, a tap opens the fuller instruction (its English, grey italic, to record)",
-  "probes": [
-   {
-    "flow": "cook:fetch",
-    "path": "fair",
-    "level": [
-     1,
-     2,
-     3
-    ],
-    "sizes": [
-     "1366x768"
-    ],
-    "profile": "seen",
-    "want": null,
-    "at": "kind-tap",
-    "after": null,
-    "capture": [
-     "crop:#side",
-     "voice",
-     "dom:.njg-guide"
-    ],
-    "expect": null,
-    "note": "L1: the card read once (the request pop-up), then Nani names each thing as the child goes (her box open); L2+: her box folded to her face and tools (no line), a tap on it opens the fuller instruction for 5 s"
-   }
-  ]
- },
+ "PAN-10": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#side",
+    "voice",
+    "dom:#side"
+   ],
+   "expect": null,
+   "note": "Zafar, 14 Oct: no folded second Nani box from L2 (R4: one face); her line is her card's top strip (.oc-strip) at every level. L1: the card read once (the request pop-up), then she names each thing as the child goes; L2-L3: the same one face, her line in the strip. The Kutchi waits on Mum's Round 5: the strip's line is its English in grey italic (to record)"
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:20"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-20 (one face per person, R4) over the pantry at L1-L3: Nani's face once (no folded box beside her card)"
+  }
+ ],
  "PAN-11": [
   {
    "flow": "cook:fetch",
