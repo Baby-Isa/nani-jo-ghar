@@ -259,3 +259,11 @@ test("contract-21 input live (checks-to-build 20): a tap in the play area while 
   assert.equal(run([tap(2000, { play: false })]).length, 0, "outside the play area");
   assert.equal(run([tap(2000, { exp: { clinic: { kind: "wait" } } })]).length, 0, "the game expected nothing");
 });
+
+test("contract-18: a hidden count written in as it is heard is not a change of words; another change is", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const run = (a, b) => analyse({ flow: "cook:chai-tray@L3", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "chai", t: 1000 }, { type: "c", k: "rows", t: 1200, list: [{ id: "k1", text: a }] }, { type: "c", k: "rows", t: 1400, list: [{ id: "k1", text: b }] }] }, { lexicon: new Set(), numbers: new Set() }).filter((x) => x.check === "contract-18");
+  assert.equal(run("••• khun", "ba khun").length, 0);
+  assert.equal(run("ba •••", "ba bataata").length, 0);
+  assert.equal(run("ba khun", "trae khun").length, 1);
+});

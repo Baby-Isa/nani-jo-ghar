@@ -565,8 +565,9 @@ export const CONTRACT_HOOK = `(() => {
       const b = el.getBoundingClientRect();
       if (b.width < 1 || b.height < 1 || b.right < 0 || b.bottom < 0 || b.left > innerWidth || b.top > innerHeight) continue;
       if (t.toLowerCase() === "to record") continue;
-      const grown = !!el.closest("[class*='help'], [id*='help'], [class*='grown'], [class*='lab-'], [id*='lab'], [data-lab], .njg-act, [role='dialog'][aria-label*='elp']");
-      const rec = !!el.closest(".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line");
+      // a developer lab page (lab/*.html, labs.html) is for grown-ups throughout, not the child
+      const grown = location.pathname.includes("/lab/") || location.pathname.includes("labs.html") || !!el.closest("[class*='help'], [id*='help'], [class*='grown'], [class*='lab-'], [id*='lab'], [data-lab], .njg-act, [role='dialog'][aria-label*='elp']");
+      const rec = !!el.closest(".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line, .rs-ph, .rs-ph-in, .rs-rec");
       // .rs-en and the steps page's small English: the end-of-round review shows each word's English under it (ui-design-system §6, §6a), pending Zafar's answer (docs/questions.md, 14 Oct)
       const en = !!el.closest(".english, .cl-row-en, .bulb-en, [data-bulb-en], .rs-en, .rs-step-text small");
       const key = t + "|" + rec + en + grown;
