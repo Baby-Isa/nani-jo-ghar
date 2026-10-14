@@ -11800,7 +11800,7 @@
  "DAAR-23": [
   {
    "flow": "cook:chop",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -11813,7 +11813,7 @@
     "crop:#mission"
    ],
    "expect": null,
-   "note": "every slice: a row highlights when its count has been cut (ba dungri at the second onion), not before, not never",
+   "note": "every slice, at a child's pace (speed 1): a row highlights when its count has been cut (ba dungri at the second onion), not before, not never. At the sandbox's test speed 3 each blocking capture let about three throws fly by uncut (a wanted vegetable flies its count plus two spares), so the player landed 1 of 5 and no row reached its count (S05-C3's tool gap); at speed 1 a capture costs under one throw",
    "max": 14
   }
  ],
