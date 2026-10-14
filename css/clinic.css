@@ -180,6 +180,12 @@ body.clinic button { font-family: inherit; color: inherit; }
   .cl-card-face, .cl-card-speak, .cl-bulb { width: 36px; height: 36px; }
   .cl-side .cl-tray .cl-dish { height: 44px; }
 }
+/* CLN-151: a short landscape phone lays the sidebar's tray in a row (three to a line) so the doctor's card above it
+   keeps room for its rows (the hair game's card scrolled at 800x360: 140>66 once his face and strip are on it) */
+@media (orientation: landscape) and (max-height: 420px) {
+  .cl-side .cl-tray { flex-direction: row; flex-wrap: wrap; gap: var(--njg-s1); }
+  .cl-side .cl-tray .cl-dish { flex: 1 1 calc((100% - 2 * var(--njg-s1)) / 3); width: auto; min-width: var(--njg-tap); }
+}
 @media (prefers-reduced-motion: reduce) {
   .cl-row.pulse, .cl-dish.pulse, .cl-go:not(.njg-btn).throb, .cl-fig .fig-swirl { animation: none; }
 }
