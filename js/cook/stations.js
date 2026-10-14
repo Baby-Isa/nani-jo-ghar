@@ -423,6 +423,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const top = st.length ? st[st.length - 1] : null;
       st.forEach((g) => g !== top && g.obj.glowFx && this.glowDraw(g.obj, false));
       if (top && (!top.obj.glowFx || top.obj === obj)) this.glowDraw(top.obj, true, top.opts);
+      // CK-41: and the ✓'s glow waits while a picture glows (one highlight at a time, the DOM's and the canvas's together)
+      if (Cook.UI && Cook.UI.holdDone) Cook.UI.holdDone(top ? top.obj : null);
     }
     /** The glow itself, drawn or taken off (glow() decides which one shows). */
     glowDraw(obj, on = true, { bounce = false } = {}) {

@@ -2498,22 +2498,42 @@
   };
   let doneResolve = null;
   let doneGlowT = null;
+  /*
+   * CK-41 (decision 95, contract-8: one highlight at a time): the ✓'s glow is what the station wants (doneWant); it shows
+   * only while no picture in the scene glows (the scene's glow stack, stations.js glow(), holds it: UI.holdDone). Roll-tawa's
+   * ✓ lit at the count while the tawa's raw chapati glowed to be flipped, both for 300 ms; the ✓ now waits for the flip
+   */
+  let doneWant = false;
+  let heldBy = null; // the picture glowing now (a picture gone with its station holds nothing)
+  const doneGlowNow = () => {
+    const b = $("#done-btn");
+    const held = !!(heldBy && heldBy.active && heldBy.scene);
+    if (b) b.classList.toggle("glow", doneWant && !held);
+  };
+  UI.holdDone = (obj) => {
+    heldBy = obj || null;
+    doneGlowNow();
+  };
   UI.done = function (opts = {}) {
     const b = $("#done-btn");
     b.classList.remove("hidden");
-    b.classList.toggle("glow", !!opts.glow);
+    doneWant = !!opts.glow;
     // SH-58 (C8, D5): when the ✓ is the only thing left it glows (the first plays of a station:
     // its first five rounds), not only in a guided round
     clearTimeout(doneGlowT);
     // (S05-C, S's request: at once, the moment it is the only thing left, as every other focal glow; a play counts
     // once per order, however often a station shows its ✓: chai's showed it on every refresh, so the five plays were
     // used up in the first round)
-    if (opts.glow !== false && UI.doneGlows()) b.classList.add("glow");
+    if (opts.glow !== false && UI.doneGlows()) doneWant = true;
+    doneGlowNow();
     return new Promise((resolve) => {
       doneResolve = resolve;
     });
   };
-  UI.glowDone = (on) => $("#done-btn").classList.toggle("glow", on);
+  UI.glowDone = (on) => {
+    doneWant = !!on;
+    doneGlowNow();
+  };
   /** SH-58: still in a station's first plays (its first five orders), when a lone ✓ glows. Counted once per order. */
   const doneCounted = new WeakSet();
   UI.doneGlows = function () {
