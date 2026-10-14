@@ -82,8 +82,9 @@
       fig.swirl(plan.part, plan.side, false);
       // T30 / CLN-86: her bubbles from her face (the art's mouth), his from him
       Kit.Voice.speakers.patient = () => (art && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
-      // T22: the doctor is on screen, so he talks in bubbles; the card's headline says the job, the box stays empty
-      screen.setNani(null);
+      // T22 / CLN-140 (Zafar, 14 Oct, R4 in the clinic): the doctor is on screen, so he talks in bubbles; his card says the
+      // job as its headline, and its top strip keeps his line for the step now (the room's: [Where does it hurt?], [Let's
+      // have a look]; S.room set it), as in every stage
       const top = h("div", "cl-fx", stage);
       const at = (part, side) => fig.hotspot(part, side, stage);
       // the face parts answer only in the close-up: the magnifier toggles it (the head frames the face)

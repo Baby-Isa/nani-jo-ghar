@@ -159,6 +159,7 @@
     "why-pharmacy": { "kutchi": "[Bring me...]", "english": "Bring me..." },
     "lookhere": { "kutchi": "[Let's have a look]", "english": "Let's have a look" },
     "bringme": { "fn": "BringMeA", "kutchi": "[Bring me] {a}", "english": "Bring me {a}" },
+    "bring-these": { "lex": "phrase.bring-me-these", "english": "Bring me these", "_src": "CLN-140 (Zafar, 14 Oct, R4 as Nani's pantry list): the pharmacy card's goal headline, the same engine phrase as Nani's pantry card (Muke de, to record), the items its rows; 'Bring me' alone read as a fragment" },
     "saybye": { "kutchi": "[Say bye.]", "english": "Say bye." },
     "howfeel": { "kutchi": "[How do you feel?]", "english": "How do you feel?" },
     "onemore": { "kutchi": "[One more thing]", "english": "One more thing" },

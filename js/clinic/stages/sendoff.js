@@ -135,7 +135,9 @@
       showFeel(null);
       // 13e: no card listing every line up front (no script cards, UX 16): the doctor's box says the one
       // line now; the scene makes the rest clear
-      screen.card.setTitle("", null);
+      // CLN-140 (Zafar, 14 Oct, R4 in the clinic): his one card still says the goal, his own question [Is everything okay
+      // now?], as its headline (his face on it, his step line, [Pick how she feels] at L1, as its strip)
+      screen.card.setTitle(S.line(env, "okay-now"), null);
       screen.card.setRows([]);
 
       const rowOf = (id) => plan.rows.find((r) => r.id === id);

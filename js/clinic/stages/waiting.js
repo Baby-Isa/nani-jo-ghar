@@ -176,8 +176,11 @@
       // S04-F1 (decision 53, CLN-84): the call first, in the shared pop-up, read out (a tap skips it); it folds into
       // the sidebar and the room is quiet. The pop-up shows the card exactly as the sidebar will: closed from level 3,
       // and at level 1 the same face-only card (decision 74)
-      await S.requestPopup(screen, { reason: "clinic:waiting", title: "", rows: plan.card, closed });
-      await S.request(screen, { title: "", rows: plan.card, closed, onPeek: () => screen.peek("waiting-card"), look: "bulb", read: false }); // S02-A hook: decision 57
+      // CLN-140 (Zafar, 14 Oct, R4 in the clinic): his card's goal headline is his question, [Who's next?] (said just above:
+      // the pop-up reads only the rows)
+      const head = S.line(env, "why-waiting");
+      await S.requestPopup(screen, { reason: "clinic:waiting", title: head, rows: plan.card, closed, readTitle: false });
+      await S.request(screen, { title: head, rows: plan.card, closed, onPeek: () => screen.peek("waiting-card"), look: "bulb", read: false }); // S02-A hook: decision 57
       let callIdx = 0;
       const rows = plan.rows;
       const W4 = plan.variant === "W4";
