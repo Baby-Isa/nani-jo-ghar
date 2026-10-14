@@ -535,9 +535,16 @@
       root.FitText.run(page);
       if (!box) return;
       const wrapped = [...box.querySelectorAll(".rs-en > .fit")].some((f) => f.style.whiteSpace === "normal");
-      if (!wrapped) return;
-      box.classList.add("gloss-under");
-      root.FitText.run(page);
+      if (wrapped) {
+        box.classList.add("gloss-under");
+        root.FitText.run(page);
+      }
+      // CLN-153 (non-negotiable 9): a single word too long for its tile even at the 14 px floor ("thermometer" at 800x360,
+      // three to a row in its half) was broken across two lines (fit.js's last resort). Its tile takes two columns
+      // instead (the grid fills the gap behind it), and the word fits whole
+      const broken = [...box.querySelectorAll(".rs-word")].filter((t) => !t.classList.contains("wide") && [...t.querySelectorAll(".fit")].some((f) => f.style.overflowWrap === "break-word"));
+      broken.forEach((t) => { const col = t.closest(".rs-words-col"); if (col && +getComputedStyle(col).getPropertyValue("--rs-cols") > 1) t.classList.add("wide"); });
+      if (broken.some((t) => t.classList.contains("wide"))) root.FitText.run(page);
     }
     // decision 93 (SH-44): the steps are their own page (no tap on the tick badge, no overlay). Non-negotiable 9: a card
     // that would still pass the screen shrinks the list as a whole, as the request pop-up does; never an inner scroll
