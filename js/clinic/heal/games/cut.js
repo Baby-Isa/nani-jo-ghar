@@ -1221,7 +1221,7 @@
         // SH-40: the next action (a plaster) closes this step from level 2: no ✓
         ctx.tally("cloth", st.dabs, { next: "pl-", of: c.count }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (ctx.level === 1 && st.dabs >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
+        if (ctx.level === 1 && st.dabs >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450, c.id);
       }
     });
     ctx.on(S.svg, "pointermove", (e) => {

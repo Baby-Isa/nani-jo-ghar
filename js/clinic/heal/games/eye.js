@@ -702,7 +702,7 @@
       if (soreEl && eyesArt) soreEl.setAttribute("opacity", Math.min(1, 0.34 * st.drops));
       else if (soreEl) soreEl.setAttribute("opacity", Math.max(0.08, 0.55 - 0.18 * st.drops));
       // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
-      if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900);
+      if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900, "drops");
       // EY6 (CLN-107): from level 2, once a drop is in, a "to the eye test" button comes up bottom right like every
       // other stage's (a picture of the chart, no words), never a flashing chart in the corner
       if (P.level >= 2 && !testBtn) {

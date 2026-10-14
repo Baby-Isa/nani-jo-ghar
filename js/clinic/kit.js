@@ -592,7 +592,8 @@
     const items = [];
     const groups = {};
     // CLN-54 (P47): a row marked `head` names its `seq` group (a drink, its recipe rows under it: the order card's
-    // item with parts); the group's parts are marked on the row the child is on (now), never ticked one by one
+    // item with parts); the band marks the part the child is on (now), and each part ticks as its own step is done (SH-10:
+    // a nested part is a step, not a count; the game ticks it), the name's row when the whole thing is
     let headed = false;
     rows.forEach((r) => {
       const g = r.seq || (this.isOrdered ? "__all" : null);
