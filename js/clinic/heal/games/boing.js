@@ -442,11 +442,28 @@
         ctx.tally("cotton", st.wipes, { next: "lever", of: c.count }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
         if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
-        shine.setAttribute("opacity", Math.min(0.3, st.wipes * 0.08));
-        // B4: the wipe in the hand sweeps across the spot (a wipe, not a dab)
-        const w = s("image", { href: wipeArt && Kit ? Kit.url(wipeArt) : WIPE_SVG, x: A.x - 34, y: A.y - 34, width: 68, height: 68 }, S.fx);
-        if (w.animate) w.animate([{ transform: "translate(-40px, 6px) rotate(-8deg)" }, { transform: "translate(40px, -6px) rotate(8deg)" }, { transform: "translate(-20px, 4px) rotate(-4deg)" }], { duration: fast() ? 60 : 450, fill: "forwards" });
-        ctx.after(fast() ? 80 : 480, () => w.remove());
+        // B4 (CLN-106, S06): the wipe in the hand rubs to and fro across the spot, twice, for about a second (a wipe, not
+        // a dab: it was one 450 ms sweep, over before anyone saw it, and only a grey smudge stayed); the skin it passes
+        // over shines wet, a sheen that follows the wipe and settles (the spot cleaner with each wipe)
+        const sheen = Math.min(0.3, st.wipes * 0.08);
+        const dur = fast() ? 60 : 1000;
+        const w = s("image", { href: wipeArt && Kit ? Kit.url(wipeArt) : WIPE_SVG, x: A.x - 34, y: A.y - 40, width: 68, height: 68 }, S.fx);
+        if (w.animate) {
+          w.animate(
+            [
+              { transform: "translate(-58px, 8px) rotate(-12deg)", opacity: 0 },
+              { transform: "translate(-52px, 7px) rotate(-11deg)", opacity: 1, offset: 0.08 },
+              { transform: "translate(52px, -6px) rotate(10deg)", offset: 0.36 },
+              { transform: "translate(-46px, 6px) rotate(-9deg)", offset: 0.64 },
+              { transform: "translate(46px, -5px) rotate(9deg)", opacity: 1, offset: 0.9 },
+              { transform: "translate(40px, -4px) rotate(8deg)", opacity: 0 },
+            ],
+            { duration: dur, fill: "forwards", easing: "ease-in-out" }
+          );
+          shine.animate && shine.animate([{ opacity: Math.max(sheen, 0.12) * 0.4 }, { opacity: Math.min(0.5, sheen + 0.22), offset: 0.6 }, { opacity: sheen }], { duration: dur + 200, fill: "none" });
+        }
+        shine.setAttribute("opacity", sheen);
+        ctx.after(dur + 40, () => w.remove());
         S.face("happy", 400);
       } else if (c.kind === "plaster" && /^plaster-/.test(S.sel || "") && Math.hypot(p.x - A.x, p.y - A.y) < 70) {
         // B6: the plaster she was given (the picture of the one picked)
