@@ -1837,17 +1837,17 @@
   "date": "2026-10-13"
  },
  "CLN-148": {
-  "hash": "db6ec4fa9b9ae9e4ee55",
+  "hash": "15403773efca0ead1807",
   "dhash": [
    "15c9878101010181"
   ],
-  "verdict": "FAIL",
-  "line": "A, frame 5 (\"Switch on ceiling fan\") shows the card cut off just below the arrow: the inner list and the outer card have no bottom border, unlike frame 4, so the card does not fit whole at 800x360; the .md also records no layout-lint scroll-container result",
+  "verdict": "PASS",
+  "line": "A, frame 5 (\"Switch on ceiling fan\" placed, 800x360) shows the whole sidebar card with both bottom borders (inner list and outer card) below the arrow and clear space above the \"?\" button, no scrollbar; the \"Switch on ceiling fan\" row wraps to two lines without clipping; the probe records \"whole, no scroll\" at all 5 changes. Flaws noted: none blocking; the card text is grey-italic English (to-record, decision 84) and the frame 2 header is drawn fainter than the others.",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-001722-cc1",
-  "commit": "9376780",
-  "png": "build/screenshots/evidence/ev-20261014-001722-cc1/CLN-148.png",
+  "run": "ev-20261014-003211-we8",
+  "commit": "c99fba0",
+  "png": "build/screenshots/evidence/ev-20261014-003211-we8/CLN-148.png",
   "date": "2026-10-14"
  },
  "CLN-17": {

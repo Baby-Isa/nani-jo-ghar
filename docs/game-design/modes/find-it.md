@@ -216,7 +216,7 @@ This is round three or four for a new player (the first ever round is P5's ninet
 
 ---
 
-> The older passes (the pipeline design, the deep dive, the original sections 1-8 and their Sources) are in `docs/archive/modes/find-it-old-passes.md`. Where the header above says they are superseded, this file now wins. Section ids like P6, D5 or 8.2 in code comments point to that archive.
+> The older passes (the pipeline design, the deep dive, the original sections 1-8 and their Sources) are in `docs/archive/modes/find-it-old-passes.md`. Where the header above says they are superseded, this file now wins; the parts it does not replace still hold (the pipeline P1, research P4, stitching P5, what survives P6, words P7, decisions P9, and sections 4 scenes and 5 learning design), so read them there before building Find it. Section ids like P6, D5 or 8.2 in code comments point to that archive.
 
 ---
 
