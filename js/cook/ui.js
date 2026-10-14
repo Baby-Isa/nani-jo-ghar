@@ -538,7 +538,35 @@
     if (OCard() && OCard().setStrip) OCard().setStrip(c, mission.strip);
   };
   /** R4 (S02-B, T12): while Nani asks on a card of her own (daar's chop list) her box keeps only its tools (one face). */
-  UI.guideStrip = (on) => guide && guide.strip && guide.strip(!!on || !!(mission && mission.stripMode));
+  let stationStrip = false;
+  let peekFolded = false;
+  const applyStrip = () => guide && guide.strip && guide.strip(stationStrip || peekFolded || !!(mission && mission.stripMode));
+  UI.guideStrip = (on) => {
+    stationStrip = !!on;
+    applyStrip();
+  };
+  /**
+   * CK-38: while a peek holds a closed card open on a sidebar too short for it (sekelo L3: both skewers at 800x360), her
+   * box folds to its tools (no face, no line), so the card fits; it comes back as the peek ends (checkFit, below)
+   */
+  const peekFold = (side) => {
+    const peeking = !!document.querySelector("#mission .oc-card.peek");
+    if (!peeking) {
+      if (peekFolded) {
+        peekFolded = false;
+        applyStrip();
+        side.classList.remove("peek-fold");
+      }
+      return;
+    }
+    if (side.scrollHeight <= side.clientHeight + 1) return;
+    // one step at a time (each change asks again): her box to its tools, then (the card already in pills) the rail's
+    // buttons step out for the peek's few seconds
+    if (!peekFolded) {
+      peekFolded = true;
+      applyStrip();
+    } else if ((mission.compact || 0) >= 3) side.classList.add("peek-fold");
+  };
   /** The station (or station:phase) whose instruction the box shows. */
   UI.guideFor = function (key) {
     guideKey = key || null;
@@ -956,7 +984,9 @@
     // R4: Nani asking herself (the pantry list): one face, her line as the card's strip
     mission.stripMode = who === "nani";
     mission.strip = null;
-    if (guide && guide.strip) guide.strip(mission.stripMode);
+    stationStrip = peekFolded = false; // a new order: no station card or peek folds her box (CK-38)
+    applyStrip();
+    if ($("#side")) $("#side").classList.remove("peek-fold");
     if (UI.stepDone) UI.stepDone();
     // Nani's box: a new order, so no station's instruction yet
     if (UI.guideFor) UI.guideFor(null);
@@ -1710,6 +1740,7 @@
     const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame || ((f) => setTimeout(f, 16));
     raf(() =>
       raf(() => {
+        if (mission && side.clientHeight > 0) peekFold(side); // CK-38: a peek on a short sidebar folds her box meanwhile
         if (!mission || (mission.compact || 0) >= 3 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
         if (side.scrollHeight <= side.clientHeight + 1) return;
         // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face,
