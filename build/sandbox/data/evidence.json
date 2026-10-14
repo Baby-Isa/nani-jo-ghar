@@ -12429,6 +12429,27 @@
    "max": 4
   }
  ],
+ "CK-35": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_cook_levels.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the level data test for the boil and tawa windows (data/cook.json, read as Mech.knobs reads it): level 1 at least 1.6 s (boil) and 1.3 s (tawa, and the maani station's tawa), each level above about 15% quicker (0.7x-0.87x), the chai tray's own windows unchanged"
+  }
+ ],
  "CLN-143": [
   {
    "flow": "clinic:heal-eye",

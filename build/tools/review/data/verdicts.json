@@ -1006,6 +1006,17 @@
   "commit": "7ebd7d7",
   "date": "2026-10-13"
  },
+ "CK-35": {
+  "hash": "3562af10ce3c4586822e",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/test_cook_levels.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-004448-y12",
+  "commit": "beacbea",
+  "date": "2026-10-14"
+ },
  "CK-TAB-01": {
   "hash": "2f582bbe2b379cf77a54",
   "dhash": [
