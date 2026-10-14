@@ -13,10 +13,11 @@
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
 //   k: "art"     {src, via, key}           an image drawn for the first time in this stage (canvas drawImage, Phaser
 //                                          texture, <img>, CSS background)
-//   k: "input"   {x, y, on, exp, popup, poses}   a real tap or press (trusted pointerdown): what it landed on, what the
+//   k: "rows"    {list: [{id, key, text, done, en}]}   each sidebar card row: its key, words and tick (contract-18)
+//   k: "input"   {x, y, on, play, exp, popup, poses}   a real tap or press (trusted pointerdown): what it landed on (play: in the play area), what the
 //                                          game expected then, the staged talkers' poses (data-pose) at that moment
-//   k: "life"    {what, reason, at}        an entry of the shared lifecycle's own log (window.Lifecycle.log: request,
-//                                          advance, stage-end, results) at its own time (at), not the sampler's
+//   k: "life"    {what, reason, at, step?, during?, by?}   an entry of the shared lifecycle's own log (window.Lifecycle.log:
+//                                          request, advance, stage-end, results, step-close, act) at its own time (at), not the sampler's
 //   k: "hl"      {n, list}                 the next-thing highlights on screen: Cook's glowing pictures (glowFx), the
 //                                          clinic's next-up / pulsing tools (one group per tool family: the plasters)
 //   k: "wrap"    {n, list}                 words whose letters sit on two lines in a card (.oc-card, the request card, a word tile)
@@ -317,7 +318,7 @@ export const CONTRACT_HOOK = `(() => {
   const lifeLog = () => {
     const L = window.Lifecycle && window.Lifecycle.log;
     if (!L || !L.length) return;
-    for (const x of L) { if (!x || typeof x !== "object" || lifeSeen.has(x)) continue; lifeSeen.add(x); emit({ k: "life", what: String(x.what || ""), reason: String(x.reason || ""), at: +x.t || Date.now() }); }
+    for (const x of L) { if (!x || typeof x !== "object" || lifeSeen.has(x)) continue; lifeSeen.add(x); const e = { k: "life", what: String(x.what || ""), reason: String(x.reason || ""), at: +x.t || Date.now() }; if (x.step != null) e.step = String(x.step); if (x.during != null) e.during = !!x.during; if (x.by != null) e.by = String(x.by); emit(e); }
   };
 
   // ---- the next-thing highlight: Cook's glowing pictures (the shared glow, glowFx), the clinic's next-up and pulsing tools
@@ -351,7 +352,7 @@ export const CONTRACT_HOOK = `(() => {
       while ((t = w.nextNode())) {
         const txt = t.nodeValue;
         if (!txt.trim() || (t.parentElement && t.parentElement.closest("[hidden], .hidden"))) continue;
-        const re = /\S+/g;
+        const re = /\\S+/g; // (\\S: inside this template string a single backslash is lost and the pattern matched only capital S)
         let m;
         while ((m = re.exec(txt))) {
           if (m[0].length < 4 || /[-\u2013]/.test(m[0])) continue; // a hyphen may break a word
@@ -599,6 +600,10 @@ export const CONTRACT_HOOK = `(() => {
     const words = cards.flatMap((c) => [...c.querySelectorAll(".oc-row .oc-t, .oc-item .oc-t, .oc-row, li")].filter(shown).map((x) => (x.textContent || "").trim().slice(0, 40))).filter(Boolean).slice(0, 24);
     const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, words: [...new Set(words)] };
     if (!same("side", sd)) emit({ k: "side", ...sd });
+    // contract-18: each sidebar card row, by its key (the order card's data-key, the clinic's data-row) or its place, with its
+    // words (the Kutchi line, not the bulb's English beside it) and whether it is ticked; en: the card shows the bulb's English
+    const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english") }; }));
+    if (!same("rows", rl.map((x) => x.id + "|" + x.text + "|" + x.done + "|" + x.en))) emit({ k: "rows", list: rl });
     const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()) }));
     if (!same("buttons", bl.map((b) => b.sel))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
     const tx = safe(texts, []);
@@ -632,7 +637,7 @@ export const CONTRACT_HOOK = `(() => {
       if (!ev.isTrusted) return;
       const t = ev.target;
       const btn = t && t.closest ? t.closest("button, " + BTN) : null;
-      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage });
+      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), play: !!(t && t.closest && t.closest(".njg-play, [data-njg-play], #stage, .cl-stage, .hs-root")), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage });
     } catch (e) {}
   }, true);
 })();`;

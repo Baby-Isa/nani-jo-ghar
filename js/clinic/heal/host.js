@@ -537,6 +537,8 @@
         setRows: (rows) => card.setRows(rows),
         tick: (rowId) => {
           if (rowId === card.st.now) showDone(false);
+          // checks-to-build 6 (contract-18): the game closed this step (its row ticks now)
+          if (global.Lifecycle && global.Lifecycle.note && card.row(rowId) && !card.isTicked(rowId)) global.Lifecycle.note("step-close", { step: rowId, by: "heal" });
           card.tick(rowId);
         },
         pulse: (rowId, on) => card.pulse(rowId, on),
@@ -736,7 +738,15 @@
         timers.add(t);
         return t;
       },
-      on(el, type, fn, o) {
+      on(el, type, fn0, o) {
+        // checks-to-build 20 (contract-21): a tap or press the host hands to the game is logged as it runs, with whether a
+        // voice was speaking then (input never waits for the voice: D8, E5)
+        const fn = /^(pointerdown|pointerup|click|mousedown|touchstart)$/.test(type)
+          ? function (ev) {
+              if (ev && ev.isTrusted && global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("act", { during: !!(Kit.Voice && Kit.Voice.busy), stage: `heal/${def.id}` });
+              return fn0.apply(this, arguments);
+            }
+          : fn0;
         el.addEventListener(type, fn, o);
         listeners.push([el, type, fn, o]);
       },

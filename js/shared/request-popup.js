@@ -23,6 +23,8 @@
  *                                   channels and <audio>, the clinic's Kit.Voice, Cook's read-along), so one stop silences
  *                                   everything: voice.stop(reason) voice.gen() voice.track(audio, onCut) voice.onStop(fn)
  *   Lifecycle.onStageEnd(fn) -> off()   Lifecycle.log   (what happened when: {what, reason, t}; the contract checks read it)
+ *   Lifecycle.note(what, info)      TEST HOOK (only logged): {what, ...info} in Lifecycle.log: "step-close" {step} (the order
+ *                                   card's tick, the heal host; contract-18), "act" {during} (an input handed on; contract-21)
  *   Lifecycle.ghost(step, info)     TEST HOOK (only logged, s04-hooks): the ghost finger played once (Onboard's kit, Cook's
  *                                   S.ghost): {what: "ghost", reason: step, step, ...info} in Lifecycle.log, so a probe counts
  *                                   plays (SH-46, MAA-13, CLN-101) instead of catching frames
@@ -545,6 +547,19 @@
      */
     stageStart(reason) {
       note("stage-start", reason || "");
+    },
+    /**
+     * TEST HOOK (only logged; checks-to-build 6 and 20): what a game did, with its own fields, for the contract checks:
+     * {what: "step-close", step} a step closed (the shared order card's tick, the heal host), contract-18;
+     * {what: "act", during} an input the host handed to the game, during: a voice was speaking then, contract-21.
+     */
+    note(what, info) {
+      note(what, info && info.step != null ? String(info.step) : "");
+      try {
+        if (info && typeof info === "object") Object.assign(log[log.length - 1], info, { what });
+      } catch (e) {
+        /* only a log */
+      }
     },
     /** TEST HOOK (read-only for the game: only logged): the ghost finger played once; step names what it showed. */
     ghost(step, info) {

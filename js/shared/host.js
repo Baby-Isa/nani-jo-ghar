@@ -394,7 +394,11 @@ export function createHost(opts = {}) {
       onAct: () => {
         if (tAct == null) tAct = T.now();
         // E5: input is live while a line plays; the shell may cut it short (opts.onActDuringSpeech)
-        if (core.voice && core.voice.busy && core.voice.busy() && opts.onActDuringSpeech) opts.onActDuringSpeech(stageId);
+        const busy = !!(core.voice && core.voice.busy && core.voice.busy());
+        // checks-to-build 20 (contract-21): every input handed to the game is logged, with whether a voice was speaking
+        const LCa = lifecycle();
+        if (LCa && LCa.note) LCa.note("act", { during: busy, stage: stageId });
+        if (busy && opts.onActDuringSpeech) opts.onActDuringSpeech(stageId);
       },
     });
     const voice = core.voice

@@ -133,9 +133,35 @@
   };
   const tick = (on) => `<span class="oc-tk" aria-hidden="true">${on ? OC.CHECK : ""}</span>`;
 
+  // checks-to-build 6 (contract-18): a keyed row's name for the tools (data-key) and its step's name in the step-close log;
+  // a host's key object (Cook's row) gets a stable id of its own
+  const keyIds = typeof WeakMap === "function" ? new WeakMap() : null;
+  let keyN = 0;
+  const keyId = (k) => {
+    if (k == null) return null;
+    if (typeof k !== "object") return String(k);
+    if (!keyIds) return null;
+    if (!keyIds.has(k)) keyIds.set(k, `k${++keyN}`);
+    return keyIds.get(k);
+  };
+  // the tick path: a sidebar card's row drawn done for the first time is its step closing (Lifecycle.note "step-close"),
+  // kept per card in the host's fold state, so a redraw of a row already ticked logs nothing
+  function stepLog(st, id, done) {
+    if (!st || id == null) return;
+    const seen = st.ticked || (st.ticked = new Set());
+    if (!done) return seen.delete(id);
+    if (seen.has(id)) return;
+    seen.add(id);
+    const L = root.Lifecycle;
+    if (L && L.note) L.note("step-close", { step: id, by: "card" });
+  }
+
   function rowEl(node, cls, opts) {
     const r = el("div", ["oc-row", cls, node.done && !node.wrong ? "done" : "", node.next ? "next" : "", node.no ? "no" : "", node.miss ? "miss" : "", node.wrong ? "wrong" : ""].filter(Boolean).join(" "));
     r.innerHTML = `<span class="oc-t fit">${node.label == null ? "" : node.label}</span>${tick(node.done && !node.wrong)}`;
+    const id = keyId(node.key);
+    if (id != null) r.dataset.key = id;
+    if (!opts.big) stepLog(opts.fold, id, !!node.done && !node.wrong);
     if (node.key != null && opts.onEl) opts.onEl(node.key, r);
     if (opts.decorate) opts.decorate(r, node);
     return r;
