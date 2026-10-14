@@ -97,3 +97,5 @@
 {"id":"CLN-127","run":"ev-20261014-052855-o2a","event":"built","date":"2026-10-14"}
 {"id":"DAAR-25","run":"ev-20261014-062458-i3u","verdict":"FAIL","spec":"7c6ebce0852b7a1507ac","judge":"expect","date":"2026-10-14"}
 {"id":"DAAR-25","run":"ev-20261014-062618-1wr","verdict":"PASS","spec":"7c6ebce0852b7a1507ac","judge":"expect","date":"2026-10-14"}
+{"id":"SH-87","run":"ev-20261014-070005-rf2","verdict":"FAIL","spec":"2687dc7d204bf1c78979","judge":"expect","date":"2026-10-14"}
+{"id":"SH-87","run":"ev-20261014-070130-bnb","verdict":"PASS","spec":"2687dc7d204bf1c78979","judge":"expect","date":"2026-10-14"}
