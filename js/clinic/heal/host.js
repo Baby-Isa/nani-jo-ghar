@@ -393,8 +393,8 @@
     const goal = def.why && def.why.goal ? HOST.line(def.why.goal, data) : "";
     // CLN-140 (G3, T29): the doctor's box stays at the top of the sidebar as in every other stage: his face and his
     // line for the step now live there (he's off screen), so the card carries no second face of his (R4, one face per
-    // person): the card is the goal and the steps. The parked games keep their old card (face, no goal headline).
-    card.setTitle(v2 ? goal : "", v2 ? null : face);
+    // person): the card is the goal and the steps. The parked games keep their goal in his box (no headline).
+    card.setTitle(v2 ? goal : "", null); // CLN-149: the parked games too (their goal is in his box)
     if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then

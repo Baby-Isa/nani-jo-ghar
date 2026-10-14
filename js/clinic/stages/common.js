@@ -272,7 +272,9 @@
     card.closed = closed ? { onPeek, look } : null;
     card.fold = {};
     card.titleText = title || "";
-    card.faceEl = face || S.doctorFace();
+    // CLN-149 (R4, one face per person): the doctor is the guide and the asker, so his face shows once, in his box at
+    // the top (screen.js); his own sidebar card carries no second face. A card for someone else keeps their face.
+    card.faceEl = face || (who === "doctor" ? null : S.doctorFace());
     card.setRows(rows);
     const reading = read ? card.speak() : Promise.resolve();
     return Promise.resolve({ reading });
