@@ -12096,16 +12096,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:visible:.cl-bubble.who-patient",
    "after": null,
    "capture": [
-    "zoom2:.cl-bubble",
+    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor",
     "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 12"
    ],
    "expect": null,
-   "note": "her bubble comes from her face, its tail at her head, never on top of her hair",
+   "note": "her bubble comes from her face, its tail at her head, never on top of her hair (each crop holds her bubble and her head: the figure's head anchor; fever_bubbles.mjs says where each tail tip lands: at her face, on her hair or off her head)",
    "seed": 12,
-   "max": 4
+   "max": 6,
+   "delay": 300
   }
  ],
  "CLN-138": [

@@ -468,7 +468,8 @@
       const follow = () => {
         if (!b.isConnected || !anchor.isConnected) return;
         const r = anchor.getBoundingClientRect();
-        const key = `${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.width)},${Math.round(r.height)},${b.offsetWidth},${b.offsetHeight}`;
+        // CLN-127: and when something it must not cover (data-njg-avoid: the fever's sweat drop) comes or goes
+        const key = `${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.width)},${Math.round(r.height)},${b.offsetWidth},${b.offsetHeight},${document.querySelectorAll("[data-njg-avoid]").length}`;
         if (key !== last) { last = key; Voice.place(b, anchor, layer, others()); }
         if (global.requestAnimationFrame) global.requestAnimationFrame(follow);
         else setTimeout(follow, 16);

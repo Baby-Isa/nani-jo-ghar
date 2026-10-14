@@ -281,11 +281,19 @@
   /**
    * One bubble placement (SH-68, CLN-86, Z1): above the speaker's head, its tail pointing down at it; when there's no
    * room above, below the head, its tail pointing up. Centred on the head, then kept inside the layer with a margin;
-   * a bubble that would land on another speaker (avoid) moves to the other side of the head. head: an element or a
+   * a bubble that would land on another speaker (avoid, and any element marked data-njg-avoid) moves to the other side of the head. head: an element or a
    * rect {left, top, width, height} in page px. Returns "above" | "below" (or null: no head to place by).
+   *
+   * CLN-127 (fever, CL2/FV3: "her bubble comes from her face, never anchored on top of her hair"): a head that is a
+   * whole painted head (o.face, or the element's data-njg-face: the clinic figure's head anchor) gets its bubble BESIDE
+   * the head, its bottom at her eye line, its tail out of its near side pointing at her cheek: "face-right" (the bubble
+   * right of her head) | "face-left". With no room either side it falls back to above / below.
    */
   function placeBubble(b, head, layer, o = {}) {
     if (!b || !head) return null;
+    // CLN-127: anything a game marks data-njg-avoid (the fever's sweat drop or snowflake by her head) is never covered
+    // by a bubble, as the other speakers are not
+    if (typeof document !== "undefined" && document.querySelectorAll) o = Object.assign({}, o, { avoid: (o.avoid || []).concat([...document.querySelectorAll("[data-njg-avoid]")]) });
     const M = o.margin != null ? o.margin : 8;
     const lr = layer && layer.getBoundingClientRect ? layer.getBoundingClientRect() : { left: 0, top: 0, width: root.innerWidth || 1000, height: root.innerHeight || 700 };
     const r0 = head.getBoundingClientRect ? head.getBoundingClientRect() : head;
@@ -301,6 +309,7 @@
     b.style.transform = "none";
     b.style.left = "0px";
     b.style.top = "0px";
+    delete b.dataset.njgPlace;
     const bw = b.offsetWidth;
     const bh = b.offsetHeight;
     const W = lr.width;
@@ -308,6 +317,11 @@
     const hx = r.left - lr.left;
     const hy = r.top - lr.top;
     const cx = hx + r.width / 2;
+    const face = o.face != null ? !!o.face : !!(head.dataset && head.dataset.njgFace != null);
+    if (face) {
+      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr }, o.avoid);
+      if (sd) return sd;
+    }
     const gap = o.gap != null ? o.gap : M + 6; // room for the tail
     const above = hy - gap - bh;
     const below = hy + r.height + gap;
@@ -337,6 +351,44 @@
     b.dataset.njgPlace = side;
     b.style.setProperty("--njg-tail-x", `${Math.round(Math.max(18, Math.min(bw - 30, cx - x - 9)))}px`);
     return side;
+  }
+
+  /** CLN-127: beside a painted head, the tail out of the near side at her cheek; null when neither side has room. */
+  function placeByFace(b, g, avoid) {
+    const { hx, hy, w, h, bw, bh, W, H, M, lr } = g;
+    // where the tail's middle sits outside the bubble's edge (css/shared/order-card.css [data-njg-place^="face-"]::before:
+    // it hangs out of the side), read from the drawn tail once the side is set
+    b.dataset.njgPlace = "face-right";
+    const cs = root.getComputedStyle ? root.getComputedStyle(b, "::before") : null;
+    const bs = root.getComputedStyle ? root.getComputedStyle(b) : null;
+    const tw = (cs && parseFloat(cs.width)) || 22;
+    const off = cs && isFinite(parseFloat(cs.left)) ? -parseFloat(cs.left) - ((bs && parseFloat(bs.borderLeftWidth)) || 0) - tw / 2 : 5;
+    // the tail's middle just inside her head's edge
+    const m = 3; // the bubble clears her hair; the tip, half a tail further in, lands on her cheek
+    const cy = hy + h / 2; // her eye line (the head anchor's centre)
+    const y = Math.round(cy - 2 - bh);
+    if (y < M || cy - 2 > H - M) return null;
+    const xs = { "face-right": hx + w - m + off, "face-left": hx + m - off - bw };
+    const fits = (sd) => xs[sd] >= M && xs[sd] + bw <= W - M;
+    const hits = (sd) =>
+      (avoid || []).some((el) => {
+        const q = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+        if (!q || !q.width || !q.height) return false;
+        const qx = q.left - lr.left;
+        const qy = q.top - lr.top;
+        return !(xs[sd] >= qx + q.width || xs[sd] + bw <= qx || y >= qy + q.height || y + bh <= qy);
+      });
+    // towards the middle of the play area first (the room the other side may not have)
+    const order = hx + w / 2 <= W / 2 ? ["face-right", "face-left"] : ["face-left", "face-right"];
+    const sd = order.find((k) => fits(k) && !hits(k)) || order.find(fits);
+    if (!sd) {
+      delete b.dataset.njgPlace;
+      return null;
+    }
+    b.style.left = `${Math.round(xs[sd])}px`;
+    b.style.top = `${y}px`;
+    b.dataset.njgPlace = sd;
+    return sd;
   }
 
   /*

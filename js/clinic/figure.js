@@ -522,6 +522,9 @@
         const A = fig.art;
         const rh = at ? at.r || { head: 0.11, eyes: 0.05, mouth: 0.035 }[at.q] || 0.04 : 0;
         const rw = A && A.V && A.V.w ? (rh * A.V.h) / A.V.w : rh;
+        // CLN-127: her whole head: the shared placement puts her bubble beside it, its tail at her face (not on her hair)
+        if (at && at.q === "head") a.dataset.njgFace = "";
+        else delete a.dataset.njgFace;
         Object.assign(a.style, {
           left: at ? `${(at.x - rw) * 100}%` : "50%",
           top: at ? `${(at.y - rh) * 100}%` : "40%",
