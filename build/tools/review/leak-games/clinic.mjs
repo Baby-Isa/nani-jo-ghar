@@ -105,11 +105,12 @@ for (const id of games) {
     // "reader" reads the English placeholders (every word is English until the family records it): reported, not a blind leak
     const blind = Object.entries(cell).filter(([k, x]) => k !== "fair" && k !== "reader" && typeof x === "number");
     const worst = blind.reduce((m, [k, x]) => (x > m[1] ? [k, x] : m), ["-", 0]);
-    if (L === 1 && ACCEPTED[id] && worst[1] < ACCEPTED[id].under) console.log(`  ACCEPTED ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)}: ${ACCEPTED[id].why}`);
-    else if (L === 1 && worst[1] >= 0.1 && !clearlyOver(worst[1], NH, 0.1)) console.log(`  ?? ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)} is over 10% by sampling noise only (${NH} rounds, 99% lower end ${pct(wilsonLow(worst[1], NH), 1)}): re-run with more --rounds to settle it`);
-    else if (L === 1 && worst[1] >= 0.1) {
+    // every level, not only level 1 (Zafar, 14 Oct; checks-to-build 19)
+    if (ACCEPTED[id] && worst[1] < ACCEPTED[id].under) console.log(`  ACCEPTED ${id} L${L} blind ${worst[0]} ${pct(worst[1], 1)}: ${ACCEPTED[id].why}`);
+    else if (worst[1] >= 0.1 && !clearlyOver(worst[1], NH, 0.1)) console.log(`  ?? ${id} L${L} blind ${worst[0]} ${pct(worst[1], 1)} is over 10% by sampling noise only (${NH} rounds, 99% lower end ${pct(wilsonLow(worst[1], NH), 1)}): re-run with more --rounds to settle it`);
+    else if (worst[1] >= 0.1) {
       problems++;
-      console.log(`  !! ${id} L1 blind ${worst[0]} ${pct(worst[1], 1)} (the contract wants under 10%)`);
+      console.log(`  !! ${id} L${L} blind ${worst[0]} ${pct(worst[1], 1)} (the contract wants under 10%)`);
     }
     console.log(`  ${id} L${L}: ${Object.entries(cell).map(([k, x]) => `${k} ${typeof x === "number" ? pct(x, 1) : x}`).join(" · ")}`);
   }
@@ -132,9 +133,9 @@ for (const L of [1, 2, 3]) {
   }
   out.patient[`L${L}`] = cell;
   console.log(`  L${L}: fair ${pct(cell.fair, 1)} · blind ${(100 * cell.blind).toFixed(2)}%`);
-  if (L === 1 && cell.blind >= 0.01) {
+  if (cell.blind >= 0.01) {
     problems++;
-    console.log("  !! the level-1 patient is winnable blind 1% or more");
+    console.log(`  !! the level-${L} patient is winnable blind 1% or more`);
   }
 }
 // the first-ever session (one patient: W1 bench of 2, D1 taught, one item, H2 scrape, E1 taught)

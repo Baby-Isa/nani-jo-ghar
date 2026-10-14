@@ -1,0 +1,176 @@
+#!/usr/bin/env node
+// Static checks (checks-to-build 9, 10, 11, 13, 17, 18, 21; Sprint 6): rules that read the code and data, no browser.
+//   kit       shared-kit identity: no CSS outside css/shared/ selects the shared components' classes (.njg-*, .oc-*, .rs-*,
+//             .gb-*): one look in every mode (non-negotiable 8)
+//   tokens    design tokens: colours only from css/shared/tokens.css (no hex or rgb() elsewhere), no gradients, no text-shadow
+//   ladder    level ladders: Cook's timers ~15% quicker per level (timing.levelSpeed 0.13-0.17); each heal game's levels add at
+//             most one new knob per level and no count goes down (L1 the smallest round)
+//   words     banned forms: no 'aabhar aanjo' or 'arre re' in a line the game says, no 'lal' (laal), no lexicon entry glossed
+//             "no" that says 'nar'; the settled words are in the lexicon (khun, ba, hane, khuda-fis, matar)
+//   privacy   nothing leaves the device: no fetch/XMLHttpRequest/sendBeacon/WebSocket to an absolute URL in js/, no third-party
+//             script in a page, localStorage only in the save and settings modules
+//   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
+//   bulb      the bulb's English shows for 5, 3, 2, 1 s by level (Bulb.MS)
+// Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
+//   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
+import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const KNOWN = join(ROOT, "build/lint/static-known.json");
+
+const walk = (root, dir, ok, out = []) => {
+  if (!existsSync(join(root, dir))) return out;
+  for (const f of readdirSync(join(root, dir))) {
+    const p = `${dir}/${f}`;
+    if (statSync(join(root, p)).isDirectory()) { if (!/^(vendor|node_modules|archive)$/.test(f)) walk(root, p, ok, out); } else if (ok(p)) out.push(p);
+  }
+  return out;
+};
+const lines = (text) => text.split("\n");
+const stripCssComments = (t) => t.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "));
+
+// ---- kit: one look in every mode ----
+export function kitFindings(file, text) {
+  if (file.startsWith("css/shared/")) return [];
+  const out = [];
+  lines(stripCssComments(text)).forEach((l, i) => {
+    const sel = l.split("{")[0];
+    if (!l.includes("{")) return;
+    const m = sel.match(/\.(?:njg|oc|rs|gb)-[\w-]+/g);
+    // a mode may name the shared class only to keep its own old element apart (":not(.njg-btn)")
+    if (m && m.some((c) => !new RegExp(`:not\\([^)]*\\${c}`).test(sel))) out.push({ check: "kit", at: `${file}:${i + 1}`, key: `kit|${file}|${sel.trim()}`, text: sel.trim().slice(0, 100) });
+  });
+  return out;
+}
+// ---- tokens: colours from tokens.css only ----
+export function tokenFindings(file, text) {
+  if (file === "css/shared/tokens.css") return [];
+  const out = [];
+  lines(stripCssComments(text)).forEach((l, i) => {
+    const decl = l.replace(/^[^{]*\{/, "");
+    const bad = [];
+    if (/#[0-9a-f]{3,8}\b/i.test(decl)) bad.push("hex colour");
+    if (/\brgba?\(\s*\d/i.test(decl)) bad.push("rgb colour");
+    if (/linear-gradient|radial-gradient/i.test(decl)) bad.push("gradient");
+    if (/text-shadow\s*:/i.test(decl)) bad.push("text-shadow");
+    for (const b of bad) out.push({ check: "tokens", at: `${file}:${i + 1}`, key: `tokens|${file}|${b}|${decl.trim().slice(0, 80)}`, text: `${b}: ${decl.trim().slice(0, 90)}` });
+  });
+  return out;
+}
+// ---- ladder ----
+const size = (v) => (Array.isArray(v) ? Math.max(v.length, ...v.filter((x) => typeof x === "number")) : typeof v === "number" ? v : null);
+export function ladderFindings(file, levels) {
+  const out = [];
+  const keys = Object.keys(levels || {}).filter((k) => /^\d+$/.test(k)).sort((a, b) => a - b);
+  for (let i = 1; i < keys.length; i++) {
+    const a = levels[keys[i - 1]], b = levels[keys[i]];
+    const added = Object.keys(b).filter((k) => !k.startsWith("_") && !(k in a));
+    if (added.length > 1) out.push({ check: "ladder", at: file, key: `ladder|${file}|L${keys[i]} adds ${added.join("+")}`, text: `L${keys[i]} adds ${added.length} new knobs (${added.join(", ")}): one per level` });
+    for (const k of Object.keys(a)) {
+      if (k.startsWith("_") || !(k in b)) continue;
+      const x = size(a[k]), y = size(b[k]);
+      // L1 is the smallest round; from L3 a step may hold fewer (heard only, at most two things to remember: D19)
+      if (+keys[i] <= 2 && x !== null && y !== null && y < x && !/ms$|time|speed|rate|window/i.test(k)) out.push({ check: "ladder", at: file, key: `ladder|${file}|L${keys[i]} ${k} down`, text: `${k} goes down from L${keys[i - 1]} (${x}) to L${keys[i]} (${y}): L1 is the smallest round` });
+    }
+  }
+  return out;
+}
+// ---- words ----
+const SAID = /^(kutchi|k|say|line|text)$/i;
+export function wordFindings(file, json) {
+  const out = [];
+  const go = (x, key, path) => {
+    if (typeof x === "string") {
+      if (!SAID.test(key || "")) return;
+      for (const [re, why] of [[/\baabhar aanjo\b/i, "'aabhar aanjo' was dropped: the family says 'thank you' (decision 87)"], [/\barre re\b/i, "'arre re' is not a family word (decision 61)"], [/\blal\b/i, "'lal' is spelt 'laal'"]])
+        if (re.test(x)) out.push({ check: "words", at: `${file} ${path}`, key: `words|${file}|${path}|${why}`, text: `${why}: "${x.slice(0, 60)}"` });
+    } else if (Array.isArray(x)) x.forEach((y, i) => go(y, key, `${path}[${i}]`));
+    else if (x && typeof x === "object") for (const [k, v] of Object.entries(x)) if (!k.startsWith("_")) go(v, k, path ? `${path}.${k}` : k);
+  };
+  go(json, "", "");
+  return out;
+}
+export function lexiconFindings(lex) {
+  const out = [], E = lex.entries || [];
+  const forms = (e) => [e.lemma, ...Object.values(e.forms || {}).map((v) => (typeof v === "string" ? v : v && v.t))].filter(Boolean).map((s) => String(s).toLowerCase());
+  for (const e of E) {
+    if (/^no\b/i.test(e.gloss || "") && forms(e).includes("nar")) out.push({ check: "words", at: `lexicon ${e.id}`, key: `words|lexicon|${e.id}|nar`, text: `"no" is 'na', never 'nar' (${e.id})` });
+    if (forms(e).some((f) => /\baabhar aanjo\b/.test(f))) out.push({ check: "words", at: `lexicon ${e.id}`, key: `words|lexicon|${e.id}|aabhar`, text: `the dropped draft 'aabhar aanjo' (${e.id})` });
+  }
+  const all = new Set(E.flatMap(forms));
+  for (const w of ["khun", "ba", "hane", "khuda-fis", "matar"]) if (!all.has(w)) out.push({ check: "words", at: "lexicon", key: `words|lexicon|settled ${w}`, text: `the settled word '${w}' is missing from the lexicon` });
+  return out;
+}
+// ---- privacy ----
+export const STORAGE_OK = new Set(["js/core/save.js", "js/shared/save.js", "js/shared/uistore.js", "js/shared/speech.js"]);
+export function privacyFindings(file, text) {
+  const out = [];
+  lines(text).forEach((l, i) => {
+    if (/^\s*(\/\/|\*)/.test(l)) return;
+    if (/\b(fetch|sendBeacon)\s*\(\s*["'`]https?:|new\s+WebSocket\s*\(|new\s+XMLHttpRequest\b|\.open\(\s*["'`]\w+["'`]\s*,\s*["'`]https?:/.test(l)) out.push({ check: "privacy", at: `${file}:${i + 1}`, key: `privacy|${file}|net|${l.trim().slice(0, 60)}`, text: `a request off the device: ${l.trim().slice(0, 80)}` });
+    if (file.endsWith(".js") && /\blocalStorage\b/.test(l) && !STORAGE_OK.has(file)) out.push({ check: "privacy", at: `${file}:${i + 1}`, key: `privacy|${file}|localStorage`, text: "localStorage outside the save and settings modules" });
+    if (file.endsWith(".html") && /<script[^>]+src=["']https?:/i.test(l)) out.push({ check: "privacy", at: `${file}:${i + 1}`, key: `privacy|${file}|script|${l.trim().slice(0, 60)}`, text: `a third-party script: ${l.trim().slice(0, 80)}` });
+  });
+  return out;
+}
+// ---- reward ----
+const SWEET = /\b(mithai|lolly|lollies|lollipop|biscuits?|sweets?|candy|chocolate|toffee)\b/i;
+export function rewardFindings(file, json) {
+  const out = [];
+  const go = (x, key, path) => {
+    if (typeof x === "string") { if (/reward|gift|help|treat/i.test(key || "") && SWEET.test(x)) out.push({ check: "reward", at: `${file} ${path}`, key: `reward|${file}|${path}`, text: `a sweet as a reward: "${x}" (${path})` }); }
+    else if (Array.isArray(x)) x.forEach((y, i) => go(y, key, `${path}[${i}]`));
+    else if (x && typeof x === "object") for (const [k, v] of Object.entries(x)) if (!k.startsWith("_")) go(v, /reward|gift|help|treat/i.test(k) ? k : /reward|gift|help|treat/i.test(key || "") ? key : null, path ? `${path}.${k}` : k);
+  };
+  go(json, "", "");
+  return out;
+}
+// ---- bulb ----
+export function bulbFindings(text) {
+  const m = /MS\s*:\s*\[([^\]]*)\]/.exec(text || "");
+  const ms = m ? m[1].split(",").map((s) => +s.trim()) : null;
+  return ms && ms.join() === "5000,3000,2000,1000" ? [] : [{ check: "bulb", at: "js/shared/bulb.js", key: "bulb|MS", text: `Bulb.MS is ${ms ? `[${ms}]` : "missing"}: the English shows 5, 3, 2, 1 s by level` }];
+}
+
+// ---------- the repo ----------
+export function run(root = ROOT, only = null) {
+  const want = (k) => !only || only.includes(k);
+  const rd = (p) => readFileSync(join(root, p), "utf8");
+  const J = (p) => JSON.parse(rd(p));
+  const out = [];
+  const css = walk(root, "css", (p) => p.endsWith(".css"));
+  if (want("kit")) for (const f of css) out.push(...kitFindings(f, rd(f)));
+  if (want("tokens")) for (const f of css) out.push(...tokenFindings(f, rd(f)));
+  if (want("ladder")) {
+    const s = (J("data/cook.json").timing || {}).levelSpeed;
+    if (!(s >= 0.13 && s <= 0.17)) out.push({ check: "ladder", at: "data/cook.json timing", key: "ladder|cook levelSpeed", text: `Cook's timers quicken ${s} per level: about 15%` });
+    for (const f of walk(root, "data/clinic/heal", (p) => p.endsWith(".json"))) out.push(...ladderFindings(f, J(f).levels));
+  }
+  if (want("words")) {
+    const said = [...walk(root, "data/clinic", (p) => p.endsWith(".json")), "data/cook.json", ...walk(root, "data/conversations", (p) => p.endsWith(".json")), ...walk(root, "data/stations", (p) => p.endsWith(".json")), ...walk(root, "data/patients", (p) => p.endsWith(".json")), ...walk(root, "data/story", (p) => p.endsWith(".json"))];
+    for (const f of said) { try { out.push(...wordFindings(f, J(f))); } catch (e) { /* not JSON */ } }
+    out.push(...lexiconFindings(J("data/lang/lexicon.json")));
+  }
+  if (want("privacy")) {
+    for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...privacyFindings(f, rd(f)));
+    for (const f of readdirSync(root).filter((x) => x.endsWith(".html"))) out.push(...privacyFindings(f, rd(f)));
+  }
+  if (want("reward")) for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/lang\/|audio|candidates/.test(p))) { try { out.push(...rewardFindings(f, J(f))); } catch (e) { /* not JSON */ } }
+  if (want("bulb")) out.push(...bulbFindings(existsSync(join(root, "js/shared/bulb.js")) ? rd("js/shared/bulb.js") : ""));
+  return out;
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  const argv = process.argv.slice(2), val = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
+  const only = val("--only") ? val("--only").split(",") : null;
+  const found = run(ROOT, only);
+  if (argv.includes("--write-known")) { writeFileSync(KNOWN, JSON.stringify([...new Set(found.map((f) => f.key))].sort(), null, 1) + "\n"); console.log(`static: ${found.length} known findings written`); process.exit(0); }
+  const known = new Set(existsSync(KNOWN) ? JSON.parse(readFileSync(KNOWN, "utf8")) : []);
+  const fresh = found.filter((f) => !known.has(f.key)), gone = [...known].filter((k) => !found.some((f) => f.key === k));
+  const by = {}; for (const f of found) by[f.check] = (by[f.check] || 0) + 1;
+  for (const f of (argv.includes("--all") ? found : fresh).slice(0, 60)) console.log(`${known.has(f.key) ? "known" : "NEW"} ${f.check} ${f.at}: ${f.text}`);
+  console.log(`static: ${found.length} findings (${Object.entries(by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - fresh.length} known, ${fresh.length} new${gone.length ? `; ${gone.length} known ones are fixed: run --write-known to shrink the list` : ""}`);
+  process.exit(fresh.length ? 1 : 0);
+}

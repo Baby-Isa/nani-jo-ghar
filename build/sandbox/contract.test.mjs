@@ -172,3 +172,47 @@ test("contract-6: the old hand-and-knife at the chopping board (Z8) and standing
   const scoped = analyse(fx("chaat-l4"), { root: ROOT, clip, retired: [{ ...retired[1], file: "assets/cook/items/tool-knife-t.webp" }] });
   assert.equal(of(scoped, "contract-6").length, 0);
 });
+
+test("contract-17 voice source (checks-to-build 5): on the store build only clips Zafar marked OK sound; never a computer voice", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const base = { flow: "clinic:heal-cut", size: "1366x768", t0: 1000, timeline: [{ type: "c", k: "stage", key: "heal", t: 1000 }], states: [] };
+  const plays = [{ kind: "family-ok", file: "a.mp3", n: 3 }, { kind: "device-voice", text: "Bring me", n: 1 }, { kind: "tts", file: "assets/audio/cook-tts/x.mp3", n: 2 }, { kind: "family-unchecked", file: "b.mp3", n: 1 }];
+  const store = analyse({ ...base, store: true, sound: { plays, lines: [] } }).filter((b) => b.check === "contract-17");
+  assert.deepEqual(store.map((b) => b.measured.split(":")[0]).sort(), ["device-voice", "family-unchecked", "tts"]);
+  assert.equal(analyse({ ...base, store: false, sound: { plays, lines: [] } }).filter((b) => b.check === "contract-17").length, 0);
+});
+
+test("contract-20 one face per person (checks-to-build 8): no patient circle while she stands in full; never two faces or two cards of one person", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const run = (faces) => analyse({ flow: "clinic:diagnosis", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "diagnosis", t: 1000 }, { type: "c", k: "faces", t: 1200, ...faces }] }).filter((b) => b.check === "contract-20");
+  const doc = { who: "doctor", sel: "button.ng-face", doctor: true };
+  assert.equal(run({ clinic: true, figFull: true, cards: ["girl"], list: [doc] }).length, 0);
+  assert.match(run({ clinic: true, figFull: true, cards: ["girl"], list: [doc, { who: "girl", sel: "button.oc-face", doctor: false }] })[0].measured, /girl's face circle while she is on screen/);
+  assert.equal(run({ clinic: true, figFull: false, cards: ["girl"], list: [doc, { who: "girl", sel: "button.oc-face", doctor: false }] }).length, 0);
+  assert.match(run({ clinic: false, figFull: false, cards: ["nani"], list: [{ who: "nani", sel: "button.ng-face" }, { who: "nani", sel: "button.oc-face" }] })[0].measured, /two faces of nani/);
+  assert.match(run({ clinic: false, figFull: false, cards: ["ali", "ali"], list: [] })[0].measured, /two cards for ali/);
+});
+
+test("contract-16 English for the child (checks-to-build 4): every text is a lexicon form, a placeholder, the bulb's English or grown-ups' text", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const lexicon = new Set(["muke", "chai", "khape", "thank", "you", "paani"]);
+  const run = (list) => analyse({ flow: "cook:chai-tray", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "chai", t: 1000 }, { type: "c", k: "texts", t: 1200, list }] }, { lexicon }).filter((b) => b.check === "contract-16");
+  assert.equal(run([{ t: "Muke chai khape.", sel: "div.oc-headline" }, { t: "Bring me these", rec: true, sel: "span" }, { t: "Pour the tea", en: true, sel: "span" }, { t: "Play as new", grown: true, sel: "button" }, { t: "Thank you!", sel: "div" }, { t: "x2", sel: "b" }]).length, 0);
+  const b = run([{ t: "Pour the paani", sel: "div.cl-row" }]);
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /"Pour the paani" .*pour, the/);
+});
+
+test("contract-19 counting rule (checks-to-build 7): from L3 no number written on a card (words seen before); from L2 no counting along", async () => {
+  const { analyse } = await import("./lib/contract.mjs");
+  const numbers = new Set(["hakro", "ba", "trae", "char"]);
+  const run = (flow, variant, extra) => analyse({ flow, variant, size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "chai", t: 1000 }, { type: "c", k: "input", x: 1, y: 1, on: "canvas", t: 1500 }, ...extra] }, { numbers, lexicon: new Set() }).filter((b) => b.check === "contract-19");
+  const side = (words) => ({ type: "c", k: "side", n: 1, rows: 2, done: 0, closed: 0, words, t: 1600 });
+  const line = (text, t) => [{ type: "line", id: t, text, t }, { type: "line-end", id: t, t: t + 300 }];
+  assert.match(run("cook:chai-tray@L3", "p-seen", [side(["ba elchi", "dudh"])])[0].measured, /"ba elchi"/);
+  assert.equal(run("cook:chai-tray@L3", "", [side(["ba elchi"])]).length, 0, "a first-time player sees the number written (decision 57)");
+  assert.equal(run("cook:chai-tray@L2", "p-seen", [side(["ba elchi"])]).length, 0);
+  assert.match(run("cook:chai-tray@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/);
+  assert.equal(run("cook:chai-tray", "p-seen", line("Ba!", 2000)).length, 0, "L1 counts along");
+  assert.equal(run("cook:chai-tray@L2", "p-seen", line("Ba!", 1200)).length, 0, "the order said before the first tap is not counting along");
+});

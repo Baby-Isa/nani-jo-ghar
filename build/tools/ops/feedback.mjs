@@ -3,9 +3,12 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join, basename } from "node:path";
 import { ROOT, rel, args, help, die } from "./lib.mjs";
+import { checkReport } from "./feedbackcheck.mjs";
 
 const HELP = `
 node build/tools/ops/feedback.mjs <transcript.md|.txt|.srt|.vtt> [more parts...] --name <slug> [--out file] [--source path]
+node build/tools/ops/feedback.mjs --check <report.md>   the gate: exit 1 while a transcript line is unmapped or a point has no
+                                                      cause in code (file:line, or "not code: ..."); add the rows only then
   Reads one or more timestamped transcripts (Whisper's "- **m:ss** text" from build/transcribe_family.py, "[h:mm:ss] text",
   "m:ss text", SRT or VTT; several files are parts 1, 2 ... and times print as 1:m:ss, 2:m:ss) and writes the report skeleton
   in the CLAUDE.md voice-note format:
@@ -17,6 +20,13 @@ node build/tools/ops/feedback.mjs <transcript.md|.txt|.srt|.vtt> [more parts...]
   them as you check causes in code. Default output build/reports/feedback-<slug>.md (or docs/feedback/<date>-<slug>.md once
   final, by hand). No network.`;
 const a = args(); help(HELP, a);
+if (a.has("check")) {
+  const f = a.val("check") === true ? a.pos[0] : a.val("check");
+  if (!f || !existsSync(f)) die("Give the finished report: --check <report.md>.");
+  const p = checkReport(readFileSync(f, "utf8"));
+  console.log(p.length ? `feedback gate: ${p.length} problem(s):\n${p.map((x) => `  ${x}`).join("\n")}` : "feedback gate: every line mapped, every point has its cause in code");
+  process.exit(p.length ? 1 : 0);
+}
 if (!a.pos.length) die("Give the transcript file(s) and --name. --help shows the formats.");
 const name = a.val("name") || basename(a.pos[0]).replace(/\.\w+$/, "");
 const out = a.val("out") || join("build", "reports", `feedback-${name}.md`);

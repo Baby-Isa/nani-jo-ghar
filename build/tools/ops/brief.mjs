@@ -2,11 +2,13 @@
 // Brief generator: a small JSON spec -> a complete session brief in the template's shape, with the standing boilerplate added.
 import { readFileSync, writeFileSync } from "node:fs";
 import { args, help, die, sh } from "./lib.mjs";
-import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs } from "./briefpack.mjs";
+import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs, outsideScope, NAMES_HELPERS } from "./briefpack.mjs";
 
 const HELP = `
 node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows] [--no-pack]
 node build/tools/ops/brief.mjs --live-check
+node build/tools/ops/brief.mjs --audit <spec.json> <git range>   every file the session's commits touched is in its owns; anything
+                                                                  else is listed as a request and /review fails on it (exit 1)
   Fills docs/process/session-brief-template.md from a spec and adds the standing lines every brief needs (rules B3, B4, B16, B17:
   read-first list, no helpers, don't remove mechanics, proof via touched mapper + shotdiff, the regression rows for the flows
   it touches via regress.mjs, finish rules). Prints the brief (paste it as the session's first message) or writes --out.
@@ -34,10 +36,20 @@ if (a.has("live-check")) {
   if (clash.length) { for (const c of clash) console.error(`OVERLAP: "${c.a}" owns ${c.pathA}; "${c.b}" owns ${c.pathB}`); die(`${clash.length} overlap(s) between live briefs.`, 1); }
   console.log(`${n} live briefs, no overlap.`); process.exit(0);
 }
+if (a.has("audit")) {
+  const spec = JSON.parse(readFileSync(a.val("audit") === true ? a.pos[0] : a.val("audit"), "utf8"));
+  const range = a.val("audit") === true ? a.pos[1] : a.pos[0];
+  if (!range) die("Give the git range of the session's commits: --audit <spec.json> <base>..<head>.");
+  const files = sh("git", ["diff", "--name-only", range]).split("\n").filter(Boolean);
+  const out = outsideScope(spec.owns, files, { report: spec.report });
+  console.log(out.length ? `scope: ${out.length} file(s) outside "${spec.name}"'s owns (requests, not edits):\n${out.map((f) => `  ${f}`).join("\n")}` : `scope: all ${files.length} files are "${spec.name}"'s own`);
+  process.exit(out.length ? 1 : 0);
+}
 if (!a.pos[0]) die("Give a spec file. --help shows the fields.");
 const s = JSON.parse(readFileSync(a.pos[0], "utf8"));
 if (!s.model && s.kind) { const m = modelFor(s.kind); if (!m) die(`Unknown kind "${s.kind}". Known: ${Object.keys(MODEL_TABLE).join(", ")}.`); s.model = m.model; s.effort = s.effort || m.effort; s.why = s.why || m.why; }
 for (const k of ["name", "model", "cost", "stop", "branch", "owns", "tasks"]) if (s[k] == null) die(`Spec is missing "${k}" (or give "kind" for the model).`);
+if (NAMES_HELPERS(JSON.stringify(s.tasks) + " " + (s.extra || []).join(" "))) die("The spec sets up helper sessions: one build session at a time (two at most on different files), no helpers.");
 if (s.live && clash.length) { for (const c of clash) console.error(`OVERLAP: "${c.a}" owns ${c.pathA}; "${c.b}" owns ${c.pathB}`); die(`${clash.length} overlap(s) between live briefs: one owner per path; the other brief lists it read-only (an edit there goes in the report as a request).`, 1); }
 
 const L = [], add = (...x) => L.push(...x), list = (xs) => (xs || []).map((x) => `  - ${x}`);

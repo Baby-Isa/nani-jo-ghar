@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Hook (PostToolUse, wired in .claude/settings.json): warns when work has gone 30 minutes unpushed (cost-and-speed change 7: a limit
-// costs minutes, not a day). Prints a PostToolUse additionalContext line for Claude; never fails, never blocks.
+// costs minutes, not a day). Prints a PostToolUse additionalContext line for Claude at 30 minutes; at 45 it blocks (decision: block).
 //   node build/tools/ops/unpushed.mjs [--minutes 30] [--check]   --check: print the minutes unpushed and exit 0 (no JSON, no throttle)
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync, statSync } from "node:fs";
@@ -23,6 +23,14 @@ export function minutesUnpushed(now = Date.now(), g = git) {
 }
 export const warning = (m, limit = LIMIT) => (m >= limit ? `UNPUSHED ${m} min: commit and push the branch now (git pull --rebase, then git push; a usage limit loses unpushed work). Rule: push every 30-40 minutes.` : "");
 
+// checks-to-build 23: at 45 minutes it is no longer a hint: the hook blocks (Claude is told to push before going on)
+export const BLOCK_AT = 45;
+export function hookOutput(m, w = warning(m)) {
+  if (!w) return null;
+  if (m >= BLOCK_AT) return { decision: "block", reason: `${w} (${BLOCK_AT} minutes: push before anything else)` };
+  return { hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: w } };
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   const m = minutesUnpushed();
   if (argv.includes("--check")) { console.log(`${m} minutes unpushed`); process.exit(0); }
@@ -31,7 +39,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   let last = 0; try { last = +readFileSync(stamp, "utf8"); } catch (e) { /* first time */ }
   if (w && Date.now() - last > 10 * 60000) { // at most one warning in ten minutes
     try { writeFileSync(stamp, String(Date.now())); } catch (e) { /* read-only tmp */ }
-    console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: w } }));
+    console.log(JSON.stringify(hookOutput(m, w)));
   }
   process.exit(0);
 }

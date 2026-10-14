@@ -83,6 +83,9 @@ const owners = (u) => {
   return out;
 };
 
+// today's oversize pictures (build/tools/review/data/oversize-known.json, may only shrink; --write-oversize rewrites it)
+const OVERSIZE_FILE = join(ROOT, "build/tools/review/data/oversize-known.json");
+const OVERSIZE_KNOWN = new Set(existsSync(OVERSIZE_FILE) ? JSON.parse(readFileSync(OVERSIZE_FILE, "utf8")) : []);
 /* ---------------- the pages ---------------- */
 const STATIONS = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa"];
 const CLINIC = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
@@ -104,6 +107,10 @@ const PAGES = [
     id: `clinic:${g}`, url: `/clinic.html?stage=heal&game=${g}&level=1&quiet=1&seed=1&fast=1`,
     ready: "window.__clinic && window.__clinic.ready && window.__clinic.Stages.heal.current && !!window.__clinic.Stages.heal.current.controller",
     allow: () => clinicAssets.shared.concat(gameAssets(g)), code: () => [g],
+  })),
+  // checks-to-build 15: the first launch, the hub and every mode's page (no manifest yet: held to the oversize rule and page errors)
+  ...["first", "index", "dress", "find", "monsoon", "snap", "tidy", "who"].map((m) => ({
+    id: `page:${m}`, url: `/${m}.html?quiet=1&seed=1`, ready: "document.readyState === 'complete'", allow: null,
   })),
 ];
 if (a.has("list")) {
@@ -158,9 +165,12 @@ async function visit(pg, page, warm = false) {
   if (pg.stray) await page.evaluate((u) => { new Image().src = u; }, pg.stray);
   await sleep(TIME ? 400 : 1800); // what loads just after the screen is up (a prefetch) counts too
   if (pg.after) await pg.after(page, pg);
+  // checks-to-build 15 (images at drawn size, J11): a picture whose file is over 3x its drawn width (2x art for sharp screens,
+  // with half again to spare) is a waste of the child's data
+  const oversize = TIME ? [] : await page.evaluate(() => [...document.images].filter((i) => i.complete && i.naturalWidth && i.getBoundingClientRect().width >= 8).map((i) => ({ u: decodeURIComponent(new URL(i.currentSrc || i.src, location.href).pathname.slice(1)), nat: i.naturalWidth, drawn: Math.round(i.getBoundingClientRect().width) })).filter((x) => x.nat > x.drawn * 3)).catch(() => []);
   page.off("request", onReq);
   page.off("response", onRes);
-  return { reqs, tOpen, tStation, bytes, served: served - s0 };
+  return { reqs, tOpen, tStation, bytes, served: served - s0, oversize };
 }
 
 const results = [];
@@ -181,13 +191,14 @@ async function checkPage(pg) {
     } else {
       const r = await visit(pg, page);
       // a station page is held to its station after the title (the title's own pictures are Cook's shared ones)
-      const allow = matcher(pg.allow(pg));
+      const allow = pg.allow ? matcher(pg.allow(pg)) : () => true;
       const shared = matcher(pg.id.startsWith("cook") ? cookShared() : clinicAssets.shared);
       const pics = [...new Set(r.reqs.filter((q) => IMG.test(q.u) && q.u.startsWith("assets/")).map((q) => q.u))];
       const stray = pics.filter((u) => !allow(u) && !(pg.station && shared(u)));
       const okCode = pg.code ? pg.code(pg) : null;
       const codeStray = okCode ? [...new Set(r.reqs.map((q) => q.u).filter((u) => /^js\/clinic\/heal\/games\//.test(u)).map((u) => u.replace(/^.*\/|\.js$/g, "")).filter((g) => !okCode.includes(g)))] : [];
-      results.push({ pg, pics, stray, codeStray, errs });
+      const big = [...new Map((r.oversize || []).map((x) => [x.u, x])).values()].filter((x) => !OVERSIZE_KNOWN.has(x.u));
+      results.push({ pg, pics, stray, codeStray, errs, big, oversize: r.oversize || [] });
     }
   } catch (e) {
     results.push({ pg, error: e.message.split("\n")[0], errs });
@@ -211,7 +222,8 @@ for (const pg of pages) {
     console.log(`time ${pg.id.padEnd(20)} cold ${f(r.cold)} | warm ${f(r.warm)}`);
     continue;
   }
-  const bad = r.stray.length || r.codeStray.length;
+  const bad = r.stray.length || r.codeStray.length || (r.big || []).length;
+  for (const x of (r.big || []).slice(0, 6)) console.log(`       oversize: ${x.u} is ${x.nat} px wide, drawn at ${x.drawn} px (over 3x)`);
   if (bad) fail++;
   console.log(`${bad ? "FAIL" : "ok  "} ${pg.id.padEnd(20)} ${r.pics.length} pictures${pg.games ? ` (games ${pg.games.join(", ")})` : ""}${bad ? `: ${r.stray.length} outside the manifest${r.codeStray.length ? `, other games' code: ${r.codeStray.join(", ")}` : ""}` : ""}`);
   if (bad && !a.has("discover")) r.stray.slice(0, 8).forEach((u) => { const o = owners(u); console.log(`       ${u}${o.length ? `  (belongs to ${o.join(", ")})` : "  (in no manifest)"}`); });
@@ -222,6 +234,7 @@ for (const pg of pages) {
   }
   if (r.errs.length) console.log(`       page errors: ${r.errs.slice(0, 2).join(" | ")}`);
 }
+if (a.has("write-oversize")) { (await import("node:fs")).writeFileSync(OVERSIZE_FILE, JSON.stringify([...new Set(results.flatMap((r) => (r.oversize || []).map((x) => x.u)))].sort(), null, 1) + "\n"); console.log("oversize known list written"); }
 if (a.val("json")) (await import("node:fs")).writeFileSync(a.val("json"), JSON.stringify(Object.fromEntries(results.map((r) => [r.pg.id, { pictures: r.pics || [], stray: r.stray || [], games: r.pg.games || null }])), null, 1));
 if (!TIME) console.log(`\n${pages.length - fail}/${pages.length} pages load only what's on their screen${fail ? `; ${fail} FAIL` : ""}${a.has("stray") ? " (--stray: the chai station asked for samosa's board on purpose)" : ""}`);
 process.exit(fail ? 1 : 0);

@@ -12,3 +12,10 @@ test("unpushed work older than the limit warns", () => {
 test("nothing unpushed is zero minutes", () => {
   assert.equal(minutesUnpushed(Date.now(), () => ""), 0);
 });
+test("at 45 minutes the hook blocks, under it only a hint (checks-to-build 23)", async () => {
+  const { hookOutput } = await import("./unpushed.mjs");
+  assert.equal(hookOutput(10), null);
+  assert.equal(hookOutput(35).hookSpecificOutput.hookEventName, "PostToolUse");
+  assert.equal(hookOutput(45).decision, "block");
+  assert.match(hookOutput(50).reason, /push before anything else/);
+});

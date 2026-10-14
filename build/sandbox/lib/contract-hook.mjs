@@ -7,7 +7,7 @@
 //   k: "stage"   {key}                      a stage boundary: a Cook station starts or ends (Cook.inStation), the host's
 //                                          stage changes (njgTest.state()), the end screen shows ("end")
 //   k: "popup"   {open, box}               the shared request pop-up (.njg-rq-open, Cook's #intro) up or down
-//   k: "side"    {n, rows, done, closed}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
+//   k: "side"    {n, rows, done, closed, words}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
 //   k: "buttons" {list: [{sel, text, box}], exp}   the ✓ / Next / stage buttons on screen, with what the game expects
 //   k: "bubble"  {list: [{who, text, box, tail}], heads: [{who, box, src}], play}   speech bubbles and the speakers' heads
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
@@ -24,6 +24,8 @@
 //   k: "stale"   {sel, text, from}         a reply pill first seen in an earlier stage, still on screen 600 ms into this one
 //   k: "talk"    {list, spec}              the talk animations running: Cook's character tweens that repeat (lift, tilt,
 //                                          ms) and the play area's CSS talk or bob animations, with Lifecycle.talk.SPEC
+//   k: "texts"   {list: [{t, rec, en, grown, sel}]}   every visible text, tagged (contract-16)
+//   k: "faces"   {list: [{who, sel, doctor}], cards, figFull, clinic}   face circles on screen and whose (contract-20)
 //   k: "bg"      {src, via, sx, sy, dpr}   a background (a picture covering half the screen or the canvas): screen px per
 //                                          source px across (sx) and down (sy)
 //
@@ -517,6 +519,61 @@ export const CONTRACT_HOOK = `(() => {
   // the staged talkers (the clinic's staging hook: data-pose talk / front) on screen
   const poses = () => [...document.querySelectorAll(".cl-staged[data-pose]")].filter((x) => x.dataset && x.dataset.pose && shown(x)).map((x) => ({ who: desc(x), pose: x.dataset.pose, facing: x.dataset.facing || null }));
 
+  // contract-20 (one face per person: R4, decision 92): the face circles on screen and whose they are (an order card's face is
+  // its card's person, the guide's face its person, a clinic close-up face the patient), the cards' people, and whether a clinic
+  // patient figure stands on screen in full (most of it inside the screen, a third of its height or more)
+  const faceWho = (el) => safe(() => {
+    const norm = (x) => String(x || "").toLowerCase().replace(/^the /, "").trim() || null;
+    // a clinic face names its person in its classes (cl-face doctor | patient | person) or its card's data-who
+    const cf = el.matches(".cl-face") ? el : el.querySelector(".cl-face");
+    if (cf && cf.classList.contains("doctor")) return "doctor";
+    const card = el.closest(".oc-card");
+    if (card && card.dataset && card.dataset.who) return norm(card.dataset.who);
+    const img = el.querySelector("img");
+    const name = (img && img.alt) || (el.getAttribute("aria-label") || "").replace(/^Hear /, "").replace(/ again$/, "");
+    if (el.classList.contains("ng-face") && name) return norm(name);
+    if (cf && cf.classList.contains("patient")) return "patient";
+    return null; // a face whose person the page doesn't say (the morning's end lists several patients): not judged
+  });
+  const faces = () => {
+    const all = [...document.querySelectorAll(".oc-face, .ng-face, .cl-face, .cl-card-face")].filter((f) => shown(f) && f.getBoundingClientRect().width >= 16);
+    // a face drawn inside another face's button is that one face
+    // (the request pop-up is the card itself, shown big while it folds into the sidebar: its face is not a second one)
+    const list = all.filter((f) => !all.some((o) => o !== f && o.contains(f)) && !f.closest(".njg-rq-veil, .njg-rq-card")).map((f) => ({ who: faceWho(f), sel: desc(f), doctor: !!(f.closest(".njg-guide, .cl-nani") && location.pathname.includes("clinic")) }));
+    const cards = sideCards().map((c) => (c.dataset && c.dataset.who ? String(c.dataset.who).toLowerCase() : null)).filter(Boolean);
+    const vw = innerWidth, vh = innerHeight;
+    const full = [...document.querySelectorAll(".cl-fig")].filter((f) => shown(f) && !f.closest(".oc-card, .cl-card")).some((f) => {
+      const r = f.getBoundingClientRect();
+      const inW = Math.max(0, Math.min(r.right, vw) - Math.max(r.left, 0)), inH = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0));
+      return r.width * r.height > 0 && (inW * inH) / (r.width * r.height) >= 0.85 && r.height >= vh / 3;
+    });
+    return { list, cards, figFull: full, clinic: location.pathname.includes("clinic") };
+  };
+
+  // contract-16 (no written English for the child, non-negotiable 5): the visible texts, each tagged: a to-record placeholder
+  // (decision 84), the bulb's English (the help, decision 1), or grown-ups' text (the "?" pop-up, a lab panel): those are allowed
+  const texts = () => {
+    const out = new Map();
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let n, k = 0;
+    while ((n = w.nextNode()) && k < 400) {
+      const t = (n.nodeValue || "").replace(/ +/g, " ").trim();
+      if (!t || t.length < 2 || !/[A-Za-z]/.test(t)) continue;
+      const el = n.parentElement;
+      if (!el || !shown(el) || el.closest("script, style, noscript, svg, title")) continue;
+      const b = el.getBoundingClientRect();
+      if (b.width < 1 || b.height < 1 || b.right < 0 || b.bottom < 0 || b.left > innerWidth || b.top > innerHeight) continue;
+      if (t.toLowerCase() === "to record") continue;
+      const grown = !!el.closest("[class*='help'], [id*='help'], [class*='grown'], [class*='lab-'], [id*='lab'], [data-lab], .njg-act, [role='dialog'][aria-label*='elp']");
+      const rec = !!el.closest(".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line");
+      // .rs-en and the steps page's small English: the end-of-round review shows each word's English under it (ui-design-system §6, §6a), pending Zafar's answer (docs/questions.md, 14 Oct)
+      const en = !!el.closest(".english, .cl-row-en, .bulb-en, [data-bulb-en], .rs-en, .rs-step-text small");
+      const key = t + "|" + rec + en + grown;
+      if (!out.has(key)) { out.set(key, { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }); k++; }
+    }
+    return [...out.values()];
+  };
+
   // ---- the sampler ----
   let last = {};
   const same = (k, v) => { const j = JSON.stringify(v); if (last[k] === j) return true; last[k] = j; return false; };
@@ -538,10 +595,16 @@ export const CONTRACT_HOOK = `(() => {
     const rows = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row, .oc-item, li").length, 0);
     const done = cards.reduce((n, c) => n + c.querySelectorAll(".oc-row.done, .oc-item.done, .done, .ticked, .is-done").length, 0);
     // closed: the card is closed (from L3 the call is heard, not read: OrderCard's "closed", folded or peeking)
-    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length };
+    // the rows' words (contract-19, the counting rule: from L3 no number written on a card)
+    const words = cards.flatMap((c) => [...c.querySelectorAll(".oc-row .oc-t, .oc-item .oc-t, .oc-row, li")].filter(shown).map((x) => (x.textContent || "").trim().slice(0, 40))).filter(Boolean).slice(0, 24);
+    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, words: [...new Set(words)] };
     if (!same("side", sd)) emit({ k: "side", ...sd });
     const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()) }));
     if (!same("buttons", bl.map((b) => b.sel))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
+    const tx = safe(texts, []);
+    if (!same("texts", tx.map((x) => x.t + x.rec + x.en + x.grown))) emit({ k: "texts", list: tx });
+    const fc = safe(faces, null);
+    if (fc && !same("faces", [fc.list.map((f) => f.who + f.sel), fc.cards, fc.figFull])) emit({ k: "faces", ...fc });
     const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => ({ who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b) }));
     const bsig = bubs.map((b) => [b.who, b.text, Math.round(b.box.l / 6), Math.round(b.box.t / 6)]);
     if (!same("bubble", bsig) && bubs.length) {
