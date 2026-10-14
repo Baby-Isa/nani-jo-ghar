@@ -90,7 +90,9 @@ export function parseCmd(s) {
 
 // ---------- expect strings (the machine assertions; anything else is read by the reviewer) ----------
 // The words of the spec file's _expect list. "!" in front negates (true <-> false; undecided stays undecided).
-export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRot:", "traceRepeats:", "clipClass:", "liveInput", "pass"];
+// the layout lint's checks (build/lint/layout.mjs), for noFinding:<check>
+export const LINT_CHECKS = ["text-clipped", "ellipsis", "text-small", "tap-small", "text-offscreen", "tap-offscreen", "page-scroll", "scroll-container", "covered", "covers-play-area", "word-broken"];
+export const EXPECT_WORDS = ["lexicon", "textMatches:", "hasWord:", "count:", "inside:", "noOverlap:", "centredOn:", "order:", "sameOrder:", "noClip:", "lines:", "minFont:", "minSize:", "countsUp:", "silentAfter:", "familyOnly", "gapMs:", "times:", "lastsMs:", "traceAmp:", "tracePeriod:", "traceRot:", "traceRepeats:", "clipClass:", "noFinding:", "liveInput", "pass"];
 const OP = "(>=|<=|=|<|>)";
 export function parseExpect(s, { contractChecks = null } = {}) {
   let t = String(s || "").trim(), not = false;
@@ -132,6 +134,9 @@ function parseExpectOne(t, contractChecks) {
   if ((m = new RegExp(`^lastsMs:(.+?)${OP}(\\d+)$`).exec(t))) return { kind: "lastsMs", sel: m[1].trim(), op: m[2], n: +m[3] };
   if ((m = new RegExp(`^(traceAmp|tracePeriod|traceRepeats|traceRot|amp|period):(.+?)${OP}(\\d+(?:\\.\\d+)?)$`).exec(t))) return { kind: { amp: "traceAmp", period: "tracePeriod" }[m[1]] || m[1], sel: m[2].trim(), op: m[3], n: +m[4] };
   if ((m = /^clipClass:([\w-]+)$/.exec(t))) return { kind: "clipClass", cls: m[1] };
+  // noFinding:<check>: the layout lint (build/lint/layout.mjs) finds none of this check on the page at the moment (SH-81: a tap
+  // area 2 px off screen that no picture can show)
+  if ((m = /^noFinding:(.+)$/.exec(t))) return LINT_CHECKS.includes(m[1].trim()) ? { kind: "noFinding", check: m[1].trim() } : { error: `noFinding: unknown lint check "${m[1].trim()}" (${LINT_CHECKS.join(" ")})` };
   if ((m = /^contract-(\d+)$/.exec(t))) {
     if (contractChecks && !contractChecks.includes(t)) return { error: `unknown contract check "${t}"` };
     return { kind: "contract", check: t };

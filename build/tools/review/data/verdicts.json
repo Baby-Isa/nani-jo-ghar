@@ -5343,19 +5343,18 @@
   "date": "2026-10-13"
  },
  "SH-81": {
-  "hash": "5df640618fa717feeaf0",
+  "hash": "e11f27b0ce68aa844aad",
   "dhash": [
-   "5c485a2221666040",
-   "5c485a2221666040",
+   "5c48612626667250",
+   "5c48612626667250",
    "0195a15101c981c3"
   ],
   "verdict": "PASS",
-  "line": "A, at 800x360 with the card peeked open, both order cards' face buttons (Nani with \"Chop these.\", Nana with \"Muke daar khape.\") are fully on screen inside the left column, nothing cut at any edge (C confirms at crop size). Flaw off the point: at this size each face's speaker badge sits over the top of the first row (\"trae dungri\", \"hakro mirchi\"), touching its letters. \"Chop these.\" is grey-italic to-record, allowed",
-  "panel": "A",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-050235-4w2",
-  "commit": "4ffc7ee9",
-  "png": "build/screenshots/evidence/ev-20261014-050235-4w2/SH-81.png",
+  "line": "machine: noFinding:tap-offscreen (no tap-offscreen)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-070807-bk5",
+  "commit": "cce45446",
   "date": "2026-10-14"
  },
  "SH-83": {

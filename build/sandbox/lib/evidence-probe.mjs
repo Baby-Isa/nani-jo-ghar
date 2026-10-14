@@ -14,6 +14,7 @@ import { join } from "node:path";
 import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, traceDecision, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
 import { decodePng, encodePng } from "../../tools/review/lib/png.mjs";
 import * as Contract from "./contract.mjs";
+import { lintPage } from "../../lint/layout.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80); // no # or @: these are URL paths on the sheets
@@ -370,6 +371,9 @@ export class EvidenceProbe {
             if (!set) { put({ ok: null, why: `the lexicon has no "${e.tag}" tag (number and name only)` }); continue; }
             const ws = (domText(true).toLowerCase().match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).filter((w) => set.has(w));
             put({ ok: ws.length > 0, why: ws.length ? `${e.tag}: ${[...new Set(ws)].join(", ")}` : `no ${e.tag} word in the text` });
+          } else if (e.kind === "noFinding") {
+            const fs = (await lintPage(this.page)).filter((f) => f.check === e.check);
+            put({ ok: !fs.length, why: fs.length ? `${fs.length} ${e.check}: ${fs.slice(0, 3).map((f) => `${f.selector} ${f.measured}`).join("; ")}` : `no ${e.check}` });
           } else if (e.kind === "sameOrder") {
             const t = await this.texts(e.sel);
             const rows = []; for (const x of t) { rows[x.el] = (rows[x.el] ? rows[x.el] + " " : "") + x.text; }
@@ -378,7 +382,7 @@ export class EvidenceProbe {
         } catch (x) { put({ ok: null, why: `could not measure: ${String(x.message || x).split("\n")[0]}` }); }
       }
     };
-    const EARLY = new Set(["count", "inside", "noOverlap", "centredOn", "noClip", "lines", "minFont", "minSize"]);
+    const EARLY = new Set(["count", "inside", "noOverlap", "centredOn", "noClip", "lines", "minFont", "minSize", "noFinding"]);
     await decide((e) => EARLY.has(e.kind));
     for (const [ci, c] of p.capture.entries()) {
       const out = { kind: c.kind, raw: c.raw, files: [], text: null, fail: null };
@@ -481,7 +485,7 @@ export class EvidenceProbe {
       const words = () => `${spoken.map((l) => l.text).join(" ")} ${s.hits.flatMap((h) => h.captures.filter((c) => c.runs).flatMap((c) => c.runs.map((x) => x.text))).join(" ")}`;
       for (const e of p.expect) {
         const put = (x) => res.expects.push(negate(e, { raw: e.raw, ...x }));
-        if (["count", "inside", "noOverlap", "centredOn", "noClip", "lines", "minFont", "minSize", "lexicon", "hasWord"].includes(e.kind) || (e.kind === "order" && e.sels)) {
+        if (["count", "inside", "noOverlap", "centredOn", "noClip", "lines", "minFont", "minSize", "lexicon", "hasWord", "noFinding"].includes(e.kind) || (e.kind === "order" && e.sels)) {
           let all = s.hits.map((h) => h.expects.find((x) => x.raw === e.raw)).filter(Boolean);
           if (!all.length) { put({ ok: null, why: "the moment never came" }); continue; }
           // an every: probe decides on the moments where its thing was on screen (the others are notes, above)

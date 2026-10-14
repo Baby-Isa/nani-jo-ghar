@@ -26,7 +26,8 @@
   "clipClass:<class>": "every line in the voice timeline has this class (family-ok, tts, silent): familyOnly = clipClass:family-ok",
   "liveInput": "the probe's driver tapped the expected thing while a line was playing and the game accepted it before the line ended",
   "pass": "the probe's contract:<n> or cmd: capture reports no break (contract) or exits 0 (cmd)",
-  "times:<moment><op><n>": "how many times the moment came while the probe was armed, repeats included (each ghost-finger play is a life:ghost moment: SH-46, MAA-13)"
+  "times:<moment><op><n>": "how many times the moment came while the probe was armed, repeats included (each ghost-finger play is a life:ghost moment: SH-46, MAA-13)",
+  "noFinding:<check>": "the layout lint (build/lint/layout.mjs) finds none of this check (tap-offscreen, text-clipped, covered, word-broken ...) on the page at the moment: for a fault no picture can show (SH-81: a tap area 2 px off screen)"
  },
  "_capture": {
   "shot": "the whole screen (last resort: only rows about the whole layout)",
@@ -12511,8 +12512,10 @@
     "shot",
     "crop:#mission"
    ],
-   "expect": null,
-   "note": "a peeked closed card: its face button fully on screen",
+   "expect": [
+    "noFinding:tap-offscreen"
+   ],
+   "note": "a peeked closed card: its face button fully on screen. Machine: the layout lint at the peek finds no tap-offscreen (the bug was a 2 px tap-area overhang no picture can show)",
    "delay": 300
   }
  ],
