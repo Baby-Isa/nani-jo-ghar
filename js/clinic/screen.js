@@ -1,6 +1,6 @@
 /*
  * The clinic's one screen layout (UX s2, s13, s15): the sidebar on the LEFT (the
- * doctor's box at its top with the light bulb, the instruction card, the tray), the play area
+ * bulb and sound buttons at its top (a small row, no face), the doctor's one card under it (CLN-140, R4), the tray), the play area
  * (the tally in its top-right corner), and the shared buttons in the play area's bottom-right
  * corner under the thumb. Every stage and every healing game draws into the same
  * frame, so nothing jumps between stages.
@@ -41,7 +41,20 @@
         bulbBtn = bulbRow.querySelector(".ng-bulb");
       } else bulbBtn = h("button", "", bulbRow);
       const hintN = h("span", "cl-hint-n", bulbRow.querySelector(".ng-tools") || bulbRow);
+      // CLN-140 (Zafar, 14 Oct, R4 in the clinic): the doctor is always both the guide and the asker, so he has ONE card
+      // at the top of the sidebar: his face once (on the card), his current-step line as its top strip (T22, T29), then
+      // the goal headline and the steps. His box keeps only the bulb and sound buttons, a small row above with no face.
+      if (nani && nani.strip) nani.strip(true);
       const cardEl = h("section", "", side);
+      /** The doctor's face on his card (= replay): his picture, else the flat stand-in. */
+      const doctorFace = () => {
+        const f = h("div", "cl-face doctor");
+        const img = h("img", "", f);
+        img.alt = "";
+        const src = Kit.person && Kit.person("doctor", "neutral");
+        img.src = src ? Kit.url(src) : Kit.DOCTOR_FACE;
+        return f;
+      };
       const trayWrap = h("div", "cl-side-tray", side);
       const trayEl = h("div", "", trayWrap);
       // the ? (what do I do here?): the goal for grown-ups, and the first-time help's skip (G7 / CQ15)
@@ -68,7 +81,7 @@
         trayEl,
         trayWrap,
         hints: 0,
-        card: new Kit.Card(cardEl, { who: "doctor" }),
+        card: new Kit.Card(cardEl, { who: "doctor", face: doctorFace }),
         tally: new Kit.Tally(tallyEl),
         stage: null,
       };
@@ -143,16 +156,16 @@
         if (w) Kit.text(w, span);
         const rec = !!(w && (!w.kutchi || /\[/.test(w.kutchi)));
         nani.set(span.innerHTML, { rec });
-        // R4: while the doctor is both the asker and the guide (a heal game), his line is his card's strip
-        if (scr.strip) scr.card.setStrip(w ? { html: span.innerHTML, rec } : null);
+        // CLN-140 (R4): the doctor is the asker and the guide in every stage: his line is his card's top strip
+        scr.card.setStrip(w ? { html: span.innerHTML, rec } : null);
       };
-      /** R4 (decision 55, T29): one face: the box keeps only its tools and the guide's line goes on the card. */
-      scr.stripMode = (on) => {
-        scr.strip = !!on;
-        if (nani && nani.strip) nani.strip(scr.strip);
-        if (!scr.strip) scr.card.setStrip(null);
+      /** R4 in the clinic (CLN-140): always one card (the strip is on in every stage); kept for the stages that ask. */
+      scr.stripMode = () => {};
+      // his face on the card replays the card; a card with only his line in its strip replays that line
+      scr.card.onReplay = () => {
+        if (!scr.card.rows.length && !scr.card.titleText && scr.naniLine) Kit.Voice.say(scr.naniLine, { who: "guide", noBubble: true });
       };
-      Kit.Voice.speakers.nani = Kit.Voice.speakers.guide = () => bulbRow.querySelector(".ng-face") || bulbRow;
+      Kit.Voice.speakers.nani = Kit.Voice.speakers.guide = () => cardEl.querySelector(".cl-card-face") || bulbRow;
       scr.closeHelp = () => helpPop.classList.add("hidden");
       scr.openHelp = () => {
         helpPop.innerHTML = "";

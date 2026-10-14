@@ -553,6 +553,9 @@
     this.big = !!opts.big; // the request pop-up's card at full size (the shared OrderCard {big: true})
     this.onReplay = opts.onReplay || null;
     this.faceEl = null;
+    // CLN-140 (R4 in the clinic): the sidebar's doctor card always wears his face (opts.face: () => element), the one
+    // face of his on screen; a card set for someone else (faceEl) shows theirs instead
+    this.defaultFace = typeof opts.face === "function" ? opts.face : null;
     this.titleText = "";
     this.isOrdered = false;
     this.closed = null;
@@ -669,12 +672,13 @@
     // the shared card tints its box, and a tinted box round the row now lit reads as a second highlight: no tint here
     if (headed) c.querySelectorAll(".oc-item.tint").forEach((x) => x.classList.remove("tint"));
     // the person's face (= replay), drawn by the clinic (a stand-in face element, not a picture file)
-    if (this.faceEl) {
+    const faceEl = this.faceEl || (this.defaultFace && this.who === "doctor" ? this.defaultFace() : null);
+    if (faceEl) {
       const f = document.createElement("button");
       f.type = "button";
       f.className = "oc-face face-say cl-card-face";
       f.setAttribute("aria-label", "Hear it again");
-      f.appendChild(this.faceEl);
+      f.appendChild(faceEl);
       f.insertAdjacentHTML("beforeend", '<span class="say-badge" aria-hidden="true"></span>');
       f.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -684,7 +688,7 @@
       const head = c.querySelector(".oc-head");
       head.insertBefore(f, head.firstChild);
     }
-    if (!rows.length && !this.faceEl && !this.titleText) c.classList.add("cl-empty");
+    if (!rows.length && !faceEl && !this.titleText) c.classList.add("cl-empty");
     this.el.appendChild(c);
     this.ocEl = c;
     // SH-41 (S05-D): the card in English for the bulb's time is the card itself (the shared .oc-card), redrawn or not
