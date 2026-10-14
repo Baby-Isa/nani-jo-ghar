@@ -166,3 +166,11 @@
 {"id":"CLN-151","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"e286fb0d4dff495e9e61","judge":"expect","date":"2026-10-14"}
 {"id":"MOD-03","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"80e1fc0b465108234585","judge":"expect","date":"2026-10-14"}
 {"id":"MOD-04","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"0d98ff513fb72a849bc4","judge":"expect","date":"2026-10-14"}
+{"id":"CK-07","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"2aef4a9d4a0a08ebd29a","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent session 01Nw7k9ibu5B4mnUdyC8x8yh","date":"2026-10-14"}
+{"id":"SH-88","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}
+{"id":"CK-07","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}
+{"id":"CK-36","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}
+{"id":"CK-37","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}
+{"id":"CLN-151","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}
+{"id":"MOD-03","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}
+{"id":"MOD-04","run":"ev-20261014-144157-8oo","event":"built","date":"2026-10-14"}

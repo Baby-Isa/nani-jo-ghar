@@ -699,19 +699,21 @@
   "date": "2026-10-13"
  },
  "CK-07": {
-  "hash": "5116f465b08092c8164c",
+  "hash": "c560f355ac427be44791",
   "dhash": [
    "cefebf9f9391d62b",
-   "cefebf979399d62b"
+   "cefebf979399d62b",
+   "3818727072786cec",
+   "70b0a2a2a6e2d050"
   ],
-  "verdict": "FAIL",
-  "line": "A frame 3 and B frame 4, the review is now a large round face circle over the tray slot with \"Shabash!\" (right shape), but in both #mistake runs the face is happy, no frown, and no wrong row is marked: the card collapses to the headline (dom at click 3 / click 4 is the headline only). B frame 4 shows two faces for two orders plus a small face badge half off the tray's right edge.",
-  "panel": null,
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/CK-07.png",
-  "date": "2026-10-13"
+  "verdict": "PASS",
+  "line": "D, at the wrong serve's Done one large round face circle per person sits over their own glass slot on the tray, with no eating, no sliding half-body and no rim badge; A3 and B4 show the same shape with \"Shabash!\" at the right serves (only the chai station is on the sheet; flaw off this row: the chai jar's label is a speaker icon with no word in B3, B4, C and D, though A2 and A3 read \"chai\")",
+  "panel": "D",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent session 01Nw7k9ibu5B4mnUdyC8x8yh",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
+  "png": "build/screenshots/evidence/ev-20261014-144157-8oo/CK-07.png",
+  "date": "2026-10-14"
  },
  "CK-08": {
   "hash": "bb2669dd211e7979ea46",
