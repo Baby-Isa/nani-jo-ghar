@@ -425,11 +425,11 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   /* S06 (non-negotiable 9, cook:daar@L3#hint 800x360): on a short phone the gloss goes under its speaker, centred, with
      the tile's whole width, so it shrinks, then wraps between its words (beside the speaker it was squeezed to a few px:
      "one" broke into "on / e", "mustard seeds" ran down the tile and the words panel scrolled) */
-  .njg-results .rs-p2 .rs-word .rs-en { flex-wrap: wrap; justify-content: center; row-gap: 0; }
-  .njg-results .rs-p2 .rs-word .rs-en > .fit { flex: 1 1 100%; text-align: center; }
+  .njg-results .rs-p2 .rs-words:not(.dense) .rs-word .rs-en { flex-wrap: wrap; justify-content: center; row-gap: 0; }
+  .njg-results .rs-p2 .rs-words:not(.dense) .rs-word .rs-en > .fit { flex: 1 1 100%; text-align: center; }
   /* and the halves give the tiles their side padding (still the same width each, SH-03): "cardamom" fits a tile whole */
   .njg-results .rs-words:not(.dense) .rs-words-col { padding: 0 var(--njg-s1); }
-  .njg-results .rs-p2 .rs-word { padding-left: var(--njg-s1); padding-right: var(--njg-s1); }
+  .njg-results .rs-p2 .rs-words:not(.dense) .rs-word { padding-left: var(--njg-s1); padding-right: var(--njg-s1); }
   /* a word still to record: its flag takes the second line, the speaker sits on the tile's corner as a small badge */
   .njg-results .rs-words.dense .rs-word:has(.rs-rec) .rs-say { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s3) * -1); box-shadow: var(--njg-shadow); }
   .njg-results .rs-words.dense .rs-word .rs-rec { order: 0; padding: 0 var(--njg-s1); letter-spacing: 0; white-space: nowrap; max-width: none; line-height: 1.3; }
