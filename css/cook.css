@@ -1133,3 +1133,9 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 @media (max-height: 420px) {
   #mission { padding: 4px 8px 4px; }
 }
+
+/* CK-37: the finale fits a short phone whole (it scrolled by 40 px at 800x360): smaller family and quilt patch there */
+@media (max-height: 430px) {
+  .finale-row img { height: clamp(56px, 16vh, 150px); }
+  .patch { width: 80px; height: 80px; margin: 4px auto; }
+}
