@@ -350,7 +350,7 @@ Output: a ready questionnaire section (ID, English, blank columns, "stop here" m
 
 ## 11. The Excel's role
 
-`content/Nani jo Ghar - Content Master.xlsx` (read 1 Oct): scene tabs (Bazaar, Doorstep, Street, Charades, Clinic, Hide and Seek, Pack the Bag, Bonus) with about 170 handout drafts, **0 confirmed words**; a "Carrier sentences" tab of `Muke {x} khape` formulas; a 496-entry Freelang dictionary paste; a formula-built master list. `build/build_content.py` turns it into `data/content.json` for the parked modes. Every word Mum has confirmed since 24 Sept lives in `data/cook.json`, not in the sheet (`lexicon.md` § 5).
+`content/Nani jo Ghar - Content Master.xlsx` (read 1 Oct): scene tabs (Bazaar, Doorstep, Street, Charades, Clinic, Hide and Seek, Pack the Bag, Bonus) with about 170 handout drafts, **0 confirmed words**; a "Carrier sentences" tab of `Muke {x} khape` formulas; a 496-entry Freelang dictionary paste; a formula-built master list. `build/archive/build_content.py` turns it into `data/content.json` for the parked modes. Every word Mum has confirmed since 24 Sept lives in `data/cook.json`, not in the sheet (`lexicon.md` § 5).
 
 **Recommendation: retire it as a source.**
 - The engine's `lexicon.json` is the one source of words; `lexicon.md` stays the human-readable log of where each word came from.

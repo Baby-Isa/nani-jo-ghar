@@ -147,7 +147,7 @@ Review every contact sheet on **both a black and a white backing**, and every pl
 | 12 | **No text** | Any letters or numbers, even fake ones |
 | 13 | **Cultural accuracy** | See below |
 | 14 | **Finger count (hands; parked)** | Count every digit, at full size, and write the count down for each hand. Five per hand (thumb and four fingers) unless the pose hides some behind the palm; hidden digits must be where the pose puts them, not missing. Counting frames E3 raise exactly 1, 2, 3, 4, 5 (in "4" the thumb is folded and must not stick out). Reject: a missing or extra digit, two fingers merged, two hands fused into one shape |
-| 15 | **Hand scale matches (hands; parked)** | Forearm width just above the sleeve differs from the reference by more than about 5% after the scale normaliser (`build/gen_assets.py`, `forearm_widths()`); the hand looks bigger or smaller than its neighbours on the contact sheet; the normaliser had no room to grow it (flagged in its log) |
+| 15 | **Hand scale matches (hands; parked)** | Forearm width just above the sleeve differs from the reference by more than about 5% after the scale normaliser (`build/archive/gen_assets.py`, `forearm_widths()`); the hand looks bigger or smaller than its neighbours on the contact sheet; the normaliser had no room to grow it (flagged in its log) |
 | 16 | **Hand camera, light and skin (hands; parked)** | T poses not seen from straight above; E poses showing the palm when the pose says the back of the hand; a forearm entering from the side when the pose doesn't need it; light not from the upper left like the reference; skin not matching the reference after the skin normaliser (orange palms, pale or pink hands) |
 | 17 | **Tool gaps (grips; parked)** | A tool drawn in the hand (tools are separate sprites); no clear gap where the tool goes; a keyed-out gap that slices through a finger or leaves a red rim |
 
@@ -268,7 +268,7 @@ A first version of the script assumed each item sat inside an equal-sized grid b
 
 ### 1.2 Boy and girl versions (Zafar, 24 Sept)
 
-Plan: **generate one master set, then skin it in code** (changed 25 Sept 2026). The image API's edit mode redrew the hands when asked to reskin them, so `build/skin_hands.py` recolours the skin and sleeve of each master and places jewellery sprites at anchor points recorded per pose (`data/hand-anchors.json`); the characters are data (`data/hand-skins.json`).
+Plan: **generate one master set, then skin it in code** (changed 25 Sept 2026). The image API's edit mode redrew the hands when asked to reskin them, so `build/archive/skin_hands.py` recolours the skin and sleeve of each master and places jewellery sprites at anchor points recorded per pose (`data/hand-anchors.json`); the characters are data (`data/hand-skins.json`).
 
 | Version | Sleeve and details |
 |---|---|
@@ -362,18 +362,18 @@ Each line: pose, camera, frames, and what it's used for. Games: **C** Cook, **F*
 **Actual, hands v1 (24–25 Sept 2026; full report `build/reports/archive/art-hands-v1.md`):**
 
 - **Player master set:** 56 images (A1–F5, every camera and frame; F3 and F5 are aliases of B3 and C1). After two review rounds, **47 pass** and **9 still fail** (a2, b1, c2, c3-t, c3-e, d3, d6-f1, e3-count-4, e5). Every master is skin-matched and scaled to the reference forearm (250 px).
-- **Characters are made in code, not generated** (`build/skin_hands.py`, data in `data/hand-skins.json` and `data/hand-anchors.json`): each passing master gets its skin recoloured, its sleeve recoloured and jewellery sprites placed at per-pose anchors (wrist and ring finger). Baked: **player-boy 47**, **player-girl 47** (dusty-pink sleeve, three glass bangles), **Nani 88** (47 right hands + 41 left hands; deep-red sleeve, her skin, aqiq ring and tennis bracelet on the right, solitaire on the left, no bangles). **player-girl-eid** waits for the mehndi overlay texture. Rebuilding every character takes minutes and costs nothing.
+- **Characters are made in code, not generated** (`build/archive/skin_hands.py`, data in `data/hand-skins.json` and `data/hand-anchors.json`): each passing master gets its skin recoloured, its sleeve recoloured and jewellery sprites placed at per-pose anchors (wrist and ring finger). Baked: **player-boy 47**, **player-girl 47** (dusty-pink sleeve, three glass bangles), **Nani 88** (47 right hands + 41 left hands; deep-red sleeve, her skin, aqiq ring and tennis bracelet on the right, solitaire on the left, no bangles). **player-girl-eid** waits for the mehndi overlay texture. Rebuilding every character takes minutes and costs nothing.
 - **API images:** 214 in all (2 eye-level reference, 56 masters, 71 master retries, 47 girl reskins that were later deleted, 13 Nani reference hands, 25 Nani poses that were archived). The API reskins failed: 39 of 47 girl reskins redrew the hand. That's why reskins and Nani moved to code.
 - **Cost:** about **$31.70** at the real rates: 182 images at high quality (the API's silent default, ~$0.167) before the pipeline was fixed, and 32 at medium (~$0.042). The pipeline's own log says $8.63 because it assumed $0.04 an image. Future hand work needs no API calls, apart from new master poses (at medium, about $0.04 each).
 - **Still to make:** the 9 failed masters (b1, the knife/spatula grip, first; probably as a pose with the tool drawn on its own layer), the Eid mehndi overlay, and the tools (separate sprites, generated with their station's props): knife, spatula, ladle, doi, tadka ladle, whisk, tongs, rolling pin, teaspoon, jug, pestle, grater, racquet, drumstick, umbrella, brush, mehndi cone, camera and so on.
-- **Cost note (24 Sept 2026):** an early run left `quality` unset and the API defaulted to high (~$0.167/1024² image), billing ~$0.16/image instead of the assumed $0.04. `build/gen_assets.py` now always sends `quality` explicitly, prices per quality **and** size (low ~$0.011, medium ~$0.042, high ~$0.167 at 1024², more at larger sizes), and defaults to **medium**. `--draft` (quality low, writes to `drafts/`) is the cheap way to check prompts before a real run; a QA failure (the reskin drift check) auto-retries once by default (`--max-regens N`), never silently more; and any live run estimated over $5 needs `--yes`. `--dry-run` and `--self-test` still make no network calls.
+- **Cost note (24 Sept 2026):** an early run left `quality` unset and the API defaulted to high (~$0.167/1024² image), billing ~$0.16/image instead of the assumed $0.04. `build/archive/gen_assets.py` now always sends `quality` explicitly, prices per quality **and** size (low ~$0.011, medium ~$0.042, high ~$0.167 at 1024², more at larger sizes), and defaults to **medium**. `--draft` (quality low, writes to `drafts/`) is the cheap way to check prompts before a real run; a QA failure (the reskin drift check) auto-retries once by default (`--max-regens N`), never silently more; and any live run estimated over $5 needs `--yes`. `--dry-run` and `--self-test` still make no network calls.
 
 ### 1.5 Generation order
 
 1. **Reference hand.** One right hand, top-down, with the embroidered cuff. The runner and Claude judge it (decision 29: only real people need Zafar).
 2. **Master set**, top-down poses first (Cook needs them first), then eye level.
 3. **The code check.** Drop the hands into two stations (roll and tawa) and check that the grips line up with the tools.
-4. **Characters in code** (`build/skin_hands.py`): boy, girl, girl Eid (when the mehndi texture exists) and Nani, from the passing masters; check the anchor sheet (`--check-sheet`) and each character's contact sheet.
+4. **Characters in code** (`build/archive/skin_hands.py`): boy, girl, girl Eid (when the mehndi texture exists) and Nani, from the passing masters; check the anchor sheet (`--check-sheet`) and each character's contact sheet.
 5. **Contact sheets** reviewed by Claude against the visual QA checklist (camera angle, scale, clean alpha, cuff consistent). Rejected images go back into the queue.
 
 ---
@@ -477,7 +477,7 @@ Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel 
 - Match each uploaded ChatGPT file to its prompt using Chrome's list, then the download order, then the picture itself, and `git mv` it to the "Claude renames it to" name, in `sources/art/pantry-v2/`.
 
 ### Cutting the sheets (`docs/archive/process/VISUAL-QA.md` §2)
-- Write `build/cut_pantry_v2.py` on `build/cut_tick_v2.py`'s method, not `slice_sheet.py --key grey`:
+- Write `build/archive/cut_pantry_v2.py` on `build/cut_tick_v2.py`'s method, not `slice_sheet.py --key grey`:
   - measure the background from the sheet's edges (the median of the outer 6 px);
   - find the nine cells from the grey gutters (column and row projections of `d > 8`), not by dividing the image by three: ChatGPT rarely spaces cells exactly;
   - the object is everything **not connected** to the flat background, holes filled, largest piece kept, so clear glass and the grey-ish water stay solid instead of turning into holes;
@@ -488,7 +488,7 @@ Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel 
 - Record each type's real height relative to the tall jar in `data/cook.json` (`art.sprites`), e.g. tall jar and bottle 1.0, packet 0.75, crate 0.6, tub 0.55, spice jar 0.5, so a spice jar never shows as big as a flour jar.
 - Check every cut on the game's cream background, zoomed: no grey fringe, no ring, no holes (the water bottle especially). Keep the sources in `sources/art/pantry-v2/` and write the webps to `assets/cook/items/` under the "Cuts to" names above (via the labelling step below).
 
-### Putting the labels on (`build/label_pantry_v2.py`)
+### Putting the labels on (`build/archive/label_pantry_v2.py`)
 - **The label:** the blank sticker, with the item's icon scaled so its longer side is about 70% of the sticker's inner circle and centred on it. One label per item, all from the same sticker, so they're identical apart from the picture.
 - **Where it goes:** one anchor per container type, set once by eye on that type's canvas and stored in the script: the label's centre (as fractions of the container's box) and its diameter (about a third of the container's height; larger on spice jars and crates if a third reads too small). All nine items of a type use the same anchor, so the labels line up across the shelf.
 - **Making it sit on the surface:** on round containers (tall jars, bottles, tubs) squeeze the label slightly towards its left and right edges to follow the curve; square jars, crates and packets stay flat. Then shade it to match the container: darker towards the lower right, a touch of the glass's highlight across it on glass, and a hairline soft edge so it doesn't look cut out. Test on one sheet and show Zafar before doing all seven.
@@ -497,8 +497,8 @@ Do not add any text, letters, numbers, logos or watermarks. No outlines, no cel 
 
 ### Status (28 Sept, evening)
 - All 16 images came back and passed; Zafar uploaded them (ChatGPT dump 3) and they're renamed in `sources/art/pantry-v2/` (the first background try wasn't uploaded, so there's no `-try1`).
-- Cut with `build/cut_pantry_v2.py`: 63 bare containers (`shelf-<id>-bare-f.webp`), 63 icons (`icon-<id>.webp`) and `sticker-blank.webp` in `assets/cook/items/`. Checked by eye on cream and shelf wood (`build/previews/pantry-v2/`): glass is see-through, lids solid, no grey fringe.
-- Labels tested on the spice jars (`build/label_pantry_v2.py --preview 2`, `build/previews/pantry-v2/labels-test-spice.jpg`). They sit well, but at phone size the jar's colour reads better than the label, and white-on-cream icons (salt) vanish. **Zafar: decide later. Claude recommends bare for now.** The labelling script stays ready; if labels come back, give the salt, rice and sugar icons a darker sticker or an outline first.
+- Cut with `build/archive/cut_pantry_v2.py`: 63 bare containers (`shelf-<id>-bare-f.webp`), 63 icons (`icon-<id>.webp`) and `sticker-blank.webp` in `assets/cook/items/`. Checked by eye on cream and shelf wood (`build/previews/pantry-v2/`): glass is see-through, lids solid, no grey fringe.
+- Labels tested on the spice jars (`build/archive/label_pantry_v2.py --preview 2`, `build/previews/pantry-v2/labels-test-spice.jpg`). They sit well, but at phone size the jar's colour reads better than the label, and white-on-cream icons (salt) vanish. **Zafar: decide later. Claude recommends bare for now.** The labelling script stays ready; if labels come back, give the salt, rice and sugar icons a darker sticker or an outline first.
 
 - **Wired in (28 Sept, late):** the pantry view uses `assets/cook/bg/bg-pantry-v2-1600.webp` (`art.sprites.bg.pantry`; the old `pantry.jpg` stays as the fallback). Each word's container is `art.sprites.shelf` (`<id>.shelf`, with its size), loaded by `art.sprites.need.fetch`. `js/cook/mechanics/fetch.js` places items from `mechanics.fetch.slots` (13 shelf places, the top shelf's two right-hand ones left clear for the tally, and 6 in the fridge), keeps `mechanics.fetch.fridge` things in the fridge, leaves out decoys with no side-on art (chips, maani), and draws the tray's outlined spaces (`mechanics.fetch.tray`), one per thing on the list, each in its container's shape. Screenshots: `node build/shoot_pantry_v2.mjs` → `build/reports/pantry-v2/` (laptop and phone landscape, levels 1 and 4, empty / half / full tray).
 
@@ -651,7 +651,7 @@ It works for *rare, big* changes (a very happy pose shown once). It doesn't work
 **Painted-on blinks: tried and rejected (23 Sept 2026).** Claude painted eyelids over the existing eyes by filling them from the surrounding skin. It looked bad, so we are not doing it. Decision instead:
 - **Closed eyes:** have ChatGPT make an eyes-closed version of each character, in the same style, canvas size and position.
 - **Mouth shapes and other small movements:** LivePortrait (below).
-- **What does work from existing art:** swapping in *only the mouth* from the existing talking pose, lined up to the neutral pose with a soft edge. The body stays identical, so flapping between the two frames moves just the mouth. This is what the game uses now (`build/make_scene_art.py`).
+- **What does work from existing art:** swapping in *only the mouth* from the existing talking pose, lined up to the neutral pose with a soft edge. The body stays identical, so flapping between the two frames moves just the mouth. This is what the game uses now (`build/archive/make_scene_art.py`).
 
 **Stage B: LivePortrait for face frames [MVP, you are exploring this]**
 - **Is it the best free, easy option? Yes, as of late 2026.** Use the free Hugging Face Space (search "LivePortrait"; nothing to install) or the official GitHub project (KwaiVGI/LivePortrait) in Google Colab. The alternatives are worse for this job: SadTalker is older with lower quality, and Hedra is easier but paid or limited, and it redraws the face.

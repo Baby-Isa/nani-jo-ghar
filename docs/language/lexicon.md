@@ -306,7 +306,7 @@ Everything in the released app is recorded, written and drawn for this project. 
 
 ## 5. The Excel's role (decided: retired)
 
-`content/Nani jo Ghar - Content Master.xlsx` exists. `build/build_content.py` reads it and warns never to resave it with openpyxl, because the "Carrier sentences" tab holds Excel formulas. The older docs (Brief, Technical Plan, Game Design, Roadmap) call it the single source of truth for every word, edited by Mum and her sister, with ids such as `fru-01`, `veg-01`, `spi-01`.
+`content/Nani jo Ghar - Content Master.xlsx` exists. `build/archive/build_content.py` reads it and warns never to resave it with openpyxl, because the "Carrier sentences" tab holds Excel formulas. The older docs (Brief, Technical Plan, Game Design, Roadmap) call it the single source of truth for every word, edited by Mum and her sister, with ids such as `fru-01`, `veg-01`, `spi-01`.
 
 **Drift risk:** every Cook word confirmed since 24 Sept (*daar*, *ba*, *hakro/hakri*, *chundo*, *aako*, *gos*, *boga* …) lives in `data/cook.json`, not in the sheet.
 

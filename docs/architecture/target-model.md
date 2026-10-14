@@ -220,7 +220,7 @@ Swapping art or adding a level never changes code (J4, H1).
 | Words, forms, sentence rules | `data/lang/` | the engine's (2b) |
 | Recordings | `data/family-audio.json` | OK / ?? per clip (G16) |
 | A mode's levels and games | `data/<mode>/levels.json`, `data/<mode>/games/<game>.json` | each level adds one thing (E6); timers ~15% quicker per level, set here (H8) |
-| Scenes | `data/scenes/<scene>.json` | every anchor, slot, seat and occluder measured in background pixels, checked with `build/place_preview.py` (J4) |
+| Scenes | `data/scenes/<scene>.json` | every anchor, slot, seat and occluder measured in background pixels, checked with `build/archive/place_preview.py` (J4) |
 | Recipes, patients, cases | `data/<mode>/…` | as meanings and word ids, never strings |
 | Arcs and errands | `data/arcs/<arc>.json` | § 4.5 |
 | Pay and prices | `data/economy.json` | § 3.5 |
