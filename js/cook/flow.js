@@ -705,7 +705,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
     const spots = traySpots();
     const t = spots.reduce((a, b) => (Math.abs(b[0] - x) < Math.abs(a[0] - x) ? b : a));
-    return { x: t[0], y: t[1], w: t[2], h: t[3], painted: !!(kt && kt.ready) };
+    return trayBox(t, !!(kt && kt.ready));
+  }
+  /*
+   * CK-21: a tray spot ([cx, cy, w, h], design px measured on the 1600-wide service picture). The trays the child sees
+   * are the counter's occluder (stations.js occluder(): the service picture's counter, y 611 down, drawn 1:1 at the
+   * design box's origin, over the characters), not the background behind it (which is scaled up about its pivot on a
+   * taller stage). So the spot is where the tray is, in world px, and `src` is the same box in the picture's own px
+   * (the front wall's crop, trayFront).
+   */
+  function trayBox(sp, painted) {
+    const t = { x: sp[0], y: sp[1], w: sp[2], h: sp[3], painted, src: null };
+    if (!painted) return t;
+    const s = S();
+    const tex = s && s.textures && s.textures.exists("bg-service") ? s.textures.get("bg-service") : null;
+    const img = tex && tex.getSourceImage ? tex.getSourceImage() : null;
+    const k = img && img.width ? img.width / 1600 : 1; // the picture's own px per design px
+    t.src = { x: sp[0] * k, y: sp[1] * k, w: sp[2] * k, h: sp[3] * k, k };
+    return t;
   }
   // the drawn stand-ins' props, for a dish with no served picture yet (loaded at serve time, not at open)
   const SERVED_PROPS = ["glass-chai", "thali", "chapati-puffed", "pot-daal"];
@@ -733,8 +750,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const h = a.drawH * k;
     const w = (h * a.w) / a.h;
     const base = t.y + t.h * 0.18;
-    // CK-21: the contact shadow on the tray's floor, falling to the right (light from the left)
-    s.track(s.add.ellipse(x + w * 0.16, t.y - t.h * 0.06, w * 0.95, Math.max(10, h * 0.16), 0x2a1a0a, 0.26).setDepth(Cook.D.occ + 1.9 + i * 0.01));
+    // CK-21: the contact shadow on the tray's floor, falling to the right (light from the left): it reaches past the dish's
+    // right side, so it shows beside the base and is not all hidden under the dish
+    s.track(s.add.ellipse(x + w * 0.3, t.y - t.h * 0.08, w * 1.0, Math.max(10, h * 0.16), 0x2a1a0a, 0.3).setDepth(Cook.D.occ + 1.9 + i * 0.01));
     s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
     trayFront(s, t);
     return true;
@@ -745,12 +763,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * A drawn tray (no painted kitchen) keeps its own drawing.
    */
   function trayFront(s, t) {
-    if (!t.painted || !s.bg || !s.bg.texture || s.bg.texture.key !== "bg-service") return;
-    const fx = Math.round(t.x - t.w / 2 - 4);
-    const fy = Math.round(t.y - 1);
-    const fw = Math.round(t.w + 8);
-    const fh = Math.round(t.h / 2 + 6);
-    return s.track(s.add.image(s.bg.x, s.bg.y, "bg-service").setOrigin(0).setScale(s.bg.scaleX, s.bg.scaleY).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
+    if (!t.painted || !t.src || !s.textures.exists("bg-service")) return;
+    // the crop is in the picture's own pixels (Phaser crops the texture frame), and the copy is placed as the counter's
+    // occluder is (origin 0 at the design box's origin, the picture drawn 1600 wide), so the cut wall lands on the tray
+    // the child sees. (It was placed with origin 0 at the scaled background's pivot: a piece of the window and wall was
+    // pasted over the trays.)
+    const r = t.src;
+    const k = r.k || 1;
+    const fx = Math.round(r.x - r.w / 2 - 4 * k);
+    const fy = Math.round(r.y - 1 * k);
+    const fw = Math.round(r.w + 8 * k);
+    const fh = Math.round(r.h / 2 + 6 * k);
+    return s.track(s.add.image(0, 0, "bg-service").setOrigin(0).setScale(1 / k).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
   }
   // a chai cup with no milk (CHAI-07) is served as black tea
   const servedRecipe = (d, c = 0) => Cook.Art.servedName(d.recipe, { noMilk: Array.isArray(d.cups) && !!d.cups[c] && d.cups[c].dudh === false });
@@ -773,7 +797,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         let j = px == null ? -1 : spots.reduce((b, sp, q) => (used.has(q) ? b : b < 0 || Math.abs(sp[0] - px) < Math.abs(spots[b][0] - px) ? q : b), -1);
         if (j < 0) j = spots.findIndex((_, q) => !used.has(q));
         used.add(j);
-        const t = { x: spots[j][0], y: spots[j][1], w: spots[j][2], h: spots[j][3], painted: !!(kt && kt.ready) };
+        const t = trayBox(spots[j], !!(kt && kt.ready));
         drawTray(s, t);
         if (!servedPic(s, Cook.Art.servedName(ctx.served[0].recipe, { noMilk: p.dudh === false }), t.x, t, 0)) prop("glass-chai", t.x, t.y - 4, 100, 130, { depth: Cook.D.occ + 2 });
         s.steam(t.x, 560, 1);
