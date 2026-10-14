@@ -705,7 +705,7 @@
           S.did();
           testBtn.remove();
           closeDrops();
-        }, "throb eye-btn");
+        }, "eye-btn"); // CLN-143 (decision 95): no glow: the card's row is the one thing lit (the ✓'s rule, SH-40)
         testBtn.dataset.go = "eye test";
         const t = testBtn.querySelector(".njg-next-t") || testBtn;
         t.textContent = "";
