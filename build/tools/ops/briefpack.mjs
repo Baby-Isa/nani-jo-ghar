@@ -139,3 +139,13 @@ export function liveSpecs(dir = join(ROOT, "build", "tools", "ops", "specs")) {
   for (const f of readdirSync(dir).filter((x) => x.endsWith(".json"))) { try { const s = JSON.parse(readFileSync(join(dir, f), "utf8")); out.push({ ...s, file: f }); } catch (e) { /* not a spec */ } }
   return out;
 }
+
+// checks-to-build 14 (B17, B2-B4): the files a session's commits touched that its spec does not own (its own report is always
+// its own). owns: the spec's owns list; files: paths from git diff --name-only. -> [paths outside the scope]
+export function outsideScope(owns, files, { report } = {}) {
+  const owned = ownedPaths(owns);
+  const mine = (f) => owned.some((o) => pathsOverlap(o.path, f) && !o.except.some((e) => pathsOverlap(e, f)));
+  return files.filter((f) => f && !mine(f) && !(report && f === `build/reports/${String(report).replace(/\.md$/, "")}.md`));
+}
+// a brief that sets up helper sessions breaks the one-or-two-sessions rule
+export const NAMES_HELPERS = (text) => /\b(spawn|launch|start|use|open)\b[^.\n]{0,40}\bhelper (session|agent)s?\b/i.test(String(text || ""));

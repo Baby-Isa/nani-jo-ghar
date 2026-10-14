@@ -8,6 +8,7 @@ description: Review a finished build session or any change before it goes to Zaf
 
 ## Steps
 0. The fast checks, docs limits included: `node build/tools/review/checks.mjs` (exit 1 stops the review).
+0b. A build session's scope: `node build/tools/ops/brief.mjs --audit <its spec.json> <base>..<head>` (exit 1: a file outside its owns; the review fails until it is undone or agreed).
 1. What the change reaches:
    ```
    node build/tools/review/touched.mjs --base <last reviewed commit>

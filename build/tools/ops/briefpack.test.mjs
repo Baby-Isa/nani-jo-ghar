@@ -33,3 +33,11 @@ test("the live specs give no overlap", () => {
   // Sprint 5 closed on 13 Oct, so its specs are no longer live; whatever is live now must not overlap
   assert.deepEqual(overlaps(liveSpecs().filter((s) => s.live)), []);
 });
+
+test("session scope (checks-to-build 14): files outside the spec's owns are listed; its own report is its own", async () => {
+  const { outsideScope, NAMES_HELPERS } = await import("./briefpack.mjs");
+  const owns = ["js/clinic/** except heal/registry.js", "css/clinic.css"];
+  assert.deepEqual(outsideScope(owns, ["js/clinic/main.js", "css/clinic.css", "js/shared/frame.js", "js/clinic/heal/registry.js", "build/reports/s06-clinic.md"], { report: "s06-clinic" }), ["js/shared/frame.js", "js/clinic/heal/registry.js"]);
+  assert.equal(NAMES_HELPERS("Launch two helper sessions for the art"), true);
+  assert.equal(NAMES_HELPERS("NO helper sessions or background helpers."), false);
+});
