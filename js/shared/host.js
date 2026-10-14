@@ -47,7 +47,8 @@
  *   ctx.after(ms, fn) ctx.every(ms, fn) ctx.on(el, type, fn)   cleared by the host at the end of the stage
  *   ctx.test.expect(e) ctx.test.state(name)   what the stage wants next, for window.njgTest (§ 8.1)
  *   ctx.done(r?)     the stage is finished. r may carry {right, total, marks, hints, looks, words, evidence, tasks, timeMs,
- *                    steps: [{id, label, asked, done, ok}] (D14: what the end review shows when a step went wrong)}
+ *                    steps: [{id, label, asked, done, ok}] (D14: what the end review shows when a step went wrong),
+ *                    taught (D13: a guided first round; a round whose every stage is taught has no time, best or badges)}
  *                    from an adapter whose game scores itself: the host turns right/total (or marks) into marks
  *                    when the stage made none; evidence [{word, ok, cue}] feeds word progress; words the end screen
  *
@@ -272,11 +273,15 @@ export function createHost(opts = {}) {
     }
     if (id !== runs) return Object.assign(res, { left: true });
     const sum = tally.summary();
+    // CLN-118 (D13): a round whose every stage was taught (a heal game's guided first round) is neither timed nor
+    // scored: no time, so no best; the end screen skips its badge page
+    const taught = stages.length > 0 && stages.every((s) => s.taught);
     const round = {
       mode: mode.id,
       game: roundGame,
       level: lvl,
-      timeMs: stages.length ? Math.round(timeMs) : undefined,
+      timeMs: stages.length && !taught ? Math.round(timeMs) : undefined,
+      taught: taught || undefined,
       right: sum.right,
       total: sum.total,
       marks: sum.marks,
@@ -307,6 +312,7 @@ export function createHost(opts = {}) {
         hints: round.hints,
         looks: round.looks,
         steps: stepsOf(stages),
+        taught: round.taught,
         words: dedupeWords(words),
         actions: actions || undefined,
         speak: opts.speakWord,
@@ -546,6 +552,7 @@ export function createHost(opts = {}) {
     // an adapter whose game keeps its own clock passes timeMs; otherwise first action (or mount) to Done
     info.timeMs = typeof r.timeMs === "number" ? r.timeMs : info.tEnd - (tAct != null ? tAct : tStart);
     info.tasks = r.tasks || 0;
+    info.taught = !!r.taught; // CLN-118: a taught stage (D13) is neither timed nor scored
 
     // tear down: the stage's own destroy, then the host's checks (E17)
     try {

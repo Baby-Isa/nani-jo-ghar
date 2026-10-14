@@ -400,7 +400,10 @@
     opts = opts || {};
     if (current) current.close();
     const S = store(opts);
-    const timed = opts.timeMs != null;
+    // CLN-118 (D13): a taught round (a heal game's guided first round) is neither timed nor scored: no time is recorded
+    // and the badge page is skipped; the card opens on the word review (or the steps), or holds only the actions
+    const taught = !!opts.taught && !opts.body;
+    const timed = opts.timeMs != null && !taught;
     const time = timed ? Results.recordTime(opts.mode, opts.game, opts.level, opts.timeMs, { store: S }) : null;
     const b = Results.badges(opts, time ? time.prevMs : null);
     if (time) b.time = time;
@@ -414,19 +417,22 @@
     el.setAttribute("aria-modal", "true");
     el.setAttribute("aria-label", "End of the round");
     // the pages after the badges: the word review, then the steps (decision 93); none: the actions sit under the badges
-    const more = words.length > 0 || steps.length > 0;
+    const first = taught ? (words.length ? 2 : steps.length ? 3 : 1) : 1;
+    // the pages in turn: the badges (not in a taught round), the word review (if any words), the steps (if any; decision 93)
+    const pages = (taught ? [] : [1]).concat(words.length ? [2] : [], steps.length ? [3] : []);
+    const many = pages.length > 1; // a Next between pages; one page: the actions sit under it
     const acts = `<div class="rs-actions rs-last">${actionsHtml(opts)}</div>`;
     el.innerHTML = `
-      <div class="rs-card" data-step="1">
+      <div class="rs-card${taught ? " taught" : ""}" data-step="${first}">
         <div class="rs-steps">
-          <div class="rs-page rs-p1" data-page="1">
+          ${taught ? "" : `<div class="rs-page rs-p1" data-page="1">
             ${opts.body ? '<div class="rs-body"></div>' : `<div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>`}
-          </div>
-          ${words.length ? `<div class="rs-page rs-p2" data-page="2" aria-hidden="true"><div class="rs-words${denseWords(words) ? " dense" : ""}">${wordsHtml(words)}</div></div>` : ""}
+          </div>`}
+          ${words.length ? `<div class="rs-page rs-p2" data-page="2"${first === 2 ? "" : ' aria-hidden="true"'}><div class="rs-words${denseWords(words) ? " dense" : ""}">${wordsHtml(words)}</div></div>` : ""}
           ${steps.length ? stepsHtml(steps) : ""}
         </div>
-        ${more ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
-        ${more ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
+        ${many ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
+        ${many ? acts.replace('class="rs-actions rs-last"', 'class="rs-actions rs-last" hidden') : acts}
       </div>`;
     if (opts.body) el.querySelector(".rs-body").appendChild(opts.body);
     host.appendChild(el);
@@ -472,8 +478,6 @@
     };
     current = { el, close, page: () => +card.dataset.step };
 
-    // the pages in turn: the badges, the word review (if any words), the steps (if any steps; decision 93)
-    const pages = [1].concat(words.length ? [2] : [], steps.length ? [3] : []);
     const toPage = (n) => {
       const from = el.querySelector(`.rs-p${card.dataset.step}`);
       const to = el.querySelector(`.rs-p${n}`);
@@ -527,6 +531,13 @@
       const r = card.getBoundingClientRect();
       const room = (root.innerHeight || 0) - 2 * Math.max(0, Math.min(r.top, 16));
       if (room > 0 && r.height > room) list.style.zoom = String(Math.max(0.6, Math.floor((1 - (r.height - room) / Math.max(1, list.offsetHeight)) * 100) / 100));
+    }
+    // CLN-118: a taught round opens on its first page after the badges, fitted as toPage fits it
+    if (first !== 1) {
+      const pg = el.querySelector(`.rs-p${first}`);
+      pg.removeAttribute("aria-hidden");
+      if (root.FitText) root.FitText.run(pg);
+      if (first === 3) fitSteps(pg);
     }
     // focus into the dialog (the card itself, so no button shows a ring before it's needed)
     card.setAttribute("tabindex", "-1");
