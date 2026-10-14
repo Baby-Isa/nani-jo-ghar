@@ -1779,14 +1779,14 @@
   "date": "2026-10-13"
  },
  "CLN-143": {
-  "hash": "9e9f12bf1015421f2cd1",
+  "hash": "079d8789e2f112f5691d",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "machine: CLN-143-p1-L2-1024x768: pass: 1 contract breaks",
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-001722-cc1",
-  "commit": "9376780",
+  "run": "ev-20261014-004524-xbl",
+  "commit": "e7e5f21",
   "date": "2026-10-14"
  },
  "CLN-144": {
