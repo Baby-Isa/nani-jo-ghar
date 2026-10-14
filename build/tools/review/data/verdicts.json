@@ -699,19 +699,21 @@
   "date": "2026-10-13"
  },
  "CK-07": {
-  "hash": "5116f465b08092c8164c",
+  "hash": "c560f355ac427be44791",
   "dhash": [
    "cefebf9f9391d62b",
-   "cefebf979399d62b"
+   "cefebf979399d62b",
+   "3818727072786cec",
+   "70b0a2a2a6e2d050"
   ],
-  "verdict": "FAIL",
-  "line": "A frame 3 and B frame 4, the review is now a large round face circle over the tray slot with \"Shabash!\" (right shape), but in both #mistake runs the face is happy, no frown, and no wrong row is marked: the card collapses to the headline (dom at click 3 / click 4 is the headline only). B frame 4 shows two faces for two orders plus a small face badge half off the tray's right edge.",
-  "panel": null,
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/CK-07.png",
-  "date": "2026-10-13"
+  "verdict": "PASS",
+  "line": "D, at the wrong serve's Done one large round face circle per person sits over their own glass slot on the tray, with no eating, no sliding half-body and no rim badge; A3 and B4 show the same shape with \"Shabash!\" at the right serves (only the chai station is on the sheet; flaw off this row: the chai jar's label is a speaker icon with no word in B3, B4, C and D, though A2 and A3 read \"chai\")",
+  "panel": "D",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent session 01Nw7k9ibu5B4mnUdyC8x8yh",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
+  "png": "build/screenshots/evidence/ev-20261014-144157-8oo/CK-07.png",
+  "date": "2026-10-14"
  },
  "CK-08": {
   "hash": "bb2669dd211e7979ea46",
@@ -1047,6 +1049,39 @@
   "judge": "expect",
   "run": "ev-20261014-004448-y12",
   "commit": "beacbea",
+  "date": "2026-10-14"
+ },
+ "CK-36": {
+  "hash": "5040eee206f5dfa1cebe",
+  "dhash": [
+   "03030b0b170b030b",
+   "0140124a1202024a",
+   "4101151749011153",
+   "4101151749011153",
+   "2141010949014d49",
+   "2141010949014d49",
+   "2d2d510111110101"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noFinding:scroll-container (no scroll-container); noFinding:text-offscreen (no text-offscreen); noFinding:scroll-container (no scroll-container)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
+  "date": "2026-10-14"
+ },
+ "CK-37": {
+  "hash": "65dd1b23eddd3d0036fc",
+  "dhash": [
+   "7301313111d1c175",
+   "7101313111d1c171"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noFinding:scroll-container (no scroll-container); noClip:div#panel (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
   "date": "2026-10-14"
  },
  "CK-38": {
@@ -1975,6 +2010,22 @@
   "judge": "expect",
   "run": "ev-20261014-071816-c9g",
   "commit": "defcdaf7",
+  "date": "2026-10-14"
+ },
+ "CLN-151": {
+  "hash": "73aa73ad8ce7c90557c5",
+  "dhash": [
+   "f9757b67666f7f78",
+   "6901a19501c12170",
+   "c971f9f9d8ecefe6",
+   "4901a19501a10175"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noFinding:scroll-container (no scroll-container); noClip:div.njg-rq-card (1 clean); noFinding:scroll-container (no scroll-container)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
   "date": "2026-10-14"
  },
  "CLN-152": {
@@ -3667,6 +3718,31 @@
   "run": "ev-20261013-113508-8ie",
   "commit": "48f64ae",
   "date": "2026-10-13"
+ },
+ "MOD-03": {
+  "hash": "8718212f948685a3c53c",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/tools/review/leak.mjs tidy: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
+  "date": "2026-10-14"
+ },
+ "MOD-04": {
+  "hash": "71161ec150b6cbc381b5",
+  "dhash": [
+   "070696868e160604",
+   "010161110109d141"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noFinding:scroll-container (no scroll-container); noClip:div#panel (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
+  "date": "2026-10-14"
  },
  "PAN-01": {
   "hash": "51aeec68bbc3f8cbe76c",
@@ -5518,6 +5594,22 @@
   "judge": "expect",
   "run": "ev-20261014-070130-bnb",
   "commit": "8223e50b",
+  "date": "2026-10-14"
+ },
+ "SH-88": {
+  "hash": "0a3886ddd0e031440d0d",
+  "dhash": [
+   "050d0c0d0c0f0303",
+   "0b1f1d0919190303",
+   "70050d0f0c070341",
+   "0519190d1d1d0303"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noFinding:scroll-container (no scroll-container); noFinding:scroll-container (no scroll-container); noFinding:scroll-container (no scroll-container)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-144157-8oo",
+  "commit": "902f018d",
   "date": "2026-10-14"
  }
 }
