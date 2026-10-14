@@ -436,9 +436,16 @@
       DRAW[id](s, s("g", {}, svg));
       art(b, id, "off");
       els[id] = b;
-      ctx.on(b, "click", (e) => {
+      // CLN-152 (contract-21): a thing acts on the press itself (its picture is redrawn as it changes, so the click after
+      // the release could miss it and the tap was lost); a keyboard's click (no pointer) still works
+      ctx.on(b, "pointerdown", (e) => {
+        if (e.button > 0) return;
         e.stopPropagation();
         tapThing(id);
+      });
+      ctx.on(b, "click", (e) => {
+        e.stopPropagation();
+        if (e.detail === 0) tapThing(id);
       });
       return b;
     };

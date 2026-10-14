@@ -739,12 +739,16 @@
         timers.add(t);
         return t;
       },
+      /** contract-21: the child's tap reached the game (a control the shared kit wires itself: the answer pills). */
+      act() {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("act", { during: !!(Kit.Voice && Kit.Voice.busy), stage: `heal/${def.id}` });
+      },
       on(el, type, fn0, o) {
         // checks-to-build 20 (contract-21): a tap or press the host hands to the game is logged as it runs, with whether a
         // voice was speaking then (input never waits for the voice: D8, E5)
         const fn = /^(pointerdown|pointerup|click|mousedown|touchstart)$/.test(type)
           ? function (ev) {
-              if (ev && ev.isTrusted && global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("act", { during: !!(Kit.Voice && Kit.Voice.busy), stage: `heal/${def.id}` });
+              if (ev && ev.isTrusted) ctx.act();
               return fn0.apply(this, arguments);
             }
           : fn0;

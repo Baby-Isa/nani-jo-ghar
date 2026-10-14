@@ -455,7 +455,8 @@
     const judgeBox = S.h("div", "hs-judge", S.root);
     const NB = root.NjgButtons;
     const yesNo = { yes: HS.L.w(HS.L.yesId()).kutchi, no: HS.L.w(HS.L.noId()).kutchi };
-    const pills = NB ? NB.pills(judgeBox, [{ id: "yes", html: yesNo.yes }, { id: "no", html: yesNo.no }], (id) => onJudge(id === "yes")) : null;
+    // CLN-152 (contract-21): the shared pills wire their own taps: each one is handed to the game, logged as an act
+    const pills = NB ? NB.pills(judgeBox, [{ id: "yes", html: yesNo.yes }, { id: "no", html: yesNo.no }], (id) => (ctx.act && ctx.act(), onJudge(id === "yes"))) : null;
     const mk = (id, label) => {
       if (pills) {
         const b = pills.pill(id);
