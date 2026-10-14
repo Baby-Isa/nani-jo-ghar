@@ -32,6 +32,8 @@
  *     done?: bool }                               default: every item done
  *
  *   `key` is anything the host wants handed back with the element drawn for it (read-along).
+ *   A part's (or item's) `wrong` (CK-32): the serve found it wrong. It is drawn red, never ticked, and the card stays open
+ *   (never folded, never "done") until the host redoes the row and drops the flag.
  *   A part's `next` (ordered items): the host's own choice, else the first open part of the first open
  *   ordered item. `done` on an item: the host's (a count row ticks when its step closes, UX 11), else
  *   all its parts done.
@@ -114,8 +116,13 @@
         if (it) it.parts.find((p) => !p.done && !p.no).next = true;
       }
     } else items.forEach((it) => it.parts.forEach((p) => (p.next = false)));
-    const done = data && data.done != null ? !!data.done : items.length > 0 && items.every((it) => it.done);
-    return { direct, done, items };
+    // CK-32: a wrong serve's row keeps the card open to show it, whatever the host says of the card's done
+    const wrong = items.some((it) => it.wrong || it.parts.some((p) => p.wrong));
+    items.forEach((it) => {
+      if (it.wrong || it.parts.some((p) => p.wrong)) it.folded = false;
+    });
+    const done = !wrong && (data && data.done != null ? !!data.done : items.length > 0 && items.every((it) => it.done));
+    return { direct, done, items, wrong };
   };
 
   const el = (tag, cls, html) => {
@@ -127,8 +134,8 @@
   const tick = (on) => `<span class="oc-tk" aria-hidden="true">${on ? OC.CHECK : ""}</span>`;
 
   function rowEl(node, cls, opts) {
-    const r = el("div", ["oc-row", cls, node.done ? "done" : "", node.next ? "next" : "", node.no ? "no" : "", node.miss ? "miss" : ""].filter(Boolean).join(" "));
-    r.innerHTML = `<span class="oc-t fit">${node.label == null ? "" : node.label}</span>${tick(node.done)}`;
+    const r = el("div", ["oc-row", cls, node.done && !node.wrong ? "done" : "", node.next ? "next" : "", node.no ? "no" : "", node.miss ? "miss" : "", node.wrong ? "wrong" : ""].filter(Boolean).join(" "));
+    r.innerHTML = `<span class="oc-t fit">${node.label == null ? "" : node.label}</span>${tick(node.done && !node.wrong)}`;
     if (node.key != null && opts.onEl) opts.onEl(node.key, r);
     if (opts.decorate) opts.decorate(r, node);
     return r;

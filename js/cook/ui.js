@@ -1386,7 +1386,7 @@
   const rowText = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
   // decision 57 (SH-52): the bulb's English is the full order, numbers too ("two chapati"), whatever the card drops
   const fullLine = (r) => (mission && mission.english && r.phrase && !r.no ? r.phrase : r.line);
-  const partNode = (r, gi) => ({ label: rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, key: r, gi, next: false });
+  const partNode = (r, gi) => ({ label: rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false });
   /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
   const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
   /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */
@@ -1447,7 +1447,7 @@
           .forEach(({ r }) => {
             const mixes = L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || y.shown));
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));
-            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, key: r, src: ps ? src(ps) : [] });
+            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, wrong: !!r.wrong, key: r, src: ps ? src(ps) : [] });
             rowsShown.push(r);
             // SEK-03 (S05-C, the shared group box): several different skewers, one plain box each (no label row; the
             // headline gives the summary), alternate boxes tinted, each drawn as a little skewer
@@ -1828,6 +1828,7 @@
   const ladderFor = (dish) => (mission ? mission.ladders.find((L) => L.dish === dish) || mission.ladders[0] : null);
   function markDone(r) {
     r.done = true;
+    r.wrong = false; // CK-32: a row done again (redone right, or shown) is no longer the wrong one
     // a finished row shows its words again
   }
   /**
@@ -1980,6 +1981,22 @@
     return r;
   };
   /**
+   * CK-32 (Zafar, 29 Sept: "the card marks the wrong row"): at a wrong serve's review, the rows the serve found wrong are
+   * drawn red on the card (the shared card's `wrong`), and the card stays open to show them, until they are redone
+   * (M.reopen) or shown (a tick). Never mid-round: only a station's serve calls it. Returns the rows marked.
+   */
+  M.serveWrong = function (ids, dish = 0, { for: forWho = null } = {}) {
+    const L = ladderFor(dish);
+    if (!L) return [];
+    const want = [].concat(ids);
+    const rows = Order()
+      .rows(L, { all: true })
+      .filter((r) => !r.head && (!forWho || r.for === forWho) && r.ids.some((id) => want.includes(id)));
+    rows.forEach((r) => (r.wrong = true));
+    if (rows.length) renderOrder();
+    return rows;
+  };
+  /**
    * Decision 51 (CK-23): a wrong item is redone on the spot: its rows open again (opts.for: one person's), the first
    * try's mark (r.miss) kept for the end review. Returns the rows reopened.
    */
@@ -1996,6 +2013,7 @@
     rows.forEach((r) => {
       r.done = false;
       r.got = 0;
+      r.wrong = false; // CK-32: open again, plain (the red was the review's)
     });
     if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
     renderOrder();

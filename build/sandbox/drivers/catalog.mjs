@@ -12,6 +12,8 @@
 export const DRIVERS = {
   "wrong-extra-person": { kinds: ["cook"], moments: ["rec:wrong-extra-person", "rec:wrong-redo"] },
   "wrong-count": { kinds: ["cook"], moments: ["rec:wrong-count"] },
+  // a dish served wrong: the look-alike (chai's salt for the sugar) put in once and left in, then fair (CK-31, CK-32)
+  "serve-wrong": { kinds: ["cook"], moments: ["rec:serve-wrong"] },
   "serve-combined": { kinds: ["cook-other"], moments: ["rec:served-combined"] },
   "tap-during-speech": { kinds: ["cook", "heal"], moments: ["rec:tap-during-speech", "rec:tap-taken-while-speaking", "rec:tap-held-till-quiet"] },
   "tap-during-pause": { kinds: ["cook"], moments: ["rec:tap-during-pause", "rec:pause-skipped", "rec:pause-kept"] },

@@ -121,6 +121,19 @@ export class CookPlayer {
       await this.once("idle-again", { settle: 0 });
       return true;
     }
+    // serve-wrong (CK-31, CK-32): a dish served wrong. At the first step that offers a look-alike (chai's sugar: the salt jar
+    // beside it, e.wrongs), the look-alike goes in once and stays (no take-back), then the rest is played fair: the cup is
+    // served with salt in it, so the review at Done is a wrong serve (the face frowns, the row is marked)
+    if (m === "serve-wrong" && !d.served && e.kind === "tap" && e.swrongs && e.swrongs.length) {
+      d.served = true;
+      const w = e.swrongs[0];
+      await this.tap(w.x, w.y, "look-alike, kept");
+      await sleep(700);
+      await this.once("serve-wrong", { settle: 0 });
+      this.rec.note(`serve-wrong: the look-alike put in at ${e.key} and left in`);
+      this.made.add("serve-wrong");
+      return true;
+    }
     // wrong-thrice (CK-23): three wrong picks at the same step, one after the other, then the help and the right way
     if (m === "wrong-thrice") {
       if (e.kind === "tap" && d.n < 3 && e.swrongs && e.swrongs.length && (d.key == null || d.key === e.key)) {

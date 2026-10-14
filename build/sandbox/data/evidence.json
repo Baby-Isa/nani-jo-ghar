@@ -94,6 +94,7 @@
   "tawa-empty-then-off": "maani: at the first move, the tawa lit with nothing on it (2 s: tawa-empty), the knob turned high, low, off (2 s: knob-off), on again, then cooks fair. The sizzle loop (synthesized, no file) is logged into the voice timeline as sfx/sizzle-loop",
   "turn-early-late": "sekelo grill: turns the first skewer before its green (wrong-early), the next after it (wrong-late), then grills fair",
   "wrong-count": "in the first counted step (a count or 'one more' step) puts one fewer than asked and closes the step (wrong-count), then finishes fair",
+  "serve-wrong": "a dish served wrong (CK-31, CK-32): at the first step that offers a look-alike (chai's sugar: the salt jar beside it), the look-alike goes in once and is left in (serve-wrong; no take-back), then fair, so the cup is served wrong at Done",
   "wrong-extra-person": "in a 2-person chai (chai-tray L2): the last person's pan, once everything they asked for is in, gets a spice from the shelf they did not ask for (aadu when it is on the shelf); then Done, the redo (wrong-redo) and fair",
   "wrong-spice-thrice": "daar: a wrong spice in the tadka on three tries (each try the whole tadka: the game takes it out and asks again), wrong-1..3; then the game shows the right way (shown-right)",
   "wrong-thrice": "three wrong picks in a row at the same step (Cook: the expectation's own wrong items; a heal game: its debug slip(), else another tool than the one asked for), wrong-1..3; then the help and the right way (shown-right)",
@@ -11503,7 +11504,7 @@
  "CK-31": [
   {
    "flow": "cook:chai-tray",
-   "path": "wrong-count",
+   "path": "serve-wrong",
    "level": [
     1,
     2
@@ -11512,14 +11513,16 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/(hakro|ba|trae|char) khun/"
+   ],
    "at": "every:cook-done:click",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "note": "a wrong cup served (one spoon of sugar short): the review face over it frowns",
+   "note": "a wrong cup served (a spoon of the salt that looks like sugar left in it): the review face over that glass frowns, never happy (at L2 the other, right cup's face is happy)",
    "max": 4,
    "delay": 700
   }
@@ -11527,7 +11530,7 @@
  "CK-32": [
   {
    "flow": "cook:chai-tray",
-   "path": "wrong-count",
+   "path": "serve-wrong",
    "level": [
     1,
     2
@@ -11536,7 +11539,9 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/(hakro|ba|trae|char) khun/"
+   ],
    "at": "every:cook-done:click",
    "after": null,
    "capture": [
@@ -11544,7 +11549,7 @@
     "dom:#mission"
    ],
    "expect": null,
-   "note": "a wrong cup served (one spoon of sugar short): the sugar row marked on the card, the card open to show it",
+   "note": "a wrong cup served (salt left in it): the sugar row marked on that person's card (red), the card staying open to show it",
    "max": 4,
    "delay": 1200
   }

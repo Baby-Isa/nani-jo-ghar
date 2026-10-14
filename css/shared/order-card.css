@@ -160,6 +160,11 @@
 /* next (an ordered job's next part, while playing): the one highlight, in the one colour (the focal glow's, SH-53):
    an amber edge with a soft glow inside, never a fill of its own (a done row is the flat gold ring with its tick) */
 .oc-card .oc-row.next { background: var(--oc-card); border-color: var(--njg-focus); box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(224, 166, 58, 0.35); }
+/* CK-32 (Zafar, 29 Sept: "the card marks the wrong row"): a wrong serve's row, at the review: the same row with a flat red
+   outline (the end review's red), no tick; the card stays open to show it until the row is redone */
+.oc-card .oc-row.wrong { background: var(--oc-card); border-color: var(--njg-wrong); box-shadow: inset 0 0 0 var(--njg-line) var(--njg-wrong); }
+/* the person says their order again over it (the read-along): the red stays, so it never reads as amber */
+.oc-card .oc-row.wrong.reading, .oc-card .oc-row.wrong.next { border-color: var(--njg-wrong) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-wrong) !important; }
 /* read-along: flat, the gold edge (never a yellow box) */
 /* (!important: a page's own generic .reading, e.g. Cook's yellow box, must not reach the card) */
 .oc-card .oc-row.reading { background: var(--oc-card) !important; border-color: var(--njg-focus) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-focus), inset 0 0 var(--njg-s2) rgba(224, 166, 58, 0.35) !important; }
