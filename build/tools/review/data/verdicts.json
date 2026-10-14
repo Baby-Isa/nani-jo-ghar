@@ -4502,7 +4502,7 @@
   "date": "2026-10-12"
  },
  "SH-10": {
-  "hash": "8442c854d71a0be246d4",
+  "hash": "35f52995c1e4cf7e60aa",
   "dhash": [
    "008aa98141c18101",
    "81859149e0413111",
@@ -4511,13 +4511,13 @@
    "21e98991a1694141",
    "01c001858181c101"
   ],
-  "verdict": "FAIL",
-  "line": "E, the drinks (taste) nested rows never tick as their things go in. After the water goes in (frame 5), \"Paani bhari chad!\" shows no tick: the highlight just moves on to \"Aadu wiji chad!\", which stays unticked through frames 5-7, and only the parent \"Make aadu ne paani\" ticks when the card collapses at frame 8. D frame 2 is also late: at the pour, \"Paani garam, hakro jugs\" is still unticked and only ticks at frame 3. The count rows behave as the row asks. \"Pop laal spots\" ticks only on the third pop (E4), \"Wipe, ba\" only once both wipes are done (F4), \"Chando, char\" only once all four drops are in (F8) and Plaster only on the second plaster (D5). A (chai elchi / hakro khun), B (tooth, one tap at a time) and C (fever) tick as each item goes in. Flaws: the Nani lines and most clinic rows are grey-italic English, and the sheet has no dom capture to confirm the to-record tag. C frames 1-2 show the Nani line smaller than in frames 3-5, and the frame-2 header is faded. F frame 8 has a faint, garbled header reading \"Trae\". The E and F crops are too small to read comfortably.",
+  "verdict": "PASS",
+  "line": "E, the drinks (taste) rows now tick as their things go in: \"Pop laal spots\" ticks only on the third pop [E4], \"Paani bhari chad!\" ticks as the water goes in [E5] and \"Aadu wiji chad!\" as the ginger goes in [E6], with the parent \"Make aadu ne paani\" ticking when its step closes [E8]. D2 ticks \"Paani garam, hakro jugs\" at the pour and Plaster only on the second plaster [D5]. F: \"Wipe, ba\" ticks only once both wipes are done [F3] and \"Chando, char\" only on the fourth drop [F7]. A (hakro khun A4, elchi A5), B (tooth taps one at a time, B1-B4) and C (fever, one row per change, C2-C5) tick as each item goes in. Flaws: most clinic rows and Nani lines are grey-italic English (allowed as to-record; the sheet has no dom capture to confirm the tag). C1-C2 show the Nani line smaller than C3-C5, and the C2 header is faded. E4 and F8 headers are faded mid-change (F8 reads a garbled \"Trae\"). The E and F crops are too small to read comfortably.",
   "panel": "E",
   "judge": "Claude Opus 5.5 [claude-opus-5-5], judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00",
-  "run": "ev-20261014-133539-0a2",
-  "commit": "67ad10a3",
-  "png": "build/screenshots/evidence/ev-20261014-133539-0a2/SH-10.png",
+  "run": "ev-20261014-134716-k7l",
+  "commit": "4e39c9ef",
+  "png": "build/screenshots/evidence/ev-20261014-134716-k7l/SH-10.png",
   "date": "2026-10-14"
  },
  "SH-11": {
