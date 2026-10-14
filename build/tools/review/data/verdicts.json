@@ -928,20 +928,21 @@
   "date": "2026-10-12"
  },
  "CK-27": {
-  "hash": "c0dd1509dece29c7c669",
+  "hash": "cbcd03a6b3cdcbe41dbe",
   "dhash": [
-   "70c0c8486864e840",
-   "70b2fa7a70302020",
-   "70b0e87068101030"
+   "fcc88e86ccd496f8",
+   "e096868696ccccf8",
+   "c48e88828682da70",
+   "ff0f072707431f7f"
   ],
   "verdict": "FAIL",
-  "line": "C, the bataato lands (yellow piece at the bowl's centre at 0 ms, full layer by 188 ms) with no puff or sprinkle in any of the four frames; A, the paani goes in (bottle tilted at 0 and 174 ms, pan turned blue by 335 ms, bottle back beside the pan at 475 ms) with only a single blue pour-drop at 335 ms, not the shared puff; the grey puff is visible only in B (two translucent blobs at the daar pan's rim at 0 ms, a dark dot and smudge at 265 ms). Samosa is not on the sheet. Frames are 170-270 ms apart, so if the puff is shorter than that the tool must sample faster before this is re-judged.",
-  "panel": "C",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-164227-oez",
-  "commit": "caaa8ca",
-  "png": "build/screenshots/evidence/ev-20261013-164227-oez/CK-27.png",
-  "date": "2026-10-13"
+  "line": "A, the paani goes in (bottle tilted 160-480 ms, pan blue by 800-960 ms) with no puff or sprinkle in any of the 7 frames. B (daar: white clouds rising at 0-481 ms, a cluster in the pot at 960 ms) and C (chaat: a small white cloud at the bowl centre from 640 ms) do show it. D (samosa) loses the pastry after 320 ms: 480 ms is a different screen with a dialogue card that reads like \"Make samosa bhaje.\" (possibly written English, too small to confirm) and 640-960 ms are blank, so samosa's puff is not shown.",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-014202-sqj",
+  "commit": "72100d8",
+  "png": "build/screenshots/evidence/ev-20261014-014202-sqj/CK-27.png",
+  "date": "2026-10-14"
  },
  "CK-28": {
   "hash": "fb6468235905f26d4ba0",
@@ -980,6 +981,21 @@
   "commit": "09b5676",
   "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CK-30.png",
   "date": "2026-10-13"
+ },
+ "CK-32": {
+  "hash": "315a805d9252470ba873",
+  "dhash": [
+   "0084a9814181c101",
+   "888181c1808141c1"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 2 (the wrong serve's Done) shows the grandfather's card open with gold border, his order line underlined as he says it again, aadu and dudh rows ticked and the trae khun row outlined red; B frame 2 repeats it at L2 on the elchi card while the other, correct card stays collapsed with a tick (flaws off-point: in A4/B4 the dimmed end overlay's round badge overlaps the card, in B4 covering the end of \"waari\")",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-020634-odn",
+  "commit": "ced963e",
+  "png": "build/screenshots/evidence/ev-20261014-020634-odn/CK-32.png",
+  "date": "2026-10-14"
  },
  "CK-33": {
   "hash": "e6b0bd289143e4e1b30d",
@@ -3055,19 +3071,19 @@
   "date": "2026-10-12"
  },
  "DAAR-13": {
-  "hash": "3f4919b2cc59de293df5",
+  "hash": "f3052732a6cebcf14618",
   "dhash": [
-   "c0c0a0a4d450c8a8",
-   "c0c0a0a090d4cca8"
+   "c0c0a0b0a4e0caa8",
+   "c0c0a0a4d4c0d0b0"
   ],
   "verdict": "FAIL",
-  "line": "B, no ghost finger anywhere in the five frames (the knife lies on its own at 0, 754, 1200, 1696 and 1983 ms) and no cut is ever shown (every item whole, the board's items swap out wholesale between frames); A the same; the row highlight at the right count is on no panel; the knife is small with its tip intact and the items are spread (right)",
+  "line": "B, nothing in the strip looks slower at L1: the tomato drops from mid-board to the bottom edge, where it is clipped, between 401 and 601 ms and is gone by 800 ms; the onion vanishes between 0 and 201 ms and a potato appears; the chilli jumps across the board between frames. Small knife with an intact tip and spread items are met (A), but the items still race across the board. Flaw: a mouse-pointer hand sits on the board in A and at 0 and 201 ms in B",
   "panel": "B",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/DAAR-13.png",
-  "date": "2026-10-13"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-011029-06w",
+  "commit": "8d19bac",
+  "png": "build/screenshots/evidence/ev-20261014-011029-06w/DAAR-13.png",
+  "date": "2026-10-14"
  },
  "DAAR-14": {
   "hash": "a7f42c5c494151850fc2",
@@ -3137,6 +3153,34 @@
   "png": "build/screenshots/evidence/ev-20261013-203335-a7k/DAAR-18.png",
   "date": "2026-10-13"
  },
+ "DAAR-19": {
+  "hash": "44ef9b3a9c94ea962580",
+  "dhash": [
+   "d19181c191a18c81"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frames 9-15 show the tadka card in plain written English (\"I'd like daal.\", \"two onions\", \"one chilli\", \"one tomato\", \"mustard seeds\", \"garlic\"), and their dom captures carry no [ph] to-record tag, so this is English for the child. Frame 16's dom capture still ends \"rai / lasan / ba\", which is the stray 'ba' row under rai and lasan. The frames are also too small to read the ticks.",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-005632-c97",
+  "commit": "c976c59",
+  "png": "build/screenshots/evidence/ev-20261014-005632-c97/DAAR-19.png",
+  "date": "2026-10-14"
+ },
+ "DAAR-20": {
+  "hash": "ca60a1567662c44751a7",
+  "dhash": [
+   "c0c0a0e0d0d0cca8"
+  ],
+  "verdict": "PASS",
+  "line": "A, all 8 frames of cook:chop L1 at 1366x768 (0 to 1750 ms, cuts landing at 250, 750, 1250 and 1500 ms, the 1500-1750 ms span covering the old 1696 ms moment) keep the same light wood board with no dark-brown dim or scrim; flaws: the top-right chips are too small to read at strip scale, and the strip samples every 250 ms, so a single dim frame between samples would not show",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-005632-c97",
+  "commit": "c976c59",
+  "png": "build/screenshots/evidence/ev-20261014-005632-c97/DAAR-20.png",
+  "date": "2026-10-14"
+ },
  "DAAR-21": {
   "hash": "1550e5a462d9db4453e6",
   "dhash": [
@@ -3151,18 +3195,32 @@
   "date": "2026-10-13"
  },
  "DAAR-22": {
-  "hash": "7936f59b7bf0f4ee1ad8",
+  "hash": "34288b254b852a2b1b88",
   "dhash": [
-   "c0c0a0b090e2eea8"
+   "c0c0a0e0f0d0ccac"
   ],
-  "verdict": "FAIL",
-  "line": "A, the blade crosses the tomato at 766 ms and 1018 ms and the tomato is whole in both frames with no cut line; at 1189 ms the knife has moved on and a whole tomato sits lower on the board, no halves anywhere in the six frames",
+  "verdict": "PASS",
+  "line": "A, each swipe leaves a clean cut: the tomato has a cut line at 120 ms and lies in two halves at 241 ms, the chilli is in two pieces from 241 ms, the onion has a cut line at 360 ms and lies in two separated halves by 480 and 600 ms, and the white blade trail crosses each item. Flaw: the row of chips at top right is too small to read at sheet scale, so it cannot be checked for written English",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-170537-y9n",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-170537-y9n/DAAR-22.png",
-  "date": "2026-10-13"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-011029-06w",
+  "commit": "8d19bac",
+  "png": "build/screenshots/evidence/ev-20261014-011029-06w/DAAR-22.png",
+  "date": "2026-10-14"
+ },
+ "DAAR-23": {
+  "hash": "e2433edb95abfa6086a7",
+  "dhash": [
+   "01818e81a1818101"
+  ],
+  "verdict": "PASS",
+  "line": "A, the card asks for \"hakro dungri\" and \"ba mirchi\". Frame 1 has no row lit, frame 2 lights only hakro dungri, and frame 3 lights ba mirchi too. Only three cuts were made in all, so ba mirchi stayed unlit after its first cut and lit at its second, not before",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-011029-06w",
+  "commit": "8d19bac",
+  "png": "build/screenshots/evidence/ev-20261014-011029-06w/DAAR-23.png",
+  "date": "2026-10-14"
  },
  "FL-01": {
   "hash": "e488377841b110b66915",
@@ -4117,18 +4175,20 @@
   "date": "2026-10-12"
  },
  "SEK-13": {
-  "hash": "29a00bcbfc9169e4aef3",
+  "hash": "7aa86391746df09a2f5f",
   "dhash": [
-   "018981c041c1c1d1"
+   "3830707470f130b0",
+   "a992313111333301",
+   "000085a882820100"
   ],
-  "verdict": "FAIL",
-  "line": "A, across all 8 placed moments no piece row of \"hakri lakri mixed\" ever ticks; \"mishkaki\" stays highlighted from frame 1 to 8. Flaw: \"mixed\" is English in the card row",
-  "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/SEK-13.png",
-  "date": "2026-10-12"
+  "verdict": "PASS",
+  "line": "C, the L3 mixed-skewer card (tameto, mishkaki, dungri, mishkaki x2) peeked open at each tap gains ticks in order with nothing ticked early: 0 (C1) > 1 (C2) > 2 (C3) > 4 (C5) > 5 (C6) > 7 (C8) > 8 (C9, C10), and the next piece is outlined gold; flaws: C4 and C7 catch the card mid-redraw (empty body / faded rows), so ticks 3 and 6 are not seen landing; A's sidebar hint \"Thread them.\" is grey-italic English (allowed only as the decision-84 to-record form)",
+  "panel": "C",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-014202-sqj",
+  "commit": "72100d8",
+  "png": "build/screenshots/evidence/ev-20261014-014202-sqj/SEK-13.png",
+  "date": "2026-10-14"
  },
  "SEK-16": {
   "hash": "0adc459b58707be9a1ab",
@@ -4280,20 +4340,20 @@
   "date": "2026-10-12"
  },
  "SH-10": {
-  "hash": "1ed06741d821a17f3edf",
+  "hash": "180d402051b0ad774371",
   "dhash": [
    "008aa98141c18101",
-   "81818183d3c15101",
+   "81859149e0413111",
    "00a800b29081f400"
   ],
   "verdict": "FAIL",
-  "line": "C, frame 4 (heal-done:blanket) the fever card has no rows at all, only the bubble with a tick on its right, so \"Put on blanket\" never ticks as it goes in (it first appears already ticked in frame 5); frame 1 the temperature row stays plain at the thermometer tap and ticks only at the patient tap (frame 2). A, frames 6-8 the chai card collapses to the headline with one tick, so the elchi and hakro-khun ticks (frames 4-5) vanish for the pour. B is right: tooth ticks Pela, ne poi, Drill, Fill one by one, frames 1-4.",
-  "panel": "C",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SH-10.png",
-  "date": "2026-10-13"
+  "line": "A, frames 2-6 the chai order card swaps from Kutchi (\"Muke elchi waari chai khape.\", frames 1 and 7-8) to written English in dark upright type, not grey-italic to-record (\"I'd like chai with cardamom it in.\", rows \"cardamom / no milk / one sugar\"), so the child reads English while the rows tick. The ticks themselves now build up and stay: sugar at frame 4, cardamom at frame 5, both still there at frames 6-8 as hakro khun and elchi. B (tooth ticks Pela, ne poi, Drill, Fill one at a time, frames 1-4) and C (fever ticks temperature at the patient tap, then window, blanket and fan one at a time, frames 2-5) are right, but foot, drinks and boing L1 are not on the sheet, so \"L1 in every station\" is not shown.",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-004527-3br",
+  "commit": "c976c59",
+  "png": "build/screenshots/evidence/ev-20261014-004527-3br/SH-10.png",
+  "date": "2026-10-14"
  },
  "SH-11": {
   "hash": "7a4d97f3316837546e5f",
@@ -5079,18 +5139,21 @@
   "date": "2026-10-12"
  },
  "SH-69": {
-  "hash": "35ca8d381be12102f931",
+  "hash": "89093a560227368fa27f",
   "dhash": [
-   "177f2f2d0d8d8d98"
+   "cefebf9f9b9996d7",
+   "00343434342c0c0c",
+   "0081888a81810100",
+   "713ef0f0e6e6f6e7"
   ],
-  "verdict": "FAIL",
-  "line": "A, the first meeting shows no name: the only line on screen is \"Muke chai ji chiju khanechi dinde?\" and the probe's voice log records no spoken line before 21.6 s, so nothing heard at rec:arrive is proven either; the day-2 greeting (\"Ali!\" 5.3 s, \"Ma!\" silent, no clip) is only in p2's log with no panel, and the later-order and clinic cards are text captures only (nameless, which is right) with no panel.",
+  "verdict": "PASS",
+  "line": "A, A3 shows Nani's bubble \"Ma!\" by Nani as the new customer arrives on a save with no one met, then A4 the customer's own \"Salamun alaykum!\" by her; the timeline has Nani's \"Ma!\" line at 16.40 s, before the salaam. C shows the later day-2 card \"Muke maani khape.\" / \"hakri maani\" with a face and no name, and D's clinic card has no patient name (flaws: \"Ma!\" plays as a silent line with no family clip, a recording gap; B's sidebar has a faint English line under Nani, \"Take a dough ball.\", and D's card has grey-italic English placeholders, all allowed only if they carry the hidden to-record tag)",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SH-69.png",
-  "date": "2026-10-13"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-011029-06w",
+  "commit": "8d19bac",
+  "png": "build/screenshots/evidence/ev-20261014-011029-06w/SH-69.png",
+  "date": "2026-10-14"
  },
  "SH-70": {
   "hash": "f89b36a4d8a7e2fef7ec",
@@ -5221,6 +5284,22 @@
   "commit": "7ebd7d7",
   "png": "build/screenshots/evidence/ev-20261013-203335-a7k/SH-80.png",
   "date": "2026-10-13"
+ },
+ "SH-81": {
+  "hash": "1091be4918c734c698f5",
+  "dhash": [
+   "5c48723626766660",
+   "5c48723626766660",
+   "0195a15101c981c3"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 800x360 the peeked closed card \"Muke daar khape.\" sits fully on screen, its face button and all three rows inside the viewport, with the ? / home / book rail fully visible below it (flaws: the Check names the layout lint but the .md records no lint result; \"Chop these.\" is grey-italic English, allowed only if tagged to-record)",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-011029-06w",
+  "commit": "8d19bac",
+  "png": "build/screenshots/evidence/ev-20261014-011029-06w/SH-81.png",
+  "date": "2026-10-14"
  },
  "SH-83": {
   "hash": "df51a6070226cf3f6cb9",
