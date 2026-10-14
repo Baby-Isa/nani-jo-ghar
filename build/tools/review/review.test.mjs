@@ -177,3 +177,21 @@ test("checks-to-build 19: every game has a leak config (every heal game, every m
   for (const m of readdirSync(join(R, "js"), { withFileTypes: true }).filter((d) => d.isDirectory() && !["core", "shared", "vendor", "demo"].includes(d.name)).map((d) => d.name)) if (!ids.has(m)) missing.push(`mode ${m}`);
   assert.deepEqual(missing, [], "add a config in build/tools/review/leak-configs/");
 });
+
+test("checks-to-build 12: the steps page's recipes are ui-design-system 6a's yes list (chaat, daar; sekelo's skewers by code), never an any-order set", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { join } = await import("node:path");
+  const R = join(import.meta.dirname, "..", "..", "..");
+  const cook = JSON.parse(readFileSync(join(R, "data/cook.json"), "utf8"));
+  const seq = new Set();
+  const walk = (x, rec) => { if (x && typeof x === "object") { if (x.order === "sequence") seq.add(rec); for (const v of Object.values(x)) walk(v, rec); } };
+  for (const [k, v] of Object.entries(cook.recipes)) walk(v, k);
+  assert.deepEqual([...seq].sort(), ["chaat", "daal"], "a recipe with a sequence slot that 6a doesn't list (or one it lists without): change the data or 6a with Zafar");
+  for (const no of ["pantry", "chai", "maani", "samosa"]) assert.ok(!seq.has(no), `${no} is an any-order set (6a: no steps page)`);
+  // the steps page and the badges are drawn by the shared results screen only
+  const { readdirSync } = await import("node:fs");
+  const own = [];
+  const scan = (d) => { for (const f of readdirSync(join(R, d), { withFileTypes: true })) { const p = `${d}/${f.name}`; if (f.isDirectory()) { if (f.name !== "vendor") scan(p); } else if (p.endsWith(".js") && p !== "js/shared/results.js" && /class=\\?["']rs-(step|badge)s?\b/.test(readFileSync(join(R, p), "utf8"))) own.push(p); } };
+  scan("js");
+  assert.deepEqual(own, [], "a mode drawing its own steps page or badges (js/shared/results.js only)");
+});
