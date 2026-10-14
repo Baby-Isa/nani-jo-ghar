@@ -4,7 +4,7 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 ---
 # /sprint: open and close a sprint
 
-**For:** the orchestrator. A sprint is one to three days with one goal Zafar can play at the end (decision 99); one build session at a time, small fixes in the orchestrator's chat. Files: `docs/sprints/Snn-<name>.md` from `docs/sprints/TEMPLATE.md`.
+**For:** the orchestrator. A sprint is one to three days with one goal Zafar can play at the end; one build session at a time, small fixes in the orchestrator's chat. Files: `docs/sprints/Snn-<name>.md` from `docs/sprints/TEMPLATE.md`.
 
 ## Open (propose, then wait for Zafar's go)
 1. If new work arrives outside a sprint, steer it in: "This looks like Sprint nn. Goal: …. Budget: … (ceiling and days). Sessions: …. Yes?" Give a model, effort and cost for every session.
@@ -16,7 +16,7 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 - At close: any mode called finished gets a pass through `docs/ideas.md` with Zafar first (Zafar, 14 Oct).
 - Feedback becomes fix-list rows the same day (`/feedback`). Cut scope before the budget.
 
-## Before the publish (decision 78)
+## Before the publish
 The sprint check (`/review` step 9) has played every row the sprint touched and Fable has judged each sheet; every FAIL is fixed or reopened and listed for Zafar. A sprint whose rows are unproven doesn't publish.
 
 ## Close (after `/review`, `/publish` and Zafar's play)

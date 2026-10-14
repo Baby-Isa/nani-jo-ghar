@@ -269,5 +269,5 @@ This is the first launch itself: `Conversations.run("A1.1")` runs FL2, FL4, FL5,
 ## 5. After wiring: check
 - `node --test build/test_shared_conversations.mjs`: engine and data.
 - `node build/test_conversations-browser.mjs`: the lab at 390×844 and 1366×768.
-- The existing mode tests (`build/test_cook.py`, `build/test_first_launch.py`, `build/test_clinic.py`). Their bots answer Cook's old `exchange()` pills, so they'll now meet `.cv-pill` buttons instead. The right one is the pill whose `data-line` is the exchange's correct line (`data-correct` is set only with `lab: true`). Or the bots can press the ✋ skip (`.cv-skip`).
+- The existing mode tests (`build/test_cook.py`, `build/archive/test_first_launch.py`, `build/test_clinic.py`). Their bots answer Cook's old `exchange()` pills, so they'll now meet `.cv-pill` buttons instead. The right one is the pill whose `data-line` is the exchange's correct line (`data-correct` is set only with `lab: true`). Or the bots can press the ✋ skip (`.cv-skip`).
 - Grown-ups: a Conversations frequency picker (Often / Sometimes / Story only / Off) in the ⚙ panel.

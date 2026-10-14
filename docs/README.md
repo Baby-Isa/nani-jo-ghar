@@ -13,7 +13,7 @@ Start with `CLAUDE.md`, then `docs/status.md` "Next chat". Open anything else on
 ## The game
 - `vision.md`: pitch, audience, pillars, out of scope.
 - `game-design/`: `story-and-arcs.md`, `cast.md`, `progression-and-scoring.md`, `speaking.md`; `modes/` one file per mode (`cook.md`, `clinic.md`, `first-launch.md`, `conversations.md`, `story-by-the-fire.md`, `find-it.md`, stubs for the parked modes), each with its own design decisions.
-- `design-language/`: `ui-design-system.md` (shared screens and buttons), `ux-principles.md` (how the game teaches and feels), `guide-and-card.md`, `art-bible.md`, `art-pipeline.md` and `art-plans/` (the clinic art), `tone-of-voice.md`, `audio.md`.
+- `design-language/`: `ui-design-system.md` (shared screens and buttons), `ux-principles.md` (how the game teaches and feels), `guide-and-card.md`, `art-bible.md`, `art-pipeline.md` and `art-plans/` (the next art run: the Sprint 5 audit and its paste block; finished packs are in `archive/art-plans/`), `tone-of-voice.md`, `audio.md`.
 - `language/`: `grammar-notes.md` (what Mum confirmed), `lexicon.md`, `grammar-kb.md`, `engine-spec.md`, `engine-design.md`, `fill-the-engine.md`, `doctor-recording-list.md`, `mum-questions/` (the current round).
 - `ideas.md`: the parking lot.
 

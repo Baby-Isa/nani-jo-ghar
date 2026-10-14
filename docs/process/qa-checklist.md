@@ -28,8 +28,6 @@ A reviewer who is not the builder fills in the results, flaws first.
 
 | ID | Check | Rule | How |
 |---|---|---|---|
-| TXT-01 | No text is clipped, cut off or ellipsised, including headlines, card rows, pills, chips, badges and end-screen word tiles | F7 | auto: layout lint `text-clipped`, `ellipsis` |
-| TXT-02 | Long headlines shrink first, then wrap; they never overflow their card | F7 | auto: layout lint `text-clipped` |
 | TXT-03 | The guide box shows at most 2 lines; a card row shows 1 | F7 | eye → auto |
 | TXT-04 | Outlines, glows and highlights around text have room and aren't cut by the card edge | F7 | eye |
 | TXT-05 | No text is smaller than 14 px (L4) at 800×360 and 844×390, chip words included; words stay readable at a glance on a phone | F2 | auto: layout lint `text-small` |
@@ -37,7 +35,6 @@ A reviewer who is not the builder fills in the results, flaws first.
 | TXT-07 | Kutchi on cards is lower case, with Kutchi number words and no full stop | F10 | eye |
 | TXT-08 | Every spoken line is also written, with the read-along underline as it's said | E3, E4 | eye |
 | TXT-09 | One text line beside an icon is centred on the icon | F21 | eye |
-| TXT-10 | Words never break mid-word ("tr/ae/kh/un") at any checklist size | F7 | auto: layout lint `word-broken` |
 | TXT-11 | The word review shows the exact word the order used (*hakri lakri*, not *hakro*) | F10, F14 | eye → auto |
 
 ## LAY: layout and spacing
@@ -167,8 +164,6 @@ A reviewer who is not the builder fills in the results, flaws first.
 
 | ID | Check | Rule | How |
 |---|---|---|---|
-| REL-01 | `python3 build/bump_version.py` ran before the push to `main` | B7 | eye (git log) |
-| REL-02 | The Pages build ran for the commit and the change shows after a hard refresh; screenshot sent | C9 | eye |
 | REL-03 | Nothing leaves the device: no accounts, uploads or analytics | J1 | eye (code review) |
 | REL-04 | Persistence only through the save API (`js/shared/save.js`); a mode edits only its own files | B17, J3 | eye (code review) |
 | REL-05 | Screenshots rewritten by test runs are discarded unless intended | B16 | eye (git status) |

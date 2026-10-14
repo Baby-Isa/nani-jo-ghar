@@ -146,7 +146,7 @@ Supersedes the layout contract in the Image Prompt Sheets doc and the "Screen la
 
 | Rule | Detail |
 | --- | --- |
-| World size | Fixed 1600×900 (16:9), scaled to fit. All positions are background pixels, stored in `data/scenes/<scene>.json` and checked with `build/place_preview.py` |
+| World size | Fixed 1600×900 (16:9), scaled to fit. All positions are background pixels, stored in `data/scenes/<scene>.json` and checked with `build/archive/place_preview.py` |
 | Sidebar | Always its own column beside the game in landscape, never on top of it. A slide-out drawer only in portrait or on very narrow screens, with a close button, and it never opens by itself during play |
 | Letterbox | Filled with the scene's dominant colour or a blurred copy of the background, never black bars |
 | Tests | Every build tested at phone landscape (915×375), 1366×768, **1440×900 and 1280×800 (16:10)**, and iPad landscape and portrait. Before every tap, the test checks nothing covers the item |

@@ -4,7 +4,8 @@
  *   node build/tools/review/docs.mjs [--json]
  * Fails (exit 1) when:
  *   - a file is over its word limit (LIMITS below; CLAUDE.md, status.md and its "Next chat", the newest sprint file, the decisions log,
- *     the fix list, docs/README.md, docs/tools.md)
+ *     the fix list, docs/README.md, docs/tools.md) or a mode or design-language doc is over its own limit (DOC_LIMITS: its size after
+ *     the Sprint 6 cut-down, rounded up to the next 500 words; a new doc in those folders needs a limit too)
  *   - a fix-list status cell is over STATUS_CHARS or carries an old "· earlier:" chain (history belongs in the history file)
  *   - a regression ID appears twice across the fix list and its archive, or a decision number twice in the log
  *   - a non-live row (built, fixed, retired) sits in the fix list
@@ -25,6 +26,31 @@ export const LIMITS = {
   "docs/README.md": 700,
   "docs/tools.md": 1000,
 };
+// docs/game-design/modes/*.md and docs/design-language/*.md: each doc's size after the Sprint 6 cut-down, rounded up to the next 500
+// words, so it passes today and cannot grow unnoticed. Raise one only with Zafar's yes (and archive the old text first).
+export const DOC_LIMITS = {
+  "docs/game-design/modes/README.md": 500,
+  "docs/game-design/modes/clinic.md": 4000,
+  "docs/game-design/modes/conversations-wiring.md": 2500,
+  "docs/game-design/modes/conversations.md": 14000,
+  "docs/game-design/modes/cook.md": 5000,
+  "docs/game-design/modes/dress-up.md": 500,
+  "docs/game-design/modes/find-it.md": 9500,
+  "docs/game-design/modes/first-launch.md": 2500,
+  "docs/game-design/modes/monsoon-rush.md": 500,
+  "docs/game-design/modes/snap.md": 500,
+  "docs/game-design/modes/story-by-the-fire.md": 2500,
+  "docs/game-design/modes/tidy-up.md": 500,
+  "docs/game-design/modes/who-did-it.md": 500,
+  "docs/design-language/art-bible.md": 6500,
+  "docs/design-language/art-pipeline.md": 13500,
+  "docs/design-language/audio.md": 1000,
+  "docs/design-language/guide-and-card.md": 3000,
+  "docs/design-language/tone-of-voice.md": 1000,
+  "docs/design-language/ui-design-system.md": 3500,
+  "docs/design-language/ux-principles.md": 3000,
+};
+export const DOC_DIRS = ["docs/game-design/modes", "docs/design-language"];
 export const NEXT_CHAT = 600, SPRINT = 1200, STATUS_CHARS = 1200;
 
 const words = (s) => (s.match(/\S+/g) || []).length;
@@ -34,6 +60,14 @@ export function checkDocs() {
   for (const [p, max] of Object.entries(LIMITS)) {
     const t = read(p); if (t == null) continue;
     const n = words(t); (n > max ? fails : info).push(`${p}: ${n} words (limit ${max})`);
+  }
+  for (const [p, max] of Object.entries(DOC_LIMITS)) {
+    const t = read(p); if (t == null) { fails.push(`${p}: in DOC_LIMITS but the file is gone (remove the limit)`); continue; }
+    const n = words(t); (n > max ? fails : info).push(`${p}: ${n} words (limit ${max})`);
+  }
+  for (const d of DOC_DIRS) {
+    if (!existsSync(join(ROOT, d))) continue;
+    for (const f of readdirSync(join(ROOT, d)).filter((x) => x.endsWith(".md"))) if (!(`${d}/${f}` in DOC_LIMITS)) fails.push(`${d}/${f}: no word limit (add it to DOC_LIMITS in build/tools/review/docs.mjs)`);
   }
   const status = read("docs/status.md");
   if (status) {

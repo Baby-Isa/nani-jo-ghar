@@ -171,9 +171,9 @@ The spec is `docs/game-design/modes/first-launch.md` ("Character creation", "Zaf
 - **UI:** the maker's tabs show each part in its current colour, and each swatch is the part in that choice, so no reading is needed. After a pick, the next tab bounces once as an invitation (UX §8) but doesn't move by itself. The ✓ and the → are big and bottom-right (UX §2). Yes and No are on the right too.
 
 ### Tests
-- `build/test_first_launch.py`: phone, iPad and laptop.
+- `build/archive/test_first_launch.py`: phone, iPad and laptop.
 - `build/test_shared_character.mjs`: Node.
-- `build/test_shell.py`: now plays the new first launch.
+- `build/archive/test_shell.py`: now plays the new first launch.
 
 
 ## Character creation (HO26, decided 26 Sept)
