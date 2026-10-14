@@ -8,23 +8,20 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (14 Oct 2026, ~03:00 UK):** Sprint 6 "Fix and guard" is open (`docs/sprints/S06-fix-and-guard.md`, Zafar's yes 14 Oct: ceiling $350, nothing left out for budget, everything in the orchestrator's chat). `main` is still 8559d610 (Sprint 5); all work is on `ccr-a7370759-t0lee7`.
+**Where things stand (14 Oct 2026, ~05:00 UK):** Sprint 6 "Fix and guard" (`docs/sprints/S06-fix-and-guard.md`; ceiling $350, nothing left out for budget, everything in the orchestrator's chat). `main` is still 8559d610; all work is on `ccr-a7370759-t0lee7`.
 
-**Done so far:**
-- Triage of the 75 open rows (in the sprint file): ~37 code, art, Mum and Zafar lists.
+**Done:**
 - Docs cut-down (`build/reports/s06-docs.md`): live docs 248k -> 205k words.
-- Checks built (each listed at the top of `docs/process/checks-to-build.md`): 1 red-then-green gate, 2 publish gate, 3 zero tolerance, 4/5/7/8 as contract-16/17/19/20, 9-11/13/17/18/21 (`build/lint/static.mjs`), 12, 14, 16 (`artcheck.mjs`), 19 (leak bots every level), 22, 23, 24. Debt they found sits in known lists that may only shrink.
-- Rows built through the gate: CLN-146, CLN-148. New rows: MOD-03 (Tidy leak), LNG-14 (store build plays unchecked clips).
+- 20 of 24 checks built (listed at the top of `docs/process/checks-to-build.md`); their debt sits in known lists that may only shrink.
+- Round 1 builders merged (`build/reports/s06-cook.md`, `build/reports/s06-clinic.md`), every row judged by Opus `judge` agents, applied through the red-then-green gate. Built: CLN-45, 100, 104, 116, 143, 146, 148; SH-69, DAAR-22, SEK-13, CK-35. New rows from the checks: MOD-03, LNG-14, SH-85, CLN-149, CLN-150.
 
-**Running (in-chat Opus builders, own worktrees, never judge their own work):** Clinic builder on `s06-clinic` (CLN-140, 143, 45 committed so far; report s06-clinic.md when it lands); Cook+shared builder on `s06-cook` (CK-35, SH-10, SH-69, SH-81, CK-07/31/32 so far; report s06-cook.md). A container restart stopped them once; they were resumed with `--parallel 1`.
+**Running:** round 2, two in-chat Opus builders in worktrees: `s06-r2-shared` (CLN-118, CLN-127, the results screen's clipped tiles, boing's untagged English, checks 6 and 20, reds for CLN-138/144/145, probes for CLN-26/37/126/149) and `s06-r2-cook` (SH-85, DAAR-13, DAAR-19, probes for CK-21/31, CHAI-13, CK-27's samosa, reds for CK-32, SH-81, DAAR-23).
 
 **Next steps, in order:**
-1. When each builder hands back: in its worktree, `evidence.mjs --judge`, one `judge` agent per batch, `--collect`, `--apply`; then merge the branch, run `checks.mjs`.
-2. Checks still to build: 6 (card rows: the games must log each step closing), 20 (input live: the host must log each act) once `js/shared` is merged; 15 (load check on every page, oversize pictures) is written, its first run pending.
-3. The contract route run (`s06-route`) and the load check are queued: turn their findings into rows.
-4. `/review` at the full matrix, the publish gate, publish, then Zafar plays.
+1. When each hands back: in its worktree `evidence.mjs --judge`, one `judge` agent per batch, `--collect`, `--apply` (oldest run first); merge; `checks.mjs`.
+2. `/review` at the full matrix (sandbox `--gate`, the contract route, `evidence.mjs --run --sprint`), the publish gate (`publish.mjs` dry run), publish, then Zafar plays.
 
-**Open questions to Zafar:** `docs/questions.md` 28 (English under the words on the end-of-round review) and 29 (263 clips he picked but never marked OK).
+**Open questions to Zafar:** `docs/questions.md` 28-34.
 
 **Starting prompt for a new chat:**
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `ccr-a7370759-t0lee7` (`main` = 8559d610). Sprint 6 is mid-way: carry on from "Next steps"; tell me before launching anything new.
@@ -35,10 +32,10 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 4 | 66 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 4 | 67 |
 | Cook: pantry | 2 | 13 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 7 / 0 / 0 / 2 / 10 | 16 / 14 / 15 / 11 / 19 / 14 / 18 |
-| Clinic | 25 | 117 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 2 / 0 / 6 / 0 / 0 / 1 / 9 | 16 / 14 / 16 / 11 / 19 / 15 / 19 |
+| Clinic | 24 | 122 |
 | First launch and shell | 0 | 2 |
 | Other modes | 2 | 1 |
 | Art | 6 | 9 |
