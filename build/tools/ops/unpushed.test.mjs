@@ -19,3 +19,9 @@ test("at 45 minutes the hook blocks, under it only a hint (checks-to-build 23)",
   assert.equal(hookOutput(45).decision, "block");
   assert.match(hookOutput(50).reason, /push before anything else/);
 });
+test("in a builder's worktree (merged by the orchestrator, never pushed) it stays a hint", async () => {
+  const { hookOutput, inWorktree } = await import("./unpushed.mjs");
+  assert.equal(hookOutput(60, undefined, { worktree: true }).hookSpecificOutput.hookEventName, "PostToolUse");
+  assert.equal(inWorktree((...a) => (a[1] === "--git-dir" ? "/r/.git/worktrees/x" : "/r/.git")), true);
+  assert.equal(inWorktree((...a) => (a[1] === "--git-dir" ? ".git" : ".git")), false);
+});

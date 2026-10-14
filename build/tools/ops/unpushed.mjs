@@ -25,9 +25,11 @@ export const warning = (m, limit = LIMIT) => (m >= limit ? `UNPUSHED ${m} min: c
 
 // checks-to-build 23: at 45 minutes it is no longer a hint: the hook blocks (Claude is told to push before going on)
 export const BLOCK_AT = 45;
-export function hookOutput(m, w = warning(m)) {
+// a builder's own worktree (git dir != common dir) is merged by the orchestrator, never pushed: there it stays a hint
+export const inWorktree = (g = git) => { const d = g("rev-parse", "--git-dir"), c = g("rev-parse", "--git-common-dir"); return !!d && !!c && d !== c; };
+export function hookOutput(m, w = warning(m), { worktree = false } = {}) {
   if (!w) return null;
-  if (m >= BLOCK_AT) return { decision: "block", reason: `${w} (${BLOCK_AT} minutes: push before anything else)` };
+  if (m >= BLOCK_AT && !worktree) return { decision: "block", reason: `${w} (${BLOCK_AT} minutes: push before anything else)` };
   return { hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: w } };
 }
 
@@ -39,7 +41,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   let last = 0; try { last = +readFileSync(stamp, "utf8"); } catch (e) { /* first time */ }
   if (w && Date.now() - last > 10 * 60000) { // at most one warning in ten minutes
     try { writeFileSync(stamp, String(Date.now())); } catch (e) { /* read-only tmp */ }
-    console.log(JSON.stringify(hookOutput(m, w)));
+    console.log(JSON.stringify(hookOutput(m, w, { worktree: inWorktree() })));
   }
   process.exit(0);
 }
