@@ -7,7 +7,7 @@
  *    into the upright syringe below, counted on the syringe (D6). The drops are teardrop-shaped, matte and see-through
  *    (never a glossy ball, never sweets: I2, art plan question 9). A drop is taken back by tapping THAT drop in the
  *    syringe, never by tapping the barrel (CLN-58); the first go is the one scored (E14).
- *    L1 one dispenser, the count written and said; L2 four dispensers and the colours said, in order ("ba [red],
+ *    L1 four dispensers (any one counts: CLN-37), the count written and said; L2 the colours said, in order ("ba [red],
  *    ne poi hakro [blue]"); L3 the same, heard only (the closed card: Zafar's ladder, 13 Oct).
  * 3. The syringe's end glows: pressing it starts the jab (no ✓, D7): the doctor counts down, BOING (a starburst, no
  *    written word), the patient jumps.
@@ -20,7 +20,9 @@
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
-  const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, drops: { 1: [2, 3, 4] }, colours: ["red", "yellow", "blue", "green"], tubes: 4, one: "purple", maxDrops: 5 };
+  // CLN-37 (Zafar, 29 Sept / 1 Oct): the dispenser is four coloured tubes with a lever each at EVERY level; at level 1
+  // any tube's drop counts (the count is the row); the colours are said from level 2 (COL)
+  const K = { wipes: { 1: [1, 2, 3, 4, 5], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5] }, drops: { 1: [2, 3, 4] }, colours: ["red", "yellow", "blue", "green"], tubes: 4, maxDrops: 5 };
   // Zafar (13 Oct, the heal ladder): each level adds one thing, all by level 2; level 3 only closes the card. So the
   // drops' colours, in order, are level 2's new thing (they were level 3's, with the closed card: two at once)
   const COL = 2;
@@ -41,11 +43,11 @@
     const wipes = HS.pick(K.wipes[L], rng);
     let drops;
     let tubes;
+    tubes = HS.shuffle(K.colours, rng).slice(0, K.tubes);
     if (L < COL) {
-      drops = Array(HS.pick(K.drops[L], rng)).fill(K.one);
-      tubes = [K.one];
+      // the colour isn't asked: the help and the test driver use one tube; any lever's drop is counted in
+      drops = Array(HS.pick(K.drops[L], rng)).fill(tubes[0]);
     } else {
-      tubes = HS.shuffle(K.colours, rng).slice(0, K.tubes);
       const [a, b] = HS.shuffle(tubes, rng);
       const na = 1 + Math.floor(rng() * 2);
       const nb = 1 + Math.floor(rng() * 2);
