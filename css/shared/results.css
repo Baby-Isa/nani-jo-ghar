@@ -82,6 +82,7 @@
 /* SH-75: a page narrower than three badges (the steps list, two badges, a body such as the clinic's receipt) takes its own
    width, never the three-badge width with wide empty bands either side; never narrower than its action buttons */
 .rs-card[data-step="3"],
+.rs-card.taught[data-step="2"],
 .rs-card[data-step="1"]:has(> .rs-steps .rs-badges.n2),
 .rs-card[data-step="1"]:has(> .rs-steps .rs-body) {
   width: auto;
@@ -278,6 +279,8 @@
 /* the two groups sit towards the middle */
 .rs-words-bad { justify-content: end; }
 .rs-words-ok { justify-content: start; }
+/* CLN-118: a taught round (nothing scored) has no halves: one group, centred, filling the card */
+.rs-words.one .rs-words-all { flex: 0 1 auto; justify-content: center; }
 .rs-word {
   --rs-edge: #e6dac7;
   position: relative;

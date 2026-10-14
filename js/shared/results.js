@@ -296,13 +296,16 @@
   Results.wordCols = (n) => (n ? Math.min(3, n) : 0);
   /** S03 (S02 review flaw 1, CLN-73): a side with more than two rows of three: the tiles go two lines on a short phone. */
   const denseWords = (words) => Math.max(words.filter((w) => w.right === false).length, words.filter((w) => w.right !== false).length) > 6;
-  function wordsHtml(words) {
-    const card = (w, i) => `<button class="rs-word ${w.right === false ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
+  // one: a taught round (CLN-118, D13: nothing scored): no wrong and right halves (SH-03's empty left half was a white
+  // block where the badges had been); the words are one group that fills the card
+  function wordsHtml(words, { one = false } = {}) {
+    const card = (w, i) => `<button class="rs-word ${w.right === false && !one ? "bad" : "ok"}" type="button" data-i="${i}" aria-label="Hear ${esc(w.kutchi)}">
           ${w.kutchi ? `<b class="fit">${esc(w.kutchi)}</b>` : `<b class="rs-ph fit">${esc(w.english || "")}</b><small class="rs-rec">to record</small>`}<span class="rs-en"><span class="rs-say">${ICON.speaker}</span>${w.kutchi ? `<span class="fit">${esc(w.english)}</span>` : ""}</span></button>`;
     const bad = [];
     const ok = [];
-    words.forEach((w, i) => (w.right === false ? bad : ok).push(card(w, i)));
+    words.forEach((w, i) => (w.right === false && !one ? bad : ok).push(card(w, i)));
     const col = (cls, list) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}${list.length >= 10 ? " many" : ""}" style="--rs-cols:${Results.wordCols(list.length)}">${list.join("")}</div>`;
+    if (one) return col("rs-words-all", ok);
     return col("rs-words-bad", bad) + col("rs-words-ok", ok);
   }
 
@@ -428,7 +431,7 @@
           ${taught ? "" : `<div class="rs-page rs-p1" data-page="1">
             ${opts.body ? '<div class="rs-body"></div>' : `<div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>`}
           </div>`}
-          ${words.length ? `<div class="rs-page rs-p2" data-page="2"${first === 2 ? "" : ' aria-hidden="true"'}><div class="rs-words${denseWords(words) ? " dense" : ""}">${wordsHtml(words)}</div></div>` : ""}
+          ${words.length ? `<div class="rs-page rs-p2" data-page="2"${first === 2 ? "" : ' aria-hidden="true"'}><div class="rs-words${denseWords(words) ? " dense" : ""}${taught ? " one" : ""}">${wordsHtml(words, { one: taught })}</div></div>` : ""}
           ${steps.length ? stepsHtml(steps) : ""}
         </div>
         ${many ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}

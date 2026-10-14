@@ -32,6 +32,9 @@ test("expects: the spec writer's vocabulary, negation, unknown words go to the r
   assert.equal(parseExpect("textMatches:(?i)salaam").flags.includes("i"), true);
   assert.equal(parseExpect("order:salaam,reply").sels, false);
   assert.equal(parseExpect("order:.a,.b").sels, true);
+  // noFinding:<check>: a layout lint check at the moment (SH-81's tap area 2 px off screen, which no picture shows)
+  assert.deepEqual(parseExpect("noFinding:tap-offscreen"), { kind: "noFinding", check: "tap-offscreen", not: false, raw: "noFinding:tap-offscreen" });
+  assert.ok(parseExpect("noFinding:tap-offscren").error, "an unknown lint check is a spec error");
   const f = parseExpect("feels nice");
   assert.equal(f.kind, "free"); assert.ok(f.warning);
   assert.deepEqual(negate({ not: true }, { ok: true, why: "x" }).ok, false);

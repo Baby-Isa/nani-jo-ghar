@@ -12,6 +12,9 @@
 export const DRIVERS = {
   "wrong-extra-person": { kinds: ["cook"], moments: ["rec:wrong-extra-person", "rec:wrong-redo"] },
   "wrong-count": { kinds: ["cook"], moments: ["rec:wrong-count"] },
+  // the first chop lets the vegetables fly by uncut for 3 s, so a count comes up short and the chop comes again with its
+  // request pop-up (decision 51; DAAR-25: Nani's face on that pop-up and on her chop card)
+  "miss-chop": { kinds: ["cook"], moments: ["rec:chop-missed"] },
   // a dish served wrong: the look-alike (chai's salt for the sugar) put in once and left in, then fair (CK-31, CK-32)
   "serve-wrong": { kinds: ["cook"], moments: ["rec:serve-wrong", "drv:review-face"] },
   // a closed card (level 3) peeked open before every tap, so each tap's moment shows the card's rows (SEK-13)

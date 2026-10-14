@@ -1274,9 +1274,14 @@
     const prevExpect = Cook.expect;
     Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
     const read = () => (!UI.naniMuted() && Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line))));
+    // R4 (DAAR-25, T12 "one Nani card"): her own card is already in the sidebar (the chop card, made before the chop again):
+    // the pop-up is that card shown big, so it leaves the sidebar while the pop-up is up and the pop-up folds back into it
+    const mine = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who) || null;
+    if (mine) mine.style.visibility = "hidden";
     try {
-      await L.request({ reason: "cook:station-order", el, card, target: () => $("#guide") || $("#mission"), lead: 0, hold: 900, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read });
+      await L.request({ reason: "cook:station-order", el, card, target: () => (mine && mine.isConnected ? mine : $("#guide") || $("#mission")), lead: 0, hold: 900, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read });
     } finally {
+      if (mine) mine.style.visibility = "";
       stopReading();
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
     }

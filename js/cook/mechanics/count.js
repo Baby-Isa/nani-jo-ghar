@@ -25,29 +25,42 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const S = z.S;
     const col = St.heapColor(word, 0xffffff);
     const c = S.centre(bowl);
+    // CHAI-13 (S06 round 3): into a pot or a glass, the spoon that flies in is the stir's own teaspoon, the same size and
+    // lie (the flight's was a third of the size, a grey sliver on the hob), and it lands where the stir starts, so it
+    // goes straight round with no gap: the sugar tap shows the spoon coming in and stirring
+    const st = into.rim && St.stirStart ? St.stirStart(into) : null;
+    const L = st ? st.L : z.L(1);
     const sp = S.track(S.add.container(c.x, c.y - z.L(20)).setDepth(D.fx + 1)); // CHAI-13: over the puff it makes, so the teaspoon is seen
     // CHAI-13: a real teaspoon (the art run's picture once it lands, art.s02 "teaspoon"), its bowl heaped
     if (St.hasArt(S, "teaspoon")) {
       const im = S.add.image(0, 0, St.artKey("teaspoon"));
       const m = St.art("teaspoon").meta || {};
       const bowlAt = m.bowl || [0.5, 0.85];
-      im.setOrigin(bowlAt[0], bowlAt[1]).setScale(z.L(80) / Math.max(im.width, im.height)).setAngle(-60);
-      const heap = S.add.ellipse(0, 0, z.L(20), z.L(12), col, 1);
+      im.setOrigin(bowlAt[0], bowlAt[1]).setScale((L * 80) / Math.max(im.width, im.height)).setAngle(-60);
+      const heap = S.add.ellipse(0, 0, L * 20, L * 12, col, 1);
       sp.add([im, heap]);
     } else {
       const g = S.add.graphics();
-      St.teaspoon(g, 0, 0, z.L(64), z.L(4), z.L(1), col);
+      if (st) St.teaspoon(g, 0, 0, L * 70, L * 38, L, col);
+      else St.teaspoon(g, 0, 0, z.L(64), z.L(4), z.L(1), col);
       sp.add(g);
     }
     const p = into.surface ? into.surface() : into;
-    await S.fly(sp, p.x + (Math.random() - 0.5) * z.L(30), p.y - z.L(10), { duration: ms, arc: z.L(90) });
-    S.tweens.add({ targets: sp, angle: -70, duration: 120 });
+    const to = st || { x: p.x + (Math.random() - 0.5) * z.L(30), y: p.y - z.L(10) };
+    await S.fly(sp, to.x, to.y, { duration: ms, arc: z.L(90) });
     S.puff(p.x, p.y, col, z.L(36)); // CK-27: the one shared puff (no spray of dots, CK-06)
+    if (st) {
+      // into a pot or a glass: a stir with the teaspoon (28 Sept, s8; CHAI-13, S06: two slow turns, so the spoon is seen
+      // going round in the pan, not a blink; nothing waits on it: the next tap is taken while it stirs). It takes over
+      // from this spoon in the same frame (or, already going round, goes round again)
+      const stir = St.stirIn(S, into, { ms: 900, turns: 2, dipped: true });
+      sp.destroy();
+      await stir;
+      return;
+    }
+    S.tweens.add({ targets: sp, angle: -70, duration: 120 });
     await Cook.wait(130);
     sp.destroy();
-    // into a pot or a glass: a stir with the teaspoon (28 Sept, s8; CHAI-13, S06: two slow turns, so the spoon is seen
-    // going round in the pan, not a blink; nothing waits on it: the next tap is taken while it stirs)
-    if (into.rim) await St.stirIn(S, into, { ms: 900, turns: 2 });
   }
   Cook.Spoon = { spoon };
 

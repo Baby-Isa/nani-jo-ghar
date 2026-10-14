@@ -78,6 +78,11 @@ export class CookPlayer {
   // drivers' records (the combined order served, a forced pass-me, a redone cup, the right way shown)
   async driverWatch(view) {
     const p = this.page, d = this.drv, m = this.mode;
+    // a probe of the served trays (drv:dish-served, drv:counter-<n>; CK-21): the dishes held 3 s on the counter (Cook.serveHold,
+    // a test hook) so its 2x crop lands before the end card comes over the counter (S06 r3: day 2's crops caught the card)
+    const ev = p.__njgEvidence;
+    if (!d.holdSet && ev && (ev.state || []).some((s) => /drv:(dish-served|counter-)/.test(String(s.p.at || ""))))
+      d.holdSet = await p.evaluate("!!window.Cook && ((window.Cook.serveHold = 3000), true)").catch(() => false);
     const s = await p.evaluate(() => {
       const C = window.Cook;
       const pm = document.querySelector("#passme");
@@ -151,6 +156,15 @@ export class CookPlayer {
       await this.once("serve-wrong", { settle: 0 });
       this.rec.note(`serve-wrong: the look-alike put in at ${e.key} and left in`);
       this.made.add("serve-wrong");
+      return true;
+    }
+    // miss-chop (DAAR-25): the first slice step lets the vegetables fly by uncut for 3 s, so a count is short and the chop
+    // comes again (decision 51: only the wrong ones, opened by the request pop-up), then fair
+    if (m === "miss-chop" && !d.missed && e.kind === "slice") {
+      d.missed = true;
+      await sleep(3000);
+      await this.once("chop-missed", { settle: 0 });
+      this.made.add("chop-missed");
       return true;
     }
     // peek-every-tap (SEK-13): from level 3 the card is closed; before each tap a closed (folded) card is peeked open (a tap on
