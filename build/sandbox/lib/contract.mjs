@@ -572,6 +572,8 @@ function check19(r, tl, segs, v, nums, add) {
   if (level >= 2) {
     const firstTap = (t) => { const s = segAt(segs, t); const from = s ? s.t0 : -Infinity; const i = tl.find((e) => e.type === "c" && e.k === "input" && !e.popup && e.t >= from); return i ? i.t : Infinity; };
     for (const l of v.lines) {
+      // a count-down the game says on its own (the boing jab: the doctor counts down to it) is not counting along
+      if (l.role === "countdown") continue;
       const ws = split(l.text);
       if (ws.length && ws.length <= 2 && ws.every((x) => nums.has(x)) && l.t0 > firstTap(l.t0) && !seen.has(l.text + l.t0)) { seen.add(l.text + l.t0); add("contract-19", l.t0, `"${l.text}" is counting along at L${level}`); }
     }

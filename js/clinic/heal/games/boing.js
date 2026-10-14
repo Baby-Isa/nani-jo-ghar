@@ -301,7 +301,8 @@
           const t = s("text", { x: 400, y: 120, "font-size": 72, "text-anchor": "middle", fill: "#2e6b5f", "font-weight": 800, "font-family": "Nunito, sans-serif" }, countG);
           t.textContent = HS.num(k);
         }
-        await S.say(HS.L.num(k, { cap: true }), "doctor");
+        // the doctor's own count-down, not counting along with the child (contract-19 reads the role from the sound log)
+        await S.say(Object.assign(HS.L.num(k, { cap: true }), { role: "countdown" }), "doctor");
       }
       S.clear(countG);
       // B2 (CLN-106): a FUNNY jab, never a flash: the syringe boings on a spring (squash and stretch), a cartoon

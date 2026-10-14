@@ -215,6 +215,10 @@ test("contract-19 counting rule (checks-to-build 7): from L3 no number written o
   assert.match(run("cook:chai-tray@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/);
   assert.equal(run("cook:chai-tray", "p-seen", line("Ba!", 2000)).length, 0, "L1 counts along");
   assert.equal(run("cook:chai-tray@L2", "p-seen", line("Ba!", 1200)).length, 0, "the order said before the first tap is not counting along");
+  // the boing jab's count-down (the doctor counting down to the jab, role "countdown" in the sound log) is not counting along
+  const countdown = (text, t) => [{ type: "line", id: t, text, t, role: "countdown" }, { type: "line-end", id: t, t: t + 300 }];
+  assert.equal(run("clinic:heal-boing@L2", "p-seen", [...countdown("Char!", 2000), ...countdown("Trae!", 2400), ...countdown("Ba!", 2800), ...countdown("Hakro!", 3200)]).length, 0, "the doctor's count-down is not counting along");
+  assert.match(run("clinic:heal-boing@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/, "a number said with no role still is");
 });
 
 test("contract-18 card rows (checks-to-build 6): a row ticks only within 1 s after its step-close log; no row changes its words mid-stage", async () => {
