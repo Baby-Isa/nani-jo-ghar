@@ -143,3 +143,8 @@
 {"id":"CK-40","run":"ev-20261014-134153-rhd","verdict":"PASS","spec":"ba8cd5ab3b7d1981a09d","judge":"expect","date":"2026-10-14"}
 {"id":"CK-41","run":"ev-20261014-134153-rhd","verdict":"PASS","spec":"62507632e216d32972c8","judge":"expect","date":"2026-10-14"}
 {"id":"CLN-152","run":"ev-20261014-134153-rhd","verdict":"PASS","spec":"ec4ededbf5fa9d8c4894","judge":"expect","date":"2026-10-14"}
+{"id":"CK-38","run":"ev-20261014-134153-rhd","event":"built","date":"2026-10-14"}
+{"id":"CK-39","run":"ev-20261014-134153-rhd","event":"built","date":"2026-10-14"}
+{"id":"CK-40","run":"ev-20261014-134153-rhd","event":"built","date":"2026-10-14"}
+{"id":"CK-41","run":"ev-20261014-134153-rhd","event":"built","date":"2026-10-14"}
+{"id":"CLN-152","run":"ev-20261014-134153-rhd","event":"built","date":"2026-10-14"}
