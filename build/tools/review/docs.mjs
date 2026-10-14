@@ -11,7 +11,7 @@
  *   - a non-live row (built, fixed, retired) sits in the fix list
  * Run by checks.mjs ("docs"), so every push and every /review runs it. Change a limit only with Zafar's yes.
  */
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { args, help, ROOT } from "./lib/common.mjs";
 import { parseRegressions, statusKind } from "./lib/regressions.mjs";
@@ -95,10 +95,36 @@ export function checkDocs() {
   const dec = read("docs/decisions.md") || "";
   const nums = [...dec.matchAll(/^\| (\d+) \|/gm)].map((m) => m[1]);
   for (const n of new Set(nums)) if (nums.filter((x) => x === n).length > 1) fails.push(`decision ${n} appears twice in docs/decisions.md`);
+  // checks-to-build 22: every file a live doc names in backticks exists (the archive, generated screenshots and placeholders
+  // aside); today's broken ones are build/tools/review/data/doc-paths-known.json, which may only shrink
+  const known = new Set(JSON.parse(read("build/tools/review/data/doc-paths-known.json") || "[]"));
+  const broken = brokenPaths();
+  for (const b of broken) if (!known.has(b)) fails.push(`${b.replace(" -> ", ": names ")}, which does not exist (fix the path, or the doc)`);
+  const fixedPaths = [...known].filter((k) => !broken.includes(k));
+  if (fixedPaths.length) info.push(`${fixedPaths.length} known broken doc paths are fixed: run docs.mjs --write-known-paths`);
   info.push(`${live.length} rows in the fix list, ${all.length - live.length} in the archive`);
   return { fails, info };
 }
 
+export function brokenPaths() {
+  const files = [];
+  const walk = (d) => { for (const f of readdirSync(join(ROOT, d), { withFileTypes: true })) { const p = `${d}/${f.name}`; if (f.isDirectory()) { if (f.name !== "archive") walk(p); } else if (p.endsWith(".md")) files.push(p); } };
+  walk("docs"); files.push("CLAUDE.md");
+  if (existsSync(join(ROOT, ".claude/skills"))) for (const s of readdirSync(join(ROOT, ".claude/skills"))) if (existsSync(join(ROOT, `.claude/skills/${s}/SKILL.md`))) files.push(`.claude/skills/${s}/SKILL.md`);
+  const out = new Set();
+  for (const f of files) for (const m of (read(f) || "").matchAll(/`((?:docs|build|js|css|data|assets|\.claude)\/[^`\s]+?)`/g)) {
+    const p = m[1].replace(/[#:].*$/, "").replace(/[),.;]+$/, "");
+    if (/[<>*{}$…]|\.\.\.|^build\/screenshots\//.test(p)) continue;
+    if (!existsSync(join(ROOT, p))) out.add(`${f} -> ${p}`);
+  }
+  return [...out].sort();
+}
+
+if (import.meta.url === `file://${process.argv[1]}` && a.has("write-known-paths")) {
+  writeFileSync(join(ROOT, "build/tools/review/data/doc-paths-known.json"), JSON.stringify(brokenPaths(), null, 1) + "\n");
+  console.log("docs: known broken paths written");
+  process.exit(0);
+}
 if (import.meta.url === `file://${process.argv[1]}`) {
   const r = checkDocs();
   if (a.has("json")) console.log(JSON.stringify(r, null, 1));

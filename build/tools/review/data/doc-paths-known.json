@@ -1,0 +1,23 @@
+[
+ ".claude/skills/mum-round/SKILL.md -> build/reports/mum-YYYY-MM-DD.md",
+ "docs/architecture/code-map.md -> js/storage.js",
+ "docs/architecture/cook-recipes-guide.md -> assets/cook/props/omelette-raw.webp",
+ "docs/architecture/shared-api.md -> js/storage.js",
+ "docs/architecture/target-model.md -> build/package.mjs",
+ "docs/architecture/target-model.md -> build/tools/review/approved-shots.json",
+ "docs/architecture/technical-plan.md -> build/package.mjs",
+ "docs/design-language/art-pipeline.md -> assets/props/bunting.png",
+ "docs/design-language/art-pipeline.md -> assets/props/lantern.png",
+ "docs/design-language/art-pipeline.md -> build/reports/pantry-v2/",
+ "docs/game-design/modes/conversations-wiring.md -> js/core/score",
+ "docs/game-design/modes/conversations.md -> build/reports/conversations-mvp/",
+ "docs/game-design/modes/conversations.md -> data/conversations/chains.json",
+ "docs/game-design/modes/cook.md -> css/ds.css",
+ "docs/game-design/modes/story-by-the-fire.md -> js/shared/story-log.js",
+ "docs/game-design/modes/story-by-the-fire.md -> js/shared/storybook.js",
+ "docs/language/engine-design.md -> build/lang/gaps.js",
+ "docs/language/engine-spec.md -> docs/language/sources/",
+ "docs/language/grammar-notes.md -> docs/GAME-IDEAS-TBC.md",
+ "docs/process/cost-and-speed.md -> data/lang/kutchi/",
+ "docs/tools.md -> data/verdict-log.jsonl"
+]
