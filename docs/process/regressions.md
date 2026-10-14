@@ -65,6 +65,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | CK-39 | A card row's words are clipped on cook:chaat (view-marble) and cook:assemble (order card in the sidebar) at 1366x1024 (span.oc-t cut by 34-37 px) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: zero-tolerance lint, text-clipped on those flows | gate summary.md |
 | CK-40 | Day 6 shows two cards and two faces for one person (the cousin, ma) and two Nani faces at once (contract-20) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: contract-20 on cook:day6 | gate contract.md |
 | CK-41 | Roll-tawa lights two things at once for 337 ms (the raw chapati's glow and a .njg-pulse: contract-8) | **open** (found by gate s06-gate (S06 full check, 14 Oct)) | auto: contract-8 on cook:roll-tawa | gate contract.md |
+| CK-42 | Cook's title page shows grown-ups' English on the page itself, not behind "?": the parents' intro ("The family come to Nani's kitchen... Your child listens"), the Station lab, Nani's shop's upgrade descriptions ("Special knife... twice as fast"), "Relaxed/Busy", "Level 1-4", "Start over". Non-negotiable 5: grown-ups' English lives only in the "?" pop-up (and the end-of-round review); the child sees pictures and Kutchi only | **open** (found by gate s06-gate (S06 full check, 14 Oct): contract-16 on cook:title) | auto: contract-16 on cook:title | gate contract.md |
 
 ## Clinic
 
