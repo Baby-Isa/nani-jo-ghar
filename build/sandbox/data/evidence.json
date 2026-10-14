@@ -1134,13 +1134,13 @@
  ],
  "SH-69": [
   {
-   "flow": "cook:day1",
-   "path": "fair",
+   "flow": "lab:cook/round",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
    "at": "every:bubble",
    "after": null,
@@ -1149,8 +1149,8 @@
     "voice"
    ],
    "expect": null,
-   "note": "the first meeting: on a fresh save Nani names each new customer in her bubble and says it (flow.js firstMeeting, once per save); the first customer arrives about a minute in, after the pantry; 'Thank you!' on a pill is Kutchi (decision 81)",
-   "max": 12
+   "note": "the first meeting, at a child's pace (speed 1: Nani's name bubble stays its real 1.1 s; at the sandbox's test speed 3 it is gone in 0.37 s, before a crop lands, which is why the day-2 run heard 'Ali!' at 2.99 s but the frame shows the salaam): on a save that has met no one (Cook.save.met empty), Nani greets the new customer by name in her bubble and says it (flow.js firstMeeting, once per save), then their salaam",
+   "max": 4
   },
   {
    "flow": "cook:day2",
@@ -1164,6 +1164,7 @@
    "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
+    "crop:#mission",
     "dom:#mission",
     "voice"
    ],
@@ -1184,6 +1185,7 @@
    "at": "heal-cut-start",
    "after": null,
    "capture": [
+    "crop:.cl-side",
     "dom:.cl-side"
    ],
    "expect": [
