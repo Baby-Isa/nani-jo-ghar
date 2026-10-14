@@ -266,7 +266,7 @@
       .map((w) => {
         const d = M.words[w.id] || {};
         const mark = w.missed ? `<span class="wr-miss">missed ${w.missed}</span>` : w.taught && !w.heard ? `<span class="wr-new">new</span>` : `<span class="wr-ok">✓</span>`;
-        return `<li><button type="button" class="wr-hear" data-w="${esc(w.id)}" aria-label="Hear it">${ICON.speaker}</button><span class="${d.kutchi ? "k" : "ph"}">${esc(d.kutchi || d.english || w.id)}</span><span class="en">${esc(d.english || "")}</span>${mark}</li>`;
+        return `<li><button type="button" class="wr-hear" data-w="${esc(w.id)}" aria-label="Hear it">${ICON.speaker}</button><span class="${d.kutchi ? "k" : "ph"}">${esc(d.kutchi || d.english || w.id)}</span><span class="en english">${esc(d.english || "")}</span>${mark}</li>`;
       })
       .join("");
     const t = res.tally;

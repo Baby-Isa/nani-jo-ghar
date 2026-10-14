@@ -190,7 +190,7 @@
       <div class="title-wrap"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="">
       <div><h1>Dress up</h1>
       <p class="dl-links"><a href="cook.html">Cook with Nani</a> · <a href="find.html">Find it</a>${Cook.storageOK ? "" : " · Progress can't be saved in this browser window."}</p></div></div>
-      <div class="dl-cols">
+      <div class="dl-cols" data-lab>
       <div class="dl-set">
       <h2>Dress lab</h2>
       <div class="lab-row"><span class="lab-lbl">Level</span><div class="seg" role="group" aria-label="Level">${[1, 2, 3].map((n) => `<button data-level="${n}" class="${n === L.level ? "on" : ""}">Level ${n}</button>`).join("")}</div></div>

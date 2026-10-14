@@ -45,7 +45,7 @@
   <div class="card">
     <h2>Who's playing?</h2>
     <div class="tiles"></div>
-    <form class="add" hidden>
+    <form class="add grownups-form" hidden>
       <p class="for-grownups">For grown-ups: type the child's name.</p>
       <input name="name" maxlength="24" autocomplete="off" placeholder="Name" aria-label="Name">
       <div class="swatches" role="radiogroup" aria-label="Colour"></div>
@@ -55,7 +55,7 @@
 </div>
 
 <!-- grown-ups (press and hold the cog): names, colours, and the save file -->
-<div id="grown" class="sheet" hidden role="dialog" aria-label="Grown-ups">
+<div id="grown" class="sheet grownups-sheet" hidden role="dialog" aria-label="Grown-ups">
   <div class="card">
     <!-- three groups, so a phone held sideways shows them in two columns and nothing scrolls (SH-88): the players, then the
          links and Done | story help and the save -->

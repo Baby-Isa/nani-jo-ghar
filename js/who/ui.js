@@ -82,7 +82,7 @@
   UI.wordHTML = function (id, hidden) {
     const w = UI.P.word(id);
     if (hidden) return `<span class="kw">•••</span>`;
-    if (!w.real) return `<span class="kw ph">${esc(w.english)}</span>`;
+    if (!w.real) return `<span class="kw ph" data-rec>${esc(w.english)}</span>`; // to record (decision 84): grey italic, tagged in the markup only
     return `<span class="kw${w.draft ? " draft" : ""}">${esc(w.kutchi)}</span>`;
   };
   UI.lineHTML = function (key, wordId, opts) {
@@ -91,7 +91,7 @@
     const x = wordId ? UI.wordHTML(wordId, opts.hidden) : "";
     if (L.k) return `<span>${esc(L.k).replace("{x}", x)}</span>`;
     const parts = String(L.e).split("{x}");
-    return parts.map((p) => (p ? `<span class="en">${esc(p)}</span>` : "")).join(x);
+    return parts.map((p) => (p ? `<span class="en" data-rec>${esc(p)}</span>` : "")).join(x); // a frame not yet recorded: to record
   };
   UI.gist = function (key, wordId) {
     const L = UI.P.who.lines[key] || { e: key };
@@ -148,7 +148,7 @@
       };
     row.querySelector(".tr").onclick = () => {
       hooks.help(5);
-      row.querySelector(".rt").innerHTML = `<span class="en">${esc(UI.gist(clue.line, clue.word))}</span>`;
+      row.querySelector(".rt").innerHTML = `<span class="en" data-bulb-en>${esc(UI.gist(clue.line, clue.word))}</span>`; // the asked-for English (help)
     };
     $("ladder").querySelectorAll(".row").forEach((r) => r.classList.remove("current"));
     $("ladder").appendChild(row);
@@ -200,7 +200,7 @@
     const review = words
       .map((id) => {
         const w = UI.P.word(id);
-        return `<tr><td>${UI.wordHTML(id)}</td><td class="en">${esc(w.english)}</td><td><button class="btn wr" data-w="${id}" type="button">&#128264;</button></td></tr>`;
+        return `<tr><td>${UI.wordHTML(id)}</td><td class="en english">${esc(w.english)}</td><td><button class="btn wr" data-w="${id}" type="button">&#128264;</button></td></tr>`;
       })
       .join("");
     const html = `<h2>Case closed!</h2><div class="starrow">${stars}</div>` +
