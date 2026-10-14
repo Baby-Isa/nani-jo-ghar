@@ -141,11 +141,14 @@
     const p = UI.panel(
       `<div class="title-wrap">
         <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
-        <div>
+        <div class="t-text">
+          <div class="t-about">
           <h1>Find it with Nani</h1>
           <p>Nani tells you what she needs, in Kutchi. Listen, find the right things and the right number, and check the shopkeeper hasn't made a mistake!</p>
           <div class="purse"><span class="pill coins" title="Pocket money"><i class="coin-dot"></i>${Cook.save.coins}</span><span class="purse-total">pocket money</span></div>
           <p class="story-line"><b>${esc(s.chapter)}</b><br>${esc(s.gist)}${rounds ? ` <b>You've done ${rounds} list${rounds > 1 ? "s" : ""}.</b>` : ""}</p>
+          </div>
+          <div class="t-go">
           <div class="seg" role="group" aria-label="Setting">
             <button data-mode="relaxed" class="${mode === "relaxed" ? "on" : ""}">Relaxed</button>
             <button data-mode="busy" class="${mode === "busy" ? "on" : ""}">Busy</button>
@@ -156,6 +159,7 @@
             <button class="btn" id="t-lab">Search lab</button>
           </div>
           <p style="margin-top:14px;font-size:13px"><a href="cook.html">Cook with Nani</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
+          </div>
         </div>
       </div>`,
       { title: true }

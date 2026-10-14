@@ -155,3 +155,18 @@ body.find #live { flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y:
 #ali-card { padding: 10px 12px; }
 #ali-card .ac-head { display: flex; align-items: center; gap: 8px; font: 800 15px/1.2 Nunito, system-ui, sans-serif; color: #5b3a22; }
 #ali-card .ac-face { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; flex: none; }
+
+/* MOD-06: nothing scrolls on a phone held sideways (non-negotiable 9).
+   The list: a Kutchi word's letters reach about 0.2em under its line box (Baloo 2 at line-height 1.15), so the list keeps
+   that much room at its foot and never scrolls by 2-3 px for them. */
+body.find #mission .m-order { padding-bottom: 4px; }
+/* the title: on a short screen its words sit in two columns beside Nani (what it is | how to start), never one tall column */
+@media (max-height: 430px) and (orientation: landscape) {
+  body.find #panel:has(> .title-wrap) { --panel-pad: 12px; }
+  body.find .title-wrap { gap: 12px; align-items: start; }
+  body.find .title-wrap img { width: clamp(88px, 14vw, 140px); }
+  body.find .title-wrap .t-text { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; align-items: start; }
+  body.find .title-wrap .t-about h1 { font-size: clamp(26px, 4vw, 34px); }
+  body.find .title-wrap .t-go .btn-row { margin-top: 8px; }
+  body.find .title-wrap .t-go > p { margin-top: 8px; }
+}
