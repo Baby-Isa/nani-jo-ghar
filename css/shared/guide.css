@@ -107,20 +107,6 @@
 .njg-guide.ng-strip .ng-face,
 .njg-guide.ng-strip .ng-say { display: none; }
 
-/* PAN-10 (Zafar, 6 Oct PA3): folded (from level 2): her face and the tools only; a tap on the box opens the fuller
-   instruction under them for a few seconds. Folded, the box is hers again even where the strip had taken her face (R4) */
-.njg-guide .ng-say.ng-full { display: none; }
-.njg-guide.ng-min { cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.njg-guide.ng-min .ng-say { display: none; }
-.njg-guide.ng-min.ng-open .ng-say.ng-full { display: flex; }
-.njg-guide.ng-strip.ng-min {
-  grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "face tools" "say say";
-  padding: var(--njg-card-pad) var(--njg-card-pad) var(--njg-card-pad) calc(var(--ng-band-w) + var(--njg-card-pad));
-  background: var(--ng-bg); border-color: var(--ng-edge);
-}
-.njg-guide.ng-strip.ng-min::before { display: block; }
-.njg-guide.ng-strip.ng-min .ng-face { display: inline-flex; }
-
 /* decision 84 (Zafar, 12 Oct): a line or word still to record shows as its English in grey italic only; no visible
    "to record" flag (it threw off the spacing, so the screen can't be judged as it will look live). The flag stays in
    the markup as a hidden tag (.ng-rec / .oc-rec / .rs-rec, .ph, data-rec) so the tools can still list every one. */

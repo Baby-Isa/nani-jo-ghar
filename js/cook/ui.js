@@ -521,18 +521,21 @@
     return !!(ctx && ctx.guided);
   };
   /**
-   * PAN-10 (Zafar, 6 Oct PA3): from level 2 Nani's box folds to her face and tools; a tap opens the fuller instruction
-   * (the station's guide line: data.guide[key] through the engine, else its to-record English, grey italic) for a few
-   * seconds. Level 1 keeps her box open: she reads the card once (the request pop-up) and names each thing as it comes.
+   * PAN-10 (Zafar, 14 Oct: no folded second box, R4 one face): while Nani asks on her own card (the pantry), her task
+   * line (the station's guide line: data.guide[key] through the engine, else its to-record English, grey italic) is
+   * her card's top strip whenever no step line is showing there (from level 2 a step's line shows only after the
+   * pause). UI.stripTask(null) clears it. Level 1 needs none: she names each thing as it comes (the step line, at once).
    */
-  UI.guideFold = function (on, key = guideKey) {
-    if (!guide || !guide.fold) return;
-    if (!on) return guide.fold(false);
+  UI.stripTask = function (key) {
+    if (!mission) return;
     const G = (Cook.data && Cook.data.guide) || {};
-    const k = [key, String(key || "").split(":")[0]].find((x) => x && G[x]);
-    if (!k) return guide.fold(true);
-    const line = Lang.guideLine(k, G[k]);
-    guide.fold(true, line.ok ? { full: raHtml(line) } : { full: esc(Lang.plain(line)), rec: true });
+    const k = key && [key, String(key).split(":")[0]].find((x) => x && G[x]);
+    const line = k ? Lang.guideLine(k, G[k]) : null;
+    mission.stripTask = line ? (line.ok ? { html: raHtml(line) } : { html: esc(Lang.plain(line)), rec: true }) : null;
+    if (!mission.stripMode || (mission.strip && mission.strip.html && !mission.strip.task)) return;
+    mission.strip = mission.stripTask ? Object.assign({ task: true }, mission.stripTask) : null;
+    const c = document.querySelector(`#mission .oc-card[data-who="${CSS.escape(String(mission.who))}"]`);
+    if (OCard() && OCard().setStrip) OCard().setStrip(c, mission.strip);
   };
   /** R4 (S02-B, T12): while Nani asks on a card of her own (daar's chop list) her box keeps only its tools (one face). */
   UI.guideStrip = (on) => guide && guide.strip && guide.strip(!!on || !!(mission && mission.stripMode));
@@ -586,7 +589,8 @@
     g.set = (html, o = {}) => {
       rawSet(html, o);
       if (!mission || !mission.stripMode) return;
-      mission.strip = html ? { html, rec: !!o.rec } : null;
+      // PAN-10: no step line showing: her task line (UI.stripTask), if the station set one
+      mission.strip = html ? { html, rec: !!o.rec } : mission.stripTask ? Object.assign({ task: true }, mission.stripTask) : null;
       const c = document.querySelector(`#mission .oc-card[data-who="${CSS.escape(String(mission.who))}"]`);
       if (OCard() && OCard().setStrip) OCard().setStrip(c, mission.strip);
     };
@@ -2212,7 +2216,6 @@
     stopReading();
     UI.stepDone();
     if (guide && guide.strip) guide.strip(false);
-    if (guide && guide.fold) guide.fold(false); // PAN-10: a folded box never outlives its order
     $("#mission").classList.add("hidden");
     $("#mission").classList.remove("arriving");
     intro().classList.add("hidden");

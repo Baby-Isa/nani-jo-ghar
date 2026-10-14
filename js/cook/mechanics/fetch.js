@@ -129,9 +129,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // Nani's list (PAN-02, step 4d): every thing its own full sentence, "Muke atto de. Muke khun de." (give me: the
       // family's words); one sentence with a list waits for Mum's list rule (the engine's gap list: Fetch, L29)
       const ask = (id) => Lang.line("give", Lang.phrase([id]));
-      // PAN-10: from level 2 her box folds to her face (a tap opens the fuller instruction); level 1 keeps it open
-      const folded = Cook.roundLevel(ctx) >= 2 && !!UI.guideFold;
-      if (folded) UI.guideFold(true, "fetch");
+      // PAN-10 (Zafar, 14 Oct: R4, one face, no folded second box): from level 2 her task line is her card's top strip
+      // while no step line shows there; level 1 names each thing as the child goes (the step line, at once)
+      const tasked = Cook.roundLevel(ctx) >= 2 && !!UI.stripTask;
+      if (tasked) UI.stripTask("fetch");
       // (the taught first time, her whole list said again, only when no request pop-up has read it out this stage:
       // R2, her box never reads the whole card, and the pantry header at L3/L4 crammed five sentences into a tiny font)
       const LC = global.Lifecycle;
@@ -298,7 +299,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       fetching = false;
       Cook.undoAt = null;
-      if (folded) UI.guideFold(false);
+      if (tasked) UI.stripTask(null);
       tray.forEach((e) => e.obj.active && S.untap(e.obj));
       // the wrong things on the tray go back to their shelf, one by one; the right ones stay (and close up)
       const wrongs = tray.filter((e) => !e.right);
