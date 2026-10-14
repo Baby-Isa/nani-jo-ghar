@@ -19,3 +19,8 @@ test("each of those docs is under its limit", () => {
 test("checkDocs reports no limit failure", () => {
   assert.deepEqual(checkDocs().fails.filter((f) => /limit|DOC_LIMITS/.test(f)), []);
 });
+
+test("checks-to-build 23: a report's prose is counted without its tables, headings and code", async () => {
+  const { proseWords } = await import("./docs.mjs");
+  assert.equal(proseWords("# Title\n\nfour words of prose\n\n| a | b |\n|---|---|\n| x y z | w |\n\n```\ncode here\n```"), 4);
+});

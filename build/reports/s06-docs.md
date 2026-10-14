@@ -12,6 +12,10 @@ Branch `s06-docs`, not pushed. `checks.mjs` green.
 6. Nine skills: retired rule ids and decision numbers removed; live `NN` ids kept.
 7. `docs.mjs`: `DOC_LIMITS` for every mode and design doc (size rounded up to 500; a new doc needs a limit), plus `docs.test.mjs` in `checks.mjs`.
 
+## Proof
+
+`node build/tools/review/checks.mjs` green at c60efad (unit 309 pass, specs, docs, load); live docs (`docs/` minus the archive) 248,062 words before, 205,400 after.
+
 ## Skipped
 - Comments in `js/`, `data/`, `assets/`, `lab/` that name moved scripts or find-it section ids: not mine to edit, now stale.
 - `conversations.md` (13.7k) and `art-pipeline.md` (13.2k) were not in scope; their limits sit just above today's size.

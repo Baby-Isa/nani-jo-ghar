@@ -95,6 +95,9 @@ export function checkDocs() {
   const dec = read("docs/decisions.md") || "";
   const nums = [...dec.matchAll(/^\| (\d+) \|/gm)].map((m) => m[1]);
   for (const n of new Set(nums)) if (nums.filter((x) => x === n).length > 1) fails.push(`decision ${n} appears twice in docs/decisions.md`);
+  // checks-to-build 23: a session report from Sprint 6 on (build/reports/s06-*.md and later) keeps its prose under 300 words
+  // (tables and code are the proof, not prose) and carries its proof: a "Proof" section or the evidence runs it rests on
+  for (const r of reportProblems()) fails.push(r);
   // checks-to-build 22: every file a live doc names in backticks exists (the archive, generated screenshots and placeholders
   // aside); today's broken ones are build/tools/review/data/doc-paths-known.json, which may only shrink
   const known = new Set(JSON.parse(read("build/tools/review/data/doc-paths-known.json") || "[]"));
@@ -106,6 +109,22 @@ export function checkDocs() {
   return { fails, info };
 }
 
+export const REPORT_PROSE = 300;
+export function proseWords(md) {
+  const t = String(md || "").replace(/```[\s\S]*?```/g, "").split("\n").filter((l) => !/^\s*\|/.test(l) && !/^#/.test(l)).join("\n");
+  return words(t);
+}
+export function reportProblems(dir = "build/reports") {
+  if (!existsSync(join(ROOT, dir))) return [];
+  const out = [];
+  for (const f of readdirSync(join(ROOT, dir)).filter((x) => /^s(0[6-9]|[1-9]\d)[a-z0-9-]*\.md$/i.test(x))) {
+    const t = read(`${dir}/${f}`) || "";
+    const n = proseWords(t);
+    if (n > REPORT_PROSE) out.push(`${dir}/${f}: ${n} words of prose (limit ${REPORT_PROSE}; the tables are the proof)`);
+    if (!/^#+\s*proof/im.test(t) && !/\bev-\d{8}-\d{4,6}-\w+|\bev-s\d+/.test(t) && !/^#+\s*(what moved|moved)/im.test(t)) out.push(`${dir}/${f}: no proof (a "Proof" section, or the evidence runs it rests on)`);
+  }
+  return out;
+}
 export function brokenPaths() {
   const files = [];
   const walk = (d) => { for (const f of readdirSync(join(ROOT, d), { withFileTypes: true })) { const p = `${d}/${f.name}`; if (f.isDirectory()) { if (f.name !== "archive") walk(p); } else if (p.endsWith(".md")) files.push(p); } };
