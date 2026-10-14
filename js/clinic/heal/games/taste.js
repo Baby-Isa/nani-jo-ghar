@@ -378,8 +378,14 @@
     const nudge = (el, still) => {
       clearTimeout(nudgeT);
       [S.toolEls.spoon, glassG].forEach((x) => x && x.classList.remove("pulse"));
+      // CLN-144 (decision 95, contract-8): while the nudge glows, the card's next-step band steps back (one thing lit)
+      if (ctx.card.hush) ctx.card.hush(false);
       if (!el) return;
-      nudgeT = setTimeout(() => !st.over && still() && el.classList.add("pulse"), fast() ? 200 : 1800);
+      nudgeT = setTimeout(() => {
+        if (st.over || !still()) return;
+        if (ctx.card.hush) ctx.card.hush(true);
+        el.classList.add("pulse");
+      }, fast() ? 200 : 1800);
     };
     const emptyGlass = () => {
       st.glass = { liquid: null, adds: {}, stirred: false, slip: false };

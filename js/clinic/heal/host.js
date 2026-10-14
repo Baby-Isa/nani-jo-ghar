@@ -490,6 +490,7 @@
       stage.querySelectorAll(".hs-tool.next-up").forEach((b) => b.classList.remove("pulse", "next-up"));
       card.el.querySelectorAll(".cl-row.next-up").forEach((r) => r.classList.remove("next-up"));
       nextOn = null;
+      card.hush(false);
     };
     const nextUp = (tool) => {
       if (!tool) return nextOff();
@@ -499,18 +500,24 @@
         nextT = null;
         if (finished || card.st.now !== at) return;
         const id = card.nextStepId();
-        nextOn = { tool, id };
-        // the next tool (an exact id, or every tool its id starts with: all the plasters, never just the right colour)
-        const t = String(tool);
-        [...stage.querySelectorAll(".hs-tool")].filter((b) => b.dataset.tool === t || (t.endsWith("-") && String(b.dataset.tool || "").startsWith(t))).forEach((b) => b.classList.add("pulse", "next-up"));
+        const on = (nextOn = { tool, id });
+        // CLN-144, CLN-145 (decision 95: one thing lit at a time, contract-8): the card's band steps back, the next row
+        // is said (its read-along light), and only then the tool glows: never the band, the row and the tool at once
+        card.hush(true);
         const rowEl = id && card.row(id) && card.row(id).el;
         if (rowEl) rowEl.classList.add("next-up");
         if (id && screen.setGuide) screen.setGuide(stripRow(card.row(id)));
+        // the next tool (an exact id, or every tool its id starts with: all the plasters, never just the right colour)
+        const t = String(tool);
+        const glow = () => {
+          if (nextOn !== on || finished) return;
+          [...stage.querySelectorAll(".hs-tool")].filter((b) => b.dataset.tool === t || (t.endsWith("-") && String(b.dataset.tool || "").startsWith(t))).forEach((b) => b.classList.add("pulse", "next-up"));
+        };
         // the doctor (off screen: his box) says the next step's line, once
         if (id) {
           saidNext.add(id);
-          card.speak([id]);
-        }
+          Promise.resolve(card.speak([id])).then(glow, glow);
+        } else glow();
       }, Kit.fast ? 300 : 2000);
     };
 
@@ -533,6 +540,7 @@
           card.tick(rowId);
         },
         pulse: (rowId, on) => card.pulse(rowId, on),
+        hush: (on) => card.hush(on), // CLN-144: a game's own tool nudge: the card's band steps back while it glows
         // additions
         now: (rowId) => {
           if (rowId !== card.st.now) {
