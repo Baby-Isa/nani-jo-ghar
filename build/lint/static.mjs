@@ -10,7 +10,7 @@
 //   privacy   nothing leaves the device: no fetch/XMLHttpRequest/sendBeacon/WebSocket to an absolute URL in js/, no third-party
 //             script in a page, localStorage only in the save and settings modules
 //   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
-//   bulb      the bulb's English shows for 5, 3, 2, 1 s by level (Bulb.MS)
+//   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in every bulb time table
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
@@ -128,10 +128,25 @@ export function rewardFindings(file, json) {
   return out;
 }
 // ---- bulb ----
-export function bulbFindings(text) {
-  const m = /MS\s*:\s*\[([^\]]*)\]/.exec(text || "");
-  const ms = m ? m[1].split(",").map((s) => +s.trim()) : null;
-  return ms && ms.join() === "5000,3000,2000,1000" ? [] : [{ check: "bulb", at: "js/shared/bulb.js", key: "bulb|MS", text: `Bulb.MS is ${ms ? `[${ms}]` : "missing"}: the English shows 5, 3, 2, 1 s by level` }];
+// the bulb's English shows long enough to read: 8 s at every level (Zafar, D11 / SH-41); every bulb time table holds >= 7.5 s
+export const BULB_MIN = 7500;
+export function bulbFindings(tables) {
+  const out = [];
+  for (const [where, ms] of Object.entries(tables)) {
+    const list = (Array.isArray(ms) ? ms : Object.values(ms || {})).filter((x) => typeof x === "number");
+    if (!list.length) { out.push({ check: "bulb", at: where, key: `bulb|${where}|missing`, text: `${where}: no bulb time found` }); continue; }
+    if (list.some((x) => x < BULB_MIN)) out.push({ check: "bulb", at: where, key: `bulb|${where}`, text: `${where}: the bulb's English shows [${list.join(", ")}] ms; 8 s at every level (D11, SH-41)` });
+  }
+  return out;
+}
+export function bulbTables(rd, J) {
+  const t = {};
+  const num = (src, re) => { const m = re.exec(src || ""); return m ? m[1].split(/[,\s]+/).map((x) => +String(x).replace(/^\d:\s*/, "")).filter((x) => !isNaN(x) && x > 100) : []; };
+  t["data/cook.json calm.bulbMs"] = [].concat((J("data/cook.json").calm || {}).bulbMs ?? []);
+  t["js/clinic/kit.js Kit.BULB_MS"] = Object.values(Function(`return ${(/Kit\.BULB_MS\s*=\s*(\{[^}]*\})/.exec(rd("js/clinic/kit.js")) || [0, "{}"])[1]}`)());
+  t["js/shared/bulb.js Bulb.MS"] = num(rd("js/shared/bulb.js"), /MS\s*:\s*\[([^\]]*)\]/);
+  t["js/shared/conversations.js BULB_MS"] = Object.values(Function(`return ${(/const BULB_MS\s*=\s*(\{[^}]*\})/.exec(rd("js/shared/conversations.js")) || [0, "{}"])[1]}`)());
+  return t;
 }
 
 // ---------- the repo ----------
@@ -158,7 +173,7 @@ export function run(root = ROOT, only = null) {
     for (const f of readdirSync(root).filter((x) => x.endsWith(".html"))) out.push(...privacyFindings(f, rd(f)));
   }
   if (want("reward")) for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/lang\/|audio|candidates/.test(p))) { try { out.push(...rewardFindings(f, J(f))); } catch (e) { /* not JSON */ } }
-  if (want("bulb")) out.push(...bulbFindings(existsSync(join(root, "js/shared/bulb.js")) ? rd("js/shared/bulb.js") : ""));
+  if (want("bulb")) out.push(...bulbFindings(bulbTables(rd, J)));
   return out;
 }
 

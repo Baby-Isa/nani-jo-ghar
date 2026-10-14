@@ -44,9 +44,10 @@ test("reward: no sweet as a reward or send-off help; a sticker's group is not a 
   assert.equal(rewardFindings("d.json", { sendoff: { helps: { sad: "apple" } } }).length, 0);
   assert.equal(rewardFindings("d.json", { items: { sticker: { group: "sweet" } } }).length, 0);
 });
-test("bulb: 5, 3, 2, 1 seconds", () => {
-  assert.equal(bulbFindings("const B = { MS: [5000, 3000, 2000, 1000] };").length, 0);
-  assert.equal(bulbFindings("const B = { MS: [4000, 3000, 2000, 1000] };").length, 1);
+test("bulb: 8 s at every level in every table (Zafar, D11 / SH-41)", () => {
+  assert.equal(bulbFindings({ cook: [8000], clinic: { 1: 8000, 2: 8000 } }).length, 0);
+  assert.equal(bulbFindings({ shared: [5000, 3000, 2000, 1000] }).length, 1);
+  assert.match(bulbFindings({ x: [] })[0].text, /no bulb time/);
 });
 test("the repo: no static finding outside the known list (build/lint/static-known.json)", () => {
   const known = new Set(existsSync(join(ROOT, "build/lint/static-known.json")) ? JSON.parse(readFileSync(join(ROOT, "build/lint/static-known.json"), "utf8")) : []);
