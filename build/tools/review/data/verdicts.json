@@ -1890,6 +1890,17 @@
   "png": "build/screenshots/evidence/ev-20261014-003211-we8/CLN-148.png",
   "date": "2026-10-14"
  },
+ "CLN-149": {
+  "hash": "8a6da2037a7e200a9bdd",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-052119-vgy",
+  "commit": "78366ac4",
+  "date": "2026-10-14"
+ },
  "CLN-17": {
   "hash": "a66008768accb8c43b70",
   "dhash": [

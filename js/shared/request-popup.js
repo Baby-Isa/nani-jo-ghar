@@ -283,7 +283,7 @@
   /**
    * One bubble placement (SH-68, CLN-86, Z1): above the speaker's head, its tail pointing down at it; when there's no
    * room above, below the head, its tail pointing up. Centred on the head, then kept inside the layer with a margin;
-   * a bubble that would land on another speaker (avoid, and any element marked data-njg-avoid) moves to the other side of the head. head: an element or a
+   * a bubble that would land on another speaker (avoid) moves to the other side of the head. head: an element or a
    * rect {left, top, width, height} in page px. Returns "above" | "below" (or null: no head to place by).
    *
    * CLN-127 (fever, CL2/FV3: "her bubble comes from her face, never anchored on top of her hair"): a head that is a
@@ -293,9 +293,6 @@
    */
   function placeBubble(b, head, layer, o = {}) {
     if (!b || !head) return null;
-    // CLN-127: anything a game marks data-njg-avoid (the fever's sweat drop or snowflake by her head) is never covered
-    // by a bubble, as the other speakers are not
-    if (typeof document !== "undefined" && document.querySelectorAll) o = Object.assign({}, o, { avoid: (o.avoid || []).concat([...document.querySelectorAll("[data-njg-avoid]")]) });
     const M = o.margin != null ? o.margin : 8;
     const lr = layer && layer.getBoundingClientRect ? layer.getBoundingClientRect() : { left: 0, top: 0, width: root.innerWidth || 1000, height: root.innerHeight || 700 };
     const r0 = head.getBoundingClientRect ? head.getBoundingClientRect() : head;
@@ -321,7 +318,10 @@
     const cx = hx + r.width / 2;
     const face = o.face != null ? !!o.face : !!(head.dataset && head.dataset.njgFace != null);
     if (face) {
-      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr }, o.avoid);
+      // anything a game marks data-njg-avoid (the fever's sweat drop or snowflake by her head) sends the bubble to her
+      // other side, as another speaker does (only beside her face: above or below, dodging it put the bubble on her body)
+      const marked = typeof document !== "undefined" && document.querySelectorAll ? [...document.querySelectorAll("[data-njg-avoid]")] : [];
+      const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr }, (o.avoid || []).concat(marked));
       if (sd) return sd;
     }
     const gap = o.gap != null ? o.gap : M + 6; // room for the tail

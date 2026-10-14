@@ -12098,7 +12098,7 @@
    "at": "every:visible:.cl-bubble.who-patient",
    "after": null,
    "capture": [
-    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor",
+    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor, .cl-patient-layer .fig-head",
     "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 11"
    ],
    "expect": null,
@@ -12121,7 +12121,7 @@
    "at": "every:visible:.cl-bubble.who-patient",
    "after": null,
    "capture": [
-    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor",
+    "crop:.cl-bubble.who-patient, .cl-patient-layer .fig-anchor, .cl-patient-layer .fig-head",
     "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 12"
    ],
    "expect": null,

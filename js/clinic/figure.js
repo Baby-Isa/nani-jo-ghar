@@ -104,7 +104,7 @@
       core: el("g", { class: "fig-core" }, g),
       armR: el("g", { class: "fig-arm fig-arm-right" }, g),
       armL: el("g", { class: "fig-arm fig-arm-left" }, g),
-      head: el("g", { class: "fig-head" }, g),
+      head: el("g", { class: "fig-head", "data-njg-face": "" }, g), // CLN-127: a whole head: her bubble goes beside it, tail at her face
       marks: el("g", { class: "fig-marks" }, g),
       fx: el("g", { class: "fig-fx" }, g),
     };
