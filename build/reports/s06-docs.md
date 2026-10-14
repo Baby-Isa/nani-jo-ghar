@@ -14,7 +14,7 @@ Branch `s06-docs`, not pushed. `checks.mjs` green.
 
 ## Proof
 
-`node build/tools/review/checks.mjs` green at c60efad (unit 309 pass, specs, docs, load); live docs (`docs/` minus the archive) 248,062 words before, 205,400 after.
+checks.mjs green at c60efad; live docs 248,062 → 205,400 words.
 
 ## Skipped
 - Comments in `js/`, `data/`, `assets/`, `lab/` that name moved scripts or find-it section ids: not mine to edit, now stale.
