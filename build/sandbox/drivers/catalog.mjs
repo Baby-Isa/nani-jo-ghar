@@ -21,6 +21,8 @@ export const DRIVERS = {
   "peek-every-tap": { kinds: ["cook"], moments: ["rec:peek-for-tap"] },
   "serve-combined": { kinds: ["cook-other"], moments: ["rec:served-combined"] },
   "tap-during-speech": { kinds: ["cook", "heal"], moments: ["rec:tap-during-speech", "rec:tap-taken-while-speaking", "rec:tap-held-till-quiet"] },
+  // the first voiced question's reply pill tapped while the question is being said (CK-43, E5: contract-21 wants its act logged)
+  "answer-while-asked": { kinds: ["cook-other"], moments: ["rec:answer-while-asked", "rec:answer-after-asked", "drv:answer-while-asked"] },
   "tap-during-pause": { kinds: ["cook"], moments: ["rec:tap-during-pause", "rec:pause-skipped", "rec:pause-kept"] },
   "mute-across-modes": { kinds: ["lab-cook"], moments: ["rec:muted-in-cook", "rec:after-mute", "rec:after-mute-cook"] },
   "start-over": { kinds: ["cook"], moments: ["rec:started-over", "rec:after-start-over"] },

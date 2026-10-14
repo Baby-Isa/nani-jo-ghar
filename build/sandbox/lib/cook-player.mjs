@@ -7,7 +7,7 @@ import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWord
 
 // the evidence loop's named drivers this player plays (drivers/catalog.mjs, build/sandbox/data/evidence.json _drivers): each plays
 // fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
-const VOICE_MODES = new Set(["tap-during-speech", "tap-during-pause", "tap-quick"]);
+const VOICE_MODES = new Set(["tap-during-speech", "tap-during-pause", "tap-quick", "answer-while-asked"]);
 const CALM = ["tap", "hold", "count", "more", "swipe", "roll", "knead", "stir"];
 // tawa-empty-then-off (MAA-11): Cook's sizzle loop is in the sound log as "sfx/sizzle-loop" on every page (the game's own
 // "njg-sfx" event, lib/sound.mjs 3b; s04-hooks), so this driver no longer wraps it
@@ -255,6 +255,40 @@ export class CookPlayer {
       await this.once(!came ? "tap-during-speech" : moved && still ? "tap-taken-while-speaking" : moved ? "tap-during-speech" : "tap-held-till-quiet", { settle: 0 });
       if (!came) this.rec.note("tap-during-speech: no line was said within 3 s of any of the first ten taps");
       if (moved) await this.waitChange(t, 3000);
+      return true;
+    }
+    // answer-while-asked (CK-43, E5): the first reply pills whose question is voiced (its bubble has a speaker): the right pill's
+    // word is tapped while the question is being said. Still sounding as the pills come up: tapped at once; else the question is
+    // heard again from its bubble's speaker and the pill tapped as that line starts. A silent question is answered fair
+    if (m === "answer-while-asked" && !d.answered && e.kind === "click" && /^#choices /.test(e.selector || "")) {
+      const still = await this.voice.speaking();
+      const say = still ? null : await p.evaluate(() => {
+        const b = document.querySelector("#bubble:not(.hidden) .wp-say");
+        const r = b && b.getBoundingClientRect();
+        return r && r.width > 2 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null;
+      }).catch(() => null);
+      if (!still && !say) return false;
+      d.answered = true;
+      let came = still;
+      if (!still) {
+        const next = this.voice.nextLine(2500);
+        await p.mouse.click(say.x, say.y);
+        came = !!(await next);
+      }
+      const at = await p.evaluate((sel) => {
+        const el = document.querySelector(sel);
+        const r = el && el.getBoundingClientRect();
+        return r && r.width > 2 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null;
+      }, e.selector).catch(() => null);
+      if (!at) { this.rec.note("answer-while-asked: the right pill was not on screen"); return false; }
+      const speaking = came && (await this.voice.speaking());
+      await mark(p, "answer-while-asked", { block: false });
+      await p.mouse.click(at.x, at.y);
+      await sleep(450);
+      await this.once(speaking ? "answer-while-asked" : "answer-after-asked", { settle: 0 });
+      if (!speaking) this.rec.note("answer-while-asked: the question was no longer being said when the pill was tapped");
+      this.rec.note(`answer-while-asked: ${e.selector} tapped ${still ? "as the question was still being said" : "while the question was heard again"}`);
+      await this.waitChange(e, 3000);
       return true;
     }
     // tawa-empty-then-off (MAA-11): the tawa lit with nothing on it (2 s), the knob turned off (high, low, off: 2 s), on again
