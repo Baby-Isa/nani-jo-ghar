@@ -277,6 +277,9 @@ function stageGame(id, { stage, heal = null, gestures, levels = [1, 2, 3], label
           ctx.done({
             words: words.map((w) => ({ id: w.id, kutchi: w.kutchi || null, english: w.english || "", placeholder: !w.kutchi || !!w.placeholder, right: w.right, plan: w.plan || [] })),
             steps: hl && hl.steps ? hl.steps : undefined, // D14: the heal game's steps, for "what went wrong"
+            // CLN-118 (D13): the heal game's first, taught round: nothing scored or timed. The shared host (js/shared/host.js)
+            // does not read this yet: it times every round and the end card shows its badges (the proposed patch: S06 report)
+            taught: hl && hl.taught ? true : undefined,
           });
         },
         expect() {

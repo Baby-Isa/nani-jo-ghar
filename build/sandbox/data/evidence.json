@@ -12031,10 +12031,11 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "crop:.cl-bubble"
+    "crop:.cl-bubble",
+    "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 11"
    ],
    "expect": null,
-   "note": "her own page (the bubble moments are not shared with other probes' captures): every line she says gets her bubble",
+   "note": "her own page: every line she says gets her bubble. The crops at every bubble lag (each waits 250 ms and queues behind the last), so some find her bubble already gone; fever_bubbles.mjs samples her bubble every 50 ms through each of her lines",
    "seed": 11,
    "max": 16
   }
@@ -12052,7 +12053,8 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "zoom2:.cl-bubble"
+    "zoom2:.cl-bubble",
+    "cmd:node build/tools/review/fever_bubbles.mjs 1 1366x768 12"
    ],
    "expect": null,
    "note": "her bubble comes from her face, its tail at her head, never on top of her hair",
