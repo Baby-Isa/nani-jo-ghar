@@ -1049,6 +1049,58 @@
   "commit": "beacbea",
   "date": "2026-10-14"
  },
+ "CK-38": {
+  "hash": "5c61d7c2ab364c97ef54",
+  "dhash": [
+   "5c30347471727878",
+   "0a80834141416141"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:aside#side (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-134153-rhd",
+  "commit": "4e39c9ef",
+  "date": "2026-10-14"
+ },
+ "CK-39": {
+  "hash": "5fa347673e7af2ac851c",
+  "dhash": [
+   "61e6636363636162",
+   "854b010101010185",
+   "008234f418000158",
+   "84aaf13100000084"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noFinding:text-clipped (no text-clipped); noClip:#side (1 clean); noFinding:text-clipped (no text-clipped)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-134153-rhd",
+  "commit": "4e39c9ef",
+  "date": "2026-10-14"
+ },
+ "CK-40": {
+  "hash": "f0f6569b17495bb3aee2",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-134153-rhd",
+  "commit": "4e39c9ef",
+  "date": "2026-10-14"
+ },
+ "CK-41": {
+  "hash": "cf71f66420d566778a10",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-134153-rhd",
+  "commit": "4e39c9ef",
+  "date": "2026-10-14"
+ },
  "CK-TAB-01": {
   "hash": "2f582bbe2b379cf77a54",
   "dhash": [
@@ -1923,6 +1975,17 @@
   "judge": "expect",
   "run": "ev-20261014-071816-c9g",
   "commit": "defcdaf7",
+  "date": "2026-10-14"
+ },
+ "CLN-152": {
+  "hash": "18a22e1d6ec2405622fc",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-134153-rhd",
+  "commit": "4e39c9ef",
   "date": "2026-10-14"
  },
  "CLN-153": {
