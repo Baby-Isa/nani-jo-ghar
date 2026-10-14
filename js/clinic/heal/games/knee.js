@@ -102,6 +102,13 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng, ctx.side);
+    // CLN-118 (D13): the taught round has no counts: "Hammer." and "Then the bandage."; the child copies the ghost
+    // finger and the steps still end at the plan's counts (the kick moves on with the bandage, the wrap at its last turn)
+    if (ctx.taught) {
+      P.steps[0].row = Object.assign({ id: "kick" }, HS.L.show(HS.L.join(["hammer"]), { cap: true }));
+      P.steps[1].row = Object.assign({ id: "wrap" }, HS.L.show(HS.L.then("cl-bandage")));
+      P.words = HS.taughtWords(P.words);
+    }
     const S = HS.make(stage, ctx, { place: "limb", game: "knee" });
     const { s } = S;
     const st = { i: 0, kicks: 0, turns: 0, oi: 0, last: null, judged: {}, over: false, busy: false, flashT: 0 };

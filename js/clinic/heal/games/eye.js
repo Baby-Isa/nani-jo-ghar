@@ -91,6 +91,11 @@
   function mount(stage, ctx) {
     const data = ctx.data || {};
     const P = plan(ctx.level, ctx.rng);
+    // CLN-118 (D13): the taught round has no counts: "The drops." (the step ends at the plan's count)
+    if (ctx.taught) {
+      P.steps[0].row = Object.assign({ id: "drops" }, HS.L.show(HS.L.join(["cl-drops"]), { cap: true }));
+      P.words = HS.taughtWords(P.words);
+    }
     // S03 (review flaw 5): on a tablet (4:3, 1180x820) the close-up's crop cut the sore eye at the screen's edge: a
     // wider safe area there keeps both eyes whole (and the tool shelf goes down to the cheek, below)
     const tablet = (root.innerWidth || 0) / Math.max(1, root.innerHeight || 0) < 1.5;

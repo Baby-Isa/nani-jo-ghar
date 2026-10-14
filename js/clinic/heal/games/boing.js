@@ -84,6 +84,13 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng);
+    // CLN-118 (D13): the taught round has no counts: "Wipe." and "The drops." (the step ends at the plan's count);
+    // the doctor's count-down to the jab stays (it is the jab, not a count for the child)
+    if (ctx.taught) {
+      P.steps[0].row = Object.assign({ id: "wipe", seq: "steps" }, HS.L.show(HS.L.join(["cl-wipe"]), { cap: true }));
+      if (!P.steps[1].rows) P.steps[1].row = Object.assign({ id: "drops", seq: "steps" }, HS.L.show(HS.L.join(["cl-drops"]), { cap: true }));
+      P.words = HS.taughtWords(P.words);
+    }
     const Kit = root.Clinic && root.Clinic.Kit;
     const fast = () => !!(Kit && Kit.fast);
     const S = HS.make(stage, ctx, { place: "limb", game: "boing" });

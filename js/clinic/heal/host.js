@@ -594,7 +594,9 @@
         return ctx.tally(null, n, Object.assign({}, o, { at: el }));
       },
       tally(itemId, n, o = {}) {
-        // D6: the count on the tool in use (never the target); level 1 also says the number (E12)
+        // D6: the count on the tool in use (never the target); level 1 also says the number (E12). CLN-118 (D13): the
+        // taught round has no counts, written or said: the child copies the ghost finger; counts start next round
+        if (taught) return;
         if (n > 0) countOn(itemId, n, o.at || null);
         else clearCounts();
         // decision 52 (CLN-82, the stuck fix): from level 2, once the count is reached (o.of) on a step the next

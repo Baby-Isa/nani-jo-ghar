@@ -39,6 +39,11 @@
   Object.defineProperty(HS, "L", { get: Lg, enumerable: true });
   /** The number word for n ("ba"), or null past five. */
   HS.num = (n, o) => (Lg().numId(n) ? Lg().num(n, o).kutchi : null);
+  /**
+   * CLN-118 (D13): the taught first round has no counts, sizes or sides: its word review drops the number, size and side
+   * words (each game builds its rows without them: its own mount, `if (ctx.taught)`); counts start on the next round.
+   */
+  HS.taughtWords = (words) => (words || []).filter((w) => w && w.n == null && !/^(side-|a\.(big|small|left|right)$|ph-(big|small)$)/.test(String(w.id || "")));
   HS.cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   HS.pick = (a, rng) => a[Math.floor(rng() * a.length)];
   HS.shuffle = (a, rng) => {

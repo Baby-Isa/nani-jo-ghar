@@ -109,6 +109,13 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng);
+    // CLN-118 (D13): the taught round has no counts: the soak is "Paani, hot." without the jugs (the step ends at the
+    // plan's count); the splinters' row names no size at level 1
+    if (ctx.taught) {
+      const Lg = HS.L;
+      P.steps[0].row = Object.assign({ id: "soak" }, Lg.show(Lg.join([Lg.item("cook-paani"), Lg.item(TEMP_ID[P.steps[0].temp])]), { cap: true }));
+      P.words = HS.taughtWords(P.words);
+    }
     const Kit = root.Clinic && root.Clinic.Kit;
     const fast = () => !!(Kit && Kit.fast);
     const S = HS.make(stage, ctx, { place: "limb", game: "foot" });

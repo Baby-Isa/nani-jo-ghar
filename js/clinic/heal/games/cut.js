@@ -646,6 +646,7 @@
     // CLN-118 (S05-D): the taught round (D13: nothing scored) carries no count: the cloth's row is "then the cloth" and
     // the child copies the ghost finger's dabs; the step still closes by itself at the plan's count (level 1, D5)
     if (ctx.taught) P.steps[1].row = Object.assign({ id: "dab", seq: "steps" }, say(LG().then("cl-cloth")));
+    if (ctx.taught) P.words = HS.taughtWords(P.words); // and its word review lists no number (CLN-118)
     // the forearm is long and thin in the 800 x 500 drawing: push in on the scrape so it fills more of the screen
     const S = HS.make(stage, ctx, { place: "limb", game: "cut", zoom: 1.35, focus: [330, 335], safe: [120, 540] });
     const { s } = S;

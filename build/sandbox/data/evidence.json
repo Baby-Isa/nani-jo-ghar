@@ -9795,6 +9795,177 @@
  ],
  "CLN-118": [
   {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "cut, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "knee, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "ear, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "tooth, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "taste, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "fever, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "boing, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "eye, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card",
+    "voice"
+   ],
+   "expect": null,
+   "note": "foot, a fresh child's taught first round: each step as it opens, its card row and its line with no count, size or side (counts start next round); nothing scored or timed",
+   "max": 6
+  },
+  {
    "flow": "clinic:heal-knee",
    "path": "fair",
    "level": 1,
@@ -9809,7 +9980,7 @@
     "crop:.rs-card"
    ],
    "expect": null,
-   "note": "the end badges of the taught round (fresh child, knee L1): nothing scored or timed"
+   "note": "the knee's taught round's end card: nothing scored or timed, no number in its word review (the English under the words is allowed: Zafar, 14 Oct, NN5)"
   }
  ],
  "CLN-119": [

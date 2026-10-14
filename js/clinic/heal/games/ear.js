@@ -105,6 +105,12 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng, { hearing: (ctx.data && ctx.data.hearing) || {} });
+    // CLN-118 (D13): the taught round has no counts: "Then the drops." (the step ends at the plan's count)
+    if (ctx.taught) {
+      const dr = P.steps.find((x) => x.kind === "drops");
+      if (dr) dr.row = Object.assign({ id: "drops" }, HS.L.show(HS.L.then("cl-drops")));
+      P.words = HS.taughtWords(P.words);
+    }
     const S = HS.make(stage, ctx, { place: "head", game: "ear" });
     const { s } = S;
     const Kit = root.Clinic && root.Clinic.Kit;
