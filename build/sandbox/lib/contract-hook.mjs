@@ -536,7 +536,10 @@ export const CONTRACT_HOOK = `(() => {
     return null; // a face whose person the page doesn't say (the morning's end lists several patients): not judged
   });
   const faces = () => {
-    const list = [...document.querySelectorAll(".oc-face, .ng-face, .cl-face, .cl-card-face")].filter((f) => shown(f) && f.getBoundingClientRect().width >= 16).map((f) => ({ who: faceWho(f), sel: desc(f), doctor: !!(f.closest(".njg-guide, .cl-nani") && location.pathname.includes("clinic")) }));
+    const all = [...document.querySelectorAll(".oc-face, .ng-face, .cl-face, .cl-card-face")].filter((f) => shown(f) && f.getBoundingClientRect().width >= 16);
+    // a face drawn inside another face's button is that one face
+    // (the request pop-up is the card itself, shown big while it folds into the sidebar: its face is not a second one)
+    const list = all.filter((f) => !all.some((o) => o !== f && o.contains(f)) && !f.closest(".njg-rq-veil, .njg-rq-card")).map((f) => ({ who: faceWho(f), sel: desc(f), doctor: !!(f.closest(".njg-guide, .cl-nani") && location.pathname.includes("clinic")) }));
     const cards = sideCards().map((c) => (c.dataset && c.dataset.who ? String(c.dataset.who).toLowerCase() : null)).filter(Boolean);
     const vw = innerWidth, vh = innerHeight;
     const full = [...document.querySelectorAll(".cl-fig")].filter((f) => shown(f) && !f.closest(".oc-card, .cl-card")).some((f) => {
