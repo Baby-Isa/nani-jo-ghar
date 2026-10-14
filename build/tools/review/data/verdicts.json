@@ -1989,17 +1989,17 @@
   "date": "2026-10-14"
  },
  "CLN-153": {
-  "hash": "510ff2f592b378d53a9e",
+  "hash": "460f97e00981fe70872e",
   "dhash": [
-   "0d0b0b09090d0307"
+   "0d090d0909090307"
   ],
-  "verdict": "PASS",
-  "line": "A, at 800x360 L3 the words page shows \"thermometer\" whole on one line in its card from 0 ms (fading in) through 600 ms, never split across lines; matches CLN-153-p1-L3-800x360 contract-15 \"0 breaks on this page\". Flaw off the row's point: the 700 ms frame is an empty white card with no words (the page blanks or leaves mid-strip), worth a look by the tool owner. The grey-italic English (head, heater, Thank you) sits on the grown-up end-of-round page and is not a flaw.",
+  "verdict": "FAIL",
+  "line": "A, the end-of-round words page (800x360, L3) still breaks the top-right card's word across two lines in frames 100-600 ms; the CLN-153-p1-L3-800x360 contract-15 capture confirms \"1 word broken across lines for 585 ms (thermometer)\", and expect pass is FAIL",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00",
-  "run": "ev-20261014-125029-oat",
-  "commit": "51f9057e",
-  "png": "build/screenshots/evidence/ev-20261014-125029-oat/CLN-153.png",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session ad16ad29-ed75-5367-93f4-f73deedfff00",
+  "run": "ev-20261014-134041-3zc",
+  "commit": "c0bbdf8a",
+  "png": "build/screenshots/evidence/ev-20261014-134041-3zc/CLN-153.png",
   "date": "2026-10-14"
  },
  "CLN-17": {
