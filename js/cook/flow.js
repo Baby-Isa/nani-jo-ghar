@@ -1922,6 +1922,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
     // (Phaser adds it in Game.start, after its "ready" event: the first frame is after it)
     Cook.game.events.once("poststep", unpatch);
+    // checks-to-build 20 (contract-21, E5): every tap the game's canvas takes is logged as an act, as the shared host's
+    // onAct does (js/shared/host.js). Here, on the DOM, before Phaser: a game object that stops the event's propagation
+    // (the kit's chips) cuts the scene's own pointerdown, never this one
+    // (once per element: a second boot in the same screen keeps the one listener)
+    if (!parent.__njgActs) {
+      parent.__njgActs = true;
+      parent.addEventListener(
+        "pointerdown",
+        (ev) => {
+          if (!Cook.game || Cook.paused || !ev.target || ev.target.tagName !== "CANVAS") return;
+          const S = Cook.scene;
+          if (!S || !S.input || !S.input.enabled) return;
+          const L = global.Lifecycle;
+          if (L && L.note) L.note("act", { during: !!(Cook.voiceBusy && Cook.voiceBusy()), stage: Cook.inStation ? "cook:station" : "cook" });
+        },
+        true
+      );
+    }
     return shown;
   };
   let winFocus = null;

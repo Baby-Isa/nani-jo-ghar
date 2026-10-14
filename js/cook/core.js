@@ -309,6 +309,9 @@
     } catch (e) {}
     currentSrc = null;
   };
+  /** Is a clip sounding now? (only read by the act log, contract-21; currentSrc stays set past its end, for the stop) */
+  let sounding = null;
+  Cook.voiceBusy = () => sounding != null && sounding === currentSrc;
   /**
    * PAN-12 (V5): the part of a clip worth playing, without the silence its recording left at either end (the gap
    * between count words was mostly that): from just before the first sound to just after the last, measured once.
@@ -359,7 +362,11 @@
           resolve(true);
         }
       };
-      src.onended = finish;
+      src.onended = () => {
+        if (sounding === src) sounding = null;
+        finish();
+      };
+      sounding = src;
       const span = spanOf(buf);
       setTimeout(finish, (span.dur * 1000) / Cook.speed + 150);
       src.start(0, span.at, span.dur);
