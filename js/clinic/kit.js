@@ -592,7 +592,8 @@
     const items = [];
     const groups = {};
     // CLN-54 (P47): a row marked `head` names its `seq` group (a drink, its recipe rows under it: the order card's
-    // item with parts); the group's parts are marked on the row the child is on (now), never ticked one by one
+    // item with parts); the band marks the part the child is on (now), and each part ticks as its own step is done (SH-10:
+    // a nested part is a step, not a count; the game ticks it), the name's row when the whole thing is
     let headed = false;
     rows.forEach((r) => {
       const g = r.seq || (this.isOrdered ? "__all" : null);
@@ -672,7 +673,10 @@
     // the shared card tints its box, and a tinted box round the row now lit reads as a second highlight: no tint here
     if (headed) c.querySelectorAll(".oc-item.tint").forEach((x) => x.classList.remove("tint"));
     // the person's face (= replay), drawn by the clinic (a stand-in face element, not a picture file)
-    const faceEl = this.faceEl || (this.defaultFace && this.who === "doctor" ? this.defaultFace() : null);
+    // CLN-140: his default face is ONE element, moved into each redraw (a new <img> each time showed a blank circle
+    // for a frame while it decoded)
+    if (this.defaultFace && !this.defFaceEl) this.defFaceEl = this.defaultFace();
+    const faceEl = this.faceEl || (this.defFaceEl && this.who === "doctor" ? this.defFaceEl : null);
     if (faceEl) {
       const f = document.createElement("button");
       f.type = "button";
@@ -689,6 +693,9 @@
       head.insertBefore(f, head.firstChild);
     }
     if (!rows.length && !faceEl && !this.titleText) c.classList.add("cl-empty");
+    // CLN-140 (decision 80): a card that only says the doctor's goal, while he asks on screen in his own bubble (the
+    // send-off), is his how-to line, not an order: no request pop-up is owed for it (contract-1)
+    if (this.howto && !rows.length) c.dataset.howto = "";
     this.el.appendChild(c);
     this.ocEl = c;
     // SH-41 (S05-D): the card in English for the bulb's time is the card itself (the shared .oc-card), redrawn or not
@@ -730,6 +737,7 @@
     return this.render();
   };
   Kit.Card.prototype.setRows = function (rows) {
+    this.howto = false; // a new set of rows is an ask again (CLN-140: only the send-off's goal-only card is his how-to)
     this.rows = (rows || []).map((r, i) => Object.assign({ id: r.id || `r${i}` }, r, { el: null }));
     this.st = { done: new Set(), miss: new Set(), pulse: null, now: null, reading: null, counts: {} };
     this.fold = {};

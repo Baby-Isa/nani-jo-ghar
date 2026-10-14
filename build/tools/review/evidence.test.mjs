@@ -183,6 +183,10 @@ test("verdict files: a text-only row's PASS cites its text capture; a row with a
   // a sheet: only A-D stands
   assert.equal(passRefusal(L["SH-61"], true), null);
   assert.match(passRefusal(L["SH-45"], true), /A-D/);
+  // a row with more than four probes (SH-10, CLN-118: one panel per probe, up to A-L over two sheets): E, F ... L stand too
+  const six = parseVerdicts("SH-10 | PASS: E, the drinks rows tick\nSH-10 | PASS: D and F, both count up\nCLN-118 | PASS: J, the foot names no side").lines;
+  assert.deepEqual(six.map((l) => l.panel), ["E", "DANDF", "J"]);
+  assert.equal(passRefusal(six[0], true), null);
   // FAIL and EVIDENCE are never refused here
   assert.equal(passRefusal({ verdict: "FAIL", panel: null }, true), null);
   assert.match(passRefusal({ verdict: "PASS", panel: null }, false), /name the panel/);

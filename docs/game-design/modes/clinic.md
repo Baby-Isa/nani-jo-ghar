@@ -52,7 +52,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
 **Rules for every sheet:**
 - **Prototype first:** build on the new backgrounds (`sources/art/clinic-v2/`: cb1b, cb2b, cb3b, cb4b, cb5 and cb6b once they land) with **simple stand-in pieces**: flat shapes, the existing rough sprites, or the Cook art where it fits. Final character and item art comes after Zafar plays the prototypes.
 - **Shared UI from Cook** (G3):
-  - the order card as the **patient card** (face + headline + rows);
+  - the order card as the **doctor's card** (R4: his face once, his step line as its top strip, the headline and rows; the patient has no card: Zafar, 14 Oct);
   - the sage Nani box;
   - the end pop-up;
   - the **round review face** (`Cook.Kit.review` and the `<who>-face / -happy / -frown` badges);

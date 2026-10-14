@@ -111,6 +111,15 @@
   function mount(stage, ctx) {
     const data = ctx.data || {};
     const P = plan(ctx.level, ctx.rng, data);
+    // CLN-118 (D13, Zafar): the taught first round names no sides and no directions: the brushing is one row, [Brush]
+    // (the ghost finger shows each move), ticked when the last move is done; up, down, left and right start next round
+    if (ctx.taught) {
+      const brush = Object.assign({}, HS.L.w("tooth-brush", { cap: true }), { id: "brush" });
+      P.steps.forEach((x) => x.kind === "brush" && Object.assign(x, { rowKey: "brush", row: x.i === 0 ? brush : null }));
+      const dirIds = new Set(["tooth-up", "tooth-down", "tooth-left", "tooth-right"].map((k) => HS.L.w(k).id));
+      P.words = HS.taughtWords(P.words).filter((w) => !dirIds.has(w.id));
+    }
+    const rowOf = (c) => c.rowKey || c.id;
     const S = HS.make(stage, ctx, { place: "head", game: "tooth" });
     const { s } = S;
     const Kit0 = root.Clinic && root.Clinic.Kit;
@@ -131,7 +140,7 @@
     const cur = () => P.steps[st.i] || null;
     const uid = `t${Math.floor(Math.random() * 1e9)}`;
     const fast = () => !!(Kit0 && Kit0.fast);
-    ctx.card.setRows(P.steps.map((x) => x.row));
+    ctx.card.setRows(P.steps.map((x) => x.row).filter(Boolean));
     const skin = S.skin || "#c99a74";
     const skinDark = S.skinDark || "#a77b58";
 
@@ -440,7 +449,7 @@
     let timer = null;
     const open = async () => {
       const c = cur();
-      ctx.card.now(c.id);
+      ctx.card.now(rowOf(c));
       await view(c.kind);
       if (cur() !== c || st.over) return;
       if (c.kind === "brush") {
@@ -463,7 +472,8 @@
       const c = cur();
       if (!c) return;
       if (c.kind === "brush") {
-        ctx.card.tick(c.id);
+        // the taught round's one [Brush] row ticks with the last move (CLN-118)
+        if (!c.rowKey || c.i === P.moves.length - 1) ctx.card.tick(rowOf(c));
         if (c.i === P.moves.length - 1) judge("b-order", JSON.stringify(st.done) === JSON.stringify(P.moves), { moves: st.done.slice() }); // the review shows it on the brush rows (D14)
       }
       if (c.kind === "drill") {

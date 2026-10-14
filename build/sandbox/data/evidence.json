@@ -13122,5 +13122,189 @@
    "note": "the sidebar card at the end: its served badge (the done tick) beside the headline, never over a word (it covered waari)",
    "delay": 300
   }
+ ],
+ "CLN-153": [
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:15"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-15 over one patient at L3 on a short phone: no word (thermometer on the end-of-round words page) broken across lines, even for a moment"
+  },
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.rs-p2.enter",
+   "after": null,
+   "capture": [
+    "strip:.rs-card:8x100"
+   ],
+   "expect": null,
+   "note": "the words page as it opens (eight frames 100 ms apart): every word whole"
+  }
+ ],
+ "CK-38": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "hint",
+   "level": 3,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:#mission .oc-card.peek",
+   "after": null,
+   "capture": [
+    "crop:aside#side"
+   ],
+   "expect": [
+    "noClip:aside#side"
+   ],
+   "note": "L3's peek (the hint) on a short phone: the sidebar holds the opened card without scrolling (it ran 429 px in a 360 px screen). Machine: nothing in aside#side clipped or scrolled",
+   "delay": 700
+  }
+ ],
+ "CK-39": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "noFinding:text-clipped",
+    "noClip:#side"
+   ],
+   "note": "chaat's marble view on a tablet: no card word (span.oc-t) cut off by its card; the sidebar's card whole"
+  },
+  {
+   "flow": "cook:assemble",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "noFinding:text-clipped",
+    "noClip:#side"
+   ],
+   "note": "assemble's order card as it lands in the sidebar: every word whole inside its card"
+  }
+ ],
+ "CK-40": [
+  {
+   "flow": "cook:day6",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:20"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-20 (one face per person) over story day 6: the cousin and ma each order two dishes, each gets one card and one face"
+  }
+ ],
+ "CK-41": [
+  {
+   "flow": "cook:roll-tawa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:8"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-8 (one lit thing at a time) over roll-tawa: the done tick never glows with the raw chapati"
+  }
+ ],
+ "CLN-152": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:21"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-21 over the fever game: a tap on the hanging thing while a line plays is handed to the game and logged as an act"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:21"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-21 over the eye game: a tap on the yes/no pills while a line plays logs an act"
+  }
  ]
 }

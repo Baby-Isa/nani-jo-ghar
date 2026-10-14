@@ -353,3 +353,7 @@ body.w6 #mission .throb { animation: throbIn .7s ease-in-out infinite alternate 
 /* DAAR-19 (S06 r2): a step row's own tool before its words (the daar stir row's ladle, js/cook/ui.js rowPic), the
    height of a line of the row's text, so the laps ("ba") read as the stir's row */
 body.w6 img.ck-step-pic { height: 1.5em; width: auto; vertical-align: middle; margin: -0.25em 0.35em -0.25em 0; }
+
+/* CK-38: a peek that still runs past a short sidebar (her box already folded, the card in pills): the rail's buttons step
+   out for the peek's few seconds (js/cook/ui.js peekFold) and come back as it closes */
+#side.peek-fold .side-rail { display: none; }

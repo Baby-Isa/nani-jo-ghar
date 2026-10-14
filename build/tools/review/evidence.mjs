@@ -26,7 +26,7 @@ node build/tools/review/evidence.mjs --apply  [--run-id id] [--dry]
              --from-run <id>: a sandbox run (a gate run with --evidence) whose pages already carry the probes: only the pages it
              lacks are played (one run, not two).
   --sheets   per row: build/screenshots/evidence/<run>/<ROW>.png (at most 1200 px wide: the row's words, then at most four panels
-             A-D at 1:1 CSS px; a layout panel is the whole screen with the crop outlined) and <ROW>.md (the panels in words, voice
+             A-D (one per probe, up to A-L over two sheets, for a row with more than four probes) at 1:1 CSS px; a layout panel is the whole screen with the crop outlined) and <ROW>.md (the panels in words, voice
              timeline, text, traces, script output, expect results, tool failures); build/reports/evidence-<run>.md (the index).
              Text-only rows (wording, voice) have no PNG.
   --judge    writes judge/batch-NN.md prompts (8-10 rows of one kind, text-only rows up to 30) for the rows a reviewer must see:
@@ -281,11 +281,12 @@ async function sheets(dirArg) {
     const outcome = rowOutcome(probes);
     if (specErr.length) outcome.tool.unshift(...specErr.map((e) => `spec: ${e}`));
     const kind = probes.length ? probes[0].kind : "layout";
-    // panels: at most four, A-D; text for the .md
-    const panels = [], texts = [], extra = [];
+    // panels: at most four, A-D; a row with more than four probes gets one panel per probe (SH-10, CLN-118: each station or
+    // game its own), up to twelve, A-L, over as many sheets as it takes at six or fewer to a sheet; text for the .md
+    const panels = [], texts = [], extra = [], cap = probes.length > 4 ? Math.min(12, probes.length) : 4;
     const fileOf = (p, f) => join(p.dir || join(SANDBOX, p.sandboxRun || "", "evidence"), f);
     const dprOf = (p) => (/(^|_)x2(_|$)/.test(p.variant || "") ? 2 : 1);
-    const addPanel = (pl) => { if (panels.length < 4) { pl.letter = "ABCD"[panels.length]; panels.push(pl); } else extra.push(pl); };
+    const addPanel = (pl) => { if (panels.length < cap) { pl.letter = "ABCDEFGHIJKL"[panels.length]; panels.push(pl); } else extra.push(pl); };
     for (const p of probes) {
       const tag = `${p.flow} L${p.level} ${p.size}${p.variant ? ` [${p.variant}]` : ""}`;
       const crops = [], strips = [];
@@ -323,26 +324,32 @@ async function sheets(dirArg) {
     const fp = fingerprint({ words: [row.issue, row.check], spec: P.spec[row.id] || null, text: [textPart, voiceWords], tree: treeHash([...new Set(probes.flatMap((p) => MODE_DIRS(p.flow)))]), panels: panelHashes });
     // the PNG (not for text-only rows or tool failures)
     let png = null;
+    const sheets = [];
     if (!outcome.tool.length && panels.length) {
-      const html = sheetHtml(row, panels, shotUrl);
-      png = await htmlToPng(page, join(dir, `${row.id}.html`), html);
+      // more than six panels: two or more sheets, evenly (<ROW>.png, <ROW>-2.png ...), each still at most about 1200 x 1900 px
+      const n = Math.ceil(panels.length / 6), per = Math.ceil(panels.length / n);
+      for (let k = 0; k < n; k++) {
+        const name = k ? `${row.id}-${k + 1}` : row.id;
+        sheets.push(await htmlToPng(page, join(dir, `${name}.html`), sheetHtml(row, panels.slice(k * per, (k + 1) * per), shotUrl, n > 1 ? `sheet ${k + 1} of ${n}` : "")));
+      }
+      png = sheets[0];
     }
     // the .md
     let md = `# ${row.id} (${row.kind}) · ${row.section}\n\n**Issue:** ${row.issue}\n\n**Check:** ${row.check}\n\n**Source:** ${row.source}\n\n**Status now:** ${row.status}\n\n`;
     if (outcome.tool.length) md += `## TOOL FAILURE (not evidence: the tool owner fixes the driver or the spec)\n\n${outcome.tool.map((t) => `- ${t}`).join("\n")}\n\n`;
     if (outcome.expect) md += `## Machine verdict: ${outcome.expect}\n\n${outcome.line}\n\n`;
     md += `## Probes\n\n${probes.map((p) => `- ${p.id}: ${p.flow} L${p.level} @ ${p.size}${p.variant ? ` [${p.variant}]` : ""}, at ${p.every ? "every " : ""}${p.at}${p.after ? ` after ${p.after}` : ""}: ${p.reached ? `reached ${p.hits.length}x (${p.hits.map((h) => `${h.name} ${(h.t / 1000).toFixed(1)}s`).slice(0, 6).join(", ")})` : "NOT reached"}${p.note ? ` · ${p.note}` : ""}${(p.expects || []).map((e) => `\n  - expect ${e.raw}: ${e.ok === true ? "PASS" : e.ok === false ? "FAIL" : "undecided"} (${e.why})`).join("")}${(p.notes || []).slice(0, 8).map((n) => `\n  - note (an every: moment where it was not on screen): ${n}`).join("")}`).join("\n")}\n\n`;
-    if (panels.length) md += `## Panels${png ? ` (\`${rel(png)}\`)` : ""}\n\n${panels.map((p) => `- **${p.letter}**: ${p.label}`).join("\n")}${extra.length ? `\n- (${extra.length} more not on the sheet: ${extra.map((p) => p.label).join("; ")})` : ""}\n\n`;
+    if (panels.length) md += `## Panels${png ? ` (${sheets.map((s) => `\`${rel(s)}\``).join(", ")})` : ""}\n\n${panels.map((p) => `- **${p.letter}**: ${p.label}`).join("\n")}${extra.length ? `\n- (${extra.length} more not on the sheet: ${extra.map((p) => p.label).join("; ")})` : ""}\n\n`;
     if (texts.length) md += `## Text captures\n\n${texts.join("\n\n")}\n`;
     writeFileSync(join(dir, `${row.id}.md`), md);
-    index.rows[row.id] = { kind: TEXT_KINDS.has(kind) ? kind : kind, png: png ? rel(png) : null, md: rel(join(dir, `${row.id}.md`)), panels: panels.map((p) => `${p.letter}: ${p.label}`), tool: outcome.tool, expect: outcome.expect, expectLine: outcome.line, fp, probes: probes.length, reached: probes.filter((p) => p.reached).length };
+    index.rows[row.id] = { kind: TEXT_KINDS.has(kind) ? kind : kind, png: png ? rel(png) : null, sheets: sheets.map(rel), md: rel(join(dir, `${row.id}.md`)), panels: panels.map((p) => `${p.letter}: ${p.label}`), tool: outcome.tool, expect: outcome.expect, expectLine: outcome.line, fp, probes: probes.length, reached: probes.filter((p) => p.reached).length };
     console.log(`${row.id}: ${outcome.tool.length ? `TOOL FAILURE (${outcome.tool.length})` : outcome.expect ? `machine ${outcome.expect}` : `${panels.length} panels${texts.length ? `, ${texts.length} text` : ""}`}${png ? ` -> ${rel(png)}` : ""}`);
   }
   await page.close(); await browser.close(); server.close();
   writeFileSync(join(dir, "index.json"), JSON.stringify(index, null, 1));
   writeReport(dir, P, index);
 }
-function sheetHtml(row, panels, shotUrl) {
+function sheetHtml(row, panels, shotUrl, part = "") {
   // at most 1200 x ~1200 px (about 1.9k image tokens at full resolution, under the API's downscale): panels side by side, two to a
   // row; a filmstrip or a lone zoom spans the row. Crops at 1:1 CSS px when they fit their column, else scaled down to fit
   const wide = (p) => p.type === "frames" || (p.zoom && panels.length === 1) || panels.length === 1;
@@ -363,7 +370,7 @@ function sheetHtml(row, panels, shotUrl) {
     section img{display:block;margin-top:3px;max-width:100%} img.one{max-height:520px;object-fit:contain}
     .frames{display:flex;gap:4px;margin-top:3px} .fr{margin:0;flex:1 1 0;min-width:0} .fr img{width:100%;max-height:420px;object-fit:contain} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
     .room{position:relative;margin-top:3px} .room img{width:100%} .room .box{position:absolute;border:3px solid #e0201a;box-shadow:0 0 0 2px #fff}
-  </style><header><h1>${esc(row.id)}<small>${esc(row.section)}</small></h1><p><span class="k">Issue:</span> ${esc(row.issue.slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(row.check.slice(0, 220))}</p></header>
+  </style><header><h1>${esc(row.id)}<small>${esc(row.section)}${part ? ` · ${esc(part)}` : ""}</small></h1><p><span class="k">Issue:</span> ${esc(row.issue.slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(row.check.slice(0, 220))}</p></header>
   <div class="grid">${panels.map((p) => `<section class="${wide(p) ? "wide" : ""}"><span class="lab">${p.letter}</span><span class="cap">${esc(p.label)}</span>${fig(p)}</section>`).join("\n")}</div>
   <script>
     // 1:1 CSS px where it fits: a DPR-2 crop shows at half its pixels, unless it is the zoom (then at its real pixels, 2x)
@@ -427,8 +434,8 @@ function judge() {
   const write = (b, n, isAudit) => {
     const name = `${isAudit ? "audit" : "batch"}-${String(n).padStart(2, "0")}`;
     const vf = join(jdir, `${name}.verdicts.md`);
-    let t = `# Evidence ${name} (${b.kind}, ${b.rows.length} rows) · run ${id}\n\nYou are the reviewer for Nani jo Ghar's evidence loop (decision 82). You are not the session that built these changes${index.builder ? ` (${index.builder})` : ""}.${isAudit ? " This is an AUDIT: each row already has a cached PASS from another model (named below); judge it afresh, without regard to that verdict." : ""}\n\nFor each row: read its sheet (PNG, if it has one: its panels are labelled A-D, the labels repeated below) and its text file (.md: the panels in words, the voice timeline, text captures, expect results). Judge against the row's own words (Zafar's feedback), nothing else. Words the engine marks loan:en (thank you, mixed, cup, film) are Kutchi (decision 87): never flag them as English. A line shown as grey-italic English with the hidden to-record tag is allowed (decision 84): it is not an English leak and not a missing clip; only its absence from Mum's list is a gap.\n1. Flaws first: anything wrong in the panels (clipping, overlap, English for the child, a bubble away from its speaker, old art), even off the row's point.\n2. Then one line in ${rel(vf)}:\n   \`ID | PASS: <panel>, <what that panel shows that proves it>\` e.g. \`CLN-100 | PASS: A, L3 wrap crosses the kneecap, 6 turns\`\n   \`ID | FAIL: <panel>, <what is wrong>\`\n   \`ID | EVIDENCE: <what the sheet is missing>\` only when the sheet does not show the row's state at all (it goes to the tool owner, never to the list as a FAIL).\n   A PASS that names no panel is refused. A text-only row (Sheet: (text only)) names its text capture instead, by its label in the .md: \`SH-45 | PASS: SH-45-p1-L1-1366x768 dom, the line reads ...\` (or \`PASS: text, ...\`). Sound quality and feel are not yours: say so in a FAIL only when the row is about what you can read (which clip, when, in what order).\n3. First line of the verdict file: \`judge: <your model and session>\`.\n\n`;
-    for (const x of b.rows) t += `## ${x.id} [${x.row.kind}] ${x.row.section}${x.audit ? ` (cached PASS by ${x.audit.judge}: ${x.audit.line})` : ""}\n- Issue: ${x.row.issue}\n- Check: ${x.row.check}\n- Sheet: ${x.r.png ? join(ROOT, x.r.png) : "(text only)"}\n- Text: ${join(ROOT, x.r.md)}\n${x.r.panels.map((p) => `- Panel ${p}`).join("\n")}\n\n`;
+    let t = `# Evidence ${name} (${b.kind}, ${b.rows.length} rows) · run ${id}\n\nYou are the reviewer for Nani jo Ghar's evidence loop (decision 82). You are not the session that built these changes${index.builder ? ` (${index.builder})` : ""}.${isAudit ? " This is an AUDIT: each row already has a cached PASS from another model (named below); judge it afresh, without regard to that verdict." : ""}\n\nFor each row: read its sheet (PNG, if it has one: its panels are labelled A-D, or up to A-L over two sheets for a row with more probes: read both; the labels repeated below) and its text file (.md: the panels in words, the voice timeline, text captures, expect results). Judge against the row's own words (Zafar's feedback), nothing else. Words the engine marks loan:en (thank you, mixed, cup, film) are Kutchi (decision 87): never flag them as English. A line shown as grey-italic English with the hidden to-record tag is allowed (decision 84): it is not an English leak and not a missing clip; only its absence from Mum's list is a gap.\n1. Flaws first: anything wrong in the panels (clipping, overlap, English for the child, a bubble away from its speaker, old art), even off the row's point.\n2. Then one line in ${rel(vf)}:\n   \`ID | PASS: <panel>, <what that panel shows that proves it>\` e.g. \`CLN-100 | PASS: A, L3 wrap crosses the kneecap, 6 turns\`\n   \`ID | FAIL: <panel>, <what is wrong>\`\n   \`ID | EVIDENCE: <what the sheet is missing>\` only when the sheet does not show the row's state at all (it goes to the tool owner, never to the list as a FAIL).\n   A PASS that names no panel is refused. A text-only row (Sheet: (text only)) names its text capture instead, by its label in the .md: \`SH-45 | PASS: SH-45-p1-L1-1366x768 dom, the line reads ...\` (or \`PASS: text, ...\`). Sound quality and feel are not yours: say so in a FAIL only when the row is about what you can read (which clip, when, in what order).\n3. First line of the verdict file: \`judge: <your model and session>\`.\n\n`;
+    for (const x of b.rows) t += `## ${x.id} [${x.row.kind}] ${x.row.section}${x.audit ? ` (cached PASS by ${x.audit.judge}: ${x.audit.line})` : ""}\n- Issue: ${x.row.issue}\n- Check: ${x.row.check}\n- Sheet: ${x.r.png ? ((x.r.sheets || []).length > 1 ? x.r.sheets : [x.r.png]).map((s) => join(ROOT, s)).join(" and ") : "(text only)"}\n- Text: ${join(ROOT, x.r.md)}\n${x.r.panels.map((p) => `- Panel ${p}`).join("\n")}\n\n`;
     writeFileSync(join(jdir, `${name}.md`), t);
     if (!existsSync(vf)) writeFileSync(vf, `judge: \n${b.rows.map((x) => `${x.id} | `).join("\n")}\n`);
     files.push(rel(join(jdir, `${name}.md`)));

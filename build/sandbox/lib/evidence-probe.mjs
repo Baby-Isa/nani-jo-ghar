@@ -227,6 +227,13 @@ export class EvidenceProbe {
     this.state = spec.probes.map((p) => ({ p, id: probeId(p.row, p.i, p.level, spec.size) + (p.sub ? `@${p.sub}` : ""), armed: !p.after, hits: [], afterAt: null }));
     page.__njgEvidence = this;
   }
+  // SH-10, PAN-10: whether a probe on this page is about the grown-ups' "?" or the bulb (its moment, what came before, its captures
+  // or expects name help or the bulb). The fair Cook player's "?" and bulb round (CookPlayer.tryHelp) runs only then: otherwise the
+  // bulb's 8 s of English (SH-41) sat on the captures of other rows, 6-7 s into the page
+  wantsHelp() {
+    const HELP = ["rec:help-open", "rec:bulb-english", "bulb"];
+    return this.spec.probes.some((p) => [p.at, p.after].some((m) => m && HELP.some((n) => momentMatches(m, n))) || /help|bulb/i.test(JSON.stringify([p.at, p.after, p.capture, p.expect])));
+  }
   // a sound-log event (run.mjs chains it after the recorder's contract shots)
   onEvent(e) {
     if (!e) return;

@@ -85,7 +85,7 @@
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng);
     // CLN-118 (D13): the taught round has no counts: "Wipe." and "The drops." (the step ends at the plan's count);
-    // the doctor's count-down to the jab stays (it is the jab, not a count for the child)
+    // nor the doctor's count-down to the jab (countdown(), below)
     if (ctx.taught) {
       P.steps[0].row = Object.assign({ id: "wipe", seq: "steps" }, HS.L.show(HS.L.join(["cl-wipe"]), { cap: true }));
       if (!P.steps[1].rows) P.steps[1].row = Object.assign({ id: "drops", seq: "steps" }, HS.L.show(HS.L.join(["cl-drops"]), { cap: true }));
@@ -301,7 +301,10 @@
       const move = syG.animate ? syG.animate([{ transform: "translate(0,0) rotate(0)" }, { transform: `translate(${A.x - syCx - 40}px, ${A.y - SY.y - SY.h - 70}px)` }], { duration: fast() ? 60 : 600, fill: "forwards" }) : null;
       if (move) await move.finished.catch(() => {});
       const from = Math.min(5, Math.max(3, st.drops.length));
-      for (let k = from; k >= 1; k--) {
+      // CLN-118 (D13, Zafar): the taught first round has no counts at all, the jab's count-down too: a short beat, then the
+      // jab (the count-down starts on the next round)
+      if (ctx.taught) await new Promise((r) => setTimeout(r, fast() ? 60 : 900));
+      for (let k = ctx.taught ? 0 : from; k >= 1; k--) {
         S.clear(countG);
         // the number as it's said: its Kutchi word at L1-2, heard only at L3 (E12)
         if (P.level < 3 && HS.num(k)) {
@@ -393,7 +396,7 @@
       if (P.level >= 2 && st.drops.length === 1) lightEnd(true);
       ctx.sfx("pop");
       // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
-      if (P.level === 1 && st.drops.length >= d.drops.length) S.when(() => (!cur() || cur().kind !== "drops" || st.over ? "stop" : !st.busy), close, 450);
+      if (P.level === 1 && st.drops.length >= d.drops.length) S.when(() => (!cur() || cur().kind !== "drops" || st.over ? "stop" : !st.busy), close, 450, d.id);
     };
     const press = () => {
       const c = cur();
@@ -449,7 +452,7 @@
         S.count(st.wipes);
         ctx.tally("cotton", st.wipes, { next: "lever", of: c.count }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450);
+        if (P.level === 1 && st.wipes >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 450, c.id);
         // B4 (CLN-106, S06): the wipe in the hand rubs to and fro across the spot, twice, for about a second (a wipe, not
         // a dab: it was one 450 ms sweep, over before anyone saw it, and only a grey smudge stayed); the skin it passes
         // over shines wet, a sheen that follows the wipe and settles (the spot cleaner with each wipe)

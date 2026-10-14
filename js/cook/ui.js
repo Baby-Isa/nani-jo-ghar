@@ -538,7 +538,35 @@
     if (OCard() && OCard().setStrip) OCard().setStrip(c, mission.strip);
   };
   /** R4 (S02-B, T12): while Nani asks on a card of her own (daar's chop list) her box keeps only its tools (one face). */
-  UI.guideStrip = (on) => guide && guide.strip && guide.strip(!!on || !!(mission && mission.stripMode));
+  let stationStrip = false;
+  let peekFolded = false;
+  const applyStrip = () => guide && guide.strip && guide.strip(stationStrip || peekFolded || !!(mission && mission.stripMode));
+  UI.guideStrip = (on) => {
+    stationStrip = !!on;
+    applyStrip();
+  };
+  /**
+   * CK-38: while a peek holds a closed card open on a sidebar too short for it (sekelo L3: both skewers at 800x360), her
+   * box folds to its tools (no face, no line), so the card fits; it comes back as the peek ends (checkFit, below)
+   */
+  const peekFold = (side) => {
+    const peeking = !!document.querySelector("#mission .oc-card.peek");
+    if (!peeking) {
+      if (peekFolded) {
+        peekFolded = false;
+        applyStrip();
+        side.classList.remove("peek-fold");
+      }
+      return;
+    }
+    if (side.scrollHeight <= side.clientHeight + 1) return;
+    // one step at a time (each change asks again): her box to its tools, then (the card already in pills) the rail's
+    // buttons step out for the peek's few seconds
+    if (!peekFolded) {
+      peekFolded = true;
+      applyStrip();
+    } else if ((mission.compact || 0) >= 3) side.classList.add("peek-fold");
+  };
   /** The station (or station:phase) whose instruction the box shows. */
   UI.guideFor = function (key) {
     guideKey = key || null;
@@ -956,7 +984,9 @@
     // R4: Nani asking herself (the pantry list): one face, her line as the card's strip
     mission.stripMode = who === "nani";
     mission.strip = null;
-    if (guide && guide.strip) guide.strip(mission.stripMode);
+    stationStrip = peekFolded = false; // a new order: no station card or peek folds her box (CK-38)
+    applyStrip();
+    if ($("#side")) $("#side").classList.remove("peek-fold");
     if (UI.stepDone) UI.stepDone();
     // Nani's box: a new order, so no station's instruction yet
     if (UI.guideFor) UI.guideFor(null);
@@ -1282,9 +1312,14 @@
     // the pop-up is that card shown big, so it leaves the sidebar while the pop-up is up and the pop-up folds back into it
     const mine = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who) || null;
     if (mine) mine.style.visibility = "hidden";
+    // CK-40 (R4, contract-20: one face per person): while her card is up in the pop-up, her box keeps only its tools (no
+    // second Nani face beside it, as while her chop card is in the sidebar); her face comes back as the pop-up folds
+    const own = who === "nani" && !!UI.guideStrip;
+    if (own) UI.guideStrip(true);
     try {
       await L.request({ reason: "cook:station-order", el, card, target: () => (mine && mine.isConnected ? mine : $("#guide") || $("#mission")), lead: 0, hold: 900, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read });
     } finally {
+      if (own) UI.guideStrip(!!mine && mine.isConnected);
       if (mine) mine.style.visibility = "";
       stopReading();
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
@@ -1584,13 +1619,19 @@
     const cards = orderCards();
     const idle = big ? new Set() : idlePeople(cards);
     const minis = big ? new Set() : miniPeople(cards);
+    // CK-40 (R4, contract-20: one card and one face per person): a person who orders two dishes (day 6: the cousin's
+    // mishkaki and chaat) gets ONE card: the first dish's card wears their face, each later dish is a continuation of it
+    // (its headline and rows, no second face), joined to it in one .oc-person outline
+    const firstOf = new Map();
     return extra.concat(cards.map((c) => {
+      const lead = c.who ? firstOf.get(c.who) : null;
+      if (c.who && !lead) firstOf.set(c.who, c);
       // the pop-up never shows more than the sidebar card it folds into: a start-folded card (§14a, M.closeCards with
       // peek: the order is to be remembered) is the shared closed big card there (js/shared/order-card.js big + closed:
       // face, headline, one row of dots; the order is heard in full, never written; non-negotiable 6, as the clinic).
       // A phase fold (a card you can't act on now) is still drawn open in the pop-up
       const phase = !!closed && (!big || !!closed.peek) && (!closed.who || closed.who === c.who);
-      const el = OC.card(c.data, {
+      const el = OC.card(lead ? Object.assign({}, c.data, { person: null }) : c.data, {
         big,
         fold: big ? null : folds[c.key] || (folds[c.key] = {}),
         // the phase fold / a start-folded card (M.closeCards): face + headline; a peek may cost a hint
@@ -1628,8 +1669,22 @@
         el.addEventListener("click", (ev) => !ev.target.closest(".oc-face") && M.focus(c.who));
         let row = box.querySelector(":scope > .oc-minis");
         if (!row) row = box.appendChild(Object.assign(document.createElement("div"), { className: "oc-minis" }));
-        row.appendChild(el);
+        // a continuation of someone who is just their face shows nothing more (CK-40)
+        if (!lead) row.appendChild(el);
+      } else if (lead && lead.el && lead.el.parentNode) {
+        // CK-40: under its person's first card, in one outline (the pop-up's crowd grid keeps it in that person's column)
+        let wrap = lead.el.parentNode.classList && lead.el.parentNode.classList.contains("oc-person") ? lead.el.parentNode : null;
+        if (!wrap) {
+          wrap = document.createElement("div");
+          wrap.className = "oc-person";
+          wrap.dataset.person = c.who;
+          lead.el.parentNode.insertBefore(wrap, lead.el);
+          wrap.appendChild(lead.el);
+        }
+        el.classList.add("oc-cont");
+        wrap.appendChild(el);
       } else box.appendChild(el);
+      if (c.who && !lead) c.el = el;
       return el;
     }));
   }
@@ -1685,13 +1740,15 @@
     const raf = (Cook.life && Cook.life.requestAnimationFrame) || global.requestAnimationFrame || ((f) => setTimeout(f, 16));
     raf(() =>
       raf(() => {
+        if (mission && side.clientHeight > 0) peekFold(side); // CK-38: a peek on a short sidebar folds her box meanwhile
         if (!mission || (mission.compact || 0) >= 3 || side.clientHeight <= 0 || $("#mission").classList.contains("hidden")) return;
         if (side.scrollHeight <= side.clientHeight + 1) return;
-        // (with fewer than two people, steps 1 and 2 fold nothing: a station's card and one person go straight to pills)
-        if (orderCards().filter((c) => c.who).length + (mission.extra || []).length < 2) return;
         // one step at a time (the redraw checks again): 1 folds the idle people to their headline, 2 to their face,
-        // 3 flows the open card's rows as pills
-        mission.compact = (mission.compact || 0) + 1;
+        // 3 flows the open card's rows as pills. With fewer than two people steps 1 and 2 fold nothing: one person (and a
+        // station's card) go straight to pills. CK-38: that step was never taken (it returned), so one person's order
+        // opened by a peek (sekelo L3: both skewers) ran past a 360 px sidebar
+        const one = orderCards().filter((c) => c.who).length + (mission.extra || []).length < 2;
+        mission.compact = one ? 3 : (mission.compact || 0) + 1;
         renderOrder();
       })
     );
@@ -1783,7 +1840,7 @@
     const card = intro().querySelector(".ic-card");
     card.classList.add("people");
     // decision 53: several people's orders side by side (one column each, two by two at four), never off the screen
-    const n = box.querySelectorAll(":scope > .oc-card[data-who]").length;
+    const n = box.querySelectorAll(":scope > .oc-card[data-who], :scope > .oc-person").length; // one column per person (CK-40)
     card.classList.toggle("crowd", n >= 2);
     card.classList.toggle("c4", n >= 4);
     card.style.setProperty("--crowd-cols", String(n >= 4 ? 2 : Math.max(1, n)));
@@ -2472,22 +2529,42 @@
   };
   let doneResolve = null;
   let doneGlowT = null;
+  /*
+   * CK-41 (decision 95, contract-8: one highlight at a time): the ✓'s glow is what the station wants (doneWant); it shows
+   * only while no picture in the scene glows (the scene's glow stack, stations.js glow(), holds it: UI.holdDone). Roll-tawa's
+   * ✓ lit at the count while the tawa's raw chapati glowed to be flipped, both for 300 ms; the ✓ now waits for the flip
+   */
+  let doneWant = false;
+  let heldBy = null; // the picture glowing now (a picture gone with its station holds nothing)
+  const doneGlowNow = () => {
+    const b = $("#done-btn");
+    const held = !!(heldBy && heldBy.active && heldBy.scene);
+    if (b) b.classList.toggle("glow", doneWant && !held);
+  };
+  UI.holdDone = (obj) => {
+    heldBy = obj || null;
+    doneGlowNow();
+  };
   UI.done = function (opts = {}) {
     const b = $("#done-btn");
     b.classList.remove("hidden");
-    b.classList.toggle("glow", !!opts.glow);
+    doneWant = !!opts.glow;
     // SH-58 (C8, D5): when the ✓ is the only thing left it glows (the first plays of a station:
     // its first five rounds), not only in a guided round
     clearTimeout(doneGlowT);
     // (S05-C, S's request: at once, the moment it is the only thing left, as every other focal glow; a play counts
     // once per order, however often a station shows its ✓: chai's showed it on every refresh, so the five plays were
     // used up in the first round)
-    if (opts.glow !== false && UI.doneGlows()) b.classList.add("glow");
+    if (opts.glow !== false && UI.doneGlows()) doneWant = true;
+    doneGlowNow();
     return new Promise((resolve) => {
       doneResolve = resolve;
     });
   };
-  UI.glowDone = (on) => $("#done-btn").classList.toggle("glow", on);
+  UI.glowDone = (on) => {
+    doneWant = !!on;
+    doneGlowNow();
+  };
   /** SH-58: still in a station's first plays (its first five orders), when a lone ✓ glows. Counted once per order. */
   const doneCounted = new WeakSet();
   UI.doneGlows = function () {

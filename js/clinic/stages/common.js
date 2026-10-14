@@ -289,7 +289,7 @@
    * card (from level 3: heard, not read) is closed here too. prep(card): the stage's own drawing of its card (the
    * check-up's tool blocks), applied before the rows are set.
    */
-  S.requestPopup = function (screen, { reason, title, rows, ordered, face, closed = false, prep = null }) {
+  S.requestPopup = function (screen, { reason, title, rows, ordered, face, closed = false, prep = null, readTitle = true }) {
     const LC = global.Lifecycle;
     if (!LC) return Promise.resolve({ skipped: false });
     let card = null;
@@ -315,7 +315,8 @@
       },
       // the read-out starts once the pop-up is on screen: at real speed its own 300 ms lead covers the 0.2 s fade in;
       // at test speed (a 20 ms lead) it waits for the fade, so the first line is never said before the card shows
-      read: () => (Kit.fast ? new Promise((r) => setTimeout(r, 220)) : Promise.resolve()).then(() => card.speak()),
+      // readTitle false: a headline the doctor has just said (the waiting room's [Who's next?]) is not read again
+      read: () => (Kit.fast ? new Promise((r) => setTimeout(r, 220)) : Promise.resolve()).then(() => card.speak(readTitle ? undefined : card.rows.map((r) => r.id))),
       onStop: () => Kit.Voice.clear(),
     });
   };

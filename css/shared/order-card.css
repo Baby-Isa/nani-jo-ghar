@@ -407,3 +407,13 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
   background: #b08a5a; border-radius: var(--njg-line);
 }
 .oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after { right: auto; left: calc(50% - var(--njg-s1)); top: auto; bottom: 0; width: var(--njg-s2); height: var(--njg-s3); clip-path: polygon(25% 0, 75% 0, 50% 100%); }
+
+/* CK-40 (R4: one card per person): a person who orders two dishes has one card: the first dish's card (their face) and
+   each later dish's continuation (its headline and rows, no face) in one outline, a dashed line between the dishes */
+.oc-person { display: flex; flex-direction: column; min-width: 0; }
+.oc-person > .oc-card:not(:last-child) { border-bottom-width: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.oc-person > .oc-card.oc-cont { border-top-style: dashed; border-top-left-radius: 0; border-top-right-radius: 0; }
+
+/* CK-38: a card folded to pills on a short sidebar (ui.js checkFit) packs an upright skewer's pieces closer (sekelo L3's
+   two upright skewers, opened by a peek at 800x360, ran 9 px past the sidebar) */
+.oc-card.oc-pills .oc-item.oc-group.oc-stack .oc-group-parts { gap: var(--njg-line-2); }

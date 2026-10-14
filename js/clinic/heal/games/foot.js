@@ -346,7 +346,7 @@
         S.count(st.jugs);
         ctx.tally(S.sel, st.jugs, { next: "splinter", of: c.jugs }); // S02-A hook: decision 52, the next step shows at L2+
         // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (P.level === 1 && st.jugs >= c.jugs) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600);
+        if (P.level === 1 && st.jugs >= c.jugs) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600, c.id);
         // FT2: each jug washes the same share of the dirt away (never "until it's clean": the count is the words', C10);
         // the rest rinses off when the soak closes. No water overlay
         splash(TCOL[t]);
