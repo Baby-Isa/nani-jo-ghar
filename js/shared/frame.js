@@ -227,7 +227,14 @@
     const names = el._njgSideVars || [];
     for (const k of names) el.style.removeProperty(k);
     el._njgSideVars = [];
-    const over = () => el.scrollHeight > el.clientHeight + 1;
+    // CLN-148: overflow anywhere in it counts: the clinic's card scrolls inside a sidebar that itself never overflows
+    // (overflow: hidden, the card a shrinking flex child), so the sidebar alone never looked too full
+    const scrolls = (x) => {
+      if (x.scrollHeight <= x.clientHeight + 1 || x.clientHeight <= 0) return false;
+      const oy = root.getComputedStyle ? root.getComputedStyle(x).overflowY : "visible";
+      return oy === "auto" || oy === "scroll";
+    };
+    const over = () => el.scrollHeight > el.clientHeight + 1 || [...el.querySelectorAll(":scope > *, :scope > * > *")].some(scrolls);
     let used = now.scale;
     if (el.clientHeight > 0 && over()) {
       for (const s of F.sideScales(L, now.scale).slice(1)) {
