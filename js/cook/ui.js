@@ -2547,6 +2547,8 @@
     const p = $("#panel");
     p.innerHTML = html;
     p.scrollTop = 0;
+    // CK-36: a grown-ups' view (opts.grown: the Station lab) may scroll; a child's panel never (the layout lint's rule)
+    p.toggleAttribute("data-grown", !!opts.grown);
     return p;
   };
   UI.closePanel = () => {

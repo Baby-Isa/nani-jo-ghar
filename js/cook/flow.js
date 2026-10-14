@@ -1092,6 +1092,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Cook.sfx.click();
       const open = box.classList.toggle("hidden") === false;
       btn.setAttribute("aria-expanded", String(open));
+      // CK-36: while the grown-ups' text is open the panel is theirs: it may scroll (the pop sits in its flow)
+      p.toggleAttribute("data-grown", open);
     });
     p.prepend(box);
     p.prepend(btn);
@@ -1348,7 +1350,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       <details class="lab-parts"><summary>Parts (the pieces inside the stations, for testing)</summary>
         <div class="lab-grid">${labParts().map(([k, n, v]) => `<button data-st="${k}">${UI.esc(n)}<small>${UI.esc(v)}</small></button>`).join("")}</div>
       </details>
-      <div class="btn-row"><button class="btn" id="lab-back">Back</button></div>`);
+      <div class="btn-row"><button class="btn" id="lab-back">Back</button></div>`, { grown: true }); // CK-36: the Station lab is a grown-ups' tool: its list may scroll
     p.querySelectorAll("[data-level]").forEach((b) =>
       b.addEventListener("click", () => {
         Cook.labLevel = Number(b.dataset.level);

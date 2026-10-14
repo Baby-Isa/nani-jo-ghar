@@ -11,7 +11,7 @@
 //   text-offscreen   text running outside the viewport
 //   tap-offscreen    a tappable thing partly outside the viewport
 //   page-scroll      the page itself scrolls (LAY-02)
-//   scroll-container a visible box that scrolls (a scroll bar on a child screen, CMP-07)
+//   scroll-container a visible box that scrolls (a scroll bar on a child screen, CMP-07); a grown-ups' view ([data-grown]) may scroll
 //   covered          something sits on top of a tappable thing: the topmost element at its visible centre is neither it nor
 //                    its child (LAY-06). A full-screen scrim or modal over everything is by design and not reported.
 //   covers-play-area something other than the canvas is on top of the middle of the play area (LAY-06)
@@ -194,7 +194,7 @@ export async function pageLint(opts) {
     }
     // outside the viewport
     const out_ = Math.max(-L, -T, R - vw, B - vh);
-    if (out_ > TOL) { add("text-offscreen", el, `${Math.round(out_)}px outside the screen`); moving.push([out[out.length - 1], el, el.getBoundingClientRect()]); }
+    if (out_ > TOL && !(el.closest && el.closest("[data-grown]"))) { add("text-offscreen", el, `${Math.round(out_)}px outside the screen`); moving.push([out[out.length - 1], el, el.getBoundingClientRect()]); }
   }
 
   // ---- covering (LAY-06) ----
@@ -276,7 +276,11 @@ export async function pageLint(opts) {
   const hidden = (a, b) => a === "hidden" || a === "clip" || (a === "visible" && (b === "hidden" || b === "clip"));
   if (se.scrollWidth > vw + 1 && !hidden(ho, hb)) out.push({ check: "page-scroll", selector: "html", measured: `sideways: ${se.scrollWidth}px in ${vw}px`, text: "" });
   if (se.scrollHeight > vh + 1 && !hidden(vo, vb)) out.push({ check: "page-scroll", selector: "html", measured: `down: ${se.scrollHeight}px in ${vh}px`, text: "" });
+  // a grown-ups' view (data-grown: the Station lab, a panel while its grown-ups' "?" is open) may scroll: the rule is for
+  // the child's screens (CMP-07); its rows below the fold are scrolled out of view, not off the screen
+  const grown = (el) => !!(el.closest && el.closest("[data-grown]"));
   for (const el of all) {
+    if (grown(el)) continue;
     const c = cs(el);
     const sx = (c.overflowX === "auto" || c.overflowX === "scroll") && el.scrollWidth > el.clientWidth + 1;
     const sy = (c.overflowY === "auto" || c.overflowY === "scroll") && el.scrollHeight > el.clientHeight + 1;
