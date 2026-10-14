@@ -1301,7 +1301,8 @@
    * chunk: each spoken line has its own voice file). Hearing it again once
    * its words are dots is help (a hint), as before.
    * The light bulb at the top of the sidebar flips the words to English for
-   * a few seconds (data.calm.bulbMs by level: 5, 3, 2, 1 s); for rows still
+   * a few seconds (data.calm.bulbMs by level: 8 s at every level, SH-41 / D11,
+   * Zafar 1 Oct "give it like eight seconds"; the older 5, 3, 2, 1 s is gone); for rows still
    * to do that's the answer, so it costs the accuracy badge, like A/En did.
    */
   const sideEls = new Map(); // row -> [elements] on the sidebar card
@@ -1400,7 +1401,38 @@
   const rowText = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
   // decision 57 (SH-52): the bulb's English is the full order, numbers too ("two chapati"), whatever the card drops
   const fullLine = (r) => (mission && mission.english && r.phrase && !r.no ? r.phrase : r.line);
-  const partNode = (r, gi) => ({ label: rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false });
+  // DAAR-19 (S06 r2): a step row with its own tool (r.pic, the recipe's say entry: the daar stir row's ladle) shows it
+  // before its words, so the laps ("ba") read as the stir's, not as a stray plain row; never a word's picture (that would
+  // give the word away), only the tool of a step whose verb the card doesn't write
+  // The picture is the station's own (already loaded for the station), drawn on the card at a line's height: a small copy
+  // made once from it (64 px, the load check's rule: never a 360 px picture drawn at 24 px), the card redrawn when it's ready
+  const THUMBS = new Map();
+  const thumbOf = (src) => {
+    if (THUMBS.has(src)) return THUMBS.get(src);
+    THUMBS.set(src, null);
+    const im = new Image();
+    im.onload = () => {
+      try {
+        const N = 64;
+        const k = N / Math.max(im.naturalWidth, im.naturalHeight);
+        const c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(im.naturalWidth * k));
+        c.height = Math.max(1, Math.round(im.naturalHeight * k));
+        c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+        THUMBS.set(src, c.toDataURL("image/png"));
+        if (mission) renderOrder();
+      } catch (e) {
+        /* no picture: the row keeps its words */
+      }
+    };
+    im.src = src;
+    return null;
+  };
+  const rowPic = (r) => {
+    const t = r && r.pic ? thumbOf(r.pic) : null;
+    return t ? `<img class="ck-step-pic" src="${t}" alt="" aria-hidden="true">` : "";
+  };
+  const partNode = (r, gi) => ({ label: rowPic(r) + rowText(text6(fullLine(r), rowHide(r))), done: !!r.done, no: !!r.no, wrong: !!r.wrong, key: r, gi, next: false });
   /** A count row said for one of several ("ba lakri mixed" -> "hakri lakri mixed"): the same words, the number one. */
   const oneOf = (r) => Lang.phrase((r.parts || r.ids).map((p) => (typeof p === "number" ? 1 : p)));
   /** An ordered list's next step (its group), `at` steps on (a station that ticks later moves it: M.advance). */

@@ -392,18 +392,18 @@
   "date": "2026-10-12"
  },
  "CHAI-13": {
-  "hash": "6351d58188df5f14275a",
+  "hash": "314433891fd40535d9aa",
   "dhash": [
-   "dec7e1e0e0e0208e"
+   "20b070949c8c9ce8"
   ],
   "verdict": "FAIL",
-  "line": "A, both crops at the teaspoon's bounds (hits 2 and 3) show only the pan interior, no teaspoon anywhere; hit 2 also shows pale translucent discs on the bare pan",
+  "line": "A, the sugar frames (0-300 ms, \"khun\" label) show no teaspoon flying in or stirring: 0 ms has only the white puff discs on the milk, and 300 ms has just a tiny grey sliver at the pan's right rim. A silver teaspoon only shows up from 600 ms, under the \"elchi\" label with cardamom already in the pan, lying across it at almost the same angle in every frame, so the sugar stir with a real teaspoon is not shown (flaws: from 600 ms the left chip \"trae\" is cut off by the crop edge)",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CHAI-13.png",
-  "date": "2026-10-12"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-042419-l3k",
+  "commit": "e6088d1",
+  "png": "build/screenshots/evidence/ev-20261014-042419-l3k/CHAI-13.png",
+  "date": "2026-10-14"
  },
  "CHAI-14": {
   "hash": "31bc36f796d660690948",
@@ -862,19 +862,19 @@
   "date": "2026-10-13"
  },
  "CK-21": {
-  "hash": "2cc14b3fa05c0e6dc92c",
+  "hash": "b669f378f4538a892c3c",
   "dhash": [
-   "0e170fb6e637d801",
-   "615f37270e3f0300"
+   "e5af978f9c9ec288",
+   "ccccc932e09cb4a4"
   ],
   "verdict": "FAIL",
-  "line": "B, the day-2 chai glasses still stand ON the tray rim, not in the tray: in B10/B11 each glass's full faceted base and bottom edge are drawn over the front wall (left glass at the left tray's left end, right glass at the right tray's right end) with wood showing below them and no cut, and no contact shadow to the right; and in every panel the \"tray front\" redrawn over the dish is a chunk of the wrong picture: a grey post, a pale-blue block and a diagonal beam (a window), not the tray's wood, pasted over the middle tray's right half and the marble between the middle and right trays (visible right of the daar bowl's base in A7-A9, under the maani plate in B4, under the right chai glass in B10/B11, on the empty counter in A1/A2/A10/A11 and B5/B6). What is right: the dish base is now cut flat by the wall at 2x too (B4 maani plate, B6 basket) and at 1x (A1/A2 basket, A7-A9 daar bowl).",
-  "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-185411-hda",
-  "commit": "3af9889",
-  "png": "build/screenshots/evidence/ev-20261013-185411-hda/CK-21.png",
-  "date": "2026-10-13"
+  "line": "A, half the row is now met: in all six serve crops (A1 maani plate, A2 basket, A3 chai glass, B1 basket, B2 daar bowl, B3 daar bowl plus maani plate) the dish sits in its tray, its base cut flat by the tray's own wooden front wall, with no rim-standing and no wrong-picture patch. But no contact shadow falling to the right shows under any dish in A1-A3 or B1-B3: the tray floor reads the same plain brown on both sides of each dish (clearest at A3's glass and B2's bowl), so \"shadows to the right\" is not shown at any serve.",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-043957-gnj",
+  "commit": "e6088d1b",
+  "png": "build/screenshots/evidence/ev-20261014-043957-gnj/CK-21.png",
+  "date": "2026-10-14"
  },
  "CK-22": {
   "hash": "93f522a912dac41a1a5e",
@@ -928,20 +928,20 @@
   "date": "2026-10-12"
  },
  "CK-27": {
-  "hash": "cbcd03a6b3cdcbe41dbe",
+  "hash": "87fdcc14a220c4f32843",
   "dhash": [
-   "fcc88e86ccd496f8",
+   "fcc88e86ccd4d6f8",
    "e096868696ccccf8",
-   "c48e88828682da70",
-   "ff0f072707431f7f"
+   "c48e88828682da60",
+   "cd9582808484828e"
   ],
-  "verdict": "FAIL",
-  "line": "A, the paani goes in (bottle tilted 160-480 ms, pan blue by 800-960 ms) with no puff or sprinkle in any of the 7 frames. B (daar: white clouds rising at 0-481 ms, a cluster in the pot at 960 ms) and C (chaat: a small white cloud at the bowl centre from 640 ms) do show it. D (samosa) loses the pastry after 320 ms: 480 ms is a different screen with a dialogue card that reads like \"Make samosa bhaje.\" (possibly written English, too small to confirm) and 640-960 ms are blank, so samosa's puff is not shown.",
+  "verdict": "PASS",
+  "line": "A, chai: the paani bottle tips in (170-340 ms) and at 1190 ms a small white cloud puff sits in the pan; the same white puff shows in B (daar, cluster in the pot at 960 ms), C (chaat, small cloud on the layer from 641 ms) and D (samosa, a white puff on the filling at 600 ms), so it is one shared effect in all four. Flaws: D's strip crop cuts the top off the \"nakro chundo\" label in every frame (a crop artefact of the strip, not seen in the game frame); A's puff only begins on its last frame (1190 ms).",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-014202-sqj",
-  "commit": "72100d8",
-  "png": "build/screenshots/evidence/ev-20261014-014202-sqj/CK-27.png",
+  "run": "ev-20261014-043957-gnj",
+  "commit": "e6088d1b",
+  "png": "build/screenshots/evidence/ev-20261014-043957-gnj/CK-27.png",
   "date": "2026-10-14"
  },
  "CK-28": {
@@ -982,19 +982,34 @@
   "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CK-30.png",
   "date": "2026-10-13"
  },
+ "CK-31": {
+  "hash": "aba9a0e093762999aeae",
+  "dhash": [
+   "ce87c9e9e951a387",
+   "a3311b8b1b5f123b"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 1 (the wrong cup's review at 2x) shows Nana's review face frowning, mouth turned down and brows knit, no smile, sitting over the cup's slot on the tray; B1 shows the same at L2: the wrong cup's face frowns while the right cup's face beside it is happy; A2/B2 are the redone cup and are happy, as the probe says (flaws: none seen, no text, no clipping, no overlap, current art; the 2x crop shows only the glass rim under the face, not the whole dish)",
+  "panel": "A",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-040741-6zs",
+  "commit": "e6088d1",
+  "png": "build/screenshots/evidence/ev-20261014-040741-6zs/CK-31.png",
+  "date": "2026-10-14"
+ },
  "CK-32": {
-  "hash": "315a805d9252470ba873",
+  "hash": "e90e8bb40ae0b6382937",
   "dhash": [
    "0084a9814181c101",
    "888181c1808141c1"
   ],
   "verdict": "PASS",
-  "line": "A, frame 2 (the wrong serve's Done) shows the grandfather's card open with gold border, his order line underlined as he says it again, aadu and dudh rows ticked and the trae khun row outlined red; B frame 2 repeats it at L2 on the elchi card while the other, correct card stays collapsed with a tick (flaws off-point: in A4/B4 the dimmed end overlay's round badge overlaps the card, in B4 covering the end of \"waari\")",
+  "line": "A, frame 2 (the wrong serve's Done): the card stays open with \"aadu\" and \"dudh\" ticked and the \"trae khun\" row outlined red; B frame 2 shows the same at L2 (\"elchi\", \"dudh na\" ticked, \"trae khun\" red). Flaw off the point: in the dimmed frame 4 of A and B a circled icon sits on the cards, and in B it covers the end of \"waari\" on both headlines",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-020634-odn",
-  "commit": "ced963e",
-  "png": "build/screenshots/evidence/ev-20261014-020634-odn/CK-32.png",
+  "run": "ev-20261014-050235-4w2",
+  "commit": "4ffc7ee9",
+  "png": "build/screenshots/evidence/ev-20261014-050235-4w2/CK-32.png",
   "date": "2026-10-14"
  },
  "CK-33": {
@@ -3088,18 +3103,20 @@
   "date": "2026-10-12"
  },
  "DAAR-13": {
-  "hash": "f3052732a6cebcf14618",
+  "hash": "4ffd193d5f0d2fa30abd",
   "dhash": [
-   "c0c0a0b0a4e0caa8",
-   "c0c0a0a4d4c0d0b0"
+   "c0c0a0a0d0d0c8a8",
+   "c0c0a0c090d0caae",
+   "c0c0a0a0a0d0ca9a",
+   "c0c0a0a096d2c8a8"
   ],
-  "verdict": "FAIL",
-  "line": "B, nothing in the strip looks slower at L1: the tomato drops from mid-board to the bottom edge, where it is clipped, between 401 and 601 ms and is gone by 800 ms; the onion vanishes between 0 and 201 ms and a potato appears; the chilli jumps across the board between frames. Small knife with an intact tip and spread items are met (A), but the items still race across the board. Flaw: a mouse-pointer hand sits on the board in A and at 0 and 201 ms in B",
+  "verdict": "PASS",
+  "line": "B, at L1 the knife is small next to the vegetables and the chilli, tomato and garlic sit spread across the board. Across 1250 ms they drift only a few pixels per frame (the tomato rises gently from the lower right, the garlic fades in clear of the bottom edge), so nothing races or gets clipped. D (L2) moves visibly faster over the same frames, and C shows the small knife with its tip intact. Flaws: a pointing-hand icon sits on the board in A, C and faintly at 0 and 250 ms in B, and in A a white disc covers the knife blade, so the tip can't be seen in the L1 still.",
   "panel": "B",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-011029-06w",
-  "commit": "8d19bac",
-  "png": "build/screenshots/evidence/ev-20261014-011029-06w/DAAR-13.png",
+  "run": "ev-20261014-033839-s25",
+  "commit": "4abfb52",
+  "png": "build/screenshots/evidence/ev-20261014-033839-s25/DAAR-13.png",
   "date": "2026-10-14"
  },
  "DAAR-14": {
@@ -3171,17 +3188,18 @@
   "date": "2026-10-13"
  },
  "DAAR-19": {
-  "hash": "44ef9b3a9c94ea962580",
+  "hash": "1d7db06060fc180cf23e",
   "dhash": [
-   "d19181c191a18c81"
+   "8184c24262499101",
+   "a494a2a233231301"
   ],
-  "verdict": "FAIL",
-  "line": "A, frames 9-15 show the tadka card in plain written English (\"I'd like daal.\", \"two onions\", \"one chilli\", \"one tomato\", \"mustard seeds\", \"garlic\"), and their dom captures carry no [ph] to-record tag, so this is English for the child. Frame 16's dom capture still ends \"rai / lasan / ba\", which is the stray 'ba' row under rai and lasan. The frames are also too small to read the ticks.",
+  "verdict": "PASS",
+  "line": "A, at L1 every tadka row is ticked (ba dungri, hakro mirchi, hakro tameto, rai, lasan) and the row under rai and lasan is a separate card led by a ladle icon reading \"ba\" (the stir laps), not a plain stray \"ba\"; B shows the same ladle row under the L2 strip. Flaws: the ladle row has a thin grey border, no gold outline or tick, so it reads lighter than the other rows; the text capture still ends \"rai / lasan / ba\" because the ladle carries no text; no clipping, overlap or written English in either panel.",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-005632-c97",
-  "commit": "c976c59",
-  "png": "build/screenshots/evidence/ev-20261014-005632-c97/DAAR-19.png",
+  "run": "ev-20261014-052608-81u",
+  "commit": "4ffc7ee9",
+  "png": "build/screenshots/evidence/ev-20261014-052608-81u/DAAR-19.png",
   "date": "2026-10-14"
  },
  "DAAR-20": {
@@ -5303,19 +5321,19 @@
   "date": "2026-10-13"
  },
  "SH-81": {
-  "hash": "1091be4918c734c698f5",
+  "hash": "5df640618fa717feeaf0",
   "dhash": [
-   "5c48723626766660",
-   "5c48723626766660",
+   "5c485a2221666040",
+   "5c485a2221666040",
    "0195a15101c981c3"
   ],
   "verdict": "PASS",
-  "line": "A, at 800x360 the peeked closed card \"Muke daar khape.\" sits fully on screen, its face button and all three rows inside the viewport, with the ? / home / book rail fully visible below it (flaws: the Check names the layout lint but the .md records no lint result; \"Chop these.\" is grey-italic English, allowed only if tagged to-record)",
+  "line": "A, at 800x360 with the card peeked open, both order cards' face buttons (Nani with \"Chop these.\", Nana with \"Muke daar khape.\") are fully on screen inside the left column, nothing cut at any edge (C confirms at crop size). Flaw off the point: at this size each face's speaker badge sits over the top of the first row (\"trae dungri\", \"hakro mirchi\"), touching its letters. \"Chop these.\" is grey-italic to-record, allowed",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-011029-06w",
-  "commit": "8d19bac",
-  "png": "build/screenshots/evidence/ev-20261014-011029-06w/SH-81.png",
+  "run": "ev-20261014-050235-4w2",
+  "commit": "4ffc7ee9",
+  "png": "build/screenshots/evidence/ev-20261014-050235-4w2/SH-81.png",
   "date": "2026-10-14"
  },
  "SH-83": {

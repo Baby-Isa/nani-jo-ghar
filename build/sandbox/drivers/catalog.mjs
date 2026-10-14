@@ -13,7 +13,7 @@ export const DRIVERS = {
   "wrong-extra-person": { kinds: ["cook"], moments: ["rec:wrong-extra-person", "rec:wrong-redo"] },
   "wrong-count": { kinds: ["cook"], moments: ["rec:wrong-count"] },
   // a dish served wrong: the look-alike (chai's salt for the sugar) put in once and left in, then fair (CK-31, CK-32)
-  "serve-wrong": { kinds: ["cook"], moments: ["rec:serve-wrong"] },
+  "serve-wrong": { kinds: ["cook"], moments: ["rec:serve-wrong", "drv:review-face"] },
   // a closed card (level 3) peeked open before every tap, so each tap's moment shows the card's rows (SEK-13)
   "peek-every-tap": { kinds: ["cook"], moments: ["rec:peek-for-tap"] },
   "serve-combined": { kinds: ["cook-other"], moments: ["rec:served-combined"] },
@@ -50,9 +50,9 @@ export const DRIVERS = {
 export const driverPaths = (kind) => Object.keys(DRIVERS).filter((d) => DRIVERS[d].kinds.includes(kind));
 // moments every flow of a kind reaches on its fair path too (bare evidence moments, drivers/index.mjs mark())
 export const FAIR_MOMENTS = {
-  cook: ["drv:your-turn-*", "drv:daar-in", "drv:retry"],
+  cook: ["drv:your-turn-*", "drv:daar-in", "drv:retry", "drv:dish-served", "drv:counter-*"],
   "lab-cook": ["drv:your-turn-*", "drv:retry"],
-  "cook-other": ["drv:your-turn-*", "drv:retry", "drv:daar-in"],
+  "cook-other": ["drv:your-turn-*", "drv:retry", "drv:daar-in", "drv:dish-served", "drv:counter-*"],
   heal: ["rec:taught-*", "drv:your-turn-*"],
   "clinic-stage": ["drv:your-turn-*"],
   patient: ["drv:your-turn-*", "rec:taught-*"],

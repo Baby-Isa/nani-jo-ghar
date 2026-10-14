@@ -572,6 +572,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /* ---------- FILL ---------- */
     let sheet = pastry(P0.x);
     S.tweens.add({ targets: sheet, alpha: { from: 0, to: 1 }, duration: 250 });
+    // (the test hook focus, flow.js: the strip's filling end, where each spoonful lands and puffs; CK-27's filmstrip)
+    Cook.focusBox = () => {
+      if (!sheet || !sheet.active) return null;
+      const pa = fillAt(sheet);
+      const h = Math.max(pa.r * 2.2, z.L(130));
+      return { x: pa.x - h, y: pa.y - h, w: h * 2, h: h * 2 };
+    };
     // 30 Sept: two different samosas in one order (count2, want2): block 1 is filled first; once its
     // samosas are made, the next strip starts EMPTY and block 2 is filled on it (then pre-filled as usual)
     const two = count2 > 0 && kinds2.length > 0;

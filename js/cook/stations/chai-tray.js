@@ -308,6 +308,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     });
     pans.forEach((pan, i) => (pan.well = wells[i]));
     // for the screenshot script (build/shoot_chai_v2.py): each pan's state; harmless when unused
+    // (the test hook focus, flow.js: the pan in hand, its handle and the spoon's stir round it; CHAI-13's filmstrip)
+    Cook.focusBox = () => {
+      if (!sel || !sel.img || !sel.img.active) return null;
+      const b = sel.img.getBounds();
+      const m = Math.max(b.width, b.height) * 0.12;
+      return { x: b.x - m, y: b.y - m * 2, w: b.width + m * 2, h: b.height + m * 3 };
+    };
     Cook.chaiPans = () => pans.map((q) => ({ who: q.who, state: q.state, heat: q.heat, lo, hi, milk: q.has.milk > 0, leaves: q.has.leaves > 0, extras: q.extras.length, shown: q.shown, poured: q.poured }));
 
     /* ---------- the shelf: identical slots, grouped, a chip under each ---------- */

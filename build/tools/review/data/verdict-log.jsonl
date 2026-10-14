@@ -61,3 +61,19 @@
 {"id":"CLN-116","run":"ev-20261014-021334-3v9","event":"built","date":"2026-10-14"}
 {"id":"CLN-104","run":"ev-20261014-031151-81u","event":"built","date":"2026-10-14"}
 {"id":"CLN-143","run":"ev-20261014-031151-81u","event":"built","date":"2026-10-14"}
+{"id":"DAAR-13","run":"ev-20261014-033839-s25","verdict":"PASS","spec":"83170791e81c8d51372f","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"DAAR-19","run":"ev-20261014-034414-bt3","verdict":"FAIL","spec":"f02ee7cc40ab479ec5b0","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CK-31","run":"ev-20261014-040741-6zs","verdict":"PASS","spec":"f1cdadb899563d27f6fd","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CHAI-13","run":"ev-20261014-040741-6zs","verdict":"PASS","spec":"25464d0d2895ba10a891","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CK-27","run":"ev-20261014-040741-6zs","verdict":"PASS","spec":"eeff559d069fe6e4d2f4","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CHAI-13","run":"ev-20261014-042419-l3k","verdict":"FAIL","spec":"7f3acbea319fd6f96fe9","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CK-27","run":"ev-20261014-042419-l3k","verdict":"FAIL","spec":"9a9bdc475bfc519b3446","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CK-21","run":"ev-20261014-043957-gnj","verdict":"FAIL","spec":"b21c93386f085087699c","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CK-27","run":"ev-20261014-043957-gnj","verdict":"PASS","spec":"f4500ca235708edae0af","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"SH-81","run":"ev-20261014-045754-y6f","verdict":"PASS","spec":"170d2efcfd249ca2ef3d","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"SH-81","run":"ev-20261014-050235-4w2","verdict":"PASS","spec":"170d2efcfd249ca2ef3d","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CK-32","run":"ev-20261014-050235-4w2","verdict":"PASS","spec":"e5a38de0485fb2230464","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"DAAR-19","run":"ev-20261014-052608-81u","verdict":"PASS","spec":"f02ee7cc40ab479ec5b0","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"DAAR-13","run":"ev-20261014-033839-s25","event":"built","date":"2026-10-14"}
+{"id":"CK-27","run":"ev-20261014-043957-gnj","event":"built","date":"2026-10-14"}
+{"id":"DAAR-19","run":"ev-20261014-052608-81u","event":"built","date":"2026-10-14"}

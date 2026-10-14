@@ -135,8 +135,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return key;
       };
       // DAAR-13 (D1): slower at level 1 (k.slow < 1): the throws keep their height (speed x a, gravity x a^2) but
-      // take 1/a as long in the air, and come further apart
+      // take 1/a as long in the air, and come further apart. S06 r2: k.slow per level (0.67, 0.76, 0.86: L1 about
+      // 3.3 s in the air, each level about 15% quicker; build/test_cook_levels.mjs)
       const slow = k.slow || 1;
+      // DAAR-13 (S06 r2): nothing is ever cut off by the board's bottom edge (the visible world's bottom, Cook.view:
+      // the camera is anchored there): a vegetable is see-through until it is clear of the edge on the way up and
+      // fades out before it reaches it on the way down; a cut half stops short of it
+      const edge = () => (Cook.view ? Cook.view.bottom : z.Y(900));
+      const FADE = z.L(90);
+      const clearOf = (img) => edge() - Math.max(img.displayWidth, img.displayHeight) * 0.55 - img.y;
+      const shown = (img) => Phaser.Math.Clamp(clearOf(img) / FADE, 0, 1);
       const [v0, v1] = k.throwSpeed.map((v) => v * slow);
       const gravity = k.gravity * slow * slow;
       // how long a throw is in the air (up and back below the board), in game seconds
@@ -213,6 +221,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         lastX = x0;
         const img = S.track(S.add.image(z.X(x0), z.Y(990), key).setDepth(D.item + 2));
         img.setScale(S.fitScale(key, z.L(size), z.L(size)));
+        img.setAlpha(shown(img));
         img.wordId = pick;
         img.phase = phase;
         img.vx = (z.X(760) - img.x) * (0.15 + Math.random() * 0.2) * slow;
@@ -236,8 +245,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         [0, 1].forEach((side) => {
           const half = S.track(S.add.image(img.x, img.y, key).setScale(img.scale).setAngle(deg).setDepth(D.item + 3).setCrop(side ? w / 2 : 0, 0, w / 2, h));
           const d = side ? 1 : -1;
+          // the fall stops short of the bottom edge (DAAR-13: never cut off by it); it fades out on the way
+          const fall = Math.max(0, Math.min(z.L(240), clearOf(img) - z.L(120)));
           S.tweens.add({ targets: half, x: img.x + nx * z.L(22 * d), y: img.y + ny * z.L(22 * d), angle: deg + 6 * d, duration: 140, ease: "Quad.easeOut" });
-          S.tweens.add({ targets: half, x: img.x + nx * z.L(120 * d), y: img.y + ny * z.L(120 * d) + z.L(240), angle: deg + 60 * d, alpha: 0, delay: 460, duration: 600, ease: "Quad.easeIn", onComplete: () => half.destroy() });
+          S.tweens.add({ targets: half, x: img.x + nx * z.L(120 * d), y: Math.min(img.y + ny * z.L(120 * d) + fall, img.y + fall), angle: deg + 60 * d, alpha: 0, delay: 460, duration: 600, ease: "Quad.easeIn", onComplete: () => half.destroy() });
         });
         const len = Math.max(img.displayWidth, img.displayHeight) * 0.62;
         const cx = Math.cos(ang) * len;
@@ -315,7 +326,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (prevBlade) lines.push(new Phaser.Geom.Line(prevBlade[0].x, prevBlade[0].y, bl[0].x, bl[0].y), new Phaser.Geom.Line(prevBlade[1].x, prevBlade[1].y, bl[1].x, bl[1].y));
           }
           flying.slice().forEach((img) => {
-            if (!img.active || img.sliced) return;
+            if (!img.active || img.sliced || img.alpha < 0.3) return; // not yet (or no longer) on the board
             const c = new Phaser.Geom.Circle(img.x, img.y, img.displayWidth * 0.42);
             if (!lines.some((line) => Phaser.Geom.Intersects.LineToCircle(line, c))) return;
             Cook.sfx.chop();
@@ -369,6 +380,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           img.x += img.vx * dt;
           img.y += img.vy * dt;
           img.angle += img.spin;
+          img.setAlpha(shown(img));
           if (img.y > z.Y(1060) && img.vy > 0) img.destroy();
         });
         trail.clear();
@@ -390,7 +402,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const at = (o) => ({ x: o.x + o.vx * lead, y: o.y + o.vy * lead + 0.5 * z.L(gravity) * lead * lead, vy: o.vy + z.L(gravity) * lead });
         const inView = (o) => {
           const p = at(o);
-          return o.active && !o.sliced && p.y < z.Y(760) && p.y > z.Y(120) && Math.abs(p.vy) < z.L(700);
+          // (DAAR-13: and well clear of the bottom edge's fade, where a swipe doesn't cut)
+          return o.active && !o.sliced && p.y < Math.min(z.Y(760), o.y + clearOf(o) - FADE * 0.5) && p.y > z.Y(120) && Math.abs(p.vy) < z.L(700);
         };
         const needs = (id) => phase && phase.targets.includes(id) && (cut[id] || 0) < want[id];
         // nothing it shouldn't cut next to it (another wanted kind that still needs cutting is fine)

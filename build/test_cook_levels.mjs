@@ -100,3 +100,20 @@ test("CK-35: the chai tray's boil windows are its own (unchanged by the level 1 
     assert.equal(k.rate, rate, `tray L${i + 1} rate`);
   });
 });
+
+// DAAR-13 (Zafar 6 Oct D1: "slower… the easier mode a bit easier"; S06 r2): the chop's throws, the way js/cook/mechanics/chop.js
+// reads them: speed x slow, gravity x slow^2, so a throw keeps its height and is 1/slow as long in the air (up and back:
+// 2 v1 / g); the throws come every / slow apart.
+const chop = data.mechanics.chop.levels;
+const air = (k) => { const s = k.slow || 1; return (2 * k.throwSpeed[1] * s) / (k.gravity * s * s); };
+
+test("DAAR-13: the chop at level 1 is slow (a throw at least 3.2 s in the air; it was 2.8 s)", () => {
+  const k = knobs(chop, 1);
+  assert.ok(air(k) >= 3.2, `chop L1 in the air ${air(k).toFixed(2)} s`);
+  assert.ok(k.every / (k.slow || 1) >= 1, `chop L1 throws ${(k.every / (k.slow || 1)).toFixed(2)} s apart: at least 1 s`);
+});
+
+test("DAAR-13: above level 1 the chop is about 15% quicker per level", () => {
+  ladder("chop air time", chop.map((_, i) => air(knobs(chop, i + 1))));
+  ladder("chop throw gap", chop.map((_, i) => { const k = knobs(chop, i + 1); return k.every / (k.slow || 1); }));
+});
