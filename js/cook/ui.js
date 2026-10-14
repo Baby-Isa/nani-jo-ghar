@@ -1301,7 +1301,8 @@
    * chunk: each spoken line has its own voice file). Hearing it again once
    * its words are dots is help (a hint), as before.
    * The light bulb at the top of the sidebar flips the words to English for
-   * a few seconds (data.calm.bulbMs by level: 5, 3, 2, 1 s); for rows still
+   * a few seconds (data.calm.bulbMs by level: 8 s at every level, SH-41 / D11,
+   * Zafar 1 Oct "give it like eight seconds"; the older 5, 3, 2, 1 s is gone); for rows still
    * to do that's the answer, so it costs the accuracy badge, like A/En did.
    */
   const sideEls = new Map(); // row -> [elements] on the sidebar card
