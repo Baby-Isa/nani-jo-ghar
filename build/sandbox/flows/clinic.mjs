@@ -268,8 +268,19 @@ export class ClinicPlayer {
       await this.healAct(a);
       lastA = a;
       steps++;
+      // CLN-138: the boing's takeback is a drop in the syringe, tapped where it sits (a lever tapped again adds one): once two
+      // drops are in, the first (the bottom one) is tapped, so the strip shows that drop going back up and the other staying
+      if (this.mode === "takeback" && game === "boing" && !this.drv.tookBack && /^lever/.test(String(a.what || "")) && (await this.ev(() => document.querySelectorAll(".bo-drop").length).catch(() => 0)) >= 2) {
+        this.drv.tookBack = true;
+        await sleep(500);
+        await this.once("before-takeback", { settle: 0 });
+        const at = await this.ev(() => { const d = document.querySelector('.bo-drop[data-k="0"]'); const r = d && d.getBoundingClientRect(); return r ? [r.left + r.width / 2, r.top + r.height / 2] : null; }).catch(() => null);
+        if (at) await this.healAct({ do: "tap", x: at[0], y: at[1], what: "take a drop back" });
+        await sleep(700);
+        await this.once("after-takeback", { settle: 0 });
+      }
       // takeback (CLN-112): the first thing placed (not a tool pick, not the ✓) is tapped again where it went
-      if (this.mode === "takeback" && !this.drv.tookBack && ["tap", "drag"].includes(a.do) && !(await tools()).includes(a.what)) {
+      if (this.mode === "takeback" && game !== "boing" && !this.drv.tookBack && ["tap", "drag"].includes(a.do) && !(await tools()).includes(a.what)) {
         this.drv.tookBack = true;
         await sleep(400);
         await this.once("before-takeback", { settle: 0 });

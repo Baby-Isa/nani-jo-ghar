@@ -9515,13 +9515,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:heal-done:",
+   "at": "every:heal:",
    "after": null,
    "capture": [
     "strip:.cl-heal:5x200"
    ],
    "expect": null,
-   "note": "alcohol wipe with a wipe motion (to and fro, about a second); a funny jab; a plaster choice: each move filmed just after it is made, at real pace (fast mode plays the wipe in 60 ms)",
+   "note": "alcohol wipe with a wipe motion (to and fro, about a second); a funny jab; a plaster choice: each move filmed as it is made, at real pace (fast mode plays the wipe in 60 ms)",
    "max": 12
   },
   {
@@ -12064,7 +12064,7 @@
   {
    "flow": "clinic:heal-boing",
    "path": "takeback",
-   "level": 1,
+   "level": 2,
    "sizes": [
     "1366x768"
    ],
@@ -12076,7 +12076,7 @@
     "strip:.cl-heal:6x200"
    ],
    "expect": null,
-   "note": "a tap on a drop in the syringe takes only that drop back up; the barrel never empties by surprise"
+   "note": "a tap on a drop in the syringe takes only that drop back up; the barrel never empties by surprise (the driver taps the bottom drop once two are in; level 2, where the drops step never closes itself at the count)"
   }
  ],
  "CLN-133": [
