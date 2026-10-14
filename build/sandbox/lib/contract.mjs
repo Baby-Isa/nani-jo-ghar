@@ -628,7 +628,9 @@ function check18(tl, segs, add) {
         const k = `tick|${s && s.key}|${x.id}`;
         if (!ok && !seen.has(k)) { seen.add(k); add("contract-18", e.t, `${s ? s.key : "?"}: the row "${x.text}"${x.key ? ` (${x.key})` : ""} ticked with no step-close logged for it in the ${TICK_AFTER / 1000} s before`); }
       }
-      if (!x.en && !p.en && letters(p.text) && letters(x.text) && p.text !== x.text) {
+      // a hidden count ("•••") written in when it is heard (decision 57) is not a change of words
+      const masked = (a, b) => /•/.test(a) && new RegExp("^" + a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/•+/g, "\\S+") + "$", "u").test(b);
+      if (!x.en && !p.en && letters(p.text) && letters(x.text) && p.text !== x.text && !masked(p.text, x.text)) {
         const k = `words|${s && s.key}|${x.id}|${p.text}|${x.text}`;
         if (!seen.has(k)) { seen.add(k); add("contract-18", e.t, `${s ? s.key : "?"}: the row${x.key ? ` ${x.key}` : ""} changed its words mid-stage, "${p.text}" to "${x.text}"`); }
       }
