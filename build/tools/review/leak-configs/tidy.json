@@ -1,1 +1,1 @@
-{"id": "tidy", "adapter": "script", "script": "build/tools/review/leak-games/tidy.mjs", "about": "Tidy up: generator checks (--gen) and the bot (--bot) (Node)", "args": ["--gen", "1000", "--bot", "500"], "knownFail": "MOD-03 (the fruit box L3 corner prior): fix it and remove this line"}
+{"id": "tidy", "adapter": "script", "script": "build/tools/review/leak-games/tidy.mjs", "about": "Tidy up: generator checks (--gen) and the bot (--bot) (Node)", "args": ["--gen", "1000", "--bot", "500"]}

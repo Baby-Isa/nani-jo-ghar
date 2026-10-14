@@ -270,9 +270,13 @@
     for (let i = 0; i < nCount; i++) {
       const word = nextWord();
       if (!word) return null;
-      const n = int(rng, kn.count[0], kn.count[1]);
+      // MOD-03 (check 5, flat priors): the place first, from every place on offer, then the number from what fits
+      // there. Drawing the number first re-rolled every big count aimed at a small place (the box's middle holds
+      // one), so the middle was said 0.7x its share and every other place more (fru-05 in the corners 1.67x, z=4.3)
       const g = pick(rng, addressable);
-      if (groupFree(sol, B, g) < n) return null;
+      const room = groupFree(sol, B, g);
+      if (room < kn.count[0]) return null;
+      const n = int(rng, kn.count[0], Math.min(kn.count[1], room));
       for (let k = 0; k < n; k++) add(word, {}, freeIn(rng, sol, B, g));
       const spare = perKind ? Math.max(1, perKind - n) : 1;
       for (let k = 0; k < spare; k++) add(word, {});
