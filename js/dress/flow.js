@@ -176,23 +176,40 @@
     const L = lab;
     const D = Dress.data;
     const people = ["", "nana", "ma", "cousin"];
+    // MOD-05: the lab lays out wide (settings | games and the leak check) so it fits a phone held sideways without scrolling;
+    // the two paragraphs a grown-up reads (what the game is, what the leak check does) sit behind the panel's "?", as on
+    // Cook's title (R4; Cook.grownUps in js/cook/flow.js, the same .gu-btn and .gu-pop)
     const p = UI.panel(
-      `<div class="title-wrap"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="">
+      `<button type="button" class="rail-btn gu-btn" id="gu-btn" aria-label="For grown-ups" aria-expanded="false">?</button>
+      <div class="gu-pop hidden" id="gu-pop" role="dialog" aria-label="For grown-ups">
+        <h3>Dress up</h3>
+        <p>Someone says in Kutchi what they want to wear; you put it on them, lay it out, or sew it on. <b>Greybox</b>: shapes and colours only, every clothes and colour word an English placeholder until the family gives it.</p>
+        <h3>Leak check</h3>
+        <p>The bot plays 200 rounds of each game at this level, on screen, seeing only the screen. The ear-star rate should be under 10% (the design budget is 5%); build/leak_dress.mjs runs the same check in Node.</p>
+      </div>
+      <div class="title-wrap"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="">
       <div><h1>Dress up</h1>
-      <p>Someone says in Kutchi what they want to wear; you put it on them, lay it out, or sew it on. <b>Greybox</b>: shapes and colours only, every clothes and colour word an English placeholder until the family gives it.</p></div></div>
+      <p class="dl-links"><a href="cook.html">Cook with Nani</a> · <a href="find.html">Find it</a>${Cook.storageOK ? "" : " · Progress can't be saved in this browser window."}</p></div></div>
+      <div class="dl-cols">
+      <div class="dl-set">
       <h2>Dress lab</h2>
       <div class="lab-row"><span class="lab-lbl">Level</span><div class="seg" role="group" aria-label="Level">${[1, 2, 3].map((n) => `<button data-level="${n}" class="${n === L.level ? "on" : ""}">Level ${n}</button>`).join("")}</div></div>
       <div class="lab-row"><span class="lab-lbl">Client</span><div class="seg" role="group" aria-label="Client">${people.map((w) => `<button data-who="${w}" class="${w === L.who ? "on" : ""}">${w ? esc(D.people[w].name) : "Any"}</button>`).join("")}</div></div>
-      <label class="lab-check"><input type="checkbox" id="lab-helps" ${L.helps ? "checked" : ""}> Big Ma helps (after a slip the right thing glows; costs the no-help star)</label>
       <div class="lab-row"><span class="lab-lbl">Bot</span><div class="seg" role="group" aria-label="The bot plays">${["", "random", "salient", "frequent"].map((s) => `<button data-bot="${s}" class="${s === L.bot ? "on" : ""}">${s || "Off"}</button>`).join("")}</div></div>
+      <label class="lab-check"><input type="checkbox" id="lab-helps" ${L.helps ? "checked" : ""}> Big Ma helps (after a slip the right thing glows; costs the no-help star)</label>
+      </div>
+      <div class="dl-play">
       <div class="lab-grid">${GAMES.map((k) => `<button data-game="${k}"><b>${esc(D.games[k].id)}</b> ${esc(D.games[k].name)}<small>${esc(D.games[k].verb)}</small></button>`).join("")}<button disabled><b>G5</b> Going out<small>phase 3 (logic and bot only)</small></button></div>
-      <h3>Leak check</h3>
-      <p>The bot plays 200 rounds of each game at this level, on screen, seeing only the screen. The ear-star rate should be under 10% (the design budget is 5%); build/leak_dress.mjs runs the same check in Node.</p>
-      <div class="btn-row"><button class="btn" id="lab-leak">Bot × 200</button></div>
+      <div class="dl-leak"><h3>Leak check</h3><button class="btn" id="lab-leak">Bot × 200</button></div>
       <div id="lab-out"></div>
-      <p style="margin-top:14px;font-size:13px"><a href="cook.html">Cook with Nani</a> · <a href="find.html">Find it</a>${Cook.storageOK ? "" : " · Progress can't be saved in this browser window."}</p>`,
+      </div>
+      </div>`,
       { title: true }
     );
+    $("#gu-btn").addEventListener("click", () => {
+      const open = $("#gu-pop").classList.toggle("hidden") === false;
+      $("#gu-btn").setAttribute("aria-expanded", String(open));
+    });
     p.querySelectorAll("[data-level]").forEach((b) => b.addEventListener("click", () => ((L.level = Number(b.dataset.level)), showLab())));
     p.querySelectorAll("[data-who]").forEach((b) => b.addEventListener("click", () => ((L.who = b.dataset.who), showLab())));
     p.querySelectorAll("[data-bot]").forEach((b) => b.addEventListener("click", () => ((L.bot = b.dataset.bot), showLab())));
