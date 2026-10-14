@@ -5738,8 +5738,31 @@
     "dom:#mission"
    ],
    "expect": null,
-   "note": "one review at serve (the station's Done: the face circle over the dish), happy or frown; wrong marks the wrong row",
+   "note": "a right serve after live mistakes (the mistake player's wrong jar is refused at the tap, so the cup served is right): at the station's Done one large round face per person over their own glass, happy, with the praise; no small rim badge beside it; the card then folds to its headline (the dish is done). The earlier frames are the greeting and the stove, before Done",
    "max": 6
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "serve-wrong",
+   "level": 2,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": [
+    "/(hakro|ba|trae|char) khun/"
+   ],
+   "at": "drv:review-face",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "crop:#mission",
+    "dom:#mission"
+   ],
+   "expect": [
+    "count:#mission .oc-row.wrong>=1"
+   ],
+   "note": "a wrong serve (salt left in one cup): the review at Done is one large round face per person over their own glass, the wrong cup's person frowning (never happy; the frown's art is CK-31's) and the other happy; the wrong row on that person's card red and the card open (never folded to its headline). Machine: a red row visible"
   }
  ],
  "CK-08": [
@@ -13305,6 +13328,222 @@
     "pass"
    ],
    "note": "contract-21 over the eye game: a tap on the yes/no pills while a line plays logs an act"
+  }
+ ],
+ "SH-88": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.rs-card"
+   ],
+   "expect": [
+    "noFinding:scroll-container"
+   ],
+   "note": "the end-of-round word review with the English under its words on a short phone: the words panel never scrolls sideways (it ran 562>560 at 800x360, 606>604 at 844x390: the corner speaker badges 2 px past it). Machine: the zero-tolerance lint's scroll-container (noClip is not used: each corner speaker badge hangs past its own tile by design)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.rs-card"
+   ],
+   "expect": [
+    "noFinding:scroll-container"
+   ],
+   "note": "the same at chai-tray L4 (more words on the page)"
+  }
+ ],
+ "CLN-151": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1180x820",
+    "1280x800"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.njg-rq-card",
+   "after": null,
+   "capture": [
+    "crop:.njg-rq-card"
+   ],
+   "expect": [
+    "noFinding:scroll-container",
+    "noClip:div.njg-rq-card"
+   ],
+   "note": "heal-foot's request pop-up card, open and fitted: the card inside never scrolls (div.cl-card.njg-rq-body ran 92>90, 156>154, 134>132)",
+   "delay": 700
+  },
+  {
+   "flow": "clinic:heal-extra-hair",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-hair-jar",
+   "after": null,
+   "capture": [
+    "crop:aside.cl-side"
+   ],
+   "expect": [
+    "noFinding:scroll-container"
+   ],
+   "note": "the parked hair game's sidebar card on a short phone: whole, no scroll (section.cl-card ran 92>54). Machine: the lint's scroll-container (noClip is not used: the face circle crops its picture by design)"
+  }
+ ],
+ "CK-36": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "station-lab-parts-open",
+   "after": null,
+   "capture": [
+    "crop:#panel"
+   ],
+   "expect": [
+    "noFinding:scroll-container",
+    "noFinding:text-offscreen"
+   ],
+   "note": "the Station lab (a grown-ups' testers' list, marked data-grown) with its parts open: the zero-tolerance lint (scroll-container, text-offscreen) is for the child's screens; it found 862>744 ... 855>366 here"
+  },
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "title-grown-ups",
+   "after": null,
+   "capture": [
+    "crop:#panel"
+   ],
+   "expect": [
+    "noFinding:scroll-container",
+    "noFinding:text-offscreen"
+   ],
+   "note": "the title with its grown-ups' '?' open on a short phone (383>336): the pop sits in the panel's flow, the panel may scroll as a grown-ups' view"
+  },
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "shop-grown-ups",
+   "after": null,
+   "capture": [
+    "crop:#panel"
+   ],
+   "expect": [
+    "noFinding:scroll-container",
+    "noFinding:text-offscreen"
+   ],
+   "note": "the shop with its grown-ups' '?' open on a short phone (672>336)"
+  }
+ ],
+ "CK-37": [
+  {
+   "flow": "cook:day6",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "finale",
+   "after": null,
+   "capture": [
+    "crop:#panel"
+   ],
+   "expect": [
+    "noFinding:scroll-container",
+    "noClip:div#panel"
+   ],
+   "note": "day 6's finale on a short phone: the panel whole, no scroll (div#panel ran 376>336)"
+  }
+ ],
+ "MOD-04": [
+  {
+   "flow": "mode:tidy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "result",
+   "after": null,
+   "capture": [
+    "crop:#panel"
+   ],
+   "expect": [
+    "noFinding:scroll-container",
+    "noClip:div#panel"
+   ],
+   "note": "Tidy up's result panel on a short phone: whole, no scroll (div#panel ran 357>331)"
+  }
+ ],
+ "MOD-03": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/leak.mjs tidy"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the tidy leak bot at every level of every game: the generator's flat priors (no thing, place pair over 1.5x its fair share and clearly not chance: seed 1 flagged fru-05 in the box's corners 1.67x, z=4.3, at L3) and every blind strategy under 10%; exit 0"
   }
  ]
 }

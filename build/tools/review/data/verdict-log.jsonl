@@ -153,3 +153,16 @@
 {"id":"CLN-153","run":"ev-20261014-135157-o4m","event":"built","date":"2026-10-14"}
 {"id":"SH-10","run":"ev-20261014-134716-k7l","verdict":"PASS","spec":"d637922b7ce30994c763","judge":"Claude Opus 5.5 [claude-opus-5-5], judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00","date":"2026-10-14"}
 {"id":"SH-10","run":"ev-20261014-134716-k7l","event":"built","date":"2026-10-14"}
+{"id":"SH-88","run":"ev-20261014-141125-ihx","verdict":"FAIL","spec":"66497d813bcc298c69fe","judge":"expect","date":"2026-10-14"}
+{"id":"CK-36","run":"ev-20261014-141125-ihx","verdict":"FAIL","spec":"92ede938b53f2675e046","judge":"expect","date":"2026-10-14"}
+{"id":"CK-37","run":"ev-20261014-141125-ihx","verdict":"FAIL","spec":"f956ebce749ca40dbc95","judge":"expect","date":"2026-10-14"}
+{"id":"MOD-04","run":"ev-20261014-141125-ihx","verdict":"FAIL","spec":"0d98ff513fb72a849bc4","judge":"expect","date":"2026-10-14"}
+{"id":"SH-88","run":"ev-20261014-143448-dlf","verdict":"FAIL","spec":"7933625b76802a478813","judge":"expect","date":"2026-10-14"}
+{"id":"CLN-151","run":"ev-20261014-143448-dlf","verdict":"FAIL","spec":"e286fb0d4dff495e9e61","judge":"expect","date":"2026-10-14"}
+{"id":"MOD-03","run":"ev-20261014-141210-f7s","verdict":"FAIL","spec":"80e1fc0b465108234585","judge":"expect","date":"2026-10-14"}
+{"id":"SH-88","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"7933625b76802a478813","judge":"expect","date":"2026-10-14"}
+{"id":"CK-36","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"92ede938b53f2675e046","judge":"expect","date":"2026-10-14"}
+{"id":"CK-37","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"f956ebce749ca40dbc95","judge":"expect","date":"2026-10-14"}
+{"id":"CLN-151","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"e286fb0d4dff495e9e61","judge":"expect","date":"2026-10-14"}
+{"id":"MOD-03","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"80e1fc0b465108234585","judge":"expect","date":"2026-10-14"}
+{"id":"MOD-04","run":"ev-20261014-144157-8oo","verdict":"PASS","spec":"0d98ff513fb72a849bc4","judge":"expect","date":"2026-10-14"}
