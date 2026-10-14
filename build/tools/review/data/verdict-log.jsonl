@@ -14,3 +14,8 @@
 {"id":"CLN-148","run":"ev-20261014-003211-we8","event":"built","date":"2026-10-14"}
 {"id":"CLN-143","run":"ev-20261014-004702-abn","verdict":"FAIL","spec":"8e34b129ddc05c19e8d8","judge":"expect","date":"2026-10-14"}
 {"id":"CLN-143","run":"ev-20261014-004524-xbl","verdict":"PASS","spec":"8e34b129ddc05c19e8d8","judge":"expect","date":"2026-10-14"}
+{"id":"CLN-144","run":"ev-20261014-021334-3v9","verdict":"PASS","spec":"76379985e45d86823ed5","judge":"expect","date":"2026-10-14"}
+{"id":"CLN-145","run":"ev-20261014-021334-3v9","verdict":"PASS","spec":"846dc683b1aebf33658e","judge":"expect","date":"2026-10-14"}
+{"id":"CLN-143","run":"ev-20261014-031151-81u","verdict":"PASS","spec":"8e34b129ddc05c19e8d8","judge":"expect","date":"2026-10-14"}
+{"id":"CLN-144","run":"ev-20261014-031151-81u","verdict":"PASS","spec":"76379985e45d86823ed5","judge":"expect","date":"2026-10-14"}
+{"id":"CLN-145","run":"ev-20261014-031151-81u","verdict":"PASS","spec":"846dc683b1aebf33658e","judge":"expect","date":"2026-10-14"}

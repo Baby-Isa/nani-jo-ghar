@@ -1779,36 +1779,36 @@
   "date": "2026-10-13"
  },
  "CLN-143": {
-  "hash": "079d8789e2f112f5691d",
+  "hash": "bdee1fa6df4efc3a44f4",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-004524-xbl",
-  "commit": "e7e5f21",
+  "run": "ev-20261014-031151-81u",
+  "commit": "287a056",
   "date": "2026-10-14"
  },
  "CLN-144": {
-  "hash": "5a0286c5b71c7785c56d",
+  "hash": "de02bcda1f8fd2872217",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-002208-25n",
-  "commit": "9376780",
+  "run": "ev-20261014-031151-81u",
+  "commit": "287a056",
   "date": "2026-10-14"
  },
  "CLN-145": {
-  "hash": "8c1e0a7820574531a89c",
+  "hash": "ba7182b9ae1ab7a314e4",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261014-002208-25n",
-  "commit": "9376780",
+  "run": "ev-20261014-031151-81u",
+  "commit": "287a056",
   "date": "2026-10-14"
  },
  "CLN-146": {
