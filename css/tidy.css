@@ -39,6 +39,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .rail-btn { min-height: 40px; }
   #nani-line { font-size: 12px; }
   #nani-line img, .r-face { width: 26px; height: 26px; }
+  /* MOD-04: the result panel fits a phone's height whole (it scrolled by 26 px at 800x360) */
+  #panel { padding: 10px 16px; }
+  #panel h2, #panel h3 { margin: 0; }
+  #panel p { margin: 4px 0; }
+  .result-stars { margin: 2px 0; }
+  .result-stars .star { width: 34px; height: 34px; }
+  #panel .lab-row { margin: 4px 0 0; }
 }
 @media (orientation: portrait) {
   #app { flex-direction: column; }
