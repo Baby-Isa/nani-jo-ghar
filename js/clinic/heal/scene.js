@@ -346,7 +346,10 @@
     const Voice = Kit && Kit.Voice;
     if (Voice) {
       Voice.speakers.patient = () => faceBox;
-      Voice.speakers.doctor = () => doc.querySelector(".cl-docbox .ng-face") || null;
+      // CLN-140 (T29, decision 55): he is off screen in a close-up, so his lines are said from his box (Voice.toGuide: the
+      // line in the box while it plays), never a bubble pointing at the sidebar from the play area (contract-4); his face
+      // there is visible again now that the box keeps its shape in the heal stage
+      Voice.speakers.doctor = () => null;
     }
 
     /* ---- lines ---- */
