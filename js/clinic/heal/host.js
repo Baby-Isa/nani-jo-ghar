@@ -390,7 +390,10 @@
     // they were: the goal in the doctor's box, the whole card at once, no zoom, the ✓ always there
     const v2 = !!def.cues;
     const goal = def.why && def.why.goal ? HOST.line(def.why.goal, data) : "";
-    card.setTitle(v2 ? goal : "", face);
+    // CLN-140 (G3, T29): the doctor's box stays at the top of the sidebar as in every other stage: his face and his
+    // line for the step now live there (he's off screen), so the card carries no second face of his (R4, one face per
+    // person): the card is the goal and the steps. The parked games keep their old card (face, no goal headline).
+    card.setTitle(v2 ? goal : "", v2 ? null : face);
     if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
@@ -401,9 +404,8 @@
       if (!finished && fresh.length) card.speak(fresh);
     });
     card.setRows([]);
-    // R4 / T29 (decision 55): the doctor is the card's asker and the off-screen guide: one face (the card's), his
-    // line for the step now as the card's top strip; the box keeps only the bulb and the mute
-    if (v2 && screen.stripMode) screen.stripMode(true);
+    // T29 (CLN-140, was R4's strip): the doctor's line for the step now is in his box at the top, never a strip on the
+    // card (the box keeps its shape in every stage)
     // decision 41 (S02-F, C open item): from level 3 a count is heard, never read: the strip shows the step's line
     // without its number word (the doctor still says it whole)
     const NUM_EN = /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\b\s*/gi;
