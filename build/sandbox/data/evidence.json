@@ -3564,20 +3564,23 @@
  "CHAI-13": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/(hakro|ba|trae) khun/"
+   ],
    "at": "every:cook-done:tap",
    "after": null,
    "capture": [
-    "zoom2:canvas:teaspoon"
+    "strip:canvas:hob:3x250"
    ],
    "expect": null,
-   "note": "a real teaspoon for the sugar stir (it shows while the cups are filled)"
+   "note": "the code part of CHAI-13 (the real teaspoon picture is art), at a child's pace: at each sugar tap the drawn teaspoon flies in with its heap and goes round the pan twice (0.9 s), over its puff, never hidden by it",
+   "max": 6
   }
  ],
  "CHAI-14": [

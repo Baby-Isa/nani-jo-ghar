@@ -307,7 +307,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const rx = vessel.rim.rx * 0.45;
     const ry = vessel.rim.ry * 0.45;
     const L = vessel.rim.rx / 60;
-    const sp = S.track(S.add.graphics().setDepth(D.fx - 1));
+    const sp = S.track(S.add.graphics().setDepth(D.fx + 1)); // CHAI-13 (S06): the stirring teaspoon over the puff, never hidden by it
     const sw = S.track(S.add.graphics().setDepth(D.item + 0.5));
     return new Promise((resolve) => {
       S.tweens.addCounter({

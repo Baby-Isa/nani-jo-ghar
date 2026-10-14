@@ -25,7 +25,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const S = z.S;
     const col = St.heapColor(word, 0xffffff);
     const c = S.centre(bowl);
-    const sp = S.track(S.add.container(c.x, c.y - z.L(20)).setDepth(D.fx));
+    const sp = S.track(S.add.container(c.x, c.y - z.L(20)).setDepth(D.fx + 1)); // CHAI-13: over the puff it makes, so the teaspoon is seen
     // CHAI-13: a real teaspoon (the art run's picture once it lands, art.s02 "teaspoon"), its bowl heaped
     if (St.hasArt(S, "teaspoon")) {
       const im = S.add.image(0, 0, St.artKey("teaspoon"));
@@ -45,8 +45,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     S.puff(p.x, p.y, col, z.L(36)); // CK-27: the one shared puff (no spray of dots, CK-06)
     await Cook.wait(130);
     sp.destroy();
-    // into a pot or a glass: a quick stir (28 Sept, s8)
-    if (into.rim) await St.stirIn(S, into, { ms: 520, turns: 1.5 });
+    // into a pot or a glass: a stir with the teaspoon (28 Sept, s8; CHAI-13, S06: two slow turns, so the spoon is seen
+    // going round in the pan, not a blink; nothing waits on it: the next tap is taken while it stirs)
+    if (into.rim) await St.stirIn(S, into, { ms: 900, turns: 2 });
   }
   Cook.Spoon = { spoon };
 
