@@ -4,7 +4,7 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
 ---
 # /art-run: the block, the judge, the cutter
 
-**For:** art packs. Method: `docs/design-language/art-pipeline.md` (§15 the tools and the runner loop), look: `art-bible.md`. Rules: D3, D12, decisions 29, 43; non-negotiables 13, 16. Zafar approves only art of real people (Nani, Big Ma, the doctor).
+**For:** art packs. Method: `docs/design-language/art-pipeline.md` (§15 the tools and the runner loop), look: `art-bible.md`. Rules: non-negotiables 13 and 16 in CLAUDE.md. Zafar approves only art of real people (Nani, Big Ma, the doctor).
 
 ## Before the run
 1. Plan first: what each object is for, how it's seen in game, who stands where (D-rules). The pack's plan is `docs/design-language/art-plans/<pack>-art-plan.md`; its run spec `build/tools/art/specs/<pack>.run.yaml`.
@@ -14,7 +14,7 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
    python3 build/tools/art/artblock.py --spec build/tools/art/specs/<pack>.run.yaml
    ```
    A redo: `--redo docs/design-language/art-plans/<pack>-redo-list.yaml` gives a block of just those lines.
-3. Put it to Zafar: image count, expected redos, time; the block is pasted into Chrome by him, ready as is (A10). No art run without his go (decision 43).
+3. Put it to Zafar: image count, expected redos, time; the block is pasted into Chrome by him, ready as is. No art run without his go.
 
 ## While it runs
 - The runner loop in the block keeps N windows generating and commits kept images straight to `sources/art/<pack>/` on `main` (no downloads, no manual steps).
@@ -38,5 +38,5 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
 
 Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
 
-- **Only make art for items the game will use;** reuse approved art where it fits, but say so. (D10, D23)
+- **Only make art for items the game will use;** reuse approved art where it fits, but say so.
 - **Decision 29 (5 Oct):** Zafar approves art only for characters based on real people; everything else is judged pass/fail by the runner and Claude; art runs need no manual steps.

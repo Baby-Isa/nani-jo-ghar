@@ -19,8 +19,8 @@ description: Process a new round of Mum's recordings into clips, the family-audi
    ```
    Clips cut, normalised, merged into `data/family-audio.json`; engine rebuilt; new gap counts printed.
 4. Write the answers into `docs/language/grammar-notes.md`, `lexicon.md` and `build/lang/hand/` (each citing the recording and time), then re-run `node build/lang/import_all.mjs`.
-5. Report `build/reports/mum-YYYY-MM-DD.md` in the 5 Oct shape: headline grammar, new words, clips (none ear-checked yet), spellings to confirm as a "yes to all except …" list for Zafar (A5).
-6. Tell Zafar the clips wait for his ear in `lab/family-audio.html` (only OK takes ship, G16).
+5. Report `build/reports/mum-YYYY-MM-DD.md` in the 5 Oct shape: headline grammar, new words, clips (none ear-checked yet), spellings to confirm as a "yes to all except …" list for Zafar.
+6. Tell Zafar the clips wait for his ear in `lab/family-audio.html` (only takes marked OK ship).
 
 ## The next sheet
 ```

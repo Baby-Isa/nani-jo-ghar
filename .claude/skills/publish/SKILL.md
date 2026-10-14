@@ -7,7 +7,7 @@ description: Publish the branch to main (the live GitHub Pages site) and confirm
 **For:** the orchestrator, or a session whose brief says it publishes. `publish.mjs` enforces the order (bump, one push to `main`, wait for Pages, shoot the live page).
 
 ## Before
-- `/review` passed at the full matrix; Zafar said publish (B20, decisions 33, 34, 37).
+- `/review` passed at the full matrix; Zafar said publish.
 - No running session is mid-push to the same files.
 
 ## Steps
@@ -23,7 +23,7 @@ description: Publish the branch to main (the live GitHub Pages site) and confirm
    ```
    Bump → commit → push the branch → push `HEAD:main` → poll the site's `js/version.js` until it serves the new stamp → screenshot `labs.html`.
 4. If github.io isn't reachable from the container, it says so: check the `pages-build-deployment` run for the commit (GitHub MCP `actions_list`), then open the site.
-5. Look at the screenshot. Only then tell Zafar it's live (C9): the link, what to play (`labs.html` links every lab), the screenshot.
+5. Look at the screenshot. Only then tell Zafar it's live: the link, what to play (`labs.html` links every lab), the screenshot.
 6. Update `docs/status.md` "What is live" (`/handover`).
 
 ## Never

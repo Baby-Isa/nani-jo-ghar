@@ -14,15 +14,15 @@ description: Turn Zafar's voice-note or play-test feedback into the full report 
    ```
    Writes `build/reports/feedback-<name>.md`: §1 mechanics changed and old art reused (blank), §2 every point (time, his words, screen; cause and fix blank), §3 draft regression rows with the next free ids, §4 coverage of every line.
 3. The points are drafts: merge, split and re-word them; check every cause **in code** (file:line) and write the fix.
-4. Fill §1 first: every mechanic changed (now → proposed) and every old art reused. Anything that removes or replaces a mechanic needs his explicit OK (A4).
+4. Fill §1 first: every mechanic changed (now → proposed) and every old art reused. Anything that removes or replaces a mechanic needs his explicit OK.
 5. Coverage: every transcript line maps to a point or "chatter"; 0 unmapped.
-5a. **Scope, at his strength (decision 78).** For every point ask: one screen, or every game? Anything about a shared thing (pop-ups, cards, buttons, ticks, voice, bubbles, the end screen, characters, art swaps, "every game", "everywhere", "like in Cook") is a Shared row in his full words, with Check "auto: contract check (decision 75) every game", and goes on the contract list (`build/sandbox/lib/contract.mjs`, `regress.mjs` CONTRACT_ROWS) in the sprint that builds it. Never narrow, soften or merge his words; quote them in the row.
-5b. **A second reader before the rows land (decision 78).** A fresh Fable agent reads the transcript and your drafted rows only (not your reasoning) and returns every point it finds MISSING or WEAKENED (the S04 coverage audits are the model: `build/reports/s04-coverage-*.md`). Fix every one; the report's §4 records both readers: 0 unmapped, 0 weakened.
+5a. **Scope, at his strength.** For every point ask: one screen, or every game? Anything about a shared thing (pop-ups, cards, buttons, ticks, voice, bubbles, the end screen, characters, art swaps, "every game", "everywhere", "like in Cook") is a Shared row in his full words, with Check "auto: contract check every game", and goes on the contract list (`build/sandbox/lib/contract.mjs`, `regress.mjs` CONTRACT_ROWS) in the sprint that builds it. Never narrow, soften or merge his words; quote them in the row.
+5b. **A second reader before the rows land.** A fresh Fable agent reads the transcript and your drafted rows only (not your reasoning) and returns every point it finds MISSING or WEAKENED (the S04 coverage audits are the model: `build/reports/s04-coverage-*.md`). Fix every one; the report's §4 records both readers: 0 unmapped, 0 weakened.
 5c. **Old feedback coming back.** If a point repeats an earlier row, the row is **reopened** (not a new row), and §5 of the report says why it slipped (a code reading marked it built, a one-game fix, a narrowed row...).
-6. Put decisions to him as a numbered list with recommendations, "yes to all except …" (A5).
+6. Put decisions to him as a numbered list with recommendations, "yes to all except …".
 7. Same day: add the checked rows to the fix list, `docs/process/regressions.md` (next free ID across it and `docs/archive/regressions-done.md`; one row per point; a status is the current state in a line, no history), then `node build/tools/review/statuscounts.mjs --write` for the status table.
 8. Move the final report to `docs/feedback/<mode>-playtest-<date>.md`.
 
 ## Don't
-Mark anything built here: rows from feedback start open or reopened; only the sprint check's judged evidence moves them (decision 76).
-Paraphrase away his words in §2; build anything before he answers (A1).
+Mark anything built here: rows from feedback start open or reopened; only the sprint check's judged evidence moves them.
+Paraphrase away his words in §2; build anything before he answers.
