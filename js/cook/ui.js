@@ -520,6 +520,20 @@
     UI.step(line, { helpAfter: false });
     return !!(ctx && ctx.guided);
   };
+  /**
+   * PAN-10 (Zafar, 6 Oct PA3): from level 2 Nani's box folds to her face and tools; a tap opens the fuller instruction
+   * (the station's guide line: data.guide[key] through the engine, else its to-record English, grey italic) for a few
+   * seconds. Level 1 keeps her box open: she reads the card once (the request pop-up) and names each thing as it comes.
+   */
+  UI.guideFold = function (on, key = guideKey) {
+    if (!guide || !guide.fold) return;
+    if (!on) return guide.fold(false);
+    const G = (Cook.data && Cook.data.guide) || {};
+    const k = [key, String(key || "").split(":")[0]].find((x) => x && G[x]);
+    if (!k) return guide.fold(true);
+    const line = Lang.guideLine(k, G[k]);
+    guide.fold(true, line.ok ? { full: raHtml(line) } : { full: esc(Lang.plain(line)), rec: true });
+  };
   /** R4 (S02-B, T12): while Nani asks on a card of her own (daar's chop list) her box keeps only its tools (one face). */
   UI.guideStrip = (on) => guide && guide.strip && guide.strip(!!on || !!(mission && mission.stripMode));
   /** The station (or station:phase) whose instruction the box shows. */
@@ -2161,6 +2175,7 @@
     stopReading();
     UI.stepDone();
     if (guide && guide.strip) guide.strip(false);
+    if (guide && guide.fold) guide.fold(false); // PAN-10: a folded box never outlives its order
     $("#mission").classList.add("hidden");
     $("#mission").classList.remove("arriving");
     intro().classList.add("hidden");

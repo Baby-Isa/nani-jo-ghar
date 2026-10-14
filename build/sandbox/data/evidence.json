@@ -3050,7 +3050,7 @@
   }
  ],
  "PAN-10": {
-  "needsDecision": "Pantry wording: card *Muke de* + items, Nani's box the task (*Muke chai lai de*, to check with Mum), and from L2 her box folds to a minimised state (pending decision)",
+  "needsDecision": "Pantry wording: card *Muke de* + items, Nani's box the task (*Muke chai lai de*, to check with Mum): waits for Mum's Round 5 (decision 83). The code part is built (S06): L1 one item at a time after the card is read once; from L2 her box folded to her face, a tap opens the fuller instruction (its English, grey italic, to record)",
   "probes": [
    {
     "flow": "cook:fetch",
@@ -3065,15 +3065,15 @@
     ],
     "profile": "seen",
     "want": null,
-    "at": "request",
+    "at": "kind-tap",
     "after": null,
     "capture": [
+     "crop:#side",
      "voice",
-     "dom:#mission",
      "dom:.njg-guide"
     ],
     "expect": null,
-    "note": "L1: she reads the card once, then names items one at a time as the child goes; L2+: the guide box folded"
+    "note": "L1: the card read once (the request pop-up), then Nani names each thing as the child goes (her box open); L2+: her box folded to her face and tools (no line), a tap on it opens the fuller instruction for 5 s"
    }
   ]
  },

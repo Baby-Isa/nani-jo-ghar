@@ -23,6 +23,10 @@
  *   g.el                    the box
  *   g.strip(on)             R4: the asker is the guide (Nani's pantry list): the box keeps only its tools (no second
  *                           face, no line); the host shows the line as the card's top strip
+ *   g.fold(on, {full, rec, ms})  PAN-10 (Zafar, 6 Oct PA3: "then she could be minimised... expands to give the fuller
+ *                           instruction"): the box folds to her face and tools; a tap on the box opens the fuller
+ *                           instruction (`full`, html; rec: a line still to record) for ms (5 s), then it folds again.
+ *                           Folded, it also stands in for the strip (her face is back: the box is hers to open)
  *   NaniGuide.muted()       is her voice off? (every mode asks this before she speaks)
  *
  * The step rules (decision 55, rules R1-R4 of docs/design-language/guide-and-card.md), one for every mode:
@@ -196,6 +200,27 @@
     });
     const bulb = el.querySelector(".ng-bulb");
     if (bulb && opts.onBulb) bulb.addEventListener("click", (ev) => (ev.stopPropagation(), opts.onBulb(bulb)));
+    // PAN-10: the fuller instruction, shown when the folded box is opened
+    const full = document.createElement("span");
+    full.className = "ng-say ng-full";
+    el.appendChild(full);
+    const fold = { on: false, ms: 5000, timer: null };
+    const shut = () => {
+      clearTimeout(fold.timer);
+      fold.timer = null;
+      el.classList.remove("ng-open");
+      el.setAttribute("aria-expanded", "false");
+    };
+    el.addEventListener("click", (ev) => {
+      if (!fold.on || (ev.target.closest && ev.target.closest("button"))) return;
+      if (el.classList.contains("ng-open")) return shut();
+      el.classList.add("ng-open");
+      el.setAttribute("aria-expanded", "true");
+      const fl = full.querySelector(".fit");
+      if (root.FitText && fl) root.FitText.fit(fl);
+      clearTimeout(fold.timer);
+      fold.timer = setTimeout(shut, fold.ms);
+    });
     const off = G.onMute(paint);
     paint();
     const fit = () => root.FitText && say.firstChild && root.FitText.fit(say.firstChild);
@@ -223,7 +248,22 @@
       strip(on) {
         el.classList.toggle("ng-strip", !!on);
       },
+      fold(on, { full: html = "", rec = false, ms = 5000 } = {}) {
+        fold.on = !!on;
+        fold.ms = ms;
+        shut();
+        el.classList.toggle("ng-min", fold.on);
+        if (fold.on) {
+          el.setAttribute("aria-expanded", "false");
+          full.innerHTML = html ? `<span class="ng-line fit fit2">${html}</span>${rec ? `<small class="ng-rec">to record</small>` : ""}` : "";
+          full.classList.toggle("rec", !!rec);
+        } else {
+          el.removeAttribute("aria-expanded");
+          full.innerHTML = "";
+        }
+      },
       destroy() {
+        clearTimeout(fold.timer);
         off();
         if (ro) ro.disconnect();
         el.innerHTML = "";
