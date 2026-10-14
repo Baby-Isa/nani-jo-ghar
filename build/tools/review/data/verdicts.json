@@ -392,17 +392,17 @@
   "date": "2026-10-12"
  },
  "CHAI-13": {
-  "hash": "314433891fd40535d9aa",
+  "hash": "fbc564e38f20bee562a1",
   "dhash": [
-   "20b070949c8c9ce8"
+   "20b030949c9c9ce8"
   ],
   "verdict": "FAIL",
-  "line": "A, the sugar frames (0-300 ms, \"khun\" label) show no teaspoon flying in or stirring: 0 ms has only the white puff discs on the milk, and 300 ms has just a tiny grey sliver at the pan's right rim. A silver teaspoon only shows up from 600 ms, under the \"elchi\" label with cardamom already in the pan, lying across it at almost the same angle in every frame, so the sugar stir with a real teaspoon is not shown (flaws: from 600 ms the left chip \"trae\" is cut off by the crop edge)",
+  "line": "A, the only sugar frame (0 ms, \"khun\" label) shows the white sugar puff on the milk and no teaspoon anywhere, not over the puff and not flying in from the jar. The silver spoon first appears at 920 ms, when the label already reads \"elchi\" and cardamom is in the pan, so the sugar stir with a real teaspoon is still not shown [flaws: the strip is labelled 6x300 but its frames are about 800 ms apart (0/920/1655/2415/3323/4027 ms), so most of the 0.9 s stir window was never sampled; from 920 ms the leftmost chip (\"trae\" and its icon) is cut off by the crop edge]",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-042419-l3k",
-  "commit": "e6088d1",
-  "png": "build/screenshots/evidence/ev-20261014-042419-l3k/CHAI-13.png",
+  "run": "ev-20261014-064034-e9u",
+  "commit": "a9d2cfea",
+  "png": "build/screenshots/evidence/ev-20261014-064034-e9u/CHAI-13.png",
   "date": "2026-10-14"
  },
  "CHAI-14": {
@@ -862,18 +862,18 @@
   "date": "2026-10-13"
  },
  "CK-21": {
-  "hash": "b669f378f4538a892c3c",
+  "hash": "189ae8a230cc42edcae0",
   "dhash": [
-   "e5af978f9c9ec288",
-   "ccccc932e09cb4a4"
+   "e58f978f9c9ec288",
+   "cc8dc932e09cbca4"
   ],
   "verdict": "FAIL",
-  "line": "A, half the row is now met: in all six serve crops (A1 maani plate, A2 basket, A3 chai glass, B1 basket, B2 daar bowl, B3 daar bowl plus maani plate) the dish sits in its tray, its base cut flat by the tray's own wooden front wall, with no rim-standing and no wrong-picture patch. But no contact shadow falling to the right shows under any dish in A1-A3 or B1-B3: the tray floor reads the same plain brown on both sides of each dish (clearest at A3's glass and B2's bowl), so \"shadows to the right\" is not shown at any serve.",
+  "line": "A, in all six serve crops (A1 maani plate, A2 basket, A3 chai glass, B1 basket, B2 daar bowl, B3 daar bowl plus maani plate) the dish sits in its tray with the tray's front wall drawn over its base, nothing on the rim and no floating, but there is still no contact shadow falling to the right under any dish: the tray floor looks the same plain brown on both sides of each dish (clearest beside A3's glass and B2's bowl), so \"shadows to the right\" is not shown at any serve",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-043957-gnj",
-  "commit": "e6088d1b",
-  "png": "build/screenshots/evidence/ev-20261014-043957-gnj/CK-21.png",
+  "run": "ev-20261014-065344-z8b",
+  "commit": "a9d2cfea",
+  "png": "build/screenshots/evidence/ev-20261014-065344-z8b/CK-21.png",
   "date": "2026-10-14"
  },
  "CK-22": {
@@ -983,18 +983,18 @@
   "date": "2026-10-13"
  },
  "CK-31": {
-  "hash": "aba9a0e093762999aeae",
+  "hash": "bebe97a056dc4a86b176",
   "dhash": [
-   "ce87c9e9e951a387",
-   "a3311b8b1b5f123b"
+   "8e0349e9e951a38e",
+   "c231198b1b5d123b"
   ],
   "verdict": "PASS",
-  "line": "A, frame 1 (the wrong cup's review at 2x) shows Nana's review face frowning, mouth turned down and brows knit, no smile, sitting over the cup's slot on the tray; B1 shows the same at L2: the wrong cup's face frowns while the right cup's face beside it is happy; A2/B2 are the redone cup and are happy, as the probe says (flaws: none seen, no text, no clipping, no overlap, current art; the 2x crop shows only the glass rim under the face, not the whole dish)",
-  "panel": "A",
+  "line": "B, B1 the wrong serve at L2: the face over the wrong glass on the tray frowns (brows knit, mouth turned down, not happy) while the right cup's face beside it smiles; B2 the redone cup's face is happy; A1 the same frown at L1 (flaw, off the row's point: in A the face sits on a bright green and black backdrop with a dotted green edge instead of the wooden tray and glass, so it looks like a chroma or debug layer showing through, or a bad crop; no dish is visible under it)",
+  "panel": "B",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-040741-6zs",
-  "commit": "e6088d1",
-  "png": "build/screenshots/evidence/ev-20261014-040741-6zs/CK-31.png",
+  "run": "ev-20261014-071456-yen",
+  "commit": "bdadffeb",
+  "png": "build/screenshots/evidence/ev-20261014-071456-yen/CK-31.png",
   "date": "2026-10-14"
  },
  "CK-32": {
@@ -1485,18 +1485,18 @@
   "date": "2026-10-13"
  },
  "CLN-118": {
-  "hash": "f00218d3a389df3bf6ae",
+  "hash": "774da84d514b7c6c29b9",
   "dhash": [
-   "4040878d8b83c0c0",
-   "011c1a1913030303"
+   "40408d878786c0c0",
+   "0114161111030303"
   ],
   "verdict": "FAIL",
-  "line": "B, the fresh knee round's end card now has no stopwatch, crown or bulb counts, but its left half is an empty white block where the badges were, and the word cards carry written English glosses for the child (\"one\", \"four\", \"and then\", \"knee\"). The sheet also shows only the knee's end card: none of the other eight heal games, and no step of the taught round itself (counts, sizes or sides during play).",
+  "line": "B, the fresh knee round's end card has no counts, scores or timer and the empty left block is gone, but the word cards still show written English glosses under the Kutchi for the child (\"one\", \"four\", \"and then\", \"knee\"). The sheet also shows only the knee's end card: none of the other eight heal games and no step of the taught round during play (counts, sizes or sides), which the Check asks for.",
   "panel": "B",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-033140-49j",
-  "commit": "5e36689",
-  "png": "build/screenshots/evidence/ev-20261014-033140-49j/CLN-118.png",
+  "run": "ev-20261014-063144-6es",
+  "commit": "b3f1ab8d",
+  "png": "build/screenshots/evidence/ev-20261014-063144-6es/CLN-118.png",
   "date": "2026-10-14"
  },
  "CLN-119": {
