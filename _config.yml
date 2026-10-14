@@ -1,0 +1,6 @@
+# GitHub Pages (Jekyll) settings for the live site.
+# sources/ (original art sheets and raw recordings) and build/ (tools, contact sheets, reports) are never loaded by the game;
+# leaving them out keeps the site well under GitHub's 1 GB limit (Zafar, 14 Oct). build/tools/review/sitesize.mjs checks it.
+exclude:
+  - sources
+  - build

@@ -10,6 +10,7 @@
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
  * specs  evidence.mjs --lint-specs: the static pass over build/sandbox/data/evidence.json (no browser; new flags only, a baseline holds the known ones)
  * docs   build/tools/review/docs.mjs (decision 99): the docs' size limits and unique IDs
+ * size   build/tools/review/sitesize.mjs (Zafar, 14 Oct): the live site stays under 800 MB (GitHub Pages stops deploying near 1 GB)
  * load   build/tools/review/loadcheck.mjs (decision 68, J11): every Cook station and clinic game page loads only the pictures
  *        in its manifest (never another game's); a browser check, so it runs under the browser lock (B16), about 3 minutes
  * Other browser checks are not run here (one at a time under the lock, rule B16): build/check_stamps.mjs, build/lint/layout.test.mjs, the sandbox
@@ -22,7 +23,7 @@ import { args, help, ROOT } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
-const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "leak", "bump", "specs", "docs", "load"];
+const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "leak", "bump", "specs", "docs", "size", "load"];
 const run = (cmd, argv) => spawnSync(cmd, argv, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
 const ls = (dir, ok) => readdirSync(join(ROOT, dir)).filter(ok).map((f) => join(dir, f));
 const results = [];
@@ -82,6 +83,10 @@ if (only.includes("docs")) {
   const r = run(process.execPath, ["build/tools/review/docs.mjs"]);
   note("docs", r.status === 0, (r.stdout.trim().split("\n").pop() || `docs.mjs exited ${r.status}`));
   if (r.status !== 0) console.log((r.stdout.match(/^FAIL .*$/gm) || []).slice(0, 10).map((l) => "     " + l).join("\n"));
+}
+if (only.includes("size")) {
+  const r = run(process.execPath, ["build/tools/review/sitesize.mjs"]);
+  note("size", r.status === 0, (r.stdout.trim().split("\n").pop() || `sitesize.mjs exited ${r.status}`));
 }
 if (only.includes("load")) {
   const r = run("flock", ["-w", "1800", "/tmp/njg-browser.lock", "timeout", "900", process.execPath, "build/tools/review/loadcheck.mjs"]);
