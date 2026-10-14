@@ -224,6 +224,9 @@ test("contract-19 counting rule (checks-to-build 7): from L3 no number written o
   assert.equal(run("cook:daar@L2", "p-seen", [...lapLine("Hakro!", 2000), ...lapLine("Ba!", 2600), ...lapLine("Trae!", 3200)]).length, 0, "the stir's laps said aloud are not counting along");
   assert.equal(run("cook:daar@L3", "p-seen", lapLine("Ba!", 2000)).length, 0, "at every level");
   assert.match(run("cook:daar@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/, "a number with no role still is");
+  // the stir's own request pop-up mid-stage reads the order ("Muke daar khape, ba."): a number said while it is up is heard
+  const pop = (open, t) => ({ type: "c", k: "popup", open, t });
+  assert.equal(run("cook:daar@L2", "p-seen", [{ type: "c", k: "life", what: "request", t: 1990 }, ...line("Muke daar khape,", 2000), pop(true, 2090), ...line("ba.", 2300), ...line("Ba!", 3300), pop(false, 3350)]).length, 0, "the order read in the pop-up is not counting along");
 });
 
 test("contract-18 card rows (checks-to-build 6): a row ticks only within 1 s after its step-close log; no row changes its words mid-stage", async () => {

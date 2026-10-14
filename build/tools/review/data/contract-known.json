@@ -1,10 +1,5 @@
 [
  {
-  "check": "contract-19",
-  "flow": "cook:daar*",
-  "row": "DAAR-24"
- },
- {
   "check": "contract-11",
   "flow": "cook:*",
   "row": "ART-05"

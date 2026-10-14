@@ -570,11 +570,20 @@ function check19(r, tl, segs, v, nums, add) {
     for (const w of e.words || []) if (split(w).some((x) => nums.has(x)) && !seen.has(w)) { seen.add(w); add("contract-19", e.t, `"${w}" writes a number on the card at L${level}`); }
   }
   if (level >= 2) {
+    // the request pop-up reads the order out (a phase's own pop-up mid-stage: the daar stir's "Muke daar khape, ba."):
+    // a number said while it is up is the order, heard, never counting along
+    const pops = [];
+    for (const e of tl) if (e.type === "c" && e.k === "popup") {
+      if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) pops.push({ t0: e.t, t1: null });
+      else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
+    }
+    const asks = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "request").map((e) => e.t);
+    const inPopup = (t) => pops.some((p) => t >= p.t0 - 150 && (p.t1 == null || t <= p.t1)) || asks.some((a) => t >= a && t - a < 150);
     const firstTap = (t) => { const s = segAt(segs, t); const from = s ? s.t0 : -Infinity; const i = tl.find((e) => e.type === "c" && e.k === "input" && !e.popup && e.t >= from); return i ? i.t : Infinity; };
     for (const l of v.lines) {
       // a count-down the game says on its own (the boing jab: the doctor counts down to it) is not counting along; nor are
       // the daar stir's laps, said aloud at every level (DAAR-24 retired, Zafar 14 Oct: the exception D12 asked for)
-      if (l.role === "countdown" || l.role === "laps") continue;
+      if (l.role === "countdown" || l.role === "laps" || inPopup(l.t0)) continue;
       const ws = split(l.text);
       if (ws.length && ws.length <= 2 && ws.every((x) => nums.has(x)) && l.t0 > firstTap(l.t0) && !seen.has(l.text + l.t0)) { seen.add(l.text + l.t0); add("contract-19", l.t0, `"${l.text}" is counting along at L${level}`); }
     }
