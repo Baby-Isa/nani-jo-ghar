@@ -115,3 +115,12 @@
 {"id":"SH-81","run":"ev-20261014-070807-bk5","event":"built","date":"2026-10-14"}
 {"id":"CK-32","run":"ev-20261014-071456-yen","event":"built","date":"2026-10-14"}
 {"id":"CLN-149","run":"ev-20261014-071816-c9g","event":"built","date":"2026-10-14"}
+{"id":"SH-10","run":"ev-20261014-100949-2q0","verdict":"FAIL","spec":"d637922b7ce30994c763","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CLN-26","run":"ev-20261014-100949-2q0","verdict":"PASS","spec":"6f03e571974c0e929b1e","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CLN-139","run":"ev-20261014-100949-2q0","verdict":"FAIL","spec":"79a27a327991b9f4bb4a","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CLN-140","run":"ev-20261014-100949-2q0","verdict":"FAIL","spec":"0016ce3613257958d336","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"PAN-10","run":"ev-20261014-102915-exg","verdict":"FAIL","spec":"79a515ca943ef73f33af","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CLN-118","run":"ev-20261014-103732-xxj","verdict":"FAIL","spec":"0886609ff2acc055f894","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CLN-140","run":"ev-20261014-103732-xxj","verdict":"FAIL","spec":"0016ce3613257958d336","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"ART-20","run":"ev-20261014-105914-fsz","verdict":"FAIL","spec":"da7403dd9c5f546813e6","judge":"Opus judge agent (S06 orchestrator chat; not the builder)","date":"2026-10-14"}
+{"id":"CLN-26","run":"ev-20261014-100949-2q0","event":"built","date":"2026-10-14"}

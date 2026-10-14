@@ -218,18 +218,18 @@
   "date": "2026-10-12"
  },
  "ART-20": {
-  "hash": "abaac0b913221e676e7d",
+  "hash": "496843a0c2cc8bfd67f7",
   "dhash": [
-   "9b1f14b471595dde"
+   "9b9f9fbc7c7c7cfe"
   ],
   "verdict": "FAIL",
-  "line": "A, belt shows only a tissue box, a stethoscope and crutches, with no tilted plaster and no comb; the grep for a table in docs/game-design/modes/clinic.md exits 1 with no output, so no item/view table exists",
+  "line": "A, the belt crop shows one level plaster and no comb, and no heal-game view is shown; the clinic-items.md table capture exists but still marks the comb (CLN-97), most items' belt/tray/spares views, the plaster colours and boing's drop machine (\"code-drawn ... drop-machine.webp, which does not exist\") as NEED, so the sprite sheet per item and the first gaps are not done",
   "panel": "A",
-  "judge": "Sonnet (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/ART-20.png",
-  "date": "2026-10-12"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-105914-fsz",
+  "commit": "0cdd5128",
+  "png": "build/screenshots/evidence/ev-20261014-105914-fsz/ART-20.png",
+  "date": "2026-10-14"
  },
  "CHAI-02": {
   "hash": "7d0f070be18f4468d8e3",
@@ -1485,18 +1485,20 @@
   "date": "2026-10-13"
  },
  "CLN-118": {
-  "hash": "774da84d514b7c6c29b9",
+  "hash": "74db9874c0c119f15c74",
   "dhash": [
-   "40408d878786c0c0",
-   "0114161111030303"
+   "8188812361155100",
+   "01a4912121691180",
+   "0181018181018101",
+   "899181e161416101"
   ],
   "verdict": "FAIL",
-  "line": "B, the fresh knee round's end card has no counts, scores or timer and the empty left block is gone, but the word cards still show written English glosses under the Kutchi for the child (\"one\", \"four\", \"and then\", \"knee\"). The sheet also shows only the knee's end card: none of the other eight heal games and no step of the taught round during play (counts, sizes or sides), which the Check asks for.",
-  "panel": "B",
+  "line": "D, the tooth's fresh taught round still names sides: its step rows read \"Pela down\" and \"ne poi right\" at every step (1-6), so this first round is not free of sides. Flaws: in B the \"Hammer\" step is in plain dark type, not grey italic, so it may be written English for the child. A and B steps 2-6 and C step 1 sit under a dark overlay. The boing voice timeline (p7) has the doctor counting \"Char, Trae, Ba, Hakro\" in its taught round. The sheet shows 4 of the nine games (taste, fever, boing, eye and foot are not on it).",
+  "panel": "D",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-063144-6es",
-  "commit": "b3f1ab8d",
-  "png": "build/screenshots/evidence/ev-20261014-063144-6es/CLN-118.png",
+  "run": "ev-20261014-103732-xxj",
+  "commit": "c84199ac",
+  "png": "build/screenshots/evidence/ev-20261014-103732-xxj/CLN-118.png",
   "date": "2026-10-14"
  },
  "CLN-119": {
@@ -1763,21 +1765,21 @@
   "date": "2026-10-14"
  },
  "CLN-139": {
-  "hash": "77cc3a270492c46d5e70",
+  "hash": "7d949ab59ca917f4fb7a",
   "dhash": [
-   "8b81010101010101",
-   "cfefebcbc1cdcec3",
-   "8b51010101010101",
-   "cfefebcbc1cdced5"
+   "8b41010101010101",
+   "cbebebcbc1cdcec3",
+   "8b01010101010101",
+   "cbebebcbc1cdced5"
   ],
   "verdict": "FAIL",
-  "line": "A, stage 2 (diagnosis) card still carries a face circle (the doctor's bearded face, S.request's default S.doctorFace(), under \"Find where it hurts.\"), while stage 5 and panels C/D show the send-off card with no face; the row says diagnosis AND send-off keep her card without a face circle, and a card wearing the doctor's face is his request card, not her patient card. Send-off itself is right: B/C (L2) headline \"Pick how she feels.\", D (L3) \"What will help?\", no face, nothing clipped. Off the row's point: stage 4 (heal) has no patient card at all (the \"Pela paani\" step panel replaces it, though the code claims the card stays \"at every stage\"); the doctor wears three faces (glasses in the top box, bearded kufi on the card, bearded bare-headed in the room).",
+  "line": "A, at diagnosis (frame 2, \"Find where it hurts.\") and send-off (frame 5, \"Pick how she feels.\") the sidebar has only the doctor's strip and no patient card; B, C and D (send-off L2, L3) also show an empty sidebar under the doctor's row",
   "panel": "A",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-185436-h71",
-  "commit": "6c85f6a",
-  "png": "build/screenshots/evidence/ev-20261013-185436-h71/CLN-139.png",
-  "date": "2026-10-13"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-100949-2q0",
+  "commit": "e3f4dbf3",
+  "png": "build/screenshots/evidence/ev-20261014-100949-2q0/CLN-139.png",
+  "date": "2026-10-14"
  },
  "CLN-14": {
   "hash": "19d2fb98e262cfa0d2d7",
@@ -1792,17 +1794,17 @@
   "date": "2026-10-12"
  },
  "CLN-140": {
-  "hash": "83cb4ae1638f05a152b0",
+  "hash": "93db3c2b3c2443e15def",
   "dhash": [
-   "8b81010101010101"
+   "0b81d10101010101"
   ],
   "verdict": "FAIL",
-  "line": "A, frame 4 (heal) now has a box at the top of the same shape, but it holds \"Pela paani\" in bold, not the doctor's line; his line \"Let's clean it and put plasters on.\" still sits inside the heal card below, and a stray clipped mark still shows under the card's last option row (\"ne poi laal plaster\")",
+  "line": "A, step 2 (diagnosis) has no top strip: the doctor's face and \"Find where it hurts.\" share one bare row, so not every stage shows his current-step line as the card's top strip followed by the goal headline and steps. The other stages (1, 3, 4, 5) do have the strip, and the bulb and sound row above has no face. Flaws: in 1 and 5 the face stands alone with no goal headline beside it; in 3 the headline \"Bring me\" reads as a fragment, with \"plaster\" split off into the step.",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-013834-y6h",
-  "commit": "cab063c",
-  "png": "build/screenshots/evidence/ev-20261014-013834-y6h/CLN-140.png",
+  "run": "ev-20261014-103732-xxj",
+  "commit": "c84199ac",
+  "png": "build/screenshots/evidence/ev-20261014-103732-xxj/CLN-140.png",
   "date": "2026-10-14"
  },
  "CLN-141": {
@@ -2042,20 +2044,20 @@
   "date": "2026-10-12"
  },
  "CLN-26": {
-  "hash": "7613e2d5ae3ba8621a12",
+  "hash": "2db7a375e045e3264bc4",
   "dhash": [
-   "cfefefcbc9c9cec3",
-   "cfebfbcbc5cdcec3",
-   "cfe9ebcbc1cdced5"
+   "cbebebcbc9cdcedb",
+   "cbebfbcbc5cdcec3",
+   "cbebebcbc1cdced5"
   ],
-  "verdict": "FAIL",
-  "line": "A, at L1 the patient is not in the scene at all: the bed is empty and the four-face thought bubble floats over it with its dots trailing to nobody, so the feeling cannot show on her face (B at L2 is right: no thought bubble, four cards in a plain row; C at L3 the tray along the bottom is blanket, fan, apple and her face is sad; L4 is on no panel)",
+  "verdict": "PASS",
+  "line": "A, L1 she is on the bed smiling and the four-face thought bubble (sad, cold, happy, hot, pictures only) sits at her head; B L2 has no thought bubble, four plain cards in a row at the bottom; C L3 her face is unhappy and the tray along the bottom holds blanket, fan, apple; the voice timeline has \"Say bye.\" / \"Khuda-fis\" in the scene at L2 and L3; flaws: in B the doctor looks washed-out/semi-transparent, and the doctor's bubbles in B and C are faint and sit over the wall picture frame",
   "panel": "A",
-  "judge": "Fable, independent subagent (orchestrator final look)",
-  "run": "ev-20261013-184310-4hz",
-  "commit": "09b5676",
-  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-26.png",
-  "date": "2026-10-13"
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-100949-2q0",
+  "commit": "e3f4dbf3",
+  "png": "build/screenshots/evidence/ev-20261014-100949-2q0/CLN-26.png",
+  "date": "2026-10-14"
  },
  "CLN-27": {
   "hash": "cb532720d5bb5913d3c3",
@@ -3708,6 +3710,23 @@
   "png": "build/screenshots/evidence/ev-20261013-135717-7pn/PAN-09.png",
   "date": "2026-10-13"
  },
+ "PAN-10": {
+  "hash": "e5ea7fc4fe8d7eb90e9a",
+  "dhash": [
+   "7f7ffee8e9e9fdcf",
+   "0a8581010101010d",
+   "7f7fe6f4f4edfdcf",
+   "0a8d01810101010d"
+  ],
+  "verdict": "FAIL",
+  "line": "B, the card headline reads \"Give me milk.\" in plain dark English (no to-record tag in the dom capture, not grey italic), where it should read Muke de + the items, and the item rows \"milk / daal / sugar\" are also plain written English for the child; D shows the same at L2 (\"Give me chai.\", \"chai / milk / cardamom / sugar\"). Only the strip's \"Bring me these\" is the allowed grey to-record placeholder. The one-face strip at L2 (D) does match Zafar's 14 Oct decision.",
+  "panel": "B",
+  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
+  "run": "ev-20261014-102915-exg",
+  "commit": "132e3536",
+  "png": "build/screenshots/evidence/ev-20261014-102915-exg/PAN-10.png",
+  "date": "2026-10-14"
+ },
  "PAN-11": {
   "hash": "12b0f0511135c6c47e41",
   "dhash": [],
@@ -4398,19 +4417,20 @@
   "date": "2026-10-12"
  },
  "SH-10": {
-  "hash": "180d402051b0ad774371",
+  "hash": "c5f9f7294acc79aa964d",
   "dhash": [
    "008aa98141c18101",
-   "81859149e0413111",
-   "00a800b29081f400"
+   "014de8e1c1211181",
+   "0001d44494b50000",
+   "006880c031211180"
   ],
   "verdict": "FAIL",
-  "line": "A, frames 2-6 the chai order card swaps from Kutchi (\"Muke elchi waari chai khape.\", frames 1 and 7-8) to written English in dark upright type, not grey-italic to-record (\"I'd like chai with cardamom it in.\", rows \"cardamom / no milk / one sugar\"), so the child reads English while the rows tick. The ticks themselves now build up and stay: sugar at frame 4, cardamom at frame 5, both still there at frames 6-8 as hakro khun and elchi. B (tooth ticks Pela, ne poi, Drill, Fill one at a time, frames 1-4) and C (fever ticks temperature at the patient tap, then window, blanket and fan one at a time, frames 2-5) are right, but foot, drinks and boing L1 are not on the sheet, so \"L1 in every station\" is not shown.",
+  "line": "A, frames 2-5 the chai order card still swaps to written English in dark upright type, not grey-italic to-record (\"I'd like chai with cardamom it in.\", rows \"cardamom / no milk / one sugar\"), so the child reads English while the rows tick (ticks do build and stay: sugar 4, cardamom 5, all three by 6-8); B tooth and C fever tick one by one, D foot ticks jug, splinters, plaster in order, but drinks (taste) and boing L1 are not on the sheet",
   "panel": "A",
   "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-004527-3br",
-  "commit": "c976c59",
-  "png": "build/screenshots/evidence/ev-20261014-004527-3br/SH-10.png",
+  "run": "ev-20261014-100949-2q0",
+  "commit": "e3f4dbf3",
+  "png": "build/screenshots/evidence/ev-20261014-100949-2q0/SH-10.png",
   "date": "2026-10-14"
  },
  "SH-11": {
