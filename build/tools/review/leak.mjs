@@ -2,7 +2,7 @@
 /*
  * One generic leak harness (C10, non-negotiable 6): the Sceptic as code. A bot that knows no Kutchi plays a game with strategies that see
  * only what is on screen (pictures, order, what it already tried), never the words. Pass: "fair" wins 100% at every level; every other
- * strategy wins under the limit (10%) at level 1. A game needs only a small config in build/tools/review/leak-configs/<name>.json;
+ * strategy wins under the limit (10%) at every level (Zafar, 14 Oct). A game needs only a small config in build/tools/review/leak-configs/<name>.json;
  * the old per-game scripts (build/leak_*.mjs) are thin wrappers that run this with their config.
  *
  *   node build/tools/review/leak.mjs <name|path.json> [--rounds 1000] [--l1 5000] [--seed 1] [--json out.json]
@@ -90,13 +90,14 @@ for (const id of adapter.games) {
     out.games[id][level] = { strategies: row, rows: rowsSeen, placeholderRows };
     console.log(`  L${level} (${n} rounds, ${rowsSeen} rows, ${placeholderRows} still English)  ${strategies.map((s) => `${s} ${pct(row[s].win)}`).join("  ")}`);
     if (!row.fair || row.fair.win < 1) fails.push(`${id} L${level}: fair wins ${pct(row.fair ? row.fair.win : 0)}, not 100%`);
-    if (level === 1) for (const s of strategies.filter((x) => x !== "fair")) {
+    // every level, not only level 1 (Zafar, 14 Oct; checks-to-build 19)
+    for (const s of strategies.filter((x) => x !== "fair")) {
       const lim = ACCEPTED[id] ? ACCEPTED[id].under : BLIND;
-      if (!(row[s].win < lim)) fails.push(`${id} L1: ${s} wins ${pct(row[s].win)} blind (must be under ${pct(lim).trim()})`);
+      if (!(row[s].win < lim)) fails.push(`${id} L${level}: ${s} wins ${pct(row[s].win)} blind (must be under ${pct(lim).trim()})`);
     }
   }
 }
 if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify(out, null, 1));
 const except = Object.entries(ACCEPTED).map(([k, v]) => `${k} under ${pct(v.under).trim()}`).join(", ");
-console.log(fails.length ? `\nFAIL\n  ${fails.join("\n  ")}` : `\nPASS: fair 100% everywhere; every blind strategy under ${100 * BLIND}% at level 1${except ? ` (except, as Zafar decided: ${except})` : ""}`);
+console.log(fails.length ? `\nFAIL\n  ${fails.join("\n  ")}` : `\nPASS: fair 100% everywhere; every blind strategy under ${100 * BLIND}% at every level${except ? ` (except, as Zafar decided: ${except})` : ""}`);
 process.exit(fails.length ? 1 : 0);

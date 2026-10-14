@@ -3,6 +3,7 @@
  * The standard check command (R7): every fast, no-browser check in one run, one line each, exit 1 if any fails.
  *   node build/tools/review/checks.mjs [--only unit,words,bump] [--list]
  * unit   node --test over the shared kit, core, host, css lint, sandbox (the contract checks on fixtures) and review-tool tests
+ * leak   the Kutchi leak bots (build/tools/review/leak.mjs) for every config that needs no browser, at every level
  * static the static checks (build/lint/static.mjs): shared-kit identity, design tokens, level ladders, banned forms, privacy, rewards, the bulb; a finding not in build/lint/static-known.json fails
  * words  the word lint's strict gate (check A, string literals in game code) on the folders in build/lint/words-gate.json "enforce";
  *        "ready" folders are reported but not enforced until their engine step reports 0 literals
@@ -21,7 +22,7 @@ import { args, help, ROOT } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
-const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "bump", "specs", "docs", "load"];
+const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "leak", "bump", "specs", "docs", "load"];
 const run = (cmd, argv) => spawnSync(cmd, argv, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
 const ls = (dir, ok) => readdirSync(join(ROOT, dir)).filter(ok).map((f) => join(dir, f));
 const results = [];
@@ -47,6 +48,26 @@ if (only.includes("static")) {
   const r = run(process.execPath, ["build/lint/static.mjs"]);
   note("static", r.status === 0, (r.stdout.trim().split("\n").pop() || `static.mjs exited ${r.status}`));
   if (r.status !== 0) console.log((r.stdout.match(/^NEW .*$/gm) || []).slice(0, 10).map((l) => "     " + l).join("\n"));
+}
+if (only.includes("leak")) {
+  // checks-to-build 19 (Zafar, 14 Oct: every level, not only level 1): every leak config that needs no browser (Cook's bot runs in
+  // /review), three at a time; a group config whose games all have their own config is skipped; a config with "knownFail" names
+  // its fix-list row and is reported, not failed, until that row is fixed
+  const { spawn } = await import("node:child_process");
+  const dir = join(ROOT, "build/tools/review/leak-configs");
+  const cfgs = readdirSync(dir).filter((x) => x.endsWith(".json")).sort().map((f) => JSON.parse(readFileSync(join(dir, f), "utf8"))).filter((c) => !c.browser && c.id !== "cook");
+  const single = new Set(cfgs.filter((c) => (c.games || []).length === 1).map((c) => c.games[0]));
+  const todo = cfgs.filter((c) => !((c.games || []).length > 1 && c.games.every((g) => single.has(g))));
+  const bad = [], known = [];
+  const one = (cfg) => new Promise((res) => {
+    const extra = cfg.adapter === "script" ? (cfg.id === "clinic" ? ["--rounds", "100"] : []) : ["--rounds", "500", "--l1", "1000"];
+    const p = spawn("timeout", ["300", process.execPath, "build/tools/review/leak.mjs", cfg.id, ...extra], { cwd: ROOT });
+    let out = ""; p.stdout.on("data", (d) => (out += d));
+    p.on("close", (code) => { if (code !== 0) (cfg.knownFail ? known : bad).push(`${cfg.id}${cfg.knownFail ? ` (${cfg.knownFail})` : `: ${(out.match(/^\s+\S.*(wins|blind|FAIL).*$/m) || [`exit ${code}`])[0].trim().slice(0, 120)}`}`); res(); });
+  });
+  const queue = [...todo];
+  await Promise.all([0, 1, 2].map(async () => { while (queue.length) await one(queue.shift()); }));
+  note("leak", !bad.length, bad.length ? `${bad.length} leak(s): ${bad.join("; ")}` : `${todo.length} configs at every level${known.length ? `; known: ${known.join("; ")}` : ""}`);
 }
 if (only.includes("bump")) {
   const r = run("python3", ["build/bump_version.py", "--dry-run"]);

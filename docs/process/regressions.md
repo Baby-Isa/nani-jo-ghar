@@ -133,6 +133,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
 | MOD-02 | Sitting room 3.2: sofa too high | open (S04 audit: no evidence yet; no evidence: the Find it flow shows the fruit stall, never sitting room 3.2; on Zafar's play checklist) | eye: Find it | `docs/status.md` §7 Artwork |
+| MOD-03 | Tidy up's fruit box at level 3 can be won blind: the generator puts fru-05 in the corners 1.67x its fair share (z=4.3), so a player who knows no Kutchi wins by guessing corners (non-negotiable 6) | **open** (found by the leak bots at every level, S06 check 19, 14 Oct) | auto: `node build/tools/review/leak.mjs tidy` | build/tools/review/leak-games/tidy.mjs |
 
 ## Art (cuts, style, backgrounds, characters)
 
