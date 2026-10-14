@@ -153,6 +153,15 @@ export class CookPlayer {
       this.made.add("serve-wrong");
       return true;
     }
+    // miss-chop (DAAR-25): the first slice step lets the vegetables fly by uncut for 3 s, so a count is short and the chop
+    // comes again (decision 51: only the wrong ones, opened by the request pop-up), then fair
+    if (m === "miss-chop" && !d.missed && e.kind === "slice") {
+      d.missed = true;
+      await sleep(3000);
+      await this.once("chop-missed", { settle: 0 });
+      this.made.add("chop-missed");
+      return true;
+    }
     // peek-every-tap (SEK-13): from level 3 the card is closed; before each tap a closed (folded) card is peeked open (a tap on
     // its headline, the paid peek), so what the card does as each piece goes on is on screen at the tap's moment
     if (m === "peek-every-tap" && e.kind === "tap") {

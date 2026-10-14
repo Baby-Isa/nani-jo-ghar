@@ -100,7 +100,8 @@
   "wrong-spice-thrice": "daar: a wrong spice in the tadka on three tries (each try the whole tadka: the game takes it out and asks again), wrong-1..3; then the game shows the right way (shown-right)",
   "wrong-thrice": "three wrong picks in a row at the same step (Cook: the expectation's own wrong items; a heal game: its debug slip(), else another tool than the one asked for), wrong-1..3; then the help and the right way (shown-right)",
   "takeback": "the clinic's take-back (like Cook's #takeback): the first thing placed is tapped again (a heal game's placement, the pharmacy tray's dish, a waiting-room tick): before-takeback, after-takeback",
-  "real-pace": "the clinic without the lab's fast mode (no &fast=1): its zooms and waits take their real time (CLN-87: 1.5 s), played fair"
+  "real-pace": "the clinic without the lab's fast mode (no &fast=1): its zooms and waits take their real time (CLN-87: 1.5 s), played fair",
+  "miss-chop": "daar (any chop): the first slice step lets the vegetables fly by uncut for 3 s (chop-missed), so a count comes up short and the chop comes again for only the wrong ones, opened by the request pop-up (decision 51); then fair"
  },
  "_tools": {
   "build/tools/review/evidence.mjs": "the evidence loop itself (--plan --all exits 1 on any live row with no spec: PRC-06); being built in parallel",
@@ -11930,6 +11931,27 @@
    "expect": null,
    "note": "every slice, at a child's pace (speed 1): a row highlights when its count has been cut (ba dungri at the second onion), not before, not never. At the sandbox's test speed 3 each blocking capture let about three throws fly by uncut (a wanted vegetable flies its count plus two spares), so the player landed 1 of 5 and no row reached its count (S05-C3's tool gap); at speed 1 a capture costs under one throw",
    "max": 14
+  }
+ ],
+ "DAAR-25": [
+  {
+   "flow": "cook:daar",
+   "path": "miss-chop",
+   "level": 1,
+   "sizes": [
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:20"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-20 (one face per person, R4) over daar L1 with a chop missed: the chop again opens with Nani's request pop-up while her chop card is in the sidebar; her face shows once (the pop-up is her card shown big: it leaves the sidebar while up and folds back into it)"
   }
  ],
  "CLN-123": {

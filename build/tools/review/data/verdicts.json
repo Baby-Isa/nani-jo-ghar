@@ -3268,6 +3268,17 @@
   "png": "build/screenshots/evidence/ev-20261014-011029-06w/DAAR-23.png",
   "date": "2026-10-14"
  },
+ "DAAR-25": {
+  "hash": "445c443ced367916b759",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261014-062618-1wr",
+  "commit": "93bf1f6c",
+  "date": "2026-10-14"
+ },
  "FL-01": {
   "hash": "e488377841b110b66915",
   "dhash": [
