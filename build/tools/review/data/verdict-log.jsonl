@@ -153,3 +153,5 @@
 {"id":"CLN-153","run":"ev-20261014-135157-o4m","event":"built","date":"2026-10-14"}
 {"id":"SH-10","run":"ev-20261014-134716-k7l","verdict":"PASS","spec":"d637922b7ce30994c763","judge":"Claude Opus 5.5 [claude-opus-5-5], judge subagent session ad16ad29-ed75-5367-93f4-f73deedfff00","date":"2026-10-14"}
 {"id":"SH-10","run":"ev-20261014-134716-k7l","event":"built","date":"2026-10-14"}
+{"id":"CLN-140","run":"ev-20261014-143910-h6q","verdict":"PASS","spec":"0016ce3613257958d336","judge":"Claude Opus 5.5 (claude-opus-5-5), judge subagent, session ad16ad29-ed75-5367-93f4-f73deedfff00, not the builder","date":"2026-10-14"}
+{"id":"CLN-140","run":"ev-20261014-143910-h6q","event":"built","date":"2026-10-14"}

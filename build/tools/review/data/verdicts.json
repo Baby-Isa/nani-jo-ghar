@@ -1852,17 +1852,17 @@
   "date": "2026-10-12"
  },
  "CLN-140": {
-  "hash": "225235ef85e4bca2c8e6",
+  "hash": "98bafca8f097238eae54",
   "dhash": [
    "0b81d10101010101"
   ],
-  "verdict": "FAIL",
-  "line": "A, stages 2 (diagnosis: strip \"Where does it hurt?\", headline \"Find where it hurts.\") and 5 (sendoff: strip \"Pick how she feels.\", headline \"Is everything okay now?\") have no step rows under the headline, whereas 1, 3 and 4 do (\"Bring in chokri\", \"plaster\", the three heal steps), so not every stage shows \"then the goal headline and the steps\". All five stages do show one card at the top with the face once and a top strip, and the bulb and sound row above has no face. Flaws: stage 5's headline is in clearly smaller type than the other stages'. In stage 2 the strip and the headline say nearly the same thing. In stage 4 the later step rows are very faint pink and hard to read.",
+  "verdict": "PASS",
+  "line": "A, at all five L1 stages the sidebar has one doctor card at the top with his face once, a top strip that changes per stage (\"Bring them in.\" / \"Where does it hurt?\" / \"Bring me plaster\" / \"Pela paani\" matching the lit first heal step / \"Pick how she feels.\"), then the headline and the steps; diagnosis (2) and send-off (5) have no step list, as the row now allows; above the card is a small bulb and sound row with no face. Flaws (off the point): stage 5's headline is in smaller type than the other stages'; in stage 4 the later step rows are very faint pink, and a stray \"!\" sits under the list; in stage 2 the strip and the headline say almost the same thing.",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent, session ad16ad29-ed75-5367-93f4-f73deedfff00; not the builder",
-  "run": "ev-20261014-120206-258",
-  "commit": "16614f86",
-  "png": "build/screenshots/evidence/ev-20261014-120206-258/CLN-140.png",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), judge subagent, session ad16ad29-ed75-5367-93f4-f73deedfff00, not the builder",
+  "run": "ev-20261014-143910-h6q",
+  "commit": "131dd617",
+  "png": "build/screenshots/evidence/ev-20261014-143910-h6q/CLN-140.png",
   "date": "2026-10-14"
  },
  "CLN-141": {
