@@ -10609,10 +10609,11 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -n \"sprite sheet\\|views\" docs/game-design/modes/clinic.md"
+    "cmd:grep -n \"sprite sheet\\|views\" docs/game-design/modes/clinic.md",
+    "cmd:sed -n 1,60p docs/design-language/art-plans/clinic-items.md"
    ],
    "expect": null,
-   "note": "the table of every clinic item and the views it needs"
+   "note": "the table of every clinic item and the views it needs (clinic.md links docs/design-language/art-plans/clinic-items.md, the table itself)"
   },
   {
    "flow": "clinic:pharmacy",

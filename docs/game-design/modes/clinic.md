@@ -103,6 +103,7 @@ The clinic is Hannah's granddad's; the child is his helper (H25). This file hold
   - L2: 2–3 items, look-alikes, a colour.
   - L3: 3–4 items in order (*pela {a}, ne poi {b}*), a **faster belt with the items closer together**. No timer (CQ5).
 - **Items:** pick ones easy to draw and recognise. Replace "filling" (`paste`) with a clear tube. Check the whole list for items that only read as English.
+- **Item art (ART-20):** every clinic item and the views its sprite sheet needs (belt, tray, tool column, in use, spares), with what exists and the gaps: `docs/design-language/art-plans/clinic-items.md`.
 
 ### E. The send-off (CB5)
 - **Why:** "Is everything okay now?" The patient is at the half-open front door with the doctor beside them.
