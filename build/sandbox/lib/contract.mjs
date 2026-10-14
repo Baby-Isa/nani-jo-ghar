@@ -22,6 +22,12 @@
 //   contract-12 greyed      a ✓ / Next / stage button is hidden until usable, never shown greyed (SH-23)
 //   contract-13 stale-ui    no reply pill from an earlier stage left on screen (CLN-06)
 //   contract-14 talk        one talk animation: no bob bigger or faster than the shared one, no other talk animation (ART-18)
+//   contract-16 english     no written English for the child: every text on screen is a lexicon form (loan: en included), a
+//                           number, a to-record placeholder, the bulb's English or grown-ups' text (checks-to-build 4)
+//   contract-20 one-face    one face per person: no patient face circle while she stands on screen in full (decision 92),
+//                           never two face circles or two cards of one person (R4; checks-to-build 8)
+//   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
+//                           TTS, no unchecked or redo clip, no unknown audio (non-negotiable 10; checks-to-build 5)
 //
 // analyse(result, {retired, clip}) -> [{check, item, flow, level, size, state, shot, at, measured}]. A break is never
 // ratcheted into the baseline: --check and --contract fail on any (exit 1).
@@ -29,8 +35,12 @@ import { readFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
+import { lexiconWords } from "./evidence.mjs";
 
 export const CHECKS = {
+  "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
+  "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
+  "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
   "contract-1": { item: "popup", title: "pop-up before play", how: "Splits the flow into stages (a Cook station from Cook.inStation, else the game host's stage) and finds each stage's first real tap in the play area. A stage that gives an order (a line said before that tap outside a pop-up, a new order card in the sidebar, or the first stage with a card) must have had the request pop-up (.njg-rq-open, Cook's #intro) on screen since the last stage ended; a line must start while it is up (read out) unless a tap closed it at once; within 2 s of closing an order card must show in the sidebar (folded). Nani's how-to step line and her 'pass me' (the game tags them howto / passme) are not orders (decision 80)." },
   "contract-2": { item: "moves-on", title: "moves on by itself", how: "Every ✓, Next or stage button seen on screen (.cl-go, #done-btn, a button reading ✓ or →, aria 'next'/'done') and every press of one is judged with what the game expected at that moment: if it expected only that button (the clinic between stages or kind 'button', a heal game's 'button' step, Cook clicking that selector), the step was already decided, so the button is a break. A ✓/Done that lets the child take things back until Done (non-negotiable 12) is not: Cook's count or 'more' step, an open count Cook steers its player to end with Done (expectation 'open': more stirs, folds or skewers still change it), an expectation that offers a take-back (undo), Cook's pictures still taking taps (live: chaat's bowl, where more taps still change the result), a heal game's count it reported uncapped (ctx.tally without capped: the child decides when it's enough, C10). A capped count (ctx.tally {capped}) that stopped taking input and still shows its ✓ is a break (decision 79). A button that starts the next part of the order (samosa's 'next kind', expectation choice) is the child's own move (decision 80)." },
   "contract-3": { item: "voice", title: "voice stops at every stage end", how: "Every clip's real start, length (the decoded buffer or the file's own length) and stop (ended, stop, pause, cancel) from the sound log; each belongs to the line (and so the stage) it was said for. A stage ends when the shared lifecycle logged its stage-end (Lifecycle.log, at its own millisecond; else the sampled stage change), so a line queued after the stop belongs to the next stage. A clip still sounding 250 ms after its stage ended, or started after it, is a break." },
@@ -529,6 +539,45 @@ function check14(tl, segs, add) {
   }
 }
 
+// the lexicon's words for contract-16, read once per root (build/sandbox/lib/evidence.mjs lexiconWords)
+const LEXICA = new Map();
+function lexiconFor(root) {
+  if (!LEXICA.has(root)) LEXICA.set(root, existsSync(join(root, "data/lang/lexicon.json")) ? lexiconWords(root) : null);
+  return LEXICA.get(root);
+}
+function check16(tl, lex, add) {
+  if (!lex) return;
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "texts") continue;
+    for (const x of e.list || []) {
+      if (x.rec || x.en || x.grown) continue;
+      const words = (String(x.t).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).map((w) => w.replace(/’/g, "'")).filter((w) => w.length > 1 && !lex.has(w));
+      if (!words.length) continue;
+      const k = x.t;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      add("contract-16", e.t, `"${x.t}" (${x.sel}): ${[...new Set(words)].join(", ")}`);
+    }
+  }
+}
+function check20(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "faces") continue;
+    const say = (m) => { if (!seen.has(m)) { seen.add(m); add("contract-20", e.t, m); } };
+    const list = e.list || [];
+    if (e.clinic && e.figFull) for (const f of list) if (!f.doctor && f.who !== "doctor") say(`${f.who || "a person"}'s face circle while she is on screen in full (${f.sel})`);
+    const by = {}; for (const f of list) if (f.who) by[f.who] = (by[f.who] || 0) + 1;
+    for (const [w, n] of Object.entries(by)) if (n > 1) say(`two faces of ${w} on screen (${list.filter((f) => f.who === w).map((f) => f.sel).join(", ")})`);
+    const cs = {}; for (const c of e.cards || []) cs[c] = (cs[c] || 0) + 1;
+    for (const [w, n] of Object.entries(cs)) if (n > 1) say(`two cards for ${w}`);
+  }
+}
+function check17(r, tl, add) {
+  if (!r.store || !r.sound) return;
+  for (const p of r.sound.plays || []) if (p.kind !== "family-ok") add("contract-17", r.t0 || (tl[0] && tl[0].t) || 0, `${p.kind}: ${p.file || p.text || "?"}${p.n > 1 ? ` x${p.n}` : ""}`);
+}
 export function loadRetired(root) {
   const p = join(root, "build", "sandbox", "data", "retired-art.json");
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")).list : [];
@@ -539,7 +588,7 @@ export function timeline(r) {
   return (r.timeline || []).map((e) => (e && e.type === "c" && e.k === "life" && e.at ? { ...e, t: e.at } : e)).sort((a, b) => a.t - b.t);
 }
 
-export function analyse(r, { root = ".", retired = loadRetired(root), clip = clipSeconds } = {}) {
+export function analyse(r, { root = ".", retired = loadRetired(root), clip = clipSeconds, lexicon = null } = {}) {
   const tl = timeline(r);
   const out = [];
   if (!tl.length) return out;
@@ -561,6 +610,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check13(tl, add);
   check14(tl, segs, add);
   check15(tl, segs, add);
+  check17(r, tl, add);
+  check20(tl, add);
+  check16(tl, lexicon || lexiconFor(root), add);
   return out;
 }
 

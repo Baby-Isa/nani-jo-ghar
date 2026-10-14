@@ -87,6 +87,8 @@ export async function newPage(browser, sizeKey, { seed = 1, touch, dpr = 1 } = {
     if (u.includes("fonts.googleapis.com")) return route.fulfill({ status: 200, contentType: "text/css", body: fontsCss() });
     return route.abort();
   });
+  // run.mjs --store: the packaged app's voice path (js/core/voice.js path(): only OK family clips, never a computer voice)
+  if (process.env.NJG_STORE === "1") await ctx.addInitScript('window.NJG_BUILD = "store";');
   await ctx.addInitScript(SEED_SCRIPT(seed));
   await ctx.addInitScript(CLICK_HOOK);
   await ctx.addInitScript(PHASER_HOOK);

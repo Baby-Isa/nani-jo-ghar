@@ -25,6 +25,7 @@ import * as Contract from "./lib/contract.mjs";
 
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
+if (argv.includes("--store")) process.env.NJG_STORE = "1"; // the store build's voice path (contract-17)
 const val = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
 const log = (...a) => console.log(new Date().toTimeString().slice(0, 8), ...a);
 
@@ -43,6 +44,7 @@ if (has("--help") || has("-h") || !argv.length) {
   --update-baseline     rewrite the baseline with the fixed findings dropped (it only shrinks); --accept also adopts new findings (and creates the baseline); --append only ADDS findings and flows the baseline lacks and changes no existing entry
   --webgl               Phaser's WebGL renderer for Cook (software GL: about 4x slower; the default is canvas, which draws no tints)
   --from-run id         judge a finished run's saved data (no browser): with --check / --update-baseline
+  --store               play as the store build (window.NJG_BUILD = "store": only OK family clips; contract-17 checks it)
   --contract            the contract checks (decision 75: pop-up before play, moves on by itself, voice stops at every stage end,
                         bubbles at the speaker's head, badges in order, no retired art, and contract-7 to 14: lib/contract.mjs) on the named flows (default: the
                         route set CONTRACT_ROUTE at laptop size); writes contract.md and contract.json; exit 1 on any break.
@@ -234,7 +236,7 @@ if (fromRun) {
       if (probe) { await probe.chain.catch(() => {}); await probe.collectRec(); }
       await ctx.close().catch(() => {});
       const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
-      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}), ...(ev ? { variant: ev.variant || "", evKey: ev.key, ...(seed != null ? { seed } : {}) } : {}) };
+      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), store: process.env.NJG_STORE === "1", timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}), ...(ev ? { variant: ev.variant || "", evKey: ev.key, ...(seed != null ? { seed } : {}) } : {}) };
       if (probe) { r.evidence = await probe.finish(r, { root: ROOT }); r.moments = probe.seen; }
       writeFileSync(file, JSON.stringify(r));
       fresh.push(r);
