@@ -89,6 +89,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         knife.setScale(z.L(k.knifePx || 190) / Math.max(knife.width, knife.height));
       } else knife = S.hand("knife", { x: z.X(1300), y: z.Y(640), angle: -25, k: z.k });
       if (k.special) S.special(knife);
+      // DAAR-22 (S06): between swipes the knife goes back to rest beside the board, so it never lies across a flying
+      // vegetable without cutting it (a blade over a whole tomato read as "the knife doesn't cut")
+      const knifeHome = { x: knife.x, y: knife.y };
+      let knifeBack = null;
+      const restKnife = () => {
+        if (knifeBack) knifeBack.remove();
+        knifeBack = S.time.delayedCall(220, () => {
+          knifeBack = null;
+          if (prev || !knife.active) return;
+          S.tweens.add({ targets: knife, x: knifeHome.x, y: knifeHome.y, duration: 260, ease: "Sine.easeOut" });
+        });
+      };
       // bigger vegetables on a small (phone) screen, so a finger can hit them
       const small = S.scale && S.scale.displaySize && S.scale.displaySize.width < 800;
       const size = small ? k.phoneSize || k.size : k.size;
@@ -209,18 +221,33 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         img.spin = (Math.random() - 0.5) * 5;
         flying.push(img);
       };
-      const halves = (img) => {
+      /*
+       * DAAR-22 (S06): the blade visibly cuts. The item splits along the swipe's own line (its two halves turned so the
+       * cut runs the way the knife went), a bright cut line flashes along it, the halves part a little and hold, then
+       * fall away. ang: the swipe's direction (radians; default straight down).
+       */
+      const halves = (img, ang = Math.PI / 2) => {
         const key = img.texture.key;
         const { w, h } = S.texSize(key);
+        const rot = ang - Math.PI / 2; // the texture's vertical middle along the swipe
+        const nx = Math.cos(rot);
+        const ny = Math.sin(rot);
+        const deg = Phaser.Math.RadToDeg(rot);
         [0, 1].forEach((side) => {
-          const half = S.track(S.add.image(img.x, img.y, key).setScale(img.scale).setDepth(D.item + 3).setCrop(side ? w / 2 : 0, 0, w / 2, h));
-          // DAAR-22 (S05-C3): the cut reads first: the halves part a little along a clean line and hold, then fall away
-          const dx = side ? 1 : -1;
-          S.tweens.add({ targets: half, x: img.x + z.L(18 * dx), angle: 6 * dx, duration: 140, ease: "Quad.easeOut" });
-          S.tweens.add({ targets: half, x: img.x + z.L(120 * dx), y: img.y + z.L(240), angle: 60 * dx, alpha: 0, delay: 420, duration: 600, ease: "Quad.easeIn", onComplete: () => half.destroy() });
+          const half = S.track(S.add.image(img.x, img.y, key).setScale(img.scale).setAngle(deg).setDepth(D.item + 3).setCrop(side ? w / 2 : 0, 0, w / 2, h));
+          const d = side ? 1 : -1;
+          S.tweens.add({ targets: half, x: img.x + nx * z.L(22 * d), y: img.y + ny * z.L(22 * d), angle: deg + 6 * d, duration: 140, ease: "Quad.easeOut" });
+          S.tweens.add({ targets: half, x: img.x + nx * z.L(120 * d), y: img.y + ny * z.L(120 * d) + z.L(240), angle: deg + 60 * d, alpha: 0, delay: 460, duration: 600, ease: "Quad.easeIn", onComplete: () => half.destroy() });
         });
+        const len = Math.max(img.displayWidth, img.displayHeight) * 0.62;
+        const cx = Math.cos(ang) * len;
+        const cy = Math.sin(ang) * len;
+        const flash = S.track(S.add.graphics().setDepth(D.item + 3.5));
+        flash.lineStyle(z.L(7), 0xffffff, 0.95).lineBetween(img.x - cx, img.y - cy, img.x + cx, img.y + cy);
+        flash.lineStyle(z.L(2), 0xfff1c0, 1).lineBetween(img.x - cx, img.y - cy, img.x + cx, img.y + cy);
+        S.tweens.add({ targets: flash, alpha: 0, delay: 180, duration: 260, onComplete: () => flash.destroy() });
       };
-      const sliceIt = (img) => {
+      const sliceIt = (img, ang) => {
         img.sliced = true;
         const id = img.wordId;
         // what counts is what Nani is asking for now (after a switch, the last ones are decoys)
@@ -248,7 +275,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             S.burst(img.x, img.y, [0xb24a3a, 0xffd6c9], 10, z.L(60));
           }
         }
-        halves(img);
+        halves(img, ang);
         img.destroy();
         return ok;
       };
@@ -293,11 +320,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (!lines.some((line) => Phaser.Geom.Intersects.LineToCircle(line, c))) return;
             Cook.sfx.chop();
             Cook.sfx.whoosh();
-            const ok = sliceIt(img);
+            const ok = sliceIt(img, Math.atan2(cur.y - prev.y, cur.x - prev.x));
             if (k.sharp && ok) {
               // the sharp knife also catches a second wanted one near the first
               const near = flying.find((o) => o.active && !o.sliced && phase.targets.includes(o.wordId) && Phaser.Math.Distance.Between(o.x, o.y, cur.x, cur.y) < z.L(220));
-              if (near) sliceIt(near);
+              if (near) sliceIt(near, Math.atan2(cur.y - prev.y, cur.x - prev.x));
             }
           });
         }
@@ -305,7 +332,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         prevBlade = bl;
       };
       // a swipe starts where the finger goes down
-      const offs = [z.on("pointerdown", (p) => ((prev = { x: p.worldX, y: p.worldY }), (prevBlade = null), stopDemo())), z.on("pointermove", move), z.on("pointerup", () => ((prev = null), (prevBlade = null)))];
+      const offs = [z.on("pointerdown", (p) => ((prev = { x: p.worldX, y: p.worldY }), (prevBlade = null), knifeBack && (knifeBack.remove(), (knifeBack = null)), S.tweens.killTweensOf(knife), stopDemo())), z.on("pointermove", move), z.on("pointerup", () => ((prev = null), (prevBlade = null), restKnife()))];
       let running = false; // the ring runs and vegetables fly (not while Nani gives the first order)
       let spawnT = 0;
       let roundT = 0;
@@ -387,7 +414,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       // DAAR-13 (D1): the ghost finger DRAGS THE KNIFE left and right across the board (the knife goes with it) until
       // the first touch; without a knife picture, the ghost alone as before
-      const stopDemo = knifeKey && knife.texture && knife.texture.key === knifeKey ? demoKnife() : S.ghost([[z.X(400), z.Y(450)], [z.X(1200), z.Y(380)]], { duration: 500, delay: z.guided ? 1200 : 6000 }).stop;
+      // DAAR-13 (S06): at level 1 the ghost starts the moment the vegetables start flying (demo.start below), not on a
+      // timer from before Nani's order: a child who waits sees it at once, a child who swipes never waits for it
+      const demo = knifeKey && knife.texture && knife.texture.key === knifeKey ? demoKnife() : { stop: S.ghost([[z.X(400), z.Y(450)], [z.X(1200), z.Y(380)]], { duration: 500, delay: z.guided ? 1200 : 6000 }).stop, start: () => {} };
+      const stopDemo = demo.stop;
       function demoKnife() {
         const a = { x: z.X(420), y: z.Y(440) };
         const b = { x: z.X(1180), y: z.Y(400) };
@@ -416,7 +446,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           });
         };
         const t0 = S.time.delayedCall(z.guided ? 1200 : 4000, go);
-        return () => {
+        const stop = () => {
           if (!alive) return;
           alive = false;
           t0.remove();
@@ -425,6 +455,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (dot && dot.active) dot.destroy();
           if (!prev) knife.setPosition(home.x, home.y);
         };
+        const start = () => {
+          if (!alive || tw) return;
+          t0.remove();
+          go();
+        };
+        return { stop, start };
       }
       // "Kali ba dungri. Ne hakro tameto.": the number is always said
       const orderLine = (tg, first) =>
@@ -442,6 +478,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           else await z.say(line, { hide }).catch(() => {});
           running = true;
           spawnT = 0;
+          if (Cook.roundLevel(ctx) <= 1) demo.start();
         } else {
           z.say(orderLine(r.targets, false), { hide }).catch(() => {});
         }
