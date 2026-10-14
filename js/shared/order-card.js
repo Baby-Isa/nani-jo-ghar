@@ -255,7 +255,15 @@
       const t = p.querySelector(".oc-t");
       const tk = p.querySelector(".oc-tk");
       // the pill's own size, not one fit.js has shrunk the word to
-      const font = `${ps.fontStyle} ${getComputedStyle(t || p).fontWeight} ${ps.fontSize} ${ps.fontFamily}`;
+      // CK-39: the word's own CSS size (.oc-t has its own, var(--oc-p)), read without fit.js's inline shrink
+      let size = ps.fontSize;
+      if (t) {
+        const inl = t.style.fontSize;
+        if (inl) t.style.fontSize = "";
+        size = getComputedStyle(t).fontSize;
+        if (inl) t.style.fontSize = inl;
+      }
+      const font = `${ps.fontStyle} ${getComputedStyle(t || p).fontWeight} ${size} ${ps.fontFamily}`;
       need += textWidth((t || p).textContent.trim(), font) + px(ps.paddingLeft) + px(ps.paddingRight) + px(ps.borderLeftWidth) + px(ps.borderRightWidth);
       if (tk && tk.getBoundingClientRect().width) need += tk.getBoundingClientRect().width + px(ps.columnGap);
     });
@@ -270,6 +278,11 @@
     };
     const ro = new root.ResizeObserver(check);
     ro.observe(list);
+    // CK-39: and each pill: a card that flies from the request pop-up into the sidebar changes its words' size (the pop-up's
+    // sizes easing to the sidebar's) while the list keeps its width, so the list alone never asked again and the no-wrap row
+    // stayed side by side, cut by the card's edge (chaat's and assemble's sequences at 1366x1024). The measure is from the
+    // words' one-line widths, so a pill resized by the stacking itself can't flip it back
+    [...list.children].forEach((p) => ro.observe(p));
     if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(check);
   }
 
