@@ -593,7 +593,7 @@ function check20(tl, add) {
     if (e.type !== "c" || e.k !== "faces") continue;
     const say = (m) => { if (!seen.has(m)) { seen.add(m); add("contract-20", e.t, m); } };
     const list = e.list || [];
-    if (e.clinic && e.figFull) for (const f of list) if (!f.doctor && f.who !== "doctor") say(`${f.who || "a person"}'s face circle while she is on screen in full (${f.sel})`);
+    if (e.clinic && e.figFull) for (const f of list) if (!f.doctor && f.who && f.who !== "doctor") say(`${f.who || "a person"}'s face circle while she is on screen in full (${f.sel})`);
     const by = {}; for (const f of list) if (f.who) by[f.who] = (by[f.who] || 0) + 1;
     for (const [w, n] of Object.entries(by)) if (n > 1) say(`two faces of ${w} on screen (${list.filter((f) => f.who === w).map((f) => f.sel).join(", ")})`);
     const cs = {}; for (const c of e.cards || []) cs[c] = (cs[c] || 0) + 1;

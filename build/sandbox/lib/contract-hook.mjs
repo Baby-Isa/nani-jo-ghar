@@ -523,13 +523,17 @@ export const CONTRACT_HOOK = `(() => {
   // its card's person, the guide's face its person, a clinic close-up face the patient), the cards' people, and whether a clinic
   // patient figure stands on screen in full (most of it inside the screen, a third of its height or more)
   const faceWho = (el) => safe(() => {
+    const norm = (x) => String(x || "").toLowerCase().replace(/^the /, "").trim() || null;
+    // a clinic face names its person in its classes (cl-face doctor | patient | person) or its card's data-who
+    const cf = el.matches(".cl-face") ? el : el.querySelector(".cl-face");
+    if (cf && cf.classList.contains("doctor")) return "doctor";
     const card = el.closest(".oc-card");
-    if (card && card.dataset && card.dataset.who) return String(card.dataset.who).toLowerCase();
+    if (card && card.dataset && card.dataset.who) return norm(card.dataset.who);
     const img = el.querySelector("img");
     const name = (img && img.alt) || (el.getAttribute("aria-label") || "").replace(/^Hear /, "").replace(/ again$/, "");
-    if (el.classList.contains("ng-face") && name) return String(name).toLowerCase();
-    if (el.classList.contains("cl-face") || el.classList.contains("cl-card-face")) return "patient";
-    return null;
+    if (el.classList.contains("ng-face") && name) return norm(name);
+    if (cf && cf.classList.contains("patient")) return "patient";
+    return null; // a face whose person the page doesn't say (the morning's end lists several patients): not judged
   });
   const faces = () => {
     const list = [...document.querySelectorAll(".oc-face, .ng-face, .cl-face, .cl-card-face")].filter((f) => shown(f) && f.getBoundingClientRect().width >= 16).map((f) => ({ who: faceWho(f), sel: desc(f), doctor: !!(f.closest(".njg-guide, .cl-nani") && location.pathname.includes("clinic")) }));
