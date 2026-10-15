@@ -1,0 +1,207 @@
+You're making 40 images in ChatGPT for a children's game called Nani jo Ghar and putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything. Zafar approves the likenesses (see APPROVALS).
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/docs/design-language/art-plans/s07-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/
+Reference images, by the name the run order uses:
+ style-anchor-v1.png             RAW + sources/art/style-anchor-v1.png
+ customers-sheet.webp            RAW + sources/cook/customers-sheet.webp
+ nani-sheet-v2-approved.png      RAW + sources/art/characters/nani-sheet-v2-approved.png
+ nana-neutral.webp               RAW + assets/cook/characters/nana-neutral.webp
+ bg-cook-service-v2.webp         RAW + assets/cook/bg/service-v2.webp
+ cb4c-pharmacy-belt-v1.png       RAW + sources/art/clinic-v2/cb4c-pharmacy-belt-v1.png
+ ci1-care-kit-v1.png             RAW + sources/art/clinic-v2/items/ci1-care-kit-v1.png
+ ci2-tools-comfort-v1.png        RAW + sources/art/clinic-v2/items/ci2-tools-comfort-v1.png
+ ci3-drinks-v1.png               RAW + sources/art/clinic-v2/items/ci3-drinks-v1.png
+ e3-plaster-views-v1.png         RAW + sources/art/s02/e3-plaster-views-v1.png
+ e4-drop-bottle-sheet-v1.png     RAW + sources/art/s02/e4-drop-bottle-sheet-v1.png
+ bandage-roll.webp               RAW + assets/clinic/items-v2/bandage-roll.webp
+ s1-girl-sheet-v2.png            RAW + sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+ girl-w1-front-neutral-v1.png    RAW + sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
+ girl-w11-standing-palms-v1.png  RAW + sources/art/s02/girl-w11-standing-palms-v1.png
+ child-p1-sole-v1.png            RAW + sources/art/clinic-heal-v3/child-p1-sole-v1.png
+ child-k1-knee-v1.png            RAW + sources/art/clinic-heal-v3/child-k1-knee-v1.png
+ child-f2-forearm-graze-v1.png   RAW + sources/art/clinic-heal-v3/child-f2-forearm-graze-v1.png
+ c7-sekelo-plate-plain-t-v1.png  RAW + sources/art/s02/c7-sekelo-plate-plain-t-v1.png
+ sekelo-stick.webp               RAW + assets/cook/items/v3/sekelo/stick.webp
+ c1-chai-pan-pour-milk-v1.png    RAW + sources/art/s02/c1-chai-pan-pour-milk-v1.png
+ c6-ginger-t-v1.png              RAW + sources/art/s02/c6-ginger-t-v1.png
+Kept images: "kept:X" is the image you kept for prompt X, already committed by you to RAW + sources/art/s07/<X's save-as name>.
+The upload page: https://github.com/Baby-Isa/nani-jo-ghar/upload/main/sources/art/s07
+The folder (to check and to resume): https://github.com/Baby-Isa/nani-jo-ghar/tree/main/sources/art/s07
+
+MOVING IMAGES WITHOUT DOWNLOADING (no Chrome downloads, no file pickers, nothing for Zafar to do)
+Use your cloud workspace and your browser file-upload tool. Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. Test both moves on the first image that finishes and log that they worked.
+
+1. INTO CHATGPT (attaching). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run; a kept image is attached from your workspace copy, not fetched again. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, and check the composer shows exactly that many thumbnails before you paste.
+
+2. OUT OF CHATGPT, INTO GITHUB (saving a kept image). Never use ChatGPT's download button.
+   a) Find the new image's address: read the src of the newest large image in the reply (e.g. document.querySelectorAll('main img'), the last one at least 512 px wide; reading an attribute is fine, fetching isn't). Make sure it's the NEW image, not one you attached.
+   b) Fetch that address into your cloud workspace and save it under the prompt's save-as name. Check it's the full image (1024 px or more on its long side), not a thumbnail. If the workspace can't fetch it, open the image full-size in ChatGPT and try its address from there.
+   c) Commit in batches (see the loop, step 4a): open the upload page, put every queued file into the page's file input in one go, check they all appear with the right names.
+   d) In "Commit changes", write "s07: <the IDs>" as the message and the log lines (see THE LOG), one per file, in the extended description; choose "Commit directly to the main branch", commit, and check the folder page lists every file.
+   If an image can't be saved, leave it in its ChatGPT chat, log "NOT SAVED: <chat title>" and carry on; Claude collects those afterwards. Never fall back to downloading, and never ask Zafar to do it.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (committing to GitHub, fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (saved in your workspace, not yet committed) · COMMITTED · SKIPPED or STALLED (why). Two queues: READY (redos at the front, then run order) and SAVE (kept, not yet committed).
+
+THE TICK. Repeat until every line is COMMITTED or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). If the prompt you start needs this very picture, fetch and save it first (move 2, steps a and b only, into your workspace under its save-as name) and attach that local copy, never waiting for the GitHub commit; otherwise send first, then fetch and save it while the new prompt generates, and add it to SAVE.
+   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) commit SAVE (all queued files in one upload) when 6 files are queued, or the oldest has waited 25 minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+FIRST-PASS NUMBERS (optional)
+If your workspace has python and a clone of https://github.com/Baby-Isa/nani-jo-ghar, run `python3 build/tools/art/artjudge.py --dir <the folder of your saved images> --only <ID>` on each kept image before your own look: a FAIL line is a redo, a FLAG line names what to look at hardest. It never replaces looking.
+
+APPROVALS
+- Zafar approves characters based on real people. After each such image, post it and wait for his ok in this chat before using it; keep the other windows generating meanwhile.
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
+- Sign nothing in or out. Delete no chats.
+- Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with the slots filled for that line's person, and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most 2 redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+6. Save the kept image (move 2 a and b) and queue it for the next batch commit.
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART A: THE CLINIC: THE DOCTOR (P1; a real person: Zafar attaches the photos and approves each one) (14)
+DS1 first: every doctor line attaches it (or the sheet he already has, saved under DS1's name). DW1 next: every face edits it and every pose is drawn from it. The photos never go into the repo.
+DS1 | style-anchor-v1.png, customers-sheet.webp | doctor-s1-sheet-v1.png | DSHEET + ALSO attach the doctor's photos (sources/private, never in the repo) and, if Zafar has the sheet he made earlier, that sheet: he attaches them himself. If that earlier sheet already passes DSHEET, save it under this name and skip the prompt
+DW1 | style-anchor-v1.png, kept:DS1 | doctor-w1-stand-3q-neutral-v1.png | DW1
+DF1 | edit: kept:DW1 | doctor-f1-stand-3q-talk-v1.png | DFACE
+DF2 | edit: kept:DW1 | doctor-f2-stand-3q-happy-v1.png | DFACE
+DF3 | edit: kept:DW1 | doctor-f3-stand-3q-blink-v1.png | DFACE
+DF4 | edit: kept:DW1 | doctor-f4-stand-3q-hmm-v1.png | DFACE
+DA1 | kept:DW1, kept:DS1 | doctor-a1-stand-3q-folded-v1.png | DA1
+DA2 | kept:DW1, kept:DS1 | doctor-a2-stand-3q-point-left-v1.png | DA2
+DA3 | kept:DW1, kept:DS1 | doctor-a3-stand-3q-finger-up-v1.png | DA3
+DA4 | kept:DW1, kept:DS1 | doctor-a4-stand-3q-arms-up-v1.png | DA4
+DA5 | kept:DW1, kept:DS1, ci2-tools-comfort-v1.png | doctor-a5-stand-3q-torch-v1.png | DA5
+DA6 | kept:DW1, kept:DS1 | doctor-a6-stand-3q-right-wave-v1.png | DA6
+DD1 | style-anchor-v1.png, kept:DS1 | doctor-d1-door-call-v1.png | DD1
+DD2 | edit: kept:DD1 | doctor-d2-door-look-v1.png | DDFACE
+Part A done: post the part A summary (see AT THE END) and carry on.
+
+PART B: THE CLINIC: THE BELT ITEMS (P1; one sheet per item, the belt view in cell 1) (10)
+Every sheet attaches the painted belt (cb4c) for its camera only: nothing of the belt is drawn. Judge cell 1 of each against section 3.2 of the plan: standing on its base, seen from the front and a little above, level, never tilted.
+B1 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, e3-plaster-views-v1.png | b1-plaster-level-colours-v1.png | SHEET8
+B2 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, bandage-roll.webp | b2-bandage-colours-v1.png | SHEET8
+B3 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci1-care-kit-v1.png | b3-thread-colours-v1.png | SHEET8
+B4 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b4-reflex-hammer-sheet-v1.png | SHEET8
+B5 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, e4-drop-bottle-sheet-v1.png | b5-drops-colours-v1.png | SHEET8
+B6 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b6-drill-sheet-v1.png | SHEET8
+B7 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci1-care-kit-v1.png | b7-filling-tube-sheet-v1.png | SHEET8
+B8 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci3-drinks-v1.png | b8-taste-things-v1.png | SHEET8
+B9 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b9-decoys-belt-v1.png | SHEET8
+B10 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b10-eye-patch-sheet-v1.png | SHEET8
+Part B done: post the part B summary (see AT THE END) and carry on.
+
+PART C: THE CLINIC: THE INJURIES AND HER FACES (P1, P2) (5)
+RP1 and I1 attach repo files; I2, GS1 and GN1 are edits of repo files (attach only that one file).
+RP1 | style-anchor-v1.png, s1-girl-sheet-v2.png, child-p1-sole-v1.png | child-p1-sole-v2.png | SOLE + REDO of the clinic pack's child-P1: last time the toes sloped down to the little toe, so foot levels 2 and 3 kept a stand-in
+I1 | style-anchor-v1.png, child-f2-forearm-graze-v1.png | i1-dirt-bits-v1.png | DIRT
+I2 | edit: child-k1-knee-v1.png | child-k4-knee-bump-v1.png | BUMP
+GS1 | edit: girl-w1-front-neutral-v1.png | girl-w4-front-sore-v2.png | GSORE + REDO of the clinic pack's W4: it came back with both eyes open (CLN-136)
+GN1 | edit: girl-w11-standing-palms-v1.png | girl-w13-standing-neutral-v1.png | GNEUTRAL
+Part C done: post the part C summary (see AT THE END) and carry on.
+
+PART D: COOK: THE KITCHEN MASTER, NANI (Zafar approves each one), THE STATIONS (as time allows) (11)
+K1 first (the kitchen master). N1 next: every other Nani line edits it or attaches it; judge N1 against the attached Nana for scale and render before anything else: if her head reads bigger than his, or her face more photographic, redo it. KD1 needs his kadchi photo.
+K1 | bg-cook-service-v2.webp, style-anchor-v1.png | k1-kitchen-master-v1.png | KMASTER
+N1 | nani-sheet-v2-approved.png, nana-neutral.webp, bg-cook-service-v2.webp, style-anchor-v1.png | nani-n1-lean-neutral-v1.png | NANI + REDO of S04-C's leaning Nani (never run in s05): last time far too big next to the others and her elbows not on the counter; Nana is attached for her scale and render, the kitchen for the camera only
+N2 | edit: kept:N1 | nani-n2-lean-happy-v1.png | NFACE
+N3 | edit: kept:N1 | nani-n3-lean-talk-v1.png | NFACE
+N4 | kept:N1, nani-sheet-v2-approved.png | nani-n4-lean-point-v1.png | NPOINT
+N5 | edit: kept:N1 | nani-n5-lean-blink-v1.png | NFACE
+SK2 | style-anchor-v1.png, c7-sekelo-plate-plain-t-v1.png, sekelo-stick.webp | sk2-sekelo-plate-skewers-v1.png | PLATE4
+CP1 | style-anchor-v1.png, c1-chai-pan-pour-milk-v1.png | cp1-chai-pan-tilt-v1.png | PANTILT
+DP1 | style-anchor-v1.png, c6-ginger-t-v1.png | dp1-daar-pieces-v1.png | PIECES8
+PT1 | style-anchor-v1.png | pt1-potato-v1.png | POTATO
+KD1 | style-anchor-v1.png | kd1-kadchi-v1.png | KADCHI + ALSO attach Zafar's photo of a real kadchi (he attaches it himself); no photo, skip this line
+Part D done.
+
+CHECKS (by check ID)
+DSHEET: eight panels in two rows of four, nothing touching; the same man in every panel: bald, neat white beard, clear-framed glasses, white shirt under a checked blazer, stethoscope, steel watch; panel 2 turned three-quarters to the viewer's LEFT with the arms at his sides; panels 3-5 neutral, talking, laughing; a likeness of the photos that survives the stylising (Zafar decides); never a white coat; warm light tan skin
+DW1: the doctor standing, full body, turned three-quarters to the viewer's LEFT, both feet on one level, BOTH arms hanging relaxed at his sides, neutral kind face, mouth closed; as the sheet in every feature; fills about 85% of the height, touches no edge; no floor drawn; five fingers on each hand
+DFACE: only the face changed (the expression asked); glasses, beard, clothes, hands, stethoscope, size and position identical; compare with DW1; DF4 is kind, never a frown
+DA1: the same doctor, size, framing and feet as DW1 (compare them side by side); BOTH arms folded across the chest, the stethoscope above them; neutral face; five fingers where they show; touches no edge
+DA2: the same doctor, size, framing and feet as DW1 (compare them side by side); only the near arm raised, the index finger pointing to the viewer's LEFT at chest height; the other arm at his side; five fingers; touches no edge
+DA3: the same doctor, size, framing and feet as DW1; only the near arm raised beside the shoulder, the index finger pointing straight UP; the other arm at his side; five fingers; touches no edge
+DA4: the same doctor, size, framing and feet as DW1; BOTH arms raised high, open hands, palms to us, his laughing smile; both hands inside the image; five fingers on each; touches no edge
+DA5: the same doctor, size, framing and feet as DW1; only the near arm raised, the hand holding a small steel pen torch (OFF, no beam) at chest height, its tip to the viewer's left; the other arm at his side; five fingers; nothing else in his hands; touches no edge
+DA6: the same doctor at the same size, feet on the same level as DW1, but turned three-quarters to the viewer's RIGHT (the mirror of DW1's turn, drawn, not flipped: the watch stays on his LEFT wrist); the near arm up in a wave, palm to us; a big warm smile; five fingers; touches no edge
+DD1: the doctor's head, shoulders and one raised beckoning hand leaning in from the RIGHT edge only; NO door, frame or wall drawn; a big open calling smile; the head about 40% of the height, a little left of centre; as the sheet in every feature; five fingers
+DDFACE: only the face changed, to a closed-mouth smile looking out; the raised hand, clothes, size and position identical; compare with DD1
+SHEET8: eight cells in a 4 by 2 grid, in the order and at the angles the plan's prompt lists (cell 1 the belt view: seen from the front and a little above, standing or lying LEVEL on its base, never tilted, never floating) · the same object, colours and materials as the attached reference in every cell · the colours asked are the whole object in one clean colour · "exactly side-on" and "from directly above" drawn so, not at an angle · lit from the upper left in every cell · nothing but the objects (no belt, no surface, no hands, skin or body parts) · nothing touches a cell boundary
+SOLE: the same sole as the attached picture (size, framing, the white trouser leg off the bottom), but the five toes in a LEVEL row, tips at about one height, clearly separate; smooth, no marks; touches the bottom edge only
+DIRT: eight separate soft-edged bits of brown and grey-brown dirt in a 4 by 2 grid, in the order the prompt lists (patch, patch with grit, smear, scatter, big patch, streak, three specks, faint patch); matte and feathered, never hard-edged discs or flat blobs; no blood, no insects; no skin or surface drawn; nothing touches a cell boundary
+BUMP: one soft rounded swelling on the kneecap with a mild pink-red blush, no cut, no blood, no purple or black · nothing else changed (compare with the attached knee)
+GSORE: only the face changed, to a comic wince with ONE eye shut (the viewer's left) and the other open, a small tight mouth; no tears; everything else identical to the attached seated picture (compare them)
+GNEUTRAL: only the mouth changed, to closed and neutral with no smile; eyes and everything else identical to the attached standing picture (compare them)
+KMASTER: the same kitchen and camera as the attached picture, but wider and taller: the attached picture's content sits in the middle-bottom (about the middle 76% of the width, the bottom 64% of the height), with ceiling and more wall above and more kitchen each side; the island's back edge one straight line across the whole width at about 79% down, its oak front below it to the bottom edge; three empty walnut trays with their centres at about 29%, 50% and 71% across; ONE mixer tap, nothing loose beside it; NO plant on the floor through the arch; nobody; sharp to every edge, no blur
+NANI: Nani leaning: both forearms flat on a plain marble counter, elbows ON it, one over the other; the counter's back edge one straight horizontal line across the whole image at about 82% down, marble below it, flat grey above; head a normal size for her body (the sheet's proportions, never a big head); rendered as chunky and simplified as the attached Nana, not more photographic; glasses, red dupatta, cream embroidered kurta, bracelet and rings as the sheet, no bangles; nothing of her below the counter's back edge but the arms on it; clear grey left and right of her
+NFACE: only the face changed (the mood asked); glasses, dupatta, arms, hands, counter, size and position identical; compare with N1
+NPOINT: the same Nani, size, framing and counter line as N1 (compare them side by side); her left forearm (viewer's right) still flat on the counter; her right hand up beside her face, index finger pointing down to the viewer's right, elbow on the counter; five fingers
+PLATE4: four times the SAME plain oval steel plate from directly above, at the same size and place in each of the 2 by 2 cells, with ONE, TWO, THREE, FOUR bare skewers (as the attached stick, no food) lying STRAIGHT and PARALLEL left to right, close together, evenly spaced, handles to the RIGHT sticking past the rim; never fanned or bending; nothing touches a cell boundary
+PANTILT: six times the SAME steel chai pan from directly above, at the same size and place in each of the 3 by 2 cells, the lip to the left and the handle to the right: flat, 15, 30, 45 degrees (the liquid gathering towards the lip, not yet pouring), 45 pouring milky chai, 45 pouring dark black tea; circles as circles in cell 1; nothing touches a cell boundary
+PIECES8: eight food things from directly above in a 4 by 2 grid, in order: an onion heap, one onion piece, a ginger-garlic paste dollop, tomato chunks, green chilli slices, red chilli flakes, cumin seeds, one curry leaf; matte real food, never glossy beads or sweets; nothing touches a cell boundary
+POTATO: four things from directly above in a 2 by 2 grid: a whole potato, two halves cut face up, one cube, a pile of about eight cubes; the flesh pale cream-white and MATTE, uneven, never a glossy yellow block (butter or cheese is a fail); nothing touches a cell boundary
+KADCHI: the kadchi of the attached photo, three cells of a 2 by 2 grid, the fourth empty: (1) from directly above, the bowl a full circle at the top, the handle running down and strongly foreshortened as it rises towards the camera; (2) exactly side-on, bowl left; (3) the bowl alone from above; nothing touches a cell boundary
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare (the kitchen K1 included).
+- The background isn't one flat mid-grey (K1 and the counter below Nani excepted); there's a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head or body runs off that edge (K1 fills the whole image).
+- The wrong number of things, things in the wrong order, the wrong view in a cell, or extra objects, people, hands or animals (in a sprite sheet, a hand holding the item is a fail; any piece of the belt drawn is a fail).
+- A belt view (cell 1 of parts B's sheets) not seen from the front and a little above, or the object tilted, standing on an edge, floating, or seen from straight above or straight on instead.
+- Hands: not five fingers on each visible hand, fused or extra fingers.
+- The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals), or looking older or younger.
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest clothes, or any religious marker (bindi, tilak, sindoor, deities, temple items); any person drawn in the kitchen.
+- Anything scary, bloody, gory or gross; a bare needle anywhere; a bruise in purple or black; real distress instead of a mild, comic wince.
+- Anything that looks like sweets, lollies, gumballs or jelly beans: drops drawn as glossy balls, daar pieces drawn as beads, potato drawn as butter.
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left, or cells of one sheet lit from different sides; a second light; "seen exactly side-on" or "from directly above" drawn at an angle; circles drawn as ovals where "from directly above" was asked (the tipped pan excepted).
+- A registered set (the doctor's poses on DW1, the four plates, the six pans, the plaster, bandage, thread and drops colours) whose object moves or changes size between pictures or cells.
+- Nani or the doctor not matching their sheet, or a likeness Zafar has not approved (real people: his yes is the pass).
+- Nani's head drawn bigger than Nana's for her body, or her face rendered more photographic than his.
+- The doctor in a white coat, or without his glasses, beard, blazer or stethoscope.
+
+THE LOG
+One line per kept image, used in its batch commit's description:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | <notes>
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, every "NOT SAVED" image, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+RESUMING
+If this message is pasted again later with the word "resume", open the folder page: every committed file is a kept image (its commit's description holds its log line). Carry on from the first prompt in the run order whose save-as file isn't there.
+
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), not saved. Flush the SAVE queue before you post it. At the very end, also commit the whole log as sources/art/s07/art-run-log.txt: on the folder page use "Add file" > "Create new file", paste the log, commit directly to main.

@@ -11,7 +11,7 @@ About $120–180, ceiling $200, 2–3 days, plus Zafar's time running the block 
 
 ## Sessions
 None; all in the orchestrator's chat (Opus) with in-chat subagents:
-- Plan and paste block: Fable (art planning is Fable's kind), about $15–25: the s07 art plan, run spec and paste block (being written).
+- Plan and paste block: Fable (art planning is Fable's kind), about $15–25: `docs/design-language/art-plans/s07-art-plan.md`, `build/tools/art/specs/s07.run.yaml`, `docs/design-language/art-plans/s07-paste-block.txt`.
 - Judge, cut and wire what lands: the orchestrator (Opus), the `judge` agent for pictures.
 
 ## Small decisions
