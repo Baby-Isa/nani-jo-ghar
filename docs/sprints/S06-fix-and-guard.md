@@ -1,6 +1,6 @@
 # Sprint 6: Fix and guard
 
-**Status:** open
+**Status:** closed (15 Oct 2026)
 **Opened:** 14 Oct 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback`
 
 ## Goal
@@ -24,7 +24,9 @@ None planned. Everything runs in the orchestrator's chat (Opus), with in-chat su
 - 14 Oct: the stale local copy of this branch (an S04 checkout, 50 commits not on origin) was renamed `stale/local-s04-a7370759` in the container, not deleted.
 
 ## Outcome
-(at close)
+Published 14 Oct (6fa99ea); it only went live on 15 Oct as cc2b0e8b, after the Pages-size hotfix (`_config.yml` leaves `sources/` and `build/` off the site; checks.mjs "size"). Zafar played it on his phone on 15 Oct: `docs/feedback/cook-phone-2026-10-15.md` (CK-44, ART-21, SH-90, SH-91). Art rows moved to Sprint 7's art run. Open rows: `docs/status.md` "The fix list". Spend not recorded by this chat.
 
 ## Look back (three lines)
-(at close)
+1. Worked: everything in one chat with in-chat judges; 28 rows built with independent evidence.
+2. Cost more: the publish wasn't confirmed live; a 1.29 GB upload timed out and the site stayed on 13 Oct for a day.
+3. Change: checks.mjs "size" guards the upload, and a publish is only "live" once the Pages run for that commit succeeded (already rule in `/publish`).
