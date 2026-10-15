@@ -16,7 +16,9 @@ None; all in the orchestrator's chat (Opus) with in-chat subagents:
 
 ## Small decisions
 - Order in the block (Zafar, 15 Oct): the doctor first, then the belt items, then the injuries, then Cook; if the run is cut short, the clinic is ready.
-- Open: an interim code fix for the counter seam (CK-44) before the kitchen master lands; upscaling with a local upscaler (Real-ESRGAN).
+- Zafar, 15 Oct ("yes to everything"): the interim counter-seam fix (CK-44) this sprint; upscaling with Real-ESRGAN on our side; the kitchen master method; send-off back at the front door (CLN-25); the ladle (KD1) left as it is; N1 kept; adult limbs, other patients, CLN-107, PAN-06, CK-24, SH-37 and the station masters wait for next sprint.
+- The girl first (Zafar, 15 Oct): every clinic game must play start to finish with the little girl in final art before other patients' art is made. His doctor sheets are the reference (`sources/art/s07/doctor-s1-sheet-v1.png`).
+- Ready characters already in the repo (clinic boy, old man and woman, guests, cousin, dad with baby): wired only if easy.
 
 ## Outcome
 (at close)
