@@ -1,4 +1,4 @@
-You're making 40 images in ChatGPT for a children's game called Nani jo Ghar and putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything. Zafar approves the likenesses (see APPROVALS).
+You're making 41 images in ChatGPT for a children's game called Nani jo Ghar and putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything. Zafar approves the likenesses (see APPROVALS).
 
 THE PAGE
 Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/docs/design-language/art-plans/s07-art-plan.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
@@ -7,7 +7,8 @@ WHERE FILES LIVE (all public; open nothing locally)
 RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/main/
 Reference images, by the name the run order uses:
  style-anchor-v1.png             RAW + sources/art/style-anchor-v1.png
- customers-sheet.webp            RAW + sources/cook/customers-sheet.webp
+ doctor-s1-sheet-v1.png          RAW + sources/art/s07/doctor-s1-sheet-v1.png
+ doctor-ref-faces-v1.png         RAW + sources/art/s07/doctor-ref-faces-v1.png
  nani-sheet-v2-approved.png      RAW + sources/art/characters/nani-sheet-v2-approved.png
  nana-neutral.webp               RAW + assets/cook/characters/nana-neutral.webp
  bg-cook-service-v2.webp         RAW + assets/cook/bg/service-v2.webp
@@ -21,6 +22,7 @@ Reference images, by the name the run order uses:
  s1-girl-sheet-v2.png            RAW + sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
  girl-w1-front-neutral-v1.png    RAW + sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
  girl-w11-standing-palms-v1.png  RAW + sources/art/s02/girl-w11-standing-palms-v1.png
+ girl-m1-mouth-v2.png            RAW + sources/art/s02/girl-m1-mouth-v2.png
  child-p1-sole-v1.png            RAW + sources/art/clinic-heal-v3/child-p1-sole-v1.png
  child-k1-knee-v1.png            RAW + sources/art/clinic-heal-v3/child-k1-knee-v1.png
  child-f2-forearm-graze-v1.png   RAW + sources/art/clinic-heal-v3/child-f2-forearm-graze-v1.png
@@ -88,26 +90,33 @@ HOW TO RUN EACH PROMPT
 6. Save the kept image (move 2 a and b) and queue it for the next batch commit.
 
 RUN ORDER. Line format: ID (person) | attach | save as | check
-PART A: THE CLINIC: THE DOCTOR (P1; a real person: Zafar attaches the photos and approves each one) (14)
-DS1 first: every doctor line attaches it (or the sheet he already has, saved under DS1's name). DW1 next: every face edits it and every pose is drawn from it. The photos never go into the repo.
-DS1 | style-anchor-v1.png, customers-sheet.webp | doctor-s1-sheet-v1.png | DSHEET + ALSO attach the doctor's photos (sources/private, never in the repo) and, if Zafar has the sheet he made earlier, that sheet: he attaches them himself. If that earlier sheet already passes DSHEET, save it under this name and skip the prompt
-DW1 | style-anchor-v1.png, kept:DS1 | doctor-w1-stand-3q-neutral-v1.png | DW1
+PART A: THE CLINIC: THE DOCTOR (P1; a real person: Zafar approves each one; his sheet doctor-s1-sheet-v1.png is every line's reference) (11)
+DW1 first: the two faces edit it and every pose is drawn from it. His box and card faces are cut from doctor-ref-faces-v1.png (no prompt). Follow HIS sheet in every line: bald with white side hair, short white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown shoes, silver watch; no white coat, no stethoscope, no bag.
+DW1 | doctor-s1-sheet-v1.png | doctor-w1-stand-3q-neutral-v1.png | DW1 + his sheet is the only reference: follow its face, clothes and render, never the old stand-in (no white coat, no stethoscope)
 DF1 | edit: kept:DW1 | doctor-f1-stand-3q-talk-v1.png | DFACE
-DF2 | edit: kept:DW1 | doctor-f2-stand-3q-happy-v1.png | DFACE
 DF3 | edit: kept:DW1 | doctor-f3-stand-3q-blink-v1.png | DFACE
-DF4 | edit: kept:DW1 | doctor-f4-stand-3q-hmm-v1.png | DFACE
-DA1 | kept:DW1, kept:DS1 | doctor-a1-stand-3q-folded-v1.png | DA1
-DA2 | kept:DW1, kept:DS1 | doctor-a2-stand-3q-point-left-v1.png | DA2
-DA3 | kept:DW1, kept:DS1 | doctor-a3-stand-3q-finger-up-v1.png | DA3
-DA4 | kept:DW1, kept:DS1 | doctor-a4-stand-3q-arms-up-v1.png | DA4
-DA5 | kept:DW1, kept:DS1, ci2-tools-comfort-v1.png | doctor-a5-stand-3q-torch-v1.png | DA5
-DA6 | kept:DW1, kept:DS1 | doctor-a6-stand-3q-right-wave-v1.png | DA6
-DD1 | style-anchor-v1.png, kept:DS1 | doctor-d1-door-call-v1.png | DD1
+DA1 | kept:DW1, doctor-s1-sheet-v1.png | doctor-a1-stand-3q-folded-v1.png | DA1
+DA2 | kept:DW1, doctor-s1-sheet-v1.png | doctor-a2-stand-3q-point-left-v1.png | DA2
+DA3 | kept:DW1, doctor-s1-sheet-v1.png | doctor-a3-stand-3q-finger-up-v1.png | DA3
+DA4 | kept:DW1, doctor-s1-sheet-v1.png | doctor-a4-stand-3q-arms-up-v1.png | DA4
+DA5 | kept:DW1, doctor-s1-sheet-v1.png, ci2-tools-comfort-v1.png | doctor-a5-stand-3q-torch-v1.png | DA5
+DA6 | kept:DW1, doctor-s1-sheet-v1.png | doctor-a6-stand-3q-right-wave-v1.png | DA6
+DD1 | doctor-s1-sheet-v1.png, doctor-ref-faces-v1.png | doctor-d1-door-call-v1.png | DD1
 DD2 | edit: kept:DD1 | doctor-d2-door-look-v1.png | DDFACE
 Part A done: post the part A summary (see AT THE END) and carry on.
 
-PART B: THE CLINIC: THE BELT ITEMS (P1; one sheet per item, the belt view in cell 1) (10)
-Every sheet attaches the painted belt (cb4c) for its camera only: nothing of the belt is drawn. Judge cell 1 of each against section 3.2 of the plan: standing on its base, seen from the front and a little above, level, never tilted.
+PART B: THE CLINIC: THE GIRL COMPLETE (P1; her life frames and faces, her sole, the dirt, the bump, the drill view, boing's machine, and the belt sheets her ailments ask for) (19)
+GB1, GM1, GS1, GN1 and I2 are edits of repo files (attach only that one file). DM2 attaches the kept DM1. Every belt sheet attaches the painted belt (cb4c) for its camera only: nothing of the belt is drawn; judge cell 1 of each as the belt view: standing on its base, seen from the front and a little above, level, never tilted.
+GB1 | edit: girl-w1-front-neutral-v1.png | girl-b1-front-blink-v1.png | GBLINK
+GM1 | edit: girl-w1-front-neutral-v1.png | girl-m5-front-mouth-open-v1.png | GMOUTH
+GS1 | edit: girl-w1-front-neutral-v1.png | girl-w4-front-sore-v2.png | GSORE + REDO of the clinic pack's W4: it came back with both eyes open (CLN-136)
+GN1 | edit: girl-w11-standing-palms-v1.png | girl-w13-standing-neutral-v1.png | GNEUTRAL
+RP1 | style-anchor-v1.png, s1-girl-sheet-v2.png, child-p1-sole-v1.png | child-p1-sole-v2.png | SOLE + REDO of the clinic pack's child-P1: last time the toes sloped down to the little toe, so foot levels 2 and 3 kept a stand-in
+I1 | style-anchor-v1.png, child-f2-forearm-graze-v1.png | i1-dirt-bits-v1.png | DIRT
+I2 | edit: child-k1-knee-v1.png | child-k4-knee-bump-v1.png | BUMP
+TD1 | style-anchor-v1.png, girl-m1-mouth-v2.png | td1-tooth-drill-view-v1.png | TOOTH
+DM1 | style-anchor-v1.png, ci2-tools-comfort-v1.png | dm1-drop-machine-v1.png | DM1
+DM2 | style-anchor-v1.png, kept:DM1 | dm2-levers-drops-v1.png | DM2
 B1 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, e3-plaster-views-v1.png | b1-plaster-level-colours-v1.png | SHEET8
 B2 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, bandage-roll.webp | b2-bandage-colours-v1.png | SHEET8
 B3 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci1-care-kit-v1.png | b3-thread-colours-v1.png | SHEET8
@@ -116,21 +125,16 @@ B5 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, e4-drop-bottle-sheet-v1.png
 B6 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b6-drill-sheet-v1.png | SHEET8
 B7 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci1-care-kit-v1.png | b7-filling-tube-sheet-v1.png | SHEET8
 B8 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci3-drinks-v1.png | b8-taste-things-v1.png | SHEET8
-B9 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b9-decoys-belt-v1.png | SHEET8
 B10 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b10-eye-patch-sheet-v1.png | SHEET8
 Part B done: post the part B summary (see AT THE END) and carry on.
 
-PART C: THE CLINIC: THE INJURIES AND HER FACES (P1, P2) (5)
-RP1 and I1 attach repo files; I2, GS1 and GN1 are edits of repo files (attach only that one file).
-RP1 | style-anchor-v1.png, s1-girl-sheet-v2.png, child-p1-sole-v1.png | child-p1-sole-v2.png | SOLE + REDO of the clinic pack's child-P1: last time the toes sloped down to the little toe, so foot levels 2 and 3 kept a stand-in
-I1 | style-anchor-v1.png, child-f2-forearm-graze-v1.png | i1-dirt-bits-v1.png | DIRT
-I2 | edit: child-k1-knee-v1.png | child-k4-knee-bump-v1.png | BUMP
-GS1 | edit: girl-w1-front-neutral-v1.png | girl-w4-front-sore-v2.png | GSORE + REDO of the clinic pack's W4: it came back with both eyes open (CLN-136)
-GN1 | edit: girl-w11-standing-palms-v1.png | girl-w13-standing-neutral-v1.png | GNEUTRAL
+PART C: THE CLINIC: THE REST OF THE BELT (P2) (1)
+The decoys, one sheet; the belt attached for its camera only.
+B9 | style-anchor-v1.png, cb4c-pharmacy-belt-v1.png, ci2-tools-comfort-v1.png | b9-decoys-belt-v1.png | SHEET8
 Part C done: post the part C summary (see AT THE END) and carry on.
 
-PART D: COOK: THE KITCHEN MASTER, NANI (Zafar approves each one), THE STATIONS (as time allows) (11)
-K1 first (the kitchen master). N1 next: every other Nani line edits it or attaches it; judge N1 against the attached Nana for scale and render before anything else: if her head reads bigger than his, or her face more photographic, redo it. KD1 needs his kadchi photo.
+PART D: COOK: THE KITCHEN MASTER, NANI (Zafar approves each one), THE STATIONS (as time allows) (10)
+K1 first (the kitchen master). N1 next: every other Nani line edits it or attaches it; judge N1 against the attached Nana for scale and render before anything else: if her head reads bigger than his, or her face more photographic, redo it.
 K1 | bg-cook-service-v2.webp, style-anchor-v1.png | k1-kitchen-master-v1.png | KMASTER
 N1 | nani-sheet-v2-approved.png, nana-neutral.webp, bg-cook-service-v2.webp, style-anchor-v1.png | nani-n1-lean-neutral-v1.png | NANI + REDO of S04-C's leaning Nani (never run in s05): last time far too big next to the others and her elbows not on the counter; Nana is attached for her scale and render, the kitchen for the camera only
 N2 | edit: kept:N1 | nani-n2-lean-happy-v1.png | NFACE
@@ -141,27 +145,30 @@ SK2 | style-anchor-v1.png, c7-sekelo-plate-plain-t-v1.png, sekelo-stick.webp | s
 CP1 | style-anchor-v1.png, c1-chai-pan-pour-milk-v1.png | cp1-chai-pan-tilt-v1.png | PANTILT
 DP1 | style-anchor-v1.png, c6-ginger-t-v1.png | dp1-daar-pieces-v1.png | PIECES8
 PT1 | style-anchor-v1.png | pt1-potato-v1.png | POTATO
-KD1 | style-anchor-v1.png | kd1-kadchi-v1.png | KADCHI + ALSO attach Zafar's photo of a real kadchi (he attaches it himself); no photo, skip this line
 Part D done.
 
 CHECKS (by check ID)
-DSHEET: eight panels in two rows of four, nothing touching; the same man in every panel: bald, neat white beard, clear-framed glasses, white shirt under a checked blazer, stethoscope, steel watch; panel 2 turned three-quarters to the viewer's LEFT with the arms at his sides; panels 3-5 neutral, talking, laughing; a likeness of the photos that survives the stylising (Zafar decides); never a white coat; warm light tan skin
-DW1: the doctor standing, full body, turned three-quarters to the viewer's LEFT, both feet on one level, BOTH arms hanging relaxed at his sides, neutral kind face, mouth closed; as the sheet in every feature; fills about 85% of the height, touches no edge; no floor drawn; five fingers on each hand
-DFACE: only the face changed (the expression asked); glasses, beard, clothes, hands, stethoscope, size and position identical; compare with DW1; DF4 is kind, never a frown
-DA1: the same doctor, size, framing and feet as DW1 (compare them side by side); BOTH arms folded across the chest, the stethoscope above them; neutral face; five fingers where they show; touches no edge
+DW1: the doctor standing, full body, turned three-quarters to the viewer's LEFT, both feet on one level, BOTH arms hanging relaxed at his sides, nothing in his hands, neutral kind face, mouth closed; as HIS sheet in every feature: bald with white side hair, short white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown shoes, silver watch on the left wrist; no white coat, no stethoscope, no bag; fills about 85% of the height, touches no edge; no floor drawn; five fingers on each hand
+DFACE: only the face changed (the expression asked); glasses, beard, clothes, hands, size and position identical; compare with DW1
+DA1: the same doctor, size, framing and feet as DW1 (compare them side by side); BOTH arms folded across the chest; neutral face; five fingers where they show; touches no edge
 DA2: the same doctor, size, framing and feet as DW1 (compare them side by side); only the near arm raised, the index finger pointing to the viewer's LEFT at chest height; the other arm at his side; five fingers; touches no edge
 DA3: the same doctor, size, framing and feet as DW1; only the near arm raised beside the shoulder, the index finger pointing straight UP; the other arm at his side; five fingers; touches no edge
 DA4: the same doctor, size, framing and feet as DW1; BOTH arms raised high, open hands, palms to us, his laughing smile; both hands inside the image; five fingers on each; touches no edge
 DA5: the same doctor, size, framing and feet as DW1; only the near arm raised, the hand holding a small steel pen torch (OFF, no beam) at chest height, its tip to the viewer's left; the other arm at his side; five fingers; nothing else in his hands; touches no edge
 DA6: the same doctor at the same size, feet on the same level as DW1, but turned three-quarters to the viewer's RIGHT (the mirror of DW1's turn, drawn, not flipped: the watch stays on his LEFT wrist); the near arm up in a wave, palm to us; a big warm smile; five fingers; touches no edge
-DD1: the doctor's head, shoulders and one raised beckoning hand leaning in from the RIGHT edge only; NO door, frame or wall drawn; a big open calling smile; the head about 40% of the height, a little left of centre; as the sheet in every feature; five fingers
+DD1: the doctor's head, shoulders and one raised beckoning hand leaning in from the RIGHT edge only; NO door, frame or wall drawn; a big open calling smile; the head about 40% of the height, a little left of centre; as his sheet in every feature; five fingers
 DDFACE: only the face changed, to a closed-mouth smile looking out; the raised hand, clothes, size and position identical; compare with DD1
-SHEET8: eight cells in a 4 by 2 grid, in the order and at the angles the plan's prompt lists (cell 1 the belt view: seen from the front and a little above, standing or lying LEVEL on its base, never tilted, never floating) · the same object, colours and materials as the attached reference in every cell · the colours asked are the whole object in one clean colour · "exactly side-on" and "from directly above" drawn so, not at an angle · lit from the upper left in every cell · nothing but the objects (no belt, no surface, no hands, skin or body parts) · nothing touches a cell boundary
+GBLINK: only the eyes changed, to gently closed; everything else identical to the attached seated picture (compare them)
+GMOUTH: only the mouth changed, open a little mid-word; eyes and everything else identical to the attached seated picture (compare them)
+GSORE: only the face changed, to a comic wince with ONE eye shut (the viewer's left) and the other open, a small tight mouth; no tears; everything else identical to the attached seated picture (compare them)
+GNEUTRAL: only the mouth changed, to closed and neutral with no smile; eyes and everything else identical to the attached standing picture (compare them)
 SOLE: the same sole as the attached picture (size, framing, the white trouser leg off the bottom), but the five toes in a LEVEL row, tips at about one height, clearly separate; smooth, no marks; touches the bottom edge only
 DIRT: eight separate soft-edged bits of brown and grey-brown dirt in a 4 by 2 grid, in the order the prompt lists (patch, patch with grit, smear, scatter, big patch, streak, three specks, faint patch); matte and feathered, never hard-edged discs or flat blobs; no blood, no insects; no skin or surface drawn; nothing touches a cell boundary
 BUMP: one soft rounded swelling on the kneecap with a mild pink-red blush, no cut, no blood, no purple or black · nothing else changed (compare with the attached knee)
-GSORE: only the face changed, to a comic wince with ONE eye shut (the viewer's left) and the other open, a small tight mouth; no tears; everything else identical to the attached seated picture (compare them)
-GNEUTRAL: only the mouth changed, to closed and neutral with no smile; eyes and everything else identical to the attached standing picture (compare them)
+TOOTH: ONE big upper front tooth straight on, centred, about 45% of the width, its two neighbours cut by the LEFT and RIGHT edges, the pink gum off the TOP edge; all clean white and healthy, no decay, spots or holes; nothing below the teeth but the flat grey; no tongue, lips, tools or hands; the same look as the attached mouth
+DM1: a white and steel machine, four tall tubes of red, yellow, blue and green LIQUID (no balls or beads), a drip spout under each, a chute to one opening at the bottom, empty lever sockets, no levers · looks like a medicine dispenser, not a sweet, gumball or jelly-bean machine
+DM2: six things in a 3 by 2 grid: a lever UP, the same lever DOWN at the same size and place, then four falling teardrop drops (red, yellow, blue, green), matte and softly translucent, the same size and shape, never glossy balls, beads or sweets; nothing crosses a cell boundary
+SHEET8: eight cells in a 4 by 2 grid, in the order and at the angles the plan's prompt lists (cell 1 the belt view: seen from the front and a little above, standing or lying LEVEL on its base, never tilted, never floating) · the same object, colours and materials as the attached reference in every cell · the colours asked are the whole object in one clean colour · "exactly side-on" and "from directly above" drawn so, not at an angle · lit from the upper left in every cell · nothing but the objects (no belt, no surface, no hands, skin or body parts) · nothing touches a cell boundary
 KMASTER: the same kitchen and camera as the attached picture, but wider and taller: the attached picture's content sits in the middle-bottom (about the middle 76% of the width, the bottom 64% of the height), with ceiling and more wall above and more kitchen each side; the island's back edge one straight line across the whole width at about 79% down, its oak front below it to the bottom edge; three empty walnut trays with their centres at about 29%, 50% and 71% across; ONE mixer tap, nothing loose beside it; NO plant on the floor through the arch; nobody; sharp to every edge, no blur
 NANI: Nani leaning: both forearms flat on a plain marble counter, elbows ON it, one over the other; the counter's back edge one straight horizontal line across the whole image at about 82% down, marble below it, flat grey above; head a normal size for her body (the sheet's proportions, never a big head); rendered as chunky and simplified as the attached Nana, not more photographic; glasses, red dupatta, cream embroidered kurta, bracelet and rings as the sheet, no bangles; nothing of her below the counter's back edge but the arms on it; clear grey left and right of her
 NFACE: only the face changed (the mood asked); glasses, dupatta, arms, hands, counter, size and position identical; compare with N1
@@ -170,15 +177,14 @@ PLATE4: four times the SAME plain oval steel plate from directly above, at the s
 PANTILT: six times the SAME steel chai pan from directly above, at the same size and place in each of the 3 by 2 cells, the lip to the left and the handle to the right: flat, 15, 30, 45 degrees (the liquid gathering towards the lip, not yet pouring), 45 pouring milky chai, 45 pouring dark black tea; circles as circles in cell 1; nothing touches a cell boundary
 PIECES8: eight food things from directly above in a 4 by 2 grid, in order: an onion heap, one onion piece, a ginger-garlic paste dollop, tomato chunks, green chilli slices, red chilli flakes, cumin seeds, one curry leaf; matte real food, never glossy beads or sweets; nothing touches a cell boundary
 POTATO: four things from directly above in a 2 by 2 grid: a whole potato, two halves cut face up, one cube, a pile of about eight cubes; the flesh pale cream-white and MATTE, uneven, never a glossy yellow block (butter or cheese is a fail); nothing touches a cell boundary
-KADCHI: the kadchi of the attached photo, three cells of a 2 by 2 grid, the fourth empty: (1) from directly above, the bowl a full circle at the top, the handle running down and strongly foreshortened as it rises towards the camera; (2) exactly side-on, bowl left; (3) the bowl alone from above; nothing touches a cell boundary
 
 PASS/FAIL LIST (every image; any one of these is a fail)
 - Any text, letters, numbers, labels or logos, even fake or blurry ones (tick marks with no digits are fine).
-- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare (the kitchen K1 included).
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism (the doctor follows his own sheet's soft 3D render); blur, a vignette or lens flare (the kitchen K1 included).
 - The background isn't one flat mid-grey (K1 and the counter below Nani excepted); there's a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
-- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head or body runs off that edge (K1 fills the whole image).
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says a limb, head, body or tooth runs off that edge (K1 fills the whole image).
 - The wrong number of things, things in the wrong order, the wrong view in a cell, or extra objects, people, hands or animals (in a sprite sheet, a hand holding the item is a fail; any piece of the belt drawn is a fail).
-- A belt view (cell 1 of parts B's sheets) not seen from the front and a little above, or the object tilted, standing on an edge, floating, or seen from straight above or straight on instead.
+- A belt view (cell 1 of a belt sheet) not seen from the front and a little above, or the object tilted, standing on an edge, floating, or seen from straight above or straight on instead.
 - Hands: not five fingers on each visible hand, fused or extra fingers.
 - The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals), or looking older or younger.
 - Skin that is orange, pink, grey or very pale instead of a warm light tan.
@@ -187,10 +193,10 @@ PASS/FAIL LIST (every image; any one of these is a fail)
 - Anything that looks like sweets, lollies, gumballs or jelly beans: drops drawn as glossy balls, daar pieces drawn as beads, potato drawn as butter.
 - An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
 - Light from anywhere but the upper left, or cells of one sheet lit from different sides; a second light; "seen exactly side-on" or "from directly above" drawn at an angle; circles drawn as ovals where "from directly above" was asked (the tipped pan excepted).
-- A registered set (the doctor's poses on DW1, the four plates, the six pans, the plaster, bandage, thread and drops colours) whose object moves or changes size between pictures or cells.
+- A registered set (the doctor's poses on DW1, the four plates, the six pans, the plaster, bandage, thread and drops colours, the lever up and down) whose object moves or changes size between pictures or cells.
 - Nani or the doctor not matching their sheet, or a likeness Zafar has not approved (real people: his yes is the pass).
 - Nani's head drawn bigger than Nana's for her body, or her face rendered more photographic than his.
-- The doctor in a white coat, or without his glasses, beard, blazer or stethoscope.
+- The doctor in a white coat, with a stethoscope or a bag, or without his glasses, beard, navy check blazer or silver watch.
 
 THE LOG
 One line per kept image, used in its batch commit's description:
