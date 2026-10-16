@@ -553,21 +553,44 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // S06 (CK-27 reopened: the puff did not read on chaat's yellow layer or chai's water, where its white and item-coloured
       // clouds matched what they landed on): every cloud is white with a clear warm edge, the item's colour only at its
       // heart; they rise above the rim, so the puff reads over the food, the pan or the glass, and it holds for about 0.9 s
+      // s07 fix round (CK-06, DAAR-05: the judge read those hard-edged white ellipses, with the item's colour at their
+      // heart, as "flat white discs" and "white circles with black dots" lying on the food): every cloud is now one soft
+      // vapour sprite (a radial fade, no outline, no coloured heart), faintly warmed toward the item's colour; it is born
+      // small at the landing spot and rises up and out, so what stays pictured in the pot is only what went in. Same
+      // timing as before (out 360 ms, gone by about 0.9 s), the same one shared effect in every station (CK-27)
       const s = size * 1.3;
-      const ring = this.track(this.add.ellipse(x, y, s * 0.9, s * 0.45).setDepth(D.fx).setStrokeStyle(3, 0xffffff, 0.9));
-      this.tweens.add({ targets: ring, scale: 2.1, alpha: 0, duration: 420, ease: "Cubic.easeOut", onComplete: () => ring.destroy() });
-      for (let i = 0; i < 7; i++) {
-        const a = (i / 7) * Math.PI * 2 + Math.random() * 0.5;
-        const c = this.track(this.add.ellipse(x, y, s * 0.72, s * 0.5, 0xffffff, 0.9).setDepth(D.fx).setStrokeStyle(2.5, 0x8a6a48, 0.6));
-        const tx = x + Math.cos(a) * s * 0.85;
-        const ty = y + Math.sin(a) * s * 0.35 - s * 0.55;
-        this.tweens.add({ targets: c, x: tx, y: ty, scale: 1.7, duration: 360, ease: "Cubic.easeOut" });
-        this.tweens.add({ targets: c, alpha: 0, scale: 2, y: ty - s * 0.25, delay: 360, duration: 520 + Math.random() * 160, ease: "Sine.easeIn", onComplete: () => c.destroy() });
-        if (i % 2) continue;
-        const h = this.track(this.add.ellipse(x, y, s * 0.3, s * 0.21, color, 0.9).setDepth(D.fx + 0.01));
-        this.tweens.add({ targets: h, x: tx, y: ty, scale: 1.7, duration: 360, ease: "Cubic.easeOut" });
-        this.tweens.add({ targets: h, alpha: 0, scale: 2, y: ty - s * 0.25, delay: 360, duration: 520, ease: "Sine.easeIn", onComplete: () => h.destroy() });
+      const key = this.softPuffTex();
+      const warm = (c) => {
+        const mix = (sh) => Math.round(255 * 0.82 + ((c >> sh) & 255) * 0.18);
+        return (mix(16) << 16) | (mix(8) << 8) | mix(0);
+      };
+      const tint = warm(Number(color) >>> 0);
+      for (let i = 0; i < 6; i++) {
+        const a = -Math.PI / 2 + ((i - 2.5) / 2.5) * 1.15 + (Math.random() - 0.5) * 0.25;
+        const c = this.track(this.add.image(x, y, key).setDepth(D.fx).setTint(tint).setAlpha(0.95));
+        c.setScale((s * 0.55) / 128);
+        const tx = x + Math.cos(a) * s * 0.75;
+        const ty = y + Math.sin(a) * s * 0.55 - s * 0.7;
+        this.tweens.add({ targets: c, x: tx, y: ty, scale: (s * 1.05) / 128, duration: 360, ease: "Cubic.easeOut" });
+        this.tweens.add({ targets: c, alpha: 0, scale: (s * 1.3) / 128, y: ty - s * 0.4, delay: 360, duration: 520 + Math.random() * 160, ease: "Sine.easeIn", onComplete: () => c.destroy() });
       }
+    }
+    /** The puff's one soft cloud (128 px, made once per game): white at its heart, a faint warm shade, then nothing. */
+    softPuffTex() {
+      const key = "fx-puff-soft";
+      if (this.textures.exists(key)) return key;
+      const N = 128;
+      const ct = this.textures.createCanvas(key, N, N);
+      const g = ct.getContext();
+      const grd = g.createRadialGradient(N / 2, N * 0.46, 0, N / 2, N / 2, N / 2);
+      grd.addColorStop(0, "rgba(255,255,255,0.92)");
+      grd.addColorStop(0.42, "rgba(255,252,247,0.78)");
+      grd.addColorStop(0.72, "rgba(196,172,146,0.32)");
+      grd.addColorStop(1, "rgba(196,172,146,0)");
+      g.fillStyle = grd;
+      g.fillRect(0, 0, N, N);
+      ct.refresh();
+      return key;
     }
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */
     wisps(x, y, n = 2, w = 60) {
@@ -726,6 +749,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const img = this.chars[who];
       if (!img) return;
       img.mood = mood;
+      // ART-10: her box's face rests in the same mood as her counter sprite
+      if (who === "nani" && UI.naniMood && mood !== "talk" && mood !== "blink") UI.naniMood(mood === "happy" ? "happy" : "neutral");
       const key =
         who === "nani"
           ? { neutral: "nani-neutral", happy: "nani-happy", talk: "nani-talk", point: "nani-point", blink: "nani-blink" }[mood] || "nani-neutral"

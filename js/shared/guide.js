@@ -20,6 +20,7 @@
  *   g.set(html, {rec})      the line now (html: the host's own word markup); rec: flagged "to record"
  *   g.talk(on)              her face bobs while she talks
  *   g.replaying(on)         her face's badge lights while her line is heard again
+ *   g.mood(m)               her face in that mood (opts.faces: {mood: {src, crop}}, each head cut once; ART-10)
  *   g.el                    the box
  *   g.strip(on)             R4: the asker is the guide (Nani's pantry list): the box keeps only its tools (no second
  *                           face, no line); the host shows the line as the card's top strip
@@ -198,6 +199,45 @@
     if (bulb && opts.onBulb) bulb.addEventListener("click", (ev) => (ev.stopPropagation(), opts.onBulb(bulb)));
     const off = G.onMute(paint);
     paint();
+    // ART-10 (s07 fix round): her face follows her mood. opts.faces: {mood: {src, crop: [x, y, w, h] in the picture's
+    // px}}: each mood's head is cut once from its picture (the same pictures as her counter sprite), and g.mood(m)
+    // shows it; until a cut is ready (or with no faces) the box keeps opts.face
+    const faceImg = face.querySelector("img");
+    const moods = {};
+    let moodNow = "neutral";
+    const showMood = () => {
+      const u = moods[moodNow] || moods.neutral;
+      if (u && faceImg.getAttribute("src") !== u) faceImg.setAttribute("src", u);
+      el.dataset.mood = moodNow;
+    };
+    const cutFace = (f) =>
+      new Promise((res) => {
+        if (!f || !f.src) return res(null);
+        if (!f.crop || typeof document === "undefined") return res(f.src);
+        const im = new Image();
+        im.onload = () => {
+          try {
+            const [x, y, w, hh] = f.crop;
+            const N = Math.round(Math.min(256, w));
+            const c = document.createElement("canvas");
+            c.width = N;
+            c.height = Math.round((N * hh) / w);
+            c.getContext("2d").drawImage(im, x, y, w, hh, 0, 0, c.width, c.height);
+            res(c.toDataURL("image/png"));
+          } catch (e) {
+            res(null); // (a cross-origin picture: the box keeps its one face)
+          }
+        };
+        im.onerror = () => res(null);
+        im.src = f.src;
+      });
+    Object.keys(opts.faces || {}).forEach((m) =>
+      cutFace(opts.faces[m]).then((u) => {
+        if (!u) return;
+        moods[m] = u;
+        if (m === moodNow || (m === "neutral" && !moods[moodNow])) showMood();
+      })
+    );
     const fit = () => root.FitText && say.firstChild && root.FitText.fit(say.firstChild);
     const ro = typeof ResizeObserver === "function" ? new ResizeObserver(fit) : null;
     if (ro) ro.observe(say);
@@ -219,6 +259,14 @@
       },
       replaying(on) {
         face.classList.toggle("on", !!on);
+      },
+      /** Her face's mood now (a key of opts.faces: neutral, happy, talk, blink...); an unknown one shows neutral. */
+      mood(m) {
+        moodNow = m || "neutral";
+        showMood();
+      },
+      get moodNow() {
+        return moodNow;
       },
       strip(on) {
         el.classList.toggle("ng-strip", !!on);
