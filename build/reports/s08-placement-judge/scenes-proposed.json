@@ -1,0 +1,220 @@
+{
+ "_about": "Clinic v2 prototype (docs/game-design/modes/clinic.md part A): the approved backgrounds (sources/art/clinic-v2/, cut to webp in assets/clinic/rooms/) shown at full strength, and where the stand-in pieces stand on them. Every x/y is a share of the picture (1536 x 1024, aspect 1.5): x across, y down; a person's y is where their feet (or stool) meet the floor; h is their height as a share of the picture's height. `need` = the x-range that must stay on screen (the scene box covers the play area when it can; when the play area is too narrow for `need`, the box fits `need`'s width and sits on the bottom, and a soft mirrored strip of the wall fills above it). Placement checked against build/reports/clinic-bg-check/ (VISUAL-QA 2b).",
+ "aspect": 1.5,
+ "horizon": 0.35,
+ "_horizon": "s08-doctor-stitch: the rooms' eye line as a share of the picture (from the doors, the counter top seen from above, the bench seat and the step stool): a person's height grows with (feet line - horizon). With a room's `door` (its top and threshold, read off the picture), a 1.75 m doctor at feet line y is 0.875 x door x (y - horizon) / (threshold - horizon); the plane static check holds every room to it.",
+ "rooms": {
+  "waiting": {
+   "src": "assets/clinic/rooms/bg-clinic-waiting-cb1b-v1.webp",
+   "need": [
+    0.0,
+    0.93
+   ],
+   "ay": 0.7
+  },
+  "exam": {
+   "src": "assets/clinic/rooms/bg-clinic-exam-cb2b-v1.webp",
+   "need": [
+    0.2,
+    0.86
+   ],
+   "ay": 0.6,
+   "square": {
+    "src": "assets/clinic/rooms/bg-clinic-exam-cb2b-sq-v1.webp",
+    "size": 1536,
+    "middle": [
+     256,
+     1280
+    ],
+    "_about": "A2 (5 Oct), R3: the square room (CB2b kept pixel for pixel in rows 256-1280, R3's ceiling and floor bands); a screen taller than the room shows its whole width (js/clinic/stages/common.js squareFit)"
+   }
+  },
+  "stand": {
+   "src": "assets/clinic/rooms/bg-clinic-stand-cb3b-v1.webp",
+   "need": [
+    0.22,
+    0.86
+   ],
+   "ay": 0.6
+  },
+  "pharmacy": {
+   "src": "assets/clinic/rooms/bg-clinic-pharmacy-cb4c-v1.webp",
+   "need": [
+    0.15,
+    0.85
+   ],
+   "ay": 0.75
+  },
+  "door": {
+   "src": "assets/clinic/rooms/bg-clinic-door-cb5-v1.webp",
+   "need": [
+    0.1,
+    0.92
+   ],
+   "ay": 0.7
+  }
+ },
+ "waiting": {
+  "_about": "The six-seat bench (cushion centres), the standing spots by the doctor's door and the desk, (two little stools in front, then a spot by the window, were tried for 9-10 people: they hid the bench's ticks and faces, so level 5 fills the room with the babies and children sitting with the grown-ups instead). adult = an adult's height sitting (a child is `child` of it); the heart poster's frame ends at y 0.31, so a sitting adult's head (0.745 - 0.36 = 0.385) stays under it (the bg-check note).",
+  "slots": {
+   "bench0": {
+    "x": 0.123,
+    "y": 0.745,
+    "z": 2
+   },
+   "bench1": {
+    "x": 0.238,
+    "y": 0.745,
+    "z": 2
+   },
+   "bench2": {
+    "x": 0.355,
+    "y": 0.745,
+    "z": 2
+   },
+   "bench3": {
+    "x": 0.472,
+    "y": 0.745,
+    "z": 2
+   },
+   "bench4": {
+    "x": 0.588,
+    "y": 0.745,
+    "z": 2
+   },
+   "bench5": {
+    "x": 0.703,
+    "y": 0.745,
+    "z": 2
+   },
+   "door": {
+    "x": 0.79,
+    "y": 0.83,
+    "z": 3,
+    "scale": 1.08
+   },
+   "desk": {
+    "x": 0.855,
+    "y": 0.93,
+    "z": 4,
+    "scale": 1.1
+   },
+   "window": {
+    "x": 0.075,
+    "y": 0.9,
+    "z": 4,
+    "scale": 1.05
+   }
+  },
+  "adult": 0.34,
+  "child": 0.8,
+  "tall": 1.12,
+  "short": 0.84,
+  "doctor": {
+   "x": 0.795,
+   "y": 0.755,
+   "h": 0.57,
+   "_about": "s07-clinic-a (CLN-115, Zafar 15 Oct: standing and waving, not coming out from the door): the real doctor stands in front of his open door, face-on (DD1); y = his feet line just in front of the threshold (0.70), h = his height (the door is about 0.66 of the room)"
+  },
+  "exit": {
+   "x": 0.815,
+   "y": 0.7
+  }
+ },
+ "exam": {
+  "_about": "CB2b: the patient sits on the bed's edge (the mattress top at y 0.53, the step stool's top at 0.66), facing us; the doctor stands to the right, past the bed's end, turned 3/4. fig = the figure's box (the patient DOM figure draws seated inside it, feet at its bottom). floor = the line she sits on, where the step stool stands (the bed's legs at 0.78, the stool's at 0.82): the doctor's feet are on it (CLN-154, Zafar 16 Oct: he read nearer the camera than her). s08-doctor-stitch (Zafar, 16 Oct: \"the grandad looks too big for the room - maybe him and the girl both need to be a tad further back into the room and smaller\"): floor = the bed's front legs (0.79-0.80), the line under her seat on the mattress edge, so he stands level with her, 0.71 tall (1.75 m by the door, `door`); fig.big = her sitting art's size over its 1x room size (1.3 before; 1.0 now: seated she is her standing self in the stand room, 0.505), fig.tapBig = the size her tap areas are kept at (1.3: today's, CLN-93; partAt pads them by tapBig / big).",
+  "fig": {
+   "x": 0.5,
+   "bottom": 0.69,
+   "h": 0.56,
+   "big": 1.0,
+   "tapBig": 1.3
+  },
+  "seat": 0.535,
+  "floor": 0.8,
+  "door": [
+   0.054,
+   0.742
+  ],
+  "side": {
+   "_about": "A1 (5 Oct), the art plan section 3.1 W7: side-on, the patient sits on the bed's right-hand end in profile, facing right (the knee, ear and eye test B zooms); x = the seat anchor across, seat = the mattress top it sits on.",
+   "x": 0.7,
+   "seat": 0.535
+  },
+  "doctor": {
+   "x": 0.85,
+   "y": 0.83,
+   "h": 0.72
+  },
+  "certificate": {
+   "src": null,
+   "x": 0.68,
+   "y": 0.215,
+   "w": 0.125,
+   "h": 0.14,
+   "_about": "CLN-116 (CB2b review, 29 Sept): the real doctor's certificate on the right wall, a photo Zafar supplies (src: then a framed picture); a grey frame flagged in the markup until then. x = the frame's centre, y = its bottom, w and h = its size, as shares of the room (1536 x 1024): above the doctor's head (doctor), clear of the door and of the fever room's wall thermometer (x 0.76-0.84)"
+  }
+ },
+ "stand": {
+  "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right. CLN-154 (Zafar, 16 Oct: he read nearer the camera than her): one feet line (fig.bottom = doctor.y) and fig.body = her standing art's height (head to feet) as a share of the room, so he is about 1.45x her (0.85 / 0.59 = 1.44) and her crown is at his chest, as at the door; fig.h is only her box. s08-doctor-stitch (Zafar, 16 Oct: \"a tad further back into the room and smaller\"): the feet line goes back up the floor from 0.91 to 0.80, him 0.85 -> 0.73 (1.75 m by the door on the right wall, `door`), her 0.59 -> 0.505 (1.45x); fig.tapBody 0.59 = the body her tap areas are kept at (today's, CLN-93, CLN-09: partAt pads them by tapBody / body), so drawn smaller her hit zones never shrink (the plane static check holds it).",
+  "fig": {
+   "x": 0.5,
+   "bottom": 0.825,
+   "h": 0.55,
+   "body": 0.535,
+   "tapBody": 0.59
+  },
+  "door": [
+   0.047,
+   0.728
+  ],
+  "phone": {
+   "fig": {
+    "bottom": 0.865,
+    "h": 0.63
+   },
+   "doctor": {
+    "y": 0.84
+   },
+   "_about": "S03 (CLN-94): on a short screen (under 480 px) their feet are lower, on one line, so the room's cropped top (0.06) keeps his crown (0.11). Their sizes stay the desktop's, and her tap areas the size they were before s08 (tapBody 0.59: her art's 1x size or more, CLN-93, CLN-09; the static check holds it)"
+  },
+  "doctor": {
+   "x": 0.72,
+   "y": 0.8,
+   "h": 0.73
+  }
+ },
+ "pharmacy": {
+  "_about": "CB4c: the painted belt's surface runs edge to edge between y 0.615 and 0.69; items stand on it (their base at `beltY`, `itemH` tall); the counter strip in front (y 0.73 to 1) holds the pantry-style tray.",
+  "beltY": 0.685,
+  "itemH": 0.15,
+  "tray": {
+   "x": 0.5,
+   "y": 0.86,
+   "h": 0.17
+  }
+ },
+ "door": {
+  "_about": "CB5, clinic fixes 13d: the doctor and the patient stand on the LEFT, in the free wall space (not by the door, where the face circle sat on the green cross sign), turned to each other while they talk. The feeling cards open in a thought bubble from the patient's head, out to the right (levels 1-2); from level 3 the help items sit in a tray along the bottom of the screen.",
+  "patient": {
+   "x": 0.39,
+   "y": 0.77,
+   "h": 0.455,
+   "body": 0.415,
+   "_about": "s07-clinic-a (CLN-25): body = her standing art's height (head to feet) as a share of the room, a child beside the doctor. y = her drawn feet. s08-doctor-stitch (Zafar, 16 Oct: \"a tad further back into the room and smaller\"): she and the doctor on one feet line, 0.77 (was hers 0.822, his 0.88), him 0.60 (was 0.64; 1.75 m by the front door, `door`), her 0.415 (1.45x)"
+  },
+  "doctor": {
+   "x": 0.205,
+   "y": 0.77,
+   "h": 0.6
+  },
+  "door": [
+   0.078,
+   0.728
+  ],
+  "cards": {
+   "x": 0.6,
+   "y": 0.95
+  }
+ }
+}
