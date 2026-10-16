@@ -272,7 +272,7 @@
             const face = body.isFace(pid);
             if (closeup ? !(face || pid === "body-head") : face) return;
             const d = Math.hypot(cx - (r.left + ax * r.width), cy - (r.top + ay * r.height));
-            const R = ar * r.height;
+            const R = ar * r.height * (fig.art.tapPad || 1);
             if (p === want && d <= R && R < md) (md = R), (mine = { part: p, side: sd || null, key: k });
             // inside: rank by the area's size (smaller first); outside: by the distance past its edge, plus pad
             const score = d <= R ? R - 1e6 : d - R <= pad ? d - R : Infinity;
@@ -418,8 +418,8 @@
        * o.view "front" | "side"; o.figH = the figure box's height as a share of the room (scenes-v2 exam.fig.h), so
        * the art is drawn at its own room size (art plan section 2.2). o.body (CLN-154) = her body's height (head to
        * feet: the view's fig_h) as a share of the room, so she is sized as the doctor is (Kit.doctorFigure:
-       * H * V.h / fig_h); without it the box's height cancels out and the art is always its 1x size. Returns false
-       * when there is no art.
+       * H * V.h / fig_h); without it the box's height cancels out and the art is always its 1x size. o.tapPad (s08):
+       * her tap areas' growth over the drawn picture (fig.art.tapPad, read by partAt). Returns false when there is no art.
        */
       useArt(spec, o = {}) {
         const view = o.view === "side" && spec && spec.side ? "side" : "front";
@@ -468,7 +468,9 @@
         fig.artEl = inner;
         fig.artBox = box;
         fig.tapAnchors = false; // the diagnosis turns it on (its tap areas); a heal game's zoom uses the anchors
-        fig.art = { spec, view, V, base, face, body: "front", life, lifeImg };
+        // s08-doctor-stitch (Zafar, 16 Oct: both a tad further back and smaller): o.tapPad >= 1 grows her tap areas (partAt)
+        // by that factor, so drawn smaller her hit zones stay the size they were (CLN-93, CLN-09); what is drawn is not padded
+        fig.art = { spec, view, V, base, face, body: "front", life, lifeImg, tapPad: Math.max(1, +o.tapPad || 1) };
         fig.artMood(mood);
         fig.artLife();
         const sw = groups.fx.querySelector(".fig-swirl");

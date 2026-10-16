@@ -17,7 +17,9 @@ Job types (spec "jobs", each with an "id"; "each": [{...vars}] repeats a job wit
            "soft" keys the whole sheet colour-to-alpha (glass); "register_scale" shrinks a registered set together
   figure   a single standing/sitting figure: the base pose and its poses ("poses": whole figures registered on a band),
            face layers ("faces": head-only edits on the base's canvas), one canvas for all, the 1x size from "fig_h",
-           @2x never above the source, anchors as canvas fractions, 512 px corner heads, an optional side pose
+           @2x never above the source, anchors as canvas fractions, 512 px corner heads, an optional side pose;
+           "face_align": "none" takes face edits as drawn on the base's canvas (no ECC), "face_match" fits their colour
+           to the base on the head band's unchanged pixels (s08: no skin flicker when a face layer swaps on)
   lean     (s08) a figure leaning on a counter: face and arm edits as layers on the base (registered, colour drift
            taken out), the marble cut away round the counter line, one canvas per use ("canvases"), "alias" for a
            frame still to draw
@@ -278,6 +280,28 @@ def register_set(props, names, align, cx, q):
 
 # ---------------------------------------------------------------- figure
 
+def match_colour(r, base, y0, y1, name):
+    """A per-channel gain and offset that maps the edit onto the base, fitted on the head band's pixels the edit left
+    alone (summed channel difference under 40) that are skin on the base, so a head layer swaps on with no skin flicker.
+    Logs the skin ΔE (the medians over those pixels) before and after."""
+    a, b = r[y0:y1].reshape(-1, 3), base[y0:y1].reshape(-1, 3)
+    hsv = cv2.cvtColor(b.reshape(-1, 1, 3).astype(np.uint8), cv2.COLOR_RGB2HSV).reshape(-1, 3)
+    skin = (hsv[:, 0] >= 5) & (hsv[:, 0] <= 22) & (hsv[:, 1] > 60) & (hsv[:, 1] < 170) & (hsv[:, 2] > 120)
+    ok = (np.abs(a - b).sum(1) < 40) & skin
+    if ok.sum() < 500:
+        log("  face %s: too little skin to match (%d px), kept as drawn" % (name, ok.sum()), quiet=True)
+        return r
+    out = r.copy()
+    for c in range(3):
+        g, o = np.polyfit(a[ok, c], b[ok, c], 1)
+        out[..., c] = np.clip(r[..., c] * g + o, 0, 255)
+    m2 = out[y0:y1].reshape(-1, 3)
+    de0 = L.delta_e(np.median(a[ok], 0), np.median(b[ok], 0))
+    de1 = L.delta_e(np.median(m2[ok], 0), np.median(b[ok], 0))
+    log("  face %s: skin matched to the base on %d px, ΔE %.2f -> %.2f" % (name, ok.sum(), de0, de1), quiet=True)
+    return out
+
+
 def cut_figure(job, cx):
     p = cx.path(job["src"])
     if not p:
@@ -301,7 +325,12 @@ def cut_figure(job, cx):
             log("  face %s: not landed" % f, quiet=True)
             continue
         e = fit_to(L.load(fp), w1.shape)
-        r, M = L.ecc(e, w1, (top / H, (neck + band_pad) / H), say=log)
+        if job.get("face_align") == "none":  # s08: an edit of the base on its own canvas: no registration (ECC drifts on the mouth)
+            r, M = e, np.eye(2, 3)
+        else:
+            r, M = L.ecc(e, w1, (top / H, (neck + band_pad) / H), say=log)
+        if job.get("face_match"):  # s08: the edit's skin re-rendered a shade off: matched to the base on the head band's unchanged pixels
+            r = match_colour(r, w1, top, neck + 30, f)
         m = L.head_mask(r, w1, neck + 30, neck, (H, W))
         m[neck + 30:] = 0
         lk = L.leak(r, w1, m > 0)

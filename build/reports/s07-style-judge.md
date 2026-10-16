@@ -43,6 +43,12 @@ Measured on Zafar's shot (`/root/.claude/uploads/e8c41a29-f924-5d5e-910b-747f89d
 
 Correct relation: one feet line (within 0.01 of the room) and him 1.5× her body, her crown at his chest.
 
+| Zafar, 16 Oct (newer, wins): "a tad further back into the room and smaller" | feet line | him | her | rule (s08-doctor-stitch, `plane` static check) |
+|---|---|---|---|---|
+| check-up (stand) | 0.80 (phone 0.84) | 0.73 | 0.505, taps kept at 0.59 (`tapBody`) | one feet line; 1.4-1.5×; him a 1.75 m man by the room's 2 m door (`scenes-v2.json` `horizon`, `door`) |
+| seated exam | 0.80 (bed's front legs) | 0.71 | sitting art 1×, taps kept at 1.3× (`tapBig`) | as above |
+| front door (send-off) | 0.77 both | 0.60 | 0.415 | as above |
+
 | File | Key | Now | Proposed (not done) |
 |---|---|---|---|
 | `data/clinic/scenes-v2.json` | `stand.fig.bottom` / `stand.doctor.y` | 0.86 / 0.92 | **0.88 / 0.88** |
