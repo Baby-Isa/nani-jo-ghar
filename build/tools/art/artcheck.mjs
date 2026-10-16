@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Art-asset data check (checks-to-build 16; art rules D8, D15, D22, D29): no decoding, headers only.
-//   bg       every background (assets/**/bg/, assets/backgrounds/, assets/clinic/rooms/) is exactly 1600x900
+//   bg       every background (assets/**/bg/, assets/backgrounds/, assets/clinic/rooms/) is exactly 1600x900; a scene master
+//            (*-master-vN, SH-91, Zafar 15 Oct) is 2100x1350 with the 1600x900 core inside it
 //   cutout   every cut-out (items*, props, room-items folders) is WebP with an alpha channel
 //   ref      every assets/ path named in js/ or data/ exists (a retired or moved file still referenced)
 // Today's findings are build/tools/art/artcheck-known.json (art debt for the next runs): a finding not in it fails.
@@ -46,7 +47,8 @@ export function findings() {
   for (const p of walk("assets", (x) => IMG.test(x))) {
     const i = imageInfo(head(join(ROOT, p)));
     if (!i) continue;
-    if (isBg(p) && (i.w !== 1600 || i.h !== 900)) out.push({ check: "bg", key: `bg|${p}`, text: `${p}: ${i.w}x${i.h}, not 1600x900` });
+    const master = /-master-v\d+\./.test(p);
+    if (isBg(p) && (master ? i.w !== 2100 || i.h !== 1350 : i.w !== 1600 || i.h !== 900)) out.push({ check: "bg", key: `bg|${p}`, text: `${p}: ${i.w}x${i.h}, not 1600x900` });
     if (isCutout(p) && (i.type !== "webp" || !i.alpha)) out.push({ check: "cutout", key: `cutout|${p}`, text: `${p}: ${i.type}${i.alpha ? "" : " without alpha"}, not WebP with alpha` });
   }
   const refs = new Set();
