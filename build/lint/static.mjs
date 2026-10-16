@@ -11,8 +11,8 @@
 //             script in a page, localStorage only in the save and settings modules
 //   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
 //   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in every bulb time table
-//   plane     the exam room's doctor and patient in one plane (CLN-154): standing, one feet line and him 1.35-1.6x her body;
-//             seated, his feet on the exam floor line; her standing body never under her art's 1x size (data/clinic/scenes-v2.json)
+//   plane     the doctor and the girl in one plane (CLN-154, s08): one feet line, him 1.35-1.6x her body, a tad back (PLANE_BACK),
+//             him a 1.75 m man by the room door; her tap areas never under today's size (data/clinic/scenes-v2.json)
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
@@ -153,20 +153,50 @@ export function bulbTables(rd, J) {
 
 // ---- plane ----
 // CLN-154 (Zafar, 16 Oct: "he's much too close to the foreground than she is"): the send-off's relation in the exam room
+// s08-doctor-stitch (Zafar, 16 Oct: "the grandad looks too big for the room - maybe him and the girl both need to be a tad
+// further back into the room and smaller"): every room's feet line at most BACK (CLN-154's were 0.91, 0.95 on a phone, 0.84
+// seated and 0.82/0.88 at the door), his height that of a 1.75 m man by the room's 2 m door at his feet line (within 12%:
+// scenes-v2 horizon and the room's door), and her tap areas never under today's size however small she is drawn
+export const PLANE_BACK = { stand: 0.85, exam: 0.82, door: 0.8 };
 export function planeFindings(sc) {
   const out = [];
   const add = (where, text) => out.push({ check: "plane", at: `data/clinic/scenes-v2.json ${where}`, key: `plane|${where}`, text });
+  const persp = (where, room, doc) => {
+    const d = room.door, hz = sc.horizon;
+    if (!d || hz == null) return add(`${where}.door`, `no door or horizon: his size against the room cannot be checked`);
+    const want = (0.875 * (d[1] - d[0]) * (doc.y - hz)) / (d[1] - hz);
+    if (!(Math.abs(doc.h / want - 1) <= 0.12)) add(`${where}.size`, `him ${doc.h} at feet line ${doc.y}: a 1.75 m man by the door there is ${want.toFixed(2)} (within 12%)`);
+  };
+  const back = (where, room, y) => { if (!(y <= PLANE_BACK[room])) add(`${where}.back`, `the feet line at ${y}: at most ${PLANE_BACK[room]}, a tad further back into the room (Zafar, 16 Oct)`); };
   const st = sc.stand || {}, ph = st.phone || {};
-  for (const [where, fig, doc] of [["stand", st.fig, st.doctor], ["stand.phone", { ...st.fig, ...ph.fig }, { ...st.doctor, ...ph.doctor }]]) {
+  for (const [where, fig, doc] of st.fig && st.doctor ? [["stand", st.fig, st.doctor], ["stand.phone", { ...st.fig, ...ph.fig }, { ...st.doctor, ...ph.doctor }]] : []) {
     if (!fig || !doc) continue;
     if (!(Math.abs(fig.bottom - doc.y) <= 0.01)) add(where, `her feet at ${fig.bottom}, his at ${doc.y}: one feet line (within 0.01)`);
     const r = doc.h / fig.body;
     if (!(r >= 1.35 && r <= 1.6)) add(where, `him ${doc.h} beside her body ${fig.body}: about 1.4-1.5x her (fig.body)`);
-    // her tap targets scale with her drawn body: never under her art's 1x size, the size before CLN-154 (CLN-93, CLN-09)
-    if (!(fig.body >= 600 / 1024)) add(`${where}.body`, `her body ${fig.body} is under her art's 1x size (0.586): her tap targets would shrink`);
+    back(where, "stand", doc.y);
+    persp(where, st, doc);
+    // her tap areas are drawn for max(body, tapBody) (figure.js partAt pads them): never under her art's 1x size, the size
+    // before CLN-154 and s08 (CLN-93, CLN-09)
+    if (!(Math.max(fig.body, fig.tapBody || 0) >= 600 / 1024)) add(`${where}.body`, `her tap areas are sized for body ${Math.max(fig.body, fig.tapBody || 0)}, under her art's 1x size (0.586): her tap targets would shrink (pad them: fig.tapBody)`);
   }
   const ex = sc.exam || {};
-  if (ex.doctor && !(Math.abs(ex.doctor.y - ex.floor) <= 0.01)) add("exam", `his feet at ${ex.doctor.y}, the floor she sits on at ${ex.floor}: on it (within 0.01)`);
+  if (ex.doctor) {
+    if (!(Math.abs(ex.doctor.y - ex.floor) <= 0.01)) add("exam", `his feet at ${ex.doctor.y}, the floor she sits on at ${ex.floor}: on it (within 0.01)`);
+    back("exam", "exam", ex.doctor.y);
+    persp("exam", ex, ex.doctor);
+    // sitting, her tap areas are drawn for max(big, tapBig): never under the 1.3 they were (D1, CLN-93)
+    const big = ex.fig && ex.fig.big != null ? ex.fig.big : 1.3;
+    if (!(Math.max(big, (ex.fig && ex.fig.tapBig) || 0) >= 1.3)) add("exam.body", `her sitting tap areas are sized for ${Math.max(big, (ex.fig && ex.fig.tapBig) || 0)}x her art, under 1.3x: her tap targets would shrink (pad them: fig.tapBig)`);
+  }
+  const dr = sc.door || {};
+  if (dr.patient && dr.doctor) {
+    if (!(Math.abs(dr.patient.y - dr.doctor.y) <= 0.01)) add("door", `her feet at ${dr.patient.y}, his at ${dr.doctor.y}: one feet line (within 0.01)`);
+    const r = dr.doctor.h / dr.patient.body;
+    if (!(r >= 1.35 && r <= 1.6)) add("door", `him ${dr.doctor.h} beside her body ${dr.patient.body}: about 1.4-1.5x her (patient.body)`);
+    back("door", "door", dr.doctor.y);
+    persp("door", dr, dr.doctor);
+  }
   return out;
 }
 

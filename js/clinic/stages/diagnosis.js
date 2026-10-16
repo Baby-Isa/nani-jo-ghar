@@ -22,7 +22,9 @@
   const PL = () => global.ClinicPipeline;
 
   const FACE = ["eye", "ear", "nose", "mouth", "tooth", "throat"];
-  const BIG = 1.3; // the art's size over its room size in the diagnosis (D1: "maybe make her bigger")
+  // the sitting art's size over its room size in the diagnosis (D1: "maybe make her bigger"); scenes-v2 exam.fig.big
+  // sets it (s08-doctor-stitch, Zafar 16 Oct: both a tad smaller), and exam.fig.tapBig keeps her tap areas at that size
+  const BIG = 1.3;
   const HURT = "sad"; // CLN-136: the diagnosis's sore face (never the pain face: it reads as a wink)
   const FINDS = { hand: "👀", torch: "✨", stethoscope: "〰️", thermometer: "🔥" };
 
@@ -66,7 +68,11 @@
       fig.pose(standing ? "stand" : "sit");
       // D1, CLN-93 (6 Oct): a bigger patient so her parts are easy to tap (her seat stays on the bed's edge)
       // CLN-154 (Zafar, 16 Oct): standing, her body is drawn at figCfg.body (as the doctor at his h), on his feet line
-      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(standArt || artSpec, standArt ? { view: "front", figH: figCfg.h, body: figCfg.body } : { view: "front", figH: cfg.fig.h / BIG }));
+      // s08-doctor-stitch (Zafar, 16 Oct: "a tad further back into the room and smaller"): drawn smaller, her tap areas
+      // are padded back to the size they were (tapPad: standing tapBody / body, sitting tapBig / big; CLN-93, CLN-09)
+      const big = cfg.fig && cfg.fig.big != null ? cfg.fig.big : BIG;
+      const tapPad = standArt ? (figCfg.tapBody || figCfg.body) / figCfg.body : (cfg.fig && cfg.fig.tapBig ? cfg.fig.tapBig / big : 1);
+      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(standArt || artSpec, standArt ? { view: "front", figH: figCfg.h, body: figCfg.body, tapPad } : { view: "front", figH: cfg.fig.h / big, tapPad }));
       if (art) fig.tapAnchors = true;
       // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher); the art
       // sits by its measured seat line (the backs of the thighs on the mattress), as in the heal games

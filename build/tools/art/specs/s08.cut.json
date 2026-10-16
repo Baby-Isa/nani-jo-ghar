@@ -1,0 +1,234 @@
+{
+ "pack": "s08",
+ "about": "Pack s08 (sources/art/s08, judged in build/reports/s08-art-landing.md), cut by build/tools/art/artcut.py for s08-doctor-stitch (Zafar, 16 Oct: the old doctor beside the girl 'looks copy and pasted ... we need it all good and consistent'): the doctor's new cartoon views, one figure job per view at the s07 drawn height (fig_h 676), so every view is the same man at the same size on one feet line. Talk and blink are head layers on their view's neutral (edits of the neutral on its own canvas, so face_align none (measured: the best shift is 0,0; ECC drifted 3 px on the mouth) and face_match (the edit's skin is matched to the neutral, no flicker)); point and talk-gesture are whole-figure poses on the view's canvas (registered on the legs). The 3q-left talk and blink (DT-QL, DB-QL) are still being made: they are listed as faces, so a re-run cuts them when they land and only data/clinic/heal-art.json doctor.views['3q-left'].faces needs their two paths. Run with --out to a scratch folder and copy the files the game uses into assets/clinic/patients/doctor/v2 (the corner heads are not used); the numbers go into data/clinic/heal-art.json under `doctor`.",
+ "src": "sources/art/s08",
+ "out": "assets/clinic",
+ "data": "data/clinic/s08-cut-data.json",
+ "skin_render": [
+  207,
+  130,
+  99
+ ],
+ "skin_limits": [
+  6,
+  12
+ ],
+ "failed": {},
+ "jobs": [
+  {
+   "id": "doctor2-front",
+   "type": "figure",
+   "data": "doctor-front",
+   "src": "doctor-front-neutral-v2.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 300,
+   "skin_box": [
+    0.44,
+    0.08,
+    0.56,
+    0.15
+   ],
+   "faces": {
+    "talk": "doctor-front-talk-v2.png",
+    "blink": "doctor-front-blink-v2.png"
+   },
+   "poses": {
+    "point": {
+     "src": "doctor-front-point-v2.png",
+     "band": [
+      0.62,
+      0.95
+     ]
+    },
+    "gesture": {
+     "src": "doctor-front-talk-gesture-v2.png",
+     "band": [
+      0.62,
+      0.95
+     ]
+    }
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      512,
+      170
+     ],
+     "eyes": [
+      512,
+      175
+     ],
+     "stand": [
+      520,
+      1440
+     ]
+    }
+   },
+   "out": "patients/doctor/v2/doctor-front",
+   "face_align": "none",
+   "face_match": true
+  },
+  {
+   "id": "doctor2-3q-right",
+   "type": "figure",
+   "data": "doctor-3q-right",
+   "src": "doctor-3q-right-neutral-v2.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 290,
+   "skin_box": [
+    0.5,
+    0.08,
+    0.6,
+    0.15
+   ],
+   "faces": {
+    "talk": "doctor-3q-right-talk-v2.png",
+    "blink": "doctor-3q-right-blink-v2.png"
+   },
+   "poses": {
+    "point": {
+     "src": "doctor-3q-right-point-v2.png",
+     "band": [
+      0.62,
+      0.95
+     ]
+    },
+    "gesture": {
+     "src": "doctor-3q-right-talk-gesture-v2.png",
+     "band": [
+      0.62,
+      0.95
+     ]
+    }
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      540,
+      168
+     ],
+     "eyes": [
+      570,
+      172
+     ],
+     "stand": [
+      551,
+      1438
+     ]
+    }
+   },
+   "out": "patients/doctor/v2/doctor-3q-right",
+   "face_align": "none",
+   "face_match": true
+  },
+  {
+   "id": "doctor2-3q-left",
+   "type": "figure",
+   "data": "doctor-3q-left",
+   "src": "doctor-3q-left-neutral-v2.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 290,
+   "skin_box": [
+    0.4,
+    0.08,
+    0.5,
+    0.15
+   ],
+   "faces": {
+    "talk": "doctor-3q-left-talk-v2.png",
+    "blink": "doctor-3q-left-blink-v2.png"
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      485,
+      168
+     ],
+     "eyes": [
+      460,
+      172
+     ],
+     "stand": [
+      494,
+      1458
+     ]
+    }
+   },
+   "out": "patients/doctor/v2/doctor-3q-left",
+   "face_align": "none",
+   "face_match": true
+  },
+  {
+   "id": "doctor2-wave-3q-right",
+   "type": "figure",
+   "data": "doctor-wave-3q-right",
+   "src": "doctor-3q-right-wave-v2.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 290,
+   "skin_box": [
+    0.5,
+    0.08,
+    0.6,
+    0.15
+   ],
+   "anchors": {
+    "front": {
+     "head": [
+      536,
+      168
+     ],
+     "eyes": [
+      566,
+      172
+     ],
+     "stand": [
+      550,
+      1442
+     ]
+    }
+   },
+   "out": "patients/doctor/v2/doctor-wave-3q-right"
+  },
+  {
+   "id": "doctor2-wave-front",
+   "type": "figure",
+   "data": "doctor-wave-front",
+   "src": "doctor-front-wave-call-v2.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 300,
+   "skin_box": [
+    0.44,
+    0.08,
+    0.56,
+    0.15
+   ],
+   "faces": {
+    "closed": "doctor-front-wave-v2.png"
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      512,
+      170
+     ],
+     "eyes": [
+      512,
+      175
+     ],
+     "stand": [
+      519,
+      1440
+     ]
+    }
+   },
+   "out": "patients/doctor/v2/doctor-wave-front",
+   "face_align": "none",
+   "face_match": true
+  }
+ ]
+}
