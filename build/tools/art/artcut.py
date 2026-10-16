@@ -575,6 +575,46 @@ def lean_cut(a, counter, k_alpha=None):
     return out
 
 
+def front_cut(fr, f, alpha):
+    """(s08-nani-ground) The part of a pose that comes in front of the counter (Nani's pointing hand, her forearm over the
+    counter's back edge): a polygon traced round it in source px ("poly"), snapped to the picture's own edges by GrabCut in
+    a thin band ("band" px outside, "inner" px inside it), from source row "from_row" down (above it the layer is the frame
+    itself, so it overlaps the figure behind with the same pixels). Returns the layer's alpha (0..1, source size)."""
+    H, W = fr.shape[:2]
+    band, inner, top = f.get("band", 6), f.get("inner", 4), f["from_row"]
+    poly = np.zeros((H, W), np.uint8)
+    cv2.fillPoly(poly, [np.round(np.array(f["poly"], float) * 4).astype(np.int32)], 1, shift=2)
+    gm = np.full((H, W), cv2.GC_BGD, np.uint8)
+    gm[cv2.dilate(poly, np.ones((2 * band + 1, 2 * band + 1), np.uint8)) > 0] = cv2.GC_PR_BGD
+    gm[poly > 0] = cv2.GC_PR_FGD
+    gm[cv2.erode(poly, np.ones((2 * inner + 1, 2 * inner + 1), np.uint8)) > 0] = cv2.GC_FGD
+    # the rows where it overlaps the figure behind (down to the counter line): kept whole inside the polygon
+    gm[top:f.get("whole_to", top)][poly[top:f.get("whole_to", top)] > 0] = cv2.GC_FGD
+    ys, xs = np.nonzero(poly)
+    y0, y1 = max(0, ys.min() - 40), min(H, ys.max() + 40)
+    x0, x1 = max(0, xs.min() - 40), min(W, xs.max() + 40)
+    sub = np.ascontiguousarray(np.clip(fr[y0:y1, x0:x1], 0, 255).astype(np.uint8))
+    g = np.ascontiguousarray(gm[y0:y1, x0:x1])
+    bgd, fgd = np.zeros((1, 65), np.float64), np.zeros((1, 65), np.float64)
+    cv2.grabCut(cv2.cvtColor(sub, cv2.COLOR_RGB2BGR), g, None, bgd, fgd, 8, cv2.GC_INIT_WITH_MASK)
+    fg = np.zeros((H, W), bool)
+    fg[y0:y1, x0:x1] = (g == cv2.GC_FGD) | (g == cv2.GC_PR_FGD)
+    fg = ndi.binary_opening(fg, iterations=1)
+    lb, n = ndi.label(fg)
+    if n > 1:
+        sz = np.bincount(lb.ravel())
+        sz[0] = 0
+        fg = lb == int(np.argmax(sz))
+    fg = ndi.binary_fill_holes(fg)
+    soft = ndi.gaussian_filter(fg.astype(float), 0.9)
+    # above "from_row" it is the frame's own alpha round the polygon (the figure behind has the same pixels there): the
+    # layer is resized with it and only then faded out above its top on the canvas (cut_lean), so its colours at the
+    # join are the figure's own, not a resize's ringing off a hard edge
+    near = cv2.dilate(poly, np.ones((2 * band + 1, 2 * band + 1), np.uint8)) > 0
+    soft[:top] = (alpha[:top] * near[:top])
+    return soft
+
+
 def cut_lean(job, cx):
     """(s08) A figure leaning on a counter (Nani N-set): the base (neutral) and its frames on ONE canvas, so a swap moves
     nothing. "faces": head-only edits (registered by ECC on "head_band", the changed pixels above "neck" as a feathered
@@ -582,7 +622,10 @@ def cut_lean(job, cx):
     Each frame is keyed off the grey with the marble cut away (GrabCut round "counter", the source row of the counter's
     back edge). "alias": a frame not drawn yet shown as another ({"point": "talk"}): its file is that frame's, so the later
     picture is a re-run. "canvases": each {size, head_w (scarf width at "eye_row", world px), eyes_x, arm_y (canvas row of
-    the forearms' underside), out (with <mood>)} or {fit_top: pad} to scale her into the canvas height instead."""
+    the forearms' underside), out (with <mood>)} or {fit_top: pad} to scale her into the canvas height instead.
+    "front" (s08-nani-ground): a pose's part drawn in front of the counter (front_cut), one file per canvas
+    ("front_out" in the canvas), on the canvas's own registration, as tall as it needs; the data gives each canvas its
+    "counter_row" (the canvas row of the source's counter line, where her body meets the counter) and the front's "tip"."""
     p = cx.path(job["src"])
     if not p:
         log("%s: base not landed" % job["id"])
@@ -657,6 +700,7 @@ def cut_lean(job, cx):
     log("  base: forearms' underside at source row %d, scarf %d px wide at the eye row (centre x %.1f), top %d; lowest rows %s" % (arm, hw, hx, top, bottom), quiet=True)
     out = {"src": job["src"], "arm_src": arm, "head_w_src": int(hw), "canvases": {}}
     alias = job.get("alias", {})
+    fronts = {}
     for cn, cv_ in job["canvases"].items():
         Wc, Hc = cv_["size"]
         if "head_w" in cv_:
@@ -692,7 +736,32 @@ def cut_lean(job, cx):
         ch = np.asarray(Image.open(cx.to(cv_["out"].replace("<mood>", "neutral"))))[..., 3]
         cut_top = int(np.nonzero((ch > 10).any(1))[0].min())
         head = [int(round(ox + (hx - hw / 2) * k)), int(round(oy + top * k)), int(round(hw * k)), int(round(hw * k))]
-        out["canvases"][cn] = {"size": [Wc, Hc], "k": round(k, 4), "arm_y": arm_y, "top_px": cut_top, "head": head, "files": files}
+        out["canvases"][cn] = {"size": [Wc, Hc], "k": round(k, 4), "arm_y": arm_y, "top_px": cut_top, "head": head, "files": files,
+                               "counter_row": round(oy + counter * k, 2)}
+        fj = job.get("front")
+        if fj and cv_.get("front_out") and fj["pose"] in frames:
+            if fj["pose"] not in fronts:
+                fronts[fj["pose"]] = front_cut(frames[fj["pose"]], fj, alphas[fj["pose"]])
+            fa = fronts[fj["pose"]]
+            ys = np.nonzero((fa > 0.04).any(1))[0]
+            Hf = max(Hc, int(np.ceil(oy + (ys.max() + 1) * k)) + cv_.get("below", 4))
+            y_end = min(H, int(np.ceil((Hf - oy) / k)) + 1)
+            img = L.to_img(np.dstack([frames[fj["pose"]], fa])[:y_end]).resize((round(W * k), round(y_end * k)), Image.LANCZOS)
+            canvas = Image.new("RGBA", (Wc, Hf), (0, 0, 0, 0))
+            canvas.paste(img, (int(round(ox)), int(round(oy))))
+            # faded in over a few rows from its top (where it lies on her own picture, the same pixels)
+            ca = np.asarray(canvas).copy()
+            r0 = oy + fj["from_row"] * k
+            ramp = np.clip((np.arange(Hf) - r0) / fj.get("fade", 4), 0, 1)
+            ca[..., 3] = np.round(ca[..., 3] * ramp[:, None]).astype(np.uint8)
+            canvas = Image.fromarray(ca, "RGBA")
+            path = cx.to(cv_["front_out"])
+            canvas.save(path, quality=cv_.get("q", 90), method=6)
+            tx, ty = fj["tip"]
+            out["canvases"][cn]["front"] = {"pose": fj["pose"], "file": cx.rel(path), "size": [Wc, Hf], "from_row": round(oy + fj["from_row"] * k, 2),
+                                            "tip": [round(ox + tx * k, 1), round(oy + ty * k, 1)]}
+            log("  canvas %s: %s's front layer %dx%d (the counter line at row %.1f, the fingertip at %.1f, %.1f)"
+                % (cn, fj["pose"], Wc, Hf, oy + counter * k, ox + tx * k, oy + ty * k), quiet=True)
         log("  canvas %s: %dx%d, k %.4f, head %d px wide, forearms' underside at row %d, her top at row %d%s"
             % (cn, Wc, Hc, k, round(hw * k), arm_y, cut_top, " CLIPPED AT THE TOP" if cut_top == 0 else ""), flag=cut_top == 0, quiet=True)
     log("%s: lean cut, %d frame(s) + %d alias(es) on %d canvas(es)" % (job["id"], len(frames), len([a for a in alias if a not in frames]), len(job["canvases"])))

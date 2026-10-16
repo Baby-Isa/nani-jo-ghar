@@ -213,7 +213,7 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 - **Art still to request:** pot-content states and a pour stream, the ingredient containers (from the pantry-v2 pack), and any missing chai-glass fill levels.
 - **Remove the fill line** from the chai glass and the pot: it's a relic. Nothing fills to a line any more.
 - **Ingredients:** stations where you pick from a supply (the hob, chai) use the bottom strip of front-on containers. Stations where the items are part of the scene (the sekelo tray, rolling) keep them in the scene. The rule is consistency within each station.
-- **People behind the counter** use the character art of them leaning on the counter, or with an arm on it (the `char-*-counter` art already made), at least when they're sitting or waiting. No floating cut-out heads.
+- **People behind the counter** sit on a stool behind it, hands and forearms in their laps: the counter's front covers the lower part of their forearms, never a strip of cabinet between an arm and the counter (Zafar, 16 Oct; `js/cook/stations.js` CHARS). Pointing, Nani's hand comes up over the counter's edge.
 - **The Done button (every mode): decide** between:
   - (A) the new gold-metal tick art on a round cream button, the same tick as the end-of-round screen; recommended;
   - (B) a brass service bell for Cook ("order's ready!", with a ding), plus A everywhere else;

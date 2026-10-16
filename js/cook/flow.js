@@ -783,8 +783,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const fy = Math.round(r.y - 1 * k);
     const fw = Math.round(r.w + 8 * k);
     const fh = Math.round(r.h / 2 + 6 * k);
-    return s.track(s.add.image(r.ox || 0, r.oy || 0, "bg-service").setOrigin(0).setScale(1 / k).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
+    const wall = s.track(s.add.image(r.ox || 0, r.oy || 0, "bg-service").setOrigin(0).setScale(1 / k).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
+    wall.wallTop = (r.oy || 0) + fy / k; // the wall's top edge, world px (the tray floor's front line)
+    return wall;
   }
+  // s08-nani-ground: Nani's pointing finger reaches into the tray in front of her; its front wall goes over the fingertip
+  // (stations.js pointFront)
+  Cook.trayFrontFor = (s, x) => trayFront(s, trayFor(x));
   /** A world box as client px (the test hooks' boxes). */
   function clientBox(x0, y0, x1, y1) {
     const p = UI.worldToScreen(x0, y0);

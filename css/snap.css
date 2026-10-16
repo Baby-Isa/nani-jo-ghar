@@ -57,9 +57,15 @@ body.snap #overlay.title-mode { background: linear-gradient(#dcebf2, #cfe3c8 70%
 
 /* ---------------- Show Nani ---------------- */
 #handin { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(120px, 30%) 1fr; background: linear-gradient(#f6ecd8, #e9dcc4); }
-.hi-nani { position: relative; display: flex; align-items: flex-end; justify-content: center; }
-.hi-face { width: 90%; max-height: 80%; object-fit: contain; object-position: bottom; position: relative; z-index: 1; }
+.hi-nani { position: relative; display: flex; align-items: flex-end; justify-content: center; container-type: size; }
+/* s08-nani-ground (Zafar, 16 Oct): she sits behind the charpai, hands in her lap, the charpai over the lower part of her
+   forearms: its top a little above the line where her picture meets the counter (ledge canvas row 452.3 of 578 = 78.25%,
+   build/tools/art/specs/s08-nani.cut-data.json counter_row). Her picture's box is the picture (90% of the column wide, at
+   most 80% of it tall), so the charpai is placed on her, not on the column */
+.hi-seat { position: relative; aspect-ratio: 443 / 578; height: min(80cqh, 90cqw * 578 / 443); }
+.hi-face { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hi-charpai { position: absolute; left: 6%; right: 6%; bottom: 4%; height: 16%; border-radius: 8px; background: repeating-linear-gradient(45deg, #c8a778 0 6px, #b28f5e 6px 12px); border: 6px solid #7c5a3a; }
+.hi-seat .hi-charpai { left: -6%; right: -6%; top: 77.25%; bottom: -2%; height: auto; z-index: 1; }
 .hi-prints { align-self: center; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; padding: 16px; max-height: 100%; overflow: auto; }
 .hi-print { cursor: pointer; transition: transform .15s; }
 .hi-print:hover { transform: translateY(-3px) rotate(-1deg); }
