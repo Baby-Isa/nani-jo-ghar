@@ -118,32 +118,32 @@
   "date": "2026-10-12"
  },
  "ART-10": {
-  "hash": "32b7f3ce03816ac15274",
+  "hash": "772b46061a73591ae914",
   "dhash": [
    "00858a8148108000",
-   "0c0cb4b4b4b4b4b4"
+   "8921819696860901"
   ],
   "verdict": "FAIL",
-  "line": "A, all 8 guide-box crops show the same red-hijab Nani avatar (only dimmed in 4-6), one image rather than four cooking moods; B shows food bowls and a clipped label, no Nana, Ma or Ali impatient face. Flaws: A4's \"Roll it round.\" is cut off at the bottom of the box; B's top-left label is clipped",
+  "line": "A, all 8 guide-box crops show the same red-hijab Nani face (only dimmed in 3-6), so there is one image, not four cooking moods; B shows a smiling red-hijab face asking for chutney, with no Nana, Ma or Ali impatient face to judge (A's grey-italic English lines are allowed to-record lines)",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/ART-10.png",
+  "judge": "Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/ART-10.png",
   "date": "2026-10-16"
  },
  "ART-11": {
-  "hash": "22deda0434c89c7eb1d9",
+  "hash": "0bfaeb285a758b6bfd5c",
   "dhash": [
-   "40b296b6acb4f470"
+   "40b296b6bcb4f470"
   ],
   "verdict": "FAIL",
-  "line": "A, the cubes are uniform smooth pale-cream blocks with soft edges, no skin, starchy surface or irregular cuts, so they still read as butter pats in a jar rather than potato",
+  "line": "A, the cubes are still even pale-cream blocks with soft edges, no skin and no starchy cut face, packed in a glass jar, so they still read as butter more than potato",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/ART-11.png",
+  "judge": "Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/ART-11.png",
   "date": "2026-10-16"
  },
  "ART-13": {
@@ -232,17 +232,17 @@
   "date": "2026-10-14"
  },
  "ART-21": {
-  "hash": "a4ff0c5e7e58f372fde1",
+  "hash": "d7a584e6d9083a4b00ca",
   "dhash": [
-   "dfcfdec6e6eaeaf6"
+   "dfcfcec6e6eaeaf6"
   ],
   "verdict": "FAIL",
-  "line": "A, the tap sits at the stage's left edge with only its gold spout showing, so it does not read as one tap with spout and handles, and leafy greenery still fills the doorway at the right; 844x390 is not on this sheet",
+  "line": "A, the tap is still cut by the stage's left edge behind Mum's shoulder with only its gold spout showing and no handles, so it does not read as one tap; the doorway at the right shows only outdoor greenery (no floor plant visible), and 844x390 is not on this sheet",
   "panel": "A",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/ART-21.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/ART-21.png",
   "date": "2026-10-16"
  },
  "CHAI-02": {
@@ -698,18 +698,18 @@
   "date": "2026-10-12"
  },
  "CK-06": {
-  "hash": "cf9bfdeeb8a350d96c24",
+  "hash": "45bdaf6c375b5681d969",
   "dhash": [
    "8e92d6c6ce96968e",
-   "bc88a226b2c6449c"
+   "bc88a226b2c64c9c"
   ],
   "verdict": "FAIL",
-  "line": "A, daal stages 2-5 still show flat white discs on the oil and contents (white circles with black dots, a lone white oval, clusters of white egg-like discs); B's chai liquid looks real, but A does not. Flaw off the point: in B a second \"hakro\" chip is cut to \"kro\" at the left edge",
+  "line": "A, daal stage 3 still shows a cluster of white ovals and stage 4 a white disc on the oil (stage 1 a white disc too); B's chai liquid looks real but has a small cluster of white dots in it. Flaw off the point: B's left \"hakro\" chip is cut to \"kro\" at the edge",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CK-06.png",
+  "judge": "Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CK-06.png",
   "date": "2026-10-16"
  },
  "CK-07": {
@@ -878,18 +878,18 @@
   "date": "2026-10-13"
  },
  "CK-21": {
-  "hash": "cbdec8b142a7f0500799",
+  "hash": "95dc80b0410eef5b0be1",
   "dhash": [
    "af8f978d9e9ec488",
-   "cce47870c49c84d0"
+   "69513bb0c49c84d0"
   ],
   "verdict": "PASS",
-  "line": "A, all three day-2 serves (maani plate, pantry basket, chai glass) stand inside their wooden tray with the tray's front wall drawn over each base, at the counter's angle; B shows the same for all three day-3 serves (basket, daar bowl, daar bowl plus maani plate). No shadow is needed (Zafar, 14 Oct)",
+  "line": "A, all three day-2 serves (maani plate, pantry basket, chai glass) stand inside the wooden tray with its front wall drawn over each base, at the counter's angle; B shows the same for all three day-3 serves (basket, daar bowl, daar bowl with maani plate). No shadow needed per the Zafar 14 Oct note in the .md",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CK-21.png",
+  "judge": "Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CK-21.png",
   "date": "2026-10-16"
  },
  "CK-22": {
@@ -1162,19 +1162,19 @@
   "date": "2026-10-14"
  },
  "CK-44": {
-  "hash": "398d29e8288e85a063bc",
+  "hash": "ab327ccbaabf5db09c2f",
   "dhash": [
    "7f77676363636a7b",
    "677c6363434b6a79",
    "f57f6b63434b6a5d"
   ],
   "verdict": "PASS",
-  "line": "C, at 915x412 (2.25:1) the marble top and wood front run as one continuous counter edge to edge with no vertical seam or restart (B at 844x390 and A at 1366x1024 the same); flaw off the point: in B Mum is cut by the stage's left edge and half hidden behind the bubble; 1366x768 is not on this sheet",
+  "line": "C, at 915x412 (his phone's 2.25:1) the counter's marble top and wooden front run unbroken from the stage's left edge to its right with no vertical seam or restart, and B (844x390) and A (1366x1024) show the same one continuous counter; 1366x768 is not on this sheet",
   "panel": "C",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CK-44.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CK-44.png",
   "date": "2026-10-16"
  },
  "CK-TAB-01": {
@@ -1212,17 +1212,17 @@
   "date": "2026-10-12"
  },
  "CLN-01": {
-  "hash": "de807e521368bfb1f125",
+  "hash": "579b9c3d6e0f0e35e8a7",
   "dhash": [
    "dfd7dfdbd6d6cede"
   ],
   "verdict": "PASS",
-  "line": "A, all five rooms (waiting, diagnosis, pharmacy, heal close-up, send-off) are painted art in one style, and frame 5's feelings card now shows the girl's own painted faces, not flat emoji",
+  "line": "A, all five rooms (waiting, diagnosis, pharmacy, heal close-up, send-off) are finished painted art in one consistent style, with no rough stand-ins",
   "panel": "A",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CLN-01.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CLN-01.png",
   "date": "2026-10-16"
  },
  "CLN-02": {
@@ -1870,19 +1870,19 @@
   "date": "2026-10-13"
  },
  "CLN-136": {
-  "hash": "4a57f4feed13ddeed0d4",
+  "hash": "e2f3e10a40c0f838300a",
   "dhash": [
-   "9bb3959c8c9c1434",
-   "c54dd9d6cccececf",
-   "8d8bb5bc8c8d1d1d"
+   "9b9397968e9e1237",
+   "c5cddedec4cccecb",
+   "8d89b5bc8c8d3c1f"
   ],
   "verdict": "PASS",
-  "line": "C, at L2 under the doctor's \"A scrape.\" her face is sore (brows up, mouth down) with both eyes open; A frames 1-6 at L1 show no one-eye-shut face",
+  "line": "C, at L2 under the doctor's \"A scrape.\" her face is worried and sore (brows up, mouth open) with both eyes open; A frames 1-5 at L1 show no one-eye-shut face",
   "panel": "C",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CLN-136.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CLN-136.png",
   "date": "2026-10-16"
  },
  "CLN-138": {
@@ -2096,17 +2096,17 @@
   "date": "2026-10-14"
  },
  "CLN-17": {
-  "hash": "ef1f3f67563fdec54c13",
+  "hash": "3271855046e7e19ec535",
   "dhash": [
-   "cbfbfbcec6ccccde"
+   "cbebebcfc6cccadb"
   ],
   "verdict": "FAIL",
-  "line": "A, the girl sits on the bed edge and the right wall has the certificate frame with no anatomy poster, but the doctor stands square to the camera (body and both feet facing front), not three-quarter turned",
+  "line": "A, the girl sits on the bed edge and the right wall has the certificate frame with no anatomy poster, but the doctor stands apart at the far right by the door, not beside her, and his body and feet still face mostly front rather than three-quarter turned",
   "panel": "A",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CLN-17.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CLN-17.png",
   "date": "2026-10-16"
  },
  "CLN-18": {
@@ -2123,18 +2123,18 @@
   "date": "2026-10-12"
  },
  "CLN-19": {
-  "hash": "e0c6273ceb2bd499ffd2",
+  "hash": "36a5abb7500d14acb93e",
   "dhash": [
-   "f676f2ceceffded7",
-   "9e8e9e1c7b6f6efa"
+   "f676f2cedefeded7",
+   "9e9e8e1c727e7efa"
   ],
-  "verdict": "FAIL",
-  "line": "A, the painted belt runs mid-scene (not a code-drawn belt across the top) and the crutches and spoon lie straight, but the pink cotton-bud bundle lies diagonally at about 45 degrees on the belt",
+  "verdict": "PASS",
+  "line": "A, the belt is the painted dark-slatted belt running across the middle of the scene (outlined), not a code-drawn belt across the top, and both items on it (crutch and cotton bud, also B) lie flat along the belt, not at 45 degrees",
   "panel": "A",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CLN-19.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CLN-19.png",
   "date": "2026-10-16"
  },
  "CLN-20": {
@@ -2177,17 +2177,17 @@
   "date": "2026-10-13"
  },
  "CLN-23": {
-  "hash": "8a1a05412de42652ae58",
+  "hash": "c1913938790ced89c1db",
   "dhash": [
-   "9b9fbf3c5f5b5bfe"
+   "9b9f9fbc7e2d64f9"
   ],
   "verdict": "FAIL",
-  "line": "A, the three red swabs are fanned at an angle with their tips rising past the belt's back rail onto the wall, so they read as tilted or propped up, not lying flat; the crutch stands upright on its tips. Only the spoon lies flat with a contact shadow",
+  "line": "A, the crutch lies at a slant across the belt with its top tip reaching the back rail and no contact shadow under it; the swab and spoon lie flat with a faint shadow",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CLN-23.png",
+  "judge": "Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CLN-23.png",
   "date": "2026-10-16"
  },
  "CLN-24": {
@@ -2206,17 +2206,17 @@
   "date": "2026-10-12"
  },
  "CLN-25": {
-  "hash": "fb2e3e20b3fae96c58d2",
+  "hash": "8aeb265e04b5e32ced27",
   "dhash": [
-   "d7edefc5cdcce3c3"
+   "c7cdefc5cdccf3c3"
   ],
   "verdict": "FAIL",
-  "line": "A, both stand left in the free wall space clear of the green cross with the doctor beside her, but she stands facing the camera with arms spread, not leaving, far from the door at the right",
+  "line": "A, the doctor and girl stand left clear of the green cross, but she still faces the camera with both arms spread, not leaving, far from the door, and the door at the right is swung wide open rather than half open",
   "panel": "A",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/CLN-25.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CLN-25.png",
   "date": "2026-10-16"
  },
  "CLN-26": {
@@ -3206,19 +3206,20 @@
   "date": "2026-10-13"
  },
  "DAAR-05": {
-  "hash": "c6ff25c3171cd62e073f",
+  "hash": "227153a04154b7aac691",
   "dhash": [
-   "8e8ac6c6ce96968e",
+   "8e9ad6c6ce96968e",
    "cc96868a9a9296cc",
-   "70b0b2f676312020"
+   "70b0b2e676311030",
+   "3858383a18190890"
   ],
   "verdict": "FAIL",
-  "line": "A, stages 2, 3 and 5 still show flat white discs sitting on the pot contents (2: white circles with black dots, 3: a single white disc, 5: a cluster of white ovals), so the added things are still white blobs; the review bowl is not captured (B and C are before Done)",
+  "line": "A, stages 4, 5 and 6 still show white oval blobs at the top of the pot contents (stage 1 a white disc too), so the added things still read as white dots; D's served bowl is too small to confirm there is no dry chilli or curry leaf, and the stir can't be judged from stills",
   "panel": "A",
-  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/DAAR-05.png",
+  "judge": "Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/DAAR-05.png",
   "date": "2026-10-16"
  },
  "DAAR-07": {
@@ -4979,17 +4980,17 @@
   "date": "2026-10-12"
  },
  "SH-37": {
-  "hash": "d4bcd0b65c52a7fd257b",
+  "hash": "617074003634b8e9534d",
   "dhash": [
-   "385848102a020080"
+   "385848100c191080"
   ],
   "verdict": "FAIL",
-  "line": "A, the chop screen still mixes art styles (flat green timer, glossy near-photoreal knife, glossy chilli) with knife and chilli far apart and no single focal thing, and the marble board stops short, leaving an empty flat beige band across the bottom of the stage, so UI and world do not read as one product",
+  "line": "A, the chop screen still mixes art styles (a flat green timer next to a near-photoreal bulb and a glossy knife), the bulb and knife sit far apart with no single focal thing, and the marble stops short above a flat empty beige band across the bottom of the stage, so UI and world do not read as one product",
   "panel": "A",
-  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
-  "run": "ev-s07",
-  "commit": "61af63b4",
-  "png": "build/screenshots/evidence/ev-s07/SH-37.png",
+  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
+  "run": "ev-20261016-194922-b8t",
+  "commit": "414fc077",
+  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/SH-37.png",
   "date": "2026-10-16"
  },
  "SH-38": {

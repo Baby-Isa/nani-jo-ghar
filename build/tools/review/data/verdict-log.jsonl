@@ -219,3 +219,26 @@
 {"id":"CLN-12","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"2de1f00910ab4c7b7c33","judge":"expect","date":"2026-10-16"}
 {"id":"CLN-13","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"4ae4f16a1a0b1bec0f97","judge":"expect","date":"2026-10-16"}
 {"id":"ART-13","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"60bc9122d28610c0d018","judge":"expect","date":"2026-10-16"}
+{"id":"DAAR-05","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"c3e04c8b6f7cd45287bb","judge":"Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU","date":"2026-10-16"}
+{"id":"CK-06","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"9b60ef000246c2df4930","judge":"Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU","date":"2026-10-16"}
+{"id":"ART-10","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"53857a3d7937ff01efff","judge":"Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU","date":"2026-10-16"}
+{"id":"ART-11","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"c4e56467af1475f3c3cb","judge":"Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU","date":"2026-10-16"}
+{"id":"CLN-23","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"c6f3075fa47afc1998b7","judge":"Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU","date":"2026-10-16"}
+{"id":"CK-21","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"b21c93386f085087699c","judge":"Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU","date":"2026-10-16"}
+{"id":"SH-37","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"eee4b63db3d83531c885","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"CK-44","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"b8713ab3b305e0fca056","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"CLN-17","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"7198ebc78184b7e6ad72","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"CLN-25","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"dc6da1557b9e18765d55","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"ART-21","run":"ev-20261016-194922-b8t","verdict":"FAIL","spec":"415e16466293e88aac21","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"CLN-19","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"5bd6a7fd1f67c122aa9d","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"CLN-01","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"29d044480637142783a8","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"CLN-136","run":"ev-20261016-194922-b8t","verdict":"PASS","spec":"20cfc509ba2e4bb0fa8e","judge":"claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]","date":"2026-10-16"}
+{"id":"CLN-19","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"CK-21","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"CLN-04","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"CLN-01","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"CLN-11","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"CLN-12","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"CLN-13","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"CLN-136","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
+{"id":"ART-13","run":"ev-20261016-194922-b8t","event":"built","date":"2026-10-16"}
