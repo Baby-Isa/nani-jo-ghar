@@ -146,8 +146,8 @@
   };
   /**
    * The contact shadows (s08-placement-judge, CLN-154..157: "pasted on" until his feet and hers touch the floor as every
-   * painted thing does): a soft ellipse under each foot of a standing (or the seated girl's) picture, black at 0.18, 1.2x
-   * the foot's width and a quarter of that tall, centred on the foot's lowest row (heal-art.json `shoes`, measured by
+   * painted thing does): a soft ellipse under each foot of a standing (or the seated girl's) picture, black at 0.30 (the token), 1.2x
+   * the foot's width and 0.35x of that tall, centred on the foot's lowest row and 0.06x of its width right of the foot (heal-art.json `shoes`, measured by
    * build/tools/art/shoes.py: [cx, bottom, w, h] as canvas fractions, keyed by the picture's file). The spec's "0.25x its
    * height" is read as the ellipse's own: a quarter of the foot's measured height (h) is 2 px under the sole on a phone,
    * where nothing shows. host = the box drawn at that picture's canvas (the picture fills it), aspect = its width over its
@@ -172,8 +172,11 @@
       e.setAttribute("preserveAspectRatio", "none");
       e.innerHTML = `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter><ellipse cx="50" cy="50" rx="40" ry="40" filter="url(#${id})"/>`;
       const ew = 1.2 * w;
-      const eh = 0.25 * ew * (aspect || 0.45);
-      Object.assign(e.style, { left: `${(cx - ew / 2) * 100}%`, top: `${(bottom - eh / 2) * 100}%`, width: `${ew * 100}%`, height: `${eh * 100}%` });
+      // s08-rejudge-fixes: 0.35x its width tall (0.25x did not ground anyone on a phone), centred 0.06x of its width right of
+      // the foot (the window light is on the left, shadows fall right)
+      const eh = 0.35 * ew * (aspect || 0.45);
+      const ecx = cx + 0.06 * ew;
+      Object.assign(e.style, { left: `${(ecx - ew / 2) * 100}%`, top: `${(bottom - eh / 2) * 100}%`, width: `${ew * 100}%`, height: `${eh * 100}%` });
       host.insertBefore(e, host.firstChild);
     });
   };

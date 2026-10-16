@@ -487,6 +487,12 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 /* 13e: from level 3, the help items in a tray along the bottom of the screen */
 .cl-help-tray { position: absolute; z-index: 25; left: 50%; bottom: 3%; transform: translateX(-50%); display: flex; gap: var(--njg-s3); padding: var(--njg-s2) var(--njg-s4); background: rgba(255, 250, 241, .9); border: 2px solid rgba(201, 150, 46, .55); border-radius: 18px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); }
 .cl-help-tray .cl-face-card { width: clamp(64px, 7.5vw, 96px); height: clamp(64px, 7.5vw, 96px); min-height: 0; padding: var(--njg-s2); border-radius: 16px; border: 3px solid #e2d3bb; }
+/* s08-rejudge-fixes: on a phone (a short screen) a tray of four cards (level 2's feelings) draws them at 48 px (LAY-04's smallest),
+   gap 8, padding 8/12: about 0.40 of the room, and sendoff.js sets its left edge at room x 0.50 (as level 3's), clear of both feet */
+@media (max-height: 479px) {
+  .cl-help-tray.four { gap: 8px; padding: 8px 12px; }
+  .cl-help-tray.four .cl-face-card { width: 48px; height: 48px; padding: 4px; }
+}
 /* level 1's hint sits on the patient's own face (13d): the stand-in circle over the head */
 .cl-feel-circle.on-face { top: 1%; width: 30%; transform: translate(-50%, 0); opacity: 0; pointer-events: none; }
 .cl-feel-circle.on-face.on { opacity: 1; }
@@ -546,7 +552,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-fig .fig-art { position: absolute; z-index: -1; }
 .cl-fig.has-art { isolation: isolate; }
 .cl-fig .fig-art-in { position: absolute; inset: 0; }
-/* s08-placement-judge: the contact shadow under each foot, his and hers (Kit.contactShadows): soft, black at 0.18 */
+/* s08-placement-judge: the contact shadow under each foot, his and hers (Kit.contactShadows): soft, black at 0.30 (the token) */
 .cl-shadow { position: absolute; display: block; pointer-events: none; overflow: visible; }
 .cl-shadow ellipse { fill: var(--njg-contact); }
 .cl-fig .fig-art img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; user-select: none; }

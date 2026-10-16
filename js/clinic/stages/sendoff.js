@@ -235,6 +235,21 @@
         await S.say(feelLine("happy"), "patient");
       };
 
+      // s08-placement-judge (CB5), s08-rejudge-fixes: on a phone (a short screen) the tray covered her feet and his shoe: its
+      // left edge at room x 0.50 or more (its centre 0.70), clear of both (the cards are 48 px there, css/clinic.css); levels 2
+      // and 3 alike (the four feeling cards, the help items). Laptops keep it centred
+      const placeTray = () => {
+        if (!cards.isConnected || !cards.classList.contains("cl-help-tray")) return;
+        cards.style.left = cards.style.transform = "";
+        if ((global.innerHeight || 999) >= 480 || box === stage) return;
+        const sr = stage.getBoundingClientRect();
+        const br = box.getBoundingClientRect();
+        const tw = cards.offsetWidth;
+        const left = Math.min(Math.max(br.left + 0.7 * br.width - tw / 2, br.left + 0.5 * br.width), sr.right - tw - 4);
+        cards.style.left = `${left - sr.left}px`;
+        cards.style.transform = "none";
+      };
+
       if (plan.mode === "helps") {
         // level 3: what helps? (the blanket, the fan, the apple)
         const r = rowOf("help");
@@ -246,19 +261,6 @@
           Kit.icon(id, b);
           return b;
         });
-        // s08-placement-judge (CB5): on a phone (a short screen) the tray covered her feet and his shoe: its left edge at room
-        // x 0.50 or more (its centre 0.70), clear of both; laptops keep it centred
-        const placeTray = () => {
-          if (!cards.isConnected) return;
-          cards.style.left = cards.style.transform = "";
-          if ((global.innerHeight || 999) >= 480 || box === stage) return;
-          const sr = stage.getBoundingClientRect();
-          const br = box.getBoundingClientRect();
-          const tw = cards.offsetWidth;
-          const left = Math.min(Math.max(br.left + 0.7 * br.width - tw / 2, br.left + 0.5 * br.width), sr.right - tw - 4);
-          cards.style.left = `${left - sr.left}px`;
-          cards.style.transform = "none";
-        };
         placeTray();
         box.addEventListener("scenefit", placeTray);
         S.setExpect("sendoff", () => (busy ? { stage: "sendoff", kind: "wait" } : { stage: "sendoff", kind: "tap", target: `.cl-help-card[data-help="${r.answer}"]`, wrong: `.cl-help-card:not([data-help="${r.answer}"])` }));
@@ -304,6 +306,9 @@
           } else Kit.feelingFace(f, b);
           return b;
         });
+        cards.classList.toggle("four", btns.length >= 4); // four cards: 48 px each on a phone (css/clinic.css)
+        placeTray();
+        box.addEventListener("scenefit", placeTray);
         S.setExpect("sendoff", () => {
           if (awaitingExtra) return { stage: "sendoff", kind: "tap", target: ".cl-extra" };
           if (busy) return { stage: "sendoff", kind: "wait" };

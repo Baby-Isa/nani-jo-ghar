@@ -32,10 +32,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const D = { bg: 0, back: 5, char: 10, occ: 20, item: 30, item2: 32, front: 34, fx: 40, hand: 45, top: 50 };
 
   const CHARS = {
-    // s08 (ART-13, ART-10): her jaw-fixed lean set (v3), one canvas 460x501, drawn 1:1, head 186 px wide; her forearms'
-    // underside at canvas row 497 = y 613, just under the occluder's top (611), so they rest on the counter's back edge
-    // (s05 audit section 6, way (a)). top = 613 - 497 (build/tools/art/specs/s08-nani.cut-data.json, canvases.counter)
-    nani: { x: 330, top: 116, scale: 1 },
+    // s08 (ART-13, ART-10): her jaw-fixed lean set (v3), one canvas 460x501, head 186 px wide at 1:1; her forearms'
+    // underside at canvas row 497 sits at y 613, just under the occluder's top (611), so they rest on the counter's back edge
+    // (s05 audit section 6, way (a)). s08-rejudge-fixes: drawn at 0.82 (she leans and Ma stands, 1:1 put her crown 102 px above
+    // Ma's): top = 613 - 497 x 0.82 = 205.5 (build/tools/art/specs/s08-nani.cut-data.json, canvases.counter)
+    nani: { x: 330, top: 205, scale: 0.82 },
     nana: { x: 940, top: 175, scale: 1.25 },
     ma: { x: 940, top: 195, scale: 1.14 },
     cousin: { x: 940, top: 290, scale: 1.02 },

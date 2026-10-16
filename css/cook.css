@@ -271,9 +271,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 .finale-row { display: flex; justify-content: center; gap: 4px; margin: 6px 0; }
 .finale-row img { height: clamp(80px, 16vh, 150px); }
-/* s08: Nani's v3 counter canvas is 501 px tall for the same 186 px head (the old one 423): drawn 501/423 bigger about
-   her base so she reads at her neighbours' size; a transform, so the row (and CK-37's short-phone fit) doesn't change */
-.finale-row img.fin-nani { transform: scale(1.18); transform-origin: 50% 100%; }
+/* s08-rejudge-fixes: Nani's lineup picture is drawn as it is (it was 1.18x, which made her the biggest of the four) */
+.finale-row img.fin-nani { transform: none; }
 .patch { width: 120px; height: 120px; margin: 8px auto; border-radius: 12px; background:
   repeating-linear-gradient(45deg, #b24a3a 0 12px, #c9973a 12px 24px, #34457a 24px 36px);
   border: 6px dashed #fffaf1; outline: 4px solid #b24a3a; }

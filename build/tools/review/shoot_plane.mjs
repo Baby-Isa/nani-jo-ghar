@@ -167,6 +167,10 @@ try {
         const sh = (sel) => [...document.querySelectorAll(sel)].filter((n) => n.getBoundingClientRect().width > 0);
         r.shadowsDoc = sh(".cl-doc-art .cl-shadow").length;
         r.shadowsGirl = sh(".cl-patient-layer .cl-shadow").length;
+        // s08-rejudge-fixes: each shadow's drawn size in px [w, h] and its centre's offset from its foot's centre (px, + = right)
+        const px = (sel) => sh(sel).map((n) => { const b = n.getBoundingClientRect(); return [+b.width.toFixed(1), +b.height.toFixed(1)]; });
+        r.shadowPxDoc = px(".cl-doc-art .cl-shadow");
+        r.shadowPxGirl = px(".cl-patient-layer .cl-shadow");
         let art = fig && fig.art;
         if (!art || !art.base || !art.base.isConnected) {
           // a stage that keeps no S.env (the send-off): her drawn picture, matched to its data by file
