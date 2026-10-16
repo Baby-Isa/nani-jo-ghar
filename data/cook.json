@@ -3809,34 +3809,98 @@
    },
    "chai-pan-pour-milk": {
     "line": "C1",
-    "file": "assets/cook/items/chai-v2/pan-pour-milk.webp",
+    "file": "assets/cook/items/chai-v2/pan-pour-milk-v2.webp",
     "ready": true,
     "meta": {
-     "lipX": 0.14,
-     "lipY": 0.8,
-     "_about": "the origin is on the painted stream at 80% down (the stream's last fifth runs on into the glass), so the tipped pan stays inside the view; scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
-     "scale": 1.7
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08, build/tools/art/specs/s08-cp1.cut.json): straight down, on one canvas with the tilts (431x354, registered by the spout and the handle). The origin is on the painted stream at 80% down (the stream's last fifth runs on into the glass); scale: the rim is 0.5954 of this picture's width, so x1.51 draws it the size of the pan's rim on the hob (1.84 panR, against the 2.05 panR the station sizes the picture by)",
+     "scale": 1.51
     },
     "station": "chai-tray",
     "size": [
-     611,
-     640
+     431,
+     354
     ]
    },
    "chai-pan-pour-black": {
     "line": "C2",
-    "file": "assets/cook/items/chai-v2/pan-pour-black.webp",
+    "file": "assets/cook/items/chai-v2/pan-pour-black-v2.webp",
     "ready": true,
     "meta": {
-     "lipX": 0.14,
-     "lipY": 0.8,
-     "_about": "the origin is on the painted stream at 80% down (the stream's last fifth runs on into the glass), so the tipped pan stays inside the view; scale: the pan body is 0.39 of this picture's width against 0.66 of the old pan-pour's, so x1.7 draws it the size of the pan on the hob",
-     "scale": 1.7
+     "lipX": 0.2831,
+     "lipY": 0.926,
+     "_about": "CP1 (s08): as chai-pan-pour-milk, black tea in the pan and the stream",
+     "scale": 1.51
     },
     "station": "chai-tray",
     "size": [
-     612,
-     640
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-0": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-0-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): the milk chai pan flat, then tipped 15, 30 and 45 degrees (chai-pan-tilt-0 .. -45), on chai-pan-pour-milk's canvas and origin, so the pour steps through them over the glass before its stream (chai-tray.js panTap). Milk chai only: a black-tea pour goes straight to chai-pan-pour-black",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-15": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-15-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): see chai-pan-tilt-0",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-30": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-30-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): see chai-pan-tilt-0",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-45": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-45-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): see chai-pan-tilt-0",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
     ]
    },
    "chai-glass-black-half": {
@@ -4489,8 +4553,8 @@
       "assets/cook/items/chai-v2/glass-empty.webp",
       "assets/cook/items/chai-v2/glass-full.webp",
       "assets/cook/items/chai-v2/glass-half.webp",
-      "assets/cook/items/chai-v2/pan-pour-black.webp",
-      "assets/cook/items/chai-v2/pan-pour-milk.webp",
+      "assets/cook/items/chai-v2/pan-pour-black-v2.webp",
+      "assets/cook/items/chai-v2/pan-pour-milk-v2.webp",
       "assets/cook/items/chai-v2/pan-pour.webp",
       "assets/cook/items/chai-v2/teaspoon-t.webp",
       "assets/cook/items/chai-v2/tray-4-cutout-t.webp",

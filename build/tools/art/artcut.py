@@ -799,8 +799,103 @@ def cut_sheet_faces(job, cx):
     return {"patient": job.get("data", job["id"]), "value": out}
 
 
+def cut_shaped(job, cx):
+    """(s08 CP1) A sheet whose pieces come with their own shape: a round body (a pan's rim) plus what leaves it (the
+    handle, a spout, a pour stream), on a ground that must never be keyed (CP1's is a dark gradient with glows). Each
+    piece is its connected shape in the source alpha (no ground colour is read), hardened (a steep ramp at 0.5: no
+    glow) and its edge colours pulled in from inside, so no dark halo shows on a light or a dark surface. The pieces are
+    registered by the spout's tip and the handle's middle row (scaled to one spout-to-handle length) onto one canvas, so
+    a swap between them moves nothing. "lip": for each name with a stream, the canvas point "stream_at" of the way down
+    the stream (lip to tip) is recorded, for the station's origin; "body" is the rim's diameter on the canvas."""
+    p = cx.path(job["src"])
+    if not p:
+        log("%s: sheet not landed" % job["id"])
+        return None
+    im = Image.open(p).convert("RGBA")
+    a = np.asarray(im).astype(float)
+    rgb, al = a[..., :3], a[..., 3] / 255
+    H, W = al.shape
+    shape = al > 0.5
+    shape = ndi.binary_opening(shape, iterations=1)
+    lb, n = ndi.label(shape)
+    sz = np.bincount(lb.ravel())
+    sz[0] = 0
+    ids = [i for i in range(1, n + 1) if sz[i] > job.get("min_px", 5000)]
+    cols, rows = job.get("grid", [3, 2])
+    cent = []
+    for i in ids:
+        ys, xs = np.nonzero(lb == i)
+        cent.append((int(ys.mean() // (H / rows)), xs.mean(), i))
+    cent.sort()
+    names = job["names"]
+    log("  %d pieces (want %d)" % (len(cent), len(names)), flag=len(cent) != len(names), quiet=True)
+    pieces = {}
+    for nm, (_, _, i) in zip(names, cent):
+        if nm is None:
+            continue
+        m = lb == i  # (the handle's hanging hole stays a hole)
+        ys, xs = np.nonzero(m)
+        x0, x1 = xs.min(), xs.max()
+        # the handle's middle row, a little in from its end: a fixed point of the pan in every cell (the tilt is drawn
+        # by the liquid and a slight foreshortening of the body, never by the handle)
+        hx = x1 - job.get("handle_in", 30)
+        hy = float(np.nonzero(m[:, hx])[0].mean())
+        top = ys.min()
+        body_rows = np.nonzero(m[:, int(x0 + (hx - x0) * 0.3)])[0]
+        pieces[nm] = dict(mask=m, x0=float(x0), x1=float(x1), hy=hy, top=float(top), body=float(body_rows.max() - body_rows.min()))
+    # one scale (the spout-to-handle length, the same pan in every cell) and one anchor (spout x, handle row)
+    span = float(np.median([pc["x1"] - pc["x0"] for pc in pieces.values()]))
+    ext = [0, 0, 0, 0]
+    for nm, pc in pieces.items():
+        pc["k"] = span / (pc["x1"] - pc["x0"])
+        ys, xs = np.nonzero(pc["mask"])
+        q = pc["k"]
+        ext = [min(ext[0], (xs.min() - pc["x0"]) * q), min(ext[1], (ys.min() - pc["hy"]) * q), max(ext[2], (xs.max() - pc["x0"]) * q), max(ext[3], (ys.max() - pc["hy"]) * q)]
+    pad = job.get("pad", 6)
+    ox, oy = int(np.floor(-ext[0])) + pad, int(np.floor(-ext[1])) + pad
+    cw, ch = int(np.ceil(ext[2] - ext[0])) + 2 * pad + 1, int(np.ceil(ext[3] - ext[1])) + 2 * pad + 1
+    flat = pieces[names[0]]
+    body = flat["body"] * flat["k"]
+    out = {"src": job["src"], "canvas": [cw, ch], "anchor": [ox, oy], "body": round(body / cw, 4), "files": {}, "lip": {}}
+    for nm, pc in pieces.items():
+        k = pc["k"]
+        dx, dy = ox - pc["x0"] * k, oy - pc["hy"] * k
+        M = np.float32([[k, 0, dx], [0, k, dy]])
+        m = pc["mask"].astype(np.float32)
+        # the ramp: hardened alpha (the source's own soft edge, steep at 0.5), only on this piece's shape (grown 2 px)
+        grown = ndi.binary_dilation(pc["mask"], iterations=2)
+        aa = np.clip((al - 0.5) * job.get("ramp", 3.0) + 0.5, 0, 1) * grown
+        # edge colours from inside: every pixel not solid takes the colour of the nearest solid pixel of the piece
+        solid = (al > 0.97) & pc["mask"]
+        _, (iy, ix) = ndi.distance_transform_edt(~solid, return_indices=True)
+        col = np.where(solid[..., None], rgb, rgb[iy, ix])
+        rgba = np.dstack([col, aa * 255]).astype(np.float32)
+        rgba = cv2.warpAffine(rgba, M, (cw, ch), flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0))
+        img = Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA")
+        path = cx.to(job["out"].replace("<name>", nm))
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        img.save(path, quality=job.get("q", 90), method=6)
+        out["files"][nm] = cx.rel(path)
+        # the stream: the shape below the body, on the spout's side (the handle leaves right)
+        mm = cv2.warpAffine(m, M, (cw, ch), flags=cv2.INTER_NEAREST) > 0.5
+        bottom_body = oy + (flat["top"] - flat["hy"]) * flat["k"] + body  # the flat pan's lowest rim row
+        yy, xx = np.mgrid[0:ch, 0:cw]
+        below = mm & (yy > bottom_body + 4) & (xx < ox + body * 0.8)
+        if below.sum() > 200:
+            ys, xs = np.nonzero(below)
+            y_lip, y_tip = float(ys.min()), float(ys.max())
+            y_at = y_lip + (y_tip - y_lip) * job.get("stream_at", 0.8)
+            row = np.nonzero(mm[int(y_at)] & (xx[0] < ox + body * 0.8))[0]
+            x_at = float(row.mean()) if len(row) else float(xs.mean())
+            out["lip"][nm] = [round(x_at / cw, 4), round(y_at / ch, 4)]
+        log("  %s: spout x %.0f, handle row %.1f, scaled %.3f, moved %+.2f,%+.2f onto the canvas; body %.0f px tall%s"
+            % (nm, pc["x0"], pc["hy"], k, dx, dy, pc["body"] * k, ("; stream at %s" % out["lip"][nm]) if nm in out["lip"] else ""), quiet=True)
+    log("%s: %d shaped piece(s) on one canvas %dx%d, body %.1f px" % (job["id"], len(pieces), cw, ch, body))
+    return {"patient": job.get("data", job["id"]), "value": out}
+
+
 TYPES = {"closeup": cut_closeup, "grid": cut_grid, "figure": cut_figure, "background": cut_background, "pose": cut_pose,
-         "lean": cut_lean, "faces": cut_sheet_faces}
+         "lean": cut_lean, "faces": cut_sheet_faces, "shaped": cut_shaped}
 
 
 # ---------------------------------------------------------------- spec handling

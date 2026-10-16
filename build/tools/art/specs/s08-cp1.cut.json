@@ -1,0 +1,22 @@
+{
+ "pack": "s08-cp1",
+ "about": "CP1 (s07 art plan section CP1, CHAI-08): the chai pan seen straight down, flat, tipped 15, 30 and 45 degrees, then pouring milk chai and black tea; cut by shape (cut_shaped: never keyed off its dark ground), registered by the rim's circle onto one canvas, into assets/cook/items/chai-v2/. The chai tray's pour (js/cook/stations/chai-tray.js) steps through the tilts before the stream; data/cook.json art.s02 chai-pan-tilt-* and chai-pan-pour-* carry the files and the lip.",
+ "src": "sources/art/s08/items",
+ "out": "assets",
+ "data": "build/tools/art/specs/s08-cp1.cut-data.json",
+ "report_beside_data": true,
+ "jobs": [
+  {
+   "id": "cp1",
+   "type": "shaped",
+   "data": "cp1",
+   "src": "cp1-chai-pan-tilt-v2.png",
+   "grid": [3, 2],
+   "names": ["tilt-0", "tilt-15", "tilt-30", "tilt-45", "pour-milk", "pour-black"],
+   "stream_at": 0.8,
+   "ramp": 3.0,
+   "pad": 6,
+   "out": "cook/items/chai-v2/pan-<name>-v2.webp"
+  }
+ ]
+}
