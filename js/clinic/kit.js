@@ -153,6 +153,7 @@
    * where nothing shows. host = the box drawn at that picture's canvas (the picture fills it), aspect = its width over its
    * height; the shadows go under the picture. A file with no measured feet draws none (and clears the old ones).
    */
+  Kit._shadows = 0;
   Kit.contactShadows = function (host, file, aspect) {
     if (!host) return;
     host.querySelectorAll(":scope > .cl-shadow").forEach((n) => n.remove());
@@ -162,9 +163,14 @@
     const key = String(file || "").replace(/[?#].*$/, "").replace(/^.*?(assets\/)/, "$1").replace(/@2x(\.webp)$/, "$1");
     const feet = (a && a.shoes && a.shoes[key]) || [];
     feet.forEach(([cx, bottom, w]) => {
-      const e = document.createElement("i");
-      e.className = "cl-shadow";
+      // an ellipse blurred at its edge (in its own units, so it is as soft at every size); the colour is a token
+      const id = `cl-shadow-${++Kit._shadows}`;
+      const e = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      e.setAttribute("class", "cl-shadow");
       e.setAttribute("aria-hidden", "true");
+      e.setAttribute("viewBox", "0 0 100 100");
+      e.setAttribute("preserveAspectRatio", "none");
+      e.innerHTML = `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter><ellipse cx="50" cy="50" rx="40" ry="40" filter="url(#${id})"/>`;
       const ew = 1.2 * w;
       const eh = 0.25 * ew * (aspect || 0.45);
       Object.assign(e.style, { left: `${(cx - ew / 2) * 100}%`, top: `${(bottom - eh / 2) * 100}%`, width: `${ew * 100}%`, height: `${eh * 100}%` });
