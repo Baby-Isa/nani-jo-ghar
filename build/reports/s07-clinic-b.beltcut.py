@@ -46,9 +46,10 @@ JOBS = {
     # B1 FAIL: drawn top-down, so rows 1-2 are tray views only (not the belt)
     "b1-plaster-level-colours": [("plaster-level", f"plaster-{c}-tray", (x, y), {}) for (c, x, y) in (("red", 205, 325), ("blue", 580, 325), ("green", 955, 325), ("yellow", 1335, 325), ("skin", 205, 640))],
     # s08-clinic-items: B1 v2 (s08 API redo, PASS-with-note): row 1 (red, blue, green, yellow) and cell 5 (skin) at the
-    # belt camera, drawn at the width given (a share of the dish, set to the belt set's look: see the report); cells 6-8
+    # belt camera, side-padded to 0.6 of the canvas: the belt gives a long thing a 1.6-item dish (pharmacy.js widen), so
+    # the plaster draws about one item wide, as the belt's other things (today's flat plaster drew 0.9); cells 6-8
     # (top-down) are not cut again: the s07 tray views stay
-    "s08/items/b1-plaster-level-colours-v2": [("plaster-level", f"plaster-{c}-belt", (x, y), {"width": 0.8}) for (c, x, y) in (("red", 204, 269), ("blue", 581, 269), ("green", 955, 269), ("yellow", 1327, 269), ("skin", 204, 750))],
+    "s08/items/b1-plaster-level-colours-v2": [("plaster-level", f"plaster-{c}-belt", (x, y), {"width": 0.6}) for (c, x, y) in (("red", 204, 269), ("blue", 581, 269), ("green", 955, 269), ("yellow", 1327, 269), ("skin", 204, 750))],
     # s08-clinic-items: DM2 v2 (PASS-with-note): the four matte drops for the drop machine's syringe. Its two levers
     # (cream knob, steel boss; up at (296, 230), down at (768, 300)) are not cut: today's drawn levers carry their
     # tube's colour on the knob, which the colour levels need (build/reports/s08-clinic-items.md)
