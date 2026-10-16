@@ -51,14 +51,26 @@ test("bulb: 8 s at every level in every table (Zafar, D11 / SH-41)", () => {
 });
 test("plane: the doctor and the girl on one feet line, him about 1.45x her, a tad back, him 1.75 m by the door (CLN-154, s08)", () => {
   const doors = { stand: [0.047, 0.728], exam: [0.054, 0.742], door: [0.078, 0.728] };
-  // s08-doctor-stitch (Zafar, 16 Oct): further back and smaller, her tap areas padded back to today's size
+  // s08-placement-judge (CLN-155, CLN-156; Zafar 16 Oct): seated, he stands at the stool's front legs (0.03 in front of her bed
+  // line); standing, she is a touch forward and bigger (0.025 in front of him); her tap areas padded back to today's size
   const ok = {
     horizon: 0.35,
-    stand: { fig: { bottom: 0.8, body: 0.505, tapBody: 0.59 }, doctor: { y: 0.8, h: 0.73 }, phone: { fig: { bottom: 0.84 }, doctor: { y: 0.84 } }, door: doors.stand },
-    exam: { fig: { big: 1, tapBig: 1.3 }, floor: 0.8, doctor: { y: 0.8, h: 0.71 }, door: doors.exam },
+    stand: { fig: { bottom: 0.825, body: 0.535, tapBody: 0.59 }, doctor: { y: 0.8, h: 0.73 }, phone: { fig: { bottom: 0.865 }, doctor: { y: 0.84 } }, door: doors.stand },
+    exam: { fig: { big: 1, tapBig: 1.3 }, floor: 0.8, doctor: { y: 0.83, h: 0.7 }, door: doors.exam },
     door: { patient: { y: 0.77, body: 0.415 }, doctor: { y: 0.77, h: 0.6 }, door: doors.door },
   };
   assert.deepEqual(planeFindings(ok), []);
+  // s08-doctor-stitch's numbers (one feet line in both rooms, his shoe on the bed's leg): red in the exam and the stand
+  const stitch = JSON.parse(JSON.stringify(ok));
+  Object.assign(stitch.stand.fig, { bottom: 0.8, body: 0.505 });
+  stitch.stand.phone.fig.bottom = 0.84;
+  Object.assign(stitch.exam.doctor, { y: 0.8, h: 0.71 });
+  assert.deepEqual(planeFindings(stitch).map((f) => f.key), ["plane|stand", "plane|stand.phone", "plane|exam"]);
+  // too far forward is red too: her 0.04 in front of him, him 0.05 in front of her bed line
+  const far = JSON.parse(JSON.stringify(ok));
+  far.stand.fig.bottom = 0.84;
+  far.exam.doctor.y = 0.85;
+  assert.deepEqual(planeFindings(far).map((f) => f.key).filter((k) => !/size|back/.test(k)), ["plane|stand", "plane|exam"]);
   // drawn smaller without the pad, her tap targets shrink (CLN-93, CLN-09): red in both rooms
   const unpadded = JSON.parse(JSON.stringify(ok));
   delete unpadded.stand.fig.tapBody;
@@ -67,13 +79,13 @@ test("plane: the doctor and the girl on one feet line, him about 1.45x her, a ta
   // CLN-154's numbers (the base of s08), with the doors: too near the camera everywhere; at the door two feet lines and him small for his place
   const was = {
     horizon: 0.35,
-    stand: { fig: { bottom: 0.91, body: 0.59 }, doctor: { y: 0.91, h: 0.85 }, phone: { fig: { bottom: 0.95 }, doctor: { y: 0.95 } }, door: doors.stand },
-    exam: { floor: 0.84, doctor: { y: 0.84, h: 0.76 }, door: doors.exam },
+    stand: { fig: { bottom: 0.935, body: 0.59 }, doctor: { y: 0.91, h: 0.85 }, phone: { fig: { bottom: 0.975 }, doctor: { y: 0.95 } }, door: doors.stand },
+    exam: { floor: 0.84, doctor: { y: 0.86, h: 0.76 }, door: doors.exam },
     door: { patient: { y: 0.822, body: 0.42 }, doctor: { y: 0.88, h: 0.64 }, door: doors.door },
   };
   assert.deepEqual(planeFindings(was).map((f) => f.key), ["plane|stand.back", "plane|stand.phone.back", "plane|exam.back", "plane|door", "plane|door.back", "plane|door.size"]);
   // no door or horizon: his size cannot be checked, which is a finding, never a pass
-  assert.deepEqual(planeFindings({ exam: { floor: 0.8, doctor: { y: 0.8, h: 0.7 } } }).map((f) => f.key), ["plane|exam.door"]);
+  assert.deepEqual(planeFindings({ exam: { floor: 0.8, doctor: { y: 0.83, h: 0.7 } } }).map((f) => f.key), ["plane|exam.door"]);
 });
 test("the repo: no static finding outside the known list (build/lint/static-known.json)", () => {
   const known = new Set(existsSync(join(ROOT, "build/lint/static-known.json")) ? JSON.parse(readFileSync(join(ROOT, "build/lint/static-known.json"), "utf8")) : []);
