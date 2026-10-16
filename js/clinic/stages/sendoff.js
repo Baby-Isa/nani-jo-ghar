@@ -60,8 +60,6 @@
         // her standing views, each its own canvas on one feet line and one drawn size (fig_h): face-on (with her faces),
         // her turns (GN1: three-quarter to the viewer's left, to the doctor), the wave (W12)
         const B = cfg.patient.body || 0.42; // her body's height as a share of the room (a child beside the doctor)
-        const k = (B * 1024) / (standSpec.fig_h || 600);
-        const figH = cfg.patient.h / k;
         const viewOf = (v) => (v && v.file ? Object.assign({}, v, { front: v.file, faces: v.faces || {}, heads: standSpec.heads || artSpec.heads }) : null);
         const front = Object.assign({}, standSpec, { heads: standSpec.heads || artSpec.heads });
         const turns = standSpec.turns || {};
@@ -73,7 +71,7 @@
         const use = (v) => {
           if (!v || now === v) return;
           now = v;
-          fig.useArt(v, { view: "front", figH });
+          fig.useArt(v, { view: "front", figH: cfg.patient.h, body: B });
         };
         use(front);
         turn = (to) => !fig.waving && use(to === "talk" && talkView ? talkView : front);

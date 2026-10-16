@@ -65,7 +65,8 @@
       layer.appendChild(fig.el);
       fig.pose(standing ? "stand" : "sit");
       // D1, CLN-93 (6 Oct): a bigger patient so her parts are easy to tap (her seat stays on the bed's edge)
-      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(standArt || artSpec, { view: "front", figH: standArt ? figCfg.h : cfg.fig.h / BIG }));
+      // CLN-154 (Zafar, 16 Oct): standing, her body is drawn at figCfg.body (as the doctor at his h), on his feet line
+      const art = !!(artSpec && box && cfg.fig && fig.useArt && fig.useArt(standArt || artSpec, standArt ? { view: "front", figH: figCfg.h, body: figCfg.body } : { view: "front", figH: cfg.fig.h / BIG }));
       if (art) fig.tapAnchors = true;
       // sitting: the knees on the bed's edge whatever the patient's size (a child's feet dangle higher); the art
       // sits by its measured seat line (the backs of the thighs on the mattress), as in the heal games

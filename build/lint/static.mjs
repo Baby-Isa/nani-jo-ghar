@@ -11,6 +11,8 @@
 //             script in a page, localStorage only in the save and settings modules
 //   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
 //   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in every bulb time table
+//   plane     the exam room's doctor and patient in one plane (CLN-154): standing, one feet line and him 1.35-1.6x her body;
+//             seated, his feet on the exam floor line (data/clinic/scenes-v2.json)
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
@@ -149,6 +151,23 @@ export function bulbTables(rd, J) {
   return t;
 }
 
+// ---- plane ----
+// CLN-154 (Zafar, 16 Oct: "he's much too close to the foreground than she is"): the send-off's relation in the exam room
+export function planeFindings(sc) {
+  const out = [];
+  const add = (where, text) => out.push({ check: "plane", at: `data/clinic/scenes-v2.json ${where}`, key: `plane|${where}`, text });
+  const st = sc.stand || {}, ph = st.phone || {};
+  for (const [where, fig, doc] of [["stand", st.fig, st.doctor], ["stand.phone", { ...st.fig, ...ph.fig }, { ...st.doctor, ...ph.doctor }]]) {
+    if (!fig || !doc) continue;
+    if (!(Math.abs(fig.bottom - doc.y) <= 0.01)) add(where, `her feet at ${fig.bottom}, his at ${doc.y}: one feet line (within 0.01)`);
+    const r = doc.h / fig.body;
+    if (!(r >= 1.35 && r <= 1.6)) add(where, `him ${doc.h} beside her body ${fig.body}: about 1.4-1.5x her (fig.body)`);
+  }
+  const ex = sc.exam || {};
+  if (ex.doctor && !(Math.abs(ex.doctor.y - ex.floor) <= 0.01)) add("exam", `his feet at ${ex.doctor.y}, the floor she sits on at ${ex.floor}: on it (within 0.01)`);
+  return out;
+}
+
 // ---------- the repo ----------
 export function run(root = ROOT, only = null) {
   const want = (k) => !only || only.includes(k);
@@ -174,6 +193,7 @@ export function run(root = ROOT, only = null) {
   }
   if (want("reward")) for (const f of walk(root, "data", (p) => p.endsWith(".json") && !/lang\/|audio|candidates/.test(p))) { try { out.push(...rewardFindings(f, J(f))); } catch (e) { /* not JSON */ } }
   if (want("bulb")) out.push(...bulbFindings(bulbTables(rd, J)));
+  if (want("plane")) out.push(...planeFindings(J("data/clinic/scenes-v2.json")));
   return out;
 }
 

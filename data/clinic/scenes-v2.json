@@ -29,19 +29,19 @@
     "exit": { "x": 0.815, "y": 0.7 }
   },
   "exam": {
-    "_about": "CB2b: the patient sits on the bed's edge (the mattress top at y 0.53, the step stool's top at 0.66, the floor at 0.8), facing us; the stand-in doctor stands to the right, turned 3/4. fig = the figure's box (the patient DOM figure draws seated inside it, feet at its bottom).",
+    "_about": "CB2b: the patient sits on the bed's edge (the mattress top at y 0.53, the step stool's top at 0.66), facing us; the doctor stands to the right, past the bed's end, turned 3/4. fig = the figure's box (the patient DOM figure draws seated inside it, feet at its bottom). floor = the line she sits on, where the step stool stands (the bed's legs at 0.78, the stool's at 0.82): the doctor's feet are on it (CLN-154, Zafar 16 Oct: he read nearer the camera than her), his crown at 0.08, under a phone's cropped top (0.06) and to the right of the certificate.",
     "fig": { "x": 0.5, "bottom": 0.69, "h": 0.56 },
     "seat": 0.535,
-    "floor": 0.88,
+    "floor": 0.84,
     "side": { "_about": "A1 (5 Oct), the art plan section 3.1 W7: side-on, the patient sits on the bed's right-hand end in profile, facing right (the knee, ear and eye test B zooms); x = the seat anchor across, seat = the mattress top it sits on.", "x": 0.7, "seat": 0.535 },
-    "doctor": { "x": 0.735, "y": 0.9, "h": 0.66 },
+    "doctor": { "x": 0.79, "y": 0.84, "h": 0.76 },
     "certificate": { "src": null, "x": 0.68, "y": 0.215, "w": 0.125, "h": 0.14, "_about": "CLN-116 (CB2b review, 29 Sept): the real doctor's certificate on the right wall, a photo Zafar supplies (src: then a framed picture); a grey frame flagged in the markup until then. x = the frame's centre, y = its bottom, w and h = its size, as shares of the room (1536 x 1024): above the doctor's head (doctor), clear of the door and of the fever room's wall thermometer (x 0.76-0.84)" }
   },
   "stand": {
-    "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right.",
-    "fig": { "x": 0.5, "bottom": 0.86, "h": 0.64 },
-    "phone": { "fig": { "bottom": 0.9, "h": 0.74 }, "doctor": { "y": 0.95, "h": 0.84 }, "_about": "S03 (CLN-94): on a short screen (under 480 px) she and the doctor stand bigger, their feet lower (she stays a child beside him)" },
-    "doctor": { "x": 0.72, "y": 0.92, "h": 0.66 }
+    "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right. CLN-154 (Zafar, 16 Oct: he read nearer the camera than her): one feet line (fig.bottom = doctor.y) and fig.body = her standing art's height (head to feet) as a share of the room, so he is about 1.45x her and her crown is at his chest, as at the door; fig.h is only her box.",
+    "fig": { "x": 0.5, "bottom": 0.88, "h": 0.64, "body": 0.55 },
+    "phone": { "fig": { "bottom": 0.95, "h": 0.74, "body": 0.58 }, "doctor": { "y": 0.95, "h": 0.84 }, "_about": "S03 (CLN-94): on a short screen (under 480 px) she and the doctor stand bigger, their feet lower, on one line (she stays a child beside him; her tap targets as big as before)" },
+    "doctor": { "x": 0.72, "y": 0.88, "h": 0.8 }
   },
   "pharmacy": {
     "_about": "CB4c: the painted belt's surface runs edge to edge between y 0.615 and 0.69; items stand on it (their base at `beltY`, `itemH` tall); the counter strip in front (y 0.73 to 1) holds the pantry-style tray.",
@@ -51,7 +51,7 @@
   },
   "door": {
     "_about": "CB5, clinic fixes 13d: the doctor and the patient stand on the LEFT, in the free wall space (not by the door, where the face circle sat on the green cross sign), turned to each other while they talk. The feeling cards open in a thought bubble from the patient's head, out to the right (levels 1-2); from level 3 the help items sit in a tray along the bottom of the screen.",
-    "patient": { "x": 0.39, "y": 0.85, "h": 0.46, "body": 0.42, "_about": "s07-clinic-a (CLN-25): body = her standing art's height (head to feet) as a share of the room, a child beside the doctor" },
+    "patient": { "x": 0.39, "y": 0.822, "h": 0.46, "body": 0.42, "_about": "s07-clinic-a (CLN-25): body = her standing art's height (head to feet) as a share of the room, a child beside the doctor. y = her drawn feet (CLN-154: 0.85 drew them at 0.822 while the greybox's standing lift also moved the art; the lift is gone and the picture Zafar passed is kept)" },
     "doctor": { "x": 0.205, "y": 0.88, "h": 0.64 },
     "cards": { "x": 0.6, "y": 0.95 }
   }

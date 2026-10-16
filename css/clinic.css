@@ -154,6 +154,7 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-fig.pose-hop, .cl-fig.pose-jump { animation: cl-hop .7s; }
 .cl-fig.pose-shiver { animation: cl-shiver .5s 2; }
 .cl-fig.standing { transform: translateY(-6%); }
+.cl-fig.standing.has-art { transform: none; } /* CLN-154: the art is registered on its own feet line (heal-art.json feet): the greybox's lift drew her 6% of her box above it */
 .cl-fig .fig-swirl { animation: cl-spin 3s linear infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes cl-kick { 30% { transform: rotate(-32deg); } 100% { transform: rotate(0); } }
 @keyframes cl-kick-r { 30% { transform: rotate(32deg); } 100% { transform: rotate(0); } }
