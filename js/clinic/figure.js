@@ -260,8 +260,11 @@
           const r = fig.art.base.getBoundingClientRect();
           if (!r.height) return null;
           const act = new Set((active || Object.keys(T).map((k) => k.split(".")[0])).map((p) => partId(p)));
+          const want = prefer && String(prefer).replace(/^body-/, "");
           let best = [];
           let bd = Infinity;
+          let mine = null; // the asked-for part's own area holding the tap (its smallest, if both sides do)
+          let md = Infinity;
           Object.entries(T).forEach(([k, [ax, ay, ar]]) => {
             const [p, sd] = k.split(".");
             const pid = partId(p);
@@ -270,13 +273,17 @@
             if (closeup ? !(face || pid === "body-head") : face) return;
             const d = Math.hypot(cx - (r.left + ax * r.width), cy - (r.top + ay * r.height));
             const R = ar * r.height;
+            if (p === want && d <= R && R < md) (md = R), (mine = { part: p, side: sd || null, key: k });
             // inside: rank by the area's size (smaller first); outside: by the distance past its edge, plus pad
             const score = d <= R ? R - 1e6 : d - R <= pad ? d - R : Infinity;
             if (score < bd - 1e-6) (bd = score), (best = [{ part: p, side: sd || null, key: k }]);
             else if (Math.abs(score - bd) <= 1e-6) best.push({ part: p, side: sd || null, key: k });
           });
+          // s07 fix (foot): a tap inside the asked-for part's own area is that part, even where a smaller one lies on
+          // it (the toe's area covers the middle of the standing foot's, where its hint ring is drawn)
+          if (mine) return mine;
           if (!best.length) return null;
-          return best.find((b) => prefer && b.part === String(prefer).replace(/^body-/, "")) || best[0];
+          return best.find((b) => want && b.part === want) || best[0];
         }
         const [x, y] = toDesign(cx, cy);
         const act = (active || body.keys.map((k) => body.split(k).part)).map(partId);
