@@ -205,7 +205,7 @@
     null
    ],
    "pad": 8,
-   "max": 384,
+   "max": 144,
    "min_area": 4000,
    "outdir": "patients/doctor/faces"
   },
