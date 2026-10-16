@@ -58,7 +58,11 @@ def check_str(l):
 
 def line_str(l):
     lid = l["id"] if l["tid"] == l["id"] else "%s (prompt %s)" % (l["id"], l["tid"])
-    return "%s | %s | %s | %s" % (lid, ", ".join(att_str(a) for a in l["attach"]), l["save"], check_str(l))
+    s = "%s | %s | %s | %s" % (lid, ", ".join(att_str(a) for a in l["attach"]), l["save"], check_str(l))
+    slots = l.get("slots") or {}
+    if slots:
+        s += " | slots: " + "; ".join("{%s} = %s" % (k, v) for k, v in slots.items())
+    return s
 
 
 # How kept images leave ChatGPT. "github": the runner commits them itself (the default). "download": they stay in their chats
@@ -145,7 +149,7 @@ def part_text(part, lines, spec, only=None):
                 seen.append(l["tid"])
                 t = spec["templates"][l["tid"]]
                 kw = {"p": "<p>", "sheet": "<sheet>"}
-                fake = {"id": "<p>-" + l["tid"], "attach": [S._attach(a, kw) for a in t["attach"]], "save": S.sub(t["save"], **kw),
+                fake = {"id": "<p>-" + l["tid"], "tid": "<p>-" + l["tid"], "attach": [S._attach(a, kw) for a in t["attach"]], "save": S.sub(t["save"], **kw),
                         "check": t["check"], "note": S.sub(t.get("note", ""), **kw)}
                 out.append(" " + line_str(fake))
         out.append("People, in this order:")
@@ -245,6 +249,11 @@ def build(spec, redo_path=None):
         "VERB": "redoing" if redo_path else "making", "COUNT": count, "PACK": spec["pack"], "DEST": spec["dest"],
         "WATCH": "Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS)." if not real else "Zafar approves the likenesses (see APPROVALS).",
         "PAGE_URL": "https://github.com/%s/blob/%s/%s" % (repo, branch, spec["plan"]), "RAW": raw, "REFS": refs,
+        "PEOPLE_TABLE": ", and its PEOPLE table" if spec.get("people") else "",
+        "SLOT_RULE": ("The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table"
+                      if spec.get("people") else "The only change allowed is filling a code box's {SLOTS}")
+        + (" and, where a line ends with \"slots:\", putting each slot's words from that line into the code box's matching {SLOT}, word for word (a code box with a {SLOT} is never sent unfilled)."
+           if any(l.get("slots") for l in used) else "."),
         "KEPT_NOTE": (", from this run if it is in the run order below, otherwise the one already in the repo at RAW + %s/<X's save-as name>" % spec["dest"]) if redo_path
         else (", already committed by you to RAW + %s/<X's save-as name>" % spec["dest"]) if spec.get("delivery", "github") == "github"
         else ", still in its ChatGPT chat (attach it from ChatGPT's library, see below)",

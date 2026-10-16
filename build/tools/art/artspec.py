@@ -31,11 +31,25 @@ def plan_people(spec):
 
 def plan_prompt_ids(spec):
     """The IDs that have a prompt in the plan (a '#### ID. title' heading with a code box under it)."""
+    return set(plan_prompt_boxes(spec))
+
+
+def plan_prompt_boxes(spec):
+    """ID -> the text of its code box (the words pasted into ChatGPT)."""
     txt = plan_text(spec)
-    ids = set()
-    for m in re.finditer(r"^#### (\w+)\.[^\n]*\n(?:[^\n]*\n){0,3}?```", txt, re.M):
-        ids.add(m.group(1))
-    return ids
+    out = {}
+    for m in re.finditer(r"^#### (\w+)\.[^\n]*\n(?:[^\n]*\n){0,3}?```[^\n]*\n(.*?)^```", txt, re.M | re.S):
+        out[m.group(1)] = m.group(2)
+    return out
+
+
+# The slots the PEOPLE table fills (the clinic and s07 packs); any other {SLOT} in a code box is filled from the line's own
+# `slots:` map (s08: one DP prompt serves every view and pose, the line says VIEW and POSE).
+PEOPLE_SLOTS = {"NAME", "KEEP", "LEGS", "LIMB_WHO"}
+
+
+def box_slots(box):
+    return {s for s in re.findall(r"\{([A-Z_]+)\}", box)} - PEOPLE_SLOTS
 
 
 def sub(s, **kw):
@@ -73,7 +87,8 @@ def expand(spec):
             for lid in it.get("lines", []):
                 t = spec["lines"][lid]
                 add({"id": lid, "part": part["id"], "who": t.get("person"), "set": None, "sheet": None, "tid": t.get("prompt", lid),
-                     "attach": [_attach(a, {}) for a in t["attach"]], "save": t["save"], "check": t["check"], "note": t.get("note", "")})
+                     "attach": [_attach(a, {}) for a in t["attach"]], "save": t["save"], "check": t["check"], "note": t.get("note", ""),
+                     "slots": dict(t.get("slots") or {})})
             for tid in it.get("ids", []):
                 if "who" in it:
                     p = it["who"]
@@ -111,7 +126,8 @@ def validate(spec):
     lines = expand(spec)
     ids = {l["id"] for l in lines}
     people, limbs = plan_people(spec)
-    prompts = plan_prompt_ids(spec)
+    boxes = plan_prompt_boxes(spec)
+    prompts = set(boxes)
     saves = {}
     for p in spec["people"]:
         if p not in people:
@@ -125,6 +141,15 @@ def validate(spec):
         saves[l["save"]] = l["id"]
         if l["tid"] not in prompts:
             bad.append("%s: the plan has no prompt %s (a '#### %s.' heading with a code box)" % (l["id"], l["tid"], l["tid"]))
+        else:
+            want, got = box_slots(boxes[l["tid"]]), set(l.get("slots") or {})
+            if want - got:
+                bad.append("%s: prompt %s needs the slot(s) %s on the line" % (l["id"], l["tid"], ", ".join(sorted(want - got))))
+            if got - want:
+                bad.append("%s: slot(s) %s are not in prompt %s" % (l["id"], ", ".join(sorted(got - want)), l["tid"]))
+            for k, v in (l.get("slots") or {}).items():
+                if not str(v).strip() or "\n" in str(v):
+                    bad.append("%s: slot %s is empty or spans lines" % (l["id"], k))
         if l["check"] not in spec["checks"]:
             bad.append("%s: no check %s" % (l["id"], l["check"]))
         for a in l["attach"]:

@@ -1,296 +1,325 @@
-# s08: lock the style of the real people, then the doctor (pack `s08`)
+# s08: the doctor and Nani in the locked style, every view and gesture (pack `s08`)
 
-**Written:** 16 Oct 2026 by the style judge; revised the same day on Zafar's reply ("Are you sure Nani and the girl will look okay? Now is the time to lock in character design … keep the resemblance in the face, match the rest through the body, clothing or something else"). **Status:** a proposal; nothing runs until he says go. Judgement behind it: `build/reports/s07-style-judge.md`. Rules: `CLAUDE.md` 13 and 16; the doctor and Nani are real people, so **he approves every picture of them**. Run spec: `build/tools/art/specs/s08.run.yaml`; the block it generates: `s08-paste-block.txt` (never hand-edited).
+**Written:** 16 Oct 2026 by the art planner, on Zafar's lock and his ask the same day ("Ensure we capture all the variations we need or might need … face on, quarter turn, half turn, left and right, arms down, arms waving, mid conversation, making a point, pointing up, pointing down … have a review about all the permutations that we need"). **Status:** ready for his go; nothing runs until he says so. Rules: `CLAUDE.md` 13 and 16; the doctor and Nani are real people, so **he approves every picture of them** (his ok in the chat is the pass). Run spec: `build/tools/art/specs/s08.run.yaml`; the block it generates: `s08-paste-block.txt` (never hand-edited). He runs the block himself in Claude in Chrome, download delivery (section 3).
 
-## 0. The honest answer to "are you sure?"
+## 0. The lock and the skin swatches
 
-No. Nani's N1 is visibly more real than the girl: real skin texture, normal-size eyes, a knitted dupatta. Beside Ma at the counter the gap is small, but beside the girl on one floor "one film" is not certain, and bringing the doctor to N1's level (my first plan) would lock that uncertainty in. So the run starts with a **style lock**: three lineups he judges by eye before any pose is made. His idea is the one worth testing: keep the likeness in the face and match the rest through the body, the clothes and the render finish.
+**Locked (Zafar, 16 Oct): `sources/art/s08/lineup-v4-1.png`**, the grandad (the doctor), Nani and the girl side by side. Faces keep the likeness at that level with slightly larger, open eyes (the V4-1 eyes; not the bigger V5 eyes). Bodies and clothes simplified: his plain navy blazer with a faint check, white open shirt, charcoal trousers, brown shoes, brown belt, silver watch on his left wrist; her plain cream kameez with a few bold red motifs at the neck, cuffs and hem, a plain red dupatta over her head, round gold glasses, thin bracelet and two rings, flat cream shoes, modest and loose. Nani 5'5"-5'6" beside his 5'8", slim, never portly. The girl unchanged (not in this run).
 
-## 1. The lock: three lineups, then STOP
+**Skin, sampled from the lineup (median of the face, skin pixels only).** The doctor **#D3997A** (lit forehead #E99F7A, cheek #CF8E74, hands #DE8764); Nani **#D48E6B** (lit forehead #E5A37A, cheek #D78D6A, hands #E8A77E); the girl #DE936C for comparison. Every prompt names its character's swatch; every check reads "skin within ΔE 6 of the sheet swatch"; `artjudge.py` measures it (`skin:` on the check). Zafar: "watch skin tone drift on all."
 
-Each is one picture: the doctor, Nani, the girl and Nana standing on one floor, front-on, true heights (the doctor about 1.5× the girl, her crown at his chest), flat grey. The same five files attached to each; three windows at once, about ten minutes.
+**The drift guard (how every picture is made).** (1) The character sheet first, redrawn from the lineup; Zafar approves it; it is attached to every later picture as the only authority on who and how. (2) The face-on standing base is drawn from the sheet. (3) A turn is a redraw of the face-on base ("changed in nothing but the turn"), with the s07 picture of that turn attached as the turn reference only. (4) A pose is a redraw of its view's base ("changed in nothing but the arms, hands and face"), with the s07 picture of that pose, where one exists, attached as the pose reference only. (5) Mouths and blinks are edits of the base. Nothing is generated fresh from words; faces, skin and feet lines register with the base, so the cutter can swap views in place. The s07 pictures (`sources/art/s07/doctor-*`) are never a rendering reference: their finish is the one being replaced.
 
-| ID | What it tests | Save as |
-|---|---|---|
-| **LA** | My first plan: the doctor brought to Nani's N1 level; Nani and the girl exactly as they are. Does the girl look like a child from the same film as two slightly-real adults? | `lineup-la-v1.png` |
-| **LB** | Zafar's idea: the doctor's and Nani's **faces kept exactly** (shape, glasses, beard and hairline, the dupatta's framing, skin tone); everything below the neck and the whole finish brought into the girl's world (rounder simpler bodies, plain soft cloth with no weave or pores, simpler hands, her smooth skin finish and soft light, the same soft edges; eyes a touch larger only if the likeness holds). Nani stays modest. | `lineup-lb-v1.png` |
-| **LC** | LB plus the girl one small step toward them (eyes about fifteen percent smaller, a touch more real skin shading, head a touch smaller). Included because the gap is two levels and it may close faster from both ends; **not recommended** unless A and B both fail: the girl has about 25 wired pictures across three packs, and C redraws all of them (only her two bases are in this run). Zafar, 16 Oct: "she does seem to suit the artwork quite nicely." | `lineup-lc-v1.png` |
+## 1. Where they appear (the audit, 16 Oct)
 
-**How he picks.** The runner posts the three with their chat links and stops. Zafar looks at them at one size and answers in the chat with one of: **"pick A"**, **"pick B"**, **"pick C"** or **"none"**. The runner then runs only that branch; "none" ends the run with the log and we rethink. My expectation: B, if the faces survive; the lineup shows that at once.
+| Place | Who, view, pose | Today | Pictures it needs |
+|---|---|---|---|
+| Clinic waiting room (`js/clinic/stages/waiting.js`, `data/clinic/scenes-v2.json` waiting.doctor) | the doctor front-on by his door, standing and waving, calling the next patient; mouth closed between lines | DD1 + DD2 (s07, wired) | wave front + the calling mouth |
+| Clinic diagnosis (`diagnosis.js`) | three-quarter left to the patient while they talk, then front to the player; bubbles at his head | 3q-left + talk + blink; front (no faces: his mouth is still when he talks front) | 3q-left, front, each with talk and blink |
+| Clinic send-off (`sendoff.js`) | three-quarter right to the girl at the door; waves her off | 3q-right (no faces), wave-3q-right | 3q-right with talk and blink; wave 3q-right |
+| Clinic pharmacy and his box, cards (`common.js` `S.doctorFace`, `Kit.doctorFace`) | his face in the guide box and on cards: neutral, talk, laugh, think | cut from `doctor-ref-faces-v1.png` | the face sheet (12, registered) |
+| Clinic stage 2's "does it hurt here?", the tool cues, "that's it" | pointing at the part, finger up, the torch at the eye | not drawn (words only) | point-left 3q-left, finger-up, torch (LIKELY) |
+| Cook: every station, the greeting, the orders, the day summaries, the shop (`js/cook/stations.js`, `js/cook/flow.js`, `data/cook.json` art.assets.shared) | Nani leaning on the counter: neutral, happy, talk, point, blink | N1-N5 (s07, wired as `nani-*-v2.webp`) | the five leaning pictures again |
+| Nani's guide box in every mode, the Cook cover, story cards (`js/shared/guide.js`, `js/shared/story.js`, `nani-badge.webp`) | her face | the old badge | the face sheet (12, registered) |
+| First launch (`data/story/first-launch.json`, `docs/game-design/modes/first-launch.md`) | Nani talks, points at the kitchen, holds out a spoon, hugs the child, sips chai | the old waist-up pictures with a ledge; SVG placeholder panels | standing front with talk; point-left/right; the counter set (LIKELY) |
+| Story by the fire, the bazaar, travel, conversations at the door (`docs/game-design/modes/story-by-the-fire.md`, `docs/game-design/modes/conversations.md`: "someone enters and speaks to whoever is there; Nani answers, then turns to the player") | Nani standing, turned to a visitor then to the player; waving, welcoming, celebrating | nothing drawn | standing turns, waves, gestures (LIKELY) |
+| The house (`js/home.js`) | nobody drawn today | | none |
 
-## 2. What runs after the pick
+**The s07 doctor set** (`sources/art/s07/`, 41 standing pictures, `s07-art-run-log.txt`): neutral, arms folded, point-left, finger-up, arms-up, torch and wave in five views each (front, 3q-left, 3q-right, side-left, side-right; point-left's 3q-right was rejected), the door call with its closed mouth, four waving turns, talk and blink on the 3q-left, the faces sheet, the seated portrait and the sheet. Wired: 3q-left (+talk, blink), front, 3q-right, wave-3q-right, wave-front (+closed mouth), four faces. The other 33 are unwired spares; in this run they serve only as pose and turn references.
 
-| Pick | Lines | Images | His time | What lands |
-|---|---|---|---|---|
-| A | DS2, then DW1, DF1, DF3, DW1F, DW1QR, DA6QR, DD1, DD2, DR2 | 10 (+3 redos likely) | about 1 h, approving as they land | the doctor at Nani's level: his sheet, the 8 wired pictures, his 12 card faces. Nani and the girl unchanged |
-| B | DS2B, then the same nine poses (the same prompts, attaching DS2B), then N1B, N2B, N3B, N4B, N5B | 15 (+4) | about 1 h 20 | the doctor and Nani in the soft finish: his sheet and poses, her N1 redone as an edit of itself, her four moods as edits of the new N1 |
-| C | branch B with LC attached wherever a line says kept:LB, then GW1C, GW13C | 17 (+4) | about 1 h 30 | as B, plus the girl's seated and standing bases; the rest of her set in a later pack |
+## 2. The permutation matrix
 
-The wired doctor pictures (`data/clinic/heal-art.json` `doctor.views`): 3q-left (+ talk, blink), front, 3q-right, wave-3q-right, wave-front (+ closed mouth), and his four card faces cut from the faces sheet. The other 33 kept s07 turns are unwired spares and are not redone. Dependencies: every pose attaches the branch's sheet; DF1, DF3 edit DW1; DD2 edits DD1; N2B, N3B, N5B edit N1B and N4B attaches it.
+Views: **F** face-on, **QL** quarter turn to the viewer's left, **QR** quarter turn to the viewer's right, **SL** side-on left, **SR** side-on right. Cells: **NEED** (wired today or certainly next), **LIKELY** (planned story and modes), **SKIP** (never seen: a side view hides the face, a point behind oneself). The letter is the part that makes it.
 
-## 3. How Zafar runs it
+### The doctor
 
-He pastes `s08-paste-block.txt` into Claude in Chrome and watches. The block is in **download mode** (s07, 15 Oct: ChatGPT serves images as in-page blobs and the page-JavaScript route to GitHub was refused, so nothing landed and he downloaded by hand): every kept image stays in its chat, the log carries its chat link and save-as name, kept images are attached to later prompts from ChatGPT's library, and at the very end the runner downloads them in run order with ChatGPT's own download button, logging "DOWNLOADED n: save-as" so the files can be renamed in order. Zafar then uploads the folder as `sources/art/s08/`. The runner never tries page-JavaScript uploads. Real people: his ok in the chat is the pass. Nothing from parts A, B or C starts before his pick.
+| Pose | F | QL | QR | SL | SR |
+|---|---|---|---|---|---|
+| Arms down, neutral (the view base) | NEED A | NEED A | NEED A | LIKELY C3 | LIKELY C3 |
+| Talking mouth (edit) | NEED A | NEED A | NEED A | SKIP | SKIP |
+| Blink (edit) | NEED A | NEED A | NEED A | SKIP | SKIP |
+| Waving (+ the open calling mouth, F) | NEED A | LIKELY C2 | NEED A | LIKELY C3 | LIKELY C3 |
+| Talking mid-conversation, open hands | LIKELY C1 | LIKELY C1 | LIKELY C1 | SKIP | SKIP |
+| Making a point, gesticulating | LIKELY C1 | LIKELY C1 | LIKELY C1 | SKIP | SKIP |
+| Pointing left | LIKELY C1 | LIKELY C1 | SKIP | SKIP | SKIP |
+| Pointing right | LIKELY C1 | SKIP | LIKELY C1 | SKIP | SKIP |
+| Finger up, "idea" | LIKELY C1 | LIKELY C1 | LIKELY C1 | SKIP | SKIP |
+| Pointing up | LIKELY C2 | LIKELY C2 | LIKELY C2 | SKIP | SKIP |
+| Pointing down | LIKELY C2 | LIKELY C2 | LIKELY C2 | SKIP | SKIP |
+| Welcoming, open hands | LIKELY C2 | LIKELY C2 | LIKELY C2 | SKIP | SKIP |
+| Celebrating, arms up | LIKELY C2 | LIKELY C2 | LIKELY C2 | SKIP | SKIP |
+| Arms folded | LIKELY C3 | LIKELY C3 | LIKELY C3 | SKIP | SKIP |
+| Thinking, hand on chin | LIKELY C3 | LIKELY C3 | LIKELY C3 | SKIP | SKIP |
+| Holding the torch | LIKELY C3 | LIKELY C3 | LIKELY C3 | SKIP | SKIP |
+
+Plus his sheet and his face sheet (A). Doctor: **14 NEED, 39 LIKELY.**
+
+### Nani
+
+| Pose | F | QL | QR | SL | SR |
+|---|---|---|---|---|---|
+| Leaning on the counter: neutral, happy, talk, point, blink (N1-N5) | NEED B (5) | SKIP | SKIP | SKIP | SKIP |
+| Standing, arms down, neutral (the view base) | NEED B | LIKELY C1 | LIKELY C1 | LIKELY C3 | LIKELY C3 |
+| Talking mouth (edit) | NEED B | LIKELY C1 | LIKELY C1 | SKIP | SKIP |
+| Blink (edit) | NEED B | SKIP | SKIP | SKIP | SKIP |
+| Talking mid-conversation, open hands | LIKELY C1 | LIKELY C1 | LIKELY C1 | SKIP | SKIP |
+| Making a point | LIKELY C1 | LIKELY C1 | LIKELY C1 | SKIP | SKIP |
+| Pointing left | LIKELY C1 | LIKELY C1 | SKIP | SKIP | SKIP |
+| Pointing right | LIKELY C1 | SKIP | LIKELY C1 | SKIP | SKIP |
+| Finger up, "idea" | LIKELY C1 | LIKELY C1 | SKIP | SKIP | SKIP |
+| Waving | LIKELY C2 | LIKELY C2 | LIKELY C2 | SKIP | SKIP |
+| Pointing up | LIKELY C2 | SKIP | SKIP | SKIP | SKIP |
+| Pointing down | LIKELY C2 | SKIP | SKIP | SKIP | SKIP |
+| Welcoming, open hands | LIKELY C2 | SKIP | SKIP | SKIP | SKIP |
+| Celebrating (Shabash, clapping) | LIKELY C2 | LIKELY C2 | SKIP | SKIP | SKIP |
+| Arms folded | LIKELY C3 | SKIP | SKIP | SKIP | SKIP |
+| Thinking, hand on chin | LIKELY C3 | SKIP | SKIP | SKIP | SKIP |
+| Standing at the counter, hands on it (the counter base) | LIKELY C3 | SKIP | SKIP | SKIP | SKIP |
+| Holding a tray of chai (off the counter base) | LIKELY C3 | SKIP | SKIP | SKIP | SKIP |
+| Stirring a pan (off the counter base) | LIKELY C3 | SKIP | SKIP | SKIP | SKIP |
+
+Plus her sheet and her face sheet (B). Nani: **10 NEED, 31 LIKELY.**
+
+**The face sheets (one each, registered):** twelve expressions on one 4 by 3 grid with the head in exactly the same place and size in every cell: neutral, talking A (mouth a little open), talking B (wide open, teeth showing), smiling, laughing, blink, surprised, thinking, concerned, proud, encouraging nod, listening. They feed the guide box, the cards and the talk animation (two mouth shapes). The doctor's today is cut from `doctor-ref-faces-v1.png` (not registered); Nani has only a badge.
+
+## 3. The run: order, time, safe stops
+
+| Part | Lines | What lands | His time |
+|---|---|---|---|
+| **A** The doctor, NEED | 14 | his sheet and face sheet; front, 3q-left and 3q-right bases, each with talk and blink; wave front with the calling mouth; wave 3q-right | about 45 min (the sheet, then the front base, then the turns each wait for his ok before anything attaches them) |
+| **B** Nani, NEED | 10 | her sheet and face sheet; the five leaning pictures; her standing front base with talk and blink | about 35 min |
+| **C1** Talking and pointing, LIKELY | 29 | both: mid-conversation, making a point, pointing left and right, finger up; Nani's quarter turns with talk | about 55 min |
+| **C2** Waves, up and down, welcome and celebrate, LIKELY | 21 | both: pointing up and down, welcoming, celebrating; his wave 3q-left; her waves | about 40 min |
+| **C3** Folded, thinking, torch, the counter set, the side views, LIKELY | 20 | his folded, thinking, torch; her folded, thinking, counter base, tray, stirring; both side views, his side waves | about 40 min |
+| | **94** | | **about 3 h 35** |
+
+**Time:** three windows, about 1.5 to 2 minutes a line once they flow, a quarter redone; parts A and B are slower because every real-person picture waits for his ok before it is attached to the next. **Every part boundary is a safe stop:** A leaves the clinic's doctor complete in the new style, B leaves Cook's Nani and both face sheets, C1-C3 add the story and conversation set in value order. The block downloads whatever is kept at any stop.
+
+**How he runs it.** He pastes `s08-paste-block.txt` into Claude in Chrome and watches. Download delivery (s07, 15 Oct: ChatGPT serves images as in-page blobs and page-JavaScript uploads were refused): every kept image stays in its chat, logged with the chat link and save-as name; later prompts attach kept images from ChatGPT's library; at the end (or at a stop) the runner downloads them in run order with ChatGPT's own download button, logging "DOWNLOADED n: save-as", and Zafar uploads the folder as `sources/art/s08/`. He must attach nothing himself: every reference is fetched from the branch raw (`claude/new-session-b5r2am`, where the lineup and the s07 pictures live until they are published). His ok in the chat is the pass for every picture.
 
 ## 4. After the run (Claude)
 
-1. Likeness: the chosen sheet's front and three-quarter faces beside `doctor-s1-sheet-v1.png` at one head height; under B, N1B beside N1 the same way. Zafar's eye decides.
-2. Level: the lineup's four heads at one head height; under B no pores, weave or single hairs at 2× zoom on anyone.
-3. `artjudge.py` on the pack; pose edits by pixel diff against their base (mean under 5, as N2/N5 were).
-4. Cut: `s07.cut.json` re-run on `sources/art/s08/` (feet, stand and head re-measured); `heal-art.json` `doctor.fig_h` and the views re-measured; the `scenes-v2.json` scale numbers from the judge report applied in the same session.
-5. **Nani under B:** the five cook moods are five rows in `data/cook.json` (`nani-neutral`, `-talk`, `-happy`, `-point`, `-blink` → `assets/cook/characters/nani-*-v2.webp`) plus two `nani-happy-v2.webp` paths in `js/cook/flow.js`. N1B–N5B are cut the way N1–N5 were (the s07-cook session's method) to `-v3.webp`, and those seven paths change; no code logic changes. Under A nothing of Nani's changes.
+1. `artjudge.py` on the pack (skin ΔE against the swatches above; edits by pixel diff against their base, mean under 5; poses and turns registered on the base's feet line).
+2. Likeness, by Zafar's eye: each sheet's face close-up beside the lineup at one head height.
+3. Cut (`artcut.py`, a new `s08.cut.json`): the doctor's five views on one `fig_h` with talk and blink layers, the wave front with the calling mouth as a face layer, the twelve faces as 512 px heads; Nani's five leaning pictures to `nani-*-v3.webp` (the seven paths in `data/cook.json` and `js/cook/flow.js`), her standing base and faces, her badge from the face sheet.
+4. Wire (`/brief`, then `/review`): `data/clinic/heal-art.json` views re-measured with faces on front and 3q-right; the guide box faces; part C pictures stay as cut spares until a mode asks for them (an idea row names each).
 
 ## 5. The prompts
 
-Every prompt is pasted as is into a fresh chat with exactly the files on its line. Sizes: a lineup or a sheet 1536×1024; a standing picture 1024×1536; DD1 1024×1024.
+Every prompt is pasted as is into a fresh chat with exactly the files on its line, its {SLOT}s filled word for word from the line. Sizes: a sheet 1536×1024; a standing picture 1024×1536; the leaning and counter pictures 1024×1536.
 
-### The three finishes, in words (used inside the prompts below)
+#### DS. The doctor's sheet, from the lineup
 
-- **Nani's level (A):** smooth, simple skin with no pores and no fine wrinkles (age shown by two or three soft lines, the shape of the face and the white hair, not by texture); hair and beard as soft solid masses with a few simple strands; eyes a little larger and rounder than real with one clear highlight each; nose, ears and hands simplified and softly rounded; cloth smooth with any pattern quiet and simplified, no visible weave; softer rounder forms, the head a little larger for the body; soft global illumination, warm light from the upper left, soft shadows to the lower right, no outlines, no photorealism.
-- **The girl's world (B):** the face kept exactly; everything else as the attached girl: matte poreless skin with a soft even sheen, rounder simpler body forms, soft plain cloth with no weave and no fine folds, hair and beard as soft solid masses, simpler hands with soft rounded fingers, clear glasses with simple frames and no refraction, one warm soft key light from the upper left with soft shadows, the same soft edges; the eyes a touch larger than real only if the face still reads as the same person.
-
-#### LA. The lineup, the doctor at Nani's level
-
-Attach: `doctor-s1-sheet-v1.png`, `nani-n1-lean-neutral-v1.png`, `nani-sheet-v2-approved.png`, `s1-girl-sheet-v2.png`, `char-nana-v1.png`.
+Attach: `lineup-v4-1.png`, `doctor-s1-sheet-v1.png`.
 
 ```
 Generate an image, 1536×1024, landscape.
 
-Draw four game characters standing in a row on one flat invisible floor, all feet on exactly the same level, seen straight on at eye level, full body, arms relaxed at their sides, each a gentle neutral face with a small smile. From left to right: the DOCTOR (from the attached doctor character sheet: bald on top with short white side hair, a short neat white beard, clear rectangular glasses, a white open-collared shirt under a navy-blue check blazer, charcoal trousers, brown leather shoes, a silver watch on his left wrist, no bag), NANI (her face, glasses and rendering exactly as the attached leaning picture of her; her standing body, cream kurta with red embroidery, loose trousers and red dupatta over her head from the attached Nani sheet's front panel), the LITTLE GIRL (exactly as the attached girl sheet's standing front panel: yellow dress, white leggings, white sandals, two plaits with white bows) and NANA (exactly as the attached Nana sheet's front panel). True relative heights: the doctor about 170 cm, Nani about 155 cm, the girl about 110 cm (her head top at the doctor's chest), Nana about 165 cm. Clear space between them; nothing touches the edges of the image.
+Two pictures are attached: a LINEUP of three people on grey (landscape) and an OLD character sheet (several panels on light blue-grey). The man on the LEFT of the lineup is the doctor. The lineup is the only reference for WHO he is and HOW he is rendered: his face, the size of his eyes, his skin, his white hair and beard, his glasses, his clothes and the whole finish. The old sheet gives only the idea of a character sheet; its rendering, its bag and its clothes are not used.
 
-Rendering: Nani, the girl and Nana exactly as their attached pictures, changed in nothing. The doctor rendered at exactly the level of stylising of the attached Nani picture, and no more photographic than Nana: smooth, simple skin with no pores and no fine wrinkles (his age shown by two or three soft lines, the shape of his face and his white hair and beard, not by texture); the beard and side hair soft solid white masses with a few simple strands; the eyes a little larger and rounder than real with one clear highlight each, behind clear glasses with simple frames and no refraction; nose, ears and hands simplified and softly rounded; the blazer's check a quiet simplified pattern with no visible weave; softer rounder forms, the head a little larger for the body. Everyone lit by one warm key light from the upper left with soft shadows to the lower right, a soft contact shadow under each pair of feet, no outlines, no photorealism.
+Draw his character sheet: a full-body turnaround (front, three-quarter left, side left, back) standing on one invisible floor with every pair of feet on one level, arms relaxed at the sides, a gentle neutral face with a small kind smile; a large face close-up front-on; a face close-up turned three-quarters; both hands, palm and back; the glasses and the watch alone; and a strip of round colour swatches: his skin in the light, his skin in shadow, his beard, the blazer's navy, the shirt's white, the trousers' charcoal, the shoes' brown. Panels spaced clearly apart, nothing touching a panel's neighbour or the image edges.
 
-Skin a warm light tan, never orange, never pink. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; Nani's clothes modest and loose, her dupatta over her head.
+The same man in every panel, identical clothing: bald on top with short white side hair, a short neat solid white beard, clear thin rectangular glasses, a white open-collared shirt under a plain navy-blue blazer with a faint check, charcoal trousers with a brown belt, brown leather shoes, a silver watch on his LEFT wrist, no bag, no stethoscope. Rendered exactly as in the lineup: his face at the lineup's level of likeness, the eyes slightly larger and open as there, matte smooth skin with soft shading and no pores or fine wrinkles, hair and beard as soft solid white masses, the body and clothes simplified with soft plain cloth and no visible weave, simple hands with rounded fingers, glasses with simple frames and no refraction, one warm soft key light from the upper left with soft shadows to the lower right, no outlines, no photorealism.
+
+Skin: exactly the warm light tan of his face in the lineup, about hex #D3997A in the light; never orange, never pink, never darker or paler than the lineup. Background: one flat, uniform light blue-grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand.
 ```
 
-#### LB. The lineup, faces kept, the rest in the girl's world
+#### DX. The doctor's twelve faces, registered (attach his kept sheet first)
 
-Attach: the same five files as LA.
-
-```
-Generate an image, 1536×1024, landscape.
-
-Draw four game characters standing in a row on one flat invisible floor, all feet on exactly the same level, seen straight on at eye level, full body, arms relaxed at their sides, each a gentle neutral face with a small smile. From left to right: the DOCTOR (from the attached doctor character sheet: bald on top with short white side hair, a short neat white beard, clear rectangular glasses, a white open-collared shirt under a navy-blue check blazer, charcoal trousers, brown leather shoes, a silver watch on his left wrist, no bag), NANI (her face and glasses exactly as the attached leaning picture of her; her standing body, cream kurta with red embroidery, loose trousers and red dupatta over her head from the attached Nani sheet's front panel), the LITTLE GIRL (exactly as the attached girl sheet's standing front panel: yellow dress, white leggings, white sandals, two plaits with white bows) and NANA (exactly as the attached Nana sheet's front panel). True relative heights: the doctor about 170 cm, Nani about 155 cm, the girl about 110 cm (her head top at the doctor's chest), Nana about 165 cm. Clear space between them; nothing touches the edges of the image.
-
-Rendering: the girl and Nana exactly as their attached pictures, changed in nothing. The doctor and Nani: KEEP THEIR FACES EXACTLY as in their attached pictures, the same face shape, features, glasses, his beard and hairline, the way her dupatta frames her face, their skin tone, the same age, so that they are clearly the same two people. Bring everything below the neck and the whole render finish into the girl's world, exactly like the attached girl: matte, poreless skin with a soft even sheen and no fine wrinkles, rounder and simpler body forms, soft plain cloth with no weave and no fine folds (the blazer's check a quiet simplified pattern, the kurta's embroidery simple), hair and beard as soft solid masses, simpler hands with soft rounded fingers, clear glasses with simple frames and no refraction, the same soft edges. Their eyes may be a touch larger than real only if the faces still read as the same people. Everyone lit by one warm soft key light from the upper left with soft shadows to the lower right, a soft contact shadow under each pair of feet, no outlines, no photorealism.
-
-Skin a warm light tan, never orange, never pink. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; Nani's clothes modest and loose, her dupatta over her head.
-```
-
-#### LC. The lineup, as LB with the girl one step toward them
-
-Attach: the same five files as LA.
+Attach: kept:DS, `doctor-ref-faces-v1.png`.
 
 ```
 Generate an image, 1536×1024, landscape.
 
-Draw four game characters standing in a row on one flat invisible floor, all feet on exactly the same level, seen straight on at eye level, full body, arms relaxed at their sides, each a gentle neutral face with a small smile. From left to right: the DOCTOR (from the attached doctor character sheet: bald on top with short white side hair, a short neat white beard, clear rectangular glasses, a white open-collared shirt under a navy-blue check blazer, charcoal trousers, brown leather shoes, a silver watch on his left wrist, no bag), NANI (her face and glasses exactly as the attached leaning picture of her; her standing body, cream kurta with red embroidery, loose trousers and red dupatta over her head from the attached Nani sheet's front panel), the LITTLE GIRL (as the attached girl sheet's standing front panel: yellow dress, white leggings, white sandals, two plaits with white bows) and NANA (exactly as the attached Nana sheet's front panel). True relative heights: the doctor about 170 cm, Nani about 155 cm, the girl about 110 cm (her head top at the doctor's chest), Nana about 165 cm. Clear space between them; nothing touches the edges of the image.
+Two pictures are attached: his character SHEET (panels on light blue-grey) and an OLD faces sheet (twelve head-and-shoulders faces in a 4 by 3 grid). The old sheet gives only the grid and the framing (head and shoulders, front-on, one face per cell); its expressions and its rendering are not used. The SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
 
-Rendering: Nana exactly as his attached picture, changed in nothing. The doctor and Nani: KEEP THEIR FACES EXACTLY as in their attached pictures, the same face shape, features, glasses, his beard and hairline, the way her dupatta frames her face, their skin tone, the same age, so that they are clearly the same two people. Bring everything below the neck and the whole render finish into the girl's world, exactly like the attached girl: matte, poreless skin with a soft even sheen and no fine wrinkles, rounder and simpler body forms, soft plain cloth with no weave and no fine folds (the blazer's check a quiet simplified pattern, the kurta's embroidery simple), hair and beard as soft solid masses, simpler hands with soft rounded fingers, clear glasses with simple frames and no refraction, the same soft edges. Their eyes may be a touch larger than real only if the faces still read as the same people. The girl one small step toward them: her eyes about fifteen percent smaller than on her sheet, a touch more real soft shading on her cheeks and nose, her head a touch smaller for her body; still clearly the same girl, the same clothes, still a small child. Everyone lit by one warm soft key light from the upper left with soft shadows to the lower right, a soft contact shadow under each pair of feet, no outlines, no photorealism.
+Draw twelve head-and-shoulders faces of him, front-on, in a 4 by 3 grid, in this order, left to right then top to bottom: 1 neutral (a small kind smile, mouth closed); 2 talking A (the mouth a little open, as on a short vowel); 3 talking B (the mouth open wide, the teeth showing, as on a long vowel); 4 smiling (a warm closed smile); 5 laughing (a big open laugh, the eyes crinkled); 6 blink (both eyes gently closed, the face otherwise as 1); 7 surprised (brows up, eyes wide, the mouth a small o); 8 thinking (eyes up and to one side, lips pressed, one brow up); 9 concerned (brows drawn a little together, a small kind frown); 10 proud (chin a little up, a broad closed smile, soft eyes); 11 encouraging nod (the head tipped a few degrees down, a warm smile, eyes on us); 12 listening (the head tipped a few degrees to one side, mouth closed, brows soft, attentive).
 
-Skin a warm light tan, never orange, never pink. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; Nani's clothes modest and loose, her dupatta over her head.
+REGISTERED: the head exactly the same size and in exactly the same place in every cell, the eyes on one line across each row and the nose on each cell's centre line, so that any two cells can be swapped without the head moving; the head tilts only in cells 11 and 12 and only by a few degrees. Glasses, beard, hair, shirt and blazer identical in every cell; only the face changes. Nothing crosses a cell boundary. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear thin rectangular glasses, white open-collared shirt, plain navy blazer with a faint check.
+
+Skin: exactly the sheet's swatch, about hex #D3997A in the light; never orange, never pink, never darker or paler than the sheet. Background in every cell: one flat, uniform light blue-grey as the sheet. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur.
 ```
 
-#### DS2. The doctor's new sheet at Nani's level (pick A; an edit of his sheet)
+#### DW0. The doctor standing, front, neutral (the face-on base)
 
-Attach: `doctor-s1-sheet-v1.png`, kept:LA, `nani-n1-lean-neutral-v1.png`.
+Attach: kept:DS, `doctor-w1-stand-front-neutral-v1.png`.
+
+```
+Generate an image, 1024×1536, portrait.
+
+Two pictures are attached: his character SHEET (panels on light blue-grey) and an OLD standing picture of the same man (grey background) in a rendering that is wrong and must not be copied. The old picture gives only the pose, the size, the framing and the position of the feet. The SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
+
+Draw him standing, full body, front-on to the viewer, both arms relaxed at his sides, hands open and loose, nothing in his hands, a gentle neutral face with a small kind smile, mouth closed, looking at us; the figure at the same size and position as in the old picture (about 85% of the image height, both feet on exactly the same invisible level, nothing touching an edge). Draw no floor and no shadow on the grey.
+
+Rendered exactly as the sheet: the same face and eye size, the same skin finish, the same hair and beard, the same cloth, the same light from the upper left, the same soft edges, the same proportions. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear thin rectangular glasses, white open-collared shirt, plain navy blazer with a faint check, charcoal trousers, brown belt, brown leather shoes, silver watch on his left wrist. No bag, no stethoscope.
+
+Skin: exactly the sheet's swatch, about hex #D3997A in the light; never orange, never pink, never darker or paler than the sheet. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand.
+```
+
+#### DWT. The doctor turned (a redraw of his face-on base; the line says the turn)
+
+Attach: kept:DW-F, kept:DS, the s07 picture of that turn.
+
+```
+Generate an image, 1024×1536, portrait.
+
+Three pictures are attached: first, his face-on STANDING picture (grey background), which is the base; second, his character SHEET; third, an OLD picture of the same man already turned, in a rendering that is wrong and must not be copied (it shows only the turn and the feet).
+
+Draw the man of the first picture again, changed in nothing but his turn: {VIEW}. Both arms stay relaxed at his sides, hands open and loose, nothing in his hands, the same gentle neutral face with a small kind smile, mouth closed. The figure at the same size as the first picture, his feet on the same invisible level at the same height, his head at the same height, nothing touching an edge, no floor, no shadow on the grey. Drawn, not flipped: the watch stays on his LEFT wrist. Everything else identical to the first picture: the same face and eye size, skin, hair and beard, glasses, clothes, rendering, light from the upper left and grey.
+
+Skin: exactly the sheet's swatch, about hex #D3997A in the light; never orange, never pink, never darker or paler than the sheet. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand.
+```
+
+#### DT. Talking (an edit; attach that one image only)
+
+```
+Edit the attached image. Change only his mouth: open it a little as if saying a word, the teeth just showing. Every other pixel identical: the same pose, size, position, clothes, skin, light and background.
+```
+
+#### DB. Blink (an edit; attach that one image only)
+
+```
+Edit the attached image. Change only his eyes: both eyes gently closed, as in a blink, the lids relaxed, the brows unchanged. Every other pixel identical: the same pose, size, position, clothes, skin, light and background.
+```
+
+#### DC. The calling mouth (an edit of his waving front picture; attach that one image only)
+
+```
+Edit the attached image. Change only his mouth: open it in a wide friendly call, as if calling the next patient in, the teeth showing, the smile kept. Every other pixel identical: the same raised hand, pose, size, position, clothes, skin, light and background.
+```
+
+#### DP. A pose (a redraw of the view's base; the line says the pose)
+
+Attach: the view's kept base first, kept:DS second, and third, where the line has one, the s07 picture of that pose.
+
+```
+Generate an image, 1024×1536, portrait.
+
+Two or three pictures are attached: first, his STANDING picture (grey background), which is the base; second, his character SHEET; third, if present, an OLD picture of the same man in a rendering that is wrong and must not be copied, which shows only the arm pose to copy.
+
+Draw the man of the first picture again, changed in nothing but his arms, hands and face, exactly so: {POSE}. Keep everything else identical to the first picture: the same turn of the body and head, the same size and position in the frame, both feet on the same invisible level in the same place, the same clothes, the same rendering, the same skin, the same light from the upper left, the same grey. Draw the new arms and hands in the same rendering as the rest of him, never as the third picture. The watch stays on his LEFT wrist. Nothing touches an edge; no floor, no shadow on the grey.
+
+Skin: exactly the sheet's swatch, about hex #D3997A in the light; never orange, never pink, never darker or paler than the sheet. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand.
+```
+
+#### NS. Nani's sheet, from the lineup
+
+Attach: `lineup-v4-1.png`, `nani-n1-lean-neutral-v1.png`.
 
 ```
 Generate an image, 1536×1024, landscape.
 
-Using the attached doctor character sheet as the only reference for WHO this is and for the LAYOUT, redraw the whole sheet with the same panels in the same places and the same poses: the full-body turnaround (front, three-quarter, side, back), the seated upper-body portrait, both hands, the glasses, the watch, the brown leather bag, the blazer fabric close-up and the colour strip. Keep every identifying feature exactly: bald on top with short white hair at the sides, a short neat solid white beard, clear rectangular glasses, a white open-collared shirt under a navy-blue check blazer, charcoal trousers, brown leather shoes, a silver watch on his LEFT wrist, his face shape, his build and his age. The same man in every panel, identical clothing.
+Two pictures are attached: a LINEUP of three people on grey (landscape) and an OLD picture of a woman leaning on a marble counter (portrait). The woman in the MIDDLE of the lineup is Nani. The lineup is the only reference for WHO she is and HOW she is rendered: her face, the size of her eyes, her skin, her glasses, her clothes, her build and the whole finish. The old leaning picture shows her features large: use it only for the likeness of her face (the shape of her face, her eyes, her brows, her nose and her smile), drawn at the lineup's level of stylising; its rendering, its embroidery and its knitted dupatta are not used.
 
-Change only the rendering: render him exactly as the doctor in the attached lineup picture, at exactly the level of stylising of the attached Nani picture. Smooth, simple skin with no pores and no fine wrinkles (his age shown by two or three soft lines, the shape of his face and his white hair and beard, not by texture). The beard and side hair soft solid white masses with a few simple strands, not single hairs. The eyes a little larger and rounder than real, with one clear highlight each, behind clear glasses with simple frames and no refraction. Nose, ears and hands simplified and softly rounded. The blazer's navy check a quiet, simplified pattern with no visible weave; the shirt and trousers smooth cloth. Softer, rounder forms overall, the head a little larger for the body. Soft global illumination, warm light from the upper left, soft shadows to the lower right, no outlines, no photorealism.
+Draw her character sheet: a full-body turnaround (front, three-quarter left, side left, back) standing on one invisible floor with every pair of feet on one level, arms relaxed at the sides, a gentle neutral face with a small kind smile; a large face close-up front-on; a face close-up turned three-quarters; both hands, palm and back (a thin bracelet on her right wrist, a small red-stone gold ring on her right hand, a small gold ring on her left); a close-up of one red motif from her kameez; and a strip of round colour swatches: her skin in the light, her skin in shadow, the kameez's cream, the dupatta's red, the glasses' gold. Panels spaced clearly apart, nothing touching a panel's neighbour or the image edges.
 
-Skin a warm light tan, never orange, never pink. Background: one flat, uniform light blue-grey as on the attached sheet. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No stethoscope.
+The same woman in every panel, identical clothing, exactly as the lineup: a plain cream knee-length kameez with long sleeves and a few bold red flower motifs at the neck, the cuffs and the hem, straight cream trousers, a plain red dupatta over her head covering her hair and falling around her shoulders and down one side, flat cream shoes with a little gold, round thin gold glasses, small gold earrings. Slim, the lineup's build and proportions, never portly; her clothes modest and loose. Rendered exactly as in the lineup: her face at the lineup's level of likeness, the eyes slightly larger and open as there, matte smooth skin with soft shading and no pores or fine wrinkles, the dupatta and kameez soft plain cloth with no knit, weave or fine folds, simple hands with rounded fingers, glasses with simple frames and no refraction, one warm soft key light from the upper left with soft shadows to the lower right, no outlines, no photorealism.
+
+Skin: exactly the warm light tan of her face in the lineup, about hex #D48E6B in the light; never orange, never pink, never darker or paler than the lineup. Background: one flat, uniform light blue-grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers.
 ```
 
-#### DS2B. The doctor's new sheet in the girl's world (pick B or C; an edit of his sheet)
+#### NX. Nani's twelve faces, registered (attach her kept sheet first)
 
-Attach: `doctor-s1-sheet-v1.png`, kept:LB (kept:LC on pick C), `s1-girl-sheet-v2.png`.
-
-```
-Generate an image, 1536×1024, landscape.
-
-Using the attached doctor character sheet as the only reference for WHO this is and for the LAYOUT, redraw the whole sheet with the same panels in the same places and the same poses: the full-body turnaround (front, three-quarter, side, back), the seated upper-body portrait, both hands, the glasses, the watch, the brown leather bag, the blazer fabric close-up and the colour strip. KEEP HIS FACE EXACTLY: the same face shape and features, clear rectangular glasses, short neat white beard, bald on top with short white hair at the sides, his skin tone and his age, so that he is clearly the same man. Keep every identifying feature: a white open-collared shirt under a navy-blue check blazer, charcoal trousers, brown leather shoes, a silver watch on his LEFT wrist. The same man in every panel, identical clothing.
-
-Change only the rendering, exactly as the doctor in the attached lineup picture: everything below the neck and the whole finish in the world of the attached girl sheet. Matte, poreless skin with a soft even sheen and no fine wrinkles; rounder, simpler body forms; soft plain cloth with no weave and no fine folds, the blazer's check a quiet simplified pattern; hair and beard as soft solid white masses; simpler hands with soft rounded fingers; clear glasses with simple frames and no refraction; the same soft edges as the girl. His eyes a touch larger than real only if the face still reads as him. One warm soft key light from the upper left with soft shadows to the lower right, no outlines, no photorealism.
-
-Skin a warm light tan, never orange, never pink. Background: one flat, uniform light blue-grey as on the attached sheet. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No stethoscope.
-```
-
-#### DW1. Standing, three-quarter left, neutral (an edit of the kept s07 picture, rendered as the new sheet)
-
-Attach: `doctor-w1-stand-3q-neutral-v1.png`, the branch's kept sheet (DS2 or DS2B).
-
-```
-Generate an image, 1024×1536, portrait.
-
-Two pictures are attached: a character SHEET (several panels on light blue-grey) and one STANDING picture (grey background). The STANDING picture gives only the pose, size, framing, turn and the position of the feet; its rendering is wrong and must not be copied. The SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
-
-Draw him again exactly as in the standing picture: standing, full body, turned three-quarters towards the viewer's left, both arms relaxed at his sides, hands open and loose, nothing in his hands, the same gentle neutral face with a small kind smile, mouth closed, looking towards the viewer's left and a little down, the figure at the same size and the same position in the frame, both feet on exactly the same invisible level. Draw no floor; nothing touches the edges of the image.
-
-Rendered exactly as the attached sheet: the same skin finish, the same eye size, the same hair and beard, the same cloth, the same light, the same softness of edges, the same proportions. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown leather shoes, silver watch on his left wrist. Warm light from the upper left, no outlines, no photorealism.
-
-Background: one flat, uniform neutral mid-grey, hex #808080; no shadow on the grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No stethoscope.
-```
-
-#### DF1. Talking (an edit of the kept DW1; attach that one image only)
-
-```
-Edit the attached image. Change only his mouth: open it a little as if saying a word, the teeth just showing. Every other pixel identical: the same pose, size, position, clothes, light and background.
-```
-
-#### DF3. Eyes closed (an edit of the kept DW1; attach that one image only)
-
-```
-Edit the attached image. Change only his eyes: both eyes gently closed, as in a blink, the lids relaxed, the brows unchanged. Every other pixel identical: the same pose, size, position, clothes, light and background.
-```
-
-#### DW1F. Standing, front, neutral
-
-Attach: `doctor-w1-stand-front-neutral-v1.png`, the branch's kept sheet.
-
-```
-Generate an image, 1024×1536, portrait.
-
-Two pictures are attached: a character SHEET (several panels on light blue-grey) and one STANDING picture (grey background). The STANDING picture gives only the pose, size, framing, turn and the position of the feet; its rendering is wrong and must not be copied. The SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
-
-Draw him again exactly as in the standing picture: standing, full body, front-on to the viewer, both arms relaxed at his sides, hands open and loose, nothing in his hands, the same gentle neutral face with a small kind smile, mouth closed, looking at us, the figure at the same size and the same position in the frame, both feet on exactly the same invisible level. Draw no floor; nothing touches the edges of the image.
-
-Rendered exactly as the attached sheet: the same skin finish, the same eye size, the same hair and beard, the same cloth, the same light, the same softness of edges, the same proportions. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown leather shoes, silver watch on his left wrist. Warm light from the upper left, no outlines, no photorealism.
-
-Background: one flat, uniform neutral mid-grey, hex #808080; no shadow on the grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No stethoscope.
-```
-
-#### DW1QR. Standing, three-quarter right, neutral
-
-Attach: `doctor-w1-stand-3q-right-neutral-v1.png`, the branch's kept sheet.
-
-```
-Generate an image, 1024×1536, portrait.
-
-Two pictures are attached: a character SHEET (several panels on light blue-grey) and one STANDING picture (grey background). The STANDING picture gives only the pose, size, framing, turn and the position of the feet; its rendering is wrong and must not be copied. The SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
-
-Draw him again exactly as in the standing picture: standing, full body, turned three-quarters towards the viewer's right, both arms relaxed at his sides, hands open and loose, nothing in his hands, the same gentle neutral face with a small kind smile, mouth closed, looking towards the viewer's right and a little down, the figure at the same size and the same position in the frame, both feet on exactly the same invisible level. Draw no floor; nothing touches the edges of the image.
-
-Rendered exactly as the attached sheet: the same skin finish, the same eye size, the same hair and beard, the same cloth, the same light, the same softness of edges, the same proportions. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown leather shoes, silver watch on his left wrist. Warm light from the upper left, no outlines, no photorealism.
-
-Background: one flat, uniform neutral mid-grey, hex #808080; no shadow on the grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No stethoscope.
-```
-
-#### DA6QR. Three-quarter right, waving
-
-Attach: `doctor-a6-stand-3q-right-wave-v1.png`, the branch's kept sheet.
-
-```
-Generate an image, 1024×1536, portrait.
-
-Two pictures are attached: a character SHEET (several panels on light blue-grey) and one STANDING picture (grey background). The STANDING picture gives only the pose, size, framing, turn and the position of the feet; its rendering is wrong and must not be copied. The SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
-
-Draw him again exactly as in the standing picture: standing, full body, turned three-quarters towards the viewer's right, his near arm (on the viewer's right) raised in a friendly wave with the open hand beside his head and the palm towards us, the other arm relaxed at his side, a big warm open smile, looking towards the viewer's right and a little down, the figure at the same size and the same position in the frame, both feet on exactly the same invisible level. Draw no floor; nothing touches the edges of the image.
-
-Rendered exactly as the attached sheet: the same skin finish, the same eye size, the same hair and beard, the same cloth, the same light, the same softness of edges, the same proportions. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown leather shoes, silver watch on his left wrist. Warm light from the upper left, no outlines, no photorealism.
-
-Background: one flat, uniform neutral mid-grey, hex #808080; no shadow on the grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No stethoscope.
-```
-
-#### DD1. Standing front, waving and calling (the waiting room)
-
-Attach: `doctor-d1-door-call-v1.png`, the branch's kept sheet.
-
-```
-Generate an image, 1024×1024, square.
-
-Two pictures are attached: a character SHEET (several panels on light blue-grey) and one STANDING picture (grey background). The STANDING picture gives only the pose, size, framing and the position of the feet; its rendering is wrong and must not be copied. The SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
-
-Draw him again exactly as in the standing picture: standing, full body, front-on, one hand raised in a friendly wave beside his head with the palm towards us, the other arm relaxed at his side, a big open smile as he calls the next patient, looking at us, the figure at the same size and the same position in the frame, both feet on exactly the same invisible level. Draw no floor and no door; nothing touches the edges of the image.
-
-Rendered exactly as the attached sheet: the same skin finish, the same eye size, the same hair and beard, the same cloth, the same light, the same softness of edges, the same proportions. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown leather shoes, silver watch on his left wrist. Warm light from the upper left, no outlines, no photorealism.
-
-Background: one flat, uniform neutral mid-grey, hex #808080; no shadow on the grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No stethoscope.
-```
-
-#### DD2. The closed smile (an edit of the kept DD1; attach that one image only)
-
-```
-Edit the attached image. Change only his mouth: a warm closed smile, lips together. Every other pixel identical: the same pose, size, position, clothes, light and background.
-```
-
-#### DR2. The twelve card faces (an edit of the faces sheet)
-
-Attach: `doctor-ref-faces-v1.png`, the branch's kept sheet.
+Attach: kept:NS, `doctor-ref-faces-v1.png`.
 
 ```
 Generate an image, 1536×1024, landscape.
 
-Two pictures are attached: a character SHEET (several panels on light blue-grey, with a turnaround) and a FACES sheet (twelve head-and-shoulders faces in a grid). The FACES sheet gives only the grid, the framing and the twelve expressions in their places (neutral smile, talking, laughing, gentle smile, cheering, warm closed smile, finger up, thinking, surprised, worried, sceptical, wink-laugh); its rendering is wrong and must not be copied. The character SHEET gives who he is and exactly how he is rendered; copy its rendering exactly.
+Two pictures are attached: her character SHEET (panels on light blue-grey) and an OLD faces sheet of a different person (twelve head-and-shoulders faces in a 4 by 3 grid). The old sheet gives only the grid and the framing (head and shoulders, front-on, one face per cell); its person, its expressions and its rendering are not used. The SHEET gives who she is and exactly how she is rendered; copy its rendering exactly.
 
-Redraw all twelve faces in the same grid and the same order, head and shoulders, front-on, the same man with the same expression in each cell. Keep every identifying feature: bald on top, white side hair, short solid white beard, clear rectangular glasses, white open-collared shirt, navy check blazer. Rendered exactly as the character sheet: the same skin finish, the same eye size, the same hair and beard, the same cloth, the same light, the same softness of edges.
+Draw twelve head-and-shoulders faces of her, front-on, in a 4 by 3 grid, in this order, left to right then top to bottom: 1 neutral (a small kind smile, mouth closed); 2 talking A (the mouth a little open, as on a short vowel); 3 talking B (the mouth open wide, the teeth showing, as on a long vowel); 4 smiling (a warm closed smile); 5 laughing (a big open laugh, the eyes crinkled); 6 blink (both eyes gently closed, the face otherwise as 1); 7 surprised (brows up, eyes wide, the mouth a small o); 8 thinking (eyes up and to one side, lips pressed, one brow up); 9 concerned (brows drawn a little together, a small kind frown); 10 proud (chin a little up, a broad closed smile, soft eyes); 11 encouraging nod (the head tipped a few degrees down, a warm smile, eyes on us); 12 listening (the head tipped a few degrees to one side, mouth closed, brows soft, attentive).
 
-Background in every cell: one flat, uniform light blue-grey as on the attached sheets. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur.
+REGISTERED: the head exactly the same size and in exactly the same place in every cell, the eyes on one line across each row and the nose on each cell's centre line, so that any two cells can be swapped without the head moving; the head tilts only in cells 11 and 12 and only by a few degrees. Glasses, the red dupatta over her head and the cream kameez's neck identical in every cell; only the face changes. Nothing crosses a cell boundary.
+
+Skin: exactly the sheet's swatch, about hex #D48E6B in the light; never orange, never pink, never darker or paler than the sheet. Background in every cell: one flat, uniform light blue-grey as the sheet. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other religious markers.
 ```
 
-#### N1B. Nani leaning, neutral, in the girl's world (pick B or C; an edit of N1)
+#### NL. Nani leaning on the counter, neutral (the Cook base)
 
-Attach: `nani-n1-lean-neutral-v1.png`, kept:LB (kept:LC on pick C).
-
-```
-Generate an image, 1024×1536, portrait.
-
-Two pictures are attached: a LEANING picture of Nani at a marble counter (portrait) and a LINEUP of four people (landscape). Draw the leaning picture again, changed in nothing but its rendering: the same pose with both forearms flat on the counter, the same framing, the same size and position, the counter's back edge at the same height, the same glasses, red dupatta over her head, cream kurta with red embroidery, bracelet and rings, the same gentle neutral face with a small smile, mouth closed, looking at us.
-
-KEEP HER FACE EXACTLY: the same face shape and features, glasses, the way the dupatta frames her face, her skin tone and her age, so that she is clearly the same woman. Change the rendering to exactly that of Nani in the attached lineup: matte, poreless skin with a soft even sheen and no fine wrinkles; rounder, simpler forms; the dupatta and kurta soft plain cloth with no knit, no weave and no fine folds, the embroidery simple; simpler hands with soft rounded fingers; the glasses simple frames with no refraction; the same soft edges. Her eyes a touch larger than real only if the face still reads as her. One warm soft key light from the upper left with soft shadows, no outlines, no photorealism.
-
-Background above the counter: the same flat grey as the attached leaning picture; the marble below it the same. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; her clothes modest, her dupatta over her head.
-```
-
-#### N2B. Happy (an edit of the kept N1B; attach that one image only)
-
-```
-Edit the attached image. Change only her face: a warm happy smile, the eyes a little narrowed with it, the mouth closed. Every other pixel identical: the same pose, arms, counter, size, position, clothes, light and background.
-```
-
-#### N3B. Talking (an edit of the kept N1B; attach that one image only)
-
-```
-Edit the attached image. Change only her mouth: open it a little as if saying a word. Every other pixel identical: the same pose, arms, counter, size, position, clothes, light and background.
-```
-
-#### N4B. Pointing (attach the kept N1B first, then the kept s07 pointing picture)
-
-Attach: kept:N1B, `nani-n4-lean-point-v1.png`.
-
-```
-Edit the first attached image. Change only her right arm (on the viewer's right): raise it as in the second attached picture, the elbow on the counter, the hand up beside her face, the index finger pointing down to the viewer's right, the arm and hand rendered like the rest of her in the first picture. Her left forearm stays flat on the counter. Every other pixel of the first image identical: the same face, dupatta, counter, size, position, clothes, light and background. Five fingers.
-```
-
-#### N5B. Blink (an edit of the kept N1B; attach that one image only)
-
-```
-Edit the attached image. Change only her eyes: both eyes gently closed, as in a blink, the lids relaxed, the brows unchanged. Every other pixel identical: the same pose, arms, counter, size, position, clothes, light and background.
-```
-
-#### GW1C. The girl seated, front, neutral, one step toward the adults (pick C only; an edit)
-
-Attach: `girl-w1-front-neutral-v1.png`, kept:LC.
+Attach: kept:NS, `nani-n1-lean-neutral-v1.png`.
 
 ```
 Generate an image, 1024×1536, portrait.
 
-Two pictures are attached: a SEATED picture of a little girl (portrait, grey background) and a LINEUP of four people (landscape). Draw the seated picture again, changed in nothing but her rendering: the same pose, framing, size and position, the same yellow dress, white leggings, white sandals, two plaits with white bows, the same gentle neutral face, mouth closed, looking at us. Render her exactly as the girl in the attached lineup: her eyes about fifteen percent smaller than in the seated picture, a touch more real soft shading on her cheeks and nose, her head a touch smaller for her body; still clearly the same girl, still a small child, the same smooth matte skin and soft light.
+Two pictures are attached: her character SHEET (panels on light blue-grey) and an OLD picture of her leaning on a marble counter (portrait) in a rendering that is wrong and must not be copied. The old picture gives only the pose, the framing, the size and the counter: both forearms flat along the counter top, folded loosely one over the other, both elbows resting on it, her upper body tilted a little forward, her head and shoulders in the same place, the counter's back edge a straight horizontal line across the whole image at the same height, the marble top in front of her down to the bottom edge. The SHEET gives who she is and exactly how she is rendered; copy its rendering and its clothes exactly.
 
-Background: one flat, uniform neutral mid-grey, hex #808080, as the attached seated picture. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand.
+Draw her again exactly so: leaning on the counter as in the old picture, a gentle neutral face with a small kind smile, mouth closed, looking at us; the plain cream kameez with its few bold red motifs at the neck and cuffs, the plain red dupatta over her head, the round gold glasses, the thin bracelet and the two rings, as the sheet. Her whole head, both shoulders, both elbows and both hands inside the image with clear grey on the left and right. Nothing else on the counter. Soft contact shadows under her forearms on the marble only.
+
+Rendered exactly as the sheet: the same face and eye size, the same skin finish, soft plain cloth with no knit or weave, simple hands, simple glasses, light from the upper left, soft edges. Skin: exactly the sheet's swatch, about hex #D48E6B in the light; never orange, never pink, never darker or paler than the sheet. Background above and beside the counter: one flat, uniform neutral mid-grey, hex #808080; the marble as the old picture, warm white with faint veins. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; her clothes modest, her dupatta over her head.
 ```
 
-#### GW13C. The girl standing, three-quarter left, neutral, one step toward the adults (pick C only; an edit)
+#### NH. Happy (an edit; attach that one image only)
 
-Attach: `girl-w13-standing-3q-left-neutral-v1.png`, kept:LC.
+```
+Edit the attached image. Change only her face: a warm happy smile, the eyes a little narrowed with it, the mouth closed. Every other pixel identical: the same pose, arms, counter, size, position, clothes, skin, light and background.
+```
+
+#### NT. Talking (an edit; attach that one image only)
+
+```
+Edit the attached image. Change only her mouth: open it a little as if saying a word, the teeth just showing. Every other pixel identical: the same pose, arms, size, position, clothes, skin, light and background.
+```
+
+#### NB. Blink (an edit; attach that one image only)
+
+```
+Edit the attached image. Change only her eyes: both eyes gently closed, as in a blink, the lids relaxed, the brows unchanged. Every other pixel identical: the same pose, arms, size, position, clothes, skin, light and background.
+```
+
+#### NW0. Nani standing, front, neutral (the face-on base)
+
+Attach: kept:NS.
 
 ```
 Generate an image, 1024×1536, portrait.
 
-Two pictures are attached: a STANDING picture of a little girl (portrait, grey background) and a LINEUP of four people (landscape). Draw the standing picture again, changed in nothing but her rendering: the same pose, turn, framing, size, the position of her feet, the same yellow dress, white leggings, white sandals, two plaits with white bows, the same gentle neutral face, mouth closed. Render her exactly as the girl in the attached lineup: her eyes about fifteen percent smaller than in the standing picture, a touch more real soft shading on her cheeks and nose, her head a touch smaller for her body; still clearly the same girl, still a small child, the same smooth matte skin and soft light.
+One picture is attached: her character SHEET (panels on light blue-grey). It gives who she is and exactly how she is rendered; copy its rendering, its clothes and its front turnaround panel exactly.
 
-Background: one flat, uniform neutral mid-grey, hex #808080, as the attached standing picture; no floor, no shadow on the grey. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand.
+Draw her standing, full body, front-on to the viewer, both arms relaxed at her sides, hands open and loose, nothing in her hands, a gentle neutral face with a small kind smile, mouth closed, looking at us; the figure about 85% of the image height, both feet on exactly the same invisible level, nothing touching an edge. Draw no floor and no shadow on the grey.
+
+Rendered exactly as the sheet: the same face and eye size, the same skin finish, the same soft plain cloth, the same light from the upper left, the same soft edges, the same slim proportions. Keep every identifying feature: the plain cream kameez with its few bold red motifs at the neck, cuffs and hem, straight cream trousers, the plain red dupatta over her head, flat cream shoes, round thin gold glasses, the thin bracelet and the two rings.
+
+Skin: exactly the sheet's swatch, about hex #D48E6B in the light; never orange, never pink, never darker or paler than the sheet. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; her clothes modest and loose, her dupatta over her head.
+```
+
+#### NWT. Nani turned (a redraw of her face-on base; the line says the turn)
+
+Attach: kept:NW-F, kept:NS.
+
+```
+Generate an image, 1024×1536, portrait.
+
+Two pictures are attached: first, her face-on STANDING picture (grey background), which is the base; second, her character SHEET.
+
+Draw the woman of the first picture again, changed in nothing but her turn: {VIEW}. Both arms stay relaxed at her sides, hands open and loose, nothing in her hands, the same gentle neutral face with a small kind smile, mouth closed. The figure at the same size as the first picture, her feet on the same invisible level at the same height, her head at the same height, nothing touching an edge, no floor, no shadow on the grey. Everything else identical to the first picture: the same face and eye size, skin, glasses, dupatta over her head, clothes, rendering, light from the upper left and grey.
+
+Skin: exactly the sheet's swatch, about hex #D48E6B in the light; never orange, never pink, never darker or paler than the sheet. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; her clothes modest, her dupatta over her head.
+```
+
+#### NC. Nani standing at the counter (the counter base)
+
+Attach: kept:NW-F, kept:NS, `nani-n1-lean-neutral-v1.png`.
+
+```
+Generate an image, 1024×1536, portrait.
+
+Three pictures are attached: first, her face-on STANDING picture (grey background), which is the base; second, her character SHEET; third, an OLD picture of her leaning on a marble counter in a rendering that is wrong and must not be copied, which gives only the counter and the framing (waist up, the counter's back edge a straight horizontal line across the whole image at about 82% down, the marble top in front of her down to the bottom edge, her figure from the top of her dupatta to the counter edge about 65% of the image height).
+
+Draw the woman of the first picture again, standing upright behind that counter, seen waist up, front-on, both hands resting lightly on the counter top a little apart, the same gentle neutral face with a small kind smile, mouth closed, looking at us. Nothing else on the counter; soft contact shadows under her hands on the marble only. Everything else identical to the first picture: the same face and eye size, skin, glasses, dupatta over her head, kameez, rendering and light from the upper left.
+
+Skin: exactly the sheet's swatch, about hex #D48E6B in the light; never orange, never pink, never darker or paler than the sheet. Background above and beside the counter: one flat, uniform neutral mid-grey, hex #808080; the marble as the third picture, warm white with faint veins. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; her clothes modest, her dupatta over her head.
+```
+
+#### NP. A pose (a redraw of the base the line attaches first; the line says the pose)
+
+Attach: the kept base first (a standing view, the leaning picture or the counter picture), kept:NS second, and third, where the line has one, the s07 picture of that pose.
+
+```
+Generate an image, 1024×1536, portrait.
+
+Two or three pictures are attached: first, her picture (grey background, with a marble counter if the base has one), which is the base; second, her character SHEET; third, if present, an OLD picture of her in a rendering that is wrong and must not be copied, which shows only the arm pose to copy.
+
+Draw the woman of the first picture again, changed in nothing but her arms, hands, what they hold and her face, exactly so: {POSE}. Keep everything else identical to the first picture: the same turn of the body and head, the same size and position in the frame, the same feet or counter line in the same place, the same clothes, the same rendering, the same skin, the same light from the upper left, the same grey (and the same marble, if any). Draw the new arms and hands in the same rendering as the rest of her, never as the third picture. Nothing touches an edge; no floor, no shadow on the grey.
+
+Skin: exactly the sheet's swatch, about hex #D48E6B in the light; never orange, never pink, never darker or paler than the sheet. Background: one flat, uniform neutral mid-grey, hex #808080. Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. Five fingers on each hand. No bindi, tilak or other religious markers; her clothes modest, her dupatta over her head.
 ```

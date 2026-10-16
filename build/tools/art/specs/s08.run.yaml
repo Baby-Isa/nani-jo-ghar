@@ -1,15 +1,17 @@
-# The run spec for pack s08 (Sprint 8 art; Zafar, 16 Oct: lock the style of the real people before any pose). Part S the
-# style lock: three lineups (LA the doctor at Nani's level, LB faces kept and the rest in the girl's world, LC as LB with the
-# girl a step toward them), then STOP for Zafar's pick. Part A (pick A): the doctor's sheet and his eight wired pictures and
-# card faces at Nani's level. Part B (pick B or C): the same in the soft finish, plus Nani's N1-N5 redone as edits. Part C
-# (pick C only): the girl's two bases. Read by build/tools/art/artblock.py (the paste block) and artjudge.py. The prompts
-# stay in the plan (section 5: docs/design-language/art-plans/s08-style-prompts.md); a part-B pose line says `prompt: X` to
-# paste part A's box with its own attachments. Edit this file, then regenerate the block; never hand-edit the block.
-# Zafar runs it himself in Claude in Chrome (plan section 3): delivery is "download" (kept images stay in their chats and
-# are downloaded in order at the end; never page-JavaScript uploads). RAW is the branch because the s07 kept pictures
-# (DW1, DD1, N1 ...) are not on main yet; switch raw_branch to main and regenerate once they are published.
+# The run spec for pack s08 (Sprint 8 art; Zafar, 16 Oct: the style is locked to sources/art/s08/lineup-v4-1.png, now the doctor
+# and Nani in every view and gesture the game needs or will need). Read by build/tools/art/artblock.py (the paste block) and
+# artjudge.py. The prompts stay in the plan (section 5: docs/design-language/art-plans/s08-style-prompts.md); a line says
+# `prompt: X` to paste X's code box, and its `slots:` fill X's {VIEW} or {POSE}, word for word (artspec.py checks both ways).
+# Parts: A the doctor's NEED set (sheet, face sheet, three bases with talk and blink, the waves), B Nani's NEED set (sheet, face
+# sheet, the five leaning pictures, the standing base), C1-C3 the LIKELY set in value order; every part boundary is a safe stop.
+# The drift guard: every line attaches the character's new sheet; a turn redraws the face-on base, a pose redraws its view's
+# base, a face is an edit; every check carries the skin swatch sampled from the lineup (the doctor #D3997A, Nani #D48E6B) and
+# the judge measures ΔE against it. Zafar runs it himself in Claude in Chrome: delivery "download" (kept images stay in their
+# chats, downloaded in run order at the end; never page-JavaScript uploads). RAW is the branch because the lineup and the s07
+# pictures are not on main yet; switch raw_branch to main and regenerate once they are published. Edit this file, then
+# regenerate the block; never hand-edit the block. Written by a generator once (16 Oct); hand-edit from here.
 pack: s08
-title: 'Sprint 8 art: the style lock, then the doctor (and Nani) in the chosen finish'
+title: 'Sprint 8 art: the doctor and Nani in the locked style, every view and gesture'
 plan: docs/design-language/art-plans/s08-style-prompts.md
 plan_branch: claude/new-session-b5r2am
 repo: Baby-Isa/nani-jo-ghar
@@ -17,227 +19,678 @@ raw_branch: claude/new-session-b5r2am
 dest: sources/art/s08
 real_people: true
 delivery: download
-runner:
-  windows: 3
-  send_gap_seconds: 60
-  stall_minutes: 6
-  hard_minutes: 10
-  redos: 2
-  commit_batch: 6
-  flush_minutes: 25
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
 refs:
-  doctor-s1-sheet-v1.png: sources/art/s07/doctor-s1-sheet-v1.png
-  doctor-ref-faces-v1.png: sources/art/s07/doctor-ref-faces-v1.png
-  doctor-w1-stand-3q-neutral-v1.png: sources/art/s07/doctor-w1-stand-3q-neutral-v1.png
-  doctor-w1-stand-front-neutral-v1.png: sources/art/s07/doctor-w1-stand-front-neutral-v1.png
-  doctor-w1-stand-3q-right-neutral-v1.png: sources/art/s07/doctor-w1-stand-3q-right-neutral-v1.png
+  doctor-a1-stand-3q-folded-v1.png: sources/art/s07/doctor-a1-stand-3q-folded-v1.png
+  doctor-a1-stand-3q-right-folded-v1.png: sources/art/s07/doctor-a1-stand-3q-right-folded-v1.png
+  doctor-a1-stand-front-folded-v1.png: sources/art/s07/doctor-a1-stand-front-folded-v1.png
+  doctor-a2-stand-3q-point-left-v1.png: sources/art/s07/doctor-a2-stand-3q-point-left-v1.png
+  doctor-a2-stand-front-point-left-v1.png: sources/art/s07/doctor-a2-stand-front-point-left-v1.png
+  doctor-a3-stand-3q-finger-up-v1.png: sources/art/s07/doctor-a3-stand-3q-finger-up-v1.png
+  doctor-a3-stand-3q-right-finger-up-v1.png: sources/art/s07/doctor-a3-stand-3q-right-finger-up-v1.png
+  doctor-a3-stand-front-finger-up-v1.png: sources/art/s07/doctor-a3-stand-front-finger-up-v1.png
+  doctor-a4-stand-3q-arms-up-v1.png: sources/art/s07/doctor-a4-stand-3q-arms-up-v1.png
+  doctor-a4-stand-3q-right-arms-up-v1.png: sources/art/s07/doctor-a4-stand-3q-right-arms-up-v1.png
+  doctor-a4-stand-front-arms-up-v1.png: sources/art/s07/doctor-a4-stand-front-arms-up-v1.png
+  doctor-a5-stand-3q-right-torch-v1.png: sources/art/s07/doctor-a5-stand-3q-right-torch-v1.png
+  doctor-a5-stand-3q-torch-v1.png: sources/art/s07/doctor-a5-stand-3q-torch-v1.png
+  doctor-a5-stand-front-torch-v1.png: sources/art/s07/doctor-a5-stand-front-torch-v1.png
+  doctor-a6-stand-3q-left-right-wave-v1.png: sources/art/s07/doctor-a6-stand-3q-left-right-wave-v1.png
   doctor-a6-stand-3q-right-wave-v1.png: sources/art/s07/doctor-a6-stand-3q-right-wave-v1.png
   doctor-d1-door-call-v1.png: sources/art/s07/doctor-d1-door-call-v1.png
+  doctor-d1-wave-side-left-v1.png: sources/art/s07/doctor-d1-wave-side-left-v1.png
+  doctor-d1-wave-side-right-v1.png: sources/art/s07/doctor-d1-wave-side-right-v1.png
+  doctor-ref-faces-v1.png: sources/art/s07/doctor-ref-faces-v1.png
+  doctor-s1-sheet-v1.png: sources/art/s07/doctor-s1-sheet-v1.png
+  doctor-w1-stand-3q-neutral-v1.png: sources/art/s07/doctor-w1-stand-3q-neutral-v1.png
+  doctor-w1-stand-3q-right-neutral-v1.png: sources/art/s07/doctor-w1-stand-3q-right-neutral-v1.png
+  doctor-w1-stand-front-neutral-v1.png: sources/art/s07/doctor-w1-stand-front-neutral-v1.png
+  doctor-w1-stand-side-left-neutral-v1.png: sources/art/s07/doctor-w1-stand-side-left-neutral-v1.png
+  doctor-w1-stand-side-right-neutral-v1.png: sources/art/s07/doctor-w1-stand-side-right-neutral-v1.png
+  lineup-v4-1.png: sources/art/s08/lineup-v4-1.png
   nani-n1-lean-neutral-v1.png: sources/art/s07/nani-n1-lean-neutral-v1.png
   nani-n4-lean-point-v1.png: sources/art/s07/nani-n4-lean-point-v1.png
-  nani-sheet-v2-approved.png: sources/art/characters/nani-sheet-v2-approved.png
-  char-nana-v1.png: sources/art/characters/char-nana-v1.png
-  s1-girl-sheet-v2.png: sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
-  girl-w1-front-neutral-v1.png: sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
-  girl-w13-standing-3q-left-neutral-v1.png: sources/art/s07/girl-w13-standing-3q-left-neutral-v1.png
 people: {}
 limb_sets: {}
 templates: {}
 limb_templates: {}
 lines:
-  LA:
-    attach: [doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png]
-    save: lineup-la-v1.png
-    check: LINEUP
-    note: 'the doctor at Nani''s level; Nani, the girl and Nana as they are'
-  LB:
-    attach: [doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png]
-    save: lineup-lb-v1.png
-    check: LINEUPB
-    note: 'the doctor''s and Nani''s faces kept exactly, everything below the neck and the finish as the girl'
-  LC:
-    attach: [doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png]
-    save: lineup-lc-v1.png
-    check: LINEUPB
-    note: 'as LB, and the girl one small step toward them (eyes a little smaller, a touch more shading); still the same child'
-  DS2:
-    attach: [doctor-s1-sheet-v1.png, 'kept:LA', nani-n1-lean-neutral-v1.png]
-    save: doctor-s2-sheet-v1.png
+  DS:
+    attach: [lineup-v4-1.png, doctor-s1-sheet-v1.png]
+    save: doctor-sheet-v2.png
     check: DSHEET
-  DW1:
-    attach: [doctor-w1-stand-3q-neutral-v1.png, 'kept:DS2']
-    save: doctor-w1-stand-3q-neutral-v2.png
-    check: DW1
-  DF1:
-    attach: ['edit: kept:DW1']
-    save: doctor-f1-stand-3q-talk-v2.png
-    check: DFACE
-  DF3:
-    attach: ['edit: kept:DW1']
-    save: doctor-f3-stand-3q-blink-v2.png
-    check: DFACE
-  DW1F:
-    attach: [doctor-w1-stand-front-neutral-v1.png, 'kept:DS2']
-    save: doctor-w1-stand-front-neutral-v2.png
-    check: DFRONT
-  DW1QR:
-    attach: [doctor-w1-stand-3q-right-neutral-v1.png, 'kept:DS2']
-    save: doctor-w1-stand-3q-right-neutral-v2.png
-    check: DQR
-  DA6QR:
-    attach: [doctor-a6-stand-3q-right-wave-v1.png, 'kept:DS2']
-    save: doctor-a6-stand-3q-right-wave-v2.png
-    check: DA6
-  DD1:
-    attach: [doctor-d1-door-call-v1.png, 'kept:DS2']
-    save: doctor-d1-door-call-v2.png
-    check: DD1
-  DD2:
-    attach: ['edit: kept:DD1']
-    save: doctor-d2-door-look-v2.png
-    check: DDFACE
-  DR2:
-    attach: [doctor-ref-faces-v1.png, 'kept:DS2']
-    save: doctor-ref-faces-v2.png
+    note: 'post it and wait for Zafar''s ok: every doctor line attaches it'
+  DX:
+    attach: ['kept:DS', doctor-ref-faces-v1.png]
+    save: doctor-faces-v2.png
     check: DFACES
-  DS2B:
-    attach: [doctor-s1-sheet-v1.png, 'kept:LB', s1-girl-sheet-v2.png]
-    save: doctor-s2-sheet-soft-v1.png
-    check: DSHEETB
-    note: 'on pick C attach the kept LC instead of LB'
-  DW1B:
-    prompt: DW1
-    attach: [doctor-w1-stand-3q-neutral-v1.png, 'kept:DS2B']
-    save: doctor-w1-stand-3q-neutral-soft-v1.png
-    check: DW1
-  DF1B:
-    prompt: DF1
-    attach: ['edit: kept:DW1B']
-    save: doctor-f1-stand-3q-talk-soft-v1.png
-    check: DFACE
-    note: 'compare with DW1B'
-  DF3B:
-    prompt: DF3
-    attach: ['edit: kept:DW1B']
-    save: doctor-f3-stand-3q-blink-soft-v1.png
-    check: DFACE
-    note: 'compare with DW1B'
-  DW1FB:
-    prompt: DW1F
-    attach: [doctor-w1-stand-front-neutral-v1.png, 'kept:DS2B']
-    save: doctor-w1-stand-front-neutral-soft-v1.png
-    check: DFRONT
-  DW1QRB:
-    prompt: DW1QR
-    attach: [doctor-w1-stand-3q-right-neutral-v1.png, 'kept:DS2B']
-    save: doctor-w1-stand-3q-right-neutral-soft-v1.png
-    check: DQR
-  DA6QRB:
-    prompt: DA6QR
-    attach: [doctor-a6-stand-3q-right-wave-v1.png, 'kept:DS2B']
-    save: doctor-a6-stand-3q-right-wave-soft-v1.png
-    check: DA6
-  DD1B:
-    prompt: DD1
-    attach: [doctor-d1-door-call-v1.png, 'kept:DS2B']
-    save: doctor-d1-door-call-soft-v1.png
-    check: DD1
-  DD2B:
-    prompt: DD2
-    attach: ['edit: kept:DD1B']
-    save: doctor-d2-door-look-soft-v1.png
-    check: DDFACE
-    note: 'compare with DD1B'
-  DR2B:
-    prompt: DR2
-    attach: [doctor-ref-faces-v1.png, 'kept:DS2B']
-    save: doctor-ref-faces-soft-v1.png
-    check: DFACES
-  N1B:
-    attach: [nani-n1-lean-neutral-v1.png, 'kept:LB']
-    save: nani-n1-lean-neutral-soft-v1.png
-    check: NANIB
-    note: 'on pick C attach the kept LC instead of LB; Zafar approves it before N2B-N5B run'
-  N2B:
-    attach: ['edit: kept:N1B']
-    save: nani-n2-lean-happy-soft-v1.png
-    check: NFACE
-  N3B:
-    attach: ['edit: kept:N1B']
-    save: nani-n3-lean-talk-soft-v1.png
-    check: NFACE
-  N4B:
-    attach: ['kept:N1B', nani-n4-lean-point-v1.png]
-    save: nani-n4-lean-point-soft-v1.png
-    check: NPOINT
-    note: 'an edit of N1B with the pointing picture as the second attachment: it must register with N1B (the s07 N4 was drawn fresh and did not)'
-  N5B:
-    attach: ['edit: kept:N1B']
-    save: nani-n5-lean-blink-soft-v1.png
-    check: NFACE
-  GW1C:
-    attach: [girl-w1-front-neutral-v1.png, 'kept:LC']
-    save: girl-w1-front-neutral-soft-v1.png
-    check: GIRLC
-  GW13C:
-    attach: [girl-w13-standing-3q-left-neutral-v1.png, 'kept:LC']
-    save: girl-w13-standing-3q-left-neutral-soft-v1.png
-    check: GIRLC
+  DW-F:
+    attach: ['kept:DS', doctor-w1-stand-front-neutral-v1.png]
+    save: doctor-front-neutral-v2.png
+    check: DVIEW
+    prompt: DW0
+    note: 'post it and wait for his ok: the turns and poses attach it'
+  DW-QL:
+    prompt: DWT
+    attach: ['kept:DW-F', 'kept:DS', doctor-w1-stand-3q-neutral-v1.png]
+    save: doctor-3q-left-neutral-v2.png
+    check: DVIEW
+    slots: {VIEW: 'turned three-quarters towards the viewer''s left, his face still fully visible, looking towards the viewer''s left and a little down'}
+  DW-QR:
+    prompt: DWT
+    attach: ['kept:DW-F', 'kept:DS', doctor-w1-stand-3q-right-neutral-v1.png]
+    save: doctor-3q-right-neutral-v2.png
+    check: DVIEW
+    slots: {VIEW: 'turned three-quarters towards the viewer''s right, his face still fully visible, looking towards the viewer''s right and a little down'}
+  DT-F:
+    prompt: DT
+    attach: ['edit: kept:DW-F']
+    save: doctor-front-talk-v2.png
+    check: DEDIT
+    note: compare with DW-F
+  DB-F:
+    prompt: DB
+    attach: ['edit: kept:DW-F']
+    save: doctor-front-blink-v2.png
+    check: DEDIT
+    note: compare with DW-F
+  DT-QL:
+    prompt: DT
+    attach: ['edit: kept:DW-QL']
+    save: doctor-3q-left-talk-v2.png
+    check: DEDIT
+    note: compare with DW-QL
+  DB-QL:
+    prompt: DB
+    attach: ['edit: kept:DW-QL']
+    save: doctor-3q-left-blink-v2.png
+    check: DEDIT
+    note: compare with DW-QL
+  DT-QR:
+    prompt: DT
+    attach: ['edit: kept:DW-QR']
+    save: doctor-3q-right-talk-v2.png
+    check: DEDIT
+    note: compare with DW-QR
+  DB-QR:
+    prompt: DB
+    attach: ['edit: kept:DW-QR']
+    save: doctor-3q-right-blink-v2.png
+    check: DEDIT
+    note: compare with DW-QR
+  D-WAV-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS', doctor-d1-door-call-v1.png]
+    save: doctor-front-wave-v2.png
+    check: DPOSE
+    slots: {POSE: 'one hand raised in a friendly wave beside his head, the palm towards us, the fingers relaxed and a little apart; the other arm relaxed at his side; a warm closed smile'}
+    note: 'the waiting room''s call: its closed-mouth base'
+  D-CALL-F:
+    prompt: DC
+    attach: ['edit: kept:D-WAV-F']
+    save: doctor-front-wave-call-v2.png
+    check: DEDIT
+    note: compare with D-WAV-F
+  D-WAV-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS', doctor-a6-stand-3q-right-wave-v1.png]
+    save: doctor-3q-right-wave-v2.png
+    check: DPOSE
+    slots: {POSE: 'his near arm (on the viewer''s right) raised in a friendly wave beside his head, the palm towards us; the other arm relaxed at his side; a big warm open smile, as he waves the girl off'}
+  NS:
+    attach: [lineup-v4-1.png, nani-n1-lean-neutral-v1.png]
+    save: nani-sheet-v3.png
+    check: NSHEET
+    note: 'post it and wait for Zafar''s ok: every Nani line attaches it'
+  NX:
+    attach: ['kept:NS', doctor-ref-faces-v1.png]
+    save: nani-faces-v1.png
+    check: NFACES
+  NL:
+    attach: ['kept:NS', nani-n1-lean-neutral-v1.png]
+    save: nani-lean-neutral-v2.png
+    check: NLEAN
+    note: 'post it and wait for his ok: the four moods attach it'
+  NL-HAP:
+    prompt: NH
+    attach: ['edit: kept:NL']
+    save: nani-lean-happy-v2.png
+    check: NEDIT
+    note: compare with NL
+  NL-TLK:
+    prompt: NT
+    attach: ['edit: kept:NL']
+    save: nani-lean-talk-v2.png
+    check: NEDIT
+    note: compare with NL
+  NL-BLK:
+    prompt: NB
+    attach: ['edit: kept:NL']
+    save: nani-lean-blink-v2.png
+    check: NEDIT
+    note: compare with NL
+  NL-PNT:
+    prompt: NP
+    attach: ['kept:NL', 'kept:NS', nani-n4-lean-point-v1.png]
+    save: nani-lean-point-v2.png
+    check: NCPOSE
+    slots: {POSE: 'her right arm (on the viewer''s right) raised with the elbow on the counter, the hand up beside her face and the index finger pointing down to the viewer''s right, as the third picture
+        shows; her left forearm still flat on the counter; the same face'}
+  NW-F:
+    prompt: NW0
+    attach: ['kept:NS']
+    save: nani-front-neutral-v2.png
+    check: NVIEW
+    note: 'post it and wait for his ok: the turns and poses attach it'
+  NT-F:
+    prompt: NT
+    attach: ['edit: kept:NW-F']
+    save: nani-front-talk-v2.png
+    check: NEDIT
+    note: compare with NW-F
+  NB-F:
+    prompt: NB
+    attach: ['edit: kept:NW-F']
+    save: nani-front-blink-v2.png
+    check: NEDIT
+    note: compare with NW-F
+  NW-QL:
+    prompt: NWT
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-3q-left-neutral-v2.png
+    check: NVIEW
+    slots: {VIEW: 'turned three-quarters towards the viewer''s left, her face still fully visible, looking towards the viewer''s left and a little down'}
+  NT-QL:
+    prompt: NT
+    attach: ['edit: kept:NW-QL']
+    save: nani-3q-left-talk-v2.png
+    check: NEDIT
+    note: compare with NW-QL
+  NW-QR:
+    prompt: NWT
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-3q-right-neutral-v2.png
+    check: NVIEW
+    slots: {VIEW: 'turned three-quarters towards the viewer''s right, her face still fully visible, looking towards the viewer''s right and a little down'}
+  NT-QR:
+    prompt: NT
+    attach: ['edit: kept:NW-QR']
+    save: nani-3q-right-talk-v2.png
+    check: NEDIT
+    note: compare with NW-QR
+  D-TLK-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS']
+    save: doctor-front-talk-gesture-v2.png
+    check: DPOSE
+    slots: {POSE: 'both hands up in front of his chest, the palms open and turned a little towards each other, mid-sentence, as if gently explaining something; a kind face, mouth closed'}
+  D-TLK-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS']
+    save: doctor-3q-left-talk-gesture-v2.png
+    check: DPOSE
+    slots: {POSE: 'both hands up in front of his chest, the palms open and turned a little towards each other, mid-sentence, as if gently explaining something; a kind face, mouth closed'}
+  D-TLK-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS']
+    save: doctor-3q-right-talk-gesture-v2.png
+    check: DPOSE
+    slots: {POSE: 'both hands up in front of his chest, the palms open and turned a little towards each other, mid-sentence, as if gently explaining something; a kind face, mouth closed'}
+  D-PNT-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS']
+    save: doctor-front-point-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised to shoulder height with the index finger and thumb a little apart, making a point; the other hand open at his side; the brows a little up, mouth closed'}
+  D-PNT-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS']
+    save: doctor-3q-left-point-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised to shoulder height with the index finger and thumb a little apart, making a point; the other hand open at his side; the brows a little up, mouth closed'}
+  D-PNT-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS']
+    save: doctor-3q-right-point-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised to shoulder height with the index finger and thumb a little apart, making a point; the other hand open at his side; the brows a little up, mouth closed'}
+  D-PL-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS', doctor-a2-stand-front-point-left-v1.png]
+    save: doctor-front-point-left-v2.png
+    check: DPOSE
+    slots: {POSE: 'the arm nearer the viewer''s left extended straight out towards the viewer''s left at waist height, the index finger pointing left; the other arm relaxed at his side; looking the way
+        he points'}
+  D-PL-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS', doctor-a2-stand-3q-point-left-v1.png]
+    save: doctor-3q-left-point-left-v2.png
+    check: DPOSE
+    slots: {POSE: 'the arm nearer the viewer''s left extended straight out towards the viewer''s left at waist height, the index finger pointing left; the other arm relaxed at his side; looking the way
+        he points'}
+  D-PR-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS']
+    save: doctor-front-point-right-v2.png
+    check: DPOSE
+    slots: {POSE: 'the arm nearer the viewer''s right extended straight out towards the viewer''s right at waist height, the index finger pointing right; the other arm relaxed at his side; looking the way
+        he points'}
+  D-PR-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS']
+    save: doctor-3q-right-point-right-v2.png
+    check: DPOSE
+    slots: {POSE: 'the arm nearer the viewer''s right extended straight out towards the viewer''s right at waist height, the index finger pointing right; the other arm relaxed at his side; looking the way
+        he points'}
+  D-IDE-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS', doctor-a3-stand-front-finger-up-v1.png]
+    save: doctor-front-finger-up-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised beside his face with the index finger up, as if he has just had an idea; the other arm at his side; a bright open smile'}
+  D-IDE-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS', doctor-a3-stand-3q-finger-up-v1.png]
+    save: doctor-3q-left-finger-up-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised beside his face with the index finger up, as if he has just had an idea; the other arm at his side; a bright open smile'}
+  D-IDE-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS', doctor-a3-stand-3q-right-finger-up-v1.png]
+    save: doctor-3q-right-finger-up-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised beside his face with the index finger up, as if he has just had an idea; the other arm at his side; a bright open smile'}
+  N-TLK-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-talk-gesture-v2.png
+    check: NPOSE
+    slots: {POSE: 'both hands up in front of her chest, the palms open and turned a little towards each other, mid-sentence, as if gently explaining something; a kind face, mouth closed'}
+  N-TLK-QL:
+    prompt: NP
+    attach: ['kept:NW-QL', 'kept:NS']
+    save: nani-3q-left-talk-gesture-v2.png
+    check: NPOSE
+    slots: {POSE: 'both hands up in front of her chest, the palms open and turned a little towards each other, mid-sentence, as if gently explaining something; a kind face, mouth closed'}
+  N-TLK-QR:
+    prompt: NP
+    attach: ['kept:NW-QR', 'kept:NS']
+    save: nani-3q-right-talk-gesture-v2.png
+    check: NPOSE
+    slots: {POSE: 'both hands up in front of her chest, the palms open and turned a little towards each other, mid-sentence, as if gently explaining something; a kind face, mouth closed'}
+  N-PNT-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-point-v2.png
+    check: NPOSE
+    slots: {POSE: 'her right hand raised to shoulder height with the index finger and thumb a little apart, making a point; the other hand open at her side; the brows a little up, mouth closed'}
+  N-PNT-QL:
+    prompt: NP
+    attach: ['kept:NW-QL', 'kept:NS']
+    save: nani-3q-left-point-v2.png
+    check: NPOSE
+    slots: {POSE: 'her right hand raised to shoulder height with the index finger and thumb a little apart, making a point; the other hand open at her side; the brows a little up, mouth closed'}
+  N-PNT-QR:
+    prompt: NP
+    attach: ['kept:NW-QR', 'kept:NS']
+    save: nani-3q-right-point-v2.png
+    check: NPOSE
+    slots: {POSE: 'her right hand raised to shoulder height with the index finger and thumb a little apart, making a point; the other hand open at her side; the brows a little up, mouth closed'}
+  N-PL-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-point-left-v2.png
+    check: NPOSE
+    slots: {POSE: 'the arm nearer the viewer''s left extended straight out towards the viewer''s left at waist height, the index finger pointing left; the other arm relaxed at her side; looking the way
+        she points'}
+  N-PL-QL:
+    prompt: NP
+    attach: ['kept:NW-QL', 'kept:NS']
+    save: nani-3q-left-point-left-v2.png
+    check: NPOSE
+    slots: {POSE: 'the arm nearer the viewer''s left extended straight out towards the viewer''s left at waist height, the index finger pointing left; the other arm relaxed at her side; looking the way
+        she points'}
+  N-PR-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-point-right-v2.png
+    check: NPOSE
+    slots: {POSE: 'the arm nearer the viewer''s right extended straight out towards the viewer''s right at waist height, the index finger pointing right; the other arm relaxed at her side; looking the way
+        she points'}
+  N-PR-QR:
+    prompt: NP
+    attach: ['kept:NW-QR', 'kept:NS']
+    save: nani-3q-right-point-right-v2.png
+    check: NPOSE
+    slots: {POSE: 'the arm nearer the viewer''s right extended straight out towards the viewer''s right at waist height, the index finger pointing right; the other arm relaxed at her side; looking the way
+        she points'}
+  N-IDE-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-finger-up-v2.png
+    check: NPOSE
+    slots: {POSE: 'her right hand raised beside her face with the index finger up, as if she has just had an idea; the other arm at her side; a bright open smile'}
+  N-IDE-QL:
+    prompt: NP
+    attach: ['kept:NW-QL', 'kept:NS']
+    save: nani-3q-left-finger-up-v2.png
+    check: NPOSE
+    slots: {POSE: 'her right hand raised beside her face with the index finger up, as if she has just had an idea; the other arm at her side; a bright open smile'}
+  D-WAV-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS', doctor-a6-stand-3q-left-right-wave-v1.png]
+    save: doctor-3q-left-wave-v2.png
+    check: DPOSE
+    slots: {POSE: 'one hand raised in a friendly wave beside his head, the palm towards us, the fingers relaxed and a little apart; the other arm relaxed at his side; a warm closed smile'}
+  D-UP-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS']
+    save: doctor-front-point-up-v2.png
+    check: DPOSE
+    slots: {POSE: 'one arm raised high, the index finger pointing straight up above his head; the other arm at his side; looking up along it'}
+  D-UP-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS']
+    save: doctor-3q-left-point-up-v2.png
+    check: DPOSE
+    slots: {POSE: 'one arm raised high, the index finger pointing straight up above his head; the other arm at his side; looking up along it'}
+  D-UP-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS']
+    save: doctor-3q-right-point-up-v2.png
+    check: DPOSE
+    slots: {POSE: 'one arm raised high, the index finger pointing straight up above his head; the other arm at his side; looking up along it'}
+  D-DN-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS']
+    save: doctor-front-point-down-v2.png
+    check: DPOSE
+    slots: {POSE: 'one arm extended down and a little forward, the index finger pointing at the floor in front of him; the other arm at his side; looking down along it'}
+  D-DN-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS']
+    save: doctor-3q-left-point-down-v2.png
+    check: DPOSE
+    slots: {POSE: 'one arm extended down and a little forward, the index finger pointing at the floor in front of him; the other arm at his side; looking down along it'}
+  D-DN-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS']
+    save: doctor-3q-right-point-down-v2.png
+    check: DPOSE
+    slots: {POSE: 'one arm extended down and a little forward, the index finger pointing at the floor in front of him; the other arm at his side; looking down along it'}
+  D-WEL-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS']
+    save: doctor-front-welcome-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms out to the sides and a little forward at waist height, the palms open and up, a welcoming gesture; a big warm smile'}
+  D-WEL-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS']
+    save: doctor-3q-left-welcome-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms out to the sides and a little forward at waist height, the palms open and up, a welcoming gesture; a big warm smile'}
+  D-WEL-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS']
+    save: doctor-3q-right-welcome-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms out to the sides and a little forward at waist height, the palms open and up, a welcoming gesture; a big warm smile'}
+  D-CEL-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS', doctor-a4-stand-front-arms-up-v1.png]
+    save: doctor-front-cheer-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms raised straight up above his head, the hands open, celebrating; a big open laugh'}
+  D-CEL-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS', doctor-a4-stand-3q-arms-up-v1.png]
+    save: doctor-3q-left-cheer-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms raised straight up above his head, the hands open, celebrating; a big open laugh'}
+  D-CEL-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS', doctor-a4-stand-3q-right-arms-up-v1.png]
+    save: doctor-3q-right-cheer-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms raised straight up above his head, the hands open, celebrating; a big open laugh'}
+  N-WAV-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-wave-v2.png
+    check: NPOSE
+    slots: {POSE: 'one hand raised in a friendly wave beside her head, the palm towards us, the fingers relaxed and a little apart; the other arm relaxed at her side; a warm closed smile'}
+  N-WAV-QL:
+    prompt: NP
+    attach: ['kept:NW-QL', 'kept:NS']
+    save: nani-3q-left-wave-v2.png
+    check: NPOSE
+    slots: {POSE: 'one hand raised in a friendly wave beside her head, the palm towards us, the fingers relaxed and a little apart; the other arm relaxed at her side; a warm closed smile'}
+  N-WAV-QR:
+    prompt: NP
+    attach: ['kept:NW-QR', 'kept:NS']
+    save: nani-3q-right-wave-v2.png
+    check: NPOSE
+    slots: {POSE: 'one hand raised in a friendly wave beside her head, the palm towards us, the fingers relaxed and a little apart; the other arm relaxed at her side; a warm closed smile'}
+  N-UP-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-point-up-v2.png
+    check: NPOSE
+    slots: {POSE: 'one arm raised high, the index finger pointing straight up above her head; the other arm at her side; looking up along it'}
+  N-DN-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-point-down-v2.png
+    check: NPOSE
+    slots: {POSE: 'one arm extended down and a little forward, the index finger pointing at the floor in front of her; the other arm at her side; looking down along it'}
+  N-WEL-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-welcome-v2.png
+    check: NPOSE
+    slots: {POSE: 'both arms out to the sides and a little forward at waist height, the palms open and up, a welcoming gesture; a big warm smile'}
+  N-CEL-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-cheer-v2.png
+    check: NPOSE
+    slots: {POSE: 'both hands up beside her shoulders, clapping, delighted; a big warm smile, as when the child has done well'}
+  N-CEL-QL:
+    prompt: NP
+    attach: ['kept:NW-QL', 'kept:NS']
+    save: nani-3q-left-cheer-v2.png
+    check: NPOSE
+    slots: {POSE: 'both hands up beside her shoulders, clapping, delighted; a big warm smile, as when the child has done well'}
+  D-FLD-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS', doctor-a1-stand-front-folded-v1.png]
+    save: doctor-front-folded-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms folded across his chest, the hands tucked, relaxed; a kind listening face, mouth closed'}
+  D-FLD-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS', doctor-a1-stand-3q-folded-v1.png]
+    save: doctor-3q-left-folded-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms folded across his chest, the hands tucked, relaxed; a kind listening face, mouth closed'}
+  D-FLD-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS', doctor-a1-stand-3q-right-folded-v1.png]
+    save: doctor-3q-right-folded-v2.png
+    check: DPOSE
+    slots: {POSE: 'both arms folded across his chest, the hands tucked, relaxed; a kind listening face, mouth closed'}
+  D-THK-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS']
+    save: doctor-front-think-v2.png
+    check: DPOSE
+    slots: {POSE: 'one hand raised to his chin, the index finger along the cheek, the other arm across his waist supporting that elbow; the eyes a little up, thinking'}
+  D-THK-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS']
+    save: doctor-3q-left-think-v2.png
+    check: DPOSE
+    slots: {POSE: 'one hand raised to his chin, the index finger along the cheek, the other arm across his waist supporting that elbow; the eyes a little up, thinking'}
+  D-THK-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS']
+    save: doctor-3q-right-think-v2.png
+    check: DPOSE
+    slots: {POSE: 'one hand raised to his chin, the index finger along the cheek, the other arm across his waist supporting that elbow; the eyes a little up, thinking'}
+  D-TOR-F:
+    prompt: DP
+    attach: ['kept:DW-F', 'kept:DS', doctor-a5-stand-front-torch-v1.png]
+    save: doctor-front-torch-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised beside his face holding a small silver pen torch, pointed forward and a little down the way he faces, as if about to look into a patient''s eye; the other arm at
+        his side; a kind concentrating face'}
+  D-TOR-QL:
+    prompt: DP
+    attach: ['kept:DW-QL', 'kept:DS', doctor-a5-stand-3q-torch-v1.png]
+    save: doctor-3q-left-torch-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised beside his face holding a small silver pen torch, pointed forward and a little down the way he faces, as if about to look into a patient''s eye; the other arm at
+        his side; a kind concentrating face'}
+  D-TOR-QR:
+    prompt: DP
+    attach: ['kept:DW-QR', 'kept:DS', doctor-a5-stand-3q-right-torch-v1.png]
+    save: doctor-3q-right-torch-v2.png
+    check: DPOSE
+    slots: {POSE: 'his right hand raised beside his face holding a small silver pen torch, pointed forward and a little down the way he faces, as if about to look into a patient''s eye; the other arm at
+        his side; a kind concentrating face'}
+  N-FLD-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-folded-v2.png
+    check: NPOSE
+    slots: {POSE: 'both arms folded across her chest, the hands tucked, relaxed; a kind listening face, mouth closed'}
+  N-THK-F:
+    prompt: NP
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-front-think-v2.png
+    check: NPOSE
+    slots: {POSE: 'one hand raised to her chin, the index finger along the cheek, the other arm across her waist supporting that elbow; the eyes a little up, thinking'}
+  NC-F:
+    prompt: NC
+    attach: ['kept:NW-F', 'kept:NS', nani-n1-lean-neutral-v1.png]
+    save: nani-counter-neutral-v2.png
+    check: NCOUNTER
+  N-TRAY-F:
+    prompt: NP
+    attach: ['kept:NC-F', 'kept:NS']
+    save: nani-counter-tray-v2.png
+    check: NCPOSE
+    slots: {POSE: 'both hands holding a round steel tray with three small glasses of milky chai, in front of her at chest height just above the counter; a warm closed smile'}
+  N-STIR-F:
+    prompt: NP
+    attach: ['kept:NC-F', 'kept:NS']
+    save: nani-counter-stir-v2.png
+    check: NCPOSE
+    slots: {POSE: 'a plain steel saucepan on the counter in front of her, her right hand stirring it with a wooden spoon, her left hand resting on the counter beside it; looking down at the pan with a small
+        smile'}
+  DW-SL:
+    prompt: DWT
+    attach: ['kept:DW-F', 'kept:DS', doctor-w1-stand-side-left-neutral-v1.png]
+    save: doctor-side-left-neutral-v2.png
+    check: DVIEW
+    slots: {VIEW: 'turned fully side-on to the viewer''s left, in profile, looking straight to the viewer''s left'}
+  NW-SL:
+    prompt: NWT
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-side-left-neutral-v2.png
+    check: NVIEW
+    slots: {VIEW: 'turned fully side-on to the viewer''s left, in profile, looking straight to the viewer''s left'}
+  DW-SR:
+    prompt: DWT
+    attach: ['kept:DW-F', 'kept:DS', doctor-w1-stand-side-right-neutral-v1.png]
+    save: doctor-side-right-neutral-v2.png
+    check: DVIEW
+    slots: {VIEW: 'turned fully side-on to the viewer''s right, in profile, looking straight to the viewer''s right'}
+  NW-SR:
+    prompt: NWT
+    attach: ['kept:NW-F', 'kept:NS']
+    save: nani-side-right-neutral-v2.png
+    check: NVIEW
+    slots: {VIEW: 'turned fully side-on to the viewer''s right, in profile, looking straight to the viewer''s right'}
+  D-WAV-SL:
+    prompt: DP
+    attach: ['kept:DW-SL', 'kept:DS', doctor-d1-wave-side-left-v1.png]
+    save: doctor-side-left-wave-v2.png
+    check: DPOSE
+    slots: {POSE: 'one hand raised in a friendly wave beside his head, the palm towards us, the fingers relaxed and a little apart; the other arm relaxed at his side; a warm closed smile'}
+  D-WAV-SR:
+    prompt: DP
+    attach: ['kept:DW-SR', 'kept:DS', doctor-d1-wave-side-right-v1.png]
+    save: doctor-side-right-wave-v2.png
+    check: DPOSE
+    slots: {POSE: 'one hand raised in a friendly wave beside his head, the palm towards us, the fingers relaxed and a little apart; the other arm relaxed at his side; a warm closed smile'}
 parts:
-- id: S
-  title: 'THE STYLE LOCK: three lineups, then STOP for Zafar''s pick (real people: his word is the pass)'
-  intro: 'Run LA, LB and LC at once (one window each), judge each against its check and redo as usual, then STOP. Post the three kept lineups with their chat links and exactly these words: "Zafar: pick A, pick B, pick C or none". Start NOTHING from parts A, B or C until Zafar answers in this chat; this overrides the loop''s "parts are priorities, not walls": here they are walls. His answer: "pick A" = run part A only. "pick B" = run part B only. "pick C" = run part B with the kept LC attached wherever a line says kept:LB, then part C. "none" = run nothing more, post the log and the downloads. If he answers anything else, ask him for one of the four words.'
-  stop: 'Part S done: post the part S summary and the three lineups, then WAIT for Zafar''s pick. Nothing below runs until he has answered.'
-  items:
-  - lines: [LA, LB, LC]
 - id: A
-  title: 'ONLY ON "pick A": THE DOCTOR AT NANI''S LEVEL (a real person: Zafar approves each one)'
-  intro: 'DS2 first (post it; wait for his ok): every pose attaches it. Every pose line attaches its kept s07 picture for the pose only and the sheet for the rendering; judge the rendering against the sheet, never against the s07 picture. DF1 and DF3 edit DW1; DD2 edits DD1.'
+  title: 'THE DOCTOR, NEED (a real person: Zafar approves each one before it is attached to the next)'
+  intro: 'DS first; post it and wait for his ok: every doctor line attaches it (DX and DW-F next, at once). DW-F is the face-on base: post it, wait for his ok, then the turns DW-QL and DW-QR attach it and
+    the s07 picture of that turn (the turn only; its rendering is wrong). DT and DB edit a base; D-CALL-F edits D-WAV-F. A line''s "slots:" words go into its prompt''s {VIEW} or {POSE}, word for word.'
+  stop: 'Part A done: post the part A summary (see AT THE END). This is a safe stop: if Zafar has said "stop" or "download" in this chat, do AT THE END now; otherwise carry on.'
   items:
-  - lines: [DS2, DW1, DF1, DF3, DW1F, DW1QR, DA6QR, DD1, DD2, DR2]
+  - lines: [DS, DX, DW-F, DW-QL, DW-QR, DT-F, DB-F, DT-QL, DB-QL, DT-QR, DB-QR, D-WAV-F, D-CALL-F, D-WAV-QR]
 - id: B
-  title: 'ONLY ON "pick B" OR "pick C": THE DOCTOR AND NANI IN THE SOFT FINISH (real people: Zafar approves each one)'
-  intro: 'DS2B first (post it; wait for his ok): every doctor pose attaches it. A line marked "(prompt X)" pastes the code box of X from the plan with the attachments on its own line. On pick C, attach the kept LC wherever a line says kept:LB. N1B next (post it; wait for his ok): N2B, N3B and N5B edit it and N4B attaches it first.'
+  title: 'NANI, NEED (a real person: Zafar approves each one before it is attached to the next)'
+  intro: 'NS first; post it and wait for his ok: every Nani line attaches it (NX, NL and NW-F next, at once). NL is the Cook base: his ok, then NL-HAP, NL-TLK and NL-BLK edit it and NL-PNT attaches it first.
+    NW-F is the standing base: his ok, then NT-F and NB-F edit it.'
+  stop: 'Part B done: post the part B summary (see AT THE END). This is a safe stop: if Zafar has said "stop" or "download" in this chat, do AT THE END now; otherwise carry on.'
   items:
-  - lines: [DS2B, DW1B, DF1B, DF3B, DW1FB, DW1QRB, DA6QRB, DD1B, DD2B, DR2B, N1B, N2B, N3B, N4B, N5B]
-- id: C
-  title: 'ONLY ON "pick C", AFTER PART B: THE GIRL''S TWO BASES'
-  intro: 'Each attaches the kept LC for her new rendering and her own picture for everything else.'
+  - lines: [NS, NX, NL, NL-HAP, NL-TLK, NL-BLK, NL-PNT, NW-F, NT-F, NB-F]
+- id: C1
+  title: TALKING AND POINTING, LIKELY (both; the story and conversation set)
+  intro: Nani's quarter turns NW-QL and NW-QR first (his ok, then their poses attach them). Every pose attaches its view's base first and the sheet second; a third attachment, where there is one, is an
+    old s07 picture for the arm pose only.
+  stop: 'Part C1 done: post the part C1 summary (see AT THE END). This is a safe stop: if Zafar has said "stop" or "download" in this chat, do AT THE END now; otherwise carry on.'
   items:
-  - lines: [GW1C, GW13C]
+  - lines: [NW-QL, NT-QL, NW-QR, NT-QR, D-TLK-F, D-TLK-QL, D-TLK-QR, D-PNT-F, D-PNT-QL, D-PNT-QR, D-PL-F, D-PL-QL, D-PR-F, D-PR-QR, D-IDE-F, D-IDE-QL, D-IDE-QR, N-TLK-F, N-TLK-QL, N-TLK-QR, N-PNT-F, N-PNT-QL,
+      N-PNT-QR, N-PL-F, N-PL-QL, N-PR-F, N-PR-QR, N-IDE-F, N-IDE-QL]
+- id: C2
+  title: WAVES, UP AND DOWN, WELCOME AND CELEBRATE, LIKELY
+  intro: 'As C1: the base first, the sheet second, an old pose picture third where there is one.'
+  stop: 'Part C2 done: post the part C2 summary (see AT THE END). This is a safe stop: if Zafar has said "stop" or "download" in this chat, do AT THE END now; otherwise carry on.'
+  items:
+  - lines: [D-WAV-QL, D-UP-F, D-UP-QL, D-UP-QR, D-DN-F, D-DN-QL, D-DN-QR, D-WEL-F, D-WEL-QL, D-WEL-QR, D-CEL-F, D-CEL-QL, D-CEL-QR, N-WAV-F, N-WAV-QL, N-WAV-QR, N-UP-F, N-DN-F, N-WEL-F, N-CEL-F, N-CEL-QL]
+- id: C3
+  title: FOLDED, THINKING, THE TORCH, THE COUNTER SET AND THE SIDE VIEWS, LIKELY
+  intro: NC-F is the counter base (his ok, then N-TRAY-F and N-STIR-F attach it first). The side views DW-SL, DW-SR, NW-SL, NW-SR attach the face-on base first; the side waves attach the side view.
+  items:
+  - lines: [D-FLD-F, D-FLD-QL, D-FLD-QR, D-THK-F, D-THK-QL, D-THK-QR, D-TOR-F, D-TOR-QL, D-TOR-QR, N-FLD-F, N-THK-F, NC-F, N-TRAY-F, N-STIR-F, DW-SL, NW-SL, DW-SR, NW-SR, D-WAV-SL, D-WAV-SR]
 checks:
-  LINEUP:
-    text: 'four people in a row, left to right the doctor, Nani, the little girl, Nana; full body, front-on, arms at their sides, standing on one invisible floor with every pair of feet on ONE level; the doctor about 1.5 times the girl''s height (her head top at his chest), Nani and Nana a little shorter than him; each as their attached picture in face and clothes (the doctor: bald, white side hair, white beard, rectangular glasses, navy check blazer; Nani: red dupatta over her head, cream kurta; the girl: yellow dress, plaits with white bows); the doctor as smooth-skinned as Nani, no pores or weave on him; one flat mid-grey; nothing touches an edge; five fingers on each hand'
-    judge:
-      aspect: [3, 2]
-      bg: flat
-      no_touch: true
-  LINEUPB:
-    text: 'as LINEUP, and: the doctor''s and Nani''s FACES unchanged (face shape, features, glasses, his beard and hairline, her dupatta''s framing, skin tone, age: clearly the same two people as their attached pictures); below the neck and in the finish they match the girl: matte poreless skin, rounder simpler bodies, plain soft cloth with no weave, knit or fine folds, simple hands, no refraction in the glasses; Nani''s clothes modest and loose, her dupatta over her head'
-    judge:
-      aspect: [3, 2]
-      bg: flat
-      no_touch: true
   DSHEET:
-    text: 'the same sheet as his: the same panels in the same places (turnaround front, three-quarter, side, back; the seated portrait; two hands; glasses; watch; bag; fabric close-up; colour strip), the same man in every panel with identical clothing; rendered as the doctor in the lineup: smooth simple skin, no pores, no single hairs, no fabric weave, eyes a little larger, soft rounded forms; still clearly him (his face shape, glasses, beard, hairline; Zafar''s ok is the pass); light blue-grey ground'
+    text: 'the doctor''s sheet from the lineup: a four-view turnaround on one feet line, a front face close-up, a three-quarter face, both hands, the glasses and watch, seven colour swatches; the same man
+      in every panel with identical clothing (bald, white side hair, short solid white beard, thin rectangular glasses, white open shirt, plain navy blazer with a faint check, charcoal trousers, brown belt
+      and shoes, watch on the LEFT wrist; no bag, no stethoscope); rendered exactly as the man on the left of the lineup (the likeness, the slightly larger open eyes, matte smooth skin, no pores, weave
+      or single hairs); skin within ΔE 6 of the sheet swatch #D3997A (never orange, pink, darker or paler than the sheet); light blue-grey ground; nothing touches a neighbour or an edge; Zafar''s ok is
+      the pass'
     judge:
       aspect: [3, 2]
       bg: flat
-  DSHEETB:
-    text: 'as DSHEET, but the finish is the girl''s: his face unchanged (shape, features, glasses, beard, hairline, skin tone, age), matte poreless skin, rounder simpler body, plain soft cloth with no weave, simple hands with rounded fingers, no refraction, the same soft edges as the girl'
+  DFACES:
+    text: 'twelve head-and-shoulders faces of the doctor in a 4 by 3 grid in the order asked (neutral, talking A, talking B, smiling, laughing, blink, surprised, thinking, concerned, proud, nod, listening);
+      REGISTERED: the head the same size and place in every cell, eyes on one line per row (lay a ruler across); only the face changes; rendered exactly as the attached sheet; skin within ΔE 6 of the sheet
+      swatch #D3997A (never orange, pink, darker or paler than the sheet); light blue-grey in every cell; nothing crosses a cell boundary'
     judge:
       aspect: [3, 2]
       bg: flat
-  DW1:
-    text: 'the doctor standing, full body, turned three-quarters to the viewer''s LEFT, both feet on one level, BOTH arms hanging relaxed at his sides, nothing in his hands, neutral kind face, mouth closed; the same pose, size, framing and feet as the attached s07 picture (compare them side by side); rendered exactly as the attached SHEET, not as the s07 picture (no pores, no weave, no single hairs); bald with white side hair, short white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown shoes, silver watch on the left wrist; no white coat, no stethoscope, no bag; fills about 85% of the height, touches no edge; no floor drawn; five fingers on each hand'
+  DVIEW:
+    text: 'the doctor standing, full body, in the view the line''s {VIEW} words say (a turn: compare with the face-on base it attaches first: the same size, feet line and head height; drawn, not flipped:
+      the watch on his LEFT wrist), both arms relaxed at his sides, nothing in his hands, neutral kind face, mouth closed; rendered exactly as the attached sheet, never as the old s07 picture (no pores,
+      weave or single hairs); skin within ΔE 6 of the sheet swatch #D3997A (never orange, pink, darker or paler than the sheet); fills about 85% of the height, touches no edge, no floor, one flat mid-grey;
+      five fingers on each hand; Zafar''s ok is the pass'
     judge:
       aspect: [2, 3]
       bg: flat
       fill_h: [0.75, 0.95]
       no_touch: true
       skin_face: [0.25, 0.0, 0.75, 0.2]
-  DFACE:
-    text: only the face changed (the expression asked); glasses, beard, clothes, hands, size and position identical; compare with the base it edits
+      skin: '#D3997A'
+  DEDIT:
+    text: 'only the face changed (the mouth or the eyes, as asked); glasses, beard, hands, clothes, size and position identical; compare with the base it edits; skin within ΔE 6 of the sheet swatch #D3997A
+      (never orange, pink, darker or paler than the sheet)'
     judge:
       aspect: [2, 3]
       bg: flat
@@ -245,87 +698,102 @@ checks:
       edit:
         allowed: [0.3, 0.0, 0.7, 0.25]
       skin_face: [0.25, 0.0, 0.75, 0.2]
-  DFRONT:
-    text: 'as DW1 but FRONT-on to the viewer, looking at us; the same pose, size, framing and feet as the attached s07 front picture; rendered exactly as the attached sheet'
+      skin: '#D3997A'
+  DPOSE:
+    text: 'the same man, turn, size, feet line and head height as the base it attaches first (compare them side by side: a redraw of it, not a fresh drawing); only the arms, hands and face changed, to exactly
+      the line''s {POSE} words; the new arms rendered like the rest of him, never like an attached s07 picture; the watch on his LEFT wrist; skin within ΔE 6 of the sheet swatch #D3997A (never orange, pink,
+      darker or paler than the sheet); touches no edge, no floor, one flat mid-grey; five fingers on each visible hand; Zafar''s ok is the pass'
     judge:
       aspect: [2, 3]
       bg: flat
-      fill_h: [0.75, 0.95]
+      fill_h: [0.75, 0.98]
       no_touch: true
       skin_face: [0.25, 0.0, 0.75, 0.2]
-  DQR:
-    text: 'as DW1 but turned three-quarters to the viewer''s RIGHT (drawn, not flipped: the watch stays on his LEFT wrist); the same pose, size, framing and feet as the attached s07 picture; rendered exactly as the attached sheet'
-    judge:
-      aspect: [2, 3]
-      bg: flat
-      fill_h: [0.75, 0.95]
-      no_touch: true
-      skin_face: [0.25, 0.0, 0.75, 0.2]
-  DA6:
-    text: 'the doctor turned three-quarters to the viewer''s RIGHT, the near arm up in a wave with the palm to us, the other at his side, a big warm smile; the same pose, size, framing and feet as the attached s07 picture; rendered exactly as the attached sheet; the watch on his LEFT wrist; five fingers; touches no edge'
-    judge:
-      aspect: [2, 3]
-      bg: flat
-      fill_h: [0.75, 0.95]
-      no_touch: true
-  DD1:
-    text: 'square; the doctor standing, full body, front-on, one hand raised in a wave beside his head with the palm to us, the other at his side, a big open calling smile; the same pose, size, framing and feet as the attached s07 picture; no door, frame, wall or floor drawn; rendered exactly as the attached sheet; five fingers; touches no edge'
-    judge:
-      aspect: [1, 1]
-      bg: flat
-      fill_h: [0.8, 0.98]
-      no_touch: true
-  DDFACE:
-    text: only the face changed, to a closed-mouth smile looking out; the raised hand, clothes, size and position identical; compare with the DD1 it edits
-    judge:
-      aspect: [1, 1]
-      bg: flat
-      no_touch: true
-      edit:
-        allowed: [0.3, 0.0, 0.7, 0.3]
-  DFACES:
-    text: 'twelve head-and-shoulders faces in the same 4 by 3 grid and order as the attached faces sheet (neutral smile, talking, laughing, gentle smile, cheering, warm closed smile, finger up, thinking, surprised, worried, sceptical, wink-laugh), the same man in every cell, rendered exactly as the attached character sheet (no pores, no single hairs, no weave); light blue-grey ground in every cell; nothing crosses a cell boundary'
+      skin: '#D3997A'
+  NSHEET:
+    text: 'Nani''s sheet from the lineup: a four-view turnaround on one feet line, a front face close-up, a three-quarter face, both hands (thin bracelet, two small rings), one red motif, five colour swatches;
+      the same woman in every panel with identical clothing (plain cream kameez with a few bold red motifs at the neck, cuffs and hem, straight cream trousers, plain red dupatta over her head, flat cream
+      shoes, round thin gold glasses); slim as the lineup, never portly; modest; rendered exactly as the woman in the middle of the lineup (the likeness, the slightly larger open eyes, matte smooth skin,
+      no pores, knit, weave or embroidery texture); skin within ΔE 6 of the sheet swatch #D48E6B (never orange, pink, darker or paler than the sheet); light blue-grey ground; nothing touches a neighbour
+      or an edge; no bindi or other religious marker; Zafar''s ok is the pass'
     judge:
       aspect: [3, 2]
       bg: flat
-  NANIB:
-    text: 'Nani leaning exactly as the attached N1 (both forearms flat on the marble counter, elbows on it, the counter''s back edge at the same height, the same size, framing, glasses, red dupatta, cream embroidered kurta, bracelet and rings); her FACE unchanged (shape, features, glasses, the dupatta''s framing, skin tone, age: clearly her); the finish now the girl''s: matte poreless skin, no knit or weave on the dupatta, simple embroidery, simple hands, no refraction; modest, no bangles; grey above the counter, marble below; Zafar''s ok is the pass'
+  NFACES:
+    text: 'twelve head-and-shoulders faces of Nani in a 4 by 3 grid in the order asked (neutral, talking A, talking B, smiling, laughing, blink, surprised, thinking, concerned, proud, nod, listening); REGISTERED:
+      the head the same size and place in every cell, eyes on one line per row; only the face changes; the dupatta over her head in every cell; rendered exactly as the attached sheet; skin within ΔE 6 of
+      the sheet swatch #D48E6B (never orange, pink, darker or paler than the sheet); light blue-grey in every cell; nothing crosses a cell boundary'
+    judge:
+      aspect: [3, 2]
+      bg: flat
+  NLEAN:
+    text: 'Nani leaning exactly as the attached old picture (both forearms flat on the marble counter, elbows on it, the counter''s back edge at the same height, the same size and framing) but rendered
+      exactly as the attached sheet and in the sheet''s clothes (plain cream kameez with a few red motifs, plain red dupatta over her head, round gold glasses, bracelet and rings; no embroidery texture,
+      knit or weave); neutral kind face, mouth closed; skin within ΔE 6 of the sheet swatch #D48E6B (never orange, pink, darker or paler than the sheet); grey above the counter, marble below; modest; Zafar''s
+      ok is the pass'
     judge:
       aspect: [2, 3]
       bg: none
-  NFACE:
-    text: only the face changed (the mood asked); glasses, dupatta, arms, hands, counter, size and position identical; compare with N1B
+      skin_face: [0.3, 0.05, 0.7, 0.35]
+      skin: '#D48E6B'
+  NEDIT:
+    text: 'only the face changed (the mood, mouth or eyes asked); glasses, dupatta, arms, hands, counter if any, size and position identical; compare with the base it edits; skin within ΔE 6 of the sheet
+      swatch #D48E6B (never orange, pink, darker or paler than the sheet)'
     judge:
       aspect: [2, 3]
       bg: none
       edit:
-        allowed: [0.25, 0.1, 0.75, 0.42]
-  NPOINT:
-    text: 'the same Nani, size, framing, face and counter line as N1B (compare them side by side: an edit of it, not a fresh drawing); her left forearm (viewer''s right) still flat on the counter; her right hand up beside her face, index finger pointing down to the viewer''s right, elbow on the counter; the raised arm rendered like the rest of her; five fingers'
-    judge:
-      aspect: [2, 3]
-      bg: none
-  GIRLC:
-    text: 'the same girl, pose, size, framing, feet, clothes, plaits and bows as the attached picture (compare them side by side); only her rendering changed, exactly as the girl in the attached LC lineup: eyes a little smaller, a touch more shading on cheeks and nose, head a touch smaller; still the same small child, smooth matte skin; one flat mid-grey; touches no edge; five fingers'
+        allowed: [0.25, 0.0, 0.75, 0.42]
+      skin_face: [0.3, 0.0, 0.7, 0.35]
+      skin: '#D48E6B'
+  NVIEW:
+    text: 'Nani standing, full body, in the view the line''s {VIEW} words say (a turn: compare with the face-on base it attaches first: the same size, feet line and head height), both arms relaxed at her
+      sides, nothing in her hands, neutral kind face, mouth closed; rendered exactly as the attached sheet in its clothes, the dupatta over her head; slim, never portly; skin within ΔE 6 of the sheet swatch
+      #D48E6B (never orange, pink, darker or paler than the sheet); fills about 85% of the height, touches no edge, no floor, one flat mid-grey; five fingers on each hand; Zafar''s ok is the pass'
     judge:
       aspect: [2, 3]
       bg: flat
+      fill_h: [0.75, 0.95]
       no_touch: true
-passfail:
-- Any text, letters, numbers, labels or logos, even fake or blurry ones.
-- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare.
-- 'Pores, fine wrinkles, single hairs, fabric weave or knit, or refraction in glasses, on anyone (LA excepted on nobody: in LA the doctor must already be as smooth as Nani).'
-- The background isn't one flat mid-grey (sheets light blue-grey, the counter below Nani excepted); there's a floor, a surface or a shadow on the grey (a soft contact shadow under feet in a lineup is fine); grid lines, panel borders or labels.
-- Anything touching an image edge, or crossing into a neighbour's cell on a sheet.
-- The wrong number of people, people in the wrong order, or extra objects, people, hands or animals.
-- 'Hands: not five fingers on each visible hand, fused or extra fingers.'
-- 'A lineup whose feet are not on one level, or whose heights are wrong: the doctor must be about 1.5 times the girl (her head top at his chest), Nani and Nana a little shorter than him.'
-- The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals) or looking older or younger (in LC and part C only the small rendering step asked).
-- Skin that is orange, pink, grey or very pale instead of a warm light tan.
-- Immodest or tight clothes on Nani, her dupatta off her head, or any religious marker (bindi, tilak, sindoor, deities, temple items).
-- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
-- Light from anywhere but the upper left, or a second light.
-- 'A registered set (the doctor''s poses on their s07 pictures, Nani''s moods on N1B) whose figure moves or changes size between pictures.'
-- 'The doctor or Nani not clearly the same person as their attached picture (face shape, glasses, his beard and hairline, her dupatta''s framing), or a likeness Zafar has not approved (real people: his yes is the pass).'
-- The doctor in a white coat, with a stethoscope or a bag, or without his glasses, beard, navy check blazer or silver watch; the watch on the wrong wrist.
-- A pose rendered like its attached s07 picture (the realistic one) instead of like the attached sheet.
+      skin_face: [0.3, 0.0, 0.7, 0.2]
+      skin: '#D48E6B'
+  NPOSE:
+    text: 'the same woman, turn, size, feet line and head height as the base it attaches first (compare them side by side: a redraw of it, not a fresh drawing); only the arms, hands and face changed, to
+      exactly the line''s {POSE} words; the new arms rendered like the rest of her; the dupatta still over her head; skin within ΔE 6 of the sheet swatch #D48E6B (never orange, pink, darker or paler than
+      the sheet); touches no edge, no floor, one flat mid-grey; five fingers on each visible hand; Zafar''s ok is the pass'
+    judge:
+      aspect: [2, 3]
+      bg: flat
+      fill_h: [0.75, 0.98]
+      no_touch: true
+      skin_face: [0.3, 0.0, 0.7, 0.2]
+      skin: '#D48E6B'
+  NCOUNTER:
+    text: 'Nani standing upright behind the marble counter, waist up, front-on, both hands resting on the counter top; the counter''s back edge a straight line at about 82% down, her figure about 65% of
+      the height above it; the same woman, face, clothes and rendering as the standing base it attaches first; skin within ΔE 6 of the sheet swatch #D48E6B (never orange, pink, darker or paler than the
+      sheet); grey above the counter, marble below; nothing else on the counter; Zafar''s ok is the pass'
+    judge:
+      aspect: [2, 3]
+      bg: none
+      skin_face: [0.3, 0.05, 0.7, 0.35]
+      skin: '#D48E6B'
+  NCPOSE:
+    text: 'the same woman, size, framing, face and counter line as the base it attaches first (compare them side by side: a redraw of it, not a fresh drawing); only the arms, hands and what they hold changed,
+      to exactly the line''s {POSE} words; anything held drawn in the same rendering; skin within ΔE 6 of the sheet swatch #D48E6B (never orange, pink, darker or paler than the sheet); grey above the counter,
+      marble below; five fingers on each visible hand'
+    judge:
+      aspect: [2, 3]
+      bg: none
+      skin_face: [0.3, 0.05, 0.7, 0.35]
+      skin: '#D48E6B'
+passfail: ['Any text, letters, numbers, labels or logos, even fake or blurry ones.', 'Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare.', 'The
+    old s07 rendering copied instead of the sheet''s: pores, fine wrinkles, photographic skin, single hairs, fabric weave, knit or embroidery texture, refraction in the glasses.', 'Skin off the sheet''s
+    swatch (the doctor about #D3997A, Nani about #D48E6B): orange, pink, grey, very pale, or visibly darker or lighter than the sheet; or a face and hands of different tones.', 'Eyes bigger than on the
+    lineup (the rejected V5 look) or smaller and more photographic than it; a face that is not clearly the same person as the lineup (real people: Zafar''s yes is the pass).', 'The background isn''t one
+    flat mid-grey (sheets light blue-grey; the marble below Nani''s counter excepted); a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.', 'Anything touching an image edge,
+    or crossing into a neighbour''s cell or panel on a sheet.', 'Extra objects, people, hands or animals; a bag or a stethoscope on the doctor; the watch missing or on the wrong wrist.', 'Hands: not five
+    fingers on each visible hand, fused or extra fingers.', 'A turn or a pose whose figure moves, changes size or changes its feet line against the base it attaches first; a turn that is a mirror flip (the
+    watch swaps wrists).', A pose with the wrong arm raised or the wrong direction (pointing left when the line says right); a pose copied in the old picture's rendering., 'An edit that looks identical
+    to the original, or where something other than what was asked moved, changed size or changed colour.', 'Nani portly, or taller-looking than slim; her clothes tight or immodest, her dupatta off her head,
+    embroidery all over the kameez instead of a few motifs; any religious marker (bindi, tilak, sindoor, deities, temple items).', 'A face sheet whose heads are not registered (the eyes not on one line
+    across a row, a head a different size), or with fewer or more than twelve cells.', 'Light from anywhere but the upper left, or a second light.']
