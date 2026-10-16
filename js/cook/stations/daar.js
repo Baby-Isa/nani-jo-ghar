@@ -86,6 +86,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // D1's "tomato" is onion + tomato and its "chilli" all three). Another vegetable (garlic, potato) changes nothing.
   const VEG_BIT = { "veg-02": 1, "veg-03": 2, "veg-12": 4 };
   const MIX_POT = ["seeds", "onion", "tomato-only", "tomato", "chilli-only", "onion-chilli", "tomato-chilli", "chilli"];
+  /*
+   * DAAR-05 (s07 DP1): what went in stays pictured once the daar is poured over it, and turns with the stir: a few of
+   * DP1's pieces (sources/art/s07/dp1-daar-pieces-v1.png, cut to v3/daar/dp1-*) lie on the daar, each vegetable's own,
+   * never one that didn't go in. [texture, its width as a share of the contents' radius, [angle (deg), radius share]...]
+   */
+  const DP1 = {
+    "veg-02": [["dv4-onion", 0.2, [[20, 0.55], [140, 0.62], [250, 0.4], [320, 0.7]]]],
+    "veg-03": [["dv4-tomato", 0.3, [[80, 0.5], [200, 0.58], [300, 0.32]]]],
+    "veg-12": [["dv4-chilli-1", 0.17, [[115, 0.3], [345, 0.45]]], ["dv4-chilli-2", 0.17, [[230, 0.68], [40, 0.25]]]],
+    "veg-13": [["dv4-paste", 0.24, [[170, 0.22]]]],
+    "veg-14": [["dv4-paste", 0.24, [[10, 0.12]]]],
+  };
+  const DP1_FILES = { "dv4-onion": "dp1-onion", "dv4-tomato": "dp1-tomato", "dv4-chilli-1": "dp1-chilli-1", "dv4-chilli-2": "dp1-chilli-2", "dv4-paste": "dp1-paste" };
   // the served bowl on its trivet (528 x 563; its round body, trivet and all: r 0.4833 of w) and the ladle
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
   // S03-D (S8): the tadka bowl redrawn with matte daar (no beads), its own trivet circle measured on the cut
@@ -169,6 +182,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
       .concat(DIAL_ICONS.map((n) => [`dv3-dial-${n}`, `${V3}dial-${n}.webp`]))
+      .concat([...new Set(vegAll.flatMap((id) => (DP1[id] || []).map((d) => d[0])))].map((key) => [key, `${V3}${DP1_FILES[key]}.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
       .concat(St.artLoad(["knife", "daar-bowl", "daar-trivet"])); // S02-B: the art run's knife and split bowl/trivet, once they land
@@ -510,7 +524,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let mix = 0; // the pictured vegetables in the pot so far (VEG_BIT)
     const stage = (st) => (st === "oil" ? 0 : 1);
     /** A chopped vegetable goes in: the pot shows exactly what's in it (R4: no onion unless onion went in). */
+    const wentIn = new Set(); // DAAR-05: every chopped thing that went in (DP1's pieces after the daar)
     const addVeg = (id) => {
+      if (id) wentIn.add(id);
       mix |= VEG_BIT[id] || 0;
       const want = MIX_POT[mix];
       if (want !== state) setPot(want);
@@ -593,6 +609,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let help = false;
     // a pinch from the jar: the jar tips over the pot, the seeds land in the oil (the picture changes: D3)
     const spiceDrop = async (id) => {
+      if (DP1[id]) wentIn.add(id); // (garlic in the tadka: its paste stays pictured on the daar, DAAR-05)
       const obj = items[id];
       const col = St.heapColor(id, 0x8a5a2a);
       S.tweens.add({ targets: obj, scale: obj.baseScale * 1.06, duration: 90, yoyo: true });
@@ -700,7 +717,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // the bowl tips in: everything in it goes at once
         await S.fly(vbowl, cx - bodyR * 0.8, cy - bodyR * 0.4, { duration: 360, arc: z.L(60) });
         await Cook.tween(S, { targets: vbowl, angle: 60, duration: 200 });
-        chopped.rows.forEach((id) => (mix |= VEG_BIT[id] || 0));
+        chopped.rows.forEach((id) => {
+          mix |= VEG_BIT[id] || 0;
+          wentIn.add(id);
+        });
         addVeg(null);
         Cook.sfx.sizzle(1);
         S.tweens.add({ targets: vbowl, alpha: 0, duration: 300 });
@@ -735,6 +755,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     S.tweens.add({ targets: dBowl, alpha: 0, duration: 300 });
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
     await setPot("tadka-v2", 600);
+    const pieces = [];
+    [...wentIn].forEach((id) =>
+      (DP1[id] || []).forEach(([key, w, spots]) => {
+        if (!S.textures.exists(key)) return;
+        spots.forEach(([deg, rr], i) => {
+          const img = S.track(S.add.image(cx, cy, key).setDepth(D.item + 0.15).setAlpha(0));
+          if (key === "dv4-onion") img.setTint(0xffe2b4); // cooked soft in the oil, not raw white
+          img.setScale((inR * w * (0.9 + 0.2 * ((i * 37) % 10) / 10)) / Math.max(img.width, img.height));
+          const piece = { img, a: (deg * Math.PI) / 180, r: inR * rr, turn: ((deg * 7) % 360) * (Math.PI / 180) };
+          img.setPosition(cx + Math.cos(piece.a) * piece.r, cy + Math.sin(piece.a) * piece.r).setRotation(piece.turn);
+          S.tweens.add({ targets: img, alpha: 0.92, duration: 400 });
+          pieces.push(piece);
+        });
+      })
+    );
     Cook.daarPhase = "daar-in";
     burner.set("low");
     if (sizzle && sizzle.stop) sizzle.stop();
@@ -749,7 +784,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // wrong try is counted right for you and moves on.
     let stirred = 0;
     for (let t = 0; ; t++) {
-      const st = await stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry: retry || t > 0, steps });
+      const st = await stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry: retry || t > 0, steps, pieces });
       stirred = st.count;
       if (!t && !retry) {
         z.listen(stirred === laps, `stirred ${stirred} times, they asked for ${laps}`);
@@ -946,7 +981,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * pictured contents turn with the ladle (D10: the tadka picture, clipped inside the rim; the swirl picture
    * comes up as you go faster). speed: null | "slow" | "quick" (said from level 2, judged by the ear only).
    */
-  function stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry, steps }) {
+  function stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry, steps, pieces = [] }) {
     return new Promise((resolve) => {
       const ctx = z.ctx;
       const hide = St.hideKnown(ctx);
@@ -966,7 +1001,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return im;
       };
       const still = layer("dv3-pot-tadka-v2", 1);
-      const swirl = layer("dv3-pot-stir", 0);
+      // DAAR-05: the fast layer is the pot's own tadka turning faster (pot-stir showed curry leaves no order puts in)
+      const swirl = layer("dv3-pot-tadka-v2", 0);
       // the ladle (D6): top-down, its bowl in the daar and the handle rising toward us
       const ladle = S.track(S.add.image(cx + trackR, cy, "dv3-ladle").setDepth(D.item + 0.6).setOrigin(LADLE.cx, LADLE.cy));
       ladle.setScale((inR * 0.3) / (LADLE.r * LADLE.w));
@@ -1028,7 +1064,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         ladle.setRotation(ang - LADLE_HANDLE); // DAAR-11: the handle points out over the rim, wherever the ladle is
         ringG.setPosition(ladle.x, ladle.y);
         still.setRotation(rot);
-        swirl.setRotation(rot);
+        swirl.setRotation(rot * 1.7);
+        // DAAR-05: what went in turns with the daar
+        pieces.forEach((p) => p.img.active && p.img.setPosition(cx + Math.cos(p.a + rot) * p.r, cy + Math.sin(p.a + rot) * p.r).setRotation(p.turn + rot));
       };
       const lap = () => {
         count++;
