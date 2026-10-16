@@ -487,6 +487,114 @@
    "outdir": "heal-v3",
    "failed": {},
    "_note": "DM2: the two lever states only; the four drops are glossy and could read as sweets (landing report, non-negotiable 16): not cut, the game keeps its matte drawn drops"
+  },
+  {
+   "id": "boy-sit",
+   "type": "figure",
+   "data": "boy",
+   "_note": "s07-clinic-b: the other patients' seated front pose (clinic-heal-v3 W1, the girl's own framing), for the waiting room's bench: the same job shape as girl-wide, base only (no moods, poses or close-ups exist for them in the games: the girl stays every game's patient)",
+   "src": "../clinic-heal-v3/boy-w1-front-neutral-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 470,
+   "age": "child",
+   "anchors": {
+    "front": {
+     "forehead": [
+      512,
+      220
+     ],
+     "eyes": [
+      512,
+      310
+     ],
+     "mouth": [
+      512,
+      400
+     ],
+     "head": [
+      512,
+      310
+     ],
+     "seat": [
+      512,
+      960
+     ]
+    }
+   },
+   "out": "patients/boy/boy"
+  },
+  {
+   "id": "old-man-sit",
+   "type": "figure",
+   "data": "old-man",
+   "_note": "s07-clinic-b: the other patients' seated front pose (clinic-heal-v3 W1, the girl's own framing), for the waiting room's bench: the same job shape as girl-wide, base only (no moods, poses or close-ups exist for them in the games: the girl stays every game's patient)",
+   "src": "../clinic-heal-v3/oldman-w1-front-neutral-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 440,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      512,
+      190
+     ],
+     "eyes": [
+      512,
+      272
+     ],
+     "mouth": [
+      512,
+      350
+     ],
+     "head": [
+      512,
+      272
+     ],
+     "seat": [
+      512,
+      990
+     ]
+    }
+   },
+   "out": "patients/old-man/old-man"
+  },
+  {
+   "id": "old-woman-sit",
+   "type": "figure",
+   "data": "old-woman",
+   "_note": "s07-clinic-b: the other patients' seated front pose (clinic-heal-v3 W1, the girl's own framing), for the waiting room's bench: the same job shape as girl-wide, base only (no moods, poses or close-ups exist for them in the games: the girl stays every game's patient)",
+   "src": "../clinic-heal-v3/oldwoman-w1-front-neutral-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 430,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      512,
+      190
+     ],
+     "eyes": [
+      512,
+      262
+     ],
+     "mouth": [
+      512,
+      340
+     ],
+     "head": [
+      512,
+      262
+     ],
+     "seat": [
+      512,
+      990
+     ]
+    }
+   },
+   "out": "patients/old-woman/old-woman"
   }
  ]
 }

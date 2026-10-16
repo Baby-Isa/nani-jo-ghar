@@ -15,8 +15,8 @@
  *   fallback) · W4 two in the called order, with the comfort rings.
  * A wrong tick at level 1: the person shakes their head and the doctor says the
  * line once more (the one gentle correction). From level 2 it just shakes (UX s11).
- * Stand-ins: the rough people (sitting on their stools), recoloured for the
- * colour rung; the doctor's rough sprite in the doorway.
+ * Stand-ins: the uncle, the auntie and the woman with the baby are still the rough people (sitting on
+ * their stools), recoloured for the colour rung; the girl, the boy, the old man and the old woman are their real art.
  */
 (function (global) {
   "use strict";
@@ -55,14 +55,27 @@
     img.src = Kit.url((art.heads && (art.heads[mood || "neutral"] || art.heads.neutral)) || art.front);
     return f;
   };
-  const artFor = (b) => (b.kind === "girl" && girlArt && girlArt.front ? girlArt : null);
+  /**
+   * s07-clinic-b (Zafar 16 Oct: the ready-made characters, "do that now regardless"): the boy, the old man and the
+   * old woman sit on the bench in their real art too (data/clinic/heal-art.json `waiting`: the clinic-heal-v3 seated
+   * fronts on the girl's framing), seated like her: the seat line on the cushion, one drawn height per person (a child
+   * GIRL_H, a grown-up ADULT_H: a seated grown-up about three quarters of the doctor's standing 0.57), never stretched.
+   * The uncle, the auntie and the woman with the baby keep their rough sprites until their seated art is cut.
+   */
+  const ADULT_H = 0.42;
+  let peopleArt = {};
+  const artFor = (b) => {
+    if (b.with === "baby") return null; // the woman holding the baby: her stand-in until that art exists
+    const a = b.kind === "girl" ? girlArt : peopleArt[b.kind];
+    return a && a.front ? a : null;
+  };
 
   /** One person in the room: the sprite (recoloured for the colour rung), the child beside them, the tick under them. */
   function personEl(box, cfg, b, i, used) {
     const slot = cfg.slots[b.slot] || cfg.slots.bench0;
     const child = b.who === "boy" || b.who === "girl";
     const art = artFor(b);
-    const hgt = art ? GIRL_H * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) : cfg.adult * (child ? cfg.child : 1) * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) * (slot.scale || 1);
+    const hgt = art ? (art.age === "adult" ? ADULT_H : GIRL_H) * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) : cfg.adult * (child ? cfg.child : 1) * (b.height === "tall" ? cfg.tall : b.height === "short" ? cfg.short : 1) * (slot.scale || 1);
     // the art: her seat line (anchors.seat) on the cushion, so the wrap's bottom (her feet) sits below it
     const y = art ? GIRL_SEAT + hgt * (art.feet - art.anchors.seat[1]) / art.feet : slot.y;
     const wrap = S.place(h("div", `cl-wp${child ? " child" : ""}${art ? " art" : ""}`, box), { x: slot.x, y, h: art ? hgt / art.feet : hgt, z: slot.z });
@@ -80,6 +93,13 @@
       const tint = h("div", "cl-wp-tint", fig);
       tint.style.setProperty("--tint", Kit.COLOURS[b.colour] || b.colour);
       tint.style.setProperty("--mask", `url("${img.src}")`);
+      // s07-clinic-b: a person's own clothes band (heal-art.json waiting.<kind>.tint), not the girl's dress band
+      if (art && art.tint) {
+        const [t0, t1] = art.tint.map((v) => Math.round(v * 100));
+        const m = `url("${img.src}"), linear-gradient(to bottom, transparent ${t0 - 3}%, #000 ${t0}%, #000 ${t1}%, transparent ${t1 + 3}%)`;
+        tint.style.webkitMaskImage = m;
+        tint.style.maskImage = m;
+      }
       wrap.dataset.colour = b.colour;
     }
     if (b.with === "child") {
@@ -124,6 +144,7 @@
       const { screen, data } = env;
       const res = S.result("waiting");
       girlArt = await S.artFor("girl");
+      peopleArt = (S._healArt && S._healArt.waiting) || {};
       const stage = S.room(screen, "waiting");
       // T22, T23 (decision 55): the doctor is on screen, so he talks in bubbles at his face; his box holds only the
       // child's next step: [Bring them in] at L1, nothing from L2
@@ -320,7 +341,7 @@
           b.classList.add("cl-face-pill");
           b.setAttribute("aria-label", k);
           const s = seats.find((x) => x.b.who === k);
-          b.appendChild(s && artFor(s.b) ? headOf(girlArt) : S.personFace(s ? s.b.kind : k, "neutral"));
+          b.appendChild(s && artFor(s.b) ? headOf(artFor(s.b)) : S.personFace(s ? s.b.kind : k, "neutral"));
           const sp = h("span", "cl-pill-say", b);
           sp.innerHTML = SPEAKER;
           sp.addEventListener("click", (e) => {

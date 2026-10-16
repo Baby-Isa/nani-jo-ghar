@@ -1185,5 +1185,144 @@
    "laugh": "assets/clinic/patients/doctor/faces/laugh.webp",
    "think": "assets/clinic/patients/doctor/faces/think.webp"
   }
+ },
+ "waiting": {
+  "_about": "s07-clinic-b (Zafar 16 Oct: 'do that now regardless'): the other people's real art for the waiting room's bench, cut by build/tools/art/specs/s07.cut.json (boy-sit, old-man-sit, old-woman-sit) from the clinic-heal-v3 W1 seated fronts, on the girl's framing (fig_h 440, one canvas per person, never stretched). Not under `patients`: no game has their moods, poses or close-ups, so the girl stays every game's patient (js/clinic/stages/waiting.js reads this key only).",
+  "boy": {
+   "canvas": [
+    658,
+    1475
+   ],
+   "src": [
+    179,
+    0
+   ],
+   "w": 210,
+   "h": 471,
+   "front": "assets/clinic/patients/boy/boy-front.webp",
+   "faces": {},
+   "feet": 0.9647,
+   "anchors": {
+    "forehead": [
+     0.5061,
+     0.1492
+    ],
+    "eyes": [
+     0.5061,
+     0.2102
+    ],
+    "mouth": [
+     0.5061,
+     0.2712
+    ],
+    "head": [
+     0.5061,
+     0.2102
+    ],
+    "seat": [
+     0.5061,
+     0.6508
+    ]
+   },
+   "heads": {
+    "neutral": "assets/clinic/patients/boy/boy-head-neutral.webp"
+   },
+   "age": "child",
+   "tint": [
+    0.33,
+    0.59
+   ]
+  },
+  "old-man": {
+   "canvas": [
+    719,
+    1443
+   ],
+   "src": [
+    122,
+    26
+   ],
+   "w": 235,
+   "h": 472,
+   "front": "assets/clinic/patients/old-man/old-man-front.webp",
+   "faces": {},
+   "feet": 0.9647,
+   "anchors": {
+    "forehead": [
+     0.5424,
+     0.1137
+    ],
+    "eyes": [
+     0.5424,
+     0.1705
+    ],
+    "mouth": [
+     0.5424,
+     0.2245
+    ],
+    "head": [
+     0.5424,
+     0.1705
+    ],
+    "seat": [
+     0.5424,
+     0.6681
+    ]
+   },
+   "heads": {
+    "neutral": "assets/clinic/patients/old-man/old-man-head-neutral.webp"
+   },
+   "age": "adult",
+   "tint": [
+    0.27,
+    0.67
+   ]
+  },
+  "old-woman": {
+   "canvas": [
+    857,
+    1449
+   ],
+   "src": [
+    72,
+    35
+   ],
+   "w": 279,
+   "h": 472,
+   "front": "assets/clinic/patients/old-woman/old-woman-front.webp",
+   "faces": {},
+   "feet": 0.9648,
+   "anchors": {
+    "forehead": [
+     0.5134,
+     0.107
+    ],
+    "eyes": [
+     0.5134,
+     0.1567
+    ],
+    "mouth": [
+     0.5134,
+     0.2105
+    ],
+    "head": [
+     0.5134,
+     0.1567
+    ],
+    "seat": [
+     0.5134,
+     0.6591
+    ]
+   },
+   "heads": {
+    "neutral": "assets/clinic/patients/old-woman/old-woman-head-neutral.webp"
+   },
+   "age": "adult",
+   "tint": [
+    0.3,
+    0.72
+   ]
+  },
+  "_tint": "tint: the clothes' band [top, bottom] as canvas shares, for the colour rung's stand-in tint (waiting.js; the girl's is css/clinic.css .cl-wp.art .cl-wp-tint)"
  }
 }
