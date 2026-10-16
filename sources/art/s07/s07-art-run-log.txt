@@ -142,3 +142,31 @@ Downloaded file name (ChatGPT title)              -> save as
 50. Three-Quarter View Girl in Yellow Dress.png        -> girl-w13-standing-3q-right-neutral-v1.png
 51. Little Girl in Profile with Braid.png              -> girl-w13-standing-side-right-neutral-v1.png
 Note: DA3-F and DA4-F were each tried more than once while ChatGPT was failing, so a duplicate copy (name ending "(1)") may be in Downloads; it is the same picture. GN1-QL (girl quarter turn left) was never made correctly, so nothing was downloaded for it.
+
+=== PARTS B AND D RE-DOWNLOADED (16 Oct 2026) ===
+Downloaded file name                                -> save as
+GM1 (from chat)                                     -> girl-m5-front-mouth-open-v1.png
+GS1 (from chat)                                     -> girl-w4-front-sore-v2.png
+RP1 (from chat)                                     -> child-p1-sole-v2.png
+I1  (from chat)                                     -> i1-dirt-bits-v1.png
+B1  (from chat)                                     -> b1-plaster-level-colours-v1.png
+Peaceful Girl in Yellow Dress.png                   -> girl-b1-front-blink-v1.png
+Close-Up of a Swollen Knee.png                      -> child-k4-knee-bump-v1.png
+Clinical Front Tooth and Gums Close-Up.png          -> td1-tooth-drill-view-v1.png
+Colorful Four-Tank Liquid Dispenser.png             -> dm1-drop-machine-v1.png
+Minimalist Lever and Colorful Syrup Drops.png       -> dm2-levers-drops-v1.png
+Colorful Gauze Roll Asset Sheet.png                 -> b2-bandage-colours-v1.png
+Sewing Spools and Loose Thread Grid.png             -> b3-thread-colours-v1.png
+Reflex Hammer Multi-View Reference Sheet.png        -> b4-reflex-hammer-sheet-v1.png
+Colorful Dropper Bottle Grid.png                    -> b5-drops-colours-v1.png
+Dental Handpiece Views in Grid.png                  -> b6-drill-sheet-v1.png
+Eight White Tubes in Blue-Cap Arrangements.png      -> b7-filling-tube-sheet-v1.png
+Lemon, Milk, Honey, and Spoon Set(1).png            -> b8-taste-things-v1.png
+Studio Grid of Everyday Essentials.png              -> b9-decoys-belt-v1.png
+Light Blue Eye Patch View Sheet.png                 -> b10-eye-patch-sheet-v1.png
+Sunlit Sage Green Mediterranean Kitchen.png         -> k1-kitchen-master-v1.png
+Four Trays of Wooden Skewers.png / Four Trays of Bamboo Skewers.png -> sk2-sekelo-plate-skewers-v1.png (ChatGPT's two near-identical options; keep either)
+Saucepan Tea Pouring Sequence.png                   -> cp1-chai-pan-tilt-v1.png
+Minimalist Ingredient Grid.png                      -> dp1-daar-pieces-v1.png
+Potato Ingredient Icon Sheet.png                    -> pt1-potato-v1.png
+Kept tries were matched to their chats by creation time.
