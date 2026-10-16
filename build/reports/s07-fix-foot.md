@@ -4,4 +4,6 @@
 
 **Fix.** In `partAt`, a tap inside the asked-for part's own area is that part. Otherwise the old rule still applies. The art, data, mechanics and words are unchanged.
 
-**Proof.** Red: the repro timed out at the foot. A probe of every standing part (L1-L4; 800x360, 844x390, 1366x768; 213 taps) found 12 bad before, all foot-as-toe at L3/L4, and 0 after. Green: `clinic:morning@L3` completes. `clinic:diagnosis,clinic:morning` at 800x360 and 1366x768 complete with 0 findings. Unit, static and leak checks pass.
+## Proof
+
+Red: the repro timed out at the foot. A probe of every standing part (L1-L4; 800x360, 844x390, 1366x768; 213 taps) found 12 bad before, all foot-as-toe at L3/L4, and 0 after. Green: `clinic:morning@L3` completes. `clinic:diagnosis,clinic:morning` at 800x360 and 1366x768 complete with 0 findings. Unit, static and leak checks pass.
