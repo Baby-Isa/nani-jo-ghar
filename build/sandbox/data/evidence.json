@@ -4267,7 +4267,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "cook-done:click",
+   "at": "hidden:#done-btn",
    "after": null,
    "capture": [
     "crop:#stage"
