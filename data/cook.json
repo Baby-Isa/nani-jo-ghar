@@ -3713,31 +3713,36 @@
   "s02": {
    "_about": "S02-B: the art run s02's Cook pictures (build/tools/art/specs/s02.run.yaml), by the id the game asks for. Until a line lands, `ready` is false and the game keeps the current art (or a drawn stand-in). When /art-run cuts one: set `file` (the game's webp), `ready: true` and the measured `meta` (sizes, registration points, the flat inner area). Nothing else changes in code.",
    "kitchen-trays": {
-    "line": "A1",
-    "file": "assets/cook/bg/service-v2.webp",
+    "line": "K1 (s07; was A1's service-v2.webp)",
+    "file": "assets/cook/bg/service-master-v1.webp",
     "ready": true,
+    "core": [
+     250,
+     450
+    ],
+    "_core": "SH-91, CK-44 (s07-cook, 16 Oct): the kitchen's master, 2100x1350 (K1 upscaled x1.367 by Real-ESRGAN, set 126 px down so its island's back edge lands on core y 608; the 126 px of ceiling above are its top row carried on; 177 px of the island's wooden front trimmed). The 1600x900 core sits at `core` (x, y) in it; fitBg draws it 1:1 with the core on the design box, and the occluder and the trays' fronts are cut from it at the same place (stations.js serviceFrame).",
     "meta": {
      "trays": [
       [
-       358,
-       652,
-       339,
-       58
+       350,
+       662,
+       324,
+       64
       ],
       [
-       802,
-       652,
-       331,
-       58
+       803,
+       662,
+       327,
+       64
       ],
       [
-       1251,
-       652,
-       332,
-       58
+       1258,
+       662,
+       329,
+       64
       ]
      ],
-     "_about": "three tray boxes in design px [cx, cy, w, h], left to right, measured on the cut (artcut background job); the island's back edge lands at y 608 as on service.jpg (the occluder crops at 611)"
+     "_about": "three tray boxes in core design px [cx, cy, w, h], left to right, measured on the master's core (brown-rim mask); the island's back edge lands at y 608 as on service-v2 (the occluder crops at 611)"
     },
     "station": "service"
    },

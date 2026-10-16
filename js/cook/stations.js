@@ -155,8 +155,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const k0 = W / bw; // every background is drawn 1600 wide in the design box
       if (this.viewName === "pantry") {
         bg.setOrigin(0).setPosition(0, 0).setScale(k0);
-        this.extendEdges(bg.texture.key, src, k0, bh * k0);
+        this.extendEdges(bg.texture.key, src, k0);
         return;
+      }
+      // SH-91, CK-44 (s07-cook): the kitchen's master (art.s02 kitchen-trays `core`) is drawn 1:1 with its 1600x900
+      // core on the design box, so the stage shows more of the one picture instead of zooming it; the counter's
+      // occluder and the trays' fronts are cut from the same picture at the same place (serviceFrame), so no seam
+      if (bg.texture.key === "bg-service") {
+        const f = Cook.serviceFrame(this);
+        if (f.master) {
+          bg.setOrigin(0).setPosition(f.ox, f.oy).setScale(1 / f.k);
+          this.extendEdges(bg.texture.key, src, 1 / f.k, f.ox, f.oy);
+          return;
+        }
       }
       // cover the view, scaled about a pivot that stays put: the service picture's island edge (the
       // family lean on it), a worktop's middle (nothing sits on its pattern)
@@ -165,8 +176,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const need = Math.max(1, (piv.x - v.left) / piv.x, (v.right - piv.x) / (W - piv.x), (piv.y - v.top) / piv.y, (v.bottom - piv.y) / Math.max(1, dh - piv.y));
       bg.setOrigin(piv.x / W, piv.y / dh).setPosition(piv.x, piv.y).setScale(k0 * need);
     }
-    /** The pantry photo's edges carried on past it (its own edge rows and columns), for a stage of another shape. */
-    extendEdges(key, src, k, dh) {
+    /**
+     * A picture's edges carried on past it (its own edge rows and columns), for a stage of another shape: the pantry
+     * photo, or a stage wider or taller than the kitchen's master. The picture covers [ox, ox + bw*k] x [oy, oy + bh*k].
+     */
+    extendEdges(key, src, k, ox = 0, oy = 0) {
       const v = Cook.view;
       const strip = (name, sx, sy, sw, sh) => {
         const tk = `bgedge-${key}-${name}`;
@@ -182,10 +196,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const add = (tk, x, y, w, h) => this.bgExt.push(this.add.image(x, y, tk).setOrigin(0).setDisplaySize(w, h).setDepth(D.bg - 0.1));
       const bw = src.width;
       const bh = src.height;
-      if (v.top < 0) add(strip("t", 0, 0, bw, 2), 0, v.top, W, -v.top + 1);
-      if (v.bottom > dh) add(strip("b", 0, bh - 2, bw, 2), 0, dh - 1, W, v.bottom - dh + 1);
-      if (v.left < 0) add(strip("l", 0, 0, 2, bh), v.left, v.top < 0 ? v.top : 0, -v.left + 1, Math.max(dh, v.bottom) - Math.min(0, v.top));
-      if (v.right > W) add(strip("r", bw - 2, 0, 2, bh), W - 1, v.top < 0 ? v.top : 0, v.right - W + 1, Math.max(dh, v.bottom) - Math.min(0, v.top));
+      const x0 = ox;
+      const y0 = oy;
+      const x1 = ox + bw * k;
+      const y1 = oy + bh * k;
+      const top = Math.min(y0, v.top);
+      const tall = Math.max(y1, v.bottom) - top;
+      if (v.top < y0) add(strip("t", 0, 0, bw, 2), x0, v.top, x1 - x0, y0 - v.top + 1);
+      if (v.bottom > y1) add(strip("b", 0, bh - 2, bw, 2), x0, y1 - 1, x1 - x0, v.bottom - y1 + 1);
+      if (v.left < x0) add(strip("l", 0, 0, 2, bh), v.left, top, x0 - v.left + 1, tall);
+      if (v.right > x1) add(strip("r", bw - 2, 0, 2, bh), x1 - 1, top, v.right - x1 + 1, tall);
     }
 
     /* ---------------- views ---------------- */
@@ -678,8 +698,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       return img;
     }
+    /**
+     * The counter's front (the service picture from design y 611 down), drawn over the family: the same picture at the
+     * same place and size as the background (serviceFrame), across the picture's whole width, so on any stage it is
+     * one continuous counter (CK-44).
+     */
     occluder() {
-      return this.track(this.add.image(0, 0, "bg-service").setOrigin(0).setCrop(0, 611, W, H - 611).setDepth(D.occ));
+      const f = Cook.serviceFrame(this);
+      const cy = Math.round((611 - f.oy) * f.k);
+      return this.track(this.add.image(f.ox, f.oy, "bg-service").setOrigin(0).setScale(1 / f.k).setCrop(0, cy, f.bw, f.bh - cy).setDepth(D.occ));
     }
     setMood(who, mood) {
       const img = this.chars[who];
@@ -1040,4 +1067,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Cook.CookScene = CookScene;
   Cook.D = D;
   Cook.CHARS = CHARS;
+  /**
+   * Where the service picture (texture bg-service) sits in the world: its origin at (ox, oy) design px, k of its own px
+   * per design px. The kitchen's master (art.s02 kitchen-trays `core`: the 1600x900 core's offset in it) is drawn 1:1
+   * with the core on the design box; an old 1600-wide picture at the design box's origin.
+   */
+  Cook.serviceFrame = function (scene) {
+    const tex = scene && scene.textures && scene.textures.exists("bg-service") ? scene.textures.get("bg-service") : null;
+    const img = tex && tex.getSourceImage ? tex.getSourceImage() : null;
+    const bw = (img && img.width) || W;
+    const bh = (img && img.height) || H;
+    const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
+    const core = kt && kt.ready && Array.isArray(kt.core) ? kt.core : null;
+    if (core && bw >= W + core[0] && bh >= H + core[1]) return { master: true, ox: -core[0], oy: -core[1], k: 1, bw, bh };
+    return { master: false, ox: 0, oy: 0, k: bw / W, bw, bh };
+  };
 })(window);

@@ -710,20 +710,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return trayBox(t, !!(kt && kt.ready));
   }
   /*
-   * CK-21: a tray spot ([cx, cy, w, h], design px measured on the 1600-wide service picture). The trays the child sees
-   * are the counter's occluder (stations.js occluder(): the service picture's counter, y 611 down, drawn 1:1 at the
-   * design box's origin, over the characters), not the background behind it (which is scaled up about its pivot on a
-   * taller stage). So the spot is where the tray is, in world px, and `src` is the same box in the picture's own px
-   * (the front wall's crop, trayFront).
+   * CK-21: a tray spot ([cx, cy, w, h], design px measured on the service picture's 1600x900 core). The trays the child
+   * sees are the counter's occluder (stations.js occluder(): the service picture's counter, y 611 down, drawn where
+   * serviceFrame puts the picture, over the characters). So the spot is where the tray is, in world px, and `src` is
+   * the same box in the picture's own px (the front wall's crop, trayFront), with the picture's origin (ox, oy).
    */
   function trayBox(sp, painted) {
     const t = { x: sp[0], y: sp[1], w: sp[2], h: sp[3], painted, src: null };
     if (!painted) return t;
-    const s = S();
-    const tex = s && s.textures && s.textures.exists("bg-service") ? s.textures.get("bg-service") : null;
-    const img = tex && tex.getSourceImage ? tex.getSourceImage() : null;
-    const k = img && img.width ? img.width / 1600 : 1; // the picture's own px per design px
-    t.src = { x: sp[0] * k, y: sp[1] * k, w: sp[2] * k, h: sp[3] * k, k };
+    // where the picture sits (stations.js serviceFrame: the kitchen's master is drawn 1:1 with its core on the design box)
+    const f = Cook.serviceFrame ? Cook.serviceFrame(S()) : { ox: 0, oy: 0, k: 1 };
+    const k = f.k; // the picture's own px per design px
+    t.src = { x: (sp[0] - f.ox) * k, y: (sp[1] - f.oy) * k, w: sp[2] * k, h: sp[3] * k, k, ox: f.ox, oy: f.oy };
     return t;
   }
   // the drawn stand-ins' props, for a dish with no served picture yet (loaded at serve time, not at open)
@@ -785,7 +783,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const fy = Math.round(r.y - 1 * k);
     const fw = Math.round(r.w + 8 * k);
     const fh = Math.round(r.h / 2 + 6 * k);
-    return s.track(s.add.image(0, 0, "bg-service").setOrigin(0).setScale(1 / k).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
+    return s.track(s.add.image(r.ox || 0, r.oy || 0, "bg-service").setOrigin(0).setScale(1 / k).setCrop(fx, fy, fw, fh).setDepth(Cook.D.occ + 2.6));
   }
   /** A world box as client px (the test hooks' boxes). */
   function clientBox(x0, y0, x1, y1) {
