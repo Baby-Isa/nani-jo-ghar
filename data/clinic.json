@@ -1001,6 +1001,8 @@
    "group": "cloth"
   },
   "plaster": {
+   "img": "assets/clinic/sheets/plaster-level/plaster-skin-belt.webp",
+   "imgs": {"red": "assets/clinic/sheets/plaster-level/plaster-red-belt.webp", "blue": "assets/clinic/sheets/plaster-level/plaster-blue-belt.webp", "green": "assets/clinic/sheets/plaster-level/plaster-green-belt.webp", "yellow": "assets/clinic/sheets/plaster-level/plaster-yellow-belt.webp"},
    "glyph": "🩹",
    "group": "plaster"
   },

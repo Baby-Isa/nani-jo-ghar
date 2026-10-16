@@ -1,5 +1,5 @@
 {
- "_about": "S02-E (decision 65): the clinic's items as sprite sheets (pack s02, build/tools/art/specs/s02.cut.json; E1-E17), one picture per view: views[item][view] -> file (belt: the pharmacy's belt, front and a little above; tray: top-down; tool: the heal games' tool column; use, use-down, ...: the working angle; the rest are spares). remap: an old single-view picture -> the sheet view that replaces it wherever the clinic draws it (Clinic.Kit.url, installed by js/clinic/main.js); the old files stay. The two-colour plasters are the s03 redo (split lengthwise, build/gen_s03.py S3; S03-D). Not remapped: the ceiling fan (R2 stays). s07-clinic-b: the s07 belt sheets (B1-B10, cut by component by build/reports/s07-clinic-b.beltcut.py, shadow-free, the base flush with the bottom): views named <item>[-<colour>]-<view>; data/clinic.json items name their belt view (`img`) and own-colour views (`imgs`); the tray views and spares are not wired yet; plaster-level holds B1's top-down plasters (tray views only: B1 failed the belt camera).",
+ "_about": "S02-E (decision 65): the clinic's items as sprite sheets (pack s02, build/tools/art/specs/s02.cut.json; E1-E17), one picture per view: views[item][view] -> file (belt: the pharmacy's belt, front and a little above; tray: top-down; tool: the heal games' tool column; use, use-down, ...: the working angle; the rest are spares). remap: an old single-view picture -> the sheet view that replaces it wherever the clinic draws it (Clinic.Kit.url, installed by js/clinic/main.js); the old files stay. The two-colour plasters are the s03 redo (split lengthwise, build/gen_s03.py S3; S03-D). Not remapped: the ceiling fan (R2 stays). s07-clinic-b: the s07 belt sheets (B1-B10, cut by component by build/reports/s07-clinic-b.beltcut.py, shadow-free, the base flush with the bottom): views named <item>[-<colour>]-<view>; data/clinic.json items name their belt view (`img`) and own-colour views (`imgs`); the tray views and spares are not wired yet; plaster-level holds B1's top-down plasters (the tray views) and, s08-clinic-items, B1 v2's belt views (row 1 and cell 5, the belt camera; data/clinic.json plaster `img`/`imgs`), drawn at 0.8 of the dish's width.",
  "views": {
   "bandage": {
    "bandage-blue-belt": "assets/clinic/sheets/bandage/bandage-blue-belt.webp",
@@ -176,10 +176,15 @@
    "yellow": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp"
   },
   "plaster-level": {
+   "plaster-blue-belt": "assets/clinic/sheets/plaster-level/plaster-blue-belt.webp",
    "plaster-blue-tray": "assets/clinic/sheets/plaster-level/plaster-blue-tray.webp",
+   "plaster-green-belt": "assets/clinic/sheets/plaster-level/plaster-green-belt.webp",
    "plaster-green-tray": "assets/clinic/sheets/plaster-level/plaster-green-tray.webp",
+   "plaster-red-belt": "assets/clinic/sheets/plaster-level/plaster-red-belt.webp",
    "plaster-red-tray": "assets/clinic/sheets/plaster-level/plaster-red-tray.webp",
+   "plaster-skin-belt": "assets/clinic/sheets/plaster-level/plaster-skin-belt.webp",
    "plaster-skin-tray": "assets/clinic/sheets/plaster-level/plaster-skin-tray.webp",
+   "plaster-yellow-belt": "assets/clinic/sheets/plaster-level/plaster-yellow-belt.webp",
    "plaster-yellow-tray": "assets/clinic/sheets/plaster-level/plaster-yellow-tray.webp"
   },
   "syringe": {

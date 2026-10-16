@@ -159,9 +159,13 @@
     s("line", { x1: syCx, y1: SY.y + SY.h + 16, x2: syCx, y2: SY.y + SY.h + 58, stroke: "#8a8f98", "stroke-width": 4, "stroke-linecap": "round" }, syG);
     const dropG = s("g", {}, syG);
     const fallG = s("g", {}, S.fx);
-    // a drop: a matte, see-through teardrop (never a ball)
+    // a drop: a matte, see-through teardrop (never a ball). s08-clinic-items (DM2): the drawn drop in its colour when
+    // the art has one (boing.json art.drops), in the drawn teardrop's own box (tip y - 1.5r, bottom y + 1.25r)
+    const DROP_ART = ART.drops || {};
     const tear = (g, x, y, r, c, cls) =>
-      s("path", { class: cls || null, d: `M${x} ${y - r * 1.5} C${x + r * 0.35} ${y - r * 0.8} ${x + r} ${y - r * 0.2} ${x + r} ${y + r * 0.25} A${r} ${r} 0 1 1 ${x - r} ${y + r * 0.25} C${x - r} ${y - r * 0.2} ${x - r * 0.35} ${y - r * 0.8} ${x} ${y - r * 1.5}Z`, fill: MED[c] || c, opacity: 0.72, stroke: "rgba(0,0,0,.18)", "stroke-width": 1.5 }, g);
+      DROP_ART[c] && Kit
+        ? s("image", { class: cls || null, href: Kit.url(DROP_ART[c]), x: x - (2.75 * r * DROP_ART.aspect) / 2, y: y - 1.5 * r, width: 2.75 * r * DROP_ART.aspect, height: 2.75 * r, preserveAspectRatio: "xMidYMax meet", opacity: DROP_ART.opacity || 1 }, g)
+        : s("path", { class: cls || null, d: `M${x} ${y - r * 1.5} C${x + r * 0.35} ${y - r * 0.8} ${x + r} ${y - r * 0.2} ${x + r} ${y + r * 0.25} A${r} ${r} 0 1 1 ${x - r} ${y + r * 0.25} C${x - r} ${y - r * 0.2} ${x - r * 0.35} ${y - r * 0.8} ${x} ${y - r * 1.5}Z`, fill: MED[c] || c, opacity: 0.72, stroke: "rgba(0,0,0,.18)", "stroke-width": 1.5 }, g);
     const slotY = (k) => SY.y + SY.h - 24 - k * 30;
     const drawDrops = () => {
       S.clear(dropG);
