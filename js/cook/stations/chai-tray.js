@@ -916,6 +916,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const minTop = ((Cook.view && Cook.view.top) || 0) + 12;
         const top = tilt.getBounds().y;
         if (top < minTop && ly > minTop) tilt.setScale(ps * Math.max(0.6, (ly - minTop) / (ly - top)));
+        // (s08 CP1: the top view's handle points right: over the last glass it would run off the right edge; the same,
+        // drawn smaller about its lip)
+        const maxRight = ((Cook.view && Cook.view.right) || 1600) - 12;
+        const b2 = tilt.getBounds();
+        if (b2.right > maxRight && maxRight > lx) tilt.setScale(tilt.scaleX * Math.max(0.6, (maxRight - lx) / (b2.right - lx)));
         await new Promise((r) => S.tweens.add({ targets: tilt, alpha: 1, duration: 260, onComplete: r }));
         for (const key of steps.slice(1).concat(steps.length ? [tiltKey] : [])) {
           await Cook.wait(110);
