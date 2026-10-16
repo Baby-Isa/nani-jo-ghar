@@ -124,7 +124,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // the food inside a pot, below the jar's own highlights and above its thick base (the layers' texture)
   const POT_FOOD = { x0: 0.15, x1: 0.85, y0: 0.4, y1: 0.86 };
   const POTS = {
-    "veg-01": "pot-potato",
+    "veg-01": "pot-potato-v2", // ART-11 (s07 PT1): the cubes recoloured to PT1's matte cream flesh (they read as butter)
     "ph-chana": "pot-chana",
     "veg-02": "pot-onion",
     "veg-03": "pot-tomato", // a stand-in (build/make_chaat_tomato_pot.py): no tomato on the T2 sheet

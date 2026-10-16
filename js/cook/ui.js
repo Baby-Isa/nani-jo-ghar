@@ -2620,6 +2620,8 @@
     // S02-E (decision 64): the title shows the redrawn kitchen once it has landed (the old photo isn't fetched)
     const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
     o.style.backgroundImage = opts.title && kt && kt.ready && kt.file ? `url("${Cook.v(kt.file)}")` : "";
+    // the kitchen's master (SH-91): its core (the island and trays) is at the bottom, so the title keeps the counter in view
+    o.style.backgroundPosition = opts.title && kt && kt.ready && Array.isArray(kt.core) ? "50% 100%" : "";
     o.classList.toggle("title-mode", !!opts.title);
     const p = $("#panel");
     p.innerHTML = html;
