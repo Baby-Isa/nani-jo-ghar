@@ -66,8 +66,10 @@ def line_str(l):
 
 
 # How kept images leave ChatGPT. "github": the runner commits them itself (the default). "download": they stay in their chats
-# and are downloaded for Zafar at the end (s07, 15 Oct: ChatGPT serves images as in-page blob: URLs, and the page-JavaScript
-# route to GitHub was refused by Claude's safety classifier; Zafar then downloaded them by hand).
+# and are downloaded for Zafar at the end from ChatGPT's Library page with Chrome's normal download, logged as "title -> save
+# as" since the files cannot be renamed (s07, 15-16 Oct: ChatGPT serves images as in-page blob: URLs, the page-JavaScript
+# route to GitHub was refused by Claude's safety classifier, and the Library page was the way the last 21 came down).
+# A spec may set `approvals:` to replace the APPROVALS lines (s08: his ok on the first picture of each person gates the rest).
 def delivery_texts(mode, spec):
     dest = spec["dest"]
     if mode == "github":
@@ -89,15 +91,15 @@ def delivery_texts(mode, spec):
         }
     if mode == "download":
         return {
-            "OPENING": "keeping each kept image in its own ChatGPT chat until the end, when you download them for Zafar. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed; Zafar uploads the folder himself afterwards).",
-            "PLACES": "Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END).",
+            "OPENING": "keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself.",
+            "PLACES": "Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library",
             "MOVING": tpl("moving-download.txt"),
             "SAFETY_COMMIT": "Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.",
-            "STEP6": "Log the kept image: its save-as name and its chat's link (the address bar of that chat). It stays in that chat; never download it mid-run.",
-            "LOG_HEAD": "One line per kept image:\n <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | <notes>",
+            "STEP6": "Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.",
+            "LOG_HEAD": "One line per kept image:\n <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | title: <that chat's title> | <notes>",
             "LOG_ALSO": "",
             "RESUMING": "read the log posted in this chat: every line with a chat link is a kept image. Carry on from the first prompt in the run order that has no such line.",
-            "AT_END": "After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link. At the very end, post the whole log as one block, then download the kept images for Zafar, in the run order, one at a time: open the kept image's chat, open the image full size, use ChatGPT's own download button, and log \"DOWNLOADED <n>: <save as>\" so the n-th file in the Downloads folder is known by name (ChatGPT names the files itself; the order is the rename key). Never page JavaScript, never a GitHub upload. If the download button is refused, say so and post the ordered list of chat links and save-as names instead; Zafar downloads from it.",
+            "AT_END": "After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link and title. At the very end, or as soon as Zafar says \"stop\" or \"download\" in this chat, post the whole log as one block, then download the kept images for Zafar, in the run order, one at a time: open https://chatgpt.com/library, find the kept image (by its chat's title and its thumbnail; the newest kept try of that chat), open it and download it with ChatGPT's own download button, which is Chrome's normal download into the Downloads folder. The file keeps the name ChatGPT gives it; you cannot rename it, so log each download at once, in order, as \"DOWNLOADED <n>: <ChatGPT's title, as the file is named> -> <save as>\". When every kept image is down, post the whole log once more with that numbered title -> save-as list at its end: Zafar renames from it and pushes the folder and the log to the repo himself. Never page JavaScript, never a GitHub upload, never a file picker. If a download is refused, say so, log it, and post the ordered list of chat links, titles and save-as names instead; Zafar downloads from it.",
             "NOTES": "One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).",
             "DONE": "KEPT or SKIPPED",
             "PASS_SAVE": "Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the \"+\" button, then \"Add from library\": the kept image is there under its chat), never by download and re-upload.",
@@ -241,7 +243,8 @@ def build(spec, redo_path=None):
     dv = delivery_texts(spec.get("delivery", "github"), spec)
     loop = fill(tpl("runner-loop.txt"), {"WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "STALL": r["stall_minutes"], "HARD": r["hard_minutes"],
                                          "NOTES": dv["NOTES"], "DONE": dv["DONE"], "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "BATCH": r["commit_batch"], "FLUSH": r["flush_minutes"]})
-    approvals = ("- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.\n"
+    approvals = spec.get("approvals") or (
+                 "- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.\n"
                  "- Everything else is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log \"needs Zafar: likeness\" and carry on."
                  if not real else
                  "- Zafar approves characters based on real people. After each such image, post it and wait for his ok in this chat before using it; keep the other windows generating meanwhile.")
