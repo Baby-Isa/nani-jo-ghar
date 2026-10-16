@@ -1,0 +1,51 @@
+{
+ "pack": "s08-nani",
+ "about": "Nani's s08 look outside the clinic (build/reports/s08-nani-stitch.md), cut by build/tools/art/artcut.py from sources/art/s08: the jaw-fixed lean set (v3) at the counter and on the story's ledge (one canvas each, every frame registered onto lean-neutral, so a swap moves nothing), and her face sheet for the badge and the box faces. A later picture is a file swap: change the name here and re-run; the game's file names stay.",
+ "src": "sources/art/s08",
+ "out": "assets",
+ "data": "build/tools/art/specs/s08-nani.cut-data.json",
+ "report_beside_data": true,
+ "skin_render": [213, 144, 108],
+ "skin_limits": [6, 12],
+ "jobs": [
+  {
+   "id": "nani-lean",
+   "type": "lean",
+   "data": "nani-lean",
+   "src": "nani-lean-neutral-v3.png",
+   "faces": {
+    "happy": "nani-lean-happy-v3.png",
+    "talk": "nani-lean-talk-v3.png",
+    "blink": "nani-lean-blink-v3.png"
+   },
+   "poses": {
+    "point": "nani-lean-point-v3.png"
+   },
+   "alias": {},
+   "counter": 1172,
+   "neck": 640,
+   "eye_row": 400,
+   "head_band": [0.08, 0.42],
+   "arm_cols": [330, 700],
+   "skin_box": [380, 300, 640, 560],
+   "canvases": {
+    "counter": { "size": [460, null], "head_w": 186, "eyes_x": 224.5, "pad": 4, "below": 4, "out": "cook/characters/nani-<mood>-v3.webp" },
+    "ledge": { "size": [443, 578], "arm_y": 499, "fit_top": 12, "eyes_x": 221, "moods": ["neutral", "happy", "talk", "point"], "out": "cook/characters/nani-ledge-<mood>-v3.webp" }
+   }
+  },
+  {
+   "id": "nani-faces",
+   "type": "faces",
+   "data": "nani-faces",
+   "src": "nani-faces-v2.png",
+   "rows": 3,
+   "names": ["neutral", "talk", "happy", "calm", null, "blink", "surprised", "think", "frown", null, null, null],
+   "size": 280,
+   "badge": { "side": 1.0, "top_pad": 0.02 },
+   "face": { "side": 1.6, "dy": -0.03 },
+   "only": { "badge": ["neutral"], "face": ["neutral", "talk", "happy", "blink", "frown"] },
+   "out": { "badge": "cook/characters/nani-badge.webp", "face": "cook/characters/nani-face-<name>.webp" },
+   "rename": { "face:neutral": "cook/characters/nani-face.webp" }
+  }
+ ]
+}

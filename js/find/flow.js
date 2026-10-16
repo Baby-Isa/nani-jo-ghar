@@ -140,7 +140,7 @@
     const mode = Cook.save.mode;
     const p = UI.panel(
       `<div class="title-wrap">
-        <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
+        <img src="${Cook.v("assets/cook/characters/nani-ledge-happy-v3.webp")}" alt="Nani">
         <div class="t-text">
           <div class="t-about">
           <h1>Find it with Nani</h1>
