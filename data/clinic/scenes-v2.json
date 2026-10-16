@@ -38,10 +38,10 @@
     "certificate": { "src": null, "x": 0.68, "y": 0.215, "w": 0.125, "h": 0.14, "_about": "CLN-116 (CB2b review, 29 Sept): the real doctor's certificate on the right wall, a photo Zafar supplies (src: then a framed picture); a grey frame flagged in the markup until then. x = the frame's centre, y = its bottom, w and h = its size, as shares of the room (1536 x 1024): above the doctor's head (doctor), clear of the door and of the fever room's wall thermometer (x 0.76-0.84)" }
   },
   "stand": {
-    "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right. CLN-154 (Zafar, 16 Oct: he read nearer the camera than her): one feet line (fig.bottom = doctor.y) and fig.body = her standing art's height (head to feet) as a share of the room, so he is about 1.45x her and her crown is at his chest, as at the door; fig.h is only her box.",
-    "fig": { "x": 0.5, "bottom": 0.88, "h": 0.64, "body": 0.55 },
-    "phone": { "fig": { "bottom": 0.95, "h": 0.74, "body": 0.58 }, "doctor": { "y": 0.95, "h": 0.84 }, "_about": "S03 (CLN-94): on a short screen (under 480 px) she and the doctor stand bigger, their feet lower, on one line (she stays a child beside him; her tap targets as big as before)" },
-    "doctor": { "x": 0.72, "y": 0.88, "h": 0.8 }
+    "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right. CLN-154 (Zafar, 16 Oct: he read nearer the camera than her): one feet line (fig.bottom = doctor.y) and fig.body = her standing art's height (head to feet) as a share of the room, so he is about 1.45x her (0.85 / 0.59 = 1.44) and her crown is at his chest, as at the door; fig.h is only her box. body is never under 0.586 (her art's 1x size: her tap targets, CLN-93).",
+    "fig": { "x": 0.5, "bottom": 0.91, "h": 0.64, "body": 0.59 },
+    "phone": { "fig": { "bottom": 0.95, "h": 0.74 }, "doctor": { "y": 0.95 }, "_about": "S03 (CLN-94): on a short screen (under 480 px) their feet are lower, on one line, so the room's cropped top (0.06) keeps his crown (0.10). Their sizes stay the desktop's: body 0.59 is her art's 1x size (600/1024 = 0.586, the size before CLN-154), so her tap targets never shrink (CLN-93, CLN-09; the static check holds it)" },
+    "doctor": { "x": 0.72, "y": 0.91, "h": 0.85 }
   },
   "pharmacy": {
     "_about": "CB4c: the painted belt's surface runs edge to edge between y 0.615 and 0.69; items stand on it (their base at `beltY`, `itemH` tall); the counter strip in front (y 0.73 to 1) holds the pantry-style tray.",

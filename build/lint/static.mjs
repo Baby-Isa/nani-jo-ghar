@@ -12,7 +12,7 @@
 //   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
 //   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in every bulb time table
 //   plane     the exam room's doctor and patient in one plane (CLN-154): standing, one feet line and him 1.35-1.6x her body;
-//             seated, his feet on the exam floor line (data/clinic/scenes-v2.json)
+//             seated, his feet on the exam floor line; her standing body never under her art's 1x size (data/clinic/scenes-v2.json)
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
@@ -162,6 +162,8 @@ export function planeFindings(sc) {
     if (!(Math.abs(fig.bottom - doc.y) <= 0.01)) add(where, `her feet at ${fig.bottom}, his at ${doc.y}: one feet line (within 0.01)`);
     const r = doc.h / fig.body;
     if (!(r >= 1.35 && r <= 1.6)) add(where, `him ${doc.h} beside her body ${fig.body}: about 1.4-1.5x her (fig.body)`);
+    // her tap targets scale with her drawn body: never under her art's 1x size, the size before CLN-154 (CLN-93, CLN-09)
+    if (!(fig.body >= 600 / 1024)) add(`${where}.body`, `her body ${fig.body} is under her art's 1x size (0.586): her tap targets would shrink`);
   }
   const ex = sc.exam || {};
   if (ex.doctor && !(Math.abs(ex.doctor.y - ex.floor) <= 0.01)) add("exam", `his feet at ${ex.doctor.y}, the floor she sits on at ${ex.floor}: on it (within 0.01)`);

@@ -50,11 +50,13 @@ test("bulb: 8 s at every level in every table (Zafar, D11 / SH-41)", () => {
   assert.match(bulbFindings({ x: [] })[0].text, /no bulb time/);
 });
 test("plane: the exam room's doctor and patient on one feet line, him about 1.45x her (CLN-154)", () => {
-  const ok = { stand: { fig: { bottom: 0.88, body: 0.55 }, doctor: { y: 0.88, h: 0.8 }, phone: { fig: { bottom: 0.95, body: 0.58 }, doctor: { y: 0.95, h: 0.84 } } }, exam: { floor: 0.84, doctor: { y: 0.84 } } };
+  const ok = { stand: { fig: { bottom: 0.91, body: 0.59 }, doctor: { y: 0.91, h: 0.85 }, phone: { fig: { bottom: 0.95 }, doctor: { y: 0.95 } } }, exam: { floor: 0.84, doctor: { y: 0.84 } } };
   assert.equal(planeFindings(ok).length, 0);
+  // a smaller girl shrinks her tap targets (CLN-93): never under her art's 1x size
+  assert.deepEqual(planeFindings({ stand: { fig: { bottom: 0.88, body: 0.55 }, doctor: { y: 0.88, h: 0.8 } } }).map((f) => f.key), ["plane|stand.body", "plane|stand.phone.body"]);
   // the numbers before the fix: her feet above his, no body (the art drawn at its 1x size), him in front of the floor
   const was = { stand: { fig: { bottom: 0.86, h: 0.64 }, doctor: { y: 0.92, h: 0.66 }, phone: { fig: { bottom: 0.9, h: 0.74 }, doctor: { y: 0.95, h: 0.84 } } }, exam: { floor: 0.88, doctor: { y: 0.9 } } };
-  assert.deepEqual(planeFindings(was).map((f) => f.key), ["plane|stand", "plane|stand", "plane|stand.phone", "plane|stand.phone", "plane|exam"]);
+  assert.deepEqual(planeFindings(was).map((f) => f.key), ["plane|stand", "plane|stand", "plane|stand.body", "plane|stand.phone", "plane|stand.phone", "plane|stand.phone.body", "plane|exam"]);
 });
 test("the repo: no static finding outside the known list (build/lint/static-known.json)", () => {
   const known = new Set(existsSync(join(ROOT, "build/lint/static-known.json")) ? JSON.parse(readFileSync(join(ROOT, "build/lint/static-known.json"), "utf8")) : []);
