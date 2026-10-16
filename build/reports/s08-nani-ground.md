@@ -1,8 +1,8 @@
 # s08-nani-ground: the family seated behind the counter (16 Oct 2026)
 
-Zafar (16 Oct): "Her body is completely floating", then "as if sitting on a stool behind". Everyone at the counter sits behind it, hands in laps, the counter's front over the lower forearms. One rule (`js/cook/stations.js` CHARS): every arm's lowest point at least 4 px under the counter's front, so the talk's lift never opens a gap. Nani's top 166 to 210 (her body meets the counter at canvas row 449.7); Ma, Nana, Ali 6 px lower. No art edits: the point's hand is a new cut (`s08-nani.cut.json` "front") drawn over the counter, its fingertip into the tray in front of her, under the tray's front wall, with the shared Cook shadow. Snap's charpai covers her lower forearms; the Eid panels got a ledge, the finger on it. Story scenes: she stands where there is no counter, and sits behind the kitchen's own island.
+Zafar (16 Oct): "as if sitting on a stool behind". Everyone at the counter sits behind it, hands in laps, the counter's front over the lower forearms. One rule (`js/cook/stations.js` CHARS): every arm's lowest point at least 4 px under the counter's front, so the talk's lift never opens a gap. Nani's top 166 to 210 (her body meets the counter at canvas row 449.7); Ma, Nana, Ali 6 px lower. No art edits: the point's hand is a new cut drawn over the counter, its fingertip into the tray in front of her. Snap's charpai covers her lower forearms; the Eid panels got a ledge, the finger on it. Story scenes: she stands where there is no counter, and sits behind the kitchen's own island.
 
-Flaws: the fingertip reads "into the tray", not "on the counter"; its shadow is faint. Her right elbow's round tip leaves a 2-column notch, 4 to 12 px. The panel ledge is a plain box, lighter than p3's painted counter. The hop and shake can briefly lift an elbow. Standing, she is small on phones.
+Flaws: the fingertip reads "into the tray", not "on the counter"; its shadow is faint. Her right elbow's round tip leaves a 2-column notch, 4 to 12 px. The panel ledge is a plain box, lighter than p3's painted counter. The hop can briefly lift an elbow; standing, she is small on phones.
 
 ## Proof
 
