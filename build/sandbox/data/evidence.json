@@ -13659,6 +13659,23 @@
     "shot"
    ],
    "note": "the doctor is one man in every picture (bald, white side hair, short white beard, clear rectangular glasses, navy check blazer, white shirt): the box at the top, the cards and the standing doctor"
+  },
+  {
+   "path": "fair",
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "clinic:heal-cut",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "rec:stage-heal",
+   "capture": [
+    "shot"
+   ],
+   "note": "the doctor is one man in every picture (bald, white side hair, short white beard, clear rectangular glasses, navy check blazer, white shirt): the box at the top, the cards and the standing doctor"
   }
  ]
 }
