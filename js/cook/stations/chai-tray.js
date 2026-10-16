@@ -106,6 +106,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // CHAI-14 / CHAI-07 (C9): a cup with no milk is black tea, in the tipped pan, the stream and the glass. The art
   // run's pictures (art.s02) replace the stand-in: until then the stream is dark and the glass is tinted darker.
   const BLACK_ART = ["chai-pan-pour-milk", "chai-pan-pour-black", "chai-glass-black-half", "chai-glass-black-full"];
+  // CHAI-08 (s08 CP1): the milk chai pan flat, then tipped 15, 30 and 45 degrees, on the milk pour's canvas: the pour
+  // steps through them over the glass before its stream (the art's data, art.s02 chai-pan-tilt-*)
+  const TILT_ART = ["chai-pan-tilt-0", "chai-pan-tilt-15", "chai-pan-tilt-30", "chai-pan-tilt-45"];
   const BLACK = { stream: 0x7a3c16, tint: 0xc07a4c };
 
   Mech.combined("chai-tray", {
@@ -161,7 +164,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       St.load(
         S,
         ART.concat(
-          St.artLoad(BLACK_ART.concat("teaspoon")), // S02-B: the art run's black-tea pan and glasses, the teaspoon, once they land
+          St.artLoad(BLACK_ART.concat(TILT_ART, "teaspoon")), // S02-B: the art run's black-tea pan and glasses, the teaspoon, once they land; CP1's tilts
           people.flatMap((p) => Cook.Kit.faceArt(p.who)),
           [].concat(...shelfIds).map((id) => [`jar-${id}`, spiceJar(id)])
         )
@@ -889,7 +892,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (the art run's pictures carry their stream: meta.scale sizes the pan body to the pan on the hob)
       const ps = (pw / (tiltKey !== "v2-pan-pour" ? S.textures.get(tiltKey).getSourceImage().width : pp.w)) * ((tiltKey !== "v2-pan-pour" && tm.scale) || 1);
       if (black) blackGlass(w);
-      const tilt = S.track(S.add.image(pan.x, pan.y, tiltKey).setOrigin(tm.lipX, tm.lipY).setScale(ps * 0.9).setDepth(D.fx + 1).setAlpha(0));
+      // CP1: a milk pour tips in its pictured steps first (all four on the pour's canvas, so the pan never moves)
+      const steps = !black && tiltKey !== "v2-pan-pour" && TILT_ART.every((id) => St.hasArt(S, id)) ? TILT_ART.map(St.artKey) : [];
+      const tilt = S.track(S.add.image(pan.x, pan.y, steps[0] || tiltKey).setOrigin(tm.lipX, tm.lipY).setScale(ps * 0.9).setDepth(D.fx + 1).setAlpha(0));
       pan.img.setAlpha(0);
       // the pan's off the burner: no flame and no glow on an empty burner while it pours (29 Sept)
       pan.away = true;
@@ -911,7 +916,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const minTop = ((Cook.view && Cook.view.top) || 0) + 12;
         const top = tilt.getBounds().y;
         if (top < minTop && ly > minTop) tilt.setScale(ps * Math.max(0.6, (ly - minTop) / (ly - top)));
+        // (s08 CP1: the top view's handle points right: over the last glass it would run off the right edge; the same,
+        // drawn smaller about its lip)
+        const maxRight = ((Cook.view && Cook.view.right) || 1600) - 12;
+        const b2 = tilt.getBounds();
+        if (b2.right > maxRight && maxRight > lx) tilt.setScale(tilt.scaleX * Math.max(0.6, (maxRight - lx) / (b2.right - lx)));
         await new Promise((r) => S.tweens.add({ targets: tilt, alpha: 1, duration: 260, onComplete: r }));
+        for (const key of steps.slice(1).concat(steps.length ? [tiltKey] : [])) {
+          await Cook.wait(110);
+          if (tilt.active) tilt.setTexture(key);
+        }
       } else {
         S.tweens.add({ targets: tilt, alpha: 1, duration: 120 });
         await S.fly(tilt, lx, ly, { duration: 520, arc: 70, scale: ps });
@@ -951,6 +965,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       w.fill = to;
       S.wisps(w.x, w.y - 20, 2, 40);
       Cook.sfx.pop();
+      // (CP1: it tips back level before it goes home, so its painted stream never flies over the hob)
+      for (const key of steps.slice(0, -1).reverse()) {
+        if (tilt.active) tilt.setTexture(key);
+        await Cook.wait(90);
+      }
       await new Promise((r) => S.tweens.add({ targets: tilt, angle: 0, duration: 160, onComplete: r }));
       await S.fly(tilt, pan.x, pan.y, { duration: 420, arc: 50, scale: ps * 0.9 });
       tilt.destroy();

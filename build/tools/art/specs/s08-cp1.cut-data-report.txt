@@ -1,0 +1,8 @@
+  6 pieces (want 6)
+  tilt-0: spout x 118, handle row 248.9, scaled 1.002, moved -112.28,-119.53 onto the canvas; body 257 px tall
+  tilt-15: spout x 576, handle row 248.9, scaled 0.988, moved -563.18,-115.93 onto the canvas; body 249 px tall
+  tilt-30: spout x 1024, handle row 248.9, scaled 0.990, moved -1008.27,-116.56 onto the canvas; body 250 px tall
+  tilt-45: spout x 125, handle row 692.4, scaled 1.022, moved -121.76,-577.68 onto the canvas; body 236 px tall
+  pour-milk: spout x 578, handle row 692.3, scaled 1.015, moved -580.44,-572.40 onto the canvas; body 337 px tall; stream at [0.2773, 0.9328]
+  pour-black: spout x 1026, handle row 692.5, scaled 0.998, moved -1017.55,-560.80 onto the canvas; body 333 px tall; stream at [0.2831, 0.926]
+cp1: 6 shaped piece(s) on one canvas 431x354, body 256.6 px

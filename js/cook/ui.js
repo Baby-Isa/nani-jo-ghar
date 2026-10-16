@@ -593,14 +593,14 @@
   function mountGuide() {
     const el = $("#guide");
     if (!el || !global.NaniGuide) return;
-    // ART-10 (s07 fix round): her box's face is her counter sprite's head (s07 N1 neutral, N2 happy, N3 talk, N5 blink:
-    // the scene's shared pictures, already loaded), in the mood she is in: talking while she speaks, happy for a moment
-    // when a row of the order ticks, blinking now and then at rest (UI.naniMood; the service view's setMood too)
-    const imgs = (Cook.data && Cook.data.assets && Cook.data.assets.shared && Cook.data.assets.shared.images) || {};
+    // ART-10: her box's face follows her mood: talking while she speaks, happy for a moment when a row of the order
+    // ticks, blinking now and then at rest (UI.naniMood; the service view's setMood too). s08 (Zafar, 16 Oct: "all good
+    // and consistent"): the faces are her face sheet's (nani-face*.webp, every cell registered onto the neutral one by
+    // build/tools/art/specs/s08-nani.cut.json, so a swap moves nothing), each loaded before it is first shown
     const faces = {};
     ["neutral", "happy", "talk", "blink"].forEach((m) => {
-      const src = imgs[`nani-${m}`] || `assets/cook/characters/nani-${m}-v2.webp`;
-      faces[m] = { src: Cook.v(src), crop: NANI_HEAD };
+      faces[m] = { src: Cook.v(Cook.facePath("nani", m)) };
+      if (typeof Image !== "undefined") new Image().src = faces[m].src;
     });
     const g = global.NaniGuide.mount(el, {
       face: Cook.v(Cook.facePath("nani")),
@@ -653,8 +653,6 @@
     blinkT = setTimeout(blink, 2400);
     showGuide();
   }
-  // the head in N1-N5 (460 x 423, one canvas, registered by ECC): her hijab top to her chin, square
-  const NANI_HEAD = [158, 14, 174, 174];
   let talking = false;
   let blinkT = 0;
   let restAs = "neutral"; // the mood she rests in (the service view's setMood)

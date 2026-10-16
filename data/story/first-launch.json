@@ -87,7 +87,7 @@
       "kind": "scene",
       "bg": "assets/backgrounds/bg-courtyard-e-v1.webp",
       "child": { "x": 8, "walk": true },
-      "nani": { "img": "assets/cook/characters/nani-happy.webp", "x": 56 },
+      "nani": { "img": "assets/cook/characters/nani-ledge-happy-v3.webp", "x": 56 },
       "lines": ["name-nani", "help-me", "pantry-ask"]
     },
     { "id": "pantry", "kind": "cook", "url": "cook.html?app=1&first=pantry" },
@@ -96,7 +96,7 @@
       "kind": "scene",
       "bg": "assets/backgrounds/bg-nani-kitchen-e-v1.webp",
       "child": { "x": 8 },
-      "nani": { "img": "assets/cook/characters/nani-talk.webp", "x": 50 },
+      "nani": { "img": "assets/cook/characters/nani-ledge-talk-v3.webp", "x": 50 },
       "props": [{ "img": "assets/cook/props/saucepan.webp", "x": 40, "y": 70, "w": 16 }],
       "lines": ["make-chai"]
     },
@@ -106,7 +106,7 @@
       "kind": "scene",
       "bg": "assets/backgrounds/bg-sitting-room-e-v1.webp",
       "child": { "x": 8 },
-      "nani": { "img": "assets/cook/characters/nani-happy.webp", "x": 50, "sip": true },
+      "nani": { "img": "assets/cook/characters/nani-ledge-happy-v3.webp", "x": 50, "sip": true },
       "props": [{ "img": "assets/cook/items/vessel-glass-chai-full-f.png", "x": 70, "y": 62, "w": 7, "cls": "sip" }],
       "hearts": true,
       "lines": ["lovely-chai"]
@@ -117,13 +117,13 @@
       "panels": [
         {
           "art": "assets/story/first-launch/p1-calendar.svg",
-          "items": [{ "img": "assets/cook/characters/nani-point.webp", "x": 0, "y": 34, "w": 36 }],
+          "items": [{ "img": "assets/cook/characters/nani-ledge-point-v3.webp", "x": 0, "y": 34, "w": 36 }],
           "line": "eid-tomorrow"
         },
         {
           "art": "assets/story/first-launch/p2-guests.svg",
           "items": [
-            { "img": "assets/cook/characters/nani-happy.webp", "x": 0, "y": 34, "w": 36 },
+            { "img": "assets/cook/characters/nani-ledge-happy-v3.webp", "x": 0, "y": 34, "w": 36 },
             { "img": "assets/cook/characters/nana-badge.webp", "x": 46, "y": 12, "w": 13, "cls": "bob" },
             { "img": "assets/cook/characters/ma-badge.webp", "x": 60, "y": 8, "w": 13, "cls": "bob d1" },
             { "img": "assets/cook/characters/cousin-badge.webp", "x": 74, "y": 12, "w": 13, "cls": "bob d2" },
@@ -134,7 +134,7 @@
         {
           "art": "assets/story/first-launch/p3-pots.svg",
           "items": [
-            { "img": "assets/cook/characters/nani-neutral.webp", "x": 0, "y": 34, "w": 36, "cls": "shake" },
+            { "img": "assets/cook/characters/nani-ledge-neutral-v3.webp", "x": 0, "y": 34, "w": 36, "cls": "shake" },
             { "img": "assets/cook/props/pot.webp", "x": 44, "y": 52, "w": 22 },
             { "img": "assets/cook/props/saucepan.webp", "x": 70, "y": 56, "w": 22 }
           ],
@@ -142,7 +142,7 @@
         },
         {
           "art": "assets/story/first-launch/p4-help.svg",
-          "items": [{ "img": "assets/cook/characters/nani-point.webp", "x": 0, "y": 34, "w": 36 }],
+          "items": [{ "img": "assets/cook/characters/nani-ledge-point-v3.webp", "x": 0, "y": 34, "w": 36 }],
           "child": { "x": 62, "y": 18, "w": 26 },
           "line": "help-cook"
         }
@@ -153,7 +153,7 @@
       "kind": "choice",
       "bg": "assets/backgrounds/bg-nani-kitchen-e-v1.webp",
       "child": { "x": 8 },
-      "nani": { "img": "assets/cook/characters/nani-talk.webp", "x": 50 },
+      "nani": { "img": "assets/cook/characters/nani-ledge-talk-v3.webp", "x": 50 },
       "line": "help-cook",
       "yes": "yes",
       "no": { "laugh": "laugh", "dodges": 2 },

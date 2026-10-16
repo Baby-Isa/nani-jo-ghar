@@ -20,6 +20,11 @@ Job types (spec "jobs", each with an "id"; "each": [{...vars}] repeats a job wit
            @2x never above the source, anchors as canvas fractions, 512 px corner heads, an optional side pose;
            "face_align": "none" takes face edits as drawn on the base's canvas (no ECC), "face_match" fits their colour
            to the base on the head band's unchanged pixels (s08: no skin flicker when a face layer swaps on)
+  lean     (s08) a figure leaning on a counter: face and arm edits as layers on the base (registered, colour drift
+           taken out), the marble cut away round the counter line, one canvas per use ("canvases"), "alias" for a
+           frame still to draw
+  faces    (s08) a face sheet cut by component: every cell registered onto the first, cut at the first one's badge
+           and face boxes (a later sheet with the same layout is a file swap)
 Missing sources are skipped and listed, so the cut can be re-run as a run uploads more. Nothing here changes the old
 build/cut_*.py scripts. Output: webp (+ @2x), a data JSON ("data") and cut-report.txt beside it.
 """
@@ -516,7 +521,381 @@ def cut_pose(job, cx):
     return {"closeup": job.get("data", job["id"]), "value": {"file": cx.rel(out[0]), "drift": round(float(drift), 4)}}
 
 
-TYPES = {"closeup": cut_closeup, "grid": cut_grid, "figure": cut_figure, "background": cut_background, "pose": cut_pose}
+# ---------------------------------------------------------------- lean (s08: Nani at the counter) and face sheets
+
+def tone_match(r, base, m, sigma=18, thr=36):
+    """The layer's slow colour drift taken out (no flicker on a swap): the smooth field of base - layer, measured on the
+    masked pixels that barely changed (skin, scarf) and spread over the ones that did (eyes, mouth). Returns the
+    corrected layer and the skin dE before/after."""
+    sel = ((m > 0.05) & (np.abs(r - base).sum(2) < thr)).astype(np.float32)
+    d = (base - r).astype(np.float32) * sel[..., None]
+    w = cv2.GaussianBlur(sel, (0, 0), sigma) + 1e-4
+    field = np.dstack([cv2.GaussianBlur(d[..., c], (0, 0), sigma) / w for c in range(3)])
+    return np.clip(r + field * (m[..., None] > 0), 0, 255)
+
+
+def lean_cut(a, counter, k_alpha=None):
+    """Off the grey; round the counter line only her own pixels (sleeves, hands), not the marble: GrabCut on the band
+    round the line, seeded with her above it and the marble well below her arms (s07 cut_nani_s07.py, unchanged)."""
+    k, _ = L.key(a, exits=("left", "right", "bottom"))
+    al = k[..., 3] * 255
+    h, w = a.shape[:2]
+    y0, y1 = counter - 140, min(h, counter + 240)
+    band = np.clip(a[y0:y1], 0, 255).astype(np.uint8).copy()
+    gm = np.full(band.shape[:2], cv2.GC_PR_BGD, np.uint8)
+    gm[(np.arange(y1 - y0)[:, None] + y0 < counter) & np.ones((1, w), bool)] = cv2.GC_PR_FGD
+    gm[al[y0:y1] < 20] = cv2.GC_BGD
+    gm[: counter - 30 - y0][al[y0:counter - 30] > 250] = cv2.GC_FGD
+    # (s08) her hands and sleeves below the line by colour: skin and the embroidery are saturated, the marble is not
+    hsv = cv2.cvtColor(band, cv2.COLOR_RGB2HSV).astype(float)
+    sat, val = hsv[..., 1] / 255, hsv[..., 2] / 255
+    below = np.arange(y1 - y0)[:, None] + y0 >= counter
+    # (the marble is warm too: S 0.11-0.21 at V 0.8-0.94; skin S 0.4-0.5)
+    sk = ndi.binary_opening(below & (sat > 0.33) & (val > 0.35), iterations=2)
+    gm[sk] = cv2.GC_FGD
+    gm[below & (sat > 0.25) & (gm == cv2.GC_PR_BGD)] = cv2.GC_PR_FGD
+    gm[below & (sat < 0.24) & (val > 0.45) & ~ndi.binary_dilation(sk, iterations=3)] = cv2.GC_BGD
+    gm[counter + 230 - y0:] = cv2.GC_BGD
+    bgd, fgd = np.zeros((1, 65), np.float64), np.zeros((1, 65), np.float64)
+    cv2.grabCut(cv2.cvtColor(band, cv2.COLOR_RGB2BGR), gm, None, bgd, fgd, 6, cv2.GC_INIT_WITH_MASK)
+    fg = (gm == cv2.GC_FGD) | (gm == cv2.GC_PR_FGD)
+    fg = ndi.binary_opening(fg, iterations=2)
+    fg = ndi.binary_fill_holes(fg)
+    lb, n = ndi.label(fg)
+    if n > 1:
+        sz = np.bincount(lb.ravel())
+        sz[0] = 0
+        fg = lb == int(np.argmax(sz))
+    m = al > 128
+    m[y0:y1] = fg & (m[y0:y1] | (np.arange(y1 - y0)[:, None] + y0 >= counter - 20))
+    m[y1:] = False
+    soft = ndi.gaussian_filter(m.astype(float), 0.9)
+    out = al / 255.0
+    out[counter - 20:] = soft[counter - 20:]
+    return out
+
+
+def cut_lean(job, cx):
+    """(s08) A figure leaning on a counter (Nani N-set): the base (neutral) and its frames on ONE canvas, so a swap moves
+    nothing. "faces": head-only edits (registered by ECC on "head_band", the changed pixels above "neck" as a feathered
+    layer, its slow colour drift taken out); "poses": edits that change the arms ("point"), the same way below the neck.
+    Each frame is keyed off the grey with the marble cut away (GrabCut round "counter", the source row of the counter's
+    back edge). "alias": a frame not drawn yet shown as another ({"point": "talk"}): its file is that frame's, so the later
+    picture is a re-run. "canvases": each {size, head_w (scarf width at "eye_row", world px), eyes_x, arm_y (canvas row of
+    the forearms' underside), out (with <mood>)} or {fit_top: pad} to scale her into the canvas height instead."""
+    p = cx.path(job["src"])
+    if not p:
+        log("%s: base not landed" % job["id"])
+        return None
+    base = L.load(p)
+    H, W = base.shape[:2]
+    counter, neck = job["counter"], job["neck"]
+    frames = {"neutral": base}
+    masks = {}
+    for kind, items in (("face", job.get("faces", {})), ("pose", job.get("poses", {}))):
+        for f, name in items.items():
+            fp = cx.path(name)
+            if not fp:
+                log("  %s %s: not landed" % (kind, f), quiet=True)
+                continue
+            e = fit_to(L.load(fp), base.shape)
+            r, M = L.ecc(e, base, job.get("head_band", [0.08, 0.42]), cv2.MOTION_TRANSLATION, say=log)
+            c = L.changed(r, base)
+            c = cv2.morphologyEx(c.astype(np.uint8), cv2.MORPH_OPEN, np.ones((5, 5), np.uint8)) > 0
+            rows = np.arange(H)[:, None]
+            if kind == "face":
+                c &= rows < neck
+                m = np.zeros((H, W), np.uint8)
+                pts = cv2.findNonZero(c.astype(np.uint8))
+                if pts is not None:
+                    cv2.fillConvexPoly(m, cv2.convexHull(pts), 1)
+                m = cv2.dilate(m, np.ones((25, 25), np.uint8))
+            else:
+                c &= rows >= neck
+                c = ndi.binary_closing(c, iterations=6)
+                lb, n = ndi.label(c)
+                if n:
+                    sz = np.bincount(lb.ravel())
+                    sz[0] = 0
+                    c = np.isin(lb, [i for i in range(1, n + 1) if sz[i] > 400])
+                m = ndi.binary_fill_holes(cv2.dilate(c.astype(np.uint8), np.ones((31, 31), np.uint8)) > 0).astype(np.uint8)
+            soft = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 6)
+            r2 = tone_match(r, base, soft)
+            fr = base * (1 - soft[..., None]) + r2 * soft[..., None]
+            sk_box = job.get("skin_box", [380, 300, 640, 560])
+            one = np.ones((H, W))
+            de0 = L.delta_e(L.skin_median(base, one, sk_box), L.skin_median(r, one, sk_box))
+            de1 = L.delta_e(L.skin_median(base, one, sk_box), L.skin_median(fr, one, sk_box))
+            out_px = float(np.abs(fr - base)[soft < 0.001].max()) if (soft < 0.001).any() else 0.0
+            log("  %s %s: registered %+.2f,%+.2f px; layer %d px; outside it the frame IS the base (max diff %.0f); skin dE %.2f -> %.2f"
+                % (kind, f, M[0, 2], M[1, 2], int((soft > 0.5).sum()), out_px, de0, de1), quiet=True)
+            frames[f] = fr
+            masks[f] = soft
+    # alpha: the base's everywhere; a pose's own inside its layer (the arms moved)
+    a0 = lean_cut(base, counter)
+    alphas = {"neutral": a0}
+    for f, fr in frames.items():
+        if f == "neutral":
+            continue
+        if f in job.get("poses", {}):
+            ap = lean_cut(fr, counter)
+            sm = masks[f]
+            alphas[f] = a0 * (1 - sm) + ap * sm
+        else:
+            alphas[f] = a0
+    # the forearms' underside on the base: the median lowest opaque row over the arms' columns
+    ax0, ax1 = job.get("arm_cols", [int(W * 0.3), int(W * 0.7)])
+    low = [np.nonzero(a0[:, x] > 0.5)[0] for x in range(ax0, ax1)]
+    arm = int(np.median([r.max() for r in low if len(r)]))
+    er = job["eye_row"]
+    xs = np.nonzero(a0[er] > 0.5)[0]
+    hw, hx = xs.max() - xs.min(), (xs.max() + xs.min()) / 2
+    allal = np.maximum.reduce(list(alphas.values()))
+    ys_, xs_ = np.nonzero(allal > 0.04)
+    top = int(ys_.min())
+    bottom = {f: int(np.nonzero((al > 0.04).any(1))[0].max()) for f, al in alphas.items()}
+    log("  base: forearms' underside at source row %d, scarf %d px wide at the eye row (centre x %.1f), top %d; lowest rows %s" % (arm, hw, hx, top, bottom), quiet=True)
+    out = {"src": job["src"], "arm_src": arm, "head_w_src": int(hw), "canvases": {}}
+    alias = job.get("alias", {})
+    for cn, cv_ in job["canvases"].items():
+        Wc, Hc = cv_["size"]
+        if "head_w" in cv_:
+            k = cv_["head_w"] / hw
+        else:
+            k = (cv_["arm_y"] - cv_["fit_top"]) / (arm - top)
+        if Hc is None:  # the canvas grows to hold her: top pad + figure
+            Hc = int(np.ceil(cv_.get("pad", 4) + (arm - top) * k)) + cv_.get("below", 4)
+            arm_y = Hc - cv_.get("below", 4)
+        else:
+            arm_y = cv_["arm_y"]
+        oy = arm_y - arm * k
+        ox = cv_["eyes_x"] - hx * k
+        files = {}
+        for f in list(frames) + [a for a in alias if a not in frames]:
+            if cv_.get("moods") and f not in cv_["moods"] and f != "neutral":
+                continue  # this use shows only these frames (neutral is always cut: the canvas is measured on it)
+            src_f = f if f in frames else alias[f]
+            if src_f not in frames:
+                continue
+            rgba = np.dstack([frames[src_f], alphas[src_f]])
+            # crop the source rows the canvas shows (her own lowest row, or the canvas's bottom)
+            y_end = min(H, int(np.ceil((Hc - oy) / k)) + 1)
+            img = L.to_img(rgba[:y_end])
+            sw, sh = round(W * k), round(y_end * k)
+            img = img.resize((sw, sh), Image.LANCZOS)
+            canvas = Image.new("RGBA", (Wc, Hc), (0, 0, 0, 0))
+            canvas.paste(img, (int(round(ox)), int(round(oy))))  # onto an empty canvas: a plain copy (any offset)
+            path = cx.to(cv_["out"].replace("<mood>", f))
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            canvas.save(path, quality=cv_.get("q", 90), method=6)
+            files[f] = cx.rel(path)
+        ch = np.asarray(Image.open(cx.to(cv_["out"].replace("<mood>", "neutral"))))[..., 3]
+        cut_top = int(np.nonzero((ch > 10).any(1))[0].min())
+        head = [int(round(ox + (hx - hw / 2) * k)), int(round(oy + top * k)), int(round(hw * k)), int(round(hw * k))]
+        out["canvases"][cn] = {"size": [Wc, Hc], "k": round(k, 4), "arm_y": arm_y, "top_px": cut_top, "head": head, "files": files}
+        log("  canvas %s: %dx%d, k %.4f, head %d px wide, forearms' underside at row %d, her top at row %d%s"
+            % (cn, Wc, Hc, k, round(hw * k), arm_y, cut_top, " CLIPPED AT THE TOP" if cut_top == 0 else ""), flag=cut_top == 0, quiet=True)
+    log("%s: lean cut, %d frame(s) + %d alias(es) on %d canvas(es)" % (job["id"], len(frames), len([a for a in alias if a not in frames]), len(job["canvases"])))
+    return {"patient": job.get("data", job["id"]), "value": out}
+
+
+def cut_sheet_faces(job, cx):
+    """(s08) A face sheet (one head and shoulders per cell) cut by component: the pieces in reading order get "names"
+    (null skips one), each registered onto the first named piece (ECC, similarity, on its head) and its slow colour drift
+    taken out, so a mood swap in a box moves nothing; then every piece is cut at the SAME two boxes of the first one:
+    "badge" (head and shoulders) and "face" (the face filling a round box). "out": {"badge": path with <name>, "face": ...},
+    each written at "size". A new sheet with the same layout is a file swap: change "src" and re-run."""
+    p = cx.path(job["src"])
+    if not p:
+        log("%s: sheet not landed" % job["id"])
+        return None
+    a = L.load(p)
+    H, W = a.shape[:2]
+    k, obj = L.key(a, multi=job.get("multi", 20000))
+    lb, n = ndi.label(obj)
+    boxes = []
+    for i in range(1, n + 1):
+        ys, xs = np.nonzero(lb == i)
+        if len(ys) < job.get("multi", 20000):
+            continue
+        boxes.append((int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1, i))
+    rowh = H / job.get("rows", 3)
+    boxes.sort(key=lambda b: (int(((b[1] + b[3]) / 2) // rowh), b[0]))
+    names = job["names"]
+    log("  %d pieces (want %d)" % (len(boxes), len(names)), flag=len(boxes) != len(names), quiet=True)
+    pad = job.get("pad", 40)
+    cw = max(b[2] - b[0] for b in boxes) + 2 * pad
+    chh = max(b[3] - b[1] for b in boxes) + 2 * pad
+
+    def piece(b):  # the piece on a common cell canvas, aligned at its box's top-centre
+        x0 = int((b[0] + b[2]) / 2 - cw / 2)
+        y0 = b[1] - pad
+        rgb = np.full((chh, cw, 3), 128.0)
+        al = np.zeros((chh, cw))
+        sx0, sy0, sx1, sy1 = max(0, x0), max(0, y0), min(W, x0 + cw), min(H, y0 + chh)
+        own = (lb[sy0:sy1, sx0:sx1] == b[4])
+        rgb[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0] = a[sy0:sy1, sx0:sx1]
+        al[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0] = k[sy0:sy1, sx0:sx1, 3] * ndi.binary_dilation(own, iterations=3)
+        return rgb, al
+
+    pieces = {}
+    ref = None
+    for nm, b in zip(names, boxes):
+        if nm is None:
+            continue
+        rgb, al = piece(b)
+        if ref is None:
+            ref = (rgb, al)
+            pieces[nm] = (rgb, al, np.eye(2, 3))
+            continue
+        band = job.get("head_band", [0.02, 0.62])
+        g = lambda x, aa: np.clip(x * aa[..., None] + 128 * (1 - aa[..., None]), 0, 255)
+        r, M = L.ecc(g(rgb, al), g(*ref), band, cv2.MOTION_EUCLIDEAN, say=log)
+        ra = cv2.warpAffine(al.astype(np.float32), M, (cw, chh), flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP).astype(float)
+        rr = cv2.warpAffine(rgb.astype(np.float32), M, (cw, chh), flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP, borderMode=cv2.BORDER_REPLICATE).astype(float)
+        both = np.minimum(ra, ref[1])
+        rr = tone_match(rr, ref[0], both, sigma=24)
+        sk = job.get("skin_box_cell", [0.3, 0.2, 0.7, 0.5])
+        bx = (int(cw * sk[0]), int(chh * sk[1]), int(cw * sk[2]), int(chh * sk[3]))
+        s0, s1 = L.skin_median(ref[0], ref[1], bx), L.skin_median(rr, ra, bx)
+        de = L.delta_e(s0, s1) if s0 is not None and s1 is not None else -1
+        ang = np.degrees(np.arctan2(M[1, 0], M[0, 0]))
+        log("  %s: onto %s by %+.1f,%+.1f px, %+.1f deg; skin dE %.2f" % (nm, names[0], M[0, 2], M[1, 2], ang, de), quiet=True)
+        pieces[nm] = (rr, ra, M)
+    # the boxes, on the first piece: "badge" from the scarf's top, "face" round the face's skin
+    rgb0, al0 = ref
+    ys, xs = np.nonzero(al0 > 0.5)
+    hsv = cv2.cvtColor(np.clip(rgb0, 0, 255).astype(np.uint8), cv2.COLOR_RGB2HSV)
+    skin = (hsv[..., 0] >= 3) & (hsv[..., 0] <= 22) & (hsv[..., 1] > 45) & (hsv[..., 2] > 110) & (al0 > 0.9)
+    skin[int(chh * 0.7):] = False
+    sl, sn = ndi.label(ndi.binary_opening(skin, iterations=2))
+    sz = np.bincount(sl.ravel())
+    sz[0] = 0
+    fy, fx = np.nonzero(sl == int(np.argmax(sz)))
+    fbox = (fx.min(), fy.min(), fx.max(), fy.max())
+    bj, fj = job.get("badge", {}), job.get("face", {})
+    bside = (xs.max() - xs.min()) * bj.get("side", 1.0)
+    bcx, btop = (xs.max() + xs.min()) / 2, ys.min() - bj.get("top_pad", 0.04) * bside
+    fside = (fbox[3] - fbox[1]) * fj.get("side", 1.3)
+    fcx, fcy = (fbox[0] + fbox[2]) / 2, (fbox[1] + fbox[3]) / 2 + fj.get("dy", 0.0) * fside
+    crops = {"badge": (bcx - bside / 2, btop, bside), "face": (fcx - fside / 2, fcy - fside / 2, fside)}
+    log("  boxes on %s: badge %s, face %s (face skin %s)" % (names[0], [round(v) for v in crops["badge"]], [round(v) for v in crops["face"]], [int(v) for v in fbox]), quiet=True)
+    size = job.get("size", 280)
+    out = {"src": job["src"], "files": {}}
+    for nm, (rgb, al, M) in pieces.items():
+        rgba = np.dstack([rgb, al])
+        for kind, (x0, y0, s) in crops.items():
+            tmpl = job["out"].get(kind)
+            if not tmpl or (kind in job.get("only", {}) and nm not in job["only"][kind]):
+                continue
+            sq = np.zeros((int(round(s)), int(round(s)), 4))
+            ix0, iy0 = int(round(x0)), int(round(y0))
+            ya, xa, yb, xb = max(0, iy0), max(0, ix0), min(chh, iy0 + sq.shape[0]), min(cw, ix0 + sq.shape[1])
+            sq[ya - iy0:yb - iy0, xa - ix0:xb - ix0] = rgba[ya:yb, xa:xb]
+            path = cx.to(job.get("rename", {}).get("%s:%s" % (kind, nm)) or tmpl.replace("<name>", nm))
+            L.save(L.to_img(sq), path, job.get("q", 92), (size, size))
+            out["files"]["%s:%s" % (kind, nm)] = cx.rel(path)
+    log("%s: %d face(s) from the sheet, %d file(s)" % (job["id"], len(pieces), len(out["files"])))
+    return {"patient": job.get("data", job["id"]), "value": out}
+
+
+def cut_shaped(job, cx):
+    """(s08 CP1) A sheet whose pieces come with their own shape: a round body (a pan's rim) plus what leaves it (the
+    handle, a spout, a pour stream), on a ground that must never be keyed (CP1's is a dark gradient with glows). Each
+    piece is its connected shape in the source alpha (no ground colour is read), hardened (a steep ramp at 0.5: no
+    glow) and its edge colours pulled in from inside, so no dark halo shows on a light or a dark surface. The pieces are
+    registered by the spout's tip and the handle's middle row (scaled to one spout-to-handle length) onto one canvas, so
+    a swap between them moves nothing. "lip": for each name with a stream, the canvas point "stream_at" of the way down
+    the stream (lip to tip) is recorded, for the station's origin; "body" is the rim's diameter on the canvas."""
+    p = cx.path(job["src"])
+    if not p:
+        log("%s: sheet not landed" % job["id"])
+        return None
+    im = Image.open(p).convert("RGBA")
+    a = np.asarray(im).astype(float)
+    rgb, al = a[..., :3], a[..., 3] / 255
+    H, W = al.shape
+    shape = al > 0.5
+    shape = ndi.binary_opening(shape, iterations=1)
+    lb, n = ndi.label(shape)
+    sz = np.bincount(lb.ravel())
+    sz[0] = 0
+    ids = [i for i in range(1, n + 1) if sz[i] > job.get("min_px", 5000)]
+    cols, rows = job.get("grid", [3, 2])
+    cent = []
+    for i in ids:
+        ys, xs = np.nonzero(lb == i)
+        cent.append((int(ys.mean() // (H / rows)), xs.mean(), i))
+    cent.sort()
+    names = job["names"]
+    log("  %d pieces (want %d)" % (len(cent), len(names)), flag=len(cent) != len(names), quiet=True)
+    pieces = {}
+    for nm, (_, _, i) in zip(names, cent):
+        if nm is None:
+            continue
+        m = lb == i  # (the handle's hanging hole stays a hole)
+        ys, xs = np.nonzero(m)
+        x0, x1 = xs.min(), xs.max()
+        # the handle's middle row, a little in from its end: a fixed point of the pan in every cell (the tilt is drawn
+        # by the liquid and a slight foreshortening of the body, never by the handle)
+        hx = x1 - job.get("handle_in", 30)
+        hy = float(np.nonzero(m[:, hx])[0].mean())
+        top = ys.min()
+        body_rows = np.nonzero(m[:, int(x0 + (hx - x0) * 0.3)])[0]
+        pieces[nm] = dict(mask=m, x0=float(x0), x1=float(x1), hy=hy, top=float(top), body=float(body_rows.max() - body_rows.min()))
+    # one scale (the spout-to-handle length, the same pan in every cell) and one anchor (spout x, handle row)
+    span = float(np.median([pc["x1"] - pc["x0"] for pc in pieces.values()]))
+    ext = [0, 0, 0, 0]
+    for nm, pc in pieces.items():
+        pc["k"] = span / (pc["x1"] - pc["x0"])
+        ys, xs = np.nonzero(pc["mask"])
+        q = pc["k"]
+        ext = [min(ext[0], (xs.min() - pc["x0"]) * q), min(ext[1], (ys.min() - pc["hy"]) * q), max(ext[2], (xs.max() - pc["x0"]) * q), max(ext[3], (ys.max() - pc["hy"]) * q)]
+    pad = job.get("pad", 6)
+    ox, oy = int(np.floor(-ext[0])) + pad, int(np.floor(-ext[1])) + pad
+    cw, ch = int(np.ceil(ext[2] - ext[0])) + 2 * pad + 1, int(np.ceil(ext[3] - ext[1])) + 2 * pad + 1
+    flat = pieces[names[0]]
+    body = flat["body"] * flat["k"]
+    out = {"src": job["src"], "canvas": [cw, ch], "anchor": [ox, oy], "body": round(body / cw, 4), "files": {}, "lip": {}}
+    for nm, pc in pieces.items():
+        k = pc["k"]
+        dx, dy = ox - pc["x0"] * k, oy - pc["hy"] * k
+        M = np.float32([[k, 0, dx], [0, k, dy]])
+        m = pc["mask"].astype(np.float32)
+        # the ramp: hardened alpha (the source's own soft edge, steep at 0.5), only on this piece's shape (grown 2 px)
+        grown = ndi.binary_dilation(pc["mask"], iterations=2)
+        aa = np.clip((al - 0.5) * job.get("ramp", 3.0) + 0.5, 0, 1) * grown
+        # edge colours from inside: every pixel not solid takes the colour of the nearest solid pixel of the piece
+        solid = (al > 0.97) & pc["mask"]
+        _, (iy, ix) = ndi.distance_transform_edt(~solid, return_indices=True)
+        col = np.where(solid[..., None], rgb, rgb[iy, ix])
+        rgba = np.dstack([col, aa * 255]).astype(np.float32)
+        rgba = cv2.warpAffine(rgba, M, (cw, ch), flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0))
+        img = Image.fromarray(np.clip(rgba, 0, 255).astype(np.uint8), "RGBA")
+        path = cx.to(job["out"].replace("<name>", nm))
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        img.save(path, quality=job.get("q", 90), method=6)
+        out["files"][nm] = cx.rel(path)
+        # the stream: the shape below the body, on the spout's side (the handle leaves right)
+        mm = cv2.warpAffine(m, M, (cw, ch), flags=cv2.INTER_NEAREST) > 0.5
+        bottom_body = oy + (flat["top"] - flat["hy"]) * flat["k"] + body  # the flat pan's lowest rim row
+        yy, xx = np.mgrid[0:ch, 0:cw]
+        below = mm & (yy > bottom_body + 4) & (xx < ox + body * 0.8)
+        if below.sum() > 200:
+            ys, xs = np.nonzero(below)
+            y_lip, y_tip = float(ys.min()), float(ys.max())
+            y_at = y_lip + (y_tip - y_lip) * job.get("stream_at", 0.8)
+            row = np.nonzero(mm[int(y_at)] & (xx[0] < ox + body * 0.8))[0]
+            x_at = float(row.mean()) if len(row) else float(xs.mean())
+            out["lip"][nm] = [round(x_at / cw, 4), round(y_at / ch, 4)]
+        log("  %s: spout x %.0f, handle row %.1f, scaled %.3f, moved %+.2f,%+.2f onto the canvas; body %.0f px tall%s"
+            % (nm, pc["x0"], pc["hy"], k, dx, dy, pc["body"] * k, ("; stream at %s" % out["lip"][nm]) if nm in out["lip"] else ""), quiet=True)
+    log("%s: %d shaped piece(s) on one canvas %dx%d, body %.1f px" % (job["id"], len(pieces), cw, ch, body))
+    return {"patient": job.get("data", job["id"]), "value": out}
+
+
+TYPES = {"closeup": cut_closeup, "grid": cut_grid, "figure": cut_figure, "background": cut_background, "pose": cut_pose,
+         "lean": cut_lean, "faces": cut_sheet_faces, "shaped": cut_shaped}
 
 
 # ---------------------------------------------------------------- spec handling

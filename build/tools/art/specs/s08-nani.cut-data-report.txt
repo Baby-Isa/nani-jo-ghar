@@ -1,0 +1,18 @@
+  face happy: registered +0.46,+0.21 px; layer 33244 px; outside it the frame IS the base (max diff 0); skin dE 1.00 -> 0.00
+  face talk: registered -0.06,-0.40 px; layer 15480 px; outside it the frame IS the base (max diff 0); skin dE 0.39 -> 0.39
+  face blink: registered -0.13,-0.42 px; layer 49293 px; outside it the frame IS the base (max diff 0); skin dE 1.96 -> 1.57
+  pose point: registered +0.03,+0.04 px; layer 177943 px; outside it the frame IS the base (max diff 0); skin dE 1.62 -> 0.00
+  base: forearms' underside at source row 1280, scarf 425 px wide at the eye row (centre x 501.5), top 154; lowest rows {'neutral': 1299, 'happy': 1299, 'talk': 1299, 'blink': 1299, 'point': 1359}
+  canvas counter: 460x501, k 0.4376, head 186 px wide, forearms' underside at row 497, her top at row 4
+  canvas ledge: 443x578, k 0.4325, head 184 px wide, forearms' underside at row 499, her top at row 11
+nani-lean: lean cut, 5 frame(s) + 0 alias(es) on 2 canvas(es)
+  12 pieces (want 12)
+  talk: onto neutral by +0.8,+1.7 px, -0.5 deg; skin dE 1.18
+  happy: onto neutral by -3.8,+3.8 px, -1.1 deg; skin dE 2.20
+  calm: onto neutral by -4.9,+8.8 px, -2.0 deg; skin dE 1.18
+  blink: onto neutral by +4.1,+6.6 px, -0.8 deg; skin dE 2.35
+  surprised: onto neutral by +7.7,-2.0 px, +1.0 deg; skin dE 1.62
+  think: onto neutral by -0.4,+9.4 px, -2.6 deg; skin dE 1.07
+  frown: onto neutral by +2.2,+8.6 px, -1.0 deg; skin dE 0.39
+  boxes on neutral: badge [45, 35, 321], face [97, 61, 212] (face skin [140, 95, 266, 238])
+nani-faces: 8 face(s) from the sheet, 6 file(s)

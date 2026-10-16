@@ -32,9 +32,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const D = { bg: 0, back: 5, char: 10, occ: 20, item: 30, item2: 32, front: 34, fx: 40, hand: 45, top: 50 };
 
   const CHARS = {
-    // s07 (ART-13, ART-10): her lean poses N1-N5, one canvas, drawn 1:1; her forearms' underside at y 613, just under the
-    // occluder's top (611), so they rest on the counter's back edge (s05 audit section 6, way (a): no code change)
-    nani: { x: 330, top: 194, scale: 1 },
+    // s08 (ART-13, ART-10): her jaw-fixed lean set (v3), one canvas 460x501, drawn 1:1, head 186 px wide; her forearms'
+    // underside at canvas row 497 = y 613, just under the occluder's top (611), so they rest on the counter's back edge
+    // (s05 audit section 6, way (a)). top = 613 - 497 (build/tools/art/specs/s08-nani.cut-data.json, canvases.counter)
+    nani: { x: 330, top: 116, scale: 1 },
     nana: { x: 940, top: 175, scale: 1.25 },
     ma: { x: 940, top: 195, scale: 1.14 },
     cousin: { x: 940, top: 290, scale: 1.02 },
