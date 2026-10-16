@@ -132,12 +132,10 @@
       stage.dataset.level = String(plan.level);
       const box = stage.scene || stage;
       const cfg = stage.sceneCfg && stage.sceneCfg.slots ? stage.sceneCfg : null;
-      // the doctor leans out of his half-open door (the rough sprite's top half: a stand-in)
-      const doc = S.place(h("div", "cl-wdoc", box), { x: cfg.doctor.x, y: cfg.doctor.y + cfg.doctor.h, h: cfg.doctor.h, z: 1 });
-      const dimg = h("img", "", doc);
-      dimg.alt = "";
-      dimg.src = Kit.url(Kit.person("doctor", "neutral") || Kit.sprite("doctor-neutral"));
-      Kit.Voice.speakers.doctor = () => dimg;
+      // CLN-115, CLN-150 (Zafar, 15 Oct: "just have him standing and waving, not coming out from the door"): the real
+      // doctor stands in front of his open door, face-on, waving (DD1), and calls from there; his mouth closed between
+      // lines (DD2), open while he calls (scenes-v2 waiting.doctor: his feet line and height in the room)
+      const doc = S.doctor(box, Object.assign({ z: 1 }, cfg.doctor), "cl-wdoc-art", "call");
       const used = {};
       const seats = plan.bench.map((b, i) => personEl(box, cfg, b, i, used));
       // CLN-90 (S05-D3): the ticks on one bench stand in one even row: each first clears its own person's feet
@@ -168,7 +166,6 @@
       Kit.Voice.speakers.bench = null;
 
       // the why beat (G5): the doctor looks out, then calls. Input is live at once (13i): nothing waits for the talking
-      doc.classList.add("lean");
       S.pose(doc, "front");
       S.say(S.line(env, "why-waiting"), "doctor");
       // from level 3 the card is closed: the call is heard, not read; a tap on it is the paid peek (13a, 13c)

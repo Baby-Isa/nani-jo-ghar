@@ -448,13 +448,18 @@
         const base = img(view === "side" ? V.file : V.front, "fig-art-base");
         const face = img(view === "side" ? V.file : V.front, "fig-art-face");
         face.hidden = true;
+        // ART-19 (s07-clinic-a): her blink (GB1) and talking mouth (GM1), head layers on this view's canvas (spec.life)
+        const life = view === "front" && spec.life ? spec.life : null;
+        const lifeImg = life ? img(life.blink || life.talk, "fig-art-life") : null;
+        if (lifeImg) lifeImg.hidden = true;
         root.appendChild(box);
         root.classList.add("has-art");
         fig.artEl = inner;
         fig.artBox = box;
         fig.tapAnchors = false; // the diagnosis turns it on (its tap areas); a heal game's zoom uses the anchors
-        fig.art = { spec, view, V, base, face, body: "front" };
+        fig.art = { spec, view, V, base, face, body: "front", life, lifeImg };
         fig.artMood(mood);
+        fig.artLife();
         const sw = groups.fx.querySelector(".fig-swirl");
         if (sw) {
           const [, pk, sk] = sw.dataset.key.split(":");
@@ -489,7 +494,68 @@
             A.face.dataset.src = u;
           }
           A.face.hidden = false;
+          if (A.lifeImg) A.lifeImg.hidden = true; // her blink and talking mouth are her resting face's, never over a mood
         } else A.face.hidden = true;
+      },
+      /**
+       * ART-19 (s07-clinic-a): her life on the art: a blink now and then (GB1) and, while a line of hers plays, her
+       * talking mouth (GM1) flapping (Kit.Voice.say finds root.__talk through data-talker). Only on her own resting face
+       * (a mood face shows: no blink, no flap over it) and on the bare front (the blanket and bottle are whole figures).
+       */
+      artLife() {
+        const Kit = global.Clinic && global.Clinic.Kit;
+        const u = (p) => {
+          const two = String(p).replace(/\.webp$/, "@2x.webp");
+          return Kit && Kit.url ? Kit.url(two) : two;
+        };
+        const free = () => {
+          const A = fig.art;
+          return A && A.life && A.lifeImg && A.body === "front" && A.face.hidden ? A : null;
+        };
+        const show = (A, which, on) => {
+          if (on) {
+            const s = u(A.life[which]);
+            if (A.lifeImg.dataset.src !== s) {
+              A.lifeImg.src = s;
+              A.lifeImg.dataset.src = s;
+            }
+          }
+          A.lifeImg.hidden = !on;
+        };
+        root.dataset.talker = "patient";
+        root.__talk = () => {
+          let open = false;
+          const flap = () => {
+            const A = free();
+            if (!A || !A.life.talk) return;
+            open = !open;
+            show(A, "talk", open);
+          };
+          fig.talking = true;
+          flap();
+          const t = setInterval(flap, Kit && Kit.fast ? 60 : 170);
+          return () => {
+            clearInterval(t);
+            fig.talking = false;
+            const A = fig.art;
+            if (A && A.lifeImg) A.lifeImg.hidden = true;
+          };
+        };
+        if (fig.blinkT || (Kit && Kit.fast)) return;
+        const tick = () => {
+          if (!root.isConnected && fig.blinkSeen) return void (fig.blinkT = null);
+          if (root.isConnected) fig.blinkSeen = true;
+          const A = free();
+          if (A && A.life.blink && !fig.talking) {
+            show(A, "blink", true);
+            setTimeout(() => {
+              const B = fig.art;
+              if (B && B.lifeImg && !fig.talking) B.lifeImg.hidden = true;
+            }, 140);
+          }
+          fig.blinkT = setTimeout(tick, 3000 + Math.random() * 2500);
+        };
+        fig.blinkT = setTimeout(tick, 2600);
       },
       /** The whole front figure: "front" (bare), "blanket" (W9) or "bottle" (W10); false when that art isn't there. */
       artBody(name) {

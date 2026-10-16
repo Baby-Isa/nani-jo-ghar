@@ -1,0 +1,387 @@
+{
+ "pack": "s07",
+ "about": "Pack s07 (sources/art/s07, judged in build/reports/s07-art-landing.md), cut by build/tools/art/artcut.py for s07-clinic-a: the doctor (his standing views as one figure job each at one drawn height, fig_h 676 = 0.66 of the 1024 px room, so every view is the same man at the same size on one feet line; DF1/DF3 head layers on DW1; DD2 a head layer on DD1), his box and card faces from doctor-ref-faces-v1.png, and the girl's pieces. Run with --out to a scratch folder and copy the files the game uses into assets/clinic (the extra corner heads are not used); the numbers go into data/clinic/heal-art.json under `doctor` and the girl's keys.",
+ "src": "sources/art/s07",
+ "out": "assets/clinic",
+ "data": "data/clinic/s07-cut-data.json",
+ "skin_render": [
+  243,
+  152,
+  97
+ ],
+ "skin_limits": [
+  6,
+  12
+ ],
+ "failed": {},
+ "jobs": [
+  {
+   "id": "doctor-3q-left",
+   "type": "figure",
+   "data": "doctor-3q-left",
+   "src": "doctor-w1-stand-3q-neutral-v1.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 290,
+   "skin_box": [
+    0.44,
+    0.06,
+    0.56,
+    0.14
+   ],
+   "faces": {
+    "talk": "doctor-f1-stand-3q-talk-v1.png",
+    "blink": "doctor-f3-stand-3q-blink-v1.png"
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      512,
+      150
+     ],
+     "eyes": [
+      520,
+      118
+     ],
+     "stand": [
+      610,
+      1435
+     ]
+    }
+   },
+   "out": "doctor/doctor-3q-left"
+  },
+  {
+   "id": "doctor-front",
+   "type": "figure",
+   "data": "doctor-front",
+   "src": "doctor-w1-stand-front-neutral-v1.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 280,
+   "skin_box": [
+    0.44,
+    0.06,
+    0.56,
+    0.14
+   ],
+   "anchors": {
+    "front": {
+     "head": [
+      512,
+      150
+     ],
+     "eyes": [
+      512,
+      118
+     ],
+     "stand": [
+      508,
+      1423
+     ]
+    }
+   },
+   "out": "doctor/doctor-front"
+  },
+  {
+   "id": "doctor-3q-right",
+   "type": "figure",
+   "data": "doctor-3q-right",
+   "src": "doctor-w1-stand-3q-right-neutral-v1.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 290,
+   "skin_box": [
+    0.44,
+    0.06,
+    0.56,
+    0.14
+   ],
+   "anchors": {
+    "front": {
+     "head": [
+      520,
+      155
+     ],
+     "eyes": [
+      512,
+      122
+     ],
+     "stand": [
+      452,
+      1412
+     ]
+    }
+   },
+   "out": "doctor/doctor-3q-right"
+  },
+  {
+   "id": "doctor-wave-3q-right",
+   "type": "figure",
+   "data": "doctor-wave-3q-right",
+   "src": "doctor-a6-stand-3q-right-wave-v1.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 290,
+   "skin_box": [
+    0.44,
+    0.06,
+    0.56,
+    0.14
+   ],
+   "anchors": {
+    "front": {
+     "head": [
+      528,
+      150
+     ],
+     "eyes": [
+      520,
+      118
+     ],
+     "stand": [
+      559,
+      1403
+     ]
+    }
+   },
+   "out": "doctor/doctor-wave-3q-right"
+  },
+  {
+   "id": "doctor-wave-front",
+   "type": "figure",
+   "data": "doctor-wave-front",
+   "src": "doctor-d1-door-call-v1.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 250,
+   "skin_box": [
+    0.47,
+    0.05,
+    0.55,
+    0.12
+   ],
+   "faces": {
+    "closed": "doctor-d2-door-look-v1.png"
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      640,
+      150
+     ],
+     "eyes": [
+      640,
+      118
+     ],
+     "stand": [
+      627,
+      1187
+     ]
+    }
+   },
+   "out": "doctor/doctor-wave-front"
+  },
+  {
+   "id": "doctor-faces",
+   "type": "grid",
+   "src": "doctor-ref-faces-v1.png",
+   "cells": [
+    4,
+    3
+   ],
+   "names": [
+    "neutral",
+    "talk",
+    "laugh",
+    null,
+    null,
+    null,
+    null,
+    "think",
+    null,
+    null,
+    null,
+    null
+   ],
+   "pad": 8,
+   "max": 384,
+   "min_area": 4000,
+   "outdir": "doctor/faces"
+  },
+  {
+   "id": "girl-wide",
+   "type": "figure",
+   "data": "girl",
+   "_note": "the clinic-heal-v3 girl-wide job again (same base, poses and anchors, so the canvas is the same, checked with artdiff: 0 px differ on girl-front), with only GB1's blink and GM1's talking mouth as face layers; only girl-face-blink and girl-face-talk are copied into assets",
+   "src": "../clinic-heal-v3/girl-w1-front-neutral-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 540,
+   "age": "child",
+   "faces": {
+    "blink": "girl-b1-front-blink-v1.png",
+    "talk": "girl-m5-front-mouth-open-v1.png"
+   },
+   "poses": {
+    "blanket": {
+     "src": "../clinic-heal-v3/girl-w9-blanket-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    },
+    "bottle": {
+     "src": "../clinic-heal-v3/girl-w10-bottle-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    }
+   },
+   "anchors": {
+    "front": {
+     "forehead": [
+      512,
+      240
+     ],
+     "eyes": [
+      512,
+      330
+     ],
+     "mouth": [
+      512,
+      420
+     ],
+     "ear.left": [
+      700,
+      360
+     ],
+     "ear.right": [
+      322,
+      365
+     ],
+     "upperarm.left": [
+      690,
+      680
+     ],
+     "upperarm.right": [
+      332,
+      680
+     ],
+     "forearm.left": [
+      640,
+      850
+     ],
+     "forearm.right": [
+      384,
+      850
+     ],
+     "hand": [
+      512,
+      900
+     ],
+     "tummy": [
+      512,
+      790
+     ],
+     "knee.left": [
+      610,
+      1040
+     ],
+     "knee.right": [
+      414,
+      1040
+     ],
+     "foot.left": [
+      625,
+      1350
+     ],
+     "foot.right": [
+      395,
+      1350
+     ],
+     "head": [
+      512,
+      330
+     ],
+     "seat": [
+      512,
+      1040
+     ]
+    }
+   },
+   "out": "patients/girl/girl"
+  },
+  {
+   "id": "girl-stand-3q-left",
+   "type": "figure",
+   "data": "girl-stand-3q-left",
+   "src": "girl-w13-standing-3q-left-neutral-v1.png",
+   "fig_h": 600,
+   "pad": 16,
+   "neck": 470,
+   "age": "child",
+   "anchors": {
+    "front": {
+     "head": [
+      547,
+      300
+     ],
+     "eyes": [
+      547,
+      300
+     ],
+     "mouth": [
+      542,
+      385
+     ],
+     "forehead": [
+      547,
+      200
+     ],
+     "seat": [
+      511,
+      1000
+     ]
+    }
+   },
+   "out": "patients/girl/girl-stand-3q-left"
+  },
+  {
+   "id": "girl-stand-3q-right",
+   "type": "figure",
+   "data": "girl-stand-3q-right",
+   "src": "girl-w13-standing-3q-right-neutral-v1.png",
+   "fig_h": 600,
+   "pad": 16,
+   "neck": 470,
+   "age": "child",
+   "anchors": {
+    "front": {
+     "head": [
+      477,
+      300
+     ],
+     "eyes": [
+      477,
+      300
+     ],
+     "mouth": [
+      482,
+      385
+     ],
+     "forehead": [
+      477,
+      200
+     ],
+     "seat": [
+      512,
+      1000
+     ]
+    }
+   },
+   "out": "patients/girl/girl-stand-3q-right"
+  }
+ ]
+}

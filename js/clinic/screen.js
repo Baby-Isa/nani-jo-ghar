@@ -46,13 +46,12 @@
       // the goal headline and the steps. His box keeps only the bulb and sound buttons, a small row above with no face.
       if (nani && nani.strip) nani.strip(true);
       const cardEl = h("section", "", side);
-      /** The doctor's face on his card (= replay): his picture, else the flat stand-in. */
+      /** The doctor's face on his card (= replay): the real man's face (CLN-150, Kit.doctorFace). */
       const doctorFace = () => {
         const f = h("div", "cl-face doctor");
         const img = h("img", "", f);
         img.alt = "";
-        const src = Kit.person && Kit.person("doctor", "neutral");
-        img.src = src ? Kit.url(src) : Kit.DOCTOR_FACE;
+        img.src = Kit.doctorFace("neutral");
         return f;
       };
       const trayWrap = h("div", "cl-side-tray", side);
