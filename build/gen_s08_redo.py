@@ -70,19 +70,24 @@ def lines():
         L[lid] = dict(src=[f"{S08}/{src}.png", r["nani-close"]], out=src.replace("-v2", "-v3"),
                       prompt=JAW + KEEP.format(counter=counter), crop="lean" if "lean" in src else "stand", expr=expr,
                       skin="#D5906C")
-    L["N-FACES"] = dict(src=[f"{S08}/nani-faces-v1.png", r["nani-close"]], out="nani-faces-v3",
-                        prompt=JAW.replace("Edit the FIRST attached picture (Nani).", "Edit the FIRST attached picture, "
-                               "a sheet of twelve faces of Nani in a 4 by 3 grid.").replace("her face skin", "her face skin in every cell")
-                        + " Every one of the twelve faces keeps its own expression, size and exact place in its cell."
-                        + KEEP.format(counter="") + GRID)
+    FACE_EXPR = ["a calm neutral face, mouth closed", "talking, the mouth half open", "talking, the mouth more open",
+                 "a smile", "laughing", "a blink with both eyes closed", "surprised", "thinking", "concerned", "proud",
+                 "a nod", "listening"]
+    for i, e in enumerate(FACE_EXPR, 1):  # Nani's face sheet, one close-up per cell; --merge-faces builds nani-faces-v2
+        L[f"N-FACES-C{i}"] = dict(src=[f"{S08}/nani-faces-v1.png", r["nani-close"]], out=f"nani-faces-v2-c{i}",
+                                  crop=f"cell:{i}", expr=f"the same expression ({e})", skin="#D5906C", close_only=True,
+                                  prompt="(CLOSE)")
     L["NL-PNT"] = dict(src=[f"{S08}/nani-lean-neutral-v3.png", r["nani-close"]], out="nani-lean-point-v3", prompt=(
         "Edit the FIRST attached picture (Nani leaning on the marble counter). Change ONLY her right arm and hand (on the "
         "viewer's LEFT): that forearm and elbow stay resting on the counter while the hand lifts a little off the marble "
         "and her index finger points straight DOWN at the counter top just in front of her, as if showing where to put "
         "something; the other fingers softly curled, the thumb relaxed. The finger points at the counter, never at "
         "herself, her chest or her dupatta. Her left forearm (on the viewer's right) stays lying flat on the counter "
-        "exactly as now. Her face: the same gentle face with a small kind smile, looking down a little at the spot she "
-        "points to.") + KEEP.format(counter=", the marble counter").replace("expression, ", "").replace("hands, pose, ", ""))
+        "in front of her, its hand relaxed and flat. The thin PEARL BRACELET stays on her RIGHT wrist (the pointing arm, "
+        "on the viewer's left), clearly visible just above the pointing hand, as on the forearm in the picture now. "
+        "The pointing hand is soft and stylised exactly like her other hand: smooth, slightly chunky, no knuckle "
+        "creases or wrinkles, normal size, five fingers. Her face, head, glasses and hijab stay EXACTLY as they are, "
+        "pixel for pixel.") + KEEP.format(counter=", the marble counter").replace("expression, ", "").replace("hands, pose, ", ""))
     DKEEP = (" Change nothing else: the same man, face, glasses, beard, hair, head angle, clothes, hands, watch, pose, size and "
              "position in the frame, skin tone, lighting and flat grey background, pixel for pixel. Do not move, resize, crop "
              "or add anything. No text. Keep the picture exactly the same size and shape as the attached one.")
@@ -126,23 +131,25 @@ def lines():
     ITEM = (" Background: one perfectly flat, uniform neutral mid-grey #808080 edge to edge, NO shadows of any kind. Style "
             "exactly as the FIRST attached picture: a stylised 3D animated-feature-film look, soft global illumination, "
             "warm light from the upper left, no outlines. No grid lines, borders, labels, text or numbers.")
-    L["CP1"] = dict(src=["sources/art/chai-v2/pan-top-draft1.png", "sources/art/s07/cp1-chai-pan-tilt-v1.png"],
-                    out="items/cp1-chai-pan-tilt-v2", size="1536x1024", prompt=(
-        "Make ONE sprite sheet for a cooking game: the same small brushed-steel chai pan six times in an invisible grid of "
-        "3 columns by 2 rows of equal cells. The camera looks STRAIGHT DOWN from directly above, a true top view exactly "
-        "like the FIRST attached picture: when the pan is flat its rim is a perfect circle and none of its outside wall "
-        "shows. The pan has a small pouring lip at its LEFT and a straight black handle sticking out to the RIGHT, level, "
-        "as in the SECOND attached picture (which shows the colours and the layout, but its camera is wrong: never "
-        "copy its oblique view). The pan is the same size in every cell, its centre in the same place, filling about 60% "
-        "of the cell's width with the handle, clear grey all round; nothing near a cell boundary or the image edge. "
-        "Row 1: (1) FLAT: the rim a perfect circle, full of milky tan chai to a level round surface. (2) tipped a little "
-        "towards the lip: the rim now a slightly narrower upright oval, the chai slid towards the lip so a thin crescent "
-        "of bare steel shows inside at the right. (3) tipped more: a narrower oval, a wide crescent of bare steel at the "
-        "right, the chai pooled at the lip. Row 2: (4) tipped the most: the narrowest oval, most of the inside bare steel, "
-        "the chai only at the lip, not pouring. (5) as 4 and POURING: a smooth stream of milky tan chai leaving the lip "
-        "to the left and down. (6) as 5 but clear dark reddish-brown black tea in the pan and in the stream. The four "
-        "tilts must be plainly different at a glance. NO shadows at all: no contact shadow, no drop shadow, no glow on "
-        "the grey." + ITEM.replace("exactly as the FIRST attached picture", "as the attached pictures")))
+    L["CP1"] = dict(src=["sources/art/chai-v2/pan-top-draft1.png"], out="items/cp1-chai-pan-tilt-v2", size="1536x1024",
+                    gen=True, prompt=(  # try 3 attached the draft and copied its brown ground and diagonal handle; tries 4-5 are text-only generations
+        "Make ONE new picture: a sprite sheet for a cooking game of the same small brushed-steel "
+        "chai pan six times, in an invisible grid of 3 columns by 2 rows of equal cells. TRUE ORTHOGRAPHIC TOP VIEW, "
+        "the camera straight down over the middle of each pan: no perspective, the pan's outer wall never visible. "
+        "The pan is a round saucepan with a small pouring lip at its LEFT and a straight black handle sticking straight "
+        "out to the RIGHT, exactly horizontal. Every pan is the same size, centred in its cell, filling only about 55% "
+        "of the cell's width including the handle, with generous clear grey margins on all sides; nothing near a cell "
+        "boundary or the image edge. Flat, even, soft light; NO cast shadow, no contact shadow, no drop shadow, no glow. "
+        "Row 1: (1) FLAT: the rim a perfect circle, full of milky tan chai with a level round surface. (2) tipped a "
+        "little towards the lip: the rim seen as a slightly narrow upright oval, the chai slid towards the lip, a thin "
+        "crescent of bare steel inside at the right. (3) tipped more: a narrower oval, a wide crescent of bare steel at "
+        "the right, the chai pooled at the lip. Row 2: (4) tipped the most: the narrowest oval, most of the inside bare "
+        "steel, the chai only at the lip, not pouring. (5) as 4 and POURING: a smooth stream of milky tan chai falling "
+        "from the lip to the left. (6) as 5 but clear dark reddish-brown black tea in the pan and in the stream. The "
+        "flat pan and the three tilts must be plainly different at a glance. Background: one perfectly flat, uniform "
+        "neutral mid-grey #808080 edge to edge, the SAME grey everywhere: no gradient, no vignette, no dark corners, no "
+        "brown or warm tint, no glow, halo or light spot around any pan. Style: a stylised 3D animated-feature-film look, soft global "
+        "illumination, no outlines. No grid lines, borders, labels, text or numbers."))
     L["DM2"] = dict(src=["sources/art/s07/dm2-levers-drops-v1.png", "sources/art/s08/extra/dm2-levers-drops-v2-try1.png"],
                     out="items/dm2-levers-drops-v2", prompt=(
         "Edit the FIRST attached picture, a sprite sheet of exactly SIX things in 3 columns by 2 rows: row 1 = (1) the "
@@ -166,16 +173,15 @@ def lines():
         "its near edge thickness showing along the bottom. These five must look clearly different from the top-down cells. "
         "Each of these five plasters fills only about 70% of its cell's width (narrower than now), centred, "
         "with clear grey all round. No surface drawn, no shadows." + ITEM))
-    L["SK2"] = dict(src=["sources/art/s07/sk2-sekelo-plate-skewers-v1.png"], out="items/sk2-sekelo-plate-skewers-v2",
-                    prompt=(
-        "Redraw the attached picture (the same oval brushed-steel plate seen from directly above, four times in a 2 by 2 "
-        "grid, holding one, two, three and four bare bamboo skewers) with these fixes: each plate a little smaller, "
-        "about 70% of its cell's width, centred, with wide clear grey margins all round and well clear of every image "
-        "edge and of the middle; the skewers SHORTER, each whole skewer (point to handle end) only about 70% of the "
-        "plate's length, so each whole skewer INCLUDING its wooden handle lies completely INSIDE the plate's rim, with "
-        "bare steel showing between the handle's end and the right rim; nothing sticks out past the rim. Skewers straight, parallel, left to right, close together and evenly spaced about the middle: 1, 2, 3 and "
-        "4 skewers. Keep the plate, the skewers' look and the top-down view; a soft contact shadow of the skewers on the "
-        "steel only." + ITEM.replace("FIRST attached", "attached")))
+    L["SK2"] = dict(src=["sources/art/s08/extra/sk2-sekelo-plate-skewers-v2-try2.png"],
+                    out="items/sk2-sekelo-plate-skewers-v2", prompt=(  # round 2: edit the best try (margins right)
+        "Edit the attached picture (four steel plates seen straight down, holding one, two, three and four bamboo "
+        "skewers). Keep the plates, their size and position, the margins and the grey background exactly. Change ONLY "
+        "the skewers: make every skewer SHORTER and move it to the left, so that each whole skewer, point AND wooden "
+        "handle, lies completely INSIDE the plate's inner rim, with a clear band of bare steel between the end of each "
+        "handle and the plate's right rim, and a clear band between each point and the left rim. Nothing crosses or "
+        "touches the rim. The skewers stay straight, parallel, left to right, evenly spaced about the middle, handles "
+        "to the right, a soft contact shadow on the steel only. No text."))
     return L
 
 
@@ -195,21 +201,27 @@ CLOSE = ("Edit the FIRST attached picture, a close-up of Nani's face (it is cut 
 
 
 def face_box(a, kind):
-    """A square around the largest skin blob in the face area (px in the full picture)."""
+    """A square around the largest skin blob in the face area (px in the full picture). kind "cell:<i>" searches only
+    cell i (1-12, row by row) of a 4x3 face sheet and keeps the square inside that cell."""
     import numpy as np, cv2
     H, W = a.shape[:2]
-    y_lim = int(H * (0.45 if kind == "lean" else 0.22))
-    sub = a[:y_lim]
+    rx0, ry0, rx1, ry1 = 0, 0, W, int(H * (0.45 if kind == "lean" else 0.22))
+    if kind.startswith("cell:"):
+        i = int(kind[5:]) - 1
+        rx0, ry0 = (i % 4) * W // 4, (i // 4) * H // 3
+        rx1, ry1 = rx0 + W // 4, ry0 + H // 3
+    sub = a[ry0:ry1, rx0:rx1]
     hsv = cv2.cvtColor(sub, cv2.COLOR_RGB2HSV)
     sk = ((hsv[..., 0] >= 5) & (hsv[..., 0] <= 22) & (hsv[..., 1] > 60) & (hsv[..., 1] < 170) & (hsv[..., 2] > 120))
     sk = cv2.morphologyEx(sk.astype(np.uint8), cv2.MORPH_OPEN, np.ones((9, 9), np.uint8))
     n, lb, st, _ = cv2.connectedComponentsWithStats(sk)
     i = 1 + int(np.argmax(st[1:, 4]))
     x, y, w, h = st[i, :4]
-    side = int(max(w, h) * 1.6)
-    cx, cy = x + w // 2, y + h // 2
-    x0 = max(0, min(W - side, cx - side // 2)); y0 = max(0, min(H - side, cy - side // 2))
-    return (x0, y0, x0 + side, y0 + side), (lb == i)
+    side = min(int(max(w, h) * 1.6), rx1 - rx0, ry1 - ry0)
+    cx, cy = rx0 + x + w // 2, ry0 + y + h // 2
+    x0 = max(rx0, min(rx1 - side, cx - side // 2)); y0 = max(ry0, min(ry1 - side, cy - side // 2))
+    mask = np.zeros((H, W), bool); mask[ry0:ry1, rx0:rx1] = lb == i
+    return (x0, y0, x0 + side, y0 + side), mask
 
 
 def paste_face(src, gen, box, skin, out, target=None):
@@ -273,10 +285,16 @@ def call(lid, spec, k, key):
         prompt = CLOSE.format(expr=spec["expr"])
     data = {"model": "chatgpt-image-latest", "prompt": prompt, "quality": "high", "size": size, "n": "1",
             "input_fidelity": "high"}
+    if spec.get("gen"):  # a fresh generation from text: /images/generations, no attachment
+        blobs = []
     for attempt in range(6):  # 16 Oct: the account's credit check bounced some calls with 429 and passed on a retry
         files = [("image[]", (n, b, "image/png")) for n, b in blobs]
-        r = requests.post("https://api.openai.com/v1/images/edits", headers={"Authorization": "Bearer " + key},
-                          data=data, files=files, timeout=600)
+        if spec.get("gen"):
+            r = requests.post("https://api.openai.com/v1/images/generations", timeout=600, json={k: v for k, v in data.items()
+                              if k != "input_fidelity"} | {"n": 1}, headers={"Authorization": "Bearer " + key})
+        else:
+            r = requests.post("https://api.openai.com/v1/images/edits", headers={"Authorization": "Bearer " + key},
+                              data=data, files=files, timeout=600)
         if r.status_code == 200:
             break
         print(lid, "attempt", attempt, r.status_code, r.text[:120].replace("\n", " "), file=sys.stderr)
@@ -287,7 +305,8 @@ def call(lid, spec, k, key):
     raw = base64.b64decode(j["data"][0]["b64_json"])
     if spec.get("crop"):
         close = out.with_name(out.stem + "-close.png"); close.write_bytes(raw)
-        paste_face(ROOT / spec["src"][0], close, box, skin, out, spec.get("skin"))
+        if not spec.get("close_only"):
+            paste_face(ROOT / spec["src"][0], close, box, skin, out, spec.get("skin"))
     else:
         out.write_bytes(raw)
     u = j.get("usage", {})
@@ -306,10 +325,23 @@ if __name__ == "__main__":
     ap.add_argument("--try", dest="k", type=int, default=1)
     ap.add_argument("--jobs", type=int, default=4)
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--merge-faces", metavar="T1,..,T12", help="no API: paste the 12 kept cell close-ups (the try per "
+                    "cell) into nani-faces-v1 as sources/art/s08/nani-faces-v2.png")
     ap.add_argument("--register", metavar="LINE:TRY", help="no API: register a kept doctor face edit to its base "
                     "(DT-QL:1 writes sources/art/s08/doctor-3q-left-talk-v2.png from extra/...-try1.png)")
     a = ap.parse_args()
     L = lines()
+    if a.merge_faces:
+        import numpy as np
+        src = ROOT / S08 / "nani-faces-v1.png"; out = ROOT / S08 / "nani-faces-v2.png"
+        base = np.asarray(Image.open(src).convert("RGB"))
+        cur = src
+        for i, k in enumerate(a.merge_faces.split(","), 1):
+            box, skin = face_box(base, f"cell:{i}")
+            paste_face(cur, EXTRA / f"nani-faces-v2-c{i}-try{k}-close.png", box, skin, out, "#D5906C")
+            cur = out
+        print("merged", out)
+        sys.exit()
     if a.register:
         lid, k = a.register.split(":")
         sp = L[lid]

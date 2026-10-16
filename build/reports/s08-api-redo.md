@@ -1,6 +1,6 @@
 # s08 API redo: Nani's jaw, the doctor's gaps, the failed s07 items (16 Oct 2026)
 
-Zafar's go (16 Oct): "fix Nani and the items that failed their checks yourself through the API now". Script: `build/gen_s08_redo.py` (chatgpt-image-latest, /images/edits, quality high, input_fidelity high). Every try is in `sources/art/s08/extra/`. Kept files are copied to their final names. **Stopped early: the OpenAI account ran out of credit** (`credit_balance_exhausted`, 429 on every retry from about 27 calls in). Three lines never ran, and B1 got only one try.
+Zafar's go (16 Oct): "fix Nani and the items that failed their checks yourself through the API now". Script: `build/gen_s08_redo.py` (chatgpt-image-latest, /images/edits, quality high, input_fidelity high). Every try is in `sources/art/s08/extra/`. Kept files are copied to their final names. Round 1 stopped when the OpenAI credit ran out (27 calls). Round 2, after Zafar's top-up, ran the face sheet, NL-PNT, CP1 and SK2 (19 calls, budget $10).
 
 ## The flaw (Nani, zoomed on all 12 `nani-*-v2` and `nani-faces-v1`; there are 12 v2 files, not 14)
 The jaw line is lumpy. Each side of the chin has a small jowl bulge with a dip between, and it is worst low on her left cheek in the lean pictures. The lower cheeks and chin have pale, patchy highlight spots and a faint mottled grain. Her skin is a little orange-red (ΔE 3–8 to #D5906C). The face sheet has the same jaw.
@@ -30,16 +30,16 @@ The hands were not touched. The doctor's DT-QL and DB-QL were registered the sam
 | 1 | nani-3q-right-neutral-v3.png | PASS | the lumpy chin edge is now smooth | 6.5 → 2.3 |
 | 1 | nani-3q-right-talk-v3.png | PASS | | 5.2 → 2.3 |
 | — | likeness (all 11) | PASS | hijab framing, round gold glasses, eyes and expressions identical to v2; no seams at 3×; no rings; hands as v2 (soft) | |
-| 1 | nani-faces-v3.png | **NOT RUN** | out of credit. Plan: 12 close-up calls (one per cell, about $3.60) | (v1 4.3) |
-| 2 | nani-lean-point-v3.png | **NOT RUN** | out of credit. The prompt is ready (`NL-PNT`, edits nani-lean-neutral-v3) | |
+| 1 | nani-faces-v2.png | PASS-with-note | round 2: one close-up per cell (`N-FACES-C1..12`, merged with `--merge-faces`). Outside the 12 faces the sheet is v1 pixel for pixel, so the cells stay registered and the gutters clean. Light even, the spots gone; the jaw is smoother, with a faint bulge left at the left jaw in cells 1–2. Cell 5 (laughing) still reads as a wink, as in v1 (left as it was) | per cell 4.6–5.7 → 1.5–3.9 |
+| 2 | nani-lean-point-v3.png | PASS-with-note | try 3 of 3. The right index finger points straight down at the counter in front of her; the pearl bracelet is on that wrist; the face is v3's (skin 3.0). Tries 1–2 lost the bracelet. Notes: the forearms now lie side by side, not folded; the pointing hand has slight knuckle creases | 3.0 |
 | 3 | doctor-3q-left-talk-v2.png | PASS | mouth open mid-word, teeth showing, brows up; only the face changed | 4.2 |
 | 3 | doctor-3q-left-blink-v2.png | PASS | both eyes closed behind the glasses | 4.1 |
 | 4 | doctor-faces-v3.png | PASS-with-note | try 1 shifted the cells and had two winks. Try 2 follows v2 cell for cell (cells 6 and 11 have both eyes shut). His new look, 4 clean cells a row. Notes: the column-4 gutter wanders (x 1116–1161) and cell 12 touches the right edge | 2.2 |
 | 5 GS1 | items/girl-w4-front-sore-v2.png | PASS | both eyes open and equal, brows up in the middle, open "ow" with the top teeth showing, no wink. Try 1 was a pucker that read as a kiss | – |
 | 5 DM2 | items/dm2-levers-drops-v2.png | PASS-with-note | try 1 had three levers and no red drop. Try 2 has the right 3×2; the drops are matte, with no specular shine, and don't look like sweets, but they read a little opaque rather than translucent. Try 1 was overwritten by try 2 (a numbering slip); its preview is in the scratchpad | – |
-| 5 CP1 | (extra/cp1-chai-pan-tilt-v2-try1.png) | **FAIL** | still oblique (the outer wall shows), tilts 1–3 hardly differ, soft shadows. Try 2 came out portrait with a brown glow (my size bug, now fixed). 2 tries used | – |
-| 5 B1 | (extra/b1-plaster-level-colours-v2-try1.png) | **FAIL** | row 1 still reads top-down (like cells 6–8) and fills about 87% of the cell. Try 2 bounced (no credit) | – |
-| 5 SK2 | (extra/sk2-sekelo-plate-skewers-v2-try2.png) | **FAIL** | margins now clear (plate about 66% of the cell), but in both tries every handle still sticks out past the right rim. 2 tries used | – |
+| 5 CP1 | (best: extra/cp1-chai-pan-tilt-v2-try4.png) | **FAIL** | round 2, 3 fresh tries. Tries 4–5 (text only, no attachment) finally get the geometry right: a true top view, the handle straight to the right, flat, three plainly different tilts (a growing crescent of bare steel), milk pour, black-tea pour. But the ground is a warm grey-brown gradient with glowing halos round each pan, not flat #808080, even when told outright, so it won't key. Try 3 copied the attached draft's diagonal handle and brown ground. Round 1: oblique, then portrait (my size bug). Not copied to items/. Fix: cut the pans out by shape (circle plus handle) or re-ground in code | – |
+| 5 B1 | items/b1-plaster-level-colours-v2.png | PASS-with-note | the coordinator's verdict overrides mine: row 1 reads from the belt angle, and the cut narrows it from about 87% of the cell | – |
+| 5 SK2 | (extra/sk2-sekelo-plate-skewers-v2-try3.png) | **FAIL** | try 3 edited try 2: cell 1's skewer now lies inside the rim, but cells 2–4 still stick out past the right rim, and cell 2 now holds three skewers instead of two. Fix: lay the skewers in code on the plain plate | – |
 
 ## Calls (27 billed; cost estimated at gpt-image-1 list rates, an upper bound, from each response's `usage`)
 
@@ -52,14 +52,22 @@ The hands were not touched. The doctor's DT-QL and DB-QL were registered the sam
 | GS1 | 2 | 1024x1536 | 0.71 |
 | DM2, CP1, SK2 | 2 each | 1536x1024 (CP1 try 2 1024x1536) | 2.30 |
 | B1 | 1 | 1536x1024 | 0.41 |
-| **total** | **27** | | **$9.47** (budget $15) |
+| **round 1 total** | **27** | | **$9.47** (budget $15) |
+| round 2: 12 face cells | 1 each | 1024² close-up | 3.62 |
+| round 2: NL-PNT | 3 | 1024x1536 | 1.28 |
+| round 2: CP1 (tries 3–5) | 3 | 1536x1024 | 0.85 |
+| round 2: SK2 (try 3) | 1 | 1536x1024 | 0.34 |
+| **round 2 total** | **19** | | **$6.09** (budget $10); both rounds $15.56 |
 
 Prompts: each line's text is in `lines()` in `build/gen_s08_redo.py`; the Nani close-ups use `CLOSE`. The per-call log (prompt, usage, crop box) is in the session scratchpad at `s08redo/calls.jsonl`.
 
-## To finish (after a top-up, about $5)
-1. nani-faces-v3: 12 close-ups.
-2. NL-PNT.
-3. B1 try 2.
-4. CP1 and SK2 are past 2 tries: Zafar's call whether to retry. CP1 likely needs a fresh generation without the oblique v1 attached; SK2 probably needs the handles cut in code.
+## Still open
+CP1 and SK2: Zafar's call. The API won't give a flat ground for CP1, or skewers inside the rim for SK2. Both fixes are code, not more art: cut the pans out by shape, and lay the skewers on the plain plate.
 
-Contact sheets: `s08redo/nani-jaw-before-after.jpg` (row 1 v2, row 2 v3, rows 3–4 contrast-boosted) and `s08redo/items-before-after.jpg`, in the session scratchpad.
+Numbering slips: round 1 DM2 try 2 and round 2 CP1 try 3 were run as "try 1" and overwrote the round-1 try 1 files (renamed afterwards). Their previews are in the scratchpad.
+
+Contact sheets, in the session scratchpad:
+- `s08redo/nani-jaw-before-after.jpg`: row 1 v2, row 2 v3, rows 3–4 contrast-boosted.
+- `s08redo/nani-faces-jaw-before-after.jpg`: per cell, before over after.
+- `s08redo/items-before-after.jpg`
+- `s08redo/round2-contact.jpg`
