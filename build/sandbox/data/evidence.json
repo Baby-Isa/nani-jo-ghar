@@ -4257,6 +4257,24 @@
    "expect": null,
    "note": "after the stir, at the ✓: the pot (and the bowl it is served in) shows what went in, stirred; no dry chilli or curry leaves left over",
    "delay": 400
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "hidden:#done-btn",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "the review bowl (s07 fix round: the judge saw no bowl in ev-s07): after ✓, the served bowl beside the pot shows what went in, stirred; no dry chilli or curry leaves",
+   "delay": 900
   }
  ],
  "DAAR-06": [

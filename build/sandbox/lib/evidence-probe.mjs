@@ -409,14 +409,21 @@ export class EvidenceProbe {
           if (bs.error) { out.fail = bs.error; continue; }
           const b = union(bs);
           if (!b) { out.fail = `"${c.sel}" is not on screen at ${hit.name}`; continue; }
-          const clip = clipOf(b, vw, vh, c.kind === "zoom2" ? 8 : c.kind === "strip" ? 24 : 16);
+          let clip = clipOf(b, vw, vh, c.kind === "zoom2" ? 8 : c.kind === "strip" ? 24 : 16);
           if (!clip) { out.fail = `"${c.sel}" is off screen`; continue; }
           out.box = clip; out.n = bs.length;
           if (c.kind !== "strip") {
             // zoom2: the plan gives a zoom probe its own page at deviceScaleFactor 2, so this crop is the real 2x render (Fable 6)
             // a plain crop from the compositor (fast: a 1.1 s bubble was gone before a full screenshot landed, SH-69); a zoom2
             // crop keeps the full screenshot (its page's real 2x render)
-            const buf = c.kind === "crop" ? await this.fastShot(clip) : await this.shot(clip);
+            let buf = c.kind === "crop" ? await this.fastShot(clip) : await this.shot(clip);
+            // s07 fix round (ART-10's "Roll it round." cut off): a box that grew while the screenshot was taken (Nani's box
+            // as her new line lands) was cut at its old edge, a clip the game never shows; measured again, once, and shot again
+            if (c.kind === "zoom2") {
+              const b2 = union(await this.boxes(c.sel).then((x) => (x.error ? [] : x)).catch(() => []));
+              const clip2 = b2 && clipOf(b2, vw, vh, 8);
+              if (clip2 && ["x", "y", "width", "height"].some((k) => Math.abs(clip2[k] - clip[k]) > 2)) { clip = clip2; out.box = clip; buf = await this.shot(clip); }
+            }
             const f = this.file(s, hit, ci, c.kind); writeFileSync(join(this.dir, f), buf); out.files.push(f);
             const fl = flatness(buf); out.flat = fl == null ? null : Math.round(fl * 10) / 10;
             if (fl != null && fl < 1.5) out.fail = `the crop of "${c.sel}" is one flat colour (covered or blank)`;
