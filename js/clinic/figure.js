@@ -416,7 +416,10 @@
        * patient's wide pose drawn over the figure in place of the greybox, the face swapped by mood, and the hotspots
        * read from the art's measured anchors instead of the greybox polygons. spec = heal-art.json patients[kind];
        * o.view "front" | "side"; o.figH = the figure box's height as a share of the room (scenes-v2 exam.fig.h), so
-       * the art is drawn at its own room size (art plan section 2.2). Returns false when there is no art.
+       * the art is drawn at its own room size (art plan section 2.2). o.body (CLN-154) = her body's height (head to
+       * feet: the view's fig_h) as a share of the room, so she is sized as the doctor is (Kit.doctorFigure:
+       * H * V.h / fig_h); without it the box's height cancels out and the art is always its 1x size. Returns false
+       * when there is no art.
        */
       useArt(spec, o = {}) {
         const view = o.view === "side" && spec && spec.side ? "side" : "front";
@@ -431,7 +434,8 @@
         const box = document.createElement("div");
         box.className = `fig-art view-${view}`;
         const roomPx = 1024; // the room's own height in px: the art's 1x size is measured on it
-        const hFrac = V.h / roomPx / (o.figH || 0.56);
+        const artH = o.body != null && (V.fig_h || spec.fig_h) ? (o.body * V.h) / (V.fig_h || spec.fig_h) : V.h / roomPx;
+        const hFrac = artH / (o.figH || 0.56);
         const feet = V.feet != null ? V.feet : 0.98;
         const seat = (V.anchors && V.anchors.seat) || [0.5, 0.7];
         box.style.height = `${hFrac * 100}%`;

@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, run, ROOT } from "./static.mjs";
+import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, run, ROOT } from "./static.mjs";
 
 test("kit: a mode's CSS may not restyle the shared kit, but may keep its own element apart with :not()", () => {
   assert.equal(kitFindings("css/clinic.css", ".cl-card.oc-card { padding: 2px; }").length, 1);
@@ -48,6 +48,15 @@ test("bulb: 8 s at every level in every table (Zafar, D11 / SH-41)", () => {
   assert.equal(bulbFindings({ cook: [8000], clinic: { 1: 8000, 2: 8000 } }).length, 0);
   assert.equal(bulbFindings({ shared: [5000, 3000, 2000, 1000] }).length, 1);
   assert.match(bulbFindings({ x: [] })[0].text, /no bulb time/);
+});
+test("plane: the exam room's doctor and patient on one feet line, him about 1.45x her (CLN-154)", () => {
+  const ok = { stand: { fig: { bottom: 0.91, body: 0.59 }, doctor: { y: 0.91, h: 0.85 }, phone: { fig: { bottom: 0.95 }, doctor: { y: 0.95 } } }, exam: { floor: 0.84, doctor: { y: 0.84 } } };
+  assert.equal(planeFindings(ok).length, 0);
+  // a smaller girl shrinks her tap targets (CLN-93): never under her art's 1x size
+  assert.deepEqual(planeFindings({ stand: { fig: { bottom: 0.88, body: 0.55 }, doctor: { y: 0.88, h: 0.8 } } }).map((f) => f.key), ["plane|stand.body", "plane|stand.phone.body"]);
+  // the numbers before the fix: her feet above his, no body (the art drawn at its 1x size), him in front of the floor
+  const was = { stand: { fig: { bottom: 0.86, h: 0.64 }, doctor: { y: 0.92, h: 0.66 }, phone: { fig: { bottom: 0.9, h: 0.74 }, doctor: { y: 0.95, h: 0.84 } } }, exam: { floor: 0.88, doctor: { y: 0.9 } } };
+  assert.deepEqual(planeFindings(was).map((f) => f.key), ["plane|stand", "plane|stand", "plane|stand.body", "plane|stand.phone", "plane|stand.phone", "plane|stand.phone.body", "plane|exam"]);
 });
 test("the repo: no static finding outside the known list (build/lint/static-known.json)", () => {
   const known = new Set(existsSync(join(ROOT, "build/lint/static-known.json")) ? JSON.parse(readFileSync(join(ROOT, "build/lint/static-known.json"), "utf8")) : []);
