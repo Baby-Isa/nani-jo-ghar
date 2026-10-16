@@ -21,6 +21,8 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 - Clinic level 1: a morning is 2 check-ups and 2 named ailments, the first visit always a check-up.
 - Speech recognition defaults (Isa and a cousin saying five words, children's takes enrolled by default, no cloud path, three takes from Mum) await Zafar (`docs/architecture/speech-recognition-plan.md`).
 
+- The Cook greeting pill "Thank you!" is styled as Kutchi (red, bold): is there a Kutchi word for it, or should it be grey italic "to record"? (s08 gate, 16 Oct)
+
 ### From Sprint 7's art (16 Oct)
 35. **Boing's drop machine (DM1):** the new machine is tall, so its levers would sit 40 units apart, too close for a phone tap (needs 56). Redraw it wider (on the redo list) or move the syringe to make room? Recommend: redraw.
 36. **The pharmacy's "cup" and "bottle":** the new belt art draws the cup as a glass tumbler and the bottle as a hot-water bottle (as the art plan said). Keep? Recommend yes.
