@@ -188,13 +188,22 @@
   function img(src, cls, style) {
     return `<img alt="" class="${esc(cls || "")}" style="${esc(style || "")}" src="${esc(v(src))}">`;
   }
+  /*
+   * s08-nani-ground (Zafar, 16 Oct): Nani sits on a stool behind the ledge, her hands in her lap: the ledge (in front of
+   * her) covers the lower part of her forearms, its top on the line where her picture meets the counter (css/first.css
+   * --st-ledge-top). Pointing, her hand comes up over the ledge: `front` (the point frame's hand, cut on the same canvas,
+   * build/tools/art/specs/s08-nani.cut.json "front") is drawn over the ledge, the fingertip on its top.
+   */
+  function seated(n, cls) {
+    return `${img(n.img, `st-nani ${cls || ""}`)}<i class="st-ledge"></i>${n.front ? img(n.front, "st-nani-front") : ""}`;
+  }
   function stage(scene) {
     const s = el("div", "st-stage");
     if (scene.bg) s.style.backgroundImage = `url("${v(scene.bg)}")`;
     let html = "";
     (scene.props || []).forEach((p) => (html += img(p.img, `st-prop ${p.cls || ""}`, `left:${p.x}%;top:${p.y}%;width:${p.w}%`)));
     // Nani's pictures are waist-up, leaning on a counter: she always gets a ledge to lean on
-    if (scene.nani) html += `<div class="st-nani-wrap${scene.nani.sip ? " sip" : ""}" style="left:${scene.nani.x}%">${img(scene.nani.img, "st-nani")}<i class="st-ledge"></i></div>`;
+    if (scene.nani) html += `<div class="st-nani-wrap${scene.nani.sip ? " sip" : ""}" style="left:${scene.nani.x}%">${seated(scene.nani)}</div>`;
     if (scene.child) html += `<div class="st-child${scene.child.walk ? " walk" : ""}" style="left:${scene.child.x}%">${childSvg()}</div>`;
     if (scene.hearts) html += `<div class="st-hearts" aria-hidden="true"><i></i><i></i><i></i></div>`;
     s.innerHTML = html;
@@ -253,7 +262,11 @@
         const pic = el("div", "st-panel");
         pic.style.backgroundImage = `url("${v(p.art)}")`;
         let html = "";
-        (p.items || []).forEach((it) => (html += img(it.img, `st-item ${it.cls || ""}`, `left:${it.x}%;top:${it.y}%;width:${it.w}%`)));
+        (p.items || []).forEach((it) => {
+          const at = `left:${it.x}%;top:${it.y}%;width:${it.w}%`;
+          // Nani on a panel sits behind her ledge too (seated, above)
+          html += it.ledge ? `<div class="st-pnani" style="${at}">${seated(it, it.cls)}</div>` : img(it.img, `st-item ${it.cls || ""}`, at);
+        });
         if (p.child) html += `<div class="st-item st-pchild" style="left:${p.child.x}%;top:${p.child.y}%;width:${p.child.w}%">${childSvg()}</div>`;
         pic.innerHTML = html;
         // ART-18 (s04-fxc): a bobbing guest bobs with the one shared talk animation (Lifecycle.talk), never its own

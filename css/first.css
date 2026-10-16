@@ -106,12 +106,26 @@ button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-c
   animation: stIn .5s ease-out both;
 }
 .st-nani { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; filter: drop-shadow(0 6px 12px rgba(60, 35, 20, .25)); transform-origin: 50% 100%; }
+/* s08-nani-ground (Zafar, 16 Oct): she sits on a stool behind the ledge, hands in her lap, the ledge over the lower part of
+   her forearms: its top a little above the line where her picture meets the counter (ledge canvas row 452.3 of 578 =
+   78.25%, build/tools/art/specs/s08-nani.cut-data.json counter_row), so no strip of wall shows under her arms. Pointing,
+   her hand (.st-nani-front, the same canvas) lies over the ledge, the drop shadow under her fingertip. */
+.st-nani-wrap, .st-pnani { --st-ledge-top: 77.25%; }
+.st-nani-front { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; filter: drop-shadow(0 4px 5px rgba(60, 35, 20, .3)); pointer-events: none; }
+/* on a picture-story panel: placed by the panel's data (x, y, w); the ledge runs on to the panel's foot (the panel clips it) */
+.st-pnani { position: absolute; aspect-ratio: 443 / 578; }
+.st-pnani .st-ledge { bottom: -40%; --st-top-face: 30%; }
+.st-pnani .st-nani.shake { animation: stShake .5s ease-in-out 3; }
+/* the ledge: its top (from the back edge, where she sits, to the front edge: deep enough for her fingertip, canvas row 532
+   of 578), then its front; --st-top-face is that depth as a share of the ledge's own height */
 .st-ledge {
-  position: absolute; left: -12%; right: -12%; bottom: 0; height: 16%;
+  position: absolute; left: -12%; right: -12%; top: var(--st-ledge-top, 84%); bottom: 0;
   border-radius: 10px 10px 0 0;
+  --st-top-face: 72%;
   background: linear-gradient(#c79560, #a8784a 40%, #8f6440);
   box-shadow: 0 -2px 0 #dcb27f inset, 0 -4px 12px rgba(60, 35, 20, .2);
 }
+.st-ledge::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: var(--st-top-face); border-radius: inherit; background: var(--njg-cream-lip); opacity: .3; border-bottom: 2px solid var(--njg-cream-edge); }
 .st-nani.laugh { animation: stLaugh .18s ease-in-out 8 alternate; }
 .st-nani.happy-hop { animation: stHop .45s ease-out 2; }
 .st-nani-wrap.sip .st-nani { animation: stSway 2.2s ease-in-out .6s infinite alternate; }

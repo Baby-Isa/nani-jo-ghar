@@ -117,13 +117,13 @@
       "panels": [
         {
           "art": "assets/story/first-launch/p1-calendar.svg",
-          "items": [{ "img": "assets/cook/characters/nani-ledge-point-v3.webp", "x": 0, "y": 34, "w": 36 }],
+          "items": [{ "img": "assets/cook/characters/nani-ledge-point-v3.webp", "front": "assets/cook/characters/nani-ledge-point-front-v3.webp", "ledge": true, "x": 0, "y": 17.9, "w": 36 }],
           "line": "eid-tomorrow"
         },
         {
           "art": "assets/story/first-launch/p2-guests.svg",
           "items": [
-            { "img": "assets/cook/characters/nani-ledge-happy-v3.webp", "x": 0, "y": 34, "w": 36 },
+            { "img": "assets/cook/characters/nani-ledge-happy-v3.webp", "ledge": true, "x": 0, "y": 17.9, "w": 36 },
             { "img": "assets/cook/characters/nana-badge.webp", "x": 46, "y": 12, "w": 13, "cls": "bob" },
             { "img": "assets/cook/characters/ma-badge.webp", "x": 60, "y": 8, "w": 13, "cls": "bob d1" },
             { "img": "assets/cook/characters/cousin-badge.webp", "x": 74, "y": 12, "w": 13, "cls": "bob d2" },
@@ -134,7 +134,7 @@
         {
           "art": "assets/story/first-launch/p3-pots.svg",
           "items": [
-            { "img": "assets/cook/characters/nani-ledge-neutral-v3.webp", "x": 0, "y": 34, "w": 36, "cls": "shake" },
+            { "img": "assets/cook/characters/nani-ledge-neutral-v3.webp", "ledge": true, "x": 0, "y": 11.2, "w": 36, "cls": "shake" },
             { "img": "assets/cook/props/pot.webp", "x": 44, "y": 52, "w": 22 },
             { "img": "assets/cook/props/saucepan.webp", "x": 70, "y": 56, "w": 22 }
           ],
@@ -142,7 +142,7 @@
         },
         {
           "art": "assets/story/first-launch/p4-help.svg",
-          "items": [{ "img": "assets/cook/characters/nani-ledge-point-v3.webp", "x": 0, "y": 34, "w": 36 }],
+          "items": [{ "img": "assets/cook/characters/nani-ledge-point-v3.webp", "front": "assets/cook/characters/nani-ledge-point-front-v3.webp", "ledge": true, "x": 0, "y": 17.9, "w": 36 }],
           "child": { "x": 62, "y": 18, "w": 26 },
           "line": "help-cook"
         }

@@ -3,7 +3,9 @@
   face blink: registered -0.13,-0.42 px; layer 49293 px; outside it the frame IS the base (max diff 0); skin dE 1.96 -> 1.57
   pose point: registered +0.03,+0.04 px; layer 177943 px; outside it the frame IS the base (max diff 0); skin dE 1.62 -> 0.00
   base: forearms' underside at source row 1280, scarf 425 px wide at the eye row (centre x 501.5), top 154; lowest rows {'neutral': 1299, 'happy': 1299, 'talk': 1299, 'blink': 1299, 'point': 1359}
+  canvas counter: point's front layer 460x537 (the counter line at row 449.7, the fingertip at 193.2, 530.7)
   canvas counter: 460x501, k 0.4376, head 186 px wide, forearms' underside at row 497, her top at row 4
+  canvas ledge: point's front layer 443x578 (the counter line at row 452.3, the fingertip at 190.1, 532.3)
   canvas ledge: 443x578, k 0.4325, head 184 px wide, forearms' underside at row 499, her top at row 11
 nani-lean: lean cut, 5 frame(s) + 0 alias(es) on 2 canvas(es)
   12 pieces (want 12)

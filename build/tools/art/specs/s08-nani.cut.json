@@ -28,9 +28,23 @@
    "head_band": [0.08, 0.42],
    "arm_cols": [330, 700],
    "skin_box": [380, 300, 640, 560],
+   "front": {
+    "_about": "s08-nani-ground (Zafar, 16 Oct): the family sit on stools behind the counter, hands in their laps; when she points, her right hand comes up over the counter's back edge and her fingertip touches the counter top in front of her. Traced round her pointing hand and forearm on nani-lean-point-v3.png (source px), snapped to its edges by GrabCut; from row 1150 (above the counter line, 1172) it overlaps her own picture with the same pixels.",
+    "pose": "point",
+    "poly": [[166, 1150], [166.7, 1171.7], [196.7, 1190], [226.7, 1205], [250, 1211.7], [276.7, 1220], [300, 1233.3], [308.3, 1236.7],
+     [313.3, 1250], [320, 1263.3], [330, 1276.7], [340, 1283.3], [353.3, 1285], [363.3, 1290], [376.7, 1295], [390, 1300], [401.7, 1301.7], [411.7, 1300],
+     [412.7, 1320], [413.3, 1340], [416.7, 1350], [425, 1356.7], [435, 1355], [440, 1350], [443.3, 1340], [446.7, 1326.7], [448.3, 1313.3], [449.3, 1303.3],
+     [453.3, 1306.7], [461.7, 1306.7], [466.7, 1300], [466.7, 1290], [458.3, 1281.7], [450, 1280],
+     [450.7, 1240], [449.3, 1206.7], [448.3, 1173.3], [446.7, 1150]],
+    "from_row": 1150,
+    "whole_to": 1172,
+    "band": 6,
+    "inner": 4,
+    "tip": [430, 1357]
+   },
    "canvases": {
-    "counter": { "size": [460, null], "head_w": 186, "eyes_x": 224.5, "pad": 4, "below": 4, "out": "cook/characters/nani-<mood>-v3.webp" },
-    "ledge": { "size": [443, 578], "arm_y": 499, "fit_top": 12, "eyes_x": 221, "moods": ["neutral", "happy", "talk", "point"], "out": "cook/characters/nani-ledge-<mood>-v3.webp" }
+    "counter": { "size": [460, null], "head_w": 186, "eyes_x": 224.5, "pad": 4, "below": 4, "out": "cook/characters/nani-<mood>-v3.webp", "front_out": "cook/characters/nani-point-front-v3.webp" },
+    "ledge": { "size": [443, 578], "arm_y": 499, "fit_top": 12, "eyes_x": 221, "moods": ["neutral", "happy", "talk", "point"], "out": "cook/characters/nani-ledge-<mood>-v3.webp", "front_out": "cook/characters/nani-ledge-point-front-v3.webp" }
    }
   },
   {

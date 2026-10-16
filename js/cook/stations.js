@@ -32,14 +32,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const D = { bg: 0, back: 5, char: 10, occ: 20, item: 30, item2: 32, front: 34, fx: 40, hand: 45, top: 50 };
 
   const CHARS = {
-    // s08 (ART-13, ART-10): her jaw-fixed lean set (v3), one canvas 460x501, head 186 px wide at 1:1; her forearms'
-    // underside at canvas row 497 sits at y 613, just under the occluder's top (611), so they rest on the counter's back edge
-    // (s05 audit section 6, way (a)). s08-rejudge-fixes: drawn at 0.82 (she leans and Ma stands, 1:1 put her crown 102 px above
-    // Ma's, 0.82 made her head too small): 0.90, top = 613 - 497 x 0.90 = 165.7 (build/tools/art/specs/s08-nani.cut-data.json, canvases.counter)
-    nani: { x: 330, top: 166, scale: 0.9 },
-    nana: { x: 940, top: 175, scale: 1.25 },
-    ma: { x: 940, top: 195, scale: 1.14 },
-    cousin: { x: 940, top: 290, scale: 1.02 },
+    // s08 (ART-13, ART-10): her jaw-fixed lean set (v3), one canvas 460x501, head 186 px wide at 1:1, drawn at 0.90
+    // (s08-rejudge-fixes: her head 0.85 of Ma's). s08-nani-ground (Zafar, 16 Oct: "her body is completely floating"; then
+    // "aim for hands and arms resting on knee or lap as if sitting on a stool behind"): the whole family sit on stools behind
+    // the counter, hands in their laps, the counter's front (the occluder, y 611 down) over the lower part of their forearms,
+    // never a strip of cabinet between an arm and the counter. One rule for everyone: the lowest point of every arm sits at
+    // least 4 px under the occluder's top, so the talk's 2 px lift and 0.4 degree tilt never open a gap. Nani: her body meets
+    // the counter at canvas row 449.7 (the source's counter line, build/tools/art/specs/s08-nani.cut-data.json
+    // counter_row), so top = 615 - 449.7 x 0.90 = 210 (her crown 213.6, Ma's 228.4: a touch taller); the others 6 px lower
+    // than before (their hands were on the edge). pointTip: her fingertip on the canvas (cut-data front.tip).
+    nani: { x: 330, top: 210, scale: 0.9, pointTip: [193.2, 530.7] },
+    nana: { x: 940, top: 181, scale: 1.25 },
+    ma: { x: 940, top: 201, scale: 1.14 },
+    cousin: { x: 940, top: 296, scale: 1.02 },
   };
 
   /** How far a station may raise its scene pieces into the extra worktop above the design box (k of it; see fitView). */
@@ -719,6 +724,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.mood = "neutral";
       this.tweens.add({ targets: img, scaleY: c.scale * 1.012, duration: 1700 + Math.random() * 400, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
       this.chars[who] = img;
+      if (who === "nani") this.pointFront(img, c);
       // ART-19 (s07 N5): Nani blinks now and then while she rests (only the neutral face; a mood or talk is never cut)
       if (who === "nani" && this.textures.exists("nani-blink")) {
         const blink = () => {
@@ -738,6 +744,46 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         this.tweens.add({ targets: img, y: c.top - 14, duration: 150, yoyo: true, repeat: 2 });
       }
       return img;
+    }
+    /**
+     * s08-nani-ground: when Nani points, her right hand comes up over the counter's back edge: the point frame's hand and
+     * forearm (nani-point-front, cut by build/tools/art/specs/s08-nani.cut.json "front", on her canvas's registration, so
+     * it lies exactly on her picture) drawn over the counter's front, moving with her. Her fingertip reaches into the tray in
+     * front of her: the tray's own front wall (CK-21, the same cut as a served dish's) goes over it, and a soft contact
+     * shadow (the shared Cook shadow) lies on the tray's floor beside her finger. Shown only while she shows the point frame.
+     */
+    pointFront(img, c) {
+      if (!this.textures.exists("nani-point-front") || !c.pointTip) return;
+      const W0 = this.texSize("nani-neutral").w;
+      const front = this.track(this.add.image(img.x, img.y, "nani-point-front").setOrigin(0.5, 0).setDepth(D.occ + 0.5).setVisible(false));
+      const sh = this.track(this.add.image(0, 0, this.tex("shadow")).setDepth(D.occ + 0.45).setVisible(false));
+      let wall = null;
+      const sync = () => {
+        if (!img.active) return;
+        const on = img.visible && img.texture.key === "nani-point";
+        if (on && !wall && Cook.trayFrontFor) wall = Cook.trayFrontFor(this, img.x) || false;
+        front.setVisible(on);
+        sh.setVisible(on);
+        if (wall) wall.setVisible(on);
+        if (!on) return;
+        front.setPosition(img.x, img.y).setScale(img.scaleX, img.scaleY).setAngle(img.angle).setAlpha(img.alpha);
+        // the fingertip in the world (her picture turns about its top-centre as she talks)
+        const a = (img.angle * Math.PI) / 180;
+        const dx = (c.pointTip[0] - W0 / 2) * img.scaleX;
+        const dy = c.pointTip[1] * img.scaleY;
+        const tx = img.x + dx * Math.cos(a) - dy * Math.sin(a);
+        const ty = img.y + dx * Math.sin(a) + dy * Math.cos(a);
+        // on the floor just behind the wall (or under the tip, with no tray), a little right of the finger (light from the left)
+        const fy = wall && wall.wallTop != null ? Math.min(ty, wall.wallTop) - 4 : ty - 2;
+        sh.setPosition(tx + 6 * img.scaleX, fy).setDisplaySize(44 * img.scaleX, 16 * img.scaleY).setAlpha(img.alpha);
+      };
+      this.events.on("update", sync);
+      img.once("destroy", () => {
+        this.events.off("update", sync);
+        front.destroy();
+        sh.destroy();
+        if (wall) wall.destroy();
+      });
     }
     /**
      * The counter's front (the service picture from design y 611 down), drawn over the family: the same picture at the
