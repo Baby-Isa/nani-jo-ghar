@@ -11,6 +11,9 @@ high (faces kept), 1536x1024. Writes sources/art/s08/lineup-<V>-<n>.png; never w
   V2 Faces kept, bodies like the girl: the doctor's and Nani's faces exactly as they are; everything below the neck, the
      clothes, hands and the render finish in the girl's stylised world; the girl unchanged.
   V3 Cartoon: Nani a little more cartoon, the doctor a lot more, both to match the girl; the girl unchanged.
+  V4 Zafar's pick (16 Oct: "these ones", V2-1) refined as an edit of lineup-v2-1.png: the eyes as they are; Nani taller
+     (5'5"-5'6" beside his 5'8") and not portly; simpler clothes (no fine embroidery or weave).
+  V5 V4-1 with Nani's eyes restored to V2-1's size and openness (the V4 edit shrank them).
 """
 import argparse, base64, os, sys, time
 from pathlib import Path
@@ -25,7 +28,29 @@ REFS = {
     "nani_sheet": "sources/art/characters/nani-sheet-v2-approved.png",
     "girl_stand": "sources/art/s07/girl-w13-standing-3q-right-neutral-v1.png",
     "girl_sheet": "sources/art/clinic-heal-v3/s1-girl-sheet-v2.png",
+    "lineup_v21": "sources/art/s08/lineup-v2-1.png",
+    "lineup_v41": "sources/art/s08/lineup-v4-1.png",
 }
+EDIT_V5 = (
+    "Edit the FIRST attached picture. Keep everything exactly as it is (the three people, their heights, clothes, poses, "
+    "the style, light and background) and change ONLY Nani's eyes (the woman in the red hijab): make her eyes exactly as "
+    "big, round and open as Nani's eyes in the SECOND attached picture, warm and bright, looking at us, behind the same "
+    "round gold glasses; her face shape, smile, eyebrows and hijab stay as they are in the first picture. The "
+    "grandfather and the girl stay exactly the same. No text, no labels."
+)
+EDIT_V4 = (
+    "Edit the FIRST attached picture (the lineup of the grandfather, the grandmother Nani and the little girl). Keep "
+    "everything exactly as it is: the same three people, their faces and likeness, their eyes (the same size and "
+    "openness), the same art style, render and soft lighting, the same pose and places, the girl completely unchanged, "
+    "the same plain mid-grey background and floor shadows. Change ONLY these: (1) Nani is taller and slimmer: her real "
+    "height is about 5 foot 5 to 5 foot 6 beside the grandfather's 5 foot 8, so the top of her hijab reaches about 96% of "
+    "his height (just below his eyebrows), with a slim, upright figure, not short or portly; her face stays exactly the "
+    "same. (2) Simpler clothes with less fine detail, the same colours: the grandfather's blazer a plain soft navy with "
+    "only a faint, simple, large check (no fine weave or texture), his shirt and trousers plain; Nani's long kameez plain "
+    "cream with a few bold, simple red flower motifs at the neckline, cuffs and hem only (no fine embroidery all over), "
+    "her dupatta a plain red with one simple border, her trousers plain cream. Feet level on one floor line. Modest "
+    "clothing. No text, no labels, no borders, no props."
+)
 
 COMMON = (
     "Make ONE picture for a children's game: a character lineup of three members of one family, standing side by side on "
@@ -45,6 +70,8 @@ COMMON = (
 VARIANTS = {
     "V1": ("doctor_sheet", "doctor_stand", "nani_n1", "nani_sheet", "girl_stand", "girl_sheet"),
     "V2": ("doctor_sheet", "doctor_stand", "nani_n1", "nani_sheet", "girl_stand", "girl_sheet"),
+    "V4": ("lineup_v21", "doctor_sheet", "nani_n1"),
+    "V5": ("lineup_v41", "lineup_v21"),
     "V3": ("doctor_sheet", "doctor_stand", "nani_n1", "nani_sheet", "girl_stand", "girl_sheet"),
 }
 STYLE = {
@@ -70,7 +97,7 @@ STYLE = {
 
 def run(v, n, model, key):
     files = [("image[]", (Path(p).name, open(ROOT / p, "rb"), "image/png")) for p in (REFS[k] for k in VARIANTS[v])]
-    data = {"model": model, "prompt": COMMON + STYLE[v], "quality": "high", "size": "1536x1024", "n": str(n),
+    data = {"model": model, "prompt": {"V4": EDIT_V4, "V5": EDIT_V5}.get(v) or COMMON + STYLE[v], "quality": "high", "size": "1536x1024", "n": str(n),
             "input_fidelity": "high"}
     for attempt in range(3):
         r = requests.post("https://api.openai.com/v1/images/edits", headers={"Authorization": "Bearer " + key},
