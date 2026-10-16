@@ -14,7 +14,7 @@
  *            label: a string, a DOM node (the mode's own word markup) or {html}
  *            icon: "arrow" (default), "check", "grid", "again", "home" or null
  *   const row = NjgButtons.pills(parent, [{id, label | html | node}], onPick, {cls}) -> <div class="njg-pills">
- *            row.pill(id) the button, row.lock(on), row.remove()
+ *            row.pill(id) the button, row.lock(on), row.fresh() (a new question: no double-tap guard left), row.remove()
  *   NjgButtons.glow(btn, on)
  *   const row = NjgButtons.grownUp(parent, label, note, onPress, {ask, cls}) -> <p class="njg-grownup"> (the "?" pop-up's
  *            grown-ups' action, e.g. "Play as new": the .njg-act look at tap height; row.btn is the button)
@@ -149,6 +149,9 @@
     if (parent) parent.appendChild(row);
     row.pill = (id) => els[id] || null;
     row.lock = (on = true) => row.classList.toggle("locked", !!on);
+    // a new question (the pills put up again): every pill takes a tap at once. The 400 ms double-tap guard belongs to
+    // the question just answered, never to the next one (contract-21: the eye chart's next row, same pill, was dropped)
+    row.fresh = () => Object.values(els).forEach((b) => delete b.dataset.cool);
     return row;
   };
 

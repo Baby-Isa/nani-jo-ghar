@@ -485,7 +485,10 @@
     };
     const showJudge = (on) => {
       judgeBox.classList.toggle("hidden", !on);
-      if (on) placeJudge();
+      if (!on) return;
+      // a new row to judge: the pills are live at once, even on the pill just pressed for the row before (contract-21)
+      if (pills && pills.fresh) pills.fresh();
+      placeJudge();
     };
     showJudge(false);
 
