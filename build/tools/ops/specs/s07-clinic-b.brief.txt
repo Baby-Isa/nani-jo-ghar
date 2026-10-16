@@ -1,0 +1,66 @@
+SESSION NAME / MODE:  s07-clinic-b: the belt items at the belt's angle (B1-B10), and the ready-made characters wired in
+MODEL AND EFFORT:     Opus, high effort (cutting sheets that partly failed, and placing ready characters, need judgement)
+COST ESTIMATE:        about $40-70
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am after s07-clinic-a is merged (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s07-clinic-b.context.md (939 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/game-design/modes/clinic.md
+     docs/design-language/art-plans/s07-art-plan.md section 6 (the belt sheets) and docs/design-language/art-plans/clinic-items.md
+     build/reports/s07-art-landing.md (each sheet's verdict and its workaround)
+     build/reports/s07-clinic-a.md (what the doctor and girl wiring changed)
+
+FILES THIS SESSION OWNS (edit only these):
+  - data/clinic/sheets.json, data/clinic.json (items), data/clinic/pipeline.json (decoys)
+  - js/clinic/** where the belt, pharmacy and Kit.icon item sprites and the patients' pictures are drawn
+  - data/clinic/heal-art.json and rough-art.json for the other patients
+  - assets/clinic/sheets/**, assets/clinic/** new files for the other patients
+  - build/tools/art/specs/s07.cut.json (add jobs)
+  - build/reports/s07-clinic-b.md
+READ-ONLY (never edit):
+  - js/cook/**, data/cook.json, assets/cook/**
+  - sources/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none: a sheet cell that can't be cut clean keeps today's sprite and is listed in the report
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The belt items (B1-B10, B9 decoys): cut each usable view by component (not blind grid) per the landing report's workaround, into assets/clinic/sheets/<item>/ with own-colour sprites (<base>-<colour>) so the CSS tint stops for them; every belt item drawn at the belt's viewing angle and sitting on the belt surface with its base on it (Zafar: 'make sure the items look correct when on the conveyor belt in terms of angle of viewing and how they sit on the travelator'); the comb dropped from the decoys. A view that can't be used keeps today's sprite.
+     Accept: the pharmacy shots at 1366x768 and 844x390, zoomed x2: every item on the belt sits on its surface at one camera angle; no item clipped or touching another
+  2. The ready-made characters (Zafar 16 Oct: 'do that now regardless'): the clinic boy, old man and old woman (their poses in sources/art/clinic-heal-v3/ boy-*, and sources/art/chatgpt-batch3/char-clinic-*), and the guest aunts/uncles, older cousin and dad with baby as waiting-room people: wherever a rough stand-in or SVG person shows today for them, use their real art, registered on one canvas per person, never stretched; where a whole game needs body-part close-ups that don't exist for them, keep the girl as that game's patient.
+     Accept: a grep finds no rough stand-in left where real art exists; the waiting-room and patient shots show the real people
+  3. Nothing else changes: same mechanics and words.
+     Accept: node build/tools/review/checks.mjs --only unit,static,leak passes; clinic sandbox flows reach their end
+
+REGRESSION ROWS TO RECHECK (148 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (26): CLN-01*, CLN-81*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151
+  clinic:waiting (11): CLN-115*, CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110
+  clinic:pharmacy (8): CLN-19, CLN-20, CLN-21, CLN-22, CLN-23, CLN-24, CLN-96, CLN-97
+  clinic:diagnosis (7): CLN-17*, CLN-16, CLN-18, CLN-93, CLN-94, CLN-95, CLN-116
+  clinic:sendoff (7): CLN-25*, CLN-27, CLN-28, CLN-29, CLN-98, CLN-117, CLN-26
+  shared components (89): SH-70, SH-37*, SH-90*, SH-91*, SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-53, SH-54, SH-55, SH-62, SH-69, SH-10, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58, SH-59, SH-60, SH-63, SH-64, SH-65, SH-66, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33, SH-34, SH-35, SH-36, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48, SH-71, SH-72, SH-73, SH-74, SH-75, SH-76, SH-77, SH-79, SH-80, SH-82, SH-83, SH-84, SH-86, SH-87, SH-81, SH-89, SH-88
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s07-clinic-b` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8823.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s07-clinic-b.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

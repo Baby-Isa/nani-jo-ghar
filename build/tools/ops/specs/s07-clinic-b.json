@@ -1,0 +1,37 @@
+{
+  "name": "s07-clinic-b: the belt items at the belt's angle (B1-B10), and the ready-made characters wired in",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "art",
+  "why": "cutting sheets that partly failed, and placing ready characters, need judgement",
+  "cost": "about $40-70",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/new-session-b5r2am after s07-clinic-a is merged (the orchestrator merges)",
+  "read": [
+    "docs/game-design/modes/clinic.md",
+    "docs/design-language/art-plans/s07-art-plan.md section 6 (the belt sheets) and docs/design-language/art-plans/clinic-items.md",
+    "build/reports/s07-art-landing.md (each sheet's verdict and its workaround)",
+    "build/reports/s07-clinic-a.md (what the doctor and girl wiring changed)"
+  ],
+  "owns": [
+    "data/clinic/sheets.json, data/clinic.json (items), data/clinic/pipeline.json (decoys)",
+    "js/clinic/** where the belt, pharmacy and Kit.icon item sprites and the patients' pictures are drawn",
+    "data/clinic/heal-art.json and rough-art.json for the other patients",
+    "assets/clinic/sheets/**, assets/clinic/** new files for the other patients",
+    "build/tools/art/specs/s07.cut.json (add jobs)",
+    "build/reports/s07-clinic-b.md"
+  ],
+  "readOnly": ["js/cook/**, data/cook.json, assets/cook/**", "sources/**"],
+  "stubs": "none: a sheet cell that can't be cut clean keeps today's sprite and is listed in the report",
+  "tasks": [
+    { "do": "The belt items (B1-B10, B9 decoys): cut each usable view by component (not blind grid) per the landing report's workaround, into assets/clinic/sheets/<item>/ with own-colour sprites (<base>-<colour>) so the CSS tint stops for them; every belt item drawn at the belt's viewing angle and sitting on the belt surface with its base on it (Zafar: 'make sure the items look correct when on the conveyor belt in terms of angle of viewing and how they sit on the travelator'); the comb dropped from the decoys. A view that can't be used keeps today's sprite.", "accept": "the pharmacy shots at 1366x768 and 844x390, zoomed x2: every item on the belt sits on its surface at one camera angle; no item clipped or touching another" },
+    { "do": "The ready-made characters (Zafar 16 Oct: 'do that now regardless'): the clinic boy, old man and old woman (their poses in sources/art/clinic-heal-v3/ boy-*, and sources/art/chatgpt-batch3/char-clinic-*), and the guest aunts/uncles, older cousin and dad with baby as waiting-room people: wherever a rough stand-in or SVG person shows today for them, use their real art, registered on one canvas per person, never stretched; where a whole game needs body-part close-ups that don't exist for them, keep the girl as that game's patient.", "accept": "a grep finds no rough stand-in left where real art exists; the waiting-room and patient shots show the real people" },
+    { "do": "Nothing else changes: same mechanics and words.", "accept": "node build/tools/review/checks.mjs --only unit,static,leak passes; clinic sandbox flows reach their end" }
+  ],
+  "flows": ["clinic:waiting", "clinic:pharmacy", "clinic:patient", "clinic:morning", "clinic:diagnosis", "clinic:sendoff"],
+  "shared": true,
+  "browser": true,
+  "port": 8823,
+  "report": "s07-clinic-b",
+  "publish": false
+}
