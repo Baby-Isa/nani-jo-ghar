@@ -1086,90 +1086,154 @@
   }
  },
  "doctor": {
-  "_about": "s07-clinic-a (CLN-150): the real doctor, one man everywhere, cut by build/tools/art/artcut.py from sources/art/s07 (build/tools/art/specs/s07.cut.json). views: each standing view on its own canvas at ONE drawn size (fig_h: his body, head top to feet, in px at 1x of the 1024 px room), so every view is the same man at the same height; feet = the feet line and stand = the x between his feet (canvas fractions): every view is placed by them, so a turn swaps in place, never stretched. head = his head's middle (bubbles). faces: head layers on that view's canvas (DF1 talk and DF3 blink on DW1; DD2's closed mouth on DD1). poses: which view each staging turn draws (talk-left = turned three-quarter to the viewer's left, to a patient on his right; front = to the player; call = the waiting room's DD1, standing and waving, Zafar 15 Oct). box: his box and card faces (neutral, talk, laugh, think) cut from doctor-ref-faces-v1.png (Kit.DOCTOR_FACE, Kit.doctorFace).",
+  "_about": "s08-doctor-stitch (Zafar, 16 Oct: the old doctor beside the girl 'looks copy and pasted ... we need it all good and consistent'; keep the cartoony look): the doctor's new cartoon views from sources/art/s08 (doctor-*-v2.png), cut by build/tools/art/artcut.py (build/tools/art/specs/s08.cut.json), one man everywhere. views: each standing view on its own canvas at ONE drawn size (fig_h: his body, head top to feet, in px at 1x of the 1024 px room), so every view is the same man at the same height; feet = the feet line and stand = the x between his feet (canvas fractions): every view is placed by them, so a turn swaps in place, never stretched. head = his head's middle (bubbles). faces: head layers drawn on that view's own canvas (talk and blink edits of the neutral, taken with no shift and their skin matched to it; the wave's closed mouth on the calling wave). 3q-left has no faces yet: its talk and blink (DT-QL, DB-QL) are still being made; when they land, re-run the s08 cut and add views['3q-left'].faces {talk, blink} here (data only: Kit.doctorFigure flaps and blinks any view that has them). front-point, front-gesture, 3q-right-point, 3q-right-gesture: the new pointing and talking-hands poses on their view's canvas, cut and ready but not staged (no stage asks for them yet). poses: which view each staging turn draws (talk-left = turned three-quarter to the viewer's left, to a patient on his right; front = to the player; call = the waiting room's wave, Zafar 15 Oct). box: his box and card faces (neutral, talk, laugh, think), still the s07 faces from doctor-ref-faces-v1.png until the new face sheet (doctor-faces-v3.png) lands (Kit.DOCTOR_FACE, Kit.doctorFace).",
   "fig_h": 676,
   "views": {
    "3q-left": {
-    "file": "assets/clinic/patients/doctor/doctor-3q-left-front.webp",
+    "file": "assets/clinic/patients/doctor/v2/doctor-3q-left-front.webp",
     "canvas": [
-     543,
-     1462
+     542,
+     1481
     ],
-    "w": 263,
+    "w": 259,
     "h": 708,
-    "feet": 0.9761,
-    "stand": 0.6924,
+    "feet": 0.977,
+    "stand": 0.4668,
     "head": [
-     0.512,
-     0.0971
-    ],
-    "faces": {
-     "talk": "assets/clinic/patients/doctor/doctor-3q-left-face-talk.webp",
-     "blink": "assets/clinic/patients/doctor/doctor-3q-left-face-blink.webp"
-    }
+     0.4502,
+     0.0966
+    ]
    },
    "front": {
-    "file": "assets/clinic/patients/doctor/doctor-front-front.webp",
+    "file": "assets/clinic/patients/doctor/v2/doctor-front-front.webp",
     "canvas": [
-     562,
-     1448
+     666,
+     1463
     ],
-    "w": 275,
-    "h": 708,
-    "feet": 0.9765,
-    "stand": 0.5071,
+    "w": 323,
+    "h": 709,
+    "feet": 0.9761,
+    "stand": 0.488,
     "head": [
-     0.5142,
-     0.0974
-    ]
+     0.476,
+     0.0984
+    ],
+    "faces": {
+     "talk": "assets/clinic/patients/doctor/v2/doctor-front-face-talk.webp",
+     "blink": "assets/clinic/patients/doctor/v2/doctor-front-face-blink.webp"
+    }
    },
    "3q-right": {
-    "file": "assets/clinic/patients/doctor/doctor-3q-right-front.webp",
+    "file": "assets/clinic/patients/doctor/v2/doctor-3q-right-front.webp",
     "canvas": [
-     496,
-     1429
-    ],
-    "w": 246,
-    "h": 708,
-    "feet": 0.9769,
-    "stand": 0.3609,
-    "head": [
-     0.498,
-     0.0973
-    ]
-   },
-   "wave-3q-right": {
-    "file": "assets/clinic/patients/doctor/doctor-wave-3q-right-front.webp",
-    "canvas": [
-     615,
-     1424
+     630,
+     1461
     ],
     "w": 306,
     "h": 708,
-    "feet": 0.9768,
-    "stand": 0.587,
+    "feet": 0.976,
+    "stand": 0.5,
     "head": [
-     0.5366,
+     0.4825,
+     0.0972
+    ],
+    "faces": {
+     "talk": "assets/clinic/patients/doctor/v2/doctor-3q-right-face-talk.webp",
+     "blink": "assets/clinic/patients/doctor/v2/doctor-3q-right-face-blink.webp"
+    }
+   },
+   "wave-3q-right": {
+    "file": "assets/clinic/patients/doctor/v2/doctor-wave-3q-right-front.webp",
+    "canvas": [
+     655,
+     1465
+    ],
+    "w": 316,
+    "h": 708,
+    "feet": 0.9761,
+    "stand": 0.4687,
+    "head": [
+     0.4473,
      0.0969
     ]
    },
    "wave-front": {
-    "file": "assets/clinic/patients/doctor/doctor-wave-front-front.webp",
+    "file": "assets/clinic/patients/doctor/v2/doctor-wave-front-front.webp",
     "canvas": [
-     550,
-     1199
+     653,
+     1462
     ],
-    "w": 325,
+    "w": 316,
     "h": 708,
-    "feet": 0.975,
-    "stand": 0.5345,
+    "feet": 0.9767,
+    "stand": 0.5605,
     "head": [
-     0.5582,
-     0.1101
+     0.5498,
+     0.0985
     ],
     "faces": {
-     "closed": "assets/clinic/patients/doctor/doctor-wave-front-face-closed.webp"
+     "closed": "assets/clinic/patients/doctor/v2/doctor-wave-front-face-closed.webp"
     }
+   },
+   "front-point": {
+    "file": "assets/clinic/patients/doctor/v2/doctor-front-front-point.webp",
+    "canvas": [
+     666,
+     1463
+    ],
+    "w": 323,
+    "h": 709,
+    "feet": 0.9761,
+    "stand": 0.488,
+    "head": [
+     0.476,
+     0.0984
+    ]
+   },
+   "front-gesture": {
+    "file": "assets/clinic/patients/doctor/v2/doctor-front-front-gesture.webp",
+    "canvas": [
+     666,
+     1463
+    ],
+    "w": 323,
+    "h": 709,
+    "feet": 0.9761,
+    "stand": 0.488,
+    "head": [
+     0.476,
+     0.0984
+    ]
+   },
+   "3q-right-point": {
+    "file": "assets/clinic/patients/doctor/v2/doctor-3q-right-front-point.webp",
+    "canvas": [
+     630,
+     1461
+    ],
+    "w": 306,
+    "h": 708,
+    "feet": 0.976,
+    "stand": 0.5,
+    "head": [
+     0.4825,
+     0.0972
+    ]
+   },
+   "3q-right-gesture": {
+    "file": "assets/clinic/patients/doctor/v2/doctor-3q-right-front-gesture.webp",
+    "canvas": [
+     630,
+     1461
+    ],
+    "w": 306,
+    "h": 708,
+    "feet": 0.976,
+    "stand": 0.5,
+    "head": [
+     0.4825,
+     0.0972
+    ]
    }
   },
   "poses": {
@@ -1177,7 +1241,11 @@
    "talk-right": "3q-right",
    "front": "front",
    "wave-right": "wave-3q-right",
-   "call": "wave-front"
+   "call": "wave-front",
+   "point": "front-point",
+   "point-right": "3q-right-point",
+   "gesture": "front-gesture",
+   "gesture-right": "3q-right-gesture"
   },
   "box": {
    "neutral": "assets/clinic/patients/doctor/faces/neutral.webp",
