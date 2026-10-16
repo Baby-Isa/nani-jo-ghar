@@ -77,6 +77,16 @@ try {
             r.taps = taps;
             r.tapMin = Math.min(...Object.values(taps));
             r.tapHand = taps["hand.left"] || taps.hand || null;
+            // the real hit test: a tap 0.95 of the radius out from each area's centre, that part alone asked for, no slack
+            let hit = 0;
+            for (const [key, t] of Object.entries(T)) {
+              const [p, sd] = key.split(".");
+              const cx = g.left + t[0] * g.width + 0.95 * taps[key];
+              const cy = g.top + t[1] * g.height;
+              const got = fig.partAt(cx, cy, { active: [p], pad: 0, closeup: /^(eye|ear|nose|mouth|tooth|throat)$/.test(p) });
+              if (got && got.part === p && (got.side || null) === (sd || null)) hit++;
+            }
+            r.tapHits = `${hit}/${Object.keys(T).length}`;
           }
         }
         return r;
