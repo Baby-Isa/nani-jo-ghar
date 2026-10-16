@@ -6,7 +6,10 @@
 The three sheets Zafar reviews in chat before the Chrome run; every later pose is an edit of the approved sheet. Same
 settings as the lineups he approved: chatgpt-image-latest, /images/edits, quality high, input_fidelity high, 1536x1024.
 Skin swatches sampled from lineup-v4-1 (the median skin of each face): the doctor #c88a6f, Nani #d5906c, the girl #da956c.
-Writes sources/art/s08/sheet-<who>-<n>.png.
+Writes sources/art/s08/sheet-<who>-<n>.png. --rev 2 (Zafar, 16 Oct "yes to all, try improve"): the skin held to the
+swatch, stylised adult hands like the girl's, a relaxed natural stance, full clean panels (no empty boxes, no fade),
+written as sheet-<who>-v2-<n>.png. --proportion: one lineup with the adults a touch more stylised (head about 1/6.5 of
+their height), faces untouched, as lineup-v6-<n>.png, for a side-by-side with lineup-v4-1.
 """
 import argparse, base64, os, sys, time
 from pathlib import Path
@@ -60,9 +63,22 @@ WHO = {
 }
 
 
-def run(who, n, key):
+REV2 = (
+    " IMPORTANT, a professional studio character sheet: (1) the skin is EXACTLY {skin} on the face and hands in every "
+    "panel, matching the FIRST picture; not lighter, not paler, not pinker. (2) Hands are stylised exactly like the little "
+    "girl's hands in the FIRST picture: soft, simple, slightly chunky, smooth skin, no veins, no wrinkles, no knuckle "
+    "detail. (3) The four full-body turnaround figures stand in a relaxed natural stance with a slight weight shift, arms "
+    "resting naturally, a hint of personality; not a stiff mannequin pose. (4) Every panel is filled and cleanly composed "
+    "with even spacing, edge to edge: no empty boxes, no blank panels, no vignette or fade around the close-up; the "
+    "close-up is a clean head-and-shoulders on the same flat grey."
+)
+
+
+def run(who, n, key, rev=1):
     w = WHO[who]
     prompt = "Make ONE character sheet picture for a children's game. " + LAYOUT.format(**w) + " " + w["note"]
+    if rev == 2:
+        prompt += REV2.format(**w)
     files = [("image[]", (Path(p).name, open(ROOT / p, "rb"), "image/png")) for p in w["refs"]]
     data = {"model": "chatgpt-image-latest", "prompt": prompt, "quality": "high", "size": "1536x1024", "n": str(n),
             "input_fidelity": "high"}
@@ -76,15 +92,44 @@ def run(who, n, key):
     else:
         return
     for i, item in enumerate(r.json()["data"], 1):
-        (OUT / f"sheet-{who}-{i}.png").write_bytes(base64.b64decode(item["b64_json"]))
+        (OUT / (f"sheet-{who}-v2-{i}.png" if rev == 2 else f"sheet-{who}-{i}.png")).write_bytes(base64.b64decode(item["b64_json"]))
     print(who, "done", n)
+
+
+PROP = (
+    "Edit the attached picture (the family lineup). Keep the three people, their faces and likeness EXACTLY (face shape, "
+    "eyes and their size, glasses, beard, hijab framing), their clothes and colours, the skin tones, the art style, light "
+    "and background, the girl completely unchanged. Change ONLY the two adults' proportions, a touch more stylised so the "
+    "family reads as one designed cast: their heads slightly larger relative to their bodies (about one sixth and a half "
+    "of their height instead of one seventh and a half), bodies slightly simpler and softer, hands simpler and softer like "
+    "the girl's. Keep their heights relative to each other and to the girl (Nani just below the grandfather's eyebrows, "
+    "the girl about two thirds of his height) and their feet on one floor line. No text, no labels."
+)
+
+
+def prop(n, key):
+    files = [("image[]", ("lineup-v4-1.png", open(ROOT / LINEUP, "rb"), "image/png"))]
+    data = {"model": "chatgpt-image-latest", "prompt": PROP, "quality": "high", "size": "1536x1024", "n": str(n),
+            "input_fidelity": "high"}
+    r = requests.post("https://api.openai.com/v1/images/edits", headers={"Authorization": "Bearer " + key},
+                      data=data, files=files, timeout=600)
+    if r.status_code != 200:
+        sys.exit(f"proportion {r.status_code} {r.text[:300]}")
+    for i, item in enumerate(r.json()["data"], 1):
+        (OUT / f"lineup-v6-{i}.png").write_bytes(base64.b64decode(item["b64_json"]))
+    print("proportion done", n)
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", default="doctor,nani,girl")
     ap.add_argument("--n", type=int, default=2)
+    ap.add_argument("--rev", type=int, default=1)
+    ap.add_argument("--proportion", action="store_true")
     a = ap.parse_args()
     key = os.environ.get("OPENAI_API_KEY") or sys.exit("OPENAI_API_KEY is not set")
+    if a.proportion:
+        prop(a.n, key)
+        sys.exit()
     for who in a.only.split(","):
-        run(who.strip(), a.n, key)
+        run(who.strip(), a.n, key, a.rev)
