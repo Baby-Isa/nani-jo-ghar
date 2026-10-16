@@ -118,33 +118,33 @@
   "date": "2026-10-12"
  },
  "ART-10": {
-  "hash": "e4d9807da7840838cb92",
+  "hash": "32b7f3ce03816ac15274",
   "dhash": [
    "00858a8148108000",
-   "00809684d2969600"
+   "0c0cb4b4b4b4b4b4"
   ],
   "verdict": "FAIL",
-  "line": "A, all 8 guide-box crops show the same red-hijab Nani avatar (only dimmed or not): no four cooking moods, one image for every move; crop 7 text \"Roll the maani, then cook\" is cut off at the bottom of the box and crop 6 shows a stray dark circle under the box; B, #passme shows Nani with the same neutral face, and no panel shows a Nana, Ma or Ali impatient face at all",
+  "line": "A, all 8 guide-box crops show the same red-hijab Nani avatar (only dimmed in 4-6), one image rather than four cooking moods; B shows food bowls and a clipped label, no Nana, Ma or Ali impatient face. Flaws: A4's \"Roll it round.\" is cut off at the bottom of the box; B's top-left label is clipped",
   "panel": "A",
-  "judge": "Sonnet (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/ART-10.png",
-  "date": "2026-10-12"
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/ART-10.png",
+  "date": "2026-10-16"
  },
  "ART-11": {
-  "hash": "00e5256149e4cb1987d7",
+  "hash": "22deda0434c89c7eb1d9",
   "dhash": [
-   "40b294b6acb4f4f0"
+   "40b296b6acb4f470"
   ],
   "verdict": "FAIL",
-  "line": "A, the cubes are uniform pale-yellow glossy blocks with no brown skin or starchy texture; they still read as butter (or pineapple), not potato",
+  "line": "A, the cubes are uniform smooth pale-cream blocks with soft edges, no skin, starchy surface or irregular cuts, so they still read as butter pats in a jar rather than potato",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/ART-11.png",
-  "date": "2026-10-12"
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/ART-11.png",
+  "date": "2026-10-16"
  },
  "ART-13": {
   "hash": "9bd5108dbf138ff10de4",
@@ -230,6 +230,20 @@
   "commit": "0cdd5128",
   "png": "build/screenshots/evidence/ev-20261014-105914-fsz/ART-20.png",
   "date": "2026-10-14"
+ },
+ "ART-21": {
+  "hash": "a4ff0c5e7e58f372fde1",
+  "dhash": [
+   "dfcfdec6e6eaeaf6"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the tap sits at the stage's left edge with only its gold spout showing, so it does not read as one tap with spout and handles, and leafy greenery still fills the doorway at the right; 844x390 is not on this sheet",
+  "panel": "A",
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/ART-21.png",
+  "date": "2026-10-16"
  },
  "CHAI-02": {
   "hash": "7d0f070be18f4468d8e3",
@@ -684,19 +698,19 @@
   "date": "2026-10-12"
  },
  "CK-06": {
-  "hash": "0c5c296fc5d67efd0f54",
+  "hash": "cf9bfdeeb8a350d96c24",
   "dhash": [
-   "8e8ac6c6ce96968e",
-   "54444236b2c6449c"
+   "8e92d6c6ce96968e",
+   "bc88a226b2c6449c"
   ],
   "verdict": "FAIL",
-  "line": "A, daal stages 3–5 show the added ginger-garlic as a glossy white code-drawn blob floating on the oil, stage 5 the onion as two clusters of purple dots, and stage 2 a flat grey disc in the oil; stages 1 and 6 and B's chai liquid (red-brown, spices floating, bubbles) read as real.",
+  "line": "A, daal stages 2-5 still show flat white discs on the oil and contents (white circles with black dots, a lone white oval, clusters of white egg-like discs); B's chai liquid looks real, but A does not. Flaw off the point: in B a second \"hakro\" chip is cut to \"kro\" at the left edge",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/CK-06.png",
-  "date": "2026-10-13"
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CK-06.png",
+  "date": "2026-10-16"
  },
  "CK-07": {
   "hash": "c560f355ac427be44791",
@@ -864,19 +878,19 @@
   "date": "2026-10-13"
  },
  "CK-21": {
-  "hash": "189ae8a230cc42edcae0",
+  "hash": "cbdec8b142a7f0500799",
   "dhash": [
-   "e58f978f9c9ec288",
-   "cc8dc932e09cbca4"
+   "af8f978d9e9ec488",
+   "cce47870c49c84d0"
   ],
-  "verdict": "FAIL",
-  "line": "A, in all six serve crops (A1 maani plate, A2 basket, A3 chai glass, B1 basket, B2 daar bowl, B3 daar bowl plus maani plate) the dish sits in its tray with the tray's front wall drawn over its base, nothing on the rim and no floating, but there is still no contact shadow falling to the right under any dish: the tray floor looks the same plain brown on both sides of each dish (clearest beside A3's glass and B2's bowl), so \"shadows to the right\" is not shown at any serve",
+  "verdict": "PASS",
+  "line": "A, all three day-2 serves (maani plate, pantry basket, chai glass) stand inside their wooden tray with the tray's front wall drawn over each base, at the counter's angle; B shows the same for all three day-3 serves (basket, daar bowl, daar bowl plus maani plate). No shadow is needed (Zafar, 14 Oct)",
   "panel": "A",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-065344-z8b",
-  "commit": "a9d2cfea",
-  "png": "build/screenshots/evidence/ev-20261014-065344-z8b/CK-21.png",
-  "date": "2026-10-14"
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CK-21.png",
+  "date": "2026-10-16"
  },
  "CK-22": {
   "hash": "93f522a912dac41a1a5e",
@@ -1147,6 +1161,22 @@
   "commit": "a642b770",
   "date": "2026-10-14"
  },
+ "CK-44": {
+  "hash": "398d29e8288e85a063bc",
+  "dhash": [
+   "7f77676363636a7b",
+   "677c6363434b6a79",
+   "f57f6b63434b6a5d"
+  ],
+  "verdict": "PASS",
+  "line": "C, at 915x412 (2.25:1) the marble top and wood front run as one continuous counter edge to edge with no vertical seam or restart (B at 844x390 and A at 1366x1024 the same); flaw off the point: in B Mum is cut by the stage's left edge and half hidden behind the bubble; 1366x768 is not on this sheet",
+  "panel": "C",
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CK-44.png",
+  "date": "2026-10-16"
+ },
  "CK-TAB-01": {
   "hash": "2f582bbe2b379cf77a54",
   "dhash": [
@@ -1182,18 +1212,18 @@
   "date": "2026-10-12"
  },
  "CLN-01": {
-  "hash": "cfa0866326927ace0e55",
+  "hash": "de807e521368bfb1f125",
   "dhash": [
-   "df57dfdad6d6cede"
+   "dfd7dfdbd6d6cede"
   ],
-  "verdict": "FAIL",
-  "line": "A, the rooms, the girl and the doctor are real art now (frames 1–4), but frame 5's \"how she feels\" card is four flat emoji-style faces and the sidebar's guide-box doctor is still the flat glasses icon",
+  "verdict": "PASS",
+  "line": "A, all five rooms (waiting, diagnosis, pharmacy, heal close-up, send-off) are painted art in one style, and frame 5's feelings card now shows the girl's own painted faces, not flat emoji",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CLN-01.png",
-  "date": "2026-10-12"
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CLN-01.png",
+  "date": "2026-10-16"
  },
  "CLN-02": {
   "hash": "84efea5b9271d8784ad9",
@@ -1840,20 +1870,20 @@
   "date": "2026-10-13"
  },
  "CLN-136": {
-  "hash": "d229467258b778e35ff0",
+  "hash": "4a57f4feed13ddeed0d4",
   "dhash": [
-   "9fb3959b8b9b1437",
-   "c54dd9d6cbcbcccf",
-   "8d8bb5ba8a8b1d1d"
+   "9bb3959c8c9c1434",
+   "c54dd9d6cccececf",
+   "8d8bb5bc8c8d1d1d"
   ],
-  "verdict": "FAIL",
-  "line": "C, at L2 under the doctor's \"A scrape.\" she beams with both arms spread, a pleased face at the moment he names her hurt (D9 asks for her own sore look), the same line that gets a sore face at L1; the wink claim holds everywhere (both eyes open in A 1-2 and in B/C, no one-eye-shut face). A passes: L1 frames 1 and 2 show a sore face (brows drawn up, mouth turned down, hands in her lap) with both eyes open. Also: A frame 3, labelled a bubble capture, is the end pop-up (13s, ✓ 1/1, →) over the stage, not a bubble, and frame 1 shows no bubble inside the crop, so the line her face answers there is not on the sheet (tool owner).",
+  "verdict": "PASS",
+  "line": "C, at L2 under the doctor's \"A scrape.\" her face is sore (brows up, mouth down) with both eyes open; A frames 1-6 at L1 show no one-eye-shut face",
   "panel": "C",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-173342-ny2",
-  "commit": "5658b93",
-  "png": "build/screenshots/evidence/ev-20261013-173342-ny2/CLN-136.png",
-  "date": "2026-10-13"
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CLN-136.png",
+  "date": "2026-10-16"
  },
  "CLN-138": {
   "hash": "ee78a6c0be72e8f955dd",
@@ -2066,18 +2096,18 @@
   "date": "2026-10-14"
  },
  "CLN-17": {
-  "hash": "a66008768accb8c43b70",
+  "hash": "ef1f3f67563fdec54c13",
   "dhash": [
-   "cffbebcbc5cdcedb"
+   "cbfbfbcec6ccccde"
   ],
   "verdict": "FAIL",
-  "line": "A, the doctor is a flat vector placeholder facing the camera, not three-quarter turned and not in the scene's art style; patient on the bed edge is right; the right wall has no certificate frame (CLN-116)",
+  "line": "A, the girl sits on the bed edge and the right wall has the certificate frame with no anatomy poster, but the doctor stands square to the camera (body and both feet facing front), not three-quarter turned",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CLN-17.png",
-  "date": "2026-10-12"
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CLN-17.png",
+  "date": "2026-10-16"
  },
  "CLN-18": {
   "hash": "11deb6a0b1a5d8c5d8d3",
@@ -2093,19 +2123,19 @@
   "date": "2026-10-12"
  },
  "CLN-19": {
-  "hash": "5828133b164ca782df96",
+  "hash": "e0c6273ceb2bd499ffd2",
   "dhash": [
-   "7676f2cedfdbded7",
-   "9e9e8e1c717979fa"
+   "f676f2ceceffded7",
+   "9e8e9e1c7b6f6efa"
   ],
-  "verdict": "PASS",
-  "line": "A, the three items (plaster, thread reel, apple) stand upright on the dark painted belt that runs mid-scene under the counter, not at 45 degrees and not a code-drawn belt across the top; B, the belt crop matches the painted scene",
+  "verdict": "FAIL",
+  "line": "A, the painted belt runs mid-scene (not a code-drawn belt across the top) and the crutches and spoon lie straight, but the pink cotton-bud bundle lies diagonally at about 45 degrees on the belt",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/CLN-19.png",
-  "date": "2026-10-12"
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CLN-19.png",
+  "date": "2026-10-16"
  },
  "CLN-20": {
   "hash": "06f919ee97acd5e9f9b8",
@@ -2147,18 +2177,18 @@
   "date": "2026-10-13"
  },
  "CLN-23": {
-  "hash": "0445258e3498f1ea475a",
+  "hash": "8a1a05412de42652ae58",
   "dhash": [
-   "9b9f9fbc7b7b7bfb"
+   "9b9fbf3c5f5b5bfe"
   ],
-  "verdict": "PASS",
-  "line": "A, the plaster lies flat on the belt with a soft shadow under it, not tilted or floating; only one item is on the belt at this moment",
+  "verdict": "FAIL",
+  "line": "A, the three red swabs are fanned at an angle with their tips rising past the belt's back rail onto the wall, so they read as tilted or propped up, not lying flat; the crutch stands upright on its tips. Only the spoon lies flat with a contact shadow",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/CLN-23.png",
-  "date": "2026-10-12"
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CLN-23.png",
+  "date": "2026-10-16"
  },
  "CLN-24": {
   "hash": "315ca708cf3adcde23ab",
@@ -2176,18 +2206,18 @@
   "date": "2026-10-12"
  },
  "CLN-25": {
-  "hash": "c1a47ba8661a76e5200c",
+  "hash": "fb2e3e20b3fae96c58d2",
   "dhash": [
-   "cfefebcbc9cdcedb"
+   "d7edefc5cdcce3c3"
   ],
   "verdict": "FAIL",
-  "line": "A, this is the diagnosis room: patient still sitting on the bed, door shut, nobody leaving, no half-open door, doctor is the flat placeholder; the four-face thought bubble overlaps the bed and first-aid box",
+  "line": "A, both stand left in the free wall space clear of the green cross with the doctor beside her, but she stands facing the camera with arms spread, not leaving, far from the door at the right",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "png": "build/screenshots/evidence/ev-s04-ev2/CLN-25.png",
-  "date": "2026-10-12"
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CLN-25.png",
+  "date": "2026-10-16"
  },
  "CLN-26": {
   "hash": "2db7a375e045e3264bc4",
@@ -3014,19 +3044,19 @@
   "date": "2026-10-12"
  },
  "CLN-90": {
-  "hash": "d711a4582bc47631f7da",
+  "hash": "e30c5645201acb6f6d09",
   "dhash": [
-   "3f233faa9a1a3c7e",
-   "262e2f9a981a0cfd"
+   "3f233faa9a1a3e7e",
+   "262e2e9e9a1e0cfd"
   ],
   "verdict": "PASS",
-  "line": "B, at 844x390 the four selector circles are one even row on the floor below the bench, each clear under its own person's feet; A the same at 1366x768. No separate \"call them in\" boxes are on the sheet (the circles are the call-in ticks)",
+  "line": "B, at 844x390 the four selector circles form one even row on the floor below the bench, each under its own person, not overlapping each other or anyone's feet; A shows the same at 1366x768. No separate \"call them in\" boxes appear on the sheet (the circles are the only call-in controls shown)",
   "panel": "B",
-  "judge": "Fable, independent subagent (orchestrator final look)",
-  "run": "ev-20261013-184310-4hz",
-  "commit": "09b5676",
-  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-90.png",
-  "date": "2026-10-13"
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/CLN-90.png",
+  "date": "2026-10-16"
  },
  "CLN-91": {
   "hash": "0ca2c34995a48cc5c3c5",
@@ -3176,20 +3206,20 @@
   "date": "2026-10-13"
  },
  "DAAR-05": {
-  "hash": "aeca9c113953c08a24c0",
+  "hash": "c6ff25c3171cd62e073f",
   "dhash": [
-   "8e82c6c6ce96968e",
-   "cc9686aea29296cc",
+   "8e8ac6c6ce96968e",
+   "cc96868a9a9296cc",
    "70b0b2f676312020"
   ],
   "verdict": "FAIL",
-  "line": "B, after the stir the pot swaps to a generic daar picture (yellow balls, black seeds, red chilli flakes); the tomato chunks and green chilli of stages 5-7 are gone and the red flakes never went in, so the stir does not turn the pictured contents and the dry-chilli garnish the row complains of is now in the pot; the review bowl itself is not captured (B and C are before Done). A is clean: no white dots at any of the 7 stages.",
-  "panel": "B",
-  "judge": "Fable, independent subagent",
-  "run": "ev-20261013-171625-ng0",
-  "commit": "76623db",
-  "png": "build/screenshots/evidence/ev-20261013-171625-ng0/DAAR-05.png",
-  "date": "2026-10-13"
+  "line": "A, stages 2, 3 and 5 still show flat white discs sitting on the pot contents (2: white circles with black dots, 3: a single white disc, 5: a cluster of white ovals), so the added things are still white blobs; the review bowl is not captured (B and C are before Done)",
+  "panel": "A",
+  "judge": "Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/DAAR-05.png",
+  "date": "2026-10-16"
  },
  "DAAR-07": {
   "hash": "f4764cc4ed66711944c4",
@@ -4949,18 +4979,18 @@
   "date": "2026-10-12"
  },
  "SH-37": {
-  "hash": "c9d1ec3f57d41ee59b64",
+  "hash": "d4bcd0b65c52a7fd257b",
   "dhash": [
-   "3858481424210080"
+   "385848102a020080"
   ],
   "verdict": "FAIL",
-  "line": "A, no single focal thing: a timer top-left, a garlic bulb bottom-centre and a chilli with a small knife right, scattered on an empty marble, in three art styles (flat timer, photoreal garlic, flat chilli); the pick-up strip under the marble is empty, so no shelf slots are shown, and the card asks for ba dungri and hakro mirchi while the marble shows garlic.",
+  "line": "A, the chop screen still mixes art styles (flat green timer, glossy near-photoreal knife, glossy chilli) with knife and chilli far apart and no single focal thing, and the marble board stops short, leaving an empty flat beige band across the bottom of the stage, so UI and world do not read as one product",
   "panel": "A",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/SH-37.png",
-  "date": "2026-10-13"
+  "judge": "claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU)",
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "png": "build/screenshots/evidence/ev-s07/SH-37.png",
+  "date": "2026-10-16"
  },
  "SH-38": {
   "hash": "5a39143087edd8fd34d5",
