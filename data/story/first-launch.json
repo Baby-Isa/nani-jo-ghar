@@ -87,7 +87,7 @@
       "kind": "scene",
       "bg": "assets/backgrounds/bg-courtyard-e-v1.webp",
       "child": { "x": 8, "walk": true },
-      "nani": { "img": "assets/cook/characters/nani-ledge-happy-v3.webp", "x": 56 },
+      "nani": { "stand": "assets/cook/characters/nani-stand-v3-front.webp", "x": 60 },
       "lines": ["name-nani", "help-me", "pantry-ask"]
     },
     { "id": "pantry", "kind": "cook", "url": "cook.html?app=1&first=pantry" },
@@ -95,9 +95,10 @@
       "id": "ask-chai",
       "kind": "scene",
       "bg": "assets/backgrounds/bg-nani-kitchen-e-v1.webp",
+      "counter": { "y": 0.608 },
       "child": { "x": 8 },
       "nani": { "img": "assets/cook/characters/nani-ledge-talk-v3.webp", "x": 50 },
-      "props": [{ "img": "assets/cook/props/saucepan.webp", "x": 40, "y": 70, "w": 16 }],
+      "props": [{ "img": "assets/cook/props/saucepan.webp", "x": 30, "on": 0.665, "w": 16 }],
       "lines": ["make-chai"]
     },
     { "id": "chai", "kind": "cook", "url": "cook.html?app=1&first=chai" },
@@ -106,8 +107,7 @@
       "kind": "scene",
       "bg": "assets/backgrounds/bg-sitting-room-e-v1.webp",
       "child": { "x": 8 },
-      "nani": { "img": "assets/cook/characters/nani-ledge-happy-v3.webp", "x": 50, "sip": true },
-      "props": [{ "img": "assets/cook/items/vessel-glass-chai-full-f.png", "x": 70, "y": 62, "w": 7, "cls": "sip" }],
+      "nani": { "stand": "assets/cook/characters/nani-stand-v3-front.webp", "x": 52, "sip": true, "hold": { "img": "assets/cook/items/vessel-glass-chai-full-f.png", "x": 82.7, "y": 51, "w": 15 } },
       "hearts": true,
       "lines": ["lovely-chai"]
     },
@@ -152,6 +152,7 @@
       "id": "help",
       "kind": "choice",
       "bg": "assets/backgrounds/bg-nani-kitchen-e-v1.webp",
+      "counter": { "y": 0.608 },
       "child": { "x": 8 },
       "nani": { "img": "assets/cook/characters/nani-ledge-talk-v3.webp", "x": 50 },
       "line": "help-cook",

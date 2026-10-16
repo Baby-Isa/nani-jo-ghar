@@ -125,12 +125,23 @@ button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-c
   background: linear-gradient(#c79560, #a8784a 40%, #8f6440);
   box-shadow: 0 -2px 0 #dcb27f inset, 0 -4px 12px rgba(60, 35, 20, .2);
 }
+/* standing, where the scene has no counter (js/shared/story.js stage): her feet on the floor, a contact shadow under them;
+   taller than the child (whose box is min(58vh, 70vw)), her head clear of the line card; .st-fig sways with her glass when she sips */
+.st-nani-stand { position: absolute; z-index: 1; bottom: 1vh; height: min(80vh, 95vw, calc(100vh - 110px)); aspect-ratio: 266 / 776; animation: stIn .5s ease-out both; }
+.st-fig { position: absolute; inset: 0; transform-origin: 50% 98%; }
+.st-nani-stand.sip .st-fig { animation: stSway 2.2s ease-in-out .6s infinite alternate; }
+.st-hold { position: absolute; height: auto; pointer-events: none; }
+.st-contact { position: absolute; display: block; border-radius: 50%; background: var(--njg-contact); filter: blur(3px); pointer-events: none; }
+.st-nani-stand > .st-contact { left: 8%; right: 8%; bottom: -1.2%; height: 3.5%; }
+.st-prop-shadow { z-index: 2; }
+/* the scene picture's own counter drawn again over her (clip set by layout()) */
+.st-occ { position: absolute; inset: 0; z-index: 1; background: center / cover no-repeat; pointer-events: none; }
 .st-ledge::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: var(--st-top-face); border-radius: inherit; background: var(--njg-cream-lip); opacity: .3; border-bottom: 2px solid var(--njg-cream-edge); }
 .st-nani.laugh { animation: stLaugh .18s ease-in-out 8 alternate; }
 .st-nani.happy-hop { animation: stHop .45s ease-out 2; }
 .st-nani-wrap.sip .st-nani { animation: stSway 2.2s ease-in-out .6s infinite alternate; }
 .st-child {
-  position: absolute; bottom: 1vh; height: min(58vh, 70vw); aspect-ratio: 240 / 400;
+  position: absolute; z-index: 2; bottom: 1vh; height: min(58vh, 70vw); aspect-ratio: 240 / 400; /* (in front of a scene's counter, .st-occ) */
   filter: drop-shadow(0 6px 10px rgba(60, 35, 20, .22));
   animation: stIn .5s ease-out both;
 }

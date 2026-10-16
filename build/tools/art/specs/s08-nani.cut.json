@@ -48,6 +48,18 @@
    }
   },
   {
+   "id": "nani-stand",
+   "_about": "s08-nani-ground (the s08 gate, flaw 1): her standing view for the story's scenes with no counter (the courtyard, the sitting room), so she never leans on a lone block; the front neutral of the s08 run, cut as it is (the game uses only <out>-front.webp)",
+   "type": "figure",
+   "data": "nani-stand",
+   "src": "nani-front-neutral-v3.png",
+   "fig_h": 760,
+   "pad": 8,
+   "neck": 360,
+   "skin_box": [0.42, 0.06, 0.58, 0.16],
+   "out": "cook/characters/nani-stand-v3"
+  },
+  {
    "id": "nani-faces",
    "type": "faces",
    "data": "nani-faces",

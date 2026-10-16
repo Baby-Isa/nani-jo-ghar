@@ -8,6 +8,9 @@
   canvas ledge: point's front layer 443x578 (the counter line at row 452.3, the fingertip at 190.1, 532.3)
   canvas ledge: 443x578, k 0.4325, head 184 px wide, forearms' underside at row 499, her top at row 11
 nani-lean: lean cut, 5 frame(s) + 0 alias(es) on 2 canvas(es)
+  skin nani-stand base face: #DA8E6B ΔE 3.0 from the approved render
+  head band y 52..360
+nani-stand: figure cut, canvas 490x1430, 1 pose(s), 0 face layer(s)
   12 pieces (want 12)
   talk: onto neutral by +0.8,+1.7 px, -0.5 deg; skin dE 1.18
   happy: onto neutral by -3.8,+3.8 px, -1.1 deg; skin dE 2.20

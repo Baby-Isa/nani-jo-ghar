@@ -194,20 +194,77 @@
    * --st-ledge-top). Pointing, her hand comes up over the ledge: `front` (the point frame's hand, cut on the same canvas,
    * build/tools/art/specs/s08-nani.cut.json "front") is drawn over the ledge, the fingertip on its top.
    */
-  function seated(n, cls) {
-    return `${img(n.img, `st-nani ${cls || ""}`)}<i class="st-ledge"></i>${n.front ? img(n.front, "st-nani-front") : ""}`;
+  function seated(n, cls, ledge = true) {
+    return `${img(n.img, `st-nani ${cls || ""}`)}${ledge ? `<i class="st-ledge"></i>` : ""}${n.front ? img(n.front, "st-nani-front") : ""}`;
   }
+  /*
+   * s08-nani-ground (the s08 gate, flaw 1: "Nani leans on a bare brown block standing alone in the courtyard"): nobody
+   * leans on a lone block. A scene with no counter shows her standing (nani.stand: her standing picture, feet on the floor
+   * with a contact shadow, nani.hold: what she holds, placed on her hand as fractions of her picture). A scene whose picture
+   * has a counter (scene.counter.y: its back edge as a share of the picture's height) seats her behind that counter: the
+   * picture is drawn again from that edge down over her (.st-occ, as Cook's occluder), and props with `on` (the share of the
+   * picture's height their base stands at) stand on its top with a contact shadow. layout() places them as the picture is
+   * cropped (cover) on this screen.
+   */
   function stage(scene) {
     const s = el("div", "st-stage");
     if (scene.bg) s.style.backgroundImage = `url("${v(scene.bg)}")`;
     let html = "";
-    (scene.props || []).forEach((p) => (html += img(p.img, `st-prop ${p.cls || ""}`, `left:${p.x}%;top:${p.y}%;width:${p.w}%`)));
-    // Nani's pictures are waist-up, leaning on a counter: she always gets a ledge to lean on
-    if (scene.nani) html += `<div class="st-nani-wrap${scene.nani.sip ? " sip" : ""}" style="left:${scene.nani.x}%">${seated(scene.nani)}</div>`;
+    (scene.props || []).forEach((p, i) => {
+      if (p.on != null) html += `<i class="st-contact st-prop-shadow" data-for="${i}"></i>`;
+      html += img(p.img, `st-prop ${p.cls || ""}`, `left:${p.x}%;top:${p.on != null ? 0 : p.y}%;width:${p.w}%`).replace("<img ", `<img data-i="${i}" `);
+    });
+    const n = scene.nani;
+    if (n && n.stand) {
+      const hold = n.hold ? img(n.hold.img, "st-hold", `left:${n.hold.x}%;top:${n.hold.y}%;width:${n.hold.w}%`) : "";
+      html += `<div class="st-nani-stand${n.sip ? " sip" : ""}" style="left:${n.x}%"><i class="st-contact"></i><div class="st-fig">${img(n.stand, "st-nani")}${hold}</div></div>`;
+    } else if (n) html += `<div class="st-nani-wrap${n.sip ? " sip" : ""}" style="left:${n.x}%">${seated(n, "", !scene.counter)}</div>`;
+    if (scene.counter) html += `<div class="st-occ" aria-hidden="true" style="background-image:url(&quot;${esc(v(scene.bg))}&quot;)"></div>`;
     if (scene.child) html += `<div class="st-child${scene.child.walk ? " walk" : ""}" style="left:${scene.child.x}%">${childSvg()}</div>`;
     if (scene.hearts) html += `<div class="st-hearts" aria-hidden="true"><i></i><i></i><i></i></div>`;
     s.innerHTML = html;
     return s;
+  }
+  /** Places what stands on the scene picture's counter for this screen (see stage); again on a resize, until the scene goes. */
+  function layout(s, sc, cardEl) {
+    if (!sc.counter && !(sc.props || []).some((p) => p.on != null)) return;
+    const [iw, ih] = sc.bgSize || [1536, 1024];
+    const fit = () => {
+      if (!s.isConnected) return global.removeEventListener("resize", fit);
+      const W = s.clientWidth;
+      const H = s.clientHeight;
+      if (!W || !H) return;
+      const k = Math.max(W / iw, H / ih); // background-size: cover, centred
+      const Y = (f) => (H - ih * k) / 2 + f * ih * k;
+      if (sc.counter) {
+        const edge = Y(sc.counter.y);
+        const occ = s.querySelector(".st-occ");
+        if (occ) occ.style.clipPath = `inset(${edge.toFixed(1)}px 0 0 0)`;
+        const wrap = s.querySelector(".st-nani-wrap");
+        if (wrap) {
+          // her body line (ledge canvas row 452.3 of 578 = 78.25%, her crown at row 11 = 1.9%) 3 px under the counter's back
+          // edge; a little smaller where her head would go under the line's card
+          wrap.style.height = "";
+          const h0 = wrap.offsetHeight;
+          const top = cardEl ? cardEl.getBoundingClientRect().bottom - s.getBoundingClientRect().top + 6 : 0;
+          const h = Math.max(40, Math.min(h0, (edge + 3 - top) / (0.7825 - 0.019)));
+          wrap.style.height = `${h.toFixed(1)}px`;
+          wrap.style.bottom = `${(H - (edge + 3) - 0.2175 * h).toFixed(1)}px`;
+        }
+      }
+      (sc.props || []).forEach((p, i) => {
+        if (p.on == null) return;
+        const im = s.querySelector(`.st-prop[data-i="${i}"]`);
+        const sh = s.querySelector(`.st-prop-shadow[data-for="${i}"]`);
+        if (!im || !im.offsetHeight) return;
+        const base = Y(p.on);
+        im.style.top = `${(base - im.offsetHeight).toFixed(1)}px`;
+        if (sh) Object.assign(sh.style, { left: `${im.offsetLeft + im.offsetWidth * 0.06}px`, width: `${im.offsetWidth * 0.86}px`, top: `${(base - im.offsetWidth * 0.06).toFixed(1)}px`, height: `${(im.offsetWidth * 0.12).toFixed(1)}px` });
+      });
+    };
+    fit();
+    s.querySelectorAll("img").forEach((x) => x.complete || x.addEventListener("load", fit, { once: true }));
+    global.addEventListener("resize", fit);
   }
   function nextButton(host, label = "Next") {
     const b = el("button", "st-next", `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4l9 8-9 8" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
@@ -238,6 +295,7 @@
       api.el.appendChild(s);
       const c = card(naniFace());
       api.el.appendChild(c);
+      layout(s, sc, c);
       await wait(sc.child && sc.child.walk ? 1300 : 500);
       for (const id of sc.lines || []) await Story.say(id, { card: c });
       await nextButton(api.el);
@@ -287,6 +345,7 @@
       api.el.appendChild(s);
       const c = card(naniFace());
       api.el.appendChild(c);
+      layout(s, sc, c);
       await wait(400);
       await Story.say(sc.line, { card: c });
       const box = el("div", "st-choice");
