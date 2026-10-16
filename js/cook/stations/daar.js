@@ -798,7 +798,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     steps.done();
     burner.set("off");
-    return { order, wrong, stirred, pot: { img: pot, cx, cy, bodyR } };
+    return { order, wrong, stirred, pot: { img: pot, cx, cy, bodyR, inR, pieces } };
   }
 
   /**
@@ -1304,17 +1304,67 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
   }
 
+  /*
+   * DAAR-05 (s07 fix round): what is in the served bowl, as one container over the plain bowl (it grows with it): the
+   * pot's stirred daar (pot-tadka-v2's contents, cut once to a circle with a soft edge) filling the bowl's daar circle,
+   * and the pieces that went in (DP1), each where the stir left it in the pot, scaled from the pot's daar to the bowl's.
+   * The plain bowl's daar circle (daar-bowl-trivet-plain-v2, measured on the cut): centre (0.499, 0.497), r 0.322 of w.
+   */
+  const BOWL_DAAR = { cx: 0.499, cy: 0.497, r: 0.322 };
+  function bowlFill(S, bowl, pot) {
+    const key = "dv3-bowl-daar";
+    const R = Math.round(POT.inner * POT.w);
+    if (!S.textures.exists(key)) {
+      const img = S.textures.get("dv3-pot-tadka-v2").getSourceImage();
+      const ct = S.textures.createCanvas(key, 2 * R, 2 * R);
+      const g = ct.getContext();
+      g.drawImage(img, POT.cx * img.width - R, POT.cy * img.height - R, 2 * R, 2 * R, 0, 0, 2 * R, 2 * R);
+      // the edge fades into the bowl's own daar (no hard line where the two meet)
+      const fade = g.createRadialGradient(R, R, R * 0.8, R, R, R);
+      fade.addColorStop(0, "rgba(0,0,0,1)");
+      fade.addColorStop(1, "rgba(0,0,0,0)");
+      g.globalCompositeOperation = "destination-in";
+      g.fillStyle = fade;
+      g.fillRect(0, 0, 2 * R, 2 * R);
+      g.globalCompositeOperation = "source-over";
+      ct.refresh();
+    }
+    const TB = TRIVET_PLAIN;
+    // the container's units are the bowl picture's px (it takes the bowl's scale)
+    const dx = (BOWL_DAAR.cx - TB.cx) * TB.w;
+    const dy = (BOWL_DAAR.cy - TB.cy) * TB.h;
+    const rIn = BOWL_DAAR.r * TB.w;
+    const box = S.track(S.add.container(bowl.x, bowl.y).setDepth(bowl.depth + 0.01).setAlpha(0).setScale(bowl.scale));
+    box.add(S.add.image(dx, dy, key).setScale((rIn * 0.98) / R));
+    const k = pot && pot.inR ? rIn / pot.inR : 0; // the pot's daar (world px) to the bowl's (its picture's px)
+    ((pot && pot.pieces) || []).forEach((p) => {
+      const im = p.img;
+      if (!im || !im.active || !k) return;
+      const q = S.add.image(dx + (im.x - pot.cx) * k, dy + (im.y - pot.cy) * k, im.texture.key);
+      q.setScale(im.scale * k).setRotation(im.rotation).setAlpha(0.95);
+      if (im.isTinted) q.setTint(im.tintTopLeft);
+      box.add(q);
+    });
+    return box;
+  }
+
   /* ---------- serve and taste (§14a): the bowl on its trivet (D5), their face over it ---------- */
   async function serve(z, { who, pot, ok, last }) {
     const S = z.S;
     const ctx = z.ctx;
     z.expect({ kind: "wait" });
     // a bowl of daar, ladled from the pot, on its wooden trivet beside it
-    const bowl = S.track(S.add.image(z.X(1230), sy(z, 450), "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));
-    const bs = z.L(250) / TRIVET.w;
+    // DAAR-05 (s07 fix round): the bowl shows what went in, stirred: the plain bowl with the pot's own stirred daar in
+    // it (its tadka seeds) and DP1's pieces where the stir left them; never the old tadka bowl's dry chilli and curry
+    // leaves, which no order puts in. (No plain bowl: the old one, as before.)
+    const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists("dv3-pot-tadka-v2");
+    const TB = plain ? TRIVET_PLAIN : TRIVET;
+    const bowl = S.track(S.add.image(z.X(1230), sy(z, 450), plain ? "dv3-trivet-plain" : "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));
+    const bs = z.L(250) / TB.w;
     bowl.setScale(bs * 0.8);
     bowl.shadow = S.contactShadow(bowl);
-    await Cook.tween(S, { targets: bowl, alpha: 1, scale: bs, duration: 300, ease: "Back.easeOut" });
+    const fill = plain ? bowlFill(S, bowl, pot) : null;
+    await Cook.tween(S, { targets: fill ? [bowl, fill] : bowl, alpha: 1, scale: bs, duration: 300, ease: "Back.easeOut" });
     Cook.sfx.pop();
     S.steam(bowl.x, bowl.y - z.L(40), 3);
     // the review (X10 / Q1): their big round face over the bowl, no body, no pretend eating

@@ -593,8 +593,18 @@
   function mountGuide() {
     const el = $("#guide");
     if (!el || !global.NaniGuide) return;
+    // ART-10 (s07 fix round): her box's face is her counter sprite's head (s07 N1 neutral, N2 happy, N3 talk, N5 blink:
+    // the scene's shared pictures, already loaded), in the mood she is in: talking while she speaks, happy for a moment
+    // when a row of the order ticks, blinking now and then at rest (UI.naniMood; the service view's setMood too)
+    const imgs = (Cook.data && Cook.data.assets && Cook.data.assets.shared && Cook.data.assets.shared.images) || {};
+    const faces = {};
+    ["neutral", "happy", "talk", "blink"].forEach((m) => {
+      const src = imgs[`nani-${m}`] || `assets/cook/characters/nani-${m}-v2.webp`;
+      faces[m] = { src: Cook.v(src), crop: NANI_HEAD };
+    });
     const g = global.NaniGuide.mount(el, {
       face: Cook.v(Cook.facePath("nani")),
+      faces,
       bulb: Cook.v("assets/ui/results/icon-bulb.webp"),
       bulbId: "btn-bulb",
       onBulb: () => {
@@ -622,9 +632,47 @@
       const c = document.querySelector(`#mission .oc-card[data-who="${CSS.escape(String(mission.who))}"]`);
       if (OCard() && OCard().setStrip) OCard().setStrip(c, mission.strip);
     };
+    // her mood: talk while she speaks, then back to the mood she rests in; a blink now and then while neutral
+    const rawTalk = g.talk;
+    g.talk = (on) => {
+      rawTalk(on);
+      talking = !!on;
+      g.mood(on ? "talk" : restMood());
+    };
     guide = g;
+    g.mood(restMood());
+    clearTimeout(blinkT);
+    const blink = () => {
+      if (guide !== g) return;
+      if (!talking && g.moodNow === "neutral") {
+        g.mood("blink");
+        setTimeout(() => guide === g && !talking && g.moodNow === "blink" && g.mood(restMood()), 150);
+      }
+      blinkT = setTimeout(blink, 3200 + Math.random() * 2600);
+    };
+    blinkT = setTimeout(blink, 2400);
     showGuide();
   }
+  // the head in N1-N5 (460 x 423, one canvas, registered by ECC): her hijab top to her chin, square
+  const NANI_HEAD = [158, 14, 174, 174];
+  let talking = false;
+  let blinkT = 0;
+  let restAs = "neutral"; // the mood she rests in (the service view's setMood)
+  let happyUntil = 0;
+  let happyT = 0;
+  const restMood = () => (Date.now() < happyUntil ? "happy" : restAs);
+  /** Nani's face in her box: "happy" for a moment (ms), or the mood she rests in (the counter sprite's setMood). */
+  UI.naniMood = function (mood, ms = 0) {
+    if (ms > 0) {
+      happyUntil = Date.now() + ms;
+      clearTimeout(happyT);
+      happyT = setTimeout(() => guide && !talking && guide.mood(restMood()), ms + 20);
+    } else {
+      restAs = ["happy", "neutral"].includes(mood) ? mood : "neutral";
+      happyUntil = 0;
+    }
+    if (guide && !talking) guide.mood(ms > 0 ? mood : restMood());
+  };
 
   /* ---------------- gist (top of the picture) and help ("?" in the sidebar) ---------------- */
   /*
@@ -1975,6 +2023,7 @@
     const r = rows.find((x) => !x.head && x.ids.includes(id)) || rows.find((x) => x.ids.includes(id));
     if (!r) return null;
     r.got = (r.got || 0) + 1;
+    if (UI.naniMood) UI.naniMood("happy", 1600); // ART-10: something went in: Nani's face smiles a moment (progress, not a verdict)
     if (isCount(r) && !opts.close) return r;
     if (r.got >= (r.need || 1) || isCount(r)) markDone(r);
     settle(L);
@@ -2018,6 +2067,7 @@
     if (rows.length) {
       settle(L);
       renderOrder();
+      if (UI.naniMood) UI.naniMood("happy", 1600); // ART-10: a step is made: Nani's face smiles a moment
     }
     return rows;
   };

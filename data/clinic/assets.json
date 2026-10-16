@@ -5,7 +5,8 @@
   "assets/clinic/rooms/*",
   "assets/clinic/patients/**",
   "assets/clinic/rough/**",
-  "assets/clinic/sheets/*/*-belt.webp"
+  "assets/clinic/sheets/*/*-belt.webp",
+  "assets/clinic/sheets/bud/bud-flat.webp"
  ],
- "_belt": "s07-clinic-b: every item's belt view (the s07 belt sheets, data/clinic.json items img/imgs) is shared: Kit.icon draws it on the belt, in the tray and in a game's tool tray, whichever patient is in"
+ "_belt": "s07-clinic-b: every item's belt view (the s07 belt sheets, data/clinic.json items img/imgs) is shared: Kit.icon draws it on the belt, in the tray and in a game's tool tray, whichever patient is in. s07 fix round (CLN-19, CLN-23): the cotton bud lies on the belt as one flat bud (bud-flat), the crutch lies on its side (crutches-flat-belt, B9's crutch turned 90 degrees)"
 }

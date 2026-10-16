@@ -210,7 +210,9 @@ def judge_one(spec, r, ctx):
         bx = (int(xs.min() + bw * box[0]), int(ys.min() + bh * box[1]), int(xs.min() + bw * box[2]), int(ys.min() + bh * box[3])) if box else (0, 0, W, H)
         m = L.skin_median(a, k[..., 3], bx, smin=105)
         if m is not None:
-            de = L.delta_e(m, SKIN_RENDER)
+            # s08: a check may name its own swatch (`skin: '#D3997A'`, sampled from the locked lineup) instead of the family render
+            ref = np.array([int(prof["skin"].lstrip("#")[i:i + 2], 16) for i in (0, 2, 4)], float) if prof.get("skin") else SKIN_RENDER
+            de = L.delta_e(m, ref)
             r.info["skin"] = "#%02X%02X%02X ΔE %.1f" % (int(m[0]), int(m[1]), int(m[2]), de)
             if de > 12:
                 r.fail.append("skin ΔE %.1f from the approved render (over 12: a redo)" % de)

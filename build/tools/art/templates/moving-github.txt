@@ -1,0 +1,11 @@
+MOVING IMAGES WITHOUT DOWNLOADING (no Chrome downloads, no file pickers, nothing for Zafar to do)
+Use your cloud workspace and your browser file-upload tool. Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. Test both moves on the first image that finishes and log that they worked.
+
+1. INTO CHATGPT (attaching). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run; a kept image is attached from your workspace copy, not fetched again. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, and check the composer shows exactly that many thumbnails before you paste.
+
+2. OUT OF CHATGPT, INTO GITHUB (saving a kept image). Never use ChatGPT's download button.
+   a) Find the new image's address: read the src of the newest large image in the reply (e.g. document.querySelectorAll('main img'), the last one at least 512 px wide; reading an attribute is fine, fetching isn't). Make sure it's the NEW image, not one you attached.
+   b) Fetch that address into your cloud workspace and save it under the prompt's save-as name. Check it's the full image (1024 px or more on its long side), not a thumbnail. If the workspace can't fetch it, open the image full-size in ChatGPT and try its address from there.
+   c) Commit in batches (see the loop, step 4a): open the upload page, put every queued file into the page's file input in one go, check they all appear with the right names.
+   d) In "Commit changes", write "{{PACK}}: <the IDs>" as the message and the log lines (see THE LOG), one per file, in the extended description; choose "Commit directly to the main branch", commit, and check the folder page lists every file.
+   If an image can't be saved, leave it in its ChatGPT chat, log "NOT SAVED: <chat title>" and carry on; Claude collects those afterwards. Never fall back to downloading, and never ask Zafar to do it.

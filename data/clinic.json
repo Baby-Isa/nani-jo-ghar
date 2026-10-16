@@ -1034,7 +1034,7 @@
    "group": "plaster"
   },
   "crutches": {
-   "img": "assets/clinic/sheets/decoys/crutches-belt.webp",
+   "img": "assets/clinic/sheets/decoys/crutches-flat-belt.webp",
    "glyph": "🩼",
    "group": "tool"
   },
@@ -1048,6 +1048,7 @@
    "group": "tool"
   },
   "cotton-bud": {
+   "img": "assets/clinic/sheets/bud/bud-flat.webp",
    "glyph": "🦯",
    "group": "cotton"
   },
