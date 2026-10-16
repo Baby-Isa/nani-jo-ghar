@@ -3049,8 +3049,8 @@
     },
     "veg-01": {
      "bowl": "topping-bataato-boiled-bowl-t",
-     "whole": "veg-bataato-whole-t",
-     "cubed": "veg-bataato-cubed-t",
+     "whole": "veg-bataato-whole-v2-t",
+     "cubed": "veg-bataato-cubed-v2-t",
      "raw": "mishkaki-bataato-raw-t"
     },
     "veg-02": {
