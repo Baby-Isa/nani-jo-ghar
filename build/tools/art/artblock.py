@@ -57,7 +57,50 @@ def check_str(l):
 
 
 def line_str(l):
-    return "%s | %s | %s | %s" % (l["id"], ", ".join(att_str(a) for a in l["attach"]), l["save"], check_str(l))
+    lid = l["id"] if l["tid"] == l["id"] else "%s (prompt %s)" % (l["id"], l["tid"])
+    return "%s | %s | %s | %s" % (lid, ", ".join(att_str(a) for a in l["attach"]), l["save"], check_str(l))
+
+
+# How kept images leave ChatGPT. "github": the runner commits them itself (the default). "download": they stay in their chats
+# and are downloaded for Zafar at the end (s07, 15 Oct: ChatGPT serves images as in-page blob: URLs, and the page-JavaScript
+# route to GitHub was refused by Claude's safety classifier; Zafar then downloaded them by hand).
+def delivery_texts(mode, spec):
+    dest = spec["dest"]
+    if mode == "github":
+        return {
+            "OPENING": "putting each one straight into the GitHub repo yourself. Work entirely inside Chrome: never download a file, never open a file picker or the Downloads folder, never ask Zafar to drag, attach or upload anything.",
+            "PLACES": "The upload page: https://github.com/%s/upload/main/%s\nThe folder (to check and to resume): https://github.com/%s/tree/main/%s" % (spec["repo"], dest, spec["repo"], dest),
+            "MOVING": tpl("moving-github.txt").replace("{{PACK}}", spec["pack"]),
+            "SAFETY_COMMIT": "Commit only the images this run makes (and the log file at the end), only to the folder above. Attach to ChatGPT only the files each prompt's line names.",
+            "STEP6": "Save the kept image (move 2 a and b) and queue it for the next batch commit.",
+            "LOG_HEAD": "One line per kept image, used in its batch commit's description:\n <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | <notes>",
+            "LOG_ALSO": "every \"NOT SAVED\" image, ",
+            "RESUMING": "open the folder page: every committed file is a kept image (its commit's description holds its log line). Carry on from the first prompt in the run order whose save-as file isn't there.",
+            "AT_END": "After each part, post a short list: passed, failed (and why), skipped or stalled (and why), not saved. Flush the SAVE queue before you post it. At the very end, also commit the whole log as %s/art-run-log.txt: on the folder page use \"Add file\" > \"Create new file\", paste the log, commit directly to main." % dest,
+            "NOTES": "One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (saved in your workspace, not yet committed) · COMMITTED · SKIPPED or STALLED (why). Two queues: READY (redos at the front, then run order) and SAVE (kept, not yet committed).",
+            "DONE": "COMMITTED or SKIPPED",
+            "PASS_SAVE": "Refill the freed slot at once (step 3). If the prompt you start needs this very picture, fetch and save it first (move 2, steps a and b only, into your workspace under its save-as name) and attach that local copy, never waiting for the GitHub commit; otherwise send first, then fetch and save it while the new prompt generates, and add it to SAVE.",
+            "CHORE_NAMES": "committing to GitHub, fetching references, posting the log",
+            "CHORES": "(a) commit SAVE (all queued files in one upload) when {{BATCH}} files are queued, or the oldest has waited {{FLUSH}} minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log.",
+        }
+    if mode == "download":
+        return {
+            "OPENING": "keeping each kept image in its own ChatGPT chat until the end, when you download them for Zafar. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed; Zafar uploads the folder himself afterwards).",
+            "PLACES": "Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END).",
+            "MOVING": tpl("moving-download.txt"),
+            "SAFETY_COMMIT": "Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.",
+            "STEP6": "Log the kept image: its save-as name and its chat's link (the address bar of that chat). It stays in that chat; never download it mid-run.",
+            "LOG_HEAD": "One line per kept image:\n <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | <notes>",
+            "LOG_ALSO": "",
+            "RESUMING": "read the log posted in this chat: every line with a chat link is a kept image. Carry on from the first prompt in the run order that has no such line.",
+            "AT_END": "After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link. At the very end, post the whole log as one block, then download the kept images for Zafar, in the run order, one at a time: open the kept image's chat, open the image full size, use ChatGPT's own download button, and log \"DOWNLOADED <n>: <save as>\" so the n-th file in the Downloads folder is known by name (ChatGPT names the files itself; the order is the rename key). Never page JavaScript, never a GitHub upload. If the download button is refused, say so and post the ordered list of chat links and save-as names instead; Zafar downloads from it.",
+            "NOTES": "One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).",
+            "DONE": "KEPT or SKIPPED",
+            "PASS_SAVE": "Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the \"+\" button, then \"Add from library\": the kept image is there under its chat), never by download and re-upload.",
+            "CHORE_NAMES": "fetching references, posting the log",
+            "CHORES": "(a) fetch the references the next READY prompts need; (b) post the progress line and log.",
+        }
+    raise SystemExit("delivery must be github or download, not %r" % mode)
 
 
 def compress(ids):
@@ -120,7 +163,10 @@ def part_text(part, lines, spec, only=None):
         out.append("Part %s done: post the part %s summary and carry on." % (part["id"], part["id"]))
         return "\n".join(out)
     out += [line_str(l) for l in mine]
-    out.append(("Part %s done: post the part %s summary (see AT THE END) and carry on." % (part["id"], part["id"])) if part is not spec["parts"][-1] else "Part %s done." % part["id"])
+    if part.get("stop") and only is None:
+        out.append(part["stop"])  # a gate: the part's own closing words (s08: wait for Zafar's pick), never "carry on"
+    else:
+        out.append(("Part %s done: post the part %s summary (see AT THE END) and carry on." % (part["id"], part["id"])) if part is not spec["parts"][-1] else "Part %s done." % part["id"])
     return "\n".join(out)
 
 
@@ -188,6 +234,9 @@ def build(spec, redo_path=None):
     allc.update({k: v for k, v in extra_checks.items()})
     checks = "\n".join("%s: %s" % (c, allc[c]["text"]) for c in check_ids if c in allc)
     real = spec.get("real_people")
+    dv = delivery_texts(spec.get("delivery", "github"), spec)
+    loop = fill(tpl("runner-loop.txt"), {"WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "STALL": r["stall_minutes"], "HARD": r["hard_minutes"],
+                                         "NOTES": dv["NOTES"], "DONE": dv["DONE"], "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "BATCH": r["commit_batch"], "FLUSH": r["flush_minutes"]})
     approvals = ("- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.\n"
                  "- Everything else is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log \"needs Zafar: likeness\" and carry on."
                  if not real else
@@ -197,19 +246,21 @@ def build(spec, redo_path=None):
         "WATCH": "Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS)." if not real else "Zafar approves the likenesses (see APPROVALS).",
         "PAGE_URL": "https://github.com/%s/blob/%s/%s" % (repo, branch, spec["plan"]), "RAW": raw, "REFS": refs,
         "KEPT_NOTE": (", from this run if it is in the run order below, otherwise the one already in the repo at RAW + %s/<X's save-as name>" % spec["dest"]) if redo_path
-        else ", already committed by you to RAW + %s/<X's save-as name>" % spec["dest"],
-        "UPLOAD_URL": "https://github.com/%s/upload/main/%s" % (repo, spec["dest"]),
-        "FOLDER_URL": "https://github.com/%s/tree/main/%s" % (repo, spec["dest"]),
-        "LOOP": fill(tpl("runner-loop.txt"), {"WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "STALL": r["stall_minutes"], "HARD": r["hard_minutes"], "BATCH": r["commit_batch"], "FLUSH": r["flush_minutes"]}),
-        "FIRST_PASS": ("FIRST-PASS NUMBERS (optional)\nIf your workspace has python and a clone of https://github.com/%s, run `python3 build/tools/art/artjudge.py --dir <the folder of your saved images> --only <ID>` on each kept image before your own look: a FAIL line is a redo, a FLAG line names what to look at hardest. It never replaces looking.\n\n" % repo),
+        else (", already committed by you to RAW + %s/<X's save-as name>" % spec["dest"]) if spec.get("delivery", "github") == "github"
+        else ", still in its ChatGPT chat (attach it from ChatGPT's library, see below)",
+        "LOOP": loop,
+        "FIRST_PASS": "" if spec.get("delivery") == "download" else ("FIRST-PASS NUMBERS (optional)\nIf your workspace has python and a clone of https://github.com/%s, run `python3 build/tools/art/artjudge.py --dir <the folder of your saved images> --only <ID>` on each kept image before your own look: a FAIL line is a redo, a FLAG line names what to look at hardest. It never replaces looking.\n\n" % repo),
         "APPROVALS": approvals, "WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "REDOS": r["redos"],
         "RUN_ORDER": run_text, "CHECKS": checks, "PASSFAIL": "\n".join("- " + x for x in spec["passfail"]),
     }
+    vals.update({k: v for k, v in dv.items() if k in ("OPENING", "PLACES", "MOVING", "SAFETY_COMMIT", "STEP6", "LOG_HEAD", "LOG_ALSO", "RESUMING", "AT_END")})
     return fill(tpl("block.txt"), vals) + "\n", blocked, count
 
 
 def sync_doc():
-    loop = fill(tpl("runner-loop.txt"), {"WINDOWS": "N", "GAP": "G", "STALL": "X", "HARD": "Y", "BATCH": "B", "FLUSH": "F"})
+    dv = delivery_texts("github", {"dest": "<dest>", "repo": "<repo>", "pack": "<pack>"})
+    loop = fill(tpl("runner-loop.txt"), {"WINDOWS": "N", "GAP": "G", "STALL": "X", "HARD": "Y", "NOTES": dv["NOTES"], "DONE": dv["DONE"],
+                                         "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "BATCH": "B", "FLUSH": "F"})
     txt = open(DOC).read()
     a, b = "<!-- runner-loop:start -->", "<!-- runner-loop:end -->"
     if a not in txt:

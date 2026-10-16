@@ -1,5 +1,6 @@
 """Reads a pack's run spec (build/tools/art/specs/<pack>.run.yaml) and its art plan: expands the run order into
-lines, resolves dependencies, parses the plan's PEOPLE table, and validates it all. Used by artblock.py and artjudge.py."""
+lines, resolves dependencies, parses the plan's PEOPLE table, and validates it all. Used by artblock.py and artjudge.py.
+A one-off line may say `prompt: X` to paste another line's code box (s08: a branch's poses reuse the base prompts)."""
 import os
 import re
 
@@ -71,7 +72,7 @@ def expand(spec):
         for it in part["items"]:
             for lid in it.get("lines", []):
                 t = spec["lines"][lid]
-                add({"id": lid, "part": part["id"], "who": t.get("person"), "set": None, "sheet": None, "tid": lid,
+                add({"id": lid, "part": part["id"], "who": t.get("person"), "set": None, "sheet": None, "tid": t.get("prompt", lid),
                      "attach": [_attach(a, {}) for a in t["attach"]], "save": t["save"], "check": t["check"], "note": t.get("note", "")})
             for tid in it.get("ids", []):
                 if "who" in it:

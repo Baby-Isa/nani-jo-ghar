@@ -1,0 +1,331 @@
+# The run spec for pack s08 (Sprint 8 art; Zafar, 16 Oct: lock the style of the real people before any pose). Part S the
+# style lock: three lineups (LA the doctor at Nani's level, LB faces kept and the rest in the girl's world, LC as LB with the
+# girl a step toward them), then STOP for Zafar's pick. Part A (pick A): the doctor's sheet and his eight wired pictures and
+# card faces at Nani's level. Part B (pick B or C): the same in the soft finish, plus Nani's N1-N5 redone as edits. Part C
+# (pick C only): the girl's two bases. Read by build/tools/art/artblock.py (the paste block) and artjudge.py. The prompts
+# stay in the plan (section 5: docs/design-language/art-plans/s08-style-prompts.md); a part-B pose line says `prompt: X` to
+# paste part A's box with its own attachments. Edit this file, then regenerate the block; never hand-edit the block.
+# Zafar runs it himself in Claude in Chrome (plan section 3): delivery is "download" (kept images stay in their chats and
+# are downloaded in order at the end; never page-JavaScript uploads). RAW is the branch because the s07 kept pictures
+# (DW1, DD1, N1 ...) are not on main yet; switch raw_branch to main and regenerate once they are published.
+pack: s08
+title: 'Sprint 8 art: the style lock, then the doctor (and Nani) in the chosen finish'
+plan: docs/design-language/art-plans/s08-style-prompts.md
+plan_branch: claude/new-session-b5r2am
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/new-session-b5r2am
+dest: sources/art/s08
+real_people: true
+delivery: download
+runner:
+  windows: 3
+  send_gap_seconds: 60
+  stall_minutes: 6
+  hard_minutes: 10
+  redos: 2
+  commit_batch: 6
+  flush_minutes: 25
+refs:
+  doctor-s1-sheet-v1.png: sources/art/s07/doctor-s1-sheet-v1.png
+  doctor-ref-faces-v1.png: sources/art/s07/doctor-ref-faces-v1.png
+  doctor-w1-stand-3q-neutral-v1.png: sources/art/s07/doctor-w1-stand-3q-neutral-v1.png
+  doctor-w1-stand-front-neutral-v1.png: sources/art/s07/doctor-w1-stand-front-neutral-v1.png
+  doctor-w1-stand-3q-right-neutral-v1.png: sources/art/s07/doctor-w1-stand-3q-right-neutral-v1.png
+  doctor-a6-stand-3q-right-wave-v1.png: sources/art/s07/doctor-a6-stand-3q-right-wave-v1.png
+  doctor-d1-door-call-v1.png: sources/art/s07/doctor-d1-door-call-v1.png
+  nani-n1-lean-neutral-v1.png: sources/art/s07/nani-n1-lean-neutral-v1.png
+  nani-n4-lean-point-v1.png: sources/art/s07/nani-n4-lean-point-v1.png
+  nani-sheet-v2-approved.png: sources/art/characters/nani-sheet-v2-approved.png
+  char-nana-v1.png: sources/art/characters/char-nana-v1.png
+  s1-girl-sheet-v2.png: sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+  girl-w1-front-neutral-v1.png: sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
+  girl-w13-standing-3q-left-neutral-v1.png: sources/art/s07/girl-w13-standing-3q-left-neutral-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  LA:
+    attach: [doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png]
+    save: lineup-la-v1.png
+    check: LINEUP
+    note: 'the doctor at Nani''s level; Nani, the girl and Nana as they are'
+  LB:
+    attach: [doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png]
+    save: lineup-lb-v1.png
+    check: LINEUPB
+    note: 'the doctor''s and Nani''s faces kept exactly, everything below the neck and the finish as the girl'
+  LC:
+    attach: [doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png]
+    save: lineup-lc-v1.png
+    check: LINEUPB
+    note: 'as LB, and the girl one small step toward them (eyes a little smaller, a touch more shading); still the same child'
+  DS2:
+    attach: [doctor-s1-sheet-v1.png, 'kept:LA', nani-n1-lean-neutral-v1.png]
+    save: doctor-s2-sheet-v1.png
+    check: DSHEET
+  DW1:
+    attach: [doctor-w1-stand-3q-neutral-v1.png, 'kept:DS2']
+    save: doctor-w1-stand-3q-neutral-v2.png
+    check: DW1
+  DF1:
+    attach: ['edit: kept:DW1']
+    save: doctor-f1-stand-3q-talk-v2.png
+    check: DFACE
+  DF3:
+    attach: ['edit: kept:DW1']
+    save: doctor-f3-stand-3q-blink-v2.png
+    check: DFACE
+  DW1F:
+    attach: [doctor-w1-stand-front-neutral-v1.png, 'kept:DS2']
+    save: doctor-w1-stand-front-neutral-v2.png
+    check: DFRONT
+  DW1QR:
+    attach: [doctor-w1-stand-3q-right-neutral-v1.png, 'kept:DS2']
+    save: doctor-w1-stand-3q-right-neutral-v2.png
+    check: DQR
+  DA6QR:
+    attach: [doctor-a6-stand-3q-right-wave-v1.png, 'kept:DS2']
+    save: doctor-a6-stand-3q-right-wave-v2.png
+    check: DA6
+  DD1:
+    attach: [doctor-d1-door-call-v1.png, 'kept:DS2']
+    save: doctor-d1-door-call-v2.png
+    check: DD1
+  DD2:
+    attach: ['edit: kept:DD1']
+    save: doctor-d2-door-look-v2.png
+    check: DDFACE
+  DR2:
+    attach: [doctor-ref-faces-v1.png, 'kept:DS2']
+    save: doctor-ref-faces-v2.png
+    check: DFACES
+  DS2B:
+    attach: [doctor-s1-sheet-v1.png, 'kept:LB', s1-girl-sheet-v2.png]
+    save: doctor-s2-sheet-soft-v1.png
+    check: DSHEETB
+    note: 'on pick C attach the kept LC instead of LB'
+  DW1B:
+    prompt: DW1
+    attach: [doctor-w1-stand-3q-neutral-v1.png, 'kept:DS2B']
+    save: doctor-w1-stand-3q-neutral-soft-v1.png
+    check: DW1
+  DF1B:
+    prompt: DF1
+    attach: ['edit: kept:DW1B']
+    save: doctor-f1-stand-3q-talk-soft-v1.png
+    check: DFACE
+    note: 'compare with DW1B'
+  DF3B:
+    prompt: DF3
+    attach: ['edit: kept:DW1B']
+    save: doctor-f3-stand-3q-blink-soft-v1.png
+    check: DFACE
+    note: 'compare with DW1B'
+  DW1FB:
+    prompt: DW1F
+    attach: [doctor-w1-stand-front-neutral-v1.png, 'kept:DS2B']
+    save: doctor-w1-stand-front-neutral-soft-v1.png
+    check: DFRONT
+  DW1QRB:
+    prompt: DW1QR
+    attach: [doctor-w1-stand-3q-right-neutral-v1.png, 'kept:DS2B']
+    save: doctor-w1-stand-3q-right-neutral-soft-v1.png
+    check: DQR
+  DA6QRB:
+    prompt: DA6QR
+    attach: [doctor-a6-stand-3q-right-wave-v1.png, 'kept:DS2B']
+    save: doctor-a6-stand-3q-right-wave-soft-v1.png
+    check: DA6
+  DD1B:
+    prompt: DD1
+    attach: [doctor-d1-door-call-v1.png, 'kept:DS2B']
+    save: doctor-d1-door-call-soft-v1.png
+    check: DD1
+  DD2B:
+    prompt: DD2
+    attach: ['edit: kept:DD1B']
+    save: doctor-d2-door-look-soft-v1.png
+    check: DDFACE
+    note: 'compare with DD1B'
+  DR2B:
+    prompt: DR2
+    attach: [doctor-ref-faces-v1.png, 'kept:DS2B']
+    save: doctor-ref-faces-soft-v1.png
+    check: DFACES
+  N1B:
+    attach: [nani-n1-lean-neutral-v1.png, 'kept:LB']
+    save: nani-n1-lean-neutral-soft-v1.png
+    check: NANIB
+    note: 'on pick C attach the kept LC instead of LB; Zafar approves it before N2B-N5B run'
+  N2B:
+    attach: ['edit: kept:N1B']
+    save: nani-n2-lean-happy-soft-v1.png
+    check: NFACE
+  N3B:
+    attach: ['edit: kept:N1B']
+    save: nani-n3-lean-talk-soft-v1.png
+    check: NFACE
+  N4B:
+    attach: ['kept:N1B', nani-n4-lean-point-v1.png]
+    save: nani-n4-lean-point-soft-v1.png
+    check: NPOINT
+    note: 'an edit of N1B with the pointing picture as the second attachment: it must register with N1B (the s07 N4 was drawn fresh and did not)'
+  N5B:
+    attach: ['edit: kept:N1B']
+    save: nani-n5-lean-blink-soft-v1.png
+    check: NFACE
+  GW1C:
+    attach: [girl-w1-front-neutral-v1.png, 'kept:LC']
+    save: girl-w1-front-neutral-soft-v1.png
+    check: GIRLC
+  GW13C:
+    attach: [girl-w13-standing-3q-left-neutral-v1.png, 'kept:LC']
+    save: girl-w13-standing-3q-left-neutral-soft-v1.png
+    check: GIRLC
+parts:
+- id: S
+  title: 'THE STYLE LOCK: three lineups, then STOP for Zafar''s pick (real people: his word is the pass)'
+  intro: 'Run LA, LB and LC at once (one window each), judge each against its check and redo as usual, then STOP. Post the three kept lineups with their chat links and exactly these words: "Zafar: pick A, pick B, pick C or none". Start NOTHING from parts A, B or C until Zafar answers in this chat; this overrides the loop''s "parts are priorities, not walls": here they are walls. His answer: "pick A" = run part A only. "pick B" = run part B only. "pick C" = run part B with the kept LC attached wherever a line says kept:LB, then part C. "none" = run nothing more, post the log and the downloads. If he answers anything else, ask him for one of the four words.'
+  stop: 'Part S done: post the part S summary and the three lineups, then WAIT for Zafar''s pick. Nothing below runs until he has answered.'
+  items:
+  - lines: [LA, LB, LC]
+- id: A
+  title: 'ONLY ON "pick A": THE DOCTOR AT NANI''S LEVEL (a real person: Zafar approves each one)'
+  intro: 'DS2 first (post it; wait for his ok): every pose attaches it. Every pose line attaches its kept s07 picture for the pose only and the sheet for the rendering; judge the rendering against the sheet, never against the s07 picture. DF1 and DF3 edit DW1; DD2 edits DD1.'
+  items:
+  - lines: [DS2, DW1, DF1, DF3, DW1F, DW1QR, DA6QR, DD1, DD2, DR2]
+- id: B
+  title: 'ONLY ON "pick B" OR "pick C": THE DOCTOR AND NANI IN THE SOFT FINISH (real people: Zafar approves each one)'
+  intro: 'DS2B first (post it; wait for his ok): every doctor pose attaches it. A line marked "(prompt X)" pastes the code box of X from the plan with the attachments on its own line. On pick C, attach the kept LC wherever a line says kept:LB. N1B next (post it; wait for his ok): N2B, N3B and N5B edit it and N4B attaches it first.'
+  items:
+  - lines: [DS2B, DW1B, DF1B, DF3B, DW1FB, DW1QRB, DA6QRB, DD1B, DD2B, DR2B, N1B, N2B, N3B, N4B, N5B]
+- id: C
+  title: 'ONLY ON "pick C", AFTER PART B: THE GIRL''S TWO BASES'
+  intro: 'Each attaches the kept LC for her new rendering and her own picture for everything else.'
+  items:
+  - lines: [GW1C, GW13C]
+checks:
+  LINEUP:
+    text: 'four people in a row, left to right the doctor, Nani, the little girl, Nana; full body, front-on, arms at their sides, standing on one invisible floor with every pair of feet on ONE level; the doctor about 1.5 times the girl''s height (her head top at his chest), Nani and Nana a little shorter than him; each as their attached picture in face and clothes (the doctor: bald, white side hair, white beard, rectangular glasses, navy check blazer; Nani: red dupatta over her head, cream kurta; the girl: yellow dress, plaits with white bows); the doctor as smooth-skinned as Nani, no pores or weave on him; one flat mid-grey; nothing touches an edge; five fingers on each hand'
+    judge:
+      aspect: [3, 2]
+      bg: flat
+      no_touch: true
+  LINEUPB:
+    text: 'as LINEUP, and: the doctor''s and Nani''s FACES unchanged (face shape, features, glasses, his beard and hairline, her dupatta''s framing, skin tone, age: clearly the same two people as their attached pictures); below the neck and in the finish they match the girl: matte poreless skin, rounder simpler bodies, plain soft cloth with no weave, knit or fine folds, simple hands, no refraction in the glasses; Nani''s clothes modest and loose, her dupatta over her head'
+    judge:
+      aspect: [3, 2]
+      bg: flat
+      no_touch: true
+  DSHEET:
+    text: 'the same sheet as his: the same panels in the same places (turnaround front, three-quarter, side, back; the seated portrait; two hands; glasses; watch; bag; fabric close-up; colour strip), the same man in every panel with identical clothing; rendered as the doctor in the lineup: smooth simple skin, no pores, no single hairs, no fabric weave, eyes a little larger, soft rounded forms; still clearly him (his face shape, glasses, beard, hairline; Zafar''s ok is the pass); light blue-grey ground'
+    judge:
+      aspect: [3, 2]
+      bg: flat
+  DSHEETB:
+    text: 'as DSHEET, but the finish is the girl''s: his face unchanged (shape, features, glasses, beard, hairline, skin tone, age), matte poreless skin, rounder simpler body, plain soft cloth with no weave, simple hands with rounded fingers, no refraction, the same soft edges as the girl'
+    judge:
+      aspect: [3, 2]
+      bg: flat
+  DW1:
+    text: 'the doctor standing, full body, turned three-quarters to the viewer''s LEFT, both feet on one level, BOTH arms hanging relaxed at his sides, nothing in his hands, neutral kind face, mouth closed; the same pose, size, framing and feet as the attached s07 picture (compare them side by side); rendered exactly as the attached SHEET, not as the s07 picture (no pores, no weave, no single hairs); bald with white side hair, short white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown shoes, silver watch on the left wrist; no white coat, no stethoscope, no bag; fills about 85% of the height, touches no edge; no floor drawn; five fingers on each hand'
+    judge:
+      aspect: [2, 3]
+      bg: flat
+      fill_h: [0.75, 0.95]
+      no_touch: true
+      skin_face: [0.25, 0.0, 0.75, 0.2]
+  DFACE:
+    text: only the face changed (the expression asked); glasses, beard, clothes, hands, size and position identical; compare with the base it edits
+    judge:
+      aspect: [2, 3]
+      bg: flat
+      no_touch: true
+      edit:
+        allowed: [0.3, 0.0, 0.7, 0.25]
+      skin_face: [0.25, 0.0, 0.75, 0.2]
+  DFRONT:
+    text: 'as DW1 but FRONT-on to the viewer, looking at us; the same pose, size, framing and feet as the attached s07 front picture; rendered exactly as the attached sheet'
+    judge:
+      aspect: [2, 3]
+      bg: flat
+      fill_h: [0.75, 0.95]
+      no_touch: true
+      skin_face: [0.25, 0.0, 0.75, 0.2]
+  DQR:
+    text: 'as DW1 but turned three-quarters to the viewer''s RIGHT (drawn, not flipped: the watch stays on his LEFT wrist); the same pose, size, framing and feet as the attached s07 picture; rendered exactly as the attached sheet'
+    judge:
+      aspect: [2, 3]
+      bg: flat
+      fill_h: [0.75, 0.95]
+      no_touch: true
+      skin_face: [0.25, 0.0, 0.75, 0.2]
+  DA6:
+    text: 'the doctor turned three-quarters to the viewer''s RIGHT, the near arm up in a wave with the palm to us, the other at his side, a big warm smile; the same pose, size, framing and feet as the attached s07 picture; rendered exactly as the attached sheet; the watch on his LEFT wrist; five fingers; touches no edge'
+    judge:
+      aspect: [2, 3]
+      bg: flat
+      fill_h: [0.75, 0.95]
+      no_touch: true
+  DD1:
+    text: 'square; the doctor standing, full body, front-on, one hand raised in a wave beside his head with the palm to us, the other at his side, a big open calling smile; the same pose, size, framing and feet as the attached s07 picture; no door, frame, wall or floor drawn; rendered exactly as the attached sheet; five fingers; touches no edge'
+    judge:
+      aspect: [1, 1]
+      bg: flat
+      fill_h: [0.8, 0.98]
+      no_touch: true
+  DDFACE:
+    text: only the face changed, to a closed-mouth smile looking out; the raised hand, clothes, size and position identical; compare with the DD1 it edits
+    judge:
+      aspect: [1, 1]
+      bg: flat
+      no_touch: true
+      edit:
+        allowed: [0.3, 0.0, 0.7, 0.3]
+  DFACES:
+    text: 'twelve head-and-shoulders faces in the same 4 by 3 grid and order as the attached faces sheet (neutral smile, talking, laughing, gentle smile, cheering, warm closed smile, finger up, thinking, surprised, worried, sceptical, wink-laugh), the same man in every cell, rendered exactly as the attached character sheet (no pores, no single hairs, no weave); light blue-grey ground in every cell; nothing crosses a cell boundary'
+    judge:
+      aspect: [3, 2]
+      bg: flat
+  NANIB:
+    text: 'Nani leaning exactly as the attached N1 (both forearms flat on the marble counter, elbows on it, the counter''s back edge at the same height, the same size, framing, glasses, red dupatta, cream embroidered kurta, bracelet and rings); her FACE unchanged (shape, features, glasses, the dupatta''s framing, skin tone, age: clearly her); the finish now the girl''s: matte poreless skin, no knit or weave on the dupatta, simple embroidery, simple hands, no refraction; modest, no bangles; grey above the counter, marble below; Zafar''s ok is the pass'
+    judge:
+      aspect: [2, 3]
+      bg: none
+  NFACE:
+    text: only the face changed (the mood asked); glasses, dupatta, arms, hands, counter, size and position identical; compare with N1B
+    judge:
+      aspect: [2, 3]
+      bg: none
+      edit:
+        allowed: [0.25, 0.1, 0.75, 0.42]
+  NPOINT:
+    text: 'the same Nani, size, framing, face and counter line as N1B (compare them side by side: an edit of it, not a fresh drawing); her left forearm (viewer''s right) still flat on the counter; her right hand up beside her face, index finger pointing down to the viewer''s right, elbow on the counter; the raised arm rendered like the rest of her; five fingers'
+    judge:
+      aspect: [2, 3]
+      bg: none
+  GIRLC:
+    text: 'the same girl, pose, size, framing, feet, clothes, plaits and bows as the attached picture (compare them side by side); only her rendering changed, exactly as the girl in the attached LC lineup: eyes a little smaller, a touch more shading on cheeks and nose, head a touch smaller; still the same small child, smooth matte skin; one flat mid-grey; touches no edge; five fingers'
+    judge:
+      aspect: [2, 3]
+      bg: flat
+      no_touch: true
+passfail:
+- Any text, letters, numbers, labels or logos, even fake or blurry ones.
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare.
+- 'Pores, fine wrinkles, single hairs, fabric weave or knit, or refraction in glasses, on anyone (LA excepted on nobody: in LA the doctor must already be as smooth as Nani).'
+- The background isn't one flat mid-grey (sheets light blue-grey, the counter below Nani excepted); there's a floor, a surface or a shadow on the grey (a soft contact shadow under feet in a lineup is fine); grid lines, panel borders or labels.
+- Anything touching an image edge, or crossing into a neighbour's cell on a sheet.
+- The wrong number of people, people in the wrong order, or extra objects, people, hands or animals.
+- 'Hands: not five fingers on each visible hand, fused or extra fingers.'
+- 'A lineup whose feet are not on one level, or whose heights are wrong: the doctor must be about 1.5 times the girl (her head top at his chest), Nani and Nana a little shorter than him.'
+- The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals) or looking older or younger (in LC and part C only the small rendering step asked).
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest or tight clothes on Nani, her dupatta off her head, or any religious marker (bindi, tilak, sindoor, deities, temple items).
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left, or a second light.
+- 'A registered set (the doctor''s poses on their s07 pictures, Nani''s moods on N1B) whose figure moves or changes size between pictures.'
+- 'The doctor or Nani not clearly the same person as their attached picture (face shape, glasses, his beard and hairline, her dupatta''s framing), or a likeness Zafar has not approved (real people: his yes is the pass).'
+- The doctor in a white coat, with a stethoscope or a bag, or without his glasses, beard, navy check blazer or silver watch; the watch on the wrong wrist.
+- A pose rendered like its attached s07 picture (the realistic one) instead of like the attached sheet.

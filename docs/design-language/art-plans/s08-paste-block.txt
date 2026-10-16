@@ -1,0 +1,171 @@
+You're making 30 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them for Zafar. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed; Zafar uploads the folder himself afterwards). Zafar approves the likenesses (see APPROVALS).
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/docs/design-language/art-plans/s08-style-prompts.md and read section 5, "The prompts", and its PEOPLE table. Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/claude/new-session-b5r2am/
+Reference images, by the name the run order uses:
+ doctor-s1-sheet-v1.png                    RAW + sources/art/s07/doctor-s1-sheet-v1.png
+ doctor-ref-faces-v1.png                   RAW + sources/art/s07/doctor-ref-faces-v1.png
+ doctor-w1-stand-3q-neutral-v1.png         RAW + sources/art/s07/doctor-w1-stand-3q-neutral-v1.png
+ doctor-w1-stand-front-neutral-v1.png      RAW + sources/art/s07/doctor-w1-stand-front-neutral-v1.png
+ doctor-w1-stand-3q-right-neutral-v1.png   RAW + sources/art/s07/doctor-w1-stand-3q-right-neutral-v1.png
+ doctor-a6-stand-3q-right-wave-v1.png      RAW + sources/art/s07/doctor-a6-stand-3q-right-wave-v1.png
+ doctor-d1-door-call-v1.png                RAW + sources/art/s07/doctor-d1-door-call-v1.png
+ nani-n1-lean-neutral-v1.png               RAW + sources/art/s07/nani-n1-lean-neutral-v1.png
+ nani-n4-lean-point-v1.png                 RAW + sources/art/s07/nani-n4-lean-point-v1.png
+ nani-sheet-v2-approved.png                RAW + sources/art/characters/nani-sheet-v2-approved.png
+ char-nana-v1.png                          RAW + sources/art/characters/char-nana-v1.png
+ s1-girl-sheet-v2.png                      RAW + sources/art/clinic-heal-v3/s1-girl-sheet-v2.png
+ girl-w1-front-neutral-v1.png              RAW + sources/art/clinic-heal-v3/girl-w1-front-neutral-v1.png
+ girl-w13-standing-3q-left-neutral-v1.png  RAW + sources/art/s07/girl-w13-standing-3q-left-neutral-v1.png
+Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
+Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END).
+
+MOVING IMAGES (references in, kept images stay put until the end)
+Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. ChatGPT shows its generated images as in-page blob: addresses that nothing outside the page can fetch, so never try to copy one out with page JavaScript or to upload it anywhere; last time that was refused and the run lost its pictures.
+
+1. INTO CHATGPT (references). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, and check the composer shows exactly that many thumbnails before you paste.
+
+2. INTO CHATGPT (a kept image, "kept:X"). It is still in the chat where it was made. In the new prompt's fresh chat press the "+" button in the composer, choose "Add from library", pick that image (the newest in that chat), and check the thumbnail is the kept one, not an attachment of its chat. Never download it and re-upload it.
+
+3. OUT OF CHATGPT: only at the very end, with ChatGPT's own download button, in the run order (see AT THE END). Until then every kept image stays in its chat, and its chat link and save-as name are in THE LOG.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).
+
+THE TICK. Repeat until every line is KEPT or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the "+" button, then "Add from library": the kept image is there under its chat), never by download and re-upload.
+   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) fetch the references the next READY prompts need; (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+APPROVALS
+- Zafar approves characters based on real people. After each such image, post it and wait for his ok in this chat before using it; keep the other windows generating meanwhile.
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
+- Sign nothing in or out. Delete no chats.
+- Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling the {NAME}, {KEEP}, {LEGS} and {LIMB_WHO} slots from the PEOPLE table.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with the slots filled for that line's person, and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most 2 redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+6. Log the kept image: its save-as name and its chat's link (the address bar of that chat). It stays in that chat; never download it mid-run.
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART S: THE STYLE LOCK: three lineups, then STOP for Zafar's pick (real people: his word is the pass) (3)
+Run LA, LB and LC at once (one window each), judge each against its check and redo as usual, then STOP. Post the three kept lineups with their chat links and exactly these words: "Zafar: pick A, pick B, pick C or none". Start NOTHING from parts A, B or C until Zafar answers in this chat; this overrides the loop's "parts are priorities, not walls": here they are walls. His answer: "pick A" = run part A only. "pick B" = run part B only. "pick C" = run part B with the kept LC attached wherever a line says kept:LB, then part C. "none" = run nothing more, post the log and the downloads. If he answers anything else, ask him for one of the four words.
+LA | doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png | lineup-la-v1.png | LINEUP + the doctor at Nani's level; Nani, the girl and Nana as they are
+LB | doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png | lineup-lb-v1.png | LINEUPB + the doctor's and Nani's faces kept exactly, everything below the neck and the finish as the girl
+LC | doctor-s1-sheet-v1.png, nani-n1-lean-neutral-v1.png, nani-sheet-v2-approved.png, s1-girl-sheet-v2.png, char-nana-v1.png | lineup-lc-v1.png | LINEUPB + as LB, and the girl one small step toward them (eyes a little smaller, a touch more shading); still the same child
+Part S done: post the part S summary and the three lineups, then WAIT for Zafar's pick. Nothing below runs until he has answered.
+
+PART A: ONLY ON "pick A": THE DOCTOR AT NANI'S LEVEL (a real person: Zafar approves each one) (10)
+DS2 first (post it; wait for his ok): every pose attaches it. Every pose line attaches its kept s07 picture for the pose only and the sheet for the rendering; judge the rendering against the sheet, never against the s07 picture. DF1 and DF3 edit DW1; DD2 edits DD1.
+DS2 | doctor-s1-sheet-v1.png, kept:LA, nani-n1-lean-neutral-v1.png | doctor-s2-sheet-v1.png | DSHEET
+DW1 | doctor-w1-stand-3q-neutral-v1.png, kept:DS2 | doctor-w1-stand-3q-neutral-v2.png | DW1
+DF1 | edit: kept:DW1 | doctor-f1-stand-3q-talk-v2.png | DFACE
+DF3 | edit: kept:DW1 | doctor-f3-stand-3q-blink-v2.png | DFACE
+DW1F | doctor-w1-stand-front-neutral-v1.png, kept:DS2 | doctor-w1-stand-front-neutral-v2.png | DFRONT
+DW1QR | doctor-w1-stand-3q-right-neutral-v1.png, kept:DS2 | doctor-w1-stand-3q-right-neutral-v2.png | DQR
+DA6QR | doctor-a6-stand-3q-right-wave-v1.png, kept:DS2 | doctor-a6-stand-3q-right-wave-v2.png | DA6
+DD1 | doctor-d1-door-call-v1.png, kept:DS2 | doctor-d1-door-call-v2.png | DD1
+DD2 | edit: kept:DD1 | doctor-d2-door-look-v2.png | DDFACE
+DR2 | doctor-ref-faces-v1.png, kept:DS2 | doctor-ref-faces-v2.png | DFACES
+Part A done: post the part A summary (see AT THE END) and carry on.
+
+PART B: ONLY ON "pick B" OR "pick C": THE DOCTOR AND NANI IN THE SOFT FINISH (real people: Zafar approves each one) (15)
+DS2B first (post it; wait for his ok): every doctor pose attaches it. A line marked "(prompt X)" pastes the code box of X from the plan with the attachments on its own line. On pick C, attach the kept LC wherever a line says kept:LB. N1B next (post it; wait for his ok): N2B, N3B and N5B edit it and N4B attaches it first.
+DS2B | doctor-s1-sheet-v1.png, kept:LB, s1-girl-sheet-v2.png | doctor-s2-sheet-soft-v1.png | DSHEETB + on pick C attach the kept LC instead of LB
+DW1B (prompt DW1) | doctor-w1-stand-3q-neutral-v1.png, kept:DS2B | doctor-w1-stand-3q-neutral-soft-v1.png | DW1
+DF1B (prompt DF1) | edit: kept:DW1B | doctor-f1-stand-3q-talk-soft-v1.png | DFACE (compare with DW1B)
+DF3B (prompt DF3) | edit: kept:DW1B | doctor-f3-stand-3q-blink-soft-v1.png | DFACE (compare with DW1B)
+DW1FB (prompt DW1F) | doctor-w1-stand-front-neutral-v1.png, kept:DS2B | doctor-w1-stand-front-neutral-soft-v1.png | DFRONT
+DW1QRB (prompt DW1QR) | doctor-w1-stand-3q-right-neutral-v1.png, kept:DS2B | doctor-w1-stand-3q-right-neutral-soft-v1.png | DQR
+DA6QRB (prompt DA6QR) | doctor-a6-stand-3q-right-wave-v1.png, kept:DS2B | doctor-a6-stand-3q-right-wave-soft-v1.png | DA6
+DD1B (prompt DD1) | doctor-d1-door-call-v1.png, kept:DS2B | doctor-d1-door-call-soft-v1.png | DD1
+DD2B (prompt DD2) | edit: kept:DD1B | doctor-d2-door-look-soft-v1.png | DDFACE (compare with DD1B)
+DR2B (prompt DR2) | doctor-ref-faces-v1.png, kept:DS2B | doctor-ref-faces-soft-v1.png | DFACES
+N1B | nani-n1-lean-neutral-v1.png, kept:LB | nani-n1-lean-neutral-soft-v1.png | NANIB + on pick C attach the kept LC instead of LB; Zafar approves it before N2B-N5B run
+N2B | edit: kept:N1B | nani-n2-lean-happy-soft-v1.png | NFACE
+N3B | edit: kept:N1B | nani-n3-lean-talk-soft-v1.png | NFACE
+N4B | kept:N1B, nani-n4-lean-point-v1.png | nani-n4-lean-point-soft-v1.png | NPOINT + an edit of N1B with the pointing picture as the second attachment: it must register with N1B (the s07 N4 was drawn fresh and did not)
+N5B | edit: kept:N1B | nani-n5-lean-blink-soft-v1.png | NFACE
+Part B done: post the part B summary (see AT THE END) and carry on.
+
+PART C: ONLY ON "pick C", AFTER PART B: THE GIRL'S TWO BASES (2)
+Each attaches the kept LC for her new rendering and her own picture for everything else.
+GW1C | girl-w1-front-neutral-v1.png, kept:LC | girl-w1-front-neutral-soft-v1.png | GIRLC
+GW13C | girl-w13-standing-3q-left-neutral-v1.png, kept:LC | girl-w13-standing-3q-left-neutral-soft-v1.png | GIRLC
+Part C done.
+
+CHECKS (by check ID)
+LINEUP: four people in a row, left to right the doctor, Nani, the little girl, Nana; full body, front-on, arms at their sides, standing on one invisible floor with every pair of feet on ONE level; the doctor about 1.5 times the girl's height (her head top at his chest), Nani and Nana a little shorter than him; each as their attached picture in face and clothes (the doctor: bald, white side hair, white beard, rectangular glasses, navy check blazer; Nani: red dupatta over her head, cream kurta; the girl: yellow dress, plaits with white bows); the doctor as smooth-skinned as Nani, no pores or weave on him; one flat mid-grey; nothing touches an edge; five fingers on each hand
+LINEUPB: as LINEUP, and: the doctor's and Nani's FACES unchanged (face shape, features, glasses, his beard and hairline, her dupatta's framing, skin tone, age: clearly the same two people as their attached pictures); below the neck and in the finish they match the girl: matte poreless skin, rounder simpler bodies, plain soft cloth with no weave, knit or fine folds, simple hands, no refraction in the glasses; Nani's clothes modest and loose, her dupatta over her head
+DSHEET: the same sheet as his: the same panels in the same places (turnaround front, three-quarter, side, back; the seated portrait; two hands; glasses; watch; bag; fabric close-up; colour strip), the same man in every panel with identical clothing; rendered as the doctor in the lineup: smooth simple skin, no pores, no single hairs, no fabric weave, eyes a little larger, soft rounded forms; still clearly him (his face shape, glasses, beard, hairline; Zafar's ok is the pass); light blue-grey ground
+DSHEETB: as DSHEET, but the finish is the girl's: his face unchanged (shape, features, glasses, beard, hairline, skin tone, age), matte poreless skin, rounder simpler body, plain soft cloth with no weave, simple hands with rounded fingers, no refraction, the same soft edges as the girl
+DW1: the doctor standing, full body, turned three-quarters to the viewer's LEFT, both feet on one level, BOTH arms hanging relaxed at his sides, nothing in his hands, neutral kind face, mouth closed; the same pose, size, framing and feet as the attached s07 picture (compare them side by side); rendered exactly as the attached SHEET, not as the s07 picture (no pores, no weave, no single hairs); bald with white side hair, short white beard, clear rectangular glasses, white open-collared shirt, navy check blazer, charcoal trousers, brown shoes, silver watch on the left wrist; no white coat, no stethoscope, no bag; fills about 85% of the height, touches no edge; no floor drawn; five fingers on each hand
+DFACE: only the face changed (the expression asked); glasses, beard, clothes, hands, size and position identical; compare with the base it edits
+DFRONT: as DW1 but FRONT-on to the viewer, looking at us; the same pose, size, framing and feet as the attached s07 front picture; rendered exactly as the attached sheet
+DQR: as DW1 but turned three-quarters to the viewer's RIGHT (drawn, not flipped: the watch stays on his LEFT wrist); the same pose, size, framing and feet as the attached s07 picture; rendered exactly as the attached sheet
+DA6: the doctor turned three-quarters to the viewer's RIGHT, the near arm up in a wave with the palm to us, the other at his side, a big warm smile; the same pose, size, framing and feet as the attached s07 picture; rendered exactly as the attached sheet; the watch on his LEFT wrist; five fingers; touches no edge
+DD1: square; the doctor standing, full body, front-on, one hand raised in a wave beside his head with the palm to us, the other at his side, a big open calling smile; the same pose, size, framing and feet as the attached s07 picture; no door, frame, wall or floor drawn; rendered exactly as the attached sheet; five fingers; touches no edge
+DDFACE: only the face changed, to a closed-mouth smile looking out; the raised hand, clothes, size and position identical; compare with the DD1 it edits
+DFACES: twelve head-and-shoulders faces in the same 4 by 3 grid and order as the attached faces sheet (neutral smile, talking, laughing, gentle smile, cheering, warm closed smile, finger up, thinking, surprised, worried, sceptical, wink-laugh), the same man in every cell, rendered exactly as the attached character sheet (no pores, no single hairs, no weave); light blue-grey ground in every cell; nothing crosses a cell boundary
+NANIB: Nani leaning exactly as the attached N1 (both forearms flat on the marble counter, elbows on it, the counter's back edge at the same height, the same size, framing, glasses, red dupatta, cream embroidered kurta, bracelet and rings); her FACE unchanged (shape, features, glasses, the dupatta's framing, skin tone, age: clearly her); the finish now the girl's: matte poreless skin, no knit or weave on the dupatta, simple embroidery, simple hands, no refraction; modest, no bangles; grey above the counter, marble below; Zafar's ok is the pass
+NFACE: only the face changed (the mood asked); glasses, dupatta, arms, hands, counter, size and position identical; compare with N1B
+NPOINT: the same Nani, size, framing, face and counter line as N1B (compare them side by side: an edit of it, not a fresh drawing); her left forearm (viewer's right) still flat on the counter; her right hand up beside her face, index finger pointing down to the viewer's right, elbow on the counter; the raised arm rendered like the rest of her; five fingers
+GIRLC: the same girl, pose, size, framing, feet, clothes, plaits and bows as the attached picture (compare them side by side); only her rendering changed, exactly as the girl in the attached LC lineup: eyes a little smaller, a touch more shading on cheeks and nose, head a touch smaller; still the same small child, smooth matte skin; one flat mid-grey; touches no edge; five fingers
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels or logos, even fake or blurry ones.
+- Outlines, cel shading, a flat vector look, painterly brushwork or photorealism; blur, a vignette or lens flare.
+- Pores, fine wrinkles, single hairs, fabric weave or knit, or refraction in glasses, on anyone (LA excepted on nobody: in LA the doctor must already be as smooth as Nani).
+- The background isn't one flat mid-grey (sheets light blue-grey, the counter below Nani excepted); there's a floor, a surface or a shadow on the grey (a soft contact shadow under feet in a lineup is fine); grid lines, panel borders or labels.
+- Anything touching an image edge, or crossing into a neighbour's cell on a sheet.
+- The wrong number of people, people in the wrong order, or extra objects, people, hands or animals.
+- Hands: not five fingers on each visible hand, fused or extra fingers.
+- A lineup whose feet are not on one level, or whose heights are wrong: the doctor must be about 1.5 times the girl (her head top at his chest), Nani and Nana a little shorter than him.
+- The girl not matching her sheet (face, plaits, ribbons, yellow dress, white leggings, white sandals) or looking older or younger (in LC and part C only the small rendering step asked).
+- Skin that is orange, pink, grey or very pale instead of a warm light tan.
+- Immodest or tight clothes on Nani, her dupatta off her head, or any religious marker (bindi, tilak, sindoor, deities, temple items).
+- An edit that looks identical to the original, or where something other than what was asked moved, changed size or changed colour.
+- Light from anywhere but the upper left, or a second light.
+- A registered set (the doctor's poses on their s07 pictures, Nani's moods on N1B) whose figure moves or changes size between pictures.
+- The doctor or Nani not clearly the same person as their attached picture (face shape, glasses, his beard and hairline, her dupatta's framing), or a likeness Zafar has not approved (real people: his yes is the pass).
+- The doctor in a white coat, with a stethoscope or a bag, or without his glasses, beard, navy check blazer or silver watch; the watch on the wrong wrist.
+- A pose rendered like its attached s07 picture (the realistic one) instead of like the attached sheet.
+
+THE LOG
+One line per kept image:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | <notes>
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+RESUMING
+If this message is pasted again later with the word "resume", read the log posted in this chat: every line with a chat link is a kept image. Carry on from the first prompt in the run order that has no such line.
+
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link. At the very end, post the whole log as one block, then download the kept images for Zafar, in the run order, one at a time: open the kept image's chat, open the image full size, use ChatGPT's own download button, and log "DOWNLOADED <n>: <save as>" so the n-th file in the Downloads folder is known by name (ChatGPT names the files itself; the order is the rename key). Never page JavaScript, never a GitHub upload. If the download button is refused, say so and post the ordered list of chat links and save-as names instead; Zafar downloads from it.
