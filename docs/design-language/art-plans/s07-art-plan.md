@@ -61,7 +61,7 @@ Columns: **seen** is how the game shows it (view, size on the 1600×900 stage or
 |---|---|---|---|---|---|
 | GB1 | Her blink (edit of her seated front picture) | the eye test and every bubble of hers; the life frames | missing (the talk swaps to the same picture) | ART-19, EY8 | s05 GB1 |
 | GM1 | Her talking mouth (edit) | as GB1 | missing | ART-19 | s05 GM1 |
-| GS1 | Her sore face, one eye shut (edit) | the diagnosis's D9 (her own sore look under the card), the send-off's L2 feeling | `girl-face-pain` with both eyes open | CLN-136 | redo of the clinic pack's W4 |
+| GS1 | Her sore face, both eyes open (edit; 16 Oct: one eye shut read as a wink) | the diagnosis's D9 (her own sore look under the card), the send-off's L2 feeling | `girl-face-pain` with both eyes open | CLN-136 | redo of the clinic pack's W4 |
 | GN1 | Standing, mouth closed, neutral (edit of her standing-palms picture) | the send-off at L2 while she says her feeling | her standing art's resting face smiles | CLN-137 | `girl-w11-standing-palms-v1` |
 | RP1 | Her sole with the five toes in a level row | foot L1–L3 (the channels run from the named toes), the sole filling the close-up (800×500 units, the leg off the bottom) | the clinic pack's P1 (toes sloping) for L1 only; a stand-in from L2 | CLN-87's foot note | s05 RP1 |
 | I1 | Dirt: eight soft bits of dust, grit and a smear | the scrape (on her grazed forearm and knee, washed away by the water), the foot's soak (the dirt hides the splinters) | flat dark-brown discs drawn in code | CLN-121's flaw, CLN-108 | – |
@@ -282,9 +282,9 @@ Style: exactly as the attached picture: a stylised 3D animated-feature-film look
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no photorealism, no blur. No bindi, tilak or other Hindu religious markers. Five fingers on each hand.
 ```
 
-#### GS1. The girl's sore face, one eye shut (redo of the clinic pack's W4; an edit of her seated front picture)
+#### GS1. The girl's sore face, both eyes open (redo of the clinic pack's W4; an edit of her seated front picture)
 ```
-Edit the attached picture. Change ONLY her face, to this expression: a small comic wince of being sore: ONE eye squeezed shut (the eye on the viewer's left), the other eye open and looking at us, the brows pulled together and up in the middle, the mouth a small tight "ow" pulled to one side with the teeth just showing; mild and a little funny, never real distress, no tears. Her plaits, ribbons, dress, hands and legs stay exactly as they are.
+Edit the attached picture. Change ONLY her face, to this expression: a small comic wince of being sore: BOTH eyes open and looking at us, a little narrowed with the lower lids raised (never one eye shut: that reads as a wink, CLN-136), the brows pulled together and up in the middle, the mouth a small tight "ow" pulled to one side with the teeth just showing; mild and a little funny, never real distress, no tears. Her plaits, ribbons, dress, hands and legs stay exactly as they are.
 Everything else stays exactly the same: the same person, pose, body, hands, clothes, hair, colours and skin; the same size and position in the frame; the same lighting; the same flat mid-grey background with no shadows. Do not move, resize, crop or add anything. Do not add any text, letters, numbers, symbols, tears, sweat drops, stars or motion lines.
 Keep the picture exactly the same size and shape (aspect ratio) as the attached one.
 Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No floor, no gradient, no texture. NO shadows of any kind.

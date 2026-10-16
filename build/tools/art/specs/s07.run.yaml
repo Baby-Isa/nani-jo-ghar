@@ -528,7 +528,7 @@ checks:
         - 0.7
         - 0.35
   GSORE:
-    text: only the face changed, to a comic wince with ONE eye shut (the viewer's left) and the other open, a small tight mouth; no tears; everything else identical to the attached seated picture (compare them)
+    text: only the face changed, to a comic wince with BOTH eyes open and a little narrowed (never one eye shut, which reads as a wink, CLN-136), a small tight mouth; no tears; everything else identical to the attached seated picture (compare them)
     judge:
       aspect:
       - 2

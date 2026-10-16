@@ -1,0 +1,28 @@
+# The art redo list for pack s07: what the next run starts from (16 Oct, after the s07 cut and wiring).
+# Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s07.run.yaml --redo docs/design-language/art-plans/s07-redo-list.yaml
+# Verdicts: build/reports/s07-art-landing.md; wiring: build/reports/s07-clinic-a.md, s07-clinic-b.md, s07-cook.md.
+# Not run lines (re-download only, no redo): DT3 (the wave, quarter turn right) is in its ChatGPT chat; the GN1 front base
+# was never downloaded. DA2-QR (pointing, quarter turn right) came back as DA2 again: redo it by hand with its turn prompt.
+pack: s07
+redo:
+  - id: GS1
+    why: "one eye squeezed shut reads as a wink (CLN-136: she never winks); the prompt itself asked for one eye shut: rewrite it to both eyes open, brows pinched, mouth turned down"
+    source: "build/reports/s07-art-landing.md"
+  - id: SK2
+    why: "the skewers sit about 0.1 of their length apart but the game's chunks are about 0.19 wide, so four loaded skewers would pile up; wanted: four skewers spaced at least 0.22 apart, handles inside the plate rim"
+    source: "build/reports/s07-cook.md"
+  - id: CP1
+    why: "pans seen slightly oblique, not straight down; the tilt steps barely differ; the streams read as syrup; column 3's handles touch the edge"
+    source: "build/reports/s07-art-landing.md; build/reports/s07-cook.md"
+  - id: B1
+    why: "row 1 drawn top-down, not from the belt camera, so the belt plaster keeps its old sprite (CLN-97); plasters fill about 89% of the cell"
+    source: "build/reports/s07-art-landing.md; build/reports/s07-clinic-b.md"
+  - id: DM2
+    why: "the drops are glossy and could read as sweets (non-negotiable 16); wanted: matte syrup drops; the levers are good"
+    source: "build/reports/s07-art-landing.md"
+  - id: DM1
+    why: "tall: at its proportions the levers sit 40 units apart, not the 56 a phone tap needs (CLN-09); wanted: a wider, lower machine, four spouts at least 56 units apart"
+    source: "build/reports/s07-clinic-a.md"
+  - id: N4
+    why: "drawn fresh, not edited from N1, so it doesn't register with N1-N3 and N5; wanted: an edit of N1 (the same canvas), pointing"
+    source: "build/reports/s07-art-landing.md"
