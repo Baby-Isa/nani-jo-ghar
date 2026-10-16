@@ -40,3 +40,10 @@ Next: `node build/tools/review/evidence.mjs --judge --run-id ev-s07`, the review
 ## No spec (2)
 
 SH-92, CK-45
+
+## EVIDENCE lines from the reviewers (the tool owner's list)
+
+- CLN-81: A frames 1 (waiting) and 2 (diagnosis) crop only the doctor (and a boy in frame 1), so the girl is not in shot in those stages; only frame 5 (send-off) shows her finished art; B shows the results badges (timer, tick, bulb), not the sticker or card faces; pharmacy and heal were not captured (Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU)
+- CLN-97: A shows the swabs, spoon, stethoscope and a red item cut off at the right edge; there is no green bottle and no jug on the belt, and the red plaster is not shown whole. Flaw off the point: the swabs (left) and the stethoscope tubing rise above the belt's back rail and read as tilted (Claude Opus 5.5 (claude-opus-5-5), session_01W85EF4CUVUYMaoJk4JskAU)
+- CLN-150: no heal panel; the sheet shows waiting, diagnosis and send-off, but the Check names heal and the heal card is one of the pictures the row names (A-C do show the same bald, bearded, glasses doctor standing and in the box) (claude-opus-5-5 (Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU))
+
