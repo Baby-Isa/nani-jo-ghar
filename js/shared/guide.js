@@ -152,6 +152,8 @@
     return st;
   };
 
+  const CUTS = new Map(); // src|crop -> Promise of the cut head (ART-10)
+  const CUT_DONE = new Map(); // src|crop -> the cut head, once ready
   const SPEAKER = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="ng-waves" d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path class="ng-slash" d="M16 9l6 6M22 9l-6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`;
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -210,9 +212,21 @@
       if (u && faceImg.getAttribute("src") !== u) faceImg.setAttribute("src", u);
       el.dataset.mood = moodNow;
     };
-    const cutFace = (f) =>
+    // (each head is cut once per page: a box mounted again, the next screen, shows it at once, never opts.face first)
+    const cutFace = (f) => {
+      if (!f || !f.src) return Promise.resolve(null);
+      const k = `${f.src}|${f.crop || ""}`;
+      if (!CUTS.has(k)) CUTS.set(k, cutOnce(f));
+      return CUTS.get(k);
+    };
+    Object.keys(opts.faces || {}).forEach((m) => {
+      const f = opts.faces[m];
+      const k = f && `${f.src}|${f.crop || ""}`;
+      if (k && CUT_DONE.has(k)) moods[m] = CUT_DONE.get(k);
+    });
+    if (moods.neutral) showMood();
+    const cutOnce = (f) =>
       new Promise((res) => {
-        if (!f || !f.src) return res(null);
         if (!f.crop || typeof document === "undefined") return res(f.src);
         const im = new Image();
         im.onload = () => {
@@ -223,7 +237,9 @@
             c.width = N;
             c.height = Math.round((N * hh) / w);
             c.getContext("2d").drawImage(im, x, y, w, hh, 0, 0, c.width, c.height);
-            res(c.toDataURL("image/png"));
+            const u = c.toDataURL("image/png");
+            CUT_DONE.set(`${f.src}|${f.crop}`, u);
+            res(u);
           } catch (e) {
             res(null); // (a cross-origin picture: the box keeps its one face)
           }

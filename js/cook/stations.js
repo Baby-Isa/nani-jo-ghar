@@ -565,14 +565,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return (mix(16) << 16) | (mix(8) << 8) | mix(0);
       };
       const tint = warm(Number(color) >>> 0);
-      for (let i = 0; i < 6; i++) {
-        const a = -Math.PI / 2 + ((i - 2.5) / 2.5) * 1.15 + (Math.random() - 0.5) * 0.25;
-        const c = this.track(this.add.image(x, y, key).setDepth(D.fx).setTint(tint).setAlpha(0.95));
-        c.setScale((s * 0.55) / 128);
-        const tx = x + Math.cos(a) * s * 0.75;
-        const ty = y + Math.sin(a) * s * 0.55 - s * 0.7;
-        this.tweens.add({ targets: c, x: tx, y: ty, scale: (s * 1.05) / 128, duration: 360, ease: "Cubic.easeOut" });
-        this.tweens.add({ targets: c, alpha: 0, scale: (s * 1.3) / 128, y: ty - s * 0.4, delay: 360, duration: 520 + Math.random() * 160, ease: "Sine.easeIn", onComplete: () => c.destroy() });
+      // (wisps, taller than wide, like steam off hot food: never round balls sitting on it)
+      const u = s / 128;
+      for (let i = 0; i < 5; i++) {
+        const a = -Math.PI / 2 + ((i - 2) / 2) * 0.9 + (Math.random() - 0.5) * 0.2;
+        const c = this.track(this.add.image(x, y, key).setDepth(D.fx).setTint(tint).setAlpha(0.85));
+        c.setScale(u * 0.3, u * 0.45);
+        const tx = x + Math.cos(a) * s * 0.6;
+        const ty = y + Math.sin(a) * s * 0.4 - s * 0.9;
+        this.tweens.add({ targets: c, x: tx, y: ty, scaleX: u * 0.55, scaleY: u * 1.0, duration: 360, ease: "Cubic.easeOut" });
+        this.tweens.add({ targets: c, alpha: 0, scaleX: u * 0.7, scaleY: u * 1.35, y: ty - s * 0.5, delay: 360, duration: 520 + Math.random() * 160, ease: "Sine.easeIn", onComplete: () => c.destroy() });
       }
     }
     /** The puff's one soft cloud (128 px, made once per game): white at its heart, a faint warm shade, then nothing. */
