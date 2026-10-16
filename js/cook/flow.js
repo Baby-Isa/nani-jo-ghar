@@ -1287,7 +1287,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const p = UI.panel(`
       <h1 class="ph" data-rec>Eid Mubarak!</h1>
       <div class="finale-row">
-        <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
+        <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img src="${Cook.v("assets/cook/characters/nani-happy-v2.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
       </div>
       <div class="patch" title="A new patch for Nani's quilt"></div>
       <div class="btn-row pic-row">${picBtn("fin-menu", "home", "Menu")}${picBtn("fin-shop", "shop", "Nani's shop", "primary")}</div>`);
@@ -1493,7 +1493,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const p = UI.panel(
       `
       <div class="title-wrap">
-        <img src="${Cook.v("assets/cook/characters/nani-happy.webp")}" alt="Nani">
+        <img src="${Cook.v("assets/cook/characters/nani-happy-v2.webp")}" alt="Nani">
         <div>
           <h1 hidden>Cook with Nani</h1>
           <div class="purse">${coinsHtml(Cook.coins(), "total")}</div>

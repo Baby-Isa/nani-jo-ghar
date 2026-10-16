@@ -32,7 +32,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const D = { bg: 0, back: 5, char: 10, occ: 20, item: 30, item2: 32, front: 34, fx: 40, hand: 45, top: 50 };
 
   const CHARS = {
-    nani: { x: 330, top: 150, scale: 0.98 },
+    // s07 (ART-13, ART-10): her lean poses N1-N5, one canvas, drawn 1:1; her forearms' underside at y 613, just under the
+    // occluder's top (611), so they rest on the counter's back edge (s05 audit section 6, way (a): no code change)
+    nani: { x: 330, top: 194, scale: 1 },
     nana: { x: 940, top: 175, scale: 1.25 },
     ma: { x: 940, top: 195, scale: 1.14 },
     cousin: { x: 940, top: 290, scale: 1.02 },
@@ -690,6 +692,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.mood = "neutral";
       this.tweens.add({ targets: img, scaleY: c.scale * 1.012, duration: 1700 + Math.random() * 400, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
       this.chars[who] = img;
+      // ART-19 (s07 N5): Nani blinks now and then while she rests (only the neutral face; a mood or talk is never cut)
+      if (who === "nani" && this.textures.exists("nani-blink")) {
+        const blink = () => {
+          if (!img.active) return;
+          if (img.mood === "neutral" && img.texture.key === "nani-neutral") {
+            img.setTexture("nani-blink");
+            this.time.delayedCall(150, () => img.active && img.texture.key === "nani-blink" && img.setTexture("nani-neutral"));
+          }
+          this.time.delayedCall(3200 + Math.random() * 2600, blink);
+        };
+        this.time.delayedCall(2400, blink);
+      }
       if (enter) {
         img.x = W + 260;
         // (to the spot asked for: the chai tray's other people stand behind their own trays, decision 64)
@@ -714,7 +728,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.mood = mood;
       const key =
         who === "nani"
-          ? { neutral: "nani-neutral", happy: "nani-happy", talk: "nani-talk", point: "nani-point" }[mood] || "nani-neutral"
+          ? { neutral: "nani-neutral", happy: "nani-happy", talk: "nani-talk", point: "nani-point", blink: "nani-blink" }[mood] || "nani-neutral"
           : `${who}-${mood === "talk" ? "happy" : mood}`;
       img.setTexture(key);
     }

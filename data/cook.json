@@ -4355,10 +4355,11 @@
    "shared": {
     "images": {
      "bg-service": "assets/cook/bg/service.jpg",
-     "nani-neutral": "assets/cook/characters/nani-neutral.webp",
-     "nani-talk": "assets/cook/characters/nani-talk.webp",
-     "nani-happy": "assets/cook/characters/nani-happy.webp",
-     "nani-point": "assets/cook/characters/nani-point.webp",
+     "nani-neutral": "assets/cook/characters/nani-neutral-v2.webp",
+     "nani-talk": "assets/cook/characters/nani-talk-v2.webp",
+     "nani-happy": "assets/cook/characters/nani-happy-v2.webp",
+     "nani-point": "assets/cook/characters/nani-point-v2.webp",
+     "nani-blink": "assets/cook/characters/nani-blink-v2.webp",
      "nana-happy": "assets/cook/characters/nana-happy.webp",
      "nana-neutral": "assets/cook/characters/nana-neutral.webp",
      "nana-impatient": "assets/cook/characters/nana-impatient.webp",
