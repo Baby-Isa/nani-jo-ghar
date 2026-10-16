@@ -45,3 +45,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 19:30 S05-D3: final-look fails: CLN-104 second FAIL (surface outside the cup) to Zafar; CLN-26 not reproduced; CLN-126 tool timing; stopped at the cap.
 - 2026-10-13 22:01 UK · Published 20261013T205739Z to main (8559d610); Pages serving it.
 - 2026-10-15 00:20 UK · Published 20261014T231844Z to main (cc2b0e8b); Pages serving it.
+- 16 Oct s07-cook (merged by the orchestrator): K1 kitchen master (CK-44 seam gone, ART-21), Nani N1-N5, DP1, PT1; SK2 and CP1 not wired (redo).
