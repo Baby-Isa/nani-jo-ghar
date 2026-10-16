@@ -94,7 +94,7 @@ const rowsFor = (opt, list, seq) => {
   if (opt === 'C') return `<div class="rows${seq ? ' seq' : ''}">${list.map(x => `<div class="row${x.done ? ' done' : ''}"><img class="pic" src="${x.pic}" alt=""><span class="word">${x.w}</span>${slot(x.done)}</div>`).join('')}</div>`;
   return `<div class="rows${seq ? ' seq' : ''}">${list.map(x => `<div class="row${x.done ? ' done' : ''}">${slot(x.done)}<span class="word">${x.w}</span></div>`).join('')}</div>`;
 };
-const guide = `<div class="guide"><img class="face" src="${F('nani-talk')}" alt=""><div class="say" style="font-style:italic;color:#8a7667;font-weight:600">Nani's instruction (to record)</div><span class="icon"><img src="${BULB}" alt=""></span><span class="icon">🔊</span></div>`;
+const guide = `<div class="guide"><img class="face" src="${F('nani-face-talk')}" alt=""><div class="say" style="font-style:italic;color:#8a7667;font-weight:600">Nani's instruction (to record)</div><span class="icon"><img src="${BULB}" alt=""></span><span class="icon">🔊</span></div>`;
 const opts = [['A','Tick rows','a slot on the left fills with a gold tick'],['B','Chips','each word is a chip that turns gold'],['C','Picture rows','picture, word, tick slot']];
 document.getElementById('cols').innerHTML = opts.map(([k, name, sub]) => `
   <div class="col ${k}">
