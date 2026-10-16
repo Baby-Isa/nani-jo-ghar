@@ -42,7 +42,7 @@
    "names": ["neutral", "talk", "happy", "calm", null, "blink", "surprised", "think", "frown", null, null, null],
    "size": 280,
    "badge": { "side": 1.0, "top_pad": 0.02 },
-   "face": { "side": 1.6, "dy": -0.03 },
+   "face": { "side": 1.48, "dy": 0.0 },
    "only": { "badge": ["neutral"], "face": ["neutral", "talk", "happy", "blink", "frown"] },
    "out": { "badge": "cook/characters/nani-badge.webp", "face": "cook/characters/nani-face-<name>.webp" },
    "rename": { "face:neutral": "cook/characters/nani-face.webp" }
