@@ -991,7 +991,7 @@
   "weber": 0.12
  },
  "items": {
-  "_about": "The tray nouns (P4, P10): what rides the pharmacy belt and fills the tray. `kutchi` only where the family word exists (paani, limu, loon, khun, dudh from data/cook.json); everything else is an English placeholder. `glyph` is the greybox picture until data/clinic/rough-art.json names a sprite. `group` is the look-alike group (the belt draws a decoy from the same group only from level 2). Healing games may use ids not listed here: the kit then shows the id as English. `same` names the item an id stands for (the healing games use Cook's ids for the real food words and care-/tool- ids): the belt, the tray and the review show it as that item; `sprite` names its rough-art sprite.",
+  "_about": "The tray nouns (P4, P10): what rides the pharmacy belt and fills the tray. `kutchi` only where the family word exists (paani, limu, loon, khun, dudh from data/cook.json); everything else is an English placeholder. `glyph` is the greybox picture until data/clinic/rough-art.json names a sprite. `group` is the look-alike group (the belt draws a decoy from the same group only from level 2). Healing games may use ids not listed here: the kit then shows the id as English. `same` names the item an id stands for (the healing games use Cook's ids for the real food words and care-/tool- ids): the belt, the tray and the review show it as that item; `sprite` names its rough-art sprite. s07-clinic-b: `img` is the item's belt picture from the s07 belt sheets (one camera, its base flush with the picture's bottom; data/clinic/sheets.json), `imgs` its own-colour pictures (Kit.icon draws them with no CSS tint).",
   "paani": {
    "glyph": "🫗",
    "group": "liquid"
@@ -1005,10 +1005,14 @@
    "group": "plaster"
   },
   "bandage": {
+   "img": "assets/clinic/sheets/bandage/bandage-red-belt.webp",
+   "imgs": {"red": "assets/clinic/sheets/bandage/bandage-red-belt.webp", "blue": "assets/clinic/sheets/bandage/bandage-blue-belt.webp", "green": "assets/clinic/sheets/bandage/bandage-green-belt.webp", "yellow": "assets/clinic/sheets/bandage/bandage-yellow-belt.webp"},
    "glyph": "🧻",
    "group": "plaster"
   },
   "thread": {
+   "img": "assets/clinic/sheets/thread/thread-blue-belt.webp",
+   "imgs": {"red": "assets/clinic/sheets/thread/thread-red-belt.webp", "blue": "assets/clinic/sheets/thread/thread-blue-belt.webp", "green": "assets/clinic/sheets/thread/thread-green-belt.webp"},
    "glyph": "🧵",
    "group": "thread"
   },
@@ -1017,6 +1021,7 @@
    "group": "thread"
   },
   "hammer": {
+   "img": "assets/clinic/sheets/hammer/hammer-belt.webp",
    "glyph": "🔨",
    "group": "tool"
   },
@@ -1029,10 +1034,12 @@
    "group": "plaster"
   },
   "crutches": {
+   "img": "assets/clinic/sheets/decoys/crutches-belt.webp",
    "glyph": "🩼",
    "group": "tool"
   },
   "torch": {
+   "img": "assets/clinic/sheets/decoys/torch-belt.webp",
    "glyph": "🔦",
    "group": "tool"
   },
@@ -1049,10 +1056,13 @@
    "group": "cotton"
   },
   "drops": {
+   "img": "assets/clinic/sheets/drops/drops-green-belt.webp",
+   "imgs": {"red": "assets/clinic/sheets/drops/drops-red-belt.webp", "blue": "assets/clinic/sheets/drops/drops-blue-belt.webp", "green": "assets/clinic/sheets/drops/drops-green-belt.webp", "yellow": "assets/clinic/sheets/drops/drops-yellow-belt.webp"},
    "glyph": "💧",
    "group": "bottle"
   },
   "bottle": {
+   "img": "assets/clinic/sheets/decoys/hot-water-bottle-belt.webp",
    "glyph": "🧴",
    "group": "bottle"
   },
@@ -1065,14 +1075,17 @@
    "group": "brush"
   },
   "drill": {
+   "img": "assets/clinic/sheets/drill/drill-belt.webp",
    "glyph": "🔩",
    "group": "tool"
   },
   "paste": {
+   "img": "assets/clinic/sheets/paste/paste-belt.webp",
    "glyph": "🦷",
    "group": "bottle"
   },
   "limu": {
+   "img": "assets/clinic/sheets/taste/lemon-belt.webp",
    "glyph": "🍋",
    "group": "dropper"
   },
@@ -1085,10 +1098,12 @@
    "group": "dropper"
   },
   "dudh": {
+   "img": "assets/clinic/sheets/taste/milk-jug-belt.webp",
    "glyph": "🥛",
    "group": "liquid"
   },
   "cup": {
+   "img": "assets/clinic/sheets/decoys/tumbler-belt.webp",
    "glyph": "🥤",
    "group": "liquid"
   },
@@ -1097,6 +1112,7 @@
    "group": "tool"
   },
   "blanket": {
+   "img": "assets/clinic/sheets/decoys/blanket-belt.webp",
    "glyph": "🛏️",
    "group": "cloth"
   },
@@ -1117,6 +1133,7 @@
    "group": "tool"
   },
   "patch": {
+   "img": "assets/clinic/sheets/patch/patch-belt.webp",
    "glyph": "🏴‍☠️",
    "group": "plaster"
   },
@@ -1125,18 +1142,22 @@
    "group": "liquid"
   },
   "spoon": {
+   "img": "assets/clinic/sheets/taste/spoon-belt.webp",
    "glyph": "🥄",
    "group": "tool"
   },
   "honey": {
+   "img": "assets/clinic/sheets/taste/honey-jar-belt.webp",
    "glyph": "🍯",
    "group": "bottle"
   },
   "tissue": {
+   "img": "assets/clinic/sheets/decoys/tissue-belt.webp",
    "glyph": "🤧",
    "group": "cloth"
   },
   "stethoscope": {
+   "img": "assets/clinic/sheets/decoys/stethoscope-belt.webp",
    "glyph": "🩺",
    "group": "tool"
   },

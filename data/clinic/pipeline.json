@@ -86,7 +86,7 @@
       "firstBelt": 5,
       "coloured": { "bandage": ["red", "blue", "green", "yellow"], "thread": ["red", "blue", "green"], "cast": ["blue", "pink", "white"], "plaster": ["red", "blue", "green"], "drops": ["red", "blue", "green", "yellow"] },
       "countable": ["cotton", "plaster", "care-plaster", "fru-02", "spi-16", "cook-khun", "cotton-bud", "blanket"],
-      "decoys": ["paani", "cloth", "plaster", "bandage", "thread", "hammer", "torch", "tweezers", "cotton-bud", "cotton", "drops", "bottle", "toothbrush", "comb", "fan", "blanket", "apple", "spoon", "cup", "honey", "tissue", "stethoscope", "thermometer", "crutches"]
+      "decoys": ["paani", "cloth", "plaster", "bandage", "thread", "hammer", "torch", "tweezers", "cotton-bud", "cotton", "drops", "bottle", "toothbrush", "fan", "blanket", "apple", "spoon", "cup", "honey", "tissue", "stethoscope", "thermometer", "crutches"]
     },
     "sendoff": {
       "_about": "P6 + Q3, rebuilt for clinic v2 (docs/game-design/modes/clinic.md E; CQ6): on CB5, the patient at the half-open front door, the doctor beside them. E1 (level 1): the patient's round face circle shows the feeling; pick the matching card of four (happy, sad, hot, cold). E2 (level 2): the patient SAYS it, no picture; pick the card; then the goodbye the doctor cues, in the scene (E2 and E3 merged: E3 names E2). Level 3: the feeling shows and the child picks WHAT HELPS (cold: the blanket, hot: the fan, sad: the apple); E4 (level 3): the child asks first ([How do you feel?]); the first time the doctor cues it (never Nani: CLN-05, CLN-117) and the question card shows the patient's face with a '?'. Not happy at levels 1-2: one more thing (in the scene), then it ends happy.",
@@ -120,8 +120,8 @@
 
   "items": {
     "_about": "Clinic v2 overrides on data/clinic.json's items (P.prepare merges them over it). The ids stay (the heal games' tray contracts); what changes is the picture (`standin`: a flat stand-in drawn by js/clinic/kit.js until the art) and the word. CLN-66 (2 Oct): no lollipop anywhere: every list here names the apple (its own id, with the v2 apple art); the old lollipop id still draws the apple, for any data that still names it; paste -> the filling as a tube (P4); torch -> a torch that looks like one (D5).",
-    "apple": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "treat", "img": "assets/clinic/items-v2/apple.webp", "standin": "apple" },
-    "lollipop": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "treat", "img": "assets/clinic/items-v2/apple.webp", "standin": "apple" },
+    "apple": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "treat", "img": "assets/clinic/sheets/decoys/apple-belt.webp", "standin": "apple" },
+    "lollipop": { "kutchi": null, "english": "apple", "glyph": "🍎", "placeholder": true, "group": "treat", "img": "assets/clinic/sheets/decoys/apple-belt.webp", "standin": "apple" },
     "sticker": { "kutchi": null, "english": "sticker", "glyph": "⭐", "placeholder": true, "group": "treat" },
     "paste": { "kutchi": null, "english": "filling", "glyph": "🦷", "placeholder": true, "group": "bottle", "standin": "tube" },
     "torch": { "kutchi": null, "english": "torch", "glyph": "🔦", "placeholder": true, "group": "tool", "standin": "torch" }

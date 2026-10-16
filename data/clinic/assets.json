@@ -4,6 +4,8 @@
   "assets/ui/**",
   "assets/clinic/rooms/*",
   "assets/clinic/patients/**",
-  "assets/clinic/rough/**"
- ]
+  "assets/clinic/rough/**",
+  "assets/clinic/sheets/*/*-belt.webp"
+ ],
+ "_belt": "s07-clinic-b: every item's belt view (the s07 belt sheets, data/clinic.json items img/imgs) is shared: Kit.icon draws it on the belt, in the tray and in a game's tool tray, whichever patient is in"
 }

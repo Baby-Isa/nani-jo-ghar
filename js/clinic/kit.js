@@ -335,12 +335,20 @@
     const info = Kit.itemInfo(item);
     const d = h("div", `cl-item ${cls || ""}`, parent);
     d.dataset.item = info.id;
-    // an item whose data names its own picture (`img`, a path: the clinic v2 item art, e.g. the apple) draws it
-    if (info.img && !info.colour) {
+    // an item whose data names its own picture (`img`, a path: the clinic v2 item art, e.g. the apple) draws it;
+    // s07-clinic-b: a coloured one draws its own-colour picture (`imgs[colour]`, the s07 belt sheets), so the CSS tint
+    // (.cl-item[data-colour]:not(.own-colour)) never applies to it
+    const own = info.colour && info.imgs && info.imgs[info.colour];
+    if (own || (info.img && !info.colour)) {
+      if (own) {
+        d.classList.add("own-colour");
+        d.dataset.colour = info.colour;
+        d.style.setProperty("--tint", Kit.COLOURS[info.colour] || info.colour);
+      }
       const img = h("img", "cl-item-img", d);
       img.alt = "";
       img.draggable = false;
-      img.src = Kit.url(info.img);
+      img.src = Kit.url(own || info.img);
       return d;
     }
     if (info.standin && Kit.STANDIN[info.standin]) {

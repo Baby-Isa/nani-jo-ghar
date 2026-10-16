@@ -97,12 +97,27 @@
       let sinceSpawn = everyMs; // the first one enters at once
       let raf = 0;
       let dead = false;
+      // s07-clinic-b: a long, thin thing lying on the belt (the hammer, the spoon, the torch) gets a wider dish, so it
+      // isn't shrunk to fit the square one: at most 1.6 items wide, its height still the item's (the gap to the next
+      // dish stays clear at every level: level 3 enters one a second)
+      const widen = (d) => {
+        if (!box) return;
+        const img = d.querySelector(".cl-item-img");
+        if (!img) return;
+        const fit = () => {
+          const a = img.naturalWidth / Math.max(1, img.naturalHeight);
+          if (a > 1.8) d.style.width = `calc(var(--item, 96px) * ${Math.min(1.6, a * 0.5).toFixed(2)})`;
+        };
+        if (img.complete && img.naturalWidth) fit();
+        else img.addEventListener("load", fit, { once: true });
+      };
       const spawn = () => {
         const it = plan.loop[li++ % plan.loop.length];
         const d = h("button", "cl-belt-dish", track);
         d.type = "button";
         d.dataset.key = PL().beltKey(it);
         Kit.icon({ id: it.id, colour: it.colour }, d);
+        widen(d);
         const o = { el: d, it, born: tBelt };
         live.add(o);
         d.addEventListener("pointerdown", (e) => {

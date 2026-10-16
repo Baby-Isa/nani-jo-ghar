@@ -1,6 +1,12 @@
 {
- "_about": "S02-E (decision 65): the clinic's items as sprite sheets (pack s02, build/tools/art/specs/s02.cut.json; E1-E17), one picture per view: views[item][view] -> file (belt: the pharmacy's belt, front and a little above; tray: top-down; tool: the heal games' tool column; use, use-down, ...: the working angle; the rest are spares). remap: an old single-view picture -> the sheet view that replaces it wherever the clinic draws it (Clinic.Kit.url, installed by js/clinic/main.js); the old files stay. The two-colour plasters are the s03 redo (split lengthwise, build/gen_s03.py S3; S03-D). Not remapped: the ceiling fan (R2 stays).",
+ "_about": "S02-E (decision 65): the clinic's items as sprite sheets (pack s02, build/tools/art/specs/s02.cut.json; E1-E17), one picture per view: views[item][view] -> file (belt: the pharmacy's belt, front and a little above; tray: top-down; tool: the heal games' tool column; use, use-down, ...: the working angle; the rest are spares). remap: an old single-view picture -> the sheet view that replaces it wherever the clinic draws it (Clinic.Kit.url, installed by js/clinic/main.js); the old files stay. The two-colour plasters are the s03 redo (split lengthwise, build/gen_s03.py S3; S03-D). Not remapped: the ceiling fan (R2 stays). s07-clinic-b: the s07 belt sheets (B1-B10, cut by component by build/reports/s07-clinic-b.beltcut.py, shadow-free, the base flush with the bottom): views named <item>[-<colour>]-<view>; data/clinic.json items name their belt view (`img`) and own-colour views (`imgs`); the tray views and spares are not wired yet; plaster-level holds B1's top-down plasters (tray views only: B1 failed the belt camera).",
  "views": {
+  "bandage": {
+   "bandage-blue-belt": "assets/clinic/sheets/bandage/bandage-blue-belt.webp",
+   "bandage-green-belt": "assets/clinic/sheets/bandage/bandage-green-belt.webp",
+   "bandage-red-belt": "assets/clinic/sheets/bandage/bandage-red-belt.webp",
+   "bandage-yellow-belt": "assets/clinic/sheets/bandage/bandage-yellow-belt.webp"
+  },
   "bin": {
    "front": "assets/clinic/sheets/bin/bin-front.webp",
    "kidney-3q": "assets/clinic/sheets/bin/bin-kidney-3q.webp",
@@ -39,6 +45,16 @@
    "tool": "assets/clinic/sheets/cloth/cloth-tool.webp",
    "tray": "assets/clinic/sheets/cloth/cloth-tray.webp"
   },
+  "decoys": {
+   "apple-belt": "assets/clinic/sheets/decoys/apple-belt.webp",
+   "blanket-belt": "assets/clinic/sheets/decoys/blanket-belt.webp",
+   "crutches-belt": "assets/clinic/sheets/decoys/crutches-belt.webp",
+   "hot-water-bottle-belt": "assets/clinic/sheets/decoys/hot-water-bottle-belt.webp",
+   "stethoscope-belt": "assets/clinic/sheets/decoys/stethoscope-belt.webp",
+   "tissue-belt": "assets/clinic/sheets/decoys/tissue-belt.webp",
+   "torch-belt": "assets/clinic/sheets/decoys/torch-belt.webp",
+   "tumbler-belt": "assets/clinic/sheets/decoys/tumbler-belt.webp"
+  },
   "desk-fan": {
    "back": "assets/clinic/sheets/desk-fan/desk-fan-back.webp",
    "belt": "assets/clinic/sheets/desk-fan/desk-fan-belt.webp",
@@ -48,6 +64,10 @@
    "top": "assets/clinic/sheets/desk-fan/desk-fan-top.webp",
    "use-3q": "assets/clinic/sheets/desk-fan/desk-fan-use-3q.webp",
    "use": "assets/clinic/sheets/desk-fan/desk-fan-use.webp"
+  },
+  "drill": {
+   "drill-belt": "assets/clinic/sheets/drill/drill-belt.webp",
+   "drill-tool": "assets/clinic/sheets/drill/drill-tool.webp"
   },
   "drop-bottle": {
    "belt": "assets/clinic/sheets/drop-bottle/drop-bottle-belt.webp",
@@ -59,6 +79,16 @@
    "use-down": "assets/clinic/sheets/drop-bottle/drop-bottle-use-down.webp",
    "use": "assets/clinic/sheets/drop-bottle/drop-bottle-use.webp"
   },
+  "drops": {
+   "drops-blue-belt": "assets/clinic/sheets/drops/drops-blue-belt.webp",
+   "drops-blue-tray": "assets/clinic/sheets/drops/drops-blue-tray.webp",
+   "drops-green-belt": "assets/clinic/sheets/drops/drops-green-belt.webp",
+   "drops-green-tray": "assets/clinic/sheets/drops/drops-green-tray.webp",
+   "drops-red-belt": "assets/clinic/sheets/drops/drops-red-belt.webp",
+   "drops-red-tray": "assets/clinic/sheets/drops/drops-red-tray.webp",
+   "drops-yellow-belt": "assets/clinic/sheets/drops/drops-yellow-belt.webp",
+   "drops-yellow-tray": "assets/clinic/sheets/drops/drops-yellow-tray.webp"
+  },
   "ear-bits": {
    "bud-wax": "assets/clinic/sheets/ear-bits/ear-bits-bud-wax.webp",
    "seed": "assets/clinic/sheets/ear-bits/ear-bits-seed.webp",
@@ -66,6 +96,10 @@
    "wax-drop": "assets/clinic/sheets/ear-bits/ear-bits-wax-drop.webp",
    "wax-mid": "assets/clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
    "wax-small": "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp"
+  },
+  "hammer": {
+   "hammer-belt": "assets/clinic/sheets/hammer/hammer-belt.webp",
+   "hammer-tool": "assets/clinic/sheets/hammer/hammer-tool.webp"
   },
   "hand-fan": {
    "room": "assets/clinic/sheets/hand-fan/hand-fan-room.webp",
@@ -108,6 +142,25 @@
    "warm-pour": "assets/clinic/sheets/jug/jug-warm-pour.webp",
    "warm-tray": "assets/clinic/sheets/jug/jug-warm-tray.webp"
   },
+  "paste": {
+   "paste-belt": "assets/clinic/sheets/paste/paste-belt.webp",
+   "paste-fill": "assets/clinic/sheets/paste/paste-fill.webp",
+   "paste-tool": "assets/clinic/sheets/paste/paste-tool.webp"
+  },
+  "patch": {
+   "patch-belt": "assets/clinic/sheets/patch/patch-belt.webp",
+   "patch-use": "assets/clinic/sheets/patch/patch-use.webp"
+  },
+  "plaster": {
+   "belt": "assets/clinic/sheets/plaster/plaster-belt.webp",
+   "forearm": "assets/clinic/sheets/plaster/plaster-forearm.webp",
+   "knee": "assets/clinic/sheets/plaster/plaster-knee.webp",
+   "peel": "assets/clinic/sheets/plaster/plaster-peel.webp",
+   "side": "assets/clinic/sheets/plaster/plaster-side.webp",
+   "tool": "assets/clinic/sheets/plaster/plaster-tool.webp",
+   "tray": "assets/clinic/sheets/plaster/plaster-tray.webp",
+   "upperarm": "assets/clinic/sheets/plaster/plaster-upperarm.webp"
+  },
   "plaster-flat": {
    "blue-green": "assets/clinic/sheets/plaster-flat/plaster-flat-blue-green.webp",
    "blue": "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
@@ -121,15 +174,12 @@
    "yellow-green": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow-green.webp",
    "yellow": "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp"
   },
-  "plaster": {
-   "belt": "assets/clinic/sheets/plaster/plaster-belt.webp",
-   "forearm": "assets/clinic/sheets/plaster/plaster-forearm.webp",
-   "knee": "assets/clinic/sheets/plaster/plaster-knee.webp",
-   "peel": "assets/clinic/sheets/plaster/plaster-peel.webp",
-   "side": "assets/clinic/sheets/plaster/plaster-side.webp",
-   "tool": "assets/clinic/sheets/plaster/plaster-tool.webp",
-   "tray": "assets/clinic/sheets/plaster/plaster-tray.webp",
-   "upperarm": "assets/clinic/sheets/plaster/plaster-upperarm.webp"
+  "plaster-level": {
+   "plaster-blue-tray": "assets/clinic/sheets/plaster-level/plaster-blue-tray.webp",
+   "plaster-green-tray": "assets/clinic/sheets/plaster-level/plaster-green-tray.webp",
+   "plaster-red-tray": "assets/clinic/sheets/plaster-level/plaster-red-tray.webp",
+   "plaster-skin-tray": "assets/clinic/sheets/plaster-level/plaster-skin-tray.webp",
+   "plaster-yellow-tray": "assets/clinic/sheets/plaster-level/plaster-yellow-tray.webp"
   },
   "syringe": {
    "belt": "assets/clinic/sheets/syringe/syringe-belt.webp",
@@ -141,6 +191,16 @@
    "upright": "assets/clinic/sheets/syringe/syringe-upright.webp",
    "use": "assets/clinic/sheets/syringe/syringe-use.webp"
   },
+  "taste": {
+   "honey-jar-belt": "assets/clinic/sheets/taste/honey-jar-belt.webp",
+   "honey-jar-tray": "assets/clinic/sheets/taste/honey-jar-tray.webp",
+   "lemon-belt": "assets/clinic/sheets/taste/lemon-belt.webp",
+   "lemon-tray": "assets/clinic/sheets/taste/lemon-tray.webp",
+   "milk-jug-belt": "assets/clinic/sheets/taste/milk-jug-belt.webp",
+   "milk-jug-tray": "assets/clinic/sheets/taste/milk-jug-tray.webp",
+   "spoon-belt": "assets/clinic/sheets/taste/spoon-belt.webp",
+   "spoon-tray": "assets/clinic/sheets/taste/spoon-tray.webp"
+  },
   "thermometer": {
    "arm": "assets/clinic/sheets/thermometer/thermometer-arm.webp",
    "belt": "assets/clinic/sheets/thermometer/thermometer-belt.webp",
@@ -150,6 +210,16 @@
    "tray": "assets/clinic/sheets/thermometer/thermometer-tray.webp",
    "use-down": "assets/clinic/sheets/thermometer/thermometer-use-down.webp",
    "use": "assets/clinic/sheets/thermometer/thermometer-use.webp"
+  },
+  "thread": {
+   "thread-blue-belt": "assets/clinic/sheets/thread/thread-blue-belt.webp",
+   "thread-blue-tray": "assets/clinic/sheets/thread/thread-blue-tray.webp",
+   "thread-green-belt": "assets/clinic/sheets/thread/thread-green-belt.webp",
+   "thread-green-tray": "assets/clinic/sheets/thread/thread-green-tray.webp",
+   "thread-loose": "assets/clinic/sheets/thread/thread-loose.webp",
+   "thread-red-belt": "assets/clinic/sheets/thread/thread-red-belt.webp",
+   "thread-red-side": "assets/clinic/sheets/thread/thread-red-side.webp",
+   "thread-red-tray": "assets/clinic/sheets/thread/thread-red-tray.webp"
   },
   "toothbrush": {
    "belt": "assets/clinic/sheets/toothbrush/toothbrush-belt.webp",
