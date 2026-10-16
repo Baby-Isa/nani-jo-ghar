@@ -41,6 +41,7 @@
   --njg-lip: 0 4px 0 var(--njg-cream-lip), 0 8px 18px rgba(70, 45, 20, 0.22);
   --njg-lip-down: 0 1px 0 var(--njg-cream-lip), 0 4px 10px rgba(70, 45, 20, 0.2);
   --njg-glow-gold: 0 0 0 8px rgba(217, 164, 65, 0.35);
+  --njg-contact: rgba(0, 0, 0, 0.18); /* a figure's contact shadow under each foot (the clinic; s08-placement-judge) */
   --njg-font: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
   --njg-round: 999px;         /* the full circle / pill radius (CDS 2: 12 or full) */
 

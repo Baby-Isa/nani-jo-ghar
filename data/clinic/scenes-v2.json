@@ -27,7 +27,7 @@
     "child": 0.8,
     "tall": 1.12,
     "short": 0.84,
-    "doctor": { "x": 0.805, "y": 0.755, "h": 0.57, "_about": "s07-clinic-a (CLN-115, Zafar 15 Oct: standing and waving, not coming out from the door): the real doctor stands in front of his open door, face-on (DD1); y = his feet line just in front of the threshold (0.70), h = his height (the door is about 0.66 of the room)" },
+    "doctor": { "x": 0.795, "y": 0.755, "h": 0.57, "_about": "s07-clinic-a (CLN-115, Zafar 15 Oct: standing and waving, not coming out from the door): the real doctor stands in front of his open door, face-on (DD1); y = his feet line just in front of the threshold (0.70), h = his height (the door is about 0.66 of the room). s08-placement-judge: x 0.805 -> 0.795, so his right shoe clears the desk's corner, still in his doorway" },
     "exit": { "x": 0.815, "y": 0.7 }
   },
   "exam": {
@@ -37,14 +37,14 @@
     "floor": 0.8,
     "door": [0.054, 0.742],
     "side": { "_about": "A1 (5 Oct), the art plan section 3.1 W7: side-on, the patient sits on the bed's right-hand end in profile, facing right (the knee, ear and eye test B zooms); x = the seat anchor across, seat = the mattress top it sits on.", "x": 0.7, "seat": 0.535 },
-    "doctor": { "x": 0.79, "y": 0.8, "h": 0.71 },
+    "doctor": { "x": 0.845, "y": 0.83, "h": 0.7, "_about": "s08-placement-judge (CLN-155, Zafar 16 Oct: his shoe butts against the bed's leg; \"the middle or the front of the stool\"): his feet on the stool's front-leg line (0.83, 0.03 in front of her bed line `floor`), his shoes 0.02 clear of the bed's right front leg and his right side clear of the door frame; h 0.70 = 0.95 of a 1.75 m man there by the door (0.737), his crown 0.13" },
     "certificate": { "src": null, "x": 0.68, "y": 0.215, "w": 0.125, "h": 0.14, "_about": "CLN-116 (CB2b review, 29 Sept): the real doctor's certificate on the right wall, a photo Zafar supplies (src: then a framed picture); a grey frame flagged in the markup until then. x = the frame's centre, y = its bottom, w and h = its size, as shares of the room (1536 x 1024): above the doctor's head (doctor), clear of the door and of the fever room's wall thermometer (x 0.76-0.84)" }
   },
   "stand": {
     "_about": "CB3b: the patient stands on the floor in front of the plain wall between the anatomy poster and the height chart; the doctor to the right. CLN-154 (Zafar, 16 Oct: he read nearer the camera than her): one feet line (fig.bottom = doctor.y) and fig.body = her standing art's height (head to feet) as a share of the room, so he is about 1.45x her (0.85 / 0.59 = 1.44) and her crown is at his chest, as at the door; fig.h is only her box. s08-doctor-stitch (Zafar, 16 Oct: \"a tad further back into the room and smaller\"): the feet line goes back up the floor from 0.91 to 0.80, him 0.85 -> 0.73 (1.75 m by the door on the right wall, `door`), her 0.59 -> 0.505 (1.45x); fig.tapBody 0.59 = the body her tap areas are kept at (today's, CLN-93, CLN-09: partAt pads them by tapBody / body), so drawn smaller her hit zones never shrink (the plane static check holds it).",
-    "fig": { "x": 0.5, "bottom": 0.8, "h": 0.55, "body": 0.505, "tapBody": 0.59 },
+    "fig": { "x": 0.5, "bottom": 0.825, "h": 0.55, "body": 0.535, "tapBody": 0.59, "_about": "s08-placement-judge (CLN-156, Zafar 16 Oct: bring her forward a touch and a little bigger): her feet 0.025 in front of his (0.825), drawn 1.06x (0.535: the same child one step nearer by the room's perspective); tapBody 0.59 kept" },
     "door": [0.047, 0.728],
-    "phone": { "fig": { "bottom": 0.84, "h": 0.63 }, "doctor": { "y": 0.84 }, "_about": "S03 (CLN-94): on a short screen (under 480 px) their feet are lower, on one line, so the room's cropped top (0.06) keeps his crown (0.11). Their sizes stay the desktop's, and her tap areas the size they were before s08 (tapBody 0.59: her art's 1x size or more, CLN-93, CLN-09; the static check holds it)" },
+    "phone": { "fig": { "bottom": 0.865, "h": 0.63 }, "doctor": { "y": 0.84 }, "_about": "S03 (CLN-94): on a short screen (under 480 px) their feet are lower, on one line, so the room's cropped top (0.06) keeps his crown (0.11). Their sizes stay the desktop's, and her tap areas the size they were before s08 (tapBody 0.59: her art's 1x size or more, CLN-93, CLN-09; the static check holds it)" },
     "doctor": { "x": 0.72, "y": 0.8, "h": 0.73 }
   },
   "pharmacy": {

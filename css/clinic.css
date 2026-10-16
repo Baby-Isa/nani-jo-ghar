@@ -546,6 +546,9 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .cl-fig .fig-art { position: absolute; z-index: -1; }
 .cl-fig.has-art { isolation: isolate; }
 .cl-fig .fig-art-in { position: absolute; inset: 0; }
+/* s08-placement-judge: the contact shadow under each foot, his and hers (Kit.contactShadows): soft, black at 0.18 */
+.cl-shadow { position: absolute; display: block; pointer-events: none; overflow: visible; }
+.cl-shadow ellipse { fill: var(--njg-contact); }
 .cl-fig .fig-art img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; user-select: none; }
 .cl-fig .fig-art img[hidden] { display: none; }
 .cl-fig .fig-art-swirl { position: absolute; width: 14%; aspect-ratio: 1; transform: translate(-50%, -50%); }

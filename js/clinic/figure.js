@@ -464,6 +464,9 @@
         const lifeImg = life ? img(life.blink || life.talk, "fig-art-life") : null;
         if (lifeImg) lifeImg.hidden = true;
         root.appendChild(box);
+        // s08-placement-judge: her contact shadows, one soft ellipse under each foot (Kit.contactShadows, as the doctor's)
+        const KitS = global.Clinic && global.Clinic.Kit;
+        if (KitS && KitS.contactShadows) KitS.contactShadows(box, view === "side" ? V.file : V.front, V.w / V.h);
         root.classList.add("has-art");
         fig.artEl = inner;
         fig.artBox = box;
@@ -580,6 +583,8 @@
         const two = String(src).replace(/\.webp$/, "@2x.webp");
         A.base.src = Kit && Kit.url ? Kit.url(two) : two;
         A.body = name;
+        // the shadows follow the picture: the bare front's feet; the blanket and the bottle (in bed) have none measured
+        if (Kit && Kit.contactShadows && fig.artBox) Kit.contactShadows(fig.artBox, src, A.V.w / A.V.h);
         fig.artMood(mood);
         return true;
       },

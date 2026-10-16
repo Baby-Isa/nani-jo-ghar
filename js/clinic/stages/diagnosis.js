@@ -2,7 +2,8 @@
  * Stage 2, diagnosis: "Where does it hurt?" (docs/archive/clinic/clinic-design-v1.md P3,
  * Q3, Q5; clinic v2: docs/game-design/modes/clinic.md D). The patient
  * faces us, sitting on the bed's edge with legs dangling (CB2b), or standing
- * by the wall for the check-up (CB3b); a stand-in doctor to the right, turned 3/4.
+ * by the wall for the check-up (CB3b); the doctor to the right, turned 3/4 to her (CLN-157: he faces whoever he
+ * speaks to, and her between lines; front only for a line to the player: the card, a tool's cue, the ailment).
  *   D1  level 1 (taught): 3 parts pulse; tap one; the doctor asks
  *       [Does it hurt here?]; the patient says haa / na (G9); on haa the swirl,
  *       [My knee], and the Found it button lights.
@@ -52,19 +53,28 @@
       const phone = standing && cfg.phone && (global.innerHeight || 999) < 480;
       const figCfg = phone ? Object.assign({}, cfg.fig, cfg.phone.fig) : cfg.fig;
       const docCfg = phone && cfg.doctor ? Object.assign({}, cfg.doctor, cfg.phone.doctor) : cfg.doctor;
+      let docEl = null;
       if (box && cfg.fig) {
         // the figure's box on the bed's edge (or the floor), in shares of the picture
         layer.classList.add("v2");
         S.place(layer, { x: figCfg.x, y: figCfg.bottom, h: figCfg.h, w: figCfg.h * (620 / 900) / 1.5, z: 3 });
         if (docCfg) {
           // CLN-150: the real doctor (S.doctor: his own views on one feet line; his bubbles from his head)
-          const docEl = S.doctor(box, docCfg, "cl-doc-stand", "talk-left");
-          // UX 16 (the staging hook): the doctor is turned three-quarter to the patient while they talk;
-          // on the child's turn (the card is up, a moment later) he turns to the player
+          docEl = S.doctor(box, docCfg, "cl-doc-stand", "talk-left");
+          // CLN-157 (s08-placement-judge; Zafar 16 Oct: "now we have them, we should take advantage"): he examines her, so he
+          // stands three-quarter to her (3q-left) between lines; the "your turn" cue is the card and the pulsing parts
           S.pose(docEl, "talk", { facing: "left" });
-          setTimeout(() => docEl.isConnected && S.pose(docEl, "front"), Kit.fast ? 50 : 1200);
         }
       }
+      // his line to the player (the card's read-out, a tool's cue, the ailment): he turns to the front for it, then back to her
+      const toPlayer = async (say) => {
+        if (docEl) S.pose(docEl, "front");
+        try {
+          return await say();
+        } finally {
+          if (docEl && docEl.isConnected) S.pose(docEl, "talk", { facing: "left" });
+        }
+      };
       const fig = env.fig;
       layer.appendChild(fig.el);
       fig.pose(standing ? "stand" : "sit");
@@ -130,9 +140,9 @@
       const tapPart = (e, active, prefer) => (e.target.closest && e.target.closest(".cl-mag, .cl-kit") ? null : fig.partAt(e.clientX, e.clientY, { active: active || levelParts, closeup: zoom.on, prefer: prefer || plan.part }));
       const partW = (p) => PL().partWord(data, p);
 
-      if (plan.variant === "D1" || plan.variant === "D1b") await d1(env, plan, res, { stage, top, fig, at });
-      else if (plan.variant === "D2") await d2(env, plan, res, { stage, fig, tapPart, partW });
-      else await d3(env, plan, res, { stage, top, fig, at, tapPart });
+      if (plan.variant === "D1" || plan.variant === "D1b") await d1(env, plan, res, { stage, top, fig, at, toPlayer });
+      else if (plan.variant === "D2") await d2(env, plan, res, { stage, fig, tapPart, partW, toPlayer });
+      else await d3(env, plan, res, { stage, top, fig, at, tapPart, toPlayer });
 
       // the doctor names the ailment and says the prescription (the seam into the pharmacy)
       S.current = null;
@@ -141,7 +151,7 @@
       // decision 52 (D2, CLN-83): the outcome is clear, so no "To the counter" click: the doctor names it and it moves on
       // CLN-136 (S05-D3): her sore face here (HURT: GS1's, both eyes open; the old one eye screwed shut read as a wink)
       fig.react(HURT, 0);
-      await S.say(plan.name, "doctor");
+      await toPlayer(() => S.say(plan.name, "doctor"));
       await Kit.wait(Kit.fast ? 60 : 900);
       // S02-F (C open item): the end screen comes up over this room, and a stage played alone hands its patient
       // back (fig.destroy) first: a still copy of her stays in her place, so the room behind is never empty
@@ -156,12 +166,12 @@
     },
   };
 
-  async function d1(env, plan, res, { stage, top, fig, at }) {
+  async function d1(env, plan, res, { stage, top, fig, at, toPlayer }) {
     const { screen, data } = env;
     // T24 (decision 55): the card's headline is the job, [Ask where it hurts]; the doctor's [Does it hurt here?] and her
     // Ha / Na are bubbles at their faces. D1 is taught at every level (decision 52: no Found it, no Next)
     // S04-F1 (decision 53, CLN-84): the request first, in the shared pop-up, read out; then the sidebar card, quiet
-    await S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "ask-where"), rows: [] });
+    await toPlayer(() => S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "ask-where"), rows: [] }));
     await S.request(screen, { title: S.line(env, "ask-where"), rows: [], read: false });
     let dots = plan.probes.map((p) => {
       const side = p === plan.part ? plan.side : data.sided.includes(p) ? (env.rng() < 0.5 ? "left" : "right") : null;
@@ -246,11 +256,11 @@
     return ready.then(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
   }
 
-  async function d2(env, plan, res, { stage, fig, tapPart, partW }) {
+  async function d2(env, plan, res, { stage, fig, tapPart, partW, toPlayer }) {
     const { screen } = env;
     const row = plan.rows[0];
     // T25: the card's headline [Find where it hurts]; her [My {part} hurts] in her bubble; his [That's it]; it moves on
-    await S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "find-where"), rows: [] }); // S04-F1
+    await toPlayer(() => S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "find-where"), rows: [] })); // S04-F1
     await S.request(screen, { title: S.line(env, "find-where"), rows: [], read: false });
     fig.react(HURT, 0); // CLN-136 (S05-D3): she looks sore as she says it hurts (her face reads as the feeling)
     S.say(row.patientSays, "patient"); // input is live at once (13i): a tap during the line goes ahead
@@ -299,7 +309,7 @@
    * it, ticking as each is done; one highlight (the row now). Picking the torch zooms to her face by itself, any
    * other tool zooms back out, so the eye and the ear answer at the first tap.
    */
-  async function d3(env, plan, res, { stage, top, fig, at, tapPart }) {
+  async function d3(env, plan, res, { stage, top, fig, at, tapPart, toPlayer }) {
     const { screen, data } = env;
     const tools = data.stages.diagnosis.tools;
     fig.react(HURT, 0); // CLN-136: she looks unwell as she says it
@@ -313,7 +323,8 @@
     order.forEach((t) => (heads[`tool-${t}`] = S.line(env, `use-${t}`)));
     blockCard(screen.card, heads);
     // S04-F1 (decision 53, CLN-84): the whole check-up card in the shared pop-up first (the same tool blocks), read out
-    await S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "check-over"), rows: calls.map(partRow), prep: (c) => blockCard(c, heads) });
+    // he calls the tools to the helper (the player): front while the card is read out; 3q-left to her while the child uses them
+    await toPlayer(() => S.requestPopup(screen, { reason: "clinic:diagnosis", title: S.line(env, "check-over"), rows: calls.map(partRow), prep: (c) => blockCard(c, heads) }));
     await S.request(screen, { title: S.line(env, "check-over"), rows: calls.map(partRow), read: false });
     const kit = h("div", "cl-kit", stage);
     let tool = null;
@@ -347,7 +358,7 @@
         /* no storage */
       }
       btns[c.tool].classList.add("cue");
-      await S.say(S.line(env, `cue-tool-${c.tool}`), "doctor");
+      await toPlayer(() => S.say(S.line(env, `cue-tool-${c.tool}`), "doctor"));
       S.onboard(env, `diagnosis-tool-${c.tool}`, [{ spotlight: btns[c.tool], ghost: { gesture: "tap" }, wait: "clinic-tool" }]);
     };
     let i = 0;

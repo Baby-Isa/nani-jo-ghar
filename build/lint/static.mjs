@@ -11,8 +11,9 @@
 //             script in a page, localStorage only in the save and settings modules
 //   reward    no reward or send-off item is a sweet (mithai, lolly, biscuit, sweet, candy, chocolate, toffee)
 //   bulb      the bulb's English shows 8 s at every level (Zafar, D11 / SH-41) in every bulb time table
-//   plane     the doctor and the girl in one plane (CLN-154, s08): one feet line, him 1.35-1.6x her body, a tad back (PLANE_BACK),
-//             him a 1.75 m man by the room door; her tap areas never under today's size (data/clinic/scenes-v2.json)
+//   plane     the doctor and the girl in one plane (CLN-154, s08): at the door one feet line, standing hers 0.02-0.03 in front
+//             of his, seated his 0.02-0.04 in front of her bed line (s08-placement-judge); him 1.35-1.6x her body, a tad back
+//             (PLANE_BACK), a 1.75 m man by the room door; her tap areas never under today's size (data/clinic/scenes-v2.json)
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails.
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from "node:fs";
@@ -157,7 +158,13 @@ export function bulbTables(rd, J) {
 // further back into the room and smaller"): every room's feet line at most BACK (CLN-154's were 0.91, 0.95 on a phone, 0.84
 // seated and 0.82/0.88 at the door), his height that of a 1.75 m man by the room's 2 m door at his feet line (within 12%:
 // scenes-v2 horizon and the room's door), and her tap areas never under today's size however small she is drawn
-export const PLANE_BACK = { stand: 0.85, exam: 0.82, door: 0.8 };
+// s08-placement-judge (CLN-155, Zafar 16 Oct: "the middle or the front of the stool"): seated, his feet leave her bed line for
+// the stool's front legs, 0.02-0.04 in front of it (exam 0.84); CLN-156 (Zafar: "bring her forward a touch and a little bigger"):
+// standing, her feet 0.02-0.03 in front of his (EXAM_AHEAD, STAND_AHEAD)
+export const PLANE_BACK = { stand: 0.85, exam: 0.84, door: 0.8 };
+export const EXAM_AHEAD = [0.02, 0.04];
+export const STAND_AHEAD = [0.02, 0.03];
+const within = (v, [a, b]) => v >= a - 1e-9 && v <= b + 1e-9;
 export function planeFindings(sc) {
   const out = [];
   const add = (where, text) => out.push({ check: "plane", at: `data/clinic/scenes-v2.json ${where}`, key: `plane|${where}`, text });
@@ -171,7 +178,7 @@ export function planeFindings(sc) {
   const st = sc.stand || {}, ph = st.phone || {};
   for (const [where, fig, doc] of st.fig && st.doctor ? [["stand", st.fig, st.doctor], ["stand.phone", { ...st.fig, ...ph.fig }, { ...st.doctor, ...ph.doctor }]] : []) {
     if (!fig || !doc) continue;
-    if (!(Math.abs(fig.bottom - doc.y) <= 0.01)) add(where, `her feet at ${fig.bottom}, his at ${doc.y}: one feet line (within 0.01)`);
+    if (!within(+(fig.bottom - doc.y).toFixed(4), STAND_AHEAD)) add(where, `her feet at ${fig.bottom}, his at ${doc.y}: hers ${STAND_AHEAD.join("-")} in front of his (CLN-156)`);
     const r = doc.h / fig.body;
     if (!(r >= 1.35 && r <= 1.6)) add(where, `him ${doc.h} beside her body ${fig.body}: about 1.4-1.5x her (fig.body)`);
     back(where, "stand", doc.y);
@@ -182,7 +189,7 @@ export function planeFindings(sc) {
   }
   const ex = sc.exam || {};
   if (ex.doctor) {
-    if (!(Math.abs(ex.doctor.y - ex.floor) <= 0.01)) add("exam", `his feet at ${ex.doctor.y}, the floor she sits on at ${ex.floor}: on it (within 0.01)`);
+    if (!within(+(ex.doctor.y - ex.floor).toFixed(4), EXAM_AHEAD)) add("exam", `his feet at ${ex.doctor.y}, her bed line at ${ex.floor}: his ${EXAM_AHEAD.join("-")} in front of it, at the stool's front legs (CLN-155)`);
     back("exam", "exam", ex.doctor.y);
     persp("exam", ex, ex.doctor);
     // sitting, her tap areas are drawn for max(big, tapBig): never under the 1.3 they were (D1, CLN-93)

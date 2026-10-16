@@ -17,7 +17,7 @@
 //   contract-7 one-voice    one voice at a time: no two lines' clips sound over each other (PAN-04)
 //   contract-8 highlight    one next-thing highlight at a time, in one colour: the stage's glows and every lit thing on a card (SH-53)
 //   contract-9 closed-card  from L3 the card is closed in the waiting room, the pharmacy and every heal game (CLN-114)
-//   contract-10 your-turn   the staged talkers face the player when it is the child's turn (SH-71)
+//   contract-10 your-turn   the staged talkers face the player when it is the child's turn (SH-71); in the examination the doctor faces her (CLN-157)
 //   contract-11 background  no background stretched out of proportion (PAN-14) or drawn low-res (ART-05)
 //   contract-12 greyed      a ✓ / Next / stage button is hidden until usable, never shown greyed (SH-23)
 //   contract-13 stale-ui    no reply pill from an earlier stage left on screen (CLN-06)
@@ -60,7 +60,7 @@ export const CHECKS = {
   "contract-7": { item: "one-voice", title: "one voice at a time", how: "Every clip said for a line (the sound log, its real start and stop as contract-3 reads them); two clips of different lines sounding together for more than 150 ms is a break (PAN-04: the count words, the next-thing line and the order never overlap). Clips whose length is only estimated are not judged." },
   "contract-8": { item: "highlight", title: "one highlight at a time", how: "Sampled on every change: Cook's pictures carrying the shared glow (glowFx) and the clinic's next-up or pulsing tools (a tool family, all the plasters, is one highlight). More than one at once for 300 ms or more is a break (SH-53)." },
   "contract-9": { item: "closed-card", title: "closed card from L3", how: "At the first play tap of the waiting room, the pharmacy or a heal game at level 3 or more: every order card in the sidebar must be closed (OrderCard 'closed': folded, peeking or open for the bulb's time). An open card is a break (CLN-114)." },
-  "contract-10": { item: "your-turn", title: "faces the player on the child's turn", how: "At every play tap the clinic asked for (it expected a tap or a pick, not 'wait'), every staged talker on screen (the staging hook's .cl-staged, data-pose) must face the player (data-pose 'front'); still turned to the other talker is a break (SH-71, rules E20, F26). Cook has no poses yet: an eye check." },
+  "contract-10": { item: "your-turn", title: "faces the player on the child's turn", how: "At every play tap the clinic asked for (it expected a tap or a pick, not 'wait'), every staged talker on screen (the staging hook's .cl-staged, data-pose) must face the player (data-pose 'front'); still turned to the other talker is a break (SH-71, rules E20, F26). In the examination (clinic/diagnosis) the doctor stays three-quarter to her instead, and front is the break (CLN-157). Cook has no poses yet: an eye check." },
   "contract-11": { item: "background", title: "backgrounds in proportion and sharp", how: "Every picture covering half the screen or Cook's canvas (<img>, CSS background, Phaser image): screen px per source px across and down. Across and down differing by more than 3% is stretched (PAN-14); more than 1.5 screen px per source px (times the page's pixel ratio) is low-res (ART-05). Either is a break." },
   "contract-12": { item: "greyed", title: "buttons hidden until usable", how: "A ✓, Next or stage button on screen while disabled, aria-disabled, dimmed under 60% or greyscale, for 400 ms or more and not just pressed (1.5 s before), is a break: hidden until usable, never greyed (SH-23)." },
   "contract-13": { item: "stale-ui", title: "each stage clears its own UI", how: "Each reply pill (.cl-pill, .njg-pill, .cv-pill, .st-reply, .st-choice; not the sidebar's) remembers the stage it was first seen in; still on screen 600 ms into a later play stage is a break (CLN-06)." },
@@ -458,19 +458,27 @@ function check9(tl, segs, level, add) {
     if (c.closed < c.n) add("contract-9", first.t, `${s.key} at L${level}: ${c.n - c.closed} of ${c.n} sidebar cards open at the first play tap (from L3 the card is closed)`);
   }
 }
-// 10 (SH-71): on the child's turn (a tap the clinic asked for), every staged talker faces the player
+// 10 (SH-71): on the child's turn (a tap the clinic asked for), every staged talker faces the player. In the examination
+// (CLN-157, s08-placement-judge; ux-principles 16) the doctor faces whoever he speaks to and her between lines: on the
+// child's turn there he stays three-quarter to her (the cue is the card and the pulsing parts), and front is the break
+const EXAMINE = /clinic\/diagnosis$/;
+const DOCTOR = /\bcl-doc\b/;
 function check10(tl, segs, add) {
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "input" || e.popup || e.side || !(e.poses && e.poses.length)) continue;
     const k0 = e.exp && e.exp.clinic && e.exp.clinic.kind;
     if (!k0 || k0 === "wait") continue;
-    const turned = e.poses.filter((p) => p.pose !== "front");
+    const s = segAt(segs, e.t);
+    const exam = !!(s && EXAMINE.test(s.key));
+    const wrong = (p) => (exam && DOCTOR.test(p.who) ? p.pose !== "talk" : p.pose !== "front");
+    const turned = e.poses.filter(wrong);
     if (!turned.length) continue;
-    const s = segAt(segs, e.t), k = `${s && s.key}|${turned.map((p) => p.who).join(",")}`;
+    const k = `${s && s.key}|${turned.map((p) => p.who).join(",")}`;
     if (seen.has(k)) continue;
     seen.add(k);
-    add("contract-10", e.t, `${s ? s.key : "?"}: the child's turn (${k0}) with ${turned.map((p) => `${p.who} still "${p.pose}"${p.facing ? ` facing ${p.facing}` : ""}`).join(", ")}: talkers turn to face the player`);
+    const say = (p) => (exam && DOCTOR.test(p.who) ? `${p.who} "${p.pose}": he faces the patient while the child examines her (CLN-157)` : `${p.who} still "${p.pose}"${p.facing ? ` facing ${p.facing}` : ""}: talkers turn to face the player`);
+    add("contract-10", e.t, `${s ? s.key : "?"}: the child's turn (${k0}) with ${turned.map(say).join(", ")}`);
   }
 }
 // 11 (PAN-14, ART-05): a background stretched (across and down differ) or drawn low-res (more screen px than source px)
