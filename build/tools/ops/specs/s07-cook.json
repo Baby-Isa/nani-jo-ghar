@@ -1,0 +1,37 @@
+{
+  "name": "s07-cook: the counter seam (CK-44), the kitchen master (SH-91, ART-21) if usable, Nani's lean poses, the sekelo plate, chai pan, daar pieces and potato",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "art",
+  "why": "background geometry, occluders and real-person art need judgement",
+  "cost": "about $40-70",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": [
+    "docs/game-design/modes/cook.md",
+    "docs/design-language/art-plans/s07-art-plan.md section 6 and section 3",
+    "docs/design-language/art-plans/s05-art-audit.md section 6 (Nani's lean: the counter line, way (a) or (b))",
+    "docs/feedback/cook-phone-2026-10-15.md (CK-44, ART-21, SH-91)",
+    "build/reports/s07-art-landing.md (which pictures passed)"
+  ],
+  "owns": [
+    "js/cook/**",
+    "data/cook.json",
+    "assets/cook/** new files",
+    "build/reports/s07-cook.md"
+  ],
+  "readOnly": ["js/clinic/**, data/clinic/**, assets/clinic/** (s07-clinic-a and -b)", "js/shared/** (ask the orchestrator)", "sources/**"],
+  "stubs": "none: a picture that failed its judge keeps today's art and is listed in the report",
+  "tasks": [
+    { "do": "CK-44: no hard vertical line where the counter's front (occluder(), js/cook/stations.js:681; trayFront, js/cook/flow.js:777) meets the background on a stage wider or taller than 16:9. If the kitchen master K1 (sources/art/s07/k1-kitchen-master-v1.png; its island sits higher than service-v2's, see the landing report) can be registered so the trays, the island's back edge and the family line up (upscale with Real-ESRGAN, pip realesrgan or the ncnn binary, ×1.367 → trim to 2100×1350, fitBg 1:1 with the core offset, occluder and trayFront from the same picture, meta.trays re-measured), do that (closes SH-91's first master and ART-21); if it cannot be registered without moving the family or trays, keep service-v2 and make the interim fix: on a wide or tall stage draw the background and the occluder at the same scale and position so they are one picture (e.g. extend the picture's edges as the pantry's extendEdges does, or scale the occluder with the background), and say K1 needs a redo.", "accept": "the counter at 2.25:1 (915x412), 844x390, 1366x768 and 1366x1024 shows one continuous counter with no vertical edge (zoomed crops in the report); the family still stands behind their trays" },
+    { "do": "Nani's lean poses N1-N5 (Zafar chose N1 'try 1'; N2 happy, N3 talk, N4 point, N5 blink) replace her current counter sprite and moods where they pass the judge, cut at the counter line so she reads as leaning on it.", "accept": "the greeting and every order show the new Nani; her moods switch as before" },
+    { "do": "SK2 the sekelo plate, CP1 the chai pan tilt, DP1 the daar pieces, PT1 the potato: wire each that passed the judge where the plan says (CK-24/SEK-14, CHAI-08/CHAI-13, DAAR-05, ART-11); a FAIL keeps today's art.", "accept": "each station's shots show the new piece; potato no longer reads as butter (ART-11)" },
+    { "do": "Nothing else changes: same mechanics and timings.", "accept": "node build/tools/review/checks.mjs --only unit,static,leak,load passes; touched sandbox flows reach their end" }
+  ],
+  "flows": ["cook:title", "cook:day1", "cook:chai", "cook:chai-tray", "cook:daar", "cook:chop", "cook:mishkaki-grill", "cook:assemble"],
+  "shared": false,
+  "browser": true,
+  "port": 8822,
+  "report": "s07-cook",
+  "publish": false
+}

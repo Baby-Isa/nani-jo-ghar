@@ -1,0 +1,38 @@
+{
+  "name": "s07-clinic-a: the real doctor everywhere, the girl's new pieces, the send-off at the front door",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "art",
+  "why": "wiring real-person art into every clinic stage needs judgement on placement and likeness",
+  "cost": "about $40-70",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": [
+    "docs/game-design/modes/clinic.md",
+    "docs/design-language/art-plans/s07-art-plan.md section 6 (cut and wire notes) and section 3 (the lines)",
+    "build/reports/s07-art-landing.md (which pictures passed, their files in sources/art/s07/)",
+    "docs/design-language/art-pipeline.md section 15 (artcut.py, artdiff.py)"
+  ],
+  "owns": [
+    "js/clinic/** except js/clinic/pharmacy* and the belt's item sprites (s07-clinic-b)",
+    "data/clinic/heal-art.json, data/clinic/scenes-v2.json, data/clinic/rough-art.json, data/clinic/heal/*.json",
+    "js/shared/kit*.js only where Kit.DOCTOR_FACE, Kit.doctorFigure, Kit.person('doctor') and Kit.feelingFace are defined",
+    "assets/clinic/** new files (doctor, girl pieces, dirt, knee bump, tooth drill view, drop machine)",
+    "build/tools/art/specs/s07.cut.json",
+    "build/reports/s07-clinic-a.md"
+  ],
+  "readOnly": ["js/cook/**, data/cook.json, assets/cook/** (s07-cook)", "data/clinic/sheets.json, data/clinic.json items, data/clinic/pipeline.json (s07-clinic-b)", "sources/** (never edit sources)"],
+  "stubs": "none: a picture that failed its judge keeps today's art and is listed in the report",
+  "tasks": [
+    { "do": "The doctor is ONE person everywhere (CLN-150): his box and heal-card faces cut from sources/art/s07/doctor-ref-faces-v1.png (neutral, talking, laughing, thinking), every standing doctor (diagnosis, exam room, send-off, waiting-room call) from the s07 standing poses registered on one canvas and feet line, his turns used where he talks to someone left or right and face-on where he talks to the player; the waiting-room call is him standing and waving (DD1, Zafar: 'just have him standing and waving, not coming out from the door'), recorded under one `doctor` key in heal-art.json that every stage reads. His blink (DF3) and talk (DF1) drive the talk animation where the stage has one.", "accept": "a grep finds no remaining use of the old SVG/rough doctor in any clinic stage; the sandbox's clinic flows show the same man (bald, white beard, glasses, navy check blazer) in every shot" },
+    { "do": "The girl's new pieces that passed the judge: blink (GB1) and talking mouth (GM1) as head layers, sore face (GS1, only if it is not a wink, CLN-136), standing turns (GN1 HL/QR/HR and the mirrored QL), the level sole (RP1, re-measure foot.json place), dirt bits (I1) instead of the drawn discs in cut.js and foot.js, the knee bump (I2), the tooth drill view (TD1), the drop machine (DM1, DM2) for boing.", "accept": "every clinic game plays start to finish with the girl (sandbox clinic flows at 1366x768 and 844x390 reach their end, no page errors); each new picture appears where its row says" },
+    { "do": "The send-off goes back to the front door room with the doctor standing beside her (CLN-25, Zafar 15 Oct).", "accept": "the clinic:sendoff shots show the door room, both standing left of the green cross sign" },
+    { "do": "Nothing else changes: same mechanics, same timings, same words.", "accept": "shotdiff changes only where art changed; leak bots for every clinic game still pass (node build/tools/review/checks.mjs --only leak,unit,static)" }
+  ],
+  "flows": ["clinic:waiting", "clinic:diagnosis", "clinic:pharmacy", "clinic:sendoff", "clinic:heal-cut", "clinic:heal-knee", "clinic:heal-ear", "clinic:heal-tooth", "clinic:heal-taste", "clinic:heal-fever", "clinic:heal-boing", "clinic:heal-eye", "clinic:heal-foot", "clinic:patient", "clinic:morning"],
+  "shared": true,
+  "browser": true,
+  "port": 8821,
+  "report": "s07-clinic-a",
+  "publish": false
+}
