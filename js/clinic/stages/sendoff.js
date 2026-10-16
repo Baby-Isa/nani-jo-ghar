@@ -278,7 +278,17 @@
           b.type = "button";
           b.dataset.face = f;
           b.setAttribute("aria-label", data.feelings[f].english);
-          Kit.feelingFace(f, b);
+          // CLN-01 (frame 5), the s07 plan: the four feelings are her own faces (her heads, heal-art.json), never flat
+          // stand-in faces; the flat ones only for a patient with no art
+          const own = heads && heads[f === "happy" ? "happy" : f];
+          if (own) {
+            const d = h("div", `cl-feel feel-${f} own`, b);
+            const im = h("img", "", d);
+            im.alt = "";
+            im.draggable = false;
+            im.src = Kit.url(own);
+            Object.assign(im.style, { width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%", display: "block" });
+          } else Kit.feelingFace(f, b);
           return b;
         });
         S.setExpect("sendoff", () => {

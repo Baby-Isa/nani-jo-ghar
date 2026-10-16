@@ -1090,7 +1090,7 @@
   "fig_h": 676,
   "views": {
    "3q-left": {
-    "file": "assets/clinic/doctor/doctor-3q-left-front.webp",
+    "file": "assets/clinic/patients/doctor/doctor-3q-left-front.webp",
     "canvas": [
      543,
      1462
@@ -1104,12 +1104,12 @@
      0.0971
     ],
     "faces": {
-     "talk": "assets/clinic/doctor/doctor-3q-left-face-talk.webp",
-     "blink": "assets/clinic/doctor/doctor-3q-left-face-blink.webp"
+     "talk": "assets/clinic/patients/doctor/doctor-3q-left-face-talk.webp",
+     "blink": "assets/clinic/patients/doctor/doctor-3q-left-face-blink.webp"
     }
    },
    "front": {
-    "file": "assets/clinic/doctor/doctor-front-front.webp",
+    "file": "assets/clinic/patients/doctor/doctor-front-front.webp",
     "canvas": [
      562,
      1448
@@ -1124,7 +1124,7 @@
     ]
    },
    "3q-right": {
-    "file": "assets/clinic/doctor/doctor-3q-right-front.webp",
+    "file": "assets/clinic/patients/doctor/doctor-3q-right-front.webp",
     "canvas": [
      496,
      1429
@@ -1139,7 +1139,7 @@
     ]
    },
    "wave-3q-right": {
-    "file": "assets/clinic/doctor/doctor-wave-3q-right-front.webp",
+    "file": "assets/clinic/patients/doctor/doctor-wave-3q-right-front.webp",
     "canvas": [
      615,
      1424
@@ -1154,7 +1154,7 @@
     ]
    },
    "wave-front": {
-    "file": "assets/clinic/doctor/doctor-wave-front-front.webp",
+    "file": "assets/clinic/patients/doctor/doctor-wave-front-front.webp",
     "canvas": [
      550,
      1199
@@ -1168,7 +1168,7 @@
      0.1101
     ],
     "faces": {
-     "closed": "assets/clinic/doctor/doctor-wave-front-face-closed.webp"
+     "closed": "assets/clinic/patients/doctor/doctor-wave-front-face-closed.webp"
     }
    }
   },
@@ -1180,10 +1180,10 @@
    "call": "wave-front"
   },
   "box": {
-   "neutral": "assets/clinic/doctor/faces/neutral.webp",
-   "talk": "assets/clinic/doctor/faces/talk.webp",
-   "laugh": "assets/clinic/doctor/faces/laugh.webp",
-   "think": "assets/clinic/doctor/faces/think.webp"
+   "neutral": "assets/clinic/patients/doctor/faces/neutral.webp",
+   "talk": "assets/clinic/patients/doctor/faces/talk.webp",
+   "laugh": "assets/clinic/patients/doctor/faces/laugh.webp",
+   "think": "assets/clinic/patients/doctor/faces/think.webp"
   }
  }
 }

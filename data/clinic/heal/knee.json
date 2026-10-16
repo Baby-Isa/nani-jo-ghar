@@ -395,13 +395,23 @@
     "girl"
    ],
    "has2x": true
+  },
+  "knee-bump": {
+   "file": "assets/clinic/closeups/child/knee-bump.webp",
+   "on": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "why": "s07-clinic-a (I2; CLN-33, CLN-100): the knee with a bump, an edit of K1 registered onto its canvas (artcut.py s07.cut.json child-knee-bump: shift +0.3,-0.9 px), drawn in K1's place for the knee-bump ailment"
   }
  },
  "assets": [
   "assets/clinic/closeups/child/knee-kick.webp",
   "assets/clinic/closeups/child/knee.webp",
   "assets/clinic/items-v2/bandage-roll.webp",
-  "assets/clinic/items-v2/reflex-hammer.webp"
+  "assets/clinic/items-v2/reflex-hammer.webp",
+  "assets/clinic/closeups/child/knee-bump.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

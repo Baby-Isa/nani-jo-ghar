@@ -250,11 +250,17 @@
     s("path", { d: "M-400 -300 L1200 -300 L1200 120 Q400 40 -400 120Z", fill: "#e8909a" }, toothG); // the gum
     s("path", { d: "M-400 560 Q400 470 1200 560 L1200 900 L-400 900Z", fill: "#c4636b" }, toothG); // the lower lip
     const toothPath = (x0, x1, y0, y1) => `M${x0} ${y0} Q${(x0 + x1) / 2} ${y0 - 26} ${x1} ${y0} L${x1 - 6} ${y1 - 40} Q${x1 - 14} ${y1 + 6} ${(x0 + x1) / 2} ${y1} Q${x0 + 14} ${y1 + 6} ${x0 + 6} ${y1 - 40}Z`;
-    s("path", { d: toothPath(30, 252, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, toothG); // the neighbours
-    s("path", { d: toothPath(548, 770, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, toothG);
-    const TOOTH_D = toothPath(272, 528, 92, 392);
-    s("path", { d: TOOTH_D, fill: "#fbf9f2", stroke: "#d8cfbd", "stroke-width": 5 }, toothG);
-    s("path", { d: "M300 130 Q320 118 345 122", stroke: "#fff", "stroke-width": 10, "stroke-linecap": "round", fill: "none", opacity: 0.8 }, toothG); // a shine
+    // TD1 (s07-clinic-a): the drill view's painted tooth, its neighbours and the gum (art "drillView": box = where the
+    // picture sits, its crown over the drawn tooth's place, so the decay, the drill's reach and the chip stay where they
+    // were); the drawn teeth only without it
+    const dv = art("drillView");
+    if (dv) s("image", { href: url(dv.src), x: dv.box[0], y: dv.box[1], width: dv.box[2], height: dv.box[3], preserveAspectRatio: "none", class: "tooth-drill-art" }, toothG);
+    else {
+      s("path", { d: toothPath(30, 252, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, toothG); // the neighbours
+      s("path", { d: toothPath(548, 770, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, toothG);
+      s("path", { d: toothPath(272, 528, 92, 392), fill: "#fbf9f2", stroke: "#d8cfbd", "stroke-width": 5 }, toothG);
+      s("path", { d: "M300 130 Q320 118 345 122", stroke: "#fff", "stroke-width": 10, "stroke-linecap": "round", fill: "none", opacity: 0.8 }, toothG); // a shine
+    }
     // the decay, cut away where the drill has been (a mask of drilled circles)
     const defs = s("defs", {}, S.svg);
     const mask = s("mask", { id: `${uid}-m`, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 800, height: 500 }, defs);

@@ -155,6 +155,9 @@
     const kickArt = art && ctx.data.art["knee-kick"];
     // the kicked picture loads now, so the first kick never flashes empty
     if (art && kickArt && kickArt.on && root.Image) new root.Image().src = art.getAttribute("href").replace(/knee(@2x)?\.webp/, (m, two) => `knee-kick${two || ""}.webp`);
+    // I2 (s07-clinic-a, CLN-33/CLN-100): a bump on the knee is drawn (K4, registered to K1: the same canvas), until the wrap
+    const bumpArt = art && ctx.ailment && ctx.ailment.id === "knee-bump" && ctx.data.art["knee-bump"];
+    if (bumpArt && bumpArt.on) art.setAttribute("href", art.getAttribute("href").replace(/knee(@2x)?\.webp/, (m, two) => `knee-bump${two || ""}.webp`));
     if (art && !(kickArt && kickArt.on) && KA.split) {
       const [x, y, w, hh] = KA.box;
       const cy = KA.split;
@@ -386,7 +389,7 @@
         if (kick && kick.on) {
           // the same picture's kicked twin (the @2x where the plain one is the @2x)
           const plain = art.getAttribute("href");
-          art.setAttribute("href", plain.replace(/knee(@2x)?\.webp/, (m, two) => `knee-kick${two || ""}.webp`));
+          art.setAttribute("href", plain.replace(/knee(?:-bump)?(@2x)?\.webp/, (m, two) => `knee-kick${two || ""}.webp`));
           ctx.after(420, () => art.setAttribute("href", plain));
         }
         S.face("happy", 600);

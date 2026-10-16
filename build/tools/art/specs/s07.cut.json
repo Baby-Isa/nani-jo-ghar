@@ -49,7 +49,7 @@
      ]
     }
    },
-   "out": "doctor/doctor-3q-left"
+   "out": "patients/doctor/doctor-3q-left"
   },
   {
    "id": "doctor-front",
@@ -81,7 +81,7 @@
      ]
     }
    },
-   "out": "doctor/doctor-front"
+   "out": "patients/doctor/doctor-front"
   },
   {
    "id": "doctor-3q-right",
@@ -113,7 +113,7 @@
      ]
     }
    },
-   "out": "doctor/doctor-3q-right"
+   "out": "patients/doctor/doctor-3q-right"
   },
   {
    "id": "doctor-wave-3q-right",
@@ -145,7 +145,7 @@
      ]
     }
    },
-   "out": "doctor/doctor-wave-3q-right"
+   "out": "patients/doctor/doctor-wave-3q-right"
   },
   {
    "id": "doctor-wave-front",
@@ -180,7 +180,7 @@
      ]
     }
    },
-   "out": "doctor/doctor-wave-front"
+   "out": "patients/doctor/doctor-wave-front"
   },
   {
    "id": "doctor-faces",
@@ -207,7 +207,7 @@
    "pad": 8,
    "max": 384,
    "min_area": 4000,
-   "outdir": "doctor/faces"
+   "outdir": "patients/doctor/faces"
   },
   {
    "id": "girl-wide",
@@ -382,6 +382,111 @@
     }
    },
    "out": "patients/girl/girl-stand-3q-right"
+  },
+  {
+   "id": "dirt",
+   "type": "grid",
+   "src": "i1-dirt-bits-v1.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "dirt-1",
+    "dirt-2",
+    "dirt-3",
+    "dirt-4",
+    "dirt-5",
+    "dirt-6",
+    "dirt-7",
+    "dirt-8"
+   ],
+   "soft": true,
+   "pad": 8,
+   "max": 160,
+   "min_area": 300,
+   "min_bit": 4,
+   "outdir": "heal-v3",
+   "_note": "I1: eight soft bits of dust and grit, cut by grid cell, colour-to-alpha (the soft clouds and grain scatters key out partly: by design); cut.js and foot.js draw them in place of the code's discs"
+  },
+  {
+   "id": "child-knee-bump",
+   "type": "closeup",
+   "data": "child.knee",
+   "src": "../clinic-heal-v3/child-k1-knee-v1.png",
+   "exits": [
+    "left",
+    "bottom"
+   ],
+   "out": "closeups/child/knee.webp",
+   "states": {
+    "bump": {
+     "src": "child-k4-knee-bump-v1.png",
+     "register": {
+      "mode": "translation",
+      "band": [
+       0.0,
+       1.0
+      ]
+     }
+    }
+   },
+   "_note": "I2: the knee bump registered onto K1 (the clinic-heal-v3 child-knee job's base, so knee.webp comes out the same); only knee-bump.webp is new"
+  },
+  {
+   "id": "tooth-drill-view",
+   "type": "closeup",
+   "data": "girl.tooth-drill",
+   "src": "td1-tooth-drill-view-v1.png",
+   "exits": [
+    "left",
+    "right",
+    "top"
+   ],
+   "out": "closeups/girl/tooth-drill.webp",
+   "_note": "TD1: the drill step's one tooth, big, with its neighbours and the gum (exits left, right, top)"
+  },
+  {
+   "id": "child-sole-level",
+   "type": "closeup",
+   "data": "child.sole-level",
+   "src": "child-p1-sole-v2.png",
+   "exits": [
+    "bottom"
+   ],
+   "out": "closeups/child/sole-v2.webp",
+   "_note": "RP1: the sole with level toes (foot levels 1-3)"
+  },
+  {
+   "id": "drop-machine",
+   "type": "closeup",
+   "data": "boing.machine",
+   "src": "dm1-drop-machine-v1.png",
+   "exits": [],
+   "out": "heal-v3/drop-machine-v2.webp",
+   "_note": "DM1: boing's drop machine, trimmed whole"
+  },
+  {
+   "id": "drop-levers",
+   "type": "grid",
+   "src": "dm2-levers-drops-v1.png",
+   "cells": [
+    3,
+    2
+   ],
+   "names": [
+    "lever-up",
+    "lever-down",
+    null,
+    null,
+    null,
+    null
+   ],
+   "pad": 8,
+   "max": 256,
+   "outdir": "heal-v3",
+   "failed": {},
+   "_note": "DM2: the two lever states only; the four drops are glossy and could read as sweets (landing report, non-negotiable 16): not cut, the game keeps its matte drawn drops"
   }
  ]
 }

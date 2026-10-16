@@ -191,32 +191,43 @@
  "art": {
   "_about": "The art plan's P1 (closeups/<set>/sole.webp, child and adult sets), swapped in by file name when it exists; the channels and splinters stay code.",
   "sole": {
-   "child": "assets/clinic/closeups/child/sole.webp",
+   "child": "assets/clinic/closeups/child/sole-v2.webp",
    "adult": "assets/clinic/closeups/adult/sole.webp"
   },
   "place": {
    "box": [
-    104.2,
-    -35.0,
-    551.4,
-    827.1
+    113.9,
+    -48.7,
+    531.0,
+    796.4
    ],
    "levels": [
-    1
+    1,
+    2,
+    3
    ],
    "kinds": [
     "girl"
    ],
    "has2x": true,
-   "_about": "A1 (5 Oct): P1 placed so its big toe (360, 195 in the 1024 x 1536 source) and little toe (750, 397) land on the mirrored stand-in's (298, 70) and (508, 78): the sole's width and length match the stand-in's outline, so the channels and their clip still fit. The art's toes slope down to the little toe where the stand-in's are level, so the levels with channels from the toes, toes named (level 2 and up since Zafar's heal ladder, 13 Oct) keep the stand-in until the toes are re-placed. Mirrored in code when the big toe is on the right."
-  }
+   "_about": "A1 (5 Oct): P1 placed so its big toe (360, 195 in the 1024 x 1536 source) and little toe (750, 397) land on the mirrored stand-in's (298, 70) and (508, 78): the sole's width and length match the stand-in's outline, so the channels and their clip still fit. The art's toes slope down to the little toe where the stand-in's are level, so the levels with channels from the toes, toes named (level 2 and up since Zafar's heal ladder, 13 Oct) keep the stand-in until the toes are re-placed. Mirrored in code when the big toe is on the right.",
+   "box_v1": [
+    104.2,
+    -35.0,
+    551.4,
+    827.1
+   ],
+   "_s07": "s07-clinic-a (RP1, CLN-87's foot note): the sole redone with level toes (sole-v2, cut by artcut.py s07.cut.json): its big toe centre (355, 229 in the 1024 x 1536 source) on the mirrored stand-in's (298, 70) and its little toe (760, 289) on (508, 78) at one scale (0.5185): every toe sits in its stand-in channel, so levels 1-3 draw it (the v1 box is box_v1)"
+  },
+  "sole_v1": "assets/clinic/closeups/child/sole.webp"
  },
  "assets": [
-  "assets/clinic/closeups/child/sole.webp",
   "assets/clinic/sheets/jug/jug-cold-belt.webp",
   "assets/clinic/sheets/jug/jug-hot-belt.webp",
   "assets/clinic/sheets/jug/jug-warm-belt.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp"
+  "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
+  "assets/clinic/closeups/child/sole-v2.webp",
+  "assets/clinic/heal-v3/dirt-*.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

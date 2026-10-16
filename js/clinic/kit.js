@@ -148,7 +148,7 @@
   Kit.doctorFace = function (mood) {
     const A = Kit.doctorArt();
     const box = (A && A.box) || {};
-    return Kit.url(box[mood || "neutral"] || box.neutral || "assets/clinic/doctor/faces/neutral.webp");
+    return Kit.url(box[mood || "neutral"] || box.neutral || "assets/clinic/patients/doctor/faces/neutral.webp");
   };
   /** The doctor's face for his box and the heal card: his neutral face (Kit.doctorFace). */
   Object.defineProperty(Kit, "DOCTOR_FACE", { get: () => Kit.doctorFace("neutral"), configurable: true });

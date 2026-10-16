@@ -222,6 +222,21 @@
    "up": "assets/clinic/sheets/brushing/brushing-up.webp",
    "down": "assets/clinic/sheets/brushing/brushing-down.webp",
    "_s02": "S02-E (E5b, CLN-103): the brusher's view of the toothbrush, level; up and down are the same brush tipped 30 degrees for an up or down stroke (their own canvases: up 471 x 220, down 472 x 194, the head at the left)"
+  },
+  "drillView": {
+   "src": "assets/clinic/closeups/{kind}/tooth-drill.webp",
+   "ready": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "box": [
+    -5.1,
+    -7.9,
+    818.7,
+    545.8
+   ],
+   "why": "s07-clinic-a (TD1): the drill step's one sore tooth, big, with its neighbours and the gum (artcut.py s07.cut.json tooth-drill-view). Its crown (centre x 760, top 165, bottom 750 in the 1536 x 1024 source, at the middle) on the drawn tooth's place (centre 400, top 80, bottom 392) at one scale (0.533): the decay patches (CROWN) and the drill's reach (276-524 x 96-392) lie on its enamel"
   }
  },
  "camera": {
@@ -275,7 +290,8 @@
   "assets/clinic/heal-v3/filling-button-up.webp",
   "assets/clinic/heal-v3/filling-nozzle.webp",
   "assets/clinic/items-v2/dentist-drill.webp",
-  "assets/clinic/sheets/brushing/brushing-level.webp"
+  "assets/clinic/sheets/brushing/brushing-level.webp",
+  "assets/clinic/closeups/girl/tooth-drill.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }
