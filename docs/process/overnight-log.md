@@ -47,3 +47,4 @@ One line per event, appended by sessions and `build/tools/ops/checkin.mjs --log`
 - 2026-10-15 00:20 UK · Published 20261014T231844Z to main (cc2b0e8b); Pages serving it.
 - 16 Oct s07-cook (merged by the orchestrator): K1 kitchen master (CK-44 seam gone, ART-21), Nani N1-N5, DP1, PT1; SK2 and CP1 not wired (redo).
 - 16 Oct s07-clinic-a (merged by the orchestrator): the real doctor everywhere (CLN-150), waving at his door (CLN-115), send-off at the front door (CLN-25), the girl's blink, talk, turns, dirt, knee bump, drill tooth, level sole, her faces on the feeling cards; DM1/DM2 not wired (lever spacing, Zafar's call).
+- 16 Oct s07-clinic-b (merged by the orchestrator): belt items B2-B10 at one camera angle, own-colour sprites, comb out; boy, old man, old woman on the waiting-room bench; eye page's manifest now lists every chart picture (load 29/29).

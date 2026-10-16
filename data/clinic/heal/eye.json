@@ -342,7 +342,7 @@
    "src_v1": "assets/clinic/closeups/{kind}/eyes-sore.webp",
    "box_v1": [
     -222.9,
-    -313.0,
+    -313,
     1244.2,
     829.4
    ],
@@ -493,12 +493,17 @@
   "assets/clinic/closeups/girl/eyes-v2-sore.webp",
   "assets/clinic/closeups/girl/eyes-v2.webp",
   "assets/clinic/closeups/girl/eyetest-a-v2.webp",
+  "assets/clinic/items-v2/ginger.webp",
+  "assets/clinic/items-v2/lemon-half.webp",
   "assets/clinic/items-v2/milk-jug.webp",
   "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
   "assets/clinic/sheets/drop-bottle/drop-bottle-use-down.webp",
   "assets/cook/items/icon-cook-paani.webp",
+  "assets/cook/items/icon-veg-01.webp",
   "assets/cook/items/icon-veg-02.webp",
-  "assets/cook/items/icon-veg-03.webp"
+  "assets/cook/items/icon-veg-03.webp",
+  "assets/cook/items/icon-veg-12.webp",
+  "assets/cook/items/icon-veg-13.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }
