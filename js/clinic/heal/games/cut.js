@@ -762,7 +762,11 @@
         const r = Math.sqrt(ctx.rng());
         const x = p.x + Math.cos(a) * (p.rx + 18) * r;
         const y = p.y + Math.sin(a) * (p.ry + 12) * r;
-        const el = s("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: (3 + ctx.rng() * 4).toFixed(1), fill: ctx.rng() < 0.5 ? "#7a5a3a" : "#8f6c48" }, dirtG);
+        // I1 (s07-clinic-a, CLN-121's flaw): a soft bit of dust or grit (heal-v3/dirt-<n>), never a flat disc; the same
+        // two draws as the disc's size and colour, so the game's other draws don't move
+        const d = (3 + ctx.rng() * 4) * 3.2;
+        const n = 1 + Math.floor(ctx.rng() * 8);
+        const el = s("image", { href: url(`assets/clinic/heal-v3/dirt-${n}.webp`), x: (x - d / 2).toFixed(1), y: (y - d / 2).toFixed(1), width: d.toFixed(1), height: d.toFixed(1), preserveAspectRatio: "xMidYMid meet", class: "cut-dirt-bit" }, dirtG);
         specks.push({ x, y, el, gone: false });
       }
     });

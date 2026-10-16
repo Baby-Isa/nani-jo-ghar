@@ -132,8 +132,26 @@
     return Kit.sprite(p[mood] || p.neutral);
   };
 
-  /** The doctor's face for his box (a flat stand-in: glasses, beard; the art is based on Hannah's granddad, to come). */
-  Kit.DOCTOR_FACE = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#e8f3ef"/><circle cx="20" cy="21" r="14" fill="#c99a74"/><path d="M6 17 Q20 1 34 17 L34 12 Q20 -4 6 12Z" fill="#6f6a66"/><circle cx="15" cy="19.5" r="4" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="25" cy="19.5" r="4" fill="none" stroke="#333" stroke-width="1.5"/><path d="M19 19.5 h2" stroke="#333" stroke-width="1.5"/><path d="M11 27 Q20 38 29 27 Q27 33 20 33 Q13 33 11 27Z" fill="#8e8984"/><path d="M16 28.5 Q20 31 24 28.5" fill="none" stroke="#5a3a33" stroke-width="1.6" stroke-linecap="round"/><path d="M4 40 Q20 30 36 40Z" fill="#fff"/><path d="M17 36 L20 40 L23 36" fill="#2e8b7a"/></svg>');
+  /**
+   * CLN-150 (s07-clinic-a): the doctor is ONE man everywhere, the real one (sources/art/s07, his sheet): his art is
+   * data/clinic/heal-art.json `doctor` (loaded with the clinic's base data, js/clinic/heal/host.js loadBase), which every
+   * stage reads: `box` = his box and card faces (neutral, talk, laugh, think), `views` = his standing views on one feet
+   * line and one drawn size, `poses` = which view each staging turn draws.
+   */
+  Kit.doctorArt = function () {
+    const HH = Clinic.HealHost;
+    const S = Clinic.Stages;
+    const a = (HH && HH.healArt) || (S && S._healArt);
+    return (a && a.doctor) || null;
+  };
+  /** His face for a box or a card (neutral, talk, laugh, think), as a URL. */
+  Kit.doctorFace = function (mood) {
+    const A = Kit.doctorArt();
+    const box = (A && A.box) || {};
+    return Kit.url(box[mood || "neutral"] || box.neutral || "assets/clinic/patients/doctor/faces/neutral.webp");
+  };
+  /** The doctor's face for his box and the heal card: his neutral face (Kit.doctorFace). */
+  Object.defineProperty(Kit, "DOCTOR_FACE", { get: () => Kit.doctorFace("neutral"), configurable: true });
   Kit.ITEMS = {}; // filled from data/clinic.json items
   Kit.COLOURS = {
     red: "#d23b3b", blue: "#3b6fd2", green: "#3fa35b", yellow: "#f0c43a", white: "#f4f1ea", black: "#33333b",
@@ -187,10 +205,128 @@
     d.innerHTML = `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="${F.fill}" stroke="rgba(0,0,0,.12)" stroke-width="2"/><circle cx="23" cy="26" r="3.5" fill="#2a2522"/><circle cx="41" cy="26" r="3.5" fill="#2a2522"/>${F.mouth}${F.extra || ""}</svg>`;
     return d;
   };
-  /** The doctor, a flat-colour stand-in (a white coat, turned 3/4; the doctor art comes later). */
-  Kit.doctorFigure = function (parent, cls) {
-    const d = h("div", `cl-doc ${cls || ""}`, parent);
-    d.innerHTML = '<svg viewBox="0 0 100 260" aria-hidden="true"><ellipse cx="50" cy="252" rx="30" ry="6" fill="rgba(0,0,0,.12)"/><path d="M34 180h14l-2 68H34zM52 180h14l-1 68H53z" fill="#3b3b46"/><path d="M30 246h18v8H26zM52 246h18l4 8H52z" fill="#2a2522"/><path d="M22 74q28-14 56 0l6 112H16z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><path d="M44 72l6 26 6-26z" fill="#2e8b7a"/><path d="M22 76l-8 70 10 2 8-60zM78 76l6 64-10 4-6-58z" fill="#f7f6f2" stroke="#d9d2c7" stroke-width="2"/><circle cx="18" cy="150" r="6" fill="#b8845f"/><circle cx="80" cy="146" r="6" fill="#b8845f"/><path d="M36 84q2 20 14 22" stroke="#2a3f5a" stroke-width="3" fill="none"/><circle cx="50" cy="107" r="4" fill="#9aa0a8"/><rect x="44" y="56" width="12" height="12" fill="#b8845f"/><ellipse cx="52" cy="38" rx="17" ry="20" fill="#b8845f"/><path d="M35 34q2-22 18-22q15 1 16 18q-8-8-20-6q-8 1-14 10z" fill="#2b1d16"/><path d="M40 50q10 8 24 0q-2 10-12 10q-10 0-12-10z" fill="#2b1d16"/><circle cx="46" cy="38" r="2.6" fill="#2a2522"/><circle cx="59" cy="38" r="2.6" fill="#2a2522"/><path d="M47 47q5 3 10 0" stroke="#5a3a33" stroke-width="2" fill="none"/></svg>';
+  /**
+   * The doctor standing (CLN-150, s07-clinic-a): his real art (heal-art.json doctor.views), one man on one feet line.
+   * o.h = his body's height as a share of the room (scenes-v2 `doctor.h`); place it with S.place WITHOUT a height (the
+   * element is his view's canvas, sized from o.h). Each view stands by its own measured feet line and the x between
+   * his feet, so a turn (S.pose: talk left or right, front to the player, the wave, the waiting room's call) swaps the
+   * picture in place, never stretched or squashed, never mirrored (he is a real person). el.__doc.head is his head (the
+   * bubbles' anchor); while he talks his talking mouth (DF1, a head layer) flaps on the view that has it, and he
+   * blinks (DF3) now and then; a view without them bobs (the shared talk). o.view: the first view (default talk-left).
+   */
+  Kit.doctorFigure = function (parent, cls, o = {}) {
+    const A = Kit.doctorArt() || { views: {}, poses: {}, fig_h: 676 };
+    const d = h("div", `cl-doc cl-doc-art ${cls || ""}`, parent);
+    d.dataset.talker = "doctor";
+    d.setAttribute("aria-hidden", "true");
+    // his own box: never the stand-in's aspect, mirror or tint (css/clinic.css .cl-doc, .cl-doc-stand, .cl-staged)
+    Object.assign(d.style, { aspectRatio: "auto", filter: "none", transition: "none", pointerEvents: "none" });
+    const inner = h("div", "cl-doc-in", d);
+    Object.assign(inner.style, { position: "absolute", inset: "0" });
+    const pic = (cls2) => {
+      const i = h("img", cls2, inner);
+      i.alt = "";
+      i.draggable = false;
+      // (no inline display: the hidden attribute must still hide a layer)
+      Object.assign(i.style, { position: "absolute", inset: "0", width: "100%", height: "100%" });
+      return i;
+    };
+    const base = pic("cl-doc-base");
+    const layer = pic("cl-doc-face");
+    layer.hidden = true;
+    const head = h("i", "cl-doc-head", d);
+    Object.assign(head.style, { position: "absolute", display: "block", pointerEvents: "none" });
+    const H = o.h || 0.66;
+    const set = (img, src) => {
+      const u = Kit.url(src);
+      if (img.dataset.src === u) return;
+      img.dataset.src = u;
+      img.src = u;
+      img.srcset = `${u} 1x, ${Kit.url(String(src).replace(/\.webp$/, "@2x.webp"))} 2x`;
+    };
+    const st = { view: null, name: null, talking: false, flap: null, blink: null };
+    const rest = () => {
+      const V = st.view;
+      const f = (V && V.faces) || {};
+      // DD1 calls with his mouth open; DD2's closed mouth is his face at rest
+      if (f.closed && !st.talking) {
+        set(layer, f.closed);
+        layer.hidden = false;
+      } else layer.hidden = true;
+    };
+    const show = (name) => {
+      const key = (A.poses && A.poses[name]) || name;
+      const V = A.views && (A.views[key] || A.views["3q-left"]);
+      if (!V) return;
+      st.name = key;
+      st.view = V;
+      set(base, V.file);
+      const r = 0.075; // his head's half height, as a share of the canvas
+      const rw = (r * V.canvas[1]) / V.canvas[0];
+      Object.assign(d.style, {
+        height: `${((H * V.h) / (A.fig_h || 676)) * 100}%`,
+        aspectRatio: `${V.w} / ${V.h}`,
+        transform: `translate(${-V.stand * 100}%, ${-V.feet * 100}%)`,
+      });
+      Object.assign(head.style, { left: `${(V.head[0] - rw) * 100}%`, top: `${(V.head[1] - r) * 100}%`, width: `${rw * 200}%`, height: `${r * 200}%` });
+      rest();
+    };
+    const blinkLoop = () => {
+      if (Kit.fast || st.blink) return;
+      const tick = () => {
+        if (!d.isConnected) return void (st.blink = null);
+        const f = st.view && st.view.faces;
+        if (f && f.blink && !st.talking) {
+          set(layer, f.blink);
+          layer.hidden = false;
+          setTimeout(() => !st.talking && rest(), 140);
+        }
+        st.blink = setTimeout(tick, 3200 + Math.random() * 2200);
+      };
+      st.blink = setTimeout(tick, 2400);
+    };
+    d.__doc = {
+      head,
+      /** A staging turn: "talk" (facing "left" | "right"), "front", "wave" (facing), "call". */
+      pose(pose, facing) {
+        // (the waiting room's call is his face-on view there: "front" keeps him standing and waving)
+        const name = pose === "front" ? (o.view === "call" ? "call" : "front") : pose === "call" ? "call" : pose === "wave" ? (facing === "left" ? "front" : "wave-right") : facing === "right" ? "talk-right" : "talk-left";
+        show(name);
+      },
+      get view() {
+        return st.name;
+      },
+    };
+    // the talk (Kit.Voice.say): his talking mouth on the view that has one (DF1; DD1's open mouth over DD2's closed),
+    // else the shared bob
+    d.__talk = () => {
+      const f = (st.view && st.view.faces) || {};
+      st.talking = true;
+      if (f.talk || f.closed) {
+        let open = false;
+        const flap = () => {
+          open = !open;
+          if (f.talk) {
+            set(layer, f.talk);
+            layer.hidden = !open;
+          } else layer.hidden = open; // the closed mouth off = DD1's open mouth
+        };
+        flap();
+        st.flap = setInterval(flap, Kit.fast ? 60 : 170);
+        return () => {
+          clearInterval(st.flap);
+          st.talking = false;
+          rest();
+        };
+      }
+      const stop = global.Lifecycle && global.Lifecycle.talk ? global.Lifecycle.talk.dom(inner) : null;
+      return () => {
+        st.talking = false;
+        if (stop) stop();
+      };
+    };
+    show(o.view || "talk-left");
+    blinkLoop();
     return d;
   };
 
@@ -371,7 +507,10 @@
         } catch (e) {
           /* no speaker */
         }
-        if (el && el.tagName === "IMG") stopTalk = global.Lifecycle.talk.dom(el);
+        // a figure with its own talking face (the doctor's DF1, the girl's GM1: data-talker, __talk) moves its mouth
+        const tk = el && el.closest ? el.closest("[data-talker]") : null;
+        if (tk && tk.__talk) stopTalk = tk.__talk();
+        else if (el && el.tagName === "IMG") stopTalk = global.Lifecycle.talk.dom(el);
       }
       const t0 = Date.now();
       let played = false;

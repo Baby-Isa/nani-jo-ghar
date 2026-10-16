@@ -541,7 +541,12 @@
       0.02
      ]
     },
-    "faces": {},
+    "faces": {
+     "happy": "assets/clinic/patients/girl/girl-stand-face-happy.webp",
+     "sad": "assets/clinic/patients/girl/girl-stand-face-sad.webp",
+     "hot": "assets/clinic/patients/girl/girl-stand-face-hot.webp",
+     "cold": "assets/clinic/patients/girl/girl-stand-face-cold.webp"
+    },
     "heads": {
      "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",
      "happy": "assets/clinic/patients/girl/girl-head-happy.webp",
@@ -549,10 +554,98 @@
      "pain": "assets/clinic/patients/girl/girl-head-pain.webp",
      "hot": "assets/clinic/patients/girl/girl-head-hot.webp",
      "cold": "assets/clinic/patients/girl/girl-head-cold.webp"
-    }
+    },
+    "fig_h": 600,
+    "life": {
+     "blink": "assets/clinic/patients/girl/girl-stand-face-blink.webp",
+     "talk": "assets/clinic/patients/girl/girl-stand-face-talk.webp"
+    },
+    "_faces": "s07-clinic-a (CLN-25, the send-off at the door): her sitting face layers (W2, W3, W5, W6 moods; GB1, GM1) moved onto the standing canvas by one scale and shift (template match on the face: scale 1.22, never stretched), so her standing face shows the feeling; the pain face (the wink, CLN-136) is not moved",
+    "turns": {
+     "3q-left": {
+      "file": "assets/clinic/patients/girl/girl-stand-3q-left.webp",
+      "canvas": [
+       735,
+       1438
+      ],
+      "src": [
+       125,
+       18
+      ],
+      "w": 323,
+      "h": 632,
+      "feet": 0.9736,
+      "fig_h": 600,
+      "anchors": {
+       "head": [
+        0.5741,
+        0.1961
+       ],
+       "eyes": [
+        0.5741,
+        0.1961
+       ],
+       "mouth": [
+        0.5673,
+        0.2552
+       ],
+       "forehead": [
+        0.5741,
+        0.1266
+       ],
+       "seat": [
+        0.5252,
+        0.6829
+       ]
+      }
+     },
+     "3q-right": {
+      "file": "assets/clinic/patients/girl/girl-stand-3q-right.webp",
+      "canvas": [
+       735,
+       1438
+      ],
+      "src": [
+       164,
+       18
+      ],
+      "w": 323,
+      "h": 632,
+      "feet": 0.9736,
+      "fig_h": 600,
+      "anchors": {
+       "head": [
+        0.4259,
+        0.1961
+       ],
+       "eyes": [
+        0.4259,
+        0.1961
+       ],
+       "mouth": [
+        0.4327,
+        0.2552
+       ],
+       "forehead": [
+        0.4259,
+        0.1266
+       ],
+       "seat": [
+        0.4735,
+        0.6829
+       ]
+      }
+     }
+    },
+    "_turns": "s07-clinic-a (GN1-QL, GN1-QR): her standing turns, three-quarter to the viewer's left (QL: a mirror of QR, made in the landing; her design is symmetrical) and right, each on its own canvas at the same drawn size (fig_h 600, as W11) on its feet line; anchors in canvas fractions (seat x = between her feet). The send-off turns her to the doctor with QL while they talk"
    },
    "bottle-v1": "assets/clinic/patients/girl/girl-front-bottle.webp",
-   "_s02_bottle": "S02-E (RW10): the bottle hug redone at W1's exact size and feet (registered to W1, girl-front-bottle-v2); bottle-v1 kept"
+   "_s02_bottle": "S02-E (RW10): the bottle hug redone at W1's exact size and feet (registered to W1, girl-front-bottle-v2); bottle-v1 kept",
+   "life": {
+    "blink": "assets/clinic/patients/girl/girl-face-blink.webp",
+    "talk": "assets/clinic/patients/girl/girl-face-talk.webp"
+   },
+   "_life": "s07-clinic-a (ART-19): GB1's blink and GM1's talking mouth as head layers on her sitting canvas (cut by artcut.py, build/tools/art/specs/s07.cut.json girl-wide): she blinks now and then, and while she talks her mouth flaps"
   }
  },
  "closeups": {
@@ -990,6 +1083,107 @@
     0.4619
    ],
    "_about": "R4: the open window over CB2b, box = x0, y0, x1, y1 in CB2b's fractions (the room's own pixels)"
+  }
+ },
+ "doctor": {
+  "_about": "s07-clinic-a (CLN-150): the real doctor, one man everywhere, cut by build/tools/art/artcut.py from sources/art/s07 (build/tools/art/specs/s07.cut.json). views: each standing view on its own canvas at ONE drawn size (fig_h: his body, head top to feet, in px at 1x of the 1024 px room), so every view is the same man at the same height; feet = the feet line and stand = the x between his feet (canvas fractions): every view is placed by them, so a turn swaps in place, never stretched. head = his head's middle (bubbles). faces: head layers on that view's canvas (DF1 talk and DF3 blink on DW1; DD2's closed mouth on DD1). poses: which view each staging turn draws (talk-left = turned three-quarter to the viewer's left, to a patient on his right; front = to the player; call = the waiting room's DD1, standing and waving, Zafar 15 Oct). box: his box and card faces (neutral, talk, laugh, think) cut from doctor-ref-faces-v1.png (Kit.DOCTOR_FACE, Kit.doctorFace).",
+  "fig_h": 676,
+  "views": {
+   "3q-left": {
+    "file": "assets/clinic/patients/doctor/doctor-3q-left-front.webp",
+    "canvas": [
+     543,
+     1462
+    ],
+    "w": 263,
+    "h": 708,
+    "feet": 0.9761,
+    "stand": 0.6924,
+    "head": [
+     0.512,
+     0.0971
+    ],
+    "faces": {
+     "talk": "assets/clinic/patients/doctor/doctor-3q-left-face-talk.webp",
+     "blink": "assets/clinic/patients/doctor/doctor-3q-left-face-blink.webp"
+    }
+   },
+   "front": {
+    "file": "assets/clinic/patients/doctor/doctor-front-front.webp",
+    "canvas": [
+     562,
+     1448
+    ],
+    "w": 275,
+    "h": 708,
+    "feet": 0.9765,
+    "stand": 0.5071,
+    "head": [
+     0.5142,
+     0.0974
+    ]
+   },
+   "3q-right": {
+    "file": "assets/clinic/patients/doctor/doctor-3q-right-front.webp",
+    "canvas": [
+     496,
+     1429
+    ],
+    "w": 246,
+    "h": 708,
+    "feet": 0.9769,
+    "stand": 0.3609,
+    "head": [
+     0.498,
+     0.0973
+    ]
+   },
+   "wave-3q-right": {
+    "file": "assets/clinic/patients/doctor/doctor-wave-3q-right-front.webp",
+    "canvas": [
+     615,
+     1424
+    ],
+    "w": 306,
+    "h": 708,
+    "feet": 0.9768,
+    "stand": 0.587,
+    "head": [
+     0.5366,
+     0.0969
+    ]
+   },
+   "wave-front": {
+    "file": "assets/clinic/patients/doctor/doctor-wave-front-front.webp",
+    "canvas": [
+     550,
+     1199
+    ],
+    "w": 325,
+    "h": 708,
+    "feet": 0.975,
+    "stand": 0.5345,
+    "head": [
+     0.5582,
+     0.1101
+    ],
+    "faces": {
+     "closed": "assets/clinic/patients/doctor/doctor-wave-front-face-closed.webp"
+    }
+   }
+  },
+  "poses": {
+   "talk-left": "3q-left",
+   "talk-right": "3q-right",
+   "front": "front",
+   "wave-right": "wave-3q-right",
+   "call": "wave-front"
+  },
+  "box": {
+   "neutral": "assets/clinic/patients/doctor/faces/neutral.webp",
+   "talk": "assets/clinic/patients/doctor/faces/talk.webp",
+   "laugh": "assets/clinic/patients/doctor/faces/laugh.webp",
+   "think": "assets/clinic/patients/doctor/faces/think.webp"
   }
  }
 }

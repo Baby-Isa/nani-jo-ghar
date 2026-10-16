@@ -232,18 +232,22 @@
     return f;
   };
 
-  /** The doctor's face for the card (no sprite yet: a greybox face). */
+  /** The doctor's face for a card (CLN-150: the real man's face, Kit.doctorFace; neutral, talk, laugh or think). */
   S.doctorFace = function (mood) {
     const f = h("div", "cl-face doctor");
-    const src = Kit.person("doctor", mood || "neutral");
-    if (src) {
-      const img = h("img", "", f);
-      img.alt = "";
-      img.src = Kit.url(src);
-      return f;
-    }
-    f.innerHTML = '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#c99a74"/><path d="M5 14 Q20 -2 35 14 L35 10 Q20 -6 5 10Z" fill="#2b1d16"/><circle cx="14" cy="18" r="4.5" fill="none" stroke="#333" stroke-width="1.6"/><circle cx="26" cy="18" r="4.5" fill="none" stroke="#333" stroke-width="1.6"/><path d="M18.5 18 h3" stroke="#333" stroke-width="1.6"/><path d="M13 28 Q20 33 27 28" fill="none" stroke="#5a3a33" stroke-width="2" stroke-linecap="round"/><path d="M12 26 Q20 22 28 26" fill="#2b1d16"/></svg>';
+    const img = h("img", "", f);
+    img.alt = "";
+    img.src = Kit.doctorFace(mood || "neutral");
     return f;
+  };
+  /**
+   * The doctor standing in a room (CLN-150): his real art (Kit.doctorFigure) placed by his feet at cfg {x, y (the feet
+   * line), h (his height), z}, as shares of the room picture; his bubbles come from his head. Returns the element.
+   */
+  S.doctor = function (box, cfg, cls, view) {
+    const el = S.place(Kit.doctorFigure(box, cls, { h: cfg.h, view }), { x: cfg.x, y: cfg.y, z: cfg.z != null ? cfg.z : 2 });
+    Kit.Voice.speakers.doctor = () => el.__doc.head;
+    return el;
   };
   /** A person's face for the card or a bench seat: the rough sprite, else a small greybox figure. */
   S.personFace = function (kind, mood) {
@@ -341,6 +345,8 @@
       void el.offsetWidth;
       el.classList.add("pose-swap");
     }
+    // the real doctor (CLN-150): his own turned view, swapped in place on his feet line (Kit.doctorFigure)
+    if (el.__doc) el.__doc.pose(pose, o.facing || el.dataset.facing);
     const kind = el.dataset.kind;
     const poses = kind && Kit.art && Kit.art.poses && Kit.art.poses[kind];
     const img = el.querySelector("img");

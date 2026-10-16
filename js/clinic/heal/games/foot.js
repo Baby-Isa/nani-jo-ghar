@@ -174,7 +174,16 @@
     const fxG = s("g", {}, S.fx);
     const dirt = [];
     {
-      const blob = (x, y, r) => dirt.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (r * (0.8 + ctx.rng() * 0.5)).toFixed(1), ry: (r * (0.55 + ctx.rng() * 0.35)).toFixed(1), fill: ctx.rng() < 0.5 ? "#7a5a3a" : "#8f6c48", opacity: (0.75 + ctx.rng() * 0.2).toFixed(2) }, dirtG) });
+      // I1 (s07-clinic-a): a soft bit of dust or grit (heal-v3/dirt-<n>), never a flat disc; the same four draws as the
+      // disc's (its size, its squash, its colour, its opacity), so the game's other draws don't move
+      const blob = (x, y, r) => {
+        const w = r * (0.8 + ctx.rng() * 0.5) * 2.6;
+        const hh = w * (0.7 + ctx.rng() * 0.3);
+        const n = 1 + Math.floor(ctx.rng() * 8);
+        const op = (0.8 + ctx.rng() * 0.2).toFixed(2);
+        const href = Kit ? Kit.url(`assets/clinic/heal-v3/dirt-${n}.webp`) : `assets/clinic/heal-v3/dirt-${n}.webp`;
+        dirt.push({ x, y, el: s("image", { href, x: (x - w / 2).toFixed(1), y: (y - hh / 2).toFixed(1), width: w.toFixed(1), height: hh.toFixed(1), preserveAspectRatio: "none", opacity: op, class: "fo-dirt-bit" }, dirtG) });
+      };
       // thick over every splinter's spot and its channel, so it's hidden until washed
       P.splinters.forEach((q) => q.pts.forEach((pt, k) => k < 3 && [0, 1, 2, 3].forEach(() => blob(pt[0] + (ctx.rng() - 0.5) * 50, pt[1] + (ctx.rng() - 0.5) * 50, 20 + ctx.rng() * 12))));
       for (let k = 0; k < 40; k++) blob(200 + ctx.rng() * 400, 80 + ctx.rng() * 380, 8 + ctx.rng() * 14);

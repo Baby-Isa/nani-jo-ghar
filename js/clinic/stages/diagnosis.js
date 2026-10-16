@@ -53,11 +53,11 @@
         layer.classList.add("v2");
         S.place(layer, { x: figCfg.x, y: figCfg.bottom, h: figCfg.h, w: figCfg.h * (620 / 900) / 1.5, z: 3 });
         if (docCfg) {
-          const docEl = S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: docCfg.x, y: docCfg.y, h: docCfg.h, z: 2 });
+          // CLN-150: the real doctor (S.doctor: his own views on one feet line; his bubbles from his head)
+          const docEl = S.doctor(box, docCfg, "cl-doc-stand", "talk-left");
           // UX 16 (the staging hook): the doctor is turned three-quarter to the patient while they talk;
           // on the child's turn (the card is up, a moment later) he turns to the player
           S.pose(docEl, "talk", { facing: "left" });
-          Kit.Voice.speakers.doctor = () => docEl;
           setTimeout(() => docEl.isConnected && S.pose(docEl, "front"), Kit.fast ? 50 : 1200);
         }
       }

@@ -25,7 +25,7 @@
     "child": 0.8,
     "tall": 1.12,
     "short": 0.84,
-    "doctor": { "x": 0.806, "y": 0.2, "h": 0.2 },
+    "doctor": { "x": 0.805, "y": 0.755, "h": 0.57, "_about": "s07-clinic-a (CLN-115, Zafar 15 Oct: standing and waving, not coming out from the door): the real doctor stands in front of his open door, face-on (DD1); y = his feet line just in front of the threshold (0.70), h = his height (the door is about 0.66 of the room)" },
     "exit": { "x": 0.815, "y": 0.7 }
   },
   "exam": {
@@ -51,8 +51,8 @@
   },
   "door": {
     "_about": "CB5, clinic fixes 13d: the doctor and the patient stand on the LEFT, in the free wall space (not by the door, where the face circle sat on the green cross sign), turned to each other while they talk. The feeling cards open in a thought bubble from the patient's head, out to the right (levels 1-2); from level 3 the help items sit in a tray along the bottom of the screen.",
-    "patient": { "x": 0.37, "y": 0.84, "h": 0.46 },
-    "doctor": { "x": 0.22, "y": 0.88, "h": 0.64 },
+    "patient": { "x": 0.39, "y": 0.85, "h": 0.46, "body": 0.42, "_about": "s07-clinic-a (CLN-25): body = her standing art's height (head to feet) as a share of the room, a child beside the doctor" },
+    "doctor": { "x": 0.205, "y": 0.88, "h": 0.64 },
     "cards": { "x": 0.6, "y": 0.95 }
   }
 }

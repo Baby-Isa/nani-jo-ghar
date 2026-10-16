@@ -34,72 +34,68 @@
     async run(env, plan, patient) {
       const { screen, data } = env;
       const res = S.result("sendoff");
-      // CLN-81, CLN-98 (6 Oct, CL1, SO1): a patient with her finished art says goodbye on it. Her art sits only (the
-      // standing pose comes with the art run), so until then the send-off is where she already sits: the bed's edge in
-      // the doctor's room, the doctor beside her (as in the diagnosis); her own faces show the feeling. Without art:
-      // the door, the stand-in body and the face circle, as before.
+      // CLN-25 (Zafar, 15 Oct): the send-off is back at the front door (CB5): she stands on her standing art (heal-art.json
+      // patients[kind].stand: face-on with her own faces for the feeling, her turns while she talks to him, the wave at
+      // the goodbye), the real doctor beside her (CLN-150), both on the left in the free wall space, clear of the green
+      // cross sign. Without standing art: the stand-in body and the face circle, as before.
       const fig = env.fig;
       const artSpec = await S.artFor(fig.kind);
       const heads = (artSpec && artSpec.heads) || null;
-      const onArt = !!(artSpec && artSpec.front);
-      // S02-E (W12, CLN-98): at the goodbye she stands up off the bed and waves (heal-art.json patients[kind].stand.wave)
-      const waveArt = onArt && artSpec.stand && artSpec.stand.wave ? Object.assign({}, artSpec.stand, { front: artSpec.stand.wave, heads: artSpec.stand.heads || artSpec.heads }) : null;
-      let waveOn = () => {};
-      // (its picture loads now, so she never blinks out at the goodbye; useArt draws the @2x)
-      if (waveArt && global.Image) new global.Image().src = Kit.url(String(waveArt.front).replace(/\.webp$/, "@2x.webp"));
-      const stage = S.room(screen, onArt ? "exam" : "door");
+      const standSpec = artSpec && artSpec.stand && artSpec.stand.front ? artSpec.stand : null;
+      const onArt = !!standSpec;
+      const stage = S.room(screen, "door");
       stage.dataset.mode = plan.mode;
       screen.trayWrap.classList.add("hidden");
       const box = stage.scene || stage;
-      let cfg;
-      let docEl;
-      let layer;
-      if (onArt && stage.sceneCfg && stage.sceneCfg.fig) {
-        const ex = stage.sceneCfg;
-        cfg = { patient: { x: ex.fig.x, y: ex.fig.bottom, h: ex.fig.h }, doctor: ex.doctor, cards: { x: 0.6, y: 0.95 } };
-        docEl = S.place(Kit.doctorFigure(box, "cl-doc-stand"), { x: ex.doctor.x, y: ex.doctor.y, h: ex.doctor.h, z: 2 });
-        layer = S.place(h("div", "cl-patient-layer v2", box), { x: ex.fig.x, y: ex.fig.bottom, h: ex.fig.h, w: ex.fig.h * (620 / 900) / 1.5, z: 3 });
-        layer.appendChild(fig.el);
-        fig.focus(null, null, 1, 0);
-        fig.pose("sit");
-        fig.useArt(artSpec, { view: "front", figH: ex.fig.h });
-        fig.artBody && fig.artBody("front");
-        const seat = () => {
-          layer.style.top = `${ex.fig.bottom * 100}%`;
-          const q = fig.hotspot("seat", "left", box);
-          const H = box.clientHeight || 1;
-          if (q && isFinite(q.y)) layer.style.top = `${(ex.fig.bottom + (ex.seat * H - q.y) / H) * 100}%`;
+      const cfg = stage.sceneCfg && stage.sceneCfg.patient ? stage.sceneCfg : { patient: { x: 0.64, y: 0.8, h: 0.46 }, doctor: { x: 0.44, y: 0.86, h: 0.64 }, cards: { x: 0.36, y: 0.9 } };
+      // the doctor at the door, turned three-quarter to her (she stands on his left: the viewer's right)
+      const docEl = S.doctor(box, cfg.doctor, "cl-doc-door", "talk-right");
+      const layer = S.place(h("div", "cl-patient-layer v2", box), { x: cfg.patient.x, y: cfg.patient.y, h: cfg.patient.h, w: cfg.patient.h * (620 / 900) / 1.5, z: 3 });
+      layer.appendChild(fig.el);
+      fig.focus(null, null, 1, 0);
+      fig.pose("stand");
+      let waveOn = () => {};
+      let turn = () => {};
+      if (onArt) {
+        // her standing views, each its own canvas on one feet line and one drawn size (fig_h): face-on (with her faces),
+        // her turns (GN1: three-quarter to the viewer's left, to the doctor), the wave (W12)
+        const B = cfg.patient.body || 0.42; // her body's height as a share of the room (a child beside the doctor)
+        const k = (B * 1024) / (standSpec.fig_h || 600);
+        const figH = cfg.patient.h / k;
+        const viewOf = (v) => (v && v.file ? Object.assign({}, v, { front: v.file, faces: v.faces || {}, heads: standSpec.heads || artSpec.heads }) : null);
+        const front = Object.assign({}, standSpec, { heads: standSpec.heads || artSpec.heads });
+        const turns = standSpec.turns || {};
+        const talkView = viewOf(turns["3q-left"]);
+        const waveView = standSpec.wave ? Object.assign({}, standSpec, { front: standSpec.wave, faces: {}, life: null, heads: front.heads }) : null;
+        // (their pictures load now, so she never blinks out at a turn; useArt draws the @2x)
+        [talkView, waveView].forEach((v) => v && global.Image && (new global.Image().src = Kit.url(String(v.front).replace(/\.webp$/, "@2x.webp"))));
+        let now = null;
+        const use = (v) => {
+          if (!v || now === v) return;
+          now = v;
+          fig.useArt(v, { view: "front", figH });
         };
-        seat();
-        box.addEventListener("scenefit", seat);
-        if (waveArt) {
-          waveOn = () => {
-            if (fig.waving) return;
-            fig.waving = true;
-            box.removeEventListener("scenefit", seat);
-            // standing on the floor in front of the bed (scenes-v2 exam.floor)
-            layer.style.top = `${(ex.floor || 0.8) * 100}%`;
-            fig.useArt(waveArt, { view: "front", figH: ex.fig.h });
-          };
-        }
-      } else {
-        cfg = stage.sceneCfg && stage.sceneCfg.patient ? stage.sceneCfg : { patient: { x: 0.64, y: 0.8, h: 0.46 }, doctor: { x: 0.44, y: 0.86, h: 0.64 }, cards: { x: 0.36, y: 0.9 } };
-        docEl = S.place(Kit.doctorFigure(box, "cl-doc-door"), { x: cfg.doctor.x, y: cfg.doctor.y, h: cfg.doctor.h, z: 2 });
-        layer = S.place(h("div", "cl-patient-layer v2", box), { x: cfg.patient.x, y: cfg.patient.y, h: cfg.patient.h, w: cfg.patient.h * (620 / 900) / 1.5, z: 3 });
-        if (fig.dropArt) fig.dropArt();
-        layer.appendChild(fig.el);
-        fig.focus(null, null, 1, 0);
-        fig.pose("stand");
-      }
+        use(front);
+        turn = (to) => !fig.waving && use(to === "talk" && talkView ? talkView : front);
+        waveOn = () => {
+          if (fig.waving || !waveView) return;
+          fig.waving = true;
+          use(waveView);
+        };
+      } else if (fig.dropArt) fig.dropArt();
       fig.swirl(null, null, false);
       fig.react("idle", 0);
-      // T28, CLN-98: her lines in her bubble at her face, his at his
+      // T28, CLN-98: her lines in her bubble at her face, his at his (S.doctor: his head)
       Kit.Voice.speakers.patient = () => (onArt && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el);
-      Kit.Voice.speakers.doctor = () => docEl;
       // the doctor is on screen: his box holds only the child's next step, [Pick how she feels] at L1 (T28)
       screen.setNani(plan.level <= 1 ? S.line(env, "pick-feel") : null);
-      // UX 16: while they talk, the doctor and the patient stand three-quarter turned to each other
-      S.stage(docEl, layer, "talk");
+      // UX 16: while they talk, the doctor and the patient stand three-quarter turned to each other (her turn, on her
+      // art, is her own three-quarter view; on the child's turn both face the player)
+      const stageTurn = (to) => {
+        S.stage(docEl, layer, to);
+        turn(to);
+      };
+      stageTurn("talk");
       // level 1's hint that the feeling shows sits ON the patient's own face (13d): on her art, her own face for the
       // feeling (heal-art.json faces); on the stand-in, a circle over the head; never a second face floating beside
       const circle = h("div", "cl-feel-circle on-face", layer);
@@ -162,7 +158,7 @@
           S.say(S.line(env, "whisper-ask"), "guide");
         }
         // the child's turn (E4: they ask her): both turn to face the player (UX 16, SH-71; contract-10)
-        S.stage(docEl, layer, "player");
+        stageTurn("player");
         S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: "howfeel" }));
         const out = await S.moment(env, {
           choices: r.options,
@@ -191,7 +187,7 @@
       void feel;
       S.say(feelLine(plan.feeling), "patient");
       // the child's turn: they turn to face the player (UX 16), and the choice opens at once (13i)
-      S.stage(docEl, layer, "player");
+      stageTurn("player");
       // levels 1-2: the four feeling cards in a thought bubble rising from the patient's head, opening out to
       // the right (13d); level 3: the help items in a tray along the bottom of the screen (13e)
       let cards;
@@ -206,15 +202,6 @@
         const hy = (hb.top - bb.top) / Math.max(1, bb.height);
         cards.style.left = `${Math.min(0.62, hx + 0.03) * 100}%`;
         cards.style.bottom = `${Math.max(0.25, 1 - hy + 0.03) * 100}%`;
-        if (onArt) {
-          // on the bed she sits high in the room: the thought bubble opens beside her head, to the left, kept on screen
-          cards.classList.add("beside");
-          const hl = (hb.left - bb.left) / Math.max(1, bb.width);
-          cards.style.left = "";
-          cards.style.right = `${(1 - hl + 0.035) * 100}%`;
-          cards.style.bottom = "";
-          cards.style.top = `${Math.max(0.08, hy) * 100}%`;
-        }
         h("i", "cl-thought-dot d1", cards);
         h("i", "cl-thought-dot d2", cards);
       }
@@ -291,7 +278,17 @@
           b.type = "button";
           b.dataset.face = f;
           b.setAttribute("aria-label", data.feelings[f].english);
-          Kit.feelingFace(f, b);
+          // CLN-01 (frame 5), the s07 plan: the four feelings are her own faces (her heads, heal-art.json), never flat
+          // stand-in faces; the flat ones only for a patient with no art
+          const own = heads && heads[f === "happy" ? "happy" : f];
+          if (own) {
+            const d = h("div", `cl-feel feel-${f} own`, b);
+            const im = h("img", "", d);
+            im.alt = "";
+            im.draggable = false;
+            im.src = Kit.url(own);
+            Object.assign(im.style, { width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%", display: "block" });
+          } else Kit.feelingFace(f, b);
           return b;
         });
         S.setExpect("sendoff", () => {
@@ -354,14 +351,14 @@
       // CLN-111 (S05-D): the feeling is picked: the doctor's box no longer says "pick how she feels" (it stayed behind
       // the end card)
       if (screen.setNani) screen.setNani(null);
-      S.stage(docEl, layer, "talk");
+      stageTurn("talk");
 
       // the goodbye, in the scene (from level 2: E2 and E3 merged); the reply pills only now, when a reply is
       // needed, with nothing else on screen (13f)
       if (plan.goodbye) {
         const r = rowOf("bye");
         S.say(plan.card.find((x) => x.id === "bye"), "doctor");
-        S.stage(docEl, layer, "player");
+        stageTurn("player");
         S.setExpect("sendoff", () => ({ stage: "sendoff", kind: "say", choice: plan.goodbye }));
         const out = await S.moment(env, {
           choices: r.options,
@@ -382,6 +379,8 @@
       }
       waveOn();
       fig.pose("wave");
+      // the doctor waves her off, turned to her as she goes out of the door (DA6)
+      S.pose(docEl, "wave", { facing: "right" });
       layer.classList.add("leaving");
       S.current = null;
       S.endOnboard();
