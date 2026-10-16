@@ -18,7 +18,7 @@
    "faces": {
     "happy": "assets/clinic/patients/girl/girl-face-happy.webp",
     "sad": "assets/clinic/patients/girl/girl-face-sad.webp",
-    "pain": "assets/clinic/patients/girl/girl-face-pain.webp",
+    "pain": "assets/clinic/patients/girl/girl-face-sore.webp",
     "hot": "assets/clinic/patients/girl/girl-face-hot.webp",
     "cold": "assets/clinic/patients/girl/girl-face-cold.webp"
    },
@@ -97,7 +97,7 @@
     "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",
     "happy": "assets/clinic/patients/girl/girl-head-happy.webp",
     "sad": "assets/clinic/patients/girl/girl-head-sad.webp",
-    "pain": "assets/clinic/patients/girl/girl-head-pain.webp",
+    "pain": "assets/clinic/patients/girl/girl-head-sore.webp",
     "hot": "assets/clinic/patients/girl/girl-head-hot.webp",
     "cold": "assets/clinic/patients/girl/girl-head-cold.webp"
    },
@@ -545,13 +545,14 @@
      "happy": "assets/clinic/patients/girl/girl-stand-face-happy.webp",
      "sad": "assets/clinic/patients/girl/girl-stand-face-sad.webp",
      "hot": "assets/clinic/patients/girl/girl-stand-face-hot.webp",
-     "cold": "assets/clinic/patients/girl/girl-stand-face-cold.webp"
+     "cold": "assets/clinic/patients/girl/girl-stand-face-cold.webp",
+     "pain": "assets/clinic/patients/girl/girl-stand-face-sore.webp"
     },
     "heads": {
      "neutral": "assets/clinic/patients/girl/girl-head-neutral.webp",
      "happy": "assets/clinic/patients/girl/girl-head-happy.webp",
      "sad": "assets/clinic/patients/girl/girl-head-sad.webp",
-     "pain": "assets/clinic/patients/girl/girl-head-pain.webp",
+     "pain": "assets/clinic/patients/girl/girl-head-sore.webp",
      "hot": "assets/clinic/patients/girl/girl-head-hot.webp",
      "cold": "assets/clinic/patients/girl/girl-head-cold.webp"
     },
@@ -560,7 +561,7 @@
      "blink": "assets/clinic/patients/girl/girl-stand-face-blink.webp",
      "talk": "assets/clinic/patients/girl/girl-stand-face-talk.webp"
     },
-    "_faces": "s07-clinic-a (CLN-25, the send-off at the door): her sitting face layers (W2, W3, W5, W6 moods; GB1, GM1) moved onto the standing canvas by one scale and shift (template match on the face: scale 1.22, never stretched), so her standing face shows the feeling; the pain face (the wink, CLN-136) is not moved",
+    "_faces": "s07-clinic-a (CLN-25, the send-off at the door): her sitting face layers (W2, W3, W5, W6 moods; GB1, GM1) moved onto the standing canvas by one scale and shift (template match on the face: scale 1.22, never stretched), so her standing face shows the feeling; s08-clinic-items: the pain face is GS1's (both eyes open, CLN-136), moved the same way",
     "turns": {
      "3q-left": {
       "file": "assets/clinic/patients/girl/girl-stand-3q-left.webp",
@@ -645,7 +646,8 @@
     "blink": "assets/clinic/patients/girl/girl-face-blink.webp",
     "talk": "assets/clinic/patients/girl/girl-face-talk.webp"
    },
-   "_life": "s07-clinic-a (ART-19): GB1's blink and GM1's talking mouth as head layers on her sitting canvas (cut by artcut.py, build/tools/art/specs/s07.cut.json girl-wide): she blinks now and then, and while she talks her mouth flaps"
+   "_life": "s07-clinic-a (ART-19): GB1's blink and GM1's talking mouth as head layers on her sitting canvas (cut by artcut.py, build/tools/art/specs/s07.cut.json girl-wide): she blinks now and then, and while she talks her mouth flaps",
+   "_pain": "s08-clinic-items (GS1, CLN-136: she never winks): her pain face is GS1 (girl-w4-front-sore-v2: both eyes open, an 'ow'), the redo of W4 whose one shut eye read as a wink; cut on W1's canvas by build/tools/art/specs/s08.cut.json girl-wide-sore (shift 0,0, skin matched to W1), and moved onto the standing canvas by the s07 move (scale 1.22, found again by fitting her sitting sad face onto her standing one). The diagnosis shows it as her sore face (HURT = ouch)."
   }
  },
  "closeups": {
@@ -1086,7 +1088,7 @@
   }
  },
  "doctor": {
-  "_about": "s08-doctor-stitch (Zafar, 16 Oct: the old doctor beside the girl 'looks copy and pasted ... we need it all good and consistent'; keep the cartoony look): the doctor's new cartoon views from sources/art/s08 (doctor-*-v2.png), cut by build/tools/art/artcut.py (build/tools/art/specs/s08.cut.json), one man everywhere. views: each standing view on its own canvas at ONE drawn size (fig_h: his body, head top to feet, in px at 1x of the 1024 px room), so every view is the same man at the same height; feet = the feet line and stand = the x between his feet (canvas fractions): every view is placed by them, so a turn swaps in place, never stretched. head = his head's middle (bubbles). faces: head layers drawn on that view's own canvas (talk and blink edits of the neutral, taken with no shift and their skin matched to it; the wave's closed mouth on the calling wave). 3q-left has no faces yet: its talk and blink (DT-QL, DB-QL) are still being made; when they land, re-run the s08 cut and add views['3q-left'].faces {talk, blink} here (data only: Kit.doctorFigure flaps and blinks any view that has them). front-point, front-gesture, 3q-right-point, 3q-right-gesture: the new pointing and talking-hands poses on their view's canvas, cut and ready but not staged (no stage asks for them yet). poses: which view each staging turn draws (talk-left = turned three-quarter to the viewer's left, to a patient on his right; front = to the player; call = the waiting room's wave, Zafar 15 Oct). box: his box and card faces (neutral, talk, laugh, think), still the s07 faces from doctor-ref-faces-v1.png until the new face sheet (doctor-faces-v3.png) lands (Kit.DOCTOR_FACE, Kit.doctorFace).",
+  "_about": "s08-doctor-stitch (Zafar, 16 Oct: the old doctor beside the girl 'looks copy and pasted ... we need it all good and consistent'; keep the cartoony look): the doctor's new cartoon views from sources/art/s08 (doctor-*-v2.png), cut by build/tools/art/artcut.py (build/tools/art/specs/s08.cut.json), one man everywhere. views: each standing view on its own canvas at ONE drawn size (fig_h: his body, head top to feet, in px at 1x of the 1024 px room), so every view is the same man at the same height; feet = the feet line and stand = the x between his feet (canvas fractions): every view is placed by them, so a turn swaps in place, never stretched. head = his head's middle (bubbles). faces: head layers drawn on that view's own canvas (talk and blink edits of the neutral, taken with no shift and their skin matched to it; the wave's closed mouth on the calling wave). 3q-left's talk and blink are DT-QL and DB-QL (s08-clinic-items: shift 0,0, skin matched; Kit.doctorFigure flaps and blinks any view that has them). front-point, front-gesture, 3q-right-point, 3q-right-gesture: the new pointing and talking-hands poses on their view's canvas, cut and ready but not staged (no stage asks for them yet). poses: which view each staging turn draws (talk-left = turned three-quarter to the viewer's left, to a patient on his right; front = to the player; call = the waiting room's wave, Zafar 15 Oct). box: his box and card faces (neutral, talk, laugh, think) from his new face sheet doctor-faces-v3.png (cells 1, 2, 3, 8, as v1), cut by component (s08.cut.json doctor3-faces; Kit.DOCTOR_FACE, Kit.doctorFace).",
   "fig_h": 676,
   "views": {
    "3q-left": {
@@ -1102,7 +1104,11 @@
     "head": [
      0.4502,
      0.0966
-    ]
+    ],
+    "faces": {
+     "talk": "assets/clinic/patients/doctor/v2/doctor-3q-left-face-talk.webp",
+     "blink": "assets/clinic/patients/doctor/v2/doctor-3q-left-face-blink.webp"
+    }
    },
    "front": {
     "file": "assets/clinic/patients/doctor/v2/doctor-front-front.webp",
@@ -1248,10 +1254,10 @@
    "gesture-right": "3q-right-gesture"
   },
   "box": {
-   "neutral": "assets/clinic/patients/doctor/faces/neutral.webp",
-   "talk": "assets/clinic/patients/doctor/faces/talk.webp",
-   "laugh": "assets/clinic/patients/doctor/faces/laugh.webp",
-   "think": "assets/clinic/patients/doctor/faces/think.webp"
+   "neutral": "assets/clinic/patients/doctor/v2/faces/neutral.webp",
+   "talk": "assets/clinic/patients/doctor/v2/faces/talk.webp",
+   "laugh": "assets/clinic/patients/doctor/v2/faces/laugh.webp",
+   "think": "assets/clinic/patients/doctor/v2/faces/think.webp"
   }
  },
  "waiting": {

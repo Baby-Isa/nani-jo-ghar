@@ -25,7 +25,9 @@
   // the sitting art's size over its room size in the diagnosis (D1: "maybe make her bigger"); scenes-v2 exam.fig.big
   // sets it (s08-doctor-stitch, Zafar 16 Oct: both a tad smaller), and exam.fig.tapBig keeps her tap areas at that size
   const BIG = 1.3;
-  const HURT = "sad"; // CLN-136: the diagnosis's sore face (never the pain face: it reads as a wink)
+  // CLN-136: the diagnosis's sore face. It was the sad one while the art's pain face winked; s08-clinic-items: the pain
+  // face is GS1 now (both eyes open, an "ow"), sitting and standing, so she looks sore (ouch, held: react(HURT, 0))
+  const HURT = "ouch";
   const FINDS = { hand: "👀", torch: "✨", stethoscope: "〰️", thermometer: "🔥" };
 
   S.diagnosis = {
@@ -137,7 +139,7 @@
       if (zoom.on) await fig.focus(null, null, 1, Kit.fast ? 60 : 350);
       if (zoom.el) zoom.el.remove();
       // decision 52 (D2, CLN-83): the outcome is clear, so no "To the counter" click: the doctor names it and it moves on
-      // CLN-136 (S05-D3): her sore face here is the sad one: the art's pain face (one eye screwed shut) read as a wink
+      // CLN-136 (S05-D3): her sore face here (HURT: GS1's, both eyes open; the old one eye screwed shut read as a wink)
       fig.react(HURT, 0);
       await S.say(plan.name, "doctor");
       await Kit.wait(Kit.fast ? 60 : 900);

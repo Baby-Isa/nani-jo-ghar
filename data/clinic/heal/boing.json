@@ -183,6 +183,15 @@
     502
    ],
    "why": "S03-D (review flaw 3, the s02 RU1): the girl's bare upper arm, sleeve pushed up, hanging; it runs off the stage's top and bottom (the cut's exits); the jab spot (300, 395) on the upper arm"
+  },
+  "drops": {
+   "red": "assets/clinic/sheets/drops-machine/drop-red.webp",
+   "yellow": "assets/clinic/sheets/drops-machine/drop-yellow.webp",
+   "blue": "assets/clinic/sheets/drops-machine/drop-blue.webp",
+   "green": "assets/clinic/sheets/drops-machine/drop-green.webp",
+   "aspect": 0.656,
+   "opacity": 0.9,
+   "why": "s08-clinic-items (DM2 v2): the matte drops that fall into the syringe, in the drawn teardrop's box (aspect = width / height); a little see-through in the barrel (opacity). A colour without art (purple) stays drawn. DM2's levers are not used: today's drawn levers carry their tube's colour"
   }
  },
  "lines": {
@@ -206,6 +215,10 @@
   "assets/clinic/closeups/child/upperarm-v2*.webp",
   "assets/clinic/heal-v3/drop-machine.webp",
   "assets/clinic/items-v2/apple.webp",
+  "assets/clinic/sheets/drops-machine/drop-blue.webp",
+  "assets/clinic/sheets/drops-machine/drop-green.webp",
+  "assets/clinic/sheets/drops-machine/drop-red.webp",
+  "assets/clinic/sheets/drops-machine/drop-yellow.webp",
   "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
   "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
   "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp",

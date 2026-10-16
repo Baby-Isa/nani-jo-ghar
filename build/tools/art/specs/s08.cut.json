@@ -229,6 +229,144 @@
    "out": "patients/doctor/v2/doctor-wave-front",
    "face_align": "none",
    "face_match": true
+  },
+  {
+   "id": "doctor3-faces",
+   "type": "grid",
+   "src": "doctor-faces-v3.png",
+   "about": "s08-clinic-items: his box and card faces from the new face sheet (4x3, cell for cell as v1/v2: 1 neutral, 2 talk, 3 laugh, 8 think). Cut by component (whole blobs by centroid), not by gutters: the column-4 gutter wanders (x 1116-1161) and cell 12 touches the right edge. Same size as the s07 faces (max 144).",
+   "cells": [
+    4,
+    3
+   ],
+   "names": [
+    "neutral",
+    "talk",
+    "laugh",
+    null,
+    null,
+    null,
+    null,
+    "think",
+    null,
+    null,
+    null,
+    null
+   ],
+   "pad": 8,
+   "max": 144,
+   "min_area": 4000,
+   "outdir": "patients/doctor/v2/faces"
+  },
+  {
+   "id": "girl-wide-sore",
+   "type": "figure",
+   "data": "girl",
+   "_note": "s08-clinic-items (GS1, CLN-136: she never winks): the clinic-heal-v3 girl-wide job again (same base, poses and anchors, so the canvas is the same as girl-front; checked: 0 px differ), with only GS1's sore face (both eyes open, an 'ow') as a face layer, drawn as an edit of W1 on its own canvas (measured shift 0.0,0.0 px: face_align none) and its skin matched to W1 (face_match). Only girl-face-sore(@2x) and girl-head-sore are copied into assets.",
+   "src": "../clinic-heal-v3/girl-w1-front-neutral-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 540,
+   "age": "child",
+   "faces": {
+    "sore": "items/girl-w4-front-sore-v2.png"
+   },
+   "poses": {
+    "blanket": {
+     "src": "../clinic-heal-v3/girl-w9-blanket-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    },
+    "bottle": {
+     "src": "../clinic-heal-v3/girl-w10-bottle-v1.png",
+     "band": [
+      0.74,
+      0.93
+     ]
+    }
+   },
+   "anchors": {
+    "front": {
+     "forehead": [
+      512,
+      240
+     ],
+     "eyes": [
+      512,
+      330
+     ],
+     "mouth": [
+      512,
+      420
+     ],
+     "ear.left": [
+      700,
+      360
+     ],
+     "ear.right": [
+      322,
+      365
+     ],
+     "upperarm.left": [
+      690,
+      680
+     ],
+     "upperarm.right": [
+      332,
+      680
+     ],
+     "forearm.left": [
+      640,
+      850
+     ],
+     "forearm.right": [
+      384,
+      850
+     ],
+     "hand": [
+      512,
+      900
+     ],
+     "tummy": [
+      512,
+      790
+     ],
+     "knee.left": [
+      610,
+      1040
+     ],
+     "knee.right": [
+      414,
+      1040
+     ],
+     "foot.left": [
+      625,
+      1350
+     ],
+     "foot.right": [
+      395,
+      1350
+     ],
+     "head": [
+      512,
+      330
+     ],
+     "seat": [
+      512,
+      1040
+     ]
+    }
+   },
+   "out": "patients/girl/girl",
+   "face_align": "none",
+   "face_match": true,
+   "skin_render": [
+    243,
+    152,
+    97
+   ]
   }
  ]
 }

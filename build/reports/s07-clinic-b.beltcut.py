@@ -23,6 +23,7 @@ from scipy import ndimage as ndi  # noqa: E402
 SRC = os.path.join(ROOT, "sources/art/s07")
 OUT = os.path.join(ROOT, "assets/clinic/sheets")
 MAX = 384  # the s02 belt views' longest side (decision 68: drawn at about 110-154 px tall, x2 for a phone's density)
+OUT_DIR = [OUT]  # --out DIR writes there instead
 
 # sheet -> [(folder, name, (x, y) a point on the piece, options)]
 JOBS = {
@@ -44,6 +45,15 @@ JOBS = {
     "b2-bandage-colours": [("bandage", f"bandage-{c}-belt", (x, 715), {}) for c, x in zip(("red", "blue", "green", "yellow"), (200, 580, 955, 1335))],
     # B1 FAIL: drawn top-down, so rows 1-2 are tray views only (not the belt)
     "b1-plaster-level-colours": [("plaster-level", f"plaster-{c}-tray", (x, y), {}) for (c, x, y) in (("red", 205, 325), ("blue", 580, 325), ("green", 955, 325), ("yellow", 1335, 325), ("skin", 205, 640))],
+    # s08-clinic-items: B1 v2 (s08 API redo, PASS-with-note): row 1 (red, blue, green, yellow) and cell 5 (skin) at the
+    # belt camera, side-padded to 0.6 of the canvas: the belt gives a long thing a 1.6-item dish (pharmacy.js widen), so
+    # the plaster draws about one item wide, as the belt's other things (today's flat plaster drew 0.9); cells 6-8
+    # (top-down) are not cut again: the s07 tray views stay
+    "s08/items/b1-plaster-level-colours-v2": [("plaster-level", f"plaster-{c}-belt", (x, y), {"width": 0.6}) for (c, x, y) in (("red", 204, 269), ("blue", 581, 269), ("green", 955, 269), ("yellow", 1327, 269), ("skin", 204, 750))],
+    # s08-clinic-items: DM2 v2 (PASS-with-note): the four matte drops for the drop machine's syringe. Its two levers
+    # (cream knob, steel boss; up at (296, 230), down at (768, 300)) are not cut: today's drawn levers carry their
+    # tube's colour on the knob, which the colour levels need (build/reports/s08-clinic-items.md)
+    "s08/items/dm2-levers-drops-v2": [("drops-machine", n, (x, y), {"max": 128}) for (n, x, y) in (("drop-red", 1247, 292), ("drop-yellow", 292, 745), ("drop-blue", 768, 745), ("drop-green", 1247, 745))],
     # B4 FAIL: cut by component; cell 1 = belt, cell 4 = tool (in use)
     "b4-reflex-hammer-sheet": [("hammer", "hammer-belt", (220, 300), {}), ("hammer", "hammer-tool", (1340, 280), {})],
     # B6 FAIL: cell 1 = belt, cell 4 = tool
@@ -69,7 +79,8 @@ def unshadow(a, obj, bg, x0=0):
 
 
 def cut(sheet, pieces, preview=None):
-    a = L.load(os.path.join(SRC, sheet + "-v1.png"))
+    # a sheet name with a folder (s08/items/b1-...-v2) is a later pack's file under sources/art, as named
+    a = L.load(os.path.join(ROOT, "sources/art", sheet + ".png") if "/" in sheet else os.path.join(SRC, sheet + "-v1.png"))
     k, obj = L.key(a, multi=1500, tol=10)
     e = np.concatenate([a[:6].reshape(-1, 3), a[-6:].reshape(-1, 3)])
     bg = np.median(e, 0)
@@ -106,12 +117,15 @@ def cut(sheet, pieces, preview=None):
         piece = piece[y0:y1, x0:x1]
         img = L.to_img(piece)
         p = 3
-        cv = Image.new("RGBA", (img.width + 2 * p, img.height + p), (0, 0, 0, 0))
-        cv.alpha_composite(img, (p, p))
-        s = min(1, MAX / max(cv.size))
+        # "width": the piece drawn at that share of the belt's square dish (side padding, never a stretch): the belt
+        # fits every picture to the dish (object-fit contain), so a long flat thing would otherwise span the whole dish
+        sw = max(img.width + 2 * p, int(round(img.width / o["width"]))) if o.get("width") else img.width + 2 * p
+        cv = Image.new("RGBA", (sw, img.height + p), (0, 0, 0, 0))
+        cv.alpha_composite(img, ((sw - img.width) // 2, p))
+        s = min(1, o.get("max", MAX) / max(cv.size))
         if s < 1:
             cv = cv.resize((round(cv.width * s), round(cv.height * s)), Image.LANCZOS)
-        path = os.path.join(OUT, folder, name + ".webp")
+        path = os.path.join(OUT_DIR[0], folder, name + ".webp")
         os.makedirs(os.path.dirname(path), exist_ok=True)
         cv.save(path, quality=90, method=6)
         report[name] = {"file": os.path.relpath(path, ROOT), "w": cv.width, "h": cv.height, "src_box": [x0, y0, x1, y1]}
@@ -129,12 +143,14 @@ def cut(sheet, pieces, preview=None):
             sh.alpha_composite(d, (xx, 32 + top))
             xx += t.width + 16
         os.makedirs(preview, exist_ok=True)
-        sh.convert("RGB").save(os.path.join(preview, sheet + ".png"))
+        sh.convert("RGB").save(os.path.join(preview, os.path.basename(sheet) + ".png"))
     return report
 
 
 if __name__ == "__main__":
     prev = sys.argv[sys.argv.index("--preview") + 1] if "--preview" in sys.argv else None
+    if "--out" in sys.argv:  # a test run into a scratch folder
+        OUT_DIR[0] = os.path.abspath(sys.argv[sys.argv.index("--out") + 1])
     only = sys.argv[sys.argv.index("--only") + 1].split(",") if "--only" in sys.argv else None
     rep = {}
     for sh, pcs in JOBS.items():

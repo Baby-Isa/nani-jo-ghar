@@ -77,11 +77,11 @@ class Ctx:
     def to(self, rel_path):
         return os.path.join(self.out, rel_path)
 
-    def skin_check(self, rgb, alpha, box, name):
+    def skin_check(self, rgb, alpha, box, name, ref=None):
         m = L.skin_median(rgb, alpha, box)
         if m is None:
             return None
-        de = L.delta_e(m, self.skin)
+        de = L.delta_e(m, self.skin if ref is None else np.array(ref, float))
         lim = self.spec.get("skin_limits", [6, 12])
         log("  skin %s: #%02X%02X%02X ΔE %.1f from the approved render%s%s" % (name, int(m[0]), int(m[1]), int(m[2]), de, " (colour-correct)" if de > lim[0] else "", " FAIL" if de > lim[1] else ""),
             flag=de > lim[1], quiet=True)
@@ -306,7 +306,7 @@ def cut_figure(job, cx):
     H, W = w1.shape[:2]
     k1, obj1 = L.key(w1)
     sb = job.get("skin_box", [.35, .2, .65, .38])
-    cx.skin_check(w1, k1[..., 3], (int(W * sb[0]), int(H * sb[1]), int(W * sb[2]), int(H * sb[3])), "%s base face" % job["id"])
+    cx.skin_check(w1, k1[..., 3], (int(W * sb[0]), int(H * sb[1]), int(W * sb[2]), int(H * sb[3])), "%s base face" % job["id"], job.get("skin_render"))  # a job from another pack: its pack's render
     figs = {"front": k1}
     rows = obj1.sum(1)
     top = int(np.argmax(rows > 0))
