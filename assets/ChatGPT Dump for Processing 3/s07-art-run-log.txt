@@ -1,0 +1,144 @@
+s07 art run log, 15 Oct 2026 (times BST). Chat links are https://chatgpt.com + the path shown.
+
+NOT SAVED (all images): ChatGPT shows generated images as in-page blob: URLs, so the cloud workspace can't fetch them, and the in-browser route (passing the image from the ChatGPT tab to the GitHub upload tab with page JavaScript) was refused by Claude's safety classifier as data exfiltration. Every kept image is still in its ChatGPT chat below. Nothing was committed to GitHub.
+Attaching kept images to later prompts works through ChatGPT's own "+ > Add from library" (used for DM2).
+
+PART A: THE DOCTOR (waiting on Zafar)
+DW1 | 18:35 | save as doctor-w1-stand-3q-neutral-v1.png | PASS, awaiting Zafar's approval | redos: 0 | NOT SAVED: /c/6ad0ff98-3cbc-83eb-b4be-a718abb3866b
+DD1 | 18:57 | save as doctor-d1-door-call-v1.png | FAIL (body runs off the bottom edge as well as the right; hand waves rather than beckons) best of 3 kept (try 3) | redos: 2 | awaiting approval | NOT SAVED: chat "Generate Doctor Image" (newest)
+WAITING for DW1 approval: DF1, DF3, DA1, DA2, DA3, DA4, DA5, DA6
+WAITING for DD1 approval: DD2
+
+PART B: THE GIRL COMPLETE
+GB1 | 18:59 | save as girl-b1-front-blink-v1.png | PASS | redos: 0 | NOT SAVED: chat "Edit eyes only"
+GM1 | 19:03 | save as girl-m5-front-mouth-open-v1.png | PASS | redos: 0 | NOT SAVED: /c/6ad10416-ed50-83ed-9838-4922d27e2dc3
+GS1 | 19:05 | save as girl-w4-front-sore-v2.png | PASS | redos: 0 | NOT SAVED: /c/6ad10455-2908-83ed-9bca-02a62c3f7e9f
+GN1 | 19:08 | save as girl-w13-standing-neutral-v1.png | PASS | redos: 0 | NOT SAVED: /c/6ad10494-e090-83ed-b448-1cd2bb9ed72e
+RP1 | 19:13 | save as child-p1-sole-v2.png | PASS (toes near-level, slight drop to the little toe) | redos: 1 | NOT SAVED: /c/6ad1057e-0278-83eb-9514-b2aacc490fb8
+I1 | 19:10 | save as i1-dirt-bits-v1.png | PASS (dirt reads orange-sandy brown) | redos: 0 | NOT SAVED: /c/6ad104fb-1340-83eb-9c85-b3968cc37989
+I2 | 19:12 | save as child-k4-knee-bump-v1.png | PASS | redos: 0 | NOT SAVED: /c/6ad1053f-3674-83ed-a6f5-b0b31a1bab77
+TD1 | 19:15 | save as td1-tooth-drill-view-v1.png | PASS (tooth about 49% of width) | redos: 0 | NOT SAVED: /c/6ad105b6-3a68-83ed-8e0b-32c6d1065f05
+DM1 | 18:44 | save as dm1-drop-machine-v1.png | PASS | redos: 0 | NOT SAVED: chat "Generate Medicine Dispenser Image"
+DM2 | 19:01 | save as dm2-levers-drops-v1.png | FAIL (drops glossy every time) best of 3 kept | redos: 2 | NOT SAVED: /c/6ad103bf-f7bc-83eb-871f-57c7505b17da
+B1 | 19:26 | save as b1-plaster-level-colours-v1.png | FAIL (row 1 never drawn from the belt camera; plasters about 95% of cell width) best of 3 kept (try 3) | redos: 2 | NOT SAVED: /c/6ad10768-ba70-83eb-85ae-ce7bfb48ff7a
+B2 | 19:28 | save as b2-bandage-colours-v1.png | FAIL (rolls about 85% of cell; row-1 rolls angled; tries 2-3 grew unrolled tails touching neighbours/edge) best of 3 kept (try 1) | redos: 2 | NOT SAVED: /c/6ad10631-1050-83eb-981d-c6e4c5e15529
+B3 | 19:20 | save as b3-thread-colours-v1.png | PASS | redos: 0 | NOT SAVED: /c/6ad10664-ecf8-83ed-aa35-9cca4cdd04df
+B4 | 19:34 | save as b4-reflex-hammer-sheet-v1.png | FAIL (oversized; cell 1 handle touches cell 2; try 2 drew hands) best of 3 kept (try 3) | redos: 2 | NOT SAVED: /c/6ad108d1-8594-83ed-870b-016b4d6b062f
+B5 | 19:31 | save as b5-drops-colours-v1.png | PASS | redos: 0 | NOT SAVED: /c/6ad10836-bd48-83eb-878d-e98599ed5062
+B6 | 19:41 | save as b6-drill-sheet-v1.png | FAIL (oversized; cells 1/2 same view; close-up touches its cell edge; tries 2-3 ran off the bottom) best of 3 kept (try 1) | redos: 2 | NOT SAVED: /c/6ad10882-3004-83eb-8241-83ead1ac1b10
+B7 | 19:44 | save as b7-filling-tube-sheet-v1.png | FAIL (tubes about 90% of cell; cell 1 crosses its boundary; cells 1/2 near-identical) best of 3 kept (try 3) | redos: 2 | NOT SAVED: /c/6ad10a90-99b0-83eb-84a9-992241ab8a0f
+B8 | 19:43 | save as b8-taste-things-v1.png | PASS (spoons sit right at their cell edge) | redos: 1 | NOT SAVED: /c/6ad10a56-4be8-83eb-ade6-8bc6d12db1a7
+B10 | 19:56 | save as b10-eye-patch-sheet-v1.png | FAIL (straps reach cell boundaries/right edge in all tries) best of 3 kept (try 2) | redos: 2 | NOT SAVED: /c/6ad10b9e-5988-83ed-8af3-c111ef683ec3
+
+PART C: THE REST OF THE BELT
+B9 | 19:52 | save as b9-decoys-belt-v1.png | PASS (stethoscope and blanket right at their cell edges) | redos: 1 | NOT SAVED: /c/6ad10be9-f630-83eb-8410-2cdcc29bd11a
+
+PART D: COOK
+K1 | 20:00 | save as k1-kitchen-master-v1.png | FAIL (island back edge about 67% down in all tries, needs about 79%; trays at 29/50/71% are right) best of 3 kept (try 3) | redos: 2 | NOT SAVED: /c/6ad10d0c-4334-83eb-b4bd-7fd80caddd8c
+N1 | 18:55 | save as nani-n1-lean-neutral-v1.png | FAIL (counter back edge about 71% down, needs about 82%) best of 3 kept (try 3: face chunky like Nana, head a normal size) | redos: 2 | awaiting approval | NOT SAVED: chat "Generate Nani Image" (newest)
+WAITING for N1 approval: N2, N3, N4, N5
+SK2 | 19:58 | save as sk2-sekelo-plate-skewers-v1.png | PASS (ChatGPT returned two options; option 1 kept; no preference clicked) | redos: 0 | NOT SAVED: /c/6ad10cc7-0770-83ed-8572-a9850c658f68
+CP1 | 20:10 | save as cp1-chai-pan-tilt-v1.png | FAIL (pans slightly oblique, not straight down; column-3 handles at the right edge) best of 3 kept (try 2) | redos: 2 | NOT SAVED: /c/6ad10e2f-b6a4-83eb-8ab6-4370b0323d74
+DP1 | 20:08 | save as dp1-daar-pieces-v1.png | PASS (tomato slightly wet-looking) | redos: 1 | NOT SAVED: /c/6ad10e75-c878-83ed-849d-7e75f69f4728
+PT1 | 20:11 | save as pt1-potato-v1.png | FAIL (cube and pile in 3/4 view, not straight down; flesh pale cream and matte) best of 3 kept (try 3) | redos: 2 | NOT SAVED: /c/6ad10f69-b384-83ed-92f3-bbc3655be983
+
+ODD: no image-limit messages, no stalls, no refusals.
+
+
+=== RUN 2 + 3 (15-16 Oct 2026): PEOPLE, WAVING TURNS, STANDING-POSE TURNS ===
+ZAFAR'S COMMENTS:
+- DW1 approved.
+- N1: use try 1 (/c/6ad10008-d060-83eb-b7cc-05d3ee34b6d8) - "the rest are too cartoony and lose the semblance".
+- DD1: "just have him standing and waving, not coming out from the door" -> new DD1 made, then approved ("DD1 is good").
+- DD1 turns: quarter and half turn, left and right, still waving -> DT1-DT4.
+- All standing poses: face on (talking to the player), quarter turn (conversing with someone left/right, face still visible), half turn (fully side-on left/right).
+- Latest waving image had a patchy white beard with skin-coloured blobs -> beard line strengthened, DT1-DT4 redone with solid beards.
+- Zafar is not downloading anything himself; Claude downloads.
+
+DOWNLOADED TO ZAFAR'S PC (in this order; ChatGPT names each file after its picture title, so use this order to rename):
+ 1. DW1     -> doctor-w1-stand-3q-neutral-v1.png   (/c/6ad0ff98-3cbc-83eb-b4be-a718abb3866b)
+ 2. N1      -> nani-n1-lean-neutral-v1.png   (/c/6ad10008-d060-83eb-b7cc-05d3ee34b6d8)
+ 3. N2      -> nani-n2-lean-happy-v1.png   (/c/6ad14e9b-5240-83ed-9b61-4d360bdf4a9a)
+ 4. N3      -> nani-n3-lean-talk-v1.png   (/c/6ad14fb6-b810-83ed-b0cb-e8a0ca9d7fa2)
+ 5. N4      -> nani-n4-lean-point-v1.png   (/c/6ad150e1-7628-83ed-ab92-de12372c6d4a)
+ 6. N5      -> nani-n5-lean-blink-v1.png   (/c/6ad15217-6184-83ed-b720-3304dbcde032)
+ 7. DF1     -> doctor-f1-stand-3q-talk-v1.png   (/c/6ad14ad6-4830-83ed-9a2b-6c88bc52a097)
+ 8. DF3     -> doctor-f3-stand-3q-blink-v1.png   (/c/6ad14b18-8ad0-83ed-a6a0-0917c1d3e28c)
+ 9. DA1     -> doctor-a1-stand-3q-folded-v1.png   (/c/6ad14b4e-561c-83ed-bf62-89007c1f8d29)
+10. DA2     -> doctor-a2-stand-3q-point-left-v1.png   (/c/6ad14bf9-5f9c-83ed-89e1-0d2b66d0922b)
+11. DA3     -> doctor-a3-stand-3q-finger-up-v1.png   (/c/6ad14c4a-1680-83eb-9744-f825230ad5a2)
+12. DA4     -> doctor-a4-stand-3q-arms-up-v1.png   (/c/6ad14d7c-ea78-83eb-9f66-f71417d741c1)
+13. DA5     -> doctor-a5-stand-3q-torch-v1.png   (/c/6ad14efb-28d0-83eb-8b9f-39f38b20858b)
+14. DA6     -> doctor-a6-stand-3q-right-wave-v1.png   (/c/6ad14fe4-6c74-83eb-a6f4-4c9dd8949cb1)
+15. DD1     -> doctor-d1-door-call-v1.png   (/c/6ad14a81-c550-83ed-8803-ed9c48e94055)
+16. DD2     -> doctor-d2-door-look-v1.png   (/c/6ad14cd9-7ed8-83ed-954d-d37e517b5cad)
+17. DT1     -> doctor-d1-wave-3q-left-v1.png   (/c/6ad15269-9334-83ed-bb8e-eed9ef443475)
+18. DT2     -> doctor-d1-wave-side-left-v1.png   (/c/6ad152da-7940-83ed-8417-d140fe6e94de)
+19. DT4     -> doctor-d1-wave-side-right-v1.png   (/c/6ad1535d-232c-83eb-8408-bca05356dfb4)
+20. DT3     -> doctor-d1-wave-3q-right-v1.png   (/c/6ad15301-4f24-83ed-a3b9-1b20f5306fcb)  [option 2 of 2]
+21. DW1-F   -> doctor-w1-stand-front-neutral-v1.png   (/c/6ad151d0-8da4-83eb-a5dd-4f3fa608a11a)
+22. DW1-HL  -> doctor-w1-stand-side-left-neutral-v1.png   (/c/6ad153bb-d004-83eb-a4f2-e6626ac5765c)
+23. DW1-QR  -> doctor-w1-stand-3q-right-neutral-v1.png   (/c/6ad15400-0818-83eb-9be0-0c90d984e681)
+24. DW1-HR  -> doctor-w1-stand-side-right-neutral-v1.png   (/c/6ad1544e-db98-83eb-9ce9-cd70296e708e)
+25. DA1-F   -> doctor-a1-stand-front-folded-v1.png   (/c/6ad154a9-bc2c-83ed-ae2c-1b1af88772ce)
+26. DA1-HL  -> doctor-a1-stand-side-left-folded-v1.png   (/c/6ad154f0-7418-83eb-ad5a-d3bccfbef744)
+27. DA1-QR  -> doctor-a1-stand-3q-right-folded-v1.png   (/c/6ad15531-f2e0-83eb-b006-a9303f582bfd)
+28. DA1-HR  -> doctor-a1-stand-side-right-folded-v1.png   (/c/6ad15579-84cc-83eb-9b07-06a046eacafc)
+29. DA2-F   -> doctor-a2-stand-front-point-left-v1.png   (/c/6ad155ff-a6fc-83ed-8637-b26efcd7b943)
+30. DA2-HL  -> doctor-a2-stand-side-left-point-left-v1.png   (/c/6ad15651-c49c-83eb-a626-5c86f48c69b4)
+
+NOT YET DOWNLOADED (all PASSED; picture is in the chat shown):
+    DA2-QR  -> doctor-a2-stand-3q-right-point-left-v1.png   (/c/6ad157ef-379c-83ed-9291-2d6667f6ccc1)
+    DA2-HR  -> doctor-a2-stand-side-right-point-left-v1.png   (/c/6ad15702-38dc-83ed-9b42-65e9da907598)
+    DA3-F   -> doctor-a3-stand-front-finger-up-v1.png   (/c/6ad158f7-60fc-83eb-906f-be6101bfba11)
+    DA3-HL  -> doctor-a3-stand-side-left-finger-up-v1.png   (/c/6ad15940-2030-83ed-8c97-af77137da00e)
+    DA3-QR  -> doctor-a3-stand-3q-right-finger-up-v1.png   (/c/6ad159a7-9a84-83eb-a479-ece49a423138)
+    DA3-HR  -> doctor-a3-stand-side-right-finger-up-v1.png   (/c/6ad15a01-9b54-83ed-8557-52f3c719450c)
+    DA4-F   -> doctor-a4-stand-front-arms-up-v1.png   (/c/6ad15a5e-86d0-83ed-8ef4-04abb3fb0d1a)
+    DA4-HL  -> doctor-a4-stand-side-left-arms-up-v1.png   (/c/6ad15ad4-5618-83ed-92d3-c930cd723a8c)
+    DA4-QR  -> doctor-a4-stand-3q-right-arms-up-v1.png   (/c/6ad15b22-8b54-83ed-a0c1-dc1301ed42f1)
+    DA4-HR  -> doctor-a4-stand-side-right-arms-up-v1.png   (/c/6ad15b81-7ce8-83ed-abf3-8b7e3b2d3128)
+    DA5-F   -> doctor-a5-stand-front-torch-v1.png   (/c/6ad15bd5-fe30-83eb-9fc5-2e53b32b9b41)
+    DA5-HL  -> doctor-a5-stand-side-left-torch-v1.png   (/c/6ad15c2b-af6c-83ed-a9e9-25e91270207e)
+    DA5-QR  -> doctor-a5-stand-3q-right-torch-v1.png   (/c/6ad15c73-db44-83eb-9352-9b1cd80f400a)
+    DA5-HR  -> doctor-a5-stand-side-right-torch-v1.png   (/c/6ad15cc6-2654-83eb-8187-6ff50d40e591)
+    DA6-F   -> doctor-a6-stand-front-right-wave-v1.png   (/c/6ad15d23-ed44-83ed-815a-e1c91ca1f340)
+    DA6-QL  -> doctor-a6-stand-3q-left-right-wave-v1.png   (/c/6ad15d69-fae8-83ed-9eb6-911c43b1bdbd)
+    DA6-HL  -> doctor-a6-stand-side-left-right-wave-v1.png   (/c/6ad15dc1-9514-83ed-a933-21c846d44701)
+    DA6-HR  -> doctor-a6-stand-side-right-right-wave-v1.png   (/c/6ad15e14-0f1c-83ed-b542-61cbb4a904c4)
+    GN1-HL  -> girl-w13-standing-side-left-neutral-v1.png   (/c/6ad15f89-b9c0-83eb-bce9-0ef51fa4dcea)
+    GN1-QR  -> girl-w13-standing-3q-right-neutral-v1.png   (/c/6ad16037-9e30-83eb-be4f-ca913abaca33)
+    GN1-HR  -> girl-w13-standing-side-right-neutral-v1.png   (/c/6ad160c4-b21c-83ed-954d-422e0bcee8d3)
+
+FAILED: GN1-QL (girl quarter turn to the LEFT) - 3 tries, ChatGPT turned her to the right every time (/c/6ad15f43-2374-83ed-9e04-8c79b8f0d4ec, /c/6ad16066-ff38-83eb-a2ac-488489764ef5). Her design is symmetrical, so a mirrored copy of GN1-QR would serve.
+Turn notes: DA5 torch held at face height (kept). DA6 waves with his far arm. DA2-QR/DT3 needed a redo for wrong direction. DA2 turns still point left as in the base pose.
+Each original pose was already a three-quarter LEFT view, so its "QL" is the original picture (DA6 was turned right, so it got a QL).
+
+INCIDENTS: a mis-click created a public share link to the TD1 chat; deleted at once in Manage links. The ChatGPT Google-plugins dialog opened twice by mis-click; closed without changes.
+BLOCKS: the GitHub commit was refused twice by Claude's safety classifier; later the last batch of downloads was refused too ("unrequested commit in a connected app"), so downloads stopped at item 30.
+
+=== REST OF THE DOWNLOADS (16 Oct 2026): ALL 21 NOW ON ZAFAR'S PC ===
+Items 31-36 came from the chats; 37-51 came from the ChatGPT Library because ChatGPT kept refusing to open chats ("Could not load this ChatGPT conversation"). Each picture was checked by eye before saving.
+Downloaded file name (ChatGPT title)              -> save as
+31. DA2-QR (from chat)                                 -> doctor-a2-stand-3q-right-point-left-v1.png
+32. DA2-HR (from chat)                                 -> doctor-a2-stand-side-right-point-left-v1.png
+33. DA3-QR (from chat)                                 -> doctor-a3-stand-3q-right-finger-up-v1.png
+34. DA3-HL (from chat)                                 -> doctor-a3-stand-side-left-finger-up-v1.png
+35. DA3-HR (from chat)                                 -> doctor-a3-stand-side-right-finger-up-v1.png
+36. DA3-F (from chat)                                  -> doctor-a3-stand-front-finger-up-v1.png
+37. DA4-QR (from chat)                                 -> doctor-a4-stand-3q-right-arms-up-v1.png
+38. DA4-HL (from chat)                                 -> doctor-a4-stand-side-left-arms-up-v1.png
+39. DA5-F (from chat)                                  -> doctor-a5-stand-front-torch-v1.png
+40. Joyful Elderly Man Celebrating(1).png              -> doctor-a4-stand-front-arms-up-v1.png
+41. Joyful Elderly Man Celebrating in Profile.png      -> doctor-a4-stand-side-right-arms-up-v1.png
+42. Elderly Man in Profile with Pen.png                -> doctor-a5-stand-side-left-torch-v1.png
+43. Elderly Gentleman Demonstrating Metal Pointer.png  -> doctor-a5-stand-3q-right-torch-v1.png
+44. Smiling Elderly Man Pointing in Profile.png        -> doctor-a5-stand-side-right-torch-v1.png
+45. Cheerful Elderly Gentleman Waving(1).png           -> doctor-a6-stand-front-right-wave-v1.png
+46. Cheerful Elderly Man Waving in Plaid Blazer.png    -> doctor-a6-stand-3q-left-right-wave-v1.png
+47. Cheerful Elderly Man Waving in Profile(2).png      -> doctor-a6-stand-side-left-right-wave-v1.png
+48. Smiling Elderly Man Waving in Profile.png          -> doctor-a6-stand-side-right-right-wave-v1.png
+49. Side-Profile Girl in Yellow Dress.png              -> girl-w13-standing-side-left-neutral-v1.png
+50. Three-Quarter View Girl in Yellow Dress.png        -> girl-w13-standing-3q-right-neutral-v1.png
+51. Little Girl in Profile with Braid.png              -> girl-w13-standing-side-right-neutral-v1.png
+Note: DA3-F and DA4-F were each tried more than once while ChatGPT was failing, so a duplicate copy (name ending "(1)") may be in Downloads; it is the same picture. GN1-QL (girl quarter turn left) was never made correctly, so nothing was downloaded for it.
