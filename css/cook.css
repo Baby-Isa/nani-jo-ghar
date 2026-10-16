@@ -271,8 +271,8 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 .finale-row { display: flex; justify-content: center; gap: 4px; margin: 6px 0; }
 .finale-row img { height: clamp(80px, 16vh, 150px); }
-/* s08-rejudge-fixes: Nani's lineup picture is drawn as it is (it was 1.18x, which made her the biggest of the four) */
-.finale-row img.fin-nani { transform: none; }
+/* s08-rejudge-fixes: Nani's lineup picture was 1.18x (the biggest of the four) and 1.0 read small: 1.08, about her base */
+.finale-row img.fin-nani { transform: scale(1.08); transform-origin: 50% 100%; }
 .patch { width: 120px; height: 120px; margin: 8px auto; border-radius: 12px; background:
   repeating-linear-gradient(45deg, #b24a3a 0 12px, #c9973a 12px 24px, #34457a 24px 36px);
   border: 6px dashed #fffaf1; outline: 4px solid #b24a3a; }

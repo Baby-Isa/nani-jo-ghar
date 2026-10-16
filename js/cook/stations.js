@@ -35,8 +35,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // s08 (ART-13, ART-10): her jaw-fixed lean set (v3), one canvas 460x501, head 186 px wide at 1:1; her forearms'
     // underside at canvas row 497 sits at y 613, just under the occluder's top (611), so they rest on the counter's back edge
     // (s05 audit section 6, way (a)). s08-rejudge-fixes: drawn at 0.82 (she leans and Ma stands, 1:1 put her crown 102 px above
-    // Ma's): top = 613 - 497 x 0.82 = 205.5 (build/tools/art/specs/s08-nani.cut-data.json, canvases.counter)
-    nani: { x: 330, top: 205, scale: 0.82 },
+    // Ma's, 0.82 made her head too small): 0.90, top = 613 - 497 x 0.90 = 165.7 (build/tools/art/specs/s08-nani.cut-data.json, canvases.counter)
+    nani: { x: 330, top: 166, scale: 0.9 },
     nana: { x: 940, top: 175, scale: 1.25 },
     ma: { x: 940, top: 195, scale: 1.14 },
     cousin: { x: 940, top: 290, scale: 1.02 },
