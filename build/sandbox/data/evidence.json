@@ -13567,5 +13567,98 @@
    ],
    "note": "the tidy leak bot at every level of every game: the generator's flat priors (no thing, place pair over 1.5x its fair share and clearly not chance: seed 1 flagged fru-05 in the box's corners 1.67x, z=4.3, at L3) and every blind strategy under 10%; exit 0"
   }
+ ],
+ "CK-44": [
+  {
+   "path": "fair",
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "cook:day1",
+   "sizes": [
+    "915x412",
+    "844x390",
+    "1366x1024"
+   ],
+   "at": "view-service",
+   "capture": [
+    "shot"
+   ],
+   "note": "the counter on a stage wider and taller than 16:9: one continuous counter, no hard vertical line where the counter's front meets the background, the marble never 'starts again'; the family stands behind their trays"
+  }
+ ],
+ "ART-21": [
+  {
+   "path": "fair",
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "cook:day1",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "view-service",
+   "capture": [
+    "shot"
+   ],
+   "note": "the kitchen picture: the tap reads as one tap (spout and handles together), no plant standing on the floor through the door"
+  }
+ ],
+ "CLN-150": [
+  {
+   "path": "fair",
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "clinic:waiting",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "rec:stage-waiting",
+   "capture": [
+    "shot"
+   ],
+   "note": "the doctor is one man in every picture (bald, white side hair, short white beard, clear rectangular glasses, navy check blazer, white shirt): the box at the top, the cards and the standing doctor"
+  },
+  {
+   "path": "fair",
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "clinic:diagnosis",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "rec:stage-diagnosis",
+   "capture": [
+    "shot"
+   ],
+   "note": "the doctor is one man in every picture (bald, white side hair, short white beard, clear rectangular glasses, navy check blazer, white shirt): the box at the top, the cards and the standing doctor"
+  },
+  {
+   "path": "fair",
+   "level": 1,
+   "profile": "seen",
+   "want": null,
+   "after": null,
+   "expect": null,
+   "flow": "clinic:sendoff",
+   "sizes": [
+    "1366x768"
+   ],
+   "at": "rec:stage-sendoff",
+   "capture": [
+    "shot"
+   ],
+   "note": "the doctor is one man in every picture (bald, white side hair, short white beard, clear rectangular glasses, navy check blazer, white shirt): the box at the top, the cards and the standing doctor"
+  }
  ]
 }

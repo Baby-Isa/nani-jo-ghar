@@ -20,6 +20,7 @@ export const FONTS_DIR = join(ROOT, "build", "sandbox", "fonts");
 export const SIZES = {
   "844x390": { width: 844, height: 390, label: "phone landscape (iPhone 12-14)", touch: true },
   "800x360": { width: 800, height: 360, label: "small Android landscape", touch: true },
+  "915x412": { width: 915, height: 412, label: "wide Android landscape, 20:9 (Zafar's phone; CK-44): not in the gate's sizes", touch: true },
   "1366x768": { width: 1366, height: 768, label: "laptop" },
   "1440x900": { width: 1440, height: 900, label: "16:10 laptop" },
   "1280x800": { width: 1280, height: 800, label: "16:10 laptop (small)" },
