@@ -101,14 +101,23 @@ test("contract-9 closed-card: an open card at the first play tap from L3 (CLN-11
 });
 
 test("contract-10 your-turn: a talker still turned to the other on the child's turn (SH-71); facing the player passes", () => {
-  const tl = [stage(T, "host:clinic/diagnosis"), C(T + 900, "input", { x: 500, y: 300, exp: { clinic: { kind: "tap" } }, poses: [{ who: "div.cl-doc.cl-staged", pose: "talk", facing: "left" }, { who: "div.cl-fig.cl-staged", pose: "front" }] })];
-  assert.match(of(run(page("clinic:diagnosis", tl)), "contract-10")[0].measured, /cl-doc.* still "talk" facing left/);
+  const tl = [stage(T, "host:clinic/sendoff"), C(T + 900, "input", { x: 500, y: 300, exp: { clinic: { kind: "tap" } }, poses: [{ who: "div.cl-doc.cl-staged", pose: "talk", facing: "right" }, { who: "div.cl-patient-layer.cl-staged", pose: "front" }] })];
+  assert.match(of(run(page("clinic:sendoff", tl)), "contract-10")[0].measured, /cl-doc.* still "talk" facing right/);
   const ok = clone(tl);
   ok[1].poses[0].pose = "front";
-  assert.equal(of(run(page("clinic:diagnosis", ok)), "contract-10").length, 0);
+  assert.equal(of(run(page("clinic:sendoff", ok)), "contract-10").length, 0);
   const talking = clone(tl);
   talking[1].exp.clinic.kind = "wait"; // a tap while they talk: not the child's turn
-  assert.equal(of(run(page("clinic:diagnosis", talking)), "contract-10").length, 0);
+  assert.equal(of(run(page("clinic:sendoff", talking)), "contract-10").length, 0);
+});
+
+test("contract-10 in the examination (CLN-157, s08-placement-judge): the doctor faces her on the child's turn; the cue is the card", () => {
+  const tl = [stage(T, "host:clinic/diagnosis"), C(T + 900, "input", { x: 500, y: 300, exp: { clinic: { kind: "point" } }, poses: [{ who: "div.cl-doc.cl-doc-art.cl-staged", pose: "talk", facing: "left" }] })];
+  assert.equal(of(run(page("clinic:diagnosis", tl)), "contract-10").length, 0);
+  // turned to the player while the child examines her (s08-doctor-stitch's staging): a break
+  const front = clone(tl);
+  front[1].poses[0] = { who: "div.cl-doc.cl-doc-art.cl-staged", pose: "front", facing: "left" };
+  assert.match(of(run(page("clinic:diagnosis", front)), "contract-10")[0].measured, /cl-doc.* "front": he faces the patient/);
 });
 
 test("contract-11 background: the pantry stretched (PAN-14) and a low-res background (ART-05); in proportion and sharp passes", () => {

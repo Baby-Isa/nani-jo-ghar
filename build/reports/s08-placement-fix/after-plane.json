@@ -1,0 +1,2171 @@
+[
+ {
+  "room": "exam",
+  "size": "800x360",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 28,
+  "roomPx": 400,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 26.4,
+   "ear.left": 9.6,
+   "ear.right": 9.6,
+   "eye.left": 7.2,
+   "eye.right": 7.2,
+   "nose": 5.3,
+   "mouth": 6,
+   "tooth": 6,
+   "throat": 6,
+   "neck": 7.2,
+   "chest": 14.4,
+   "tummy": 12,
+   "shoulder.left": 10.8,
+   "shoulder.right": 10.8,
+   "arm.left": 12,
+   "arm.right": 12,
+   "elbow.left": 8.4,
+   "elbow.right": 8.4,
+   "hand.left": 9.6,
+   "hand.right": 9.6,
+   "finger.left": 6,
+   "finger.right": 6,
+   "knee.left": 12,
+   "knee.right": 12,
+   "leg.left": 12,
+   "leg.right": 12,
+   "foot.left": 9.6,
+   "foot.right": 9.6,
+   "toe.left": 5.3,
+   "toe.right": 5.3
+  },
+  "tapMin": 5.3,
+  "tapHand": 9.6,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-talk",
+  "size": "800x360",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 28,
+  "roomPx": 400,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 26.4,
+   "ear.left": 9.6,
+   "ear.right": 9.6,
+   "eye.left": 7.2,
+   "eye.right": 7.2,
+   "nose": 5.3,
+   "mouth": 6,
+   "tooth": 6,
+   "throat": 6,
+   "neck": 7.2,
+   "chest": 14.4,
+   "tummy": 12,
+   "shoulder.left": 10.8,
+   "shoulder.right": 10.8,
+   "arm.left": 12,
+   "arm.right": 12,
+   "elbow.left": 8.4,
+   "elbow.right": 8.4,
+   "hand.left": 9.6,
+   "hand.right": 9.6,
+   "finger.left": 6,
+   "finger.right": 6,
+   "knee.left": 12,
+   "knee.right": 12,
+   "leg.left": 12,
+   "leg.right": 12,
+   "foot.left": 9.6,
+   "foot.right": 9.6,
+   "toe.left": 5.3,
+   "toe.right": 5.3
+  },
+  "tapMin": 5.3,
+  "tapHand": 9.6,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts.",
+   "say 3q-left: Does it hurt here?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-front",
+  "size": "800x360",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 28,
+  "roomPx": 400,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.778,
+    0.827,
+    0.83
+   ],
+   [
+    0.856,
+    0.912,
+    0.83
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.028,
+  "clearOfDoorFrame": 0.013,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.176,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 26.4,
+   "ear.left": 9.6,
+   "ear.right": 9.6,
+   "eye.left": 7.2,
+   "eye.right": 7.2,
+   "nose": 5.3,
+   "mouth": 6,
+   "tooth": 6,
+   "throat": 6,
+   "neck": 7.2,
+   "chest": 14.4,
+   "tummy": 12,
+   "shoulder.left": 10.8,
+   "shoulder.right": 10.8,
+   "arm.left": 12,
+   "arm.right": 12,
+   "elbow.left": 8.4,
+   "elbow.right": 8.4,
+   "hand.left": 9.6,
+   "hand.right": 9.6,
+   "finger.left": 6,
+   "finger.right": 6,
+   "knee.left": 12,
+   "knee.right": 12,
+   "leg.left": 12,
+   "leg.right": 12,
+   "foot.left": 9.6,
+   "foot.right": 9.6,
+   "toe.left": 5.3,
+   "toe.right": 5.3
+  },
+  "tapMin": 5.3,
+  "tapHand": 9.6,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts.",
+   "say 3q-left: Does it hurt here?",
+   "say 3q-left: knee",
+   "say front: A scrape."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-L3",
+  "size": "800x360",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 28,
+  "roomPx": 400,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 26.4,
+   "ear.left": 9.6,
+   "ear.right": 9.6,
+   "eye.left": 7.2,
+   "eye.right": 7.2,
+   "nose": 5.3,
+   "mouth": 6,
+   "tooth": 6,
+   "throat": 6,
+   "neck": 7.2,
+   "chest": 14.4,
+   "tummy": 12,
+   "shoulder.left": 10.8,
+   "shoulder.right": 10.8,
+   "arm.left": 12,
+   "arm.right": 12,
+   "elbow.left": 8.4,
+   "elbow.right": 8.4,
+   "hand.left": 9.6,
+   "hand.right": 9.6,
+   "finger.left": 6,
+   "finger.right": 6,
+   "knee.left": 12,
+   "knee.right": 12,
+   "leg.left": 12,
+   "leg.right": 12,
+   "foot.left": 9.6,
+   "foot.right": 9.6,
+   "toe.left": 5.3,
+   "toe.right": 5.3
+  },
+  "tapMin": 5.3,
+  "tapHand": 9.6,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Find where it hurts."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "stand",
+  "size": "800x360",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.84,
+  "docH": 0.73,
+  "docCrown": 0.11,
+  "docCrownPx": 20,
+  "roomPx": 400,
+  "docOfDoor": 1.072,
+  "docShoes": [
+   [
+    0.647,
+    0.695,
+    0.824
+   ],
+   [
+    0.74,
+    0.782,
+    0.839
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.865,
+  "girlH": 0.535,
+  "ratio": 1.364,
+  "girlCrownOnHim": 0.699,
+  "girlShoes": [
+   [
+    0.452,
+    0.485,
+    0.865
+   ],
+   [
+    0.515,
+    0.547,
+    0.865
+   ]
+  ],
+  "feetGap": 0.026,
+  "tapPad": 1.102803738317757,
+  "taps": {
+   "head": 27.3,
+   "ear.left": 8.7,
+   "ear.right": 8.7,
+   "eye.left": 7,
+   "eye.right": 7,
+   "nose": 5,
+   "mouth": 5.5,
+   "tooth": 5.5,
+   "throat": 5,
+   "neck": 6.2,
+   "chest": 14.9,
+   "tummy": 14.9,
+   "shoulder.left": 9.9,
+   "shoulder.right": 9.9,
+   "arm.left": 11.2,
+   "arm.right": 11.2,
+   "elbow.left": 7.5,
+   "elbow.right": 7.5,
+   "hand.left": 12.4,
+   "hand.right": 12.4,
+   "finger.left": 6.2,
+   "finger.right": 6.2,
+   "knee.left": 8.7,
+   "knee.right": 8.7,
+   "leg.left": 8.7,
+   "leg.right": 8.7,
+   "foot.left": 9.9,
+   "foot.right": 9.9,
+   "toe.left": 5,
+   "toe.right": 5
+  },
+  "tapMin": 5,
+  "tapHand": 12.4,
+  "tapHits": "30/30",
+  "lines": [
+   "card front: Check her over.",
+   "card front: mouth",
+   "card front: chest",
+   "card front: I / me's left arm"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "stand-front",
+  "size": "800x360",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.84,
+  "docH": 0.73,
+  "docCrown": 0.11,
+  "docCrownPx": 20,
+  "roomPx": 400,
+  "docOfDoor": 1.072,
+  "docShoes": [
+   [
+    0.65,
+    0.701,
+    0.84
+   ],
+   [
+    0.732,
+    0.79,
+    0.84
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.865,
+  "girlH": 0.535,
+  "ratio": 1.365,
+  "girlCrownOnHim": 0.699,
+  "girlShoes": [
+   [
+    0.452,
+    0.485,
+    0.865
+   ],
+   [
+    0.515,
+    0.547,
+    0.865
+   ]
+  ],
+  "feetGap": 0.025,
+  "tapPad": 1.102803738317757,
+  "taps": {
+   "head": 27.3,
+   "ear.left": 8.7,
+   "ear.right": 8.7,
+   "eye.left": 7,
+   "eye.right": 7,
+   "nose": 5,
+   "mouth": 5.5,
+   "tooth": 5.5,
+   "throat": 5,
+   "neck": 6.2,
+   "chest": 14.9,
+   "tummy": 14.9,
+   "shoulder.left": 9.9,
+   "shoulder.right": 9.9,
+   "arm.left": 11.2,
+   "arm.right": 11.2,
+   "elbow.left": 7.5,
+   "elbow.right": 7.5,
+   "hand.left": 12.4,
+   "hand.right": 12.4,
+   "finger.left": 6.2,
+   "finger.right": 6.2,
+   "knee.left": 8.7,
+   "knee.right": 8.7,
+   "leg.left": 8.7,
+   "leg.right": 8.7,
+   "foot.left": 9.9,
+   "foot.right": 9.9,
+   "toe.left": 5,
+   "toe.right": 5
+  },
+  "tapMin": 5,
+  "tapHand": 12.4,
+  "tapHits": "30/30",
+  "lines": [
+   "card front: Check her over.",
+   "card front: mouth",
+   "card front: chest",
+   "card front: I / me's left arm",
+   "say front: The jab before the trip."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door",
+  "size": "800x360",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 40,
+  "roomPx": 400,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-thought",
+   "l": 0.441,
+   "r": 0.894,
+   "c": 0.668,
+   "top": 0.17
+  },
+  "trayOverDocFeetPx": 0,
+  "trayOverGirlFeetPx": 0,
+  "lines": [
+   "say 3q-right: Is everything okay now?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door-L2",
+  "size": "800x360",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 40,
+  "roomPx": 400,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-help-tray",
+   "l": 0.227,
+   "r": 0.773,
+   "c": 0.5,
+   "top": 0.733
+  },
+  "trayOverDocFeetPx": 14.8,
+  "trayOverGirlFeetPx": 14.8,
+  "lines": [
+   "say 3q-right: Is everything okay now?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door-L3",
+  "size": "800x360",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 40,
+  "roomPx": 400,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-help-tray",
+   "l": 0.5,
+   "r": 0.92,
+   "c": 0.71,
+   "top": 0.733
+  },
+  "trayOverDocFeetPx": 0,
+  "trayOverGirlFeetPx": 0,
+  "lines": [
+   "say 3q-right: Is everything okay now?",
+   "say front: What will help?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "waiting",
+  "size": "800x360",
+  "view": "wave-front",
+  "file": "doctor-wave-front-front.webp",
+  "docFeet": 0.755,
+  "docH": 0.57,
+  "docCrown": 0.185,
+  "docCrownPx": 46,
+  "roomPx": 400,
+  "docShoes": [
+   [
+    0.74,
+    0.78,
+    0.755
+   ],
+   [
+    0.804,
+    0.85,
+    0.755
+   ]
+  ],
+  "shoeClearOfDesk": 0.025,
+  "shadowsDoc": 2,
+  "shadowsGirl": 0,
+  "lines": [
+   "say wave-front: Who's next?",
+   "card wave-front: Bring in girl"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "boing",
+  "size": "800x360",
+  "machineArt": false,
+  "errors": 0
+ },
+ {
+  "room": "exam",
+  "size": "844x390",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 32,
+  "roomPx": 429,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 28.3,
+   "ear.left": 10.3,
+   "ear.right": 10.3,
+   "eye.left": 7.7,
+   "eye.right": 7.7,
+   "nose": 5.7,
+   "mouth": 6.4,
+   "tooth": 6.4,
+   "throat": 6.4,
+   "neck": 7.7,
+   "chest": 15.4,
+   "tummy": 12.9,
+   "shoulder.left": 11.6,
+   "shoulder.right": 11.6,
+   "arm.left": 12.9,
+   "arm.right": 12.9,
+   "elbow.left": 9,
+   "elbow.right": 9,
+   "hand.left": 10.3,
+   "hand.right": 10.3,
+   "finger.left": 6.4,
+   "finger.right": 6.4,
+   "knee.left": 12.9,
+   "knee.right": 12.9,
+   "leg.left": 12.9,
+   "leg.right": 12.9,
+   "foot.left": 10.3,
+   "foot.right": 10.3,
+   "toe.left": 5.7,
+   "toe.right": 5.7
+  },
+  "tapMin": 5.7,
+  "tapHand": 10.3,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-talk",
+  "size": "844x390",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 32,
+  "roomPx": 429,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 28.3,
+   "ear.left": 10.3,
+   "ear.right": 10.3,
+   "eye.left": 7.7,
+   "eye.right": 7.7,
+   "nose": 5.7,
+   "mouth": 6.4,
+   "tooth": 6.4,
+   "throat": 6.4,
+   "neck": 7.7,
+   "chest": 15.4,
+   "tummy": 12.9,
+   "shoulder.left": 11.6,
+   "shoulder.right": 11.6,
+   "arm.left": 12.9,
+   "arm.right": 12.9,
+   "elbow.left": 9,
+   "elbow.right": 9,
+   "hand.left": 10.3,
+   "hand.right": 10.3,
+   "finger.left": 6.4,
+   "finger.right": 6.4,
+   "knee.left": 12.9,
+   "knee.right": 12.9,
+   "leg.left": 12.9,
+   "leg.right": 12.9,
+   "foot.left": 10.3,
+   "foot.right": 10.3,
+   "toe.left": 5.7,
+   "toe.right": 5.7
+  },
+  "tapMin": 5.7,
+  "tapHand": 10.3,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts.",
+   "say 3q-left: Does it hurt here?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-front",
+  "size": "844x390",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 32,
+  "roomPx": 429,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.778,
+    0.827,
+    0.83
+   ],
+   [
+    0.856,
+    0.912,
+    0.83
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.028,
+  "clearOfDoorFrame": 0.013,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.176,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 28.3,
+   "ear.left": 10.3,
+   "ear.right": 10.3,
+   "eye.left": 7.7,
+   "eye.right": 7.7,
+   "nose": 5.7,
+   "mouth": 6.4,
+   "tooth": 6.4,
+   "throat": 6.4,
+   "neck": 7.7,
+   "chest": 15.4,
+   "tummy": 12.9,
+   "shoulder.left": 11.6,
+   "shoulder.right": 11.6,
+   "arm.left": 12.9,
+   "arm.right": 12.9,
+   "elbow.left": 9,
+   "elbow.right": 9,
+   "hand.left": 10.3,
+   "hand.right": 10.3,
+   "finger.left": 6.4,
+   "finger.right": 6.4,
+   "knee.left": 12.9,
+   "knee.right": 12.9,
+   "leg.left": 12.9,
+   "leg.right": 12.9,
+   "foot.left": 10.3,
+   "foot.right": 10.3,
+   "toe.left": 5.7,
+   "toe.right": 5.7
+  },
+  "tapMin": 5.7,
+  "tapHand": 10.3,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts.",
+   "say 3q-left: Does it hurt here?",
+   "say 3q-left: knee",
+   "say front: A scrape."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-L3",
+  "size": "844x390",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 32,
+  "roomPx": 429,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 28.3,
+   "ear.left": 10.3,
+   "ear.right": 10.3,
+   "eye.left": 7.7,
+   "eye.right": 7.7,
+   "nose": 5.7,
+   "mouth": 6.4,
+   "tooth": 6.4,
+   "throat": 6.4,
+   "neck": 7.7,
+   "chest": 15.4,
+   "tummy": 12.9,
+   "shoulder.left": 11.6,
+   "shoulder.right": 11.6,
+   "arm.left": 12.9,
+   "arm.right": 12.9,
+   "elbow.left": 9,
+   "elbow.right": 9,
+   "hand.left": 10.3,
+   "hand.right": 10.3,
+   "finger.left": 6.4,
+   "finger.right": 6.4,
+   "knee.left": 12.9,
+   "knee.right": 12.9,
+   "leg.left": 12.9,
+   "leg.right": 12.9,
+   "foot.left": 10.3,
+   "foot.right": 10.3,
+   "toe.left": 5.7,
+   "toe.right": 5.7
+  },
+  "tapMin": 5.7,
+  "tapHand": 10.3,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Find where it hurts."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "stand",
+  "size": "844x390",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.84,
+  "docH": 0.73,
+  "docCrown": 0.11,
+  "docCrownPx": 24,
+  "roomPx": 429,
+  "docOfDoor": 1.072,
+  "docShoes": [
+   [
+    0.647,
+    0.695,
+    0.824
+   ],
+   [
+    0.739,
+    0.782,
+    0.839
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.865,
+  "girlH": 0.535,
+  "ratio": 1.365,
+  "girlCrownOnHim": 0.699,
+  "girlShoes": [
+   [
+    0.452,
+    0.485,
+    0.865
+   ],
+   [
+    0.515,
+    0.547,
+    0.865
+   ]
+  ],
+  "feetGap": 0.026,
+  "tapPad": 1.102803738317757,
+  "taps": {
+   "head": 29.3,
+   "ear.left": 9.3,
+   "ear.right": 9.3,
+   "eye.left": 7.5,
+   "eye.right": 7.5,
+   "nose": 5.3,
+   "mouth": 5.9,
+   "tooth": 5.9,
+   "throat": 5.3,
+   "neck": 6.7,
+   "chest": 16,
+   "tummy": 16,
+   "shoulder.left": 10.7,
+   "shoulder.right": 10.7,
+   "arm.left": 12,
+   "arm.right": 12,
+   "elbow.left": 8,
+   "elbow.right": 8,
+   "hand.left": 13.3,
+   "hand.right": 13.3,
+   "finger.left": 6.7,
+   "finger.right": 6.7,
+   "knee.left": 9.3,
+   "knee.right": 9.3,
+   "leg.left": 9.3,
+   "leg.right": 9.3,
+   "foot.left": 10.7,
+   "foot.right": 10.7,
+   "toe.left": 5.3,
+   "toe.right": 5.3
+  },
+  "tapMin": 5.3,
+  "tapHand": 13.3,
+  "tapHits": "30/30",
+  "lines": [
+   "card front: Check her over.",
+   "card front: mouth",
+   "card front: chest",
+   "card front: I / me's left arm"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "stand-front",
+  "size": "844x390",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.84,
+  "docH": 0.73,
+  "docCrown": 0.11,
+  "docCrownPx": 24,
+  "roomPx": 429,
+  "docOfDoor": 1.072,
+  "docShoes": [
+   [
+    0.65,
+    0.701,
+    0.84
+   ],
+   [
+    0.732,
+    0.79,
+    0.84
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.865,
+  "girlH": 0.535,
+  "ratio": 1.365,
+  "girlCrownOnHim": 0.699,
+  "girlShoes": [
+   [
+    0.452,
+    0.485,
+    0.865
+   ],
+   [
+    0.515,
+    0.547,
+    0.865
+   ]
+  ],
+  "feetGap": 0.025,
+  "tapPad": 1.102803738317757,
+  "taps": {
+   "head": 29.3,
+   "ear.left": 9.3,
+   "ear.right": 9.3,
+   "eye.left": 7.5,
+   "eye.right": 7.5,
+   "nose": 5.3,
+   "mouth": 5.9,
+   "tooth": 5.9,
+   "throat": 5.3,
+   "neck": 6.7,
+   "chest": 16,
+   "tummy": 16,
+   "shoulder.left": 10.7,
+   "shoulder.right": 10.7,
+   "arm.left": 12,
+   "arm.right": 12,
+   "elbow.left": 8,
+   "elbow.right": 8,
+   "hand.left": 13.3,
+   "hand.right": 13.3,
+   "finger.left": 6.7,
+   "finger.right": 6.7,
+   "knee.left": 9.3,
+   "knee.right": 9.3,
+   "leg.left": 9.3,
+   "leg.right": 9.3,
+   "foot.left": 10.7,
+   "foot.right": 10.7,
+   "toe.left": 5.3,
+   "toe.right": 5.3
+  },
+  "tapMin": 5.3,
+  "tapHand": 13.3,
+  "tapHits": "30/30",
+  "lines": [
+   "card front: Check her over.",
+   "card front: mouth",
+   "card front: chest",
+   "card front: I / me's left arm",
+   "say front: The jab before the trip."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door",
+  "size": "844x390",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 45,
+  "roomPx": 429,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-thought",
+   "l": 0.441,
+   "r": 0.863,
+   "c": 0.652,
+   "top": 0.182
+  },
+  "trayOverDocFeetPx": 0,
+  "trayOverGirlFeetPx": 0,
+  "lines": [
+   "say 3q-right: Is everything okay now?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door-L2",
+  "size": "844x390",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 45,
+  "roomPx": 429,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-help-tray",
+   "l": 0.245,
+   "r": 0.755,
+   "c": 0.5,
+   "top": 0.75
+  },
+  "trayOverDocFeetPx": 8.7,
+  "trayOverGirlFeetPx": 8.7,
+  "lines": [
+   "say 3q-right: Is everything okay now?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door-L3",
+  "size": "844x390",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 45,
+  "roomPx": 429,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-help-tray",
+   "l": 0.504,
+   "r": 0.896,
+   "c": 0.7,
+   "top": 0.75
+  },
+  "trayOverDocFeetPx": 0,
+  "trayOverGirlFeetPx": 0,
+  "lines": [
+   "say 3q-right: Is everything okay now?",
+   "say front: What will help?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "waiting",
+  "size": "844x390",
+  "view": "wave-front",
+  "file": "doctor-wave-front-front.webp",
+  "docFeet": 0.755,
+  "docH": 0.57,
+  "docCrown": 0.185,
+  "docCrownPx": 52,
+  "roomPx": 429,
+  "docShoes": [
+   [
+    0.74,
+    0.78,
+    0.755
+   ],
+   [
+    0.804,
+    0.85,
+    0.755
+   ]
+  ],
+  "shoeClearOfDesk": 0.025,
+  "shadowsDoc": 2,
+  "shadowsGirl": 0,
+  "lines": [
+   "say wave-front: Who's next?",
+   "card wave-front: Bring in girl"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "boing",
+  "size": "844x390",
+  "machineArt": false,
+  "errors": 0
+ },
+ {
+  "room": "exam",
+  "size": "1366x768",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 111,
+  "roomPx": 737,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 48.6,
+   "ear.left": 17.7,
+   "ear.right": 17.7,
+   "eye.left": 13.3,
+   "eye.right": 13.3,
+   "nose": 9.7,
+   "mouth": 11,
+   "tooth": 11,
+   "throat": 11,
+   "neck": 13.3,
+   "chest": 26.5,
+   "tummy": 22.1,
+   "shoulder.left": 19.9,
+   "shoulder.right": 19.9,
+   "arm.left": 22.1,
+   "arm.right": 22.1,
+   "elbow.left": 15.5,
+   "elbow.right": 15.5,
+   "hand.left": 17.7,
+   "hand.right": 17.7,
+   "finger.left": 11,
+   "finger.right": 11,
+   "knee.left": 22.1,
+   "knee.right": 22.1,
+   "leg.left": 22.1,
+   "leg.right": 22.1,
+   "foot.left": 17.7,
+   "foot.right": 17.7,
+   "toe.left": 9.7,
+   "toe.right": 9.7
+  },
+  "tapMin": 9.7,
+  "tapHand": 17.7,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-talk",
+  "size": "1366x768",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 111,
+  "roomPx": 737,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 48.6,
+   "ear.left": 17.7,
+   "ear.right": 17.7,
+   "eye.left": 13.3,
+   "eye.right": 13.3,
+   "nose": 9.7,
+   "mouth": 11,
+   "tooth": 11,
+   "throat": 11,
+   "neck": 13.3,
+   "chest": 26.5,
+   "tummy": 22.1,
+   "shoulder.left": 19.9,
+   "shoulder.right": 19.9,
+   "arm.left": 22.1,
+   "arm.right": 22.1,
+   "elbow.left": 15.5,
+   "elbow.right": 15.5,
+   "hand.left": 17.7,
+   "hand.right": 17.7,
+   "finger.left": 11,
+   "finger.right": 11,
+   "knee.left": 22.1,
+   "knee.right": 22.1,
+   "leg.left": 22.1,
+   "leg.right": 22.1,
+   "foot.left": 17.7,
+   "foot.right": 17.7,
+   "toe.left": 9.7,
+   "toe.right": 9.7
+  },
+  "tapMin": 9.7,
+  "tapHand": 17.7,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts.",
+   "say 3q-left: Does it hurt here?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-front",
+  "size": "1366x768",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 111,
+  "roomPx": 737,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.778,
+    0.827,
+    0.83
+   ],
+   [
+    0.856,
+    0.912,
+    0.83
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.028,
+  "clearOfDoorFrame": 0.013,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.176,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 48.6,
+   "ear.left": 17.7,
+   "ear.right": 17.7,
+   "eye.left": 13.3,
+   "eye.right": 13.3,
+   "nose": 9.7,
+   "mouth": 11,
+   "tooth": 11,
+   "throat": 11,
+   "neck": 13.3,
+   "chest": 26.5,
+   "tummy": 22.1,
+   "shoulder.left": 19.9,
+   "shoulder.right": 19.9,
+   "arm.left": 22.1,
+   "arm.right": 22.1,
+   "elbow.left": 15.5,
+   "elbow.right": 15.5,
+   "hand.left": 17.7,
+   "hand.right": 17.7,
+   "finger.left": 11,
+   "finger.right": 11,
+   "knee.left": 22.1,
+   "knee.right": 22.1,
+   "leg.left": 22.1,
+   "leg.right": 22.1,
+   "foot.left": 17.7,
+   "foot.right": 17.7,
+   "toe.left": 9.7,
+   "toe.right": 9.7
+  },
+  "tapMin": 9.7,
+  "tapHand": 17.7,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Ask where it hurts.",
+   "say 3q-left: Does it hurt here?",
+   "say 3q-left: knee",
+   "say front: A scrape."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "exam-L3",
+  "size": "1366x768",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.83,
+  "docH": 0.7,
+  "docCrown": 0.13,
+  "docCrownPx": 111,
+  "roomPx": 737,
+  "docOfDoor": 1.017,
+  "docShoes": [
+   [
+    0.775,
+    0.821,
+    0.815
+   ],
+   [
+    0.864,
+    0.904,
+    0.829
+   ]
+  ],
+  "shoeClearOfBedLeg": 0.025,
+  "clearOfDoorFrame": 0.011,
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.654,
+  "girlH": 0.43,
+  "ratio": 1.629,
+  "girlCrownOnHim": 0.865,
+  "girlShoes": [
+   [
+    0.459,
+    0.492,
+    0.654
+   ],
+   [
+    0.507,
+    0.539,
+    0.654
+   ]
+  ],
+  "feetGap": -0.175,
+  "tapPad": 1.3,
+  "taps": {
+   "head": 48.6,
+   "ear.left": 17.7,
+   "ear.right": 17.7,
+   "eye.left": 13.3,
+   "eye.right": 13.3,
+   "nose": 9.7,
+   "mouth": 11,
+   "tooth": 11,
+   "throat": 11,
+   "neck": 13.3,
+   "chest": 26.5,
+   "tummy": 22.1,
+   "shoulder.left": 19.9,
+   "shoulder.right": 19.9,
+   "arm.left": 22.1,
+   "arm.right": 22.1,
+   "elbow.left": 15.5,
+   "elbow.right": 15.5,
+   "hand.left": 17.7,
+   "hand.right": 17.7,
+   "finger.left": 11,
+   "finger.right": 11,
+   "knee.left": 22.1,
+   "knee.right": 22.1,
+   "leg.left": 22.1,
+   "leg.right": 22.1,
+   "foot.left": 17.7,
+   "foot.right": 17.7,
+   "toe.left": 9.7,
+   "toe.right": 9.7
+  },
+  "tapMin": 9.7,
+  "tapHand": 17.7,
+  "tapHits": "28/30",
+  "lines": [
+   "card front: Find where it hurts."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "stand",
+  "size": "1366x768",
+  "view": "3q-left",
+  "file": "doctor-3q-left-front.webp",
+  "docFeet": 0.8,
+  "docH": 0.73,
+  "docCrown": 0.07,
+  "docCrownPx": 54,
+  "roomPx": 768,
+  "docOfDoor": 1.072,
+  "docShoes": [
+   [
+    0.647,
+    0.695,
+    0.784
+   ],
+   [
+    0.74,
+    0.782,
+    0.799
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.825,
+  "girlH": 0.535,
+  "ratio": 1.365,
+  "girlCrownOnHim": 0.699,
+  "girlShoes": [
+   [
+    0.452,
+    0.485,
+    0.825
+   ],
+   [
+    0.515,
+    0.547,
+    0.825
+   ]
+  ],
+  "feetGap": 0.026,
+  "tapPad": 1.102803738317757,
+  "taps": {
+   "head": 52.5,
+   "ear.left": 16.7,
+   "ear.right": 16.7,
+   "eye.left": 13.4,
+   "eye.right": 13.4,
+   "nose": 9.5,
+   "mouth": 10.5,
+   "tooth": 10.5,
+   "throat": 9.5,
+   "neck": 11.9,
+   "chest": 28.6,
+   "tummy": 28.6,
+   "shoulder.left": 19.1,
+   "shoulder.right": 19.1,
+   "arm.left": 21.5,
+   "arm.right": 21.5,
+   "elbow.left": 14.3,
+   "elbow.right": 14.3,
+   "hand.left": 23.9,
+   "hand.right": 23.9,
+   "finger.left": 11.9,
+   "finger.right": 11.9,
+   "knee.left": 16.7,
+   "knee.right": 16.7,
+   "leg.left": 16.7,
+   "leg.right": 16.7,
+   "foot.left": 19.1,
+   "foot.right": 19.1,
+   "toe.left": 9.5,
+   "toe.right": 9.5
+  },
+  "tapMin": 9.5,
+  "tapHand": 23.9,
+  "tapHits": "30/30",
+  "lines": [
+   "card front: Check her over.",
+   "card front: mouth",
+   "card front: chest",
+   "card front: I / me's left arm"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "stand-front",
+  "size": "1366x768",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.8,
+  "docH": 0.73,
+  "docCrown": 0.07,
+  "docCrownPx": 54,
+  "roomPx": 768,
+  "docOfDoor": 1.072,
+  "docShoes": [
+   [
+    0.65,
+    0.701,
+    0.8
+   ],
+   [
+    0.732,
+    0.79,
+    0.8
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.825,
+  "girlH": 0.535,
+  "ratio": 1.365,
+  "girlCrownOnHim": 0.699,
+  "girlShoes": [
+   [
+    0.452,
+    0.485,
+    0.825
+   ],
+   [
+    0.515,
+    0.547,
+    0.825
+   ]
+  ],
+  "feetGap": 0.025,
+  "tapPad": 1.102803738317757,
+  "taps": {
+   "head": 52.5,
+   "ear.left": 16.7,
+   "ear.right": 16.7,
+   "eye.left": 13.4,
+   "eye.right": 13.4,
+   "nose": 9.5,
+   "mouth": 10.5,
+   "tooth": 10.5,
+   "throat": 9.5,
+   "neck": 11.9,
+   "chest": 28.6,
+   "tummy": 28.6,
+   "shoulder.left": 19.1,
+   "shoulder.right": 19.1,
+   "arm.left": 21.5,
+   "arm.right": 21.5,
+   "elbow.left": 14.3,
+   "elbow.right": 14.3,
+   "hand.left": 23.9,
+   "hand.right": 23.9,
+   "finger.left": 11.9,
+   "finger.right": 11.9,
+   "knee.left": 16.7,
+   "knee.right": 16.7,
+   "leg.left": 16.7,
+   "leg.right": 16.7,
+   "foot.left": 19.1,
+   "foot.right": 19.1,
+   "toe.left": 9.5,
+   "toe.right": 9.5
+  },
+  "tapMin": 9.5,
+  "tapHand": 23.9,
+  "tapHits": "30/30",
+  "lines": [
+   "card front: Check her over.",
+   "card front: mouth",
+   "card front: chest",
+   "card front: I / me's left arm",
+   "say front: The jab before the trip."
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door",
+  "size": "1366x768",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 131,
+  "roomPx": 768,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-thought",
+   "l": 0.441,
+   "r": 0.625,
+   "c": 0.533,
+   "top": 0.073
+  },
+  "trayOverDocFeetPx": 0,
+  "trayOverGirlFeetPx": 0,
+  "lines": [
+   "say 3q-right: Is everything okay now?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door-L2",
+  "size": "1366x768",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 131,
+  "roomPx": 768,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-help-tray",
+   "l": 0.312,
+   "r": 0.708,
+   "c": 0.51,
+   "top": 0.819
+  },
+  "trayOverDocFeetPx": 0,
+  "trayOverGirlFeetPx": 0,
+  "lines": [
+   "say 3q-right: Is everything okay now?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "door-L3",
+  "size": "1366x768",
+  "view": "front",
+  "file": "doctor-front-front.webp",
+  "docFeet": 0.77,
+  "docH": 0.6,
+  "docCrown": 0.17,
+  "docCrownPx": 131,
+  "roomPx": 768,
+  "docOfDoor": 0.923,
+  "docShoes": [
+   [
+    0.147,
+    0.189,
+    0.77
+   ],
+   [
+    0.215,
+    0.263,
+    0.77
+   ]
+  ],
+  "shadowsDoc": 2,
+  "shadowsGirl": 2,
+  "girlFeet": 0.77,
+  "girlH": 0.415,
+  "ratio": 1.446,
+  "girlCrownOnHim": 0.692,
+  "girlShoes": [
+   [
+    0.353,
+    0.378,
+    0.77
+   ],
+   [
+    0.402,
+    0.427,
+    0.77
+   ]
+  ],
+  "feetGap": 0,
+  "tray": {
+   "cls": "cl-help-tray",
+   "l": 0.359,
+   "r": 0.661,
+   "c": 0.51,
+   "top": 0.819
+  },
+  "trayOverDocFeetPx": 0,
+  "trayOverGirlFeetPx": 0,
+  "lines": [
+   "say 3q-right: Is everything okay now?",
+   "say front: What will help?"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "waiting",
+  "size": "1366x768",
+  "view": "wave-front",
+  "file": "doctor-wave-front-front.webp",
+  "docFeet": 0.755,
+  "docH": 0.57,
+  "docCrown": 0.185,
+  "docCrownPx": 142,
+  "roomPx": 768,
+  "docShoes": [
+   [
+    0.74,
+    0.78,
+    0.755
+   ],
+   [
+    0.804,
+    0.85,
+    0.755
+   ]
+  ],
+  "shoeClearOfDesk": 0.025,
+  "shadowsDoc": 2,
+  "shadowsGirl": 0,
+  "lines": [
+   "say wave-front: Who's next?",
+   "card wave-front: Bring in girl"
+  ],
+  "errors": 0
+ },
+ {
+  "room": "boing",
+  "size": "1366x768",
+  "machineArt": false,
+  "errors": 0
+ }
+]

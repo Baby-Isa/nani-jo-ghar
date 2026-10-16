@@ -1,0 +1,4 @@
+NEW plane data/clinic/scenes-v2.json stand: her feet at 0.8, his at 0.8: hers 0.02-0.03 in front of his (CLN-156)
+NEW plane data/clinic/scenes-v2.json stand.phone: her feet at 0.84, his at 0.84: hers 0.02-0.03 in front of his (CLN-156)
+NEW plane data/clinic/scenes-v2.json exam: his feet at 0.8, her bed line at 0.8: his 0.02-0.04 in front of it, at the stool's front legs (CLN-155)
+static: 3 findings (plane 3), 0 known, 3 new; 918 known ones are fixed: run --write-known to shrink the list
