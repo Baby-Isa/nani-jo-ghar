@@ -232,7 +232,9 @@
         im.onload = () => {
           try {
             const [x, y, w, hh] = f.crop;
-            const N = Math.round(Math.min(256, w));
+            // cut at the size it is drawn (its screen px, a little over: never over 3x, the load check's oversize rule)
+            const drawn = faceImg.getBoundingClientRect().width || 64;
+            const N = Math.round(Math.max(48, Math.min(w, 256, drawn * (root.devicePixelRatio || 1) * 1.25)));
             const c = document.createElement("canvas");
             c.width = N;
             c.height = Math.round((N * hh) / w);
