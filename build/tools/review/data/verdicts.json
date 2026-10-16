@@ -147,17 +147,17 @@
   "date": "2026-10-12"
  },
  "ART-13": {
-  "hash": "768ec71bf884c6f842be",
+  "hash": "9bd5108dbf138ff10de4",
   "dhash": [
-   "6ffef6eae8e8eadb"
+   "7fdf564aeaebeac9"
   ],
   "verdict": "PASS",
   "line": "machine: pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "date": "2026-10-12"
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "date": "2026-10-16"
  },
  "ART-15": {
   "hash": "3d3db756e11de264177d",
@@ -1226,15 +1226,15 @@
   "date": "2026-10-13"
  },
  "CLN-04": {
-  "hash": "5251e3ae906b94cd27da",
+  "hash": "95807649faf1002bb2f1",
   "dhash": [],
   "verdict": "PASS",
-  "line": "machine: lexicon (3 words, all in the lexicon); !textMatches:… (not (text: \"Bring in chokri\")); lexicon (5 words, all in the lexicon)",
+  "line": "machine: lexicon (1 words, all in the lexicon); !textMatches:… (not (text: \"chokri\")); lexicon (1 words, all in the lexicon)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev3",
-  "commit": "7812e59a",
-  "date": "2026-10-12"
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "date": "2026-10-16"
  },
  "CLN-05": {
   "hash": "05ed96555b83cd527883",
@@ -1467,18 +1467,18 @@
   "date": "2026-10-12"
  },
  "CLN-11": {
-  "hash": "e1188a31319279f9eaab",
+  "hash": "b8e3fbde6a7ee79f1a1b",
   "dhash": [
-   "df57dfd7cccccede",
-   "3fa33fae9a9a1efe"
+   "dfd7dfd7cececede",
+   "3fa33faa9e9a1efe"
   ],
   "verdict": "PASS",
   "line": "machine: count:.cl-wp>=1 (4 visible); count:.cl-wp<=6 (4 visible)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261013-113508-8ie",
-  "commit": "48f64ae",
-  "date": "2026-10-13"
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "date": "2026-10-16"
  },
  "CLN-110": {
   "hash": "adb5eb72f4bf2a2449fc",
@@ -1618,20 +1618,21 @@
   "date": "2026-10-12"
  },
  "CLN-12": {
-  "hash": "892e2f1736f3e0701f19",
+  "hash": "bf3afba1ee4e63523984",
   "dhash": [
-   "1f23232323078f7e",
-   "0000002c2e22175b",
-   "1f23232323070f7e",
-   "010000bb1b072a17"
+   "1f23010101030f7e",
+   "0000002e2e22111b",
+   "1f23111111030d7e",
+   "000000bb1b072b17",
+   "1f23192929032f7e"
   ],
   "verdict": "PASS",
-  "line": "machine: count:.cl-wp.risen=1 (1 visible); lastsMs:.cl-wp.risen>=800 (on screen 15233 ms (still at the end)); count:.cl-wp.risen=1 (1 visible)",
+  "line": "machine: count:.cl-wp.risen=1 (1 visible); lastsMs:.cl-wp.risen>=800 (on screen 13728 ms (still at the end)); count:.cl-wp.risen=1 (1 visible)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "date": "2026-10-13"
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "date": "2026-10-16"
  },
  "CLN-120": {
   "hash": "ec5be1ffedc1bf2c869d",
@@ -1747,20 +1748,20 @@
   "date": "2026-10-13"
  },
  "CLN-13": {
-  "hash": "0e9dea0d4d0d2531e8bd",
+  "hash": "f78c246766ff9db4da3b",
   "dhash": [
-   "df57dffae2f2cede",
-   "3fa33fcec6962efe",
-   "df57dfdad2f2cede",
-   "3fa33faea6762efe"
+   "df57dff7d6d6cede",
+   "3fa35f2e2e2e1efe",
+   "df57eff7d6d6cede",
+   "3fa35fce6e2e1efe"
   ],
   "verdict": "PASS",
   "line": "machine: count:.cl-seat-who<=6 (0 visible); count:.cl-seat-who<=6 (0 visible)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-s04-ev2",
-  "commit": "804b21c1",
-  "date": "2026-10-12"
+  "run": "ev-s07",
+  "commit": "61af63b4",
+  "date": "2026-10-16"
  },
  "CLN-130": {
   "hash": "1870663bc76fa2e17671",

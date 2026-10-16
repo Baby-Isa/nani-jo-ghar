@@ -185,3 +185,8 @@
 {"id":"CK-40","run":"ev-20261014-160921-s7f","event":"built","date":"2026-10-14"}
 {"id":"CK-37","run":"ev-20261014-160921-s7f","event":"built","date":"2026-10-14"}
 {"id":"CK-43","run":"ev-20261014-160921-s7f","event":"built","date":"2026-10-14"}
+{"id":"CLN-04","run":"ev-s07","verdict":"PASS","spec":"a01a7ba8cce089d808b6","judge":"expect","date":"2026-10-16"}
+{"id":"CLN-11","run":"ev-s07","verdict":"PASS","spec":"6d0c80204a5e88edfe87","judge":"expect","date":"2026-10-16"}
+{"id":"CLN-12","run":"ev-s07","verdict":"PASS","spec":"2de1f00910ab4c7b7c33","judge":"expect","date":"2026-10-16"}
+{"id":"CLN-13","run":"ev-s07","verdict":"PASS","spec":"4ae4f16a1a0b1bec0f97","judge":"expect","date":"2026-10-16"}
+{"id":"ART-13","run":"ev-s07","verdict":"PASS","spec":"60bc9122d28610c0d018","judge":"expect","date":"2026-10-16"}
