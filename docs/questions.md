@@ -28,6 +28,9 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 36. **The pharmacy's "cup" and "bottle":** the new belt art draws the cup as a glass tumbler and the bottle as a hot-water bottle (as the art plan said). Keep? Recommend yes.
 37. **The waiting room:** two old women in one morning share one picture; the dad-with-baby picture can't be used while the rule "the baby sits with a woman" (`js/clinic/pipeline.js:234`) stands. Allow a dad with the baby? Recommend yes.
 
+### From the 17 Oct Cook play-test
+38. **Fifteen decisions** on Cook (item words on a tap, the memory problem and Nani barking orders, the bulb, help, moving on, the ending, chaat, samosa, sekelo, maani, daal, the art run): `docs/feedback/cook-playtest-2026-10-17.md` §6, each with a recommendation.
+
 ### Business
 26. **Commercial model:** open (decision 7). The landing page needs it first.
 27. **Landing page:** whose voices and faces appear first. Hannah's granddad can share it across a community with deep Kutch roots; the trailer is planned "Planet Zoo style" (in-game footage, slow camera, gentle music, no narrator), built in code from the game.

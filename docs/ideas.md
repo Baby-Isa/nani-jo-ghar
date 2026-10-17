@@ -56,3 +56,5 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 47. Streaks: none for now, at most one gentle "today" hub [Zafar, 14 Oct]. Idea.
 48. Hands for first-person scenes outside Cook [Zafar, 14 Oct]. Parked until a mode needs them.
 49. Story mode and the free-play modes come after Arc 1; Busy and Relaxed Cook modes dropped, timers come from the level [Zafar, 14 Oct]. Idea.
+50. Conversations in the kitchen: the characters talk to each other on screen, then with the child ("okay, I'll see you tomorrow", "I'll come again"), at every order's start and end; "a really really good way to absorb all this immersion-based knowledge ... we're gonna rely on it a lot" [Zafar, 17 Oct; `docs/feedback/cook-playtest-2026-10-17.md` P25]. For the Conversations mode.
+51. Samosa fold as a dot-to-dot swipe: staggered dots, a different number of ups and downs each time [Zafar, 17 Oct, then "let's leave it, let's not overdo it"; P39]. Parked.

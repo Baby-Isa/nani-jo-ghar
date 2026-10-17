@@ -8,23 +8,19 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (16 Oct 2026, 22:20 UK):** Sprint 7 "Art, clinic first" closed (`docs/sprints/S07-art-clinic-first.md`). Published to `main` 16 Oct 22:17 UK (38d0591a, stamp 20261016T211414Z), past the publish gate on Zafar's word. Branch `claude/new-session-b5r2am` = `main`. Nothing running.
+**Where things stand (17 Oct 2026):** Sprint 8 is open (`docs/sprints/S08-play-feedback-final.md`). `main` = 38d0591a; branch `claude/new-session-b5r2am` carries the docs below. Nothing running.
 
-**Live now:** the cartoony grandad everywhere in the clinic, turned to the girl while he examines, both set back on one floor with contact shadows (`build/reports/s08-placement-*.md`, `s08-rejudge*.md`); Nani's jaw-fixed new look everywhere outside the clinic, the family seated on stools behind the counter (CK-46, `s08-nani-ground.md`); the clinic items and the top-view chai pan (`s08-clinic-items.md`, `s08-nani-stitch.md`).
+**Done today:** Zafar's six Cook voice notes (sekelo, samosa, daal, maani, chai, chaat; no clinic yet) turned into `docs/feedback/cook-playtest-2026-10-17.md`: 66 points, causes checked in code, a second reader's 18 finds fixed, the gate passed. Fix list: 57 new rows and 8 reopened (SH-60, PAN-16, PAN-04, LNG-09, SH-53, CHAI-19, CK-TB-01, SEK-07); their contract checks are item 25 in `docs/process/checks-to-build.md`.
 
-**Gate skipped at this publish** (Zafar, 16 Oct): no full contract run since 14 Oct, no evidence rerun after CK-46. The chunked gate (`s08-gate.md`, 574 pages) found no new break. Run both early in Sprint 8.
-
-**Sprint 8 is open** (`docs/sprints/S08-play-feedback-final.md`): Zafar plays Cook and the clinic and sends feedback; we make both modes close to final with one big art run; Kutchi may lag.
+**Waiting on Zafar:** the report's §6, fifteen decisions with recommendations (`docs/questions.md` 38). His clinic feedback may follow.
 
 **Next steps, in order:**
-1. Wait for Zafar's play feedback; `/feedback` on it (fix-list rows the same day).
-2. Agree the Sprint 8 budget with him; plan the big art run (`/art-run`, Fable plans, about $15-25), carrying the Sprint 7 art leftovers in the sprint file.
-3. Early: `sandbox/run.mjs --gate` (in chunks, PNGs deleted as judged) and `evidence.mjs --run --sprint`, judged and applied; specs for CK-46 and CLN-154..157 so they can be marked built.
-
-**Open questions to Zafar:** `docs/questions.md` (new: the Cook "Thank you!" pill, for Mum).
+1. His answers: each yes into its row, doc or check ("Zafar, <date>"), including non-negotiable 9 (decision 8) and cook.md (decision 9).
+2. The Sprint 8 budget; the design pass of decision 2 (Fable); the big art run (decision 15, `/art-run`).
+3. Early: `sandbox/run.mjs --gate` (in chunks) and `evidence.mjs --run --sprint`, judged and applied; specs for CK-46 and CLN-154..157.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (= `main`, 38d0591a). Sprint 8 is open and waits on my play feedback for Cook and the clinic, which I'll send next. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8 is open; the 17 Oct Cook feedback is processed and waits on my answers to its fifteen decisions. Tell me before launching anything new.
 
 ## The fix list
 
@@ -32,14 +28,14 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 5 | 73 |
-| Cook: pantry | 1 | 14 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 1 / 0 / 4 / 0 / 0 / 1 / 7 | 16 / 14 / 19 / 11 / 19 / 15 / 30 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 15 | 71 |
+| Cook: pantry | 3 | 12 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 6 / 1 / 10 / 1 / 3 / 3 / 10 | 15 / 14 / 19 / 11 / 19 / 14 / 29 |
 | Clinic | 19 | 134 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 9 |
 | Art | 5 | 9 |
-| Language and audio | 7 | 5 |
+| Language and audio | 9 | 4 |
 
 ---
 

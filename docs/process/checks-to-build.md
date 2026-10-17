@@ -6,6 +6,7 @@ Rules become code (decision 99): each item below is a check that will make a rul
 
 | # | Check | What it checks | Where | Size | Retires | Guards (open rows) |
 |---|---|---|---|---|---|---|
+| 25 | The 17 Oct Cook contract checks | One per shared row, every game: item words never over a line (SH-94), the help ladder and first-hint timing (SH-60, SH-95, SH-96), each line said once (PAN-16), one-sentence add line (SH-97), the bulb peek and said = written (SH-98, SH-99), one bulb picture and peek time by level (SH-100, SH-101), a free replay (SH-102), the review divider (SH-103), moving on (SH-105), the go-on arrow (SH-106), headline size (SH-107), the marble (SH-108), the level table (SH-110), loading (CK-48), the opening line (LNG-16) | `build/sandbox/lib/contract.mjs`, CONTRACT_ROWS | one each, built with its fix (Sprint 8) | the row's eye-only check | those rows |
 
 ## The rules these checks replace (word for word, until their check exists)
 
