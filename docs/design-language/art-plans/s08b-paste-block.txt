@@ -1,0 +1,148 @@
+You're making 20 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Nobody needs to watch: none of these people is based on a real person, so you judge every image yourself (see APPROVALS).
+
+THE PAGE
+Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/docs/design-language/art-plans/s08b-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
+
+WHERE FILES LIVE (all public; open nothing locally)
+RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/claude/new-session-b5r2am/
+Reference images, by the name the run order uses:
+ style-anchor-v1.png              RAW + sources/art/style-anchor-v1.png
+ plaster-skin.webp                RAW + assets/clinic/items-v2/plaster-skin.webp
+ bowl-side-v2.webp                RAW + assets/cook/items/v3/chaat/bowl-side-v2.webp
+ pot-empty.webp                   RAW + assets/cook/items/v3/daar/pot-empty.webp
+ pot-tadka-v2.webp                RAW + assets/cook/items/v3/daar/pot-tadka-v2.webp
+ cp1-chai-pan-tilt-v1.png         RAW + sources/art/s07/cp1-chai-pan-tilt-v1.png
+ sk2-sekelo-plate-skewers-v1.png  RAW + sources/art/s07/sk2-sekelo-plate-skewers-v1.png
+ grill.webp                       RAW + assets/cook/items/v3/sekelo/grill.webp
+ karahi.webp                      RAW + assets/cook/items/v3/samosa/karahi.webp
+ fold-v2-1.webp                   RAW + assets/cook/items/v3/samosa/fold-v2-1.webp
+ thermometer.webp                 RAW + assets/clinic/items-v2/thermometer.webp
+ fan-blades.webp                  RAW + assets/clinic/room-items/fan-blades.webp
+ bandage-roll.webp                RAW + assets/clinic/items-v2/bandage-roll.webp
+ brushing-level.webp              RAW + assets/clinic/sheets/brushing/brushing-level.webp
+ lemon-half.webp                  RAW + assets/clinic/items-v2/lemon-half.webp
+ sole-v2.webp                     RAW + assets/clinic/closeups/child/sole-v2.webp
+ tumbler.webp                     RAW + assets/clinic/items-v2/tumbler.webp
+ cotton-buds.webp                 RAW + assets/clinic/items-v2/cotton-buds.webp
+Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
+Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
+
+MOVING IMAGES (references in, kept images stay put until the end)
+Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. ChatGPT shows its generated images as in-page blob: addresses that nothing outside the page can fetch, so never try to copy one out with page JavaScript or to upload it anywhere; last time that was refused and the run lost its pictures.
+
+1. INTO CHATGPT (references). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, in the order the line names them, and check the composer shows exactly that many thumbnails before you paste.
+
+2. INTO CHATGPT (a kept image, "kept:X"). It is still in the chat where it was made. In the new prompt's fresh chat press the "+" button in the composer, choose "Add from library", pick that image (the newest kept try of that chat, by its title and thumbnail), and check the thumbnail is the kept one, not an attachment of its chat. Never download it and re-upload it.
+
+3. OUT OF CHATGPT: only at the very end, or when Zafar says "stop" or "download": from the Library page (https://chatgpt.com/library), each kept image in the run order with ChatGPT's own download button (Chrome's normal download; the file keeps ChatGPT's title, so you log "title -> save as" for each one; see AT THE END). Until then every kept image stays in its chat, and its chat link, title and save-as name are in THE LOG.
+
+THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (fetching references, posting the log) happens only while every window is generating.
+
+YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).
+
+THE TICK. Repeat until every line is KEPT or SKIPPED:
+1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
+2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
+   PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the "+" button, then "Add from library": the kept image is there under its chat), never by download and re-upload.
+   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
+3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) fetch the references the next READY prompts need; (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
+
+STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
+- First, reload that chat once: the picture is often finished and the page is stuck.
+- Still nothing 10 minutes after the send: abandon that chat and run the same prompt (same attachments) in a fresh chat, once. This retry does not use up a redo.
+- That retry stalls too: SKIP the prompt. Log "STALLED: <id> | <time>", log every prompt that waited for it as "SKIPPED: waits for <id>", free the slot and carry on.
+- Never leave a stalled tab holding a slot while others are idle.
+
+APPROVALS
+- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.
+- Everything else is yours to judge with the checks below. Don't stop to ask Zafar about any of it. If a prompt ever shows Nani, Big Ma, the doctor or another real person, skip it, log "needs Zafar: likeness" and carry on.
+
+SAFETY RULES (always)
+- Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
+- Sign nothing in or out. Delete no chats.
+- Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.
+- Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling a code box's {SLOTS}.
+- If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
+- Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
+
+HOW TO RUN EACH PROMPT
+1. Start a fresh ChatGPT chat in a free tab (never continue another prompt's chat).
+2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
+3. Paste the text of its code box, with its slots filled for that line (the PEOPLE table's, or the words after "slots:" on the line), and send.
+4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
+5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most 2 redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+6. Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.
+
+RUN ORDER. Line format: ID (person) | attach | save as | check
+PART A: COOK: CHAAT, DAAR, CHAI, SEKELO, THE GO-ON PICTURES, THE PASTRY (9)
+Objects only, no people. Each line attaches the picture it replaces or matches, plus the style anchor; match their look, never their mistakes (the line says which).
+CH1 | bowl-side-v2.webp, style-anchor-v1.png | ch1-chaat-bowl-side-v1.png | SIDEON
+CH2 | style-anchor-v1.png | ch2-chaat-strips-a-v1.png | STRIPS5
+CH3 | style-anchor-v1.png | ch3-chaat-strips-b-v1.png | STRIPS5
+DP2 | pot-empty.webp, style-anchor-v1.png | dp2-daar-pot-topdown-v1.png | TOPDOWN1
+DP3 | pot-tadka-v2.webp, style-anchor-v1.png | dp3-daar-discs-v1.png | DISCS6
+CP2 | cp1-chai-pan-tilt-v1.png, style-anchor-v1.png | cp2-chai-pan-topdown-v1.png | PAN3
+SK3 | sk2-sekelo-plate-skewers-v1.png, grill.webp, style-anchor-v1.png | sk3-sekelo-square-tray-v1.png | TRAY4
+GO1 | grill.webp, karahi.webp, style-anchor-v1.png | go1-go-on-pictures-v1.png | SHEET2
+SM1 | fold-v2-1.webp | sm1-pastry-tile-v1.png | TILE
+Part A done: post the part A summary (see AT THE END) and carry on.
+
+PART B: THE CLINIC: EAR, FEVER, KNEE, TOOTH, EYE, FOOT, TASTE (11)
+Objects only, no people (FT1 is an edit of the girl's sole close-up). Every line attaches the plaster packet as the look to match: real-looking materials and fine surface detail, as the item boxes.
+TH1 | thermometer.webp, plaster-skin.webp | th1-thermometer-v1.png | SHEET2
+FN1 | fan-blades.webp, plaster-skin.webp | fn1-ceiling-fan-below-v1.png | ITEM1
+FV1 | plaster-skin.webp | fv1-fever-bed-items-v1.png | SHEET4
+BD1 | bandage-roll.webp, plaster-skin.webp | bd1-bandage-band-v1.png | TILE
+TB1 | brushing-level.webp, plaster-skin.webp | tb1-toothbrush-v1.png | BRUSH
+ED1 | plaster-skin.webp | ed1-eye-drops-v1.png | SHEET3
+EC1 | style-anchor-v1.png | ec1-optician-wall-chart-v1.png | WALL
+LM1 | lemon-half.webp, plaster-skin.webp | lm1-lemon-whole-v1.png | ITEM1
+FT1 | edit: sole-v2.webp | ft1-sole-leg-v1.png | SOLEEDIT
+SP1 | sole-v2.webp, plaster-skin.webp | sp1-splinter-channel-tiles-v1.png | SHEET4
+TS1 | tumbler.webp, cotton-buds.webp, plaster-skin.webp | ts1-glass-and-bud-v1.png | SHEET2
+Part B done.
+
+CHECKS (by check ID)
+ITEM1: one object, whole, centred, seen as the line says, filling about 70% of the image, on one flat mid-grey; nothing touches an edge; no shadow on the grey
+SHEET2: the two things the line names, one in each half, the same scale, each whole; nothing touches the middle or an edge; flat mid-grey
+SHEET3: the three things the line names, left to right, the same scale; nothing touches a neighbour or an edge; flat mid-grey
+SHEET4: the four things the line names in a 2 by 2 grid, the same scale, each whole; nothing touches a cell boundary or an edge; flat mid-grey
+SIDEON: the bowl EXACTLY side-on: the rim one straight horizontal line, NO ellipse of the rim or the floor showing; clear glass, empty; flat mid-grey; touches no edge
+STRIPS5: five horizontal strips stacked with grey between, each the full width of the same glass bowl's inside seen exactly side-on, the food as a layer seen through glass, in the order the line names; no bowl drawn; nothing touches an edge
+TOPDOWN1: the pot from EXACTLY straight above: the rim a perfect circle, the walls equally thick all round, the floor a centred circle; empty; flat mid-grey; touches no edge
+DISCS6: six round discs of pot contents from exactly above, the SAME size, in a 3 by 2 grid, in the order the line names; no pot, no rim; perfect circles; nothing touches a cell boundary
+PAN3: three times the SAME steel chai pan from EXACTLY straight above, same size and place in each third, handle to the right: empty, milky chai, dark black tea; the rim a perfect circle; nothing touches a boundary
+TRAY4: four times the SAME square, matte, brushed-steel tray from directly above in a 2 by 2 grid, with ONE, TWO, THREE, FOUR bare skewers straight and parallel left to right, handles to the right past the rim; less shiny than the grill; nothing touches a cell boundary
+TILE: one seamless, tileable strip as the line says: its left and right ends match so it repeats with no visible seam; even light, no shadow on the grey; nothing else
+BRUSH: a child's toothbrush as the line says: the bristles facing the viewer's left towards the teeth, the handle pointing to the viewer's right and slightly down, NOT twisted (the bristles and the handle's back on opposite sides); flat mid-grey; touches no edge
+WALL: a plain optician's wall filling the whole image, softly out of focus at its edges, with ONE blank white eye-test board on it taking about 70% of the height, centred; NO letters, pictures, lines or icons on the board
+SOLEEDIT: the same sole as the attached (size, framing, toes) but the leg runs on off the bottom edge of the image with no cuff edge or cut line; the gaps between the toes are clean background, no grey wedges; only that changed
+
+PASS/FAIL LIST (every image; any one of these is a fail)
+- Any text, letters, numbers, labels or logos, even fake or blurry ones.
+- Outlines, cel shading, a flat vector look or painterly brushwork; blur, a vignette or lens flare (EC1's soft wall edges excepted).
+- The background isn't one flat mid-grey (EC1 excepted); a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says so (FT1's leg, EC1's wall).
+- The wrong number of things, things in the wrong order, the wrong view, or extra objects, people, hands or animals.
+- A top-down line not EXACTLY from above (an ellipse instead of a circle, one wall thicker than the other); a side-on line showing the rim or floor as an ellipse.
+- Anything scary, bloody, gory or gross; a bare needle; a cut-open foot (SP1's channel is a raised red welt, never an open wound).
+- Anything that looks like sweets, lollies, gumballs or jelly beans: drops as glossy balls, daar or chickpeas as beads.
+- Any religious marker.
+
+THE LOG
+One line per kept image:
+ <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | title: <that chat's title> | <notes>
+Also log every skipped or stalled prompt (and why), every image-limit message with its time, and anything odd (a refusal, an error, a missing attachment). Keep the log in your notes and post it in this chat only at the end of a part and after every 10 images, as one block; between those, post one short progress line per tick if you like, never a long message while a tab is waiting.
+
+IMAGE LIMITS
+If ChatGPT says you've hit the image limit, log the time and its exact words. Start no new prompts; let the windows already generating finish and harvest them. Wait until the time it gives (or check about every 30 minutes), then carry on from the same prompt. Don't stop the run and don't switch to another tool.
+
+RESUMING
+If this message is pasted again later with the word "resume", read the log posted in this chat: every line with a chat link is a kept image. Carry on from the first prompt in the run order that has no such line.
+
+AT THE END (and after each part)
+After each part, post a short list: passed, failed (and why), skipped or stalled (and why), each kept image with its chat link and title. At the very end, or as soon as Zafar says "stop" or "download" in this chat, post the whole log as one block, then download the kept images for Zafar, in the run order, one at a time: open https://chatgpt.com/library, find the kept image (by its chat's title and its thumbnail; the newest kept try of that chat), open it and download it with ChatGPT's own download button, which is Chrome's normal download into the Downloads folder. The file keeps the name ChatGPT gives it; you cannot rename it, so log each download at once, in order, as "DOWNLOADED <n>: <ChatGPT's title, as the file is named> -> <save as>". When every kept image is down, post the whole log once more with that numbered title -> save-as list at its end: Zafar renames from it and pushes the folder and the log to the repo himself. Never page JavaScript, never a GitHub upload, never a file picker. If a download is refused, say so, log it, and post the ordered list of chat links, titles and save-as names instead; Zafar downloads from it.

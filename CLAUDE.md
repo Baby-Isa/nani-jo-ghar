@@ -24,7 +24,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 6. **Pass the Kutchi leak test:** someone who knows no Kutchi can't win by reading, matching, eliminating, patterns or waiting.
 7. **Done means an independent picture, not tests passed.** Red then green: the row's check fails before the fix and passes after, and a judge who isn't the builder (the `judge` agent) passes the picture, flaws first.
 8. **The same shared screens and buttons in every mode,** from `js/shared/`, never restyled per mode.
-9. **No clipped or ellipsised text, anywhere.** Headlines wrap first, then shrink (Zafar, 18 Oct).
+9. **No clipped or ellipsised text, anywhere.** Headlines shrink, then wrap.
 10. **Only real family voices ship.** TTS is test-only and never ships; no AI-generated Kutchi.
 11. **Every line is a full, natural sentence built by the language engine, and every word the child hears is a real family voice.** The most frequent phrases (found by statistical analysis of simulated play) are recorded whole; the rest are assembled from recorded words. Never hand-written fragments or hand fixes: if the engine can't say it, report the gap.
 12. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can take it back until Done.

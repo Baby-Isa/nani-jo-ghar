@@ -1,0 +1,188 @@
+# The run spec for pack s08b (Sprint 8's object art, from Zafar's play-tests of 17 Oct (Cook) and 18 Oct (clinic); his
+# "yes to all" of 18 Oct). Part A Cook (chaat, daar, chai, sekelo, the go-on pictures, the samosa pastry), part B the clinic
+# (ear, fever, knee, tooth, eye, foot, taste). No real people in this pack, so no approval gate: Claude judges pass/fail.
+# Every part boundary is a safe stop. Zafar runs it himself in ChatGPT with his daily allowance; delivery "download" (kept
+# images stay in their chats, downloaded from ChatGPT's Library and saved under the line's save name). Read by
+# build/tools/art/artblock.py (the paste block) and artjudge.py. The prompts stay in the plan (section 5:
+# docs/design-language/art-plans/s08b-art-plan.md). Edit this file, then regenerate the block; never hand-edit the block.
+pack: s08b
+title: 'Sprint 8 objects: Cook and the clinic, from the 17 and 18 Oct play-tests'
+plan: docs/design-language/art-plans/s08b-art-plan.md
+plan_branch: claude/new-session-b5r2am
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/new-session-b5r2am
+dest: sources/art/s08b
+real_people: false
+delivery: download
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+  plaster-skin.webp: assets/clinic/items-v2/plaster-skin.webp
+  bowl-side-v2.webp: assets/cook/items/v3/chaat/bowl-side-v2.webp
+  pot-empty.webp: assets/cook/items/v3/daar/pot-empty.webp
+  pot-tadka-v2.webp: assets/cook/items/v3/daar/pot-tadka-v2.webp
+  cp1-chai-pan-tilt-v1.png: sources/art/s07/cp1-chai-pan-tilt-v1.png
+  sk2-sekelo-plate-skewers-v1.png: sources/art/s07/sk2-sekelo-plate-skewers-v1.png
+  grill.webp: assets/cook/items/v3/sekelo/grill.webp
+  karahi.webp: assets/cook/items/v3/samosa/karahi.webp
+  fold-v2-1.webp: assets/cook/items/v3/samosa/fold-v2-1.webp
+  bin-three-q-open.webp: assets/clinic/sheets/bin/bin-three-q-open.webp
+  thermometer.webp: assets/clinic/items-v2/thermometer.webp
+  fan-blades.webp: assets/clinic/room-items/fan-blades.webp
+  bandage-roll.webp: assets/clinic/items-v2/bandage-roll.webp
+  brushing-level.webp: assets/clinic/sheets/brushing/brushing-level.webp
+  lemon-half.webp: assets/clinic/items-v2/lemon-half.webp
+  sole-v2.webp: assets/clinic/closeups/child/sole-v2.webp
+  tumbler.webp: assets/clinic/items-v2/tumbler.webp
+  cotton-buds.webp: assets/clinic/items-v2/cotton-buds.webp
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  # ---- Part A: Cook ----
+  CH1:
+    attach: [bowl-side-v2.webp, style-anchor-v1.png]
+    save: ch1-chaat-bowl-side-v1.png
+    check: SIDEON
+  CH2:
+    attach: [style-anchor-v1.png]
+    save: ch2-chaat-strips-a-v1.png
+    check: STRIPS5
+  CH3:
+    attach: [style-anchor-v1.png]
+    save: ch3-chaat-strips-b-v1.png
+    check: STRIPS5
+  DP2:
+    attach: [pot-empty.webp, style-anchor-v1.png]
+    save: dp2-daar-pot-topdown-v1.png
+    check: TOPDOWN1
+  DP3:
+    attach: [pot-tadka-v2.webp, style-anchor-v1.png]
+    save: dp3-daar-discs-v1.png
+    check: DISCS6
+  CP2:
+    attach: [cp1-chai-pan-tilt-v1.png, style-anchor-v1.png]
+    save: cp2-chai-pan-topdown-v1.png
+    check: PAN3
+  SK3:
+    attach: [sk2-sekelo-plate-skewers-v1.png, grill.webp, style-anchor-v1.png]
+    save: sk3-sekelo-square-tray-v1.png
+    check: TRAY4
+  GO1:
+    attach: [grill.webp, karahi.webp, style-anchor-v1.png]
+    save: go1-go-on-pictures-v1.png
+    check: SHEET2
+  SM1:
+    attach: [fold-v2-1.webp]
+    save: sm1-pastry-tile-v1.png
+    check: TILE
+  # ---- Part B: the clinic ----
+  TH1:
+    attach: [thermometer.webp, plaster-skin.webp]
+    save: th1-thermometer-v1.png
+    check: SHEET2
+  FN1:
+    attach: [fan-blades.webp, plaster-skin.webp]
+    save: fn1-ceiling-fan-below-v1.png
+    check: ITEM1
+  FV1:
+    attach: [plaster-skin.webp]
+    save: fv1-fever-bed-items-v1.png
+    check: SHEET4
+  BD1:
+    attach: [bandage-roll.webp, plaster-skin.webp]
+    save: bd1-bandage-band-v1.png
+    check: TILE
+  TB1:
+    attach: [brushing-level.webp, plaster-skin.webp]
+    save: tb1-toothbrush-v1.png
+    check: BRUSH
+  ED1:
+    attach: [plaster-skin.webp]
+    save: ed1-eye-drops-v1.png
+    check: SHEET3
+  EC1:
+    attach: [style-anchor-v1.png]
+    save: ec1-optician-wall-chart-v1.png
+    check: WALL
+  LM1:
+    attach: [lemon-half.webp, plaster-skin.webp]
+    save: lm1-lemon-whole-v1.png
+    check: ITEM1
+  FT1:
+    attach: ['edit: sole-v2.webp']
+    save: ft1-sole-leg-v1.png
+    check: SOLEEDIT
+  SP1:
+    attach: [sole-v2.webp, plaster-skin.webp]
+    save: sp1-splinter-channel-tiles-v1.png
+    check: SHEET4
+  TS1:
+    attach: [tumbler.webp, cotton-buds.webp, plaster-skin.webp]
+    save: ts1-glass-and-bud-v1.png
+    check: SHEET2
+parts:
+- id: A
+  title: 'COOK: CHAAT, DAAR, CHAI, SEKELO, THE GO-ON PICTURES, THE PASTRY'
+  intro: 'Objects only, no people. Each line attaches the picture it replaces or matches, plus the style anchor; match their look, never their mistakes (the line says which).'
+  items:
+  - lines: [CH1, CH2, CH3, DP2, DP3, CP2, SK3, GO1, SM1]
+- id: B
+  title: 'THE CLINIC: EAR, FEVER, KNEE, TOOTH, EYE, FOOT, TASTE'
+  intro: 'Objects only, no people (FT1 is an edit of the girl''s sole close-up). Every line attaches the plaster packet as the look to match: real-looking materials and fine surface detail, as the item boxes.'
+  items:
+  - lines: [TH1, FN1, FV1, BD1, TB1, ED1, EC1, LM1, FT1, SP1, TS1]
+checks:
+  ITEM1:
+    text: one object, whole, centred, seen as the line says, filling about 70% of the image, on one flat mid-grey; nothing touches an edge; no shadow on the grey
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}
+  SHEET2:
+    text: the two things the line names, one in each half, the same scale, each whole; nothing touches the middle or an edge; flat mid-grey
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  SHEET3:
+    text: the three things the line names, left to right, the same scale; nothing touches a neighbour or an edge; flat mid-grey
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  SHEET4:
+    text: the four things the line names in a 2 by 2 grid, the same scale, each whole; nothing touches a cell boundary or an edge; flat mid-grey
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 4, no_touch: true}
+  SIDEON:
+    text: 'the bowl EXACTLY side-on: the rim one straight horizontal line, NO ellipse of the rim or the floor showing; clear glass, empty; flat mid-grey; touches no edge'
+    judge: {aspect: [3, 2], bg: flat, pieces: 1, no_touch: true}
+  STRIPS5:
+    text: 'five horizontal strips stacked with grey between, each the full width of the same glass bowl''s inside seen exactly side-on, the food as a layer seen through glass, in the order the line names; no bowl drawn; nothing touches an edge'
+    judge: {aspect: [2, 3], bg: flat, pieces_min: 5, no_touch: true, sweets: true}
+  TOPDOWN1:
+    text: 'the pot from EXACTLY straight above: the rim a perfect circle, the walls equally thick all round, the floor a centred circle; empty; flat mid-grey; touches no edge'
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}
+  DISCS6:
+    text: 'six round discs of pot contents from exactly above, the SAME size, in a 3 by 2 grid, in the order the line names; no pot, no rim; perfect circles; nothing touches a cell boundary'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 6, no_touch: true, sweets: true}
+  PAN3:
+    text: 'three times the SAME steel chai pan from EXACTLY straight above, same size and place in each third, handle to the right: empty, milky chai, dark black tea; the rim a perfect circle; nothing touches a boundary'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  TRAY4:
+    text: 'four times the SAME square, matte, brushed-steel tray from directly above in a 2 by 2 grid, with ONE, TWO, THREE, FOUR bare skewers straight and parallel left to right, handles to the right past the rim; less shiny than the grill; nothing touches a cell boundary'
+    judge: {aspect: [3, 2], bg: flat, pieces: 4, no_touch: true}
+  TILE:
+    text: 'one seamless, tileable strip as the line says: its left and right ends match so it repeats with no visible seam; even light, no shadow on the grey; nothing else'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 1}
+  BRUSH:
+    text: 'a child''s toothbrush as the line says: the bristles facing the viewer''s left towards the teeth, the handle pointing to the viewer''s right and slightly down, NOT twisted (the bristles and the handle''s back on opposite sides); flat mid-grey; touches no edge'
+    judge: {aspect: [3, 2], bg: flat, pieces: 1, no_touch: true}
+  WALL:
+    text: 'a plain optician''s wall filling the whole image, softly out of focus at its edges, with ONE blank white eye-test board on it taking about 70% of the height, centred; NO letters, pictures, lines or icons on the board'
+    judge: {aspect: [2, 3], bg: none}
+  SOLEEDIT:
+    text: 'the same sole as the attached (size, framing, toes) but the leg runs on off the bottom edge of the image with no cuff edge or cut line; the gaps between the toes are clean background, no grey wedges; only that changed'
+    judge: {aspect: [2, 3], bg: flat, exits: [bottom], skin_obj: true}
+passfail:
+- Any text, letters, numbers, labels or logos, even fake or blurry ones.
+- Outlines, cel shading, a flat vector look or painterly brushwork; blur, a vignette or lens flare (EC1's soft wall edges excepted).
+- The background isn't one flat mid-grey (EC1 excepted); a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge, unless the check says so (FT1's leg, EC1's wall).
+- The wrong number of things, things in the wrong order, the wrong view, or extra objects, people, hands or animals.
+- A top-down line not EXACTLY from above (an ellipse instead of a circle, one wall thicker than the other); a side-on line showing the rim or floor as an ellipse.
+- Anything scary, bloody, gory or gross; a bare needle; a cut-open foot (SP1's channel is a raised red welt, never an open wound).
+- 'Anything that looks like sweets, lollies, gumballs or jelly beans: drops as glossy balls, daar or chickpeas as beads.'
+- Any religious marker.
