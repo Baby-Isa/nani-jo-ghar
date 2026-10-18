@@ -145,6 +145,8 @@ Reopened and widened rows (his new words added):
 | SH-99 | 18 Oct, the clinic too: "all the frequencies has to be written down. And audible as well" | **open** | as before | P5 |
 | SH-106 | 18 Oct, the clinic too: "the move on to the next stage button ... much nicer ... more consistent with how it is done in the cook game" | **open** | as before | P9 |
 
+**Consolidated (Zafar, 18 Oct: comments that run across all games are one shared row each):** SH-94, PAN-16, CHAI-21 → PAN-04; SH-95, SH-96 → SH-60; SH-100, SH-101, SAM-23, CLN-160 → SH-98; CLN-161, CLN-169, CLN-171 → SH-99; SH-114 → SH-102; SAM-20 → SH-105; SAM-26, MAA-18, CK-49 → SH-110; CLN-185 → CLN-163; DAAR-28, CLN-197 → SH-117 (one shared pour and fill). The merged rows are retired in the archive; their words live on in the shared row.
+
 ## 4. Coverage: every transcript line → a point
 
 | Lines | Point |

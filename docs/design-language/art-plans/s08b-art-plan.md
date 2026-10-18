@@ -1,6 +1,6 @@
 # Sprint 8 object art plan (pack `s08b`)
 
-**Written:** 18 Oct 2026, from Zafar's play-tests of 17 Oct (`docs/feedback/cook-playtest-2026-10-17.md`) and 18 Oct (`docs/feedback/clinic-playtest-2026-10-18.md`) and his "yes to all" of 18 Oct. **Run spec:** `build/tools/art/specs/s08b.run.yaml`; **paste block:** `docs/design-language/art-plans/s08b-paste-block.txt` (generated); sources land in `sources/art/s08b/`. Zafar runs it himself in ChatGPT on his daily allowance; nothing here is a real person, so there is no approval gate.
+**Written:** 18 Oct 2026, from Zafar's play-tests of 17 Oct (`docs/feedback/cook-playtest-2026-10-17.md`) and 18 Oct (`docs/feedback/clinic-playtest-2026-10-18.md`) and his "yes to all" of 18 Oct. **Run spec:** `build/tools/art/specs/s08b.run.yaml`; **paste block:** `docs/design-language/art-plans/s08b-paste-block.txt` (generated); sources land in `sources/art/s08b/`. Zafar runs it in Claude in Chrome on his ChatGPT allowance; nothing here is a real person, so there is no approval gate. **Amending (Zafar, 18 Oct):** after a failed try the runner may amend that prompt to fix what failed (spec `amend: true`), logging the new text.
 
 ## 0. Totals
 
@@ -155,17 +155,18 @@ Style: as real-looking as the attached plaster packet (the game's item boxes): b
 Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no blur. No religious images or markers.
 ```
 
-#### FN1. The ceiling fan, seen from below
+#### FN1. The ceiling fan, as the room's camera sees it
 ```
-Generate an image, 1024×1024, square.
+Generate an image, 1536×1024, landscape.
 
-One white ceiling fan seen from DIRECTLY BELOW, as you see it lying in bed looking up: the round central motor housing in the middle, three long blades spread evenly around it like a three-pointed star, a short rod up to the ceiling hidden behind the housing. The attached picture is the wrong view; draw it from below. Centred, about 85% of the image wide.
+The first attached picture is the game's room, for the CAMERA only: we stand on the floor looking straight into the room at about a child's eye level; the white ceiling fan hangs from the ceiling ahead of us, near the top of the picture, above the girl, in front of the back wall. Draw that ceiling fan as it is seen from exactly there: from in front of it and a little BELOW, almost level with it, NOT from directly below. So: the three blades spread to the left and right as a thin, flattened ellipse (about six times wider than tall), their UNDERSIDES just showing; the round motor housing in the middle with its underside visible; a short down-rod rising from the housing to a small round ceiling plate at the very top. The second attached picture is the wrong view (blades seen flat from above); do not copy its angle.
+Draw the SAME fan twice, side by side, the same size and height: LEFT still; RIGHT spinning, its blades a soft motion-blurred flattened disc, the housing and rod sharp. Each about 40% of the image wide; nothing touches an edge or the other.
 
-Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No table, no gradient, no texture. NO shadows on the grey.
+Background: one perfectly flat, uniform neutral mid-grey, hex #808080, filling the whole image edge to edge. No ceiling drawn, no gradient, no texture. NO shadows on the grey.
 
-Style: as real-looking as the attached plaster packet (the game's item boxes): believable materials and fine surface detail, soft even light from the upper left, no outlines.
+Style: as the room in the attached picture: a stylised 3D animated-feature-film look, soft global illumination, warm light from the upper left, no outlines.
 
-Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no blur. No religious images or markers.
+Do not add any text, letters, numbers, labels, logos or watermarks. No outlines, no cel shading, no blur except the spinning blades. No religious images or markers.
 ```
 
 #### FV1. Fever things lying on a bed

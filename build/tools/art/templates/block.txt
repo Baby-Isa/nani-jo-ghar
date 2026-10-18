@@ -21,7 +21,7 @@ SAFETY RULES (always)
 - Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
 - Sign nothing in or out. Delete no chats.
 - {{SAFETY_COMMIT}}
-- Never write a prompt of your own, and never reword, shorten or add to one. {{SLOT_RULE}}
+- {{REWORD_RULE}} {{SLOT_RULE}}
 - If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
 - Pacing: at most {{WINDOWS}} images generating at once and at least {{GAP}} seconds between sends (see the loop).
 
@@ -30,7 +30,7 @@ HOW TO RUN EACH PROMPT
 2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
 3. Paste the text of its code box, with its slots filled for that line (the PEOPLE table's, or the words after "slots:" on the line), and send.
 4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
-5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most {{REDOS}} redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+5. {{REDO_RULE}}
 6. {{STEP6}}
 
 RUN ORDER. Line format: ID (person) | attach | save as | check

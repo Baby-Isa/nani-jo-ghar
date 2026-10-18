@@ -18,6 +18,7 @@ Reference images, by the name the run order uses:
  fold-v2-1.webp                   RAW + assets/cook/items/v3/samosa/fold-v2-1.webp
  thermometer.webp                 RAW + assets/clinic/items-v2/thermometer.webp
  fan-blades.webp                  RAW + assets/clinic/room-items/fan-blades.webp
+ ref-fever-room-v1.png            RAW + sources/art/s08b/ref-fever-room-v1.png
  bandage-roll.webp                RAW + assets/clinic/items-v2/bandage-roll.webp
  brushing-level.webp              RAW + assets/clinic/sheets/brushing/brushing-level.webp
  lemon-half.webp                  RAW + assets/clinic/items-v2/lemon-half.webp
@@ -45,7 +46,7 @@ THE TICK. Repeat until every line is KEPT or SKIPPED:
 1. SCAN. Look at every generating tab (a screenshot or its page text, never the chat history). Note which are finished, still generating, stalled or errored.
 2. HARVEST each finished tab, first finished first. Judge it now, in one look at the full image against its check and the PASS/FAIL LIST (no waiting, no second opinions):
    PASS: mark it KEPT; every WAITING prompt that needed it becomes READY now. Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the "+" button, then "Add from library": the kept image is there under its chat), never by download and re-upload.
-   FAIL with redos left: put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed.
+   FAIL with redos left: put the prompt back at the front of READY, amended to fix what failed (step 5: change only the words about the failed point; log the new text), to run in a fresh chat with the same attachments; note what failed.
    FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
 3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
 4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) fetch the references the next READY prompts need; (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
@@ -65,7 +66,7 @@ SAFETY RULES (always)
 - Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
 - Sign nothing in or out. Delete no chats.
 - Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.
-- Never write a prompt of your own, and never reword, shorten or add to one. The only change allowed is filling a code box's {SLOTS}.
+- Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it. The only change allowed is filling a code box's {SLOTS}.
 - If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
 - Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).
 
@@ -74,7 +75,7 @@ HOW TO RUN EACH PROMPT
 2. Attach exactly the files on its line. For an edit (a line that says "edit"), attach ONLY that one image; an edit is always of a fresh picture, never of another edit.
 3. Paste the text of its code box, with its slots filled for that line (the PEOPLE table's, or the words after "slots:" on the line), and send.
 4. When it finishes, harvest it as in the loop: judge it against its check (the CHECKS list) and then the PASS/FAIL LIST, point by point. For an edit, compare it with the image you attached: if it looks identical, it fails; if anything other than what the prompt asks has moved, changed size or changed colour, it fails.
-5. If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most 2 redos. Never send corrections like "make it smaller". Keep the best one, even if all fail, and note what's wrong.
+5. If it fails, redo it in a fresh chat with the same attachments, at most 2 redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong.
 6. Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.
 
 RUN ORDER. Line format: ID (person) | attach | save as | check
@@ -94,7 +95,7 @@ Part A done: post the part A summary (see AT THE END) and carry on.
 PART B: THE CLINIC: EAR, FEVER, KNEE, TOOTH, EYE, FOOT, TASTE (11)
 Objects only, no people (FT1 is an edit of the girl's sole close-up). Every line attaches the plaster packet as the look to match: real-looking materials and fine surface detail, as the item boxes.
 TH1 | thermometer.webp, plaster-skin.webp | th1-thermometer-v1.png | SHEET2
-FN1 | fan-blades.webp, plaster-skin.webp | fn1-ceiling-fan-below-v1.png | ITEM1
+FN1 | ref-fever-room-v1.png, fan-blades.webp | fn1-ceiling-fan-v1.png | FAN2
 FV1 | plaster-skin.webp | fv1-fever-bed-items-v1.png | SHEET4
 BD1 | bandage-roll.webp, plaster-skin.webp | bd1-bandage-band-v1.png | TILE
 TB1 | brushing-level.webp, plaster-skin.webp | tb1-toothbrush-v1.png | BRUSH
@@ -111,6 +112,7 @@ ITEM1: one object, whole, centred, seen as the line says, filling about 70% of t
 SHEET2: the two things the line names, one in each half, the same scale, each whole; nothing touches the middle or an edge; flat mid-grey
 SHEET3: the three things the line names, left to right, the same scale; nothing touches a neighbour or an edge; flat mid-grey
 SHEET4: the four things the line names in a 2 by 2 grid, the same scale, each whole; nothing touches a cell boundary or an edge; flat mid-grey
+FAN2: the SAME white ceiling fan twice (left still, right spinning), seen as in the attached room: from in front and a little BELOW, almost level with it, the blades a thin flattened ellipse spreading left and right with their undersides just showing, the motor's underside visible, the down-rod rising to a ceiling plate at the top; never a flat star seen from straight below or above
 SIDEON: the bowl EXACTLY side-on: the rim one straight horizontal line, NO ellipse of the rim or the floor showing; clear glass, empty; flat mid-grey; touches no edge
 STRIPS5: five horizontal strips stacked with grey between, each the full width of the same glass bowl's inside seen exactly side-on, the food as a layer seen through glass, in the order the line names; no bowl drawn; nothing touches an edge
 TOPDOWN1: the pot from EXACTLY straight above: the rim a perfect circle, the walls equally thick all round, the floor a centred circle; empty; flat mid-grey; touches no edge

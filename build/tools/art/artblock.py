@@ -241,7 +241,7 @@ def build(spec, redo_path=None):
     checks = "\n".join("%s: %s" % (c, allc[c]["text"]) for c in check_ids if c in allc)
     real = spec.get("real_people")
     dv = delivery_texts(spec.get("delivery", "github"), spec)
-    loop = fill(tpl("runner-loop.txt"), {"WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "STALL": r["stall_minutes"], "HARD": r["hard_minutes"],
+    loop = fill(tpl("runner-loop.txt"), {"LOOP_REDO": ("put the prompt back at the front of READY, amended to fix what failed (step 5: change only the words about the failed point; log the new text), to run in a fresh chat with the same attachments; note what failed." if spec.get("amend") else "put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed."), "WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "STALL": r["stall_minutes"], "HARD": r["hard_minutes"],
                                          "NOTES": dv["NOTES"], "DONE": dv["DONE"], "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "BATCH": r["commit_batch"], "FLUSH": r["flush_minutes"]})
     approvals = spec.get("approvals") or (
                  "- Zafar approves only characters based on real people: Nani, Big Ma and the doctor (and any real family member). None is in this run.\n"
@@ -262,6 +262,8 @@ def build(spec, redo_path=None):
         else ", still in its ChatGPT chat (attach it from ChatGPT's library, see below)",
         "LOOP": loop,
         "FIRST_PASS": "" if spec.get("delivery") == "download" else ("FIRST-PASS NUMBERS (optional)\nIf your workspace has python and a clone of https://github.com/%s, run `python3 build/tools/art/artjudge.py --dir <the folder of your saved images> --only <ID>` on each kept image before your own look: a FAIL line is a redo, a FLAG line names what to look at hardest. It never replaces looking.\n\n" % repo),
+        "REWORD_RULE": ("Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it." if spec.get("amend") else "Never write a prompt of your own, and never reword, shorten or add to one."),
+        "REDO_RULE": ("If it fails, redo it in a fresh chat with the same attachments, at most %d redos. Before each redo you may AMEND the prompt to fix what failed: keep every sentence, change or add only the words about the failed point (name the fault plainly, e.g. 'the rim must be a perfect circle, not an ellipse'), never loosen the check, and log the amended prompt word for word with the line. Never send corrections inside the old chat. Keep the best one, even if all fail, and note what's wrong." % spec["runner"]["redos"]) if spec.get("amend") else ("If it fails, redo it: the same prompt in a fresh chat with the same attachments, at most %d redos. Never send corrections like \"make it smaller\". Keep the best one, even if all fail, and note what's wrong." % spec["runner"]["redos"]),
         "APPROVALS": approvals, "WINDOWS": r["windows"], "GAP": r["send_gap_seconds"], "REDOS": r["redos"],
         "RUN_ORDER": run_text, "CHECKS": checks, "PASSFAIL": "\n".join("- " + x for x in spec["passfail"]),
     }
@@ -271,7 +273,7 @@ def build(spec, redo_path=None):
 
 def sync_doc():
     dv = delivery_texts("github", {"dest": "<dest>", "repo": "<repo>", "pack": "<pack>"})
-    loop = fill(tpl("runner-loop.txt"), {"WINDOWS": "N", "GAP": "G", "STALL": "X", "HARD": "Y", "NOTES": dv["NOTES"], "DONE": dv["DONE"],
+    loop = fill(tpl("runner-loop.txt"), {"LOOP_REDO": "put the same prompt back at the front of READY, to run in a fresh chat with the same attachments; note what failed (a pack with amend: true may amend it first, step 5).", "WINDOWS": "N", "GAP": "G", "STALL": "X", "HARD": "Y", "NOTES": dv["NOTES"], "DONE": dv["DONE"],
                                          "PASS_SAVE": dv["PASS_SAVE"], "CHORES": dv["CHORES"], "CHORE_NAMES": dv["CHORE_NAMES"], "BATCH": "B", "FLUSH": "F"})
     txt = open(DOC).read()
     a, b = "<!-- runner-loop:start -->", "<!-- runner-loop:end -->"

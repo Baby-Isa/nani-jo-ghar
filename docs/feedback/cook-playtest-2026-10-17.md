@@ -183,6 +183,8 @@ Reopened rows, his new words added (moved back from the archive):
 
 
 
+**Consolidated (Zafar, 18 Oct: comments that run across all games are one shared row each):** SH-94, PAN-16, CHAI-21 → PAN-04; SH-95, SH-96 → SH-60; SH-100, SH-101, SAM-23, CLN-160 → SH-98; CLN-161, CLN-169, CLN-171 → SH-99; SH-114 → SH-102; SAM-20 → SH-105; SAM-26, MAA-18, CK-49 → SH-110; CLN-185 → CLN-163; DAAR-28, CLN-197 → SH-117 (one shared pour and fill). The merged rows are retired in the archive; their words live on in the shared row.
+
 ## 4. Coverage: every transcript line → a point
 
 | Lines | Point |
@@ -326,8 +328,8 @@ Answerable "yes to all except ...". Each has a recommendation.
 8. **Headlines and the review (P22, P23, P30; changes non-negotiable 9).** **Recommend yes:** headlines wrap at full size first and shrink only if two lines don't fit (non-negotiable 9 and SH-09 change, "Zafar, 17 Oct"). *Zafar, 18 Oct: only the order pop-up he meant; the side panel and everywhere else keep shrink-then-wrap.* the review's divider at 4/5; the third review page held aside until chaat's instant feedback is in, as you said.
 9. **Chaat (P62, P63, CHT-14, CHT-15; changes cook.md "the ticks work" and "never a red cross").** **Recommend yes, softened for rule 12:** a wrong item gets a short pause, the bowl wobbles and the item bounces back out, with a warm glow, not red; a wrong one in the sequence empties the bowl, as you said; a tick only for the right item first go; help stays on the bulbs (that's already how it works).
 10. **Samosa (P39, P43, SAM-21, SAM-25; changes SAM-05 and the L1-L2 one-at-a-time; the swipe itself stays, KEEP-04).** Am I clear? A flat rectangle of pastry; the filling in the bottom-left corner; swipe bottom-left to top-right and the corner folds over into a triangle; swipe top-left to bottom-right and that triangle folds over again; and so on, three or four folds, the strip getting shorter until it's used up on the right. Coded, in the pastry texture, an arrow showing each swipe, only the moving flap lit. **Recommend yes**, plus: always six strips on a bigger board at every level, tap any, fill each, one tick, fold all the filled ones, then straight to the fryer.
-11. **Sekelo (P16, P37, SEK-19, SEK-20).** **Recommend yes** to *gos* for the raw cubes and *mishkaki* for the cooked skewer (*gos* is already Mum's recording). What should the card say: is "hakri, lakri, mishkaki" right (Whisper's spelling)? Equal gaps now; a Fable look at the layout (about $1) as you asked, then your two-rack idea drawn in the art run.
+11. **Sekelo (P16, P37, SEK-19, SEK-20).** **Recommend yes** to *gos* for the raw cubes and *mishkaki* for the cooked skewer (*gos* is already Mum's recording). What should the card say: is "hakri, lakri, mishkaki" right (Whisper's spelling)? *Zafar, 18 Oct: "Hakri Lakri Mishkaki", no commas.* Equal gaps now; a Fable look at the layout (about $1) as you asked, then your two-rack idea drawn in the art run.
 12. **Maani (P45, P46, MAA-17, MAA-18; touches KEEP-11 "maani speed").** **Recommend yes:** +0.75 s on the flip window at every level; big and small from L2.
 13. **Daal (P51, P52, DAAR-32, DAAR-33; reverses DAAR-10).** **Recommend yes:** the mat fades away after the pour; the stir speed said and shown at every level, L1 too.
-14. **The daal note lost 37 s** (13:53-14:30, Whisper dropped it) just before "isn't fully top-down on all levels": anything there to resend?
+14. **The daal note lost 37 s** (13:53-14:30, Whisper dropped it) just before "isn't fully top-down on all levels": anything there to resend? *Zafar, 18 Oct: nothing lost.*
 15. **Into the big art run:** the chaat bowl side-on with a strip for every item, every daal pot state top-down with the daal centred, the chai pans top-down and the pour pan in 4-5 tilts, the sekelo racks and a square tray, the grill and fryer button pictures, the samosa art. **Recommend:** Fable plans it as one paste block after you answer these.
