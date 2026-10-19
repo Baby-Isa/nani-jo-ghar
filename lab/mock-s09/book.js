@@ -80,7 +80,7 @@
     {
       // 6 goodnight, and a glimpse of tomorrow's door with its sky
       line: { e: "Goodnight.", rec: true },
-      left: () => `<div class="art" style="gap:6%"><div class="box" style="aspect-ratio:160/240">${LAMP}</div><div class="box" style="height:70%;aspect-ratio:3/2">${MOON}</div></div>`,
+      left: () => `<div class="art"><div class="box" style="aspect-ratio:160/240">${LAMP}</div></div>`,
       right: () => `<div class="art">${global.Door.mini(Book.DAY.tomorrow)}</div>`,
     },
   ];
