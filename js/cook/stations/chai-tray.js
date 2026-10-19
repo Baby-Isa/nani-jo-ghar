@@ -732,12 +732,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       let y = pan.y - rimR - 16 - H / 2;
       // s08 w6B (CHAI-19): never across the hob's top edge: where the pan reaches almost to it, the bubble sits wholly above
       // the hob, centred on the pan
+      const offRim = (v) => (v - H / 2 < hobY + 10 && v + H / 2 > hobY - 10 ? hobY - 10 - H / 2 : v); // (only ever up)
       if (y - H / 2 < hobY + 10) y = hobY - 10 - H / 2;
       const bb = badgeBox();
       const hits = (cx, cy) => bb && cx - W / 2 < bb.x1 + 8 && cx + W / 2 > bb.x0 - 8 && cy - H / 2 < bb.y1 + 8 && cy + H / 2 > bb.y0 - 8;
       if (hits(x, y)) {
-        const above = bb.y0 - 8 - H / 2;
-        if (above - H / 2 - 14 >= top) y = above;
+        // above the count badge, and still never across the hob's top edge (1366x768: the badge sits just under the edge)
+        const above = offRim(Math.min(bb.y0 - 8 - H / 2, y));
+        if (above - H / 2 - 14 >= top && !hits(x, above)) y = above;
         else x = bb.x1 + 8 + W / 2;
       }
       y = Math.max(top + H / 2 + 14, y);

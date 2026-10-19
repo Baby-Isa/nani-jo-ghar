@@ -44,7 +44,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       S.loops.push(sizzle);
       flat.forEach((id) => Cook.markSeen(id));
       // how the card shows her order: words, dots, or nothing (from memory)
-      const mode = ctx.guided ? "words" : k.ladder || "words";
+      // s08 w6B (contract-35; SH-110, the level table, Zafar 19 Oct: the card open at L1-L2, the items dotted at L3, hidden at
+      // L4, at every station): the card's state by the level table (Cook.cardState); was the tadka's own ladder (L2 dotted)
+      const cs = Cook.cardState ? Cook.cardState(Cook.roundLevel ? Cook.roundLevel(ctx) : z.level) : null;
+      const mode = ctx.guided ? "words" : cs ? (cs === "open" ? "words" : cs === "hidden" ? "hidden" : "dots") : k.ladder || "words";
       if (mode !== "words" && UI.mission.conceal) UI.mission.conceal("tadka", mode);
       const hideAll = mode !== "words";
       const hide = hideAll ? () => true : St.hideKnown(ctx);

@@ -925,6 +925,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       let pour = null;
       let filling = false;
       dBowl.setDepth(D.item + 0.3);
+      // s08 w6B (DAAR-29): the vessel pouring the daal is part of the pot's picture while it pours (named so, the evidence
+      // probes' canvas:pot crop takes it in whole and never cuts it at the crop's edge; it fades out after, alpha 0)
+      dBowl.setName("daar-pour-pot");
       await NjgPour.phaser(S, {
         obj: dBowl,
         lip: [-rim, 0],
