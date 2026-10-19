@@ -394,7 +394,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       return { x: c.x, y: c.y, r: 0.21 * U(o) };
     };
     /** Where m fillings' mounds sit on a strip (world px): inside the corner the first fold lays over them. */
-    const mounds = (o, m) => proto.mounds(m).map((s) => Object.assign(u2w(o, [s.x, s.y]), { size: 2.3 * s.r * U(o) }));
+    // (on a strip laid out on the board they're drawn a quarter bigger, so they read at its size; at full size, to be folded,
+    // they fit inside where the corner lands)
+    const mounds = (o, m) => proto.mounds(m).map((s) => Object.assign(u2w(o, [s.x, s.y]), { size: 2.3 * s.r * U(o) * (o.scaleX < FULL * 0.9 ? 1.25 : 1) }));
     const grow = (o) => Math.min(1.15, 1 + 0.05 * ((o.spoons || 1) - 1));
 
     /* a spoonful: a little heap lifts off its pile and lands on the strip's corner (the first fold covers it) */
@@ -576,6 +578,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return;
         }
         if (filled) UI.done({ glow: !!(glow && mv.done) }).then(() => fin({ done: true }));
+        // T17 / SH-110: Nani calls the strip's first filling as soon as a strip is wanted ("Bhar! Chundo."), the same step
+        // when that strip is tapped (so a strip tap never starts a call over the child's next tap), then each next filling
+        const ord = filledOf().filter((x) => x !== active).length;
+        const callFill = (heap) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto" });
         if (mv.heap) {
           const o = items[mv.heap];
           if (o && o.active) {
@@ -588,11 +594,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               .filter((id) => id !== mv.heap && items[id] && items[id].active)
               .map((id) => S.centre(items[id]));
             z.expect({ kind: "tap", x: c.x, y: c.y, key: mv.heap, wrongs });
-            steps.to("samosa:fill", { id: `fill-${active ? active.slot : 0}-${mv.heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([mv.heap]))]), role: "howto" });
+            callFill(mv.heap);
             return;
           }
         }
-        steps.done();
+        const nb = mv.strip ? needBlock() : 0;
+        if (nb) callFill(kindsOf(nb)[0]);
+        else steps.done();
         if (mv.strip) {
           if (glow) {
             S.glow(mv.strip, true, { bounce: true });
@@ -603,10 +611,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else if (filled) z.expect({ kind: "click", selector: "#done-btn", open: true }); // open: another strip or spoon still changes it (C10)
         else z.expect({ kind: "wait" });
       });
+    /** The strip being filled sits a little raised (bigger, its shadow wider) so the child sees where the spoons go. */
+    const lift = (x, k, ms) => {
+      const sc = x.home.scale * k;
+      S.tweens.add({ targets: x, scale: sc, duration: ms, ease: k > 1 ? "Back.easeOut" : "Quad.easeOut" });
+      const ids = x.blobs.map((o) => o.wordId);
+      const at = mounds({ x: x.x, y: x.y, scaleX: sc }, ids.length);
+      x.blobs.forEach((o) => {
+        const sp = at[ids.indexOf(o.wordId)];
+        const size = sp.size * grow(o);
+        S.tweens.add({ targets: o, x: sp.x, y: sp.y, displayWidth: size, displayHeight: size * 0.96, duration: ms });
+      });
+    };
     const setActive = (x) => {
       if (active === x) return;
+      if (active && active.active) lift(active, 1, 140);
       active = x;
-      S.tweens.add({ targets: x, scale: x.home.scale * 1.04, duration: 140, yoyo: true });
+      x.setDepth(D.item + 0.05);
+      lift(x, 1.05, 180);
     };
     /** The right way, shown (decision 51, the third try): a strip filled for them, its heaps glowing in turn. */
     const showFill = async (x, b) => {

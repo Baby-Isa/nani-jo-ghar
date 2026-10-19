@@ -300,6 +300,9 @@ test("contract-50 (SAM-24): samosa's card rows tick together at the one tick; on
   assert.equal(page([rows(15400, [1, 1, 1, 1]), rows(16000, [0, 0, 0, 0]), rows(22000, [1, 1, 1, 1])]).length, 0);
   // ticked and never finished in the stage
   assert.equal(page([rows(15400, [1, 1, 0, 0])]).length, 1);
+  // a "don't" row ticks with the finished dish, later, by design: not judged
+  const withNo = (t, d) => ({ ...rows(t, d), list: [...rows(t, d).list, { id: "0:2", text: "dhania na", done: false, no: true }] });
+  assert.equal(page([withNo(15400, [1, 1, 1, 1])]).length, 0);
   // another station is not judged
   assert.equal(page([rows(15400, [1, 1, 0, 0]), rows(18000, [1, 1, 1, 1])], "cook:chai-tray@L3").length, 0);
 });

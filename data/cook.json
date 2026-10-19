@@ -6000,7 +6000,11 @@
   "samosa": [
    {
     "do": "tap",
-    "what": "a spoon of the first filling they said, onto the strip"
+    "what": "a pastry strip (SAM-25: any of the six)"
+   },
+   {
+    "do": "tap",
+    "what": "a spoon of the first filling they said, onto that strip"
    },
    {
     "do": "tap",
@@ -6008,7 +6012,7 @@
    },
    {
     "do": "tap",
-    "what": "the tick when the filling's in"
+    "what": "the tick when every strip they want is filled"
    },
    {
     "do": "swipe",
