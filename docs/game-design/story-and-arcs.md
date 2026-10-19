@@ -4,6 +4,9 @@ The story spine for every mode: Nani's role, how the story is told, the arcs, an
 
 ## Part 1. Story structure (Roadmap and Story Structure)
 
+**Replaced (Zafar, 19 Oct): story mode is "A day at Nani's".** Each day is self-contained: a morning ritual at Nani's door (she names the day and the weather, which sets what you pack; the child says *Ha!*), one adventure (a kitchen day of 4-5 customers, a clinic day of 3-4 patients, a trip day, later a sewing day), then the evening with Nani and the book. Days get harder as they go; new trips arrive as new days. Arc 1 and the weekly thread are retired; set the table and find-it move into the trips. Days 1-2 are free (a kitchen day, then the first trip: the farm or the beach). Conversations with recurring characters become a much larger part of every day. The full rewrite of this doc follows the trip map (farm, beach, shops; in progress).
+
+
 
 > from: docs/archive/design-v1/Roadmap and Story Structure.md § Nani's role
 
