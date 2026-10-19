@@ -3,27 +3,32 @@
 Branch `worktree-agent-a1a00f6d36b562e9a`, not pushed. Detail: `build/reports/s08-w4b-chai/details.md`.
 
 ## Flaws first
-1. The CP1 tilts don't fit the s08b pan: it's a different pan. So the pour turns the hob's own picture in code, in four 20° steps. Zafar's fallback picture (a half-turned s08b pan) still needs drawing.
-2. At 800x360 the turned pan is drawn at about 0.7 of its size, and its handle comes close to the top edge.
-3. The water, leaves, boil, foam and spiced stages show v3 pictures inside the s08b rim. They differ a little in colour from the s08b milk and black pictures.
-4. Two things predate this work and are still there: the simmer bubbles are drawn in code (CK-06), and the black-tea glass is a side-on picture.
-5. On the hob the pan is turned -40°, so its light comes from the left.
-6. CK-45 is still failing (contract-21 on #mistake). The tap's act is not logged in flow.js, which isn't my file.
-7. contract-22 and contract-37 also fail in the touched run. Neither is about lines or decoy counts this work changed.
-8. The tally's comment (shared kit) and INT-16 both say the tally "never takes a tap". Zafar's P34 overrides that, so both need amending.
-9. Pan-tap take-back is gone; the count badge is now the only way.
+| # | Flaw |
+|---|---|
+| 1 | CP1's tilts don't register on the s08b pan (another pan), so the hob's own picture turns in code, 4 steps of 20°. Zafar's fallback, a half-turned s08b picture, is art still to draw. |
+| 2 | At 800x360 the turned pan is drawn about 0.7 of its size; its handle nearly meets the top edge. |
+| 3 | Water, leaves, boils, foam and spiced are v3 pictures cut to the s08b rim: a slight colour step from s08b's milk and black. |
+| 4 | Older, still there: simmer bubbles drawn in code (CK-06); the black-tea glass is side-on. |
+| 5 | The hob pan turns -40°, so its light comes from the left. |
+| 6 | CK-45 still red (contract-21 on #mistake): the act isn't logged in flow.js (not my file). contract-22 and 37 breaks too, outside what changed. |
+| 7 | The shared tally and INT-16 say it "never takes a tap": P34 overrides both; they need amending. |
+| 8 | Pan-tap take-back removed: the badge is the one way. |
 
 ## What changed
-The new pans on the hob and pouring (CHAI-08, CHAI-26). The word bubble centred over the pan (CHAI-19). Milk, water and tea go in once each (CHAI-22). "Slow kar" plays at the green (CHAI-24). The pan's glow is a ring (CHAI-25). Tapping a count-badge chip takes one out (CK-TB-01). New checks: contract-70 and contract-71.
+| Row | Change |
+|---|---|
+| CHAI-08, CHAI-26 | s08b pans on the hob; the same pan pours, the chai following, the shared stream |
+| CHAI-19 | the word centred over the pan, above the badge |
+| CHAI-22 | milk, water, tea once each |
+| CHAI-24 | "Slow kar" at the green |
+| CHAI-25 | a ring glow on the rim |
+| CK-TB-01 | a badge chip takes one out, until poured |
+| checks | contract-70, contract-71 |
 
 ## Proof
-- Red/green: contract-70 and 71 failed on the old behaviour, then passed.
-- `checks.mjs`: unit (406), words, static, leak, bump, specs, docs all ok. Load check ok.
-- Touched set at 1366x768: 22 pages reached the end, 0 new findings.
-- Filmstrips in `build/screenshots/w4b/`:
-  - pour-1366x768-milky-top-black-bottom.png
-  - pour-800x360-milky-final.png
-  - pour-800x360-black.png (from the build before the fit fix)
-  - word-bubbles-1366x768.png
-  - ring-glow-1366x768.png
-  - takeback-by-badge-1366x768.png
+| Check | Result |
+|---|---|
+| contract-70/71 | red on the old behaviour (4 breaks), green after |
+| `checks.mjs` | unit 406, words, static, leak, bump, specs, docs ok; load check ok |
+| touched, 1366x768 | 22 pages end, 0 new findings |
+| filmstrips | `build/screenshots/w4b/`: pour-1366x768-milky-top-black-bottom, pour-800x360-milky-final, pour-800x360-black (before the fit fix), word-bubbles-1366x768, ring-glow-1366x768, takeback-by-badge-1366x768 (.png) |
