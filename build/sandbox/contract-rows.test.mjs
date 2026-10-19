@@ -20,8 +20,8 @@ const C = (t, k, o = {}) => ({ type: "c", k, t, ...o });
 const stage = (t, key) => C(t, "stage", { key });
 const T = 1e6;
 
-test("the checks: twenty-one, each with an item, a title and how it measures", () => {
-  assert.equal(Object.keys(CHECKS).length, 21);
+test("the checks: twenty-six, each with an item, a title and how it measures", () => {
+  assert.equal(Object.keys(CHECKS).length, 26);
   for (const [k, c] of Object.entries(CHECKS)) assert.ok(/^contract-\d+$/.test(k) && c.item && c.title && c.how.length > 40, k);
 });
 

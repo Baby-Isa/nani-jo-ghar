@@ -463,16 +463,37 @@
    * Lang.speak(line) resolves when the line has been said (or dropped).
    */
   const COUNT_WAIT_MS = 1500;
+  let sayN = 0;
+  const note = (what, id, text) => {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note(what, { step: String(id), by: text });
+    } catch (e) {
+      /* only a log */
+    }
+  };
   let quietSince = 0; // when the queue last went quiet (an item's name waits a breath after a line, never in the gap between two)
   Lang.speak = async (line, { over = false, kind = over ? "count" : "line" } = {}) => {
     if (!line) return false;
     const items = planOf(line);
     const V = Cook.core && Cook.core.voice;
+    // (the help ladder never says again what was said less than 10 s ago: js/shared/guide.js recentlySaid)
+    if (kind === "line" && global.NaniGuide && global.NaniGuide.markSaid) global.NaniGuide.markSaid(Lang.plain(line));
     if (V) {
-      const o = { channel: "cook", queue: true };
+      // the line's turn is logged when its first clip is about to play (a test log, Lifecycle say-start / say-end): the sound log
+      // knows a line when it is asked for, the contract checks need to know when it was said
+      const turn = ++sayN;
+      let started = false;
+      const o = {
+        channel: "cook",
+        queue: true,
+        onWord: () => {
+          if (!started) (started = true), note("say-start", turn, Lang.plain(line));
+        },
+      };
       if (kind === "count") Object.assign(o, { key: "count", ttl: COUNT_WAIT_MS });
       if (kind === "item") o.ifIdle = true;
       const r = await V.say({ clipPlan: items }, o);
+      if (started) note("say-end", turn, "");
       if (kind !== "item" && !V.busy("cook")) quietSince = Date.now();
       return !(r && r.skipped);
     }

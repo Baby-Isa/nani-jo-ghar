@@ -621,7 +621,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       for (;;) {
         const next = kindsB.find((id) => (got[id] || 0) < wantB[id]) || null;
         // T17: "Bhar!" and the next filling (at level 1 said as it opens; later after a pause, with the glow)
-        if (next) steps.to("samosa:fill", { id: `fill-${block}-${order.length}-${next}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([next]))]), role: "howto" });
+        if (next) steps.to("samosa:fill", { id: `fill-${block}-${next}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([next]))]), role: "howto" });
         else steps.done();
         const r = await St.freePick(z, { items, next, doneOk: order.length > 0, doneGlow: (ctx.guided || help) && !next, help });
         steps.poke();

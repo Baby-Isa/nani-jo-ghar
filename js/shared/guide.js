@@ -114,11 +114,22 @@
   G.lastAction = () => clock.t;
   /** The pulse on both light bulbs (the English bulb in her box and the closed card's small bulb): a class the page styles (css/cook.css). */
   G.BULBS = "#btn-bulb, .ng-bulb, .oc-look.bulb";
+  let pulsing = false;
   G.pulseBulbs = function (on) {
     const d = root.document;
     if (!d || !d.querySelectorAll) return;
     d.querySelectorAll(G.BULBS).forEach((b) => b.classList.toggle("help-pulse", !!on));
+    if (!!on !== pulsing) {
+      pulsing = !!on;
+      logHelp("bulb-pulse", { step: pulsing ? "on" : "off" }); // (a test log: contract-25)
+    }
   };
+  // what has been said, and when (every Cook line is marked as it is spoken, js/cook/words.js Lang.speak): the help never says
+  // a line again that was said less than REPEAT ago
+  const spoken = new Map();
+  const norm = (t) => String(t || "").toLowerCase().replace(/\s+/g, " ").trim();
+  G.markSaid = (t) => spoken.set(norm(t), Date.now());
+  G.recentlySaid = (t) => Date.now() - (spoken.get(norm(t)) || -1e9) < G.REPEAT;
   const logHelp = (what, info) => {
     try {
       if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note(what, info);
@@ -136,7 +147,6 @@
     let timer = null;
     let shownAt = 0;
     let seq = 0;
-    const said = new Map(); // a line's text -> when it was last said by a help (PAN-16: never twice within REPEAT)
     const call = (fn, ...a) => {
       try {
         return fn ? fn(...a) : undefined;
@@ -151,13 +161,19 @@
       shownAt = Date.now();
       call(o.show, s.html, { rec: !!s.rec });
     };
-    const textOf = (s) => String((s.line && s.line.segs ? s.line.segs.map((x) => x.t).join("") : s.html) || "");
-    const say = (s) => {
+    // the step's words: the whole line and each of its parts (a line made of two is said part by part)
+    const textsOf = (s) => {
+      const l = s.line;
+      if (!l || !l.segs) return [String(s.html || "")];
+      const plain = (x) => x.segs.map((g) => g.t).join("");
+      return [plain(l)].concat((l.parts || []).map(plain));
+    };
+    const say = (s, manual = false) => {
       if (G.muted()) return Promise.resolve(null);
-      // the same line is not said again within REPEAT of its last saying
-      const k = textOf(s);
-      if (Date.now() - (said.get(k) || -1e9) < G.REPEAT) return Promise.resolve(null);
-      said.set(k, Date.now());
+      // PAN-16: a line is not said again within REPEAT of its last saying (by the help, or by the station itself: the
+      // daar's tadka order said at the start)
+      if (!manual && textsOf(s).some((t) => G.recentlySaid(t))) return Promise.resolve(null);
+      textsOf(s).forEach(G.markSaid);
       return Promise.resolve(call(o.speak, s)).catch(() => {});
     };
     // the help: her line and the glow at the same moment (SH-60); the line is shown at once and said unless it was just said
@@ -168,7 +184,7 @@
       s.helpedAt = Date.now();
       logHelp("help", { step: manual ? "asked" : "idle", by: `L${lv()} ${s.id || ""}` });
       call(o.onHelp, s);
-      say(s);
+      say(s, manual);
       call(o.glow, s, true);
     };
     // when the next help is due: PAUSE of no action after the step opened or the last action; a second help only after
