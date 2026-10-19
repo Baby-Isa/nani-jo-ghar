@@ -8,19 +8,18 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (18 Oct 2026):** Sprint 8 is open (`docs/sprints/S08-play-feedback-final.md`, its plan in "Sessions"). `main` = 38d0591a; branch `claude/new-session-b5r2am` carries docs only. Nothing running. Zafar is low on tokens this week.
+**Where things stand (19 Oct 2026, 20:45 UK):** Sprint 8's waves are all merged on `claude/new-session-b5r2am` (pushed); `main` = 38d0591a. Sprint 9 ("A day at Nani's", `docs/sprints/S09-a-day-at-nanis.md`) has its frame and mock-ups merged; its art run waits on Zafar agreeing the mock-ups. Nothing running.
 
-**Done:** Cook feedback 17 Oct (`docs/feedback/cook-playtest-2026-10-17.md`, 66 points, 65 rows) and clinic feedback 18 Oct (`docs/feedback/clinic-playtest-2026-10-18.md`, 49 points, 49 rows); Zafar said yes to all fifteen Cook decisions (rows, `CLAUDE.md` 9, `cook.md`). Old status histories moved to `build/tools/review/data/status-history.jsonl` to keep the fix list within its limit. The art run s08b is planned (20 images): plan `docs/design-language/art-plans/s08b-art-plan.md`, block `s08b-paste-block.txt`.
+**Sprint 8 review (done):** evidence run `ev-20261019-172022-khk` (`build/reports/evidence-ev-20261019-172022-khk.md`), judged and applied: 26 rows proven, 54 FAIL and reopened, 40 not proven (26 sheets miss the moment, 14 tool failures: the tool owner's), 10 Zafar's, 4 decisions. Full gate `s08-gate-close` failed: 508 contract breaks (mostly known: English in the parked modes 167, low-res backgrounds on big screens 162; new: repeated lines 82, mostly tadka; chaat written vs said 27; pop-up headline shrinks 14; level-table rows), 8 clinic runs time out (foot drag, boing L3 lever, fever bottle, cut L2). Load check passes.
 
-**Waiting on Zafar:** the twelve clinic decisions (questions 39) and the 19 Oct decisions (questions 42: level table, scrape, layouts, plan). **Art landed 19 Oct:** all 20 s08b images in `sources/art/s08b/`, judged usable (SP1 to try in the game).
+**Waiting on Zafar:** five decisions (19 Oct, chat): 1 a short fix round before publishing (spoken English "with"/"tomatoes", sekelo name, fever flip, daal pour, chai labels, plus the gate's repeats, pop-up wrap and clinic time-outs) or publish now; 2 SH-104; 3 SEK-14; 4 CLN-115; 5 CLN-196. Also the Sprint 9 mock-up questions.
 
 **Next steps, in order:**
-1. His answers into rows and docs, then wave 0 of the sprint plan (cut the art).
-2. His clinic answers into rows and docs; the waves in the sprint file, two builders at a time, each `/brief`ed.
-3. Gate in chunks, `evidence.mjs --run --sprint`, judge, `/publish`.
+1. His answers into rows and docs.
+2. If yes to 1: the fix round, two builders, each `/brief`ed; then `evidence.mjs --run --rows <the round's rows>`, judge, the gate on the touched flows, `/publish` on his go.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8 is open: both play-tests are processed, the art run s08b is with me, and the clinic decisions wait on my answers. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8 is reviewed and waits on my five decisions. Tell me before launching anything new.
 
 ## The fix list
 
