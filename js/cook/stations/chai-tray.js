@@ -337,7 +337,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const mixDisc = disc8(D.item + 0.07);
       const layers = { mix, disc, mixDisc };
       // the glow's ring (CHAI-25), shown only while the pan is the next thing
-      const glowRing = S.track(S.add.image(x, y, RING).setScale(s8).setDepth(D.item + 0.9).setVisible(false));
+      // (under the simmer and over the spoonfuls; the canvas renderer's halo, half a layer under it, lies under the pan)
+      const glowRing = S.track(S.add.image(x, y, RING).setScale(s8).setDepth(D.item + 0.45).setVisible(false));
       // CHAI-12 (C19): the handle stays fully opaque OVER the heat ring: the pan's handle is drawn again above the ring,
       // masked to its wedge (the empty picture's, the same in every state)
       const handle = top8("empty", D.fx - 1.9);
@@ -1117,10 +1118,14 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const v = Cook.view || {};
       const box = { l: (v.left || 0) + 12, t: (v.top || 0) + 12, r: (v.right || 1600) - 12, b: (v.bottom || 900) - 12 };
       const holdFor = (n, z) => NjgPour.holdAt(lipTo, [TOP.lip[0] * z * k1, TOP.lip[1] * z], TOP.turn + n * P.deg);
+      // (every step it shows over the glass: the handle stands highest part-way round)
       const fits = (n, z) => {
         const h = holdFor(n, z);
-        const bb = body.setPosition(h.x, h.y).setAngle(TOP.turn + n * P.deg).setScale(z * k1, z).getBounds();
-        return bb.y >= box.t && bb.right <= box.r && bb.x >= box.l;
+        for (let j = 0; j <= n; j++) {
+          const bb = body.setPosition(h.x, h.y).setAngle(TOP.turn + j * P.deg).setScale(z * (1 - P.squash * (j / n)), z).getBounds();
+          if (bb.y < box.t || bb.right > box.r || bb.x < box.l) return false;
+        }
+        return true;
       };
       // the biggest it can be drawn (at least 0.7 of its size on the hob: it is the same pan), with all its steps, or one
       // fewer where a short screen leaves no room for the handle, turned up, over the tray's top row
@@ -1148,7 +1153,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         to: hold,
         tilt,
         steps,
-        arc: 50,
+        arc: sc < s8 ? 12 : 50, // (a short screen: no rise past the room it has)
         ms: { lift: P.liftMs, tip: P.stepMs * steps, pour: P.pourMs * (to - from), untip: P.stepMs * steps, back: P.backMs },
       });
       const M = plan.marks;
