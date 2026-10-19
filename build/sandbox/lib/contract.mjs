@@ -563,7 +563,7 @@ function check12(tl, segs, add, tEnd = tl[tl.length - 1].t) {
   });
 }
 // 27 (SH-106): every go-on button on screen shows the arrow
-function check27(tl, segs, add) {
+function check34(tl, segs, add) {
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "buttons") continue;
@@ -1110,7 +1110,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check11(tl, add);
   check12(tl, segs, add, tEnd);
   check13(tl, add);
-  check27(tl, segs, add);
+  check34(tl, segs, add);
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);
