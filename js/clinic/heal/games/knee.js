@@ -235,6 +235,18 @@
      * a soft shadow under it.
      */
     const drawn = {}; // how many bands each back-front pair of dots has had (CLN-100)
+    // CLN-179: the s08b crepe band (data art.band: its seamless tile, w x h px), one base pattern the turns' slices take
+    const BAND = KA && KA.band && KA.band.tile ? KA.band : (ctx.data && ctx.data.art && ctx.data.art.band && ctx.data.art.band.tile ? ctx.data.art.band : null);
+    let bandId = null;
+    const bandBase = (W) => {
+      if (bandId) return bandId;
+      bandId = `${gid}-band`;
+      const [tw, th] = BAND.size || [1036, 226];
+      const pw = (W * tw) / th;
+      const pat = s("pattern", { id: bandId, patternUnits: "userSpaceOnUse", width: pw.toFixed(2), height: W.toFixed(2) }, defs);
+      s("image", { href: root.Clinic && root.Clinic.Kit ? root.Clinic.Kit.url(BAND.tile) : BAND.tile, x: 0, y: 0, width: pw.toFixed(2), height: W.toFixed(2), preserveAspectRatio: "none" }, pat);
+      return bandId;
+    };
     const wrapTurn = (a, b) => {
       const k = KA.box[2] / WA.src[0];
       const back = a.s === "l" ? a : b;
@@ -263,10 +275,15 @@
       const c = { x: (p0.x + p1.x) / 2 + nx * bow, y: (p0.y + p1.y) / 2 + ny * bow };
       const at = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
       const N = 24;
+      // CLN-179 (Zafar, 18 Oct: "the bandages still don't go to the edge of the knee sometimes"): each turn runs on past
+      // its two dots (BAND.over of its length each way); the leg's own outline (the mask) trims it where the leg turns
+      // away, so every turn reaches the knee's edge
+      const E = BAND ? BAND.over || 0.16 : 0;
+      const tOf = (i) => -E + (i / N) * (1 + 2 * E);
       const side = (o) => {
         const pts = [];
         for (let i = 0; i <= N; i++) {
-          const t = i / N;
+          const t = tOf(i);
           const q = at(t);
           const q2 = at(Math.min(1, t + 0.01));
           const q1 = at(Math.max(0, t - 0.01));
@@ -275,7 +292,7 @@
           const tl = Math.hypot(tx, ty) || 1;
           tx /= tl;
           ty /= tl;
-          const w = (W * (0.55 + 0.45 * Math.min(1, t * 1.6))) / 2;
+          const w = (W * (0.55 + 0.45 * Math.min(1, Math.max(0, t) * 1.6))) / 2;
           pts.push([q.x - ty * w * o, q.y + tx * w * o]);
         }
         return pts;
@@ -286,9 +303,37 @@
       const shape = `${line(A)} ${line(B.slice().reverse()).replace(/^M/, "L")} Z`;
       const t = s("g", { class: "knee-turn" }, sore.wrap);
       const gidT = `${gid}-t${st.turns}`;
+      s("path", { d: shape, fill: "#4a2c14", opacity: 0.16, transform: `translate(${(nx * 5).toFixed(1)} ${(ny * 6).toFixed(1)})` }, t);
+      if (BAND) {
+        // CLN-179 (Zafar, 18 Oct: "it needs to be a photorealistic bandage"; the s08b BD1 crepe band, seamless): the
+        // band's picture laid along the turn, one slice for each step of the curve, each turned to the curve there and
+        // as wide as the band is there (narrower where it dives into the crease), its weave running on along the turn
+        const base = bandBase(W);
+        let run = 0;
+        for (let i = 0; i < N; i++) {
+          const q0 = at(tOf(i));
+          const q1 = at(tOf(i + 1));
+          const len = Math.hypot(q1.x - q0.x, q1.y - q0.y);
+          const ang = (Math.atan2(q1.y - q0.y, q1.x - q0.x) * 180) / Math.PI;
+          const wi = Math.hypot(A[i][0] - B[i][0], A[i][1] - B[i][1]);
+          const pid = `${gidT}-s${i}`;
+          s("pattern", { id: pid, href: `#${base}`, patternTransform: `translate(${q0.x.toFixed(2)} ${q0.y.toFixed(2)}) rotate(${ang.toFixed(2)}) translate(${(-run).toFixed(2)} ${(-wi / 2).toFixed(2)}) scale(1 ${(wi / W).toFixed(4)})` }, defs);
+          // each slice a hair longer than its step, so no hairline shows between them
+          const ext = 0.6;
+          const ex = ((q1.x - q0.x) / (len || 1)) * ext;
+          const ey = ((q1.y - q0.y) / (len || 1)) * ext;
+          const quad = [[A[i][0] - ex, A[i][1] - ey], [A[i + 1][0] + ex, A[i + 1][1] + ey], [B[i + 1][0] + ex, B[i + 1][1] + ey], [B[i][0] - ex, B[i][1] - ey]];
+          s("polygon", { points: quad.map((q) => `${q[0].toFixed(1)},${q[1].toFixed(1)}`).join(" "), fill: `url(#${pid})` }, t);
+          run += len;
+        }
+        // the light: darker at both ends where the band turns away round the leg, a fine edge along each side
+        const gr = s("linearGradient", { id: gidT, gradientUnits: "userSpaceOnUse", x1: back.x, y1: back.yy, x2: fr.x, y2: fr.yy }, defs);
+        [["0", 0.38], ["0.24", 0], ["0.84", 0], ["1", 0.3]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#46301a", "stop-opacity": a }, gr));
+        s("path", { d: shape, fill: `url(#${gidT})`, stroke: "rgba(150,135,110,.55)", "stroke-width": 1.2, "stroke-linejoin": "round" }, t);
+        return;
+      }
       const gr = s("linearGradient", { id: gidT, gradientUnits: "userSpaceOnUse", x1: back.x, y1: back.yy, x2: fr.x, y2: fr.yy }, defs);
       [["0", "#b9ab90"], ["0.22", "#efe8d8"], ["0.6", "#fcfaf3"], ["0.86", "#f1ebdd"], ["1", "#c9bca2"]].forEach(([o, col]) => s("stop", { offset: o, "stop-color": col }, gr));
-      s("path", { d: shape, fill: "#4a2c14", opacity: 0.16, transform: `translate(${(nx * 5).toFixed(1)} ${(ny * 6).toFixed(1)})` }, t);
       s("path", { d: shape, fill: `url(#${gidT})`, stroke: "#b8ab92", "stroke-width": 2, "stroke-linejoin": "round" }, t);
       [-0.25, 0.08, 0.38].forEach((f) => {
         const pts = [];

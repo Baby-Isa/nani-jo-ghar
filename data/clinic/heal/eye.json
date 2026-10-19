@@ -492,6 +492,36 @@
    "has2x": true,
    "_a1": "A1 (5 Oct): Y1, the clear eyes on Y2's canvas: fades in over the sore eye with each drop.",
    "src_v1": "assets/clinic/closeups/{kind}/eyes.webp"
+  },
+  "wall": {
+   "_about": "s08-w5b (CLN-188; Zafar 18 Oct: 'an eye test board sitting on an optician's wall'): the s08b EC1 wall with its blank board (assets/clinic/s08b/ec1-meta.json), layout A's right panel. box = where the picture goes in the close-up's 800x500 units (from x 406, the panel's left edge, 350 wide: the wall colour carries on to the right edge, so the board clears her face circle in the corner and, on the shortest screen (800x360), its frame ends above the yes / no pills; its top cut 36 units), board = the board's white face as shares of the picture (ec1-meta board / size), fill and floor = the wall's and the skirting's own colours, round the picture on a taller screen",
+   "src": "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
+   "box": [
+    406,
+    -36,
+    350,
+    525
+   ],
+   "board": [
+    0.17383,
+    0.12109,
+    0.83105,
+    0.7806
+   ],
+   "fill": "#a9b4b8",
+   "floor": "#c3b6a6"
+  },
+  "drop": {
+   "_about": "s08-w5b (CLN-186; Zafar 18 Oct: 'photorealistic drops, and the bottle ... isn't cut out nicely'): bottle = the re-cut bottle held nozzle down (SH-115 sheets-v3), cut off at nozzle (its nozzle's end, a share of its height: its own painted drop hidden); tool = the re-cut bottle in the strip; falling = the s08b DP3 photo drop (aspect its width over height, w its width in the close-up's units) hanging at the nozzle and falling; splash = DP3's splash on the eye (splashW wide)",
+   "bottle": "assets/clinic/sheets-v3/drop-bottle/drop-bottle-use-down-v3.webp",
+   "nozzle": 0.818,
+   "tool": "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp",
+   "falling": "assets/clinic/items-s08b/drop-falling-s08b.webp",
+   "aspect": 0.604,
+   "w": 11,
+   "splash": "assets/clinic/items-s08b/drop-splash-s08b.webp",
+   "splashW": 46,
+   "splashAspect": 2.022
   }
  },
  "assets": [
@@ -500,16 +530,40 @@
   "assets/clinic/closeups/girl/eyes-v2.webp",
   "assets/clinic/closeups/girl/eyetest-a-v2.webp",
   "assets/clinic/items-v2/ginger.webp",
-  "assets/clinic/items-v2/lemon-half.webp",
   "assets/clinic/items-v2/milk-jug.webp",
-  "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
-  "assets/clinic/sheets/drop-bottle/drop-bottle-use-down.webp",
   "assets/cook/items/icon-cook-paani.webp",
   "assets/cook/items/icon-veg-01.webp",
   "assets/cook/items/icon-veg-02.webp",
   "assets/cook/items/icon-veg-03.webp",
   "assets/cook/items/icon-veg-12.webp",
-  "assets/cook/items/icon-veg-13.webp"
+  "assets/cook/items/icon-veg-13.webp",
+  "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
+  "assets/clinic/items-s08b/lemon-whole-s08b.webp",
+  "assets/clinic/items-s08b/drop-falling-s08b.webp",
+  "assets/clinic/items-s08b/drop-splash-s08b.webp",
+  "assets/clinic/sheets-v3/drop-bottle/drop-bottle-use-down-v3.webp",
+  "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp"
  ],
- "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json",
+ "chart_colours": {
+  "_about": "s08-w5b (CLN-189, the auto check build/test_shared_heal_chart.mjs, the classes of build/heal_colour.py): the colour each chart word's thing is (a lemon is yellow, never an orange's), so every picture the chart draws must be that colour; a word may allow two where the picture sits between them (a potato is tan, a red onion red-purple, garlic cream), never yellow for orange",
+  "fru-02": "yellow",
+  "veg-01": [
+   "brown",
+   "orange"
+  ],
+  "veg-02": [
+   "red",
+   "purple"
+  ],
+  "veg-03": "red",
+  "veg-12": "green",
+  "veg-13": [
+   "white",
+   "brown"
+  ],
+  "veg-14": "brown",
+  "cook-dudh": "white",
+  "cook-paani": "blue"
+ }
 }
