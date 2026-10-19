@@ -2,8 +2,9 @@
  * H-foot: the sole of the foot (D15i, decision 27; the 1 Oct report §8H; CLN-64, CLN-40, CLN-47).
  *
  * Why: "Ow, something's in my foot!" / "Let's take the splinters out."
- * 1. Soak: the doctor says which water (paani [hot] / [cold] / [lukewarm]) and how many jugs; tap the jug, then
- *    the foot, that many times (L1 closes at the count, D5; from L2 the next action closes it, D7).
+ * 1. Soak: the doctor says which water (paani [hot] / [cold] / [lukewarm]) and how many jugs; pick the jug, then pour
+ *    it on the foot, that many times: each press is one jug, and its water washes off only the dirt it passes over,
+ *    as the scrape's wash (CLN-190; L1 closes at the count, D5; from L2 the next action closes it, D7).
  * 2. The splinters, seen on the sole (toes up, the leg off the bottom): each sits in a lighter channel that runs with
  *    square turns to the edge of the foot. Drag the splinter along its channel; touching the side is an "ow": it
  *    slides back to the last turn and is a scored hand-skill mistake (the "steady" row).
@@ -32,7 +33,7 @@
   const WHY = { problem: "foot-why", goal: "foot-goal" }; // line keys in data/clinic/heal/foot.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
-    soak: { gesture: "tap", then: "tap" },
+    soak: { gesture: "tap", then: { gesture: "drag" } }, // CLN-190: pick the jug, then pour it over the foot (the scrape's wash)
     pull: { gesture: "drag" },
     plaster: { gesture: "tap", then: "tap" },
   };
@@ -122,6 +123,7 @@
     // one instruction at a time (D8): the whole job is set, the progressive card shows and says each step as it opens
     ctx.card.setRows([].concat(...P.steps.map((x) => x.rows || [x.row])));
     const ART = (ctx.data && ctx.data.art) || {};
+    const IMG = "assets/clinic/items-v2/";
 
     // the sole (P1's close-up swaps in by file name): toes up, the leg off the bottom of the picture
     const skin = S.skin || "#d9a57c";
@@ -160,9 +162,106 @@
     const flipT = P.flip ? "translate(800 0) scale(-1 1)" : null;
     s("path", { d: outline, transform: flipT }, clip);
     Object.values(TOE_AT).forEach(([x, y, rx, ry]) => s("ellipse", { cx: x, cy: y, rx, ry, transform: flipT }, clip)); // the toes' splinters sit in their channels too
+    const splG = s("g", {}, S.layer);
     const chanG = s("g", { "clip-path": `url(#${clipId})` }, S.layer);
     const chanFill = HS.shade ? HS.shade(sole, 0.45) : "#f6e2cc";
-    const splG = s("g", {}, S.layer);
+    const gripG = s("g", {}, S.layer);
+    // CLN-193 (Zafar, 18 Oct: "an irritated raised red translucent channel and you see the splinter traveling inside of
+    // it"; "a repeatable, very tileable visual block ... and the splinter as well"): the s08b SP1 pieces laid along each
+    // path in code (data art.channel: the straight block repeated, the elbow at each turn, the closed end at the
+    // splinter's spot), see-through over the splinter; the open end runs off past the foot's edge (the sole's clip)
+    const CA = ART.channel && ART.channel.straight && ART.channel.corner && ART.channel.end ? ART.channel : null;
+    const Wb = P.halfW * 2;
+    const url = (u) => (Kit ? Kit.url(u) : u);
+    const tile = CA ? (() => {
+      const T = CA;
+      const sb = T.straightBand; // the straight block's band: [first row, last row, first col, last col, w, h] in its px
+      const ks = Wb / (sb[1] - sb[0]);
+      const pid = `fo-chan-${Math.floor(Math.random() * 1e9)}`;
+      const y0 = -((sb[0] + sb[1]) / 2) * ks; // the band centred on the path
+      const pat = s("pattern", { id: pid, patternUnits: "userSpaceOnUse", x: 0, y: y0.toFixed(2), width: ((sb[3] - sb[2]) * ks).toFixed(2), height: (sb[5] * ks).toFixed(2) }, defs);
+      s("image", { href: url(T.straight), x: (-sb[2] * ks).toFixed(2), y: 0, width: (sb[4] * ks).toFixed(2), height: (sb[5] * ks).toFixed(2), preserveAspectRatio: "none" }, pat);
+      const cb = T.cornerBox; // the elbow: [centre x, centre y, arm width, w, h] in its px (arms up and right)
+      const kc = Wb / cb[2];
+      const cid = `fo-elbow-${Math.floor(Math.random() * 1e9)}`;
+      const cc = s("clipPath", { id: cid, clipPathUnits: "userSpaceOnUse" }, defs);
+      const m = cb[2] / 2 + 12;
+      s("rect", { x: 0, y: cb[1] - m, width: cb[0] + m, height: cb[4] - (cb[1] - m) }, cc);
+      const eb = T.endBox; // the closed end: [cap centre x, centre y, band width, w, h] in its px (the cap at its right)
+      const ke = Wb / eb[2];
+      const eid = `fo-cap-${Math.floor(Math.random() * 1e9)}`;
+      const ec = s("clipPath", { id: eid, clipPathUnits: "userSpaceOnUse" }, defs);
+      s("rect", { x: eb[0] - 1.35 * eb[2], y: 0, width: eb[3] - (eb[0] - 1.35 * eb[2]), height: eb[4] }, ec);
+      return { ks, pid, kc, cid, cb, ke, eid, eb, h: sb[5] * ks, y0 };
+    })() : null;
+    // each piece is turned (a quarter turn, and flipped across its own length if need be) to point the way the path goes
+    // while its painted light stays from the upper left, as in every other picture (so no joint shows a lit edge meeting
+    // a shaded one): orient(the piece's own directions, the ones wanted) -> {d: degrees, f: 1 or -1 (flip)}
+    const LIGHT = [-1, -1];
+    const turnV = (v, d, f) => {
+      const r = (d * Math.PI) / 180;
+      const x = v[0];
+      const y = v[1] * f;
+      return [Math.round(x * Math.cos(r) - y * Math.sin(r)), Math.round(x * Math.sin(r) + y * Math.cos(r))];
+    };
+    const same = (u, v) => u[0] === v[0] && u[1] === v[1];
+    const orient = (own, want, light) => {
+      let best = null;
+      [0, 90, 180, 270].forEach((dd) => [1, -1].forEach((f) => {
+        const got = own.map((v) => turnV(v, dd, f));
+        const ok = want.length === 1 ? same(got[0], want[0]) : (same(got[0], want[0]) && same(got[1], want[1])) || (same(got[0], want[1]) && same(got[1], want[0]));
+        if (!ok) return;
+        const l = turnV(light, dd, f);
+        const score = l[0] * LIGHT[0] + l[1] * LIGHT[1];
+        if (!best || score > best.score) best = { d: dd, f, score };
+      }));
+      return best || { d: 0, f: 1 };
+    };
+    const featherId = `fo-feather-${Math.floor(Math.random() * 1e9)}`;
+    if (CA) s("feGaussianBlur", { stdDeviation: (Wb * (CA.feather || 0.1)).toFixed(2) }, s("filter", { id: featherId, filterUnits: "userSpaceOnUse", x: -400, y: -400, width: 1600, height: 1400 }, defs));
+    const dirOf = (A, B) => [Math.sign(Math.round(B[0] - A[0])), Math.sign(Math.round(B[1] - A[1]))];
+    const layChannel = (q, g, op) => {
+      const pts = q.pts;
+      // the welt's own edge, feathered: a soft mask along the path (round at the turns), CA.welt of the channel's width: the
+      // raised red line and a little skin either side show, never the blocks' square ends or their own skin-coloured flanks
+      const mid = `fo-welt-${Math.floor(Math.random() * 1e9)}`;
+      const mk = s("mask", { id: mid, maskUnits: "userSpaceOnUse", x: -400, y: -400, width: 1600, height: 1400 }, defs);
+      const n = pts.length;
+      const un = dirOf(pts[n - 2], pts[n - 1]);
+      const ext = pts.map((p) => p.slice());
+      ext[n - 1] = [pts[n - 1][0] + un[0] * Wb * 2, pts[n - 1][1] + un[1] * Wb * 2];
+      s("path", { d: pathD(ext), fill: "none", stroke: "#fff", "stroke-width": (Wb * (CA.welt || 0.72)).toFixed(1), "stroke-linejoin": "round", "stroke-linecap": "round", filter: `url(#${featherId})` }, mk);
+      const cg = s("g", { opacity: op, mask: `url(#${mid})` }, g);
+      const top = [];
+      for (let k = 0; k < n - 1; k++) {
+        const A = pts[k];
+        const B = pts[k + 1];
+        const u = dirOf(A, B);
+        const L = Math.hypot(B[0] - A[0], B[1] - A[1]);
+        const from = k === 0 ? Wb * 1.1 : Wb / 2 - 2;
+        const to = k === n - 2 ? L + Wb : L - (Wb / 2 - 2);
+        // the straight block runs along +x, lit from its top
+        const o = orient([[1, 0]], [u], [0, -1]);
+        const sg = s("g", { transform: `translate(${A[0]} ${A[1]}) rotate(${o.d}) scale(1 ${o.f})` }, cg);
+        s("rect", { x: from.toFixed(1), y: tile.y0.toFixed(1), width: Math.max(0, to - from).toFixed(1), height: tile.h.toFixed(1), fill: `url(#${tile.pid})` }, sg);
+        if (k < n - 2) {
+          // the elbow's arms go up and right from its middle, lit from the upper left
+          const u2 = dirOf(B, pts[k + 2]);
+          const e = orient([[0, -1], [1, 0]], [[-u[0], -u[1]], u2], [-1, -1]);
+          const eg = s("g", { transform: `translate(${B[0]} ${B[1]}) rotate(${e.d}) scale(${tile.kc.toFixed(4)} ${(tile.kc * e.f).toFixed(4)}) translate(${-tile.cb[0]} ${-tile.cb[1]})` }, null);
+          s("image", { href: url(CA.corner), x: 0, y: 0, width: tile.cb[3], height: tile.cb[4], "clip-path": `url(#${tile.cid})` }, eg);
+          top.push(eg);
+        }
+      }
+      // the closed end: its cap (at the block's right, lit from its top) half a width behind the splinter's spot
+      const u0 = dirOf(pts[0], pts[1]);
+      const e0 = orient([[1, 0]], [[-u0[0], -u0[1]]], [0, -1]);
+      const cg2 = s("g", { transform: `translate(${pts[0][0]} ${pts[0][1]}) rotate(${e0.d}) scale(${tile.ke.toFixed(4)} ${(tile.ke * e0.f).toFixed(4)}) translate(${-tile.eb[0]} ${-tile.eb[1]})` }, null);
+      s("image", { href: url(CA.end), x: 0, y: 0, width: tile.eb[3], height: tile.eb[4], "clip-path": `url(#${tile.eid})` }, cg2);
+      top.push(cg2);
+      top.forEach((m) => cg.appendChild(m));
+      return cg;
+    };
     // FT2 (CLN-108): the sole is dirty and the dirt hides the splinters; each jug's water washes some of it away, and the
     // last jug of the count shows them all (no water rising over the foot: no flooding)
     const dirtG = s("g", { "clip-path": `url(#${clipId})`, class: "fo-dirt" }, S.layer);
@@ -192,15 +291,46 @@
         d.el.animate([{ opacity: d.el.getAttribute("opacity"), transform: "translate(0,0)" }, { opacity: 0, transform: "translate(0px, 30px)" }], { duration: fast() ? 60 : 600, fill: "forwards" });
       });
     };
-    // the water from the jug: a stream that splashes onto the sole, then runs off (never a rising pool)
-    const splash = (col) => {
-      const st2 = s("path", { d: "M470 -20 Q440 120 400 240", stroke: col, "stroke-width": 16, fill: "none", "stroke-linecap": "round", opacity: 0.8 }, fxG);
-      const ring = s("ellipse", { cx: 400, cy: 250, rx: 30, ry: 14, fill: "none", stroke: col, "stroke-width": 5, opacity: 0.8 }, fxG);
-      ring.animate([{ rx: 30, ry: 14, opacity: 0.8 }, { rx: 140, ry: 60, opacity: 0 }], { duration: fast() ? 60 : 650, fill: "forwards" });
-      ctx.after(fast() ? 80 : 520, () => st2.remove());
-      ctx.after(fast() ? 100 : 700, () => ring.remove());
+    // CLN-190 (Zafar, 18 Oct: "the animation for clearing the foot is terrible ... a colored, coded jet"; "like the
+    // plaster one ... you have to put the cursor over specific parts of the dirt and the water clears off those parts"):
+    // the scrape's wash. The jug picked tilts over the finger and its water (clear, whatever its warmth) falls where the
+    // finger is; only the dirt under it washes off, running down
+    const pourJug = s("image", { width: 104, height: 108, opacity: 0, class: "fo-jug" }, fxG);
+    const streamG = s("g", { opacity: 0 }, fxG);
+    const streamW = s("path", { fill: "none", stroke: "rgba(170,214,240,.55)", "stroke-width": 13, "stroke-linecap": "round" }, streamG);
+    const streamC = s("path", { fill: "none", stroke: "rgba(255,255,255,.75)", "stroke-width": 3.5, "stroke-linecap": "round" }, streamG);
+    const WASH_R = 44; // svg units round the water's point that it washes
+    const washAt = (p, temp) => {
+      pourJug.setAttribute("href", Kit ? Kit.url(`${IMG}jug-${temp}.webp`) : `${IMG}jug-${temp}.webp`);
+      pourJug.setAttribute("x", p.x + 16);
+      pourJug.setAttribute("y", p.y - 168);
+      pourJug.setAttribute("transform", `rotate(-38 ${p.x + 68} ${p.y - 114})`);
+      pourJug.setAttribute("opacity", 1);
+      const d = `M${p.x + 22} ${p.y - 126} Q${p.x + 5} ${p.y - 68} ${p.x} ${p.y}`;
+      streamW.setAttribute("d", d);
+      streamC.setAttribute("d", d);
+      streamG.setAttribute("opacity", 1);
+      let hit = 0;
+      dirt.forEach((q) => {
+        if (q.gone || Math.hypot(q.x - p.x, q.y - p.y) > WASH_R) return;
+        q.gone = true;
+        hit++;
+        q.el.animate([{ transform: "translate(0,0)", opacity: q.el.getAttribute("opacity") }, { transform: `translate(${(q.x - p.x) * 0.5}px, 30px)`, opacity: 0 }], { duration: fast() ? 60 : 480, fill: "forwards" });
+      });
+      if (!st.splashT || Date.now() - st.splashT > 260) {
+        st.splashT = Date.now();
+        // the water meeting the sole: a soft clear ring and a few drops thrown off
+        const sp = s("ellipse", { cx: p.x, cy: p.y, rx: 10, ry: 6, fill: "rgba(200,230,248,.35)", stroke: "rgba(255,255,255,.8)", "stroke-width": 2.5 }, fxG);
+        sp.animate([{ rx: 10, ry: 6, opacity: 1 }, { rx: hit ? 40 : 28, ry: hit ? 22 : 15, opacity: 0 }], { duration: fast() ? 60 : 420, fill: "forwards" });
+        ctx.after(fast() ? 80 : 460, () => sp.remove());
+      }
+      return hit;
     };
-
+    const endPour = () => {
+      st.pouring = false;
+      pourJug.setAttribute("opacity", 0);
+      streamG.setAttribute("opacity", 0);
+    };
     const at = (q, t) => {
       const T = Math.max(0, Math.min(q.lens[q.lens.length - 1], t));
       let k = 1;
@@ -238,36 +368,62 @@
       return b;
     };
     const pathD = (pts) => pts.map((p, k) => `${k ? "L" : "M"}${p[0]} ${p[1]}`).join(" ");
+    const chanEls = {};
     const draw = () => {
-      S.clear(chanG);
+      if (!tile) S.clear(chanG);
       S.clear(splG);
       S.clear(plG);
       const c = cur();
+      S.clear(gripG);
       P.splinters.forEach((q) => {
+        // the laid channels are made once and kept (draw runs on every move of the finger): shown, dimmed or gone
+        const lc = tile && (chanEls[q.id] || (chanEls[q.id] = layChannel(q, chanG, 1)));
+        if (lc) lc.style.display = st.pulled.includes(q.id) ? "none" : "";
         if (st.pulled.includes(q.id)) return;
-        // the lighter channel to the edge (square turns), a darker rim so the sides read
-        const d = pathD(q.pts);
-        s("path", { d, fill: "none", stroke: edge, "stroke-width": P.halfW * 2 + 6, "stroke-linejoin": "miter", "stroke-linecap": "butt", opacity: c && c.kind === "pull" ? 0.6 : 0.3 }, chanG);
-        s("path", { d, fill: "none", stroke: chanFill, "stroke-width": P.halfW * 2, "stroke-linejoin": "miter", "stroke-linecap": "butt", opacity: c && c.kind === "pull" ? 0.95 : 0.6 }, chanG);
+        const pulling = c && c.kind === "pull";
+        if (lc) lc.setAttribute("opacity", pulling ? CA.opacity || 0.8 : (CA.opacity || 0.8) * 0.75);
+        else {
+          // the lighter channel to the edge (square turns), a darker rim so the sides read
+          const d = pathD(q.pts);
+          s("path", { d, fill: "none", stroke: edge, "stroke-width": P.halfW * 2 + 6, "stroke-linejoin": "miter", "stroke-linecap": "butt", opacity: pulling ? 0.6 : 0.3 }, chanG);
+          s("path", { d, fill: "none", stroke: chanFill, "stroke-width": P.halfW * 2, "stroke-linejoin": "miter", "stroke-linecap": "butt", opacity: pulling ? 0.95 : 0.6 }, chanG);
+        }
         // the splinter: from its head (the progress point) back along the channel; the head is what you hold
         const t = st.prog[q.id];
-        const tail = [];
-        for (let k = 0; k <= 8; k++) tail.push(at(q, t - (k / 8) * K.len));
-        s("path", { d: tail.map((p, k) => `${k ? "L" : "M"}${p.x} ${p.y}`).join(" "), fill: "none", stroke: "#6a3e1e", "stroke-width": 8, "stroke-linecap": "round", "stroke-linejoin": "round" }, splG);
         const h = at(q, t);
-        if (c && c.kind === "pull") s("circle", { class: "fo-grip", cx: h.x, cy: h.y, r: 16, fill: "#ffe27a", opacity: 0.55 }, splG);
-        s("circle", { cx: h.x, cy: h.y, r: 9, fill: "#8a5a2a", stroke: "#fff", "stroke-width": 2 }, splG);
+        if (CA && CA.splinter) {
+          // SP1's splinter, its broken end at the head (pulled out first), its point back down the channel
+          const tl = at(q, t - K.len);
+          const len = Math.max(8, Math.hypot(tl.x - h.x, tl.y - h.y)) * 1.25;
+          const th = len / (CA.splinterAspect || 5.2);
+          const ang = (Math.atan2(tl.y - h.y, tl.x - h.x) * 180) / Math.PI;
+          s("image", { href: url(CA.splinter), x: (-len * 0.08).toFixed(1), y: (-th / 2).toFixed(1), width: len.toFixed(1), height: th.toFixed(1), transform: `translate(${h.x.toFixed(1)} ${h.y.toFixed(1)}) rotate(${ang.toFixed(1)})`, preserveAspectRatio: "none" }, splG);
+        } else {
+          const tail = [];
+          for (let k = 0; k <= 8; k++) tail.push(at(q, t - (k / 8) * K.len));
+          s("path", { d: tail.map((p, k) => `${k ? "L" : "M"}${p.x} ${p.y}`).join(" "), fill: "none", stroke: "#6a3e1e", "stroke-width": 8, "stroke-linecap": "round", "stroke-linejoin": "round" }, splG);
+          s("circle", { cx: h.x, cy: h.y, r: 9, fill: "#8a5a2a", stroke: "#fff", "stroke-width": 2 }, splG);
+        }
+        if (pulling) s("circle", { class: "fo-grip", cx: h.x, cy: h.y, r: 16, fill: "#ffe27a", opacity: 0.5 }, gripG);
       });
       P.splinters.forEach((q) => {
         const sp = { x: q.pts[0][0], y: q.pts[0][1] };
         if (st.plasters[q.id]) {
-          s("rect", { x: sp.x - 30, y: sp.y - 16, width: 60, height: 32, rx: 10, fill: "#f2d2a8", stroke: "#b98a60", "stroke-width": 2 }, plG);
-          s("rect", { x: sp.x - 9, y: sp.y - 8, width: 18, height: 16, rx: 3, fill: "#fff", opacity: 0.6 }, plG);
+          // CLN-191 (Zafar, 18 Oct: "It should be the photorealistic plaster that's in the item box"): the strip's own plaster
+          const pw = 84;
+          s("image", { href: url(IMG + "plaster-skin.webp"), x: sp.x - pw / 2, y: sp.y - pw / 4.4, width: pw, height: pw / 2.2, preserveAspectRatio: "xMidYMid meet" }, plG);
         } else if (st.pulled.includes(q.id) && c && c.kind === "plaster") s("circle", { cx: sp.x, cy: sp.y, r: 18, fill: "none", stroke: "#2e8b7a", "stroke-width": 4, "stroke-dasharray": "5 4" }, plG);
         else if (st.pulled.includes(q.id)) s("circle", { cx: sp.x, cy: sp.y, r: 6, fill: "#d9546a" }, plG);
       });
     };
     draw();
+    // CLN-194: everything on the foot in one group, so a touch on the channel's edge shakes it all a little
+    const shakeG = s("g", { class: "fo-shake" }, S.layer);
+    [...S.layer.childNodes].filter((n) => n !== shakeG).forEach((n) => shakeG.appendChild(n));
+    const flashId = `fo-flash-${Math.floor(Math.random() * 1e9)}`;
+    const fl = s("radialGradient", { id: flashId }, defs);
+    s("stop", { offset: 0, "stop-color": "#e2453c", "stop-opacity": 0.55 }, fl);
+    s("stop", { offset: 1, "stop-color": "#e2453c", "stop-opacity": 0 }, fl);
 
     const judge = (id, ok, detail) => {
       st.judged[id] = ok;
@@ -281,7 +437,7 @@
       const c = cur();
       ctx.card.now(c.id === "pull" && c.rows ? "pull0" : c.id);
       draw();
-      if (c.kind === "soak") S.cue("soak", CUES.soak, S.toolEls["jug-" + c.temp], { x: 400, y: 300 });
+      if (c.kind === "soak") S.cue("soak", CUES.soak, S.toolEls["jug-" + c.temp], { gesture: "drag", target: { x: 400, y: 190, r: 90 }, to: { x: 400, y: 400, r: 90 } });
       if (c.kind === "pull") {
         const q = nextSplinter();
         const e = at(q, total(q));
@@ -322,7 +478,6 @@
     };
 
     const TCOL = { hot: "#e8503a", cold: "#3f8fd8", lukewarm: "#9a7ad0" };
-    const IMG = "assets/clinic/items-v2/";
     // CLN-75: steam on the hot jug, ice on the cold one, the lukewarm one plain: they read at a glance at button size
     const MARK = { hot: "steam", cold: "ice" };
     S.tools(TEMPS.map((t) => ({ id: "jug-" + t, img: `${IMG}jug-${t}.webp`, glyph: "•", bg: TCOL[t] + "26", mark: MARK[t] })).concat([{ id: "plaster", img: IMG + "plaster-skin.webp", glyph: "•" }]), () => {});
@@ -337,7 +492,9 @@
       // D7: from level 2 the soak closes by the next action: taking hold of a splinter (no ✓)
       if (c.kind === "soak" && st.jugs && P.level >= 2) {
         const grab = 30 + slack();
-        if (P.splinters.some((x) => Math.hypot(p.x - at(x, st.prog[x.id]).x, p.y - at(x, st.prog[x.id]).y) < grab)) {
+        // CLN-190: a press on a splinter the water has already washed clean takes hold of it (a press on dirt pours)
+        const clean = (h) => !dirt.some((d) => !d.gone && Math.hypot(d.x - h.x, d.y - h.y) < 30);
+        if (P.splinters.some((x) => Math.hypot(p.x - at(x, st.prog[x.id]).x, p.y - at(x, st.prog[x.id]).y) < grab && clean(at(x, st.prog[x.id])))) {
           close();
           c = cur();
         }
@@ -347,18 +504,17 @@
         if (Math.hypot((p.x - 400) / 1.4, p.y - 300) > 260) return;
         const t = S.sel.slice(4);
         st.temp = st.temp && st.temp !== t ? "mixed" : t;
+        // CLN-190: each press is one jug poured; its water washes what it passes over until the finger lifts
         st.jugs++;
         S.count(st.jugs);
         ctx.tally(S.sel, st.jugs, { next: "splinter", of: c.jugs }); // S02-A hook: decision 52, the next step shows at L2+
-        // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself
-        if (P.level === 1 && st.jugs >= c.jugs) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), close, 600, c.id);
-        // FT2: each jug washes the same share of the dirt away (never "until it's clean": the count is the words', C10);
-        // the rest rinses off when the soak closes. No water overlay
-        splash(TCOL[t]);
-        washDirt(0.18);
+        // D5 (SH-38): at level 1 the row turns gold at the count and the step closes by itself (once that jug is poured)
+        if (P.level === 1 && st.jugs >= c.jugs) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy && !st.pouring), close, 600, c.id);
+        // FT2: never "until it's clean" (the count is the words', C10): the rest rinses off when the soak closes
+        st.pouring = t;
+        if (S.svg.setPointerCapture) try { S.svg.setPointerCapture(e.pointerId); } catch (err) { /* a synthetic pointer */ }
+        washAt(p, t);
         S.face(t === "hot" ? "hot" : t === "cold" ? "cold" : "happy", 600);
-        st.busy = true;
-        ctx.after(fast() ? 60 : 300, () => (st.busy = false));
         return;
       }
       if (c.kind === "pull") {
@@ -385,6 +541,12 @@
       }
     });
     ctx.on(S.svg, "pointermove", (e) => {
+      if (st.pouring) {
+        const c = cur();
+        if (!c || c.kind !== "soak") return endPour();
+        washAt(S.pt(e), st.pouring);
+        return;
+      }
       if (!drag) return;
       const q = drag;
       const p = S.pt(e);
@@ -399,9 +561,14 @@
         S.say(HS.L.w("foot-ow"), "patient");
         ctx.log({ type: "extra", rowId: "pull-steady", detail: "touched the side" });
         ctx.sfx("tap");
+        // CLN-194 (Zafar, 18 Oct: "the foot should vibrate a little and it should say ow ... a little red flash"): the
+        // whole foot shakes a little and a soft red glow comes and goes where the channel was touched
         const h = at(q, t0);
-        const ow = s("circle", { cx: h.x, cy: h.y, r: P.halfW + 6, fill: "none", stroke: "#d8433f", "stroke-width": 5, opacity: 0.8 }, fxG);
-        ctx.after(450, () => ow.remove());
+        const ow = s("circle", { cx: h.x, cy: h.y, r: P.halfW * 2.6, fill: `url(#${flashId})`, opacity: 0 }, fxG);
+        if (ow.animate) ow.animate([{ opacity: 0 }, { opacity: 1, offset: 0.25 }, { opacity: 0 }], { duration: fast() ? 120 : 520, fill: "forwards" });
+        ctx.after(fast() ? 150 : 560, () => ow.remove());
+        const still = root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (shakeG.animate && !still) shakeG.animate([0, -7, 6, -4, 2, 0].map((x) => ({ transform: `translate(${x}px, 0px)` })), { duration: fast() ? 120 : 360 });
         draw();
         return;
       }
@@ -417,7 +584,12 @@
         S.face("happy", 600);
         ctx.sfx("pop");
         const e2 = at(q, total(q));
-        const fly = s("line", { x1: e2.x, y1: e2.y, x2: at(q, total(q) - K.len).x, y2: at(q, total(q) - K.len).y, stroke: "#6a3e1e", "stroke-width": 8, "stroke-linecap": "round" }, fxG);
+        const e3 = at(q, total(q) - K.len);
+        // CLN-193: the splinter itself flies off (its picture), never a drawn stick
+        const fl = Math.hypot(e3.x - e2.x, e3.y - e2.y) * 1.25;
+        const fly = CA && CA.splinter
+          ? s("image", { href: url(CA.splinter), x: 0, y: (-fl / (CA.splinterAspect || 5.2) / 2).toFixed(1), width: fl.toFixed(1), height: (fl / (CA.splinterAspect || 5.2)).toFixed(1), preserveAspectRatio: "none", transform: `translate(${e2.x.toFixed(1)} ${e2.y.toFixed(1)}) rotate(${((Math.atan2(e3.y - e2.y, e3.x - e2.x) * 180) / Math.PI).toFixed(1)})` }, s("g", {}, fxG)).parentNode
+          : s("line", { x1: e2.x, y1: e2.y, x2: e3.x, y2: e3.y, stroke: "#6a3e1e", "stroke-width": 8, "stroke-linecap": "round" }, fxG);
         if (fly.animate) fly.animate([{ transform: "translate(0,0)" }, { transform: "translate(60px,-140px)", opacity: 0 }], { duration: 600, fill: "forwards" });
         ctx.after(700, () => fly.remove());
         if (st.pulled.length === P.splinters.length) {
@@ -437,7 +609,10 @@
       }
       draw();
     });
-    const up = () => (drag = null);
+    const up = () => {
+      drag = null;
+      if (st.pouring) endPour();
+    };
     ctx.on(S.svg, "pointerup", up);
     ctx.on(S.svg, "pointercancel", up);
 
@@ -469,7 +644,20 @@
           };
           if (c.kind === "soak") {
             if (st.jugs >= c.jugs && P.level === 1) return { do: "wait" };
-            if (st.jugs < c.jugs) return S.sel !== "jug-" + c.temp ? tool("jug-" + c.temp) : Object.assign({ do: "tap", what: "pour" }, S.client(400, 300));
+            if (st.jugs < c.jugs) {
+              if (S.sel !== "jug-" + c.temp) return tool("jug-" + c.temp);
+              // CLN-190: one jug is one sweep, through its share of the dirt that's left (top to bottom)
+              const left = dirt.filter((d) => !d.gone).sort((a, b) => a.y - b.y);
+              const share = left.slice(0, Math.max(1, Math.ceil(left.length / (c.jugs - st.jugs))));
+              // (the first jug starts where the first-time help lights the foot)
+              const way = (st.jugs === 0 ? [{ x: 400, y: 190 }] : []).concat(share.length ? share : [{ x: 400, y: 300 }]);
+              const pts = way.map((d) => {
+                const cl = S.client(d.x, d.y);
+                return [cl.x, cl.y];
+              });
+              if (pts.length < 2) pts.push([pts[0][0] + 4, pts[0][1] + 2]);
+              return { do: "drag", pts, steps: 3, what: "pour" };
+            }
           }
           if (c.kind === "pull" || c.kind === "soak") {
             const q = c.kind === "soak" ? (P.steps[1].order ? P.splinters.find((x) => x.toe === P.steps[1].order[0]) : P.splinters[0]) : nextSplinter();

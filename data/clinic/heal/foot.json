@@ -191,7 +191,7 @@
  "art": {
   "_about": "The art plan's P1 (closeups/<set>/sole.webp, child and adult sets), swapped in by file name when it exists; the channels and splinters stay code.",
   "sole": {
-   "child": "assets/clinic/closeups/child/sole-v2.webp",
+   "child": "assets/clinic/closeups/child/sole-v3-s08b.webp",
    "adult": "assets/clinic/closeups/adult/sole.webp"
   },
   "place": {
@@ -219,15 +219,53 @@
    ],
    "_s07": "s07-clinic-a (RP1, CLN-87's foot note): the sole redone with level toes (sole-v2, cut by artcut.py s07.cut.json): its big toe centre (355, 229 in the 1024 x 1536 source) on the mirrored stand-in's (298, 70) and its little toe (760, 289) on (508, 78) at one scale (0.5185): every toe sits in its stand-in channel, so levels 1-3 draw it (the v1 box is box_v1)"
   },
-  "sole_v1": "assets/clinic/closeups/child/sole.webp"
+  "sole_v1": "assets/clinic/closeups/child/sole.webp",
+  "sole_v2": "assets/clinic/closeups/child/sole-v2.webp",
+  "_s08b": "s08-w5b (CLN-192; Zafar 18 Oct: 'the foot kind of floats ... the ankle ... just stops dead ... blow it out into the background'): the s08b FT1 sole, its leg running on off the bottom edge (no cuff), registered on sole-v3 / sole-v2 (artcut shift -0.9 px), so place.box is unchanged",
+  "channel": {
+   "_about": "s08-w5b (CLN-193; Zafar 18 Oct: 'an irritated raised red translucent channel and you see the splinter traveling inside of it'; 'a repeatable, very tileable visual block ... and the splinter as well'): the s08b SP1 pieces, laid along each path by js/clinic/heal/games/foot.js layChannel. straightBand = the straight block's [first, last opaque row, first, last opaque col, w, h] (px), repeated along each segment; cornerBox = the elbow's [centre x, centre y, arm width, w, h] (arms up and right), turned onto each turn; endBox = the closed end's [cap centre x, centre y, band width, w, h] (the cap at its right), at the splinter's spot; opacity = how see-through the welt is over the splinter (CLN-193); splinterAspect = the splinter's length over its thickness; welt = the share of the channel's width the pieces show through (a soft mask along the path: their own skin-coloured flanks and square ends stay hidden), feather its soft edge (shares of the width)",
+   "straight": "assets/clinic/items-s08b/splinter/channel-straight-s08b.webp",
+   "corner": "assets/clinic/items-s08b/splinter/channel-corner-s08b.webp",
+   "end": "assets/clinic/items-s08b/splinter/channel-end-s08b.webp",
+   "splinter": "assets/clinic/items-s08b/splinter/splinter-s08b.webp",
+   "straightBand": [
+    3,
+    104,
+    3,
+    415,
+    420,
+    108
+   ],
+   "cornerBox": [
+    66,
+    247,
+    124,
+    409,
+    320
+   ],
+   "endBox": [
+    347,
+    72,
+    136,
+    420,
+    146
+   ],
+   "opacity": 0.88,
+   "splinterAspect": 5.19,
+   "welt": 0.48,
+   "feather": 0.12
+  }
  },
  "assets": [
   "assets/clinic/sheets/jug/jug-cold-belt.webp",
   "assets/clinic/sheets/jug/jug-hot-belt.webp",
   "assets/clinic/sheets/jug/jug-warm-belt.webp",
   "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
-  "assets/clinic/closeups/child/sole-v2.webp",
-  "assets/clinic/heal-v3/dirt-*.webp"
+  "assets/clinic/heal-v3/dirt-*.webp",
+  "assets/clinic/closeups/child/sole-v3-s08b*.webp",
+  "assets/clinic/items-s08b/splinter/*.webp",
+  "assets/clinic/items-v2/plaster-skin.webp",
+  "assets/clinic/items-v2/jug-*.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }
