@@ -1,6 +1,6 @@
 # The run spec for pack s09a: Sprint 9's style test (the house, the ride windows, the evening book and four book layout
-# tests), from Zafar's notes on the s09 mock-ups (19 Oct). One image per prompt; Zafar judges the look and Nani's and
-# Ali's likeness afterwards in chat. Read by build/tools/art/artblock.py. Edit this file, then regenerate the block.
+# tests), from Zafar's notes on the s09 mock-ups (19 Oct). One image per prompt; Zafar judges the look and Nani's
+# likeness afterwards in chat. Read by build/tools/art/artblock.py. Edit this file, then regenerate the block.
 pack: s09a
 title: 'Sprint 9 style test: the house, the ride, the evening book'
 plan: docs/design-language/art-plans/s09a-art-plan.md
@@ -9,7 +9,7 @@ repo: Baby-Isa/nani-jo-ghar
 raw_branch: claude/new-session-b5r2am
 dest: sources/art/s09a
 real_people: true
-approvals: "- This is a style test. Zafar judges every image, Nani's and Ali's likeness included, after the run in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes the checks below.\n- Redo only for a failed check (text, the wrong view, the wrong count, a missing or extra person, a printed page that should be plain)."
+approvals: "- This is a style test. Zafar judges every image, Nani's likeness included, after the run in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes the checks below.\n- Redo only for a failed check (text, the wrong view, the wrong count, a missing or extra person, a printed page that should be plain)."
 delivery: download
 amend: true
 runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
@@ -17,7 +17,6 @@ refs:
   style-anchor-v1.png: sources/art/style-anchor-v1.png
   clinic-doorway.webp: assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
   nani-neutral.png: assets/characters/nani/nani-neutral.png
-  ali-feeling-happy.png: assets/characters/ali/ali-feeling-happy.png
 people: {}
 limb_sets: {}
 templates: {}
@@ -30,8 +29,8 @@ lines:
   B1: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png], save: b1-library-fireplace-v1.png, check: LIBRARY}
   B2: {attach: [style-anchor-v1.png, nani-neutral.png], save: b2-book-open-v1.png, check: BOOK}
   L1: {attach: ["kept:B2", style-anchor-v1.png], save: l1-book-find-it-v1.png, check: LAYOUT}
-  L2: {attach: ["kept:B2", style-anchor-v1.png], save: l2-book-which-word-v1.png, check: LAYOUT}
-  L3: {attach: ["kept:B2", style-anchor-v1.png, ali-feeling-happy.png], save: l3-book-give-ali-v1.png, check: LAYOUT}
+  L2: {attach: ["kept:B2", style-anchor-v1.png], save: l2-book-name-it-v1.png, check: LAYOUT}
+  L3: {attach: ["kept:B2", style-anchor-v1.png], save: l3-book-stick-photo-v1.png, check: LAYOUT}
   L4: {attach: ["kept:B2", style-anchor-v1.png], save: l4-book-our-day-v1.png, check: LAYOUT}
 parts:
 - id: A
@@ -41,7 +40,7 @@ parts:
   - lines: [H1, H2, R1, R2]
 - id: B
   title: 'THE EVENING BOOK AND ITS LAYOUT TESTS'
-  intro: 'B1 is Nani by the fireplace; B2 the open book close up, whose pages stay plain. L1-L4 each attach the kept B2 and lay one review game out on its pages; L3 adds Ali (a real person).'
+  intro: 'B1 is Nani by the fireplace; B2 the open book close up, whose pages stay plain. L1-L4 each attach the kept B2 and lay one review game out on its pages.'
   items:
   - lines: [B1, B2, L1, L2, L3, L4]
 checks:

@@ -6,10 +6,9 @@ Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/doc
 WHERE FILES LIVE (all public; open nothing locally)
 RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/claude/new-session-b5r2am/
 Reference images, by the name the run order uses:
- style-anchor-v1.png    RAW + sources/art/style-anchor-v1.png
- clinic-doorway.webp    RAW + assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
- nani-neutral.png       RAW + assets/characters/nani/nani-neutral.png
- ali-feeling-happy.png  RAW + assets/characters/ali/ali-feeling-happy.png
+ style-anchor-v1.png  RAW + sources/art/style-anchor-v1.png
+ clinic-doorway.webp  RAW + assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
+ nani-neutral.png     RAW + assets/characters/nani/nani-neutral.png
 Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
 Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
 
@@ -44,7 +43,7 @@ STALLS. A tab is stalled when its screen shows no change (no progress text, no i
 - Never leave a stalled tab holding a slot while others are idle.
 
 APPROVALS
-- This is a style test. Zafar judges every image, Nani's and Ali's likeness included, after the run in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes the checks below.
+- This is a style test. Zafar judges every image, Nani's likeness included, after the run in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes the checks below.
 - Redo only for a failed check (text, the wrong view, the wrong count, a missing or extra person, a printed page that should be plain).
 
 SAFETY RULES (always)
@@ -73,12 +72,12 @@ R2 | style-anchor-v1.png | r2-bus-window-v1.png | WINDOW
 Part A done: post the part A summary (see AT THE END) and carry on.
 
 PART B: THE EVENING BOOK AND ITS LAYOUT TESTS (6)
-B1 is Nani by the fireplace; B2 the open book close up, whose pages stay plain. L1-L4 each attach the kept B2 and lay one review game out on its pages; L3 adds Ali (a real person).
+B1 is Nani by the fireplace; B2 the open book close up, whose pages stay plain. L1-L4 each attach the kept B2 and lay one review game out on its pages.
 B1 | clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png | b1-library-fireplace-v1.png | LIBRARY
 B2 | style-anchor-v1.png, nani-neutral.png | b2-book-open-v1.png | BOOK
 L1 | kept:B2, style-anchor-v1.png | l1-book-find-it-v1.png | LAYOUT
-L2 | kept:B2, style-anchor-v1.png | l2-book-which-word-v1.png | LAYOUT
-L3 | kept:B2, style-anchor-v1.png, ali-feeling-happy.png | l3-book-give-ali-v1.png | LAYOUT
+L2 | kept:B2, style-anchor-v1.png | l2-book-name-it-v1.png | LAYOUT
+L3 | kept:B2, style-anchor-v1.png | l3-book-stick-photo-v1.png | LAYOUT
 L4 | kept:B2, style-anchor-v1.png | l4-book-our-day-v1.png | LAYOUT
 Part B done.
 

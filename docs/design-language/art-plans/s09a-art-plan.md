@@ -9,12 +9,12 @@
 | **A** | The house front, two versions (one wide arch; a row of small arches), Nani in the porch | 2 |
 | **B** | The ride: a car window and a bus window, the opening keyed green | 2 |
 | **C** | The evening book: Nani by the fireplace in the little library, and the open book close up | 2 |
-| **D** | Book layout tests: the four recommended review games laid out on the open pages | 4 |
+| **D** | Book layout tests: find it in the picture, name it, stick in the photo, our day in order (Zafar, 19 Oct) | 4 |
 | | **Total** | **10**, about 40 minutes |
 
 ## 1. Flaws and uncertainties first
 
-1. **Nani and Ali are based on real people,** so Zafar judges their likeness after the run, in chat. The runner keeps the first image that passes the checks and doesn't wait for him.
+1. **Nani is based on a real person,** so Zafar judges her likeness after the run, in chat. The runner keeps the first image that passes the checks and doesn't wait for him.
 2. **The weather is added in code,** so the house's sky is left plain. If ChatGPT paints a sun or clouds anyway, it can be masked out.
 3. **The windows are keyed on flat green,** so the moving road shows through. Any reflection on the green has to be cut by hand.
 4. **The layout tests show where things go, not the final art.** The words, the speaker buttons and the game logic are drawn by code on the book's plain pages.
@@ -106,26 +106,26 @@ Style: exactly as the attached close-up and the style anchor: a stylised 3D anim
 Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
 
-#### L2. Book layout test: which word?
+#### L2. Book layout test: name it
 ```
 Generate an image, 1536×1024, landscape.
 
-The same open storybook as the attached close-up, held on Nani's lap, facing the viewer. LEFT page: one picture of a sunny beach with a red bucket and a yellow spade on the sand, the sea behind. RIGHT page, top half: a short row of four rounded cream tiles with nothing on them, the third tile an empty dashed outline (a gap). RIGHT page, lower half: THREE round cream buttons in a row, each with only a small simple speaker symbol on it, well apart.
+The same open storybook as the attached close-up, held on Nani's lap, facing the viewer. LEFT page: ONE large picture of a single thing from the day, a glass of milky chai on a saucer, whole and centred, filling most of the page. RIGHT page, upper half: a short row of four rounded cream tiles with nothing on them (where Nani's sentence goes). RIGHT page, lower half: THREE round cream buttons in a row, each with only a small simple speaker symbol on it, well apart.
 
 Style: exactly as the attached close-up and the style anchor: a stylised 3D animated-feature-film look, warm evening lamplight on the book. No outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks; the speaker symbol is the only mark on the buttons.
 ```
 
-#### L3. Book layout test: give it to Ali
+#### L3. Book layout test: stick in the photo
 ```
 Generate an image, 1536×1024, landscape.
 
-The same open storybook as the attached close-up, held on Nani's lap, facing the viewer. LEFT page: the boy in the attached character picture (same face, clothes and proportions), full figure, smiling, holding an open wooden keepsake box in both hands. RIGHT page: FOUR things from a day at the beach, laid out well apart in a loose two-by-two: a spiral seashell, a red bucket, a ripe mango, a straw sun hat. Each is whole and none touches another.
+The same open storybook as the attached close-up, held on Nani's lap, facing the viewer. LEFT page: one EMPTY square photo frame with little corner mounts and a dashed outline, in the upper two thirds; under it a short row of four rounded cream tiles with nothing on them (where Nani's sentence goes). RIGHT page: THREE square instant photos lying loose and slightly tilted, well apart: a big brown cow in a field, a goat in a farmyard, a red hen. Each photo is whole and none overlaps another.
 
-Style: exactly as the attached close-up and the style anchor: a stylised 3D animated-feature-film look, warm evening lamplight on the book. No outlines.
+Style: exactly as the attached close-up and the style anchor: a stylised 3D animated-feature-film look, warm evening lamplight on the book, the photos bright and sunny. No outlines.
 
-Do not add any text, letters, numbers, labels, logos or watermarks. No religious images or markers.
+Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
 
 #### L4. Book layout test: our day, in order
@@ -141,4 +141,4 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No religious
 
 ## 6. Cut and wire notes
 
-H1-H2 become the door's fixed house (the sky is masked and swapped by weather). R1-R2 are keyed on #00FF00 for the window ride's frame. B1 is the evening opening; the camera moves from it into B2, which is the review's surface. L1-L4 only test the layout: the game draws its pictures, gaps and speaker buttons on B2's plain pages.
+H1-H2 become the door's fixed house (the sky is masked and swapped by weather). R1-R2 are keyed on #00FF00 for the window ride's frame. B1 is the evening opening; the camera moves from it into B2, which is the review's surface. L1-L4 only test the layout: the game draws its pictures, sentence, speaker buttons and photos on B2's plain pages.
