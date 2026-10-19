@@ -699,7 +699,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         helpedAt = Date.now();
         if (!guided && Cook.onHelp) Cook.onHelp("hint");
         if (g && g.logHelp) g.logHelp("help", { step: "idle", by: `L${levelOf()} ${expected}` });
-        hint();
+        // (a step with no word of its own to say here, the pantry's guided step: the step's line, through the stepper)
+        if (sayLine) hint();
+        else if (UI.stepHelp) {
+          g.idleHelp = true;
+          try {
+            UI.stepHelp();
+          } finally {
+            g.idleHelp = false;
+          }
+        }
         S.glow(target, true, { bounce: true, now: true });
         if (!guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
       }, 200);

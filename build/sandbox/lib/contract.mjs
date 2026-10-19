@@ -784,17 +784,22 @@ function check22(r, tl, segs, v, nums, add) {
 function check23(r, tl, segs, v, add) {
   const level = levelOf(r.flow || "");
   // (a pop the queue dropped because something was speaking made no sound: only a pop that sounded is judged)
-  const pops = v.lines.filter((l) => l.role === "item" && (l.text || "").trim() && l.plays.length && !l.silent).sort((a, b) => a.t0 - b.t0);
-  const others = v.lines.filter((l) => l.role !== "item" && (l.text || "").trim() && isCookLine(l));
+  // An item's name is a line tagged role item (js/cook/words.js Lang.popWord); a build before the tag has the same thing as one
+  // untagged word said right after a tap on the pictures (a chip's word, role hear, is the child asking to hear it: not a pop)
+  const taps = tl.filter((e) => e.type === "c" && e.k === "input" && e.on === "canvas");
+  const oneWord = (l) => normW(l.text).split(" ").filter(Boolean).length === 1;
+  const isPop = (l) => l.role === "item" || (!l.role && oneWord(l) && taps.some((i) => i.t <= l.t0 + 20 && l.t0 - i.t <= 400));
+  const pops = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && isPop(l) && l.plays.length && !l.silent).sort((a, b) => a.t0 - b.t0);
+  const others = v.lines.filter((l) => !pops.includes(l) && (l.text || "").trim() && isCookLine(l));
   const seen = new Set();
   const norm = (s) => normW(s).replace(/\s+/g, " ");
   pops.forEach((p, i) => {
     const s = segAt(segs, p.t0);
     const say = (why) => { const k = `${s && s.key}|${norm(p.text)}|${why}`; if (!seen.has(k)) { seen.add(k); add("contract-23", p.t0, `${s ? s.key : "?"}: the item word "${p.text}" ${why}`); } };
     if (level >= 3) return say(`was said at level ${level} (an item's name on a tap is for levels 1 and 2 only)`);
-    // over another line: another line was open (from its call to its end) or one of its clips was sounding
+    // over another line: another line was open (from its call to its end, or a clip of it sounding)
     const over = others.find((l) => l.t0 < p.t0 && (l.t1 == null || l.t1 > p.t0 + 30));
-    const sounding = v.plays.find((q) => q.line && q.line.role !== "item" && !q.est && q.t0 < p.t0 && q.t1 > p.t0 + 100);
+    const sounding = v.plays.find((q) => q.line && q.line !== p && !pops.includes(q.line) && !q.est && q.t0 < p.t0 && q.t1 > p.t0 + 100);
     if (over || sounding) return say(`started while "${(over || sounding.line).text}" was being said`);
     const prev = pops.slice(0, i).reverse().find((q) => norm(q.text) === norm(p.text));
     if (prev && p.t0 - prev.t0 < SAID_AGAIN) say(`was said again ${Math.round(p.t0 - prev.t0)} ms after the last time (again only after ${SAID_AGAIN / 1000} s)`);

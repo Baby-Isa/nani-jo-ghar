@@ -91,6 +91,16 @@ test("contract-23: an item's name on a tap over a line, at level 3 or 4, or agai
   const again = clone(quiet);
   again.push(line(3, T + 6000, "Chai", { role: "item" }), play(3, T + 6010, "assets/audio/family/mum/bhar-rc.mp3", 0.5), playEnd(3, T + 6510), lineEnd(3, T + 6520));
   assert.match(of(run(page("cook:chai-tray", sorted(again))), "contract-23")[0].measured, /again 3500 ms after the last time/);
+  // before the tag (the build this wave replaced): an untagged word said right after a tap on the pictures is the same pop
+  const untagged = clone(base);
+  untagged.find((e) => e.type === "line" && e.id === 2).role = undefined;
+  assert.equal(of(run(page("cook:chai-tray", sorted(untagged))), "contract-23").length, 0, "no tap on the pictures: not a pop");
+  untagged.push(tap(T + 880));
+  assert.match(of(run(page("cook:chai-tray", sorted(untagged))), "contract-23")[0].measured, /item word "Chai" started while/);
+  // a word the child asked to hear (a chip: role hear) is hers, said in its turn
+  const chip = clone(untagged);
+  chip.find((e) => e.type === "line" && e.id === 2).role = "hear";
+  assert.equal(of(run(page("cook:chai-tray", sorted(chip))), "contract-23").length, 0);
   // a pop the queue dropped (something was speaking) made no sound and is not judged
   const dropped = clone(base).filter((e) => !((e.type === "play" || e.type === "play-end") && e.pid === 2));
   assert.equal(of(run(page("cook:chai-tray", dropped)), "contract-23").length, 0);

@@ -502,7 +502,7 @@
     return true;
   };
   /** Say a word (a speaker button, a chip, the end review): queued behind what is being said, never cutting it. */
-  Lang.speakWord = (id) => Lang.speak(Lang.wordLine(id));
+  Lang.speakWord = (id) => Lang.speak(Lang.role(Lang.wordLine(id), "hear"));
   /**
    * SH-94 (Zafar, 17 Oct: "Mishkaki, Mishkaki, Mishkaki ... it's too much to hear"; one rule for every game): an item's name
    * as it is tapped or lands. Said only when nothing else is speaking or waiting (never over an order, a step or a count),

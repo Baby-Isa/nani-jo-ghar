@@ -97,6 +97,7 @@
    */
   G.PAUSE = [7000, 8000, 11000, 15000];
   G.REPEAT = 10000;
+  G.idleHelp = false;
   G.BULB_PULSE = 17000;
   const clock = { t: Date.now(), on: false };
   /** The idle clock: one listener for the page, so every station pokes it on every action (SH-60: "the timer restarts on every action"). */
@@ -235,7 +236,9 @@
         G.poke();
       },
       help() {
-        helpNow(cur, { manual: true });
+        // (G.idleHelp: a station's own timer asks for the step's help because the child has been idle: that is the ladder's help,
+        // not one the child asked for, so the same-line rule and the log treat it so)
+        helpNow(cur, { manual: !G.idleHelp });
       },
       shownFor: () => (cur && cur.shown ? Date.now() - shownAt : 0),
     };
