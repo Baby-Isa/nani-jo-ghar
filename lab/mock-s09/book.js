@@ -19,7 +19,7 @@
   const CORN = `<svg viewBox="0 0 320 220" aria-hidden="true"><ellipse cx="160" cy="190" rx="120" ry="18" fill="#8a6239"/><path d="M60 180 Q160 120 260 180" stroke="#5b3b25" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M130 160 Q160 90 190 160 Z" fill="#e8a33a"/><path d="M110 165 Q160 110 210 165 Z" fill="#f2b64c" opacity=".8"/><g transform="rotate(-18 160 90)"><rect x="90" y="70" width="140" height="42" rx="21" fill="#f5c542"/><g fill="#d9a441"><circle cx="110" cy="91" r="5"/><circle cx="130" cy="84" r="5"/><circle cx="130" cy="99" r="5"/><circle cx="150" cy="91" r="5"/><circle cx="170" cy="84" r="5"/><circle cx="170" cy="99" r="5"/><circle cx="190" cy="91" r="5"/><circle cx="210" cy="86" r="5"/></g><path d="M226 80 Q262 70 270 92 Q250 100 226 102 Z" fill="#7a9b55"/></g></svg>`;
   const REDDOOR = `<svg viewBox="0 0 300 300" aria-hidden="true"><rect width="300" height="300" fill="#a9d8f5"/><rect y="60" width="300" height="190" fill="#efe3d3"/><rect y="48" width="300" height="14" fill="#dccbb3"/><rect x="100" y="90" width="110" height="160" rx="6" fill="#b58a5a"/><rect x="110" y="100" width="90" height="150" fill="#b72424"/><path d="M130 100v150M155 100v150M180 100v150" stroke="#8e1b1b" stroke-width="4" opacity=".6"/><circle cx="186" cy="178" r="6" fill="#c9962e"/><rect y="250" width="300" height="50" fill="#e2c79b"/></svg>`;
   const FARMBG = (w = 400, h = 300) => `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="${w}" height="${h}" fill="#a9d8f5"/><circle cx="${w - 60}" cy="50" r="26" fill="#ffe27a"/><path d="M0 150 C100 120 200 130 ${w} 140 V${h} H0 Z" fill="#aab79a"/><rect y="180" width="${w}" height="${h}" fill="#9cbf6b"/><rect y="236" width="${w}" height="${h}" fill="#e2c79b"/><g stroke="#8a6239" stroke-width="5"><path d="M0 206h${w}M0 222h${w}"/><path d="M30 196v40M110 196v40M190 196v40M270 196v40M350 196v40"/></g></svg>`;
-  const LAMP = `<svg viewBox="0 0 160 240" aria-hidden="true"><rect x="70" y="120" width="20" height="90" fill="#c9962e"/><ellipse cx="80" cy="216" rx="46" ry="12" fill="#a67a24"/><path d="M30 120 L50 40 L110 40 L130 120 Z" fill="#f3d9a4"/><path d="M30 120 L50 40 L110 40 L130 120 Z" fill="#fff" opacity=".25"/><rect x="24" y="116" width="112" height="10" rx="4" fill="#c9962e"/><circle cx="80" cy="80" r="70" fill="#ffd27a" opacity=".22"/></svg>`;
+  const LAMP = `<svg viewBox="0 0 160 240" aria-hidden="true"><rect x="70" y="120" width="20" height="90" fill="#c9962e"/><ellipse cx="80" cy="216" rx="46" ry="12" fill="#a67a24"/><path d="M30 120 L50 40 L110 40 L130 120 Z" fill="#f3d9a4"/><path d="M30 120 L50 40 L110 40 L130 120 Z" fill="#fff" opacity=".25"/><rect x="24" y="116" width="112" height="10" rx="4" fill="#c9962e"/><circle cx="80" cy="80" r="58" fill="#ffd27a" opacity=".22"/></svg>`;
   const MOON = `<svg viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="200" rx="14" fill="#1f2a5e"/><circle cx="210" cy="80" r="40" fill="#fff6d6"/><g fill="#fff"><circle cx="40" cy="40" r="3"/><circle cx="90" cy="110" r="2.5"/><circle cx="140" cy="50" r="3"/><circle cx="60" cy="150" r="2"/><circle cx="250" cy="150" r="2.5"/><circle cx="120" cy="160" r="3"/><circle cx="270" cy="30" r="2"/></g><path d="M0 170 Q150 150 300 170 V200 H0 Z" fill="#3c3f6e"/></svg>`;
 
   /** The fake day log (story-by-the-fire 2): what the child did on the farm day, in order. Pages are built from it. */
@@ -62,7 +62,7 @@
     {
       // 3 counted and made: three potatoes (recorded whole), corn on the fire
       line: { e: "You pulled three potatoes.", rec: true },
-      left: () => word(`<div style="display:flex;gap:4%;align-items:flex-end;height:100%">${img(IMG.potato)}${img(IMG.potato)}${img(IMG.potato)}</div>`, "<span class='word'>trae bateta</span>"),
+      left: () => word(`<div class="row">${img(IMG.potato)}${img(IMG.potato)}${img(IMG.potato)}</div>`, "<span class='word'>trae bateta</span>"),
       right: () => word(CORN, "<span class='word'>makai</span>"),
     },
     {
@@ -80,7 +80,7 @@
     {
       // 6 goodnight, and a glimpse of tomorrow's door with its sky
       line: { e: "Goodnight.", rec: true },
-      left: () => `<div class="art" style="gap:6%"><div style="height:100%">${LAMP}</div><div style="height:70%">${MOON}</div></div>`,
+      left: () => `<div class="art" style="gap:6%"><div class="box" style="aspect-ratio:160/240">${LAMP}</div><div class="box" style="height:70%;aspect-ratio:3/2">${MOON}</div></div>`,
       right: () => `<div class="art">${global.Door.mini(Book.DAY.tomorrow)}</div>`,
     },
   ];

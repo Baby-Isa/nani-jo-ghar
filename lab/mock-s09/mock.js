@@ -30,7 +30,7 @@
     dock.innerHTML = `
       <button type="button" class="mk-help" aria-label="What do I do here?">?</button>
       <button type="button" class="mk-home" aria-label="Home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.2 12 4l9 7.2V20a1 1 0 0 1-1 1h-5.5v-5.5h-5V21H4a1 1 0 0 1-1-1z"/></svg></button>
-      <button type="button" class="mk-book" aria-label="The book"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#2a2522" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2 2 0 0 1 6 4h5v15H6a2 2 0 0 0-2 2z"/><path d="M20 5.5A2 2 0 0 0 18 4h-5v15h5a2 2 0 0 1 2 2z"/></svg></button>`;
+      <button type="button" class="mk-dock-book" aria-label="The book"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#2a2522" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2 2 0 0 1 6 4h5v15H6a2 2 0 0 0-2 2z"/><path d="M20 5.5A2 2 0 0 0 18 4h-5v15h5a2 2 0 0 1 2 2z"/></svg></button>`;
     side.appendChild(dock);
     return guide;
   };

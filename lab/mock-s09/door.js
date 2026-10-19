@@ -31,10 +31,10 @@
   <g class="clouds rain"><g fill="#73808f"><ellipse cx="300" cy="120" rx="220" ry="60"/><ellipse cx="400" cy="70" rx="150" ry="80"/><ellipse cx="180" cy="90" rx="110" ry="64"/></g><g fill="#66727f"><ellipse cx="900" cy="80" rx="240" ry="62"/><ellipse cx="1000" cy="40" rx="150" ry="70"/><ellipse cx="760" cy="60" rx="120" ry="60"/></g><g fill="#7b8896"><ellipse cx="1400" cy="150" rx="210" ry="58"/><ellipse cx="1480" cy="100" rx="130" ry="76"/></g></g>
   <!-- far hills -->
   <path class="hills" d="M0 520 C200 470 380 480 560 500 C760 520 900 440 1100 470 C1300 500 1450 450 1600 480 L1600 600 L0 600 Z" fill="#aab79a"/>
-  <!-- the tree beside the house -->
-  <g class="tree"><rect x="1395" y="330" width="34" height="420" rx="10" fill="#8a5a36"/><path d="M1412 420 C1380 400 1350 380 1330 350" stroke="#8a5a36" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M1412 400 C1450 380 1480 360 1500 330" stroke="#8a5a36" stroke-width="14" stroke-linecap="round" fill="none"/>
-    <g fill="#6f9a52"><circle cx="1330" cy="300" r="96"/><circle cx="1430" cy="250" r="120"/><circle cx="1530" cy="310" r="96"/><circle cx="1420" cy="350" r="90"/></g>
-    <g fill="#89b267"><circle cx="1350" cy="270" r="60"/><circle cx="1450" cy="220" r="74"/><circle cx="1520" cy="280" r="52"/></g></g>
+  <!-- the tree behind the annex, on the left -->
+  <g class="tree"><rect x="256" y="250" width="30" height="220" rx="10" fill="#8a5a36"/><path d="M271 330 C248 312 226 294 212 270" stroke="#8a5a36" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M271 312 C298 294 320 274 334 250" stroke="#8a5a36" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <g fill="#6f9a52"><circle cx="196" cy="248" r="76"/><circle cx="276" cy="204" r="94"/><circle cx="358" cy="254" r="72"/><circle cx="270" cy="290" r="70"/></g>
+    <g fill="#89b267"><circle cx="212" cy="222" r="46"/><circle cx="292" cy="178" r="56"/><circle cx="350" cy="232" r="38"/></g></g>
   <!-- the house front: limewash, a flat roof with a parapet -->
   <rect x="0" y="340" width="1600" height="26" fill="#dccbb3"/>
   <rect x="0" y="366" width="1600" height="380" fill="url(#wall)"/>
@@ -64,8 +64,9 @@
   <!-- puddles: rain only -->
   <g class="puddles" fill="#9fb3c8" opacity=".6"><ellipse cx="420" cy="840" rx="110" ry="16"/><ellipse cx="1180" cy="860" rx="150" ry="20"/><ellipse cx="900" cy="880" rx="80" ry="12"/></g>
   <!-- the sun-shadow layer: only the sunny sky shows it (the tree's dapple, the door frame and pot, the posts) -->
-  <g class="shadows" fill="#5a3a1a" opacity=".22"><path d="M948 392 L990 392 L990 748 L948 748 Z"/><ellipse cx="520" cy="752" rx="84" ry="12"/><path d="M1030 750 L1120 900 L1140 900 L1034 750 Z"/><path d="M1350 750 L1480 900 L1500 900 L1354 750 Z"/>
-    <g opacity=".8"><ellipse cx="1230" cy="800" rx="150" ry="26"/><ellipse cx="1380" cy="840" rx="190" ry="30"/><ellipse cx="1100" cy="860" rx="120" ry="22"/><ellipse cx="1480" cy="790" rx="110" ry="22"/></g></g>
+  <g class="shadows" fill="#5a3a1a" opacity=".13"><path d="M948 392 L966 400 L966 748 L948 748 Z"/><ellipse cx="520" cy="752" rx="84" ry="12"/><path d="M1030 750 L1120 900 L1140 900 L1034 750 Z"/><path d="M1350 750 L1480 900 L1500 900 L1354 750 Z"/>
+    <g opacity=".7"><ellipse cx="300" cy="800" rx="150" ry="26"/><ellipse cx="420" cy="846" rx="170" ry="28"/><ellipse cx="180" cy="864" rx="120" ry="22"/><ellipse cx="520" cy="790" rx="100" ry="20"/></g>
+    <path d="M300 770 Q450 760 560 780 L620 900 L200 900 Z" opacity=".5"/></g>
 </svg>`;
 
   // the thought bubble's pictures: the real backgrounds where they exist, the beach drawn ("to draw")
@@ -96,8 +97,8 @@
     stage.className = `mk-stage wx-${o.weather}`;
     stage.innerHTML = `${HOUSE}<div class="mk-stars"></div><div class="mk-tint"></div><div class="mk-lamp-glow"></div><div class="mk-rain"><i></i><i></i></div>
       <div class="mk-nani"><img alt="Nani" src="${R}assets/cook/characters/nani-stand-v3-front.webp"></div>
-      <div class="mk-thought" style="left: 16%; top: 8%; width: 22%;"><div class="cloud">${Door.THOUGHT[o.thought]}</div><i class="dot a"></i><i class="dot b"></i></div>
-      <div class="mk-bubble left" style="left: 60%; top: 10%;"><i class="tail"></i><span class="k ${L.rec ? "ph" : ""}">${M.lineHtml(L)}</span><span class="e">${M.esc(L.e)}</span><div class="mk-dots">${o.lines.map((_, i) => `<i class="${i + 1 === step ? "on" : i + 1 < step ? "done" : ""}"></i>`).join("")}</div></div>
+      <div class="mk-thought" style="left: 24%; top: 4%; width: 20%;"><div class="cloud">${Door.THOUGHT[o.thought]}</div><i class="dot a"></i><i class="dot b"></i></div>
+      <div class="mk-bubble left" style="left: 59%; top: 13%;"><i class="tail"></i><span class="k ${L.rec ? "ph" : ""}">${M.lineHtml(L)}</span>${L.rec ? "" : `<span class="e">${M.esc(L.e)}</span>`}<div class="mk-dots">${o.lines.map((_, i) => `<i class="${i + 1 === step ? "on" : i + 1 < step ? "done" : ""}"></i>`).join("")}</div></div>
       <div class="mk-answer"></div>`;
     f.play.appendChild(stage);
     // the stars: the night sky's own, drawn in code

@@ -17,7 +17,7 @@
     chick: `${R}assets/characters/chick/chick-run.png`,
   };
   // the road strip, three views wide: sky, far hills, fields, the road and its fence; the houses and trees sit on it
-  const STRIP_BG = `<svg viewBox="0 0 4800 900" preserveAspectRatio="none" aria-hidden="true">
+  const STRIP_BG = `<svg class="bg" viewBox="0 0 4800 900" preserveAspectRatio="none" aria-hidden="true">
     <defs><linearGradient id="rsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fa9e6"/><stop offset="1" stop-color="#cfe9f8"/></linearGradient></defs>
     <rect width="4800" height="900" fill="url(#rsky)"/>
     <circle cx="700" cy="150" r="70" fill="#ffe27a"/>
@@ -35,14 +35,14 @@
   const item = (x, src, cls = "") => `<div class="item ${cls}" style="left:${x}%"><img alt="" src="${src}"></div>`;
 
   const CAR_FRAME = `<svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5a4a"/><stop offset="1" stop-color="#4a3b2f"/></linearGradient><linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d2c7"/><stop offset="1" stop-color="#bdb5a9"/></linearGradient></defs>
-    <rect x="0" y="0" width="1600" height="82" fill="url(#roof)"/>
-    <rect x="0" y="0" width="112" height="610" fill="#5a4a3c"/><rect x="1488" y="0" width="112" height="610" fill="#5a4a3c"/>
+    <defs><linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8c7560"/><stop offset="1" stop-color="#6b5a4a"/></linearGradient><linearGradient id="roof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d2c7"/><stop offset="1" stop-color="#bdb5a9"/></linearGradient></defs>
+    <rect x="0" y="0" width="1600" height="70" fill="url(#roof)"/>
+    <rect x="0" y="0" width="100" height="620" fill="#5a4a3c"/><rect x="1500" y="0" width="100" height="620" fill="#5a4a3c"/>
     <rect x="0" y="600" width="1600" height="300" fill="url(#panel)"/>
-    <rect x="130" y="640" width="1340" height="26" rx="13" fill="#3b2e24"/>
-    <rect x="1180" y="700" width="180" height="40" rx="20" fill="#c9962e"/><rect x="1200" y="708" width="140" height="24" rx="12" fill="#a67a24"/>
-    <rect x="240" y="720" width="520" height="120" rx="30" fill="#3b2e24"/>
-    <rect x="1420" y="300" width="180" height="320" rx="30" fill="#2a2522" opacity=".9"/><rect x="1440" y="220" width="150" height="110" rx="40" fill="#b72424"/><rect x="1430" y="330" width="170" height="24" rx="12" fill="#1d1a17"/>
+    <rect x="0" y="600" width="1600" height="16" fill="#3b2e24"/>
+    <rect x="1080" y="700" width="420" height="54" rx="27" fill="#3b2e24"/>
+    <rect x="1120" y="650" width="150" height="34" rx="17" fill="#c9962e"/>
+    <rect x="140" y="760" width="620" height="110" rx="26" fill="#5a4a3c"/><rect x="140" y="760" width="620" height="14" rx="7" fill="#3b2e24"/>
   </svg>`;
   const BUS_FRAME = `<svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
     <rect x="0" y="0" width="1600" height="54" fill="#d9d2c7"/>
