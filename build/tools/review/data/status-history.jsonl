@@ -534,3 +534,52 @@
 {"id": "CLN-188", "run": "trim-2026-10-18", "earlier": "**open** (rows 1-2-3-4, no lines, no icon, the board filling most of its side now; the wall and board picture wait on s08b)"}
 {"id": "ART-20", "run": "trim-2026-10-18", "earlier": "**waiting on art** (S06 round 4: the table is written, `docs/design-language/art-plans/clinic-items.md`; the judge, ev-20261014-105914-fsz, saw the sprites it lists still missing: the art run)"}
 {"id": "ART-22", "run": "trim-2026-10-18", "earlier": "**waiting on art** (Zafar, 16 Oct: style locked to `sources/art/s08/lineup-v4-1.png`; he runs the doctor's and Nani's sets in Claude in Chrome: `docs/design-language/art-plans/s08-paste-block.txt`)"}
+{"id":"SH-70","run":"ev-20261019-172022-khk","earlier":"**waiting on Mum**"}
+{"id":"SH-37","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"SH-91","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-109","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-110","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-111","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-60","run":"ev-20261019-172022-khk","earlier":"**reopened** (17 Oct play)"}
+{"id":"SH-113","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-116","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-117","run":"ev-20261019-172022-khk","earlier":"**open** (after CHAI-26)"}
+{"id":"PAN-06","run":"ev-20261019-172022-khk","earlier":"**open, waiting on art**"}
+{"id":"CHAI-08","run":"ev-20261019-172022-khk","earlier":"**waiting on art** · was **reopened**"}
+{"id":"CHAI-13","run":"ev-20261019-172022-khk","earlier":"**open, waiting on Zafar's play**"}
+{"id":"CHAI-19","run":"ev-20261019-172022-khk","earlier":"**reopened** (17 Oct play)"}
+{"id":"DAAR-02","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on art (the kadchi, next art run)** (S06 publish triage, 14 Oct)"}
+{"id":"DAAR-05","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"DAAR-29","run":"ev-20261019-172022-khk","earlier":"**waiting on art** (and the turning disc in code)"}
+{"id":"DAAR-31","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"DAAR-35","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SEK-19","run":"ev-20261019-172022-khk","earlier":"**open** (Zafar, 18 Oct: yes; the card says \"Hakri Lakri Mishkaki\", no commas; the raw piece is *gos*)"}
+{"id":"SEK-20","run":"ev-20261019-172022-khk","earlier":"**open** (Zafar, 18 Oct: yes to decision 11)"}
+{"id":"CHT-15","run":"ev-20261019-172022-khk","earlier":"**open** (Zafar, 18 Oct: yes to decision 9)"}
+{"id":"CK-06","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"CK-24","run":"ev-20261019-172022-khk","earlier":"**open, waiting on art**"}
+{"id":"CK-31","run":"ev-20261019-172022-khk","earlier":"**open, waiting on Zafar's play**"}
+{"id":"CK-48","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-17","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"CLN-25","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"CLN-38","run":"ev-20261019-172022-khk","earlier":"**open** · **waiting on art and Mum (the household nouns' pictures and checked clips)** (S06 publish triage, 14 Oct)"}
+{"id":"CLN-106","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"CLN-163","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 7)"}
+{"id":"CLN-165","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-173","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-176","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 5)"}
+{"id":"CLN-181","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-187","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 8)"}
+{"id":"CLN-188","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-189","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 9)"}
+{"id":"CLN-105","run":"ev-20261019-172022-khk","earlier":"**reopened** (the fan waits on art, s08b)"}
+{"id":"MOD-10","run":"ev-20261019-172022-khk","earlier":"**waiting on Mum**"}
+{"id":"ART-05","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"ART-10","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"ART-11","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"ART-19","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on art (blink and mouth frames)** (S06 publish triage, 14 Oct)"}
+{"id":"ART-20","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"LNG-01","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on Mum (the lines' recordings; the code side passes: contract-16)** (S06 publish triage, 14 Oct)"}
+{"id":"LNG-06","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on Mum (the recordings; Zafar's studio re-record before launch)** (S06 publish triage, 14 Oct)"}
+{"id":"LNG-10","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on Mum (the recordings)** (S06 publish triage, 14 Oct)"}
+{"id":"CLN-23","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}

@@ -34,8 +34,8 @@ node build/tools/review/evidence.mjs --apply  [--run-id id] [--dry]
              cached PASSes (a different model). The reviewer fills judge/batch-NN.verdicts.md.
   --collect  folds the batch verdict files into build/tools/review/data/verdicts.json (refuses the builder's session as judge and
              a PASS that names no panel); EVIDENCE lines go to the tool owner's list in the index.
-  --apply    writes the verdicts into docs/process/regressions.md: FAIL -> **reopened** with the line; PASS -> built with the line and
-             the sheet (keep and retired rows untouched). --dry prints what it would change.
+  --apply    writes the verdicts into docs/process/regressions.md: FAIL -> **reopened** with the run (the line stays in data/verdicts.json;
+             a "waiting on ..." note is kept); PASS -> built with the line (keep and retired rows untouched). --dry prints what it would change.
   Port: COOK_TEST_PORT (default 8843). The builder's session: NJG_BUILDER or --builder (recorded; never accepted as judge).`;
 const a = args(); help(HELP, a);
 const PORT = process.env.COOK_TEST_PORT || "8843";

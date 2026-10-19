@@ -115,10 +115,14 @@ export function applyVerdicts(md, verdicts, run) {
     if (kind === "keep" || kind === "retired") { skipped.push({ id, why: kind }); continue; }
     if (v.verdict !== "PASS" && v.verdict !== "FAIL") { skipped.push({ id, why: v.verdict }); continue; }
     if (r.status.includes(`evidence ${v.verdict} ${run}`)) { skipped.push({ id, why: "already applied" }); continue; }
-    const note = `evidence ${v.verdict} ${run}: ${clean(v.line)}${v.png ? `; \`${v.png}\`` : ""}`;
+    // a FAIL row names only the run (the judge's line is in build/tools/review/data/verdicts.json), so the fix list stays under its limit;
+    // a PASS keeps its line, which goes with the row to the archive
+    const note = v.verdict === "FAIL" ? `evidence FAIL ${run}` : `evidence PASS ${run}: ${clean(v.line)}`;
     const head = v.verdict === "FAIL" ? (v.twoStrikes ? "**open (two strikes: Zafar)**" : "**reopened**") : kind === "fixed" ? "fixed" : "built";
     // the status is the current state only (decision 99): the old one goes to the history file, not after "· earlier:"
-    const status = `${head} (${note})`;
+    // a FAIL keeps what the row still waits on (Mum, art): that is current state, not history
+    const wait = v.verdict === "FAIL" && /waiting on [^·|(*]*(\([^)]*\))?/.exec(plain(r.status));
+    const status = `${head}${wait ? ` · **${wait[0].trim()}**` : ""} (${note})`;
     history.push({ id, run, earlier: r.status });
     const cells = lines[i].replace(/^\|\s*/, "").replace(/\s*\|\s*$/, "").split(/ \| /);
     if (cells.length < 4) { skipped.push({ id, why: "row has fewer than four cells" }); continue; }
