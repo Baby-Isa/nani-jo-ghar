@@ -295,10 +295,11 @@
   "wide": "front",
   "target": [
    400,
-   250
+   215
   ],
   "size": 230,
-  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size.",
+  "_s08": "CLN-163: the target on the brushing mouth's lips (the front teeth's lower edge is y 205.6 in the close-up's units), where the far view (view.farY) puts it, so the room's mouth and the close-up's meet in the one camera move"
  },
  "lines": {
   "tooth-ow": {
