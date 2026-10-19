@@ -4,10 +4,15 @@
 //            (*-master-vN, SH-91, Zafar 15 Oct) is 2100x1350 with the 1600x900 core inside it
 //   cutout   every cut-out (items*, props, room-items folders) is WebP with an alpha channel
 //   ref      every assets/ path named in js/ or data/ exists (a retired or moved file still referenced)
+//   pixel    (SH-115) every cut-out's pixels, not just its header: key grey left on it, grey holes between toes or prongs, a wide
+//            soft rim on cream, a cast shadow or haze kept as alpha (build/tools/art/artpixels.py, its rules in its docstring).
+//            One finding per file and rule, `pixel|<path>|<rule>`. The known list may only shrink: a pixel finding that is in it
+//            but no longer found fails ("fixed, take it off the list"), so a re-cut that passes today and slips tomorrow shows.
 // Today's findings are build/tools/art/artcheck-known.json (art debt for the next runs): a finding not in it fails.
 //   node build/tools/art/artcheck.mjs [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, openSync, readSync, closeSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -42,6 +47,17 @@ const walk = (dir, ok, out = []) => {
 const IMG = /\.(png|webp|jpe?g)$/i;
 export const isBg = (p) => /\/bg\/|^assets\/backgrounds\/|^assets\/clinic\/rooms\//.test(p) && !/@2x|thumb/.test(p);
 export const isCutout = (p) => /\/(items[\w-]*|props|room-items)\//.test(p);
+// the pixel check (artpixels.py --scan --json): {path: [reasons]}; a failure to run it is itself a finding, never a silent pass
+export function pixelFindings() {
+  const r = spawnSync("python3", [join(ROOT, "build/tools/art/artpixels.py"), "--scan", "--json"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+  let res;
+  try { res = JSON.parse(r.stdout); } catch { return [{ check: "pixel", key: "pixel|artpixels|did-not-run", text: `artpixels.py did not run: ${(r.stderr || "").trim().split("\n").pop() || "no output"}` }]; }
+  const out = [];
+  for (const [p, fails] of Object.entries(res)) for (const why of fails) out.push({ check: "pixel", key: `pixel|${p}|${why.split(" ")[0]}`, text: `${p}: ${why}` });
+  return out;
+}
+// pixel entries on the known list that no longer fail: the list may only shrink, so they must come off it
+export const staleKnown = (known, found) => [...known].filter((k) => k.startsWith("pixel|") && !found.some((f) => f.key === k));
 export function findings() {
   const out = [];
   for (const p of walk("assets", (x) => IMG.test(x))) {
@@ -51,6 +67,7 @@ export function findings() {
     if (isBg(p) && (master ? i.w !== 2100 || i.h !== 1350 : i.w !== 1600 || i.h !== 900)) out.push({ check: "bg", key: `bg|${p}`, text: `${p}: ${i.w}x${i.h}, not 1600x900` });
     if (isCutout(p) && (i.type !== "webp" || !i.alpha)) out.push({ check: "cutout", key: `cutout|${p}`, text: `${p}: ${i.type}${i.alpha ? "" : " without alpha"}, not WebP with alpha` });
   }
+  for (const f of pixelFindings()) out.push(f);
   const refs = new Set();
   for (const f of [...walk("js", (x) => x.endsWith(".js") && !x.includes("/vendor/")), ...walk("data", (x) => x.endsWith(".json") && !/candidates|audio-manifest|asset-list/.test(x))]) {
     for (const m of readFileSync(join(ROOT, f), "utf8").matchAll(/["'`](assets\/[^"'`\s$*{}]+\.(?:png|webp|jpe?g|svg))["'`]/gi)) refs.add(`${f} -> ${m[1]}`);
@@ -64,8 +81,10 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   if (argv.includes("--write-known")) { writeFileSync(KNOWN, JSON.stringify(found.map((f) => f.key).sort(), null, 1) + "\n"); console.log(`artcheck: ${found.length} known findings written`); process.exit(0); }
   const known = new Set(existsSync(KNOWN) ? JSON.parse(readFileSync(KNOWN, "utf8")) : []);
   const fresh = found.filter((f) => !known.has(f.key));
+  const stale = staleKnown(known, found);
+  for (const k of stale.slice(0, 40)) console.log(`FIXED ${k} (passes now: take it off the known list, so it cannot slip back unseen)`);
   const by = {}; for (const f of found) by[f.check] = (by[f.check] || 0) + 1;
   for (const f of (argv.includes("--all") ? found : fresh).slice(0, 60)) console.log(`${known.has(f.key) ? "known" : "NEW"} ${f.check} ${f.text}`);
-  console.log(`artcheck: ${found.length} findings (${Object.entries(by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - fresh.length} known, ${fresh.length} new`);
-  process.exit(fresh.length ? 1 : 0);
+  console.log(`artcheck: ${found.length} findings (${Object.entries(by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - fresh.length} known, ${fresh.length} new${stale.length ? `, ${stale.length} fixed (remove from the known list)` : ""}`);
+  process.exit(fresh.length || stale.length ? 1 : 0);
 }

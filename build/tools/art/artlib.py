@@ -18,9 +18,13 @@ def load(p):
     return np.asarray(Image.open(p).convert("RGB")).astype(float)
 
 
-def key(a, multi=400, exits=(), tol=10, glass=None, soft=False):
+def key(a, multi=400, exits=(), tol=10, glass=None, soft=False, hole_min=600, hole_neutral=False, shadow=False):
     """RGBA float array (alpha 0..1) of the object on the flat grey, plus the object mask. exits: the edges the
-    object leaves by: the grey is not measured there. soft: partial alpha everywhere (glass, a drop, dust)."""
+    object leaves by: the grey is not measured there. soft: partial alpha everywhere (glass, a drop, dust).
+    SH-115 (the pixel check, artpixels.py): tol is per piece (steel sits near the key: 4-6; glass and skin 10);
+    hole_min is the size (px) from which an enclosed patch of the ground is a hole, not a part (any size: 8);
+    hole_neutral also takes enclosed neutral grey that is a shade off the key (the shadowed gap between toes);
+    shadow drops the ground's cast shadow: dark neutral pixels joined to the ground are ground, not the piece."""
     h, w = a.shape[:2]
     parts = []
     if "top" not in exits:
@@ -38,6 +42,10 @@ def key(a, multi=400, exits=(), tol=10, glass=None, soft=False):
     bg = np.median(g if len(g) > 200 else e, 0)
     d = np.abs(a - bg).max(2)
     flat = d < tol
+    if shadow:  # a contact shadow is the ground darkened: neutral, darker than the ground, joined to it
+        spread = a.max(2) - a.min(2)
+        dark = (a.mean(2) < bg.mean() - tol * 0.5) & (spread < 14 + tol) & (a.mean(2) > bg.mean() * 0.35)
+        flat = flat | ndi.binary_opening(dark, iterations=1)
     lab, _ = ndi.label(flat)
     border = np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]])
     border = set(np.unique(border[border > 0]))
@@ -47,10 +55,13 @@ def key(a, multi=400, exits=(), tol=10, glass=None, soft=False):
     obj = ndi.binary_opening(obj, iterations=1)
     obj = ndi.binary_fill_holes(obj)
     hole = (d < tol * 0.8) & obj  # enclosed background (between a plait and the neck) is a hole, not a part
+    if hole_neutral:  # the gap between toes is the ground in shade: neutral, a little darker or lighter than the key
+        sp = a.max(2) - a.min(2)
+        hole = hole | ((sp < 18) & (np.abs(a.mean(2) - bg.mean()) < 34) & obj)
     hl, hn = ndi.label(hole)
     if hn:
         hs = np.bincount(hl.ravel())
-        big = [i for i in range(1, hn + 1) if hs[i] > 600]
+        big = [i for i in range(1, hn + 1) if hs[i] > hole_min]
         if big:
             obj &= ~ndi.binary_dilation(np.isin(hl, big), iterations=1)
     lb, n = ndi.label(obj)
