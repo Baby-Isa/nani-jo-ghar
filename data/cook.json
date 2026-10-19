@@ -4997,7 +4997,8 @@
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/v3/samosa/*",
       "assets/cook/items/vessel-thali-t.png",
-      "assets/cook/items/v3/daar/chop-heap-*"
+      "assets/cook/items/v3/daar/chop-heap-*",
+      "assets/cook/items-s08b/go-on/go-karahi-s08b*"
      ],
      "prefetch": [
       "assets/cook/items/chai-station/flame-high.webp",
@@ -5040,7 +5041,8 @@
       "assets/cook/items/skewer-empty-t.webp",
       "assets/cook/items/tool-board-t.png",
       "assets/cook/items/veg-*",
-      "assets/cook/items/vessel-katori-t.webp"
+      "assets/cook/items/vessel-katori-t.webp",
+      "assets/cook/items-s08b/go-on/go-grill-s08b*"
      ],
      "prefetch": [
       "assets/cook/items/mishkaki-bataato-raw-t.webp",

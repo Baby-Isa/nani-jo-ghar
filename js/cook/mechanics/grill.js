@@ -1127,35 +1127,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return c;
   };
   /**
-   * The phase button (§15): the flat design-system button, "to the grill" with a small grill icon (a
-   * gold outline, as the design system's icons), in place of the red "Go to the barbecue".
+   * The go-on button to the grill (SH-106, 17 Oct: "there's no arrow ... consistent with the other ones"): the shared
+   * go-on button (js/shared/buttons.js) with the art run's grill picture (go-grill-s08b) before its arrow; the picture
+   * goes when the button is hidden, so another job on #go-btn never shows the grill.
    */
+  SK.GO_PIC = "assets/cook/items-s08b/go-on/go-grill-s08b";
   SK.goIcon = function () {
     const b = document.querySelector("#go-btn");
-    if (!b) return;
-    // the shared Next (js/shared/buttons.js): its icon slot takes the grill
-    const kitIcon = b.querySelector(".njg-next-ic");
-    if (kitIcon) {
-      kitIcon.innerHTML =
-        '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' +
-        '<path d="M5 13h22"/><path d="M6 13c0 6 4.5 10 10 10s10-4 10-10"/><path d="M11 23l-3 6M21 23l3 6"/>' +
-        '<path d="M11 4c-1.5 2 1.5 3 0 5M16 3c-1.5 2 1.5 3 0 5M21 4c-1.5 2 1.5 3 0 5"/></svg>';
-      return;
-    }
-    b.classList.add("ds");
-    const a = b.querySelector(".go-arrow");
-    if (a) a.remove();
-    let i = b.querySelector(".go-icon");
-    if (!i) {
-      i = document.createElement("span");
-      i.className = "go-icon";
-      i.setAttribute("aria-hidden", "true");
-      b.insertBefore(i, b.firstChild);
-    }
-    i.innerHTML =
-      '<svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#C9962E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M5 13h22"/><path d="M6 13c0 6 4.5 10 10 10s10-4 10-10"/><path d="M11 23l-3 6M21 23l3 6"/>' +
-      '<path d="M11 4c-1.5 2 1.5 3 0 5M16 3c-1.5 2 1.5 3 0 5M21 4c-1.5 2 1.5 3 0 5"/></svg>';
+    const kit = global.NjgButtons;
+    if (!b || !kit || !kit.pic) return;
+    const v = Cook.v || ((u) => u);
+    kit.pic(b, { src: v(SK.GO_PIC + ".webp"), src2x: v(SK.GO_PIC + "@2x.webp") }, { untilHidden: true });
   };
   /**
    * The rack (vessel-skewer-rack-t-v1, top-down), sized to the skewers it holds (followup, 29 Sept: it
