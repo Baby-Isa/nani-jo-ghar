@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>s09 mock-ups: the door, the book, the window ride</title>
+<link rel="stylesheet" href="../../css/shared/tokens.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="mock.css">
+<style>html, body { background: var(--njg-page); }</style>
+</head>
+<body>
+<div class="ov">
+  <h1>A day at Nani's: the screens, mocked</h1>
+  <p>Static mock-ups for Zafar to agree the look of each screen before any ChatGPT art (sprint 9). The frame, Nani's box, the cards and the buttons are the real shared ones; the house, the car, the bus, the book and the farm road are drawn in code and marked "to draw" in <code>build/reports/s09-mock.md</code>. Every page is live: resize the window to see the phone layout; add <code>?clean=1</code> to hide the grey label.</p>
+
+  <h2>1. The morning door, four weathers</h2>
+  <p>One fixed house and foreground; the sky from the horizon up is swapped; a light tint follows it, and the sun-shadow layer shows only when sunny. Nani says short sentences one at a time (<code>?s=1</code> to <code>?s=4</code>), Kutchi with its English beneath; a thought bubble shows the day's place; the child answers Ha!</p>
+  <div class="grid">
+    <a class="tile" href="door-beach.html"><b><i class="sw" style="background:#5fa9e6"></i>Sunny: the beach day</b><span>Garam. · to the beach · the sun-shadow layer on</span></a>
+    <a class="tile" href="door-cook.html"><b><i class="sw" style="background:#4f5f74"></i>Raining: a cooking day</b><span>Warsaad. · we need to cook · rain drawn in code</span></a>
+    <a class="tile" href="door-clinic.html"><b><i class="sw" style="background:#8d9eb0"></i>Cloudy: a clinic day</b><span>cloud (to record) · can you help me?</span></a>
+    <a class="tile" href="door-night.html"><b><i class="sw" style="background:#0d1538"></i>Night: home again</b><span>Shabash! · the lamp lit · the book next</span></a>
+    <a class="tile" href="door-cook.html?s=1"><b>The weather word alone</b><span>the first sentence: Warsaad.</span></a>
+    <a class="tile" href="door-beach.html?s=2"><b>The weather in a sentence</b><span>the second sentence, with her gesture (to draw)</span></a>
+  </div>
+
+  <h2>2. The evening book</h2>
+  <p>Nani and the child in the sitting room at night; the book is built from the day's log (the farm day): the cover and the car, a spotted page with its gap, three potatoes and the corn, the two photos, today's words and the shelf of days, goodnight and tomorrow's door.</p>
+  <div class="grid">
+    <a class="tile" href="book.html?p=1"><b>Page 1: today, and the car</b><span>the cover: the sunny door; gadi</span></a>
+    <a class="tile" href="book.html?p=2"><b>Page 2: you spotted a …</b><span>the gap (rung G1): two picture pills</span></a>
+    <a class="tile" href="book.html?p=3"><b>Page 3: trae bateta, makai</b><span>counted and made</span></a>
+    <a class="tile" href="book.html?p=4"><b>Page 4: the photos</b><span>the prints from Snap, a gold corner</span></a>
+    <a class="tile" href="book.html?p=5"><b>Page 5: today's words</b><span>progress, not a verdict; the shelf of days</span></a>
+    <a class="tile" href="book.html?p=6"><b>Page 6: goodnight, tomorrow</b><span>the lamp, the moon; tomorrow's door under cloud</span></a>
+  </div>
+
+  <h2>3. The window ride</h2>
+  <p>The farm road scrolls past the window like the clinic's belt; Nani names a thing and the child taps it as it passes; the red door passes with a blue one, the she-goat with the billy goat. <code>?at=4</code> jumps the scroll to that second.</p>
+  <div class="grid">
+    <a class="tile" href="ride.html"><b>The car: laal darwajo</b><span>the red door and the blue door pass together</span></a>
+    <a class="tile" href="ride.html?t=stop"><b>The car: stop the car!</b><span>a goat in the road, the car stops</span></a>
+    <a class="tile" href="ride-bus.html"><b>The bus</b><span>the same road from a bus seat (the beach day's ride)</span></a>
+    <a class="tile" href="ride.html?at=3"><b>Frame 2 of the filmstrip</b><span>three seconds in</span></a>
+    <a class="tile" href="ride.html?at=6"><b>Frame 3 of the filmstrip</b><span>six seconds in</span></a>
+  </div>
+</div>
+</body>
+</html>

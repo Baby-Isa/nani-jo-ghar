@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Mock: the door, a cloudy clinic day</title>
+<!-- s09-mock (lab only): the real frame, tokens, guide box, card and button styles; the scene drawn in mock.css -->
+<link rel="stylesheet" href="../../css/shared/app.css">
+<link rel="stylesheet" href="../../css/shared/tokens.css">
+<link rel="stylesheet" href="../../css/shared/frame.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="../../css/shared/guide.css">
+<link rel="stylesheet" href="../../css/shared/order-card.css">
+<link rel="stylesheet" href="../../css/shared/buttons.css">
+<link rel="stylesheet" href="../../css/shared/focus.css">
+<link rel="stylesheet" href="mock.css">
+</head>
+<body>
+<script src="../../js/shared/fit.js"></script>
+<script src="../../js/shared/frame.js"></script>
+<script src="../../js/shared/guide.js"></script>
+<script src="../../js/shared/buttons.js"></script>
+<script src="mock.js"></script>
+<script src="door.js"></script>
+<script>
+Door.show({
+  "weather": "cloud",
+  "thought": "clinic",
+  "note": "the door · cloudy · a clinic day",
+  "lines": [
+    {
+      "e": "Cloud.",
+      "rec": true
+    },
+    {
+      "e": "Today it is cloudy.",
+      "rec": true
+    },
+    {
+      "e": "Today we are going to the clinic, to help the doctor.",
+      "rec": true
+    },
+    {
+      "k": "Tu muke {help} kar de?",
+      "e": "Can you help me?"
+    }
+  ]
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+/* s09-mock: static mock-ups of the morning door, the evening book and the window ride (lab only, never shipped).
+   The frame, tokens, Nani's guide box and the buttons are the real shared ones (css/shared/*, js/shared/*); only the
+   scenes are drawn here, in code, where their art does not exist yet ("to draw" in build/reports/s09-mock.md). */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; font-family: var(--njg-font); color: var(--njg-ink); }
+img { -webkit-user-drag: none; user-select: none; }
+
+/* ---------- the sidebar, as the clinic lays it out (guide box, one card, the dock) ---------- */
+.mk-side { background: var(--njg-panel); border-right: 3px solid #e6d6bd; display: flex; flex-direction: column; gap: var(--njg-s2); padding: var(--njg-s2); overflow: hidden; min-height: 0; }
+.mk-side .njg-guide { flex: none; }
+.mk-card { gap: var(--njg-s2); }
+.mk-card .oc-head { align-items: center; }
+.mk-card .oc-face { flex: none; }
+.mk-card .mk-head { font: 800 var(--njg-side-h)/1.2 var(--njg-font); color: var(--njg-ink); }
+.mk-card .mk-head .word { color: var(--njg-word); }
+.mk-card .ph { color: var(--njg-ink-soft); font-style: italic; }
+/* the card's pictures: a row of small square pictures (what the day holds, what has been spotted) */
+.mk-pics { display: flex; flex-wrap: wrap; gap: var(--njg-s2); }
+.mk-pic { position: relative; width: calc(var(--njg-big-face) * 0.95); height: calc(var(--njg-big-face) * 0.95); border-radius: var(--njg-radius); background: var(--njg-tint); border: var(--njg-line) solid var(--njg-edge); display: grid; place-items: center; overflow: hidden; }
+.mk-pic img { width: 86%; height: 86%; object-fit: contain; }
+.mk-pic.gold { border: var(--njg-line-2) solid var(--njg-gold); }
+.mk-pic.empty { border: var(--njg-line-2) dashed var(--njg-grey); background: none; }
+.mk-pic.full img { width: 100%; height: 100%; object-fit: cover; }
+.mk-arrow { align-self: center; color: var(--njg-gold); width: var(--njg-icon); height: var(--njg-icon); flex: none; }
+/* the dock: ? · home · the book, three identical round buttons (ui-design-system 3) */
+.mk-dock { margin-top: auto; display: flex; gap: var(--njg-s3); padding-top: var(--njg-s2); }
+.mk-dock button { width: var(--njg-rail); height: var(--njg-rail); border-radius: 50%; border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-cream); font: 800 22px var(--njg-font); color: var(--njg-ink); cursor: pointer; box-shadow: var(--njg-shadow); display: grid; place-items: center; padding: 0; }
+.mk-dock button svg { width: 50%; height: 50%; }
+.mk-dock .mk-home { border: var(--njg-s1) solid var(--njg-player, #b5523b); background: #fffaf2; }
+.mk-dock .mk-home svg { fill: #6b3b24; }
+
+/* ---------- the play area ---------- */
+.mk-play { position: relative; overflow: hidden; background: var(--njg-house); container-type: size; }
+.mk-stage { position: absolute; inset: 0; overflow: hidden; }
+.mk-stage > svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* a thing the child taps: at least 48 px */
+.mk-tap { cursor: pointer; }
+
+/* ---------- speech and thought bubbles (layout contract: solid cream, dark text, the tail to the mouth) ---------- */
+.mk-bubble { position: absolute; z-index: 8; max-width: min(46cqw, 520px); padding: var(--njg-s3) var(--njg-s4); background: #fffaf1; border: var(--njg-line-2) solid #e2d3bb; border-radius: 18px; box-shadow: var(--njg-shadow); }
+.mk-bubble .k { display: block; font: 800 var(--njg-t1)/1.2 var(--njg-font); color: var(--njg-ink); }
+.mk-bubble .k .word { color: var(--njg-word); }
+.mk-bubble .k.ph, .mk-bubble .ph { color: var(--njg-ink-soft); font-style: italic; font-weight: 700; }
+/* rule 5 (Zafar, 19 Oct): at the door her English sits under each Kutchi line, small and grey */
+.mk-bubble .e { display: block; margin-top: var(--njg-s1); font: 600 var(--njg-t4)/1.25 var(--njg-font); color: var(--njg-ink-soft); }
+.mk-bubble .tail { position: absolute; width: 22px; height: 22px; background: #fffaf1; border-left: var(--njg-line-2) solid #e2d3bb; border-bottom: var(--njg-line-2) solid #e2d3bb; transform: rotate(45deg); }
+.mk-bubble.left .tail { left: -13px; bottom: 28%; transform: rotate(45deg); }
+.mk-bubble.right .tail { right: -13px; bottom: 28%; transform: rotate(-135deg); }
+.mk-bubble.below .tail { left: 50%; bottom: -13px; margin-left: -11px; transform: rotate(-45deg); }
+/* the step dots: which of her short sentences this is (a mark, not text) */
+.mk-dots { display: flex; gap: var(--njg-s2); margin-top: var(--njg-s2); }
+.mk-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--njg-grey); }
+.mk-dots i.on { background: var(--njg-gold); }
+.mk-dots i.done { background: color-mix(in srgb, var(--njg-gold) 45%, #fff); }
+/* the thought bubble: a cloud with a picture in it and two small circles trailing to her head */
+.mk-thought { position: absolute; z-index: 7; }
+.mk-thought .cloud { position: relative; width: 100%; aspect-ratio: 4 / 3; background: #fffaf1; border: var(--njg-line-2) solid #e2d3bb; border-radius: 46% 46% 44% 44% / 52% 52% 40% 40%; box-shadow: var(--njg-shadow); overflow: hidden; padding: 7%; }
+.mk-thought .cloud > * { width: 100%; height: 100%; border-radius: 40% 40% 38% 38% / 46% 46% 34% 34%; object-fit: cover; display: block; }
+.mk-thought .cloud svg { object-fit: unset; }
+.mk-thought .dot { position: absolute; background: #fffaf1; border: var(--njg-line-2) solid #e2d3bb; border-radius: 50%; }
+.mk-thought .dot.a { width: 12%; height: 16%; right: -6%; bottom: -12%; }
+.mk-thought .dot.b { width: 7%; height: 9%; right: -14%; bottom: -24%; }
+
+/* the answer pills sit low on the right of the play area, never over Nani (buttons.css gives them their look) */
+.mk-answer { position: absolute; z-index: 30; right: max(var(--njg-s4), 3%); bottom: max(var(--njg-s4), 5%); }
+.mk-answer .njg-pill { font-size: calc(var(--njg-t1) * 1.15); }
+
+/* a small grown-ups' note on the mock only (never in the game): what this screen is */
+.mk-note { position: absolute; z-index: 50; left: var(--njg-s2); top: var(--njg-s2); padding: 2px 8px; border-radius: 999px; background: rgba(42, 37, 34, .72); color: #fff; font: 700 12px/1.6 var(--njg-font); letter-spacing: .02em; pointer-events: none; }
+html[data-clean] .mk-note { display: none; }
+
+/* ---------- the house front (door.html): one fixed house, the sky swapped, the light following it ---------- */
+.mk-sky { position: absolute; inset: 0; }
+.mk-tint { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; }
+.mk-sun-shadows { position: absolute; inset: 0; pointer-events: none; display: none; }
+.wx-sun .mk-sun-shadows { display: block; }
+.wx-sun .mk-tint { background: linear-gradient(180deg, rgba(255, 236, 196, .55), rgba(255, 226, 170, .25)); }
+.wx-cloud .mk-tint { background: linear-gradient(180deg, rgba(196, 204, 214, .55), rgba(214, 214, 210, .35)); }
+.wx-rain .mk-tint { background: linear-gradient(180deg, rgba(142, 160, 184, .62), rgba(160, 170, 186, .5)); }
+.wx-night .mk-tint { background: linear-gradient(180deg, rgba(38, 48, 96, .8), rgba(56, 60, 104, .62)); }
+/* the lamp by the door: lit at night only (a warm pool over the tint) */
+.mk-lamp-glow { position: absolute; pointer-events: none; display: none; left: 50%; top: 42%; width: 48%; height: 48%; transform: translate(-56%, -40%); background: radial-gradient(closest-side, rgba(255, 196, 110, .55), rgba(255, 180, 90, 0)); mix-blend-mode: screen; }
+.wx-night .mk-lamp-glow { display: block; }
+/* the rain, drawn in code: two sheets of streaks falling at slightly different speeds */
+.mk-rain { position: absolute; inset: -20% 0 0 0; pointer-events: none; display: none; }
+.wx-rain .mk-rain { display: block; }
+.mk-rain i { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, transparent 0 18px, rgba(255, 255, 255, .34) 18px 20px, transparent 20px 44px); background-size: 220px 120px; animation: mkRain .7s linear infinite; opacity: .8; }
+.mk-rain i + i { background-size: 170px 90px; animation-duration: .5s; opacity: .55; }
+@keyframes mkRain { to { background-position: -40px 120px; } }
+/* the figure at the door: her real standing picture (assets/cook/characters/nani-stand-v3-front.webp) */
+.mk-nani { position: absolute; z-index: 5; left: 50%; bottom: 20.5%; height: 58%; transform: translateX(-56%); filter: drop-shadow(0 6px 4px rgba(40, 25, 10, .28)); }
+.mk-nani img { height: 100%; width: auto; display: block; }
+.wx-night .mk-nani { filter: brightness(.82) drop-shadow(0 6px 4px rgba(10, 10, 30, .45)); }
+.wx-rain .mk-nani { filter: brightness(.9) saturate(.9) drop-shadow(0 6px 4px rgba(20, 20, 30, .35)); }
+.wx-cloud .mk-nani { filter: saturate(.92) drop-shadow(0 6px 4px rgba(40, 25, 10, .22)); }
+.mk-stars { position: absolute; inset: 0; pointer-events: none; display: none; }
+.wx-night .mk-stars { display: block; }
+.mk-stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px 1px rgba(255, 255, 255, .8); animation: mkTwinkle 2.4s ease-in-out infinite; }
+.mk-stars i:nth-child(3n) { animation-delay: .8s; width: 4px; height: 4px; }
+.mk-stars i:nth-child(5n) { animation-delay: 1.5s; }
+@keyframes mkTwinkle { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .mk-rain i, .mk-stars i { animation: none; } }
+
+/* ---------- the evening book (book.html) ---------- */
+.mk-room { position: absolute; inset: 0; background: url("../../assets/backgrounds/bg-sitting-room-e-v1.webp") center bottom / cover no-repeat; }
+.mk-night { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(34, 40, 92, .78), rgba(60, 50, 80, .62)); mix-blend-mode: multiply; }
+.mk-window-night { position: absolute; left: 0; top: 0; width: 9.2%; height: 55%; background: linear-gradient(180deg, #16204a, #2a3570 70%, #3a3f78); overflow: hidden; }
+.mk-window-night .bar { position: absolute; background: #6b5a44; }
+.mk-window-night .bar.v { left: 54%; top: 0; width: 7%; height: 100%; }
+.mk-window-night .bar.h { left: 0; width: 100%; height: 4%; }
+.mk-room-lamp { position: absolute; right: 2%; top: 30%; width: 44%; height: 70%; background: radial-gradient(closest-side at 80% 20%, rgba(255, 190, 100, .7), rgba(255, 170, 80, 0)); mix-blend-mode: screen; pointer-events: none; }
+.mk-lamp { position: absolute; right: 7.5%; top: 24%; width: 6.5%; z-index: 2; }
+.mk-sitter { position: absolute; z-index: 4; bottom: 34%; }
+.mk-sitter img { display: block; height: 100%; width: auto; }
+.mk-sitter.nani { left: 19%; height: 42%; filter: brightness(.95) drop-shadow(0 4px 4px rgba(10, 10, 30, .4)); }
+.mk-sitter.child { left: 60%; height: 34%; filter: brightness(.95) drop-shadow(0 4px 4px rgba(10, 10, 30, .4)); }
+.mk-sitter.child svg { height: 100%; width: auto; display: block; }
+/* the book: a soft cream card with a thin gold border, the request-card look (story-by-the-fire 5) */
+.mk-book { position: absolute; z-index: 6; left: 50%; bottom: 7%; width: min(74%, 1120px); height: 58%; transform: translateX(-50%); display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: #fffaf0; border: var(--njg-line-2) solid var(--njg-gold); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow-lift); overflow: hidden; }
+.mk-book::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(90deg, rgba(0, 0, 0, .12), rgba(0, 0, 0, .04)); }
+.mk-page { position: relative; padding: var(--njg-s4) var(--njg-s5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--njg-s3); min-width: 0; }
+.mk-page .art { width: 100%; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; gap: var(--njg-s3); }
+.mk-page .art img, .mk-page .art svg { max-height: 100%; max-width: 100%; object-fit: contain; }
+.mk-page .cap { font: 800 var(--njg-t1)/1.2 var(--njg-font); color: var(--njg-word); text-align: center; }
+.mk-page .cap.ph { color: var(--njg-ink-soft); font-style: italic; font-weight: 700; }
+.mk-page .corner { position: absolute; right: 0; top: 0; width: 0; height: 0; border-style: solid; border-width: 0 34px 34px 0; border-color: transparent var(--njg-gold) transparent transparent; }
+.mk-page .pageno { position: absolute; bottom: var(--njg-s2); display: flex; gap: var(--njg-s1); }
+.mk-page .pageno i { width: 7px; height: 7px; border-radius: 50%; background: var(--njg-grey); }
+.mk-page .pageno i.on { background: var(--njg-gold); }
+/* a print from Snap: the game's own print look (css/snap.css .print) */
+.mk-print { position: relative; width: 44%; aspect-ratio: 4 / 3; background: #dcebf2; border: 4px solid #fffaf0; border-bottom-width: 14px; border-radius: 3px; box-shadow: 0 3px 8px rgba(0, 0, 0, .3); overflow: hidden; }
+.mk-print.tilt-l { transform: rotate(-4deg); }
+.mk-print.tilt-r { transform: rotate(3deg); }
+.mk-print svg, .mk-print img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mk-print .gold { position: absolute; right: -2px; top: -2px; width: 0; height: 0; border-style: solid; border-width: 0 26px 26px 0; border-color: transparent var(--njg-gold) transparent transparent; }
+/* the gap pills on a page: the shared pills with pictures in them */
+.mk-page .njg-pills { margin-top: var(--njg-s1); }
+.mk-page .njg-pill { min-width: calc(var(--njg-tap) * 1.6); padding: var(--njg-s1) var(--njg-s3); }
+.mk-page .njg-pill img { height: calc(var(--njg-tap) * 1.1); width: auto; display: block; }
+/* the shelf of days (decision 4: a finished day is a book on the shelf) */
+.mk-shelf { width: 92%; display: flex; align-items: flex-end; justify-content: center; gap: var(--njg-s2); padding-bottom: 6px; border-bottom: 8px solid #b8864f; }
+.mk-shelf i { display: block; width: 11%; height: 64px; border-radius: 3px 3px 0 0; background: #8c6a4a; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .12); }
+.mk-shelf i.sun { background: #d9a441; }
+.mk-shelf i.farm { background: #7e9a76; height: 72px; }
+.mk-shelf i.today { background: var(--njg-gold); height: 78px; box-shadow: 0 0 0 3px #fff, 0 0 14px rgba(224, 166, 58, .8); }
+.mk-shelf i.empty { background: none; border: 2px dashed var(--njg-grey); height: 60px; box-shadow: none; }
+/* today's words: small gold-edged cards (progress, never a verdict) */
+.mk-words { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--njg-s2); width: 100%; }
+.mk-word { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: var(--njg-s1); border-radius: var(--njg-radius); background: #fff; border: var(--njg-line-2) solid var(--njg-gold); box-shadow: var(--njg-shadow); min-width: 0; }
+.mk-word img, .mk-word svg { height: 46px; width: auto; max-width: 100%; }
+.mk-word b { font: 800 var(--njg-t4)/1.1 var(--njg-font); color: var(--njg-word); text-align: center; white-space: nowrap; }
+
+/* ---------- the window ride (ride.html) ---------- */
+.mk-view { position: absolute; left: 7%; right: 7%; top: 9%; height: 58%; border-radius: 28px 28px 14px 14px; overflow: hidden; box-shadow: inset 0 0 0 10px #4a3b2f, inset 0 0 24px 12px rgba(0, 0, 0, .35); background: #9ad0ee; }
+.mk-view.bus { left: 4%; right: 4%; top: 6%; height: 62%; border-radius: 12px; box-shadow: inset 0 0 0 10px #5d6670, inset 0 0 24px 12px rgba(0, 0, 0, .35); }
+.mk-strip { position: absolute; left: 0; top: 0; height: 100%; width: 300%; animation: mkScroll 14s linear infinite; will-change: transform; }
+.mk-strip.far { animation-duration: 42s; }
+.mk-strip.slow { animation-duration: 28s; }
+.stopped .mk-strip { animation-play-state: paused; }
+@keyframes mkScroll { from { transform: translateX(0); } to { transform: translateX(-66.667%); } }
+.mk-strip > svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.mk-strip .item { position: absolute; bottom: 20%; height: 32%; }
+.mk-strip .item img { height: 100%; width: auto; display: block; filter: drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
+.mk-strip .item.big { height: 44%; bottom: 10%; }
+.mk-strip .item.small { height: 20%; bottom: 20%; }
+.mk-strip .item.onroad { bottom: 2%; height: 36%; z-index: 3; }
+.mk-strip .item.flip img { transform: scaleX(-1); }
+.mk-strip .item.hint img { animation: cl-belt-glow 1s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(255, 196, 64, .95)) drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); }
+@keyframes cl-belt-glow { 50% { filter: drop-shadow(0 0 16px rgba(255, 196, 64, 1)) drop-shadow(0 5px 3px rgba(30, 30, 30, .28)); } }
+.mk-car { position: absolute; inset: 0; pointer-events: none; }
+.mk-car svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mk-shake { animation: mkShake .12s linear infinite; }
+.stopped .mk-shake { animation: none; }
+@keyframes mkShake { 50% { transform: translateY(1px); } }
+.mk-stopline { position: absolute; z-index: 9; left: 50%; top: 2%; transform: translateX(-50%); padding: var(--njg-s2) var(--njg-s4); background: #fffaf1; border: var(--njg-line-2) solid #e2d3bb; border-radius: 18px; box-shadow: var(--njg-shadow); font: 800 var(--njg-t1)/1.2 var(--njg-font); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .mk-strip, .mk-shake { animation: none; } }
+
+/* ---------- the overview page ---------- */
+.ov { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; background: var(--njg-page); min-height: 100%; }
+.ov h1 { font: 800 28px/1.2 var(--njg-font); margin: 0 0 4px; }
+.ov p { margin: 0 0 16px; color: var(--njg-ink-soft); font-weight: 600; }
+.ov h2 { font: 800 20px/1.2 var(--njg-font); margin: 28px 0 10px; }
+.ov .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.ov a.tile { display: block; background: #fff; border: 1px solid var(--njg-edge); border-radius: 12px; padding: 12px; color: var(--njg-ink); text-decoration: none; box-shadow: var(--njg-shadow); }
+.ov a.tile:hover { border-color: var(--njg-gold); }
+.ov a.tile b { display: block; font-size: 17px; margin-bottom: 4px; }
+.ov a.tile span { color: var(--njg-ink-soft); font-size: 14px; font-weight: 600; }
+.ov .sw { display: inline-block; width: 14px; height: 14px; border-radius: 50%; vertical-align: -2px; margin-right: 6px; }
+
+/* which parts of the drawn house each weather shows */
+.scene .sun, .scene .moon, .scene .clouds, .scene .puddles, .scene .shadows { display: none; }
+.wx-sun .scene .sun, .wx-sun .scene .clouds.small, .wx-sun .scene .shadows { display: initial; }
+.wx-cloud .scene .clouds.big { display: initial; }
+.wx-rain .scene .clouds.rain, .wx-rain .scene .puddles { display: initial; }
+.wx-night .scene .moon { display: initial; }
+.wx-night .scene .lamp-pane { fill: #ffe9a8; }
+.wx-night .scene .pane { fill: #f6d58a; }
+.mk-mini svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mk-mini .mk-stars { display: none; }
