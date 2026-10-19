@@ -45,6 +45,9 @@ export const DRIVERS = {
   "find-scene": { kinds: ["mode"], moments: ["rec:scene-*", "rec:scene-*-*"] },
   // not in _drivers (a path the spec already used): the clinic's take-back, like Cook's #takeback (CLN-112, CK-TB-01)
   takeback: { kinds: ["heal", "clinic-stage"], moments: ["rec:before-takeback", "rec:after-takeback"] },
+  // the clinic's replay (SH-102's clinic half, SH-114): once a step is ticked and others are left, the side card's face is tapped (flows/clinic.mjs
+  // replayTap); contract-31 judges that it counts no hint and says only the steps left
+  "replay-tap": { kinds: ["heal", "clinic-stage"], moments: ["rec:replay-tap", "rec:after-replay-tap"] },
   // the clinic at its real pace (no &fast=1): the zooms take their 1.5 s (CLN-87, CLN-43, CLN-77); a stage's pop-up and read-along their
   // real time (SH-17, CLN-04: in fast mode the pop-up folds within a second)
   "real-pace": { kinds: ["heal", "clinic-stage"], moments: [] },

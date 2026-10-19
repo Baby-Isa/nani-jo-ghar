@@ -80,7 +80,10 @@
     const g = P.who.games[o.game];
     const lv = g.levels[Math.min(o.level, g.levels.length) - 1];
     const st = Who.Case.start(c, { stage: () => o.stage });
-    $("case-name").textContent = `${g.name} · L${o.level}`;
+    // the game's name is the grown-up's tooltip, not written for the child (rule 5)
+    $("case-name").textContent = "";
+    $("case-name").title = `${g.name} · L${o.level}`;
+    $("case-name").classList.add("hidden");
     const world = UI.drawScene(F.scene, { listener: c.kind === "K4" });
     UI.speaker(c.kind === "K4" ? "ali" : "nani");
     $("nani-card").querySelector(".say-slot").innerHTML = "";

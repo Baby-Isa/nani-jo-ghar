@@ -153,7 +153,8 @@
     UI.mission.close();
     Cook.expect = { kind: "click", selector: "#res-back", end: true };
   }
-  const receiptIcon = (key) => (key === "help" ? `<i class="coin-dot"></i>` : UI.ICON[(key === "voice" ? Snap.data.star_set.voice : UI.starInfo(key)).icon] || "");
+  const pic = (svg) => `<span class="mstar earned" style="width:24px;height:24px;padding:3px">${svg}</span>`;
+  const receiptIcon = (key) => (key === "help" ? `<i class="coin-dot"></i>` : pic(UI.ICON[(key === "voice" ? Snap.data.star_set.voice : UI.starInfo(key)).icon] || ""));
   /** The grown-ups' "?" on a panel: a round "?" in its corner; the English opens beside it and nowhere else (Cook.grownUps does the same on Cook's panels). */
   function grownUps(p, html) {
     const btn = document.createElement("button");

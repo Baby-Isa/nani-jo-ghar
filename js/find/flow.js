@@ -98,7 +98,8 @@
    * word on the list as a pill: speaker, Kutchi, its English under it; the missed ones and the helped ones marked).
    * No written English on the card for the child (rule 5): the tips, one per missed star, sit behind the grown-ups' "?".
    */
-  const receiptIcon = (key) => (key === "voice" ? voiceIcon() : key === "combo" ? "&times;" : key === "help" ? `<i class="coin-dot"></i>` : UI.starIcon(key));
+  const pic = (svg) => `<span class="mstar earned" style="width:24px;height:24px;padding:3px">${svg}</span>`;
+  const receiptIcon = (key) => (key === "voice" ? pic(voiceIcon()) : key === "combo" ? "&times;" : key === "help" ? `<i class="coin-dot"></i>` : pic(UI.starIcon(key)));
   /** The grown-ups' "?" on a panel: a round "?" in its corner; the English opens beside it and nowhere else (Cook.grownUps does the same on Cook's panels). */
   function grownUps(p, html) {
     const btn = document.createElement("button");

@@ -8,7 +8,7 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { DRIVERS, FAIR_MOMENTS } from "../drivers/catalog.mjs";
 
-const LIFE = ["line:*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "page:end", "page:start", "bubble"];
+const LIFE = ["line:*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "life:stir-lap", "page:end", "page:start", "bubble"];
 // the spec's named moments (evidence.json _moments, _at's every:<x>) that an existing signal answers; `delay` waits after it.
 // A named moment with no entry here has no driver yet: --plan refuses it (the driver lands with the spec, Fable 2)
 export const ALIASES = {

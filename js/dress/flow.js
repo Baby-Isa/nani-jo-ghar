@@ -136,7 +136,8 @@
       })
       .join("");
   }
-  const receiptIcon = (key) => UI.ICON[UI.starInfo(key).icon] || UI.ICON.tick;
+  const pic = (svg) => `<span class="mstar earned" style="width:24px;height:24px;padding:3px">${svg}</span>`;
+  const receiptIcon = (key) => pic(UI.ICON[UI.starInfo(key).icon] || UI.ICON.tick);
   /** The grown-ups' "?" on a panel: a round "?" in its corner; the English opens beside it and nowhere else (Cook.grownUps does the same on Cook's panels). */
   function grownUps(p, html) {
     const btn = document.createElement("button");
