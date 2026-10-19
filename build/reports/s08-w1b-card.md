@@ -20,3 +20,4 @@ Builder's report (Sonnet); the orchestrator judges. Branch `worktree-agent-ac1d3
 | `test_shared_w1b_card.mjs` | 9 fail | 9 pass |
 
 Eye: chai L3 pop-up one size on two lines; samosa bulb "two samosas, one mince"; review with 0, 1, 3 wrong; faces side by side.
+`checks.mjs` (no load): unit 380 pass, words, static, leak 17, bump, specs, docs, size ok; `loadcheck` 29/29.
