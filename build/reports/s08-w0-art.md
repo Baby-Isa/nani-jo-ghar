@@ -12,7 +12,7 @@ Branch `worktree-agent-a9bd6c078be6c9cf9` (from `claude/new-session-b5r2am`), no
 | 4 | Not cut, failed: `thermometer-side-v3`, `thermometer-use-down-v3` (dark soft edge reads as shadow, 2.9-3.9 %). The old two stay. |
 | 5 | Small: a faint contact-shadow residue under the lemon; two white specks on trays 2 and 4 (in the source); the yogurt strip is pale on cream. |
 | 6 | SM1 and BD1 are not seamless as cut (seam ratio 4.55, 2.69; limit 1.6). The cross-faded `-tile` copies measure 1.10 and 1.19, texture blended over 96 and 64 px. |
-| 7 | Not run, over the 15 minute browser limit (`touched.mjs` maps the new files to 76 flows, about 128 min, though no page names them): sandbox, shotdiff, regress rows, evidence probes. Every brief row is unchecked. |
+| 7 | Not run, over the 15 minute browser limit (`touched.mjs` maps the new files to 76 flows, about 128 min, though no page names them): sandbox, shotdiff, regress rows, evidence probes. Every brief row is unchecked. `checks.mjs --only load` timed out twice (500 and 580 s, no result); leak ok (17 configs). |
 | 8 | The four old files are still what the game draws; the re-cuts are unwired. The brief's push and overnight-log lines were overridden. |
 
 ## What changed
