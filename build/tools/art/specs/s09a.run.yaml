@@ -16,18 +16,18 @@ runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, r
 refs:
   style-anchor-v1.png: sources/art/style-anchor-v1.png
   clinic-doorway.webp: assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
-  nani-neutral.png: assets/characters/nani/nani-neutral.png
+  nani-sheet-final.png: sources/art/s08/sheet-nani-final-1.png
 people: {}
 limb_sets: {}
 templates: {}
 limb_templates: {}
 lines:
-  H1: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png], save: h1-house-one-arch-v1.png, check: HOUSE}
-  H2: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png], save: h2-house-three-arches-v1.png, check: HOUSE}
+  H1: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png], save: h1-house-one-arch-v1.png, check: HOUSE}
+  H2: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png], save: h2-house-three-arches-v1.png, check: HOUSE}
   R1: {attach: [style-anchor-v1.png], save: r1-car-window-v1.png, check: WINDOW}
   R2: {attach: [style-anchor-v1.png], save: r2-bus-window-v1.png, check: WINDOW}
-  B1: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png], save: b1-library-fireplace-v1.png, check: LIBRARY}
-  B2: {attach: [style-anchor-v1.png, nani-neutral.png], save: b2-book-open-v1.png, check: BOOK}
+  B1: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png], save: b1-library-fireplace-v1.png, check: LIBRARY}
+  B2: {attach: [style-anchor-v1.png, nani-sheet-final.png], save: b2-book-open-v1.png, check: BOOK}
   L1: {attach: ["kept:B2", style-anchor-v1.png], save: l1-book-find-it-v1.png, check: LAYOUT}
   L2: {attach: ["kept:B2", style-anchor-v1.png], save: l2-book-name-it-v1.png, check: LAYOUT}
   L3: {attach: ["kept:B2", style-anchor-v1.png], save: l3-book-stick-photo-v1.png, check: LAYOUT}

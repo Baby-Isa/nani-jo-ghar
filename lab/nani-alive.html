@@ -95,7 +95,7 @@
  *
  * Self-contained Phaser 3 scene, independent of the main game. Proves that
  * a single set of pixel-identical-outside-the-face expression frames
- * (build/expressions.py, assets/characters/nani/{nani-neutral,expr/*}.png)
+ * (build/expressions.py, sources/archive/nani-pre-s08/{nani-neutral,expr/*}.png: the pre-s08 Nani, archived 19 Oct (Zafar); this lab runs locally only)
  * can be swapped between with zero jump, and driven into breathing, idle
  * sway, blinking, audio-driven talking and a happy hop.
  *
@@ -147,7 +147,7 @@ class AliveScene extends Phaser.Scene {
   preload() {
     this.load.image("bg-kitchen", "../assets/backgrounds/bg-nani-kitchen-v1.jpg");
     for (const [id, key] of Object.entries(FRAME_KEYS)) {
-      this.load.image(key, `../assets/characters/nani/${id === "neutral" ? "nani-neutral.png" : `expr/${key}.png`}`);
+      this.load.image(key, `../sources/archive/nani-pre-s08/${id === "neutral" ? "nani-neutral.png" : `expr/${key}.png`}`);
     }
   }
 
@@ -429,7 +429,7 @@ function buildRawStrip(scene) {
   for (const [id, key] of Object.entries(FRAME_KEYS)) {
     const fig = document.createElement("figure");
     const img = document.createElement("img");
-    img.src = id === "neutral" ? "../assets/characters/nani/nani-neutral.png" : `../assets/characters/nani/expr/${key}.png`;
+    img.src = id === "neutral" ? "../sources/archive/nani-pre-s08/nani-neutral.png" : `../sources/archive/nani-pre-s08/expr/${key}.png`;
     img.dataset.key = key;
     const cap = document.createElement("figcaption");
     cap.textContent = id;

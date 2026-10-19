@@ -6,9 +6,9 @@ Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/doc
 WHERE FILES LIVE (all public; open nothing locally)
 RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/claude/new-session-b5r2am/
 Reference images, by the name the run order uses:
- style-anchor-v1.png  RAW + sources/art/style-anchor-v1.png
- clinic-doorway.webp  RAW + assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
- nani-neutral.png     RAW + assets/characters/nani/nani-neutral.png
+ style-anchor-v1.png   RAW + sources/art/style-anchor-v1.png
+ clinic-doorway.webp   RAW + assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
+ nani-sheet-final.png  RAW + sources/art/s08/sheet-nani-final-1.png
 Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
 Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
 
@@ -65,16 +65,16 @@ HOW TO RUN EACH PROMPT
 RUN ORDER. Line format: ID (person) | attach | save as | check
 PART A: THE HOUSE AND THE RIDE (4)
 H1-H2 put Nani (a real person: Zafar judges her likeness later) in the porch of a house drawn in the style of the attached clinic doorway. R1-R2 are vehicle windows with the opening keyed flat green.
-H1 | clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png | h1-house-one-arch-v1.png | HOUSE
-H2 | clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png | h2-house-three-arches-v1.png | HOUSE
+H1 | clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png | h1-house-one-arch-v1.png | HOUSE
+H2 | clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png | h2-house-three-arches-v1.png | HOUSE
 R1 | style-anchor-v1.png | r1-car-window-v1.png | WINDOW
 R2 | style-anchor-v1.png | r2-bus-window-v1.png | WINDOW
 Part A done: post the part A summary (see AT THE END) and carry on.
 
 PART B: THE EVENING BOOK AND ITS LAYOUT TESTS (6)
 B1 is Nani by the fireplace; B2 the open book close up, whose pages stay plain. L1-L4 each attach the kept B2 and lay one review game out on its pages.
-B1 | clinic-doorway.webp, style-anchor-v1.png, nani-neutral.png | b1-library-fireplace-v1.png | LIBRARY
-B2 | style-anchor-v1.png, nani-neutral.png | b2-book-open-v1.png | BOOK
+B1 | clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png | b1-library-fireplace-v1.png | LIBRARY
+B2 | style-anchor-v1.png, nani-sheet-final.png | b2-book-open-v1.png | BOOK
 L1 | kept:B2, style-anchor-v1.png | l1-book-find-it-v1.png | LAYOUT
 L2 | kept:B2, style-anchor-v1.png | l2-book-name-it-v1.png | LAYOUT
 L3 | kept:B2, style-anchor-v1.png | l3-book-stick-photo-v1.png | LAYOUT

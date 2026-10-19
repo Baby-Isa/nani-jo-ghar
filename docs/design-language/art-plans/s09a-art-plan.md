@@ -29,7 +29,7 @@ Paste the Claude in Chrome block (`s09a-chrome-block.txt`). It opens this page, 
 ```
 Generate an image, 1536×1024, landscape.
 
-The front of Nani's house, seen from the path a few steps away at eye level. A warm, modern family home (not old-fashioned) with textured, rendered walls in cream and sand. A deep shaded porch under ONE wide rounded archway; inside the porch the front door stands open, with a glimpse of a cool hallway. A few potted plants and a tiled step. Nani, the woman in the attached character picture (same face, clothes and proportions, fully covered modest clothing), stands in the porch, full figure, smiling and waving the viewer in. The porch sits a little right of centre; the ground in front of it is clear.
+The front of Nani's house, seen from the path a few steps away at eye level. A warm, modern family home (not old-fashioned) with textured, rendered walls in cream and sand. A deep shaded porch under ONE wide rounded archway; inside the porch the front door stands open, with a glimpse of a cool hallway. A few potted plants and a tiled step. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands in the porch, full figure, smiling and waving the viewer in. The porch sits a little right of centre; the ground in front of it is clear.
 
 The top third of the image is plain, soft, even sky: no sun, no clouds (the weather is added later).
 
@@ -42,7 +42,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks. No religious
 ```
 Generate an image, 1536×1024, landscape.
 
-The front of Nani's house, seen from the path, slightly from one side. A warm, modern one-storey family home (not old-fashioned) with textured, rendered walls in warm white and terracotta. Along the front, a shaded verandah under a row of THREE small rounded arches; behind the middle arch the blue front door stands open. A wooden bench, a pot of herbs and a low garden wall with a gap for the path. Nani, the woman in the attached character picture (same face, clothes and proportions, fully covered modest clothing), stands under the middle arch, full figure, smiling and waving the viewer in. The path in front is clear.
+The front of Nani's house, seen from the path, slightly from one side. A warm, modern one-storey family home (not old-fashioned) with textured, rendered walls in warm white and terracotta. Along the front, a shaded verandah under a row of THREE small rounded arches; behind the middle arch the blue front door stands open. A wooden bench, a pot of herbs and a low garden wall with a gap for the path. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands under the middle arch, full figure, smiling and waving the viewer in. The path in front is clear.
 
 The top third of the image is plain, soft, even sky: no sun, no clouds (the weather is added later).
 
@@ -77,7 +77,7 @@ No people. Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
 Generate an image, 1536×1024, landscape.
 
-A small, cosy home library in the evening. Nani, the woman in the attached character picture (same face, clothes and proportions, fully covered modest clothing), sits in a comfortable armchair beside a small fireplace with a low, gentle fire behind a guard. She holds a large open picture book on her lap, turned to face the viewer, as if reading a story to them; its two open pages are plain cream with NOTHING printed on them. Behind her, wooden bookshelves with only a few books; ONE whole shelf at about her shoulder height is completely empty, ready for new books. A small rug and a reading lamp. Her full figure, a little left of centre.
+A small, cosy home library in the evening. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), sits in a comfortable armchair beside a small fireplace with a low, gentle fire behind a guard. She holds a large open picture book on her lap, turned to face the viewer, as if reading a story to them; its two open pages are plain cream with NOTHING printed on them. Behind her, wooden bookshelves with only a few books; ONE whole shelf at about her shoulder height is completely empty, ready for new books. A small rug and a reading lamp. Her full figure, a little left of centre.
 
 Style: exactly as the attached clinic doorway and the style anchor, but in the evening: a stylised 3D animated-feature-film look, warm lamplight and the soft orange glow of the fire, gentle shadows, calm, made for young children. No outlines.
 
@@ -88,7 +88,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks, not on the b
 ```
 Generate an image, 1536×1024, landscape.
 
-A close-up of a large storybook lying open on Nani's lap, facing the viewer. The two open pages fill most of the image: plain cream paper with a thin gold border and NOTHING printed on them, the spine down the middle, the pages curving gently. Nani's hands, with the sleeves of the clothes in the attached character picture, hold the book's outer edges. Below the book, just her lap and the arm of the chair. The pages must stay plain: the game draws on them.
+A close-up of a large storybook lying open on Nani's lap, facing the viewer. The two open pages fill most of the image: plain cream paper with a thin gold border and NOTHING printed on them, the spine down the middle, the pages curving gently. Nani's hands, with the cream sleeves and red-motif cuffs of the attached character sheet, no rings, hold the book's outer edges. Below the book, just her lap and the arm of the chair. The pages must stay plain: the game draws on them.
 
 Style: exactly as the style anchor, in the evening: a stylised 3D animated-feature-film look, warm lamplight, the soft glow of a fire off to one side. No outlines.
 
