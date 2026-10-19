@@ -26,8 +26,13 @@
  *   const index = clipIndex(familyAudioList, { tts: cookTts.lines })
  *   const V = createVoice({ index, player })        // player: {play(url) -> Promise, stop(), synth?(text) -> Promise}
  *   V.plan(result) -> [{ file?, text, source, tokens: [from, to] }]     a Lang result's clip plan, resolved
- *   V.say(result, { channel = "main", onWord, queue = false }) -> Promise<{ done }>   never blocks input
- *   V.word(text, { say })   one word or short line by its text      V.stop(channel)      V.busy(channel)
+ *   V.say(result, { channel = "main", onWord, queue = false, ifIdle, key, ttl }) -> Promise<{ done }>   never blocks input
+ *       queue: false replaces what the channel is saying (the clinic's lines); queue: true waits its turn and cuts nothing
+ *       (Cook's one speech queue, PAN-04); ifIdle: said only when the channel is silent and empty (an item word on a tap,
+ *       SH-94); key: a waiting line with the same key is dropped for this newer one (the newest count is said); ttl: ms
+ *       a waiting line may wait for its turn before it is dropped (a late number is not said, P10)
+ *   V.word(text, { say })   one word or short line by its text      V.stop(channel)      V.busy(channel) (saying or waiting)
+ *   deviceSpeak(text, { rate = 1 }) -> Promise   the device voice (test path only): waits out a cancel (LNG-16), then speaks
  *   planClips(segments, index, { path, phrases }) -> clip plan     (used by the Lang seam)
  *   phrasesOn() -> false until the pre-publish pass;  isPhrase(text) -> more than one word
  */
@@ -301,24 +306,70 @@ export function browserPlayer() {
       }
     },
     synth(text) {
-      return new Promise((resolve) => {
-        const S = globalThis.speechSynthesis;
-        if (!S) return resolve(false);
-        try {
-          const vs = S.getVoices();
-          const v = vs.find((x) => /^gu/i.test(x.lang)) || vs.find((x) => /^hi/i.test(x.lang)) || vs[0];
-          const u = new SpeechSynthesisUtterance(text);
-          if (v) (u.voice = v), (u.lang = v.lang);
-          u.rate = 0.7;
-          u.onend = u.onerror = () => resolve(true);
-          S.speak(u);
-          setTimeout(() => resolve(true), 700 + 260 * text.length);
-        } catch (e) {
-          resolve(false);
-        }
-      });
+      return deviceSpeak(text);
     },
   };
+}
+
+/** The device voice's speed: normal (LNG-09, 17 Oct: "the weird robotic slow voice ... speed the voices up"). */
+export const DEVICE_RATE = 1;
+/** How long after a speechSynthesis.cancel() the browser takes a new utterance (Chrome drops one spoken in the same breath). */
+export const CANCEL_GAP_MS = 180;
+/**
+ * LNG-16 (17 Oct: "I didn't hear the muke ... the opening card"): the stop that opens every request pop-up cancels the device
+ * voice (js/shared/request-popup.js VoiceStop.stop), and the opening line's first stand-in word was spoken in the same breath,
+ * which the browser throws away. The cancel is noted here, and deviceSpeak waits out CANCEL_GAP_MS after it.
+ */
+function watchCancel(S) {
+  if (!S || S.__njgCancelWatch) return S;
+  try {
+    const c = S.cancel;
+    S.cancel = function () {
+      S.__njgCancelAt = Date.now();
+      return c.apply(this, arguments);
+    };
+    S.__njgCancelWatch = true;
+  } catch (e) {
+    /* a read-only synth: no gap to keep */
+  }
+  return S;
+}
+export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, wait = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+  const S = globalThis.speechSynthesis;
+  if (!S || !globalThis.SpeechSynthesisUtterance) return Promise.resolve(false);
+  watchCancel(S);
+  return new Promise((resolve) => {
+    let done = false;
+    const fin = (v) => !done && ((done = true), resolve(v));
+    const go = () => {
+      try {
+        const vs = (S.getVoices && S.getVoices()) || [];
+        const v = voice || vs.find((x) => /^gu/i.test(x.lang)) || vs.find((x) => /^hi/i.test(x.lang)) || vs[0];
+        const u = new globalThis.SpeechSynthesisUtterance(text);
+        if (v) (u.voice = v), (u.lang = v.lang);
+        u.rate = rate;
+        let started = false;
+        u.onstart = () => (started = true);
+        // it ends when the browser says so (so the next piece never starts under it); a voice that never starts (none
+        // installed) or never ends is let go of
+        u.onend = u.onerror = () => fin(true);
+        S.speak(u);
+        setTimeout(() => !started && fin(false), 900);
+        setTimeout(() => fin(true), 1500 + 300 * String(text).length);
+      } catch (e) {
+        fin(false);
+      }
+    };
+    const since = Date.now() - (S.__njgCancelAt || 0);
+    if (since < CANCEL_GAP_MS) wait(CANCEL_GAP_MS - since).then(go);
+    else go();
+  });
+}
+
+try {
+  watchCancel(globalThis.speechSynthesis); // note every cancel from the start, whoever makes it (the request pop-up's stop)
+} catch (e) {
+  /* no device voice */
 }
 
 export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
@@ -326,7 +377,10 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
   const thePath = () => path || voicePath();
   const thePhrases = () => (phrases == null ? phrasesOn() : !!phrases);
   const dev = () => devFlags().has("voice");
-  const channels = new Map(); // channel -> {token, done: Promise}
+  // channel -> {gen, tail, live, entries}: every line on a channel is an entry in one queue. gen counts the stops: an entry
+  // made before a stop never plays after it. live counts the entries saying or waiting (busy)
+  const channels = new Map();
+  const chan = (name) => channels.get(name) || channels.set(name, { gen: 0, tail: Promise.resolve(), live: 0, entries: [] }).get(name);
   const V = { log: [], path: thePath };
 
   V.plan = (result) => {
@@ -335,9 +389,10 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
   };
   V.phrases = thePhrases;
 
-  async function playItems(items, ch, token, onWord) {
+  async function playItems(items, c, entry, onWord) {
+    const alive = () => !entry.cancelled && entry.gen === c.gen;
     for (const it of items) {
-      if (channels.get(ch).token !== token) return false;
+      if (!alive()) return false;
       if (onWord) {
         try {
           onWord(it.tokens, it);
@@ -357,12 +412,13 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
       else if (it.source === "device" && thePath() === "test" && P.synth) await P.synth(it.text);
       if (gapMs && items.length > 1) await new Promise((r) => setTimeout(r, gapMs));
     }
-    return channels.get(ch).token === token;
+    return alive();
   }
 
   /**
    * An interjection over whatever is playing (over: true; PAN-11): the line playing pauses, these clips play, and the
-   * line carries on from where it was. Nothing else is stopped; a newer interjection replaces an older one.
+   * line carries on from where it was. Nothing else is stopped; a newer interjection replaces an older one. (Cook no longer
+   * uses it since PAN-04's one queue: a count waits its turn; kept for a host that wants the old behaviour.)
    */
   let overTok = 0;
   async function sayOver(items, onWord) {
@@ -385,21 +441,41 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
     return tok === overTok;
   }
 
-  /** Play a Lang result (or {segments}) on a channel. A new line replaces the one playing (queue: true waits). Returns at once. */
-  V.say = function (result, { channel = "main", onWord, queue = false, over = false } = {}) {
+  /**
+   * Play a Lang result (or {segments}) on a channel. Returns at once (input never waits for a voice).
+   *   queue false (default): replaces what the channel is saying (a new line cuts the old).
+   *   queue true: waits for the lines before it and cuts nothing (PAN-04: one speech queue; a stop still clears it).
+   *   ifIdle true: said only when nothing is saying or waiting on the channel, else dropped ({done: false, skipped: true}).
+   *   key: a waiting line with the same key is dropped for this one (the newest count); ttl: ms it may wait for its turn.
+   */
+  V.say = function (result, { channel = "main", onWord, queue = false, over = false, ifIdle = false, key = null, ttl = null } = {}) {
     if (over) return sayOver(V.plan(result), onWord).then((done) => ({ done }));
-    const prev = channels.get(channel) || { token: 0, done: Promise.resolve(true) };
-    const token = prev.token + 1;
+    const c = chan(channel);
+    if (ifIdle && c.live > 0) return Promise.resolve({ done: false, skipped: true });
     const items = V.plan(result);
-    const start = queue ? prev.done.catch(() => {}) : (P.stop(), Promise.resolve());
-    const entry = { token, done: null, playing: true };
-    channels.set(channel, entry);
-    entry.done = start
-      .then(() => playItems(items, channel, token, onWord))
-      .then((done) => {
-        if (channels.get(channel) === entry) entry.playing = false;
-        return { done };
+    if (!queue) {
+      // replace: whatever the channel says or has waiting goes
+      c.gen++;
+      c.entries.forEach((e) => (e.cancelled = true));
+      P.stop();
+      c.tail = Promise.resolve();
+    }
+    if (key) c.entries.forEach((e) => e.key === key && !e.started && (e.cancelled = true));
+    const entry = { gen: c.gen, key, started: false, cancelled: false, until: ttl == null ? null : Date.now() + ttl };
+    c.entries.push(entry);
+    c.live++;
+    entry.done = c.tail
+      .catch(() => {})
+      .then(async () => {
+        if (entry.cancelled || entry.gen !== c.gen || (entry.until != null && Date.now() > entry.until)) return { done: false };
+        entry.started = true;
+        return { done: await playItems(items, c, entry, onWord) };
+      })
+      .finally(() => {
+        c.live = Math.max(0, c.live - 1);
+        c.entries.splice(c.entries.indexOf(entry), 1);
       });
+    c.tail = entry.done;
     return entry.done;
   };
   V.word = (text, { say, channel = "word" } = {}) => {
@@ -410,19 +486,24 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
     const items = fam || t ? [{ file: (fam || t).file, text, source: (fam || t).source, tokens: [0, 0] }] : [{ text, source: thePath() === "test" ? "device" : "missing", tokens: [0, 0] }];
     return V.say({ clipPlan: items }, { channel });
   };
+  const clear = (c) => {
+    c.gen++;
+    c.entries.forEach((e) => (e.cancelled = true));
+    c.tail = Promise.resolve();
+  };
   V.stop = (channel = "main") => {
     const c = channels.get(channel);
-    if (c) (c.token++, (c.playing = false));
+    if (c) clear(c);
     P.stop();
   };
-  V.busy = (channel = "main") => !!(channels.get(channel) && channels.get(channel).playing);
+  V.busy = (channel = "main") => !!(channels.get(channel) && channels.get(channel).live > 0);
   // S04-B (SH-66, decision 75 (3)): the one voice layer. On a page with the shared lifecycle (js/shared/request-popup.js)
   // every stop it makes (a stage end, the end screen, a tap through the request pop-up) silences every channel here too:
   // Cook's lines and the clinic's core lines stop with the clinic's own Kit.Voice, from one call
   const layer = globalThis.Lifecycle && globalThis.Lifecycle.voice;
   if (layer && layer.onStop) {
     V.offLayer = layer.onStop(() => {
-      channels.forEach((c) => (c.token++, (c.playing = false)));
+      channels.forEach(clear);
       overTok++;
       P.stop();
     });
