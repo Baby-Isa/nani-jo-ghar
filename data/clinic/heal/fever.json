@@ -237,7 +237,9 @@
   "assets/clinic/items-s08b/hot-water-bottle-s08b.webp",
   "assets/clinic/items-s08b/thermometer-flat-s08b.webp",
   "assets/clinic/items-s08b/thermometer-mouth-s08b.webp",
-  "assets/clinic/items-v2/blanket-red.webp"
+  "assets/clinic/items-v2/blanket-red.webp",
+  "assets/clinic/sheets/heater/heater-3q-off.webp",
+  "assets/clinic/sheets/heater/heater-3q-on.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }
