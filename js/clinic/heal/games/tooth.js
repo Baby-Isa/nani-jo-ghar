@@ -422,7 +422,16 @@
       // CLN-182: half way between the tooth's bottom and the screen's bottom (the near view's), both middles on it;
       // the pair centred under the tooth
       const v = view.near();
-      const bottom = (v[1] + v[3] - DY0) * KD;
+      // the screen's bottom in the near view: the svg fits its viewBox inside its own box (meet), so where the box is
+      // taller than the view, more shows below (tablets), centred
+      const er = S.svg.getBoundingClientRect();
+      const visH = er.width > 0 && er.height > 0 ? Math.max(v[3], (v[2] * er.height) / er.width) : v[3];
+      let bottom = (v[1] + v[3] / 2 + visH / 2 - DY0) * KD;
+      // in the near view itself: the screen's own bottom, measured through the svg's matrix (exact on every shape)
+      const m = st.view === "near" && !st.moving && S.svg.getScreenCTM ? S.svg.getScreenCTM() : null;
+      const doc = S.svg.ownerDocument;
+      const screenB = doc && doc.documentElement ? doc.documentElement.clientHeight : 0;
+      if (m && m.d && screenB) bottom = ((screenB - m.f) / m.d - DY0) * KD;
       const mid = (TOOTH.y1 + bottom) / 2;
       const cx = (TOOTH.x0 + TOOTH.x1) / 2;
       const gap = 50;
@@ -594,6 +603,7 @@
         parkDrill();
       }
       if (c.kind === "fill") {
+        placeFill(); // the near view has landed: measured on the screen itself (CLN-182)
         const p = filling(0);
         putNozzle(p.cx, p.cy);
         drawPaste();
