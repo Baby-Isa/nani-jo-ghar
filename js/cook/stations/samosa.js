@@ -178,21 +178,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const steps = St.steps(ctx);
     /* ---------- 1 + 2: fill and fold ---------- */
     // the fill and the fold: the first time, the coach shows each move (X11: data.onboard.samosa)
-    await St.begin(S, ctx, "samosa", "marble");
-    if (phases.fill) UI.gist(phases.fill);
-    if (ctx.nextStep) ctx.nextStep("Fill");
+    const fillBegun = St.begin(S, ctx, "samosa", "marble");
+    await viewUp(S, "marble", fillBegun);
+    const fillReady = fillBegun.then(() => {
+      if (phases.fill) UI.gist(phases.fill);
+      if (ctx.nextStep) ctx.nextStep("Fill");
+    });
     const fz = Mech.zone(S, ctx, { id: "fill", level });
-    const made = await fillFold(fz, { ids, want, kinds, exclude, count, want2, kinds2, count2, level, phases, retry: false, redo, steps });
+    const made = await fillFold(fz, { ids, want, kinds, exclude, count, want2, kinds2, count2, level, phases, retry: false, redo, steps, ready: fillReady });
     fz.close();
     St.end();
 
     /* ---------- 3: fry, then serve and taste ---------- */
     // the fry: its first-time coach runs (X11: data.onboard.fry; it used to be switched off here)
-    await St.begin(S, ctx, "fry", "marble");
-    if (phases.fry) UI.gist(phases.fry);
-    if (ctx.nextStep) ctx.nextStep("Fry");
+    const fryBegun = St.begin(S, ctx, "fry", "marble");
+    await viewUp(S, "marble", fryBegun);
+    const fryReady = fryBegun.then(() => {
+      if (phases.fry) UI.gist(phases.fry);
+      if (ctx.nextStep) ctx.nextStep("Fry");
+    });
     const yz = Mech.zone(S, ctx, { id: "fry", level });
-    const fried = await fry(yz, { n: made.n, level, redo, steps });
+    const fried = await fry(yz, { n: made.n, level, redo, steps, ready: fryReady });
     // the first try's verdict (graded where it happened): the count and the frying
     const countWrong = made.countWrong || null;
     if (countWrong || fried.bad) yz.listen(false, countWrong || fried.bad);
@@ -213,6 +219,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return result;
   }
 
+  /*
+   * s08 w6B (CK-48, P28; the judge: "the stage is bare marble at 2264 and 2665 ms before the board appears at 3168 ms"): the
+   * station's art is loaded before St.begin (above, while the order's card is up), but St.begin's view fade comes up on the
+   * empty worktop and then waits for the station's pop-up (ctx.nextStep) before the scene was drawn. Now the scene is drawn
+   * the moment the new view is set (as it fades in), and only the play waits for St.begin: the game appears with its
+   * worktop, never after it. Resolves once St.begin has set `view` (its fresh layer), or once St.begin has finished.
+   */
+  function viewUp(S, view, begun) {
+    const layer0 = S.layer;
+    let done = false;
+    begun.then(
+      () => (done = true),
+      () => (done = true),
+    );
+    return new Promise((resolve) => {
+      const check = () => (done || (S.layer !== layer0 && S.viewName === view) ? resolve() : setTimeout(check, 16));
+      check();
+    });
+  }
   /**
    * The phase fold (design system 13): once the fill closes, the card can't be acted on until the plate is
    * tasted, so it folds to face + headline (no ✓: the samosas aren't made yet; the count is only in the
@@ -349,7 +374,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const STRIP_H = 290; // a strip's height at full size (design px); its length is the fold's (Cook.Pastry)
   const PPU = 300; // the fold's canvas px per strip height
   const STRIPS = 6;
-  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps }) {
+  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps, ready = null }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
     const z0 = z;
     z = Cook.liftZone(z0);
@@ -500,6 +525,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       strips.push(st);
     }
     await Cook.wait(260 + 40 * STRIPS);
+    if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
     let active = null;
     // (the test hook focus, flow.js: the strip's filling corner, where each spoonful lands and puffs; CK-27's filmstrip)
     Cook.focusBox = () => {
@@ -993,7 +1019,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- 3: fry in the karahi on the wide hob, lift onto the paper-lined plate ---------- */
-  async function fry(z, { n, level, redo, steps }) {
+  async function fry(z, { n, level, redo, steps, ready = null }) {
     const z0 = z;
     z = Cook.liftZone(z0);
     const S = z.S;
@@ -1039,6 +1065,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // nothing fries), and on again. T17: Chulo bar!, then Tar!
     const cx = at.x;
     const cy = at.y;
+    if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
     steps.to("samosa:fire");
     await new Promise((resolve) => {
       burner.knobHit.handAction = false;

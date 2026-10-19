@@ -91,7 +91,14 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * tomato and coriander that an order may not have (DAAR-16: the pot shows what went in), so they are not used: what went in
    * shows as DP1's pieces on the daal, and the tadka lies under the daal poured over it.
    */
-  const POT2 = { w: 900, h: 705, cx: 0.5, cy: 0.4993, r: 0.3844, inner: 0.3467 };
+  const POT2 = { w: 900, h: 705, cx: 0.5, cy: 0.4993, r: 0.3844, inner: 0.3467, cut: [327 / 900, 333 / 900], disc: 337 / 900 };
+  /*
+   * s08 w6B (DAAR-31, P50: "the bottom and left walls of the pot are more visible than the top wall"): DP2's lip is not even
+   * (measured on the @2x cut along 12 rays: its bright lip begins 12 px inside the outer edge at the top, 18-25 px elsewhere,
+   * and the outer edge is 340 x 346 px), so a round cut at `inner` showed a thin top and a thick bottom. The still rim is now
+   * cut on an ellipse a constant 13 px inside the outer edge (cut: its x and y radii, of w), and the disc reaches past it
+   * (disc: its radius, of w; under the rim's outer edge everywhere), so the metal shows one even band all round.
+   */
   const OLD_IN = { cx: 213.5 / 430, cy: 175 / 348, r: 135 / 430 };
   // DP3's discs (assets/s08b-cut-data.json: [cx, cy, r] of the circle on its 419 x 420 canvas)
   const DISCS = { daar: ["dv4-disc-plain", "disc-daal-plain-s08b", [208.7, 223.4, 194.0]], stirred: ["dv4-disc-stirred", "disc-daal-stirred-s08b", [208.7, 197.0, 194.2]] };
@@ -184,15 +191,21 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     g.drawImage(img, 0, 0, w, h);
     const cx = POT2.cx * w;
     const cy = POT2.cy * h;
-    const rin = POT2.inner * w;
-    const cut = g.createRadialGradient(cx, cy, rin - 12, cx, cy, rin + 2);
+    // DAAR-31: an even band of rim all round (POT2.cut, an ellipse a constant width inside DP2's outer edge)
+    const rx = POT2.cut[0] * w;
+    const ky = POT2.cut[1] / POT2.cut[0];
+    g.save();
+    g.translate(cx, cy);
+    g.scale(1, ky);
+    const cut = g.createRadialGradient(0, 0, rx - 5, 0, 0, rx + 1);
     cut.addColorStop(0, "rgba(0,0,0,1)");
     cut.addColorStop(1, "rgba(0,0,0,0)");
     g.globalCompositeOperation = "destination-out";
     g.fillStyle = cut;
     g.beginPath();
-    g.arc(cx, cy, rin + 2, 0, TAU);
+    g.arc(0, 0, rx + 1, 0, TAU);
     g.fill();
+    g.restore();
     g.globalCompositeOperation = "source-over";
     ct.refresh();
     return key;
@@ -652,7 +665,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     pot.shadow = S.contactShadow(pot, { centerX: cx, centerY: cy + bodyR * 0.08, width: bodyR * 2.15, height: bodyR * 2.15 });
     const inR = (bodyR * POT2.inner) / POT2.r;
     // the disc reaches a little under the rim's soft inner edge, so no edge of it ever shows
-    const discAt = (img) => img.setScale((inR * 1.03) / (img.width / 2));
+    // DAAR-31: out to POT2.disc, past the rim's even cut and under its outer edge
+    const discR = (bodyR * POT2.disc) / POT2.r;
+    const discAt = (img) => img.setScale(discR / (img.width / 2));
     const contents = S.track(discAt(S.add.image(cx, cy, discTex(S, "oil")).setDepth(D.item + 0.05)));
     contents.setName("daar-pot-contents");
     const rim = S.track(S.add.image(cx, cy, rimTex(S)).setOrigin(POT2.cx, POT2.cy).setScale(scale).setDepth(D.item + 0.2));
@@ -1190,7 +1205,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       // over it: rimTex), and DP3's stirred swirl comes up over it as you go faster, turning a little faster
       const still = contents;
       const swirl = S.track(S.add.image(cx, cy, discTex(S, "stirred")).setDepth(D.item + 0.1).setAlpha(0));
-      swirl.setScale((inR * 1.03) / (swirl.width / 2));
+      swirl.setScale((bodyR * POT2.disc) / POT2.r / (swirl.width / 2));
       swirl.setName("daar-pot-swirl");
       /*
        * DAAR-30 (P49, Zafar 17 Oct: "a little racing flag to mark the start and end of one revolution ... at the 12 o'clock

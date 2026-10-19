@@ -171,7 +171,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // DAAR-35 (P55, Zafar 17 Oct: "the items should just come continuously"): a round lasts its throws; the next one's
         // throws follow straight on, at the same spacing, while the last round's are still in the air. Only the last round
         // waits for the air to clear (its flight)
-        return { i, targets: tg, kinds, bag, every, secs: bag.length * every };
+        return { i, targets: tg, kinds, bag, size: bag.length, every, secs: bag.length * every };
       });
       const total = rounds.reduce((a, r) => a + r.secs, 0) + flight;
       // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
@@ -501,6 +501,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       for (const r of rounds) {
         phase = r;
         roundT = 0;
+        if (r.i > 0) {
+          // s08 w6B (DAAR-35, contract-65 at L3: a 175 ms gap at the switch): the next wave's first throw goes on its beat
+          // first; the card's new rows and her line (DOM work and a clip starting, a slow frame) come just after it, while
+          // it rises, so nothing the switch does can hold a throw back
+          await new Promise((resolve) => {
+            const off = z.tick(() => {
+              if (r.bag.length === r.size && running) return;
+              off();
+              resolve();
+            });
+          });
+        }
         // DAAR-34 (P54): the card shows this round's rows as she calls them (a caller's cue; daar's chop card fills its dots)
         if (onCall) onCall(r.targets.slice(), r.i);
         if (r.i === 0) {
