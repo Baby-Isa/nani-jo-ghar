@@ -12,10 +12,10 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Done:** Cook feedback 17 Oct (`docs/feedback/cook-playtest-2026-10-17.md`, 66 points, 65 rows) and clinic feedback 18 Oct (`docs/feedback/clinic-playtest-2026-10-18.md`, 49 points, 49 rows); Zafar said yes to all fifteen Cook decisions (rows, `CLAUDE.md` 9, `cook.md`). Old status histories moved to `build/tools/review/data/status-history.jsonl` to keep the fix list within its limit. The art run s08b is planned (20 images): plan `docs/design-language/art-plans/s08b-art-plan.md`, block `s08b-paste-block.txt`.
 
-**Waiting on Zafar:** the art run (his ChatGPT); the twelve clinic decisions (questions 39); the budget and waves (the sprint file).
+**Waiting on Zafar:** the twelve clinic decisions (questions 39) and the 19 Oct decisions (questions 42: level table, scrape, layouts, plan). **Art landed 19 Oct:** all 20 s08b images in `sources/art/s08b/`, judged usable (SP1 to try in the game).
 
 **Next steps, in order:**
-1. When images land: `/art-run` judge and cut (`artjudge.py`, `artcut.py`).
+1. His answers into rows and docs, then wave 0 of the sprint plan (cut the art).
 2. His clinic answers into rows and docs; the waves in the sprint file, two builders at a time, each `/brief`ed.
 3. Gate in chunks, `evidence.mjs --run --sprint`, judge, `/publish`.
 
