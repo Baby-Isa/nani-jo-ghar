@@ -984,7 +984,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
         // a clip that never ends (no audio on this device) never holds the station up
-        const talk = speakId ? Lang.speakWord(speakId) : line ? Lang.speak(line) : null;
+        const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
         return talk ? Promise.race([talk.catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
       };
 

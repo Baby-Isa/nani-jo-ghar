@@ -608,7 +608,8 @@
         // child decides when it's enough: moving on at the target would give the answer away, C10)
         if (o.capped && o.of && n >= o.of && level >= 2) ctx.ready(true);
         else if (n > 0 && level >= 2 && !o.next) showDone(true);
-        if (level <= 1 && n > 0 && n <= 5) Kit.Voice.now(LANG().num(n));
+        // (PAN-04: the number as you tap is said only when no line is being said: it never goes over the doctor)
+        if (level <= 1 && n > 0 && n <= 5 && !Kit.Voice.busy) Kit.Voice.now(LANG().num(n));
       },
       /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */
       ready(on) {

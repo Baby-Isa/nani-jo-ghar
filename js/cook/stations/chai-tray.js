@@ -587,7 +587,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       c.add([g, t]);
       S.tweens.add({ targets: c, alpha: 1, y: y - 18, duration: 180, ease: "Back.easeOut" });
       S.tweens.add({ targets: c, alpha: 0, y: y - 46, delay: 1900, duration: 320, onComplete: () => c.destroy() });
-      if (speak && !UI.naniMuted()) Lang.speakWord(id);
+      if (speak && !UI.naniMuted()) Lang.popWord(id);
     };
     // CHAI-19 (S05-C3): the word pops over the pan's own upper right, inside the hob (above the rim it sat loose over the
     // hob's top edge at 844x390), right of the count badge on the rim's left (SH-39)

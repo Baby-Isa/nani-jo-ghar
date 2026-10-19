@@ -356,7 +356,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     S.tweens.add({ targets: c, alpha: 1, scale: Math.max(z.k, Cook.Kit.textFloor(S, 36)), y: y - z.L(18), duration: 200, ease: "Back.easeOut" });
     S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: ms, duration: 320, onComplete: () => c.destroy() });
     if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
-    const talk = speakId ? Lang.speakWord(speakId) : line ? Lang.speak(line) : null;
+    const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
     return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
   }
 
@@ -1074,7 +1074,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         dial.laps(count);
         // DAAR-24 retired (Zafar, 14 Oct, D12): the laps are said aloud at every level, the stir's own exception to the
         // counting rule; the line carries role "laps" so the counting check (contract-19) knows it is not counting along
-        if (!(UI.naniMuted && UI.naniMuted())) Lang.speak(Lang.role(Lang.numLine(count), "laps")).catch(() => {});
+        if (!(UI.naniMuted && UI.naniMuted())) Lang.speak(Lang.role(Lang.numLine(count), "laps"), { kind: "count" }).catch(() => {});
         z.progress({ lap: count });
         // SH-58: the laps are done: the ✓ is the only thing left, and glows (a station's first plays; level 1 only: later the glow would give the count away)
         if (count === laps && Cook.roundLevel(ctx) <= 1 && UI.doneGlows && UI.doneGlows()) UI.glowDone(true);
