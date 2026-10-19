@@ -649,9 +649,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (UI.tallyAt) UI.tallyAt([pan.x - panR * 0.7, pan.y - panR * 1.02], { anchor: "right" });
       if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
       if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
-      pan.extras.forEach((id) => UI.count(1, { speak: false, id }));
+      pan.extras.forEach((id) => UI.count(spoonsOf(pan, id), { speak: false, id }));
       refresh();
     };
+    // (CK-TB-01: the badge shows each spice's spoonfuls, so one tap on it takes one back and the chip goes at none)
+    const spoonsOf = (pan, id) => Math.max(1, (pan.spoons || []).filter((x) => x === id).length);
     const closeSpoons = (pan) => {
       if (!pan || pan.closed || pan.spoonsClosed || !(pan.sugar > 0)) return;
       pan.spoonsClosed = true;
@@ -836,7 +838,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         } else if (id !== "cook-chai") {
           if (!pan.extras.includes(id)) pan.extras.push(id);
           if (id === pan.p.extra && !pan.closed) UI.mission.tickItem(id, dishNo(), { for: pan.who });
-          UI.count(1, { speak: false, id });
+          UI.count(spoonsOf(pan, id), { speak: false, id });
         }
         pop(id, pan);
         await spoonInto(pan, obj, id);
@@ -1055,7 +1057,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       UI.hideCount();
       if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
       if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
-      pan.extras.forEach((x) => UI.count(1, { speak: false, id: x }));
+      pan.extras.forEach((x) => UI.count(spoonsOf(pan, x), { speak: false, id: x }));
       Cook.sfx.pop();
       drawBits(pan); // SH-32: the spoonful comes back out of the pan
       if (obj) await Cook.Spoon.spoon(zb, { bowl: pan.img, into: at(obj), word: id, ms: kCount.spoonMs });
@@ -1086,7 +1088,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
        * pan's picture: s07's tilts don't register on this pan (see TOP).
        */
       const P = Object.assign({ steps: 3, deg: -20, squash: 0.12, liftMs: 420, stepMs: 150, pourMs: 700, backMs: 420 }, K.pour || {});
-      const tilt = P.steps * P.deg;
+      let steps = P.steps;
+      let tilt = steps * P.deg;
       const to = halves ? pan.poured + 1 : 2;
       const from = pan.poured;
       const body = look8(pan.img, black ? "black" : "milk");
@@ -1110,28 +1113,43 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // it would leave the screen (its handle points up over the tray's top row)
       const gd = w.glass.empty.displayWidth;
       const lipTo = { x: w.x + gd * 0.04, y: w.y - gd * 0.36 };
-      const end = TOP.turn + tilt;
       const k1 = 1 - P.squash;
       const v = Cook.view || {};
       const box = { l: (v.left || 0) + 12, t: (v.top || 0) + 12, r: (v.right || 1600) - 12, b: (v.bottom || 900) - 12 };
-      let sc = s8;
-      let hold = null;
-      for (let i = 0; i < 5; i++) {
-        hold = NjgPour.holdAt(lipTo, [TOP.lip[0] * sc * k1, TOP.lip[1] * sc], end);
-        body.setPosition(hold.x, hold.y).setAngle(end).setScale(sc * k1, sc);
-        const bb = body.getBounds();
-        const over = Math.max(box.t - bb.y, bb.right - box.r, box.l - bb.x, 0);
-        if (!over) break;
-        sc *= Math.max(0.6, 1 - over / Math.max(bb.width, bb.height) - 0.02);
+      const holdFor = (n, z) => NjgPour.holdAt(lipTo, [TOP.lip[0] * z * k1, TOP.lip[1] * z], TOP.turn + n * P.deg);
+      const fits = (n, z) => {
+        const h = holdFor(n, z);
+        const bb = body.setPosition(h.x, h.y).setAngle(TOP.turn + n * P.deg).setScale(z * k1, z).getBounds();
+        return bb.y >= box.t && bb.right <= box.r && bb.x >= box.l;
+      };
+      // the biggest it can be drawn (at least 0.7 of its size on the hob: it is the same pan), with all its steps, or one
+      // fewer where a short screen leaves no room for the handle, turned up, over the tray's top row
+      const biggest = (n) => {
+        if (fits(n, s8)) return s8;
+        let lo2 = s8 * 0.7;
+        let hi2 = s8;
+        for (let i = 0; i < 12; i++) {
+          const mid = (lo2 + hi2) / 2;
+          if (fits(n, mid)) lo2 = mid;
+          else hi2 = mid;
+        }
+        return lo2;
+      };
+      let sc = biggest(steps);
+      if (sc < s8 * 0.92 && steps > 3) {
+        const sc2 = biggest(steps - 1);
+        if (sc2 > sc + s8 * 0.04) [steps, sc] = [steps - 1, sc2];
       }
+      tilt = steps * P.deg;
+      const hold = holdFor(steps, sc);
       body.setPosition(pan.x, pan.y).setAngle(TOP.turn).setScale(s8);
       const plan = NjgPour.plan({
         from: { x: pan.x, y: pan.y },
         to: hold,
         tilt,
-        steps: P.steps,
+        steps,
         arc: 50,
-        ms: { lift: P.liftMs, tip: P.stepMs * P.steps, pour: P.pourMs * (to - from), untip: P.stepMs * P.steps, back: P.backMs },
+        ms: { lift: P.liftMs, tip: P.stepMs * steps, pour: P.pourMs * (to - from), untip: P.stepMs * steps, back: P.backMs },
       });
       const M = plan.marks;
       const rI = TOP.inner;
@@ -1177,7 +1195,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         if (f.flow > 0.01) {
           const sp = NjgPour.lipAt({ x: f.x, y: f.y, angle: ang }, [TOP.lip[0] * z * k, TOP.lip[1] * z]);
           const surf = { x: w.x, y: w.y - gd * 0.06 };
-          const wd = Math.max(7, rimR * 0.085);
+          const wd = Math.max(9, rimR * 0.13);
           const sm = NjgPour.stream(sp, surf, wd * (0.35 + 0.65 * f.flow), t / 1000);
           stream.fillStyle(black ? BLACK.stream : COL.glass, 0.95);
           stream.fillPoints(sm.poly, true);
