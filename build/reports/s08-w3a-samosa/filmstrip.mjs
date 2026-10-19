@@ -1,8 +1,8 @@
 // s08 w3A (SAM-21): films samosa's coded fold in the real game. Plays the Station lab's samosa fair (the sandbox's Cook
 // player); at every swipe it drags in steps and shoots the strip: lit with its arrow, a third, two thirds, then let go. A
-// second, x2 page shoots the flap close. One sheet per size: <out>/fold-<size>.png (and fold-<size>-x2.png).
+// second, x2 page shoots the flap close. One sheet per size: <out>/fold-<size>.jpg (and fold-<size>-x2.jpg).
 //   COOK_TEST_PORT=8839 flock -w 1800 /tmp/njg-browser.lock timeout 600 node build/reports/s08-w3a-samosa/filmstrip.mjs <out> <level> <size>[,<size>] [x2]
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { startServer, launch, newPage, sleep } from "../../sandbox/lib/env.mjs";
 import { openCook } from "../../sandbox/flows/cook.mjs";
@@ -72,9 +72,8 @@ for (const size of sizes.split(",")) {
     await page.setViewportSize({ width: 1800, height: 900 });
     await page.setContent(`<body style="margin:0;padding:8px;background:#f4ecdf;font:600 15px sans-serif;color:#2a2522"><h3 style="margin:4px 0 8px">samosa L${level} fold at ${size}${dpr > 1 ? " (x2 zoom on the flap)" : ""}: ${frames.length} frames</h3><div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:8px">${frames.map((f) => `<div><div>${f.label}</div><img src="data:image/png;base64,${f.png}" style="width:100%;border-radius:6px"></div>`).join("")}</div></body>`);
     await sleep(300);
-    const file = join(out, `fold-${size}${dpr > 1 ? "-x2" : ""}.png`);
-    await page.screenshot({ path: file, fullPage: true });
-    writeFileSync(file.replace(/\.png$/, ".json"), JSON.stringify(frames.map((f) => f.label)));
+    const file = join(out, `fold-${size}${dpr > 1 ? "-x2" : ""}.jpg`);
+    await page.screenshot({ path: file, fullPage: true, type: "jpeg", quality: 82 });
     console.log(file, frames.length, "frames");
   }
 }
