@@ -481,9 +481,12 @@
       });
       // as many rows as fit the play area's height (a phone is short), then more columns: measured on the boxes as drawn
       // (SH-112: the shared box's size comes from the tokens, so a phone's is smaller than a laptop's)
+      // (the column hangs from under her face circle: the rows that fit between its top and the foot of the play area)
       const box = shelf.firstElementChild ? shelf.firstElementChild.getBoundingClientRect().height : 0;
       const gap = parseFloat((global.getComputedStyle && global.getComputedStyle(shelf).rowGap) || "") || 8;
-      const rowsFit = Math.max(2, Math.floor((root.getBoundingClientRect().height * 0.9 + gap) / ((box || 62) + gap)));
+      const rr = root.getBoundingClientRect();
+      const room = rr.bottom - Math.max(rr.top, shelf.getBoundingClientRect().top) - gap;
+      const rowsFit = Math.max(2, Math.floor((room + gap) / ((box || 62) + gap)));
       shelf.style.setProperty("--cols", Math.max(1, Math.ceil(list.length / Math.min(6, rowsFit))));
     };
     S.pick = (id) => {

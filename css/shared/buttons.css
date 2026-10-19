@@ -50,6 +50,11 @@
   display: block; flex: none; height: var(--njg-go-pic); width: auto; max-width: calc(var(--njg-go-pic) * 1.6); object-fit: contain;
   pointer-events: none; -webkit-user-drag: none;
 }
+/* a button with a picture is never narrower than its picture and arrow (inside a row that wraps it, the clinic's actions,
+   its max-width is a share of itself and would push the arrow out past its edge) */
+.njg-next.has-pic, .njg-next:has(> .njg-next-t > :is(img, svg)) { min-width: max-content; }
+/* a drawn (svg) picture has no size of its own: it gets a 3:4 box and fits inside it (its viewBox, centred) */
+.njg-next .njg-next-t > svg { width: calc(var(--njg-go-pic) * 0.75); }
 .njg-next .njg-next-t:has(> :is(img, svg)) { display: flex; flex: none; align-items: center; }
 .njg-next-ic { display: inline-flex; flex: none; width: calc(var(--njg-go-h) * 0.38); height: calc(var(--njg-go-h) * 0.38); color: var(--njg-gold); }
 .njg-next-ic svg { width: 100%; height: 100%; }

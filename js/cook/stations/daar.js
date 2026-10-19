@@ -763,7 +763,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         tilt: -38,
         squash: 0.14,
         colour: 0xe09a12,
-        width: z.L(34),
+        width: z.L(26),
         depth: D.item + 0.25,
         surface: () => ({ x: cx + inR * 0.12, y: cy + inR * 0.04 }),
         arc: z.L(50),

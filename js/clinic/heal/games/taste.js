@@ -351,10 +351,11 @@
         colour: t.liquid,
         opacity: id === "water" ? 0.75 : 0.95,
         width: 13,
-        // the stream lands on the drink's surface as it rises (a little right of its middle, under the spout)
+        // the stream lands on the drink's surface as it rises (a little right of its middle, under the spout); while the
+        // surface is still down inside the opaque tumbler it ends in the mouth's opening, never over the steel front
         surface: (u) => {
-          const q = surf(Math.max(0.04, u));
-          return { x: q.x + q.rx * 0.2, y: q.y };
+          const q = surf(u);
+          return { x: q.x + q.rx * 0.2, y: Math.min(q.y, MOUTH.y + MOUTH.ry * 0.35) };
         },
         // CLN-104 (S05-D3): the level rises slowly enough to see it rise (it read as one jump at 760 ms)
         onFill: (u) => u > 0 && level(u, t.liquid, opOf(id)),
