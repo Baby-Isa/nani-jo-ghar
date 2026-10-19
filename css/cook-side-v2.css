@@ -341,6 +341,9 @@ body.w6 #mission.stamped .oc-card::after {
   background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='21' fill='%23fffaf0' stroke='%23c9962e' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='16.5' fill='none' stroke='%23c9962e' stroke-width='1.5'/%3E%3Cpath d='M13 30h22M15.5 30a8.5 8.5 0 0 1 17 0' fill='none' stroke='%23c9962e' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='19.5' r='1.8' fill='%23c9962e'/%3E%3C/svg%3E");
 }
 @keyframes stampIn { from { transform: rotate(-12deg) scale(1.6); opacity: 0; } }
+/* SH-37 / CHT-15 (judges, 19 Oct: "Muke daar khape" ran under the stamp, which covered its full stop): the stamped card keeps
+   the stamp's own room at its right, so its words fit (shrink, then wrap: non-negotiable 9) beside it, never under it */
+body.w6 #mission.stamped .oc-card { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
 /* SH-53 / SH-55: the one highlight (her row while she talks) is the gold token, drawn INSIDE the row, so no card or
    sidebar edge can clip it */
 body.w6 #mission .throb { animation: throbIn .7s ease-in-out infinite alternate !important; border-radius: var(--njg-radius); }

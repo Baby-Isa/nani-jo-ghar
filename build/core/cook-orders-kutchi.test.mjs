@@ -5,7 +5,7 @@
 //      engine's confirmed list frame says it ("Ne ba samosa, ..."); the tomato count stays one until the plural is in.
 //   2. PAN-16 / contract-22: Lang.speak (js/cook/words.js, the one speech queue) says a line once; the same line again only
 //      after 10 s of the child's time, unless the child asked, another person says it in the same pop-up, it is a step's call,
-//      or it was cut before its end.
+//      or a stop cleared it before it began.
 // Run: node --test build/core/cook-orders-kutchi.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -56,9 +56,9 @@ test("LNG-17: the join is left out, the second kind says 'ne', a single tomato i
 async function speaker() {
   const { Cook, win } = await loadCookEngine({ seed: 1 });
   const played = [];
-  let cut = false;
+  let hold = null; // a clip that is still sounding until released (a line cut part-way)
   const player = {
-    play: async (u) => (played.push(u), cut ? (cut = false, false) : true),
+    play: (u) => (played.push(u), hold ? new Promise((r) => (hold = r)) : Promise.resolve(true)),
     stop() {},
     synth: async (t) => (played.push(`device:${t}`), true),
   };
@@ -68,7 +68,7 @@ async function speaker() {
   const realNow = Date.now;
   const clock = { set: (t) => (now = t), add: (ms) => (now += ms), restore: () => (Date.now = realNow) };
   Date.now = () => now;
-  return { Cook, win, played, clock, cutNext: () => (cut = true) };
+  return { Cook, win, played, clock, holdNext: () => (hold = true), release: () => typeof hold === "function" && (hold(true), (hold = null)) };
 }
 
 test("PAN-16: a line is said once; again only after 10 s of the child's time", async () => {
@@ -80,6 +80,9 @@ test("PAN-16: a line is said once; again only after 10 s of the child's time", a
     const once = played.length;
     assert.ok(once > 0);
     clock.add(2000);
+    // every caller asks Lang.hasVoice before it says a line: false now, so it shows the line without saying it again
+    assert.equal(L.hasVoice(line()), false, "not to be voiced again 2 s later");
+    assert.equal(L.voiced(line()), true, "it can still be heard (a speaker button, a replay)");
     assert.equal(await L.speak(line()), false, "said again 2 s later");
     assert.equal(played.length, once, "nothing played the second time");
     clock.add(8100);
@@ -98,29 +101,40 @@ test("PAN-16: a line is said once; again only after 10 s of the child's time", a
   }
 });
 
-test("PAN-16: two people in one pop-up may say the same; a later pop-up may not; a cut line may be said again", async () => {
-  const { Cook, win, clock, cutNext } = await speaker();
+test("PAN-16: two people in one pop-up may say the same; a later pop-up may not; a line a stop cleared before it began may", async () => {
+  const { Cook, win, clock, holdNext, release } = await speaker();
   try {
     const L = Cook.Lang;
     const order = () => L.line("need", L.phrase(["cook-chai"]));
     let serial = 4;
+    let card = { who: "nana" };
     win.RequestPopup = { serial: () => serial, isOpen: () => serial > 0 };
+    win.document = { querySelector: (sel) => (/\.speaking/.test(sel) ? card : null) };
     assert.equal(await L.speak(order()), true);
     clock.add(900);
+    card = { who: "ma" };
     assert.equal(await L.speak(order()), true, "the second person's own card, in the same pop-up");
+    card = null;
+    clock.add(300);
+    assert.equal(await L.speak(order()), false, "the same pop-up, but no one's card being read: the station's own line again");
     serial = 5;
     clock.add(900);
     assert.equal(await L.speak(order()), false, "the order again in the next pop-up (the reveal) is a repeat");
     serial = 0;
-    // cut before its end (a tap through): never heard whole, so it may be said again
-    const step = () => L.line("then", L.phrase(["veg-02"]));
-    cutNext();
-    const V = Cook.core.voice;
-    const p = L.speak(step());
-    V.stop("cook");
-    await p;
+    // a tap through the pop-up: the line being said is cut (heard as far as the child wanted: not said again); the line
+    // waiting its turn behind it never began, so it may be said later
+    const a = () => L.line("then", L.phrase(["veg-02"]));
+    const b = () => L.line("then", L.phrase(["cook-maani"]));
+    holdNext();
+    const pa = L.speak(a());
+    const pb = L.speak(b());
+    await new Promise((r) => setTimeout(r, 5));
+    Cook.core.voice.stop("cook");
+    release();
+    await Promise.all([pa, pb]);
     clock.add(500);
-    assert.equal(await L.speak(step()), true, "a line cut short is said again");
+    assert.equal(await L.speak(a()), false, "the line cut part-way is not said again at once");
+    assert.equal(await L.speak(b()), true, "the line that never began is said");
   } finally {
     clock.restore();
   }
