@@ -43,6 +43,8 @@
 //   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
 //   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
 //   contract-50 one-tick     samosa: the card's rows tick together at the one tick, never a kind before its samosas are all made (SAM-24)
+//   contract-70 slow-at-green  chai: "Slow kar" as the heat bar enters the green, never before it (CHAI-24; lib/contract-chai.mjs)
+//   contract-71 once-each      chai: milk, water and tea go into a pan once each; a second tap adds nothing (CHAI-22)
 //   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
 //                           TTS, no unchecked or redo clip, no unknown audio (non-negotiable 10; checks-to-build 5)
 //
@@ -57,6 +59,8 @@ import { lexiconWords } from "./evidence.mjs";
 import { DAY_CHECKS, check45, check46 } from "./contract-day.mjs";
 // contracts 65 and up: the daal station (s08 w4A), in a file of their own
 import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
+// contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
+import { CHAI_CHECKS, check70, check71 } from "./contract-chai.mjs";
 
 export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
@@ -99,6 +103,7 @@ export const CHECKS = {
   "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
   ...DAY_CHECKS,
   ...DAAL_CHECKS,
+  ...CHAI_CHECKS,
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -1320,6 +1325,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check50(r, tl, segs, add);
   check65(r, tl, add);
   check66(r, tl, v, add);
+  check70(r, tl, add);
+  check71(r, tl, add);
   return out;
 }
 

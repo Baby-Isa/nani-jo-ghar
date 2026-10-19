@@ -43,7 +43,16 @@
      "spi-05"
     ],
     "speakGapMs": 300,
-    "tallyMax": 6
+    "tallyMax": 6,
+    "pour": {
+     "steps": 4,
+     "deg": -20,
+     "squash": 0.12,
+     "liftMs": 420,
+     "stepMs": 150,
+     "pourMs": 700,
+     "backMs": 420
+    }
    },
    {
     "tolerance": 0.06,
@@ -57,5 +66,6 @@
     "halfLine": true
    }
   ]
- }
+ },
+ "_pour": "CHAI-26 (Zafar 17 Oct, P59: 'four or five orientations of ... 20 degrees each time towards the player, and the chai level following'): the pour turns the hob's own pan (js/cook/stations/chai-tray.js TOP) in `steps` of `deg` degrees from its place on the hob, narrowing by `squash` at full turn; the times in ms (stepMs each step, pourMs each half glass)"
 }
