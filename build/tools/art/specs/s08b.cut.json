@@ -23,7 +23,7 @@
    "outdir": "cook/items-s08b/daar-discs", "disc": true, "cell_align": true, "max": 420, "pad": 2, "x2": true, "shadow": true},
   {"id": "cp2-pans", "type": "grid", "src": "cp2-chai-pan-topdown-v1.png", "cells": [3, 1],
    "names": ["pan-top-empty-s08b", "pan-top-milk-s08b", "pan-top-black-s08b"],
-   "outdir": "cook/items-s08b/chai-pan", "tol": 5, "shadow": true, "hole_min": 8, "cell_align": true, "max": 560, "pad": 4, "x2": true},
+   "outdir": "cook/items-s08b/chai-pan", "tol": 5, "hole_min": 8, "cell_align": true, "max": 560, "pad": 4, "x2": true},
   {"id": "sk3-trays", "type": "grid", "src": "sk3-sekelo-square-tray-v1.png", "cells": [2, 2],
    "names": ["tray-1-s08b", "tray-2-s08b", "tray-3-s08b", "tray-4-s08b"],
    "outdir": "cook/items-s08b/sekelo-tray", "tol": 5, "shadow": true, "hole_min": 8, "cell_align": true, "max": 700, "pad": 4, "x2": true},

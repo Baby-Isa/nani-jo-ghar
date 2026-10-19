@@ -17,7 +17,7 @@ Branch `worktree-agent-a9bd6c078be6c9cf9` (from `claude/new-session-b5r2am`), no
 
 ## What changed
 
-New `artpixels.py`, wired into `artcheck.mjs` as the `pixel` check with the known list and tests. Cutter gained per-piece tolerance, shadow drop, hole sizes, glass floor and gain, `cell_align`, `disc`, `rect`, `tile`, `x2` and skin matching. CLN-159: the heal lab's log shows only with `?debug=1`.
+New `artpixels.py`, wired into `artcheck.mjs` as the `pixel` check with the known list and tests. Cutter gained per-piece tolerance, shadow drop, hole sizes, glass floor and gain, `cell_align`, `disc`, `rect`, `tile`, `x2` and skin matching. CLN-159: the heal lab's log shows only with `?debug=1`. CP2 pans re-cut without the shadow drop, which had eaten their black handles (orchestrator's catch).
 
 ## Proof
 
