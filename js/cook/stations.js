@@ -9,15 +9,15 @@
  * loaded as the view fades in), drawn in code otherwise.
  *
  * Shared helpers: props with contact shadows, item labels that fade by
- * word stage, glow and wiggle, the step engine (wait for the right item,
- * with hints), hold-to-pour, a ring timer that sits on the food ("tap when
+ * word stage, glow and wiggle (the step engine is js/cook/station-lib.js's
+ * S$.step since wave 1A), hold-to-pour, a ring timer that sits on the food ("tap when
  * it's green"), first-person hands, a fingertip demo, particles, and a
  * pause that "pass me" uses in Relaxed mode. Cook.expect always says what
  * the player should do next, for the end-to-end test.
  *
  * Several things can run at once (two tawas, three skewers, a combined
  * station's zones), so per-frame work goes through addTick() rather than
- * one `tick` slot, and step/pour/ring report what they expect through an
+ * one `tick` slot, and pour/ring report what they expect through an
  * `io` ({expect, gauge}; see zone.js) instead of writing the globals.
  */
 import { Cook as CookNS } from "./ns.js";
@@ -841,98 +841,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Cook.tween(this, { targets: img, x: W + 300, duration: 800, ease: "Cubic.easeIn" });
       img.destroy();
       delete this.chars[who];
-    }
-
-    /* ---------------- the step engine ---------------- */
-    /**
-     * Wait for the player to tap `expected` among `items` ({key: obj}).
-     * Wrong items wiggle ("Arre re!" on the first). Guided: the item glows
-     * and Nani names it at once. Otherwise Nani names it after the word's
-     * hesitation delay, and it glows a little later; each counts as help.
-     */
-    step({ items, expected, word, guided, sayLine, allowAny, onWrong, onLand, quiet = false, io = Cook.IO, ctl = null }) {
-      return new Promise((resolve) => {
-        let misses = 0;
-        const target = items[expected];
-        const timers = [];
-        const cleanup = () => {
-          timers.forEach(clearTimeout);
-          Object.values(items).forEach((o) => {
-            this.untap(o);
-            this.glow(o, false);
-          });
-        };
-        // C3 (E14): the caller can stop this step (a thing was taken back: the step starts again with it)
-        if (ctl)
-          ctl.cancel = () => {
-            cleanup();
-            io.expect(null);
-            resolve({ cancelled: true, misses });
-          };
-        // Nani is a voice at a station; the row she names throbs on the card (UX 13)
-        const hint = () => sayLine && UI.voice(sayLine).catch(() => {});
-        if (guided) {
-          this.glow(target, true, { bounce: true });
-          hint();
-        } else {
-          // real time, not game time: this measures the player's hesitation,
-          // which Cook.speed (the test's animation speed-up) doesn't change
-          const d = word ? Cook.hintDelay(word) : 6000;
-          timers.push(
-            setTimeout(() => {
-              if (!target.active) return;
-              if (Cook.onHelp) Cook.onHelp("hint");
-              hint();
-              timers.push(
-                setTimeout(() => {
-                  if (!target.active) return;
-                  this.glow(target, true, { bounce: true });
-                  if (Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
-                }, 4000)
-              );
-            }, d)
-          );
-        }
-        Object.entries(items).forEach(([key, obj]) => {
-          if (!obj || !obj.active) return;
-          this.tappable(obj, () => {
-            if (key === expected || (allowAny && allowAny(key))) {
-              cleanup();
-              io.expect(null);
-              resolve({ key, misses });
-            } else if (quiet) {
-              // Wave 6b (UX 11), level 2 up: a wrong pick lands like any other (onLand moves it);
-              // nothing says it's wrong now, the end review does
-              misses++;
-              Cook.sfx.pop();
-              if (onWrong) onWrong(key, misses);
-              if (onLand) {
-                this.untap(obj);
-                onLand(key, obj);
-              }
-            } else {
-              misses++;
-              this.wiggle(obj);
-              Cook.sfx.soft();
-              if (onWrong) onWrong(key, misses);
-              if (misses >= 2) {
-                this.glow(target, true, { bounce: true });
-                if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
-              }
-            }
-          });
-        });
-        const c = this.centre(target);
-        io.expect({
-          kind: "tap",
-          x: c.x,
-          y: c.y,
-          key: expected,
-          wrongs: Object.keys(items)
-            .filter((k) => k !== expected && items[k] && items[k].active)
-            .map((k) => this.centre(items[k])),
-        });
-      });
     }
 
     /** Hold on `obj` to pour; `onLevel(v)` as it rises; resolves with the level at release. */
