@@ -321,7 +321,9 @@
  },
  "test": {
   "version": "A",
-  "_about": "A = the split screen (the patient close up covering one eye, looking over our shoulder; the chart on the right); B = the patient side-on at the left, a big chart on a stand at the right, turned a quarter towards both (D15h: both prototyped for Zafar)"
+  "_about": "A = the split screen (the patient close up covering one eye, looking over our shoulder; the chart on the right); B = the patient side-on at the left, a big chart on a stand at the right, turned a quarter towards both (D15h: both prototyped for Zafar)",
+  "split": 250,
+  "_s08w6c": "CLN-188 (the judge: the board filled about a third, her photo the larger part): the split at 250 (was the middle, 392), her panel's picture 230 wide in it, the wall's picture bigger and its board centred in the rest (art.wall.box), its foot clear of the yes / no pills on the shortest screen"
  },
  "art": {
   "_about": "art plan pack clinic-heal-v3: used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; eye = where the open eye is (the redrop)",
@@ -373,14 +375,14 @@
    "src": "assets/clinic/closeups/{kind}/eyetest-a-v2.webp",
    "ready": true,
    "box": [
+    20,
     0,
-    0,
-    392,
+    230,
     500
    ],
    "eye": [
-    149,
-    208
+    96,
+    214
    ],
    "kinds": [
     "girl"
@@ -392,7 +394,8 @@
     243,
     194
    ],
-   "_s02": "S02-E (RT1, the redo): the open eye looks a little to our right, past us at the chart, as drawn (v1 was mirrored for its gaze; v2 isn't): her open eye (390, 657 in the 1024 x 1536 source) at the box's slice scale 0.383"
+   "_s02": "S02-E (RT1, the redo): the open eye looks a little to our right, past us at the chart, as drawn (v1 was mirrored for its gaze; v2 isn't): her open eye (390, 657 in the 1024 x 1536 source) at the box's slice scale 0.383",
+   "_s08w6c": "CLN-188: 230 wide at x 20 (was 392 at 0), slice-fitted (scale 0.3255, 51 cropped each side); eye = her open eye there (source 390, 657)"
   },
   "testB": {
    "src": "assets/clinic/closeups/{kind}/eyetest-b.webp",
@@ -497,10 +500,10 @@
    "_about": "s08-w5b (CLN-188; Zafar 18 Oct: 'an eye test board sitting on an optician's wall'): the s08b EC1 wall with its blank board (assets/clinic/s08b/ec1-meta.json), layout A's right panel. box = where the picture goes in the close-up's 800x500 units (from x 406, the panel's left edge, 350 wide: the wall colour carries on to the right edge, so the board clears her face circle in the corner and, on the shortest screen (800x360), its frame ends above the yes / no pills; its top cut 36 units), board = the board's white face as shares of the picture (ec1-meta board / size), fill and floor = the wall's and the skirting's own colours, round the picture on a taller screen",
    "src": "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
    "box": [
-    406,
-    -36,
-    350,
-    525
+    297,
+    -68,
+    404,
+    606
    ],
    "board": [
     0.17383,
@@ -509,7 +512,8 @@
     0.7806
    ],
    "fill": "#a9b4b8",
-   "floor": "#c3b6a6"
+   "floor": "#c3b6a6",
+   "_s08w6c": "CLN-188: 404 x 606 at (297, -68) (was 350 x 525 at (406, -36)): the board 265 x 400 units, its middle at x 500, its foot at y 405 (above the pills at 800x360)"
   },
   "drop": {
    "_about": "s08-w5b (CLN-186; Zafar 18 Oct: 'photorealistic drops, and the bottle ... isn't cut out nicely'): bottle = the re-cut bottle held nozzle down (SH-115 sheets-v3), cut off at nozzle (its nozzle's end, a share of its height: its own painted drop hidden); tool = the re-cut bottle in the strip; falling = the s08b DP3 photo drop (aspect its width over height, w its width in the close-up's units) hanging at the nozzle and falling; splash = DP3's splash on the eye (splashW wide)",

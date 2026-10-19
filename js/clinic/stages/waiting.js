@@ -199,6 +199,13 @@
       const head = S.line(env, "why-waiting");
       await S.requestPopup(screen, { reason: "clinic:waiting", title: head, rows: plan.card, closed, readTitle: false });
       await S.request(screen, { title: head, rows: plan.card, closed, onPeek: () => screen.peek("waiting-card"), look: "bulb", read: false }); // S02-A hook: decision 57
+      // CLN-115 (Zafar, 19 Oct): the doctor makes the call himself, standing at his open door: once the pop-up has
+      // folded, he calls the row(s) out from there, in his bubble at his head (not the sidebar's box). Input stays live
+      // (13i); the W3 variant is the child's own call, so he stays quiet there
+      if (plan.variant !== "W3" && doc && doc.isConnected) {
+        S.pose(doc, "front");
+        plan.card.forEach((r) => S.say(r, "doctor"));
+      }
       let callIdx = 0;
       const rows = plan.rows;
       const W4 = plan.variant === "W4";

@@ -355,9 +355,13 @@
     const WALL = data.art && data.art.wall && data.art.wall.src && data.art.wall.box && data.art.wall.board ? data.art.wall : null;
     if (version === "A") {
       const a = art("testA");
+      // CLN-188 (s08-w6c; the judge: the board "fills only about a third of the screen ... the girl photo takes the larger
+      // left part"): where the split falls (data test.split, close-up units; it was 392, the middle): her panel narrower,
+      // the wall and its board wider
+      const SPLIT = (data.test && data.test.split) || 392;
       // the left panel: the patient, head and shoulders, a hand over the good eye, looking past us to our right
       const pan = s("g", {}, testG);
-      s("rect", { x: -400, y: -300, width: 790, height: 1100, fill: "#e9dcc6" }, pan);
+      s("rect", { x: -400, y: -300, width: SPLIT + 400, height: 1100, fill: "#e9dcc6" }, pan);
       if (a) s("image", { href: url(a.src), x: a.box[0], y: a.box[1], width: a.box[2], height: a.box[3], preserveAspectRatio: "xMidYMid slice" }, pan);
       else {
         s("path", { d: "M40 520 Q60 380 200 360 Q340 380 360 520Z", fill: clothes }, pan); // shoulders
@@ -379,20 +383,20 @@
       }
       readEye = a && a.eye ? { x: a.eye[0], y: a.eye[1] } : { x: 160, y: 205 };
       // the split: a frame between the two halves
-      s("rect", { x: 392, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
+      s("rect", { x: SPLIT, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
       // CLN-188 (Zafar, 18 Oct: "an eye test board sitting on an optician's wall ... code draw everything that goes onto
       // the board"; "we want it to take up most of the screen"): the s08b EC1 wall with its blank board fills the right
       // panel edge to edge (art.wall.box, the close-up's units; its own wall and skirting colours round it on a tall
       // screen); the board's white face (art.wall.board, shares of the picture) is the chart's own units (CH)
       if (WALL) {
         const wb = WALL.box;
-        s("rect", { x: 406, y: -300, width: 600, height: 1100, fill: WALL.fill || "#a9b4b8" }, testG);
-        s("rect", { x: 406, y: wb[1] + wb[3] - 2, width: 600, height: 700, fill: WALL.floor || "#c3b6a6" }, testG);
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: WALL.fill || "#a9b4b8" }, testG);
+        s("rect", { x: SPLIT + 14, y: wb[1] + wb[3] - 2, width: 1000, height: 700, fill: WALL.floor || "#c3b6a6" }, testG);
         s("image", { href: url(WALL.src), x: wb[0], y: wb[1], width: wb[2], height: wb[3], preserveAspectRatio: "none" }, testG);
         const bd = WALL.board;
         CH = { x: wb[0] + bd[0] * wb[2], y: wb[1] + bd[1] * wb[3], w: (bd[2] - bd[0]) * wb[2], h: (bd[3] - bd[1]) * wb[3] };
       } else {
-        s("rect", { x: 406, y: -300, width: 600, height: 1100, fill: "#f4ecdf" }, testG);
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: "#f4ecdf" }, testG);
         CH = { x: 450, y: 18, w: 262, h: 352 };
       }
       testG.appendChild(chartG); // the chart over both halves' ground
