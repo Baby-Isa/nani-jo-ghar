@@ -274,3 +274,14 @@ test("contract-18: a hidden count written in as it is heard is not a change of w
   assert.equal(run("ba •••", "ba bataata").length, 0);
   assert.equal(run("ba khun", "trae khun").length, 1);
 });
+
+test("contract-34 (SH-106): a go-on button with no arrow (sekelo's grill picture in its place) is a break; with it, or the ✓, passes", () => {
+  const btn = (b) => ({ type: "c", k: "buttons", t: 1200, list: [b], exp: null });
+  const page = (b) => analyse({ flow: "cook:mishkaki-grill", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "cook:station2:marble", t: 1000 }, btn(b)] }, { lexicon: new Set(), numbers: new Set() }).filter((x) => x.check === "contract-34");
+  const go = { sel: "button#go-btn.njg-btn.njg-next", text: "", box: [0, 0, 200, 110], go: true };
+  const b = page({ ...go, arrow: false });
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /#go-btn.* has no arrow/);
+  assert.equal(page({ ...go, arrow: true }).length, 0);
+  assert.equal(page({ sel: "button#done-btn.njg-btn.njg-done", go: false, arrow: null }).length, 0);
+});

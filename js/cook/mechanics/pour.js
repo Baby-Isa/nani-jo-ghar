@@ -32,6 +32,7 @@
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+import { NjgPour } from "../../shared/pour.js";
 
 (function (global) {
   const Cook = CookNS;
@@ -59,37 +60,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /**
    * The pour stream (28 Sept, s8): a short tapered stream from the spout that falls in a
    * curve onto the surface, with a light core and a small splash ring where it lands.
+   * SH-117: its shape is the shared pour's (js/shared/pour.js NjgPour.stream), the one every game draws.
    */
   function drawStream(g, sp, p, col, w, t) {
     g.clear();
-    const midX = (sp.x + p.x) / 2 - (p.x - sp.x) * 0.15;
-    const midY = sp.y + (p.y - sp.y) * 0.35;
-    const pts = [];
-    for (let i = 0; i <= 12; i++) {
-      const u = i / 12;
-      const x = (1 - u) * (1 - u) * sp.x + 2 * (1 - u) * u * midX + u * u * p.x;
-      const y = (1 - u) * (1 - u) * sp.y + 2 * (1 - u) * u * midY + u * u * p.y;
-      pts.push({ x, y, w: w * (1 - 0.45 * u) * (1 + 0.08 * Math.sin(t * 30 + u * 9)) });
-    }
-    const side = (k) => pts.map((q, i) => {
-      const n = pts[Math.min(i + 1, pts.length - 1)];
-      const m = pts[Math.max(i - 1, 0)];
-      const dx = n.x - m.x;
-      const dy = n.y - m.y;
-      const l = Math.hypot(dx, dy) || 1;
-      return { x: q.x + (-dy / l) * (q.w / 2) * k, y: q.y + (dx / l) * (q.w / 2) * k };
-    });
-    const poly = side(1).concat(side(-1).reverse());
+    const s = NjgPour.stream(sp, p, w, t);
     g.fillStyle(col, 0.9);
-    g.fillPoints(poly, true);
+    g.fillPoints(s.poly, true);
     g.lineStyle(Math.max(1, w * 0.18), 0xffffff, 0.35);
-    g.strokePoints(side(0.3), false);
+    g.strokePoints(s.core, false);
     // the splash where it lands
-    const r = w * (1.4 + 0.3 * Math.sin(t * 20));
     g.lineStyle(Math.max(1, w * 0.2), 0xffffff, 0.45);
-    g.strokeEllipse(p.x, p.y, r * 2.2, r * 0.9);
+    g.strokeEllipse(s.splash.x, s.splash.y, s.splash.rx * 2, s.splash.ry * 2);
     g.fillStyle(col, 0.9);
-    g.fillEllipse(p.x, p.y, w * 1.3, w * 0.5);
+    g.fillEllipse(s.pool.x, s.pool.y, s.pool.rx * 2, s.pool.ry * 2);
   }
 
   /**

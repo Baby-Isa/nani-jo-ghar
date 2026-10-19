@@ -8,7 +8,8 @@
 //                                          stage changes (njgTest.state()), the end screen shows ("end")
 //   k: "popup"   {open, box}               the shared request pop-up (.njg-rq-open, Cook's #intro) up or down
 //   k: "side"    {n, rows, done, closed, words}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
-//   k: "buttons" {list: [{sel, text, box}], exp}   the ✓ / Next / stage buttons on screen, with what the game expects
+//   k: "buttons" {list: [{sel, text, box, go, arrow}], exp}   the ✓ / Next / stage buttons on screen, with what the game
+//                                          expects; go: a go-on (→ Next) button, arrow: its arrow is drawn (contract-27)
 //   k: "bubble"  {list: [{who, text, box, tail}], heads: [{who, box, src}], play}   speech bubbles and the speakers' heads
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
 //   k: "art"     {src, via, key}           an image drawn for the first time in this stage (canvas drawImage, Phaser
@@ -148,6 +149,10 @@ export const CONTRACT_HOOK = `(() => {
     return /^(✓|✔|→|➜|➔|>)$/.test(t) || /\\b(next|done|go on|continue|to the doctor|move on)\\b/i.test(a);
   };
   const nextButtons = () => [...document.querySelectorAll("button, " + BTN)].filter((b) => isNextBtn(b) && shown(b) && !b.disabled);
+  // contract-27 (SH-106): a go-on button (the shared → Next, Cook's #go-btn, samosa's) and whether its arrow shows: the
+  // kit's arrow path (js/shared/buttons.js ICON.arrow's head) drawn at a size you can see, or an arrow character
+  const isGoBtn = (b) => b.matches(".njg-next, #go-btn, #samosa-next, [data-go]") && !b.matches(".njg-done");
+  const hasArrow = (b) => [...b.querySelectorAll("svg path")].some((p) => p.getAttribute("d") === "M13 6l6 6-6 6" && shown(p.closest("svg"))) || /[→➜➔]/.test(b.textContent || "");
 
   // ---- speech bubbles and the speakers' heads ----
   const BUB = ".cl-bubble, #bubble, .njg-bubble, [data-bubble]";
@@ -686,8 +691,8 @@ export const CONTRACT_HOOK = `(() => {
     // words (the Kutchi line, not the bulb's English beside it) and whether it is ticked; en: the card shows the bulb's English
     const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english") }; }));
     if (!same("rows", rl.map((x) => x.id + "|" + x.text + "|" + x.done + "|" + x.en))) emit({ k: "rows", list: rl });
-    const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()) }));
-    if (!same("buttons", bl.map((b) => b.sel))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
+    const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()), go: isGoBtn(b), arrow: isGoBtn(b) ? hasArrow(b) : null }));
+    if (!same("buttons", bl.map((b) => b.sel + b.arrow))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
     const tx = safe(texts, []);
     if (!same("texts", tx.map((x) => x.t + x.rec + x.en + x.grown))) emit({ k: "texts", list: tx });
     const fc = safe(faces, null);

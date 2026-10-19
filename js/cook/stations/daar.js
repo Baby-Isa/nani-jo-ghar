@@ -40,6 +40,7 @@
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the daar into its pot)
 
 (function (global) {
   const Cook = CookNS;
@@ -747,12 +748,44 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     steps.done();
     S.tweens.killTweensOf(dBowl);
     split.lift();
-    const home = { x: dBowl.x, y: dBowl.y, s: dBowl.scale };
-    await Cook.tween(S, { targets: dBowl, x: cx + bodyR * 1.05, y: cy - bodyR * 0.7, angle: -35, scale: home.s * 0.9, duration: 420, ease: "Quad.easeInOut" });
-    const pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
-    await setPot("daar", 700);
-    if (pour && pour.stop) pour.stop();
-    S.tweens.add({ targets: dBowl, alpha: 0, duration: 300 });
+    // SH-117 (DAAR-28, 17 Oct: "a better animation for the daal pouring into the pot ... like the chai one"): the shared
+    // pour (js/shared/pour.js): the bowl lifts to the pot's rim and tips its near edge down, a stream of daal falls into
+    // the pot and the pot fills (its picture fades to the daar) while it runs, then it tips back and goes
+    {
+      const rim = BOWL_IN * dBowl.width * dBowl.scaleX;
+      let pour = null;
+      let filling = false;
+      dBowl.setDepth(D.item + 0.3);
+      await NjgPour.phaser(S, {
+        obj: dBowl,
+        lip: [-rim, 0],
+        lipTo: { x: cx + inR * 0.62, y: cy - inR * 0.5 },
+        tilt: -38,
+        squash: 0.14,
+        colour: 0xe09a12,
+        width: z.L(26),
+        depth: D.item + 0.25,
+        surface: () => ({ x: cx + inR * 0.12, y: cy + inR * 0.04 }),
+        arc: z.L(50),
+        away: { x: cx + bodyR * 1.3, y: cy - bodyR * 0.9 },
+        fade: true,
+        ms: { lift: 420, tip: 240, pour: 900, untip: 200, back: 300 },
+        onPhase: (ph) => {
+          if (ph === "pour" && !pour) pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
+          if (ph === "untip" && pour && pour.stop) {
+            pour.stop();
+            pour = null;
+          }
+        },
+        onFill: (u) => {
+          if (u <= 0.02 || filling) return;
+          filling = true;
+          setPot("daar", 820);
+        },
+      });
+      if (pour && pour.stop) pour.stop();
+      dBowl.setAlpha(0);
+    }
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
     await setPot("tadka-v2", 600);
     const pieces = [];

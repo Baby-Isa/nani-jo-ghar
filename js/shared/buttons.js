@@ -4,15 +4,19 @@
  *
  *   ✓ Done     the round gold tick, bottom right of the play area: commit what you've made
  *              (serve the dish, hand over the tray, finish the heal step). Cook's #done-btn look.
- *   → Next     the flat design-system pill with a gold icon and a short label: move on to the next
- *              screen or phase ("to the grill", "to the bench"). Cook's #go-btn.ds look.
+ *   → Next     the go-on button (SH-106, 19 Oct): the flat design-system card, taller than the ✓, with a clear picture
+ *              of where it goes (the grill, the karahi, the eye chart) and the gold arrow, ALWAYS: move on to the
+ *              next screen or phase. One look and one place in every Cook station and every heal game.
  *   answer pills   one pill style for haa / na and the speaking fallbacks.
  *   the end screen's actions: Again / Next / Home (or the list), always in that order (endActions()).
  *
  *   const b = NjgButtons.done(parent, onPress, {glow, id, label})      -> <button class="njg-btn njg-done">
- *   const n = NjgButtons.next(parent, label, onPress, {icon, glow, id}) -> <button class="njg-btn njg-next">
- *            label: a string, a DOM node (the mode's own word markup) or {html}
- *            icon: "arrow" (default), "check", "grid", "again", "home" or null
+ *   const n = NjgButtons.next(parent, label, onPress, {pic, glow, id}) -> <button class="njg-btn njg-next">
+ *            label: a string, a DOM node (the mode's own word markup) or {html}; "" or null for a picture only
+ *            pic: the picture of where it goes, a URL or {src, src2x} (the @2x for dense screens)
+ *            the arrow is always drawn last (SH-106: "there's no arrow"); nothing can take it off
+ *   NjgButtons.pic(btn, pic, {untilHidden})  put (or with null take off) a go-on button's picture; untilHidden: it
+ *            goes when the button is next hidden (a button made once and shown again for other jobs: Cook's #go-btn)
  *   const row = NjgButtons.pills(parent, [{id, label | html | node}], onPick, {cls}) -> <div class="njg-pills">
  *            row.pill(id) the button, row.lock(on), row.fresh() (a new question: no double-tap guard left), row.remove()
  *   NjgButtons.glow(btn, on)
@@ -112,7 +116,11 @@
     sync();
     if (typeof root.MutationObserver === "function") new root.MutationObserver(sync).observe(b, { attributes: true, attributeFilter: ["class"] });
   }
-  /** → Next: the flat pill with a gold icon and a short label, bottom right of the play area. */
+  /**
+   * → Next, the go-on button (SH-106): [label] [picture] →, bottom right of the play area. The arrow is part of the
+   * button, always last (data-arrow marks it for the contract run's check, contract-27); a label and a picture are
+   * each optional.
+   */
   B.next = function (parent, label, onPress, o = {}) {
     const b = doc().createElement("button");
     b.type = "button";
@@ -122,10 +130,48 @@
     t.className = "njg-next-t";
     labelInto(t, label);
     b.appendChild(t);
-    const icon = o.icon === undefined ? "arrow" : o.icon;
-    if (icon && B.ICON[icon]) b.insertAdjacentHTML("beforeend", `<span class="njg-next-ic">${B.ICON[icon]}</span>`);
+    b.insertAdjacentHTML("beforeend", `<span class="njg-next-ic" data-arrow="1" aria-hidden="true">${B.ICON.arrow}</span>`);
+    if (o.pic) B.pic(b, o.pic);
     if (parent) parent.appendChild(b);
     return wire(b, onPress);
+  };
+  /** A go-on button's picture (SH-106): set it (a URL or {src, src2x}), or take it off (null). */
+  B.pic = function (b, pic, o = {}) {
+    if (!b) return null;
+    let im = b.querySelector(":scope > .njg-next-pic");
+    if (!pic) {
+      if (im) im.remove();
+      b.classList.remove("has-pic");
+      return null;
+    }
+    const src = typeof pic === "string" ? pic : pic.src;
+    if (!im) {
+      im = doc().createElement("img");
+      im.className = "njg-next-pic";
+      im.alt = "";
+      im.draggable = false;
+      im.setAttribute("aria-hidden", "true");
+      // after the label, before the arrow
+      b.insertBefore(im, b.querySelector(":scope > .njg-next-ic"));
+    }
+    if (pic.src2x) im.srcset = `${src} 1x, ${pic.src2x} 2x`;
+    else im.removeAttribute("srcset");
+    im.src = src;
+    b.classList.add("has-pic");
+    if (b._picWatch) {
+      b._picWatch.disconnect();
+      b._picWatch = null;
+    }
+    if (o.untilHidden && typeof root.MutationObserver === "function") {
+      const w = (b._picWatch = new root.MutationObserver(() => {
+        if (!b.classList.contains("hidden")) return;
+        w.disconnect();
+        b._picWatch = null;
+        B.pic(b, null);
+      }));
+      w.observe(b, { attributes: true, attributeFilter: ["class"] });
+    }
+    return im;
   };
   B.glow = (b, on = true) => b && b.classList.toggle("glow", !!on);
 

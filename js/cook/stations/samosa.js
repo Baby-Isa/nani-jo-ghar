@@ -766,14 +766,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let nA = 0; // (two kinds: how many of each were made)
     let nB = 0;
     let first = null; // the first time Next was pressed: the count then (only the first try is scored)
-    const goIcon = (() => {
-      // R5 (T17): the button to the karahi is a picture, no English
-      const el = document.createElement("span");
-      el.className = "samosa-go-icon";
-      el.setAttribute("aria-label", "fry");
-      el.innerHTML = `<img src="${Cook.v ? Cook.v(V3 + "karahi.webp") : V3 + "karahi.webp"}" alt="" style="height:38px;width:auto;display:block">`;
-      return el;
-    })();
+    // R5 (T17): the button to the karahi is a picture, no English. SH-106 (17 Oct: "the handles are text and there's a pan
+    // sitting over the text"): the shared go-on button's picture slot, the art run's karahi (go-karahi-s08b), and its arrow
+    const goPic = ((v) => ({ src: v("assets/cook/items-s08b/go-on/go-karahi-s08b.webp"), src2x: v("assets/cook/items-s08b/go-on/go-karahi-s08b@2x.webp") }))(Cook.v || ((u) => u));
+    const goIcon = "";
     let second = false; // folding the second kind now
     const total = count + (two ? count2 : 0);
     const most = total + (k.maxExtra != null ? k.maxExtra : 3);
@@ -947,7 +943,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const from = at(cxy.x, cxy.y, sw.from[0], sw.from[1]);
           const to = at(cxy.x, cxy.y, sw.to[0], sw.to[1]);
           glowOn = { poly, a: from, b: to };
-          await swipe(z, S, { onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? x.blobs : []), fimg, sheet: x, offerGo: false, goLabel: { text: goIcon, rec: false }, expectGo: false, glowGo: false, minLen: k.minLen || 0.45 });
+          await swipe(z, S, { onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? x.blobs : []), fimg, sheet: x, offerGo: false, goLabel: { text: goIcon, pic: goPic, rec: false }, expectGo: false, glowGo: false, minLen: k.minLen || 0.45 });
           glowOn = null;
           if (f === 0) x.blobs.forEach((bl) => bl.destroy());
           if (f === 0) x.blobs = [];
@@ -1020,7 +1016,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         glowOn = { poly, a: from, b: to };
         const offerGo = n > 0 && f === 0;
         const r = await swipe(z, S, {
-          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: { text: goIcon, rec: false }, expectGo: offerGo && n >= total, glowGo: offerGo && (ctx.guided || !!first) && n >= total, minLen: k.minLen || 0.45 });
+          onDrag: () => (glowOn = null), from, to, draw: (t) => drawFold(sw, t, f === 0 ? sheet.blobs : []), fimg, sheet, offerGo, goLabel: { text: goIcon, pic: goPic, rec: false }, expectGo: offerGo && n >= total, glowGo: offerGo && (ctx.guided || !!first) && n >= total, minLen: k.minLen || 0.45 });
         glowOn = null;
         if (r === "go") {
           if (!first) first = { n, nA, nB };
@@ -1203,8 +1199,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       );
       // 30 Sept: "fry them" is the shared button kit's → Next (js/shared/buttons.js, UX-PRINCIPLES 15)
       const stage = document.querySelector("#stage");
-      if (offerGo && global.NjgButtons && stage) nextBtn = global.NjgButtons.next(stage, goLabel.text, () => finish("go"), { id: "samosa-next", glow: !!glowGo });
-      else if (offerGo) UI.go(goLabel.text, { glow: !!glowGo, rec: goLabel.rec }).then(() => finish("go"));
+      if (offerGo && global.NjgButtons && stage) {
+        nextBtn = global.NjgButtons.next(stage, goLabel.text, () => finish("go"), { id: "samosa-next", glow: !!glowGo, pic: goLabel.pic });
+        nextBtn.setAttribute("aria-label", "fry");
+      } else if (offerGo) UI.go(goLabel.text, { glow: !!glowGo, rec: goLabel.rec }).then(() => finish("go"));
       // decision 80: the 'next kind' button stays (moving on once the count is made would give the count away): the
       // child's own choice (`choice`, contract-2 reads it)
       z.expect(expectGo ? { kind: "click", selector: nextBtn ? "#samosa-next" : "#go-btn", choice: true } : { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
