@@ -13944,5 +13944,2242 @@
    "expect": null,
    "note": "the daal pour: the stream lands in a soft ripple of its own colour, no bright white ring (no drawn line on the daal)"
   }
+ ],
+ "SH-98": [
+  {
+   "flow": "cook:samosa",
+   "path": "hint",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:#mission .oc-card.peek",
+   "after": null,
+   "capture": [
+    "crop:#mission",
+    "contract:27",
+    "contract:29"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the Cook card's bulb peek at L3 (the samosa card too): every word written in Kutchi with its number, headline and filling rows, no dotted word (contract-27), and it stays up the level's time, 7 s at L3 and the 3.5 s added to the others (contract-29: 'a little bit too quick')"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "hint",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "peek-waiting",
+   "after": null,
+   "capture": [
+    "crop:.cl-side",
+    "contract:27",
+    "contract:28",
+    "contract:29"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the same in the clinic: the peek of the closed card shows every word (27), the bulb is the photo bulb Nani's box uses, not the flat one (28), and it lasts the level's time (29)"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-ear-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-side"
+   ],
+   "expect": null,
+   "note": "ear at L3: one card in the same shared sequence as Cook's (not two separate cards), written the Cook way (Zafar: 'review all these side cards and make them similar to cook')"
+  }
+ ],
+ "SH-99": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:30"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every number of two or more that Nani says is written on the card (one is never written), at L2 and L3: 'she said she wanted three chilies but it said chili'"
+  },
+  {
+   "flow": "clinic:patient",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:30"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the clinic's taught first round writes every count it says too ('all the frequencies has to be written down. And audible as well')"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-side",
+    "contract:30"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "boing: the colour of the drops is on the card at every level (a colour with no Kutchi yet as its grey English), the count with it"
+  }
+ ],
+ "SH-107": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-open",
+   "after": null,
+   "capture": [
+    "crop:.njg-rq-card",
+    "contract:33"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai L3 with three customers: every headline in the order pop-up is one size, and wraps onto a second line before it shrinks (the old man's text was smaller on one line, the other two larger on two)"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "popup-open",
+   "after": null,
+   "capture": [
+    "crop:.njg-rq-card",
+    "contract:33"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the same in the clinic's pop-up; the side panel keeps shrink-then-wrap, so it is not in this check"
+  }
+ ],
+ "SH-91": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "844x390",
+    "915x412",
+    "1366x768",
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-pantry",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:11"
+   ],
+   "expect": null,
+   "note": "the pantry background on four screen shapes: the wider or taller screen shows more of the same painting (above and below, or to the sides) and never zooms in or cuts into the 1600x900 core"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "844x390",
+    "915x412",
+    "1366x768",
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:11"
+   ],
+   "expect": null,
+   "note": "the chai counter on four screen shapes: more painting on wider or taller screens, the core never zoomed or cut, the marble not stretched"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "844x390",
+    "915x412",
+    "1366x768",
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-waiting",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:11"
+   ],
+   "expect": null,
+   "note": "a clinic room on four screen shapes: the same painting with more of it shown, nothing in the core zoomed or cut"
+  }
+ ],
+ "SH-97": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "voice",
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "Nani's 'add' line: the thing and 'put it in' said as ONE sentence ('one sentence instruction'), not the item, a full stop, then the verb. Read the voice timeline: one line, one sentence",
+   "max": 3
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "voice",
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "the same at the chaat bowl, where the potato goes in: one sentence, no full stop between the item and its verb",
+   "max": 3
+  }
+ ],
+ "SH-102": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:31"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the hint player taps the card's face (the replay) once before the glow: it costs no hint, and what is said is only the steps left (contract-31)"
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:31"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the same in the pantry: a replay adds no hint and does not read out a ticked row"
+  }
+ ],
+ "SH-103": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.rs-card",
+    "contract:32"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the end review's divider: with no wrong word the right words take four fifths of the width (room for four right and one wrong)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.rs-card"
+   ],
+   "expect": null,
+   "note": "with one or two wrong words: the divider has moved over by one unit per wrong word, nothing squeezed or cut, the right words still in one column ('if there are more incorrect items then the line has to move over')"
+  }
+ ],
+ "SH-104": {
+  "needsDecision": "Keep the third end-review page (the steps list), or hold it aside for now as Zafar said ('maybe we don't need this third screen ... hold it to the side for now')? Decide after CHT-14; he said yes on 18 Oct.",
+  "probes": [
+   {
+    "flow": "cook:chaat",
+    "path": "mistake",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "visible:.njg-results .rs-p3 .rs-step",
+    "after": null,
+    "capture": [
+     "crop:.njg-results"
+    ],
+    "expect": null,
+    "note": "the chaat review's third page as built: does it tick Channa, or show a pill that says potato ('that's not really clear')?"
+   }
+  ]
+ },
+ "SH-105": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:2"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai tray: once every cup is poured the game moves on by itself, no tick waits (contract-2)"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:2"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa: once the asked-for amount is folded it goes on to the fryer by itself (no tick or Next waiting where nothing can change)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:2"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chaat: 'we can now remove the tick, move on' (no tick waits where nothing can change)"
+  }
+ ],
+ "SH-106": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:visible:.njg-btn",
+   "after": null,
+   "capture": [
+    "zoom2:.njg-btn",
+    "contract:34"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "sekelo's go-on button is the shared one with its arrow ('more consistent with the other ones ... there's no arrow')",
+   "max": 3
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:visible:.njg-btn",
+   "after": null,
+   "capture": [
+    "zoom2:.njg-btn",
+    "contract:34"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa's go-on button shows the arrow and is not a pan sitting over text",
+   "max": 3
+  }
+ ],
+ "SH-108": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "top-down chai counter at L1 and L3: the painted marble countertop, not a code-drawn worktop"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the samosa board's surface at L1 and L3: the painted marble when seen from above"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the daar station's counter at L1 and L3: the painted marble when top-down"
+  }
+ ],
+ "SH-109": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"L1-L4\" .claude/skills/feedback/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "/feedback lists L1-L4 for every station a point touches (text check on the skill)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"L1-L4\" .claude/skills/review/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "/review lists L1-L4 for every station touched"
+  }
+ ],
+ "SH-110": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:35",
+    "contract:36",
+    "contract:37"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the level table at chai: L3 the card open with the items dotted, L4 folded; Nani calls each step as it opens; decoys 3 (a look-alike at L4)"
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:35",
+    "contract:36",
+    "contract:37"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the same table at the sekelo grill"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:35",
+    "contract:36"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani: the card ladder and the step calls at L2-L4 (big and small from L2, the tightest flip window at L4)"
+  }
+ ],
+ "SH-111": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"go-on button\" .claude/skills/review/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "/review names the go-on button among the things it judges at every station (text check on the skill)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"fold\" .claude/skills/review/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "/review names the samosa fold among the things it judges at L1-L4 (text check on the skill)"
+  }
+ ],
+ "SH-112": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-start",
+   "after": null,
+   "capture": [
+    "crop:.hs-tools"
+   ],
+   "expect": null,
+   "note": "boing's tool strip: are the items big enough against the whole scene, and obvious what each is ('too small compared to the whole scene')?"
+  },
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-fever-start",
+   "after": null,
+   "capture": [
+    "crop:.hs-tools"
+   ],
+   "expect": null,
+   "note": "fever's tool strip: items big enough, each one obvious"
+  },
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-foot-start",
+   "after": null,
+   "capture": [
+    "crop:.hs-tools"
+   ],
+   "expect": null,
+   "note": "foot's tool strip: items big enough, each one obvious"
+  }
+ ],
+ "SH-113": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "note": "the customer's face circle on Cook's card: how much of the head shows (the same amount as every other circle)"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-waiting",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side"
+   ],
+   "expect": null,
+   "note": "the patient's face circle in the clinic's card: the same zoom as the Cook circle"
+  },
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-diagnosis",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-side"
+   ],
+   "expect": null,
+   "note": "the doctor's face circle: not 'very zoomed out', the same zoom as the others"
+  }
+ ],
+ "SH-115": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/art/artcheck.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the art check and its tests (grey share, holes, rim, cream composite); the full run is over 100 s, so checks.mjs runs it"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"thermometer\\|tweezers\\|toe\\|bottle\" build/tools/art/artcheck-known.json"
+   ],
+   "expect": null,
+   "note": "are the four cuts Zafar named (eye bottle, foot toes, tweezers, thermometer) listed as findings, i.e. does the pixel check see them?"
+  }
+ ],
+ "SH-116": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"told before\" .claude/skills/feedback/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "/feedback searches the archive for every point and reopens what came back (text check on the skill)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n \"told before\" .claude/skills/review/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "/review judges a shot of every told-before row (text check on the skill)"
+  }
+ ],
+ "CHAI-22": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:71",
+    "contract:30"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "milk, water and tea go into a pan once each; a second tap adds nothing (71); and the line says what the card says (30)"
+  }
+ ],
+ "CHAI-24": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:70"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the turn-off line is called as the heat bar enters the green, never early ('it fires 0.14 early')"
+  }
+ ],
+ "CHAI-25": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "zoom2:hook:cook.glowing",
+    "zoom2:canvas:pan"
+   ],
+   "expect": null,
+   "note": "the tea pan's glow: even all round, the same above and below, around the rim and by the hole in the handle ('doesn't look symmetrical')",
+   "webgl": true
+  }
+ ],
+ "CHAI-26": {
+  "human": "Waits on the big art run: when the pour frames land (the pan turned about 20 degrees towards the player in four or five steps with the chai level following, else one half-poured static pan), look at the pour and say which one stays."
+ },
+ "SEK-18": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:36",
+    "voice"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the thread step at L1: Nani calls it as it opens (the recorded 'wiji chad' with the item until Mum records the thread line): no 20 s of silence"
+  }
+ ],
+ "SEK-19": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "dom:#mission",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the raw piece is called gos on the card and in Nani's line; the cooked one is Mishkaki (so the child learns both words); the card says 'Hakri Lakri Mishkaki' with no commas",
+   "max": 4
+  }
+ ],
+ "SEK-20": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "sekelo layout L1-L4 on a laptop: balanced; the plate not shiny; the barbecue style kept; two racks on the left (uncooked, cooked) or a square metal tray, the barbecue a little bigger"
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the same on a phone: balanced, nothing cut, both racks or the tray whole"
+  }
+ ],
+ "SEK-21": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "the bins of ingredients: equal gaps between them ('the onions are much closer to the tomatoes than to the meat cubes')"
+  }
+ ],
+ "SAM-21": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-swipe",
+   "after": null,
+   "capture": [
+    "strip:canvas:sv3-fold:8x250"
+   ],
+   "expect": null,
+   "note": "the fold at every level: soft edges, no seam, the right flat side highlighted, a strip of pastry that gets smaller as it folds over the filling, three or four alternating swipes left to right"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook:swipe",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "each swipe shows which way to go (an arrow or a glow), and the directions alternate (bottom left to top right, then top left to bottom right)",
+   "max": 4
+  }
+ ],
+ "SAM-22": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "samosa played through at each level: does it look right, and does each step move on when it should ('a bit of an unsatisfying game mode')?",
+   "max": 4
+  }
+ ],
+ "SAM-24": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:50"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the card ticks a samosa kind only once all its samosas are made ('he's ticked the samosa like it's done but he wanted three')"
+  }
+ ],
+ "SAM-25": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-click",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the child clicks the pastry rolls from level one; six of them; a taller, wider chopping board; the fold comes after all are made"
+  }
+ ],
+ "MAA-15": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "'Firai' is said on both turns of the chapati, not only the first ('I heard it once, I didn't hear it the second time'): read the voice timeline for the flip call at each side",
+   "max": 6
+  }
+ ],
+ "MAA-16": {
+  "human": "Waits on Mum: when she records the 'and' join, play maani at level 3 and listen that Nani says the 'and' between the two counts, so two different chapatis are not heard as two overall."
+ },
+ "MAA-17": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n '\"flipAddS\": 0.75' data/stations/maani-line.json"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the data holds the 0.75 s added to each side's green flip window, for every level"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "strip:#stage:8x250"
+   ],
+   "expect": null,
+   "note": "the flip ring's green lasts about three quarters of a second longer than before, at L1 and at L4"
+  }
+ ],
+ "CHT-12": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:cv3-bowl"
+   ],
+   "expect": null,
+   "note": "the chaat bowl has no drop shadow of its own under it ('doesn't make sense')"
+  }
+ ],
+ "CHT-13": {
+  "human": "Waits on art: when the chaat items and the redrawn side-on bowl (a horizontal strip) land, look at every item sitting in the bowl and say whether it reads."
+ },
+ "CHT-14": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/leak.mjs chaat"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the chaat leak bot: fair wins everywhere, every blind strategy under 10% at every level (no tick gives a guess away)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "retry",
+   "after": null,
+   "capture": [
+    "strip:#stage:6x200",
+    "crop:#mission"
+   ],
+   "expect": null,
+   "note": "a wrong item: the bowl shakes (maybe glows red) and only that item comes back out; a wrong third item does not throw all the items out; no tick shows which guess was right"
+  }
+ ],
+ "CHT-15": [
+  {
+   "flow": "cook:chaat",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-badges",
+   "after": null,
+   "capture": [
+    "crop:#mission",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "one tick per item, earned by the right item in the right place on the first go; an item thrown out takes a tick away ('you accumulate light bulbs' for help)"
+  }
+ ],
+ "CK-47": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the end of a lab order: it finishes in the kitchen (Nani's well done there), not a second well done after the recipe card ('this double level of well done')"
+  },
+  {
+   "flow": "cook:day2",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:drv:dish-served",
+   "after": null,
+   "capture": [
+    "shot",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the end of a story order: Nani recounts what went into the recipe and says well done once, in the kitchen",
+   "max": 2
+  }
+ ],
+ "CK-48": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "strip:#stage:8x200"
+   ],
+   "expect": null,
+   "note": "going into the chop station: one smooth load, no zoomed-in board that goes away and then the game loading"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "start",
+   "after": null,
+   "capture": [
+    "strip:#stage:8x200"
+   ],
+   "expect": null,
+   "note": "going into the samosa station: nothing half-drawn, nothing still loading in the first seconds"
+  }
+ ],
+ "CLN-159": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": [
+    "count:.cl-lab-out=0"
+   ],
+   "note": "the heal lab page without ?debug=1: no log of code at the bottom left"
+  },
+  {
+   "flow": "clinic:morning",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:rec:stage",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": [
+    "count:.cl-lab-out=0"
+   ],
+   "note": "the real clinic page: no log in any stage",
+   "max": 3
+  }
+ ],
+ "CLN-162": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-fever-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the fever girl's feet rest on the stool, no drop shadow under them"
+  },
+  {
+   "flow": "clinic:diagnosis",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-diagnosis",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-stage"
+   ],
+   "expect": null,
+   "note": "the doctor stands on the floor: no shadow that makes him float, placed well against the background"
+  },
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-waiting",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-stage"
+   ],
+   "expect": null,
+   "note": "the doctor calling the patient in: no floating shadow under his feet"
+  }
+ ],
+ "CLN-163": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-in",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:8x150"
+   ],
+   "expect": null,
+   "note": "the zoom in on the teeth: smooth in and out, not two big jumps, no blur from an upscaled picture"
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-tooth-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the far view: the cavities sit inside the teeth at every level, none outside the tooth"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-in",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:8x150"
+   ],
+   "expect": null,
+   "note": "the eye's close-up zoom: not too close or intimidating ('feels a little bit too zoomed in')"
+  }
+ ],
+ "CLN-164": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the dropper machine and the syringe look photographic, in the same style as the plasters and packets"
+  }
+ ],
+ "CLN-165": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-start",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the dropper machine and the syringe smaller, the items on the right larger"
+  }
+ ],
+ "CLN-166": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:lever",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "each drop fills the syringe with liquid in the colour of the dropper",
+   "max": 4
+  }
+ ],
+ "CLN-167": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-boing-mid",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:10x250"
+   ],
+   "expect": null,
+   "note": "the jab: the syringe places itself over the arm one fifth of the way up the bicep, central to it; a little puff of mist and sparkles, no crazy boing, no countdown; stars and hearts stay"
+  }
+ ],
+ "CLN-168": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:wipe",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x200"
+   ],
+   "expect": null,
+   "note": "the wipe is done with the cloth, not the item inside the packet and not the outside of the packet"
+  }
+ ],
+ "CLN-170": [
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": [
+    "count:.hs-count,.cl-tally-chip<=1"
+   ],
+   "note": "one counter, in one place (on the syringe), every round",
+   "max": 6
+  }
+ ],
+ "CLN-172": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -n '\"game\": \"cut\"' data/clinic/pipeline.json"
+   ],
+   "expect": null,
+   "note": "no morning can draw the scrape: every match is inside the 'parked' block (after line 205), none in a morning's mix or the ailments"
+  }
+ ],
+ "CLN-173": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:tweezers",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x150"
+   ],
+   "expect": null,
+   "note": "the tweezers' grab: cut out cleanly, one prong in front of the ear and one behind it, none floating in the air"
+  }
+ ],
+ "CLN-174": [
+  {
+   "flow": "clinic:heal-ear",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-ear-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the bin is a medical kidney-shaped metal tray"
+  }
+ ],
+ "CLN-175": {
+  "human": "Waits on the s08b art: when the photographic thermometer lands, look at the fever game (the strip and in her mouth) and say whether it is photographic and cut out cleanly."
+ },
+ "CLN-176": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal",
+    "voice"
+   ],
+   "expect": null,
+   "note": "'just right' is said only after about 2 s in the green, never while it then switches to too cold ('she shouldn't have said that')",
+   "max": 8
+  }
+ ],
+ "CLN-177": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-fever-mid",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the little sweat icon is red to show heat"
+  }
+ ],
+ "CLN-178": [
+  {
+   "flow": "clinic:heal-fever",
+   "path": "real-pace",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-out",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x300"
+   ],
+   "expect": null,
+   "note": "how the fever game ends: the end is clear to the child (the girl well, the pull-out)"
+  },
+  {
+   "flow": "clinic:heal-knee",
+   "path": "real-pace",
+   "level": [
+    1,
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-out",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x300"
+   ],
+   "expect": null,
+   "note": "how the knee game ends: the end is clear, the game visibly finishes ('again this game hasn't ended')"
+  }
+ ],
+ "CLN-179": [
+  {
+   "flow": "clinic:heal-knee",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:dot",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "eight wraps at L3, zoomed: the bandage reaches the edge of the knee each time and is a photographic band",
+   "max": 8
+  }
+ ],
+ "CLN-180": {
+  "human": "Waits on the s08b art: when the redrawn toothbrush lands, look at the brushing view and say whether the bristles and the back of the handle face the same way, not twisted."
+ },
+ "CLN-181": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:fill",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:8x150"
+   ],
+   "expect": null,
+   "note": "the fill: no code-drawn white line from the drill to the filling; the tip centred in the cavity and the cavity fills from the middle"
+  }
+ ],
+ "CLN-182": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:fill",
+   "after": null,
+   "capture": [
+    "crop:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the middle of the big button is level with the middle of the progress gauge, and both are centred between the bottom of the tooth and the bottom of the screen"
+  }
+ ],
+ "CLN-183": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:fill",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the tooth's gauge uses the design of Cook's speed dial (dark glass face, gold rim, banded arc)"
+  },
+  {
+   "flow": "cook:stir",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "zoom2:hook:cook.gauge"
+   ],
+   "expect": null,
+   "note": "Cook's dial, to hold the tooth's gauge against",
+   "webgl": true
+  }
+ ],
+ "CLN-184": [
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-tooth-slip",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:8x300"
+   ],
+   "expect": null,
+   "note": "an overfill is allowed: the gauge shows red, she says so, the filling smooths back into the holes and he fills again"
+  }
+ ],
+ "CLN-186": {
+  "human": "Waits on the s08b art: when the photographic drops and the re-cut bottle land, look at the eye game at level 3 and say whether the drops look real and the bottle is cut out cleanly."
+ },
+ "CLN-187": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-start",
+   "after": null,
+   "capture": [
+    "dom:.cl-side",
+    "crop:.cl-side"
+   ],
+   "expect": null,
+   "note": "from level 2 the card asks a number of drops for the left eye and a number for the right ('left and right combinations')"
+  }
+ ],
+ "CLN-188": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "eye-test",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the eye chart is a test board on an optician's wall, taking most of the screen, drawn in code, no stray lines, no eye icon; one, two, then three, then four rows by level"
+  }
+ ],
+ "CLN-189": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/heal-marks.mjs --pool eye",
+    "ref:assets/clinic/items-v2/lemon-half.webp"
+   ],
+   "expect": null,
+   "note": "the lemon is yellow, not an orange, so 'limu' marked as a lemon is not scored wrong: does each chart picture's colour class match its word?"
+  }
+ ],
+ "CLN-190": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:pour",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:8x150"
+   ],
+   "expect": null,
+   "note": "clearing the foot: not a flat coloured jet; the washing is more interesting, the cursor over specific parts of the dirt"
+  }
+ ],
+ "CLN-191": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "step:plaster",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the plaster on the foot is the photographic one from the item box, not a coded one"
+  }
+ ],
+ "CLN-192": {
+  "human": "Waits on the s08b art: when the re-cut foot lands, look at it at 800x360, 1366x768 and 1366x1024 and say whether the outside is clean and the ankle blends into the background instead of stopping dead."
+ },
+ "CLN-193": {
+  "human": "Waits on the s08b art (SP1): when the translucent red channel and the splinter travelling inside land, look at the foot at every level's path and say whether it reads as a snake-type game without showing the foot cut open."
+ },
+ "CLN-194": [
+  {
+   "flow": "clinic:heal-foot",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal:off-the-channel",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:6x120"
+   ],
+   "expect": null,
+   "note": "a touch on the edge: the foot vibrates a little, says 'ow', and flashes a little red"
+  }
+ ],
+ "CLN-195": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "a clean cotton bud with nothing on it; when it hits a blue spot it takes the colour of that spot",
+   "max": 6
+  }
+ ],
+ "CLN-196": {
+  "needsDecision": "Taste: is the metal cup the right thing (clinic decision 10), and is the new cup (no drop shadow, sitting on the surface) wanted from the s08b run?",
+  "probes": [
+   {
+    "flow": "clinic:heal-taste",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1366x768"
+    ],
+    "profile": "seen",
+    "want": null,
+    "at": "heal-taste-start",
+    "after": null,
+    "capture": [
+     "zoom2:.cl-heal"
+    ],
+    "expect": null,
+    "note": "the metal cup as built: its drop shadow and how it sits on the surface"
+   }
+  ]
+ },
+ "MOD-10": [
+  {
+   "flow": "mode:tidy",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:16"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "Tidy up: no written English for the child outside the '?' and the labs (result headings, receipts, intro cards)"
+  },
+  {
+   "flow": "mode:snap",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:16"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "Snap: no 'Show Nani', 'None of these: take another' or title intro in English"
+  },
+  {
+   "flow": "mode:who",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:16"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "Who did it?: no 'EN' tag and no English heading or receipt"
+  }
+ ],
+ "ART-22": {
+  "human": "Waits on the art run: when the redrawn girl, doctor and Nani land, look at the three side by side and in each of their scenes and say whether they share one house style."
+ },
+ "LNG-16": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:26",
+    "voice"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai L1: every word of the customer's opening line, 'muke' included, has a sound (a family clip or the device voice), every order"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:26",
+    "voice"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani L1: the opening line is heard whole, every order"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:26",
+    "voice"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chaat L1: the opening line is heard whole, every order"
+  }
  ]
 }
