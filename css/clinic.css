@@ -173,7 +173,8 @@ body.clinic button { font-family: inherit; color: inherit; }
 .cl-lab-bar .grow { flex: 1; }
 .cl-lab-bar.min > :not(.cl-lab-toggle) { display: none; }
 .cl-lab-out { position: fixed; left: calc(var(--cl-side-w) + 8px); bottom: 8px; z-index: 200; max-width: 55vw; max-height: 40vh; overflow: auto; background: rgba(255, 255, 255, .95); border-radius: 10px; padding: var(--njg-s2) var(--njg-s2); font: 12px ui-monospace, monospace; white-space: pre-wrap; box-shadow: 0 2px 8px rgba(0, 0, 0, .15); }
-.cl-lab-out:empty { display: none; }
+.cl-lab-out { display: none; }  /* CLN-159: shown only on ?debug=1 (lab/clinic-heal-host.html sets data-lab-debug) */
+html[data-lab-debug] .cl-lab-out:not(:empty) { display: block; }
 
 @media (max-height: 460px) {
   .cl-row { padding: var(--njg-s1) var(--njg-s1); font-size: 15px; }
