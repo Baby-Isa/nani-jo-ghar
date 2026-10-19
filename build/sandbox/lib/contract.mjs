@@ -38,6 +38,7 @@
 //   contract-24 help-ladder  no help line or glow before the idle time by level, counted from the last action (SH-60, SH-95)
 //   contract-25 bulb-pulse   both bulbs pulse after 15-20 s stuck, never before (SH-96)
 //   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
+//   contract-27 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106)
 //   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
 //                           TTS, no unchecked or redo clip, no unknown audio (non-negotiable 10; checks-to-build 5)
 //
@@ -76,6 +77,7 @@ export const CHECKS = {
   "contract-13": { item: "stale-ui", title: "each stage clears its own UI", how: "Each reply pill (.cl-pill, .njg-pill, .cv-pill, .st-reply, .st-choice; not the sidebar's) remembers the stage it was first seen in; still on screen 600 ms into a later play stage is a break (CLN-06)." },
   "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
+  "contract-27": { item: "go-arrow", title: "every go-on button has the arrow", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\")." },
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -553,6 +555,20 @@ function check12(tl, segs, add, tEnd = tl[tl.length - 1].t) {
     }
   });
 }
+// 27 (SH-106): every go-on button on screen shows the arrow
+function check27(tl, segs, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "buttons") continue;
+    for (const b of e.list || []) {
+      if (!b.go || b.arrow !== false) continue;
+      const s = segAt(segs, e.t), k = `${s && s.key}|${b.sel}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      add("contract-27", e.t, `${s ? s.key : "?"}: ${b.sel} has no arrow`);
+    }
+  }
+}
 // 13 (CLN-06): a reply pill from an earlier stage still on screen in a later play stage
 function check13(tl, add) {
   const seen = new Set();
@@ -945,6 +961,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check11(tl, add);
   check12(tl, segs, add, tEnd);
   check13(tl, add);
+  check27(tl, segs, add);
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);

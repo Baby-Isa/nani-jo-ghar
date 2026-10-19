@@ -28,19 +28,30 @@
   50% { filter: drop-shadow(0 0 var(--njg-s3) rgba(224, 166, 58, 0.85)); }
 }
 
-/* → Next: the flat pill (Cook's #go-btn.ds): white card, charcoal text, gold edge and icon */
+/* → Next, the go-on button (SH-106, 19 Oct: "consistent ... there's no arrow"; samosa's "twice as big vertically"): the
+   flat card (white, charcoal text, gold edge), a quarter taller than the ✓ beside it, the picture of where it goes as
+   big as the card allows, then the gold arrow, always. Every Cook station and every heal game; no mode restyles it. */
 .njg-next {
+  --njg-go-h: calc(var(--njg-done) * 1.25);
+  --njg-go-pic: calc(var(--njg-go-h) - var(--njg-s2) * 2 - var(--njg-line-2) * 2);
   position: absolute; z-index: 30;
   right: max(var(--njg-s3), 2.5%, env(safe-area-inset-right, 0px)); bottom: max(var(--njg-s3), 5%, env(safe-area-inset-bottom, 0px));
   display: inline-flex; align-items: center; gap: var(--njg-s2); max-width: calc(100% - var(--njg-s5)); box-sizing: border-box;
-  border-radius: var(--njg-radius); min-height: var(--njg-tap); margin: 0;
-  padding: var(--njg-s2) var(--njg-s4);
+  border-radius: var(--njg-radius); min-height: var(--njg-go-h); margin: 0;
+  padding: var(--njg-s2) var(--njg-s3) var(--njg-s2) var(--njg-s4);
   background: var(--njg-card); color: var(--njg-ink); border: var(--njg-line-2) solid var(--njg-gold);
   box-shadow: var(--njg-shadow);
   font-weight: 800; font-size: var(--njg-side-h); line-height: 1.15; text-align: left;
 }
 .njg-next-t { min-width: 0; overflow-wrap: normal; }
-.njg-next-ic { display: inline-flex; flex: none; width: 1.5em; height: 1.5em; color: var(--njg-gold); }
+.njg-next-t:empty { display: none; }
+/* the picture: the kit's own slot (NjgButtons.pic), or one a game puts in the label (the eye chart, CLN-107) */
+.njg-next .njg-next-pic, .njg-next .njg-next-t > :is(img, svg) {
+  display: block; flex: none; height: var(--njg-go-pic); width: auto; max-width: calc(var(--njg-go-pic) * 1.6); object-fit: contain;
+  pointer-events: none; -webkit-user-drag: none;
+}
+.njg-next .njg-next-t:has(> :is(img, svg)) { display: flex; align-items: center; }
+.njg-next-ic { display: inline-flex; flex: none; width: calc(var(--njg-go-h) * 0.38); height: calc(var(--njg-go-h) * 0.38); color: var(--njg-gold); }
 .njg-next-ic svg { width: 100%; height: 100%; }
 .njg-next:active { transform: translateY(var(--njg-line)); }
 .njg-next.glow { animation: njgNextGlow 1s ease-in-out infinite; }
