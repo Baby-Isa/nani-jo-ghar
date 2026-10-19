@@ -49,6 +49,8 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
+// contracts 45 and up: the day's frame (s09-frame), in a file of their own
+import { DAY_CHECKS, check45, check46 } from "./contract-day.mjs";
 
 export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
@@ -85,6 +87,7 @@ export const CHECKS = {
   "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
   "contract-34": { item: "go-arrow", title: "every go-on button has the arrow", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\")." },
+  ...DAY_CHECKS,
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -657,7 +660,8 @@ function check16(tl, lex, add, store) {
     if (e.type !== "c" || e.k !== "texts") continue;
     for (const x of e.list || []) {
       if (x.rec && store && !x.grown && !seen.has("rec:" + x.t)) { seen.add("rec:" + x.t); add("contract-16", e.t, `"${x.t}" (${x.sel}): a to-record placeholder on the store build`); continue; }
-      if (x.rec || x.en || x.grown) continue;
+      // a door line's English (rule 5's door exception) is contract-46's to judge
+      if (x.rec || x.en || x.grown || x.door) continue;
       const words = (String(x.t).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).map((w) => w.replace(/’/g, "'")).filter((w) => w.length > 1 && !lex.has(w));
       if (!words.length) continue;
       const k = x.t;
@@ -1131,6 +1135,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check31(tl, v, add);
   check32(tl, add);
   check33(tl, add);
+  check45(tl, add);
+  check46(tl, add);
   return out;
 }
 
