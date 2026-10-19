@@ -1,0 +1,70 @@
+SESSION NAME / MODE:  s08 wave 5A, the clinic I: boing, ear, tooth and every close-up's zoom, with the new art
+MODEL AND EFFORT:     Opus, high effort (visual work and art wiring (non-negotiable 15))
+COST ESTIMATE:        about $35-50
+HARD STOP:            when every task is accepted, or 5 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w5a-clinic.context.md (844 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/clinic-playtest-2026-10-18.md (P8, P11-P18, P21, P22, P31-P36; section 6 decisions 3, 4, 6, 7)
+     build/reports/s08-w0-art.md and assets/s08b-cut-data.json (the cut files)
+     docs/game-design/modes/clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/heal/games/boing.js
+  - js/clinic/heal/games/ear.js
+  - js/clinic/heal/games/tooth.js
+  - js/clinic/heal/host.js (the camera only)
+  - data/clinic/heal/boing.json, ear.json, tooth.json, eye.json (camera only)
+  - data/clinic/heal-art.json registrations for these games
+  - assets/clinic/** new files only (upscaled close-ups)
+  - build/reports/s08-w5a-clinic.md
+READ-ONLY (never edit):
+  - js/cook/**, data/cook.json, data/stations/** (wave 2A)
+  - js/shared/** (ask)
+  - the other heal games (wave 5B)
+  - data/lang/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a colour or word the engine can't say stays grey 'to record'
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Boing: the s07 drop machine and levers (assets/clinic/sheets-v3 or as wave 0 cut them: drop-machine-v3, lever-up-v3, lever-down-v3) and the existing syringe sheets wired in place of code rects (CLN-164); machine about 0.75, syringe 0.85 (CLN-165); drops fill the barrel as liquid in the dropper's colour (CLN-166); the jab a fifth up the bicep, central; the syringe sits above the arm once filled; no count-down, no squash, no violent shake; a small puff of mist and sparkles hides the needle; stars and hearts stay (CLN-167); the cloth (sheets/cloth) in hand, not the packet (CLN-168); one tap counter, on the syringe (CLN-170).
+     Accept: eye: boing L1 and L3 as a filmstrip, flaws first
+  2. Ear: the code-drawn pink sore spots removed for good and the bud's 'miss the spots' rule with them (CLN-135, ear.js:150); the tweezers in two layers, back prong under the blob, front prong over it, from the re-cut tweezers-v3 / sheets tweezers-open (CLN-173); the kidney tray assets/clinic/sheets/bin/bin-kidney-3q.webp in place of the bin (CLN-174).
+     Accept: eye: ear L1 and L3, the grab zoomed x2
+  3. Tooth: the new toothbrush (assets/clinic/items-s08b/toothbrush-s08b.webp), bristles to the teeth, handle out, no 38-degree twist (CLN-180); no code-drawn white line; the tool's tip on the cavity's centre, filling from the middle (CLN-181); the button's middle in line with the gauge's middle, both midway between the tooth's bottom and the screen's bottom (CLN-182); the gauge styled from Cook's daal speed dial (CLN-183); overfilling shows red, smooths back to the line, fill again; the first go scored (CLN-184).
+     Accept: eye: tooth L1-L3 filmstrips; the button and gauge aligned (measured)
+  4. CLN-163 (with CLN-185): every close-up zooms smoothly in and out over one high-resolution picture (upscale the close-up with build/tools/art/upscale.py), one camera tween, the cavities drawn in that picture's own place; tooth and eye a step less zoomed in.
+     Accept: eye: tooth and eye zoom in and out as filmstrips at 1366x768 and 800x360; no jump; cavities on the teeth at the far view
+
+REGRESSION ROWS TO RECHECK (99 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (43): CLN-81*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-30, CLN-42, CLN-43, CLN-44, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-boing (13): CLN-159*, CLN-106, CLN-138*, CLN-164*, CLN-165*, CLN-166*, CLN-167*, CLN-168*, CLN-170*, CLN-82, CLN-58, CLN-66, CLN-37
+  clinic:heal-ear (12): CLN-173*, CLN-174*, CLN-135*, CLN-86, CLN-34, CLN-49, CLN-50, CLN-71, CLN-78, CLN-101, CLN-102, CLN-134
+  clinic:heal-tooth (12): CLN-180, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-09, CLN-35, CLN-51, CLN-52, CLN-53, CLN-103, CLN-129
+  clinic:heal-eye (20): CLN-38*, CLN-107*, CLN-163*, CLN-186, CLN-187*, CLN-188*, CLN-189*, CLN-85, CLN-152, CLN-39, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-78, CLN-80, CLN-143, CLN-136
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w5a-clinic` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8836.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w5a-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

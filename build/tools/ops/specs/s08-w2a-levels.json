@@ -1,0 +1,27 @@
+{
+  "name": "s08 wave 2A, Cook's level table: Nani calls each step live, the card open/open/dotted/hidden, decoys and each station's one new thing per level; moving on by itself; one ending in the kitchen; loading behind the pop-up; the marble; the last 'one' written",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "the design spine of every Cook station: judgement on pacing, leak test and the engine's lines",
+  "cost": "about $35-50",
+  "stop": "when every task is accepted, or 5 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["build/reports/research-levels-2026-10-19.md (the table; Zafar said yes to all, 19 Oct, except chai L3: two cups, no half/full)", "docs/feedback/cook-playtest-2026-10-17.md (P24, P26, P28, P31, P32, P36, P44, P46, P64)", "docs/game-design/modes/cook.md", "docs/game-design/progression-and-scoring.md", "build/reports/s08-w1-voice.md, s08-w1b-card.md (the hooks: stepper({call}), UI.mission.dotsHook)"],
+  "owns": ["js/cook/flow.js", "js/cook/station-lib.js", "js/cook/stations.js", "js/cook/zone.js", "js/cook/order.js", "js/cook/ui.js (card ladder and dotted hook only)", "js/cook/stations/*.js and js/cook/mechanics/*.js: only level knobs, step calls, decoys and moving on", "data/cook.json recipes, calm and level data", "data/stations/*.json", "build/sandbox/lib/contract.mjs and build/tools/review/lib/regressions.mjs: new checks", "docs/game-design/modes/cook.md (the level table, replacing closedFrom and decision 41's lines)", "build/reports/s08-w2a-levels.md"],
+  "readOnly": ["js/clinic/**, data/clinic/** (wave 5A)", "js/shared/** (ask)", "assets/**", "data/lang/** (never hand-written Kutchi)"],
+  "stubs": "a step call the engine can't say (the stir sentence, 'put it on', 'take it off', the 'and' join) uses the interim line the rows name or stays its grey 'to record' placeholder; listed in the report",
+  "tasks": [
+    {"do": "SH-110 (with SAM-26, MAA-18, CK-49): the level table as data per station, replacing calm.closedFrom: card open L1-L2, item words dotted at L3 (frames, verbs, numbers written), hidden at L4 (a tap replays it, free); Nani calls each step once as it opens, at every level (the order in pieces, never help, never costs); decoys 1/2/3/3 + a lookalike; each station's one new thing per level per the research table (chai 1, 2, 2, 3 cups; maani two with big/small from L2; samosa one filling, a second in order, two kinds, then the 'no' filling; pantry asks one thing at a time; sekelo decoys; daal chop rounds; chaat toppings in order).", "accept": "contract-run checks red then green per station L1-L4: the card's state by level, a step call at each step's open, decoy counts; the leak bots (build/tools/review/leak.mjs) still pass at every level"},
+    {"do": "SH-105: move on by itself where nothing is left to choose: the chai tray after the last pour, samosa after the last filled strip is folded (straight to the fryer), chaat when the bowl is complete; samosa's count step keeps its go-on button (decision 6).", "accept": "contract-2 green; no tick waits where nothing can change"},
+    {"do": "CK-47: one ending, in the kitchen: every station ends back at the counter with the customer's thanks and goodbye and one well done; no recap in Nani's box (lab and story).", "accept": "eye: every station's end, story and lab, one praise"},
+    {"do": "CK-48: a station's files load behind the order's pop-up; nothing half-drawn appears (sekelo's chopping board flash). SH-108: every top-down station shows the painted marble (wait for it, never the code worktop).", "accept": "a throttled run: click the card through after 1 s, no flash, every station on marble"},
+    {"do": "SH-99's last gap: samosa and the pantry at L1 say 'hakro X' but the card doesn't write 'hakro' (station-lib.js:43; the orchestrator's contract run orch-w1b2b-check, contract-30 on cook:samosa and cook:fetch L1); daal's chop card (daar.js:282) too.", "accept": "contract-30 green on cook:samosa, cook:fetch, cook:daar L1-L4"}
+  ],
+  "flows": ["cook:chai-tray", "cook:samosa", "cook:chaat", "cook:fetch", "cook:mishkaki-grill", "cook:maani-line", "cook:daar", "cook:day1"],
+  "shared": true,
+  "browser": true,
+  "port": 8835,
+  "report": "s08-w2a-levels",
+  "publish": false
+}

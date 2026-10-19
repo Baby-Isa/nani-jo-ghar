@@ -1,0 +1,26 @@
+{
+  "name": "s08 wave 5A, the clinic I: boing, ear, tooth and every close-up's zoom, with the new art",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "visual work and art wiring (non-negotiable 15)",
+  "cost": "about $35-50",
+  "stop": "when every task is accepted, or 5 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/feedback/clinic-playtest-2026-10-18.md (P8, P11-P18, P21, P22, P31-P36; section 6 decisions 3, 4, 6, 7)", "build/reports/s08-w0-art.md and assets/s08b-cut-data.json (the cut files)", "docs/game-design/modes/clinic.md"],
+  "owns": ["js/clinic/heal/games/boing.js", "js/clinic/heal/games/ear.js", "js/clinic/heal/games/tooth.js", "js/clinic/heal/host.js (the camera only)", "data/clinic/heal/boing.json, ear.json, tooth.json, eye.json (camera only)", "data/clinic/heal-art.json registrations for these games", "assets/clinic/** new files only (upscaled close-ups)", "build/reports/s08-w5a-clinic.md"],
+  "readOnly": ["js/cook/**, data/cook.json, data/stations/** (wave 2A)", "js/shared/** (ask)", "the other heal games (wave 5B)", "data/lang/**"],
+  "stubs": "a colour or word the engine can't say stays grey 'to record'",
+  "tasks": [
+    {"do": "Boing: the s07 drop machine and levers (assets/clinic/sheets-v3 or as wave 0 cut them: drop-machine-v3, lever-up-v3, lever-down-v3) and the existing syringe sheets wired in place of code rects (CLN-164); machine about 0.75, syringe 0.85 (CLN-165); drops fill the barrel as liquid in the dropper's colour (CLN-166); the jab a fifth up the bicep, central; the syringe sits above the arm once filled; no count-down, no squash, no violent shake; a small puff of mist and sparkles hides the needle; stars and hearts stay (CLN-167); the cloth (sheets/cloth) in hand, not the packet (CLN-168); one tap counter, on the syringe (CLN-170).", "accept": "eye: boing L1 and L3 as a filmstrip, flaws first"},
+    {"do": "Ear: the code-drawn pink sore spots removed for good and the bud's 'miss the spots' rule with them (CLN-135, ear.js:150); the tweezers in two layers, back prong under the blob, front prong over it, from the re-cut tweezers-v3 / sheets tweezers-open (CLN-173); the kidney tray assets/clinic/sheets/bin/bin-kidney-3q.webp in place of the bin (CLN-174).", "accept": "eye: ear L1 and L3, the grab zoomed x2"},
+    {"do": "Tooth: the new toothbrush (assets/clinic/items-s08b/toothbrush-s08b.webp), bristles to the teeth, handle out, no 38-degree twist (CLN-180); no code-drawn white line; the tool's tip on the cavity's centre, filling from the middle (CLN-181); the button's middle in line with the gauge's middle, both midway between the tooth's bottom and the screen's bottom (CLN-182); the gauge styled from Cook's daal speed dial (CLN-183); overfilling shows red, smooths back to the line, fill again; the first go scored (CLN-184).", "accept": "eye: tooth L1-L3 filmstrips; the button and gauge aligned (measured)"},
+    {"do": "CLN-163 (with CLN-185): every close-up zooms smoothly in and out over one high-resolution picture (upscale the close-up with build/tools/art/upscale.py), one camera tween, the cavities drawn in that picture's own place; tooth and eye a step less zoomed in.", "accept": "eye: tooth and eye zoom in and out as filmstrips at 1366x768 and 800x360; no jump; cavities on the teeth at the far view"}
+  ],
+  "flows": ["clinic:heal-boing", "clinic:heal-ear", "clinic:heal-tooth", "clinic:heal-eye"],
+  "shared": false,
+  "browser": true,
+  "port": 8836,
+  "report": "s08-w5a-clinic",
+  "publish": false
+}
