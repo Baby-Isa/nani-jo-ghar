@@ -4037,189 +4037,189 @@
    },
    "chaat-glass": {
     "line": "C8",
-    "file": "assets/cook/items/v3/chaat/bowl-side-v2.webp",
+    "file": "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
     "ready": true,
     "station": "assemble",
     "size": [
-     900,
-     457
+     800,
+     311
     ],
     "meta": {
-     "_about": "measured on the cut (S02-E) the way build/check_vessel_meta.py measures bowl-side: fractions of the sprite; rim/floor = the front lines of the rim and the inside floor, ery = their ellipses' half-heights, inside = the inside wall [left, right] at 41 heights",
+     "_about": "CHT-13 (s08 w3B): the s08b art run's exactly side-on bowl (CH1, assets/s08b-cut-data.json), measured on its @2x cut the way build/check_vessel_meta.py measures bowl-side (fractions of the sprite): rim = under the rim's bright band, floor = where the thick base starts; side-on, so a level's ellipse is nearly flat (ery); inside = the silhouette less its 29 px (2x) wall at 41 heights. Was the S02-E bowl-side-v2 (C8).",
      "bowl": {
-      "w": 900,
-      "h": 457,
-      "cx": 0.5,
-      "rim": 0.206,
-      "floor": 0.957,
-      "eryRim": 0.0855,
-      "eryFloor": 0.0735,
-      "floorTop": 0.81,
-      "floorHw": 0.381,
+      "w": 800,
+      "h": 311,
+      "cx": 0.4989,
+      "rim": 0.0728,
+      "floor": 0.8701,
+      "eryRim": 0.006,
+      "eryFloor": 0.0107,
+      "floorTop": 0.8504,
+      "floorHw": 0.3572,
       "inside": [
        [
-        0.0211,
-        0.9789
+        0.0314,
+        0.9671
        ],
        [
-        0.0211,
-        0.9789
+        0.0314,
+        0.9671
        ],
        [
-        0.0211,
-        0.9789
+        0.0314,
+        0.9671
        ],
        [
-        0.0211,
-        0.9789
+        0.0329,
+        0.9648
        ],
        [
-        0.0244,
-        0.9756
+        0.0352,
+        0.964
        ],
        [
-        0.0267,
-        0.9733
+        0.0391,
+        0.9602
        ],
        [
-        0.03,
-        0.97
+        0.0421,
+        0.9564
        ],
        [
-        0.0322,
-        0.9678
+        0.0459,
+        0.9533
        ],
        [
-        0.0356,
-        0.9644
+        0.049,
+        0.9502
        ],
        [
-        0.0389,
-        0.9611
+        0.0528,
+        0.9464
        ],
        [
-        0.0411,
-        0.9589
-       ],
-       [
-        0.0444,
-        0.9556
-       ],
-       [
-        0.0478,
-        0.9522
-       ],
-       [
-        0.0511,
-        0.9489
-       ],
-       [
-        0.0544,
-        0.9467
-       ],
-       [
-        0.0567,
+        0.0559,
         0.9433
        ],
        [
-        0.06,
-        0.94
+        0.0597,
+        0.9395
        ],
        [
-        0.0633,
-        0.9367
+        0.0628,
+        0.9357
        ],
        [
-        0.0667,
-        0.9333
+        0.0666,
+        0.9326
        ],
        [
-        0.0689,
-        0.93
+        0.0697,
+        0.9288
        ],
        [
-        0.0722,
-        0.9278
+        0.0735,
+        0.9257
        ],
        [
-        0.0756,
-        0.9244
+        0.0766,
+        0.9219
        ],
        [
-        0.0789,
-        0.9211
+        0.0804,
+        0.9188
        ],
        [
-        0.0822,
-        0.9178
+        0.0835,
+        0.915
        ],
        [
-        0.0856,
-        0.9144
+        0.0865,
+        0.9119
        ],
        [
-        0.0889,
-        0.9111
+        0.0904,
+        0.9081
        ],
        [
-        0.0922,
-        0.9078
+        0.0942,
+        0.9043
        ],
        [
-        0.0956,
-        0.9044
+        0.0972,
+        0.9012
        ],
        [
-        0.0989,
-        0.9011
+        0.1003,
+        0.8974
        ],
        [
-        0.1022,
-        0.8978
+        0.1041,
+        0.8936
        ],
        [
-        0.1056,
-        0.8944
+        0.1072,
+        0.8905
        ],
        [
-        0.1089,
-        0.8911
+        0.111,
+        0.8867
        ],
        [
-        0.1122,
-        0.8878
+        0.1149,
+        0.8836
        ],
        [
-        0.1156,
-        0.8844
+        0.1179,
+        0.8798
        ],
        [
-        0.1189,
-        0.8811
+        0.121,
+        0.876
        ],
        [
-        0.1189,
-        0.8811
+        0.1248,
+        0.8729
        ],
        [
-        0.1189,
-        0.8811
+        0.1279,
+        0.8691
        ],
        [
-        0.1189,
-        0.8811
+        0.1317,
+        0.866
        ],
        [
-        0.1189,
-        0.8811
+        0.1355,
+        0.8622
        ],
        [
-        0.1189,
-        0.8811
+        0.1386,
+        0.8583
        ],
        [
-        0.1189,
-        0.8811
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
        ]
       ]
      }
@@ -5025,10 +5025,12 @@
       "chilli"
      ],
      "files": [
-      "assets/cook/items/v3/chaat/*"
+      "assets/cook/items/v3/chaat/*",
+      "assets/cook/items-s08b/chaat-bowl-side-s08b*",
+      "assets/cook/items-s08b/chaat-strips/*"
      ],
      "prefetch": [
-      "assets/cook/items/v3/chaat/bowl-side-v2.webp",
+      "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
       "assets/cook/items/v3/chaat/pot-chana.webp",
       "assets/cook/items/v3/chaat/pot-imli.webp",
       "assets/cook/items/v3/chaat/pot-potato.webp",
