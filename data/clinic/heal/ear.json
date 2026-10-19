@@ -340,7 +340,7 @@
   },
   "tweezers": {
    "file": "assets/clinic/sheets-v3/tweezers/tweezers-open-v3.webp",
-   "tool": "assets/clinic/items-v3/tweezers-v3.webp",
+   "tool": "assets/clinic/items-v3/tweezers-v3-tool.webp",
    "size": [
     365,
     142
@@ -387,7 +387,7 @@
   "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp",
   "assets/clinic/sheets/bin/bin-kidney-3q.webp",
   "assets/clinic/sheets-v3/tweezers/tweezers-open-v3.webp",
-  "assets/clinic/items-v3/tweezers-v3.webp",
+  "assets/clinic/items-v3/tweezers-v3-tool.webp",
   "assets/clinic/sheets/tweezers/tweezers-tool.webp",
   "assets/clinic/sheets/tweezers/tweezers-use-45.webp",
   "assets/clinic/sheets/bin/bin-three-q-open.webp"
