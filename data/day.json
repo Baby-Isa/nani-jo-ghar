@@ -49,7 +49,7 @@
       ]
     },
     "nani": { "art": "assets/cook/characters/nani-stand-v3-front.webp", "x": 1060, "base": 890, "h": 560 },
-    "thought": { "x": 1250, "y": 120, "w": 260, "h": 200 },
+    "thought": { "x": 1230, "y": 170, "w": 260, "h": 200 },
     "lineCard": { "x": 60, "y": 40, "w": 760 }
   },
   "weather": {
@@ -147,14 +147,17 @@
     "goodnight": { "meaning": { "fn": "Say", "x": "phrase.goodnight" }, "en": "Goodnight!" },
     "tomorrow": { "meaning": { "fn": "Say", "x": "phrase.see-you-tomorrow" }, "en": "See you tomorrow!" },
     "pictures": {
-      "_about": "A word's picture: its own entry here, else a Cook word's image (assets/cook/props/<image>.webp from data/cook.json), else a plain shape (no text).",
+      "_about": "A word's picture: its own entry here (by engine id), else the mode's own picture for it (each source: a data file's table, the id with `strip` taken off, the field, the path made from it), else a plain shape (no text). Loaded only when a page needs it.",
       "own": {
         "n.she-goat": "assets/characters/goat/goat-side.png",
         "n.chicken": "assets/characters/hen/hen-side.png",
         "pn.nana": "assets/cook/characters/nana-badge.webp",
         "pn.ali": "assets/cook/characters/cousin-badge.webp"
       },
-      "cook": { "data": "data/cook.json", "path": "assets/cook/props/{image}.webp" }
+      "sources": [
+        { "data": "data/cook.json", "table": "words", "field": "image", "path": "assets/cook/props/{v}.webp" },
+        { "data": "data/clinic.json", "table": "items", "strip": "cl-", "field": "img", "path": "{v}" }
+      ]
     },
     "lab": {
       "_about": "lab/day.html: a day log as Cook or the clinic would leave it (core/log entries and the words met today), so the book can be seen after each. Ids are the modes' own (engine aliases).",

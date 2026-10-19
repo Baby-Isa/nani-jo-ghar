@@ -263,15 +263,10 @@
 
     // the schedule: group i enters at t_i (gapMs between the end of one group and the next; scenery fills the gaps)
     const st = { t: 0, scroll: 0, vel: 1, items: [], call: -1, phase: "idle", outcome: [], done: false, stopped: false, hints: 0 };
-    const plans = [];
-    let tEnter = 600;
-    plan.calls.forEach((c, i) => {
-      const g = { i, call: c, enter: tEnter, members: [], said: false, taps: [], glow: false, again: false, result: null, firstAt: null };
-      plans.push(g);
-      const width = c.group.reduce((a, id) => a + itemH * ((things[id] || {}).h || 1) * 1.25, 0);
-      tEnter += width / pxPerMs + (plan.gapMs || 1800);
-      if (plan.stopAfter === i) tEnter += 900; // room for the stop
-    });
+    // one group at a time, like the belt's one prescription: the next comes on gapMs after the one before is settled (and after
+    // the stop beat), so a call never overlaps another and a group that comes round again has the road to itself
+    const plans = plan.calls.map((c, i) => ({ i, call: c, members: [], said: false, taps: [], glow: false, again: false, result: null, firstAt: null }));
+    let nextEnter = 600;
     const sceneryIds = (ride.scenery || []).filter((id) => things[id]);
     // a group's members side by side with a gap between them (each as wide as it is drawn)
     const lineUp = (g) => {
@@ -336,7 +331,12 @@
       if (on && !g.glow) st.hints++;
       g.glow = on;
       g.wrongOrHelp = g.wrongOrHelp || on;
-      g.members.forEach((m) => m.b.classList.toggle("wr-glow", on && m.id === g.call.named));
+      // the one shared glow (css/shared/focus.css: a centred pulse, F17), on the named thing only
+      g.members.forEach((m) => {
+        const lit = on && m.id === g.call.named;
+        m.b.classList.toggle("wr-glow", lit);
+        m.b.classList.toggle("njg-pulse", lit);
+      });
     }
     function finish(g, res, m) {
       g.result = res;
@@ -347,6 +347,7 @@
         m.got = true;
       }
       g.members.forEach((x) => (x.b.disabled = true));
+      nextEnter = (st.ride || 0) + (plan.gapMs || 1800);
       if (o.onResult) o.onResult(g.i, res);
       if (plans.every((p) => p.result)) end();
     }
@@ -415,9 +416,8 @@
       });
       // groups come on at their time (counted on the ride's own clock, which stands still while the car stops)
       st.ride = (st.ride || 0) + dt * st.vel;
-      plans.forEach((g) => {
-        if (!g.members.length && st.ride >= g.enter) spawnGroup(g);
-      });
+      const due = plans.find((g) => !g.members.length);
+      if (due && st.ride >= nextEnter && !stopBeat && (due.i === 0 || plans[due.i - 1].result) && !(plan.stopAfter === due.i - 1 && !st.stopDone)) spawnGroup(due);
       if (st.ride >= nextScenery && !st.done) {
         spawnScenery();
         nextScenery = st.ride + (plan.gapMs || 1800) * 1.6 + Math.random() * 900;
@@ -493,9 +493,11 @@
         if (!g) return { kind: "wait" };
         const m = g.members.find((x) => x.id === g.call.named);
         if (!m) return { kind: "wait" };
+        // on screen: its middle inside the window (a tap there lands on it)
         const r = m.b.getBoundingClientRect();
-        const vw = root.innerWidth || 0;
-        if (r.right < 8 || r.left > vw - 8) return { kind: "wait" };
+        const wr = win.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        if (cx < wr.left + 24 || cx > wr.right - 24) return { kind: "wait" };
         return { kind: "tap", sel: `.wr-member[data-call="${g.i}"][data-thing="${g.call.named}"]`, call: g.i, thing: g.call.named, others: g.members.filter((x) => x !== m).map((x) => x.id) };
       },
       _st: st,
