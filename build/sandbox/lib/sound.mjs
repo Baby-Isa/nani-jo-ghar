@@ -164,6 +164,9 @@ export const SOUND_HOOK = `(() => {
       const C = window.Cook;
       if (C && C.Lang && C.Lang.plain) wrapLine(C.Lang, "speak", "cook", (l) => C.Lang.plain(l));
       if (C && C.speak) wrapLine(C, "speak", "cook", (p) => p);
+      // day.html (s09-frame): every line goes through window.Day.say; the speaker names the stage ("day:door:nani")
+      const D = window.Day;
+      if (D && D.say && D.plain) wrapLine(D, "say", (l, o) => "day:" + String(D.stage || "?") + ":" + String((o && o.who) || "nani"), (l) => D.plain(l));
       const K = window.Clinic && window.Clinic.Kit;
       if (K && K.Voice && K.plain) {
         // (D3's ask, S05-C3: each clinic line names its speaker, "clinic:doctor", "clinic:child" ..., not "clinic" alone)

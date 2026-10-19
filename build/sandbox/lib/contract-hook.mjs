@@ -575,8 +575,12 @@ export const CONTRACT_HOOK = `(() => {
       const rec = !!el.closest(".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line, .rs-ph, .rs-ph-in, .rs-rec");
       // .rs-en and the steps page's small English: the end-of-round review shows each word's English under it (ui-design-system §6, §6a), pending Zafar's answer (docs/questions.md, 14 Oct)
       const en = !!el.closest(".english, .cl-row-en, .bulb-en, [data-bulb-en], .rs-en, .rs-step-text small");
-      const key = t + "|" + rec + en + grown;
-      if (!out.has(key)) { out.set(key, { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }); k++; }
+      // contract-46 (s09-frame): a door line's English (day.html, rule 5's door exception): is the page on its door, and does
+      // the English sit right under a Kutchi line (a .day-k that is not a to-record placeholder)?
+      const dEl = el.closest("[data-door-en]");
+      const door = dEl ? { stage: !!(window.Day && window.Day.stage === "door"), under: !!(dEl.previousElementSibling && dEl.previousElementSibling.matches(".day-k:not(.to-record)")) } : null;
+      const key = t + "|" + rec + en + grown + (door ? JSON.stringify(door) : "");
+      if (!out.has(key)) { out.set(key, door ? { t: t.slice(0, 80), rec, en, grown, door, sel: desc(el) } : { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }); k++; }
     }
     return [...out.values()];
   };
@@ -694,7 +698,7 @@ export const CONTRACT_HOOK = `(() => {
     const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()), go: isGoBtn(b), arrow: isGoBtn(b) ? hasArrow(b) : null }));
     if (!same("buttons", bl.map((b) => b.sel + b.arrow))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
     const tx = safe(texts, []);
-    if (!same("texts", tx.map((x) => x.t + x.rec + x.en + x.grown))) emit({ k: "texts", list: tx });
+    if (!same("texts", tx.map((x) => x.t + x.rec + x.en + x.grown + (x.door ? JSON.stringify(x.door) : "")))) emit({ k: "texts", list: tx });
     const fc = safe(faces, null);
     if (fc && !same("faces", [fc.list.map((f) => f.who + f.sel), fc.cards, fc.figFull])) emit({ k: "faces", ...fc });
     const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => ({ who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b) }));

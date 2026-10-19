@@ -52,6 +52,8 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
+// contracts 45 and up: the day's frame (s09-frame), in a file of their own
+import { DAY_CHECKS, check45, check46 } from "./contract-day.mjs";
 
 export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
@@ -91,6 +93,7 @@ export const CHECKS = {
   "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted; L4 every order card closed (face + headline folded). Was closedFrom 3 (SH-110, the level table, Zafar 19 Oct)." },
   "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows only: every step the game opens in a play stage (Lifecycle step-open, js/shared/guide.js stepper) must be called: a Cook line tagged role call must start after it and before the next step opens (or within 6 s), unless the game logged a step-call skip for that step (Lifecycle step-call, by 'skip ...': Nani muted, the station said it a moment ago, a step with no voiced line, the step closed before its turn). A step-open with neither is a break; a call said where the step-call log says skip is a break too (SH-110, the level table: the order in pieces, at every level, never help)." },
   "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
+  ...DAY_CHECKS,
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -663,7 +666,8 @@ function check16(tl, lex, add, store) {
     if (e.type !== "c" || e.k !== "texts") continue;
     for (const x of e.list || []) {
       if (x.rec && store && !x.grown && !seen.has("rec:" + x.t)) { seen.add("rec:" + x.t); add("contract-16", e.t, `"${x.t}" (${x.sel}): a to-record placeholder on the store build`); continue; }
-      if (x.rec || x.en || x.grown) continue;
+      // a door line's English (rule 5's door exception) is contract-46's to judge
+      if (x.rec || x.en || x.grown || x.door) continue;
       const words = (String(x.t).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).map((w) => w.replace(/’/g, "'")).filter((w) => w.length > 1 && !lex.has(w));
       if (!words.length) continue;
       const k = x.t;
@@ -1264,6 +1268,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check35(r, tl, segs, add, root);
   check36(r, tl, segs, v, add);
   check37(r, tl, segs, add);
+  check45(tl, add);
+  check46(tl, add);
   return out;
 }
 

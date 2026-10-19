@@ -5,6 +5,7 @@ import { clinicFlows, clinicFlow, HEAL_GAMES } from "./clinic.mjs";
 import { MODE_FLOWS } from "./modes.mjs";
 import { rotateFlow, cssFlow } from "./extra.mjs";
 import { labFlows, labCook } from "./labs.mjs";
+import { DAY_FLOWS } from "./day.mjs";
 import { ALL_SIZES } from "../lib/env.mjs";
 import { driverPaths } from "../drivers/catalog.mjs";
 
@@ -51,6 +52,8 @@ export function allFlows() {
   for (const f of labFlows()) flows.push(deep(f));
   // the pantry and the Chop tile at a child's pace (speed 1): the voice check in real time
   for (const k of ["fetch", "chop"]) flows.push(deep(cookStation(k, 1, { speed: 1 })));
+  // ---- s09-frame: a day at Nani's (day.html): the door, the book, the window ride, at a phone, a 4:3 tablet and the laptop ----
+  for (const f of DAY_FLOWS) flows.push({ ...f, sizes: ["844x390", "1024x768", "1366x768"] });
   return flows.map((f) => ({ ...f, parked: false }));
 }
 export const flowSizes = (f) => f.sizes || ALL_SIZES;
