@@ -141,6 +141,43 @@
     117
    ],
    "_a2": "A2 (5 Oct): O3's bud with the ointment (malam) on its right-hand swab"
+  },
+  "budClean": {
+   "_about": "s08-w5b (CLN-195; Zafar 18 Oct: 'a clean cotton bud with nothing on it ... when it hits the blob ... the colour of the blob'): the s08b clean bud, lying across its picture; tip = the right swab's middle, swab = its half length and half height (shares of the picture, measured on its alpha); the code tints that swab with the colour of the spot it last touched",
+   "src": "assets/clinic/items-s08b/cotton-bud-clean-s08b.webp",
+   "size": [
+    560,
+    63
+   ],
+   "tip": [
+    0.92,
+    0.5
+   ],
+   "swab": [
+    0.08,
+    0.42
+   ]
+  },
+  "glass": {
+   "_about": "s08-w5b (CLN-196, clinic decision 10: a clear glass, no drop shadow, so the drink shows through as it fills and mixes): the s08b clear tumbler; rim = its rim's ellipse (centre x, y, half axes as shares of the picture's w and h); inside = the drink's surface when full and its inner bottom (y), the inner half widths there (of w) and the surface's height over its width (perspective), measured on the picture's alpha",
+   "src": "assets/clinic/items-s08b/tumbler-glass-s08b.webp",
+   "size": [
+    463,
+    560
+   ],
+   "rim": [
+    0.5,
+    0.105,
+    0.48,
+    0.09
+   ],
+   "inside": {
+    "full": 0.24,
+    "bottom": 0.84,
+    "top": 0.455,
+    "foot": 0.385,
+    "ratio": 0.2
+   }
   }
  },
  "camera": {
@@ -177,12 +214,12 @@
  },
  "assets": [
   "assets/clinic/closeups/girl/tongue-v2.webp",
-  "assets/clinic/heal-v3/bud-ointment.webp",
   "assets/clinic/heal-v3/spot-blue-s03.webp",
   "assets/clinic/heal-v3/spot-green-s03.webp",
   "assets/clinic/heal-v3/spot-red-s03.webp",
-  "assets/clinic/items-v2/tumbler.webp",
-  "assets/clinic/sheets/bud/bud-pot-belt.webp"
+  "assets/clinic/sheets/bud/bud-pot-belt.webp",
+  "assets/clinic/items-s08b/tumbler-glass-s08b.webp",
+  "assets/clinic/items-s08b/cotton-bud-clean-s08b.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

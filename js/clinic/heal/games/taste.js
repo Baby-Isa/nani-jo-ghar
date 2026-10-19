@@ -25,14 +25,14 @@
   // the things on the counter, each by its id (an alias in the engine's data/lang/lexicon.json): no Kutchi in this file (R5, 4e)
   const THINGS = {
     milk: { lex: "cook-dudh", img: "assets/clinic/items-v2/milk-jug.webp", glyph: "🥛", liquid: "#f7f3ea" },
-    water: { lex: "cook-paani", img: "assets/clinic/items-v2/water-jug.webp", glyph: "💧", liquid: "#d4e9f4" },
+    water: { lex: "cook-paani", img: "assets/clinic/items-v2/water-jug.webp", glyph: "💧", liquid: "#b9dbef" },
     turmeric: { lex: "spi-01", img: "assets/clinic/items-v2/turmeric-bowl.webp", glyph: "🟡", tint: "#e3a21a" },
     honey: { lex: "cl-honey", img: "assets/clinic/items-v2/honey-jar.webp", glyph: "🍯", tint: "#d99a2b" },
     ginger: { lex: "veg-14", img: "assets/clinic/items-v2/ginger.webp", glyph: "🫚", tint: "#cfa968" },
     lemon: { lex: "fru-02", img: "assets/clinic/items-v2/lemon-half.webp", glyph: "🍋", tint: "#efe04a" },
   };
   const SPOON = { img: "assets/clinic/items-v2/teaspoon.webp", glyph: "🥄" };
-  const BUD = { img: "assets/clinic/items-v2/cotton-buds.webp", glyph: "🩹" };
+  const BUD = { img: "assets/clinic/items-s08b/cotton-bud-clean-s08b.webp", glyph: "🩹" }; // CLN-195: the clean bud
   // four drinks, each a liquid poured and one thing added (four, so a blind guess at level 1 stays under 10%:
   // 1/3 for the colour x 1/4 for the drink); named with the frames the clinic already had (hardar waaro dudh,
   // aadu ne paani): "{thing} waaro {milk}", "{thing} ne {water}"
@@ -250,10 +250,25 @@
       ctx.after(fast() ? 120 : 380, tick);
     };
 
-    /* ---------------- the cotton bud (O3: dipped in the soothing ointment) ---------------- */
-    const budArt = art("budOintment");
+    /* ---------------- the cotton bud ---------------- */
+    // CLN-195 (Zafar, 18 Oct: "It should be a clean cotton bud with nothing on it. Then when it ... hits the blob, the
+    // cotton bud ... should have the colour of the blob"): the s08b clean bud (data art.budClean); its tip takes the
+    // colour of the spot it last touched (a soft tint over the swab), never one colour baked in
+    const clean = data.art && data.art.budClean && data.art.budClean.src ? data.art.budClean : null;
+    const budArt = clean ? null : art("budOintment");
     const budG = s("g", { opacity: 0 }, S.fx);
-    if (budArt && budArt.size) {
+    let budTip = null;
+    if (clean) {
+      // the bud lies across its picture, the swab to dab with at its right: that swab on the dab point, the stick
+      // up and a little to the right
+      const [bw, bh] = clean.size;
+      const k = 150 / bw;
+      const [tx, ty] = clean.tip; // the right swab's middle (shares of the picture)
+      const [sw, sh] = clean.swab; // its half length and half height (shares)
+      const g = s("g", { transform: `rotate(110) translate(${(-tx * bw * k).toFixed(1)} ${(-ty * bh * k).toFixed(1)})` }, budG);
+      s("image", { href: url(clean.src), x: 0, y: 0, width: bw * k, height: bh * k }, g);
+      budTip = s("ellipse", { cx: (tx * bw * k).toFixed(1), cy: (ty * bh * k).toFixed(1), rx: (sw * bw * k * 0.92).toFixed(1), ry: (sh * bh * k * 0.86).toFixed(1), fill: "none", opacity: 0, style: "mix-blend-mode:multiply" }, g);
+    } else if (budArt && budArt.size) {
       // A2 (5 Oct): O3's bud is a horizontal picture, the ointment on its right-hand swab: that swab's centre on
       // the dab point, the stick up and a little to the right
       const [bw, bh] = budArt.size;
@@ -268,9 +283,19 @@
     }
     const dab = (sp) =>
       tween(fast() ? 1 : 220, (u) => {
+        // the tip takes the spot's colour as it touches (half way down the dab)
+        if (budTip && u >= 0.5 && budTip.dataset.col !== sp.colour) {
+          budTip.dataset.col = sp.colour;
+          budTip.setAttribute("fill", hexOf(sp.colour));
+          budTip.setAttribute("opacity", 0.8);
+        }
         budG.setAttribute("opacity", 1);
         budG.setAttribute("transform", `translate(${sp.x} ${sp.y - 6 - 30 * (1 - Math.sin(u * Math.PI))})`);
-      }).then(() => ctx.after(fast() ? 10 : 160, () => budG.setAttribute("opacity", 0)));
+      }).then(() => {
+        // CLN-195: the bud stays a moment after the dab, so its tip's new colour is seen (a next dab keeps it up)
+        const n = (budG.dabN = (budG.dabN || 0) + 1);
+        ctx.after(fast() ? 10 : budTip ? 700 : 160, () => budG.dabN === n && budG.setAttribute("opacity", 0));
+      });
     const sparkle = (x, y, col) => {
       const g = s("g", { transform: `translate(${x} ${y})` }, fxG);
       for (let k = 0; k < 8; k++) {
@@ -283,46 +308,60 @@
       }).then(() => g.remove());
     };
 
-    /* ---------------- the drink: the tumbler, the pour, the spoon ---------------- */
-    const GL = { x: 150, y: 330, w: 116, h: 150 }; // the tumbler (its art: 278 x 359)
+    /* ---------------- the drink: the clear glass, the pour, the spoon ---------------- */
+    // CLN-196 (clinic decision 10; Zafar, 18 Oct: "a metal cup, but it's got a drop shadow, but it's sitting on the
+    // surface"; "is the metal cup the right thing"): a clear glass tumbler (s08b TS1), no drop shadow, so the drink is
+    // seen through its sides as it fills and mixes. Its inside is measured on the picture (data art.glass: the rim's
+    // ellipse, the inner bottom, the walls' half widths, shares of the picture); the drink is drawn behind the glass
+    const GA = (data.art && data.art.glass) || {};
+    const GW = GA.size || [463, 560];
+    const GL = { x: 146, y: 330, h: 150 };
+    GL.w = (GL.h * GW[0]) / GW[1];
     const glassG = s("g", { class: "taste-glass", opacity: 0 }, S.layer);
-    // a small wooden tray for it to stand on (a flat base, a contact shadow)
+    // a small wooden tray for it to stand on (a flat base)
     s("rect", { x: GL.x - 34, y: GL.y + GL.h - 12, width: GL.w + 68, height: 26, rx: 12, fill: "#b78a55", stroke: "#93683c", "stroke-width": 3 }, glassG);
-    s("ellipse", { cx: GL.x + GL.w / 2, cy: GL.y + GL.h - 4, rx: GL.w * 0.48, ry: 7, fill: "#000", opacity: 0.18 }, glassG); // contact shadow
-    s("image", { href: url("assets/clinic/items-v2/tumbler.webp"), x: GL.x, y: GL.y, width: GL.w, height: GL.h }, glassG);
-    // CLN-104 (S06): the tumbler is opaque steel, so the drink is seen only inside its mouth: the surface is an ellipse
-    // the shape of the opening (measured on the art: centre 139.5, 65; half-axes 117.5 x 45 of 278 x 359), lower and a
-    // little narrower the emptier the glass (the walls taper), clipped to the opening, so as it fills the far edge of the
-    // liquid rises up the inside of the back wall and the surface widens to the rim (it was a painted rect over the
-    // cup's outside and an unclipped ellipse wider than the cup, below its base when empty)
-    const ax = GL.w / 278;
-    const ay = GL.h / 359;
-    const MOUTH = { x: GL.x + 139.5 * ax, y: GL.y + 65 * ay, rx: 117.5 * ax, ry: 45 * ay };
-    const DEEP = 125 * ay; // how far the surface sits below the rim when the glass is empty (out of sight)
+    const drinkG = s("g", { class: "taste-drink" }, glassG);
+    s("image", { href: url(GA.src || "assets/clinic/items-s08b/tumbler-glass-s08b.webp"), x: GL.x, y: GL.y, width: GL.w, height: GL.h }, glassG);
+    const gx = (f) => GL.x + f * GL.w;
+    const gy = (f) => GL.y + f * GL.h;
+    const RIM = GA.rim || [0.5, 0.105, 0.48, 0.09]; // the rim's ellipse: centre x, y, half axes (shares of w and h)
+    const MOUTH = { x: gx(RIM[0]), y: gy(RIM[1]), rx: RIM[2] * GL.w, ry: RIM[3] * GL.h };
+    const IN = GA.inside || { full: 0.24, bottom: 0.84, top: 0.455, foot: 0.385, ratio: 0.2 }; // full and bottom surfaces (y), the inner half widths there (of w), the surface's ry over rx
     const surf = (u) => {
-      const k = 1 - 0.25 * (1 - u);
-      return { x: MOUTH.x, y: MOUTH.y + 0.18 * MOUTH.ry + (1 - u) * DEEP, rx: MOUTH.rx * k * 0.97, ry: MOUTH.ry * k * 0.97 };
+      const y = IN.bottom + (IN.full - IN.bottom) * u;
+      const t = (y - IN.full) / (IN.bottom - IN.full);
+      const rx = (IN.top + (IN.foot - IN.top) * t) * GL.w;
+      return { x: MOUTH.x, y: gy(y), rx, ry: rx * IN.ratio };
     };
     const TOP = surf(1); // the full glass's surface: where the stream lands, the thing goes in and the spoon stirs
-    const cid = `taste-glass-${Math.floor(ctx.rng() * 1e6)}`;
-    const clip = s("clipPath", { id: cid }, s("defs", {}, S.svg));
-    s("ellipse", { cx: MOUTH.x, cy: MOUTH.y, rx: MOUTH.rx, ry: MOUTH.ry }, clip);
-    const drinkG = s("g", { class: "taste-drink", "clip-path": `url(#${cid})` }, glassG);
-    const liquid = s("ellipse", { cx: TOP.x, cy: TOP.y, rx: TOP.rx, ry: TOP.ry, fill: "#fff", opacity: 0 }, drinkG);
-    // the shine on the surface (a soft lighter band near its far edge) and the shadow the back wall casts on it
+    // the drink: its body down to the inner bottom (the walls' taper, the bottom's front curve) and its surface on top
+    const body = s("path", { fill: "#fff", opacity: 0 }, drinkG);
+    // (the surface's thin edge line: water is seen in a clear glass by its surface)
+    const liquid = s("ellipse", { cx: TOP.x, cy: TOP.y, rx: TOP.rx, ry: TOP.ry, fill: "#fff", opacity: 0, stroke: "rgba(110,150,175,.55)", "stroke-width": 1.4 }, drinkG);
     const shine = s("ellipse", { cx: TOP.x, cy: TOP.y, rx: TOP.rx * 0.7, ry: TOP.ry * 0.35, fill: "#fff", opacity: 0 }, drinkG);
+    const shade = (hex, k) => {
+      const n = parseInt(String(hex).replace("#", ""), 16);
+      const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => Math.round(v * k));
+      return `rgb(${c.join(",")})`;
+    };
     const level = (u, col, op) => {
-      const q = surf(u);
+      const q = surf(Math.max(0.02, u));
+      const b0 = surf(0);
       [["cx", q.x], ["cy", q.y], ["rx", q.rx], ["ry", q.ry]].forEach(([k, v]) => liquid.setAttribute(k, v.toFixed(1)));
+      body.setAttribute("d", `M${(q.x - q.rx).toFixed(1)} ${q.y.toFixed(1)} L${(b0.x - b0.rx).toFixed(1)} ${b0.y.toFixed(1)} A${b0.rx.toFixed(1)} ${b0.ry.toFixed(1)} 0 0 0 ${(b0.x + b0.rx).toFixed(1)} ${b0.y.toFixed(1)} L${(q.x + q.rx).toFixed(1)} ${q.y.toFixed(1)} A${q.rx.toFixed(1)} ${q.ry.toFixed(1)} 0 0 0 ${(q.x - q.rx).toFixed(1)} ${q.y.toFixed(1)}Z`);
       shine.setAttribute("cx", q.x.toFixed(1));
       shine.setAttribute("cy", (q.y - q.ry * 0.45).toFixed(1));
       shine.setAttribute("rx", (q.rx * 0.7).toFixed(1));
       shine.setAttribute("ry", (q.ry * 0.3).toFixed(1));
-      if (col) liquid.setAttribute("fill", col);
-      liquid.setAttribute("opacity", u > 0 ? Math.min(1, op + 0.15) : 0);
+      if (col) {
+        liquid.setAttribute("fill", col);
+        body.setAttribute("fill", shade(col, 0.9));
+      }
+      body.setAttribute("opacity", u > 0 ? op : 0);
+      liquid.setAttribute("opacity", u > 0 ? Math.min(1, op + 0.1) : 0);
       shine.setAttribute("opacity", u > 0 ? 0.35 : 0);
     };
-    const opOf = (id) => (id === "water" ? 0.55 : 0.95);
+    const opOf = (id) => (id === "water" ? 0.5 : 0.95);
     const blob = s("ellipse", { cx: TOP.x - 6, cy: TOP.y + 3, rx: TOP.rx * 0.45, ry: TOP.ry * 0.6, fill: "#fff", opacity: 0 }, glassG);
     const glassArt = (key) => art(key);
     void glassArt;
@@ -355,7 +394,7 @@
         // surface is still down inside the opaque tumbler it ends in the mouth's opening, never over the steel front
         surface: (u) => {
           const q = surf(u);
-          return { x: q.x + q.rx * 0.2, y: Math.min(q.y, MOUTH.y + MOUTH.ry * 0.35) };
+          return { x: q.x + q.rx * 0.2, y: q.y };
         },
         // CLN-104 (S05-D3): the level rises slowly enough to see it rise (it read as one jump at 760 ms)
         onFill: (u) => u > 0 && level(u, t.liquid, opOf(id)),
