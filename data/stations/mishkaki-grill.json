@@ -19,12 +19,12 @@
    "unit": "ph-lakri",
    "_unit": "the word said before a skewer's kind when Nani repeats it (hakri lakri gos, ba lakri boga): the same as the mishkaki recipe's tally `unit`",
    "classes": {
-    "ph-mishkaki": "meat",
+    "ph-meat": "meat",
     "veg-02": "veg",
     "veg-03": "veg"
    },
    "kinds": {
-    "ph-meat": "meat",
+    "ph-mishkaki": "meat",
     "ph-veg": "veg",
     "ph-mixed": "mixed",
     "veg-02": "only:veg-02",
@@ -44,16 +44,16 @@
      "style": "tomato",
      "color": "#d8402e"
     },
-    "ph-mishkaki": {
+    "ph-meat": {
      "style": "meat",
      "color": "#9c4a32"
     }
    },
-   "_pieces": "Design system §15 (Zafar, 29 Sept): mishkaki now means only the square meat cubes, so the meat PIECE is ph-mishkaki (the bowl's chip, the word pop, a mixed skewer's parts); ph-meat (gos) stays the KIND word of an all-meat skewer in the order (ba lakri gos: to confirm).",
-   "meatPiece": "ph-mishkaki",
+   "_pieces": "SEK-19 (decision 11; Zafar, 17-18 Oct: 'she should be saying Gos, because the raw ingredient is Gos ... When it's cooked it becomes Mishkaki'; the card 'Hakri Lakri Mishkaki'): the raw meat PIECE is ph-meat (gos: the bowl's chip, the word pop, a mixed skewer's parts); the KIND word of an all-meat skewer in the order is ph-mishkaki (hakri lakri mishkaki). Was the other way round (29 Sept, design system §15).",
+   "meatPiece": "ph-meat",
    "bowls": {
     "_about": "30 Sept (K5, Q11): the shelf holds top-down heaps of the same big chunks that go on the skewer (assets/cook/items/v3/sekelo/heap-*; 30 Sept, v3.1 R7: the decoy potato has its own heap and chunks now). Was one cream bowl family (Zafar, 29 Sept).",
-    "ph-mishkaki": "v3/sekelo/heap-meat",
+    "ph-meat": "v3/sekelo/heap-meat",
     "veg-02": "v3/sekelo/heap-onion",
     "veg-03": "v3/sekelo/heap-tomato",
     "ph-pepper": "v3/sekelo/heap-pepper",
@@ -61,7 +61,7 @@
    },
    "v3pieces": {
     "_about": "30 Sept (K5): each piece's v3 chunk (assets/cook/items/v3/sekelo/<name>-raw|grilled|charred.webp); a piece not listed keeps its old sprite. 30 Sept (v3.1, R7): every piece has a charred chunk that keeps its own colour, and the decoy potato has its chunks",
-    "ph-mishkaki": "meat",
+    "ph-meat": "meat",
     "veg-02": "onion",
     "veg-03": "tomato",
     "ph-pepper": "pepper",

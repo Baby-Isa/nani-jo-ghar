@@ -11,7 +11,7 @@
  * left of the scene, the skewer rack on the right. A piece's word pops by the
  * skewer as it goes on (the family clip plays). A finished skewer moves to
  * the rack, then the next starts; no picture tally (the rack shows them).
- * The meat piece is ph-mishkaki (mishkaki = the meat cubes).
+ * The meat piece is ph-meat (gos, the raw cubes; SEK-19, decision 11: the cooked all-meat skewer is mishkaki).
  *
  * Kutchi: which kind and how many ("ba lakri gos, hakri lakri boga"), and for a
  * mixed skewer the pieces in the order they said ("gos, ne poi tameto…").

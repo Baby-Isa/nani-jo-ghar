@@ -22,6 +22,8 @@
     "ballsPerBowl": 5,
     "sizes": null,
     "quietMs": 700,
+    "flipAddS": 0.75,
+    "_flipAddS": "MAA-17 (decision 12; Zafar, 17 Oct): seconds added to each side's green flip window at every level (was 1.42/1.20/0.93/0.79 s on side 1); js/cook/stations/maani-line.js slows the ring to fit",
     "zones": {
      "roll": {
       "level": 1

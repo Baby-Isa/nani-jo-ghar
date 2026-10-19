@@ -496,8 +496,9 @@
     if (!s.line || s.line.ok === false || !Lang.hasVoice(s.line)) return callNote(s, "skip-novoice");
     if (UI.naniMuted()) return callNote(s, "skip-muted");
     const G = global.NaniGuide;
-    if (G && G.recentlySaid && G.recentlySaid(Lang.plain(s.line))) return callNote(s, "skip-said");
-    callNote(s, "queued");
+    // MAA-15 (Zafar, 17 Oct: maani's Firai on both turns): a step opened with "again" is called even if its words were just said
+    if (!s.again && G && G.recentlySaid && G.recentlySaid(Lang.plain(s.line))) return callNote(s, "skip-said");
+    callNote(s, s.again ? "queued-again" : "queued");
     const line = Lang.role(copyLine(s.line), "call");
     queued(() => {
       if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
@@ -528,7 +529,7 @@
     if (!stepper) stepper = makeStepper();
     if (!stepper || !line) return null;
     const rec = line.ok === false;
-    return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids, noCall: o.noCall || null });
+    return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids, noCall: o.noCall || null, again: !!o.again });
   };
   UI.stepDone = () => stepper && stepper.close();
   /** An off-screen guide's line in her box (or her card's strip, R4), said; resolves when it ends (a tap skips). */

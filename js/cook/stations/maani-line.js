@@ -134,8 +134,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const kLevel = Mech.knobs("tawa", { level: zt.level });
     const speedUp = Math.pow(1 / (1 - (((Cook.data.timing || {}).levelSpeed) || 0.15)), level - 1);
     const [lo, hi] = kLevel.band || kTawa.band;
-    const rate1 = kTawa.rate * speedUp;
-    const rate2 = kTawa.rate2 * speedUp;
+    // MAA-17 (decision 12; Zafar, 17 Oct: "add on like three quarters of a second ... across all levels for the chapati. Time
+    // to flip"): each side's green lasts its old time plus K.flipAddS (0.75 s), at every level. The ring keeps one steady
+    // speed, just slower: (hi - lo) / rate is the old window, so the new rate is (hi - lo) / (old window + add). Was 1.42, 1.20,
+    // 0.93, 0.79 s on side 1 (L1-L4); now 2.17, 1.95, 1.68, 1.54 s (in the child's time; Cook.speed shortens both alike)
+    const addS = Number(K.flipAddS) || 0;
+    const slower = (rate) => (hi - lo) / ((hi - lo) / rate + addS);
+    const rate1 = slower(kTawa.rate * speedUp);
+    const rate2 = slower(kTawa.rate2 * speedUp);
+    Cook.maaniWindow = { side1: (hi - lo) / rate1, side2: (hi - lo) / rate2, addS }; // (for the test scripts: the green's length, s)
     const types = Object.keys(K.doughs || { "cook-maani": {} });
     const who = (ctx.order && ctx.order.who) || null;
     await St.loadArt(S, ART.concat(Cook.Kit.faceArt(who)));
@@ -343,7 +350,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (finished) return steps.done();
       const t = onTawa;
       const hot = t && !t.busy && heat !== "off" && t.v >= lo && t.v <= hi;
-      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}` });
+      // MAA-15 (P7, Zafar 17 Oct: "I didn't hear it the second time ... she should say it the second time"): side 2's step says
+      // Firai too (data/cook.json guide maani-line:off; "take it off" waits on Mum), even right after side 1's
+      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}`, again: t.side !== 1 });
       if (waiting && waiting.landed && !onTawa) return steps.to("maani-line:tawa", { id: `tawa-on-${items.indexOf(waiting)}` });
       if (chakla && !chakla.busy) return steps.to("maani-line:roll", { id: `roll-${items.length}` });
       if (!chakla && !waiting && nextType()) return steps.to("maani-line:take", { id: `take-${items.length}` });

@@ -614,9 +614,9 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03"
      ]
     }
@@ -646,10 +646,10 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
       "veg-03",
-      "ph-mishkaki"
+      "ph-meat"
      ]
     }
    },
@@ -672,9 +672,9 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02"
      ]
     }
@@ -1935,10 +1935,10 @@
     "thread",
     "grill"
    ],
-   "_about": "The order says how many skewers of each kind (a tally: \"ba lakri gos, hakri lakri boga\": lakri, the skewer, is the tally's `unit`, a she-word, so one is hakri), and when there's a mixed one its pieces in order (Pela gos, ne poi …): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/design-language/ux-principles.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
+   "_about": "The order says how many skewers of each kind (a tally: \"ba lakri mishkaki, hakri lakri boga\": lakri, the skewer, is the tally's `unit`, a she-word, so one is hakri), and when there's a mixed one its pieces in order (Pela gos, ne poi …; SEK-19, decision 11: the raw piece is gos, the cooked all-meat skewer mishkaki): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/design-language/ux-principles.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
    "lists": {
     "skewer": [
-     "ph-mishkaki",
+     "ph-meat",
      "veg-02",
      "veg-03"
     ],
@@ -1949,46 +1949,46 @@
     "_mixes": "The mixed skewers (28 Sept, design system 12): four pieces, as a skewer holds (data.mechanics.thread.pieces), meat and both vegetables, never the same piece twice running. The old generator drew three pieces (meat and two vegetables once green pepper was out), which no four-piece skewer could match",
     "mixes": [
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03"
      ],
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02"
      ],
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
       "veg-03",
-      "ph-mishkaki"
+      "ph-meat"
      ],
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
       "veg-02",
-      "ph-mishkaki"
+      "ph-meat"
      ],
      [
       "veg-02",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
-      "ph-mishkaki"
+      "ph-meat"
      ],
      [
       "veg-03",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
-      "ph-mishkaki"
+      "ph-meat"
      ]
     ]
    },
    "slots": {
     "vegKind": {
-     "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri gos: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
+     "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri mishkaki: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
      "pick": [
       "veg-02",
       "veg-03"
@@ -1999,20 +1999,20 @@
      "kinds": {
       "byLevel": [
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind"
        ],
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind"
        ],
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind",
         "ph-mixed"
        ],
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind",
         "ph-mixed"
        ]
@@ -3751,7 +3751,7 @@
     "thread": [
      "skewer.tool",
      "katori.top",
-     "ph-mishkaki.raw",
+     "ph-meat.raw",
      "ph-pepper.raw",
      "veg-02.raw",
      "veg-03.raw",
@@ -3760,7 +3760,7 @@
     ],
     "grill": [
      "skewer.tool",
-     "ph-mishkaki.raw",
+     "ph-meat.raw",
      "ph-pepper.raw",
      "veg-02.raw",
      "veg-03.raw",
@@ -6158,7 +6158,9 @@
   "maani-line:flip": {
    "line": "guide-firai"
   },
-  "maani-line:off": {},
+  "maani-line:off": {
+   "line": "guide-firai"
+  },
   "maani-line:fire": {
    "line": "guide-fire"
   },
