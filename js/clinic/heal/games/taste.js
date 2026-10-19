@@ -32,7 +32,7 @@
     lemon: { lex: "fru-02", img: "assets/clinic/items-v2/lemon-half.webp", glyph: "🍋", tint: "#efe04a" },
   };
   const SPOON = { img: "assets/clinic/items-v2/teaspoon.webp", glyph: "🥄" };
-  const BUD = { img: "assets/clinic/items-s08b/cotton-bud-clean-s08b.webp", glyph: "🩹" }; // CLN-195: the clean bud
+  const BUD = { img: "assets/clinic/items-s08b/cotton-bud-clean-s08b-sm.webp", glyph: "🩹" }; // CLN-195: the clean bud (its -sm copy: the strip draws it small)
   // four drinks, each a liquid poured and one thing added (four, so a blind guess at level 1 stays under 10%:
   // 1/3 for the colour x 1/4 for the drink); named with the frames the clinic already had (hardar waaro dudh,
   // aadu ne paani): "{thing} waaro {milk}", "{thing} ne {water}"

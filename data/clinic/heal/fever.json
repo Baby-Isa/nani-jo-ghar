@@ -123,13 +123,13 @@
   "window-on": "assets/clinic/room-items/window-open.webp",
   "ceiling-fan-off": "assets/clinic/items-s08b/fan-still-s08b.webp",
   "ceiling-fan-on": "assets/clinic/items-s08b/fan-spin-s08b.webp",
-  "hand-fan": "assets/clinic/items-s08b/paper-fan-s08b.webp",
+  "hand-fan": "assets/clinic/items-s08b/paper-fan-s08b-sm.webp",
   "ice-pack": "assets/clinic/items-s08b/ice-pack-s08b.webp",
   "heater-off": "assets/clinic/room-items/heater-off.webp",
   "heater-on": "assets/clinic/room-items/heater-on.webp",
-  "bottle": "assets/clinic/items-s08b/hot-water-bottle-s08b.webp",
+  "bottle": "assets/clinic/items-s08b/hot-water-bottle-s08b-sm.webp",
   "blanket": "assets/clinic/items-v2/blanket-red.webp",
-  "thermometer": "assets/clinic/items-s08b/thermometer-flat-s08b.webp",
+  "thermometer": "assets/clinic/items-s08b/thermometer-flat-s08b-sm.webp",
   "aspect": {
    "_about": "each bed picture's width over its height (drawn at its own shape)",
    "hand-fan": 2.981,
@@ -210,7 +210,8 @@
   "tint": {
    "_about": "s08-w5b: a thing on the bed is the same thing she holds or wears: her W10 bottle is teal, so the s08b bottle (red) is turned teal on the bed; her W9 blanket is red, so the bed has the red fleece (items-v2/blanket-red; the s08b blanket is light blue and no filter makes it her red: a flaw for the next art run)",
    "bottle": "hue-rotate(185deg) saturate(.9)"
-  }
+  },
+  "_sm": "s08-w5b (decision 68, images at drawn size; the load check): the paper fan, the bottle and the flat thermometer are -sm copies of the s08b cuts (250-300 px wide, about 3x the size they are drawn), made from those cuts by downscaling only"
  },
  "throbMs": 8000,
  "lines": {
@@ -232,10 +233,10 @@
   "assets/clinic/room-items/heater-on.webp",
   "assets/clinic/items-s08b/fan-still-s08b.webp",
   "assets/clinic/items-s08b/fan-spin-s08b.webp",
-  "assets/clinic/items-s08b/paper-fan-s08b.webp",
+  "assets/clinic/items-s08b/paper-fan-s08b-sm.webp",
   "assets/clinic/items-s08b/ice-pack-s08b.webp",
-  "assets/clinic/items-s08b/hot-water-bottle-s08b.webp",
-  "assets/clinic/items-s08b/thermometer-flat-s08b.webp",
+  "assets/clinic/items-s08b/hot-water-bottle-s08b-sm.webp",
+  "assets/clinic/items-s08b/thermometer-flat-s08b-sm.webp",
   "assets/clinic/items-s08b/thermometer-mouth-s08b.webp",
   "assets/clinic/items-v2/blanket-red.webp",
   "assets/clinic/sheets/heater/heater-3q-off.webp",

@@ -494,13 +494,13 @@
    "src_v1": "assets/clinic/closeups/{kind}/eyes.webp"
   },
   "wall": {
-   "_about": "s08-w5b (CLN-188; Zafar 18 Oct: 'an eye test board sitting on an optician's wall'): the s08b EC1 wall with its blank board (assets/clinic/s08b/ec1-meta.json), layout A's right panel. box = where the picture goes in the close-up's 800x500 units (from x 406, the panel's left edge, 376 wide: the wall colour carries on to the right edge, so the board clears her face circle in the corner; its top cut 40 units so the board is high), board = the board's white face as shares of the picture (ec1-meta board / size), fill and floor = the wall's and the skirting's own colours, round the picture on a taller screen",
+   "_about": "s08-w5b (CLN-188; Zafar 18 Oct: 'an eye test board sitting on an optician's wall'): the s08b EC1 wall with its blank board (assets/clinic/s08b/ec1-meta.json), layout A's right panel. box = where the picture goes in the close-up's 800x500 units (from x 406, the panel's left edge, 350 wide: the wall colour carries on to the right edge, so the board clears her face circle in the corner and, on the shortest screen (800x360), its frame ends above the yes / no pills; its top cut 36 units), board = the board's white face as shares of the picture (ec1-meta board / size), fill and floor = the wall's and the skirting's own colours, round the picture on a taller screen",
    "src": "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
    "box": [
     406,
-    -40,
-    376,
-    564
+    -36,
+    350,
+    525
    ],
    "board": [
     0.17383,

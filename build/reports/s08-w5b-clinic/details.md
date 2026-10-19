@@ -1,6 +1,15 @@
 # s08-w5b-clinic
 
-Branch `worktree-agent-a2338681d97f9f59b`, commit `d915b4c5`. Sandbox run `s08-w5b-quick`. Game code changed: fever, eye, foot, taste, knee, kit.js (shadows), pipeline.js (one fallback).
+Branch `worktree-agent-a2338681d97f9f59b`, commit `d915b4c5`. Sandbox run `s08-w5b-quick`. Game code changed: fever, eye, foot, taste, knee, kit.js (shadows), pipeline.js (one fallback), main.js (a lab page's parked game).
+
+## After the orchestrator's look (19 Oct)
+
+| Point | Change | Shot |
+|---|---|---|
+| Foot seams | each segment is the straight block alone, under its own soft round-ended mask; no elbow or end pieces; one block stretched over the longest segment (no repeat seam); the welts masked by the photo sole's own alpha, so the open ends stop at the foot's edge | foot-L3-welts-x2.png, foot-L2-welts-x2.png, foot-L2/L3-filmstrip.png |
+| Load check | `-sm` copies (300, 300, 280, 250 px wide) of the bud, flat thermometer, paper fan and bottle, downscaled from the s08b cuts, in the manifests; `main.js` plays a lab page's parked game on its parked ailments (clinic:cut); 29/29 | |
+| Eye 800x360 | the wall box 406, -36, 350 x 525: the board's frame ends above the pills | eye-L2-800x360-pills-clear.png |
+| Fever sweat | the W5 hot face has its own clear sweat; the code's blue drops (stand-in) are drawn only without the art | |
 
 ## What was built
 

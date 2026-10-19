@@ -681,7 +681,9 @@
         s("rect", { x: 640 + 84, y: 183, width: 18, height: 16, rx: 5, fill: "#3b6fb6", stroke: "#2a4f86", "stroke-width": 2.5 }, tg);
       }
       const r = st.measured ? reading() : null;
-      if (r != null && r > cfg.k.zone) [[560, 120], [722, 108]].forEach(([x, y], i) => {
+      // the stand-in's sweat: only without her art (her hot face W5 has its own clear sweat on the forehead; these blue
+      // drops, mapped onto the art, fell under her eyes and read as tears: the orchestrator's look, 19 Oct)
+      if (r != null && r > cfg.k.zone && !artOn) [[560, 120], [722, 108]].forEach(([x, y], i) => {
         const d = s("path", { class: "fv-sweat", d: `M${x} ${y} q8 14 0 20 q-8 -6 0 -20Z`, fill: "#6bb7ea" }, wear);
         d.style.animationDelay = `${i * 0.6}s`;
       });

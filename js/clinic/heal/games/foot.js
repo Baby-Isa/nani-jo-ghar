@@ -164,6 +164,15 @@
     Object.values(TOE_AT).forEach(([x, y, rx, ry]) => s("ellipse", { cx: x, cy: y, rx, ry, transform: flipT }, clip)); // the toes' splinters sit in their channels too
     const splG = s("g", {}, S.layer);
     const chanG = s("g", { "clip-path": `url(#${clipId})` }, S.layer);
+    // the welts' open ends stop at the photo foot's own edge (its alpha as a mask; the stand-in's outline is wider)
+    if (art) {
+      const fm = `${clipId}-sole`;
+      const m = s("mask", { id: fm, maskUnits: "userSpaceOnUse", x: -2000, y: -2000, width: 5000, height: 5000, style: "mask-type: alpha" }, defs);
+      const im = art.cloneNode();
+      im.setAttribute("opacity", 1);
+      m.appendChild(im);
+      chanG.setAttribute("mask", `url(#${fm})`);
+    }
     const chanFill = HS.shade ? HS.shade(sole, 0.45) : "#f6e2cc";
     const gripG = s("g", {}, S.layer);
     // CLN-193 (Zafar, 18 Oct: "an irritated raised red translucent channel and you see the splinter traveling inside of
@@ -179,8 +188,12 @@
       const ks = Wb / (sb[1] - sb[0]);
       const pid = `fo-chan-${Math.floor(Math.random() * 1e9)}`;
       const y0 = -((sb[0] + sb[1]) / 2) * ks; // the band centred on the path
-      const pat = s("pattern", { id: pid, patternUnits: "userSpaceOnUse", x: 0, y: y0.toFixed(2), width: ((sb[3] - sb[2]) * ks).toFixed(2), height: (sb[5] * ks).toFixed(2) }, defs);
-      s("image", { href: url(T.straight), x: (-sb[2] * ks).toFixed(2), y: 0, width: (sb[4] * ks).toFixed(2), height: (sb[5] * ks).toFixed(2), preserveAspectRatio: "none" }, pat);
+      // one block's length covers the longest segment and its round ends (stretched, never repeated: no seam on a run)
+      let longest = 0;
+      P.splinters.forEach((q) => q.pts.forEach((pt, k) => k && (longest = Math.max(longest, Math.hypot(pt[0] - q.pts[k - 1][0], pt[1] - q.pts[k - 1][1])))));
+      const kx = Math.max(ks, (longest + 4 * Wb) / (sb[3] - sb[2]));
+      const pat = s("pattern", { id: pid, patternUnits: "userSpaceOnUse", x: (-Wb * 1.5).toFixed(2), y: y0.toFixed(2), width: ((sb[3] - sb[2]) * kx).toFixed(2), height: (sb[5] * ks).toFixed(2) }, defs);
+      s("image", { href: url(T.straight), x: (-sb[2] * kx).toFixed(2), y: 0, width: (sb[4] * kx).toFixed(2), height: (sb[5] * ks).toFixed(2), preserveAspectRatio: "none" }, pat);
       const cb = T.cornerBox; // the elbow: [centre x, centre y, arm width, w, h] in its px (arms up and right)
       const kc = Wb / cb[2];
       const cid = `fo-elbow-${Math.floor(Math.random() * 1e9)}`;
@@ -232,34 +245,26 @@
       ext[n - 1] = [pts[n - 1][0] + un[0] * Wb * 2, pts[n - 1][1] + un[1] * Wb * 2];
       s("path", { d: pathD(ext), fill: "none", stroke: "#fff", "stroke-width": (Wb * (CA.welt || 0.72)).toFixed(1), "stroke-linejoin": "round", "stroke-linecap": "round", filter: `url(#${featherId})` }, mk);
       const cg = s("g", { opacity: op, mask: `url(#${mid})` }, g);
-      const top = [];
+      // one continuous welt (the orchestrator's look, 19 Oct: "no visible joins anywhere"): only the straight block, one
+      // piece a segment, each under its own soft round-ended mask (as the whole path's, but for that segment alone), so
+      // where two meet at a turn they fade into each other with a round outer corner; no elbow or end block is pasted
+      // over them, and one block is stretched over the longest segment, so no block joins another along a run
       for (let k = 0; k < n - 1; k++) {
         const A = pts[k];
         const B = pts[k + 1];
         const u = dirOf(A, B);
         const L = Math.hypot(B[0] - A[0], B[1] - A[1]);
-        const from = k === 0 ? Wb * 1.1 : Wb / 2 - 2;
-        const to = k === n - 2 ? L + Wb : L - (Wb / 2 - 2);
+        const a0 = k === 0 ? -Wb * 0.2 : 0;
+        const a1 = k === n - 2 ? L + Wb * 2 : L;
+        const sid = `${mid}-s${k}`;
+        const sm = s("mask", { id: sid, maskUnits: "userSpaceOnUse", x: -400, y: -400, width: 1600, height: 1400 }, defs);
+        s("path", { d: `M${(A[0] + u[0] * a0).toFixed(1)} ${(A[1] + u[1] * a0).toFixed(1)} L${(A[0] + u[0] * a1).toFixed(1)} ${(A[1] + u[1] * a1).toFixed(1)}`, fill: "none", stroke: "#fff", "stroke-width": (Wb * (CA.welt || 0.72) * 1.05).toFixed(1), "stroke-linecap": "round", filter: `url(#${featherId})` }, sm);
         // the straight block runs along +x, lit from its top
         const o = orient([[1, 0]], [u], [0, -1]);
-        const sg = s("g", { transform: `translate(${A[0]} ${A[1]}) rotate(${o.d}) scale(1 ${o.f})` }, cg);
-        s("rect", { x: from.toFixed(1), y: tile.y0.toFixed(1), width: Math.max(0, to - from).toFixed(1), height: tile.h.toFixed(1), fill: `url(#${tile.pid})` }, sg);
-        if (k < n - 2) {
-          // the elbow's arms go up and right from its middle, lit from the upper left
-          const u2 = dirOf(B, pts[k + 2]);
-          const e = orient([[0, -1], [1, 0]], [[-u[0], -u[1]], u2], [-1, -1]);
-          const eg = s("g", { transform: `translate(${B[0]} ${B[1]}) rotate(${e.d}) scale(${tile.kc.toFixed(4)} ${(tile.kc * e.f).toFixed(4)}) translate(${-tile.cb[0]} ${-tile.cb[1]})` }, null);
-          s("image", { href: url(CA.corner), x: 0, y: 0, width: tile.cb[3], height: tile.cb[4], "clip-path": `url(#${tile.cid})` }, eg);
-          top.push(eg);
-        }
+        const pg = s("g", { mask: `url(#${sid})` }, cg);
+        const sg = s("g", { transform: `translate(${A[0]} ${A[1]}) rotate(${o.d}) scale(1 ${o.f})` }, pg);
+        s("rect", { x: (-Wb).toFixed(1), y: tile.y0.toFixed(1), width: (L + 3 * Wb).toFixed(1), height: tile.h.toFixed(1), fill: `url(#${tile.pid})` }, sg);
       }
-      // the closed end: its cap (at the block's right, lit from its top) half a width behind the splinter's spot
-      const u0 = dirOf(pts[0], pts[1]);
-      const e0 = orient([[1, 0]], [[-u0[0], -u0[1]]], [0, -1]);
-      const cg2 = s("g", { transform: `translate(${pts[0][0]} ${pts[0][1]}) rotate(${e0.d}) scale(${tile.ke.toFixed(4)} ${(tile.ke * e0.f).toFixed(4)}) translate(${-tile.eb[0]} ${-tile.eb[1]})` }, null);
-      s("image", { href: url(CA.end), x: 0, y: 0, width: tile.eb[3], height: tile.eb[4], "clip-path": `url(#${tile.eid})` }, cg2);
-      top.push(cg2);
-      top.forEach((m) => cg.appendChild(m));
       return cg;
     };
     // FT2 (CLN-108): the sole is dirty and the dirt hides the splinters; each jug's water washes some of it away, and the
