@@ -409,11 +409,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     /*
      * DAAR-34 (P54, Zafar 17 Oct: "those other items should be dotted, so you can see there's three items to be chopped in total
      * but only the first one is revealed to you audibly and visually in writing"; the level table's L3: "unsaid rows dotted and
-     * revealed as called"): where the chop is called in rounds (its phases, L2 up), a row she has not called yet is dotted
+     * revealed as called"): where the chop is called in rounds (its phases) on a dotted card (L3 up), a row she has not called yet is dotted
      * whole, number too, and is written as she calls it (call(ids), the chop's onCall). One round: every row is called at once.
      */
     const rounds = Math.min(Math.max(1, (Mech.knobs("chop", { level }) || {}).phases || 1), Object.keys(need).length || 1);
-    const called = new Set(rounds > 1 ? Object.keys(want).filter((id) => !(id in need)) : Object.keys(want));
+    // (from L3, where the level table dots the card: an open card, L1-L2, writes every word, contract-35)
+    const staged = rounds > 1 && Cook.cardState(level) !== "open";
+    const called = new Set(staged ? Object.keys(want).filter((id) => !(id in need)) : Object.keys(want));
     const label = (id) => Lang.html(Lang.phrase(parts(id)), { hide: (w) => !doneIds.includes(id) && (!called.has(id) || dot(w)) });
     const rows = Object.keys(want).map((id) => ({ id, label: label(id), done: doneIds.includes(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
