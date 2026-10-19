@@ -14,7 +14,7 @@
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
 //   k: "art"     {src, via, key}           an image drawn for the first time in this stage (canvas drawImage, Phaser
 //                                          texture, <img>, CSS background)
-//   k: "rows"    {list: [{id, key, text, done, en}]}   each sidebar card row: its key, words and tick (contract-18)
+//   k: "rows"    {list: [{id, key, text, done, en, no}]}   each sidebar card row: its key, words, tick and whether it is a "don't" row (contract-18, 50)
 //   k: "input"   {x, y, on, play, exp, popup, poses}   a real tap or press (trusted pointerdown): what it landed on (play: in the play area), what the
 //                                          game expected then, the staged talkers' poses (data-pose) at that moment
 //   k: "life"    {what, reason, at, step?, during?, by?}   an entry of the shared lifecycle's own log (window.Lifecycle.log:
@@ -693,7 +693,7 @@ export const CONTRACT_HOOK = `(() => {
     if (!same("heads", hd.map((x) => [x.size, x.lines, x.text]))) emit({ k: "heads", list: hd });
     // contract-18: each sidebar card row, by its key (the order card's data-key, the clinic's data-row) or its place, with its
     // words (the Kutchi line, not the bulb's English beside it) and whether it is ticked; en: the card shows the bulb's English
-    const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english") }; }));
+    const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english"), no: x.classList.contains("no") }; }));
     if (!same("rows", rl.map((x) => x.id + "|" + x.text + "|" + x.done + "|" + x.en))) emit({ k: "rows", list: rl });
     const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()), go: isGoBtn(b), arrow: isGoBtn(b) ? hasArrow(b) : null }));
     if (!same("buttons", bl.map((b) => b.sel + b.arrow))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });

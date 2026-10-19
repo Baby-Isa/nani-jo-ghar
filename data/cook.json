@@ -5075,7 +5075,8 @@
       "assets/cook/items/v3/samosa/*",
       "assets/cook/items/vessel-thali-t.png",
       "assets/cook/items/v3/daar/chop-heap-*",
-      "assets/cook/items-s08b/go-on/go-karahi-s08b*"
+      "assets/cook/items-s08b/go-on/go-karahi-s08b*",
+      "assets/cook/tiles-s08b/pastry-tile-s08b*"
      ],
      "prefetch": [
       "assets/cook/items/chai-station/flame-high.webp",
@@ -6000,7 +6001,11 @@
   "samosa": [
    {
     "do": "tap",
-    "what": "a spoon of the first filling they said, onto the strip"
+    "what": "a pastry strip (SAM-25: any of the six)"
+   },
+   {
+    "do": "tap",
+    "what": "a spoon of the first filling they said, onto that strip"
    },
    {
     "do": "tap",
@@ -6008,7 +6013,7 @@
    },
    {
     "do": "tap",
-    "what": "the tick when the filling's in"
+    "what": "the tick when every strip they want is filled"
    },
    {
     "do": "swipe",
