@@ -214,6 +214,7 @@
       const room = [];
       const shot = [];
       const fade = [];
+      const bg = [];
       const el = closeEl();
       const r = el && a.tc ? el.getBoundingClientRect() : null;
       for (let i = 0; i <= N; i++) {
@@ -222,8 +223,12 @@
         const s = Math.pow(a.k, p);
         const f = a.k > 1.001 ? (s - 1) / (a.k - 1) : p;
         room.push({ offset: u, transform: `translate(${(a.dx * f).toFixed(2)}px, ${(a.dy * f).toFixed(2)}px) scale(${s.toFixed(4)})`, filter: `blur(${(dir > 0 ? 3 * p : 0).toFixed(2)}px)` });
-        // the room is the picture until the close-up shows the part big enough to read; gone by 75 % of the zoom
-        fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (0.75 - p) / 0.35)).toFixed(3) });
+        // the room stays the picture until the close-up is nearly its full size (its own edges never show for long), and
+        // hands over in the last stretch, both showing the part in the same place at the same size
+        fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (0.98 - p) / 0.22)).toFixed(3) });
+        // the close-up's own blurred room comes in under the room only once it is big enough to fill the screen (until
+        // then it would be a pale box round the part)
+        bg.push({ offset: u, opacity: Math.max(0, Math.min(1, (p - 0.66) / 0.08)).toFixed(3) });
         if (r) {
           const sg = s / a.k;
           const tx = (a.tc.q.x - a.tc.t.x) * (1 - f);
@@ -231,7 +236,8 @@
           shot.push({ offset: u, transform: `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${sg.toFixed(4)})` });
         }
       }
-      return { room, shot, fade, el: r ? el : null, origin: r ? `${(a.tc.t.x - r.left).toFixed(1)}px ${(a.tc.t.y - r.top).toFixed(1)}px` : null };
+      const bgEls = r ? [el.querySelector(".hs-bg"), el.querySelector(".hs-bg") && el.querySelector(".hs-bg").nextElementSibling].filter(Boolean) : [];
+      return { room, shot, fade, bg, bgEls, el: r ? el : null, origin: r ? `${(a.tc.t.x - r.left).toFixed(1)}px ${(a.tc.t.y - r.top).toFixed(1)}px` : null };
     };
     // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
     const healed = () => fig.el.querySelectorAll(".fig-swirl").forEach((n) => n.remove());
@@ -267,12 +273,12 @@
         let shot = Promise.resolve();
         if (F.el) {
           F.el.style.transformOrigin = F.origin;
-          shot = play(F.el, F.shot, opts);
+          shot = Promise.all([play(F.el, F.shot, opts)].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         }
         await Promise.all([zoom, fade, shot]);
         z.moving = false;
         // the close-up rests as it is drawn (its own transform gone: no rounding left over from the last frame)
-        if (F.el && !z.leaving) F.el.getAnimations && F.el.getAnimations().forEach((an) => an.cancel());
+        if (F.el && !z.leaving) [F.el].concat(F.bgEls).forEach((x) => x.getAnimations && x.getAnimations().forEach((an) => an.cancel()));
         if (z.leaving) return; // the game already ended (a very quick round): the pull-out owns the layer now
         wide.classList.remove("on");
         wide.classList.add("gone");
@@ -303,7 +309,7 @@
         const F = frames(a, -1);
         const opts = { duration: ms, easing: "linear", fill: "forwards" };
         if (F.el) F.el.style.transformOrigin = F.origin;
-        await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), F.el ? play(F.el, F.shot, opts) : null]);
+        await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), F.el ? play(F.el, F.shot, opts) : null].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
       /**
