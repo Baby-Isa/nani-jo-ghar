@@ -1,0 +1,224 @@
+{
+  "_about": "A day at Nani's (Zafar, 19 Oct; docs/game-design/story-and-arcs.md Part 1; build/reports/research-trips-2026-10-19.md 'the day's fixed shape'). Read by js/day/ (day.html, lab/day.html). Everything that is a look lives here, never in the code, so the agreed art (the s09 mock-ups, then a ChatGPT run) drops in by changing paths: every `art` that is null draws the placeholder `shapes` (flat shapes, no text) instead. Positions are in the scene's own pixels (1600x900, D15). Lines are engine MEANINGS (data/lang/abstract.json), never Kutchi: what the engine can't say shows its `en` in grey italic, tagged to record (decision 84), and is listed in build/reports/s09-frame.md. `en` under a door line is the one place written English shows for the child (rule 5's door exception, Zafar, 19 Oct).",
+  "version": 1,
+  "days": [
+    { "id": 1, "weather": "sunny", "activity": "kitchen" },
+    { "id": 2, "weather": "sunny", "activity": "trip", "trip": "farm" },
+    { "id": 3, "weather": "cloudy", "activity": "kitchen" },
+    { "id": 4, "weather": "raining", "activity": "trip", "trip": "shops" },
+    { "id": 5, "weather": "cloudy", "activity": "clinic" }
+  ],
+  "scene": {
+    "w": 1600,
+    "h": 900,
+    "horizon": 560,
+    "_about": "One fixed house and foreground; only the sky above the horizon is swapped by the weather (Zafar, 19 Oct). art: a picture of the whole layer (transparent where the sky shows), else the shapes.",
+    "house": {
+      "art": null,
+      "shapes": [
+        { "t": "rect", "x": 300, "y": 300, "w": 1000, "h": 420, "fill": "#e8c9a0" },
+        { "t": "poly", "pts": [[260, 310], [800, 150], [1340, 310]], "fill": "#b0603f" },
+        { "t": "rect", "x": 690, "y": 400, "w": 220, "h": 320, "r": 110, "fill": "#7a4a2b", "id": "door" },
+        { "t": "rect", "x": 708, "y": 418, "w": 184, "h": 302, "r": 92, "fill": "#8c5a35" },
+        { "t": "circle", "cx": 870, "cy": 580, "r": 9, "fill": "#d9a441" },
+        { "t": "rect", "x": 400, "y": 420, "w": 170, "h": 150, "r": 12, "fill": "#5f7f95", "id": "window-left" },
+        { "t": "rect", "x": 1030, "y": 420, "w": 170, "h": 150, "r": 12, "fill": "#5f7f95", "id": "window-right" },
+        { "t": "rect", "x": 640, "y": 700, "w": 320, "h": 30, "r": 6, "fill": "#cdb08a", "id": "step" }
+      ]
+    },
+    "foreground": {
+      "art": null,
+      "shapes": [
+        { "t": "rect", "x": 0, "y": 720, "w": 1600, "h": 180, "fill": "#c9b38c" },
+        { "t": "rect", "x": 0, "y": 720, "w": 1600, "h": 14, "fill": "#b39b74" },
+        { "t": "circle", "cx": 180, "cy": 700, "r": 90, "fill": "#6f8f4a" },
+        { "t": "circle", "cx": 1440, "cy": 690, "r": 110, "fill": "#6f8f4a" },
+        { "t": "rect", "x": 150, "y": 690, "w": 70, "h": 60, "r": 8, "fill": "#a35d3d" },
+        { "t": "rect", "x": 1400, "y": 680, "w": 80, "h": 70, "r": 8, "fill": "#a35d3d" }
+      ]
+    },
+    "shadow": {
+      "_about": "The sun-shadow layer: only the sunny sky shows it (Zafar, 19 Oct). Placeholder: soft shapes under the eaves and the pots.",
+      "art": null,
+      "shapes": [
+        { "t": "rect", "x": 300, "y": 300, "w": 1000, "h": 46, "fill": "#000000", "a": 0.12 },
+        { "t": "poly", "pts": [[690, 400], [910, 400], [960, 440], [740, 440]], "fill": "#000000", "a": 0.08 },
+        { "t": "ellipse", "cx": 230, "cy": 760, "rx": 120, "ry": 18, "fill": "#000000", "a": 0.16 },
+        { "t": "ellipse", "cx": 1470, "cy": 760, "rx": 130, "ry": 18, "fill": "#000000", "a": 0.16 },
+        { "t": "ellipse", "cx": 1060, "cy": 880, "rx": 120, "ry": 16, "fill": "#000000", "a": 0.18, "id": "nani" }
+      ]
+    },
+    "nani": { "art": "assets/cook/characters/nani-stand-v3-front.webp", "x": 1060, "base": 890, "h": 560 },
+    "thought": { "x": 1250, "y": 120, "w": 260, "h": 200 },
+    "lineCard": { "x": 60, "y": 40, "w": 760 }
+  },
+  "weather": {
+    "sunny": {
+      "sky": { "art": null, "stops": [["#7cc3ea", 0], ["#bfe3f2", 0.8], ["#f4ecd2", 1]], "sun": { "cx": 260, "cy": 140, "r": 70, "fill": "#f6c94b" }, "clouds": [{ "cx": 1150, "cy": 110, "s": 1, "fill": "#ffffff", "a": 0.9 }] },
+      "tint": { "fill": "#fff1cc", "a": 0.08 },
+      "shadow": true,
+      "word": { "meaning": { "fn": "Say", "x": "phrase.the-suns-out" }, "en": "The sun's out!" },
+      "sentence": { "meaning": { "fn": "Say", "x": "phrase.its-sunny-today" }, "en": "Today it's sunny. Lots of sun!" },
+      "gesture": "arms-up"
+    },
+    "cloudy": {
+      "sky": { "art": null, "stops": [["#9fb0bd", 0], ["#c9d2d8", 0.8], ["#e4e2da", 1]], "clouds": [{ "cx": 300, "cy": 120, "s": 1.4, "fill": "#eef1f3", "a": 0.95 }, { "cx": 820, "cy": 90, "s": 1.8, "fill": "#e2e7ea", "a": 0.95 }, { "cx": 1300, "cy": 150, "s": 1.5, "fill": "#eef1f3", "a": 0.95 }] },
+      "tint": { "fill": "#8796a3", "a": 0.12 },
+      "shadow": false,
+      "word": { "meaning": { "fn": "Item", "kind": "n.cloud" }, "en": "Clouds." },
+      "sentence": { "meaning": { "fn": "Say", "x": "phrase.its-cloudy-today" }, "en": "Today it's cloudy. Lots of clouds!" },
+      "gesture": "point-up"
+    },
+    "raining": {
+      "sky": { "art": null, "stops": [["#5d6c7a", 0], ["#8a98a4", 0.8], ["#b9c0c4", 1]], "clouds": [{ "cx": 260, "cy": 100, "s": 1.8, "fill": "#7d8a95", "a": 0.95 }, { "cx": 800, "cy": 80, "s": 2.2, "fill": "#6f7c87", "a": 0.95 }, { "cx": 1350, "cy": 110, "s": 1.9, "fill": "#7d8a95", "a": 0.95 }] },
+      "tint": { "fill": "#4a5a6a", "a": 0.18 },
+      "shadow": false,
+      "rain": { "drops": 160, "speed": 900, "slant": 0.18, "len": 26, "fill": "#dbe6f0", "a": 0.6 },
+      "word": { "meaning": { "fn": "Item", "kind": "n.rain" }, "en": "Rain." },
+      "sentence": { "meaning": { "fn": "Say", "x": "phrase.its-raining-today" }, "en": "Today it's raining. Lots of rain!" },
+      "gesture": "arms-out"
+    },
+    "night": {
+      "sky": { "art": null, "stops": [["#141c3a", 0], ["#26335c", 0.75], ["#3b4670", 1]], "moon": { "cx": 1320, "cy": 130, "r": 52, "fill": "#f3ecd0" } },
+      "tint": { "fill": "#1a2340", "a": 0.38 },
+      "shadow": false,
+      "stars": { "n": 90, "fill": "#fff8dc", "seed": 11 },
+      "word": { "meaning": { "fn": "Item", "kind": "n.star", "n": 2 }, "en": "Stars." },
+      "sentence": null,
+      "gesture": null
+    }
+  },
+  "activities": {
+    "kitchen": {
+      "go": "cook.html",
+      "thought": { "art": "assets/cook/props/pot-daal.webp", "shapes": [{ "t": "ellipse", "cx": 130, "cy": 120, "rx": 90, "ry": 50, "fill": "#8a8f96" }, { "t": "rect", "x": 40, "y": 70, "w": 180, "h": 50, "r": 12, "fill": "#a7adb4" }] },
+      "lines": [
+        { "meaning": { "fn": "Command", "verb": "v.come" }, "en": "Come!" },
+        { "meaning": { "fn": "Say", "x": "phrase.i-want-to-cook-today" }, "en": "I want to cook today.", "thought": true },
+        { "meaning": { "fn": "Say", "x": "phrase.will-you-help-me-cook" }, "en": "Will you help me cook?" }
+      ]
+    },
+    "clinic": {
+      "go": "clinic.html",
+      "thought": { "art": null, "shapes": [{ "t": "rect", "x": 50, "y": 40, "w": 160, "h": 120, "r": 12, "fill": "#ffffff" }, { "t": "rect", "x": 115, "y": 60, "w": 30, "h": 80, "fill": "#3f8f6b" }, { "t": "rect", "x": 90, "y": 85, "w": 80, "h": 30, "fill": "#3f8f6b" }] },
+      "lines": [
+        { "meaning": { "fn": "Command", "verb": "v.come" }, "en": "Come!" },
+        { "meaning": { "fn": "Say", "x": "phrase.today-we-help-at-the-clinic" }, "en": "Today we're helping at the clinic.", "thought": true },
+        { "meaning": { "fn": "Say", "x": "phrase.can-you-help-me" }, "en": "Can you help me?" }
+      ]
+    },
+    "trip": {
+      "go": null,
+      "stub": true,
+      "_about": "A trip day: the door, then the window ride to the place (the place's games, pack the bag and the meeting come in later sprints: a stub beat). The lines are the trip's own (trips.<id>.lines)."
+    }
+  },
+  "trips": {
+    "farm": {
+      "ride": "farm-road",
+      "thought": { "art": "assets/characters/goat/goat-three-quarter.png", "shapes": [] },
+      "lines": [
+        { "meaning": { "fn": "Command", "verb": "v.come" }, "en": "Come!" },
+        { "meaning": { "fn": "Say", "x": "phrase.today-i-want-to-go-to-the-farm" }, "en": "Today I want to go to the farm.", "thought": true },
+        { "meaning": { "fn": "Say", "x": "phrase.do-you-want-to-come-to-the-farm-with-me" }, "en": "Do you want to come to the farm with me?" }
+      ]
+    },
+    "shops": {
+      "ride": "farm-road",
+      "thought": { "art": null, "shapes": [{ "t": "rect", "x": 40, "y": 60, "w": 180, "h": 110, "r": 12, "fill": "#e0a63a" }, { "t": "poly", "pts": [[30, 70], [130, 20], [230, 70]], "fill": "#c0443c" }] },
+      "lines": [
+        { "meaning": { "fn": "Command", "verb": "v.come" }, "en": "Come!" },
+        { "meaning": { "fn": "Say", "x": "phrase.lets-go-to-the-market" }, "en": "Let's go to the market.", "thought": true },
+        { "meaning": { "fn": "Say", "x": "phrase.come-along-with-me" }, "en": "Come along with me." }
+      ]
+    }
+  },
+  "door": {
+    "_about": "The door's order (Zafar, 19 Oct): the weather word alone, then in a sentence with a gesture, then the day as short lines in turn, each its own line with its English beneath; a thought bubble of the day's place; the child answers Ha!",
+    "gapMs": 450,
+    "yes": { "meaning": { "fn": "Exclaim", "x": "phrase.yes" }, "en": "Yes!" },
+    "naniFace": "assets/cook/characters/nani-badge.webp"
+  },
+  "book": {
+    "_about": "The evening (story-by-the-fire.md, the day's fixed shape): the night sky, Nani and the book: today's words as pictures with their Kutchi, said in turn; photos if any; a progress mark (no verdicts); goodnight; tomorrow's door previewed by its sky.",
+    "maxPages": 8,
+    "pageMs": 900,
+    "art": { "book": null, "nani": "assets/cook/characters/nani-stand-v3-front.webp" },
+    "goodnight": { "meaning": { "fn": "Say", "x": "phrase.goodnight" }, "en": "Goodnight!" },
+    "tomorrow": { "meaning": { "fn": "Say", "x": "phrase.see-you-tomorrow" }, "en": "See you tomorrow!" },
+    "pictures": {
+      "_about": "A word's picture: its own entry here, else a Cook word's image (assets/cook/props/<image>.webp from data/cook.json), else a plain shape (no text).",
+      "own": {
+        "n.she-goat": "assets/characters/goat/goat-side.png",
+        "n.chicken": "assets/characters/hen/hen-side.png",
+        "pn.nana": "assets/cook/characters/nana-badge.webp",
+        "pn.ali": "assets/cook/characters/cousin-badge.webp"
+      },
+      "cook": { "data": "data/cook.json", "path": "assets/cook/props/{image}.webp" }
+    },
+    "lab": {
+      "_about": "lab/day.html: a day log as Cook or the clinic would leave it (core/log entries and the words met today), so the book can be seen after each. Ids are the modes' own (engine aliases).",
+      "kitchen": {
+        "entries": [
+          { "type": "round", "what": "chai-tray", "count": 3 },
+          { "type": "made", "what": "cook-chai", "who": "pn.nana" },
+          { "type": "made", "what": "cook-maani", "who": "pn.ali" },
+          { "type": "counted", "what": "cook-dudh", "count": 2 }
+        ],
+        "words": ["cook-chai", "cook-dudh", "cook-khun", "cook-maani"]
+      },
+      "clinic": {
+        "entries": [
+          { "type": "round", "what": "pharmacy", "count": 2 },
+          { "type": "made", "what": "cl-bandage" },
+          { "type": "made", "what": "cl-apple" }
+        ],
+        "words": ["cl-bandage", "cl-apple", "n.she-goat"]
+      },
+      "farm": {
+        "entries": [
+          { "type": "saw", "what": "n.she-goat" },
+          { "type": "saw", "what": "n.chicken" },
+          { "type": "saw", "what": "n.dog" }
+        ],
+        "words": []
+      }
+    }
+  },
+  "window": {
+    "_about": "The window ride (js/shared/window-ride.js, the clinic's pharmacy belt over a scrolling view): Nani names a thing, the child taps it as it passes; look-alikes pass together so the word decides (the leak test); a 'stop the car!' beat. A family is a set of look-alikes: a group is k of one family; any member may be the one named, so no picture is safe to ignore.",
+    "rides": {
+      "farm-road": {
+        "vehicle": "car",
+        "view": {
+          "bands": [
+            { "id": "hills", "y": 300, "h": 140, "speed": 0.15, "art": null, "shapes": [{ "t": "ellipse", "cx": 200, "cy": 140, "rx": 260, "ry": 110, "fill": "#8fae6b" }, { "t": "ellipse", "cx": 650, "cy": 150, "rx": 300, "ry": 120, "fill": "#7fa05d" }], "tile": 900 },
+            { "id": "field", "y": 420, "h": 160, "speed": 0.4, "art": null, "shapes": [{ "t": "rect", "x": 0, "y": 0, "w": 900, "h": 160, "fill": "#b9c77a" }, { "t": "rect", "x": 0, "y": 60, "w": 900, "h": 10, "fill": "#a7b56a" }], "tile": 900 },
+            { "id": "verge", "y": 580, "h": 320, "speed": 1, "art": null, "shapes": [{ "t": "rect", "x": 0, "y": 0, "w": 900, "h": 220, "fill": "#a9bd6e" }, { "t": "rect", "x": 0, "y": 220, "w": 900, "h": 100, "fill": "#8c8178" }, { "t": "rect", "x": 60, "y": 262, "w": 140, "h": 12, "fill": "#e8e2d0" }, { "t": "rect", "x": 510, "y": 262, "w": 140, "h": 12, "fill": "#e8e2d0" }], "tile": 900 }
+          ],
+          "itemY": 760,
+          "itemH": 230,
+          "frame": { "art": null }
+        },
+        "things": {
+          "goat": { "say": "n.she-goat", "art": "assets/characters/goat/goat-side.png", "h": 1, "family": "animal" },
+          "hen": { "say": "n.chicken", "art": "assets/characters/hen/hen-side.png", "h": 0.8, "family": "animal" },
+          "dog": { "say": "n.dog", "art": null, "shape": "animal", "fill": "#9a6a3e", "h": 0.9, "family": "animal" },
+          "bird": { "say": "n.bird", "art": null, "shape": "bird", "fill": "#5f86b0", "h": 0.55, "family": "animal" },
+          "red-door": { "say": { "fn": "Item", "kind": "n.door", "mods": ["a.red"] }, "art": null, "shape": "door", "fill": "#b8433a", "h": 1.25, "family": "door" },
+          "green-door": { "say": { "fn": "Item", "kind": "n.door", "mods": ["a.green"] }, "art": null, "shape": "door", "fill": "#4f8a4a", "h": 1.25, "family": "door" },
+          "tree": { "say": "n.the-tree", "art": null, "shape": "tree", "fill": "#5f8a3e", "h": 1.6, "scenery": true }
+        },
+        "stopCar": { "thing": "goat", "meaning": { "fn": "Exclaim", "x": "phrase.stop-the-car-keep-it-standing" }, "en": "Stop the car!", "holdMs": 2600 },
+        "levels": {
+          "1": { "calls": 3, "group": 3, "crossMs": 7000, "gapMs": 2200, "card": "open" },
+          "2": { "calls": 4, "group": 3, "crossMs": 6000, "gapMs": 1800, "card": "open" },
+          "3": { "calls": 5, "group": 3, "crossMs": 5000, "gapMs": 1500, "card": "closed" }
+        },
+        "callAt": 0.18,
+        "hintMs": 5000,
+        "scenery": ["tree"]
+      }
+    }
+  }
+}
