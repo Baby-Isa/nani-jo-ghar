@@ -5641,6 +5641,7 @@
    "level1": 0.2
   },
   "bulbMs": [8000, 8000, 8000, 8000],
+  "peekMs": {"_about": "SH-101 (Zafar, 17 Oct: level 3 double, and the same seconds added to the others): how long the closed card's small bulb holds the card open (the peek), by level; was a flat 3.5 s. Read by js/cook/ui.js peekMsOf; the clinic has its own table (js/clinic/kit.js Kit.PEEK_MS).", "1": 7000, "2": 7000, "3": 7000, "4": 7000},
   "closedFrom": 3,
   "coachSteps": 4,
   "uiAfter": {

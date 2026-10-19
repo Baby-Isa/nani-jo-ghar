@@ -593,8 +593,14 @@ export const CONTRACT_HOOK = `(() => {
     if (!C || typeof C.onHelp !== "function" || C.onHelp.__njgw) return;
     const o = C.onHelp;
     const w = function (kind, info) {
-      try { emit({ k: "hint", kind: String(kind || "help"), ids: info && info.ids ? [].concat(info.ids).slice(0, 4).map(String) : [] }); } catch (e) {}
-      return o.apply(this, arguments);
+      let before = null;
+      try { before = window.Cook.ctx ? window.Cook.ctx.help : null; } catch (e) {}
+      const r = o.apply(this, arguments);
+      try {
+        const after = window.Cook.ctx ? window.Cook.ctx.help : null;
+        emit({ k: "hint", kind: String(kind || "help"), ids: info && info.ids ? [].concat(info.ids).slice(0, 4).map(String) : [], counted: before != null && after != null ? after > before : null });
+      } catch (e) {}
+      return r;
     };
     w.__njgw = true;
     C.onHelp = w;

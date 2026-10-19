@@ -1000,7 +1000,7 @@ function check30(r, tl, segs, v, nums, add) {
 const REPLAY_WINDOW = 7000;
 function check31(tl, v, add) {
   const seen = new Set();
-  for (const e of tl) if (e.type === "c" && e.k === "hint" && /^(replay|say|hear)$/.test(e.kind || "") && !seen.has(`h${e.t}`)) {
+  for (const e of tl) if (e.type === "c" && e.k === "hint" && /^(replay|say|hear)$/.test(e.kind || "") && e.counted !== false && !seen.has(`h${e.t}`)) {
     seen.add(`h${e.t}`);
     add("contract-31", e.t, `a replay was counted as a hint (${e.kind}${e.ids ? `: ${[].concat(e.ids).join(", ")}` : ""})`);
   }

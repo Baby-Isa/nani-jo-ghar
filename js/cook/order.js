@@ -32,18 +32,16 @@
   const O = (Cook.Order = {});
 
   /**
-   * 29 Sept (X12 / Q7, Zafar): the counting rule, for a recipe with `countRule`. Level 1 and 2: the
-   * card row writes the quantity in Kutchi ("ba dungri", never a digit); level 3 and up: the card
-   * says only the thing, and how many is heard in the order (remember it). C3 (decision 41): every
-   * station follows it, the Chai tray's sugar included (data/cook.json countRule on every counted recipe).
+   * SH-99 (Zafar, 18 Oct: "whatever is said audibly is written down ... including quantity and item type"; reverses decision 41's and
+   * decision 57's "from level 3 the card says only the thing and how many is heard"): every number said is written on the card, at
+   * every level and in every round. The count rule's old filter is gone: a card row writes its whole phrase, number included
+   * ("ba dungri", "trae khun"), and Nani's bulb is the English of it. Counting along aloud (L2 up) is another rule (contract-19).
    */
-  // decision 57 (SH-52): a number is written the first times it is heard, at any level (then level 3 drops it)
-  const heardFew = (n) => !!(Cook.timesHeard && Cook.numId && Cook.timesHeard(Cook.numId(n)) < 3);
-  const cardParts = (parts, level, rule) => (rule && level >= 3 ? parts.filter((p) => typeof p !== "number" || heardFew(p)) : parts);
+  const cardParts = (parts) => parts;
   /**
-   * C3 (decision 41, E12): a headline that says a quantity ("Muke trae samosa khape.") follows the rule too: from
-   * level 3 the card writes its sentence without the number ("Muke samosa khape."), built from the same frame; the
-   * full line is still what's said (and replayed from the face).
+   * SAM-11 (T16), SAM-23 (Zafar, 18 Oct: "keep the title ... I want samosa"): a dish whose count heads each of its blocks writes its
+   * headline without the number ("Muke samosa khape.", in English "I want samosa" too); each block's own row says how many
+   * ("ba samosa", "trae samosa"). Every other headline is the whole line, number included (SH-99).
    */
   function headCard(r, level, rule, uncounted = false) {
     const parts = r.parts || [];
@@ -122,7 +120,7 @@
     const row = (r) => rowOf(r, rule);
     Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
       if (r.kind === "dish" && !L.head) {
-        L.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule, !!(Cook.data.recipes[d.recipe] || {}).blockHeads) });
+        L.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule, !!(Cook.data.recipes[d.recipe] || {}).blockHeads), uncountedTitle: !!(Cook.data.recipes[d.recipe] || {}).blockHeads });
         return;
       }
       // a person's own headline (the Chai tray's "Muke kari chai khape."): heads their card, not a row

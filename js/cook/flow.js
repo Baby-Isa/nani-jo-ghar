@@ -188,13 +188,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /*
      * Help (docs/archive/cook/cook-with-nani-kutchi-audit.md, top fix 1):
      *   hearing it again (replay, Nani's hint, a label speaker from stage 3)
-     *     is a hint on the hints badge (and in Busy some patience);
+     *     (SH-102: a replay is free; only being shown costs) is a hint on the hints badge (and in Busy some patience);
      *   being shown the answer (the hesitation glow, the highlight after two
      *     misses, 👁 reveal, translating an order line or "pass me")
      *     is that AND a mistake on the accuracy badge.
      */
     Cook.onHelp = (kind = "help", info = {}) => {
       if (Cook.ctx !== ctx) return;
+      // SH-102 (Zafar, 18 Oct: "you shouldn't lose points by playing the speaker button"): hearing it again is free, whoever asks (the card's
+      // face, a station's own speaker); only being shown it (the bulbs, the eye, a hint, the glow after two misses) is help
+      if (kind === "replay") return;
       ctx.help++;
       const ids = info.ids || (Cook.expect && Cook.expect.key ? [Cook.expect.key] : []);
       ids.forEach((id) => typeof id === "string" && ctx.wordHelp.add(id));
@@ -492,6 +495,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   Cook.callBack = callBack;
   const shabash = () => Lang.say({ fn: "Exclaim", x: "intj.well-done" });
+  // wave 1A's flaw 4: "Shabash!" once at the serve. A station that already praised (the review faces say it when every dish is right) said it a
+  // moment ago (the guide remembers every line said, js/shared/guide.js recentlySaid): it is not said again at the serve or after the station
+  const praised = () => !!(global.NaniGuide && global.NaniGuide.recentlySaid && global.NaniGuide.recentlySaid(Lang.plain(shabash())));
   // SH-66 (S05-C, S's S1 request): the chef's call-back and Shabash (decision 54) come after the station's
   // Lifecycle.stageEnd stopped every voice; they open a stage of their own so they are never read as voice carrying over
   // (a short quiet at its start, as every stage has: E27)
@@ -913,10 +919,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await Cook.wait(900);
     if (who === "nani") {
       // Nani's own list (the pantry, T4): Shabash and her happy face; she stays in her kitchen
-      await S().talk("nani", shabash(), { after: "happy" });
+      if (!praised()) await S().talk("nani", shabash(), { after: "happy" });
+      else S().setMood("nani", "happy");
     } else {
       // T7: Shabash from Nani, then the customer's thank you (the family's English words, G6) and khuda-fis
-      await S().talk("nani", shabash(), { after: "happy", ms: 900 });
+      if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
+      else S().setMood("nani", "happy");
       await S().talk(who, Lang.line("thanks"), { after: "happy" });
       await S().talk(who, Lang.line("bye"));
     }
@@ -1429,7 +1437,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await closingBeat();
       const back = callBack(ctx);
       if (back) await UI.guideSay(back).catch(() => {});
-      await UI.guideSay(shabash(), { ms: 900 }).catch(() => {});
+      if (!praised()) await UI.guideSay(shabash(), { ms: 900 }).catch(() => {});
     }
     // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
     // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)

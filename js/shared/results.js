@@ -304,9 +304,12 @@
     const bad = [];
     const ok = [];
     words.forEach((w, i) => (w.right === false && !one ? bad : ok).push(card(w, i)));
-    const col = (cls, list) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}${list.length >= 10 ? " many" : ""}" style="--rs-cols:${Results.wordCols(list.length)}">${list.join("")}</div>`;
+    // SH-103 (Zafar, 17 Oct: "space for four correct items on the right and one incorrect item on the left ... if there are more incorrect items then
+    // the line has to move over"): the two halves are weighted, the right words 4 and the wrong words as many as they are (1 to 3), so the divider sits
+    // at 1/5 of the width with none wrong and moves over as the wrong words grow (contract-32 reads it)
+    const col = (cls, list, w = 1) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}${list.length >= 10 ? " many" : ""}" style="--rs-cols:${Results.wordCols(list.length)};--rs-w:${w}">${list.join("")}</div>`;
     if (one) return col("rs-words-all", ok);
-    return col("rs-words-bad", bad) + col("rs-words-ok", ok);
+    return col("rs-words-bad", bad, Math.max(1, Math.min(bad.length, 3))) + col("rs-words-ok", ok, 4);
   }
 
   // the page-1 show: badges pop in one by one; the stopwatch counts up; the tick gauge fills

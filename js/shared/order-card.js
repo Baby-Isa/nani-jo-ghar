@@ -79,7 +79,21 @@
   OC.CHECK = `<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#c9962e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const FOLD_AFTER = 700;
   // decision 57: the small bulb on a closed spoken card (flat, the design tokens' gold; no counter)
-  OC.BULB = `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4a12 12 0 0 0-7 21.8c1.3 1 2 2.4 2 4V31h10v-1.2c0-1.6.7-3 2-4A12 12 0 0 0 20 4z" fill="#f2c14e" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M15 34.5h10M16.5 38h7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+  // SH-100 (Zafar, 17 Oct: "let's make them all photorealistic"): ONE bulb picture on every card and in Nani's and the doctor's box: the photo
+  // (assets/ui/results/icon-bulb.webp, the one results.js and the guide use), never a flat drawing of our own. The path is from this script's
+  // own place (as results.js does), stamped for the cache (njgV) when the card is drawn; a page without the stamp keeps the plain path
+  const scriptBase = (() => {
+    try {
+      const src = typeof document !== "undefined" && document.currentScript && document.currentScript.getAttribute("src");
+      const m = src && src.match(/^(.*?)js\/shared\/order-card\.js(?:[?#].*)?$/);
+      return m ? m[1] : "";
+    } catch (e) {
+      return "";
+    }
+  })();
+  OC.BULB_FILE = "assets/ui/results/icon-bulb.webp";
+  OC.bulbSrc = () => (typeof root.njgV === "function" ? root.njgV(scriptBase + OC.BULB_FILE) : scriptBase + OC.BULB_FILE);
+  OC.bulbImg = () => `<img class="oc-bulb-img" src="${OC.bulbSrc()}" alt="" draggable="false">`;
   OC.EYE = `<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M2 20 Q32 -6 62 20 Q32 46 2 20Z" fill="#fffaf0" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="20" r="10" fill="currentColor"/></svg>`;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -406,7 +420,9 @@
     const h = data.headline;
     if (h) {
       // a line still to record: its English, flagged "to record" under it
-      const t = h.rec ? el("div", "oc-headline rec", `<span class="oc-rec-line fit fit-wrap">${h.html}</span><small class="oc-rec">to record</small>`) : el("div", "oc-headline fit fit-wrap", h.html);
+      // SH-107: the order pop-up's headline (a big card) wraps at full size first and shrinks only when two lines don't fit (fit.js fit-head)
+      const fh = opts.big ? " fit-head" : "";
+      const t = h.rec ? el("div", "oc-headline rec", `<span class="oc-rec-line fit fit-wrap${fh}">${h.html}</span><small class="oc-rec">to record</small>`) : el("div", `oc-headline fit fit-wrap${fh}`, h.html);
       if (h.key != null && opts.onEl) opts.onEl(h.key, t);
       head.appendChild(t);
     }
@@ -419,7 +435,7 @@
     // line only and the headline keeps its full width (three closed cards fit an 800x360 sidebar); no headline: the corner
     if (opts.closed && opts.onPeek && !opts.big) {
       const eye = opts.look === "eye";
-      const sign = `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.BULB}</span>`;
+      const sign = `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.bulbImg()}</span>`;
       const hl = head.querySelector(".oc-headline");
       const at = hl ? hl.querySelector(".oc-rec-line") || hl : head;
       at.insertAdjacentHTML("beforeend", sign);
