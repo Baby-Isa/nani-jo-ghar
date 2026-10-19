@@ -1247,18 +1247,19 @@
      ]
     },
     "tomatoes": {
+     "_about": "LNG-17 (19 Oct): one tomato only (hakro tameto) until Mum's plural is confirmed: data/lang/lexicon.json n.tomato pl.dir is unknown (Q14; grammar-notes §34 P3 'doesn't change' vs the -o rule's tameta), so the engine has no Kutchi for two or three and said 'tomatoes' in English. Back to 1-3 (daal) and 1-2 (chaat) once the form is in the lexicon",
      "byLevel": [
       {
        "int": [
         1,
-        3
+        1
        ],
        "zero": 0.25
       },
       {
        "int": [
         1,
-        3
+        1
        ],
        "zero": 0.3
       }
@@ -1525,9 +1526,10 @@
      ]
     },
     "tomatoes": {
+     "_about": "LNG-17 (19 Oct): one tomato only (hakro tameto) until Mum's plural is confirmed: data/lang/lexicon.json n.tomato pl.dir is unknown (Q14; grammar-notes §34 P3 'doesn't change' vs the -o rule's tameta), so the engine has no Kutchi for two or three and said 'tomatoes' in English. Back to 1-3 (daal) and 1-2 (chaat) once the form is in the lexicon",
      "int": [
       1,
-      2
+      1
      ]
     }
    },

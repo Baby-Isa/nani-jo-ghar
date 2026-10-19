@@ -265,8 +265,26 @@
    * Without a spoken headline (the pantry's "bring me these", still to record) each row is said as
    * the recipe data frames it ("Muke dudh de. Ne atto.").
    */
+  // LNG-17 (judges, 19 Oct; non-negotiable 5): the join word is said only when the engine can say it in Kutchi. "with"
+  // (WithFood) and "and" (AndKind) are the engine's gaps until Mum gives them (Q5; data/lang/reports/gap-list.md): an
+  // English join is never spoken or written into the order, so the row is said bare, as the rows after it always are
+  // ("Muke elchi waari chai khape, dudh, trae khun."), the card's own list (29 Sept, X1)
+  const joinable = (join, r) => {
+    const l = Lang.line(join, r.phrase);
+    return !!l && l.ok !== false && !(l.segs || []).some((s) => s.lang === "e");
+  };
+  // LNG-17: a block's head the engine can't say ("And samosa": AndKind, Mum's Q5) is said with the engine's confirmed list
+  // frame instead, "ne" before the next thing (grammar-notes §6: "a list takes ne before each item"): "Ne ba samosa, ba bataata."
+  const joinGap = (s) => s.lang === "e" && /\b(AndKind|WithFood)\b/.test(String(s.gap || ""));
+  const spokenHead = (head, F) => {
+    const segs = (head && head.line && head.line.segs) || [];
+    if (!head || head.rec || !head.phrase || head.line.ok !== false || !segs.some(joinGap) || segs.some((s) => s.lang === "e" && !joinGap(s))) return head;
+    const l = Lang.line(F.more, head.phrase);
+    return l && l.ok !== false ? Object.assign({}, head, { line: l }) : head;
+  };
   O.sentence = function (head, rows, { join = "with" } = {}) {
     const F = Lang.frames();
+    head = spokenHead(head, F);
     const parts = [];
     const said = head && !head.rec && head.line;
     if (!said) {
@@ -288,7 +306,7 @@
         segs = lower(cut(l.segs));
         en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
         plan = l.plan;
-      } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join])) { // (parked pages only: their own lines)
+      } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join]) && joinable(join, r)) { // (parked pages only: their own lines)
         const l = Lang.line(join, r.phrase);
         // inside the sentence: no capital (the engine says a join it has no rule for as a sentence of its own)
         segs = lower(cut(l.segs));

@@ -330,6 +330,24 @@
     });
   }
 
+  /**
+   * SH-98 / contract-27 (Zafar, 17 Oct: "if you click light bulb everything should be written in Kutchi"): while a card peeks, every
+   * dotted word shows (a dot group carries its words in data-said: Cook's Lang.html); when the peek ends the dots come back.
+   */
+  function unveil(card, on) {
+    if (!card || !card.querySelectorAll) return;
+    if (on)
+      card.querySelectorAll(".dots[data-said]").forEach((d) => {
+        const w = document.createElement("span");
+        w.className = "word oc-peeked";
+        w.textContent = d.getAttribute("data-said");
+        w._dots = d;
+        d.replaceWith(w);
+      });
+    else card.querySelectorAll(".oc-peeked").forEach((w) => w._dots && w.replaceWith(w._dots));
+  }
+  OC.unveil = unveil;
+
   /** A closed card (not finished): folded to face + headline, no check; a tap peeks (or opens) it. */
   function closable(c, st, opts) {
     const now = Date.now();
@@ -340,12 +358,13 @@
       c.classList.add("bulb-open");
       return;
     }
-    if (open) c.classList.add("peek");
+    if (open) c.classList.add("peek"), unveil(c, true);
     else c.classList.add("folded", "still");
     const shut = () => {
       const cur = st.el && st.el.isConnected ? st.el : c;
       cur.classList.remove("peek", "still");
       cur.classList.add("folded");
+      unveil(cur, false);
     };
     if (st.peekUntil && open) {
       clearTimeout(st.timer);
@@ -359,6 +378,7 @@
         st.peekUntil = Date.now() + (opts.peekMs != null ? opts.peekMs : 3500);
         cur.classList.remove("folded", "still");
         cur.classList.add("peek");
+        unveil(cur, true);
         clearTimeout(st.timer);
         st.timer = setTimeout(shut, st.peekUntil - Date.now());
         opts.onPeek(cur);
@@ -367,6 +387,7 @@
         cur.classList.remove("still");
         cur.classList.toggle("folded", !st.opened);
         cur.classList.toggle("peek", st.opened);
+        unveil(cur, st.opened);
       }
     });
   }
