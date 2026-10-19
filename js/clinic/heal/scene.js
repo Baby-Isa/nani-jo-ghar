@@ -483,7 +483,7 @@
       // (SH-112: the shared box's size comes from the tokens, so a phone's is smaller than a laptop's)
       const box = shelf.firstElementChild ? shelf.firstElementChild.getBoundingClientRect().height : 0;
       const gap = parseFloat((global.getComputedStyle && global.getComputedStyle(shelf).rowGap) || "") || 8;
-      const rowsFit = Math.max(2, Math.floor((root.getBoundingClientRect().height * 0.86 + gap) / ((box || 62) + gap)));
+      const rowsFit = Math.max(2, Math.floor((root.getBoundingClientRect().height * 0.9 + gap) / ((box || 62) + gap)));
       shelf.style.setProperty("--cols", Math.max(1, Math.ceil(list.length / Math.min(6, rowsFit))));
     };
     S.pick = (id) => {
