@@ -21,7 +21,8 @@ Branch `worktree-agent-a17cf64fa2dd1fbf8` from f36ca4ac, not pushed. Filmstrips 
 | Host | CLN-163: one camera tween over the room and the close-up; `HOST.view` |
 | Boing | CLN-164 to 168, 170: the DM1 machine and DM2 levers; the syringe sheets with no needle shown; the drops as liquid bands; one count on the syringe; the cloth in hand; the syringe moves over the arm; a puff of mist (no count-down, no squash) |
 | Ear | CLN-135, 173, 174: the spots and their rule are gone; the tweezers in layers; the kidney tray with the wax in sight |
-| Tooth | CLN-163, 180 to 184: one picture and one camera; the s08b brush lying level; no line; the tip on the cavity; a dial styled from Cook's dial; overfill smooths back; the first go is scored |
+| Tooth | CLN-163, 180 to 184: one picture and one camera; the s08b brush lying level; a dial styled from Cook's dial; overfill smooths back; the first go is scored |
+| Tooth fill, after the orchestrator's look | No line at all: the nozzle keeps its plain picture while pressed (the paste picture drew a squiggle). The cavity is a soft, rounded, darker hollow with no drawn rim, and the decay's rim is masked away once drilled. The filling is soft-edged, grows from the middle under the tip, and covers the hollow (`tooth-fill-x2.jpg`). |
 
 ## Proof
 

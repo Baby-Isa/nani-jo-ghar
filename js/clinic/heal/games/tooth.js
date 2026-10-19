@@ -276,6 +276,16 @@
     const defs = s("defs", {}, S.svg);
     const mask = s("mask", { id: `${uid}-m`, maskUnits: "userSpaceOnUse", x: -400, y: -300, width: 1600, height: 1100 }, defs);
     s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: "#fff" }, mask);
+    // the orchestrator's look (19 Oct, on CLN-181): the drilled cavity is a soft, rounded, darker hollow (never a hard
+    // drawn outline), and the filling a soft-edged patch that grows from its middle to cover it
+    const soft = (id, sd) => {
+      const f = s("filter", { id, x: "-50%", y: "-50%", width: "200%", height: "200%", "color-interpolation-filters": "sRGB" }, defs);
+      s("feGaussianBlur", { stdDeviation: sd }, f);
+      return `url(#${id})`;
+    };
+    const SOFT_HOLE = soft(`${uid}-soft-hole`, 7);
+    const SOFT_FILL = soft(`${uid}-soft-fill`, 3.5);
+    const about = (p, k) => `translate(${(p.cx * (1 - k)).toFixed(2)} ${(p.cy * (1 - k)).toFixed(2)}) scale(${k.toFixed(4)})`;
     const holesG = s("g", {}, ds); // the drilled holes (under the decay)
     const decayG = s("g", { mask: `url(#${uid}-m)` }, ds);
     const scuffG = s("g", {}, ds); // where healthy enamel was drilled
@@ -296,7 +306,8 @@
     drillPatches.forEach((p, k) => {
       const d = p.pts.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" ") + "Z";
       p.d = d;
-      s("path", { d, fill: "#ead2c6", stroke: "#c9a493", "stroke-width": 3 }, holesG);
+      s("path", { d, fill: "#b48a72", opacity: 0.75, filter: SOFT_HOLE, transform: about(p, 0.9) }, holesG);
+      s("path", { d, fill: "#7f5a48", opacity: 0.55, filter: SOFT_HOLE, transform: about(p, 0.55) }, holesG);
       const a = decayArt[k % 3];
       if (a) {
         // A2 (5 Oct): O2's decay as the patch's texture, clipped to the patch's own outline (the drill's samples)
@@ -448,7 +459,9 @@
         btnUp.setAttribute("opacity", down ? 0 : 1);
         btnDown.setAttribute("opacity", down ? 1 : 0);
       } else btnUp.setAttribute("transform", down ? "translate(0 18)" : "");
-      if (nozImg && nozArt && nozPasteArt) nozImg.setAttribute("href", url(down ? nozPasteArt.src : nozArt.src));
+      // (the orchestrator, 19 Oct; Zafar: "you don't need to show really anything coming out"): the nozzle stays the
+      // plain one while pressed: its paste picture drew a squiggle from the tip, so nothing shows between tip and cavity
+      void nozPasteArt;
     };
     const fillArt = art("fillingPatch");
     // CLN-181: the cavities fill one at a time, each from its middle out, the nozzle's tip on the middle of the one
@@ -464,15 +477,16 @@
         const g0 = share(f, i);
         if (g0 <= 0) return;
         const k = g0 * (f > zone[1] ? 1 + (f - zone[1]) * 1.6 : 1);
-        const tf = `translate(${(p.cx * (1 - k)).toFixed(2)} ${(p.cy * (1 - k)).toFixed(2)}) scale(${k.toFixed(4)})`;
-        // T3 (CLN-103): the filling a shade off white (tooth-coloured), never an outline
-        s("path", { d: p.d, fill: "#f3eee0", stroke: "none", transform: tf }, pasteG);
+        // T3 (CLN-103): the filling a shade off white (tooth-coloured), never an outline; soft-edged and a little wider
+        // than the hollow, so at full it covers it
+        const tf = about(p, k * 1.12);
+        s("path", { d: p.d, fill: "#f3eee0", stroke: "none", filter: SOFT_FILL, transform: tf }, pasteG);
         if (fillArt) {
-          const cid = `${uid}-f${p.cx | 0}-${p.cy | 0}`;
-          const cp = s("clipPath", { id: cid }, pasteG);
-          s("path", { d: p.d }, cp);
-          const g = s("g", { "clip-path": `url(#${cid})`, transform: tf }, pasteG);
-          s("image", { href: url(fillArt.src), x: p.cx - p.r * 1.35, y: p.cy - p.r * 1.35, width: p.r * 2.7, height: p.r * 2.7, preserveAspectRatio: "none" }, g);
+          const mid = `${uid}-f${p.cx | 0}-${p.cy | 0}`;
+          const mk = s("mask", { id: mid, maskUnits: "userSpaceOnUse", x: -400, y: -300, width: 1600, height: 1100 }, pasteG);
+          s("path", { d: p.d, fill: "#fff", filter: SOFT_FILL, transform: tf }, mk);
+          const g = s("g", { mask: `url(#${mid})` }, pasteG);
+          s("image", { href: url(fillArt.src), x: p.cx - p.r * 1.5, y: p.cy - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none" }, g);
         }
       });
     };
@@ -744,9 +758,10 @@
           });
           if (inPoly(p.x, p.y, pa.pts)) onDecay = true;
           // the last specks go by themselves once most of a patch is gone
-          if (pa.left.size && pa.left.size <= pa.samples.length * 0.12) {
-            pa.left.clear();
-            s("path", { d: pa.d, fill: "#000" }, mask);
+          if (pa.left.size && pa.left.size <= pa.samples.length * 0.12) pa.left.clear();
+          if (!pa.left.size && !pa.masked) {
+            pa.masked = true;
+            s("path", { d: pa.d, fill: "#000", stroke: "#000", "stroke-width": 10, "stroke-linejoin": "round" }, mask); // its drawn rim too (no hard edge left)
           }
         }
       });
