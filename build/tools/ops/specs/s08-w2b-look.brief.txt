@@ -1,0 +1,81 @@
+SESSION NAME / MODE:  s08 wave 2B, the shared look: one go-on button, bigger tool boxes, one shared pour and fill, the kitchen master; tidy-up of dead code from wave 1A
+MODEL AND EFFORT:     Opus, high effort (visual work across both modes (non-negotiable 15: top model for visual work))
+COST ESTIMATE:        about $30-45
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w2b-look.context.md (854 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/cook-playtest-2026-10-17.md (P27, P47, P59; KEEP rows)
+     docs/feedback/clinic-playtest-2026-10-18.md (P1, P9, P49)
+     build/reports/s08-w0-art.md (the cut files and assets/s08b-cut-data.json)
+     docs/design-language/ui-design-system.md
+     docs/feedback/cook-phone-2026-10-15.md (SH-91, CK-44)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/buttons.js
+  - css/shared/buttons.css
+  - js/clinic/heal/scene.js
+  - css/clinic.css (tool strip only)
+  - js/cook/stations.js
+  - js/cook/mechanics/pour.js
+  - a new js/shared/pour.js if the shared pour needs one
+  - js/cook/mechanics/grill.js and js/cook/stations/samosa.js: only their go-on button lines
+  - js/clinic/heal/games/taste.js: only its fill
+  - js/cook/stations/daar.js: only the pour (daar.js:749)
+  - assets/cook/bg/** new files (the kitchen master)
+  - data/cook.json art entries for the kitchen master only
+  - build/reports/s08-w2b-look.md
+READ-ONLY (never edit):
+  - js/cook/ui.js, order.js, flow.js, main.js, js/shared/order-card.js, results.js, fit.js, js/clinic/kit.js (wave 1B)
+  - js/core/voice.js, js/shared/guide.js, js/cook/station-lib.js, words.js (wave 1A)
+  - assets/** other than the kitchen master (wave 0's cuts are final)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: if the kitchen master cannot be registered, keep today's kitchen and say why
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-106: one shared go-on button in every Cook station and every heal game: the arrow always, a clear picture where the station needs one (wave 0's go-grill-s08b and go-karahi-s08b, assets/cook/items-s08b/), taller (samosa's about twice as tall, decision 6), the same look and place in both modes, no per-mode restyle (non-negotiable 8).
+     Accept: contract-run check: every go-on button has the arrow; eye: sekelo, samosa, a heal game, side by side at 800x360 and 1366x768
+  2. SH-112: one shared, bigger tool box for every clinic tool strip (boing, fever, foot first; about double today's 60x46 picture in its box, design tokens, not literals), checked at 800x360.
+     Accept: eye: every heal game's strip at 800x360 and 1366x768: items readable, nothing clipped
+  3. SH-117 (with DAAR-28, CLN-197): one shared pour and fill from Cook's chai pour: the daal into its pot (daar.js:749) and the taste game's glass fill (taste.js:315) use it; chai's own pour is wave 4's (CHAI-26), so build the shared piece so chai can adopt it.
+     Accept: eye: the daal pour and the taste fill as filmstrips
+  4. SH-91, CK-44, ART-21: the kitchen master (sources/art/s07/k1-kitchen-master-v1.png; read build/reports/s07-cook.md for why it was not used) registered so the trays, island and family line up, upscaled, drawn 1:1 with the occluder from the same picture; else keep today's interim and say why.
+     Accept: the counter at 915x412, 844x390, 1366x768, 1366x1024: one continuous counter, the family behind their trays
+  5. Tidy-up: delete stations.js step() and glowDraw(), unused since wave 1A (build/reports/s08-w1-voice.md flaw 4).
+     Accept: no caller left (grep); checks green
+
+REGRESSION ROWS TO RECHECK (315 rows of the fix list and its done archive; * = open or reopened):
+  cook:mishkaki-grill (21): SEK-14*, SEK-18, SEK-19*, SEK-20*, SEK-21*, SEK-07*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, CK-38
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:daar (37): DAAR-02*, DAAR-05*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-29, DAAR-30*, DAAR-31, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, CK-06*, CK-08, CK-10, CK-29, CK-27
+  cook:title (49): CK-01*, CK-06*, CK-TAB-01, CK-24*, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-48*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43
+  clinic:heal-boing (56): CLN-81*, CLN-159*, CLN-106, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-165*, CLN-166*, CLN-167*, CLN-168*, CLN-170*, CLN-02, CLN-03, CLN-08, CLN-82, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-30, CLN-42, CLN-43, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118, CLN-140
+  clinic:heal-taste (50): CLN-81*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-144*, CLN-195*, CLN-196, CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-30, CLN-36, CLN-42, CLN-43, CLN-44, CLN-54, CLN-55, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-104, CLN-149, CLN-118, CLN-140
+  clinic:heal-fever (62): CLN-81*, CLN-65*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-175, CLN-176*, CLN-177*, CLN-178*, CLN-105*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-86, CLN-87, CLN-109, CLN-112, CLN-114, CLN-152, CLN-153, CLN-151, CLN-30, CLN-31, CLN-42, CLN-43, CLN-44, CLN-56, CLN-57, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-120, CLN-124, CLN-125, CLN-128, CLN-130, CLN-132, CLN-133, CLN-147, CLN-146, CLN-148, CLN-45, CLN-100, CLN-126, CLN-127, CLN-149, CLN-131, CLN-118, CLN-140
+  shared components (109): SH-70, SH-98*, SH-99*, SH-107*, SH-37*, SH-90*, SH-91*, SH-92*, SH-93*, SH-97*, SH-102*, SH-103*, SH-104, SH-105*, SH-106*, SH-108*, SH-109*, SH-110*, SH-111*, SH-53*, SH-60*, SH-112*, SH-113*, SH-115*, SH-116*, SH-117*, SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-54, SH-55, SH-62, SH-69, SH-10, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58, SH-59, SH-63, SH-64, SH-65, SH-66, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33, SH-34, SH-35, SH-36, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48, SH-71, SH-72, SH-73, SH-74, SH-75, SH-76, SH-77, SH-79, SH-80, SH-82, SH-83, SH-84, SH-86, SH-87, SH-81, SH-89, SH-88
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w2b-look` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8834.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w2b-look.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
