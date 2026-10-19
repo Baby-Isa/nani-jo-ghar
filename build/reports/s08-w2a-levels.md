@@ -8,7 +8,7 @@ Branch `worktree-agent-a3ac499adc0b87799`, commit `0d20cc13`. Sandbox run `w2a-g
 2. **Sekelo decoys 1, not 3** at L3-L4 (contract-37 red): only the potato has sekelo piece art. Waits on the art run.
 3. **Leaks left:** bajri maani has no voice, so it stays written at L3 (contract-35, maani L3); a person's headline writes their extra ("Muke elchi waari chai khape"); chai's spice row caps at five jars (two extras asked: two decoys, not three).
 4. Not done: the pantry's pop-up still reads the whole list (asked one at a time after); MAA-17's +0.75 s flip; the throttled CK-48 run (no throttle in the sandbox; begin now waits for art, marble 20 s cap: eye it); samosa unchanged (L3+ already goes to the fryer).
-5. contract-36 counts any call in 6 s after an opening (a late call can stand for the next step); 35/37 read the game's own logs and DOM, not pixels. Browser time about 19 min: L2 only for maani, no 800x360; checks.mjs result below.
+5. contract-36 counts any call in 6 s after an opening (a late call can stand for the next step); 35/37 read the game's own logs and DOM, not pixels. Browser time about 19 min: L2 only for maani, no 800x360. `checks.mjs`: unit 387, words 0 literals, static, leak (17 configs, every level), bump, specs, docs, size all ok; its load line did not print on the final run (the first run's load FAIL on chai-tray was my bug, fixed and probed).
 6. Lines waiting on Mum: none new; calls reuse the engine's step lines.
 
 ## What was built
