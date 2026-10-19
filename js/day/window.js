@@ -138,7 +138,11 @@ export async function runWindow(el, api, day) {
         showCall(i);
         api.say(asks[i], { who: "nani", min: false });
       },
-      sayStop: () => api.say(api.line({ meaning: ride.stopCar.meaning, en: ride.stopCar.en }), { who: "nani" }),
+      sayStop: () => {
+        const ln = api.line({ meaning: ride.stopCar.meaning, en: ride.stopCar.en });
+        if (guide && !bulbOn) guide.set(html(ln), { rec: !ln.ok });
+        return api.say(ln, { who: "nani" }).then(() => current < 0 && showCall(-1));
+      },
       onTap: (t) => {
         if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("act", { during: "day:window" });
         void t;

@@ -28,6 +28,7 @@ export const STATIC = [
     cards: [
       {href: "cook.html", title: "Cook with Nani", text: "The main game (calm UI, batch 1 art, Wave 6b: end-of-round screen, tap-measure pour, onboarding per station)."},
       {href: "find.html", title: "Find it", text: "Nani's list + Check the bag.", tag: "parked"},
+      {href: "lab/day.html", title: "A day at Nani's", text: "Sprint 9: the morning door in every weather, the window ride, the evening book after a kitchen or a clinic day (placeholder art)."},
     ],
   },
   {

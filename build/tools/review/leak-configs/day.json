@@ -1,0 +1,1 @@
+{"id": "day", "adapter": "script", "script": "build/leak_window_ride.mjs", "args": ["--rounds", "2000"], "about": "A day at Nani's: the window ride (js/shared/window-ride.js): fair wins, every blind strategy under 10%, every level (Node)"}

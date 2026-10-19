@@ -359,23 +359,17 @@
       setTimeout(() => o.onEnd && o.onEnd(r), 500 / speed);
     }
 
-    // ---- the stop-the-car beat: a thing walks into the road, the view eases to a stop, Nani calls it, it crosses ----
+    // ---- the stop-the-car beat: a thing stands in the road ahead; as it comes into the middle of the window Nani calls
+    // out, the view eases to a stop, it crosses the road (towards us and out of sight), and the view goes on ----
     let stopBeat = null;
     const startStop = () => {
       const sc = ride.stopCar;
       const m = make(sc.thing, "wr-crossing");
       m.b.tabIndex = -1;
-      m.cross = true;
-      m.x = SCENE.w * 0.62;
-      m.b.style.top = `${baseY + 40 - itemH}px`;
-      m.b.style.opacity = "0";
+      m.b.disabled = true;
+      m.b.style.top = `${baseY + 60 - itemH}px`;
       st.items.push(m);
-      stopBeat = { m, t0: st.t, phase: "slow" };
-      st.phase = "stopping";
-      raf(() => (m.b.style.opacity = "1"));
-      Promise.resolve(o.sayStop ? o.sayStop() : null).then(() => {
-        if (stopBeat) stopBeat.said = true;
-      });
+      stopBeat = { m, t0: null, phase: "approach" };
     };
 
     // ---- the clock ----
@@ -389,16 +383,23 @@
       last = now;
       st.t += dt;
       // the stop beat: ease the velocity down, hold, then up again
-      if (stopBeat) {
+      if (stopBeat && stopBeat.phase === "approach" && stopBeat.m.x + stopBeat.m.w / 2 < SCENE.w * 0.6) {
+        stopBeat.phase = "stop";
+        stopBeat.t0 = st.t;
+        st.phase = "stopping";
+        if (o.sayStop) o.sayStop();
+      }
+      if (stopBeat && stopBeat.phase === "stop") {
         const k = (st.t - stopBeat.t0) / 1000;
         const hold = (ride.stopCar.holdMs || 2400) / 1000;
         if (k < 0.9) st.vel = Math.max(0, 1 - k / 0.9);
         else if (k < 0.9 + hold) {
           st.vel = 0;
-          // the thing crosses the road (downwards, out of the lane), facing its way
+          stopBeat.m.cross = true;
+          // the thing crosses the road towards us (down and a little bigger) and goes out of sight
           const f = (k - 0.9) / hold;
-          stopBeat.m.b.style.transform = `translateY(${(f * 200).toFixed(1)}px)`;
-          stopBeat.m.b.style.opacity = f > 0.85 ? String(Math.max(0, (1 - f) / 0.15)) : "1";
+          stopBeat.m.b.style.transform = `translateY(${(f * 260).toFixed(1)}px) scale(${(1 + f * 0.15).toFixed(3)})`;
+          stopBeat.m.b.style.opacity = f > 0.8 ? String(Math.max(0, (1 - f) / 0.2)) : "1";
         } else if (k < 1.8 + hold) st.vel = Math.min(1, (k - 0.9 - hold) / 0.9);
         else {
           st.vel = 1;
@@ -484,7 +485,7 @@
         caf(rafId);
         if (root.removeEventListener) root.removeEventListener("resize", fit);
       },
-      state: () => (st.done ? "end" : stopBeat ? "stop" : st.phase),
+      state: () => (st.done ? "end" : stopBeat && stopBeat.phase === "stop" ? "stop" : st.phase),
       result: () => st.outcome.slice(),
       /** what the ride wants now (window.njgTest): the named thing to tap once it has been said and is on screen */
       expect() {
