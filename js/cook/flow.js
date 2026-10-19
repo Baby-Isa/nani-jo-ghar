@@ -520,7 +520,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return Lang.join(once.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
   }
   Cook.callBack = callBack;
-  const shabash = () => Lang.say({ fn: "Exclaim", x: "intj.well-done" });
+  const shabash = () => Lang.role(Lang.say({ fn: "Exclaim", x: "intj.well-done" }), "exclaim"); // (contract-23: never read as an item word)
   // wave 1A's flaw 4: "Shabash!" once at the serve. A station that already praised (the review faces say it when every dish is right) said it a
   // moment ago (the guide remembers every line said, js/shared/guide.js recentlySaid): it is not said again at the serve or after the station
   const praised = () => !!(global.NaniGuide && global.NaniGuide.recentlySaid && global.NaniGuide.recentlySaid(Lang.plain(shabash())));

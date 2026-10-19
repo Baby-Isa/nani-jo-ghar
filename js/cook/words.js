@@ -336,7 +336,11 @@
     else if (entry(`cook.line.${key}`)) m = fixed(`cook.line.${key}`);
     else if (entry(key)) return Object.assign(Lang.wordLine(key), { key });
     else m = fixed(`cook.line.${key}`); // the engine's own gap (a to-record placeholder)
-    return Object.assign(Lang.say(m), { key });
+    // contract-23 (SH-94): a fixed exclamation said as it is ("Shabash!", "Bas!") is tagged so, never read as an item's name said
+    // on a tap (the sound log's one untagged word after a tap); a caller's own role (howto, call ...) still replaces it
+    const l = Object.assign(Lang.say(m), { key });
+    if (m && m.fn === "Exclaim" && typeof m.x === "string") l.role = "exclaim";
+    return l;
   };
   /** Nani's guide box line for a guide key (data/cook.json guide: a line key, else the engine's to-record entry). */
   Lang.guideLine = (key, g) => (g && g.line && Lang.hasLine(g.line) ? Lang.line(g.line) : Object.assign(Lang.say(fixed(`cook.guide.${key}`)), { key }));
