@@ -91,11 +91,12 @@
     // words, numbers and joins from data through the seam (R5)
     const Lg = HS.L;
     const say = (m, o) => Lg.show(m, o);
-    const steps = [{ id: "soak", kind: "soak", temp, jugs, row: Object.assign({ id: "soak" }, say(Lg.join([Lg.item("cook-paani"), Lg.item(TEMP_ID[temp]), ",", Lg.item("cl-jugs", { n: jugs })]), { cap: true })) }];
+    const steps = [{ id: "soak", kind: "soak", temp, jugs, row: Object.assign({ id: "soak", seq: "steps" }, say(Lg.join([Lg.item("cook-paani"), Lg.item(TEMP_ID[temp]), ",", Lg.item("cl-jugs", { n: jugs })]), { cap: true })) }];
     // the toe order (L3) is a sequence on the card (13h): pela [big toe], ne poi ...
-    const pullRows = order ? order.map((t, i) => Object.assign({ id: `pull${i}`, seq: "toes" }, say(Lg.step(i, TOE_ID[t], { lower: true })))) : null;
-    steps.push({ id: "pull", kind: "pull", order, row: pullRows ? pullRows[0] : Object.assign({ id: "pull" }, say(Lg.item("cl-splinters"), { cap: true })), rows: pullRows });
-    steps.push({ id: "plaster", kind: "plaster", row: Object.assign({ id: "plaster" }, say(Lg.item("cl-plaster"), { cap: true })) });
+    const pullRows = order ? order.map((t, i) => Object.assign({ id: `pull${i}`, seq: "steps" }, say(Lg.step(i, TOE_ID[t], { lower: true })))) : null;
+    steps.push({ id: "pull", kind: "pull", order, row: pullRows ? pullRows[0] : Object.assign({ id: "pull", seq: "steps" }, say(Lg.item("cl-splinters"), { cap: true })), rows: pullRows });
+    steps.push({ id: "plaster", kind: "plaster", row: Object.assign({ id: "plaster", seq: "steps" }, say(Lg.item("cl-plaster"), { cap: true })) });
+    // CLN-160: the soak, the toes and the plaster are one sequence on the card (the toe order's own "toes" key made a second box at level 3)
     const rows = [
       { id: "soak-water", options: TEMPS, answer: temp, placeholder: true },
       { id: "soak-jugs", options: K.jugs[L], answer: jugs },
@@ -109,13 +110,8 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng);
-    // CLN-118 (D13): the taught round has no counts: the soak is "Paani, hot." without the jugs (the step ends at the
-    // plan's count); the splinters' row names no size at level 1
-    if (ctx.taught) {
-      const Lg = HS.L;
-      P.steps[0].row = Object.assign({ id: "soak" }, Lg.show(Lg.join([Lg.item("cook-paani"), Lg.item(TEMP_ID[P.steps[0].temp])]), { cap: true }));
-      P.words = HS.taughtWords(P.words);
-    }
+    // CLN-118 (D13): the taught round is shown by the ghost finger and scores nothing; SH-99, CLN-161 (Zafar, 18 Oct: "it needed me to press the cloth twice, but it wasn't in the instructions ... all the frequencies has to be written down. And audible as well"; reverses CLN-118): the taught first round writes and says every count too, and its word review keeps the number words
+    if (ctx.taught) P.words = HS.taughtWords(P.words).concat(P.words.filter((w) => w && w.n != null));
     const Kit = root.Clinic && root.Clinic.Kit;
     const fast = () => !!(Kit && Kit.fast);
     const S = HS.make(stage, ctx, { place: "limb", game: "foot" });

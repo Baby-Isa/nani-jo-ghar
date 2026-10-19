@@ -625,6 +625,15 @@ export class CookPlayer {
         await sleep(300);
       }
     }
+    // the card's face is its replay (a speaker): tap it once (s08 w1b, SH-102: a replay is free and says only the steps left; contract-31)
+    if (!this.replayed && (this.peeks > 0 || e.kind === "tap")) {
+      const face = await p.$("#side .oc-card .oc-face");
+      if (face && (await face.isVisible())) {
+        this.replayed = true;
+        await face.click({ force: true }).catch(() => {});
+        await sleep(400);
+      }
+    }
     if (calm && this.bulbs < 3 && !this.bulbBusy) {
       const bulb = await p.$("#btn-bulb");
       if (bulb && (await bulb.isVisible()) && (await p.$("#mission:not(.hidden):not(.stamped)"))) {

@@ -75,14 +75,15 @@
     const drops = HS.pick(K.drops[L], rng);
     const Lg = HS.L; // words, numbers and joins from data through the seam (R5)
     const say = (m, opts) => Lg.show(m, opts);
+    // CLN-160: the whole job is one sequence on the card (every row shares the `seq` key; the wax order's own "wax" key made a second box at level 3)
     const waxRow = (i) => say(Lg.step(i, i === 0 ? Lg.item("cl-wax", { size: order[0] }) : Lg.item(Lg.sizeId(order[1])), { lower: true }));
     // 13j: level 1 has no size words (just take the wax out); big and small start at level 2
     const steps = [
       L === 1
-        ? { id: "wax", kind: "wax", order: null, row: Object.assign({}, Lg.w("ear-wax-out"), { id: "wax" }) }
-        : { id: "wax", kind: "wax", order, row: Object.assign({ id: "wax0", seq: "wax" }, waxRow(0)), rows: [Object.assign({ id: "wax0", seq: "wax" }, waxRow(0)), Object.assign({ id: "wax1", seq: "wax" }, waxRow(1))] },
-      { id: "wipe", kind: "wipe", row: Object.assign({ id: "wipe" }, say(Lg.then("cl-cotton-bud"))) },
-      { id: "drops", kind: "drops", count: drops, row: Object.assign({ id: "drops" }, say(Lg.join([Lg.then("cl-drops"), ",", Lg.count(drops)]))) },
+        ? { id: "wax", kind: "wax", order: null, row: Object.assign({}, Lg.w("ear-wax-out"), { id: "wax", seq: "steps" }) }
+        : { id: "wax", kind: "wax", order, row: Object.assign({ id: "wax0", seq: "steps" }, waxRow(0)), rows: [Object.assign({ id: "wax0", seq: "steps" }, waxRow(0)), Object.assign({ id: "wax1", seq: "steps" }, waxRow(1))] },
+      { id: "wipe", kind: "wipe", row: Object.assign({ id: "wipe", seq: "steps" }, say(Lg.then("cl-cotton-bud"))) },
+      { id: "drops", kind: "drops", count: drops, row: Object.assign({ id: "drops", seq: "steps" }, say(Lg.join([Lg.then("cl-drops"), ",", Lg.count(drops)]))) },
     ];
     const rows = [
       ...(L === 1 ? [] : [{ id: "wax-order", options: [["big", "small"], ["small", "big"]], answer: order }]),
@@ -95,7 +96,7 @@
       const choices = HS.shuffle(H.words, rng).slice(0, n);
       const word = HS.pick(choices, rng);
       hear = { word, choices };
-      steps.push({ id: "hear", kind: "hear", word, choices, row: Object.assign({}, Lg.w("ear-hear-q"), { id: "hear" }) });
+      steps.push({ id: "hear", kind: "hear", word, choices, row: Object.assign({}, Lg.w("ear-hear-q"), { id: "hear", seq: "steps" }) });
       rows.push({ id: "hear-word", options: choices, answer: word });
     }
     const words = (L === 1 ? [] : [Lg.w("lnk-pela"), Lg.w("ph-big"), Lg.w("ph-small")]).concat([Lg.w("lnk-nepoi"), Lg.num(drops), Lg.w("body-ear"), Lg.w("cl-wax")]);
@@ -105,12 +106,8 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng, { hearing: (ctx.data && ctx.data.hearing) || {} });
-    // CLN-118 (D13): the taught round has no counts: "Then the drops." (the step ends at the plan's count)
-    if (ctx.taught) {
-      const dr = P.steps.find((x) => x.kind === "drops");
-      if (dr) dr.row = Object.assign({ id: "drops" }, HS.L.show(HS.L.then("cl-drops")));
-      P.words = HS.taughtWords(P.words);
-    }
+    // CLN-118 (D13): the taught round is shown by the ghost finger and scores nothing; SH-99, CLN-161 (Zafar, 18 Oct: "it needed me to press the cloth twice, but it wasn't in the instructions ... all the frequencies has to be written down. And audible as well"; reverses CLN-118): the taught first round writes and says every count too, and its word review keeps the number words
+    if (ctx.taught) P.words = HS.taughtWords(P.words).concat(P.words.filter((w) => w && w.n != null));
     const S = HS.make(stage, ctx, { place: "head", game: "ear" });
     const { s } = S;
     const Kit = root.Clinic && root.Clinic.Kit;

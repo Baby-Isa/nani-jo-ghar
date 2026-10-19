@@ -37,6 +37,10 @@
     plaster: { gesture: "tap", then: "tap" },
   };
   const MED = { red: "#e0584a", yellow: "#f0c43a", blue: "#4a86d8", green: "#5fae5a", purple: "#8a55c8" };
+  // CLN-171 (Zafar, 18 Oct: "this game is about colours, no? So it should specify the colour of the plaster"): the plaster to put on is a named colour
+  // (blue or yellow: the two with a picture and no Kutchi yet, so its row is the grey English until Mum gives the word); the shelf holds those two and the skin one
+  const PLASTERS = ["skin", "blue", "yellow"];
+  const ASKED = ["blue", "yellow"];
 
   function plan(level, rng) {
     const L = Math.max(1, Math.min(3, level));
@@ -55,10 +59,13 @@
     }
     const groups = [];
     drops.forEach((c) => (groups.length && groups[groups.length - 1].c === c ? groups[groups.length - 1].n++ : groups.push({ c, n: 1 })));
+    const plaster = HS.pick(ASKED, rng);
     const Lg = HS.L; // words, numbers and joins from data through the seam (R5)
     const say = (m, o) => Lg.show(m, o);
     const groupM = (g) => Lg.item(g.c, { n: g.n });
-    const dropW = L < COL ? say(Lg.join(["cl-drops", ",", Lg.count(drops.length)]), { cap: true }) : say(Lg.join(["cl-drops", ":", ...groups.flatMap((g, i) => (i ? [",", groupM(g)] : [groupM(g)]))]), { cap: true });
+    // CLN-169 (Zafar, 18 Oct: "the game doesn't tell you which colour drops to put in there ... there should be an English placeholder"): the drops'
+    // colour is on the card at EVERY level ("drops: three red"; a colour with no Kutchi yet is its grey English), the count with it; level 1 is one colour
+    const dropW = say(Lg.join(["cl-drops", ":", ...groups.flatMap((g, i) => (i ? [",", groupM(g)] : [groupM(g)]))]), { cap: true });
     const steps = [
       { id: "wipe", kind: "wipe", count: wipes, row: Object.assign({ id: "wipe", seq: "steps" }, say(Lg.join(["cl-wipe", ",", Lg.count(wipes)]), { cap: true })) },
       {
@@ -71,11 +78,11 @@
       },
       { id: "press", kind: "press", row: Object.assign({ id: "press", seq: "steps" }, say(Lg.item("boing-press"), { cap: true })) },
       { id: "boing", kind: "boing", row: null },
-      { id: "plaster", kind: "plaster", row: Object.assign({ id: "plaster", seq: "steps" }, say(Lg.item("cl-plaster"), { cap: true })) },
+      { id: "plaster", kind: "plaster", colour: plaster, row: Object.assign({ id: "plaster", seq: "steps" }, say(Lg.item("cl-plaster", { mods: [`col-${plaster}`] }), { cap: true })) },
     ];
     const rows = [{ id: "wipe-count", options: K.wipes[L], answer: wipes }];
-    if (L < COL) rows.push({ id: "drop-count", options: K.drops[L], answer: drops.length });
-    else rows.push({ id: "drop-colours", seq: tubes, answer: drops, placeholder: true });
+    rows.push({ id: "drop-colours", seq: tubes, answer: drops, placeholder: true }); // (CLN-169: the colour is asked at every level; level 1's is one colour, its count with it)
+    rows.push({ id: "plaster-colour", options: PLASTERS, answer: plaster, placeholder: true });
     const words = [Lg.num(wipes), Lg.w("cl-wipe"), Lg.w("cl-drops"), Lg.w("cl-plaster")];
     groups.forEach((g) => words.push(Lg.num(g.n)));
     if (L >= COL) words.push(Lg.w("lnk-pela"), Lg.w("lnk-nepoi"));
@@ -84,13 +91,9 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng);
-    // CLN-118 (D13): the taught round has no counts: "Wipe." and "The drops." (the step ends at the plan's count);
-    // nor the doctor's count-down to the jab (countdown(), below)
-    if (ctx.taught) {
-      P.steps[0].row = Object.assign({ id: "wipe", seq: "steps" }, HS.L.show(HS.L.join(["cl-wipe"]), { cap: true }));
-      if (!P.steps[1].rows) P.steps[1].row = Object.assign({ id: "drops", seq: "steps" }, HS.L.show(HS.L.join(["cl-drops"]), { cap: true }));
-      P.words = HS.taughtWords(P.words);
-    }
+    // CLN-118 (D13): the taught round is shown by the ghost finger and scores nothing, and has no doctor's count-down to the jab (countdown(), below);
+    // SH-99, CLN-161 (Zafar, 18 Oct; reverses CLN-118): the taught first round writes and says every count too, and its word review keeps the number words
+    if (ctx.taught) P.words = HS.taughtWords(P.words).concat(P.words.filter((w) => w && w.n != null));
     const Kit = root.Clinic && root.Clinic.Kit;
     const fast = () => !!(Kit && Kit.fast);
     const S = HS.make(stage, ctx, { place: "limb", game: "boing" });
@@ -252,17 +255,17 @@
         S.cue("press", CUES.press, { x: syCx, y: SY.y - 47, r: 40 });
         return;
       }
-      S.cue(c.kind, CUES[c.kind], S.toolEls[TOOL[c.kind]], { x: A.x, y: A.y });
+      S.cue(c.kind, CUES[c.kind], S.toolEls[c.kind === "plaster" ? `plaster-${c.colour}` : TOOL[c.kind]], { x: A.x, y: A.y });
     };
     const close = () => {
       const c = cur();
       if (!c) return;
       if (c.kind === "wipe") judge("wipe-count", st.wipes === c.count, `${st.wipes} of ${c.count}`);
+      if (c.kind === "plaster") judge("plaster-colour", st.plaster === c.colour, `${st.plaster || "none"} of ${c.colour}`);
       if (c.kind === "drops") {
         // a drop taken back counts only if the child had gone past the count (the first go is scored)
         const over = st.slip && st.max > c.drops.length;
-        if (P.level < COL) judge("drop-count", !over && st.drops.length === c.drops.length, `${st.drops.length} of ${c.drops.length}`);
-        else judge("drop-colours", !st.wrongColour && JSON.stringify(st.drops) === JSON.stringify(c.drops), st.drops.join(" "));
+        judge("drop-colours", !over && !st.wrongColour && JSON.stringify(st.drops) === JSON.stringify(c.drops), st.drops.join(" "));
         badge(0);
       }
       if (c.row) ctx.card.tick(c.id);
@@ -361,7 +364,6 @@
     // B6: three plasters to choose from (any is fine: a choice, not a test)
     const wipeArt = ART["alcohol-wipe"] && ART["alcohol-wipe"].on ? ART["alcohol-wipe"].file : null;
     const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
-    const PLASTERS = ["skin", "blue", "yellow"];
     st.plaster = null;
     S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: `${IMG}plaster-${c}.webp`, glyph: "•" }))), (id) => {
       if (/^plaster-/.test(id)) st.plaster = id.slice(8);
@@ -381,7 +383,7 @@
       const k = st.drops.length;
       st.drops.push(colour);
       st.max = Math.max(st.max, st.drops.length);
-      if (P.level >= COL && d.drops[k] !== colour) st.wrongColour = true;
+      if (d.drops[k] !== colour) st.wrongColour = true;
       // the drop falls from the spout into the barrel
       const fall = tear(fallG, lv.x, M.y + 136, 11, colour);
       const dy = slotY(k) - (M.y + 136);
@@ -483,6 +485,7 @@
       } else if (c.kind === "plaster" && /^plaster-/.test(S.sel || "") && Math.hypot(p.x - A.x, p.y - A.y) < 70) {
         // B6: the plaster she was given (the picture of the one picked)
         const kind = S.sel.slice(8);
+        st.plaster = kind;
         s("image", { href: Kit ? Kit.url(`${IMG}plaster-${kind}.webp`) : `${IMG}plaster-${kind}.webp`, x: A.x - 52, y: A.y - 26, width: 104, height: 52 }, markG);
         spot.setAttribute("opacity", 0);
         shine.setAttribute("opacity", 0);
@@ -530,7 +533,7 @@
             return at(levers[want].kx, levers[want].y, `lever ${want}`);
           }
           if (c.kind === "press") return at(syCx, SY.y - 47, "press the glowing end");
-          if (c.kind === "plaster") return !/^plaster-/.test(S.sel || "") ? tool("plaster-skin") : at(A.x, A.y, "plaster");
+          if (c.kind === "plaster") return S.sel !== `plaster-${c.colour}` ? tool(`plaster-${c.colour}`) : at(A.x, A.y, "plaster");
           return { do: "wait" };
         },
         slip() {
