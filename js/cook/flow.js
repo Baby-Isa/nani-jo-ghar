@@ -277,6 +277,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- service view ---------------- */
+  /**
+   * CK-47 (decision 7): the lab's one ending, in the kitchen, as a story order's: the counter again, Nani's one Shabash (not
+   * when the station's own praise just said it), the customer's thanks and goodbye, and they go.
+   */
+  async function kitchenEnd(who) {
+    const guest = who && who !== "nani" && Cook.CHARS[who] ? who : null;
+    await serviceView(guest);
+    if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
+    else S().setMood("nani", "happy");
+    if (guest) {
+      await S().talk(guest, Lang.line("thanks"), { after: "happy" });
+      await S().talk(guest, Lang.line("bye"));
+      UI.hideBubble();
+      await S().leaveChar(guest);
+    }
+    UI.hideBubble();
+  }
   async function serviceView(who, { enter } = {}) {
     await S().setView("service");
     S().addChar("nani");
@@ -426,13 +443,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /**
-   * F9 / E12 (S05-C; S saw chai L4 cards open): from level 3 (data.calm.closedFrom) the order is heard, never written:
-   * the card starts folded (face + headline) before the request pop-up, which then shows the same closed card; a peek
-   * costs a hint (the shared eye). A demo (Nani shows it) stays open.
+   * The level table (s08 w2A, SH-110: data/cook.json levelTable, Cook.levelRow): the card is open at L1-L2, open with its
+   * item words dotted at L3 (UI.mission draws that), hidden at L4: it starts folded (face + headline) before the request
+   * pop-up, which then shows the same closed card; a tap on the face replays the order (free), a peek costs a hint (the
+   * shared eye). Was data.calm.closedFrom 3. A demo (Nani shows it) stays open.
    */
   function closedCards(level, demo) {
-    const at = (Cook.data.calm || {}).closedFrom || 3;
-    if (!demo && level >= at && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true, level: true });
+    if (!demo && Cook.cardState(level) === "hidden" && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true, level: true });
   }
   /** The character bobs as if talking (while the intro card says their order). */
   function talking(who) {
@@ -898,8 +915,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SH-66 (S05-C): the serve is its own beat after the station's stage end, so its call-back, Shabash and thanks
     // are its own lines, never the station's voice carrying over
     await closingBeat();
-    const back = callBack(ctx);
-    if (back) await S().talk("nani", back, { after: "happy" });
+    // CK-47 (decision 7, P24): no recap of what went in ("this double level of well done"); only a row that went wrong is said
+    // again by the customer, and the one well done and their thanks come below
     if (missedRows && who !== "nani") {
       const again = recast(ctx);
       if (again) await S().talk(who, again, { after: "neutral" });
@@ -1438,15 +1455,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // close its rows: they tick now it's finished, as a dish's do (the kept stations tick their own)
     if (!keptKeys().includes(key)) (ctx.ladders || []).forEach((L, i) => UI.mission.finishDish(i));
     const tEnd = Date.now();
-    // decision 54 (T4, T7): the chef's call-back of what was made, then Shabash, in the guide's box (she's off
-    // screen at a station; her card's strip in the pantry); a part tried on its own has nothing to call back
+    // CK-47 (decision 7, P24, Zafar 19 Oct: "this starts in the kitchen ... I don't know why it doesn't finish in the kitchen"):
+    // one ending, in the kitchen: back to the counter, one well done from Nani (none if the station's own praise said it),
+    // the customer's thanks and goodbye there; no recap of the recipe in her box. A part tried on its own just ends
     if (keptKeys().includes(key) || /^recipe:/.test(key)) {
       // SH-66: the closing lines are their own beat, a breath after the station's stage end
-      await Cook.wait(900);
+      await Cook.wait(600);
       await closingBeat();
-      const back = callBack(ctx);
-      if (back) await UI.guideSay(back).catch(() => {});
-      if (!praised()) await UI.guideSay(shabash(), { ms: 900 }).catch(() => {});
+      await kitchenEnd(order.who);
     }
     // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
     // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)

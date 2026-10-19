@@ -166,11 +166,18 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const pool = [].concat(p.pool || []).filter((id) => VEG[id]);
     const tadka = [].concat(p.tadka || []);
     const flat = tadka.flat();
-    const spiceIds = Cook.shuffle([...new Set(flat.concat(St.decoys(K.spiceShelf || [], flat, K.spiceDecoys || 0)))]);
+    // CK-49 (the level table): 1, 2, 3, 3 decoy spices on the tadka shelf, a lookalike among them at L4
+    const spiceIds = Cook.shuffle([...new Set(flat.concat(St.tableDecoys(K.spiceShelf || [], flat, level, { want: flat, what: "spices" })))]);
     const laps = p.laps || 3;
     const side = Cook.daarSide || "counter";
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the chop's own begin shows it (data.onboard.daar)
     const vegAll = [...new Set(kinds.concat(no, pool))].filter((id) => VEG[id]);
+    // CK-49 (contract-37): the chop's decoys, the vegetables thrown that nobody asked for (its 'no' one too)
+    {
+      const LA = Cook.data.lookalikes || {};
+      const off = vegAll.filter((id) => !kinds.includes(id));
+      St.decoyNote(off.length, { what: "chop", lookalike: off.some((id) => kinds.some((w) => (LA[w] || []).includes(id))) });
+    }
     const art = [
       ["dv2-knife", IT + "tool-knife-t.png"], // DAAR-13: the margin-safe cut (the webp touched its canvas edge: the tip was clipped)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
@@ -276,15 +283,15 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
   function naniCard(want, no, level = 1, doneIds = []) {
     const M = UI.mission;
-    // 30 Sept (Zafar, Q7): from level 3 the chop card is words only ("dungri"); how many is heard, as on the order card
+    // SH-99 (every number said is written) and the level table (s08 w2A, SH-110): the chop card writes how many at every
+    // level ("trae dungri"); from L3 its item words are dotted as the order card's are ("trae •••"), and at L4 it starts
+    // folded (face + headline; her face replays it). Was: from level 3 words only, the number heard (decision 41)
     const parts = (id) => Lang.countParts(want[id], id);
-    // (from level 3 the noun keeps the form its count gave it: "trae dungri" is written "dungri")
-    // DAAR-08, decision 57 (as the order card, js/cook/order.js): a number is still written the first times it is heard
-    const written = (id) => level < 3 || !!(Cook.timesHeard && Cook.numId && Cook.timesHeard(Cook.numId(want[id])) < 3);
-    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(written(id) ? Lang.phrase(parts(id)) : Lang.phraseUncounted(parts(id))), done: doneIds.includes(id) }));
+    const dot = (w) => Cook.dotItem(w, level);
+    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(Lang.phrase(parts(id)), { hide: (w) => !doneIds.includes(id) && dot(w) }), done: doneIds.includes(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
-    no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))))), done: false, no: true }));
+    no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))), { hide: dot })), done: false, no: true }));
     // "Chop these": the engine's line (to record with Mum: a grey-italic placeholder until then)
     const chopHead = Lang.line("chop-these");
     // T12 (R4): one Nani card. Her step line ("Nindha nindha kap!") is the card's top strip, and her box keeps only
@@ -304,7 +311,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const line = kinds.length
       ? Lang.join(kinds.map((id, j) => Lang.line(j === 0 ? "only" : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))))
       : null;
-    const opts = { say: line ? () => Lang.speak(line) : null };
+    const opts = { say: line ? () => Lang.speak(line) : null, closed: Cook.cardState(level) === "hidden" };
     M.addCard("daar-chop", data(), opts);
     M.closeCards(true);
     if (UI.guideStrip) UI.guideStrip(true);

@@ -105,6 +105,21 @@ test("contract-30: a number or an English placeholder said that no card of the s
   assert.equal(of(run(page("cook:chai-tray@L3", sorted([stage(T, ST), line(1, T + 1000, "Muke chai khape, with dudh, trae khun.")]))), "contract-30").length, 0);
 });
 
+// s08 wave 2A (Zafar, 19 Oct: "we don't need to write one, only two or more: 'tomato. two tomatoes. three tomatoes.'"): a said
+// "one" (hakro, hakri) with the bare item written is not a break; a said 2+ number the card lacks still is
+test("contract-30: a said one with its bare item written passes; one with its item missing, or a 2+ number missing, is a break", () => {
+  const NUM1 = new Set(["ek", "ba", "trae", "hakro", "hakri"]);
+  const run1 = (r) => analyse(r, { root: ROOT, retired: [], clip, lexicon: new Set([...LEX, "hakro", "hakri", "bataato", "dungri"]), numbers: NUM1 });
+  const one = sorted([stage(T, ST), card(T + 400, ["Muke samosa khape", "bataato"]), line(1, T + 1000, "Hakro bataato wij!")]);
+  assert.equal(of(run1(page("cook:samosa", one)), "contract-30").length, 0, "the bare item written stands for one");
+  const missing = clone(one);
+  missing[1].words = ["Muke samosa khape", "dungri"];
+  assert.equal(of(run1(page("cook:samosa", missing)), "contract-30").length, 1, "one, its item written nowhere");
+  const two = clone(one);
+  two[2].text = "Ba bataata wij!";
+  assert.equal(of(run1(page("cook:samosa", two)), "contract-30").length, 1, "two said, not written");
+});
+
 test("contract-31: a replay counted as a hint is a break; a replay that says a ticked step again is a break; a replay of what is left passes", () => {
   const hint = sorted([stage(T, ST), C(T + 900, "hint", { kind: "replay", ids: ["dudh"] }), C(T + 1500, "hint", { kind: "hint", ids: [] })]);
   const b = of(run(page("cook:chai-tray@L3#hint", hint)), "contract-31");

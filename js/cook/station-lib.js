@@ -38,11 +38,80 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // at a station Nani is a voice (docs/design-language/ux-principles.md 13); one gentle "oh oh" at level 1 only (UX 11, R6)
   const nani = (line, opts = {}) => UI.voice(line, opts);
   const oops = () => Cook.oops(Cook.ctx); // R6: the family's "oh oh oh" or a soft sound (S02-A hook; arre re is gone)
-  // C3 (decision 41, E12): from level 3 a number is heard, never written: in Nani's box it shows as dots too
-  // from level 3 a number is heard, not written (E12), except the first times it is heard (decision 57, as the card)
-  const hideKnown = (ctx) => (id) => (!ctx.guided && Cook.cardHidden(id)) || ((ctx.level || 1) >= 3 && /^num-/.test(String(id)) && !(Cook.timesHeard && Cook.timesHeard(id) < 3));
+  // s08 w2A (SH-110, SH-99): her box hides what the card hides at the round's level: the item words from L3 (Cook.dotItem, the
+  // level table below); a number is always written (SH-99: every number said is written), so never dots
+  const hideKnown = (ctx) => (id) => !(ctx && ctx.guided) && Cook.dotItem(id, Cook.roundLevel(ctx));
   S$.nani = nani;
   S$.oops = oops;
+
+  /*
+   * s08 wave 2A (SH-110, CK-49, Zafar 19 Oct: yes to build/reports/research-levels-2026-10-19.md): the level table, one row per
+   * level for every Cook station (data/cook.json levelTable; a station's own row overrides it, levelTable.stations[key]):
+   *   card      "open" (L1-L2: every word and number), "dotted" (L3: the item words dotted; frames, verbs and numbers written),
+   *             "hidden" (L4: face + headline folded; a tap on the face replays the whole order, free). Replaces calm.closedFrom.
+   *   decoys    how many things on offer that no one asked for (1, 2, 3, 3), with a lookalike among them at L4
+   *   stepCall  Nani calls each step once as it opens (the order in pieces, never help, never costs): every level
+   * Cook.levelRow(level, station) -> {card, decoys, lookalike, stepCall}; Cook.dotItem(id, level): is this word dotted on the
+   * card (and in her box) at that level: an item word (a thing to pick) with a voice, at a dotted or hidden card.
+   */
+  const LT_DEFAULT = { card: ["open", "open", "dotted", "hidden"], decoys: [1, 2, 3, 3], lookalike: [false, false, false, true], stepCall: [true, true, true, true] };
+  Cook.levelRow = function (level, station) {
+    const T = (Cook.data && Cook.data.levelTable) || {};
+    const own = (station && (T.stations || {})[station]) || {};
+    const lv = Math.min(4, Math.max(1, Math.round(Number(level)) || 1));
+    const pick = (k) => {
+      const v = own[k] != null ? own[k] : T[k] != null ? T[k] : LT_DEFAULT[k];
+      return Array.isArray(v) ? v[Math.min(v.length, lv) - 1] : v;
+    };
+    return { level: lv, card: pick("card"), decoys: pick("decoys"), lookalike: !!pick("lookalike"), stepCall: pick("stepCall") !== false };
+  };
+  Cook.cardState = (level, station) => Cook.levelRow(level, station).card;
+  // an item word: a thing to pick (the catalogue's words with a bowl, heap, image, layer or piece, and bajri maani); never a
+  // number, a link word, a person or a frame
+  // (things picked that the catalogue gives no picture field: bajri maani, the sekelo meat cube)
+  const ITEM_ALSO = ["cook-bajrmaani", "ph-mishkaki"];
+  Cook.isItemWord = (id) => {
+    const s = String(id || "");
+    if (!s || /^(num|lnk|kin|name)-/.test(s)) return false;
+    const w = Cook.item(s);
+    return !!w && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in w) || ITEM_ALSO.includes(s));
+  };
+  Cook.dotItem = (id, level) => Cook.cardState(level) !== "open" && Cook.isItemWord(id) && !Cook.isPlaceholder(id) && Lang.wordHasVoice(id);
+  /**
+   * CK-49: the decoys for a round by the table: `n` of `pool` (leaving out `not`), at L4 one of them a lookalike of a wanted
+   * thing (data/cook.json lookalikes) where the pool has one; `ok(id)` keeps only those the station can draw. Logged for
+   * contract-37 (St.decoyNote, with `also` more already on offer). Returns the list.
+   */
+  S$.tableDecoys = function (pool, not, level, { want = not, ok = () => true, what = "", n = null, station = null, also = 0, alsoLook = false } = {}) {
+    const row = Cook.levelRow(level, station);
+    const need = n == null ? row.decoys : n;
+    const left = [...new Set((pool || []).filter((x) => !not.includes(x) && ok(x)))];
+    const out = [];
+    let look = false;
+    if (row.lookalike && need > 0 && !alsoLook) {
+      const L = Cook.data.lookalikes || {};
+      // (a lookalike the station can draw: data.lookalikes, else a picture from the same lookalike group, from the pool)
+      const groups = ((Cook.data.lookalike_groups || {}).groups || []).filter(Array.isArray);
+      const mates = (w) => (L[w] || []).concat(...groups.filter((g) => g.includes(w)));
+      const cand = Cook.shuffle([].concat(...[].concat(want || []).map(mates))).find((x) => left.includes(x));
+      if (cand) {
+        out.push(cand);
+        look = true;
+      }
+    }
+    Cook.shuffle(left).forEach((x) => out.length < need && !out.includes(x) && out.push(x));
+    // (also: things on offer that nobody asked for besides these, the 'no' item: an ordinary decoy, counted)
+    S$.decoyNote(out.length + also, { what, lookalike: look || (row.lookalike && alsoLook) });
+    return out;
+  };
+  /** CK-49 (contract-37): a station reports how many decoys it put out this round, and whether one is a lookalike. */
+  S$.decoyNote = function (n, { what = "", lookalike = false } = {}) {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("decoys", { step: String(n), by: `${what}${what ? " " : ""}lookalike:${lookalike ? 1 : 0}` });
+    } catch (e) {
+      /* only a log */
+    }
+  };
 
   /*
    * 29 Sept (X7, Zafar): the shelf band's one padding rule. The band is the bottom 26% (666-900 in
@@ -216,16 +285,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   async function begin(S, ctx, key, view, { closed = false } = {}) {
     ladderStart(S, ctx);
     Cook.focusBox = null; // the last station's test crop box (flow.js hook focus) goes with it
+    // CK-48 (P28: "the time it takes for you to listen to the instruction ... should be enough time to load"): the station's
+    // painted sprites, its worktop and its hand poses load behind the order's pop-up, and the view fades in only once they
+    // are there, so nothing half-drawn shows (a dead file still has its cap, Art.need)
+    const art = Cook.Art.need(S, key, 20000);
+    const bg = Cook.Art.refUrl && Cook.Art.refUrl(`bg:${view}`) ? Promise.race([Cook.Art.load(S, `bg:${view}`), new Promise((r) => setTimeout(r, 20000))]) : null;
+    const hands = Cook.Hands ? Cook.Hands.need(S, key) : null;
     // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar
     if (ctx && ctx.intro) {
       await ctx.intro;
       ctx.intro = null;
     }
-    // the station's painted sprites load while the view changes (data.art.sprites.need)
-    const art = Cook.Art.need(S, key);
+    await Promise.all([art, bg, hands]);
     await S.setView(view);
-    // only this station's hand poses (js/cook/hands.js): the last station's go
-    await Promise.all([art, Cook.Hands ? Cook.Hands.need(S, key) : null]);
     const st = Cook.data.stations[key] || {};
     Cook.save.seenStation = Cook.save.seenStation || {};
     // the goal waits behind the "?" (it pulses the first time); Nani's last line goes, and she
@@ -683,7 +755,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           resolve({ cancelled: true, misses });
         };
       // Nani is a voice at a station; the row she names throbs on the card (UX 13)
-      const hint = () => sayLine && UI.voice(sayLine).catch(() => {});
+      // (her box dots the item where the card does: the level table, s08 w2A)
+      const hint = () => sayLine && UI.voice(sayLine, { hide: (id) => Cook.dotItem(id, levelOf()) }).catch(() => {});
       const openedAt = Date.now();
       let helped = 0;
       let helpedAt = 0;

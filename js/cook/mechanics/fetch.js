@@ -96,6 +96,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // where it lives, so a thing taken back off the tray goes home (E14)
         items[id].home = { x: items[id].x, y: items[id].y, scale: items[id].scale, depth: items[id].depth };
       });
+      // CK-49 (contract-37): the shelf's decoys (PAN-06: from L2 every slot holds one, so at least the table's), and whether a
+      // lookalike of a thing asked for is among them
+      {
+        const out = Object.keys(items).filter((id) => !need.includes(id));
+        const LA = Cook.data.lookalikes || {};
+        St.decoyNote(out.length, { what: "shelf", lookalike: out.some((id) => need.some((w) => (LA[w] || []).includes(id))) });
+      }
       // the tray on the counter: one outlined space per thing on the list, in a row, so you
       // can see how many are still missing (not which). A wrong pick takes a space too (UX 11),
       // so a space is added after the last one if the row runs out.
@@ -226,17 +233,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let showFor = null;
       while (remaining.length) {
         const expected = remaining[0];
-        // PAN-17 (F9, E12): from data.calm.closedFrom (level 3) the card is closed and the order heard, never written: her
-        // step line is said, not shown (no "Muke elchi de." in her strip); below it the step line is shown and said
-        const closed = Cook.roundLevel(ctx) >= ((Cook.data.calm || {}).closedFrom || 3);
-        if (closed && UI.stepDone) UI.stepDone();
-        // (said through the one voice queue, never written: UI.voice would put it in her strip)
-        const muted = global.NaniGuide && global.NaniGuide.muted && global.NaniGuide.muted();
-        if (closed && !muted) (UI.queueSpeech || ((f) => f()))(() => Lang.speak(ask(expected, n === 0))).catch(() => {});
-        const guided = closed ? !!ctx.guided : UI.stepOpen ? UI.stepOpen(ask(expected, n === 0), { ctx }) : ctx.guided || Cook.wordStage(expected) === 1; // S02-A hook: R2/T2, help after the pause
-        // PAN-16: at level 1 the step line is shown and said at once by Nani's step (UI.step), so the guided step doesn't
-        // say it again; her later hesitation help (unguided) still says it
-        const saidByStep = (closed || !!UI.stepOpen) && guided && (closed || Cook.roundLevel(ctx) === 1);
+        // s08 w2A (SH-110, the level table; the research's 'one thing at a time'): every level, Nani asks for the next thing
+        // as its step opens (the step call, UI.step: "Muke khun de.", said once, never shown at the open); the next thing is
+        // asked when the last one lands. Her strip shows the line only as help, its item dotted where the card dots it
+        // (L3 dotted, L4 hidden). Was: from closedFrom (3) said outside the step, below it shown and said.
+        const guided = UI.stepOpen ? UI.stepOpen(ask(expected, n === 0), { ctx, hide: St.hideKnown(ctx) }) : ctx.guided || Cook.wordStage(expected) === 1; // S02-A hook: R2/T2, help after the pause
+        // PAN-16: the step call has said it; the guided step doesn't say it again; her later hesitation help still does
+        const saidByStep = !!UI.stepOpen && guided;
         Cook.markSeen(expected);
         const r = await S.step({
           items,

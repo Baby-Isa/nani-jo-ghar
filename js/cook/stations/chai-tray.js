@@ -140,7 +140,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const personHead = (L, who) => (L.sections.find((x) => x.for === who) || {}).head || L.head;
   // 29 Sept (X1): one sentence per person, in card order ("Muke aadu waari chai khape, with dudh, ba khun.")
   const personLine = (L, who, rows) => Cook.Order.sentence(personHead(L, who), rows || personRows(L, who), { join: Cook.Order.joinOf(L) });
-  const hiddenRow = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.cardHidden(s.w) && Lang.wordHasVoice(s.w));
+  const hiddenRow = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && Cook.dotItem(s.w, Cook.roundLevel()));
 
   /** The speaker icon (the kitchen kit's). */
   const speaker = (g, x, y, sz, color) => Cook.Kit.speaker(g, x, y, sz, color);
@@ -158,7 +158,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const kBoil = Mech.knobs("boil", { level: K.boilLevel || level, profile: "tray" });
     const kCount = Mech.knobs("count", { level });
     const halves = people.some((p) => p.amount); // level 4: half or full
-    const spiceIds = (K.extras || []).concat(K.decoys || []).filter((id, i, a) => a.indexOf(id) === i).slice(0, 4);
+    // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
+    // sugar's lookalike counts), at most five jars (the shelf's slots narrow to fit)
+    // (the salt, sugar's lookalike, is always the first decoy: the lab's #mistake tries it, CHAI-04)
+    const askedX = [...new Set(people.map((p) => p.extra).filter(Boolean))];
+    const SALT = "spi-16";
+    const spicePool = (K.extras || []).concat(K.decoys || []).filter((id, i, a) => a.indexOf(id) === i && id !== SALT);
+    const nSpice = Math.max(1, Math.min(Cook.levelRow(level).decoys, 5 - askedX.length));
+    const spiceIds = Cook.shuffle(askedX.concat(SALT, St.tableDecoys(spicePool, askedX.concat(SALT), level, { n: nSpice - 1, also: 1, alsoLook: true, what: "spices" })));
     const shelfIds = [["cook-paani", "cook-dudh"], ["cook-chai", "cook-khun"], spiceIds];
     await Promise.race([
       St.load(
@@ -179,7 +186,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      * (waiting on the heat): the box is empty.
      */
     const stepLine = (key, id) => {
-      if (key === "cups" && id) return Cook.cardHidden(id) && !guided ? St.guideLine("chai-tray:next") : St.addLine(id);
+      // s08 w2A (SH-110): the step names the thing (Nani calls it as it opens); her box dots it where the card does (hideKnown)
+      if (key === "cups" && id) return St.addLine(id);
       return St.guideLine(key === "slow" ? "chai-tray:slow" : `chai-tray:${key}`);
     };
     let lastGist = null;
@@ -322,19 +330,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     /* ---------- the shelf: identical slots, grouped, a chip under each ---------- */
     const slotsN = shelfIds.reduce((a, g) => a + g.length, 0);
-    const width = slotsN * PITCH + (shelfIds.length - 1) * GROUP_GAP;
+    // (nine jars at L3-L4: the slots narrow so the row stays clear of the tick)
+    const slotW = Math.min(PITCH, (1600 - 190 - 80 - (shelfIds.length - 1) * GROUP_GAP) / slotsN);
+    const width = slotsN * slotW + (shelfIds.length - 1) * GROUP_GAP;
     const x0 = Math.max(40, (1600 - 190 - width) / 2); // clear of the tick, bottom right
     const shelf = {};
-    let sx = x0 + PITCH / 2;
+    let sx = x0 + slotW / 2;
     const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
     shelfIds.forEach((group, gi) => {
       plank.fillStyle(INK.grey, 1);
-      plank.fillRoundedRect(sx - PITCH / 2 + 10, BASE - 2, group.length * PITCH - 20, 10, 5);
+      plank.fillRoundedRect(sx - slotW / 2 + 10, BASE - 2, group.length * slotW - 20, 10, 5);
       // 29 Sept (X7): the band's padding rule (St.shelfFit): the group's tallest thing, hop included, keeps the top gap
       const K = Math.min(...group.map((id) => St.shelfFit(S, `jar-${id}`, SHELF_K[gi], BASE)));
       group.forEach((id) => {
         shelf[id] = slot(id, sx, K);
-        sx += PITCH;
+        sx += slotW;
       });
       sx += GROUP_GAP;
     });
@@ -988,7 +998,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       busy--;
       if (!doneShown && pans.every((q) => q.poured > 0)) {
         doneShown = true;
-        UI.done().then(() => finishUp());
+        // SH-105 (decision 6, P26: "once you've poured all the teas it just scores you immediately"): every cup poured and none
+        // can take more (no half-poured cup at L4's half / full), so nothing is left to choose: no ✓, it moves on
+        if (!halves || pans.every((q) => q.poured >= 2)) finishUp();
+        else UI.done().then(() => finishUp());
       }
       refresh();
     };

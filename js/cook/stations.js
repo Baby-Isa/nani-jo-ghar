@@ -254,7 +254,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const dur = fast ? 120 : 220;
       // a painted worktop (data.art.sprites.bg) loads while the old view fades
       const bgRef = `bg:${name}`;
-      const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Cook.Art.load(this, bgRef), new Promise((r) => setTimeout(r, 2500))]) : null;
+      // SH-108 (P31: "if it's top-down then it should be the marble countertop"): a top-down worktop waits for its painting
+      // (only a dead file's 20 s cap), never the code-drawn worktop after 2.5 s; the other views keep the short wait
+      const topDown = name === "marble" || name === "hob";
+      const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Cook.Art.load(this, bgRef), new Promise((r) => setTimeout(r, topDown ? 20000 : 2500))]) : null;
       if (this.viewName) {
         cam.fadeOut(dur, 233, 220, 196);
         await Cook.wait(dur + 20);

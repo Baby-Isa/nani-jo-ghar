@@ -39,6 +39,9 @@
 //   contract-25 bulb-pulse   both bulbs pulse after 15-20 s stuck, never before (SH-96)
 //   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
 //   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106)
+//   contract-35 card-ladder  Cook's card by level: open at L1-L2, the item words dotted at L3, hidden (folded) at L4 (SH-110)
+//   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
+//   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
 //   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
 //                           TTS, no unchecked or redo clip, no unknown audio (non-negotiable 10; checks-to-build 5)
 //
@@ -62,7 +65,7 @@ export const CHECKS = {
   "contract-27": { item: "peek-whole", title: "the peek shows every word", how: "The side sample's peek (a card with the class peek: a tap on its small bulb opened it) and its dots (.dots, the dotted word '•••' of Lang.html's hide): any dotted word in a peeking card is a break (SH-98, Zafar, 17 Oct: 'certain words are hidden, which is pointless'). Numbers: contract-30." },
   "contract-28": { item: "one-bulb", title: "one bulb picture", how: "The bulbs sample (every shown .oc-look.bulb, .ng-bulb, .cl-bulb or #btn-bulb and the file it is drawn with: an <img>, a CSS background, or the flat inline svg): any bulb not drawn with assets/ui/results/icon-bulb.webp (the photo Nani's box uses) is a break, on Cook and the clinic alike (SH-100, Zafar, 17 Oct: 'let's make them all photorealistic')." },
   "contract-29": { item: "peek-time", title: "the peek lasts the level's time", how: "Each peek (the side sample's peek count from 0 to some and back) on a page whose card count and stage did not change: it must last the level's time from data (data/cook.json calm.peekMs, the clinic's Kit.PEEK_MS: 7 s at level 3, the same 3.5 s added to the others), judged as a child's time (Cook's test speed 3 shortens it; the clinic's is real time); under that less 450 ms is a break (SH-101)." },
-  "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171)." },
+  "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171). One is the exception (Zafar, 19 Oct: 'we don't need to write one, only two or more'): a said one (hakro, hakri) whose item is written bare passes. Counting along the taps (role count) is a tally, not the order." },
   "contract-31": { item: "free-replay", title: "a replay is free and says what is left", how: "A help Cook counts (the hint sample: Cook.onHelp's kind) of kind replay is a break (SH-102: only seeing it written costs); and after a tap on a face (the card's replay) with rows already ticked (the rows sample), no line said in the next 7 s may be a ticked row's words (SH-114: a replay reads out the remaining steps)." },
   "contract-32": { item: "divider", title: "the review's divider leaves room", how: "The review sample (the word review's two halves, side by side: the wrong words' column and the right words' column, their widths and counts): with no wrong word the right words take 4/5 of the width (room for four right and one wrong, SH-103, Zafar, 17 Oct: 'a little bit more to the left'); the wrong half is as many units wide as it has words (1 to 3) against the right half's 4, so the divider moves over as wrong words grow. Not judged on a taught round (one group) or stacked on a portrait phone." },
   "contract-33": { item: "headline-size", title: "the order pop-up's headlines: one size, wrap first", how: "The heads sample (each headline of the order pop-up with its size, its full size from a bare clone of it, and its line count; settled 400 ms): two sizes on one pop-up, or headlines all on one line while shrunk under their full size, is a break (SH-107, Zafar, 18 Oct: 'it was better to have the bigger text'; only the order pop-up: everywhere else keeps shrink, then wrap, non-negotiable 9)." },
@@ -85,6 +88,9 @@ export const CHECKS = {
   "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
   "contract-34": { item: "go-arrow", title: "every go-on button has the arrow", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\")." },
+  "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted; L4 every order card closed (face + headline folded). Was closedFrom 3 (SH-110, the level table, Zafar 19 Oct)." },
+  "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows only: every step the game opens in a play stage (Lifecycle step-open, js/shared/guide.js stepper) must be called: a Cook line tagged role call must start after it and before the next step opens (or within 6 s), unless the game logged a step-call skip for that step (Lifecycle step-call, by 'skip ...': Nani muted, the station said it a moment ago, a step with no voiced line, the step closed before its turn). A step-open with neither is a break; a call said where the step-call log says skip is a break too (SH-110, the level table: the order in pieces, at every level, never help)." },
+  "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -236,7 +242,7 @@ function stateAt(r, t) {
 
 // ---- the checks ----
 // lines that give no order (decision 80): Nani's how-to step line and her "pass me" (and its thank-you) stay outside the pop-up
-export const NOT_ORDER = new Set(["howto", "passme"]);
+export const NOT_ORDER = new Set(["howto", "passme", "call"]); // (s08 w2A: "call", Nani calling a step as it opens: the order in pieces after the pop-up gave it, SH-110)
 function check1(tl, segs, v, add) {
   const side = tl.filter((e) => e.type === "c" && e.k === "side");
   const sideAt = (t) => { let s = { n: 0, rows: 0 }; for (const e of side) if (e.t <= t) s = e; else break; return s; };
@@ -985,7 +991,9 @@ function check29(r, tl, segs, add) {
 }
 // 30 (SH-99): every number said in an order or a step is written on the card, at every level and in every round (a taught one too);
 // a line's English placeholder ([red]: a colour or item with no Kutchi yet) is written there too
-const WRITTEN_SKIP = new Set(["item", "laps", "countdown"]);
+// the number one's forms (data/lang/lexicon.json num.1: hakro, hakri; the old spellings too): a card writes the bare item for one
+const ONE_FORMS = new Set(["hakro", "hakri", "hik", "hikdo", "hikdi", "ek"]);
+const WRITTEN_SKIP = new Set(["item", "laps", "countdown", "count"]); // (s08 w2A: "count", L1 counting along the taps, "hakro bataato, ba bataata": a tally, not the order)
 function check30(r, tl, segs, v, nums, add) {
   if (!nums || !nums.size) return;
   const cards = tl.filter((e) => e.type === "c" && e.k === "card" && (e.words || []).length).map((e) => ({ t: e.t, words: wordsOf((e.words || []).join(" ")) }));
@@ -1002,8 +1010,10 @@ function check30(r, tl, segs, v, nums, add) {
     if (!mine.length) continue;
     const written = new Set(mine.flatMap((c) => c.words));
     const said = wordsOf(text.replace(/\[[^\]]*\]/g, " "));
-    for (const w of said) {
+    for (const [i, w] of said.entries()) {
       if (!nums.has(w) || written.has(w) || seen.has(`${s.key}|${w}`)) continue;
+      // s08 w2A (Zafar, 19 Oct: "we don't need to write one, only two or more"): a said one with its bare item written passes
+      if (ONE_FORMS.has(w) && said[i + 1] && written.has(said[i + 1])) continue;
       seen.add(`${s.key}|${w}`);
       add("contract-30", l.t0, `${s.key}: "${text}" says ${w}, which no card written in this stage holds (every number said is written)`);
     }
@@ -1077,6 +1087,126 @@ function check33(tl, add) {
     }
   });
 }
+// ---- s08 wave 2A: Cook's level table (SH-110, SAM-26, MAA-18, CK-49; build/reports/research-levels-2026-10-19.md) ----
+const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
+// the station a Cook flow plays (cook:samosa@L3 -> samosa; lab:cook/recipe-chai -> chai)
+const stationOf = (flow) => { const m = /^(?:cook:(?:recipe:)?|lab:cook\/(?:recipe-)?)([\w-]+)/.exec(flow || ""); return m ? m[1] : null; };
+// the written forms of every item word (a thing to pick: data/cook.json words with a bowl, heap, image, layer or piece, and
+// bajri maani and the sekelo meat cube, which have none), from the lexicon with its inflections: what a dotted L3 card must not write in an open row
+const ITEMS = new Map();
+export function itemForms(root) {
+  if (ITEMS.has(root)) return ITEMS.get(root);
+  const out = new Set();
+  const read = (f) => { try { return JSON.parse(readFileSync(join(root, f), "utf8")); } catch (e) { return null; } };
+  const cook = read("data/cook.json") || {};
+  const ids = new Set(Object.entries(cook.words || {}).filter(([k, v]) => v && typeof v === "object" && !/^(num|lnk|kin|name)-/.test(k) && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in v) || k === "cook-bajrmaani" || k === "ph-mishkaki")).map(([k]) => k));
+  const lex = read("data/lang/lexicon.json") || {};
+  const par = (read("data/lang/paradigms.json") || {}).paradigms || {};
+  const split = (x) => String(x || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
+  for (const e of lex.entries || []) {
+    if (e.pos !== "N" || !(e.aliases || []).some((a) => ids.has(a))) continue;
+    const add = (x) => split(x).forEach((w) => out.add(w));
+    add(e.lemma);
+    const walk = (v) => { if (typeof v === "string") add(v); else if (v && typeof v === "object") { if (typeof v.t === "string") add(v.t); else Object.values(v).forEach(walk); } };
+    walk(e.forms || {});
+    const pd = par[e.paradigm];
+    if (pd && e.lemma) {
+      let stem = e.lemma; const dr = pd.stem && pd.stem.drop; if (dr && stem.endsWith(dr)) stem = stem.slice(0, -dr.length);
+      Object.values(pd.cells || {}).map((c) => (c && typeof c === "object" ? c.make : c)).filter((m) => typeof m === "string").forEach((m) => add(m.replace(/\{stem\}/g, stem).replace(/\{lemma\}/g, e.lemma)));
+    }
+  }
+  ITEMS.set(root, out);
+  return out;
+}
+// 35 (SH-110): the card by level: open, open, the item words dotted, hidden
+function check35(r, tl, segs, add, root) {
+  if (!isCookFlow(r.flow)) return;
+  const level = levelOf(r.flow || "");
+  const items = itemForms(root);
+  const last = (k, t) => { let s = null; for (const e of tl) { if (e.t > t) break; if (e.type === "c" && e.k === k) s = e; } return s; };
+  const inputs = tl.filter((e) => e.type === "c" && e.k === "input" && !e.popup && !e.side && !e.next);
+  for (const s of segs) {
+    if (!/(^|\|)cook:station/.test(s.key)) continue;
+    const end = s.t1 == null ? Infinity : s.t1;
+    const first = inputs.find((i) => i.t >= s.t0 && i.t < end);
+    if (!first) continue;
+    const side = last("side", first.t);
+    // (the rows as the child reads them: the last sample in the stage before that tap with no row under the bulb's English)
+    const rows = tl.filter((e) => e.type === "c" && e.k === "rows" && e.t <= first.t && e.t >= s.t0 - 10000 && !(e.list || []).some((x) => x.en)).pop() || last("rows", first.t);
+    if (!side || !side.n) continue;
+    const at = `${s.key} at L${level}`;
+    if (level >= 4) {
+      if (side.closed < side.n) add("contract-35", first.t, `${at}: ${side.n - side.closed} of ${side.n} sidebar cards open at the first play tap (hidden at L4: face and headline folded)`);
+      continue;
+    }
+    const all = ((rows && rows.list) || []).filter((x) => !x.en);
+    const open = all.filter((x) => !x.done && !/\bna$/.test((x.text || "").trim())); // (a "no" row, "dhania na", is never ticked)
+    // the card you work from is open: a second card may fold for a phase it can't be acted on (the order card under Nani's
+    // chop card, design system 13), and a card whose rows are all ticked may fold (samosa's fry); every card closed is a break
+    if (side.closed >= side.n && !(all.length && !open.length)) add("contract-35", first.t, `${at}: ${side.closed} of ${side.n} sidebar cards closed at the first play tap (open until L4; L3 dots the items instead)`);
+    if (level <= 2) {
+      const dotted = open.filter((x) => /•/.test(x.text || ""));
+      if (dotted.length) add("contract-35", first.t, `${at}: ${dotted.length} row${dotted.length > 1 ? "s" : ""} with dotted words ("${dotted.map((x) => x.text).slice(0, 3).join(" / ")}"): an open card writes every word at L1-L2`);
+    } else {
+      const shown = open.filter((x) => wordsOf(x.text).some((w) => items.has(w)));
+      if (shown.length) add("contract-35", first.t, `${at}: an item written in ${shown.length} open row${shown.length > 1 ? "s" : ""} ("${shown.map((x) => x.text).slice(0, 3).join(" / ")}"): at L3 the item words are dotted (frames, verbs and numbers written)`);
+    }
+  }
+}
+// 36 (SH-110): Nani calls each step as it opens (the order in pieces), at every level
+const CALL_WITHIN = 6000;
+function check36(r, tl, segs, v, add) {
+  if (!isCookFlow(r.flow)) return;
+  const life = tl.filter((e) => e.type === "c" && e.k === "life");
+  const opens = life.filter((e) => e.what === "step-open");
+  const notes = life.filter((e) => e.what === "step-call");
+  const calls = v.lines.filter((l) => l.role === "call" && (l.text || "").trim());
+  const seen = new Set();
+  opens.forEach((o, i) => {
+    const s = segAt(segs, o.t);
+    if (!s || !isPlayStage(s.key)) return;
+    const next = opens[i + 1];
+    const until = Math.min(o.t + CALL_WITHIN, next ? next.t + 300 : Infinity, s.t1 == null ? Infinity : s.t1 + 300);
+    // (step ids count again from 1 on each station's stepper: this opening's notes are the ones before that id opens again)
+    const again = opens.slice(i + 1).find((x) => x.reason === o.reason);
+    const mine = notes.filter((n) => n.reason === o.reason && n.t >= o.t - 50 && n.t <= Math.min(o.t + CALL_WITHIN, again ? again.t : Infinity));
+    const skip = mine.find((n) => /^skip/.test(n.by || ""));
+    // a call queued behind another line may start after the next step opened: any call from this opening on counts
+    const said = calls.find((l) => l.t0 >= o.t - 50 && l.t0 <= Math.max(until, o.t + CALL_WITHIN));
+    const k = `${s.key}|${o.reason}|${o.t}`;
+    if (seen.has(k)) return;
+    if (!said && !skip) { seen.add(k); add("contract-36", o.t, `${s.key}: step ${o.reason} (${o.by || ""}) opened and Nani did not call it (no line tagged call within ${CALL_WITHIN / 1000} s, no skip logged)`); }
+  });
+}
+// 37 (CK-49): decoys by level, 1 / 2 / 3 / 3 + a lookalike, from the game's own report per station stage
+export const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
+const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
+const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
+function check37(r, tl, segs, add) {
+  if (!isCookFlow(r.flow)) return;
+  const st = stationOf(r.flow);
+  if (!st || !DECOY_STATIONS.test(st)) return;
+  const level = levelOf(r.flow || "");
+  const want = DECOYS[Math.min(4, level)];
+  const notes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys");
+  if (!notes.length) {
+    const s = segs.find((x) => /(^|\|)cook:station/.test(x.key));
+    if (s) add("contract-37", s.t0, `${s.key} (${st} at L${level}): no decoy count reported in the round (the table wants ${want}${level >= 4 ? " with a lookalike" : ""})`);
+    return;
+  }
+  {
+    const s = { key: "round" };
+    const mine = notes;
+    for (const n of mine) {
+      const got = Number(n.reason);
+      const look = /lookalike:1/.test(n.by || "");
+      const what = (n.by || "").replace(/\s*lookalike:\d/, "");
+      const ok = DECOY_AT_LEAST.test(st) ? got >= want : got === want;
+      if (!ok) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L${level}): ${got} decoy${got === 1 ? "" : "s"}, the table wants ${DECOY_AT_LEAST.test(st) ? "at least " : ""}${want}`);
+      if (level >= 4 && !look) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L4): no lookalike among the decoys (L4: 3 + a lookalike variant)`);
+    }
+  }
+}
 export function loadRetired(root) {
   const p = join(root, "build", "sandbox", "data", "retired-art.json");
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")).list : [];
@@ -1131,6 +1261,9 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check31(tl, v, add);
   check32(tl, add);
   check33(tl, add);
+  check35(r, tl, segs, add, root);
+  check36(r, tl, segs, v, add);
+  check37(r, tl, segs, add);
   return out;
 }
 

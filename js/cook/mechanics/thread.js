@@ -79,12 +79,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* the bowls: every skewer piece (and decoys), on the shelf, meat | vegetables, in a new order each time */
       const pieceIds = SK.pieceIds();
-      const ids = pieceIds.concat(St.decoys(k.decoyPool || [], pieceIds, k.decoys || 0));
+      // CK-49 (the level table): 1, 2, 3, 3 decoy bowls by the round's level (the knob); only the potato has sekelo piece art
+      // yet, so past one the rest wait on the art run (reported as they are: contract-37)
+      const ids = pieceIds.concat(St.tableDecoys(k.decoyPool || [], pieceIds, Cook.roundLevel(ctx), { what: "bowls" }));
       await SK.loadArt(S, ids);
       SK.band(S, z0);
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
-      const bowls = SK.shelf(S, z0, groups, { level: z.level });
+      // (the chips by the round's level, not the thread's knob level: from L3 a speaker only, never the word: the level table)
+      const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)) });
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
