@@ -212,6 +212,8 @@
           "green-door": { "say": { "fn": "Item", "kind": "n.door", "mods": ["a.green"] }, "art": null, "shape": "door", "fill": "#4f8a4a", "h": 1.25, "family": "door" },
           "tree": { "say": "n.the-tree", "art": null, "shape": "tree", "fill": "#5f8a3e", "h": 1.6, "scenery": true }
         },
+        "headline": { "meaning": { "fn": "Command", "verb": "v.look" }, "en": "Look!" },
+        "call": { "fn": "Where", "arg": "thing" },
         "stopCar": { "thing": "goat", "meaning": { "fn": "Exclaim", "x": "phrase.stop-the-car-keep-it-standing" }, "en": "Stop the car!", "holdMs": 2600 },
         "levels": {
           "1": { "calls": 3, "group": 3, "crossMs": 7000, "gapMs": 2200, "card": "open" },

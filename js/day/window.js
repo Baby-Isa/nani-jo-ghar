@@ -33,7 +33,10 @@ export async function runWindow(el, api, day) {
   Object.keys(ride.things).forEach((id) => !callable(id) && api.gaps.push({ en: id, meaning: meaningOf(ride.things[id]), gaps: ["never named: the engine can't say it yet"] }));
   const plan = WR.plan(ride, level, api.rng, { callable });
   const words = plan.calls.map((c) => api.line({ meaning: meaningOf(ride.things[c.named]), en: c.named }));
-  const asks = plan.calls.map((c) => api.line({ meaning: { fn: "Where", thing: meaningOf(ride.things[c.named]) }, en: `Where is the ${c.named}?` }));
+  // Nani's call: the ride's frame (data: "Where is {thing}?") around the thing, built by the engine
+  const callOf = (thing) => Object.assign({ fn: (ride.call && ride.call.fn) || "Where" }, { [(ride.call && ride.call.arg) || "thing"]: thing });
+  const asks = plan.calls.map((c) => api.line({ meaning: callOf(meaningOf(ride.things[c.named])), en: `Where is the ${c.named}?` }));
+  const head = ride.headline ? api.line(ride.headline) : null;
   window.Day.ride = { plan, level };
 
   // ---- the frame: sidebar (guide, card) and the play area ----
@@ -91,7 +94,7 @@ export async function runWindow(el, api, day) {
   const fold = {};
   const cardData = () => ({
     person: null,
-    headline: null,
+    headline: head ? { html: html(head), rec: !head.ok } : null,
     items: plan.calls.map((c, i) => ({ label: html(words[i]), count: 1, parts: [], done: done[i], key: i })),
   });
   const closed = plan.card === "closed";
@@ -114,6 +117,7 @@ export async function runWindow(el, api, day) {
       },
       read: async () => {
         await api.wait(250);
+        if (head) await api.say(head, { who: "nani" });
         for (const w of words) await api.say(w, { who: "nani" });
       },
       onStop: () => core.voice.stop("day"),
