@@ -161,7 +161,14 @@
     const S = Clinic.Stages;
     const a = (HH && HH.healArt) || (S && S._healArt);
     const key = String(file || "").replace(/[?#].*$/, "").replace(/^.*?(assets\/)/, "$1").replace(/@2x(\.webp)$/, "$1");
-    const feet = (a && a.shoes && a.shoes[key]) || [];
+    // CLN-162 (Zafar, 18 Oct: "her feet have a drop shadow underneath them, so it looks like her feet aren't resting on
+    // the wooden stool"; clinic decision 5: her dangling feet were not meant, her shadow goes under the stool): a seated
+    // patient (her front, blanket and bottle pictures: patients.<kind>.front / blanket / bottle) casts no shadow under
+    // her feet, which rest on the stool; the stool's own painted shadow on the floor is the one under her. Standing
+    // pictures (hers and the doctor's) keep one under each measured foot, and a picture with no measured feet has none
+    const P = (a && a.patients) || {};
+    const seated = Object.keys(P).some((k) => ["front", "blanket", "bottle"].some((v) => P[k] && P[k][v] === key));
+    const feet = seated ? [] : (a && a.shoes && a.shoes[key]) || [];
     feet.forEach(([cx, bottom, w]) => {
       // an ellipse blurred at its edge (in its own units, so it is as soft at every size); the colour is a token
       const id = `cl-shadow-${++Kit._shadows}`;
