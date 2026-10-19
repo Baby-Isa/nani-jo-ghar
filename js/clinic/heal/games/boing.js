@@ -210,7 +210,8 @@
       s("rect", { x: syCx - 10, y: SY.y + SY.h, width: 20, height: 16, fill: "#6a8aa8" }, syG);
     }
     // the liquid in the barrel, laid over the picture's glass and multiplied, so its marks and shine show through
-    const liquidG = s("g", { class: "bo-liquid", style: "mix-blend-mode:multiply" }, syG);
+    const liquidG = s("g", { class: "bo-liquid" }, syG);
+    liquidG.style.mixBlendMode = "multiply";
     const syEl = syFull || syG;
     const bandH = (BAR.y1 - BAR.y0) / K.maxDrops;
     const bandY = (k) => BAR.y1 - (k + 1) * bandH;
@@ -233,7 +234,8 @@
         return;
       }
       if (!badgeEl || !badgeEl.isConnected) {
-        badgeEl = S.h("span", "hs-count at", S.root);
+        badgeEl = S.h("span", "hs-count", S.root);
+        badgeEl.classList.add("at");
         badgeEl.setAttribute("aria-hidden", "true");
       }
       const r = syEl.getBoundingClientRect();
@@ -650,7 +652,7 @@
             const want = c.drops[st.drops.length];
             return at(levers[want].kx, levers[want].y, `lever ${want}`);
           }
-          if (c.kind === "press") return placed ? at(syCx + OVER.dx, endY() + OVER.dy, "press the plunger") : { do: "wait" };
+          if (c.kind === "press") return placed ? at(syCx + OVER.dx, endY() + OVER.dy, "press the glowing end") : { do: "wait" };
           if (c.kind === "plaster") return S.sel !== `plaster-${c.colour}` ? tool(`plaster-${c.colour}`) : at(A.x, A.y, "plaster");
           return { do: "wait" };
         },

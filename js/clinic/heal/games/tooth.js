@@ -825,7 +825,7 @@
       if (!("fill-line" in st.judged)) judge("fill-line", ok, { filled: Math.round((100 * st.fill) / FILL.max) });
       if (!ok) {
         st.overs++;
-        ctx.log({ type: "extra", rowId: "fill-line", detail: "too much: smoothed back" });
+        ctx.log({ type: "extra", rowId: "fill-line", detail: "over" });
         S.say("tooth-toomuch", "patient");
         S.face("wince", 700);
         st.smoothing = true;
@@ -941,7 +941,7 @@
             const q = fromD(BTN.x, BTN.y);
             return S.client(q.x, q.y);
           })();
-          return { do: "hold", x: t.x, y: t.y, until: "__heal.run.controller.debug.overOk()", what: "too much" };
+          return { do: "hold", x: t.x, y: t.y, until: "__heal.run.controller.debug.overOk()", what: "over" };
         },
         slip() {
           // brush the first move the wrong way
