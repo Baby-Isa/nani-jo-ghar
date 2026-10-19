@@ -39,10 +39,11 @@ def blob(ramp=1.0, wedge=False, glass=False, shadow=False):
     rgb = np.zeros((H, W, 3)); rgb[...] = (225, 150, 100)
     if wedge:  # the ground left between two toes: neutral grey, a shade off the key
         rgb[40:70, 78:86] = (118, 117, 119); a[40:70, 78:86] = 1
-    if glass:
-        a = a * 0.45
+    if glass:  # a clear jar: a firm wall 3 px thick, clear (alpha .15) inside, pale
+        a = np.where(r < 18, np.where(r > 15, 1.0, 0.15), 0.0)
+        rgb[...] = (232, 236, 238)
     if shadow:  # a dark soft smear kept as alpha beyond the body
-        s = (np.abs(yy - 150) < 6) & (np.abs(xx - 80) < 60)
+        s = (np.abs(yy - 112) < 5) & (np.abs(xx - 80) < 40)
         rgb[s] = (50, 50, 52); a = np.where(s, 0.35, a)
     return Image.fromarray(np.dstack([rgb, a * 255]).astype(np.uint8), "RGBA")
 blob().save(d + "/clean.png")
@@ -59,7 +60,7 @@ test("pixel check: a toe-gap wedge, a wide soft rim and a kept cast shadow fail;
   assert.deepEqual(f("clean"), []);
   assert.ok(f("wedge").includes("holes"), "a grey wedge inside the piece is a hole");
   assert.ok(f("softrim").includes("rim"), "a 20 px soft rim is a rim");
-  assert.ok(f("glass-shadow").includes("smudge") || f("glass-shadow").includes("halo"), "a shadow kept on glass is flagged");
+  assert.ok(f("glass-shadow").includes("smudge") || f("glass-shadow").includes("dirt"), "a shadow kept under glass is flagged");
   assert.deepEqual(f("glass-clean"), [], "glass gets a narrower rule, not a blanket one");
 });
 test("pixel check on the repo: today's four failures are red, their re-cuts green", () => {

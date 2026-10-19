@@ -18,7 +18,7 @@ def load(p):
     return np.asarray(Image.open(p).convert("RGB")).astype(float)
 
 
-def key(a, multi=400, exits=(), tol=10, glass=None, soft=False, hole_min=600, hole_neutral=False, shadow=False):
+def key(a, multi=400, exits=(), tol=10, glass=None, soft=False, hole_min=600, hole_neutral=False, shadow=False, soft_floor=0.0, soft_gain=2.2):
     """RGBA float array (alpha 0..1) of the object on the flat grey, plus the object mask. exits: the edges the
     object leaves by: the grey is not measured there. soft: partial alpha everywhere (glass, a drop, dust).
     SH-115 (the pixel check, artpixels.py): tol is per piece (steel sits near the key: 4-6; glass and skin 10);
@@ -76,7 +76,7 @@ def key(a, multi=400, exits=(), tol=10, glass=None, soft=False, hole_min=600, ho
     alpha = np.where(ndi.binary_dilation(obj, iterations=2), alpha, 0)
     alpha = np.clip((alpha - 0.04) / 0.5, 0, 1)  # a strong ramp: soft antialiasing, no grey halo
     if soft:
-        alpha = np.where(ndi.binary_dilation(obj, iterations=2), np.clip(up.max(2) * 2.2, 0, 1), 0)
+        alpha = np.where(ndi.binary_dilation(obj, iterations=2), np.clip((up.max(2) * soft_gain - soft_floor) / (1 - soft_floor), 0, 1), 0)  # soft_floor: the ground's own gradient seen through clear glass is not glass
     else:
         alpha = np.where(core, 1.0, alpha)
     if glass is not None:
@@ -186,3 +186,23 @@ def head_mask(r, base, ys_limit, neck, shape, grow=25, open_k=5):
         cv2.fillConvexPoly(m, cv2.convexHull(pts), 1)
     m = cv2.dilate(m, np.ones((grow, grow), np.uint8))
     return m
+
+
+def seam_ratio(rgb):
+    """The colour step across a tile's wrap (last column to first) over the mean step between neighbouring columns:
+    about 1 is seamless, over 1.6 shows a seam when the tile is laid in a row (BD1, SM1)."""
+    a = np.asarray(rgb, np.float32)[..., :3]
+    return float(np.abs(a[:, 0] - a[:, -1]).mean() / max(np.abs(np.diff(a, axis=1)).mean(), 1e-3))
+
+
+def make_tileable(img, ov=64):
+    """A left-right seamless copy of a flat tile: the last `ov` columns are cross-faded into the first `ov` and dropped, so
+    the new last column is the old column that sat next to the first one (no seam by construction; the texture in the
+    cross-fade band is a blend of two places, so keep `ov` a small share of the width)."""
+    a = np.asarray(img.convert("RGBA"), np.float32)
+    h, w = a.shape[:2]
+    ov = int(min(ov, w // 3))
+    t = np.linspace(0, 1, ov, dtype=np.float32)[None, :, None]
+    out = a[:, : w - ov].copy()
+    out[:, :ov] = a[:, w - ov:] * (1 - t) + a[:, :ov] * t
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGBA")

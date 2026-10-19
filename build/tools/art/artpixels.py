@@ -21,11 +21,11 @@ Rules (RULES below; solid pieces):
   smudge  over 2 % of the covered pixels are dark neutral soft alpha beyond 2 px of the solid body: a cast shadow kept
   rim     the semi-alpha band that shows on cream (composite differs from cream by more than 12) is wider than 5 px on
           average (pixels of that band / pixels of the outline)
-Glass (a piece whose semi-alpha pixels are over 28 % of what it covers) gets a narrower rule, not an exemption: grey and
-holes are measured as above (on alpha >= 0.5), the rim rule is replaced by
-  halo    more than 5 % of the covered pixels lie more than 3 px from any pixel of alpha >= 0.5 (a cast shadow, or the
-          sheet's haze, kept as soft alpha)
-  greyring  more than 1 % of the outer 3 px ring is soft alpha whose colour is the key grey (a grey fringe)
+  dirt    over 5 % of the covered pixels are faint alpha (under 0.5) whose composite on cream is darker than 205: a cast
+          shadow or the sheet's haze kept
+Glass (a piece whose semi-alpha pixels are over 28 % of what it covers) gets a narrower rule, not an exemption: holes and
+grey are measured on alpha >= 0.5, dirt and smudge apply, and only the rim allowance is wider (10 px: clear glass is soft all
+through, so its soft band is not a defect until it is a wide glow).
 Thresholds are in RULES; change them there and re-run `artcheck.mjs --write-known` only when a rule is tightened.
 """
 import hashlib
@@ -40,7 +40,7 @@ from scipy import ndimage as ndi
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 CREAM = np.array([247.0, 238.0, 220.0])
-RULES = {"v": 8, "grey_share": 0.03, "hole_px": 16, "rim_w": 5.0, "glass_semi": 0.28, "halo": 0.05, "greyring": 0.01,
+RULES = {"v": 13, "grey_share": 0.03, "hole_px": 16, "rim_w": 5.0, "glass_semi": 0.28, "rim_glass": 10.0, "dirt": 0.05,
          "smudge": 0.02, "max_side": 1600, "key_tol": 14, "key_mid": 122, "spread": 12, "flat_sd": 1.5, "coloured": 22}
 
 
@@ -89,28 +89,25 @@ def analyse(path):
     vis = semi_mask & (np.abs(comp - CREAM).max(2) > 12)
     per = int((ndi.binary_dilation(~nz) & nz).sum()) + 1
     rim = vis.sum() / per
-    far = ndi.distance_transform_edt(~(a >= 0.5))
-    halo = float((nz & (far > 3)).sum()) / n_nz
-    ring = nz & (ndi.distance_transform_edt(nz) <= 3)
-    gr = float((ring & ~op & near_key).sum()) / max(int(ring.sum()), 1)
-    soft_dark = nz & (a < 0.6) & (spread < 22) & (lum < 115) & (ndi.distance_transform_edt(~(a >= 0.9)) > 2)
-    smudge = float(soft_dark.sum()) / n_nz
+    # beyond the piece's own filled silhouette (its firm pixels, closed, clear glass inside the wall filled): a cast shadow or haze kept
+    outside = ~ndi.binary_dilation(ndi.binary_fill_holes(ndi.binary_closing(a >= 0.5, iterations=2)), iterations=2)
+    if not glass:  # a solid piece has no clear parts: faint dark alpha anywhere on it is a shadow or haze
+        outside = np.ones_like(outside)
+    dirt = float((nz & outside &(a < 0.5) & (comp.mean(2) < 205)).sum()) / n_nz  # faint alpha that is dark on cream
+    smudge = float((nz & outside & (a < 0.6) & (spread < 22) & (lum < 115)).sum()) / n_nz  # the same, neutral and dark
     fails = []
     if grey > RULES["grey_share"]:
         fails.append("grey %.1f%% of the solid pixels are key grey" % (grey * 100))
     if holes:
         fails.append("holes %d key-grey patch(es), the largest %d px" % (len(holes), max(holes)))
-    if glass:
-        if halo > RULES["halo"]:
-            fails.append("halo %.1f%% soft alpha away from the body (cast shadow or haze)" % (halo * 100))
-        if gr > RULES["greyring"]:
-            fails.append("greyring %.1f%% of the outer ring is key grey" % (gr * 100))
-    elif rim > RULES["rim_w"]:
+    if rim > (RULES["rim_glass"] if glass else RULES["rim_w"]):
         fails.append("rim a soft rim %.1f px wide on cream" % rim)
+    if dirt > RULES["dirt"]:
+        fails.append("dirt %.1f%% of the piece is faint alpha that shows dark on cream (a cast shadow or the sheet's haze)" % (dirt * 100))
     if smudge > RULES["smudge"]:
         fails.append("smudge %.1f%% is a dark soft shadow kept as alpha" % (smudge * 100))
     return {"covered": n_nz, "glass": bool(glass), "grey": round(float(grey), 4), "holes": len(holes),
-            "hole_max": max(holes) if holes else 0, "rim": round(float(rim), 2), "smudge": round(smudge, 4), "halo": round(halo, 4), "greyring": round(gr, 4),
+            "hole_max": max(holes) if holes else 0, "rim": round(float(rim), 2), "smudge": round(smudge, 4), "dirt": round(dirt, 4),
             "fails": fails}
 
 
@@ -182,7 +179,21 @@ def sheet(paths, out, cell=220):
     sh.save(out)
 
 
+def seam(path):
+    """How well a tile repeats left to right: the mean colour step across the wrap (the last columns to the first) over the
+    mean step between neighbouring columns inside it. About 1 is seamless; over 1.6 shows a seam when laid in a row."""
+    a = np.asarray(Image.open(path).convert("RGB")).astype(np.float32)
+    inner = np.abs(np.diff(a, axis=1)).mean()
+    wrap = np.abs(a[:, 0] - a[:, -1]).mean()
+    return float(wrap / max(inner, 1e-3))
+
+
 def main(argv):
+    if "--seam" in argv:
+        for p in [x for x in argv if not x.startswith("-")]:
+            r = seam(p)
+            print("%s %s seam ratio %.2f" % ("PASS" if r <= 1.6 else "SEAM", p, r))
+        return 0
     if "--sheet" in argv:
         i = argv.index("--sheet")
         sheet(argv[i + 2:], argv[i + 1])
@@ -214,7 +225,7 @@ def main(argv):
     for p in files:
         r = analyse(p)
         bad += bool(r["fails"])
-        print("%s %s%s" % ("FAIL" if r["fails"] else "PASS", p, ("  " + "; ".join(r["fails"])) if r["fails"] else "  (%s grey %.3f rim %.1f halo %.3f)" % ("glass" if r["glass"] else "solid", r.get("grey", 0), r.get("rim", 0), r.get("halo", 0))))
+        print("%s %s%s" % ("FAIL" if r["fails"] else "PASS", p, ("  " + "; ".join(r["fails"])) if r["fails"] else "  (%s grey %.3f rim %.1f dirt %.3f)" % ("glass" if r["glass"] else "solid", r.get("grey", 0), r.get("rim", 0), r.get("dirt", 0))))
     return 1 if bad else 0
 
 

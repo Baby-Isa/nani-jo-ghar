@@ -1,0 +1,553 @@
+{
+ "_about": "Pack s08b (sources/art/s08b, the s08b art plan section 6) and the s08 wave-0 re-cuts (SH-115): every piece is cut by build/tools/art/artcut.py with the keying options the pixel check (artpixels.py) asked for: a tolerance per piece (steel 4-6), the ground's cast shadow dropped (shadow), enclosed ground of any size a hole (hole_min), the shaded gap between toes a hole (hole_neutral). New names only (-s08b / -v3): nothing the game uses today is overwritten; the wiring waves point at these. Run: python3 build/tools/art/artcut.py build/tools/art/specs/s08b.cut.json. The numbers (file sizes, disc circles, strip order) land in assets/s08b-cut-data.json.",
+ "patients": {},
+ "closeups": {
+  "boing.machine-v3": {
+   "file": "clinic/heal-v3/drop-machine-v3.webp",
+   "size": [
+    1024,
+    1536
+   ],
+   "exits": [],
+   "box": [
+    0.0566,
+    0.0566,
+    0.9443,
+    0.929
+   ]
+  },
+  "child.sole-v3": {
+   "file": "clinic/closeups/child/sole-v3.webp",
+   "size": [
+    1024,
+    1536
+   ],
+   "exits": [
+    "bottom"
+   ],
+   "box": [
+    0.2441,
+    0.0957,
+    0.79,
+    1.0
+   ],
+   "s08b": "clinic/closeups/child/sole-v3-s08b.webp"
+  }
+ },
+ "props": {
+  "chaat-bowl-side-s08b": {
+   "file": "cook/items-s08b/chaat-bowl-side-s08b.webp",
+   "w": 800,
+   "h": 311,
+   "file2x": "cook/items-s08b/chaat-bowl-side-s08b@2x.webp"
+  },
+  "strip-potato-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-potato-s08b.webp",
+   "w": 820,
+   "h": 190
+  },
+  "strip-chickpea-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-chickpea-s08b.webp",
+   "w": 820,
+   "h": 186
+  },
+  "strip-onion-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-onion-s08b.webp",
+   "w": 820,
+   "h": 177
+  },
+  "strip-tomato-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-tomato-s08b.webp",
+   "w": 820,
+   "h": 185
+  },
+  "strip-yogurt-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-yogurt-s08b.webp",
+   "w": 820,
+   "h": 180
+  },
+  "strip-tamarind-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-tamarind-s08b.webp",
+   "w": 820,
+   "h": 162
+  },
+  "strip-green-chutney-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-green-chutney-s08b.webp",
+   "w": 820,
+   "h": 172
+  },
+  "strip-sev-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-sev-s08b.webp",
+   "w": 820,
+   "h": 193
+  },
+  "strip-coriander-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-coriander-s08b.webp",
+   "w": 820,
+   "h": 195
+  },
+  "strip-chilli-s08b": {
+   "file": "cook/items-s08b/chaat-strips/strip-chilli-s08b.webp",
+   "w": 820,
+   "h": 182
+  },
+  "daar-pot-top-s08b": {
+   "file": "cook/items-s08b/daar-pot-top-s08b.webp",
+   "w": 900,
+   "h": 705,
+   "file2x": "cook/items-s08b/daar-pot-top-s08b@2x.webp"
+  },
+  "disc-lentils-s08b": {
+   "file": "cook/items-s08b/daar-discs/disc-lentils-s08b.webp",
+   "w": 419,
+   "h": 420,
+   "file2x": "cook/items-s08b/daar-discs/disc-lentils-s08b@2x.webp",
+   "disc": [
+    222.1,
+    221.2,
+    191.0
+   ]
+  },
+  "disc-daal-plain-s08b": {
+   "file": "cook/items-s08b/daar-discs/disc-daal-plain-s08b.webp",
+   "w": 419,
+   "h": 420,
+   "file2x": "cook/items-s08b/daar-discs/disc-daal-plain-s08b@2x.webp",
+   "disc": [
+    208.7,
+    223.4,
+    194.0
+   ]
+  },
+  "disc-daal-veg-s08b": {
+   "file": "cook/items-s08b/daar-discs/disc-daal-veg-s08b.webp",
+   "w": 419,
+   "h": 420,
+   "file2x": "cook/items-s08b/daar-discs/disc-daal-veg-s08b@2x.webp",
+   "disc": [
+    200.1,
+    223.4,
+    194.9
+   ]
+  },
+  "disc-daal-tadka-s08b": {
+   "file": "cook/items-s08b/daar-discs/disc-daal-tadka-s08b.webp",
+   "w": 419,
+   "h": 420,
+   "file2x": "cook/items-s08b/daar-discs/disc-daal-tadka-s08b@2x.webp",
+   "disc": [
+    222.5,
+    196.6,
+    193.1
+   ]
+  },
+  "disc-daal-stirred-s08b": {
+   "file": "cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp",
+   "w": 419,
+   "h": 420,
+   "file2x": "cook/items-s08b/daar-discs/disc-daal-stirred-s08b@2x.webp",
+   "disc": [
+    208.7,
+    197.0,
+    194.2
+   ]
+  },
+  "disc-daal-done-s08b": {
+   "file": "cook/items-s08b/daar-discs/disc-daal-done-s08b.webp",
+   "w": 419,
+   "h": 420,
+   "file2x": "cook/items-s08b/daar-discs/disc-daal-done-s08b@2x.webp",
+   "disc": [
+    199.2,
+    197.0,
+    194.7
+   ]
+  },
+  "pan-top-empty-s08b": {
+   "file": "cook/items-s08b/chai-pan/pan-top-empty-s08b.webp",
+   "w": 531,
+   "h": 286
+  },
+  "pan-top-milk-s08b": {
+   "file": "cook/items-s08b/chai-pan/pan-top-milk-s08b.webp",
+   "w": 531,
+   "h": 286
+  },
+  "pan-top-black-s08b": {
+   "file": "cook/items-s08b/chai-pan/pan-top-black-s08b.webp",
+   "w": 520,
+   "h": 286
+  },
+  "tray-1-s08b": {
+   "file": "cook/items-s08b/sekelo-tray/tray-1-s08b.webp",
+   "w": 558,
+   "h": 458
+  },
+  "tray-2-s08b": {
+   "file": "cook/items-s08b/sekelo-tray/tray-2-s08b.webp",
+   "w": 558,
+   "h": 458
+  },
+  "tray-3-s08b": {
+   "file": "cook/items-s08b/sekelo-tray/tray-3-s08b.webp",
+   "w": 558,
+   "h": 471
+  },
+  "tray-4-s08b": {
+   "file": "cook/items-s08b/sekelo-tray/tray-4-s08b.webp",
+   "w": 558,
+   "h": 471
+  },
+  "go-grill-s08b": {
+   "file": "cook/items-s08b/go-on/go-grill-s08b.webp",
+   "w": 256,
+   "h": 180,
+   "file2x": "cook/items-s08b/go-on/go-grill-s08b@2x.webp"
+  },
+  "go-karahi-s08b": {
+   "file": "cook/items-s08b/go-on/go-karahi-s08b.webp",
+   "w": 256,
+   "h": 179,
+   "file2x": "cook/items-s08b/go-on/go-karahi-s08b@2x.webp"
+  },
+  "pastry-tile-s08b": {
+   "file": "cook/tiles-s08b/pastry-tile-s08b.webp",
+   "w": 1200,
+   "h": 392,
+   "tile": {
+    "file": "cook/tiles-s08b/pastry-tile-s08b-tile.webp",
+    "w": 1104,
+    "h": 392,
+    "seam_before": 4.55,
+    "seam_after": 1.1
+   }
+  },
+  "thermometer-flat-s08b": {
+   "file": "clinic/items-s08b/thermometer-flat-s08b.webp",
+   "w": 560,
+   "h": 113,
+   "file2x": "clinic/items-s08b/thermometer-flat-s08b@2x.webp"
+  },
+  "thermometer-mouth-s08b": {
+   "file": "clinic/items-s08b/thermometer-mouth-s08b.webp",
+   "w": 560,
+   "h": 190,
+   "file2x": "clinic/items-s08b/thermometer-mouth-s08b@2x.webp"
+  },
+  "fan-still-s08b": {
+   "file": "clinic/items-s08b/fan-still-s08b.webp",
+   "w": 640,
+   "h": 253,
+   "file2x": "clinic/items-s08b/fan-still-s08b@2x.webp"
+  },
+  "fan-spin-s08b": {
+   "file": "clinic/items-s08b/fan-spin-s08b.webp",
+   "w": 640,
+   "h": 250,
+   "file2x": "clinic/items-s08b/fan-spin-s08b@2x.webp"
+  },
+  "hot-water-bottle-s08b": {
+   "file": "clinic/items-s08b/hot-water-bottle-s08b.webp",
+   "w": 480,
+   "h": 265,
+   "file2x": "clinic/items-s08b/hot-water-bottle-s08b@2x.webp"
+  },
+  "ice-pack-s08b": {
+   "file": "clinic/items-s08b/ice-pack-s08b.webp",
+   "w": 480,
+   "h": 242,
+   "file2x": "clinic/items-s08b/ice-pack-s08b@2x.webp"
+  },
+  "paper-fan-s08b": {
+   "file": "clinic/items-s08b/paper-fan-s08b.webp",
+   "w": 480,
+   "h": 161,
+   "file2x": "clinic/items-s08b/paper-fan-s08b@2x.webp"
+  },
+  "blanket-s08b": {
+   "file": "clinic/items-s08b/blanket-s08b.webp",
+   "w": 480,
+   "h": 298,
+   "file2x": "clinic/items-s08b/blanket-s08b@2x.webp"
+  },
+  "bandage-band-s08b": {
+   "file": "clinic/tiles-s08b/bandage-band-s08b.webp",
+   "w": 1100,
+   "h": 226,
+   "tile": {
+    "file": "clinic/tiles-s08b/bandage-band-s08b-tile.webp",
+    "w": 1036,
+    "h": 226,
+    "seam_before": 2.69,
+    "seam_after": 1.12
+   }
+  },
+  "bandage-end-s08b": {
+   "file": "clinic/items-s08b/bandage-end-s08b.webp",
+   "w": 700,
+   "h": 230,
+   "file2x": "clinic/items-s08b/bandage-end-s08b@2x.webp"
+  },
+  "toothbrush-s08b": {
+   "file": "clinic/items-s08b/toothbrush-s08b.webp",
+   "w": 640,
+   "h": 112,
+   "file2x": "clinic/items-s08b/toothbrush-s08b@2x.webp"
+  },
+  "drop-hanging-s08b": {
+   "file": "clinic/items-s08b/drop-hanging-s08b.webp",
+   "w": 162,
+   "h": 360,
+   "file2x": "clinic/items-s08b/drop-hanging-s08b@2x.webp"
+  },
+  "drop-falling-s08b": {
+   "file": "clinic/items-s08b/drop-falling-s08b.webp",
+   "w": 157,
+   "h": 260
+  },
+  "drop-splash-s08b": {
+   "file": "clinic/items-s08b/drop-splash-s08b.webp",
+   "w": 360,
+   "h": 178,
+   "file2x": "clinic/items-s08b/drop-splash-s08b@2x.webp"
+  },
+  "tumbler-glass-s08b": {
+   "file": "clinic/items-s08b/tumbler-glass-s08b.webp",
+   "w": 463,
+   "h": 560,
+   "file2x": "clinic/items-s08b/tumbler-glass-s08b@2x.webp"
+  },
+  "cotton-bud-clean-s08b": {
+   "file": "clinic/items-s08b/cotton-bud-clean-s08b.webp",
+   "w": 560,
+   "h": 63,
+   "file2x": "clinic/items-s08b/cotton-bud-clean-s08b@2x.webp"
+  },
+  "lemon-whole-s08b": {
+   "file": "clinic/items-s08b/lemon-whole-s08b.webp",
+   "w": 420,
+   "h": 289,
+   "file2x": "clinic/items-s08b/lemon-whole-s08b@2x.webp"
+  },
+  "channel-straight-s08b": {
+   "file": "clinic/items-s08b/splinter/channel-straight-s08b.webp",
+   "w": 420,
+   "h": 108,
+   "file2x": "clinic/items-s08b/splinter/channel-straight-s08b@2x.webp"
+  },
+  "channel-corner-s08b": {
+   "file": "clinic/items-s08b/splinter/channel-corner-s08b.webp",
+   "w": 409,
+   "h": 320
+  },
+  "channel-end-s08b": {
+   "file": "clinic/items-s08b/splinter/channel-end-s08b.webp",
+   "w": 420,
+   "h": 146,
+   "file2x": "clinic/items-s08b/splinter/channel-end-s08b@2x.webp"
+  },
+  "splinter-s08b": {
+   "file": "clinic/items-s08b/splinter/splinter-s08b.webp",
+   "w": 420,
+   "h": 81,
+   "file2x": "clinic/items-s08b/splinter/splinter-s08b@2x.webp"
+  },
+  "tweezers-v3": {
+   "file": "clinic/items-v3/tweezers-v3.webp",
+   "w": 378,
+   "h": 174
+  },
+  "eye-drops-v3": {
+   "file": "clinic/items-v3/eye-drops-v3.webp",
+   "w": 159,
+   "h": 328
+  },
+  "thermometer-v3": {
+   "file": "clinic/items-v3/thermometer-v3.webp",
+   "w": 404,
+   "h": 220
+  },
+  "drop-bottle-belt-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-belt-v3.webp",
+   "w": 196,
+   "h": 384
+  },
+  "drop-bottle-tray-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-tray-v3.webp",
+   "w": 245,
+   "h": 260
+  },
+  "drop-bottle-tool-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp",
+   "w": 192,
+   "h": 384
+  },
+  "drop-bottle-use-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-use-v3.webp",
+   "w": 329,
+   "h": 368
+  },
+  "drop-bottle-use-down-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-use-down-v3.webp",
+   "w": 195,
+   "h": 384
+  },
+  "drop-bottle-side-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-side-v3.webp",
+   "w": 191,
+   "h": 384
+  },
+  "drop-bottle-cap-off-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-cap-off-v3.webp",
+   "w": 377,
+   "h": 305
+  },
+  "drop-bottle-squeeze-v3": {
+   "file": "clinic/sheets-v3/drop-bottle/drop-bottle-squeeze-v3.webp",
+   "w": 242,
+   "h": 384
+  },
+  "tweezers-belt-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-belt-v3.webp",
+   "w": 371,
+   "h": 193
+  },
+  "tweezers-tray-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-tray-v3.webp",
+   "w": 379,
+   "h": 119
+  },
+  "tweezers-tool-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-tool-v3.webp",
+   "w": 384,
+   "h": 72
+  },
+  "tweezers-use-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-use-v3.webp",
+   "w": 110,
+   "h": 384
+  },
+  "tweezers-use-45-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-use-45-v3.webp",
+   "w": 341,
+   "h": 339
+  },
+  "tweezers-splinter-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-splinter-v3.webp",
+   "w": 378,
+   "h": 346
+  },
+  "tweezers-side-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-side-v3.webp",
+   "w": 380,
+   "h": 60
+  },
+  "tweezers-open-v3": {
+   "file": "clinic/sheets-v3/tweezers/tweezers-open-v3.webp",
+   "w": 365,
+   "h": 142
+  },
+  "thermometer-belt-v3": {
+   "file": "clinic/sheets-v3/thermometer/thermometer-belt-v3.webp",
+   "w": 357,
+   "h": 120
+  },
+  "thermometer-tray-v3": {
+   "file": "clinic/sheets-v3/thermometer/thermometer-tray-v3.webp",
+   "w": 368,
+   "h": 99
+  },
+  "thermometer-tool-v3": {
+   "file": "clinic/sheets-v3/thermometer/thermometer-tool-v3.webp",
+   "w": 369,
+   "h": 83
+  },
+  "thermometer-use-v3": {
+   "file": "clinic/sheets-v3/thermometer/thermometer-use-v3.webp",
+   "w": 354,
+   "h": 245
+  },
+  "thermometer-arm-v3": {
+   "file": "clinic/sheets-v3/thermometer/thermometer-arm-v3.webp",
+   "w": 260,
+   "h": 377
+  },
+  "thermometer-read-v3": {
+   "file": "clinic/sheets-v3/thermometer/thermometer-read-v3.webp",
+   "w": 360,
+   "h": 92
+  },
+  "lever-up-v3": {
+   "file": "clinic/heal-v3/lever-up-v3.webp",
+   "w": 169,
+   "h": 256,
+   "file2x": "clinic/heal-v3/lever-up-v3@2x.webp"
+  },
+  "lever-down-v3": {
+   "file": "clinic/heal-v3/lever-down-v3.webp",
+   "w": 182,
+   "h": 256,
+   "file2x": "clinic/heal-v3/lever-down-v3@2x.webp"
+  },
+  "potato-whole-v3": {
+   "file": "cook/items-s08b/potato/potato-whole-v3.webp",
+   "w": 420,
+   "h": 296,
+   "file2x": "cook/items-s08b/potato/potato-whole-v3@2x.webp"
+  },
+  "potato-halves-v3": {
+   "file": "cook/items-s08b/potato/potato-halves-v3.webp",
+   "w": 420,
+   "h": 259,
+   "file2x": "cook/items-s08b/potato/potato-halves-v3@2x.webp"
+  },
+  "potato-cube-v3": {
+   "file": "cook/items-s08b/potato/potato-cube-v3.webp",
+   "w": 256,
+   "h": 261
+  },
+  "potato-pile-v3": {
+   "file": "cook/items-s08b/potato/potato-pile-v3.webp",
+   "w": 420,
+   "h": 319,
+   "file2x": "cook/items-s08b/potato/potato-pile-v3@2x.webp"
+  }
+ },
+ "_report": [
+  "ch1-bowl: 1 piece(s) by cell for 1 name(s)",
+  "ch2-strips: 5 pieces for 5 names",
+  "ch3-strips: 5 pieces for 5 names",
+  "dp2-pot: 1 piece(s) by cell for 1 name(s)",
+  "dp3-discs: 6 piece(s) by cell for 6 name(s)",
+  "  dp3-discs: 6 piece(s) on one window 481x482 (cell_align)",
+  "cp2-pans: 3 piece(s) by cell for 3 name(s)",
+  "  cp2-pans: 3 piece(s) on one window 523x278 (cell_align)",
+  "sk3-trays: 4 piece(s) by cell for 4 name(s)",
+  "  sk3-trays: 4 piece(s) on one window 550x463 (cell_align)",
+  "go1-icons: 2 piece(s) by cell for 2 name(s)",
+  "sm1-pastry: 1 piece(s) by cell for 1 name(s)",
+  "  pastry-tile-s08b: seam ratio 4.55 as cut (SEAM), 1.10 in the cross-faded -tile copy",
+  "th1-thermometer: 2 piece(s) by cell for 2 name(s)",
+  "fn1-fan: 2 piece(s) by cell for 2 name(s)",
+  "fv1-bed-items: 4 piece(s) by cell for 4 name(s)",
+  "bd1-bandage: 2 piece(s) by cell for 2 name(s)",
+  "  bandage-band-s08b: seam ratio 2.69 as cut (SEAM), 1.12 in the cross-faded -tile copy",
+  "tb1-toothbrush: 1 piece(s) by cell for 1 name(s)",
+  "ed1-drops: 3 piece(s) by cell for 3 name(s)",
+  "ts1-glass-bud: 2 piece(s) by cell for 2 name(s)",
+  "lm1-lemon: 1 piece(s) by cell for 1 name(s)",
+  "sp1-splinter: 4 piece(s) by cell for 4 name(s)",
+  "ci1-recut: 3 piece(s) by cell for 3 name(s)",
+  "e4-recut: 8 piece(s) by cell for 8 name(s)",
+  "e12-recut: 8 piece(s) by cell for 8 name(s)",
+  "e17-recut: 8 piece(s) by cell for 8 name(s)",
+  "  thermometer-use-down-v3: judged a fail, not cut (SH-115 smudge 2.9 %: the same dark soft edge)",
+  "  thermometer-side-v3: judged a fail, not cut (SH-115 smudge: the thin tube's dark soft edge reads as a cast shadow (3.9 % of its pixels) at every key setting tried; the old cut stays until a redraw)",
+  "dm1-machine: cut, exits none, 1 picture(s)",
+  "dm2-levers: 2 piece(s) by cell for 2 name(s)",
+  "pt1-potato: 4 piece(s) by cell for 4 name(s)",
+  "  s08b: shift -0.9,-0.1 px",
+  "  match: skin ΔE 2.24 -> 0.39 to the base (gain [0.99, 1.006, 1.0])",
+  "sole-v3: cut, exits bottom, 2 picture(s)"
+ ]
+}

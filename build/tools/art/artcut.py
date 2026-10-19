@@ -12,6 +12,14 @@ Job types (spec "jobs", each with an "id"; "each": [{...vars}] repeats a job wit
   grid     a prop sheet cut by its gutters: pieces in reading order get "names" (null skips one), padded, max "max" px;
            "glass": names kept at partial alpha; "failed": {name: reason} not cut; "registered": [{"names", "align"}]
            pad pieces of one object onto one shared canvas (base | topleft)
+  keying options (SH-115, the pixel check artpixels.py; on a grid or closeup job): "tol" (and "tols": {name: tol} per piece; steel 4-6,
+           glass and skin 10), "shadow" (the ground's cast shadow is ground), "hole_min" (px from which an enclosed patch of ground
+           is a hole; 8 = any), "hole_neutral" (the shaded gap between toes is a hole), "soft_floor"/"soft_gain" (glass: the ground's
+           own gradient seen through clear glass is not glass; a steeper ramp narrows the soft rim)
+  grid extras: "cell_align" (the same thing in every cell: one window relative to each cell's corner), "disc" (a clean circle
+           fitted to a round top-down thing, centre and radius in the data), "rect" (a flat tile: its solid rectangle), "tile" (names
+           laid in a row by code: the seam measured, and a cross-faded -tile copy made), "x2" (an @2x never above the source)
+  closeup states: "match": {"band": [y0, y1]} fits the redrawn skin to the base's (gain per channel, ΔE logged)
   background  (s02) a 16:9 background cropped at "crop_y", resized, with painted trays measured ("measure")
   grid "cells"/"boxes" (s02): whole blobs by centroid per cell, or explicit source-px boxes; "sizes" per name;
            "soft" keys the whole sheet colour-to-alpha (glass); "register_scale" shrinks a registered set together
@@ -131,7 +139,7 @@ def cut_closeup(job, cx):
     exits = tuple(job.get("exits", ()))
     a = L.load(p)
     H, W = a.shape[:2]
-    kopt = {x: job[x] for x in ("tol", "hole_min", "hole_neutral", "shadow") if x in job}  # SH-115 keying options (per job)
+    kopt = {x: job[x] for x in ("tol", "hole_min", "hole_neutral", "shadow", "soft_floor", "soft_gain") if x in job}  # SH-115 keying options (per job)
     k, obj = L.key(a, exits=exits, **kopt)
     L.flush_exits(k, obj, exits)
     outp = cx.to(job["out"])
@@ -230,7 +238,7 @@ def cut_grid(job, cx):
         return None
     a = L.load(p)
     ma = job.get("min_area", 1500)
-    kopt = {x: job[x] for x in ("hole_min", "hole_neutral", "shadow") if x in job}  # SH-115: per-job keying options
+    kopt = {x: job[x] for x in ("hole_min", "hole_neutral", "shadow", "soft_floor", "soft_gain") if x in job}  # SH-115: per-job keying options
     k, obj = L.key(a, multi=ma, tol=job.get("tol", 10), **kopt)
     names = job["names"]
     if "cells" in job or "boxes" in job:
@@ -329,6 +337,13 @@ def cut_grid(job, cx):
                 props[nm]["file2x"] = cx.rel(path.replace(".webp", "@2x.webp"))
         if nm in discs:
             props[nm]["disc"] = [round(v * s, 1) for v in discs[nm]]
+        if nm in job.get("tile", ()):  # BD1, SM1: laid in a row by code, so the tile must repeat: the seam measured, and a cross-faded copy made
+            before = L.seam_ratio(cv)
+            tl = L.make_tileable(cv, job.get("tile_ov", 64))
+            tp = path.replace(".webp", "-tile.webp")
+            tl.save(tp, quality=job.get("q", 90), method=6, lossless=job.get("tile_lossless", False))
+            props[nm]["tile"] = {"file": cx.rel(tp), "w": tl.width, "h": tl.height, "seam_before": round(before, 2), "seam_after": round(L.seam_ratio(tl), 2)}
+            log("  %s: seam ratio %.2f as cut (%s), %.2f in the cross-faded -tile copy" % (nm, before, "seamless" if before <= 1.6 else "SEAM", L.seam_ratio(tl)), quiet=True)
         if job.get("scale_note"):
             props[nm]["scale"] = round(s, 4)
     for grp in job.get("registered", []):
