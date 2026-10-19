@@ -29,12 +29,14 @@
  * The step rules (decision 55, rules R1-R4 of docs/design-language/guide-and-card.md), one for every mode:
  *   const st = NaniGuide.stepper({show(html, {rec}), clear(), speak(step) -> Promise, glow(step, on), level() -> n,
  *                                 pauseMs(level) -> ms, onHelp(step)})
- *   st.open({html, rec, line, ...})   a step opens: ONE line, the next step only (never the whole card). Level 1:
- *                           shown and said at once, the glow after the pause. Level 2+: nothing until the pause,
- *                           then the line, said, with the glow (the first step too). Help, not a giveaway.
+ *   st.open({html, rec, line, ...})   a step opens: ONE line, the next step only (never the whole card). Nothing is shown,
+ *                           said or lit at the open, at any level (SH-60, SH-95: the help ladder below); the step call of the
+ *                           level table (Nani saying each step once as it opens) hooks in as `call(step)` (next wave).
  *   st.close()              the step ended: its line clears (a spoken line never outstays its step), the glow goes
- *   st.poke()               the child did something: the pause starts again
+ *   st.poke()               the child did something: the page's idle clock starts again (it also starts on every tap, drag or key)
  *   st.help()               the help now (the bulb, a wrong tap): line, voice and glow
+ *   NaniGuide.PAUSE / REPEAT / BULB_PULSE   the ladder's table (below); NaniGuide.idleMs() ms since the last action;
+ *   NaniGuide.pulseBulbs(on) both light bulbs pulse (class help-pulse)
  *   st.current              the open step, or null
  *   NaniGuide.setMuted(v)   NaniGuide.onMute(fn) -> unsubscribe
  *
@@ -82,14 +84,59 @@
   };
   G.onMute = (fn) => (listeners.push(fn), () => listeners.splice(listeners.indexOf(fn), 1));
 
-  /** The pause before help, by level (ms): about 5 s at level 1 (the glow), a little longer from level 2. */
-  G.PAUSE = [5000, 6000, 7000, 8000];
+  /*
+   * The help ladder (Zafar, 17 Oct; decision 4: SH-60, SH-95, SH-96). One table for every station, counted from the child's
+   * LAST ACTION (any tap, drag or key: the idle clock below), never from when a step opened:
+   *   PAUSE[level-1]   how long she must have done nothing before Nani helps: her line and the glow at the SAME moment
+   *                    (2 s later than before: 7, 8, 11, 15 s)
+   *   REPEAT           a help line is said again only after this much idle time more (never twice in a row, PAN-16)
+   *   BULB_PULSE       after this long stuck both light bulbs pulse, so the child knows they can be tapped (15-20 s)
+   * Nothing is said or lit when a step opens (the "step call", Nani saying each step once as it opens, is the next wave's:
+   * pass `call(step)` to the stepper and it runs at that moment). Cook's data (data/cook.json calm.helpMs, calm.bulbPulseMs)
+   * replace these defaults when a station starts.
+   */
+  G.PAUSE = [7000, 8000, 11000, 15000];
+  G.REPEAT = 10000;
+  G.BULB_PULSE = 17000;
+  const clock = { t: Date.now(), on: false };
+  /** The idle clock: one listener for the page, so every station pokes it on every action (SH-60: "the timer restarts on every action"). */
+  G.watch = function () {
+    const d = root.document;
+    if (clock.on || !d || !d.addEventListener) return;
+    clock.on = true;
+    const bump = () => (clock.t = Date.now());
+    ["pointerdown", "pointerup", "keydown", "wheel", "touchstart"].forEach((ev) => d.addEventListener(ev, bump, true));
+    d.addEventListener("pointermove", (e) => e.buttons && bump(), true); // a drag or a stir is doing something
+  };
+  G.poke = () => (clock.t = Date.now());
+  /** ms since the child last did anything (or a station started). */
+  G.idleMs = () => Date.now() - clock.t;
+  G.lastAction = () => clock.t;
+  /** The pulse on both light bulbs (the English bulb in her box and the closed card's small bulb): a class the page styles (css/cook.css). */
+  G.BULBS = "#btn-bulb, .ng-bulb, .oc-look.bulb";
+  G.pulseBulbs = function (on) {
+    const d = root.document;
+    if (!d || !d.querySelectorAll) return;
+    d.querySelectorAll(G.BULBS).forEach((b) => b.classList.toggle("help-pulse", !!on));
+  };
+  const logHelp = (what, info) => {
+    try {
+      if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note(what, info);
+    } catch (e) {
+      /* only a log (the contract checks read it) */
+    }
+  };
+  G.logHelp = logHelp;
+
   G.stepper = function (o = {}) {
+    G.watch();
     const lv = () => Math.max(1, Number(o.level ? o.level() : 1) || 1);
     const pause = (l) => (o.pauseMs ? o.pauseMs(l) : G.PAUSE[Math.min(G.PAUSE.length, l) - 1]);
     let cur = null;
     let timer = null;
     let shownAt = 0;
+    let seq = 0;
+    const said = new Map(); // a line's text -> when it was last said by a help (PAN-16: never twice within REPEAT)
     const call = (fn, ...a) => {
       try {
         return fn ? fn(...a) : undefined;
@@ -97,28 +144,48 @@
         return undefined;
       }
     };
-    const stopTimer = () => (clearTimeout(timer), (timer = null));
+    const stopTimer = () => (clearInterval(timer), (timer = null));
     const show = (s) => {
       if (!s || s.shown) return;
       s.shown = true;
       shownAt = Date.now();
       call(o.show, s.html, { rec: !!s.rec });
     };
-    const say = (s) => Promise.resolve(G.muted() ? null : call(o.speak, s)).catch(() => {});
-    const helpNow = (s) => {
+    const textOf = (s) => String((s.line && s.line.segs ? s.line.segs.map((x) => x.t).join("") : s.html) || "");
+    const say = (s) => {
+      if (G.muted()) return Promise.resolve(null);
+      // the same line is not said again within REPEAT of its last saying
+      const k = textOf(s);
+      if (Date.now() - (said.get(k) || -1e9) < G.REPEAT) return Promise.resolve(null);
+      said.set(k, Date.now());
+      return Promise.resolve(call(o.speak, s)).catch(() => {});
+    };
+    // the help: her line and the glow at the same moment (SH-60); the line is shown at once and said unless it was just said
+    const helpNow = (s, { manual = false } = {}) => {
       if (!s || s !== cur) return;
       show(s);
       s.helped = true;
+      s.helpedAt = Date.now();
+      logHelp("help", { step: manual ? "asked" : "idle", by: `L${lv()} ${s.id || ""}` });
       call(o.onHelp, s);
       say(s);
       call(o.glow, s, true);
+    };
+    // when the next help is due: PAUSE of no action after the step opened or the last action; a second help only after
+    // REPEAT of no action more and REPEAT since the last help
+    const due = (s) => {
+      const base = Math.max(clock.t, s.openedAt);
+      return s.helped ? Math.max(base + G.REPEAT, s.helpedAt + G.REPEAT) : base + pause(lv());
     };
     const arm = () => {
       stopTimer();
       const s = cur;
       // helpAfter false: the host's own hesitation help runs this step (the line is still the box's)
-      if (!s || s.helped || s.helpAfter === false) return;
-      timer = setTimeout(() => helpNow(s), pause(lv()));
+      if (!s || s.helpAfter === false) return;
+      timer = setInterval(() => {
+        if (s !== cur) return stopTimer();
+        if (Date.now() >= due(s) - 15) helpNow(s);
+      }, 200);
     };
     const st = {
       get current() {
@@ -126,11 +193,11 @@
       },
       open(step) {
         st.close();
-        cur = Object.assign({ shown: false, helped: false }, step);
-        if (lv() <= 1 && !cur.quiet) {
-          show(cur);
-          say(cur);
-        } else call(o.clear);
+        cur = Object.assign({ shown: false, helped: false, openedAt: Date.now(), id: ++seq }, step);
+        // opening a step says and lights nothing: the child gets the pause first (SH-60, SH-95). The step call (wave 2) hooks in here
+        call(o.clear);
+        logHelp("step-open", { step: String(cur.id), by: `L${lv()}` });
+        call(o.call, cur);
         arm();
         return cur;
       },
@@ -141,14 +208,21 @@
         if (s) call(o.glow, s, false);
         call(o.clear);
       },
+      /** The child did something: the pause starts again (every station's actions also poke the page's idle clock). */
       poke() {
-        if (cur && !cur.helped) arm();
+        G.poke();
       },
       help() {
-        helpNow(cur);
+        helpNow(cur, { manual: true });
       },
       shownFor: () => (cur && cur.shown ? Date.now() - shownAt : 0),
     };
+    // a stage that ends takes its open step with it: no help line or glow ever comes after the stage (contract-3)
+    try {
+      if (root.Lifecycle && root.Lifecycle.onStageEnd) root.Lifecycle.onStageEnd(() => st.close());
+    } catch (e) {
+      /* no lifecycle on this page */
+    }
     return st;
   };
 

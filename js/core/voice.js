@@ -344,7 +344,7 @@ export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, wait = (ms
     const go = () => {
       try {
         const vs = (S.getVoices && S.getVoices()) || [];
-        const v = voice || vs.find((x) => /^gu/i.test(x.lang)) || vs.find((x) => /^hi/i.test(x.lang)) || vs[0];
+        const v = voice || vs.find((x) => /^gu/i.test(x.lang)) || vs.find((x) => /^hi/i.test(x.lang)) || vs.find((x) => /^en-IN/i.test(x.lang)) || vs[0];
         const u = new globalThis.SpeechSynthesisUtterance(text);
         if (v) (u.voice = v), (u.lang = v.lang);
         u.rate = rate;
@@ -354,7 +354,8 @@ export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, wait = (ms
         // installed) or never ends is let go of
         u.onend = u.onerror = () => fin(true);
         S.speak(u);
-        setTimeout(() => !started && fin(false), 900);
+        // (no voice installed at all: let go of it almost at once, so a test browser is not held up)
+        setTimeout(() => !started && fin(false), vs.length ? 900 : 250);
         setTimeout(() => fin(true), 1500 + 300 * String(text).length);
       } catch (e) {
         fin(false);
@@ -388,6 +389,7 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
     return planClips((result && (result.segments || result.segs)) || [], index, { path: thePath(), phrases: thePhrases() });
   };
   V.phrases = thePhrases;
+  V.deviceSpeak = deviceSpeak;
 
   async function playItems(items, c, entry, onWord) {
     const alive = () => !entry.cancelled && entry.gen === c.gen;

@@ -330,7 +330,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       pop.add([bg, icon, t]);
       S.tweens.add({ targets: pop, alpha: 1, y: y - 16, duration: 220 });
       S.tweens.add({ targets: pop, alpha: 0, delay: 1300, duration: 300, onComplete: () => pop.destroy() });
-      Lang.speakWord(id);
+      Lang.popWord(id);
     };
 
     /*

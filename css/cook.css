@@ -179,6 +179,16 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 #done-btn:not(.njg-btn):active { transform: translateY(3px); box-shadow: 0 1px 0 #e0cba6, 0 4px 10px rgba(70, 45, 20, 0.2); }
 #done-btn:not(.njg-btn).glow { animation: doneGlow 1s ease-in-out infinite; }
 @keyframes doneGlow { 50% { box-shadow: 0 0 0 8px rgba(217, 164, 65, .35), 0 4px 0 #e0cba6, 0 8px 18px rgba(70, 45, 20, 0.22); } }
+/* SH-96, SH-53 (17 Oct): the help glow's token. js/cook/station-lib.js (Cook.GLOW) writes these; the defaults are the shared tick's
+   own pulse (css/shared/buttons.css njgDonePulse: 1.2 s, a 12 px gold glow at .85), so the item glow, the pulsing bulbs and the
+   tick beat together. The bulbs pulse (class help-pulse, js/shared/guide.js pulseBulbs) once the child has been stuck 15-20 s. */
+:root { --glow-ms: 1200ms; --glow-radius: 12px; --glow-rgb: 224, 166, 58; --glow-alpha: .85; }
+.help-pulse { animation: helpPulse var(--glow-ms) ease-in-out infinite; }
+@keyframes helpPulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(var(--glow-rgb), 0)); }
+  50% { filter: drop-shadow(0 0 var(--glow-radius) rgba(var(--glow-rgb), var(--glow-alpha))); }
+}
+@media (prefers-reduced-motion: reduce) { .help-pulse { animation: none; filter: drop-shadow(0 0 var(--glow-radius) rgba(var(--glow-rgb), var(--glow-alpha))); } }
 
 #toast {
   position: absolute; z-index: 11; left: 50%; top: 40%; transform: translate(-50%, -50%);

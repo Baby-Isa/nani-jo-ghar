@@ -97,8 +97,98 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
   S$.hideKnown = hideKnown;
 
+  /*
+   * The help ladder, one table for every station (Zafar, 17 Oct; decision 4; SH-60, SH-95, SH-96, SH-53; js/shared/guide.js):
+   *   - the lab's "Nani helps" is off until ticked (flow.js reads Cook.labGuided !== false, so this is the default);
+   *   - first-play guidance (ctx.guided) only at levels 1 and 2; at levels 3 and 4 nothing at the start;
+   *   - the idle clock is the page's (NaniGuide.idleMs: every tap, drag and key restarts it, in every station);
+   *   - Nani's word and the glow come at the same moment, after the pause (S$.step below, the stepper in guide.js);
+   *   - after calm.bulbPulseMs stuck, both light bulbs pulse.
+   * The numbers are data (data/cook.json calm.helpMs, calm.bulbPulseMs); the glow's size and beat are one token (Cook.GLOW,
+   * mirrored as CSS variables so the tick's pulse and the item glow are the same).
+   */
+  if (Cook.labGuided == null) Cook.labGuided = false;
+  const NG = () => global.NaniGuide;
+  // the glow token (SH-53, 17 Oct: "make it glow even more, extend a little further out ... like how we got on the tick button,
+  // pulsating quite strongly"): the tick's own pulse (css/shared/buttons.css njgDonePulse: 1.2 s, a 12 px gold glow at .85) is
+  // the beat and the reach of the item glow, the bulbs' pulse and the done glow, written once here and mirrored as CSS variables
+  // (css/cook.css reads --glow-ms, --glow-radius, --glow-rgb, --glow-alpha)
+  const GLOW = (Cook.GLOW = { ms: 1200, radius: 12, color: 0xe0a63a, rgb: "224, 166, 58", alpha: 0.85 });
+  const glowCss = () => {
+    try {
+      const st = document.documentElement.style;
+      st.setProperty("--glow-ms", `${GLOW.ms}ms`);
+      st.setProperty("--glow-radius", `${GLOW.radius}px`);
+      st.setProperty("--glow-rgb", GLOW.rgb);
+      st.setProperty("--glow-alpha", String(GLOW.alpha));
+    } catch (e) {
+      /* no page */
+    }
+  };
+  let pulseTimer = null;
+  const levelOf = (ctx) => Cook.roundLevel(ctx);
+  function ladderStart(S, ctx) {
+    const calm = (Cook.data && Cook.data.calm) || {};
+    const G = NG();
+    if (G) {
+      if (Array.isArray(calm.helpMs)) G.PAUSE = calm.helpMs.slice();
+      if (calm.repeatMs) G.REPEAT = calm.repeatMs;
+      if (calm.bulbPulseMs) G.BULB_PULSE = calm.bulbPulseMs;
+      G.watch();
+      G.poke();
+    }
+    glowCss();
+    Lang.popReset();
+    // first-play guidance only at levels 1 and 2 (SH-95: "You shouldn't be getting help, especially not in level four")
+    if (ctx && ctx.guided && levelOf(ctx) >= 3) ctx.guided = false;
+    // the shared step engine and the glow, on this scene (stations.js keeps the old ones, unused by the stations)
+    if (S && !S.__ladder) {
+      S.__ladder = true;
+      S.step = (o) => S$.step(S, o);
+      const draw0 = S.glowDraw && S.glowDraw.bind(S);
+      if (draw0) {
+        S.glowDraw = (obj, on = true, o) => {
+          draw0(obj, on, o);
+          if (on && obj && obj.active && obj.glowFx) tuneGlow(S, obj);
+        };
+      }
+    }
+    clearInterval(pulseTimer);
+    pulseTimer = setInterval(() => {
+      const g = NG();
+      if (g) g.pulseBulbs(!!Cook.inStation && !Cook.paused && g.idleMs() >= g.BULB_PULSE);
+    }, 500);
+  }
+  function ladderStop() {
+    clearInterval(pulseTimer);
+    pulseTimer = null;
+    if (NG()) NG().pulseBulbs(false);
+  }
+  /** SH-53: the item glow as strong, as wide and on the same beat as the tick's ring (GLOW), whether WebGL or the canvas halo. */
+  function tuneGlow(S, obj) {
+    const g = obj.glowFx;
+    const ring = GLOW.radius;
+    const mine = (t) => (t.targets || []).some((x) => x === g.fx || x === g.halo);
+    if (g.fx && obj.preFX) {
+      g.tweens.filter(mine).forEach((t) => t.stop());
+      g.tweens = g.tweens.filter((t) => !mine(t));
+      obj.preFX.remove(g.fx);
+      obj.preFX.padding = Math.max(obj.preFX.padding || 0, ring * 3.6);
+      g.fx = obj.preFX.addGlow(GLOW.color, ring * 0.4, 0, false, 0.1, Math.round(ring * 2.2));
+      g.tweens.push(S.tweens.add({ targets: g.fx, outerStrength: ring * 1.2, duration: GLOW.ms / 2, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
+    } else if (g.halo) {
+      g.tweens.filter(mine).forEach((t) => t.stop());
+      g.tweens = g.tweens.filter((t) => !mine(t));
+      const c = S.opaqueBox(obj);
+      g.halo.setSize && g.halo.setSize(c.w * 1.25 + ring * 4, c.h * 1.2 + ring * 3.4);
+      g.halo.setAlpha(GLOW.alpha);
+      g.tweens.push(S.tweens.add({ targets: g.halo, alpha: GLOW.alpha * 0.45, scale: 1.1, duration: GLOW.ms / 2, yoyo: true, repeat: -1 }));
+    }
+  }
+
   /** Start a station: its view, its goal line (first time or guided), its step on the mission card. */
   async function begin(S, ctx, key, view, { closed = false } = {}) {
+    ladderStart(S, ctx);
     Cook.focusBox = null; // the last station's test crop box (flow.js hook focus) goes with it
     // Wave 5: the lab's order card is still up big in the middle: start once it has flown into the sidebar
     if (ctx && ctx.intro) {
@@ -143,6 +233,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (global.Lifecycle) global.Lifecycle.stageEnd("cook:station");
     if (Cook.Coach) Cook.Coach.stop();
     Cook.inStation = false;
+    ladderStop();
     UI.hideVoice();
     UI.hideGist();
     UI.hideCount();
@@ -503,8 +594,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * UI.step). The same key twice in a row is the same step (no repeat). Old pages without UI.step get guideFor.
    */
   S$.guideLine = (key) => Lang.guideLine(key, ((Cook.data && Cook.data.guide) || {})[key] || {});
-  /** "Elchi. Wiji chad!": the next thing then Mum's "put it in" (T9; the join is the engine's, to check with Mum). */
-  S$.addLine = (id) => Lang.join([Lang.bare(Lang.phrase([id])), Lang.line("guide-add")]);
+  /**
+   * "Bataato wiji chad!": the next thing and Mum's "put it in" as ONE sentence, the engine's DoIt with its object (SH-97, P15:
+   * "there's a full stop there, there shouldn't be ... it's just put in potato, a one sentence instruction"). Was two lines
+   * joined, "Bataato." then "Wiji chad!".
+   */
+  S$.addLine = (id) => Object.assign(Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf([id]) }), { key: "guide-add" });
   S$.steps = function (ctx) {
     let cur = null;
     const g = {
@@ -531,6 +626,95 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
     return g;
   };
+  /**
+   * The shared step engine (was CookScene.step in stations.js; the help ladder's side for the stations that wait for one tap
+   * among items: the pantry, the add stations, tadka). Waits for the player to tap `expected` among `items` ({key: obj}).
+   * A wrong item wiggles (level 1) or lands quietly (level 2+); from the second wrong try the right one glows.
+   * HELP (SH-60, SH-95): nothing is said or lit when it opens, guided or not; once the child has done nothing for the
+   * ladder's pause (NaniGuide.PAUSE by level, counted from the last action on the page) Nani says the word and the item
+   * glows at the same moment; again only after REPEAT more of no action. The first (hint) counts as help, the glow as
+   * "shown" (accuracy badge), unless this is the guided first play.
+   */
+  S$.step = function (S, { items, expected, word, guided, sayLine, allowAny, onWrong, onLand, quiet = false, io = Cook.IO, ctl = null }) {
+    return new Promise((resolve) => {
+      let misses = 0;
+      const target = items[expected];
+      let poll = null;
+      const cleanup = () => {
+        clearInterval(poll);
+        Object.values(items).forEach((o) => {
+          S.untap(o);
+          S.glow(o, false);
+        });
+      };
+      // C3 (E14): the caller can stop this step (a thing was taken back: the step starts again with it)
+      if (ctl)
+        ctl.cancel = () => {
+          cleanup();
+          io.expect(null);
+          resolve({ cancelled: true, misses });
+        };
+      // Nani is a voice at a station; the row she names throbs on the card (UX 13)
+      const hint = () => sayLine && UI.voice(sayLine).catch(() => {});
+      const openedAt = Date.now();
+      let helped = 0;
+      let helpedAt = 0;
+      poll = setInterval(() => {
+        const g = NG();
+        if (!g || !target || !target.active) return;
+        const idle = Math.min(g.idleMs(), Date.now() - openedAt);
+        const need = helped ? g.REPEAT : g.PAUSE[Math.min(g.PAUSE.length, levelOf()) - 1];
+        if (idle < need || (helped && Date.now() - helpedAt < g.REPEAT)) return;
+        helped++;
+        helpedAt = Date.now();
+        if (!guided && Cook.onHelp) Cook.onHelp("hint");
+        if (g && g.logHelp) g.logHelp("help", { step: "idle", by: `L${levelOf()} ${expected}` });
+        hint();
+        S.glow(target, true, { bounce: true });
+        if (!guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
+      }, 200);
+      Object.entries(items).forEach(([key, obj]) => {
+        if (!obj || !obj.active) return;
+        S.tappable(obj, () => {
+          if (key === expected || (allowAny && allowAny(key))) {
+            cleanup();
+            io.expect(null);
+            resolve({ key, misses });
+          } else if (quiet) {
+            // Wave 6b (UX 11), level 2 up: a wrong pick lands like any other (onLand moves it);
+            // nothing says it's wrong now, the end review does
+            misses++;
+            Cook.sfx.pop();
+            if (onWrong) onWrong(key, misses);
+            if (onLand) {
+              S.untap(obj);
+              onLand(key, obj);
+            }
+          } else {
+            misses++;
+            S.wiggle(obj);
+            Cook.sfx.soft();
+            if (onWrong) onWrong(key, misses);
+            if (misses >= 2) {
+              S.glow(target, true, { bounce: true });
+              if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
+            }
+          }
+        });
+      });
+      const c = S.centre(target);
+      io.expect({
+        kind: "tap",
+        x: c.x,
+        y: c.y,
+        key: expected,
+        wrongs: Object.keys(items)
+          .filter((k) => k !== expected && items[k] && items[k].active)
+          .map((k) => S.centre(items[k])),
+      });
+    });
+  };
+
   /*
    * Decision 51 (CK-23): a wrong item is redone on the spot, never the whole game. A station keeps one tracker per
    * round (ctx.redo, from flow.js / OrderCard.redo; a lab page without it gets its own) and asks it per item key.

@@ -453,20 +453,54 @@
     return (line.plan || []).map((c) => (c.file ? c : c.lang === "e" ? Object.assign({}, c, { source: "missing" }) : Object.assign({}, c, { source: path() === "test" ? "device" : "missing", text: c.say || c.text })));
   }
   Lang.planOf = planOf;
-  Lang.speak = async (line, { over = false } = {}) => {
+  /*
+   * PAN-04 / SH-94 (17 Oct): ONE speech queue for everything Cook says, in js/core/voice.js (channel "cook", queue: true):
+   * a line waits its turn and cuts nothing; a stop (a station's end, a tap through the pop-up) clears it. Three kinds:
+   *   "line"   (default) a step, an order, a help line, the order replayed, the chips: queued, said whole, in turn
+   *   "item"   an item's name on a tap (Lang.popWord): said only when nothing else is speaking, otherwise not at all
+   *   "count"  a number as you tap or turn (opts.over, kept for the old call): queued; a newer count drops an older one still
+   *            waiting, and one that waited over COUNT_WAIT_MS is dropped (P10: the late number is not said)
+   * Lang.speak(line) resolves when the line has been said (or dropped).
+   */
+  const COUNT_WAIT_MS = 1500;
+  let quietSince = 0; // when the queue last went quiet (an item's name waits a breath after a line, never in the gap between two)
+  Lang.speak = async (line, { over = false, kind = over ? "count" : "line" } = {}) => {
     if (!line) return false;
     const items = planOf(line);
     const V = Cook.core && Cook.core.voice;
     if (V) {
-      // over: an interjection (the count as you tap) that pauses the line playing, then lets it carry on (PAN-11)
-      await V.say({ clipPlan: items }, { channel: "cook", over });
-      return true;
+      const o = { channel: "cook", queue: true };
+      if (kind === "count") Object.assign(o, { key: "count", ttl: COUNT_WAIT_MS });
+      if (kind === "item") o.ifIdle = true;
+      const r = await V.say({ clipPlan: items }, o);
+      if (kind !== "item" && !V.busy("cook")) quietSince = Date.now();
+      return !(r && r.skipped);
     }
     // no core (it failed to load): the family clips in order
     for (const c of items) if (c.file && Cook.speakFile) await Cook.speakFile(c.file);
     return true;
   };
+  /** Say a word (a speaker button, a chip, the end review): queued behind what is being said, never cutting it. */
   Lang.speakWord = (id) => Lang.speak(Lang.wordLine(id));
+  /**
+   * SH-94 (Zafar, 17 Oct: "Mishkaki, Mishkaki, Mishkaki ... it's too much to hear"; one rule for every game): an item's name
+   * as it is tapped or lands. Said only when nothing else is speaking or waiting (never over an order, a step or a count),
+   * never at levels 3 and 4 (the item is for the child to know), and the same word again only after POP_AGAIN_MS. Resolves
+   * false when it was not said.
+   */
+  const POP_AGAIN_MS = 10000;
+  const POP_BREATH_MS = 500;
+  const popped = new Map();
+  Lang.popWord = (id, { level } = {}) => {
+    const lv = level != null ? level : Cook.roundLevel ? Cook.roundLevel() : 1;
+    const V = Cook.core && Cook.core.voice;
+    const now = Date.now();
+    if (lv >= 3 || (V && V.busy("cook")) || now - quietSince < POP_BREATH_MS || now - (popped.get(id) || -1e9) < POP_AGAIN_MS) return Promise.resolve(false);
+    popped.set(id, now);
+    return Lang.speak(Lang.role(Lang.wordLine(id), "item"), { kind: "item" });
+  };
+  /** A new station or round: its item words are new again. */
+  Lang.popReset = () => popped.clear();
   /** Can any of this line be heard (a family clip; on the test path, a Kutchi stand-in too)? */
   Lang.hasVoice = (line) => planOf(line).some((c) => c.file || (c.source === "device" && path() === "test"));
   /** Is the whole line one recording? */
@@ -475,32 +509,10 @@
     return p.length === 1 && !!p[0].file;
   };
   Lang.wordHasVoice = (id) => Lang.hasVoice(Lang.wordLine(id));
-  // the core voice's stand-in for a piece with no recording (test path only): the device's own voice
-  const synthVoice = () => {
-    try {
-      const vs = global.speechSynthesis ? global.speechSynthesis.getVoices() : [];
-      return vs.find((v) => /^gu/i.test(v.lang)) || vs.find((v) => /^hi/i.test(v.lang)) || vs.find((v) => /^en-IN/i.test(v.lang)) || vs[0] || null;
-    } catch (e) {
-      return null;
-    }
+  // LNG-09 / LNG-16: the device voice is the core's (js/core/voice.js deviceSpeak): normal speed, waits out a cancel, ends when
+  // the browser says so (so the next piece never starts under it)
+  Cook.synthSay = (text) => {
+    const V = Cook.core && Cook.core.voice;
+    return V && V.deviceSpeak ? V.deviceSpeak(text) : Promise.resolve(false);
   };
-  Cook.synthSay = (text) =>
-    new Promise((resolve) => {
-      const v = synthVoice();
-      if (!v) return resolve(false);
-      let done = false;
-      const fin = () => !done && ((done = true), resolve(true));
-      try {
-        const u = new global.SpeechSynthesisUtterance(text);
-        u.voice = v;
-        u.lang = v.lang;
-        u.rate = 0.7;
-        u.onend = fin;
-        u.onerror = fin;
-        global.speechSynthesis.speak(u);
-      } catch (e) {
-        fin();
-      }
-      setTimeout(fin, (700 + 260 * String(text).length) / (Cook.speed || 1));
-    });
 })(window);

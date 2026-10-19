@@ -302,7 +302,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     S.tweens.add({ targets: c, alpha: 1, scale: Math.max(z.k, Cook.Kit.textFloor(S, 36)), y: y - z.L(18), duration: 200, ease: "Back.easeOut" });
     S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: ms, duration: 320, onComplete: () => c.destroy() });
     if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
-    const talk = speakId ? Lang.speakWord(speakId) : line ? Lang.speak(line) : null;
+    const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
     return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
   }
 

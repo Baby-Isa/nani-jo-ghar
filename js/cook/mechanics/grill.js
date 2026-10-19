@@ -1123,7 +1123,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     c.add([g, t]);
     S.tweens.add({ targets: c, alpha: 1, y: y - z.L(18), duration: 180, ease: "Back.easeOut" });
     S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: 1500, duration: 320, onComplete: () => c.destroy() });
-    if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.speakWord(id);
+    if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.popWord(id);
     return c;
   };
   /**
