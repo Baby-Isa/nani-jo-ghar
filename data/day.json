@@ -206,16 +206,16 @@
           "frame": { "art": null }
         },
         "things": {
-          "goat": { "say": "n.she-goat", "art": "assets/characters/goat/goat-side.png", "h": 1, "family": "animal" },
-          "hen": { "say": "n.chicken", "art": "assets/characters/hen/hen-side.png", "h": 0.8, "family": "animal" },
-          "dog": { "say": "n.dog", "art": null, "shape": "animal", "fill": "#9a6a3e", "h": 0.9, "family": "animal" },
-          "bird": { "say": "n.bird", "art": null, "shape": "bird", "fill": "#5f86b0", "h": 0.55, "family": "animal" },
-          "red-door": { "say": { "fn": "Item", "kind": "n.door", "mods": ["a.red"] }, "art": null, "shape": "door", "fill": "#b8433a", "h": 1.25, "family": "door" },
-          "green-door": { "say": { "fn": "Item", "kind": "n.door", "mods": ["a.green"] }, "art": null, "shape": "door", "fill": "#4f8a4a", "h": 1.25, "family": "door" },
-          "tree": { "say": "n.the-tree", "art": null, "shape": "tree", "fill": "#5f8a3e", "h": 1.6, "scenery": true }
+          "goat": { "en": "goat", "say": "n.she-goat", "art": "assets/characters/goat/goat-side.png", "h": 1, "family": "animal" },
+          "hen": { "en": "hen", "say": "n.chicken", "art": "assets/characters/hen/hen-side.png", "h": 0.8, "family": "animal" },
+          "dog": { "en": "dog", "say": "n.dog", "art": null, "shape": "animal", "fill": "#9a6a3e", "h": 0.9, "family": "animal" },
+          "bird": { "en": "bird", "say": "n.bird", "art": null, "shape": "bird", "fill": "#5f86b0", "h": 0.55, "family": "animal" },
+          "red-door": { "en": "red door", "say": { "fn": "Item", "kind": "n.door", "mods": ["a.red"] }, "art": null, "shape": "door", "fill": "#b8433a", "h": 1.25, "family": "door" },
+          "green-door": { "en": "green door", "say": { "fn": "Item", "kind": "n.door", "mods": ["a.green"] }, "art": null, "shape": "door", "fill": "#4f8a4a", "h": 1.25, "family": "door" },
+          "tree": { "en": "tree", "say": "n.the-tree", "art": null, "shape": "tree", "fill": "#5f8a3e", "h": 1.6, "scenery": true }
         },
         "headline": { "meaning": { "fn": "Command", "verb": "v.look" }, "en": "Look!" },
-        "call": { "fn": "Where", "arg": "thing" },
+        "call": { "fn": "Where", "arg": "thing", "en": "Where is the {x}?" },
         "stopCar": { "thing": "goat", "meaning": { "fn": "Exclaim", "x": "phrase.stop-the-car-keep-it-standing" }, "en": "Stop the car!", "holdMs": 2600 },
         "levels": {
           "1": { "calls": 3, "group": 3, "crossMs": 7000, "gapMs": 2200, "card": "open" },

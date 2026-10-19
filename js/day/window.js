@@ -22,6 +22,7 @@ export async function runWindow(el, api, day) {
 
   // the things as the engine says them: a thing it can't say yet is never named (it may pass as scenery)
   const meaningOf = (t) => (typeof t.say === "string" ? { fn: "Item", kind: t.say } : t.say);
+  const enOf = (id) => ride.things[id].en || id;
   const callable = (id) => {
     const t = ride.things[id];
     try {
@@ -30,12 +31,12 @@ export async function runWindow(el, api, day) {
       return false;
     }
   };
-  Object.keys(ride.things).forEach((id) => !callable(id) && api.gaps.push({ en: id, meaning: meaningOf(ride.things[id]), gaps: ["never named: the engine can't say it yet"] }));
+  Object.keys(ride.things).forEach((id) => !callable(id) && api.gaps.push({ en: enOf(id), meaning: meaningOf(ride.things[id]), gaps: ["unsaid"] }));
   const plan = WR.plan(ride, level, api.rng, { callable });
-  const words = plan.calls.map((c) => api.line({ meaning: meaningOf(ride.things[c.named]), en: c.named }));
+  const words = plan.calls.map((c) => api.line({ meaning: meaningOf(ride.things[c.named]), en: enOf(c.named) }));
   // Nani's call: the ride's frame (data: "Where is {thing}?") around the thing, built by the engine
   const callOf = (thing) => Object.assign({ fn: (ride.call && ride.call.fn) || "Where" }, { [(ride.call && ride.call.arg) || "thing"]: thing });
-  const asks = plan.calls.map((c) => api.line({ meaning: callOf(meaningOf(ride.things[c.named])), en: `Where is the ${c.named}?` }));
+  const asks = plan.calls.map((c) => api.line({ meaning: callOf(meaningOf(ride.things[c.named])), en: String((ride.call && ride.call.en) || "{x}").replace("{x}", enOf(c.named)) }));
   const head = ride.headline ? api.line(ride.headline) : null;
   window.Day.ride = { plan, level };
 
