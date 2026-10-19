@@ -39,6 +39,23 @@
   Object.defineProperty(HS, "L", { get: Lg, enumerable: true });
   /** The number word for n ("ba"), or null past five. */
   HS.num = (n, o) => (Lg().numId(n) ? Lg().num(n, o).kutchi : null);
+  /*
+   * SH-117: the shared pour and fill (js/shared/pour.js, an ES module Cook imports): a game that pours (the taste glass)
+   * awaits HS.pourKit() (S.pourKit). It is asked for once, beside this file (its own address, with the page's version),
+   * as soon as this file runs in a page, so it is there long before the first pour.
+   */
+  const SELF = typeof document !== "undefined" && document.currentScript && document.currentScript.src;
+  let pourKit = null;
+  HS.pourKit = function () {
+    if (global.NjgPour) return Promise.resolve(global.NjgPour);
+    if (!pourKit) {
+      const u = new URL("../../shared/pour.js", SELF || (typeof document !== "undefined" ? document.baseURI : "file:///"));
+      if (SELF) u.search = new URL(SELF).search;
+      pourKit = import(u.href).then((m) => m.NjgPour || global.NjgPour);
+    }
+    return pourKit;
+  };
+  if (SELF) HS.pourKit().catch(() => (pourKit = null));
   /**
    * CLN-118 (D13): the taught first round has no counts, sizes or sides: its word review drops the number, size and side
    * words (each game builds its rows without them: its own mount, `if (ctx.taught)`); counts start on the next round.
@@ -82,7 +99,8 @@
     ice: `<svg class="hs-mark" viewBox="0 0 100 100" aria-hidden="true">${cube(30, 14, -12)}${cube(48, 10, 10)}${cube(40, 26, 4)}</svg>`,
   };
   HS.CSS = [
-    ".hs-tool .g.im{width:calc(var(--njg-tap) * 1.25);height:calc(var(--njg-tap) * .95);object-fit:contain;pointer-events:none;-webkit-user-drag:none}",
+    // SH-112: the tool's picture fills the shared box (css/clinic.css .hs-tools: --hs-pic-w x --hs-pic-h, from the tokens)
+    ".hs-tool .g.im{width:var(--hs-pic-w);height:var(--hs-pic-h);object-fit:contain;pointer-events:none;-webkit-user-drag:none}",
     ".hs-tool.drag-src{opacity:.4}",
     // CLN-75: a drawn mark over a tool's art that reads at button size (the hot jug's steam, the cold jug's ice)
     ".hs-tool{position:relative}",
@@ -215,6 +233,7 @@
     const S = { root, svg, s, h, ctx, level: ctx.level, game: opts.game || (ctx.game && ctx.game.id) };
     S.layer = s("g", { class: "hs-art" }, svg);
     S.fx = s("g", { class: "hs-fx" }, svg);
+    S.pourKit = HS.pourKit; // SH-117: the shared pour and fill
 
     /* ---- coordinates ---- */
     S.pt = (e) => {
@@ -400,9 +419,6 @@
     S.tools = (list, fn) => {
       shelf.innerHTML = "";
       S.toolEls = {};
-      // as many rows as fit the play area's height (a phone is short), then more columns
-      const rowsFit = Math.max(2, Math.floor((root.getBoundingClientRect().height * 0.86 + 8) / 70));
-      shelf.style.setProperty("--cols", Math.ceil(list.length / Math.min(6, rowsFit)));
       onPick = fn;
       list.forEach((t) => {
         const b = h("button", "hs-tool", shelf);
@@ -463,6 +479,12 @@
         });
         S.toolEls[t.id] = b;
       });
+      // as many rows as fit the play area's height (a phone is short), then more columns: measured on the boxes as drawn
+      // (SH-112: the shared box's size comes from the tokens, so a phone's is smaller than a laptop's)
+      const box = shelf.firstElementChild ? shelf.firstElementChild.getBoundingClientRect().height : 0;
+      const gap = parseFloat((global.getComputedStyle && global.getComputedStyle(shelf).rowGap) || "") || 8;
+      const rowsFit = Math.max(2, Math.floor((root.getBoundingClientRect().height * 0.86 + gap) / ((box || 62) + gap)));
+      shelf.style.setProperty("--cols", Math.max(1, Math.ceil(list.length / Math.min(6, rowsFit))));
     };
     S.pick = (id) => {
       S.sel = id;
