@@ -206,11 +206,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     c.setName("daar-stir-flag");
     const g = S.add.graphics();
     const L = (v) => z.L(v);
-    const pole = 58;
-    const fw = 40;
-    const fh = 28;
+    const pole = 76;
+    const fw = 56;
+    const fh = 38;
     g.fillStyle(0x28190a, 0.16).fillEllipse(L(3), L(2), L(16), L(7));
-    g.fillStyle(0x3a2410, 1).fillRoundedRect(-L(2.5), -L(pole), L(5), L(pole), L(2.5));
+    g.fillStyle(0x3a2410, 1).fillRoundedRect(-L(3.5), -L(pole), L(7), L(pole), L(3.5));
     g.fillStyle(0x3a2410, 1).fillCircle(0, -L(pole), L(4.5));
     const flagG = S.add.graphics();
     const n = 4;
@@ -1261,7 +1261,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         // DAAR-05: what went in turns with the daar
         pieces.forEach((p) => p.img.active && p.img.setPosition(cx + Math.cos(p.a + rot) * p.r, cy + Math.sin(p.a + rot) * p.r).setRotation(p.turn + rot));
       };
-      const lap = () => {
+      const lap = (da = 0) => {
         count++;
         const now = performance.now();
         const period = now - lapT;
@@ -1278,18 +1278,20 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         // at once) the number is not said late: it is left out and the next one is said (P10: "a late number is dropped")
         const V = Cook.core && Cook.core.voice;
         const busy = !saying && !!(V && V.busy && V.busy("cook"));
-        let said = "muted";
+        let said = "mute";
         if (!(UI.naniMuted && UI.naniMuted())) {
-          if (busy) said = "quiet:busy";
+          if (busy) said = "quiet";
           else {
-            said = "said";
+            said = "ok";
             const mine = Lang.speak(Lang.role(Lang.numLine(count), "laps"), { kind: "count" }).catch(() => {});
             saying = mine;
             mine.then(() => saying === mine && (saying = null));
           }
         }
-        const at = Math.round(((((ang - FLAG_AT) % TAU) + TAU + Math.PI) % TAU) * (180 / Math.PI) - 180);
-        stirNote("stir-lap", count, `at:${at} period:${Math.round(period)} speed:${Cook.speed || 1} ${said}`);
+        // (the log: the ladle's angle from the flag after the move that passed it, that move's size, the lap's time; lib/contract-daal.mjs)
+        const deg = (a) => Math.round(a * (180 / Math.PI));
+        const at = deg(((((ang - FLAG_AT) % TAU) + TAU + Math.PI) % TAU) - Math.PI);
+        stirNote("stir-lap", count, `deg:${at} da:${deg(Math.abs(da))} ms:${Math.round(period)} ${said}`);
         z.progress({ lap: count });
         // SH-58: the laps are done: the ✓ is the only thing left, and glows (a station's first plays; level 1 only: later the glow would give the count away)
         if (count === laps && Cook.roundLevel(ctx) <= 1 && UI.doneGlows && UI.doneGlows()) UI.glowDone(true);
@@ -1308,7 +1310,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         // since the last one: stirring back and forth under the flag never counts; either way round does
         if (lapOf(before) !== lapOf(ang) && Math.abs(since) >= TAU * 0.75 && Math.sign(since) === Math.sign(da)) {
           since = 0;
-          lap();
+          lap(da);
         }
       };
       /** Daar slops over the rim where the ladle is (way too fast). */

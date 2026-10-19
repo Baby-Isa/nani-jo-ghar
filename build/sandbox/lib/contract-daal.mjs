@@ -7,7 +7,7 @@
 //                            left out only while another line was being said (DAAR-27, DAAR-30; P10, P49)
 export const DAAL_CHECKS = {
   "contract-65": { item: "chop-waves", title: "the chop's waves without a gap", how: "Cook flows with the daal chop: each throw the chop logs (Lifecycle chop-throw: its wave, and the spacing it is thrown at in real ms). Where the wave changes from one throw to the next, the time between them less the new wave's spacing must be at most 500 ms; more is a break (DAAR-35, P55: 'the items should just come continuously'). A daal flow whose chop logged no throws is a break too (nothing to judge)." },
-  "contract-66": { item: "stir-flag", title: "a lap at the flag, its number heard in step", how: "Daal flows (cook:daar, cook:daal): each lap the stir logs (Lifecycle stir-lap: the lap, the ladle's angle from 12 o'clock, how long the lap took in real ms, and said / quiet:busy). The angle must be within 25 degrees of the flag (DAAR-30: a lap counts as the ladle passes it). A said lap's number (a Cook line tagged role laps, asked for within 250 ms of the lap) must start sounding (its first clip) within 3/4 of that lap's time (at least 300 ms) after it; one that never sounds passes only if a newer lap came within that time (the late number dropped, the newest said: P10). A lap left quiet (quiet:busy) must have another line's clip sounding at that moment. A daal flow that stirred (a stir step opened) and logged no lap is a break (DAAR-27, P10: 'say it within like three quarters of one revolution')." },
+  "contract-66": { item: "stir-flag", title: "a lap at the flag, its number heard in step", how: "Daal flows (cook:daar, cook:daal): each lap the stir logs (Lifecycle stir-lap: the lap, deg the ladle's angle from 12 o'clock just after the move that counted it, da that move's size, ms how long the lap took in real ms, and ok / quiet / mute: the number said, left out, Nani muted). The angle must be within 25 degrees of the flag, or of the last move's size where a fast drag moved further (DAAR-30: a lap counts as the ladle passes it). A said lap's number (a Cook line tagged role laps, asked for within 250 ms of the lap) must start sounding (its first clip) within 3/4 of that lap's time (at least 300 ms) after it; one that never sounds passes only if a newer lap came within that time (the late number dropped, the newest said: P10). A lap left quiet must have another line's clip sounding at that moment. A daal flow that stirred (a stir step opened) and logged no lap is a break (DAAR-27, P10: 'say it within like three quarters of one revolution')." },
 };
 
 const GAP_MS = 500; // P55: no gap: at most half a second more than the wave's own spacing
@@ -42,7 +42,7 @@ export function check65(r, tl, add) {
 }
 
 export function check66(r, tl, v, add) {
-  const laps = lifes(tl, "stir-lap").map((e) => ({ t: e.t, n: Number(e.reason), at: num(e.by, "at"), period: num(e.by, "period"), how: /quiet:busy/.test(e.by || "") ? "quiet" : /muted/.test(e.by || "") ? "muted" : "said" }));
+  const laps = lifes(tl, "stir-lap").map((e) => ({ t: e.t, n: Number(e.reason), at: num(e.by, "deg"), da: num(e.by, "da") || 0, period: num(e.by, "ms"), how: /\bquiet\b/.test(e.by || "") ? "quiet" : /\bmute\b/.test(e.by || "") ? "muted" : "said" }));
   if (!laps.length) {
     if (isDaal(r.flow)) {
       const stir = tl.find((e) => e.type === "c" && e.k === "life" && e.what === "say-start" && /firai/i.test(e.by || ""));
@@ -53,12 +53,14 @@ export function check66(r, tl, v, add) {
   const lapLines = v.lines.filter((l) => l.role === "laps");
   const used = new Set();
   laps.forEach((p, i) => {
-    if (p.at != null && Math.abs(p.at) > FLAG_DEG) add("contract-66", p.t, `lap ${p.n} counted ${p.at} degrees from the flag (at 12 o'clock it counts as the ladle passes it, within ${FLAG_DEG})`);
+    // (a fast drag moves the ladle up to 1.3 rad between two pointer events: past the flag by at most that move)
+    const tol = Math.max(FLAG_DEG, p.da + 2);
+    if (p.at != null && Math.abs(p.at) > tol) add("contract-66", p.t, `lap ${p.n} counted ${p.at} degrees from the flag (at 12 o'clock it counts as the ladle passes it: within ${tol}, its last move ${p.da})`);
     if (p.how === "muted") return;
     const next = laps[i + 1];
     if (p.how === "quiet") {
       const other = v.lines.some((l) => l.role !== "laps" && l.plays.some((q) => q.t0 <= p.t + 20 && q.t1 >= p.t - 20));
-      if (!other) add("contract-66", p.t, `lap ${p.n}'s number was left out (quiet:busy) though no other line was sounding`);
+      if (!other) add("contract-66", p.t, `lap ${p.n}'s number was left out (quiet) though no other line was sounding`);
       return;
     }
     const l = lapLines.find((x) => !used.has(x.id) && x.t0 >= p.t - 50 && x.t0 <= p.t + LINE_WITHIN);
