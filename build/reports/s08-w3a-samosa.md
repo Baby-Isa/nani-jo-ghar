@@ -16,7 +16,7 @@ Branch `worktree-agent-aa375192437065399`, not pushed. Detail: `build/reports/s0
 - SAM-21: a coded fold in the pastry tile (`Cook.Pastry`, `js/cook/mechanics/fill-fold.js`). The corner folds over the filling, bottom left to top right; the triangle then rolls left to right, alternating. Three swipes, an arrow on each, only the flap lit; the end tucks under by itself. No seam, no outlines.
 - SAM-25: six strips on a bigger board at every level. Tap any strip, fill it, one tick, fold every filled strip, then straight to the fryer.
 - SAM-24: every strip is graded at the tick; the card ticks then, all kinds together. contract-50 checks it.
-- SAM-22: no button with nothing to decide; the fry is untouched (KEEP-03).
+- SAM-22: no button with nothing to decide; fry untouched (KEEP-03).
 
 ## Proof
 
@@ -25,7 +25,7 @@ Branch `worktree-agent-aa375192437065399`, not pushed. Detail: `build/reports/s0
 | contract-50 | red on the old L3 run (one kind ticked 2.6 s early); green on 13 pages (L1-L4, #mistake, #takeback, #hint, recipe) |
 | sandbox --check 1366x768 | every page reaches its end; 0 findings, 0 breaks |
 | checks.mjs (no browser) | all ok, unit 388 pass |
-| Filmstrips | `s08-w3a-samosa/fold-1366x768.jpg`, `fold-800x360.jpg`, x2 zooms |
+| Filmstrips | `s08-w3a-samosa/fold-*.jpg` (git-ignored, in the worktree) |
 
 ## Open
 
