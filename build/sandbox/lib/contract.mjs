@@ -723,7 +723,8 @@ function check21(tl, segs, v, add) {
 export const LADDER = [7000, 8000, 11000, 15000];
 export const BULB_PULSE_MIN = 15000; // the bulbs pulse after 15-20 s stuck (Zafar, 17 Oct): never before 15 s
 export const BULB_PULSE_MAX = 21000; // ... and by 21 s of no action they must be pulsing
-export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16)
+export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16: "about 10 s": judged from 9 s)
+const SAID_JUDGED = 9000;
 const SLOP = 400; // ms: the sampler, a timer's tick
 const isCookLine = (l) => /^cook/.test(l.who || "");
 const isCountLine = (l, nums) => {
@@ -733,7 +734,7 @@ const isCountLine = (l, nums) => {
 // a tap that asked to hear it (the speaker on her face or a card, the order replayed, a chip): its line is the child's own, not a repeat
 const askedAt = (inputs, t) => inputs.some((i) => i.t <= t + 20 && t - i.t <= 700 && (i.side || i.popup || i.btn));
 // the last thing the child did before t: a real tap in the play area or a button, the stage opening (Lifecycle stage-start), or the step opening
-function lastAction(tl, t, { steps = true } = {}) {
+function lastAction(tl, t, { steps = false } = {}) {
   let last = -Infinity;
   for (const e of tl) {
     if (e.t > t) break;
@@ -755,11 +756,11 @@ function check22(r, tl, segs, v, nums, add) {
   for (let i = 0; i < lines.length; i++) for (let j = i + 1; j < lines.length; j++) {
     const a = lines[i], b = lines[j];
     if (b.t0 - a.t0 >= SAID_AGAIN) break;
-    if (b.t0 - a.t0 >= (b.role === "howto" ? SAID_AGAIN : SAID_AGAIN / speed)) continue;
+    if (b.t0 - a.t0 >= (b.role === "howto" ? SAID_JUDGED : SAID_JUDGED / speed)) continue;
     if (norm(a.text) !== norm(b.text) || !norm(a.text)) continue;
     if (askedAt(inputs, b.t0) || (norm(a.text).split(" ").length === 1 && inputs.some((x) => x.t <= b.t0 + 20 && b.t0 - x.t <= 400))) continue;
     const s = segAt(segs, b.t0), k = `${s && s.key}|${norm(a.text)}`;
-    if (s && !isPlayStage(s.key)) continue; // (the serve and the praise between stations are the ending's, wave 1B)
+    if (!s || !isPlayStage(s.key)) continue; // (the pop-up's read-out before the station, the serve and the praise between stations are the order card's and the ending's, wave 1B)
     if (seen.has(k)) continue;
     seen.add(k);
     add("contract-22", b.t0, `${s ? s.key : "?"}: "${b.text}" said twice, ${Math.round(b.t0 - a.t0)} ms apart (a line is said once; again only after ${SAID_AGAIN / 1000} s idle)`);
@@ -806,6 +807,7 @@ function check23(r, tl, segs, v, add) {
   });
 }
 // 24 (SH-60, SH-95): no help line or glow before the idle time, counted from the last action (by level)
+const CONTINUOUS = /^(hold|drag|stir|swipe|roll|circle|pour|slice|cut)$/;
 function check24(r, tl, segs, v, add) {
   if (/#mistake/.test(r.flow || "")) return; // a wrong pick is an action, and the game answers it
   const level = levelOf(r.flow || "");
@@ -814,6 +816,9 @@ function check24(r, tl, segs, v, add) {
   const flag = (t, what) => {
     const ref = lastAction(tl, t);
     if (!isFinite(ref) || t - ref >= need - SLOP) return;
+    // the last thing she did was a hold, a drag, a stir or a swipe: the probe sees where it began, not when she let go
+    const last = tl.filter((e) => e.type === "c" && e.k === "input" && e.t <= t && e.t >= ref - 1).pop();
+    if (last && CONTINUOUS.test((last.exp && last.exp.cook && last.exp.cook.kind) || "")) return;
     const s = segAt(segs, t), k = `${s && s.key}|${what}`;
     if (seen.has(k)) return;
     seen.add(k);
@@ -872,19 +877,24 @@ function check26(tl, v, add, root, lex) {
     for (const l of v.lines) {
       if (!(l.text || "").trim() || !isCookLine(l) || l.t0 < p.t0 - 100 || (p.t1 != null && l.t0 > p.t1)) continue;
       const heard = new Set();
+      const lineWords = new Set(normW(l.text).split(" "));
+      let respelled = 0; // device-voice pieces that say a word by its respelling (the lexicon's say: "ba" is "ber")
       for (const q of l.plays) {
+        if (q.via === "speechSynthesis" && normW(q.text || "").split(" ").some((w) => w && !lineWords.has(w))) respelled++;
         const f = String(q.url || "").split("?")[0];
         const t = q.via === "speechSynthesis" ? q.text : fam.get(f) || ((/cook-tts\/([^/]+)\.mp3$/.exec(f) || [])[1]);
         for (const w of normW(t || "").split(" ")) if (w) heard.add(w);
       }
       // (an English placeholder in the line, grey italic, is never spoken: only the lexicon's words are judged)
-      const missing = normW(l.text).split(" ").filter((w) => w && lex.has(w) && !heard.has(w));
+      const missing = normW(l.text).split(" ").filter((w) => w && lex.has(w) && !ENGLISH_PLACEHOLDERS.has(w) && !heard.has(w)).slice(respelled);
       if (!missing.length || seen.has(l.text)) continue;
       seen.add(l.text);
       add("contract-26", l.t0, `the opening line "${l.text}" was not heard whole: ${[...new Set(missing)].join(", ")} had no sound (no clip played and the device voice did not say it)`);
     }
   }
 }
+// the engine's grey English placeholders (a to-record frame word with no Kutchi yet): never spoken, so never a missing sound
+const ENGLISH_PLACEHOLDERS = new Set(["with", "and", "also", "only", "for", "but", "or"]);
 // family clip file -> its words (data/family-audio.json), and the placeholder TTS files by name
 const FILE_WORDS = new Map();
 function fileWords(root) {

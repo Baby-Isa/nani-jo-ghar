@@ -29,10 +29,10 @@ const sorted = (tl) => tl.sort((a, b) => a.t - b.t);
 
 test("contract-22: a step line said twice within 10 s (samosa's per-put step, daal's tadka order) is a break; once, or 10 s later, passes", () => {
   const tl = sorted([stage(T, ST), life(T, "stage-start", "cook:station"),
-    line(1, T + 8000, "Bhar!"), lineEnd(1, T + 8600), line(2, T + 11000, "Bhar!"), lineEnd(2, T + 11600)]);
+    line(1, T + 8000, "Bhar!"), lineEnd(1, T + 8600), line(2, T + 10500, "Bhar!"), lineEnd(2, T + 11100)]);
   const b = of(run(page("cook:samosa", tl)), "contract-22");
   assert.equal(b.length, 1);
-  assert.match(b[0].measured, /"Bhar!" said twice, 3000 ms apart/);
+  assert.match(b[0].measured, /"Bhar!" said twice, 2500 ms apart/);
   const later = clone(tl);
   later.find((e) => e.type === "line" && e.id === 2).t = T + 18700;
   assert.equal(of(run(page("cook:samosa", sorted(later))), "contract-22").length, 0, "10 s later is a new saying");
@@ -47,7 +47,7 @@ test("contract-22: a step line said twice within 10 s (samosa's per-put step, da
   assert.equal(of(run(page("cook:samosa#speed1", sorted(slow))), "contract-22").length, 1, "at a child's pace it is 6 s");
   // a replay the child asked for (a tap on the face or the card) is hers
   const asked = clone(tl);
-  asked.push(tap(T + 10800, { side: true, play: false, on: "button.ng-face" }));
+  asked.push(tap(T + 10300, { side: true, play: false, on: "button.ng-face" }));
   assert.equal(of(run(page("cook:samosa", sorted(asked))), "contract-22").length, 0);
   // numbers counted as you go, and item words (their own check), are not repeats
   const counts = sorted([stage(T, ST), line(1, T + 8000, "Ba!", { role: "laps" }), lineEnd(1, T + 8500), line(2, T + 9000, "Ba!"), lineEnd(2, T + 9500), line(3, T + 9600, "Chai", { role: "item" }), line(4, T + 9800, "Chai", { role: "item" })]);
@@ -112,7 +112,7 @@ test("contract-24: the help (voice and glow) before the idle time of its level i
   const early = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), life(T + 500, "step-open", "1", { by: "L1" }), help(T + 3500, 1)]);
   const b = of(run(page("cook:chai-tray", early)), "contract-24");
   assert.equal(b.length, 1);
-  assert.match(b[0].measured, /Nani's help \(voice and glow\) came 3000 ms after the last action \(L1 waits 7000 ms\)/);
+  assert.match(b[0].measured, /Nani's help \(voice and glow\) came 3500 ms after the last action \(L1 waits 7000 ms\)/);
   // 7.5 s after the step opened: passes
   const ok = clone(early);
   ok.find((e) => e.what === "help").t = ok.find((e) => e.what === "help").at = T + 8000;
@@ -166,6 +166,27 @@ test("contract-26: the opening line under the request pop-up is heard whole; a w
   const ph = clone(heard);
   ph.find((e) => e.type === "line").text = "Muke bhar with.";
   assert.equal(of(run(page("cook:chai-tray", sorted(ph))), "contract-26").length, 0);
+});
+
+test("contract-26: a number the device voice says by its respelling (ba as ber) is heard; an English placeholder (with) is never spoken and never missing", () => {
+  const lex = new Set(["muke", "ba", "with", "khape"]);
+  const tl = sorted([stage(T, ST), C(T + 50, "popup", { open: true }),
+    line(1, T + 100, "Muke ba with khape."), { type: "play", via: "speechSynthesis", text: "Muke", pid: 1, dur: 0.5, est: true, t: T + 110 },
+    { type: "play", via: "speechSynthesis", text: "ber", pid: 2, dur: 0.5, est: true, t: T + 700 }, { type: "play", via: "speechSynthesis", text: "khape", pid: 3, dur: 0.5, est: true, t: T + 1300 },
+    lineEnd(1, T + 1900), C(T + 2000, "popup", { open: false })]);
+  const out = analyse(page("cook:chai-tray", tl), { root: ROOT, retired: [], clip, lexicon: lex, numbers: NUMS });
+  assert.equal(of(out, "contract-26").length, 0, JSON.stringify(of(out, "contract-26")));
+  // ... but with no sound for "khape" at all, the break names it
+  const miss = clone(tl).filter((e) => e.pid !== 3);
+  assert.match(of(analyse(page("cook:chai-tray", miss), { root: ROOT, retired: [], clip, lexicon: lex, numbers: NUMS }), "contract-26")[0].measured, /khape had no sound/);
+});
+
+test("contract-24: a hold, a drag or a stir is an action until she lets go (the probe sees only where it began): its help is not judged", () => {
+  const help = life(T + 4000, "help", "idle", { by: "L1 1" });
+  const hold = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), tap(T + 1000, { exp: { cook: { kind: "hold" } } }), help]);
+  assert.equal(of(run(page("cook:chai-tray", hold)), "contract-24").length, 0);
+  const tapped = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), tap(T + 1000), help]);
+  assert.equal(of(run(page("cook:chai-tray", tapped)), "contract-24").length, 1);
 });
 
 test("the queue's turns (Lifecycle say-start / say-end): a line asked for while another sounds plays after it; its clips are its own, nothing overlaps", () => {

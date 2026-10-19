@@ -160,22 +160,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           const g = NG();
           if (!g || g.helping || (o && o.now) || !Cook.inStation) return glow0(obj, true, o);
-          pending.set(obj, o);
+          pending.set(obj, { o, at: Date.now() });
         };
         S.__releaseGlows = () => {
           const g = NG();
-          if (!g || !pending.size || g.idleMs() < g.PAUSE[Math.min(g.PAUSE.length, levelOf()) - 1]) return;
-          [...pending].forEach(([obj, o]) => {
+          if (!g || !pending.size) return;
+          const need = g.PAUSE[Math.min(g.PAUSE.length, levelOf()) - 1];
+          // (a glow asked for waits the pause from when it was asked and from the child's last action, whichever is later)
+          [...pending].forEach(([obj, p]) => {
+            if (Math.min(g.idleMs(), Date.now() - p.at) < need) return;
             pending.delete(obj);
-            if (obj.active) (g.logHelp("help", { step: "idle", by: `L${levelOf()} glow` }), glow0(obj, true, o));
+            if (obj.active) (g.logHelp("help", { step: "idle", by: `L${levelOf()} glow` }), glow0(obj, true, p.o));
           });
-        };
-      }
-      const draw0 = S.glowDraw && S.glowDraw.bind(S);
-      if (draw0) {
-        S.glowDraw = (obj, on = true, o) => {
-          draw0(obj, on, o);
-          if (on && obj && obj.active && obj.glowFx) tuneGlow(S, obj);
         };
       }
     }
@@ -249,6 +245,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // Wave 6: the first time here, dim all but the next thing and show the move (js/cook/coach.js).
     // Only in a guided run (a dish's first order; the lab's "Nani helps"): the spotlight can be the answer
     if (Cook.Coach && UI.w6() && ctx.guided) Cook.Coach.start(key);
+    // the child can act from here: the help ladder's idle time counts from now (not from the art loading and the pop-up read-out)
+    if (NG()) NG().poke();
   }
   /**
    * A phase's first-time coach inside a station that has already begun (29 Sept, X11): daar's tadka and
