@@ -14503,7 +14503,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -n \"L1-L4\" .claude/skills/feedback/SKILL.md"
+    "cmd:grep -n \"L1-L4 for each station touched\" .claude/skills/feedback/SKILL.md"
    ],
    "expect": [
     "pass"
@@ -14522,7 +14522,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -n \"L1-L4\" .claude/skills/review/SKILL.md"
+    "cmd:grep -n \"L1-L4 for each station touched\" .claude/skills/review/SKILL.md"
    ],
    "expect": [
     "pass"
@@ -14636,7 +14636,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -n \"fold\" .claude/skills/review/SKILL.md"
+    "cmd:grep -n \"samosa fold\" .claude/skills/review/SKILL.md"
    ],
    "expect": [
     "pass"
@@ -14804,7 +14804,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -n \"told before\" .claude/skills/feedback/SKILL.md"
+    "cmd:grep -n \"search the archive for every point\" .claude/skills/feedback/SKILL.md"
    ],
    "expect": [
     "pass"
@@ -14823,7 +14823,7 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -n \"told before\" .claude/skills/review/SKILL.md"
+    "cmd:grep -n \"Told-before rows get a shot\" .claude/skills/review/SKILL.md"
    ],
    "expect": [
     "pass"
