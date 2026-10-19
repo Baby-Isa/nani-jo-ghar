@@ -1460,10 +1460,32 @@
     return [].concat(...rows.map((r) => map.get(r) || []));
   }
   let readToken = 0;
+  /*
+   * contract-8 (SH-53, SH-79, decision 95; s08 w3B): one thing lit while a card is read. The rows' "next" marks are held
+   * (taken off and kept here) from the first part read until the reading ends or is stopped, then given back; a card drawn
+   * again meanwhile has its new marks held too (renderOrder6). Was: each part gave its marks back in its own finally, so a
+   * read stopped by a new one (a replay over the order, the hint over a replay) put "next" back while the new one was lit.
+   */
+  const heldNext = new Set();
+  let readActive = false;
+  const holdNext = (keep = []) =>
+    document.querySelectorAll(".oc-row.next, .oc-item.next").forEach((e) => {
+      if (keep.includes(e)) return;
+      e.classList.remove("next");
+      heldNext.add(e);
+    });
+  const giveNext = () => {
+    heldNext.forEach((e) => e.isConnected && e.classList.add("next"));
+    heldNext.clear();
+  };
   const stopReading = () => {
     readToken++;
+    readActive = false;
     document.querySelectorAll(".reading").forEach((e) => e.classList.remove("reading"));
+    giveNext();
   };
+  /** A part that names several rows (one word in two skewers' boxes, a headline naming rows) lights one: the first on the card. */
+  const oneLit = (els) => (els.length > 1 ? [els.slice().sort((a, b) => (a.compareDocumentPosition(b) & 4 ? -1 : 1))[0]] : els);
   /**
    * S03-A, the voice stop (SH-64, CLN-109): Cook's voice really stops: the read-along's chain (readToken), the core's
    * channels (their lines already chained stay quiet) and the clip playing now (Cook.stopVoice). A tap through the
@@ -1493,20 +1515,25 @@
     const t0 = Date.now();
     for (const p of parts) {
       if (token !== readToken) return;
-      p.els.forEach((e) => e.classList.add("reading"));
+      const lit = oneLit(p.els);
       // SH-79 (decision 95, contract-8): one lit thing on the card: while a row is read out, the next row's mark waits
-      const held = [...document.querySelectorAll(".oc-row.next, .oc-item.next")].filter((e) => !p.els.includes(e));
-      held.forEach((e) => e.classList.remove("next"));
+      readActive = true;
+      holdNext(lit);
+      lit.forEach((e) => e.classList.add("reading"));
       try {
         // SH-17 (S05-G): a part stays lit while it is said and at least ~220 ms a word (up to 0.9 s): a part whose clip is
         // short ('elchi' in 'Muke elchi waari chai khape.') lit for under 150 ms, too fast to follow at a child's pace
         if (Lang.hasVoice(p.line)) await Promise.all([Lang.speak(p.line), Cook.wait(Math.max(260, Math.min(900, 220 * Lang.plain(p.line).split(/\s+/).length)))]);
         else await Cook.wait(Math.max(700, Cook.readMs(Lang.plain(p.line)) * 0.55));
       } finally {
-        p.els.forEach((e) => e.classList.remove("reading"));
-        held.forEach((e) => e.isConnected && e.classList.add("next"));
+        lit.forEach((e) => e.classList.remove("reading"));
       }
       if (token === readToken) await Cook.wait(120);
+    }
+    // the reading is over (and was not stopped by another): the next marks come back
+    if (token === readToken) {
+      readActive = false;
+      giveNext();
     }
     const left = min / Cook.speed - (Date.now() - t0);
     if (left > 0 && token === readToken) await Cook.wait(left * Cook.speed);
@@ -1639,7 +1666,10 @@
             // SEK-03 (S05-C2): several skewers of one mix ("ba lakri mix") are a box each too, the same little skewer
             // twice, not one label row over a list of its pieces (a skewer's mix is a sequence; maani's fillings are not)
             // The pieces tick along the one mix for the first skewer; a later box is done when its skewer is (M.tickCard)
-            else if (mixes.length === 1 && mixes[0].seq)
+            else if (mixes.length === 1 && mixes[0].seq) {
+              // contract-30 (SH-99; s08 w3B): the same mix several times is said with its number ("ba lakri mixed"), so the
+              // number is written too: the kind's own row over its boxes (one is the bare item: Zafar, 19 Oct, no row for one)
+              if ((r.qty || 1) > 1) items.push({ label: rowText(text6(fullLine(r), rowHide(r))), count: 1, parts: [], ordered: false, done: !!r.done, wrong: !!r.wrong, key: r, src: [] });
               for (let u = 0; u < (r.qty || 1); u++) {
                 const it = Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), mixes[0]), { group: true });
                 const unit = !!(r.units && r.units[u]) || !!r.done;
@@ -1652,7 +1682,7 @@
                 }
                 items.push(it);
               }
-            else {
+            } else {
               const it = item(rowText(text6(fullLine(r), rowHide(r))), mixes[0] || null);
               it.count = r.qty || 1;
               items.push(it);
@@ -1936,6 +1966,8 @@
     $("#mission").classList.add("people");
     $("#side").classList.toggle("english", !!mission.english);
     if (introOpen()) renderIntro6();
+    // contract-8: a card drawn again while a card is read keeps its new next marks held until the reading ends
+    if (readActive) holdNext([...document.querySelectorAll(".reading")]);
   }
   function renderIntro6() {
     const box = intro().querySelector(".ic-order");
@@ -1949,6 +1981,7 @@
     card.style.setProperty("--crowd-cols", String(n >= 4 ? 2 : Math.max(1, n)));
     // a long order: the pop-up lays its items out in two columns rather than running off the screen
     card.classList.toggle("wide", n < 2 && box.querySelectorAll(".oc-row").length > 8);
+    if (readActive) holdNext([...document.querySelectorAll(".reading")]);
   }
   /**
    * SH-102, SH-114: the order as a replay says it: only the rows not yet done once any is done (and not the headline then); the whole
