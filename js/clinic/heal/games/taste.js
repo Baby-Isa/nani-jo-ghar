@@ -332,29 +332,35 @@
       const r = el.getBoundingClientRect();
       return S.pt({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 });
     };
-    // the kitchen kit's pour, drawn here: the jug flies over the glass, tips, a stream runs, the level rises, it goes home
+    // SH-117 (CLN-197, 18 Oct: "the filling animations ... take from the cook game ... the chai game"): the shared pour
+    // and fill (js/shared/pour.js, Cook's chai pour): the jug comes over the glass and tips its spout over the mouth, a
+    // tapered stream falls onto the drink's surface (a splash where it lands) and the level rises with it, then it
+    // tips back and goes home. The spout: the jug pictures' lip, measured on the art drawn in its 100 x 120 box
     const pour = async (id) => {
       const t = THINGS[id];
       st.busy = true;
-      const from = toolSvg(id);
-      const g = s("g", {}, S.fx);
-      s("image", { href: url(t.img), x: -50, y: -60, width: 100, height: 120 }, g);
-      const to = { x: GL.x + GL.w + 30, y: GL.y - 60 };
-      await tween(380, (u) => {
-        const e = ease(u);
-        g.setAttribute("transform", `translate(${from.x + (to.x - from.x) * e} ${from.y + (to.y - from.y) * e - 60 * Math.sin(u * Math.PI)})`);
+      const P = await S.pourKit();
+      await P.svg(S.fx, {
+        href: url(t.img),
+        size: { w: 100, h: 120 },
+        from: toolSvg(id),
+        lip: [-44, -42],
+        lipTo: { x: MOUTH.x + MOUTH.rx * 0.5, y: MOUTH.y - 34 },
+        tilt: -72,
+        arc: 60,
+        colour: t.liquid,
+        opacity: id === "water" ? 0.75 : 0.95,
+        width: 13,
+        // the stream lands on the drink's surface as it rises (a little right of its middle, under the spout)
+        surface: (u) => {
+          const q = surf(Math.max(0.04, u));
+          return { x: q.x + q.rx * 0.2, y: q.y };
+        },
+        // CLN-104 (S05-D3): the level rises slowly enough to see it rise (it read as one jump at 760 ms)
+        onFill: (u) => u > 0 && level(u, t.liquid, opOf(id)),
+        counter: tween,
+        ms: { lift: 380, tip: 220, pour: 1500, untip: 180, back: 300 },
       });
-      await tween(220, (u) => g.setAttribute("transform", `translate(${to.x} ${to.y}) rotate(${-100 * u})`));
-      const stream = s("path", { d: `M${to.x - 50} ${to.y - 10} Q${TOP.x + 20} ${to.y + 10} ${TOP.x} ${TOP.y}`, stroke: t.liquid, "stroke-width": 9, fill: "none", "stroke-linecap": "round", opacity: id === "water" ? 0.75 : 0.95 }, S.fx);
-      // CLN-104 (S05-D3): the level rises slowly enough to see it rise (it read as one jump at 760 ms)
-      await tween(1500, (u) => level(u, t.liquid, opOf(id)));
-      stream.remove();
-      await tween(180, (u) => g.setAttribute("transform", `translate(${to.x} ${to.y}) rotate(${-100 * (1 - u)})`));
-      await tween(300, (u) => {
-        const e = ease(u);
-        g.setAttribute("transform", `translate(${to.x + (from.x - to.x) * e} ${to.y + (from.y - to.y) * e})`);
-      });
-      g.remove();
       st.busy = false;
     };
     const addIn = async (id) => {
