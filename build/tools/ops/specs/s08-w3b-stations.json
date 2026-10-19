@@ -1,0 +1,26 @@
+{
+  "name": "s08 wave 3B, chaat, sekelo and maani: chaat's art and its no-leak bowl, sekelo's two racks and words, maani's turns and flip time; the double highlight while a card row is read",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "visual layout and art wiring across three stations",
+  "cost": "about $35-50",
+  "stop": "when every task is accepted, or 5 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/feedback/cook-playtest-2026-10-17.md (P7, P16, P37, P38, P45, P60-P63; section 6 decisions 9, 11, 12)", "build/reports/research-layout-2026-10-19.md (task 1: the sekelo layout, recommended coordinates)", "build/reports/s08-w0-art.md and assets/s08b-cut-data.json (chaat bowl and strips, the square trays)", "build/reports/s08-w2a-levels.md (the level table, merged)", "build/screenshots/sandbox/orch-w2a-sekelo/contract.md (the orchestrator's 9 breaks)"],
+  "owns": ["js/cook/mechanics/assemble.js", "js/cook/mechanics/grill.js", "js/cook/mechanics/thread.js", "js/cook/stations/mishkaki-grill.js", "js/cook/stations/maani-line.js", "js/cook/mechanics/tawa.js", "data/stations/mishkaki-grill.json, maani-line.json", "data/cook.json chaat, sekelo and maani entries only", "js/cook/station-lib.js and js/cook/ui.js: only the one-highlight fix (contract-8)", "build/reports/s08-w3b-stations.md"],
+  "readOnly": ["js/cook/stations/samosa.js (wave 3A)", "js/clinic/** (wave 5B)", "js/day/**, js/shared/window-ride.js (Sprint 9)", "assets/** (use the cuts)", "data/lang/**"],
+  "stubs": "sekelo's extra decoys need vegetable piece art that doesn't exist: keep one decoy and say so",
+  "tasks": [
+    {"do": "Chaat: no drop shadow under the bowl (CHT-12); the side-on glass bowl and a strip per item from wave 0's cuts (CHT-13); a wrong item gets a short pause, a wobble and a warm glow (not red), then bounces back out; a wrong one in the sequence empties the bowl; a tick only for the right item first go; help stays on the bulbs (CHT-14, CHT-15; decision 9).", "accept": "the leak bot on chaat: a guesser can't win by trying each item; eye: a wrong drop and a sequence reset as filmstrips"},
+    {"do": "Sekelo: the research layout: two racks stacked on the left (raw above, cooked below, today's rack art twice), the grill 1.4x bigger on the right, gaps even (SEK-20, SEK-07); the square tray cuts if they fit better (say which); equal gaps between the bins (SEK-21); the raw piece is gos, the cooked skewer mishkaki, the card says 'Hakri Lakri Mishkaki' (SEK-19); the mixed skewer's 'ba' written (contract-30).", "accept": "eye: sekelo L1 and L3 at 1366x768 and 800x360; contract-30 green on sekelo"},
+    {"do": "Maani: Nani says Firai on both turns (MAA-15); the flip window +0.75 s at every level (MAA-17).", "accept": "ear: maani L1 both sides; the window measured"},
+    {"do": "contract-8: one highlight at a time while a card row is read and another row is next (station-lib / ui reading vs next).", "accept": "contract-8 green on sekelo L3#hint and chai-tray L3"}
+  ],
+  "flows": ["cook:chaat", "cook:assemble", "cook:mishkaki-grill", "cook:maani-line", "cook:chai-tray"],
+  "shared": true,
+  "browser": true,
+  "port": 8840,
+  "report": "s08-w3b-stations",
+  "publish": false
+}
