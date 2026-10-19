@@ -91,11 +91,8 @@
   function mount(stage, ctx) {
     const data = ctx.data || {};
     const P = plan(ctx.level, ctx.rng);
-    // CLN-118 (D13): the taught round has no counts: "The drops." (the step ends at the plan's count)
-    if (ctx.taught) {
-      P.steps[0].row = Object.assign({ id: "drops" }, HS.L.show(HS.L.join(["cl-drops"]), { cap: true }));
-      P.words = HS.taughtWords(P.words);
-    }
+    // CLN-118 (D13): the taught round is shown by the ghost finger and scores nothing; SH-99, CLN-161 (Zafar, 18 Oct: "it needed me to press the cloth twice, but it wasn't in the instructions ... all the frequencies has to be written down. And audible as well"; reverses CLN-118): the taught first round writes and says every count too, and its word review keeps the number words
+    if (ctx.taught) P.words = HS.taughtWords(P.words).concat(P.words.filter((w) => w && w.n != null));
     // S03 (review flaw 5): on a tablet (4:3, 1180x820) the close-up's crop cut the sore eye at the screen's edge: a
     // wider safe area there keeps both eyes whole (and the tool shelf goes down to the cheek, below)
     const tablet = (root.innerWidth || 0) / Math.max(1, root.innerHeight || 0) < 1.5;

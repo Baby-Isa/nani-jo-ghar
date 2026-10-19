@@ -81,9 +81,19 @@
    .face-say::after reached 10 px below) poked past the last card and scrolled a short phone's sidebar 7 px */
 .oc-card .oc-face::after { inset: 0; }
 .oc-card .oc-face:active { transform: scale(0.95); }
+/* SH-113 (Zafar, 18 Oct: "all the characters where you just see a circle of their face need to be zoomed in by the same amount"): ONE face
+   size in every circle. Cook's faces are cut as close-ups framed by the eyes (the face fills the circle: zoom 1); the clinic's are whole
+   heads or a bust (the doctor's 144 px one), so a clinic face circle zooms in on its face to the same size. --face-zoom is the scale and
+   --face-y where the face sits in its picture (the point that lands at the circle's centre); the per-face tweak is the rule for its
+   picture, set by eye on the side-by-side sheet (build/reports/s08-w1b-card.md) */
+.cl-face img { transform-origin: 50% var(--face-y, 50%); transform: translateY(calc(50% - var(--face-y, 50%))) scale(var(--face-zoom, 1)); }
+.cl-face.doctor img { --face-zoom: 1.7; --face-y: 40%; }
+.cl-face.person img { --face-zoom: 1.25; --face-y: 44%; }
 .oc-card .oc-headline { flex: 1 1 auto; min-width: 0; font-weight: 800; font-size: var(--oc-h); line-height: 1.25; }
 /* the headline is the family's line and can't be shortened: shrink, then wrap, never "..." */
 .oc-card .oc-headline.fit-wrap, .oc-card .oc-rec-line.fit-wrap { --fit-min: var(--njg-t4); }
+/* SH-107 (Zafar, 18 Oct): the order pop-up's headline only: wrap at full size first (two lines), shrink only if they don't fit (fit.js fit-head) */
+.oc-card .oc-headline.fit-head, .oc-card .oc-rec-line.fit-head { white-space: normal; }
 /* a line still to record: its English placeholder, grey italic (G2), with the grown-ups' flag under it */
 .oc-card .oc-headline.rec { display: flex; flex-direction: column; align-items: flex-start; font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
 .oc-card .oc-headline.rec .oc-rec-line { max-width: 100%; }
@@ -123,7 +133,8 @@
 /* in the card's corner, so the headline keeps the card's whole width (a narrow phone sidebar) */
 .oc-card.closed { position: relative; }
 .oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
-.oc-look svg { width: 100%; height: 100%; display: block; }
+.oc-look svg, .oc-look img { width: 100%; height: 100%; display: block; }
+.oc-look img { object-fit: contain; pointer-events: none; user-select: none; }
 .oc-card.closed.folded .oc-look { display: block; }
 /* SH-47: the headline (and a "to record" flag under it) keeps clear of the eye: the head leaves the eye's corner
    free, so a long line shrinks first, then wraps at the largest two-line size (js/shared/fit.js), never under it */
@@ -304,7 +315,7 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 .oc-strip.rec .oc-strip-t { font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
 .oc-strip.new { animation: ocStrip .3s ease-out; }
 @keyframes ocStrip { from { opacity: .2; } }
-.oc-look.bulb svg { width: 100%; height: 100%; }
+.oc-look.bulb img { width: 100%; height: 100%; } /* SH-100: the photo bulb (order-card.js bulbImg), one picture everywhere */
 /* S02 review: on the shortest phones (800x360) the guide's strip gives back a little padding, so a card with the strip,
    a two-line headline and four rows (the cut game) still fits its sidebar without a scroll */
 @media (max-height: 370px) {

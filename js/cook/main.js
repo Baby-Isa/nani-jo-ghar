@@ -153,8 +153,9 @@ function cookStage(id, { label, gestures = ["tap"], levels = LEVELS, run }) {
   };
 }
 
+// wave 1A (the help ladder, SH-60): a lab tile is played unguided unless the page asks for it (&guided=1); the first-time help is for L1-L2 (station-lib.js)
 const labStage = (key, label, gestures) =>
-  cookStage(key.replace(/[^a-z0-9-]/g, "-"), { label, gestures, run: (hook, ctx) => hook.lab(key, ctx.params.guided !== false, { level: ctx.level }) });
+  cookStage(key.replace(/[^a-z0-9-]/g, "-"), { label, gestures, run: (hook, ctx) => hook.lab(key, ctx.params.guided === 1 || ctx.params.guided === true, { level: ctx.level }) });
 
 const games = {};
 STATIONS.forEach(([key, label, gestures]) => (games[key] = labStage(key, label, gestures)));

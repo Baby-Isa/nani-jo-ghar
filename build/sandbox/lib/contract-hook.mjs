@@ -576,6 +576,68 @@ export const CONTRACT_HOOK = `(() => {
     return [...out.values()];
   };
 
+  // contract-28 (SH-100, Zafar, 17 Oct: "let's make them all photorealistic"): every light bulb button or sign on screen: the card's small
+  // bulb, Nani's and the doctor's, with the picture it is drawn with (an <img>'s file or a CSS background's; "svg" is the flat inline drawing)
+  const bulbs = () => [...document.querySelectorAll(".oc-look.bulb, .ng-bulb, .cl-bulb, #btn-bulb")].filter(shown).map((b) => {
+    const im = b.matches("img") ? b : b.querySelector("img");
+    const bg = getComputedStyle(b).backgroundImage;
+    const raw = im ? (im.getAttribute("src") || "") : bg && bg !== "none" ? bg : "";
+    const file = raw.replace(/^.*\\//, "").replace(/[?"')#].*$/, "").slice(0, 60);
+    return { sel: desc(b), kind: im ? "img" : raw ? "bg" : b.querySelector("svg") ? "svg" : "other", file };
+  });
+
+  // contract-31 (SH-102): every help Cook counts (Cook.onHelp: hint, replay, shown, translate...) as it is counted; a read-only wrap
+  // (the call goes through unchanged), put on again whenever a round sets its own
+  const wrapHelp = () => {
+    const C = window.Cook;
+    if (!C || typeof C.onHelp !== "function" || C.onHelp.__njgw) return;
+    const o = C.onHelp;
+    const w = function (kind, info) {
+      let before = null;
+      try { before = window.Cook.ctx ? window.Cook.ctx.help : null; } catch (e) {}
+      const r = o.apply(this, arguments);
+      try {
+        const after = window.Cook.ctx ? window.Cook.ctx.help : null;
+        emit({ k: "hint", kind: String(kind || "help"), ids: info && info.ids ? [].concat(info.ids).slice(0, 4).map(String) : [], counted: before != null && after != null ? after > before : null });
+      } catch (e) {}
+      return r;
+    };
+    w.__njgw = true;
+    C.onHelp = w;
+  };
+
+  // contract-32 (SH-103): the end review's two halves: where the wrong (left) and right (right) words sit. Null unless the word review
+  // is up with its two halves side by side (a taught round has one group; a portrait phone stacks them)
+  const review = () => {
+    const w = document.querySelector(".njg-results .rs-p2 .rs-words:not(.one)");
+    if (!w || !shown(w)) return null;
+    const b = w.querySelector(".rs-words-bad"), o = w.querySelector(".rs-words-ok");
+    if (!b || !o) return null;
+    const rb = b.getBoundingClientRect(), ro = o.getBoundingClientRect();
+    if (ro.top >= rb.bottom - 2 && rb.height > 2) return null; // stacked
+    return { bad: b.querySelectorAll(".rs-word").length, ok: o.querySelectorAll(".rs-word").length, badW: Math.round(rb.width), okW: Math.round(ro.width), l: Math.round(rb.left), r: Math.round(ro.right) };
+  };
+  // contract-33 (SH-107): the headlines of the order pop-up (the cards at the start of a round): each one's size, the size it would
+  // have at full (a bare clone of it in the same place, no inline size), and how many lines it takes
+  const heads = () => {
+    const out = [];
+    for (const h of document.querySelectorAll(".njg-rq-card .oc-headline, #intro .oc-headline")) {
+      if (!shown(h)) continue;
+      const cs = getComputedStyle(h);
+      const c = h.cloneNode(false);
+      c.style.fontSize = "";
+      c.style.cssText += ";position:absolute;visibility:hidden;white-space:nowrap;width:auto;max-width:none";
+      h.parentNode.appendChild(c);
+      const full = parseFloat(getComputedStyle(c).fontSize) || 0;
+      c.remove();
+      const rg = document.createRange();
+      rg.selectNodeContents(h);
+      const tops = new Set([...rg.getClientRects()].filter((x) => x.width > 1).map((x) => Math.round(x.top / 4)));
+      out.push({ size: Math.round(parseFloat(cs.fontSize) * 2) / 2, full: Math.round(full * 2) / 2, lines: tops.size || 1, text: (h.textContent || "").replace(/\s+/g, " ").trim().slice(0, 50) });
+    }
+    return out;
+  };
+
   // ---- the sampler ----
   let last = {};
   const same = (k, v) => { const j = JSON.stringify(v); if (last[k] === j) return true; last[k] = j; return false; };
@@ -583,6 +645,7 @@ export const CONTRACT_HOOK = `(() => {
     const key = safe(stageKey, "page");
     if (key !== stage) { stage = key; stageSince = Date.now(); emit({ k: "stage", key }); }
     safe(lifeLog);
+    safe(wrapHelp);
     const hl = safe(highlights, []);
     if (!same("hl", hl)) emit({ k: "hl", n: hl.length, list: hl });
     const bw = safe(brokenWords, []);
@@ -602,8 +665,23 @@ export const CONTRACT_HOOK = `(() => {
     // closed: the card is closed (from L3 the call is heard, not read: OrderCard's "closed", folded or peeking)
     // the rows' words (contract-19, the counting rule: from L3 no number written on a card)
     const words = cards.flatMap((c) => [...c.querySelectorAll(".oc-row .oc-t, .oc-item .oc-t, .oc-row, li")].filter(shown).map((x) => (x.textContent || "").trim().slice(0, 40))).filter(Boolean).slice(0, 24);
-    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, words: [...new Set(words)] };
+    // contract-27, contract-29 (s08 w1b, SH-98, SH-101): a card peeking (a tap on its small bulb opened it for a moment): how many,
+    // and how many dotted words ("•••") show in them
+    const peeking = cards.filter((c) => c.classList.contains("peek"));
+    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots")].filter(shown).length, 0), words: [...new Set(words)] };
     if (!same("side", sd)) emit({ k: "side", ...sd });
+    // contract-30 (SH-99): everything WRITTEN on the sidebar cards, shown or folded away (a closed card holds its rows for the peek):
+    // each row's and headline's Kutchi words and every count chip, the bulb's English aside
+    const cw = cards.flatMap((c) => [...c.querySelectorAll(".oc-headline, .oc-t, .cl-row-text, .cl-row-count")].filter((x) => !x.closest(".cl-row-en")).map((x) => (x.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60))).filter(Boolean);
+    const cwu = [...new Set(cw)].slice(0, 60);
+    if (!same("card", cwu)) emit({ k: "card", words: cwu });
+    // contract-28 (SH-100): the light bulbs on screen and what each is drawn with
+    const bl2 = safe(bulbs, []);
+    if (!same("bulbs", bl2)) emit({ k: "bulbs", list: bl2 });
+    const rv = safe(review, null);
+    if (!same("review", rv)) emit({ k: "review", ...(rv || { none: true }) });
+    const hd = safe(heads, []);
+    if (!same("heads", hd.map((x) => [x.size, x.lines, x.text]))) emit({ k: "heads", list: hd });
     // contract-18: each sidebar card row, by its key (the order card's data-key, the clinic's data-row) or its place, with its
     // words (the Kutchi line, not the bulb's English beside it) and whether it is ticked; en: the card shows the bulb's English
     const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english") }; }));

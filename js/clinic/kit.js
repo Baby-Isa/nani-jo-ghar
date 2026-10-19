@@ -848,6 +848,7 @@
       opts.onPeek = this.closed.onPeek || null;
       opts.look = this.closed.look || null; // decision 57: a spoken card's look is a small bulb
       opts.open = !!this.bulbOn; // D11: the bulb opens a closed card for its time
+      opts.peekMs = Kit.peekMs(Kit.Bulb && Kit.Bulb.last ? Kit.Bulb.last.level : 3); // SH-101: the peek's time by level
       this.closedSeen = true; // the round had a closed card: the end screen shows the eye badge (D12)
     }
     this.el.innerHTML = "";
@@ -1065,7 +1066,11 @@
       else doc.querySelectorAll("[data-next-held]").forEach((x) => (delete x.dataset.nextHeld, x.isConnected && x.classList.add("next")));
     };
     const gen = Voice.gen; // a voice stop mid-card: the rows still to read stay quiet (SH-64)
-    if (!only && tt && typeof tt === "object") {
+    // SH-114, SH-102 (Zafar, 18 Oct: "they should just read out starting from the remaining steps"): a replay (the face, no `only`) says
+    // the steps not yet done once some are, and not the headline then; the whole card while none is done, and when all are
+    const shown = this.rows.slice(0, this.progressive ? this.shown + 1 : this.rows.length);
+    const left = !only && shown.some((r) => this.st.done.has(r.id)) && shown.some((r) => !this.st.done.has(r.id));
+    if (!only && !left && tt && typeof tt === "object") {
       this.st.reading = "__head";
       hold(true);
       if (this.headEl) this.headEl.classList.add("reading");
@@ -1074,7 +1079,7 @@
       if (this.headEl) this.headEl.classList.remove("reading");
       hold(false);
     }
-    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows.slice(0, this.progressive ? this.shown + 1 : this.rows.length);
+    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : left ? shown.filter((r) => !this.st.done.has(r.id)) : shown;
     for (const r of rows) {
       if (gen !== Voice.gen) break;
       if (!this.rows.includes(r)) continue;
@@ -1092,9 +1097,14 @@
   // the bulb's time per level: data/clinic/pipeline.json "bulb_ms" (D11, 1 Oct: 8 s at every level to start); this is
   // only the fallback before the data loads
   Kit.BULB_MS = { 1: 8000, 2: 8000, 3: 8000, 4: 8000 };
+  // SH-101 (Zafar, 17 Oct: level 3 double, the same seconds added to the others): how long the closed card's small bulb holds it open (the
+  // peek), by level; was a flat 3.5 s. Cook's table is data/cook.json calm.peekMs (contract-29 reads both as 7 s)
+  Kit.PEEK_MS = { 1: 7000, 2: 7000, 3: 7000, 4: 7000, 5: 7000 };
+  Kit.peekMs = (level) => Kit.PEEK_MS[level] || Kit.PEEK_MS[3];
   Kit.Bulb = function (btn, opts = {}) {
     this.btn = btn;
     this.level = opts.level || 1;
+    Kit.Bulb.last = this; // the screen's bulb: its level is the stage's (the peek's time follows it, SH-101)
     this.onUse = opts.onUse || null;
     // SH-41 (S05-D): the bulb's on and off reach the card (a closed card opens, in English, for the bulb's time); these
     // were passed by the screen and never called
@@ -1107,7 +1117,8 @@
     btn.classList.add("cl-bulb");
     btn.type = "button";
     btn.setAttribute("aria-label", "Light bulb: show it in English for a moment");
-    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2z" fill="currentColor"/><rect x="9" y="19" width="6" height="2.4" rx="1" fill="currentColor"/></svg>';
+    // SH-100: the one bulb picture (assets/ui/results/icon-bulb.webp), as Nani's and the card's small bulb
+    btn.innerHTML = `<img src="${Kit.url("assets/ui/results/icon-bulb.webp")}" alt="" draggable="false">`;
     btn.addEventListener("click", this._h);
   };
   Kit.Bulb.prototype.use = function () {

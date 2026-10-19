@@ -605,6 +605,15 @@ export class CookPlayer {
   async hintMoves(e) {
     const p = this.page;
     const calm = ["tap", "hold", "count", "more", "swipe", "roll"].includes(e.kind); // not the timed gestures: a wait would cost the window
+    // the card's face is its replay (a speaker): tap it once, before the help glow is up (s08 w1b, SH-102: a replay is free and says only the steps left; contract-31)
+    if (calm && !this.replayed && !this.waited) {
+      const face = await p.$("#side .oc-card .oc-face");
+      if (face && (await face.isVisible())) {
+        this.replayed = true;
+        await face.click({ force: true }).catch(() => {});
+        await sleep(600);
+      }
+    }
     if (calm && !this.waited) {
       this.waited = true;
       // the lab is unguided: Nani names the thing after the word's hesitation delay, and it glows 4 s later (real time, not game time)
