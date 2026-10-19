@@ -42,6 +42,7 @@
 //   contract-35 card-ladder  Cook's card by level: open at L1-L2, the item words dotted at L3, hidden (folded) at L4 (SH-110)
 //   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
 //   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
+//   contract-50 one-tick     samosa: the card's rows tick together at the one tick, never a kind before its samosas are all made (SAM-24)
 //   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
 //                           TTS, no unchecked or redo clip, no unknown audio (non-negotiable 10; checks-to-build 5)
 //
@@ -90,6 +91,7 @@ export const CHECKS = {
   "contract-34": { item: "go-arrow", title: "every go-on button has the arrow", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\")." },
   "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted; L4 every order card closed (face + headline folded). Was closedFrom 3 (SH-110, the level table, Zafar 19 Oct)." },
   "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows only: every step the game opens in a play stage (Lifecycle step-open, js/shared/guide.js stepper) must be called: a Cook line tagged role call must start after it and before the next step opens (or within 6 s), unless the game logged a step-call skip for that step (Lifecycle step-call, by 'skip ...': Nani muted, the station said it a moment ago, a step with no voiced line, the step closed before its turn). A step-open with neither is a break; a call said where the step-call log says skip is a break too (SH-110, the level table: the order in pieces, at every level, never help)." },
+  "contract-50": { item: "one-tick", title: "samosa: the card ticks at the one tick", how: "Cook flows of the samosa station only, in the stage where the game reported its fillings' decoys (Lifecycle decoys by 'fillings'): the rows sample (each sidebar card row and its tick). Once any row ticks, every row still open must tick within 1.5 s: the fill closes once for every strip at the one tick, so no kind's box or filling row ticks while samosas of it are still to be made (SAM-24, P42: 'he's ticked the samosa like it's done but he wanted three'). A row unticked again (a redo after a mistake, decision 51) starts the wait over." },
   "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
 };
 
@@ -1207,6 +1209,43 @@ function check37(r, tl, segs, add) {
     }
   }
 }
+// 50 (SAM-24): samosa's card ticks once, at the one tick, for every strip; never a kind early
+export const ONE_TICK_MS = 1500;
+function check50(r, tl, segs, add) {
+  if (!isCookFlow(r.flow) || stationOf(r.flow) !== "samosa") return;
+  const fills = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys" && /^fillings/.test(e.by || ""));
+  // (the note comes as the station picks its fillings, a moment before the sampler sees its stage start: the station stage just after it)
+  const stages = new Set(fills.map((e) => segs.find((x) => /station/.test(x.key) && x.t0 >= e.t - 50 && x.t0 <= e.t + 3000) || segAt(segs, e.t)).filter(Boolean));
+  for (const s of stages) {
+    let first = null; // the first tick since the rows were last all open (or one was reopened)
+    let broke = false;
+    let last = null;
+    for (const e of tl) {
+      if (e.type !== "c" || e.k !== "rows" || segAt(segs, e.t) !== s) continue;
+      const list = (e.list || []).filter((x) => x.text);
+      if (!list.length) continue;
+      const prev = new Map((last || []).map((x) => [x.id, x]));
+      if (list.some((x) => prev.has(x.id) && prev.get(x.id).done && !x.done)) {
+        first = null;
+        broke = false;
+      }
+      last = list;
+      const done = list.filter((x) => x.done);
+      if (!done.length) {
+        first = null;
+        continue;
+      }
+      if (!first) first = { t: e.t, rows: done.map((x) => x.text) };
+      const late = list.filter((x) => x.done && prev.has(x.id) && !prev.get(x.id).done);
+      if (late.length && e.t - first.t > ONE_TICK_MS && !broke) {
+        broke = true;
+        add("contract-50", first.t, `${s.key}: "${first.rows.slice(0, 3).join(" / ")}" ticked ${((e.t - first.t) / 1000).toFixed(1)} s before "${late.map((x) => x.text).slice(0, 3).join(" / ")}" (more than ${ONE_TICK_MS / 1000} s): a samosa kind ticked before its samosas were all made (the card ticks at the one tick)`);
+      }
+    }
+    // a row ticked, and others still open when the stage ended
+    if (!broke && first && last && last.some((x) => !x.done) && s.t1 != null && s.t1 - first.t > ONE_TICK_MS) add("contract-50", first.t, `${s.key}: "${first.rows.slice(0, 3).join(" / ")}" ticked and ${last.filter((x) => !x.done).length} row(s) never did in this stage`);
+  }
+}
 export function loadRetired(root) {
   const p = join(root, "build", "sandbox", "data", "retired-art.json");
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")).list : [];
@@ -1264,6 +1303,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check35(r, tl, segs, add, root);
   check36(r, tl, segs, v, add);
   check37(r, tl, segs, add);
+  check50(r, tl, segs, add);
   return out;
 }
 
