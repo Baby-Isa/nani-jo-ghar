@@ -63,6 +63,8 @@ export const CHECKS = {
   "contract-29": { item: "peek-time", title: "the peek lasts the level's time", how: "Each peek (the side sample's peek count from 0 to some and back) on a page whose card count and stage did not change: it must last the level's time from data (data/cook.json calm.peekMs, the clinic's Kit.PEEK_MS: 7 s at level 3, the same 3.5 s added to the others), judged as a child's time (Cook's test speed 3 shortens it; the clinic's is real time); under that less 450 ms is a break (SH-101)." },
   "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171)." },
   "contract-31": { item: "free-replay", title: "a replay is free and says what is left", how: "A help Cook counts (the hint sample: Cook.onHelp's kind) of kind replay is a break (SH-102: only seeing it written costs); and after a tap on a face (the card's replay) with rows already ticked (the rows sample), no line said in the next 7 s may be a ticked row's words (SH-114: a replay reads out the remaining steps)." },
+  "contract-32": { item: "divider", title: "the review's divider leaves room", how: "The review sample (the word review's two halves, side by side: the wrong words' column and the right words' column, their widths and counts): with no wrong word the right words take 4/5 of the width (room for four right and one wrong, SH-103, Zafar, 17 Oct: 'a little bit more to the left'); the wrong half is as many units wide as it has words (1 to 3) against the right half's 4, so the divider moves over as wrong words grow. Not judged on a taught round (one group) or stacked on a portrait phone." },
+  "contract-33": { item: "headline-size", title: "the order pop-up's headlines: one size, wrap first", how: "The heads sample (each headline of the order pop-up with its size, its full size from a bare clone of it, and its line count; settled 400 ms): two sizes on one pop-up, or headlines all on one line while shrunk under their full size, is a break (SH-107, Zafar, 18 Oct: 'it was better to have the bigger text'; only the order pop-up: everywhere else keeps shrink, then wrap, non-negotiable 9)." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
   "contract-18": { item: "card-rows", title: "card rows tick when their step closes", how: "Every rows sample (lib/contract-hook.mjs: each sidebar card row with its key, words and tick) against the shared lifecycle's step-close log (Lifecycle.note: the order card's tick path and the heal host, at their own millisecond, with the step's key): a row that turns ticked with no step-close for its key (any step-close for a row with no key) in the 1.1 s before is a break; a row whose words change while it stays in the same stage (not to or from a row with no letters, not under the bulb's English) is a break." },
   "contract-21": { item: "input-live", title: "input is live while a line plays", how: "Every real tap (trusted pointerdown) in the play area (not the sidebar, the pop-up or a ✓/Next button) while a line is being said (a clip of it sounding, or the line between its start and end in the sound log) and the game expected a tap, a pick or a drag: the shared lifecycle must log an act (Lifecycle.note from js/shared/host.js onAct, the heal host's input and Cook's play area: its canvas and its own controls, js/cook/flow.js) within 150 ms. None is a break (E5: input never waits for the voice)." },
@@ -1017,6 +1019,45 @@ function check31(tl, v, add) {
     }
   }
 }
+// 32 (SH-103): the end review's divider leaves room for four right words and one wrong one (the right words are 4/5 of the width with
+// none wrong), and moves over as the wrong words grow: the wrong side is as many units wide as it has words (1 to 3), the right side 4
+export function reviewShare(bad) { return 4 / (Math.max(1, Math.min(bad, 3)) + 4); }
+function check32(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "review" || e.none || !(e.badW + e.okW > 0)) continue;
+    const share = e.okW / (e.badW + e.okW);
+    const want = reviewShare(e.bad);
+    // content may push a narrow half wider than its share (a long word in one tile at 800x360): never narrower than it, so lower is judged loosely
+    const bad = e.bad === 0 ? share < 0.72 || share > 0.88 : share < want - 0.12 || share > want + 0.08;
+    const k = `${e.bad}|${e.ok}|${Math.round(share * 20)}`;
+    if (!bad || seen.has(k)) continue;
+    seen.add(k);
+    add("contract-32", e.t, `the review's right words take ${Math.round(share * 100)}% of the width with ${e.bad} wrong and ${e.ok} right (wanted about ${Math.round(want * 100)}%: room for four right and one wrong, the wrong side growing with its count)`);
+  }
+}
+// 33 (SH-107): the order pop-up's headlines are one size per screen, and wrap at full size before they shrink: a size under the full
+// one is only for headlines that don't fit two lines, so a pop-up whose every headline is on one line is at full size
+function check33(tl, add) {
+  const heads = tl.filter((e) => e.type === "c" && e.k === "heads");
+  const seen = new Set();
+  heads.forEach((e, i) => {
+    const list = e.list || [];
+    const next = heads[i + 1];
+    if (!list.length || (next && next.t - e.t < 400)) return; // (the card is still flying in: its sizes are easing)
+    const sizes = [...new Set(list.map((x) => x.size))];
+    const k = list.map((x) => `${x.size}/${x.lines}`).join("|");
+    if (seen.has(k)) return;
+    if (sizes.length > 1) {
+      seen.add(k);
+      return add("contract-33", e.t, `the order pop-up's headlines are ${sizes.length} sizes at once (${list.map((x) => `"${x.text}" ${x.size}px, ${x.lines} line${x.lines > 1 ? "s" : ""}`).join("; ")}): one size per screen`);
+    }
+    if (list.every((x) => x.lines <= 1) && list.some((x) => x.size < x.full - 0.5)) {
+      seen.add(k);
+      add("contract-33", e.t, `the order pop-up's headlines shrank to ${sizes[0]}px (full ${Math.max(...list.map((x) => x.full))}px) to stay on one line: they wrap at full size first, and shrink only when two lines don't fit`);
+    }
+  });
+}
 export function loadRetired(root) {
   const p = join(root, "build", "sandbox", "data", "retired-art.json");
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")).list : [];
@@ -1068,6 +1109,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check29(r, tl, segs, add);
   check30(r, tl, segs, v, numbers || numbersFor(root), add);
   check31(tl, v, add);
+  check32(tl, add);
+  check33(tl, add);
   return out;
 }
 

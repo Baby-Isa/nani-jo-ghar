@@ -120,6 +120,45 @@ test("contract-31: a replay counted as a hint is a break; a replay that says a t
   assert.equal(of(run(page("clinic:heal-ear@L3", none)), "contract-31").length, 0);
 });
 
+const review = (t, o) => C(t, "review", { bad: 0, ok: 4, badW: 300, okW: 300, l: 100, r: 700, ...o });
+
+test("contract-32: the review's divider at the middle with no wrong word (the old equal halves) is a break; 4/5 with none wrong, growing with the wrong words, passes", () => {
+  const halves = sorted([stage(T, "cook:station1:chai-tray"), review(T + 500, { bad: 0, ok: 4, badW: 300, okW: 300 })]);
+  const b = of(run(page("cook:chai-tray", halves)), "contract-32");
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /take 50% of the width with 0 wrong and 4 right \(wanted about 80%/);
+  const fair = [stage(T, "cook:station1:chai-tray"), review(T + 500, { bad: 0, ok: 4, badW: 120, okW: 480 }), review(T + 900, { bad: 1, ok: 4, badW: 120, okW: 480 }), review(T + 1300, { bad: 3, ok: 3, badW: 258, okW: 342 })];
+  assert.equal(of(run(page("cook:chai-tray", sorted(fair))), "contract-32").length, 0, "0 and 1 wrong: 80%; 3 wrong: 4/7 = 57%");
+  // one wrong word still at the old middle, and three wrong squeezed into a fifth, are breaks
+  assert.equal(of(run(page("cook:chai-tray", sorted([stage(T, "x"), review(T + 500, { bad: 1, ok: 4, badW: 300, okW: 300 })]))), "contract-32").length, 1);
+  assert.equal(of(run(page("cook:chai-tray", sorted([stage(T, "x"), review(T + 500, { bad: 3, ok: 3, badW: 120, okW: 480 })]))), "contract-32").length, 1);
+  // a taught round (one group) or stacked halves report nothing
+  assert.equal(of(run(page("cook:chai-tray", sorted([stage(T, "x"), C(T + 500, "review", { none: true })]))), "contract-32").length, 0);
+});
+
+test("contract-33: the order pop-up's headlines in two sizes, or shrunk to one line, are breaks; one size, wrapped at full size, passes", () => {
+  const H = (t, list) => C(t, "heads", { list });
+  const two = sorted([stage(T, "cook:station1:chai-tray"), H(T + 500, [{ size: 33, full: 40, lines: 1, text: "Muke aadu waari chai khape." }, { size: 40, full: 40, lines: 2, text: "Muke elchi waari chai khape." }]), H(T + 2500, [])]);
+  const b = of(run(page("cook:chai-tray@L3", two)), "contract-33");
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /2 sizes at once/);
+  const wrapped = clone(two);
+  wrapped[1].list = [{ size: 40, full: 40, lines: 2, text: "Muke aadu waari chai khape." }, { size: 40, full: 40, lines: 2, text: "Muke elchi waari chai khape." }];
+  assert.equal(of(run(page("cook:chai-tray@L3", wrapped)), "contract-33").length, 0);
+  // all on one line yet under the full size: they shrank where wrapping would do
+  const shrunk = clone(two);
+  shrunk[1].list = [{ size: 33, full: 40, lines: 1, text: "a" }, { size: 33, full: 40, lines: 1, text: "b" }];
+  assert.match(of(run(page("cook:chai-tray@L3", shrunk)), "contract-33")[0].measured, /shrank to 33px \(full 40px\) to stay on one line/);
+  // a common smaller size with a headline that needs two lines (two lines didn't fit at full) passes
+  const fits = clone(two);
+  fits[1].list = [{ size: 33, full: 40, lines: 2, text: "a" }, { size: 33, full: 40, lines: 1, text: "b" }];
+  assert.equal(of(run(page("cook:chai-tray@L3", fits)), "contract-33").length, 0);
+  // the card still flying in (the next sample within 400 ms): its easing sizes are not judged
+  const flying = clone(two);
+  flying[2].t = T + 700;
+  assert.equal(of(run(page("cook:chai-tray@L3", sorted(flying))), "contract-33").length, 0);
+});
+
 test("contract-30: the order read out under the pop-up, before the station's stage starts, is judged against the first stage's card (what the 19 Oct chai L3 run did)", () => {
   // recorded shape: lines at 1.3 to 3.3 s, the stage at 4 s, the sidebar card drawn at 4 s with the numbers dropped
   const tl = sorted([line(1, T + 1280, "Muke chai khape,"), line(2, T + 2270, "with trae khun."), line(3, T + 3070, "ba khun."), stage(T + 4000, ST), card(T + 3980, ["Muke chai khape.", "dudh na", "khun", "dudh"])]);
