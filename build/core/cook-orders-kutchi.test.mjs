@@ -108,7 +108,7 @@ test("PAN-16: two people in one pop-up may say the same; a later pop-up may not;
     const order = () => L.line("need", L.phrase(["cook-chai"]));
     let serial = 4;
     let card = { who: "nana" };
-    win.RequestPopup = { serial: () => serial, isOpen: () => serial > 0 };
+    win.Lifecycle = { serial: () => serial, isOpen: () => serial > 0 };
     win.document = { querySelector: (sel) => (/\.speaking/.test(sel) ? card : null) };
     assert.equal(await L.speak(order()), true);
     clock.add(900);

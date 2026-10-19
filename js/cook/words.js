@@ -532,7 +532,7 @@
   }
   const popupNow = () => {
     try {
-      return (global.RequestPopup && global.RequestPopup.serial && global.RequestPopup.serial()) || 0;
+      return (global.Lifecycle && global.Lifecycle.serial && global.Lifecycle.serial()) || 0;
     } catch (e) {
       return 0;
     }

@@ -53,7 +53,7 @@
  *     level,         // the play's level: from 3 the order is heard, never written; every big card drawn is closed (SH-72)
  *     closed,        // the same, whatever the level
  *   });            // -> {skipped}: resolves once the card is in the sidebar
- *   RequestPopup.isOpen()   RequestPopup.serial() (the open one's number, 0 when none)   RequestPopup.close()  (the open one folds now, as a tap would, without the voice stop)
+ *   RequestPopup.isOpen()   RequestPopup.serial() / Lifecycle.serial() (the open one's number, 0 when none)   RequestPopup.close()  (the open one folds now, as a tap would, without the voice stop)
  *   RequestPopup.fly(cardEl, targetEl, {fast})   the fold animation alone (Promise)
  *
  *   The voice stop: one switch for every voice on the page (the clinic's Kit.Voice, Cook's player, the device voice).
@@ -521,6 +521,8 @@
     /** Has a request pop-up opened since the last stage ended? (A phase's order says so: one pop-up per phase.) */
     asked: () => asks === ends && asks > 0,
     isOpen: () => !!current,
+    /** the open pop-up's number (each opening a new one), or 0 when none is up (PAN-16: Cook's one-line rule) */
+    serial: () => (current ? serialN : 0),
     close: () => current && current.fold(false),
     fly,
     /**
