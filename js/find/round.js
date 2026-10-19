@@ -129,7 +129,7 @@
       this.rows.forEach((r) => (r.placeholder = !phTested && Find.rowParts(r.want).some((p) => typeof p === "string" && Cook.data.words[p] && !Cook.data.words[p].kutchi)));
       this.rows.forEach((r) => (r.decorate = (li) => decorate(r, li)));
       this.L = Find.ladder(this.rows);
-      UI.mission.open({ who: this.who || "nani", name: this.listName || "Nani's list", ladders: [this.L], line: this.listLine(), busy: this.busy });
+      UI.mission.open({ who: this.who || "nani", name: this.listName || "", ladders: [this.L], line: this.listLine(), busy: this.busy });
       if (!Find.stageOverride) this.rows.forEach((r) => r.ids.concat(r.want.count ? [Cook.numId(r.want.count)] : []).forEach((id) => Cook.markSeen(id)));
     }
     /**
@@ -354,13 +354,13 @@
       UI.mission.stamp();
       UI.setPatience(null);
       const P = Find.data.pay;
-      const receipt = [["Helping Nani", P.help]];
-      if (stars.ear) receipt.push(["Understood (ear star)", P.ear]);
-      if (stars.voice) receipt.push(["Said it (voice star)", P.voice || 4]);
-      if (stars.hand) receipt.push([`${UI.starInfo("hand").name} star`, P.hand]);
-      if (stars.third) receipt.push([`${UI.starInfo("third").name} star`, P.third]);
+      const receipt = [["Helping Nani", P.help, "help"]];
+      if (stars.ear) receipt.push(["Understood (ear star)", P.ear, "ear"]);
+      if (stars.voice) receipt.push(["Said it (voice star)", P.voice || 4, "voice"]);
+      if (stars.hand) receipt.push([`${UI.starInfo("hand").name} star`, P.hand, "hand"]);
+      if (stars.third) receipt.push([`${UI.starInfo("third").name} star`, P.third, "third"]);
       const c = P.combo;
-      if (this.bestCombo >= c.from) receipt.push([`Combo ×${this.bestCombo}`, Math.min(c.max, (this.bestCombo - c.from + 1) * c.each)]);
+      if (this.bestCombo >= c.from) receipt.push([`Combo ×${this.bestCombo}`, Math.min(c.max, (this.bestCombo - c.from + 1) * c.each), "combo"]);
       const coins = receipt.reduce((a, [, v]) => a + v, 0);
       // word progress (not when the lab is pretending you know the words)
       if (!Find.stageOverride && !this.noProgress) {

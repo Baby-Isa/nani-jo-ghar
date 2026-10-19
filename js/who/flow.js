@@ -16,6 +16,12 @@
  * the game wants next, point(i) where suspect i is on screen.
  */
 (function (global) {
+  // no written English for the child (rule 5): the turn-your-phone card is its turning arrow alone
+  document.querySelectorAll("#rotate p").forEach((e) => e.remove());
+  // ... and Done is a tick
+  const whoDone = document.getElementById("who-done");
+  whoDone.textContent = "✓";
+  whoDone.setAttribute("aria-label", "Done");
   const Who = (global.Who = global.Who || {});
   const UI = Who.UI;
   const $ = (id) => document.getElementById(id);

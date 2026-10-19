@@ -105,7 +105,7 @@
     async play() {
       UI.gist(this.goal);
       this.L = { dish: 0, recipe: null, head: null, sections: [{ key: "any", seq: false, groups: Cook.shuffle(this.childRows).map((r) => [r]) }] };
-      UI.mission.open({ who: "nani", name: "Nani's photos", ladders: [this.L], line: this.listLine(), busy: false });
+      UI.mission.open({ who: "nani", name: "", ladders: [this.L], line: this.listLine(), busy: false });
       if (!Snap.stageOverride) this.rows.forEach((r) => r.ids.forEach((id) => Cook.markSeen(id)));
       this.vf = Snap.Mech.defs.viewfinder.create({ lay: this.lay, scene: Snap.scene, K: this.K, film: this.film, debug: this.debug, onShot: (s) => this.onShot(s), onAct: () => (this.lastAct = Snap.now()) });
       this.vf.enable(false);
@@ -143,7 +143,9 @@
       this.lastAct = Snap.now();
       this.hesitated = false;
       const show = $("#vf-show");
-      show.textContent = label;
+      // a picture button, no written English for the child (rule 5): the label is for screen readers
+      show.textContent = "\u25B6";
+      show.setAttribute("aria-label", label);
       const shotsAtStart = this.prints.length;
       show.classList.toggle("hidden", this.prints.length === 0 || need > 0);
       Cook.expect = null;
@@ -251,11 +253,11 @@
       UI.mission.refresh();
       UI.mission.stamp();
       const P = Snap.data.pay;
-      const receipt = [["Helping Nani", P.help]];
-      if (stars.ear) receipt.push(["Understood (ear star)", P.ear]);
-      if (stars.hand) receipt.push(["Good shots (lens star)", P.hand]);
-      if (stars.third) receipt.push(["No help", P.third]);
-      if (stars.voice) receipt.push(["Said it (voice star)", P.voice]);
+      const receipt = [["Helping Nani", P.help, "help"]];
+      if (stars.ear) receipt.push(["Understood (ear star)", P.ear, "ear"]);
+      if (stars.hand) receipt.push(["Good shots (lens star)", P.hand, "hand"]);
+      if (stars.third) receipt.push(["No help", P.third, "third"]);
+      if (stars.voice) receipt.push(["Said it (voice star)", P.voice, "voice"]);
       const coins = receipt.reduce((a, [, v]) => a + v, 0);
       if (!Snap.stageOverride) {
         this.rows.forEach((r) => {

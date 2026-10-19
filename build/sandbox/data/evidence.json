@@ -16115,6 +16115,66 @@
     "pass"
    ],
    "note": "Who did it?: no 'EN' tag and no English heading or receipt"
+  },
+  {
+   "flow": "mode:find",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:16"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "Find it: no 'Nani's list' heading, 'Tap to start', 'Show' button or caption in English; the title and result are pictures and numbers"
+  },
+  {
+   "flow": "mode:dress",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:16"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "Dress up: no result heading, receipt, 'They asked'/'You did' or 'Tap to start' in English"
+  },
+  {
+   "flow": "mode:monsoon",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:16"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "Monsoon rush: no storm name, 'EN' tag, result heading or receipt in English"
   }
  ],
  "ART-22": {

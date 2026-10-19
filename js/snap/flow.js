@@ -127,31 +127,57 @@
       return el.outerHTML;
     };
     const earNote = card.earOffered ? "" : `<div class="cc-why">New words: taught, not tested (the ear star needs ${Snap.data.mechanics.handin.levels[0].minTested} rows you've heard before).</div>`;
+    const why = card.reasons.length ? `<div class="cc-why">Ear: ${esc(card.reasons.slice(0, 3).join("; "))}</div>` : "";
+    const records = card.lab && state.lab.records ? `<h3>Print records</h3><pre class="records">${esc(JSON.stringify(card.prints.map((x) => ({ by: x.by, used: x.used, frame: x.frame, sprites: x.print.sprites })), null, 1))}</pre>` : "";
     const p = UI.panel(`
-      <h2>${esc(g.name)} · level ${card.level}${card.lab ? ` <small class="seed">seed ${card.seed}</small>` : ""}</h2>
       <div class="cards"><div class="ccard rcard res-card"><div class="rc-left">
-        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="">Nani's photos</div>
+        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt=""></div>
         <span class="cc-coins"><i class="coin-dot"></i>+${card.coins}</span>
         <div class="cc-stars">${starsHtml(card.stars)}</div>
-        <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>Pocket money</span><b>${card.coins}</b></div></div>
-        ${earNote}
-        ${card.reasons.length ? `<div class="cc-why">Ear: ${esc(card.reasons.slice(0, 3).join("; "))}</div>` : ""}
+        <div class="receipt">${card.receipt.map(([k, v, key]) => `<div title="${esc(k)}"><span class="rc-ic">${receiptIcon(key)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span class="rc-ic"><i class="coin-dot"></i></span><b>${card.coins}</b></div></div>
       </div>
       <div class="rc-right">
         <div class="snap-asked">${card.asked
           .map((a, i) => `<div class="sa-row${a.bad ? " bad" : ""}"><span class="kp${a.bad ? " bad" : ""}">${a.ali ? `<i class="ali-tag">Ali</i> ` : ""}${Lang.html(a.line)}</span>${printFor(card.gave[i])}</div>`)
           .join("")}</div>
-        ${t.length ? `<div class="rc-tips"><h4>Next time</h4>${t.map((x) => `<div class="rc-tip"><span class="mstar lost">${UI.ICON[(x.star === "voice" ? Snap.data.star_set.voice : UI.starInfo(x.star)).icon] || ""}</span>${esc(x.text)}</div>`).join("")}</div>` : `<div class="rc-tips all"><h4>Next time</h4><div class="rc-tip">Just the same. Every star!</div></div>`}
       </div></div></div>
-      <h3>Words from this round</h3>
       ${UI.wordReview(card.words.map((id) => ({ id, state: card.asked.some((a, i) => a.bad && Snap.rowWords(round.rows[i].row).includes(id)) ? "missed" : "ok" })))}
-      ${card.lab && state.lab.records ? `<h3>Print records</h3><pre class="records">${esc(JSON.stringify(card.prints.map((x) => ({ by: x.by, used: x.used, frame: x.frame, sprites: x.print.sprites })), null, 1))}</pre>` : ""}
-      <div class="btn-row"><button class="btn primary" id="res-again">${spec.lab ? "Again (new seed)" : "Another walk"}</button><button class="btn" id="res-back">${spec.lab ? "Snap lab" : "Menu"}</button></div>`);
+      <div class="btn-row"><button class="btn primary" id="res-again" type="button" aria-label="${spec.lab ? "Again (new seed)" : "Another walk"}">&#9654;</button><button class="btn" id="res-back" type="button" aria-label="${spec.lab ? "Snap lab" : "Menu"}">&#8962;</button></div>`);
+    // the end-of-round review shows each word's English under it (the one place besides the "?"; ui-design-system s6)
+    p.querySelectorAll(".wr-en").forEach((e) => e.classList.add("rs-en"));
+    // the grown-ups' "?": a tip per missed star, why the ear star was or wasn't offered, the lab's records
+    if (t.length || earNote || why || records) grownUps(p, `${t.length ? `<h3>Next time</h3>${t.map((x) => `<div class="rc-tip"><span class="mstar lost">${UI.ICON[(x.star === "voice" ? Snap.data.star_set.voice : UI.starInfo(x.star)).icon] || ""}</span>${esc(x.text)}</div>`).join("")}` : ""}${earNote}${why}${records}`);
     UI.wireWordReview(p);
     $("#res-again").addEventListener("click", () => (spec.lab ? runLab(spec.key).catch(report) : photoWalk()));
     $("#res-back").addEventListener("click", () => (spec.lab ? showLab() : showTitle()));
     UI.mission.close();
     Cook.expect = { kind: "click", selector: "#res-back", end: true };
+  }
+  const receiptIcon = (key) => (key === "help" ? `<i class="coin-dot"></i>` : UI.ICON[(key === "voice" ? Snap.data.star_set.voice : UI.starInfo(key)).icon] || "");
+  /** The grown-ups' "?" on a panel: a round "?" in its corner; the English opens beside it and nowhere else (Cook.grownUps does the same on Cook's panels). */
+  function grownUps(p, html) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "rail-btn gu-btn";
+    btn.id = "gu-btn";
+    btn.textContent = "?";
+    btn.setAttribute("aria-label", "For grown-ups");
+    btn.setAttribute("aria-expanded", "false");
+    const box = document.createElement("div");
+    box.className = "gu-pop hidden";
+    box.id = "gu-pop";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", "For grown-ups");
+    box.innerHTML = html;
+    btn.addEventListener("click", () => {
+      Cook.sfx.click();
+      const open = box.classList.toggle("hidden") === false;
+      btn.setAttribute("aria-expanded", String(open));
+      p.toggleAttribute("data-grown", open);
+    });
+    p.prepend(box);
+    p.prepend(btn);
+    return box;
   }
 
   /* ---------------- title ---------------- */
@@ -170,17 +196,20 @@
       `<div class="title-wrap">
         <img src="${Cook.v("assets/cook/characters/nani-ledge-happy-v3.webp")}" alt="Nani">
         <div>
-          <h1>Snap with Nani</h1>
-          <p>Nani's old camera! She tells you, in Kutchi, what she wants a photo of. Frame exactly that, shoot, then show her your photos: she'll ask for each one again.</p>
-          <p class="story-line"><b>Photo walk in Nani's orchard.</b> Greybox: shapes and the fruit pictures only, no painted scene yet.</p>
-          <div class="btn-row">
-            <button class="btn primary" id="t-start">Photo walk</button>
-            <button class="btn" id="t-lab">Snap lab</button>
-          </div>
-          <p style="margin-top:14px;font-size:13px"><a href="cook.html">Cook with Nani</a> · <a href="find.html">Find it</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
+          <h1 hidden>Snap with Nani</h1>
+          <div class="btn-row pic-row"><button class="btn primary big" id="t-start" type="button" aria-label="Photo walk">&#9654;</button></div>
         </div>
       </div>`,
       { title: true }
+    );
+    // everything a grown-up reads (what Snap is, the walk, the Snap lab) is behind the "?" (rule 5)
+    grownUps(
+      p,
+      `<h3>Snap with Nani</h3>
+      <p>Nani's old camera! She tells you, in Kutchi, what she wants a photo of. Frame exactly that, shoot, then show her your photos: she'll ask for each one again.</p>
+      <p><b>Photo walk in Nani's orchard.</b> Greybox: shapes and the fruit pictures only, no painted scene yet.</p>
+      <div class="btn-row"><button class="btn" id="t-lab" type="button">Snap lab</button></div>
+      <p class="gu-small"><a href="cook.html">Cook with Nani</a> · <a href="find.html">Find it</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>`
     );
     $("#t-start").addEventListener("click", photoWalk);
     $("#t-lab").addEventListener("click", showLab);
@@ -373,6 +402,14 @@
     UI.init();
     Cook.loadSave();
     await Snap.load();
+    // no written English for the child (rule 5): the intro card has no name and no "tap to start" (cook.css draws the tapping
+    // finger on an empty .ic-go); "none of these: take another" is a back arrow
+    const icName = document.querySelector("#intro .ic-name");
+    if (icName) icName.remove();
+    document.querySelector("#intro .ic-go").textContent = "";
+    const back = document.querySelector("#hi-back");
+    back.textContent = "\u21BA";
+    back.setAttribute("aria-label", "None of these: take another");
     $("#btn-home").addEventListener("click", () => {
       if (!Cook.inDay || confirm("Leave these photos and go back to the menu?")) showTitle();
     });
