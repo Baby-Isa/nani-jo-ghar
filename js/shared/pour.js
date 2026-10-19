@@ -124,7 +124,7 @@ function lipAt(f, lip) {
 
 /**
  * The stream (Cook's chai stream, 28 Sept s8): from the lip it falls in a curve onto the surface, tapering, with a slight
- * ripple; a small splash ring and a pool where it lands. Points in the caller's units.
+ * ripple; a soft splash ripple (its own colour, no white ring: SH-117) and a pool where it lands. Points in the caller's units.
  */
 function stream(sp, p, w, t = 0) {
   const midX = (sp.x + p.x) / 2 - (p.x - sp.x) * 0.15;
@@ -201,8 +201,9 @@ function phaser(S, o) {
     g.fillPoints(s.poly, true);
     g.lineStyle(Math.max(1, (o.width || 12) * 0.18), 0xffffff, 0.35);
     g.strokePoints(s.core, false);
-    g.lineStyle(Math.max(1, (o.width || 12) * 0.2), 0xffffff, 0.45 * f.flow);
-    g.strokeEllipse(s.splash.x, s.splash.y, s.splash.rx * 2, s.splash.ry * 2);
+    // SH-117 (s08 w4A): the splash is a soft ripple of the liquid's own colour, never a white ring (a drawn line on the daal)
+    g.fillStyle(o.colour, 0.22 * f.flow);
+    g.fillEllipse(s.splash.x, s.splash.y, s.splash.rx * 2, s.splash.ry * 2);
     g.fillStyle(o.colour, 0.9);
     g.fillEllipse(s.pool.x, s.pool.y, s.pool.rx * 2, s.pool.ry * 2);
   };
@@ -233,7 +234,8 @@ function svg(layer, o) {
   const sg = el("g", { opacity: 0 }, root);
   const body = el("path", { fill: o.colour, opacity: o.opacity == null ? 0.92 : o.opacity }, sg);
   const core = el("polyline", { fill: "none", stroke: "#fff", "stroke-opacity": 0.35, "stroke-linecap": "round", "stroke-width": Math.max(1, (o.width || 9) * 0.18) }, sg);
-  const ring = el("ellipse", { fill: "none", stroke: "#fff", "stroke-opacity": 0.45, "stroke-width": Math.max(1, (o.width || 9) * 0.2) }, sg);
+  // SH-117 (s08 w4A): the splash a soft ripple of the liquid's own colour, no white ring
+  const ring = el("ellipse", { fill: o.colour, "fill-opacity": 0.22, stroke: "none" }, sg);
   const pool = el("ellipse", { fill: o.colour, opacity: o.opacity == null ? 0.92 : o.opacity }, sg);
   const vg = el("g", {}, root);
   el("image", { href: o.href, x: -o.size.w / 2, y: -o.size.h / 2, width: o.size.w, height: o.size.h }, vg);

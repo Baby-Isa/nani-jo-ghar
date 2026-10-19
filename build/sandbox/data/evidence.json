@@ -13695,5 +13695,254 @@
    ],
    "note": "the doctor is one man in every picture (bald, white side hair, short white beard, clear rectangular glasses, navy check blazer, white shirt): the box at the top, the cards and the standing doctor"
   }
+ ],
+ "DAAR-26": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-stir",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:#guide"
+   ],
+   "expect": null,
+   "note": "the stir: no pop-up card; Nani says the stir line once and whole (verb, count, speed) as it opens, at every level (the engine's nearest whole line until Mum's sentence)"
+  }
+ ],
+ "DAAR-27": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "voice",
+    "contract:66"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "each lap's number starts within 3/4 of that lap after the ladle passes the flag (contract-66); a late one is left out"
+  }
+ ],
+ "DAAR-29": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:cook-done:tap",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pot"
+   ],
+   "expect": null,
+   "note": "the pot's contents are a round disc inside the rim, centred, never clipped; it turns under a still rim when stirred",
+   "max": 8
+  }
+ ],
+ "DAAR-30": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-begin",
+   "after": null,
+   "capture": [
+    "strip:canvas:pot:8x200"
+   ],
+   "expect": null,
+   "note": "a small chequered flag at 12 o'clock on the rim; the ladle starts under it and each lap counts as it passes (the dial's number changes)"
+  }
+ ],
+ "DAAR-31": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:#done-btn",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pot"
+   ],
+   "expect": null,
+   "note": "the pot exactly top-down at every level: the rim a circle, the walls even all round",
+   "delay": 400
+  }
+ ],
+ "DAAR-32": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-stir",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "L1 too: the stir line says the speed (jaldi or aste) and the card's stir row shows it"
+  }
+ ],
+ "DAAR-33": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:#done-btn",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "after the pour the mat the daar stood on has gone: nothing peeks out under the speed dial",
+   "delay": 400
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "at serve: one mat only, under the served bowl"
+  }
+ ],
+ "DAAR-34": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-slice",
+   "after": null,
+   "capture": [
+    "dom:#mission",
+    "strip:#mission:8x700"
+   ],
+   "expect": null,
+   "note": "the chop card: rows she has not called yet are dotted whole (number too) and written as she calls each round (L3 up, the dotted card; L4 folds it, its peek shows them)"
+  }
+ ],
+ "DAAR-35": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-slice",
+   "after": null,
+   "capture": [
+    "contract:65",
+    "strip:#stage:8x400"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the chop's waves follow on with no gap (contract-65: at most 0.5 s more than the throw spacing); an item counts for its own wave"
+  }
+ ],
+ "SH-117": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "daar-in",
+   "after": null,
+   "capture": [
+    "strip:canvas:pot:8x60"
+   ],
+   "expect": null,
+   "note": "the daal pour: the stream lands in a soft ripple of its own colour, no bright white ring (no drawn line on the daal)"
+  }
  ]
 }

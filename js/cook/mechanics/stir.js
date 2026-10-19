@@ -19,7 +19,7 @@
  *
  * Kutchi: the number, "slowly" / "quickly", "now …", "enough".
  * Params: laps, speed (null | "slow" | "quick").
- * Knobs (data.mechanics.stir): speeds (say a speed at all: false at level 1;
+ * Knobs (data.mechanics.stir): speeds (say a speed at all: every level since decision 13, L1 too;
  * a missing speed is picked at random), switch ({sameChance}: change it
  * mid-stir), bands ([stopped|tortoise, tortoise|hare, hare|spill] in real
  * laps per second, the same for every order), dialMax, speedWords, lap
