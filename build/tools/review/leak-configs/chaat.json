@@ -1,0 +1,1 @@
+{"id": "chaat", "adapter": "build/leak_chaat.mjs", "games": ["chaat"], "blindMax": 0.1, "about": "The chaat bowl (CHT-14, CHT-15, decision 9): its own rules (assemble.js CHAAT_RULES) on recipe-shaped orders; a guesser trying each thing must not keep every tick"}

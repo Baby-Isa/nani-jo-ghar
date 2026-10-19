@@ -713,7 +713,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         cur = id;
         // decision 80: the guide key's own line is her how-to line (not an order); a station's own line says so itself
         const line = o.line ? (o.role ? Lang.role(o.line, o.role) : o.line) : Lang.role(S$.guideLine(key), "howto");
-        if (UI.step) return UI.step(line, { glow: o.glow || null, hide: o.hide || (ctx ? hideKnown(ctx) : undefined), quiet: !!o.quiet, ids: o.ids });
+        // o.again (MAA-15): a new step whose call is said even if the same words were said a moment ago (maani's second Firai)
+        if (UI.step) return UI.step(line, { glow: o.glow || null, hide: o.hide || (ctx ? hideKnown(ctx) : undefined), quiet: !!o.quiet, ids: o.ids, again: !!o.again });
         if (UI.guideFor) UI.guideFor(key);
         return null;
       },

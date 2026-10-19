@@ -54,6 +54,21 @@ test("contract-22: a step line said twice within 10 s (samosa's per-put step, da
   assert.equal(of(run(page("cook:daar", counts)), "contract-22").length, 0);
 });
 
+test("contract-22: a step call the game says again on purpose for a new step (maani's Firai on both turns, MAA-15) is not a repeat", () => {
+  const tl = sorted([stage(T, ST), life(T, "stage-start", "cook:station"),
+    life(T + 7990, "step-open", "4"), life(T + 7995, "step-call", "4", { by: "queued" }), line(1, T + 8000, "Firai!", { role: "call" }), lineEnd(1, T + 8500),
+    life(T + 8900, "step-open", "5"), life(T + 8905, "step-call", "5", { by: "queued-again" }), line(2, T + 9000, "Firai!", { role: "call" }), lineEnd(2, T + 9500)]);
+  assert.equal(of(run(page("cook:maani-line", tl)), "contract-22").length, 0, "the second turn's own call");
+  // the same call with no new step marked again is still a repeat
+  const plain = clone(tl);
+  plain.find((e) => e.by === "queued-again").by = "queued";
+  assert.equal(of(run(page("cook:maani-line", sorted(plain))), "contract-22").length, 1);
+  // and a line that is not a step call is judged as before
+  const notCall = clone(tl);
+  notCall.find((e) => e.type === "line" && e.id === 2).role = undefined;
+  assert.equal(of(run(page("cook:maani-line", sorted(notCall))), "contract-22").length, 1);
+});
+
 test("contract-22: a clip cut short by the next line starting over it is a break; a stop the game made, or a clip that finished, passes", () => {
   const tl = sorted([stage(T, ST), line(1, T + 100, "Muke chai khape."), play(1, T + 110, "assets/audio/family/mum/bhar-rc.mp3", 2.0), playEnd(1, T + 900, "stop"), lineEnd(1, T + 900),
     line(2, T + 880, "Bhar!"), play(2, T + 890, "assets/audio/family/mum/bhar-rc.mp3", 0.6), playEnd(2, T + 1490), lineEnd(2, T + 1500)]);
