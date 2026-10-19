@@ -453,6 +453,7 @@
     /* ---- the things round the room ---- */
     const els = {};
     const on = {};
+    let pressedAt = 0; // when a thing in the room was last pressed (its click must not reach the patient under it)
     let mood = null; // the sweat / snowflake by her head (FV10), made below
     const AT = Object.assign(
       {
@@ -507,6 +508,7 @@
       ctx.on(b, "pointerdown", (e) => {
         if (e.button > 0) return;
         e.stopPropagation();
+        pressedAt = Date.now();
         tapThing(id);
       });
       ctx.on(b, "click", (e) => {
@@ -812,6 +814,12 @@
         st.busy = false;
         next();
       };
+      // CLN-176 (clinic decision 5; Zafar, 18 Oct: "the girl said I'm okay ... but then it switched to being too cold,
+      // so she shouldn't have said that ... until she's feeling the correct temperature"): she says "barabar" only once
+      // she stays just right, on the last swing (then her thanks, finish()); a swing that is still to come goes on
+      // without a word from her (her face eases while the gauge sits in the green, then the next swing turns it)
+      const last = !P.steps[st.i + 1];
+      if (!last) return void ctx.after(fast() ? 150 : 900, go);
       say("fever-just-right").then(() => ctx.after(fast() ? 150 : 700, go), () => ctx.after(fast() ? 150 : 700, go));
       ctx.after(fast() ? 1500 : 2600, go); // a line that never ends (a stalled clip) still moves on
     };
@@ -910,6 +918,9 @@
     };
     ctx.on(fig.el, "click", (e) => {
       e.stopPropagation();
+      // s08-w6c (the gate's stuck fever runs): a thing lying on the bed beside her hides as it goes onto her (.gone), so
+      // the same press's click lands on her and took it straight back; a click that ends a thing's press is not hers
+      if (Date.now() - pressedAt < 700) return;
       tapPatient(e);
     });
     const finish = () => {

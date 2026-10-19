@@ -933,6 +933,41 @@
       if (woundPts) shiftScrape(X - x0);
       slideView(X + fa.tip * k - E);
     };
+    // s08-w6c (the gate's stuck clinic:heal-cut@L2 at 1024x768): on the knee (the scrape's leg art) nothing kept the
+    // grazes clear of the tool column, which is two tiles wide there, so the second graze sat under the tools and its
+    // plaster could not be laid (a child was stuck too). The view slides right until the last plaster clears the
+    // column (never so far that the first leaves the screen: slideView's cap); where even that can't, it steps back
+    // just enough that the first graze's margin to the last plaster fits left of the column
+    const clearLeg = () => {
+      if (!legPart || !limbArt || !S.shelf || !patches.length || vb0.length !== 4) return;
+      const sr = S.shelf.getBoundingClientRect();
+      let m = S.svg.getScreenCTM();
+      if (!sr.width || !m) return;
+      const half = ((TURN ? SCRAPE.plaster.h : SCRAPE.plaster.w) * PK) / 2;
+      const right = Math.max(...patches.map((p) => p.x)) + half + 10;
+      const left = Math.min(...patches.map((p) => p.x)) - EDGE;
+      const edge = () => {
+        const p = S.svg.createSVGPoint();
+        p.x = sr.left - 12;
+        p.y = sr.top + sr.height / 2;
+        return p.matrixTransform(S.svg.getScreenCTM().inverse()).x;
+      };
+      const over = right - edge();
+      if (over <= 0) return;
+      slideView(over);
+      if (right - edge() <= 0.5) return;
+      m = S.svg.getScreenCTM();
+      const sv = S.svg.getBoundingClientRect();
+      const leftPx = Math.max(stage.getBoundingClientRect().left, sv.left);
+      const nz = (sr.left - 12 - leftPx) / (right - left);
+      if (!(nz > 0 && nz < m.a)) return;
+      const kk = m.a / nz;
+      const vw = vb0[2] * kk;
+      const vh = vb0[3] * kk;
+      const vx = left - (leftPx - sv.left) / nz;
+      const vy = vb0[1] + vb0[3] / 2 - vh / 2;
+      S.svg.setAttribute("viewBox", `${vx.toFixed(1)} ${vy.toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`);
+    };
     const placeHand = () => {
       // measure in the game's own view: the scene's fit for this screen now (a resize changes it), never a view this
       // game already slid or stepped back
@@ -942,6 +977,7 @@
       }
       slideView(0);
       placeArt();
+      clearLeg();
       if (limbArt || !handG || !armPath || !S.shelf) return;
       const sr = S.shelf.getBoundingClientRect();
       const m = S.svg.getScreenCTM();

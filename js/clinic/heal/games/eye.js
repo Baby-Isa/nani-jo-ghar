@@ -22,6 +22,7 @@
  */
 (function (root) {
   "use strict";
+  let eyeUid = 0; // s08-w6c: ids for the wall picture's fade mask
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
@@ -94,7 +95,11 @@
     // a word is still to record)
     const eyeRow = (sd, n) => Object.assign({ id: `drops-${sd}`, side: sd }, Lg.show(Lg.join([Lg.item("body-eye", { mods: [Lg.sideId(sd)] }), ",", "cl-drops", Lg.count(n)]), { cap: true }));
     const cardRows = both ? [eyeRow("right", both.right), eyeRow("left", both.left)] : [Object.assign({ id: "drops" }, Lg.show(Lg.join(["cl-drops", Lg.count(drops)]), { cap: true }))];
-    steps.push({ id: "drops", kind: "drops", count: both ? both.right + both.left : drops, both, side, row: cardRows[0], cardRows });
+    // CLN-187 (s08-w6c; the judge: at L3 "Jamni akh, chando" with no number and no left-eye card): from level 3 the card
+    // is closed and its strip shows one step's line, so the drops step's strip is both eyes' counts in one engine line
+    const eyeParts = (sd, n) => [Lg.item("body-eye", { mods: [Lg.sideId(sd)] }), ",", "cl-drops", Lg.count(n)];
+    const strip = both && L >= 3 ? Object.assign({ id: "drops-both" }, Lg.show(Lg.join(eyeParts("right", both.right).concat([","], eyeParts("left", both.left))), { cap: true })) : null;
+    steps.push({ id: "drops", kind: "drops", count: both ? both.right + both.left : drops, both, side, row: cardRows[0], cardRows, strip });
     chart.slice(0, read).forEach((c, i) => steps.push({ id: `read${i}`, kind: "read", row: i, rowDef: c }));
     const rows = both ? [{ id: "drops-right", options: K.drops[L], answer: both.right }, { id: "drops-left", options: K.drops[L], answer: both.left }] : [{ id: "drops-count", options: K.drops[L], answer: drops }];
     // each chart row's judgement: "chart-a", "chart-b" ... (the end review lists them under the card's eye-test row, D14)
@@ -351,9 +356,13 @@
     const WALL = data.art && data.art.wall && data.art.wall.src && data.art.wall.box && data.art.wall.board ? data.art.wall : null;
     if (version === "A") {
       const a = art("testA");
+      // CLN-188 (s08-w6c; the judge: the board "fills only about a third of the screen ... the girl photo takes the larger
+      // left part"): where the split falls (data test.split, close-up units; it was 392, the middle): her panel narrower,
+      // the wall and its board wider
+      const SPLIT = (data.test && data.test.split) || 392;
       // the left panel: the patient, head and shoulders, a hand over the good eye, looking past us to our right
       const pan = s("g", {}, testG);
-      s("rect", { x: -400, y: -300, width: 790, height: 1100, fill: "#e9dcc6" }, pan);
+      s("rect", { x: -400, y: -300, width: SPLIT + 400, height: 1100, fill: "#e9dcc6" }, pan);
       if (a) s("image", { href: url(a.src), x: a.box[0], y: a.box[1], width: a.box[2], height: a.box[3], preserveAspectRatio: "xMidYMid slice" }, pan);
       else {
         s("path", { d: "M40 520 Q60 380 200 360 Q340 380 360 520Z", fill: clothes }, pan); // shoulders
@@ -375,20 +384,32 @@
       }
       readEye = a && a.eye ? { x: a.eye[0], y: a.eye[1] } : { x: 160, y: 205 };
       // the split: a frame between the two halves
-      s("rect", { x: 392, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
+      s("rect", { x: SPLIT, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
       // CLN-188 (Zafar, 18 Oct: "an eye test board sitting on an optician's wall ... code draw everything that goes onto
       // the board"; "we want it to take up most of the screen"): the s08b EC1 wall with its blank board fills the right
       // panel edge to edge (art.wall.box, the close-up's units; its own wall and skirting colours round it on a tall
       // screen); the board's white face (art.wall.board, shares of the picture) is the chart's own units (CH)
       if (WALL) {
         const wb = WALL.box;
-        s("rect", { x: 406, y: -300, width: 600, height: 1100, fill: WALL.fill || "#a9b4b8" }, testG);
-        s("rect", { x: 406, y: wb[1] + wb[3] - 2, width: 600, height: 700, fill: WALL.floor || "#c3b6a6" }, testG);
-        s("image", { href: url(WALL.src), x: wb[0], y: wb[1], width: wb[2], height: wb[3], preserveAspectRatio: "none" }, testG);
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: WALL.fill || "#a9b4b8" }, testG);
+        s("rect", { x: SPLIT + 14, y: wb[1] + wb[3] - 2, width: 1000, height: 700, fill: WALL.floor || "#c3b6a6" }, testG);
+        // s08-w6c (CLN-188): the picture's sides fade into the wall's colour round it (its lit left edge left a seam)
+        const fadeId = `eye-wallfade-${(eyeUid = (eyeUid || 0) + 1)}`;
+        const gr = s("linearGradient", { id: `${fadeId}-g`, x1: 0, x2: 1, y1: 0, y2: 0 }, testG);
+        [[0, 0], [0.12, 1], [0.88, 1], [1, 0]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#fff", "stop-opacity": a }, gr));
+        const mk = s("mask", { id: fadeId, maskUnits: "userSpaceOnUse", x: wb[0], y: wb[1], width: wb[2], height: wb[3] }, testG);
+        s("rect", { x: wb[0], y: wb[1], width: wb[2], height: wb[3], fill: `url(#${fadeId}-g)` }, mk);
+        // and its top (the ceiling light's bright band) into the wall above it on a tall screen
+        const gv = s("linearGradient", { id: `${fadeId}-v`, x1: 0, x2: 0, y1: 0, y2: 1 }, testG);
+        [[0, 0], [0.1, 1], [1, 1]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#fff", "stop-opacity": a }, gv));
+        const mv = s("mask", { id: `${fadeId}-m`, maskUnits: "userSpaceOnUse", x: wb[0], y: wb[1], width: wb[2], height: wb[3] }, testG);
+        s("rect", { x: wb[0], y: wb[1], width: wb[2], height: wb[3], fill: `url(#${fadeId}-v)` }, mv);
+        const wallG = s("g", { mask: `url(#${fadeId}-m)` }, testG);
+        s("image", { href: url(WALL.src), x: wb[0], y: wb[1], width: wb[2], height: wb[3], preserveAspectRatio: "none", mask: `url(#${fadeId})` }, wallG);
         const bd = WALL.board;
         CH = { x: wb[0] + bd[0] * wb[2], y: wb[1] + bd[1] * wb[3], w: (bd[2] - bd[0]) * wb[2], h: (bd[3] - bd[1]) * wb[3] };
       } else {
-        s("rect", { x: 406, y: -300, width: 600, height: 1100, fill: "#f4ecdf" }, testG);
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: "#f4ecdf" }, testG);
         CH = { x: 450, y: 18, w: 262, h: 352 };
       }
       testG.appendChild(chartG); // the chart over both halves' ground
@@ -700,7 +721,7 @@
       const c = cur();
       drawChart();
       if (c.kind === "drops") {
-        ctx.card.now(c.both ? "drops-right" : "drops");
+        ctx.card.now(c.both ? "drops-right" : "drops", c.strip ? { strip: c.strip } : {});
         const te = c.both ? EY.right : sore; // CLN-187: from level 2 the first row's eye (the patient's right)
         return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: te.x, y: te.y - 55, r: 110 } }); // S02-G: the dropper and the eye
       }
@@ -795,7 +816,7 @@
         // its word at L2, dots from L3), and the card's lit row follows the eye still short of its count
         if (dropperAt !== eye) showDropper(eye, false);
         const short = ["right", "left"].find((x) => st.n[x] < c.both[x]);
-        if (short && short !== st.nowEye) ctx.card.now(`drops-${(st.nowEye = short)}`);
+        if (short && short !== st.nowEye) ctx.card.now(`drops-${(st.nowEye = short)}`, c.strip ? { strip: c.strip } : {});
         // (a new lit row clears the host's counts: both eyes' are drawn again after it)
         ["right", "left"].forEach((x) => (x === sd || st.n[x] > 0) && countEye(x, x === sd));
       } else {
