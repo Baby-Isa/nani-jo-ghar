@@ -311,7 +311,13 @@
    250
   ],
   "size": 240,
-  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size.",
+  "view": {
+   "k": 0.85,
+   "bottom": 520.9,
+   "not": "^chart"
+  },
+  "_view": "CLN-163 (CLN-185, Zafar 18 Oct: 'a little bit too zoomed in ... a bit intimidating'): the eyes' close-up a step less zoomed in (js/clinic/heal/host.js HOST.view): the scene's fit widened by 1/k, its lower edge kept above the picture's bottom (eyesSore box y + h = 520.9); the eye test (rows matching `not`) keeps its own framing."
  },
  "test": {
   "version": "A",

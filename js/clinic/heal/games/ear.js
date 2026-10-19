@@ -8,8 +8,8 @@
  *    (one gesture, no tweezers pick first: P32). Taking one out makes 0, 1 or 2 more pop out of the canal (random,
  *    fewer as the ear empties, capped): the fun (KEEP-10). From level 2 the big and the small one go out in the
  *    order said (pela wadho, ne poi nindho, or the other way round); the others are middling.
- * 2. The cotton bud WIPES the wax smears the blobs left, without touching the sore pink skin (a drag-erase: P33,
- *    CLN-46): a touch on the pink makes the patient wince (a hand-skill row, never a verdict mid-round).
+ * 2. The cotton bud WIPES the wax smears the blobs left (a drag-erase: P33). CLN-135 (Zafar, 18 Oct, clinic decision 4):
+ *    the code-drawn sore pink spots, and the rule that the bud must miss them (CLN-46), are gone for good.
  * 3. N drops (counted).
  * 4. Can you hear me? (data flag `hearing.on`, D15c): the doctor whispers a word the child knows from Cook (said
  *    through the seam, a family voice, never written) and the child taps its picture for the patient.
@@ -27,7 +27,6 @@
     start: { 1: 3, 2: 4, 3: 4, 4: 5 }, // blobs in the ear at the start (big and small among them from L2)
     spawnCap: { 1: 3, 2: 5, 3: 5, 4: 7 }, // how many more can pop out in all
     smears: { 1: 3, 2: 4, 3: 4, 4: 5 }, // the first blobs out leave a smear each, for the bud
-    sore: { 1: 1, 2: 2, 3: 2, 4: 3 }, // sore pink patches the bud must miss
     budR: 20, // the bud's tip, svg units
   };
   // D15c: the whispered-word check. Words the child knows from Cook (ids the engine knows, data/lang/lexicon.json; their
@@ -143,17 +142,7 @@
     s("ellipse", { cx: CANAL.x + 4, cy: CANAL.y - 4, rx: 74, ry: 88, fill: HS.shade(S.skin, -0.1) }, head); // the bowl
     s("ellipse", { cx: CANAL.x, cy: CANAL.y, rx: 26, ry: 34, fill: "#4a2219" }, head); // the canal
     S.closeup("ear", head);
-    // the sore pink skin the bud must miss
-    const soreG = s("g", { class: "ear-sore" }, S.layer);
-    const sores = [];
-    const SORE_SPOTS = [[350, 236], [420, 290], [338, 300], [416, 226], [380, 330]];
-    HS.shuffle(SORE_SPOTS, ctx.rng)
-      .slice(0, K.sore[P.level])
-      .forEach(([x, y]) => {
-        s("ellipse", { cx: x, cy: y, rx: 15, ry: 12, fill: "#f08a9a", opacity: 0.85 }, soreG);
-        s("ellipse", { cx: x - 3, cy: y - 3, rx: 6, ry: 4, fill: "#ffc4cc", opacity: 0.8 }, soreG);
-        sores.push({ x, y, r: 15 });
-      });
+    // CLN-135 (Zafar, 18 Oct: "please remove them permanently"; clinic decision 4): no drawn sore spots on the ear
     // the tissue beside the ear: where the wax goes
     const tissue = s("g", { class: "ear-tissue" }, S.layer);
     // A1 (5 Oct): the art's bits (O1: wax big, mid, small and the tissue) where they're cut; drawn shapes otherwise
@@ -164,10 +153,16 @@
       const h = w * (f.h / f.w);
       return s("image", { href: url(f.file), x: cx - w / 2, y: cy - h / 2, width: w, height: h }, parent);
     };
-    // E4 (CLN-101): a small waste bin, not a tissue: what goes in is out of sight. Art id "ear-bin" (the art run, by
-    // data/clinic/heal/ear.json art["ear-bin"].on); until then a drawn steel bin with its lid open
+    // E4 (CLN-101): where the wax goes. CLN-174 (Zafar, 18 Oct: "a medical ... kidney-shaped metal tray"): the s02
+    // kidney tray (art "ear-tray"), the wax that goes in lying in it, in sight (E24); the drawn bin only without the art
+    const trayArt = ctx.data && ctx.data.art && ctx.data.art["ear-tray"];
     const binArt = ctx.data && ctx.data.art && ctx.data.art["ear-bin"];
-    if (binArt && binArt.on) {
+    if (trayArt && trayArt.on) {
+      const tw = trayArt.w || 170;
+      const th = (tw * trayArt.size[1]) / trayArt.size[0];
+      s("image", { href: url(trayArt.file), x: TISSUE.x - tw / 2, y: TISSUE.y - th / 2, width: tw, height: th, class: "ear-tray" }, tissue);
+      tissue.setAttribute("data-art", "1");
+    } else if (binArt && binArt.on) {
       s("image", { href: url(binArt.file), x: TISSUE.x - 70, y: TISSUE.y - 80, width: 140, height: 150 }, tissue);
       tissue.setAttribute("data-art", "1");
     } else {
@@ -184,7 +179,7 @@
     const blobs = [];
     const freeSpot = () => {
       const taken = (x, y) => blobs.some((b) => !b.out && Math.hypot(b.x - x, b.y - y) < b.r + 26);
-      const free = HS.shuffle(SPOTS, ctx.rng).filter(([x, y]) => !taken(x, y) && !sores.some((q) => Math.hypot(q.x - x, q.y - y) < 30));
+      const free = HS.shuffle(SPOTS, ctx.rng).filter(([x, y]) => !taken(x, y));
       return free[0] || null;
     };
     // E2 (CLN-101): the first blobs sit on a smear of their own, drawn under them from the start, so pulling one
@@ -206,6 +201,45 @@
       if (bit(`wax-${b.size}`, b.x, b.y, b.r * 2.5, b.el)) return;
       s("circle", { cx: b.x, cy: b.y, r: b.r, fill: `url(#ear-wax-${uid})`, stroke: "#8a6010", "stroke-width": 2.5 }, b.el);
       s("ellipse", { cx: b.x - b.r * 0.35, cy: b.y - b.r * 0.38, rx: b.r * 0.3, ry: b.r * 0.2, fill: "#fff6d0", opacity: 0.8 }, b.el);
+    };
+    /*
+     * CLN-173 (Zafar, 18 Oct: "not one prong in front and behind ... the far side of the prong just floats in air"): the
+     * re-cut open tweezers (sheets-v3 tweezers-open-v3) in layers round the blob: the far prong under it, the near prong
+     * and the handle over it, both prongs closing on it (each turned about the joint until their tips are about the
+     * blob's width apart). data art.tweezers: the picture, its joint and its tips' middles (its own px), its length.
+     */
+    const TW = (ctx.data && ctx.data.art && ctx.data.art.tweezers) || null;
+    const twClip = {};
+    if (TW) {
+      [["b", 0, 0, TW.joint[0], TW.joint[1]], ["f", 0, TW.joint[1], TW.joint[0], TW.size[1] - TW.joint[1]], ["h", TW.joint[0], 0, TW.size[0] - TW.joint[0], TW.size[1]]].forEach(([k, x, y, w, hh]) => {
+        twClip[k] = `ear-tw${k}-${uid}`;
+        s("rect", { x, y, width: w, height: hh }, s("clipPath", { id: twClip[k], clipPathUnits: "userSpaceOnUse" }, defs));
+      });
+    }
+    // the layers, round a blob of radius r at (0, 0): {under, over, close(u)}: u 0 open, 1 closed on the blob
+    const tweezersOn = (under, over, r) => {
+      const k = TW.len / TW.size[0];
+      const [jx, jy] = TW.joint;
+      const mid = (TW.tips[1] + TW.tips[2]) / 2;
+      const base = `rotate(${TW.angle}) scale(${k.toFixed(4)}) translate(${-TW.tips[0]} ${-mid})`;
+      const half = Math.atan((mid - TW.tips[1]) / (jx - TW.tips[0]));
+      const want = Math.atan(((1.15 * r) / k / 2) / (jx - TW.tips[0]));
+      const phi = ((half - want) * 180) / Math.PI;
+      const layer = (parent, clip) => {
+        const g = s("g", { transform: base }, parent);
+        const turn = s("g", {}, g);
+        s("image", { href: url(TW.file), x: 0, y: 0, width: TW.size[0], height: TW.size[1], "clip-path": `url(#${clip})` }, turn);
+        return turn;
+      };
+      const back = layer(under, twClip.b);
+      const front = layer(over, twClip.f);
+      layer(over, twClip.h);
+      const close = (u) => {
+        back.setAttribute("transform", `rotate(${(phi * u).toFixed(2)} ${jx} ${jy})`);
+        front.setAttribute("transform", `rotate(${(-phi * u).toFixed(2)} ${jx} ${jy})`);
+      };
+      close(0);
+      return { close };
     };
     const addBlob = (size, at, pop) => {
       const spot = at || freeSpot();
@@ -292,14 +326,6 @@
         })
       );
       if (hit) budWax(true);
-      // the sore skin: a touch makes the patient wince (counted once per touch, a hand-skill row)
-      const onSore = sores.some((q) => Math.hypot(q.x - p.x, q.y - p.y) < q.r + 4);
-      if (onSore && Date.now() - st.soreT > 700) {
-        st.soreT = Date.now();
-        st.sore++;
-        S.face("wince", 700);
-        ctx.log({ type: "extra", rowId: "wipe", detail: "touched the sore skin" });
-      }
       const c = cur();
       if (c && c.kind === "wipe" && !smearLeft() && !st.busy) {
         st.busy = true;
@@ -329,19 +355,30 @@
       if (!S.cuesOn || twGhost) return;
       const doc = S.root.ownerDocument;
       const twArt = Kit && Kit.view ? Kit.view("tweezers", "use-45") : null;
-      const H = twArt ? 96 : 46;
+      const H = TW ? 128 : twArt ? 96 : 46;
       twGhost = doc.createElement("div");
       twGhost.className = "ear-ghost-tw";
-      Object.assign(twGhost.style, { position: "fixed", zIndex: 10001, width: "96px", height: `${H}px`, pointerEvents: "none", display: "none" });
-      const im = doc.createElement("img");
-      im.alt = "";
-      im.src = url(twArt || "assets/clinic/items-v2/tweezers.webp");
-      Object.assign(im.style, { position: "absolute", inset: "0", width: "100%", height: "100%", transform: twArt ? "none" : "rotate(-30deg)" });
-      // the blob it carries, held in the tips (the tips sit at the picture's lower left)
-      const blob = doc.createElement("i");
-      Object.assign(blob.style, { position: "absolute", left: "-9px", bottom: "-9px", width: "22px", height: "22px", borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, #f6cf6a, #c8902a 60%, #8a6010)", boxShadow: "0 1px 2px rgba(0,0,0,.35)" });
-      twGhost.appendChild(im);
-      twGhost.appendChild(blob);
+      Object.assign(twGhost.style, { position: "fixed", zIndex: 10001, width: TW ? "150px" : "96px", height: `${H}px`, pointerEvents: "none", display: "none" });
+      if (TW) {
+        // CLN-173: the help's tweezers are the game's own, in their layers round a wax blob, closed on it
+        const sv = s("svg", { viewBox: "-40 -130 200 170", width: 150, height: 128, style: "position:absolute;inset:0;overflow:visible" });
+        const under = s("g", {}, sv);
+        const waxEl = s("g", {}, sv);
+        const over = s("g", {}, sv);
+        if (!bit("wax-mid", 0, 0, 21 * 2.5, waxEl)) s("circle", { cx: 0, cy: 0, r: 21, fill: `url(#ear-wax-${uid})` }, waxEl);
+        tweezersOn(under, over, 21).close(1);
+        twGhost.appendChild(sv);
+      } else {
+        const im = doc.createElement("img");
+        im.alt = "";
+        im.src = url(twArt || "assets/clinic/items-v2/tweezers.webp");
+        Object.assign(im.style, { position: "absolute", inset: "0", width: "100%", height: "100%", transform: twArt ? "none" : "rotate(-30deg)" });
+        // the blob it carries, held in the tips (the tips sit at the picture's lower left)
+        const blob = doc.createElement("i");
+        Object.assign(blob.style, { position: "absolute", left: "-9px", bottom: "-9px", width: "22px", height: "22px", borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, #f6cf6a, #c8902a 60%, #8a6010)", boxShadow: "0 1px 2px rgba(0,0,0,.35)" });
+        twGhost.appendChild(im);
+        twGhost.appendChild(blob);
+      }
       doc.body.appendChild(twGhost);
       const tick = () => {
         if (!twGhost) return;
@@ -351,8 +388,8 @@
         const on = !!(r && r.width && c && c.kind === "wax" && !st.drag && !st.over && +getComputedStyle(g).opacity > 0.05);
         twGhost.style.display = on ? "block" : "none";
         if (on) {
-          twGhost.style.left = `${r.left + r.width * 0.3}px`;
-          twGhost.style.top = `${r.top - (twArt ? 84 : 40)}px`;
+          twGhost.style.left = `${r.left + r.width * 0.3 - (TW ? 30 : 0)}px`;
+          twGhost.style.top = `${r.top - (TW ? 91 : twArt ? 84 : 40)}px`;
           twGhost.style.opacity = getComputedStyle(g).opacity;
         }
         if (!c || c.kind !== "wax" || st.over) {
@@ -393,7 +430,7 @@
         const firstBS = st.out.find((k) => k === "big" || k === "small");
         judge("wax-order", firstBS === c.order[0], `first ${firstBS || "none"}`);
       }
-      if (c.kind === "wipe") judge("wipe-gentle", st.sore === 0, st.sore ? `${st.sore} touches` : "gentle");
+      if (c.kind === "wipe") judge("wipe-gentle", true, "wiped"); // CLN-135: no sore skin to miss: the wipe is done when it's clean
       if (c.kind === "drops") judge("drops-count", st.drops === c.count, `${st.drops} of ${c.count}`);
       if (c.kind !== "hear") ctx.card.tick(c.id);
       if (c.kind === "wax") S.used("tweezers");
@@ -407,8 +444,6 @@
     const finish = () => {
       st.over = true;
       S.uncue();
-      // E5 (CLN-101): the sore pink skin is gone at the end (healed by the drops)
-      soreG.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fast() ? 100 : 900, fill: "forwards" });
       ctx.card.now(null);
       S.root.classList.add("hs-healed"); // the close-up's last look before the pull-out (the evidence probes' moment)
       S.face("happy");
@@ -506,7 +541,7 @@
     /* ---- the tools: the v2 item art ---- */
     S.tools(
       [
-        { id: "tweezers", img: "assets/clinic/items-v2/tweezers.webp" },
+        { id: "tweezers", img: (TW && TW.tool) || "assets/clinic/items-v2/tweezers.webp" }, // CLN-173: the re-cut (items-v3)
         { id: "bud", img: "assets/clinic/items-v2/cotton-buds.webp" },
         { id: "drops", img: "assets/clinic/items-v2/eye-drops.webp", turn: 180 }, // CLN-134: nozzle down
       ],
@@ -530,11 +565,26 @@
         if (!b) return;
         if (S.sel !== "tweezers") S.pick("tweezers");
         st.drag = { b, el: s("g", { class: "ear-held" }, S.fx) };
-        if (!bit(`wax-${b.size}`, 0, 0, b.r * 2.5, st.drag.el)) s("circle", { cx: 0, cy: 0, r: b.r, fill: `url(#ear-wax-${uid})`, stroke: "#8a6010", "stroke-width": 2.5 }, st.drag.el);
-        // S02-E (E12): the art run's tweezers at 45 degrees, tips to the lower left on the blob (sheets.json "use-45")
-        const twArt = Kit && Kit.view ? Kit.view("tweezers", "use-45") : null;
-        if (twArt) s("image", { href: url(twArt), x: -10, y: -96, width: 106, height: 106 }, st.drag.el);
-        else s("image", { href: url("assets/clinic/items-v2/tweezers.webp"), x: -8, y: -60, width: 110, height: 52, transform: "rotate(-30)" }, st.drag.el);
+        const under = s("g", { class: "ear-tw-under" }, st.drag.el);
+        const waxEl = s("g", {}, st.drag.el);
+        const over = s("g", { class: "ear-tw-over" }, st.drag.el);
+        if (!bit(`wax-${b.size}`, 0, 0, b.r * 2.5, waxEl)) s("circle", { cx: 0, cy: 0, r: b.r, fill: `url(#ear-wax-${uid})`, stroke: "#8a6010", "stroke-width": 2.5 }, waxEl);
+        if (TW) {
+          // CLN-173: the far prong under the blob, the near prong over it, closing on it as it's taken
+          const tw = tweezersOn(under, over, b.r);
+          const t0 = Date.now();
+          const shut = () => {
+            const u = Math.min(1, (Date.now() - t0) / (fast() ? 1 : 160));
+            tw.close(u);
+            if (u < 1 && root.requestAnimationFrame) root.requestAnimationFrame(shut);
+          };
+          shut();
+        } else {
+          // S02-E (E12): the art run's tweezers at 45 degrees, tips to the lower left on the blob (sheets.json "use-45")
+          const twArt = Kit && Kit.view ? Kit.view("tweezers", "use-45") : null;
+          if (twArt) s("image", { href: url(twArt), x: -10, y: -96, width: 106, height: 106 }, over);
+          else s("image", { href: url("assets/clinic/items-v2/tweezers.webp"), x: -8, y: -60, width: 110, height: 52, transform: "rotate(-30)" }, over);
+        }
         st.drag.el.setAttribute("transform", `translate(${p.x} ${p.y})`);
         b.el.setAttribute("opacity", 0.25);
         return;
@@ -583,6 +633,14 @@
         // out: onto the tissue; it leaves a smear for the bud; more may pop out
         b.out = true;
         b.el.remove();
+        // CLN-174: in the kidney tray it lies in sight (E24), a little smaller, somewhere in the bowl
+        if (trayArt && trayArt.on) {
+          const n = st.removed;
+          const ax = TISSUE.x - 30 + ((n * 37) % 64) + (ctx.rng() - 0.5) * 8;
+          const ay = TISSUE.y - 6 + ((n * 11) % 14) - 7;
+          const w = Math.min(34, b.r * 1.6);
+          if (!bit(`wax-${b.size}`, ax, ay, w, onTissue)) s("circle", { cx: ax, cy: ay, r: w / 3, fill: `url(#ear-wax-${uid})` }, onTissue);
+        }
         st.removed++;
         st.out.push(b.size);
         // into the bin: out of sight (E4); the smear under it was there all along (E2)

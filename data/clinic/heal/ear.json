@@ -327,6 +327,36 @@
    },
    "_a2": "A2 (5 Oct): O3's bud, clean and with wax (one canvas), the swab on the tip of the wipe",
    "_s02": "S02-E (E15, CLN-101): the wax at the ear's angle (side-lit from the upper left, as it sits on an ear seen side-on) and on the bud's tip; the v1 files kept as file_v1"
+  },
+  "ear-tray": {
+   "file": "assets/clinic/sheets/bin/bin-kidney-3q.webp",
+   "on": true,
+   "size": [
+    375,
+    220
+   ],
+   "w": 170,
+   "why": "CLN-174 (Zafar, 18 Oct: 'a medical ... kidney-shaped metal tray'): the s02 kidney tray, three-quarter, where the wax goes, in sight; it replaces ear-bin (kept for a page without it)"
+  },
+  "tweezers": {
+   "file": "assets/clinic/sheets-v3/tweezers/tweezers-open-v3.webp",
+   "tool": "assets/clinic/items-v3/tweezers-v3-tool.webp",
+   "size": [
+    365,
+    142
+   ],
+   "joint": [
+    196,
+    70
+   ],
+   "tips": [
+    18,
+    31.5,
+    108.5
+   ],
+   "len": 160,
+   "angle": -35,
+   "why": "CLN-173: the re-cut open tweezers (s08 wave 0) in three layers round the held blob: the far prong (above the joint's line) under it, the near prong and the handle over it; joint = where the prongs meet, tips = [x, upper y, lower y] of the prongs' ends (own px); len = svg units long; angle = turned so the tips point down-left; tool = the shelf's picture (the re-cut items-v3)"
   }
  },
  "hearing": {
@@ -349,15 +379,18 @@
   "assets/clinic/closeups/girl/ear.webp",
   "assets/clinic/heal-v3/bud.webp",
   "assets/clinic/heal-v3/wax-mid.webp",
-  "assets/clinic/sheets/bin/bin-three-q-open.webp",
   "assets/clinic/sheets/bud/bud-pot-belt.webp",
   "assets/clinic/sheets/drop-bottle/drop-bottle-tool.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-bud-wax.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-wax-big.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-wax-mid.webp",
   "assets/clinic/sheets/ear-bits/ear-bits-wax-small.webp",
+  "assets/clinic/sheets/bin/bin-kidney-3q.webp",
+  "assets/clinic/sheets-v3/tweezers/tweezers-open-v3.webp",
+  "assets/clinic/items-v3/tweezers-v3-tool.webp",
   "assets/clinic/sheets/tweezers/tweezers-tool.webp",
-  "assets/clinic/sheets/tweezers/tweezers-use-45.webp"
+  "assets/clinic/sheets/tweezers/tweezers-use-45.webp",
+  "assets/clinic/sheets/bin/bin-three-q-open.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

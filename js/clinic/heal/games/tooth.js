@@ -127,33 +127,65 @@
     const kind = S.kind || (ctx.patient && ctx.patient.kind) || "girl";
     const art = (key) => {
       const a = data.art && data.art[key];
-      // A1: a {kind} picture only for the kinds that have it cut (a.kinds); the @2x on dense screens (a.has2x)
+      // A1: a {kind} picture only for the kinds that have it cut (a.kinds); the @2x on dense screens (a.has2x), or
+      // always where the camera pushes in on it (a.always2x: CLN-163, the one high-resolution picture)
       if (!a || !a.ready || !a.src || (a.kinds && a.src.includes("{kind}") && !a.kinds.includes(kind))) return null;
-      const two = a.has2x && (root.devicePixelRatio || 1) > 1.25;
+      const two = a.has2x && (a.always2x || (root.devicePixelRatio || 1) > 1.25);
       return Object.assign({}, a, { src: a.src.replace("{kind}", kind).replace(two ? /\.webp$/ : /$^/, "@2x.webp") });
     };
     const FILL = Object.assign({}, K.fill, data.fill || {});
     const zone = (FILL.zone && FILL.zone[P.level]) || K.fill.zone[P.level];
     const fillMs = ((FILL.ms && FILL.ms[P.level]) || K.fill.ms[P.level]) * 1;
     const chipAt = data.chipAt || K.chipAt;
-    const st = { i: 0, done: [], judged: {}, over: false, busy: false, fill: 0, holding: false, white: 0, chipped: false, cleared: new Set(), whiteSeen: new Set(), mark: 0 };
+    const st = { i: 0, done: [], judged: {}, over: false, busy: false, fill: 0, holding: false, white: 0, chipped: false, mark: 0, view: "far", overs: 0 };
     const cur = () => P.steps[st.i] || null;
     const uid = `t${Math.floor(Math.random() * 1e9)}`;
     const fast = () => !!(Kit0 && Kit0.fast);
     ctx.card.setRows(P.steps.map((x) => x.row).filter(Boolean));
     const skin = S.skin || "#c99a74";
     const skinDark = S.skinDark || "#a77b58";
+    const CAM = Object.assign({ far: 0.85, farY: 235, near: 1000, nearTop: 0.14, ms: 1100 }, data.view || {});
 
-    /* ---------------- 1. the mouth, open (the M1 close-up; a drawn stand-in until the art is ready) ---------------- */
+    /*
+     * CLN-163 (Zafar, 18 Oct; clinic decision 7): ONE picture and ONE camera. The brushing is the mouth a little open
+     * (M3); the drill and the fill happen on the wide-open mouth (M1, its @2x, with an upscaled copy of its own teeth laid
+     * exactly over them: mouth-v2-teeth-hd), and the camera moves smoothly in on the sore tooth and back out (a viewBox
+     * tween, in log space). The decay is drawn on that tooth, in that picture's own place, so from far it sits on the
+     * tooth. The two mouths are registered on the front teeth, so the change from one to the other (as the camera starts)
+     * is the mouth opening, never a jump. Without the art (a patient the art isn't cut for) the drawn mouth and the drawn
+     * tooth stand in, the same way.
+     *
+     * Units: the svg's own (the "mouth" units: the brushing mouth, the brush, the plaque) and the drill's (the sore tooth
+     * 256 wide at x 272-528, y from 92: the decay, the drill, the paste, the gauge and the button), one uniform scale
+     * apart (ds, below).
+     */
     const M = { x: 400, y: 250 };
-    const mouthG = s("g", { class: "tooth-mouth" }, S.layer);
     const mouthArt = art("mouth");
-    // which upper tooth is sore: one of the middle four (the zoom pushes in on it)
+    const mbArt = art("mouthBrush");
+    const plArt = mbArt && art("plaque");
+    const artMode = !!(mouthArt && mbArt && mouthArt.teeth);
+    // the drawn stand-in's upper teeth (mouth units); which tooth is sore: one of the middle four
     const UP = [0, 1, 2, 3, 4, 5].map((k) => ({ x: M.x - 165 + k * 55, y: M.y - 112, w: 50, h: 66 }));
     const soreK = 1 + Math.floor(ctx.rng() * 4);
-    const sore = UP[soreK];
-    if (mouthArt) s("image", { href: url(mouthArt.src), x: mouthArt.box[0], y: mouthArt.box[1], width: mouthArt.box[2], height: mouthArt.box[3], preserveAspectRatio: "xMidYMid slice" }, mouthG);
-    else {
+    let sore;
+    if (artMode) {
+      // the art's own front teeth (data art.mouth.teeth: [x0, y0, x1, y1] in the 1x source's pixels, left to right)
+      const t = mouthArt.teeth[soreK - 1];
+      const k = mouthArt.box[2] / mouthArt.size[0];
+      sore = { x: mouthArt.box[0] + t[0] * k, y: mouthArt.box[1] + t[1] * k, w: (t[2] - t[0]) * k, h: (t[3] - t[1]) * k };
+    } else sore = Object.assign({}, UP[soreK]);
+    const KD = 256 / sore.w; // drill units per mouth unit
+    const DX0 = sore.x - 272 / KD;
+    const DY0 = sore.y - 92 / KD;
+    const TOOTH = { x0: 272, x1: 528, y0: 92, y1: 92 + sore.h * KD }; // the sore tooth, drill units
+    const toD = (p) => ({ x: (p.x - DX0) * KD, y: (p.y - DY0) * KD });
+    const fromD = (x, y) => ({ x: DX0 + x / KD, y: DY0 + y / KD });
+    const dsT = `matrix(${(1 / KD).toFixed(6)} 0 0 ${(1 / KD).toFixed(6)} ${DX0.toFixed(3)} ${DY0.toFixed(3)})`;
+
+    /* ---------------- 1. the brushing mouth (face1) ---------------- */
+    const face1 = s("g", { class: "tooth-mouth" }, S.layer);
+    const mouthG = face1; // (the brushing view's things: the brush, the plaque, the foam)
+    if (!artMode) {
       s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: skin }, mouthG);
       s("ellipse", { cx: M.x - 330, cy: M.y + 40, rx: 120, ry: 90, fill: HS.shade ? HS.shade(skin, 0.08) : skin, opacity: 0.6 }, mouthG);
       s("ellipse", { cx: M.x + 330, cy: M.y + 40, rx: 120, ry: 90, fill: HS.shade ? HS.shade(skin, 0.08) : skin, opacity: 0.6 }, mouthG);
@@ -161,77 +193,50 @@
       s("ellipse", { cx: M.x, cy: M.y, rx: 262, ry: 176, fill: "#c4636b" }, mouthG); // the lips
       s("ellipse", { cx: M.x, cy: M.y, rx: 236, ry: 150, fill: "#4e1620" }, mouthG); // inside
       s("ellipse", { cx: M.x, cy: M.y + 70, rx: 150, ry: 62, fill: "#d9707e" }, mouthG); // the tongue
-      // the gums and teeth, inside the open mouth (clipped to it)
       const clip = s("clipPath", { id: `${uid}-mouth` }, s("defs", {}, S.svg));
       s("ellipse", { cx: M.x, cy: M.y, rx: 236, ry: 150 }, clip);
       const inner = s("g", { "clip-path": `url(#${uid}-mouth)` }, mouthG);
       UP.forEach((t) => s("rect", { x: t.x, y: t.y - 14, width: t.w, height: t.h + 14, rx: 14, fill: "#fbf8ef", stroke: "#dcd3c2", "stroke-width": 2 }, inner));
       [0, 1, 2, 3, 4, 5].forEach((k) => s("rect", { x: M.x - 160 + k * 54, y: M.y + 58, width: 48, height: 64, rx: 13, fill: "#fbf8ef", stroke: "#dcd3c2", "stroke-width": 2 }, inner));
-      // the gums over the teeth's roots
       s("path", { d: `M${M.x - 240} ${M.y - 160} H${M.x + 240} V${M.y - 112} Q${M.x} ${M.y - 92} ${M.x - 240} ${M.y - 112}Z`, fill: "#e8909a" }, inner);
       s("path", { d: `M${M.x - 240} ${M.y + 170} H${M.x + 240} V${M.y + 116} Q${M.x} ${M.y + 100} ${M.x - 240} ${M.y + 116}Z`, fill: "#e8909a" }, inner);
     }
-    // the sore tooth's decay, small, seen from here (the drill view shows it big)
-    const specks = s("g", {}, mouthG);
-    const toMouth = (x, y) => [sore.x + ((x - 272) / 256) * sore.w, sore.y + ((y - 92) / 300) * sore.h];
-    const drawSpecks = (filled) => {
-      S.clear(specks);
-      P.steps.find((x) => x.kind === "drill").patches.forEach((p) => {
-        const d = p.pts.map(([x, y], i) => `${i ? "L" : "M"}${toMouth(x, y).join(" ")}`).join(" ") + "Z";
-        s("path", { d, fill: filled ? "#f3eee0" : "#5a3d2c", stroke: "none" }, specks);
-      });
-    };
-    drawSpecks(false);
-    // the toothbrush (the clinic v2 art), its head on the front teeth, the handle out of the mouth; the art run's
-    // brusher's view (art "brushInMouth", E5b) with its own size and head once it's ready
-    const brushIn = art("brushInMouth");
-    const BR = Object.assign({ src: "assets/clinic/items-v2/toothbrush.webp", size: [374, 291], head: [62, 52], w: 300 }, data.brush || {}, brushIn ? { size: brushIn.size, head: brushIn.head, w: brushIn.w } : {});
-    const brushG = s("g", {}, mouthG);
-    const bW = BR.w;
-    const bH = (BR.w * BR.size[1]) / BR.size[0];
-    const hx = (BR.head[0] / BR.size[0]) * bW;
-    const hy = (BR.head[1] / BR.size[1]) * bH;
-    // T1 (CLN-103): the brush turned so its head lies across the front teeth, the handle out of the corner of the mouth
-    // (art id "toothbrush-in-mouth" from the art run, once ready: the bristles into the mouth)
-    // CLN-103 (T1, s04-r2k2): with the brusher's view, the brush is turned INTO the mouth: its head on the front teeth
-    // (the bristles against them, its back to us) and the handle coming towards us, foreshortened, down out of the
-    // mouth over the lower lip; never lying flat across the teeth
-    const IN_MOUTH = data.brushTurn || { a: 38, k: 0.8 };
-    const brushImg = s("image", { href: url(brushIn ? brushIn.src : BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH, transform: brushIn ? `translate(${M.x} ${M.y - 60}) rotate(${IN_MOUTH.a}) scale(${IN_MOUTH.k} 1) translate(${-M.x} ${-(M.y - 60)})` : `rotate(-12 ${M.x} ${M.y - 60})` }, brushG);
-    void brushImg;
+    /*
+     * S02-E (M3, M4; CLN-103, T9): the brushing has its own mouth, less open (art "mouthBrush"), and the plaque is the
+     * art run's picture registered on it (art "plaque"), wiped away under the brush through a mask; the drawn plaque
+     * spots stay as the record of what's been cleared (hidden).
+     */
+    let wipeMask = null;
+    let plaqueImg = null;
+    if (artMode) {
+      const b = mbArt.box;
+      s("image", { href: url(mbArt.src), x: b[0], y: b[1], width: b[2], height: b[3], preserveAspectRatio: "none" }, face1);
+      if (plArt) {
+        const defs = s("defs", {}, face1);
+        const mk = s("mask", { id: `${uid}-wipe`, maskUnits: "userSpaceOnUse", x: b[0], y: b[1], width: b[2], height: b[3] }, defs);
+        s("rect", { x: b[0], y: b[1], width: b[2], height: b[3], fill: "#fff" }, mk);
+        wipeMask = mk;
+        plaqueImg = s("image", { href: url(plArt.src), x: b[0], y: b[1], width: b[2], height: b[3], preserveAspectRatio: "none", mask: `url(#${uid}-wipe)` }, face1);
+      }
+    }
     // T9 (CLN-103): plaque on the teeth that clears where the brush goes (and the last of it when the brushing is done)
-    const plaqueG = s("g", { class: "tooth-plaque" }, mouthG);
+    const plaqueG = s("g", { class: "tooth-plaque", opacity: plaqueImg ? 0 : 1 }, mouthG);
     const plaque = [];
     for (let k = 0; k < 26; k++) {
       const x = 240 + (k / 25) * 320 + (ctx.rng() - 0.5) * 12;
       const y = (k % 2 ? 188 : 160) + (ctx.rng() - 0.5) * 8;
       plaque.push({ x, y, el: s("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: (12 + ctx.rng() * 7).toFixed(1), ry: (4 + ctx.rng() * 2).toFixed(1), fill: "#d6be5a", opacity: 0.55 }, plaqueG), gone: false });
     }
-    mouthG.insertBefore(plaqueG, brushG);
-    /*
-     * S02-E (M3, M4; CLN-103, T9): the brushing has its own mouth, less open (art "mouthBrush"), and the plaque is the
-     * art run's picture registered on it (art "plaque"), wiped away under the brush through a mask; the drawn plaque
-     * spots stay as the record of what's been cleared (hidden). Both go when the view moves on to the sore tooth.
-     */
-    const mbArt = art("mouthBrush");
-    const plArt = mbArt && art("plaque");
-    let brushFace = null;
-    let wipeMask = null;
-    let plaqueImg = null;
-    if (mbArt) {
-      brushFace = s("g", { class: "tooth-mouth-brush" }, mouthG);
-      mouthG.insertBefore(brushFace, plaqueG);
-      const b = mbArt.box;
-      s("image", { href: url(mbArt.src), x: b[0], y: b[1], width: b[2], height: b[3], preserveAspectRatio: "none" }, brushFace);
-      if (plArt) {
-        const defs = s("defs", {}, brushFace);
-        const mk = s("mask", { id: `${uid}-wipe`, maskUnits: "userSpaceOnUse", x: b[0], y: b[1], width: b[2], height: b[3] }, defs);
-        s("rect", { x: b[0], y: b[1], width: b[2], height: b[3], fill: "#fff" }, mk);
-        wipeMask = mk;
-        plaqueImg = s("image", { href: url(plArt.src), x: b[0], y: b[1], width: b[2], height: b[3], preserveAspectRatio: "none", mask: `url(#${uid}-wipe)` }, brushFace);
-        plaqueG.setAttribute("opacity", 0);
-      }
-    }
+    // CLN-180 (Zafar, 18 Oct; the s08b TB1 brush): the brush lies level, its bristles at its left end against the front
+    // teeth and its handle running out of the mouth to the right: no turn, no squash (it was turned 38 degrees)
+    const brushIn = art("brushInMouth");
+    const BR = Object.assign({ src: "assets/clinic/items-v2/toothbrush.webp", size: [374, 291], head: [62, 52], w: 300 }, data.brush || {}, brushIn ? { size: brushIn.size, head: brushIn.head, w: brushIn.w } : {});
+    const brushG = s("g", { class: "tooth-brush" }, mouthG);
+    const bW = BR.w;
+    const bH = (BR.w * BR.size[1]) / BR.size[0];
+    const hx = (BR.head[0] / BR.size[0]) * bW;
+    const hy = (BR.head[1] / BR.size[1]) * bH;
+    s("image", { href: url(brushIn ? brushIn.src : BR.src), x: M.x - hx, y: M.y - 60 - hy, width: bW, height: bH, transform: brushIn ? null : `rotate(-12 ${M.x} ${M.y - 60})` }, brushG);
     const wipe = (x, y, r = 58) => wipeMask && s("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r, fill: "#000" }, wipeMask);
     const plaqueGone = (ms = 600) => plaqueImg && plaqueImg.animate && plaqueImg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, fill: "forwards" });
     const scrub = (hx2, hy2) => {
@@ -244,38 +249,65 @@
     };
     const foam = s("g", {}, mouthG);
 
-    /* ---------------- 2. the sore tooth, close (still in the mouth: gum, neighbours, lip) ---------------- */
-    const toothG = s("g", { opacity: 0, class: "tooth-close" }, S.layer);
-    s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: "#4e1620" }, toothG); // inside the mouth
-    s("path", { d: "M-400 -300 L1200 -300 L1200 120 Q400 40 -400 120Z", fill: "#e8909a" }, toothG); // the gum
-    s("path", { d: "M-400 560 Q400 470 1200 560 L1200 900 L-400 900Z", fill: "#c4636b" }, toothG); // the lower lip
+    /* ---------------- 2. the wide-open mouth and the sore tooth on it (face2) ---------------- */
+    const face2 = s("g", { class: "tooth-close", opacity: 0 }, S.layer);
+    if (artMode) {
+      const b = mouthArt.box;
+      s("image", { href: url(mouthArt.src), x: b[0], y: b[1], width: b[2], height: b[3], preserveAspectRatio: "none", class: "tooth-mouth-art" }, face2);
+      // its own teeth, upscaled x2 from the @2x (build/tools/art/upscale.py's network), laid exactly over them
+      const hd = mouthArt.hd;
+      if (hd && hd.src) {
+        const k = b[2] / mouthArt.size[0];
+        s("image", { href: url(hd.src), x: b[0] + hd.crop[0] * k, y: b[1] + hd.crop[1] * k, width: (hd.crop[2] - hd.crop[0]) * k, height: (hd.crop[3] - hd.crop[1]) * k, preserveAspectRatio: "none", class: "tooth-teeth-hd" }, face2);
+      }
+    }
+    const ds = s("g", { class: "tooth-drill-space", transform: dsT }, face2); // the drill's units
     const toothPath = (x0, x1, y0, y1) => `M${x0} ${y0} Q${(x0 + x1) / 2} ${y0 - 26} ${x1} ${y0} L${x1 - 6} ${y1 - 40} Q${x1 - 14} ${y1 + 6} ${(x0 + x1) / 2} ${y1} Q${x0 + 14} ${y1 + 6} ${x0 + 6} ${y1 - 40}Z`;
-    // TD1 (s07-clinic-a): the drill view's painted tooth, its neighbours and the gum (art "drillView": box = where the
-    // picture sits, its crown over the drawn tooth's place, so the decay, the drill's reach and the chip stay where they
-    // were); the drawn teeth only without it
-    const dv = art("drillView");
-    if (dv) s("image", { href: url(dv.src), x: dv.box[0], y: dv.box[1], width: dv.box[2], height: dv.box[3], preserveAspectRatio: "none", class: "tooth-drill-art" }, toothG);
-    else {
-      s("path", { d: toothPath(30, 252, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, toothG); // the neighbours
-      s("path", { d: toothPath(548, 770, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, toothG);
-      s("path", { d: toothPath(272, 528, 92, 392), fill: "#fbf9f2", stroke: "#d8cfbd", "stroke-width": 5 }, toothG);
-      s("path", { d: "M300 130 Q320 118 345 122", stroke: "#fff", "stroke-width": 10, "stroke-linecap": "round", fill: "none", opacity: 0.8 }, toothG); // a shine
+    if (!artMode) {
+      // the drawn close tooth (the stand-in): inside the mouth, the gum, the neighbours, the lip
+      s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: "#4e1620" }, ds);
+      s("path", { d: "M-400 -300 L1200 -300 L1200 120 Q400 40 -400 120Z", fill: "#e8909a" }, ds);
+      s("path", { d: "M-400 560 Q400 470 1200 560 L1200 900 L-400 900Z", fill: "#c4636b" }, ds);
+      s("path", { d: toothPath(30, 252, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, ds);
+      s("path", { d: toothPath(548, 770, 96, 370), fill: "#f6f2e8", stroke: "#d8cfbd", "stroke-width": 4 }, ds);
+      s("path", { d: toothPath(272, 528, 92, TOOTH.y1), fill: "#fbf9f2", stroke: "#d8cfbd", "stroke-width": 5 }, ds);
     }
     // the decay, cut away where the drill has been (a mask of drilled circles)
     const defs = s("defs", {}, S.svg);
-    const mask = s("mask", { id: `${uid}-m`, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 800, height: 500 }, defs);
+    const mask = s("mask", { id: `${uid}-m`, maskUnits: "userSpaceOnUse", x: -400, y: -300, width: 1600, height: 1100 }, defs);
     s("rect", { x: -400, y: -300, width: 1600, height: 1100, fill: "#fff" }, mask);
-    const holesG = s("g", {}, toothG); // the drilled holes (under the decay)
-    const decayG = s("g", { mask: `url(#${uid}-m)` }, toothG);
-    const scuffG = s("g", {}, toothG); // where healthy enamel was drilled
-    const pasteG = s("g", {}, toothG);
-    const chipEl = s("path", { d: "M470 112 L520 104 L514 160 Z", fill: "#4e1620", opacity: 0 }, toothG);
+    // the orchestrator's look (19 Oct, on CLN-181): the drilled cavity is a soft, rounded, darker hollow (never a hard
+    // drawn outline), and the filling a soft-edged patch that grows from its middle to cover it
+    const soft = (id, sd) => {
+      const f = s("filter", { id, x: "-50%", y: "-50%", width: "200%", height: "200%", "color-interpolation-filters": "sRGB" }, defs);
+      s("feGaussianBlur", { stdDeviation: sd }, f);
+      return `url(#${id})`;
+    };
+    const SOFT_HOLE = soft(`${uid}-soft-hole`, 7);
+    const SOFT_FILL = soft(`${uid}-soft-fill`, 3.5);
+    const about = (p, k) => `translate(${(p.cx * (1 - k)).toFixed(2)} ${(p.cy * (1 - k)).toFixed(2)}) scale(${k.toFixed(4)})`;
+    const holesG = s("g", {}, ds); // the drilled holes (under the decay)
+    const decayG = s("g", { mask: `url(#${uid}-m)` }, ds);
+    const scuffG = s("g", {}, ds); // where healthy enamel was drilled
+    const pasteG = s("g", {}, ds);
+    const chipEl = s("path", { d: `M470 ${TOOTH.y0 + 20} L520 ${TOOTH.y0 + 12} L514 ${TOOTH.y0 + 68} Z`, fill: "#4e1620", opacity: 0 }, ds);
     const drillPatches = P.steps.find((x) => x.kind === "drill").patches;
+    // the patches sit on the tooth's crown, whatever its height (the plan places them in CROWN, a tooth 300 tall)
+    const fitY = (y) => TOOTH.y0 + ((y - 92) * (TOOTH.y1 - TOOTH.y0)) / 300;
+    drillPatches.forEach((p) => {
+      if (p.fitted) return;
+      p.fitted = true;
+      const k = Math.min(1, (TOOTH.y1 - TOOTH.y0) / 300);
+      const cy = fitY(p.cy);
+      p.pts = p.pts.map(([x, y]) => [Math.round(x), Math.round(cy + (y - p.cy) * Math.max(k, 0.82))]);
+      p.cy = Math.round(cy);
+    });
     const decayArt = [1, 2, 3].map((n) => art(`decay${n}`));
     drillPatches.forEach((p, k) => {
       const d = p.pts.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" ") + "Z";
       p.d = d;
-      s("path", { d, fill: "#ead2c6", stroke: "#c9a493", "stroke-width": 3 }, holesG);
+      s("path", { d, fill: "#b48a72", opacity: 0.75, filter: SOFT_HOLE, transform: about(p, 0.9) }, holesG);
+      s("path", { d, fill: "#7f5a48", opacity: 0.55, filter: SOFT_HOLE, transform: about(p, 0.55) }, holesG);
       const a = decayArt[k % 3];
       if (a) {
         // A2 (5 Oct): O2's decay as the patch's texture, clipped to the patch's own outline (the drill's samples)
@@ -283,8 +315,7 @@
         s("path", { d }, s("clipPath", { id: cid }, decayG));
         s("image", { href: url(a.src), x: p.cx - p.r * 1.5, y: p.cy - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none", "clip-path": `url(#${cid})` }, decayG);
         s("path", { d, fill: "none", stroke: "#6e4c37", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0.6 }, decayG);
-      }
-      else {
+      } else {
         s("path", { d, fill: "#4a3326", stroke: "#2f1f17", "stroke-width": 3, "stroke-linejoin": "round" }, decayG);
         s("path", { d, fill: "none", stroke: "#6e4c37", "stroke-width": 9, opacity: 0.5, transform: `translate(${p.cx * 0.12} ${p.cy * 0.12}) scale(0.88)` }, decayG);
       }
@@ -293,6 +324,8 @@
       for (let y = p.cy - p.r * 1.3; y <= p.cy + p.r * 1.3; y += 9) for (let x = p.cx - p.r * 1.3; x <= p.cx + p.r * 1.3; x += 9) if (inPoly(x, y, p.pts)) p.samples.push([x, y]);
       p.left = new Set(p.samples.map((_, i) => i));
     });
+    // the drill, the nozzle, the gauge and the button: drill units, over everything (S.fx)
+    const dsFx = s("g", { class: "tooth-drill-fx", transform: dsT }, S.fx);
     // CLN-51: the drill is its picture (assets/clinic/items-v2), placed so its tip (the bur, data: drill.tip, in the
     // picture's own pixels) sits exactly under the finger
     const DR = Object.assign({ src: "assets/clinic/items-v2/dentist-drill.webp", size: [394, 212], tip: [45, 196], w: 150 }, data.drill || {});
@@ -300,163 +333,277 @@
     const DH = (DR.w * DR.size[1]) / DR.size[0];
     const tipX = (DR.tip[0] / DR.size[0]) * DW;
     const tipY = (DR.tip[1] / DR.size[1]) * DH;
-    const drillEl = s("image", { href: url(DR.src), x: -1000, y: -1000, width: DW, height: DH, opacity: 0, class: "hs-drill" }, S.fx);
+    const drillEl = s("image", { href: url(DR.src), x: -1000, y: -1000, width: DW, height: DH, opacity: 0, class: "hs-drill" }, dsFx);
     drillEl.dataset.tipX = String(tipX);
     drillEl.dataset.tipY = String(tipY);
-    const TIP_R = 17; // the bur's reach, svg units
+    const TIP_R = 17; // the bur's reach, drill units
 
-    /* ---------------- 3. the fill: the nozzle, the gauge, the big button ---------------- */
-    const fillG = s("g", { opacity: 0 }, S.fx);
-    // CLN-129 (S05-D3): the gauge lies in the open mouth under the teeth, beside the button, filling to the right; standing
-    // up beside the tooth it covered the next tooth in every frame
-    const G = { x0: 150, x1: 560, y: 414, h: 32 }; // the gauge: left = empty, right = MAX
-    const gx = (f) => G.x0 + (f / FILL.max) * (G.x1 - G.x0);
-    s("rect", { x: G.x0 - 8, y: G.y - 8, width: G.x1 - G.x0 + 16, height: G.h + 16, rx: 16, fill: "#fff", stroke: "#bfae94", "stroke-width": 4 }, fillG);
-    s("rect", { x: G.x0, y: G.y, width: gx(zone[0]) - G.x0, height: G.h, fill: "#e0574f" }, fillG); // not enough
-    s("rect", { x: gx(zone[0]), y: G.y, width: gx(zone[1]) - gx(zone[0]), height: G.h, fill: "#4cae5c" }, fillG); // just right
-    s("rect", { x: gx(zone[1]), y: G.y, width: G.x1 - gx(zone[1]), height: G.h, fill: "#e0574f" }, fillG); // too much
-    const level = s("rect", { x: G.x0, y: G.y + 6, width: 0, height: G.h - 12, rx: 6, fill: "#fbfbff", stroke: "#9aa3b5", "stroke-width": 2 }, fillG);
-    const marker = s("path", { d: "", fill: "#fbfbff", stroke: "#2a2522", "stroke-width": 2 }, fillG);
+    /* ---------------- 3. the fill: the nozzle on the cavity, the gauge and the big button ---------------- */
+    const fillG = s("g", { opacity: 0, class: "tooth-fill" }, dsFx);
+    /*
+     * CLN-183 (Zafar, 18 Oct: "the speedometer for the dial game, that looks really good ... use design elements from
+     * that"): the gauge is Cook's daal speed dial, drawn small: the dark glass face, the thin gold rim, the bands round a
+     * half circle (red, then green, then red), the band the needle is in lit in its own colour, the gold needle and hub.
+     * CLN-182: its middle and the button's middle on one line, half way between the tooth's bottom and the screen's
+     * (placeFill(), on every resize).
+     */
+    const GA = { w: 250, h: 170, R: 86, bw: 22, ay: 42 };
+    const gaugeG = s("g", { class: "tooth-gauge" }, fillG);
+    const GOLD = "#c9962e";
+    const BANDS = [
+      [0, zone[0], "#d0604a"],
+      [zone[0], zone[1], "#8fb087"],
+      [zone[1], FILL.max, "#d0604a"],
+    ];
+    const toA = (v) => Math.PI + (Math.max(0, Math.min(FILL.max, v)) / FILL.max) * Math.PI;
+    const arc = (a, b, r) => {
+      const p0 = [Math.cos(toA(a)) * r, GA.ay + Math.sin(toA(a)) * r];
+      const p1 = [Math.cos(toA(b)) * r, GA.ay + Math.sin(toA(b)) * r];
+      return `M${p0[0].toFixed(1)} ${p0[1].toFixed(1)} A${r} ${r} 0 0 1 ${p1[0].toFixed(1)} ${p1[1].toFixed(1)}`;
+    };
+    s("rect", { x: -GA.w / 2 + 3, y: -GA.h / 2 + 6, width: GA.w, height: GA.h, rx: 24, fill: "#28190a", opacity: 0.22 }, gaugeG); // its shadow
+    s("rect", { x: -GA.w / 2, y: -GA.h / 2, width: GA.w, height: GA.h, rx: 24, fill: "#1d1b1a", "fill-opacity": 0.96, stroke: GOLD, "stroke-width": 4 }, gaugeG);
+    s("rect", { x: -GA.w / 2 + 8, y: -GA.h / 2 + 8, width: GA.w - 16, height: GA.h - 16, rx: 18, fill: "none", stroke: "#fff", "stroke-opacity": 0.08, "stroke-width": 2 }, gaugeG);
+    BANDS.forEach(([a, b, col]) => s("path", { d: arc(a + 0.004, b - 0.004, GA.R), stroke: col, "stroke-opacity": 0.72, "stroke-width": GA.bw, fill: "none" }, gaugeG));
+    const litG = s("g", {}, gaugeG);
+    const needle = s("g", {}, gaugeG);
+    const needleSh = s("line", { x1: 0, y1: GA.ay + 2, x2: 0, y2: GA.ay + 2, stroke: "#0e0d0c", "stroke-opacity": 0.5, "stroke-width": 7, "stroke-linecap": "round" }, needle);
+    const needleLn = s("line", { x1: 0, y1: GA.ay, x2: 0, y2: GA.ay, stroke: "#f0cf7a", "stroke-width": 5, "stroke-linecap": "round" }, needle);
+    s("circle", { cx: 0, cy: GA.ay, r: 24, fill: "#ffa94d", opacity: 0.18 }, needle);
+    s("circle", { cx: 0, cy: GA.ay, r: 12, fill: GOLD }, needle);
+    s("circle", { cx: 0, cy: GA.ay, r: 5, fill: "#3a2410" }, needle);
+    let litBand = -1;
     const setMarker = (f) => {
-      const x = gx(Math.min(FILL.max, f));
-      marker.setAttribute("d", `M${x - 11} ${G.y - 26} L${x} ${G.y - 6} L${x + 11} ${G.y - 26}Z`);
-      level.setAttribute("width", Math.max(0, x - G.x0));
+      const a = toA(Math.min(FILL.max, f));
+      const r = GA.R - 4;
+      [needleSh, needleLn].forEach((ln, k) => {
+        ln.setAttribute("x2", (Math.cos(a) * r).toFixed(1));
+        ln.setAttribute("y2", (GA.ay + (k ? 0 : 2) + Math.sin(a) * r).toFixed(1));
+      });
+      // the band the needle is in, lit in its own colour with a soft glow (never over the others)
+      const bi = f <= 0.01 ? -1 : BANDS.findIndex(([, b]) => f < b) < 0 ? BANDS.length - 1 : BANDS.findIndex(([, b]) => f < b);
+      if (bi === litBand) return;
+      litBand = bi;
+      S.clear(litG);
+      if (bi < 0) return;
+      const [a0, b0, col] = BANDS[bi];
+      [[GA.bw + 18, 0.12], [GA.bw + 9, 0.22]].forEach(([w, op]) => s("path", { d: arc(a0 + 0.004, b0 - 0.004, GA.R), stroke: col, "stroke-opacity": op, "stroke-width": w, fill: "none" }, litG));
+      s("path", { d: arc(a0 + 0.004, b0 - 0.004, GA.R), stroke: col, "stroke-width": GA.bw, fill: "none", class: bi === 2 ? "tooth-over" : null }, litG);
     };
     setMarker(0);
-    // the nozzle over the tooth (B1: art once ready; a drawn white-and-steel pen until then)
-    const nozzleG = s("g", {}, fillG);
-    const NZ = { x: 400, y: 222 }; // the tip, over the holes
+    // the nozzle (B1's art; a drawn white-and-steel pen until then): its tip on the middle of the cavity it fills
+    const nozzleG = s("g", { class: "tooth-nozzle" }, fillG);
     const nozArt = art("nozzle");
     const nozPasteArt = art("nozzlePaste");
     let nozImg = null;
-    if (nozArt) nozImg = s("image", { href: url(nozArt.src), x: NZ.x - nozArt.tip[0], y: NZ.y - nozArt.tip[1], width: nozArt.size[0], height: nozArt.size[1] }, nozzleG);
+    if (nozArt) nozImg = s("image", { href: url(nozArt.src), x: -nozArt.tip[0], y: -nozArt.tip[1], width: nozArt.size[0], height: nozArt.size[1] }, nozzleG);
     else {
-      s("path", { d: `M${NZ.x} ${NZ.y} L${NZ.x + 16} ${NZ.y - 30} L${NZ.x + 30} ${NZ.y - 24} Z`, fill: "#9aa3ad" }, nozzleG);
-      s("rect", { x: NZ.x + 12, y: NZ.y - 150, width: 44, height: 130, rx: 20, fill: "#f2f0ea", stroke: "#b9b4aa", "stroke-width": 3, transform: `rotate(28 ${NZ.x + 34} ${NZ.y - 85})` }, nozzleG);
-      s("rect", { x: NZ.x + 12, y: NZ.y - 104, width: 44, height: 8, fill: "#4a8fd0", transform: `rotate(28 ${NZ.x + 34} ${NZ.y - 85})` }, nozzleG);
+      s("path", { d: "M0 0 L16 -30 L30 -24 Z", fill: "#9aa3ad" }, nozzleG);
+      s("rect", { x: 12, y: -150, width: 44, height: 130, rx: 20, fill: "#f2f0ea", stroke: "#b9b4aa", "stroke-width": 3, transform: "rotate(28 34 -85)" }, nozzleG);
     }
-    const ribbon = s("path", { d: "", stroke: "#fbfbff", "stroke-width": 9, "stroke-linecap": "round", fill: "none", opacity: 0 }, nozzleG);
+    const NZ = { x: 400, y: 222 };
+    const putNozzle = (x, y) => {
+      NZ.x = x;
+      NZ.y = y;
+      nozzleG.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+    };
     // the big press button (blue on a white base: neither "stop" nor "yes")
-    const BTN = { x: 640, y: 440, r: 46 };
+    const BTN = { x: 560, y: 470, r: 46 };
     const btnG = s("g", { class: "tooth-button" }, fillG);
     const upArt = art("buttonUp");
     const downArt = art("buttonDown");
     let btnUp = null;
     let btnDown = null;
+    const BW = 150;
+    const BH = upArt ? (BW * 401) / 494 : 120; // the B1 button's own canvas, 494 x 401
     if (upArt && downArt) {
-      // B1 (A2): the art's base is wider than the drawn one, so it sits a little lower, clear of the gauge
-      btnUp = s("image", { href: url(upArt.src), x: BTN.x - 70, y: BTN.y - 56, width: 140, height: 140 }, btnG);
-      btnDown = s("image", { href: url(downArt.src), x: BTN.x - 70, y: BTN.y - 56, width: 140, height: 140, opacity: 0 }, btnG);
+      btnUp = s("image", { href: url(upArt.src), x: -BW / 2, y: -BH / 2, width: BW, height: BH }, btnG);
+      btnDown = s("image", { href: url(downArt.src), x: -BW / 2, y: -BH / 2, width: BW, height: BH, opacity: 0 }, btnG);
     } else {
-      s("ellipse", { cx: BTN.x, cy: BTN.y + 22, rx: BTN.r + 18, ry: 22, fill: "#e9e6df", stroke: "#b9b4aa", "stroke-width": 3 }, btnG);
-      s("rect", { x: BTN.x - BTN.r - 18, y: BTN.y, width: 2 * BTN.r + 36, height: 22, fill: "#e9e6df" }, btnG);
-      s("ellipse", { cx: BTN.x, cy: BTN.y, rx: BTN.r + 18, ry: 20, fill: "#f7f5f0", stroke: "#b9b4aa", "stroke-width": 3 }, btnG);
+      s("ellipse", { cx: 0, cy: 22, rx: BTN.r + 18, ry: 22, fill: "#e9e6df", stroke: "#b9b4aa", "stroke-width": 3 }, btnG);
+      s("rect", { x: -BTN.r - 18, y: 0, width: 2 * BTN.r + 36, height: 22, fill: "#e9e6df" }, btnG);
+      s("ellipse", { cx: 0, cy: 0, rx: BTN.r + 18, ry: 20, fill: "#f7f5f0", stroke: "#b9b4aa", "stroke-width": 3 }, btnG);
       btnUp = s("g", {}, btnG);
-      s("rect", { x: BTN.x - BTN.r, y: BTN.y - 26, width: 2 * BTN.r, height: 26, fill: "#2f6fbf" }, btnUp);
-      s("ellipse", { cx: BTN.x, cy: BTN.y, rx: BTN.r, ry: 16, fill: "#2f6fbf" }, btnUp);
-      s("ellipse", { cx: BTN.x, cy: BTN.y - 26, rx: BTN.r, ry: 16, fill: "#4a8fe0", stroke: "#2a5fa3", "stroke-width": 2 }, btnUp);
-      s("ellipse", { cx: BTN.x - 14, cy: BTN.y - 30, rx: 14, ry: 5, fill: "#fff", opacity: 0.45 }, btnUp);
+      s("rect", { x: -BTN.r, y: -26, width: 2 * BTN.r, height: 26, fill: "#2f6fbf" }, btnUp);
+      s("ellipse", { cx: 0, cy: 0, rx: BTN.r, ry: 16, fill: "#2f6fbf" }, btnUp);
+      s("ellipse", { cx: 0, cy: -26, rx: BTN.r, ry: 16, fill: "#4a8fe0", stroke: "#2a5fa3", "stroke-width": 2 }, btnUp);
     }
+    const GAUGE = { x: 305, y: 470 };
+    const placeFill = () => {
+      // CLN-182: half way between the tooth's bottom and the screen's bottom (the near view's), both middles on it;
+      // the pair centred under the tooth
+      const v = view.near();
+      // the screen's bottom in the near view: the svg fits its viewBox inside its own box (meet), so where the box is
+      // taller than the view, more shows below (tablets), centred
+      const er = S.svg.getBoundingClientRect();
+      const visH = er.width > 0 && er.height > 0 ? Math.max(v[3], (v[2] * er.height) / er.width) : v[3];
+      let bottom = (v[1] + v[3] / 2 + visH / 2 - DY0) * KD;
+      // in the near view itself: the screen's own bottom, measured through the svg's matrix (exact on every shape)
+      const m = st.view === "near" && !st.moving && S.svg.getScreenCTM ? S.svg.getScreenCTM() : null;
+      const doc = S.svg.ownerDocument;
+      const screenB = doc && doc.documentElement ? doc.documentElement.clientHeight : 0;
+      if (m && m.d && screenB) bottom = ((screenB - m.f) / m.d - DY0) * KD;
+      const mid = (TOOTH.y1 + bottom) / 2;
+      const cx = (TOOTH.x0 + TOOTH.x1) / 2;
+      const gap = 50;
+      const total = GA.w + gap + BW;
+      GAUGE.x = cx - total / 2 + GA.w / 2;
+      GAUGE.y = mid;
+      BTN.x = cx + total / 2 - BW / 2;
+      BTN.y = mid;
+      gaugeG.setAttribute("transform", `translate(${GAUGE.x.toFixed(1)} ${GAUGE.y.toFixed(1)})`);
+      btnG.setAttribute("transform", `translate(${BTN.x.toFixed(1)} ${BTN.y.toFixed(1)})`);
+    };
     const pressBtn = (down) => {
       if (btnDown) {
         btnUp.setAttribute("opacity", down ? 0 : 1);
         btnDown.setAttribute("opacity", down ? 1 : 0);
       } else btnUp.setAttribute("transform", down ? "translate(0 18)" : "");
-      if (nozImg && nozArt && nozPasteArt) nozImg.setAttribute("href", url(down ? nozPasteArt.src : nozArt.src));
-      ribbon.setAttribute("opacity", down ? 1 : 0);
+      // (the orchestrator, 19 Oct; Zafar: "you don't need to show really anything coming out"): the nozzle stays the
+      // plain one while pressed: its paste picture drew a squiggle from the tip, so nothing shows between tip and cavity
+      void nozPasteArt;
     };
     const fillArt = art("fillingPatch");
+    // CLN-181: the cavities fill one at a time, each from its middle out, the nozzle's tip on the middle of the one
+    // filling (left to right); past the green every filling bulges (too much)
+    const order = drillPatches.slice().sort((a, b) => a.cx - b.cx);
+    const share = (f, i) => Math.max(0, Math.min(1, (f / zone[0]) * order.length - i));
+    const filling = (f) => order.find((p, i) => share(f, i) < 1) || order[order.length - 1];
     const drawPaste = () => {
       S.clear(pasteG);
       const f = st.fill;
       if (f <= 0) return;
-      drillPatches.forEach((p) => {
-        const k = Math.min(f / zone[0], 1) * (f > zone[1] ? 1 + (f - zone[1]) * 1.6 : 1);
-        const tf = `translate(${p.cx * (1 - k)} ${p.cy * (1 - k)}) scale(${k})`;
-        // T3 (CLN-103): the filling a shade off white (tooth-coloured), never an outline
-        s("path", { d: p.d, fill: "#f3eee0", stroke: "none", transform: tf }, pasteG);
-        // A2 (5 Oct): O2's filling over the paste, inside the patch's own outline (its gloss reads as a filling)
+      order.forEach((p, i) => {
+        const g0 = share(f, i);
+        if (g0 <= 0) return;
+        const k = g0 * (f > zone[1] ? 1 + (f - zone[1]) * 1.6 : 1);
+        // T3 (CLN-103): the filling a shade off white (tooth-coloured), never an outline; soft-edged and a little wider
+        // than the hollow, so at full it covers it
+        const tf = about(p, k * 1.12);
+        s("path", { d: p.d, fill: "#f3eee0", stroke: "none", filter: SOFT_FILL, transform: tf }, pasteG);
         if (fillArt) {
-          const cid = `${uid}-f${p.cx | 0}-${p.cy | 0}`;
-          const cp = s("clipPath", { id: cid }, pasteG);
-          s("path", { d: p.d }, cp);
-          const g = s("g", { "clip-path": `url(#${cid})`, transform: tf }, pasteG);
-          s("image", { href: url(fillArt.src), x: p.cx - p.r * 1.35, y: p.cy - p.r * 1.35, width: p.r * 2.7, height: p.r * 2.7, preserveAspectRatio: "none" }, g);
+          const mid = `${uid}-f${p.cx | 0}-${p.cy | 0}`;
+          const mk = s("mask", { id: mid, maskUnits: "userSpaceOnUse", x: -400, y: -300, width: 1600, height: 1100 }, pasteG);
+          s("path", { d: p.d, fill: "#fff", filter: SOFT_FILL, transform: tf }, mk);
+          const g = s("g", { mask: `url(#${mid})` }, pasteG);
+          s("image", { href: url(fillArt.src), x: p.cx - p.r * 1.5, y: p.cy - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none" }, g);
         }
       });
-      ribbon.setAttribute("d", `M${NZ.x} ${NZ.y} Q${NZ.x - 4} ${NZ.y + 16} ${drillPatches[0].cx} ${drillPatches[0].cy}`);
     };
 
-    /* ---------------- the camera inside the mouth: push in on the tooth, and back out ---------------- */
-    const VB0 = [0, 0, 800, 500];
-    // a match cut: the sore tooth lands exactly where the close-up's tooth is drawn (crown x 272-528, y 92-392)
-    const zoomBox = () => {
-      const k = 256 / sore.w;
-      return [sore.x - 272 / k, sore.y - 92 / k, 800 / k, 500 / k];
+    /* ---------------- the camera: one picture, one move in and out ---------------- */
+    const parseVB = () => String(S.svg.getAttribute("viewBox") || "0 0 800 500").trim().split(/[\s,]+/).map(Number);
+    const view = {
+      fit: null,
+      // the scene's own fit (js/clinic/heal/scene.js), read once per size
+      base() {
+        if (!view.fit) {
+          S.fitView();
+          view.fit = parseVB();
+        }
+        return view.fit;
+      },
+      // CLN-185: a step less zoomed in than before: the brushing view wider than the scene's fit (1 / CAM.far)
+      far() {
+        const b = view.base();
+        const w = b[2] / CAM.far;
+        const hh = b[3] / CAM.far;
+        return [b[0] + b[2] / 2 - w / 2, CAM.farY - hh / 2, w, hh];
+      },
+      // the sore tooth about a quarter of the view's width (it was a third), near the top, room under it for the fill
+      near() {
+        const b = view.base();
+        const w = (sore.w * CAM.near) / 256;
+        const hh = (w * b[3]) / b[2];
+        return [sore.x + sore.w / 2 - w / 2, sore.y - CAM.nearTop * hh, w, hh];
+      },
     };
     const setVB = (b) => S.svg.setAttribute("viewBox", b.map((v) => Math.round(v * 10) / 10).join(" "));
-    const camera = (from, to, ms) =>
+    // one tween in log space: the size changes evenly, and the point being zoomed on stays put as it grows
+    const camera = (from, to, ms, each) =>
       new Promise((res) => {
         if (fast() || !root.requestAnimationFrame) {
           setVB(to);
+          if (each) each(1);
           return res();
         }
         const t0 = Date.now();
+        const lw0 = Math.log(from[2]);
+        const lw1 = Math.log(to[2]);
         const step = () => {
+          if (st.gone) return res();
           const u = Math.min(1, (Date.now() - t0) / ms);
-          const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
-          setVB(from.map((v, i) => v + (to[i] - v) * e));
-          if (u < 1 && !st.gone) root.requestAnimationFrame(step);
+          const e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+          const w = Math.exp(lw0 + (lw1 - lw0) * e);
+          const f = Math.abs(to[2] - from[2]) > 0.01 ? (from[2] - w) / (from[2] - to[2]) : e;
+          setVB([from[0] + (to[0] - from[0]) * f, from[1] + (to[1] - from[1]) * f, w, (w * from[3]) / from[2]]);
+          if (each) each(e);
+          if (u < 1) root.requestAnimationFrame(step);
           else res();
         };
         step();
       });
-    const view = async (k) => {
+    const rest = () => setVB(st.view === "near" ? view.near() : view.far());
+    ctx.on(root, "resize", () => {
+      view.fit = null;
+      if (!st.moving) rest();
+      placeFill();
+    });
+    const fade = (u, a, b) => Math.max(0, Math.min(1, (u - a) / (b - a)));
+    const view2 = async (k) => {
       if (k === "brush") {
-        mouthG.setAttribute("opacity", 1);
-        toothG.setAttribute("opacity", 0);
+        face1.setAttribute("opacity", 1);
+        face2.setAttribute("opacity", 0);
         fillG.setAttribute("opacity", 0);
         return;
       }
-      if (mouthG.getAttribute("opacity") !== "0") {
-        // the push-in: the mouth view zooms on the sore tooth, then the close is there (same place, same size)
+      if (st.view === "far") {
+        // the push-in: the mouth opens wide as the camera starts (the two mouths share their front teeth), then on in
         st.busy = true;
-        brushG.setAttribute("opacity", 0);
-        if (brushFace) brushFace.setAttribute("opacity", 0);
+        st.moving = true;
         S.clear(foam); // the brushing's foam stays in the brushing (never into the drill's close-up)
-        await camera(VB0, zoomBox(), 650);
-        mouthG.setAttribute("opacity", 0);
-        toothG.setAttribute("opacity", 1);
-        setVB(VB0);
+        brushG.setAttribute("opacity", 0);
+        await camera(view.far(), view.near(), CAM.ms, (e) => {
+          face2.setAttribute("opacity", fade(e, 0, 0.4).toFixed(3));
+          face1.setAttribute("opacity", (1 - fade(e, 0.25, 0.45)).toFixed(3));
+        });
+        face2.setAttribute("opacity", 1);
+        face1.setAttribute("opacity", 0);
+        st.view = "near";
+        st.moving = false;
         st.busy = false;
       }
       fillG.setAttribute("opacity", k === "fill" ? 1 : 0);
     };
     const pullOut = async () => {
-      drawSpecks(true);
-      setVB(zoomBox());
-      // CLN-103 (S04 audit: "the mouth wide open" at the end): she ends with the brushing's less open mouth, the plaque
-      // gone and the brush put away, not the drill's wide-open one
-      if (brushFace) {
-        brushFace.setAttribute("opacity", 1);
-        if (plaqueImg) plaqueImg.setAttribute("opacity", 0);
-        brushG.setAttribute("opacity", 0);
-      }
-      mouthG.setAttribute("opacity", 1);
-      toothG.setAttribute("opacity", 0);
+      // the pull-out: the camera back out over the filled tooth (the fillings in their places), and the mouth closes to
+      // the brushing's at the end (CLN-103: she ends with the less open mouth, the plaque gone and the brush put away)
       fillG.setAttribute("opacity", 0);
-      await camera(zoomBox(), VB0, 650);
+      drillEl.setAttribute("opacity", 0);
+      if (plaqueImg) plaqueImg.setAttribute("opacity", 0);
+      plaqueG.setAttribute("opacity", 0);
+      brushG.setAttribute("opacity", 0);
+      st.moving = true;
+      await camera(view.near(), view.far(), CAM.ms, (e) => {
+        face1.setAttribute("opacity", fade(e, 0.6, 0.85).toFixed(3));
+        face2.setAttribute("opacity", (1 - fade(e, 0.75, 1)).toFixed(3));
+      });
+      st.view = "far";
+      st.moving = false;
     };
+    rest();
+    placeFill();
 
     const judge = (id, ok, detail) => {
       st.judged[id] = ok;
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
+    const inM = (x, y, r) => Object.assign(fromD(x, y), r ? { r: r / KD } : {});
     let timer = null;
     const open = async () => {
       const c = cur();
       ctx.card.now(rowOf(c));
-      await view(c.kind);
+      await view2(c.kind);
       if (cur() !== c || st.over) return;
       if (c.kind === "brush") {
         // the guided round shows the very move asked for (D13); later the ghost only shows "drag the brush"
@@ -465,13 +612,16 @@
       }
       if (c.kind === "drill") {
         const p = c.patches[0];
-        S.cue("drill", { gesture: "drag", to: { x: p.cx + p.r * 0.6, y: p.cy } }, { x: p.cx - p.r * 0.6, y: p.cy });
+        S.cue("drill", { gesture: "drag", to: inM(p.cx + p.r * 0.6, p.cy) }, inM(p.cx - p.r * 0.6, p.cy));
         if (c.timer) timer = S.timer(c.timer * (fast() ? 2 : 1), () => cur() === c && close());
         parkDrill();
       }
       if (c.kind === "fill") {
+        placeFill(); // the near view has landed: measured on the screen itself (CLN-182)
+        const p = filling(0);
+        putNozzle(p.cx, p.cy);
         drawPaste();
-        S.cue("fill", CUES.fill, { x: BTN.x, y: BTN.y - 10, r: BTN.r + 10 });
+        S.cue("fill", CUES.fill, inM(BTN.x, BTN.y, BTN.r + 10));
       }
     };
     const close = () => {
@@ -489,10 +639,7 @@
         drillEl.setAttribute("opacity", 0);
         ctx.card.tick(c.id);
       }
-      if (c.kind === "fill") {
-        judge("fill-line", st.fill >= zone[0] && st.fill <= zone[1], { filled: Math.round((100 * st.fill) / FILL.max) });
-        ctx.card.tick(c.id);
-      }
+      if (c.kind === "fill") ctx.card.tick(c.id); // (judged on the first go: stopFill)
       S.uncue();
       st.i++;
       if (cur()) open();
@@ -510,6 +657,7 @@
 
     /* ---------------- the gestures ---------------- */
     let drag = null;
+    const onButton = (q) => Math.hypot(q.x - BTN.x, q.y - BTN.y) < BTN.r + 30;
     ctx.on(S.svg, "pointerdown", (e) => {
       if (!S.ready || st.over || st.busy) return;
       const p = S.pt(e);
@@ -518,14 +666,14 @@
       if (c.kind === "brush" && Math.hypot(p.x - M.x, (p.y - M.y) * 1.3) < 230) drag = { from: p, fired: false };
       else if (c.kind === "drill") {
         drag = { drill: true, last: null };
-        drillAt(p);
-      } else if (c.kind === "fill" && Math.hypot(p.x - BTN.x, p.y - (BTN.y - 10)) < BTN.r + 26) startFill();
+        drillAt(toD(p));
+      } else if (c.kind === "fill" && onButton(toD(p))) startFill();
       if ((drag || st.holding) && S.svg.setPointerCapture) S.svg.setPointerCapture(e.pointerId);
     });
     ctx.on(S.svg, "pointermove", (e) => {
       if (!drag) return;
       const p = S.pt(e);
-      if (drag.drill) return drillAt(p);
+      if (drag.drill) return drillAt(toD(p));
       // T1: the brush follows the finger across the whole mouth (kept inside the open mouth), scrubbing the plaque
       if (cur() && cur().kind === "brush") {
         const dxB = Math.max(-190, Math.min(190, p.x - drag.from.x));
@@ -561,14 +709,6 @@
         plaque.forEach((q) => !q.gone && ((q.gone = true), q.el.animate([{ opacity: 0.55 }, { opacity: 0 }], { duration: 600, fill: "forwards" })));
         plaqueGone();
       }
-      // E5b: an up or down stroke shows the brush tipped that way for the stroke
-      if (brushIn && (brushIn.up || brushIn.down) && dy) {
-        const tip = dy < 0 ? brushIn.up : brushIn.down;
-        if (tip) {
-          brushImg.setAttribute("href", url(tip));
-          ctx.after(520, () => brushImg.setAttribute("href", url(brushIn.src)));
-        }
-      }
       for (let k = 0; k < 3; k++) {
         const f = s("circle", { cx: M.x + dx * (30 + k * 25) + (ctx.rng() - 0.5) * 40, cy: M.y - 70 + dy * (20 + k * 18) + (ctx.rng() - 0.5) * 20, r: 9 + k * 3, fill: "#fff", opacity: 0.92 }, foam);
         ctx.after(1500, () => f.remove());
@@ -582,9 +722,9 @@
         if (cur() === c) close();
       });
     };
-    // CLN-103 (decision 72, s04-r2k2): the drill of before Sprint 2 is there for its whole step: it rests beside the
-    // tooth, its bur by the crown's lower right, until the finger takes it (its tip under the finger), and goes back
-    const DRILL_REST = { x: 548, y: 372 };
+    // CLN-103 (decision 72, s04-r2k2): the drill rests beside the tooth, its bur by the crown's lower right, until the
+    // finger takes it (its tip under the finger), and goes back
+    const DRILL_REST = { x: 548, y: TOOTH.y1 - 20 };
     const parkDrill = () => {
       const c = cur();
       if (!c || c.kind !== "drill" || st.over) return drillEl.setAttribute("opacity", 0);
@@ -599,7 +739,7 @@
       drillEl.setAttribute("y", p.y - tipY);
       drillEl.setAttribute("opacity", 1);
       if (!S.ready || st.busy) return;
-      const inTooth = p.x > 276 && p.x < 524 && p.y > 96 && p.y < 392;
+      const inTooth = p.x > TOOTH.x0 + 4 && p.x < TOOTH.x1 - 4 && p.y > TOOTH.y0 + 4 && p.y < TOOTH.y1;
       if (!inTooth) return;
       // cut away the decay under the tip
       if (!drag || !drag.last || Math.hypot(p.x - drag.last.x, p.y - drag.last.y) > 4) {
@@ -618,9 +758,10 @@
           });
           if (inPoly(p.x, p.y, pa.pts)) onDecay = true;
           // the last specks go by themselves once most of a patch is gone
-          if (pa.left.size && pa.left.size <= pa.samples.length * 0.12) {
-            pa.left.clear();
-            s("path", { d: pa.d, fill: "#000" }, mask);
+          if (pa.left.size && pa.left.size <= pa.samples.length * 0.12) pa.left.clear();
+          if (!pa.left.size && !pa.masked) {
+            pa.masked = true;
+            s("path", { d: pa.d, fill: "#000", stroke: "#000", "stroke-width": 10, "stroke-linejoin": "round" }, mask); // its drawn rim too (no hard edge left)
           }
         }
       });
@@ -629,6 +770,7 @@
       } else {
         // the white: a scuff, and the tooth chips if it goes on too long
         const key = `${Math.round(p.x / 12)},${Math.round(p.y / 12)}`;
+        if (!st.whiteSeen) st.whiteSeen = new Set();
         if (!st.whiteSeen.has(key)) {
           st.whiteSeen.add(key);
           st.white++;
@@ -643,9 +785,9 @@
             } catch (e) {
               /* no vibration */
             }
-            toothG.classList.remove("buzz");
-            void toothG.getBoundingClientRect();
-            toothG.classList.add("buzz");
+            face2.classList.remove("buzz");
+            void face2.getBoundingClientRect();
+            face2.classList.add("buzz");
           }
           if (st.white >= chipAt && !st.chipped) {
             st.chipped = true;
@@ -667,8 +809,13 @@
       }
     };
     let fillT = null;
+    const nozzleTo = (snap) => {
+      const p = filling(st.fill);
+      if (snap) return putNozzle(p.cx, p.cy);
+      putNozzle(NZ.x + (p.cx - NZ.x) * 0.25, NZ.y + (p.cy - NZ.y) * 0.25);
+    };
     const startFill = () => {
-      if (st.holding) return;
+      if (st.holding || st.smoothing) return;
       st.holding = true;
       S.did();
       pressBtn(true);
@@ -681,21 +828,52 @@
         t0 = now;
         setMarker(st.fill);
         drawPaste();
+        nozzleTo(false);
         if (st.fill >= FILL.max) return stopFill();
         fillT = root.requestAnimationFrame ? root.requestAnimationFrame(step) : setTimeout(step, 16);
       };
       step();
     };
+    /*
+     * CLN-184 (Zafar, 18 Oct; clinic decision 6: "it should let me get it wrong"): letting go past the green is too much:
+     * the gauge shows red, she says so, the filling smooths back down into the holes, and he fills again. The first go
+     * is the one scored (E14); the step closes when a go ends in the green. Below the green just pauses (press again).
+     */
     const stopFill = () => {
       if (!st.holding) return;
       st.holding = false;
       pressBtn(false);
       const c = cur();
       if (!c || c.kind !== "fill") return;
-      // below the green: nothing is judged yet; press again to add more (never stuck, E29)
       if (st.fill < zone[0]) return;
-      if (st.fill > zone[1]) S.say("tooth-toomuch", "patient");
-      else S.face("happy", 700);
+      const ok = st.fill <= zone[1];
+      if (!("fill-line" in st.judged)) judge("fill-line", ok, { filled: Math.round((100 * st.fill) / FILL.max) });
+      if (!ok) {
+        st.overs++;
+        ctx.log({ type: "extra", rowId: "fill-line", detail: "over" });
+        S.say("tooth-toomuch", "patient");
+        S.face("wince", 700);
+        st.smoothing = true;
+        const from = st.fill;
+        const t0 = Date.now();
+        const ms = fast() ? 120 : 900;
+        const back = () => {
+          if (st.gone) return;
+          const u = Math.min(1, (Date.now() - t0) / ms);
+          st.fill = from * (1 - (1 - Math.pow(1 - u, 3)));
+          setMarker(st.fill);
+          drawPaste();
+          nozzleTo(true);
+          if (u < 1) return root.requestAnimationFrame ? root.requestAnimationFrame(back) : setTimeout(back, 16);
+          st.fill = 0;
+          setMarker(0);
+          drawPaste();
+          st.smoothing = false;
+        };
+        ctx.after(fast() ? 60 : 650, back);
+        return;
+      }
+      S.face("happy", 700);
       st.busy = true;
       ctx.after(fast() ? 150 : 600, () => {
         st.busy = false;
@@ -724,12 +902,39 @@
         },
         zone,
         fillOk: () => st.fill >= zone[0] + (zone[1] - zone[0]) * 0.3,
-        state: () => ({ step: cur() && cur().id, fill: st.fill, white: st.white, chipped: st.chipped, left: drillPatches.map((p) => p.left.size) }),
+        overOk: () => st.fill > zone[1] + 0.06,
+        state: () => ({ step: cur() && cur().id, fill: st.fill, white: st.white, chipped: st.chipped, left: drillPatches.map((p) => p.left.size), view: st.view, moving: !!st.moving, overs: st.overs, smoothing: !!st.smoothing, judged: Object.assign({}, st.judged) }),
+        /** TEST HOOK (CLN-163, CLN-181, CLN-182; read-only): client px boxes of the sore tooth, each decay patch, the gauge's face, the button and the nozzle's tip */
+        layout() {
+          const box = (el) => {
+            const r = el.getBoundingClientRect();
+            return { left: r.left, top: r.top, width: r.width, height: r.height, cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
+          };
+          const a = S.client(...Object.values(fromD(TOOTH.x0, TOOTH.y0)));
+          const b = S.client(...Object.values(fromD(TOOTH.x1, TOOTH.y1)));
+          const tip = S.client(...Object.values(fromD(NZ.x, NZ.y)));
+          return {
+            tooth: { left: a.x, top: a.y, width: b.x - a.x, height: b.y - a.y },
+            patches: drillPatches.map((p) => {
+              const q = S.client(...Object.values(fromD(p.cx, p.cy)));
+              return { cx: q.x, cy: q.y, r: p.r / KD / S.unit() };
+            }),
+            gauge: box(gaugeG.querySelector("rect:nth-of-type(2)")),
+            button: box(btnUp),
+            nozzleTip: tip,
+            stage: box(S.svg),
+            view: st.view,
+          };
+        },
         next() {
           if (!S.ready) return { do: "wait" };
           const c = cur();
-          if (st.over || !c || st.busy) return { do: "wait" };
+          if (st.over || !c || st.busy || st.smoothing) return { do: "wait" };
           const cl = (x, y) => S.client(x, y);
+          const clD = (x, y) => {
+            const q = fromD(x, y);
+            return S.client(q.x, q.y);
+          };
           if (c.kind === "brush") {
             const [dx, dy] = SCREEN[c.move];
             const a = cl(M.x, M.y - 40);
@@ -737,7 +942,6 @@
             return { do: "drag", pts: [[a.x, a.y], [b.x, b.y]], what: c.move };
           }
           if (c.kind === "drill") {
-            // a careful path: over the decay points still left, patch by patch
             // one patch per stroke (lifting between them: no white drilled), row by row, back and forth
             const pa = c.patches.find((q) => q.left.size);
             if (!pa) return { do: "wait" };
@@ -747,12 +951,22 @@
             Object.keys(rows)
               .map(Number)
               .sort((a, b) => a - b)
-              .forEach((y, k) => (k % 2 ? rows[y].sort((a, b) => b - a) : rows[y].sort((a, b) => a - b)).forEach((x) => pts.push(cl(x, y))));
+              .forEach((y, k) => (k % 2 ? rows[y].sort((a, b) => b - a) : rows[y].sort((a, b) => a - b)).forEach((x) => pts.push(clD(x, y))));
             const path = pts.slice(0, 60).map((q) => [q.x, q.y]);
             return path.length ? { do: "drag", pts: [path[0]].concat(path), steps: 2, what: "drill" } : { do: "wait" };
           }
-          const t = cl(BTN.x, BTN.y - 10);
+          const t = clD(BTN.x, BTN.y);
           return { do: "hold", x: t.x, y: t.y, until: "__heal.run.controller.debug.fillOk()", what: "fill" };
+        },
+        /** the overfill (CLN-184's probe): hold past the green */
+        over() {
+          const c = cur();
+          if (!S.ready || !c || c.kind !== "fill" || st.busy || st.smoothing || st.holding) return null;
+          const t = (() => {
+            const q = fromD(BTN.x, BTN.y);
+            return S.client(q.x, q.y);
+          })();
+          return { do: "hold", x: t.x, y: t.y, until: "__heal.run.controller.debug.overOk()", what: "over" };
         },
         slip() {
           // brush the first move the wrong way
