@@ -41,11 +41,11 @@
   // Zafar's heal ladder (13 Oct): all new things by L2, L3 heard only (the closed card), harder variety from L4: the
   // four-picture row (L3's until now) is L4's
   // CLN-188 (clinic decision 8; Zafar, 18 Oct: "one, two, then three, then four"; the layout research, 19 Oct): ONE
-  // chart at every level, rows 1-2-3-4 (Snellen's top four), and the level chooses how many rows are read (read: L1 the
-  // first two, L2-L3 three, L4 all four). CLN-187 (clinic decision 8; Zafar, 18 Oct: "by level 2, start picking drops.
+  // chart at every level, rows 1-2-3-4 (Snellen's top four), and the level chooses how many rows are read (read: L1-L3 the
+  // first three, L4 all four; L1 is not two rows: with two a blind player wins 10.4%, over the leak test's 10%). CLN-187 (clinic decision 8; Zafar, 18 Oct: "by level 2, start picking drops.
   // A certain number of drops in the left eye and a certain number of drops in the right eye"): from bothFrom a count
   // for each eye
-  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, per: [1, 2, 3, 4], read: { 1: 2, 2: 3, 3: 3, 4: 4 }, bothFrom: 2, wrongP: 0.45 };
+  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, per: [1, 2, 3, 4], read: { 1: 3, 2: 3, 3: 3, 4: 4 }, bothFrom: 2, wrongP: 0.45 };
   // the chart's rows as shares of the board's white face (H its height, W its width; research-layout-2026-10-19 task 2):
   // each row 0.8x the one above (the logMAR step), its middle at y, the pictures 1.5 of their size apart, centred
   const ROWS = { size: [0.2, 0.16, 0.128, 0.102], y: [0.19, 0.45, 0.66, 0.82], pitch: 1.5, tick: 0.955 };

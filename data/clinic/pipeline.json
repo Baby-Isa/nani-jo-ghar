@@ -35,8 +35,6 @@
 
   "ailments": {
     "_about": "P3/P4: part -> game -> the prescription. `items` is the heal tray in the game's own ids and order (what the host would default to); `ask` is what the belt asks for, in priority order (level 1 asks the first one; the rest the doctor already has on the counter). `from` = the lowest diagnosis level it's drawn at. `say` = the doctor naming it.",
-    "scrape": { "game": "cut", "part": "knee", "parts": ["knee", "hand", "arm", "leg", "elbow"], "from": 1, "items": ["paani", "cloth", "plaster"], "ask": ["plaster", "cloth", "paani"], "say": { "english": "A scrape." } },
-    "cut": { "game": "cut", "part": "arm", "parts": ["arm", "hand", "leg"], "from": 2, "items": ["paani", "thread", "plaster"], "ask": ["thread", "plaster", "paani"], "say": { "english": "A cut." } },
     "knee-bump": { "game": "knee", "part": "knee", "parts": ["knee"], "from": 1, "items": ["hammer", "bandage"], "ask": ["bandage", "hammer"], "say": { "english": "A bump." } },
     "leg-break": { "game": "knee", "part": "leg", "parts": ["leg"], "from": 2, "items": ["hammer", "bandage"], "ask": ["bandage", "hammer"], "say": { "english": "A break. Clonk!" } },
     "seed-in-ear": { "game": "ear", "part": "ear", "parts": ["ear"], "from": 1, "items": ["tweezers", "cotton-bud", "drops"], "ask": ["tweezers", "drops", "cotton-bud"], "say": { "english": "Something in the ear!" } },
@@ -195,13 +193,19 @@
   },
 
   "days": {
-    "_about": "P8: a clinic morning. `mix` is one entry per session (the last repeats): how many patients, each stage's level, and the healing games to draw from (set 1, then set 2), never the same game twice in a morning. Session 1 is the tiny first-ever session (UX 7): one patient, a bench of two, D1, one item on a slow belt, H2 (the scrape), E1. Each later session adds one thing per stage. After a morning, a stage whose rows were all right goes up a level (max 3), per stage.",
+    "_about": "P8: a clinic morning. `mix` is one entry per session (the last repeats): how many patients, each stage's level, and the healing games to draw from (set 1, then set 2), never the same game twice in a morning. Session 1 is the tiny first-ever session (UX 7): one patient, a bench of two, D1, one item on a slow belt, the knee (H2, the scrape, until it was parked: CLN-172, Zafar 19 Oct), E1. Each later session adds one thing per stage. After a morning, a stage whose rows were all right goes up a level (max 3), per stage.",
     "mix": [
-      { "patients": 1, "first": true, "levels": { "waiting": 1, "diagnosis": 1, "pharmacy": 1, "heal": 1, "sendoff": 1 }, "variants": { "waiting": "W1", "diagnosis": "D1", "sendoff": "E1" }, "ailments": ["scrape"] },
-      { "patients": 2, "levels": { "waiting": 1, "diagnosis": 1, "pharmacy": 1, "heal": 1, "sendoff": 1 }, "variants": { "diagnosis": "D2" }, "asks": 2, "bench": 3, "ailments": ["knee-bump", "scrape"] },
-      { "patients": 3, "games": ["cut", "knee", "ear", "taste", "fever"] },
-      { "patients": 3, "games": ["cut", "knee", "ear", "taste", "fever", "tooth", "boing", "eye", "foot"] }
+      { "patients": 1, "first": true, "levels": { "waiting": 1, "diagnosis": 1, "pharmacy": 1, "heal": 1, "sendoff": 1 }, "variants": { "waiting": "W1", "diagnosis": "D1", "sendoff": "E1" }, "ailments": ["knee-bump"] },
+      { "patients": 2, "levels": { "waiting": 1, "diagnosis": 1, "pharmacy": 1, "heal": 1, "sendoff": 1 }, "variants": { "diagnosis": "D2" }, "asks": 2, "bench": 3, "ailments": ["knee-bump", "seed-in-ear"] },
+      { "patients": 3, "games": ["knee", "ear", "taste", "fever"] },
+      { "patients": 3, "games": ["knee", "ear", "taste", "fever", "tooth", "boing", "eye", "foot"] }
     ]
+  },
+
+  "parked": {
+    "_about": "CLN-172 (Zafar, 19 Oct: the scrape is parked, \"we have enough clinic modes\"): ailments no morning draws, kept as they were so the game can come back (js/clinic/heal/games/cut.js stays, on the heal-host lab page, as hic, tummy and hair: data/clinic/pipeline.json ailments never name them). Both of these were the scrape game's (cut).",
+    "scrape": { "game": "cut", "part": "knee", "parts": ["knee", "hand", "arm", "leg", "elbow"], "from": 1, "items": ["paani", "cloth", "plaster"], "ask": ["plaster", "cloth", "paani"], "say": { "english": "A scrape." } },
+    "cut": { "game": "cut", "part": "arm", "parts": ["arm", "hand", "leg"], "from": 2, "items": ["paani", "thread", "plaster"], "ask": ["thread", "plaster", "paani"], "say": { "english": "A cut." } }
   },
 
   "bot": {

@@ -267,7 +267,8 @@
       const [sw, sh] = clean.swab; // its half length and half height (shares)
       const g = s("g", { transform: `rotate(110) translate(${(-tx * bw * k).toFixed(1)} ${(-ty * bh * k).toFixed(1)})` }, budG);
       s("image", { href: url(clean.src), x: 0, y: 0, width: bw * k, height: bh * k }, g);
-      budTip = s("ellipse", { cx: (tx * bw * k).toFixed(1), cy: (ty * bh * k).toFixed(1), rx: (sw * bw * k * 0.92).toFixed(1), ry: (sh * bh * k * 0.86).toFixed(1), fill: "none", opacity: 0, style: "mix-blend-mode:multiply" }, g);
+      budTip = s("ellipse", { cx: (tx * bw * k).toFixed(1), cy: (ty * bh * k).toFixed(1), rx: (sw * bw * k * 0.92).toFixed(1), ry: (sh * bh * k * 0.86).toFixed(1), fill: "none", opacity: 0 }, g);
+      budTip.style.mixBlendMode = "multiply"; // the colour soaks into the cotton
     } else if (budArt && budArt.size) {
       // A2 (5 Oct): O3's bud is a horizontal picture, the ointment on its right-hand swab: that swab's centre on
       // the dab point, the stick up and a little to the right
