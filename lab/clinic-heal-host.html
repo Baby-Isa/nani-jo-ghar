@@ -71,6 +71,7 @@
 <script>
 (async function () {
   const Q = new URLSearchParams(location.search);
+  if (Q.get("debug") === "1") document.documentElement.dataset.labDebug = "1"; // CLN-159: the log at bottom left shows only with ?debug=1 (it is still written, so probes can read it)
   const Kit = Clinic.Kit;
   Kit.root = "../";
   Kit.Voice.quiet = Q.get("quiet") === "1";

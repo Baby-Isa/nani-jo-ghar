@@ -1,0 +1,6 @@
+{
+ "_about": "EC1 (s08b): the optician wall with the blank eye-test board, a plain picture (no alpha). board = the white board face in source px of the 1024x1536 picture [x0, y0, x1, y1], measured (about 5 px); the game places its own item pictures on it in rows 1-2-3-4",
+ "file": "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
+ "size": [1024, 1536],
+ "board": [178, 186, 851, 1199]
+}
