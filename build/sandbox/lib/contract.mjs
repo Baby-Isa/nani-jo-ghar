@@ -872,10 +872,13 @@ function check26(tl, v, add, root, lex) {
   }
   if (!pops.length) return;
   const fam = fileWords(root);
+  const stops = tl.filter((e) => e.type === "voice-stop").map((e) => e.t);
   const seen = new Set();
   for (const p of pops) {
     for (const l of v.lines) {
       if (!(l.text || "").trim() || !isCookLine(l) || l.t0 < p.t0 - 100 || (p.t1 != null && l.t0 > p.t1)) continue;
+      // a tap through the pop-up (or any stop the game made) ends the read-out: what it had not said yet was cut on purpose
+      if (stops.some((t) => t > l.t0 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
       const heard = new Set();
       const lineWords = new Set(normW(l.text).split(" "));
       let respelled = 0; // device-voice pieces that say a word by its respelling (the lexicon's say: "ba" is "ber")
