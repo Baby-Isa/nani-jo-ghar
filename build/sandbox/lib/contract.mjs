@@ -50,7 +50,7 @@ import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
 
 export const CHECKS = {
-  "contract-19": { item: "counting", title: "the counting rule", how: "From level 3, on a page whose profile has heard the words (variant p-seen), no order-card row (the side sample's words) holds a Kutchi number word (the lexicon's Num entries); from level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number." },
+  "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
   "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): a to-record placeholder passes until launch (Zafar, 14 Oct) and is a break on the store build (--store); every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
   "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s of the child's time is a break (PAN-16; Cook's test speed shortens the game's waits, so 10 s / speed in the run, and a help line's, role howto, 10 s of the clock) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap); item words (contract-23) and counts (laps, countdowns, number words) are not judged here. On a #speed1 flow (a child's pace, where clip timing is real) a clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up), by another line's clip starting over it, is a break (PAN-04)." },
@@ -58,6 +58,11 @@ export const CHECKS = {
   "contract-24": { item: "help-ladder", title: "no help before the idle time", how: "Nani's help and the glow come only after the child has done nothing for the ladder's time by level (7, 8, 11, 15 s: data/cook.json calm.helpMs), counted from the LAST action (a real tap, the stage or the step opening). Three things are measured on every path but #mistake: the game's own help log (Lifecycle help, idle), a step line (role howto) said, and a picture's glow switching on (the sampler's hl). One earlier than the table is a break (SH-60, SH-95)." },
   "contract-25": { item: "bulb-pulse", title: "the bulbs pulse when stuck", how: "The bulbs' pulse (Lifecycle bulb-pulse, js/shared/guide.js pulseBulbs) may not start before 15 s of no action; any stretch of no action of 21 s or more inside a play stage must have had the pulse start (SH-96: both light bulbs pulse after 15-20 s stuck)." },
   "contract-26": { item: "opening", title: "the opening line is heard whole", how: "Every Cook line said while the request pop-up is up: each of its words that is in the lexicon must have a sound, a family clip of that word or the device voice saying it (the sound log); a word that made no sound (the device voice's text thrown away by a cancel, no stand-in at all) is a break (LNG-16: \"I didn't hear the muke\")." },
+  "contract-27": { item: "peek-whole", title: "the peek shows every word", how: "The side sample's peek (a card with the class peek: a tap on its small bulb opened it) and its dots (.dots, the dotted word '•••' of Lang.html's hide): any dotted word in a peeking card is a break (SH-98, Zafar, 17 Oct: 'certain words are hidden, which is pointless'). Numbers: contract-30." },
+  "contract-28": { item: "one-bulb", title: "one bulb picture", how: "The bulbs sample (every shown .oc-look.bulb, .ng-bulb, .cl-bulb or #btn-bulb and the file it is drawn with: an <img>, a CSS background, or the flat inline svg): any bulb not drawn with assets/ui/results/icon-bulb.webp (the photo Nani's box uses) is a break, on Cook and the clinic alike (SH-100, Zafar, 17 Oct: 'let's make them all photorealistic')." },
+  "contract-29": { item: "peek-time", title: "the peek lasts the level's time", how: "Each peek (the side sample's peek count from 0 to some and back) on a page whose card count and stage did not change: it must last the level's time from data (data/cook.json calm.peekMs, the clinic's Kit.PEEK_MS: 7 s at level 3, the same 3.5 s added to the others), judged as a child's time (Cook's test speed 3 shortens it; the clinic's is real time); under that less 450 ms is a break (SH-101)." },
+  "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171)." },
+  "contract-31": { item: "free-replay", title: "a replay is free and says what is left", how: "A help Cook counts (the hint sample: Cook.onHelp's kind) of kind replay is a break (SH-102: only seeing it written costs); and after a tap on a face (the card's replay) with rows already ticked (the rows sample), no line said in the next 7 s may be a ticked row's words (SH-114: a replay reads out the remaining steps)." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
   "contract-18": { item: "card-rows", title: "card rows tick when their step closes", how: "Every rows sample (lib/contract-hook.mjs: each sidebar card row with its key, words and tick) against the shared lifecycle's step-close log (Lifecycle.note: the order card's tick path and the heal host, at their own millisecond, with the step's key): a row that turns ticked with no step-close for its key (any step-close for a row with no key) in the 1.1 s before is a break; a row whose words change while it stays in the same stage (not to or from a row with no letters, not under the bulb's English) is a break." },
   "contract-21": { item: "input-live", title: "input is live while a line plays", how: "Every real tap (trusted pointerdown) in the play area (not the sidebar, the pop-up or a ✓/Next button) while a line is being said (a clip of it sounding, or the line between its start and end in the sound log) and the game expected a tap, a pick or a drag: the shared lifecycle must log an act (Lifecycle.note from js/shared/host.js onAct, the heal host's input and Cook's play area: its canvas and its own controls, js/cook/flow.js) within 150 ms. None is a break (E5: input never waits for the voice)." },
@@ -605,10 +610,6 @@ function check19(r, tl, segs, v, nums, add) {
   const level = levelOf(r.flow || "");
   const split = (s) => String(s || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
   const seen = new Set();
-  if (level >= 3 && /seen/.test(r.variant || "")) for (const e of tl) {
-    if (e.type !== "c" || e.k !== "side") continue;
-    for (const w of e.words || []) if (split(w).some((x) => nums.has(x)) && !seen.has(w)) { seen.add(w); add("contract-19", e.t, `"${w}" writes a number on the card at L${level}`); }
-  }
   if (level >= 2) {
     // the request pop-up reads the order out (a phase's own pop-up mid-stage: the daar stir's "Muke daar khape, ba."):
     // a number said while it is up is the order, heard, never counting along
@@ -912,6 +913,110 @@ function check17(r, tl, add) {
   if (!r.store || !r.sound) return;
   for (const p of r.sound.plays || []) if (p.kind !== "family-ok") add("contract-17", r.t0 || (tl[0] && tl[0].t) || 0, `${p.kind}: ${p.file || p.text || "?"}${p.n > 1 ? ` x${p.n}` : ""}`);
 }
+// ---- s08 wave 1B: the card and what is said (SH-98 to SH-103, SH-107, SAM-23, CLN-160, CLN-161, CLN-169, CLN-171) ----
+// the peek's time by level, from data (data/cook.json calm.peekMs; the clinic's Kit.PEEK_MS): 7 s at level 3 (double the old 3.5 s,
+// SH-101) and the same 3.5 s added to the others, so 7 s at every level
+export const PEEK_MS = { 1: 7000, 2: 7000, 3: 7000, 4: 7000 };
+const wordsOf = (s) => String(s || "").toLowerCase().normalize("NFC").match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}'’]*/gu) || [];
+// 27 (SH-98): the small bulb's peek shows every word in Kutchi: never a dotted one
+function check27(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "side" || !(e.peek > 0) || !(e.dots > 0)) continue;
+    const k = (e.words || []).join("|");
+    if (seen.has(k)) continue;
+    seen.add(k);
+    add("contract-27", e.t, `a peeking card shows ${e.dots} dotted word${e.dots > 1 ? "s" : ""} (•••): the peek shows every word in Kutchi${(e.words || []).length ? ` ("${e.words.join(" / ")}")` : ""}`);
+  }
+}
+// 28 (SH-100): one bulb picture everywhere: the photo (assets/ui/results/icon-bulb.webp), never the flat drawing
+function check28(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "bulbs") continue;
+    for (const b of e.list || []) {
+      const ok = (b.kind === "img" || b.kind === "bg") && /^icon-bulb\.webp$/.test(b.file || "");
+      const k = `${b.sel}|${b.kind}|${b.file}`;
+      if (ok || seen.has(k)) continue;
+      seen.add(k);
+      add("contract-28", e.t, `${b.sel} is drawn ${b.kind === "svg" ? "as the flat inline drawing" : `with ${b.file || b.kind}`}, not the photo icon-bulb.webp (one bulb picture everywhere)`);
+    }
+  }
+}
+// 29 (SH-101): a peek lasts the level's time (data), not less: judged as a child's time (Cook's test speed shortens it; the clinic's peek is real time)
+function check29(r, tl, segs, add) {
+  const level = levelOf(r.flow || "");
+  const speed = /^clinic:/.test(r.flow || "") ? 1 : +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3);
+  const want = (PEEK_MS[level] || PEEK_MS[3]) / speed;
+  let open = null;
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "side") continue;
+    if (e.peek > 0 && !open) open = { t0: e.t, n: e.n, seg: segAt(segs, e.t) };
+    else if (!(e.peek > 0) && open) {
+      const o = open;
+      open = null;
+      // a card that went away or a stage that ended closes the peek on purpose
+      if (e.n !== o.n || segAt(segs, e.t) !== o.seg) continue;
+      const took = e.t - o.t0;
+      if (took < want - 450) add("contract-29", o.t0, `a peek lasted ${Math.round(took)} ms; level ${level} gives ${Math.round(want)} ms${speed > 1 ? ` (${PEEK_MS[level] || PEEK_MS[3]} ms at the test speed ${speed})` : ""}`);
+    }
+  }
+}
+// 30 (SH-99): every number said in an order or a step is written on the card, at every level and in every round (a taught one too);
+// a line's English placeholder ([red]: a colour or item with no Kutchi yet) is written there too
+const WRITTEN_SKIP = new Set(["item", "laps", "countdown"]);
+function check30(r, tl, segs, v, nums, add) {
+  if (!nums || !nums.size) return;
+  const cards = tl.filter((e) => e.type === "c" && e.k === "card" && (e.words || []).length).map((e) => ({ t: e.t, words: wordsOf((e.words || []).join(" ")) }));
+  if (!cards.length) return;
+  const seen = new Set();
+  for (const l of v.lines) {
+    const text = String(l.text || "").trim();
+    if (!text || WRITTEN_SKIP.has(l.role) || isCountLine(l, nums)) continue;
+    // the stage it was said in (the request pop-up reads the order out before the station's own stage starts: the first stage's)
+    const s = segAt(segs, l.t0) || segs[0] || { key: "page", t0: -Infinity, t1: null };
+    if (/cook:between|cook:closing/.test(s.key)) continue;
+    // the cards of that stage: from a little before it (the card opens with the request) to its end, whenever they were drawn
+    const mine = cards.filter((c) => c.t >= s.t0 - 10000 && (s.t1 == null || c.t <= s.t1));
+    if (!mine.length) continue;
+    const written = new Set(mine.flatMap((c) => c.words));
+    const said = wordsOf(text.replace(/\[[^\]]*\]/g, " "));
+    for (const w of said) {
+      if (!nums.has(w) || written.has(w) || seen.has(`${s.key}|${w}`)) continue;
+      seen.add(`${s.key}|${w}`);
+      add("contract-30", l.t0, `${s.key}: "${text}" says ${w}, which no card written in this stage holds (every number said is written)`);
+    }
+    for (const m of text.matchAll(/\[([^\]]+)\]/g)) {
+      const missing = wordsOf(m[1]).filter((w) => !written.has(w));
+      if (!missing.length || seen.has(`${s.key}|[${m[1]}`)) continue;
+      seen.add(`${s.key}|[${m[1]}`);
+      add("contract-30", l.t0, `${s.key}: "${text}" says [${m[1]}], which no card written in this stage holds`);
+    }
+  }
+}
+// 31 (SH-102, SH-114): a replay (the speaker, a tap on a face) is free and says only the steps not yet done
+const REPLAY_WINDOW = 7000;
+function check31(tl, v, add) {
+  const seen = new Set();
+  for (const e of tl) if (e.type === "c" && e.k === "hint" && /^(replay|say|hear)$/.test(e.kind || "") && !seen.has(`h${e.t}`)) {
+    seen.add(`h${e.t}`);
+    add("contract-31", e.t, `a replay was counted as a hint (${e.kind}${e.ids ? `: ${[].concat(e.ids).join(", ")}` : ""})`);
+  }
+  // a tap on a face (the card's replay) with some steps already ticked: what it says must be the steps left
+  const rows = tl.filter((e) => e.type === "c" && e.k === "rows");
+  const norm = (s) => wordsOf(s).join(" ");
+  for (const i of tl) {
+    if (i.type !== "c" || i.k !== "input" || !/\b(oc-face|face-say|cl-card-face|ng-face)\b/.test(i.on || "")) continue;
+    const before = rows.filter((x) => x.t <= i.t).pop();
+    const done = new Set(((before && before.list) || []).filter((x) => x.done && norm(x.text)).map((x) => norm(x.text)));
+    if (!done.size) continue;
+    for (const l of v.lines) {
+      if (l.t0 < i.t || l.t0 > i.t + REPLAY_WINDOW || !norm(l.text) || !done.has(norm(l.text)) || seen.has(`${i.t}|${l.id}`)) continue;
+      seen.add(`${i.t}|${l.id}`);
+      add("contract-31", l.t0, `a replay said "${l.text}", a step already ticked (a replay says only what is left)`);
+    }
+  }
+}
 export function loadRetired(root) {
   const p = join(root, "build", "sandbox", "data", "retired-art.json");
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")).list : [];
@@ -958,6 +1063,11 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check26(tl, v, add, root, lexicon || lexiconFor(root));
   check16(tl, lexicon || lexiconFor(root), add, !!r.store);
   check19(r, tl, segs, v, numbers || numbersFor(root), add);
+  check27(tl, add);
+  check28(tl, add);
+  check29(r, tl, segs, add);
+  check30(r, tl, segs, v, numbers || numbersFor(root), add);
+  check31(tl, v, add);
   return out;
 }
 
