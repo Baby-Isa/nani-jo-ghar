@@ -22,6 +22,7 @@
  */
 (function (root) {
   "use strict";
+  let eyeUid = 0; // s08-w6c: ids for the wall picture's fade mask
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
@@ -392,7 +393,19 @@
         const wb = WALL.box;
         s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: WALL.fill || "#a9b4b8" }, testG);
         s("rect", { x: SPLIT + 14, y: wb[1] + wb[3] - 2, width: 1000, height: 700, fill: WALL.floor || "#c3b6a6" }, testG);
-        s("image", { href: url(WALL.src), x: wb[0], y: wb[1], width: wb[2], height: wb[3], preserveAspectRatio: "none" }, testG);
+        // s08-w6c (CLN-188): the picture's sides fade into the wall's colour round it (its lit left edge left a seam)
+        const fadeId = `eye-wallfade-${(eyeUid = (eyeUid || 0) + 1)}`;
+        const gr = s("linearGradient", { id: `${fadeId}-g`, x1: 0, x2: 1, y1: 0, y2: 0 }, testG);
+        [[0, 0], [0.12, 1], [0.88, 1], [1, 0]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#fff", "stop-opacity": a }, gr));
+        const mk = s("mask", { id: fadeId, maskUnits: "userSpaceOnUse", x: wb[0], y: wb[1], width: wb[2], height: wb[3] }, testG);
+        s("rect", { x: wb[0], y: wb[1], width: wb[2], height: wb[3], fill: `url(#${fadeId}-g)` }, mk);
+        // and its top (the ceiling light's bright band) into the wall above it on a tall screen
+        const gv = s("linearGradient", { id: `${fadeId}-v`, x1: 0, x2: 0, y1: 0, y2: 1 }, testG);
+        [[0, 0], [0.1, 1], [1, 1]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#fff", "stop-opacity": a }, gv));
+        const mv = s("mask", { id: `${fadeId}-m`, maskUnits: "userSpaceOnUse", x: wb[0], y: wb[1], width: wb[2], height: wb[3] }, testG);
+        s("rect", { x: wb[0], y: wb[1], width: wb[2], height: wb[3], fill: `url(#${fadeId}-v)` }, mv);
+        const wallG = s("g", { mask: `url(#${fadeId}-m)` }, testG);
+        s("image", { href: url(WALL.src), x: wb[0], y: wb[1], width: wb[2], height: wb[3], preserveAspectRatio: "none", mask: `url(#${fadeId})` }, wallG);
         const bd = WALL.board;
         CH = { x: wb[0] + bd[0] * wb[2], y: wb[1] + bd[1] * wb[3], w: (bd[2] - bd[0]) * wb[2], h: (bd[3] - bd[1]) * wb[3] };
       } else {

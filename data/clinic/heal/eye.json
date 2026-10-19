@@ -375,14 +375,14 @@
    "src": "assets/clinic/closeups/{kind}/eyetest-a-v2.webp",
    "ready": true,
    "box": [
-    20,
-    0,
-    230,
-    500
+    -30,
+    -75,
+    290,
+    650
    ],
    "eye": [
-    96,
-    214
+    63,
+    203
    ],
    "kinds": [
     "girl"
@@ -395,7 +395,7 @@
     194
    ],
    "_s02": "S02-E (RT1, the redo): the open eye looks a little to our right, past us at the chart, as drawn (v1 was mirrored for its gaze; v2 isn't): her open eye (390, 657 in the 1024 x 1536 source) at the box's slice scale 0.383",
-   "_s08w6c": "CLN-188: 230 wide at x 20 (was 392 at 0), slice-fitted (scale 0.3255, 51 cropped each side); eye = her open eye there (source 390, 657)"
+   "_s08w6c": "CLN-188: 290 x 650 at (-30, -75), slice-fitted (scale 0.4232), the tallest close-up (4:3: y -70 to 570) covered, so her picture fills her narrower panel to its edges on every screen (no strip of the panel's ground round it); eye = her open eye there (source 390, 657)"
   },
   "testB": {
    "src": "assets/clinic/closeups/{kind}/eyetest-b.webp",

@@ -204,7 +204,8 @@
       // (13i); the W3 variant is the child's own call, so he stays quiet there
       if (plan.variant !== "W3" && doc && doc.isConnected) {
         S.pose(doc, "front");
-        plan.card.forEach((r) => S.say(r, "doctor"));
+        // from level 3 the call is heard, not read (the closed card): no bubble writes it then
+        plan.card.forEach((r) => S.say(r, "doctor", closed ? { noBubble: true } : {}));
       }
       let callIdx = 0;
       const rows = plan.rows;
