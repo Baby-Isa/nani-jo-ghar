@@ -53,7 +53,7 @@
  *     level,         // the play's level: from 3 the order is heard, never written; every big card drawn is closed (SH-72)
  *     closed,        // the same, whatever the level
  *   });            // -> {skipped}: resolves once the card is in the sidebar
- *   RequestPopup.isOpen()   RequestPopup.close()  (the open one folds now, as a tap would, without the voice stop)
+ *   RequestPopup.isOpen()   RequestPopup.serial() (the open one's number, 0 when none)   RequestPopup.close()  (the open one folds now, as a tap would, without the voice stop)
  *   RequestPopup.fly(cardEl, targetEl, {fast})   the fold animation alone (Promise)
  *
  *   The voice stop: one switch for every voice on the page (the clinic's Kit.Voice, Cook's player, the device voice).
@@ -144,6 +144,9 @@
   }
 
   let current = null;
+  // which opening of the pop-up this is (PAN-16: Cook's speech layer lets two people in ONE pop-up ask for the same thing,
+  // each in their own card, while the same line said again in a later pop-up is a repeat): RequestPopup.serial()
+  let serialN = 0;
   /**
    * No scroll inside the pop-up (non-negotiable 9, F7): a tall card on a short phone (tooth L3 at 800x360) shrinks as a
    * whole to the veil's height instead of scrolling; nothing is clipped.
@@ -183,6 +186,7 @@
 
   function open(opts = {}) {
     if (current) current.fold(false);
+    serialN++;
     const wait = opts.wait || ((ms) => sleep(ms));
     const fast = !!opts.fast;
     let veil;
@@ -259,6 +263,8 @@
     open,
     fly,
     isOpen: () => !!current,
+    /** the open pop-up's number (each opening a new one), or 0 when none is up */
+    serial: () => (current ? serialN : 0),
     close: () => current && current.fold(false),
   };
 

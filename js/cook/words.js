@@ -472,10 +472,85 @@
     }
   };
   let quietSince = 0; // when the queue last went quiet (an item's name waits a breath after a line, never in the gap between two)
+  /*
+   * PAN-16 / contract-22 (Zafar, 17 Oct: "she says everything twice"; "she should say it once ... unless I ... have a massive
+   * pause for 10 seconds"): ONE rule for every Cook line, here in the one speech queue. A line said is not said again within
+   * AGAIN_MS of the child's time (10 s; Cook's test speed shortens it as it shortens every wait; a how-to line's is the clock's,
+   * as the help's is) whoever asks for it: the order read in its pop-up and then by the station, a part of the order read again
+   * when it is revealed. It still shows; it is only not voiced (Lang.speak resolves false, Lifecycle say-skip). Said again:
+   *   - when the child asked (a tap on the sidebar, a pop-up or a button just before it, and the lines read on from that tap);
+   *   - by another person in the same pop-up (two people may ask for the same thing, each on their own card);
+   *   - a step's call (role call: the stepper keeps its own rule, maani's Firai on both turns, MAA-15), a word the child tapped
+   *     to hear (role hear), counts and item names (their own rules: COUNT_WAIT_MS, popWord);
+   *   - when it was cut before its end (a tap through, a stage end): it was never heard whole.
+   */
+  const AGAIN_MS = 10000;
+  const ASKED_MS = 700;
+  const FREE_ROLES = { call: 1, hear: 1, count: 1, laps: 1, countdown: 1, item: 1 };
+  const said = new Map(); // the line's words -> {t, popup}
+  const normLine = (t) => (String(t || "").toLowerCase().normalize("NFC").match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}'’-]*/gu) || []).join(" ");
+  let tapAt = -1e9;
+  let chain = { on: false, end: -1e9 };
+  try {
+    // the child's own asks: a real tap on the sidebar, a pop-up or a button (the speaker on a face, a card replayed, the bulb)
+    if (global.addEventListener)
+      global.addEventListener(
+        "pointerdown",
+        (ev) => {
+          const t = ev && ev.target;
+          const near = t && t.closest && t.closest("#side, #mission, #guide, #intro, .njg-rq-veil, button, [role=button], .wp-say, .oc-face, .ng-face");
+          const popup = global.RequestPopup && global.RequestPopup.isOpen && global.RequestPopup.isOpen();
+          if (ev.isTrusted !== false && (near || popup)) tapAt = Date.now();
+        },
+        true
+      );
+  } catch (e) {
+    /* no page (Node) */
+  }
+  const popupNow = () => {
+    try {
+      return (global.RequestPopup && global.RequestPopup.serial && global.RequestPopup.serial()) || 0;
+    } catch (e) {
+      return 0;
+    }
+  };
+  /** Was this line said a moment ago (so it is not said again now)? The reason it may be said, else "said". */
+  Lang.saidAgain = (line) => {
+    const role = line && line.role;
+    if (role && FREE_ROLES[role]) return null;
+    const k = normLine(Lang.plain(line));
+    if (!k) return null;
+    const now = Date.now();
+    const V = Cook.core && Cook.core.voice;
+    // the lines read on from a tap the child made (a replay's later parts): asked, as its first was
+    if (now - tapAt <= ASKED_MS) chain = { on: true, end: now };
+    else if (chain.on && !(V && V.busy("cook")) && now - chain.end > 600) chain = { on: false, end: -1e9 };
+    if (chain.on) {
+      chain.end = Math.max(chain.end, now);
+      return null;
+    }
+    const last = said.get(k);
+    if (!last) return null;
+    const win = Math.round(role === "howto" ? AGAIN_MS : AGAIN_MS / (Cook.speed || 1)); // (in whole ms: a harness at speed 1e6 has none)
+    if (now - last.t >= win) return null;
+    const pop = popupNow();
+    if (pop && last.popup === pop) return null;
+    return "said";
+  };
   Lang.speak = async (line, { over = false, kind = over ? "count" : "line" } = {}) => {
     if (!line) return false;
     const items = planOf(line);
     const V = Cook.core && Cook.core.voice;
+    let mine = null;
+    if (kind === "line") {
+      if (Lang.saidAgain(line)) {
+        note("say-skip", "said", Lang.plain(line));
+        return false;
+      }
+      const k = normLine(Lang.plain(line));
+      if (k && !(line.role && FREE_ROLES[line.role] && line.role !== "call")) said.set(k, (mine = { t: Date.now(), popup: popupNow() }));
+      if (mine) mine.k = k;
+    }
     // (the help ladder never says again what was said less than 10 s ago: js/shared/guide.js recentlySaid)
     if (kind === "line" && global.NaniGuide && global.NaniGuide.markSaid) global.NaniGuide.markSaid(Lang.plain(line));
     if (V) {
@@ -495,6 +570,9 @@
       const r = await V.say({ clipPlan: items }, o);
       if (started) note("say-end", turn, "");
       if (kind !== "item" && !V.busy("cook")) quietSince = Date.now();
+      // a line cut before its end (a tap through, a stage end) was never heard whole: it may be said again
+      if (mine && r && r.done === false && said.get(mine.k) === mine) said.delete(mine.k);
+      if (chain.on) chain.end = Date.now();
       return !(r && r.skipped);
     }
     // no core (it failed to load): the family clips in order
