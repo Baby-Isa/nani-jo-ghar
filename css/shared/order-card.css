@@ -94,6 +94,9 @@
 .oc-card .oc-headline.fit-wrap, .oc-card .oc-rec-line.fit-wrap { --fit-min: var(--njg-t4); }
 /* SH-107 (Zafar, 18 Oct): the order pop-up's headline only: wrap at full size first (two lines), shrink only if they don't fit (fit.js fit-head) */
 .oc-card .oc-headline.fit-head, .oc-card .oc-rec-line.fit-head { white-space: normal; }
+/* contract-33 (s08 w6a): the line box holds the font's whole height (Nunito's is about 1.36 em), so two lines at full size measure
+   two lines (at 1.25 the last line's glyph box hung 2 px below them, fit.js read three lines and shrank the headline to one) */
+.oc-card .oc-headline.fit-head, .oc-card .oc-rec-line.fit-head { line-height: 1.4; }
 /* a line still to record: its English placeholder, grey italic (G2), with the grown-ups' flag under it */
 .oc-card .oc-headline.rec { display: flex; flex-direction: column; align-items: flex-start; font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
 .oc-card .oc-headline.rec .oc-rec-line { max-width: 100%; }
