@@ -421,7 +421,7 @@
     if (h) {
       // a line still to record: its English, flagged "to record" under it
       // SH-107: the order pop-up's headline (a big card) wraps at full size first and shrinks only when two lines don't fit (fit.js fit-head)
-      const fh = opts.big ? " fit-head" : "";
+      const fh = opts.big ? " fit-head fit2" : ""; // (fit2: Cook's #intro .fit:not(.fit2) rule would hold it to one line)
       const t = h.rec ? el("div", "oc-headline rec", `<span class="oc-rec-line fit fit-wrap${fh}">${h.html}</span><small class="oc-rec">to record</small>`) : el("div", `oc-headline fit fit-wrap${fh}`, h.html);
       if (h.key != null && opts.onEl) opts.onEl(h.key, t);
       head.appendChild(t);

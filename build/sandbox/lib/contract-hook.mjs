@@ -622,7 +622,7 @@ export const CONTRACT_HOOK = `(() => {
   const heads = () => {
     const out = [];
     for (const h of document.querySelectorAll(".njg-rq-card .oc-headline, #intro .oc-headline")) {
-      if (!shown(h) || h.closest(".oc-closed-big")) continue;
+      if (!shown(h)) continue;
       const cs = getComputedStyle(h);
       const c = h.cloneNode(false);
       c.style.fontSize = "";

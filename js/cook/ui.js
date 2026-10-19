@@ -1067,7 +1067,8 @@
   // level table hangs the dotted L3 card on dotsOk: it says whether a card may show its well-known words as dots (an open card
   // may; the peek never does)
   let peekCard = false;
-  const dotsOk = () => !peekCard;
+  M.dotsHook = null; // wave 2A's level table: (mission) => false makes the open card at that level show no dotted words (the L3 card with some dotted is the other way round); null: as before
+  const dotsOk = () => !peekCard && (typeof M.dotsHook !== "function" || M.dotsHook(mission) !== false);
   const rowHide = (r) => (id) => dotsOk() && !r.done && !r.revealed && (r.dots || hideWord(id));
   // SH-101 (Zafar, 17 Oct): the peek lasts the level's time, from data (data/cook.json calm.peekMs: 7 s at level 3, the 3.5 s added to the others)
   const peekMsOf = () => {
@@ -1698,6 +1699,9 @@
         // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress
         // fold to face + headline too (a tap opens one; the face is still the replay)
         closed: phase || idle.has(c.key),
+        // D11 (as the clinic): Nani's English bulb opens a closed card for its time, so the English shows each kind and its parts (SAM-23:
+        // "three samosas" and its fillings under it); the small bulb's peek is the Kutchi (SH-98)
+        open: !!mission.english,
         onPeek: !big && phase && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
         peekMs: peekMsOf(),
         foldAfter: 700 / (Cook.speed || 1),

@@ -1117,7 +1117,8 @@
     btn.classList.add("cl-bulb");
     btn.type = "button";
     btn.setAttribute("aria-label", "Light bulb: show it in English for a moment");
-    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2z" fill="currentColor"/><rect x="9" y="19" width="6" height="2.4" rx="1" fill="currentColor"/></svg>';
+    // SH-100: the one bulb picture (assets/ui/results/icon-bulb.webp), as Nani's and the card's small bulb
+    btn.innerHTML = `<img src="${Kit.url("assets/ui/results/icon-bulb.webp")}" alt="" draggable="false">`;
     btn.addEventListener("click", this._h);
   };
   Kit.Bulb.prototype.use = function () {

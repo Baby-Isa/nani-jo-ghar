@@ -71,6 +71,10 @@ test("contract-29: a peek shorter than the level's time (7 s, as a child's time)
   assert.equal(of(run(page("cook:chai-tray@L3#hint#speed1", full)), "contract-29").length, 1);
   // the clinic's peek is real time whatever the test speed
   assert.equal(of(run(page("clinic:heal-ear@L3#hint", short)), "contract-29").length, 1);
+  // the light bulb pressed during the peek ends it on purpose (the clinic's bulb opens the card in English)
+  const bulb = clone(short);
+  bulb.push(C(T + 2100, "input", { x: 160, y: 30, on: "img", btn: "button.ng-bulb", popup: false, side: true, play: false, exp: {} }));
+  assert.equal(of(run(page("cook:chai-tray@L3#hint", sorted(bulb))), "contract-29").length, 0);
   // the card went away (the stage ended, a new order): not a short peek
   const gone = clone(short);
   gone[3].n = 2;
@@ -118,6 +122,15 @@ test("contract-31: a replay counted as a hint is a break; a replay that says a t
   // nothing ticked yet: a replay says it all
   const none = sorted([stage(T, "host:clinic/heal-ear"), rows([false, false]), face, line(1, T + 2100, "Wax", { who: "doctor" }), line(2, T + 3000, "Ba drops", { who: "doctor" })]);
   assert.equal(of(run(page("clinic:heal-ear@L3", none)), "contract-31").length, 0);
+});
+
+test("contract-22: 'Shabash!' said twice at the serve (the station's praise, then the serve's) is a break; said once passes (wave 1B)", () => {
+  const tl = sorted([stage(T, ST), line(1, T + 1000, "Shabash!"), lineEnd(1, T + 1500), stage(T + 1800, "cook:between1:marble"), line(2, T + 2300, "Aadu waari chai."), lineEnd(2, T + 2900), line(3, T + 3300, "Shabash!"), lineEnd(3, T + 3800)]);
+  const b = of(run(page("cook:chai-tray@L3", tl)), "contract-22");
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /cook:between1:marble: "Shabash!" said twice/);
+  const once = tl.filter((e) => !(e.type === "line" && e.id === 1) && !(e.type === "line-end" && e.id === 1));
+  assert.equal(of(run(page("cook:chai-tray@L3", once)), "contract-22").length, 0);
 });
 
 const review = (t, o) => C(t, "review", { bad: 0, ok: 4, badW: 300, okW: 300, l: 100, r: 700, ...o });

@@ -763,7 +763,8 @@ function check22(r, tl, segs, v, nums, add) {
     if (norm(a.text) !== norm(b.text) || !norm(a.text)) continue;
     if (askedAt(inputs, b.t0) || (norm(a.text).split(" ").length === 1 && inputs.some((x) => x.t <= b.t0 + 20 && b.t0 - x.t <= 400))) continue;
     const s = segAt(segs, b.t0), k = `${s && s.key}|${norm(a.text)}`;
-    if (!s || !isPlayStage(s.key)) continue; // (the pop-up's read-out before the station, the serve and the praise between stations are the order card's and the ending's, wave 1B)
+    // (the pop-up's read-out before the station is the order card's: two people may ask for the same thing, each in their own words; the serve and the praise between stations are judged too, wave 1B: "Shabash!" once)
+    if (!s || !(isPlayStage(s.key) || /cook:between|cook:closing/.test(s.key))) continue;
     if (seen.has(k)) continue;
     seen.add(k);
     add("contract-22", b.t0, `${s ? s.key : "?"}: "${b.text}" said twice, ${Math.round(b.t0 - a.t0)} ms apart (a line is said once; again only after ${SAID_AGAIN / 1000} s idle)`);
@@ -957,8 +958,9 @@ function check29(r, tl, segs, add) {
     else if (!(e.peek > 0) && open) {
       const o = open;
       open = null;
-      // a card that went away or a stage that ended closes the peek on purpose
+      // a card that went away, a stage that ended, or the light bulb pressed (the bulb opens the card in English and ends the look: SH-41) closes the peek on purpose
       if (e.n !== o.n || segAt(segs, e.t) !== o.seg) continue;
+      if (tl.some((x) => x.type === "c" && x.k === "input" && /bulb/.test(x.btn || x.on || "") && x.t >= o.t0 && x.t <= e.t + 250)) continue;
       const took = e.t - o.t0;
       if (took < want - 450) add("contract-29", o.t0, `a peek lasted ${Math.round(took)} ms; level ${level} gives ${Math.round(want)} ms${speed > 1 ? ` (${PEEK_MS[level] || PEEK_MS[3]} ms at the test speed ${speed})` : ""}`);
     }
