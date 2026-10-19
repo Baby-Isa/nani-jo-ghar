@@ -1289,21 +1289,11 @@
      ]
     },
     "speed": {
-     "byLevel": [
-      {
-       "pick": [
-        null
-       ]
-      },
-      {
-       "pick": [
-        null,
-        "slow",
-        "quick"
-       ]
-      }
+     "pick": [
+      "slow",
+      "quick"
      ],
-     "_about": "S02-B: no speed at level 1 (the stir mechanic asks none there), so the card never shows one it won't ask"
+     "_about": "Decision 13 (P51, DAAR-32; Zafar, 17 Oct: 'she should say the speed as well, so either jaldi or aste'): a speed at every level, L1 too, said in Nani's stir line and shown on the dial and the card (was S02-B: none at level 1, and none some rounds from level 2)"
     }
    },
    "say": [
@@ -2757,7 +2747,7 @@
   "stir": {
    "levels": [
     {
-     "speeds": false,
+     "speeds": true,
      "switch": null,
      "bands": [
       0.12,
@@ -4860,6 +4850,9 @@
      "files": [
       "assets/cook/items/chai-station/*",
       "assets/cook/items/v3/daar/*",
+      "assets/cook/items-s08b/daar-pot-top-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-plain-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/shelf-*",
       "assets/cook/items/tool-knife-t-v2.webp",
@@ -4889,17 +4882,15 @@
       "assets/cook/items/v3/daar/dial-spill.webp",
       "assets/cook/items/v3/daar/dial-stopped.webp",
       "assets/cook/items/v3/daar/ladle-v3.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-plain-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp",
+      "assets/cook/items-s08b/daar-pot-top-s08b.webp",
       "assets/cook/items/v3/daar/pot-chilli-only.webp",
       "assets/cook/items/v3/daar/pot-chilli.webp",
-      "assets/cook/items/v3/daar/pot-daar.webp",
-      "assets/cook/items/v3/daar/pot-empty.webp",
       "assets/cook/items/v3/daar/pot-oil.webp",
       "assets/cook/items/v3/daar/pot-onion-chilli.webp",
       "assets/cook/items/v3/daar/pot-onion.webp",
       "assets/cook/items/v3/daar/pot-seeds.webp",
-      "assets/cook/items/v3/daar/pot-stir.webp",
-      "assets/cook/items/v3/daar/pot-tadka-v2.webp",
-      "assets/cook/items/v3/daar/pot-tadka.webp",
       "assets/cook/items/v3/daar/pot-tomato-chilli.webp",
       "assets/cook/items/v3/daar/pot-tomato-only.webp",
       "assets/cook/items/v3/daar/pot-tomato.webp",

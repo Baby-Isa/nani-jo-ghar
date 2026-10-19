@@ -23,7 +23,10 @@
  * rows: daal). Daar's options (29 Sept, D1 / Q4; all default off, so chaat's chop is unchanged):
  * knifeKey (a texture: the kitchen kit's knife follows the finger instead of the hand, the no-hands
  * rule), onSlice({id, ok, x, y, key, scale}) (called on every slice: daar sends the pieces to the
- * side), tally (false: no picture tally, Q7), timer ({x, y, r, warn}: moves the countdown ring).
+ * side), tally (false: no picture tally, Q7), timer ({x, y, r, warn}: moves the countdown ring),
+ * onCall(ids, round) (called as each round is called, before she says it: daar's card shows those rows, DAAR-34).
+ * s08 w4A (DAAR-35, P55): the rounds run on without a gap (the next round's throws follow the last one's at the same
+ * spacing), and a slice counts for the round its thing was thrown in.
  * Knobs (data.mechanics.chop): phases (1 = all at once; 2+ = that many
  * rounds with a switch between them, at most one per vegetable), every
  * (seconds between throws), fasterPerStage / fasterMax (throws come this
@@ -58,7 +61,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, tally = true, timer = null }, k) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null }, k) {
       const S = z.S;
       const ctx = z.ctx;
       const want = {};
@@ -165,9 +168,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         for (let c = 0; c < cycles; c++) bag.push(...Cook.shuffle(kinds.slice()));
         const stage = Math.min(...tg.map((t) => Cook.wordStage(t)));
         const every = (k.every / slow) * (1 - Math.min(k.fasterMax, (stage - 1) * k.fasterPerStage));
-        return { i, targets: tg, kinds, bag, every, secs: bag.length * every + flight };
+        // DAAR-35 (P55, Zafar 17 Oct: "the items should just come continuously"): a round lasts its throws; the next one's
+        // throws follow straight on, at the same spacing, while the last round's are still in the air. Only the last round
+        // waits for the air to clear (its flight)
+        return { i, targets: tg, kinds, bag, every, secs: bag.length * every };
       });
-      const total = rounds.reduce((a, r) => a + r.secs, 0);
+      const total = rounds.reduce((a, r) => a + r.secs, 0) + flight;
+      // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
+      const throwNote = (r) => {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `every:${Math.round((r.every * 1000) / (Cook.speed || 1))}` });
+        } catch (e) {
+          /* only a log */
+        }
+      };
       let phase = null; // the round being thrown: {targets, kinds, bag, every, secs}
 
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
@@ -201,6 +215,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* ---------- throwing ---------- */
       const throwOne = () => {
         const pick = phase.bag.shift();
+        throwNote(phase);
         let key = texFor(pick);
         const v = (k.variants || {})[pick];
         if (v && phase.kinds.some((x) => (v.near || []).includes(x)) && Math.random() < v.chance) key = variantTex(pick, v.color);
@@ -261,12 +276,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const sliceIt = (img, ang) => {
         img.sliced = true;
         const id = img.wordId;
-        // what counts is what Nani is asking for now (after a switch, the last ones are decoys)
-        const ok = !!phase && phase.targets.includes(id);
+        // what counts is what Nani asked for in the wave it was thrown in (DAAR-35, P55: "if you miss something the first time
+        // you've got a bit more opportunity to cut item A"): one of the last wave's still in the air counts for it; a thing
+        // thrown after the switch is judged by the new order (the last ones are decoys then)
+        const own = img.phase || phase;
+        const ok = !!own && own.targets.includes(id);
         // the picture tally (top right): every slice you made, by kind; what you did, never the target
         sliced[id] = (sliced[id] || 0) + 1;
         if (tally) UI.count(sliced[id], { id, state: "whole", speak: ok });
-        if (onSlice) onSlice({ id, ok: !!phase && phase.targets.includes(id), x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
+        if (onSlice) onSlice({ id, ok, x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
         if (ok) {
           cut[id] = (cut[id] || 0) + 1;
           // DAAR-13, rule E11: at level 1 the row lights the moment the count is reached
@@ -334,7 +352,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const ok = sliceIt(img, Math.atan2(cur.y - prev.y, cur.x - prev.x));
             if (k.sharp && ok) {
               // the sharp knife also catches a second wanted one near the first
-              const near = flying.find((o) => o.active && !o.sliced && phase.targets.includes(o.wordId) && Phaser.Math.Distance.Between(o.x, o.y, cur.x, cur.y) < z.L(220));
+              const near = flying.find((o) => o.active && !o.sliced && (o.phase || phase).targets.includes(o.wordId) && Phaser.Math.Distance.Between(o.x, o.y, cur.x, cur.y) < z.L(220));
               if (near) sliceIt(near, Math.atan2(cur.y - prev.y, cur.x - prev.x));
             }
           });
@@ -405,18 +423,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // (DAAR-13: and well clear of the bottom edge's fade, where a swipe doesn't cut)
           return o.active && !o.sliced && p.y < Math.min(z.Y(760), o.y + clearOf(o) - FADE * 0.5) && p.y > z.Y(120) && Math.abs(p.vy) < z.L(700);
         };
-        const needs = (id) => phase && phase.targets.includes(id) && (cut[id] || 0) < want[id];
+        // (each thing is judged by its own wave's order, DAAR-35)
+        const ownOf = (o) => o.phase || phase;
+        const needs = (o) => !!ownOf(o) && ownOf(o).targets.includes(o.wordId) && (cut[o.wordId] || 0) < want[o.wordId];
         // nothing it shouldn't cut next to it (another wanted kind that still needs cutting is fine)
         const alone = (o) => {
           const p = at(o);
           return !flying.some((x) => {
-            if (x === o || !x.active || x.sliced || (x.wordId !== o.wordId && needs(x.wordId))) return false;
+            if (x === o || !x.active || x.sliced || (x.wordId !== o.wordId && needs(x))) return false;
             const q = at(x);
             return Math.abs(q.x - p.x) < z.L(size * 0.9) && Math.abs(q.y - p.y) < z.L(size * 1.3);
           });
         };
-        const tgt = flying.find((o) => inView(o) && needs(o.wordId) && alone(o));
-        const dec = flying.find((o) => o.active && !o.sliced && at(o).y < z.Y(700) && at(o).y > z.Y(150) && phase && !phase.targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
+        const tgt = flying.find((o) => inView(o) && needs(o) && alone(o));
+        const dec = flying.find((o) => o.active && !o.sliced && at(o).y < z.Y(700) && at(o).y > z.Y(150) && ownOf(o) && !ownOf(o).targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
         const aim = tgt && at(tgt);
         const decAt = dec && at(dec);
         z.expect(
@@ -481,6 +501,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       for (const r of rounds) {
         phase = r;
         roundT = 0;
+        // DAAR-34 (P54): the card shows this round's rows as she calls them (a caller's cue; daar's chop card fills its dots)
+        if (onCall) onCall(r.targets.slice(), r.i);
         if (r.i === 0) {
           // the ring starts once she's said it; after that, the switch comes while things fly. s04-fxc (decision 75 (1),
           // contract-1): a new order with no pop-up yet this phase (the chop again, only the wrong ones) comes up in the
@@ -495,7 +517,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else {
           z.say(orderLine(r.targets, false), { hide }).catch(() => {});
         }
-        // the round lasts its share of the ring: its throws, then the air clears
+        // the round lasts its share of the ring: its throws (DAAR-35: the next round's follow on at once); the last one's
+        // air clears
         await new Promise((resolve) => {
           const off = z.tick(() => {
             if (roundT < r.secs || r.bag.length) return;
