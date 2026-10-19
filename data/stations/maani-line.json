@@ -31,7 +31,12 @@
      }
     }
    },
-   {},
+   {
+    "sizes": {
+     "ph-big": 185,
+     "ph-small": 118
+    }
+   },
    {
     "zones": {
      "tawa": {
@@ -40,10 +45,6 @@
     }
    },
    {
-    "sizes": {
-     "ph-big": 185,
-     "ph-small": 118
-    },
     "quietMs": 1100
    }
   ]

@@ -780,7 +780,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const dishNo = () => ctx.dishAt || 0;
       // this station's own first-time demo replaces the generic spotlight (js/cook/coach.js)
       if (Cook.Coach) Cook.Coach.stop(true);
-      if (!pool) pool = St.decoys(decoyPool, flat.concat(exclude), knobInt(k.decoys), k.decoyPick);
+      // CK-49 (the level table): 1, 2, 3, 3 decoys (the knob), a lookalike among them at L4; the 'no' row's topping is on the
+      // shelf too and counts as one (it is an ordinary decoy, never the odd one out)
+      if (!pool) pool = St.tableDecoys(decoyPool, flat.concat(exclude), level, { want: flat, n: Math.max(0, knobInt(k.decoys) - exclude.length), also: exclude.length, what: "toppings" });
+      else St.decoyNote(pool.filter((x) => !flat.includes(x)).length, { what: "toppings" });
       const ids = Cook.shuffle([...new Set(pool.concat(flat, exclude))]);
       const who = (ctx.order && ctx.order.who) || "nana";
       useBowlArt();
@@ -1198,10 +1201,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           let last = 0;
           building = true;
           for (;;) {
-            // T15: the box names the next layer ("Bataato. Wiji chad!"), only after a pause (help, never a giveaway);
-            // a word the card hides shows as dots there too; not at level 4 (from memory)
+            // T15, s08 w2A (SH-110): Nani calls the next layer as its step opens ("Bataato wiji chad!"), at every level (the
+            // order in pieces); her box shows it only after the pause (help), its item dotted where the card dots it
             const nx = C.next(got);
-            if (nx && level < 4) steps.to("assemble:next", { id: `layer-${got.length}-${nx}`, line: St.addLine(nx), quiet: true });
+            if (nx) steps.to("assemble:next", { id: `layer-${got.length}-${nx}`, line: St.addLine(nx) });
             else steps.done();
             const r = await St.freePick(z, {
               items,
@@ -1215,6 +1218,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             last = performance.now();
             z.expect({ kind: "wait" });
             await drop(r.id);
+            // SH-105 (decision 6, P26: "it's clear and obvious when you've got the final correct answer ... remove the tick, move
+            // on"): the bowl is complete and right, so nothing is left to choose: it goes to the customer by itself
+            if (got.length >= C.total && !C.mistake(got)) break;
           }
           building = false;
           steps.done();

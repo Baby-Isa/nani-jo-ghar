@@ -65,7 +65,7 @@ export const CHECKS = {
   "contract-27": { item: "peek-whole", title: "the peek shows every word", how: "The side sample's peek (a card with the class peek: a tap on its small bulb opened it) and its dots (.dots, the dotted word '•••' of Lang.html's hide): any dotted word in a peeking card is a break (SH-98, Zafar, 17 Oct: 'certain words are hidden, which is pointless'). Numbers: contract-30." },
   "contract-28": { item: "one-bulb", title: "one bulb picture", how: "The bulbs sample (every shown .oc-look.bulb, .ng-bulb, .cl-bulb or #btn-bulb and the file it is drawn with: an <img>, a CSS background, or the flat inline svg): any bulb not drawn with assets/ui/results/icon-bulb.webp (the photo Nani's box uses) is a break, on Cook and the clinic alike (SH-100, Zafar, 17 Oct: 'let's make them all photorealistic')." },
   "contract-29": { item: "peek-time", title: "the peek lasts the level's time", how: "Each peek (the side sample's peek count from 0 to some and back) on a page whose card count and stage did not change: it must last the level's time from data (data/cook.json calm.peekMs, the clinic's Kit.PEEK_MS: 7 s at level 3, the same 3.5 s added to the others), judged as a child's time (Cook's test speed 3 shortens it; the clinic's is real time); under that less 450 ms is a break (SH-101)." },
-  "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171)." },
+  "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171). One is the exception (Zafar, 19 Oct: 'we don't need to write one, only two or more'): a said one (hakro, hakri) whose item is written bare passes. Counting along the taps (role count) is a tally, not the order." },
   "contract-31": { item: "free-replay", title: "a replay is free and says what is left", how: "A help Cook counts (the hint sample: Cook.onHelp's kind) of kind replay is a break (SH-102: only seeing it written costs); and after a tap on a face (the card's replay) with rows already ticked (the rows sample), no line said in the next 7 s may be a ticked row's words (SH-114: a replay reads out the remaining steps)." },
   "contract-32": { item: "divider", title: "the review's divider leaves room", how: "The review sample (the word review's two halves, side by side: the wrong words' column and the right words' column, their widths and counts): with no wrong word the right words take 4/5 of the width (room for four right and one wrong, SH-103, Zafar, 17 Oct: 'a little bit more to the left'); the wrong half is as many units wide as it has words (1 to 3) against the right half's 4, so the divider moves over as wrong words grow. Not judged on a taught round (one group) or stacked on a portrait phone." },
   "contract-33": { item: "headline-size", title: "the order pop-up's headlines: one size, wrap first", how: "The heads sample (each headline of the order pop-up with its size, its full size from a bare clone of it, and its line count; settled 400 ms): two sizes on one pop-up, or headlines all on one line while shrunk under their full size, is a break (SH-107, Zafar, 18 Oct: 'it was better to have the bigger text'; only the order pop-up: everywhere else keeps shrink, then wrap, non-negotiable 9)." },
@@ -991,6 +991,8 @@ function check29(r, tl, segs, add) {
 }
 // 30 (SH-99): every number said in an order or a step is written on the card, at every level and in every round (a taught one too);
 // a line's English placeholder ([red]: a colour or item with no Kutchi yet) is written there too
+// the number one's forms (data/lang/lexicon.json num.1: hakro, hakri; the old spellings too): a card writes the bare item for one
+const ONE_FORMS = new Set(["hakro", "hakri", "hik", "hikdo", "hikdi", "ek"]);
 const WRITTEN_SKIP = new Set(["item", "laps", "countdown", "count"]); // (s08 w2A: "count", L1 counting along the taps, "hakro bataato, ba bataata": a tally, not the order)
 function check30(r, tl, segs, v, nums, add) {
   if (!nums || !nums.size) return;
@@ -1008,8 +1010,10 @@ function check30(r, tl, segs, v, nums, add) {
     if (!mine.length) continue;
     const written = new Set(mine.flatMap((c) => c.words));
     const said = wordsOf(text.replace(/\[[^\]]*\]/g, " "));
-    for (const w of said) {
+    for (const [i, w] of said.entries()) {
       if (!nums.has(w) || written.has(w) || seen.has(`${s.key}|${w}`)) continue;
+      // s08 w2A (Zafar, 19 Oct: "we don't need to write one, only two or more"): a said one with its bare item written passes
+      if (ONE_FORMS.has(w) && said[i + 1] && written.has(said[i + 1])) continue;
       seen.add(`${s.key}|${w}`);
       add("contract-30", l.t0, `${s.key}: "${text}" says ${w}, which no card written in this stage holds (every number said is written)`);
     }

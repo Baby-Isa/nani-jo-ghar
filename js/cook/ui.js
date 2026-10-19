@@ -475,6 +475,36 @@
    *                         the taught first round: decision 55, SH-60: help after the pause, the first item too)
    */
   let stepper = null;
+  /*
+   * s08 w2A (SH-110, the level table's step call; Zafar, 19 Oct): as a step opens Nani says its line once, at every level:
+   * the order in pieces, never help (nothing is shown or lit, it never costs). Said through the one speech queue, tagged
+   * role "call"; skipped (and logged, Lifecycle step-call) when she is muted, the line has no voice, the station said it a
+   * moment ago (the help ladder's same-line rule), or the step closed before its turn. The help after the pause is unchanged.
+   */
+  const callNote = (s, by) => {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: String(s.id), by });
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  const copyLine = (l) => Object.assign({}, l, { parts: l.parts ? l.parts.map(copyLine) : l.parts });
+  function stepCall(s) {
+    const row = Cook.levelRow ? Cook.levelRow(orderLevel()) : { stepCall: false };
+    if (!row.stepCall) return callNote(s, "skip-off");
+    if (s.noCall) return callNote(s, `skip-${s.noCall}`);
+    if (!s.line || s.line.ok === false || !Lang.hasVoice(s.line)) return callNote(s, "skip-novoice");
+    if (UI.naniMuted()) return callNote(s, "skip-muted");
+    const G = global.NaniGuide;
+    if (G && G.recentlySaid && G.recentlySaid(Lang.plain(s.line))) return callNote(s, "skip-said");
+    callNote(s, "queued");
+    const line = Lang.role(copyLine(s.line), "call");
+    queued(() => {
+      if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
+      if (guide) guide.talk(true);
+      return Lang.speak(line).finally(() => guide && guide.talk(false));
+    }).catch(() => {});
+  }
   function makeStepper() {
     if (!global.NaniGuide || !global.NaniGuide.stepper) return null;
     return global.NaniGuide.stepper({
@@ -491,13 +521,14 @@
       glow: (s, on) => s.glow && s.glow(on),
       level: () => orderLevel(),
       onHelp: (s) => Cook.onHelp && Cook.onHelp("hint", { ids: s.ids || [] }),
+      call: (s) => stepCall(s),
     });
   }
   UI.step = function (line, o = {}) {
     if (!stepper) stepper = makeStepper();
     if (!stepper || !line) return null;
     const rec = line.ok === false;
-    return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids });
+    return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids, noCall: o.noCall || null });
   };
   UI.stepDone = () => stepper && stepper.close();
   /** An off-screen guide's line in her box (or her card's strip, R4), said; resolves when it ends (a tap skips). */
@@ -519,8 +550,8 @@
   };
   UI.stepPoke = () => stepper && stepper.poke();
   UI.stepHelp = () => stepper && stepper.help();
-  UI.stepOpen = function (line, { ctx } = {}) {
-    UI.step(line, { helpAfter: false });
+  UI.stepOpen = function (line, { ctx, hide } = {}) {
+    UI.step(line, { helpAfter: false, hide });
     return !!(ctx && ctx.guided);
   };
   /**
@@ -1005,7 +1036,9 @@
   const M = (UI.mission = {});
   let mission = null;
   const Order = () => Cook.Order;
-  const hideWord = (id) => Cook.cardHidden(id) && Lang.wordHasVoice(id);
+  // s08 w2A (SH-110, the level table): the card dots its item words from L3 (frames, verbs and numbers stay written), by the
+  // order's level, never by how well a word is known (L1-L2 write every word: Zafar, 19 Oct)
+  const hideWord = (id) => !!mission && !!Cook.dotItem && Cook.dotItem(id, mission.level);
   const faceUrl = (who, mood) => Cook.v(Cook.facePath(who, mood));
   UI.faceUrl = faceUrl;
   M.open = function ({ who, name, ladders, lines, line, busy, how }) {
@@ -2543,11 +2576,12 @@
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {
     const ws = id && id !== "_" ? String(id).split("+") : [];
-    if (!ws.length || !ws.every((w) => Lang.known(w)) || ws.some((w) => Cook.isPlaceholder(w))) return Lang.say({ fn: "Count", n }, { row: true });
+    // (s08 w2A, SH-99's last gap: tagged role "count": counting along the taps is a tally, not the order, contract-30)
+    if (!ws.length || !ws.every((w) => Lang.known(w)) || ws.some((w) => Cook.isPlaceholder(w))) return Lang.role(Lang.say({ fn: "Count", n }, { row: true }), "count");
     const parts = Lang.countParts(n, ws[ws.length - 1]);
     const at = parts.indexOf(ws[ws.length - 1]);
     parts.splice(at, 1, ...ws);
-    return Lang.phrase(parts);
+    return Lang.role(Lang.phrase(parts), "count");
   }
   UI.tallyLine = tallyLine;
   /** One more of `id` on the tally (returns the new count). */

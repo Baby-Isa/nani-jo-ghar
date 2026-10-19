@@ -181,7 +181,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const kinds2 = Object.keys(want2);
     const count2 = kinds2.length ? Number(p.count2) || 0 : 0;
     const kFill = Mech.knobs("fill", { level });
-    const pool = p.pool || St.decoys(p.decoyPool || [], kinds.concat(kinds2, exclude), St.knobInt(kFill.decoys), kFill.decoyPick).filter((id) => heapUrl(id));
+    // CK-49 (the level table): 1, 2, 3, 3 decoy fillings, a lookalike among them at L4; the 'no' filling (L4) is one of them
+    const pool = p.pool || St.tableDecoys(p.decoyPool || [], kinds.concat(kinds2, exclude), level, { want: kinds.concat(kinds2), ok: (id) => !!heapUrl(id), n: Math.max(0, St.knobInt(kFill.decoys != null ? kFill.decoys : 1) - exclude.length), also: exclude.length, what: "fillings" });
     const ids = Cook.shuffle([...new Set(pool.concat(kinds, count2 ? kinds2 : [], exclude))]);
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the fill's own begin shows it (data.onboard.samosa)
     // the art loads while the order card is up (a slow phone mustn't meet an empty scene)
