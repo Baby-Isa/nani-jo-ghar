@@ -185,7 +185,13 @@
       logHelp("help", { step: manual ? "asked" : "idle", by: `L${lv()} ${s.id || ""}` });
       call(o.onHelp, s);
       say(s, manual);
-      call(o.glow, s, true);
+      // (the glow is lit in the same turn as her voice; a station's own glow calls wait for this moment: G.helping)
+      G.helping = true;
+      try {
+        call(o.glow, s, true);
+      } finally {
+        G.helping = false;
+      }
     };
     // when the next help is due: PAUSE of no action after the step opened or the last action; a second help only after
     // REPEAT of no action more and REPEAT since the last help

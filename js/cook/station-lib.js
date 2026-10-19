@@ -126,6 +126,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
   };
   let pulseTimer = null;
+  let glowTimer = null;
   const levelOf = (ctx) => Cook.roundLevel(ctx);
   function ladderStart(S, ctx) {
     const calm = (Cook.data && Cook.data.calm) || {};
@@ -145,6 +146,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (S && !S.__ladder) {
       S.__ladder = true;
       S.step = (o) => S$.step(S, o);
+      // every "light up the next thing" is help, so it waits for the ladder (SH-60: "for the first item too, every game"): a
+      // glow asked for sits until the child has done nothing for the pause, then comes on with Nani's word (the stepper's
+      // and S$.step's own glows are lit at that moment, and a glow asked for with {now: true} is lit at once)
+      const glow0 = S.glow && S.glow.bind(S);
+      if (glow0) {
+        const pending = (S.__pendingGlows = new Map());
+        S.glow = (obj, on = true, o) => {
+          if (!obj) return;
+          if (!on) {
+            pending.delete(obj);
+            return glow0(obj, false, o);
+          }
+          const g = NG();
+          if (!g || g.helping || (o && o.now) || !Cook.inStation) return glow0(obj, true, o);
+          pending.set(obj, o);
+        };
+        S.__releaseGlows = () => {
+          const g = NG();
+          if (!g || !pending.size || g.idleMs() < g.PAUSE[Math.min(g.PAUSE.length, levelOf()) - 1]) return;
+          [...pending].forEach(([obj, o]) => {
+            pending.delete(obj);
+            if (obj.active) (g.logHelp("help", { step: "idle", by: `L${levelOf()} glow` }), glow0(obj, true, o));
+          });
+        };
+      }
       const draw0 = S.glowDraw && S.glowDraw.bind(S);
       if (draw0) {
         S.glowDraw = (obj, on = true, o) => {
@@ -158,10 +184,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const g = NG();
       if (g) g.pulseBulbs(!!Cook.inStation && !Cook.paused && g.idleMs() >= g.BULB_PULSE);
     }, 500);
+    clearInterval(glowTimer);
+    glowTimer = setInterval(() => S && S.__releaseGlows && S.__releaseGlows(), 200);
   }
   function ladderStop() {
     clearInterval(pulseTimer);
-    pulseTimer = null;
+    clearInterval(glowTimer);
+    pulseTimer = glowTimer = null;
+    if (Cook.scene && Cook.scene.__pendingGlows) Cook.scene.__pendingGlows.clear();
     if (NG()) NG().pulseBulbs(false);
   }
   /** SH-53: the item glow as strong, as wide and on the same beat as the tick's ring (GLOW), whether WebGL or the canvas halo. */
@@ -670,7 +700,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!guided && Cook.onHelp) Cook.onHelp("hint");
         if (g && g.logHelp) g.logHelp("help", { step: "idle", by: `L${levelOf()} ${expected}` });
         hint();
-        S.glow(target, true, { bounce: true });
+        S.glow(target, true, { bounce: true, now: true });
         if (!guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
       }, 200);
       Object.entries(items).forEach(([key, obj]) => {
@@ -696,7 +726,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             Cook.sfx.soft();
             if (onWrong) onWrong(key, misses);
             if (misses >= 2) {
-              S.glow(target, true, { bounce: true });
+              S.glow(target, true, { bounce: true, now: true });
               if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
             }
           }

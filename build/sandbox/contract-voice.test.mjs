@@ -36,6 +36,15 @@ test("contract-22: a step line said twice within 10 s (samosa's per-put step, da
   const later = clone(tl);
   later.find((e) => e.type === "line" && e.id === 2).t = T + 18700;
   assert.equal(of(run(page("cook:samosa", sorted(later))), "contract-22").length, 0, "10 s later is a new saying");
+  // a help line (role howto) is judged against the real clock, a plain line against the child's time (10 s / the test speed)
+  const help = clone(tl);
+  help.forEach((e) => e.type === "line" && (e.role = "howto"));
+  help.find((e) => e.type === "line" && e.id === 2).t = T + 14000;
+  assert.equal(of(run(page("cook:samosa", sorted(help))), "contract-22").length, 1, "6 s apart on the real clock");
+  const slow = clone(tl);
+  slow.find((e) => e.type === "line" && e.id === 2).t = T + 14000;
+  assert.equal(of(run(page("cook:samosa", sorted(slow))), "contract-22").length, 0, "6 s at test speed 3 is 18 s of a child's time");
+  assert.equal(of(run(page("cook:samosa#speed1", sorted(slow))), "contract-22").length, 1, "at a child's pace it is 6 s");
   // a replay the child asked for (a tap on the face or the card) is hers
   const asked = clone(tl);
   asked.push(tap(T + 10800, { side: true, play: false, on: "button.ng-face" }));
@@ -48,16 +57,18 @@ test("contract-22: a step line said twice within 10 s (samosa's per-put step, da
 test("contract-22: a clip cut short by the next line starting over it is a break; a stop the game made, or a clip that finished, passes", () => {
   const tl = sorted([stage(T, ST), line(1, T + 100, "Muke chai khape."), play(1, T + 110, "assets/audio/family/mum/bhar-rc.mp3", 2.0), playEnd(1, T + 900, "stop"), lineEnd(1, T + 900),
     line(2, T + 880, "Bhar!"), play(2, T + 890, "assets/audio/family/mum/bhar-rc.mp3", 0.6), playEnd(2, T + 1490), lineEnd(2, T + 1500)]);
-  const b = of(run(page("cook:chai-tray", tl)), "contract-22");
+  const b = of(run(page("cook:chai-tray#speed1", tl)), "contract-22");
   assert.equal(b.length, 1);
   assert.match(b[0].measured, /cut off 1210 ms before its end/);
   const stopped = clone(tl);
   stopped.push({ type: "voice-stop", why: "VoiceStop.stop", t: T + 895 });
-  assert.equal(of(run(page("cook:chai-tray", sorted(stopped))), "contract-22").length, 0, "a stage end or a tap through the pop-up stops it on purpose");
+  assert.equal(of(run(page("cook:chai-tray#speed1", sorted(stopped))), "contract-22").length, 0, "a stage end or a tap through the pop-up stops it on purpose");
+  // at the test speed (3) the clip timers run short and the cut is the test's, not the game's: not judged
+  assert.equal(of(run(page("cook:chai-tray", tl)), "contract-22").length, 0);
   const whole = clone(tl);
   whole.find((e) => e.type === "play-end" && e.pid === 1).t = T + 2110;
   whole.find((e) => e.type === "play-end" && e.pid === 1).why = "ended";
-  assert.equal(of(run(page("cook:chai-tray", sorted(whole))), "contract-22").length, 0);
+  assert.equal(of(run(page("cook:chai-tray#speed1", sorted(whole))), "contract-22").length, 0);
 });
 
 test("contract-23: an item's name on a tap over a line, at level 3 or 4, or again within 10 s is a break; said when quiet, once, at level 1, passes", () => {

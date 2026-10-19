@@ -53,7 +53,7 @@ export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 3, on a page whose profile has heard the words (variant p-seen), no order-card row (the side sample's words) holds a Kutchi number word (the lexicon's Num entries); from level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number." },
   "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): a to-record placeholder passes until launch (Zafar, 14 Oct) and is a break on the store build (--store); every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
-  "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s is a break (PAN-16) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap), item words (contract-23) and counts (laps, countdowns, number words) are not judged here. A clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up) was cut by another line starting over it (PAN-04)." },
+  "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s of the child's time is a break (PAN-16; Cook's test speed shortens the game's waits, so 10 s / speed in the run, and a help line's, role howto, 10 s of the clock) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap); item words (contract-23) and counts (laps, countdowns, number words) are not judged here. On a #speed1 flow (a child's pace, where clip timing is real) a clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up), by another line's clip starting over it, is a break (PAN-04)." },
   "contract-23": { item: "item-word", title: "an item's name only when nothing else speaks", how: "Lines tagged role item (js/cook/words.js Lang.popWord: an item's name as it is tapped or lands) that made a sound: at level 3 or 4 any is a break; one starting while another Cook line is being said (from its call to its end, or a clip of it sounding) is a break; the same item word again within 10 s is a break (SH-94, decision 1 of 17 Oct)." },
   "contract-24": { item: "help-ladder", title: "no help before the idle time", how: "Nani's help and the glow come only after the child has done nothing for the ladder's time by level (7, 8, 11, 15 s: data/cook.json calm.helpMs), counted from the LAST action (a real tap, the stage or the step opening). Three things are measured on every path but #mistake: the game's own help log (Lifecycle help, idle), a step line (role howto) said, and a picture's glow switching on (the sampler's hl). One earlier than the table is a break (SH-60, SH-95)." },
   "contract-25": { item: "bulb-pulse", title: "the bulbs pulse when stuck", how: "The bulbs' pulse (Lifecycle bulb-pulse, js/shared/guide.js pulseBulbs) may not start before 15 s of no action; any stretch of no action of 21 s or more inside a play stage must have had the pulse start (SH-96: both light bulbs pulse after 15-20 s stuck)." },
@@ -743,7 +743,11 @@ function lastAction(tl, t, { steps = true } = {}) {
   return last;
 }
 // 22 (PAN-04, PAN-16): each line said once and whole
-function check22(tl, segs, v, nums, add) {
+function check22(r, tl, segs, v, nums, add) {
+  // Cook's test speed shortens the game's own waits (and its clip timers) but not the help's real-time ones: a repeat is judged
+  // against 10 s of the child's time (10 s / speed in the run), a help line's against 10 s of the clock; a clip cut short only
+  // where the timing is real (a #speed1 flow, a child's pace)
+  const speed = +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3);
   const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
   const lines = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && l.role !== "item" && !isCountLine(l, nums)).sort((a, b) => a.t0 - b.t0);
   const seen = new Set();
@@ -751,20 +755,25 @@ function check22(tl, segs, v, nums, add) {
   for (let i = 0; i < lines.length; i++) for (let j = i + 1; j < lines.length; j++) {
     const a = lines[i], b = lines[j];
     if (b.t0 - a.t0 >= SAID_AGAIN) break;
+    if (b.t0 - a.t0 >= (b.role === "howto" ? SAID_AGAIN : SAID_AGAIN / speed)) continue;
     if (norm(a.text) !== norm(b.text) || !norm(a.text)) continue;
     if (askedAt(inputs, b.t0) || (norm(a.text).split(" ").length === 1 && inputs.some((x) => x.t <= b.t0 + 20 && b.t0 - x.t <= 400))) continue;
     const s = segAt(segs, b.t0), k = `${s && s.key}|${norm(a.text)}`;
+    if (s && !isPlayStage(s.key)) continue; // (the serve and the praise between stations are the ending's, wave 1B)
     if (seen.has(k)) continue;
     seen.add(k);
     add("contract-22", b.t0, `${s ? s.key : "?"}: "${b.text}" said twice, ${Math.round(b.t0 - a.t0)} ms apart (a line is said once; again only after ${SAID_AGAIN / 1000} s idle)`);
   }
-  // whole: a clip cut short by the next one (or by anything but a stop the game made: a stage end, a tap through the pop-up)
+  // whole: a clip cut short by another LINE starting over it (not the next word of its own line), with no stop the game made near it
+  if (speed !== 1) return;
   const stops = tl.filter((e) => e.type === "voice-stop" || (e.type === "c" && e.k === "life" && /^(stage-end|stage-start|request|results|advance)$/.test(e.what))).map((e) => e.t);
   for (const p of v.plays) {
     if (p.est || !p.line || p.end == null || !/^(stop|pause|cancel)$/.test(p.why || "")) continue;
     const natural = p.t0 + p.dur * 1000;
     if (natural - p.end < 150) continue;
     if (stops.some((t) => Math.abs(t - p.end) <= 300)) continue;
+    const next = v.plays.find((q) => q !== p && q.t0 >= p.end - 60 && q.t0 <= p.end + 60);
+    if (next && next.line === p.line) continue;
     const s = segAt(segs, p.end), k = `cut|${s && s.key}|${p.url}`;
     if (seen.has(k)) continue;
     seen.add(k);
@@ -924,7 +933,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check20(tl, add);
   check18(tl, segs, add);
   check21(tl, segs, v, add);
-  check22(tl, segs, v, numbers || numbersFor(root), add);
+  check22(r, tl, segs, v, numbers || numbersFor(root), add);
   check23(r, tl, segs, v, add);
   check24(r, tl, segs, v, add);
   check25(tl, segs, add);
