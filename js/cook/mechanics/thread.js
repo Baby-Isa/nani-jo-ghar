@@ -86,7 +86,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       SK.band(S, z0);
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
-      const bowls = SK.shelf(S, z0, groups, { level: z.level });
+      // (the chips by the round's level, not the thread's knob level: from L3 a speaker only, never the word: the level table)
+      const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)) });
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));

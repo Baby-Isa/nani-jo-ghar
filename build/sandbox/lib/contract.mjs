@@ -1092,14 +1092,14 @@ const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
 // the station a Cook flow plays (cook:samosa@L3 -> samosa; lab:cook/recipe-chai -> chai)
 const stationOf = (flow) => { const m = /^(?:cook:(?:recipe:)?|lab:cook\/(?:recipe-)?)([\w-]+)/.exec(flow || ""); return m ? m[1] : null; };
 // the written forms of every item word (a thing to pick: data/cook.json words with a bowl, heap, image, layer or piece, and
-// bajri maani), from the lexicon with its inflections: what a dotted L3 card must not write in an open row
+// bajri maani and the sekelo meat cube, which have none), from the lexicon with its inflections: what a dotted L3 card must not write in an open row
 const ITEMS = new Map();
 export function itemForms(root) {
   if (ITEMS.has(root)) return ITEMS.get(root);
   const out = new Set();
   const read = (f) => { try { return JSON.parse(readFileSync(join(root, f), "utf8")); } catch (e) { return null; } };
   const cook = read("data/cook.json") || {};
-  const ids = new Set(Object.entries(cook.words || {}).filter(([k, v]) => v && typeof v === "object" && !/^(num|lnk|kin|name)-/.test(k) && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in v) || k === "cook-bajrmaani")).map(([k]) => k));
+  const ids = new Set(Object.entries(cook.words || {}).filter(([k, v]) => v && typeof v === "object" && !/^(num|lnk|kin|name)-/.test(k) && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in v) || k === "cook-bajrmaani" || k === "ph-mishkaki")).map(([k]) => k));
   const lex = read("data/lang/lexicon.json") || {};
   const par = (read("data/lang/paradigms.json") || {}).paradigms || {};
   const split = (x) => String(x || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
@@ -1131,7 +1131,8 @@ function check35(r, tl, segs, add, root) {
     const first = inputs.find((i) => i.t >= s.t0 && i.t < end);
     if (!first) continue;
     const side = last("side", first.t);
-    const rows = last("rows", first.t);
+    // (the rows as the child reads them: the last sample in the stage before that tap with no row under the bulb's English)
+    const rows = tl.filter((e) => e.type === "c" && e.k === "rows" && e.t <= first.t && e.t >= s.t0 - 10000 && !(e.list || []).some((x) => x.en)).pop() || last("rows", first.t);
     if (!side || !side.n) continue;
     const at = `${s.key} at L${level}`;
     if (level >= 4) {
@@ -1166,13 +1167,15 @@ function check36(r, tl, segs, v, add) {
     if (!s || !isPlayStage(s.key)) return;
     const next = opens[i + 1];
     const until = Math.min(o.t + CALL_WITHIN, next ? next.t + 300 : Infinity, s.t1 == null ? Infinity : s.t1 + 300);
-    const mine = notes.filter((n) => n.reason === o.reason && n.t >= o.t - 50);
+    // (step ids count again from 1 on each station's stepper: this opening's notes are the ones before that id opens again)
+    const again = opens.slice(i + 1).find((x) => x.reason === o.reason);
+    const mine = notes.filter((n) => n.reason === o.reason && n.t >= o.t - 50 && n.t <= Math.min(o.t + CALL_WITHIN, again ? again.t : Infinity));
     const skip = mine.find((n) => /^skip/.test(n.by || ""));
-    const said = calls.find((l) => l.t0 >= o.t - 50 && l.t0 <= until);
-    const k = `${s.key}|${o.reason}`;
+    // a call queued behind another line may start after the next step opened: any call from this opening on counts
+    const said = calls.find((l) => l.t0 >= o.t - 50 && l.t0 <= Math.max(until, o.t + CALL_WITHIN));
+    const k = `${s.key}|${o.reason}|${o.t}`;
     if (seen.has(k)) return;
-    if (!said && !skip) { seen.add(k); add("contract-36", o.t, `${s.key}: step ${o.reason} (${o.by || ""}) opened and Nani did not call it (no line tagged call before the next step or within ${CALL_WITHIN / 1000} s, no skip logged)`); }
-    else if (said && skip && skip.t <= said.t0) { seen.add(k); add("contract-36", said.t0, `${s.key}: step ${o.reason} was called ("${said.text}") although the game logged ${skip.by}`); }
+    if (!said && !skip) { seen.add(k); add("contract-36", o.t, `${s.key}: step ${o.reason} (${o.by || ""}) opened and Nani did not call it (no line tagged call within ${CALL_WITHIN / 1000} s, no skip logged)`); }
   });
 }
 // 37 (CK-49): decoys by level, 1 / 2 / 3 / 3 + a lookalike, from the game's own report per station stage

@@ -68,11 +68,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Cook.cardState = (level, station) => Cook.levelRow(level, station).card;
   // an item word: a thing to pick (the catalogue's words with a bowl, heap, image, layer or piece, and bajri maani); never a
   // number, a link word, a person or a frame
+  // (things picked that the catalogue gives no picture field: bajri maani, the sekelo meat cube)
+  const ITEM_ALSO = ["cook-bajrmaani", "ph-mishkaki"];
   Cook.isItemWord = (id) => {
     const s = String(id || "");
     if (!s || /^(num|lnk|kin|name)-/.test(s)) return false;
     const w = Cook.item(s);
-    return !!w && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in w) || s === "cook-bajrmaani");
+    return !!w && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in w) || ITEM_ALSO.includes(s));
   };
   Cook.dotItem = (id, level) => Cook.cardState(level) !== "open" && Cook.isItemWord(id) && !Cook.isPlaceholder(id) && Lang.wordHasVoice(id);
   /**
