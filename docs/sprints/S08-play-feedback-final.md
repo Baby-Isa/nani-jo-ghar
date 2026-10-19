@@ -20,12 +20,12 @@ Plan (19 Oct; nothing launched until Zafar answers the decisions). **Goal: every
 | 3 Cook I | Samosa: the coded fold, six strips, one tick, straight to the fryer (SAM-21, 22, 24, 25), Opus | Chaat (CHT-12 to 15); sekelo layout and words (SEK-07, 19, 20, 21); maani (MAA-15, 17) | SM1; CH1-CH3; SK3 | $45 |
 | 4 Cook II | Daal (DAAR-26 to 35, DAAR-05) | Chai (CHAI-19, 22, 24, 25, 26, CHAI-08); take-back by the count badge (CK-TB-01) | DP2, DP3, DP1; CP2 with CP1's tilts | $40 |
 | 5 Clinic | Boing (CLN-164 to 168, 170); ear (CLN-173, 174, 135); tooth (CLN-180 to 184); zooms (CLN-163) | Fever (CLN-105, 175 to 178); eye (CLN-186 to 189); foot (CLN-190 to 194); taste (CLN-195, 196); knee (CLN-179); placement (CLN-162) | DM1, DM2; TB1; TH1, FN1, FV1; ED1, EC1, LM1; FT1, SP1; TS1; BD1 | $55 |
-| 6 Scrape (if yes) | The sore arm (CLN-172), Opus | — | a small run: X-ray card, cast roll, sticker sheet (his ChatGPT) | $15 |
 | 7 Close | Gate in chunks; `evidence.mjs --run --sprint`; judge; `/review`; `/publish` | | | $30 |
 
 About $290 in all, ceiling $350. Waiting on Mum, not this sprint: the stir sentence, "put it on", "take it off", the "and" join, *muke*/*khape* (interim lines where the rows say). Not in this sprint unless Zafar says: SH-90 (phones), CK-TAB-01 (tablets), older two-strike art rows not in his notes.
 
 ## Small decisions
+- Zafar, 19 Oct: yes to the plan, the level table (chai L3 = two cups, no half/full: idea 54), the twelve clinic decisions, the sekelo and eye layouts; the scrape parked, the sore arm to the idea bank (wave 6 dropped); budget about $275, ceiling $350. "Set it into motion."
 - Zafar, 18 Oct: yes to all fifteen Cook decisions; the clinic's twelve wait on him.
 - Zafar, 16 Oct: publish Sprint 7 now past the gate (low on tokens); start Sprint 8 from his play feedback.
 

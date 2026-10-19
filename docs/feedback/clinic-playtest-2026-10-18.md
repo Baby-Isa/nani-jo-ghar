@@ -235,6 +235,8 @@ Two readers: mine and a fresh Fable agent on the transcripts and §3: 5 missing,
 
 ## 6. Decisions for Zafar
 
+*Zafar, 19 Oct: yes to all, except 1: the scrape is parked ("we have enough clinic modes"), and the sore arm goes to the idea bank.*
+
 Yes to all except ... Each has a recommendation.
 
 1. **The scrape (P20, CLN-172).** I research hospital and injury games and bring 3 options with their Kutchi needs (a richer scrape, a swap, or a splint game), within his limits (not another knee game; words Mum can give). Recommend: a Fable design pass (about $3-5) when tokens allow; nothing replaced without his yes.

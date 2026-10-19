@@ -30,9 +30,7 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 
 ### From the 17 Oct Cook play-test
 38. **Fifteen decisions** on Cook (item words on a tap, the memory problem and Nani barking orders, the bulb, help, moving on, the ending, chaat, samosa, sekelo, maani, daal, the art run): `docs/feedback/cook-playtest-2026-10-17.md` §6, each with a recommendation.
-39. **Twelve clinic decisions** (the scrape's future, counts in the first round, boing's colours, the ear's spots, fever's ending, tooth overfill, zooms, the eye, the lemon, the taste cup, cut-outs, answers): `docs/feedback/clinic-playtest-2026-10-18.md` §6.
 40. **Remind Zafar:** which game the doctor floats in (diagnosis or the waiting room call-in), when he plays them (CLN-162).
-42. **Sprint 8 decisions, 19 Oct:** the level table, the scrape, the sekelo and eye layouts, and the plan (`docs/sprints/S08-play-feedback-final.md`, research in `build/reports/research-*-2026-10-19.md`).
 
 ### Business
 26. **Commercial model:** open (decision 7). The landing page needs it first.

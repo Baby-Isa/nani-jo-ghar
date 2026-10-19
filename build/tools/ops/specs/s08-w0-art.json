@@ -1,0 +1,26 @@
+{
+  "name": "s08 wave 0, the art: a pixel check on every cut-out (SH-115), then cut s08b and the unwired s07 art into game assets; the heal lab's log off (CLN-159)",
+  "model": "Sonnet",
+  "effort": "high",
+  "kind": "art",
+  "why": "mechanical cutting and a measurable check; the orchestrator judges the cuts by eye",
+  "cost": "about $15-20",
+  "stop": "when every task is accepted, or 3 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/design-language/art-pipeline.md (the art tools, the cutter, section 15)", "docs/design-language/art-plans/s08b-art-plan.md (sections 1 and 6)", "docs/feedback/clinic-playtest-2026-10-18.md P7 (why cut-outs slipped)"],
+  "owns": ["build/tools/art/** (artlib.py, artjudge.py, artcheck.mjs, artcut.py, their tests, specs/s08b.cut.json)", "assets/** new files only (the cuts; never overwrite a file the game uses today: new names with -v3 or s08b in them)", "lab/clinic-heal-host.html", "css/clinic.css .cl-lab-out only", "build/reports/s08-w0-art.md"],
+  "readOnly": ["js/**, data/** (wiring is the later waves)", "sources/art/** (the sources)", "docs/**"],
+  "stubs": "none: a cut that fails the new check is listed in the report with why, never shipped",
+  "tasks": [
+    {"do": "SH-115: a pixel check on shipped cut-outs (webp/png with alpha under assets/): share of opaque pixels near the #808080 key grey, enclosed holes of key grey (between toes, between prongs), a semi-alpha rim wider than a few px, judged on a flat cream composite; glass pieces get a narrower rule, not an exemption. Wire it into build/tools/art/artcheck.mjs (or a new artpixels check called by it) with a known-list of today's failures that may only shrink, and a test. Re-key steel and glass (a per-piece tolerance in the cut spec, or a ground other than #808080 for steel) and fill enclosed holes of any size.", "accept": "the check fails on today's foot sole (sole-v2), the eye drop bottle, the tweezers and the thermometer (red), and passes on their re-cuts (green); `node build/tools/review/checks.mjs` green with the known-list"},
+    {"do": "Cut every s08b source (sources/art/s08b/*-v1.png, 20) per the plan's section 6 into game-ready webp under assets/ (new names), registered with a meta json where a station places pieces (CH2/CH3 per strip; DP3 per disc; SK3 per cell; GO1 two icons; TH1, FN1, FV1, ED1, SP1, TS1 per piece; BD1 band and end; SM1 and BD1 checked as seamless tiles; FT1 colour-matched to sole-v2's skin and keeping its registration).", "accept": "every cut passes the new pixel check; a contact sheet of all cuts on cream and on dark in the report; each cut's file name and size listed for the wiring waves"},
+    {"do": "Cut the unwired s07 art the later waves wire: dm1-drop-machine, dm2-levers-drops, cp1-chai-pan-tilt (if not already in assets/cook/items/chai-v3 or similar), dp1-daar-pieces, pt1-potato; skip anything already cut (check data/*.json for its path first). Also re-cut the four failures above from their sources.", "accept": "listed in the report as cut, already in, or failed (why)"},
+    {"do": "CLN-159: the heal lab's log (lab/clinic-heal-host.html:146, .cl-lab-out) shows only with ?debug=1.", "accept": "a screenshot of the heal lab without ?debug=1 shows no log at bottom left"}
+  ],
+  "flows": ["clinic:heal-ear", "clinic:heal-foot"],
+  "shared": false,
+  "browser": true,
+  "port": 8831,
+  "report": "s08-w0-art",
+  "publish": false
+}

@@ -1,0 +1,64 @@
+SESSION NAME / MODE:  s08 wave 0, the art: a pixel check on every cut-out (SH-115), then cut s08b and the unwired s07 art into game assets; the heal lab's log off (CLN-159)
+MODEL AND EFFORT:     Sonnet, high effort (mechanical cutting and a measurable check; the orchestrator judges the cuts by eye)
+COST ESTIMATE:        about $15-20
+HARD STOP:            when every task is accepted, or 3 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w0-art.context.md (856 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/design-language/art-pipeline.md (the art tools, the cutter, section 15)
+     docs/design-language/art-plans/s08b-art-plan.md (sections 1 and 6)
+     docs/feedback/clinic-playtest-2026-10-18.md P7 (why cut-outs slipped)
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/art/** (artlib.py, artjudge.py, artcheck.mjs, artcut.py, their tests, specs/s08b.cut.json)
+  - assets/** new files only (the cuts; never overwrite a file the game uses today: new names with -v3 or s08b in them)
+  - lab/clinic-heal-host.html
+  - css/clinic.css .cl-lab-out only
+  - build/reports/s08-w0-art.md
+READ-ONLY (never edit):
+  - js/**, data/** (wiring is the later waves)
+  - sources/art/** (the sources)
+  - docs/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none: a cut that fails the new check is listed in the report with why, never shipped
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-115: a pixel check on shipped cut-outs (webp/png with alpha under assets/): share of opaque pixels near the #808080 key grey, enclosed holes of key grey (between toes, between prongs), a semi-alpha rim wider than a few px, judged on a flat cream composite; glass pieces get a narrower rule, not an exemption. Wire it into build/tools/art/artcheck.mjs (or a new artpixels check called by it) with a known-list of today's failures that may only shrink, and a test. Re-key steel and glass (a per-piece tolerance in the cut spec, or a ground other than #808080 for steel) and fill enclosed holes of any size.
+     Accept: the check fails on today's foot sole (sole-v2), the eye drop bottle, the tweezers and the thermometer (red), and passes on their re-cuts (green); `node build/tools/review/checks.mjs` green with the known-list
+  2. Cut every s08b source (sources/art/s08b/*-v1.png, 20) per the plan's section 6 into game-ready webp under assets/ (new names), registered with a meta json where a station places pieces (CH2/CH3 per strip; DP3 per disc; SK3 per cell; GO1 two icons; TH1, FN1, FV1, ED1, SP1, TS1 per piece; BD1 band and end; SM1 and BD1 checked as seamless tiles; FT1 colour-matched to sole-v2's skin and keeping its registration).
+     Accept: every cut passes the new pixel check; a contact sheet of all cuts on cream and on dark in the report; each cut's file name and size listed for the wiring waves
+  3. Cut the unwired s07 art the later waves wire: dm1-drop-machine, dm2-levers-drops, cp1-chai-pan-tilt (if not already in assets/cook/items/chai-v3 or similar), dp1-daar-pieces, pt1-potato; skip anything already cut (check data/*.json for its path first). Also re-cut the four failures above from their sources.
+     Accept: listed in the report as cut, already in, or failed (why)
+  4. CLN-159: the heal lab's log (lab/clinic-heal-host.html:146, .cl-lab-out) shows only with ?debug=1.
+     Accept: a screenshot of the heal lab without ?debug=1 shows no log at bottom left
+
+REGRESSION ROWS TO RECHECK (66 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (44): CLN-81*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-135*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-30, CLN-42, CLN-43, CLN-44, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-ear (11): CLN-173*, CLN-174*, CLN-86, CLN-34, CLN-49, CLN-50, CLN-71, CLN-78, CLN-101, CLN-102, CLN-134
+  clinic:heal-foot (11): CLN-190*, CLN-191*, CLN-192, CLN-193, CLN-194*, CLN-82, CLN-40, CLN-47, CLN-64, CLN-75, CLN-108
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w0-art` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8831.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w0-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
