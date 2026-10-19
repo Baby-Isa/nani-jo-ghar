@@ -852,7 +852,8 @@ function check25(tl, segs, add) {
     if (isFinite(ref) && e.t - ref < BULB_PULSE_MIN - SLOP) { const s = segAt(segs, e.t); add("contract-25", e.t, `${s ? s.key : "?"}: the bulbs began to pulse ${Math.round(e.t - ref)} ms after the last action (not before ${BULB_PULSE_MIN} ms)`); }
   }
   // a stretch of no action at least BULB_PULSE_MAX long inside a play stage must have had the pulse start
-  const inputs = tl.filter((e) => e.type === "c" && e.k === "input" && e.play);
+  // any real tap is an action (the shared guide's idle clock restarts on every pointerdown: the card's face, a peek, the bulb as much as a tap in the play area; s08 w1b, SH-102: a replay is a child doing something)
+  const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
   for (const s of segs) {
     if (!isPlayStage(s.key)) continue;
     const end = s.t1 == null ? (tl[tl.length - 1] || {}).t : s.t1;

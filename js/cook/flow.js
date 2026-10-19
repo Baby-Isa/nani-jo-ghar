@@ -490,8 +490,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       else if (L.head && L.head.phrase) phrases.push(L.head.phrase);
     });
     if (!phrases.length) return null;
+    // wave 1A's flaw 4 ("each order part once"): two people who asked for the same thing (chai-tray: two "elchi waari chai") are one kind of
+    // dish in the chef's call-back, said once; the same line twice in a row was heard as a stutter (contract-22 at the serve)
+    const kinds = new Set();
+    const once = phrases.filter((ph) => {
+      const k = Lang.plain(ph).toLowerCase().replace(/[^\p{L}\p{N} ]/gu, "").replace(/\s+/g, " ").trim();
+      if (kinds.has(k)) return false;
+      kinds.add(k);
+      return true;
+    });
     const F = Lang.frames();
-    return Lang.join(phrases.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
+    return Lang.join(once.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
   }
   Cook.callBack = callBack;
   const shabash = () => Lang.say({ fn: "Exclaim", x: "intj.well-done" });
