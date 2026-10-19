@@ -543,7 +543,11 @@
       }
       return out;
     })();
-    const stripRow = (row) => {
+    // SH-99, CLN-187 (s08-w6c; Zafar, 18 Oct: "all the frequencies has to be written down. And audible as well"):
+    // every number said is written (contract-30), the closed card's strip too, so the strip keeps its count at every
+    // level now; stripRow.count (decision 41's old rule: from level 3 the strip without its number) is kept, unused
+    const stripRow = (row) => row;
+    stripRow.count = (row) => {
       if (!row || level < 3) return row;
       const nums = (row.ids || []).filter((id) => numWords[id]);
       if (!nums.length) return row;
@@ -662,7 +666,9 @@
         pulse: (rowId, on) => card.pulse(rowId, on),
         hush: (on) => card.hush(on), // CLN-144: a game's own tool nudge: the card's band steps back while it glows
         // additions
-        now: (rowId) => {
+        // o.strip: the line the strip shows for this step when it is not the row's own (the eye's drops at level 3: both
+        // eyes' counts in one line, CLN-187)
+        now: (rowId, o = {}) => {
           if (rowId !== card.st.now) {
             clearCounts();
             showDone(false);
@@ -671,7 +677,7 @@
           card.now(rowId);
           if (viewer) viewer.step(rowId);
           // T29: the guide's line is the step now (it clears when no step is open)
-          if (v2 && screen.setGuide) screen.setGuide(rowId ? stripRow(card.row(rowId)) : null);
+          if (v2 && screen.setGuide) screen.setGuide(rowId ? stripRow(o.strip || card.row(rowId)) : null);
         },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),

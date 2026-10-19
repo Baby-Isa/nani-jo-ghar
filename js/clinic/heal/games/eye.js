@@ -94,7 +94,11 @@
     // a word is still to record)
     const eyeRow = (sd, n) => Object.assign({ id: `drops-${sd}`, side: sd }, Lg.show(Lg.join([Lg.item("body-eye", { mods: [Lg.sideId(sd)] }), ",", "cl-drops", Lg.count(n)]), { cap: true }));
     const cardRows = both ? [eyeRow("right", both.right), eyeRow("left", both.left)] : [Object.assign({ id: "drops" }, Lg.show(Lg.join(["cl-drops", Lg.count(drops)]), { cap: true }))];
-    steps.push({ id: "drops", kind: "drops", count: both ? both.right + both.left : drops, both, side, row: cardRows[0], cardRows });
+    // CLN-187 (s08-w6c; the judge: at L3 "Jamni akh, chando" with no number and no left-eye card): from level 3 the card
+    // is closed and its strip shows one step's line, so the drops step's strip is both eyes' counts in one engine line
+    const eyeParts = (sd, n) => [Lg.item("body-eye", { mods: [Lg.sideId(sd)] }), ",", "cl-drops", Lg.count(n)];
+    const strip = both && L >= 3 ? Object.assign({ id: "drops-both" }, Lg.show(Lg.join(eyeParts("right", both.right).concat([","], eyeParts("left", both.left))), { cap: true })) : null;
+    steps.push({ id: "drops", kind: "drops", count: both ? both.right + both.left : drops, both, side, row: cardRows[0], cardRows, strip });
     chart.slice(0, read).forEach((c, i) => steps.push({ id: `read${i}`, kind: "read", row: i, rowDef: c }));
     const rows = both ? [{ id: "drops-right", options: K.drops[L], answer: both.right }, { id: "drops-left", options: K.drops[L], answer: both.left }] : [{ id: "drops-count", options: K.drops[L], answer: drops }];
     // each chart row's judgement: "chart-a", "chart-b" ... (the end review lists them under the card's eye-test row, D14)
@@ -700,7 +704,7 @@
       const c = cur();
       drawChart();
       if (c.kind === "drops") {
-        ctx.card.now(c.both ? "drops-right" : "drops");
+        ctx.card.now(c.both ? "drops-right" : "drops", c.strip ? { strip: c.strip } : {});
         const te = c.both ? EY.right : sore; // CLN-187: from level 2 the first row's eye (the patient's right)
         return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: te.x, y: te.y - 55, r: 110 } }); // S02-G: the dropper and the eye
       }
@@ -795,7 +799,7 @@
         // its word at L2, dots from L3), and the card's lit row follows the eye still short of its count
         if (dropperAt !== eye) showDropper(eye, false);
         const short = ["right", "left"].find((x) => st.n[x] < c.both[x]);
-        if (short && short !== st.nowEye) ctx.card.now(`drops-${(st.nowEye = short)}`);
+        if (short && short !== st.nowEye) ctx.card.now(`drops-${(st.nowEye = short)}`, c.strip ? { strip: c.strip } : {});
         // (a new lit row clears the host's counts: both eyes' are drawn again after it)
         ["right", "left"].forEach((x) => (x === sd || st.n[x] > 0) && countEye(x, x === sd));
       } else {

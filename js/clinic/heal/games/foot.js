@@ -652,10 +652,17 @@
             if (st.jugs < c.jugs) {
               if (S.sel !== "jug-" + c.temp) return tool("jug-" + c.temp);
               // CLN-190: one jug is one sweep, through its share of the dirt that's left (top to bottom)
-              const left = dirt.filter((d) => !d.gone).sort((a, b) => a.y - b.y);
+              // s08-w6c (the gate's stuck clinic:patient at 1024x768): only dirt a finger can reach; a bit under the tool
+              // column (the sole runs on under it on a narrow screen) is pressed on a tool, so no jug is poured
+              const reach = (d) => {
+                const cl = S.client(d.x, d.y);
+                const el = root.document.elementFromPoint(cl.x, cl.y);
+                return !!el && S.svg.contains(el);
+              };
+              const left = dirt.filter((d) => !d.gone && reach(d)).sort((a, b) => a.y - b.y);
               const share = left.slice(0, Math.max(1, Math.ceil(left.length / (c.jugs - st.jugs))));
               // (the first jug starts where the first-time help lights the foot)
-              const way = (st.jugs === 0 ? [{ x: 400, y: 190 }] : []).concat(share.length ? share : [{ x: 400, y: 300 }]);
+              const way = (st.jugs === 0 && reach({ x: 400, y: 190 }) ? [{ x: 400, y: 190 }] : []).concat(share.length ? share : [{ x: 400, y: 300 }]);
               const pts = way.map((d) => {
                 const cl = S.client(d.x, d.y);
                 return [cl.x, cl.y];

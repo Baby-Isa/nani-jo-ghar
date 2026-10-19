@@ -155,12 +155,13 @@
   "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
   "wide": "front",
   "target": [
-   327,
-   347
+   300,
+   375
   ],
-  "size": 70,
+  "size": 91,
   "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size.",
-  "_s08": "CLN-167: the target moves with the jab spot (art.upperarm.spot)"
+  "_s08": "CLN-167: the target moves with the jab spot (art.upperarm.spot)",
+  "_s08w6c": "the target and size follow the arm drawn 1.3x (art.upperarm.box)"
  },
  "art": {
   "_about": "The art plan's D1 and D2 (docs/design-language/art-plans/clinic-heal-art-plan.md §8), swapped in by file name when they exist; until then the code-drawn machine, levers, drops and syringe. The levers, drops and the two-layer syringe need their cut positions (tube, socket, spout) before they replace the drawn ones.",
@@ -177,17 +178,18 @@
     "girl"
    ],
    "box": [
-    -50,
-    0,
-    753,
-    502
+    -190,
+    -76,
+    979,
+    653
    ],
    "why": "S03-D (review flaw 3, the s02 RU1): the girl's bare upper arm, sleeve pushed up, hanging; it runs off the stage's top and bottom (the cut's exits); the jab spot (300, 395) on the upper arm",
    "spot": [
-    327,
-    347
+    300,
+    375
    ],
-   "_spot": "CLN-167 (Zafar, 18 Oct: 'one fifth of the way up the bicep, central to the arm'; it was (300, 395), in the elbow's crease): a fifth of the way from the crease (y 397) to the sleeve's edge (y 147), in the middle of the arm there (x 327)"
+   "_spot": "CLN-167 (Zafar, 18 Oct: 'one fifth of the way up the bicep, central to the arm'; it was (300, 395), in the elbow's crease): a fifth of the way from the crease (y 397) to the sleeve's edge (y 147), in the middle of the arm there (x 327)",
+   "_s08w6c": "CLN-165 (s08 wave 6C; the judge: 'the arm photo ends above the bottom with a hard horizontal edge'): the photo drawn 1.3x about the jab spot and moved left, so it runs off the top and the bottom of the tallest close-up (4:3 shows y -70 to 570) and its right edge stays clear of the drop machine; the spot is the same place on the arm (a fifth up the bicep)"
   },
   "drops": {
    "red": "assets/clinic/sheets/drops-machine/drop-red.webp",
@@ -206,10 +208,10 @@
     1536
    ],
    "box": [
-    474,
+    440,
     -4,
-    176,
-    264
+    140,
+    210
    ],
    "tubes": [
     210,
@@ -227,7 +229,8 @@
     512,
     1256
    ],
-   "_about": "CLN-164, CLN-165 (s07 DM1, cut in s08 wave 0): the drop machine, drawn 176 wide at (474, -4) (about three quarters of the old drawn machine); tubes = its four tubes' and sockets' x (source px, red, yellow, blue, green as drawn), tubeY their liquid, spoutY the drip spouts' tips, socketY the lever sockets, ring the chute's round mouth the drops fall from"
+   "_about": "CLN-164, CLN-165 (s07 DM1, cut in s08 wave 0): the drop machine, drawn 176 wide at (474, -4) (about three quarters of the old drawn machine); tubes = its four tubes' and sockets' x (source px, red, yellow, blue, green as drawn), tubeY their liquid, spoutY the drip spouts' tips, socketY the lever sockets, ring the chute's round mouth the drops fall from",
+   "_s08w6c": "CLN-165 (s08 wave 6C; the gate's stuck boing at 1024x768: the green lever sat under the tool column, svg x 594 there): 140 wide at (440, -4), 0.8 of before, its last lever at x 564, clear of the tools on every screen"
   },
   "levers": {
    "plate": 26,
@@ -264,7 +267,7 @@
     129,
     384
    ],
-   "h": 210,
+   "h": 190,
    "barrel": [
     37,
     150,
@@ -272,7 +275,8 @@
     268
    ],
    "tip": 366,
-   "_about": "CLN-164, CLN-165, CLN-166: the s02 E11 syringe, upright, cap down (no needle is ever shown), 210 tall (0.85 of the old drawn one); barrel = the inside of the barrel [x0, y0, x1, y1] (its own px) where the drops' liquid rises; tip = the cap's end; pressed = the same syringe with the plunger home (same canvas), cross-faded in as the medicine goes in"
+   "_about": "CLN-164, CLN-165, CLN-166: the s02 E11 syringe, upright, cap down (no needle is ever shown), 210 tall (0.85 of the old drawn one); barrel = the inside of the barrel [x0, y0, x1, y1] (its own px) where the drops' liquid rises; tip = the cap's end; pressed = the same syringe with the plunger home (same canvas), cross-faded in as the medicine goes in",
+   "_s08w6c": "CLN-165: 190 tall (0.9 of 210), so the machine and the syringe no longer dominate the tools"
   },
   "cloth": {
    "file": "assets/clinic/sheets/cloth/cloth-dab.webp",

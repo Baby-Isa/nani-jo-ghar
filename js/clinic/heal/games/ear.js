@@ -223,7 +223,10 @@
       const mid = (TW.tips[1] + TW.tips[2]) / 2;
       const base = `rotate(${TW.angle}) scale(${k.toFixed(4)}) translate(${-TW.tips[0]} ${-mid})`;
       const half = Math.atan((mid - TW.tips[1]) / (jx - TW.tips[0]));
-      const want = Math.atan(((1.15 * r) / k / 2) / (jx - TW.tips[0]));
+      // s08-w6c (CLN-173; the judge: "the tweezers ... lying wholly on top of the wax; no prong is seen passing behind"):
+      // closed, the tips are under half the blob's width apart, so both prongs cross the blob: the far one's tip is hidden
+      // behind the wax (it was 1.15 r apart, beside the blob, where nothing showed it passing behind)
+      const want = Math.atan(((0.45 * r) / k / 2) / (jx - TW.tips[0]));
       const phi = ((half - want) * 180) / Math.PI;
       const layer = (parent, clip) => {
         const g = s("g", { transform: base }, parent);
