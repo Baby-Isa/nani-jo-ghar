@@ -238,8 +238,10 @@
       const front = layer(over, twClip.f);
       layer(over, twClip.h);
       const close = (u) => {
-        back.setAttribute("transform", `rotate(${(phi * u).toFixed(2)} ${jx} ${jy})`);
-        front.setAttribute("transform", `rotate(${(-phi * u).toFixed(2)} ${jx} ${jy})`);
+        // s08-w6c (CLN-173): the tips lie left of the joint, so the upper (far) prong closes turning anticlockwise and the
+        // lower (near) one clockwise; the signs were the other way round, so the prongs opened wider on the blob
+        back.setAttribute("transform", `rotate(${(-phi * u).toFixed(2)} ${jx} ${jy})`);
+        front.setAttribute("transform", `rotate(${(phi * u).toFixed(2)} ${jx} ${jy})`);
       };
       close(0);
       return { close };
