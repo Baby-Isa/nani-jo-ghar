@@ -13784,10 +13784,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "stir-mid",
+   "at": "stir-begin",
    "after": null,
    "capture": [
-    "strip:#stage:8x150"
+    "strip:canvas:pot:8x200"
    ],
    "expect": null,
    "note": "a small chequered flag at 12 o'clock on the rim; the ladle starts under it and each lap counts as it passes (the dial's number changes)"
@@ -13883,7 +13883,6 @@
    "flow": "cook:daar",
    "path": "fair",
    "level": [
-    2,
     3,
     4
    ],
@@ -13892,15 +13891,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:request",
+   "at": "kind-slice",
    "after": null,
    "capture": [
     "dom:#mission",
-    "crop:#mission"
+    "strip:#mission:8x700"
    ],
    "expect": null,
-   "note": "the chop card: rows she has not called yet are dotted whole (number too) and written as she calls each round (L2 up; L4's card is folded, its peek shows them)",
-   "max": 4
+   "note": "the chop card: rows she has not called yet are dotted whole (number too) and written as she calls each round (L2 up; L4's card is folded, its peek shows them)"
   }
  ],
  "DAAR-35": [
@@ -13941,7 +13939,7 @@
    "at": "daar-in",
    "after": null,
    "capture": [
-    "strip:canvas:pot:8x150"
+    "strip:canvas:pot:8x60"
    ],
    "expect": null,
    "note": "the daal pour: the stream lands in a soft ripple of its own colour, no bright white ring (no drawn line on the daal)"

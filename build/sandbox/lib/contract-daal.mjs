@@ -6,7 +6,7 @@
 //   contract-66 stir-flag    a stir lap counts at the flag (12 o'clock) and its number is heard within 3/4 of that lap; a number
 //                            left out only while another line was being said (DAAR-27, DAAR-30; P10, P49)
 export const DAAL_CHECKS = {
-  "contract-65": { item: "chop-waves", title: "the chop's waves without a gap", how: "Cook flows with the daal chop: each throw the chop logs (Lifecycle chop-throw: its wave, and the spacing it is thrown at in real ms). Where the wave changes from one throw to the next, the time between them less the new wave's spacing must be at most 500 ms; more is a break (DAAR-35, P55: 'the items should just come continuously'). A daal flow whose chop logged no throws is a break too (nothing to judge)." },
+  "contract-65": { item: "chop-waves", title: "the chop's waves without a gap", how: "Cook flows with the daal chop: each throw the chop logs (Lifecycle chop-throw: its wave, and the spacing it is thrown at in real ms). Where the wave changes from one throw to the next, the time between them less the new wave's spacing must be at most 500 ms of the child's time (500 ms / the test speed the throw logs, x); more is a break (DAAR-35, P55: 'the items should just come continuously'). A daal flow whose chop logged no throws is a break too (nothing to judge)." },
   "contract-66": { item: "stir-flag", title: "a lap at the flag, its number heard in step", how: "Daal flows (cook:daar, cook:daal): each lap the stir logs (Lifecycle stir-lap: the lap, deg the ladle's angle from 12 o'clock just after the move that counted it, da that move's size, ms how long the lap took in real ms, and ok / quiet / mute: the number said, left out, Nani muted). The angle must be within 25 degrees of the flag, or of the last move's size where a fast drag moved further (DAAR-30: a lap counts as the ladle passes it). A said lap's number (a Cook line tagged role laps, asked for within 250 ms of the lap) must start sounding (its first clip) within 3/4 of that lap's time (at least 300 ms) after it; one that never sounds passes only if a newer lap came within that time (the late number dropped, the newest said: P10). A lap left quiet must have another line's clip sounding at that moment. A daal flow that stirred (a stir step opened) and logged no lap is a break (DAAR-27, P10: 'say it within like three quarters of one revolution')." },
 };
 
@@ -24,7 +24,8 @@ const num = (by, key) => {
 const isDaal = (flow) => /^cook:(daar|daal)\b/.test(flow || "");
 
 export function check65(r, tl, add) {
-  const throws = lifes(tl, "chop-throw").map((e) => ({ t: e.t, wave: Number(e.reason), every: num(e.by, "every") || 0 }));
+  // (x: the game's test speed: the 0.5 s is the child's time, so it is 0.5 s / x of the run's)
+  const throws = lifes(tl, "chop-throw").map((e) => ({ t: e.t, wave: Number(e.reason), every: num(e.by, "ms") || 0, x: num(e.by, "x") || 1 }));
   if (!throws.length) {
     if (isDaal(r.flow)) {
       const chop = tl.find((e) => e.type === "c" && e.k === "life" && /^decoys$/.test(e.what) && /chop/.test(e.by || ""));
@@ -37,7 +38,8 @@ export function check65(r, tl, add) {
     const b = throws[i];
     if (b.wave !== a.wave + 1) continue; // the same wave, or a new chop (a redo starts again at wave 0)
     const gap = b.t - a.t - b.every;
-    if (gap > GAP_MS) add("contract-65", b.t, `wave ${b.wave + 1}'s first throw came ${Math.round(b.t - a.t)} ms after wave ${a.wave + 1}'s last (its spacing ${Math.round(b.every)} ms): a gap of ${Math.round(gap)} ms between the waves (at most ${GAP_MS})`);
+    const most = GAP_MS / b.x;
+    if (gap > most) add("contract-65", b.t, `wave ${b.wave + 1}'s first throw came ${Math.round(b.t - a.t)} ms after wave ${a.wave + 1}'s last (its spacing ${Math.round(b.every)} ms): a gap of ${Math.round(gap)} ms between the waves (at most ${Math.round(most)}${b.x !== 1 ? `, 0.5 s at the test speed ${b.x}` : ""})`);
   }
 }
 

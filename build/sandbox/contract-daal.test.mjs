@@ -29,7 +29,7 @@ test("contract-65: a wave that waits a flight after the last one is a break; wav
     let t = T + 100;
     for (let w = 0; w < 3; w++) {
       for (let i = 0; i < 4; i++) {
-        tl.push(life(t, "chop-throw", w, "every:600"));
+        tl.push(life(t, "chop-throw", w, "ms:600"));
         t += 600;
       }
       t += gapMs;

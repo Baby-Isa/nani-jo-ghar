@@ -177,7 +177,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
       const throwNote = (r) => {
         try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `every:${Math.round((r.every * 1000) / (Cook.speed || 1))}` });
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round((r.every * 1000) / (Cook.speed || 1))} x:${Cook.speed || 1}` });
         } catch (e) {
           /* only a log */
         }
