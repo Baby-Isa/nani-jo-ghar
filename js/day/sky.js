@@ -64,7 +64,7 @@ function cloud(svg, c) {
 }
 
 /** The sky into an svg w x h (the gradient's stops, sun, moon, clouds), or the weather's own picture. */
-export function paintSky(el, weather, { w = 1600, h = 900, url = (p) => p } = {}) {
+export function paintSky(el, weather, { w = 1600, h = 900, url = (p) => p, above = false } = {}) {
   const sky = (weather && weather.sky) || {};
   if (sky.art) {
     const im = document.createElement("img");
@@ -80,6 +80,12 @@ export function paintSky(el, weather, { w = 1600, h = 900, url = (p) => p } = {}
   const lg = SVG("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
   (sky.stops || [["#9fc7e0", 0], ["#e8eef0", 1]]).forEach(([c, o]) => SVG("stop", { offset: o, "stop-color": c }, lg));
   SVG("rect", { x: 0, y: 0, width: w, height: h, fill: `url(#${id})` }, s);
+  // the sky goes on upwards past the picture's top (a scene shrunk to keep its safe area shows it there)
+  if (above) {
+    const top = (sky.stops && sky.stops[0] && sky.stops[0][0]) || "#9fc7e0";
+    SVG("rect", { x: -w, y: -h * 2, width: w * 3, height: h * 2 + 1, fill: top }, s);
+    s.style.overflow = "visible";
+  }
   const k = w / 1600;
   if (sky.sun) SVG("circle", { cx: sky.sun.cx * k, cy: sky.sun.cy * k, r: sky.sun.r * k, fill: sky.sun.fill, class: "day-sun" }, s);
   if (sky.moon) SVG("circle", { cx: sky.moon.cx * k, cy: sky.moon.cy * k, r: sky.moon.r * k, fill: sky.moon.fill, class: "day-moon" }, s);
@@ -153,7 +159,7 @@ export function paintScene(el, { scene, weather, url = (p) => p, speed = () => 1
   box.style.width = `${W}px`;
   box.style.height = `${H}px`;
   const skyL = div("day-layer day-sky", box);
-  paintSky(skyL, weather, { w: W, h: H, url });
+  paintSky(skyL, weather, { w: W, h: H, url, above: true });
   box.appendChild(layer(scene.house, W, H, "day-house", url));
   box.appendChild(layer(scene.foreground, W, H, "day-ground", url));
   // the sun-shadow layer: only the sunny sky shows it (Zafar, 19 Oct)
@@ -167,13 +173,20 @@ export function paintScene(el, { scene, weather, url = (p) => p, speed = () => 1
     t.style.backgroundColor = weather.tint.fill;
     t.style.opacity = String(weather.tint.a || 0);
   }
+  // cover the stage, kept to the ground; but never crop the scene's safe area (scene.safe: [x0, y0, x1, y1], what must stay on
+  // screen: Nani, the door, the thought bubble): on a 4:3 tablet the picture shrinks to keep it, and the sky (drawn on upwards
+  // past the picture's top) fills what is left above
+  const safe = scene.safe || [0, 0, W, H];
   const fit = () => {
     const w0 = stage.clientWidth || 1;
     const h0 = stage.clientHeight || 1;
-    const s = Math.max(w0 / W, h0 / H);
-    box.style.transform = `translate(${((w0 - W * s) / 2).toFixed(1)}px, ${(h0 - H * s).toFixed(1)}px) scale(${s.toFixed(4)})`;
+    let s = Math.max(w0 / W, h0 / H);
+    if (w0 / s < safe[2] - safe[0]) s = w0 / (safe[2] - safe[0]);
+    const cx = (safe[0] + safe[2]) / 2;
+    const x = W * s <= w0 ? (w0 - W * s) / 2 : Math.min(0, Math.max(w0 - W * s, w0 / 2 - cx * s));
+    box.style.transform = `translate(${x.toFixed(1)}px, ${(h0 - H * s).toFixed(1)}px) scale(${s.toFixed(4)})`;
     fit.s = s;
-    fit.x = (w0 - W * s) / 2;
+    fit.x = x;
     fit.y = h0 - H * s;
   };
   fit();

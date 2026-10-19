@@ -12,6 +12,7 @@
     "w": 1600,
     "h": 900,
     "horizon": 560,
+    "safe": [240, 0, 1520, 900],
     "_about": "One fixed house and foreground; only the sky above the horizon is swapped by the weather (Zafar, 19 Oct). art: a picture of the whole layer (transparent where the sky shows), else the shapes.",
     "house": {
       "art": null,
@@ -146,6 +147,7 @@
     "art": { "book": null, "nani": "assets/cook/characters/nani-stand-v3-front.webp" },
     "goodnight": { "meaning": { "fn": "Say", "x": "phrase.goodnight" }, "en": "Goodnight!" },
     "tomorrow": { "meaning": { "fn": "Say", "x": "phrase.see-you-tomorrow" }, "en": "See you tomorrow!" },
+    "tomorrowWord": "adv.tomorrow",
     "pictures": {
       "_about": "A word's picture: its own entry here (by engine id), else the mode's own picture for it (each source: a data file's table, the id with `strip` taken off, the field, the path made from it), else a plain shape (no text). Loaded only when a page needs it.",
       "own": {

@@ -43,8 +43,8 @@ async function door(ctx, query, prefix) {
   const e = await expect(page);
   if (!e || e.kind !== "tap") throw new Error(`the door did not ask for Ha! (${JSON.stringify(e)})`);
   await tapExpected(page, rec, e);
-  await page.waitForFunction(() => window.njgTest.expect().kind === "end", null, { timeout: 20000 });
-  await sleep(200);
+  // the answer chosen, the child's Ha! heard (a trip goes straight on to the ride after it)
+  await page.waitForFunction(() => window.njgTest.expect().kind === "end" || document.querySelector(".day-thought.go"), null, { timeout: 20000 });
   await rec.state(`${prefix}yes`);
 }
 export const dayDoor = {

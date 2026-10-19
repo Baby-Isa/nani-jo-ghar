@@ -162,7 +162,9 @@ export async function runBook(el, api, day) {
   prev.appendChild(door);
   root.appendChild(prev);
   requestAnimationFrame(() => prev.classList.add("in"));
-  const tm = api.line({ word: "adv.tomorrow", en: "tomorrow" });
+  // "See you tomorrow!" when the engine can say it; until then the word it has, tomorrow (saware, a draft form)
+  const tline = api.line(B.tomorrow);
+  const tm = tline && tline.ok ? tline : api.line({ word: B.tomorrowWord || "adv.tomorrow", en: "tomorrow" });
   const tl = api.render(tm);
   say.appendChild(tl);
   await api.say(tm, { el: tl, who: "nani" });
