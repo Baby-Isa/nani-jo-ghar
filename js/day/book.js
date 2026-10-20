@@ -371,11 +371,12 @@ export async function runBook(host, api, day) {
     await api.wait(C.tiltMs * C.dissolveAt);
   } else place3(C.book);
   book.style.transitionDuration = `${(direct ? 300 : C.dissolveMs) / api.speed}ms`;
-  root.classList.add("day-reading");
   book.classList.add("open");
   await api.wait(direct ? 300 : Math.max(C.dissolveMs, C.tiltMs * (1 - C.dissolveAt)));
   window.Day.book.stage = "pages";
   // behind the open book the room eases back to the whole room, softly out of focus (the close-up stays only for the moves)
+  root.classList.add("day-reading");
+  await api.wait(380);
   place3(C.wide);
   root.classList.add("day-behind");
   layout();
