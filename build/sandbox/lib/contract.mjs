@@ -56,7 +56,7 @@ import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
 // contracts 45 and up: the day's frame (s09-frame), in a file of their own
-import { DAY_CHECKS, check45, check46 } from "./contract-day.mjs";
+import { DAY_CHECKS, check45, check46, check47, check48 } from "./contract-day.mjs";
 // contracts 65 and up: the daal station (s08 w4A), in a file of their own
 import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
@@ -1384,6 +1384,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check37(r, tl, segs, add);
   check45(tl, add);
   check46(tl, add);
+  check47(r, tl, add);
+  check48(r, tl, add);
   check50(r, tl, segs, add);
   check65(r, tl, add);
   check66(r, tl, v, add);
