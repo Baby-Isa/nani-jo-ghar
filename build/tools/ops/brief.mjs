@@ -2,7 +2,7 @@
 // Brief generator: a small JSON spec -> a complete session brief in the template's shape, with the standing boilerplate added.
 import { readFileSync, writeFileSync } from "node:fs";
 import { args, help, die, sh } from "./lib.mjs";
-import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs, outsideScope, NAMES_HELPERS } from "./briefpack.mjs";
+import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs, outsideScope, NAMES_HELPERS, proofLines } from "./briefpack.mjs";
 
 const HELP = `
 node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows] [--no-pack]
@@ -110,13 +110,8 @@ if (s.flows?.length && !a.has("no-rows")) {
   add("");
 }
 
-add("PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):",
-  "  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's \`/review\`. If a check would run longer, stop it and say so in the report.",
-  "  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).",
-  "  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.",
-  "  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).",
-  "  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.",
-  "  - `node build/tools/review/skeleton.mjs " + report + "` starts the report's proof section.",
+add(...proofLines(s, report));
+add(
   `TESTS: ${s.browser === false ? "no browser needed" : `browser tests one at a time (\`flock -w 1800 /tmp/njg-browser.lock timeout ...\`, B16), own COOK_TEST_PORT = ${s.port || "<pick the next free one; record it in docs/architecture/testing.md>"}`}.`, "");
 
 add("GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.",

@@ -149,3 +149,23 @@ export function outsideScope(owns, files, { report } = {}) {
 }
 // a brief that sets up helper sessions breaks the one-or-two-sessions rule
 export const NAMES_HELPERS = (text) => /\b(spawn|launch|start|use|open)\b[^.\n]{0,40}\bhelper (session|agent)s?\b/i.test(String(text || ""));
+
+// The PROOF section every brief carries (rule C8, decisions 48 and 50; Zafar, 20 Oct: builders replay their own flows at every size
+// before reporting, so the review round finds nothing the matrix would have shown).
+export const MATRIX_SIZES = "800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900";
+export function matrixCommand(flows, report) {
+  const fl = flows && flows.length ? flows.join(",") : "<the spec's flows>";
+  return `node build/sandbox/run.mjs --contract --flow ${fl} --sizes ${MATRIX_SIZES} --run-id ${report}-matrix --no-sheets`;
+}
+export function proofLines(s, report) {
+  return [
+    "PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):",
+    "  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.",
+    "  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).",
+    "  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.",
+    `  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: \`flock -w 3600 /tmp/njg-browser.lock timeout 1800 ${matrixCommand(s.flows, report)}\`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).`,
+    "  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).",
+    "  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.",
+    "  - `node build/tools/review/skeleton.mjs " + report + "` starts the report's proof section.",
+  ];
+}

@@ -41,3 +41,17 @@ test("session scope (checks-to-build 14): files outside the spec's owns are list
   assert.equal(NAMES_HELPERS("Launch two helper sessions for the art"), true);
   assert.equal(NAMES_HELPERS("NO helper sessions or background helpers."), false);
 });
+
+test("every brief's PROOF asks for the size-matrix replay of its own flows before the finish (Zafar, 20 Oct)", async () => {
+  const { proofLines, matrixCommand, MATRIX_SIZES } = await import("./briefpack.mjs");
+  assert.equal(MATRIX_SIZES, "800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900");
+  assert.equal(matrixCommand(["clinic:heal-eye", "cook:chai-tray"], "s09-x"),
+    "node build/sandbox/run.mjs --contract --flow clinic:heal-eye,cook:chai-tray --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s09-x-matrix --no-sheets");
+  const text = proofLines({ flows: ["clinic:heal-eye"] }, "s09-x").join("\n");
+  assert.ok(text.includes("flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:heal-eye --sizes " + MATRIX_SIZES + " --run-id s09-x-matrix --no-sheets"));
+  assert.match(text, /0 contract breaks the report doesn't explain/);
+  assert.match(text, /rises to 30/);
+  assert.doesNotMatch(text, /1366x768 only, one shot/, "the old 1366x768-only line is gone");
+  assert.doesNotMatch(text, /HARD LIMIT/);
+  assert.match(proofLines({}, "r").join("\n"), /--flow <the spec's flows>/, "a spec with no flows says so");
+});
