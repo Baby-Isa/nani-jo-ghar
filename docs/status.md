@@ -8,18 +8,16 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (19 Oct 2026, 20:45 UK):** Sprint 8's waves are all merged on `claude/new-session-b5r2am` (pushed); `main` = 38d0591a. Sprint 9 ("A day at Nani's", `docs/sprints/S09-a-day-at-nanis.md`) has its frame and mock-ups merged; its art run waits on Zafar agreeing the mock-ups. Nothing running.
+**Where things stand (20 Oct 2026, 03:00 UK):** Sprint 8's fix round (waves 6A-6H) is merged and pushed on `claude/new-session-b5r2am`; `main` = 38d0591a. Checks all green. Running: the final evidence run over the sprint's rows (`evidence.mjs --run --sprint --since 38d0591a`), then the full gate `s08-gate-final`; then judge agents per batch, `--collect`, `--apply`, and ask Zafar before `/publish`.
 
-**Sprint 8 review (done):** evidence run `ev-20261019-172022-khk` (`build/reports/evidence-ev-20261019-172022-khk.md`), judged and applied: 26 rows proven, 54 FAIL and reopened, 40 not proven (26 sheets miss the moment, 14 tool failures: the tool owner's), 10 Zafar's, 4 decisions. Full gate `s08-gate-close` failed: 508 contract breaks (mostly known: English in the parked modes 167, low-res backgrounds on big screens 162; new: repeated lines 82, mostly tadka; chaat written vs said 27; pop-up headline shrinks 14; level-table rows), 8 clinic runs time out (foot drag, boing L3 lever, fever bottle, cut L2). Load check passes.
+**Done this round:** spoken English out of the orders (joins dropped where Mum has no Kutchi; tomato asked singly until the plural is known); each line said once; pop-up wraps first; clinic stuck runs fixed; the wrong colour clip (a late line) fixed with a test over every heal game; the parked modes write no English; art that had landed is wired (potato, whole lemon, drop machine, level plasters, Nani's talking and blinking faces); evidence specs reach every moment. Reports `build/reports/s08-w6*.md`.
 
-**Waiting on Zafar:** five decisions (19 Oct, chat): 1 a short fix round before publishing (spoken English "with"/"tomatoes", sekelo name, fever flip, daal pour, chai labels, plus the gate's repeats, pop-up wrap and clinic time-outs) or publish now; 2 SH-104; 3 SEK-14; 4 CLN-115; 5 CLN-196. Also the Sprint 9 mock-up questions.
+**Art:** Sprint 9 style test `s09a` (10 images) is with Zafar (Chrome block; references from his ChatGPT chat "Nani jo Ghar s09a references", Nani = `sources/art/s08/sheet-nani-final-1.png`; the old Nani archived to `sources/archive/nani-pre-s08`). Sprint 8 fix run `s08c` (28 images) is planned (`docs/design-language/art-plans/s08c-art-plan.md`), after s09a.
 
-**Next steps, in order:**
-1. His answers into rows and docs.
-2. If yes to 1: the fix round, two builders, each `/brief`ed; then `evidence.mjs --run --rows <the round's rows>`, judge, the gate on the touched flows, `/publish` on his go.
+**Waiting on Zafar:** the tomato plural (*ba tameto* or *ba tameta*); the five s08c decisions (sekelo trays, the kadchi, sekelo decoys, the chai pour, pantry stickers); SH-112's shelf band (about 30% vs 26%); boing's tool column (two or four colours); the s09a images with his notes; then /publish.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8 is reviewed and waits on my five decisions. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8's fixes are merged; finish the evidence judging and the gate, then ask me before publishing. Tell me before launching anything new.
 
 ## The fix list
 
