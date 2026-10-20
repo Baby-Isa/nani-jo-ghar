@@ -55,3 +55,21 @@ test("every brief's PROOF asks for the size-matrix replay of its own flows befor
   assert.doesNotMatch(text, /HARD LIMIT/);
   assert.match(proofLines({}, "r").join("\n"), /--flow <the spec's flows>/, "a spec with no flows says so");
 });
+
+test("a spec naming fix-list rows with no evidence spec is refused unless the builder owns evidence.json (Sprint 8)", async () => {
+  const { missingEvidence, rowIdsIn, EVIDENCE_FILE } = await import("./briefpack.mjs");
+  const evidence = { _about: "x", "CLN-107": { probe: 1 } };
+  const known = new Set(["CLN-107", "SH-60"]);
+  const spec = (extra = {}) => ({ owns: ["js/clinic/**"], tasks: [{ do: "Fix CLN-107 and SH-60", accept: "UTF-8 and B-52 are not rows" }], ...extra });
+  assert.deepEqual(rowIdsIn("CLN-107, SH-60, UTF-8, CLN-107", known), ["CLN-107", "SH-60"]);
+  const bad = missingEvidence(spec(), evidence, known);
+  assert.equal(bad.ok, false);
+  assert.deepEqual(bad.missing, ["SH-60"]);
+  assert.match(bad.message, /Write the evidence spec before the builder starts/);
+  assert.equal(missingEvidence(spec({ tasks: [{ do: "Fix CLN-107", accept: "" }] }), evidence, known).ok, true, "every named row has its evidence");
+  assert.equal(missingEvidence(spec({ tasks: [{ do: "Tidy the docs", accept: "" }] }), evidence, known).ok, true, "no row named");
+  assert.equal(missingEvidence(spec({ specsByBuilder: true, owns: ["js/clinic/**", EVIDENCE_FILE] }), evidence, known).ok, true, "the builder owns the evidence");
+  const half = missingEvidence(spec({ specsByBuilder: true }), evidence, known);
+  assert.equal(half.ok, false, "specsByBuilder without owning evidence.json is still refused");
+  assert.match(half.message, /does not own build\/sandbox\/data\/evidence\.json/);
+});

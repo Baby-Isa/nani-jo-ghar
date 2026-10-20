@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 // Brief generator: a small JSON spec -> a complete session brief in the template's shape, with the standing boilerplate added.
 import { readFileSync, writeFileSync } from "node:fs";
-import { args, help, die, sh } from "./lib.mjs";
-import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs, outsideScope, NAMES_HELPERS, proofLines } from "./briefpack.mjs";
+import { join } from "node:path";
+import { ROOT, args, help, die, sh } from "./lib.mjs";
+import { MODEL_TABLE, modelFor, modelTableText, contextPack, overlaps, liveSpecs, outsideScope, NAMES_HELPERS, proofLines, missingEvidence, EVIDENCE_FILE } from "./briefpack.mjs";
+import { loadRegressions } from "../review/lib/regressions.mjs";
 
 const HELP = `
 node build/tools/ops/brief.mjs <spec.json> [--out file] [--no-rows] [--no-pack]
@@ -23,7 +25,10 @@ node build/tools/ops/brief.mjs --audit <spec.json> <git range>   every file the 
                           from the table (Fable: art, design, the review before main; Opus high: code, shared; Sonnet medium: specs,
                           drivers, docs, verdicts, reports; Haiku: text-only expects, counts, logs). "model" in the spec still wins.
     live: true                                               this brief is running: two live briefs may not own one path (exit 1)
-    port, browser: true|false                               browser tests and the session's own COOK_TEST_PORT
+    specsByBuilder: true                                     the builder writes the evidence specs for the fix-list rows its tasks name (the spec
+                                                             must own build/sandbox/data/evidence.json). Without it, a row named in a task with
+                                                             no entry in that file refuses the brief: write the evidence spec before the builder starts
+    port, browser: true|false                              browser tests and the session's own COOK_TEST_PORT
     report, publish: false|true, extra: [...]               finish: the report name; whether this session ends with the push to main
   --no-rows   skip the regress.mjs lookup (rows are then left for the session to look up). No network.
   --no-pack   do not write the context pack (<spec>.context.md: under 2k words, the last 15 decisions and the rules the task names, pasted).
@@ -52,6 +57,10 @@ for (const k of ["name", "model", "cost", "stop", "branch", "owns", "tasks"]) if
 if (NAMES_HELPERS(JSON.stringify(s.tasks) + " " + (s.extra || []).join(" "))) die("The spec sets up helper sessions: one build session at a time (two at most on different files), no helpers.");
 if (s.live && clash.length) { for (const c of clash) console.error(`OVERLAP: "${c.a}" owns ${c.pathA}; "${c.b}" owns ${c.pathB}`); die(`${clash.length} overlap(s) between live briefs: one owner per path; the other brief lists it read-only (an edit there goes in the report as a request).`, 1); }
 
+{ // Sprint 8: a task that names a fix-list row needs that row's evidence spec before the builder starts
+  const m = missingEvidence(s, JSON.parse(readFileSync(join(ROOT, EVIDENCE_FILE), "utf8")), new Set(loadRegressions().map((r) => r.id)));
+  if (!m.ok) die(m.message, 1);
+}
 const L = [], add = (...x) => L.push(...x), list = (xs) => (xs || []).map((x) => `  - ${x}`);
 const report = s.report || s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 

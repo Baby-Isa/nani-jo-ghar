@@ -27,4 +27,6 @@ description: Process a new round of Mum's recordings into clips, the family-audi
 node build/tools/ops/mumsheet.mjs                     # counts only
 node build/tools/ops/mumsheet.mjs --out "docs/language/mum-questions/Questions for Mum (Round N).md" --docx
 ```
+Build the next question sheet from `docs/language/recording-sheet.md` (grammar first, then the vocabulary slots in; refresh it with `node build/tools/ops/recordings.mjs`).
+
 Cook first, then the clinic; quick checks from the clash list; `--max` keeps a sitting near an hour. Read it once as Mum would; then add the round to `docs/language/mum-questions/README.md`. Zafar's own calls (clash list §3-6) go to him, not Mum.
