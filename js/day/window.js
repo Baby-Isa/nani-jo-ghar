@@ -114,6 +114,20 @@ export async function runWindow(el, api, day) {
     window.OrderCard.render(cardBox, [cardData()], { fold, closed, onPeek: () => hints++ });
   };
 
+  // ---- the ride's own pictures, fetched while the pop-up reads the card (decision 68: only this ride's, at their drawn size) ----
+  const v = ride.view || {};
+  const pics = [v.frame && v.frame.art, v.frame && v.frame.left, v.frame && v.frame.right, ...(v.layers || []).map((l) => l.art), ...Object.values(v.props || {}).map((p) => p.art), ...Object.values(ride.things).map((t) => t.art)].filter(Boolean);
+  const loaded = Promise.all(
+    [...new Set(pics)].map(
+      (p) =>
+        new Promise((ok) => {
+          const im = new Image();
+          im.onload = im.onerror = () => (im.decode ? im.decode().catch(() => {}).then(ok) : ok());
+          im.src = url(p);
+        }),
+    ),
+  );
+
   // ---- the request pop-up first: the card at full size, read out row by row, then into the sidebar ----
   const LC = window.Lifecycle;
   if (LC && LC.request && window.OrderCard) {
@@ -135,6 +149,8 @@ export async function runWindow(el, api, day) {
     });
   }
   drawCard();
+  // the view comes on whole (never a half-drawn road): wait for its pictures, at most a moment more
+  await Promise.race([loaded, new Promise((r) => setTimeout(r, 2500))]);
   if (LC && LC.stageStart) LC.stageStart("day:window");
 
   // ---- the ride ----
