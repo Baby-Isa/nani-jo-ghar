@@ -175,6 +175,7 @@
     const gapK = view.gapK != null ? view.gapK : 0.15;
     const passOnly = Object.keys(things).filter((id) => things[id]);
     const propIds = Object.keys(propDefs);
+    const maxPropW = Math.max(0, ...propIds.map((id) => itemH * (propDefs[id].h || 0.8) * (propDefs[id].ratio || 1)));
     const fam = plan.families || W.families(ride);
 
     let vx0 = 0;
@@ -342,7 +343,13 @@
         const cov = m.coverOf(Object.assign({}, p, { x: 0 }))[0];
         p.x = atStart ? th.x + th.w * f - (cov.x + cov.w) : th.x + th.w * (1 - f) - cov.x;
         // never more than half of any member behind it
-        if (c.members.some((o) => m.share(o) < 0.0 || hiddenBy(o, p) > 0.5)) m.props.pop();
+        if (c.members.some((o) => hiddenBy(o, p) > 0.5)) m.props.pop();
+        else if (p.x < vx1 + 10) {
+          // a prop before the group would come on inside the window (a pop-in): the group and its prop come on further right
+          const dx = vx1 + 10 - p.x;
+          p.x += dx;
+          c.members.forEach((o) => (o.x += dx));
+        }
       }
     }
     const hiddenBy = (th, p) => {
@@ -436,7 +443,7 @@
         if (c.state === "wait" && m.road >= nextGroupAt) {
           // one group at a time: the last one's members gone by, no thing of this group's on screen, room where it comes on
           const span = c.group.reduce((a, id) => a + sizeOf(id, c.line).w, 0) + itemH * gapK * c.group.length;
-          if (!around && m.road - clearSince >= viewW() * 0.15 && !idsAround(c.group) && regionClear(c.line, vx1, vx1 + span + 40, c.line === "near")) spawnGroup(c);
+          if (!around && m.road - clearSince >= viewW() * 0.15 && !idsAround(c.group) && regionClear(c.line, vx1, vx1 + span + 40 + (c.line === "near" ? maxPropW : 0), c.line === "near")) spawnGroup(c);
         } else if (c.state === "coming") {
           const lead = c.members.reduce((a, o) => (o.x < a.x ? o : a), c.members[0]);
           const rel = (lead.x + lead.w / 2 - vx0) / viewW();
@@ -827,9 +834,17 @@
     const step = (now) => {
       if (stopped) return;
       if (last == null) last = now;
-      const dt = Math.min(100, now - last) * speed;
+      // the road keeps the wall clock's time (a late frame moves it on, never a stall that then creeps); only a gap of more
+      // than a second (a hidden tab, a paused page) counts as one frame. Stepped in small pieces, so no call or pass is missed.
+      let ms = now - last;
+      if (ms > 1000 || ms < 0) ms = 16;
       last = now;
-      model.step(dt);
+      let dt = ms * speed;
+      while (dt > 0) {
+        const d = Math.min(dt, 50);
+        model.step(d);
+        dt -= d;
+      }
       handle();
       // the layers: each at its own share of the road, one copy left of the window so the first fade never shows
       Object.values(layers).forEach((L) => {

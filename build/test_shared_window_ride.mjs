@@ -94,6 +94,33 @@ test("three speeds: a thing crosses the window in about 9, 6 and 3.5 s (never un
   }
 });
 
+test("nothing jumps: every thing and prop comes on right of the window and moves only with its line, until it leaves (RIDE-01)", () => {
+  for (const hold of [null, "fast"])
+    for (const [vn, view] of Object.entries(VIEWS))
+      for (let s = 1; s <= 30; s++) {
+        const p = W.plan(ride, 1 + (s % 3), seeded(s), { callable });
+        const m = W.model(ride, p, { rng: seeded(s), hold, view });
+        const last = new Map();
+        let road = 0;
+        while (!m.done && m.t < 120000) {
+          m.step(40);
+          const d = m.road - road;
+          road = m.road;
+          // a found thing's tap: the fair player, so the ride goes on
+          for (const ev of m.drain()) if (ev.type === "call") m.tap(ev.uid);
+          for (const o of [...m.things, ...m.props]) {
+            const k = `${o.line || "near"}:${o.uid}`;
+            if (!last.has(k)) assert.ok(o.x >= m.view().x1, `${vn} seed ${s}: ${o.id} came on inside the window (x ${Math.round(o.x)} < ${Math.round(m.view().x1)})`);
+            else {
+              const want = last.get(k) - d * (o.line === "field" ? m.lineSpeed.field : m.lineSpeed.near);
+              assert.ok(Math.abs(o.x - want) < 0.01, `${vn} seed ${s}: ${o.id} jumped ${Math.round(o.x - want)} px`);
+            }
+            last.set(k, o.x);
+          }
+        }
+      }
+});
+
 test("a speed change eases over about a second: no jump, every thing and layer together", () => {
   const p = W.plan(ride, 1, seeded(4), { callable });
   const m = W.model(ride, p, { rng: seeded(4), view: VIEWS.phone });
