@@ -109,7 +109,7 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
   const { page, rec } = ctx;
   await open(page, query, speed);
   if (room) {
-    await page.waitForSelector(".day-roomline .day-line", { timeout: 20000 });
+    await page.waitForSelector(".day-cv .day-bubble.in .day-line", { timeout: 20000 });
     await sleep(200);
     await rec.state(`${prefix}room-greet`);
     await page.waitForFunction(() => window.Day.book && window.Day.book.stage === "tilt", null, { timeout: 30000 });
@@ -124,6 +124,7 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
     await rec.state(`${prefix}${name}`);
   };
   const wronged = new Set();
+  let ourdayAt = 0;
   const t0 = Date.now();
   while (Date.now() - t0 < 240000) {
     const e = await expect(page);
@@ -132,7 +133,10 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
     if (e.kind === "wait") {
       const out = await page.evaluate(() => window.Day.book && window.Day.book.stage).catch(() => null);
       if (out === "out" && !seen.has("end-zoom-out")) { seen.add("end-zoom-out"); await rec.state(`${prefix}end-zoom-out`); }
-      if (await page.$(".day-ourday")) await once("ourday");
+      if (await page.$(".day-ourday")) {
+        if (!ourdayAt) ourdayAt = Date.now();
+        await once("ourday");
+      }
       await sleep(120);
       continue;
     }
@@ -148,10 +152,20 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
       if (await page.$(".day-nameit .day-filled")) await once("nameit-filled");
       if (await page.$(".day-photo-frame.day-mounted")) await once("photo-in");
       if (await page.$(".day-find .day-tick")) await once("find-found");
-      if (await page.$(".day-ourday")) await once("ourday");
+      if (await page.$(".day-ourday")) {
+        await once("ourday");
+        // our day's finished layout stays a while (BOOK-06 shoots it 9 s after the photos start to slide in)
+        if (ourdayAt) await sleep(Math.max(0, ourdayAt + 10500 - Date.now()));
+      }
       const n = await page.evaluate(() => window.Day.book.page);
-      await rec.state(`${prefix}turn-${n}`);
+      // one shot per page turn; a tap that did not take is tried again (never stuck)
+      if (!seen.has(`turn-${n}`)) {
+        seen.add(`turn-${n}`);
+        await rec.state(`${prefix}turn-${n}`);
+      }
       await tapSel(page, rec, e.sel);
+      // the page turn's own moment (a filmstrip at drv:page-turn films the page swinging over)
+      await mark(page, "page-turn", { block: false });
       await sleep(400);
       continue;
     }

@@ -186,20 +186,37 @@ async function nameit(g, page) {
   await api.wait(480);
   chosen.style.opacity = "0";
   btns.forEach((b) => (b.disabled = true));
-  // ... and only then the row shows the written Kutchi: the day's sentence, the word in its place
+  // ... and only then the row shows the written Kutchi: the day's sentence, the word in its place. Rule 11: when the engine can't
+  // say the day's sentence yet, the row holds the word itself (its Kutchi, the engine's) and the sentence is its grey to-record
+  // English under the row: never a shorter Kutchi line in its place
   node.innerHTML = "";
-  const r = api.render(sentLn, { cls: "day-inline" });
   const word = g.wordOf(page.answer);
-  r.querySelectorAll("[data-seg]").forEach((s) => {
-    const seg = sentLn.ok && sentLn.result.segments[Number(s.dataset.seg)];
-    if (seg && seg.w && (seg.w === word || g.sameWord(seg.w, word))) s.classList.add("day-word-in");
-  });
-  node.appendChild(r);
+  if (sentLn.ok) {
+    const r = api.render(sentLn, { cls: "day-inline" });
+    r.querySelectorAll("[data-seg]").forEach((s) => {
+      const seg = sentLn.result.segments[Number(s.dataset.seg)];
+      if (seg && seg.w && (seg.w === word || g.sameWord(seg.w, word))) s.classList.add("day-word-in");
+    });
+    node.appendChild(r);
+  } else {
+    const w = api.render(chosen._word, { cls: "day-inline" });
+    w.querySelectorAll("[data-seg]").forEach((s) => s.classList.add("day-word-in"));
+    node.appendChild(w);
+  }
   pill.classList.add("day-filled");
   row.classList.add("day-filled");
-  if (window.FitText) window.FitText.run(row);
+  let rec = null;
+  if (!sentLn.ok) {
+    rec = api.render(sentLn, { cls: "day-sent-rec" });
+    row.after(rec);
+  }
+  if (window.FitText) window.FitText.run(row.parentElement);
   g.head(null);
-  await g.say(sentLn, r);
+  if (sentLn.ok) await g.say(sentLn, node.firstChild);
+  else {
+    await g.say(chosen._word, node.firstChild);
+    await g.say(sentLn, rec);
+  }
 }
 
 // ---------------------------------------------------------------- stick in the photo
@@ -302,7 +319,7 @@ async function ourday(g, page) {
   wrap.classList.add("day-ourday");
   const n = page.things.length;
   const leftN = Math.min(3, Math.ceil(n / 2) + (n > 4 ? 0 : 0));
-  const lines = page.things.map((k, i) => g.line(i === 0 ? "firstOf" : "thenOf", k));
+  const lines = page.things.map((k) => g.line(["told", k], k));
   g.expect(() => ({ kind: "wait", game: "ourday" }));
   const cells = [];
   for (let i = 0; i < n; i++) {

@@ -1,14 +1,16 @@
 /*
  * The evening book (Zafar 19-20 Oct, docs/sprints/S09-a-day-at-nanis.md; build/reports/s09a-fable-review.md sections 2-3): Nani in
- * her armchair by the fire in the little library greets the child ("What did we do today?"); the camera eases to her face, turns down
- * to the open book on her lap (facing the child, as if she reads to them) and zooms onto its pages, dissolving to the pages view
- * early in the tilt. Each game (js/day/book-play.js: find it, name it, stick in the photo, our day) sits on the two pages, a page
- * turn between them (a curl from the right page's bottom corner, the 64 px corner the child taps). At the end the book closes and
- * the camera pulls back out to the room: a new day-book stands on the empty shelf (one per day played), today's words as gold
- * cards, goodnight, and tomorrow's door by its sky. No player character, no stars, no scores (non-negotiable 12).
+ * her armchair by the fire in the little library greets the child ("What did we do today?", the shared speech bubble beside her);
+ * the camera eases to her face, turns down to the open book on her lap and zooms onto its pages: the pages picture (b2 v2, the book
+ * held out to the child, her chin, dupatta and hands round it: Zafar, 20 Oct) grows from the book in her lap to fill the screen. Each
+ * game (js/day/book-play.js: find it, name it, stick in the photo, our day) sits on the two pages, a page turn between them (the
+ * right page lifts from its bottom corner and swings over the fold; the 64 px corner the child taps). At the end the pages shrink
+ * back into the book on her lap (the room all round, never black): a new day-book flies from her lap onto the empty shelf (one
+ * per day played), today's words as gold cards, goodnight, tomorrow's door by its sky as its own card. Camera moves take their
+ * real time even at test speed. No player character, no stars, no scores (non-negotiable 12).
  *
- * On a phone the book is scaled to the screen's width, not the picture to its height (pages at least 320 px wide at 844x390, the
- * border may clip): no sidebar, Nani's replay is her round face on the left page's corner, every button at least 64 px.
+ * On a phone the pages picture comes closer than the cover fit so each page is at least 330 px wide (pages at 844x390): no
+ * sidebar, Nani's replay is her round face on the left page's corner, every button at least 64 px.
  *
  * It reads what the modes already keep: the day log (js/core/log.js: today's entries) and the words met today (the save's words),
  * never a list of its own. data/day-book.json holds the places, the games and the lines (loaded only here, decision 68).
@@ -54,7 +56,7 @@ const el = (tag, cls, parent) => {
 export async function runBook(host, api, day) {
   const { core, url, E } = api;
   // one stage for the whole evening (day/book/<part>): a page turn is not a stage end
-  api.test.state("day/book/room");
+  api.test.state("day/book/load");
   api.test.expect(() => ({ kind: "wait" }));
   window.Day.stage = "book";
   const D = await fetch(url("data/day-book.json")).then((r) => r.json());
@@ -125,6 +127,11 @@ export async function runBook(host, api, day) {
       const S = place[game].sentence;
       return lineOf(S[spec[1]] || S.default, key);
     }
+    // our day: her line for each photo of the day (the place's `told`)
+    if (Array.isArray(spec) && spec[0] === "told") {
+      const T = place.told || {};
+      return lineOf(T[spec[1]] || T.default, key);
+    }
     return lineOf(D.lines[spec], key);
   };
 
@@ -137,50 +144,104 @@ export async function runBook(host, api, day) {
   const shelf = el("div", "day-shelf", cam);
   const books = Math.max(0, Number((core.save.get("story") || {}).dayBooks) || 0);
   const S = A.shelf;
+  const slotOf = (i) => ({ x: S.x + i * (S.w + S.gap), y: S.y - S.h });
   const addSpine = (i, fresh) => {
     const s = el("i", `day-spine${fresh ? " fresh" : ""}`, shelf);
-    s.style.left = `${S.x + i * (S.w + S.gap)}px`;
-    s.style.top = `${S.y - S.h}px`;
-    s.style.width = `${S.w}px`;
-    s.style.height = `${S.h - (i % 3) * 6}px`;
-    s.style.marginTop = `${(i % 3) * 6}px`;
-    s.style.background = S.colours[i % S.colours.length];
+    const p = slotOf(i);
+    Object.assign(s.style, { left: `${p.x}px`, top: `${p.y}px`, width: `${S.w}px`, height: `${S.h}px`, background: S.colours[i % S.colours.length] });
     return s;
   };
   for (let i = 0; i < Math.min(books, S.max - 1); i++) addSpine(i, false);
   const [RW, RH] = A.roomSize;
+  // the camera's moves always take their real time (also at test speed): a filmstrip of the camera must see them
+  const realWait = (ms) => new Promise((r) => setTimeout(r, ms));
   let shot = C.wide;
+  let camAt = { sc: 1, tx: 0, ty: 0 };
   const place3 = (v, ms = 0) => {
     shot = v;
     const vw = root.clientWidth;
     const vh = root.clientHeight;
     const base = Math.max(vw / RW, vh / RH);
-    // never closer than the picture holds (ART-05: at most 1.5 screen px per source px, times the pixel ratio): with today's
-    // 1536 px room the close-ups are gentler on a laptop; a sharper room picture (the s09b redo) lets them come right in
+    // never closer than the picture holds (ART-05: at most 1.5 screen px per source px, times the pixel ratio)
     const dpr = window.devicePixelRatio || 1;
     const sc = Math.max(base, Math.min(base * v.zoom, ((C.maxUpscale || 1.5) * (room.naturalWidth || RW)) / RW / dpr));
     let tx = vw / 2 - v.cx * sc;
     let ty = vh / 2 - v.cy * sc;
     tx = Math.min(0, Math.max(vw - RW * sc, tx));
     ty = Math.min(0, Math.max(vh - RH * sc, ty));
-    cam.style.transition = ms ? `transform ${ms / api.speed}ms cubic-bezier(.45,.05,.35,1)` : "none";
+    camAt = { sc, tx, ty };
+    cam.style.transition = ms ? `transform ${ms}ms cubic-bezier(.45,.05,.35,1)` : "none";
     cam.style.transform = `translate(${tx}px, ${ty}px) scale(${sc})`;
   };
   cam.style.width = `${RW}px`;
   cam.style.height = `${RH}px`;
   place3(C.wide);
+  /** a point of the room picture on the screen, for the camera's current shot */
+  const onScreen = (x, y) => ({ x: camAt.tx + x * camAt.sc, y: camAt.ty + y * camAt.sc });
 
-  // Nani's line in the room: one card, top left
-  const roomSay = el("div", "day-lines day-roomline", root);
-  const sayRoom = async (ln) => {
-    roomSay.innerHTML = "";
-    if (!ln) return;
-    const r = api.render(ln);
-    roomSay.appendChild(r);
+  // Nani's line in the room: the shared speech bubble (css/shared/conversations.css: cream, the speaker chip to hear it again),
+  // beside her head on the side with room, never over her face
+  if (!document.querySelector('link[data-day-cv]')) {
+    const lk = document.createElement("link");
+    lk.rel = "stylesheet";
+    lk.href = url("css/shared/conversations.css");
+    lk.dataset.dayCv = "";
+    document.head.appendChild(lk);
+  }
+  const cvLayer = el("div", "cv-layer day-cv", root);
+  let roomLine = null;
+  const bubble = el("div", "cv-bubble cv-say day-bubble", cvLayer);
+  bubble.dataset.speaker = "nani";
+  const bubbleText = el("span", "cv-text", bubble);
+  const spk = el("button", "cv-spk", bubble);
+  spk.type = "button";
+  spk.setAttribute("aria-label", "");
+  spk.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
+  spk.addEventListener("click", () => {
+    if (!roomLine) return;
+    bubble.classList.add("speaking");
+    api.say(roomLine, { el: bubbleText.firstChild, who: "nani", min: false }).then(() => bubble.classList.remove("speaking"));
+  });
+  const H = A.head || { x: 512, y: 150, r: 95 };
+  const placeBubble = (prefer = "left") => {
+    const vw = root.clientWidth;
+    const bw = bubble.offsetWidth;
+    const bh = bubble.offsetHeight;
+    const c = onScreen(H.x, H.y);
+    const r = H.r * camAt.sc;
+    const leftRoom = c.x - r - 16;
+    const rightRoom = vw - (c.x + r) - 16;
+    const side = prefer === "left" ? (leftRoom >= Math.min(bw, 200) || leftRoom >= rightRoom ? "left" : "right") : rightRoom >= Math.min(bw, 200) || rightRoom >= leftRoom ? "right" : "left";
+    bubble.style.maxWidth = `${Math.max(160, (side === "left" ? leftRoom : rightRoom) - 8)}px`;
+    const w = bubble.offsetWidth;
+    let x = side === "left" ? c.x - r - 12 - w / 2 : c.x + r + 12 + w / 2;
+    x = Math.max(w / 2 + 12, Math.min(vw - w / 2 - 12, x));
+    // the shared bubble hangs above its point (translate -50%, -100%): its point is just under the line of her eyes
+    const y = Math.max(bh + 24, c.y + bh / 2);
+    Object.assign(bubble.style, { left: `${x}px`, top: `${y}px` });
+    bubble.dataset.side = side;
+  };
+  const sayRoom = async (ln, prefer) => {
+    roomLine = ln;
+    bubbleText.innerHTML = "";
+    if (!ln) {
+      bubble.classList.remove("in");
+      bubble.style.visibility = "hidden";
+      return;
+    }
+    bubble.style.visibility = "";
+    const r = api.render(ln, { cls: "day-inline" });
+    bubbleText.appendChild(r);
+    if (window.FitText) window.FitText.run(bubble);
+    placeBubble(prefer);
+    bubble.classList.add("in");
+    bubble.classList.add("speaking");
     await api.say(ln, { el: r, who: "nani" });
+    bubble.classList.remove("speaking");
   };
 
-  // ---- the book: the pages picture, the two pages, her face on the left page's corner, the turn corner ----
+  // ---- the book: the pages picture (b2: the book held out to the child, her chin, dupatta and hands round it), its two pages,
+  // her face on the left page's corner, the turn corner ----
   const book = el("div", "day-book", root);
   book.style.backgroundImage = `url("${url(A.pages)}")`;
   const [BW, BH] = A.pagesSize;
@@ -196,7 +257,7 @@ export async function runBook(host, api, day) {
   const turnBtn = el("button", "day-turn", book);
   turnBtn.type = "button";
   turnBtn.setAttribute("aria-label", "");
-  turnBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>';
+  turnBtn.innerHTML = '<i class="day-turn-corner"></i><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>';
   let current = null;
   face.addEventListener("click", () => {
     if (!current) return;
@@ -204,23 +265,20 @@ export async function runBook(host, api, day) {
     api.say(current, { el: headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null, who: "nani", min: false }).then(() => face.classList.remove("on"));
   });
 
+  // the pages picture always covers the screen (no letterbox); on a phone it comes closer so each page is at least minPageW wide
+  let bookAt = { s: 1, ox: 0, oy: 0 };
   const layout = () => {
     const vw = root.clientWidth;
     const vh = root.clientHeight;
-    let s;
-    let ox;
-    let oy;
-    if (vh < 500) {
-      // a phone: the pages fill the screen (the book's border may clip), scaled by the pages box, not the picture
-      const [px, py, pw, ph] = A.phoneBox;
-      s = Math.min((vw - 16) / pw, (vh - 8) / ph);
-      ox = (vw - pw * s) / 2 - px * s;
-      oy = (vh - ph * s) / 2 - py * s;
-    } else {
-      s = Math.min((vw - 48) / BW, (vh - 48) / BH);
-      ox = (vw - BW * s) / 2;
-      oy = (vh - BH * s) / 2;
-    }
+    const [px, py, pw, ph] = A.pagesBox;
+    const cover = Math.max(vw / BW, vh / BH);
+    let s = cover;
+    if (A.pageL[2] * s < (A.minPageW || 330)) s = Math.max(cover, Math.min((vw - 16) / pw, (vh - 8) / ph, (A.minPageW || 330) / A.pageL[2]));
+    let ox = vw / 2 - (px + pw / 2) * s;
+    let oy = vh / 2 - (py + ph / 2) * s;
+    ox = Math.min(0, Math.max(vw - BW * s, ox));
+    oy = Math.min(0, Math.max(vh - BH * s, oy));
+    bookAt = { s, ox, oy };
     Object.assign(book.style, { left: `${ox}px`, top: `${oy}px`, width: `${BW * s}px`, height: `${BH * s}px` });
     for (const side of ["l", "r"]) {
       const [x, y, w, h] = side === "l" ? A.pageL : A.pageR;
@@ -234,11 +292,22 @@ export async function runBook(host, api, day) {
     Object.assign(turnBtn.style, { left: `${(rx + rw) * s - 64}px`, top: `${(ry + rh) * s - 64}px` });
     book.style.setProperty("--s", String(s));
     place3(shot);
+    if (bubble.classList.contains("in")) placeBubble(bubble.dataset.side);
     if (window.FitText) window.FitText.run(book);
   };
   layout();
   const ro = typeof ResizeObserver === "function" ? new ResizeObserver(() => layout()) : null;
   if (ro) ro.observe(root);
+  /** the book view's transform that lays its book exactly over the book in her lap, for the camera's current shot */
+  const toLap = () => {
+    const [rx, ry, rw] = A.lapBook.room;
+    const [bx, by, bw] = A.lapBook.pages;
+    const R = onScreen(rx, ry);
+    const k = (rw * camAt.sc) / (bw * bookAt.s);
+    const dx = R.x - bookAt.ox - k * bx * bookAt.s;
+    const dy = R.y - bookAt.oy - k * by * bookAt.s;
+    return `translate(${dx}px, ${dy}px) scale(${k})`;
+  };
 
   // ---- the game's context (book-play.js) ----
   const cleanups = [];
@@ -296,11 +365,6 @@ export async function runBook(host, api, day) {
     expect: (fn) => api.test.expect(fn),
     state: (s) => {
       window.Day.book.last = s;
-      try {
-        if (window.njgTest && window.njgTest.mark) window.njgTest.mark(s);
-      } catch (e) {
-        /* the hook is the sandbox's */
-      }
     },
     record: (r) => results.push(r),
     turnOn: (on) => showTurn(on),
@@ -345,40 +409,56 @@ export async function runBook(host, api, day) {
       };
       turnBtn.addEventListener("click", go);
     });
+  // the turn itself: the right page lifts from its bottom corner and swings over the fold onto the left (its real time)
   const curl = async () => {
+    window.Day.book.turning = (window.Day.book.turning || 0) + 1;
+    book.classList.add("day-turning");
     const c = el("div", "day-curl", book);
     c.style.cssText = pg.r.style.cssText;
-    c.style.animationDuration = `${C.turnMs / api.speed}ms`;
-    await api.wait(C.turnMs * 0.45);
+    c.style.animationDuration = `${C.turnMs}ms`;
+    await realWait(C.turnMs * 0.5);
     if (g.wrap) g.wrap.remove();
-    await api.wait(C.turnMs * 0.55);
+    await realWait(C.turnMs * 0.5);
     c.remove();
+    book.classList.remove("day-turning");
   };
 
   // ---------------------------------------------------------------- the evening
+  // the room is up: the evening's first moment (BOOK-01 films from here)
+  await new Promise((r) => (room.complete ? r() : (room.onload = room.onerror = r)));
+  api.test.state("day/book/room");
   await api.wait(500);
   const direct = !!only;
   if (!direct) {
-    // she greets by the fire, the camera comes to her face, then turns down to the book on her lap and zooms in
-    root.classList.add("day-greet");
-    await sayRoom(line("greet"));
+    // she greets by the fire, the camera comes to her face, turns down to the book on her lap ...
+    await sayRoom(line("greet"), "left");
     window.Day.book.stage = "face";
     place3(C.face, C.toFaceMs);
-    await api.wait(C.toFaceMs + 200);
+    bubble.classList.remove("in");
+    setTimeout(() => (bubble.style.visibility = "hidden"), 250);
+    await realWait(C.toFaceMs + 150);
     window.Day.book.stage = "tilt";
-    roomSay.innerHTML = "";
     place3(C.book, C.tiltMs);
-    await api.wait(C.tiltMs * C.dissolveAt);
-  } else place3(C.book);
-  book.style.transitionDuration = `${(direct ? 300 : C.dissolveMs) / api.speed}ms`;
-  book.classList.add("open");
-  await api.wait(direct ? 300 : Math.max(C.dissolveMs, C.tiltMs * (1 - C.dissolveAt)));
+    await realWait(C.tiltMs);
+    // ... and zooms onto its pages: the pages picture starts as the book in her lap and grows to fill the screen
+    window.Day.book.stage = "onto";
+    layout();
+    book.style.transition = "none";
+    book.style.transform = toLap();
+    book.style.opacity = "0";
+    void book.offsetWidth;
+    book.classList.add("open");
+    book.style.transition = `transform ${C.inMs}ms cubic-bezier(.45,.05,.35,1), opacity ${C.inMs * 0.7}ms ease-in`;
+    book.style.transform = "none";
+    book.style.opacity = "1";
+    await realWait(C.inMs);
+  } else {
+    place3(C.book);
+    book.classList.add("open");
+    book.style.opacity = "1";
+    await api.wait(300);
+  }
   window.Day.book.stage = "pages";
-  // behind the open book the room eases back to the whole room, softly out of focus (the close-up stays only for the moves)
-  root.classList.add("day-reading");
-  await api.wait(380);
-  place3(C.wide);
-  root.classList.add("day-behind");
   layout();
 
   for (let i = 0; i < plan.pages.length; i++) {
@@ -397,22 +477,29 @@ export async function runBook(host, api, day) {
   api.test.expect(() => ({ kind: "wait" }));
   api.test.state("day/book/end");
 
-  // ---- the end: the book closes, the camera pulls back out to the room ----
+  // ---- the end: the camera pulls back out: the pages shrink back into the book on her lap, the room all round (never black) ----
   window.Day.book.stage = "out";
+  headRow.style.visibility = "hidden";
+  place3(C.wide);
   root.classList.add("day-zoom-out");
-  root.classList.remove("day-behind");
-  await api.wait(350);
-  place3(C.book);
+  book.style.transition = `transform ${C.outMs}ms cubic-bezier(.45,.05,.35,1), opacity ${C.outMs * 0.6}ms ease-in ${C.outMs * 0.3}ms`;
+  book.style.transform = toLap();
+  book.style.opacity = "0";
+  await realWait(C.outMs);
   book.classList.remove("open");
-  book.classList.add("closed");
-  root.classList.remove("day-reading");
-  await api.wait(300);
-  place3(C.wide, C.outMs);
-  await api.wait(C.outMs);
   if (ro) ro.disconnect();
-  // a day-book on the empty shelf (one per day played) ...
-  addSpine(Math.min(books, S.max - 1), true);
+  // a day-book for today goes from her lap onto the empty shelf (one per day played) ...
+  const slot = Math.min(books, S.max - 1);
+  const spine = addSpine(slot, true);
+  const to = slotOf(slot);
+  const [lx, ly, lw, lh] = A.lapBook.room;
+  spine.style.transform = `translate(${lx + lw / 2 - to.x - S.w / 2}px, ${ly + lh / 2 - to.y - S.h / 2}px) scale(1.6) rotate(-14deg)`;
+  void spine.offsetWidth;
+  spine.classList.add("go");
+  spine.style.transform = "none";
   if (!fixture && !only && !api.q.get("stage")) core.save.update("story", (s) => ((s.dayBooks = (Number(s.dayBooks) || 0) + 1), s));
+  await realWait(1500);
+  spine.classList.add("landed");
   // ... and today's words as gold cards: progress, never a verdict
   const cards = el("div", "day-words", root);
   for (const k of bookWords(plan)) {
@@ -423,23 +510,19 @@ export async function runBook(host, api, day) {
   }
   requestAnimationFrame(() => cards.classList.add("in"));
   await api.wait(900);
-  await sayRoom(line("goodnight"));
-  // tomorrow's door, by its sky
+  await sayRoom(line("goodnight"), "left");
+  // tomorrow's door, by its sky: its own card, clear of the fire and the shelf
   const next = api.dayDef(((day && day.id) || 1) + 1);
   const tw = api.data.weather[next.weather] || api.data.weather.sunny;
   const prev = el("div", "day-tomorrow", root);
   prev.dataset.weather = next.weather;
-  const skyBox = el("div", "day-tomorrow-sky", prev);
+  const win = el("div", "day-tomorrow-win", prev);
+  const skyBox = el("div", "day-tomorrow-sky", win);
   paintSky(skyBox, tw, { w: 400, h: 300, url });
-  el("i", "day-tomorrow-door", prev);
+  el("i", "day-tomorrow-door", win);
   requestAnimationFrame(() => prev.classList.add("in"));
-  // the room settles: a slow drift in towards her, the fire and the shelf
-  root.classList.add("day-settle");
-  place3(C.settle || { cx: 760, cy: 470, zoom: 1.08 }, 4000);
   const tm = line("tomorrow");
-  const tl = api.render(tm);
-  roomSay.appendChild(tl);
-  await api.say(tm, { el: tl, who: "nani" });
+  await sayRoom(tm, "left");
   if (!fixture && !only && !api.q.get("stage")) {
     api.setToday({ at: "done" });
     core.save.update("story", (s) => ((s.dayNo = (Number(s.dayNo) || 1) + 1), s));

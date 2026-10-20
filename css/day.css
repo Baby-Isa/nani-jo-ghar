@@ -65,16 +65,16 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-book-scene { background: var(--njg-ink); }
 .day-cam { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; transition: opacity .35s; }
 .day-room { position: absolute; inset: 0; width: 100%; height: 100%; display: block; user-select: none; -webkit-user-drag: none; }
-.day-reading .day-cam { opacity: 0; }
-.day-reading.day-behind .day-cam { opacity: .5; filter: blur(6px); }
 .day-shelf { position: absolute; inset: 0; pointer-events: none; }
-.day-spine { position: absolute; display: block; border-radius: 3px 3px 1px 1px; box-shadow: var(--njg-shadow); }
-.day-spine.fresh { animation: day-spine-in 1.1s cubic-bezier(.3, .7, .3, 1) 1 both; }
-@keyframes day-spine-in { from { transform: translateY(-140px) rotate(-12deg); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
-.day-roomline { max-width: min(46vw, 560px); }
-.day-book { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; opacity: 0; transform: scale(.96); transition-property: opacity, transform; transition-duration: .7s; pointer-events: none; touch-action: none; }
-.day-book.open { opacity: 1; transform: none; pointer-events: auto; }
-.day-book.closed { opacity: 0; transform: scale(.9); pointer-events: none; }
+.day-spine { position: absolute; display: block; border-radius: 3px 3px 1px 1px; box-shadow: var(--njg-shadow); transform-origin: 50% 100%; }
+.day-spine::after { content: ""; position: absolute; left: 0; right: 0; top: 16%; height: 7%; background: var(--njg-gold); }
+.day-spine.go { transition: transform 1.4s cubic-bezier(.3, .7, .3, 1); z-index: 2; }
+.day-spine.landed { animation: day-spine-glow 1.2s ease-in-out 2; outline: 3px solid var(--njg-gold); outline-offset: 2px; }
+@keyframes day-spine-glow { 50% { box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); } }
+.day-cv .day-bubble { visibility: hidden; }
+.day-cv .day-bubble.in { visibility: visible; }
+.day-book { position: absolute; background-size: 100% 100%; background-repeat: no-repeat; opacity: 0; transform-origin: 0 0; pointer-events: none; touch-action: none; }
+.day-book.open { pointer-events: auto; }
 .day-pg-box { position: absolute; visibility: hidden; pointer-events: none; }
 .day-game { position: absolute; inset: 0; pointer-events: none; }
 .day-pg { position: absolute; pointer-events: auto; box-sizing: border-box; }
@@ -92,10 +92,13 @@ canvas.day-layer { width: 100%; height: 100%; }
 @keyframes day-again { 0%, 100% { transform: none; box-shadow: var(--njg-shadow); } 30% { transform: scale(1.06); box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); } 65% { transform: scale(1.02); } }
 .day-head-line .day-k, .day-under .day-k { font-size: var(--njg-t2); }
 
-/* the page turn: the right page's bottom corner, 64 px, shown only when the page is done */
-.day-turn { position: absolute; width: 64px; height: 64px; padding: 0 var(--njg-s2) var(--njg-s2) 0; display: flex; align-items: flex-end; justify-content: flex-end; border: 0; border-radius: 0 0 var(--njg-s1) 0; background: var(--njg-cream-lip); clip-path: polygon(100% 0, 100% 100%, 0 100%); color: var(--njg-ink); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 6; }
-.day-turn svg { width: 24px; height: 24px; }
-.day-turn.in { opacity: 1; pointer-events: auto; animation: day-turn-lift 1.4s ease-in-out infinite; }
+/* the page turn: the right page's bottom corner. The whole 64 px square takes the tap (a clipped button only takes it on its
+   triangle); the folded corner is drawn inside it */
+.day-turn { position: absolute; width: 64px; height: 64px; padding: 0; border: 0; background: transparent; color: var(--njg-ink); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 6; touch-action: manipulation; }
+.day-turn-corner { position: absolute; inset: 0; background: var(--njg-cream-lip); clip-path: polygon(100% 0, 100% 100%, 0 100%); border-radius: 0 0 var(--njg-s1) 0; pointer-events: none; }
+.day-turn svg { position: absolute; right: var(--njg-s2); bottom: var(--njg-s2); width: 24px; height: 24px; pointer-events: none; }
+.day-turn.in { opacity: 1; pointer-events: auto; }
+.day-turn.in .day-turn-corner { animation: day-turn-lift 1.4s ease-in-out infinite; }
 @keyframes day-turn-lift { 50% { clip-path: polygon(100% -12%, 100% 100%, -12% 100%); background: var(--njg-cream-edge); } }
 
 /* the pictures */
@@ -160,7 +163,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-photo-ours.in { opacity: 1; transform: rotate(var(--tilt)); }
 
 /* the end: today's words as gold cards (progress, never a verdict) */
-.day-words { position: absolute; left: var(--njg-s4); right: var(--njg-s4); bottom: var(--njg-s5); transform: translateY(24px); display: flex; gap: var(--njg-s3); flex-wrap: wrap; justify-content: center; opacity: 0; transition: opacity .5s, transform .5s; pointer-events: none; }
+.day-words { position: absolute; left: calc(var(--njg-s4) * 2 + min(16vw, 180px, 34dvh)); right: var(--njg-s4); bottom: var(--njg-s5); transform: translateY(24px); display: flex; gap: var(--njg-s3); flex-wrap: wrap; justify-content: center; opacity: 0; transition: opacity .5s, transform .5s; pointer-events: none; }
 .day-words.in { opacity: 1; transform: none; }
 .day-wordcard { display: flex; flex-direction: column; align-items: center; gap: var(--njg-s1); min-width: 88px; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-gold); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); }
 .day-wordpic { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; }
@@ -171,15 +174,14 @@ canvas.day-layer { width: 100%; height: 100%; }
   .day-words { bottom: var(--njg-s2); gap: var(--njg-s2); }
   .day-wordcard { min-width: 72px; padding: var(--njg-s1) var(--njg-s2); }
   .day-wordpic { width: 40px; height: 40px; }
-  .day-roomline { max-width: 44vw; }
 }
-.day-settle .day-cam { transition: transform 4s ease-out; }
-.day-tomorrow { position: absolute; right: 4vw; top: 8dvh; width: min(18vw, 220px, 32dvh); aspect-ratio: 3 / 4; border-radius: var(--njg-round) var(--njg-round) var(--njg-radius) var(--njg-radius); overflow: hidden; border: var(--njg-s2) solid var(--njg-cream-edge); background: var(--njg-cream); box-shadow: var(--njg-shadow-lift); opacity: 0; transform: scale(0.9); transition: opacity .6s, transform .6s; }
-.day-tomorrow.in { opacity: 1; transform: none; }
+.day-tomorrow { position: absolute; left: var(--njg-s4); bottom: var(--njg-s4); width: min(16vw, 180px, 34dvh); padding: var(--njg-s2); background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow-lift); visibility: hidden; transform: translateY(var(--njg-s4)); transition: transform .5s; }
+.day-tomorrow-win { position: relative; width: 100%; aspect-ratio: 3 / 4; border-radius: var(--njg-round) var(--njg-round) var(--njg-s1) var(--njg-s1); overflow: hidden; background: var(--njg-cream); }
+.day-tomorrow.in { visibility: visible; transform: none; }
 .day-tomorrow-sky { position: absolute; inset: 0; }
 .day-tomorrow-sky > svg, .day-tomorrow-sky > img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .day-tomorrow-door { position: absolute; left: 0; top: 0; bottom: 0; width: 34%; background: var(--njg-cream-lip); border-right: var(--njg-s1) solid var(--njg-cream-edge); }
-@media (prefers-reduced-motion: reduce) { .day-find-item.day-wiggle, .day-find-item.day-bounce, .day-spk.day-wobble, .day-turn.in, .day-spine.fresh { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .day-find-item.day-wiggle, .day-find-item.day-bounce, .day-spk.day-wobble, .day-turn.in .day-turn-corner, .day-spine.landed { animation: none; } .day-spine.go { transition: none; } }
 
 /* ---------- the window ride (js/shared/window-ride.js) ---------- */
 .day-window .day-play { position: relative; overflow: hidden; }
@@ -205,3 +207,5 @@ canvas.day-layer { width: 100%; height: 100%; }
 .wr-crossing { transition: opacity .4s; }
 .wr-frame { position: absolute; inset: 0; pointer-events: none; border: var(--njg-s5) solid var(--njg-cream-edge); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); }
 @media (prefers-reduced-motion: reduce) { .day-nani.gesture, .wr-nudge > img, .wr-nudge > svg { animation: none; } }
+.day-sent-rec { max-width: 100%; text-align: center; }
+.day-sent-rec .day-k { font-size: var(--njg-t2); }

@@ -1,49 +1,37 @@
 {
   "_about": "The evening book's games (s09-book; docs/sprints/S09-a-day-at-nanis.md, Zafar 19-20 Oct; build/reports/s09a-fable-review.md sections 2-3). js/day/book.js reads it (loaded only when the book is chosen, decision 68). Every line is an engine meaning (data/lang/): a list is tried in order and the first the engine can say is used; when none can, the first one's English is the grey 'to record' placeholder (decision 84). '{x}' in a meaning is the thing's own Item. Nothing here is Kutchi.",
   "art": {
-    "_about": "The kept s09a art as placeholders (Zafar, 20 Oct): b1 (Nani by the fire) and b2 cut to its pages (x 170-1360, y 90-800). The redone b1 and b2 replace them by path. Pixel boxes below are in each picture's own pixels.",
-    "room": "assets/day/book/room-b1-v1.webp",
+    "_about": "The s09a redo art (Zafar, 20 Oct): b1 v2 (Nani by the fire) and b2 v2 (the open book seen from the child's seat, facing outward, her chin, dupatta and hands round it). Pixel boxes are in each picture's own pixels. pageL / pageR: inside each page's gold frame (measured); pagesBox: both frames, what a phone must fit; lapBook: the book's cover edge in the room picture and in the pages picture (the camera lands one on the other); shelf: the empty shelf row (its plank top), where a day-book stands. head: her head's centre and radius in the room picture (her bubble goes beside it, never over her face).",
+    "room": "assets/day/book/room-b1-v2.webp",
     "roomSize": [
       1536,
       1024
     ],
-    "pages": "assets/day/book/pages-b2-v1.webp",
+    "pages": "assets/day/book/pages-b2-v2.webp",
     "pagesSize": [
-      1190,
-      710
+      1536,
+      1024
     ],
     "face": "assets/cook/characters/nani-badge.webp",
     "pageL": [
-      48,
-      66,
-      546,
-      604
+      276,
+      244,
+      470,
+      470
     ],
     "pageR": [
-      622,
-      62,
-      532,
-      588
-    ],
-    "fold": [
-      594,
-      0,
-      14,
-      710
-    ],
-    "phoneBox": [
-      45,
-      60,
-      1120,
-      612
+      798,
+      242,
+      466,
+      472
     ],
     "shelf": {
-      "x": 730,
-      "y": 310,
-      "w": 22,
-      "h": 92,
-      "gap": 4,
-      "max": 17,
+      "x": 724,
+      "y": 306,
+      "w": 34,
+      "h": 108,
+      "gap": 6,
+      "max": 11,
       "colours": [
         "#a5483c",
         "#3f6b8a",
@@ -51,32 +39,57 @@
         "#c9962e",
         "#7a4f8a"
       ]
+    },
+    "pagesBox": [
+      262,
+      229,
+      1018,
+      497
+    ],
+    "minPageW": 330,
+    "lapBook": {
+      "room": [
+        443,
+        357,
+        385,
+        191
+      ],
+      "pages": [
+        205,
+        212,
+        1125,
+        553
+      ]
+    },
+    "head": {
+      "x": 512,
+      "y": 165,
+      "r": 110
     }
   },
   "camera": {
-    "_about": "The camera over the room picture (b1): each shot is a centre in the picture's pixels and a zoom over the cover fit. Times in ms (at speed 1). maxUpscale: never more screen px per picture px than this (ART-05), so a sharper room picture brings the close-ups closer. No player character (Zafar, 19 Oct).",
+    "_about": "The camera over the room picture (b1): each shot is a centre in the picture's pixels and a zoom over the cover fit. The moves (to her face, the tilt to the book, onto its pages, the page turn, the way back out) always take their real time, also at test speed, so a filmstrip sees them. maxUpscale: never more screen px per picture px than this (ART-05), so a sharper room picture brings the close-ups closer. No player character (Zafar, 19 Oct).",
     "wide": {
       "cx": 768,
       "cy": 512,
       "zoom": 1
     },
     "face": {
-      "cx": 525,
+      "cx": 512,
       "cy": 175,
       "zoom": 3
     },
     "book": {
-      "cx": 668,
-      "cy": 468,
+      "cx": 636,
+      "cy": 452,
       "zoom": 3.4
     },
     "toFaceMs": 1800,
     "tiltMs": 1800,
-    "dissolveAt": 0.35,
-    "dissolveMs": 700,
-    "outMs": 2200,
-    "turnMs": 700,
-    "maxUpscale": 1.45
+    "outMs": 2400,
+    "turnMs": 1000,
+    "maxUpscale": 1.45,
+    "inMs": 1300
   },
   "order": [
     "find",
@@ -112,15 +125,7 @@
           "x": "phrase.theres-the-x",
           "thing": "{x}"
         },
-        "en": "There's the {en}!",
-        "wanted": true
-      },
-      {
-        "meaning": {
-          "fn": "Exclaim",
-          "x": "phrase.there-over-there"
-        },
-        "en": "There!"
+        "en": "There's the {en}!"
       }
     ],
     "whatsThis": [
@@ -130,24 +135,6 @@
           "x": "phrase.whats-this"
         },
         "en": "What's this?"
-      }
-    ],
-    "firstOf": [
-      {
-        "meaning": {
-          "fn": "First",
-          "x": "{x}"
-        },
-        "en": "First the {en}."
-      }
-    ],
-    "thenOf": [
-      {
-        "meaning": {
-          "fn": "Then",
-          "x": "{x}"
-        },
-        "en": "And then the {en}."
       }
     ],
     "goodnight": [
@@ -166,12 +153,9 @@
           "x": "phrase.see-you-tomorrow"
         },
         "en": "See you tomorrow!"
-      },
-      {
-        "word": "adv.tomorrow",
-        "en": "tomorrow"
       }
-    ]
+    ],
+    "_about": "Rule 11 (Zafar's sentences, the coordinator's review 20 Oct): a line is the engine's whole sentence or its English as the grey to-record placeholder; never another, shorter Kutchi line in its place. The engine says 'Where is the goat?' and 'What's this?'; the rest wait on Mum (build/reports/s09-book.md)."
   },
   "shapes": {
     "_about": "Placeholder pictures (no text), drawn in a 200x200 box, until the s09b art lands.",
@@ -667,7 +651,7 @@
     }
   },
   "places": {
-    "_about": "One place per activity: its things (word = engine lexicon id; ids = what the day log may call it; art or a placeholder shape; h = height on the find page as a share of the page), find it (the backdrop, the things shown, how many asked, the spots: page l/r, x and y of the thing's foot as shares of the page; things are dealt to spots at random), name it and stick in the photo (the pool of things; the day's sentence per thing), our day (the day's things in order). Only things the engine can say are asked; only today's words when the log has enough of them.",
+    "_about": "One place per activity: its things (word = engine lexicon id; ids = what the day log may call it; art or a placeholder shape; h = height on the find page as a share of the page), find it (the backdrop, the things shown, how many asked, the spots: page l/r, x and y of the thing's foot as shares of the page; things are dealt to spots at random), name it and stick in the photo (the pool of things; the day's sentence per thing), our day (the day's things in order) and told (her line for each of our day's photos). Only things the engine can say are asked; only today's words when the log has enough of them.",
     "farm": {
       "things": {
         "door": {
@@ -766,10 +750,11 @@
           "default": [
             {
               "meaning": {
-                "fn": "Then",
-                "x": "{x}"
+                "fn": "Say",
+                "x": "phrase.we-saw-a-x",
+                "thing": "{x}"
               },
-              "en": "And then the {en}."
+              "en": "We saw a {en}."
             }
           ],
           "car": [
@@ -779,16 +764,7 @@
                 "x": "phrase.we-went-by-x",
                 "thing": "{x}"
               },
-              "en": "We went by {en}.",
-              "wanted": true
-            },
-            {
-              "meaning": {
-                "fn": "BeIn",
-                "who": "p1pl.incl",
-                "place": "{x}"
-              },
-              "en": "We're in the {en}."
+              "en": "We went by {en}."
             }
           ]
         }
@@ -808,21 +784,7 @@
                 "x": "phrase.then-we-saw-a-big-x",
                 "thing": "{x}"
               },
-              "en": "Then we saw a big {en}.",
-              "wanted": true
-            },
-            {
-              "meaning": {
-                "fn": "Then",
-                "x": {
-                  "fn": "Item",
-                  "kind": "{word}",
-                  "mods": [
-                    "a.big"
-                  ]
-                }
-              },
-              "en": "And then the big {en}."
+              "en": "Then we saw a big {en}."
             }
           ]
         }
@@ -833,7 +795,38 @@
         "goat",
         "hen",
         "dog"
-      ]
+      ],
+      "told": {
+        "door": [
+          {
+            "meaning": {
+              "fn": "Say",
+              "x": "phrase.in-the-morning-we-opened-the-door"
+            },
+            "en": "In the morning we opened the door."
+          }
+        ],
+        "car": [
+          {
+            "meaning": {
+              "fn": "Say",
+              "x": "phrase.then-we-went-by-x",
+              "thing": "{x}"
+            },
+            "en": "Then we went by {en}."
+          }
+        ],
+        "default": [
+          {
+            "meaning": {
+              "fn": "Say",
+              "x": "phrase.then-we-saw-the-x",
+              "thing": "{x}"
+            },
+            "en": "Then we saw the {en}."
+          }
+        ]
+      }
     },
     "kitchen": {
       "things": {
@@ -930,16 +923,7 @@
                 "x": "phrase.nana-wanted-x",
                 "thing": "{x}"
               },
-              "en": "Nana wanted {en}.",
-              "wanted": true
-            },
-            {
-              "meaning": {
-                "fn": "Need",
-                "who": "p3",
-                "thing": "{x}"
-              },
-              "en": "He'd like {en}."
+              "en": "Nana wanted {en}."
             }
           ]
         }
@@ -956,18 +940,10 @@
             {
               "meaning": {
                 "fn": "Say",
-                "x": "phrase.then-we-made-x",
+                "x": "phrase.then-we-used-the-x",
                 "thing": "{x}"
               },
-              "en": "Then we made {en}.",
-              "wanted": true
-            },
-            {
-              "meaning": {
-                "fn": "Then",
-                "x": "{x}"
-              },
-              "en": "And then the {en}."
+              "en": "Then we used the {en}."
             }
           ]
         }
@@ -977,7 +953,28 @@
         "chai",
         "milk",
         "maani"
-      ]
+      ],
+      "told": {
+        "door": [
+          {
+            "meaning": {
+              "fn": "Say",
+              "x": "phrase.in-the-morning-we-opened-the-door"
+            },
+            "en": "In the morning we opened the door."
+          }
+        ],
+        "default": [
+          {
+            "meaning": {
+              "fn": "Say",
+              "x": "phrase.then-we-used-the-x",
+              "thing": "{x}"
+            },
+            "en": "Then we used the {en}."
+          }
+        ]
+      }
     }
   },
   "activityPlace": {
