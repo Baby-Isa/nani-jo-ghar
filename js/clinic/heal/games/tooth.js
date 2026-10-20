@@ -93,7 +93,9 @@
       kind: "brush",
       move: m,
       i,
-      row: Object.assign({ id: `b${i}` }, Lg.show(Lg.step(i, dirM(m), { lower: i > 0 }), { cap: i === 0 })),
+      // rule 11 (CLN-184): "Pela [down]" was Kutchi round an English word: a move whose word is still to record is the
+      // whole row in grey English ("First down"), never a mix; a move with its word ("pela dabo") stays Kutchi
+      row: Object.assign({ id: `b${i}` }, HS.whole(Lg.show(Lg.step(i, dirM(m), { lower: i > 0 }), { cap: i === 0 }))),
     }));
     steps.push({ id: "drill", kind: "drill", patches, timer: (lv.drillMs != null ? lv.drillMs : K.drillMs[L]) || 0, row: Object.assign({}, Lg.w("tooth-drill", { cap: true }), { id: "drill" }) });
     steps.push({ id: "fill", kind: "fill", row: Object.assign({}, Lg.w("tooth-fill", { cap: true }), { id: "fill" }) });

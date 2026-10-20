@@ -453,6 +453,14 @@
    * is paused and the device voice cancelled.
    */
   Voice.gen = 0;
+  // a line made stale by the game (opts.stale(): its step closed before its turn came): skipped, or cut between words
+  const stale = (o) => {
+    try {
+      return !!(o && typeof o.stale === "function" && o.stale());
+    } catch (e) {
+      return false;
+    }
+  };
   Voice.playing = new Set(); // the family clips playing now
   const VS = () => (global.Lifecycle && global.Lifecycle.voice) || null;
   const live = (g) => g == null || g === Voice.gen;
@@ -524,6 +532,7 @@
     let any = false;
     for (let i = 0; i < plan.length; i++) {
       if (!live(o.gen)) return true; // stopped mid-line: the rest of it stays quiet
+      if (i > 0 && stale(o)) return true; // CLN-119: its step closed mid-line: the rest of it stays quiet
       const c = plan[i];
       let ok = false;
       if (c.file) ok = await Voice.audio(c.file, o);
@@ -545,6 +554,9 @@
     const gen = Voice.gen; // a stop before this line's turn (Voice.clear, a tap through the pop-up) skips it
     const run = async () => {
       if (!live(gen)) return;
+      // CLN-119 (a child heard "laal" while the yellow plaster's row was lit): a step's line still waiting in the queue
+      // when its step closes is never said late, under the next step's row
+      if (stale(opts)) return;
       Voice.busy = true;
       // decision 55 (F26), S04-B (SH-68): the doctor with no face on screen (the pharmacy belt) speaks by his green box
       // at the top left, never from a bubble with no head under it
@@ -566,13 +578,13 @@
       }
       const t0 = Date.now();
       let played = false;
-      const ao = { soft: !!opts.soft, gen };
+      const ao = { soft: !!opts.soft, gen, stale: opts.stale };
       if (w.audio) played = await Voice.audio(w.audio, ao);
       // the engine's clip plan: the family's recordings of each word (a placeholder piece has none)
       if (!played && w.kutchi && w.placeholder !== true && w.plan && w.plan.length) played = await Voice.plan(w.plan, ao);
       if (!played) await Voice.tts(Kit.plain(w), ao);
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
-      if (left > 0 && live(gen)) await new Promise((r) => setTimeout(r, left));
+      if (left > 0 && live(gen) && !stale(opts)) await new Promise((r) => setTimeout(r, left));
       if (stopTalk) stopTalk();
       if (offGuide) offGuide();
       setTimeout(() => bubble && bubble.remove(), live(gen) ? (Kit.fast ? 50 : 500) : 0);
@@ -1093,7 +1105,12 @@
       this.st.reading = r.id;
       hold(true);
       if (r.el) r.el.classList.add("reading");
-      await Voice.say(r, { who: r.who || this.who, noBubble: true });
+      // CLN-119: a row read for its step (it was open when asked) goes quiet if its step closes before its turn: the
+      // next step's row is lit by then, and the late line ("ne poi laal plaster") would sound under it
+      const was = this.st.done.has(r.id);
+      const st = this.st;
+      const stale = () => st !== this.st || !this.rows.includes(r) || (!was && st.done.has(r.id));
+      await Voice.say(r, { who: r.who || this.who, noBubble: true, stale });
       if (this.st.reading === r.id) this.st.reading = null;
       if (r.el) r.el.classList.remove("reading");
       hold(false);

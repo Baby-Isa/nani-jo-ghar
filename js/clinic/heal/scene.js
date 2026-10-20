@@ -133,9 +133,20 @@
    * CLN-78 (2 Oct): a known word's picture in the clinic (the hearing check, the eye chart): the clinic's own item art
    * where it has the thing (the scrape's water is this jug), else Cook's realistic render the child learned it with.
    */
-  const CLINIC_PIC = { "cook-paani": "water-jug", "cook-dudh": "milk-jug", "fru-02": "lemon-half", "veg-14": "ginger" };
-  HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/items-v2/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
+  // CLN-189 (Zafar, 18 Oct: "an orange, not a lemon"): limu is the whole yellow lemon (s08b LM1), as the eye chart draws it,
+  // never the golden lemon-half that reads as an orange
+  const CLINIC_PIC = { "cook-paani": "items-v2/water-jug", "cook-dudh": "items-v2/milk-jug", "fru-02": "items-s08b/lemon-whole-s08b", "veg-14": "items-v2/ginger" };
+  HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
   HS.ph = (english) => ({ kutchi: null, english, placeholder: true }); // unused by the nine games since step 4e (lines are keys)
+  /**
+   * Rule 11, CLN-184 (the tooth's "Pela [down]", "ne poi [right]"): a line is a full engine sentence or a whole grey
+   * to-record placeholder, never Kutchi with an English word in it. A display word with any English piece (Kit.text's
+   * [brackets]) becomes the whole line's English, grey and silent until the missing word is recorded.
+   */
+  HS.whole = (w) => {
+    if (!w || !w.kutchi || !/\[/.test(w.kutchi)) return w;
+    return Object.assign({}, w, { kutchi: null, english: w.english, placeholder: true, plan: [], rec: true });
+  };
   /** The colours: English placeholders until the doctor's recording (Section G). */
   HS.COLOURS = { red: "#d8433f", blue: "#3f6fd8", green: "#3fa35b", yellow: "#f0c43a", orange: "#f08a2c", purple: "#8a55c8", white: "#f7f4ee" };
 
