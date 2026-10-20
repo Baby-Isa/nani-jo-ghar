@@ -920,14 +920,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ================= Sekelo v2 (design system §15): the shared grid, shelf and word pop ================= */
-  // the chai v2 grid (design px, 1600x900): the scene is the top 74%, the shelf band the bottom 26%
+  // the chai v2 grid (design px, 1600x900): the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const V2 = (SK.V2 = {
-    SHELF_TOP: 666,
+    SHELF_TOP: Cook.Stations.SHELF.top,
     BASE: 818, // (front-on shelves: the shelf line)
-    BOWL_Y: 748, // Sekelo is top-down (Zafar, 29 Sept): each bowl centred in the band above its chip
-    PITCH: 160, // v3 (K5): heaps, their chunks the size of the pieces on a skewer
+    BOWL_Y: 740, // Sekelo is top-down (Zafar, 29 Sept): each bowl centred in the band above its chip
+    PITCH: 192, // (SH-112: the taller band's bins a fifth bigger) v3 (K5): heaps, their chunks the size of the pieces on a skewer
     GROUP_GAP: 0, // SEK-21 (P38, 17 Oct: "no reason for them to be unevenly distributed"): every bin one pitch apart (was 44 between meat and veg)
-    BOWL_W: 140, // one box size per slot (§7): every prep bowl is the same bowl, seen from above
+    BOWL_W: 168, // one box size per slot (§7): every prep bowl is the same bowl, seen from above
     CHIP: { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 },
     RIGHT: 190, // the shelf keeps clear of the phase button and the tick, bottom right
     INK: { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, sage: 0x7e9a76, wrong: 0xb24a3a },
@@ -1046,25 +1046,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   SK.shelf = function (S, z, groups, { level = 1 } = {}) {
     const n = groups.reduce((a, g) => a + g.length, 0);
-    const width = n * V2.PITCH + (groups.length - 1) * V2.GROUP_GAP;
+    // (SH-112: the bigger bins narrow to fit a long row clear of the tick)
+    const pitch = Math.min(V2.PITCH, (1600 - V2.RIGHT - 80 - (groups.length - 1) * V2.GROUP_GAP) / Math.max(1, n));
+    const width = n * pitch + (groups.length - 1) * V2.GROUP_GAP;
     const x0 = Math.max(40, (1600 - V2.RIGHT - width) / 2);
     const out = {};
-    let sx = x0 + V2.PITCH / 2;
+    let sx = x0 + pitch / 2;
     groups.forEach((group) => {
       group.forEach((id) => {
-        out[id] = SK.bowl(S, z, id, sx, level);
-        sx += V2.PITCH;
+        out[id] = SK.bowl(S, z, id, sx, level, Math.min(V2.BOWL_W, pitch - 20));
+        sx += pitch;
       });
       sx += V2.GROUP_GAP;
     });
     return out;
   };
-  SK.bowl = function (S, z, id, x, level) {
+  SK.bowl = function (S, z, id, x, level, bw = V2.BOWL_W) {
     const key = `sk2-bowl-${id}`;
     let img;
     if (S.textures.exists(key)) {
       const src = S.textures.get(key).getSourceImage();
-      const k = z.L(V2.BOWL_W) / src.width;
+      const k = z.L(bw) / src.width;
       img = S.track(S.add.image(z.X(x), z.Y(V2.BOWL_Y), key).setScale(k).setDepth(D.item + 1));
       img.baseScale = k;
       img.shadow = S.contactShadow(img);

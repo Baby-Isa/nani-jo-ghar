@@ -4,7 +4,7 @@
  *
  * THREE JOBS, one at a time, each on the whole picture:
  *  1. FILL (SAM-25, decision 10, 18 Oct): six flat pastry strips lie on the big house board at every level (S6). The
- *     fillings sit on the shelf band (the bottom 26%) as top-down heaps, no bowls (S2 / Q2), a `🔊 word` chip under
+ *     fillings sit on the shelf band (the bottom 30%) as top-down heaps, no bowls (S2 / Q2), a `🔊 word` chip under
  *     each (tap the heap = use it, tap the chip = hear it; from level 3 the word hides and the speaker stays). Tap
  *     any strip, then the heaps: each tap drops ONE spoonful on that strip's bottom-left corner and its word pops
  *     with the family clip; tap another strip and fill that one; a tap on a mound takes a spoon back. Nothing is
@@ -70,21 +70,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const HEAP_ART = { "veg-12": "assets/cook/items/v3/daar/chop-heap-chilli.webp", "veg-01": "assets/cook/items-s08b/potato/potato-pile-v3.webp" };
   const heapUrl = (id) => HEAP_ART[id] || (HEAP[id] ? `${V3}fill-${HEAP[id]}.webp` : null);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
-  const SHELF_TOP = 666;
+  const SHELF_TOP = St.SHELF.top; // the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
-  const HEAP_Y = 758;
+  // SH-112 (Zafar 20 Oct): the taller band's heaps are a quarter bigger, centred between the band's top gap and the chips
+  const HEAP_Y = 742;
   const CHIP_Y = 860;
-  const PITCH = 150;
-  const HEAP_W = 128;
+  const PITCH = 182;
+  const HEAP_W = 160;
   // the house board (S6): board.webp is 1397 x 847
   // SAM-25 (P43: "increase the size of the chopping board"): the board takes the worktop left of the plate, for six strips
-  const BOARD = { x: 640, y: 340, w: 1040, h: 1040 * (847 / 1397) };
+  // (SH-112: a little smaller, so its foot stays above the taller band)
+  const BOARD = { x: 640, y: 322, w: 985, h: 985 * (847 / 1397) };
   const PLATE = { x: 1390, y: 400, d: 320 };
   // the fry (S17, S19, Q9): the wide hob (one big burner) with the karahi ~1.4x its old size (body r 180 ->
   // 250: at 270 its rim ran over the hob's knob), and the plate right of the hob. The hob (937 x 568 at
   // k 1, its burner in the middle; its knob 0.469 h below the burner, clear of the rim) centred on bx, the
   // plate just clear of its right edge: 66 ... 1134, 1140 ... 1480.
-  const FRY = { hobK: 1.14, bx: 600, r: 250, px: 1310, pd: 340, trayY: 772, trayD: 150, trayPitch: 180 };
+  // (SH-112: the hob and karahi 5% smaller so the hob's top stays on the stage above the taller band; the thalis bigger)
+  const FRY = { hobK: 1.08, bx: 600, r: 237, px: 1310, pd: 330, trayY: 744, trayD: 180, trayPitch: 210 };
   // a samosa in the oil (design px wide) and where they float (degrees round the middle, radius / the oil's):
   // fewer samosas, bigger and further apart
   // SAM-14 (A8, decision 56): every samosa stays inside the oil's flat surface: its spot (r, a fraction of the oil's
@@ -630,7 +633,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // T17 / SH-110: Nani calls the strip's first filling as soon as a strip is wanted ("Bhar! Chundo."), the same step
         // when that strip is tapped (so a strip tap never starts a call over the child's next tap), then each next filling
         const ord = filledOf().filter((x) => x !== active).length;
-        const callFill = (heap) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto" });
+        // SH-60 (s08 w6J: at L2 her help line "Bhar! Chundo." came with nothing lit): the step's help lights the thing to tap
+        // (the heap, or the strip to fill) in the same moment as her line, as the pantry does
+        const helpGlow = (o) => (o ? (on) => o.active && S.glow(o, on, { bounce: true }) : null);
+        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
         if (mv.heap) {
           const o = items[mv.heap];
           if (o && o.active) {
@@ -643,12 +649,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               .filter((id) => id !== mv.heap && items[id] && items[id].active)
               .map((id) => S.centre(items[id]));
             z.expect({ kind: "tap", x: c.x, y: c.y, key: mv.heap, wrongs });
-            callFill(mv.heap);
+            callFill(mv.heap, o);
             return;
           }
         }
         const nb = mv.strip ? needBlock() : 0;
-        if (nb) callFill(kindsOf(nb)[0]);
+        if (nb) callFill(kindsOf(nb)[0], mv.strip || null);
         else steps.done();
         if (mv.strip) {
           if (glow) {
@@ -827,7 +833,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     strips.filter((x) => !x.order.length).forEach((x) => S.tweens.add({ targets: x, alpha: 0, duration: 240, onComplete: () => x.destroy() }));
     strips.forEach((x) => x.blobs.forEach((b) => b.active && S.untap(b)));
     await Cook.wait(360);
-    cardFold(true);
+    // contract-35 (s08 gate: days 5 and 6 and the open kitchen, "2 of 2 sidebar cards closed" at the fry's first tap): the card
+    // stays open from its dish's first step to its last (decision 97, which amends design system 13's phase fold), so the
+    // samosa's card no longer folds for the fold and the fry
     Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
     if (ctx.nextStep) ctx.nextStep("Fold");
     if (phases.fold && !retry) UI.gist(phases.fold);
@@ -900,7 +908,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const [ux, uy] = w2u(x, b.x, b.y);
         return { img: b.texture.getSourceImage(), x: ux, y: uy, w: b.displayWidth / U(x), h: b.displayHeight / U(x), angle: b.angle };
       });
-      live = { P, t: 0, lit: false, arrow: 0, arrowTo: 1, blobs: blobsU };
+      // SAM-21 (s08 w6J; the judge, 20 Oct: "the first swipe of the second samosa shows no arrow"): each swipe's arrow is up
+      // at once as its swipe opens (it faded in over 220 ms, so a quick child, or the second samosa, swiped before it showed)
+      live = { P, t: 0, lit: false, arrow: 1, arrowTo: 1, blobs: blobsU };
       live.P.draw({ blobs: blobsU }, cv.getContext());
       cv.refresh();
       fimg.setPosition(x.x, x.y).setScale(FULL).setAlpha(1).setVisible(true);
@@ -913,6 +923,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const to = u2w(x, sw.to);
         live.lit = true;
         live.arrowTo = 1;
+        live.arrow = 1;
         await swipe(z, S, {
           from,
           to,
@@ -925,6 +936,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           onCancel: () => {
             live.lit = true;
             live.arrowTo = 1;
+            live.arrow = 1;
           },
           draw: (t) => (live.t = t),
         });
@@ -1101,7 +1113,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       t.setScale(z.L(FRY.trayD) / t.width);
       t.shadow = S.contactShadow(t);
       trays.push(t);
-      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(z.L(128) / META.fry.w * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
+      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(z.L(152) / META.fry.w * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
       im.baseScale = im.scale;
       im.handAction = false;
       raw.push(im);

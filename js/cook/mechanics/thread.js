@@ -292,6 +292,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* every frame: help timers, glows, what to do next (for the test) */
       let lastT = performance.now();
       let glowing = null;
+      let shownAt = 0;
       const off = z.tick(() => {
         const now = performance.now();
         const dtReal = now - lastT;
@@ -308,14 +309,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!z.out && doneShown) (handoff ? UI.glowGo : UI.glowDone)(!busy && !odd && !sk.ids.length && Object.keys(made).every((w) => made[w] === (want[w] || 0)) && ordered.every((w) => made[w] === want[w]));
         } else if (target && !(line.cooking && line.cooking())) {
           idle += dtReal;
+          // SH-60 (s08 w6J; Zafar, 17 Oct: "the highlight should only happen at the same time as the voice instruction"): her
+          // hint and the piece's glow come together, after the pause (the glow came showAfterMs later), and the step's own help
+          // (the stepper's line after the ladder's pause) lights the piece too
+          const G = window.NaniGuide;
+          const stepHelped = G && G.lastHelpAt && Date.now() - G.lastHelpAt < 1000 && G.lastHelpAt > shownAt;
           if (!hinted && idle > Cook.hintDelay(p.w)) {
             hinted = true;
             if (Cook.onHelp) Cook.onHelp("hint");
             St.nani(hintLine(p)).catch(() => {});
           }
-          if (hinted && !shown && idle > Cook.hintDelay(p.w) + k.showAfterMs) {
+          if (!shown && (hinted || stepHelped)) {
             shown = target;
-            S.glow(target, true);
+            shownAt = Date.now();
+            S.glow(target, true, { now: true });
             if (Cook.onHelp) Cook.onHelp("shown", { ids: [p.w] });
           }
         }

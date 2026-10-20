@@ -5803,7 +5803,23 @@
    true,
    true
   ],
-  "stations": {}
+  "stations": {
+   "daar-chop": {
+    "_about": "DAAR-34 (Zafar, 17 Oct, P54: 'those other items should be dotted, so you can see there's three items to be chopped in total but only the first one is revealed to you audibly and visually in writing'; s08 w6J): Nani's chop card in the daal is her step card, not an order: at L4 it stays dotted (the rows she has called written, the rest dotted whole), never folded to face + headline. callWritten: at L4 a row she has called is written whole (the first one revealed in writing); at L3 the item stays dotted until its row ticks (the level table).",
+    "card": [
+     "open",
+     "open",
+     "dotted",
+     "dotted"
+    ],
+    "callWritten": [
+     false,
+     false,
+     false,
+     true
+    ]
+   }
+  }
  },
  "timing": {
   "_about": "Cook timers by level (design system §11): flip, boil and fry timers get about 15% quicker per level (a rate is multiplied by (1/(1 - levelSpeed))^(level - 1)). Read by the maani station v2; the other stations adopt it as they are rebuilt.",

@@ -36,7 +36,7 @@ The single source of truth for how Cook looks and behaves. It merges Zafar's fee
   - **Nani** (sage box) at the top: a larger portrait (waist-up art where it exists), her line (up to 2 lines), the bulb and mute. Her face = replay.
   - **One white card per person:** face (= replay) + short headline (*Muke chai khape.*) + that person's pills directly on the card. Several of the same thing (skewers, cups) = light grey subgroups, never boxes inside boxes.
   - **A nav dock at the bottom:** three identical circular buttons (? · ⌂ · book), 48 px, quiet.
-- **The play area, about 78%.** The top 74% is the scene; the bottom 26% is the inventory shelf (a defined band: a darker wooden counter edge or a soft shelf strip).
+- **The play area, about 78%.** The top 70% is the scene; the bottom 30% is the inventory shelf (a defined band: a darker wooden counter edge or a soft shelf strip), so the jars and tools on it are big enough to read (SH-112, Zafar, 20 Oct: was 74/26).
 - **The focal rule:** the object the child should act on next pulses gently; inactive objects are dimmed about 10% until they matter; the tray and serving items are quiet until the serving step.
 
 ## 4. The inventory (every supply station)
