@@ -4,22 +4,207 @@
  "src": "sources/art/s08c",
  "out": "assets",
  "data": "data/clinic/s08c-cut-data.json",
- "skin_render": [200, 138, 111],
- "skin_limits": [6, 12],
+ "skin_render": [
+  200,
+  138,
+  111
+ ],
+ "skin_limits": [
+  6,
+  12
+ ],
  "failed": {},
  "jobs": [
-  {"id": "cr1-crutches", "type": "grid", "src": "cr1-crutches-flat-v1.png", "cells": [1, 1], "names": ["crutches-flat-belt"],
-   "outdir": "clinic/sheets/decoys", "tol": 4, "hole_min": 20, "max": 384, "pad": 4,
-   "_note": "7B (CLN-23): the pair of crutches lying flat (pads left, feet right, every part down), replacing crutches-flat-belt (B9's crutch turned 90 degrees) under the same name, so data/clinic.json items.crutches needs no change; grey pads on grey: tolerance 4 and no shadow drop (the pads' shaded undersides are dark neutral grey, which the shadow drop took for ground), the gaps between the shafts holes"},
-  {"id": "tc1-steel-cup", "type": "grid", "src": "tc1-steel-cup-v1.png", "cells": [1, 1], "names": ["steel-cup-s08c"],
-   "outdir": "clinic/items-s08c", "tol": 5, "hole_min": 8, "max": 560, "x2": true, "pad": 4,
-   "_note": "7B (CLN-196, Zafar 19 Oct: the metal cup, no drop shadow, sitting on the surface): the steel tumbler upright, inside and floor showing; no shadow drawn, so none to drop. Its rim and inside are measured on the cut's alpha into data/clinic/heal/taste.json art.glass"},
-  {"id": "dw2-doctor-3q-left", "type": "figure", "data": "doctor-3q-left", "src": "dw2-doctor-3q-left-v1.png",
-   "fig_h": 676, "pad": 16, "neck": 285, "skin_box": [0.42, 0.065, 0.5, 0.09],
-   "faces": {"talk": "dt2-doctor-3q-left-talk-v1.png", "blink": "db2-doctor-3q-left-blink-v1.png"},
-   "anchors": {"front": {"head": [490, 165], "eyes": [452, 172], "stand": [472, 1450]}},
-   "out": "clinic/patients/doctor/v2/doctor-3q-left", "face_align": "none", "face_match": true,
-   "skin_shift": {"to": [200, 138, 111]},
-   "_note": "7B (CLN-17; Zafar 20 Oct: likeness yes; 'colour-correct, don't redraw'): the true three-quarter turn to the viewer's left beside the bed, replacing the s08 3q-left set under its file names (s08.cut.json doctor2-3q-left; data/clinic/heal-art.json doctor.views['3q-left'] takes the new numbers); DT2/DB2 are clean edits of DW2 on its own canvas (shift 0,0, skin matched). skin_shift: the whole doctor set (this view and s08's front, 3q-right, waves, poses and box faces) is moved toward his sheet's swatch #C88A6F by one per-pixel Lab shift weighted by skin-likeness, the same function for every file, so every frame and face layer stays matched. artcut.py does not read skin_shift yet: build/reports/s08-w7b-people-art.md has the shift and the request"}
+  {
+   "id": "cr1-crutches",
+   "type": "grid",
+   "src": "cr1-crutches-flat-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "names": [
+    "crutches-flat-belt"
+   ],
+   "outdir": "clinic/sheets/decoys",
+   "tol": 4,
+   "hole_min": 20,
+   "max": 384,
+   "pad": 4,
+   "_note": "7B (CLN-23): the pair of crutches lying flat (pads left, feet right, every part down), replacing crutches-flat-belt (B9's crutch turned 90 degrees) under the same name, so data/clinic.json items.crutches needs no change; grey pads on grey: tolerance 4 and no shadow drop (the pads' shaded undersides are dark neutral grey, which the shadow drop took for ground), the gaps between the shafts holes"
+  },
+  {
+   "id": "tc1-steel-cup",
+   "type": "grid",
+   "src": "tc1-steel-cup-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "names": [
+    "steel-cup-s08c"
+   ],
+   "outdir": "clinic/items-s08c",
+   "tol": 5,
+   "hole_min": 8,
+   "max": 560,
+   "x2": true,
+   "pad": 4,
+   "_note": "7B (CLN-196, Zafar 19 Oct: the metal cup, no drop shadow, sitting on the surface): the steel tumbler upright, inside and floor showing; no shadow drawn, so none to drop. Its rim and inside are measured on the cut's alpha into data/clinic/heal/taste.json art.glass"
+  },
+  {
+   "id": "dw2-doctor-3q-left",
+   "type": "figure",
+   "data": "doctor-3q-left",
+   "src": "dw2-doctor-3q-left-v1.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 285,
+   "skin_box": [
+    0.42,
+    0.065,
+    0.5,
+    0.09
+   ],
+   "faces": {
+    "talk": "dt2-doctor-3q-left-talk-v1.png",
+    "blink": "db2-doctor-3q-left-blink-v1.png"
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      490,
+      165
+     ],
+     "eyes": [
+      452,
+      172
+     ],
+     "stand": [
+      472,
+      1450
+     ]
+    }
+   },
+   "out": "clinic/patients/doctor/v2/doctor-3q-left",
+   "face_align": "none",
+   "face_match": true,
+   "skin_shift": {
+    "to": [
+     200,
+     138,
+     111
+    ]
+   },
+   "_note": "7B (CLN-17; Zafar 20 Oct: likeness yes; 'colour-correct, don't redraw'): the true three-quarter turn to the viewer's left beside the bed, replacing the s08 3q-left set under its file names (s08.cut.json doctor2-3q-left; data/clinic/heal-art.json doctor.views['3q-left'] takes the new numbers); DT2/DB2 are clean edits of DW2 on its own canvas (shift 0,0, skin matched). skin_shift: the whole doctor set (this view and s08's front, 3q-right, waves, poses and box faces) is moved toward his sheet's swatch #C88A6F by one per-pixel Lab shift weighted by skin-likeness, the same function for every file, so every frame and face layer stays matched. artcut.py does not read skin_shift yet: build/reports/s08-w7b-people-art.md has the shift and the request"
+  },
+  {
+   "id": "wr1-auntie-sit",
+   "type": "figure",
+   "data": "auntie",
+   "_note": "7B (ART-23): seated front-on for the waiting room's bench, cut like s07.cut.json old-man-sit (the same job shape, fig_h 440, so every bench person is one drawn height: these are drawn 90% of the picture's height, he 80%, and the cut scales each to his height); anchors read off the source by eye (forehead, eyes, mouth, seat = the backs of the thighs on the bench); the colour rung recolours the clothes band in code, as his (heal-art.json waiting.<kind>.tint)",
+   "src": "wr1-auntie-seated-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 435,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      508,
+      183
+     ],
+     "eyes": [
+      508,
+      253
+     ],
+     "mouth": [
+      508,
+      342
+     ],
+     "head": [
+      508,
+      253
+     ],
+     "seat": [
+      508,
+      995
+     ]
+    }
+   },
+   "out": "clinic/patients/auntie/auntie"
+  },
+  {
+   "id": "wr2-uncle-sit",
+   "type": "figure",
+   "data": "uncle",
+   "_note": "7B (ART-23): seated front-on for the waiting room's bench, cut like s07.cut.json old-man-sit (the same job shape, fig_h 440, so every bench person is one drawn height: these are drawn 90% of the picture's height, he 80%, and the cut scales each to his height); anchors read off the source by eye (forehead, eyes, mouth, seat = the backs of the thighs on the bench); the colour rung recolours the clothes band in code, as his (heal-art.json waiting.<kind>.tint)",
+   "src": "wr2-uncle-seated-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 340,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      497,
+      142
+     ],
+     "eyes": [
+      497,
+      203
+     ],
+     "mouth": [
+      497,
+      308
+     ],
+     "head": [
+      497,
+      203
+     ],
+     "seat": [
+      497,
+      965
+     ]
+    }
+   },
+   "out": "clinic/patients/uncle/uncle"
+  },
+  {
+   "id": "wr3-mother-baby-sit",
+   "type": "figure",
+   "data": "mother-baby",
+   "_note": "7B (ART-23): seated front-on for the waiting room's bench, cut like s07.cut.json old-man-sit (the same job shape, fig_h 440, so every bench person is one drawn height: these are drawn 90% of the picture's height, he 80%, and the cut scales each to his height); anchors read off the source by eye (forehead, eyes, mouth, seat = the backs of the thighs on the bench); the colour rung recolours the clothes band in code, as his (heal-art.json waiting.<kind>.tint); the woman holding the baby (waiting.js: anyone called 'with the baby')",
+   "src": "wr3-mother-baby-seated-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 350,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      490,
+      142
+     ],
+     "eyes": [
+      490,
+      208
+     ],
+     "mouth": [
+      490,
+      292
+     ],
+     "head": [
+      490,
+      208
+     ],
+     "seat": [
+      490,
+      950
+     ]
+    }
+   },
+   "out": "clinic/patients/mother-baby/mother-baby"
+  }
  ]
 }
