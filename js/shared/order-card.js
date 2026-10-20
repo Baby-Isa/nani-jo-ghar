@@ -479,14 +479,25 @@
     // the face (= the speaker) and the headline, and one row of dots where the order would be. The order is heard (the
     // host's read-out), never written; one row whatever the order's length, so its size gives nothing away
     if (opts.big && opts.closed) return OC.closeBig(c);
-    if (sh.items.length) {
+    // DAAR-26 (s08 w6M): an item the host keeps written on a closed card (it.keep: daar's stir row at L4, the laps and the
+    // speed Nani says, every number she says written, SH-99) stays under the headline while the rest folds away
+    const kept = opts.closed && !opts.big ? sh.items.filter((it) => it.keep) : [];
+    const folding = kept.length ? sh.items.filter((it) => !it.keep) : sh.items;
+    if (folding.length) {
       const body = el("div", "oc-body");
       const inner = el("div", "oc-in");
       const list = el("div", "oc-items");
-      sh.items.forEach((it) => list.appendChild(itemEl(it, opts)));
+      folding.forEach((it) => list.appendChild(itemEl(it, opts)));
       inner.appendChild(list);
       body.appendChild(inner);
       c.appendChild(body);
+    }
+    if (kept.length) {
+      const held = el("div", "oc-keep");
+      const list = el("div", "oc-items");
+      kept.forEach((it) => list.appendChild(itemEl(it, opts)));
+      held.appendChild(list);
+      c.appendChild(held);
     }
     if (opts.fold && !opts.big && sh.items.length) {
       opts.fold.el = c;

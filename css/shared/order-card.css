@@ -91,8 +91,25 @@
    circle, so its face drew at the tap area's 48 px. The tap area stays; the circle inside it is --oc-face, with Cook's edge ring */
 .cl-card .oc-card .oc-face.cl-card-face { background: transparent; display: grid; place-items: center; }
 .cl-card .oc-card .oc-face.cl-card-face > .cl-face { width: var(--oc-face); height: var(--oc-face); flex: none; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
-.cl-face.doctor img { --face-zoom: 1.7; --face-y: 40%; }
+/* SH-113 (s08 w6M; the judge, 20 Oct: the doctor's circle "clearly more zoomed out than A's Cook customer", the girl's "whole head with
+   pigtails and shoulders"): the crop rule follows the PICTURE wherever its circle is drawn, so every circle of one face is zoomed the
+   same: the shared order card's face (the clinic gives it the doctor's or the girl's picture), the clinic's own .cl-face and the heal
+   games' and pharmacy's corner face (.hs-face). Set by measure against Cook's close-ups (Nana: the cheeks across 0.8 of the circle, the
+   eyes 0.05 above its middle, the chin at 0.95): the doctor's 144 px bust and the girl's 512 px head */
 .cl-face.person img { --face-zoom: 1.25; --face-y: 44%; }
+.oc-card .oc-face img[src*="/doctor/v2/faces/"], .cl-face.doctor img { --face-zoom: 1.9; --face-y: 36%; }
+.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.7; --face-y: 45%; }
+.hs-face .hs-face-art[src*="/girl/girl-head-"] { transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom)); }
+/* the shared card's face is the picture itself (the ring is its shadow): zoomed, it is cut back to its circle (clip-path, before the
+   zoom: a circle of 1/zoom round the face point), and the ring moves to the button, round the same circle */
+.oc-card .oc-face img:is([src*="/doctor/v2/faces/"], [src*="/girl/girl-head-"]) {
+  transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom));
+  clip-path: circle(calc(50% / var(--face-zoom)) at 50% var(--face-y)); box-shadow: none;
+}
+.oc-card .oc-face:has(> img:is([src*="/doctor/v2/faces/"], [src*="/girl/girl-head-"]))::before {
+  content: ""; position: absolute; pointer-events: none; border-radius: 50%; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge);
+  inset: calc((max(var(--oc-face), var(--njg-face-hit)) - var(--oc-face)) / 2);
+}
 .oc-card .oc-headline { flex: 1 1 auto; min-width: 0; font-weight: 800; font-size: var(--oc-h); line-height: 1.25; }
 /* the headline is the family's line and can't be shortened: shrink, then wrap, never "..." */
 .oc-card .oc-headline.fit-wrap, .oc-card .oc-rec-line.fit-wrap { --fit-min: var(--njg-t4); }

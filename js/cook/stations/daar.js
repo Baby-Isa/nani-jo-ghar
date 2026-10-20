@@ -773,7 +773,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const sizzle = Cook.sfx.sizzleLoop();
     S.loops.push(sizzle);
     Cook.sfx.sizzle(0.6);
-    S.steam(cx, cy - bodyR * 0.3, 2);
+    S.steam(cx, cy - bodyR * 1.05, 2); // (CK-06, s08 w6M: from the far rim, up and away: never a white cloud over the oil)
     await Cook.wait(350);
     Cook.daarPhase = "hot";
 

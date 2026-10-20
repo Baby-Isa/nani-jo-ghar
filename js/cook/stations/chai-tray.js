@@ -981,7 +981,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
             pan.bubbles.lineStyle(2, 0xfff4e0, (1 - u) * 0.8 * Math.min(1, hot));
             pan.bubbles.strokeCircle(pan.x + Math.cos(ang) * r * d, pan.y + Math.sin(ang) * r * d, s);
           }
-          if (steamT > 0.3 && Math.random() < 0.2 + hot * 0.3) S.wisps(pan.x + (Math.random() - 0.5) * rIn, pan.y - rIn * 0.4, 1, 56);
+          if (steamT > 0.3 && Math.random() < 0.2 + hot * 0.3) S.wisps(pan.x + (Math.random() - 0.5) * rIn, pan.y - rIn * 1.05, 1, 56); // (CK-06, s08 w6M: off the far rim, never over the tea)
         }
       });
       if (steamT > 0.3) steamT = 0;

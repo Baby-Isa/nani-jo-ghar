@@ -1673,7 +1673,10 @@
         }
         if (flat.length) {
           const parts = flat.map((x) => partNode(x.r, x.gi));
-          items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat });
+          // DAAR-26 (s08 w6M; the judge, 20 Oct: "the L4 card at the stir shows only 'Muke daar khape.' with no stir row"): on a
+          // card closed for its level the stir row stays written once it has come (she says the laps and the speed: SH-99)
+          const keep = s.when === "stir" && !!s.shown && !!(mission.levelClosed || (mission.closed && mission.closed.peek));
+          items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat, keep });
           rowsShown.push(...flat.map((x) => x.r));
         }
         rows

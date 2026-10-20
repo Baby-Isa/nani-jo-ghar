@@ -565,53 +565,36 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
       }
     }
-    /** A small soft puff where something lands in a pot or a glass (28 Sept, s8). */
-    puff(x, y, color = 0xffffff, size = 40) {
-      // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa): a soft puff that reads on a
-      // light pan or a dark one (each cloud has a faint warm edge); never a spray of dots (CK-06)
-      // S06 (CK-27 reopened: the puff did not read on chaat's yellow layer or chai's water, where its white and item-coloured
-      // clouds matched what they landed on): every cloud is white with a clear warm edge, the item's colour only at its
-      // heart; they rise above the rim, so the puff reads over the food, the pan or the glass, and it holds for about 0.9 s
-      // s07 fix round (CK-06, DAAR-05: the judge read those hard-edged white ellipses, with the item's colour at their
-      // heart, as "flat white discs" and "white circles with black dots" lying on the food): every cloud is now one soft
-      // vapour sprite (a radial fade, no outline, no coloured heart), faintly warmed toward the item's colour; it is born
-      // small at the landing spot and rises up and out, so what stays pictured in the pot is only what went in. Same
-      // timing as before (out 360 ms, gone by about 0.9 s), the same one shared effect in every station (CK-27)
-      const s = size * 1.3;
-      const key = this.softPuffTex();
-      const warm = (c) => {
-        const mix = (sh) => Math.round(255 * 0.82 + ((c >> sh) & 255) * 0.18);
+    /** A small "it went in" mark where something lands in a pot or a glass (28 Sept, s8). */
+    puff(x, y, color = 0xffffff, size = 40, { flat = 0.72 } = {}) {
+      // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa), the same in every station.
+      // s08 w6M (CK-06 reopened; the judge, 20 Oct: "blurry see-through white blobs over the oil and onions"): no clouds any
+      // more (white or tinted, round or wisps: every version read as blobs lying on the food). It is a ripple: two thin rings
+      // spread out from where it landed and fade, a pale line with a soft dark one just outside it (a ripple's light and its
+      // shadow), so it reads on a light pan or a dark one and leaves nothing over what went in. flat: the rings' height over
+      // their width (a side-on glass passes a flatter ring). Same timing as before (gone by about 0.9 s)
+      const s = size * 1.25;
+      const light = (() => {
+        const c = Number(color) >>> 0;
+        const mix = (sh) => Math.round(255 * 0.8 + ((c >> sh) & 255) * 0.2);
         return (mix(16) << 16) | (mix(8) << 8) | mix(0);
-      };
-      const tint = warm(Number(color) >>> 0);
-      // (wisps, taller than wide, like steam off hot food: never round balls sitting on it)
-      const u = s / 128;
-      for (let i = 0; i < 5; i++) {
-        const a = -Math.PI / 2 + ((i - 2) / 2) * 0.9 + (Math.random() - 0.5) * 0.2;
-        const c = this.track(this.add.image(x, y, key).setDepth(D.fx).setTint(tint).setAlpha(0.85));
-        c.setScale(u * 0.3, u * 0.45);
-        const tx = x + Math.cos(a) * s * 0.6;
-        const ty = y + Math.sin(a) * s * 0.4 - s * 0.9;
-        this.tweens.add({ targets: c, x: tx, y: ty, scaleX: u * 0.55, scaleY: u * 1.0, duration: 360, ease: "Cubic.easeOut" });
-        this.tweens.add({ targets: c, alpha: 0, scaleX: u * 0.7, scaleY: u * 1.35, y: ty - s * 0.5, delay: 360, duration: 520 + Math.random() * 160, ease: "Sine.easeIn", onComplete: () => c.destroy() });
+      })();
+      for (let i = 0; i < 2; i++) {
+        const g = this.track(this.add.graphics().setDepth(D.fx).setPosition(x, y));
+        const st = { r: s * 0.16, a: 1 };
+        const draw = () => {
+          if (!g.active) return;
+          g.clear();
+          const w = st.r * 2;
+          const h = w * flat;
+          g.lineStyle(Math.max(1.5, s * 0.07), 0x3a2410, 0.22 * st.a);
+          g.strokeEllipse(0, s * 0.015, w + s * 0.08, h + s * 0.08 * flat);
+          g.lineStyle(Math.max(1, s * 0.04), light, 0.7 * st.a);
+          g.strokeEllipse(0, 0, w, h);
+        };
+        draw();
+        this.tweens.add({ targets: st, r: s * (0.62 + 0.3 * i), a: 0, delay: i * 150, duration: 700, ease: "Cubic.easeOut", onUpdate: draw, onComplete: () => g.destroy() });
       }
-    }
-    /** The puff's one soft cloud (128 px, made once per game): white at its heart, a faint warm shade, then nothing. */
-    softPuffTex() {
-      const key = "fx-puff-soft";
-      if (this.textures.exists(key)) return key;
-      const N = 128;
-      const ct = this.textures.createCanvas(key, N, N);
-      const g = ct.getContext();
-      const grd = g.createRadialGradient(N / 2, N * 0.46, 0, N / 2, N / 2, N / 2);
-      grd.addColorStop(0, "rgba(255,255,255,0.92)");
-      grd.addColorStop(0.42, "rgba(255,252,247,0.78)");
-      grd.addColorStop(0.72, "rgba(196,172,146,0.32)");
-      grd.addColorStop(1, "rgba(196,172,146,0)");
-      g.fillStyle = grd;
-      g.fillRect(0, 0, N, N);
-      ct.refresh();
-      return key;
     }
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */
     wisps(x, y, n = 2, w = 60) {
