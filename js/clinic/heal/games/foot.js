@@ -698,10 +698,12 @@
               };
               const left = dirt.filter((d) => !d.gone && reach(d)).sort((a, b) => a.y - b.y);
               const share = left.slice(0, Math.max(1, Math.ceil(left.length / (c.jugs - st.jugs))));
-              // (the first jug starts where the first-time help lights the foot; s08 w6I, CLN-190: the first sweep began on a clean spot, so its first frames showed no dirt going: it
-              // starts on the bit of dirt nearest the lit spot instead, when one is inside the help's light)
+              // (the first jug starts where the first-time help lights the foot; s08 w6I, CLN-190: the first sweep began on a
+              // clean spot, so its first frames showed no dirt going: it starts on the bit of dirt nearest the lit spot when
+              // one is inside the help's light, and with no help on screen on the first bit of its share)
+              const helpUp = !!(root.Onboard && root.Onboard.active && root.Onboard.active());
               const lit = left.filter((d) => Math.hypot(d.x - 400, d.y - 190) < 80).sort((a, b) => Math.hypot(a.x - 400, a.y - 190) - Math.hypot(b.x - 400, b.y - 190))[0];
-              const start = st.jugs === 0 ? (lit ? [lit] : reach({ x: 400, y: 190 }) ? [{ x: 400, y: 190 }] : []) : [];
+              const start = st.jugs === 0 && helpUp ? (lit ? [lit] : reach({ x: 400, y: 190 }) ? [{ x: 400, y: 190 }] : []) : [];
               const way = start.concat(share.filter((d) => d !== lit).length ? share.filter((d) => d !== lit) : start.length ? [] : [{ x: 400, y: 300 }]);
               const pts = way.map((d) => {
                 const cl = S.client(d.x, d.y);

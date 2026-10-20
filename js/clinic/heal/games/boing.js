@@ -605,20 +605,19 @@
         // CLN-106, CLN-168 (s08 w6I; the judge: "the cotton puff appears ... in almost the same place and then is gone";
         // "no cloth appears in any frame"): the rub is the same in the fast test mode (it never holds the game up: the
         // next tap goes ahead while it plays), wider, and the cloth bigger, so its to and fro reads on a filmstrip
-        const dur = 1200;
+        const dur = 1600;
         const cw = 96;
         const ch = clothArt ? (cw * clothArt.size[1]) / clothArt.size[0] : 68;
         const w = s("image", { href: clothArt ? url(clothArt.file) : wipeArt ? url(wipeArt) : WIPE_SVG, x: A.x - cw / 2, y: A.y - ch / 2, width: cw, height: ch, class: "bo-cloth" }, S.fx);
         if (w.animate) {
           w.animate(
             [
-              { transform: "translate(-80px, 12px) rotate(-12deg)", opacity: 0 },
-              { transform: "translate(-74px, 11px) rotate(-11deg)", opacity: 1, offset: 0.06 },
-              { transform: "translate(74px, -9px) rotate(10deg)", offset: 0.3 },
-              { transform: "translate(-66px, 9px) rotate(-10deg)", offset: 0.54 },
-              { transform: "translate(66px, -8px) rotate(10deg)", offset: 0.78 },
-              { transform: "translate(-20px, 3px) rotate(-3deg)", opacity: 1, offset: 0.94 },
-              { transform: "translate(-24px, 3px) rotate(-4deg)", opacity: 0 },
+              // one slow rub across and back (a filmstrip's frames, a third of a second apart, each catch it somewhere new)
+              { transform: "translate(-84px, 12px) rotate(-12deg)", opacity: 0 },
+              { transform: "translate(-80px, 12px) rotate(-12deg)", opacity: 1, offset: 0.06 },
+              { transform: "translate(84px, -10px) rotate(11deg)", offset: 0.46 },
+              { transform: "translate(-64px, 9px) rotate(-9deg)", opacity: 1, offset: 0.88 },
+              { transform: "translate(-70px, 10px) rotate(-10deg)", opacity: 0 },
             ],
             { duration: dur, fill: "forwards", easing: "ease-in-out" }
           );
