@@ -27,8 +27,8 @@ FILES THIS SESSION OWNS (edit only these):
   - data/clinic/**
   - css/clinic.css
   - js/shared/guide.js and js/shared/order-card.js (the family's talk and blink frames only)
-  - build/sandbox/data/evidence.json (these rows' specs)
   - build/reports/s08-w7b-people-art.md
+  - build/sandbox/data/evidence.json
 READ-ONLY (never edit):
   - js/cook/** except as above, data/cook.json, assets/cook/** (wave 7A)
   - sources/art/**
@@ -46,6 +46,8 @@ TASKS (each with its acceptance criterion):
      Accept: eye: the belt, the taste game and the diagnosis room at 1366x768 and 800x360; the doctor beside the girl, talking
   2. Cut the girl's close-ups GZ1 (aah), GZ2 (eyes; keep the cropped crown, Zafar 20 Oct), GZ3 (sore eye), GZ4 (eyes closed), colour-corrected to her sheet's face, and wire them for the tooth zoom (CLN-163: the drawn girl dissolves into GZ1, no separate photo) and the eye game (CLN-185, ART-19: she blinks and her sore eye shows). Cut NN1/NN2, MA1/MA2, AL1/AL2 (Nana, Ma, Ali talk and blink: paste back only the changed face pixels; pad MA1 to 1536) and wire them so they talk and blink like Nani (ART-19). Cut WR1-WR3 (auntie, uncle, mother with baby, seated) scaled to the old man's height and wire them in the waiting room (ART-23).
      Accept: eye: the tooth zoom and the eye game as filmstrips; the family talking; the waiting room at L1-L5
+  3. The redo (landed 20 Oct): AL3 al3-ali-impatient-v1, Ali's impatient face (arms crossed, a frowning pout, eyes away): cut like the family's other frames and wire it wherever Ali's impatient face shows (ART-10: an order card's impatient face while the order waits; Nana's and Ma's already frown). Write the evidence specs for CLN-185 and ART-23 first (they have none), so the judge can see each one.
+     Accept: eye: Ali's card face while his order waits
 
 REGRESSION ROWS TO RECHECK (189 rows of the fix list and its done archive; * = open or reopened):
   clinic:pharmacy (35): CLN-23*, CLN-20, CLN-21, CLN-22, CLN-24, CLN-96, CLN-97, CLN-19, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01, CLN-81

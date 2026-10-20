@@ -27,7 +27,8 @@
     "data/stations/**",
     "css/cook.css",
     "build/sandbox/data/evidence.json (these rows' specs)",
-    "build/reports/s08-w7a-cook-art.md"
+    "build/reports/s08-w7a-cook-art.md",
+    "js/shared/pour.js"
   ],
   "readOnly": [
     "js/clinic/**, data/clinic/**, assets/clinic/**, assets/characters/** (wave 7B)",
@@ -42,6 +43,10 @@
     {
       "do": "WT1: the marble worktop as a seamless tile (rect + tile, the cross-fade over its seam, then build/tools/art/upscale.py x2), laid by code at its own size (never zoomed), with the hob cut from bg-cook-hob-t-v1 x2 laid on it, so the Cook backgrounds are sharp on big screens (contract-11, SH-91, ART-05). The wood stays code-drawn at screen resolution.",
       "accept": "auto: contract-11 green on every Cook flow at 1024x768, 1180x820, 1366x1024 and 1440x900"
+    },
+    {
+      "do": "The redo (landed 20 Oct, build/reports/s08c-art-landing/details.md section 5): DS1 ds1-daal-stirred-in-v2 (the daal's eight stirred-in pieces replace the sticker pieces, DAAR-05); CP4 cp4-chai-pan-brewing-v2 (the pan's brewing states: water, tea leaves, milky chai, CK-06); CP3 cp3-chai-pan-tip-pour-v2 cells 1-4 only (the pan tipping towards the player for the pour, CHAI-26), the stream drawn by js/shared/pour.js (thin, translucent tea), never the picture's syrupy streams.",
+      "accept": "eye: the stirred daal, the brewing pan and the pour as filmstrips at 1366x768 and 800x360"
     }
   ],
   "flows": [
