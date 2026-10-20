@@ -56,7 +56,7 @@ const el = (tag, cls, parent) => {
 export async function runBook(host, api, day) {
   const { core, url, E } = api;
   // one stage for the whole evening (day/book/<part>): a page turn is not a stage end
-  api.test.state("day/book/room");
+  api.test.state("day/book/load");
   api.test.expect(() => ({ kind: "wait" }));
   window.Day.stage = "book";
   const D = await fetch(url("data/day-book.json")).then((r) => r.json());
@@ -424,6 +424,9 @@ export async function runBook(host, api, day) {
   };
 
   // ---------------------------------------------------------------- the evening
+  // the room is up: the evening's first moment (BOOK-01 films from here)
+  await new Promise((r) => (room.complete ? r() : (room.onload = room.onerror = r)));
+  api.test.state("day/book/room");
   await api.wait(500);
   const direct = !!only;
   if (!direct) {

@@ -160,7 +160,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-photo-ours.in { opacity: 1; transform: rotate(var(--tilt)); }
 
 /* the end: today's words as gold cards (progress, never a verdict) */
-.day-words { position: absolute; left: var(--njg-s4); right: var(--njg-s4); bottom: var(--njg-s5); transform: translateY(24px); display: flex; gap: var(--njg-s3); flex-wrap: wrap; justify-content: center; opacity: 0; transition: opacity .5s, transform .5s; pointer-events: none; }
+.day-words { position: absolute; left: calc(var(--njg-s4) * 2 + min(16vw, 180px, 34dvh)); right: var(--njg-s4); bottom: var(--njg-s5); transform: translateY(24px); display: flex; gap: var(--njg-s3); flex-wrap: wrap; justify-content: center; opacity: 0; transition: opacity .5s, transform .5s; pointer-events: none; }
 .day-words.in { opacity: 1; transform: none; }
 .day-wordcard { display: flex; flex-direction: column; align-items: center; gap: var(--njg-s1); min-width: 88px; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-gold); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); }
 .day-wordpic { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; }
