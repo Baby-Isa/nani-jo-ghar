@@ -707,3 +707,9 @@
 {"id":"RIDE-01","run":"ev-20261020-183123-8zf","verdict":"FAIL","spec":"1cee40b71fd3b34812b6","judge":"Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-20"}
 {"id":"BOOK-01","run":"ev-20261020-183123-8zf","verdict":"FAIL","spec":"e43c2e8469b8cc642c4b","judge":"Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-20"}
 {"id":"BOOK-05","run":"ev-20261020-183123-8zf","verdict":"PASS","spec":"f71e6ec85dd7c9bd5611","judge":"Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-20"}
+{"id":"RIDE-02","run":"ev-20261020-194937-bb2","verdict":"PASS","spec":"ed31a8ff527cf462b975","judge":"expect","date":"2026-10-20"}
+{"id":"RIDE-03","run":"ev-20261020-194937-bb2","verdict":"PASS","spec":"973c3d3e25c3994e732f","judge":"expect","date":"2026-10-20"}
+{"id":"RIDE-04","run":"ev-20261020-194937-bb2","verdict":"PASS","spec":"b5edebaf30801c5c1e19","judge":"expect","date":"2026-10-20"}
+{"id":"RIDE-05","run":"ev-20261020-194937-bb2","verdict":"PASS","spec":"9be29306c6fbaf22956d","judge":"expect","date":"2026-10-20"}
+{"id":"BOOK-02","run":"ev-20261020-194937-bb2","verdict":"PASS","spec":"d6c76e3d267ba83b17ac","judge":"expect","date":"2026-10-20"}
+{"id":"BOOK-08","run":"ev-20261020-194937-bb2","verdict":"PASS","spec":"ebfb375d88c522732cd5","judge":"expect","date":"2026-10-20"}
