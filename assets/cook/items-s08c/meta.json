@@ -76,6 +76,39 @@
    "w": 497
   }
  },
+ "daar_in": {
+  "_about": "DS1 v2 scatters: their radius (px); the edge faded from 0.55 of it, the daal brought to the stirred disc's colour [235, 167, 15]",
+  "in-chilli-s08c.webp": {
+   "R": 142.0
+  },
+  "in-cumin-s08c.webp": {
+   "R": 133.1
+  },
+  "in-garlic-s08c.webp": {
+   "R": 135.3
+  },
+  "in-ginger-s08c.webp": {
+   "R": 133.3
+  },
+  "in-mustard-s08c.webp": {
+   "R": 132.3
+  },
+  "in-onion-s08c.webp": {
+   "R": 146.4
+  },
+  "in-onion-s08c@2x.webp": {
+   "R": 153.8
+  },
+  "in-potato-s08c.webp": {
+   "R": 144.0
+  },
+  "in-tomato-s08c.webp": {
+   "R": 141.8
+  },
+  "in-tomato-s08c@2x.webp": {
+   "R": 144.1
+  }
+ },
  "hob": {
   "_about": "the hob plate cut from bg-cook-hob-t-v1.png (src_box, source px, its rounded mask's corner radius) x2; in1600: its box in the 1600x900 design box, where bg-cook-hob-t-v1-1600 drew it (the stations' burners, station-lib.js BURNER)",
   "file": "assets/cook/worktop-s08c/hob-plate-s08c.webp",

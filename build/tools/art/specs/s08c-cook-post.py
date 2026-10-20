@@ -16,6 +16,7 @@ Every step works only on pictures ChatGPT drew (never a drawn stand-in, CLAUDE.m
      build/tools/art/upscale.py: assets/cook/worktop-s08c/marble-tile-s08c.webp.
   4. The hob: the plate cut from assets/cook/bg/bg-cook-hob-t-v1.png on a rounded rectangle fitted to it, upscaled x2:
      assets/cook/worktop-s08c/hob-plate-s08c.webp (laid on the tiled marble where the -1600 picture had it).
+  4b. DS1 (DAAR-05): each stirred-in scatter's edge faded and its daal brought to the pot's daal colour.
   5. The measures: assets/cook/items-s08c/meta.json (the tray's skewer lines, the pans' contents circles, the tip frames'
      near rim, the kadchi's and teaspoon's bowls, the hob's place in the 1600x900 design box).
 """
@@ -338,6 +339,39 @@ def place_in_1600(png, box):
     return {"k": round(float(k), 4), "match": round(float(v), 4), "box": [round(x0 * k - ox, 1), round(y0 * k - oy, 1), round(x1 * k - ox, 1), round(y1 * k - oy, 1)]}
 
 
+# ---------------------------------------------------------------- 4b. DS1: the scatters fade into the pot's daal
+def daar_in():
+    """DS1 v2 (DAAR-05): each scatter's own daal is drawn as a scalloped patch; on the pot's daal (DP3's disc) it must not
+    read as a sticker: its edge fades out from 55% of its radius, and its daal is brought to the disc's colour (only the
+    daal-yellow pixels, by a gain per channel: the pieces keep theirs). Run once, on a fresh cut."""
+    d = os.path.join(IT, "daar-in")
+    disc = rgba(os.path.join(REPO, "assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp"))
+    target = np.median(disc[..., :3][disc[..., 3] > 250], 0)
+    out = {}
+    for f in sorted(os.listdir(d)):
+        if not f.endswith(".webp"):
+            continue
+        a = rgba(os.path.join(d, f))
+        al = a[..., 3] / 255.0
+        H, W = al.shape
+        ys, xs = np.nonzero(al > 0.5)
+        cy_, cx_ = ys.mean(), xs.mean()
+        R = np.sqrt((al > 0.5).sum() / np.pi)
+        yy, xx = np.mgrid[0:H, 0:W]
+        dist = np.hypot(yy - cy_, xx - cx_)
+        fade = np.clip((R - dist) / (R * 0.45), 0, 1)
+        hsv = cv2.cvtColor(a[..., :3].astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
+        daal = (hsv[..., 0] >= 17) & (hsv[..., 0] <= 30) & (hsv[..., 1] > 150) & (al > 0.5)
+        if daal.sum() > 50:
+            gain = np.clip(target / np.maximum(1, np.median(a[..., :3][daal], 0)), 0.85, 1.25)
+            w = ndi.gaussian_filter(daal.astype(np.float32), 1.0)[..., None]
+            a[..., :3] = a[..., :3] * (1 - w) + np.clip(a[..., :3] * gain, 0, 255) * w
+        a[..., 3] = al * fade * 255
+        save(a, os.path.join(d, f))
+        out[f] = {"R": round(float(R), 1)}
+    META["daar_in"] = dict(out, _about="DS1 v2 scatters: their radius (px); the edge faded from 0.55 of it, the daal brought to the stirred disc's colour %s" % [round(float(v)) for v in target])
+
+
 # ---------------------------------------------------------------- 5. the other measures
 def pans():
     d = os.path.join(IT, "chai-pan")
@@ -391,9 +425,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--weights", default="RealESRGAN_x2plus.pth")
     ap.add_argument("--skip-upscale", action="store_true", help="test runs: Lanczos instead of Real-ESRGAN")
-    ap.add_argument("--only", help="comma list of: tip, tray, marble, hob, pans, bowls")
+    ap.add_argument("--only", help="comma list of: daarin, tip, tray, marble, hob, pans, bowls")
     a = ap.parse_args()
-    steps = {"tip": tip_frames, "tray": trays, "marble": lambda: marble(a.weights, a.skip_upscale), "hob": lambda: hob(a.weights, a.skip_upscale), "pans": pans, "bowls": bowls}
+    steps = {"daarin": daar_in, "tip": tip_frames, "tray": trays, "marble": lambda: marble(a.weights, a.skip_upscale), "hob": lambda: hob(a.weights, a.skip_upscale), "pans": pans, "bowls": bowls}
     want = a.only.split(",") if a.only else list(steps)
     mp = os.path.join(IT, "meta.json")
     if os.path.exists(mp):
