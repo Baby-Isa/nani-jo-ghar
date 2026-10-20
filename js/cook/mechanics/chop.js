@@ -74,6 +74,39 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!ids.length) return {};
       ids.forEach((id) => Cook.markSeen(id));
       const hide = St.hideKnown(ctx);
+      /*
+       * s08 w6B (contract-30, chaat: "Kali hakro bataato." said, and no card written in the stage held "hakro"): a chop run with
+       * no card of its own from its caller (daar passes onCall and keeps Nani's chop card itself; the Chop tile ticks the order
+       * card's rows) gets Nani's chop card the way daar's station has it: her face, "chop these", a row per thing in exactly
+       * the words she says (the number and the thing; from L3 the item word dotted, the number written), ticked at the end.
+       */
+      const M = UI.mission;
+      let own = null;
+      if (!onCall && !tick && M && M.addCard && M.removeCard) {
+        const lv = Cook.roundLevel ? Cook.roundLevel(ctx) : z.level || 1;
+        const dot = (w) => !!(Cook.dotItem && Cook.dotItem(w, lv));
+        const head = Lang.line("chop-these");
+        const rowOf = (id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id)), { hide: dot }), done: false });
+        const rows = Object.keys(want).map(rowOf);
+        const data = () => ({
+          person: { id: "nani", face: UI.faceUrl ? UI.faceUrl("nani") : "", name: "Nani" },
+          headline: { html: Lang.html(head), rec: !head.ok },
+          items: rows.map((r) => ({ label: r.label, count: 2, parts: [], done: r.done, key: r })),
+        });
+        const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
+        try {
+          M.addCard("chop-nani", data(), cardOpts);
+          own = {
+            tickAll() {
+              rows.forEach((r) => (r.done = true));
+              M.addCard("chop-nani", data(), cardOpts);
+            },
+            close: () => M.removeCard("chop-nani"),
+          };
+        } catch (e) {
+          own = null; // (the order card alone, as before)
+        }
+      }
       // S04-B (DAAR-13, ART-17, Z8): the new knife (the art run's, no hand) is the mechanic's own default, wherever it's
       // run (the Chop tile too, not only daar); the old hand-and-knife only if that art can't load
       if (!knifeKey) {
@@ -563,6 +596,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       // the step has closed (the ring ran out): its rows tick, count rows too, right or not (UX 11)
       if (tick && ctx.closeItem) ctx.closeItem(ids);
+      if (own) {
+        own.tickAll();
+        await Cook.wait(400);
+        own.close();
+      }
       ctx.result.chopped = cut;
       z.skill(100, "chop");
       S.sparkle(z.X(800), z.Y(450));

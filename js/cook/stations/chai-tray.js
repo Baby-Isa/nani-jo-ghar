@@ -696,9 +696,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       t.x = -w / 2 + 50;
       c.add([g, t]);
       const { x, y } = popAt(pan, w * k, 59 * k);
+      const v = Cook.view || {};
+      const drift = y - (59 * k) / 2 - 14 >= (v.top || 0) + 10 ? 14 : 0; // (CHAI-19: no room above, no drift up)
       c.setPosition(x, y + 14);
       S.tweens.add({ targets: c, alpha: 1, y, duration: 180, ease: "Back.easeOut" });
-      S.tweens.add({ targets: c, alpha: 0, y: y - 14, delay: 1900, duration: 320, onComplete: () => c.destroy() });
+      S.tweens.add({ targets: c, alpha: 0, y: y - drift, delay: 1900, duration: 320, onComplete: () => c.destroy() });
       if (speak && !UI.naniMuted()) Lang.popWord(id);
       return c;
     };
@@ -742,7 +744,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
         if (above - H / 2 - 14 >= top && !hits(x, above)) y = above;
         else x = bb.x1 + 8 + W / 2;
       }
-      y = Math.max(top + H / 2 + 14, y);
+      // (the room above a short stage's hob is tight: the bubble may come up to just under the view's top; it then fades
+      // where it is, never drifting up: pop() below)
+      y = Math.max(top + H / 2 + 2, y);
       x = Math.max(left + W / 2, Math.min(right - W / 2, x));
       return { x, y };
     };

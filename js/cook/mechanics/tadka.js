@@ -52,7 +52,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const hideAll = mode !== "words";
       const hide = hideAll ? () => true : St.hideKnown(ctx);
       // "Jeeru. Ne poi rai." (and then: the order matters; one group is "ne")
-      await z.say(Lang.list(order, { seq: true }), { hide, onHear: () => hideAll && Cook.onHelp && Cook.onHelp("replay", { ids: flat }) });
+      // s08 w6B (contract-22: "Pela loon." said twice 1.8 s apart): when the request pop-up has just read her order out (this
+      // stage), her box shows it quietly instead of saying it again (as the chop does)
+      const LC = global.Lifecycle;
+      const asked = !!(LC && LC.asked && LC.asked());
+      await z.say(Lang.list(order, { seq: true }), Object.assign({ hide, onHear: () => hideAll && Cook.onHelp && Cook.onHelp("replay", { ids: flat }) }, asked ? { silent: true, ms: 10, keep: true } : {}));
 
       // the heat: a ring round the pan that fills between spices
       const burnSec = k.burnSec * (ctx.guided ? k.guidedBurn : 1);

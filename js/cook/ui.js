@@ -497,7 +497,7 @@
     if (UI.naniMuted()) return callNote(s, "skip-muted");
     const G = global.NaniGuide;
     // MAA-15 (Zafar, 17 Oct: maani's Firai on both turns): a step opened with "again" is called even if its words were just said
-    if (!s.again && G && G.recentlySaid && G.recentlySaid(Lang.plain(s.line))) return callNote(s, "skip-said");
+    if (!s.again && G && (G.recentlySaidIn || G.recentlySaid)(Lang.plain(s.line))) return callNote(s, "skip-said");
     callNote(s, s.again ? "queued-again" : "queued");
     s.callWaiting = true; // (s08 w6B, contract-36: a call still waiting when its step closes is logged skip-closed then: glow below)
     const line = Lang.role(copyLine(s.line), "call");
