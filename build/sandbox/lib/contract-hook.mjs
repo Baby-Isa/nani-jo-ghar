@@ -7,7 +7,7 @@
 //   k: "stage"   {key}                      a stage boundary: a Cook station starts or ends (Cook.inStation), the host's
 //                                          stage changes (njgTest.state()), the end screen shows ("end")
 //   k: "popup"   {open, box}               the shared request pop-up (.njg-rq-open, Cook's #intro) up or down
-//   k: "side"    {n, rows, done, closed, words}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
+//   k: "side"    {n, rows, done, closed, words, lv}   order cards in the sidebar (not the pop-up's), their rows done, how many closed, #side's data-level (the order's own level)
 //   k: "buttons" {list: [{sel, text, box, go, arrow}], exp}   the ✓ / Next / stage buttons on screen, with what the game
 //                                          expects; go: a go-on (→ Next) button, arrow: its arrow is drawn (contract-27)
 //   k: "bubble"  {list: [{who, text, box, tail}], heads: [{who, box, src}], play}   speech bubbles and the speakers' heads
@@ -17,6 +17,7 @@
 //   k: "rows"    {list: [{id, key, text, done, en, no}]}   each sidebar card row: its key, words, tick and whether it is a "don't" row (contract-18, 50)
 //   k: "input"   {x, y, on, play, exp, popup, poses}   a real tap or press (trusted pointerdown): what it landed on (play: in the play area), what the
 //                                          game expected then, the staged talkers' poses (data-pose) at that moment
+//   k: "input-blocked" {x, y, by}          the input just before was blocked by the first-time help's layer (js/shared/onboard.js), outside its light
 //   k: "life"    {what, reason, at, step?, during?, by?}   an entry of the shared lifecycle's own log (window.Lifecycle.log:
 //                                          request, advance, stage-end, results, step-close, act) at its own time (at), not the sampler's
 //   k: "hl"      {n, list}                 the next-thing highlights on screen: Cook's glowing pictures (glowFx), the
@@ -677,7 +678,7 @@ export const CONTRACT_HOOK = `(() => {
     // contract-27, contract-29 (s08 w1b, SH-98, SH-101): a card peeking (a tap on its small bulb opened it for a moment): how many,
     // and how many dotted words ("•••") show in them
     const peeking = cards.filter((c) => c.classList.contains("peek"));
-    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots")].filter(shown).length, 0), words: [...new Set(words)] };
+    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots")].filter(shown).length, 0), words: [...new Set(words)], lv: (document.querySelector("#side") && document.querySelector("#side").dataset.level) || null };
     if (!same("side", sd)) emit({ k: "side", ...sd });
     // contract-30 (SH-99): everything WRITTEN on the sidebar cards, shown or folded away (a closed card holds its rows for the peek):
     // each row's and headline's Kutchi words and every count chip, the bulb's English aside
@@ -729,6 +730,13 @@ export const CONTRACT_HOOK = `(() => {
       const t = ev.target;
       const btn = t && t.closest ? t.closest("button, " + BTN) : null;
       emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), play: !!(t && t.closest && t.closest(".njg-play, [data-njg-play], #stage, .cl-stage, .hs-root")), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage });
+    } catch (e) {}
+    // the first-time help (js/shared/onboard.js) blocks a tap outside its light on capture (preventDefault): the game never gets it,
+    // so no act is logged for it (contract-21 skips it). Read after the layers have run: a following {k: "input-blocked"}
+    try {
+      if (!ev.isTrusted || !document.querySelector(".njg-onboard")) return;
+      const x = Math.round(ev.clientX), y = Math.round(ev.clientY);
+      setTimeout(() => { try { if (ev.defaultPrevented) emit({ k: "input-blocked", x, y, by: "onboard" }); } catch (e) {} }, 0);
     } catch (e) {}
   }, true);
 })();`;

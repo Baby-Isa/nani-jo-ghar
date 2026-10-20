@@ -14,6 +14,7 @@ import { join } from "node:path";
 import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, traceDecision, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
 import { decodePng, encodePng } from "../../tools/review/lib/png.mjs";
 import * as Contract from "./contract.mjs";
+import { markStrip, isHelpMoment } from "./strip-mark.mjs";
 import { lintPage } from "../../lint/layout.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -251,6 +252,8 @@ export class EvidenceProbe {
   async moment(name, { block = false, settle = 0 } = {}) {
     const t = Date.now() - this.t0;
     if (this.seen[this.seen.length - 1]?.name !== name && this.seen.length < 800) this.seen.push({ name, t });
+    // Nani's help being given (the SH-60 strip marks it): its time on the wall clock, for a strip that is filming then
+    if (isHelpMoment(name) && (this.helpAt = this.helpAt || []).length < 50) this.helpAt.push({ name, at: Date.now() });
     if (this.want && this.want.ok == null) await this.checkWant(name);
     if (this.armed) this.counts[name] = (this.counts[name] || 0) + 1;
     if (!this.armed) return;
@@ -435,6 +438,15 @@ export class EvidenceProbe {
               out.times.push(Date.now() - t0);
               const buf = c.ms < 400 ? await this.fastShot(clip) : await this.shot(clip); bufs.push(buf);
               const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
+            }
+            // (s08 w6E, SH-60) the frame where Nani's help was logged while this strip filmed gets a red frame, so the sheet shows the
+            // moment; "moved" below is judged on the frames as filmed, never the mark
+            const aboutHelp = s.p.row === "SH-60" || /hint-glow|help/i.test(JSON.stringify([s.p.expect, s.p.at, s.p.after]));
+            const helps = !aboutHelp ? [] : (this.helpAt || []).filter((x) => x.at >= t0 - 50).map((x) => ({ name: x.name, ms: x.at - t0 }));
+            if (helps.length) {
+              const mk = markStrip(bufs, out.times, helps);
+              mk.bufs.forEach((b, k) => { if (b !== bufs[k]) writeFileSync(join(this.dir, out.files[k]), b); });
+              if (mk.marks.length) out.marks = mk.marks;
             }
             // (a mean difference over the clip, 0-255: a short red flash or a foot vibrating on a small clip is a fraction of a point; frames that are the same picture are 0)
             let moved = 0;

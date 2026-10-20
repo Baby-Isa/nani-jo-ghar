@@ -130,6 +130,20 @@ export function clipSeconds(root, url) {
 
 const levelOf = (flow) => { const m = /@L(\d)/.exec(flow) || /level=(\d)/.exec(flow); return m ? +m[1] : 1; };
 const center = (b) => ({ x: (b.l + b.r) / 2, y: (b.t + b.b) / 2 });
+// the stage's real level (s08 w6E): a day flow runs L3 dishes under an L1 label, and a seen profile plays later dishes higher, so a
+// check of the level table reads the order's own level: the last "order-level" note (Lifecycle, js/cook/ui.js) at or before t, else
+// the sidebar's data-level (the side sample's lv), else the flow's label
+export function realLevel(tl, t, fallback = 1) {
+  let note = null, side = null;
+  for (const e of tl) {
+    if (e.t > t) break;
+    if (e.type !== "c") continue;
+    if (e.k === "life" && e.what === "order-level") { const n = parseInt(e.step != null ? e.step : e.reason, 10); if (n >= 1) note = n; }
+    else if (e.k === "side" && e.lv != null) { const n = parseInt(e.lv, 10); if (n >= 1) side = n; }
+  }
+  const lv = note != null ? note : side;
+  return lv != null ? Math.min(4, lv) : fallback;
+}
 
 // ---- stages from the probe's stage events ----
 export function segments(tl, tEnd) {
@@ -256,6 +270,8 @@ function stateAt(r, t) {
 // ---- the checks ----
 // lines that give no order (decision 80): Nani's how-to step line and her "pass me" (and its thank-you) stay outside the pop-up
 export const NOT_ORDER = new Set(["howto", "passme", "call"]); // (s08 w2A: "call", Nani calling a step as it opens: the order in pieces after the pop-up gave it, SH-110)
+const ASK_BEFORE = 1000; // ms: a request logged this long before its pop-up's open sample is that pop-up's
+const TAP_CLOSES = 1500; // ms: a tap on the pop-up this soon after it opened is the child closing it
 function check1(tl, segs, v, add) {
   const side = tl.filter((e) => e.type === "c" && e.k === "side");
   const sideAt = (t) => { let s = { n: 0, rows: 0 }; for (const e of side) if (e.t <= t) s = e; else break; return s; };
@@ -266,7 +282,9 @@ function check1(tl, segs, v, add) {
   for (const e of tl) if (e.type === "c" && e.k === "popup") {
     if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) {
       const after = pops.length ? pops[pops.length - 1].t1 : -Infinity;
-      const ask = asks.filter((t) => t <= e.t && t >= e.t - 500 && t >= after);
+      // (a request logged up to 1 s before the sample, and up to 150 ms before the last pop-up's close sample: the next pop-up
+      // opening as the last one closes, s08 w6E)
+      const ask = asks.filter((t) => t <= e.t && t >= e.t - ASK_BEFORE && t >= after - 150);
       pops.push({ t0: ask.length ? ask[0] : e.t, t1: null });
     } else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
   }
@@ -289,7 +307,9 @@ function check1(tl, segs, v, add) {
         const p = mine[mine.length - 1];
         // read out: a line said, or a family clip played (the read-along plays its chunks' clips without a line of its own)
         const said = v.lines.some((l) => l.t0 >= p.t0 - 100 && (p.t1 == null || l.t0 <= p.t1) && (l.text || "").trim()) || v.plays.some((q) => !q.est && q.url && q.t0 >= p.t0 - 100 && (p.t1 == null || q.t0 <= p.t1));
-        const tappedAtOnce = inputs.some((i) => i.t >= p.t0 && i.t <= p.t0 + 600);
+        // a pop-up the child's first tap closed before the voice began (a tap on it within TAP_CLOSES of its opening, a few ms
+        // before the sample too) is read out as far as it will be (s08 w6E)
+        const tappedAtOnce = inputs.some((i) => i.t >= p.t0 - 150 && i.t <= p.t0 + 600) || inputs.some((i) => i.popup && i.t >= p.t0 - 150 && i.t <= p.t0 + TAP_CLOSES && (p.t1 == null || i.t <= p.t1 + 150));
         if (!said && !tappedAtOnce) add("contract-1", p.t0, `${s.key}: the request pop-up was not read out (no line while it was up)`);
         if (p.t1 != null) {
           const folded = side.some((e) => e.t >= p.t1 - 100 && e.t <= p.t1 + 2000 && e.n > 0) || sideAt(p.t1 + 2000).n > 0;
@@ -744,9 +764,13 @@ function check21(tl, segs, v, add) {
   // a line being said: a clip of it sounding, or the line itself between its start and its end (a line with no clip yet is
   // still said, at its words' pace)
   const sounding = (t) => (v.plays.find((p) => !p.est && p.line && p.t0 <= t && t <= p.t1) || {}).line || v.lines.find((l) => l.t1 != null && (l.text || "").trim() && l.t0 <= t && t <= l.t1);
+  // a tap the first-time help blocked (js/shared/onboard.js: a touch outside its light is stopped on capture) never reaches the game
+  // and logs no act: the probe logs it as input-blocked right after
+  const blocked = tl.filter((e) => e.type === "c" && e.k === "input-blocked");
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "input" || !e.play || e.popup || e.side || e.next || !expectsInput(e.exp)) continue;
+    if (blocked.some((b) => b.t >= e.t && b.t <= e.t + 100 && Math.abs(b.x - e.x) <= 2 && Math.abs(b.y - e.y) <= 2)) continue;
     const line = sounding(e.t);
     if (!line) continue;
     if (acts.some((t) => t >= e.t - 30 && t <= e.t + ACT_MS)) continue;
@@ -1159,7 +1183,6 @@ export function itemForms(root) {
 // 35 (SH-110): the card by level: open, open, the item words dotted, hidden
 function check35(r, tl, segs, add, root) {
   if (!isCookFlow(r.flow)) return;
-  const level = levelOf(r.flow || "");
   const items = itemForms(root);
   const last = (k, t) => { let s = null; for (const e of tl) { if (e.t > t) break; if (e.type === "c" && e.k === k) s = e; } return s; };
   const inputs = tl.filter((e) => e.type === "c" && e.k === "input" && !e.popup && !e.side && !e.next);
@@ -1174,6 +1197,7 @@ function check35(r, tl, segs, add, root) {
     if (!side || !side.n) continue;
     // a peeking card (the bulb's peek) shows every word, contract-27's rule: it is not the card at rest that this check judges
     if (side.peek > 0) continue;
+    const level = realLevel(tl, first.t, levelOf(r.flow || ""));
     const at = `${s.key} at L${level}`;
     if (level >= 4) {
       if (side.closed < side.n) add("contract-35", first.t, `${at}: ${side.n - side.closed} of ${side.n} sidebar cards open at the first play tap (hidden at L4: face and headline folded)`);
@@ -1304,7 +1328,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   // the page's real end (its start plus its length): the probe samples only on a change, so a state that lasts to the end
   // (the end screen's word review) has no event after it; the timeline's last event is not the end (SH-86)
   const tEnd = Math.max(tl[tl.length - 1].t, r.t0 && r.ms ? r.t0 + r.ms : 0);
-  const add = (check, t, measured) => out.push({ check, item: CHECKS[check].item, flow: r.flow, level: levelOf(r.flow), size: r.size, ...stateAt(r, t), at: Math.round((t - (r.t0 || tl[0].t)) / 100) / 10, measured });
+  // (the level table's checks, 35 and 36, name the stage's real level: realLevel)
+  const add = (check, t, measured) => out.push({ check, item: CHECKS[check].item, flow: r.flow, level: /^contract-3[56]$/.test(check) ? realLevel(tl, t, levelOf(r.flow)) : levelOf(r.flow), size: r.size, ...stateAt(r, t), at: Math.round((t - (r.t0 || tl[0].t)) / 100) / 10, measured });
   check1(tl, segs, v, add);
   check2(tl, segs, add);
   check3(segs, v, add);
