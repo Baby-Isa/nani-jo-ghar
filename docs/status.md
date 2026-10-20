@@ -8,16 +8,16 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (20 Oct 2026, afternoon UK):** Sprint 8's fixes are all merged and pushed on `claude/new-session-b5r2am` (waves 6A-6N, the eye and boing follow-ups, the chips rule); `main` = 38d0591a. The final replays at 8 sizes: every flow reaches its end; the only rule breaks left are contract-11 (the Cook backgrounds' low-res on big screens: s08c's marble tile WT1 fixes it once cut and wired) and contract-37 (sekelo decoys: s08c). Checks green. **Waiting on Zafar's go to `/publish`.**
+**Where things stand (20 Oct 2026, evening UK):** Sprint 8's fixes and its art (s08c, waves 7A and 7B) are merged and pushed on `claude/new-session-b5r2am` (f8e8e92c); `main` = 38d0591a. 7A's replay at 8 sizes: every Cook flow reaches its end with 0 rule breaks (contract-11 and contract-37 now pass). Checks green. **Running:** evidence on the changed rows (`evidence.mjs --run --changed --since 4c0219c9`, about 3 hours in chunks), then the judges, `--apply`, and the full gate once. **Then Zafar's go to `/publish`.**
 
-**Art:** s08c landed (`build/reports/s08c-art-landing.md`): 21 pass, a 4-image redo (`s08c-redo-block.txt`), the doctor's three-quarter set and the girl's close-ups wait on his likeness call. s09a redo (house, Nani by the fire, the book from the child's seat, our day) is with him (`s09a-redo-block.txt`).
+**Art open (from 7A):** the tray's chunks nearly touch; the tip frames' undersides are slightly lumpy; cook:daal's oil still shows glossy bubbles (CK-06). s09a redo (house, Nani by the fire, the book from the child's seat, our day) is with Zafar; Sprint 9 moves to its own chat.
 
 **Process (Zafar, 20 Oct):** builders replay their flows at 8 sizes before reporting (brief.mjs); the full gate once before a publish; judge FAILs checked against his own words first; evidence on changed rows (`--changed`); two builders a round, each owning its rows' specs.
 
-**Next steps:** 1. his publish go → `/publish`. 2. Cut and wire the passing s08c art (one builder), then the redo. 3. Sprint 9: the door, the ride and the book on the agreed art.
+**Next steps:** 1. finish the evidence, judges and gate → the FAIL list to Zafar. 2. his publish go → `/publish`. 3. Sprint 9 in its own chat.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8 is ready to publish on my go; the s08c art is landed and waits on my likeness call. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8's fixes and art are merged; finish the evidence run, judges and the gate, then ask me before publishing.
 
 ## The fix list
 
