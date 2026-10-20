@@ -165,7 +165,11 @@
     const hintMs = opt.hintMs != null ? opt.hintMs : ride.hintMs != null ? ride.hintMs : 5000;
     const itemH = view.itemH || 230;
     const lines = { near: Object.assign({}, LINES.near, (view.lines || {}).near), field: Object.assign({}, LINES.field, (view.lines || {}).field) };
+    // the parallax: the trip's set (data: ride.parallax names one of window.parallaxSets, or is a {far, middle, near} of its own;
+    // a lab may pass opt.parallax), else each layer's own speed. The things on a line move with that line's layer either way.
+    const pset = typeof opt.parallax === "object" && opt.parallax ? opt.parallax : typeof ride.parallax === "object" && ride.parallax && !opt.parallax ? ride.parallax : (opt.parallaxSets || ride.parallaxSets || {})[opt.parallax || ride.parallax] || null;
     const layerSpeed = (id) => {
+      if (pset && pset[id] != null) return pset[id];
       const l = (view.layers || []).find((x) => x.id === id);
       return l && l.speed != null ? l.speed : LAYER_SPEED[id] || 1;
     };
@@ -209,6 +213,7 @@
     m.view = () => ({ x0: vx0, x1: vx1, w: viewW() });
     m.vel = vel;
     m.lineSpeed = lineSpeed;
+    m.layerSpeed = layerSpeed;
     m.lines = lines;
     m.offset = (speed) => m.road * speed;
 
@@ -593,12 +598,16 @@
     const strip = doc.createElement("div");
     strip.className = "wr-band wr-layer";
     strip.dataset.band = def.id;
-    Object.assign(strip.style, { top: `${def.y}px`, height: `${def.h}px`, width: `${period * n + tile}px` });
-    const mask = `linear-gradient(to right, transparent 0, #000 ${(W.FADE * 100).toFixed(1)}%, #000 100%)`;
+    // a true cross-fade (Zafar, 20 Oct: "a stray edge that sticks out"): over the overlap the old copy fades OUT as the new one
+    // fades IN, and the two are added (plus-lighter, inside the strip only: isolate), so their weights always sum to one. A
+    // one-sided fade left the old copy's hill line ending in a hard vertical edge wherever the two copies' outlines differ.
+    Object.assign(strip.style, { top: `${def.y}px`, height: `${def.h}px`, width: `${period * n + tile}px`, isolation: "isolate" });
+    const f = (W.FADE * 100).toFixed(1);
+    const mask = `linear-gradient(to right, transparent 0, #000 ${f}%, #000 ${(100 - W.FADE * 100).toFixed(1)}%, transparent 100%)`;
     for (let i = 0; i < n; i++) {
       const t = doc.createElement("div");
       t.className = "wr-tile";
-      Object.assign(t.style, { left: `${i * period}px`, width: `${tile}px`, height: `${def.h}px` });
+      Object.assign(t.style, { left: `${i * period}px`, width: `${tile}px`, height: `${def.h}px`, mixBlendMode: "plus-lighter" });
       t.style.webkitMaskImage = mask;
       t.style.maskImage = mask;
       if (useArt && def.art) {
@@ -630,7 +639,7 @@
       if (parent) parent.appendChild(e);
       return e;
     };
-    const model = W.model(ride, plan, { rng: o.rng || Math.random, hintMs: o.hintMs, hold: o.hold || null });
+    const model = W.model(ride, plan, { rng: o.rng || Math.random, hintMs: o.hintMs, hold: o.hold || null, parallax: o.parallax || null, parallaxSets: o.parallaxSets || null });
 
     // the window: the view (the scene in the frame's opening) and the car's frame over it
     const win = h("div", "wr-window", el);
@@ -848,7 +857,7 @@
       handle();
       // the layers: each at its own share of the road, one copy left of the window so the first fade never shows
       Object.values(layers).forEach((L) => {
-        const off = (model.road * (L.def.speed != null ? L.def.speed : 1)) % L.period;
+        const off = (model.road * model.layerSpeed(L.def.id)) % L.period;
         L.strip.style.transform = `translate3d(${(-off - L.period).toFixed(1)}px, 0, 0)`;
       });
       const open = model.open();

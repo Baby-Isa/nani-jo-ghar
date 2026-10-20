@@ -234,6 +234,13 @@
         "call": { "fn": "Where", "arg": "thing", "en": "Where is the {x}?" },
         "speeds": { "slow": 9000, "normal": 6000, "fast": 3300 },
         "easeMs": 1000,
+        "parallax": "deep",
+        "parallaxSets": {
+          "_about": "How differently the layers move (Zafar, 20 Oct: 'why three different moving speeds ... can we have it all moving together, more normal and realistic?'): the ride's `parallax` names one; each layer moves at its share of the road and the things on a line move with that line's layer. deep is the layers' own speeds (kept until Zafar chooses: lab/ride-preview.html and build/screenshots/s09-ride/ride-gentle.webm, ride-together.webm)",
+          "deep": { "far": 0.15, "middle": 0.4, "near": 1 },
+          "gentle": { "far": 0.5, "middle": 0.8, "near": 1 },
+          "together": { "far": 1, "middle": 1, "near": 1 }
+        },
         "speedLines": {
           "_about": "Nani to the driver as the car speeds up or slows down (Zafar, 20 Oct). No Kutchi yet: grey to-record placeholders until Mum records them (the recorded 'hurry up' and 'turn it down' are other meanings: Mum decides)",
           "up": { "meaning": { "fn": "Say", "x": "phrase.speed-up" }, "en": "Speed up!" },

@@ -11,7 +11,8 @@
   cross-fade), things on two ground lines, props on the verge, and the three speeds. Buttons: slow / normal / fast; the road
   (the farm, or the town's shops behind: window.previewLayers.town); the art (placeholder shapes, or each s09r cut that has
   landed in assets/day/ride/s09r/); "find them" taps each thing Nani asks for after a moment, so the ride goes on by itself.
-  URL: ?speed=slow|normal|fast &road=farm|town &art=placeholders|s09r &auto=0|1 &level=1..3 &seed=N &bar=0 (no control bar: the
+  "Layers move": the parallax (data: the ride's parallax and parallaxSets; Zafar, 20 Oct). URL: ?parallax=deep|gentle|together
+  ?speed=slow|normal|fast &road=farm|town &art=placeholders|s09r &auto=0|1 &level=1..3 &seed=N &bar=0 (no control bar: the
   recordings)
 -->
 <link rel="stylesheet" href="../css/shared/tokens.css">
@@ -39,6 +40,7 @@
   <span class="grp">Speed <button data-speed="slow">slow</button><button data-speed="normal">normal</button><button data-speed="fast">fast</button></span>
   <span class="grp">Road <button data-road="farm">farm</button><button data-road="town">town</button></span>
   <span class="grp">Art <button data-art="placeholders">placeholders</button><button data-art="s09r">s09r cuts</button></span>
+  <span class="grp">Layers move <button data-par="deep">apart (0.15 / 0.4 / 1)</button><button data-par="gentle">gently (0.5 / 0.8 / 1)</button><button data-par="together">together</button></span>
   <span class="grp"><button id="auto">find them</button></span>
   <span class="note">Nani: <span id="said">…</span> · <span id="artnote"></span></span>
 </div>
@@ -50,6 +52,7 @@ import { paintSky } from "../js/day/sky.js";
 const q = new URLSearchParams(location.search);
 const st = {
   speed: /^(slow|normal|fast)$/.test(q.get("speed") || "") ? q.get("speed") : "normal",
+  parallax: /^(deep|gentle|together)$/.test(q.get("parallax") || "") ? q.get("parallax") : null,
   road: q.get("road") === "town" ? "town" : "farm",
   art: q.get("art") === "placeholders" ? "placeholders" : "s09r",
   auto: q.get("auto") !== "0",
@@ -105,6 +108,7 @@ async function start() {
     url,
     rng,
     hold: st.speed,
+    parallax: st.parallax,
     sky: (box) => paintSky(box, data.weather.sunny, { w: 1600, h: 900, url }),
     say: (i, c, pass) => {
       said.textContent = `Where is the ${ride.things[c.named].en}?${pass > 1 ? " (again)" : ""}`;
@@ -129,6 +133,7 @@ function mark() {
   document.querySelectorAll("[data-speed]").forEach((b) => b.classList.toggle("on", b.dataset.speed === st.speed));
   document.querySelectorAll("[data-road]").forEach((b) => b.classList.toggle("on", b.dataset.road === st.road));
   document.querySelectorAll("[data-art]").forEach((b) => b.classList.toggle("on", b.dataset.art === st.art));
+  document.querySelectorAll("[data-par]").forEach((b) => b.classList.toggle("on", b.dataset.par === (st.parallax || base.parallax)));
   document.getElementById("auto").classList.toggle("on", st.auto);
 }
 document.querySelectorAll("[data-speed]").forEach((b) => b.addEventListener("click", () => {
@@ -138,6 +143,7 @@ document.querySelectorAll("[data-speed]").forEach((b) => b.addEventListener("cli
 }));
 document.querySelectorAll("[data-road]").forEach((b) => b.addEventListener("click", () => ((st.road = b.dataset.road), start())));
 document.querySelectorAll("[data-art]").forEach((b) => b.addEventListener("click", () => ((st.art = b.dataset.art), start())));
+document.querySelectorAll("[data-par]").forEach((b) => b.addEventListener("click", () => ((st.parallax = b.dataset.par), start())));
 document.getElementById("auto").addEventListener("click", () => ((st.auto = !st.auto), mark()));
 start();
 </script>

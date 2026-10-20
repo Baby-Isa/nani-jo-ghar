@@ -121,6 +121,17 @@ test("nothing jumps: every thing and prop comes on right of the window and moves
       }
 });
 
+test("the parallax setting: deep by default, gentle and together from data; the field's things move with the middle layer", () => {
+  assert.equal(ride.parallax, "deep");
+  const p = W.plan(ride, 1, seeded(2), { callable });
+  const of = (parallax) => W.model(ride, p, { rng: seeded(2), view: VIEWS.phone, parallax });
+  assert.deepEqual([of(null).layerSpeed("far"), of(null).layerSpeed("middle"), of(null).layerSpeed("near")], [0.15, 0.4, 1]);
+  assert.deepEqual(of("gentle").lineSpeed, { near: 1, field: 0.8 });
+  assert.deepEqual(of("together").lineSpeed, { near: 1, field: 1 });
+  assert.equal(of("together").layerSpeed("far"), 1);
+  assert.equal(of({ far: 0.3, middle: 0.6, near: 1 }).layerSpeed("far"), 0.3);
+});
+
 test("a speed change eases over about a second: no jump, every thing and layer together", () => {
   const p = W.plan(ride, 1, seeded(4), { callable });
   const m = W.model(ride, p, { rng: seeded(4), view: VIEWS.phone });
