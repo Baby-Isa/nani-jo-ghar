@@ -8,7 +8,7 @@ Branch `worktree-agent-ad7a2775759515f5c` from `df3be32d`. Not pushed. Game code
 2. Samosa fold: the swipe arrow starts over the filling.
 3. The review's tick picture still fills gold in part (a share). Only the "n/total" text is gone.
 4. Chai: a faint pale oval near the far rim (a wisp) still shows at kind-timing.
-5. CHT-14's bowl is unchanged: an out-of-order item still empties it (Zafar's P62, decision 9; the coordinator withdrew that part of the brief). The chaat evidence strip in `ev-w6m-green1` shows the reverted version and needs a new run.
+5. CHT-14's bowl is unchanged: an out-of-order item still empties it (Zafar's P62, decision 9; the coordinator withdrew that part of the brief). The chaat evidence strip in `ev-w6m-green1` shows the withdrawn keep-the-bowl version and needs a new run.
 
 ## What changed
 
