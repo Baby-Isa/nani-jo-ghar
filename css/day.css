@@ -84,7 +84,8 @@ canvas.day-layer { width: 100%; height: 100%; }
 /* her face on the left page's corner (the replay), her line beside it */
 .day-head { position: absolute; display: flex; align-items: center; gap: var(--njg-s2); z-index: 4; pointer-events: none; }
 .day-face { flex: none; width: 64px; height: 64px; padding: 0; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-card); background: var(--njg-cream); box-shadow: var(--njg-shadow); overflow: hidden; cursor: pointer; pointer-events: auto; }
-.day-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* her face as in every guide circle (css/shared/guide.css .ng-face img: Cook's nani-face.webp, cover, from the top) */
+.day-face img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 .day-face.on { box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); }
 .day-head-line { min-width: 0; background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); padding: var(--njg-s2) var(--njg-s3); }
 .day-head-line:empty { display: none; }
@@ -128,7 +129,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-gap { display: inline-block; width: 64px; height: 64px; border: var(--njg-line-2) dashed var(--njg-cream-lip); border-radius: var(--njg-radius); }
 .day-sent .day-line { display: inline; }
 .day-sent .day-k { display: inline; font-size: inherit; }
-.day-word-in { color: var(--njg-word); text-decoration: underline var(--njg-gold) 3px; text-underline-offset: 5px; }
+.day-word-in { color: var(--njg-word); }
 .day-spks { display: flex; gap: max(12px, calc(var(--pg-w) * .06)); justify-content: center; flex-wrap: wrap; }
 .day-spk { width: 72px; height: 72px; padding: 18px; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-cream); color: var(--njg-ink); box-shadow: var(--njg-lip); cursor: pointer; touch-action: manipulation; }
 .day-spk svg { width: 100%; height: 100%; display: block; }
@@ -163,10 +164,11 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-photo-ours.in { opacity: 1; transform: rotate(var(--tilt)); }
 
 /* the end: today's words as gold cards (progress, never a verdict) */
-.day-words { position: absolute; left: calc(var(--njg-s4) * 2 + min(16vw, 180px, 34dvh)); right: var(--njg-s4); bottom: var(--njg-s5); transform: translateY(24px); display: flex; gap: var(--njg-s3); flex-wrap: wrap; justify-content: center; opacity: 0; transition: opacity .5s, transform .5s; pointer-events: none; }
+.day-words { position: absolute; left: var(--njg-s4); right: var(--njg-s4); align-items: flex-end; bottom: var(--njg-s5); transform: translateY(24px); display: flex; gap: var(--njg-s3); flex-wrap: wrap; justify-content: center; opacity: 0; transition: opacity .5s, transform .5s; pointer-events: none; }
 .day-words.in { opacity: 1; transform: none; }
-.day-wordcard { display: flex; flex-direction: column; align-items: center; gap: var(--njg-s1); min-width: 88px; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-card); border: var(--njg-line-2) solid var(--njg-gold); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); }
-.day-wordpic { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; }
+/* the gold cards: today's words, each a warm gold card (the gold tokens), its picture on a cream disc */
+.day-wordcard { display: flex; flex-direction: column; align-items: center; gap: var(--njg-s1); min-width: 88px; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-focus); border: var(--njg-line-2) solid var(--njg-gold); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); }
+.day-wordpic { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; padding: var(--njg-s1); box-sizing: border-box; border-radius: var(--njg-round); background: var(--njg-cream); }
 .day-wordpic > img, .day-wordpic > svg { max-width: 100%; max-height: 100%; width: auto; height: auto; }
 .day-wordpic > svg { width: 100%; height: 100%; }
 .day-wordcard .day-k { font-size: var(--njg-t3); }
@@ -175,12 +177,14 @@ canvas.day-layer { width: 100%; height: 100%; }
   .day-wordcard { min-width: 72px; padding: var(--njg-s1) var(--njg-s2); }
   .day-wordpic { width: 40px; height: 40px; }
 }
-.day-tomorrow { position: absolute; left: var(--njg-s4); bottom: var(--njg-s4); width: min(16vw, 180px, 34dvh); padding: var(--njg-s2); background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow-lift); visibility: hidden; transform: translateY(var(--njg-s4)); transition: transform .5s; }
-.day-tomorrow-win { position: relative; width: 100%; aspect-ratio: 3 / 4; border-radius: var(--njg-round) var(--njg-round) var(--njg-s1) var(--njg-s1); overflow: hidden; background: var(--njg-cream); }
+/* tomorrow: a doorway at the end of the row of cards, open onto tomorrow's sky (the door swung back, a step below) */
+.day-tomorrow { position: relative; flex: none; width: 76px; margin-left: var(--njg-s3); padding: var(--njg-s2) var(--njg-s2) 0; background: var(--njg-cream-lip); border-radius: var(--njg-round) var(--njg-round) var(--njg-s1) var(--njg-s1); box-shadow: var(--njg-shadow); visibility: hidden; transform: translateY(var(--njg-s4)); transition: transform .5s; }
+.day-tomorrow-win { position: relative; width: 100%; aspect-ratio: 3 / 4; border-radius: var(--njg-round) var(--njg-round) 0 0; overflow: hidden; background: var(--njg-cream); }
+.day-tomorrow-step { display: block; height: var(--njg-s2); margin: 0 calc(var(--njg-s2) * -1); background: var(--njg-cream-edge); border-radius: 0 0 var(--njg-s1) var(--njg-s1); }
 .day-tomorrow.in { visibility: visible; transform: none; }
 .day-tomorrow-sky { position: absolute; inset: 0; }
 .day-tomorrow-sky > svg, .day-tomorrow-sky > img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.day-tomorrow-door { position: absolute; left: 0; top: 0; bottom: 0; width: 34%; background: var(--njg-cream-lip); border-right: var(--njg-s1) solid var(--njg-cream-edge); }
+.day-tomorrow-door { position: absolute; left: 0; top: 18%; bottom: 0; width: 22%; background: var(--njg-cream-edge); border-right: var(--njg-line-2) solid var(--njg-cream-lip); }
 @media (prefers-reduced-motion: reduce) { .day-find-item.day-wiggle, .day-find-item.day-bounce, .day-spk.day-wobble, .day-turn.in .day-turn-corner, .day-spine.landed { animation: none; } .day-spine.go { transition: none; } }
 
 /* ---------- the window ride (js/shared/window-ride.js) ---------- */

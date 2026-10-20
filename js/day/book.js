@@ -103,6 +103,8 @@ export async function runBook(host, api, day) {
   };
   const plan = planBook({ data: D, place: placeKey, today: { entries, words: met }, say: sayable, rng: api.q.get("seed") ? api.rng : Math.random, only });
   const results = [];
+  // this book's pictures, fetched now (decision 68: only the chosen book's own art, prefetched while she greets)
+  for (const k of Object.keys(place.things)) if (place.things[k].art) new Image().src = url(place.things[k].art);
   window.Day.book = { plan, results, stage: "room", place: placeKey };
 
   // ---- lines: the first candidate the engine can say, else the first one's grey placeholder (decision 84) ----
@@ -291,23 +293,33 @@ export async function runBook(host, api, day) {
     const [rx, ry, rw, rh] = A.pageR;
     Object.assign(turnBtn.style, { left: `${(rx + rw) * s - 64}px`, top: `${(ry + rh) * s - 64}px` });
     book.style.setProperty("--s", String(s));
-    place3(shot);
+    if (shot && shot.onBook) camOnBook(0);
+    else place3(shot);
     if (bubble.classList.contains("in")) placeBubble(bubble.dataset.side);
     if (window.FitText) window.FitText.run(book);
   };
   layout();
   const ro = typeof ResizeObserver === "function" ? new ResizeObserver(() => layout()) : null;
   if (ro) ro.observe(root);
-  /** the book view's transform that lays its book exactly over the book in her lap, for the camera's current shot */
-  const toLap = () => {
+  /**
+   * The camera on the book in her lap, so close that the room's book lies exactly where the pages picture's book lies on screen
+   * (same place, same size: A.lapBook, measured in both pictures). The cross-fade between the two pictures happens only here,
+   * between two book-filling views: no box edge, no second Nani (the judge, 20 Oct). This shot is past the room picture's
+   * resolution (ART-05), so it is only ever on screen while the camera moves or fades: the room is marked as zooming then
+   * (the sandbox's background check waits for a push-in to settle, as it does for the clinic's).
+   */
+  const camOnBook = (ms = 0) => {
     const [rx, ry, rw] = A.lapBook.room;
     const [bx, by, bw] = A.lapBook.pages;
-    const R = onScreen(rx, ry);
-    const k = (rw * camAt.sc) / (bw * bookAt.s);
-    const dx = R.x - bookAt.ox - k * bx * bookAt.s;
-    const dy = R.y - bookAt.oy - k * by * bookAt.s;
-    return `translate(${dx}px, ${dy}px) scale(${k})`;
+    const sc = (bw * bookAt.s) / rw;
+    const tx = bookAt.ox + bx * bookAt.s - rx * sc;
+    const ty = bookAt.oy + by * bookAt.s - ry * sc;
+    shot = { onBook: true };
+    camAt = { sc, tx, ty };
+    cam.style.transition = ms ? `transform ${ms}ms cubic-bezier(.45,.05,.35,1)` : "none";
+    cam.style.transform = `translate(${tx}px, ${ty}px) scale(${sc})`;
   };
+  const zooming = (on) => root.classList.toggle("cl-zooming", !!on);
 
   // ---- the game's context (book-play.js) ----
   const cleanups = [];
@@ -440,20 +452,23 @@ export async function runBook(host, api, day) {
     window.Day.book.stage = "tilt";
     place3(C.book, C.tiltMs);
     await realWait(C.tiltMs);
-    // ... and zooms onto its pages: the pages picture starts as the book in her lap and grows to fill the screen
+    // ... and zooms in until her book fills the screen, lined up with the pages picture's book; then the two cross-fade (short:
+    // her hands and dupatta differ a little between the two pictures)
     window.Day.book.stage = "onto";
     layout();
-    book.style.transition = "none";
-    book.style.transform = toLap();
-    book.style.opacity = "0";
-    void book.offsetWidth;
-    book.classList.add("open");
-    book.style.transition = `transform ${C.inMs}ms cubic-bezier(.45,.05,.35,1), opacity ${C.inMs * 0.7}ms ease-in`;
-    book.style.transform = "none";
-    book.style.opacity = "1";
+    zooming(true);
+    camOnBook(C.inMs);
     await realWait(C.inMs);
+    book.style.transform = "none";
+    book.style.transition = `opacity ${C.fadeMs}ms ease-in-out`;
+    book.classList.add("open");
+    book.style.opacity = "1";
+    await realWait(C.fadeMs);
+    // the room behind the pages goes back to the whole room (hidden behind the pages, ready for the way out)
+    place3(C.wide);
+    zooming(false);
   } else {
-    place3(C.book);
+    place3(C.wide);
     book.classList.add("open");
     book.style.opacity = "1";
     await api.wait(300);
@@ -477,16 +492,20 @@ export async function runBook(host, api, day) {
   api.test.expect(() => ({ kind: "wait" }));
   api.test.state("day/book/end");
 
-  // ---- the end: the camera pulls back out: the pages shrink back into the book on her lap, the room all round (never black) ----
+  // ---- the end: the same in reverse: the room's book lined up behind the pages, a short cross-fade to it, then the camera pulls
+  // back out to the whole room (never black, never a box) ----
   window.Day.book.stage = "out";
   headRow.style.visibility = "hidden";
-  place3(C.wide);
+  zooming(true);
+  camOnBook(0);
   root.classList.add("day-zoom-out");
-  book.style.transition = `transform ${C.outMs}ms cubic-bezier(.45,.05,.35,1), opacity ${C.outMs * 0.6}ms ease-in ${C.outMs * 0.3}ms`;
-  book.style.transform = toLap();
+  book.style.transition = `opacity ${C.fadeMs}ms ease-in-out`;
   book.style.opacity = "0";
-  await realWait(C.outMs);
+  await realWait(C.fadeMs);
   book.classList.remove("open");
+  place3(C.wide, C.outMs);
+  await realWait(C.outMs);
+  zooming(false);
   if (ro) ro.disconnect();
   // a day-book for today goes from her lap onto the empty shelf (one per day played) ...
   const slot = Math.min(books, S.max - 1);
@@ -514,12 +533,13 @@ export async function runBook(host, api, day) {
   // tomorrow's door, by its sky: its own card, clear of the fire and the shelf
   const next = api.dayDef(((day && day.id) || 1) + 1);
   const tw = api.data.weather[next.weather] || api.data.weather.sunny;
-  const prev = el("div", "day-tomorrow", root);
+  const prev = el("div", "day-tomorrow", cards);
   prev.dataset.weather = next.weather;
   const win = el("div", "day-tomorrow-win", prev);
   const skyBox = el("div", "day-tomorrow-sky", win);
   paintSky(skyBox, tw, { w: 400, h: 300, url });
   el("i", "day-tomorrow-door", win);
+  el("i", "day-tomorrow-step", prev);
   requestAnimationFrame(() => prev.classList.add("in"));
   const tm = line("tomorrow");
   await sayRoom(tm, "left");
