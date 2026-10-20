@@ -3350,18 +3350,18 @@
     }
    },
    "bg": {
-    "marble": "assets/cook/items-s08c/worktop/marble-tile-s08c",
-    "hob": "assets/cook/items-s08c/worktop/marble-tile-s08c",
+    "marble": "assets/cook/worktop-s08c/marble-tile-s08c",
+    "hob": "assets/cook/worktop-s08c/marble-tile-s08c",
     "pantry": "bg-pantry-v3-1600"
    },
    "bgTile": {
-    "_about": "contract-11, SH-91, ART-05 (s08 w7A; Zafar 15 Oct: 'one very large upscaled image ... stuff above and below'): the top-down worktops are s08c's seamless marble tile (WT1, assets/cook/items-s08c/worktop/marble-tile-s08c, x2), laid tiled by js/cook/stations.js fitBg at k design px per source px, never zoomed; the hob's plate (cut from bg-cook-hob-t-v1, x2: build/tools/art/specs/s08c-cook-post.py) lies on it at box (design px: where the -1600 picture drew it). The -1600 pictures stay on disk, unused.",
+    "_about": "contract-11, SH-91, ART-05 (s08 w7A; Zafar 15 Oct: 'one very large upscaled image ... stuff above and below'): the top-down worktops are s08c's seamless marble tile (WT1, assets/cook/worktop-s08c/marble-tile-s08c, x2), laid tiled by js/cook/stations.js fitBg at k design px per source px, never zoomed; the hob's plate (cut from bg-cook-hob-t-v1, x2: build/tools/art/specs/s08c-cook-post.py) lies on it at box (design px: where the -1600 picture drew it). The -1600 pictures stay on disk, unused.",
     "marble": {
      "k": 0.5
     },
     "hob": {
      "k": 0.5,
-     "plate": "assets/cook/items-s08c/worktop/hob-plate-s08c",
+     "plate": "assets/cook/worktop-s08c/hob-plate-s08c",
      "box": [
       247.8,
       69.4,
@@ -4570,7 +4570,7 @@
      "assets/cook/characters/*",
      "assets/ui/**",
      "assets/cook/bg/bg-cook-*-1600.webp",
-     "assets/cook/items-s08c/worktop/*"
+     "assets/cook/worktop-s08c/*"
     ],
     "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
    },

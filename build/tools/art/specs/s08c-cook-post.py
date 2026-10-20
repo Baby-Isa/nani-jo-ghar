@@ -13,9 +13,9 @@ Every step works only on pictures ChatGPT drew (never a drawn stand-in, CLAUDE.m
      below the tray (the handles) made clear.
   3. WT1 (contract-11, SH-91, ART-05): cut here from the source (artcut's key wants a grey ground), cross-faded left-right
      and top-bottom, then upscaled x2 by
-     build/tools/art/upscale.py: assets/cook/items-s08c/worktop/marble-tile-s08c.webp.
+     build/tools/art/upscale.py: assets/cook/worktop-s08c/marble-tile-s08c.webp.
   4. The hob: the plate cut from assets/cook/bg/bg-cook-hob-t-v1.png on a rounded rectangle fitted to it, upscaled x2:
-     assets/cook/items-s08c/worktop/hob-plate-s08c.webp (laid on the tiled marble where the -1600 picture had it).
+     assets/cook/worktop-s08c/hob-plate-s08c.webp (laid on the tiled marble where the -1600 picture had it).
   5. The measures: assets/cook/items-s08c/meta.json (the tray's skewer lines, the pans' contents circles, the tip frames'
      near rim, the kadchi's and teaspoon's bowls, the hob's place in the 1600x900 design box).
 """
@@ -36,7 +36,7 @@ import artlib as L  # noqa: E402
 
 IT = os.path.join(REPO, "assets/cook/items-s08c")
 BG = os.path.join(REPO, "assets/cook/bg")
-WT = os.path.join(REPO, "assets/cook/items-s08c/worktop")  # (not assets/cook/bg: artcheck holds that folder to 1600x900 pictures)
+WT = os.path.join(REPO, "assets/cook/worktop-s08c")  # (not assets/cook/bg: artcheck holds bg/ to 1600x900 pictures; not items*: an opaque tile has no alpha)
 META = {}
 
 
@@ -262,11 +262,11 @@ def marble(weights, skip):
     if not skip:
         png = out.replace(".webp", ".png")
         upscale(tmp, png, weights, "%dx%d" % (wrap.shape[1] * 2, wrap.shape[0] * 2))
-        Image.open(png).convert("RGB").crop((2 * P, 2 * P, 2 * P + t.width * 2, 2 * P + t.height * 2)).save(out, quality=88, method=6)
+        Image.open(png).convert("RGBA").crop((2 * P, 2 * P, 2 * P + t.width * 2, 2 * P + t.height * 2)).save(out, quality=88, method=6)  # (RGBA: artcheck wants an alpha channel on every cut under items)
         os.remove(png)
     os.remove(tmp)
     u = Image.open(out)
-    META["marble"] = {"file": "assets/cook/items-s08c/worktop/marble-tile-s08c.webp", "w": u.width, "h": u.height, "seam_top_bottom_before": round(before, 2), "seam_left_right_before": round(before_h, 2), "seam_top_bottom": round(after_v, 2), "seam_left_right": round(after_h, 2),
+    META["marble"] = {"file": "assets/cook/worktop-s08c/marble-tile-s08c.webp", "w": u.width, "h": u.height, "seam_top_bottom_before": round(before, 2), "seam_left_right_before": round(before_h, 2), "seam_top_bottom": round(after_v, 2), "seam_left_right": round(after_h, 2),
                       "_about": "WT1 cut from its source, cross-faded left-right and top-bottom, upscaled x2: laid tiled at 0.5 design px per source px (js/cook/stations.js fitBg)"}
 
 
@@ -315,7 +315,7 @@ def hob(weights, skip):
     up.save(out, quality=90, method=6)
     os.remove(tmp)
     # where the -1600 picture drew it: that picture is the png scaled k and cropped at (ox, oy), measured by matching
-    META["hob"] = {"file": "assets/cook/items-s08c/worktop/hob-plate-s08c.webp", "w": up.width, "h": up.height, "src_box": [X0, Y0, X1, Y1], "radius": r,
+    META["hob"] = {"file": "assets/cook/worktop-s08c/hob-plate-s08c.webp", "w": up.width, "h": up.height, "src_box": [X0, Y0, X1, Y1], "radius": r,
                    "in1600": place_in_1600(Image.open(src).convert("L"), (X0, Y0, X1, Y1)),
                    "_about": "the hob plate cut from bg-cook-hob-t-v1.png (src_box, source px, its rounded mask's corner radius) x2; in1600: its box in the 1600x900 design box, where bg-cook-hob-t-v1-1600 drew it (the stations' burners, station-lib.js BURNER)"}
 

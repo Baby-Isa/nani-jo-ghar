@@ -45,9 +45,6 @@
     "speakGapMs": 300,
     "tallyMax": 6,
     "pour": {
-     "steps": 4,
-     "deg": -20,
-     "squash": 0.12,
      "liftMs": 420,
      "stepMs": 150,
      "pourMs": 700,
@@ -67,5 +64,5 @@
    }
   ]
  },
- "_pour": "CHAI-26 (Zafar 17 Oct, P59: 'four or five orientations of ... 20 degrees each time towards the player, and the chai level following'): the pour turns the hob's own pan (js/cook/stations/chai-tray.js TOP) in `steps` of `deg` degrees from its place on the hob, narrowing by `squash` at full turn; the times in ms (stepMs each step, pourMs each half glass)"
+ "_pour": "CHAI-26 (Zafar 17 Oct, P59: 'four or five orientations of ... 20 degrees each time towards the player, and the chai level following'; the s08c redo, CP3 v2 cells 1-4, s08 w7A): the hob's pan lifts over its glass and tips towards the player in CP3's four pictures (0, 20, 40, 60 degrees: js/cook/stations/chai-tray.js TIP), a thin translucent stream (js/shared/pour.js) from its near rim; the times in ms: liftMs, stepMs each picture, pourMs each half glass, backMs"
 }
