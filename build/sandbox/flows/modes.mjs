@@ -252,7 +252,7 @@ async function findRun(ctx, { lab = null, level = 1 } = {}) {
     await page.goto(`${BASE}/find.html?speed=6`, { waitUntil: "load" });
     await page.evaluate(() => localStorage.clear());
     await page.goto(`${BASE}/find.html?speed=6`, { waitUntil: "load" });
-    await page.waitForSelector("#panel h1", { timeout: 15000 });
+    await page.waitForSelector("#panel #t-start", { timeout: 15000 });
     await rec.state("title");
     if (lab) await page.evaluate(([k, L]) => window.__find.lab(k, { level: L }), [lab, level]);
     else await page.click("#t-start");

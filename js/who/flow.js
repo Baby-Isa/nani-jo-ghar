@@ -16,6 +16,12 @@
  * the game wants next, point(i) where suspect i is on screen.
  */
 (function (global) {
+  // no written English for the child (rule 5): the turn-your-phone card is its turning arrow alone
+  document.querySelectorAll("#rotate p").forEach((e) => e.remove());
+  // ... and Done is a tick
+  const whoDone = document.getElementById("who-done");
+  whoDone.textContent = "✓";
+  whoDone.setAttribute("aria-label", "Done");
   const Who = (global.Who = global.Who || {});
   const UI = Who.UI;
   const $ = (id) => document.getElementById(id);
@@ -74,7 +80,10 @@
     const g = P.who.games[o.game];
     const lv = g.levels[Math.min(o.level, g.levels.length) - 1];
     const st = Who.Case.start(c, { stage: () => o.stage });
-    $("case-name").textContent = `${g.name} · L${o.level}`;
+    // the game's name is the grown-up's tooltip, not written for the child (rule 5)
+    $("case-name").textContent = "";
+    $("case-name").title = `${g.name} · L${o.level}`;
+    $("case-name").classList.add("hidden");
     const world = UI.drawScene(F.scene, { listener: c.kind === "K4" });
     UI.speaker(c.kind === "K4" ? "ali" : "nani");
     $("nani-card").querySelector(".say-slot").innerHTML = "";

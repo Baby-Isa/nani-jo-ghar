@@ -45,7 +45,7 @@
       pillsAfterMs: lab ? 0 : (T.pillsAfterMs || 8000) / Math.max(1, Cook.speed),
       retries: T.retries != null ? T.retries : 1,
       label: opts.label || ((id) => (typeof id === "number" ? String(id) : Cook.display(id))),
-      caption: opts.caption,
+      // no caption: the grown-up's English line under the mic is no written English for the child (rule 5)
       container: $("#stage"),
       speech,
     });

@@ -121,6 +121,15 @@ function printPlan(P) {
   console.log(`\nabout ${mins} min of browser time at 3 pages at once. Run: node build/tools/review/evidence.mjs --run${a.val("rows") ? ` --rows ${a.val("rows")}` : a.has("sprint") ? " --sprint" : ""}`);
 }
 
+// the voice timeline for the .md: all of it up to 120 lines; a longer one is the 120 lines that end 60 lines past the probe's moment
+// (">>>>"), so a moment late in a round (the stir, 30 s in) is on the sheet with the lines said just after it (s08 w6d: DAAR-26, DAAR-32)
+function voiceWindow(text) {
+  const vl = String(text).split("\n");
+  if (vl.length <= 120) return vl.join("\n");
+  const i = vl.findIndex((l) => l.includes(">>>>"));
+  const to = Math.min(vl.length, i < 0 ? 120 : i + 60), from = Math.max(0, to - 120);
+  return [...(from ? [`(${from} earlier lines left out)`] : []), ...vl.slice(from, to), ...(to < vl.length ? [`(${vl.length - to} later lines left out)`] : [])].join("\n");
+}
 // ---------- the run ----------
 function underLock() {
   if (process.env.NJG_LOCKED) return true;
@@ -314,7 +323,7 @@ async function sheets(dirArg) {
         if (cap.startsWith("ref:") && !panels.some((x) => x.ref === cap)) { const f = join(ROOT, cap.slice(4).trim()); if (existsSync(f) && /\.(png|webp|jpe?g|svg)$/i.test(f)) addPanel({ type: "img", ref: cap, label: `reference: ${cap.slice(4)}`, src: f, dpr: 1 }); else texts.push(`#### reference ${cap.slice(4)}\n\n${existsSync(f) ? "(not an image: open it)" : "MISSING FILE"}`); }
         if (cap.startsWith("cmd:") && !texts.some((t) => t.startsWith(`#### ${cap.slice(4).trim()} (exit`))) { const c = cap.slice(4).trim(), r = cmdOut(c); texts.push(`#### ${c} (exit ${r.code})\n\n\`\`\`\n${r.text}\n\`\`\``); }
       }
-      if (p.voice && p.voice.text) texts.push(`#### ${p.id} · voice (seconds from the page's start; ---- a lifecycle step; >>>> the probe's moment)\n\n\`\`\`\n${p.voice.text.split("\n").slice(0, 120).join("\n")}\n\`\`\``);
+      if (p.voice && p.voice.text) texts.push(`#### ${p.id} · voice (seconds from the page's start; ---- a lifecycle step; >>>> the probe's moment)\n\n\`\`\`\n${voiceWindow(p.voice.text)}\n\`\`\``);
     }
     // the fingerprint: row words + spec + text captures + the mode's code and art + each panel's dHash
     const textPart = probes.map((p) => [p.id, p.reached, (p.expects || []).map((e) => [e.raw, e.ok]), (p.hits || []).map((h) => (h.captures || []).map((c) => (c.kind === "dom" || c.kind === "text" ? c.text : c.kind === "voice" ? "" : c.raw)))]);

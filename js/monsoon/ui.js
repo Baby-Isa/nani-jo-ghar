@@ -15,6 +15,8 @@
  * on the storm so far (Calls.stars) and lit or dimmed.
  */
 (function (global) {
+  // no written English for the child (rule 5): the turn-your-phone card is its turning arrow alone
+  document.querySelectorAll("#rotate p").forEach((e) => e.remove());
   const M = global.Monsoon;
   const Calls = M.Calls;
   const UI = (M.UI = {});
@@ -53,6 +55,8 @@
     $("#call .c-say").addEventListener("click", () => UI.replay());
     $("#call .c-eye").addEventListener("click", () => UI.reveal("eye"));
     $("#call .c-tr").addEventListener("click", () => UI.reveal("tr"));
+    // no written English for the child (rule 5): the translate button is a globe, not "EN"
+    $("#call .c-tr").innerHTML = "&#127760;";
   };
 
   /* ---------------- the storm ---------------- */
@@ -71,8 +75,12 @@
       b.innerHTML = ICON[s.icon] || ICON.tick;
       row.appendChild(b);
     });
-    $("#storm-name").textContent = `${M.data.games[run.opts.game].name} · level ${run.opts.level} · ${storm.mode === "busy" ? "Busy" : "Drizzle"}`;
-    $("#placeholder-flag").classList.toggle("hidden", !storm.placeholder);
+    // the storm's name is for the grown-up (a tooltip), not written for the child (rule 5); a placeholder storm has no visible flag
+    // (decision 84): it is tagged in the markup only
+    $("#storm-name").textContent = "";
+    $("#storm-name").title = `${M.data.games[run.opts.game].name} · level ${run.opts.level} · ${storm.mode === "busy" ? "Busy" : "Drizzle"}`;
+    $("#placeholder-flag").classList.add("hidden");
+    $("#placeholder-flag").toggleAttribute("data-rec", !!storm.placeholder);
     UI.clearCall();
     UI.nani("");
     UI.hand(0);
@@ -204,11 +212,10 @@
         return `<div class="ic-word"><button type="button" class="ic-hear" data-w="${esc(id)}" aria-label="Hear it">${ICON.speaker}</button>${w.kutchi ? `<span class="k">${esc(w.kutchi)}</span>` : `<span class="ph">${esc(w.english || id)}</span>`}</div>`;
       });
       box.querySelector(".ic-card").innerHTML = `
-        <div class="ic-head"><img class="ic-face" src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="Nani"><div class="ic-name">${esc(game.name)}</div></div>
+        <div class="ic-head"><img class="ic-face" src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="Nani"><div class="ic-name" title="${esc(game.name)}"></div></div>
         <div class="ic-seq">${seq.map((k) => `<span class="ic-step">${ICON[k]}</span>`).join('<span class="ic-arrow">→</span>')}</div>
         ${newLines.length ? `<div class="ic-new">${newLines.join("")}</div>` : ""}
-        ${storm.placeholder ? `<div class="ic-ph">Some words are English placeholders: not yet a Kutchi test</div>` : ""}
-        <div class="ic-go">Tap to start</div>`;
+        <div class="ic-go" aria-label="Tap to start">&#9654;</div>`;
       box.classList.remove("hidden");
       box.querySelectorAll(".ic-hear").forEach((b) =>
         b.addEventListener("click", (e) => {
@@ -236,7 +243,7 @@
     keys.push(storm.mode === "busy" ? (storm.kind === "say" ? null : "busy") : "relaxed");
     const starHTML = keys
       .filter(Boolean)
-      .map((k) => `<span class="star big ${res.stars[k] ? "lit" : "lost"}" title="${esc(set[k].tip)}">${ICON[set[k].icon]}<small>${esc(set[k].name)}</small></span>`)
+      .map((k) => `<span class="star big ${res.stars[k] ? "lit" : "lost"}" title="${esc(set[k].name)}: ${esc(set[k].tip)}">${ICON[set[k].icon]}</span>`)
       .join("");
     // pocket money (section 7): 5 for helping, +5 understood, +3 kept dry, +3 quick/no help, +1 per five-in-a-row (max 5)
     let streak = 0;
@@ -265,22 +272,22 @@
     const rows = Object.values(words)
       .map((w) => {
         const d = M.words[w.id] || {};
-        const mark = w.missed ? `<span class="wr-miss">missed ${w.missed}</span>` : w.taught && !w.heard ? `<span class="wr-new">new</span>` : `<span class="wr-ok">✓</span>`;
+        const mark = w.missed ? `<span class="wr-miss" title="Missed">&#10007;${w.missed}</span>` : w.taught && !w.heard ? `<span class="wr-new" title="New">&#10022;</span>` : `<span class="wr-ok">✓</span>`;
         return `<li><button type="button" class="wr-hear" data-w="${esc(w.id)}" aria-label="Hear it">${ICON.speaker}</button><span class="${d.kutchi ? "k" : "ph"}">${esc(d.kutchi || d.english || w.id)}</span><span class="en english">${esc(d.english || "")}</span>${mark}</li>`;
       })
       .join("");
     const t = res.tally;
+    // numbers, not sentences (rule 5); the sentence is the tooltip
     const summary = storm.kind === "say" ? `Ali understood ${t.voiceOk} of ${t.voiceCalls} calls` : `Heard ${t.heard} of ${t.tested} tested calls · saved ${t.saved} of ${t.targets}`;
+    const nums = storm.kind === "say" ? `${t.voiceOk}/${t.voiceCalls}` : `${t.heard}/${t.tested} · ${t.saved}/${t.targets}`;
     const panel = $("#panel");
     panel.innerHTML = `
       <div class="result">
-        <h2>The storm has passed</h2>
         <div class="r-stars">${starHTML}</div>
-        <p class="r-sum">${esc(summary)}</p>
-        ${res.placeholder ? `<p class="r-ph">Not yet a Kutchi test: some words are English placeholders.</p>` : ""}
-        <p class="r-money"><i class="coin"></i> ${money} pocket money</p>
+        <p class="r-sum" title="${esc(summary)}">${nums}</p>
+        <p class="r-money" title="Pocket money"${res.placeholder ? " data-rec" : ""}><i class="coin"></i> ${money}</p>
         <ul class="word-review">${rows}</ul>
-        <div class="r-btns"><button type="button" class="btn primary" id="r-again">Again</button><button type="button" class="btn" id="r-lab">Rush lab</button></div>
+        <div class="r-btns"><button type="button" class="btn primary" id="r-again" aria-label="Again">&#9654;</button><button type="button" class="btn" id="r-lab" aria-label="Rush lab">&#8962;</button></div>
       </div>`;
     panel.querySelectorAll(".wr-hear").forEach((b) => b.addEventListener("click", () => M.say({ word: b.dataset.w })));
     $("#overlay").classList.remove("hidden");
