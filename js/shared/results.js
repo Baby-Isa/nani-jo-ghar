@@ -241,11 +241,13 @@
   function accuracyBadge(a) {
     // CLN-79 (2 Oct): a round with nothing to judge never shows a dash: the tick is whole (nothing went wrong) and
     // its foot says so with a gold tick, the badge's own picture, never a number or a "–"
+    // SAM-22 (s08 w6M, rule 12: progress, not verdicts; the judge, 20 Oct: "a 1/2 score"): the foot counts what was right
+    // (a gold tick x n, as the bulb's x n), never "n/total", a score out of
     const rw = a.total ? (100 * a.right) / a.total : 100;
-    return `<div class="rs-badge rs-acc tier-${a.tier === "none" ? "mid" : "pending"}" data-badge="accuracy" data-tier="${a.tier}" aria-label="${a.right} right out of ${a.total}">
+    return `<div class="rs-badge rs-acc tier-${a.tier === "none" ? "mid" : "pending"}" data-badge="accuracy" data-tier="${a.tier}" aria-label="${a.right} right">
       <div class="rs-disc">${tickImg(rw)}
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
-      <div class="rs-foot">${a.total ? `<b class="rs-n">0</b><span class="rs-of">/${a.total}</span>` : `<span class="rs-of rs-none" aria-hidden="true">&#10003;</span>`}</div>
+      <div class="rs-foot">${a.total ? `<span class="rs-hint-count rs-right-count">${img("rs-cap-icon", "tick-gold")}<b>&times; <span class="rs-n">0</span></b></span>` : `<span class="rs-of rs-none" aria-hidden="true">&#10003;</span>`}</div>
     </div>`;
   }
   function hintsBadge(h) {
@@ -304,9 +306,12 @@
     const bad = [];
     const ok = [];
     words.forEach((w, i) => (w.right === false && !one ? bad : ok).push(card(w, i)));
-    const col = (cls, list) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}${list.length >= 10 ? " many" : ""}" style="--rs-cols:${Results.wordCols(list.length)}">${list.join("")}</div>`;
+    // SH-103 (Zafar, 17 Oct: "space for four correct items on the right and one incorrect item on the left ... if there are more incorrect items then
+    // the line has to move over"): the two halves are weighted, the right words 4 and the wrong words as many as they are (1 to 3), so the divider sits
+    // at 1/5 of the width with none wrong and moves over as the wrong words grow (contract-32 reads it)
+    const col = (cls, list, w = 1) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}${list.length >= 10 ? " many" : ""}" style="--rs-cols:${Results.wordCols(list.length)};--rs-w:${w}">${list.join("")}</div>`;
     if (one) return col("rs-words-all", ok);
-    return col("rs-words-bad", bad) + col("rs-words-ok", ok);
+    return col("rs-words-bad", bad, Math.max(1, Math.min(bad.length, 3))) + col("rs-words-ok", ok, 4);
   }
 
   // the page-1 show: badges pop in one by one; the stopwatch counts up; the tick gauge fills

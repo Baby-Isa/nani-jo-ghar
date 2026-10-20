@@ -311,6 +311,8 @@
   /* ================= stage 2: diagnosis ================= */
   // the hands rest on the knees; the chest and tummy are close: one probe per region
   P.REGIONS = [["knee", "leg", "hand", "finger"], ["foot", "toe"], ["arm", "elbow", "shoulder"], ["head", "ear", "eye", "mouth", "tooth", "neck", "nose", "throat"], ["tummy", "chest"]];
+  /** CLN-172 (s08-w5b): when no ailment can be drawn (no game loaded yet), the first live one (it was the scrape, now parked). */
+  P.anyAilment = (data) => Object.keys(data.ailments).find((k) => k[0] !== "_" && (data.ailments[k].from || 1) <= 1) || Object.keys(data.ailments).find((k) => k[0] !== "_");
   P.ailmentsFor = function (data, level, games) {
     return Object.keys(data.ailments)
       .filter((k) => k !== "_about")
@@ -329,7 +331,7 @@
   P.diagnosis = function (data, level, rng, o = {}) {
     const S = data.stages.diagnosis;
     const L = clampL(level);
-    const ailmentId = o.ailment || pick(P.ailmentsFor(data, o.healLevel || L, o.games), rng) || "scrape";
+    const ailmentId = o.ailment || pick(P.ailmentsFor(data, o.healLevel || L, o.games), rng) || P.anyAilment(data); // CLN-172: the scrape is parked; nothing drawable: the first live ailment
     const ail = data.ailments[ailmentId];
     const part = o.part || (o.first ? ail.part : pick(ail.parts.filter((p) => (data.parts[L] || data.parts[3]).includes(p) || p === ail.part), rng) || ail.part);
     const sided = data.sided.includes(part);
@@ -656,7 +658,7 @@
       const byPart = {};
       avail.forEach((a) => data.ailments[a].parts.forEach((pt) => parts.includes(pt) && (byPart[pt] = (byPart[pt] || []).concat(a))));
       part = pick(Object.keys(byPart), rng) || null;
-      ailment = part ? pick(byPart[part], rng) : pick(avail, rng) || "scrape";
+      ailment = part ? pick(byPart[part], rng) : pick(avail, rng) || P.anyAilment(data);
     }
     const diagnosis = P.diagnosis(data, lv.diagnosis, rng, { variant: va.diagnosis, ailment, part, first: o.first, games });
     const pharmacy = P.pharmacy(data, lv.pharmacy, rng, { ailment, first: o.first, asks: o.asks });

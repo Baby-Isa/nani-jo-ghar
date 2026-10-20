@@ -24,3 +24,5 @@ Mum records one long voice file; before each part she says its name and each lin
 ## For the next round
 
 - After Arc 1's game modes are built (Zafar, 14 Oct), with the story-mode recording: the missing words and forms ("with" and "and" for food; roll, pour, sprinkle, serve, oil, a board, each verb's polite and "for me" form; the rest of `grammar-notes.md` §55); five minutes of re-takes at the start (Mum: *cup*, *ambo*/*amba je mathe*, *chokra*/*chokri*/*Nana sathe*; Zafar: *hakro cup*, *salamun alaykum*, *na, muke na khape*, *trae bateta*, *hakri lakri*, *chokre sathe*); which sweets go in Nani's sweet box; *topi* or *kofia*, and what the family really wears.
+
+**For the next recording session (Zafar, 20 Oct):** the plural of tomato: is two tomatoes *ba tameto* or *ba tameta*? (Mum's notes say it doesn't change; her phrase "hane tameta wij" says *tameta*.) Until she answers, daal and chaat ask for one tomato only.

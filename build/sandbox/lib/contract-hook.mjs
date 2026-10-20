@@ -7,15 +7,17 @@
 //   k: "stage"   {key}                      a stage boundary: a Cook station starts or ends (Cook.inStation), the host's
 //                                          stage changes (njgTest.state()), the end screen shows ("end")
 //   k: "popup"   {open, box}               the shared request pop-up (.njg-rq-open, Cook's #intro) up or down
-//   k: "side"    {n, rows, done, closed, words}   order cards in the sidebar (not the pop-up's), their rows done, how many closed
-//   k: "buttons" {list: [{sel, text, box}], exp}   the ✓ / Next / stage buttons on screen, with what the game expects
+//   k: "side"    {n, rows, done, closed, words, lv}   order cards in the sidebar (not the pop-up's), their rows done, how many closed, #side's data-level (the order's own level)
+//   k: "buttons" {list: [{sel, text, box, go, arrow}], exp}   the ✓ / Next / stage buttons on screen, with what the game
+//                                          expects; go: a go-on (→ Next) button, arrow: its arrow is drawn (contract-27)
 //   k: "bubble"  {list: [{who, text, box, tail}], heads: [{who, box, src}], play}   speech bubbles and the speakers' heads
 //   k: "badges"  {list: [{badge, vis}]}     end-screen badges: which show (anything of them on screen)
 //   k: "art"     {src, via, key}           an image drawn for the first time in this stage (canvas drawImage, Phaser
 //                                          texture, <img>, CSS background)
-//   k: "rows"    {list: [{id, key, text, done, en}]}   each sidebar card row: its key, words and tick (contract-18)
+//   k: "rows"    {list: [{id, key, text, done, en, no}]}   each sidebar card row: its key, words, tick and whether it is a "don't" row (contract-18, 50)
 //   k: "input"   {x, y, on, play, exp, popup, poses}   a real tap or press (trusted pointerdown): what it landed on (play: in the play area), what the
 //                                          game expected then, the staged talkers' poses (data-pose) at that moment
+//   k: "input-blocked" {x, y, by}          the input just before was blocked by the first-time help's layer (js/shared/onboard.js), outside its light
 //   k: "life"    {what, reason, at, step?, during?, by?}   an entry of the shared lifecycle's own log (window.Lifecycle.log:
 //                                          request, advance, stage-end, results, step-close, act) at its own time (at), not the sampler's
 //   k: "hl"      {n, list}                 the next-thing highlights on screen: Cook's glowing pictures (glowFx), the
@@ -25,7 +27,7 @@
 //   k: "stale"   {sel, text, from}         a reply pill first seen in an earlier stage, still on screen 600 ms into this one
 //   k: "talk"    {list, spec}              the talk animations running: Cook's character tweens that repeat (lift, tilt,
 //                                          ms) and the play area's CSS talk or bob animations, with Lifecycle.talk.SPEC
-//   k: "texts"   {list: [{t, rec, en, grown, sel}]}   every visible text, tagged (contract-16)
+//   k: "texts"   {list: [{t, rec, en, grown, name, sel}]}   every visible text, tagged (contract-16; name: a player's typed name)
 //   k: "faces"   {list: [{who, sel, doctor}], cards, figFull, clinic}   face circles on screen and whose (contract-20)
 //   k: "bg"      {src, via, sx, sy, dpr}   a background (a picture covering half the screen or the canvas): screen px per
 //                                          source px across (sx) and down (sy)
@@ -33,6 +35,14 @@
 // What the game expected (exp) also carries, for contract-2: Cook's take-back (undo: its expectation offers one), the live
 // play inputs (live: Cook's pictures still taking taps), the heal game's last count (heal.count: {n, of, capped}, read from
 // the heal host's ctx.tally as the game calls it: a read-only wrap, the call goes through unchanged).
+// contract-16: a player's own name, typed by a grown-up (js/home.js: the who's-playing tiles and the corner badge, ".nm"),
+// is not English for the child. A text is that name only in a name element and only when it is one of the saved players'
+// typed names (Save.players(), never the app's made-up "Player 1": auto). Interpolated into the hook below; kept free of backslashes.
+export function playerName(text, inNameEl, typed) {
+  if (!inNameEl || !text) return false;
+  const t = String(text).trim().toLowerCase();
+  return !!t && [...(typed || [])].some((n) => String(n || "").trim().toLowerCase() === t);
+}
 export const CONTRACT_HOOK = `(() => {
   if (window.__njgContractHook) return;
   window.__njgContractHook = true;
@@ -148,6 +158,10 @@ export const CONTRACT_HOOK = `(() => {
     return /^(✓|✔|→|➜|➔|>)$/.test(t) || /\\b(next|done|go on|continue|to the doctor|move on)\\b/i.test(a);
   };
   const nextButtons = () => [...document.querySelectorAll("button, " + BTN)].filter((b) => isNextBtn(b) && shown(b) && !b.disabled);
+  // contract-27 (SH-106): a go-on button (the shared → Next, Cook's #go-btn, samosa's) and whether its arrow shows: the
+  // kit's arrow path (js/shared/buttons.js ICON.arrow's head) drawn at a size you can see, or an arrow character
+  const isGoBtn = (b) => b.matches(".njg-next, #go-btn, #samosa-next, [data-go]") && !b.matches(".njg-done");
+  const hasArrow = (b) => [...b.querySelectorAll("svg path")].some((p) => p.getAttribute("d") === "M13 6l6 6-6 6" && shown(p.closest("svg"))) || /[→➜➔]/.test(b.textContent || "");
 
   // ---- speech bubbles and the speakers' heads ----
   const BUB = ".cl-bubble, #bubble, .njg-bubble, [data-bubble]";
@@ -248,7 +262,9 @@ export const CONTRACT_HOOK = `(() => {
   const badgeVis = () => [...document.querySelectorAll(".njg-results .rs-badge")].map((x, i) => {
     const r = x.getBoundingClientRect();
     let vis = 0;
-    for (const d of [x, ...x.querySelectorAll("*")]) { const dr = d.getBoundingClientRect(); if (dr.width > 3 && dr.height > 3) vis = Math.max(vis, opac(d)); }
+    // what shows is the badge's contents, not its tile: since SH-37 (s08 w6J) a badge still to come is its quiet empty tile,
+    // and the tile showing early is not the badge showing (contract-5 counted 553 such, 20 Oct)
+    for (const d of x.querySelectorAll("*")) { const dr = d.getBoundingClientRect(); if (dr.width > 3 && dr.height > 3) vis = Math.max(vis, opac(d)); }
     // a picture drawn on the badge's spot from outside it (the cause looked for in Z4)
     if (r.width > 4) for (const [fx, fy] of [[0.5, 0.4], [0.3, 0.5], [0.7, 0.5]]) {
       for (const e of document.elementsFromPoint(r.left + r.width * fx, r.top + r.height * fy)) {
@@ -553,8 +569,10 @@ export const CONTRACT_HOOK = `(() => {
 
   // contract-16 (no written English for the child, non-negotiable 5): the visible texts, each tagged: a to-record placeholder
   // (decision 84), the bulb's English (the help, decision 1), or grown-ups' text (the "?" pop-up, a lab panel): those are allowed
+  const playerName = ${playerName.toString()};
   const texts = () => {
     const out = new Map();
+    const typed = safe(() => (window.Save && window.Save.players ? window.Save.players() : []).filter((p) => p && !p.auto && p.name).map((p) => p.name), []) || [];
     const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     let n, k = 0;
     while ((n = w.nextNode()) && k < 400) {
@@ -570,10 +588,77 @@ export const CONTRACT_HOOK = `(() => {
       const rec = !!el.closest(".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line, .rs-ph, .rs-ph-in, .rs-rec");
       // .rs-en and the steps page's small English: the end-of-round review shows each word's English under it (ui-design-system §6, §6a), pending Zafar's answer (docs/questions.md, 14 Oct)
       const en = !!el.closest(".english, .cl-row-en, .bulb-en, [data-bulb-en], .rs-en, .rs-step-text small");
-      const key = t + "|" + rec + en + grown;
-      if (!out.has(key)) { out.set(key, { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }); k++; }
+      // contract-46 (s09-frame): a door line's English (day.html, rule 5's door exception): is the page on its door, and does
+      // the English sit right under a Kutchi line (a .day-k that is not a to-record placeholder)?
+      const dEl = el.closest("[data-door-en]");
+      const door = dEl ? { stage: !!(window.Day && window.Day.stage === "door"), under: !!(dEl.previousElementSibling && dEl.previousElementSibling.matches(".day-k:not(.to-record)")) } : null;
+      const name = playerName(t, !!el.closest(".nm, [data-player-name]"), typed);
+      const key = t + "|" + rec + en + grown + name + (door ? JSON.stringify(door) : "");
+      if (!out.has(key)) { const o = door ? { t: t.slice(0, 80), rec, en, grown, door, sel: desc(el) } : { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }; if (name) o.name = true; out.set(key, o); k++; }
     }
     return [...out.values()];
+  };
+
+  // contract-28 (SH-100, Zafar, 17 Oct: "let's make them all photorealistic"): every light bulb button or sign on screen: the card's small
+  // bulb, Nani's and the doctor's, with the picture it is drawn with (an <img>'s file or a CSS background's; "svg" is the flat inline drawing)
+  const bulbs = () => [...document.querySelectorAll(".oc-look.bulb, .ng-bulb, .cl-bulb, #btn-bulb")].filter(shown).map((b) => {
+    const im = b.matches("img") ? b : b.querySelector("img");
+    const bg = getComputedStyle(b).backgroundImage;
+    const raw = im ? (im.getAttribute("src") || "") : bg && bg !== "none" ? bg : "";
+    const file = raw.replace(/^.*\\//, "").replace(/[?"')#].*$/, "").slice(0, 60);
+    return { sel: desc(b), kind: im ? "img" : raw ? "bg" : b.querySelector("svg") ? "svg" : "other", file };
+  });
+
+  // contract-31 (SH-102): every help Cook counts (Cook.onHelp: hint, replay, shown, translate...) as it is counted; a read-only wrap
+  // (the call goes through unchanged), put on again whenever a round sets its own
+  const wrapHelp = () => {
+    const C = window.Cook;
+    if (!C || typeof C.onHelp !== "function" || C.onHelp.__njgw) return;
+    const o = C.onHelp;
+    const w = function (kind, info) {
+      let before = null;
+      try { before = window.Cook.ctx ? window.Cook.ctx.help : null; } catch (e) {}
+      const r = o.apply(this, arguments);
+      try {
+        const after = window.Cook.ctx ? window.Cook.ctx.help : null;
+        emit({ k: "hint", kind: String(kind || "help"), ids: info && info.ids ? [].concat(info.ids).slice(0, 4).map(String) : [], counted: before != null && after != null ? after > before : null });
+      } catch (e) {}
+      return r;
+    };
+    w.__njgw = true;
+    C.onHelp = w;
+  };
+
+  // contract-32 (SH-103): the end review's two halves: where the wrong (left) and right (right) words sit. Null unless the word review
+  // is up with its two halves side by side (a taught round has one group; a portrait phone stacks them)
+  const review = () => {
+    const w = document.querySelector(".njg-results .rs-p2 .rs-words:not(.one)");
+    if (!w || !shown(w)) return null;
+    const b = w.querySelector(".rs-words-bad"), o = w.querySelector(".rs-words-ok");
+    if (!b || !o) return null;
+    const rb = b.getBoundingClientRect(), ro = o.getBoundingClientRect();
+    if (ro.top >= rb.bottom - 2 && rb.height > 2) return null; // stacked
+    return { bad: b.querySelectorAll(".rs-word").length, ok: o.querySelectorAll(".rs-word").length, badW: Math.round(rb.width), okW: Math.round(ro.width), l: Math.round(rb.left), r: Math.round(ro.right) };
+  };
+  // contract-33 (SH-107): the headlines of the order pop-up (the cards at the start of a round): each one's size, the size it would
+  // have at full (a bare clone of it in the same place, no inline size), and how many lines it takes
+  const heads = () => {
+    const out = [];
+    for (const h of document.querySelectorAll(".njg-rq-card .oc-headline, #intro .oc-headline")) {
+      if (!shown(h)) continue;
+      const cs = getComputedStyle(h);
+      const c = h.cloneNode(false);
+      c.style.fontSize = "";
+      c.style.cssText += ";position:absolute;visibility:hidden;white-space:nowrap;width:auto;max-width:none";
+      h.parentNode.appendChild(c);
+      const full = parseFloat(getComputedStyle(c).fontSize) || 0;
+      c.remove();
+      const rg = document.createRange();
+      rg.selectNodeContents(h);
+      const tops = new Set([...rg.getClientRects()].filter((x) => x.width > 1).map((x) => Math.round(x.top / 4)));
+      out.push({ size: Math.round(parseFloat(cs.fontSize) * 2) / 2, full: Math.round(full * 2) / 2, lines: tops.size || 1, text: (h.textContent || "").replace(/\s+/g, " ").trim().slice(0, 50) });
+    }
+    return out;
   };
 
   // ---- the sampler ----
@@ -583,6 +668,7 @@ export const CONTRACT_HOOK = `(() => {
     const key = safe(stageKey, "page");
     if (key !== stage) { stage = key; stageSince = Date.now(); emit({ k: "stage", key }); }
     safe(lifeLog);
+    safe(wrapHelp);
     const hl = safe(highlights, []);
     if (!same("hl", hl)) emit({ k: "hl", n: hl.length, list: hl });
     const bw = safe(brokenWords, []);
@@ -602,16 +688,31 @@ export const CONTRACT_HOOK = `(() => {
     // closed: the card is closed (from L3 the call is heard, not read: OrderCard's "closed", folded or peeking)
     // the rows' words (contract-19, the counting rule: from L3 no number written on a card)
     const words = cards.flatMap((c) => [...c.querySelectorAll(".oc-row .oc-t, .oc-item .oc-t, .oc-row, li")].filter(shown).map((x) => (x.textContent || "").trim().slice(0, 40))).filter(Boolean).slice(0, 24);
-    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, words: [...new Set(words)] };
+    // contract-27, contract-29 (s08 w1b, SH-98, SH-101): a card peeking (a tap on its small bulb opened it for a moment): how many,
+    // and how many dotted words ("•••") show in them
+    const peeking = cards.filter((c) => c.classList.contains("peek"));
+    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots:not(.unsaid)")].filter(shown).length, 0), words: [...new Set(words)], lv: (document.querySelector("#side") && document.querySelector("#side").dataset.level) || null };
     if (!same("side", sd)) emit({ k: "side", ...sd });
+    // contract-30 (SH-99): everything WRITTEN on the sidebar cards, shown or folded away (a closed card holds its rows for the peek; a [data-howto] line is the doctor's spoken strip, "One more thing.", not a written row, s08 w6L):
+    // each row's and headline's Kutchi words and every count chip, the bulb's English aside
+    const cw = cards.flatMap((c) => [...c.querySelectorAll(".oc-headline, .oc-t, .cl-row-text, .cl-row-count")].filter((x) => !x.closest(".cl-row-en") && !x.closest("[data-howto]")).map((x) => (x.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60))).filter(Boolean);
+    const cwu = [...new Set(cw)].slice(0, 60);
+    if (!same("card", cwu)) emit({ k: "card", words: cwu });
+    // contract-28 (SH-100): the light bulbs on screen and what each is drawn with
+    const bl2 = safe(bulbs, []);
+    if (!same("bulbs", bl2)) emit({ k: "bulbs", list: bl2 });
+    const rv = safe(review, null);
+    if (!same("review", rv)) emit({ k: "review", ...(rv || { none: true }) });
+    const hd = safe(heads, []);
+    if (!same("heads", hd.map((x) => [x.size, x.lines, x.text]))) emit({ k: "heads", list: hd });
     // contract-18: each sidebar card row, by its key (the order card's data-key, the clinic's data-row) or its place, with its
     // words (the Kutchi line, not the bulb's English beside it) and whether it is ticked; en: the card shows the bulb's English
-    const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english") }; }));
+    const rl = cards.flatMap((c, ci) => [...c.querySelectorAll(".oc-row")].map((x, i) => { const key = (x.dataset && (x.dataset.key || x.dataset.row)) || null; const w = x.querySelector(".cl-row-text") || x.querySelector(".oc-t") || x; return { id: key || ci + ":" + i, key, text: (w.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60), done: x.classList.contains("done"), en: !!x.closest(".english"), no: x.classList.contains("no") }; }));
     if (!same("rows", rl.map((x) => x.id + "|" + x.text + "|" + x.done + "|" + x.en))) emit({ k: "rows", list: rl });
-    const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()) }));
-    if (!same("buttons", bl.map((b) => b.sel))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
+    const bl = nextButtons().map((b) => ({ sel: desc(b), text: (b.textContent || "").trim().slice(0, 20), box: R(b.getBoundingClientRect()), go: isGoBtn(b), arrow: isGoBtn(b) ? hasArrow(b) : null }));
+    if (!same("buttons", bl.map((b) => b.sel + b.arrow))) emit({ k: "buttons", list: bl, exp: bl.length ? exp() : null });
     const tx = safe(texts, []);
-    if (!same("texts", tx.map((x) => x.t + x.rec + x.en + x.grown))) emit({ k: "texts", list: tx });
+    if (!same("texts", tx.map((x) => x.t + x.rec + x.en + x.grown + (x.door ? JSON.stringify(x.door) : "")))) emit({ k: "texts", list: tx });
     const fc = safe(faces, null);
     if (fc && !same("faces", [fc.list.map((f) => f.who + f.sel), fc.cards, fc.figFull])) emit({ k: "faces", ...fc });
     const bubs = [...document.querySelectorAll(BUB)].filter(shown).map((b) => ({ who: whoOf(b), text: (b.textContent || "").trim().slice(0, 50), box: R(b.getBoundingClientRect()), tail: tailOf(b) }));
@@ -642,6 +743,13 @@ export const CONTRACT_HOOK = `(() => {
       const t = ev.target;
       const btn = t && t.closest ? t.closest("button, " + BTN) : null;
       emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), play: !!(t && t.closest && t.closest(".njg-play, [data-njg-play], #stage, .cl-stage, .hs-root")), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage });
+    } catch (e) {}
+    // the first-time help (js/shared/onboard.js) blocks a tap outside its light on capture (preventDefault): the game never gets it,
+    // so no act is logged for it (contract-21 skips it). Read after the layers have run: a following {k: "input-blocked"}
+    try {
+      if (!ev.isTrusted || !document.querySelector(".njg-onboard")) return;
+      const x = Math.round(ev.clientX), y = Math.round(ev.clientY);
+      setTimeout(() => { try { if (ev.defaultPrevented) emit({ k: "input-blocked", x, y, by: "onboard" }); } catch (e) {} }, 0);
     } catch (e) {}
   }, true);
 })();`;

@@ -65,7 +65,8 @@
       };
       let picked = null;
       const showPills = (why) => {
-        state.textContent = why || "Tap the one you'd say";
+        // no written English for the child (rule 5): the pills speak for themselves
+        state.textContent = "";
         pills.innerHTML = "";
         const order = Tidy.Rules.util.shuffle(Math.random, choices);
         order.forEach((id) => {
@@ -85,29 +86,33 @@
         const go = document.createElement("button");
         go.type = "button";
         go.className = "go hidden";
-        go.textContent = "That one";
+        go.textContent = "\u2713";
+        go.setAttribute("aria-label", "That one");
         go.onclick = () => picked && finish(picked, "pill");
         pills.appendChild(go);
         Tidy.expect({ what: "speak", answer, choices: order });
       };
+      // the grown-up's tick is the grown-up's control: its English is theirs
+      par.setAttribute("data-grown", "");
       par.classList.toggle("hidden", !parent);
       $(".yes", par).onclick = () => finish(answer, "parent");
       $(".no", par).onclick = () => showPills("Tap the one they meant");
       const usable = !Say.voiceOff && !!global.Speech && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
       mic.classList.toggle("hidden", !usable);
       if (!usable) return showPills();
-      state.textContent = "Tap the mic and say it";
+      state.textContent = "";
       Tidy.expect({ what: "speak", answer, choices, mic: true });
       // the pills are one tap away at any time: never blocked on the mic
       const later = document.createElement("button");
       later.type = "button";
       later.className = "btn";
-      later.textContent = "Tap instead";
+      later.textContent = "\u22EF";
+      later.setAttribute("aria-label", "Tap instead");
       later.onclick = () => showPills();
       pills.appendChild(later);
       mic.onclick = async () => {
         mic.classList.add("listening");
-        state.textContent = "Listening…";
+        state.textContent = "";
         const r = await Say.listen(choices, timeoutMs);
         mic.classList.remove("listening");
         if (r && r.choice && r.confidence >= min) return finish(r.choice, "voice");

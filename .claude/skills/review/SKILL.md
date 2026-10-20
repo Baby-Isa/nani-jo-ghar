@@ -18,13 +18,15 @@ description: Review a finished build session or any change before it goes to Zaf
    ```
    node build/tools/review/touched.mjs --base <ref> --json | node build/tools/review/regress.mjs --stdin
    ```
-3. Run the sandbox command it printed (one browser at a time: `flock -w 1800 ... timeout`). While iterating: laptop size, changed screens only. Before a publish: the full matrix.
+3. Run the sandbox command it printed (one browser at a time: `flock -w 1800 ... timeout`). Between fix rounds: only the changed flows, at every size with `--contract`. The full gate (`run.mjs --gate`) runs once, just before a publish (Zafar, 20 Oct).
 4. Only what changed:
    ```
    node build/tools/review/shotdiff.mjs --run <run id>
    ```
    Open `<run>/sheets/changed.png` and look at every shot, zoom ×2.
 5. Write flaws first: clipping, spacing, padding, alignment, overlap, English for the child, Kutchi leaks. Then each regression row: still fixed / broken. Then side by side with the mock-up and Zafar's last feedback.
+5b. **Every station touched, at L1-L4.** For each station, recipe or clinic game the change reaches, judge its played frames at **L1-L4 for each station touched** (L1, L2, L3, L4, not one level), in the real run's frames, never the code. In every one, look at: the samosa fold (the flap goes over the filling, in the order the card says: SAM-05) and the go-on button (shown, whole, on the bottom of the screen, doing the same in every station). A station with a level not played has not been reviewed (SH-109, SH-111).
+5c. **Told-before rows get a shot.** Every row in the fix list that came back from his earlier feedback (**told before**: `/feedback` reopened it, or its status says so) is judged on its own shot or evidence sheet in this review, flaws first, even when the change did not touch its screen (SH-116).
 6. Leak and word checks if game logic or words changed: `node build/tools/review/leak.mjs <config>`, `node build/lint/words.mjs`.
 7. Start the report: `node build/tools/review/skeleton.mjs <name> --run <run id>`.
 8. Approve the shots only after looking (and from two runs where timing wobbles): `shotdiff.mjs --approve --also <run2>`.
@@ -41,4 +43,4 @@ description: Review a finished build session or any change before it goes to Zaf
    A row is built only on a PASS of its evidence (a machine expect or a reviewer citing a panel); a FAIL reopens it before Zafar plays. Tool failures (moment never reached, blank crop, spec error) go back to the tool owner, never to Zafar. Zafar gets the FAIL list, the audit disagreements and the `human` rows (his ear or feel) before he plays. At sprint close: `--run --all`, then `--judge --audit 10`. (`sprintcheck.mjs` stays for the row → flow mapping of rows with no spec.)
 
 ## Then
-Anything broken goes back to the builder as a numbered list; nothing reaches Zafar that breaks a written rule.
+Before a judge's FAIL goes to a builder, read the row's own quote of Zafar: a FAIL that would reverse his design (or a decision in the mode's doc) is dropped and put to him instead (Zafar, 20 Oct). Between rounds run the evidence on changed rows only (`evidence.mjs --run --changed`). Anything broken goes back to the builder as a numbered list; nothing reaches Zafar that breaks a written rule.

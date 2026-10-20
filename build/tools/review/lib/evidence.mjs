@@ -69,7 +69,37 @@ export function batches(rows, { visual = 10, text = 30 } = {}) {
 // ---------- the reviewer's verdict file ----------
 // "judge: <model and session>" then one line per row: "ID | PASS: B, <what the panel shows>" | "ID | FAIL: A, <what is wrong>" |
 // "ID | EVIDENCE: <what is missing>" (goes to the tool owner, never to regressions.md). A PASS must cite its panel first (Fable 17).
-export function parseVerdicts(text) {
+// the labels a text-only row's text file offers a PASS to cite (s08 w6L: SH-115, CLN-172, LNG-04 were refused for naming the script
+// they read): each "#### <label>" heading of the .md without its "(exit N)" or " · <what>" tail (a cmd capture's command; a dom,
+// voice or contract capture's probe id), and each probe id of its "Probes" bullets
+export function captureLabels(md) {
+  const out = new Set();
+  for (const raw of String(md || "").split("\n")) {
+    let m;
+    if ((m = /^####\s+(.+?)\s*$/.exec(raw))) {
+      const h = m[1].replace(/\s+\((?:exit|code)\s*[\w-]*\)\s*$/, "").trim();
+      if (h) out.add(h);
+      const head = h.split(" · ")[0].trim();
+      if (head) out.add(head);
+    } else if ((m = /^-\s+([A-Z]+-[A-Z0-9-]*\d+-p\d+[\w@.#-]*):/.exec(raw))) out.add(m[1]);
+  }
+  return [...out];
+}
+// the longest label the line starts with (a PASS "naming its capture label", as the batch file tells the judge), else null
+export function labelOf(line, labels) {
+  const L = String(line || "").trim().toLowerCase();
+  let best = null;
+  for (const lab of labels || []) {
+    const k = String(lab).trim().toLowerCase();
+    if (k.length < 3 || !L.startsWith(k)) continue;
+    const next = L.charAt(k.length);
+    if (next && !/[\s,:;.)(\-]/.test(next)) continue;
+    if (!best || k.length > best.length) best = String(lab).trim();
+  }
+  return best;
+}
+// labelsOf(id) -> the row's capture labels (optional): a PASS that opens with one stands as that text capture's
+export function parseVerdicts(text, labelsOf = null) {
   const out = { judge: null, lines: [], rejected: [] };
   for (const raw of String(text || "").split("\n")) {
     const l = raw.trim();
@@ -80,7 +110,9 @@ export function parseVerdicts(text) {
     // a text-only row cites its text capture: "PASS: text, ...", or by its label in the .md ("SH-45-p1-L1-1366x768 dom: ...",
     // "p1-L2 voice, ..."); passFor() below keeps the A-L rule for a row that has a sheet
     const pm = /^(?:panel\s+)?([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*(?![\w-])|(?:[A-Z]+-\d+-)?p\d+(?:-L\d+)?(?:-(?:\d+x\d+|repo))?(?:\s+(?:dom|voice|cmd|contract|text|stage list))?|(?:the\s+)?(?:text|voice|dom|cmd|t)(?:\s+(?:capture|timeline))?)\b\s*(?:\([^)]*\))?\s*[,:;.)-]/i.exec(line);
-    const panel = pm ? pm[1].replace(/^the\s+/i, "").replace(/\s+/g, " ").trim().replace(/^([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*)$/i, (s) => s.toUpperCase().replace(/\s+/g, "")) : null;
+    let panel = pm ? pm[1].replace(/^the\s+/i, "").replace(/\s+/g, " ").trim().replace(/^([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*)$/i, (s) => s.toUpperCase().replace(/\s+/g, "")) : null;
+    // a text-only row's PASS that opens with a capture label from its .md (a script's command, a probe id): "PASS: grep -n ... data/x.json, all four ..."
+    if (!panel && verdict === "PASS" && labelsOf) panel = labelOf(line, labelsOf(id) || []);
     if (verdict === "PASS" && !panel) { out.rejected.push({ id, why: "a PASS must name the panel it saw first (\"PASS: B, ...\")", line }); continue; }
     out.lines.push({ id, verdict, line, panel });
   }
@@ -115,10 +147,14 @@ export function applyVerdicts(md, verdicts, run) {
     if (kind === "keep" || kind === "retired") { skipped.push({ id, why: kind }); continue; }
     if (v.verdict !== "PASS" && v.verdict !== "FAIL") { skipped.push({ id, why: v.verdict }); continue; }
     if (r.status.includes(`evidence ${v.verdict} ${run}`)) { skipped.push({ id, why: "already applied" }); continue; }
-    const note = `evidence ${v.verdict} ${run}: ${clean(v.line)}${v.png ? `; \`${v.png}\`` : ""}`;
+    // a FAIL row names only the run (the judge's line is in build/tools/review/data/verdicts.json), so the fix list stays under its limit;
+    // a PASS keeps its line, which goes with the row to the archive
+    const note = v.verdict === "FAIL" ? `evidence FAIL ${run}` : `evidence PASS ${run}: ${clean(v.line)}`;
     const head = v.verdict === "FAIL" ? (v.twoStrikes ? "**open (two strikes: Zafar)**" : "**reopened**") : kind === "fixed" ? "fixed" : "built";
     // the status is the current state only (decision 99): the old one goes to the history file, not after "· earlier:"
-    const status = `${head} (${note})`;
+    // a FAIL keeps what the row still waits on (Mum, art): that is current state, not history
+    const wait = v.verdict === "FAIL" && /waiting on [^·|(*]*(\([^)]*\))?/.exec(plain(r.status));
+    const status = `${head}${wait ? ` · **${wait[0].trim()}**` : ""} (${note})`;
     history.push({ id, run, earlier: r.status });
     const cells = lines[i].replace(/^\|\s*/, "").replace(/\s*\|\s*$/, "").split(/ \| /);
     if (cells.length < 4) { skipped.push({ id, why: "row has fewer than four cells" }); continue; }
@@ -174,4 +210,20 @@ export function redGreen(verdicts, { kinds, specs, log, run, legacy = [] }) {
     out.set(id, v);
   }
   return { verdicts: out, refused, strikes };
+}
+
+// --changed (Zafar, 20 Oct): the rows worth playing again after a change. A row is touched when one of its probes plays a flow
+// (by base id: "clinic:heal-eye#mistake@L2" is "clinic:heal-eye") that touched.mjs reaches from the changed files, or when it runs a
+// script (a "repo" probe: no browser, cheap, always kept), or its spec is broken (it must show). `norm` is the normalised spec's rows
+// (id -> probes with .flowId / .repo); rows with no probes (no spec, human, decision) are not played either way.
+export const flowBase = (id) => String(id || "").replace(/[@#].*$/, "");
+export function changedRows(rowIds, norm, touchedIds, { rowErrors = {} } = {}) {
+  const hit = new Set(touchedIds), keep = [], skipped = [];
+  for (const id of rowIds) {
+    const probes = norm[id];
+    if (!probes) { skipped.push(id); continue; }
+    const touched = rowErrors[id] || probes.some((p) => p.repo || hit.has(flowBase(p.flowId)));
+    (touched ? keep : skipped).push(id);
+  }
+  return { keep, skipped };
 }

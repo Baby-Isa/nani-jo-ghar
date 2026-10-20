@@ -1,0 +1,56 @@
+{
+  "kind": "shared",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "name": "s08 wave 6N, the clinic: the last run's code fails (the fever tool strip, the mouths moving, the tooth zoom, the eye's misread and its voice, the stethoscope, the bud, the board, the fever's framing, the arm's first frame)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "heal games' layout and speech, judged by picture",
+  "cost": "about $30-45",
+  "port": 8863,
+  "report": "s08-w6n-clinic",
+  "read": [
+    "build/tools/review/data/verdicts.json (the judge lines, run ev-20261020-073941-0e9) and build/reports/evidence-ev-20261020-073941-0e9.md",
+    "docs/game-design/modes/clinic.md",
+    "build/reports/s08-w6i-stuck.md, s08-w6h-clinic.md"
+  ],
+  "owns": [
+    "js/clinic/**",
+    "data/clinic/**",
+    "css/clinic.css",
+    "build/reports/s08-w6n-clinic.md"
+  ],
+  "readOnly": [
+    "js/cook/**, js/shared/**, css/shared/** (wave 6M; a shared change goes in the report)",
+    "build/sandbox/**, build/tools/**",
+    "data/lang/**",
+    "assets/**"
+  ],
+  "stubs": "art goes on the art list",
+  "tasks": [
+    {
+      "do": "SH-112: the fever game's tool strip shows its tools (today an empty sliver at 1366x768, a thin thermometer at 800x360). ART-19: Nani, the girl and the doctor move their mouths while they speak and blink at rest in the clinic too (the talk and blink frames exist; the judges saw a closed smile through a whole line).",
+      "accept": "eye: the fever strip at both sizes; filmstrips of each speaker mid-line"
+    },
+    {
+      "do": "CLN-107: at the eye game's misread moment the doctor's bubble names the row with pictures and gives the drop; the 'to the eye test' button shows bottom right; 'I can see!' never plays over the dungri and mirchi recordings (a line plays only its own words' clips: extend the colour-clip test to every line). CLN-188: the eye chart board takes most of the screen (more than the girl).",
+      "accept": "auto: the clip test over every heal line; eye: the misread at L2-L3"
+    },
+    {
+      "do": "CLN-163: the tooth zoom moves smoothly from the room to the mouth (no heavy blur, no curved overlay, no cut to a separate photo), and the eye close-up has no white corners. CLN-23: the stethoscope lies flat on the belt. CLN-195: the bud's tip turns blue after the dab every time (the last run saw it white again). CLN-178: at fever L3 her face is never cut off, and the end card is not blank. CLN-106: the arm's first frame has its room behind it (no blank white), and 'Time for the jab.' comes after the wipe.",
+      "accept": "eye: each as a filmstrip at 1366x768 and 800x360"
+    }
+  ],
+  "flows": [
+    "clinic:heal-fever",
+    "clinic:heal-eye",
+    "clinic:heal-tooth",
+    "clinic:heal-taste",
+    "clinic:heal-boing",
+    "clinic:pharmacy",
+    "clinic:waiting"
+  ]
+}

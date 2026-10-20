@@ -207,13 +207,13 @@ test("contract-16 English for the child (checks-to-build 4): every text is a lex
   assert.match(store[0].measured, /to-record placeholder on the store build/);
 });
 
-test("contract-19 counting rule (checks-to-build 7): from L3 no number written on a card (words seen before); from L2 no counting along", async () => {
+test("contract-19 counting rule (checks-to-build 7): from L2 no counting along (its written-number half went with SH-99: every number said is written, contract-30)", async () => {
   const { analyse } = await import("./lib/contract.mjs");
   const numbers = new Set(["hakro", "ba", "trae", "char"]);
   const run = (flow, variant, extra) => analyse({ flow, variant, size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "chai", t: 1000 }, { type: "c", k: "input", x: 1, y: 1, on: "canvas", t: 1500 }, ...extra] }, { numbers, lexicon: new Set() }).filter((b) => b.check === "contract-19");
   const side = (words) => ({ type: "c", k: "side", n: 1, rows: 2, done: 0, closed: 0, words, t: 1600 });
   const line = (text, t) => [{ type: "line", id: t, text, t }, { type: "line-end", id: t, t: t + 300 }];
-  assert.match(run("cook:chai-tray@L3", "p-seen", [side(["ba elchi", "dudh"])])[0].measured, /"ba elchi"/);
+  assert.equal(run("cook:chai-tray@L3", "p-seen", [side(["ba elchi", "dudh"])]).length, 0, "SH-99 (Zafar, 18 Oct): the number is written at every level, even for a player who has heard the words");
   assert.equal(run("cook:chai-tray@L3", "", [side(["ba elchi"])]).length, 0, "a first-time player sees the number written (decision 57)");
   assert.equal(run("cook:chai-tray@L2", "p-seen", [side(["ba elchi"])]).length, 0);
   assert.match(run("cook:chai-tray@L2", "p-seen", line("Ba!", 2000))[0].measured, /counting along/);
@@ -273,4 +273,36 @@ test("contract-18: a hidden count written in as it is heard is not a change of w
   assert.equal(run("••• khun", "ba khun").length, 0);
   assert.equal(run("ba •••", "ba bataata").length, 0);
   assert.equal(run("ba khun", "trae khun").length, 1);
+});
+
+test("contract-34 (SH-106): a go-on button with no arrow (sekelo's grill picture in its place) is a break; with it, or the ✓, passes", () => {
+  const btn = (b) => ({ type: "c", k: "buttons", t: 1200, list: [b], exp: null });
+  const page = (b) => analyse({ flow: "cook:mishkaki-grill", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "cook:station2:marble", t: 1000 }, btn(b)] }, { lexicon: new Set(), numbers: new Set() }).filter((x) => x.check === "contract-34");
+  const go = { sel: "button#go-btn.njg-btn.njg-next", text: "", box: [0, 0, 200, 110], go: true };
+  const b = page({ ...go, arrow: false });
+  assert.equal(b.length, 1);
+  assert.match(b[0].measured, /#go-btn.* has no arrow/);
+  assert.equal(page({ ...go, arrow: true }).length, 0);
+  assert.equal(page({ sel: "button#done-btn.njg-btn.njg-done", go: false, arrow: null }).length, 0);
+});
+
+test("contract-50 (SAM-24): samosa's card rows tick together at the one tick; one kind ticked early is a break; a redo starts over", () => {
+  const rows = (t, d) => ({ type: "c", k: "rows", t, list: [["0:0", "ba samosa"], ["0:1", "ba chunda"], ["1:0", "ba samosa"], ["1:1", "ba bataata"]].map(([id, text], i) => ({ id, text, done: !!d[i] })) });
+  const page = (extra, flow = "cook:samosa@L3") => analyse({ flow, size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "life", what: "decoys", reason: "3", by: "fillings lookalike:0", t: 1900 }, { type: "c", k: "stage", key: "cook:station1:marble", t: 2000 }, rows(2100, [0, 0, 0, 0]), ...extra, { type: "c", k: "stage", key: "cook:between1:marble", t: 30000 }] }, { lexicon: new Set(), numbers: new Set() }).filter((x) => x.check === "contract-50");
+  // the old L3: the first kind's box ticked after its first strip, the second kind's 2.6 s later
+  const red = page([rows(15400, [1, 1, 0, 0]), rows(18000, [1, 1, 1, 1])]);
+  assert.equal(red.length, 1);
+  assert.match(red[0].measured, /ticked 2\.6 s before/);
+  // the one tick: every row at once (one sample, or two samples 200 ms apart)
+  assert.equal(page([rows(15400, [1, 1, 1, 1])]).length, 0);
+  assert.equal(page([rows(15400, [1, 1, 0, 0]), rows(15600, [1, 1, 1, 1])]).length, 0);
+  // a redo (decision 51): ticked, reopened, ticked again together later
+  assert.equal(page([rows(15400, [1, 1, 1, 1]), rows(16000, [0, 0, 0, 0]), rows(22000, [1, 1, 1, 1])]).length, 0);
+  // ticked and never finished in the stage
+  assert.equal(page([rows(15400, [1, 1, 0, 0])]).length, 1);
+  // a "don't" row ticks with the finished dish, later, by design: not judged
+  const withNo = (t, d) => ({ ...rows(t, d), list: [...rows(t, d).list, { id: "0:2", text: "dhania na", done: false, no: true }] });
+  assert.equal(page([withNo(15400, [1, 1, 1, 1])]).length, 0);
+  // another station is not judged
+  assert.equal(page([rows(15400, [1, 1, 0, 0]), rows(18000, [1, 1, 1, 1])], "cook:chai-tray@L3").length, 0);
 });

@@ -411,7 +411,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const station = typeof def.station === "function" ? def.station(params) : def.station;
     // def.closedFrom: from this level the station's card starts folded (§14a), before its begin's request pop-up
     const lv = Math.max(Number(opts.level || params.level || (ctx && ctx.level)) || 1, Cook.roundLevel(ctx));
-    const closed = !!def.closedFrom && lv >= def.closedFrom;
+    const closed = (!!def.closedFrom && lv >= def.closedFrom) || (!!Cook.cardState && Cook.cardState(lv) === "hidden"); // (the level table, s08 w2A)
     if (station && def.view && !opts.noBegin) await Cook.Stations.begin(S, ctx, station, def.view, { closed });
     const z = opts.zone || new Zone(S, ctx, { id, level: opts.level || params.level || (ctx && ctx.level), region: opts.region, footprint: def.footprint });
     const r = await M.run(id, z, params);

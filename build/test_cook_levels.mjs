@@ -87,6 +87,32 @@ test("CK-35: the maani station's tawa keeps the same ladder", () => {
   ladder("maani tawa", ws);
 });
 
+// MAA-17 (decision 12; Zafar, 17 Oct: "add on like three quarters of a second ... across all levels for the chapati. Time to
+// flip"): the maani station's green on each side is the ladder's window above plus 0.75 s, at every level (js/cook/stations/
+// maani-line.js slows its ring by data/stations/maani-line.json flipAddS). The ladder's 15% then applies to the old part only
+// (Zafar's newest word wins over the ladder rule for this station): the windows still shrink level by level.
+test("MAA-17: the maani station's flip window is the old one + 0.75 s on both sides, at every level", () => {
+  const speed = (data.timing && data.timing.levelSpeed) || 0.15;
+  const k1 = knobs(tawa, 1);
+  const st = maani.mechanic.levels;
+  const add = Number(knobs(st, 1).flipAddS) || 0;
+  assert.equal(add, 0.75, "flipAddS is 0.75 s");
+  for (const rate0 of [k1.rate, k1.rate2]) {
+    const ws = st.map((_, i) => {
+      const level = i + 1;
+      const zl = (knobs(st, level).zones || {}).tawa || {};
+      const band = knobs(tawa, zl.level || 1).band || k1.band;
+      const old = win(band, rate0 * Math.pow(1 / (1 - speed), level - 1));
+      // the game's own sum: the new rate fits the band in the old window plus the add
+      const rate = (band[1] - band[0]) / (old + add);
+      const w = win(band, rate);
+      assert.ok(Math.abs(w - (old + 0.75)) < 0.005, `L${level}: ${w.toFixed(3)} s, want ${(old + 0.75).toFixed(3)} s`);
+      return w;
+    });
+    for (let i = 1; i < ws.length; i++) assert.ok(ws[i] < ws[i - 1], `L${i + 1} (${ws[i].toFixed(2)} s) still shorter than L${i} (${ws[i - 1].toFixed(2)} s)`);
+  }
+});
+
 test("CK-35: the chai tray's boil windows are its own (unchanged by the level 1 widening)", () => {
   // the tray profile's band and rate as they were before CK-35 (S05): the chai's listening round is slow on purpose
   const before = [

@@ -62,26 +62,24 @@
    },
    "ceiling-fan": {
     "x": 0.34,
-    "y": 0.15,
-    "h": 0.1,
-    "w": 0.1,
-    "art": 0.3,
+    "y": 0.118,
+    "h": 0.07,
+    "w": 0.22,
+    "art": 0.1304,
     "hang": true,
-    "_a2": "A2 (5 Oct): R2 hangs from the ceiling (on the square room's band), the blades at about y 0.13 (art plan 3.4). The button (h) is the motor and blades, always on screen; art = the whole picture's height, the downrod running up off a phone's crop (hang: never pushed down)"
+    "_s08b": "s08-w5b (CLN-105, the s08b FN1 fan: seen from in front and a little below): one picture, fan-still off and fan-spin on (art ceiling-fan-off/-on), 640x253; w is its width, art its whole height (w x 1.5 / 2.53), its ceiling plate at the picture's top edge; the button (h) is the motor and blades"
    },
    "hand-fan": {
-    "x": 0.668,
-    "y": 0.455,
-    "h": 0.075,
-    "w": 0.06,
-    "lie": true,
-    "_s03": "S03-C (FV4, FV5): lying flat on the bed, handle towards us (lie: tipped back in code), not standing face-on"
+    "x": 0.692,
+    "y": 0.505,
+    "w": 0.09,
+    "bed": true
    },
    "ice-pack": {
-    "x": 0.31,
-    "y": 0.455,
-    "h": 0.06,
-    "w": 0.06
+    "x": 0.392,
+    "y": 0.513,
+    "w": 0.07,
+    "bed": true
    },
    "heater": {
     "x": 0.82,
@@ -93,16 +91,17 @@
     "flip": true
    },
    "bottle": {
-    "x": 0.722,
-    "y": 0.455,
-    "h": 0.08,
-    "w": 0.05
+    "x": 0.598,
+    "y": 0.513,
+    "w": 0.08,
+    "bed": true
    },
    "blanket": {
-    "x": 0.372,
-    "y": 0.46,
-    "h": 0.06,
-    "w": 0.075
+    "x": 0.33,
+    "y": 0.505,
+    "w": 0.085,
+    "bed": true,
+    "_s08b": "s08-w5b (CLN-105; Zafar 18 Oct: 'put them on the bed with her ... one or two to the left, one or two to the right, lying on the bed ... resting on a solid surface'): the s08b FV1 things lying on the exam bed's top beside her, y = where each touches the bed, w its width; h follows the picture's shape (bed: true), a soft contact shadow under it"
    },
    "thermometer": {
     "x": 0.612,
@@ -120,21 +119,80 @@
   }
  },
  "art": {
-  "_about": "The art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md §8, R1, R2, R4, R5): a file that isn't there yet keeps the code-drawn stand-in. <id>-on / <id>-off for things with two states. The gauge (R5) and the ceiling fan (R2, body and spinning blades) need their measured boxes from the cut before they replace the drawn ones.",
+  "_about": "The art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md §8, R1, R2, R4, R5): a file that isn't there yet keeps the code-drawn stand-in. <id>-on / <id>-off for things with two states. The gauge (R5) and the ceiling fan (R2, body and spinning blades) need their measured boxes from the cut before they replace the drawn ones. s08-w5b: the s08b pictures (FV1 lying on the bed, FN1 the fan, TH1 the thermometer): a thing in the room and the same thing in her hands are one picture.",
   "window-on": "assets/clinic/room-items/window-open.webp",
-  "hand-fan": "assets/clinic/room-items/hand-fan.webp",
-  "ice-pack": "assets/clinic/room-items/ice-pack.webp",
+  "ceiling-fan-off": "assets/clinic/items-s08b/fan-still-s08b.webp",
+  "ceiling-fan-on": "assets/clinic/items-s08b/fan-spin-s08b.webp",
+  "hand-fan": "assets/clinic/items-s08b/paper-fan-s08b-sm.webp",
+  "ice-pack": "assets/clinic/items-s08b/ice-pack-s08b.webp",
   "heater-off": "assets/clinic/room-items/heater-off.webp",
   "heater-on": "assets/clinic/room-items/heater-on.webp",
-  "bottle": "assets/clinic/room-items/hot-water-bottle.webp",
+  "bottle": "assets/clinic/items-s08b/hot-water-bottle-s08b-sm.webp",
   "blanket": "assets/clinic/items-v2/blanket-red.webp",
-  "thermometer": "assets/clinic/items-v2/thermometer.webp",
-  "fan": {
-   "body": "assets/clinic/room-items/fan-body.webp",
-   "blades": "assets/clinic/room-items/fan-blades.webp",
-   "foot": 0.93,
-   "disc": 2.2,
-   "_a2": "A2 (5 Oct): R2, the body (downrod and motor) and the blade disc from below; foot = where the motor's cap is, as a share of the body's height; disc = the blades' width against the body's. The code tilts the disc into view and spins it when on."
+  "thermometer": "assets/clinic/items-s08b/thermometer-flat-s08b-sm.webp",
+  "aspect": {
+   "_about": "each bed picture's width over its height (drawn at its own shape)",
+   "hand-fan": 2.981,
+   "ice-pack": 1.983,
+   "bottle": 1.811,
+   "blanket": 1.213
+  },
+  "mouth": {
+   "_about": "s08-w5b (CLN-175, CLN-105; Zafar 18 Oct: 'the thermometer doesn't sit in her mouth, it's sitting on her bottom lip ... when her face changed ... the thermometer didn't move with it'): TH1's mouth view, its tip (x, y shares of the picture) on her mouth, placed again whenever her face or body picture changes. at = her mouth's middle on each face and body picture (shares of her canvas), measured on the @2x pictures (the dark of the lips and mouth); w = its width as a share of her canvas width; display = its screen (shares of the picture), lit green when the reading is normal at the end",
+   "file": "assets/clinic/items-s08b/thermometer-mouth-s08b.webp",
+   "w": 0.3,
+   "tip": [
+    0.03,
+    0.9
+   ],
+   "display": [
+    0.575,
+    0.13,
+    0.735,
+    0.47
+   ],
+   "at": {
+    "front": [
+     0.486,
+     0.2804
+    ],
+    "happy": [
+     0.4975,
+     0.284
+    ],
+    "sad": [
+     0.4926,
+     0.2811
+    ],
+    "hot": [
+     0.4949,
+     0.2875
+    ],
+    "cold": [
+     0.4854,
+     0.2786
+    ],
+    "pain": [
+     0.5005,
+     0.286
+    ],
+    "talk": [
+     0.4947,
+     0.2879
+    ],
+    "blink": [
+     0.4805,
+     0.28
+    ],
+    "blanket": [
+     0.4883,
+     0.2799
+    ],
+    "bottle": [
+     0.4865,
+     0.2833
+    ]
+   }
   },
   "gauge": {
    "file": "assets/clinic/room-items/thermo-gauge.webp",
@@ -148,7 +206,12 @@
    ],
    "bulb": 2.167,
    "_a2": "A2 (5 Oct): R5, the empty gauge; tube = the glass from its top to the bulb's foot (x0, y0, x1, y1 as shares of the picture), bulb = the bulb's width against the tube's. The level and the zones stay code."
-  }
+  },
+  "tint": {
+   "_about": "s08-w5b: a thing on the bed is the same thing she holds or wears: her W10 bottle is teal, so the s08b bottle (red) is turned teal on the bed; her W9 blanket is red, so the bed has the red fleece (items-v2/blanket-red; the s08b blanket is light blue and no filter makes it her red: a flaw for the next art run)",
+   "bottle": "hue-rotate(185deg) saturate(.9)"
+  },
+  "_sm": "s08-w5b (decision 68, images at drawn size; the load check): the paper fan, the bottle and the flat thermometer are -sm copies of the s08b cuts (250-300 px wide, about 3x the size they are drawn), made from those cuts by downscaling only"
  },
  "throbMs": 8000,
  "lines": {
@@ -164,14 +227,20 @@
   }
  },
  "assets": [
-  "assets/clinic/items-v2/blanket-red.webp",
-  "assets/clinic/room-items/fan-blades.webp",
-  "assets/clinic/room-items/fan-body.webp",
   "assets/clinic/room-items/thermo-gauge.webp",
-  "assets/clinic/sheets/hand-fan/hand-fan-room.webp",
+  "assets/clinic/room-items/window-open.webp",
+  "assets/clinic/room-items/heater-off.webp",
+  "assets/clinic/room-items/heater-on.webp",
+  "assets/clinic/items-s08b/fan-still-s08b.webp",
+  "assets/clinic/items-s08b/fan-spin-s08b.webp",
+  "assets/clinic/items-s08b/paper-fan-s08b-sm.webp",
+  "assets/clinic/items-s08b/ice-pack-s08b.webp",
+  "assets/clinic/items-s08b/hot-water-bottle-s08b-sm.webp",
+  "assets/clinic/items-s08b/thermometer-flat-s08b-sm.webp",
+  "assets/clinic/items-s08b/thermometer-mouth-s08b.webp",
+  "assets/clinic/items-v2/blanket-red.webp",
   "assets/clinic/sheets/heater/heater-3q-off.webp",
-  "assets/clinic/sheets/hot-water-bottle/hot-water-bottle-room.webp",
-  "assets/clinic/sheets/thermometer/thermometer-tool.webp"
+  "assets/clinic/sheets/heater/heater-3q-on.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }

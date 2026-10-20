@@ -1,0 +1,26 @@
+{
+  "name": "s08 wave 3A, samosa: the coded fold in the pastry texture, six strips at every level, tap any, one tick, fold all, then the fryer; the L3 card bugs",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "visual work: a coded fold that must look like real pastry folding (non-negotiable 15)",
+  "cost": "about $30-45",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/feedback/cook-playtest-2026-10-17.md (P39-P44, P64; section 6 decision 10 with Zafar's yes: the fold restated there)", "build/reports/s08-w2a-levels.md (the level table and samosa's ladder, merged)", "build/reports/s08-w0-art.md (the pastry tile: assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp)", "docs/game-design/modes/cook.md"],
+  "owns": ["js/cook/stations/samosa.js", "js/cook/mechanics/fill-fold.js", "data/stations/samosa*.json", "data/cook.json samosa entries only", "build/reports/s08-w3a-samosa.md"],
+  "readOnly": ["js/cook/station-lib.js, flow.js, ui.js, order.js (merged waves; ask)", "js/shared/**", "the other stations", "assets/** (use the cuts)"],
+  "stubs": "none",
+  "tasks": [
+    {"do": "SAM-21: replace the six fixed fold pictures with a coded fold in the pastry texture: a flat rectangular strip, the filling in the bottom-left corner; swipe bottom-left to top-right and the corner folds over into a triangle; swipe top-left to bottom-right and it folds again; three or four alternating folds moving left to right until the strip is used up; an arrow shows each swipe; only the moving flap is lit; soft edges, no seam, no hard code lines. The swipe itself stays (KEEP-04).", "accept": "a filmstrip of a whole fold at 1366x768 and 800x360, every frame reading as pastry folding; zoom x2 on the flap"},
+    {"do": "SAM-25: six strips on a bigger board at every level; the child taps any strip, fills it, fills the next; one tick when done; then fold every filled strip; then straight to the fryer (the level table's samosa ladder decides what is asked).", "accept": "eye: L1-L4 played through; contract-2 green"},
+    {"do": "SAM-24: the L3 bugs: the card ticks a samosa kind only when every one of that kind is made; no per-strip tick flashes; any empty strip takes a tap.", "accept": "a contract or unit check red then green on the early card tick"},
+    {"do": "SAM-22: the frying stays (KEEP-03); the moves between steps feel quick and clear (fill, fold, fry), nothing waits for a button that has nothing to decide.", "accept": "eye: one order start to serve, L2 and L4"}
+  ],
+  "flows": ["cook:samosa", "cook:fill", "cook:fry"],
+  "shared": false,
+  "browser": true,
+  "port": 8839,
+  "report": "s08-w3a-samosa",
+  "publish": false
+}

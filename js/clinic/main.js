@@ -206,8 +206,11 @@ function roundFor(ctx, screen) {
   else {
     const games = R.games();
     const heal = p.game || (HEAL.concat(PARKED).includes(ctx.game) ? ctx.game : null);
-    const ailment = heal ? P.ailmentsFor(R.data, 3, [heal]).find((a) => (R.data.ailments[a].from || 1) <= L) || P.ailmentsFor(R.data, 3, [heal])[0] : null;
-    plan = P.patient(R.data, { rng, levels: p.levels || levelsAll(L), variants: p.variant ? { [p.stage || ctx.game]: p.variant } : {}, ailment, games, speak: R.opts.speak });
+    // CLN-172 (s08-w5b): a lab page asking for a parked game (the scrape) plays it on its parked ailments
+    // (data/clinic/pipeline.json parked); no morning ever draws them
+    const D = heal && !P.ailmentsFor(R.data, 3, [heal]).length && R.data.parked ? Object.assign({}, R.data, { ailments: Object.assign({}, R.data.ailments, R.data.parked, { _about: R.data.ailments._about }) }) : R.data;
+    const ailment = heal ? P.ailmentsFor(D, 3, [heal]).find((a) => (D.ailments[a].from || 1) <= L) || P.ailmentsFor(D, 3, [heal])[0] : null;
+    plan = P.patient(D, { rng, levels: p.levels || levelsAll(L), variants: p.variant ? { [p.stage || ctx.game]: p.variant } : {}, ailment, games, speak: R.opts.speak });
   }
   // decision 68: this patient's healing game starts loading now, while the waiting room and the diagnosis play
   if (plan.stages && plan.stages.heal) prefetchGame(plan.stages.heal.game);

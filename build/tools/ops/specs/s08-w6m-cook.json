@@ -1,0 +1,59 @@
+{
+  "kind": "shared",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "name": "s08 wave 6M, Cook: the last run's code fails (chaat's bowl and jar labels, samosa's entry and filling, the review's verdict-like score, the face circles, the daal's L4 stir row and chop timing)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "two rule breaks (a child losing progress; a reading leak) plus layout fixes",
+  "cost": "about $30-45",
+  "port": 8862,
+  "report": "s08-w6m-cook",
+  "read": [
+    "build/tools/review/data/verdicts.json (the judge lines, run ev-20261020-073941-0e9) and build/reports/evidence-ev-20261020-073941-0e9.md",
+    "CLAUDE.md non-negotiables 6 and 12",
+    "docs/game-design/modes/cook.md",
+    "build/reports/s08-w6j-cook.md"
+  ],
+  "owns": [
+    "js/cook/**",
+    "data/cook.json",
+    "data/stations/**",
+    "css/cook.css",
+    "css/shared/**",
+    "js/shared/** except js/shared/guide.js's clinic paths",
+    "build/reports/s08-w6m-cook.md"
+  ],
+  "readOnly": [
+    "js/clinic/**, css/clinic.css, data/clinic/** (wave 6N)",
+    "build/sandbox/**, build/tools/**",
+    "data/lang/**",
+    "assets/**"
+  ],
+  "stubs": "art goes on the art list",
+  "tasks": [
+    {
+      "do": "CHT-14 (rule 12): in chaat a wrong item no longer empties the whole bowl: the correct items stay, only the wrong one comes out (or is refused with a wiggle). The jars' written labels must not match the card's words (rule 6, the leak test: a child could win by reading): show picture labels, or the written word only where the level table writes it on the card too, so matching letters never wins.",
+      "accept": "eye: chaat L1-L3 with a wrong item; auto: build/tools/review/leak.mjs on chaat"
+    },
+    {
+      "do": "SAM-22 flaw (rule 12): the end-of-round '1/2' score reads as a verdict: show progress, not a score out of; the empty third review card is filled or not shown. CK-48: samosa's board and its six sheets appear together (no washed-out board, no sheets popping in) and the chop never cuts to a bare board. SAM-21: the filling sits in the strip's bottom-left corner.",
+      "accept": "eye: filmstrips at L1 and L3, 1366x768 and 800x360"
+    },
+    {
+      "do": "SH-113: every face circle (Cook's customers, the clinic's doctor and the girl) is zoomed the same, the face filling the circle (the shared order-card's face zoom; clinic portraits may need their own crop values in the shared code). DAAR-26: the L4 card keeps its stir row. DAAR-35: contract-65 at L4 (the chop's waves follow on with no gap). CK-06: no see-through white blobs over the pot's contents.",
+      "accept": "eye: face circles side by side; auto: contract-65 green at L4"
+    }
+  ],
+  "flows": [
+    "cook:chaat",
+    "cook:samosa",
+    "cook:chop",
+    "cook:daar",
+    "cook:assemble",
+    "clinic:waiting"
+  ]
+}

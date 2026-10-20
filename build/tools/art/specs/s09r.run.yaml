@@ -1,0 +1,70 @@
+# The run spec for pack s09r: Sprint 9's road style test (the window view's looping layers, the props and the items),
+# from Zafar's yes to the road plan (20 Oct): the book tests' animals and Nani's house are the style guide. One image
+# per prompt; Zafar agrees the look from a coded scrolling preview afterwards. Read by build/tools/art/artblock.py.
+# Edit this file, then regenerate the block.
+pack: s09r
+title: 'Sprint 9 road style test: the window view, its layers, props and animals'
+plan: docs/design-language/art-plans/s09r-art-plan.md
+plan_branch: claude/funny-maxwell-3dkhif
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/funny-maxwell-3dkhif
+dest: sources/art/s09r
+real_people: false
+approvals: "- This is a style test with no real people in it. Don't wait for Zafar and don't ask: keep the first image of each prompt that passes the checks below.\n- Redo only for a failed check (text, the wrong view, the wrong count, people, a key colour that isn't flat, something cut by the left or right edge of a layer)."
+delivery: download
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  book-find-it.png: sources/art/s09a/l1-book-find-it-v1.png
+  book-photos.png: sources/art/s09a/l3-book-stick-photo-v1.png
+  nani-house.png: sources/art/s09a/h-try3-v1.png
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  C1: {attach: [book-find-it.png, book-photos.png, nani-house.png], save: c1-farm-road-view-v1.png, check: VIEW}
+  C2: {attach: [nani-house.png, book-find-it.png], save: c2-town-road-view-v1.png, check: VIEW}
+  F1: {attach: ["kept:C1"], save: f1-farm-far-hills-v1.png, check: LAYER}
+  M1: {attach: ["kept:C1"], save: m1-farm-mid-fields-v1.png, check: LAYER}
+  N1: {attach: ["kept:C1"], save: n1-farm-near-verge-v1.png, check: LAYER}
+  T1: {attach: ["kept:C2"], save: t1-town-mid-shops-v1.png, check: LAYER}
+  P1: {attach: ["kept:C1", book-find-it.png], save: p1-props-v1.png, check: SPRITES}
+  I1: {attach: [book-find-it.png, book-photos.png], save: i1-animals-v1.png, check: SPRITES}
+  D1: {attach: [nani-house.png], save: d1-doors-v1.png, check: DOORS}
+parts:
+- id: A
+  title: 'THE WHOLE VIEW'
+  intro: 'C1 and C2 are the whole view from a car, without the car: the farm road and the road out of town past the shops. They set the look the layers copy.'
+  items:
+  - lines: [C1, C2]
+- id: B
+  title: 'THE LOOPING LAYERS'
+  intro: 'F1, M1 and N1 split the kept C1 into its far, middle and near layers; T1 is the town''s middle layer from the kept C2. Each is keyed on flat magenta and must loop end to end.'
+  items:
+  - lines: [F1, M1, N1, T1]
+- id: C
+  title: 'THE CUT-OUTS'
+  intro: 'P1 (props to peek behind), I1 (the animals) and D1 (the red and green doors), each thing whole and apart on flat magenta.'
+  items:
+  - lines: [P1, I1, D1]
+checks:
+  VIEW:
+    text: 'one wide outdoor scene with clear far, middle and near depths, the top third plain even sky; no car, no people; the animals in the book pictures'' style; no text or signs'
+    judge: {aspect: [3, 2], bg: none}
+  LAYER:
+    text: 'only that one layer (the line says which), its top edge across the whole width, everything above it ONE flat pure magenta; nothing cut by the left or right edge and the line at the same height at both edges; no people, animals or text'
+    judge: {aspect: [3, 2], bg: none}
+  SPRITES:
+    text: 'exactly the four things the line names, in one row, each whole and well apart, on one baseline, on ONE flat pure magenta with no floor or shadow; animals facing left'
+    judge: {aspect: [3, 2], bg: none}
+  DOORS:
+    text: 'two cottage fronts, identical except the door colour (left red, right green), whole and apart on ONE flat pure magenta; no numbers or text'
+    judge: {aspect: [3, 2], bg: none}
+passfail:
+- Any text, letters, numbers, labels, signs or logos, even fake or blurry ones.
+- Outlines, cel shading, a flat vector look or painterly brushwork.
+- The wrong number of things, the wrong view, or any people.
+- A key background that isn't one flat pure magenta (a gradient, a floor, shadows or haze on it); pink or purple anywhere else.
+- Anything scary; sweets, lollies or biscuits; any religious marker.

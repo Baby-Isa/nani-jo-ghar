@@ -1,0 +1,63 @@
+SESSION NAME / MODE:  s08 wave 6E, the contract checks' last mismatches and two small card fixes (the builders' requests)
+MODEL AND EFFORT:     Sonnet, high effort (checker and driver fixes, two small card fixes: mechanical)
+COST ESTIMATE:        about $10-15
+HARD STOP:            when every task is accepted, or 2 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6e-checks.context.md (843 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s08-w6b-stations.md (Requests)
+     build/reports/s08-w6a-words.md
+     build/reports/s08-w6d-tools.md
+     build/screenshots/sandbox/s08-gate-close/contract.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/sandbox/** (contract.mjs, drivers, flows)
+  - css/shared/order-card.css (the clinic card's face circle only)
+  - js/cook/recipes.js, js/cook/order.js (the mixed-skewer card row only)
+  - build/reports/s08-w6e-checks.md
+READ-ONLY (never edit):
+  - everything else; docs/process/regressions.md
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a check that can't be made fair is listed with why
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. CK-31: the serve-wrong driver puts salt where the sugar goes (or another real wrong item) so the cup really is wrong; then the review face is the frown.
+     Accept: eye: the wrong-serve review face; the driver's own log says what was wrong
+  2. contract-35 and contract-36 read the stage's real level from the log note order-level or #side[data-level] (day flows run L3 dishes under an L1 label); contract-21 skips taps the first-time help blocks (js/shared/onboard.js); contract-1 counts a pop-up closed by the first tap; the SH-60 strip marks the moment the help is logged. Each with a unit test.
+     Accept: auto: sandbox unit tests; a short rerun of cook:day3, cook:day6, cook:stir@L3 at 1366x768 shows no break of these kinds that the report doesn't explain
+  3. SH-113: the clinic card's face circle is the same size as Cook's (the zoom already matches). Recipe-mishkaki L4: the two-mixed-skewers card writes the count Nani says, only words she says.
+     Accept: eye: Cook's and the clinic's card faces side by side; auto: contract-30 on lab:cook/recipe-mishkaki@L4
+
+REGRESSION ROWS TO RECHECK (146 rows of the fix list and its done archive; * = open or reopened):
+  cook:day3 (49): CK-01*, CK-06*, CK-TAB-01, CK-24*, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-48*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43
+  cook:day6 (49): CK-01*, CK-06*, CK-TAB-01, CK-24*, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-48*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43
+  cook:stir (15): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11
+  cook:chai-tray (25): CHAI-08*, CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-45*
+  clinic:waiting (38): CLN-115*, CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-81*, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01
+  lab:cook/recipe-mishkaki (21): SEK-14*, SEK-18, SEK-19*, SEK-20*, SEK-21*, SEK-07*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, CK-38
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6e-checks` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8855.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6e-checks.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

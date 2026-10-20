@@ -8,7 +8,7 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { DRIVERS, FAIR_MOMENTS } from "../drivers/catalog.mjs";
 
-const LIFE = ["line:*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "page:end", "page:start", "bubble"];
+const LIFE = ["line:*", "line:*-*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "life:stir-lap", "page:end", "page:start", "bubble"];
 // the spec's named moments (evidence.json _moments, _at's every:<x>) that an existing signal answers; `delay` waits after it.
 // A named moment with no entry here has no driver yet: --plan refuses it (the driver lands with the spec, Fable 2)
 export const ALIASES = {
@@ -58,7 +58,7 @@ const HOST = ["host:*", "host:*/*", "host:*/*/*", "host:results", "host:done", "
 const COOK_REC = ["rec:start", "rec:result", "rec:order-card-big", "rec:order-card-in-sidebar", "rec:results-badges", "rec:results-words", "rec:results-steps", "rec:view-*", "rec:view-*-*", "rec:kind-*", "rec:stir-begin", "rec:stir-mid", "rec:help-open"];
 const COOK_PATH = {
   hint: ["rec:hint-nani-says", "rec:hint-glow", "rec:peek-open", "rec:bulb-english", "rec:help-open"],
-  mistake: ["rec:wrong-choice", "rec:wrong-tap", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"],
+  mistake: ["rec:wrong-choice", "rec:wrong-tap", "drv:bad-item-going-in", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"],
   takeback: ["rec:before-takeback", "rec:after-takeback"],
 };
 const CLINIC_REC = ["rec:stage-*", "rec:*-tap", "rec:*-act", "rec:*-point", "rec:*-belt", "rec:*-say", "rec:say-pills", "rec:between-stages", "rec:results-badges", "rec:results-words", "rec:results-end", "rec:end", "clinic:*", "clinic:*/*"];
@@ -74,7 +74,8 @@ export function healSteps(root, game) {
   for (const m of src.matchAll(/what:\s*"([a-z][a-z -]*)"/g)) add(m[1]);
   // a step named in a template ("lever ${want}": step:lever-0) or given to the game's own at(x, y, "wipe") helper
   for (const m of src.matchAll(/what:\s*`([a-z][a-z ]*?)\s*\$\{/g)) add(`${m[1]} *`);
-  for (const m of src.matchAll(/\bat\([^;()]*?,\s*"([a-z][a-z -]*)"\)/g)) add(m[1]);
+  // (s08 w6L: one level of parentheses inside the arguments: at(syCx + OVER.dx, endY() + OVER.dy, "press the glowing end"), CLN-167)
+  for (const m of src.matchAll(/\bat\((?:[^;()]|\([^()]*\))*?,\s*"([a-z][a-z -]*)"\)/g)) add(m[1]);
   for (const m of src.matchAll(/\bat\([^;()]*?,\s*`([a-z][a-z ]*?)\s*\$\{/g)) add(`${m[1]} *`);
   for (const m of src.matchAll(/\{\s*id:\s*"([a-z][a-z-]*)",\s*img:/g)) out.add(m[1]);
   // tools made from an item table (the taste game's milk, water, turmeric ...: { lex: ..., img: ... })

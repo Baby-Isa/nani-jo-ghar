@@ -18,6 +18,7 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
 
 ## While it runs
 - The runner loop in the block keeps N windows generating and commits kept images straight to `sources/art/<pack>/` on `main` (no downloads, no manual steps).
+- The block fetches the references from GitHub itself. If Chrome refuses the attach, switch the run spec to `refs_from: library` (with `refs_chat:`; Zafar uploads the references to that one chat) and rebuild the block.
 - Count landed images at each check-in: `node build/tools/ops/checkin.mjs --art sources/art/<pack> --art-target <n>`.
 
 ## When images land

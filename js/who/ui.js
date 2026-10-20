@@ -137,7 +137,7 @@
     const hidden = stage >= 3 && UI.P.word(clue.word).real;
     row.innerHTML = `<span class="dot"></span><button class="rp" title="Say it again" aria-label="Say it again">&#128264;</button><span class="rt">${UI.lineHTML(clue.line, clue.word, { hidden })}</span>` +
       (hidden ? `<button class="rv" title="Show the words (costs the ear for this clue)" aria-label="Show">&#128065;</button>` : "") +
-      `<button class="tr" title="What does it mean? (costs the ear for this clue)" aria-label="Translate">EN</button>`;
+      `<button class="tr" title="What does it mean? (costs the ear for this clue)" aria-label="Translate">&#127760;</button>`;
     row.querySelector(".rp").onclick = () => hooks.replay();
     const rv = row.querySelector(".rv");
     if (rv)
@@ -171,7 +171,7 @@
   /* ------------------------------------------------------ overlay cards */
   UI.card = function (html, buttons) {
     return new Promise((resolve) => {
-      $("panel").innerHTML = html + `<div class="lab-btns" style="justify-content:center">${buttons.map((b) => `<button id="${b.id}" class="btn ${b.primary ? "primary" : ""}" type="button">${b.label}</button>`).join("")}</div>`;
+      $("panel").innerHTML = html + `<div class="lab-btns" style="justify-content:center">${buttons.map((b) => `<button id="${b.id}" class="btn ${b.primary ? "primary" : ""}" type="button"${b.aria ? ` aria-label="${b.aria}"` : ""}>${b.label}</button>`).join("")}</div>`;
       $("overlay").classList.remove("hidden");
       for (const b of buttons)
         $(b.id).onclick = () => {
@@ -190,7 +190,8 @@
   const STAR_ICON = { ear: "&#128066;", hand: "&#128083;", relaxed: "&#10004;&#65039;", voice: "&#127908;" };
   UI.results = function (c, s, words) {
     const set = UI.P.who.star_set;
-    const star = (key, on, label, grey) => `<div class="star ${on ? "on" : ""} ${grey ? "grey" : ""}"><i>${STAR_ICON[key]}</i>${label}</div>`;
+    // a star is its picture alone (no written English for the child, rule 5); its name is the tooltip
+    const star = (key, on, label, grey) => `<div class="star ${on ? "on" : ""} ${grey ? "grey" : ""}" title="${esc(label)}"><i>${STAR_ICON[key]}</i></div>`;
     let stars = "";
     if (s.ear === "untested") stars += star("ear", false, "Not tested this time", true);
     else stars += star("ear", s.ear === true, set.ear.name);
@@ -200,13 +201,13 @@
     const review = words
       .map((id) => {
         const w = UI.P.word(id);
-        return `<tr><td>${UI.wordHTML(id)}</td><td class="en english">${esc(w.english)}</td><td><button class="btn wr" data-w="${id}" type="button">&#128264;</button></td></tr>`;
+        return `<tr><td>${UI.wordHTML(id)}</td><td class="en english rs-en">${esc(w.english)}</td><td><button class="btn wr" data-w="${id}" type="button">&#128264;</button></td></tr>`;
       })
       .join("");
-    const html = `<h2>Case closed!</h2><div class="starrow">${stars}</div>` +
+    const html = `<div class="starrow">${stars}</div>` +
       `<table class="review">${review}</table>` +
-      `<div class="pill" style="margin:6px auto"><i class="coin-dot"></i>+${s.coins} pocket money</div>`;
-    const p = UI.card(html, [{ id: "who-next", label: "Next case", primary: true }]);
+      `<div class="pill" style="margin:6px auto" title="Pocket money"><i class="coin-dot"></i>+${s.coins}</div>`;
+    const p = UI.card(html, [{ id: "who-next", label: "&#9654;", aria: "Next case", primary: true }]);
     $("panel").querySelectorAll(".wr").forEach((b) => (b.onclick = () => UI.playWord(b.dataset.w)));
     return p;
   };

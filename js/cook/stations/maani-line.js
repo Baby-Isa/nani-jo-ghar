@@ -9,9 +9,10 @@
  *    (maani keeps one tawa: the game is rolling the next maani while flipping the one on the tawa),
  *    the flames peeking out all round it, the heat ring on the tawa's rim, the person's face and the
  *    knob on the hob's front edge, the flat wooden turner resting on the counter beside the hob.
- *  - THE SHELF BAND (the bottom 26%): under the chakla, the dough piles (wheat, bajri: always both,
+ *  - THE SHELF BAND (the bottom 30%): under the chakla, the dough piles (wheat, bajri: always both,
  *    straight on the band, no tray), a `🔊 word` chip under each (tap the pile = one ball flies out,
- *    tap the chip = hear it; the speaker alone from level 3); under the hob, the finished-maani
+ *    tap the chip = hear it; the word written until it is used right, then the speaker alone: Cook.chipWord,
+ *    Zafar, 20 Oct); under the hob, the finished-maani
  *    plates, one per kind, where each cooked maani lands.
  *
  * The flow: tap a dough pile, a ball flies out to the chakla (tap the other pile before you start
@@ -45,17 +46,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const MV = IT + "maani-v2/";
   const V3 = IT + "v3/maani/";
   /* ---------- the grid (design px, 1600x900; the canvas is the play area), as chai v2 ---------- */
-  const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const HOB_K = 0.85; // the one-burner hob, a little bigger than chai's (it holds a tawa)
   const HOB_BOTTOM = SHELF_TOP - 40; // breathing space above the shelf (§10)
   const CHAKLA_D = 470;
   const COL_GAP = 150; // between the chakla and the hob
   const TAWA_R = 150; // the tawa's round body
-  const PLATE_D = 150; // a plate on the shelf band
+  const PLATE_D = 182; // a plate on the shelf band (SH-112: a fifth bigger in the taller band)
   // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
-  const PLATE_Y = 666 + (900 - 883) + 8 + PLATE_D / 2;
-  const PLATE_PITCH = 204;
+  const PLATE_Y = SHELF_TOP + (900 - 883) + 8 + PLATE_D / 2;
+  const PLATE_PITCH = 232;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
   // maani-v2/thali.webp: the flat floor is a circle 0.42 of the picture's width across from its centre.
@@ -76,7 +77,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // their chips; St.shelfFit sizes them so the gap above equals the gap under the chips (no hop: a pile
   // doesn't bounce, it squashes a little as a ball comes off)
   const PILE_BASE = 828;
-  const PILE_K = 0.32; // at most (a pile is 590 px): shelfFit brings it down to the band's rule
+  const PILE_K = 0.42; // at most (a pile is 590 px): shelfFit brings it down to the band's rule
   /* ---------- the v3 art (29 Sept play-test M3-M8; assets/cook/items/v3/maani/, build/cut_cook_v3.py) ----------
    * Measured from the art (meta.json; build/check_vessel_meta.py checks these against it): each round body's
    * centre (cx, cy: fractions of the canvas) and radius (r: of the width). Placed by the body, never the box. */
@@ -113,7 +114,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // one drawing space (1:1); the roll zone owns the left column's pointer (a tap on the tawa is not a roll)
     zones: [
       { id: "bowls", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
-      { id: "roll", mech: "roll", region: [0, 0, 830, 666], footprint: { x: 0, y: 0, w: 830, h: 666 } },
+      { id: "roll", mech: "roll", region: [0, 0, 830, SHELF_TOP], footprint: { x: 0, y: 0, w: 830, h: SHELF_TOP } },
       { id: "tawa", mech: "tawa", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
     ],
     run: (host, params) => line(host, params),
@@ -134,8 +135,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const kLevel = Mech.knobs("tawa", { level: zt.level });
     const speedUp = Math.pow(1 / (1 - (((Cook.data.timing || {}).levelSpeed) || 0.15)), level - 1);
     const [lo, hi] = kLevel.band || kTawa.band;
-    const rate1 = kTawa.rate * speedUp;
-    const rate2 = kTawa.rate2 * speedUp;
+    // MAA-17 (decision 12; Zafar, 17 Oct: "add on like three quarters of a second ... across all levels for the chapati. Time
+    // to flip"): each side's green lasts its old time plus K.flipAddS (0.75 s), at every level. The ring keeps one steady
+    // speed, just slower: (hi - lo) / rate is the old window, so the new rate is (hi - lo) / (old window + add). Was 1.42, 1.20,
+    // 0.93, 0.79 s on side 1 (L1-L4); now 2.17, 1.95, 1.68, 1.54 s (in the child's time; Cook.speed shortens both alike)
+    const addS = Number(K.flipAddS) || 0;
+    const slower = (rate) => (hi - lo) / ((hi - lo) / rate + addS);
+    const rate1 = slower(kTawa.rate * speedUp);
+    const rate2 = slower(kTawa.rate2 * speedUp);
+    Cook.maaniWindow = { side1: (hi - lo) / rate1, side2: (hi - lo) / rate2, addS }; // (for the test scripts: the green's length, s)
     const types = Object.keys(K.doughs || { "cook-maani": {} });
     const who = (ctx.order && ctx.order.who) || null;
     await St.loadArt(S, ART.concat(Cook.Kit.faceArt(who)));
@@ -239,7 +247,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (quiet) p.setAlpha(0.9);
       return p;
     };
-    const showWord = level < 3;
     // M3 / Q14: one realistic pile of dough balls per kind, straight on the band (no tray); tap it and one
     // ball flies out. Both piles at one scale (the smaller fit), standing on PILE_BASE by their own bottom.
     const pileKey = (t) => `mv-pile-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
@@ -255,7 +262,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // always more than anyone orders, the same in both, never shown (the pile is one picture): out of
       // balls, the pile goes (a ball put back brings it back)
       img.left = K.ballsPerBowl || 5;
-      img.chip = Kit.chip(S, type, x, CHIP_Y, { word: showWord, w: 188 });
+      img.chip = Kit.chip(S, type, x, CHIP_Y, { word: Cook.chipWord(type, ctx), w: 188 });
       return img;
     });
     const pileShow = (pl) => S.tweens.add({ targets: [pl, pl.shadow].filter(Boolean), alpha: pl.left > 0 ? 1 : 0, duration: 250 });
@@ -330,7 +337,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       pop.add([bg, icon, t]);
       S.tweens.add({ targets: pop, alpha: 1, y: y - 16, duration: 220 });
       S.tweens.add({ targets: pop, alpha: 0, delay: 1300, duration: 300, onComplete: () => pop.destroy() });
-      Lang.speakWord(id);
+      Lang.popWord(id);
     };
 
     /*
@@ -343,7 +350,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (finished) return steps.done();
       const t = onTawa;
       const hot = t && !t.busy && heat !== "off" && t.v >= lo && t.v <= hi;
-      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}` });
+      // MAA-15 (P7, Zafar 17 Oct: "I didn't hear it the second time ... she should say it the second time"): side 2's step says
+      // Firai too (data/cook.json guide maani-line:off; "take it off" waits on Mum), even right after side 1's
+      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}`, again: t.side !== 1 });
       if (waiting && waiting.landed && !onTawa) return steps.to("maani-line:tawa", { id: `tawa-on-${items.indexOf(waiting)}` });
       if (chakla && !chakla.busy) return steps.to("maani-line:roll", { id: `roll-${items.length}` });
       if (!chakla && !waiting && nextType()) return steps.to("maani-line:take", { id: `take-${items.length}` });
@@ -380,7 +389,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       stepNow();
       ghostSync();
       const need = !chakla && !waiting ? nextType() : null;
-      plates.forEach((b) => glowOn(b, !!((ctx.guided || helping) && need === b.type))); // decision 51: a redo has help
+      // decision 51: a redo has help. SH-60 (s08 w6J: at L2 her help line came with nothing lit): the pile to take from is lit
+      // as help too, held by the ladder (station-lib's glow) until the pause, so it comes with her line
+      plates.forEach((b) => glowOn(b, need === b.type));
       // a rolled maani and a free tawa: that's the next thing (it pulses, whatever the level)
       if (waiting) glowOn(waiting.sprite, !onTawa && waiting.landed);
       if (need) {

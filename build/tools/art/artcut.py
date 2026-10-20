@@ -12,6 +12,14 @@ Job types (spec "jobs", each with an "id"; "each": [{...vars}] repeats a job wit
   grid     a prop sheet cut by its gutters: pieces in reading order get "names" (null skips one), padded, max "max" px;
            "glass": names kept at partial alpha; "failed": {name: reason} not cut; "registered": [{"names", "align"}]
            pad pieces of one object onto one shared canvas (base | topleft)
+  keying options (SH-115, the pixel check artpixels.py; on a grid or closeup job): "tol" (and "tols": {name: tol} per piece; steel 4-6,
+           glass and skin 10), "shadow" (the ground's cast shadow is ground), "hole_min" (px from which an enclosed patch of ground
+           is a hole; 8 = any), "hole_neutral" (the shaded gap between toes is a hole), "soft_floor"/"soft_gain" (glass: the ground's
+           own gradient seen through clear glass is not glass; a steeper ramp narrows the soft rim)
+  grid extras: "cell_align" (the same thing in every cell: one window relative to each cell's corner), "disc" (a clean circle
+           fitted to a round top-down thing, centre and radius in the data), "rect" (a flat tile: its solid rectangle), "tile" (names
+           laid in a row by code: the seam measured, and a cross-faded -tile copy made), "x2" (an @2x never above the source)
+  closeup states: "match": {"band": [y0, y1]} fits the redrawn skin to the base's (gain per channel, ΔE logged)
   background  (s02) a 16:9 background cropped at "crop_y", resized, with painted trays measured ("measure")
   grid "cells"/"boxes" (s02): whole blobs by centroid per cell, or explicit source-px boxes; "sizes" per name;
            "soft" keys the whole sheet colour-to-alpha (glass); "register_scale" shrinks a registered set together
@@ -99,6 +107,29 @@ def fit_to(e, shape):
     return np.asarray(Image.fromarray(e.astype(np.uint8)).resize((shape[1], shape[0]), Image.LANCZOS)).astype(float)
 
 
+def skin_px(rgb, y0, y1):
+    """The skin-coloured pixels of rows y0..y1 (hue 5-22, saturation 60-170, bright), as an N x 3 array."""
+    px = rgb[y0:y1].reshape(-1, 3)
+    hsv = cv2.cvtColor(px.reshape(-1, 1, 3).astype(np.uint8), cv2.COLOR_RGB2HSV).reshape(-1, 3)
+    return px[(hsv[:, 0] >= 5) & (hsv[:, 0] <= 22) & (hsv[:, 1] > 60) & (hsv[:, 1] < 170) & (hsv[:, 2] > 120)]
+
+
+def match_skin(e, base, spec):
+    """FT1: the redrawn picture's skin matched to the base's: a gain per channel from the median skin of the foot's
+    rows (spec {"band": [y0, y1] as fractions}), clipped to 0.85..1.15. Logs the ΔE before and after."""
+    H = base.shape[0]
+    y0, y1 = int(spec["band"][0] * H), int(spec["band"][1] * H)
+    sb, se = skin_px(base, y0, y1), skin_px(e, y0, y1)
+    if len(sb) < 500 or len(se) < 500:
+        log("  match: too little skin (%d, %d px), kept as drawn" % (len(sb), len(se)), flag=True)
+        return e
+    mb, me = np.median(sb, 0), np.median(se, 0)
+    gain = np.clip(mb / np.maximum(me, 1), 0.85, 1.15)
+    out = np.clip(e * gain, 0, 255)
+    log("  match: skin ΔE %.2f -> %.2f to the base (gain %s)" % (L.delta_e(me, mb), L.delta_e(np.median(skin_px(out, y0, y1), 0), mb), np.round(gain, 3).tolist()), quiet=True)
+    return out
+
+
 # ---------------------------------------------------------------- closeup
 
 def cut_closeup(job, cx):
@@ -108,7 +139,8 @@ def cut_closeup(job, cx):
     exits = tuple(job.get("exits", ()))
     a = L.load(p)
     H, W = a.shape[:2]
-    k, obj = L.key(a, exits=exits)
+    kopt = {x: job[x] for x in ("tol", "hole_min", "hole_neutral", "shadow", "soft_floor", "soft_gain") if x in job}  # SH-115 keying options (per job)
+    k, obj = L.key(a, exits=exits, **kopt)
     L.flush_exits(k, obj, exits)
     outp = cx.to(job["out"])
     files = save_closeup(L.to_img(k), outp, job)
@@ -126,7 +158,9 @@ def cut_closeup(job, cx):
             mode = cv2.MOTION_TRANSLATION if reg.get("mode", "translation") == "translation" else cv2.MOTION_AFFINE
             e, M = L.ecc(e, a, reg["band"], mode, say=log)
             log("  %s: shift %+.1f,%+.1f px" % (suf, M[0, 2], M[1, 2]), quiet=True)
-        ke, oe = L.key(e, exits=exits)
+        if st.get("match"):  # FT1: the redrawn skin fitted to the base on the foot's own pixels (a gain and offset per channel)
+            e = match_skin(e, a, st["match"])
+        ke, oe = L.key(e, exits=exits, **kopt)
         L.flush_exits(ke, oe, exits)
         d[suf] = cx.rel(save_closeup(L.to_img(ke), outp.replace(".webp", "-%s.webp" % suf), job)[0])
         n += 1
@@ -204,7 +238,8 @@ def cut_grid(job, cx):
         return None
     a = L.load(p)
     ma = job.get("min_area", 1500)
-    k, obj = L.key(a, multi=ma, tol=job.get("tol", 10))
+    kopt = {x: job[x] for x in ("hole_min", "hole_neutral", "shadow", "soft_floor", "soft_gain") if x in job}  # SH-115: per-job keying options
+    k, obj = L.key(a, multi=ma, tol=job.get("tol", 10), **kopt)
     names = job["names"]
     if "cells" in job or "boxes" in job:
         named = cell_pieces(job, obj, a.shape[:2], ma)
@@ -221,13 +256,33 @@ def cut_grid(job, cx):
         log("%s: %d pieces for %d names%s" % (job["id"], len(pieces), len(names), "" if len(pieces) == len(names) else "  <-- COUNT MISMATCH"),
             flag=len(pieces) != len(names))
         named = [(y0, x0, y1, x1, lb[y0:y1, x0:x1] == i, nm) for (y0, x0, y1, x1, i), nm in zip(pieces, names)]
+    if job.get("cell_align") and "cells" in job:  # the same thing in every cell (a pan, a tray): one window relative to each cell's corner
+        cols, rows = job["cells"]
+        H_, W_ = a.shape[:2]
+        idx = {nm: i for i, nm in enumerate(names)}
+        org = lambda nm: (int((idx[nm] // cols) * H_ / rows), int((idx[nm] % cols) * W_ / cols))
+        rel = [(y0 - org(nm)[0], x0 - org(nm)[1], y1 - org(nm)[0], x1 - org(nm)[1]) for (y0, x0, y1, x1, m, nm) in named if nm]
+        uy0, ux0 = min(r[0] for r in rel), min(r[1] for r in rel)
+        uy1, ux1 = max(r[2] for r in rel), max(r[3] for r in rel)
+        aligned = []
+        for (y0, x0, y1, x1, m, nm) in named:
+            if not nm:
+                continue
+            oy, ox = org(nm)
+            ny0, nx0 = max(0, oy + uy0), max(0, ox + ux0)
+            ny1, nx1 = min(H_, oy + uy1), min(W_, ox + ux1)
+            mf = np.zeros((ny1 - ny0, nx1 - nx0), bool)
+            mf[y0 - ny0:y1 - ny0, x0 - nx0:x1 - nx0] = m
+            aligned.append((ny0, nx0, ny1, nx1, mf, nm))
+        named = aligned
+        log("  %s: %d piece(s) on one window %dx%d (cell_align)" % (job["id"], len(named), ux1 - ux0, uy1 - uy0), quiet=True)
     props = {}
     pad, big = job.get("pad", 16), job.get("max", 512)
     sizes = job.get("sizes", {})  # name -> its longest side in px (decision 68: at drawn size, not the sheet's)
     outdir = cx.to(job["outdir"])
     ks = None
     soft_all = job.get("soft", False)
-    cvs = {}
+    cvs, discs = {}, {}
     for (y0, x0, y1, x1, m, nm) in named:
         if not nm:
             continue
@@ -235,12 +290,29 @@ def cut_grid(job, cx):
             log("  %s: judged a fail, not cut (%s)" % (nm, job["failed"][nm]), quiet=True)
             continue
         if soft_all or nm in job.get("glass", ()):  # partial alpha, never a solid core
-            ks = ks if ks is not None else L.key(a, multi=ma, soft=True, tol=job.get("tol", 10))[0]
+            ks = ks if ks is not None else L.key(a, multi=ma, soft=True, tol=job.get("tol", 10), **kopt)[0]
             piece = ks[y0:y1, x0:x1].copy()
             m = ndi.binary_fill_holes(ndi.binary_dilation(m, iterations=2))  # the soft edge stays; clear glass inside isn't a hole
+        elif nm in job.get("tols", {}):  # steel and skin sit differently near the key: a tolerance for this piece
+            kn, on = L.key(a, multi=ma, tol=job["tols"][nm], **kopt)
+            piece = kn[y0:y1, x0:x1].copy()
+            m = on[y0:y1, x0:x1] & ndi.binary_dilation(m, iterations=3)
         else:
             piece = k[y0:y1, x0:x1].copy()
         piece[..., 3] *= m
+        if job.get("disc"):  # a round thing seen from above: a clean circle fitted to the blob, no soft rim (DP3)
+            hh, ww = m.shape
+            ys_, xs_ = np.nonzero(m)
+            r0 = (xs_.max() - xs_.min() + ys_.max() - ys_.min() + 2) / 4.0
+            c0x, c0y = (xs_.max() + xs_.min()) / 2.0 + 0.5, (ys_.max() + ys_.min()) / 2.0 + 0.5
+            yy, xx = np.mgrid[0:hh, 0:ww]
+            r1 = r0 - job.get("disc_in", 2)
+            piece[..., 3] = np.clip(r1 - np.hypot(xx + 0.5 - c0x, yy + 0.5 - c0y) + 0.5, 0, 1)
+            discs[nm] = [float(c0x + pad), float(c0y + pad), float(r1)]
+        if nm in job.get("rect", ()):  # a flat tile: the blob's rectangle, solid, inset a little, no soft edge (SM1, BD1)
+            ins = job.get("rect_in", 3)
+            piece = piece[ins:-ins, ins:-ins].copy()
+            piece[..., 3] = 1.0
         img = L.to_img(piece)
         cv = Image.new("RGBA", (img.width + 2 * pad, img.height + 2 * pad), (0, 0, 0, 0))
         cv.alpha_composite(img, (pad, pad))
@@ -256,6 +328,22 @@ def cut_grid(job, cx):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         cv.save(path, quality=job.get("q", 90), method=6, lossless=job.get("lossless", False))
         props[nm] = {"file": cx.rel(path), "w": cv.width, "h": cv.height}
+        if job.get("x2"):  # the @2x: twice the 1x, never above the sheet's own pixels
+            full = cvs[nm]
+            f2 = min(1.0, 2 * s)
+            if f2 > s:
+                c2 = full.resize((round(full.width * f2), round(full.height * f2)), Image.LANCZOS) if f2 < 1 else full
+                c2.save(path.replace(".webp", "@2x.webp"), quality=job.get("q", 90), method=6)
+                props[nm]["file2x"] = cx.rel(path.replace(".webp", "@2x.webp"))
+        if nm in discs:
+            props[nm]["disc"] = [round(v * s, 1) for v in discs[nm]]
+        if nm in job.get("tile", ()):  # BD1, SM1: laid in a row by code, so the tile must repeat: the seam measured, and a cross-faded copy made
+            before = L.seam_ratio(cv)
+            tl = L.make_tileable(cv, job.get("tile_ov", 64))
+            tp = path.replace(".webp", "-tile.webp")
+            tl.save(tp, quality=job.get("q", 90), method=6, lossless=job.get("tile_lossless", False))
+            props[nm]["tile"] = {"file": cx.rel(tp), "w": tl.width, "h": tl.height, "seam_before": round(before, 2), "seam_after": round(L.seam_ratio(tl), 2)}
+            log("  %s: seam ratio %.2f as cut (%s), %.2f in the cross-faded -tile copy" % (nm, before, "seamless" if before <= 1.6 else "SEAM", L.seam_ratio(tl)), quiet=True)
         if job.get("scale_note"):
             props[nm]["scale"] = round(s, 4)
     for grp in job.get("registered", []):

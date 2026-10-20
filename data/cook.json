@@ -614,9 +614,9 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03"
      ]
     }
@@ -646,10 +646,10 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
       "veg-03",
-      "ph-mishkaki"
+      "ph-meat"
      ]
     }
    },
@@ -672,9 +672,9 @@
     },
     "mishkaki": {
      "pattern": [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02"
      ]
     }
@@ -864,7 +864,7 @@
       "byLevel": [
        1,
        2,
-       3,
+       2,
        3
       ]
      },
@@ -909,7 +909,8 @@
         }
        ]
       }
-     }
+     },
+     "_count": "s08 w2A (Zafar, 19 Oct): 1, 2, 2, 3 cups; half/full stays L4's (chai-tray.json halfLine), never L3"
     }
    },
    "say": [
@@ -1101,21 +1102,33 @@
       {
        "type": "tally",
        "kinds": [
-        "cook-maani",
-        "cook-bajrmaani"
+        "ph-big+cook-maani",
+        "ph-small+cook-maani",
+        "ph-big+cook-bajrmaani",
+        "ph-small+cook-bajrmaani"
        ],
-       "total": 2
+       "total": 2,
+       "max": {
+        "ph-big+cook-maani": 1,
+        "ph-small+cook-maani": 1,
+        "ph-big+cook-bajrmaani": 1,
+        "ph-small+cook-bajrmaani": 1
+       }
       },
       {
        "type": "tally",
        "kinds": [
-        "cook-maani",
-        "cook-bajrmaani"
+        "ph-big+cook-maani",
+        "ph-small+cook-maani",
+        "ph-big+cook-bajrmaani",
+        "ph-small+cook-bajrmaani"
        ],
        "total": 3,
-       "min": {
-        "cook-maani": 1,
-        "cook-bajrmaani": 1
+       "max": {
+        "ph-big+cook-maani": 2,
+        "ph-small+cook-maani": 2,
+        "ph-big+cook-bajrmaani": 2,
+        "ph-small+cook-bajrmaani": 2
        }
       },
       {
@@ -1174,7 +1187,8 @@
      "count": "$made"
     }
    ],
-   "how": "Listen for which maani and how many. Roll each one, then cook it on the tawa."
+   "how": "Listen for which maani and how many. Roll each one, then cook it on the tawa.",
+   "_levels": "s08 w2A (MAA-18, P46, Zafar 19 Oct): L1 one maani (which kind, by ear); L2 two maani, big or small (wadhi / nindhi); L3 three, sizes; L4 2-4 with sizes and the tightest flip window"
   },
   "daal": {
    "name": "cook-daal",
@@ -1233,18 +1247,19 @@
      ]
     },
     "tomatoes": {
+     "_about": "LNG-17 (19 Oct): one tomato only (hakro tameto) until Mum's plural is confirmed: data/lang/lexicon.json n.tomato pl.dir is unknown (Q14; grammar-notes §34 P3 'doesn't change' vs the -o rule's tameta), so the engine has no Kutchi for two or three and said 'tomatoes' in English. Back to 1-3 (daal) and 1-2 (chaat) once the form is in the lexicon",
      "byLevel": [
       {
        "int": [
         1,
-        3
+        1
        ],
        "zero": 0.25
       },
       {
        "int": [
         1,
-        3
+        1
        ],
        "zero": 0.3
       }
@@ -1275,21 +1290,11 @@
      ]
     },
     "speed": {
-     "byLevel": [
-      {
-       "pick": [
-        null
-       ]
-      },
-      {
-       "pick": [
-        null,
-        "slow",
-        "quick"
-       ]
-      }
+     "pick": [
+      "slow",
+      "quick"
      ],
-     "_about": "S02-B: no speed at level 1 (the stir mechanic asks none there), so the card never shows one it won't ask"
+     "_about": "Decision 13 (P51, DAAR-32; Zafar, 17 Oct: 'she should say the speed as well, so either jaldi or aste'): a speed at every level, L1 too, said in Nani's stir line and shown on the dial and the card (was S02-B: none at level 1, and none some rounds from level 2)"
     }
    },
    "say": [
@@ -1521,9 +1526,10 @@
      ]
     },
     "tomatoes": {
+     "_about": "LNG-17 (19 Oct): one tomato only (hakro tameto) until Mum's plural is confirmed: data/lang/lexicon.json n.tomato pl.dir is unknown (Q14; grammar-notes §34 P3 'doesn't change' vs the -o rule's tameta), so the engine has no Kutchi for two or three and said 'tomatoes' in English. Back to 1-3 (daal) and 1-2 (chaat) once the form is in the lexicon",
      "int": [
       1,
-      2
+      1
      ]
     }
    },
@@ -1616,7 +1622,7 @@
       "byLevel": [
        0,
        0,
-       0.6,
+       0,
        0.6
       ]
      },
@@ -1625,8 +1631,8 @@
        "byLevel": [
         0,
         0,
-        0.8,
-        0.8
+        0,
+        1
        ]
       },
       "from": [
@@ -1634,7 +1640,8 @@
        "veg-02",
        "ph-dhana"
       ]
-     }
+     },
+     "_no": "s08 w2A (SAM-26): the 'no' filling is L4's one new thing (with the hidden card); never before"
     },
     "kinds": {
      "type": "items",
@@ -1656,19 +1663,19 @@
       "byLevel": [
        [
         0,
-        1
+        0
        ],
        [
         1,
         1
        ],
        [
-        1,
-        2
+        0,
+        1
        ],
        [
-        1,
-        2
+        0,
+        1
        ]
       ]
      },
@@ -1691,12 +1698,12 @@
          4
         ],
         [
-         3,
-         5
+         2,
+         3
         ],
         [
-         3,
-         5
+         2,
+         3
         ]
        ]
       }
@@ -1714,12 +1721,12 @@
         2
        ],
        [
-        2,
-        3
+        1,
+        2
        ],
        [
-        2,
-        3
+        1,
+        2
        ]
       ]
      }
@@ -1749,11 +1756,11 @@
       "byLevel": [
        1,
        1,
-       0.5,
-       0.5
+       0,
+       0
       ]
      },
-     "_count2": "30 Sept (Zafar: two different samosas in one order): from level 3, half the orders have a second kind, this many of it (0: none). Its own block on the card; its first strip starts empty"
+     "_count2": "s08 w2A (SAM-26, Zafar 19 Oct): two kinds from level 3, always (was half the orders, and L4 was L3); its own block on the card; its first strip starts empty"
     },
     "base1": {
      "value": "$kinds.0"
@@ -1772,10 +1779,26 @@
      "first": "$base2",
      "from": "$extras",
      "exclude": "no",
-     "take": [
-      0,
-      1
-     ],
+     "take": {
+      "byLevel": [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        1
+       ]
+      ]
+     },
      "order": "any"
     },
     "fillings2": {
@@ -1891,7 +1914,8 @@
      "ph-dhana"
     ]
    },
-   "how": "Fill them with what they say, fold them, then fry them."
+   "how": "Fill them with what they say, fold them, then fry them.",
+   "_levels": "s08 w2A (SAM-26, P44, the level table): L1 one kind, one filling, 1-2 samosas; L2 a second filling; L3 two kinds (ba keema, hakro bataato), the card's items dotted; L4 the 'no' filling, card hidden, 2-3 spoons each"
   },
   "mishkaki": {
    "name": "ph-sekelo",
@@ -1903,10 +1927,10 @@
     "thread",
     "grill"
    ],
-   "_about": "The order says how many skewers of each kind (a tally: \"ba lakri gos, hakri lakri boga\": lakri, the skewer, is the tally's `unit`, a she-word, so one is hakri), and when there's a mixed one its pieces in order (Pela gos, ne poi …): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/design-language/ux-principles.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
+   "_about": "The order says how many skewers of each kind (a tally: \"ba lakri mishkaki, hakri lakri boga\": lakri, the skewer, is the tally's `unit`, a she-word, so one is hakri), and when there's a mixed one its pieces in order (Pela gos, ne poi …; SEK-19, decision 11: the raw piece is gos, the cooked all-meat skewer mishkaki): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/design-language/ux-principles.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
    "lists": {
     "skewer": [
-     "ph-mishkaki",
+     "ph-meat",
      "veg-02",
      "veg-03"
     ],
@@ -1917,46 +1941,46 @@
     "_mixes": "The mixed skewers (28 Sept, design system 12): four pieces, as a skewer holds (data.mechanics.thread.pieces), meat and both vegetables, never the same piece twice running. The old generator drew three pieces (meat and two vegetables once green pepper was out), which no four-piece skewer could match",
     "mixes": [
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03"
      ],
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02"
      ],
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
       "veg-03",
-      "ph-mishkaki"
+      "ph-meat"
      ],
      [
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
       "veg-02",
-      "ph-mishkaki"
+      "ph-meat"
      ],
      [
       "veg-02",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-03",
-      "ph-mishkaki"
+      "ph-meat"
      ],
      [
       "veg-03",
-      "ph-mishkaki",
+      "ph-meat",
       "veg-02",
-      "ph-mishkaki"
+      "ph-meat"
      ]
     ]
    },
    "slots": {
     "vegKind": {
-     "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri gos: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
+     "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri mishkaki: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
      "pick": [
       "veg-02",
       "veg-03"
@@ -1967,20 +1991,20 @@
      "kinds": {
       "byLevel": [
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind"
        ],
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind"
        ],
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind",
         "ph-mixed"
        ],
        [
-        "ph-meat",
+        "ph-mishkaki",
         "$vegKind",
         "ph-mixed"
        ]
@@ -2725,7 +2749,7 @@
   "stir": {
    "levels": [
     {
-     "speeds": false,
+     "speeds": true,
      "switch": null,
      "bands": [
       0.12,
@@ -2783,8 +2807,8 @@
    "levels": [
     {
      "decoys": [
-      0,
-      0
+      1,
+      1
      ],
      "decoyPick": "random",
      "flyMs": 420
@@ -2797,7 +2821,7 @@
     },
     {
      "decoys": [
-      2,
+      3,
       3
      ]
     },
@@ -2828,7 +2852,7 @@
     },
     {
      "decoys": [
-      2,
+      3,
       3
      ]
     }
@@ -2931,16 +2955,23 @@
    "levels": [
     {
      "pieces": 4,
-     "decoys": 0,
+     "decoys": 1,
      "decoyPool": [
       "veg-01"
      ],
      "showAfterMs": 4000
     },
     {
-     "decoys": 1
+     "decoys": 2
+    },
+    {
+     "decoys": 3
+    },
+    {
+     "decoys": 3
     }
-   ]
+   ],
+   "_decoys": "s08 w2A (CK-49, P32): decoy bowls 1, 2, 3, 3 by the round's level, from decoyPool (only veg-01 has sekelo piece art: the rest wait on the art run); every piece bowl is out anyway, so a piece no skewer needs is a decoy too"
   },
   "grill": {
    "_about": "The Mishkaki grill (js/cook/mechanics/grill.js): each skewer's ring (band, rate in rings per second, rateSpread so they drift apart), turns before the lift, how many cook at once (spots), rack slots (fixed per level, never the number ordered), burntScore, and ignoreBelow (a tap this early in a ring is ignored: no accidental double taps).",
@@ -3048,10 +3079,10 @@
      "raw": "chips-raw-t"
     },
     "veg-01": {
-     "bowl": "topping-bataato-boiled-bowl-t",
+     "bowl": "veg-bataato-cubed-v2-t",
      "whole": "veg-bataato-whole-v2-t",
      "cubed": "veg-bataato-cubed-v2-t",
-     "raw": "mishkaki-bataato-raw-t"
+     "raw": "assets/cook/items-s08b/potato/potato-cube-v3"
     },
     "veg-02": {
      "bowl": "topping-dungri-chopped-bowl-t",
@@ -3578,7 +3609,45 @@
     "_s02": "S02-E (C5, PA14/PAN-09): garlic, ginger, cardamom and salt use the art run's small jars with lids that differ (shelf-<name>-jar-v2-f), at a whole slot (1)"
    },
    "need": {
-    "fetch": ["bg:pantry", "cook-atto.shelf", "cook-khun.shelf", "cook-chai.shelf", "cook-daal.shelf", "ph-chana.shelf", "ph-sev.shelf", "spi-01.shelf", "spi-02.shelf", "spi-05.shelf", "spi-10.shelf", "spi-16.shelf", "spi-04.shelf", "cook-dudh.shelf", "cook-paani.shelf", "ph-amli.shelf", "ph-lili.shelf", "ph-dahi.shelf", "ph-keema.shelf", "ph-meat.shelf", "ph-ghee.shelf", "veg-01.shelf", "veg-02.shelf", "veg-03.shelf", "veg-12.shelf", "veg-13.shelf", "veg-14.shelf", "veg-10.shelf", "ph-pepper.shelf", "ph-dhana.shelf", "fru-02.shelf", "spi-11.shelf", "spi-09.shelf", "fru-01.shelf", "fru-04.shelf", "fru-05.shelf", "veg-04.shelf"],
+    "fetch": [
+     "bg:pantry",
+     "cook-atto.shelf",
+     "cook-khun.shelf",
+     "cook-chai.shelf",
+     "cook-daal.shelf",
+     "ph-chana.shelf",
+     "ph-sev.shelf",
+     "spi-01.shelf",
+     "spi-02.shelf",
+     "spi-05.shelf",
+     "spi-10.shelf",
+     "spi-16.shelf",
+     "spi-04.shelf",
+     "cook-dudh.shelf",
+     "cook-paani.shelf",
+     "ph-amli.shelf",
+     "ph-lili.shelf",
+     "ph-dahi.shelf",
+     "ph-keema.shelf",
+     "ph-meat.shelf",
+     "ph-ghee.shelf",
+     "veg-01.shelf",
+     "veg-02.shelf",
+     "veg-03.shelf",
+     "veg-12.shelf",
+     "veg-13.shelf",
+     "veg-14.shelf",
+     "veg-10.shelf",
+     "ph-pepper.shelf",
+     "ph-dhana.shelf",
+     "fru-02.shelf",
+     "spi-11.shelf",
+     "spi-09.shelf",
+     "fru-01.shelf",
+     "fru-04.shelf",
+     "fru-05.shelf",
+     "veg-04.shelf"
+    ],
     "pour": [
      "pan.top"
     ],
@@ -3674,7 +3743,7 @@
     "thread": [
      "skewer.tool",
      "katori.top",
-     "ph-mishkaki.raw",
+     "ph-meat.raw",
      "ph-pepper.raw",
      "veg-02.raw",
      "veg-03.raw",
@@ -3683,7 +3752,7 @@
     ],
     "grill": [
      "skewer.tool",
-     "ph-mishkaki.raw",
+     "ph-meat.raw",
      "ph-pepper.raw",
      "veg-02.raw",
      "veg-03.raw",
@@ -3960,189 +4029,189 @@
    },
    "chaat-glass": {
     "line": "C8",
-    "file": "assets/cook/items/v3/chaat/bowl-side-v2.webp",
+    "file": "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
     "ready": true,
     "station": "assemble",
     "size": [
-     900,
-     457
+     800,
+     311
     ],
     "meta": {
-     "_about": "measured on the cut (S02-E) the way build/check_vessel_meta.py measures bowl-side: fractions of the sprite; rim/floor = the front lines of the rim and the inside floor, ery = their ellipses' half-heights, inside = the inside wall [left, right] at 41 heights",
+     "_about": "CHT-13 (s08 w3B): the s08b art run's exactly side-on bowl (CH1, assets/s08b-cut-data.json), measured on its @2x cut the way build/check_vessel_meta.py measures bowl-side (fractions of the sprite): rim = under the rim's bright band, floor = where the thick base starts; side-on, so a level's ellipse is nearly flat (ery); inside = the silhouette less its 29 px (2x) wall at 41 heights. Was the S02-E bowl-side-v2 (C8).",
      "bowl": {
-      "w": 900,
-      "h": 457,
-      "cx": 0.5,
-      "rim": 0.206,
-      "floor": 0.957,
-      "eryRim": 0.0855,
-      "eryFloor": 0.0735,
-      "floorTop": 0.81,
-      "floorHw": 0.381,
+      "w": 800,
+      "h": 311,
+      "cx": 0.4989,
+      "rim": 0.0728,
+      "floor": 0.8701,
+      "eryRim": 0.006,
+      "eryFloor": 0.0107,
+      "floorTop": 0.8504,
+      "floorHw": 0.3572,
       "inside": [
        [
-        0.0211,
-        0.9789
+        0.0314,
+        0.9671
        ],
        [
-        0.0211,
-        0.9789
+        0.0314,
+        0.9671
        ],
        [
-        0.0211,
-        0.9789
+        0.0314,
+        0.9671
        ],
        [
-        0.0211,
-        0.9789
+        0.0329,
+        0.9648
        ],
        [
-        0.0244,
-        0.9756
+        0.0352,
+        0.964
        ],
        [
-        0.0267,
-        0.9733
+        0.0391,
+        0.9602
        ],
        [
-        0.03,
-        0.97
+        0.0421,
+        0.9564
        ],
        [
-        0.0322,
-        0.9678
+        0.0459,
+        0.9533
        ],
        [
-        0.0356,
-        0.9644
+        0.049,
+        0.9502
        ],
        [
-        0.0389,
-        0.9611
+        0.0528,
+        0.9464
        ],
        [
-        0.0411,
-        0.9589
-       ],
-       [
-        0.0444,
-        0.9556
-       ],
-       [
-        0.0478,
-        0.9522
-       ],
-       [
-        0.0511,
-        0.9489
-       ],
-       [
-        0.0544,
-        0.9467
-       ],
-       [
-        0.0567,
+        0.0559,
         0.9433
        ],
        [
-        0.06,
-        0.94
+        0.0597,
+        0.9395
        ],
        [
-        0.0633,
-        0.9367
+        0.0628,
+        0.9357
        ],
        [
-        0.0667,
-        0.9333
+        0.0666,
+        0.9326
        ],
        [
-        0.0689,
-        0.93
+        0.0697,
+        0.9288
        ],
        [
-        0.0722,
-        0.9278
+        0.0735,
+        0.9257
        ],
        [
-        0.0756,
-        0.9244
+        0.0766,
+        0.9219
        ],
        [
-        0.0789,
-        0.9211
+        0.0804,
+        0.9188
        ],
        [
-        0.0822,
-        0.9178
+        0.0835,
+        0.915
        ],
        [
-        0.0856,
-        0.9144
+        0.0865,
+        0.9119
        ],
        [
-        0.0889,
-        0.9111
+        0.0904,
+        0.9081
        ],
        [
-        0.0922,
-        0.9078
+        0.0942,
+        0.9043
        ],
        [
-        0.0956,
-        0.9044
+        0.0972,
+        0.9012
        ],
        [
-        0.0989,
-        0.9011
+        0.1003,
+        0.8974
        ],
        [
-        0.1022,
-        0.8978
+        0.1041,
+        0.8936
        ],
        [
-        0.1056,
-        0.8944
+        0.1072,
+        0.8905
        ],
        [
-        0.1089,
-        0.8911
+        0.111,
+        0.8867
        ],
        [
-        0.1122,
-        0.8878
+        0.1149,
+        0.8836
        ],
        [
-        0.1156,
-        0.8844
+        0.1179,
+        0.8798
        ],
        [
-        0.1189,
-        0.8811
+        0.121,
+        0.876
        ],
        [
-        0.1189,
-        0.8811
+        0.1248,
+        0.8729
        ],
        [
-        0.1189,
-        0.8811
+        0.1279,
+        0.8691
        ],
        [
-        0.1189,
-        0.8811
+        0.1317,
+        0.866
        ],
        [
-        0.1189,
-        0.8811
+        0.1355,
+        0.8622
        ],
        [
-        0.1189,
-        0.8811
+        0.1386,
+        0.8583
        ],
        [
-        0.1189,
-        0.8811
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
        ]
       ]
      }
@@ -4537,6 +4606,7 @@
      "files": [
       "assets/cook/items/chai-station/*",
       "assets/cook/items/chai-v2/*",
+      "assets/cook/items-s08b/chai-pan/*",
       "assets/cook/items/v3/chai/*",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/*-bowl-t.webp",
@@ -4547,6 +4617,9 @@
       "assets/cook/items/vessel-water-jug-f.webp"
      ],
      "prefetch": [
+      "assets/cook/items-s08b/chai-pan/pan-top-black-s08b.webp",
+      "assets/cook/items-s08b/chai-pan/pan-top-empty-s08b.webp",
+      "assets/cook/items-s08b/chai-pan/pan-top-milk-s08b.webp",
       "assets/cook/items/chai-station/flame-high.webp",
       "assets/cook/items/chai-station/flame-low.webp",
       "assets/cook/items/chai-v2/glass-black-full.webp",
@@ -4554,9 +4627,6 @@
       "assets/cook/items/chai-v2/glass-empty.webp",
       "assets/cook/items/chai-v2/glass-full.webp",
       "assets/cook/items/chai-v2/glass-half.webp",
-      "assets/cook/items/chai-v2/pan-pour-black-v2.webp",
-      "assets/cook/items/chai-v2/pan-pour-milk-v2.webp",
-      "assets/cook/items/chai-v2/pan-pour.webp",
       "assets/cook/items/chai-v2/teaspoon-t.webp",
       "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
       "assets/cook/items/dry-chai-leaves-bowl-t.webp",
@@ -4575,12 +4645,9 @@
       "assets/cook/items/spice-rai-bowl-t.webp",
       "assets/cook/items/v3/chai/pan-boil-milky.webp",
       "assets/cook/items/v3/chai/pan-boil-tea.webp",
-      "assets/cook/items/v3/chai/pan-empty.webp",
       "assets/cook/items/v3/chai/pan-foam.webp",
       "assets/cook/items/v3/chai/pan-leaves.webp",
-      "assets/cook/items/v3/chai/pan-milky.webp",
       "assets/cook/items/v3/chai/pan-spiced.webp",
-      "assets/cook/items/v3/chai/pan-tea.webp",
       "assets/cook/items/v3/chai/pan-water.webp",
       "assets/cook/items/v3/hob/hob-1.webp",
       "assets/cook/items/v3/hob/hob-2.webp",
@@ -4783,6 +4850,9 @@
      "files": [
       "assets/cook/items/chai-station/*",
       "assets/cook/items/v3/daar/*",
+      "assets/cook/items-s08b/daar-pot-top-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-plain-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/shelf-*",
       "assets/cook/items/tool-knife-t-v2.webp",
@@ -4812,17 +4882,15 @@
       "assets/cook/items/v3/daar/dial-spill.webp",
       "assets/cook/items/v3/daar/dial-stopped.webp",
       "assets/cook/items/v3/daar/ladle-v3.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-plain-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp",
+      "assets/cook/items-s08b/daar-pot-top-s08b.webp",
       "assets/cook/items/v3/daar/pot-chilli-only.webp",
       "assets/cook/items/v3/daar/pot-chilli.webp",
-      "assets/cook/items/v3/daar/pot-daar.webp",
-      "assets/cook/items/v3/daar/pot-empty.webp",
       "assets/cook/items/v3/daar/pot-oil.webp",
       "assets/cook/items/v3/daar/pot-onion-chilli.webp",
       "assets/cook/items/v3/daar/pot-onion.webp",
       "assets/cook/items/v3/daar/pot-seeds.webp",
-      "assets/cook/items/v3/daar/pot-stir.webp",
-      "assets/cook/items/v3/daar/pot-tadka-v2.webp",
-      "assets/cook/items/v3/daar/pot-tadka.webp",
       "assets/cook/items/v3/daar/pot-tomato-chilli.webp",
       "assets/cook/items/v3/daar/pot-tomato-only.webp",
       "assets/cook/items/v3/daar/pot-tomato.webp",
@@ -4948,10 +5016,12 @@
       "chilli"
      ],
      "files": [
-      "assets/cook/items/v3/chaat/*"
+      "assets/cook/items/v3/chaat/*",
+      "assets/cook/items-s08b/chaat-bowl-side-s08b*",
+      "assets/cook/items-s08b/chaat-strips/*"
      ],
      "prefetch": [
-      "assets/cook/items/v3/chaat/bowl-side-v2.webp",
+      "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
       "assets/cook/items/v3/chaat/pot-chana.webp",
       "assets/cook/items/v3/chaat/pot-imli.webp",
       "assets/cook/items/v3/chaat/pot-potato.webp",
@@ -4997,7 +5067,10 @@
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/v3/samosa/*",
       "assets/cook/items/vessel-thali-t.png",
-      "assets/cook/items/v3/daar/chop-heap-*"
+      "assets/cook/items/v3/daar/chop-heap-*",
+      "assets/cook/items-s08b/go-on/go-karahi-s08b*",
+      "assets/cook/tiles-s08b/pastry-tile-s08b*",
+      "assets/cook/items-s08b/potato/potato-pile-v3.webp"
      ],
      "prefetch": [
       "assets/cook/items/chai-station/flame-high.webp",
@@ -5040,7 +5113,9 @@
       "assets/cook/items/skewer-empty-t.webp",
       "assets/cook/items/tool-board-t.png",
       "assets/cook/items/veg-*",
-      "assets/cook/items/vessel-katori-t.webp"
+      "assets/cook/items/vessel-katori-t.webp",
+      "assets/cook/items-s08b/go-on/go-grill-s08b*",
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
      ],
      "prefetch": [
       "assets/cook/items/mishkaki-bataato-raw-t.webp",
@@ -5082,21 +5157,26 @@
       "assets/cook/items/vessel-katori-t.webp",
       "assets/cook/props/onion.webp",
       "assets/cook/props/tomato.webp"
-     ]
+     ],
+     "_potato": "s08 w6F (ART-11): the potato's skewer piece is PT1's cube (veg-01.raw, a whole path: js/cook/art.js refUrl); its worktop bowl is PT1's pile (veg-bataato-cubed-v2-t), no longer the butter-yellow boiled cubes"
     },
     "thread": {
      "props": [
       "onion",
       "tomato"
      ],
-     "files": []
+     "files": [
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
+     ]
     },
     "grill": {
      "props": [
       "onion",
       "tomato"
      ],
-     "files": []
+     "files": [
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
+     ]
     }
    }
   }
@@ -5284,7 +5364,43 @@
    ]
   }
  ],
- "pantry_decoys": ["cook-atto", "cook-daal", "cook-chai", "cook-dudh", "cook-khun", "spi-10", "veg-02", "veg-03", "veg-13", "veg-12", "spi-16", "veg-14", "veg-01", "ph-chana", "ph-sev", "spi-01", "spi-02", "spi-05", "spi-04", "spi-11", "spi-09", "ph-amli", "ph-lili", "ph-ghee", "veg-10", "ph-pepper", "ph-dhana", "fru-01", "fru-02", "fru-04", "fru-05", "veg-04", "ph-dahi", "ph-keema", "ph-meat"],
+ "pantry_decoys": [
+  "cook-atto",
+  "cook-daal",
+  "cook-chai",
+  "cook-dudh",
+  "cook-khun",
+  "spi-10",
+  "veg-02",
+  "veg-03",
+  "veg-13",
+  "veg-12",
+  "spi-16",
+  "veg-14",
+  "veg-01",
+  "ph-chana",
+  "ph-sev",
+  "spi-01",
+  "spi-02",
+  "spi-05",
+  "spi-04",
+  "spi-11",
+  "spi-09",
+  "ph-amli",
+  "ph-lili",
+  "ph-ghee",
+  "veg-10",
+  "ph-pepper",
+  "ph-dhana",
+  "fru-01",
+  "fru-02",
+  "fru-04",
+  "fru-05",
+  "veg-04",
+  "ph-dahi",
+  "ph-keema",
+  "ph-meat"
+ ],
  "lookalikes": {
   "cook-khun": [
    "spi-16",
@@ -5618,6 +5734,7 @@
   ]
  },
  "calm": {
+  "_help": "S08-W1 (the help ladder, SH-60 SH-95 SH-96): helpMs = how long the child must have done nothing, counted from the LAST action (any tap, drag or key), before Nani helps (her word and the glow at the same moment), by level 1-4 (2 s later than before at level 1); repeatMs = a second help only after this much more idle time; bulbPulseMs = stuck this long and both light bulbs pulse. hintMs below is the old per-word-stage delay of the thread and chop hints.",
   "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: bulbMs = how long the light bulb shows English, by the order's level (SH-41, D11: 8 s at every level to start); coachSteps = how many moves the first-time overlay shows at a station before it's gone; uiAfter = after how many orders the stars and the light bulb fade in (a new player's first order has only the order card).",
   "quietMs": 4000,
   "hintMs": [
@@ -5626,13 +5743,32 @@
    11000,
    15000
   ],
+  "helpMs": [
+   7000,
+   8000,
+   11000,
+   15000
+  ],
+  "repeatMs": 10000,
+  "bulbPulseMs": 17000,
   "passMeChance": {
    "relaxed": 0.4,
    "busy": 0.55,
    "level1": 0.2
   },
-  "bulbMs": [8000, 8000, 8000, 8000],
-  "closedFrom": 3,
+  "bulbMs": [
+   8000,
+   8000,
+   8000,
+   8000
+  ],
+  "peekMs": {
+   "_about": "SH-101 (Zafar, 17 Oct: level 3 double, and the same seconds added to the others): how long the closed card's small bulb holds the card open (the peek), by level; was a flat 3.5 s. Read by js/cook/ui.js peekMsOf; the clinic has its own table (js/clinic/kit.js Kit.PEEK_MS).",
+   "1": 7000,
+   "2": 7000,
+   "3": 7000,
+   "4": 7000
+  },
   "coachSteps": 4,
   "uiAfter": {
    "bulb": 2
@@ -5640,6 +5776,50 @@
   "passMeAfterPlays": 2,
   "passMeRingMs": 3000,
   "_passMeS02": "S02-B (T19, MAA-14): passMeAfterPlays = how many orders of a dish before Nani's 'pass me' can come (never in the first plays); passMeRingMs = her ring's time (3 s) once she has asked; the game pauses while she's on screen"
+ },
+ "levelTable": {
+  "_about": "s08 wave 2A (SH-110, CK-49, SAM-26, MAA-18; Zafar, 19 Oct: yes to build/reports/research-levels-2026-10-19.md, except chai L3 two cups, no half/full): the level table, one row per level (1-4) for every Cook station, read by js/cook/station-lib.js Cook.levelRow. card: open (L1-L2, every word and number), dotted (L3: the item words dotted, frames, verbs and numbers written), hidden (L4: face + headline folded; a tap on the face replays the order, free). Replaces calm.closedFrom (3) and decision 41's 'heard, never written'. decoys: things on offer nobody asked for, by level (1, 2, 3, 3), lookalike: one of them a lookalike variant (data.lookalikes) at L4. stepCall: Nani calls each step once as it opens (the order in pieces, never help, never costs), every level. stations: a station's own row where it differs (none yet). Each station's one new thing per level is its own data (the recipes' byLevel slots, data/stations/*.json levels).",
+  "card": [
+   "open",
+   "open",
+   "dotted",
+   "hidden"
+  ],
+  "decoys": [
+   1,
+   2,
+   3,
+   3
+  ],
+  "lookalike": [
+   false,
+   false,
+   false,
+   true
+  ],
+  "stepCall": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "stations": {
+   "daar-chop": {
+    "_about": "DAAR-34 (Zafar, 17 Oct, P54: 'those other items should be dotted, so you can see there's three items to be chopped in total but only the first one is revealed to you audibly and visually in writing'; s08 w6J): Nani's chop card in the daal is her step card, not an order: at L4 it stays dotted (the rows she has called written, the rest dotted whole), never folded to face + headline. callWritten: at L4 a row she has called is written whole (the first one revealed in writing); at L3 the item stays dotted until its row ticks (the level table).",
+    "card": [
+     "open",
+     "open",
+     "dotted",
+     "dotted"
+    ],
+    "callWritten": [
+     false,
+     false,
+     false,
+     true
+    ]
+   }
+  }
  },
  "timing": {
   "_about": "Cook timers by level (design system §11): flip, boil and fry timers get about 15% quicker per level (a rate is multiplied by (1/(1 - levelSpeed))^(level - 1)). Read by the maani station v2; the other stations adopt it as they are rebuilt.",
@@ -5837,7 +6017,11 @@
   "samosa": [
    {
     "do": "tap",
-    "what": "a spoon of the first filling they said, onto the strip"
+    "what": "a pastry strip (SAM-25: any of the six)"
+   },
+   {
+    "do": "tap",
+    "what": "a spoon of the first filling they said, onto that strip"
    },
    {
     "do": "tap",
@@ -5845,7 +6029,7 @@
    },
    {
     "do": "tap",
-    "what": "the tick when the filling's in"
+    "what": "the tick when every strip they want is filled"
    },
    {
     "do": "swipe",
@@ -5995,7 +6179,9 @@
   "maani-line:flip": {
    "line": "guide-firai"
   },
-  "maani-line:off": {},
+  "maani-line:off": {
+   "line": "guide-firai"
+  },
   "maani-line:fire": {
    "line": "guide-fire"
   },

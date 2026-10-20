@@ -1,0 +1,76 @@
+SESSION NAME / MODE:  s08 wave 3B, chaat, sekelo and maani: chaat's art and its no-leak bowl, sekelo's two racks and words, maani's turns and flip time; the double highlight while a card row is read
+MODEL AND EFFORT:     Opus, high effort (visual layout and art wiring across three stations)
+COST ESTIMATE:        about $35-50
+HARD STOP:            when every task is accepted, or 5 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w3b-stations.context.md (859 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/cook-playtest-2026-10-17.md (P7, P16, P37, P38, P45, P60-P63; section 6 decisions 9, 11, 12)
+     build/reports/research-layout-2026-10-19.md (task 1: the sekelo layout, recommended coordinates)
+     build/reports/s08-w0-art.md and assets/s08b-cut-data.json (chaat bowl and strips, the square trays)
+     build/reports/s08-w2a-levels.md (the level table, merged)
+     build/screenshots/sandbox/orch-w2a-sekelo/contract.md (the orchestrator's 9 breaks)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/mechanics/assemble.js
+  - js/cook/mechanics/grill.js
+  - js/cook/mechanics/thread.js
+  - js/cook/stations/mishkaki-grill.js
+  - js/cook/stations/maani-line.js
+  - js/cook/mechanics/tawa.js
+  - data/stations/mishkaki-grill.json, maani-line.json
+  - data/cook.json chaat, sekelo and maani entries only
+  - js/cook/station-lib.js and js/cook/ui.js: only the one-highlight fix (contract-8)
+  - build/reports/s08-w3b-stations.md
+READ-ONLY (never edit):
+  - js/cook/stations/samosa.js (wave 3A)
+  - js/clinic/** (wave 5B)
+  - js/day/**, js/shared/window-ride.js (Sprint 9)
+  - assets/** (use the cuts)
+  - data/lang/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: sekelo's extra decoys need vegetable piece art that doesn't exist: keep one decoy and say so
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Chaat: no drop shadow under the bowl (CHT-12); the side-on glass bowl and a strip per item from wave 0's cuts (CHT-13); a wrong item gets a short pause, a wobble and a warm glow (not red), then bounces back out; a wrong one in the sequence empties the bowl; a tick only for the right item first go; help stays on the bulbs (CHT-14, CHT-15; decision 9).
+     Accept: the leak bot on chaat: a guesser can't win by trying each item; eye: a wrong drop and a sequence reset as filmstrips
+  2. Sekelo: the research layout: two racks stacked on the left (raw above, cooked below, today's rack art twice), the grill 1.4x bigger on the right, gaps even (SEK-20, SEK-07); the square tray cuts if they fit better (say which); equal gaps between the bins (SEK-21); the raw piece is gos, the cooked skewer mishkaki, the card says 'Hakri Lakri Mishkaki' (SEK-19); the mixed skewer's 'ba' written (contract-30).
+     Accept: eye: sekelo L1 and L3 at 1366x768 and 800x360; contract-30 green on sekelo
+  3. Maani: Nani says Firai on both turns (MAA-15); the flip window +0.75 s at every level (MAA-17).
+     Accept: ear: maani L1 both sides; the window measured
+  4. contract-8: one highlight at a time while a card row is read and another row is next (station-lib / ui reading vs next).
+     Accept: contract-8 green on sekelo L3#hint and chai-tray L3
+
+REGRESSION ROWS TO RECHECK (191 rows of the fix list and its done archive; * = open or reopened):
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01*, CK-29, CK-27, CK-39
+  cook:assemble (17): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01*, CK-39
+  cook:mishkaki-grill (21): SEK-14*, SEK-18, SEK-19*, SEK-20*, SEK-21*, SEK-07*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, CK-38
+  cook:maani-line (17): MAA-15*, MAA-16, MAA-17*, MAA-01, MAA-02, MAA-03, MAA-04, MAA-05, MAA-06, MAA-07, MAA-08, MAA-09, MAA-10, MAA-11, MAA-12, MAA-13, MAA-14
+  cook:chai-tray (25): CHAI-08, CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-45*
+  shared components (109): SH-70, SH-98*, SH-99*, SH-107*, SH-37*, SH-90*, SH-91*, SH-92*, SH-93*, SH-97*, SH-102*, SH-103*, SH-104, SH-105*, SH-106*, SH-108*, SH-109*, SH-110*, SH-111*, SH-53*, SH-60*, SH-112*, SH-113*, SH-115*, SH-116*, SH-117*, SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-54, SH-55, SH-62, SH-69, SH-10, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58, SH-59, SH-63, SH-64, SH-65, SH-66, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33, SH-34, SH-35, SH-36, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48, SH-71, SH-72, SH-73, SH-74, SH-75, SH-76, SH-77, SH-79, SH-80, SH-82, SH-83, SH-84, SH-86, SH-87, SH-81, SH-89, SH-88
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w3b-stations` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8840.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w3b-stations.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

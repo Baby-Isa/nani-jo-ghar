@@ -5,6 +5,8 @@ import { clinicFlows, clinicFlow, HEAL_GAMES } from "./clinic.mjs";
 import { MODE_FLOWS } from "./modes.mjs";
 import { rotateFlow, cssFlow } from "./extra.mjs";
 import { labFlows, labCook } from "./labs.mjs";
+import { DAY_FLOWS, DAY_BOOK_PATHS, dayBookFlow } from "./day.mjs";
+import { DAY_WINDOW_FLOWS, DAY_WINDOW_PATHS, dayWindowFlow } from "./day-window.mjs";
 import { ALL_SIZES } from "../lib/env.mjs";
 import { driverPaths } from "../drivers/catalog.mjs";
 
@@ -51,6 +53,8 @@ export function allFlows() {
   for (const f of labFlows()) flows.push(deep(f));
   // the pantry and the Chop tile at a child's pace (speed 1): the voice check in real time
   for (const k of ["fetch", "chop"]) flows.push(deep(cookStation(k, 1, { speed: 1 })));
+  // ---- s09-frame: a day at Nani's (day.html): the door, the book, the window ride, at a phone, a 4:3 tablet and the laptop ----
+  for (const f of [...DAY_FLOWS, ...DAY_WINDOW_FLOWS]) flows.push({ ...f, sizes: ["844x390", "1024x768", "1366x768"] });
   return flows.map((f) => ({ ...f, parked: false }));
 }
 export const flowSizes = (f) => f.sizes || ALL_SIZES;
@@ -77,6 +81,8 @@ export function flowKind(base) {
   if (base === "clinic:patient") return { kind: "patient", levels: [1, 2, 3], paths: ["fair", "mistake", "hint"] };
   if (base === "clinic:morning") return { kind: "morning", levels: [1, 2, 3], paths: withDrivers("morning", ["fair"]) };
   if (/^lab:cook\/[\w-]+$/.test(base) && !/story-birthday|free/.test(base)) return { kind: "lab-cook", levels: [1, 2, 3, 4], paths: withDrivers("lab-cook", ["fair", "speed1"]) };
+  if (base === "day:window") return { kind: "day-window", levels: [1, 2, 3], paths: DAY_WINDOW_PATHS };
+  if (base === "day:book") return { kind: "day-book", levels: [1], paths: DAY_BOOK_PATHS };
   if (base === "mode:find") return { kind: "lab-cook", moments: "mode", levels: [1], paths: ["fair", "find-scene"] };
   return null;
 }
@@ -107,6 +113,10 @@ export function resolveFlow(id, live = allFlows()) {
   } else if (k.kind === "lab-cook") {
     const g = base.slice(9);
     f = labCook({ id, title: `labs.html: Cook on the game host, ${g}, level ${level}${path === "speed1" ? " at a child's pace" : ""}`, query: g === "round" ? `mode=cook&level=${level}` : `mode=cook&game=${g}&level=${level}`, timeoutS: g === "round" ? 700 : 900, ...(path === "speed1" ? { speed: 1 } : {}) });
+  } else if (k.kind === "day-window") {
+    f = dayWindowFlow(level, path);
+  } else if (k.kind === "day-book") {
+    f = dayBookFlow(level, path);
   }
   return f ? { ...f, id, ...(sizes ? { sizes } : {}), parked: false, built: true } : null;
 }

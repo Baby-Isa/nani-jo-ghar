@@ -1,0 +1,21 @@
+# The art redo list for pack s08c: what the next run starts from (20 Oct, after the s08c landing).
+# Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s08c.run.yaml --redo docs/design-language/art-plans/s08c-redo-list.yaml
+# Verdicts: build/reports/s08c-art-landing.md. The prompts in the plan (section 5) carry the fixes already: DS1's onion and
+# mustard sentences, CP3's four rim ellipses and thin stream, CP4's tiny matte bubbles. AL3 never landed (27 of 28 files): it
+# runs again with its prompt as it is. Not on this list: DW2/DT2/DB2 (artjudge's skin FAIL is against the sheet's swatch, which
+# the wired face-on base itself misses by ΔE 14.5; DW2 is ΔE 4.4 from that base: a cut-time colour decision, not a redraw) and
+# GZ2's cropped crown (Zafar's call with the likeness).
+pack: s08c
+redo:
+  - id: DS1
+    why: "cell 1's onion is yellow cubes, a dead ringer for cell 4's potato; cell 8's mustard seeds are glossy spheres (the beads rule); the prompt now asks for thin translucent onion slivers, never cubes, and pinhead matte seeds half sunk in the daal, never spheres"
+    source: "build/reports/s08c-art-landing.md"
+  - id: CP3
+    why: "the tilt steps collapse (cell 2 is barely off cell 1, cell 4 barely off cell 3) and the pour streams are thick syrup reaching 1.3% from the bottom edge; the prompt now names each rim's ellipse (100%, 94%, 77%, 50% as tall as wide) and a thin translucent tea stream ending a tenth of the cell above its bottom"
+    source: "build/reports/s08c-art-landing.md"
+  - id: CP4
+    why: "cell 1's bubbles are a neat ring of large glossy spheres (a drawn ring, and beads under the sweets rule) and cell 3's are oversized; cell 2 is good; the prompt now asks for a loose scatter of pinhead matte bubbles, no bubble bigger than a pea, never an even ring"
+    source: "build/reports/s08c-art-landing.md"
+  - id: AL3
+    why: "not run: missing from the 27-file dump (every other line landed); run it as it is"
+    source: "build/reports/s08c-art-landing.md"

@@ -1,0 +1,27 @@
+{
+  "name": "s08 wave 1B, the card and what's said: the card's bulb, everything said is written, free replays of what's left, the review divider, the order pop-up headline, face circles; the voice leftovers in ui.js and flow.js",
+  "model": "Sonnet",
+  "effort": "high",
+  "kind": "code",
+  "why": "shared card and order logic across both modes with clear checks; the orchestrator judges",
+  "cost": "about $25-35",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/feedback/cook-playtest-2026-10-17.md (P17-P23, P30, P41, P42 and section 6 decisions 3, 5, 8)", "docs/feedback/clinic-playtest-2026-10-18.md (P3, P4, P5, P6, P17, P19)", "build/reports/s08-w1-voice.md (flaw 1 and 4: what it left you)", "build/reports/research-levels-2026-10-19.md (the card ladder, for later: leave a hook)", "docs/game-design/modes/cook.md"],
+  "owns": ["js/cook/ui.js", "js/cook/order.js", "js/cook/flow.js", "js/cook/main.js", "js/shared/order-card.js", "css/shared/order-card.css", "js/shared/results.js", "css/shared/results.css", "js/shared/fit.js", "js/clinic/kit.js (card, replay, face, counts only)", "js/clinic/heal/games/*.js: only the taught-round count lines (CLN-161 in SH-99)", "data/clinic/**: only seq fields for one sequence per card", "build/sandbox/lib/contract.mjs and lib/regressions.mjs CONTRACT_ROWS: new checks for these rows", "build/reports/s08-w1b-card.md"],
+  "readOnly": ["js/core/voice.js, js/shared/guide.js, js/cook/station-lib.js, js/cook/words.js (wave 1A, merged: use its queue)", "js/shared/buttons.js, css/shared/buttons.css, js/cook/stations.js, js/clinic/heal/scene.js, css/clinic.css (wave 2B)", "assets/**", "data/lang/** (never hand-written Kutchi)"],
+  "stubs": "a line or word the engine can't say stays its grey 'to record' placeholder, listed in the report",
+  "tasks": [
+    {"do": "SH-98 (with SH-100, SH-101, SAM-23, CLN-160): the card's small bulb shows every word and number in Kutchi (no dots, numbers at every level); Nani's bulb is the English; one bulb picture everywhere (assets/ui/results/icon-bulb.webp, the photo one) on Cook and clinic cards; the peek's time is data by level (L3 7 s, the others +3.5 s on today's 3.5 s); samosa's title has no number in either language and its bulb shows each kind as 'N samosas' with its fillings; one sequence box per heal card (ear L3's two cards are one: js/clinic/kit.js:783). The closed card's three dots stay (KEEP-09). Leave a hook for the level table's dotted L3 card (wave 2A).", "accept": "contract-run checks red then green: the peek shows no dots and every number; one bulb picture; peek time by level; eye: samosa's card and bulb, ear L3's card, a chai card, each beside its bulb"},
+    {"do": "SH-99 (with CLN-161, CLN-169, CLN-171): every count, colour and item said is written on the card, every level and every round (the clinic's taught round included: write and say the count, cut.js:646 and the same in ear, boing, eye, foot, knee); boing's drops colour and plaster colour on the card at every level (grey English 'to record' until Mum).", "accept": "contract-run check: each number, colour and item said in an order or step is on the card, both modes, L1-L4"},
+    {"do": "SH-102 (with SH-114): a replay (the speaker or a tap on the face) adds no hint and says only the steps not yet done (js/cook/flow.js:196, js/clinic/kit.js:1075).", "accept": "a replay leaves the hint count unchanged; ear L3 after two steps replays only what's left"},
+    {"do": "SH-103: the end review's divider sits at about 4/5 with no wrong item (room for four right, one wrong) and moves left as wrong items grow, every game (results.css:268). SH-107: only the ORDER POP-UP's headlines (the order cards at the start of a round) wrap at full size first and shrink only if two lines don't fit, one size per screen; everywhere else keeps shrink-then-wrap (non-negotiable 9). SH-113: one shared zoom for every face circle (Cook and clinic: the doctor's 144 px bust zoomed to match), a per-face tweak in data, set by eye.", "accept": "eye: the review with 0, 1 and 3 wrong at 800x360 and 1366x768; chai L3's three order cards one size; every face circle side by side"},
+    {"do": "Leftovers from wave 1A: LNG-09's 700 ms per-line wait in ui.js trimmed; the pop-up reads each order part once (chai-tray L3); 'Shabash!' once at the serve (flow.js:916-919); labs.html's Cook tiles default not guided (js/cook/main.js:157).", "accept": "contract-22 (once and whole) green on chai-tray L3 and the serve"}
+  ],
+  "flows": ["cook:chai-tray", "cook:samosa", "cook:chaat", "cook:fetch", "clinic:heal-ear", "clinic:heal-boing", "clinic:diagnosis"],
+  "shared": true,
+  "browser": true,
+  "port": 8833,
+  "report": "s08-w1b-card",
+  "publish": false
+}

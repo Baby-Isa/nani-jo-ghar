@@ -1,0 +1,88 @@
+SESSION NAME / MODE:  s08 wave 6A, words and voice: no spoken English in the orders, the sekelo name, each line said once, everything said is written, the order pop-up wraps first
+MODEL AND EFFORT:     Opus, high effort (the language engine and card text: a wrong join speaks English or invents Kutchi)
+COST ESTIMATE:        about $25-40
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6a-words.context.md (855 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/evidence-ev-20261019-172022-khk.md and the judge verdicts in build/tools/review/data/verdicts.json (each row's line says what failed)
+     build/screenshots/sandbox/s08-gate-close/contract.md (the gate's breaks, by check, flow and size)
+     docs/language/ (the engine and the lexicon)
+     docs/feedback/cook-playtest-2026-10-17.md (P1, P9, P35, P50)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/words.js
+  - js/cook/lang.js
+  - js/cook/order.js
+  - js/cook/coach.js
+  - js/cook/flow.js
+  - js/shared/say.js
+  - js/shared/speech.js
+  - js/shared/order-card.js
+  - js/shared/request-popup.js
+  - js/core/** (the language engine)
+  - data/cook.json orders, cards, lines and recipe names only
+  - css for the order card and the request pop-up only
+  - build/reports/s08-w6a-words.md
+READ-ONLY (never edit):
+  - js/cook/stations/**, js/cook/mechanics/** (wave 6B)
+  - js/clinic/** (wave 6C)
+  - build/sandbox/**, build/tools/** (wave 6D)
+  - data/lang/** recordings: never add a Kutchi word; a word the lexicon lacks is a gap in the report
+  - assets/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a sentence the engine can't say in Kutchi is reported as a gap (rule 11), never assembled with an English join and never with a guessed Kutchi word
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. LNG-17 (new): the orders say English joins: 'with' in chai, daal and sekelo orders ('with hakro khun', 'with dudh'), and 'tomatoes' at daal L3-L4 ('ba tomatoes', 'trae tomatoes'). Make the engine build these from lexicon words only (the plural is the Kutchi word, tameto), or drop the join where the engine has a Kutchi form already used elsewhere; if no recorded Kutchi form exists, report the gap and keep the sentence without English.
+     Accept: auto: the gate's sound log for cook:chai, cook:daar, cook:mishkaki-grill at L1-L4 has no English word outside the loan-word list; a test in the engine's tests
+  2. SEK-19: the sekelo card and voice read 'Hakri Lakri Mishkaki' (no commas, Zafar 18 Oct), not 'hakri lakri tameto'.
+     Accept: eye: the sekelo card at L1 and L3; auto: the card text
+  3. contract-22 (82 gate breaks, 26 in tadka, the rest in the labs, daar, chai, samosa, stir, day6, open-kitchen): a line is said once; again only after 10 s idle. Find the double trigger (e.g. 'Muke daar khape,' twice 2.2 s apart at the start, 'Ne poi hardar.' twice 1.2 s apart).
+     Accept: auto: contract-22 green on every flow in the gate list
+  4. contract-30 (27 breaks, 17 in cook:chaat, also recipe-chaat, day4, day6, recipe-mishkaki, clinic:morning: hand the clinic one to the report): everything said is written on the card (SH-99).
+     Accept: auto: contract-30 green on those flows
+  5. SH-107 / contract-33 (14 breaks): the order pop-up's headlines wrap at full size first and shrink only when two lines don't fit, at every station and size (chop, stir, assemble, chaat, daar, day5, day6, maani-line, mishkaki-grill, samosa, tadka at 1366x1024 and others). CHT-15: the chaat badge never covers the headline's full stop. SH-37: the card text never runs under the round icon.
+     Accept: auto: contract-33 green; eye: the pop-up at 1366x1024 and 800x360, the chaat card, the daar card
+  6. contract-26 (opening line heard whole, 3 breaks), contract-23 (item name only when nothing else speaks, 2 in samosa), contract-27 (the peek shows every word, 6 in daar, chai, chai-tray): fix or explain each.
+     Accept: auto: those checks green on those flows
+
+REGRESSION ROWS TO RECHECK (180 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai (29): CHAI-08*, CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-06*, CK-45*, CK-TB-01*, CK-29, CK-27
+  cook:chai-tray (25): CHAI-08*, CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-45*
+  cook:daar (37): DAAR-02*, DAAR-05*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-29*, DAAR-30*, DAAR-31*, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, CK-06*, CK-08, CK-10, CK-29, CK-27
+  cook:mishkaki-grill (21): SEK-14*, SEK-18, SEK-19*, SEK-20*, SEK-21*, SEK-07*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, CK-38
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01*, CK-29, CK-27, CK-39
+  cook:tadka (16): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-10
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:stir (15): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11
+  cook:assemble (17): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01*, CK-39
+  cook:chop (16): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-29
+  cook:maani-line (17): MAA-15*, MAA-16, MAA-17*, MAA-01, MAA-02, MAA-03, MAA-04, MAA-05, MAA-06, MAA-07, MAA-08, MAA-09, MAA-10, MAA-11, MAA-12, MAA-13, MAA-14
+  cook:day6 (49): CK-01*, CK-06*, CK-TAB-01, CK-24*, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-48*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6a-words` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8851.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6a-words.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

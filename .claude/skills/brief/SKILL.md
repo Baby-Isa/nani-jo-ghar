@@ -9,6 +9,7 @@ description: Write a complete brief for a new build session (mode, engine, art o
 ## Steps
 1. Copy a spec: `build/tools/ops/specs/4e-clinic-engine.json` is the worked example. Fill name, model, effort and why, cost, stop (UK), branch, owns, readOnly, tasks (each `do` + `accept`), flows, port, report, publish.
    - Owned files must be disjoint from every running session's. Shared files have one owner.
+   - A fix round: two builders at most, each owning both the code and the evidence specs (`build/sandbox/data/evidence.json` entries) of its own rows, so no tools builder chases them afterwards (Zafar, 20 Oct).
    - `flows` are sandbox flow ids (`clinic:heal-cut`, `cook:chai-tray` ...). Not sure? `node build/tools/review/touched.mjs --files <the files it will change>`.
 2. Generate it:
    ```

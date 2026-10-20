@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, lexiconWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceDecision, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
 import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
-import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard } from "./lib/evidence.mjs";
+import { changedRows, flowBase, rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, captureLabels, labelOf } from "./lib/evidence.mjs";
 import { blank, encodePng } from "./lib/png.mjs";
 
 test("captures: every kind, a capture at another moment, refusals", () => {
@@ -21,6 +21,22 @@ test("captures: every kind, a capture at another moment, refusals", () => {
   assert.ok(parseCmd("node build/a.mjs | tee x").error, "no shell");
   assert.ok(parseCmd("rm -rf build").error, "only the repo's scripts");
   assert.ok(parseCmd("node build/tools/ops/publish.mjs --go").error, "never publishes");
+});
+
+test("s08 w6L: js: reads a page value by its path, never code; the new moments and the mistake-real driver are reachable", async () => {
+  assert.deepEqual(parseCapture("js:Cook.maaniWindow"), { kind: "js", path: "Cook.maaniWindow", raw: "js:Cook.maaniWindow" });
+  assert.ok(parseCapture("js:alert(1)").error && parseCapture("js:a;b").error && parseCapture("js:").error, "property reads only");
+  assert.equal(parseCapture("strip:hook:cook.gauge:12x300").sel, "hook:cook.gauge", "a hook box can be filmed");
+  const M = await import("../../sandbox/lib/moments.mjs");
+  const root = new URL("../../..", import.meta.url).pathname;
+  // at(syCx + OVER.dx, endY() + OVER.dy, "press the glowing end"): a call inside the arguments no longer hides the step (CLN-167)
+  assert.ok(M.healSteps(root, "boing").includes("press-the-glowing-end"));
+  assert.ok(M.reachable("line:clinic-patient", ["line:*-*"]) && !M.reachable("line:clinic-patient", ["line:*"]), "her line's start: line:<who>");
+  const { resolveFlow } = await import("../../sandbox/flows/index.mjs");
+  const f = resolveFlow("clinic:heal-eye#mistake-real");
+  assert.ok(f && f.id === "clinic:heal-eye#mistake-real", "the mistake player at real pace is a path of every heal game");
+  assert.equal(M.reachable("bad-item-going-in", M.momentsFor(root, "cook:chaat#mistake", { kindOf: () => ({ kind: "cook" }) })), true, "the wrong item's own moment (CHT-14)");
+  assert.equal(M.reachable("wrong-tap", ["drv:bad-item-going-in"]), false, "and it is not a wrong-tap: the rows asking for rec:wrong-tap keep their moment");
 });
 
 test("expects: the spec writer's vocabulary, negation, unknown words go to the reviewer", () => {
@@ -192,6 +208,34 @@ test("verdict files: a text-only row's PASS cites its text capture; a row with a
   assert.match(passRefusal({ verdict: "PASS", panel: null }, false), /name the panel/);
 });
 
+test("s08 w6L: a text-only PASS that opens with its capture label (a script's command) stands: SH-115, CLN-172, LNG-04", () => {
+  // the three lines of run ev-20261020-030207-6zl that collect refused, and the headings of their .md files
+  const mds = {
+    "SH-115": '# SH-115\n\n## Probes\n\n- SH-115-p1-repo: repo L1 @ -, at now: reached 0x () · the art check\n\n## Text captures\n\n#### node build/tools/art/artcheck.test.mjs (exit 0)\n\n```\nok\n```\n\n#### grep -n "thermometer\\|toe" build/tools/art/artcheck-known.json (exit 0)\n',
+    "CLN-172": '#### grep -n "\\"game\\": \\"cut\\"" data/clinic/pipeline.json (exit 0)\n\n#### grep -n "parked" data/clinic/pipeline.json (exit 0)\n',
+    "LNG-04": '- LNG-04-p2-L1-1366x768: clinic:heal-cut L1\n\n#### grep -n -i "with {x}\\|ph-turner\\|sekelo\\|plaster" data/lang/reports/gap-list.md (exit 0)\n\n#### LNG-04-p2-L1-1366x768 · dom:.cl-side at rec:heal-cut-start\n',
+  };
+  const labelsOf = (id) => captureLabels(mds[id] || "");
+  assert.ok(captureLabels(mds["SH-115"]).includes("node build/tools/art/artcheck.test.mjs"));
+  assert.ok(captureLabels(mds["LNG-04"]).includes("LNG-04-p2-L1-1366x768"), "the probe id before the dot is a label too");
+  const txt = "judge: Fable, text batch\n" +
+    'SH-115 | PASS: node build/tools/art/artcheck.test.mjs (exit 0), test 4 and test 3 pass, so the check now catches the cuts\n' +
+    'CLN-172 | PASS: grep -n "\\"game\\": \\"cut\\"" data/clinic/pipeline.json, the only two matches sit inside the parked block\n' +
+    'LNG-04 | PASS: grep -n -i "with {x}\\|ph-turner\\|sekelo\\|plaster" data/lang/reports/gap-list.md, all four placeholders are on Mum\'s list\n' +
+    "SH-45 | PASS: looks fine\n" +
+    "CLN-120 | PASS: node build/tools/art/other.mjs, not one of this row's labels\n";
+  const v = parseVerdicts(txt, labelsOf);
+  assert.deepEqual(v.lines.map((l) => [l.id, l.panel]), [["SH-115", "node build/tools/art/artcheck.test.mjs"], ["CLN-172", 'grep -n "\\"game\\": \\"cut\\"" data/clinic/pipeline.json'], ["LNG-04", 'grep -n -i "with {x}\\|ph-turner\\|sekelo\\|plaster" data/lang/reports/gap-list.md']]);
+  assert.deepEqual(v.rejected.map((r) => r.id), ["SH-45", "CLN-120"], "a PASS naming no label of its row is still refused");
+  for (const l of v.lines) assert.equal(passRefusal(l, false), null, `${l.id} stands as a text-only row's PASS`);
+  // without the labels (the old call) nothing changes: the three are refused
+  assert.deepEqual(parseVerdicts(txt).lines.length, 0);
+  // a row with a sheet still needs its panel letter, whatever it opens with
+  assert.match(passRefusal(v.lines[0], true), /A-D/);
+  assert.equal(labelOf("grep -n x file.json, fine", ["grep -n x file.json"]), "grep -n x file.json");
+  assert.equal(labelOf("grep -n xfile.json, fine", ["grep -n x"]), null, "a label is a whole word, not a prefix of one");
+});
+
 test("apply: FAIL reopens, PASS marks built, keep rows untouched, applying twice changes nothing", () => {
   const md = ["## Shared", "| ID | Issue | Status | Check | Source |", "|---|---|---|---|---|",
     "| SH-08 | Card order | built, not re-played (S04 audit: no evidence yet) | auto: ear | `x.md` |",
@@ -200,7 +244,7 @@ test("apply: FAIL reopens, PASS marks built, keep rows untouched, applying twice
   const v = new Map([["SH-08", { verdict: "FAIL", line: "A, the sugar row (2) is said first | x", png: "build/screenshots/evidence/r1/SH-08.png" }], ["SH-49", { verdict: "PASS", line: "B, every tick kept" }], ["KEEP-01", { verdict: "FAIL", line: "A" }]]);
   const out = applyVerdicts(md, v, "r1");
   assert.deepEqual(out.changed.map((c) => c.id), ["SH-08", "SH-49"]);
-  assert.match(out.text, /\| SH-08 \| Card order \| \*\*reopened\*\* \(evidence FAIL r1: A, the sugar row \[2\] is said first \/ x; `build\/screenshots\/evidence\/r1\/SH-08.png`\) \|/);
+  assert.match(out.text, /\| SH-08 \| Card order \| \*\*reopened\*\* \(evidence FAIL r1\) \|/);
   assert.match(out.text, /\| SH-49 \| Ticks \| built \(evidence PASS r1: B, every tick kept\) \|/);
   // the replaced statuses come back as history (decision 99: no "· earlier:" chain in the row)
   assert.deepEqual(out.history.map((h) => [h.id, h.earlier]), [["SH-08", "built, not re-played (S04 audit: no evidence yet)"], ["SH-49", "**reopened** (S04 audit FAIL)"]]);
@@ -343,5 +387,25 @@ test("red then green (checks-to-build 1): a PASS marks built only after a FAIL o
   // a two-strikes FAIL writes the open status Zafar's list reads
   const { applyVerdicts } = await import("./lib/evidence.mjs");
   const t = applyVerdicts("| A-06 | x | **reopened** (y) | c | s |", new Map([["A-06", { verdict: "FAIL", line: "B, still", twoStrikes: true }]]), "r1").text;
-  assert.match(t, /\| A-06 \| x \| \*\*open \(two strikes: Zafar\)\*\* \(evidence FAIL r1: B, still\) \|/);
+  assert.match(t, /\| A-06 \| x \| \*\*open \(two strikes: Zafar\)\*\* \(evidence FAIL r1\) \|/);
+  // a FAIL keeps what the row still waits on; a PASS drops it
+  const w = "| A-07 | x | **reopened** · **waiting on Mum (the recordings)** (S06) | c | s |";
+  assert.match(applyVerdicts(w, new Map([["A-07", { verdict: "FAIL", line: "A, silent" }]]), "r1").text, /\| \*\*reopened\*\* · \*\*waiting on Mum \(the recordings\)\*\* \(evidence FAIL r1\) \|/);
+  assert.doesNotMatch(applyVerdicts(w, new Map([["A-07", { verdict: "PASS", line: "A, said" }]]), "r1").text, /waiting on/);
+});
+
+test("--changed: a row is replayed only when a probe's flow is reached by the changed files (fake mapping)", () => {
+  const norm = {
+    "A-1": [{ flowId: "cook:chai-tray@L2#mistake" }], // base cook:chai-tray
+    "A-2": [{ flowId: "clinic:heal-eye" }, { flowId: "clinic:patient" }],
+    "A-3": [{ flowId: "mode:snap" }],
+    "A-4": [{ repo: true }], // a script probe: always kept
+    "A-5": [{ flowId: "mode:find" }], // a broken spec: always kept
+  };
+  assert.equal(flowBase("cook:chai-tray@L2#mistake"), "cook:chai-tray");
+  const r = changedRows(["A-1", "A-2", "A-3", "A-4", "A-5", "A-6"], norm, ["clinic:heal-eye"], { rowErrors: { "A-5": ["unknown flow"] } });
+  assert.deepEqual(r.keep, ["A-2", "A-4", "A-5"]);
+  assert.deepEqual(r.skipped, ["A-1", "A-3", "A-6"], "A-6 has no spec: not played");
+  assert.deepEqual(changedRows(["A-1"], norm, ["cook:chai-tray"]).keep, ["A-1"], "a path of a flow counts as the flow");
+  assert.deepEqual(changedRows(["A-1", "A-2", "A-3"], norm, []).keep, [], "nothing changed: nothing replayed");
 });

@@ -1,0 +1,25 @@
+{
+  "name": "s08 wave 4B, chai: the top-down pans and the pour from the hob's own pan, the word bubble clear of the pour, milk/water/tea once each, the turn-off line at the green, a ring-shaped pan glow, take-back by the count badge",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "visual work and art wiring (the pour)",
+  "cost": "about $30-45",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/feedback/cook-playtest-2026-10-17.md (P29, P33, P34, P56, P57, P59)", "build/reports/s08-w0-art.md and assets/s08b-cut-data.json (pan-top-empty/milk/black-s08b; s07's cp1 tilts)", "build/reports/s08-w2b-look.md (js/shared/pour.js)", "build/reports/s08-w2a-levels.md (chai's level rows)"],
+  "owns": ["js/cook/stations/chai-tray.js", "js/cook/mechanics/pour.js", "js/cook/mechanics/boil.js", "data/stations/chai*.json", "data/cook.json chai entries only", "build/reports/s08-w4b-chai.md"],
+  "readOnly": ["js/cook/stations/daar.js, stir.js, chop.js, tadka.js, js/shared/pour.js (wave 4A)", "js/clinic/** (wave 5B)", "assets/**", "data/lang/**"],
+  "stubs": "if the s07 tilts can't be registered to the new top-down pan, one static half-turned pour picture (Zafar's fallback) and say so",
+  "tasks": [
+    {"do": "CHAI-08, CHAI-26: the new top-down pans (pan-top-empty/milk/black-s08b) on the hob; the pour from the hob's own pan, turned towards the player in 4-5 steps of about 20 degrees with the chai level following (s07's cp1 tilts if they register, else one static half-turned picture), never a swap to a different pan; use js/shared/pour.js's stream.", "accept": "eye: the pour as a filmstrip, milky and black, at 1366x768 and 800x360"},
+    {"do": "CHAI-19: the item-name bubble centred above the pan, clear of the pour and the count badge. CHAI-22: milk, water and tea are once each (a second tap wiggles); no order asks for more than one. CHAI-24: 'Slow kar' fires as the bar enters the green. CHAI-25: the pan's highlight is a ring on the rim's centre, not the picture's box.", "accept": "eye: every pour with its bubble; auto: a second milk tap adds nothing; the turn-off line at the green's edge"},
+    {"do": "CK-TB-01: tap an ingredient's count badge to take one out, always (not only when the pan is selected, cold and nothing is speaking).", "accept": "eye: chai, take a ginger back by its badge; contract-21 green"}
+  ],
+  "flows": ["cook:chai-tray", "cook:chai", "cook:pour", "cook:boil"],
+  "shared": false,
+  "browser": true,
+  "port": 8843,
+  "report": "s08-w4b-chai",
+  "publish": false
+}

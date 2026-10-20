@@ -12,7 +12,9 @@
    count. */
 .njg-results {
   --rs-ink: #2a2522;
-  --rs-card: #ffffff;
+  /* SH-37 (s08 w6J; the judge, 20 Oct: "a stark white card ... does not read as part of the painted world"): the card is the
+     game's warm cream, edged like its round buttons, so it sits in the world, not over it */
+  --rs-card: var(--njg-cream);
   --rs-tile: #faf6ef;
   --rs-tile-line: #e7ded0;
   --rs-say-bg: #f4ecdf;
@@ -39,7 +41,8 @@
   justify-content: center;
   padding: max(var(--njg-s2), env(safe-area-inset-top)) max(var(--njg-s3), env(safe-area-inset-right)) max(var(--njg-s2), env(safe-area-inset-bottom)) max(var(--njg-s3), env(safe-area-inset-left));
   box-sizing: border-box;
-  /* Design system 10: a pop-up card over the (dimmed) game, not a page of its own */
+  /* Design system 10: a pop-up card over the (dimmed) game, not a page of its own (SH-37: dimmed less, so the kitchen still
+     reads round it) */
   background: rgba(42, 37, 34, 0.42);
   color: var(--rs-ink);
   font: 600 var(--njg-t4)/1.2 var(--njg-font);
@@ -66,7 +69,8 @@
   padding: var(--rs-pad);
   border-radius: var(--njg-radius);
   background: var(--rs-card);
-  box-shadow: var(--njg-shadow-lift);
+  border: var(--njg-line-2) solid var(--njg-cream-edge);
+  box-shadow: inset 0 calc(var(--njg-line-2) * -2) 0 var(--njg-cream-lip), var(--njg-shadow-lift);
   animation: rs-rise 0.3s cubic-bezier(0.2, 0.9, 0.3, 1) both;
 }
 .rs-steps { display: grid; grid-template-rows: minmax(0, 1fr); flex: 1 1 auto; min-height: 0; }
@@ -108,8 +112,12 @@
   transition: border-color 0.4s, box-shadow 0.4s, transform 0.3s;
   min-width: 0;
 }
-.rs-badge.pre { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
-.rs-badge.in { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1), border-color 0.4s, box-shadow 0.4s; }
+/* SH-37 (s08 w6J; the judge, 20 Oct: "a stopwatch on the left ... and an empty right half"): a badge still to come is its quiet
+   empty tile, so the card reads as three places filling in turn, never a slab with one thing in a corner; what pops is its art */
+/* SAM-22 (the judge, 20 Oct: "the third card is empty"): that was a still taken mid-reveal; a faint preview of each badge broke
+   the one-two-three reveal (contract-5, 553 gate breaks, 20 Oct), so a badge still to come stays its quiet empty tile */
+.rs-badge.pre > * { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
+.rs-badge.in > * { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1); }
 /* UX 9a: no circle behind the badge -- the object sits straight in the
    square card (.rs-badge is the card; .rs-disc just sizes and stacks it). */
 .rs-disc { position: relative; width: var(--rs-disc); height: var(--rs-disc); display: block; }
@@ -120,7 +128,8 @@
 .rs-badge.tier-plain { opacity: 0.94; }
 /* SH-67 (Z4): a badge waiting its turn stays hidden whatever its tier (.tier-plain's opacity came later in the file and
    showed the bulb before the first two); the badges step in one, two, three */
-.rs-badge.pre, .rs-badge.pre.tier-plain, .rs-badge.pre.tier-gold { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
+/* (SH-37: its tile shows, plain, with no tier's gold edge until it steps in; only its art waits) */
+.rs-badge.pre, .rs-badge.pre.tier-plain, .rs-badge.pre.tier-gold { opacity: 1; transform: none; border-color: var(--rs-tile-line); box-shadow: none; }
 
 /* ---------- time: the stopwatch art, the time drawn over its empty face ---------- */
 .rs-watch { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
@@ -264,9 +273,11 @@
   padding: var(--njg-s1);
 }
 /* SH-03 (6 Oct, decision 18 of the Cook play-test): wrong is ALWAYS the left half and right the right half, even when
-   one side is empty (all right, or all wrong): the two halves are the same width, so the centre line never moves */
+   one side is empty (all right, or all wrong), so the divider's place depends on the count of wrong words only.
+   SH-103 (Zafar, 17 Oct) replaces SH-03's equal halves: the right words are 4/5 of the width with none wrong (room for four right and one
+   wrong); the wrong half grows with its words (1 to 3 units against the right half's 4) */
 .rs-words-col {
-  flex: 1 1 0;
+  flex: var(--rs-w, 1) 1 0; /* SH-103: weighted halves (results.js wordsHtml): the right words 4, the wrong words 1 to 3 */
   min-width: 0;
   display: grid;
   grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, var(--njg-end-col)));
@@ -342,7 +353,7 @@
   .rs-actions .rs-btn.labelled svg { width: var(--njg-icon); height: var(--njg-icon); }
   .rs-actions .rs-btn.rs-done { flex: none; width: var(--rs-btn); }
   .rs-words { flex-direction: column; align-items: stretch; gap: var(--njg-s3); }
-  .rs-words-col { padding: 0; }
+  .rs-words-col { padding: 0; flex: 0 0 auto; }
   .rs-words-col:empty { display: none; }
   .rs-words-bad:not(:empty) + .rs-words-ok:not(:empty) { border-left: none; border-top: var(--njg-line) solid #d8c4a2; padding-top: var(--njg-s3); }
   .rs-words-col { grid-template-columns: repeat(var(--rs-cols, 1), minmax(0, 1fr)); }

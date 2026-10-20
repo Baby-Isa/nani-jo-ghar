@@ -1,0 +1,64 @@
+SESSION NAME / MODE:  s08 wave 6D, the review tools and the parked modes: every evidence gap and tool failure captured, the clinic replay driver, the review and feedback skills, no English in the parked modes
+MODEL AND EFFORT:     Sonnet, high effort (specs, drivers and skill text: mechanical work)
+COST ESTIMATE:        about $12-20
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6d-tools.context.md (859 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/evidence-ev-20261019-172022-khk.md and the judge verdicts in build/tools/review/data/verdicts.json (each row's line says what failed)
+     docs/tools.md
+     docs/process/qa-checklist.md
+     .claude/skills/review/SKILL.md
+     .claude/skills/feedback/SKILL.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/sandbox/** except the clinic entries of drivers/catalog.mjs
+  - build/tools/review/**
+  - build/sandbox/data/evidence.json
+  - .claude/skills/review/SKILL.md
+  - .claude/skills/feedback/SKILL.md
+  - js/find/**, js/snap/**, js/dress/**, js/monsoon/**, js/tidy/**, js/who/** (the parked modes)
+  - build/reports/s08-w6d-tools.md
+READ-ONLY (never edit):
+  - js/cook/**, js/shared/** (waves 6A, 6B)
+  - js/clinic/** (wave 6C)
+  - docs/process/regressions.md (the orchestrator applies verdicts)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a moment no driver can reach is listed in the report with why
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The 14 tool failures and 26 EVIDENCE gaps in the evidence run (the index's 'Tool failures' section and the EVIDENCE lines in build/screenshots/evidence/ev-20261019-172022-khk/judge/*.verdicts.md): fix each spec or driver so the sheet shows the row's state (the moment, the selector, the level, the frames). Add a clinic replay-tap driver step (SH-102's clinic half).
+     Accept: auto: evidence.mjs --run --rows <those 40> reaches every moment with no tool failure; the sheets show what each EVIDENCE line said was missing (list them in the report)
+  2. SH-109, SH-111, SH-116: the feedback skill lists L1-L4 for each station touched and searches the archive for every point (told before); the review skill judges every station's played frames at L1-L4, the fold and the go-on button. Make the probes' greps match what the rows ask (not incidental words).
+     Accept: auto: the three rows' repo probes pass
+  3. MOD-10 (contract-16, 135 breaks in find, snap, dress, monsoon, tidy, who): the parked modes write no English for the child: no headings, receipts, 'Show Nani', 'None of these: take another', 'EN' tags; grown-ups' text only in the '?' pop-up (rule 5). Don't change their mechanics.
+     Accept: auto: contract-16 green on mode:find, snap, dress, monsoon, tidy, who
+
+REGRESSION ROWS TO RECHECK (11 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (11): MOD-02*, MOD-10*, MOD-01, MOD-11, MOD-05, MOD-06, MOD-07, MOD-08, MOD-09, MOD-03, MOD-04
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6d-tools` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8854.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6d-tools.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

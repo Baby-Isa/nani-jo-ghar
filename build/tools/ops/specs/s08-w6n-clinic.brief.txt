@@ -1,0 +1,67 @@
+SESSION NAME / MODE:  s08 wave 6N, the clinic: the last run's code fails (the fever tool strip, the mouths moving, the tooth zoom, the eye's misread and its voice, the stethoscope, the bud, the board, the fever's framing, the arm's first frame)
+MODEL AND EFFORT:     Opus, high effort (heal games' layout and speech, judged by picture)
+COST ESTIMATE:        about $30-45
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6n-clinic.context.md (866 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/tools/review/data/verdicts.json (the judge lines, run ev-20261020-073941-0e9) and build/reports/evidence-ev-20261020-073941-0e9.md
+     docs/game-design/modes/clinic.md
+     build/reports/s08-w6i-stuck.md, s08-w6h-clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/**
+  - data/clinic/**
+  - css/clinic.css
+  - build/reports/s08-w6n-clinic.md
+READ-ONLY (never edit):
+  - js/cook/**, js/shared/**, css/shared/** (wave 6M; a shared change goes in the report)
+  - build/sandbox/**, build/tools/**
+  - data/lang/**
+  - assets/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: art goes on the art list
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-112: the fever game's tool strip shows its tools (today an empty sliver at 1366x768, a thin thermometer at 800x360). ART-19: Nani, the girl and the doctor move their mouths while they speak and blink at rest in the clinic too (the talk and blink frames exist; the judges saw a closed smile through a whole line).
+     Accept: eye: the fever strip at both sizes; filmstrips of each speaker mid-line
+  2. CLN-107: at the eye game's misread moment the doctor's bubble names the row with pictures and gives the drop; the 'to the eye test' button shows bottom right; 'I can see!' never plays over the dungri and mirchi recordings (a line plays only its own words' clips: extend the colour-clip test to every line). CLN-188: the eye chart board takes most of the screen (more than the girl).
+     Accept: auto: the clip test over every heal line; eye: the misread at L2-L3
+  3. CLN-163: the tooth zoom moves smoothly from the room to the mouth (no heavy blur, no curved overlay, no cut to a separate photo), and the eye close-up has no white corners. CLN-23: the stethoscope lies flat on the belt. CLN-195: the bud's tip turns blue after the dab every time (the last run saw it white again). CLN-178: at fever L3 her face is never cut off, and the end card is not blank. CLN-106: the arm's first frame has its room behind it (no blank white), and 'Time for the jab.' comes after the wipe.
+     Accept: eye: each as a filmstrip at 1366x768 and 800x360
+
+REGRESSION ROWS TO RECHECK (143 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (10): CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81
+  clinic:heal-fever (53): CLN-65*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-175, CLN-177*, CLN-198*, CLN-86, CLN-152, CLN-153, CLN-30, CLN-31, CLN-42, CLN-43, CLN-44, CLN-56, CLN-57, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-120, CLN-124, CLN-125, CLN-128, CLN-130, CLN-132, CLN-133, CLN-147, CLN-146, CLN-148, CLN-45, CLN-100, CLN-126, CLN-127, CLN-149, CLN-131, CLN-118, CLN-140, CLN-176, CLN-178, CLN-105
+  clinic:heal-eye (54): CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-163*, CLN-186, CLN-189*, CLN-198*, CLN-188*, CLN-85, CLN-152, CLN-30, CLN-39, CLN-42, CLN-43, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118, CLN-140, CLN-136, CLN-187
+  clinic:heal-tooth (46): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-180, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-198*, CLN-09, CLN-30, CLN-35, CLN-42, CLN-43, CLN-44, CLN-51, CLN-52, CLN-53, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103, CLN-124, CLN-125, CLN-128, CLN-129, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-taste (41): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-144*, CLN-196, CLN-198*, CLN-195*, CLN-30, CLN-36, CLN-42, CLN-43, CLN-44, CLN-54, CLN-55, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-104, CLN-149, CLN-118, CLN-140
+  clinic:heal-boing (47): CLN-159*, CLN-106*, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-166*, CLN-167*, CLN-170*, CLN-198*, CLN-82, CLN-30, CLN-42, CLN-43, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118, CLN-140, CLN-165, CLN-168
+  clinic:pharmacy (25): CLN-23*, CLN-20, CLN-21, CLN-22, CLN-24, CLN-96, CLN-97, CLN-19, CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+  clinic:waiting (28): CLN-115*, CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6n-clinic` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8863.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6n-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

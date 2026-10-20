@@ -1,0 +1,59 @@
+{
+  "kind": "tools",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "name": "s08 wave 6D, the review tools and the parked modes: every evidence gap and tool failure captured, the clinic replay driver, the review and feedback skills, no English in the parked modes",
+  "model": "Sonnet",
+  "effort": "high",
+  "why": "specs, drivers and skill text: mechanical work",
+  "cost": "about $12-20",
+  "port": 8854,
+  "report": "s08-w6d-tools",
+  "read": [
+    "build/reports/evidence-ev-20261019-172022-khk.md and the judge verdicts in build/tools/review/data/verdicts.json (each row's line says what failed)",
+    "docs/tools.md",
+    "docs/process/qa-checklist.md",
+    ".claude/skills/review/SKILL.md",
+    ".claude/skills/feedback/SKILL.md"
+  ],
+  "owns": [
+    "build/sandbox/** except the clinic entries of drivers/catalog.mjs",
+    "build/tools/review/**",
+    "build/sandbox/data/evidence.json",
+    ".claude/skills/review/SKILL.md",
+    ".claude/skills/feedback/SKILL.md",
+    "js/find/**, js/snap/**, js/dress/**, js/monsoon/**, js/tidy/**, js/who/** (the parked modes)",
+    "build/reports/s08-w6d-tools.md"
+  ],
+  "readOnly": [
+    "js/cook/**, js/shared/** (waves 6A, 6B)",
+    "js/clinic/** (wave 6C)",
+    "docs/process/regressions.md (the orchestrator applies verdicts)"
+  ],
+  "stubs": "a moment no driver can reach is listed in the report with why",
+  "tasks": [
+    {
+      "do": "The 14 tool failures and 26 EVIDENCE gaps in the evidence run (the index's 'Tool failures' section and the EVIDENCE lines in build/screenshots/evidence/ev-20261019-172022-khk/judge/*.verdicts.md): fix each spec or driver so the sheet shows the row's state (the moment, the selector, the level, the frames). Add a clinic replay-tap driver step (SH-102's clinic half).",
+      "accept": "auto: evidence.mjs --run --rows <those 40> reaches every moment with no tool failure; the sheets show what each EVIDENCE line said was missing (list them in the report)"
+    },
+    {
+      "do": "SH-109, SH-111, SH-116: the feedback skill lists L1-L4 for each station touched and searches the archive for every point (told before); the review skill judges every station's played frames at L1-L4, the fold and the go-on button. Make the probes' greps match what the rows ask (not incidental words).",
+      "accept": "auto: the three rows' repo probes pass"
+    },
+    {
+      "do": "MOD-10 (contract-16, 135 breaks in find, snap, dress, monsoon, tidy, who): the parked modes write no English for the child: no headings, receipts, 'Show Nani', 'None of these: take another', 'EN' tags; grown-ups' text only in the '?' pop-up (rule 5). Don't change their mechanics.",
+      "accept": "auto: contract-16 green on mode:find, snap, dress, monsoon, tidy, who"
+    }
+  ],
+  "flows": [
+    "mode:find",
+    "mode:snap",
+    "mode:dress",
+    "mode:monsoon",
+    "mode:tidy",
+    "mode:who"
+  ]
+}

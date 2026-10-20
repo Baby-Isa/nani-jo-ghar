@@ -1,0 +1,26 @@
+{
+  "name": "s09-mock, the look in code: the morning door in four weathers, the evening book and the window ride, mocked so Zafar agrees the screens before any ChatGPT art",
+  "model": "Fable",
+  "effort": "high",
+  "kind": "design",
+  "why": "visual design and judgement; the screens guide the mechanics",
+  "cost": "about $10-15",
+  "stop": "when every task is accepted, or 3 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/game-design/story-and-arcs.md Part 1 (the 19 Oct notes at its top: A day at Nani's, the door, the weather, the trips)", "build/reports/research-trips-2026-10-19.md (the day's fixed shape; the farm, beach and shops)", "docs/game-design/modes/story-by-the-fire.md (the evening book)", "docs/design-language/ui-design-system.md and art-bible.md (the look)", "docs/game-design/cast.md"],
+  "owns": ["lab/mock-s09/** (new: one HTML page per screen, plain HTML/CSS/SVG, existing assets only)", "build/reports/s09-mock.md and build/reports/s09-mock/ (screenshots)"],
+  "readOnly": ["everything else"],
+  "stubs": "art that does not exist yet is drawn simply in code (flat shapes, gradients) and labelled in the report as 'to draw in ChatGPT'",
+  "tasks": [
+    {"do": "The morning door in four weathers (sunny, cloudy, raining, night with stars): one fixed house front and foreground (Nani's courtyard, assets/backgrounds/bg-courtyard-e-v1.webp or Nani's existing pictures as a guide) with the sky from the horizon up swapped; the scene's light and shadows following the weather (a tint and a sun-shadow layer only when sunny); Nani at her open door with her line as short sentences one at a time, Kutchi with its English beneath (rule 5, Zafar 19 Oct), a thought bubble showing the day's place or the kitchen, the child's 'Ha!' answer button; the shared sidebar and buttons from js/shared where they apply (non-negotiable 8). Show a sunny beach-day door, a raining cooking-day door, a cloudy clinic-day door and the evening (night) return.", "accept": "screenshots of each at 1366x768 and 844x390 in the report, flaws first; a short note of what each element does in the game"},
+    {"do": "The evening book: Nani and the child with the book in the evening (night sky outside); today's pages: the words met today as pictures with their Kutchi (no English for the child), the photos taken, stars or a small progress mark (non-negotiable 12: progress, not verdicts), then goodnight and a glimpse of tomorrow's door with its sky.", "accept": "screenshots of the book's pages at both sizes"},
+    {"do": "The window ride: the view from inside a car (and a bus) as the scene scrolls past, like the clinic's conveyor belt; Nani names a thing and the child taps it as it passes; look-alikes pass together; 'stop the car!' moment. Mock the farm road (goats, hens, a tree, a red door) as the first.", "accept": "screenshots at both sizes, plus one short screen recording or a three-frame filmstrip of the scroll"},
+    {"do": "One overview page (lab/mock-s09/index.html) linking every screen, and the report's list of what each screen needs drawn in ChatGPT (the house, foreground, each sky, Nani's door poses, the book, the car and bus interiors, the farm road strip).", "accept": "the index opens every screen; the art list is concrete enough to become the art plan"}
+  ],
+  "flows": [],
+  "shared": false,
+  "browser": true,
+  "port": 8837,
+  "report": "s09-mock",
+  "publish": false
+}

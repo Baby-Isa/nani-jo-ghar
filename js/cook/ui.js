@@ -198,6 +198,9 @@
    */
   let speechTail = Promise.resolve();
   // (a clip that never ends can't hold the queue: each waits at most 4 s for the one before)
+  // LNG-09 (Zafar, 17 Oct: "speed up the instructions a little bit"): a spoken line is shown at least this long. It was 700 ms,
+  // from the days of the slowed test voice (rate 0.7); the voice runs at its own speed now, so a short word is no longer held
+  const LINE_MIN_MS = 300;
   const queued = (fn) => {
     // SH-66 (s04-fxc): a line queued before a voice stop (a station's end, a tap through the pop-up) never starts after
     // it: the shared voice layer's generation is taken now and checked when its turn comes (js/shared/request-popup.js)
@@ -296,7 +299,7 @@
     try {
       const naniQuiet = (target === card() || opts.nani) && UI.naniMuted();
       const voice = !opts.silent && !naniQuiet && Lang.hasVoice(line);
-      const talk = voice ? Promise.all([queued(() => speakAlong(line, slot)), Cook.wait(700)]) : Cook.wait(opts.ms || Cook.readMs(Lang.plain(line)));
+      const talk = voice ? Promise.all([queued(() => speakAlong(line, slot)), Cook.wait(LINE_MIN_MS)]) : Cook.wait(opts.ms || Cook.readMs(Lang.plain(line)));
       await Promise.race([talk, skipped]);
     } finally {
       if (offSkip) offSkip();
@@ -379,7 +382,7 @@
     try {
       // Nani muted (her box): she still shows the line, silently
       const voice = !opts.silent && !UI.naniMuted() && Lang.hasVoice(line);
-      const talk = voice ? Promise.all([queued(() => speakAlong(line, guide ? guide.el : cap)), Cook.wait(700)]) : Cook.wait(opts.ms || Math.min(2600, Cook.readMs(Lang.plain(line))));
+      const talk = voice ? Promise.all([queued(() => speakAlong(line, guide ? guide.el : cap)), Cook.wait(LINE_MIN_MS)]) : Cook.wait(opts.ms || Math.min(2600, Cook.readMs(Lang.plain(line))));
       await Promise.race([talk, skipped]);
     } finally {
       if (offSkip) offSkip();
@@ -472,6 +475,40 @@
    *                         the taught first round: decision 55, SH-60: help after the pause, the first item too)
    */
   let stepper = null;
+  /*
+   * s08 w2A (SH-110, the level table's step call; Zafar, 19 Oct): as a step opens Nani says its line once, at every level:
+   * the order in pieces, never help (nothing is shown or lit, it never costs). Said through the one speech queue, tagged
+   * role "call"; skipped (and logged, Lifecycle step-call) when she is muted, the line has no voice, the station said it a
+   * moment ago (the help ladder's same-line rule), or the step closed before its turn. The help after the pause is unchanged.
+   */
+  const callNote = (s, by) => {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: String(s.id), by });
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  const copyLine = (l) => Object.assign({}, l, { parts: l.parts ? l.parts.map(copyLine) : l.parts });
+  function stepCall(s) {
+    const row = Cook.levelRow ? Cook.levelRow(orderLevel()) : { stepCall: false };
+    if (!row.stepCall) return callNote(s, "skip-off");
+    if (s.noCall) return callNote(s, `skip-${s.noCall}`);
+    if (!s.line || s.line.ok === false || !Lang.hasVoice(s.line)) return callNote(s, "skip-novoice");
+    if (UI.naniMuted()) return callNote(s, "skip-muted");
+    const G = global.NaniGuide;
+    // MAA-15 (Zafar, 17 Oct: maani's Firai on both turns): a step opened with "again" is called even if its words were just said
+    if (!s.again && G && (G.recentlySaidIn || G.recentlySaid)(Lang.plain(s.line))) return callNote(s, "skip-said");
+    callNote(s, s.again ? "queued-again" : "queued");
+    s.callWaiting = true; // (s08 w6B, contract-36: a call still waiting when its step closes is logged skip-closed then: glow below)
+    const line = Lang.role(copyLine(s.line), "call");
+    queued(() => {
+      if (!s.callWaiting) return null; // (already logged skip-closed as its step closed)
+      s.callWaiting = false;
+      if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
+      if (guide) guide.talk(true);
+      return Lang.speak(line).finally(() => guide && guide.talk(false));
+    }).catch(() => {});
+  }
   function makeStepper() {
     if (!global.NaniGuide || !global.NaniGuide.stepper) return null;
     return global.NaniGuide.stepper({
@@ -485,16 +522,26 @@
         if (guide) guide.set("");
       },
       speak: (s) => (s.line && Lang.hasVoice(s.line) && guide ? queued(() => speakAlong(s.line, guide.el)) : null),
-      glow: (s, on) => s.glow && s.glow(on),
+      glow: (s, on) => {
+        // s08 w6B (contract-36, day 6's pantry: the last thing tapped while step 8's call waited behind a count, then the stage
+        // ended and the queue was dropped, so neither the call nor its skip was logged): a step that closes with its call still
+        // waiting logs the skip now
+        if (!on && s && s.callWaiting) {
+          s.callWaiting = false;
+          callNote(s, "skip-closed");
+        }
+        return s.glow && s.glow(on);
+      },
       level: () => orderLevel(),
       onHelp: (s) => Cook.onHelp && Cook.onHelp("hint", { ids: s.ids || [] }),
+      call: (s) => stepCall(s),
     });
   }
   UI.step = function (line, o = {}) {
     if (!stepper) stepper = makeStepper();
     if (!stepper || !line) return null;
     const rec = line.ok === false;
-    return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids });
+    return stepper.open({ line, html: rec ? esc(Lang.plain(line)) : raHtml(line, { hide: o.hide }), rec, glow: o.glow || null, helpAfter: o.helpAfter, quiet: !!o.quiet, ids: o.ids, noCall: o.noCall || null, again: !!o.again });
   };
   UI.stepDone = () => stepper && stepper.close();
   /** An off-screen guide's line in her box (or her card's strip, R4), said; resolves when it ends (a tap skips). */
@@ -516,8 +563,8 @@
   };
   UI.stepPoke = () => stepper && stepper.poke();
   UI.stepHelp = () => stepper && stepper.help();
-  UI.stepOpen = function (line, { ctx } = {}) {
-    UI.step(line, { helpAfter: false });
+  UI.stepOpen = function (line, { ctx, hide } = {}) {
+    UI.step(line, { helpAfter: false, hide });
     return !!(ctx && ctx.guided);
   };
   /**
@@ -615,7 +662,6 @@
         Cook.unlockAudio();
         const line = guideLine;
         if (!line || !Lang.hasVoice(line)) return;
-        if (Cook.onHelp && line.segs.some((x) => x.w)) Cook.onHelp("replay", { line });
         btn.classList.add("on");
         speakAlong(line, guide.el)
           .catch(() => {})
@@ -1003,7 +1049,9 @@
   const M = (UI.mission = {});
   let mission = null;
   const Order = () => Cook.Order;
-  const hideWord = (id) => Cook.cardHidden(id) && Lang.wordHasVoice(id);
+  // s08 w2A (SH-110, the level table): the card dots its item words from L3 (frames, verbs and numbers stay written), by the
+  // order's level, never by how well a word is known (L1-L2 write every word: Zafar, 19 Oct)
+  const hideWord = (id) => !!mission && !!Cook.dotItem && Cook.dotItem(id, mission.level);
   const faceUrl = (who, mood) => Cook.v(Cook.facePath(who, mood));
   UI.faceUrl = faceUrl;
   M.open = function ({ who, name, ladders, lines, line, busy, how }) {
@@ -1023,6 +1071,15 @@
       // the order's level: how long the light bulb shows English (data.calm.bulbMs)
       level: orderLevel(),
     };
+    // s08 w6B (contract-35, contract-36: the day flows were judged at their flow's label, L1, while day 3's maani and chai are
+    // L3 and a seen profile plays later dishes higher): the order's own level, for the checks (the sidebar's data-level and a
+    // Lifecycle note "order-level"), never shown to the child
+    try {
+      if ($("#side")) $("#side").dataset.level = String(mission.level);
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-level", { step: String(mission.level), by: String(who || "") });
+    } catch (e) {
+      /* only a marker */
+    }
     UI.bulbOff();
     // SH-59 (C16): a new order starts with the "?" calm (no pulse left over from the last station or a conversation)
     if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
@@ -1060,7 +1117,21 @@
     if (mission.busy && mission.patience != null) paintDrain(mission.patience);
   }
   const rowHidden = (r) => !r.done && !r.revealed && r.line.segs.some((s) => s.w && (r.dots || hideWord(s.w)));
-  const rowHide = (r) => (id) => !r.done && !r.revealed && (r.dots || hideWord(id));
+  // SH-98 (Zafar, 17 Oct: "if you click light bulb everything should be written in Kutchi"): the card's small bulb (the peek) shows EVERY word
+  // and number, never a dotted one; its card is drawn that way (peekCard, set per card while its data is built, orderCards). Wave 2A's
+  // level table hangs the dotted L3 card on dotsOk: it says whether a card may show its well-known words as dots (an open card
+  // may; the peek never does)
+  let peekCard = false;
+  M.dotsHook = null; // wave 2A's level table: (mission) => false makes the open card at that level show no dotted words (the L3 card with some dotted is the other way round); null: as before
+  const dotsOk = () => !peekCard && (typeof M.dotsHook !== "function" || M.dotsHook(mission) !== false);
+  const rowHide = (r) => (id) => dotsOk() && !r.done && !r.revealed && (r.dots || hideWord(id));
+  // SH-101 (Zafar, 17 Oct): the peek lasts the level's time, from data (data/cook.json calm.peekMs: 7 s at level 3, the 3.5 s added to the others)
+  const peekMsOf = () => {
+    const t = ((Cook.data && Cook.data.calm) || {}).peekMs || {};
+    const lv = Math.min(4, Math.max(1, mission ? mission.level : 1));
+    return (t[lv] != null ? t[lv] : 7000) / (Cook.speed || 1);
+  };
+  const peeksFor = (who) => !!(mission && mission.closed && mission.closed.peek && (!mission.closed.who || mission.closed.who === who));
   const anyHidden = (L) => Order().rows(L).some(rowHidden);
   const hasRows = (m) => m.ladders.some((L) => L.sections.some((s) => s.groups.some((g) => g.length)));
   /**
@@ -1107,11 +1178,7 @@
         hide: rowHide(r),
         noTranslate: true,
         reserveSay: true,
-        onHear: () => {
-          // hearing it again is fine while the words are on the card; once
-          // they're dots, a replay is help (a hint)
-          if (rowHidden(r) && Cook.onHelp) Cook.onHelp("replay", { ids: r.ids });
-        },
+        // SH-102: hearing it again is free, written or dotted (only seeing it, the eye and the bulbs, costs a hint)
         onReveal: hidden
           ? () => {
               r.revealed = true;
@@ -1131,7 +1198,7 @@
     const r = L.head;
     const li = document.createElement("div");
     li.className = ["lr", "head", r.done ? "done" : ""].filter(Boolean).join(" ");
-    li.appendChild(UI.pill(r.line, { hide: rowHide(r), noTranslate: true, reserveSay: true, onHear: () => rowHidden(r) && Cook.onHelp && Cook.onHelp("replay", { ids: r.ids }) }));
+    li.appendChild(UI.pill(r.line, { hide: rowHide(r), noTranslate: true, reserveSay: true }));
     if (mission.english && r.line.en) li.insertAdjacentHTML("beforeend", `<div class="lr-en">${esc(r.line.en)}</div>`);
     return li;
   }
@@ -1245,7 +1312,6 @@
       ev.stopPropagation();
       Cook.unlockAudio();
       faces().forEach((f) => f.classList.add("on"));
-      if (m.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
       (UI.w6() ? readAlong(partsOf(m.line, introEls)) : Lang.speak(m.line)).then(() => faces().forEach((f) => f.classList.remove("on")));
     };
     const prevExpect = Cook.expect;
@@ -1317,7 +1383,6 @@
   /** ↻ on the small card: the order big again, said again (a replay: help once its words are dots). */
   M.replay = async function () {
     if (!mission || introOpen() || $("#mission").classList.contains("stamped")) return;
-    if (mission.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
     const relaxed = Cook.save.mode !== "busy";
     const wasPaused = Cook.paused;
     if (relaxed) Cook.paused = true;
@@ -1353,7 +1418,7 @@
     const token = Cook.run;
     const prevExpect = Cook.expect;
     Cook.expect = { kind: "click", selector: "#intro .ic-card", intro: true };
-    const read = () => (!UI.naniMuted() && Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(700)]) : Cook.wait(Cook.readMs(Lang.plain(line))));
+    const read = () => (!UI.naniMuted() && Lang.hasVoice(line) ? Promise.all([Lang.speak(line), Cook.wait(LINE_MIN_MS)]) : Cook.wait(Cook.readMs(Lang.plain(line))));
     // R4 (DAAR-25, T12 "one Nani card"): her own card is already in the sidebar (the chop card, made before the chop again):
     // the pop-up is that card shown big, so it leaves the sidebar while the pop-up is up and the pop-up folds back into it
     const mine = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who) || null;
@@ -1405,6 +1470,8 @@
     const lv = ds.map((d) => d.level || 1);
     return Math.max(ctx.level || 1, ...(lv.length ? lv : [1]));
   }
+  // (the level the sidebar's cards are drawn at: a station's own card follows it, so one order never has two ladders, contract-35)
+  UI.orderLevel = orderLevel;
   /** Spoken parts ([{line, els}]) of a joined line whose parts know their rows (Cook.Order.speech). */
   function partsOf(line, map) {
     const parts = line && line.parts ? line.parts : line ? [line] : [];
@@ -1416,10 +1483,32 @@
     return [].concat(...rows.map((r) => map.get(r) || []));
   }
   let readToken = 0;
+  /*
+   * contract-8 (SH-53, SH-79, decision 95; s08 w3B): one thing lit while a card is read. The rows' "next" marks are held
+   * (taken off and kept here) from the first part read until the reading ends or is stopped, then given back; a card drawn
+   * again meanwhile has its new marks held too (renderOrder6). Was: each part gave its marks back in its own finally, so a
+   * read stopped by a new one (a replay over the order, the hint over a replay) put "next" back while the new one was lit.
+   */
+  const heldNext = new Set();
+  let readActive = false;
+  const holdNext = (keep = []) =>
+    document.querySelectorAll(".oc-row.next, .oc-item.next").forEach((e) => {
+      if (keep.includes(e)) return;
+      e.classList.remove("next");
+      heldNext.add(e);
+    });
+  const giveNext = () => {
+    heldNext.forEach((e) => e.isConnected && e.classList.add("next"));
+    heldNext.clear();
+  };
   const stopReading = () => {
     readToken++;
+    readActive = false;
     document.querySelectorAll(".reading").forEach((e) => e.classList.remove("reading"));
+    giveNext();
   };
+  /** A part that names several rows (one word in two skewers' boxes, a headline naming rows) lights one: the first on the card. */
+  const oneLit = (els) => (els.length > 1 ? [els.slice().sort((a, b) => (a.compareDocumentPosition(b) & 4 ? -1 : 1))[0]] : els);
   /**
    * S03-A, the voice stop (SH-64, CLN-109): Cook's voice really stops: the read-along's chain (readToken), the core's
    * channels (their lines already chained stay quiet) and the clip playing now (Cook.stopVoice). A tap through the
@@ -1449,20 +1538,25 @@
     const t0 = Date.now();
     for (const p of parts) {
       if (token !== readToken) return;
-      p.els.forEach((e) => e.classList.add("reading"));
+      const lit = oneLit(p.els);
       // SH-79 (decision 95, contract-8): one lit thing on the card: while a row is read out, the next row's mark waits
-      const held = [...document.querySelectorAll(".oc-row.next, .oc-item.next")].filter((e) => !p.els.includes(e));
-      held.forEach((e) => e.classList.remove("next"));
+      readActive = true;
+      holdNext(lit);
+      lit.forEach((e) => e.classList.add("reading"));
       try {
         // SH-17 (S05-G): a part stays lit while it is said and at least ~220 ms a word (up to 0.9 s): a part whose clip is
         // short ('elchi' in 'Muke elchi waari chai khape.') lit for under 150 ms, too fast to follow at a child's pace
         if (Lang.hasVoice(p.line)) await Promise.all([Lang.speak(p.line), Cook.wait(Math.max(260, Math.min(900, 220 * Lang.plain(p.line).split(/\s+/).length)))]);
         else await Cook.wait(Math.max(700, Cook.readMs(Lang.plain(p.line)) * 0.55));
       } finally {
-        p.els.forEach((e) => e.classList.remove("reading"));
-        held.forEach((e) => e.isConnected && e.classList.add("next"));
+        lit.forEach((e) => e.classList.remove("reading"));
       }
       if (token === readToken) await Cook.wait(120);
+    }
+    // the reading is over (and was not stopped by another): the next marks come back
+    if (token === readToken) {
+      readActive = false;
+      giveNext();
     }
     const left = min / Cook.speed - (Date.now() - t0);
     if (left > 0 && token === readToken) await Cook.wait(left * Cook.speed);
@@ -1538,7 +1632,9 @@
     if (r.rec) return { html: esc(r.line.en || Lang.plain(r.line)), rec: true, key: r };
     // the headline is what the person says, always shown (design system 12): its words never fade to
     // dots ("Muke ••• khape." at the grill); the rows below carry the listening
-    return { html: text6(mission && mission.english ? r.line : r.cardLine || r.line, () => false), key: r };
+    // SAM-23 (Zafar, 18 Oct: "keep the title ... I want samosa, and even in English"): a dish whose count heads each block has no number in
+    // its title in either language (r.uncountedTitle); the bulb's English of every other headline is the whole line
+    return { html: text6(mission && mission.english && !r.uncountedTitle ? r.line : r.cardLine || r.line, () => false), key: r };
   }
   /** Every card of the order: [{data, key, who, rows}] (rows: the ladder rows it shows, for read-along). */
   function orderCards() {
@@ -1549,6 +1645,7 @@
       const people = sections.filter((x) => x.s.for);
       if (people.length) {
         people.forEach(({ s, rows }) => {
+          peekCard = peeksFor(s.for);
           const placed = rows.slice().sort((a, b) => Order().slotOf(L, a.r) - Order().slotOf(L, b.r));
           // decision 97 (3), SH-78: a person's card stays open from their dish's first step to its last: every row ticked
           // is not finished while their dish is still being made (chai: their pour); the station closes them ({all, for})
@@ -1561,6 +1658,7 @@
       }
       const items = [];
       const rowsShown = [];
+      peekCard = peeksFor(mission.who);
       sections.forEach(({ s, rows, seq }) => {
         if (s.cardOf) return; // drawn under its item
         const flat = rows.filter((x) => !x.r.cards);
@@ -1575,7 +1673,10 @@
         }
         if (flat.length) {
           const parts = flat.map((x) => partNode(x.r, x.gi));
-          items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat });
+          // DAAR-26 (s08 w6M; the judge, 20 Oct: "the L4 card at the stir shows only 'Muke daar khape.' with no stir row"): on a
+          // card closed for its level the stir row stays written once it has come (she says the laps and the speed: SH-99)
+          const keep = s.when === "stir" && !!s.shown && !!(mission.levelClosed || (mission.closed && mission.closed.peek));
+          items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat, keep });
           rowsShown.push(...flat.map((x) => x.r));
         }
         rows
@@ -1591,7 +1692,10 @@
             // SEK-03 (S05-C2): several skewers of one mix ("ba lakri mix") are a box each too, the same little skewer
             // twice, not one label row over a list of its pieces (a skewer's mix is a sequence; maani's fillings are not)
             // The pieces tick along the one mix for the first skewer; a later box is done when its skewer is (M.tickCard)
-            else if (mixes.length === 1 && mixes[0].seq)
+            else if (mixes.length === 1 && mixes[0].seq) {
+              // contract-30 (SH-99; s08 w3B): the same mix several times is said with its number ("ba lakri mixed"), so the
+              // number is written too: the kind's own row over its boxes (one is the bare item: Zafar, 19 Oct, no row for one)
+              if ((r.qty || 1) > 1) items.push({ label: rowText(text6(fullLine(r), rowHide(r))), count: 1, parts: [], ordered: false, done: !!r.done, wrong: !!r.wrong, key: r, src: [] });
               for (let u = 0; u < (r.qty || 1); u++) {
                 const it = Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), mixes[0]), { group: true });
                 const unit = !!(r.units && r.units[u]) || !!r.done;
@@ -1604,7 +1708,7 @@
                 }
                 items.push(it);
               }
-            else {
+            } else {
               const it = item(rowText(text6(fullLine(r), rowHide(r))), mixes[0] || null);
               it.count = r.qty || 1;
               items.push(it);
@@ -1620,6 +1724,7 @@
       const done = rowsDone && (!H || !!H.rec || !(H.ids || []).length || !!H.done);
       cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: person(mission.who), headline, items, done, strip: mission.stripMode && L === mission.ladders[0] ? mission.strip : null } });
     });
+    peekCard = false;
     // the next step of an ordered job (a light grey band): only in the first ordered list still open
     let marked = false;
     cards.forEach((c) =>
@@ -1684,8 +1789,11 @@
         // G1 (F8, only the current need): on a sidebar too short for every person, the people not in progress
         // fold to face + headline too (a tap opens one; the face is still the replay)
         closed: phase || idle.has(c.key),
+        // D11 (as the clinic): Nani's English bulb opens a closed card for its time, so the English shows each kind and its parts (SAM-23:
+        // "three samosas" and its fillings under it); the small bulb's peek is the Kutchi (SH-98)
+        open: !!mission.english,
         onPeek: !big && phase && closed.peek ? () => Cook.onHelp && Cook.onHelp("hint", { ids: [] }) : null,
-        peekMs: 3500 / (Cook.speed || 1),
+        peekMs: peekMsOf(),
         foldAfter: 700 / (Cook.speed || 1),
         onEl: (key, e) => addEl(map, key, e),
         decorate: (e, node) => node.key && typeof node.key.decorate === "function" && node.key.decorate(e),
@@ -1698,11 +1806,16 @@
       });
       // what this card says, in order (the headline, then its rows): a person says their line from here
       // 29 Sept (X1): the card's own sentence, in card order (one per person); each part lights the rows it says
-      el._parts = () => {
+      el._parts = (left = false) => {
         const head = c.data.headline && c.data.headline.key;
+        // SH-102, SH-114: left: a replay reads the steps not yet done only, once any is (never the headline then); all of it otherwise
+        const body = c.rows.filter((r) => !r.head);
+        const part = left && body.some((r) => r.done) && body.some((r) => !r.done);
+        const rowsSaid = part ? c.rows.filter((r) => !r.head && !r.done) : c.rows;
+        const headSaid = part ? null : head;
         const line = c.who && c.L && c.L.sections.some((s) => s.for === c.who)
-          ? Order().sentence(head, c.rows, { join: Order().joinOf(c.L) })
-          : Order().speech([Object.assign({}, c.L, { head: head || null, sections: c.L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null })) })]);
+          ? Order().sentence(headSaid, rowsSaid, { join: Order().joinOf(c.L) })
+          : Order().speech([Object.assign({}, c.L, { head: headSaid || null, sections: c.L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null, groups: part ? s.groups.map((g) => g.filter((r) => !r.done)).filter((g) => g.length) : s.groups })).filter((s) => s.groups.length) })]);
         return line.parts.map((l) => ({ row: l.row, line: l, els: elsOf(l, map).filter((e) => el.contains(e)) }));
       };
       el._rows = c.rows;
@@ -1834,9 +1947,14 @@
   /** One card reads itself (its face lights), counting it as help once its words are dots. rows: only these (a recast). */
   async function sayCardEl(c, rows) {
     const face = c.querySelector(".oc-face");
-    const hidden = (c._rows || []).filter(rowHidden);
-    if (hidden.length && Cook.onHelp && !rows) Cook.onHelp("replay", { ids: [].concat(...hidden.map((r) => r.ids)) });
-    const parts = rows ? c._parts().filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : c._parts();
+    // SH-102, SH-114 (Zafar, 18 Oct: "they should just read out starting from the remaining steps"): a replay is free and says only the steps
+    // not yet done (all of it while nothing is done, and when everything is); a recast (rows) says those rows
+    // s08 w6B (contract-31: a replay said "trae khun.", a step already ticked): once every step is done there is nothing left
+    // to say but whose it is, so a replay then says the headline only (never a ticked row again)
+    const all = c._parts();
+    const body = all.slice(1).filter((p) => p && p.row);
+    const allDone = !rows && body.length > 0 && body.every((p) => p.row.done);
+    const parts = rows ? all.filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : allDone ? all.slice(0, 1) : c._parts(true);
     c.classList.add("speaking");
     if (face) face.classList.add("on");
     try {
@@ -1879,6 +1997,8 @@
     $("#mission").classList.add("people");
     $("#side").classList.toggle("english", !!mission.english);
     if (introOpen()) renderIntro6();
+    // contract-8: a card drawn again while a card is read keeps its new next marks held until the reading ends
+    if (readActive) holdNext([...document.querySelectorAll(".reading")]);
   }
   function renderIntro6() {
     const box = intro().querySelector(".ic-order");
@@ -1892,14 +2012,25 @@
     card.style.setProperty("--crowd-cols", String(n >= 4 ? 2 : Math.max(1, n)));
     // a long order: the pop-up lays its items out in two columns rather than running off the screen
     card.classList.toggle("wide", n < 2 && box.querySelectorAll(".oc-row").length > 8);
+    if (readActive) holdNext([...document.querySelectorAll(".reading")]);
   }
-  /** The order card's own speaker: the whole order, read along on the card. */
+  /**
+   * SH-102, SH-114: the order as a replay says it: only the rows not yet done once any is done (and not the headline then); the whole
+   * order while nothing is done, and when everything is
+   */
+  function replayLine() {
+    const rows = [].concat(...mission.ladders.map((L) => Order().rows(L).filter((r) => !r.head)));
+    // (s08 w6B, contract-31: everything done, the headline alone; nothing done, all of it)
+    if (rows.length && rows.every((r) => r.done) && mission.ladders.some((L) => L.head)) return Order().speech(mission.ladders.map((L) => Object.assign({}, L, { sections: [] })));
+    if (!(rows.some((r) => r.done) && rows.some((r) => !r.done))) return mission.line;
+    return Order().speech(mission.ladders.map((L) => Object.assign({}, L, { head: null, sections: L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null, groups: s.groups.map((g) => g.filter((r) => !r.done)).filter((g) => g.length) })).filter((s) => s.groups.length) })));
+  }
+  /** The order card's own speaker: the order, read along on the card (the steps left once some are done: replayLine). */
   M.sayCard = function () {
     if (!mission || introOpen()) return;
     const btns = [...document.querySelectorAll("#mission .oc-face")]; // the face is the replay button
-    if (mission.ladders.some(anyHidden) && Cook.onHelp) Cook.onHelp("replay");
     btns.forEach((b) => b.classList.add("on"));
-    return readAlong(partsOf(mission.line, sideEls))
+    return readAlong(partsOf(replayLine(), sideEls))
       .catch(() => {})
       .then(() => btns.forEach((b) => b.classList.remove("on")));
   };
@@ -2314,6 +2445,13 @@
   M.stamp = function () {
     $("#mission").classList.add("stamped");
     if (mission) mission.stamped = true;
+    // CHT-15 (the judge, 20 Oct: "the tick badge on the mission bubble covers the end of 'khape'"): the stamp's room narrows
+    // the card's words (css/shared/order-card.css .stamped), which changes no box FitText.watch sees, so the headline kept
+    // the size it was fitted at and ran under the done tick. Fit the card's words again now (and once the fold has run)
+    const refit = () => global.FitText && $("#mission") && global.FitText.run($("#mission"));
+    refit();
+    setTimeout(refit, 60);
+    setTimeout(refit, 500);
     UI.bulbOff();
     UI.stepDone();
   };
@@ -2397,7 +2535,7 @@
       if (k && base && base.charAt(0) === base.charAt(0).toLowerCase()) k = k.charAt(0).toLowerCase() + k.slice(1);
       return k || base;
     };
-    const look = (segs) => (segs || []).forEach((s) => s.w && s.lang === "k" && !form.has(s.w) && form.set(s.w, { kutchi: clean(s.w, s.t), check: !!s.check, cell: s.cell }));
+    const look = (segs) => (segs || []).forEach((s) => s.w && s.lang === "k" && !s.part && !form.has(s.w) && form.set(s.w, { kutchi: clean(s.w, s.t), check: !!s.check, cell: s.cell }));
     (ladders || []).forEach((L) => Order().rows(L, { all: true }).forEach((r) => look((r.phrase ? r.phrase.segs : r.line.segs).concat(r.line.segs))));
     return ids.map((id) => Object.assign({ id, kutchi: Cook.display(id), check: false }, form.get(id) || {}));
   };
@@ -2507,16 +2645,17 @@
     // level 2: written on the card, no counting along; level 3+: heard in the order only (the face replays it)
     const heard = lv <= 1;
     // PAN-11 (6 Oct): the count word goes over her line at once (her line pauses and carries on), never queued behind it
-    if (speak && n >= 1 && n <= 5 && heard && !UI.naniMuted()) Lang.speak(tallyLine(n, id), { over: true }).catch(() => {});
+    if (speak && n >= 1 && n <= 5 && heard && !UI.naniMuted()) UI.lastCount = Lang.speak(tallyLine(n, id), { over: true }).catch(() => {});
   };
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {
     const ws = id && id !== "_" ? String(id).split("+") : [];
-    if (!ws.length || !ws.every((w) => Lang.known(w)) || ws.some((w) => Cook.isPlaceholder(w))) return Lang.say({ fn: "Count", n }, { row: true });
+    // (s08 w2A, SH-99's last gap: tagged role "count": counting along the taps is a tally, not the order, contract-30)
+    if (!ws.length || !ws.every((w) => Lang.known(w)) || ws.some((w) => Cook.isPlaceholder(w))) return Lang.role(Lang.say({ fn: "Count", n }, { row: true }), "count");
     const parts = Lang.countParts(n, ws[ws.length - 1]);
     const at = parts.indexOf(ws[ws.length - 1]);
     parts.splice(at, 1, ...ws);
-    return Lang.phrase(parts);
+    return Lang.role(Lang.phrase(parts), "count");
   }
   UI.tallyLine = tallyLine;
   /** One more of `id` on the tally (returns the new count). */

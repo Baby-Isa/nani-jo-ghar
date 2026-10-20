@@ -1,1 +1,11 @@
-[]
+[
+ "BOOK-02:p1:selector",
+ "BOOK-03:p1:selector",
+ "BOOK-04:p1:selector",
+ "BOOK-04:p2:selector",
+ "BOOK-05:p1:selector",
+ "BOOK-06:p1:selector",
+ "BOOK-08:p1:cmd",
+ "RIDE-01:p1:selector",
+ "RIDE-02:p1:selector"
+]

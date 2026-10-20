@@ -1,0 +1,82 @@
+SESSION NAME / MODE:  s08 wave 2A, Cook's level table: Nani calls each step live, the card open/open/dotted/hidden, decoys and each station's one new thing per level; moving on by itself; one ending in the kitchen; loading behind the pop-up; the marble; the last 'one' written
+MODEL AND EFFORT:     Opus, high effort (the design spine of every Cook station: judgement on pacing, leak test and the engine's lines)
+COST ESTIMATE:        about $35-50
+HARD STOP:            when every task is accepted, or 5 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w2a-levels.context.md (869 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/research-levels-2026-10-19.md (the table; Zafar said yes to all, 19 Oct, except chai L3: two cups, no half/full)
+     docs/feedback/cook-playtest-2026-10-17.md (P24, P26, P28, P31, P32, P36, P44, P46, P64)
+     docs/game-design/modes/cook.md
+     docs/game-design/progression-and-scoring.md
+     build/reports/s08-w1-voice.md, s08-w1b-card.md (the hooks: stepper({call}), UI.mission.dotsHook)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/flow.js
+  - js/cook/station-lib.js
+  - js/cook/stations.js
+  - js/cook/zone.js
+  - js/cook/order.js
+  - js/cook/ui.js (card ladder and dotted hook only)
+  - js/cook/stations/*.js and js/cook/mechanics/*.js: only level knobs, step calls, decoys and moving on
+  - data/cook.json recipes, calm and level data
+  - data/stations/*.json
+  - build/sandbox/lib/contract.mjs and build/tools/review/lib/regressions.mjs: new checks
+  - docs/game-design/modes/cook.md (the level table, replacing closedFrom and decision 41's lines)
+  - build/reports/s08-w2a-levels.md
+READ-ONLY (never edit):
+  - js/clinic/**, data/clinic/** (wave 5A)
+  - js/shared/** (ask)
+  - assets/**
+  - data/lang/** (never hand-written Kutchi)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a step call the engine can't say (the stir sentence, 'put it on', 'take it off', the 'and' join) uses the interim line the rows name or stays its grey 'to record' placeholder; listed in the report
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-110 (with SAM-26, MAA-18, CK-49): the level table as data per station, replacing calm.closedFrom: card open L1-L2, item words dotted at L3 (frames, verbs, numbers written), hidden at L4 (a tap replays it, free); Nani calls each step once as it opens, at every level (the order in pieces, never help, never costs); decoys 1/2/3/3 + a lookalike; each station's one new thing per level per the research table (chai 1, 2, 2, 3 cups; maani two with big/small from L2; samosa one filling, a second in order, two kinds, then the 'no' filling; pantry asks one thing at a time; sekelo decoys; daal chop rounds; chaat toppings in order).
+     Accept: contract-run checks red then green per station L1-L4: the card's state by level, a step call at each step's open, decoy counts; the leak bots (build/tools/review/leak.mjs) still pass at every level
+  2. SH-105: move on by itself where nothing is left to choose: the chai tray after the last pour, samosa after the last filled strip is folded (straight to the fryer), chaat when the bowl is complete; samosa's count step keeps its go-on button (decision 6).
+     Accept: contract-2 green; no tick waits where nothing can change
+  3. CK-47: one ending, in the kitchen: every station ends back at the counter with the customer's thanks and goodbye and one well done; no recap in Nani's box (lab and story).
+     Accept: eye: every station's end, story and lab, one praise
+  4. CK-48: a station's files load behind the order's pop-up; nothing half-drawn appears (sekelo's chopping board flash). SH-108: every top-down station shows the painted marble (wait for it, never the code worktop).
+     Accept: a throttled run: click the card through after 1 s, no flash, every station on marble
+  5. SH-99's last gap: samosa and the pantry at L1 say 'hakro X' but the card doesn't write 'hakro' (station-lib.js:43; the orchestrator's contract run orch-w1b2b-check, contract-30 on cook:samosa and cook:fetch L1); daal's chop card (daar.js:282) too.
+     Accept: contract-30 green on cook:samosa, cook:fetch, cook:daar L1-L4
+
+REGRESSION ROWS TO RECHECK (305 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (25): CHAI-08, CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-45*
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01*, CK-29, CK-27, CK-39
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15, PAN-17, PAN-10
+  cook:mishkaki-grill (21): SEK-14*, SEK-18, SEK-19*, SEK-20*, SEK-21*, SEK-07*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, CK-38
+  cook:maani-line (17): MAA-15*, MAA-16, MAA-17*, MAA-01, MAA-02, MAA-03, MAA-04, MAA-05, MAA-06, MAA-07, MAA-08, MAA-09, MAA-10, MAA-11, MAA-12, MAA-13, MAA-14
+  cook:daar (37): DAAR-02*, DAAR-05*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-29, DAAR-30*, DAAR-31, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, CK-06*, CK-08, CK-10, CK-29, CK-27
+  cook:day1 (49): CK-01*, CK-06*, CK-TAB-01, CK-24*, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-48*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43
+  shared components (109): SH-70, SH-98*, SH-99*, SH-107*, SH-37*, SH-90*, SH-91*, SH-92*, SH-93*, SH-97*, SH-102*, SH-103*, SH-104, SH-105*, SH-106*, SH-108*, SH-109*, SH-110*, SH-111*, SH-53*, SH-60*, SH-112*, SH-113*, SH-115*, SH-116*, SH-117*, SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-54, SH-55, SH-62, SH-69, SH-10, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58, SH-59, SH-63, SH-64, SH-65, SH-66, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33, SH-34, SH-35, SH-36, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48, SH-71, SH-72, SH-73, SH-74, SH-75, SH-76, SH-77, SH-79, SH-80, SH-82, SH-83, SH-84, SH-86, SH-87, SH-81, SH-89, SH-88
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w2a-levels` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8835.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w2a-levels.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

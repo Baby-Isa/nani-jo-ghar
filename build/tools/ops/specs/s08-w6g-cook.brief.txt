@@ -1,0 +1,76 @@
+SESSION NAME / MODE:  s08 wave 6G, Cook: the judges' last code fails (sekelo's name, samosa's six pastries and peek, daal's L4 peek and pour stream, the story's recipe recap, the tool jars)
+MODEL AND EFFORT:     Opus, high effort (game code across stations, judged by picture)
+COST ESTIMATE:        about $25-35
+HARD STOP:            when every task is accepted, or 3 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6g-cook.context.md (856 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/tools/review/data/verdicts.json (each row's judge line, run ev-20261020-004931-exi) and build/reports/evidence-ev-20261020-004931-exi.md
+     docs/game-design/modes/cook.md
+     docs/feedback/cook-playtest-2026-10-17.md
+     build/reports/s08-w6a-words.md, s08-w6b-stations.md, s08-w6e-checks.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/**
+  - data/cook.json except art.assets
+  - data/stations/**
+  - css/cook.css
+  - js/shared/pour.js
+  - js/shared/order-card.js
+  - build/reports/s08-w6g-cook.md
+READ-ONLY (never edit):
+  - js/clinic/** (wave 6H)
+  - data/lang/** (never add Kutchi)
+  - assets/**
+  - build/sandbox/**
+  - js/shared/guide.js (merged wave 6F)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a picture that's missing goes on the report's art list; a word the engine can't say is a gap
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SEK-19: Zafar's name for the dish, 'Hakri Lakri Mishkaki' (no commas), is what the card and Nani say for the sekelo order where the row asks (read the row and its feedback quote); 'mixed' stays (a confirmed loan word, decision 87).
+     Accept: eye: the sekelo card at L1 and L3; auto: the card text and the sound log
+  2. SAM-25: find why only one of the six pastries is filled before the fryer (the game or the test player) and fix it there: all six are filled, then folded. SH-98: the samosa peek at L3 writes every row with its number and filling, as Nani says it (rule: whatever is said is written).
+     Accept: eye: the samosa play-through at L1 and L3; auto: contract-30 on cook:samosa@L3
+  3. DAAR-34: at L4 the peek shows only the first item and dots the rest, per the level table. SH-117 (daal half): the daal pours into the pot as a visible stream with a fill, using js/shared/pour.js. DAAR-05/29 flaws: no white blotches on the pot contents; the final pot art is the same at every level.
+     Accept: eye: the daal L4 peek and the pour as a filmstrip at L1 and L3
+  4. CK-47: at the end of a story order, at the counter, Nani goes over what went into the dish (built by the engine from the order's own words) before the thanks. SH-112: Cook's tool and item strips are bigger against the scene at 800x360 and 1366x768. CHT-15: the tick badge never covers the end of 'khape'.
+     Accept: eye: the story day's end; the strips at both sizes; the chaat card
+  5. ART-11 and ART-19 (from wave 6F, merged): the potato still reads as butter in chaat's jar and strip (js/cook/mechanics/assemble.js POTS veg-01 'pot-potato-v2' and 'strip-potato-s08b'), samosa's filling (samosa.js HEAP_ART: use assets/cook/items-s08b/potato/potato-pile-v3.webp, and add it to samosa's files in data/cook.json) and daar's chopped potato (daar.js: veg-bataato-cubed-v2-t.webp); use the landed potato art, or put the jar on the art list. Cook's counter Nani (js/cook/stations.js talk()) alternates nani-talk and nani-neutral every ~170 ms while she speaks, as the guide box now does.
+     Accept: eye: the potato in chaat, samosa and daar; a filmstrip of the counter Nani speaking
+
+REGRESSION ROWS TO RECHECK (139 rows of the fix list and its done archive; * = open or reopened):
+  cook:mishkaki-grill (21): SEK-14*, SEK-18, SEK-19*, SEK-20*, SEK-21*, SEK-07*, SEK-01, SEK-02, SEK-03, SEK-04, SEK-05, SEK-06, SEK-08, SEK-09, SEK-10, SEK-11, SEK-12, SEK-16, SEK-17, SEK-13, CK-38
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:daar (37): DAAR-02*, DAAR-05*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-30*, DAAR-31*, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, DAAR-29, CK-08, CK-10, CK-29, CK-27, CK-06
+  cook:daal (32): DAAR-02*, DAAR-05*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-30*, DAAR-31*, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, DAAR-29
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-TB-01*, CK-29, CK-27, CK-39
+  cook:day1 (49): CK-01*, CK-TAB-01, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43, CK-06, CK-24, CK-48
+  cook:day3 (49): CK-01*, CK-TAB-01, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43, CK-06, CK-24, CK-48
+  cook:chop (16): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-29
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6g-cook` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8857.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6g-cook.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

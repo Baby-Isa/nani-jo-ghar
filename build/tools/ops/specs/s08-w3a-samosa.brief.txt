@@ -1,0 +1,67 @@
+SESSION NAME / MODE:  s08 wave 3A, samosa: the coded fold in the pastry texture, six strips at every level, tap any, one tick, fold all, then the fryer; the L3 card bugs
+MODEL AND EFFORT:     Opus, high effort (visual work: a coded fold that must look like real pastry folding (non-negotiable 15))
+COST ESTIMATE:        about $30-45
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w3a-samosa.context.md (856 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/cook-playtest-2026-10-17.md (P39-P44, P64; section 6 decision 10 with Zafar's yes: the fold restated there)
+     build/reports/s08-w2a-levels.md (the level table and samosa's ladder, merged)
+     build/reports/s08-w0-art.md (the pastry tile: assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp)
+     docs/game-design/modes/cook.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/samosa.js
+  - js/cook/mechanics/fill-fold.js
+  - data/stations/samosa*.json
+  - data/cook.json samosa entries only
+  - build/reports/s08-w3a-samosa.md
+READ-ONLY (never edit):
+  - js/cook/station-lib.js, flow.js, ui.js, order.js (merged waves; ask)
+  - js/shared/**
+  - the other stations
+  - assets/** (use the cuts)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SAM-21: replace the six fixed fold pictures with a coded fold in the pastry texture: a flat rectangular strip, the filling in the bottom-left corner; swipe bottom-left to top-right and the corner folds over into a triangle; swipe top-left to bottom-right and it folds again; three or four alternating folds moving left to right until the strip is used up; an arrow shows each swipe; only the moving flap is lit; soft edges, no seam, no hard code lines. The swipe itself stays (KEEP-04).
+     Accept: a filmstrip of a whole fold at 1366x768 and 800x360, every frame reading as pastry folding; zoom x2 on the flap
+  2. SAM-25: six strips on a bigger board at every level; the child taps any strip, fills it, fills the next; one tick when done; then fold every filled strip; then straight to the fryer (the level table's samosa ladder decides what is asked).
+     Accept: eye: L1-L4 played through; contract-2 green
+  3. SAM-24: the L3 bugs: the card ticks a samosa kind only when every one of that kind is made; no per-strip tick flashes; any empty strip takes a tap.
+     Accept: a contract or unit check red then green on the early card tick
+  4. SAM-22: the frying stays (KEEP-03); the moves between steps feel quick and clear (fill, fold, fry), nothing waits for a button that has nothing to decide.
+     Accept: eye: one order start to serve, L2 and L4
+
+REGRESSION ROWS TO RECHECK (72 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (5): CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:samosa (23): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19
+  cook:fill (44): CK-01*, CK-06*, CK-TAB-01, CK-24*, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-48*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-30, CK-33, CK-34, CK-35, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37
+  cook:fry (44): CK-01*, CK-06*, CK-TAB-01, CK-24*, CK-31*, CK-44*, CK-45*, CK-46*, CK-47*, CK-48*, CK-TB-01*, CK-02, CK-03, CK-04, CK-05, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-30, CK-33, CK-34, CK-35, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w3a-samosa` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8839.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w3a-samosa.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

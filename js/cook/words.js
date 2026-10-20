@@ -230,6 +230,10 @@
       if (!s.lang) return;
       const t = toks[k++];
       if (t && t.cell && s.w) s.cell = t.cell; // the form's cell (the end review says that very form)
+      // contract-35 (s08 w6J: the L3 maani card wrote "hakri nindhi bajr ji maani", its item in plain ink): a fixed expression's
+      // own words (bajr, ji, maani: the engine's tokens `of` it) are that one thing, so they carry its Cook id and dot together
+      // as one item word on a dotted card (`part`: the end review still names the whole thing, Cook.display)
+      if (!s.w && t && t.of && ids.has(t.of)) (s.w = ids.get(t.of)), (s.part = true);
       const noun = t && t.defaulted && [].concat(t.defaulted.gender || [])[0];
       // only a form that changes with the gender ("hakro", not "ba"): the form's key names the gender used
       const dflt = (LX().features.gender || {}).default;
@@ -336,7 +340,11 @@
     else if (entry(`cook.line.${key}`)) m = fixed(`cook.line.${key}`);
     else if (entry(key)) return Object.assign(Lang.wordLine(key), { key });
     else m = fixed(`cook.line.${key}`); // the engine's own gap (a to-record placeholder)
-    return Object.assign(Lang.say(m), { key });
+    // contract-23 (SH-94): a fixed exclamation said as it is ("Shabash!", "Bas!") is tagged so, never read as an item's name said
+    // on a tap (the sound log's one untagged word after a tap); a caller's own role (howto, call ...) still replaces it
+    const l = Object.assign(Lang.say(m), { key });
+    if (m && m.fn === "Exclaim" && typeof m.x === "string") l.role = "exclaim";
+    return l;
   };
   /** Nani's guide box line for a guide key (data/cook.json guide: a line key, else the engine's to-record entry). */
   Lang.guideLine = (key, g) => (g && g.line && Lang.hasLine(g.line) ? Lang.line(g.line) : Object.assign(Lang.say(fixed(`cook.guide.${key}`)), { key }));
@@ -419,19 +427,34 @@
     const hidden = (s) => s && s.w && opts.hide && opts.hide(s.w);
     const out = [];
     let dots = false;
+    // SH-98 / contract-27 (Zafar, 17 Oct: "if you click light bulb everything should be written in Kutchi"): a dot group keeps
+    // the words it stands for in its markup (data-said, never text), so the shared card's peek (js/shared/order-card.js) shows
+    // them while it is open and the dots again after
+    let run = null;
+    const close = () => {
+      // (opts.sealed, DAAR-34: words not said yet, the chop's rows she has not called, stay dots even in a peek: no data-said)
+      if (run) out[run.at] = `<span class="dots${opts.sealed ? " unsaid" : ""}" title="Tap the speaker to hear it"${opts.sealed ? "" : ` data-said="${esc(run.words.join(" "))}"`}>•••</span>`;
+      run = null;
+    };
     line.segs.forEach((s, i) => {
       if (s.lang === null) {
         if (dots && /^\s*$/.test(s.t) && hidden(line.segs[i + 1])) return;
         out.push(esc(s.t));
-        if (!/^\s*$/.test(s.t)) dots = false;
+        if (!/^\s*$/.test(s.t)) (dots = false), close();
         return;
       }
       if (hidden(s)) {
-        if (!dots) out.push(`<span class="dots" title="Tap the speaker to hear it">•••</span>`);
+        if (!dots) {
+          close();
+          run = { at: out.length, words: [] };
+          out.push("");
+        }
+        run.words.push(s.t);
         dots = true;
         return;
       }
       dots = false;
+      close();
       const flag = s.check && Lang.flagGuesses();
       const cls = [s.w ? "word" : "", s.lang === "e" ? "ph" : "", flag ? "to-check" : ""].filter(Boolean).join(" ");
       const tip = flag ? ` title="To check: ${esc(Cook.english(s.check))}'s gender isn't confirmed (Mum), so this is the he-form"` : "";
@@ -440,6 +463,7 @@
       const rec = s.lang === "e" ? " data-rec" : "";
       out.push(cls ? `<span class="${cls}"${tip}${rec}>${esc(s.t)}</span>` : esc(s.t));
     });
+    close();
     return out.join("");
   };
 
@@ -453,54 +477,187 @@
     return (line.plan || []).map((c) => (c.file ? c : c.lang === "e" ? Object.assign({}, c, { source: "missing" }) : Object.assign({}, c, { source: path() === "test" ? "device" : "missing", text: c.say || c.text })));
   }
   Lang.planOf = planOf;
-  Lang.speak = async (line, { over = false } = {}) => {
+  /*
+   * PAN-04 / SH-94 (17 Oct): ONE speech queue for everything Cook says, in js/core/voice.js (channel "cook", queue: true):
+   * a line waits its turn and cuts nothing; a stop (a station's end, a tap through the pop-up) clears it. Three kinds:
+   *   "line"   (default) a step, an order, a help line, the order replayed, the chips: queued, said whole, in turn
+   *   "item"   an item's name on a tap (Lang.popWord): said only when nothing else is speaking, otherwise not at all
+   *   "count"  a number as you tap or turn (opts.over, kept for the old call): queued; a newer count drops an older one still
+   *            waiting, and one that waited over COUNT_WAIT_MS is dropped (P10: the late number is not said)
+   * Lang.speak(line) resolves when the line has been said (or dropped).
+   */
+  const COUNT_WAIT_MS = 1500;
+  let sayN = 0;
+  const note = (what, id, text) => {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note(what, { step: String(id), by: text });
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  let quietSince = 0; // when the queue last went quiet (an item's name waits a breath after a line, never in the gap between two)
+  /*
+   * PAN-16 / contract-22 (Zafar, 17 Oct: "she says everything twice"; "she should say it once ... unless I ... have a massive
+   * pause for 10 seconds"): ONE rule for every Cook line, here in the one speech queue. A line said is not said again within
+   * AGAIN_MS of the child's time (10 s; Cook's test speed shortens it as it shortens every wait; a how-to line's is the clock's,
+   * as the help's is) whoever asks for it: the order read in its pop-up and then by the station, a part of the order read again
+   * when it is revealed. It still shows; it is only not voiced: Lang.hasVoice says false, so the caller shows it silently
+   * (and Lang.speak itself drops one asked for anyway: it resolves false, Lifecycle say-skip). Said again:
+   *   - when the child asked (a tap on a face, a speaker, the bulb, the sidebar's order card or its buttons just before it, and
+   *     the lines read on from that tap: a replay's later parts);
+   *   - by another person in the same pop-up (two people may ask for the same thing, each on their own card);
+   *   - a step's call (role call: the stepper keeps its own rule, maani's Firai on both turns, MAA-15; a call is not counted
+   *     as said here either), a word the child tapped to hear (role hear), counts and item names (their own rules);
+   *   - when it never began (a stop cleared it while it waited its turn): it was never heard. (One cut short by the child's tap
+   *     through the pop-up was heard as far as they wanted: it is not said again.)
+   */
+  const AGAIN_MS = 10000;
+  const ASKED_MS = 700;
+  const CHAIN_MS = 1200; // a replay's next part follows its last within this (the read-along's own beats)
+  const FREE_ROLES = { call: 1, hear: 1, count: 1, laps: 1, countdown: 1, item: 1 };
+  const said = new Map(); // the line's words -> {t, popup, card}
+  const normLine = (t) => (String(t || "").toLowerCase().normalize("NFC").match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}'’-]*/gu) || []).join(" ");
+  let tapAt = -1e9;
+  let chain = { on: false, end: -1e9 };
+  try {
+    // the child's own asks: a real tap on a face (a card replayed), a speaker, the bulb, the sidebar's order card or its buttons
+    if (global.addEventListener)
+      global.addEventListener(
+        "pointerdown",
+        (ev) => {
+          const t = ev && ev.target;
+          // (a tap through the pop-up, anywhere but a face, skips it: it asks to hear nothing again)
+          const ask = t && t.closest && t.closest("#side button, #mission, #guide, .oc-face, .ic-say, .ng-face, .wp-say, .oc-look, .ng-bulb, #btn-bulb");
+          if (ev.isTrusted !== false && ask) tapAt = Date.now();
+        },
+        true
+      );
+  } catch (e) {
+    /* no page (Node) */
+  }
+  const popupNow = () => {
+    try {
+      return (global.Lifecycle && global.Lifecycle.serial && global.Lifecycle.serial()) || 0;
+    } catch (e) {
+      return 0;
+    }
+  };
+  const cardNow = () => {
+    try {
+      return (global.document && global.document.querySelector && global.document.querySelector(".njg-rq-open .oc-card.speaking")) || null;
+    } catch (e) {
+      return null;
+    }
+  };
+  /** Was this line said a moment ago (so it is not said again now)? The reason it may be said, else "said". */
+  Lang.saidAgain = (line) => {
+    const role = line && line.role;
+    if (role && FREE_ROLES[role]) return null;
+    const k = normLine(Lang.plain(line));
+    if (!k) return null;
+    const now = Date.now();
+    const V = Cook.core && Cook.core.voice;
+    // the lines read on from a tap the child made (a replay's later parts): asked, as its first was
+    if (now - tapAt <= ASKED_MS) chain = { on: true, end: now };
+    else if (chain.on && !(V && V.busy("cook")) && now - chain.end > CHAIN_MS) chain = { on: false, end: -1e9 };
+    if (chain.on) {
+      chain.end = Math.max(chain.end, now);
+      return null;
+    }
+    const last = said.get(k);
+    if (!last) return null;
+    const win = Math.round(role === "howto" ? AGAIN_MS : AGAIN_MS / (Cook.speed || 1)); // (in whole ms: a harness at speed 1e6 has none)
+    if (now - last.t >= win) return null;
+    // two people in one pop-up, each reading their own card (the read-along marks the card being said: .speaking)
+    const pop = popupNow();
+    const card = cardNow();
+    if (pop && last.popup === pop && card && last.card && card !== last.card) return null;
+    return "said";
+  };
+  Lang.speak = async (line, { over = false, kind = over ? "count" : "line" } = {}) => {
     if (!line) return false;
     const items = planOf(line);
     const V = Cook.core && Cook.core.voice;
+    let mine = null;
+    if (kind === "line") {
+      if (Lang.saidAgain(line)) {
+        note("say-skip", "said", Lang.plain(line));
+        return false;
+      }
+      const k = normLine(Lang.plain(line));
+      if (k && !(line.role && FREE_ROLES[line.role])) said.set(k, (mine = { t: Date.now(), popup: popupNow(), card: cardNow() }));
+      if (mine) mine.k = k;
+    }
+    // (the help ladder never says again what was said less than 10 s ago: js/shared/guide.js recentlySaid)
+    if (kind === "line" && global.NaniGuide && global.NaniGuide.markSaid) global.NaniGuide.markSaid(Lang.plain(line));
     if (V) {
-      // over: an interjection (the count as you tap) that pauses the line playing, then lets it carry on (PAN-11)
-      await V.say({ clipPlan: items }, { channel: "cook", over });
-      return true;
+      // the line's turn is logged when its first clip is about to play (a test log, Lifecycle say-start / say-end): the sound log
+      // knows a line when it is asked for, the contract checks need to know when it was said
+      const turn = ++sayN;
+      let started = false;
+      const o = {
+        channel: "cook",
+        queue: true,
+        onWord: () => {
+          if (!started) (started = true), note("say-start", turn, Lang.plain(line));
+        },
+      };
+      if (kind === "count") Object.assign(o, { key: "count", ttl: COUNT_WAIT_MS });
+      if (kind === "item") o.ifIdle = true;
+      const r = await V.say({ clipPlan: items }, o);
+      if (started) note("say-end", turn, "");
+      if (kind !== "item" && !V.busy("cook")) quietSince = Date.now();
+      // a line a stop cleared before it began (it waited its turn) was never heard: it may be said again
+      if (mine && !started && said.get(mine.k) === mine) said.delete(mine.k);
+      if (chain.on) chain.end = Date.now();
+      return !(r && r.skipped);
     }
     // no core (it failed to load): the family clips in order
     for (const c of items) if (c.file && Cook.speakFile) await Cook.speakFile(c.file);
     return true;
   };
-  Lang.speakWord = (id) => Lang.speak(Lang.wordLine(id));
+  /** Say a word (a speaker button, a chip, the end review): queued behind what is being said, never cutting it. */
+  Lang.speakWord = (id) => Lang.speak(Lang.role(Lang.wordLine(id), "hear"));
+  /**
+   * SH-94 (Zafar, 17 Oct: "Mishkaki, Mishkaki, Mishkaki ... it's too much to hear"; one rule for every game): an item's name
+   * as it is tapped or lands. Said only when nothing else is speaking or waiting (never over an order, a step or a count),
+   * never at levels 3 and 4 (the item is for the child to know), and the same word again only after POP_AGAIN_MS. Resolves
+   * false when it was not said.
+   */
+  const POP_AGAIN_MS = 10000;
+  const POP_BREATH_MS = 500;
+  const popped = new Map();
+  Lang.popWord = (id, { level } = {}) => {
+    const lv = level != null ? level : Cook.roundLevel ? Cook.roundLevel() : 1;
+    const V = Cook.core && Cook.core.voice;
+    const now = Date.now();
+    if (lv >= 3 || (V && V.busy("cook")) || now - quietSince < POP_BREATH_MS || now - (popped.get(id) || -1e9) < POP_AGAIN_MS) return Promise.resolve(false);
+    popped.set(id, now);
+    return Lang.speak(Lang.role(Lang.wordLine(id), "item"), { kind: "item" });
+  };
+  /** A new station or round: its item words are new again. */
+  Lang.popReset = () => popped.clear();
   /** Can any of this line be heard (a family clip; on the test path, a Kutchi stand-in too)? */
-  Lang.hasVoice = (line) => planOf(line).some((c) => c.file || (c.source === "device" && path() === "test"));
+  /** Can any of this line be heard (a family clip; on the test path, a Kutchi stand-in too)? Whether or not it was just said. */
+  Lang.voiced = (line) => planOf(line).some((c) => c.file || (c.source === "device" && path() === "test"));
+  /**
+   * Is this line to be voiced now: it can be heard (Lang.voiced) and it was not said a moment ago (PAN-16, Lang.saidAgain)?
+   * Every caller that says a line asks this first and, when it is false, shows the line for its reading time without
+   * saying it, so a line is said once whoever asks for it (the request pop-up's read-out, then the station's own line).
+   */
+  Lang.hasVoice = (line) => Lang.voiced(line) && !Lang.saidAgain(line);
   /** Is the whole line one recording? */
   Lang.hasWhole = (line) => {
     const p = planOf(line);
     return p.length === 1 && !!p[0].file;
   };
-  Lang.wordHasVoice = (id) => Lang.hasVoice(Lang.wordLine(id));
-  // the core voice's stand-in for a piece with no recording (test path only): the device's own voice
-  const synthVoice = () => {
-    try {
-      const vs = global.speechSynthesis ? global.speechSynthesis.getVoices() : [];
-      return vs.find((v) => /^gu/i.test(v.lang)) || vs.find((v) => /^hi/i.test(v.lang)) || vs.find((v) => /^en-IN/i.test(v.lang)) || vs[0] || null;
-    } catch (e) {
-      return null;
-    }
+  // (a fixed expression, bajr ji maani, has no word form of its own (the engine builds it from its parts as an Item): it is
+  // heard as the phrase says it, so it dots like any item with a voice; contract-35, s08 w6J)
+  Lang.wordHasVoice = (id) => Lang.voiced(Lang.wordLine(id)) || (Lang.phrase([id]).ok !== false && Lang.voiced(Lang.phrase([id])));
+  // LNG-09 / LNG-16: the device voice is the core's (js/core/voice.js deviceSpeak): normal speed, waits out a cancel, ends when
+  // the browser says so (so the next piece never starts under it)
+  Cook.synthSay = (text) => {
+    const V = Cook.core && Cook.core.voice;
+    return V && V.deviceSpeak ? V.deviceSpeak(text) : Promise.resolve(false);
   };
-  Cook.synthSay = (text) =>
-    new Promise((resolve) => {
-      const v = synthVoice();
-      if (!v) return resolve(false);
-      let done = false;
-      const fin = () => !done && ((done = true), resolve(true));
-      try {
-        const u = new global.SpeechSynthesisUtterance(text);
-        u.voice = v;
-        u.lang = v.lang;
-        u.rate = 0.7;
-        u.onend = fin;
-        u.onerror = fin;
-        global.speechSynthesis.speak(u);
-      } catch (e) {
-        fin();
-      }
-      setTimeout(fin, (700 + 260 * String(text).length) / (Cook.speed || 1));
-    });
 })(window);

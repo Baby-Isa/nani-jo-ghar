@@ -719,7 +719,7 @@
 
   /* ---------------- stars, pocket money, the word review ---------------- */
   Tidy.coins = 0;
-  Tidy.result = async function (H, { title = "Tidy!" } = {}) {
+  Tidy.result = async function (H) {
     const tested = H.tested();
     const g = Rules.grade(H.R, H.pl, [...H.lost], tested);
     const set = Tidy.data.star_sets.tidy;
@@ -736,17 +736,17 @@
     $("#coins").textContent = Tidy.coins;
     const words = new Map();
     H.R.rows.forEach((r) => Rules.phrase(r, H.R).forEach((p) => p.w && words.set(p.w, true)));
+    // the end-of-round review: each word's English under it (the one place for written English besides the "?", rule 5)
     const review = [...words.keys()]
-      .map((w) => (Cook.isPlaceholder(w) ? `<div><span class="ph">${Cook.english(w)}</span></div>` : `<div><span class="k">${Cook.display(w)}</span> <span class="e">${Cook.english(w)}</span></div>`))
+      .map((w) => (Cook.isPlaceholder(w) ? `<div><span class="ph english">${Cook.english(w)}</span></div>` : `<div><span class="k">${Cook.display(w)}</span> <span class="e english">${Cook.english(w)}</span></div>`))
       .join("");
     const panel = $("#panel");
     panel.className = "";
-    panel.innerHTML = `<h2>${title}</h2>
-      <div class="result-stars">${Object.keys(stars).map((k) => `<span class="star ${stars[k] ? "on" : "lost"}" title="${set[k].tip}">${Tidy.ICON[set[k].icon] || Tidy.ICON.tick}</span>`).join("")}</div>
-      ${teaching ? `<p><b>Learning:</b> most of these words are new, so this board teaches them (helping money only).</p>` : ""}
-      <p>Pocket money: +${coins}</p>
-      <h3>Words</h3><div class="review">${review}</div>
-      <div class="lab-row"><button class="btn primary" id="res-again" type="button">Again</button><button class="btn" id="res-lab" type="button">The lab</button></div>`;
+    panel.innerHTML = `<div class="result-stars">${Object.keys(stars).map((k) => `<span class="star ${stars[k] ? "on" : "lost"}" title="${set[k].tip}">${Tidy.ICON[set[k].icon] || Tidy.ICON.tick}</span>`).join("")}</div>
+      <p class="r-coins" title="Pocket money"><i class="coin-dot"></i>+${coins}</p>
+      <div class="review">${review}</div>
+      <div class="lab-row"><button class="btn primary" id="res-again" type="button" aria-label="Again">&#9654;</button><button class="btn" id="res-lab" type="button" aria-label="The lab">&#8962;</button></div>`;
+    panel.toggleAttribute("data-teaching", teaching);
     $("#overlay").classList.remove("hidden");
     H.result = { stars, grade: g, coins, teaching };
     Tidy.lastResult = H.result;

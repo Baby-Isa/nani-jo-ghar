@@ -11,9 +11,10 @@
  *    picture at the bowl's scale), with a little drop and bounce; the top layer shows its surface, and its
  *    word pops by the bowl with the family clip (§4: learning happens during the action). A see-through
  *    copy of the glass lies over the food (its walls and highlights; the floor's ring cut out).
- *  - THE SHELF (the bottom 26%): the side-on glass pots (v3/chaat/pot-*.webp, the pantry jars' look),
- *    standing on their measured bottom-centre on one shelf line, a `🔊 word` chip under each: tap the pot
- *    = use it, tap the chip = hear it. From level 3 the word hides and the speaker stays (the same chip).
+ *  - THE SHELF (the bottom 30%): the side-on glass pots (v3/chaat/pot-*.webp, the pantry jars' look),
+ *    standing on their measured bottom-centre on one shelf line, a speaker chip under each: tap the pot
+ *    = use it, tap the chip = hear it. The word is written until the child has used it right, then the speaker alone
+ *    from the next round (Cook.chipWord; Zafar, 20 Oct, replacing s08 w6M's speaker-only chips).
  *    Decoys and the "don't" item stand there too. The tomato pot is a stand-in (see POTS).
  *  - TAKE IT BACK (UX §17): until Done, a tap on the bowl lifts the top layer back out to its pot.
  *  - NO TALLY at this station (§14a): the bowl shows what's in.
@@ -26,8 +27,7 @@
  *  - wrong: a gentle frown, they say their order again, the bowl EMPTIES and you
  *    build it again. Never a red cross; only the first mistake counts (the accuracy badge, the end review).
  * LEVELS (§14, §14a; the recipe's slots by level in data/cook.json, the decoys in
- * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row (and the words
- * hide on the chips); 4 = the person's card starts FOLDED (face + headline): remember what you heard;
+ * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row; 4 = the person's card starts FOLDED (face + headline): remember what you heard;
  * tapping the card to peek costs a hint (the light-bulb badge).
  * ONBOARDING (first time, §14): a ghost finger shows card row 1 -> the matching pot -> the drop into
  * the bowl -> the tick; then the child does row 2.
@@ -50,6 +50,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // this file, which now loads only with the chaat bowl)
   const knobInt = St.knobInt;
 
+  /* ---- CHAAT_RULES: pure, no Cook, no DOM (build/leak_chaat.mjs, the chaat leak bot, reads this block by these markers) ---- */
   /** Where a list stands: the next thing it wants, and the first mistake in `got`. */
   function checker(sequence) {
     const steps = sequence.map((e) => [].concat(e));
@@ -108,6 +109,38 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       },
     };
   }
+  /**
+   * CHT-14, CHT-15 (decision 9; P62, P63; Zafar, 17 Oct): what a tapped item does, judged as it is put in (was: anything went
+   * in and only the serve judged it, while the card ticked only the right ones: "you put in an item. If it's not ticked, you
+   * take it out"). `got`: the bowl, bottom first, always a right start of the order (a wrong thing never stays in).
+   *   "in"     it is what the order wants here: it stays (its row ticks as it goes in)
+   *   "bounce" it is not wanted at all (a decoy, the 'no' item, one more than asked): a pause, the glass wobbles with a
+   *            warm glow and it comes back out; the bowl keeps what it had
+   *   "reset"  it is in the order, but later ("if you get the third item in the wrong order, it throws out all the items.
+   *            You have to go from the beginning again"): the same wobble, and the bowl empties
+   * expected: what the order wanted here (its row loses its tick: a tick is the right item first go).
+   */
+  function judgeDrop(C, got, id) {
+    const m = C.mistake(got.concat(id));
+    if (!m || m.got === undefined || m.at > got.length) return { verdict: "in", expected: id };
+    const later = [].concat(...C.rest(got.length, got)).includes(id);
+    return { verdict: later ? "reset" : "bounce", expected: C.next(got) };
+  }
+  /**
+   * The rows a wrong try costs their tick (P63: "you get a tick if you put the right item in the right sequence on the first
+   * go"; "if an item in the order gets thrown out because it was in the wrong sequence, that should take away a tick"):
+   * the row the order wanted here, the 'no' row when its item was tried, and the item's own row when it was tried too soon.
+   * Help never costs a tick (it goes on the bulbs, SH-49). Returns [{id, no}] (word ids; no: the 'don't' row).
+   */
+  function rowsMissed(j, id, exclude = []) {
+    if (j.verdict === "in") return [];
+    const out = [];
+    if (j.expected) out.push({ id: j.expected, no: false });
+    if (exclude.includes(id)) out.push({ id, no: true });
+    else if (j.verdict === "reset" && id !== j.expected) out.push({ id, no: false });
+    return out;
+  }
+  /* ---- /CHAAT_RULES ---- */
 
   /* ---------- the chaat v3 station (30 Sept, T2/T3, Q2b: fully side-on) ---------- */
   const V3 = "assets/cook/items/v3/chaat/";
@@ -136,12 +169,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     "ph-dhana": "pot-dhania",
   };
   /* the grid (design px, 1600x900), the same as chai v2's */
-  const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const BASE = 818; // the shelf line: every pot stands on it
   const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 };
-  const PITCH = 150;
-  const PREP_W = 132; // one slot's pot (identical for every topping)
+  // SH-112 (Zafar 20 Oct): the taller band's pots a quarter bigger (St.shelfFit keeps the band's top gap)
+  const PITCH = 180;
+  const PREP_W = 166; // one slot's pot (identical for every topping)
   const GLASS_W = 760; // the side-on bowl: wide, so a layer of a long order is still a clear strip
   const GLASS_X = 800;
   // the bowl is centred in the scene above the shelf band (0..SHELF_TOP): its middle at SHELF_TOP / 2
@@ -186,6 +220,61 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const BAND_PAD = 14; // and this much above and below the layer (for the uneven lines)
   const SPOON_W = 92; // a spoonful in flight (design px): big enough to see what is going in
   const potFood = {}; // id -> a canvas of the food in its pot (the layer's texture)
+  /*
+   * CHT-13 (P61; Zafar, 17 Oct: "redraw the bowl so it's exactly side-on ... the artwork is just like a horizontal strip"):
+   * the s08b art run's side-on strip per item (CH2, CH3: assets/s08b-cut-data.json), drawn as the layer itself, one strip
+   * across the bowl at its own size (no tiling, no seams), its ragged or glossy top the layer's top. The pot photos tiled in
+   * code (bandCanvas) stay only for an item with no strip.
+   */
+  const STRIP_DIR = "assets/cook/items-s08b/chaat-strips/";
+  const STRIPS = {
+    "veg-01": "strip-potato-s08b",
+    "ph-chana": "strip-chickpea-s08b",
+    "veg-02": "strip-onion-s08b",
+    "veg-03": "strip-tomato-s08b",
+    "veg-12": "strip-chilli-s08b",
+    "ph-sev": "strip-sev-s08b",
+    "ph-dahi": "strip-yogurt-s08b",
+    "ph-amli": "strip-tamarind-s08b",
+    "ph-lili": "strip-green-chutney-s08b",
+    "ph-dhana": "strip-coriander-s08b",
+  };
+  const stripKey = (id) => `cv3-strip-${id}`;
+  // how far a strip's top (leaves, sev, a glossy edge) stands above its layer's line, as a share of the strip's height: where
+  // its rows first turn solid (measured once per strip: the first row 85% as opaque as its most opaque row), so the line
+  // between two layers is food on both sides and never the glass showing through a ragged edge
+  const STRIP_TOP = {};
+  function stripTop(id, im) {
+    if (STRIP_TOP[id] != null) return STRIP_TOP[id];
+    let top = 0.1;
+    try {
+      const w = 96;
+      const h = Math.max(8, Math.round((im.height * w) / im.width));
+      const cv = document.createElement("canvas");
+      cv.width = w;
+      cv.height = h;
+      const x = cv.getContext("2d");
+      x.drawImage(im, 0, 0, w, h);
+      const d = x.getImageData(0, 0, w, h).data;
+      const rows = Array.from({ length: h }, (_, y) => {
+        let s = 0;
+        for (let i = 0; i < w; i++) s += d[(y * w + i) * 4 + 3];
+        return s / w;
+      });
+      const max = Math.max(...rows);
+      const y = rows.findIndex((v) => v >= 0.85 * max);
+      if (y >= 0) top = Math.min(0.3, y / h);
+    } catch (e) {
+      /* no pixels to read: the usual share */
+    }
+    return (STRIP_TOP[id] = top);
+  }
+  let stripScene = null; // the scene whose strips are loaded (set by the station)
+  const stripOf = (id) => {
+    const S = stripScene;
+    const key = stripKey(id);
+    return S && STRIPS[id] && S.textures.exists(key) ? S.textures.get(key).getSourceImage() : null;
+  };
 
   /** The speaker icon, drawn at (x, y) about `s` px tall (chai v2's). */
   function speaker(g, x, y, s, color = 0x2a2522) {
@@ -344,6 +433,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** The food in a topping's pot (its middle, below the jar's highlights), as a canvas: the layer's texture. */
   function foodOf(S, id) {
     if (potFood[id]) return potFood[id];
+    // CHT-13: the item's strip, its middle (below the ragged top), is the food a spoonful is cut from
+    const st = stripOf(id);
+    if (st && st.width) {
+      const cv = document.createElement("canvas");
+      cv.width = Math.round(st.width * 0.6);
+      cv.height = Math.round(st.height * 0.72);
+      cv.getContext("2d").drawImage(st, st.width * 0.2, st.height * 0.2, cv.width, cv.height, 0, 0, cv.width, cv.height);
+      return (potFood[id] = cv);
+    }
     const key = `cv3-pot-${id}`;
     const im = S.textures.exists(key) ? S.textures.get(key).getSourceImage() : null;
     if (!im || !im.width) return null;
@@ -378,8 +476,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (S.textures.exists(key)) S.textures.remove(key);
     const tex = S.textures.createCanvas(key, Math.round(GLASS.w * RES * k), Math.round(GLASS.h * RES * k));
     const c = tex.getContext();
-    // the contact shadow under the bowl's foot (the foot is the middle 44% of its width)
-    const shadow = S.track(S.add.ellipse(g.x, z.Y(GLASS_BOTTOM - 6), z.L(GLASS_W * 0.56), z.L(22), 0x3a2410, 0.18).setDepth(D.item - 1));
+    // CHT-12 (P60; Zafar, 17 Oct: "the bowl has a drop shadow which doesn't make sense ... it's not floating ... let's remove
+    // the drop shadow"): no shadow under the bowl (was a code ellipse under its foot)
+    // CHT-14 (decision 9): the warm glow round the glass when a thing doesn't go in (amber, never red; behind the glass)
+    if (!S.textures.exists("cv3-warm")) {
+      const cv = document.createElement("canvas");
+      cv.width = 256;
+      cv.height = 128;
+      const x = cv.getContext("2d");
+      x.translate(128, 64);
+      x.scale(128, 64);
+      const gr = x.createRadialGradient(0, 0, 0, 0, 0, 1);
+      gr.addColorStop(0, "rgba(255,190,90,0.95)");
+      gr.addColorStop(0.62, "rgba(255,182,72,0.7)");
+      gr.addColorStop(1, "rgba(255,182,72,0)");
+      x.fillStyle = gr;
+      x.fillRect(-1, -1, 2, 2);
+      S.textures.addCanvas("cv3-warm", cv);
+    }
+    const warm = S.track(S.add.image(g.x, g.y, "cv3-warm").setDisplaySize(z.L(GLASS_W * 1.25), z.L(H * 1.6)).setDepth(D.item - 0.4).setAlpha(0));
     // the glass, then the food inside it, then the glass again, see-through, over the food
     const glass = S.track(
       S.add
@@ -418,12 +533,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         .setAlpha(0.45)
         .setDepth(D.item + 0.2),
     );
-    const parts = [shadow, glass, food, hi];
+    const parts = [glass, food, hi];
     const layers = []; // {id, th (bowl px), grow, seed, wob, tex}
     const img = (id) => foodOf(S, id);
     // a full layer: thin enough that a long order (6) fills about four fifths of the glass, so three
-    // layers sit in the lower half and every layer of a long order stays visible
-    const full = () => ((GLASS.floor - GLASS.rim) * GLASS.h * 0.8) / Math.max(6, expected);
+    // layers sit in the lower half and every layer of a long order stays visible (CHT-13: with the strips, a layer of a
+    // short order is as thick as four would be, so its pieces read: three layers fill three fifths)
+    const full = () => ((GLASS.floor - GLASS.rim) * GLASS.h * 0.8) / Math.max(stripScene ? 4 : 6, expected);
     /** A level's surface ellipse (its front edge's lowest point is y): rounder lower in the glass. */
     const level = (y) => {
       const t = Cook.clamp((y / GLASS.h - GLASS.rim) / (GLASS.floor - GLASS.rim), 0, 1);
@@ -478,23 +594,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     /** One layer seen through the glass: between its lower line (y0, wob0) and its upper line (y1, wob1). */
     function band(L, y0, wob0, y1, wob1, fullH) {
-      const top = front(y1, wob1);
+      // CHT-13: an item with its strip is that strip, one across the bowl at its own size, its top (poke) over its line
+      const st = stripOf(L.id);
+      const sw = st ? (GLASS.inside[0][1] - GLASS.inside[0][0]) * GLASS.w : 0;
+      const sh = st ? (sw * st.height) / st.width : 0;
+      const poke = st ? stripTop(L.id, st) * sh * Math.min(1, L.grow) : 0;
+      const top = front(y1 - poke, wob1);
       const bot = front(y0, wob0).reverse();
       c.save();
       c.beginPath();
       top.concat(bot).forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
       c.closePath();
       c.clip();
-      const h = Math.ceil(fullH + 2 * BAND_PAD);
-      if (!L.tex || Math.abs(L.tex.height - h) > 3) L.tex = bandCanvas(L.id, img(L.id), h, L.seed);
-      // the texture, bent along the level's curve (a column at a time), so the food follows the glass
       const Lt = level(y1);
-      const x0 = Lt.cx - BAND_W / 2;
-      const step = 5;
-      for (let x = 0; x < BAND_W; x += step) {
-        const u = Cook.clamp((x0 + x + step / 2 - Lt.cx) / Lt.hw, -1, 1);
-        const ty = y1 - Lt.ry + Lt.ry * Math.sqrt(1 - u * u) - BAND_PAD;
-        c.drawImage(L.tex, x, 0, step + 0.6, L.tex.height, x0 + x, ty, step + 0.6, L.tex.height);
+      if (st) c.drawImage(st, Lt.cx - sw / 2, y1 - poke, sw, sh);
+      else {
+        const h = Math.ceil(fullH + 2 * BAND_PAD);
+        if (!L.tex || Math.abs(L.tex.height - h) > 3) L.tex = bandCanvas(L.id, img(L.id), h, L.seed);
+        // the texture, bent along the level's curve (a column at a time), so the food follows the glass
+        const x0 = Lt.cx - BAND_W / 2;
+        const step = 5;
+        for (let x = 0; x < BAND_W; x += step) {
+          const u = Cook.clamp((x0 + x + step / 2 - Lt.cx) / Lt.hw, -1, 1);
+          const ty = y1 - Lt.ry + Lt.ry * Math.sqrt(1 - u * u) - BAND_PAD;
+          c.drawImage(L.tex, x, 0, step + 0.6, L.tex.height, x0 + x, ty, step + 0.6, L.tex.height);
+        }
       }
       // the glass's curve: a soft shade at both sides, so the layer reads as round
       const L1 = level((y0 + y1) / 2);
@@ -504,20 +628,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       gr.addColorStop(0.82, "rgba(40,25,10,0)");
       gr.addColorStop(1, "rgba(40,25,10,0.36)");
       c.fillStyle = gr;
-      c.fillRect(L1.cx - L1.hw - 10, y1 - Lt.ry - 12, 2 * L1.hw + 20, y0 - y1 + Lt.ry + 24);
-      // a soft shadow under the layer above
-      c.beginPath();
-      top.forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
-      c.strokeStyle = "rgba(40,25,10,0.22)";
-      c.lineWidth = 4;
-      c.stroke();
+      // (on a strip only its food darkens: its ragged top stays clear, never a grey film over the glass)
+      if (st) c.globalCompositeOperation = "source-atop";
+      c.fillRect(L1.cx - L1.hw - 10, y1 - Lt.ry - 12 - poke, 2 * L1.hw + 20, y0 - y1 + Lt.ry + 24 + poke);
+      c.globalCompositeOperation = "source-over";
+      // a soft shadow under the layer above (a strip's own top edge carries its shadow)
+      if (!st) {
+        c.beginPath();
+        top.forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
+        c.strokeStyle = "rgba(40,25,10,0.22)";
+        c.lineWidth = 4;
+        c.stroke();
+      }
       c.restore();
     }
     function draw() {
       c.setTransform(RES * k, 0, 0, RES * k, 0, 0);
       c.clearRect(0, 0, GLASS.w, GLASS.h);
       // every layer's thickness shrinks a little if the glass would overflow
-      const want = layers.reduce((a, L) => a + (DRIZZLE[L.id] ? L.th * 0.45 : L.th), 0);
+      // (a chutney with its strip is a thin layer of its own, its glossy top showing: no drizzle over the layer below)
+      const drizzle = (id) => DRIZZLE[id] && !stripOf(id);
+      const want = layers.reduce((a, L) => a + (drizzle(L.id) ? L.th * 0.45 : L.th), 0);
       const room = (GLASS.floor - GLASS.rim - 0.035) * GLASS.h;
       const fit = want > room ? room / want : 1;
       // the line a layer lies on: shaped by the layer that fell on it (the floor is flat)
@@ -531,7 +662,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const th = L.th * fit * L.grow;
         const below = i ? wobAt(i) : null;
         const above = wobAt(i + 1);
-        if (DRIZZLE[L.id]) {
+        if (drizzle(L.id)) {
           // a chutney: drizzled over the layer below (its ribbons lie on it) and a thin layer of its own
           const own = th * 0.45;
           band(L, y + (th - own), below, y - own, above, L.th * fit);
@@ -544,8 +675,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       // the top: its surface (a drizzle shows the layer under it too)
       const t = tops[tops.length - 1];
-      if (t) {
-        const under = tops.length > 1 && DRIZZLE[t.id] ? tops[tops.length - 2] : null;
+      // (a strip's own top is the surface: the bowl is side-on, CHT-13)
+      if (t && !stripOf(t.id)) {
+        const under = tops.length > 1 && drizzle(t.id) ? tops[tops.length - 2] : null;
         if (under) surface(t.y, under.id, under.L);
         surface(t.y, t.id, t.L);
       }
@@ -590,7 +722,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               draw();
               // the glass gives a tiny settle
               S.tweens.add({
-                targets: parts.slice(1),
+                targets: parts,
                 scaleY: food.scaleY * 0.985,
                 duration: 90,
                 yoyo: true,
@@ -647,7 +779,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       slide(x, ms = 650) {
         return new Promise((resolve) =>
           S.tweens.add({
-            targets: parts,
+            targets: parts.concat(warm),
             x: `+=${x - food.x}`,
             duration: ms,
             ease: "Sine.easeInOut",
@@ -658,7 +790,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       tilt(a, ms = 260) {
         return new Promise((resolve) =>
           S.tweens.add({
-            targets: parts.slice(1),
+            targets: parts,
             angle: a,
             duration: ms,
             yoyo: true,
@@ -666,6 +798,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             onComplete: resolve,
           }),
         );
+      },
+      /** CHT-14 (decision 9): "not that one": the glass wobbles with a warm glow round it (amber, never red), about 0.6 s. */
+      async notIn() {
+        S.tweens.add({ targets: warm, alpha: { from: 0, to: 0.55 }, duration: 160, hold: 300, yoyo: true, ease: "Sine.easeOut" });
+        await bowl.tilt(-2.5, 90);
+        await bowl.tilt(2.5, 90);
+        await bowl.tilt(-1.2, 70);
       },
     };
     return bowl;
@@ -780,7 +919,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const dishNo = () => ctx.dishAt || 0;
       // this station's own first-time demo replaces the generic spotlight (js/cook/coach.js)
       if (Cook.Coach) Cook.Coach.stop(true);
-      if (!pool) pool = St.decoys(decoyPool, flat.concat(exclude), knobInt(k.decoys), k.decoyPick);
+      // CK-49 (the level table): 1, 2, 3, 3 decoys (the knob), a lookalike among them at L4; the 'no' row's topping is on the
+      // shelf too and counts as one (it is an ordinary decoy, never the odd one out)
+      if (!pool) pool = St.tableDecoys(decoyPool, flat.concat(exclude), level, { want: flat, n: Math.max(0, knobInt(k.decoys) - exclude.length), also: exclude.length, what: "toppings" });
+      else St.decoyNote(pool.filter((x) => !flat.includes(x)).length, { what: "toppings" });
       const ids = Cook.shuffle([...new Set(pool.concat(flat, exclude))]);
       const who = (ctx.order && ctx.order.who) || "nana";
       useBowlArt();
@@ -790,10 +932,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           [["cv3-bowl", bowlUrl]].concat(
             Cook.Kit ? Cook.Kit.faceArt(who) : [],
             ids.filter((id) => POTS[id]).map((id) => [`cv3-pot-${id}`, `${V3}${POTS[id]}.webp`]),
+            // CHT-13: each thing on the shelf's strip (any of them may go in), only these
+            ids.filter((id) => STRIPS[id]).map((id) => [stripKey(id), `${STRIP_DIR}${STRIPS[id]}.webp`]),
           ),
         ),
         Cook.wait(6000),
       ]);
+      stripScene = S;
+      // (a spoonful's picture is cut from the strip now: an older round's pot-photo spoonful goes)
+      ids.forEach((id) => {
+        delete potFood[id];
+        if (S.textures.exists(`cv3-bit-${id}`)) S.textures.remove(`cv3-bit-${id}`);
+      });
 
       /* ---------- the scene: the softened marble, the shelf band (chai v2's) ---------- */
       S.track(
@@ -815,12 +965,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- the shelf: identical side-on pots (the pantry jars' look), a chip under each ---------- */
       const n = ids.length;
-      // §4, §14: the word on the chip at levels 1-2, the speaker alone from level 3 (the same chip)
-      const showWord = () => level < 3;
+      // Zafar, 20 Oct (replacing s08 w6M's speaker alone at every level): a pot's word is written until the child has used
+      // it right, then the speaker alone from the next round (Cook.chipWord); the glass pot shows its food (the picture label)
+      const showWord = (id) => Cook.chipWord(id, ctx);
       // the chips' words first: each is never under the 14px floor as rendered (TXT-05), so on a small screen a word can be
       // wider than the usual slot; the pots then spread out over the shelf (their size stays) so every chip fits its slot
       const labels = {};
-      if (showWord()) ids.forEach((id) => (labels[id] = chipLabel(id)));
+      ids.forEach((id) => showWord(id) && (labels[id] = chipLabel(id)));
       const needW = Math.max(0, ...Object.values(labels).map((t) => t.displayWidth + 44 + 8));
       const pitch = Math.min(Math.max(PITCH, needW), (1600 - 190 - 60) / Math.max(1, n));
       const width = n * pitch;
@@ -866,7 +1017,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const key = `cv3-pot-${id}`;
         let img;
         if (S.textures.exists(key)) {
-          const sc = z.L(w) / POT.w;
+          const sc = z.L(St.shelfFit(S, key, w / POT.w, BASE));
           img = S.track(
             S.add
               .image(z.X(x), z.Y(BASE), key)
@@ -984,13 +1135,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
         // a clip that never ends (no audio on this device) never holds the station up
-        const talk = speakId ? Lang.speakWord(speakId) : line ? Lang.speak(line) : null;
+        const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
         return talk ? Promise.race([talk.catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
       };
 
       /* ---------- a topping goes in: it lifts off the shelf, drops into the glass and settles ---------- */
       const got = [];
       Cook.assembleGot = got; // (for the screenshot and test scripts: what's in the bowl, bottom first)
+      // (test scripts: the order and each pot's screen point, to try a wrong one on purpose: the CHT-14 filmstrips)
+      Cook.assembleOrder = { flat: flat.slice(), exclude: exclude.slice(), at: () => Object.fromEntries(Object.entries(items).filter(([, o]) => o && o.active).map(([id, o]) => [id, UI.worldToScreen(S.centre(o).x, S.centre(o).y)])) };
       const ticked = []; // the card row each layer ticked (null: none), to untick it if it's taken back
       let busy = 0;
       let building = false; // the bowl takes a layer back only while you're building (§17)
@@ -1058,9 +1211,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         busy--;
       }
       S.tappable(bowl.hit, () => takeBack());
-      async function drop(id) {
+      /** A spoonful of it lifts off the shelf, over the rim and down into the glass; resolves at the food's surface. */
+      async function spoonIn(id) {
         const obj = items[id];
-        busy++;
         Cook.sfx.pop();
         S.tweens.add({
           targets: obj,
@@ -1117,11 +1270,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }),
         );
         spoon.destroy();
+        return p;
+      }
+      async function drop(id) {
+        busy++;
+        const p = await spoonIn(id);
         got.push(id);
-        // the pill ticks now (UX 11: its step has closed, right or not; the serve judges the order)
+        // the pill ticks now (UX 11: its step has closed; decision 9: only a right thing goes in, CHT-14)
         ticked.push(UI.mission.tickItem(id, dishNo()));
         if (UI.mission.advance) UI.mission.advance(dishNo());
-        S.puff(p.x, p.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#ffffff"), z.L(34));
+        S.puff(p.x, p.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#ffffff"), z.L(34), { flat: 0.3 }); // (side-on: a flat ring)
         const settle = bowl.add(id);
         const r = bowl.rimAt();
         pop(Cook.display(id), r.x + z.L(GLASS_W * 0.36), r.y - z.L(40), {
@@ -1129,6 +1287,66 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         await settle;
         z.progress({ layer: id, n: got.length });
+        busy--;
+      }
+      /** A spoonful flies from the glass (world point p) back to its pot on the shelf. */
+      async function spoonBack(id, p) {
+        const obj = items[id];
+        if (!obj || !S.textures.exists(`cv3-bit-${id}`)) return;
+        const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(SPOON_W), z.L(SPOON_W * 0.62)));
+        await S.fly(spoon, obj.x, obj.y - obj.displayHeight * 0.5, { duration: 380, arc: z.L(70) });
+        spoon.destroy();
+      }
+      /*
+       * CHT-14, CHT-15 (decision 9, softened for rule 12): a wrong thing goes in, a short pause, the glass wobbles with a warm
+       * glow (never red) and it comes back out to its pot; one from later in the order empties the bowl (every layer back to
+       * its pot: start again from the bottom). Nothing is said. The rows it costs lose their tick (judgeDrop, rowsMissed); the
+       * card ticks nothing for it, so the bowl, not a missing tick, is what tells the child.
+       */
+      const missedIds = new Set();
+      const markedAt = new Set();
+      async function notIn(id, j) {
+        busy++;
+        const why = exclude.includes(id) ? `added ${id} (they said no)` : j.expected ? `${id} instead of ${j.expected}` : `added ${id} at the end`;
+        if (!firstWrong) firstWrong = why;
+        z.listen(false, why);
+        rowsMissed(j, id, exclude).forEach((x) => {
+          if (!x.no) missedIds.add(x.id);
+          UI.mission.missItem(x.id, dishNo(), { no: x.no, did: x.no ? null : id });
+        });
+        if (j.expected && !markedAt.has(got.length)) {
+          markedAt.add(got.length);
+          Cook.markMiss(j.expected);
+        }
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chaat-drop", { step: j.verdict, by: id }); // (a test log)
+        const p = await spoonIn(id);
+        await bowl.add(id, 380);
+        await Cook.wait(260); // the little pause ("maybe there's a tiny little pause, and then the bowl shakes")
+        if (Cook.sfx.soft) Cook.sfx.soft();
+        await bowl.notIn();
+        if (j.verdict === "bounce") {
+          await bowl.removeTop(260);
+          await spoonBack(id, p);
+        } else {
+          // everything out: each layer's spoonful back to its pot, the card's rows open again (their ticks earned stay earned)
+          const back = got.concat(id);
+          const at = bowl.surfaceAt();
+          await bowl.empty();
+          await Promise.all([...new Set(back)].map((x, i) => Cook.wait(i * 90).then(() => spoonBack(x, at))));
+          got.length = 0;
+          while (ticked.length) {
+            const r = ticked.pop();
+            if (r) {
+              r.got = Math.max(0, (r.got || 1) - 1);
+              r.done = false;
+            }
+          }
+          const L = ladderOf(ctx);
+          const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
+          if (sq) sq.at = 0;
+          UI.mission.refresh();
+        }
+        z.progress({ wrong: id, verdict: j.verdict, n: got.length });
         busy--;
       }
 
@@ -1198,10 +1416,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           let last = 0;
           building = true;
           for (;;) {
-            // T15: the box names the next layer ("Bataato. Wiji chad!"), only after a pause (help, never a giveaway);
-            // a word the card hides shows as dots there too; not at level 4 (from memory)
+            // T15, s08 w2A (SH-110): Nani calls the next layer as its step opens ("Bataato wiji chad!"), at every level (the
+            // order in pieces); her box shows it only after the pause (help), its item dotted where the card dots it
             const nx = C.next(got);
-            if (nx && level < 4) steps.to("assemble:next", { id: `layer-${got.length}-${nx}`, line: St.addLine(nx), quiet: true });
+            if (nx) steps.to("assemble:next", { id: `layer-${got.length}-${nx}`, line: St.addLine(nx) });
             else steps.done();
             const r = await St.freePick(z, {
               items,
@@ -1214,7 +1432,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (performance.now() - last < 220) continue; // a double tap
             last = performance.now();
             z.expect({ kind: "wait" });
-            await drop(r.id);
+            // CHT-14 (decision 9): judged as it goes in: right stays, wrong comes back out (or empties the bowl)
+            const j = judgeDrop(C, got, r.id);
+            if (j.verdict === "in") await drop(r.id);
+            else await notIn(r.id, j);
+            // SH-105 (decision 6, P26: "it's clear and obvious when you've got the final correct answer ... remove the tick, move
+            // on"): the bowl is complete and right, so nothing is left to choose: it goes to the customer by itself
+            if (got.length >= C.total && !C.mistake(got)) break;
           }
           building = false;
           steps.done();
@@ -1227,7 +1451,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!m) {
             // right: a happy face and the family's praise
             if (exclude.length) UI.mission.closeItem(exclude, dishNo());
-            if (!guided && tries === 1 && !firstWrong) flat.forEach((id) => Cook.markRight(id));
+            // CHT-15 (P63): each thing put in right on its first go is a right (its tick); a wrong try marked its miss already
+            if (!guided && tries === 1) [...new Set(flat)].forEach((id) => !missedIds.has(id) && Cook.markRight(id));
             await review(true);
             // a moment to enjoy it before the end of the station
             await Cook.wait(900);

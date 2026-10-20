@@ -105,6 +105,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       t0: null,
       // decision 51 (CK-23): a wrong item is redone on the spot, at most three tries, then the game shows the right way
       redo: global.OrderCard && global.OrderCard.redo ? global.OrderCard.redo({ max: 3 }) : null,
+      // Zafar, 20 Oct: the words used right before this round (Cook.chipWord: a learned word's chip is the speaker alone)
+      learned: Cook.learnedNow(),
     };
     Cook.ctx = ctx;
     ctx.listen = (ok, why) => {
@@ -188,13 +190,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /*
      * Help (docs/archive/cook/cook-with-nani-kutchi-audit.md, top fix 1):
      *   hearing it again (replay, Nani's hint, a label speaker from stage 3)
-     *     is a hint on the hints badge (and in Busy some patience);
+     *     (SH-102: a replay is free; only being shown costs) is a hint on the hints badge (and in Busy some patience);
      *   being shown the answer (the hesitation glow, the highlight after two
      *     misses, 👁 reveal, translating an order line or "pass me")
      *     is that AND a mistake on the accuracy badge.
      */
     Cook.onHelp = (kind = "help", info = {}) => {
       if (Cook.ctx !== ctx) return;
+      // SH-102 (Zafar, 18 Oct: "you shouldn't lose points by playing the speaker button"): hearing it again is free, whoever asks (the card's
+      // face, a station's own speaker); only being shown it (the bulbs, the eye, a hint, the glow after two misses) is help
+      if (kind === "replay") return;
       ctx.help++;
       const ids = info.ids || (Cook.expect && Cook.expect.key ? [Cook.expect.key] : []);
       ids.forEach((id) => typeof id === "string" && ctx.wordHelp.add(id));
@@ -274,6 +279,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- service view ---------------- */
+  /**
+   * CK-47 (decision 7): the lab's one ending, in the kitchen, as a story order's: the counter again, Nani's one Shabash (not
+   * when the station's own praise just said it), the customer's thanks and goodbye, and they go.
+   */
+  async function kitchenEnd(who) {
+    const guest = who && who !== "nani" && Cook.CHARS[who] ? who : null;
+    await serviceView(guest);
+    if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
+    else S().setMood("nani", "happy");
+    if (guest) {
+      await S().talk(guest, Lang.line("thanks"), { after: "happy" });
+      await S().talk(guest, Lang.line("bye"));
+      UI.hideBubble();
+      await S().leaveChar(guest);
+    }
+    UI.hideBubble();
+  }
   async function serviceView(who, { enter } = {}) {
     await S().setView("service");
     S().addChar("nani");
@@ -423,13 +445,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /**
-   * F9 / E12 (S05-C; S saw chai L4 cards open): from level 3 (data.calm.closedFrom) the order is heard, never written:
-   * the card starts folded (face + headline) before the request pop-up, which then shows the same closed card; a peek
-   * costs a hint (the shared eye). A demo (Nani shows it) stays open.
+   * The level table (s08 w2A, SH-110: data/cook.json levelTable, Cook.levelRow): the card is open at L1-L2, open with its
+   * item words dotted at L3 (UI.mission draws that), hidden at L4: it starts folded (face + headline) before the request
+   * pop-up, which then shows the same closed card; a tap on the face replays the order (free), a peek costs a hint (the
+   * shared eye). Was data.calm.closedFrom 3. A demo (Nani shows it) stays open.
    */
   function closedCards(level, demo) {
-    const at = (Cook.data.calm || {}).closedFrom || 3;
-    if (!demo && level >= at && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true, level: true });
+    if (!demo && Cook.cardState(level) === "hidden" && UI.mission.closeCards) UI.mission.closeCards(true, { peek: true, level: true });
   }
   /** The character bobs as if talking (while the intro card says their order). */
   function talking(who) {
@@ -487,11 +509,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       else if (L.head && L.head.phrase) phrases.push(L.head.phrase);
     });
     if (!phrases.length) return null;
+    // wave 1A's flaw 4 ("each order part once"): two people who asked for the same thing (chai-tray: two "elchi waari chai") are one kind of
+    // dish in the chef's call-back, said once; the same line twice in a row was heard as a stutter (contract-22 at the serve)
+    const kinds = new Set();
+    const once = phrases.filter((ph) => {
+      const k = Lang.plain(ph).toLowerCase().replace(/[^\p{L}\p{N} ]/gu, "").replace(/\s+/g, " ").trim();
+      if (kinds.has(k)) return false;
+      kinds.add(k);
+      return true;
+    });
     const F = Lang.frames();
-    return Lang.join(phrases.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
+    return Lang.join(once.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
   }
   Cook.callBack = callBack;
-  const shabash = () => Lang.say({ fn: "Exclaim", x: "intj.well-done" });
+  const shabash = () => Lang.role(Lang.say({ fn: "Exclaim", x: "intj.well-done" }), "exclaim"); // (contract-23: never read as an item word)
+  // wave 1A's flaw 4: "Shabash!" once at the serve. A station that already praised (the review faces say it when every dish is right) said it a
+  // moment ago (the guide remembers every line said, js/shared/guide.js recentlySaid): it is not said again at the serve or after the station
+  const praised = () => !!(global.NaniGuide && global.NaniGuide.recentlySaid && global.NaniGuide.recentlySaid(Lang.plain(shabash())));
   // SH-66 (S05-C, S's S1 request): the chef's call-back and Shabash (decision 54) come after the station's
   // Lifecycle.stageEnd stopped every voice; they open a stage of their own so they are never read as voice carrying over
   // (a short quiet at its start, as every stage has: E27)
@@ -883,8 +917,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SH-66 (S05-C): the serve is its own beat after the station's stage end, so its call-back, Shabash and thanks
     // are its own lines, never the station's voice carrying over
     await closingBeat();
-    const back = callBack(ctx);
-    if (back) await S().talk("nani", back, { after: "happy" });
+    // CK-47 (decision 7, P24): a row that went wrong is said again by the customer first; Nani's call-back of what went in,
+    // the one well done and their thanks come below, all here in the kitchen
     if (missedRows && who !== "nani") {
       const again = recast(ctx);
       if (again) await S().talk(who, again, { after: "neutral" });
@@ -911,12 +945,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.mission.stamp();
     Cook.writeSave();
     await Cook.wait(900);
+    // CK-47 (decision 7, P24; the judge, 20 Oct: "the story order ends at the counter but Nani never goes over what went into
+    // the recipe there"): at the counter, Nani goes over what went into the dish (the chef's call-back, decision 54: the card's
+    // own rows in the engine's frames, "Chai. Ne daar."), then the one well done, then their thanks. Never in her box after
+    // the round, and never a second well done
+    const recap = callBack(ctx);
+    if (recap) await S().talk("nani", recap, { after: "neutral" });
     if (who === "nani") {
       // Nani's own list (the pantry, T4): Shabash and her happy face; she stays in her kitchen
-      await S().talk("nani", shabash(), { after: "happy" });
+      if (!praised()) await S().talk("nani", shabash(), { after: "happy" });
+      else S().setMood("nani", "happy");
     } else {
       // T7: Shabash from Nani, then the customer's thank you (the family's English words, G6) and khuda-fis
-      await S().talk("nani", shabash(), { after: "happy", ms: 900 });
+      if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
+      else S().setMood("nani", "happy");
       await S().talk(who, Lang.line("thanks"), { after: "happy" });
       await S().talk(who, Lang.line("bye"));
     }
@@ -1421,15 +1463,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // close its rows: they tick now it's finished, as a dish's do (the kept stations tick their own)
     if (!keptKeys().includes(key)) (ctx.ladders || []).forEach((L, i) => UI.mission.finishDish(i));
     const tEnd = Date.now();
-    // decision 54 (T4, T7): the chef's call-back of what was made, then Shabash, in the guide's box (she's off
-    // screen at a station; her card's strip in the pantry); a part tried on its own has nothing to call back
+    // CK-47 (decision 7, P24, Zafar 19 Oct: "this starts in the kitchen ... I don't know why it doesn't finish in the kitchen"):
+    // one ending, in the kitchen: back to the counter, one well done from Nani (none if the station's own praise said it),
+    // the customer's thanks and goodbye there; no recap of the recipe in her box. A part tried on its own just ends
     if (keptKeys().includes(key) || /^recipe:/.test(key)) {
       // SH-66: the closing lines are their own beat, a breath after the station's stage end
-      await Cook.wait(900);
+      await Cook.wait(600);
       await closingBeat();
-      const back = callBack(ctx);
-      if (back) await UI.guideSay(back).catch(() => {});
-      await UI.guideSay(shabash(), { ms: 900 }).catch(() => {});
+      await kitchenEnd(order.who);
     }
     // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
     // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)

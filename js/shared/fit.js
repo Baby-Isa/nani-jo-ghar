@@ -5,6 +5,9 @@
  *   class "fit"            one line, shrunk to fit; at the floor it wraps onto more lines (never "...")
  *   class "fit fit2"       up to two lines (Nani's line, a guide box), shrunk to fit in two; at the floor more lines
  *   class "fit fit-wrap"   the same as "fit" (kept for older call sites)
+ *   class "fit fit-head"   SH-107 (Zafar, 18 Oct): the order pop-up's headline ONLY (order-card.js sets it on a big card's headline): it wraps at
+ *                          full size first, up to two lines, and shrinks only when two lines don't fit; and every such headline on the
+ *                          pop-up takes one size (the smallest any of them needs). Everywhere else keeps shrink, then wrap (non-negotiable 9)
  *   --fit-min (CSS)        the smallest size it may shrink to; never below FitText.FLOOR (14 px), whatever it says
  *
  *   FitText.fit(el)        one element (its CSS font-size is the largest it may be); returns the size used
@@ -24,7 +27,7 @@
   const px = (v) => parseFloat(v) || 0;
 
   F.fit = function (el) {
-    const two = el.classList.contains("fit2");
+    const two = el.classList.contains("fit2") || el.classList.contains("fit-head");
     el.style.whiteSpace = "";
     el.style.overflowWrap = "";
     const size = F.fit1(el, two);
@@ -83,7 +86,7 @@
     const groups = new Map();
     rootEl.querySelectorAll(".fit").forEach((el) => {
       const size = F.fit(el);
-      const g = el.closest("[data-fit-group]");
+      const g = el.closest("[data-fit-group]") || (el.classList.contains("fit-head") ? el.closest(".njg-rq-card, #intro") : null); // (the pop-up's headlines are one group)
       if (!g || !size) return;
       if (!groups.has(g)) groups.set(g, []);
       groups.get(g).push([el, size]);

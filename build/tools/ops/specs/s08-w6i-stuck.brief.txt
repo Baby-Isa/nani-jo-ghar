@@ -1,0 +1,62 @@
+SESSION NAME / MODE:  s08 wave 6I, the gate's stuck clinic runs (boing at 1024x768, the foot at 1180x820 and 1366x1024) and the names false alarm
+MODEL AND EFFORT:     Opus, high effort (a child could get stuck: play-breaking, at sizes the last round's layout change touched)
+COST ESTIMATE:        about $15-25
+HARD STOP:            when every task is accepted, or 2 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6i-stuck.context.md (849 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/screenshots/sandbox/s08-gate-final/summary.md and contract.md
+     build/reports/s08-w6c-clinic.md (the first stuck-runs fix) and s08-w6h-clinic.md (boing's machine and tiles were resized)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/**
+  - data/clinic/**
+  - css/clinic.css
+  - build/sandbox/drivers/catalog.mjs clinic entries
+  - build/sandbox/lib/contract-hook.mjs and contract.mjs (contract-16's names only)
+  - build/reports/s08-w6i-stuck.md
+READ-ONLY (never edit):
+  - js/cook/**
+  - js/shared/**
+  - assets/**
+  - data/lang/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The gate's stuck runs: clinic:heal-boing, #mistake and @L2 at 1024x768 (the yellow lever, the lever that closes the wipe), clinic:patient@L3 at 1024x768 (boing), clinic:patient at 1180x820 and 1366x1024 (the foot's drag). Wave 6H resized boing's machine and tiles and changed the foot wash. For each: if the game can get stuck (a lever under the tool column, a drag that can't land), fix the game at every size; if only the driver misses, fix its clinic entry.
+     Accept: auto: those 6 runs reach their end at those sizes, and boing and the foot at 800x360, 844x390, 1024x768, 1180x820, 1366x768, 1366x1024, 1440x900 (L1 and L3)
+  2. contract-16 reports the players' names on the who's-playing screen ('Maryam', 'Zayn') as English for the child: a player's own name is not English; exempt the names the grown-up typed (their elements) with a unit test.
+     Accept: auto: the unit test; contract-16 green on house at 1024x768
+
+REGRESSION ROWS TO RECHECK (86 rows of the fix list and its done archive; * = open or reopened):
+  clinic:heal-boing (57): CLN-159*, CLN-106*, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-166*, CLN-167*, CLN-168*, CLN-170*, CLN-198*, CLN-02, CLN-03, CLN-08, CLN-82, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-42, CLN-43, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118, CLN-140, CLN-165
+  clinic:heal-foot (56): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-190*, CLN-191*, CLN-192, CLN-193, CLN-194*, CLN-198*, CLN-135*, CLN-02, CLN-03, CLN-08, CLN-82, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-40, CLN-42, CLN-43, CLN-44, CLN-47, CLN-64, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-75, CLN-76, CLN-77, CLN-79, CLN-108, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:patient (27): CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01, CLN-81
+  house (3): FL-01, FL-02, FL-03
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6i-stuck` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8859.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6i-stuck.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

@@ -1,0 +1,81 @@
+{
+  "kind": "shared",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "name": "s08 wave 6B, the Cook stations' look: daal pour and chop, chai labels and spoon, samosa entry, home days, the review face, face circles, the pantry's help",
+  "model": "Opus",
+  "effort": "high",
+  "why": "visual fixes across stations, judged by picture",
+  "cost": "about $30-45",
+  "port": 8852,
+  "report": "s08-w6b-stations",
+  "read": [
+    "build/reports/evidence-ev-20261019-172022-khk.md and the judge verdicts in build/tools/review/data/verdicts.json (each row's line says what failed)",
+    "build/screenshots/sandbox/s08-gate-close/contract.md (the gate's breaks, by check, flow and size)",
+    "docs/game-design/modes/cook.md",
+    "docs/design-language/ (shared screens)",
+    "docs/feedback/cook-playtest-2026-10-17.md"
+  ],
+  "owns": [
+    "js/cook/stations/**",
+    "js/cook/mechanics/**",
+    "js/cook/ui.js",
+    "js/cook/app.js",
+    "js/cook/main.js",
+    "js/home.js",
+    "js/shared/results.js",
+    "js/shared/guide.js",
+    "js/shared/character.js",
+    "js/shared/pour.js",
+    "data/stations/**",
+    "data/cook.json station layout and timing entries only",
+    "css except the order card and request pop-up",
+    "build/reports/s08-w6b-stations.md"
+  ],
+  "readOnly": [
+    "js/cook/words.js, lang.js, order.js, coach.js, flow.js, js/shared/request-popup.js, order-card.js (wave 6A)",
+    "js/clinic/** (wave 6C; the clinic's face circle uses your shared guide: change it in js/shared only)",
+    "build/sandbox/**, build/tools/** (wave 6D)",
+    "assets/** (use what is there; anything that needs new art goes in the report's art list)"
+  ],
+  "stubs": "anything that needs a new picture goes in the report's art list, not a code-drawn stand-in",
+  "tasks": [
+    {
+      "do": "DAAR-29: the pot pouring the daal is never cut off at the canvas edge. DAAR-35 (contract-65 at L3): the chop's waves follow on with no gap. DAAR-31: the pot's wall shows evenly round the rim in the done state.",
+      "accept": "eye: the daal pour filmstrip and the done state at L1-L4, 1366x768 and 800x360; auto: contract-65 green"
+    },
+    {
+      "do": "CHAI-19, CHAI-08: no word pills on the hob's rim; the label sits just above the pan, not over it. CHAI-13: one spoon in the pan at a time while stirring.",
+      "accept": "eye: the chai pours and stir as filmstrips at 844x390 and 1366x768"
+    },
+    {
+      "do": "CK-48: going into samosa (and any station) the stage is never bare marble: the game appears with the background. CK-24: the home screen's days read as days, not numbered padlock levels (keep the mechanic; change the look). CK-31: after a wrong serve the review face is not a happy open-mouthed smile (rule 12: no verdicts; a gentle 'not quite' face from what exists). SEK-20: the empty sekelo racks are not thin flat bars and no skewer floats over a rack (art waits on SEK-14: code layout only).",
+      "accept": "eye: each as a filmstrip or shot"
+    },
+    {
+      "do": "SH-113: every face circle, both games, is zoomed the same (the face fills the circle as in Cook's guide box), in js/shared only. SH-60: in the pantry, Nani's help line and the glow come together, after the idle time. contract-21 (5 breaks: take-back in chai, chai-tray, daar, samosa), contract-20, contract-31 and contract-1 (cook:stir, day3, lab stir): fix or explain each.",
+      "accept": "auto: those contract checks green; eye: the face circles side by side, cook and clinic"
+    },
+    {
+      "do": "contract-35 and contract-36 (the level table: 15 and 2 breaks in day3, day6, maani-line, mishkaki-grill, open-kitchen, labs): fix the ones code can fix; contract-37 (sekelo decoys) waits on art: say so.",
+      "accept": "auto: contract-35 and 36 green, or each left break explained"
+    }
+  ],
+  "flows": [
+    "cook:daar",
+    "cook:daal",
+    "cook:chai",
+    "cook:chai-tray",
+    "cook:samosa",
+    "cook:fetch",
+    "cook:mishkaki-grill",
+    "cook:day3",
+    "cook:day6",
+    "cook:open-kitchen",
+    "cook:stir",
+    "house"
+  ]
+}

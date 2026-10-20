@@ -1,0 +1,67 @@
+SESSION NAME / MODE:  s08 wave 6F, wire the art that has landed: the potato, the whole lemon, the drop machine and level plaster, Nani's moods in the guide box, the talk and blink frames
+MODEL AND EFFORT:     Opus, high effort (art wiring across Cook, the clinic and the shared guide, judged by picture)
+COST ESTIMATE:        about $25-35
+HARD STOP:            when every task is accepted, or 3 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6f-wiring.context.md (858 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/design-language/art-plans/s08c-art-plan.md (section 1: art landed but not wired)
+     build/reports/s08-w0-art.md and assets/s08b-cut-data.json
+     build/tools/review/data/verdicts.json (the judges' lines for ART-10, ART-11, ART-19, ART-20, CLN-106, CLN-189)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/guide.js and js/shared/character.js (the face swap and talk/blink frames only)
+  - js/clinic/heal/games/boing.js, data/clinic/heal/boing.json, data/clinic/heal-art.json (the drop machine, levers, level plaster)
+  - js/clinic/heal/games/eye.js and data/clinic/heal/eye.json (the lemon only)
+  - data/cook.json art.assets entries (the potato), js/cook/art.js
+  - build/reports/s08-w6f-wiring.md
+READ-ONLY (never edit):
+  - build/sandbox/**, css/shared/order-card.css, js/cook/recipes.js, js/cook/order.js (wave 6E)
+  - assets/** (use what has landed; never draw stand-ins)
+  - data/lang/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: art that isn't there stays as it is; say so
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. ART-11: the potato pieces from assets/cook/items-s08b/potato/ replace the butter-looking cubes wherever potato is shown (chop, chaat, samosa filling, pantry). CLN-189: the eye chart's lemon is lemon-whole-s08b, not lemon-half or fru-02.
+     Accept: eye: the potato at the chop and in chaat at 1366x768; the eye chart at L1 and L3
+  2. ART-20, CLN-106: boing uses the cut drop machine and its levers (drop-machine-v3) and the level plaster in its four colours; boing.json names files that exist (no missing drop-machine.webp).
+     Accept: eye: boing at L1 and L3, 1366x768 and 800x360; auto: loadcheck and no missing-file error in the console
+  3. ART-10, ART-19: the guide box swaps Nani's face with her mood (nani-faces-v2 and the v3 set: happy when it goes well, talking while she speaks, blinking now and then); the talk and blink frames that exist for Nani, the girl and the doctor are swapped while they speak and at rest. Nothing for Nana, Ma and Ali (their frames are in the s08c run).
+     Accept: eye: a filmstrip of the guide box while Nani speaks, and the girl and the doctor in the clinic while they speak
+
+REGRESSION ROWS TO RECHECK (170 rows of the fix list and its done archive; * = open or reopened):
+  cook:chop (16): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-29
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01*, CK-29, CK-27, CK-39
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15, PAN-17, PAN-10
+  clinic:heal-boing (57): CLN-81*, CLN-159*, CLN-106*, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-165*, CLN-166*, CLN-167*, CLN-168*, CLN-170*, CLN-198*, CLN-02, CLN-03, CLN-08, CLN-82, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-30, CLN-42, CLN-43, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118, CLN-140
+  clinic:heal-eye (64): CLN-81*, CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-163*, CLN-186, CLN-187*, CLN-188*, CLN-189*, CLN-198*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-85, CLN-87, CLN-109, CLN-112, CLN-114, CLN-152, CLN-151, CLN-30, CLN-39, CLN-42, CLN-43, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118, CLN-140, CLN-136
+  clinic:waiting (38): CLN-115*, CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-81*, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01
+  clinic:diagnosis (35): CLN-17*, CLN-162*, CLN-16, CLN-18, CLN-93, CLN-94, CLN-95, CLN-116, CLN-81*, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6f-wiring` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8856.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6f-wiring.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

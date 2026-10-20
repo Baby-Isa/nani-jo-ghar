@@ -1,0 +1,71 @@
+SESSION NAME / MODE:  s08 wave 4A, daal: the pot top-down with its contents turning, the stir flag and counting, Nani's one stir line with its speed, the mat gone after the pour, the chop's continuous waves and staged reveal; the pour's white ring
+MODEL AND EFFORT:     Opus, high effort (visual work and art wiring in the busiest Cook station)
+COST ESTIMATE:        about $35-50
+HARD STOP:            when every task is accepted, or 5 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w4a-daal.context.md (867 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/cook-playtest-2026-10-17.md (P9-P10, P47-P55; section 6 decision 13)
+     build/reports/s08-w0-art.md and assets/s08b-cut-data.json (daar-pot-top-s08b and the six contents discs)
+     build/reports/s08-w2a-levels.md (the level table: daal's rows)
+     build/reports/s08-w2b-look.md (the shared pour; its white splash ring is to go)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/daar.js
+  - js/cook/mechanics/stir.js
+  - js/cook/mechanics/chop.js
+  - js/cook/mechanics/tadka.js
+  - js/shared/pour.js (the splash ring only)
+  - data/stations/daar.json
+  - data/cook.json daal entries only
+  - build/reports/s08-w4a-daal.md
+READ-ONLY (never edit):
+  - js/cook/stations/samosa.js (3A)
+  - js/cook/mechanics/assemble.js, grill.js, thread.js, js/cook/stations/mishkaki-grill.js, maani-line.js (3B)
+  - js/cook/station-lib.js, ui.js (3B owns the one-highlight fix)
+  - js/clinic/** (5B)
+  - assets/**
+  - data/lang/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: the full stir sentence waits on Mum (DAAR-26): use the engine's nearest whole line and list it
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The pot: the new top-down pot (DAAR-31) with the contents as round discs from wave 0 that turn under a still rim while stirring (DAAR-29, DAAR-05: contents shown, not dots); the mat fades out after the pour (DAAR-33); the pour's bright white splash ring in js/shared/pour.js softened or removed so no code line shows (SH-117).
+     Accept: eye: every pot state at L1-L4; the pour and stir as filmstrips; no hard code lines
+  2. The stir: a small flag at 12 o'clock marks each turn; a turn counts as the ladle passes it, with a sound, the number said within 3/4 of a turn and the number changing (DAAR-30, DAAR-27); no stir pop-up card: only Nani says the stir line, once and whole, with its speed at every level, L1 too (DAAR-26, DAAR-32).
+     Accept: contract-22 and contract-30 green on daal L1-L4; ear: fast spins counted in step
+  3. The chop: the next wave starts as the last one's items run out (no gap), an item counts for its own wave (DAAR-35); at L4 items not yet called are dotted on the card and revealed as she calls them (DAAR-34).
+     Accept: eye: the chop L4 filmstrip; a check that no gap between waves exceeds 0.5 s
+
+REGRESSION ROWS TO RECHECK (52 rows of the fix list and its done archive; * = open or reopened):
+  cook:daar (37): DAAR-02*, DAAR-05*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-29, DAAR-30*, DAAR-31, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, CK-06*, CK-08, CK-10, CK-29, CK-27
+  cook:daal (32): DAAR-02*, DAAR-05*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-29, DAAR-30*, DAAR-31, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25
+  cook:chop (16): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-29
+  cook:stir (15): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11
+  cook:tadka (16): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-10
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w4a-daal` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8842.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w4a-daal.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
