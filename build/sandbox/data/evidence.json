@@ -105,7 +105,16 @@
   "real-pace": "the clinic without the lab's fast mode (no &fast=1): its zooms and waits take their real time (CLN-87: 1.5 s), played fair",
   "mistake-real": "the heal game's mistake player at real pace (no &fast=1): a wrong answer's red, shake and flash last their real 360-600 ms (CLN-107 at L3, CLN-194; in fast mode they are gone between two frames)",
   "miss-chop": "daar (any chop): the first slice step lets the vegetables fly by uncut for 3 s (chop-missed), so a count comes up short and the chop comes again for only the wrong ones, opened by the request pop-up (decision 51); then fair",
-  "answer-while-asked": "a story day: at the first reply pills (Cook's #choices) whose question is heard from a clip, the right pill's word is tapped while that clip is sounding: at once if it still sounds as the pills come up, else the question is heard again from its bubble's speaker and the pill tapped once its clip sounds (answer-while-asked; answer-after-asked when it had ended); a question with no clip is answered fair and the next pills are tried"
+  "answer-while-asked": "a story day: at the first reply pills (Cook's #choices) whose question is heard from a clip, the right pill's word is tapped while that clip is sounding: at once if it still sounds as the pills come up, else the question is heard again from its bubble's speaker and the pill tapped once its clip sounds (answer-while-asked; answer-after-asked when it had ended); a question with no clip is answered fair and the next pills are tried",
+  "speed-slow": "day:window only: the ride held at Nani's slow speed after its first call, then played fair",
+  "speed-fast": "day:window only: the ride held at Nani's fast speed after its first call, then played fair",
+  "miss": "day:window only: every called thing is let pass once (no tap), then tapped when it comes round",
+  "find": "day:book only: the book opened on its find-it page and played fair",
+  "find-wrong": "day:book only: find it, with one wrong tap before each right one (after-wrong)",
+  "nameit": "day:book only: the book opened on its name-it page and played fair",
+  "photo": "day:book only: the book opened on its stick-in-the-photo page, the right photo dragged to the frame",
+  "ourday": "day:book only: the book opened on its our-day page, watched to its end",
+  "farm": "day:book only: the book after a farm-trip day (log=farm: the door, the ride's finds, the photos), played fair to its end"
  },
  "_tools": {
   "build/tools/review/evidence.mjs": "the evidence loop itself (--plan --all exits 1 on any live row with no spec: PRC-06); being built in parallel",
@@ -16873,6 +16882,396 @@
     "!textMatches:(?i)\\b(with|tomatoes)\\b"
    ],
    "note": "the sekelo order says no English join"
+  }
+ ],
+ "RIDE-01": [
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wr-band",
+   "after": null,
+   "capture": [
+    "strip:.wr-view:10x400"
+   ],
+   "expect": null,
+   "note": "the three layers scroll at their own speeds; a filmstrip long enough to pass a join of the near layer: no seam, no jump"
+  }
+ ],
+ "RIDE-02": [
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:call",
+   "after": null,
+   "capture": [
+    "crop:.wr-view",
+    "contract:47"
+   ],
+   "expect": [
+    "contract-47"
+   ],
+   "note": "at each call: things on the two ground lines (near bigger), props half-hiding some; contract-47 breaks if a call names a thing that is fully hidden",
+   "max": 4
+  }
+ ],
+ "RIDE-03": [
+  {
+   "flow": "day:window",
+   "path": "speed-slow",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wr-member",
+   "after": null,
+   "capture": [
+    "trace:.wr-member:12000"
+   ],
+   "expect": [
+    "lastsMs:.wr-member>=8000"
+   ],
+   "note": "slow: one thing crosses the window in about 9 s"
+  },
+  {
+   "flow": "day:window",
+   "path": "speed-fast",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wr-member",
+   "after": null,
+   "capture": [
+    "trace:.wr-member:6000"
+   ],
+   "expect": [
+    "lastsMs:.wr-member>=3000",
+    "lastsMs:.wr-member<=4500"
+   ],
+   "note": "fast: one thing crosses in about 3.5 s, never less than 3 s"
+  },
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": [
+    "!textMatches:(?i)stop the car"
+   ],
+   "note": "Nani says speed up and slow down during the ride, and the car never stops"
+  }
+ ],
+ "RIDE-04": [
+  {
+   "flow": "day:window",
+   "path": "miss",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:48",
+    "voice"
+   ],
+   "expect": [
+    "contract-48"
+   ],
+   "note": "a ride where the child lets every first pass go by: contract-48 breaks if a call comes while its thing is leaving the window, or a missed thing does not come round again; the ride still ends with everything found"
+  }
+ ],
+ "RIDE-05": [
+  {
+   "flow": "repo",
+   "path": null,
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/leak_window_ride.mjs --speeds slow,normal,fast"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the leak bot at the three speeds with unasked things passing: fair 100%, tap-all, wait and blind under 10%"
+  }
+ ],
+ "RIDE-06": [
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "1024x768",
+    "1366x768",
+    "1366x1024"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wr-band",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the car window at four shapes of screen: fitted by height, its sides extended, no green showing, the view filling the opening"
+  }
+ ],
+ "BOOK-01": [
+  {
+   "flow": "day:book",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:start",
+   "after": null,
+   "capture": [
+    "strip:.day-book-scene:12x500"
+   ],
+   "expect": null,
+   "note": "from Nani's greeting by the fire, the move to her face, the turn down to the book, the zoom onto its pages"
+  },
+  {
+   "flow": "day:book",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-tomorrow",
+   "after": null,
+   "capture": [
+    "strip:.day-book-scene:6x400"
+   ],
+   "expect": null,
+   "note": "the zoom back out at the end"
+  }
+ ],
+ "BOOK-02": [
+  {
+   "flow": "day:book",
+   "path": "nameit",
+   "level": 1,
+   "sizes": [
+    "844x390",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-nameit",
+   "after": null,
+   "capture": [
+    "crop:.day-book",
+    "dom:.day-book"
+   ],
+   "expect": [
+    "minSize:.day-book button>=64",
+    "noClip:.day-book"
+   ],
+   "note": "the book on a phone: pages at least 320 px wide, every button at least 64 px, the sentence as the shared pill row with no clipping"
+  }
+ ],
+ "BOOK-03": [
+  {
+   "flow": "day:book",
+   "path": "find",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-find",
+   "after": null,
+   "capture": [
+    "crop:.day-book",
+    "voice"
+   ],
+   "expect": null,
+   "note": "find it: today's things over the place across both pages, fewer asked for than shown"
+  },
+  {
+   "flow": "day:book",
+   "path": "find-wrong",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "after-wrong",
+   "after": null,
+   "capture": [
+    "strip:.day-book:6x200",
+    "voice"
+   ],
+   "expect": null,
+   "note": "a wrong tap: a wiggle and the line again, no red"
+  }
+ ],
+ "BOOK-04": [
+  {
+   "flow": "day:book",
+   "path": "nameit",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-nameit",
+   "after": null,
+   "capture": [
+    "crop:.day-book",
+    "dom:.day-book",
+    "voice"
+   ],
+   "expect": [
+    "!hasWord:name"
+   ],
+   "note": "name it before the answer: one thing, three identical speaker buttons, nothing written on them, the sentence row not yet filled; Nani asks without saying the word"
+  },
+  {
+   "flow": "day:book",
+   "path": "nameit",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-nameit .day-filled",
+   "after": null,
+   "capture": [
+    "crop:.day-book",
+    "voice"
+   ],
+   "expect": null,
+   "note": "after the answer: the row shows the Kutchi and she says the day's sentence"
+  }
+ ],
+ "BOOK-05": [
+  {
+   "flow": "day:book",
+   "path": "photo",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-photo",
+   "after": null,
+   "capture": [
+    "strip:.day-book:8x300",
+    "dom:.day-book",
+    "voice"
+   ],
+   "expect": null,
+   "note": "stick in the photo: the sentence written under the frame as said, three unlabelled photos, the drag and the snap"
+  }
+ ],
+ "BOOK-06": [
+  {
+   "flow": "day:book",
+   "path": "ourday",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-ourday",
+   "after": null,
+   "capture": [
+    "crop:.day-book"
+   ],
+   "expect": null,
+   "note": "our day: the photos in order, three left and two right, nothing on the fold"
+  }
+ ],
+ "BOOK-07": [
+  {
+   "flow": "day:book",
+   "path": "farm",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-tomorrow",
+   "after": null,
+   "capture": [
+    "shot",
+    "dom:.day-book-scene"
+   ],
+   "expect": null,
+   "note": "the end of a farm day: gold word cards, the new day-book on the shelf, no stars or scores"
+  }
+ ],
+ "BOOK-08": [
+  {
+   "flow": "repo",
+   "path": null,
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/leak_book.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the book leak bot over name it, stick in the photo and find it: no strategy without Kutchi beats chance"
   }
  ]
 }

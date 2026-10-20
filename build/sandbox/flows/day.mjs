@@ -89,48 +89,12 @@ export const dayBook = {
   },
 };
 
-// ---------------------------------------------------------------- the window ride
-export const dayWindow = {
-  id: "day:window",
-  group: "day",
-  title: "A day at Nani's: the window ride on the farm road, level 1, fair: the request pop-up, the ride, each thing named and tapped as it passes, the stop-the-car beat, the end",
-  timeoutMs: 180000,
-  async run(ctx) {
-    const { page, rec } = ctx;
-    await open(page, "stage=window&day=2&level=1&seed=7");
-    await page.waitForSelector(".njg-rq-open, .njg-rq-veil", { timeout: 20000 }).catch(() => {});
-    await sleep(300);
-    await rec.state("popup");
-    await page.waitForFunction(() => window.njgTest.state() === "day/window/ride", null, { timeout: 30000 });
-    await sleep(600);
-    await rec.state("ride");
-    const seen = new Set();
-    const t0 = Date.now();
-    while (Date.now() - t0 < 120000) {
-      const e = await expect(page);
-      if (!e) { await sleep(100); continue; }
-      if (e.kind === "end") break;
-      const st = await page.evaluate(() => window.Day && window.Day.rideApi && window.Day.rideApi.state()).catch(() => null);
-      if (st === "stop" && !seen.has("stop")) { seen.add("stop"); await sleep(500); await rec.state("stop-the-car"); }
-      if (e.kind === "tap") {
-        const k = `call-${e.call}`;
-        if (!seen.has(k)) { seen.add(k); if (e.call === 0) await rec.state("call-0-named"); }
-        await tapExpected(page, rec, e);
-        await sleep(150);
-        if (e.call === 0 && !seen.has("got")) { seen.add("got"); await rec.state("call-0-spotted"); }
-        await sleep(250);
-        continue;
-      }
-      await sleep(100);
-    }
-    await page.waitForFunction(() => window.njgTest.expect().kind === "end", null, { timeout: 30000 });
-    await sleep(300);
-    await rec.state("end");
-    const d = await dayOf(page);
-    ctx.extra = Object.assign(ctx.extra || {}, { ride: d && d.ride });
-    if (!d || !d.ride || !d.ride.won) throw new Error(`the fair player did not win the ride (${JSON.stringify(d && d.ride)})`);
-    ctx.reachedEnd = true;
-  },
-};
+// the book's evidence paths (build/sandbox/data/evidence.json `_drivers`): s09-book builds each driver here; until then a path
+// other than fair is a tool failure, never a pass
+export const DAY_BOOK_PATHS = ["fair", "find", "find-wrong", "nameit", "photo", "ourday", "farm"];
+export function dayBookFlow(level, path) {
+  if (path === "fair") return dayBook;
+  return { ...dayBook, title: `${dayBook.title} (${path})`, async run() { throw new Error(`day:book#${path}: the driver is not built yet (s09-book)`); } };
+}
 
-export const DAY_FLOWS = [dayDoor, dayBook, dayWindow];
+export const DAY_FLOWS = [dayDoor, dayBook];
