@@ -47,6 +47,26 @@ test("contract-26: a tap through the pop-up ends the read-out on purpose; a to-r
   assert.equal(of(run(page("mode:dress", ph)), "contract-26").length, 0, "green: the words are on screen as to-record placeholders");
 });
 
+test("contract-26 (w6L): the order said again as a tapped-through pop-up folds is the fold's saying, not the opening; an untapped pop-up still judges it", () => {
+  // Find it, run ev-20261020-030207-6zl: the tap logged 10 ms before the pop-up (its event is a beat late), the first line cut by it, the same order said 3 ms before the fold, its clips cut
+  const mk = (tap) => sorted([stage(T, ST), C(T + 50, "popup", { open: true }), line(1, T + 100, "Muke bhar."),
+    ...(tap ? [C(T + 30, "input", { x: 400, y: 300, on: "div", popup: true, side: false, next: false })] : []),
+    lineEnd(1, T + 600), line(2, T + 800, "Muke bhar."), lineEnd(2, T + 1300), C(T + 803, "popup", { open: false })]);
+  assert.equal(of(run(page("mode:find", mk(true))), "contract-26").length, 0, "green: the saying at the fold after a tap through");
+  assert.ok(of(run(page("mode:find", mk(false))), "contract-26").length >= 1, "red: nobody tapped, so the opening is judged whole");
+});
+
+test("contract-26 (w6L): a silent line that is mostly to-record placeholder words is a to-record line; a silent line of Kutchi words is still not heard", () => {
+  const lex = new Set([...LEX, "nana", "dupatta"]);
+  const rec = (t) => ({ t, rec: true, en: false, grown: false, sel: "span.ph" });
+  const mk = (text, texts) => sorted([stage(T, ST), C(T + 50, "popup", { open: true }), C(T + 60, "texts", { list: texts }), line(1, T + 100, text), lineEnd(1, T + 160), C(T + 2000, "popup", { open: false })]);
+  // Dress up, run ev-20261020-030207-6zl: "For Nana: blue dupatta." (For, blue, dupatta in grey italic; Nana a name)
+  const dress = mk("For Nana: blue dupatta.", [rec("For"), { t: "Nana", rec: false, en: false, grown: false, sel: "span.wp-text" }, rec("blue"), rec("dupatta")]);
+  assert.equal(of(run(page("mode:dress", dress), lex), "contract-26").length, 0, "green: three of four words are placeholders");
+  const kutchi = mk("Muke chai khape.", []);
+  assert.equal(of(run(page("cook:chai-tray", kutchi), lex), "contract-26").length, 1, "red: a Kutchi line that made no sound");
+});
+
 test("contract-35: a card at rest is judged, a peeking card (every word, contract-27) is not", () => {
   const rows = (t) => C(t, "rows", { list: [{ id: "r1", key: "k", text: "Muke dhania", done: false, en: false, no: false }] });
   const mk = (peek) => sorted([stage(T, ST), life(T, "stage-start", "cook:station"), C(T + 500, "side", { n: 1, rows: 1, done: 0, closed: 1, peek, dots: 0, words: [] }), rows(T + 600),

@@ -286,6 +286,12 @@ export class ClinicPlayer {
       if (this.hints && steps > 3 && !this.bulbs.has("heal")) await this.hintMoves("heal");
       const next = () => this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : { do: "wait" }; });
       let a = await next();
+      // (s08 w6L, CLN-107 at L2) the slip is looked for once more as the move is chosen: at the game's real pace a row can open between the
+      // look above and next(), and the player then judged it right and never made its mistake
+      if (this.mistakes && !this.made.has("heal-slip") && a.do !== "wait") {
+        const slip2 = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; }).catch(() => null);
+        if (slip2) { this.made.add("heal-slip"); await this.healAct(slip2); await sleep(250); await this.once(`heal-${game}-slip`, { settle: 0 }); continue; }
+      }
       // CLN-184: the mistake player's tooth is overfilled once (the game's own debug.over(): hold past the green), then filled fair
       if (this.mistakes && game === "tooth" && a.what === "fill" && !this.made.has("heal-over")) {
         const o = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.over ? r.controller.debug.over() : null; }).catch(() => null);

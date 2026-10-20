@@ -5415,16 +5415,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:cook-done:timing",
+   "at": "life:advance",
    "after": null,
    "capture": [
-    "zoom2:canvas:plate",
+    "zoom2:canvas:rack",
     "crop:#stage"
    ],
    "expect": null,
-   "note": "the cooked skewers laid on the plate straight, parallel, left to right, close; handle off the plate (L2 two skewers, L4 three or four); the plate lines up with grill and rack (the last hit is the full plate)",
-   "max": 4,
-   "delay": 900
+   "note": "the cooked skewers laid on the plate straight, parallel, left to right, close; handle off the plate (L2 two skewers, L4 three or four); the plate lines up with grill and rack: taken when the last skewer is plated and the grill moves on by itself",
+   "delay": 150
   }
  ],
  "SEK-08": [
@@ -14128,7 +14127,7 @@
  "SH-117": [
   {
    "flow": "cook:daar",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -14138,23 +14137,40 @@
    "at": "daar-in",
    "after": null,
    "capture": [
-    "strip:canvas:pot:8x60"
+    "strip:#stage:12x120"
    ],
    "expect": null,
-   "note": "the daal pour: the stream lands in a soft ripple of its own colour, no bright white ring (no drawn line on the daal)"
-  }
- ],
- "SH-98": [
+   "note": "the daal pour at a child's pace: the bowl lifts and tips, a stream runs into the pot and the fill rises, the stream lands in a soft ripple of its own colour, no bright white ring (no drawn line on the daal); the crop is the whole stage so the lifted bowl stays in it"
+  },
   {
-   "flow": "cook:samosa",
-   "path": "hint",
-   "level": 3,
+   "flow": "clinic:heal-taste",
+   "path": "real-pace",
+   "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:#mission .oc-card.peek",
+   "at": "pouring",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:8x150"
+   ],
+   "expect": null,
+   "note": "the taste game's pour at real pace: the jug tips and the glass fills from the same shared pour (CLN-197)"
+  }
+ ],
+ "SH-98": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "hint",
+   "level": 4,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "peek-open",
    "after": null,
    "capture": [
     "crop:#side",
@@ -14164,7 +14180,7 @@
    "expect": [
     "pass"
    ],
-   "note": "the Cook card's bulb peek at L3 (the samosa card too): every word written in Kutchi with its number, headline and filling rows, no dotted word (contract-27), and it stays up the level's time, 7 s at L3 and the 3.5 s added to the others (contract-29: 'a little bit too quick')",
+   "note": "the Cook card's bulb peek on a folded card (from the level table the card is folded at L4, open with dotted items at L3, so the paid peek is the L4 one; chai's card): every word written in Kutchi with its number, headline and rows, no dotted word (contract-27), and it stays up the level's time (contract-29: 'a little bit too quick')",
    "kind": "detail",
    "delay": 900
   },
@@ -15021,7 +15037,7 @@
    "note": "the doctor's face circle on the diagnosis card: not 'very zoomed out', the same zoom as the others"
   },
   {
-   "flow": "clinic:heal-fever",
+   "flow": "clinic:heal-eye",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -15029,7 +15045,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "rec:heal-fever-start",
+   "at": "eye-test",
    "after": null,
    "capture": [
     "zoom2:.hs-face"
@@ -15046,10 +15062,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "rec:stage-pharmacy",
+   "at": "pharmacy-belt",
    "after": null,
    "capture": [
-    "zoom2:.cl-face.person"
+    "zoom2:.cl-ph-face"
    ],
    "expect": null,
    "note": "the patient's face circle at the pharmacy (decision 92: she is off screen there too)"
@@ -15550,7 +15566,7 @@
    "after": null,
    "capture": [
     "js:Cook.maaniWindow",
-    "strip:hook:cook.gauge:12x300"
+    "strip:canvas:tawa:12x300"
    ],
    "expect": null,
    "note": "the flip ring's green lasts about three quarters of a second longer than before, at L1 and at L4: the page's own window (side1 and side2 in seconds; the old one is each minus addS) and the ring filmed across its cycle (300 ms a frame)"
@@ -15610,7 +15626,7 @@
    "at": "bad-item-going-in",
    "after": null,
    "capture": [
-    "strip:canvas:bowl:12x130"
+    "strip:canvas:bowl:10x120"
    ],
    "expect": null,
    "note": "a wrong item: the bowl shakes (maybe glows red) and only that item comes back out; a wrong third item does not throw all the items out; no tick shows which guess was right (filmed from the tap)"
@@ -15943,7 +15959,7 @@
  "CLN-167": [
   {
    "flow": "clinic:heal-boing",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -15960,7 +15976,7 @@
   },
   {
    "flow": "clinic:heal-boing",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -16225,7 +16241,7 @@
    "at": "heal:fill",
    "after": null,
    "capture": [
-    "strip:.tooth-drill-space:10x250"
+    "strip:.tooth-drill-space:8x250"
    ],
    "expect": null,
    "note": "the fill: no code-drawn white line from the drill to the filling; the tip centred in the cavity and the cavity fills from the middle"
@@ -16475,7 +16491,7 @@
    "at": "heal:off-the-channel",
    "after": null,
    "capture": [
-    "strip:.fo-shake:12x60"
+    "strip:.fo-shake:8x60"
    ],
    "expect": null,
    "note": "a touch on the edge: the foot vibrates a little, and flashes a little red"

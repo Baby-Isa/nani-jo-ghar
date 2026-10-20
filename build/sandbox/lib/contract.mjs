@@ -200,7 +200,10 @@ export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
       if (e.type !== "c" || e.k !== "life") continue;
       if (e.what === "say-start") {
         const u = { id: e.reason, t0: e.t, t1: null, text: e.by || "", line: null };
-        const l = [...lines.values()].filter((x) => x.who === "cook" && !taken.has(x.id) && x.t0 <= e.t + 5 && same(x.text, u.text)).sort((a, b) => a.t0 - b.t0)[0];
+        // (s08 w6L, contract-3) the turn's id is its line's id (say-start's reason = the sound log's line id): a clip belongs to the line its
+        // turn said, never to the next line with the same words (a cut count clip was matched by order to a later stage's count line)
+        const byId = [...lines.values()].filter((x) => String(x.id).split("|").pop() === String(e.reason) && !taken.has(x.id) && x.t0 <= e.t + 5).sort((a, b) => b.t0 - a.t0)[0];
+        const l = byId || [...lines.values()].filter((x) => x.who === "cook" && !taken.has(x.id) && x.t0 <= e.t + 5 && same(x.text, u.text)).sort((a, b) => a.t0 - b.t0)[0];
         if (l) { taken.add(l.id); u.line = l; }
         open.set(u.id, u);
         turns.push(u);
@@ -967,7 +970,14 @@ function check26(tl, v, add, root, lex) {
       if (!(l.text || "").trim() || !isCookLine(l) || l.t0 < p.t0 - 100 || (p.t1 != null && l.t0 > p.t1)) continue;
       // a tap through the pop-up (or any stop the game made) ends the read-out: what it had not said yet was cut on purpose
       if (stops.some((t) => t > l.t0 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
-      if (popTaps.some((t) => t >= p.t0 && t > l.t0 - 300 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
+      if (popTaps.some((t) => t >= p.t0 - 150 && t > l.t0 - 300 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
+      // (s08 w6L) the pop-up the test player tapped through folds, and the game says the order again as it closes (Find it: the same line
+      // 3 ms before the fold, in the page's fast test speed, its clips cut by the fold): that second saying is the fold's, not the opening
+      if (p.t1 != null && l.t0 >= p.t1 - 400 && popTaps.some((t) => t >= p.t0 - 150 && t <= p.t1 + 150)) continue;
+      // (s08 w6L) a line that played nothing and is mostly to-record placeholder words ("For Nana: blue dupatta.", Dress up: the grey
+      // words are not spoken, and the name in it has no clip alone) is a to-record line: never spoken, so never "not heard whole"
+      const lw = normW(l.text).split(" ").filter(Boolean);
+      if (!l.plays.some((q) => !/^silent line/.test(q.via || "")) && lw.length && lw.filter((w) => placeholder.has(w) || ENGLISH_PLACEHOLDERS.has(w)).length * 2 >= lw.length) continue;
       const heard = new Set();
       const lineWords = new Set(normW(l.text).split(" "));
       let respelled = 0; // device-voice pieces that say a word by its respelling (the lexicon's say: "ba" is "ber")
@@ -1200,7 +1210,9 @@ function check35(r, tl, segs, add, root) {
     const level = realLevel(tl, first.t, levelOf(r.flow || ""));
     const at = `${s.key} at L${level}`;
     if (level >= 4) {
-      if (side.closed < side.n) add("contract-35", first.t, `${at}: ${side.n - side.closed} of ${side.n} sidebar cards open at the first play tap (hidden at L4: face and headline folded)`);
+      // (s08 w6L, wave 6J) the daal's chop card, Nani's, stays open at L4: the other items show dotted so the child sees there are three (DAAR-34)
+      const chopCard = /daar|daal/.test(r.flow || "") ? 1 : 0;
+      if (side.n - side.closed > chopCard) add("contract-35", first.t, `${at}: ${side.n - side.closed} of ${side.n} sidebar cards open at the first play tap (hidden at L4: face and headline folded${chopCard ? "; the chop card may stay" : ""})`);
       continue;
     }
     const all = ((rows && rows.list) || []).filter((x) => !x.en);
@@ -1208,6 +1220,8 @@ function check35(r, tl, segs, add, root) {
     // the card you work from is open: a second card may fold for a phase it can't be acted on (the order card under Nani's
     // chop card, design system 13), and a card whose rows are all ticked may fold (samosa's fry); every card closed is a break
     if (side.closed >= side.n && !(all.length && !open.length)) add("contract-35", first.t, `${at}: ${side.closed} of ${side.n} sidebar cards closed at the first play tap (open until L4; L3 dots the items instead)`);
+    // (s08 w6L, wave 6J) a #hint player pressed the bulb or peeked: the rows it paid to reveal are not the card at rest
+    if (/#hint/.test(r.flow || "")) continue;
     if (level <= 2) {
       const dotted = open.filter((x) => /•/.test(x.text || ""));
       if (dotted.length) add("contract-35", first.t, `${at}: ${dotted.length} row${dotted.length > 1 ? "s" : ""} with dotted words ("${dotted.map((x) => x.text).slice(0, 3).join(" / ")}"): an open card writes every word at L1-L2`);

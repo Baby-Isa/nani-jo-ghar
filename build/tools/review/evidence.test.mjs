@@ -23,6 +23,22 @@ test("captures: every kind, a capture at another moment, refusals", () => {
   assert.ok(parseCmd("node build/tools/ops/publish.mjs --go").error, "never publishes");
 });
 
+test("s08 w6L: js: reads a page value by its path, never code; the new moments and the mistake-real driver are reachable", async () => {
+  assert.deepEqual(parseCapture("js:Cook.maaniWindow"), { kind: "js", path: "Cook.maaniWindow", raw: "js:Cook.maaniWindow" });
+  assert.ok(parseCapture("js:alert(1)").error && parseCapture("js:a;b").error && parseCapture("js:").error, "property reads only");
+  assert.equal(parseCapture("strip:hook:cook.gauge:12x300").sel, "hook:cook.gauge", "a hook box can be filmed");
+  const M = await import("../../sandbox/lib/moments.mjs");
+  const root = new URL("../../..", import.meta.url).pathname;
+  // at(syCx + OVER.dx, endY() + OVER.dy, "press the glowing end"): a call inside the arguments no longer hides the step (CLN-167)
+  assert.ok(M.healSteps(root, "boing").includes("press-the-glowing-end"));
+  assert.ok(M.reachable("line:clinic-patient", ["line:*-*"]) && !M.reachable("line:clinic-patient", ["line:*"]), "her line's start: line:<who>");
+  const { resolveFlow } = await import("../../sandbox/flows/index.mjs");
+  const f = resolveFlow("clinic:heal-eye#mistake-real");
+  assert.ok(f && f.id === "clinic:heal-eye#mistake-real", "the mistake player at real pace is a path of every heal game");
+  assert.equal(M.reachable("bad-item-going-in", M.momentsFor(root, "cook:chaat#mistake", { kindOf: () => ({ kind: "cook" }) })), true, "the wrong item's own moment (CHT-14)");
+  assert.equal(M.reachable("wrong-tap", ["drv:bad-item-going-in"]), false, "and it is not a wrong-tap: the rows asking for rec:wrong-tap keep their moment");
+});
+
 test("expects: the spec writer's vocabulary, negation, unknown words go to the reviewer", () => {
   assert.deepEqual(parseExpect("count:.rs-words-bad .rs-word=0"), { kind: "count", sel: ".rs-words-bad .rs-word", op: "=", n: 0, not: false, raw: "count:.rs-words-bad .rs-word=0" });
   assert.equal(parseExpect("!hasWord:number").not, true);
