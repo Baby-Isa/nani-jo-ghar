@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The window ride: road preview</title>
+<!--
+  For grown-ups (Sprint 9, s09-ride): the car window over the road, to agree the road's look before the s09b art run (the s09r
+  style test, docs/design-language/art-plans/s09r-art-plan.md). The shared ride engine (js/shared/window-ride.js) with the farm
+  road's data (data/day.json window.rides.farm-road): three looping layers (far 0.15, middle 0.4, near 1, joined by a soft
+  cross-fade), things on two ground lines, props on the verge, and the three speeds. Buttons: slow / normal / fast; the road
+  (the farm, or the town's shops behind: window.previewLayers.town); the art (placeholder shapes, or each s09r cut that has
+  landed in assets/day/ride/s09r/); "find them" taps each thing Nani asks for after a moment, so the ride goes on by itself.
+  URL: ?speed=slow|normal|fast &road=farm|town &art=placeholders|s09r &auto=0|1 &level=1..3 &seed=N &bar=0 (no control bar: the
+  recordings)
+-->
+<link rel="stylesheet" href="../css/shared/tokens.css">
+<link rel="stylesheet" href="../css/shared/focus.css">
+<link rel="stylesheet" href="../css/day.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #fbf5ea; color: #2b1810; font: 15px/1.4 system-ui, -apple-system, sans-serif; }
+  body { display: flex; flex-direction: column; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 8px 16px; }
+  .bar h1 { font-size: 17px; margin: 0 8px 0 0; }
+  .grp { display: inline-flex; gap: 4px; align-items: center; font-size: 13px; color: #7a6558; }
+  .grp button { font: inherit; color: #2b1810; padding: 6px 12px; border-radius: 12px; border: 1px solid #d9bf95; background: #fff7e8; min-height: 40px; cursor: pointer; }
+  .grp button.on { background: #2f3e6b; color: #fff; border-color: #2f3e6b; }
+  .note { font-size: 13px; color: #7a6558; flex: 1 1 280px; }
+  #said { font-weight: 700; color: #2b1810; }
+  #stage { position: relative; flex: 1 1 auto; min-height: 240px; margin: 0 16px 16px; border-radius: 12px; overflow: hidden; background: #f3e7d3; }
+  body.bare #stage { margin: 0; border-radius: 0; }
+  body.bare .bar { display: none; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>The window ride</h1>
+  <span class="grp">Speed <button data-speed="slow">slow</button><button data-speed="normal">normal</button><button data-speed="fast">fast</button></span>
+  <span class="grp">Road <button data-road="farm">farm</button><button data-road="town">town</button></span>
+  <span class="grp">Art <button data-art="placeholders">placeholders</button><button data-art="s09r">s09r cuts</button></span>
+  <span class="grp"><button id="auto">find them</button></span>
+  <span class="note">Nani: <span id="said">…</span> · <span id="artnote"></span></span>
+</div>
+<div id="stage"></div>
+<script src="../js/shared/window-ride.js"></script>
+<script type="module">
+import { paintSky } from "../js/day/sky.js";
+
+const q = new URLSearchParams(location.search);
+const st = {
+  speed: /^(slow|normal|fast)$/.test(q.get("speed") || "") ? q.get("speed") : "normal",
+  road: q.get("road") === "town" ? "town" : "farm",
+  art: q.get("art") === "placeholders" ? "placeholders" : "s09r",
+  auto: q.get("auto") !== "0",
+  level: Number(q.get("level")) || 1,
+  seed: Number(q.get("seed")) || 7,
+};
+if (q.get("bar") === "0") document.body.classList.add("bare");
+const W = window.WindowRide;
+const url = (p) => `../${p}`;
+const data = await (await fetch("../data/day.json")).json();
+const base = data.window.rides["farm-road"];
+const seeded = (seed) => {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+// which s09r cuts have landed (a picture that loads)
+const landed = new Map();
+const probe = (p) => (landed.has(p) ? landed.get(p) : (landed.set(p, new Promise((ok) => { const im = new Image(); im.onload = () => ok(true); im.onerror = () => ok(false); im.src = url(p); })), landed.get(p)));
+async function rideFor() {
+  const ride = JSON.parse(JSON.stringify(base));
+  if (st.road === "town") ride.view.layers = JSON.parse(JSON.stringify(data.window.previewLayers.town));
+  let n = 0;
+  const defs = [...ride.view.layers, ...Object.values(ride.view.props), ...Object.values(ride.things)];
+  for (const d of defs) {
+    if (st.art === "placeholders") d.art = null;
+    else if (d.cut && (await probe(d.cut))) {
+      d.art = d.cut;
+      n++;
+    }
+  }
+  document.getElementById("artnote").textContent = st.art === "placeholders" ? "placeholder shapes" : n ? `${n} s09r cut(s) in, the rest placeholders` : "no s09r cut has landed yet: placeholders (the goat and hen are the book's)";
+  return ride;
+}
+const GAPS = new Set(["cow", "tractor", "bicycle"]); // the engine can't say these yet: they only pass by (the game asks the engine)
+
+let cur = null;
+async function start() {
+  if (cur) cur.stop();
+  const stage = document.getElementById("stage");
+  stage.innerHTML = "";
+  const ride = await rideFor();
+  const rng = seeded(st.seed);
+  const plan = W.plan(ride, st.level, rng, { callable: (id) => !GAPS.has(id) });
+  const said = document.getElementById("said");
+  const r = W.mount(stage, {
+    ride,
+    plan,
+    url,
+    rng,
+    hold: st.speed,
+    sky: (box) => paintSky(box, data.weather.sunny, { w: 1600, h: 900, url }),
+    say: (i, c, pass) => {
+      said.textContent = `Where is the ${ride.things[c.named].en}?${pass > 1 ? " (again)" : ""}`;
+      if (st.auto) {
+        const ev = r.model.open();
+        const uid = ev && ev.namedTh && ev.namedTh.uid;
+        setTimeout(() => uid && r.model.open() && r.model.open().namedTh && r.model.open().namedTh.uid === uid && r.model.tap(uid), 1200);
+      }
+    },
+    saySpeed: (to) => (said.textContent = to === "slow" ? "Slow down!" : to === "fast" ? "Speed up!" : "(normal speed)"),
+    onEnd: () => {
+      st.seed += 1;
+      start();
+    },
+  });
+  r.start();
+  cur = r;
+  window.ridePreview = r;
+  mark();
+}
+function mark() {
+  document.querySelectorAll("[data-speed]").forEach((b) => b.classList.toggle("on", b.dataset.speed === st.speed));
+  document.querySelectorAll("[data-road]").forEach((b) => b.classList.toggle("on", b.dataset.road === st.road));
+  document.querySelectorAll("[data-art]").forEach((b) => b.classList.toggle("on", b.dataset.art === st.art));
+  document.getElementById("auto").classList.toggle("on", st.auto);
+}
+document.querySelectorAll("[data-speed]").forEach((b) => b.addEventListener("click", () => {
+  st.speed = b.dataset.speed;
+  if (cur) cur.setSpeed(st.speed);
+  mark();
+}));
+document.querySelectorAll("[data-road]").forEach((b) => b.addEventListener("click", () => ((st.road = b.dataset.road), start())));
+document.querySelectorAll("[data-art]").forEach((b) => b.addEventListener("click", () => ((st.art = b.dataset.art), start())));
+document.getElementById("auto").addEventListener("click", () => ((st.auto = !st.auto), mark()));
+start();
+</script>
+</body>
+</html>
