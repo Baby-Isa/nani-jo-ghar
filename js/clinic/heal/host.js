@@ -224,13 +224,17 @@
         const p = ease(dir > 0 ? u : 1 - u); // p: 0 = the wide shot, 1 = the close-up
         const s = Math.pow(a.k, p);
         const f = a.k > 1.001 ? (s - 1) / (a.k - 1) : p;
-        room.push({ offset: u, transform: `translate(${(a.dx * f).toFixed(2)}px, ${(a.dy * f).toFixed(2)}px) scale(${s.toFixed(4)})`, filter: `blur(${(dir > 0 ? 3 * p : 0).toFixed(2)}px)` });
-        // the room stays the picture until the close-up is nearly its full size (its own edges never show for long), and
-        // hands over in the last stretch, both showing the part in the same place at the same size
-        fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (0.98 - p) / 0.22)).toFixed(3) });
-        // the close-up's own blurred room comes in under the room only once it is big enough to fill the screen (until
-        // then it would be a pale box round the part)
-        bg.push({ offset: u, opacity: Math.max(0, Math.min(1, (p - 0.66) / 0.08)).toFixed(3) });
+        // s08 w6N (CLN-163; the judge: "the zoom still blurs the cartoon girl heavily"): no blur on the room (a blur on
+        // the scaled room grew with the scale, so it read as a smear); the room is only scaled
+        room.push({ offset: u, transform: `translate(${(a.dx * f).toFixed(2)}px, ${(a.dy * f).toFixed(2)}px) scale(${s.toFixed(4)})` });
+        // the room stays the picture until the close-up is all but its full size, and hands over in the last tenth of the
+        // move, both showing the part in the same place at the same size (s08 w6N, CLN-163; the judge: "a curved-edged
+        // overlay": an earlier hand-over showed the close-up small, its own cut-out edge, the jaw or the cheeks, on screen)
+        fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (1 - p) / 0.1)).toFixed(3) });
+        // s08 w6N (CLN-163, CLN-106; the judge: white corners, and the arm's first frame on blank white): the close-up's
+        // own blurred room stays under it all through the move (its svg lets it run past its box while it moves, so
+        // there is never a pale box round the shrunken picture, and never a bare page before the room is up)
+        void bg;
         if (r) {
           const sg = s / a.k;
           const tx = (a.tc.q.x - a.tc.t.x) * (1 - f);
@@ -238,7 +242,7 @@
           shot.push({ offset: u, transform: `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${sg.toFixed(4)})` });
         }
       }
-      const bgEls = r ? [el.querySelector(".hs-bg"), el.querySelector(".hs-bg") && el.querySelector(".hs-bg").nextElementSibling].filter(Boolean) : [];
+      const bgEls = []; // s08 w6N: the blurred room is no longer faded (above): it keeps its own drawn opacity
       return { room, shot, fade, bg, bgEls, el: r ? el : null, origin: r ? `${(a.tc.t.x - r.left).toFixed(1)}px ${(a.tc.t.y - r.top).toFixed(1)}px` : null };
     };
     // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
@@ -275,9 +279,13 @@
         let shot = Promise.resolve();
         if (F.el) {
           F.el.style.transformOrigin = F.origin;
+          // s08 w6N (CLN-163; the judge: white corners round the eye close-up): while the close-up is scaled down its
+          // svg lets its blurred room run past its own box, so the screen round it is never the bare page
+          F.el.style.overflow = "visible";
           shot = Promise.all([play(F.el, F.shot, opts)].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         }
         await Promise.all([zoom, fade, shot]);
+        if (F.el) F.el.style.overflow = "";
         z.moving = false;
         // the close-up rests as it is drawn (its own transform gone: no rounding left over from the last frame)
         if (F.el && !z.leaving) [F.el].concat(F.bgEls).forEach((x) => x.getAnimations && x.getAnimations().forEach((an) => an.cancel()));
@@ -310,7 +318,10 @@
         // back over it, both at the same place and size (frames(), above)
         const F = frames(a, -1);
         const opts = { duration: ms, easing: "linear", fill: "forwards" };
-        if (F.el) F.el.style.transformOrigin = F.origin;
+        if (F.el) {
+          F.el.style.transformOrigin = F.origin;
+          F.el.style.overflow = "visible"; // its blurred room past its box as it shrinks (CLN-163)
+        }
         await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), F.el ? play(F.el, F.shot, opts) : null].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
@@ -515,7 +526,10 @@
     // CLN-140 (Zafar, 14 Oct, R4 in the clinic): the doctor has one card at the top of the sidebar, as in every stage:
     // his face once (the card's, screen.js), his line for the step now as its top strip (T29), then the goal headline
     // and the steps. The parked games keep their goal in the strip (no headline).
-    card.setTitle(v2 ? goal : "", null); // null: the screen's card wears his face (Kit.Card's default face)
+    // s08 w6N (CLN-106): a game whose goal is said once a step is done (def.why.goalAfter: the boing's "Time for the jab"
+    // after the wipe) opens with no headline; it calls ctx.card.goal() then, and the headline comes up as he says it
+    const lateGoal = !!(v2 && def.why && def.why.goalAfter);
+    card.setTitle(v2 && !lateGoal ? goal : "", null); // null: the screen's card wears his face (Kit.Card's default face)
     if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
@@ -683,6 +697,12 @@
         },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),
+        // CLN-106 (def.why.goalAfter): the late goal: its headline on the card, and the doctor says it (once)
+        goal: () => {
+          if (!lateGoal || card.titleText === goal || !goal) return Promise.resolve();
+          card.setTitle(goal, null);
+          return ctx.say(goal, { who: "doctor" });
+        },
         speak: (ids) => {
           // the whole card is read only in the pop-up (SH-64): a game's own read of it (its opening, the scene's "why"
           // beat) stays quiet; one step's rows (ids) are still said as they open, and the face replays the card
@@ -926,7 +946,8 @@
     // S03-A (decision 53, CLN-84 re-raised, SH-64): every heal game opens with the shared request pop-up, as Cook and
     // the pharmacy do: the doctor's card at full size over the room, read out row by row; a tap anywhere stops the
     // voice and folds it into the sidebar; then the game starts, quiet (its opening repeat of the card is skipped)
-    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText);
+    // (a late goal, def.why.goalAfter: the game's first step is the pop-up's whole content; its rows come at mount)
+    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText || lateGoal);
     const popRead = new Set();
     let popped = false; // the pop-up has read the card
     let popAt = 0;

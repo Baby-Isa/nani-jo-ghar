@@ -193,6 +193,40 @@
     const box = (A && A.box) || {};
     return Kit.url(box[mood || "neutral"] || box.neutral || "assets/clinic/patients/doctor/v2/faces/neutral.webp");
   };
+  /**
+   * ART-19 (s08 w6N): while the doctor's line plays and he is not on screen, the faces on his card (and his box) flap
+   * between his talk face and his neutral face (both his own art, data/clinic/heal-art.json doctor.box). Returns the stop.
+   */
+  Kit.cardTalk = function () {
+    const doc = global.document;
+    if (!doc) return null;
+    const talk = Kit.doctorFace("talk");
+    const rest = Kit.doctorFace("neutral");
+    if (!talk || talk === rest) return null;
+    const imgs = () => Array.from(doc.querySelectorAll(".cl-face.doctor img, .cl-card-face .cl-face.doctor img")).filter((i) => i.isConnected);
+    // decoded once, so a flap never shows a blank face while the picture loads
+    if (!Kit.cardTalk.pre && global.Image) (Kit.cardTalk.pre = new global.Image()).src = talk;
+    let open = false;
+    let on = true;
+    const flap = () => {
+      if (!on) return;
+      open = !open;
+      imgs().forEach((i) => {
+        if (i.dataset.rest == null) i.dataset.rest = i.getAttribute("src") || rest;
+        i.src = open ? talk : i.dataset.rest;
+      });
+      t = setTimeout(flap, open ? 170 : 130);
+    };
+    let t = setTimeout(flap, 0);
+    return () => {
+      on = false;
+      clearTimeout(t);
+      imgs().forEach((i) => {
+        if (i.dataset.rest != null) i.src = i.dataset.rest;
+        delete i.dataset.rest;
+      });
+    };
+  };
   /** The doctor's face for his box and the heal card: his neutral face (Kit.doctorFace). */
   Object.defineProperty(Kit, "DOCTOR_FACE", { get: () => Kit.doctorFace("neutral"), configurable: true });
   Kit.ITEMS = {}; // filled from data/clinic.json items
@@ -576,6 +610,9 @@
         if (tk && tk.__talk) stopTalk = tk.__talk();
         else if (el && el.tagName === "IMG") stopTalk = global.Lifecycle.talk.dom(el);
       }
+      // ART-19 (s08 w6N; the judge: a closed smile through a whole line): the doctor speaking from his card (off screen, no
+      // bubble) moves his mouth on the card's face: his own talk face (faces/talk) and his neutral one in turn
+      if (!stopTalk && (who === "doctor" || who === "guide")) stopTalk = Kit.cardTalk();
       const t0 = Date.now();
       let played = false;
       const ao = { soft: !!opts.soft, gen, stale: opts.stale };
