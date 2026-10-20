@@ -953,6 +953,15 @@
     let popAt = 0;
     // the game's opening repeat of a row the pop-up just read (within a few seconds of the fold) stays quiet
     const quietStart = () => popped && Date.now() - popAt < (Kit.fast ? 1500 : 5000);
+    // the request pop-up's entrance animations (css/shared/order-card.css njgRqFade, njgRqIn) finished, or 800 ms at
+    // most (a page with no animations, or reduced motion, goes on at once)
+    const shownIn = (veil) => {
+      if (!veil || !veil.getAnimations) return Promise.resolve();
+      const card = veil.querySelector(".njg-rq-card");
+      const ins = [...veil.getAnimations(), ...(card && card.getAnimations ? card.getAnimations() : [])].filter((a) => /^njgRq(Fade|In)$/.test(a.animationName || ""));
+      if (!ins.length) return Promise.resolve();
+      return Promise.race([Promise.all(ins.map((a) => a.finished.catch(() => {}))), new Promise((r) => setTimeout(r, 800))]);
+    };
     const showPopup = () => {
       if (!popup) return Promise.resolve();
       Kit.Voice.clear(); // the stage change (CLN-109): nothing from before queues ahead of the request
@@ -961,6 +970,7 @@
       // step is said as it opens (Card.reveal), never the whole job up front
       const opened = card.progressive ? card.rows.slice(0, card.shown + 1) : card.rows;
       opened.forEach((r) => popRead.add(r.id));
+      let veil = null;
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
         host: screen.main,
@@ -976,8 +986,12 @@
           big.titleText = card.titleText;
           big.faceEl = face.cloneNode(true);
           big.setRows(opened.map((r) => Object.assign({}, r, { el: null })));
+          veil = box.closest ? box.closest(".njg-rq-veil") : null;
         },
-        read: () => big.speak(),
+        // the doctor reads the card once the child can see it: the pop-up's own fade-in (njgRqFade, njgRqIn) has
+        // landed. At test speed the lead is 20 ms, and a late goal's pop-up (CLN-106: the first step's line alone)
+        // was read and folded before it had faded in (contract-1: no pop-up seen, its line said outside it)
+        read: () => shownIn(veil).then(() => (veil && (veil.classList.contains("going") || !veil.isConnected) ? null : big.speak())), // (a tap-through while it faded in: nothing said)
         onStop: () => Kit.Voice.clear(),
       }).then(() => {
         popped = true;
