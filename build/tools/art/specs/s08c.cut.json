@@ -206,5 +206,42 @@
    },
    "out": "clinic/patients/mother-baby/mother-baby"
   }
+ ],
+ "_7b_manual": [
+  {
+   "id": "doctor-skin-shift",
+   "what": "every doctor file (assets/clinic/patients/doctor/v2/*, faces/*) moved toward #C88A6F: per view, the base's median skin (HSV hue 5-22, sat 60-200, val>120, in the head box) to the swatch, applied as one per-pixel Lab gain (to/from)^w, w = skin-likeness (hue within 28 deg, chroma>8, L>38), so a face layer on its base stays matched",
+   "tool": "artcut.py does not read skin_shift: request to the tools owner (7B report)"
+  },
+  {
+   "id": "gz-girl-closeups",
+   "src": [
+    "gz2-girl-face-eyes-v1.png",
+    "gz3-girl-face-eye-sore-v1.png",
+    "gz4-girl-face-eyes-closed-v1.png",
+    "gz1-girl-face-aah-v1.png"
+   ],
+   "out": [
+    "clinic/closeups/girl/eyes-s08c.webp",
+    "eyes-s08c-sore.webp",
+    "eyes-s08c-closed.webp",
+    "face-aah-s08c.webp"
+   ],
+   "what": "whole frames, no key, 1536x1024 (no @2x); GZ3/GZ4 on GZ2 measured by phase correlation (+0.18,-0.23 and -0.30,-0.14 px: used as drawn); the same skin shift as the doctor's, GZ2's median face (#F29B63) to the sheet face #E39468 (sheet-girl-v2-1.png, box 0.79-0.92 x 0.15-0.30) for all three, GZ1 its own (#DC8A56 to the same)"
+  },
+  {
+   "id": "family-talk-blink",
+   "src": [
+    "nn1",
+    "nn2",
+    "ma1 (padded to 1536)",
+    "ma2",
+    "al1",
+    "al2",
+    "al3"
+   ],
+   "out": "assets/characters/{nana,ma,ali}/<who>-{talk,blink}.webp, ali/cousin-impatient.webp",
+   "what": "build/cut_characters.py's own make_neutral with the edit as the sheet, then only the changed pixels inside a window round the eyes (|d|>18, opened, dilated 4, feathered) pasted onto the wired assets/cook/characters/<who>-neutral.webp; AL3 (an edit of chatgpt-batch3/char-ali-impatient-v2.png) cut as make_impatient with box (540,0,1040,1024) and eyes (688.6,175.7),(752.9,152.9)"
+  }
  ]
 }
