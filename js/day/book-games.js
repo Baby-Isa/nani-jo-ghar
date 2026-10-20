@@ -106,7 +106,10 @@ export function planBook({ data, place: placeKey, today = {}, say = () => true, 
       pages.push({ game, answer, choices: shuffle([answer, ...decoys], rng) });
     } else if (game === "ourday") {
       const list = (place.ourday || []).filter((k) => place.things[k] && say(k));
-      const ordered = [...met.filter((k) => list.includes(k)), ...list.filter((k) => !met.includes(k))];
+      // the day starts at the door (the list's first thing, always); then today's things in the order they happened; then the rest
+      const start = list[0];
+      const today = met.filter((k) => list.includes(k) && k !== start);
+      const ordered = [start, ...today, ...list.filter((k) => k !== start && !today.includes(k))];
       if (ordered.length < 2) continue;
       pages.push({ game, things: ordered.slice(0, 5) });
     }
