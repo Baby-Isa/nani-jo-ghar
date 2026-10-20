@@ -61,3 +61,12 @@ TP1 → CHAI-13. GL1 → CHAI-08. SK4 → SEK-14, SEK-20. SK5 → contract-37. W
 2. **The doctor's skin:** the s08 face-on set in play is ΔE 14.5 lighter than his sheet's swatch; DW2 matches that set, not the sheet. Either accept the lighter tone (nothing to do) or shift the whole doctor set toward the sheet in the cut, one correction for every frame. Recommend the cut-time shift, after his likeness call on DW2.
 3. **GZ2's cropped crown:** keep (the eye game needs brows and eyes, both in view) or redo GZ2 with GZ3 and GZ4 following (3 images). Recommend keep.
 4. **Likeness:** DW2/DT2/DB2 and GZ1–GZ4 (`sources/art/s08c/dw2-*`, `dt2-*`, `db2-*`, `gz1-*` to `gz4-*`).
+
+## 5. The redo (20 Oct, pasted by Zafar in chat)
+
+| ID | save-as | verdict | why |
+|---|---|---|---|
+| DS1 | ds1-daal-stirred-in-v2 | PASS | onion now thin translucent slivers (not the potato's cubes); matte pinhead mustard seeds, not beads; all eight cells distinct |
+| CP4 | cp4-chai-pan-brewing-v2 | PASS | small scattered bubbles on the water, leaves in amber tea, a natural foam edge on the milky chai (no glossy ring of spheres) |
+| CP3 | cp3-chai-pan-tip-pour-v2 | PASS for the tilt (cells 1-4), FAIL for the stream | the four rims are now four flatter ellipses; but the streams in 5-6 still read as glossy syrup and the pans cast shadows on the grey: use cells 1-4 for the tip and draw the stream with js/shared/pour.js (thin, translucent tea) |
+| AL3 | al3-ali-impatient-v1 | PASS | an edit of his impatient sheet: arms crossed, frowning pout, eyes turned away, foot tapping; impatient, not smug; same clothes and face as his sheet |
