@@ -321,7 +321,9 @@
         if (q.gone || Math.hypot(q.x - p.x, q.y - p.y) > WASH_R) return;
         q.gone = true;
         hit++;
-        q.el.animate([{ transform: "translate(0,0)", opacity: q.el.getAttribute("opacity") }, { transform: `translate(${(q.x - p.x) * 0.5}px, 30px)`, opacity: 0 }], { duration: fast() ? 60 : 480, fill: "forwards" });
+        // (s08 w6I, CLN-190: the judge saw no dirt clear where the water fell): the bit runs off at its own pace in the fast
+        // test mode too, so a filmstrip of the sweep shows the dirt going where the water passes
+        q.el.animate([{ transform: "translate(0,0)", opacity: q.el.getAttribute("opacity") }, { transform: `translate(${(q.x - p.x) * 0.5}px, 30px)`, opacity: 0 }], { duration: 480, fill: "forwards" });
       });
       if (!st.splashT || Date.now() - st.splashT > 260) {
         st.splashT = Date.now();
@@ -696,8 +698,11 @@
               };
               const left = dirt.filter((d) => !d.gone && reach(d)).sort((a, b) => a.y - b.y);
               const share = left.slice(0, Math.max(1, Math.ceil(left.length / (c.jugs - st.jugs))));
-              // (the first jug starts where the first-time help lights the foot)
-              const way = (st.jugs === 0 && reach({ x: 400, y: 190 }) ? [{ x: 400, y: 190 }] : []).concat(share.length ? share : [{ x: 400, y: 300 }]);
+              // (the first jug starts where the first-time help lights the foot; s08 w6I, CLN-190: the first sweep began on a clean spot, so its first frames showed no dirt going: it
+              // starts on the bit of dirt nearest the lit spot instead, when one is inside the help's light)
+              const lit = left.filter((d) => Math.hypot(d.x - 400, d.y - 190) < 80).sort((a, b) => Math.hypot(a.x - 400, a.y - 190) - Math.hypot(b.x - 400, b.y - 190))[0];
+              const start = st.jugs === 0 ? (lit ? [lit] : reach({ x: 400, y: 190 }) ? [{ x: 400, y: 190 }] : []) : [];
+              const way = start.concat(share.filter((d) => d !== lit).length ? share.filter((d) => d !== lit) : start.length ? [] : [{ x: 400, y: 300 }]);
               const pts = way.map((d) => {
                 const cl = S.client(d.x, d.y);
                 return [cl.x, cl.y];

@@ -407,7 +407,9 @@
     const jab = async () => {
       st.busy = true;
       lightEnd(false);
-      const D = (ms) => (fast() ? 40 : ms);
+      // CLN-106 (s08 w6I; the judge: "never show a jab"): the jab plays at its own pace in the fast test mode too (about
+      // 2 s), so a frame taken as it starts shows the syringe on the arm in its puff
+      const D = (ms) => ms;
       const at = { x: A.x, y: A.y - 4 };
       const down = syG.animate ? syG.animate([{ transform: `translate(${OVER.dx}px, ${OVER.dy}px)` }, { transform: `translate(${OVER.dx}px, ${OVER.dy + 10}px)` }], { duration: D(260), easing: "ease-in", fill: "forwards" }) : null;
       // the puff: soft white mist round the cap's end, with gold sparkles in it
@@ -600,19 +602,23 @@
         // B4 (CLN-106, S06): the cloth in the hand rubs to and fro across the spot, twice, for about a second; the skin
         // it passes over shines wet, a sheen that follows the wipe and settles
         const sheen = Math.min(0.3, st.wipes * 0.08);
-        const dur = fast() ? 60 : 1000;
-        const cw = 74;
+        // CLN-106, CLN-168 (s08 w6I; the judge: "the cotton puff appears ... in almost the same place and then is gone";
+        // "no cloth appears in any frame"): the rub is the same in the fast test mode (it never holds the game up: the
+        // next tap goes ahead while it plays), wider, and the cloth bigger, so its to and fro reads on a filmstrip
+        const dur = 1200;
+        const cw = 96;
         const ch = clothArt ? (cw * clothArt.size[1]) / clothArt.size[0] : 68;
         const w = s("image", { href: clothArt ? url(clothArt.file) : wipeArt ? url(wipeArt) : WIPE_SVG, x: A.x - cw / 2, y: A.y - ch / 2, width: cw, height: ch, class: "bo-cloth" }, S.fx);
         if (w.animate) {
           w.animate(
             [
-              { transform: "translate(-50px, 8px) rotate(-10deg)", opacity: 0 },
-              { transform: "translate(-46px, 7px) rotate(-9deg)", opacity: 1, offset: 0.08 },
-              { transform: "translate(46px, -6px) rotate(8deg)", offset: 0.36 },
-              { transform: "translate(-40px, 6px) rotate(-8deg)", offset: 0.64 },
-              { transform: "translate(40px, -5px) rotate(8deg)", opacity: 1, offset: 0.9 },
-              { transform: "translate(34px, -4px) rotate(7deg)", opacity: 0 },
+              { transform: "translate(-80px, 12px) rotate(-12deg)", opacity: 0 },
+              { transform: "translate(-74px, 11px) rotate(-11deg)", opacity: 1, offset: 0.06 },
+              { transform: "translate(74px, -9px) rotate(10deg)", offset: 0.3 },
+              { transform: "translate(-66px, 9px) rotate(-10deg)", offset: 0.54 },
+              { transform: "translate(66px, -8px) rotate(10deg)", offset: 0.78 },
+              { transform: "translate(-20px, 3px) rotate(-3deg)", opacity: 1, offset: 0.94 },
+              { transform: "translate(-24px, 3px) rotate(-4deg)", opacity: 0 },
             ],
             { duration: dur, fill: "forwards", easing: "ease-in-out" }
           );
