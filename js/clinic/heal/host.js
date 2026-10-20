@@ -225,13 +225,15 @@
       const qe = fig.hotspot("eyes", null, box);
       if (!qm || !qe || !(qm.y - qe.y > 2)) return;
       if (!midEl) {
-        midEl = h("img", "cl-zoom-mid", box);
-        midEl.alt = "";
+        // (a painted layer, not an <img>: it starts small and ends larger than its file, so it is drawn as the room
+        // layer's background, full size at the hand-over; the file is in the game's own asset list, warmed with it)
+        midEl = h("div", "cl-zoom-mid", box);
         midEl.setAttribute("aria-hidden", "true");
-        midEl.src = Kit.url(MID.src);
+        midEl.style.backgroundImage = `url("${Kit.url(MID.src)}")`;
+        midEl.style.backgroundSize = "100% 100%";
         const [mx, my, rx, ry] = MID.mask || [0.5, 0.45, 0.2, 0.36];
         const m = `radial-gradient(ellipse ${rx * 100}% ${ry * 100}% at ${mx * 100}% ${my * 100}%, #000 68%, transparent 100%)`;
-        Object.assign(midEl.style, { position: "absolute", zIndex: 4, opacity: 0, pointerEvents: "none", maxWidth: "none", webkitMaskImage: m, maskImage: m });
+        Object.assign(midEl.style, { position: "absolute", zIndex: 4, opacity: 0, pointerEvents: "none", webkitMaskImage: m, maskImage: m, display: "none" });
       }
       const H = (qm.y - qe.y) / (MID.mouth[1] - MID.eyes[1]);
       const W = (H * MID.size[0]) / MID.size[1];
@@ -315,6 +317,8 @@
         // CLN-163: one camera over the room and the close-up (frames(), above); the room is gone by 75 % of the zoom
         // (CLN-77: the late frames are the close-up itself, never a smear of a blurred, hugely scaled room)
         placeMid(a.k);
+        // (on screen only while the camera moves: at rest it is not drawn, so it is never a big file drawn small)
+        if (midEl) midEl.style.display = "";
         const F = frames(a, 1);
         z.moving = true;
         const opts = { duration: inMs, easing: "linear", fill: "forwards" };
@@ -330,6 +334,7 @@
           shot = Promise.all([play(F.el, F.shot, opts)].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         }
         await Promise.all([zoom, fade, shot]);
+        if (midEl) midEl.style.display = "none";
         if (F.el) F.el.style.overflow = "";
         z.moving = false;
         // the close-up rests as it is drawn (its own transform gone: no rounding left over from the last frame)
@@ -362,6 +367,7 @@
         // CLN-163: the same one camera, backwards: the close-up shrinks onto the part in the room as the room comes
         // back over it, both at the same place and size (frames(), above)
         placeMid(a.k);
+        if (midEl) midEl.style.display = "";
         const F = frames(a, -1);
         const opts = { duration: ms, easing: "linear", fill: "forwards" };
         if (F.el) {
@@ -369,6 +375,7 @@
           F.el.style.overflow = "visible"; // its blurred room past its box as it shrinks (CLN-163)
         }
         await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), midEl ? play(midEl, F.mid, opts) : null, F.el ? play(F.el, F.shot, opts) : null].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
+        if (midEl) midEl.style.display = "none";
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
       /**
@@ -383,6 +390,7 @@
           // (the kept wide shot behind the end card is the room and the drawn girl, never the middle step)
           if (midEl.getAnimations) midEl.getAnimations().forEach((an) => an.cancel());
           midEl.style.opacity = 0;
+          midEl.style.display = "none";
         }
         wide.classList.remove("gone");
         wide.classList.add("on", "kept");
