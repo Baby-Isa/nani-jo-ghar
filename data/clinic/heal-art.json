@@ -1094,21 +1094,22 @@
    "3q-left": {
     "file": "assets/clinic/patients/doctor/v2/doctor-3q-left-front.webp",
     "canvas": [
-     542,
-     1481
+     504,
+     1472
     ],
-    "w": 259,
+    "w": 242,
     "h": 708,
-    "feet": 0.977,
-    "stand": 0.4668,
+    "feet": 0.9762,
+    "stand": 0.4365,
     "head": [
-     0.4502,
-     0.0966
+     0.4722,
+     0.0951
     ],
     "faces": {
      "talk": "assets/clinic/patients/doctor/v2/doctor-3q-left-face-talk.webp",
      "blink": "assets/clinic/patients/doctor/v2/doctor-3q-left-face-blink.webp"
-    }
+    },
+    "_s08c": "7B (CLN-17; Zafar 20 Oct: likeness yes, colour-correct, don't redraw): DW2/DT2/DB2, the true three-quarter turn to the viewer's left (build/tools/art/specs/s08c.cut.json dw2-doctor-3q-left), under the s08 file names; the whole doctor set (every view, pose, face layer and box face) moved toward his sheet's skin swatch #C88A6F by one per-view Lab shift (median skin of each view's base to the swatch), so every frame matches"
    },
    "front": {
     "file": "assets/clinic/patients/doctor/v2/doctor-front-front.webp",
@@ -1403,16 +1404,10 @@
   "_about": "python3 build/tools/art/shoes.py            # measure and write data/clinic/heal-art.json \"shoes\"   python3 build/tools/art/shoes.py --check    # measure and print; write nothing",
   "assets/clinic/patients/doctor/v2/doctor-3q-left-front.webp": [
    [
-    0.2046,
-    0.9576,
-    0.2548,
-    0.0805
-   ],
-   [
-    0.6853,
+    0.6777,
     0.9774,
-    0.2278,
-    0.0636
+    0.2893,
+    0.0805
    ]
   ],
   "assets/clinic/patients/doctor/v2/doctor-front-front.webp": [

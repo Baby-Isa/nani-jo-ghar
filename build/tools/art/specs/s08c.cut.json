@@ -1,0 +1,25 @@
+{
+ "pack": "s08c",
+ "about": "Pack s08c (sources/art/s08c, judged in build/reports/s08c-art-landing/details.md; the plan's section 6), cut by build/tools/art/artcut.py. Wave 7B's lines are the clinic and the family (CR1, TC1, the doctor's DW2/DT2/DB2 set, the girl's GZ1-GZ4, the family's NN/MA/AL frames, the waiting room's WR1-WR3); wave 7A's are the Cook lines, each in its own entries. Run with --out to a scratch folder and copy the files the game uses (7B: build/reports/s08-w7b-people-art.md lists them); the numbers go into the game's data where each is wired.",
+ "src": "sources/art/s08c",
+ "out": "assets",
+ "data": "data/clinic/s08c-cut-data.json",
+ "skin_render": [200, 138, 111],
+ "skin_limits": [6, 12],
+ "failed": {},
+ "jobs": [
+  {"id": "cr1-crutches", "type": "grid", "src": "cr1-crutches-flat-v1.png", "cells": [1, 1], "names": ["crutches-flat-belt"],
+   "outdir": "clinic/sheets/decoys", "tol": 4, "hole_min": 20, "max": 384, "pad": 4,
+   "_note": "7B (CLN-23): the pair of crutches lying flat (pads left, feet right, every part down), replacing crutches-flat-belt (B9's crutch turned 90 degrees) under the same name, so data/clinic.json items.crutches needs no change; grey pads on grey: tolerance 4 and no shadow drop (the pads' shaded undersides are dark neutral grey, which the shadow drop took for ground), the gaps between the shafts holes"},
+  {"id": "tc1-steel-cup", "type": "grid", "src": "tc1-steel-cup-v1.png", "cells": [1, 1], "names": ["steel-cup-s08c"],
+   "outdir": "clinic/items-s08c", "tol": 5, "hole_min": 8, "max": 560, "x2": true, "pad": 4,
+   "_note": "7B (CLN-196, Zafar 19 Oct: the metal cup, no drop shadow, sitting on the surface): the steel tumbler upright, inside and floor showing; no shadow drawn, so none to drop. Its rim and inside are measured on the cut's alpha into data/clinic/heal/taste.json art.glass"},
+  {"id": "dw2-doctor-3q-left", "type": "figure", "data": "doctor-3q-left", "src": "dw2-doctor-3q-left-v1.png",
+   "fig_h": 676, "pad": 16, "neck": 285, "skin_box": [0.42, 0.065, 0.5, 0.09],
+   "faces": {"talk": "dt2-doctor-3q-left-talk-v1.png", "blink": "db2-doctor-3q-left-blink-v1.png"},
+   "anchors": {"front": {"head": [490, 165], "eyes": [452, 172], "stand": [472, 1450]}},
+   "out": "clinic/patients/doctor/v2/doctor-3q-left", "face_align": "none", "face_match": true,
+   "skin_shift": {"to": [200, 138, 111]},
+   "_note": "7B (CLN-17; Zafar 20 Oct: likeness yes; 'colour-correct, don't redraw'): the true three-quarter turn to the viewer's left beside the bed, replacing the s08 3q-left set under its file names (s08.cut.json doctor2-3q-left; data/clinic/heal-art.json doctor.views['3q-left'] takes the new numbers); DT2/DB2 are clean edits of DW2 on its own canvas (shift 0,0, skin matched). skin_shift: the whole doctor set (this view and s08's front, 3q-right, waves, poses and box faces) is moved toward his sheet's swatch #C88A6F by one per-pixel Lab shift weighted by skin-likeness, the same function for every file, so every frame and face layer stays matched. artcut.py does not read skin_shift yet: build/reports/s08-w7b-people-art.md has the shift and the request"}
+ ]
+}

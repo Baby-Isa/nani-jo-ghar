@@ -350,22 +350,33 @@
 
     /* ---------------- the drink: the clear glass, the pour, the spoon ---------------- */
     // CLN-196 (clinic decision 10; Zafar, 18 Oct: "a metal cup, but it's got a drop shadow, but it's sitting on the
-    // surface"; "is the metal cup the right thing"): a clear glass tumbler (s08b TS1), no drop shadow, so the drink is
-    // seen through its sides as it fills and mixes. Its inside is measured on the picture (data art.glass: the rim's
-    // ellipse, the inner bottom, the walls' half widths, shares of the picture); the drink is drawn behind the glass
+    // surface"; "is the metal cup the right thing"; 19 Oct: "yes, the metal cup; the new cup with no drop shadow, sitting
+    // on the surface"): the s08c steel cup (TC1), standing on the tray with no drop shadow. Its inside is measured on the
+    // picture (data art.glass: the rim's ellipse, the inner bottom, the walls' half widths, shares of the picture). The
+    // cup is opaque (art.glass.opaque), so the drink is seen only in its mouth: drawn over the cup's inside, clipped to the
+    // inner edge of its rim (art.glass.lip: the rim's thickness, a share of w); a clear glass keeps it behind the picture
     const GA = (data.art && data.art.glass) || {};
-    const GW = GA.size || [463, 560];
+    const GW = GA.size || [399, 560];
     const GL = { x: 146, y: 330, h: 150 };
     GL.w = (GL.h * GW[0]) / GW[1];
     const glassG = s("g", { class: "taste-glass", opacity: 0 }, S.layer);
     // a small wooden tray for it to stand on (a flat base)
     s("rect", { x: GL.x - 34, y: GL.y + GL.h - 12, width: GL.w + 68, height: 26, rx: 12, fill: "#b78a55", stroke: "#93683c", "stroke-width": 3 }, glassG);
-    const drinkG = s("g", { class: "taste-drink" }, glassG);
-    s("image", { href: url(GA.src || "assets/clinic/items-s08b/tumbler-glass-s08b.webp"), x: GL.x, y: GL.y, width: GL.w, height: GL.h }, glassG);
     const gx = (f) => GL.x + f * GL.w;
     const gy = (f) => GL.y + f * GL.h;
     const RIM = GA.rim || [0.5, 0.105, 0.48, 0.09]; // the rim's ellipse: centre x, y, half axes (shares of w and h)
     const MOUTH = { x: gx(RIM[0]), y: gy(RIM[1]), rx: RIM[2] * GL.w, ry: RIM[3] * GL.h };
+    const OPAQUE = !!GA.opaque;
+    const pic = () => s("image", { href: url(GA.src || "assets/clinic/items-s08c/steel-cup-s08c.webp"), x: GL.x, y: GL.y, width: GL.w, height: GL.h }, glassG);
+    if (OPAQUE) pic();
+    const drinkG = s("g", { class: "taste-drink" }, glassG);
+    if (OPAQUE) {
+      const lip = (GA.lip || 0.012) * GL.w;
+      const mouthId = `taste-mouth-${Math.random().toString(36).slice(2, 8)}`;
+      const cp = s("clipPath", { id: mouthId, clipPathUnits: "userSpaceOnUse" }, s("defs", {}, glassG));
+      s("ellipse", { cx: MOUTH.x, cy: MOUTH.y, rx: MOUTH.rx - lip, ry: MOUTH.ry - lip }, cp);
+      drinkG.setAttribute("clip-path", `url(#${mouthId})`);
+    } else pic();
     const IN = GA.inside || { full: 0.24, bottom: 0.84, top: 0.455, foot: 0.385, ratio: 0.2 }; // full and bottom surfaces (y), the inner half widths there (of w), the surface's ry over rx
     const surf = (u) => {
       const y = IN.bottom + (IN.full - IN.bottom) * u;
@@ -397,7 +408,7 @@
         liquid.setAttribute("fill", col);
         body.setAttribute("fill", shade(col, 0.9));
       }
-      body.setAttribute("opacity", u > 0 ? op : 0);
+      body.setAttribute("opacity", u > 0 && !OPAQUE ? op : 0);
       liquid.setAttribute("opacity", u > 0 ? Math.min(1, op + 0.1) : 0);
       shine.setAttribute("opacity", u > 0 ? 0.35 : 0);
     };
@@ -434,7 +445,8 @@
         // surface is still down inside the opaque tumbler it ends in the mouth's opening, never over the steel front
         surface: (u) => {
           const q = surf(u);
-          return { x: q.x + q.rx * 0.2, y: q.y };
+          // (the opaque cup: never below the mouth's middle, where the cup's front would be over it)
+          return { x: q.x + q.rx * 0.2, y: OPAQUE ? Math.min(q.y, MOUTH.y + MOUTH.ry * 0.55) : q.y };
         },
         // CLN-104 (S05-D3): the level rises slowly enough to see it rise (it read as one jump at 760 ms)
         onFill: (u) => u > 0 && level(u, t.liquid, opOf(id)),
