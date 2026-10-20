@@ -32,7 +32,8 @@ Branch `worktree-agent-ac393bafc43718726` (not pushed: in-chat run, non-negotiab
 |---|---|---|
 | BOOK-01 | tool failure | probe 1 tool failure (spec, flaw 4); filmstrips above |
 | BOOK-02 | tool failure | machine PASS (buttons ≥ 64, no clip; pages 322 and 332 px wide at 844x390) |
-| BOOK-03..07 | tool failure (no games) | sheets for the judge |
+| BOOK-03..06 | tool failure (no games) | sheets for the judge |
+| BOOK-07 | a sheet of the old end (progress dots, no cards, no shelf) | sheet for the judge |
 | BOOK-08 | tool failure (no bot) | PASS: blind best 29.4% find (chance 29.2), 33.9% name it, 34.0% photo (33.3); fair 100%; `--plant` caught |
 
 - **Pages run:** 8 (day:book at all eight sizes). 8 reach their end, 0 page errors. **Contract: 0 breaks** (earlier contract-3 and contract-11 breaks fixed: one stage for the evening; camera capped).
