@@ -5602,16 +5602,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "zoom2:canvas:rack",
-    "zoom2:canvas:plate"
+    "ref:sources/art/s08c/sk4-sekelo-tray-upright-v1.png"
    ],
    "expect": null,
-   "note": "the two square steel trays (s08c SK4: raw above, cooked below) holding 1-4 upright skewers, handles towards the child (taken at the stage starts; the served dish shows in the closing beat, not under the end card)",
-   "max": 4,
-   "delay": 300
+   "note": "the two square steel trays (s08c SK4: raw above, cooked below) holding 1-4 upright skewers, handles towards the child, as each skewer lands (every:placed)",
+   "max": 8,
+   "delay": 500
   }
  ],
  "CK-01": {
@@ -15250,10 +15250,10 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:pour",
-   "after": null,
+   "at": "cook-done:tap",
+   "after": "exp:pour",
    "capture": [
-    "strip:#stage:8x220",
+    "strip:#stage:10x300",
     "ref:sources/art/s08c/cp3-chai-pan-tip-pour-v2.png"
    ],
    "expect": null,
