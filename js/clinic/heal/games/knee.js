@@ -153,6 +153,9 @@
     // I2 (s07-clinic-a, CLN-33/CLN-100): a bump on the knee is drawn (K4, registered to K1: the same canvas), until the wrap
     const bumpArt = art && ctx.ailment && ctx.ailment.id === "knee-bump" && ctx.data.art["knee-bump"];
     if (bumpArt && bumpArt.on) art.setAttribute("href", art.getAttribute("href").replace(/knee(@2x)?\.webp/, (m, two) => `knee-bump${two || ""}.webp`));
+    // the picture the leg rests in between kicks (K1, or K4 with the bump): a kick shows its kicked twin, then this again
+    const restHref = art ? art.getAttribute("href") : null;
+    let kickN = 0;
     if (art && !(kickArt && kickArt.on) && KA.split) {
       const [x, y, w, hh] = KA.box;
       const cy = KA.split;
@@ -273,20 +276,28 @@
       const again = (drawn[k2] = (drawn[k2] || 0) + 1) - 1;
       const bow = (0.11 + [0, 0.13, -0.07, 0.24][again % 4]) * L;
       const c = { x: (p0.x + p1.x) / 2 + nx * bow, y: (p0.y + p1.y) / 2 + ny * bow };
-      const at = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
+      const curve = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
+      // CLN-179 (s08 w6I; Zafar: "the bandages still don't go to the edge of the knee ... level three, do it eight times
+      // ... zoom in"): past its dots a turn runs straight on along its own direction there (the curve's tangent), never
+      // the curve bent on beyond them, so the run-on reaches the leg's edge and the mask trims it there
+      const at = (t) => (t < 0 ? { x: p0.x + 2 * (c.x - p0.x) * t, y: p0.y + 2 * (c.y - p0.y) * t } : t > 1 ? { x: p1.x + 2 * (p1.x - c.x) * (t - 1), y: p1.y + 2 * (p1.y - c.y) * (t - 1) } : curve(t));
       const N = 24;
       // CLN-179 (Zafar, 18 Oct: "the bandages still don't go to the edge of the knee sometimes"): each turn runs on past
       // its two dots (BAND.over of its length each way); the leg's own outline (the mask) trims it where the leg turns
       // away, so every turn reaches the knee's edge
+      // (s08 w6I: the front run-on is longer, to reach the kneecap's edge from the dots below it; the back one stays short,
+      // where the crease meets the trouser cuff, so it never lies over the cuff)
       const E = BAND ? BAND.over || 0.16 : 0;
-      const tOf = (i) => -E + (i / N) * (1 + 2 * E);
+      const Eb = BAND ? (BAND.overBack != null ? BAND.overBack : E) : 0;
+      const tOf = (i) => -Eb + (i / N) * (1 + Eb + E);
       const side = (o) => {
         const pts = [];
         for (let i = 0; i <= N; i++) {
           const t = tOf(i);
           const q = at(t);
-          const q2 = at(Math.min(1, t + 0.01));
-          const q1 = at(Math.max(0, t - 0.01));
+          // (the direction at t from both sides of it: clamped to the dots, the run-ons' sides crossed into a bow-tie)
+          const q2 = at(t + 0.01);
+          const q1 = at(t - 0.01);
           let tx = q2.x - q1.x;
           let ty = q2.y - q1.y;
           const tl = Math.hypot(tx, ty) || 1;
@@ -361,6 +372,8 @@
       const c = cur();
       if (!c) return;
       if (c.kind === "kick") judge("kick-count", st.kicks === c.count, `${st.kicks} of ${c.count}`);
+      // (s08 w6I, CLN-179: the wrap is laid on the resting leg, never on a kick still showing: the first turn too)
+      if (c.kind === "kick" && art && restHref) (kickN += 1), art.setAttribute("href", restHref);
       if (c.kind === "wrap") judge("wrap-turns", st.turns === c.count, `${st.turns} of ${c.count}`);
       ctx.card.tick(c.id);
       S.count(null);
@@ -428,9 +441,13 @@
         const kick = art && ctx.data.art["knee-kick"];
         if (kick && kick.on) {
           // the same picture's kicked twin (the @2x where the plain one is the @2x)
-          const plain = art.getAttribute("href");
+          // CLN-179 (s08 w6I): the resting picture is the one laid at the start, never read back now: a second kick within
+          // 420 ms read the kicked twin as "plain" and left the leg kicked out for the whole wrap, so the dots and the
+          // mask (both K1's) sat inside the kicked shin and every turn below the kneecap stopped short of its edge
+          const plain = restHref;
+          const n = (kickN += 1);
           art.setAttribute("href", plain.replace(/knee(?:-bump)?(@2x)?\.webp/, (m, two) => `knee-kick${two || ""}.webp`));
-          ctx.after(420, () => art.setAttribute("href", plain));
+          ctx.after(420, () => n === kickN && art.setAttribute("href", plain));
         }
         S.face("happy", 600);
         ctx.sfx("pop");

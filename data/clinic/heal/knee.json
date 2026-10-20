@@ -406,13 +406,14 @@
    "why": "s07-clinic-a (I2; CLN-33, CLN-100): the knee with a bump, an edit of K1 registered onto its canvas (artcut.py s07.cut.json child-knee-bump: shift +0.3,-0.9 px), drawn in K1's place for the knee-bump ailment"
   },
   "band": {
-   "_about": "s08-w5b (CLN-179; Zafar 18 Oct: 'it needs to be a photorealistic bandage ... the bandages still don't go to the edge of the knee sometimes'; feedback section 6 answer: 'a drawn crepe band laid by code along each turn, its ends run past the anchors'): the s08b BD1 crepe band, its seamless tile (size = w x h px), laid along each turn by js/clinic/heal/games/knee.js wrapTurn (a slice per step of the curve, turned to it); over = how far each turn runs on past its two dots, a share of its length each way (the leg's outline trims it at the knee's edge)",
+   "_about": "s08-w5b (CLN-179; Zafar 18 Oct: 'it needs to be a photorealistic bandage ... the bandages still don't go to the edge of the knee sometimes'; feedback section 6 answer: 'a drawn crepe band laid by code along each turn, its ends run past the anchors'; s08 w6I: over raised from 0.16, the run-on straight along the end tangent, so the turns below the kneecap reach the knee's front edge; overBack = the back end's, short, clear of the trouser cuff): the s08b BD1 crepe band, its seamless tile (size = w x h px), laid along each turn by js/clinic/heal/games/knee.js wrapTurn (a slice per step of the curve, turned to it); over = how far each turn runs on past its two dots, a share of its length each way (the leg's outline trims it at the knee's edge)",
    "tile": "assets/clinic/tiles-s08b/bandage-band-s08b-tile.webp",
    "size": [
     1036,
     226
    ],
-   "over": 0.16
+   "over": 0.4,
+   "overBack": 0.12
   }
  },
  "assets": [
