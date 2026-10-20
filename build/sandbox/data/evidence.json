@@ -17063,7 +17063,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "page:start",
+   "at": "host:day/book/room",
    "after": null,
    "capture": [
     "strip:.day-book-scene:12x500"
@@ -17080,7 +17080,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:.day-tomorrow",
+   "at": "visible:.day-zoom-out",
    "after": null,
    "capture": [
     "strip:.day-book-scene:6x400"
@@ -17169,10 +17169,8 @@
     "dom:.day-book",
     "voice"
    ],
-   "expect": [
-    "!hasWord:name"
-   ],
-   "note": "name it before the answer: one thing, three identical speaker buttons, nothing written on them, the sentence row not yet filled; Nani asks without saying the word"
+   "expect": null,
+   "note": "name it before the answer: one thing, three identical speaker buttons, nothing written on them, the sentence row not yet filled; Nani asks without saying the word (the leak bot, BOOK-08, proves no reading wins; the judge checks the buttons carry no writing)"
   },
   {
    "flow": "day:book",
