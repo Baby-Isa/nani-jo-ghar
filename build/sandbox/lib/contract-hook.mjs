@@ -262,7 +262,9 @@ export const CONTRACT_HOOK = `(() => {
   const badgeVis = () => [...document.querySelectorAll(".njg-results .rs-badge")].map((x, i) => {
     const r = x.getBoundingClientRect();
     let vis = 0;
-    for (const d of [x, ...x.querySelectorAll("*")]) { const dr = d.getBoundingClientRect(); if (dr.width > 3 && dr.height > 3) vis = Math.max(vis, opac(d)); }
+    // what shows is the badge's contents, not its tile: since SH-37 (s08 w6J) a badge still to come is its quiet empty tile,
+    // and the tile showing early is not the badge showing (contract-5 counted 553 such, 20 Oct)
+    for (const d of x.querySelectorAll("*")) { const dr = d.getBoundingClientRect(); if (dr.width > 3 && dr.height > 3) vis = Math.max(vis, opac(d)); }
     // a picture drawn on the badge's spot from outside it (the cause looked for in Z4)
     if (r.width > 4) for (const [fx, fy] of [[0.5, 0.4], [0.3, 0.5], [0.7, 0.5]]) {
       for (const e of document.elementsFromPoint(r.left + r.width * fx, r.top + r.height * fy)) {
