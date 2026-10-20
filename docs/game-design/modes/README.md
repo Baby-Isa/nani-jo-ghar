@@ -8,7 +8,8 @@ Each mode has one file in this folder (parked modes keep a short stub pointing t
 | **The clinic** (`clinic.md`; the doctor's clinic) | Treat | Built on the core and the engine; the girl's art and the heal games wired; visit types and a treatment library; stitches and injections are allowed, the pill organiser stays out (H46) | Its own standalone arc: Volunteering at the clinic |
 | **Find it** (`find-it.md`) | Search | Engine and some games built; next to move onto the core | Arc 1 (the Birthday: find the sweets) |
 | **Conversations** (`conversations.md`, `conversations-wiring.md`) | Reply | Engine and lab live; not yet wired into pages | Woven round every mode |
-| **Story by the Fire** (`story-by-the-fire.md`) | Listen and fill | Designed | The end of every arc |
+| **A day at Nani's** (`a-day-at-nanis.md`) | Days of stages | Building | Story mode |
+| **Story by the Fire** (`story-by-the-fire.md`) | Listen and fill | The evening book | Days |
 | **First launch** (`first-launch.md`) | Make, then cook | Live; its hook still says Eid and is re-worded for the Birthday | Before Arc 1 |
 | **Tidy up** (`tidy-up.md`, stub) | Arrange | Parked, designed | Arc 1 (set the table, pack the sweet box) |
 | **Dress up** (`dress-up.md`, stub) | Style | Parked, designed | Making clothes with Big Ma |

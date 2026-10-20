@@ -40,6 +40,7 @@ export const DOC_LIMITS = {
   "docs/game-design/modes/monsoon-rush.md": 500,
   "docs/game-design/modes/snap.md": 500,
   "docs/game-design/modes/story-by-the-fire.md": 2500,
+  "docs/game-design/modes/a-day-at-nanis.md": 2000,
   "docs/game-design/modes/tidy-up.md": 500,
   "docs/game-design/modes/who-did-it.md": 500,
   "docs/design-language/art-bible.md": 6500,
