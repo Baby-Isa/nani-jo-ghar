@@ -1,6 +1,6 @@
 # s08 wave 7B: the clinic and the family (s08c art cut and wired)
 
-Branch `worktree-agent-acdb631c5df4d26cf` (from `c2c36656`). Game code changed: `js/clinic/heal/host.js` (the zoom's middle step), `eye.js` (her blink at rest, sizes from data), `taste.js` (the opaque cup), `waiting.js` (WR art).
+Branch `worktree-agent-acdb631c5df4d26cf` (from `c2c36656`). Game code: `js/clinic/heal/host.js`, `eye.js`, `taste.js` and the clinic data; the cuts in `assets/clinic/` and `assets/characters/`.
 
 **What changed**
 - **CR1** replaces `crutches-flat-belt`; **TC1** is the taste cup (no shadow, drink in its mouth only).
@@ -14,6 +14,6 @@ Branch `worktree-agent-acdb631c5df4d26cf` (from `c2c36656`). Game code changed: 
 - Matrix `s08-w7b-people-art-matrix`: 72/72 pages reach their end (5 re-played after a full disk crashed Chromium); 0 page errors; contract: 4 breaks, all contract-11 on `cook:day1` marble (pre-existing, 7A's WT1).
 - `checks.mjs`: all green but `load` (cook:chop's `nani-face-talk` oversize, flaky, not 7B); loadcheck alone 29/29.
 - Green evidence `ev-w7b-green` (CLN-17, 23, 163, 185, ART-23) and `ev-w7b-green2` (CLN-196): sheets for the judge.
-- shotdiff: approved manifest is old (1557 changed); flaws: the doctor's head still overlaps the certificate frame (CLN-17's old flaw); GZ1's hand-over ghosts the brush for about 0.3 s.
+- shotdiff: the approved shots are old (1557 differ). Flaws: the doctor's head overlaps the certificate frame; the brush ghosts briefly at the tooth hand-over.
 
-**Open:** ART-19/ART-10 Cook half (patch above); artcut `skin_shift` request (recorded in `s08c.cut.json _7b_manual`).
+**Open:** the Cook half of ART-19/ART-10 (the patch above); a `skin_shift` option for artcut (`s08c.cut.json _7b_manual`).
