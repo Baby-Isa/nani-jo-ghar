@@ -19,12 +19,11 @@ READ FIRST (in this order):
      build/reports/s08-w6c-clinic.md
 
 FILES THIS SESSION OWNS (edit only these):
-  - js/clinic/** except js/clinic/heal/games/boing.js
-  - data/clinic/** except data/clinic/heal/boing.json and data/clinic/heal-art.json
+  - js/clinic/**
+  - data/clinic/**
   - css/clinic.css
   - build/reports/s08-w6h-clinic.md
 READ-ONLY (never edit):
-  - js/clinic/heal/games/boing.js, data/clinic/heal/boing.json, data/clinic/heal-art.json, data/clinic/heal/eye.json's lemon (wave 6F)
   - js/cook/**, js/shared/** (6F, 6G)
   - data/lang/** (never add Kutchi; a wrong clip mapping is reported with its fix)
   - assets/**
@@ -47,6 +46,8 @@ TASKS (each with its acceptance criterion):
      Accept: eye: each as a filmstrip at 1366x768 and 800x360
   4. CLN-190: the foot wash visibly clears the dirt it passes over. CLN-195: the cotton bud's tip turns blue after it touches the blue spot.
      Accept: eye: each as a filmstrip
+  5. From wave 6F (merged): CLN-189's other lemon: js/clinic/heal/scene.js maps 'fru-02' to 'lemon-half', which reads as an orange in the ear's hearing check: use lemon-whole-s08b and add it to ear.json's assets. Boing at 800x360: the check button covers the third plaster tile; move one or the other. CLN-165: the dropper machine and syringe no longer take two thirds of the scene's height, and the tool tiles' icons fill their tiles.
+     Accept: eye: the ear's hearing check; boing at 800x360 and 1366x768 L1-L3
 
 REGRESSION ROWS TO RECHECK (118 rows of the fix list and its done archive; * = open or reopened):
   every flow here (44): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-198*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-42, CLN-43, CLN-44, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140

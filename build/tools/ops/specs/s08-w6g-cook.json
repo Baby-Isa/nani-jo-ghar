@@ -19,7 +19,7 @@
     "build/reports/s08-w6a-words.md, s08-w6b-stations.md, s08-w6e-checks.md"
   ],
   "owns": [
-    "js/cook/** except js/cook/art.js",
+    "js/cook/**",
     "data/cook.json except art.assets",
     "data/stations/**",
     "css/cook.css",
@@ -28,11 +28,11 @@
     "build/reports/s08-w6g-cook.md"
   ],
   "readOnly": [
-    "js/shared/guide.js, character.js, js/cook/art.js, data/cook.json art.assets (wave 6F)",
     "js/clinic/** (wave 6H)",
     "data/lang/** (never add Kutchi)",
     "assets/**",
-    "build/sandbox/**"
+    "build/sandbox/**",
+    "js/shared/guide.js (merged wave 6F)"
   ],
   "stubs": "a picture that's missing goes on the report's art list; a word the engine can't say is a gap",
   "tasks": [
@@ -51,6 +51,10 @@
     {
       "do": "CK-47: at the end of a story order, at the counter, Nani goes over what went into the dish (built by the engine from the order's own words) before the thanks. SH-112: Cook's tool and item strips are bigger against the scene at 800x360 and 1366x768. CHT-15: the tick badge never covers the end of 'khape'.",
       "accept": "eye: the story day's end; the strips at both sizes; the chaat card"
+    },
+    {
+      "do": "ART-11 and ART-19 (from wave 6F, merged): the potato still reads as butter in chaat's jar and strip (js/cook/mechanics/assemble.js POTS veg-01 'pot-potato-v2' and 'strip-potato-s08b'), samosa's filling (samosa.js HEAP_ART: use assets/cook/items-s08b/potato/potato-pile-v3.webp, and add it to samosa's files in data/cook.json) and daar's chopped potato (daar.js: veg-bataato-cubed-v2-t.webp); use the landed potato art, or put the jar on the art list. Cook's counter Nani (js/cook/stations.js talk()) alternates nani-talk and nani-neutral every ~170 ms while she speaks, as the guide box now does.",
+      "accept": "eye: the potato in chaat, samosa and daar; a filmstrip of the counter Nani speaking"
     }
   ],
   "flows": [
