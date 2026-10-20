@@ -129,3 +129,7 @@ Do not add any text, letters, numbers, labels, house numbers, logos or watermark
 - Key magenta to alpha, erode 1 px; trim each layer to its content band; a layer's loop is made by cross-fading its outer tenth (the seam tool checks the join).
 - P1, I1 and D1 are cut into one sprite each, bottoms on the baseline, so code stands them on the near line (bigger) or the field line (smaller).
 - The preview: the kept r1 window, fitted by height, over the sky placeholder, F1 at 0.15, M1 (or T1) at 0.4, N1 at 1, items and props on the two lines; recorded at slow, normal and fast for Zafar.
+
+## 7. Into s09b: the farm road's things (Zafar, 20 Oct)
+
+Good objects that make sense, whatever Kutchi we have yet (missing words are recorded later). **Seen before:** the red and green doors, a bus, a chai van or milk cart, two or three of one animal for counting. **New, the farm to come:** cow (*gai*, Zafar), goat, hen with chicks, sheep, donkey, horse, buffalo, duck, camel. **Things you'd spot outside:** a tractor, a bicycle, a kite, an aeroplane, a rainbow, a windmill, a well, a butterfly. **Shops** the shops game will use later: drawn only after the shops game's art is agreed, and then the same art (one source for both), never a separate road version.
