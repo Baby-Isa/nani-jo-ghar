@@ -436,10 +436,11 @@ export class EvidenceProbe {
               const buf = c.ms < 400 ? await this.fastShot(clip) : await this.shot(clip); bufs.push(buf);
               const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
             }
+            // (a mean difference over the clip, 0-255: a short red flash or a foot vibrating on a small clip is a fraction of a point; frames that are the same picture are 0)
             let moved = 0;
             for (let k = 1; k < bufs.length; k++) moved = Math.max(moved, frameDiff(bufs[0], bufs[k]) || 0);
             out.moved = Math.round(moved * 100) / 100;
-            if (moved < 0.2) out.fail = `the filmstrip of "${c.sel}" did not change over ${c.n} frames (${c.ms} ms apart)`;
+            if (moved < 0.02) out.fail = `the filmstrip of "${c.sel}" did not change over ${c.n} frames (${c.ms} ms apart)`;
           }
         } else if (c.kind === "trace") {
           const r = await page.evaluate(`(${TRACE})(${JSON.stringify([cssOf(c.sel), c.ms])})`);

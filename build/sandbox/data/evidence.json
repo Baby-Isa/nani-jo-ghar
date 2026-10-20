@@ -9810,7 +9810,7 @@
    "at": "heal:misjudge",
    "after": null,
    "capture": [
-    "strip:.cl-heal:8x120"
+    "strip:.hs-judge:12x50"
    ],
    "expect": null,
    "note": "a wrong yes/no shakes red (filmed from just before the misjudged tap)"
@@ -15174,7 +15174,7 @@
   {
    "flow": "cook:mishkaki-grill",
    "path": "fair",
-   "level": 1,
+   "level": 3,
    "sizes": [
     "1366x768"
    ],
@@ -16330,7 +16330,7 @@
    "at": "heal:off-the-channel",
    "after": null,
    "capture": [
-    "strip:.cl-heal:6x120"
+    "strip:.cl-heal:12x50"
    ],
    "expect": null,
    "note": "a touch on the edge: the foot vibrates a little, says 'ow', and flashes a little red"
