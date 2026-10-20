@@ -208,6 +208,44 @@
      * (an even push-in), sampled into keyframes so the browser plays it (tests can pause it). Out is the same, reversed.
      */
     const closeEl = () => stage.querySelector(".hs-root .hs-svg");
+    /*
+     * s08 wave 7B (CLN-163, Zafar 18 Oct: "multiple artwork steps"): the zoom's middle step. A game's data may name a
+     * painted close picture of the patient (camera.mid: GZ1, her face saying "aah", for the teeth): it lies in the room
+     * itself, over the drawn girl, placed and sized so its mouth and eyes sit on her mouth and eyes (the room's own
+     * hotspots), its edge feathered into the room, and dissolves in part-way through the push-in (mid.fade: [from, to]
+     * as shares of the move); the room, with it, hands over to the close-up at the end as before. So the drawn girl
+     * dissolves into the painted face, and the painted face into the mouth's close-up: no separate photo pops in.
+     */
+    const MID = o.camera && o.camera.mid && art && (!o.camera.mid.kinds || o.camera.mid.kinds.includes(fig.kind)) ? o.camera.mid : null;
+    let midEl = null;
+    let midG = 1; // how much more the painted face grows than the room after it is in, to meet the close-up's lips
+    const placeMid = (k) => {
+      if (!MID) return;
+      const qm = fig.hotspot(part, o.side || "left", box);
+      const qe = fig.hotspot("eyes", null, box);
+      if (!qm || !qe || !(qm.y - qe.y > 2)) return;
+      if (!midEl) {
+        // (a painted layer, not an <img>: it starts small and ends larger than its file, so it is drawn as the room
+        // layer's background, full size at the hand-over; the file is in the game's own asset list, warmed with it)
+        midEl = h("div", "cl-zoom-mid", box);
+        midEl.setAttribute("aria-hidden", "true");
+        midEl.style.backgroundImage = `url("${Kit.url(MID.src)}")`;
+        midEl.style.backgroundSize = "100% 100%";
+        const [mx, my, rx, ry] = MID.mask || [0.5, 0.45, 0.2, 0.36];
+        const m = `radial-gradient(ellipse ${rx * 100}% ${ry * 100}% at ${mx * 100}% ${my * 100}%, #000 68%, transparent 100%)`;
+        Object.assign(midEl.style, { position: "absolute", zIndex: 4, opacity: 0, pointerEvents: "none", webkitMaskImage: m, maskImage: m, display: "none" });
+      }
+      const H = (qm.y - qe.y) / (MID.mouth[1] - MID.eyes[1]);
+      const W = (H * MID.size[0]) / MID.size[1];
+      Object.assign(midEl.style, { width: `${W.toFixed(1)}px`, height: `${H.toFixed(1)}px`, left: `${(qm.x - MID.mouth[0] * W).toFixed(1)}px`, top: `${(qm.y - MID.mouth[1] * H).toFixed(1)}px`, transformOrigin: `${(MID.mouth[0] * W).toFixed(1)}px ${(MID.mouth[1] * H).toFixed(1)}px` });
+      // it comes in matched to the drawn girl's face (above); the close-up's lips are drawn bigger than hers, so from
+      // then on it grows a little faster than the room, about its mouth, until its lips are the close-up's at the hand-over
+      // (mid.lips: its lips' width, a share of its own; mid.lip: the close-up's lips' width, svg units)
+      const el = closeEl();
+      const m = el && el.getScreenCTM && el.getScreenCTM();
+      midG = 1;
+      if (m && MID.lip && MID.lips && k > 1) midG = Math.max(0.5, Math.min(6, (MID.lip * m.a) / MID.lips / (W * k)));
+    };
     // (s08 w6I, CLN-163: the judge saw the room, the whole girl and the lips in three big steps): a gentle sine ease, so
     // the middle of the move, where a cubic ease sped through most of the zoom, keeps the in-between sizes on screen
     const ease = (u) => (1 - Math.cos(Math.PI * u)) / 2;
@@ -216,6 +254,7 @@
       const room = [];
       const shot = [];
       const fade = [];
+      const mid = [];
       const bg = [];
       const el = closeEl();
       const r = el && a.tc ? el.getBoundingClientRect() : null;
@@ -231,6 +270,12 @@
         // move, both showing the part in the same place at the same size (s08 w6N, CLN-163; the judge: "a curved-edged
         // overlay": an earlier hand-over showed the close-up small, its own cut-out edge, the jaw or the cheeks, on screen)
         fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (1 - p) / 0.1)).toFixed(3) });
+        // s08 wave 7B (CLN-163): the middle step dissolves in over mid.fade (a gentle ease), over the drawn girl
+        if (MID) {
+          const [f0, f1] = MID.fade || [0.3, 0.55];
+          const g = p <= f1 ? 1 : Math.pow(midG, (p - f1) / Math.max(0.01, 1 - f1));
+          mid.push({ offset: u, opacity: ease(Math.max(0, Math.min(1, (p - f0) / Math.max(0.01, f1 - f0)))).toFixed(3), transform: `scale(${g.toFixed(4)})` });
+        }
         // s08 w6N (CLN-163, CLN-106; the judge: white corners, and the arm's first frame on blank white): the close-up's
         // own blurred room stays under it all through the move (its svg lets it run past its box while it moves, so
         // there is never a pale box round the shrunken picture, and never a bare page before the room is up)
@@ -243,7 +288,7 @@
         }
       }
       const bgEls = []; // s08 w6N: the blurred room is no longer faded (above): it keeps its own drawn opacity
-      return { room, shot, fade, bg, bgEls, el: r ? el : null, origin: r ? `${(a.tc.t.x - r.left).toFixed(1)}px ${(a.tc.t.y - r.top).toFixed(1)}px` : null };
+      return { room, shot, fade, mid, bg, bgEls, el: r ? el : null, origin: r ? `${(a.tc.t.x - r.left).toFixed(1)}px ${(a.tc.t.y - r.top).toFixed(1)}px` : null };
     };
     // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
     const healed = () => fig.el.querySelectorAll(".fig-swirl").forEach((n) => n.remove());
@@ -271,10 +316,14 @@
         const inMs = Kit.fast ? ms : Math.round(ms / 0.6);
         // CLN-163: one camera over the room and the close-up (frames(), above); the room is gone by 75 % of the zoom
         // (CLN-77: the late frames are the close-up itself, never a smear of a blurred, hugely scaled room)
+        placeMid(a.k);
+        // (on screen only while the camera moves: at rest it is not drawn, so it is never a big file drawn small)
+        if (midEl) midEl.style.display = "";
         const F = frames(a, 1);
         z.moving = true;
         const opts = { duration: inMs, easing: "linear", fill: "forwards" };
         const zoom = play(box, F.room, opts);
+        if (midEl) play(midEl, F.mid, opts);
         const fade = play(wide, F.fade, opts);
         let shot = Promise.resolve();
         if (F.el) {
@@ -285,6 +334,7 @@
           shot = Promise.all([play(F.el, F.shot, opts)].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         }
         await Promise.all([zoom, fade, shot]);
+        if (midEl) midEl.style.display = "none";
         if (F.el) F.el.style.overflow = "";
         z.moving = false;
         // the close-up rests as it is drawn (its own transform gone: no rounding left over from the last frame)
@@ -316,13 +366,16 @@
         wide.classList.add("on");
         // CLN-163: the same one camera, backwards: the close-up shrinks onto the part in the room as the room comes
         // back over it, both at the same place and size (frames(), above)
+        placeMid(a.k);
+        if (midEl) midEl.style.display = "";
         const F = frames(a, -1);
         const opts = { duration: ms, easing: "linear", fill: "forwards" };
         if (F.el) {
           F.el.style.transformOrigin = F.origin;
           F.el.style.overflow = "visible"; // its blurred room past its box as it shrinks (CLN-163)
         }
-        await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), F.el ? play(F.el, F.shot, opts) : null].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
+        await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), midEl ? play(midEl, F.mid, opts) : null, F.el ? play(F.el, F.shot, opts) : null].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
+        if (midEl) midEl.style.display = "none";
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
       /**
@@ -333,6 +386,12 @@
       keep() {
         [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
         box.style.transform = box.style.filter = "";
+        if (midEl) {
+          // (the kept wide shot behind the end card is the room and the drawn girl, never the middle step)
+          if (midEl.getAnimations) midEl.getAnimations().forEach((an) => an.cancel());
+          midEl.style.opacity = 0;
+          midEl.style.display = "none";
+        }
         wide.classList.remove("gone");
         wide.classList.add("on", "kept");
         healed();

@@ -1,40 +1,452 @@
 {
  "pack": "s08c",
- "about": "Pack s08c (sources/art/s08c; docs/design-language/art-plans/s08c-art-plan.md section 6; build/reports/s08c-art-landing/details.md). Cook lines (wave 7A, ids cook-*): KD1 the kadchi, TP1 the teaspoon, GL1 the chai glasses from above, SK4 the sekelo tray, SK5 the sekelo decoys, and the redo's DS1 v2 (the daal's stirred-in pieces), CP4 v2 (the pan's brewing states) and CP3 v2 cells 1-4 (the pan tipping towards the player). New names only (-s08c): nothing the game used before is overwritten. Then build/tools/art/specs/s08c-cook-post.py: tray-0..3 painted out of tray-4, the marble's top-bottom seam and its x2 upscale, the hob cut from assets/cook/bg/bg-cook-hob-t-v1.png (x2, its rounded mask), the black-tea tip frames, the measures (assets/cook/items-s08c/meta.json). Run: python3 build/tools/art/artcut.py build/tools/art/specs/s08c.cut.json --only <the cook-* ids>.",
+ "about": "Pack s08c (sources/art/s08c, judged in build/reports/s08c-art-landing/details.md; the plan's section 6), cut by build/tools/art/artcut.py. Wave 7B's lines are the clinic and the family (CR1, TC1, the doctor's DW2/DT2/DB2 set, the girl's GZ1-GZ4, the family's NN/MA/AL frames, the waiting room's WR1-WR3); wave 7A's are the Cook lines, each in its own entries. Run with --out to a scratch folder and copy the files the game uses (7B: build/reports/s08-w7b-people-art.md lists them); the numbers go into the game's data where each is wired.",
+ "about_7a": "Wave 7A (the Cook lines, ids cook-*): run python3 build/tools/art/artcut.py build/tools/art/specs/s08c.cut.json --only <the cook-* ids> --out <scratch>, copy <scratch>/cook/items-s08c/ to assets/cook/items-s08c/ (its cut-data.json beside them), then python3 build/tools/art/specs/s08c-cook-post.py (tray-0..3 painted out of tray-4, CP3's cast shadows out and its black-tea frames, DS1's daal colour, the WT1 tile and the hob plate x2, the measures in assets/cook/items-s08c/meta.json).",
  "src": "sources/art/s08c",
  "out": "assets",
- "data": "assets/cook/items-s08c/cut-data.json",
- "report_beside_data": true,
+ "data": "data/clinic/s08c-cut-data.json",
+ "skin_render": [
+  200,
+  138,
+  111
+ ],
+ "skin_limits": [
+  6,
+  12
+ ],
  "failed": {},
  "_wt1": "WT1 (the marble tile) is not cut here: artcut keys every grid against the ground it finds on the edges, and a full-bleed texture has none, so its colours blew out (alpha near 0, un-premultiplied); s08c-cook-post.py cuts it from the source (4 px in, both seams cross-faded, x2).",
  "jobs": [
-  {"id": "cook-kd1-kadchi", "type": "grid", "src": "kd1-kadchi-v1.png", "cells": [2, 1],
-   "names": ["kadchi-s08c", "kadchi-daal-s08c"], "outdir": "cook/items-s08c/kadchi", "tol": 5, "hole_min": 8, "shadow": true, "cell_align": true,
-   "max": 560, "x2": true, "pad": 4, "_note": "DAAR-02: left the empty kadchi, right the stir frame (full of daal); one window so they swap in place. hole_min 8: the handle's hanging hole."},
-  {"id": "cook-tp1-teaspoon", "type": "grid", "src": "tp1-teaspoon-v1.png", "cells": [3, 1],
-   "names": ["teaspoon-empty-s08c", "teaspoon-sugar-s08c", "teaspoon-chai-s08c"], "outdir": "cook/items-s08c/teaspoon", "tol": 4, "shadow": true, "cell_align": true,
-   "max": 480, "x2": true, "pad": 4, "_note": "CHAI-13: cell 2 the scoop (the spoonful flies in), cell 3 the stir in milky chai, cell 1 the stir in water or black tea."},
-  {"id": "cook-gl1-glasses", "type": "grid", "src": "gl1-chai-glasses-top-v1.png", "cells": [3, 1],
-   "names": ["glass-empty-top-s08c", "glass-chai-top-s08c", "glass-black-top-s08c"], "outdir": "cook/items-s08c/glass", "glass": ["glass-empty-top-s08c", "glass-black-top-s08c"],
-   "soft_floor": 0.25, "soft_gain": 2.5, "shadow": true, "cell_align": true, "max": 480, "x2": true, "pad": 4,
-   "_note": "CHAI-08: one set from above replaces the chai-v2 glasses. soft 0.25/2.5: the empty glass is clear (12 made its floor opaque grey, 2.2 left a 30 px haze; this passes artpixels at rim 9.7)."},
-  {"id": "cook-sk4-tray", "type": "grid", "src": "sk4-sekelo-tray-upright-v1.png", "cells": [1, 1], "names": ["tray-4-s08c"],
-   "outdir": "cook/items-s08c/sekelo-tray", "tol": 5, "shadow": true, "hole_min": 10000000, "max": 900, "x2": true, "pad": 4,
-   "_note": "SEK-14, SEK-20: grey steel on grey keys at tolerance 5 with no holes (the steel's grey patches are never ground). tray-0..3: s08c-cook-post.py paints the skewers out from the right."},
-  {"id": "cook-sk5-decoys", "type": "grid", "src": "sk5-sekelo-decoys-v1.png", "cells": [4, 3],
-   "names": ["chicken-heap-s08c", "chicken-raw-s08c", "chicken-grilled-s08c", "chicken-charred-s08c",
-             "chilli-heap-s08c", "chilli-raw-s08c", "chilli-grilled-s08c", "chilli-charred-s08c",
-             "corn-heap-s08c", "corn-raw-s08c", "corn-grilled-s08c", "corn-charred-s08c"],
-   "outdir": "cook/items-s08c/sekelo", "shadow": true, "hole_min": 8, "max": 404, "pad": 4, "_note": "contract-37: heap, raw, grilled, charred per row, named as v3/sekelo names its pieces (404: v3's chunk canvas)."},
-  {"id": "cook-ds1-daal-in", "type": "grid", "src": "ds1-daal-stirred-in-v2.png", "cells": [4, 2],
-   "names": ["in-onion-s08c", "in-tomato-s08c", "in-chilli-s08c", "in-potato-s08c", "in-garlic-s08c", "in-ginger-s08c", "in-cumin-s08c", "in-mustard-s08c"],
-   "outdir": "cook/items-s08c/daar-in", "shadow": true, "max": 320, "x2": true, "pad": 4, "_note": "DAAR-05 (the redo, v2): the eight things stirred into the daal, laid on its turning disc for what went in."},
-  {"id": "cook-cp4-brew", "type": "grid", "src": "cp4-chai-pan-brewing-v2.png",
-   "boxes": {"pan-water-s08c": [20, 320, 513, 640], "pan-leaves-s08c": [514, 320, 1008, 640], "pan-boil-milky-s08c": [1008, 320, 1520, 640]},
-   "names": ["pan-water-s08c", "pan-leaves-s08c", "pan-boil-milky-s08c"], "outdir": "cook/items-s08c/chai-pan", "tol": 5,
-   "max": 560, "pad": 4, "_note": "CK-06 (the redo, v2): the brewing states; the code shows only their contents' circle (measured by s08c-cook-post.py) over the s08b pan. No shadow option: it takes the black handle for a shadow. Boxes: a handle's end comes within 3-8 px of the next pan's lip."},
-  {"id": "cook-cp3-tip", "type": "grid", "src": "cp3-chai-pan-tip-pour-v2.png", "cells": [3, 2],
-   "names": ["pan-tip-0-s08c", "pan-tip-20-s08c", "pan-tip-40-s08c", "pan-tip-60-s08c", null, null], "outdir": "cook/items-s08c/chai-pan", "tol": 5, "cell_align": true,
-   "max": 560, "pad": 4, "_note": "CHAI-26 (the redo, v2): cells 1-4 only, the pan tipping towards the player 0/20/40/60 degrees; cells 5-6's syrupy streams are not used (js/shared/pour.js draws the stream). s08c-cook-post.py drops the cast shadow (not the shadow option: it eats the black handle), makes the black-tea copies and measures the near rim."}
+  {
+   "id": "cr1-crutches",
+   "type": "grid",
+   "src": "cr1-crutches-flat-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "names": [
+    "crutches-flat-belt"
+   ],
+   "outdir": "clinic/sheets/decoys",
+   "tol": 4,
+   "hole_min": 20,
+   "max": 384,
+   "pad": 4,
+   "_note": "7B (CLN-23): the pair of crutches lying flat (pads left, feet right, every part down), replacing crutches-flat-belt (B9's crutch turned 90 degrees) under the same name, so data/clinic.json items.crutches needs no change; grey pads on grey: tolerance 4 and no shadow drop (the pads' shaded undersides are dark neutral grey, which the shadow drop took for ground), the gaps between the shafts holes"
+  },
+  {
+   "id": "tc1-steel-cup",
+   "type": "grid",
+   "src": "tc1-steel-cup-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "names": [
+    "steel-cup-s08c"
+   ],
+   "outdir": "clinic/items-s08c",
+   "tol": 5,
+   "hole_min": 8,
+   "max": 560,
+   "x2": true,
+   "pad": 4,
+   "_note": "7B (CLN-196, Zafar 19 Oct: the metal cup, no drop shadow, sitting on the surface): the steel tumbler upright, inside and floor showing; no shadow drawn, so none to drop. Its rim and inside are measured on the cut's alpha into data/clinic/heal/taste.json art.glass"
+  },
+  {
+   "id": "dw2-doctor-3q-left",
+   "type": "figure",
+   "data": "doctor-3q-left",
+   "src": "dw2-doctor-3q-left-v1.png",
+   "fig_h": 676,
+   "pad": 16,
+   "neck": 285,
+   "skin_box": [
+    0.42,
+    0.065,
+    0.5,
+    0.09
+   ],
+   "faces": {
+    "talk": "dt2-doctor-3q-left-talk-v1.png",
+    "blink": "db2-doctor-3q-left-blink-v1.png"
+   },
+   "anchors": {
+    "front": {
+     "head": [
+      490,
+      165
+     ],
+     "eyes": [
+      452,
+      172
+     ],
+     "stand": [
+      472,
+      1450
+     ]
+    }
+   },
+   "out": "clinic/patients/doctor/v2/doctor-3q-left",
+   "face_align": "none",
+   "face_match": true,
+   "skin_shift": {
+    "to": [
+     200,
+     138,
+     111
+    ]
+   },
+   "_note": "7B (CLN-17; Zafar 20 Oct: likeness yes; 'colour-correct, don't redraw'): the true three-quarter turn to the viewer's left beside the bed, replacing the s08 3q-left set under its file names (s08.cut.json doctor2-3q-left; data/clinic/heal-art.json doctor.views['3q-left'] takes the new numbers); DT2/DB2 are clean edits of DW2 on its own canvas (shift 0,0, skin matched). skin_shift: the whole doctor set (this view and s08's front, 3q-right, waves, poses and box faces) is moved toward his sheet's swatch #C88A6F by one per-pixel Lab shift weighted by skin-likeness, the same function for every file, so every frame and face layer stays matched. artcut.py does not read skin_shift yet: build/reports/s08-w7b-people-art.md has the shift and the request"
+  },
+  {
+   "id": "wr1-auntie-sit",
+   "type": "figure",
+   "data": "auntie",
+   "_note": "7B (ART-23): seated front-on for the waiting room's bench, cut like s07.cut.json old-man-sit (the same job shape, fig_h 440, so every bench person is one drawn height: these are drawn 90% of the picture's height, he 80%, and the cut scales each to his height); anchors read off the source by eye (forehead, eyes, mouth, seat = the backs of the thighs on the bench); the colour rung recolours the clothes band in code, as his (heal-art.json waiting.<kind>.tint)",
+   "src": "wr1-auntie-seated-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 435,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      508,
+      183
+     ],
+     "eyes": [
+      508,
+      253
+     ],
+     "mouth": [
+      508,
+      342
+     ],
+     "head": [
+      508,
+      253
+     ],
+     "seat": [
+      508,
+      995
+     ]
+    }
+   },
+   "out": "clinic/patients/auntie/auntie"
+  },
+  {
+   "id": "wr2-uncle-sit",
+   "type": "figure",
+   "data": "uncle",
+   "_note": "7B (ART-23): seated front-on for the waiting room's bench, cut like s07.cut.json old-man-sit (the same job shape, fig_h 440, so every bench person is one drawn height: these are drawn 90% of the picture's height, he 80%, and the cut scales each to his height); anchors read off the source by eye (forehead, eyes, mouth, seat = the backs of the thighs on the bench); the colour rung recolours the clothes band in code, as his (heal-art.json waiting.<kind>.tint)",
+   "src": "wr2-uncle-seated-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 340,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      497,
+      142
+     ],
+     "eyes": [
+      497,
+      203
+     ],
+     "mouth": [
+      497,
+      308
+     ],
+     "head": [
+      497,
+      203
+     ],
+     "seat": [
+      497,
+      965
+     ]
+    }
+   },
+   "out": "clinic/patients/uncle/uncle"
+  },
+  {
+   "id": "wr3-mother-baby-sit",
+   "type": "figure",
+   "data": "mother-baby",
+   "_note": "7B (ART-23): seated front-on for the waiting room's bench, cut like s07.cut.json old-man-sit (the same job shape, fig_h 440, so every bench person is one drawn height: these are drawn 90% of the picture's height, he 80%, and the cut scales each to his height); anchors read off the source by eye (forehead, eyes, mouth, seat = the backs of the thighs on the bench); the colour rung recolours the clothes band in code, as his (heal-art.json waiting.<kind>.tint); the woman holding the baby (waiting.js: anyone called 'with the baby')",
+   "src": "wr3-mother-baby-seated-v1.png",
+   "fig_h": 440,
+   "pad": 16,
+   "neck": 350,
+   "age": "adult",
+   "anchors": {
+    "front": {
+     "forehead": [
+      490,
+      142
+     ],
+     "eyes": [
+      490,
+      208
+     ],
+     "mouth": [
+      490,
+      292
+     ],
+     "head": [
+      490,
+      208
+     ],
+     "seat": [
+      490,
+      950
+     ]
+    }
+   },
+   "out": "clinic/patients/mother-baby/mother-baby"
+  },
+  {
+   "id": "cook-kd1-kadchi",
+   "type": "grid",
+   "src": "kd1-kadchi-v1.png",
+   "cells": [
+    2,
+    1
+   ],
+   "names": [
+    "kadchi-s08c",
+    "kadchi-daal-s08c"
+   ],
+   "outdir": "cook/items-s08c/kadchi",
+   "tol": 5,
+   "hole_min": 8,
+   "shadow": true,
+   "cell_align": true,
+   "max": 560,
+   "x2": true,
+   "pad": 4,
+   "_note": "DAAR-02: left the empty kadchi, right the stir frame (full of daal); one window so they swap in place. hole_min 8: the handle's hanging hole."
+  },
+  {
+   "id": "cook-tp1-teaspoon",
+   "type": "grid",
+   "src": "tp1-teaspoon-v1.png",
+   "cells": [
+    3,
+    1
+   ],
+   "names": [
+    "teaspoon-empty-s08c",
+    "teaspoon-sugar-s08c",
+    "teaspoon-chai-s08c"
+   ],
+   "outdir": "cook/items-s08c/teaspoon",
+   "tol": 4,
+   "shadow": true,
+   "cell_align": true,
+   "max": 480,
+   "x2": true,
+   "pad": 4,
+   "_note": "CHAI-13: cell 2 the scoop (the spoonful flies in), cell 3 the stir in milky chai, cell 1 the stir in water or black tea."
+  },
+  {
+   "id": "cook-gl1-glasses",
+   "type": "grid",
+   "src": "gl1-chai-glasses-top-v1.png",
+   "cells": [
+    3,
+    1
+   ],
+   "names": [
+    "glass-empty-top-s08c",
+    "glass-chai-top-s08c",
+    "glass-black-top-s08c"
+   ],
+   "outdir": "cook/items-s08c/glass",
+   "glass": [
+    "glass-empty-top-s08c",
+    "glass-black-top-s08c"
+   ],
+   "soft_floor": 0.25,
+   "soft_gain": 2.5,
+   "shadow": true,
+   "cell_align": true,
+   "max": 480,
+   "x2": true,
+   "pad": 4,
+   "_note": "CHAI-08: one set from above replaces the chai-v2 glasses. soft 0.25/2.5: the empty glass is clear (12 made its floor opaque grey, 2.2 left a 30 px haze; this passes artpixels at rim 9.7)."
+  },
+  {
+   "id": "cook-sk4-tray",
+   "type": "grid",
+   "src": "sk4-sekelo-tray-upright-v1.png",
+   "cells": [
+    1,
+    1
+   ],
+   "names": [
+    "tray-4-s08c"
+   ],
+   "outdir": "cook/items-s08c/sekelo-tray",
+   "tol": 5,
+   "shadow": true,
+   "hole_min": 10000000,
+   "max": 900,
+   "x2": true,
+   "pad": 4,
+   "_note": "SEK-14, SEK-20: grey steel on grey keys at tolerance 5 with no holes (the steel's grey patches are never ground). tray-0..3: s08c-cook-post.py paints the skewers out from the right."
+  },
+  {
+   "id": "cook-sk5-decoys",
+   "type": "grid",
+   "src": "sk5-sekelo-decoys-v1.png",
+   "cells": [
+    4,
+    3
+   ],
+   "names": [
+    "chicken-heap-s08c",
+    "chicken-raw-s08c",
+    "chicken-grilled-s08c",
+    "chicken-charred-s08c",
+    "chilli-heap-s08c",
+    "chilli-raw-s08c",
+    "chilli-grilled-s08c",
+    "chilli-charred-s08c",
+    "corn-heap-s08c",
+    "corn-raw-s08c",
+    "corn-grilled-s08c",
+    "corn-charred-s08c"
+   ],
+   "outdir": "cook/items-s08c/sekelo",
+   "shadow": true,
+   "hole_min": 8,
+   "max": 404,
+   "pad": 4,
+   "_note": "contract-37: heap, raw, grilled, charred per row, named as v3/sekelo names its pieces (404: v3's chunk canvas)."
+  },
+  {
+   "id": "cook-ds1-daal-in",
+   "type": "grid",
+   "src": "ds1-daal-stirred-in-v2.png",
+   "cells": [
+    4,
+    2
+   ],
+   "names": [
+    "in-onion-s08c",
+    "in-tomato-s08c",
+    "in-chilli-s08c",
+    "in-potato-s08c",
+    "in-garlic-s08c",
+    "in-ginger-s08c",
+    "in-cumin-s08c",
+    "in-mustard-s08c"
+   ],
+   "outdir": "cook/items-s08c/daar-in",
+   "shadow": true,
+   "max": 320,
+   "x2": true,
+   "pad": 4,
+   "_note": "DAAR-05 (the redo, v2): the eight things stirred into the daal, laid on its turning disc for what went in."
+  },
+  {
+   "id": "cook-cp4-brew",
+   "type": "grid",
+   "src": "cp4-chai-pan-brewing-v2.png",
+   "boxes": {
+    "pan-water-s08c": [
+     20,
+     320,
+     513,
+     640
+    ],
+    "pan-leaves-s08c": [
+     514,
+     320,
+     1008,
+     640
+    ],
+    "pan-boil-milky-s08c": [
+     1008,
+     320,
+     1520,
+     640
+    ]
+   },
+   "names": [
+    "pan-water-s08c",
+    "pan-leaves-s08c",
+    "pan-boil-milky-s08c"
+   ],
+   "outdir": "cook/items-s08c/chai-pan",
+   "tol": 5,
+   "max": 560,
+   "pad": 4,
+   "_note": "CK-06 (the redo, v2): the brewing states; the code shows only their contents' circle (measured by s08c-cook-post.py) over the s08b pan. No shadow option: it takes the black handle for a shadow. Boxes: a handle's end comes within 3-8 px of the next pan's lip."
+  },
+  {
+   "id": "cook-cp3-tip",
+   "type": "grid",
+   "src": "cp3-chai-pan-tip-pour-v2.png",
+   "cells": [
+    3,
+    2
+   ],
+   "names": [
+    "pan-tip-0-s08c",
+    "pan-tip-20-s08c",
+    "pan-tip-40-s08c",
+    "pan-tip-60-s08c",
+    null,
+    null
+   ],
+   "outdir": "cook/items-s08c/chai-pan",
+   "tol": 5,
+   "cell_align": true,
+   "max": 560,
+   "pad": 4,
+   "_note": "CHAI-26 (the redo, v2): cells 1-4 only, the pan tipping towards the player 0/20/40/60 degrees; cells 5-6's syrupy streams are not used (js/shared/pour.js draws the stream). s08c-cook-post.py drops the cast shadow (not the shadow option: it eats the black handle), makes the black-tea copies and measures the near rim."
+  }
+ ],
+ "_7b_manual": [
+  {
+   "id": "doctor-skin-shift",
+   "what": "every doctor file (assets/clinic/patients/doctor/v2/*, faces/*) moved toward #C88A6F: per view, the base's median skin (HSV hue 5-22, sat 60-200, val>120, in the head box) to the swatch, applied as one per-pixel Lab gain (to/from)^w, w = skin-likeness (hue within 28 deg, chroma>8, L>38), so a face layer on its base stays matched",
+   "tool": "artcut.py does not read skin_shift: request to the tools owner (7B report)"
+  },
+  {
+   "id": "gz-girl-closeups",
+   "src": [
+    "gz2-girl-face-eyes-v1.png",
+    "gz3-girl-face-eye-sore-v1.png",
+    "gz4-girl-face-eyes-closed-v1.png",
+    "gz1-girl-face-aah-v1.png"
+   ],
+   "out": [
+    "clinic/closeups/girl/eyes-s08c.webp",
+    "eyes-s08c-sore.webp",
+    "eyes-s08c-closed.webp",
+    "face-aah-s08c.webp"
+   ],
+   "what": "whole frames, no key, 1536x1024 (no @2x); GZ3/GZ4 on GZ2 measured by phase correlation (+0.18,-0.23 and -0.30,-0.14 px: used as drawn); the same skin shift as the doctor's, GZ2's median face (#F29B63) to the sheet face #E39468 (sheet-girl-v2-1.png, box 0.79-0.92 x 0.15-0.30) for all three, GZ1 its own (#DC8A56 to the same)"
+  },
+  {
+   "id": "family-talk-blink",
+   "src": [
+    "nn1",
+    "nn2",
+    "ma1 (padded to 1536)",
+    "ma2",
+    "al1",
+    "al2",
+    "al3"
+   ],
+   "out": "assets/characters/{nana,ma,ali}/<who>-{talk,blink}.webp, ali/cousin-impatient.webp",
+   "what": "build/cut_characters.py's own make_neutral with the edit as the sheet, then only the changed pixels inside a window round the eyes (|d|>18, opened, dilated 4, feathered) pasted onto the wired assets/cook/characters/<who>-neutral.webp; AL3 (an edit of chatgpt-batch3/char-ali-impatient-v2.png) cut as make_impatient with box (540,0,1040,1024) and eyes (688.6,175.7),(752.9,152.9)"
+  }
  ]
 }

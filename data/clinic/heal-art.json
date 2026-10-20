@@ -1094,21 +1094,22 @@
    "3q-left": {
     "file": "assets/clinic/patients/doctor/v2/doctor-3q-left-front.webp",
     "canvas": [
-     542,
-     1481
+     504,
+     1472
     ],
-    "w": 259,
+    "w": 242,
     "h": 708,
-    "feet": 0.977,
-    "stand": 0.4668,
+    "feet": 0.9762,
+    "stand": 0.4365,
     "head": [
-     0.4502,
-     0.0966
+     0.4722,
+     0.0951
     ],
     "faces": {
      "talk": "assets/clinic/patients/doctor/v2/doctor-3q-left-face-talk.webp",
      "blink": "assets/clinic/patients/doctor/v2/doctor-3q-left-face-blink.webp"
-    }
+    },
+    "_s08c": "7B (CLN-17; Zafar 20 Oct: likeness yes, colour-correct, don't redraw): DW2/DT2/DB2, the true three-quarter turn to the viewer's left (build/tools/art/specs/s08c.cut.json dw2-doctor-3q-left), under the s08 file names; the whole doctor set (every view, pose, face layer and box face) moved toward his sheet's skin swatch #C88A6F by one per-view Lab shift (median skin of each view's base to the swatch), so every frame matches"
    },
    "front": {
     "file": "assets/clinic/patients/doctor/v2/doctor-front-front.webp",
@@ -1261,7 +1262,7 @@
   }
  },
  "waiting": {
-  "_about": "s07-clinic-b (Zafar 16 Oct: 'do that now regardless'): the other people's real art for the waiting room's bench, cut by build/tools/art/specs/s07.cut.json (boy-sit, old-man-sit, old-woman-sit) from the clinic-heal-v3 W1 seated fronts, on the girl's framing (fig_h 440, one canvas per person, never stretched). Not under `patients`: no game has their moods, poses or close-ups, so the girl stays every game's patient (js/clinic/stages/waiting.js reads this key only).",
+  "_about": "s07-clinic-b (Zafar 16 Oct: 'do that now regardless'): the other people's real art for the waiting room's bench, cut by build/tools/art/specs/s07.cut.json (boy-sit, old-man-sit, old-woman-sit) from the clinic-heal-v3 W1 seated fronts, on the girl's framing (fig_h 440, one canvas per person, never stretched). Not under `patients`: no game has their moods, poses or close-ups, so the girl stays every game's patient (js/clinic/stages/waiting.js reads this key only). s08 wave 7B (ART-23): auntie, uncle and mother-baby (the woman holding the baby: waiting.js gives her to anyone called 'with the baby') from the s08c WR1-WR3 seated fronts (build/tools/art/specs/s08c.cut.json wr1-auntie-sit, wr2-uncle-sit, wr3-mother-baby-sit), the same job shape and drawn height as the old man; their tint bands (the clothes, read off the cut: the mother's skips the baby on her lap) are canvas shares",
   "boy": {
    "canvas": [
     658,
@@ -1397,22 +1398,151 @@
     0.72
    ]
   },
-  "_tint": "tint: the clothes' band [top, bottom] as canvas shares, for the colour rung's stand-in tint (waiting.js; the girl's is css/clinic.css .cl-wp.art .cl-wp-tint)"
+  "_tint": "tint: the clothes' band [top, bottom] as canvas shares, for the colour rung's stand-in tint (waiting.js; the girl's is css/clinic.css .cl-wp.art .cl-wp-tint)",
+  "auntie": {
+   "canvas": [
+    751,
+    1528
+   ],
+   "src": [
+    136,
+    2
+   ],
+   "w": 232,
+   "h": 472,
+   "front": "assets/clinic/patients/auntie/auntie-front.webp",
+   "faces": {},
+   "feet": 0.9647,
+   "anchors": {
+    "forehead": [
+     0.4953,
+     0.1185
+    ],
+    "eyes": [
+     0.4953,
+     0.1643
+    ],
+    "mouth": [
+     0.4953,
+     0.2225
+    ],
+    "head": [
+     0.4953,
+     0.1643
+    ],
+    "seat": [
+     0.4953,
+     0.6499
+    ]
+   },
+   "heads": {
+    "neutral": "assets/clinic/patients/auntie/auntie-head-neutral.webp"
+   },
+   "age": "adult",
+   "tint": [
+    0.26,
+    0.705
+   ]
+  },
+  "uncle": {
+   "canvas": [
+    751,
+    1532
+   ],
+   "src": [
+    124,
+    0
+   ],
+   "w": 227,
+   "h": 464,
+   "front": "assets/clinic/patients/uncle/uncle-front.webp",
+   "faces": {},
+   "feet": 0.9634,
+   "anchors": {
+    "forehead": [
+     0.4967,
+     0.0927
+    ],
+    "eyes": [
+     0.4967,
+     0.1325
+    ],
+    "mouth": [
+     0.4967,
+     0.201
+    ],
+    "head": [
+     0.4967,
+     0.1325
+    ],
+    "seat": [
+     0.4967,
+     0.6299
+    ]
+   },
+   "heads": {
+    "neutral": "assets/clinic/patients/uncle/uncle-head-neutral.webp"
+   },
+   "age": "adult",
+   "tint": [
+    0.225,
+    0.643
+   ]
+  },
+  "mother-baby": {
+   "canvas": [
+    654,
+    1536
+   ],
+   "src": [
+    179,
+    0
+   ],
+   "w": 198,
+   "h": 466,
+   "front": "assets/clinic/patients/mother-baby/mother-baby-front.webp",
+   "faces": {},
+   "feet": 0.9648,
+   "anchors": {
+    "forehead": [
+     0.4755,
+     0.0924
+    ],
+    "eyes": [
+     0.4755,
+     0.1354
+    ],
+    "mouth": [
+     0.4755,
+     0.1901
+    ],
+    "head": [
+     0.4755,
+     0.1354
+    ],
+    "seat": [
+     0.4755,
+     0.6185
+    ]
+   },
+   "heads": {
+    "neutral": "assets/clinic/patients/mother-baby/mother-baby-head-neutral.webp"
+   },
+   "age": "adult",
+   "tint": [
+    0.59,
+    0.846
+   ]
+  }
  },
  "shoes": {
   "_about": "python3 build/tools/art/shoes.py            # measure and write data/clinic/heal-art.json \"shoes\"   python3 build/tools/art/shoes.py --check    # measure and print; write nothing",
   "assets/clinic/patients/doctor/v2/doctor-3q-left-front.webp": [
    [
-    0.2046,
-    0.9576,
-    0.2548,
-    0.0805
-   ],
-   [
-    0.6853,
+    0.6777,
     0.9774,
-    0.2278,
-    0.0636
+    0.2893,
+    0.0805
    ]
   ],
   "assets/clinic/patients/doctor/v2/doctor-front-front.webp": [

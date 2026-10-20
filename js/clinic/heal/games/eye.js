@@ -254,7 +254,8 @@
     // where the bottle hangs: `lift` units above the eye at scale `k` (the ring stays centred on the eye). The drops'
     // close-up hangs it high over a big eye; the eye test's redrop (CLN-62) hangs it smaller, its nozzle just over the
     // open eye, never up on the forehead
-    const HANG = { drops: { lift: 34, k: 1 }, redrop: { lift: 16, k: 0.78 } };
+    // s08 wave 7B (CLN-185): over the s08c close-up's smaller eyes the bottle hangs smaller too (art eyesSore.dropK)
+    const HANG = { drops: { lift: 34, k: (EYA && EYA.dropK) || 1 }, redrop: { lift: 16, k: 0.78 } };
     const tipOf = (h) => h.lift * h.k + 10 * h.k; // the nozzle's height over the eye
     const showDropper = (at, pulse, hang = HANG.drops) => {
       dropperAt = at;
@@ -312,7 +313,9 @@
       b.textContent = P.level >= 3 ? "•".repeat(Math.min(n, 9)) : Kit0 && Kit0.num ? Kit0.num(n) : String(n);
       const e = EY[sd];
       // the patient's right eye is on our left: its badge on its outer (left) side, the other's on the right
-      const c = S.client(e.x + (e.x < 400 ? -118 : 118), e.y - 70);
+      // (s08 wave 7B: beside the eye's outer corner, by its drawn half width, art eyesSore.eyeR)
+      const off = EYA && EYA.eyeR ? EYA.eyeR[0] + 26 : 118;
+      const c = S.client(e.x + (e.x < 400 ? -off : off), e.y - (EYA && EYA.eyeR ? EYA.eyeR[1] + 24 : 70));
       const rr = S.root.getBoundingClientRect();
       Object.assign(b.style, { left: `${c.x - rr.left}px`, top: `${c.y - rr.top}px`, translate: "-50% -50%" }); // (translate: the bump animates transform)
       if (!bump) return;
@@ -320,10 +323,24 @@
       void b.offsetWidth;
       b.classList.add("bump");
     };
+    let lastBlink = 0;
     const blink = () => {
+      lastBlink = Date.now();
       blinkEls.forEach((b) => b.setAttribute("opacity", 1));
       ctx.after(fast() ? 30 : 220, () => blinkEls.forEach((b) => b.setAttribute("opacity", 0)));
     };
+    // ART-19 (s08 wave 7B): at rest in the drops' close-up she blinks by herself now and then (GZ4 for about 160 ms every
+    // 3-5.5 s, as Nani's box does), never while a drop falls or the test is up, and not just after a drop's own blink
+    const selfBlink = () => {
+      if (st.gone || st.over) return;
+      if (st.view === "drops" && !st.busy && blinkEls.length && Date.now() - lastBlink > 1500) {
+        lastBlink = Date.now();
+        blinkEls.forEach((b) => b.setAttribute("opacity", 1));
+        ctx.after(160, () => blinkEls.forEach((b) => b.setAttribute("opacity", 0)));
+      }
+      ctx.after(3000 + Math.random() * 2500, selfBlink);
+    };
+    if (eyesArt && !fast()) ctx.after(2600, selfBlink);
     // the mini chart in the corner: from level 2 it starts the test (lit once a drop is in)
     const MINI = { x: 640, y: 24, w: 88, h: 128 };
     const miniG = s("g", { opacity: 0 }, dropsG);
@@ -984,7 +1001,7 @@
         soreEye() {
           const e = st.view === "test" ? readEye : sore;
           if (!e) return null;
-          const h = st.view === "test" ? { rx: 30, ry: 20 } : { rx: 92, ry: 54 }; // the eye's half size, svg units
+          const h = st.view === "test" ? { rx: 30, ry: 20 } : EYA && EYA.eyeR ? { rx: EYA.eyeR[0], ry: EYA.eyeR[1] } : { rx: 92, ry: 54 }; // the eye's half size, svg units
           const a = S.client(e.x - h.rx, e.y - h.ry);
           const b = S.client(e.x + h.rx, e.y + h.ry);
           return { left: a.x, top: a.y, width: b.x - a.x, height: b.y - a.y };

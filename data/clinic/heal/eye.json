@@ -309,16 +309,22 @@
   "wide": "front",
   "target": [
    400,
+   265.6
+  ],
+  "size": 122,
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size.",
+  "_view": "s08 wave 7B: the s08c close-up (GZ2) is itself the less-close view (CLN-185: brows, forehead and hairline in view, the eyes 37% of the width), so the extra widening (HOST.view, k 0.85 for Y2) is off; kept as _view_v2",
+  "target_v2": [
+   400,
    250
   ],
-  "size": 240,
-  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size.",
-  "view": {
+  "size_v2": 240,
+  "_s08c": "s08 wave 7B (CLN-163): the match cut on the s08c close-up: the eyes' midpoint, and size scaled with their spacing (240.7 units against Y2's 472: 240 x 240.7 / 472)",
+  "_view_v2": {
    "k": 0.85,
    "bottom": 520.9,
    "not": "^chart"
-  },
-  "_view": "CLN-163 (CLN-185, Zafar 18 Oct: 'a little bit too zoomed in ... a bit intimidating'): the eyes' close-up a step less zoomed in (js/clinic/heal/host.js HOST.view): the scene's fit widened by 1/k, its lower edge kept above the picture's bottom (eyesSore box y + h = 520.9); the eye test (rows matching `not`) keeps its own framing."
+  }
  },
  "test": {
   "version": "A",
@@ -330,24 +336,24 @@
  "art": {
   "_about": "art plan pack clinic-heal-v3: used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; eye = where the open eye is (the redrop)",
   "eyesSore": {
-   "src": "assets/clinic/closeups/{kind}/eyes-v2-sore.webp",
+   "src": "assets/clinic/closeups/{kind}/eyes-s08c-sore.webp",
    "ready": true,
    "box": [
-    -160.9,
-    -236.9,
-    1136.6,
-    757.8
+    -173.5,
+    -120,
+    1110,
+    740
    ],
    "_note": "Y2: the sore eye on the viewer's right (the patient's left): the code mirrors it for the other side",
    "kinds": [
     "girl"
    ],
-   "has2x": true,
+   "has2x": false,
    "_a1": "A1 (5 Oct): Y2 at 0.81, its eyes' midpoint (769, 695 in the 1536 x 1024 source) on (400, 250), so the face leaves by the bottom too; eyes = where that puts the patient's right and left eye ([right x, left x, y]: the game's drops and dropper follow). The run framed Y1/Y2 wider than asked (redo list). The blink waits for Y3.",
    "eyes": [
-    164,
-    636,
-    230
+    279.6,
+    520.3,
+    265.6
    ],
    "src_v1": "assets/clinic/closeups/{kind}/eyes-sore.webp",
    "box_v1": [
@@ -361,17 +367,37 @@
     582,
     250
    ],
-   "_s02": "S02-E (RY1-RY3, the redo: tighter framing): the v2 pupils (439, 639 and 1077, 623 in the 1536 x 1024 source) at 0.74, so the picture still fills the view below 500 (to 521, as v1's reached 516); the eyes' targets move with them (v1's box and eyes kept as *_v1)"
+   "_s02": "S02-E (RY1-RY3, the redo: tighter framing): the v2 pupils (439, 639 and 1077, 623 in the 1536 x 1024 source) at 0.74, so the picture still fills the view below 500 (to 521, as v1's reached 516); the eyes' targets move with them (v1's box and eyes kept as *_v1)",
+   "src_v2": "assets/clinic/closeups/{kind}/eyes-v2-sore.webp",
+   "box_v2": [
+    -160.9,
+    -236.9,
+    1136.6,
+    757.8
+   ],
+   "eyes_v2": [
+    164,
+    636,
+    230
+   ],
+   "eyeR": [
+    68,
+    48
+   ],
+   "dropK": 0.8,
+   "_s08c": "s08 wave 7B (CLN-163 with CLN-185, ART-19; Zafar 20 Oct: likeness yes, keep GZ2's cropped crown): the s08c close-ups, less close: GZ2 (clear), GZ3 (her LEFT eye sore, on the viewer's right, as Y2), GZ4 (closed), edits of GZ2 on its own canvas (measured shift under 0.3 px: used as drawn), all three moved toward her sheet's face (#E39468) by ONE Lab shift (GZ2's median face skin to it), so the frames cross-fade without a flicker (7B's report). 1536 x 1024 at 0.7227 (no @2x: never above the source): box = [-173.5, -120, 1110, 740], centred on y 250 so it covers the tallest view (the 4:3 tablets: y -111 to 611) and the eyes' midpoint is on x 400 (the mirror for the patient's right); eyes = the pupils (627, 537) and (960, 530) in the source; eyeR = an eye's half width and height (svg units); dropK = the dropper's scale over these smaller eyes"
   },
   "eyesClosed": {
-   "src": "assets/clinic/closeups/{kind}/eyes-v2-closed.webp",
+   "src": "assets/clinic/closeups/{kind}/eyes-s08c-closed.webp",
    "ready": true,
    "kinds": [
     "girl"
    ],
-   "has2x": true,
+   "has2x": false,
    "_a1": "A1 (5 Oct): Y3 on Y2's canvas: the blink after each drop.",
-   "src_v1": "assets/clinic/closeups/{kind}/eyes-closed.webp"
+   "src_v1": "assets/clinic/closeups/{kind}/eyes-closed.webp",
+   "src_v2": "assets/clinic/closeups/{kind}/eyes-v2-closed.webp",
+   "_s08c": "s08 wave 7B: see eyesSore._s08c"
   },
   "testA": {
    "src": "assets/clinic/closeups/{kind}/eyetest-a-v2.webp",
@@ -489,14 +515,16 @@
    "_a2": "A2 (5 Oct): C2, the same chart turned on its easel; board = its four corners, so the rows are laid on it in perspective; lines are C1's."
   },
   "eyes": {
-   "src": "assets/clinic/closeups/{kind}/eyes-v2.webp",
+   "src": "assets/clinic/closeups/{kind}/eyes-s08c.webp",
    "ready": true,
    "kinds": [
     "girl"
    ],
-   "has2x": true,
+   "has2x": false,
    "_a1": "A1 (5 Oct): Y1, the clear eyes on Y2's canvas: fades in over the sore eye with each drop.",
-   "src_v1": "assets/clinic/closeups/{kind}/eyes.webp"
+   "src_v1": "assets/clinic/closeups/{kind}/eyes.webp",
+   "src_v2": "assets/clinic/closeups/{kind}/eyes-v2.webp",
+   "_s08c": "s08 wave 7B: see eyesSore._s08c"
   },
   "wall": {
    "_about": "s08-w5b (CLN-188; Zafar 18 Oct: 'an eye test board sitting on an optician's wall'): the s08b EC1 wall with its blank board (assets/clinic/s08b/ec1-meta.json), layout A's right panel. box = where the picture goes in the close-up's 800x500 units (from x 406, the panel's left edge, 350 wide: the wall colour carries on to the right edge, so the board clears her face circle in the corner and, on the shortest screen (800x360), its frame ends above the yes / no pills; its top cut 36 units), board = the board's white face as shares of the picture (ec1-meta board / size), fill and floor = the wall's and the skirting's own colours, round the picture on a taller screen",
@@ -538,9 +566,9 @@
   }
  },
  "assets": [
-  "assets/clinic/closeups/girl/eyes-v2-closed.webp",
-  "assets/clinic/closeups/girl/eyes-v2-sore.webp",
-  "assets/clinic/closeups/girl/eyes-v2.webp",
+  "assets/clinic/closeups/girl/eyes-s08c-closed.webp",
+  "assets/clinic/closeups/girl/eyes-s08c-sore.webp",
+  "assets/clinic/closeups/girl/eyes-s08c.webp",
   "assets/clinic/closeups/girl/eyetest-a-v2.webp",
   "assets/clinic/items-v2/ginger.webp",
   "assets/clinic/items-v2/milk-jug.webp",
