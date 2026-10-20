@@ -64,8 +64,11 @@ function parseOne(t) {
     const c = parseCmd(m[1].trim());
     return c.error ? { error: `cmd "${m[1].trim()}": ${c.error}` } : { kind: "cmd", cmd: m[1].trim(), argv: c.argv, raw: t };
   }
+  // js:<Global.path>: a read-only page value at the moment (js:Cook.maaniWindow), by property reads from window, never code
+  if ((m = /^js:([A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*)$/.exec(t))) return { kind: "js", path: m[1], raw: t };
+  if (/^js:/.test(t)) return { error: `js capture "${t}": write js:<Global.path>, e.g. js:Cook.maaniWindow (property reads only)` };
   if ((m = /^(crop|zoom2|dom|text):(.+)$/.exec(t))) return m[2].trim() ? { kind: m[1] === "text" ? "dom" : m[1], sel: m[2].trim(), raw: t } : { error: `"${t}": no selector` };
-  return { error: `unknown capture "${t}" (shot, crop:, zoom2:, strip:<sel>:<n>x<ms>, trace:<sel>:<ms>, voice, dom:, contract:<n>, ref:, cmd:)` };
+  return { error: `unknown capture "${t}" (shot, crop:, zoom2:, strip:<sel>:<n>x<ms>, trace:<sel>:<ms>, voice, dom:, contract:<n>, ref:, cmd:, js:<Global.path>)` };
 }
 // a cmd capture: the repo's own read-only scripts, no shell (quotes are honoured; ; | & > < ` $( are refused)
 const CMD_OK = new Set(["node", "python3", "grep", "ls"]);
@@ -279,7 +282,7 @@ export function inferKind(capture) {
   const k = new Set(capture.map((c) => c.kind));
   if (k.has("strip") || k.has("trace")) return "motion";
   if (k.has("zoom2")) return "detail";
-  if ([...k].every((x) => ["voice", "dom", "cmd", "contract", "ref"].includes(x))) return k.has("voice") && !k.has("dom") ? "voice" : "text";
+  if ([...k].every((x) => ["voice", "dom", "cmd", "contract", "ref", "js"].includes(x))) return k.has("voice") && !k.has("dom") ? "voice" : "text";
   return "layout";
 }
 export function normalizeSpec(spec, ctx) {

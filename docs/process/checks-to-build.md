@@ -6,6 +6,7 @@ Rules become code (decision 99): each item below is a check that will make a rul
 
 | # | Check | What it checks | Where | Size | Retires | Guards (open rows) |
 |---|---|---|---|---|---|---|
+| 25 | The 17-18 Oct shared contract checks | One per shared row, every game, both modes: one voice at a time, each line once and whole, item words never over a line (PAN-04); the help ladder, first-hint timing, the bulbs' pulse (SH-60); the one-sentence add line (SH-97); the card and its bulb (SH-98); every count, colour and item said is written (SH-99); free replays of what's left (SH-102); the review divider (SH-103); moving on (SH-105); the go-on arrow (SH-106); headline size on the order pop-up (SH-107); the marble (SH-108); the level table (SH-110); loading (CK-48); the opening line (LNG-16) | `build/sandbox/lib/contract.mjs`, CONTRACT_ROWS | one each, built with its fix (Sprint 8) | the row's eye-only check | those rows |
 
 ## The rules these checks replace (word for word, until their check exists)
 
@@ -21,3 +22,4 @@ Rules become code (decision 99): each item below is a check that will make a rul
 - **Greetings are learned by watching:** visible gestures (wave, hand out), small pictures on answer pills, the meaning said once in spoken English in story mode; never written. (G15, G22, decision 58)  → **CODE-TO-DO 4 (half) + DOC**
 - **Never show English or pictures where the task is understanding Kutchi;** one place for a word's text at a time; pictures are fine for speaking prompts. (G22)  → **CODE-TO-DO 4 (half) + DOC**
 - **Nothing leaves the device:** no accounts, uploads or analytics; speech recognition on-device only. (J1)  → **CODE-TO-DO 17 + DOC**
+- **No device voice in a store build (non-negotiable 10):** Cook (js/core/voice.js, js/cook/lang.js), the clinic (js/clinic/kit.js Voice.tts) and the shared screens (results.js, story.js) fall back to the browser's speech synthesis wherever a family clip is missing, with no build switch (found 20 Oct, wave 6N fix). The store build needs one flag that makes every fallback silent (the grey to-record line stays), and a check that fails a store build if any speechSynthesis call can run.  → **CODE-TO-DO (before the app-store wrap) + DOC**

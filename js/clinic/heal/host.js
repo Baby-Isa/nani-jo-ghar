@@ -187,6 +187,7 @@
       const t = o.camera && o.camera.target;
       const svg = t && stage.querySelector(".hs-root .hs-svg");
       const m = svg && svg.getScreenCTM && svg.getScreenCTM();
+      let tc = null;
       if (m && fig.art) {
         const br = box.getBoundingClientRect();
         const tx = m.a * t[0] + m.c * t[1] + m.e - br.left;
@@ -194,8 +195,55 @@
         if (o.camera.size && q.r) k = Math.max(1.6, Math.min(9, (o.camera.size * m.a) / q.r));
         dx = tx - q.x;
         dy = ty - q.y;
+        // CLN-163 (clinic decision 7): where the part is, in client px, on the room (q) and on the close-up (t)
+        tc = { q: { x: br.left + q.x, y: br.top + q.y }, t: { x: br.left + tx, y: br.top + ty } };
       }
-      return { ox: (100 * q.x) / bw, oy: (100 * q.y) / bh, k, dx, dy };
+      return { ox: (100 * q.x) / bw, oy: (100 * q.y) / bh, k, dx, dy, tc };
+    };
+    /*
+     * CLN-163 (Zafar, 18 Oct; clinic decision 7): ONE camera. The room and the close-up move together in one tween, as
+     * if the close-up were the room's own high-resolution picture of the part: at every frame the close-up is scaled
+     * and placed so its part (camera.target) lies exactly over the part in the room (the match cut), and the room hands
+     * over to it part-way, while both show the same part at the same size, so nothing jumps. The zoom runs in log space
+     * (an even push-in), sampled into keyframes so the browser plays it (tests can pause it). Out is the same, reversed.
+     */
+    const closeEl = () => stage.querySelector(".hs-root .hs-svg");
+    // (s08 w6I, CLN-163: the judge saw the room, the whole girl and the lips in three big steps): a gentle sine ease, so
+    // the middle of the move, where a cubic ease sped through most of the zoom, keeps the in-between sizes on screen
+    const ease = (u) => (1 - Math.cos(Math.PI * u)) / 2;
+    const frames = (a, dir) => {
+      const N = 24;
+      const room = [];
+      const shot = [];
+      const fade = [];
+      const bg = [];
+      const el = closeEl();
+      const r = el && a.tc ? el.getBoundingClientRect() : null;
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const p = ease(dir > 0 ? u : 1 - u); // p: 0 = the wide shot, 1 = the close-up
+        const s = Math.pow(a.k, p);
+        const f = a.k > 1.001 ? (s - 1) / (a.k - 1) : p;
+        // s08 w6N (CLN-163; the judge: "the zoom still blurs the cartoon girl heavily"): no blur on the room (a blur on
+        // the scaled room grew with the scale, so it read as a smear); the room is only scaled
+        room.push({ offset: u, transform: `translate(${(a.dx * f).toFixed(2)}px, ${(a.dy * f).toFixed(2)}px) scale(${s.toFixed(4)})` });
+        // the room stays the picture until the close-up is all but its full size, and hands over in the last tenth of the
+        // move, both showing the part in the same place at the same size (s08 w6N, CLN-163; the judge: "a curved-edged
+        // overlay": an earlier hand-over showed the close-up small, its own cut-out edge, the jaw or the cheeks, on screen)
+        fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (1 - p) / 0.1)).toFixed(3) });
+        // s08 w6N (CLN-163, CLN-106; the judge: white corners, and the arm's first frame on blank white): the close-up's
+        // own blurred room stays under it all through the move (its svg lets it run past its box while it moves, so
+        // there is never a pale box round the shrunken picture, and never a bare page before the room is up)
+        void bg;
+        if (r) {
+          const sg = s / a.k;
+          const tx = (a.tc.q.x - a.tc.t.x) * (1 - f);
+          const ty = (a.tc.q.y - a.tc.t.y) * (1 - f);
+          shot.push({ offset: u, transform: `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${sg.toFixed(4)})` });
+        }
+      }
+      const bgEls = []; // s08 w6N: the blurred room is no longer faded (above): it keeps its own drawn opacity
+      return { room, shot, fade, bg, bgEls, el: r ? el : null, origin: r ? `${(a.tc.t.x - r.left).toFixed(1)}px ${(a.tc.t.y - r.top).toFixed(1)}px` : null };
     };
     // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
     const healed = () => fig.el.querySelectorAll(".fig-swirl").forEach((n) => n.remove());
@@ -221,11 +269,26 @@
         // CLN-87 (S05-D3): the push-in the child sees lasts about 1.5 s: the room is handed over at 60 % of the move
         // (CLN-77), so the move itself runs 1.5 s / 0.6
         const inMs = Kit.fast ? ms : Math.round(ms / 0.6);
-        const zoom = play(box, [{ transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }, { transform: `translate(${a.dx}px, ${a.dy}px) scale(${a.k})`, filter: "blur(4px)" }], { duration: inMs, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" });
-        // CLN-77 (2 Oct): the room hands over to the close-up early (gone by 60 % of the push-in), so the
-        // late frames are never a full-screen smear of a blurred, hugely scaled room
-        const fade = play(wide, [{ opacity: 1 }, { opacity: 1, offset: 0.3 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }], { duration: inMs, easing: "ease-in-out", fill: "forwards" });
-        await Promise.all([zoom, fade]);
+        // CLN-163: one camera over the room and the close-up (frames(), above); the room is gone by 75 % of the zoom
+        // (CLN-77: the late frames are the close-up itself, never a smear of a blurred, hugely scaled room)
+        const F = frames(a, 1);
+        z.moving = true;
+        const opts = { duration: inMs, easing: "linear", fill: "forwards" };
+        const zoom = play(box, F.room, opts);
+        const fade = play(wide, F.fade, opts);
+        let shot = Promise.resolve();
+        if (F.el) {
+          F.el.style.transformOrigin = F.origin;
+          // s08 w6N (CLN-163; the judge: white corners round the eye close-up): while the close-up is scaled down its
+          // svg lets its blurred room run past its own box, so the screen round it is never the bare page
+          F.el.style.overflow = "visible";
+          shot = Promise.all([play(F.el, F.shot, opts)].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
+        }
+        await Promise.all([zoom, fade, shot]);
+        if (F.el) F.el.style.overflow = "";
+        z.moving = false;
+        // the close-up rests as it is drawn (its own transform gone: no rounding left over from the last frame)
+        if (F.el && !z.leaving) [F.el].concat(F.bgEls).forEach((x) => x.getAnimations && x.getAnimations().forEach((an) => an.cancel()));
         if (z.leaving) return; // the game already ended (a very quick round): the pull-out owns the layer now
         wide.classList.remove("on");
         wide.classList.add("gone");
@@ -248,15 +311,18 @@
         const a = z.at || anchor();
         // CLN-87 (Z2, 6 Oct; newer than CLN-77's part-way start): the pull-out starts from the full zoom on the healed
         // part (where the push-in ended), lightly softened, and the room fades in over the close-up as it pulls back
-        const k0 = a.k;
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.remove("gone");
         wide.classList.add("on");
-        await Promise.all([
-          // the room fades in over the first half (the close-up's drawing shows through while the room is at its biggest)
-          play(wide, [{ opacity: 0 }, { opacity: 1, offset: 0.5 }, { opacity: 1 }], { duration: ms, easing: "ease-out", fill: "forwards" }),
-          play(box, [{ transform: `translate(${a.dx || 0}px, ${a.dy || 0}px) scale(${k0})`, filter: "blur(0px)" }, { transform: "translate(0px, 0px) scale(1)", filter: "blur(0px)" }], { duration: ms, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }),
-        ]);
+        // CLN-163: the same one camera, backwards: the close-up shrinks onto the part in the room as the room comes
+        // back over it, both at the same place and size (frames(), above)
+        const F = frames(a, -1);
+        const opts = { duration: ms, easing: "linear", fill: "forwards" };
+        if (F.el) {
+          F.el.style.transformOrigin = F.origin;
+          F.el.style.overflow = "visible"; // its blurred room past its box as it shrinks (CLN-163)
+        }
+        await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), F.el ? play(F.el, F.shot, opts) : null].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },
       /**
@@ -293,6 +359,71 @@
       },
     };
     return z;
+  };
+
+  /**
+   * CLN-163 (CLN-185, Zafar 18 Oct: "the eye game feel[s] a little bit too zoomed in ... a bit intimidating"): a close-up
+   * a step less zoomed in, from the game's data alone (camera.view: {k, bottom, not}). The close-up's own fit (the
+   * scene's viewBox, js/clinic/heal/scene.js) is widened by 1 / k about its middle, kept above `bottom` (the picture's
+   * lower edge, svg units: no bare edge shows under it), and rewritten whenever the scene refits (a resize). While the
+   * card's step matches `not` (a regex: the eye test's chart, which has its own framing) the view is the scene's own;
+   * the change between them is a short camera move, never a jump.
+   */
+  HOST.view = function (stage, cfg, ctx) {
+    const svg = stage.querySelector(".hs-root .hs-svg");
+    if (!svg || !cfg || !(cfg.k > 0) || cfg.k >= 1 || !global.MutationObserver) return null;
+    const not = cfg.not ? new RegExp(cfg.not) : null;
+    let base = null; // the scene's own fit, as it last wrote it
+    let mine = null; // what was written here
+    let on = true;
+    let anim = null;
+    const parse = (v) => String(v || "").trim().split(/[\s,]+/).map(Number);
+    const wide = (b) => {
+      const w = b[2] / cfg.k;
+      const hh = b[3] / cfg.k;
+      let cy = b[1] + b[3] / 2;
+      if (cfg.bottom != null) cy = Math.min(cy, cfg.bottom - hh / 2);
+      return [b[0] + b[2] / 2 - w / 2, cy - hh / 2, w, hh];
+    };
+    const write = (b) => {
+      mine = b.map((v) => (Math.round(v * 10) / 10).toFixed(1)).join(" ");
+      svg.setAttribute("viewBox", mine);
+    };
+    const to = (target, ms) => {
+      if (anim) cancelAnimationFrame(anim);
+      const from = parse(svg.getAttribute("viewBox"));
+      if (Kit.fast || !global.requestAnimationFrame || from.length !== 4) return write(target);
+      const t0 = Date.now();
+      const step = () => {
+        const u = Math.min(1, (Date.now() - t0) / ms);
+        const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+        write(from.map((v, i) => v + (target[i] - v) * e));
+        anim = u < 1 && svg.isConnected ? requestAnimationFrame(step) : null;
+      };
+      step();
+    };
+    const mo = new MutationObserver(() => {
+      const v = svg.getAttribute("viewBox");
+      if (v === mine || anim) return;
+      base = parse(v); // the scene refitted (a resize): keep its fit, widened
+      if (on) write(wide(base));
+    });
+    base = parse(svg.getAttribute("viewBox"));
+    if (base.length !== 4) return null;
+    write(wide(base));
+    mo.observe(svg, { attributes: true, attributeFilter: ["viewBox"] });
+    return {
+      step(rowId) {
+        const want = !(not && rowId && not.test(String(rowId)));
+        if (want === on) return;
+        on = want;
+        to(on ? wide(base) : base, 450);
+      },
+      destroy() {
+        mo.disconnect();
+        if (anim) cancelAnimationFrame(anim);
+      },
+    };
   };
 
   /**
@@ -343,6 +474,7 @@
     const roomGame = !!(data && data.camera && data.camera.wide === "room");
     const staging = opts.staging === false || !def.cues || roomGame ? null : HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
 
+    let viewer = null; // CLN-163 (CLN-185): the close-up a step less zoomed in (data camera.view; HOST.view)
     const log = [];
     const timers = new Set();
     const listeners = [];
@@ -394,7 +526,10 @@
     // CLN-140 (Zafar, 14 Oct, R4 in the clinic): the doctor has one card at the top of the sidebar, as in every stage:
     // his face once (the card's, screen.js), his line for the step now as its top strip (T29), then the goal headline
     // and the steps. The parked games keep their goal in the strip (no headline).
-    card.setTitle(v2 ? goal : "", null); // null: the screen's card wears his face (Kit.Card's default face)
+    // s08 w6N (CLN-106): a game whose goal is said once a step is done (def.why.goalAfter: the boing's "Time for the jab"
+    // after the wipe) opens with no headline; it calls ctx.card.goal() then, and the headline comes up as he says it
+    const lateGoal = !!(v2 && def.why && def.why.goalAfter);
+    card.setTitle(v2 && !lateGoal ? goal : "", null); // null: the screen's card wears his face (Kit.Card's default face)
     if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
@@ -424,7 +559,11 @@
       }
       return out;
     })();
-    const stripRow = (row) => {
+    // SH-99, CLN-187 (s08-w6c; Zafar, 18 Oct: "all the frequencies has to be written down. And audible as well"):
+    // every number said is written (contract-30), the closed card's strip too, so the strip keeps its count at every
+    // level now; stripRow.count (decision 41's old rule: from level 3 the strip without its number) is kept, unused
+    const stripRow = (row) => row;
+    stripRow.count = (row) => {
       if (!row || level < 3) return row;
       const nums = (row.ids || []).filter((id) => numWords[id]);
       if (!nums.length) return row;
@@ -543,18 +682,27 @@
         pulse: (rowId, on) => card.pulse(rowId, on),
         hush: (on) => card.hush(on), // CLN-144: a game's own tool nudge: the card's band steps back while it glows
         // additions
-        now: (rowId) => {
+        // o.strip: the line the strip shows for this step when it is not the row's own (the eye's drops at level 3: both
+        // eyes' counts in one line, CLN-187)
+        now: (rowId, o = {}) => {
           if (rowId !== card.st.now) {
             clearCounts();
             showDone(false);
             nextOff();
           }
           card.now(rowId);
+          if (viewer) viewer.step(rowId);
           // T29: the guide's line is the step now (it clears when no step is open)
-          if (v2 && screen.setGuide) screen.setGuide(rowId ? stripRow(card.row(rowId)) : null);
+          if (v2 && screen.setGuide) screen.setGuide(rowId ? stripRow(o.strip || card.row(rowId)) : null);
         },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),
+        // CLN-106 (def.why.goalAfter): the late goal: its headline on the card, and the doctor says it (once)
+        goal: () => {
+          if (!lateGoal || card.titleText === goal || !goal) return Promise.resolve();
+          card.setTitle(goal, null);
+          return ctx.say(goal, { who: "doctor" });
+        },
         speak: (ids) => {
           // the whole card is read only in the pop-up (SH-64): a game's own read of it (its opening, the scene's "why"
           // beat) stays quiet; one step's rows (ids) are still said as they open, and the face replays the card
@@ -608,7 +756,8 @@
         // child decides when it's enough: moving on at the target would give the answer away, C10)
         if (o.capped && o.of && n >= o.of && level >= 2) ctx.ready(true);
         else if (n > 0 && level >= 2 && !o.next) showDone(true);
-        if (level <= 1 && n > 0 && n <= 5) Kit.Voice.now(LANG().num(n));
+        // (PAN-04: the number as you tap is said only when no line is being said: it never goes over the doctor)
+        if (level <= 1 && n > 0 && n <= 5 && !Kit.Voice.busy) Kit.Voice.now(LANG().num(n));
       },
       /** D7: the game says whether its ✓ can do something now (a step with no count: the plasters laid). */
       ready(on) {
@@ -771,6 +920,13 @@
       console.error(`Healing game "${def.id}" failed to mount`, e);
       throw e;
     }
+    viewer = HOST.view(stage, data && data.camera && data.camera.view, ctx);
+    // CLN-163: while the one camera moves (the push-in), the close-up moves under the finger: a test driver's next move
+    // waits for it to land (the child's own taps stay live: E5)
+    if (staging && controller.debug && typeof controller.debug.next === "function") {
+      const next0 = controller.debug.next.bind(controller.debug);
+      controller.debug.next = (...a) => (staging.moving ? { do: "wait", ms: 120 } : next0(...a));
+    }
     // TEST HOOK (s04-hooks; read-only, CLN-82, CLN-104): debug.glowing() -> the tools glowing now (the next-up reveal, a
     // game's own pulse), each {tool, nextUp, box: {left, top, width, height} in client px}; [] when nothing glows
     if (controller.debug && typeof controller.debug === "object" && !("glowing" in controller.debug)) {
@@ -790,12 +946,22 @@
     // S03-A (decision 53, CLN-84 re-raised, SH-64): every heal game opens with the shared request pop-up, as Cook and
     // the pharmacy do: the doctor's card at full size over the room, read out row by row; a tap anywhere stops the
     // voice and folds it into the sidebar; then the game starts, quiet (its opening repeat of the card is skipped)
-    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText);
+    // (a late goal, def.why.goalAfter: the game's first step is the pop-up's whole content; its rows come at mount)
+    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText || lateGoal);
     const popRead = new Set();
     let popped = false; // the pop-up has read the card
     let popAt = 0;
     // the game's opening repeat of a row the pop-up just read (within a few seconds of the fold) stays quiet
     const quietStart = () => popped && Date.now() - popAt < (Kit.fast ? 1500 : 5000);
+    // the request pop-up's entrance animations (css/shared/order-card.css njgRqFade, njgRqIn) finished, or 800 ms at
+    // most (a page with no animations, or reduced motion, goes on at once)
+    const shownIn = (veil) => {
+      if (!veil || !veil.getAnimations) return Promise.resolve();
+      const card = veil.querySelector(".njg-rq-card");
+      const ins = [...veil.getAnimations(), ...(card && card.getAnimations ? card.getAnimations() : [])].filter((a) => /^njgRq(Fade|In)$/.test(a.animationName || ""));
+      if (!ins.length) return Promise.resolve();
+      return Promise.race([Promise.all(ins.map((a) => a.finished.catch(() => {}))), new Promise((r) => setTimeout(r, 800))]);
+    };
     const showPopup = () => {
       if (!popup) return Promise.resolve();
       Kit.Voice.clear(); // the stage change (CLN-109): nothing from before queues ahead of the request
@@ -804,6 +970,7 @@
       // step is said as it opens (Card.reveal), never the whole job up front
       const opened = card.progressive ? card.rows.slice(0, card.shown + 1) : card.rows;
       opened.forEach((r) => popRead.add(r.id));
+      let veil = null;
       return global.Lifecycle.request({
         reason: `clinic:heal/${def.id}`,
         host: screen.main,
@@ -819,8 +986,12 @@
           big.titleText = card.titleText;
           big.faceEl = face.cloneNode(true);
           big.setRows(opened.map((r) => Object.assign({}, r, { el: null })));
+          veil = box.closest ? box.closest(".njg-rq-veil") : null;
         },
-        read: () => big.speak(),
+        // the doctor reads the card once the child can see it: the pop-up's own fade-in (njgRqFade, njgRqIn) has
+        // landed. At test speed the lead is 20 ms, and a late goal's pop-up (CLN-106: the first step's line alone)
+        // was read and folded before it had faded in (contract-1: no pop-up seen, its line said outside it)
+        read: () => shownIn(veil).then(() => (veil && (veil.classList.contains("going") || !veil.isConnected) ? null : big.speak())), // (a tap-through while it faded in: nothing said)
         onStop: () => Kit.Voice.clear(),
       }).then(() => {
         popped = true;
@@ -858,15 +1029,13 @@
         if (popup && global.Lifecycle && global.Lifecycle.isOpen()) global.Lifecycle.close();
         timers.forEach((t) => clearTimeout(t));
         listeners.forEach(([el, type, fn, o]) => el.removeEventListener(type, fn, o));
-        try {
-          controller && controller.destroy && controller.destroy();
-        } catch (e) {
-          console.error(e);
-        }
         // CLN-69: a round that ended keeps the room under the results card (the wide shot at rest); a game with no
-        // zoom (the fever room, the parked games) gets the same still wide shot, so the card never sits on bare cream
+        // zoom (the fever room, the parked games) gets the same still wide shot, so the card never sits on bare cream.
+        // CLN-178 (the judge's blank brown frame after the fever): that still room is laid before the game's own room
+        // goes, so no frame shows the bare stage between the two
         let kept = false;
-        if (ended && opts.backdrop !== false) {
+        const keepRoom = () => {
+          if (kept || !ended || opts.backdrop === false) return;
           try {
             const z = staging || HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
             if (z && z.keep) {
@@ -877,7 +1046,15 @@
           } catch (e) {
             console.error(e);
           }
+        };
+        if (!staging) keepRoom();
+        try {
+          controller && controller.destroy && controller.destroy();
+        } catch (e) {
+          console.error(e);
         }
+        keepRoom();
+        if (viewer) viewer.destroy();
         if (staging && !kept) staging.destroy();
         if (screen.stripMode) screen.stripMode(false);
         if (!opts.patient) fig.destroy();

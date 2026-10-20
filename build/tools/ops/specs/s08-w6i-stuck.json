@@ -1,0 +1,50 @@
+{
+  "name": "s08 wave 6I, the gate's stuck clinic runs (boing at 1024x768, the foot at 1180x820 and 1366x1024) and the names false alarm",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "a child could get stuck: play-breaking, at sizes the last round's layout change touched",
+  "cost": "about $15-25",
+  "stop": "when every task is accepted, or 2 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "port": 8859,
+  "report": "s08-w6i-stuck",
+  "publish": false,
+  "read": [
+    "build/screenshots/sandbox/s08-gate-final/summary.md and contract.md",
+    "build/reports/s08-w6c-clinic.md (the first stuck-runs fix) and s08-w6h-clinic.md (boing's machine and tiles were resized)"
+  ],
+  "owns": [
+    "js/clinic/**",
+    "data/clinic/**",
+    "css/clinic.css",
+    "build/sandbox/drivers/catalog.mjs clinic entries",
+    "build/sandbox/lib/contract-hook.mjs and contract.mjs (contract-16's names only)",
+    "build/reports/s08-w6i-stuck.md"
+  ],
+  "readOnly": [
+    "js/cook/**",
+    "js/shared/**",
+    "assets/**",
+    "data/lang/**"
+  ],
+  "stubs": "none",
+  "tasks": [
+    {
+      "do": "The gate's stuck runs: clinic:heal-boing, #mistake and @L2 at 1024x768 (the yellow lever, the lever that closes the wipe), clinic:patient@L3 at 1024x768 (boing), clinic:patient at 1180x820 and 1366x1024 (the foot's drag). Wave 6H resized boing's machine and tiles and changed the foot wash. For each: if the game can get stuck (a lever under the tool column, a drag that can't land), fix the game at every size; if only the driver misses, fix its clinic entry.",
+      "accept": "auto: those 6 runs reach their end at those sizes, and boing and the foot at 800x360, 844x390, 1024x768, 1180x820, 1366x768, 1366x1024, 1440x900 (L1 and L3)"
+    },
+    {
+      "do": "contract-16 reports the players' names on the who's-playing screen ('Maryam', 'Zayn') as English for the child: a player's own name is not English; exempt the names the grown-up typed (their elements) with a unit test.",
+      "accept": "auto: the unit test; contract-16 green on house at 1024x768"
+    }
+  ],
+  "flows": [
+    "clinic:heal-boing",
+    "clinic:heal-foot",
+    "clinic:patient",
+    "house"
+  ]
+}

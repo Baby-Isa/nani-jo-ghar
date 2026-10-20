@@ -1,0 +1,75 @@
+SESSION NAME / MODE:  s08 wave 6C, the clinic: the four games that get stuck, the fever girl's flip, the eye card and chart, the drill, the drop machine's tiles
+MODEL AND EFFORT:     Opus, high effort (play-breaking stalls and visual layout in the heal games)
+COST ESTIMATE:        about $30-45
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6c-clinic.context.md (853 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/evidence-ev-20261019-172022-khk.md and the judge verdicts in build/tools/review/data/verdicts.json (each row's line says what failed)
+     build/screenshots/sandbox/s08-gate-close/contract.md (the gate's breaks, by check, flow and size)
+     docs/game-design/modes/clinic.md
+     docs/feedback/clinic-playtest-2026-10-18.md
+     build/reports/s08-w5a-clinic.md, s08-w5b-clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/**
+  - data/clinic/**
+  - css for the clinic only
+  - build/sandbox/drivers/catalog.mjs clinic entries only
+  - build/reports/s08-w6c-clinic.md
+READ-ONLY (never edit):
+  - js/cook/**, js/shared/** (waves 6A, 6B; a shared fix goes in your report)
+  - build/tools/** (wave 6D)
+  - assets/**
+  - data/lang/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a picture the game needs and does not have goes in the report's art list
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The gate's 8 stuck runs: clinic:patient (heal foot, the drag; 1024x768), clinic:patient@L3 (heal boing, the lever that closes the wipe; 1024x768, 1180x820, 1366x1024), clinic:heal-fever#hint and #mistake (the bottle tap), clinic:heal-cut@L2 (the drag). For each, find whether the game can get stuck (a child could too: fix the game) or the driver misses (fix its clinic entry).
+     Accept: auto: those 8 runs reach their end at those sizes
+  2. CLN-176, CLN-105: the fever girl never says 'barabar' (just right) and then flips to too cold or too hot; the bubble matches what she says.
+     Accept: auto: the voice timeline of clinic:heal-fever L1-L3; eye: the bubble
+  3. CLN-187: at L3 the eye card asks a count per eye, with the number, and the left-eye card. CLN-188: the eye chart board fills more of the screen than the girl's photo. CLN-165: the tool tiles are bigger, the dropper machine no longer dominates; the arm photo reaches the bottom with no hard edge. CLN-181: the drill tip is centred on the cavity and the filling grows from the middle.
+     Accept: eye: each at 1366x768 and 800x360, L1-L3
+  4. CLN-17: the doctor stands beside her at the bed (placement only; turning him needs art: art list). CLN-173: a prong of the tweezers goes behind the wax if the art has the layers (else art list). Clinic English text placeholders: 'Bring in man' reads as a fragment (rule 11): make it a full engine sentence or a grey to-record placeholder; 'Who's next?', 'Bring them in.' carry the to-record tag.
+     Accept: eye: each; auto: contract-16 green on clinic flows
+
+REGRESSION ROWS TO RECHECK (153 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (10): CLN-81*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151
+  clinic:patient (17): CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+  clinic:heal-foot (45): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-190*, CLN-191*, CLN-192, CLN-193, CLN-194*, CLN-135*, CLN-82, CLN-30, CLN-40, CLN-42, CLN-43, CLN-44, CLN-47, CLN-64, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-75, CLN-76, CLN-77, CLN-79, CLN-108, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-boing (46): CLN-159*, CLN-106*, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-165*, CLN-166*, CLN-167*, CLN-168*, CLN-170*, CLN-82, CLN-30, CLN-42, CLN-43, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118, CLN-140
+  clinic:heal-fever (52): CLN-65*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-175, CLN-176*, CLN-177*, CLN-178*, CLN-105*, CLN-86, CLN-152, CLN-153, CLN-30, CLN-31, CLN-42, CLN-43, CLN-44, CLN-56, CLN-57, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-120, CLN-124, CLN-125, CLN-128, CLN-130, CLN-132, CLN-133, CLN-147, CLN-146, CLN-148, CLN-45, CLN-100, CLN-126, CLN-127, CLN-149, CLN-131, CLN-118, CLN-140
+  clinic:heal-cut (48): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-172*, CLN-173*, CLN-175, CLN-186, CLN-192, CLN-193, CLN-82, CLN-113, CLN-30, CLN-32, CLN-42, CLN-43, CLN-44, CLN-46, CLN-62, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-74, CLN-76, CLN-77, CLN-79, CLN-99, CLN-121, CLN-124, CLN-125, CLN-128, CLN-133, CLN-142, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-eye (53): CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-163*, CLN-186, CLN-187*, CLN-188*, CLN-189*, CLN-85, CLN-152, CLN-30, CLN-39, CLN-42, CLN-43, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118, CLN-140, CLN-136
+  clinic:heal-tooth (45): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-180, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-09, CLN-30, CLN-35, CLN-42, CLN-43, CLN-44, CLN-51, CLN-52, CLN-53, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103, CLN-124, CLN-125, CLN-128, CLN-129, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-ear (45): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-173*, CLN-174*, CLN-135*, CLN-86, CLN-30, CLN-34, CLN-42, CLN-43, CLN-44, CLN-49, CLN-50, CLN-67, CLN-68, CLN-69, CLN-70, CLN-71, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-101, CLN-102, CLN-124, CLN-125, CLN-128, CLN-133, CLN-134, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:waiting (28): CLN-115*, CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+  clinic:morning (17): CLN-159*, CLN-04, CLN-05, CLN-06, CLN-07, CLN-09, CLN-82, CLN-83, CLN-85, CLN-86, CLN-88, CLN-89, CLN-111, CLN-113, CLN-152, CLN-153, CLN-01
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6c-clinic` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8853.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6c-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

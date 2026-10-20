@@ -1,6 +1,6 @@
 # Sprint 7: Art, clinic first
 
-**Status:** open
+**Status:** closed (16 Oct 2026)
 **Opened:** 15 Oct 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback` (his full play-through is Sprint 8)
 
 ## Goal
@@ -21,7 +21,9 @@ None; all in the orchestrator's chat (Opus) with in-chat subagents:
 - Ready characters already in the repo (clinic boy, old man and woman, guests, cousin, dad with baby): wired only if easy.
 
 ## Outcome
-(at close)
+Published 16 Oct 22:17 UK (38d0591a, 20261016T211414Z), past the publish gate on Zafar's word (no fresh full contract run; the 574-page chunked gate `build/reports/s08-gate.md` found no new break; two judge agents found no regression). Shipped: the s08 cartoony grandad everywhere in the clinic with his turns, talk and blink and portrait; him and the girl set back on one floor (Fable's spec, `s08-placement-judge.md`, `s08-placement-fix.md`, `s08-rejudge.md`); Nani's jaw-fixed new look everywhere outside the clinic, the family seated behind the counter (CK-46); the s07 belt, injuries, kitchen master and Cook art; the clinic items (sore face, matte drops, level plaster) and the top-view chai pan. Moved on: the bench's chibi stand-ins (ART-23), the hob pan, a truer sore face, the sekelo plate; CLN-17, CLN-25 and the rows the judges failed (all already open). Open rows: 51 (statuscounts). Money: image API $15.56 today (`s08-api-redo.md`) on top of the s08 style-lock and sheet runs; the rest Opus/Fable subagent time.
 
 ## Look back (three lines)
-(at close)
+1. Worked: an independent Fable judge writing a numbered placement spec, then a builder applying it, then Fable rejudging; and the API for small art redos when Zafar said so.
+2. Cost more: two builders lost to a restart and a full disk (scratch copies, 8 GB of gate PNGs); the browser lock shared by a gate and a builder made both slow.
+3. Change: delete gate PNGs as each chunk is judged, and never run a gate and a builder's browser work at the same time.

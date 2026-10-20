@@ -29,7 +29,7 @@
     round.items.forEach((it) => V.addItem(it));
     V.openZoom();
     if (!round.alive()) throw new Cook.Abort("left");
-    round.listName = "Nani's calls";
+    round.listName = ""; // no written English for the child (rule 5)
     UI.gist(Find.data.mechanics.where.goal, { key: "find-where" });
     await Find.calls(round, wants);
     UI.hideGist();

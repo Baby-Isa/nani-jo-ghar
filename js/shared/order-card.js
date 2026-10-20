@@ -79,7 +79,21 @@
   OC.CHECK = `<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#c9962e"/><path d="M5.6 10.4 8.6 13.3 14.4 7.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const FOLD_AFTER = 700;
   // decision 57: the small bulb on a closed spoken card (flat, the design tokens' gold; no counter)
-  OC.BULB = `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4a12 12 0 0 0-7 21.8c1.3 1 2 2.4 2 4V31h10v-1.2c0-1.6.7-3 2-4A12 12 0 0 0 20 4z" fill="#f2c14e" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M15 34.5h10M16.5 38h7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+  // SH-100 (Zafar, 17 Oct: "let's make them all photorealistic"): ONE bulb picture on every card and in Nani's and the doctor's box: the photo
+  // (assets/ui/results/icon-bulb.webp, the one results.js and the guide use), never a flat drawing of our own. The path is from this script's
+  // own place (as results.js does), stamped for the cache (njgV) when the card is drawn; a page without the stamp keeps the plain path
+  const scriptBase = (() => {
+    try {
+      const src = typeof document !== "undefined" && document.currentScript && document.currentScript.getAttribute("src");
+      const m = src && src.match(/^(.*?)js\/shared\/order-card\.js(?:[?#].*)?$/);
+      return m ? m[1] : "";
+    } catch (e) {
+      return "";
+    }
+  })();
+  OC.BULB_FILE = "assets/ui/results/icon-bulb.webp";
+  OC.bulbSrc = () => (typeof root.njgV === "function" ? root.njgV(scriptBase + OC.BULB_FILE) : scriptBase + OC.BULB_FILE);
+  OC.bulbImg = () => `<img class="oc-bulb-img" src="${OC.bulbSrc()}" alt="" draggable="false">`;
   OC.EYE = `<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M2 20 Q32 -6 62 20 Q32 46 2 20Z" fill="#fffaf0" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="20" r="10" fill="currentColor"/></svg>`;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -316,6 +330,37 @@
     });
   }
 
+  /**
+   * SH-98 / contract-27 (Zafar, 17 Oct: "if you click light bulb everything should be written in Kutchi"): while a card peeks, every
+   * dotted word shows (a dot group carries its words in data-said: Cook's Lang.html); when the peek ends the dots come back.
+   */
+  function unveil(card, on) {
+    if (!card || !card.querySelectorAll) return;
+    // SH-98 (the judge, 20 Oct: the samosa peek at L3 showed "ba samosa" and a bare "samosa" with no fillings): a finished
+    // item folded to its one gold line opens too while the card peeks, so every row is written with its parts (its
+    // number and fillings, as they were said); it folds again when the peek ends
+    if (on)
+      card.querySelectorAll(".oc-item.folded").forEach((it) => {
+        it.classList.remove("folded");
+        it.classList.add("oc-peek-open");
+      });
+    else
+      card.querySelectorAll(".oc-item.oc-peek-open").forEach((it) => {
+        it.classList.remove("oc-peek-open");
+        it.classList.add("folded");
+      });
+    if (on)
+      card.querySelectorAll(".dots[data-said]").forEach((d) => {
+        const w = document.createElement("span");
+        w.className = "word oc-peeked";
+        w.textContent = d.getAttribute("data-said");
+        w._dots = d;
+        d.replaceWith(w);
+      });
+    else card.querySelectorAll(".oc-peeked").forEach((w) => w._dots && w.replaceWith(w._dots));
+  }
+  OC.unveil = unveil;
+
   /** A closed card (not finished): folded to face + headline, no check; a tap peeks (or opens) it. */
   function closable(c, st, opts) {
     const now = Date.now();
@@ -326,12 +371,13 @@
       c.classList.add("bulb-open");
       return;
     }
-    if (open) c.classList.add("peek");
+    if (open) c.classList.add("peek"), unveil(c, true);
     else c.classList.add("folded", "still");
     const shut = () => {
       const cur = st.el && st.el.isConnected ? st.el : c;
       cur.classList.remove("peek", "still");
       cur.classList.add("folded");
+      unveil(cur, false);
     };
     if (st.peekUntil && open) {
       clearTimeout(st.timer);
@@ -345,6 +391,7 @@
         st.peekUntil = Date.now() + (opts.peekMs != null ? opts.peekMs : 3500);
         cur.classList.remove("folded", "still");
         cur.classList.add("peek");
+        unveil(cur, true);
         clearTimeout(st.timer);
         st.timer = setTimeout(shut, st.peekUntil - Date.now());
         opts.onPeek(cur);
@@ -353,6 +400,7 @@
         cur.classList.remove("still");
         cur.classList.toggle("folded", !st.opened);
         cur.classList.toggle("peek", st.opened);
+        unveil(cur, st.opened);
       }
     });
   }
@@ -406,7 +454,9 @@
     const h = data.headline;
     if (h) {
       // a line still to record: its English, flagged "to record" under it
-      const t = h.rec ? el("div", "oc-headline rec", `<span class="oc-rec-line fit fit-wrap">${h.html}</span><small class="oc-rec">to record</small>`) : el("div", "oc-headline fit fit-wrap", h.html);
+      // SH-107: the order pop-up's headline (a big card) wraps at full size first and shrinks only when two lines don't fit (fit.js fit-head)
+      const fh = opts.big ? " fit-head fit2" : ""; // (fit2: Cook's #intro .fit:not(.fit2) rule would hold it to one line)
+      const t = h.rec ? el("div", "oc-headline rec", `<span class="oc-rec-line fit fit-wrap${fh}">${h.html}</span><small class="oc-rec">to record</small>`) : el("div", `oc-headline fit fit-wrap${fh}`, h.html);
       if (h.key != null && opts.onEl) opts.onEl(h.key, t);
       head.appendChild(t);
     }
@@ -419,7 +469,7 @@
     // line only and the headline keeps its full width (three closed cards fit an 800x360 sidebar); no headline: the corner
     if (opts.closed && opts.onPeek && !opts.big) {
       const eye = opts.look === "eye";
-      const sign = `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.BULB}</span>`;
+      const sign = `<span class="oc-look${eye ? "" : " bulb"}" aria-hidden="true">${eye ? OC.EYE : OC.bulbImg()}</span>`;
       const hl = head.querySelector(".oc-headline");
       const at = hl ? hl.querySelector(".oc-rec-line") || hl : head;
       at.insertAdjacentHTML("beforeend", sign);
@@ -429,14 +479,25 @@
     // the face (= the speaker) and the headline, and one row of dots where the order would be. The order is heard (the
     // host's read-out), never written; one row whatever the order's length, so its size gives nothing away
     if (opts.big && opts.closed) return OC.closeBig(c);
-    if (sh.items.length) {
+    // DAAR-26 (s08 w6M): an item the host keeps written on a closed card (it.keep: daar's stir row at L4, the laps and the
+    // speed Nani says, every number she says written, SH-99) stays under the headline while the rest folds away
+    const kept = opts.closed && !opts.big ? sh.items.filter((it) => it.keep) : [];
+    const folding = kept.length ? sh.items.filter((it) => !it.keep) : sh.items;
+    if (folding.length) {
       const body = el("div", "oc-body");
       const inner = el("div", "oc-in");
       const list = el("div", "oc-items");
-      sh.items.forEach((it) => list.appendChild(itemEl(it, opts)));
+      folding.forEach((it) => list.appendChild(itemEl(it, opts)));
       inner.appendChild(list);
       body.appendChild(inner);
       c.appendChild(body);
+    }
+    if (kept.length) {
+      const held = el("div", "oc-keep");
+      const list = el("div", "oc-items");
+      kept.forEach((it) => list.appendChild(itemEl(it, opts)));
+      held.appendChild(list);
+      c.appendChild(held);
     }
     if (opts.fold && !opts.big && sh.items.length) {
       opts.fold.el = c;

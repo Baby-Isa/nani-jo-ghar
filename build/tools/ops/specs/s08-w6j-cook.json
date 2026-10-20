@@ -1,0 +1,70 @@
+{
+  "kind": "shared",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "name": "s08 wave 6J, Cook: every code fix still open (the taller shelf band, the pantry's help with its glow, daal's cards and pour, samosa's arrow, chai's pills, the day flows' level rows)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "layout and game code across stations, judged by picture",
+  "cost": "about $35-50",
+  "port": 8860,
+  "report": "s08-w6j-cook",
+  "read": [
+    "build/tools/review/data/verdicts.json (each row's judge line, run ev-20261020-030207-6zl) and build/reports/evidence-ev-20261020-030207-6zl.md",
+    "build/screenshots/sandbox/s08-gate-final/contract.md",
+    "docs/game-design/modes/cook.md",
+    "docs/design-language/ (the 74/26 split)",
+    "build/reports/s08-w6g-cook.md, s08-w6b-stations.md"
+  ],
+  "owns": [
+    "js/cook/**",
+    "data/cook.json",
+    "data/stations/**",
+    "css/cook.css",
+    "css/shared/** (Cook's band and cards only)",
+    "js/shared/pour.js, order-card.js, results.js, guide.js, request-popup.js",
+    "docs/design-language/ (the band's split line only)",
+    "build/reports/s08-w6j-cook.md"
+  ],
+  "readOnly": [
+    "js/clinic/**, css/clinic.css (waves 6I, 6K)",
+    "build/sandbox/**, build/tools/** (wave 6L)",
+    "data/lang/** (never add Kutchi)",
+    "assets/**"
+  ],
+  "stubs": "a picture that's missing goes on the art list (most are in the s08c run)",
+  "tasks": [
+    {
+      "do": "SH-112 (Zafar, 20 Oct: yes): the shelf band is about 30% of the stage, not 26%, in every Cook station, so the item jars and tools are bigger; lay each station out again so nothing overlaps or clips at any size; change the design doc's split line to match.",
+      "accept": "eye: every station at 800x360, 844x390, 1366x768 and 1366x1024; auto: the gate's contract checks on those flows"
+    },
+    {
+      "do": "SH-60: the pantry's help line and the glow come together, after the idle time (today the line comes and the glow only about 40 s later). Check every station the same way.",
+      "accept": "auto: the help line's time and the glow's time within 0.5 s in the pantry and two other stations"
+    },
+    {
+      "do": "Daal: DAAR-34, at L4 the chop card shows its item rows (the first written, the rest dotted), not only 'Chop these.'; at L3 a row that has ticked doesn't stay 'trae \u2022\u2022\u2022'. The dotted underline under 'hakro' on ordinary cards (SH-98's flaw): only a hidden word is dotted. SH-117: the pour shows a stream and a rising fill (the pot is not already full when the pour starts). SAM-21: every swipe at every level shows its arrow. Chai: no loose word pills at the hob's corner during a pour; Nana's face badge doesn't cover the glass just filled.",
+      "accept": "eye: each at 1366x768 and 800x360"
+    },
+    {
+      "do": "The gate's Cook breaks: contract-35 in the day flows (day3, day5, day6, open-kitchen, maani-line, chai: a level-3 row writes a word; if the word has no recording, explain or fix per the level table), contract-3 (open-kitchen: the pantry voice runs past the stage's end), contract-20 (daar: two faces). SH-37: the lab results card sits in the painted world (the shared results frame), not a stark white card, with one thing to look at.",
+      "accept": "auto: those contract checks green or each left break explained; eye: the lab end"
+    }
+  ],
+  "flows": [
+    "cook:fetch",
+    "cook:daar",
+    "cook:samosa",
+    "cook:chai-tray",
+    "cook:chai",
+    "cook:day3",
+    "cook:day6",
+    "cook:open-kitchen",
+    "cook:maani-line",
+    "cook:chop",
+    "lab:cook/round"
+  ]
+}

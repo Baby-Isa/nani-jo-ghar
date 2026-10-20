@@ -1,0 +1,84 @@
+{
+  "kind": "shared",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "name": "s08 wave 6A, words and voice: no spoken English in the orders, the sekelo name, each line said once, everything said is written, the order pop-up wraps first",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the language engine and card text: a wrong join speaks English or invents Kutchi",
+  "cost": "about $25-40",
+  "port": 8851,
+  "report": "s08-w6a-words",
+  "read": [
+    "build/reports/evidence-ev-20261019-172022-khk.md and the judge verdicts in build/tools/review/data/verdicts.json (each row's line says what failed)",
+    "build/screenshots/sandbox/s08-gate-close/contract.md (the gate's breaks, by check, flow and size)",
+    "docs/language/ (the engine and the lexicon)",
+    "docs/feedback/cook-playtest-2026-10-17.md (P1, P9, P35, P50)"
+  ],
+  "owns": [
+    "js/cook/words.js",
+    "js/cook/lang.js",
+    "js/cook/order.js",
+    "js/cook/coach.js",
+    "js/cook/flow.js",
+    "js/shared/say.js",
+    "js/shared/speech.js",
+    "js/shared/order-card.js",
+    "js/shared/request-popup.js",
+    "js/core/** (the language engine)",
+    "data/cook.json orders, cards, lines and recipe names only",
+    "css for the order card and the request pop-up only",
+    "build/reports/s08-w6a-words.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/**, js/cook/mechanics/** (wave 6B)",
+    "js/clinic/** (wave 6C)",
+    "build/sandbox/**, build/tools/** (wave 6D)",
+    "data/lang/** recordings: never add a Kutchi word; a word the lexicon lacks is a gap in the report",
+    "assets/**"
+  ],
+  "stubs": "a sentence the engine can't say in Kutchi is reported as a gap (rule 11), never assembled with an English join and never with a guessed Kutchi word",
+  "tasks": [
+    {
+      "do": "LNG-17 (new): the orders say English joins: 'with' in chai, daal and sekelo orders ('with hakro khun', 'with dudh'), and 'tomatoes' at daal L3-L4 ('ba tomatoes', 'trae tomatoes'). Make the engine build these from lexicon words only (the plural is the Kutchi word, tameto), or drop the join where the engine has a Kutchi form already used elsewhere; if no recorded Kutchi form exists, report the gap and keep the sentence without English.",
+      "accept": "auto: the gate's sound log for cook:chai, cook:daar, cook:mishkaki-grill at L1-L4 has no English word outside the loan-word list; a test in the engine's tests"
+    },
+    {
+      "do": "SEK-19: the sekelo card and voice read 'Hakri Lakri Mishkaki' (no commas, Zafar 18 Oct), not 'hakri lakri tameto'.",
+      "accept": "eye: the sekelo card at L1 and L3; auto: the card text"
+    },
+    {
+      "do": "contract-22 (82 gate breaks, 26 in tadka, the rest in the labs, daar, chai, samosa, stir, day6, open-kitchen): a line is said once; again only after 10 s idle. Find the double trigger (e.g. 'Muke daar khape,' twice 2.2 s apart at the start, 'Ne poi hardar.' twice 1.2 s apart).",
+      "accept": "auto: contract-22 green on every flow in the gate list"
+    },
+    {
+      "do": "contract-30 (27 breaks, 17 in cook:chaat, also recipe-chaat, day4, day6, recipe-mishkaki, clinic:morning: hand the clinic one to the report): everything said is written on the card (SH-99).",
+      "accept": "auto: contract-30 green on those flows"
+    },
+    {
+      "do": "SH-107 / contract-33 (14 breaks): the order pop-up's headlines wrap at full size first and shrink only when two lines don't fit, at every station and size (chop, stir, assemble, chaat, daar, day5, day6, maani-line, mishkaki-grill, samosa, tadka at 1366x1024 and others). CHT-15: the chaat badge never covers the headline's full stop. SH-37: the card text never runs under the round icon.",
+      "accept": "auto: contract-33 green; eye: the pop-up at 1366x1024 and 800x360, the chaat card, the daar card"
+    },
+    {
+      "do": "contract-26 (opening line heard whole, 3 breaks), contract-23 (item name only when nothing else speaks, 2 in samosa), contract-27 (the peek shows every word, 6 in daar, chai, chai-tray): fix or explain each.",
+      "accept": "auto: those checks green on those flows"
+    }
+  ],
+  "flows": [
+    "cook:chai",
+    "cook:chai-tray",
+    "cook:daar",
+    "cook:mishkaki-grill",
+    "cook:chaat",
+    "cook:tadka",
+    "cook:samosa",
+    "cook:stir",
+    "cook:assemble",
+    "cook:chop",
+    "cook:maani-line",
+    "cook:day6"
+  ]
+}

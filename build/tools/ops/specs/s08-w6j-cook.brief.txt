@@ -1,0 +1,78 @@
+SESSION NAME / MODE:  s08 wave 6J, Cook: every code fix still open (the taller shelf band, the pantry's help with its glow, daal's cards and pour, samosa's arrow, chai's pills, the day flows' level rows)
+MODEL AND EFFORT:     Opus, high effort (layout and game code across stations, judged by picture)
+COST ESTIMATE:        about $35-50
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6j-cook.context.md (859 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/tools/review/data/verdicts.json (each row's judge line, run ev-20261020-030207-6zl) and build/reports/evidence-ev-20261020-030207-6zl.md
+     build/screenshots/sandbox/s08-gate-final/contract.md
+     docs/game-design/modes/cook.md
+     docs/design-language/ (the 74/26 split)
+     build/reports/s08-w6g-cook.md, s08-w6b-stations.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/**
+  - data/cook.json
+  - data/stations/**
+  - css/cook.css
+  - css/shared/** (Cook's band and cards only)
+  - js/shared/pour.js, order-card.js, results.js, guide.js, request-popup.js
+  - docs/design-language/ (the band's split line only)
+  - build/reports/s08-w6j-cook.md
+READ-ONLY (never edit):
+  - js/clinic/**, css/clinic.css (waves 6I, 6K)
+  - build/sandbox/**, build/tools/** (wave 6L)
+  - data/lang/** (never add Kutchi)
+  - assets/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a picture that's missing goes on the art list (most are in the s08c run)
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-112 (Zafar, 20 Oct: yes): the shelf band is about 30% of the stage, not 26%, in every Cook station, so the item jars and tools are bigger; lay each station out again so nothing overlaps or clips at any size; change the design doc's split line to match.
+     Accept: eye: every station at 800x360, 844x390, 1366x768 and 1366x1024; auto: the gate's contract checks on those flows
+  2. SH-60: the pantry's help line and the glow come together, after the idle time (today the line comes and the glow only about 40 s later). Check every station the same way.
+     Accept: auto: the help line's time and the glow's time within 0.5 s in the pantry and two other stations
+  3. Daal: DAAR-34, at L4 the chop card shows its item rows (the first written, the rest dotted), not only 'Chop these.'; at L3 a row that has ticked doesn't stay 'trae •••'. The dotted underline under 'hakro' on ordinary cards (SH-98's flaw): only a hidden word is dotted. SH-117: the pour shows a stream and a rising fill (the pot is not already full when the pour starts). SAM-21: every swipe at every level shows its arrow. Chai: no loose word pills at the hob's corner during a pour; Nana's face badge doesn't cover the glass just filled.
+     Accept: eye: each at 1366x768 and 800x360
+  4. The gate's Cook breaks: contract-35 in the day flows (day3, day5, day6, open-kitchen, maani-line, chai: a level-3 row writes a word; if the word has no recording, explain or fix per the level table), contract-3 (open-kitchen: the pantry voice runs past the stage's end), contract-20 (daar: two faces). SH-37: the lab results card sits in the painted world (the shared results frame), not a stark white card, with one thing to look at.
+     Accept: auto: those contract checks green or each left break explained; eye: the lab end
+
+REGRESSION ROWS TO RECHECK (176 rows of the fix list and its done archive; * = open or reopened):
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15, PAN-17, PAN-10
+  cook:daar (37): DAAR-02*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-30*, DAAR-32*, DAAR-33*, DAAR-34*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, DAAR-29, DAAR-05, DAAR-31, DAAR-35, CK-08, CK-10, CK-29, CK-27, CK-06
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:chai-tray (25): CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-08, CK-45*
+  cook:chai (29): CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-08, CK-45*, CK-29, CK-27, CK-06, CK-TB-01
+  cook:day3 (49): CK-01*, CK-TAB-01, CK-44*, CK-45*, CK-46*, CK-48*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43, CK-06, CK-24, CK-31, CK-47, CK-TB-01
+  cook:day6 (49): CK-01*, CK-TAB-01, CK-44*, CK-45*, CK-46*, CK-48*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43, CK-06, CK-24, CK-31, CK-47, CK-TB-01
+  cook:open-kitchen (49): CK-01*, CK-TAB-01, CK-44*, CK-45*, CK-46*, CK-48*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43, CK-06, CK-24, CK-31, CK-47, CK-TB-01
+  cook:maani-line (17): MAA-15*, MAA-16, MAA-17*, MAA-01, MAA-02, MAA-03, MAA-04, MAA-05, MAA-06, MAA-07, MAA-08, MAA-09, MAA-10, MAA-11, MAA-12, MAA-13, MAA-14
+  cook:chop (16): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-29
+  lab:cook/round (45): PAN-06*, PAN-04*, PAN-01, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15, PAN-17, PAN-10, CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-08, CK-45*, CK-29, CK-27, CK-06, CK-TB-01
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6j-cook` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8860.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6j-cook.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

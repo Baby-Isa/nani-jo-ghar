@@ -44,12 +44,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       S.loops.push(sizzle);
       flat.forEach((id) => Cook.markSeen(id));
       // how the card shows her order: words, dots, or nothing (from memory)
-      const mode = ctx.guided ? "words" : k.ladder || "words";
+      // s08 w6B (contract-35; SH-110, the level table, Zafar 19 Oct: the card open at L1-L2, the items dotted at L3, hidden at
+      // L4, at every station): the card's state by the level table (Cook.cardState); was the tadka's own ladder (L2 dotted)
+      const cs = Cook.cardState ? Cook.cardState(Cook.roundLevel ? Cook.roundLevel(ctx) : z.level) : null;
+      const mode = ctx.guided ? "words" : cs ? (cs === "open" ? "words" : cs === "hidden" ? "hidden" : "dots") : k.ladder || "words";
       if (mode !== "words" && UI.mission.conceal) UI.mission.conceal("tadka", mode);
       const hideAll = mode !== "words";
       const hide = hideAll ? () => true : St.hideKnown(ctx);
       // "Jeeru. Ne poi rai." (and then: the order matters; one group is "ne")
-      await z.say(Lang.list(order, { seq: true }), { hide, onHear: () => hideAll && Cook.onHelp && Cook.onHelp("replay", { ids: flat }) });
+      // s08 w6B (contract-22: "Pela loon." said twice 1.8 s apart): when the request pop-up has just read her order out (this
+      // stage), her box shows it quietly instead of saying it again (as the chop does)
+      const LC = global.Lifecycle;
+      const asked = !!(LC && LC.asked && LC.asked());
+      await z.say(Lang.list(order, { seq: true }), Object.assign({ hide, onHear: () => hideAll && Cook.onHelp && Cook.onHelp("replay", { ids: flat }) }, asked ? { silent: true, ms: 10, keep: true } : {}));
 
       // the heat: a ring round the pan that fills between spices
       const burnSec = k.burnSec * (ctx.guided ? k.guidedBurn : 1);

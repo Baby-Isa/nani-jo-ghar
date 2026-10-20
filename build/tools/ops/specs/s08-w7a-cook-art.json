@@ -1,0 +1,64 @@
+{
+  "kind": "art",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "model": "Opus",
+  "effort": "high",
+  "why": "cutting and wiring art, judged by picture",
+  "cost": "about $30-45",
+  "name": "s08 wave 7A, Cook art: cut and wire s08c's kadchi, teaspoon, chai glasses, sekelo tray and decoys, and the marble tile",
+  "port": 8868,
+  "report": "s08-w7a-cook-art",
+  "read": [
+    "build/reports/s08c-art-landing/details.md (every image, the cut notes, the rows each unblocks)",
+    "docs/design-language/art-plans/s08c-art-plan.md (section 6, cut and wire)",
+    ".claude/skills/art-run/SKILL.md (When images land: artcut.py, artdiff.py)",
+    "build/tools/art/specs/s08b.cut.json (the cut spec format)"
+  ],
+  "owns": [
+    "build/tools/art/specs/s08c.cut.json (the Cook lines)",
+    "assets/cook/items-s08c/**",
+    "assets/cook/bg/** (the tile and the hob only)",
+    "js/cook/**",
+    "data/cook.json",
+    "data/stations/**",
+    "css/cook.css",
+    "build/sandbox/data/evidence.json (these rows' specs)",
+    "build/reports/s08-w7a-cook-art.md",
+    "js/shared/pour.js"
+  ],
+  "readOnly": [
+    "js/clinic/**, data/clinic/**, assets/clinic/**, assets/characters/** (wave 7B)",
+    "sources/art/** (the sources stay as landed)"
+  ],
+  "stubs": "a picture that doesn't cut cleanly goes on the redo list, never a code-drawn stand-in",
+  "tasks": [
+    {
+      "do": "Cut KD1, TP1, GL1, SK4, SK5 and WT1 with build/tools/art/artcut.py from a new s08c.cut.json (Cook lines), prove each cut (artdiff, zoom x2 on cream), and wire: KD1 the kadchi for the daal stir (DAAR-02: the handle rising towards the player); TP1 the sugar stir's teaspoon (CHAI-13, empty / sugar / chai); GL1 the top-down chai glasses (CHAI-08: empty, milky, black, the filled glass top-down); SK4 the sekelo's square trays, raw above and cooked below, skewers upright, tray-0 to tray-3 made by painting skewers out (SEK-14, SEK-20; Zafar 19-20 Oct); SK5 the decoys chicken, chilli, corn by level (contract-37).",
+      "accept": "eye: each in its station at 1366x768 and 800x360; auto: contract-37 green on cook:mishkaki-grill at L1-L4"
+    },
+    {
+      "do": "WT1: the marble worktop as a seamless tile (rect + tile, the cross-fade over its seam, then build/tools/art/upscale.py x2), laid by code at its own size (never zoomed), with the hob cut from bg-cook-hob-t-v1 x2 laid on it, so the Cook backgrounds are sharp on big screens (contract-11, SH-91, ART-05). The wood stays code-drawn at screen resolution.",
+      "accept": "auto: contract-11 green on every Cook flow at 1024x768, 1180x820, 1366x1024 and 1440x900"
+    },
+    {
+      "do": "The redo (landed 20 Oct, build/reports/s08c-art-landing/details.md section 5): DS1 ds1-daal-stirred-in-v2 (the daal's eight stirred-in pieces replace the sticker pieces, DAAR-05); CP4 cp4-chai-pan-brewing-v2 (the pan's brewing states: water, tea leaves, milky chai, CK-06); CP3 cp3-chai-pan-tip-pour-v2 cells 1-4 only (the pan tipping towards the player for the pour, CHAI-26), the stream drawn by js/shared/pour.js (thin, translucent tea), never the picture's syrupy streams.",
+      "accept": "eye: the stirred daal, the brewing pan and the pour as filmstrips at 1366x768 and 800x360"
+    }
+  ],
+  "flows": [
+    "cook:daar",
+    "cook:chai-tray",
+    "cook:chai",
+    "cook:mishkaki-grill",
+    "cook:samosa",
+    "cook:chaat",
+    "cook:chop",
+    "cook:maani-line",
+    "cook:stir",
+    "cook:tadka"
+  ]
+}

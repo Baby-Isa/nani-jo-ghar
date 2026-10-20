@@ -1,0 +1,56 @@
+SESSION NAME / MODE:  s09-mock, the look in code: the morning door in four weathers, the evening book and the window ride, mocked so Zafar agrees the screens before any ChatGPT art
+MODEL AND EFFORT:     Fable, high effort (visual design and judgement; the screens guide the mechanics)
+COST ESTIMATE:        about $10-15
+HARD STOP:            when every task is accepted, or 3 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s09-mock.context.md (855 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/game-design/story-and-arcs.md Part 1 (the 19 Oct notes at its top: A day at Nani's, the door, the weather, the trips)
+     build/reports/research-trips-2026-10-19.md (the day's fixed shape; the farm, beach and shops)
+     docs/game-design/modes/story-by-the-fire.md (the evening book)
+     docs/design-language/ui-design-system.md and art-bible.md (the look)
+     docs/game-design/cast.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - lab/mock-s09/** (new: one HTML page per screen, plain HTML/CSS/SVG, existing assets only)
+  - build/reports/s09-mock.md and build/reports/s09-mock/ (screenshots)
+READ-ONLY (never edit):
+  - everything else
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: art that does not exist yet is drawn simply in code (flat shapes, gradients) and labelled in the report as 'to draw in ChatGPT'
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The morning door in four weathers (sunny, cloudy, raining, night with stars): one fixed house front and foreground (Nani's courtyard, assets/backgrounds/bg-courtyard-e-v1.webp or Nani's existing pictures as a guide) with the sky from the horizon up swapped; the scene's light and shadows following the weather (a tint and a sun-shadow layer only when sunny); Nani at her open door with her line as short sentences one at a time, Kutchi with its English beneath (rule 5, Zafar 19 Oct), a thought bubble showing the day's place or the kitchen, the child's 'Ha!' answer button; the shared sidebar and buttons from js/shared where they apply (non-negotiable 8). Show a sunny beach-day door, a raining cooking-day door, a cloudy clinic-day door and the evening (night) return.
+     Accept: screenshots of each at 1366x768 and 844x390 in the report, flaws first; a short note of what each element does in the game
+  2. The evening book: Nani and the child with the book in the evening (night sky outside); today's pages: the words met today as pictures with their Kutchi (no English for the child), the photos taken, stars or a small progress mark (non-negotiable 12: progress, not verdicts), then goodnight and a glimpse of tomorrow's door with its sky.
+     Accept: screenshots of the book's pages at both sizes
+  3. The window ride: the view from inside a car (and a bus) as the scene scrolls past, like the clinic's conveyor belt; Nani names a thing and the child taps it as it passes; look-alikes pass together; 'stop the car!' moment. Mock the farm road (goats, hens, a tree, a red door) as the first.
+     Accept: screenshots at both sizes, plus one short screen recording or a three-frame filmstrip of the scroll
+  4. One overview page (lab/mock-s09/index.html) linking every screen, and the report's list of what each screen needs drawn in ChatGPT (the house, foreground, each sky, Nani's door poses, the book, the car and bus interiors, the farm road strip).
+     Accept: the index opens every screen; the art list is concrete enough to become the art plan
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s09-mock` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8837.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s09-mock.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

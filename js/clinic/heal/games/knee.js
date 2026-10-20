@@ -102,13 +102,8 @@
 
   function mount(stage, ctx) {
     const P = plan(ctx.level, ctx.rng, ctx.side);
-    // CLN-118 (D13): the taught round has no counts: "Hammer." and "Then the bandage."; the child copies the ghost
-    // finger and the steps still end at the plan's counts (the kick moves on with the bandage, the wrap at its last turn)
-    if (ctx.taught) {
-      P.steps[0].row = Object.assign({ id: "kick" }, HS.L.show(HS.L.join(["hammer"]), { cap: true }));
-      P.steps[1].row = Object.assign({ id: "wrap" }, HS.L.show(HS.L.then("cl-bandage")));
-      P.words = HS.taughtWords(P.words);
-    }
+    // CLN-118 (D13): the taught round: the child copies the ghost finger, the steps end at the plan's counts, nothing is scored; SH-99, CLN-161 (Zafar, 18 Oct: "it needed me to press the cloth twice, but it wasn't in the instructions ... all the frequencies has to be written down. And audible as well"; reverses CLN-118): the taught first round writes and says every count too, and its word review keeps the number words
+    if (ctx.taught) P.words = HS.taughtWords(P.words).concat(P.words.filter((w) => w && w.n != null));
     const S = HS.make(stage, ctx, { place: "limb", game: "knee" });
     const { s } = S;
     const st = { i: 0, kicks: 0, turns: 0, oi: 0, last: null, judged: {}, over: false, busy: false, flashT: 0 };
@@ -158,6 +153,9 @@
     // I2 (s07-clinic-a, CLN-33/CLN-100): a bump on the knee is drawn (K4, registered to K1: the same canvas), until the wrap
     const bumpArt = art && ctx.ailment && ctx.ailment.id === "knee-bump" && ctx.data.art["knee-bump"];
     if (bumpArt && bumpArt.on) art.setAttribute("href", art.getAttribute("href").replace(/knee(@2x)?\.webp/, (m, two) => `knee-bump${two || ""}.webp`));
+    // the picture the leg rests in between kicks (K1, or K4 with the bump): a kick shows its kicked twin, then this again
+    const restHref = art ? art.getAttribute("href") : null;
+    let kickN = 0;
     if (art && !(kickArt && kickArt.on) && KA.split) {
       const [x, y, w, hh] = KA.box;
       const cy = KA.split;
@@ -240,6 +238,18 @@
      * a soft shadow under it.
      */
     const drawn = {}; // how many bands each back-front pair of dots has had (CLN-100)
+    // CLN-179: the s08b crepe band (data art.band: its seamless tile, w x h px), one base pattern the turns' slices take
+    const BAND = KA && KA.band && KA.band.tile ? KA.band : (ctx.data && ctx.data.art && ctx.data.art.band && ctx.data.art.band.tile ? ctx.data.art.band : null);
+    let bandId = null;
+    const bandBase = (W) => {
+      if (bandId) return bandId;
+      bandId = `${gid}-band`;
+      const [tw, th] = BAND.size || [1036, 226];
+      const pw = (W * tw) / th;
+      const pat = s("pattern", { id: bandId, patternUnits: "userSpaceOnUse", width: pw.toFixed(2), height: W.toFixed(2) }, defs);
+      s("image", { href: root.Clinic && root.Clinic.Kit ? root.Clinic.Kit.url(BAND.tile) : BAND.tile, x: 0, y: 0, width: pw.toFixed(2), height: W.toFixed(2), preserveAspectRatio: "none" }, pat);
+      return bandId;
+    };
     const wrapTurn = (a, b) => {
       const k = KA.box[2] / WA.src[0];
       const back = a.s === "l" ? a : b;
@@ -266,21 +276,34 @@
       const again = (drawn[k2] = (drawn[k2] || 0) + 1) - 1;
       const bow = (0.11 + [0, 0.13, -0.07, 0.24][again % 4]) * L;
       const c = { x: (p0.x + p1.x) / 2 + nx * bow, y: (p0.y + p1.y) / 2 + ny * bow };
-      const at = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
+      const curve = (t) => ({ x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * c.x + t * t * p1.x, y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * c.y + t * t * p1.y });
+      // CLN-179 (s08 w6I; Zafar: "the bandages still don't go to the edge of the knee ... level three, do it eight times
+      // ... zoom in"): past its dots a turn runs straight on along its own direction there (the curve's tangent), never
+      // the curve bent on beyond them, so the run-on reaches the leg's edge and the mask trims it there
+      const at = (t) => (t < 0 ? { x: p0.x + 2 * (c.x - p0.x) * t, y: p0.y + 2 * (c.y - p0.y) * t } : t > 1 ? { x: p1.x + 2 * (p1.x - c.x) * (t - 1), y: p1.y + 2 * (p1.y - c.y) * (t - 1) } : curve(t));
       const N = 24;
+      // CLN-179 (Zafar, 18 Oct: "the bandages still don't go to the edge of the knee sometimes"): each turn runs on past
+      // its two dots (BAND.over of its length each way); the leg's own outline (the mask) trims it where the leg turns
+      // away, so every turn reaches the knee's edge
+      // (s08 w6I: the front run-on is longer, to reach the kneecap's edge from the dots below it; the back one stays short,
+      // where the crease meets the trouser cuff, so it never lies over the cuff)
+      const E = BAND ? BAND.over || 0.16 : 0;
+      const Eb = BAND ? (BAND.overBack != null ? BAND.overBack : E) : 0;
+      const tOf = (i) => -Eb + (i / N) * (1 + Eb + E);
       const side = (o) => {
         const pts = [];
         for (let i = 0; i <= N; i++) {
-          const t = i / N;
+          const t = tOf(i);
           const q = at(t);
-          const q2 = at(Math.min(1, t + 0.01));
-          const q1 = at(Math.max(0, t - 0.01));
+          // (the direction at t from both sides of it: clamped to the dots, the run-ons' sides crossed into a bow-tie)
+          const q2 = at(t + 0.01);
+          const q1 = at(t - 0.01);
           let tx = q2.x - q1.x;
           let ty = q2.y - q1.y;
           const tl = Math.hypot(tx, ty) || 1;
           tx /= tl;
           ty /= tl;
-          const w = (W * (0.55 + 0.45 * Math.min(1, t * 1.6))) / 2;
+          const w = (W * (0.55 + 0.45 * Math.min(1, Math.max(0, t) * 1.6))) / 2;
           pts.push([q.x - ty * w * o, q.y + tx * w * o]);
         }
         return pts;
@@ -291,9 +314,37 @@
       const shape = `${line(A)} ${line(B.slice().reverse()).replace(/^M/, "L")} Z`;
       const t = s("g", { class: "knee-turn" }, sore.wrap);
       const gidT = `${gid}-t${st.turns}`;
+      s("path", { d: shape, fill: "#4a2c14", opacity: 0.16, transform: `translate(${(nx * 5).toFixed(1)} ${(ny * 6).toFixed(1)})` }, t);
+      if (BAND) {
+        // CLN-179 (Zafar, 18 Oct: "it needs to be a photorealistic bandage"; the s08b BD1 crepe band, seamless): the
+        // band's picture laid along the turn, one slice for each step of the curve, each turned to the curve there and
+        // as wide as the band is there (narrower where it dives into the crease), its weave running on along the turn
+        const base = bandBase(W);
+        let run = 0;
+        for (let i = 0; i < N; i++) {
+          const q0 = at(tOf(i));
+          const q1 = at(tOf(i + 1));
+          const len = Math.hypot(q1.x - q0.x, q1.y - q0.y);
+          const ang = (Math.atan2(q1.y - q0.y, q1.x - q0.x) * 180) / Math.PI;
+          const wi = Math.hypot(A[i][0] - B[i][0], A[i][1] - B[i][1]);
+          const pid = `${gidT}-s${i}`;
+          s("pattern", { id: pid, href: `#${base}`, patternTransform: `translate(${q0.x.toFixed(2)} ${q0.y.toFixed(2)}) rotate(${ang.toFixed(2)}) translate(${(-run).toFixed(2)} ${(-wi / 2).toFixed(2)}) scale(1 ${(wi / W).toFixed(4)})` }, defs);
+          // each slice a hair longer than its step, so no hairline shows between them
+          const ext = 0.6;
+          const ex = ((q1.x - q0.x) / (len || 1)) * ext;
+          const ey = ((q1.y - q0.y) / (len || 1)) * ext;
+          const quad = [[A[i][0] - ex, A[i][1] - ey], [A[i + 1][0] + ex, A[i + 1][1] + ey], [B[i + 1][0] + ex, B[i + 1][1] + ey], [B[i][0] - ex, B[i][1] - ey]];
+          s("polygon", { points: quad.map((q) => `${q[0].toFixed(1)},${q[1].toFixed(1)}`).join(" "), fill: `url(#${pid})` }, t);
+          run += len;
+        }
+        // the light: darker at both ends where the band turns away round the leg, a fine edge along each side
+        const gr = s("linearGradient", { id: gidT, gradientUnits: "userSpaceOnUse", x1: back.x, y1: back.yy, x2: fr.x, y2: fr.yy }, defs);
+        [["0", 0.38], ["0.24", 0], ["0.84", 0], ["1", 0.3]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#46301a", "stop-opacity": a }, gr));
+        s("path", { d: shape, fill: `url(#${gidT})`, stroke: "rgba(150,135,110,.55)", "stroke-width": 1.2, "stroke-linejoin": "round" }, t);
+        return;
+      }
       const gr = s("linearGradient", { id: gidT, gradientUnits: "userSpaceOnUse", x1: back.x, y1: back.yy, x2: fr.x, y2: fr.yy }, defs);
       [["0", "#b9ab90"], ["0.22", "#efe8d8"], ["0.6", "#fcfaf3"], ["0.86", "#f1ebdd"], ["1", "#c9bca2"]].forEach(([o, col]) => s("stop", { offset: o, "stop-color": col }, gr));
-      s("path", { d: shape, fill: "#4a2c14", opacity: 0.16, transform: `translate(${(nx * 5).toFixed(1)} ${(ny * 6).toFixed(1)})` }, t);
       s("path", { d: shape, fill: `url(#${gidT})`, stroke: "#b8ab92", "stroke-width": 2, "stroke-linejoin": "round" }, t);
       [-0.25, 0.08, 0.38].forEach((f) => {
         const pts = [];
@@ -321,6 +372,8 @@
       const c = cur();
       if (!c) return;
       if (c.kind === "kick") judge("kick-count", st.kicks === c.count, `${st.kicks} of ${c.count}`);
+      // (s08 w6I, CLN-179: the wrap is laid on the resting leg, never on a kick still showing: the first turn too)
+      if (c.kind === "kick" && art && restHref) (kickN += 1), art.setAttribute("href", restHref);
       if (c.kind === "wrap") judge("wrap-turns", st.turns === c.count, `${st.turns} of ${c.count}`);
       ctx.card.tick(c.id);
       S.count(null);
@@ -388,9 +441,13 @@
         const kick = art && ctx.data.art["knee-kick"];
         if (kick && kick.on) {
           // the same picture's kicked twin (the @2x where the plain one is the @2x)
-          const plain = art.getAttribute("href");
+          // CLN-179 (s08 w6I): the resting picture is the one laid at the start, never read back now: a second kick within
+          // 420 ms read the kicked twin as "plain" and left the leg kicked out for the whole wrap, so the dots and the
+          // mask (both K1's) sat inside the kicked shin and every turn below the kneecap stopped short of its edge
+          const plain = restHref;
+          const n = (kickN += 1);
           art.setAttribute("href", plain.replace(/knee(?:-bump)?(@2x)?\.webp/, (m, two) => `knee-kick${two || ""}.webp`));
-          ctx.after(420, () => art.setAttribute("href", plain));
+          ctx.after(420, () => n === kickN && art.setAttribute("href", plain));
         }
         S.face("happy", 600);
         ctx.sfx("pop");

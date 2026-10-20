@@ -14,6 +14,7 @@ import { join } from "node:path";
 import { momentMatches, probeId, unknownWords, voiceOrder, wordOrder, movesOn, traceStats, silentAfter, gapMs, traceDecision, cmp, negate, cssOf, NOT_FOR_CHILD_SEL, GROWNUP_SEL } from "./evidence.mjs";
 import { decodePng, encodePng } from "../../tools/review/lib/png.mjs";
 import * as Contract from "./contract.mjs";
+import { markStrip, isHelpMoment } from "./strip-mark.mjs";
 import { lintPage } from "../../lint/layout.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -251,6 +252,8 @@ export class EvidenceProbe {
   async moment(name, { block = false, settle = 0 } = {}) {
     const t = Date.now() - this.t0;
     if (this.seen[this.seen.length - 1]?.name !== name && this.seen.length < 800) this.seen.push({ name, t });
+    // Nani's help being given (the SH-60 strip marks it): its time on the wall clock, for a strip that is filming then
+    if (isHelpMoment(name) && (this.helpAt = this.helpAt || []).length < 50) this.helpAt.push({ name, at: Date.now() });
     if (this.want && this.want.ok == null) await this.checkWant(name);
     if (this.armed) this.counts[name] = (this.counts[name] || 0) + 1;
     if (!this.armed) return;
@@ -436,10 +439,20 @@ export class EvidenceProbe {
               const buf = c.ms < 400 ? await this.fastShot(clip) : await this.shot(clip); bufs.push(buf);
               const f = this.file(s, hit, ci, "strip", k + 1); writeFileSync(join(this.dir, f), buf); out.files.push(f);
             }
+            // (s08 w6E, SH-60) the frame where Nani's help was logged while this strip filmed gets a red frame, so the sheet shows the
+            // moment; "moved" below is judged on the frames as filmed, never the mark
+            const aboutHelp = s.p.row === "SH-60" || /hint-glow|help/i.test(JSON.stringify([s.p.expect, s.p.at, s.p.after]));
+            const helps = !aboutHelp ? [] : (this.helpAt || []).filter((x) => x.at >= t0 - 50).map((x) => ({ name: x.name, ms: x.at - t0 }));
+            if (helps.length) {
+              const mk = markStrip(bufs, out.times, helps);
+              mk.bufs.forEach((b, k) => { if (b !== bufs[k]) writeFileSync(join(this.dir, out.files[k]), b); });
+              if (mk.marks.length) out.marks = mk.marks;
+            }
+            // (a mean difference over the clip, 0-255: a short red flash or a foot vibrating on a small clip is a fraction of a point; frames that are the same picture are 0)
             let moved = 0;
             for (let k = 1; k < bufs.length; k++) moved = Math.max(moved, frameDiff(bufs[0], bufs[k]) || 0);
             out.moved = Math.round(moved * 100) / 100;
-            if (moved < 0.2) out.fail = `the filmstrip of "${c.sel}" did not change over ${c.n} frames (${c.ms} ms apart)`;
+            if (moved < 0.02) out.fail = `the filmstrip of "${c.sel}" did not change over ${c.n} frames (${c.ms} ms apart)`;
           }
         } else if (c.kind === "trace") {
           const r = await page.evaluate(`(${TRACE})(${JSON.stringify([cssOf(c.sel), c.ms])})`);
@@ -447,6 +460,11 @@ export class EvidenceProbe {
           out.samples = r; out.stats = traceStats(r);
           if (!r.some((x) => isFinite(x.y))) out.fail = `"${c.sel}" was never on screen during the trace`;
           out.text = traceTable(r);
+        } else if (c.kind === "js") {
+          // a read-only page value by its dotted path (s08 w6L, MAA-17: Cook.maaniWindow, the flip ring's green in seconds): property reads, never code
+          const v = await page.evaluate((path) => { try { let o = window; for (const k of path.split(".")) { if (o == null) return null; o = o[k]; } return o == null ? null : JSON.stringify(o, (k, x) => (typeof x === "function" ? undefined : x)); } catch (e) { return null; } }, c.path);
+          if (v == null) out.fail = `"${c.path}" is not set on the page at ${hit.name}`;
+          else out.text = `${c.path} = ${v}`;
         } else if (c.kind === "dom") {
           const runs = await this.texts(c.sel);
           if (runs[0] && runs[0].tag === "error") { out.fail = runs[0].text; continue; }

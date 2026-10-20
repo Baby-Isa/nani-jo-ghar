@@ -7,10 +7,11 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
 import { parseRegressions, REGRESSIONS, REGRESSIONS_DONE, readAllRegressions, gitRegressions, moveRows, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
-import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, captureLabels, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds, changedRows } from "./lib/evidence.mjs";
 
 const HELP = `
 node build/tools/review/evidence.mjs --plan  [--rows a,b | --all | --sprint [--since ref]] [--json]
+node build/tools/review/evidence.mjs --plan|--run --changed [--since <evidence run id or commit>]
 node build/tools/review/evidence.mjs --run   [same rows] [--run-id id | --resume id] [--from-run <sandbox run>] [--parallel 3]
 node build/tools/review/evidence.mjs --sheets [--run-id id]            (--run ends with it)
 node build/tools/review/evidence.mjs --judge  [--run-id id] [--batch 10] [--audit 10]
@@ -21,6 +22,10 @@ node build/tools/review/evidence.mjs --apply  [--run-id id] [--dry]
              probe on it) and the rows with no spec. Exit 1 on any error or row with no spec (a row with no spec is never "built").
              Rows: --all (every live row: default), --rows a,b, or --sprint (sprintcheck.mjs's rows: added or changed since --since).
              Rows tagged needs-decision in their Check go to docs/status.md, never to a sheet.
+  --changed  with --plan or --run: only the rows whose probes play a flow that the files changed since the last evidence run's
+             commit reach (touched.mjs's file -> flow map; a script probe or a broken spec is always kept; an unplaced runtime file
+             widens to every flow). --since names another start: a run id (build/screenshots/evidence) or any git ref. Rows not
+             touched keep their cached verdicts. --plan --changed prints the subset and its count.
   --run      plays those pages through build/sandbox/run.mjs --evidence (13-minute chunks under the browser lock, resumable with
              --resume <id>; inside an outer flock it runs one chunk and exits 75 when pages are left), then --sheets.
              --from-run <id>: a sandbox run (a gate run with --evidence) whose pages already carry the probes: only the pages it
@@ -34,8 +39,8 @@ node build/tools/review/evidence.mjs --apply  [--run-id id] [--dry]
              cached PASSes (a different model). The reviewer fills judge/batch-NN.verdicts.md.
   --collect  folds the batch verdict files into build/tools/review/data/verdicts.json (refuses the builder's session as judge and
              a PASS that names no panel); EVIDENCE lines go to the tool owner's list in the index.
-  --apply    writes the verdicts into docs/process/regressions.md: FAIL -> **reopened** with the line; PASS -> built with the line and
-             the sheet (keep and retired rows untouched). --dry prints what it would change.
+  --apply    writes the verdicts into docs/process/regressions.md: FAIL -> **reopened** with the run (the line stays in data/verdicts.json;
+             a "waiting on ..." note is kept); PASS -> built with the line (keep and retired rows untouched). --dry prints what it would change.
   Port: COOK_TEST_PORT (default 8843). The builder's session: NJG_BUILDER or --builder (recorded; never accepted as judge).`;
 const a = args(); help(HELP, a);
 const PORT = process.env.COOK_TEST_PORT || "8843";
@@ -74,6 +79,41 @@ function selectRows() {
   return { all, rows: rows.filter((r) => !/needs-decision/i.test(r.check)), decision };
 }
 
+// ---------- --changed: the start (a run's commit or a git ref), the changed files, the flows they reach ----------
+function mainRoot() { const c = git("rev-parse", "--path-format=absolute", "--git-common-dir"); return c ? dirname(c) : ROOT; }
+function lastRun(id) { // a finished run (it has index.json), here or in the main checkout (a worktree carries no build/screenshots)
+  for (const root of [ROOT, mainRoot()]) {
+    const base = join(root, "build", "screenshots", "evidence");
+    if (!existsSync(base)) continue;
+    const names = id ? [id] : readdirSync(base).filter((n) => existsSync(join(base, n, "index.json"))).sort((x, y) => statSync(join(base, y, "index.json")).mtimeMs - statSync(join(base, x, "index.json")).mtimeMs);
+    for (const n of names) {
+      const rd = (f) => { try { return JSON.parse(readFileSync(join(base, n, f), "utf8")); } catch (e) { return null; } };
+      const c = (rd("index.json") || {}).commit || (rd("plan.json") || {}).head;
+      if (c) return { run: n, commit: c };
+    }
+  }
+  return null;
+}
+function changeStart() {
+  const since = a.val("since");
+  const r = lastRun(since);
+  if (r) return { label: r.run, commit: r.commit };
+  if (since) { if (git("rev-parse", "--verify", "-q", `${since}^{commit}`)) return { label: since, commit: since }; die(`--since ${since}: not an evidence run and not a git ref.`); }
+  return die("No finished evidence run to start from: name one with --since <run id or commit>.");
+}
+function changedFiles(commit) {
+  const lines = (x) => (x || "").split("\n").filter(Boolean);
+  if (!git("rev-parse", "--verify", "-q", `${commit}^{commit}`)) die(`The last evidence run's commit ${commit} is not in this repository: name a start with --since <commit>.`);
+  return [...new Set([...lines(git("diff", "--name-only", `${commit}..HEAD`)), ...lines(git("diff", "--name-only", "HEAD")), ...lines(git("ls-files", "--others", "--exclude-standard"))])];
+}
+// the flows (base ids) the changed files reach, by touched.mjs
+function touchedFlows(files) {
+  if (!files.length) return [];
+  const r = spawnSync(process.execPath, [join(ROOT, "build/tools/review/touched.mjs"), "--files", files.join(","), "--json"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+  if (r.status !== 0) die(`touched.mjs failed: ${(r.stderr || r.stdout || "").slice(0, 300)}`);
+  return JSON.parse(r.stdout).flows;
+}
+
 // ---------- the plan ----------
 async function makePlan() {
   const S = await import("../../sandbox/lib/evidence.mjs");
@@ -85,13 +125,20 @@ async function makePlan() {
   const cache = new Map();
   const resolve = (id) => { if (!cache.has(id)) cache.set(id, resolveFlow(id, live)); return cache.get(id); };
   const seen = M.seenMoments(ROOT);
-  const { rows, decision, all } = selectRows();
+  let { rows, decision, all } = selectRows();
   const spec = S.loadSpec(ROOT);
   const rowText = Object.fromEntries(all.map((r) => [r.id, plain(r.check)]));
   const ctx = { resolve, kindOf: flowKind, sizes: SIZES, contractChecks: Object.keys(CHECKS), moments: (id) => M.momentsFor(ROOT, id, { kindOf: flowKind, seen }), reachable: M.reachable, rowText };
   // validate the whole file (a broken spec of a row not run today is still broken), plan the selected rows
   const norm = S.normalizeSpec(spec, ctx);
-  const ids = rows.map((r) => r.id);
+  let ids = rows.map((r) => r.id), changed = null;
+  if (a.has("changed")) {
+    const start = changeStart(), files = changedFiles(start.commit), flows = touchedFlows(files);
+    const sel = changedRows(ids, norm.rows, flows, { rowErrors: norm.rowErrors });
+    changed = { since: start.label, commit: start.commit, files: files.length, flows: flows.length, of: ids.length, kept: sel.keep.length };
+    ids = sel.keep;
+    rows = rows.filter((r) => ids.includes(r.id));
+  }
   // a row whose entry is {human} (Zafar's ear or feel) or {needsDecision} (docs/status.md) gets no page; a row with a spec error
   // gets none either: it is a tool failure until its spec or its driver is fixed
   const playable = ids.filter((id) => !norm.human[id] && !norm.decision[id] && !(norm.obsolete || {})[id]);
@@ -99,10 +146,11 @@ async function makePlan() {
   const errRows = Object.fromEntries(Object.entries(norm.rowErrors).filter(([id]) => ids.includes(id)));
   const unknownRows = Object.keys(norm.rows).filter((id) => !all.some((r) => r.id === id));
   const pick = (o) => Object.fromEntries(Object.entries(o).filter(([id]) => ids.includes(id)));
-  return { created: new Date().toISOString(), head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), obsolete: pick(norm.obsolete || {}), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
+  return { created: new Date().toISOString(), changed, head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), obsolete: pick(norm.obsolete || {}), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
 }
 function printPlan(P) {
   const L = log(null);
+  if (P.changed) console.log(`changed rows only: ${P.changed.kept} of ${P.changed.of} rows (since ${P.changed.since} at ${P.changed.commit}: ${P.changed.files} files changed reach ${P.changed.flows} flows); the others keep their cached verdicts`);
   const nh = Object.keys(P.human || {}).length, nerr = Object.keys(P.rowErrors || {}).length;
   console.log(`evidence plan: ${P.rows.length} rows: ${P.rows.length - P.noSpec.length} with a spec (${nh} Zafar's ear or feel, ${P.decision.length} need a decision, ${nerr} with spec errors), ${P.pages.length} pages, ${P.pages.reduce((n, p) => n + p.probes.length, 0)} page probes, ${(P.repo || []).length} script probes`);
   if (P.errors.length) {
@@ -118,9 +166,18 @@ function printPlan(P) {
   console.log(`\npages (${P.pages.length}):`);
   more(P.pages, 80, (p) => `  ${p.flow} @ ${p.size}${p.variant ? ` [${p.variant}]` : ""}: ${p.probes.map((q) => `${q.row}${q.every ? " every" : ""} ${q.at}`).join("; ")}`);
   const mins = Math.ceil(P.pages.length * 0.35);
-  console.log(`\nabout ${mins} min of browser time at 3 pages at once. Run: node build/tools/review/evidence.mjs --run${a.val("rows") ? ` --rows ${a.val("rows")}` : a.has("sprint") ? " --sprint" : ""}`);
+  console.log(`\nabout ${mins} min of browser time at 3 pages at once. Run: node build/tools/review/evidence.mjs --run${a.has("changed") ? " --changed" + (a.val("since") ? ` --since ${a.val("since")}` : "") : ""}${a.val("rows") ? ` --rows ${a.val("rows")}` : a.has("sprint") ? " --sprint" : ""}`);
 }
 
+// the voice timeline for the .md: all of it up to 120 lines; a longer one is the 120 lines that end 60 lines past the probe's moment
+// (">>>>"), so a moment late in a round (the stir, 30 s in) is on the sheet with the lines said just after it (s08 w6d: DAAR-26, DAAR-32)
+function voiceWindow(text) {
+  const vl = String(text).split("\n");
+  if (vl.length <= 120) return vl.join("\n");
+  const i = vl.findIndex((l) => l.includes(">>>>"));
+  const to = Math.min(vl.length, i < 0 ? 120 : i + 60), from = Math.max(0, to - 120);
+  return [...(from ? [`(${from} earlier lines left out)`] : []), ...vl.slice(from, to), ...(to < vl.length ? [`(${vl.length - to} later lines left out)`] : [])].join("\n");
+}
 // ---------- the run ----------
 function underLock() {
   if (process.env.NJG_LOCKED) return true;
@@ -214,7 +271,7 @@ function runCmd(cmd) {
   // an import error or missing module is the environment's failure, never the game's: a TOOL FAILURE (code null)
   const MODULE_ERR = /ModuleNotFoundError|ImportError|Cannot find module|ERR_MODULE_NOT_FOUND/;
   const modErr = MODULE_ERR.test(`${r.stdout || ""}\n${r.stderr || ""}`);
-  return { code: modErr ? null : r.status, moduleError: modErr, text: (modErr ? "TOOL FAILURE: missing module (environment, not the game)\n" : "") + outText.slice(-60).join("\n") + (outText.length > 60 ? `\n(${outText.length - 60} earlier lines cut)` : "") };
+  return { code: modErr ? null : r.status, moduleError: modErr, text: (modErr ? "TOOL FAILURE: missing module (environment, not the game)\n" : "") + outText.slice(-120).join("\n") + (outText.length > 120 ? `\n(${outText.length - 120} earlier lines cut)` : "") };
 }
 async function sheets(dirArg) {
   const dir = dirArg || runFolder(a.val("run-id"));
@@ -300,12 +357,12 @@ async function sheets(dirArg) {
       if (p.every && crops.length > 1) {
         // every turn: the crops side by side, one frame per moment
         const byCap = new Map(); for (const x of crops) { if (!byCap.has(x.c.raw)) byCap.set(x.c.raw, []); byCap.get(x.c.raw).push(x); }
-        for (const [raw, list] of byCap) addPanel({ type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ src: fileOf(p, x.c.files[0]), cap: `${x.h.n}`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2") });
+        for (const [raw, list] of byCap) addPanel({ type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ src: fileOf(p, x.c.files[0]), cap: `${x.h.n} · ${(x.h.t / 1000).toFixed(1)} s`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2"), nat: natW(fileOf(p, list[0].c.files[0]), dprOf(p)) });
       } else for (const x of crops) {
         if (!x.shot && x.c.kind === "crop" && (p.kind === "layout" || p.kind === "art") && x.h.room) addPanel({ type: "room", label: `${tag} · ${p.at}: the screen, ${x.c.raw.slice(5)} outlined`, src: fileOf(p, x.h.room), box: x.c.box, dpr: dprOf(p) });
         addPanel({ type: "img", label: `${tag} · ${x.c.raw} at ${x.h.name}`, src: fileOf(p, x.c.files[0]), dpr: dprOf(p), zoom: x.c.kind === "zoom2" });
       }
-      for (const x of strips) addPanel({ type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}`, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms`, dpr: dprOf(p) })) });
+      for (const x of strips) addPanel({ type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}`, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
       // refs (Fable 12) and script output (Fable 13), from the spec
       for (const c of p.contract || []) texts.push(`#### ${p.id} · ${c.check} (contract)\n\n\`\`\`\n${c.text}\n\`\`\``);
       const specP = Array.isArray(P.spec[row.id]) ? P.spec[row.id][p.i] : P.spec[row.id] && P.spec[row.id].probes ? P.spec[row.id].probes[p.i] : P.spec[row.id];
@@ -314,7 +371,7 @@ async function sheets(dirArg) {
         if (cap.startsWith("ref:") && !panels.some((x) => x.ref === cap)) { const f = join(ROOT, cap.slice(4).trim()); if (existsSync(f) && /\.(png|webp|jpe?g|svg)$/i.test(f)) addPanel({ type: "img", ref: cap, label: `reference: ${cap.slice(4)}`, src: f, dpr: 1 }); else texts.push(`#### reference ${cap.slice(4)}\n\n${existsSync(f) ? "(not an image: open it)" : "MISSING FILE"}`); }
         if (cap.startsWith("cmd:") && !texts.some((t) => t.startsWith(`#### ${cap.slice(4).trim()} (exit`))) { const c = cap.slice(4).trim(), r = cmdOut(c); texts.push(`#### ${c} (exit ${r.code})\n\n\`\`\`\n${r.text}\n\`\`\``); }
       }
-      if (p.voice && p.voice.text) texts.push(`#### ${p.id} · voice (seconds from the page's start; ---- a lifecycle step; >>>> the probe's moment)\n\n\`\`\`\n${p.voice.text.split("\n").slice(0, 120).join("\n")}\n\`\`\``);
+      if (p.voice && p.voice.text) texts.push(`#### ${p.id} · voice (seconds from the page's start; ---- a lifecycle step; >>>> the probe's moment)\n\n\`\`\`\n${voiceWindow(p.voice.text)}\n\`\`\``);
     }
     // the fingerprint: row words + spec + text captures + the mode's code and art + each panel's dHash
     const textPart = probes.map((p) => [p.id, p.reached, (p.expects || []).map((e) => [e.raw, e.ok]), (p.hits || []).map((h) => (h.captures || []).map((c) => (c.kind === "dom" || c.kind === "text" ? c.text : c.kind === "voice" ? "" : c.raw)))]);
@@ -327,10 +384,20 @@ async function sheets(dirArg) {
     const sheets = [];
     if (!outcome.tool.length && panels.length) {
       // more than six panels: two or more sheets, evenly (<ROW>.png, <ROW>-2.png ...), each still at most about 1200 x 1900 px
-      const n = Math.ceil(panels.length / 6), per = Math.ceil(panels.length / n);
+      // (s08 w6L) by height, not only by count: a sheet holds panels up to about 1300 px (a strip's frames now read at 290-580 px, so a
+      // twelve-frame strip is a sheet of its own; four panels of one image each are still one sheet)
+      const groups = [];
+      let cur = [], cost = 0;
+      for (const pl of panels) {
+        const c = panelCost(pl);
+        if (cur.length && (cost + c > 4.5 || cur.length >= 6)) { groups.push(cur); cur = []; cost = 0; }
+        cur.push(pl); cost += c;
+      }
+      if (cur.length) groups.push(cur);
+      const n = groups.length;
       for (let k = 0; k < n; k++) {
         const name = k ? `${row.id}-${k + 1}` : row.id;
-        sheets.push(await htmlToPng(page, join(dir, `${name}.html`), sheetHtml(row, panels.slice(k * per, (k + 1) * per), shotUrl, n > 1 ? `sheet ${k + 1} of ${n}` : "")));
+        sheets.push(await htmlToPng(page, join(dir, `${name}.html`), sheetHtml(row, groups[k], shotUrl, n > 1 ? `sheet ${k + 1} of ${n}` : "")));
       }
       png = sheets[0];
     }
@@ -349,12 +416,23 @@ async function sheets(dirArg) {
   writeFileSync(join(dir, "index.json"), JSON.stringify(index, null, 1));
   writeReport(dir, P, index);
 }
+// a PNG's width in CSS px (its IHDR), 0 when it cannot be read: how many frames of a strip fit a line of the sheet
+function natW(file, dpr = 1) {
+  try { const b = readFileSync(file); return b.length > 24 && b.readUInt32BE(12) === 0x49484452 ? Math.round(b.readUInt32BE(16) / (dpr || 1)) : 0; } catch (e) { return 0; }
+}
+// frames to a line (s08 w6L): a crop 700 px wide or more two to a line, one of 420-700 px three, a small one four, so every frame is read at
+// about 290-580 px, not the 90-140 px a twelve-frame strip had in one line (the EVIDENCE lines of CLN-105, 167, 181, 194, SAM-22)
+const framesPerLine = (p) => Math.max(1, Math.min(p.frames.length, p.nat >= 700 ? 2 : p.nat >= 420 ? 3 : 4));
+// a panel's height on the sheet in units of about 300 px (a frames panel: its lines of frames; a lone image: two to a line)
+const panelCost = (p) => (p.type === "frames" ? 0.25 + Math.ceil(p.frames.length / framesPerLine(p)) * (framesPerLine(p) <= 2 ? 1.2 : framesPerLine(p) === 3 ? 0.8 : 0.65) : 0.8);
 function sheetHtml(row, panels, shotUrl, part = "") {
   // at most 1200 x ~1200 px (about 1.9k image tokens at full resolution, under the API's downscale): panels side by side, two to a
   // row; a filmstrip or a lone zoom spans the row. Crops at 1:1 CSS px when they fit their column, else scaled down to fit
   const wide = (p) => p.type === "frames" || (p.zoom && panels.length === 1) || panels.length === 1;
   const fig = (p) => {
-    if (p.type === "frames") return `<div class="frames">${p.frames.map((f) => `<figure class="fr"><img src="${esc(shotUrl(f.src))}" data-dpr="${f.dpr}" class="${p.zoom ? "z" : "n"}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
+    // (s08 w6L) at most 4 frames to a line: a 12-frame strip in one line was 90 px a frame, too small to read (the EVIDENCE lines of
+    // CLN-167, CLN-181, CLN-194, SAM-22); wrapped, each frame is about 290 px
+    if (p.type === "frames") return `<div class="frames" style="--c:${framesPerLine(p)};--mh:${framesPerLine(p) <= 2 ? 440 : 300}px">${p.frames.map((f) => `<figure class="fr"><img src="${esc(shotUrl(f.src))}" data-dpr="${f.dpr}" class="${p.zoom ? "z" : "n"}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
     if (p.type === "room") return `<div class="room" data-box="${esc(JSON.stringify(p.box))}" data-dpr="${p.dpr}"><img src="${esc(shotUrl(p.src))}"><i class="box"></i></div>`;
     return `<img class="${p.zoom ? "z" : "n"} one" data-dpr="${p.dpr}" src="${esc(shotUrl(p.src))}">`;
   };
@@ -368,7 +446,7 @@ function sheetHtml(row, panels, shotUrl, part = "") {
     section.wide{width:1168px}
     .lab{font-size:22px;font-weight:900;margin-right:6px} .cap{font-size:13px;font-weight:700;color:#4a3a28}
     section img{display:block;margin-top:3px;max-width:100%} img.one{max-height:520px;object-fit:contain}
-    .frames{display:flex;gap:4px;margin-top:3px} .fr{margin:0;flex:1 1 0;min-width:0} .fr img{width:100%;max-height:420px;object-fit:contain} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
+    .frames{display:grid;grid-template-columns:repeat(var(--c,4),minmax(0,1fr));gap:6px 4px;margin-top:3px} .fr{margin:0;min-width:0} .fr img{width:100%;max-height:var(--mh,300px);object-fit:contain} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
     .room{position:relative;margin-top:3px} .room img{width:100%} .room .box{position:absolute;border:3px solid #e0201a;box-shadow:0 0 0 2px #fff}
   </style><header><h1>${esc(row.id)}<small>${esc(row.section)}${part ? ` · ${esc(part)}` : ""}</small></h1><p><span class="k">Issue:</span> ${esc(row.issue.slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(row.check.slice(0, 220))}</p></header>
   <div class="grid">${panels.map((p) => `<section class="${wide(p) ? "wide" : ""}"><span class="lab">${p.letter}</span><span class="cap">${esc(p.label)}</span>${fig(p)}</section>`).join("\n")}</div>
@@ -434,7 +512,7 @@ function judge() {
   const write = (b, n, isAudit) => {
     const name = `${isAudit ? "audit" : "batch"}-${String(n).padStart(2, "0")}`;
     const vf = join(jdir, `${name}.verdicts.md`);
-    let t = `# Evidence ${name} (${b.kind}, ${b.rows.length} rows) · run ${id}\n\nYou are the reviewer for Nani jo Ghar's evidence loop (decision 82). You are not the session that built these changes${index.builder ? ` (${index.builder})` : ""}.${isAudit ? " This is an AUDIT: each row already has a cached PASS from another model (named below); judge it afresh, without regard to that verdict." : ""}\n\nFor each row: read its sheet (PNG, if it has one: its panels are labelled A-D, or up to A-L over two sheets for a row with more probes: read both; the labels repeated below) and its text file (.md: the panels in words, the voice timeline, text captures, expect results). Judge against the row's own words (Zafar's feedback), nothing else. Words the engine marks loan:en (thank you, mixed, cup, film) are Kutchi (decision 87): never flag them as English. A line shown as grey-italic English with the hidden to-record tag is allowed (decision 84): it is not an English leak and not a missing clip; only its absence from Mum's list is a gap.\n1. Flaws first: anything wrong in the panels (clipping, overlap, English for the child, a bubble away from its speaker, old art), even off the row's point.\n2. Then one line in ${rel(vf)}:\n   \`ID | PASS: <panel>, <what that panel shows that proves it>\` e.g. \`CLN-100 | PASS: A, L3 wrap crosses the kneecap, 6 turns\`\n   \`ID | FAIL: <panel>, <what is wrong>\`\n   \`ID | EVIDENCE: <what the sheet is missing>\` only when the sheet does not show the row's state at all (it goes to the tool owner, never to the list as a FAIL).\n   A PASS that names no panel is refused. A text-only row (Sheet: (text only)) names its text capture instead, by its label in the .md: \`SH-45 | PASS: SH-45-p1-L1-1366x768 dom, the line reads ...\` (or \`PASS: text, ...\`). Sound quality and feel are not yours: say so in a FAIL only when the row is about what you can read (which clip, when, in what order).\n3. First line of the verdict file: \`judge: <your model and session>\`.\n\n`;
+    let t = `# Evidence ${name} (${b.kind}, ${b.rows.length} rows) · run ${id}\n\nYou are the reviewer for Nani jo Ghar's evidence loop (decision 82). You are not the session that built these changes${index.builder ? ` (${index.builder})` : ""}.${isAudit ? " This is an AUDIT: each row already has a cached PASS from another model (named below); judge it afresh, without regard to that verdict." : ""}\n\nFor each row: read its sheet (PNG, if it has one: its panels are labelled A-D, or up to A-L over two sheets for a row with more probes: read both; the labels repeated below) and its text file (.md: the panels in words, the voice timeline, text captures, expect results). Judge against the row's own words (Zafar's feedback), nothing else. Words the engine marks loan:en (thank you, mixed, cup, film) are Kutchi (decision 87): never flag them as English. A line shown as grey-italic English with the hidden to-record tag is allowed (decision 84): it is not an English leak and not a missing clip; only its absence from Mum's list is a gap.\n1. Flaws first: anything wrong in the panels (clipping, overlap, English for the child, a bubble away from its speaker, old art), even off the row's point.\n2. Then one line in ${rel(vf)}:\n   \`ID | PASS: <panel>, <what that panel shows that proves it>\` e.g. \`CLN-100 | PASS: A, L3 wrap crosses the kneecap, 6 turns\`\n   \`ID | FAIL: <panel>, <what is wrong>\`\n   \`ID | EVIDENCE: <what the sheet is missing>\` only when the sheet does not show the row's state at all (it goes to the tool owner, never to the list as a FAIL).\n   A PASS that names no panel is refused. A text-only row (Sheet: (text only)) names its text capture instead, by its label in the .md: \`SH-45 | PASS: SH-45-p1-L1-1366x768 dom, the line reads ...\` (or \`PASS: text, ...\`); a script capture by the command printed after its \`####\` heading: \`LNG-04 | PASS: grep -n -i "ph-turner" data/lang/reports/gap-list.md, the placeholder is on Mum's list\`. Sound quality and feel are not yours: say so in a FAIL only when the row is about what you can read (which clip, when, in what order).\n3. First line of the verdict file: \`judge: <your model and session>\`.\n\n`;
     for (const x of b.rows) t += `## ${x.id} [${x.row.kind}] ${x.row.section}${x.audit ? ` (cached PASS by ${x.audit.judge}: ${x.audit.line})` : ""}\n- Issue: ${x.row.issue}\n- Check: ${x.row.check}\n- Sheet: ${x.r.png ? ((x.r.sheets || []).length > 1 ? x.r.sheets : [x.r.png]).map((s) => join(ROOT, s)).join(" and ") : "(text only)"}\n- Text: ${join(ROOT, x.r.md)}\n${x.r.panels.map((p) => `- Panel ${p}`).join("\n")}\n\n`;
     writeFileSync(join(jdir, `${name}.md`), t);
     if (!existsSync(vf)) writeFileSync(vf, `judge: \n${b.rows.map((x) => `${x.id} | `).join("\n")}\n`);
@@ -456,7 +534,9 @@ function collect() {
   const cache = loadCache(), today = new Date().toISOString().slice(0, 10);
   let n = 0; const evidence = [], refused = [], disagree = [], vlog = loadLog(), newLog = [];
   for (const f of existsSync(jdir) ? readdirSync(jdir).filter((x) => /\.verdicts\.md$/.test(x)).sort() : []) {
-    const v = parseVerdicts(readFileSync(join(jdir, f), "utf8"));
+    // a text-only row's PASS may name the capture it read by its label in the row's .md (a script's command, a probe id)
+    const labelsOf = (rid) => { const r = index.rows[rid]; try { return r && r.md ? captureLabels(readFileSync(join(ROOT, r.md), "utf8")) : []; } catch (e) { return []; } };
+    const v = parseVerdicts(readFileSync(join(jdir, f), "utf8"), labelsOf);
     if (!v.lines.length) continue;
     if (!v.judge) { refused.push(`${f}: no "judge:" line`); continue; }
     if (builder && v.judge.toLowerCase().includes(String(builder).toLowerCase())) { refused.push(`${f}: judged by the builder (${v.judge})`); continue; }
@@ -537,7 +617,9 @@ if (a.has("lint-specs")) {
   const { execFileSync: ex } = await import("node:child_process");
   const { readdirSync, statSync } = await import("node:fs");
   let flows = new Set();
-  for (let i = 0; i < 3 && flows.size < 100; i++) { try { flows = new Set(ex(process.execPath, ["build/sandbox/run.mjs", "--list"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 }).split("\n").map((l) => l.split(/\s+/)[0]).filter(Boolean)); } catch (e) { /* a list that fails or comes back short is asked again: a flaky list must not flag every flow */ } }
+  // the list is asked three times and the answers joined: under load one listing has come back without the parked modes'
+  // flows (20 Oct), and a flaky list must not flag a flow that exists
+  for (let i = 0; i < 3; i++) { try { for (const f of ex(process.execPath, ["build/sandbox/run.mjs", "--list"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 }).split("\n").map((l) => l.split(/\s+/)[0]).filter(Boolean)) flows.add(f); } catch (e) { /* asked again */ } }
   if (flows.size < 100) { console.log("lint-specs: run.mjs --list gave too few flows; not judged"); process.exit(2); }
   let corpus = "";
   const walk = (d) => { for (const f of readdirSync(join(ROOT, d))) { const p = `${d}/${f}`; if (statSync(join(ROOT, p)).isDirectory()) walk(p); else if (/\.(js|css|html)$/.test(f)) corpus += readFileSync(join(ROOT, p), "utf8") + "\n"; } };

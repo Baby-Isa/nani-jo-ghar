@@ -81,9 +81,43 @@
    .face-say::after reached 10 px below) poked past the last card and scrolled a short phone's sidebar 7 px */
 .oc-card .oc-face::after { inset: 0; }
 .oc-card .oc-face:active { transform: scale(0.95); }
+/* SH-113 (Zafar, 18 Oct: "all the characters where you just see a circle of their face need to be zoomed in by the same amount"): ONE face
+   size in every circle. Cook's faces are cut as close-ups framed by the eyes (the face fills the circle: zoom 1); the clinic's are whole
+   heads or a bust (the doctor's 144 px one), so a clinic face circle zooms in on its face to the same size. --face-zoom is the scale and
+   --face-y where the face sits in its picture (the point that lands at the circle's centre); the per-face tweak is the rule for its
+   picture, set by eye on the side-by-side sheet (build/reports/s08-w1b-card.md) */
+.cl-face img { transform-origin: 50% var(--face-y, 50%); transform: translateY(calc(50% - var(--face-y, 50%))) scale(var(--face-zoom, 1)); }
+/* SH-113, s08 w6E: the circle's SIZE too. Cook's face is --oc-face (44 px) centred in its 48 px tap area; the clinic's button was itself the
+   circle, so its face drew at the tap area's 48 px. The tap area stays; the circle inside it is --oc-face, with Cook's edge ring */
+.cl-card .oc-card .oc-face.cl-card-face { background: transparent; display: grid; place-items: center; }
+.cl-card .oc-card .oc-face.cl-card-face > .cl-face { width: var(--oc-face); height: var(--oc-face); flex: none; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
+/* SH-113 (s08 w6M; the judge, 20 Oct: the doctor's circle "clearly more zoomed out than A's Cook customer", the girl's "whole head with
+   pigtails and shoulders"): the crop rule follows the PICTURE wherever its circle is drawn, so every circle of one face is zoomed the
+   same: the shared order card's face (the clinic gives it the doctor's or the girl's picture), the clinic's own .cl-face and the heal
+   games' and pharmacy's corner face (.hs-face). Set by measure against Cook's close-ups (Nana: the cheeks across 0.8 of the circle, the
+   eyes 0.05 above its middle, the chin at 0.95): the doctor's 144 px bust and the girl's 512 px head */
+.cl-face.person img { --face-zoom: 1.25; --face-y: 44%; }
+.oc-card .oc-face img[src*="/doctor/v2/faces/"], .cl-face.doctor img { --face-zoom: 1.9; --face-y: 36%; }
+.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.7; --face-y: 45%; }
+.hs-face .hs-face-art[src*="/girl/girl-head-"] { transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom)); }
+/* the shared card's face is the picture itself (the ring is its shadow): zoomed, it is cut back to its circle (clip-path, before the
+   zoom: a circle of 1/zoom round the face point), and the ring moves to the button, round the same circle */
+.oc-card .oc-face img:is([src*="/doctor/v2/faces/"], [src*="/girl/girl-head-"]) {
+  transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom));
+  clip-path: circle(calc(50% / var(--face-zoom)) at 50% var(--face-y)); box-shadow: none;
+}
+.oc-card .oc-face:has(> img:is([src*="/doctor/v2/faces/"], [src*="/girl/girl-head-"]))::before {
+  content: ""; position: absolute; pointer-events: none; border-radius: 50%; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge);
+  inset: calc((max(var(--oc-face), var(--njg-face-hit)) - var(--oc-face)) / 2);
+}
 .oc-card .oc-headline { flex: 1 1 auto; min-width: 0; font-weight: 800; font-size: var(--oc-h); line-height: 1.25; }
 /* the headline is the family's line and can't be shortened: shrink, then wrap, never "..." */
 .oc-card .oc-headline.fit-wrap, .oc-card .oc-rec-line.fit-wrap { --fit-min: var(--njg-t4); }
+/* SH-107 (Zafar, 18 Oct): the order pop-up's headline only: wrap at full size first (two lines), shrink only if they don't fit (fit.js fit-head) */
+.oc-card .oc-headline.fit-head, .oc-card .oc-rec-line.fit-head { white-space: normal; }
+/* contract-33 (s08 w6a): the line box holds the font's whole height (Nunito's is about 1.36 em), so two lines at full size measure
+   two lines (at 1.25 the last line's glyph box hung 2 px below them, fit.js read three lines and shrank the headline to one) */
+.oc-card .oc-headline.fit-head, .oc-card .oc-rec-line.fit-head { line-height: 1.4; }
 /* a line still to record: its English placeholder, grey italic (G2), with the grown-ups' flag under it */
 .oc-card .oc-headline.rec { display: flex; flex-direction: column; align-items: flex-start; font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
 .oc-card .oc-headline.rec .oc-rec-line { max-width: 100%; }
@@ -122,8 +156,12 @@
 /* D12: the small eye on a closed card: tap to look (its own badge at the end) */
 /* in the card's corner, so the headline keeps the card's whole width (a narrow phone sidebar) */
 .oc-card.closed { position: relative; }
+/* SH-37 / CHT-15 (judges, 19 Oct: "Muke daar khape" ran under the served stamp, which covered its full stop): a card on a stamped
+   order keeps the stamp's own room at its right, so its words fit (shrink, then wrap: non-negotiable 9) beside it, never under it */
+.stamped .oc-card { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
 .oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
-.oc-look svg { width: 100%; height: 100%; display: block; }
+.oc-look svg, .oc-look img { width: 100%; height: 100%; display: block; }
+.oc-look img { object-fit: contain; pointer-events: none; user-select: none; }
 .oc-card.closed.folded .oc-look { display: block; }
 /* SH-47: the headline (and a "to record" flag under it) keeps clear of the eye: the head leaves the eye's corner
    free, so a long line shrinks first, then wraps at the largest two-line size (js/shared/fit.js), never under it */
@@ -304,7 +342,7 @@ html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-
 .oc-strip.rec .oc-strip-t { font-style: italic; font-weight: 700; color: var(--njg-ink-soft); }
 .oc-strip.new { animation: ocStrip .3s ease-out; }
 @keyframes ocStrip { from { opacity: .2; } }
-.oc-look.bulb svg { width: 100%; height: 100%; }
+.oc-look.bulb img { width: 100%; height: 100%; } /* SH-100: the photo bulb (order-card.js bulbImg), one picture everywhere */
 /* S02 review: on the shortest phones (800x360) the guide's strip gives back a little padding, so a card with the strip,
    a two-line headline and four rows (the cut game) still fits its sidebar without a scroll */
 @media (max-height: 370px) {

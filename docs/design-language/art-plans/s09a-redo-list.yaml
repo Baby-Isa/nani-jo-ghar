@@ -1,0 +1,16 @@
+# The s09a redo (20 Oct), from Zafar's notes and Fable's review (build/reports/s09a-fable-review.md). Kept: R1, R2, the L1-L3 layouts.
+# Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s09a.run.yaml --redo docs/design-language/art-plans/s09a-redo-list.yaml
+pack: s09a
+redo:
+  - id: H1
+    why: "Zafar chose try 3 (the big arch with flowers); Nani dead centre at 55-60% of the height, outer 15% clear, a straight roofline with a third of even empty sky, no cast shadows"
+    source: "Zafar, 20 Oct; Fable review"
+  - id: B1
+    why: "her face rounder and younger than the sheet and her build heavier than slim: match the sheet"
+    source: "Zafar, 20 Oct; Fable review"
+  - id: B2
+    why: "drawn from Nani's own eyes; wanted from the child's seat, the book square-on facing the viewer, her chin and dupatta above it"
+    source: "Zafar, 20 Oct; Fable review"
+  - id: L4
+    why: "photos lay over the centre fold; three on the left page, two on the right, nothing on the fold"
+    source: "Zafar, 20 Oct"

@@ -39,6 +39,23 @@
   Object.defineProperty(HS, "L", { get: Lg, enumerable: true });
   /** The number word for n ("ba"), or null past five. */
   HS.num = (n, o) => (Lg().numId(n) ? Lg().num(n, o).kutchi : null);
+  /*
+   * SH-117: the shared pour and fill (js/shared/pour.js, an ES module Cook imports): a game that pours (the taste glass)
+   * awaits HS.pourKit() (S.pourKit). It is asked for once, beside this file (its own address, with the page's version),
+   * as soon as this file runs in a page, so it is there long before the first pour.
+   */
+  const SELF = typeof document !== "undefined" && document.currentScript && document.currentScript.src;
+  let pourKit = null;
+  HS.pourKit = function () {
+    if (global.NjgPour) return Promise.resolve(global.NjgPour);
+    if (!pourKit) {
+      const u = new URL("../../shared/pour.js", SELF || (typeof document !== "undefined" ? document.baseURI : "file:///"));
+      if (SELF) u.search = new URL(SELF).search;
+      pourKit = import(u.href).then((m) => m.NjgPour || global.NjgPour);
+    }
+    return pourKit;
+  };
+  if (SELF) HS.pourKit().catch(() => (pourKit = null));
   /**
    * CLN-118 (D13): the taught first round has no counts, sizes or sides: its word review drops the number, size and side
    * words (each game builds its rows without them: its own mount, `if (ctx.taught)`); counts start on the next round.
@@ -82,7 +99,8 @@
     ice: `<svg class="hs-mark" viewBox="0 0 100 100" aria-hidden="true">${cube(30, 14, -12)}${cube(48, 10, 10)}${cube(40, 26, 4)}</svg>`,
   };
   HS.CSS = [
-    ".hs-tool .g.im{width:calc(var(--njg-tap) * 1.25);height:calc(var(--njg-tap) * .95);object-fit:contain;pointer-events:none;-webkit-user-drag:none}",
+    // SH-112: the tool's picture fills the shared box (css/clinic.css .hs-tools: --hs-pic-w x --hs-pic-h, from the tokens)
+    ".hs-tool .g.im{width:var(--hs-pic-w);height:var(--hs-pic-h);object-fit:contain;pointer-events:none;-webkit-user-drag:none}",
     ".hs-tool.drag-src{opacity:.4}",
     // CLN-75: a drawn mark over a tool's art that reads at button size (the hot jug's steam, the cold jug's ice)
     ".hs-tool{position:relative}",
@@ -115,9 +133,20 @@
    * CLN-78 (2 Oct): a known word's picture in the clinic (the hearing check, the eye chart): the clinic's own item art
    * where it has the thing (the scrape's water is this jug), else Cook's realistic render the child learned it with.
    */
-  const CLINIC_PIC = { "cook-paani": "water-jug", "cook-dudh": "milk-jug", "fru-02": "lemon-half", "veg-14": "ginger" };
-  HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/items-v2/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
+  // CLN-189 (Zafar, 18 Oct: "an orange, not a lemon"): limu is the whole yellow lemon (s08b LM1), as the eye chart draws it,
+  // never the golden lemon-half that reads as an orange
+  const CLINIC_PIC = { "cook-paani": "items-v2/water-jug", "cook-dudh": "items-v2/milk-jug", "fru-02": "items-s08b/lemon-whole-s08b", "veg-14": "items-v2/ginger" };
+  HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
   HS.ph = (english) => ({ kutchi: null, english, placeholder: true }); // unused by the nine games since step 4e (lines are keys)
+  /**
+   * Rule 11, CLN-184 (the tooth's "Pela [down]", "ne poi [right]"): a line is a full engine sentence or a whole grey
+   * to-record placeholder, never Kutchi with an English word in it. A display word with any English piece (Kit.text's
+   * [brackets]) becomes the whole line's English, grey and silent until the missing word is recorded.
+   */
+  HS.whole = (w) => {
+    if (!w || !w.kutchi || !/\[/.test(w.kutchi)) return w;
+    return Object.assign({}, w, { kutchi: null, english: w.english, placeholder: true, plan: [], rec: true });
+  };
   /** The colours: English placeholders until the doctor's recording (Section G). */
   HS.COLOURS = { red: "#d8433f", blue: "#3f6fd8", green: "#3fa35b", yellow: "#f0c43a", orange: "#f08a2c", purple: "#8a55c8", white: "#f7f4ee" };
 
@@ -192,7 +221,7 @@
     // scale (data/layout.json stage.itemScale, through the shared stage service), cropping its sides down to the
     // game's safe area (opts.safe: [x0, x1] in svg units; the tool column sits over the right edge anyway). Phones and
     // laptops (item scale 1) keep the plain fit.
-    const SAFE = opts.safe || [80, 720];
+    let SAFE = opts.safe || [80, 720];
     const fitView = () => {
       const St = global.Stage;
       const r = root.getBoundingClientRect();
@@ -215,6 +244,7 @@
     const S = { root, svg, s, h, ctx, level: ctx.level, game: opts.game || (ctx.game && ctx.game.id) };
     S.layer = s("g", { class: "hs-art" }, svg);
     S.fx = s("g", { class: "hs-fx" }, svg);
+    S.pourKit = HS.pourKit; // SH-117: the shared pour and fill
 
     /* ---- coordinates ---- */
     S.pt = (e) => {
@@ -243,6 +273,12 @@
     fitView();
     ctx.on(global, "resize", fitView);
     S.fitView = fitView;
+    /** a game's own safe area for a later view (the eye test's left panel, s08 w6N fix): [x0, x1] in svg units, or null
+     *  for the one it was made with; the view is fitted again at once (and on every resize after) */
+    S.setSafe = (safe) => {
+      SAFE = safe || opts.safe || [80, 720];
+      fitView();
+    };
 
     /* ---- the patient: their colours, so the close-up matches the person the zoom came from ---- */
     // CLN-67 (2 Oct): the round face (and the close-up's skin and clothes) follow the patient's own kind: hair, skin,
@@ -400,9 +436,6 @@
     S.tools = (list, fn) => {
       shelf.innerHTML = "";
       S.toolEls = {};
-      // as many rows as fit the play area's height (a phone is short), then more columns
-      const rowsFit = Math.max(2, Math.floor((root.getBoundingClientRect().height * 0.86 + 8) / 70));
-      shelf.style.setProperty("--cols", Math.ceil(list.length / Math.min(6, rowsFit)));
       onPick = fn;
       list.forEach((t) => {
         const b = h("button", "hs-tool", shelf);
@@ -463,6 +496,31 @@
         });
         S.toolEls[t.id] = b;
       });
+      // as many rows as fit the play area's height (a phone is short), then more columns: measured on the boxes as drawn
+      // (SH-112: the shared box's size comes from the tokens, so a phone's is smaller than a laptop's)
+      // (the column hangs from under her face circle: the rows that fit between its top and the foot of the play area)
+      const box = shelf.firstElementChild ? shelf.firstElementChild.getBoundingClientRect().height : 0;
+      const gap = parseFloat((global.getComputedStyle && global.getComputedStyle(shelf).rowGap) || "") || 8;
+      const rr = root.getBoundingClientRect();
+      // CLN-165 (s08 w6H; boing at 800x360: the ✓ covered the third plaster): the ✓'s corner (bottom right, under the
+      // column: css .cl-actions, its box the --njg-done token) is kept clear, so a tile never sits under it (a game asks
+      // for it: S.clearTick, the boing's four tiles; the others' columns are as they were)
+      const tick = (() => {
+        if (!S.clearTick) return 0;
+        try {
+          const d = shelf.ownerDocument.createElement("div");
+          d.style.cssText = "position:absolute;visibility:hidden;width:1px;height:var(--njg-done)";
+          shelf.appendChild(d);
+          const v = d.getBoundingClientRect().height;
+          d.remove();
+          return v > 0 ? v + Math.max(10, 0.03 * rr.height) : 0;
+        } catch (e) {
+          return 0;
+        }
+      })();
+      const room = rr.bottom - Math.max(rr.top, shelf.getBoundingClientRect().top) - gap - tick;
+      const rowsFit = Math.max(2, Math.floor((room + gap) / ((box || 62) + gap)));
+      shelf.style.setProperty("--cols", Math.max(1, Math.ceil(list.length / Math.min(6, rowsFit))));
     };
     S.pick = (id) => {
       S.sel = id;
@@ -556,7 +614,12 @@
           // sp.also: more things lit with the move, still tappable during the help (the ear's tweezers tile: a child who
           // picks the tool first is never blocked by the help's light)
           steps.push({ spotlight: [first, to].concat((sp.also || []).map(rectOf)), ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
-        } else if (first()) steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+        } else if (first()) {
+          // sp.also on a tap: more things lit (and tappable) with the one the ghost taps (CLN-107: the eye's other yes/no
+          // pill, so a wrong answer in the taught row still shakes red, as at every level, never a dead tap)
+          const also = (sp.also || []).map(rectOf);
+          steps.push({ spotlight: also.length ? [first].concat(also) : first, ghost: also.length ? { gesture: g, from: first } : { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+        }
         const nx = then || sp.then;
         if (nx) {
           const t2 = rectOf(nx.target || nx);

@@ -42,7 +42,7 @@
   };
   // decision 97 (8), CLN-45: one new thing per level: L3 is L2 heard only; the fix step ("fix it", the child chooses) and the
   // fourth exchange are L4's (decision 91)
-  const K = { zone: 1, max: 8, exchanges: { 1: [3], 2: [3, 4], 3: [3, 4], 4: [4] }, fixFrom: 4, fixLast: { 4: 1 }, gaps: { 1: [3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] }, fixGaps: [5, 6, 7], icePack: false };
+  const K = { zone: 1, max: 8, exchanges: { 1: [3], 2: [3, 4], 3: [3, 4], 4: [4] }, fixFrom: 4, fixLast: { 4: 1 }, gaps: { 1: [3, 4], 2: [2, 3, 4, 5], 3: [2, 3, 4, 5], 4: [2, 3, 4, 5] }, fixGaps: [5, 6, 7], icePack: false, settleMs: 2000 };
   const WHY = { problem: "fever-why", goal: "fever-goal" }; // line keys in data/clinic/heal/fever.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -206,6 +206,14 @@
     "@keyframes fv-fan{from{transform:rotate(-14deg)}to{transform:rotate(12deg)}}",
     "@keyframes fv-drip{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(26px);opacity:0}}",
     "@media (prefers-reduced-motion: reduce){.fv-thing.on .fv-fan-tilt img,.fv-thing.on .fv-blades,.fv-thing.on .fv-breeze,.fv-thing.on .fv-waves,.fv-wave-fan,.fv-sweat{animation:none}}",
+    // s08-w5b (CLN-105): a thing lying on the bed is drawn at its own shape, with a soft contact shadow where it touches
+    ".fv-thing.bed>img,.fv-thing.bed>svg{position:absolute;inset:0;width:100%;height:100%}",
+    ".fv-thing.bed::before{content:'';position:absolute;left:6%;right:6%;bottom:-6%;height:26%;border-radius:50%;background:var(--njg-contact,rgba(0,0,0,.3));filter:blur(4px);opacity:.8;pointer-events:none}",
+    ".fv-thing.bed.gone::before{display:none}",
+    // s08-w5b (CLN-175, CLN-105): the photo thermometer in her mouth, on her art's own canvas (it moves with her face)
+    ".cl-fig .fig-art .fv-mouth{position:absolute;pointer-events:none}",
+    ".fv-mouth .fv-display{position:absolute;border-radius:12%;background:rgba(92,201,120,.75);box-shadow:0 0 6px rgba(92,201,120,.9);opacity:0;transition:opacity .5s}",
+    ".fv-mouth.normal .fv-display{opacity:1}",
   ].join("\n");
 
   // stand-in drawings (no text, no emoji): each in its own 0 0 100 100 box unless said
@@ -385,10 +393,67 @@
     const wear = s("g", { class: "fv-wear" }, fig.groups.marks);
     const body = fig.body;
     const sp = (part, side) => body.spot(`body-${part}`, side ? `side-${side}` : null);
+    // CLN-175, CLN-105 (s08-w5b; Zafar, 18 Oct: "the thermometer doesn't sit in her mouth, it's sitting on her bottom lip
+    // ... when her face changed ... the thermometer didn't move with it"): TH1's mouth view, its tip on her mouth's middle
+    // as measured on the picture she shows now (fever.json art.mouth.at: each face, her talking and blinking mouths, the
+    // blanket and bottle bodies), placed again whenever any of her pictures changes (a watch on her art's layer)
+    const MO0 = (ctx.data && ctx.data.art && ctx.data.art.mouth) || null;
+    const MOUTH = artOn && MO0 && MO0.file && fig.artEl ? MO0 : null;
+    let mouthEl = null;
+    let mouthWatch = null;
+    const mouthKey = () => {
+      const A = fig.art;
+      if (!A) return "front";
+      if (A.body && A.body !== "front") return A.body;
+      const of = (img, set) => {
+        if (!img || img.hidden || !set) return null;
+        const u = String(img.dataset.src || img.getAttribute("src") || "").replace(/@2x(\.webp)/, "$1");
+        return Object.keys(set).find((k) => set[k] && u.indexOf(String(set[k]).replace(/^.*\//, "")) >= 0) || null;
+      };
+      return of(A.lifeImg, A.life) || of(A.face, artSpec.faces) || "front";
+    };
+    function placeMouth() {
+      if (!MOUTH) return;
+      if (!st.measured) {
+        if (mouthEl) mouthEl.hidden = true;
+        return;
+      }
+      if (!mouthEl || !mouthEl.isConnected) {
+        mouthEl = doc.createElement("div");
+        mouthEl.className = "fv-mouth";
+        const im = doc.createElement("img");
+        im.alt = "";
+        im.draggable = false;
+        im.src = Kit ? Kit.url(MOUTH.file) : MOUTH.file;
+        mouthEl.appendChild(im);
+        const dsp = doc.createElement("i");
+        dsp.className = "fv-display";
+        const D = MOUTH.display || [0.58, 0.13, 0.73, 0.47];
+        Object.assign(dsp.style, { left: `${D[0] * 100}%`, top: `${D[1] * 100}%`, width: `${(D[2] - D[0]) * 100}%`, height: `${(D[3] - D[1]) * 100}%` });
+        mouthEl.appendChild(dsp);
+        fig.artEl.appendChild(mouthEl);
+        if (root.MutationObserver && !mouthWatch) {
+          mouthWatch = new root.MutationObserver(() => placeMouth());
+          mouthWatch.observe(fig.artEl, { subtree: true, attributes: true, attributeFilter: ["src", "hidden", "data-src"] });
+        }
+      }
+      mouthEl.hidden = false;
+      const k = mouthKey();
+      if (mouthEl.dataset.face === k) return;
+      mouthEl.dataset.face = k;
+      const at = MOUTH.at[k] || MOUTH.at.front || [0.494, 0.282];
+      const A = fig.art;
+      const canvas = A && A.V && A.V.w ? A.V.w / A.V.h : 275 / 472;
+      const tip = MOUTH.tip || [0.03, 0.9];
+      const w = MOUTH.w || 0.3;
+      const h = (w * canvas) / (MOUTH.aspect || 560 / 190);
+      Object.assign(mouthEl.style, { left: `${((at[0] - tip[0] * w) * 100).toFixed(2)}%`, top: `${((at[1] - tip[1] * h) * 100).toFixed(2)}%`, width: `${(w * 100).toFixed(2)}%`, height: `${(h * 100).toFixed(2)}%` });
+    }
 
     /* ---- the things round the room ---- */
     const els = {};
     const on = {};
+    let pressedAt = 0; // when a thing in the room was last pressed (its click must not reach the patient under it)
     let mood = null; // the sweat / snowflake by her head (FV10), made below
     const AT = Object.assign(
       {
@@ -422,6 +487,8 @@
         if (old) old.remove();
         im.className = "fv-art";
         im.alt = "";
+        // s08-w5b: a thing in the room is the same one she then holds (fever.json art.tint: the bottle is her teal one)
+        if (ART.tint && ART.tint[id]) im.style.filter = ART.tint[id];
         el.querySelectorAll("svg.fv-standin").forEach((n) => (n.style.display = "none"));
         el.appendChild(im);
       };
@@ -441,6 +508,7 @@
       ctx.on(b, "pointerdown", (e) => {
         if (e.button > 0) return;
         e.stopPropagation();
+        pressedAt = Date.now();
         tapThing(id);
       });
       ctx.on(b, "click", (e) => {
@@ -451,30 +519,14 @@
     };
     Object.keys(cfg.things).forEach(mkThing);
     // FV1 (CLN-105): the mouth thermometer is a tool in the column on the right, like every other game's tools
-    S.tools([{ id: "thermometer", img: "assets/clinic/items-v2/thermometer.webp" }], (id) => {
+    // CLN-175 (s08b TH1): the photo thermometer lying flat in the strip; the same one at her mouth (ART.mouth)
+    S.tools([{ id: "thermometer", img: ART.thermometer || "assets/clinic/items-s08b/thermometer-flat-s08b.webp" }], (id) => {
       if (id === "thermometer") tapThing("thermometer");
     });
     els.thermometer = S.toolEls.thermometer;
-    // A2 (5 Oct): R2's ceiling fan: the body (downrod and motor) hangs from the ceiling; the blade disc, drawn from
-    // directly below, is tilted into the room's view and spins when on (art plan 3.4). fever.json art.fan: the files,
-    // the motor's foot (where the blades sit) as a share of the body's height, the disc's width against the body's
-    const FAN = ART.fan;
-    if (FAN && FAN.body && FAN.blades && els["ceiling-fan"]) {
-      const b = els["ceiling-fan"];
-      b.querySelectorAll("svg.fv-standin").forEach((n) => (n.style.display = "none"));
-      b.dataset.ownArt = "1";
-      // the button is the motor and the blades (what a child taps, always on screen); the downrod runs up from it
-      const wrap = S.h("div", "fv-fan-art", b);
-      if (!AT["ceiling-fan"].hang) wrap.style.height = `${((AT["ceiling-fan"].art || AT["ceiling-fan"].h) / AT["ceiling-fan"].h) * 100}%`;
-      const body = S.h("img", "fv-fan-body", wrap);
-      body.alt = "";
-      body.src = Kit ? Kit.url(FAN.body) : FAN.body;
-      const tilt = S.h("div", "fv-fan-tilt", wrap);
-      const bl = S.h("img", "", tilt);
-      bl.alt = "";
-      bl.src = Kit ? Kit.url(FAN.blades) : FAN.blades;
-      Object.assign(tilt.style, { left: "50%", top: `${(FAN.foot || 0.95) * 100}%`, width: `${(FAN.disc || 2.4) * 100}%`, aspectRatio: "1 / 1" });
-    }
+    // CLN-105 (s08b FN1; Zafar, 18 Oct: "I'm looking at the bottom of the fan but the fan is on the ceiling"): the
+    // ceiling fan is one picture seen from in front and a little below, still when off and spinning when on (art
+    // ceiling-fan-off / -on through art()), hung from the picture's top edge (at.hang)
     // the wall thermometer: the reading, with its green zone (R5's gauge art swaps in; the level and zone stay code)
     const gauge = S.h("div", "fv-gauge", box);
     const gs = s("svg", { viewBox: "0 0 40 200", preserveAspectRatio: "xMidYMax meet", "aria-hidden": "true" }, gauge);
@@ -544,9 +596,11 @@
         }
         el.classList.toggle("lie", !!a.lie);
         el.classList.toggle("flip", !!a.flip);
+        el.classList.toggle("bed", !!a.bed);
         let x = Math.max(v.x0 + halfW + pad, Math.min(v.x1 - halfW - pad, a.x));
         let y = a.y;
-        let h = a.h;
+        // s08-w5b (CLN-105): a thing on the bed is drawn at its picture's own shape (its width over the room's aspect)
+        let h = a.bed ? (a.w * (v.bw / v.bh)) / ((ART.aspect && ART.aspect[el.dataset.thing]) || 1.6) : a.h;
         if (a.top) y = Math.max(a.y, v.y0 + a.h + 0.02);
         y = Math.min(y, v.y1 - 0.01);
         // a phone crops the picture's top: a tall thing (the window) keeps its foot and loses its top, never off screen
@@ -610,28 +664,37 @@
         const fg = s("g", { class: "fv-wave-fan" }, wear);
         // the woven fan's handle (its bottom-right in the picture) in the hand, the fan up and to the left
         if (worn("hand-fan")) {
-          fg.style.transformOrigin = "92% 92%";
-          s("image", { href: worn("hand-fan"), x: hand[0] - 0.92 * 230, y: hand[1] - 0.92 * 203, width: 230, height: 203 }, fg);
+          // s08-w5b: the s08b paper fan (its handle at the picture's right end), held up and to the left of her hand
+          const FW = 210;
+          const FH = FW / ((ART.aspect && ART.aspect["hand-fan"]) || 2.98);
+          const hold = s("g", { transform: `translate(${hand[0]} ${hand[1]}) rotate(48)` }, fg);
+          fg.style.transformOrigin = "100% 100%";
+          s("image", { href: worn("hand-fan"), x: -0.95 * FW, y: -0.55 * FH, width: FW, height: FH }, hold);
         } else s("path", { d: `M${hand[0] - 10} ${hand[1] - 40} L${hand[0] - 120} ${hand[1] - 230} A140 140 0 0 1 ${hand[0] + 50} ${hand[1] - 260} Z`, fill: "#7fc4c0", stroke: "#3d8f8a", "stroke-width": 5 }, fg);
       }
       // the thermometer in the corner of her mouth (CLN-105, s04-r2k: a plain white bar there read as clenched teeth): a
       // glass stick with its red line and a dark cap, sticking out sideways, so it reads as the thermometer
-      if (st.measured) {
+      // CLN-175, CLN-105 (s08-w5b): with her art, TH1's photo thermometer at her mouth (placeMouth, on her own canvas)
+      placeMouth();
+      if (st.measured && !MOUTH) {
         const tg = s("g", { transform: "rotate(-14 648 190)" }, wear);
         s("rect", { x: 640 + 8, y: 185, width: 92, height: 12, rx: 6, fill: "#eef6fb", stroke: "#7d8792", "stroke-width": 3 }, tg);
         s("rect", { x: 640 + 18, y: 189.5, width: 56, height: 3.5, rx: 1.75, fill: "#d8343c" }, tg);
         s("rect", { x: 640 + 84, y: 183, width: 18, height: 16, rx: 5, fill: "#3b6fb6", stroke: "#2a4f86", "stroke-width": 2.5 }, tg);
       }
       const r = st.measured ? reading() : null;
-      if (r != null && r > cfg.k.zone) [[560, 120], [722, 108]].forEach(([x, y], i) => {
+      // the stand-in's sweat: only without her art (her hot face W5 has its own clear sweat on the forehead; these blue
+      // drops, mapped onto the art, fell under her eyes and read as tears: the orchestrator's look, 19 Oct)
+      if (r != null && r > cfg.k.zone && !artOn) [[560, 120], [722, 108]].forEach(([x, y], i) => {
         const d = s("path", { class: "fv-sweat", d: `M${x} ${y} q8 14 0 20 q-8 -6 0 -20Z`, fill: "#6bb7ea" }, wear);
         d.style.animationDelay = `${i * 0.6}s`;
       });
     };
     // FV10 (CLN-105): a small sweat drop (too hot) or snowflake (too cold) by the top right of her head, so it reads at
-    // a glance; her own hot / cold face stays (no crying face). Gone in the zone
-    mood = S.h("div", "fv-mood", box);
-    mood.innerHTML = '<svg class="fv-hot" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 C27 15 31 21 31 27 a11 11 0 0 1 -22 0 C9 21 13 15 20 4Z" fill="#6bb7ea" stroke="#2f7fbf" stroke-width="2.5"/><path d="M15 26 a5 5 0 0 0 5 5" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><svg class="fv-cold" viewBox="0 0 40 40" aria-hidden="true"><g stroke="#3f6fd8" stroke-width="3" stroke-linecap="round" fill="none"><path d="M20 4v32M6 12l28 16M6 28l28-16"/><path d="M15 6l5 4 5-4M15 34l5-4 5 4M4 18l6 1-2-6M36 22l-6-1 2 6M4 22l6-1-2 6M36 18l-6 1 2-6"/></g></svg>';
+    // a glance; her own hot / cold face stays (no crying face). Gone in the zone. CLN-177 (Zafar, 18 Oct: "the little
+    // sweat icon should be red to indicate heat"): the drop is red; the snowflake stays blue
+    mood =S.h("div", "fv-mood", box);
+    mood.innerHTML = '<svg class="fv-hot" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 C27 15 31 21 31 27 a11 11 0 0 1 -22 0 C9 21 13 15 20 4Z" fill="#e0483e" stroke="#a52a26" stroke-width="2.5"/><path d="M15 26 a5 5 0 0 0 5 5" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><svg class="fv-cold" viewBox="0 0 40 40" aria-hidden="true"><g stroke="#3f6fd8" stroke-width="3" stroke-linecap="round" fill="none"><path d="M20 4v32M6 12l28 16M6 28l28-16"/><path d="M15 6l5 4 5-4M15 34l5-4 5 4M4 18l6 1-2-6M36 22l-6-1 2 6M4 22l6-1-2 6M36 18l-6 1 2-6"/></g></svg>';
     function placeMood() {
       if (!mood) return;
       const hd = artOn && fig.artSpot ? fig.artSpot("head") : null;
@@ -751,6 +814,12 @@
         st.busy = false;
         next();
       };
+      // CLN-176 (clinic decision 5; Zafar, 18 Oct: "the girl said I'm okay ... but then it switched to being too cold,
+      // so she shouldn't have said that ... until she's feeling the correct temperature"): she says "barabar" only once
+      // she stays just right, on the last swing (then her thanks, finish()); a swing that is still to come goes on
+      // without a word from her (her face eases while the gauge sits in the green, then the next swing turns it)
+      const last = !P.steps[st.i + 1];
+      if (!last) return void ctx.after(fast() ? 150 : 900, go);
       say("fever-just-right").then(() => ctx.after(fast() ? 150 : 700, go), () => ctx.after(fast() ? 150 : 700, go));
       ctx.after(fast() ? 1500 : 2600, go); // a line that never ends (a stalled clip) still moves on
     };
@@ -772,6 +841,7 @@
         return;
       }
       if (st.busy) return;
+      if (st.settleT) clearTimeout(st.settleT), (st.settleT = null); // CLN-176: a tap while settling: not settled yet
       const e = c.live;
       const key = `${on[id] ? "off" : "on"}:${id}`;
       if (st.first == null) {
@@ -798,8 +868,15 @@
       drawWear();
       if (e.mode === "fix") st.fixTaps = (st.fixTaps || 0) + 1;
       if (inZone(r, cfg.k)) {
-        if (e.mode === "fix") judge(c.id, true, `${st.fixTaps} taps`);
-        closeEx();
+        // CLN-176 (clinic decision 5; Zafar, 18 Oct: "the girl said I'm okay ... but then it switched to being too cold,
+        // so she shouldn't have said that ... that needs fixing at all points"): "just right" only once the reading has
+        // stayed in the green for SETTLE ms with no tap; a tap meanwhile starts it again
+        st.settleT = ctx.after(fast() ? 300 : cfg.k.settleMs, () => {
+          st.settleT = null;
+          if (cur() !== c || st.over || !inZone(reading(), cfg.k)) return;
+          if (e.mode === "fix") judge(c.id, true, `${st.fixTaps} taps`);
+          closeEx();
+        });
         return;
       }
       // not yet: the patient says so (still hot, or now too cold) and the doctor's line stays; the named thing glows soon
@@ -841,8 +918,45 @@
     };
     ctx.on(fig.el, "click", (e) => {
       e.stopPropagation();
+      // s08-w6c (the gate's stuck fever runs): a thing lying on the bed beside her hides as it goes onto her (.gone), so
+      // the same press's click lands on her and took it straight back; a click that ends a thing's press is not hers
+      if (Date.now() - pressedAt < 700) return;
       tapPatient(e);
     });
+    // CLN-178: the ending's camera on the room (box: the room picture with her, the things and the gauge on it), about
+    // her head: in to about 1.8x, a beat on her well face, then out to the wide shot. Web Animations (tests can pause
+    // them); reduced motion or no animation support: no move, the ending goes straight on
+    const endZoom = () => {
+      const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      const head = artOn && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el;
+      if (reduced || !box.animate || !head || !head.getBoundingClientRect) return Promise.resolve();
+      const br = box.getBoundingClientRect();
+      const hr = head.getBoundingClientRect();
+      const rr = roomEl.getBoundingClientRect();
+      if (!br.width || !hr.width || !rr.height) return Promise.resolve();
+      // her head and the thermometer below it fill about half the play height; the point between them stays put
+      const cx = hr.left + hr.width / 2 - br.left;
+      const cy = hr.top + hr.height * 0.75 - br.top;
+      const k = Math.max(1.4, Math.min(2.2, (0.5 * rr.height) / Math.max(40, hr.height * 1.6)));
+      // the zoomed picture keeps her face in the middle of the play area
+      const dx = rr.left + rr.width / 2 - (br.left + cx);
+      const dy = rr.top + rr.height * 0.45 - (br.top + cy);
+      box.style.transformOrigin = `${cx.toFixed(1)}px ${cy.toFixed(1)}px`;
+      const at = (f) => `translate(${(dx * f).toFixed(1)}px, ${(dy * f).toFixed(1)}px) scale(${(1 + (k - 1) * f).toFixed(4)})`;
+      const T = fast() ? 0.6 : 1; // (s08 w6I, CLN-178: the fast test mode keeps most of the ending, so its frames show her well)
+      const frames = [
+        { offset: 0, transform: at(0), easing: "cubic-bezier(.4,0,.2,1)" },
+        { offset: 0.3, transform: at(1) },
+        { offset: 0.55, transform: at(1), easing: "cubic-bezier(.4,0,.2,1)" },
+        { offset: 1, transform: at(0) },
+      ];
+      roomEl.classList.add("fv-ending"); // (a probe hook: the ending's camera move is on)
+      const an = box.animate(frames, { duration: Math.round(3400 * T), fill: "none" });
+      return an.finished.catch(() => {}).then(() => {
+        box.style.transformOrigin = "";
+        roomEl.classList.remove("fv-ending");
+      });
+    };
     const finish = () => {
       st.over = true;
       unhint();
@@ -853,7 +967,34 @@
       const named = new Set();
       P.steps.forEach((x) => x.live && x.live.answer && named.add(x.live.answer.split(":")[1]));
       const words = P.words.slice(0, 3).concat([...named].map((id) => L().w(cfg.things[id].word)));
-      ctx.after(fast() ? 200 : 1200, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words }));
+      const end = () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words });
+      // CLN-178 (clinic decision 5; Zafar, 18 Oct: "I don't know how this game mode ends ... you need to tell me how it's
+      // gonna end properly"): on the last "just right" her fever is gone: the reading settles in the middle of the green
+      // (normal) and the thermometer at her mouth shows it, she smiles and says she feels better (the clinic's own
+      // thanks-better line, to record), then the round ends with the shared results and their go-on button
+      st.body = st.body - reading();
+      st.ending = true;
+      showReading(reading());
+      // (s08 w6I, CLN-178: at L3 the judge saw her cold, then the review card): the ending's reading is her normal
+      // temperature, a state of its own, not a swing passing through the green, so it is told apart from one (the
+      // sandbox's frames at each change of the gauge catch her well before the review)
+      gauge.dataset.reading = "normal";
+      mood.dataset.state = "";
+      if (mouthEl) mouthEl.classList.add("normal");
+      ctx.after(fast() ? 600 : 900, () => {
+        fig.react("happy", 0);
+        const thanks = ctx.line ? ctx.line("thanks-better") : null;
+        let went = false;
+        const go = () => !went && ((went = true), ctx.after(fast() ? 600 : 900, end));
+        // CLN-178 (s08 w6H; the judge: "no visible end"): the end the knee has, in the room: the camera closes in on
+        // her well face (the reading normal, the thermometer at her mouth, her smile), then zooms back out to the whole
+        // room, and her thank-you comes in the room; the room is the game's own picture throughout (never a blank frame)
+        endZoom().then(() => {
+          if (thanks) S.say(thanks, "patient").then(go, go);
+          else go();
+        });
+        ctx.after(fast() ? 5000 : 8000, go); // a line that never ends (a stalled clip) still moves on
+      });
     };
 
     // the card: the first line only (one instruction at a time, D8); each exchange's line is added as it opens
@@ -869,6 +1010,7 @@
       },
       destroy() {
         unhint();
+        if (mouthWatch) mouthWatch.disconnect();
         fig.destroy();
         S.destroy();
       },

@@ -56,3 +56,9 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 47. Streaks: none for now, at most one gentle "today" hub [Zafar, 14 Oct]. Idea.
 48. Hands for first-person scenes outside Cook [Zafar, 14 Oct]. Parked until a mode needs them.
 49. Story mode and the free-play modes come after Arc 1; Busy and Relaxed Cook modes dropped, timers come from the level [Zafar, 14 Oct]. Idea.
+50. Conversations in the kitchen: the characters talk to each other on screen, then with the child ("okay, I'll see you tomorrow", "I'll come again"), at every order's start and end; "a really really good way to absorb all this immersion-based knowledge ... we're gonna rely on it a lot" [Zafar, 17 Oct; `docs/feedback/cook-playtest-2026-10-17.md` P25]. For the Conversations mode.
+51. Samosa fold as a dot-to-dot swipe: staggered dots, a different number of ups and downs each time [Zafar, 17 Oct, then "let's leave it, let's not overdo it"; P39]. Parked.
+52. The eye chart with things other than food ("in the future put some other items on this, not just food ... for now that's fine") [Zafar, 18 Oct; `docs/feedback/clinic-playtest-2026-10-18.md` P39]. Idea.
+53. "The sore arm" heal game: line up a cartoon bone on a friendly X-ray, wrap a cast in the colour said, decorate it with stickers called out by count, colour and name (`build/reports/research-scrape-2026-10-19.md` option C) [Zafar, 19 Oct: idea bank; "avoid scope creep"]. Idea.
+54. Baking (a cake or similar) to teach halves, "and a half" and measures; half a cup of tea left out of chai for now [Zafar, 19 Oct]. Idea.
+55. Words brought in by dialogue: as a sentence is spoken, a card appears in the sidebar with its picture, the speaker icon and the Kutchi beneath (like the pantry's items); tried first at the door for the weather and the day's activity, then for new words in future dialogues if it works [Zafar, 19 Oct].

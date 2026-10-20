@@ -12,7 +12,7 @@ The table the next art run plans from (decision 65: one sprite sheet per item, e
 |---|---|---|---|---|---|---|---|
 | paani (cook-paani, jug-hot, jug-cold) | asked: scrape, cut, sore feet, thorn (hot and cold jugs); decoy · cut (wash), foot (hot, warm, cold jugs), hic (fills the glass), taste (water jug), tummy (pitchers) | has (hot, warm, cold) | has | NEED (items-v2 water-jug, jug-hot/cold/lukewarm) | has (pour, each temperature) | NEED side | jug |
 | cloth (care-cloth) | asked: scrape; decoy · cut (dab) | has | has | has | has (dab, dab-wet, dab-3q) | has | cloth |
-| plaster (care-plaster) | asked: scrape, cut, sore feet, thorn; decoy; colours red, blue, green · cut, boing and foot tool columns (two-colour plasters, skin) | has, but **NEED** it level, not tilted (CLN-97), and in red, blue, green | NEED in red, blue, green | has (plaster-flat: 11 colourings) | has (forearm, knee, upper arm, peel) | has | plaster, plaster-flat |
+| plaster (care-plaster) | asked: scrape, cut, sore feet, thorn; decoy; colours red, blue, green · cut, boing and foot tool columns (two-colour plasters, skin) | has (the level plaster in four colours and skin, wired in boing 20 Oct, wave 6F) | has (four colours) | has (plaster-flat: 11 colourings) | has (forearm, knee, upper arm, peel) | has | plaster, plaster-flat |
 | bandage (care-bandage) | asked: knee bump, leg break; decoy; colours red, blue, green, yellow · knee (wrap) | NEED x4 colours (rough sprite) | NEED x4 | NEED (items-v2 bandage-roll) | NEED the wrap (code-drawn) | NEED | – |
 | thread | asked: cut; decoy; colours red, blue, green | NEED x3 (rough sprite) | NEED x3 | – | – | NEED | – |
 | hammer | asked: knee bump, leg break; decoy · knee (the reflex tap) | NEED (rough sprite) | NEED | NEED (items-v2 reflex-hammer) | NEED the tap | NEED | – |
@@ -50,7 +50,7 @@ The table the next art run plans from (decision 65: one sprite sheet per item, e
 
 | Thing | Game | Needs | Now |
 |---|---|---|---|
-| the drop machine (four dispensers, levers, spouts) | boing | front, each lever up and down, a drop | **NEED**: code-drawn (data/clinic/heal/boing.json names heal-v3/drop-machine.webp, which does not exist) |
+| the drop machine (four dispensers, levers, spouts) | boing | front, each lever up and down, a drop | has (drop-machine-v3 with its levers, wired; the missing name removed from boing.json 20 Oct, wave 6F) |
 | the waste bin | ear | open, 3q | has (bin sheet) |
 | turmeric, ginger | taste | tool column, in use | NEED (items-v2 turmeric-bowl, ginger) |
 | window, ice pack, heater | fever | room view, on and off | heater has (heater sheet); window and ice pack: NEED (room-items single pictures) |

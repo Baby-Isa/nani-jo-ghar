@@ -10,6 +10,8 @@
  * starts a round straight away (the tests use it).
  */
 (function (global) {
+  // no written English for the child (rule 5): the turn-your-phone card is its turning arrow alone
+  document.querySelectorAll("#rotate p").forEach((e) => e.remove());
   const Tidy = global.Tidy;
   const Rules = Tidy.Rules;
   const $ = (s) => document.querySelector(s);
@@ -171,6 +173,10 @@
   (async function boot() {
     await Tidy.load();
     Tidy.fit();
+    // no written English for the child (rule 5): "tap to start" is a play arrow
+    const go = document.querySelector("#intro .ic-go");
+    go.textContent = "▶";
+    go.setAttribute("aria-label", "Tap to start");
     $("#btn-home").onclick = () => Lab.open();
     global.__tidy.ready = true;
     if (q.has("play")) Lab.play();

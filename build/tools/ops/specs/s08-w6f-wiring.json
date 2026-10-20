@@ -1,0 +1,57 @@
+{
+  "name": "s08 wave 6F, wire the art that has landed: the potato, the whole lemon, the drop machine and level plaster, Nani's moods in the guide box, the talk and blink frames",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "art wiring across Cook, the clinic and the shared guide, judged by picture",
+  "cost": "about $25-35",
+  "stop": "when every task is accepted, or 3 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "port": 8856,
+  "report": "s08-w6f-wiring",
+  "publish": false,
+  "read": [
+    "docs/design-language/art-plans/s08c-art-plan.md (section 1: art landed but not wired)",
+    "build/reports/s08-w0-art.md and assets/s08b-cut-data.json",
+    "build/tools/review/data/verdicts.json (the judges' lines for ART-10, ART-11, ART-19, ART-20, CLN-106, CLN-189)"
+  ],
+  "owns": [
+    "js/shared/guide.js and js/shared/character.js (the face swap and talk/blink frames only)",
+    "js/clinic/heal/games/boing.js, data/clinic/heal/boing.json, data/clinic/heal-art.json (the drop machine, levers, level plaster)",
+    "js/clinic/heal/games/eye.js and data/clinic/heal/eye.json (the lemon only)",
+    "data/cook.json art.assets entries (the potato), js/cook/art.js",
+    "build/reports/s08-w6f-wiring.md"
+  ],
+  "readOnly": [
+    "build/sandbox/**, css/shared/order-card.css, js/cook/recipes.js, js/cook/order.js (wave 6E)",
+    "assets/** (use what has landed; never draw stand-ins)",
+    "data/lang/**"
+  ],
+  "stubs": "art that isn't there stays as it is; say so",
+  "tasks": [
+    {
+      "do": "ART-11: the potato pieces from assets/cook/items-s08b/potato/ replace the butter-looking cubes wherever potato is shown (chop, chaat, samosa filling, pantry). CLN-189: the eye chart's lemon is lemon-whole-s08b, not lemon-half or fru-02.",
+      "accept": "eye: the potato at the chop and in chaat at 1366x768; the eye chart at L1 and L3"
+    },
+    {
+      "do": "ART-20, CLN-106: boing uses the cut drop machine and its levers (drop-machine-v3) and the level plaster in its four colours; boing.json names files that exist (no missing drop-machine.webp).",
+      "accept": "eye: boing at L1 and L3, 1366x768 and 800x360; auto: loadcheck and no missing-file error in the console"
+    },
+    {
+      "do": "ART-10, ART-19: the guide box swaps Nani's face with her mood (nani-faces-v2 and the v3 set: happy when it goes well, talking while she speaks, blinking now and then); the talk and blink frames that exist for Nani, the girl and the doctor are swapped while they speak and at rest. Nothing for Nana, Ma and Ali (their frames are in the s08c run).",
+      "accept": "eye: a filmstrip of the guide box while Nani speaks, and the girl and the doctor in the clinic while they speak"
+    }
+  ],
+  "flows": [
+    "cook:chop",
+    "cook:chaat",
+    "cook:samosa",
+    "cook:fetch",
+    "clinic:heal-boing",
+    "clinic:heal-eye",
+    "clinic:waiting",
+    "clinic:diagnosis"
+  ]
+}

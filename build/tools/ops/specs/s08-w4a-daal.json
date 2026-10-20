@@ -1,0 +1,25 @@
+{
+  "name": "s08 wave 4A, daal: the pot top-down with its contents turning, the stir flag and counting, Nani's one stir line with its speed, the mat gone after the pour, the chop's continuous waves and staged reveal; the pour's white ring",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "visual work and art wiring in the busiest Cook station",
+  "cost": "about $35-50",
+  "stop": "when every task is accepted, or 5 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/feedback/cook-playtest-2026-10-17.md (P9-P10, P47-P55; section 6 decision 13)", "build/reports/s08-w0-art.md and assets/s08b-cut-data.json (daar-pot-top-s08b and the six contents discs)", "build/reports/s08-w2a-levels.md (the level table: daal's rows)", "build/reports/s08-w2b-look.md (the shared pour; its white splash ring is to go)"],
+  "owns": ["js/cook/stations/daar.js", "js/cook/mechanics/stir.js", "js/cook/mechanics/chop.js", "js/cook/mechanics/tadka.js", "js/shared/pour.js (the splash ring only)", "data/stations/daar.json", "data/cook.json daal entries only", "build/reports/s08-w4a-daal.md"],
+  "readOnly": ["js/cook/stations/samosa.js (3A)", "js/cook/mechanics/assemble.js, grill.js, thread.js, js/cook/stations/mishkaki-grill.js, maani-line.js (3B)", "js/cook/station-lib.js, ui.js (3B owns the one-highlight fix)", "js/clinic/** (5B)", "assets/**", "data/lang/**"],
+  "stubs": "the full stir sentence waits on Mum (DAAR-26): use the engine's nearest whole line and list it",
+  "tasks": [
+    {"do": "The pot: the new top-down pot (DAAR-31) with the contents as round discs from wave 0 that turn under a still rim while stirring (DAAR-29, DAAR-05: contents shown, not dots); the mat fades out after the pour (DAAR-33); the pour's bright white splash ring in js/shared/pour.js softened or removed so no code line shows (SH-117).", "accept": "eye: every pot state at L1-L4; the pour and stir as filmstrips; no hard code lines"},
+    {"do": "The stir: a small flag at 12 o'clock marks each turn; a turn counts as the ladle passes it, with a sound, the number said within 3/4 of a turn and the number changing (DAAR-30, DAAR-27); no stir pop-up card: only Nani says the stir line, once and whole, with its speed at every level, L1 too (DAAR-26, DAAR-32).", "accept": "contract-22 and contract-30 green on daal L1-L4; ear: fast spins counted in step"},
+    {"do": "The chop: the next wave starts as the last one's items run out (no gap), an item counts for its own wave (DAAR-35); at L4 items not yet called are dotted on the card and revealed as she calls them (DAAR-34).", "accept": "eye: the chop L4 filmstrip; a check that no gap between waves exceeds 0.5 s"}
+  ],
+  "flows": ["cook:daar", "cook:daal", "cook:chop", "cook:stir", "cook:tadka"],
+  "shared": false,
+  "browser": true,
+  "port": 8842,
+  "report": "s08-w4a-daal",
+  "publish": false
+}

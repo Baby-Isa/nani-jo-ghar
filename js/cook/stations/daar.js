@@ -28,8 +28,9 @@
  *
  * Levels (data/cook.json's daal recipe slots; data/stations/daar.json's levels; data.mechanics.chop's levels
  * for the chop, data.mechanics.stir's for the dial's bands and the speed words): 1 = only what's asked,
- * one chop round, words on the chips; 2 = decoys, the chop's switch, a speed to stir at; 3 = speaker-only
- * chips; 4 = more decoys, and Nana's card starts folded in the cook (a peek costs a hint).
+ * one chop round; 2 = decoys, the chop's switch, a speed to stir at; 3 = the item words dotted on the card;
+ * 4 = more decoys, and Nana's card starts folded in the cook (a peek costs a hint).
+ * The chips (every level, Zafar, 20 Oct): a word is written until the child has used it right, then the speaker alone (Cook.chipWord).
  * Art: assets/cook/items/v3/daar/ (the nine pots on one registered canvas, the trivet bowl, the ladle;
  * meta.json), the pantry v2 jars, the top-down vegetables (veg-*-whole-t / -chopped-t), tool-knife-t, and
  * the kitchen kit's hob and knob (js/cook/kitchen-kit.js). The dial's face is drawn in code.
@@ -40,6 +41,7 @@
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the daar into its pot)
 
 (function (global) {
   const Cook = CookNS;
@@ -53,20 +55,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const IT = "assets/cook/items/";
   const V3 = IT + "v3/daar/";
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
-  const SHELF_TOP = 666;
+  const SHELF_TOP = St.SHELF.top; // the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   // a scene piece's y: raised into the middle of a taller stage's worktop (Cook.lift, set per round)
   let LIFT = 0;
   const sy = (z, y) => z.Y(y) - z.L(LIFT);
   const BASE = 818;
   const CHIP_Y = 860;
-  const PITCH = 150;
-  const SLOT_W = 112;
+  // SH-112 (Zafar 20 Oct): the taller band's crates and jars a quarter bigger (St.shelfFit keeps the band's top gap)
+  const PITCH = 180;
+  const SLOT_W = 140;
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf };
   const FONT = "Nunito, sans-serif";
   // the vegetables' own art: word id -> file stem
   const VEG = { "veg-01": "bataato", "veg-02": "dungri", "veg-03": "tameto", "veg-12": "marcha", "veg-13": "lasan", "veg-14": "aadu" };
-  const CHOPPED = { "veg-01": "veg-bataato-cubed-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.png" };
+  const CHOPPED = { "veg-01": "veg-bataato-cubed-v2-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.png" };
   // 30 Sept (R5): onion, tomato and chilli as real chopped heaps (one heap per chopped vegetable) and one piece
   // each (the piece flies off the knife and lands as its heap), in place of the flower-like v2 piles
   const HEAP5 = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli" };
@@ -76,12 +79,35 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * the art (assets/cook/items/v3/daar/meta.json; build/check_vessel_meta.py re-fits them): the round body's
    * centre (cx, cy: fractions of w and h) and radius r (of w), handles left out. inner: the contents' radius
    * (of w), measured on pot-oil / -daar / -tadka along 12 rays (0.33-0.34): the stir's turning layer is
-   * clipped a little inside it, so the rim never turns.
+   * clipped a little inside it, so the rim never turns. (s08 w4A: no longer drawn; its states' contents are cut from this
+   * canvas into discs, OLD_IN below, and build/check_vessel_meta.py still checks the canvas.)
    */
   const POT = { w: 430, h: 348, cx: 0.4982, cy: 0.4985, r: 0.3566, inner: 0.325 };
+  /*
+   * s08 w4A (DAAR-29, DAAR-31, P48, P50): the pot is DP2's, exactly top-down and empty (assets/cook/items-s08b/daar-pot-top-s08b,
+   * 900 x 705, measured on the cut: the rim's outer circle centre (cx, cy) and radius r, the inside wall's radius inner, all of w),
+   * and what is in it is a ROUND DISC that lies inside it and turns under a still rim (a copy of the pot with its middle cut out,
+   * drawn over the disc). The discs: DP3's daal (plain, and the stirred swirl that comes up as you stir faster), and before the
+   * daal goes in the oil, seeds and vegetables cut once as discs from the v3 pot pictures' contents (OLD_IN: their contents
+   * circle on that canvas, measured on the cut). DP3's tadka, veg and done discs show curry leaves, a dried chilli, onion with
+   * tomato and coriander that an order may not have (DAAR-16: the pot shows what went in), so they are not used: what went in
+   * shows as DP1's pieces on the daal, and the tadka lies under the daal poured over it.
+   */
+  const POT2 = { w: 900, h: 705, cx: 0.5, cy: 0.4993, r: 0.3844, inner: 0.3467, cut: [327 / 900, 333 / 900], disc: 337 / 900 };
+  /*
+   * s08 w6B (DAAR-31, P50: "the bottom and left walls of the pot are more visible than the top wall"): DP2's lip is not even
+   * (measured on the @2x cut along 12 rays: its bright lip begins 12 px inside the outer edge at the top, 18-25 px elsewhere,
+   * and the outer edge is 340 x 346 px), so a round cut at `inner` showed a thin top and a thick bottom. The still rim is now
+   * cut on an ellipse a constant 13 px inside the outer edge (cut: its x and y radii, of w), and the disc reaches past it
+   * (disc: its radius, of w; under the rim's outer edge everywhere), so the metal shows one even band all round.
+   */
+  const OLD_IN = { cx: 213.5 / 430, cy: 175 / 348, r: 135 / 430 };
+  // DP3's discs (assets/s08b-cut-data.json: [cx, cy, r] of the circle on its 419 x 420 canvas)
+  const DISCS = { daar: ["dv4-disc-plain", "disc-daal-plain-s08b", [208.7, 223.4, 194.0]], stirred: ["dv4-disc-stirred", "disc-daal-stirred-s08b", [208.7, 197.0, 194.2]] };
+  const S08B = "assets/cook/items-s08b/";
   // 30 Sept (R4): the -only / pairs pots (the same canvas, registered to D1's rim) so an order without onion
-  // never shows onion; tadka-v2 has only the mustard and cumin (no dry chilli, no curry leaves: no order has them)
-  const POTS = ["empty", "oil", "seeds", "onion", "tomato", "chilli", "daar", "tadka", "stir", "tomato-only", "chilli-only", "onion-chilli", "tomato-chilli", "tadka-v2"];
+  // never shows onion. s08 w4A: only their contents are drawn (cut to discs), so only the states before the daar load
+  const POTS = ["oil", "seeds", "onion", "tomato", "chilli", "tomato-only", "chilli-only", "onion-chilli", "tomato-chilli"];
   // what the pot shows for the pictured vegetables in it so far (onion, tomato, chilli: every mix has its picture;
   // D1's "tomato" is onion + tomato and its "chilli" all three). Another vegetable (garlic, potato) changes nothing.
   const VEG_BIT = { "veg-02": 1, "veg-03": 2, "veg-12": 4 };
@@ -116,6 +142,113 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // DAAR-11 (D6): the ladle's handle leaves its bowl about 48 degrees above the right (ladle-v3.webp); turned so it
   // always points out to the rim, hooked over it, as the ladle goes round
   const LADLE_HANDLE = (-48 * Math.PI) / 180;
+  // DAAR-30: the stir's flag, at 12 o'clock (screen angles: y down, so straight up is -90 degrees)
+  const FLAG_AT = -Math.PI / 2;
+  /** A test log (the contract checks read it: contract-65, contract-66), never shown. */
+  const stirNote = (what, step, by) => {
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note(what, { step: String(step), by });
+    } catch (e) {
+      /* only a log */
+    }
+  };
+  /*
+   * The pot's contents as a disc texture (s08 w4A): a square canvas with the round contents centred in it, its edge a little
+   * soft. st: "daar" / "stirred" (DP3's discs, cut to their circle) or a v3 pot state (its contents circle, OLD_IN). Made once.
+   */
+  function discTex(S, st) {
+    const key = `dv4-c-${st}`;
+    if (S.textures.exists(key)) return key;
+    const d = DISCS[st];
+    const srcKey = d ? d[0] : `dv3-pot-${st}`;
+    if (!S.textures.exists(srcKey)) return d ? "dv4-pot-top" : discTex(S, "daar");
+    const img = S.textures.get(srcKey).getSourceImage();
+    const [x0, y0, r] = d ? d[2] : [OLD_IN.cx * img.width, OLD_IN.cy * img.height, OLD_IN.r * img.width];
+    const R = Math.round(r);
+    const ct = S.textures.createCanvas(key, 2 * R, 2 * R);
+    const g = ct.getContext();
+    g.drawImage(img, x0 - R, y0 - R, 2 * R, 2 * R, 0, 0, 2 * R, 2 * R);
+    const feather = d ? 2 : 6;
+    const fade = g.createRadialGradient(R, R, R - feather, R, R, R);
+    fade.addColorStop(0, "rgba(0,0,0,1)");
+    fade.addColorStop(1, "rgba(0,0,0,0)");
+    g.globalCompositeOperation = "destination-in";
+    g.fillStyle = fade;
+    g.beginPath();
+    g.arc(R, R, R, 0, TAU);
+    g.fill();
+    g.globalCompositeOperation = "source-over";
+    ct.refresh();
+    return key;
+  }
+  /** The still rim: DP2's pot with its middle cut away (a soft edge just inside the wall), drawn over the turning disc. */
+  function rimTex(S) {
+    const key = "dv4-pot-rim";
+    if (S.textures.exists(key)) return key;
+    const img = S.textures.get("dv4-pot-top").getSourceImage();
+    const w = img.width;
+    const h = img.height;
+    const ct = S.textures.createCanvas(key, w, h);
+    const g = ct.getContext();
+    g.drawImage(img, 0, 0, w, h);
+    const cx = POT2.cx * w;
+    const cy = POT2.cy * h;
+    // DAAR-31: an even band of rim all round (POT2.cut, an ellipse a constant width inside DP2's outer edge)
+    const rx = POT2.cut[0] * w;
+    const ky = POT2.cut[1] / POT2.cut[0];
+    g.save();
+    g.translate(cx, cy);
+    g.scale(1, ky);
+    const cut = g.createRadialGradient(0, 0, rx - 5, 0, 0, rx + 1);
+    cut.addColorStop(0, "rgba(0,0,0,1)");
+    cut.addColorStop(1, "rgba(0,0,0,0)");
+    g.globalCompositeOperation = "destination-out";
+    g.fillStyle = cut;
+    g.beginPath();
+    g.arc(0, 0, rx + 1, 0, TAU);
+    g.fill();
+    g.restore();
+    g.globalCompositeOperation = "source-over";
+    ct.refresh();
+    return key;
+  }
+  /**
+   * DAAR-30: the stir's small racing flag, standing on the rim at 12 o'clock (x, y: the pole's foot), drawn flat in the kit's
+   * inks: a dark pole and a black and white chequered flag with a soft shadow. wave(): it flutters as the ladle passes it.
+   */
+  function stirFlag(z, S, x, y) {
+    const c = S.track(S.add.container(x, y).setDepth(D.item + 0.7).setAlpha(0));
+    c.setName("daar-stir-flag");
+    const g = S.add.graphics();
+    const L = (v) => z.L(v);
+    const pole = 76;
+    const fw = 56;
+    const fh = 38;
+    g.fillStyle(0x28190a, 0.16).fillEllipse(L(3), L(2), L(16), L(7));
+    g.fillStyle(0x3a2410, 1).fillRoundedRect(-L(3.5), -L(pole), L(7), L(pole), L(3.5));
+    g.fillStyle(0x3a2410, 1).fillCircle(0, -L(pole), L(4.5));
+    const flagG = S.add.graphics();
+    const n = 4;
+    const m = 3;
+    flagG.fillStyle(0x28190a, 0.14).fillRoundedRect(L(3), -L(pole) + L(5), L(fw), L(fh), L(3));
+    for (let i = 0; i < n; i++) for (let j = 0; j < m; j++) flagG.fillStyle((i + j) % 2 ? 0x2a2522 : 0xfffaf1, 1).fillRect(L(2) + (i * L(fw)) / n, -L(pole) + L(2) + (j * L(fh)) / m, L(fw) / n + 0.5, L(fh) / m + 0.5);
+    flagG.lineStyle(L(2), 0x2a2522, 0.85).strokeRect(L(2), -L(pole) + L(2), L(fw), L(fh));
+    // (an empty box named for the evidence probes' canvas:pot crop, so the flag is in the pot's frame; never drawn)
+    const box = S.add.rectangle(L(fw / 2), -L(pole / 2), L(fw + 8), L(pole + 8), 0xffffff, 0).setName("daar-pot-flag");
+    c.add([g, flagG, box]);
+    S.tweens.add({ targets: c, alpha: 1, duration: 300 });
+    return {
+      wave() {
+        if (!flagG.active) return;
+        S.tweens.killTweensOf(flagG);
+        flagG.setScale(1, 1);
+        S.tweens.add({ targets: flagG, scaleX: 0.72, duration: 90, yoyo: true, repeat: 1, ease: "Sine.easeInOut" });
+      },
+      close() {
+        S.tweens.add({ targets: c, alpha: 0, duration: 300, onComplete: () => c.active && c.destroy() });
+      },
+    };
+  }
   /*
    * Where the chopped pieces wait (D4, Q4: "in bowls, or on the counter at the top right: try it and judge").
    * "counter": one small pile per piece, a row per vegetable, straight on the counter (chosen: it can be
@@ -165,11 +298,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const pool = [].concat(p.pool || []).filter((id) => VEG[id]);
     const tadka = [].concat(p.tadka || []);
     const flat = tadka.flat();
-    const spiceIds = Cook.shuffle([...new Set(flat.concat(St.decoys(K.spiceShelf || [], flat, K.spiceDecoys || 0)))]);
+    // CK-49 (the level table): 1, 2, 3, 3 decoy spices on the tadka shelf, a lookalike among them at L4
+    const spiceIds = Cook.shuffle([...new Set(flat.concat(St.tableDecoys(K.spiceShelf || [], flat, level, { want: flat, what: "spices" })))]);
     const laps = p.laps || 3;
     const side = Cook.daarSide || "counter";
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the chop's own begin shows it (data.onboard.daar)
     const vegAll = [...new Set(kinds.concat(no, pool))].filter((id) => VEG[id]);
+    // CK-49 (contract-37): the chop's decoys, the vegetables thrown that nobody asked for (its 'no' one too)
+    {
+      const LA = Cook.data.lookalikes || {};
+      const off = vegAll.filter((id) => !kinds.includes(id));
+      St.decoyNote(off.length, { what: "chop", lookalike: off.some((id) => kinds.some((w) => (LA[w] || []).includes(id))) });
+    }
     const art = [
       ["dv2-knife", IT + "tool-knife-t.png"], // DAAR-13: the margin-safe cut (the webp touched its canvas edge: the tip was clipped)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
@@ -178,6 +318,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
     ]
       .concat(POTS.map((st) => [`dv3-pot-${st}`, `${V3}pot-${st}.webp`]))
+      .concat([["dv4-pot-top", `${S08B}daar-pot-top-s08b.webp`]], Object.values(DISCS).map(([key, file]) => [key, `${S08B}daar-discs/${file}.webp`]))
       .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, shelfUrl(id)]))
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
@@ -205,7 +346,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (ctx.nextStep) ctx.nextStep("Chop");
         if (phases.chop && !tries) UI.gist(phases.chop);
         const cz = Mech.zone(S, ctx, { id: "chop", level });
-        const nani = naniCard(want, no, level, kinds.filter((id) => !(id in need)));
+        // (her card is drawn at the order's card level, as the order card beside it: a day's order of daal and maani at L3 dots
+        // both, though the daal itself is a lower level: contract-35, s08 gate's day 3)
+        const nani = naniCard(want, no, level, kinds.filter((id) => !(id in need)), need, Math.max(level, UI.orderLevel ? UI.orderLevel() : level));
         const c = await chop(cz, { want: need, kinds: Object.keys(need), no, pool, level, retry: tries > 0, nani, side });
         nani.close();
         cz.close();
@@ -273,17 +416,43 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
-  function naniCard(want, no, level = 1, doneIds = []) {
+  function naniCard(want, no, level = 1, doneIds = [], need = want, cardLv = level) {
     const M = UI.mission;
-    // 30 Sept (Zafar, Q7): from level 3 the chop card is words only ("dungri"); how many is heard, as on the order card
+    // SH-99 (every number said is written) and the level table (s08 w2A, SH-110): the chop card writes how many at every
+    // level ("trae dungri"); from L3 its item words are dotted as the order card's are ("trae •••"), and at L4 it starts
+    // folded (face + headline; her face replays it). Was: from level 3 words only, the number heard (decision 41)
     const parts = (id) => Lang.countParts(want[id], id);
-    // (from level 3 the noun keeps the form its count gave it: "trae dungri" is written "dungri")
-    // DAAR-08, decision 57 (as the order card, js/cook/order.js): a number is still written the first times it is heard
-    const written = (id) => level < 3 || !!(Cook.timesHeard && Cook.numId && Cook.timesHeard(Cook.numId(want[id])) < 3);
-    const rows = Object.keys(want).map((id) => ({ id, label: Lang.html(written(id) ? Lang.phrase(parts(id)) : Lang.phraseUncounted(parts(id))), done: doneIds.includes(id) }));
+    const dot = (w) => Cook.dotItem(w, cardLv);
+    /*
+     * DAAR-34 (P54, Zafar 17 Oct: "those other items should be dotted, so you can see there's three items to be chopped in total
+     * but only the first one is revealed to you audibly and visually in writing"; the level table's L3: "unsaid rows dotted and
+     * revealed as called"): where the chop is called in rounds (its phases) on a dotted card (L3 up), a row she has not called yet is dotted
+     * whole, number too, and is written as she calls it (call(ids), the chop's onCall). One round: every row is called at once.
+     */
+    const rounds = Math.min(Math.max(1, (Mech.knobs("chop", { level }) || {}).phases || 1), Object.keys(need).length || 1);
+    // (from L3, where the level table dots the card: an open card, L1-L2, writes every word, contract-35)
+    // DAAR-34 (s08 w6J; the judge, 20 Oct: "at L4 every round the chop card shows only 'Chop these.'"): Nani's chop card has its
+    // own row in the level table (data/cook.json levelTable.stations["daar-chop"]): dotted at L4 too, never folded, so the child
+    // sees how many things there are to chop, the one she has called written and the rest dotted
+    const cardAt = Cook.cardState(cardLv, "daar-chop");
+    // (and at L4 a row she has called is written whole, "revealed to you audibly and visually in writing"; at L3 the level
+    // table's dotted card keeps the item dotted until its row ticks: data levelTable.stations["daar-chop"].callWritten)
+    const own = (((Cook.data && Cook.data.levelTable) || {}).stations || {})["daar-chop"] || {};
+    const cw = Array.isArray(own.callWritten) ? !!own.callWritten[Math.min(own.callWritten.length, Math.max(1, cardLv)) - 1] : false;
+    const staged = rounds > 1 && cardAt !== "open";
+    // the rows ticked so far (DAAR-34, the judge's flaw at L3: a ticked row stayed "trae •••"): a ticked row is written whole
+    const done = new Set(doneIds);
+    const called = new Set(staged ? Object.keys(want).filter((id) => !(id in need)) : Object.keys(want));
+    // (a row she has not called is sealed: its dots stay dots in the bulb's peek too, so the L4 peek writes only what she has
+    // said, the first item, and the rest stay dotted, per the level table; the judge, 20 Oct: "the L4 peek writes all three")
+    const label = (id) => {
+      const unsaid = !done.has(id) && !called.has(id);
+      return Lang.html(Lang.phrase(parts(id)), { hide: (w) => !done.has(id) && (!called.has(id) || (!cw && dot(w))), sealed: unsaid });
+    };
+    const rows = Object.keys(want).map((id) => ({ id, label: label(id), done: done.has(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
-    no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))))), done: false, no: true }));
+    no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))), { hide: dot })), done: false, no: true }));
     // "Chop these": the engine's line (to record with Mum: a grey-italic placeholder until then)
     const chopHead = Lang.line("chop-these");
     // T12 (R4): one Nani card. Her step line ("Nindha nindha kap!") is the card's top strip, and her box keeps only
@@ -299,26 +468,38 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the sidebar's own calls (order-card follow-ups): Nani's card above the order's, and the phase fold
     // (only cards you can act on stay open: Nana's daar card folds to face + headline while chopping)
     // C3 (decision 41, E12): her face replays what to chop, the numbers always said (from level 3 they're not written)
-    const kinds = Object.keys(want);
-    const line = kinds.length
-      ? Lang.join(kinds.map((id, j) => Lang.line(j === 0 ? "only" : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))))
-      : null;
-    const opts = { say: line ? () => Lang.speak(line) : null };
+    // (the replay says only what she has called so far: DAAR-34)
+    const line = () => {
+      const kinds = Object.keys(want).filter((id) => called.has(id));
+      return kinds.length ? Lang.join(kinds.map((id, j) => Lang.line(j === 0 ? "only" : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id))))) : null;
+    };
+    const opts = { say: Object.keys(want).length ? () => line() && Lang.speak(line()) : null, closed: cardAt === "hidden" };
     M.addCard("daar-chop", data(), opts);
     M.closeCards(true);
     if (UI.guideStrip) UI.guideStrip(true);
     return {
       rows,
+      // DAAR-34: she calls these now: their rows are written (before she says them, so every number said is written)
+      call(ids) {
+        const fresh = [].concat(ids || []).filter((id) => id in want && !called.has(id));
+        if (!fresh.length) return;
+        fresh.forEach((id) => called.add(id));
+        rows.forEach((r) => !r.no && fresh.includes(r.id) && (r.label = label(r.id)));
+        M.addCard("daar-chop", data(), opts);
+        stirNote("chop-call", fresh.join(","), `rows:${rows.filter((r) => !r.no && !called.has(r.id)).length} dotted`);
+      },
       // DAAR-13 (rule E11): at level 1 a row lights the moment its count is reached
       tick(id) {
         const r = rows.find((x) => x.id === id && !x.no);
         if (!r || r.done) return;
         r.done = true;
+        done.add(id);
+        r.label = label(id);
         M.addCard("daar-chop", data(), opts);
       },
       // the rows she asked for tick; her "don't" row stays neutral (nothing was added)
       tickAll() {
-        rows.forEach((r) => !r.no && (r.done = true));
+        rows.forEach((r) => !r.no && (r.done = true, done.add(r.id), (r.label = label(r.id))));
         M.addCard("daar-chop", data(), opts);
       },
       close() {
@@ -356,7 +537,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     S.tweens.add({ targets: c, alpha: 1, scale: Math.max(z.k, Cook.Kit.textFloor(S, 36)), y: y - z.L(18), duration: 200, ease: "Back.easeOut" });
     S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: ms, duration: 320, onComplete: () => c.destroy() });
     if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
-    const talk = speakId ? Lang.speakWord(speakId) : line ? Lang.speak(line) : null;
+    const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
     return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
   }
 
@@ -381,13 +562,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let img;
       if (S.textures.exists(key)) {
         const src = S.textures.get(key).getSourceImage();
-        const sc = z.L(w) / src.width;
+        const sc = z.L(St.shelfFit(S, key, w / src.width, BASE));
         img = S.track(S.add.image(z.X(x), z.Y(BASE), key).setOrigin(0.5, 0.97).setScale(sc).setDepth(D.item + 1));
         img.baseScale = sc;
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.8), height: z.L(16) });
       } else img = S.ingredient(id, z.X(x), z.Y(BASE - 56), { w: z.L(110), h: z.L(100), label: false, depth: D.item + 1 });
       img.wordId = id;
-      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: level < 3, w: Math.min(128, pitch - 12) });
+      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: Cook.chipWord(id, z.ctx), w: Math.min(128, pitch - 12) });
       chip.setScale(z.k);
       img.chip = chip;
       items[id] = img;
@@ -464,7 +645,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // DAAR-13 (D10): the margin-safe knife (the art run's when it lands), whose blade cuts too
     const knifeKey = St.hasArt(S, "knife") ? St.artKey("knife") : "dv2-knife";
     const blade = (St.hasArt(S, "knife") && (St.art("knife").meta || {}).blade) || KNIFE_BLADE;
-    const cut = (await Mech.run("chop", z, { targets: want, pool, no, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), tally: false, timer: { x: 130, y: 130 } })) || {};
+    const cut = (await Mech.run("chop", z, { targets: want, pool, no, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: { x: 130, y: 130 } })) || {};
     // graded now: each vegetable, how many (a sliced decoy falls away: it never reaches the pot)
     let wrong = null;
     kinds.forEach((id) => {
@@ -498,24 +679,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const cx = hob.burners[0].x;
     const cy = hob.burners[0].y;
     // the pot, placed by its measured body (never the handles' box); hot oil in it from the start (D2)
-    const scale = bodyR / (POT.r * POT.w);
-    const potKey = (st) => `dv3-pot-${st}`;
-    const pot = S.track(S.add.image(cx, cy, potKey("oil")).setOrigin(POT.cx, POT.cy).setScale(scale).setDepth(D.item));
+    // s08 w4A (DAAR-31): DP2's top-down pot, its contents a disc inside it under the still rim (POT2)
+    const scale = bodyR / (POT2.r * POT2.w);
+    const pot = S.track(S.add.image(cx, cy, "dv4-pot-top").setOrigin(POT2.cx, POT2.cy).setScale(scale).setDepth(D.item));
+    pot.setName("daar-pot");
     pot.shadow = S.contactShadow(pot, { centerX: cx, centerY: cy + bodyR * 0.08, width: bodyR * 2.15, height: bodyR * 2.15 });
-    const inR = (bodyR * POT.inner) / POT.r;
+    const inR = (bodyR * POT2.inner) / POT2.r;
+    // the disc reaches a little under the rim's soft inner edge, so no edge of it ever shows
+    // DAAR-31: out to POT2.disc, past the rim's even cut and under its outer edge
+    const discR = (bodyR * POT2.disc) / POT2.r;
+    const discAt = (img) => img.setScale(discR / (img.width / 2));
+    const contents = S.track(discAt(S.add.image(cx, cy, discTex(S, "oil")).setDepth(D.item + 0.05)));
+    contents.setName("daar-pot-contents");
+    const rim = S.track(S.add.image(cx, cy, rimTex(S)).setOrigin(POT2.cx, POT2.cy).setScale(scale).setDepth(D.item + 0.2));
+    rim.setName("daar-pot-rim");
     let state = "oil";
-    /** The pot's pictured contents change: the next picture fades in over the last (same canvas). */
+    /** The pot's pictured contents change: the next disc fades in over the last (turned as the last one is). */
     const setPot = (st, ms = 420) =>
       new Promise((r) => {
         if (st === state) return r();
         state = st;
-        const top = S.track(S.add.image(cx, cy, potKey(st)).setOrigin(POT.cx, POT.cy).setScale(scale).setDepth(D.item + 0.05).setAlpha(0));
+        const top = S.track(discAt(S.add.image(cx, cy, discTex(S, st))).setRotation(contents.rotation).setDepth(D.item + 0.06).setAlpha(0));
         S.tweens.add({
           targets: top,
           alpha: 1,
           duration: ms,
           onComplete: () => {
-            pot.setTexture(potKey(st));
+            contents.setTexture(discTex(S, st));
+            discAt(contents);
             top.destroy();
             r();
           },
@@ -583,7 +774,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const sizzle = Cook.sfx.sizzleLoop();
     S.loops.push(sizzle);
     Cook.sfx.sizzle(0.6);
-    S.steam(cx, cy - bodyR * 0.3, 2);
+    S.steam(cx, cy - bodyR * 1.05, 2); // (CK-06, s08 w6M: from the far rim, up and away: never a white cloud over the oil)
     await Cook.wait(350);
     Cook.daarPhase = "hot";
 
@@ -737,8 +928,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Cook.wait(200);
     }
     Cook.daarPhase = "veg-in";
-    // the daar: its bowl on the trivet tips into the pot; the tadka comes up on top. DAAR-10 (D4): the TRIVET
-    // STAYS on the counter: only the bowl lifts (the art run's split pictures, else the one picture split here)
+    // the daar: its bowl on the trivet tips into the pot, over the tadka. DAAR-10 (D4): only the bowl lifts (the art run's
+    // split pictures, else the one picture split here); the mat left behind fades once it's poured (DAAR-33, decision 13)
     steps.to("daar:daar"); // T13: [Put the daar in]
     const split = splitTrivet(S, dBowl, plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET);
     S.tweens.add({ targets: dBowl, alpha: 1, duration: 200 });
@@ -746,26 +937,99 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await tapOnce(z, S, dBowl, "daar", { glow: z.guided });
     steps.done();
     S.tweens.killTweensOf(dBowl);
-    split.lift();
-    const home = { x: dBowl.x, y: dBowl.y, s: dBowl.scale };
-    await Cook.tween(S, { targets: dBowl, x: cx + bodyR * 1.05, y: cy - bodyR * 0.7, angle: -35, scale: home.s * 0.9, duration: 420, ease: "Quad.easeInOut" });
-    const pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
-    await setPot("daar", 700);
-    if (pour && pour.stop) pour.stop();
-    S.tweens.add({ targets: dBowl, alpha: 0, duration: 300 });
+    const mat = split.lift();
+    // SH-117 (DAAR-28, 17 Oct: "a better animation for the daal pouring into the pot ... like the chai one"): the shared
+    // pour (js/shared/pour.js): the bowl lifts to the pot's rim and tips its near edge down, a stream of daal falls into
+    // the pot and the pot fills (its picture fades to the daar) while it runs, then it tips back and goes
+    {
+      const rim = BOWL_IN * dBowl.width * dBowl.scaleX;
+      let pour = null;
+      let filling = false;
+      dBowl.setDepth(D.item + 0.3);
+      // s08 w6B (DAAR-29): the vessel pouring the daal is part of the pot's picture while it pours (named so, the evidence
+      // probes' canvas:pot crop takes it in whole and never cuts it at the crop's edge; it fades out after, alpha 0)
+      dBowl.setName("daar-pour-pot");
+      // (the pool: the pot's daal picture over the masala, seen only inside the growing circle; a geometry mask draws in
+      // the canvas renderer too)
+      const pool = S.track(discAt(S.add.image(cx, cy, discTex(S, "daar"))).setRotation(contents.rotation).setDepth(D.item + 0.07).setAlpha(0));
+      const poolMask = S.make.graphics({ add: false });
+      pool.setMask(poolMask.createGeometryMask());
+      await NjgPour.phaser(S, {
+        obj: dBowl,
+        lip: [-rim, 0],
+        // SH-117 (s08 w6J; the judge, 20 Oct: "no stream ... no rising fill"): the lip is held over the pot's far rim, so the
+        // stream is seen falling across the masala to the middle, and the pour runs long enough to watch the daal rise
+        lipTo: { x: cx + inR * 0.78, y: cy - inR * 1.02 },
+        tilt: -38,
+        squash: 0.14,
+        colour: 0xe09a12,
+        // (s08 w6G, SH-117: a stream thick enough to read as daal falling, and its pool spreading out from where it lands
+        // over the masala until it fills the pot, under the rim; then the pot's own daal picture takes over)
+        width: z.L(40),
+        depth: D.item + 0.25,
+        surface: () => ({ x: cx + inR * 0.12, y: cy + inR * 0.04 }),
+        arc: z.L(50),
+        away: { x: cx + bodyR * 1.3, y: cy - bodyR * 0.9 },
+        fade: true,
+        ms: { lift: 420, tip: 280, pour: 1900, untip: 220, back: 300 },
+        onPhase: (ph) => {
+          if (ph === "pour" && !pour) pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
+          if (ph === "untip" && pour && pour.stop) {
+            pour.stop();
+            pour = null;
+          }
+        },
+        onFill: (u) => {
+          // the pot's own daal picture, uncovered in a circle that grows from where the stream lands until it fills the pot
+          if (u > 0.001 && poolMask) {
+            const e = Math.min(1, u);
+            // (it rises from a small pool where the stream lands: a third of the pot halfway through the pour, full at its end)
+            const r = inR * (0.12 + 1.0 * Math.pow(e, 1.1));
+            poolMask.clear();
+            poolMask.fillStyle(0xffffff, 1);
+            poolMask.fillCircle(cx + inR * 0.12 * (1 - e), cy + inR * 0.04 * (1 - e), r);
+            pool.setAlpha(1);
+          }
+          if (u < 0.97 || filling) return;
+          filling = true;
+          setPot("daar", 200);
+        },
+      });
+      if (pour && pour.stop) pour.stop();
+      dBowl.setAlpha(0);
+      await setPot("daar", 120);
+      pool.clearMask();
+      pool.destroy();
+      poolMask.destroy();
+    }
+    // DAAR-33 (P52, decision 13; reverses DAAR-10): the mat the daar stood on fades away once it has been poured, so it
+    // never peeks out under the speed dial or lies beside the served bowl's own
+    if (mat) {
+      const gone = [mat, mat.shadow].filter(Boolean);
+      S.tweens.add({ targets: gone, alpha: 0, duration: 420, onComplete: () => gone.forEach((o) => o.active && o.destroy()) });
+    }
+    Cook.daarMat = () => !!(mat && mat.active && mat.alpha > 0.02); // (for the evidence probes: is the mat still on the counter?)
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
-    await setPot("tadka-v2", 600);
+    await setPot("daar", 300);
     const pieces = [];
+    // DAAR-31's flaw (the judge, 20 Oct: "identical toppings in identical places at all four levels"): each round lays the
+    // pieces at its own turn of DP1's spots, each a little nearer or further out, so no two pots are the same picture
+    const spin = Math.random() * 360;
+    // DAAR-05's flaw (s08 w6G: "no white blotches on the pot contents"): the onion is cooked golden in the oil and the
+    // ginger-garlic paste is stirred into the daar's own colour, both a little sunk into it, never pale patches on top
+    const COOKED = { "dv4-onion": [0xe2a85a, 0.82], "dv4-paste": [0xe8b048, 0.7] };
     [...wentIn].forEach((id) =>
       (DP1[id] || []).forEach(([key, w, spots]) => {
         if (!S.textures.exists(key)) return;
         spots.forEach(([deg, rr], i) => {
           const img = S.track(S.add.image(cx, cy, key).setDepth(D.item + 0.15).setAlpha(0));
-          if (key === "dv4-onion") img.setTint(0xffe2b4); // cooked soft in the oil, not raw white
+          const cooked = COOKED[key];
+          if (cooked) img.setTint(cooked[0]);
           img.setScale((inR * w * (0.9 + 0.2 * ((i * 37) % 10) / 10)) / Math.max(img.width, img.height));
-          const piece = { img, a: (deg * Math.PI) / 180, r: inR * rr, turn: ((deg * 7) % 360) * (Math.PI / 180) };
+          const rOut = Math.min(0.72, Math.max(0.15, rr + (Math.random() - 0.5) * 0.16));
+          const piece = { img, a: ((deg + spin) * Math.PI) / 180, r: inR * rOut, turn: ((deg * 7 + spin) % 360) * (Math.PI / 180) };
           img.setPosition(cx + Math.cos(piece.a) * piece.r, cy + Math.sin(piece.a) * piece.r).setRotation(piece.turn);
-          S.tweens.add({ targets: img, alpha: 0.92, duration: 400 });
+          S.tweens.add({ targets: img, alpha: cooked ? cooked[1] : 0.92, duration: 400 });
           pieces.push(piece);
         });
       })
@@ -775,16 +1039,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (sizzle && sizzle.stop) sizzle.stop();
     if (ctx.nextStep) ctx.nextStep("Stir");
     if (K.stirLine && !retry) UI.gist(K.stirLine);
-    // T14 (DAAR-12): the stir row (the laps and the speed) shows on the card now, through the shared request pop-up
-    // before the stir (S04-B, decision 75 (1))
-    await UI.mission.request("stir");
+    // T14 (DAAR-12): the stir row (the laps and the speed) shows on the card now. DAAR-26 (P9, Zafar 17 Oct: "I don't think the
+    // recipe card should come up and tell you ... we should just keep Nani doing the stirring instructions"; newer than
+    // decision 75 (1)'s pop-up for the stir): no pop-up; the row appears quietly (every number she says is written, SH-99) and
+    // only Nani says the stir line, once and whole (stir())
+    if (UI.mission.reveal) UI.mission.reveal("stir");
 
     // 4. stir: drag the ladle round (or tap the pot: one turn); the speed dial, the laps as the Kutchi word.
     // Decision 51: the wrong number of stirs is stirred again (the laps start at nothing), with help; the third
     // wrong try is counted right for you and moves on.
     let stirred = 0;
     for (let t = 0; ; t++) {
-      const st = await stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry: retry || t > 0, steps, pieces });
+      const st = await stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry: retry || t > 0, steps, pieces, contents });
       stirred = st.count;
       if (!t && !retry) {
         z.listen(stirred === laps, `stirred ${stirred} times, they asked for ${laps}`);
@@ -981,7 +1247,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * pictured contents turn with the ladle (D10: the tadka picture, clipped inside the rim; the swirl picture
    * comes up as you go faster). speed: null | "slow" | "quick" (said from level 2, judged by the ear only).
    */
-  function stir(z, S, { cx, cy, inR, scale, laps, speed, level, retry, steps, pieces = [] }) {
+  function stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry, steps, pieces = [], contents }) {
     return new Promise((resolve) => {
       const ctx = z.ctx;
       const hide = St.hideKnown(ctx);
@@ -990,29 +1256,30 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const [e1, e2, e3] = bands;
       const asked = k.speeds ? speed || null : null;
       const trackR = inR * 0.62;
-      // the turning contents: the same pot pictures, masked to the inside of the rim
-      const maskG = S.make.graphics({ add: false });
-      maskG.fillStyle(0xffffff, 1);
-      maskG.fillCircle(cx, cy, inR);
-      const mask = maskG.createGeometryMask();
-      const layer = (key, a) => {
-        const im = S.track(S.add.image(cx, cy, key).setOrigin(POT.cx, POT.cy).setScale(scale).setDepth(D.item + 0.1).setAlpha(a));
-        im.setMask(mask);
-        return im;
-      };
-      const still = layer("dv3-pot-tadka-v2", 1);
-      // DAAR-05: the fast layer is the pot's own tadka turning faster (pot-stir showed curry leaves no order puts in)
-      const swirl = layer("dv3-pot-tadka-v2", 0);
+      // the turning contents (DAAR-29, s08 w4A): the pot's daar disc itself turns about its centre under the still rim (drawn
+      // over it: rimTex), and DP3's stirred swirl comes up over it as you go faster, turning a little faster
+      const still = contents;
+      const swirl = S.track(S.add.image(cx, cy, discTex(S, "stirred")).setDepth(D.item + 0.1).setAlpha(0));
+      swirl.setScale((bodyR * POT2.disc) / POT2.r / (swirl.width / 2));
+      swirl.setName("daar-pot-swirl");
+      /*
+       * DAAR-30 (P49, Zafar 17 Oct: "a little racing flag to mark the start and end of one revolution ... at the 12 o'clock
+       * position, and every time you go past it it makes a bit of a sound, she says the number and the number changes"): a
+       * small chequered flag on the rim at 12 o'clock. The ladle starts under it, and a turn counts as the ladle passes it.
+       */
+      const flag = stirFlag(z, S, cx, cy - bodyR + z.L(4));
       // the ladle (D6): top-down, its bowl in the daar and the handle rising toward us
-      const ladle = S.track(S.add.image(cx + trackR, cy, "dv3-ladle").setDepth(D.item + 0.6).setOrigin(LADLE.cx, LADLE.cy));
+      const ladle = S.track(S.add.image(cx, cy - trackR, "dv3-ladle").setDepth(D.item + 0.6).setOrigin(LADLE.cx, LADLE.cy));
       ladle.setScale((inR * 0.3) / (LADLE.r * LADLE.w));
-      const ringG = S.track(S.add.circle(cx + trackR, cy, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
+      const ringG = S.track(S.add.circle(cx, cy - trackR, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
       S.tweens.add({ targets: ringG, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
       const dial = speedDial(z, S, { x: 1260, y: 400, bands, max: k.dialMax || 3, asked });
       let count = 0;
-      let ang = 0; // the ladle's angle
+      let ang = FLAG_AT; // the ladle's angle: it starts under the flag
       let rot = 0; // the contents' turn
-      let acc = 0; // turned since the last lap
+      let since = 0; // turned (signed) since the last lap
+      let lapT = performance.now(); // when the last lap ended (or the stir began)
+      let saying = null; // the last number said, while it is being said
       let prev = null;
       let over = false;
       let moved = 0;
@@ -1068,27 +1335,56 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // DAAR-05: what went in turns with the daar
         pieces.forEach((p) => p.img.active && p.img.setPosition(cx + Math.cos(p.a + rot) * p.r, cy + Math.sin(p.a + rot) * p.r).setRotation(p.turn + rot));
       };
-      const lap = () => {
+      const lap = (da = 0) => {
         count++;
-        Cook.sfx.bubble ? Cook.sfx.bubble() : Cook.sfx.soft();
+        const now = performance.now();
+        const period = now - lapT;
+        lapT = now;
+        // the flag's sound as the ladle passes it, the flag flutters, and the number on the dial changes at once
+        (Cook.sfx.click || Cook.sfx.bubble || Cook.sfx.soft)();
+        flag.wave();
         dial.laps(count);
         // DAAR-24 retired (Zafar, 14 Oct, D12): the laps are said aloud at every level, the stir's own exception to the
-        // counting rule; the line carries role "laps" so the counting check (contract-19) knows it is not counting along
-        if (!(UI.naniMuted && UI.naniMuted())) Lang.speak(Lang.role(Lang.numLine(count), "laps")).catch(() => {});
+        // counting rule; the line carries role "laps" so the counting check (contract-19) knows it is not counting along.
+        // DAAR-27 (P10: "the counting doesn't keep up with the turns ... say it within like three quarters of one revolution"):
+        // the number is said the moment the ladle passes the flag. It waits behind nothing but the number before it (the one
+        // queue drops an older number still waiting); while Nani is still saying a line (her stir line, when the child starts
+        // at once) the number is not said late: it is left out and the next one is said (P10: "a late number is dropped")
+        const V = Cook.core && Cook.core.voice;
+        const busy = !saying && !!(V && V.busy && V.busy("cook"));
+        let said = "mute";
+        if (!(UI.naniMuted && UI.naniMuted())) {
+          if (busy) said = "quiet";
+          else {
+            said = "ok";
+            const mine = Lang.speak(Lang.role(Lang.numLine(count), "laps"), { kind: "count" }).catch(() => {});
+            saying = mine;
+            mine.then(() => saying === mine && (saying = null));
+          }
+        }
+        // (the log: the ladle's angle from the flag after the move that passed it, that move's size, the lap's time; lib/contract-daal.mjs)
+        const deg = (a) => Math.round(a * (180 / Math.PI));
+        const at = deg(((((ang - FLAG_AT) % TAU) + TAU + Math.PI) % TAU) - Math.PI);
+        stirNote("stir-lap", count, `deg:${at} da:${deg(Math.abs(da))} ms:${Math.round(period)} ${said}`);
         z.progress({ lap: count });
         // SH-58: the laps are done: the ✓ is the only thing left, and glows (a station's first plays; level 1 only: later the glow would give the count away)
         if (count === laps && Cook.roundLevel(ctx) <= 1 && UI.doneGlows && UI.doneGlows()) UI.glowDone(true);
         post();
       };
+      // which turn round the flag an angle is in (the flag's line lies between two)
+      const lapOf = (a) => Math.floor((a - FLAG_AT) / TAU);
       const turn = (da) => {
+        const before = ang;
         ang += da;
-        acc += Math.abs(da);
+        since += da;
         moved += Math.abs(da);
         rot += da * 0.55;
         place();
-        if (acc >= TAU * 0.92) {
-          acc = 0;
-          lap();
+        // DAAR-30: a lap counts as the ladle crosses the flag going the way it is going, after most of a turn (3/4) that way
+        // since the last one: stirring back and forth under the flag never counts; either way round does
+        if (lapOf(before) !== lapOf(ang) && Math.abs(since) >= TAU * 0.75 && Math.sign(since) === Math.sign(da)) {
+          since = 0;
+          lap(da);
         }
       };
       /** Daar slops over the rim where the ladle is (way too fast). */
@@ -1125,13 +1421,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           turn(da);
         }),
         z.on("pointerup", () => {
-          // a tap on the pot (no drag): the ladle goes round once on its own
+          // a tap on the pot (no drag): the ladle goes round on its own, on past the flag (one lap a tap)
           if (start && start.moved < 0.3 && performance.now() - start.t < 400 && !over) {
             const o = { v: 0 };
             let lastV = 0;
+            let rest = TAU - ((((ang - FLAG_AT) % TAU) + TAU) % TAU);
+            if (since + rest < TAU * 0.75) rest += TAU;
             S.tweens.add({
               targets: o,
-              v: TAU,
+              v: rest + 0.03,
               duration: 700,
               ease: "Sine.easeInOut",
               onUpdate: () => {
@@ -1187,18 +1485,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else overT = 0;
       });
       place();
-      // Nani says how many ("Trae!"), and from level 2 how fast ("Trae. Dhire dhire.")
+      /*
+       * DAAR-26, DAAR-32 (P9, P51; decision 13): Nani says the stir line ONCE and WHOLE as the stir opens, at every level, L1
+       * too: the verb, how many and how fast ("Firai! Trae! Jaldi jaldi."), never the count first and the verb seconds later.
+       * It is the engine's nearest whole line, three recorded pieces, until Mum records the one sentence (DAAR-26 waits on
+       * her); the step call says it (role call, the level table), and the help ladder says it again only after the pause.
+       */
       const said = asked && k.speedWords ? Lang.join([Lang.numLine(laps), Lang.line(k.speedWords[asked])]) : Lang.numLine(laps);
-      // T13: the stir step's line is "Firai!" with the laps and the speed ("Firai! Trae! Aste thi.")
       const stepLine = Lang.join([St.guideLine("daar:stir"), said]);
-      if (!steps) {
-        if (!retry) z.say(said, { hide }).catch(() => {});
-      } else if (Cook.roundLevel(ctx) <= 1) steps.to("daar:stir", { line: stepLine, hide, force: retry });
-      else {
-        z.say(said, { hide })
-          .catch(() => {})
-          .then(() => !over && steps.to("daar:stir", { line: stepLine, hide, quiet: true, force: retry }));
-      }
+      if (steps) steps.to("daar:stir", { line: stepLine, hide, force: retry });
+      else if (!retry) z.say(stepLine, { hide }).catch(() => {});
       Cook.markSeen(Cook.numId(laps));
       post();
       UI.done({ glow: false }).then(() => {
@@ -1213,7 +1509,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         setTimeout(() => stopTick && stopTick(), 400);
         dial.close();
         S.tweens.add({ targets: ladle, alpha: 0, duration: 300 });
-        S.tweens.add({ targets: swirl, alpha: 0, duration: 300 });
+        flag.close();
+        // (stirred, the swirl stays: the daar looks stirred; not stirred at all, it goes)
+        S.tweens.add({ targets: swirl, alpha: count > 0 ? 0.9 : 0, duration: 300 });
         const speedOk = asked && judged * 1000 >= (k.minJudgeMs || 500) ? !corrected && inAsked / judged >= (k.okFrac || 0.6) : asked && corrected ? false : null;
         resolve({ count, asked, speedOk, corrected, spills });
       });
@@ -1290,7 +1588,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return {
       lift() {
         const tex = art ? St.artKey("daar-trivet") : tKey;
-        if (!S.textures.exists(tex)) return;
+        if (!S.textures.exists(tex)) return null;
         const t = S.track(S.add.image(bowlImg.x, bowlImg.y, tex).setOrigin(bowlImg.originX, bowlImg.originY).setScale(bowlImg.scaleX).setDepth(bowlImg.depth - 0.01));
         if (art) t.setDisplaySize(bowlImg.displayWidth, bowlImg.displayHeight);
         if (bowlImg.shadow) bowlImg.shadow.setVisible(false);
@@ -1300,6 +1598,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const [dw, dh] = [bowlImg.displayWidth, bowlImg.displayHeight];
           bowlImg.setTexture(bt).setDisplaySize(dw, dh);
         }
+        return t; // (DAAR-33: the mat left behind, faded away after the pour)
       },
     };
   }
@@ -1313,12 +1612,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const BOWL_DAAR = { cx: 0.499, cy: 0.497, r: 0.322 };
   function bowlFill(S, bowl, pot) {
     const key = "dv3-bowl-daar";
-    const R = Math.round(POT.inner * POT.w);
+    // s08 w4A: the pot's own stirred daar disc (DP3), as the pot showed it
+    const src = discTex(S, "stirred");
+    const R = Math.round(S.textures.get(src).getSourceImage().width / 2);
     if (!S.textures.exists(key)) {
-      const img = S.textures.get("dv3-pot-tadka-v2").getSourceImage();
+      const img = S.textures.get(src).getSourceImage();
       const ct = S.textures.createCanvas(key, 2 * R, 2 * R);
       const g = ct.getContext();
-      g.drawImage(img, POT.cx * img.width - R, POT.cy * img.height - R, 2 * R, 2 * R, 0, 0, 2 * R, 2 * R);
+      g.drawImage(img, 0, 0, 2 * R, 2 * R);
       // the edge fades into the bowl's own daar (no hard line where the two meet)
       const fade = g.createRadialGradient(R, R, R * 0.8, R, R, R);
       fade.addColorStop(0, "rgba(0,0,0,1)");
@@ -1341,7 +1642,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const im = p.img;
       if (!im || !im.active || !k) return;
       const q = S.add.image(dx + (im.x - pot.cx) * k, dy + (im.y - pot.cy) * k, im.texture.key);
-      q.setScale(im.scale * k).setRotation(im.rotation).setAlpha(0.95);
+      q.setScale(im.scale * k).setRotation(im.rotation).setAlpha(im.alpha || 0.95);
       if (im.isTinted) q.setTint(im.tintTopLeft);
       box.add(q);
     });
@@ -1357,7 +1658,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // DAAR-05 (s07 fix round): the bowl shows what went in, stirred: the plain bowl with the pot's own stirred daar in
     // it (its tadka seeds) and DP1's pieces where the stir left them; never the old tadka bowl's dry chilli and curry
     // leaves, which no order puts in. (No plain bowl: the old one, as before.)
-    const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists("dv3-pot-tadka-v2");
+    const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists("dv4-disc-stirred");
     const TB = plain ? TRIVET_PLAIN : TRIVET;
     const bowl = S.track(S.add.image(z.X(1230), sy(z, 450), plain ? "dv3-trivet-plain" : "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));
     const bs = z.L(250) / TB.w;

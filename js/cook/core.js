@@ -171,6 +171,25 @@
   Cook.metWords = () => (P() ? Object.keys(P().all()).filter((id) => P().get(id).seen > 0) : Object.keys(Cook.save.words));
   Cook.labelMode = (id) => ["", "text", "speaker", "speaker", "speaker"][Cook.wordStage(id)];
   Cook.cardHidden = (id) => Cook.wordStage(id) >= 3 && !Cook.isPlaceholder(id);
+  /** How many times the child has used a word right (the core's per-word progress; "Start over"/"Play as new" forget it). */
+  Cook.timesRight = (id) => {
+    if (P()) {
+      const w = P().get(id);
+      return (w && w.right) || 0;
+    }
+    return (Cook.save.words[id] && Cook.save.words[id].right) || 0;
+  };
+  /** The words used right before this round began (a round's ctx keeps it: a chip never changes mid-round). */
+  Cook.learnedNow = () => new Set((P() ? Object.keys(P().all()) : Object.keys(Cook.save.words)).filter((id) => Cook.timesRight(id) > 0));
+  /**
+   * Zafar, 20 Oct: an item's word is written on its jar or chip while the child is still learning it, at every level and
+   * station; once they have used it right, from the next round the chip is the speaker alone (tap to hear). Read when a
+   * chip is built, against the round's snapshot (ctx.learned), so a word used right mid-round keeps its chip till the round ends.
+   */
+  Cook.chipWord = (id, ctx = Cook.ctx) => {
+    const learned = ctx && ctx.learned;
+    return learned ? !learned.has(id) : Cook.timesRight(id) === 0;
+  };
   /** How many times a word has been met (heard in an order): decision 57's "the first times it is heard". */
   Cook.timesHeard = (id) => {
     if (P()) {

@@ -487,3 +487,261 @@
 {"id":"CLN-13","run":"ev-20261016-194922-b8t","earlier":"built (evidence PASS ev-s07: machine: count:.cl-seat-who<=6 [0 visible]; count:.cl-seat-who<=6 [0 visible]; `build/screenshots/evidence/ev-s07/CLN-13.png`)"}
 {"id":"CLN-136","run":"ev-20261016-194922-b8t","earlier":"built (evidence PASS ev-s07: claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]: C, at L2 under the doctor's \"A scrape.\" her face is sore [brows up, mouth down] with both eyes open; A frames 1-6 at L1 show no one-eye-shut face; `build/screenshots/evidence/ev-s07/CLN-136.png`)"}
 {"id":"ART-13","run":"ev-20261016-194922-b8t","earlier":"built (evidence PASS ev-s07: machine: pass [0 contract breaks]; `build/screenshots/evidence/ev-s07/ART-13.png`)"}
+{"id": "SH-70", "run": "trim-2026-10-18", "earlier": "**waiting on Mum** (S05-B ev-s05b-sh01r: the only failing probe is the pantry headline, \"Bring me these\", the grey to-record placeholder for Mum's *Muke de* (PAN-10, decision 83, Round 5); samosa's card \"Muke samosa khape.\" and the clinic card pass)"}
+{"id": "SH-37", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]: A, the chop screen still mixes art styles [a flat green timer next to a near-photoreal bulb and a glossy knife], the bulb and knife sit far apart with no single focal thing, and the marble stops short above a flat empty beige band across the bottom of the stage, so UI and world do not read as one product; `build/screenshots/evidence/ev-20261016-194922-b8t/SH-37.png`)"}
+{"id": "SH-110", "run": "trim-2026-10-18", "earlier": "**open** (Zafar, 18 Oct: yes to decision 2: a design pass first; the always-shown L3 card may dot some words, the bulb's peek never does, SH-98)"}
+{"id": "PAN-06", "run": "trim-2026-10-18", "earlier": "**open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the pantry jars need labels and the fridge a meat section in the shelf art)"}
+{"id": "CHAI-08", "run": "trim-2026-10-18", "earlier": "**waiting on art** \u00b7 was **reopened** (evidence FAIL ev-20261013-164227-oez, Fable: the filled glass turns side-view at 507 and 821 ms, not top-down; at 821 ms the pan still pours onto the hob; the 250 ms frame tiles thirty ticked cards over the stage [capture glitch or real: check]; the hob, tray and empty glass are right. Full verdict in status-history.jsonl; `build/screenshots/evidence/ev-20261013-164227-oez/CHAI-08.png`)"}
+{"id": "CHAI-13", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (Zafar, 14 Oct: he confirms the teaspoon when he plays; the judge saw it stir right after the sugar tap in ev-20261014-040741-6zs, not in the sparser ev-20261014-064034-e9u frames)"}
+{"id": "DAAR-02", "run": "trim-2026-10-18", "earlier": "**reopened** (evidence FAIL ev-s04-ev1: Fable [orchestrator subagent]: A, the ladle is still the round measuring-scoop dipper of B with a thin flat handle lying flat in the picture plane; its bowl floats in the daar and the handle does not rise toward the viewer or rest on the rim; the flat vector hand and cuff also sit oddly against the photoreal pot; `build/screenshots/evidence/ev-s04-ev1/DAAR-02.png`) \u00b7 **waiting on art (the kadchi, next art run)** (S06 publish triage, 14 Oct)"}
+{"id": "DAAR-05", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU: A, stages 4, 5 and 6 still show white oval blobs at the top of the pot contents [stage 1 a white disc too], so the added things still read as white dots; D's served bowl is too small to confirm there is no dry chilli or curry leaf, and the stir can't be judged from stills; `build/screenshots/evidence/ev-20261016-194922-b8t/DAAR-05.png`)"}
+{"id": "DAAR-20", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (S06: passes its probe now but no failing run can be made on the current probe (not reproduced, or the fix predates any reachable commit), so the gate can't mark it built)"}
+{"id": "DAAR-23", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (S06: passes its probe now but no failing run can be made on the current probe (not reproduced, or the fix predates any reachable commit), so the gate can't mark it built)"}
+{"id": "SEK-14", "run": "trim-2026-10-18", "earlier": "**open** (decision 79, 9 Oct: Zafar chose the pre-rendered plate with 1\u20134 straight skewers; drawn in the s05 art run, part C, SK2) \u00b7 **waiting on art (the s05 run's SK2 plate and rack)** (S06 publish triage, 14 Oct)"}
+{"id": "CHT-13", "run": "trim-2026-10-18", "earlier": "**waiting on art** (the big art run; no qualm: side-on makes every layer one strip; chaat's is a glass seen from the side, so it need not match the top-down pots)"}
+{"id": "CK-06", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU: A, daal stage 3 still shows a cluster of white ovals and stage 4 a white disc on the oil [stage 1 a white disc too]; B's chai liquid looks real but has a small cluster of white dots in it. Flaw off the point: B's left \"hakro\" chip is cut to \"kro\" at the edge; `build/screenshots/evidence/ev-20261016-194922-b8t/CK-06.png`)"}
+{"id": "CK-24", "run": "trim-2026-10-18", "earlier": "**open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the day suns read as numbered, locked level tokens; they need day art)"}
+{"id": "CK-31", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (S06: not reproducible as a red: the review face already frowned with fix 8d19bac reverted, run ev-20261014-071258-24n; the independent judge passed the frown at L1 and L2, ev-20261014-071456-yen)"}
+{"id": "CLN-81", "run": "trim-2026-10-18", "earlier": "**open** (S05-D ev-20261012-2250: art: the doctor is still the flat stand-in in the diagnosis and send-off; the girl's art is in every stage; red ev-20261012-2209) \u00b7 **waiting on art (the doctor's s05 art)** (S06 publish triage, 14 Oct)"}
+{"id": "CLN-115", "run": "trim-2026-10-18", "earlier": "**open** (decision 83: the door call, built when the doctor's s05 art lands) \u00b7 **waiting on art (the doctor at the door)** (S06 publish triage, 14 Oct)"}
+{"id": "CLN-17", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]: A, the girl sits on the bed edge and the right wall has the certificate frame with no anatomy poster, but the doctor stands apart at the far right by the door, not beside her, and his body and feet still face mostly front rather than three-quarter turned; `build/screenshots/evidence/ev-20261016-194922-b8t/CLN-17.png`)"}
+{"id": "CLN-25", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]: A, the doctor and girl stand left clear of the green cross, but she still faces the camera with both arms spread, not leaving, far from the door, and the door at the right is swung wide open rather than half open; `build/screenshots/evidence/ev-20261016-194922-b8t/CLN-25.png`)"}
+{"id": "CLN-38", "run": "trim-2026-10-18", "earlier": "**open** (S05-D ev-20261012-2259: the chart's pool is still 9 food and drink items; the engine has confirmed household nouns (cup, chair, door, key, pot, tawa, bowl, car, house) but no item pictures exist for them (art) and their recordings are unchecked (package B/Mum); red ev-20261012-2209) \u00b7 **waiting on art and Mum (the household nouns' pictures and checked clips)** (S06 publish triage, 14 Oct)"}
+{"id": "CLN-65", "run": "trim-2026-10-18", "earlier": "**open, waiting on art** (S05-P: only hot, happy and cold bodies exist; sad, pain, hot-water-bottle and the other five patients wait for the art run, decision 71)"}
+{"id": "CLN-106", "run": "trim-2026-10-18", "earlier": "**waiting on art** (the wipe moves to and fro now, S06 round 1; the drop machine and syringe are flat stand-ins: the art run; Zafar, 14 Oct)"}
+{"id": "CLN-119", "run": "trim-2026-10-18", "earlier": "**reopened** (evidence FAIL ev-20261012-2132: Sonnet [S05-T tools session, not the builder of these rows]: text, heal-marks.mjs shows only the cut game has Kutchi for paani; cloth, plaster, thread, stitches, dabs and boing words [up/down, colours, numbers] are English placeholders, not a Kutchi strand per game) \u00b7 **waiting on Mum (each game's Kutchi words)** (S06 publish triage, 14 Oct)"}
+{"id": "CLN-138", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (S06: passes its probe now but no failing run can be made on the current probe (not reproduced, or the fix predates any reachable commit), so the gate can't mark it built)"}
+{"id": "CLN-141", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (S06: passes its probe now but no failing run can be made on the current probe (not reproduced, or the fix predates any reachable commit), so the gate can't mark it built)"}
+{"id": "CLN-144", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (S06: passes its probe now but no failing run can be made on the current probe (not reproduced, or the fix predates any reachable commit), so the gate can't mark it built)"}
+{"id": "CLN-145", "run": "trim-2026-10-18", "earlier": "**open, waiting on Zafar's play** (S06: passes its probe now but no failing run can be made on the current probe (not reproduced, or the fix predates any reachable commit), so the gate can't mark it built)"}
+{"id": "MOD-02", "run": "trim-2026-10-18", "earlier": "open (S04 audit: no evidence yet; no evidence: the Find it flow shows the fruit stall, never sitting room 3.2; on Zafar's play checklist) \u00b7 **waiting on Zafar's play** (S06 publish triage, 14 Oct)"}
+{"id": "MOD-10", "run": "trim-2026-10-18", "earlier": "**waiting on Mum** (S06 round 5: the parked modes' English for the child (\"Words from this round\", \"Understood\", \"Case closed!\", the title intros, \"Show Nani\", \"Tap to start\", the EN buttons) needs Mum's Kutchi or pictures in its place; Zafar to choose which when the modes are unparked)"}
+{"id": "ART-05", "run": "trim-2026-10-18", "earlier": "**waiting on art** (S06 full gate s06-gate: contract-11 sees Cook's worktop and hob backgrounds drawn low-res on every station, 179 breaks; the clinic pages are clean: the next art run redraws them at full resolution)"}
+{"id": "ART-10", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU: A, all 8 guide-box crops show the same red-hijab Nani face [only dimmed in 3-6], so there is one image, not four cooking moods; B shows a smiling red-hijab face asking for chutney, with no Nana, Ma or Ali impatient face to judge [A's grey-italic English lines are allowed to-record lines]; `build/screenshots/evidence/ev-20261016-194922-b8t/ART-10.png`)"}
+{"id": "ART-11", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU: A, the cubes are still even pale-cream blocks with soft edges, no skin and no starchy cut face, packed in a glass jar, so they still read as butter more than potato; `build/screenshots/evidence/ev-20261016-194922-b8t/ART-11.png`)"}
+{"id": "ART-12", "run": "trim-2026-10-18", "earlier": "**open, waiting on art or design** (S05-P: \"7.1\" is the old 30 Sept art-batch label for the family's seated where-it-hurts poses; no heal game or diagnosis screen shows separate neck, back and hair parts (data/clinic.json has body-back only for the stethoscope; the hair game is its own game; neck maps to head), so the probe has nothing to capture: an art or design gap. The belt and rail sit mid-screen in the pharmacy shot (ev-20261013-115147-wwe))"}
+{"id": "ART-19", "run": "trim-2026-10-18", "earlier": "**reopened** (evidence FAIL ev-s04-ev2: Fable [orchestrator subagent]: C, eight frames over 2.2 s of Nani while her line plays show one unchanging face: no blink, no mouth shape; A and B caught the results card and blank frames instead of the eye test's face; `build/screenshots/evidence/ev-s04-ev2/ART-19.png`) \u00b7 **waiting on art (blink and mouth frames)** (S06 publish triage, 14 Oct)"}
+{"id": "ART-21", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]: A, the tap is still cut by the stage's left edge behind Mum's shoulder with only its gold spout showing and no handles, so it does not read as one tap; the doorway at the right shows only outdoor greenery [no floor plant visible], and 844x390 is not on this sheet; `build/screenshots/evidence/ev-20261016-194922-b8t/ART-21.png`)"}
+{"id": "LNG-01", "run": "trim-2026-10-18", "earlier": "**reopened** (evidence FAIL ev-s04-ev2: machine: LNG-01-p2-L1-1366x768: familyOnly: 22 of 22 lines not family-ok: \"Who's next?\" silent; \"Bring in chokri\" silent; \"Salamun alaykum.\" silent; \"Wa alaikum salaam.\" silent; LNG-01-p3-L1-1366x768: lexicon: not in the family lexicon: tomatoes [4 moments]) \u00b7 **waiting on Mum (the lines' recordings; the code side passes: contract-16)** (S06 publish triage, 14 Oct)"}
+{"id": "LNG-04", "run": "trim-2026-10-18", "earlier": "**reopened** (S04 audit FAIL, 12 Oct: the plaster line is still English in the scrape (\"yellow plaster\"), and `build/lines_needing_family.py` reports only the old errand lines, not the \"with\" join, ph-turner, sekelo or the plaster line)  \u00b7 **waiting on Mum (the placeholder words)** (S06 publish triage, 14 Oct)"}
+{"id": "LNG-06", "run": "trim-2026-10-18", "earlier": "**reopened** (evidence FAIL ev-s04-ev1: machine: LNG-06-p1-L1-1366x768: familyOnly: 14 of 14 lines not family-ok: \"Let's clean it.\" silent; \"Take the wax out\" silent; \"Ne poi cotton bud\" silent; \"Ne poi chando, char\" silent; LNG-06-p1-L2-1366x768: familyOnly: 11 of 11 lines not family-ok: \"Let's clean it.\" silent; \"pela nindho wax\" family-unchecked; \"ne poi wadho\" silent; \"Ne poi cotton bud\" silent) \u00b7 **waiting on Mum (the recordings; Zafar's studio re-record before launch)** (S06 publish triage, 14 Oct)"}
+{"id": "LNG-10", "run": "trim-2026-10-18", "earlier": "**reopened** (evidence FAIL ev-s04-ev1: machine: LNG-10-p1-L1-1366x768: familyOnly: 13 of 13 lines not family-ok: \"Muke kari chai khape,\" silent; \"dudh na,\" family-unchecked; \"with hakro khun.\" silent; \"paani\" silent; LNG-10-p1-L2-1366x768: familyOnly: 12 of 12 lines not family-ok: \"Tu ki aiye?\" silent; \"Muke chai khape,\" silent; \"with dudh,\" silent; \"ba khun.\" silent) \u00b7 **waiting on Mum (the recordings)** (S06 publish triage, 14 Oct)"}
+{"id": "LNG-11", "run": "trim-2026-10-18", "earlier": "**reopened** (S04 audit FAIL, 12 Oct: Muke de / Muke chai lai de are not in the lines-needing-family report and no confirmation from Mum is recorded)  \u00b7 **waiting on Mum (her check)** (S06 publish triage, 14 Oct)"}
+{"id": "CLN-23", "run": "trim-2026-10-18", "earlier": "**open (two strikes: Zafar)** (evidence FAIL ev-20261016-194922-b8t: Claude Opus 5.5 [claude-opus-5-5], session_01W85EF4CUVUYMaoJk4JskAU: A, the crutch lies at a slant across the belt with its top tip reaching the back rail and no contact shadow under it; the swab and spoon lie flat with a faint shadow; `build/screenshots/evidence/ev-20261016-194922-b8t/CLN-23.png`)"}
+{"id": "SH-91", "run": "trim-2026-10-18", "earlier": "**open** (Zafar, 15 Oct: yes, one master per scene, ChatGPT redraws, then upscaled; the kitchen first, in the next art run)"}
+{"id": "CK-48", "run": "trim-2026-10-18", "earlier": "**open** (load every station's files while the order's card is read in the kitchen; no loading screen: \"Ideally not\")"}
+{"id": "CLN-107", "run": "trim-2026-10-18", "earlier": "**open, waiting on art** (Sprint 6 art run, Zafar 13 Oct via Fable: the eye close-up is photoreal, not the game style)"}
+{"id": "CLN-188", "run": "trim-2026-10-18", "earlier": "**open** (rows 1-2-3-4, no lines, no icon, the board filling most of its side now; the wall and board picture wait on s08b)"}
+{"id": "ART-20", "run": "trim-2026-10-18", "earlier": "**waiting on art** (S06 round 4: the table is written, `docs/design-language/art-plans/clinic-items.md`; the judge, ev-20261014-105914-fsz, saw the sprites it lists still missing: the art run)"}
+{"id": "ART-22", "run": "trim-2026-10-18", "earlier": "**waiting on art** (Zafar, 16 Oct: style locked to `sources/art/s08/lineup-v4-1.png`; he runs the doctor's and Nani's sets in Claude in Chrome: `docs/design-language/art-plans/s08-paste-block.txt`)"}
+{"id":"SH-70","run":"ev-20261019-172022-khk","earlier":"**waiting on Mum**"}
+{"id":"SH-37","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"SH-91","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-109","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-110","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-111","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-60","run":"ev-20261019-172022-khk","earlier":"**reopened** (17 Oct play)"}
+{"id":"SH-113","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-116","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SH-117","run":"ev-20261019-172022-khk","earlier":"**open** (after CHAI-26)"}
+{"id":"PAN-06","run":"ev-20261019-172022-khk","earlier":"**open, waiting on art**"}
+{"id":"CHAI-08","run":"ev-20261019-172022-khk","earlier":"**waiting on art** · was **reopened**"}
+{"id":"CHAI-13","run":"ev-20261019-172022-khk","earlier":"**open, waiting on Zafar's play**"}
+{"id":"CHAI-19","run":"ev-20261019-172022-khk","earlier":"**reopened** (17 Oct play)"}
+{"id":"DAAR-02","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on art (the kadchi, next art run)** (S06 publish triage, 14 Oct)"}
+{"id":"DAAR-05","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"DAAR-29","run":"ev-20261019-172022-khk","earlier":"**waiting on art** (and the turning disc in code)"}
+{"id":"DAAR-31","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"DAAR-35","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"SEK-19","run":"ev-20261019-172022-khk","earlier":"**open** (Zafar, 18 Oct: yes; the card says \"Hakri Lakri Mishkaki\", no commas; the raw piece is *gos*)"}
+{"id":"SEK-20","run":"ev-20261019-172022-khk","earlier":"**open** (Zafar, 18 Oct: yes to decision 11)"}
+{"id":"CHT-15","run":"ev-20261019-172022-khk","earlier":"**open** (Zafar, 18 Oct: yes to decision 9)"}
+{"id":"CK-06","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"CK-24","run":"ev-20261019-172022-khk","earlier":"**open, waiting on art**"}
+{"id":"CK-31","run":"ev-20261019-172022-khk","earlier":"**open, waiting on Zafar's play**"}
+{"id":"CK-48","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-17","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"CLN-25","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"CLN-38","run":"ev-20261019-172022-khk","earlier":"**open** · **waiting on art and Mum (the household nouns' pictures and checked clips)** (S06 publish triage, 14 Oct)"}
+{"id":"CLN-106","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"CLN-163","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 7)"}
+{"id":"CLN-165","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-173","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-176","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 5)"}
+{"id":"CLN-181","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-187","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 8)"}
+{"id":"CLN-188","run":"ev-20261019-172022-khk","earlier":"**open**"}
+{"id":"CLN-189","run":"ev-20261019-172022-khk","earlier":"**open** (clinic decision 9)"}
+{"id":"CLN-105","run":"ev-20261019-172022-khk","earlier":"**reopened** (the fan waits on art, s08b)"}
+{"id":"MOD-10","run":"ev-20261019-172022-khk","earlier":"**waiting on Mum**"}
+{"id":"ART-05","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"ART-10","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"ART-11","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"ART-19","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on art (blink and mouth frames)** (S06 publish triage, 14 Oct)"}
+{"id":"ART-20","run":"ev-20261019-172022-khk","earlier":"**waiting on art**"}
+{"id":"LNG-01","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on Mum (the lines' recordings; the code side passes: contract-16)** (S06 publish triage, 14 Oct)"}
+{"id":"LNG-06","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on Mum (the recordings; Zafar's studio re-record before launch)** (S06 publish triage, 14 Oct)"}
+{"id":"LNG-10","run":"ev-20261019-172022-khk","earlier":"**reopened** · **waiting on Mum (the recordings)** (S06 publish triage, 14 Oct)"}
+{"id":"CLN-23","run":"ev-20261019-172022-khk","earlier":"**open (two strikes: Zafar)**"}
+{"id":"SH-70","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on Mum** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SH-98","run":"ev-20261020-004931-exi","earlier":"**open** (Zafar, 18 Oct: yes to decision 3)"}
+{"id":"SH-37","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SH-91","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SH-110","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SH-112","run":"ev-20261020-004931-exi","earlier":"**open**"}
+{"id":"SH-113","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SH-117","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"PAN-06","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CHAI-08","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CHAI-13","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** · **waiting on Zafar's play** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"DAAR-02","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art (the kadchi, next art run)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"DAAR-05","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"DAAR-26","run":"ev-20261020-004931-exi","earlier":"**open** (the sentence waits on Mum)"}
+{"id":"DAAR-29","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art (and the turning disc in code)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"DAAR-34","run":"ev-20261020-004931-exi","earlier":"**open**"}
+{"id":"DAAR-35","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SEK-19","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SEK-20","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SAM-25","run":"ev-20261020-004931-exi","earlier":"**open** (Zafar, 18 Oct: yes to decision 10)"}
+{"id":"CHT-15","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CK-06","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CK-24","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CK-31","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on Zafar's play** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CK-47","run":"ev-20261020-004931-exi","earlier":"**open** (Zafar, 18 Oct: yes to decision 7)"}
+{"id":"CK-48","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CK-TB-01","run":"ev-20261020-004931-exi","earlier":"**reopened** (17 Oct play: chai)"}
+{"id":"CLN-81","run":"ev-20261020-004931-exi","earlier":"**open** · **waiting on art (the doctor's s05 art)** (S06 publish triage, 14 Oct)"}
+{"id":"CLN-17","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-38","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art and Mum (the household nouns' pictures and checked clips)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-107","run":"ev-20261020-004931-exi","earlier":"**open, waiting on art**"}
+{"id":"CLN-119","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on Mum (each game's Kutchi words)** (S06 publish triage, 14 Oct)"}
+{"id":"CLN-163","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-165","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-176","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-178","run":"ev-20261020-004931-exi","earlier":"**open** (clinic decision 5)"}
+{"id":"CLN-181","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-187","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-188","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-189","run":"ev-20261020-004931-exi","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-190","run":"ev-20261020-004931-exi","earlier":"**open**"}
+{"id":"CLN-195","run":"ev-20261020-004931-exi","earlier":"**open**"}
+{"id":"MOD-02","run":"ev-20261020-004931-exi","earlier":"open · **waiting on Zafar's play** (S06 publish triage, 14 Oct)"}
+{"id":"ART-05","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"ART-10","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"ART-11","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"ART-12","run":"ev-20261020-004931-exi","earlier":"**open, waiting on art or design**"}
+{"id":"ART-19","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on art (blink and mouth frames)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"ART-20","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** · **waiting on art** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"LNG-01","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on Mum (the lines' recordings; the code side passes: contract-16)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"LNG-06","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on Mum (the recordings; Zafar's studio re-record before launch)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"LNG-10","run":"ev-20261020-004931-exi","earlier":"**reopened** · **waiting on Mum (the recordings)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-23","run":"ev-20261020-004931-exi","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-25","run":"ev-20261020-004931-exi","earlier":"built (evidence PASS ev-20261019-172022-khk: judge: A, door swung open onto the garden at right, doctor standing beside the girl, both in the free wall space on the left, clear of the green cross sign [cross and umbrella hook stand alone between them and the door])"}
+{"id":"SH-70","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SH-98","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SH-37","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SH-91","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SH-110","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SH-60","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"SH-112","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SH-117","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"PAN-06","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on art (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CHAI-08","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on art (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CHAI-13","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on Zafar's play (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"DAAR-02","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on art (the kadchi, next art run)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"DAAR-05","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"DAAR-26","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"DAAR-31","run":"ev-20261020-030207-6zl","earlier":"**reopened** · **waiting on art** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"DAAR-34","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"DAAR-35","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SEK-20","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"SAM-21","run":"ev-20261020-030207-6zl","earlier":"**open** (Zafar, 18 Oct: yes to decision 10; changes SAM-05)"}
+{"id":"SAM-25","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CK-31","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on Zafar's play (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CK-47","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CK-TB-01","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-38","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on art and Mum (the household nouns' pictures and checked clips)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-106","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on art** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"CLN-163","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-165","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-168","run":"ev-20261020-030207-6zl","earlier":"**open**"}
+{"id":"CLN-178","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-179","run":"ev-20261020-030207-6zl","earlier":"**open** (recommendation §6: an art band laid by code; s08b BD1 draws the band)"}
+{"id":"CLN-188","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-190","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-195","run":"ev-20261020-030207-6zl","earlier":"**reopened** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"MOD-02","run":"ev-20261020-030207-6zl","earlier":"**reopened** · **waiting on Zafar's play (S06 publish triage, 14 Oct)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"ART-05","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on art (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"ART-10","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"ART-11","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"ART-12","run":"ev-20261020-030207-6zl","earlier":"**reopened** · **waiting on art or design** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"ART-20","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on art (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"LNG-01","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (the lines' recordings; the code side passes: contract-16)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"LNG-06","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (the recordings; Zafar's studio re-record before launch)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"LNG-10","run":"ev-20261020-030207-6zl","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (the recordings)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"DAAR-29","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: B, in every L2 state [1-6] the pot's top rim is whole and the contents are a round, centred disc inside the rim. A, C and D [L1, L3, L4, each ending in the stirred pot] show the same with no clipping.)"}
+{"id":"CHT-15","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, the chaat mistake-run results count ticks per item [1/3] beside a separate bulb tally [x1] for help [flaw: in B the tick badge on the mission bubble covers the end of \"khape\"])"}
+{"id":"CK-06","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, the daal pot reads as real oil, then seeds sizzling in oil, onions, then yellow daal with garlic pieces [frames 1-6], no white or swirling dots; B the chai pan is red-brown tea liquid with leaves, ginger and a cardamom leaf. Flaw: B's left \"hakro\" chip is cut off at the crop edge)"}
+{"id":"CK-24","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: B, the home shows the story days as six calendar-page tiles [ringed tops, 1 to 6, day 1 picked], not level buttons 1-4)"}
+{"id":"CK-48","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, the order card goes straight to the fully drawn chop board [4592 ms on], with no zoomed-in board in between; B goes from the card to the fully drawn samosa station at 2073 ms and stays unchanged [flaws: the order card sits over Nani's face in A 570-3947 ms and B 390-772 ms; its heading \"Make four things.\" reads as English and cannot be confirmed as grey to-record text at this size])"}
+{"id":"CLN-81","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, the girl is the finished full-body illustrated art in the waiting room [1], on the stool at diagnosis [2] and at the send-off [5], with her finished face on the sticker sheet [5] and on the end-card row [B]; no stand-in body in any frame)"}
+{"id":"CLN-17","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, the girl sits on the edge of the examination bed, the doctor stands beside her turned three-quarters towards her, and the right wall has only the certificate frame [no anatomy poster]. Flaw: the doctor's head overlaps the bottom corner of the frame)"}
+{"id":"CLN-23","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, at x2 the cotton bud and spoon lie flat along the belt, level with it and not tilted, each with a soft contact shadow underneath, not floating [flaw: the item entering at the left is cut off by the frame edge])"}
+{"id":"CLN-25","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, the doctor stands next to the girl in the free wall space on the left, clear of the green cross sign, with the front door swung open onto the garden at the right)"}
+{"id":"CLN-176","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: A, the gauge goes through green in frames 3, 4, 6 and 7 with no \"just right\" bubble, and the bubbles that show say too hot or too cold in step with the gauge. The voice timeline has \"barabar\" only once [24.00, 2 s after the fan], with no switch after it)"}
+{"id":"CLN-187","run":"ev-20261020-030207-6zl","earlier":"built (evidence PASS ev-20261020-004931-exi: judge: B, the L2 card asks for a count per eye [\"Jamni akh, chando trae\", then \"Left akh, chando trae\"]. D shows L3 asking \"Jamni akh, chando ba, left akh, chando ba\")"}
+{"id":"SH-70","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"SH-37","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"SH-91","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"SH-110","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"SH-112","run":"ev-20261020-073941-0e9","earlier":"**open** (Zafar, 20 Oct: yes to a taller shelf band, about 30% instead of 26%, in every station, so the items are bigger)"}
+{"id":"SH-113","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"PAN-06","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on art (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CHAI-13","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on Zafar's play (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"DAAR-02","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on art (the kadchi, next art run)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"DAAR-26","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"DAAR-34","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"SEK-20","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"SEK-07","run":"ev-20261020-073941-0e9","earlier":"**reopened** (17 Oct play)"}
+{"id":"SAM-21","run":"ev-20261020-073941-0e9","earlier":"**reopened** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"SAM-25","run":"ev-20261020-073941-0e9","earlier":"**open** (Zafar, 20 Oct: fill only what is ordered; the six strips stay on the board, the rest unfilled)"}
+{"id":"CHT-14","run":"ev-20261020-073941-0e9","earlier":"**open** (Zafar, 18 Oct: yes to decision 9)"}
+{"id":"CK-48","run":"ev-20261020-073941-0e9","earlier":"**reopened** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CLN-38","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on art and Mum (the household nouns' pictures and checked clips)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CLN-107","run":"ev-20261020-073941-0e9","earlier":"**reopened** · **waiting on art** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-119","run":"ev-20261020-073941-0e9","earlier":"**reopened** · **waiting on Mum (each game's Kutchi words)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"CLN-163","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CLN-168","run":"ev-20261020-073941-0e9","earlier":"**reopened** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CLN-178","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CLN-179","run":"ev-20261020-073941-0e9","earlier":"**reopened** (Zafar, 20 Oct: \"do it eight times\" means the bandage wraps round the knee eight times at L3)"}
+{"id":"CLN-190","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CLN-105","run":"ev-20261020-073941-0e9","earlier":"**reopened** (evidence FAIL ev-20261019-172022-khk)"}
+{"id":"MOD-02","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on Zafar's play (S06 publish triage, 14 Oct)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"ART-05","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on art (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"ART-10","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"ART-11","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"ART-19","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on art (blink and mouth frames)** (evidence FAIL ev-20261020-004931-exi)"}
+{"id":"ART-20","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on art (evidence FAIL ev-20261019-172022-khk)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"LNG-01","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (the lines' recordings; the code side passes: contract-16)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"LNG-06","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (the recordings; Zafar's studio re-record before launch)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"LNG-10","run":"ev-20261020-073941-0e9","earlier":"**open (two strikes: Zafar)** · **waiting on Mum (the recordings)** (evidence FAIL ev-20261020-030207-6zl)"}
+{"id":"CHAI-08","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, at 1366x768 the hob and tray are as large and as low as the v2 mock-up in B, with a true top-down pan and top-down glasses in the tray; C shows the pan tilted over the glass at 352 ms and amber chai in the top-down glass at 772 ms. Flaws: in C at 1242 ms Nana's face badge sits over the glass that was just filled, and loose \"hakro\" pills float at the hob's top-left corner during the pour)"}
+{"id":"DAAR-29","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, in all seven L1 states the pot's whole top rim and both handles are inside the frame with the contents a round, centred disc inside the rim; B, C and D show the same at L2-L4 [flaw: B7's finished pot sits hard against the frame's left and top edges, with the spice bowl overlapping its rim])"}
+{"id":"DAAR-05","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: B, after the stir the daar shows the added things as pictured pieces [green chilli slices, tomato, a ginger piece, white chunks], not white dots, and no dry chilli or curry leaves; A1-A7 show each stage's contents pictured [D's review moment shows the end card over the stage, with no bowl to check])"}
+{"id":"DAAR-31","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, at L1 the pot is exactly top-down: the rim is a round circle with even walls all round and matching handles; B, C and D show the same at L2-L4 [only the finished, stirred state is on the sheet])"}
+{"id":"DAAR-35","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: machine: pass [0 contract breaks]; pass [0 contract breaks])"}
+{"id":"CHT-15","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, results after the mistake run show ticks counted per item [1/3] beside a separate light-bulb tally [x1] for help [flaw, unchanged from the last run: in B the tick badge on the mission bubble covers the end of \"khape\"])"}
+{"id":"CK-06","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, the daal pot reads as real golden oil, then seeds sizzling in oil, onions, then thick yellow daal [frames 1-6], with no white or swirling dots; B shows red-brown chai liquid boiling with bubbles [flaws: frames 3-4 show one white speck from the shaker; B's left \"hakro\" chip is cut off at the crop edge])"}
+{"id":"CK-24","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: B, Cook's home shows the story days as six calendar-page tiles [ringed tops, 1 to 6, day 1 picked], not level buttons 1-4)"}
+{"id":"CK-31","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, frame 1: Nana's review face over the wrongly served cup frowns with a down-turned mouth and worried brows, not happy; frame 2 smiles only after the redone cup; B1 repeats this at L2, with the right cup's face happy beside the frowning one)"}
+{"id":"CK-47","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: B, frame 1 shows the story order ending in the kitchen with Nani and Ali at the counter holding the maani; the voice timeline has one \"Shabash!\" at the station's end, then cook:closing says \"Hakri maani.\" and \"Thank you! Khuda-fis!\" with no second well done. Flaws: in A [lab end] the results card is half-faded and its stopwatch sits over Nani's face; only chai, maani and the fetch are shown, not every station)"}
+{"id":"CK-TB-01","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, after the tap the \"hakro\" count badge over the chai pan [B, before] is gone and the pan is still unlit, so one spoonful was taken back; C and D show the pantry jar on the tray back on its shelf [E: chop offers no take-back, as its probe says])"}
+{"id":"CLN-81","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, the girl is the finished illustrated full-body art in the waiting room [1], on the stool at diagnosis [2] and at the send-off [5], with her finished face on the sticker sheet [5]; B shows her finished face on the end card row [flaw: B's card heading is an emoji hospital icon, not game art])"}
+{"id":"CLN-17","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, the girl sits on the edge of the examination bed with her feet on the step, the doctor stands beside her turned three-quarters towards her, and the right wall has only the certificate frame, no anatomy poster [flaw: the doctor's head overlaps the bottom corner of the frame])"}
+{"id":"CLN-23","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, at x2 the cotton bud lies flat and level on the belt with a soft contact shadow under it, and the crutch lies flat across the belt with its own shadow; neither floats or is propped up)"}
+{"id":"CLN-25","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, the doctor and the girl stand together in the free wall space on the left, clear of the green cross sign at the right, and the front door stands open onto the garden)"}
+{"id":"CLN-176","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, frames 3, 4, 6 and 8 have the gauge in green with no \"just right\" bubble. The voice capture has \"barabar\" only once [24.68, 2.0 s after the last act at 22.67], followed only by \"Thank you, I feel better!\", with no switch to too cold after it [flaw: thumbnails are tiny and no frame is at the barabar moment])"}
+{"id":"CLN-187","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: B, the L2 card asks a drop count for each eye [\"Jamni akh, chando trae\", then \"Left akh, chando trae\"]. D shows L3 asking \"Jamni akh, chando ba, left akh, chando ba\" [\"Left\" is grey-italic to-record, allowed])"}
+{"id":"CLN-165","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: B, at 1366x768 the dropper machine is a compact head with a slim, short syringe under it, and the four items on the right [wipe, three plasters] are big cards each wider than the dropper head. D shows the same balance at 800x360, with the items in a 2x2 grid of large cards next to a modest dropper [flaws: none beyond grey-italic to-record lines in the side panel])"}
+{"id":"CLN-188","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: A, the eye test is a framed white board hung on a grey-blue wall with a skirting board, filling the right-hand side of the screen. Its rows hold one, two, three, then four drawn items, with no ruled lines and no eye icon. B, C and D show the same board laid out fresh at L2, L3 and L4 [flaws: grey-italic to-record side lines only; the board fills the right side, about half the whole screen])"}
+{"id":"CLN-195","run":"ev-20261020-073941-0e9","earlier":"built (evidence PASS ev-20261020-030207-6zl: judge: B, after the dab the bud's tip is blue, the colour of the spot it hit. A shows the same bud clean on both tips before the dab. [Flaw: C still shows a blue spot on the tongue at heal-done, which may be a second blue spot.])"}

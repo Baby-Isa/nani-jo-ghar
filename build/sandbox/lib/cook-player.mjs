@@ -9,6 +9,9 @@ import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWord
 // fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
 const VOICE_MODES = new Set(["tap-during-speech", "tap-during-pause", "tap-quick", "answer-while-asked"]);
 const CALM = ["tap", "hold", "count", "more", "swipe", "roll", "knead", "stir"];
+// a step's "wrong" that really spoils the dish (s08 w6E, CK-31): chai's salt at the sugar (cook-khun), or another station's look-alike.
+// Chai's tea leaves, milk and a pan's knob also offer a "wrong", a second water or milk, which the game only wiggles at: not these
+export const realWrong = (e) => !!e && !!(e.swrongs && e.swrongs.length) && !/^(cook-chai|cook-paani|cook-dudh|knob-on-|pan-|pour-)/.test(e.key || "");
 // tawa-empty-then-off (MAA-11): Cook's sizzle loop is in the sound log as "sfx/sizzle-loop" on every page (the game's own
 // "njg-sfx" event, lib/sound.mjs 3b; s04-hooks), so this driver no longer wraps it
 
@@ -146,15 +149,19 @@ export class CookPlayer {
     // serve-wrong (CK-31, CK-32): a dish served wrong. At the first step that offers a look-alike (chai's sugar: the salt jar
     // beside it, e.wrongs), the look-alike goes in once and stays (no take-back), then the rest is played fair: the cup is
     // served with salt in it, so the review at Done is a wrong serve (the face frowns, the row is marked)
-    if (m === "serve-wrong" && !d.served && e.kind === "tap" && e.swrongs && e.swrongs.length) {
+    // (s08 w6E, CK-31: the first step with a "wrong" was the tea leaves' second water, a tap the game only wiggles at, so the cup was
+    // right and its face happy: the wrong has to be a real one, the salt for the sugar's step, cook-khun)
+    if (m === "serve-wrong" && !d.served && e.kind === "tap" && e.swrongs && e.swrongs.length && realWrong(e)) {
       d.served = true;
       const w = e.swrongs[0];
+      // which jar that is, for the log (the jars on the canvas are keyed jar-<id>; the salt is spi-16)
+      const jar = (await canvasObjects(p, /^jar-/).catch(() => [])).map((j) => ({ ...j, id: j.key.slice(4) })).sort((a, b) => Math.hypot(a.x - w.x, a.y - w.y) - Math.hypot(b.x - w.x, b.y - w.y))[0];
       await this.tap(w.x, w.y, "look-alike, kept");
       // the review faces at the serve hold 2.5 s (Cook.tasteHold, the screenshot scripts' hook) for drv:review-face's crop
       await p.evaluate("Cook.tasted = null; Cook.tasteHold = 2500").catch(() => {});
       await sleep(700);
       await this.once("serve-wrong", { settle: 0 });
-      this.rec.note(`serve-wrong: the look-alike put in at ${e.key} and left in`);
+      this.rec.note(`serve-wrong: ${jar ? (jar.id === "spi-16" ? "salt (spi-16)" : jar.id) : "a look-alike"} put in at the ${e.key} step, where ${e.key === "cook-khun" ? "the sugar" : "the right item"} goes, and left in`);
       this.made.add("serve-wrong");
       return true;
     }
@@ -439,6 +446,9 @@ export class CookPlayer {
       if (this.mistakes && e.swrongs && e.swrongs.length && !this.made.has("tap:" + e.key) && this.made.size < 6) {
         this.made.add("tap:" + e.key);
         const w = e.swrongs[this.made.size % e.swrongs.length];
+        // (s08 w6L, CHT-14) the move itself is the moment a filmstrip needs: rec:wrong-tap comes 350 ms after the tap, when the bowl's
+        // shake is over; a strip begun at this moment films the pot going in, the pause, the shake and the item coming back out
+        await mark(p, "bad-item-going-in", { block: true, settle: 0 });
         await this.tap(w.x, w.y, "wrong item");
         await sleep(350);
         await this.once("wrong-tap", { settle: 0 });
@@ -605,6 +615,15 @@ export class CookPlayer {
   async hintMoves(e) {
     const p = this.page;
     const calm = ["tap", "hold", "count", "more", "swipe", "roll"].includes(e.kind); // not the timed gestures: a wait would cost the window
+    // the card's face is its replay (a speaker): tap it once, before the help glow is up (s08 w1b, SH-102: a replay is free and says only the steps left; contract-31)
+    if (calm && !this.replayed && !this.waited) {
+      const face = await p.$("#side .oc-card .oc-face");
+      if (face && (await face.isVisible())) {
+        this.replayed = true;
+        await face.click({ force: true }).catch(() => {});
+        await sleep(600);
+      }
+    }
     if (calm && !this.waited) {
       this.waited = true;
       // the lab is unguided: Nani names the thing after the word's hesitation delay, and it glows 4 s later (real time, not game time)

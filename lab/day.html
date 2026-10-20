@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A day at Nani's: lab</title>
+<!--
+  The day's frame for grown-ups (Sprint 9, s09-frame): every weather, every activity and each stage of day.html (the morning
+  door, the window ride, the evening book after a kitchen, clinic or farm day). The skies row draws each weather's sky from
+  data/day.json; the page below plays day.html with the chosen settings (?nonav=1: the hand-off is shown, not followed).
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fbf5ea; color: #2b1810; font: 15px/1.4 system-ui, -apple-system, sans-serif; }
+  header { padding: 12px 16px 0; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  header p { margin: 0; color: #7a6558; font-size: 13px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px; }
+  .bar label { display: inline-flex; gap: 4px; align-items: center; font-size: 13px; color: #7a6558; }
+  select, button { font: inherit; padding: 6px 12px; border-radius: 10px; border: 1px solid #d9bf95; background: #fff7e8; min-height: 40px; color: inherit; }
+  button.go { background: #2f3e6b; color: #fff; border-color: #2f3e6b; cursor: pointer; }
+  .quick { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 8px; }
+  .quick button { cursor: pointer; }
+  .skies { display: flex; gap: 8px; padding: 0 16px 8px; overflow-x: auto; }
+  .sky { flex: 0 0 auto; width: 160px; border: 1px solid #d9bf95; border-radius: 12px; overflow: hidden; background: #fff; cursor: pointer; padding: 0; }
+  .sky .pic { height: 90px; position: relative; overflow: hidden; }
+  .sky .pic svg { width: 100%; height: 100%; display: block; }
+  .sky b { display: block; font-size: 13px; padding: 4px 8px; text-align: left; }
+  .frame { padding: 0 16px 16px; }
+  iframe { width: 100%; aspect-ratio: 16 / 9; border: 1px solid #d9bf95; border-radius: 12px; background: #f3e7d3; display: block; }
+  .url { font: 12px ui-monospace, Menlo, monospace; color: #7a6558; padding: 4px 0; word-break: break-all; }
+</style>
+</head>
+<body>
+<header>
+  <h1>A day at Nani's</h1>
+  <p>The morning door (weather, Nani's lines in turn with their English beneath, the thought bubble, Ha!), the window ride and the evening book. Placeholder art (shapes) until the agreed art lands; lines the engine can't say yet are grey "to record".</p>
+</header>
+<div class="skies" id="skies"></div>
+<div class="bar">
+  <label>Stage <select id="stage"><option value="door">door</option><option value="window">window ride</option><option value="book">evening book</option></select></label>
+  <label>Day <select id="day"><option value="">(data)</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+  <label>Weather <select id="weather"><option value="">(the day's)</option><option>sunny</option><option>cloudy</option><option>raining</option><option>night</option></select></label>
+  <label>Activity <select id="activity"><option value="">(the day's)</option><option>kitchen</option><option>clinic</option><option>trip</option></select></label>
+  <label>Trip <select id="trip"><option value="">(the day's)</option><option>farm</option><option>shops</option></select></label>
+  <label>Level <select id="level"><option>1</option><option>2</option><option>3</option></select></label>
+  <label>Book after <select id="log"><option value="kitchen">a kitchen day</option><option value="clinic">a clinic day</option><option value="farm">the farm</option><option value="">today's real log</option></select></label>
+  <button class="go" id="go" type="button">Play</button>
+</div>
+<div class="quick" id="quick"></div>
+<div class="frame"><div class="url" id="url"></div><iframe id="view" title="day.html"></iframe></div>
+<script type="module">
+  import { paintSky } from "../js/day/sky.js";
+  const $ = (id) => document.getElementById(id);
+  const data = await (await fetch("../data/day.json")).json();
+  // every weather's sky, from the data (a tap plays the door in that weather)
+  for (const [k, w] of Object.entries(data.weather)) {
+    const b = document.createElement("button");
+    b.className = "sky";
+    b.type = "button";
+    b.innerHTML = `<div class="pic"></div><b>${k}${w.shadow ? " (sun-shadows)" : ""}${w.rain ? " (rain)" : ""}${w.stars ? " (stars)" : ""}</b>`;
+    paintSky(b.querySelector(".pic"), w, { w: 320, h: 180, url: (p) => "../" + p });
+    b.addEventListener("click", () => { $("stage").value = "door"; $("weather").value = k; play(); });
+    $("skies").appendChild(b);
+  }
+  const quick = [
+    ["Door: sunny, kitchen", { stage: "door", weather: "sunny", activity: "kitchen" }],
+    ["Door: cloudy, clinic", { stage: "door", weather: "cloudy", activity: "clinic" }],
+    ["Door: raining, the shops", { stage: "door", weather: "raining", activity: "trip", trip: "shops" }],
+    ["Door: sunny, the farm (then the ride)", { stage: "door", weather: "sunny", activity: "trip", trip: "farm" }],
+    ["Window ride L1", { stage: "window", day: "2", level: "1" }],
+    ["Window ride L3", { stage: "window", day: "2", level: "3" }],
+    ["Book after a kitchen day", { stage: "book", log: "kitchen" }],
+    ["Book after a clinic day", { stage: "book", log: "clinic" }],
+    ["Book after the farm", { stage: "book", log: "farm", day: "2" }],
+  ];
+  for (const [label, s] of quick) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    b.addEventListener("click", () => { for (const k of ["stage", "day", "weather", "activity", "trip", "level", "log"]) $(k).value = s[k] || (k === "level" ? "1" : k === "log" ? "kitchen" : ""); play(); });
+    $("quick").appendChild(b);
+  }
+  function play() {
+    const p = new URLSearchParams({ nonav: "1" });
+    for (const k of ["stage", "day", "weather", "activity", "trip", "level"]) if ($(k).value) p.set(k, $(k).value);
+    if ($("stage").value === "book" && $("log").value) p.set("log", $("log").value);
+    const u = `../day.html?${p}`;
+    $("url").textContent = u;
+    $("view").src = u;
+  }
+  $("go").addEventListener("click", play);
+  play();
+</script>
+</body>
+</html>

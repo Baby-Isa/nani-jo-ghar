@@ -1,0 +1,83 @@
+SESSION NAME / MODE:  s08 wave 1B, the card and what's said: the card's bulb, everything said is written, free replays of what's left, the review divider, the order pop-up headline, face circles; the voice leftovers in ui.js and flow.js
+MODEL AND EFFORT:     Sonnet, high effort (shared card and order logic across both modes with clear checks; the orchestrator judges)
+COST ESTIMATE:        about $25-35
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w1b-card.context.md (863 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/cook-playtest-2026-10-17.md (P17-P23, P30, P41, P42 and section 6 decisions 3, 5, 8)
+     docs/feedback/clinic-playtest-2026-10-18.md (P3, P4, P5, P6, P17, P19)
+     build/reports/s08-w1-voice.md (flaw 1 and 4: what it left you)
+     build/reports/research-levels-2026-10-19.md (the card ladder, for later: leave a hook)
+     docs/game-design/modes/cook.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/ui.js
+  - js/cook/order.js
+  - js/cook/flow.js
+  - js/cook/main.js
+  - js/shared/order-card.js
+  - css/shared/order-card.css
+  - js/shared/results.js
+  - css/shared/results.css
+  - js/shared/fit.js
+  - js/clinic/kit.js (card, replay, face, counts only)
+  - js/clinic/heal/games/*.js: only the taught-round count lines (CLN-161 in SH-99)
+  - data/clinic/**: only seq fields for one sequence per card
+  - build/sandbox/lib/contract.mjs and lib/regressions.mjs CONTRACT_ROWS: new checks for these rows
+  - build/reports/s08-w1b-card.md
+READ-ONLY (never edit):
+  - js/core/voice.js, js/shared/guide.js, js/cook/station-lib.js, js/cook/words.js (wave 1A, merged: use its queue)
+  - js/shared/buttons.js, css/shared/buttons.css, js/cook/stations.js, js/clinic/heal/scene.js, css/clinic.css (wave 2B)
+  - assets/**
+  - data/lang/** (never hand-written Kutchi)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a line or word the engine can't say stays its grey 'to record' placeholder, listed in the report
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-98 (with SH-100, SH-101, SAM-23, CLN-160): the card's small bulb shows every word and number in Kutchi (no dots, numbers at every level); Nani's bulb is the English; one bulb picture everywhere (assets/ui/results/icon-bulb.webp, the photo one) on Cook and clinic cards; the peek's time is data by level (L3 7 s, the others +3.5 s on today's 3.5 s); samosa's title has no number in either language and its bulb shows each kind as 'N samosas' with its fillings; one sequence box per heal card (ear L3's two cards are one: js/clinic/kit.js:783). The closed card's three dots stay (KEEP-09). Leave a hook for the level table's dotted L3 card (wave 2A).
+     Accept: contract-run checks red then green: the peek shows no dots and every number; one bulb picture; peek time by level; eye: samosa's card and bulb, ear L3's card, a chai card, each beside its bulb
+  2. SH-99 (with CLN-161, CLN-169, CLN-171): every count, colour and item said is written on the card, every level and every round (the clinic's taught round included: write and say the count, cut.js:646 and the same in ear, boing, eye, foot, knee); boing's drops colour and plaster colour on the card at every level (grey English 'to record' until Mum).
+     Accept: contract-run check: each number, colour and item said in an order or step is on the card, both modes, L1-L4
+  3. SH-102 (with SH-114): a replay (the speaker or a tap on the face) adds no hint and says only the steps not yet done (js/cook/flow.js:196, js/clinic/kit.js:1075).
+     Accept: a replay leaves the hint count unchanged; ear L3 after two steps replays only what's left
+  4. SH-103: the end review's divider sits at about 4/5 with no wrong item (room for four right, one wrong) and moves left as wrong items grow, every game (results.css:268). SH-107: only the ORDER POP-UP's headlines (the order cards at the start of a round) wrap at full size first and shrink only if two lines don't fit, one size per screen; everywhere else keeps shrink-then-wrap (non-negotiable 9). SH-113: one shared zoom for every face circle (Cook and clinic: the doctor's 144 px bust zoomed to match), a per-face tweak in data, set by eye.
+     Accept: eye: the review with 0, 1 and 3 wrong at 800x360 and 1366x768; chai L3's three order cards one size; every face circle side by side
+  5. Leftovers from wave 1A: LNG-09's 700 ms per-line wait in ui.js trimmed; the pop-up reads each order part once (chai-tray L3); 'Shabash!' once at the serve (flow.js:916-919); labs.html's Cook tiles default not guided (js/cook/main.js:157).
+     Accept: contract-22 (once and whole) green on chai-tray L3 and the serve
+
+REGRESSION ROWS TO RECHECK (285 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (25): CHAI-08, CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CK-45*
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-25*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-15*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CK-TB-01*, CK-29, CK-27, CK-39
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15, PAN-17, PAN-10
+  clinic:heal-ear (55): CLN-81*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-173*, CLN-174*, CLN-135*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-86, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-30, CLN-34, CLN-42, CLN-43, CLN-44, CLN-49, CLN-50, CLN-67, CLN-68, CLN-69, CLN-70, CLN-71, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-101, CLN-102, CLN-124, CLN-125, CLN-128, CLN-133, CLN-134, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-boing (56): CLN-81*, CLN-159*, CLN-106, CLN-119*, CLN-137*, CLN-138*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-164*, CLN-165*, CLN-166*, CLN-167*, CLN-168*, CLN-170*, CLN-02, CLN-03, CLN-08, CLN-82, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-30, CLN-42, CLN-43, CLN-44, CLN-58, CLN-66, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-37, CLN-149, CLN-118, CLN-140
+  clinic:diagnosis (35): CLN-17*, CLN-162*, CLN-16, CLN-18, CLN-93, CLN-94, CLN-95, CLN-116, CLN-81*, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01
+  shared components (109): SH-70, SH-98*, SH-99*, SH-107*, SH-37*, SH-90*, SH-91*, SH-92*, SH-93*, SH-97*, SH-102*, SH-103*, SH-104, SH-105*, SH-106*, SH-108*, SH-109*, SH-110*, SH-111*, SH-53*, SH-60*, SH-112*, SH-113*, SH-115*, SH-116*, SH-117*, SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-54, SH-55, SH-62, SH-69, SH-10, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58, SH-59, SH-63, SH-64, SH-65, SH-66, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33, SH-34, SH-35, SH-36, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48, SH-71, SH-72, SH-73, SH-74, SH-75, SH-76, SH-77, SH-79, SH-80, SH-82, SH-83, SH-84, SH-86, SH-87, SH-81, SH-89, SH-88
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w1b-card` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8833.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w1b-card.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

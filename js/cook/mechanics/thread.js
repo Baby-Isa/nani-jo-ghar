@@ -7,11 +7,11 @@
  * Sekelo v2 (docs/design-language/ui-design-system.md §15): the chai v2 grid. The
  * prep bowls sit top-down on the shelf band (Zafar, 29 Sept: this station stays top-down) (identical slots, meat | veg,
  * a `🔊 word` chip under each: tap the bowl = thread it, tap the chip = hear
- * it; speaker-only at level 3 up); the board with its upright skewer on the
+ * it; the word until it is used right, then the speaker alone: Cook.chipWord, Zafar, 20 Oct); the board with its upright skewer on the
  * left of the scene, the skewer rack on the right. A piece's word pops by the
  * skewer as it goes on (the family clip plays). A finished skewer moves to
  * the rack, then the next starts; no picture tally (the rack shows them).
- * The meat piece is ph-mishkaki (mishkaki = the meat cubes).
+ * The meat piece is ph-meat (gos, the raw cubes; SEK-19, decision 11: the cooked all-meat skewer is mishkaki).
  *
  * Kutchi: which kind and how many ("ba lakri gos, hakri lakri boga"), and for a
  * mixed skewer the pieces in the order they said ("gos, ne poi tameto…").
@@ -79,12 +79,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* the bowls: every skewer piece (and decoys), on the shelf, meat | vegetables, in a new order each time */
       const pieceIds = SK.pieceIds();
-      const ids = pieceIds.concat(St.decoys(k.decoyPool || [], pieceIds, k.decoys || 0));
+      // CK-49 (the level table): 1, 2, 3, 3 decoy bowls by the round's level (the knob); only the potato has sekelo piece art
+      // yet, so past one the rest wait on the art run (reported as they are: contract-37)
+      const ids = pieceIds.concat(St.tableDecoys(k.decoyPool || [], pieceIds, Cook.roundLevel(ctx), { what: "bowls" }));
       await SK.loadArt(S, ids);
       SK.band(S, z0);
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
-      const bowls = SK.shelf(S, z0, groups, { level: z.level });
+      // (the chips: the word until it is used right, then the speaker alone: Cook.chipWord, Zafar, 20 Oct)
+      const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)) });
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
@@ -289,6 +292,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* every frame: help timers, glows, what to do next (for the test) */
       let lastT = performance.now();
       let glowing = null;
+      let shownAt = 0;
       const off = z.tick(() => {
         const now = performance.now();
         const dtReal = now - lastT;
@@ -305,14 +309,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!z.out && doneShown) (handoff ? UI.glowGo : UI.glowDone)(!busy && !odd && !sk.ids.length && Object.keys(made).every((w) => made[w] === (want[w] || 0)) && ordered.every((w) => made[w] === want[w]));
         } else if (target && !(line.cooking && line.cooking())) {
           idle += dtReal;
+          // SH-60 (s08 w6J; Zafar, 17 Oct: "the highlight should only happen at the same time as the voice instruction"): her
+          // hint and the piece's glow come together, after the pause (the glow came showAfterMs later), and the step's own help
+          // (the stepper's line after the ladder's pause) lights the piece too
+          const G = window.NaniGuide;
+          const stepHelped = G && G.lastHelpAt && Date.now() - G.lastHelpAt < 1000 && G.lastHelpAt > shownAt;
           if (!hinted && idle > Cook.hintDelay(p.w)) {
             hinted = true;
             if (Cook.onHelp) Cook.onHelp("hint");
             St.nani(hintLine(p)).catch(() => {});
           }
-          if (hinted && !shown && idle > Cook.hintDelay(p.w) + k.showAfterMs) {
+          if (!shown && (hinted || stepHelped)) {
             shown = target;
-            S.glow(target, true);
+            shownAt = Date.now();
+            S.glow(target, true, { now: true });
             if (Cook.onHelp) Cook.onHelp("shown", { ids: [p.w] });
           }
         }

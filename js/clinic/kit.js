@@ -161,7 +161,14 @@
     const S = Clinic.Stages;
     const a = (HH && HH.healArt) || (S && S._healArt);
     const key = String(file || "").replace(/[?#].*$/, "").replace(/^.*?(assets\/)/, "$1").replace(/@2x(\.webp)$/, "$1");
-    const feet = (a && a.shoes && a.shoes[key]) || [];
+    // CLN-162 (Zafar, 18 Oct: "her feet have a drop shadow underneath them, so it looks like her feet aren't resting on
+    // the wooden stool"; clinic decision 5: her dangling feet were not meant, her shadow goes under the stool): a seated
+    // patient (her front, blanket and bottle pictures: patients.<kind>.front / blanket / bottle) casts no shadow under
+    // her feet, which rest on the stool; the stool's own painted shadow on the floor is the one under her. Standing
+    // pictures (hers and the doctor's) keep one under each measured foot, and a picture with no measured feet has none
+    const P = (a && a.patients) || {};
+    const seated = Object.keys(P).some((k) => ["front", "blanket", "bottle"].some((v) => P[k] && P[k][v] === key));
+    const feet = seated ? [] : (a && a.shoes && a.shoes[key]) || [];
     feet.forEach(([cx, bottom, w]) => {
       // an ellipse blurred at its edge (in its own units, so it is as soft at every size); the colour is a token
       const id = `cl-shadow-${++Kit._shadows}`;
@@ -185,6 +192,40 @@
     const A = Kit.doctorArt();
     const box = (A && A.box) || {};
     return Kit.url(box[mood || "neutral"] || box.neutral || "assets/clinic/patients/doctor/v2/faces/neutral.webp");
+  };
+  /**
+   * ART-19 (s08 w6N): while the doctor's line plays and he is not on screen, the faces on his card (and his box) flap
+   * between his talk face and his neutral face (both his own art, data/clinic/heal-art.json doctor.box). Returns the stop.
+   */
+  Kit.cardTalk = function () {
+    const doc = global.document;
+    if (!doc) return null;
+    const talk = Kit.doctorFace("talk");
+    const rest = Kit.doctorFace("neutral");
+    if (!talk || talk === rest) return null;
+    const imgs = () => Array.from(doc.querySelectorAll(".cl-face.doctor img, .cl-card-face .cl-face.doctor img")).filter((i) => i.isConnected);
+    // decoded once, so a flap never shows a blank face while the picture loads
+    if (!Kit.cardTalk.pre && global.Image) (Kit.cardTalk.pre = new global.Image()).src = talk;
+    let open = false;
+    let on = true;
+    const flap = () => {
+      if (!on) return;
+      open = !open;
+      imgs().forEach((i) => {
+        if (i.dataset.rest == null) i.dataset.rest = i.getAttribute("src") || rest;
+        i.src = open ? talk : i.dataset.rest;
+      });
+      t = setTimeout(flap, open ? 170 : 130);
+    };
+    let t = setTimeout(flap, 0);
+    return () => {
+      on = false;
+      clearTimeout(t);
+      imgs().forEach((i) => {
+        if (i.dataset.rest != null) i.src = i.dataset.rest;
+        delete i.dataset.rest;
+      });
+    };
   };
   /** The doctor's face for his box and the heal card: his neutral face (Kit.doctorFace). */
   Object.defineProperty(Kit, "DOCTOR_FACE", { get: () => Kit.doctorFace("neutral"), configurable: true });
@@ -446,6 +487,14 @@
    * is paused and the device voice cancelled.
    */
   Voice.gen = 0;
+  // a line made stale by the game (opts.stale(): its step closed before its turn came): skipped, or cut between words
+  const stale = (o) => {
+    try {
+      return !!(o && typeof o.stale === "function" && o.stale());
+    } catch (e) {
+      return false;
+    }
+  };
   Voice.playing = new Set(); // the family clips playing now
   const VS = () => (global.Lifecycle && global.Lifecycle.voice) || null;
   const live = (g) => g == null || g === Voice.gen;
@@ -517,6 +566,7 @@
     let any = false;
     for (let i = 0; i < plan.length; i++) {
       if (!live(o.gen)) return true; // stopped mid-line: the rest of it stays quiet
+      if (i > 0 && stale(o)) return true; // CLN-119: its step closed mid-line: the rest of it stays quiet
       const c = plan[i];
       let ok = false;
       if (c.file) ok = await Voice.audio(c.file, o);
@@ -538,6 +588,9 @@
     const gen = Voice.gen; // a stop before this line's turn (Voice.clear, a tap through the pop-up) skips it
     const run = async () => {
       if (!live(gen)) return;
+      // CLN-119 (a child heard "laal" while the yellow plaster's row was lit): a step's line still waiting in the queue
+      // when its step closes is never said late, under the next step's row
+      if (stale(opts)) return;
       Voice.busy = true;
       // decision 55 (F26), S04-B (SH-68): the doctor with no face on screen (the pharmacy belt) speaks by his green box
       // at the top left, never from a bubble with no head under it
@@ -557,15 +610,18 @@
         if (tk && tk.__talk) stopTalk = tk.__talk();
         else if (el && el.tagName === "IMG") stopTalk = global.Lifecycle.talk.dom(el);
       }
+      // ART-19 (s08 w6N; the judge: a closed smile through a whole line): the doctor speaking from his card (off screen, no
+      // bubble) moves his mouth on the card's face: his own talk face (faces/talk) and his neutral one in turn
+      if (!stopTalk && (who === "doctor" || who === "guide")) stopTalk = Kit.cardTalk();
       const t0 = Date.now();
       let played = false;
-      const ao = { soft: !!opts.soft, gen };
+      const ao = { soft: !!opts.soft, gen, stale: opts.stale };
       if (w.audio) played = await Voice.audio(w.audio, ao);
       // the engine's clip plan: the family's recordings of each word (a placeholder piece has none)
       if (!played && w.kutchi && w.placeholder !== true && w.plan && w.plan.length) played = await Voice.plan(w.plan, ao);
       if (!played) await Voice.tts(Kit.plain(w), ao);
       const left = (Kit.fast ? 150 : estimate(Kit.plain(w))) - (Date.now() - t0);
-      if (left > 0 && live(gen)) await new Promise((r) => setTimeout(r, left));
+      if (left > 0 && live(gen) && !stale(opts)) await new Promise((r) => setTimeout(r, left));
       if (stopTalk) stopTalk();
       if (offGuide) offGuide();
       setTimeout(() => bubble && bubble.remove(), live(gen) ? (Kit.fast ? 50 : 500) : 0);
@@ -848,6 +904,7 @@
       opts.onPeek = this.closed.onPeek || null;
       opts.look = this.closed.look || null; // decision 57: a spoken card's look is a small bulb
       opts.open = !!this.bulbOn; // D11: the bulb opens a closed card for its time
+      opts.peekMs = Kit.peekMs(Kit.Bulb && Kit.Bulb.last ? Kit.Bulb.last.level : 3); // SH-101: the peek's time by level
       this.closedSeen = true; // the round had a closed card: the end screen shows the eye badge (D12)
     }
     this.el.innerHTML = "";
@@ -1065,7 +1122,11 @@
       else doc.querySelectorAll("[data-next-held]").forEach((x) => (delete x.dataset.nextHeld, x.isConnected && x.classList.add("next")));
     };
     const gen = Voice.gen; // a voice stop mid-card: the rows still to read stay quiet (SH-64)
-    if (!only && tt && typeof tt === "object") {
+    // SH-114, SH-102 (Zafar, 18 Oct: "they should just read out starting from the remaining steps"): a replay (the face, no `only`) says
+    // the steps not yet done once some are, and not the headline then; the whole card while none is done, and when all are
+    const shown = this.rows.slice(0, this.progressive ? this.shown + 1 : this.rows.length);
+    const left = !only && shown.some((r) => this.st.done.has(r.id)) && shown.some((r) => !this.st.done.has(r.id));
+    if (!only && !left && tt && typeof tt === "object") {
       this.st.reading = "__head";
       hold(true);
       if (this.headEl) this.headEl.classList.add("reading");
@@ -1074,14 +1135,19 @@
       if (this.headEl) this.headEl.classList.remove("reading");
       hold(false);
     }
-    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : this.rows.slice(0, this.progressive ? this.shown + 1 : this.rows.length);
+    const rows = only ? this.rows.filter((r) => only.includes(r.id)) : left ? shown.filter((r) => !this.st.done.has(r.id)) : shown;
     for (const r of rows) {
       if (gen !== Voice.gen) break;
       if (!this.rows.includes(r)) continue;
       this.st.reading = r.id;
       hold(true);
       if (r.el) r.el.classList.add("reading");
-      await Voice.say(r, { who: r.who || this.who, noBubble: true });
+      // CLN-119: a row read for its step (it was open when asked) goes quiet if its step closes before its turn: the
+      // next step's row is lit by then, and the late line ("ne poi laal plaster") would sound under it
+      const was = this.st.done.has(r.id);
+      const st = this.st;
+      const stale = () => st !== this.st || !this.rows.includes(r) || (!was && st.done.has(r.id));
+      await Voice.say(r, { who: r.who || this.who, noBubble: true, stale });
       if (this.st.reading === r.id) this.st.reading = null;
       if (r.el) r.el.classList.remove("reading");
       hold(false);
@@ -1092,9 +1158,14 @@
   // the bulb's time per level: data/clinic/pipeline.json "bulb_ms" (D11, 1 Oct: 8 s at every level to start); this is
   // only the fallback before the data loads
   Kit.BULB_MS = { 1: 8000, 2: 8000, 3: 8000, 4: 8000 };
+  // SH-101 (Zafar, 17 Oct: level 3 double, the same seconds added to the others): how long the closed card's small bulb holds it open (the
+  // peek), by level; was a flat 3.5 s. Cook's table is data/cook.json calm.peekMs (contract-29 reads both as 7 s)
+  Kit.PEEK_MS = { 1: 7000, 2: 7000, 3: 7000, 4: 7000, 5: 7000 };
+  Kit.peekMs = (level) => Kit.PEEK_MS[level] || Kit.PEEK_MS[3];
   Kit.Bulb = function (btn, opts = {}) {
     this.btn = btn;
     this.level = opts.level || 1;
+    Kit.Bulb.last = this; // the screen's bulb: its level is the stage's (the peek's time follows it, SH-101)
     this.onUse = opts.onUse || null;
     // SH-41 (S05-D): the bulb's on and off reach the card (a closed card opens, in English, for the bulb's time); these
     // were passed by the screen and never called
@@ -1107,7 +1178,8 @@
     btn.classList.add("cl-bulb");
     btn.type = "button";
     btn.setAttribute("aria-label", "Light bulb: show it in English for a moment");
-    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2z" fill="currentColor"/><rect x="9" y="19" width="6" height="2.4" rx="1" fill="currentColor"/></svg>';
+    // SH-100: the one bulb picture (assets/ui/results/icon-bulb.webp), as Nani's and the card's small bulb
+    btn.innerHTML = `<img src="${Kit.url("assets/ui/results/icon-bulb.webp")}" alt="" draggable="false">`;
     btn.addEventListener("click", this._h);
   };
   Kit.Bulb.prototype.use = function () {

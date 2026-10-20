@@ -94,30 +94,55 @@
     return out;
   }
   /*
-   * Left: the stars and the pocket-money receipt. Right: the word review
-   * (every Kutchi word on the list as a pill: speaker, Kutchi, English; the
-   * missed ones and the helped ones marked) and one "Next time" tip per
-   * missed star. No "Nani asked / You found": the pills say it, calmly.
+   * Left: the stars and the pocket-money receipt (a picture and a number each). Right: the word review (every Kutchi
+   * word on the list as a pill: speaker, Kutchi, its English under it; the missed ones and the helped ones marked).
+   * No written English on the card for the child (rule 5): the tips, one per missed star, sit behind the grown-ups' "?".
    */
+  const pic = (svg) => `<span class="mstar earned" style="width:24px;height:24px;padding:3px">${svg}</span>`;
+  const receiptIcon = (key) => (key === "voice" ? pic(voiceIcon()) : key === "combo" ? "&times;" : key === "help" ? `<i class="coin-dot"></i>` : pic(UI.starIcon(key)));
+  /** The grown-ups' "?" on a panel: a round "?" in its corner; the English opens beside it and nowhere else (Cook.grownUps does the same on Cook's panels). */
+  function grownUps(p, html) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "rail-btn gu-btn";
+    btn.id = "gu-btn";
+    btn.textContent = "?";
+    btn.setAttribute("aria-label", "For grown-ups");
+    btn.setAttribute("aria-expanded", "false");
+    const box = document.createElement("div");
+    box.className = "gu-pop hidden";
+    box.id = "gu-pop";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", "For grown-ups");
+    box.innerHTML = html;
+    btn.addEventListener("click", () => {
+      Cook.sfx.click();
+      const open = box.classList.toggle("hidden") === false;
+      btn.setAttribute("aria-expanded", String(open));
+      p.toggleAttribute("data-grown", open);
+    });
+    p.prepend(box);
+    p.prepend(btn);
+    return box;
+  }
   function showResult(card, spec) {
     UI.clearStage();
     const t = tips(card);
     const words = card.words || [];
-    const flagged = words.some((w) => w.state !== "ok");
-    const title = spec.story ? spec.story.title : `${(Find.Mech.labs[spec.key] || {}).name || "Search lab"} · level ${card.level}`;
     const p = UI.panel(`
-      <h2>${esc(title)}</h2>
       <div class="cards"><div class="ccard rcard res-card"><div class="rc-left">
-        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt="">${esc((Find.data.mechanics[card.mech] || {}).name || "Nani's list")}</div>
+        <div class="cc-head"><img src="${Cook.v("assets/cook/characters/nani-badge.webp")}" alt=""></div>
         <span class="cc-coins"><i class="coin-dot"></i>+${card.coins}</span>
         <div class="cc-stars">${starsHtml(card.stars)}</div>
-        <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>In your purse</span><b>${Cook.save.coins}</b></div></div>
+        <div class="receipt">${card.receipt.map(([k, v, key]) => `<div title="${esc(k)}"><span class="rc-ic">${receiptIcon(key)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span class="rc-ic"><i class="coin-dot"></i></span><b>${Cook.save.coins}</b></div></div>
       </div>
       <div class="rc-right">
-        ${words.length ? `<div class="rc-words"><h4>Words on this list${flagged ? ` <span class="rc-key"><i class="k-missed"></i>missed <i class="k-helped"></i>needed help</span>` : ""}</h4>${UI.wordReview(words)}</div>` : ""}
-        ${t.length ? `<div class="rc-tips"><h4>Next time</h4>${t.map((x) => `<div class="rc-tip"><span class="mstar lost">${x.star === "voice" ? voiceIcon() : UI.starIcon(x.star)}</span>${esc(x.text)}</div>`).join("")}</div>` : `<div class="rc-tips all"><h4>Next time</h4><div class="rc-tip">Just the same. Every star!</div></div>`}
+        ${words.length ? `<div class="rc-words">${UI.wordReview(words)}</div>` : ""}
       </div></div></div>
-      <div class="btn-row"><button class="btn primary" id="res-again">${spec.lab ? "Again" : "Another list"}</button><button class="btn" id="res-back">${spec.lab ? "Search lab" : "Menu"}</button></div>`);
+      <div class="btn-row"><button class="btn primary" id="res-again" type="button" aria-label="${spec.lab ? "Again" : "Another list"}">&#9654;</button><button class="btn" id="res-back" type="button" aria-label="${spec.lab ? "Search lab" : "Menu"}">&#8962;</button></div>`);
+    // the end-of-round review shows each word's English under it (the one place besides the "?"; ui-design-system s6)
+    p.querySelectorAll(".wr-en").forEach((e) => e.classList.add("rs-en"));
+    if (t.length) grownUps(p, `<h3>Next time</h3>${t.map((x) => `<div class="rc-tip"><span class="mstar lost">${x.star === "voice" ? voiceIcon() : UI.starIcon(x.star)}</span>${esc(x.text)}</div>`).join("")}`);
     UI.wireWordReview(p);
     $("#res-again").addEventListener("click", () => (spec.lab ? playRound(spec).catch(report) : storyRound()));
     $("#res-back").addEventListener("click", () => (spec.lab ? showLab() : showTitle()));
@@ -142,27 +167,26 @@
       `<div class="title-wrap">
         <img src="${Cook.v("assets/cook/characters/nani-ledge-happy-v3.webp")}" alt="Nani">
         <div class="t-text">
-          <div class="t-about">
-          <h1>Find it with Nani</h1>
-          <p>Nani tells you what she needs, in Kutchi. Listen, find the right things and the right number, and check the shopkeeper hasn't made a mistake!</p>
-          <div class="purse"><span class="pill coins" title="Pocket money"><i class="coin-dot"></i>${Cook.save.coins}</span><span class="purse-total">pocket money</span></div>
-          <p class="story-line"><b>${esc(s.chapter)}</b><br>${esc(s.gist)}${rounds ? ` <b>You've done ${rounds} list${rounds > 1 ? "s" : ""}.</b>` : ""}</p>
-          </div>
-          <div class="t-go">
-          <div class="seg" role="group" aria-label="Setting">
-            <button data-mode="relaxed" class="${mode === "relaxed" ? "on" : ""}">Relaxed</button>
-            <button data-mode="busy" class="${mode === "busy" ? "on" : ""}">Busy</button>
-          </div>
-          <div class="seg-help">${mode === "relaxed" ? "No waiting: take your time." : "The shopkeeper waits with a patience ring. Help costs patience."}</div>
-          <div class="btn-row">
-            <button class="btn primary" id="t-start">${esc(s.title)}</button>
-            <button class="btn" id="t-lab">Search lab</button>
-          </div>
-          <p style="margin-top:14px;font-size:13px"><a href="cook.html">Cook with Nani</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>
-          </div>
+          <h1 hidden>Find it with Nani</h1>
+          <div class="purse"><span class="pill coins" title="Pocket money"><i class="coin-dot"></i>${Cook.save.coins}</span></div>
+          <div class="btn-row pic-row"><button class="btn primary big" id="t-start" type="button" aria-label="${esc(s.title)}">&#9654;</button></div>
         </div>
       </div>`,
       { title: true }
+    );
+    // everything a grown-up reads (what Find it is, the chapter, the setting, the Search lab) is behind the "?" (rule 5)
+    grownUps(
+      p,
+      `<h3>Find it with Nani</h3>
+      <p>Nani tells you what she needs, in Kutchi. Listen, find the right things and the right number, and check the shopkeeper hasn't made a mistake!</p>
+      <p>${esc(s.chapter)}: ${esc(s.gist)}${rounds ? ` You've done ${rounds} list${rounds > 1 ? "s" : ""}.` : ""}</p>
+      <div class="seg" role="group" aria-label="Setting">
+        <button data-mode="relaxed" class="${mode === "relaxed" ? "on" : ""}">Relaxed</button>
+        <button data-mode="busy" class="${mode === "busy" ? "on" : ""}">Busy</button>
+      </div>
+      <div class="seg-help">${mode === "relaxed" ? "No waiting: take your time." : "The shopkeeper waits with a patience ring. Help costs patience."}</div>
+      <div class="btn-row"><button class="btn" id="t-lab" type="button">Search lab</button></div>
+      <p class="gu-small"><a href="cook.html">Cook with Nani</a> ${Cook.storageOK ? "" : "· Progress can't be saved in this browser window."}</p>`
     );
     p.querySelectorAll("[data-mode]").forEach((b) =>
       b.addEventListener("click", () => {
@@ -358,6 +382,13 @@
     Cook.loadSave();
     await Find.load();
     V.init();
+    // no written English for the child (rule 5): the intro card has no name and no "tap to start" (cook.css draws the tapping
+    // finger on an empty .ic-go), Done is a tick
+    const icName = document.querySelector("#intro .ic-name");
+    if (icName) icName.remove();
+    document.querySelector("#intro .ic-go").textContent = "";
+    $("#find-done").textContent = "✓";
+    $("#find-done").setAttribute("aria-label", "Done");
     $("#find-done").addEventListener("click", () => state.current && state.current.pressDone());
     $("#btn-warmer").innerHTML = UI.ICON.hand;
     $("#btn-warmer").addEventListener("click", () => state.current && state.current.warmer(true));

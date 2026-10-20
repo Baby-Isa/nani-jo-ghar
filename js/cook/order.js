@@ -32,18 +32,16 @@
   const O = (Cook.Order = {});
 
   /**
-   * 29 Sept (X12 / Q7, Zafar): the counting rule, for a recipe with `countRule`. Level 1 and 2: the
-   * card row writes the quantity in Kutchi ("ba dungri", never a digit); level 3 and up: the card
-   * says only the thing, and how many is heard in the order (remember it). C3 (decision 41): every
-   * station follows it, the Chai tray's sugar included (data/cook.json countRule on every counted recipe).
+   * SH-99 (Zafar, 18 Oct: "whatever is said audibly is written down ... including quantity and item type"; reverses decision 41's and
+   * decision 57's "from level 3 the card says only the thing and how many is heard"): every number said is written on the card, at
+   * every level and in every round. The count rule's old filter is gone: a card row writes its whole phrase, number included
+   * ("ba dungri", "trae khun"), and Nani's bulb is the English of it. Counting along aloud (L2 up) is another rule (contract-19).
    */
-  // decision 57 (SH-52): a number is written the first times it is heard, at any level (then level 3 drops it)
-  const heardFew = (n) => !!(Cook.timesHeard && Cook.numId && Cook.timesHeard(Cook.numId(n)) < 3);
-  const cardParts = (parts, level, rule) => (rule && level >= 3 ? parts.filter((p) => typeof p !== "number" || heardFew(p)) : parts);
+  const cardParts = (parts) => parts;
   /**
-   * C3 (decision 41, E12): a headline that says a quantity ("Muke trae samosa khape.") follows the rule too: from
-   * level 3 the card writes its sentence without the number ("Muke samosa khape."), built from the same frame; the
-   * full line is still what's said (and replayed from the face).
+   * SAM-11 (T16), SAM-23 (Zafar, 18 Oct: "keep the title ... I want samosa"): a dish whose count heads each of its blocks writes its
+   * headline without the number ("Muke samosa khape.", in English "I want samosa" too); each block's own row says how many
+   * ("ba samosa", "trae samosa"). Every other headline is the whole line, number included (SH-99).
    */
   function headCard(r, level, rule, uncounted = false) {
     const parts = r.parts || [];
@@ -122,7 +120,7 @@
     const row = (r) => rowOf(r, rule);
     Cook.Recipes[d.recipe].ladder(d, i).forEach((r) => {
       if (r.kind === "dish" && !L.head) {
-        L.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule, !!(Cook.data.recipes[d.recipe] || {}).blockHeads) });
+        L.head = Object.assign(row(r), { head: true, line: r.line, cardLine: headCard(r, rule.level, rule.rule, !!(Cook.data.recipes[d.recipe] || {}).blockHeads), uncountedTitle: !!(Cook.data.recipes[d.recipe] || {}).blockHeads });
         return;
       }
       // a person's own headline (the Chai tray's "Muke kari chai khape."): heads their card, not a row
@@ -232,6 +230,19 @@
         Object.assign(L.head, { line, said: line, cardLine, ids: firstAny.ids.slice(), parts: firstAny.parts, phrase: firstAny.phrase });
       }
     }
+    // s08 w6E (contract-30, SEK-03; the 6A/6B request): two DIFFERENT mixes ("ba lakri mixed" with two lists, L4) are two skewers on the
+    // card, each its own box written "hakri lakri mixed" with its own pieces, so the card never wrote the "ba" Nani said (and wrote a
+    // "hakri" she did not). Nani now says each mix by its own count, the words the card writes: the row says "hakri lakri mixed", and
+    // the second list is led by "Ne hakri lakri mixed" (speech below). The same mix twice stays "ba lakri mixed" over its two boxes.
+    L.sections.forEach((s) => s.groups.forEach((g) => g.forEach((r) => {
+      if (!r.cards || r.no || r.block || (r.qty || 1) < 2) return;
+      const kind = r.ids[r.ids.length - 1];
+      if (L.sections.filter((y) => y.cardOf === kind && !y.when).length !== r.qty) return;
+      const parts1 = (r.parts || r.ids).map((x) => (typeof x === "number" ? 1 : x));
+      const one = Lang.phrase(parts1);
+      if (!one || !one.segs) return;
+      Object.assign(r, { perMix: true, parts: parts1, phrase: one, line: { segs: one.segs, en: one.en, plan: one.plan }, said: Lang.line(Lang.frames().any, one) });
+    })));
     return L;
   };
 
@@ -267,8 +278,26 @@
    * Without a spoken headline (the pantry's "bring me these", still to record) each row is said as
    * the recipe data frames it ("Muke dudh de. Ne atto.").
    */
+  // LNG-17 (judges, 19 Oct; non-negotiable 5): the join word is said only when the engine can say it in Kutchi. "with"
+  // (WithFood) and "and" (AndKind) are the engine's gaps until Mum gives them (Q5; data/lang/reports/gap-list.md): an
+  // English join is never spoken or written into the order, so the row is said bare, as the rows after it always are
+  // ("Muke elchi waari chai khape, dudh, trae khun."), the card's own list (29 Sept, X1)
+  const joinable = (join, r) => {
+    const l = Lang.line(join, r.phrase);
+    return !!l && l.ok !== false && !(l.segs || []).some((s) => s.lang === "e");
+  };
+  // LNG-17: a block's head the engine can't say ("And samosa": AndKind, Mum's Q5) is said with the engine's confirmed list
+  // frame instead, "ne" before the next thing (grammar-notes §6: "a list takes ne before each item"): "Ne ba samosa, ba bataata."
+  const joinGap = (s) => s.lang === "e" && /\b(AndKind|WithFood)\b/.test(String(s.gap || ""));
+  const spokenHead = (head, F) => {
+    const segs = (head && head.line && head.line.segs) || [];
+    if (!head || head.rec || !head.phrase || head.line.ok !== false || !segs.some(joinGap) || segs.some((s) => s.lang === "e" && !joinGap(s))) return head;
+    const l = Lang.line(F.more, head.phrase);
+    return l && l.ok !== false ? Object.assign({}, head, { line: l }) : head;
+  };
   O.sentence = function (head, rows, { join = "with" } = {}) {
     const F = Lang.frames();
+    head = spokenHead(head, F);
     const parts = [];
     const said = head && !head.rec && head.line;
     if (!said) {
@@ -290,7 +319,7 @@
         segs = lower(cut(l.segs));
         en = cutEn(l.en).replace(/^./, (c) => c.toLowerCase());
         plan = l.plan;
-      } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join])) { // (parked pages only: their own lines)
+      } else if (!joined && !joinless(r) && (Lang.hasLine ? Lang.hasLine(join) : Cook.data.lines[join]) && joinable(join, r)) { // (parked pages only: their own lines)
         const l = Lang.line(join, r.phrase);
         // inside the sentence: no capital (the engine says a join it has no rule for as a sentence of its own)
         segs = lower(cut(l.segs));
@@ -370,7 +399,11 @@
       // the next skewer, never all the lists at the end
       const listsOf = (r) => (r && r.cards ? L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || withWhen)) : []);
       const early = new Set();
+      // (w6E) the second of two different mixes is led by its own count: "Ne hakri lakri mixed. Pela gos. ..."
+      const perMixRow = (s) => (s.cardOf ? O.rows(L, { all: true }).find((r) => r.cards && r.perMix && r.ids[r.ids.length - 1] === s.cardOf) : null);
       const speakSection = (s) => {
+        const pm = perMixRow(s);
+        if (pm && L.sections.filter((y) => y.cardOf === s.cardOf && !y.when).indexOf(s) > 0) push(Lang.line(F.any, pm.phrase), pm);
         let first = true;
         s.groups.forEach((g, gi) => {
           let firstInGroup = true;

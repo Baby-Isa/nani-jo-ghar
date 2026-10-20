@@ -920,21 +920,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ================= Sekelo v2 (design system §15): the shared grid, shelf and word pop ================= */
-  // the chai v2 grid (design px, 1600x900): the scene is the top 74%, the shelf band the bottom 26%
+  // the chai v2 grid (design px, 1600x900): the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const V2 = (SK.V2 = {
-    SHELF_TOP: 666,
+    SHELF_TOP: Cook.Stations.SHELF.top,
     BASE: 818, // (front-on shelves: the shelf line)
-    BOWL_Y: 748, // Sekelo is top-down (Zafar, 29 Sept): each bowl centred in the band above its chip
-    PITCH: 160, // v3 (K5): heaps, their chunks the size of the pieces on a skewer
-    GROUP_GAP: 44,
-    BOWL_W: 140, // one box size per slot (§7): every prep bowl is the same bowl, seen from above
+    BOWL_Y: 740, // Sekelo is top-down (Zafar, 29 Sept): each bowl centred in the band above its chip
+    PITCH: 192, // (SH-112: the taller band's bins a fifth bigger) v3 (K5): heaps, their chunks the size of the pieces on a skewer
+    GROUP_GAP: 0, // SEK-21 (P38, 17 Oct: "no reason for them to be unevenly distributed"): every bin one pitch apart (was 44 between meat and veg)
+    BOWL_W: 168, // one box size per slot (§7): every prep bowl is the same bowl, seen from above
     CHIP: { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 },
     RIGHT: 190, // the shelf keeps clear of the phase button and the tick, bottom right
     INK: { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf, sage: 0x7e9a76, wrong: 0xb24a3a },
     FONT: "Nunito, sans-serif",
     DIR: "assets/cook/items/sekelo/",
   });
-  /** The piece that is meat (ph-mishkaki: §15, mishkaki is the meat cube) and a piece's word. */
+  /** The piece that is meat (ph-meat, gos: SEK-19, decision 11; the cooked all-meat skewer is mishkaki) and a piece's word. */
   SK.meatPiece = () => SK.cfg().meatPiece || SK.kindWord("meat");
   /** Sekelo v2's own art: the grill, the rack, the board and the top-down prep bowls. */
   SK.loadArt = function (S, ids = []) {
@@ -1024,9 +1024,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     g.strokePath();
   };
   /** The softened marble and the shelf band (§3, §7), as chai v2 draws them. */
-  SK.band = function (S, z) {
+  SK.band = function (S, z, { full = false } = {}) {
     // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
     const FAR = 2000;
+    // full (s08 w3B, SEK-20): the grill's screen has no shelf (one job per phase, SEK-08): the softened marble all the way
+    // down, so the cooked rack never straddles the band's edge
+    if (full) return S.track(S.add.rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(900 + 2 * FAR), V2.INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
     S.track(S.add.rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(V2.SHELF_TOP + FAR), V2.INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
     const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
     band.fillStyle(V2.INK.panel, 1);
@@ -1043,25 +1046,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   SK.shelf = function (S, z, groups, { level = 1 } = {}) {
     const n = groups.reduce((a, g) => a + g.length, 0);
-    const width = n * V2.PITCH + (groups.length - 1) * V2.GROUP_GAP;
+    // (SH-112: the bigger bins narrow to fit a long row clear of the tick)
+    const pitch = Math.min(V2.PITCH, (1600 - V2.RIGHT - 80 - (groups.length - 1) * V2.GROUP_GAP) / Math.max(1, n));
+    const width = n * pitch + (groups.length - 1) * V2.GROUP_GAP;
     const x0 = Math.max(40, (1600 - V2.RIGHT - width) / 2);
     const out = {};
-    let sx = x0 + V2.PITCH / 2;
+    let sx = x0 + pitch / 2;
     groups.forEach((group) => {
       group.forEach((id) => {
-        out[id] = SK.bowl(S, z, id, sx, level);
-        sx += V2.PITCH;
+        out[id] = SK.bowl(S, z, id, sx, level, Math.min(V2.BOWL_W, pitch - 20));
+        sx += pitch;
       });
       sx += V2.GROUP_GAP;
     });
     return out;
   };
-  SK.bowl = function (S, z, id, x, level) {
+  SK.bowl = function (S, z, id, x, level, bw = V2.BOWL_W) {
     const key = `sk2-bowl-${id}`;
     let img;
     if (S.textures.exists(key)) {
       const src = S.textures.get(key).getSourceImage();
-      const k = z.L(V2.BOWL_W) / src.width;
+      const k = z.L(bw) / src.width;
       img = S.track(S.add.image(z.X(x), z.Y(V2.BOWL_Y), key).setScale(k).setDepth(D.item + 1));
       img.baseScale = k;
       img.shadow = S.contactShadow(img);
@@ -1071,7 +1076,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place): the
     // kitchen kit's (js/cook/kitchen-kit.js), else this file's copy of it
     const C = V2.CHIP;
-    const showWord = Cook.labelMode(id) === "text" && level < 3;
+    // Zafar, 20 Oct: the word is written until the child has used it right, then the speaker alone (every level)
+    const showWord = Cook.chipWord(id, z.ctx);
     if (Cook.Kit && Cook.Kit.chip && z.k === 1) {
       img.chip = Cook.Kit.chip(S, id, z.X(x), z.Y(C.y), { word: showWord, w: C.w });
       return img;
@@ -1123,39 +1129,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     c.add([g, t]);
     S.tweens.add({ targets: c, alpha: 1, y: y - z.L(18), duration: 180, ease: "Back.easeOut" });
     S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: 1500, duration: 320, onComplete: () => c.destroy() });
-    if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.speakWord(id);
+    if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.popWord(id);
     return c;
   };
   /**
-   * The phase button (§15): the flat design-system button, "to the grill" with a small grill icon (a
-   * gold outline, as the design system's icons), in place of the red "Go to the barbecue".
+   * The go-on button to the grill (SH-106, 17 Oct: "there's no arrow ... consistent with the other ones"): the shared
+   * go-on button (js/shared/buttons.js) with the art run's grill picture (go-grill-s08b) before its arrow; the picture
+   * goes when the button is hidden, so another job on #go-btn never shows the grill.
    */
+  SK.GO_PIC = "assets/cook/items-s08b/go-on/go-grill-s08b";
   SK.goIcon = function () {
     const b = document.querySelector("#go-btn");
-    if (!b) return;
-    // the shared Next (js/shared/buttons.js): its icon slot takes the grill
-    const kitIcon = b.querySelector(".njg-next-ic");
-    if (kitIcon) {
-      kitIcon.innerHTML =
-        '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' +
-        '<path d="M5 13h22"/><path d="M6 13c0 6 4.5 10 10 10s10-4 10-10"/><path d="M11 23l-3 6M21 23l3 6"/>' +
-        '<path d="M11 4c-1.5 2 1.5 3 0 5M16 3c-1.5 2 1.5 3 0 5M21 4c-1.5 2 1.5 3 0 5"/></svg>';
-      return;
-    }
-    b.classList.add("ds");
-    const a = b.querySelector(".go-arrow");
-    if (a) a.remove();
-    let i = b.querySelector(".go-icon");
-    if (!i) {
-      i = document.createElement("span");
-      i.className = "go-icon";
-      i.setAttribute("aria-hidden", "true");
-      b.insertBefore(i, b.firstChild);
-    }
-    i.innerHTML =
-      '<svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="#C9962E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M5 13h22"/><path d="M6 13c0 6 4.5 10 10 10s10-4 10-10"/><path d="M11 23l-3 6M21 23l3 6"/>' +
-      '<path d="M11 4c-1.5 2 1.5 3 0 5M16 3c-1.5 2 1.5 3 0 5M21 4c-1.5 2 1.5 3 0 5"/></svg>';
+    const kit = global.NjgButtons;
+    if (!b || !kit || !kit.pic) return;
+    const v = Cook.v || ((u) => u);
+    kit.pic(b, { src: v(SK.GO_PIC + ".webp"), src2x: v(SK.GO_PIC + "@2x.webp") }, { untilHidden: true });
   };
   /**
    * The rack (vessel-skewer-rack-t-v1, top-down), sized to the skewers it holds (followup, 29 Sept: it
@@ -1282,6 +1270,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
     return { img, d: P.rim[2] * 2 * P.w * img.scaleX, line, rank, set: (n) => img.setTexture(`sk3-plate-${Math.max(0, Math.min(4, n))}`) };
   };
+  /**
+   * s08 w3B (SEK-20, decision 11): the cooked rack, the plate's job on the stage: the same rack picture as the raw rack
+   * (rack-0..4), the j-th grilled skewer in slot j, upright, its chunks at their rack size. (x, y): the picture's centre
+   * (design px). The same API as SK.plate3 ({img, d, line(j, n), rank, set(n)}), so the grill plates onto it unchanged.
+   */
+  SK.cooked3 = function (S, z, { x, y }) {
+    const r = SK.rack3(S, z, { x, y });
+    return { img: r.img, d: r.img.displayHeight, line: (j, n) => r.line(j, Math.max(n, j + 1)), rank: (j) => j, set: r.set, rack: true };
+  };
   /** For each plate picture n: which of its drawn skewers is the j-th plated (the same place as in picture n-1). */
   SK.plateOrder = function () {
     const P = V3.plate;
@@ -1322,11 +1319,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * set from that); the plate's handles go off it to the right. RACK: the picture's centre; PLATE: the rim's centre; GRILL.skewerY: a skewer's centre
    * (local 0: its tip is 0.66 of the bamboo above).
    */
-  const G3H = 310; // the grill's height (design px): bar 1 just above the top piece, the front edge just past the handle's start
+  /*
+   * s08 w3B (SEK-20, SEK-07, decision 11; Zafar, 17 Oct: "two racks on the left. One is the uncooked and one is the cooked
+   * ... then you can make the barbecue a little bit bigger"): build/reports/research-layout-2026-10-19.md layout D. The raw
+   * rack above the cooked rack on the left (the same rack picture twice: one material, one skewer direction), the grill 1.4x
+   * on the right (G3H 310 -> 434: the biggest thing on screen), the gaps even: 102 design px left, between and right
+   * (480 + 815 + 3 x 102 = 1600) and 48 above, between and below the racks (2 x 378 + 3 x 48 = 900); the grill's middle is the
+   * racks' middle. A skewer keeps its BAMBOO length everywhere: on the grill its tip lies on bar 1 (top + 0.2422 x 434 = 338),
+   * so its centre (0.66 of the bamboo below the tip) is at 511; the handle ends 18 px past the grill's front edge.
+   * The plate is gone from the stage (P37: "I never really liked the plate anyway"); the served picture is unchanged.
+   */
+  const G3H = 434; // the grill's height (design px): bar 1 at the tip, the front edge just past the handle's start
+  const G3 = { top: 450 - G3H / 2 };
   const LAYOUT3 = {
-    RACK: { x: 300, y: 318 },
-    GRILL: { x: 860, y: 360 + 100 - 0.475 * G3H, w: (G3H * V3.grill.w) / V3.grill.h, skewerY: 360, s: V3.BAMBOO / (V3.HANDLE - V3.TIP), bed: [V3.grill.bed[0], V3.grill.bed[2]] },
-    PLATE: { x: 1340, y: 316 },
+    RACK: { x: 342, y: 237 },
+    GRILL: { x: 1091, y: 450, w: (G3H * V3.grill.w) / V3.grill.h, skewerY: Math.round(G3.top + V3.grill.bars[0] * G3H + (-V3.TIP / (V3.HANDLE - V3.TIP)) * V3.BAMBOO), s: V3.BAMBOO / (V3.HANDLE - V3.TIP), bed: [V3.grill.bed[0], V3.grill.bed[2]] },
+    // the cooked rack (was the plate): the rack picture's centre, under the raw one
+    PLATE: { x: 342, y: 663, rack: true },
     // the ring round the pieces (local -238..158 at this scale), not the handle
     RING: { dy: -22, w: 80, h: 238 },
   };
@@ -1358,7 +1367,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await SK.loadArt(S, [].concat(...shelfIds));
       const v3 = SK.v3(S);
       const { RACK, GRILL, PLATE, RING } = v3 ? LAYOUT3 : LAYOUT2;
-      SK.band(S, z);
+      SK.band(S, z, { full: v3 && !!PLATE.rack });
       const quiet = SK.shelf(S, z, shelfIds, { level: z.level });
       Object.values(quiet).forEach((b) => {
         // SEK-08 (S05-C3): one job per phase: the grill screen shows the grill alone; the bowls you threaded from (and
@@ -1397,7 +1406,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* the plate and the chips basket */
       // v3 (K8, K9): the plate's picture holds the skewers plated so far, handles off the plate
-      const plateArt = v3 ? SK.plate3(S, { x: X(PLATE.x), y: Y(PLATE.y), L }) : null;
+      // s08 w3B (SEK-20): layout D's cooked rack under the raw one (the same picture), raised with the scene as the raw rack is
+      const plateArt = v3 ? (PLATE.rack ? SK.cooked3(S, z, { x: PLATE.x + dx, y: PLATE.y - LIFT / z.k }) : SK.plate3(S, { x: X(PLATE.x), y: Y(PLATE.y), L })) : null;
+      // a chunk's size and place along a cooked skewer: the rack's own (1, 0, 0), or the plate's closer skewers' (V3.PLATE_*)
+      const PK = plateArt && plateArt.rack ? { piece: 1, shift: 0, stagger: 0 } : { piece: V3.PLATE_PIECE, shift: V3.PLATE_SHIFT, stagger: V3.PLATE_STAGGER };
       const plateImg = plateArt ? plateArt.img : S.track(S.add.image(X(PLATE.x), Y(PLATE.y), S.textures.exists("sk2-plate") ? "sk2-plate" : SK.tex(S, "plate")).setDepth(D.item - 1));
       if (!plateArt) {
         plateImg.setDisplaySize(L(PLATE.d), L(PLATE.d) * (plateImg.height / plateImg.width));
@@ -1421,8 +1433,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // and every other skewer's chunks sit half a chunk nearer its tip, so the rows don't line up into a grid
           const r = plateArt.rank(q, Math.max(n, q + 1));
           p.sprite.imgs.forEach((img, i) => {
-            img.setScale(SK.pieceScale(p.sprite.n) * V3.PLATE_PIECE);
-            img.y = SK.slotY(i, p.sprite.n) - V3.PLATE_SHIFT - (r % 2 ? V3.PLATE_STAGGER : 0);
+            img.setScale(SK.pieceScale(p.sprite.n) * PK.piece);
+            img.y = SK.slotY(i, p.sprite.n) - PK.shift - (r % 2 ? PK.stagger : 0);
             img.marks.setScale(img.scale).setPosition(img.x, img.y);
           });
         });
@@ -1607,7 +1619,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // v3 (K8, K9): it lies along its drawn place on the plate (the handle off the plate), then the picture holds it
           const t = SK.lineAt(...plateArt.line(j, j + 1));
           const r = plateArt.rank(j, j + 1);
-          g.sk.imgs.forEach((img, i) => S.tweens.add({ targets: img, scale: SK.pieceScale(g.sk.n) * V3.PLATE_PIECE, y: SK.slotY(i, g.sk.n) - V3.PLATE_SHIFT - (r % 2 ? V3.PLATE_STAGGER : 0), duration: 460, ease: "Sine.easeInOut" }));
+          g.sk.imgs.forEach((img, i) => S.tweens.add({ targets: img, scale: SK.pieceScale(g.sk.n) * PK.piece, y: SK.slotY(i, g.sk.n) - PK.shift - (r % 2 ? PK.stagger : 0), duration: 460, ease: "Sine.easeInOut" }));
           S.tweens.add({ targets: g.sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 460, ease: "Sine.easeInOut", onComplete: () => {
             plate[j].landed = true;
             platePic();
@@ -1884,7 +1896,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         const missing = {};
         Object.keys(want).forEach((w) => want[w] > (keepN[w] || 0) && (missing[w] = want[w] - (keepN[w] || 0)));
-        await taste(S, z, { who: params.taste.who, ok, plateImg, plateArt, plateD, skewers: (ok ? plate : off).map((p) => p.sprite || null), X, Y, L, PLATE, keepAll: !ok && keep.length > 0 });
+        // (layout D: their face over the raw rack, empty by now, so the cooked skewers stay in sight)
+        const faceAt = plateArt && plateArt.rack ? { x: X(RACK.x), y: Y(RACK.y) } : null;
+        await taste(S, z, { who: params.taste.who, ok, plateImg, plateArt, plateD, skewers: (ok ? plate : off).map((p) => p.sprite || null), X, Y, L, PLATE, keepAll: !ok && keep.length > 0, faceAt });
         if (!ok && !params.lastTry && Object.keys(missing).length) return { redo: true, keep: keep.map((p) => p.pieces), missing, plate: plate.map((p) => p.pieces), count: plate.length };
         closeRows();
       }
@@ -1898,13 +1912,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * clip (Shabash!). Wrong: a gentle frown (never a red cross), and the plate slides back empty so the
    * child makes it again.
    */
-  async function taste(S, z, { who, ok, plateArt, plateD, skewers, X, Y, L, PLATE, keepAll = false }) {
+  async function taste(S, z, { who, ok, plateArt, plateD, skewers, X, Y, L, PLATE, keepAll = false, faceAt = null }) {
     z.expect({ kind: "wait" });
     await SK.faceArt(S, who);
     // K10: the face sits over the plate, its lower edge on the plate's upper rim (the skewers stay in sight);
     // Cook.Kit.review keeps it inside the view on any screen
     const size = 240;
-    const look = await Cook.Kit.review(S, { who, ok, x: X(PLATE.x), y: Y(PLATE.y) - L(plateD / 2) - L(size / 2) + L(70), size: L(size), k: L(1) });
+    const at = faceAt || { x: X(PLATE.x), y: Y(PLATE.y) - L(plateD / 2) - L(size / 2) + L(70) };
+    const look = await Cook.Kit.review(S, { who, ok, x: at.x, y: at.y, size: L(size), k: L(1) });
     await look.close();
     if (!ok) {
       // the plate slides back, empty: make it again

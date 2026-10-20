@@ -23,7 +23,10 @@
  * rows: daal). Daar's options (29 Sept, D1 / Q4; all default off, so chaat's chop is unchanged):
  * knifeKey (a texture: the kitchen kit's knife follows the finger instead of the hand, the no-hands
  * rule), onSlice({id, ok, x, y, key, scale}) (called on every slice: daar sends the pieces to the
- * side), tally (false: no picture tally, Q7), timer ({x, y, r, warn}: moves the countdown ring).
+ * side), tally (false: no picture tally, Q7), timer ({x, y, r, warn}: moves the countdown ring),
+ * onCall(ids, round) (called as each round is called, before she says it: daar's card shows those rows, DAAR-34).
+ * s08 w4A (DAAR-35, P55): the rounds run on without a gap (the next round's throws follow the last one's at the same
+ * spacing), and a slice counts for the round its thing was thrown in.
  * Knobs (data.mechanics.chop): phases (1 = all at once; 2+ = that many
  * rounds with a switch between them, at most one per vegetable), every
  * (seconds between throws), fasterPerStage / fasterMax (throws come this
@@ -58,7 +61,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, tally = true, timer = null }, k) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null }, k) {
       const S = z.S;
       const ctx = z.ctx;
       const want = {};
@@ -71,6 +74,44 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!ids.length) return {};
       ids.forEach((id) => Cook.markSeen(id));
       const hide = St.hideKnown(ctx);
+      /*
+       * s08 w6B (contract-30, chaat: "Kali hakro bataato." said, and no card written in the stage held "hakro"): a chop run with
+       * no card of its own from its caller (daar passes onCall and keeps Nani's chop card itself; the Chop tile ticks the order
+       * card's rows) gets Nani's chop card the way daar's station has it: her face, "chop these", a row per thing in exactly
+       * the words she says (the number and the thing; from L3 the item word dotted, the number written), ticked at the end.
+       */
+      const M = UI.mission;
+      let own = null;
+      if (!onCall && !tick && M && M.addCard && M.removeCard) {
+        const lv = Cook.roundLevel ? Cook.roundLevel(ctx) : z.level || 1;
+        const dot = (w) => !!(Cook.dotItem && Cook.dotItem(w, lv));
+        const head = Lang.line("chop-these");
+        const rowOf = (id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id)), { hide: dot }), done: false });
+        const rows = Object.keys(want).map(rowOf);
+        const data = () => ({
+          person: { id: "nani", face: UI.faceUrl ? UI.faceUrl("nani") : "", name: "Nani" },
+          headline: { html: Lang.html(head), rec: !head.ok },
+          items: rows.map((r) => ({ label: r.label, count: 2, parts: [], done: r.done, key: r })),
+        });
+        const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
+        try {
+          M.addCard("chop-nani", data(), cardOpts);
+          // R4 (contract-20: one face per person): while she asks on her own card, her box keeps only its tools, as in daar's
+          if (UI.guideStrip) UI.guideStrip(true);
+          own = {
+            tickAll() {
+              rows.forEach((r) => (r.done = true));
+              M.addCard("chop-nani", data(), cardOpts);
+            },
+            close: () => {
+              M.removeCard("chop-nani");
+              if (UI.guideStrip) UI.guideStrip(false);
+            },
+          };
+        } catch (e) {
+          own = null; // (the order card alone, as before)
+        }
+      }
       // S04-B (DAAR-13, ART-17, Z8): the new knife (the art run's, no hand) is the mechanic's own default, wherever it's
       // run (the Chop tile too, not only daar); the old hand-and-knife only if that art can't load
       if (!knifeKey) {
@@ -165,9 +206,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         for (let c = 0; c < cycles; c++) bag.push(...Cook.shuffle(kinds.slice()));
         const stage = Math.min(...tg.map((t) => Cook.wordStage(t)));
         const every = (k.every / slow) * (1 - Math.min(k.fasterMax, (stage - 1) * k.fasterPerStage));
-        return { i, targets: tg, kinds, bag, every, secs: bag.length * every + flight };
+        // DAAR-35 (P55, Zafar 17 Oct: "the items should just come continuously"): a round lasts its throws; the next one's
+        // throws follow straight on, at the same spacing, while the last round's are still in the air. Only the last round
+        // waits for the air to clear (its flight)
+        return { i, targets: tg, kinds, bag, size: bag.length, every, secs: bag.length * every };
       });
-      const total = rounds.reduce((a, r) => a + r.secs, 0);
+      const total = rounds.reduce((a, r) => a + r.secs, 0) + flight;
+      // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
+      const throwNote = (r) => {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round((r.every * 1000) / (Cook.speed || 1))} x:${Cook.speed || 1}` });
+        } catch (e) {
+          /* only a log */
+        }
+      };
       let phase = null; // the round being thrown: {targets, kinds, bag, every, secs}
 
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
@@ -201,6 +253,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* ---------- throwing ---------- */
       const throwOne = () => {
         const pick = phase.bag.shift();
+        throwNote(phase);
         let key = texFor(pick);
         const v = (k.variants || {})[pick];
         if (v && phase.kinds.some((x) => (v.near || []).includes(x)) && Math.random() < v.chance) key = variantTex(pick, v.color);
@@ -261,12 +314,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const sliceIt = (img, ang) => {
         img.sliced = true;
         const id = img.wordId;
-        // what counts is what Nani is asking for now (after a switch, the last ones are decoys)
-        const ok = !!phase && phase.targets.includes(id);
+        // what counts is what Nani asked for in the wave it was thrown in (DAAR-35, P55: "if you miss something the first time
+        // you've got a bit more opportunity to cut item A"): one of the last wave's still in the air counts for it; a thing
+        // thrown after the switch is judged by the new order (the last ones are decoys then)
+        const own = img.phase || phase;
+        const ok = !!own && own.targets.includes(id);
         // the picture tally (top right): every slice you made, by kind; what you did, never the target
         sliced[id] = (sliced[id] || 0) + 1;
         if (tally) UI.count(sliced[id], { id, state: "whole", speak: ok });
-        if (onSlice) onSlice({ id, ok: !!phase && phase.targets.includes(id), x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
+        if (onSlice) onSlice({ id, ok, x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
         if (ok) {
           cut[id] = (cut[id] || 0) + 1;
           // DAAR-13, rule E11: at level 1 the row lights the moment the count is reached
@@ -334,7 +390,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const ok = sliceIt(img, Math.atan2(cur.y - prev.y, cur.x - prev.x));
             if (k.sharp && ok) {
               // the sharp knife also catches a second wanted one near the first
-              const near = flying.find((o) => o.active && !o.sliced && phase.targets.includes(o.wordId) && Phaser.Math.Distance.Between(o.x, o.y, cur.x, cur.y) < z.L(220));
+              const near = flying.find((o) => o.active && !o.sliced && (o.phase || phase).targets.includes(o.wordId) && Phaser.Math.Distance.Between(o.x, o.y, cur.x, cur.y) < z.L(220));
               if (near) sliceIt(near, Math.atan2(cur.y - prev.y, cur.x - prev.x));
             }
           });
@@ -349,19 +405,39 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let roundT = 0;
       let last = performance.now();
       let gameRate = Cook.speed;
+      /*
+       * s08 w6M (DAAR-35 reopened, contract-65 at L4: "wave 2's first throw came 481 ms after wave 1's last (its spacing 182
+       * ms)"): the switch to the next wave is made here, in the frame its beat falls on, not by the round loop below a frame or
+       * more later (a slow frame there held the next wave's first throw back). A wave's last throw sets the beat to the
+       * shorter of its spacing and the next wave's; on that beat the next wave starts and throws at once. The loop below then
+       * only says the switch and writes the card (onSwitch). The beat runs on the frame's real time (up to 0.25 s), so a slow
+       * frame never adds to the gap; the flying things still move by the capped step.
+       */
+      let onSwitch = null;
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000) * Cook.speed;
+        const beat = Math.min(0.25, (now - last) / 1000) * Cook.speed;
         // game seconds per real second (slow frames are capped), for the test's aim below
         if (now > last) gameRate += ((dt * 1000) / (now - last) - gameRate) * 0.2;
         last = now;
         if (running && phase) {
-          roundT += dt;
-          left = Math.max(0, left - dt);
-          spawnT -= dt;
+          roundT += beat;
+          left = Math.max(0, left - beat);
+          spawnT -= beat;
+          const next = rounds[phase.i + 1] || null;
+          if (spawnT <= 0 && !phase.bag.length && next && onSwitch) {
+            phase = next;
+            roundT = 0;
+            const cb = onSwitch;
+            onSwitch = null;
+            cb(next);
+          }
           if (spawnT <= 0 && phase.bag.length) {
             throwOne();
-            spawnT += phase.every;
+            spawnT = Math.max(0, spawnT) + phase.every;
+            const nx = rounds[phase.i + 1];
+            if (!phase.bag.length && nx) spawnT = Math.min(spawnT, nx.every);
           }
           drawRing();
           const sec = Math.ceil(left);
@@ -405,18 +481,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // (DAAR-13: and well clear of the bottom edge's fade, where a swipe doesn't cut)
           return o.active && !o.sliced && p.y < Math.min(z.Y(760), o.y + clearOf(o) - FADE * 0.5) && p.y > z.Y(120) && Math.abs(p.vy) < z.L(700);
         };
-        const needs = (id) => phase && phase.targets.includes(id) && (cut[id] || 0) < want[id];
+        // (each thing is judged by its own wave's order, DAAR-35)
+        const ownOf = (o) => o.phase || phase;
+        const needs = (o) => !!ownOf(o) && ownOf(o).targets.includes(o.wordId) && (cut[o.wordId] || 0) < want[o.wordId];
         // nothing it shouldn't cut next to it (another wanted kind that still needs cutting is fine)
         const alone = (o) => {
           const p = at(o);
           return !flying.some((x) => {
-            if (x === o || !x.active || x.sliced || (x.wordId !== o.wordId && needs(x.wordId))) return false;
+            if (x === o || !x.active || x.sliced || (x.wordId !== o.wordId && needs(x))) return false;
             const q = at(x);
             return Math.abs(q.x - p.x) < z.L(size * 0.9) && Math.abs(q.y - p.y) < z.L(size * 1.3);
           });
         };
-        const tgt = flying.find((o) => inView(o) && needs(o.wordId) && alone(o));
-        const dec = flying.find((o) => o.active && !o.sliced && at(o).y < z.Y(700) && at(o).y > z.Y(150) && phase && !phase.targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
+        const tgt = flying.find((o) => inView(o) && needs(o) && alone(o));
+        const dec = flying.find((o) => o.active && !o.sliced && at(o).y < z.Y(700) && at(o).y > z.Y(150) && ownOf(o) && !ownOf(o).targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
         const aim = tgt && at(tgt);
         const decAt = dec && at(dec);
         z.expect(
@@ -479,15 +557,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const orderLine = (tg, first) =>
         Lang.join(tg.map((id, j) => Lang.line(j === 0 ? (first ? "only" : "now") : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))));
       for (const r of rounds) {
-        phase = r;
-        roundT = 0;
+        if (r.i === 0) {
+          phase = r;
+          roundT = 0;
+        } else {
+          // s08 w6B (DAAR-35, contract-65 at L3: a 175 ms gap at the switch): the next wave's first throw goes on its beat
+          // first; the card's new rows and her line (DOM work and a clip starting, a slow frame) come just after it, while
+          // it rises, so nothing the switch does can hold a throw back. s08 w6M: the tick makes the switch on the beat
+          // (onSwitch above); this waits for it
+          if (phase !== r) await new Promise((resolve) => (onSwitch = resolve));
+        }
+        // DAAR-34 (P54): the card shows this round's rows as she calls them (a caller's cue; daar's chop card fills its dots)
+        if (onCall) onCall(r.targets.slice(), r.i);
         if (r.i === 0) {
           // the ring starts once she's said it; after that, the switch comes while things fly. s04-fxc (decision 75 (1),
           // contract-1): a new order with no pop-up yet this phase (the chop again, only the wrong ones) comes up in the
           // shared request pop-up first, read out; her box then shows it quietly
           const line = orderLine(r.targets, true);
+          // s08 w6M (CK-48; the judge, 20 Oct: "cuts from the kitchen to a bare board with only the timer and knife"): when this
+          // phase's order was read out in its pop-up just before the station opened (Lifecycle.asked), the throws start as
+          // the board comes up and she says it again over them; only an order not yet heard is said first (as before)
+          const LC = global.Lifecycle;
+          const heard = !!(LC && LC.asked && LC.asked());
           const a = UI.mission && UI.mission.askLine ? await UI.mission.askLine(line, { hide }) : { asked: false };
           if (a.asked) z.say(line, { hide, silent: true, ms: 10, keep: true }).catch(() => {});
+          else if (heard) z.say(line, { hide }).catch(() => {});
           else await z.say(line, { hide }).catch(() => {});
           running = true;
           spawnT = 0;
@@ -495,15 +589,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else {
           z.say(orderLine(r.targets, false), { hide }).catch(() => {});
         }
-        // the round lasts its share of the ring: its throws, then the air clears
-        await new Promise((resolve) => {
-          const off = z.tick(() => {
-            if (roundT < r.secs || r.bag.length) return;
-            if (r.i === rounds.length - 1 && flying.some((o) => o.active && !o.sliced)) return;
-            off();
-            resolve();
+        // the last round lasts its share of the ring, then its air clears (the others hand over in the tick, on the beat)
+        if (r.i === rounds.length - 1)
+          await new Promise((resolve) => {
+            const off = z.tick(() => {
+              if (roundT < r.secs || r.bag.length) return;
+              if (flying.some((o) => o.active && !o.sliced)) return;
+              off();
+              resolve();
+            });
           });
-        });
       }
       running = false;
       stopDemo();
@@ -528,6 +623,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       // the step has closed (the ring ran out): its rows tick, count rows too, right or not (UX 11)
       if (tick && ctx.closeItem) ctx.closeItem(ids);
+      if (own) {
+        own.tickAll();
+        await Cook.wait(400);
+        own.close();
+      }
       ctx.result.chopped = cut;
       z.skill(100, "chop");
       S.sparkle(z.X(800), z.Y(450));
@@ -546,6 +646,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const many = (o) => [o.onions, o.tomatoes, o.chillies].filter(Boolean).length >= 2;
       for (let i = 0; i < 30 && !many(d); i++) d = R.daal.make("nana", { level: L.level });
       L.card(d, ["Chop"]);
+      // s08 w6B (CK-48: the bare board for 1.8 s while the knife loaded after the view opened): the knife loads while the
+      // order's card is read
+      const kit = St.art("knife");
+      if (kit) await St.loadArt(L.S, [[St.artKey("knife"), kit.file]]).catch(() => {});
       await L.station("chop", { targets: { "veg-02": d.onions, "veg-03": d.tomatoes, "veg-12": d.chillies }, no: d.onions ? [] : ["veg-02"], pool: Cook.data.recipes.daal.lists.veg, tick: true });
     },
   });

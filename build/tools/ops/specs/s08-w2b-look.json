@@ -1,0 +1,27 @@
+{
+  "name": "s08 wave 2B, the shared look: one go-on button, bigger tool boxes, one shared pour and fill, the kitchen master; tidy-up of dead code from wave 1A",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "visual work across both modes (non-negotiable 15: top model for visual work)",
+  "cost": "about $30-45",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "read": ["docs/feedback/cook-playtest-2026-10-17.md (P27, P47, P59; KEEP rows)", "docs/feedback/clinic-playtest-2026-10-18.md (P1, P9, P49)", "build/reports/s08-w0-art.md (the cut files and assets/s08b-cut-data.json)", "docs/design-language/ui-design-system.md", "docs/feedback/cook-phone-2026-10-15.md (SH-91, CK-44)"],
+  "owns": ["js/shared/buttons.js", "css/shared/buttons.css", "js/clinic/heal/scene.js", "css/clinic.css (tool strip only)", "js/cook/stations.js", "js/cook/mechanics/pour.js", "a new js/shared/pour.js if the shared pour needs one", "js/cook/mechanics/grill.js and js/cook/stations/samosa.js: only their go-on button lines", "js/clinic/heal/games/taste.js: only its fill", "js/cook/stations/daar.js: only the pour (daar.js:749)", "assets/cook/bg/** new files (the kitchen master)", "data/cook.json art entries for the kitchen master only", "build/reports/s08-w2b-look.md"],
+  "readOnly": ["js/cook/ui.js, order.js, flow.js, main.js, js/shared/order-card.js, results.js, fit.js, js/clinic/kit.js (wave 1B)", "js/core/voice.js, js/shared/guide.js, js/cook/station-lib.js, words.js (wave 1A)", "assets/** other than the kitchen master (wave 0's cuts are final)"],
+  "stubs": "if the kitchen master cannot be registered, keep today's kitchen and say why",
+  "tasks": [
+    {"do": "SH-106: one shared go-on button in every Cook station and every heal game: the arrow always, a clear picture where the station needs one (wave 0's go-grill-s08b and go-karahi-s08b, assets/cook/items-s08b/), taller (samosa's about twice as tall, decision 6), the same look and place in both modes, no per-mode restyle (non-negotiable 8).", "accept": "contract-run check: every go-on button has the arrow; eye: sekelo, samosa, a heal game, side by side at 800x360 and 1366x768"},
+    {"do": "SH-112: one shared, bigger tool box for every clinic tool strip (boing, fever, foot first; about double today's 60x46 picture in its box, design tokens, not literals), checked at 800x360.", "accept": "eye: every heal game's strip at 800x360 and 1366x768: items readable, nothing clipped"},
+    {"do": "SH-117 (with DAAR-28, CLN-197): one shared pour and fill from Cook's chai pour: the daal into its pot (daar.js:749) and the taste game's glass fill (taste.js:315) use it; chai's own pour is wave 4's (CHAI-26), so build the shared piece so chai can adopt it.", "accept": "eye: the daal pour and the taste fill as filmstrips"},
+    {"do": "SH-91, CK-44, ART-21: the kitchen master (sources/art/s07/k1-kitchen-master-v1.png; read build/reports/s07-cook.md for why it was not used) registered so the trays, island and family line up, upscaled, drawn 1:1 with the occluder from the same picture; else keep today's interim and say why.", "accept": "the counter at 915x412, 844x390, 1366x768, 1366x1024: one continuous counter, the family behind their trays"},
+    {"do": "Tidy-up: delete stations.js step() and glowDraw(), unused since wave 1A (build/reports/s08-w1-voice.md flaw 4).", "accept": "no caller left (grep); checks green"}
+  ],
+  "flows": ["cook:mishkaki-grill", "cook:samosa", "cook:daar", "cook:title", "clinic:heal-boing", "clinic:heal-taste", "clinic:heal-fever"],
+  "shared": true,
+  "browser": true,
+  "port": 8834,
+  "report": "s08-w2b-look",
+  "publish": false
+}

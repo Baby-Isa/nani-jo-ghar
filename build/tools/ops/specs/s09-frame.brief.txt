@@ -1,0 +1,64 @@
+SESSION NAME / MODE:  s09-frame, the day's frame in code: the morning door and weather sky, the evening book, the window ride, with placeholder art swappable for the agreed art
+MODEL AND EFFORT:     Opus, high effort (new shared engine pieces every story day uses)
+COST ESTIMATE:        about $40-55
+HARD STOP:            when every task is accepted, or 5 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s09-frame.context.md (853 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/game-design/story-and-arcs.md Part 1 (the 19 Oct notes at its top)
+     build/reports/research-trips-2026-10-19.md (the day's fixed shape)
+     docs/game-design/modes/story-by-the-fire.md
+     docs/game-design/modes/conversations.md (the door chat lines later plug in here)
+     js/clinic/stages/ pharmacy belt code (the window ride reskins it)
+     docs/game-design/progression-and-scoring.md (the day log, the book)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/day/** (new: door.js, sky.js, book.js, day.js)
+  - js/shared/window-ride.js (new; a shared belt over a scrolling view; leave the clinic's pharmacy unchanged)
+  - css/day.css (new)
+  - data/day.json (new: days, weather, door lines by engine id, the window ride's things)
+  - day.html and lab/day.html (new pages) and one tile in labs.html
+  - build/sandbox flows and contract checks for these pages (new flow ids day:door, day:book, day:window; contract checks numbered from 45 up)
+  - build/reports/s09-frame.md
+READ-ONLY (never edit):
+  - js/cook/**, data/cook.json, data/stations/** (Sprint 8 wave 2A)
+  - js/clinic/** (Sprint 8 waves 5A and 5B)
+  - js/shared/** existing files (read; use them, don't restyle: non-negotiable 8)
+  - lab/mock-s09/** (the mock-up lane: its look replaces your placeholders later)
+  - data/lang/** (never hand-written Kutchi)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: art: simple placeholders (gradients and shapes) behind data entries so the agreed ChatGPT art drops in by changing paths; lines the engine can't say yet use the grey 'to record' placeholder, listed in the report
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The morning door: a day starts at Nani's door; data picks the day's weather (sunny, cloudy, raining, night) and activity (kitchen, clinic, a trip); the sky layer is swapped from the horizon up over one fixed house and foreground, with a per-weather light tint and a sun-shadow layer only when sunny, rain and stars drawn in code; Nani's lines play in turn through the language engine and the voice queue (js/core/voice.js), each line's Kutchi with its English written beneath (rule 5's door exception), a thought bubble of the day's place, the child answers Ha! and the day's activity starts (a hand-off to Cook or the clinic's existing entry; trips stub).
+     Accept: lab/day.html shows each weather and activity; contract checks: lines in turn, no overlap, English only on the door's lines; screenshots at 1366x768 and 844x390
+  2. The evening book: after the day's activity, the evening scene (night sky) with Nani and the book: today's words as pictures with their Kutchi, said in turn; photos if any; a progress mark (no verdicts); goodnight; tomorrow's door previewed by its sky. Reads the day log the modes already keep (progression-and-scoring.md).
+     Accept: the book after a Cook day and after a clinic day in the lab; screenshots
+  3. The window ride: a shared engine (js/shared/window-ride.js) like the clinic's belt over a scrolling view from a car or bus window: Nani names a thing, the child taps it as it passes; look-alikes pass together so the word decides (the leak test: tapping everything or waiting scores nothing); a 'stop the car!' beat; the things from data (the farm road first: goat, hen, dog, tree, the red door).
+     Accept: a leak bot over the window ride (fair wins, blind strategies under 10%); screenshots and a filmstrip
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s09-frame` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8838.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s09-frame.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

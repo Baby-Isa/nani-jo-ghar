@@ -1409,7 +1409,7 @@
    "ask": [
     "Round 4 Section G (the doctor's script)"
    ],
-   "english": "Bring in {kind}",
+   "english": "Bring in the {kind}.",
    "what": "Bring in {kind}",
    "src": "data/clinic/pipeline.json lines.pipeline.bring: data/clinic/pipeline.json"
   },

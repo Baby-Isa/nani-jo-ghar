@@ -17,7 +17,11 @@ const SEED = 7;
 //   takeback            the first thing placed is tapped again (a heal game's placement, the pharmacy tray, a waiting-room tick)
 //   lab-log-on          the stage with the lab bar and its log showing (&lab=1: CLN-07)
 //   heal-fast           a morning whose heal game is played with no waits between steps (CLN-109)
+//   replay-tap          once a step is ticked and others are left, the card's face (its replay) tapped: it must say only the steps left,
+//                       and count no hint (SH-102, SH-114: contract-31); 7.5 s are given for the next lines to be said
+//   grab-hold           the ear's first wax drag held on the way while the zoom crops of the tweezers are taken (CLN-173: one prong behind the wax, one over it)
 //   real-pace           the clinic without &fast=1: the zooms and waits take their real time (CLN-87)
+//   mistake-real        the mistake player at real pace (no &fast=1): the wrong answer's shake, red and flash last their real time (CLN-107 at L3, CLN-194)
 export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 
 // mode: "fair" does what the stage asks. "mistake" makes one wrong pick per stage where the stage offers one (e.wrong: a wrong dish, probe,
@@ -26,7 +30,7 @@ export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boi
 export class ClinicPlayer {
   constructor(page, rec, { mode = "fair" } = {}) {
     this.page = page; this.rec = rec; this.seen = new Set(); this.covers = new Set();
-    this.mode = mode; this.mistakes = mode === "mistake"; this.hints = mode === "hint";
+    this.mode = mode; this.mistakes = mode === "mistake" || mode === "mistake-real"; this.hints = mode === "hint";
     this.made = new Set(); this.idled = false; this.bulbs = new Set(); this.peeks = new Set(); this.badges = [];
     this.fast = mode === "heal-fast";
     this.drv = { turns: new Set(), wrongs: 0, tapped: false, tookBack: false, spoke: false };
@@ -57,6 +61,24 @@ export class ClinicPlayer {
     else if (!(await this.tapSel(target, false))) this.rec.note(`takeback: ${target} was gone after the first pick`);
     await sleep(700);
     await this.once("after-takeback", { settle: 0 });
+  }
+  // replay-tap (SH-102's clinic half, SH-114): the face on the side card is the replay. Once a row is ticked and another is left it
+  // is tapped once; the next 7.5 s are given to the doctor's reading (contract-31 judges the lines said in them)
+  async replayTap() {
+    if (this.mode !== "replay-tap" || this.drv.replayed) return false;
+    const st = await this.ev(() => {
+      const c = Array.from(document.querySelectorAll(".cl-side .oc-card")).find((x) => !x.closest(".njg-rq-card, .njg-rq") && x.getBoundingClientRect().height > 1);
+      return c ? { done: c.querySelectorAll(".oc-row.done").length, left: c.querySelectorAll(".oc-row:not(.done)").length } : null;
+    }).catch(() => null);
+    if (!st || st.done < 1 || st.left < 1) return false;
+    const f = await this.centre(".cl-side .cl-card-face, .cl-side .oc-face");
+    if (!f || !f.onscreen) return false;
+    this.drv.replayed = true;
+    await this.once("replay-tap", { settle: 0 });
+    await this.tapXY(f.x, f.y);
+    await sleep(7500);
+    await this.once("after-replay-tap", { settle: 0 });
+    return true;
   }
   // the hint player's moves at a stage: wait for the idle hint once, press the bulb once per stage, peek at a closed card once per stage
   async hintMoves(stage) {
@@ -147,7 +169,11 @@ export class ClinicPlayer {
     } else if (a.do === "drag") {
       const pts = a.pts;
       await m.move(pts[0][0], pts[0][1]); await m.down();
-      for (const [x, y] of pts.slice(1)) await m.move(x, y, { steps: a.steps || 3 });
+      for (const [x, y] of pts.slice(1)) {
+        await m.move(x, y, { steps: a.steps || 3 });
+        // grab-hold (CLN-173): the ear's first wax drag held at its first waypoint, the tweezers closed on the blob, while the probes' zoom crops are taken
+        if (this.mode === "grab-hold" && !this.drv.grabHeld && /^wax/.test(String(a.what || ""))) { this.drv.grabHeld = true; await mark(this.page, "grab-held", { block: true }); }
+      }
       await m.up();
       await this.page.waitForTimeout(this.fast ? 10 : 120);
     } else if (a.do === "hold") {
@@ -207,7 +233,7 @@ export class ClinicPlayer {
       if (this.mistakes && ["tap", "act", "belt"].includes(k) && (await this.mistakeMoves(stage, e))) continue;
       if (k === "tap" || k === "act") {
         await this.once(`${stage}-${k}`);
-        if (!(await this.tapSel(e.target))) await sleep(100); else { await sleep(250); await this.stageTakeBack(e.target); }
+        if (!(await this.tapSel(e.target))) await sleep(100); else { await sleep(250); await this.stageTakeBack(e.target); await this.replayTap(); }
       } else if (k === "point") {
         await this.once(`${stage}-point`);
         await this.tapXY(e.x, e.y); await sleep(300);
@@ -259,7 +285,18 @@ export class ClinicPlayer {
       }
       if (this.hints && steps > 3 && !this.bulbs.has("heal")) await this.hintMoves("heal");
       const next = () => this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug ? r.controller.debug.next() : { do: "wait" }; });
-      const a = await next();
+      let a = await next();
+      // (s08 w6L, CLN-107 at L2) the slip is looked for once more as the move is chosen: at the game's real pace a row can open between the
+      // look above and next(), and the player then judged it right and never made its mistake
+      if (this.mistakes && !this.made.has("heal-slip") && a.do !== "wait") {
+        const slip2 = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.slip ? r.controller.debug.slip() : null; }).catch(() => null);
+        if (slip2) { this.made.add("heal-slip"); await this.healAct(slip2); await sleep(250); await this.once(`heal-${game}-slip`, { settle: 0 }); continue; }
+      }
+      // CLN-184: the mistake player's tooth is overfilled once (the game's own debug.over(): hold past the green), then filled fair
+      if (this.mistakes && game === "tooth" && a.what === "fill" && !this.made.has("heal-over")) {
+        const o = await this.ev(() => { const r = window.__clinic.Stages.heal.current; return r && r.controller.debug && r.controller.debug.over ? r.controller.debug.over() : null; }).catch(() => null);
+        if (o) { this.made.add("heal-over"); a = o; }
+      }
       if (a.do !== "wait" && this.mode !== "fair" && (await this.healDriver(game, a, next, tools))) continue;
       // while the first-time overlay runs it ignores taps for about 450 ms between its steps: go at a child's pace
       if (a.do !== "wait" && !this.fast && (await this.page.$(".njg-onboard"))) await sleep(700);
@@ -275,7 +312,8 @@ export class ClinicPlayer {
         await sleep(500);
         await this.once("before-takeback", { settle: 0 });
         await sleep(450); // the strip films the two drops in first (it runs alongside: the tap must not beat its first frame)
-        const at = await this.ev(() => { const d = document.querySelector('.bo-drop[data-k="0"]'); const r = d && d.getBoundingClientRect(); return r ? [r.left + r.width / 2, r.top + r.height / 2] : null; }).catch(() => null);
+        // (the drops are SVG bands with no data attribute: the bottom one is the lowest on screen)
+        const at = await this.ev(() => { const rs = Array.from(document.querySelectorAll(".bo-drop")).map((e) => e.getBoundingClientRect()).filter((r) => r.width > 1 && r.height > 1).sort((x, y) => y.top - x.top); const r = rs[0]; return r ? [r.left + r.width / 2, r.top + r.height / 2] : null; }).catch(() => null);
         if (at) await this.healAct({ do: "tap", x: at[0], y: at[1], what: "take a drop back" });
         await sleep(700);
         await this.once("after-takeback", { settle: 0 });
@@ -293,6 +331,7 @@ export class ClinicPlayer {
       // the game's middle: seven moves in, or (the short games: the scrape, the tooth, the fever have four to six moves) the side card's
       // open row past half its rows
       if (!mid && a.do !== "wait" && (steps > 6 || (await this.pastHalf()))) { mid = true; await this.once(`heal-${game}-mid`); }
+      if (this.mode === "replay-tap") await this.replayTap();
       if (game === "knee") await this.kneeTurn();
       if (game === "fever") await this.feverChange();
       if (game === "eye") await this.eyeMoments();
@@ -398,7 +437,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       // second-play keeps the help on (SH-46: help met in the first play is shown again after a pause in the second; with
       // &onboard=0 the heal games' ghost finger never plays at all: s04-hooks, Lifecycle.ghost counted 0)
       const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
-      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" || mode === "tap-through-popup" ? 0 : 1}${mode === "variant-e4" ? "&variant=E4" : ""}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
+      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" || mode === "mistake-real" || mode === "tap-through-popup" ? 0 : 1}${mode === "variant-e4" ? "&variant=E4" : ""}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
       if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)
       if (levels) {

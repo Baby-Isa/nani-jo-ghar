@@ -1,0 +1,69 @@
+SESSION NAME / MODE:  s08 wave 6M, Cook: the last run's code fails (chaat's bowl and jar labels, samosa's entry and filling, the review's verdict-like score, the face circles, the daal's L4 stir row and chop timing)
+MODEL AND EFFORT:     Opus, high effort (two rule breaks (a child losing progress; a reading leak) plus layout fixes)
+COST ESTIMATE:        about $30-45
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6m-cook.context.md (860 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/tools/review/data/verdicts.json (the judge lines, run ev-20261020-073941-0e9) and build/reports/evidence-ev-20261020-073941-0e9.md
+     CLAUDE.md non-negotiables 6 and 12
+     docs/game-design/modes/cook.md
+     build/reports/s08-w6j-cook.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/**
+  - data/cook.json
+  - data/stations/**
+  - css/cook.css
+  - css/shared/**
+  - js/shared/** except js/shared/guide.js's clinic paths
+  - build/reports/s08-w6m-cook.md
+READ-ONLY (never edit):
+  - js/clinic/**, css/clinic.css, data/clinic/** (wave 6N)
+  - build/sandbox/**, build/tools/**
+  - data/lang/**
+  - assets/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: art goes on the art list
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. CHT-14 (rule 12): in chaat a wrong item no longer empties the whole bowl: the correct items stay, only the wrong one comes out (or is refused with a wiggle). The jars' written labels must not match the card's words (rule 6, the leak test: a child could win by reading): show picture labels, or the written word only where the level table writes it on the card too, so matching letters never wins.
+     Accept: eye: chaat L1-L3 with a wrong item; auto: build/tools/review/leak.mjs on chaat
+  2. SAM-22 flaw (rule 12): the end-of-round '1/2' score reads as a verdict: show progress, not a score out of; the empty third review card is filled or not shown. CK-48: samosa's board and its six sheets appear together (no washed-out board, no sheets popping in) and the chop never cuts to a bare board. SAM-21: the filling sits in the strip's bottom-left corner.
+     Accept: eye: filmstrips at L1 and L3, 1366x768 and 800x360
+  3. SH-113: every face circle (Cook's customers, the clinic's doctor and the girl) is zoomed the same, the face filling the circle (the shared order-card's face zoom; clinic portraits may need their own crop values in the shared code). DAAR-26: the L4 card keeps its stir row. DAAR-35: contract-65 at L4 (the chop's waves follow on with no gap). CK-06: no see-through white blobs over the pot's contents.
+     Accept: eye: face circles side by side; auto: contract-65 green at L4
+
+REGRESSION ROWS TO RECHECK (117 rows of the fix list and its done archive; * = open or reopened):
+  cook:chaat (19): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-29, CK-27, CK-39, CK-TB-01
+  cook:samosa (28): SAM-21*, SAM-22*, SAM-24*, SAM-01, SAM-02, SAM-03, SAM-04, SAM-05, SAM-16, SAM-06, SAM-07, SAM-08, SAM-09, SAM-10, SAM-11, SAM-12, SAM-13, SAM-14, SAM-15, SAM-17, SAM-18, SAM-19, SAM-25, CK-08, CK-09, CK-29, CK-27, CK-43
+  cook:chop (16): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-29
+  cook:daar (37): DAAR-02*, DAAR-20*, DAAR-23*, DAAR-26*, DAAR-27*, DAAR-30*, DAAR-32*, DAAR-33*, DAAR-35*, DAAR-01, DAAR-03, DAAR-04, DAAR-06, DAAR-08, DAAR-09, DAAR-10, DAAR-11, DAAR-12, DAAR-14, DAAR-15, DAAR-16, DAAR-17, DAAR-18, DAAR-21, DAAR-22, DAAR-13, DAAR-19, DAAR-25, DAAR-29, DAAR-05, DAAR-31, DAAR-34, CK-06*, CK-08, CK-10, CK-29, CK-27
+  cook:assemble (17): CHT-12*, CHT-13, CHT-14*, CHT-01, CHT-02, CHT-03, CHT-04, CHT-05, CHT-06, CHT-07, CHT-08, CHT-09, CHT-10, CHT-11, CHT-15, CK-39, CK-TB-01
+  clinic:waiting (38): CLN-115*, CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01, CLN-81
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6m-cook` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8862.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6m-cook.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

@@ -9,15 +9,15 @@
  * loaded as the view fades in), drawn in code otherwise.
  *
  * Shared helpers: props with contact shadows, item labels that fade by
- * word stage, glow and wiggle, the step engine (wait for the right item,
- * with hints), hold-to-pour, a ring timer that sits on the food ("tap when
+ * word stage, glow and wiggle (the step engine is js/cook/station-lib.js's
+ * S$.step since wave 1A), hold-to-pour, a ring timer that sits on the food ("tap when
  * it's green"), first-person hands, a fingertip demo, particles, and a
  * pause that "pass me" uses in Relaxed mode. Cook.expect always says what
  * the player should do next, for the end-to-end test.
  *
  * Several things can run at once (two tawas, three skewers, a combined
  * station's zones), so per-frame work goes through addTick() rather than
- * one `tick` slot, and step/pour/ring report what they expect through an
+ * one `tick` slot, and pour/ring report what they expect through an
  * `io` ({expect, gauge}; see zone.js) instead of writing the globals.
  */
 import { Cook as CookNS } from "./ns.js";
@@ -254,7 +254,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const dur = fast ? 120 : 220;
       // a painted worktop (data.art.sprites.bg) loads while the old view fades
       const bgRef = `bg:${name}`;
-      const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Cook.Art.load(this, bgRef), new Promise((r) => setTimeout(r, 2500))]) : null;
+      // SH-108 (P31: "if it's top-down then it should be the marble countertop"): a top-down worktop waits for its painting
+      // (only a dead file's 20 s cap), never the code-drawn worktop after 2.5 s; the other views keep the short wait
+      const topDown = name === "marble" || name === "hob";
+      const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Cook.Art.load(this, bgRef), new Promise((r) => setTimeout(r, topDown ? 20000 : 2500))]) : null;
       if (this.viewName) {
         cam.fadeOut(dur, 233, 220, 196);
         await Cook.wait(dur + 20);
@@ -479,10 +482,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         obj.preFX.padding = Math.max(obj.preFX.padding || 0, 20);
         fx = obj.preFX.addGlow(0xffcf6a, 3, 0, false, 0.1, 14);
         tweens.push(this.tweens.add({ targets: fx, outerStrength: 8, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
-      } else {
+      }
+      // SH-60 (s08 w6J: the WebGL outline alone was too thin to see on a pantry jar, so her line came "without the highlight"):
+      // the soft halo behind the picture in both renderers, the outline on top where WebGL draws it
+      {
         const c = this.opaqueBox(obj);
         halo = this.track(this.add.ellipse(c.x, c.y, c.w * 1.25 + 24, c.h * 1.2 + 20, 0xffd27a, 0.4).setDepth(obj.depth - 0.5));
         tweens.push(this.tweens.add({ targets: halo, alpha: 0.18, scale: 1.08, duration: 520, yoyo: true, repeat: -1 }));
+      }
+      // (a test hook, only logged: when a glow comes on, so a check can hold it to Nani's help line, SH-60)
+      try {
+        if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("glow", { step: "on", by: String(obj.wordId || (obj.texture && obj.texture.key) || "") });
+      } catch (e) {
+        /* only a log */
       }
       // a small hop of the picture itself (its label and shadow stay where they are)
       let y = null;
@@ -553,53 +565,36 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
       }
     }
-    /** A small soft puff where something lands in a pot or a glass (28 Sept, s8). */
-    puff(x, y, color = 0xffffff, size = 40) {
-      // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa): a soft puff that reads on a
-      // light pan or a dark one (each cloud has a faint warm edge); never a spray of dots (CK-06)
-      // S06 (CK-27 reopened: the puff did not read on chaat's yellow layer or chai's water, where its white and item-coloured
-      // clouds matched what they landed on): every cloud is white with a clear warm edge, the item's colour only at its
-      // heart; they rise above the rim, so the puff reads over the food, the pan or the glass, and it holds for about 0.9 s
-      // s07 fix round (CK-06, DAAR-05: the judge read those hard-edged white ellipses, with the item's colour at their
-      // heart, as "flat white discs" and "white circles with black dots" lying on the food): every cloud is now one soft
-      // vapour sprite (a radial fade, no outline, no coloured heart), faintly warmed toward the item's colour; it is born
-      // small at the landing spot and rises up and out, so what stays pictured in the pot is only what went in. Same
-      // timing as before (out 360 ms, gone by about 0.9 s), the same one shared effect in every station (CK-27)
-      const s = size * 1.3;
-      const key = this.softPuffTex();
-      const warm = (c) => {
-        const mix = (sh) => Math.round(255 * 0.82 + ((c >> sh) & 255) * 0.18);
+    /** A small "it went in" mark where something lands in a pot or a glass (28 Sept, s8). */
+    puff(x, y, color = 0xffffff, size = 40, { flat = 0.72 } = {}) {
+      // CK-27 (S05-C): the one shared "it went in" effect (chai, daar, chaat, samosa), the same in every station.
+      // s08 w6M (CK-06 reopened; the judge, 20 Oct: "blurry see-through white blobs over the oil and onions"): no clouds any
+      // more (white or tinted, round or wisps: every version read as blobs lying on the food). It is a ripple: two thin rings
+      // spread out from where it landed and fade, a pale line with a soft dark one just outside it (a ripple's light and its
+      // shadow), so it reads on a light pan or a dark one and leaves nothing over what went in. flat: the rings' height over
+      // their width (a side-on glass passes a flatter ring). Same timing as before (gone by about 0.9 s)
+      const s = size * 1.25;
+      const light = (() => {
+        const c = Number(color) >>> 0;
+        const mix = (sh) => Math.round(255 * 0.8 + ((c >> sh) & 255) * 0.2);
         return (mix(16) << 16) | (mix(8) << 8) | mix(0);
-      };
-      const tint = warm(Number(color) >>> 0);
-      // (wisps, taller than wide, like steam off hot food: never round balls sitting on it)
-      const u = s / 128;
-      for (let i = 0; i < 5; i++) {
-        const a = -Math.PI / 2 + ((i - 2) / 2) * 0.9 + (Math.random() - 0.5) * 0.2;
-        const c = this.track(this.add.image(x, y, key).setDepth(D.fx).setTint(tint).setAlpha(0.85));
-        c.setScale(u * 0.3, u * 0.45);
-        const tx = x + Math.cos(a) * s * 0.6;
-        const ty = y + Math.sin(a) * s * 0.4 - s * 0.9;
-        this.tweens.add({ targets: c, x: tx, y: ty, scaleX: u * 0.55, scaleY: u * 1.0, duration: 360, ease: "Cubic.easeOut" });
-        this.tweens.add({ targets: c, alpha: 0, scaleX: u * 0.7, scaleY: u * 1.35, y: ty - s * 0.5, delay: 360, duration: 520 + Math.random() * 160, ease: "Sine.easeIn", onComplete: () => c.destroy() });
+      })();
+      for (let i = 0; i < 2; i++) {
+        const g = this.track(this.add.graphics().setDepth(D.fx).setPosition(x, y));
+        const st = { r: s * 0.16, a: 1 };
+        const draw = () => {
+          if (!g.active) return;
+          g.clear();
+          const w = st.r * 2;
+          const h = w * flat;
+          g.lineStyle(Math.max(1.5, s * 0.07), 0x3a2410, 0.22 * st.a);
+          g.strokeEllipse(0, s * 0.015, w + s * 0.08, h + s * 0.08 * flat);
+          g.lineStyle(Math.max(1, s * 0.04), light, 0.7 * st.a);
+          g.strokeEllipse(0, 0, w, h);
+        };
+        draw();
+        this.tweens.add({ targets: st, r: s * (0.62 + 0.3 * i), a: 0, delay: i * 150, duration: 700, ease: "Cubic.easeOut", onUpdate: draw, onComplete: () => g.destroy() });
       }
-    }
-    /** The puff's one soft cloud (128 px, made once per game): white at its heart, a faint warm shade, then nothing. */
-    softPuffTex() {
-      const key = "fx-puff-soft";
-      if (this.textures.exists(key)) return key;
-      const N = 128;
-      const ct = this.textures.createCanvas(key, N, N);
-      const g = ct.getContext();
-      const grd = g.createRadialGradient(N / 2, N * 0.46, 0, N / 2, N / 2, N / 2);
-      grd.addColorStop(0, "rgba(255,255,255,0.92)");
-      grd.addColorStop(0.42, "rgba(255,252,247,0.78)");
-      grd.addColorStop(0.72, "rgba(196,172,146,0.32)");
-      grd.addColorStop(1, "rgba(196,172,146,0)");
-      g.fillStyle = grd;
-      g.fillRect(0, 0, N, N);
-      ct.refresh();
-      return key;
     }
     /** Soft steam rising from (x, y) (a pot or a glass), `n` wisps, `w` wide. */
     wisps(x, y, n = 2, w = 60) {
@@ -813,12 +808,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const prev = img.mood;
       img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : `${who}-happy`);
       const stopBob = this.talkBob(img, who);
+      // ART-19 (s08 w6G; the judge: "Nani keeps the same closed smile in all 8 frames while her line plays"): while she
+      // speaks at the counter her mouth moves as the guide box's face does (js/shared/guide.js flap): her talking face
+      // and her resting one in turn every 130-210 ms (two mouth frames of the one registered picture), until the line ends.
+      // Her mood reads "talk" meanwhile, so her resting blink never cuts in
+      let flapT = 0;
+      if (who === "nani" && opts.mood !== "point" && this.textures.exists("nani-neutral")) {
+        img.mood = "talk";
+        let open = true;
+        const flap = () => {
+          flapT = 0;
+          if (!img.active || img.mood !== "talk") return;
+          open = !open;
+          img.setTexture(open ? "nani-talk" : "nani-neutral");
+          flapT = setTimeout(flap, 130 + Math.random() * 80);
+        };
+        flapT = setTimeout(flap, 130 + Math.random() * 80);
+      }
+      const stopFlap = () => {
+        clearTimeout(flapT);
+        flapT = 0;
+      };
       // S04-B (SH-68, decision 75 (4)): the bubble sits above the speaker's head (below it with no room), placed by
       // the shared lifecycle; head: the top of the picture, in world px (UI.placeBubble maps it to the page)
       const anchor = { head: this.headBox(img), x: img.x, y: img.baseY };
       try {
         await UI.say(line, anchor, who === "nani" ? Object.assign({ nani: true }, opts) : opts);
       } finally {
+        stopFlap();
         stopBob();
         if (img.active) this.setMood(who, opts.after || (prev === "talk" ? "neutral" : prev));
       }
@@ -841,98 +858,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Cook.tween(this, { targets: img, x: W + 300, duration: 800, ease: "Cubic.easeIn" });
       img.destroy();
       delete this.chars[who];
-    }
-
-    /* ---------------- the step engine ---------------- */
-    /**
-     * Wait for the player to tap `expected` among `items` ({key: obj}).
-     * Wrong items wiggle ("Arre re!" on the first). Guided: the item glows
-     * and Nani names it at once. Otherwise Nani names it after the word's
-     * hesitation delay, and it glows a little later; each counts as help.
-     */
-    step({ items, expected, word, guided, sayLine, allowAny, onWrong, onLand, quiet = false, io = Cook.IO, ctl = null }) {
-      return new Promise((resolve) => {
-        let misses = 0;
-        const target = items[expected];
-        const timers = [];
-        const cleanup = () => {
-          timers.forEach(clearTimeout);
-          Object.values(items).forEach((o) => {
-            this.untap(o);
-            this.glow(o, false);
-          });
-        };
-        // C3 (E14): the caller can stop this step (a thing was taken back: the step starts again with it)
-        if (ctl)
-          ctl.cancel = () => {
-            cleanup();
-            io.expect(null);
-            resolve({ cancelled: true, misses });
-          };
-        // Nani is a voice at a station; the row she names throbs on the card (UX 13)
-        const hint = () => sayLine && UI.voice(sayLine).catch(() => {});
-        if (guided) {
-          this.glow(target, true, { bounce: true });
-          hint();
-        } else {
-          // real time, not game time: this measures the player's hesitation,
-          // which Cook.speed (the test's animation speed-up) doesn't change
-          const d = word ? Cook.hintDelay(word) : 6000;
-          timers.push(
-            setTimeout(() => {
-              if (!target.active) return;
-              if (Cook.onHelp) Cook.onHelp("hint");
-              hint();
-              timers.push(
-                setTimeout(() => {
-                  if (!target.active) return;
-                  this.glow(target, true, { bounce: true });
-                  if (Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
-                }, 4000)
-              );
-            }, d)
-          );
-        }
-        Object.entries(items).forEach(([key, obj]) => {
-          if (!obj || !obj.active) return;
-          this.tappable(obj, () => {
-            if (key === expected || (allowAny && allowAny(key))) {
-              cleanup();
-              io.expect(null);
-              resolve({ key, misses });
-            } else if (quiet) {
-              // Wave 6b (UX 11), level 2 up: a wrong pick lands like any other (onLand moves it);
-              // nothing says it's wrong now, the end review does
-              misses++;
-              Cook.sfx.pop();
-              if (onWrong) onWrong(key, misses);
-              if (onLand) {
-                this.untap(obj);
-                onLand(key, obj);
-              }
-            } else {
-              misses++;
-              this.wiggle(obj);
-              Cook.sfx.soft();
-              if (onWrong) onWrong(key, misses);
-              if (misses >= 2) {
-                this.glow(target, true, { bounce: true });
-                if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
-              }
-            }
-          });
-        });
-        const c = this.centre(target);
-        io.expect({
-          kind: "tap",
-          x: c.x,
-          y: c.y,
-          key: expected,
-          wrongs: Object.keys(items)
-            .filter((k) => k !== expected && items[k] && items[k].active)
-            .map((k) => this.centre(items[k])),
-        });
-      });
     }
 
     /** Hold on `obj` to pour; `onLevel(v)` as it rises; resolves with the level at release. */

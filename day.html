@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#f3e7d3">
+<title>Nani jo Ghar</title>
+<!--
+  A day at Nani's (Zafar, 19 Oct; docs/game-design/story-and-arcs.md Part 1): the morning door (the day's weather in the sky,
+  Nani's lines in turn, the child's Ha!), the day's activity (Cook, the clinic, or a trip by the window ride), and the evening
+  book. Runs js/day/day.js over data/day.json. Parameters (labs and tests): ?stage=door|book|window ?day=N ?weather=
+  ?activity= ?trip= ?level= ?seed= ?speed= ?nonav=1 ?log=kitchen|clinic|farm. Every weather, activity and stage: lab/day.html.
+  window.njgTest {state(), expect()}; window.Day (the line seam the sandbox's sound hook wraps).
+-->
+<link rel="stylesheet" href="css/shared/app.css?v=20261016T211414Z">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/shared/tokens.css?v=20261016T211414Z">
+<link rel="stylesheet" href="css/shared/frame.css?v=20261016T211414Z">
+<link rel="stylesheet" href="css/shared/focus.css?v=20261016T211414Z">
+<link rel="stylesheet" href="css/shared/buttons.css?v=20261016T211414Z">
+<link rel="stylesheet" href="css/shared/guide.css?v=20261016T211414Z">
+<link rel="stylesheet" href="css/shared/order-card.css?v=20261016T211414Z">
+<link rel="stylesheet" href="css/day.css?v=20261016T211414Z">
+<script type="importmap" data-njg="core">
+{
+ "imports": {}
+}
+</script>
+</head>
+<body class="day">
+<div id="day-app"></div>
+<script src="js/version.js?v=20261016T211414Z"></script>
+<script src="js/shared/app.js?v=20261016T211414Z"></script>
+<script src="js/shared/frame.js?v=20261016T211414Z"></script>
+<script src="js/shared/fit.js?v=20261016T211414Z"></script>
+<script src="js/shared/focus.js?v=20261016T211414Z"></script>
+<script src="js/shared/guide.js?v=20261016T211414Z"></script>
+<script src="js/shared/order-card.js?v=20261016T211414Z"></script>
+<script src="js/shared/request-popup.js?v=20261016T211414Z"></script>
+<script src="js/shared/buttons.js?v=20261016T211414Z"></script>
+<script src="js/shared/window-ride.js?v=20261016T211414Z"></script>
+<script type="module" src="js/day/day.js?v=20261016T211414Z"></script>
+</body>
+</html>

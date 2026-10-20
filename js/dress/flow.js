@@ -70,10 +70,10 @@
     if (r.round.say) stars.voice = !!st.voice;
     const C = Dress.data.coins;
     const receipt = [];
-    if (ear) receipt.push(["Understood", C.ear]);
-    if (hand) receipt.push(["Neat", C.hand]);
-    if (third) receipt.push(["No help", C.third]);
-    if (stars.voice) receipt.push(["Said it", C.voice]);
+    if (ear) receipt.push(["Understood", C.ear, "ear"]);
+    if (hand) receipt.push(["Neat", C.hand, "hand"]);
+    if (third) receipt.push(["No help", C.third, "third"]);
+    if (stars.voice) receipt.push(["Said it", C.voice, "voice"]);
     const coins = receipt.reduce((s, [, v]) => s + v, 0);
     // word progress: every word was met; only real Kutchi is marked right or wrong (D.9 decision 4)
     const words = Dress.Look.words(r.round, Dress.data);
@@ -132,9 +132,36 @@
       .map((id) => {
         const st = Cook.wordStage(id);
         const ph = Cook.isPlaceholder(id);
-        return `<button class="chip" data-w="${id}">${ph ? `<i class="ph">${esc(Cook.display(id))}</i>` : esc(Cook.display(id))}<small>${esc(Cook.english(id))} <span class="dots">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
+        return `<button class="chip" data-w="${id}">${ph ? `<i class="ph">${esc(Cook.display(id))}</i>` : esc(Cook.display(id))}<small class="rs-en">${esc(Cook.english(id))} <span class="dots">${"●".repeat(st)}${"○".repeat(4 - st)}</span></small></button>`;
       })
       .join("");
+  }
+  const pic = (svg) => `<span class="mstar earned" style="width:24px;height:24px;padding:3px">${svg}</span>`;
+  const receiptIcon = (key) => pic(UI.ICON[UI.starInfo(key).icon] || UI.ICON.tick);
+  /** The grown-ups' "?" on a panel: a round "?" in its corner; the English opens beside it and nowhere else (Cook.grownUps does the same on Cook's panels). */
+  function grownUps(p, html) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "rail-btn gu-btn";
+    btn.id = "gu-btn";
+    btn.textContent = "?";
+    btn.setAttribute("aria-label", "For grown-ups");
+    btn.setAttribute("aria-expanded", "false");
+    const box = document.createElement("div");
+    box.className = "gu-pop hidden";
+    box.id = "gu-pop";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", "For grown-ups");
+    box.innerHTML = html;
+    btn.addEventListener("click", () => {
+      Cook.sfx.click();
+      const open = box.classList.toggle("hidden") === false;
+      btn.setAttribute("aria-expanded", String(open));
+      p.toggleAttribute("data-grown", open);
+    });
+    p.prepend(box);
+    p.prepend(btn);
+    return box;
   }
   function showResult(card, spec) {
     const g = Dress.data.games[spec.game];
@@ -144,22 +171,21 @@
     if (!card.stars.third) tips.push(["third", "Try it without the ? button."]);
     if (card.stars.voice === false) tips.push(["voice", "Say the number out loud next time (or a grown-up can tick it)."]);
     const p = UI.panel(`
-      <h2>${esc(g.id)} ${esc(g.name)} · level ${card.level}</h2>
       <div class="cards"><div class="ccard rcard res-card"><div class="rc-left">
         <div class="cc-stars">${starsHtml(card.stars)}</div>
         <span class="cc-coins"><i class="coin-dot"></i>+${card.coins}</span>
-        <div class="receipt">${card.receipt.map(([k, v]) => `<div><span>${esc(k)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span>Pocket money</span><b>${card.coins}</b></div></div>
+        <div class="receipt">${card.receipt.map(([k, v, key]) => `<div title="${esc(k)}"><span class="rc-ic">${receiptIcon(key)}</span><b>+${v}</b></div>`).join("")}<div class="total"><span class="rc-ic"><i class="coin-dot"></i></span><b>${card.coins}</b></div></div>
       </div>
       <div class="rc-right">
         <div class="rc-cols">
-          <div class="rc-col"><h4>They asked</h4><div class="rc-pills">${kpills(card.asked)}</div></div>
-          <div class="rc-col"><h4>You did</h4><div class="rc-pills">${kpills(card.did)}</div></div>
+          <div class="rc-col"><div class="rc-pills">${kpills(card.asked)}</div></div>
+          <div class="rc-col"><div class="rc-pills">${kpills(card.did)}</div></div>
         </div>
-        ${tips.length ? `<div class="rc-tips"><h4>Next time</h4>${tips.map(([k, t]) => `<div class="rc-tip"><span class="mstar lost">${UI.ICON[UI.starInfo(k).icon] || ""}</span>${esc(t)}</div>`).join("")}</div>` : `<div class="rc-tips all"><h4>Next time</h4><div class="rc-tip">Just the same. Every star!</div></div>`}
       </div></div></div>
-      <h3>Words from this round</h3>
       <div class="chips">${wordChips(card.words)}</div>
-      <div class="btn-row"><button class="btn primary" id="res-again">Again</button><button class="btn" id="res-back">Dress lab</button></div>`);
+      <div class="btn-row"><button class="btn primary" id="res-again" type="button" aria-label="Again">&#9654;</button><button class="btn" id="res-back" type="button" aria-label="Dress lab">&#8962;</button></div>`);
+    // the grown-ups' "?": a tip per missed star (no written English for the child, rule 5)
+    if (tips.length) grownUps(p, `<h3>Next time</h3>${tips.map(([k, t]) => `<div class="rc-tip"><span class="mstar lost">${UI.ICON[UI.starInfo(k).icon] || ""}</span>${esc(t)}</div>`).join("")}`);
     p.querySelectorAll(".chip[data-w]").forEach((b) => b.addEventListener("click", () => Lang.speakWord(b.dataset.w)));
     $("#res-again").addEventListener("click", () => play(Object.assign({}, spec, { seed: undefined })).catch(report));
     $("#res-back").addEventListener("click", () => showLab());
@@ -252,6 +278,10 @@
   /* ---------------- boot ---------------- */
   Dress.boot = async function () {
     await Dress.load();
+    // no written English for the child (rule 5): the intro card's "tap to start" is a play arrow
+    const go = document.querySelector("#intro .ic-go");
+    go.textContent = "\u25B6";
+    go.setAttribute("aria-label", "Tap to start");
     $("#coins").textContent = Cook.save.coins || 0;
     $("#btn-help").addEventListener("click", async () => {
       const r = Dress.current;

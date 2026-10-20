@@ -33,6 +33,18 @@
 //                           its key); no row changes its words mid-stage (the bulb's English aside) (checks-to-build 6)
 //   contract-21 input-live  a real tap in the play area while a line is voiced, where the game expected one, is handed to the
 //                           game (Lifecycle act) within 150 ms (E5; checks-to-build 20)
+//   contract-22 once-whole  each Cook line said once (the same line not again within 10 s) and whole (no clip cut by another line) (PAN-04, PAN-16)
+//   contract-23 item-word    an item's name on a tap only when nothing else is speaking, never at L3-L4, not again within 10 s (SH-94)
+//   contract-24 help-ladder  no help line or glow before the idle time by level, counted from the last action (SH-60, SH-95)
+//   contract-25 bulb-pulse   both bulbs pulse after 15-20 s stuck, never before (SH-96)
+//   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
+//   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106)
+//   contract-35 card-ladder  Cook's card by level: open at L1-L2, the item words dotted at L3, hidden (folded) at L4 (SH-110)
+//   contract-36 step-call    Nani calls each step once as it opens, at every level (SH-110)
+//   contract-37 decoys       decoys by level: 1, 2, 3, then 3 with a lookalike at L4 (CK-49)
+//   contract-50 one-tick     samosa: the card's rows tick together at the one tick, never a kind before its samosas are all made (SAM-24)
+//   contract-70 slow-at-green  chai: "Slow kar" as the heat bar enters the green, never before it (CHAI-24; lib/contract-chai.mjs)
+//   contract-71 once-each      chai: milk, water and tea go into a pan once each; a second tap adds nothing (CHAI-22)
 //   contract-17 voice-src   on the store build (run.mjs --store) only clips Zafar marked OK sound: no device voice, no placeholder
 //                           TTS, no unchecked or redo clip, no unknown audio (non-negotiable 10; checks-to-build 5)
 //
@@ -43,11 +55,29 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
+// contracts 45 and up: the day's frame (s09-frame), in a file of their own
+import { DAY_CHECKS, check45, check46 } from "./contract-day.mjs";
+// contracts 65 and up: the daal station (s08 w4A), in a file of their own
+import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
+// contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
+import { CHAI_CHECKS, check70, check71 } from "./contract-chai.mjs";
 
 export const CHECKS = {
-  "contract-19": { item: "counting", title: "the counting rule", how: "From level 3, on a page whose profile has heard the words (variant p-seen), no order-card row (the side sample's words) holds a Kutchi number word (the lexicon's Num entries); from level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number." },
+  "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
   "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): a to-record placeholder passes until launch (Zafar, 14 Oct) and is a break on the store build (--store); every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
+  "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s of the child's time is a break (PAN-16; Cook's test speed shortens the game's waits, so 10 s / speed in the run, and a help line's, role howto, 10 s of the clock) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap) or the game opened a new step whose call it says again on purpose (Lifecycle step-call \"queued-again\": maani's Firai on both turns, MAA-15, Zafar 17 Oct); item words (contract-23) and counts (laps, countdowns, number words) are not judged here. On a #speed1 flow (a child's pace, where clip timing is real) a clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up), by another line's clip starting over it, is a break (PAN-04)." },
+  "contract-23": { item: "item-word", title: "an item's name only when nothing else speaks", how: "Lines tagged role item (js/cook/words.js Lang.popWord: an item's name as it is tapped or lands) that made a sound: at level 3 or 4 any is a break; one starting while another Cook line is being said (from its call to its end, or a clip of it sounding) is a break; the same item word again within 10 s is a break (SH-94, decision 1 of 17 Oct)." },
+  "contract-24": { item: "help-ladder", title: "no help before the idle time", how: "Nani's help and the glow come only after the child has done nothing for the ladder's time by level (7, 8, 11, 15 s: data/cook.json calm.helpMs), counted from the LAST action (a real tap, the stage or the step opening). Three things are measured on every path but #mistake: the game's own help log (Lifecycle help, idle), a step line (role howto) said, and a picture's glow switching on (the sampler's hl). One earlier than the table is a break (SH-60, SH-95)." },
+  "contract-25": { item: "bulb-pulse", title: "the bulbs pulse when stuck", how: "The bulbs' pulse (Lifecycle bulb-pulse, js/shared/guide.js pulseBulbs) may not start before 15 s of no action; any stretch of no action of 21 s or more inside a play stage must have had the pulse start (SH-96: both light bulbs pulse after 15-20 s stuck)." },
+  "contract-26": { item: "opening", title: "the opening line is heard whole", how: "Every Cook line said while the request pop-up is up: each of its words that is in the lexicon must have a sound, a family clip of that word or the device voice saying it (the sound log); a word that made no sound (the device voice's text thrown away by a cancel, no stand-in at all) is a break (LNG-16: \"I didn't hear the muke\")." },
+  "contract-27": { item: "peek-whole", title: "the peek shows every word", how: "The side sample's peek (a card with the class peek: a tap on its small bulb opened it) and its dots (.dots, the dotted word '•••' of Lang.html's hide): any dotted word in a peeking card is a break (SH-98, Zafar, 17 Oct: 'certain words are hidden, which is pointless'). Numbers: contract-30." },
+  "contract-28": { item: "one-bulb", title: "one bulb picture", how: "The bulbs sample (every shown .oc-look.bulb, .ng-bulb, .cl-bulb or #btn-bulb and the file it is drawn with: an <img>, a CSS background, or the flat inline svg): any bulb not drawn with assets/ui/results/icon-bulb.webp (the photo Nani's box uses) is a break, on Cook and the clinic alike (SH-100, Zafar, 17 Oct: 'let's make them all photorealistic')." },
+  "contract-29": { item: "peek-time", title: "the peek lasts the level's time", how: "Each peek (the side sample's peek count from 0 to some and back) on a page whose card count and stage did not change: it must last the level's time from data (data/cook.json calm.peekMs, the clinic's Kit.PEEK_MS: 7 s at level 3, the same 3.5 s added to the others), judged as a child's time (Cook's test speed 3 shortens it; the clinic's is real time); under that less 450 ms is a break (SH-101)." },
+  "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171). One is the exception (Zafar, 19 Oct: 'we don't need to write one, only two or more'): a said one (hakro, hakri) whose item is written bare passes. Counting along the taps (role count) is a tally, not the order." },
+  "contract-31": { item: "free-replay", title: "a replay is free and says what is left", how: "A help Cook counts (the hint sample: Cook.onHelp's kind) of kind replay is a break (SH-102: only seeing it written costs); and after a tap on a face (the card's replay) with rows already ticked (the rows sample), no line said in the next 7 s may be a ticked row's words (SH-114: a replay reads out the remaining steps)." },
+  "contract-32": { item: "divider", title: "the review's divider leaves room", how: "The review sample (the word review's two halves, side by side: the wrong words' column and the right words' column, their widths and counts): with no wrong word the right words take 4/5 of the width (room for four right and one wrong, SH-103, Zafar, 17 Oct: 'a little bit more to the left'); the wrong half is as many units wide as it has words (1 to 3) against the right half's 4, so the divider moves over as wrong words grow. Not judged on a taught round (one group) or stacked on a portrait phone." },
+  "contract-33": { item: "headline-size", title: "the order pop-up's headlines: one size, wrap first", how: "The heads sample (each headline of the order pop-up with its size, its full size from a bare clone of it, and its line count; settled 400 ms): two sizes on one pop-up, or headlines all on one line while shrunk under their full size, is a break (SH-107, Zafar, 18 Oct: 'it was better to have the bigger text'; only the order pop-up: everywhere else keeps shrink, then wrap, non-negotiable 9)." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
   "contract-18": { item: "card-rows", title: "card rows tick when their step closes", how: "Every rows sample (lib/contract-hook.mjs: each sidebar card row with its key, words and tick) against the shared lifecycle's step-close log (Lifecycle.note: the order card's tick path and the heal host, at their own millisecond, with the step's key): a row that turns ticked with no step-close for its key (any step-close for a row with no key) in the 1.1 s before is a break; a row whose words change while it stays in the same stage (not to or from a row with no letters, not under the bulb's English) is a break." },
   "contract-21": { item: "input-live", title: "input is live while a line plays", how: "Every real tap (trusted pointerdown) in the play area (not the sidebar, the pop-up or a ✓/Next button) while a line is being said (a clip of it sounding, or the line between its start and end in the sound log) and the game expected a tap, a pick or a drag: the shared lifecycle must log an act (Lifecycle.note from js/shared/host.js onAct, the heal host's input and Cook's play area: its canvas and its own controls, js/cook/flow.js) within 150 ms. None is a break (E5: input never waits for the voice)." },
@@ -66,6 +96,14 @@ export const CHECKS = {
   "contract-13": { item: "stale-ui", title: "each stage clears its own UI", how: "Each reply pill (.cl-pill, .njg-pill, .cv-pill, .st-reply, .st-choice; not the sidebar's) remembers the stage it was first seen in; still on screen 600 ms into a later play stage is a break (CLN-06)." },
   "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
+  "contract-34": { item: "go-arrow", title: "every go-on button has the arrow", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\")." },
+  "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted; L4 every order card closed (face + headline folded). Was closedFrom 3 (SH-110, the level table, Zafar 19 Oct)." },
+  "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows only: every step the game opens in a play stage (Lifecycle step-open, js/shared/guide.js stepper) must be called: a Cook line tagged role call must start after it and before the next step opens (or within 6 s), unless the game logged a step-call skip for that step (Lifecycle step-call, by 'skip ...': Nani muted, the station said it a moment ago, a step with no voiced line, the step closed before its turn). A step-open with neither is a break; a call said where the step-call log says skip is a break too (SH-110, the level table: the order in pieces, at every level, never help)." },
+  "contract-50": { item: "one-tick", title: "samosa: the card ticks at the one tick", how: "Cook flows of the samosa station only, in the stage where the game reported its fillings' decoys (Lifecycle decoys by 'fillings'): the rows sample (each sidebar card row and its tick). Once any row ticks, every row still open (not a \"don't\" row, which ticks with the finished dish) must tick within 1.5 s: the fill closes once for every strip at the one tick, so no kind's box or filling row ticks while samosas of it are still to be made (SAM-24, P42: 'he's ticked the samosa like it's done but he wanted three'). A row unticked again (a redo after a mistake, decision 51) starts the wait over." },
+  "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the table's (1, 2, 3, 3 by level; at least that for the pantry's shelf and the daar's chop, whose rows are full by design), with a lookalike among them at L4. No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
+  ...DAY_CHECKS,
+  ...DAAL_CHECKS,
+  ...CHAI_CHECKS,
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -92,6 +130,20 @@ export function clipSeconds(root, url) {
 
 const levelOf = (flow) => { const m = /@L(\d)/.exec(flow) || /level=(\d)/.exec(flow); return m ? +m[1] : 1; };
 const center = (b) => ({ x: (b.l + b.r) / 2, y: (b.t + b.b) / 2 });
+// the stage's real level (s08 w6E): a day flow runs L3 dishes under an L1 label, and a seen profile plays later dishes higher, so a
+// check of the level table reads the order's own level: the last "order-level" note (Lifecycle, js/cook/ui.js) at or before t, else
+// the sidebar's data-level (the side sample's lv), else the flow's label
+export function realLevel(tl, t, fallback = 1) {
+  let note = null, side = null;
+  for (const e of tl) {
+    if (e.t > t) break;
+    if (e.type !== "c") continue;
+    if (e.k === "life" && e.what === "order-level") { const n = parseInt(e.step != null ? e.step : e.reason, 10); if (n >= 1) note = n; }
+    else if (e.k === "side" && e.lv != null) { const n = parseInt(e.lv, 10); if (n >= 1) side = n; }
+  }
+  const lv = note != null ? note : side;
+  return lv != null ? Math.min(4, lv) : fallback;
+}
 
 // ---- stages from the probe's stage events ----
 export function segments(tl, tEnd) {
@@ -137,14 +189,39 @@ export function voice(tl, { root = ".", clip = clipSeconds } = {}) {
     else if (e.type === "play-end" && plays.has(key(e, e.pid))) { const p = plays.get(key(e, e.pid)); if (p.end == null) { p.end = e.t; p.why = e.why; } }
   }
   const stops = tl.filter((e) => e.type === "voice-stop").map((e) => e.t);
+  // the game's own turns (js/cook/words.js Lang.speak: say-start when the first clip of a queued line is about to play, say-end
+  // when it is done), each matched to the line asked for it: the earliest unmatched line of the same words
+  const turns = [];
+  {
+    const open = new Map();
+    const same = (a, b) => normW(a).replace(/\s+/g, " ") === normW(b).replace(/\s+/g, " ");
+    const taken = new Set();
+    for (const e of tl) {
+      if (e.type !== "c" || e.k !== "life") continue;
+      if (e.what === "say-start") {
+        const u = { id: e.reason, t0: e.t, t1: null, text: e.by || "", line: null };
+        // (s08 w6L, contract-3) the turn's id is its line's id (say-start's reason = the sound log's line id): a clip belongs to the line its
+        // turn said, never to the next line with the same words (a cut count clip was matched by order to a later stage's count line)
+        const byId = [...lines.values()].filter((x) => String(x.id).split("|").pop() === String(e.reason) && !taken.has(x.id) && x.t0 <= e.t + 5).sort((a, b) => b.t0 - a.t0)[0];
+        const l = byId || [...lines.values()].filter((x) => x.who === "cook" && !taken.has(x.id) && x.t0 <= e.t + 5 && same(x.text, u.text)).sort((a, b) => a.t0 - b.t0)[0];
+        if (l) { taken.add(l.id); u.line = l; }
+        open.set(u.id, u);
+        turns.push(u);
+      } else if (e.what === "say-end" && open.has(e.reason)) open.get(e.reason).t1 = e.t;
+    }
+  }
   for (const p of plays.values()) {
     if (p.dur == null && p.url) { p.dur = clip(root, p.url); p.fromFile = p.dur != null; }
     if (p.dur == null) { p.dur = 1; p.est = true; }
     const natural = p.t0 + p.dur * 1000;
     p.t1 = p.end != null ? Math.min(p.end, natural) : natural;
-    // the line it was said for: the latest line that had started (and not long ended) when it played
+    // the line it was said for: the latest line that had started (and not long ended) when it played. Where the game logged its
+    // own turns (Lifecycle say-start / say-end: Cook's one speech queue, PAN-04, logs a line when asked for but starts it when its
+    // turn comes) the clip belongs to the turn it sounded in, and so to that turn's line
     let best = null;
-    for (const l of lines.values()) if (l.t0 <= p.t0 + 5 && (l.t1 == null || p.t0 <= l.t1 + 60) && (!best || l.t0 >= best.t0)) best = l;
+    const turn = turns.length ? turns.filter((u) => u.t0 <= p.t0 + 5 && (u.t1 == null || p.t0 <= u.t1 + 60)).pop() : null;
+    if (turn && turn.line) best = turn.line;
+    else for (const l of lines.values()) if (l.t0 <= p.t0 + 5 && (l.t1 == null || p.t0 <= l.t1 + 60) && (!best || l.t0 >= best.t0)) best = l;
     if (best) { best.plays.push(p); p.line = best; }
   }
   // a Cook line that played nothing (the test build had no clip it could play in time, or the next line replaced it before it
@@ -195,7 +272,9 @@ function stateAt(r, t) {
 
 // ---- the checks ----
 // lines that give no order (decision 80): Nani's how-to step line and her "pass me" (and its thank-you) stay outside the pop-up
-export const NOT_ORDER = new Set(["howto", "passme"]);
+export const NOT_ORDER = new Set(["howto", "passme", "call"]); // (s08 w2A: "call", Nani calling a step as it opens: the order in pieces after the pop-up gave it, SH-110)
+const ASK_BEFORE = 1000; // ms: a request logged this long before its pop-up's open sample is that pop-up's
+const TAP_CLOSES = 1500; // ms: a tap on the pop-up this soon after it opened is the child closing it
 function check1(tl, segs, v, add) {
   const side = tl.filter((e) => e.type === "c" && e.k === "side");
   const sideAt = (t) => { let s = { n: 0, rows: 0 }; for (const e of side) if (e.t <= t) s = e; else break; return s; };
@@ -206,7 +285,9 @@ function check1(tl, segs, v, add) {
   for (const e of tl) if (e.type === "c" && e.k === "popup") {
     if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) {
       const after = pops.length ? pops[pops.length - 1].t1 : -Infinity;
-      const ask = asks.filter((t) => t <= e.t && t >= e.t - 500 && t >= after);
+      // (a request logged up to 1 s before the sample, and up to 150 ms before the last pop-up's close sample: the next pop-up
+      // opening as the last one closes, s08 w6E)
+      const ask = asks.filter((t) => t <= e.t && t >= e.t - ASK_BEFORE && t >= after - 150);
       pops.push({ t0: ask.length ? ask[0] : e.t, t1: null });
     } else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
   }
@@ -229,7 +310,9 @@ function check1(tl, segs, v, add) {
         const p = mine[mine.length - 1];
         // read out: a line said, or a family clip played (the read-along plays its chunks' clips without a line of its own)
         const said = v.lines.some((l) => l.t0 >= p.t0 - 100 && (p.t1 == null || l.t0 <= p.t1) && (l.text || "").trim()) || v.plays.some((q) => !q.est && q.url && q.t0 >= p.t0 - 100 && (p.t1 == null || q.t0 <= p.t1));
-        const tappedAtOnce = inputs.some((i) => i.t >= p.t0 && i.t <= p.t0 + 600);
+        // a pop-up the child's first tap closed before the voice began (a tap on it within TAP_CLOSES of its opening, a few ms
+        // before the sample too) is read out as far as it will be (s08 w6E)
+        const tappedAtOnce = inputs.some((i) => i.t >= p.t0 - 150 && i.t <= p.t0 + 600) || inputs.some((i) => i.popup && i.t >= p.t0 - 150 && i.t <= p.t0 + TAP_CLOSES && (p.t1 == null || i.t <= p.t1 + 150));
         if (!said && !tappedAtOnce) add("contract-1", p.t0, `${s.key}: the request pop-up was not read out (no line while it was up)`);
         if (p.t1 != null) {
           const folded = side.some((e) => e.t >= p.t1 - 100 && e.t <= p.t1 + 2000 && e.n > 0) || sideAt(p.t1 + 2000).n > 0;
@@ -521,6 +604,20 @@ function check12(tl, segs, add, tEnd = tl[tl.length - 1].t) {
     }
   });
 }
+// 27 (SH-106): every go-on button on screen shows the arrow
+function check34(tl, segs, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "buttons") continue;
+    for (const b of e.list || []) {
+      if (!b.go || b.arrow !== false) continue;
+      const s = segAt(segs, e.t), k = `${s && s.key}|${b.sel}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      add("contract-34", e.t, `${s ? s.key : "?"}: ${b.sel} has no arrow`);
+    }
+  }
+}
 // 13 (CLN-06): a reply pill from an earlier stage still on screen in a later play stage
 function check13(tl, add) {
   const seen = new Set();
@@ -573,10 +670,6 @@ function check19(r, tl, segs, v, nums, add) {
   const level = levelOf(r.flow || "");
   const split = (s) => String(s || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
   const seen = new Set();
-  if (level >= 3 && /seen/.test(r.variant || "")) for (const e of tl) {
-    if (e.type !== "c" || e.k !== "side") continue;
-    for (const w of e.words || []) if (split(w).some((x) => nums.has(x)) && !seen.has(w)) { seen.add(w); add("contract-19", e.t, `"${w}" writes a number on the card at L${level}`); }
-  }
   if (level >= 2) {
     // the request pop-up reads the order out (a phase's own pop-up mid-stage: the daar stir's "Muke daar khape, ba."):
     // a number said while it is up is the order, heard, never counting along
@@ -606,7 +699,9 @@ function check16(tl, lex, add, store) {
     if (e.type !== "c" || e.k !== "texts") continue;
     for (const x of e.list || []) {
       if (x.rec && store && !x.grown && !seen.has("rec:" + x.t)) { seen.add("rec:" + x.t); add("contract-16", e.t, `"${x.t}" (${x.sel}): a to-record placeholder on the store build`); continue; }
-      if (x.rec || x.en || x.grown) continue;
+      // a door line's English (rule 5's door exception) is contract-46's to judge
+      // a player's own name, typed by a grown-up on the who's-playing screen (the hook's name tag), is not English
+      if (x.rec || x.en || x.grown || x.door || x.name) continue;
       const words = (String(x.t).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).map((w) => w.replace(/’/g, "'")).filter((w) => w.length > 1 && !lex.has(w));
       if (!words.length) continue;
       const k = x.t;
@@ -673,9 +768,13 @@ function check21(tl, segs, v, add) {
   // a line being said: a clip of it sounding, or the line itself between its start and its end (a line with no clip yet is
   // still said, at its words' pace)
   const sounding = (t) => (v.plays.find((p) => !p.est && p.line && p.t0 <= t && t <= p.t1) || {}).line || v.lines.find((l) => l.t1 != null && (l.text || "").trim() && l.t0 <= t && t <= l.t1);
+  // a tap the first-time help blocked (js/shared/onboard.js: a touch outside its light is stopped on capture) never reaches the game
+  // and logs no act: the probe logs it as input-blocked right after
+  const blocked = tl.filter((e) => e.type === "c" && e.k === "input-blocked");
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "input" || !e.play || e.popup || e.side || e.next || !expectsInput(e.exp)) continue;
+    if (blocked.some((b) => b.t >= e.t && b.t <= e.t + 100 && Math.abs(b.x - e.x) <= 2 && Math.abs(b.y - e.y) <= 2)) continue;
     const line = sounding(e.t);
     if (!line) continue;
     if (acts.some((t) => t >= e.t - 30 && t <= e.t + ACT_MS)) continue;
@@ -685,9 +784,545 @@ function check21(tl, segs, v, add) {
     add("contract-21", e.t, `${s ? s.key : "?"}: a tap on ${e.on} at ${e.x},${e.y} while "${line.text}" was being said: no act logged within ${ACT_MS} ms (the game expected ${JSON.stringify(e.exp)})`);
   }
 }
+// ---- S08 wave 1A: voice and help in every game (PAN-04, PAN-16, SH-94, SH-60, SH-95, SH-96, LNG-16) ----
+// The ladder these measure is data/cook.json calm.helpMs / bulbPulseMs (js/shared/guide.js PAUSE, BULB_PULSE): the help comes only
+// after the child has done nothing for this long (by level), counted from the LAST action.
+export const LADDER = [7000, 8000, 11000, 15000];
+export const BULB_PULSE_MIN = 15000; // the bulbs pulse after 15-20 s stuck (Zafar, 17 Oct): never before 15 s
+export const BULB_PULSE_MAX = 21000; // ... and by 21 s of no action they must be pulsing
+export const SAID_AGAIN = 10000; // a line is not said again within this long (PAN-16: "about 10 s": judged from 9 s)
+const SAID_JUDGED = 9000;
+const SLOP = 400; // ms: the sampler, a timer's tick
+const isCookLine = (l) => /^cook/.test(l.who || "");
+const isCountLine = (l, nums) => {
+  const ws = String(l.text || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
+  return l.role === "laps" || l.role === "countdown" || (!!nums && ws.length > 0 && ws.length <= 2 && ws.every((x) => nums.has(x)));
+};
+// a tap that asked to hear it (the speaker on her face or a card, the order replayed, a chip): its line is the child's own, not a repeat
+const askedAt = (inputs, t) => inputs.some((i) => i.t <= t + 20 && t - i.t <= 700 && (i.side || i.popup || i.btn));
+// the last thing the child did before t: a real tap in the play area or a button, the stage opening (Lifecycle stage-start), or the step opening
+function lastAction(tl, t, { steps = false } = {}) {
+  let last = -Infinity;
+  for (const e of tl) {
+    if (e.t > t) break;
+    if (e.type === "c" && e.k === "input") last = Math.max(last, e.t);
+    else if (e.type === "c" && e.k === "life" && (e.what === "stage-start" || (steps && e.what === "step-open"))) last = Math.max(last, e.t);
+  }
+  return last;
+}
+// the request pop-up's open windows ({t0, t1}) from the probe's popup samples
+function popupWindows(tl) {
+  const pops = [];
+  for (const e of tl) if (e.type === "c" && e.k === "popup") {
+    if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) pops.push({ t0: e.t, t1: null });
+    else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
+  }
+  return pops;
+}
+// 22 (PAN-04, PAN-16): each line said once and whole
+function check22(r, tl, segs, v, nums, add) {
+  // Cook's test speed shortens the game's own waits (and its clip timers) but not the help's real-time ones: a repeat is judged
+  // against 10 s of the child's time (10 s / speed in the run), a help line's against 10 s of the clock; a clip cut short only
+  // where the timing is real (a #speed1 flow, a child's pace)
+  const speed = +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3);
+  const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
+  // (s08 w6d, wave 6A: a count word is a tally of the child's taps, not a line the game says twice, as contract-30 treats it; and the
+  // request pop-up reads each person's order in their own words, so two people ordering the same thing say the same line twice there)
+  const pops = popupWindows(tl);
+  const inPop = (t) => pops.some((p) => t >= p.t0 - 150 && (p.t1 == null || t <= p.t1 + 150));
+  const lines = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && l.role !== "item" && l.role !== "count" && !isCountLine(l, nums)).sort((a, b) => a.t0 - b.t0);
+  const seen = new Set();
+  const norm = (s) => normW(s).replace(/\s+/g, " ");
+  // MAA-15 (Zafar, 17 Oct: "she should say it the second time"): a step the game opens with its call said again on purpose
+  // (Lifecycle step-call "queued-again": maani's Firai on its second turn) is a new step's call, not a repeat
+  const againAt = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "step-call" && e.by === "queued-again").map((e) => e.t);
+  for (let i = 0; i < lines.length; i++) for (let j = i + 1; j < lines.length; j++) {
+    const a = lines[i], b = lines[j];
+    if (b.t0 - a.t0 >= SAID_AGAIN) break;
+    if (b.t0 - a.t0 >= (b.role === "howto" ? SAID_JUDGED : SAID_JUDGED / speed)) continue;
+    if (norm(a.text) !== norm(b.text) || !norm(a.text)) continue;
+    if (inPop(a.t0) && inPop(b.t0)) continue;
+    if (askedAt(inputs, b.t0) || (norm(a.text).split(" ").length === 1 && inputs.some((x) => x.t <= b.t0 + 20 && b.t0 - x.t <= 400))) continue;
+    if (b.role === "call" && againAt.some((t) => t > a.t0 && t <= b.t0 + 50)) continue;
+    const s = segAt(segs, b.t0), k = `${s && s.key}|${norm(a.text)}`;
+    // (the pop-up's read-out before the station is the order card's: two people may ask for the same thing, each in their own words; the serve and the praise between stations are judged too, wave 1B: "Shabash!" once)
+    if (!s || !(isPlayStage(s.key) || /cook:between|cook:closing/.test(s.key))) continue;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    add("contract-22", b.t0, `${s ? s.key : "?"}: "${b.text}" said twice, ${Math.round(b.t0 - a.t0)} ms apart (a line is said once; again only after ${SAID_AGAIN / 1000} s idle)`);
+  }
+  // whole: a clip cut short by another LINE starting over it (not the next word of its own line), with no stop the game made near it
+  if (speed !== 1) return;
+  const stops = tl.filter((e) => e.type === "voice-stop" || (e.type === "c" && e.k === "life" && /^(stage-end|stage-start|request|results|advance)$/.test(e.what))).map((e) => e.t);
+  for (const p of v.plays) {
+    if (p.est || !p.line || p.end == null || !/^(stop|pause|cancel)$/.test(p.why || "")) continue;
+    const natural = p.t0 + p.dur * 1000;
+    if (natural - p.end < 150) continue;
+    if (stops.some((t) => Math.abs(t - p.end) <= 300)) continue;
+    const next = v.plays.find((q) => q !== p && q.t0 >= p.end - 60 && q.t0 <= p.end + 60);
+    if (next && next.line === p.line) continue;
+    const s = segAt(segs, p.end), k = `cut|${s && s.key}|${p.url}`;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    add("contract-22", p.end, `${s ? s.key : "?"}: "${p.line.text}" cut off ${Math.round(natural - p.end)} ms before its end (${p.url || p.via}, by ${p.why}) with no stop from the game: another line began over it`);
+  }
+}
+// 23 (SH-94): an item's name on a tap only when nothing else is speaking, never at levels 3 and 4, the same word again only after 10 s
+function check23(r, tl, segs, v, add) {
+  const level = levelOf(r.flow || "");
+  // (a pop the queue dropped because something was speaking made no sound: only a pop that sounded is judged)
+  // An item's name is a line tagged role item (js/cook/words.js Lang.popWord); a build before the tag has the same thing as one
+  // untagged word said right after a tap on the pictures (a chip's word, role hear, is the child asking to hear it: not a pop)
+  const taps = tl.filter((e) => e.type === "c" && e.k === "input" && e.on === "canvas");
+  const oneWord = (l) => normW(l.text).split(" ").filter(Boolean).length === 1;
+  const isPop = (l) => l.role === "item" || (!l.role && oneWord(l) && taps.some((i) => i.t <= l.t0 + 20 && l.t0 - i.t <= 400));
+  const pops = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && isPop(l) && l.plays.length && !l.silent).sort((a, b) => a.t0 - b.t0);
+  const others = v.lines.filter((l) => !pops.includes(l) && (l.text || "").trim() && isCookLine(l));
+  const seen = new Set();
+  const norm = (s) => normW(s).replace(/\s+/g, " ");
+  pops.forEach((p, i) => {
+    const s = segAt(segs, p.t0);
+    const say = (why) => { const k = `${s && s.key}|${norm(p.text)}|${why}`; if (!seen.has(k)) { seen.add(k); add("contract-23", p.t0, `${s ? s.key : "?"}: the item word "${p.text}" ${why}`); } };
+    if (level >= 3) return say(`was said at level ${level} (an item's name on a tap is for levels 1 and 2 only)`);
+    // over another line: another line was open (from its call to its end, or a clip of it sounding)
+    const over = others.find((l) => l.t0 < p.t0 && (l.t1 == null || l.t1 > p.t0 + 30));
+    const sounding = v.plays.find((q) => q.line && q.line !== p && !pops.includes(q.line) && !q.est && q.t0 < p.t0 && q.t1 > p.t0 + 100);
+    if (over || sounding) return say(`started while "${(over || sounding.line).text}" was being said`);
+    const prev = pops.slice(0, i).reverse().find((q) => norm(q.text) === norm(p.text));
+    if (prev && p.t0 - prev.t0 < SAID_AGAIN) say(`was said again ${Math.round(p.t0 - prev.t0)} ms after the last time (again only after ${SAID_AGAIN / 1000} s)`);
+  });
+}
+// 24 (SH-60, SH-95): no help line or glow before the idle time, counted from the last action (by level)
+const CONTINUOUS = /^(hold|drag|stir|swipe|roll|circle|pour|slice|cut)$/;
+function check24(r, tl, segs, v, add) {
+  if (/#mistake/.test(r.flow || "")) return; // a wrong pick is an action, and the game answers it
+  const level = levelOf(r.flow || "");
+  const need = LADDER[Math.min(LADDER.length, level) - 1];
+  const seen = new Set();
+  const flag = (t, what) => {
+    const ref = lastAction(tl, t);
+    if (!isFinite(ref) || t - ref >= need - SLOP) return;
+    // the last thing she did was a hold, a drag, a stir or a swipe: the probe sees where it began, not when she let go
+    const last = tl.filter((e) => e.type === "c" && e.k === "input" && e.t <= t && e.t >= ref - 1).pop();
+    if (last && CONTINUOUS.test((last.exp && last.exp.cook && last.exp.cook.kind) || "")) return;
+    const s = segAt(segs, t), k = `${s && s.key}|${what}`;
+    if (seen.has(k)) return;
+    seen.add(k);
+    add("contract-24", t, `${s ? s.key : "?"}: ${what} ${Math.round(t - ref)} ms after the last action (L${level} waits ${need} ms)`);
+  };
+  const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
+  // the help itself (the stepper's and the step engine's, logged when it fires)
+  for (const e of tl) if (e.type === "c" && e.k === "life" && e.what === "help" && e.reason === "idle") flag(e.t, `Nani's help (voice and glow) came`);
+  // a step line she says (her how-to lines are the steps' help), not a replay the child asked for
+  for (const l of v.lines) if (l.role === "howto" && (l.text || "").trim() && !askedAt(inputs, l.t0)) flag(l.t0, `her step line "${l.text}" was said`);
+  // a glow switching on
+  let prev = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "hl") continue;
+    const now = new Set((e.list || []).filter((x) => /^cook:/.test(x)));
+    for (const x of now) if (!prev.has(x)) flag(e.t, `the glow on ${x.replace(/^cook:/, "")} came`);
+    prev = now;
+  }
+}
+// 25 (SH-96): both light bulbs pulse after 15-20 s stuck, never before
+function check25(tl, segs, add) {
+  const seen = new Set();
+  const pulses = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "bulb-pulse");
+  for (const e of pulses) {
+    if (e.reason !== "on") continue;
+    const ref = lastAction(tl, e.t, { steps: false });
+    if (isFinite(ref) && e.t - ref < BULB_PULSE_MIN - SLOP) { const s = segAt(segs, e.t); add("contract-25", e.t, `${s ? s.key : "?"}: the bulbs began to pulse ${Math.round(e.t - ref)} ms after the last action (not before ${BULB_PULSE_MIN} ms)`); }
+  }
+  // a stretch of no action at least BULB_PULSE_MAX long inside a play stage must have had the pulse start
+  // any real tap is an action (the shared guide's idle clock restarts on every pointerdown: the card's face, a peek, the bulb as much as a tap in the play area; s08 w1b, SH-102: a replay is a child doing something)
+  const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
+  for (const s of segs) {
+    if (!isPlayStage(s.key)) continue;
+    const end = s.t1 == null ? (tl[tl.length - 1] || {}).t : s.t1;
+    const ts = [s.t0, ...inputs.filter((i) => i.t >= s.t0 && i.t < end).map((i) => i.t), end];
+    for (let i = 0; i + 1 < ts.length; i++) {
+      if (ts[i + 1] - ts[i] < BULB_PULSE_MAX + SLOP) continue;
+      const on = pulses.some((p) => p.reason === "on" && p.t >= ts[i] && p.t <= ts[i + 1]);
+      const k = `${s.key}|${ts[i]}`;
+      if (!on && !seen.has(k)) { seen.add(k); add("contract-25", ts[i] + BULB_PULSE_MAX, `${s.key}: ${Math.round((ts[i + 1] - ts[i]) / 1000)} s with no action and the bulbs never pulsed (they pulse after ${BULB_PULSE_MIN / 1000}-${BULB_PULSE_MAX / 1000} s)`); }
+    }
+  }
+}
+// 26 (LNG-16): the opening line is heard whole, every order: every word of a line said while the request pop-up is up sounds
+// (a family clip of that word, or the device voice saying it), never silently dropped
+function check26(tl, v, add, root, lex) {
+  if (!lex) return;
+  const pops = [];
+  for (const e of tl) if (e.type === "c" && e.k === "popup") {
+    if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) pops.push({ t0: e.t, t1: null });
+    else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
+  }
+  if (!pops.length) return;
+  const fam = fileWords(root);
+  const stops = tl.filter((e) => e.type === "voice-stop").map((e) => e.t);
+  // a tap on the pop-up itself (the test player taps 0.1 s after it opens, on find) ends the read-out as a voice stop does
+  const popTaps = tl.filter((e) => e.type === "c" && e.k === "input" && e.popup).map((e) => e.t);
+  // the words on screen as a to-record placeholder (grey italic, decision 84: dress's "white socks"): never spoken, never missing
+  const placeholder = new Set();
+  for (const e of tl) if (e.type === "c" && e.k === "texts") for (const x of e.list || []) if (x.rec) for (const w of normW(x.t || "").split(" ")) if (w) placeholder.add(w);
+  const seen = new Set();
+  for (const p of pops) {
+    for (const l of v.lines) {
+      if (!(l.text || "").trim() || !isCookLine(l) || l.t0 < p.t0 - 100 || (p.t1 != null && l.t0 > p.t1)) continue;
+      // a tap through the pop-up (or any stop the game made) ends the read-out: what it had not said yet was cut on purpose
+      if (stops.some((t) => t > l.t0 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
+      if (popTaps.some((t) => t >= p.t0 - 150 && t > l.t0 - 300 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
+      // (s08 w6L) the pop-up the test player tapped through folds, and the game says the order again as it closes (Find it: the same line
+      // 3 ms before the fold, in the page's fast test speed, its clips cut by the fold): that second saying is the fold's, not the opening
+      if (p.t1 != null && l.t0 >= p.t1 - 400 && popTaps.some((t) => t >= p.t0 - 150 && t <= p.t1 + 150)) continue;
+      // (s08 w6L) a line that played nothing and is mostly to-record placeholder words ("For Nana: blue dupatta.", Dress up: the grey
+      // words are not spoken, and the name in it has no clip alone) is a to-record line: never spoken, so never "not heard whole"
+      const lw = normW(l.text).split(" ").filter(Boolean);
+      if (!l.plays.some((q) => !/^silent line/.test(q.via || "")) && lw.length && lw.filter((w) => placeholder.has(w) || ENGLISH_PLACEHOLDERS.has(w)).length * 2 >= lw.length) continue;
+      const heard = new Set();
+      const lineWords = new Set(normW(l.text).split(" "));
+      let respelled = 0; // device-voice pieces that say a word by its respelling (the lexicon's say: "ba" is "ber")
+      for (const q of l.plays) {
+        if (q.via === "speechSynthesis" && normW(q.text || "").split(" ").some((w) => w && !lineWords.has(w))) respelled++;
+        const f = String(q.url || "").split("?")[0];
+        const t = q.via === "speechSynthesis" ? q.text : fam.get(f) || ((/cook-tts\/([^/]+)\.mp3$/.exec(f) || [])[1]);
+        for (const w of normW(t || "").split(" ")) if (w) heard.add(w);
+      }
+      // (an English placeholder in the line, grey italic, is never spoken: only the lexicon's words are judged)
+      const missing = normW(l.text).split(" ").filter((w) => w && lex.has(w) && !ENGLISH_PLACEHOLDERS.has(w) && !placeholder.has(w) && !heard.has(w)).slice(respelled);
+      if (!missing.length || seen.has(l.text)) continue;
+      seen.add(l.text);
+      add("contract-26", l.t0, `the opening line "${l.text}" was not heard whole: ${[...new Set(missing)].join(", ")} had no sound (no clip played and the device voice did not say it)`);
+    }
+  }
+}
+// the engine's grey English placeholders (a to-record frame word with no Kutchi yet): never spoken, so never a missing sound
+const ENGLISH_PLACEHOLDERS = new Set(["with", "and", "also", "only", "for", "but", "or"]);
+// family clip file -> its words (data/family-audio.json), and the placeholder TTS files by name
+const FILE_WORDS = new Map();
+function fileWords(root) {
+  if (FILE_WORDS.has(root)) return FILE_WORDS.get(root);
+  const m = new Map();
+  const p = join(root, "data", "family-audio.json");
+  if (existsSync(p)) for (const e of JSON.parse(readFileSync(p, "utf8"))) if (e && e.file && e.kutchi) m.set(e.file, e.kutchi);
+  FILE_WORDS.set(root, m);
+  return m;
+}
 function check17(r, tl, add) {
   if (!r.store || !r.sound) return;
   for (const p of r.sound.plays || []) if (p.kind !== "family-ok") add("contract-17", r.t0 || (tl[0] && tl[0].t) || 0, `${p.kind}: ${p.file || p.text || "?"}${p.n > 1 ? ` x${p.n}` : ""}`);
+}
+// ---- s08 wave 1B: the card and what is said (SH-98 to SH-103, SH-107, SAM-23, CLN-160, CLN-161, CLN-169, CLN-171) ----
+// the peek's time by level, from data (data/cook.json calm.peekMs; the clinic's Kit.PEEK_MS): 7 s at level 3 (double the old 3.5 s,
+// SH-101) and the same 3.5 s added to the others, so 7 s at every level
+export const PEEK_MS = { 1: 7000, 2: 7000, 3: 7000, 4: 7000 };
+const wordsOf = (s) => String(s || "").toLowerCase().normalize("NFC").match(/[\p{L}\p{N}][\p{L}\p{M}\p{N}'’]*/gu) || [];
+// 27 (SH-98): the small bulb's peek shows every word in Kutchi: never a dotted one
+function check27(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "side" || !(e.peek > 0) || !(e.dots > 0)) continue;
+    const k = (e.words || []).join("|");
+    if (seen.has(k)) continue;
+    seen.add(k);
+    add("contract-27", e.t, `a peeking card shows ${e.dots} dotted word${e.dots > 1 ? "s" : ""} (•••): the peek shows every word in Kutchi${(e.words || []).length ? ` ("${e.words.join(" / ")}")` : ""}`);
+  }
+}
+// 28 (SH-100): one bulb picture everywhere: the photo (assets/ui/results/icon-bulb.webp), never the flat drawing
+function check28(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "bulbs") continue;
+    for (const b of e.list || []) {
+      const ok = (b.kind === "img" || b.kind === "bg") && /^icon-bulb\.webp$/.test(b.file || "");
+      const k = `${b.sel}|${b.kind}|${b.file}`;
+      if (ok || seen.has(k)) continue;
+      seen.add(k);
+      add("contract-28", e.t, `${b.sel} is drawn ${b.kind === "svg" ? "as the flat inline drawing" : `with ${b.file || b.kind}`}, not the photo icon-bulb.webp (one bulb picture everywhere)`);
+    }
+  }
+}
+// 29 (SH-101): a peek lasts the level's time (data), not less: judged as a child's time (Cook's test speed shortens it; the clinic's peek is real time)
+function check29(r, tl, segs, add) {
+  const level = levelOf(r.flow || "");
+  const speed = /^clinic:/.test(r.flow || "") ? 1 : +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3);
+  const want = (PEEK_MS[level] || PEEK_MS[3]) / speed;
+  let open = null;
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "side") continue;
+    if (e.peek > 0 && !open) open = { t0: e.t, n: e.n, seg: segAt(segs, e.t) };
+    else if (!(e.peek > 0) && open) {
+      const o = open;
+      open = null;
+      // a card that went away, a stage that ended, or the light bulb pressed (the bulb opens the card in English and ends the look: SH-41) closes the peek on purpose
+      if (e.n !== o.n || segAt(segs, e.t) !== o.seg) continue;
+      if (tl.some((x) => x.type === "c" && x.k === "input" && /bulb/.test(x.btn || x.on || "") && x.t >= o.t0 && x.t <= e.t + 250)) continue;
+      const took = e.t - o.t0;
+      if (took < want - 450) add("contract-29", o.t0, `a peek lasted ${Math.round(took)} ms; level ${level} gives ${Math.round(want)} ms${speed > 1 ? ` (${PEEK_MS[level] || PEEK_MS[3]} ms at the test speed ${speed})` : ""}`);
+    }
+  }
+}
+// 30 (SH-99): every number said in an order or a step is written on the card, at every level and in every round (a taught one too);
+// a line's English placeholder ([red]: a colour or item with no Kutchi yet) is written there too
+// the number one's forms (data/lang/lexicon.json num.1: hakro, hakri; the old spellings too): a card writes the bare item for one
+const ONE_FORMS = new Set(["hakro", "hakri", "hik", "hikdo", "hikdi", "ek"]);
+const WRITTEN_SKIP = new Set(["item", "laps", "countdown", "count"]); // (s08 w2A: "count", L1 counting along the taps, "hakro bataato, ba bataata": a tally, not the order)
+function check30(r, tl, segs, v, nums, add) {
+  if (!nums || !nums.size) return;
+  const cards = tl.filter((e) => e.type === "c" && e.k === "card" && (e.words || []).length).map((e) => ({ t: e.t, words: wordsOf((e.words || []).join(" ")) }));
+  if (!cards.length) return;
+  const seen = new Set();
+  for (const l of v.lines) {
+    const text = String(l.text || "").trim();
+    if (!text || WRITTEN_SKIP.has(l.role) || isCountLine(l, nums)) continue;
+    // the stage it was said in (the request pop-up reads the order out before the station's own stage starts: the first stage's)
+    const s = segAt(segs, l.t0) || segs[0] || { key: "page", t0: -Infinity, t1: null };
+    if (/cook:between|cook:closing/.test(s.key)) continue;
+    // the cards of that stage: from a little before it (the card opens with the request) to its end, whenever they were drawn
+    const mine = cards.filter((c) => c.t >= s.t0 - 10000 && (s.t1 == null || c.t <= s.t1));
+    if (!mine.length) continue;
+    const written = new Set(mine.flatMap((c) => c.words));
+    const said = wordsOf(text.replace(/\[[^\]]*\]/g, " "));
+    for (const [i, w] of said.entries()) {
+      if (!nums.has(w) || written.has(w) || seen.has(`${s.key}|${w}`)) continue;
+      // s08 w2A (Zafar, 19 Oct: "we don't need to write one, only two or more"): a said one with its bare item written passes
+      if (ONE_FORMS.has(w) && said[i + 1] && written.has(said[i + 1])) continue;
+      seen.add(`${s.key}|${w}`);
+      add("contract-30", l.t0, `${s.key}: "${text}" says ${w}, which no card written in this stage holds (every number said is written)`);
+    }
+    for (const m of text.matchAll(/\[([^\]]+)\]/g)) {
+      const missing = wordsOf(m[1]).filter((w) => !written.has(w));
+      if (!missing.length || seen.has(`${s.key}|[${m[1]}`)) continue;
+      seen.add(`${s.key}|[${m[1]}`);
+      add("contract-30", l.t0, `${s.key}: "${text}" says [${m[1]}], which no card written in this stage holds`);
+    }
+  }
+}
+// 31 (SH-102, SH-114): a replay (the speaker, a tap on a face) is free and says only the steps not yet done
+const REPLAY_WINDOW = 7000;
+function check31(tl, v, add) {
+  const seen = new Set();
+  for (const e of tl) if (e.type === "c" && e.k === "hint" && /^(replay|say|hear)$/.test(e.kind || "") && e.counted !== false && !seen.has(`h${e.t}`)) {
+    seen.add(`h${e.t}`);
+    add("contract-31", e.t, `a replay was counted as a hint (${e.kind}${e.ids ? `: ${[].concat(e.ids).join(", ")}` : ""})`);
+  }
+  // a tap on a face (the card's replay) with some steps already ticked: what it says must be the steps left
+  const rows = tl.filter((e) => e.type === "c" && e.k === "rows");
+  const norm = (s) => wordsOf(s).join(" ");
+  for (const i of tl) {
+    if (i.type !== "c" || i.k !== "input" || !/\b(oc-face|face-say|cl-card-face|ng-face)\b/.test(i.on || "")) continue;
+    const before = rows.filter((x) => x.t <= i.t).pop();
+    const done = new Set(((before && before.list) || []).filter((x) => x.done && norm(x.text)).map((x) => norm(x.text)));
+    if (!done.size) continue;
+    for (const l of v.lines) {
+      if (l.t0 < i.t || l.t0 > i.t + REPLAY_WINDOW || !norm(l.text) || !done.has(norm(l.text)) || seen.has(`${i.t}|${l.id}`)) continue;
+      seen.add(`${i.t}|${l.id}`);
+      add("contract-31", l.t0, `a replay said "${l.text}", a step already ticked (a replay says only what is left)`);
+    }
+  }
+}
+// 32 (SH-103): the end review's divider leaves room for four right words and one wrong one (the right words are 4/5 of the width with
+// none wrong), and moves over as the wrong words grow: the wrong side is as many units wide as it has words (1 to 3), the right side 4
+export function reviewShare(bad) { return 4 / (Math.max(1, Math.min(bad, 3)) + 4); }
+function check32(tl, add) {
+  const seen = new Set();
+  for (const e of tl) {
+    if (e.type !== "c" || e.k !== "review" || e.none || !(e.badW + e.okW > 0)) continue;
+    const share = e.okW / (e.badW + e.okW);
+    const want = reviewShare(e.bad);
+    // content may push a narrow half wider than its share (a long word in one tile at 800x360): never narrower than it, so lower is judged loosely
+    const bad = e.bad === 0 ? share < 0.72 || share > 0.88 : share < want - 0.12 || share > want + 0.08;
+    const k = `${e.bad}|${e.ok}|${Math.round(share * 20)}`;
+    if (!bad || seen.has(k)) continue;
+    seen.add(k);
+    add("contract-32", e.t, `the review's right words take ${Math.round(share * 100)}% of the width with ${e.bad} wrong and ${e.ok} right (wanted about ${Math.round(want * 100)}%: room for four right and one wrong, the wrong side growing with its count)`);
+  }
+}
+// 33 (SH-107): the order pop-up's headlines are one size per screen, and wrap at full size before they shrink: a size under the full
+// one is only for headlines that don't fit two lines, so a pop-up whose every headline is on one line is at full size
+function check33(tl, add) {
+  const heads = tl.filter((e) => e.type === "c" && e.k === "heads");
+  const seen = new Set();
+  heads.forEach((e, i) => {
+    const list = e.list || [];
+    const next = heads[i + 1];
+    if (!list.length || (next && next.t - e.t < 400)) return; // (the card is still flying in: its sizes are easing)
+    const sizes = [...new Set(list.map((x) => x.size))];
+    const k = list.map((x) => `${x.size}/${x.lines}`).join("|");
+    if (seen.has(k)) return;
+    if (sizes.length > 1) {
+      seen.add(k);
+      return add("contract-33", e.t, `the order pop-up's headlines are ${sizes.length} sizes at once (${list.map((x) => `"${x.text}" ${x.size}px, ${x.lines} line${x.lines > 1 ? "s" : ""}`).join("; ")}): one size per screen`);
+    }
+    if (list.every((x) => x.lines <= 1) && list.some((x) => x.size < x.full - 0.5)) {
+      seen.add(k);
+      add("contract-33", e.t, `the order pop-up's headlines shrank to ${sizes[0]}px (full ${Math.max(...list.map((x) => x.full))}px) to stay on one line: they wrap at full size first, and shrink only when two lines don't fit`);
+    }
+  });
+}
+// ---- s08 wave 2A: Cook's level table (SH-110, SAM-26, MAA-18, CK-49; build/reports/research-levels-2026-10-19.md) ----
+const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
+// the station a Cook flow plays (cook:samosa@L3 -> samosa; lab:cook/recipe-chai -> chai)
+const stationOf = (flow) => { const m = /^(?:cook:(?:recipe:)?|lab:cook\/(?:recipe-)?)([\w-]+)/.exec(flow || ""); return m ? m[1] : null; };
+// the written forms of every item word (a thing to pick: data/cook.json words with a bowl, heap, image, layer or piece, and
+// bajri maani and the sekelo meat cube, which have none), from the lexicon with its inflections: what a dotted L3 card must not write in an open row
+const ITEMS = new Map();
+export function itemForms(root) {
+  if (ITEMS.has(root)) return ITEMS.get(root);
+  const out = new Set();
+  const read = (f) => { try { return JSON.parse(readFileSync(join(root, f), "utf8")); } catch (e) { return null; } };
+  const cook = read("data/cook.json") || {};
+  const ids = new Set(Object.entries(cook.words || {}).filter(([k, v]) => v && typeof v === "object" && !/^(num|lnk|kin|name)-/.test(k) && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in v) || k === "cook-bajrmaani" || k === "ph-mishkaki")).map(([k]) => k));
+  const lex = read("data/lang/lexicon.json") || {};
+  const par = (read("data/lang/paradigms.json") || {}).paradigms || {};
+  const split = (x) => String(x || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
+  for (const e of lex.entries || []) {
+    if (e.pos !== "N" || !(e.aliases || []).some((a) => ids.has(a))) continue;
+    const add = (x) => split(x).forEach((w) => out.add(w));
+    add(e.lemma);
+    const walk = (v) => { if (typeof v === "string") add(v); else if (v && typeof v === "object") { if (typeof v.t === "string") add(v.t); else Object.values(v).forEach(walk); } };
+    walk(e.forms || {});
+    const pd = par[e.paradigm];
+    if (pd && e.lemma) {
+      let stem = e.lemma; const dr = pd.stem && pd.stem.drop; if (dr && stem.endsWith(dr)) stem = stem.slice(0, -dr.length);
+      Object.values(pd.cells || {}).map((c) => (c && typeof c === "object" ? c.make : c)).filter((m) => typeof m === "string").forEach((m) => add(m.replace(/\{stem\}/g, stem).replace(/\{lemma\}/g, e.lemma)));
+    }
+  }
+  ITEMS.set(root, out);
+  return out;
+}
+// 35 (SH-110): the card by level: open, open, the item words dotted, hidden
+function check35(r, tl, segs, add, root) {
+  if (!isCookFlow(r.flow)) return;
+  const items = itemForms(root);
+  const last = (k, t) => { let s = null; for (const e of tl) { if (e.t > t) break; if (e.type === "c" && e.k === k) s = e; } return s; };
+  const inputs = tl.filter((e) => e.type === "c" && e.k === "input" && !e.popup && !e.side && !e.next);
+  for (const s of segs) {
+    if (!/(^|\|)cook:station/.test(s.key)) continue;
+    const end = s.t1 == null ? Infinity : s.t1;
+    const first = inputs.find((i) => i.t >= s.t0 && i.t < end);
+    if (!first) continue;
+    const side = last("side", first.t);
+    // (the rows as the child reads them: the last sample in the stage before that tap with no row under the bulb's English)
+    const rows = tl.filter((e) => e.type === "c" && e.k === "rows" && e.t <= first.t && e.t >= s.t0 - 10000 && !(e.list || []).some((x) => x.en)).pop() || last("rows", first.t);
+    if (!side || !side.n) continue;
+    // a peeking card (the bulb's peek) shows every word, contract-27's rule: it is not the card at rest that this check judges
+    if (side.peek > 0) continue;
+    const level = realLevel(tl, first.t, levelOf(r.flow || ""));
+    const at = `${s.key} at L${level}`;
+    if (level >= 4) {
+      // (s08 w6L, wave 6J) the daal's chop card, Nani's, stays open at L4: the other items show dotted so the child sees there are three (DAAR-34)
+      const chopCard = /daar|daal/.test(r.flow || "") ? 1 : 0;
+      if (side.n - side.closed > chopCard) add("contract-35", first.t, `${at}: ${side.n - side.closed} of ${side.n} sidebar cards open at the first play tap (hidden at L4: face and headline folded${chopCard ? "; the chop card may stay" : ""})`);
+      continue;
+    }
+    const all = ((rows && rows.list) || []).filter((x) => !x.en);
+    const open = all.filter((x) => !x.done && !/\bna$/.test((x.text || "").trim())); // (a "no" row, "dhania na", is never ticked)
+    // the card you work from is open: a second card may fold for a phase it can't be acted on (the order card under Nani's
+    // chop card, design system 13), and a card whose rows are all ticked may fold (samosa's fry); every card closed is a break
+    if (side.closed >= side.n && !(all.length && !open.length)) add("contract-35", first.t, `${at}: ${side.closed} of ${side.n} sidebar cards closed at the first play tap (open until L4; L3 dots the items instead)`);
+    // (s08 w6L, wave 6J) a #hint player pressed the bulb or peeked: the rows it paid to reveal are not the card at rest
+    if (/#hint/.test(r.flow || "")) continue;
+    if (level <= 2) {
+      const dotted = open.filter((x) => /•/.test(x.text || ""));
+      if (dotted.length) add("contract-35", first.t, `${at}: ${dotted.length} row${dotted.length > 1 ? "s" : ""} with dotted words ("${dotted.map((x) => x.text).slice(0, 3).join(" / ")}"): an open card writes every word at L1-L2`);
+    } else {
+      const shown = open.filter((x) => wordsOf(x.text).some((w) => items.has(w)));
+      if (shown.length) add("contract-35", first.t, `${at}: an item written in ${shown.length} open row${shown.length > 1 ? "s" : ""} ("${shown.map((x) => x.text).slice(0, 3).join(" / ")}"): at L3 the item words are dotted (frames, verbs and numbers written)`);
+    }
+  }
+}
+// 36 (SH-110): Nani calls each step as it opens (the order in pieces), at every level
+const CALL_WITHIN = 6000;
+function check36(r, tl, segs, v, add) {
+  if (!isCookFlow(r.flow)) return;
+  const life = tl.filter((e) => e.type === "c" && e.k === "life");
+  const opens = life.filter((e) => e.what === "step-open");
+  const notes = life.filter((e) => e.what === "step-call");
+  const calls = v.lines.filter((l) => l.role === "call" && (l.text || "").trim());
+  const seen = new Set();
+  opens.forEach((o, i) => {
+    const s = segAt(segs, o.t);
+    if (!s || !isPlayStage(s.key)) return;
+    const next = opens[i + 1];
+    const until = Math.min(o.t + CALL_WITHIN, next ? next.t + 300 : Infinity, s.t1 == null ? Infinity : s.t1 + 300);
+    // (step ids count again from 1 on each station's stepper: this opening's notes are the ones before that id opens again)
+    const again = opens.slice(i + 1).find((x) => x.reason === o.reason);
+    const mine = notes.filter((n) => n.reason === o.reason && n.t >= o.t - 50 && n.t <= Math.min(o.t + CALL_WITHIN, again ? again.t : Infinity));
+    const skip = mine.find((n) => /^skip/.test(n.by || ""));
+    // a call queued behind another line may start after the next step opened: any call from this opening on counts
+    const said = calls.find((l) => l.t0 >= o.t - 50 && l.t0 <= Math.max(until, o.t + CALL_WITHIN));
+    const k = `${s.key}|${o.reason}|${o.t}`;
+    if (seen.has(k)) return;
+    if (!said && !skip) { seen.add(k); add("contract-36", o.t, `${s.key}: step ${o.reason} (${o.by || ""}) opened and Nani did not call it (no line tagged call within ${CALL_WITHIN / 1000} s, no skip logged)`); }
+  });
+}
+// 37 (CK-49): decoys by level, 1 / 2 / 3 / 3 + a lookalike, from the game's own report per station stage
+export const DECOYS = { 1: 1, 2: 2, 3: 3, 4: 3 };
+const DECOY_STATIONS = /^(fetch|pantry|chai-tray|chai|samosa|mishkaki-grill|mishkaki|daar|daal|assemble|chaat)$/;
+const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
+function check37(r, tl, segs, add) {
+  if (!isCookFlow(r.flow)) return;
+  const st = stationOf(r.flow);
+  if (!st || !DECOY_STATIONS.test(st)) return;
+  const level = levelOf(r.flow || "");
+  const want = DECOYS[Math.min(4, level)];
+  const notes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys");
+  if (!notes.length) {
+    const s = segs.find((x) => /(^|\|)cook:station/.test(x.key));
+    if (s) add("contract-37", s.t0, `${s.key} (${st} at L${level}): no decoy count reported in the round (the table wants ${want}${level >= 4 ? " with a lookalike" : ""})`);
+    return;
+  }
+  {
+    const s = { key: "round" };
+    const mine = notes;
+    for (const n of mine) {
+      const got = Number(n.reason);
+      const look = /lookalike:1/.test(n.by || "");
+      const what = (n.by || "").replace(/\s*lookalike:\d/, "");
+      const ok = DECOY_AT_LEAST.test(st) ? got >= want : got === want;
+      if (!ok) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L${level}): ${got} decoy${got === 1 ? "" : "s"}, the table wants ${DECOY_AT_LEAST.test(st) ? "at least " : ""}${want}`);
+      if (level >= 4 && !look) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L4): no lookalike among the decoys (L4: 3 + a lookalike variant)`);
+    }
+  }
+}
+// 50 (SAM-24): samosa's card ticks once, at the one tick, for every strip; never a kind early
+export const ONE_TICK_MS = 1500;
+function check50(r, tl, segs, add) {
+  if (!isCookFlow(r.flow) || stationOf(r.flow) !== "samosa") return;
+  const fills = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys" && /^fillings/.test(e.by || ""));
+  // (the note comes as the station picks its fillings, a moment before the sampler sees its stage start: the station stage just after it)
+  const stages = new Set(fills.map((e) => segs.find((x) => /station/.test(x.key) && x.t0 >= e.t - 50 && x.t0 <= e.t + 3000) || segAt(segs, e.t)).filter(Boolean));
+  for (const s of stages) {
+    let first = null; // the first tick since the rows were last all open (or one was reopened)
+    let broke = false;
+    let last = null;
+    for (const e of tl) {
+      if (e.type !== "c" || e.k !== "rows" || segAt(segs, e.t) !== s) continue;
+      // (a "don't" row stays neutral until the dish is finished, by design: not judged; an older run without the flag: "... na")
+      const list = (e.list || []).filter((x) => x.text && !x.no && !/\sna$/.test(x.text));
+      if (!list.length) continue;
+      const prev = new Map((last || []).map((x) => [x.id, x]));
+      if (list.some((x) => prev.has(x.id) && prev.get(x.id).done && !x.done)) {
+        first = null;
+        broke = false;
+      }
+      last = list;
+      const done = list.filter((x) => x.done);
+      if (!done.length) {
+        first = null;
+        continue;
+      }
+      if (!first) first = { t: e.t, rows: done.map((x) => x.text) };
+      const late = list.filter((x) => x.done && prev.has(x.id) && !prev.get(x.id).done);
+      if (late.length && e.t - first.t > ONE_TICK_MS && !broke) {
+        broke = true;
+        add("contract-50", first.t, `${s.key}: "${first.rows.slice(0, 3).join(" / ")}" ticked ${((e.t - first.t) / 1000).toFixed(1)} s before "${late.map((x) => x.text).slice(0, 3).join(" / ")}" (more than ${ONE_TICK_MS / 1000} s): a samosa kind ticked before its samosas were all made (the card ticks at the one tick)`);
+      }
+    }
+    // a row ticked, and others still open when the stage ended
+    if (!broke && first && last && last.some((x) => !x.done) && s.t1 != null && s.t1 - first.t > ONE_TICK_MS) add("contract-50", first.t, `${s.key}: "${first.rows.slice(0, 3).join(" / ")}" ticked and ${last.filter((x) => !x.done).length} row(s) never did in this stage`);
+  }
 }
 export function loadRetired(root) {
   const p = join(root, "build", "sandbox", "data", "retired-art.json");
@@ -708,7 +1343,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   // the page's real end (its start plus its length): the probe samples only on a change, so a state that lasts to the end
   // (the end screen's word review) has no event after it; the timeline's last event is not the end (SH-86)
   const tEnd = Math.max(tl[tl.length - 1].t, r.t0 && r.ms ? r.t0 + r.ms : 0);
-  const add = (check, t, measured) => out.push({ check, item: CHECKS[check].item, flow: r.flow, level: levelOf(r.flow), size: r.size, ...stateAt(r, t), at: Math.round((t - (r.t0 || tl[0].t)) / 100) / 10, measured });
+  // (the level table's checks, 35 and 36, name the stage's real level: realLevel)
+  const add = (check, t, measured) => out.push({ check, item: CHECKS[check].item, flow: r.flow, level: /^contract-3[56]$/.test(check) ? realLevel(tl, t, levelOf(r.flow)) : levelOf(r.flow), size: r.size, ...stateAt(r, t), at: Math.round((t - (r.t0 || tl[0].t)) / 100) / 10, measured });
   check1(tl, segs, v, add);
   check2(tl, segs, add);
   check3(segs, v, add);
@@ -722,14 +1358,37 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check11(tl, add);
   check12(tl, segs, add, tEnd);
   check13(tl, add);
+  check34(tl, segs, add);
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);
   check20(tl, add);
   check18(tl, segs, add);
   check21(tl, segs, v, add);
+  check22(r, tl, segs, v, numbers || numbersFor(root), add);
+  check23(r, tl, segs, v, add);
+  check24(r, tl, segs, v, add);
+  check25(tl, segs, add);
+  check26(tl, v, add, root, lexicon || lexiconFor(root));
   check16(tl, lexicon || lexiconFor(root), add, !!r.store);
   check19(r, tl, segs, v, numbers || numbersFor(root), add);
+  check27(tl, add);
+  check28(tl, add);
+  check29(r, tl, segs, add);
+  check30(r, tl, segs, v, numbers || numbersFor(root), add);
+  check31(tl, v, add);
+  check32(tl, add);
+  check33(tl, add);
+  check35(r, tl, segs, add, root);
+  check36(r, tl, segs, v, add);
+  check37(r, tl, segs, add);
+  check45(tl, add);
+  check46(tl, add);
+  check50(r, tl, segs, add);
+  check65(r, tl, add);
+  check66(r, tl, v, add);
+  check70(r, tl, add);
+  check71(r, tl, add);
   return out;
 }
 

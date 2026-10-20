@@ -1,0 +1,64 @@
+{
+  "kind": "shared",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 3 hours",
+  "name": "s08 wave 6H, the clinic: the judges' last code fails (the wrong colour clip, English fragments, the fever ending, the eye game's shake and board, the drill, the foot wash, the cotton bud)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "heal games and their words, judged by picture and ear",
+  "cost": "about $25-35",
+  "port": 8858,
+  "report": "s08-w6h-clinic",
+  "read": [
+    "build/tools/review/data/verdicts.json (each row's judge line, run ev-20261020-004931-exi) and build/reports/evidence-ev-20261020-004931-exi.md",
+    "docs/game-design/modes/clinic.md",
+    "docs/feedback/clinic-playtest-2026-10-18.md",
+    "build/reports/s08-w6c-clinic.md"
+  ],
+  "owns": [
+    "js/clinic/**",
+    "data/clinic/**",
+    "css/clinic.css",
+    "build/reports/s08-w6h-clinic.md"
+  ],
+  "readOnly": [
+    "js/cook/**, js/shared/** (6F, 6G)",
+    "data/lang/** (never add Kutchi; a wrong clip mapping is reported with its fix)",
+    "assets/**",
+    "build/sandbox/**"
+  ],
+  "stubs": "a picture that's missing goes on the report's art list",
+  "tasks": [
+    {
+      "do": "CLN-119 (urgent): at L2 the plaster line 'ne poi yellow plaster' plays Mum's 'laal' (red) clip under the word 'yellow'. A child must never hear the wrong colour: find where the colour word picks its clip and fix it (a colour with no recording stays a grey to-record placeholder, silent). Check every colour word in every heal game the same way. Also: the tooth and taste games mark their words as the row asks.",
+      "accept": "auto: a test over every heal game's colour lines (word = clip); the voice timeline of the knee at L2"
+    },
+    {
+      "do": "CLN-184 and rule 11: the tooth game's lines 'Pela down' and 'ne poi right' are half-English fragments: make each a full engine sentence or a whole grey to-record placeholder, never a mix.",
+      "accept": "auto: the tooth game's lines at L1-L3; eye: its card"
+    },
+    {
+      "do": "CLN-178: the fever game's end zooms back out to the room (as the knee does), with no blank or brown frame. CLN-107: at L1 a wrong yes/no shakes red, as at L2-L3. CLN-188: the eye chart board takes most of the play width. CLN-181: the drill tip is centred on the cavity and the filling grows from its middle.",
+      "accept": "eye: each as a filmstrip at 1366x768 and 800x360"
+    },
+    {
+      "do": "CLN-190: the foot wash visibly clears the dirt it passes over. CLN-195: the cotton bud's tip turns blue after it touches the blue spot.",
+      "accept": "eye: each as a filmstrip"
+    },
+    {
+      "do": "From wave 6F (merged): CLN-189's other lemon: js/clinic/heal/scene.js maps 'fru-02' to 'lemon-half', which reads as an orange in the ear's hearing check: use lemon-whole-s08b and add it to ear.json's assets. Boing at 800x360: the check button covers the third plaster tile; move one or the other. CLN-165: the dropper machine and syringe no longer take two thirds of the scene's height, and the tool tiles' icons fill their tiles.",
+      "accept": "eye: the ear's hearing check; boing at 800x360 and 1366x768 L1-L3"
+    }
+  ],
+  "flows": [
+    "clinic:heal-knee",
+    "clinic:heal-tooth",
+    "clinic:heal-taste",
+    "clinic:heal-fever",
+    "clinic:heal-eye",
+    "clinic:heal-foot"
+  ]
+}

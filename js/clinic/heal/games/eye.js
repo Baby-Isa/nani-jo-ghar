@@ -22,13 +22,16 @@
  */
 (function (root) {
   "use strict";
+  let eyeUid = 0; // s08-w6c: ids for the wall picture's fade mask
   const Heal = (root.Clinic && root.Clinic.Heal) || (typeof require === "function" ? require("../registry.js") : null);
   const HS = (root.Clinic && root.Clinic.HealScene) || (typeof require === "function" ? require("../scene.js") : null);
 
   // the chart's pictures: words the child already knows from Cook, each by its lexicon id (HS.pic: the clinic's art
   // where it has the thing, CLN-78)
   // EY10 (CLN-107): water is Cook's blue drop on the chart (the steel jug read as milk next to the milk jug)
-  const PIC = { "cook-paani": "assets/cook/items/icon-cook-paani.webp" };
+  // CLN-189 (clinic decision 9; Zafar, 18 Oct: "she's saying ... limu, which is lemon ... I'm pressing no, because an
+  // orange"): limu is the whole yellow lemon (s08b LM1), never the golden half that reads as an orange
+  const PIC = { "cook-paani": "assets/cook/items/icon-cook-paani.webp", "fru-02": "assets/clinic/items-s08b/lemon-whole-s08b.webp" };
   const THINGS = ["fru-02", "veg-01", "veg-02", "veg-03", "veg-12", "veg-13", "veg-14", "cook-dudh", "cook-paani"].map((lex) => ({ id: lex, lex, icon: PIC[lex] || HS.pic(lex) }));
   const BY = Object.fromEntries(THINGS.map((t) => [t.id, t]));
   const RID = (i) => `chart-${"abcdef"[i]}`; // a chart row's scored id (the review lists it under the eye-test row)
@@ -38,7 +41,15 @@
   // ones lower down; per[L][row] = the pictures in that row
   // Zafar's heal ladder (13 Oct): all new things by L2, L3 heard only (the closed card), harder variety from L4: the
   // four-picture row (L3's until now) is L4's
-  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, rows: { 1: 3, 2: 4, 3: 4, 4: 4 }, per: { 1: [1, 1, 2], 2: [1, 2, 2, 3], 3: [1, 2, 2, 3], 4: [1, 2, 3, 4] }, wrongP: 0.45 };
+  // CLN-188 (clinic decision 8; Zafar, 18 Oct: "one, two, then three, then four"; the layout research, 19 Oct): ONE
+  // chart at every level, rows 1-2-3-4 (Snellen's top four), and the level chooses how many rows are read (read: L1-L3 the
+  // first three, L4 all four; L1 is not two rows: with two a blind player wins 10.4%, over the leak test's 10%). CLN-187 (clinic decision 8; Zafar, 18 Oct: "by level 2, start picking drops.
+  // A certain number of drops in the left eye and a certain number of drops in the right eye"): from bothFrom a count
+  // for each eye
+  const K = { drops: { 1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3], 4: [1, 2, 3] }, per: [1, 2, 3, 4], read: { 1: 3, 2: 3, 3: 3, 4: 4 }, bothFrom: 2, wrongP: 0.45 };
+  // the chart's rows as shares of the board's white face (H its height, W its width; research-layout-2026-10-19 task 2):
+  // each row 0.8x the one above (the logMAR step), its middle at y, the pictures 1.5 of their size apart, centred
+  const ROWS = { size: [0.2, 0.16, 0.128, 0.102], y: [0.19, 0.45, 0.66, 0.82], pitch: 1.5, tick: 0.955 };
   const WHY = { problem: "eye-why", goal: "eye-goal" }; // line keys in data/clinic/heal/eye.json (the engine says them)
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
@@ -53,11 +64,13 @@
     // D10 (1 Oct): sides are said and tested in the diagnosis only: no side row, no "cover the other eye"
     const side = null;
     const drops = HS.pick(K.drops[L], rng);
+    // CLN-187: from level 2 a count for each eye (the patient's own right and left); level 1 the sore eye alone
+    const both = L >= K.bothFrom ? { right: drops, left: HS.pick(K.drops[L], rng) } : null;
     const pool = HS.shuffle(THINGS, rng);
     let pi = 0;
     const chart = [];
-    for (let r = 0; r < K.rows[L]; r++) {
-      const n = K.per[L][r] || 1;
+    for (let r = 0; r < K.per.length; r++) {
+      const n = K.per[r] || 1;
       const pics = [];
       while (pics.length < n) {
         const id = pool[pi++ % pool.length].id;
@@ -77,29 +90,36 @@
     }
     const Lg = HS.L;
     const steps = [];
-    steps.push({ id: "drops", kind: "drops", count: drops, side, row: Object.assign({ id: "drops" }, Lg.show(Lg.join(["cl-drops", Lg.count(drops)]), { cap: true })) });
-    chart.forEach((c, i) => steps.push({ id: `read${i}`, kind: "read", row: i, rowDef: c }));
-    const rows = [{ id: "drops-count", options: K.drops[L], answer: drops }];
+    const read = Math.min(chart.length, K.read[L] || chart.length);
+    // each eye's row: its side on the eye noun, then the drops and their count, built by the engine (grey English where
+    // a word is still to record)
+    const eyeRow = (sd, n) => Object.assign({ id: `drops-${sd}`, side: sd }, Lg.show(Lg.join([Lg.item("body-eye", { mods: [Lg.sideId(sd)] }), ",", "cl-drops", Lg.count(n)]), { cap: true }));
+    const cardRows = both ? [eyeRow("right", both.right), eyeRow("left", both.left)] : [Object.assign({ id: "drops" }, Lg.show(Lg.join(["cl-drops", Lg.count(drops)]), { cap: true }))];
+    // CLN-187 (s08-w6c; the judge: at L3 "Jamni akh, chando" with no number and no left-eye card): from level 3 the card
+    // is closed and its strip shows one step's line, so the drops step's strip is both eyes' counts in one engine line
+    const eyeParts = (sd, n) => [Lg.item("body-eye", { mods: [Lg.sideId(sd)] }), ",", "cl-drops", Lg.count(n)];
+    const strip = both && L >= 3 ? Object.assign({ id: "drops-both" }, Lg.show(Lg.join(eyeParts("right", both.right).concat([","], eyeParts("left", both.left))), { cap: true })) : null;
+    steps.push({ id: "drops", kind: "drops", count: both ? both.right + both.left : drops, both, side, row: cardRows[0], cardRows, strip });
+    chart.slice(0, read).forEach((c, i) => steps.push({ id: `read${i}`, kind: "read", row: i, rowDef: c }));
+    const rows = both ? [{ id: "drops-right", options: K.drops[L], answer: both.right }, { id: "drops-left", options: K.drops[L], answer: both.left }] : [{ id: "drops-count", options: K.drops[L], answer: drops }];
     // each chart row's judgement: "chart-a", "chart-b" ... (the end review lists them under the card's eye-test row, D14)
-    chart.forEach((c, i) => rows.push({ id: `chart-${"abcdef"[i]}`, options: [true, false], answer: !c.wrong }));
-    const words = [Lg.num(drops), Lg.w(Lg.yesId()), Lg.w(Lg.noId())];
+    chart.slice(0, read).forEach((c, i) => rows.push({ id: `chart-${"abcdef"[i]}`, options: [true, false], answer: !c.wrong }));
+    const words = (both ? [Lg.num(both.right), Lg.num(both.left), Lg.w(Lg.sideId("right")), Lg.w(Lg.sideId("left"))].filter((w, k, a) => a.findIndex((x) => x.kutchi === w.kutchi && x.english === w.english) === k) : [Lg.num(drops)]).concat([Lg.w(Lg.yesId()), Lg.w(Lg.noId())]);
     const seen = new Set();
-    chart.forEach((c) => c.pics.forEach((id) => !seen.has(id) && seen.add(id) && words.push(W(BY[id]))));
-    return { level: L, side, steps, rows, chart, words };
+    chart.slice(0, read).forEach((c) => c.pics.forEach((id) => !seen.has(id) && seen.add(id) && words.push(W(BY[id]))));
+    return { level: L, side, steps, rows, chart, read, both, words };
   }
 
   function mount(stage, ctx) {
     const data = ctx.data || {};
     const P = plan(ctx.level, ctx.rng);
-    // CLN-118 (D13): the taught round has no counts: "The drops." (the step ends at the plan's count)
-    if (ctx.taught) {
-      P.steps[0].row = Object.assign({ id: "drops" }, HS.L.show(HS.L.join(["cl-drops"]), { cap: true }));
-      P.words = HS.taughtWords(P.words);
-    }
+    // CLN-118 (D13): the taught round is shown by the ghost finger and scores nothing; SH-99, CLN-161 (Zafar, 18 Oct: "it needed me to press the cloth twice, but it wasn't in the instructions ... all the frequencies has to be written down. And audible as well"; reverses CLN-118): the taught first round writes and says every count too, and its word review keeps the number words
+    if (ctx.taught) P.words = HS.taughtWords(P.words).concat(P.words.filter((w) => w && w.n != null));
     // S03 (review flaw 5): on a tablet (4:3, 1180x820) the close-up's crop cut the sore eye at the screen's edge: a
     // wider safe area there keeps both eyes whole (and the tool shelf goes down to the cheek, below)
     const tablet = (root.innerWidth || 0) / Math.max(1, root.innerHeight || 0) < 1.5;
-    const S = HS.make(stage, ctx, Object.assign({ place: "head", game: "eye" }, tablet ? { safe: [50, 790] } : {}));
+    const SAFE = tablet ? [50, 790] : [80, 720];
+    const S = HS.make(stage, ctx, Object.assign({ place: "head", game: "eye" }, tablet ? { safe: SAFE } : {}));
     const { s } = S;
     const Kit0 = root.Clinic && root.Clinic.Kit;
     const url = (u) => (Kit0 && Kit0.url ? Kit0.url(u) : u);
@@ -124,9 +144,9 @@
       }
       return String(v).toUpperCase() === "B" ? "B" : "A";
     })();
-    const st = { i: 0, drops: 0, judged: {}, ticked: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false };
+    const st = { i: 0, drops: 0, n: { right: 0, left: 0 }, nowEye: "right", judged: {}, ticked: {}, over: false, busy: false, awaiting: null, redrop: null, view: "drops", gone: false };
     const cur = () => P.steps[st.i] || null;
-    ctx.card.setRows(P.steps.filter((x) => x.kind === "drops").map((x) => x.row).concat([Object.assign({}, HS.L.w("eye-test", { cap: true }), { id: "chart" })]));
+    ctx.card.setRows(P.steps.filter((x) => x.kind === "drops").flatMap((x) => x.cardRows || [x.row]).concat([Object.assign({}, HS.L.w("eye-test", { cap: true }), { id: "chart" })]));
     const skin = S.skin || "#c99a74";
     const skinDark = S.skinDark || "#a77b58";
     const hair = S.hairCol || "#2b1d16";
@@ -164,8 +184,19 @@
     // S02-G (gate s02-gate): the dropper hanging over the eye is the drop's target too (its picture is x -30..30,
     // y -128..-10 under the hang point at sore.y - 34, plus the bob and a finger's slack). At 4:3 the tool shelf sits
     // on the sore eye's outer edge, and a touch there snaps to the shelf's button, so the dropper is the sure tap
-    const DROPPER_TAP = { y: sore.y - 34 - 69 };
-    const onDropper = (p) => Math.abs(p.x - sore.x) <= 60 && p.y >= sore.y - 34 - 150 && p.y <= sore.y;
+    const DROPPER_TAP = { y: sore.y - 34 - 60 };
+    // the hanging dropper over an eye is that eye's tap too (CLN-187: from level 2 either eye takes drops)
+    const onDropper = (p, e = sore) => Math.abs(p.x - e.x) <= 60 && p.y >= e.y - 34 - 150 && p.y <= e.y;
+    const eyeSides = P.both ? ["right", "left"] : [soreSide];
+    const eyeAt = (p) => {
+      let best = null;
+      eyeSides.forEach((sd) => {
+        const e = EY[sd];
+        const d = Math.hypot(p.x - e.x, (p.y - e.y) * 1.3);
+        if ((d <= 140 || onDropper(p, e)) && (!best || d < best.d)) best = { sd, d };
+      });
+      return best ? best.sd : null;
+    };
     // Y2 has the sore eye on the viewer's right (the patient's left): mirrored for the patient's right
     const eyesArt = art("eyesSore");
     let soreEl = null;
@@ -202,8 +233,21 @@
     // the dropper (the clinic v2 eye drops), hanging over the sore eye once picked
     const dropper = s("g", { opacity: 0 }, S.fx);
     // S02-E (E4): the art run's bottle held nozzle down (sheets.json drop-bottle "use-down"), else the old one turned over
-    const downArt = Kit0 && Kit0.view ? Kit0.view("drop-bottle", "use-down") : null;
-    s("image", { href: url(downArt || "assets/clinic/items-v2/eye-drops.webp"), x: -30, y: -128, width: 60, height: 118, transform: downArt ? null : "rotate(180 0 -69)" }, dropper);
+    // CLN-186 (Zafar, 18 Oct: "the drops need to be more realistic, photorealistic drops, and the bottle ... isn't cut out
+    // nicely"): the re-cut bottle (sheets-v3, SH-115) held nozzle down, cut off just under its nozzle (its painted drop
+    // hidden), so the photo drop (s08b DP3) hangs there, falls and splashes (data art.drop)
+    const DA = data.art && data.art.drop && data.art.drop.bottle ? data.art.drop : null;
+    const downArt = DA ? DA.bottle : Kit0 && Kit0.view ? Kit0.view("drop-bottle", "use-down") : null;
+    const NOZ = DA ? DA.nozzle || 0.818 : 1; // the nozzle's end, a share of the bottle picture's height
+    const BH = 118;
+    if (DA) {
+      const cid = `eye-noz-${Math.round(Math.random() * 1e9)}`;
+      const cp = s("clipPath", { id: cid, clipPathUnits: "userSpaceOnUse" }, s("defs", {}, dropper));
+      s("rect", { x: -40, y: -10 - NOZ * BH - 2, width: 80, height: NOZ * BH + 2 }, cp);
+      s("image", { href: url(downArt), x: -30, y: -10 - NOZ * BH, width: 60, height: BH, "clip-path": `url(#${cid})` }, dropper);
+    } else s("image", { href: url(downArt || "assets/clinic/items-v2/eye-drops.webp"), x: -30, y: -128, width: 60, height: 118, transform: downArt ? null : "rotate(180 0 -69)" }, dropper);
+    const DROP = DA && DA.falling ? { w: DA.w || 11, h: (DA.w || 11) / (DA.aspect || 0.604) } : null;
+    const hangDrop = DROP ? s("image", { href: url(DA.falling), x: -DROP.w / 2, y: -11, width: DROP.w, height: DROP.h }, dropper) : null;
     const ring = s("circle", { cx: 0, cy: 34, r: 40, fill: "none", stroke: "#f0b43c", "stroke-width": 6, opacity: 0 }, dropper); // round the eye
     let dropperAt = null;
     let bob = 0;
@@ -231,8 +275,50 @@
     };
     const fallDrop = (at, hang = HANG.drops) => {
       const top = Math.max(18, tipOf(hang) - 4);
+      if (DROP) {
+        // CLN-186: the photo drop leaves the nozzle (the hanging one goes), falls onto the eye and splashes a little;
+        // a new drop forms at the nozzle after
+        const k = hang.k;
+        const w = DROP.w * k;
+        const h = DROP.h * k;
+        if (hangDrop) hangDrop.setAttribute("opacity", 0);
+        const d = s("image", { href: url(DA.falling), x: at.x - w / 2, y: at.y - top, width: w, height: h }, S.fx);
+        return tween(300, (u) => d.setAttribute("y", (at.y - top + (top - h * 0.7) * u * u).toFixed(1))).then(() => {
+          d.remove();
+          if (DA.splash) {
+            const sw = (DA.splashW || 46) * k;
+            const sh = sw / (DA.splashAspect || 2.02);
+            const sp = s("image", { href: url(DA.splash), x: at.x - sw / 2, y: at.y - sh * 0.75, width: sw, height: sh, opacity: 0.85 }, S.fx);
+            tween(260, (u) => sp.setAttribute("opacity", (0.85 * (1 - u)).toFixed(2))).then(() => sp.remove());
+          }
+          if (hangDrop) tween(300, (u) => hangDrop.setAttribute("opacity", u.toFixed(2)));
+        });
+      }
       const d = s("path", { d: "M0 -12 Q8 0 0 6 Q-8 0 0 -12Z", fill: "#7cc4f0", transform: `translate(${at.x} ${at.y - top})` }, S.fx);
       return tween(320, (u) => d.setAttribute("transform", `translate(${at.x} ${at.y - top + (top - 2) * u})`)).then(() => d.remove());
+    };
+    // CLN-187: each eye's own running count, the shared count badge beside the eye's outer corner (from level 2)
+    const eyeCounts = [];
+    const countEye = (sd, bump = true) => {
+      let b = S.root.querySelector(`.eye-count[data-eye="${sd}"]`);
+      if (!b) {
+        b = S.h("span", "hs-count eye-count", S.root);
+        b.dataset.eye = sd;
+        b.setAttribute("aria-hidden", "true");
+        eyeCounts.push(b);
+      }
+      const n = st.n[sd];
+      b.classList.toggle("dots", P.level >= 3);
+      b.textContent = P.level >= 3 ? "•".repeat(Math.min(n, 9)) : Kit0 && Kit0.num ? Kit0.num(n) : String(n);
+      const e = EY[sd];
+      // the patient's right eye is on our left: its badge on its outer (left) side, the other's on the right
+      const c = S.client(e.x + (e.x < 400 ? -118 : 118), e.y - 70);
+      const rr = S.root.getBoundingClientRect();
+      Object.assign(b.style, { left: `${c.x - rr.left}px`, top: `${c.y - rr.top}px`, translate: "-50% -50%" }); // (translate: the bump animates transform)
+      if (!bump) return;
+      b.classList.remove("bump");
+      void b.offsetWidth;
+      b.classList.add("bump");
     };
     const blink = () => {
       blinkEls.forEach((b) => b.setAttribute("opacity", 1));
@@ -268,11 +354,16 @@
     let CH; // the chart's board, in its own (unturned) units
     let readEye; // where the patient's open eye is (the redrop)
     let turn = null; // B: the quarter turn
+    const WALL = data.art && data.art.wall && data.art.wall.src && data.art.wall.box && data.art.wall.board ? data.art.wall : null;
     if (version === "A") {
       const a = art("testA");
+      // CLN-188 (s08-w6c; the judge: the board "fills only about a third of the screen ... the girl photo takes the larger
+      // left part"): where the split falls (data test.split, close-up units; it was 392, the middle): her panel narrower,
+      // the wall and its board wider
+      const SPLIT = (data.test && data.test.split) || 392;
       // the left panel: the patient, head and shoulders, a hand over the good eye, looking past us to our right
       const pan = s("g", {}, testG);
-      s("rect", { x: -400, y: -300, width: 790, height: 1100, fill: "#e9dcc6" }, pan);
+      s("rect", { x: -400, y: -300, width: SPLIT + 400, height: 1100, fill: "#e9dcc6" }, pan);
       if (a) s("image", { href: url(a.src), x: a.box[0], y: a.box[1], width: a.box[2], height: a.box[3], preserveAspectRatio: "xMidYMid slice" }, pan);
       else {
         s("path", { d: "M40 520 Q60 380 200 360 Q340 380 360 520Z", fill: clothes }, pan); // shoulders
@@ -294,9 +385,56 @@
       }
       readEye = a && a.eye ? { x: a.eye[0], y: a.eye[1] } : { x: 160, y: 205 };
       // the split: a frame between the two halves
-      s("rect", { x: 392, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
-      s("rect", { x: 406, y: -300, width: 600, height: 1100, fill: "#f4ecdf" }, testG);
-      CH = { x: 450, y: 18, w: 262, h: 352 };
+      s("rect", { x: SPLIT, y: -300, width: 14, height: 1100, fill: "#fffaf1" }, testG);
+      // CLN-188 (Zafar, 18 Oct: "an eye test board sitting on an optician's wall ... code draw everything that goes onto
+      // the board"; "we want it to take up most of the screen"): the s08b EC1 wall with its blank board fills the right
+      // panel edge to edge (art.wall.box, the close-up's units; its own wall and skirting colours round it on a tall
+      // screen); the board's white face (art.wall.board, shares of the picture) is the chart's own units (CH)
+      if (WALL) {
+        // CLN-188 (s08 w6H; the judge: the board "fills only about a third of the play width"): the board is widened
+        // without stretching its frame (art.wall.stretch: [a, b, f], a nine-slice of the picture: its middle share a..b,
+        // the plain board face and the wall above and below it, drawn f times as wide; the frame's sides keep their
+        // drawn size), so the wall's real picture takes most of the play width
+        const [sa, sb, sf] = WALL.stretch || [0.5, 0.5, 1];
+        const w0 = WALL.box[2];
+        const wb = [WALL.box[0], WALL.box[1], w0 * (sa + (1 - sb) + (sb - sa) * sf), WALL.box[3]];
+        // a share of the picture's width -> its x in the widened picture
+        const xs = (u) => wb[0] + w0 * (u <= sa ? u : u >= sb ? u - (sb - sa) + (sb - sa) * sf : sa + (u - sa) * sf);
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: WALL.fill || "#a9b4b8" }, testG);
+        s("rect", { x: SPLIT + 14, y: wb[1] + wb[3] - 2, width: 1000, height: 700, fill: WALL.floor || "#c3b6a6" }, testG);
+        // s08-w6c (CLN-188): the picture's sides fade into the wall's colour round it (its lit left edge left a seam)
+        const fadeId = `eye-wallfade-${(eyeUid = (eyeUid || 0) + 1)}`;
+        const gr = s("linearGradient", { id: `${fadeId}-g`, x1: 0, x2: 1, y1: 0, y2: 0 }, testG);
+        [[0, 0], [0.12, 1], [0.88, 1], [1, 0]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#fff", "stop-opacity": a }, gr));
+        const mk = s("mask", { id: fadeId, maskUnits: "userSpaceOnUse", x: wb[0], y: wb[1], width: wb[2], height: wb[3] }, testG);
+        s("rect", { x: wb[0], y: wb[1], width: wb[2], height: wb[3], fill: `url(#${fadeId}-g)` }, mk);
+        // and its top (the ceiling light's bright band) into the wall above it on a tall screen
+        const gv = s("linearGradient", { id: `${fadeId}-v`, x1: 0, x2: 0, y1: 0, y2: 1 }, testG);
+        [[0, 0], [0.1, 1], [1, 1]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#fff", "stop-opacity": a }, gv));
+        const mv = s("mask", { id: `${fadeId}-m`, maskUnits: "userSpaceOnUse", x: wb[0], y: wb[1], width: wb[2], height: wb[3] }, testG);
+        s("rect", { x: wb[0], y: wb[1], width: wb[2], height: wb[3], fill: `url(#${fadeId}-v)` }, mv);
+        // the wall never reaches over her panel (the widened picture may start left of the split)
+        const clipId = `${fadeId}-c`;
+        const cp = s("clipPath", { id: clipId }, testG);
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100 }, cp);
+        const wallG = s("g", { mask: `url(#${fadeId}-m)`, "clip-path": `url(#${clipId})` }, testG);
+        const fadeG = s("g", { mask: `url(#${fadeId})` }, wallG);
+        // the three slices: each a window (a nested svg) on its share of the one picture. The middle is drawn first and a
+        // little past both joins (pad, a share of the picture), the sides over it: no seam line where they meet
+        const pad = 0.01;
+        [[sa - pad, sb + pad, true], [0, sa], [sb, 1]].forEach(([u0, u1, middle]) => {
+          if (u1 <= u0 || (middle && sb <= sa)) return;
+          const x0 = middle ? xs(sa) - pad * w0 * sf : xs(u0);
+          const x1 = middle ? xs(sb) + pad * w0 * sf : xs(u1);
+          const win = s("svg", { x: x0, y: wb[1], width: x1 - x0, height: wb[3], viewBox: `${u0 * 1000} 0 ${(u1 - u0) * 1000} 1000`, preserveAspectRatio: "none", overflow: "hidden" }, fadeG);
+          s("image", { href: url(WALL.src), x: 0, y: 0, width: 1000, height: 1000, preserveAspectRatio: "none" }, win);
+        });
+        const bd = WALL.board;
+        CH = { x: xs(bd[0]), y: wb[1] + bd[1] * wb[3], w: xs(bd[2]) - xs(bd[0]), h: (bd[3] - bd[1]) * wb[3] };
+      } else {
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: "#f4ecdf" }, testG);
+        CH = { x: 450, y: 18, w: 262, h: 352 };
+      }
       testG.appendChild(chartG); // the chart over both halves' ground
     } else {
       const b = art("testB");
@@ -383,36 +521,22 @@
       return turn ? turn.k + (1 - turn.k) * ((x - (CH.x - 14)) / (CH.w + 28)) : 1;
     };
     const quad = (x, y, w, h) => [Q(x, y), Q(x + w, y), Q(x + w, y + h), Q(x, y + h)].map((q) => q.map((v) => Math.round(v * 10) / 10).join(",")).join(" ");
-    // the board: a white chart in a light-wood frame, an eye at the top, rows of pictures getting smaller
+    // the board: on the wall picture (A) the board is the picture's own; else (B, ?eyeLayout=B) a white board in a light-wood
+    // frame drawn here. CLN-188 (Zafar, 18 Oct: "take out those lines"; "take away the eye icon"): nothing on the board but
+    // the pictures, no eye, no ruled lines, no row outlines
     if (chartArt && IMG) s("image", { href: url(chartArt.src), x: IMG.x, y: IMG.y, width: IMG.w, height: IMG.h, preserveAspectRatio: "none" }, chartG);
     else if (chartArt) s("image", { href: url(chartArt.src), x: CH.x - 14, y: CH.y - 14, width: CH.w + 28, height: CH.h + 28, preserveAspectRatio: "none" }, chartG);
-    else {
+    else if (!(WALL && version === "A")) {
       s("polygon", { points: quad(CH.x - 14, CH.y - 14, CH.w + 28, CH.h + 28), fill: "#c8a46e", stroke: "#a9824d", "stroke-width": 3, "stroke-linejoin": "round" }, chartG);
       s("polygon", { points: quad(CH.x, CH.y, CH.w, CH.h), fill: "#fffefb", "stroke-linejoin": "round" }, chartG);
-      const [ex, ey] = Q(CH.x + CH.w / 2, CH.y + 28);
-      const ek = kAt(CH.x + CH.w / 2);
-      s("path", { d: `M${ex - 26} ${ey} Q${ex} ${ey - 20 * ek} ${ex + 26} ${ey} Q${ex} ${ey + 20 * ek} ${ex - 26} ${ey}Z`, fill: "#fff", stroke: "#4a6f98", "stroke-width": 4 }, chartG);
-      s("circle", { cx: ex, cy: ey, r: 8 * ek, fill: "#4a6f98" }, chartG);
     }
     const rowsG = s("g", {}, chartG);
-    const nR = P.chart.length;
-    const top = CH.y + 58;
-    const SIZES = [84, 60, 44, 32].slice(0, nR); // EY12: each row clearly smaller
-    const gap = (CH.h - 70 - SIZES.reduce((a, b) => a + b, 0)) / nR;
-    // A2: on the art, each row sits on one of the chart's own ruled lines under the eye (the biggest at the top)
-    const LINES = IMG && chartArt.lines && chartArt.lines.length > nR ? chartArt.lines : null;
+    // CLN-188 (the layout research, 19 Oct): rows 1-2-3-4, each 0.8x the one above, its middle at ROWS.y of the board's
+    // height, the pictures 1.5 of their size apart and centred: a triangle that tightens as it shrinks
     const rowBox = (i) => {
-      if (LINES) {
-        const y0 = CH.y + LINES[i] * CH.h;
-        const y1 = CH.y + LINES[i + 1] * CH.h;
-        const sz = Math.min(SIZES[i], (y1 - y0) * 0.86, (CH.w - 36) / (P.chart[i].pics.length * 1.12));
-        return { y: y1 - sz - 6, h: sz + 4, sz };
-      }
-      // EY12: each row's pictures stand on a ruled line; the outlines are inset so they never overlap (EY3)
-      let y = top;
-      for (let k = 0; k < i; k++) y += SIZES[k] + gap;
-      const sz = Math.min(SIZES[i], (CH.w - 36) / (P.chart[i].pics.length * 1.12));
-      return { y, h: SIZES[i] + gap * 0.5, sz, line: y + SIZES[i] + 2 };
+      const sz = ROWS.size[i] * CH.h;
+      const cy = CH.y + ROWS.y[i] * CH.h;
+      return { y: cy - sz / 2, h: sz, sz, cy };
     };
     const CHECK = (x, y, r, g) => {
       const c = s("g", { transform: `translate(${x} ${y})` }, g);
@@ -427,25 +551,23 @@
         // CLN-107 (EY13): a row ticks when it's really done (judged right, and read right after a drop), never on a
         // wrong judgement
         const done = !!st.ticked[i];
-        if (b.line) {
-          const [x1, y1] = Q(CH.x + 14, b.line);
-          const [x2, y2] = Q(CH.x + CH.w - 14, b.line);
-          s("line", { x1, y1, x2, y2, stroke: "#c9bfae", "stroke-width": 2 }, rowsG);
-        }
-        // the card's own looks (CLN-61): "now" is the soft band, a judged row has the gold outline and check
-        const ry = b.y - 1;
-        const rh = b.h;
-        if (now) s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 10, ry, CH.w - 20, rh), fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3, "stroke-linejoin": "round" } : { x: CH.x + 10, y: ry, width: CH.w - 20, height: rh, rx: 10, fill: "#fff4df", stroke: "#e8c98a", "stroke-width": 3 }, rowsG);
+        // the row being read: a soft pale-amber band, fill only (the card's "now"), the row's height and a little
+        const bh = b.sz + 0.03 * CH.h;
+        const bx = CH.x + 0.05 * CH.w;
+        const bw = 0.9 * CH.w;
+        if (now) s(turn ? "polygon" : "rect", turn ? { points: quad(bx, b.cy - bh / 2, bw, bh), fill: "#fdeccb" } : { x: bx, y: b.cy - bh / 2, width: bw, height: bh, rx: Math.min(14, bh / 3), fill: "#fdeccb" }, rowsG);
+        // judged: the gold tick in the side margin, level with the row (never over the pictures, no outline)
         if (done) {
-          s(turn ? "polygon" : "rect", turn ? { points: quad(CH.x + 10, ry, CH.w - 20, rh), fill: "none", stroke: "#c9962e", "stroke-width": 4, "stroke-linejoin": "round" } : { x: CH.x + 10, y: ry, width: CH.w - 20, height: rh, rx: 10, fill: "none", stroke: "#c9962e", "stroke-width": 4 }, rowsG);
-          const [cx, cy] = Q(CH.x + CH.w - 12, b.y + 4);
-          CHECK(cx, cy, 11, rowsG);
+          const [cx, cy] = Q(CH.x + ROWS.tick * CH.w, b.cy);
+          CHECK(cx, cy, Math.max(8, 0.032 * CH.w), rowsG);
         }
         c.pics.forEach((id, k) => {
-          const bx = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * 1.12;
-          const z = b.sz * kAt(bx);
-          const [px, py] = b.line ? Q(bx, b.line - b.sz / 2 - 1) : Q(bx, b.y + b.h / 2 - 2);
-          s("image", { href: url(BY[id].icon), x: px - z / 2, y: py - z / 2, width: z, height: z, opacity: done || now || !cur() || cur().kind !== "read" || cur().row < i ? 1 : 0.85 }, rowsG);
+          // a wider board spreads its rows across it (CLN-188): the pitch grows with the board's width for its height
+          const px0 = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * ROWS.pitch * Math.max(1, CH.w / CH.h / 0.66);
+          const z = b.sz * kAt(px0);
+          const [px, py] = Q(px0, b.cy);
+          const im = s("image", { href: url(BY[id].icon), x: px - z / 2, y: py - z / 2, width: z, height: z, opacity: done || now || !cur() || cur().kind !== "read" || cur().row < i ? 1 : 0.85 }, rowsG);
+          im.dataset.lex = BY[id].lex;
         });
       });
     };
@@ -497,19 +619,40 @@
       st.judged[id] = ok;
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
+    // s08 w6N fix (the eye test stuck on 4:3-3:2 tablets): the tablet's close-up crop starts at x 50, and since CLN-188
+    // moved her picture left her open eye (x 33) sat off the play area, under the side card: the redrop could not be
+    // tapped. The test's view takes in her whole open eye where the close-up's would cut it (the board a little smaller
+    // there, still most of the play area); the close-up's own crop comes back with the close-up
+    const vbOf = () => (S.svg.getAttribute("viewBox") || "0 0 800 500").split(/[\s,]+/).map(Number);
+    const camera = (safe) => {
+      const a = vbOf();
+      S.setSafe(safe);
+      const b = vbOf();
+      S.svg.setAttribute("viewBox", a.join(" "));
+      return (u) => S.svg.setAttribute("viewBox", a.map((v, k) => (v + (b[k] - v) * u).toFixed(1)).join(" "));
+    };
+    // (only the tablet crops to its safe area: phones and laptops show the whole drawing and its margins already)
+    const testSafe = () => (tablet && readEye && readEye.x - 48 < SAFE[0] ? [readEye.x - 48, SAFE[1]] : null);
     const toTest = async () => {
       // the camera pulls back from the eyes to the test (a cross-fade; the art batch makes it a cut, art plan 2.1)
       st.busy = true;
       showDropper(null);
       lightMini(false);
       S.tools([], null);
+      const wide = testSafe();
+      const cam = wide ? camera(wide) : null;
       await tween(450, (u) => {
         dropsG.setAttribute("opacity", 1 - u);
         testG.setAttribute("opacity", u);
+        if (cam) cam(u);
       });
+      if (cam) cam(1);
       st.view = "test";
       st.busy = false;
     };
+    // CLN-107: a line of hers starts only once the one before it is said (a quick judgement opens the next row while
+    // she still reads this one: its words would otherwise be heard under the next line)
+    const after = (prev, fn) => Promise.resolve(prev).catch(() => {}).then(() => (st.gone ? null : fn()));
     const readRow = async (i, again) => {
       const c = P.chart[i];
       const said = again ? c.pics : c.said;
@@ -521,7 +664,7 @@
       mouthSay(P.level === 1 ? said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", ") : null);
       if (again) {
         st.busy = true;
-        await ctx.say(line, { who: "patient", noBubble: true });
+        await (st.reading = after(st.reading, () => ctx.say(line, { who: "patient", noBubble: true })));
         S.face("neutral");
         // she read it right: the row ticks itself, then a pause before the next row (EY13)
         st.ticked[i] = true;
@@ -537,9 +680,13 @@
       // shows is taught, not scored
       if (i === 0) {
         if (S.cuesOn && !again) P.rows = P.rows.filter((r) => r.id !== RID(0));
-        S.cue("read", CUES.read, c.wrong ? naBtn : haaBtn);
+        // CLN-107 (the judge: at L1 the wrong pill never turned red): both pills are live under the help's light; the
+        // ghost taps the right one, a tap on the other shakes red as at L2-L3
+        S.cue("read", Object.assign({}, CUES.read, { also: [c.wrong ? haaBtn : naBtn] }), c.wrong ? naBtn : haaBtn);
       }
-      ctx.say(line, { who: "patient", noBubble: true }).then(() => S.face("neutral"));
+      // CLN-107: her reading is kept, so the next line (the doctor naming the row, her "I can see!") starts only when
+      // her words are said: a line plays only its own words' clips, never under another line
+      st.reading = after(st.reading, () => ctx.say(line, { who: "patient", noBubble: true })).then(() => S.face("neutral"));
     };
     // her bubble under her mouth (the eye test): the anchor below her mouth on the left panel
     const mouthAt = () => (readEye ? { x: readEye.x + (version === "A" ? 40 : 10), y: readEye.y + (version === "A" ? 92 : 70) } : null);
@@ -562,18 +709,29 @@
       ctx.after(text ? (fast() ? 300 : 2000) : fast() ? 300 : 2800, () => el.remove());
     };
     // EY13: a wrong judgement: the doctor (his box, off screen) names the row with its pictures, said aloud
+    // CLN-107 (the judge: at the misread "no doctor bubble naming the row in pictures"): his bubble stays up until the
+    // row is judged again or read again after the drop (unName), never gone a beat after his line; his line waits for
+    // her reading to end (her clips never play under his words)
+    const unName = () => S.root.querySelectorAll(".eye-name").forEach((n) => n.remove());
     const nameRow = async (i) => {
       const c = P.chart[i];
-      S.root.querySelectorAll(".eye-name").forEach((n) => n.remove());
+      unName();
       const el = S.h("div", "eye-name", S.root);
+      el.dataset.row = String(i);
+      // his own face at the bubble's start: it is the doctor (off screen) naming the row, by his card in the sidebar
+      if (Kit0 && Kit0.doctorFace) {
+        const f = S.h("img", "eye-name-face", el);
+        f.alt = "";
+        f.src = Kit0.doctorFace("neutral");
+      }
       c.pics.forEach((id) => {
         const im = S.h("img", null, el);
         im.alt = "";
         im.src = url(BY[id].icon);
       });
       const line = HS.L.show(HS.L.join(c.pics.flatMap((id, k) => (k ? [",", BY[id].lex] : [BY[id].lex]))));
-      await ctx.say(line, { who: "doctor", noBubble: true });
-      ctx.after(fast() ? 100 : 1600, () => el.remove());
+      // his line joins her lines' chain: after her reading, and her re-read after it
+      await (st.reading = after(st.reading, () => ctx.say(line, { who: "doctor", noBubble: true })));
     };
     const onJudge = async (saysRight) => {
       if (!st.awaiting || st.busy || st.over) return;
@@ -587,12 +745,29 @@
         b.classList.remove("nope-red");
         void b.offsetWidth;
         b.classList.add("nope-red");
+        // his bubble with the row's pictures is up at once and his line follows her reading; the child never waits
+        // for it (rule 12): the pills stay live, or (a misread) the dropper comes as soon as the shake is seen
+        nameRow(i);
+        ctx.after(fast() ? 200 : 600, () => b.classList.remove("nope-red"));
+        if (!wrong) return;
         st.busy = true;
-        await nameRow(i);
-        b.classList.remove("nope-red");
+        await new Promise((r) => ctx.after(fast() ? 120 : 550, r));
         st.busy = false;
+        if (st.over || st.gone) return;
+        // CLN-107 (EY13: "a misread gets a drop and a right re-read before the tick"): she misread and the child said
+        // haa: the doctor names the row (his bubble stays up), and the dropper comes for her eye, as after a na
+        {
+          st.awaiting = null;
+          showJudge(false);
+          S.said(null);
+          drawChart();
+          st.redrop = { i };
+          showDropper(readEye, true, HANG.redrop);
+          S.cue("redrop", CUES.redrop, { x: readEye.x, y: readEye.y - tipOf(HANG.redrop) / 2, r: 52 });
+        }
         return;
       }
+      unName(); // judged right this time: the doctor's naming bubble goes
       st.awaiting = null;
       showJudge(false);
       S.said(null);
@@ -614,17 +789,37 @@
       });
     };
     const advance = () => {
+      unName();
       st.i++;
       const c = cur();
       if (!c) return finish();
       open();
     };
+    // EY6 (CLN-107): from level 2 a "to the eye test" button bottom right like every other stage's (a picture of the
+    // chart, no words), never a flashing chart in the corner. CLN-107 (the judge: no button in the close-up): it is
+    // there from the moment the drops' close-up opens, so the way on is seen; it goes on once a drop is in
+    const makeTestBtn = () => {
+      if (testBtn) return testBtn;
+      testBtn = ctx.button("", () => {
+        if (st.busy || st.over || !cur() || cur().kind !== "drops" || st.drops < 1) return;
+        S.did();
+        testBtn.remove();
+        closeDrops();
+      }, "eye-btn"); // CLN-143 (decision 95): no glow: the card's row is the one thing lit (the ✓'s rule, SH-40)
+      testBtn.dataset.go = "eye test";
+      const t = testBtn.querySelector(".njg-next-t") || testBtn;
+      t.textContent = "";
+      t.insertAdjacentHTML("beforeend", '<svg class="eye-btn-chart" viewBox="0 0 40 52" aria-hidden="true"><rect x="2" y="2" width="36" height="48" rx="5" fill="#fffefb" stroke="#a9824d" stroke-width="3"/><circle cx="20" cy="12" r="4.6" fill="#e2b23b"/><circle cx="14.5" cy="23.5" r="3.7" fill="#d9534f"/><circle cx="25.5" cy="23.5" r="3.7" fill="#5aa05a"/><circle cx="11" cy="33.5" r="3" fill="#8a5a3a"/><circle cx="20" cy="33.5" r="3" fill="#e2b23b"/><circle cx="29" cy="33.5" r="3" fill="#d9534f"/><circle cx="9.5" cy="42" r="2.4" fill="#5aa05a"/><circle cx="16.5" cy="42" r="2.4" fill="#8a5a3a"/><circle cx="23.5" cy="42" r="2.4" fill="#e2b23b"/><circle cx="30.5" cy="42" r="2.4" fill="#d9534f"/></svg>');
+      return testBtn;
+    };
     const open = async () => {
       const c = cur();
       drawChart();
       if (c.kind === "drops") {
-        ctx.card.now("drops");
-        return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: sore.x, y: sore.y - 55, r: 110 } }); // S02-G: the dropper and the eye
+        if (P.level >= 2) makeTestBtn();
+        ctx.card.now(c.both ? "drops-right" : "drops", c.strip ? { strip: c.strip } : {});
+        const te = c.both ? EY.right : sore; // CLN-187: from level 2 the first row's eye (the patient's right)
+        return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: te.x, y: te.y - 55, r: 110 } }); // S02-G: the dropper and the eye
       }
       if (c.kind === "read") {
         if (st.view !== "test") await toTest();
@@ -635,8 +830,17 @@
     const closeDrops = () => {
       const c = cur();
       if (!c || c.kind !== "drops") return;
-      judge("drops-count", st.drops === c.count, `${st.drops} of ${c.count}`);
-      ctx.card.tick("drops");
+      if (c.both) {
+        // CLN-187: each eye's count is its own row (recorded for the review)
+        ["right", "left"].forEach((sd) => {
+          judge(`drops-${sd}`, st.n[sd] === c.both[sd], `${st.n[sd]} of ${c.both[sd]}`);
+          ctx.card.tick(`drops-${sd}`);
+        });
+        eyeCounts.forEach((b) => b.remove());
+      } else {
+        judge("drops-count", st.drops === c.count, `${st.drops} of ${c.count}`);
+        ctx.card.tick("drops");
+      }
       S.uncue();
       advance();
     };
@@ -650,11 +854,17 @@
       // CLN-62 (P88: "then the game just ended… weird"): after the last row she looks up from the chart, both eyes open
       // and clear, happy, and says "I can see!"; only then the pull-out and the end screen
       S.root.querySelectorAll(".eye-said, .eye-name").forEach((n) => n.remove());
+      // CLN-107 (the voice log: "I can see!" over mum/dungri-rc.mp3): her last row's reading ends before she says it
+      await Promise.resolve(st.reading).catch(() => {});
+      if (st.gone) return;
       if (soreEl) soreEl.setAttribute("opacity", eyesArt ? 1 : 0);
+      const cam = camera(null); // the close-up's own crop again
       await tween(450, (u) => {
         testG.setAttribute("opacity", 1 - u);
         dropsG.setAttribute("opacity", u);
+        cam(u);
       });
+      cam(1);
       st.view = "drops";
       S.face("happy");
       blink();
@@ -665,12 +875,14 @@
       ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words });
     };
 
-    S.tools([{ id: "drops", glyph: "💧", img: "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
+    // CLN-186: the re-cut bottle in the strip too (data art.drop.tool)
+    S.tools([{ id: "drops", glyph: "💧", img: (DA && DA.tool) || "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
       if (id === "drops" && cur() && cur().kind === "drops") showDropper(sore, false);
     });
-    // S03 (review flaw 5): on a tablet the shelf, centred on the right, sat on the sore eye: it goes down to the cheek
-    const shelfEl = S.toolEls.drops && S.toolEls.drops.parentElement;
-    if (shelfEl && tablet) Object.assign(shelfEl.style, { top: "auto", bottom: "var(--njg-s4)", transform: "none" });
+    // S03 (review flaw 5) moved the tablet's shelf, then centred on the right over the sore eye, down to the cheek. The
+    // shared shelf now hangs under her face circle (SH-112), clear of both eyes, and the cheek's corner is the "to the
+    // eye test" button's from the close-up's start (CLN-107): there it hid the dropper at L2+ (the s08 w6N tablet
+    // stall). The shelf keeps its shared place on every screen
     const dropIn = async (at, hang) => {
       await fallDrop(at, hang);
       S.face("wince", 400);
@@ -697,28 +909,39 @@
       if (c.kind !== "drops") return;
 
       if (S.sel !== "drops") return;
-      if (Math.hypot(p.x - sore.x, (p.y - sore.y) * 1.3) > 140 && !onDropper(p)) return;
+      const sd = eyeAt(p);
+      if (!sd) return;
+      const eye = EY[sd];
       st.drops++;
-      ctx.tally("drops", st.drops);
-      if (ctx.level >= 3) S.count(st.drops);
-      dropIn(sore);
-      if (soreEl && eyesArt) soreEl.setAttribute("opacity", Math.min(1, 0.34 * st.drops));
-      else if (soreEl) soreEl.setAttribute("opacity", Math.max(0.08, 0.55 - 0.18 * st.drops));
+      st.n[sd]++;
+      if (c.both) {
+        // CLN-187: the dropper goes to the eye tapped; each eye keeps its own count beside it (the count's shared look:
+        // its word at L2, dots from L3), and the card's lit row follows the eye still short of its count
+        if (dropperAt !== eye) showDropper(eye, false);
+        const short = ["right", "left"].find((x) => st.n[x] < c.both[x]);
+        if (short && short !== st.nowEye) ctx.card.now(`drops-${(st.nowEye = short)}`, c.strip ? { strip: c.strip } : {});
+        // (a new lit row clears the host's counts: both eyes' are drawn again after it)
+        ["right", "left"].forEach((x) => (x === sd || st.n[x] > 0) && countEye(x, x === sd));
+      } else {
+        ctx.tally("drops", st.drops);
+        if (ctx.level >= 3) S.count(st.drops);
+      }
+      dropIn(eye);
+      const k = st.n[soreSide];
+      if (sd === soreSide && soreEl && eyesArt) soreEl.setAttribute("opacity", Math.min(1, 0.34 * k));
+      else if (sd === soreSide && soreEl) soreEl.setAttribute("opacity", Math.max(0.08, 0.55 - 0.18 * k));
       // D5 (1 Oct, SH-38): at level 1 the row turns gold at the count and the step closes by itself
       if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900, "drops");
       // EY6 (CLN-107): from level 2, once a drop is in, a "to the eye test" button comes up bottom right like every
       // other stage's (a picture of the chart, no words), never a flashing chart in the corner
-      if (P.level >= 2 && !testBtn) {
-        testBtn = ctx.button("", () => {
-          if (st.busy || st.over || !cur() || cur().kind !== "drops") return;
-          S.did();
-          testBtn.remove();
-          closeDrops();
-        }, "eye-btn"); // CLN-143 (decision 95): no glow: the card's row is the one thing lit (the ✓'s rule, SH-40)
-        testBtn.dataset.go = "eye test";
-        const t = testBtn.querySelector(".njg-next-t") || testBtn;
-        t.textContent = "";
-        t.insertAdjacentHTML("beforeend", '<svg class="eye-btn-chart" viewBox="0 0 40 52" aria-hidden="true"><rect x="2" y="2" width="36" height="48" rx="5" fill="#fffefb" stroke="#a9824d" stroke-width="3"/><path d="M12 12 Q20 6 28 12 Q20 18 12 12Z" fill="#fff" stroke="#4a6f98" stroke-width="2"/><circle cx="20" cy="12" r="2.6" fill="#4a6f98"/><circle cx="20" cy="25" r="4" fill="#e2b23b"/><circle cx="14" cy="35" r="3" fill="#d9534f"/><circle cx="26" cy="35" r="3" fill="#5aa05a"/><circle cx="11" cy="43" r="2" fill="#8a5a3a"/><circle cx="20" cy="43" r="2" fill="#e2b23b"/><circle cx="29" cy="43" r="2" fill="#5aa05a"/></svg>');
+      if (P.level >= 2 && !st.testCued) {
+        makeTestBtn();
+        st.testCued = true;
+        if (!c.both) S.cue("chart", CUES.chart, testBtn);
+      }
+      // CLN-187: with a count for each eye, the first-time help points at the eye test only once both eyes have theirs
+      if (c.both && testBtn && !st.chartCued && ["right", "left"].every((x) => st.n[x] >= c.both[x])) {
+        st.chartCued = true;
         S.cue("chart", CUES.chart, testBtn);
       }
       st.busy = true;
@@ -776,6 +999,14 @@
             return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: id };
           };
           if (st.redrop) return Object.assign({ do: "tap", what: "redrop" }, S.client(readEye.x, readEye.y - 30));
+          if (c.kind === "drops" && c.both) {
+            // CLN-187: each eye to its own count (the patient's right first), then the eye test
+            const sd = ["right", "left"].find((x) => st.n[x] < c.both[x]);
+            if (sd) return S.sel !== "drops" ? tool("drops") : Object.assign({ do: "tap", what: `drop ${sd}` }, S.client(EY[sd].x, EY[sd].y - 34 - 60));
+            if (!testBtn) return { do: "wait" };
+            const r = testBtn.getBoundingClientRect();
+            return { do: "tap", x: r.left + r.width / 2, y: r.top + r.height / 2, what: "eyetest" };
+          }
           if (c.kind === "drops") {
             if (st.drops >= c.count) {
               if (P.level < 2 || !testBtn) return { do: "wait" };
@@ -819,6 +1050,8 @@
     why: WHY,
     cues: CUES,
     steps: (level, rng) => plan(level, rng).steps.map((x) => x.kind),
+    // CLN-189: the chart's pictures by word (the colour check reads them: build/test_shared_heal_chart.mjs)
+    chartPictures: THINGS.map((t) => ({ lex: t.lex, icon: t.icon })),
   };
   if (Heal) Heal.register(def);
   if (typeof module === "object" && module.exports) module.exports = def;
