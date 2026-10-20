@@ -450,13 +450,18 @@
     };
 
     const IMG = "assets/clinic/items-v2/";
+    // ART-20, CLN-106 (s08 w6F): the level plaster (B1's top-down view: a white pad on its coloured strip, the pharmacy
+    // belt's plaster) in the tool column and on the arm (boing.json art.plasters); a colour with no picture keeps the old one
+    const PL = ART.plasters || {};
+    const plasterPic = (c) => PL[c] || `${IMG}plaster-${c}.webp`;
+    const plasterH = (w) => w / (PL.aspect || 2);
     // B4 (CLN-106): the alcohol wipe's packet on the shelf; CLN-168 (Zafar, 18 Oct: "you should be cleaning it with the
     // cloth, not ... the packet"): the cloth (sheets/cloth) is what's in the hand on the arm
     const wipeArt = ART["alcohol-wipe"] && ART["alcohol-wipe"].on ? ART["alcohol-wipe"].file : null;
     const clothArt = ART.cloth && ART.cloth.file ? ART.cloth : null;
     const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
     st.plaster = null;
-    S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: `${IMG}plaster-${c}.webp`, glyph: "•" }))), (id) => {
+    S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: plasterPic(c), glyph: "•" }))), (id) => {
       if (/^plaster-/.test(id)) st.plaster = id.slice(8);
     });
     // ✓ (D7): from level 2 the child says when the syringe is full (the count is never given away by moving on at it);
@@ -596,7 +601,7 @@
         // B6: the plaster she was given (the picture of the one picked)
         const kind = S.sel.slice(8);
         st.plaster = kind;
-        s("image", { href: url(`${IMG}plaster-${kind}.webp`), x: A.x - 52, y: A.y - 26, width: 104, height: 52 }, markG);
+        s("image", { href: url(plasterPic(kind)), x: A.x - 52, y: A.y - plasterH(104) / 2, width: 104, height: plasterH(104) }, markG);
         spot.setAttribute("opacity", 0);
         shine.setAttribute("opacity", 0);
         ctx.after(250, () => close());

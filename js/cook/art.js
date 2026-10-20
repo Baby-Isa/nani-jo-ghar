@@ -722,6 +722,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     const v = i > 0 ? ((sp.items || {})[ref.slice(0, i)] || {})[ref.slice(i + 1)] : null;
     const stem = v && (typeof v === "string" ? v : v.file);
+    // s08 w6F (ART-11): a stem that starts "assets/" is a whole path (a later art run's own folder, the s08b potato)
+    if (stem && stem.startsWith("assets/")) return Cook.v(`${stem}.webp`);
     return stem ? Cook.v(`${sp.dir || "assets/cook/items/"}${stem}.webp`) : null;
   }
   Art.refUrl = refUrl;

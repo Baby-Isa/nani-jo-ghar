@@ -315,11 +315,61 @@
     const faceImg = face.querySelector("img");
     const moods = {};
     let moodNow = "neutral";
+    const put = (u) => u && faceImg.getAttribute("src") !== u && faceImg.setAttribute("src", u);
+    /*
+     * ART-19 (s08 w6F; the judge: "her mouth keeps the same closed smile ... while the line plays"): while she talks her
+     * mouth moves: her talking face and her resting one in turn (two mouth frames on the one registered canvas, every
+     * 130-210 ms, as the clinic's figures flap), until the mood changes. ART-10: and she blinks now and then at rest by
+     * herself (her blink face for 140 ms every 3-5.5 s), unless the host blinked her a moment ago (Cook's own blink).
+     */
+    let flapT = 0;
+    let mouthOpen = false;
+    const stopFlap = () => {
+      clearTimeout(flapT);
+      flapT = 0;
+      mouthOpen = false;
+      delete el.dataset.mouth;
+    };
+    const flap = () => {
+      flapT = 0;
+      if (moodNow !== "talk" || !moods.talk || el.isConnected === false) return stopFlap();
+      mouthOpen = !mouthOpen;
+      put(mouthOpen ? moods.talk : moods.neutral || moods.talk);
+      el.dataset.mouth = mouthOpen ? "open" : "shut";
+      flapT = setTimeout(flap, 130 + Math.random() * 80);
+    };
+    let lastBlink = 0;
+    let blinkT = 0;
+    let blinkShut = false;
     const showMood = () => {
-      const u = moods[moodNow] || moods.neutral;
-      if (u && faceImg.getAttribute("src") !== u) faceImg.setAttribute("src", u);
+      if (moodNow === "blink") lastBlink = Date.now();
+      if (moodNow === "talk" && moods.talk) {
+        if (!flapT) flap();
+      } else {
+        stopFlap();
+        if (!blinkShut) put(moods[moodNow] || moods.neutral);
+      }
       el.dataset.mood = moodNow;
     };
+    const selfBlink = () => {
+      blinkT = 0;
+      if (el.isConnected === false) return; // (a box taken off the page without destroy(): its blinks stop)
+      const doc = root.document;
+      const idle = moodNow === "neutral" && !flapT && moods.blink && moods.neutral;
+      if (idle && Date.now() - lastBlink > 2500 && !(doc && doc.hidden)) {
+        lastBlink = Date.now();
+        blinkShut = true;
+        put(moods.blink);
+        el.dataset.blink = "1";
+        setTimeout(() => {
+          blinkShut = false;
+          delete el.dataset.blink;
+          showMood();
+        }, 140);
+      }
+      blinkT = setTimeout(selfBlink, 3000 + Math.random() * 2500);
+    };
+    if (opts.faces && opts.faces.blink && root.document) blinkT = setTimeout(selfBlink, 2600);
     // (each head is cut once per page: a box mounted again, the next screen, shows it at once, never opts.face first)
     const cutFace = (f) => {
       if (!f || !f.src) return Promise.resolve(null);
@@ -399,6 +449,8 @@
       },
       destroy() {
         off();
+        stopFlap();
+        clearTimeout(blinkT);
         if (ro) ro.disconnect();
         el.innerHTML = "";
       },

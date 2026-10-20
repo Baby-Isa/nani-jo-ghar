@@ -3079,10 +3079,10 @@
      "raw": "chips-raw-t"
     },
     "veg-01": {
-     "bowl": "topping-bataato-boiled-bowl-t",
+     "bowl": "veg-bataato-cubed-v2-t",
      "whole": "veg-bataato-whole-v2-t",
      "cubed": "veg-bataato-cubed-v2-t",
-     "raw": "mishkaki-bataato-raw-t"
+     "raw": "assets/cook/items-s08b/potato/potato-cube-v3"
     },
     "veg-02": {
      "bowl": "topping-dungri-chopped-bowl-t",
@@ -5113,7 +5113,8 @@
       "assets/cook/items/tool-board-t.png",
       "assets/cook/items/veg-*",
       "assets/cook/items/vessel-katori-t.webp",
-      "assets/cook/items-s08b/go-on/go-grill-s08b*"
+      "assets/cook/items-s08b/go-on/go-grill-s08b*",
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
      ],
      "prefetch": [
       "assets/cook/items/mishkaki-bataato-raw-t.webp",
@@ -5155,21 +5156,26 @@
       "assets/cook/items/vessel-katori-t.webp",
       "assets/cook/props/onion.webp",
       "assets/cook/props/tomato.webp"
-     ]
+     ],
+     "_potato": "s08 w6F (ART-11): the potato's skewer piece is PT1's cube (veg-01.raw, a whole path: js/cook/art.js refUrl); its worktop bowl is PT1's pile (veg-bataato-cubed-v2-t), no longer the butter-yellow boiled cubes"
     },
     "thread": {
      "props": [
       "onion",
       "tomato"
      ],
-     "files": []
+     "files": [
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
+     ]
     },
     "grill": {
      "props": [
       "onion",
       "tomato"
      ],
-     "files": []
+     "files": [
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
+     ]
     }
    }
   }
