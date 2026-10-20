@@ -82,9 +82,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------------- backgrounds ---------------- */
-  function worktop(w, h, { hob = false, wood = false } = {}) {
-    const c = canvas(w, h);
+  // scale (contract-11, ART-05, s08 w7A): the canvas is w x h design px drawn at `scale` canvas px each, so the wood worktop
+  // can be drawn at the screen's own resolution (Art.worktopAt), never a 1600 x 900 canvas zoomed up
+  function worktop(w, h, { hob = false, wood = false, scale = 1 } = {}) {
+    const c = canvas(Math.round(w * scale), Math.round(h * scale));
     const ctx = c.getContext("2d");
+    if (scale !== 1) ctx.scale(scale, scale);
     const r = rng(seedOf(hob ? "hob" : wood ? "wood" : "marble"));
     if (wood) {
       ctx.fillStyle = "#d9a877";
@@ -712,7 +715,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const sp = SP();
     if (ref.startsWith("bg:")) {
       const stem = (sp.bg || {})[ref.slice(3)];
-      return stem ? Cook.v(`assets/cook/bg/${stem}.webp`) : null;
+      // (a stem that starts "assets/" is a whole path: the s08c marble tile, contract-11)
+      return stem ? Cook.v(stem.startsWith("assets/") ? `${stem}.webp` : `assets/cook/bg/${stem}.webp`) : null;
     }
     const i = ref.lastIndexOf(".");
     // pantry v2: "<id>.shelf" is a side-on container (data.art.sprites.shelf: [stem, size])
@@ -986,6 +990,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!scene.textures.exists(key)) scene.textures.addCanvas(key, get(key));
     return key;
   };
+  /** The code-drawn worktop (the wood) for a w x h design px view, drawn at `scale` canvas px per design px (fitBg). */
+  Art.worktopAt = (w, h, scale, opts = {}) => worktop(w, h, Object.assign({}, opts, { scale }));
+  /** A view's tiled painted worktop (data.art.sprites.bgTile[view]: {k: design px per source px, plate?, box?}) or null. */
+  Art.bgTile = (view) => ((SP().bgTile || {})[view]) || null;
   Art.url = function (key) {
     const c = get(key);
     return c ? c.toDataURL() : "";

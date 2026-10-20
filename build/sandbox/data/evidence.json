@@ -4173,10 +4173,29 @@
    "after": null,
    "capture": [
     "zoom2:canvas:ladle",
-    "ref:assets/cook/items/v3/daar/ladle-v3.webp"
+    "ref:sources/art/s08c/kd1-kadchi-v1.png"
    ],
    "expect": null,
-   "note": "a real kadchi seen top-down, handle rising toward the viewer and resting on the rim; not a dipper"
+   "note": "a real kadchi seen top-down (s08c KD1, its bowl full of daal), handle rising toward the viewer and resting on the rim as it goes round; not a dipper or measuring scoop"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:pot",
+    "ref:sources/art/s08c/kd1-kadchi-v1.png"
+   ],
+   "expect": null,
+   "note": "the daal stir: the kadchi's bowl in the daal on its track, its handle pointing out over the rim (s08 w7A)"
   }
  ],
  "DAAR-03": [
@@ -5570,34 +5589,31 @@
    "note": "the card peeked open before each tap while the skewers are threaded: each piece of the mixed skewer ticks as it goes on, one by one, in order (never all at once, never before it is on)"
   }
  ],
- "SEK-14": {
-  "needsDecision": "Rack and plate as pre-rendered pictures holding 1-4 real skewers (his K9 idea) vs the plain plate with code-laid skewers (S03): which is kept?",
-  "probes": [
-   {
-    "flow": "cook:mishkaki-grill",
-    "path": "fair",
-    "level": [
-     1,
-     4
-    ],
-    "sizes": [
-     "1366x768"
-    ],
-    "profile": "seen",
-    "want": null,
-    "at": "every:stage-start",
-    "after": null,
-    "capture": [
-     "zoom2:canvas:rack",
-     "zoom2:canvas:plate"
-    ],
-    "expect": null,
-    "note": "rack and plate with 1-4 skewers (taken at the stage starts, the served dish shows in the closing beat; not under the end card)",
-    "max": 4,
-    "delay": 300
-   }
-  ]
- },
+ "SEK-14": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:rack",
+    "ref:sources/art/s08c/sk4-sekelo-tray-upright-v1.png"
+   ],
+   "expect": null,
+   "note": "the two square steel trays (s08c SK4: raw above, cooked below) holding 1-4 upright skewers, handles towards the child, as each skewer lands (every:placed)",
+   "max": 8,
+   "delay": 500
+  }
+ ],
  "CK-01": {
   "human": "Play levels 2-4 of every Cook station and clinic game once and say whether each level feels right (difficulty, what is new)"
  },
@@ -15223,9 +15239,27 @@
    "delay": 300
   }
  ],
- "CHAI-26": {
-  "human": "Waits on the big art run: when the pour frames land (the pan turned about 20 degrees towards the player in four or five steps with the chai level following, else one half-poured static pan), look at the pour and say which one stays."
- },
+ "CHAI-26": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "cook-done:tap",
+   "after": "exp:pour",
+   "capture": [
+    "strip:#stage:10x300",
+    "ref:sources/art/s08c/cp3-chai-pan-tip-pour-v2.png"
+   ],
+   "expect": null,
+   "note": "the pour as frames (s08c CP3 v2 cells 1-4): the pan lifts over its glass and tips towards the player in four steps, 0/20/40/60 degrees, the chai sliding to the near rim; a thin, translucent stream (never syrup) from the near rim into the glass; then back"
+  }
+ ],
  "SEK-18": [
   {
    "flow": "cook:mishkaki-grill",

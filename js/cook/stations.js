@@ -162,6 +162,42 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const bw = src.width || W;
       const bh = src.height || H;
       const k0 = W / bw; // every background is drawn 1600 wide in the design box
+      bg.setVisible(true);
+      /*
+       * contract-11, SH-91, ART-05 (s08 w7A): a top-down worktop with a tile (data.art.sprites.bgTile[view]: the s08c marble,
+       * WT1, seamless both ways and upscaled x2) is laid tiled at its own size (k design px per source px), never zoomed, so a
+       * taller or wider stage shows more marble; the hob's plate (cut from bg-cook-hob-t-v1, x2) lies on it at its place in
+       * the design box (box: where the -1600 picture drew it, so the burners stay at St.BURNER at every size).
+       */
+      const tile = Cook.Art.bgTile ? Cook.Art.bgTile(this.viewName) : null;
+      if (tile && /^spr:bg:/.test(bg.texture.key)) {
+        bg.setVisible(false);
+        const k = tile.k || 0.5;
+        const tw = bw * k;
+        const th = bh * k;
+        for (let y = Math.floor(v.top / th) * th; y < v.bottom; y += th)
+          for (let x = Math.floor(v.left / tw) * tw; x < v.right; x += tw) this.bgExt.push(this.add.image(x, y, bg.texture.key).setOrigin(0).setScale(k).setDepth(D.bg));
+        const pk = tile.plate && `bgplate-${tile.plate}`;
+        if (pk && this.textures.exists(pk) && tile.box) {
+          const [x0, y0, x1, y1] = tile.box;
+          this.bgExt.push(this.add.image(x0, y0, pk).setOrigin(0).setDisplaySize(x1 - x0, y1 - y0).setDepth(D.bg + 0.05));
+        }
+        return;
+      }
+      // the wood (drawn in code: no painting): drawn for the visible view at the screen's own resolution, never zoomed
+      if (this.viewName === "wood" && bg.texture.key === "bg:wood" && Cook.Art.worktopAt) {
+        const cr = this.game.canvas.getBoundingClientRect();
+        const sc = Math.max(1, Math.ceil(((cr.width / Math.max(1, v.w)) * (window.devicePixelRatio || 1)) * 4) / 4);
+        const vw = Math.round(v.right - v.left);
+        const vh = Math.round(v.bottom - v.top);
+        const key = `bg:wood@${vw}x${vh}@${sc}`;
+        if (this.woodKey && this.woodKey !== key && this.textures.exists(this.woodKey)) this.textures.remove(this.woodKey);
+        if (!this.textures.exists(key)) this.textures.addCanvas(key, Cook.Art.worktopAt(vw, vh, sc, { wood: true }));
+        this.woodKey = key;
+        bg.setVisible(false);
+        this.bgExt.push(this.add.image(v.left, v.top, key).setOrigin(0).setScale(1 / sc).setDepth(D.bg));
+        return;
+      }
       if (this.viewName === "pantry") {
         bg.setOrigin(0).setPosition(0, 0).setScale(k0);
         this.extendEdges(bg.texture.key, src, k0);
@@ -257,7 +293,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // SH-108 (P31: "if it's top-down then it should be the marble countertop"): a top-down worktop waits for its painting
       // (only a dead file's 20 s cap), never the code-drawn worktop after 2.5 s; the other views keep the short wait
       const topDown = name === "marble" || name === "hob";
-      const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Cook.Art.load(this, bgRef), new Promise((r) => setTimeout(r, topDown ? 20000 : 2500))]) : null;
+      // (a tiled worktop's hob plate loads with it: contract-11)
+      const tileSpec = Cook.Art.bgTile ? Cook.Art.bgTile(name) : null;
+      const plateLoad = tileSpec && tileSpec.plate ? Cook.Art.loadFile(this, `bgplate-${tileSpec.plate}`, tileSpec.plate.startsWith("assets/") ? `${tileSpec.plate}.webp` : `assets/cook/bg/${tileSpec.plate}.webp`) : Promise.resolve(true);
+      const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Promise.all([Cook.Art.load(this, bgRef), plateLoad]), new Promise((r) => setTimeout(r, topDown ? 20000 : 2500))]) : null;
       if (this.viewName) {
         cam.fadeOut(dur, 233, 220, 196);
         await Cook.wait(dur + 20);
@@ -721,12 +760,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       this.chars[who] = img;
       if (who === "nani") this.pointFront(img, c);
       // ART-19 (s07 N5): Nani blinks now and then while she rests (only the neutral face; a mood or talk is never cut)
-      if (who === "nani" && this.textures.exists("nani-blink")) {
+      // s08 wave 7B (ART-19): Nana, Ma and Ali too (s08c NN2, MA2, AL2: their blink frames on their neutral canvas)
+      if (this.textures.exists(`${who}-blink`)) {
         const blink = () => {
           if (!img.active) return;
-          if (img.mood === "neutral" && img.texture.key === "nani-neutral") {
-            img.setTexture("nani-blink");
-            this.time.delayedCall(150, () => img.active && img.texture.key === "nani-blink" && img.setTexture("nani-neutral"));
+          if (img.mood === "neutral" && img.texture.key === `${who}-neutral`) {
+            img.setTexture(`${who}-blink`);
+            this.time.delayedCall(150, () => img.active && img.texture.key === `${who}-blink` && img.setTexture(`${who}-neutral`));
           }
           this.time.delayedCall(3200 + Math.random() * 2600, blink);
         };
@@ -806,21 +846,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const img = this.chars[who];
       if (!img) return UI.say(line, { badge: true }, opts);
       const prev = img.mood;
-      img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : `${who}-happy`);
+      // s08 wave 7B (ART-19): a family customer with a talk frame (s08c NN1, MA1, AL1) talks as Nani does (below)
+      const famTalk = who !== "nani" && this.textures.exists(`${who}-talk`);
+      img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : famTalk ? `${who}-talk` : `${who}-happy`);
       const stopBob = this.talkBob(img, who);
       // ART-19 (s08 w6G; the judge: "Nani keeps the same closed smile in all 8 frames while her line plays"): while she
       // speaks at the counter her mouth moves as the guide box's face does (js/shared/guide.js flap): her talking face
       // and her resting one in turn every 130-210 ms (two mouth frames of the one registered picture), until the line ends.
       // Her mood reads "talk" meanwhile, so her resting blink never cuts in
       let flapT = 0;
-      if (who === "nani" && opts.mood !== "point" && this.textures.exists("nani-neutral")) {
+      const talkKey = who === "nani" ? "nani-talk" : `${who}-talk`;
+      const restKey = who === "nani" ? "nani-neutral" : `${who}-neutral`;
+      if ((who === "nani" ? opts.mood !== "point" && this.textures.exists("nani-neutral") : famTalk) && this.textures.exists(restKey)) {
         img.mood = "talk";
         let open = true;
         const flap = () => {
           flapT = 0;
           if (!img.active || img.mood !== "talk") return;
           open = !open;
-          img.setTexture(open ? "nani-talk" : "nani-neutral");
+          img.setTexture(open ? talkKey : restKey);
           flapT = setTimeout(flap, 130 + Math.random() * 80);
         };
         flapT = setTimeout(flap, 130 + Math.random() * 80);

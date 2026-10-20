@@ -1,0 +1,246 @@
+{
+ "_about": "s08c Cook measures, written by build/tools/art/specs/s08c-cook-post.py (the code keeps its own copies of the numbers it uses)",
+ "bowls": {
+  "_about": "the kadchi: its bowl's biggest inner circle (cx, cy, r of w) and the handle's direction from it (deg, y down); the teaspoon: its bowl's centre and its length, of w",
+  "kadchi-daal-s08c": {
+   "cx": 0.3647,
+   "cy": 0.7143,
+   "h": 560,
+   "handle_deg": -60.8,
+   "r": 0.3488,
+   "w": 436
+  },
+  "kadchi-s08c": {
+   "cx": 0.4083,
+   "cy": 0.7143,
+   "h": 560,
+   "handle_deg": -60.8,
+   "r": 0.3487,
+   "w": 436
+  },
+  "teaspoon-chai-s08c": {
+   "bowl": [
+    0.2,
+    0.4892
+   ],
+   "end": 0.9458,
+   "h": 139,
+   "len": 0.9354,
+   "w": 480
+  },
+  "teaspoon-empty-s08c": {
+   "bowl": [
+    0.2448,
+    0.4964
+   ],
+   "end": 0.9854,
+   "h": 139,
+   "len": 0.9292,
+   "w": 480
+  },
+  "teaspoon-sugar-s08c": {
+   "bowl": [
+    0.2219,
+    0.5
+   ],
+   "end": 0.9563,
+   "h": 139,
+   "len": 0.9313,
+   "w": 480
+  }
+ },
+ "brew": {
+  "_about": "CP4: each picture's rim circle (cx, cy, rim) and its contents' circle (inner), source px (Hough)",
+  "pan-boil-milky-s08c": {
+   "cx": 162.5,
+   "cy": 148.5,
+   "h": 308,
+   "inner": 117.8,
+   "rim": 135.0,
+   "w": 508
+  },
+  "pan-leaves-s08c": {
+   "cx": 160.5,
+   "cy": 148.5,
+   "h": 308,
+   "inner": 116.7,
+   "rim": 135.1,
+   "w": 502
+  },
+  "pan-water-s08c": {
+   "cx": 161.5,
+   "cy": 150.5,
+   "h": 307,
+   "inner": 134.4,
+   "rim": 145.2,
+   "w": 497
+  }
+ },
+ "daar_in": {
+  "_about": "DS1 v2 scatters: their radius (px); the daal brought to the stirred disc's colour [235, 167, 15]",
+  "in-chilli-s08c.webp": {
+   "R": 142.0
+  },
+  "in-cumin-s08c.webp": {
+   "R": 133.1
+  },
+  "in-garlic-s08c.webp": {
+   "R": 135.3
+  },
+  "in-ginger-s08c.webp": {
+   "R": 133.3
+  },
+  "in-mustard-s08c.webp": {
+   "R": 132.3
+  },
+  "in-onion-s08c.webp": {
+   "R": 146.4
+  },
+  "in-onion-s08c@2x.webp": {
+   "R": 153.8
+  },
+  "in-potato-s08c.webp": {
+   "R": 144.0
+  },
+  "in-tomato-s08c.webp": {
+   "R": 141.8
+  },
+  "in-tomato-s08c@2x.webp": {
+   "R": 144.1
+  }
+ },
+ "hob": {
+  "_about": "the hob plate cut from bg-cook-hob-t-v1.png (src_box, source px, its rounded mask's corner radius) x2; in1600: its box in the 1600x900 design box, where bg-cook-hob-t-v1-1600 drew it (the stations' burners, station-lib.js BURNER)",
+  "file": "assets/cook/worktop-s08c/hob-plate-s08c.webp",
+  "h": 1052,
+  "in1600": {
+   "box": [
+    247.8,
+    69.4,
+    1356.2,
+    739.5
+   ],
+   "k": 1.274,
+   "match": 0.9981
+  },
+  "radius": 40,
+  "src_box": [
+   335,
+   140,
+   1205,
+   666
+  ],
+  "w": 1740
+ },
+ "marble": {
+  "_about": "WT1 cut from its source, cross-faded left-right and top-bottom, upscaled x2: laid tiled at 0.5 design px per source px (js/cook/stations.js fitBg)",
+  "file": "assets/cook/worktop-s08c/marble-tile-s08c.webp",
+  "h": 1840,
+  "seam_left_right": 1.05,
+  "seam_left_right_before": 3.55,
+  "seam_top_bottom": 0.94,
+  "seam_top_bottom_before": 4.24,
+  "w": 2864
+ },
+ "tip": {
+  "_about": "CP3 cells 1-4 (pan-tip-<deg>-s08c, one window 484x406): the contents' centre (cx, cy), the rim's half width rx and half height ry, and the near rim's middle (lip: the stream leaves from it), source px",
+  "black": [
+   124,
+   20,
+   1
+  ],
+  "frames": {
+   "0": {
+    "body": [
+     26,
+     93,
+     267,
+     356
+    ],
+    "cx": 144.6,
+    "cy": 218.7,
+    "lip": [
+     144.6,
+     332
+    ]
+   },
+   "20": {
+    "body": [
+     31,
+     92,
+     268,
+     356
+    ],
+    "cx": 147.6,
+    "cy": 216.5,
+    "lip": [
+     147.6,
+     329
+    ]
+   },
+   "40": {
+    "body": [
+     20,
+     92,
+     259,
+     356
+    ],
+    "cx": 138.0,
+    "cy": 218.3,
+    "lip": [
+     138.0,
+     333
+    ]
+   },
+   "60": {
+    "body": [
+     37,
+     6,
+     274,
+     252
+    ],
+    "cx": 153.4,
+    "cy": 124.2,
+    "lip": [
+     153.4,
+     224
+    ]
+   }
+  }
+ },
+ "tray": {
+  "_about": "SK4 tray-4-s08c (w x h px): the tray's top and bottom rows (tray), and each skewer [x, tip, handle, end] as fractions of w and h (V3.rack's form); tray-n holds skewers 1..n (from the left)",
+  "h": 900,
+  "sticks": [
+   [
+    0.2059,
+    0.0472,
+    0.7922,
+    0.9933
+   ],
+   [
+    0.4039,
+    0.0472,
+    0.7922,
+    0.9933
+   ],
+   [
+    0.6025,
+    0.0472,
+    0.7922,
+    0.9933
+   ],
+   [
+    0.7998,
+    0.0472,
+    0.7922,
+    0.9933
+   ]
+  ],
+  "tray": [
+   6,
+   713
+  ],
+  "w": 800
+ }
+}

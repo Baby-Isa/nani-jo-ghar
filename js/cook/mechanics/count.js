@@ -53,14 +53,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const st = into.rim && St.stirStart ? St.stirStart(into) : null;
     const L = st ? st.L : z.L(1);
     const sp = S.track(S.add.container(c.x, c.y - z.L(20)).setDepth(D.fx + 1)); // CHAI-13: over the puff it makes, so the teaspoon is seen
-    // CHAI-13: a real teaspoon (the art run's picture once it lands, art.s02 "teaspoon"), its bowl heaped
-    if (St.hasArt(S, "teaspoon")) {
-      const im = S.add.image(0, 0, St.artKey("teaspoon"));
-      const m = St.art("teaspoon").meta || {};
+    // CHAI-13 (s08c TP1, s08 w7A): the real teaspoon, heaped with sugar (and the salt that looks like it) as drawn; any other
+    // spoonful lies on the clean spoon (art.s02 "teaspoon" is the sugar spoon, "teaspoon-empty" the clean one). Loaded here
+    // if the station did not (the plain chai's count), only when a spoonful is shown (decision 68)
+    await St.loadArt(S, St.artLoad(["teaspoon", "teaspoon-empty", "teaspoon-chai"]), 1500);
+    const sugary = word === "cook-khun" || word === "spi-16";
+    const tid = sugary ? "teaspoon" : "teaspoon-empty";
+    if (St.hasArt(S, tid)) {
+      const im = S.add.image(0, 0, St.artKey(tid));
+      const m = St.art(tid).meta || {};
       const bowlAt = m.bowl || [0.5, 0.85];
       im.setOrigin(bowlAt[0], bowlAt[1]).setScale((L * 80) / Math.max(im.width, im.height)).setAngle(-60);
-      const heap = S.add.ellipse(0, 0, L * 20, L * 12, col, 1);
-      sp.add([im, heap]);
+      sp.add(im);
+      if (!sugary) sp.add(S.add.ellipse(0, 0, L * 20, L * 12, col, 1));
     } else {
       const g = S.add.graphics();
       if (st) St.teaspoon(g, 0, 0, L * 70, L * 38, L, col);
