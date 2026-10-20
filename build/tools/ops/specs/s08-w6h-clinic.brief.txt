@@ -1,0 +1,70 @@
+SESSION NAME / MODE:  s08 wave 6H, the clinic: the judges' last code fails (the wrong colour clip, English fragments, the fever ending, the eye game's shake and board, the drill, the foot wash, the cotton bud)
+MODEL AND EFFORT:     Opus, high effort (heal games and their words, judged by picture and ear)
+COST ESTIMATE:        about $25-35
+HARD STOP:            when every task is accepted, or 3 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6h-clinic.context.md (860 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/tools/review/data/verdicts.json (each row's judge line, run ev-20261020-004931-exi) and build/reports/evidence-ev-20261020-004931-exi.md
+     docs/game-design/modes/clinic.md
+     docs/feedback/clinic-playtest-2026-10-18.md
+     build/reports/s08-w6c-clinic.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/clinic/** except js/clinic/heal/games/boing.js
+  - data/clinic/** except data/clinic/heal/boing.json and data/clinic/heal-art.json
+  - css/clinic.css
+  - build/reports/s08-w6h-clinic.md
+READ-ONLY (never edit):
+  - js/clinic/heal/games/boing.js, data/clinic/heal/boing.json, data/clinic/heal-art.json, data/clinic/heal/eye.json's lemon (wave 6F)
+  - js/cook/**, js/shared/** (6F, 6G)
+  - data/lang/** (never add Kutchi; a wrong clip mapping is reported with its fix)
+  - assets/**
+  - build/sandbox/**
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a picture that's missing goes on the report's art list
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. CLN-119 (urgent): at L2 the plaster line 'ne poi yellow plaster' plays Mum's 'laal' (red) clip under the word 'yellow'. A child must never hear the wrong colour: find where the colour word picks its clip and fix it (a colour with no recording stays a grey to-record placeholder, silent). Check every colour word in every heal game the same way. Also: the tooth and taste games mark their words as the row asks.
+     Accept: auto: a test over every heal game's colour lines (word = clip); the voice timeline of the knee at L2
+  2. CLN-184 and rule 11: the tooth game's lines 'Pela down' and 'ne poi right' are half-English fragments: make each a full engine sentence or a whole grey to-record placeholder, never a mix.
+     Accept: auto: the tooth game's lines at L1-L3; eye: its card
+  3. CLN-178: the fever game's end zooms back out to the room (as the knee does), with no blank or brown frame. CLN-107: at L1 a wrong yes/no shakes red, as at L2-L3. CLN-188: the eye chart board takes most of the play width. CLN-181: the drill tip is centred on the cavity and the filling grows from its middle.
+     Accept: eye: each as a filmstrip at 1366x768 and 800x360
+  4. CLN-190: the foot wash visibly clears the dirt it passes over. CLN-195: the cotton bud's tip turns blue after it touches the blue spot.
+     Accept: eye: each as a filmstrip
+
+REGRESSION ROWS TO RECHECK (118 rows of the fix list and its done archive; * = open or reopened):
+  every flow here (44): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-198*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-42, CLN-43, CLN-44, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-knee (9): CLN-145*, CLN-172*, CLN-178*, CLN-179*, CLN-82, CLN-33, CLN-47, CLN-48, CLN-122
+  clinic:heal-tooth (12): CLN-180, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-09, CLN-35, CLN-51, CLN-52, CLN-53, CLN-103, CLN-129
+  clinic:heal-taste (7): CLN-144*, CLN-195*, CLN-196, CLN-36, CLN-54, CLN-55, CLN-104
+  clinic:heal-fever (19): CLN-65*, CLN-175, CLN-177*, CLN-178*, CLN-105*, CLN-86, CLN-152, CLN-153, CLN-31, CLN-56, CLN-57, CLN-120, CLN-130, CLN-132, CLN-148, CLN-126, CLN-127, CLN-131, CLN-176
+  clinic:heal-eye (20): CLN-38*, CLN-107*, CLN-163*, CLN-186, CLN-188*, CLN-189*, CLN-85, CLN-152, CLN-39, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-78, CLN-80, CLN-143, CLN-136, CLN-187
+  clinic:heal-foot (12): CLN-190*, CLN-191*, CLN-192, CLN-193, CLN-194*, CLN-135*, CLN-82, CLN-40, CLN-47, CLN-64, CLN-75, CLN-108
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6h-clinic` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8858.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6h-clinic.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
