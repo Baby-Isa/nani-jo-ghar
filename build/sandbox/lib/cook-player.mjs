@@ -446,6 +446,9 @@ export class CookPlayer {
       if (this.mistakes && e.swrongs && e.swrongs.length && !this.made.has("tap:" + e.key) && this.made.size < 6) {
         this.made.add("tap:" + e.key);
         const w = e.swrongs[this.made.size % e.swrongs.length];
+        // (s08 w6L, CHT-14) the move itself is the moment a filmstrip needs: rec:wrong-tap comes 350 ms after the tap, when the bowl's
+        // shake is over; a strip begun at this moment films the pot going in, the pause, the shake and the item coming back out
+        await mark(p, "bad-item-going-in", { block: true, settle: 0 });
         await this.tap(w.x, w.y, "wrong item");
         await sleep(350);
         await this.once("wrong-tap", { settle: 0 });

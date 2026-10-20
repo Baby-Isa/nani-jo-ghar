@@ -7,7 +7,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
 import { parseRegressions, REGRESSIONS, REGRESSIONS_DONE, readAllRegressions, gitRegressions, moveRows, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
-import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, captureLabels, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds } from "./lib/evidence.mjs";
 
 const HELP = `
 node build/tools/review/evidence.mjs --plan  [--rows a,b | --all | --sprint [--since ref]] [--json]
@@ -223,7 +223,7 @@ function runCmd(cmd) {
   // an import error or missing module is the environment's failure, never the game's: a TOOL FAILURE (code null)
   const MODULE_ERR = /ModuleNotFoundError|ImportError|Cannot find module|ERR_MODULE_NOT_FOUND/;
   const modErr = MODULE_ERR.test(`${r.stdout || ""}\n${r.stderr || ""}`);
-  return { code: modErr ? null : r.status, moduleError: modErr, text: (modErr ? "TOOL FAILURE: missing module (environment, not the game)\n" : "") + outText.slice(-60).join("\n") + (outText.length > 60 ? `\n(${outText.length - 60} earlier lines cut)` : "") };
+  return { code: modErr ? null : r.status, moduleError: modErr, text: (modErr ? "TOOL FAILURE: missing module (environment, not the game)\n" : "") + outText.slice(-120).join("\n") + (outText.length > 120 ? `\n(${outText.length - 120} earlier lines cut)` : "") };
 }
 async function sheets(dirArg) {
   const dir = dirArg || runFolder(a.val("run-id"));
@@ -309,12 +309,12 @@ async function sheets(dirArg) {
       if (p.every && crops.length > 1) {
         // every turn: the crops side by side, one frame per moment
         const byCap = new Map(); for (const x of crops) { if (!byCap.has(x.c.raw)) byCap.set(x.c.raw, []); byCap.get(x.c.raw).push(x); }
-        for (const [raw, list] of byCap) addPanel({ type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ src: fileOf(p, x.c.files[0]), cap: `${x.h.n}`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2") });
+        for (const [raw, list] of byCap) addPanel({ type: "frames", label: `${tag} · ${raw} at every ${p.at} (${list.length})`, frames: list.map((x) => ({ src: fileOf(p, x.c.files[0]), cap: `${x.h.n} · ${(x.h.t / 1000).toFixed(1)} s`, dpr: dprOf(p) })), zoom: raw.startsWith("zoom2"), nat: natW(fileOf(p, list[0].c.files[0]), dprOf(p)) });
       } else for (const x of crops) {
         if (!x.shot && x.c.kind === "crop" && (p.kind === "layout" || p.kind === "art") && x.h.room) addPanel({ type: "room", label: `${tag} · ${p.at}: the screen, ${x.c.raw.slice(5)} outlined`, src: fileOf(p, x.h.room), box: x.c.box, dpr: dprOf(p) });
         addPanel({ type: "img", label: `${tag} · ${x.c.raw} at ${x.h.name}`, src: fileOf(p, x.c.files[0]), dpr: dprOf(p), zoom: x.c.kind === "zoom2" });
       }
-      for (const x of strips) addPanel({ type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}`, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms`, dpr: dprOf(p) })) });
+      for (const x of strips) addPanel({ type: "frames", label: `${tag} · ${x.c.raw} at ${x.h.name}`, frames: x.c.files.map((f, k) => ({ src: fileOf(p, f), cap: `${x.c.times[k]} ms`, dpr: dprOf(p) })), nat: natW(fileOf(p, x.c.files[0]), dprOf(p)) });
       // refs (Fable 12) and script output (Fable 13), from the spec
       for (const c of p.contract || []) texts.push(`#### ${p.id} · ${c.check} (contract)\n\n\`\`\`\n${c.text}\n\`\`\``);
       const specP = Array.isArray(P.spec[row.id]) ? P.spec[row.id][p.i] : P.spec[row.id] && P.spec[row.id].probes ? P.spec[row.id].probes[p.i] : P.spec[row.id];
@@ -336,10 +336,20 @@ async function sheets(dirArg) {
     const sheets = [];
     if (!outcome.tool.length && panels.length) {
       // more than six panels: two or more sheets, evenly (<ROW>.png, <ROW>-2.png ...), each still at most about 1200 x 1900 px
-      const n = Math.ceil(panels.length / 6), per = Math.ceil(panels.length / n);
+      // (s08 w6L) by height, not only by count: a sheet holds panels up to about 1300 px (a strip's frames now read at 290-580 px, so a
+      // twelve-frame strip is a sheet of its own; four panels of one image each are still one sheet)
+      const groups = [];
+      let cur = [], cost = 0;
+      for (const pl of panels) {
+        const c = panelCost(pl);
+        if (cur.length && (cost + c > 4.5 || cur.length >= 6)) { groups.push(cur); cur = []; cost = 0; }
+        cur.push(pl); cost += c;
+      }
+      if (cur.length) groups.push(cur);
+      const n = groups.length;
       for (let k = 0; k < n; k++) {
         const name = k ? `${row.id}-${k + 1}` : row.id;
-        sheets.push(await htmlToPng(page, join(dir, `${name}.html`), sheetHtml(row, panels.slice(k * per, (k + 1) * per), shotUrl, n > 1 ? `sheet ${k + 1} of ${n}` : "")));
+        sheets.push(await htmlToPng(page, join(dir, `${name}.html`), sheetHtml(row, groups[k], shotUrl, n > 1 ? `sheet ${k + 1} of ${n}` : "")));
       }
       png = sheets[0];
     }
@@ -358,12 +368,23 @@ async function sheets(dirArg) {
   writeFileSync(join(dir, "index.json"), JSON.stringify(index, null, 1));
   writeReport(dir, P, index);
 }
+// a PNG's width in CSS px (its IHDR), 0 when it cannot be read: how many frames of a strip fit a line of the sheet
+function natW(file, dpr = 1) {
+  try { const b = readFileSync(file); return b.length > 24 && b.readUInt32BE(12) === 0x49484452 ? Math.round(b.readUInt32BE(16) / (dpr || 1)) : 0; } catch (e) { return 0; }
+}
+// frames to a line (s08 w6L): a crop 700 px wide or more two to a line, one of 420-700 px three, a small one four, so every frame is read at
+// about 290-580 px, not the 90-140 px a twelve-frame strip had in one line (the EVIDENCE lines of CLN-105, 167, 181, 194, SAM-22)
+const framesPerLine = (p) => Math.max(1, Math.min(p.frames.length, p.nat >= 700 ? 2 : p.nat >= 420 ? 3 : 4));
+// a panel's height on the sheet in units of about 300 px (a frames panel: its lines of frames; a lone image: two to a line)
+const panelCost = (p) => (p.type === "frames" ? 0.25 + Math.ceil(p.frames.length / framesPerLine(p)) * (framesPerLine(p) <= 2 ? 1.2 : framesPerLine(p) === 3 ? 0.8 : 0.65) : 0.8);
 function sheetHtml(row, panels, shotUrl, part = "") {
   // at most 1200 x ~1200 px (about 1.9k image tokens at full resolution, under the API's downscale): panels side by side, two to a
   // row; a filmstrip or a lone zoom spans the row. Crops at 1:1 CSS px when they fit their column, else scaled down to fit
   const wide = (p) => p.type === "frames" || (p.zoom && panels.length === 1) || panels.length === 1;
   const fig = (p) => {
-    if (p.type === "frames") return `<div class="frames">${p.frames.map((f) => `<figure class="fr"><img src="${esc(shotUrl(f.src))}" data-dpr="${f.dpr}" class="${p.zoom ? "z" : "n"}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
+    // (s08 w6L) at most 4 frames to a line: a 12-frame strip in one line was 90 px a frame, too small to read (the EVIDENCE lines of
+    // CLN-167, CLN-181, CLN-194, SAM-22); wrapped, each frame is about 290 px
+    if (p.type === "frames") return `<div class="frames" style="--c:${framesPerLine(p)};--mh:${framesPerLine(p) <= 2 ? 440 : 300}px">${p.frames.map((f) => `<figure class="fr"><img src="${esc(shotUrl(f.src))}" data-dpr="${f.dpr}" class="${p.zoom ? "z" : "n"}"><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>`;
     if (p.type === "room") return `<div class="room" data-box="${esc(JSON.stringify(p.box))}" data-dpr="${p.dpr}"><img src="${esc(shotUrl(p.src))}"><i class="box"></i></div>`;
     return `<img class="${p.zoom ? "z" : "n"} one" data-dpr="${p.dpr}" src="${esc(shotUrl(p.src))}">`;
   };
@@ -377,7 +398,7 @@ function sheetHtml(row, panels, shotUrl, part = "") {
     section.wide{width:1168px}
     .lab{font-size:22px;font-weight:900;margin-right:6px} .cap{font-size:13px;font-weight:700;color:#4a3a28}
     section img{display:block;margin-top:3px;max-width:100%} img.one{max-height:520px;object-fit:contain}
-    .frames{display:flex;gap:4px;margin-top:3px} .fr{margin:0;flex:1 1 0;min-width:0} .fr img{width:100%;max-height:420px;object-fit:contain} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
+    .frames{display:grid;grid-template-columns:repeat(var(--c,4),minmax(0,1fr));gap:6px 4px;margin-top:3px} .fr{margin:0;min-width:0} .fr img{width:100%;max-height:var(--mh,300px);object-fit:contain} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
     .room{position:relative;margin-top:3px} .room img{width:100%} .room .box{position:absolute;border:3px solid #e0201a;box-shadow:0 0 0 2px #fff}
   </style><header><h1>${esc(row.id)}<small>${esc(row.section)}${part ? ` · ${esc(part)}` : ""}</small></h1><p><span class="k">Issue:</span> ${esc(row.issue.slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(row.check.slice(0, 220))}</p></header>
   <div class="grid">${panels.map((p) => `<section class="${wide(p) ? "wide" : ""}"><span class="lab">${p.letter}</span><span class="cap">${esc(p.label)}</span>${fig(p)}</section>`).join("\n")}</div>
@@ -443,7 +464,7 @@ function judge() {
   const write = (b, n, isAudit) => {
     const name = `${isAudit ? "audit" : "batch"}-${String(n).padStart(2, "0")}`;
     const vf = join(jdir, `${name}.verdicts.md`);
-    let t = `# Evidence ${name} (${b.kind}, ${b.rows.length} rows) · run ${id}\n\nYou are the reviewer for Nani jo Ghar's evidence loop (decision 82). You are not the session that built these changes${index.builder ? ` (${index.builder})` : ""}.${isAudit ? " This is an AUDIT: each row already has a cached PASS from another model (named below); judge it afresh, without regard to that verdict." : ""}\n\nFor each row: read its sheet (PNG, if it has one: its panels are labelled A-D, or up to A-L over two sheets for a row with more probes: read both; the labels repeated below) and its text file (.md: the panels in words, the voice timeline, text captures, expect results). Judge against the row's own words (Zafar's feedback), nothing else. Words the engine marks loan:en (thank you, mixed, cup, film) are Kutchi (decision 87): never flag them as English. A line shown as grey-italic English with the hidden to-record tag is allowed (decision 84): it is not an English leak and not a missing clip; only its absence from Mum's list is a gap.\n1. Flaws first: anything wrong in the panels (clipping, overlap, English for the child, a bubble away from its speaker, old art), even off the row's point.\n2. Then one line in ${rel(vf)}:\n   \`ID | PASS: <panel>, <what that panel shows that proves it>\` e.g. \`CLN-100 | PASS: A, L3 wrap crosses the kneecap, 6 turns\`\n   \`ID | FAIL: <panel>, <what is wrong>\`\n   \`ID | EVIDENCE: <what the sheet is missing>\` only when the sheet does not show the row's state at all (it goes to the tool owner, never to the list as a FAIL).\n   A PASS that names no panel is refused. A text-only row (Sheet: (text only)) names its text capture instead, by its label in the .md: \`SH-45 | PASS: SH-45-p1-L1-1366x768 dom, the line reads ...\` (or \`PASS: text, ...\`). Sound quality and feel are not yours: say so in a FAIL only when the row is about what you can read (which clip, when, in what order).\n3. First line of the verdict file: \`judge: <your model and session>\`.\n\n`;
+    let t = `# Evidence ${name} (${b.kind}, ${b.rows.length} rows) · run ${id}\n\nYou are the reviewer for Nani jo Ghar's evidence loop (decision 82). You are not the session that built these changes${index.builder ? ` (${index.builder})` : ""}.${isAudit ? " This is an AUDIT: each row already has a cached PASS from another model (named below); judge it afresh, without regard to that verdict." : ""}\n\nFor each row: read its sheet (PNG, if it has one: its panels are labelled A-D, or up to A-L over two sheets for a row with more probes: read both; the labels repeated below) and its text file (.md: the panels in words, the voice timeline, text captures, expect results). Judge against the row's own words (Zafar's feedback), nothing else. Words the engine marks loan:en (thank you, mixed, cup, film) are Kutchi (decision 87): never flag them as English. A line shown as grey-italic English with the hidden to-record tag is allowed (decision 84): it is not an English leak and not a missing clip; only its absence from Mum's list is a gap.\n1. Flaws first: anything wrong in the panels (clipping, overlap, English for the child, a bubble away from its speaker, old art), even off the row's point.\n2. Then one line in ${rel(vf)}:\n   \`ID | PASS: <panel>, <what that panel shows that proves it>\` e.g. \`CLN-100 | PASS: A, L3 wrap crosses the kneecap, 6 turns\`\n   \`ID | FAIL: <panel>, <what is wrong>\`\n   \`ID | EVIDENCE: <what the sheet is missing>\` only when the sheet does not show the row's state at all (it goes to the tool owner, never to the list as a FAIL).\n   A PASS that names no panel is refused. A text-only row (Sheet: (text only)) names its text capture instead, by its label in the .md: \`SH-45 | PASS: SH-45-p1-L1-1366x768 dom, the line reads ...\` (or \`PASS: text, ...\`); a script capture by the command printed after its \`####\` heading: \`LNG-04 | PASS: grep -n -i "ph-turner" data/lang/reports/gap-list.md, the placeholder is on Mum's list\`. Sound quality and feel are not yours: say so in a FAIL only when the row is about what you can read (which clip, when, in what order).\n3. First line of the verdict file: \`judge: <your model and session>\`.\n\n`;
     for (const x of b.rows) t += `## ${x.id} [${x.row.kind}] ${x.row.section}${x.audit ? ` (cached PASS by ${x.audit.judge}: ${x.audit.line})` : ""}\n- Issue: ${x.row.issue}\n- Check: ${x.row.check}\n- Sheet: ${x.r.png ? ((x.r.sheets || []).length > 1 ? x.r.sheets : [x.r.png]).map((s) => join(ROOT, s)).join(" and ") : "(text only)"}\n- Text: ${join(ROOT, x.r.md)}\n${x.r.panels.map((p) => `- Panel ${p}`).join("\n")}\n\n`;
     writeFileSync(join(jdir, `${name}.md`), t);
     if (!existsSync(vf)) writeFileSync(vf, `judge: \n${b.rows.map((x) => `${x.id} | `).join("\n")}\n`);
@@ -465,7 +486,9 @@ function collect() {
   const cache = loadCache(), today = new Date().toISOString().slice(0, 10);
   let n = 0; const evidence = [], refused = [], disagree = [], vlog = loadLog(), newLog = [];
   for (const f of existsSync(jdir) ? readdirSync(jdir).filter((x) => /\.verdicts\.md$/.test(x)).sort() : []) {
-    const v = parseVerdicts(readFileSync(join(jdir, f), "utf8"));
+    // a text-only row's PASS may name the capture it read by its label in the row's .md (a script's command, a probe id)
+    const labelsOf = (rid) => { const r = index.rows[rid]; try { return r && r.md ? captureLabels(readFileSync(join(ROOT, r.md), "utf8")) : []; } catch (e) { return []; } };
+    const v = parseVerdicts(readFileSync(join(jdir, f), "utf8"), labelsOf);
     if (!v.lines.length) continue;
     if (!v.judge) { refused.push(`${f}: no "judge:" line`); continue; }
     if (builder && v.judge.toLowerCase().includes(String(builder).toLowerCase())) { refused.push(`${f}: judged by the builder (${v.judge})`); continue; }

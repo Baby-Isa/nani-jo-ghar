@@ -69,7 +69,37 @@ export function batches(rows, { visual = 10, text = 30 } = {}) {
 // ---------- the reviewer's verdict file ----------
 // "judge: <model and session>" then one line per row: "ID | PASS: B, <what the panel shows>" | "ID | FAIL: A, <what is wrong>" |
 // "ID | EVIDENCE: <what is missing>" (goes to the tool owner, never to regressions.md). A PASS must cite its panel first (Fable 17).
-export function parseVerdicts(text) {
+// the labels a text-only row's text file offers a PASS to cite (s08 w6L: SH-115, CLN-172, LNG-04 were refused for naming the script
+// they read): each "#### <label>" heading of the .md without its "(exit N)" or " · <what>" tail (a cmd capture's command; a dom,
+// voice or contract capture's probe id), and each probe id of its "Probes" bullets
+export function captureLabels(md) {
+  const out = new Set();
+  for (const raw of String(md || "").split("\n")) {
+    let m;
+    if ((m = /^####\s+(.+?)\s*$/.exec(raw))) {
+      const h = m[1].replace(/\s+\((?:exit|code)\s*[\w-]*\)\s*$/, "").trim();
+      if (h) out.add(h);
+      const head = h.split(" · ")[0].trim();
+      if (head) out.add(head);
+    } else if ((m = /^-\s+([A-Z]+-[A-Z0-9-]*\d+-p\d+[\w@.#-]*):/.exec(raw))) out.add(m[1]);
+  }
+  return [...out];
+}
+// the longest label the line starts with (a PASS "naming its capture label", as the batch file tells the judge), else null
+export function labelOf(line, labels) {
+  const L = String(line || "").trim().toLowerCase();
+  let best = null;
+  for (const lab of labels || []) {
+    const k = String(lab).trim().toLowerCase();
+    if (k.length < 3 || !L.startsWith(k)) continue;
+    const next = L.charAt(k.length);
+    if (next && !/[\s,:;.)(\-]/.test(next)) continue;
+    if (!best || k.length > best.length) best = String(lab).trim();
+  }
+  return best;
+}
+// labelsOf(id) -> the row's capture labels (optional): a PASS that opens with one stands as that text capture's
+export function parseVerdicts(text, labelsOf = null) {
   const out = { judge: null, lines: [], rejected: [] };
   for (const raw of String(text || "").split("\n")) {
     const l = raw.trim();
@@ -80,7 +110,9 @@ export function parseVerdicts(text) {
     // a text-only row cites its text capture: "PASS: text, ...", or by its label in the .md ("SH-45-p1-L1-1366x768 dom: ...",
     // "p1-L2 voice, ..."); passFor() below keeps the A-L rule for a row that has a sheet
     const pm = /^(?:panel\s+)?([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*(?![\w-])|(?:[A-Z]+-\d+-)?p\d+(?:-L\d+)?(?:-(?:\d+x\d+|repo))?(?:\s+(?:dom|voice|cmd|contract|text|stage list))?|(?:the\s+)?(?:text|voice|dom|cmd|t)(?:\s+(?:capture|timeline))?)\b\s*(?:\([^)]*\))?\s*[,:;.)-]/i.exec(line);
-    const panel = pm ? pm[1].replace(/^the\s+/i, "").replace(/\s+/g, " ").trim().replace(/^([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*)$/i, (s) => s.toUpperCase().replace(/\s+/g, "")) : null;
+    let panel = pm ? pm[1].replace(/^the\s+/i, "").replace(/\s+/g, " ").trim().replace(/^([A-L](?:\s*(?:,|and|\+|&)\s*[A-L])*)$/i, (s) => s.toUpperCase().replace(/\s+/g, "")) : null;
+    // a text-only row's PASS that opens with a capture label from its .md (a script's command, a probe id): "PASS: grep -n ... data/x.json, all four ..."
+    if (!panel && verdict === "PASS" && labelsOf) panel = labelOf(line, labelsOf(id) || []);
     if (verdict === "PASS" && !panel) { out.rejected.push({ id, why: "a PASS must name the panel it saw first (\"PASS: B, ...\")", line }); continue; }
     out.lines.push({ id, verdict, line, panel });
   }

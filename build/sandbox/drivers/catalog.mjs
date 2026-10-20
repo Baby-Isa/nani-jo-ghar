@@ -53,6 +53,9 @@ export const DRIVERS = {
   // the clinic at its real pace (no &fast=1): the zooms take their 1.5 s (CLN-87, CLN-43, CLN-77); a stage's pop-up and read-along their
   // real time (SH-17, CLN-04: in fast mode the pop-up folds within a second)
   "real-pace": { kinds: ["heal", "clinic-stage"], moments: [] },
+  // (s08 w6L, CLN-107 at L3, CLN-194) the heal game's mistake player at that real pace: a wrong answer's red, shake and flash last their real
+  // 360-600 ms (in fast mode 40-120 ms, between two frames of a filmstrip, and at the eye's L3 the red is gone in the same tick)
+  "mistake-real": { kinds: ["heal"], moments: [] },
   // the mistake player on more kinds of flow (CK-07, ART-08 on the game host; CK-26 in a story day)
   mistake: { kinds: ["lab-cook", "cook-other"], moments: ["rec:wrong-choice", "rec:wrong-tap", "rec:wrong-extra", "rec:wrong-slice", "rec:wrong-stir"] },
 };

@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, lexiconWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceDecision, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
 import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
-import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, captureLabels, labelOf } from "./lib/evidence.mjs";
 import { blank, encodePng } from "./lib/png.mjs";
 
 test("captures: every kind, a capture at another moment, refusals", () => {
@@ -190,6 +190,34 @@ test("verdict files: a text-only row's PASS cites its text capture; a row with a
   // FAIL and EVIDENCE are never refused here
   assert.equal(passRefusal({ verdict: "FAIL", panel: null }, true), null);
   assert.match(passRefusal({ verdict: "PASS", panel: null }, false), /name the panel/);
+});
+
+test("s08 w6L: a text-only PASS that opens with its capture label (a script's command) stands: SH-115, CLN-172, LNG-04", () => {
+  // the three lines of run ev-20261020-030207-6zl that collect refused, and the headings of their .md files
+  const mds = {
+    "SH-115": '# SH-115\n\n## Probes\n\n- SH-115-p1-repo: repo L1 @ -, at now: reached 0x () · the art check\n\n## Text captures\n\n#### node build/tools/art/artcheck.test.mjs (exit 0)\n\n```\nok\n```\n\n#### grep -n "thermometer\\|toe" build/tools/art/artcheck-known.json (exit 0)\n',
+    "CLN-172": '#### grep -n "\\"game\\": \\"cut\\"" data/clinic/pipeline.json (exit 0)\n\n#### grep -n "parked" data/clinic/pipeline.json (exit 0)\n',
+    "LNG-04": '- LNG-04-p2-L1-1366x768: clinic:heal-cut L1\n\n#### grep -n -i "with {x}\\|ph-turner\\|sekelo\\|plaster" data/lang/reports/gap-list.md (exit 0)\n\n#### LNG-04-p2-L1-1366x768 · dom:.cl-side at rec:heal-cut-start\n',
+  };
+  const labelsOf = (id) => captureLabels(mds[id] || "");
+  assert.ok(captureLabels(mds["SH-115"]).includes("node build/tools/art/artcheck.test.mjs"));
+  assert.ok(captureLabels(mds["LNG-04"]).includes("LNG-04-p2-L1-1366x768"), "the probe id before the dot is a label too");
+  const txt = "judge: Fable, text batch\n" +
+    'SH-115 | PASS: node build/tools/art/artcheck.test.mjs (exit 0), test 4 and test 3 pass, so the check now catches the cuts\n' +
+    'CLN-172 | PASS: grep -n "\\"game\\": \\"cut\\"" data/clinic/pipeline.json, the only two matches sit inside the parked block\n' +
+    'LNG-04 | PASS: grep -n -i "with {x}\\|ph-turner\\|sekelo\\|plaster" data/lang/reports/gap-list.md, all four placeholders are on Mum\'s list\n' +
+    "SH-45 | PASS: looks fine\n" +
+    "CLN-120 | PASS: node build/tools/art/other.mjs, not one of this row's labels\n";
+  const v = parseVerdicts(txt, labelsOf);
+  assert.deepEqual(v.lines.map((l) => [l.id, l.panel]), [["SH-115", "node build/tools/art/artcheck.test.mjs"], ["CLN-172", 'grep -n "\\"game\\": \\"cut\\"" data/clinic/pipeline.json'], ["LNG-04", 'grep -n -i "with {x}\\|ph-turner\\|sekelo\\|plaster" data/lang/reports/gap-list.md']]);
+  assert.deepEqual(v.rejected.map((r) => r.id), ["SH-45", "CLN-120"], "a PASS naming no label of its row is still refused");
+  for (const l of v.lines) assert.equal(passRefusal(l, false), null, `${l.id} stands as a text-only row's PASS`);
+  // without the labels (the old call) nothing changes: the three are refused
+  assert.deepEqual(parseVerdicts(txt).lines.length, 0);
+  // a row with a sheet still needs its panel letter, whatever it opens with
+  assert.match(passRefusal(v.lines[0], true), /A-D/);
+  assert.equal(labelOf("grep -n x file.json, fine", ["grep -n x file.json"]), "grep -n x file.json");
+  assert.equal(labelOf("grep -n xfile.json, fine", ["grep -n x"]), null, "a label is a whole word, not a prefix of one");
 });
 
 test("apply: FAIL reopens, PASS marks built, keep rows untouched, applying twice changes nothing", () => {

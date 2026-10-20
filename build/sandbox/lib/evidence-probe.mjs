@@ -460,6 +460,11 @@ export class EvidenceProbe {
           out.samples = r; out.stats = traceStats(r);
           if (!r.some((x) => isFinite(x.y))) out.fail = `"${c.sel}" was never on screen during the trace`;
           out.text = traceTable(r);
+        } else if (c.kind === "js") {
+          // a read-only page value by its dotted path (s08 w6L, MAA-17: Cook.maaniWindow, the flip ring's green in seconds): property reads, never code
+          const v = await page.evaluate((path) => { try { let o = window; for (const k of path.split(".")) { if (o == null) return null; o = o[k]; } return o == null ? null : JSON.stringify(o, (k, x) => (typeof x === "function" ? undefined : x)); } catch (e) { return null; } }, c.path);
+          if (v == null) out.fail = `"${c.path}" is not set on the page at ${hit.name}`;
+          else out.text = `${c.path} = ${v}`;
         } else if (c.kind === "dom") {
           const runs = await this.texts(c.sel);
           if (runs[0] && runs[0].tag === "error") { out.fail = runs[0].text; continue; }

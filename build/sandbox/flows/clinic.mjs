@@ -21,6 +21,7 @@ const SEED = 7;
 //                       and count no hint (SH-102, SH-114: contract-31); 7.5 s are given for the next lines to be said
 //   grab-hold           the ear's first wax drag held on the way while the zoom crops of the tweezers are taken (CLN-173: one prong behind the wax, one over it)
 //   real-pace           the clinic without &fast=1: the zooms and waits take their real time (CLN-87)
+//   mistake-real        the mistake player at real pace (no &fast=1): the wrong answer's shake, red and flash last their real time (CLN-107 at L3, CLN-194)
 export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 
 // mode: "fair" does what the stage asks. "mistake" makes one wrong pick per stage where the stage offers one (e.wrong: a wrong dish, probe,
@@ -29,7 +30,7 @@ export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boi
 export class ClinicPlayer {
   constructor(page, rec, { mode = "fair" } = {}) {
     this.page = page; this.rec = rec; this.seen = new Set(); this.covers = new Set();
-    this.mode = mode; this.mistakes = mode === "mistake"; this.hints = mode === "hint";
+    this.mode = mode; this.mistakes = mode === "mistake" || mode === "mistake-real"; this.hints = mode === "hint";
     this.made = new Set(); this.idled = false; this.bulbs = new Set(); this.peeks = new Set(); this.badges = [];
     this.fast = mode === "heal-fast";
     this.drv = { turns: new Set(), wrongs: 0, tapped: false, tookBack: false, spoke: false };
@@ -430,7 +431,7 @@ export function clinicFlow({ id, title, query, level = 1, timeoutMs = 240000, on
       // second-play keeps the help on (SH-46: help met in the first play is shown again after a pause in the second; with
       // &onboard=0 the heal games' ghost finger never plays at all: s04-hooks, Lifecycle.ghost counted 0)
       const help = ctx.profile === "fresh" || ctx.profile === "second-play" ? 1 : ctx.profile === "seen" ? 0 : onboard || mode === "hint" ? 1 : 0;
-      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" || mode === "tap-through-popup" ? 0 : 1}${mode === "variant-e4" ? "&variant=E4" : ""}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
+      const q = `${query}&seed=${ctx.seed ?? SEED}&quiet=1&fast=${mode === "real-pace" || mode === "mistake-real" || mode === "tap-through-popup" ? 0 : 1}${mode === "variant-e4" ? "&variant=E4" : ""}&nonav=1&onboard=${help}${mode === "lab-log-on" ? "&lab=1" : ""}`;
       if (ctx.profile === "fresh") { await page.goto(`${BASE}/clinic.html?lab=1&nonav=1&quiet=1`, { waitUntil: "load" }); await page.evaluate(() => localStorage.clear()); }
       // a morning at a level: every stage's saved level set first (the lab bar's page, then the morning with &nosave=1)
       if (levels) {
