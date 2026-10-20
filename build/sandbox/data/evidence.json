@@ -5416,10 +5416,10 @@
    "at": "every:cook-done:timing",
    "after": null,
    "capture": [
-    "zoom2:canvas:plate"
+    "zoom2:canvas:rack"
    ],
    "expect": null,
-   "note": "plate skewers straight, parallel, left to right, close; handle off the plate (L2 two skewers, L4 three or four)",
+   "note": "the cooked skewers laid on the plate/rack straight, parallel, left to right, close; handle off the plate (L2 two skewers, L4 three or four)",
    "max": 4,
    "delay": 400
   }
@@ -10091,7 +10091,7 @@
   },
   {
    "flow": "clinic:heal-cut",
-   "path": "fair",
+   "path": "real-pace",
    "level": [
     1,
     2,
@@ -10111,8 +10111,7 @@
    "expect": [
     "lexicon"
    ],
-   "note": "the scrape's plaster colours in Kutchi, not 'yellow plaster'",
-   "delay": 300
+   "note": "the scrape's plaster colours in Kutchi, not 'yellow plaster'"
   }
  ],
  "CLN-120": [
@@ -10686,7 +10685,6 @@
    "flow": "clinic:diagnosis",
    "path": "fair",
    "level": [
-    1,
     2,
     3
    ],
@@ -12518,7 +12516,7 @@
    "at": "before-takeback",
    "after": null,
    "capture": [
-    "strip:.cl-heal:6x200"
+    "strip:.bo-drop:8x200"
    ],
    "expect": null,
    "note": "a tap on a drop in the syringe takes only that drop back up; the barrel never empties by surprise (the driver taps the bottom drop once two are in; level 2, where the drops step never closes itself at the count)"
@@ -13899,8 +13897,7 @@
    "at": "stir-begin",
    "after": null,
    "capture": [
-    "strip:canvas:pot:8x200",
-    "voice"
+    "strip:canvas:pot:8x200"
    ],
    "expect": null,
    "note": "a small chequered flag at 12 o'clock on the rim; the ladle starts under it and each lap counts as it passes (the dial's number changes)"
@@ -13923,6 +13920,25 @@
    "note": "each lap counts as the ladle passes the flag: the dial's number in the picture changes lap by lap",
    "max": 6,
    "kind": "detail"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:stir-lap",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "the stir said aloud, laps counted by voice",
+   "max": 1,
+   "kind": "text"
   }
  ],
  "DAAR-31": [
@@ -14003,14 +14019,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "drv:dish-served",
+   "at": "hidden:#done-btn",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
    "note": "at serve: one mat only, under the served bowl (the dish held on the counter, before the end card)",
-   "kind": "detail"
+   "kind": "detail",
+   "delay": 700
   }
  ],
  "DAAR-34": [
@@ -15119,10 +15136,11 @@
    "at": "every:exp:",
    "after": null,
    "capture": [
+    "zoom2:canvas:pan",
     "zoom2:hook:cook.glowing"
    ],
    "expect": null,
-   "note": "the tea pan's glow (it glows as the next thing in the pan steps): even all round, the same above and below, around the rim and by the hole in the handle ('doesn't look symmetrical')",
+   "note": "the tea pan at every step of the chai (zoomed, WebGL): where it glows (the next thing in the pan steps) the glow is even all round, the same above and below, around the rim and by the hole in the handle ('doesn't look symmetrical')",
    "webgl": true,
    "max": 16
   }
@@ -15161,7 +15179,9 @@
     "1366x768"
    ],
    "profile": "seen",
-   "want": null,
+   "want": [
+    "/\\b(gos|meat)\\b/i"
+   ],
    "at": "every:placed",
    "after": null,
    "capture": [
@@ -15169,7 +15189,7 @@
     "voice"
    ],
    "expect": null,
-   "note": "the raw piece is called gos on the card and in Nani's line; the cooked one is Mishkaki (so the child learns both words); the card says 'Hakri Lakri Mishkaki' with no commas",
+   "note": "the raw piece is called gos on the card and in Nani's line; the cooked one is Mishkaki (so the child learns both words); the card says 'Hakri Lakri Mishkaki' with no commas (the order is seeded to hold a meat skewer: seed 1 at L1 is always a tomato skewer, so the raw piece's word would never be asked)",
    "max": 4
   }
  ],
@@ -15915,6 +15935,25 @@
    ],
    "expect": null,
    "note": "the tweezers' grab: cut out cleanly, one prong in front of the ear and one behind it, none floating in the air"
+  },
+  {
+   "flow": "clinic:heal-ear",
+   "path": "grab-hold",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "drv:grab-held",
+   "after": null,
+   "capture": [
+    "zoom2:image[href*=\"tweezers\"]",
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the tweezers at the grab, held mid-drag and zoomed (real 2x pixels): the far prong behind the wax, the near prong over it, both closing on the blob, none floating",
+   "kind": "detail"
   }
  ],
  "CLN-174": [
@@ -15982,7 +16021,7 @@
  "CLN-178": [
   {
    "flow": "clinic:heal-fever",
-   "path": "real-pace",
+   "path": "fair",
    "level": [
     1,
     2,
@@ -15993,12 +16032,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "zoom-out",
+   "at": "every:heal-fever-change",
    "after": null,
    "capture": [
-    "strip:.cl-heal:6x300"
+    "crop:.cl-stage"
    ],
-   "note": "how the fever game ends: the end is clear to the child (the girl well, the pull-out)"
+   "note": "how the fever game ends: the end is clear to the child (the girl's looks change step by step until she is well); the fever game has no pull-out, so its frames are the stage at every change",
+   "max": 12,
+   "kind": "detail"
   },
   {
    "flow": "clinic:heal-knee",
@@ -16117,11 +16158,10 @@
    "at": "stir-begin",
    "after": null,
    "capture": [
-    "zoom2:hook:cook.gauge"
+    "zoom2:#stage"
    ],
    "expect": null,
-   "note": "Cook's dial (the daar's speed dial), to hold the tooth's gauge against",
-   "webgl": true
+   "note": "Cook's dial (the daar's speed dial), to hold the tooth's gauge against"
   }
  ],
  "CLN-184": [
@@ -16137,11 +16177,29 @@
    "at": "heal:over",
    "after": null,
    "capture": [
-    "strip:.cl-heal:8x300",
-    "voice"
+    "strip:.cl-heal:8x300"
    ],
    "expect": null,
    "note": "an overfill is allowed (the mistake player holds past the green): the gauge shows red, she says so, the filling smooths back into the holes and he fills again"
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "mistake",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-done:over",
+   "after": null,
+   "capture": [
+    "voice",
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "after the overfill: the gauge red, what she says, the filling smoothed back",
+   "kind": "detail"
   }
  ],
  "CLN-186": {
@@ -16288,15 +16346,53 @@
    ],
    "profile": "seen",
    "want": null,
+   "at": "heal:pop",
+   "after": null,
+   "capture": [
+    "zoom2:.hs-tools"
+   ],
+   "expect": null,
+   "note": "the clean cotton bud in the tool box, with nothing on its tip, the moment before the dab",
+   "kind": "detail",
+   "delay": 0
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
    "at": "heal-done:pop",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal@heal:pop",
+    "zoom2:.hs-tools"
+   ],
+   "expect": null,
+   "note": "the bud just after the dab: its tip has the colour of the spot it hit",
+   "kind": "detail",
+   "delay": 300
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-done:pop",
+   "after": null,
+   "capture": [
     "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "a clean cotton bud with nothing on it (before the dab), and the bud with the colour of the blue spot it hit (after the dab)",
-   "kind": "detail"
+   "note": "the whole close-up a beat later: the spot popped and the bud's tip coloured",
+   "kind": "detail",
+   "delay": 800
   }
  ],
  "CLN-196": {

@@ -19,6 +19,7 @@ const SEED = 7;
 //   heal-fast           a morning whose heal game is played with no waits between steps (CLN-109)
 //   replay-tap          once a step is ticked and others are left, the card's face (its replay) tapped: it must say only the steps left,
 //                       and count no hint (SH-102, SH-114: contract-31); 7.5 s are given for the next lines to be said
+//   grab-hold           the ear's first wax drag held on the way while the zoom crops of the tweezers are taken (CLN-173: one prong behind the wax, one over it)
 //   real-pace           the clinic without &fast=1: the zooms and waits take their real time (CLN-87)
 export const HEAL_GAMES = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 
@@ -167,7 +168,11 @@ export class ClinicPlayer {
     } else if (a.do === "drag") {
       const pts = a.pts;
       await m.move(pts[0][0], pts[0][1]); await m.down();
-      for (const [x, y] of pts.slice(1)) await m.move(x, y, { steps: a.steps || 3 });
+      for (const [x, y] of pts.slice(1)) {
+        await m.move(x, y, { steps: a.steps || 3 });
+        // grab-hold (CLN-173): the ear's first wax drag held at its first waypoint, the tweezers closed on the blob, while the probes' zoom crops are taken
+        if (this.mode === "grab-hold" && !this.drv.grabHeld && /^wax/.test(String(a.what || ""))) { this.drv.grabHeld = true; await mark(this.page, "grab-held", { block: true }); }
+      }
       await m.up();
       await this.page.waitForTimeout(this.fast ? 10 : 120);
     } else if (a.do === "hold") {

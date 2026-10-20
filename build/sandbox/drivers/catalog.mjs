@@ -48,6 +48,8 @@ export const DRIVERS = {
   // the clinic's replay (SH-102's clinic half, SH-114): once a step is ticked and others are left, the side card's face is tapped (flows/clinic.mjs
   // replayTap); contract-31 judges that it counts no hint and says only the steps left
   "replay-tap": { kinds: ["heal", "clinic-stage"], moments: ["rec:replay-tap", "rec:after-replay-tap"] },
+  // the ear's first wax drag held part-way (flows/clinic.mjs healAct), so a zoom crop shows the tweezers closed on the blob (CLN-173)
+  "grab-hold": { kinds: ["heal"], moments: ["drv:grab-held"] },
   // the clinic at its real pace (no &fast=1): the zooms take their 1.5 s (CLN-87, CLN-43, CLN-77); a stage's pop-up and read-along their
   // real time (SH-17, CLN-04: in fast mode the pop-up folds within a second)
   "real-pace": { kinds: ["heal", "clinic-stage"], moments: [] },

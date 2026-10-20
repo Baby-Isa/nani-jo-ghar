@@ -782,6 +782,15 @@ function lastAction(tl, t, { steps = false } = {}) {
   }
   return last;
 }
+// the request pop-up's open windows ({t0, t1}) from the probe's popup samples
+function popupWindows(tl) {
+  const pops = [];
+  for (const e of tl) if (e.type === "c" && e.k === "popup") {
+    if (e.open && (!pops.length || pops[pops.length - 1].t1 != null)) pops.push({ t0: e.t, t1: null });
+    else if (!e.open && pops.length && pops[pops.length - 1].t1 == null) pops[pops.length - 1].t1 = e.t;
+  }
+  return pops;
+}
 // 22 (PAN-04, PAN-16): each line said once and whole
 function check22(r, tl, segs, v, nums, add) {
   // Cook's test speed shortens the game's own waits (and its clip timers) but not the help's real-time ones: a repeat is judged
@@ -789,7 +798,11 @@ function check22(r, tl, segs, v, nums, add) {
   // where the timing is real (a #speed1 flow, a child's pace)
   const speed = +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3);
   const inputs = tl.filter((e) => e.type === "c" && e.k === "input");
-  const lines = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && l.role !== "item" && !isCountLine(l, nums)).sort((a, b) => a.t0 - b.t0);
+  // (s08 w6d, wave 6A: a count word is a tally of the child's taps, not a line the game says twice, as contract-30 treats it; and the
+  // request pop-up reads each person's order in their own words, so two people ordering the same thing say the same line twice there)
+  const pops = popupWindows(tl);
+  const inPop = (t) => pops.some((p) => t >= p.t0 - 150 && (p.t1 == null || t <= p.t1 + 150));
+  const lines = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && l.role !== "item" && l.role !== "count" && !isCountLine(l, nums)).sort((a, b) => a.t0 - b.t0);
   const seen = new Set();
   const norm = (s) => normW(s).replace(/\s+/g, " ");
   // MAA-15 (Zafar, 17 Oct: "she should say it the second time"): a step the game opens with its call said again on purpose
@@ -800,6 +813,7 @@ function check22(r, tl, segs, v, nums, add) {
     if (b.t0 - a.t0 >= SAID_AGAIN) break;
     if (b.t0 - a.t0 >= (b.role === "howto" ? SAID_JUDGED : SAID_JUDGED / speed)) continue;
     if (norm(a.text) !== norm(b.text) || !norm(a.text)) continue;
+    if (inPop(a.t0) && inPop(b.t0)) continue;
     if (askedAt(inputs, b.t0) || (norm(a.text).split(" ").length === 1 && inputs.some((x) => x.t <= b.t0 + 20 && b.t0 - x.t <= 400))) continue;
     if (b.role === "call" && againAt.some((t) => t > a.t0 && t <= b.t0 + 50)) continue;
     const s = segAt(segs, b.t0), k = `${s && s.key}|${norm(a.text)}`;
@@ -918,12 +932,18 @@ function check26(tl, v, add, root, lex) {
   if (!pops.length) return;
   const fam = fileWords(root);
   const stops = tl.filter((e) => e.type === "voice-stop").map((e) => e.t);
+  // a tap on the pop-up itself (the test player taps 0.1 s after it opens, on find) ends the read-out as a voice stop does
+  const popTaps = tl.filter((e) => e.type === "c" && e.k === "input" && e.popup).map((e) => e.t);
+  // the words on screen as a to-record placeholder (grey italic, decision 84: dress's "white socks"): never spoken, never missing
+  const placeholder = new Set();
+  for (const e of tl) if (e.type === "c" && e.k === "texts") for (const x of e.list || []) if (x.rec) for (const w of normW(x.t || "").split(" ")) if (w) placeholder.add(w);
   const seen = new Set();
   for (const p of pops) {
     for (const l of v.lines) {
       if (!(l.text || "").trim() || !isCookLine(l) || l.t0 < p.t0 - 100 || (p.t1 != null && l.t0 > p.t1)) continue;
       // a tap through the pop-up (or any stop the game made) ends the read-out: what it had not said yet was cut on purpose
       if (stops.some((t) => t > l.t0 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
+      if (popTaps.some((t) => t >= p.t0 && t > l.t0 - 300 && t <= (l.t1 == null ? l.t0 + 5000 : l.t1) + 200)) continue;
       const heard = new Set();
       const lineWords = new Set(normW(l.text).split(" "));
       let respelled = 0; // device-voice pieces that say a word by its respelling (the lexicon's say: "ba" is "ber")
@@ -934,7 +954,7 @@ function check26(tl, v, add, root, lex) {
         for (const w of normW(t || "").split(" ")) if (w) heard.add(w);
       }
       // (an English placeholder in the line, grey italic, is never spoken: only the lexicon's words are judged)
-      const missing = normW(l.text).split(" ").filter((w) => w && lex.has(w) && !ENGLISH_PLACEHOLDERS.has(w) && !heard.has(w)).slice(respelled);
+      const missing = normW(l.text).split(" ").filter((w) => w && lex.has(w) && !ENGLISH_PLACEHOLDERS.has(w) && !placeholder.has(w) && !heard.has(w)).slice(respelled);
       if (!missing.length || seen.has(l.text)) continue;
       seen.add(l.text);
       add("contract-26", l.t0, `the opening line "${l.text}" was not heard whole: ${[...new Set(missing)].join(", ")} had no sound (no clip played and the device voice did not say it)`);
@@ -1152,6 +1172,8 @@ function check35(r, tl, segs, add, root) {
     // (the rows as the child reads them: the last sample in the stage before that tap with no row under the bulb's English)
     const rows = tl.filter((e) => e.type === "c" && e.k === "rows" && e.t <= first.t && e.t >= s.t0 - 10000 && !(e.list || []).some((x) => x.en)).pop() || last("rows", first.t);
     if (!side || !side.n) continue;
+    // a peeking card (the bulb's peek) shows every word, contract-27's rule: it is not the card at rest that this check judges
+    if (side.peek > 0) continue;
     const at = `${s.key} at L${level}`;
     if (level >= 4) {
       if (side.closed < side.n) add("contract-35", first.t, `${at}: ${side.n - side.closed} of ${side.n} sidebar cards open at the first play tap (hidden at L4: face and headline folded)`);
