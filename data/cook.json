@@ -5069,7 +5069,8 @@
       "assets/cook/items/vessel-thali-t.png",
       "assets/cook/items/v3/daar/chop-heap-*",
       "assets/cook/items-s08b/go-on/go-karahi-s08b*",
-      "assets/cook/tiles-s08b/pastry-tile-s08b*"
+      "assets/cook/tiles-s08b/pastry-tile-s08b*",
+      "assets/cook/items-s08b/potato/potato-pile-v3.webp"
      ],
      "prefetch": [
       "assets/cook/items/chai-station/flame-high.webp",

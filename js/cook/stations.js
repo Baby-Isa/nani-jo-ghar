@@ -816,12 +816,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const prev = img.mood;
       img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : `${who}-happy`);
       const stopBob = this.talkBob(img, who);
+      // ART-19 (s08 w6G; the judge: "Nani keeps the same closed smile in all 8 frames while her line plays"): while she
+      // speaks at the counter her mouth moves as the guide box's face does (js/shared/guide.js flap): her talking face
+      // and her resting one in turn every 130-210 ms (two mouth frames of the one registered picture), until the line ends.
+      // Her mood reads "talk" meanwhile, so her resting blink never cuts in
+      let flapT = 0;
+      if (who === "nani" && opts.mood !== "point" && this.textures.exists("nani-neutral")) {
+        img.mood = "talk";
+        let open = true;
+        const flap = () => {
+          flapT = 0;
+          if (!img.active || img.mood !== "talk") return;
+          open = !open;
+          img.setTexture(open ? "nani-talk" : "nani-neutral");
+          flapT = setTimeout(flap, 130 + Math.random() * 80);
+        };
+        flapT = setTimeout(flap, 130 + Math.random() * 80);
+      }
+      const stopFlap = () => {
+        clearTimeout(flapT);
+        flapT = 0;
+      };
       // S04-B (SH-68, decision 75 (4)): the bubble sits above the speaker's head (below it with no room), placed by
       // the shared lifecycle; head: the top of the picture, in world px (UI.placeBubble maps it to the page)
       const anchor = { head: this.headBox(img), x: img.x, y: img.baseY };
       try {
         await UI.say(line, anchor, who === "nani" ? Object.assign({ nani: true }, opts) : opts);
       } finally {
+        stopFlap();
         stopBob();
         if (img.active) this.setMood(who, opts.after || (prev === "talk" ? "neutral" : prev));
       }

@@ -66,7 +66,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // S2 / Q2: the fillings as top-down heaps, no bowls (samosa only)
   const HEAP = { "ph-keema": "chundo", "veg-01": "potato", "veg-10": "peas", "veg-02": "onion", "veg-12": "chilli", "ph-dhana": "dhania", "veg-carrot": "carrot", "veg-cabbage": "cabbage" };
   // 30 Sept (v3.1): S5's green chilli heap read as peas; R5's sliced chilli rings (cut for daar) take its place
-  const HEAP_ART = { "veg-12": "assets/cook/items/v3/daar/chop-heap-chilli.webp" };
+  // ART-11 (s08 w6G): the potato is the landed PT1 pile (matte, starchy cubes), not the butter-yellow v3 heap
+  const HEAP_ART = { "veg-12": "assets/cook/items/v3/daar/chop-heap-chilli.webp", "veg-01": "assets/cook/items-s08b/potato/potato-pile-v3.webp" };
   const heapUrl = (id) => HEAP_ART[id] || (HEAP[id] ? `${V3}fill-${HEAP[id]}.webp` : null);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = 666;
