@@ -319,7 +319,7 @@ export async function runBook(host, api, day) {
     cam.style.transition = ms ? `transform ${ms}ms cubic-bezier(.45,.05,.35,1)` : "none";
     cam.style.transform = `translate(${tx}px, ${ty}px) scale(${sc})`;
   };
-  const zooming = (on) => root.classList.toggle("cl-zooming", !!on);
+  const zooming = (on) => root.classList.toggle("njg-zooming", !!on);
 
   // ---- the game's context (book-play.js) ----
   const cleanups = [];
