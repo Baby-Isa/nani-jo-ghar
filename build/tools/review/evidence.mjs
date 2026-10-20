@@ -546,7 +546,9 @@ if (a.has("lint-specs")) {
   const { execFileSync: ex } = await import("node:child_process");
   const { readdirSync, statSync } = await import("node:fs");
   let flows = new Set();
-  for (let i = 0; i < 3 && flows.size < 100; i++) { try { flows = new Set(ex(process.execPath, ["build/sandbox/run.mjs", "--list"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 }).split("\n").map((l) => l.split(/\s+/)[0]).filter(Boolean)); } catch (e) { /* a list that fails or comes back short is asked again: a flaky list must not flag every flow */ } }
+  // the list is asked three times and the answers joined: under load one listing has come back without the parked modes'
+  // flows (20 Oct), and a flaky list must not flag a flow that exists
+  for (let i = 0; i < 3; i++) { try { for (const f of ex(process.execPath, ["build/sandbox/run.mjs", "--list"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 }).split("\n").map((l) => l.split(/\s+/)[0]).filter(Boolean)) flows.add(f); } catch (e) { /* asked again */ } }
   if (flows.size < 100) { console.log("lint-specs: run.mjs --list gave too few flows; not judged"); process.exit(2); }
   let corpus = "";
   const walk = (d) => { for (const f of readdirSync(join(ROOT, d))) { const p = `${d}/${f}`; if (statSync(join(ROOT, p)).isDirectory()) walk(p); else if (/\.(js|css|html)$/.test(f)) corpus += readFileSync(join(ROOT, p), "utf8") + "\n"; } };
