@@ -18,7 +18,7 @@ description: Review a finished build session or any change before it goes to Zaf
    ```
    node build/tools/review/touched.mjs --base <ref> --json | node build/tools/review/regress.mjs --stdin
    ```
-3. Run the sandbox command it printed (one browser at a time: `flock -w 1800 ... timeout`). While iterating: laptop size, changed screens only. Before a publish: the full matrix.
+3. Run the sandbox command it printed (one browser at a time: `flock -w 1800 ... timeout`). Between fix rounds: only the changed flows, at every size with `--contract`. The full gate (`run.mjs --gate`) runs once, just before a publish (Zafar, 20 Oct).
 4. Only what changed:
    ```
    node build/tools/review/shotdiff.mjs --run <run id>
@@ -43,4 +43,4 @@ description: Review a finished build session or any change before it goes to Zaf
    A row is built only on a PASS of its evidence (a machine expect or a reviewer citing a panel); a FAIL reopens it before Zafar plays. Tool failures (moment never reached, blank crop, spec error) go back to the tool owner, never to Zafar. Zafar gets the FAIL list, the audit disagreements and the `human` rows (his ear or feel) before he plays. At sprint close: `--run --all`, then `--judge --audit 10`. (`sprintcheck.mjs` stays for the row → flow mapping of rows with no spec.)
 
 ## Then
-Anything broken goes back to the builder as a numbered list; nothing reaches Zafar that breaks a written rule.
+Before a judge's FAIL goes to a builder, read the row's own quote of Zafar: a FAIL that would reverse his design (or a decision in the mode's doc) is dropped and put to him instead (Zafar, 20 Oct). Between rounds run the evidence on changed rows only (`evidence.mjs --run --changed`). Anything broken goes back to the builder as a numbered list; nothing reaches Zafar that breaks a written rule.
