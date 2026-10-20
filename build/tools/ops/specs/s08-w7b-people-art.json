@@ -1,0 +1,59 @@
+{
+  "kind": "art",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 4 hours",
+  "model": "Opus",
+  "effort": "high",
+  "why": "cutting and wiring art, judged by picture",
+  "cost": "about $30-45",
+  "name": "s08 wave 7B, the clinic and the family: cut and wire s08c's crutches, steel cup, the doctor's three-quarter set, the girl's close-ups, the family's talk and blink frames, the seated waiting-room family",
+  "port": 8869,
+  "report": "s08-w7b-people-art",
+  "read": [
+    "build/reports/s08c-art-landing/details.md (every image, the cut notes, the rows each unblocks)",
+    "docs/design-language/art-plans/s08c-art-plan.md (section 6, cut and wire)",
+    ".claude/skills/art-run/SKILL.md (When images land: artcut.py, artdiff.py)",
+    "build/tools/art/specs/s08b.cut.json (the cut spec format)",
+    "docs/design-language/art-bible.md (the locked real people)"
+  ],
+  "owns": [
+    "build/tools/art/specs/s08c.cut.json (the clinic and people lines: append, 7A writes the Cook lines in the same file; keep them in separate entries)",
+    "assets/clinic/**",
+    "assets/characters/**",
+    "js/clinic/**",
+    "data/clinic/**",
+    "css/clinic.css",
+    "js/shared/guide.js and js/shared/order-card.js (the family's talk and blink frames only)",
+    "build/sandbox/data/evidence.json (these rows' specs)",
+    "build/reports/s08-w7b-people-art.md"
+  ],
+  "readOnly": [
+    "js/cook/** except as above, data/cook.json, assets/cook/** (wave 7A)",
+    "sources/art/**"
+  ],
+  "stubs": "a picture that doesn't cut cleanly goes on the redo list, never a code-drawn stand-in",
+  "tasks": [
+    {
+      "do": "Cut and wire CR1 (the crutches lying flat on the belt, CLN-23) and TC1 (the steel cup with no shadow, sitting on the surface, CLN-196). Cut the doctor's three-quarter set DW2 (rest), DT2 (talk), DB2 (blink), colour-shifted toward his sheet's skin swatch together with his wired s08 set so they match (Zafar, 20 Oct: colour-correct, don't redraw), and wire it where he stands beside the patient (CLN-17), talking and blinking.",
+      "accept": "eye: the belt, the taste game and the diagnosis room at 1366x768 and 800x360; the doctor beside the girl, talking"
+    },
+    {
+      "do": "Cut the girl's close-ups GZ1 (aah), GZ2 (eyes; keep the cropped crown, Zafar 20 Oct), GZ3 (sore eye), GZ4 (eyes closed), colour-corrected to her sheet's face, and wire them for the tooth zoom (CLN-163: the drawn girl dissolves into GZ1, no separate photo) and the eye game (CLN-185, ART-19: she blinks and her sore eye shows). Cut NN1/NN2, MA1/MA2, AL1/AL2 (Nana, Ma, Ali talk and blink: paste back only the changed face pixels; pad MA1 to 1536) and wire them so they talk and blink like Nani (ART-19). Cut WR1-WR3 (auntie, uncle, mother with baby, seated) scaled to the old man's height and wire them in the waiting room (ART-23).",
+      "accept": "eye: the tooth zoom and the eye game as filmstrips; the family talking; the waiting room at L1-L5"
+    }
+  ],
+  "flows": [
+    "clinic:pharmacy",
+    "clinic:heal-taste",
+    "clinic:diagnosis",
+    "clinic:heal-tooth",
+    "clinic:heal-eye",
+    "clinic:waiting",
+    "clinic:patient",
+    "cook:fetch",
+    "cook:day1"
+  ]
+}

@@ -25,6 +25,7 @@ Plan (19 Oct; nothing launched until Zafar answers the decisions). **Goal: every
 About $290 in all, ceiling $350. Waiting on Mum, not this sprint: the stir sentence, "put it on", "take it off", the "and" join, *muke*/*khape* (interim lines where the rows say). Not in this sprint unless Zafar says: SH-90 (phones), CK-TAB-01 (tablets), older two-strike art rows not in his notes.
 
 ## Small decisions
+- Zafar, 20 Oct (s08c landed): the doctor's three-quarter set and the girl's close-ups look like them; colour-correct their skin at the cut, don't redraw; keep GZ2's cropped crown; run the 4-image redo; publish only after the s08c art is cut and wired.
 - Zafar, 20 Oct: fix every code fix in Sprint 8, don't push any to the next sprint; samosa fills only what is ordered; the knee wraps eight times at L3; a taller shelf band (about 30%); the plaster tool column keeps its three colours where space is tight; the tomato plural goes to the next recording session; yes to the s08c art run and its five decisions.
 - Zafar, 19 Oct: yes to the plan, the level table (chai L3 = two cups, no half/full: idea 54), the twelve clinic decisions, the sekelo and eye layouts; the scrape parked, the sore arm to the idea bank (wave 6 dropped); budget about $275, ceiling $350. "Set it into motion."
 - Zafar, 18 Oct: yes to all fifteen Cook decisions; the clinic's twelve wait on him.

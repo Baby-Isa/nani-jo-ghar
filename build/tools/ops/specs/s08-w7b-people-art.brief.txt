@@ -1,0 +1,72 @@
+SESSION NAME / MODE:  s08 wave 7B, the clinic and the family: cut and wire s08c's crutches, steel cup, the doctor's three-quarter set, the girl's close-ups, the family's talk and blink frames, the seated waiting-room family
+MODEL AND EFFORT:     Opus, high effort (cutting and wiring art, judged by picture)
+COST ESTIMATE:        about $30-45
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w7b-people-art.context.md (859 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s08c-art-landing/details.md (every image, the cut notes, the rows each unblocks)
+     docs/design-language/art-plans/s08c-art-plan.md (section 6, cut and wire)
+     .claude/skills/art-run/SKILL.md (When images land: artcut.py, artdiff.py)
+     build/tools/art/specs/s08b.cut.json (the cut spec format)
+     docs/design-language/art-bible.md (the locked real people)
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/tools/art/specs/s08c.cut.json (the clinic and people lines: append, 7A writes the Cook lines in the same file; keep them in separate entries)
+  - assets/clinic/**
+  - assets/characters/**
+  - js/clinic/**
+  - data/clinic/**
+  - css/clinic.css
+  - js/shared/guide.js and js/shared/order-card.js (the family's talk and blink frames only)
+  - build/sandbox/data/evidence.json (these rows' specs)
+  - build/reports/s08-w7b-people-art.md
+READ-ONLY (never edit):
+  - js/cook/** except as above, data/cook.json, assets/cook/** (wave 7A)
+  - sources/art/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a picture that doesn't cut cleanly goes on the redo list, never a code-drawn stand-in
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Cut and wire CR1 (the crutches lying flat on the belt, CLN-23) and TC1 (the steel cup with no shadow, sitting on the surface, CLN-196). Cut the doctor's three-quarter set DW2 (rest), DT2 (talk), DB2 (blink), colour-shifted toward his sheet's skin swatch together with his wired s08 set so they match (Zafar, 20 Oct: colour-correct, don't redraw), and wire it where he stands beside the patient (CLN-17), talking and blinking.
+     Accept: eye: the belt, the taste game and the diagnosis room at 1366x768 and 800x360; the doctor beside the girl, talking
+  2. Cut the girl's close-ups GZ1 (aah), GZ2 (eyes; keep the cropped crown, Zafar 20 Oct), GZ3 (sore eye), GZ4 (eyes closed), colour-corrected to her sheet's face, and wire them for the tooth zoom (CLN-163: the drawn girl dissolves into GZ1, no separate photo) and the eye game (CLN-185, ART-19: she blinks and her sore eye shows). Cut NN1/NN2, MA1/MA2, AL1/AL2 (Nana, Ma, Ali talk and blink: paste back only the changed face pixels; pad MA1 to 1536) and wire them so they talk and blink like Nani (ART-19). Cut WR1-WR3 (auntie, uncle, mother with baby, seated) scaled to the old man's height and wire them in the waiting room (ART-23).
+     Accept: eye: the tooth zoom and the eye game as filmstrips; the family talking; the waiting room at L1-L5
+
+REGRESSION ROWS TO RECHECK (189 rows of the fix list and its done archive; * = open or reopened):
+  clinic:pharmacy (35): CLN-23*, CLN-20, CLN-21, CLN-22, CLN-24, CLN-96, CLN-97, CLN-19, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01, CLN-81
+  clinic:heal-taste (51): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-144*, CLN-196, CLN-198*, CLN-195*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-36, CLN-42, CLN-43, CLN-44, CLN-54, CLN-55, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-104, CLN-149, CLN-118, CLN-140
+  clinic:diagnosis (35): CLN-162*, CLN-16, CLN-18, CLN-93, CLN-94, CLN-95, CLN-116, CLN-17, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01, CLN-81
+  clinic:heal-tooth (56): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-180, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-198*, CLN-02, CLN-03, CLN-08, CLN-09, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-35, CLN-42, CLN-43, CLN-44, CLN-51, CLN-52, CLN-53, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103, CLN-124, CLN-125, CLN-128, CLN-129, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+  clinic:heal-eye (64): CLN-38*, CLN-107*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-163*, CLN-186, CLN-189*, CLN-198*, CLN-188*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-85, CLN-87, CLN-109, CLN-112, CLN-114, CLN-152, CLN-151, CLN-81, CLN-30, CLN-39, CLN-42, CLN-43, CLN-44, CLN-47, CLN-59, CLN-60, CLN-61, CLN-62, CLN-63, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-78, CLN-79, CLN-80, CLN-124, CLN-125, CLN-128, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-143, CLN-149, CLN-118, CLN-140, CLN-136, CLN-187
+  clinic:waiting (38): CLN-115*, CLN-10, CLN-11, CLN-12, CLN-13, CLN-14, CLN-15, CLN-90, CLN-91, CLN-92, CLN-110, CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01, CLN-81
+  clinic:patient (27): CLN-159*, CLN-02, CLN-03, CLN-04, CLN-05, CLN-06, CLN-07, CLN-08, CLN-09, CLN-82, CLN-83, CLN-84, CLN-85, CLN-86, CLN-87, CLN-88, CLN-89, CLN-109, CLN-111, CLN-112, CLN-113, CLN-114, CLN-152, CLN-153, CLN-151, CLN-01, CLN-81
+  cook:fetch (16): PAN-06*, PAN-04*, PAN-01, PAN-02, PAN-03, PAN-05, PAN-07, PAN-08, PAN-09, PAN-11, PAN-12, PAN-13, PAN-14, PAN-15, PAN-17, PAN-10
+  cook:day1 (49): CK-01*, CK-TAB-01, CK-44*, CK-45*, CK-46*, CK-48*, CK-06*, CK-02, CK-03, CK-04, CK-05, CK-08, CK-09, CK-10, CK-11, CK-12, CK-13, CK-14, CK-15, CK-16, CK-17, CK-18, CK-19, CK-20, CK-22, CK-23, CK-25, CK-26, CK-28, CK-29, CK-30, CK-33, CK-34, CK-35, CK-27, CK-32, CK-21, CK-38, CK-39, CK-40, CK-41, CK-07, CK-36, CK-37, CK-43, CK-24, CK-31, CK-47, CK-TB-01
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow clinic:pharmacy,clinic:heal-taste,clinic:diagnosis,clinic:heal-tooth,clinic:heal-eye,clinic:waiting,clinic:patient,cook:fetch,cook:day1 --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s08-w7b-people-art-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w7b-people-art` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8869.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w7b-people-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.
