@@ -92,10 +92,13 @@ canvas.day-layer { width: 100%; height: 100%; }
 @keyframes day-again { 0%, 100% { transform: none; box-shadow: var(--njg-shadow); } 30% { transform: scale(1.06); box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); } 65% { transform: scale(1.02); } }
 .day-head-line .day-k, .day-under .day-k { font-size: var(--njg-t2); }
 
-/* the page turn: the right page's bottom corner, 64 px, shown only when the page is done */
-.day-turn { position: absolute; width: 64px; height: 64px; padding: 0 var(--njg-s2) var(--njg-s2) 0; display: flex; align-items: flex-end; justify-content: flex-end; border: 0; border-radius: 0 0 var(--njg-s1) 0; background: var(--njg-cream-lip); clip-path: polygon(100% 0, 100% 100%, 0 100%); color: var(--njg-ink); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 6; }
-.day-turn svg { width: 24px; height: 24px; }
-.day-turn.in { opacity: 1; pointer-events: auto; animation: day-turn-lift 1.4s ease-in-out infinite; }
+/* the page turn: the right page's bottom corner. The whole 64 px square takes the tap (a clipped button only takes it on its
+   triangle); the folded corner is drawn inside it */
+.day-turn { position: absolute; width: 64px; height: 64px; padding: 0; border: 0; background: transparent; color: var(--njg-ink); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 6; touch-action: manipulation; }
+.day-turn-corner { position: absolute; inset: 0; background: var(--njg-cream-lip); clip-path: polygon(100% 0, 100% 100%, 0 100%); border-radius: 0 0 var(--njg-s1) 0; pointer-events: none; }
+.day-turn svg { position: absolute; right: var(--njg-s2); bottom: var(--njg-s2); width: 24px; height: 24px; pointer-events: none; }
+.day-turn.in { opacity: 1; pointer-events: auto; }
+.day-turn.in .day-turn-corner { animation: day-turn-lift 1.4s ease-in-out infinite; }
 @keyframes day-turn-lift { 50% { clip-path: polygon(100% -12%, 100% 100%, -12% 100%); background: var(--njg-cream-edge); } }
 
 /* the pictures */
@@ -178,7 +181,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-tomorrow-sky { position: absolute; inset: 0; }
 .day-tomorrow-sky > svg, .day-tomorrow-sky > img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .day-tomorrow-door { position: absolute; left: 0; top: 0; bottom: 0; width: 34%; background: var(--njg-cream-lip); border-right: var(--njg-s1) solid var(--njg-cream-edge); }
-@media (prefers-reduced-motion: reduce) { .day-find-item.day-wiggle, .day-find-item.day-bounce, .day-spk.day-wobble, .day-turn.in, .day-spine.landed { animation: none; } .day-spine.go { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .day-find-item.day-wiggle, .day-find-item.day-bounce, .day-spk.day-wobble, .day-turn.in .day-turn-corner, .day-spine.landed { animation: none; } .day-spine.go { transition: none; } }
 
 /* ---------- the window ride (js/shared/window-ride.js) ---------- */
 .day-window .day-play { position: relative; overflow: hidden; }

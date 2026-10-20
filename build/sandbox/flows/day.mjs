@@ -158,9 +158,11 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
         if (ourdayAt) await sleep(Math.max(0, ourdayAt + 10500 - Date.now()));
       }
       const n = await page.evaluate(() => window.Day.book.page);
-      if (seen.has(`turn-${n}`)) { await sleep(150); continue; }
-      seen.add(`turn-${n}`);
-      await rec.state(`${prefix}turn-${n}`);
+      // one shot per page turn; a tap that did not take is tried again (never stuck)
+      if (!seen.has(`turn-${n}`)) {
+        seen.add(`turn-${n}`);
+        await rec.state(`${prefix}turn-${n}`);
+      }
       await tapSel(page, rec, e.sel);
       // the page turn's own moment (a filmstrip at drv:page-turn films the page swinging over)
       await mark(page, "page-turn", { block: false });

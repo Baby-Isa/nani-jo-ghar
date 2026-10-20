@@ -257,7 +257,7 @@ export async function runBook(host, api, day) {
   const turnBtn = el("button", "day-turn", book);
   turnBtn.type = "button";
   turnBtn.setAttribute("aria-label", "");
-  turnBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>';
+  turnBtn.innerHTML = '<i class="day-turn-corner"></i><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>';
   let current = null;
   face.addEventListener("click", () => {
     if (!current) return;
