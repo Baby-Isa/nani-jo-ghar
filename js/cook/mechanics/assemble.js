@@ -13,7 +13,8 @@
  *    copy of the glass lies over the food (its walls and highlights; the floor's ring cut out).
  *  - THE SHELF (the bottom 30%): the side-on glass pots (v3/chaat/pot-*.webp, the pantry jars' look),
  *    standing on their measured bottom-centre on one shelf line, a speaker chip under each: tap the pot
- *    = use it, tap the chip = hear it. No written word on a chip at any level (s08 w6M, CHT-14: the card writes it).
+ *    = use it, tap the chip = hear it. The word is written until the child has used it right, then the speaker alone
+ *    from the next round (Cook.chipWord; Zafar, 20 Oct, replacing s08 w6M's speaker-only chips).
  *    Decoys and the "don't" item stand there too. The tomato pot is a stand-in (see POTS).
  *  - TAKE IT BACK (UX §17): until Done, a tap on the bowl lifts the top layer back out to its pot.
  *  - NO TALLY at this station (§14a): the bowl shows what's in.
@@ -964,14 +965,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- the shelf: identical side-on pots (the pantry jars' look), a chip under each ---------- */
       const n = ids.length;
-      // s08 w6M (CHT-14, rule 6, decision 88 (2)): the speaker alone on every chip at every level (was: the word at levels
-      // 1-2, which the open card writes too, so a reader matched letters and won); the glass pot shows its food (the
-      // picture label), the chip says its word
-      const showWord = () => false;
+      // Zafar, 20 Oct (replacing s08 w6M's speaker alone at every level): a pot's word is written until the child has used
+      // it right, then the speaker alone from the next round (Cook.chipWord); the glass pot shows its food (the picture label)
+      const showWord = (id) => Cook.chipWord(id, ctx);
       // the chips' words first: each is never under the 14px floor as rendered (TXT-05), so on a small screen a word can be
       // wider than the usual slot; the pots then spread out over the shelf (their size stays) so every chip fits its slot
       const labels = {};
-      if (showWord()) ids.forEach((id) => (labels[id] = chipLabel(id)));
+      ids.forEach((id) => showWord(id) && (labels[id] = chipLabel(id)));
       const needW = Math.max(0, ...Object.values(labels).map((t) => t.displayWidth + 44 + 8));
       const pitch = Math.min(Math.max(PITCH, needW), (1600 - 190 - 60) / Math.max(1, n));
       const width = n * pitch;

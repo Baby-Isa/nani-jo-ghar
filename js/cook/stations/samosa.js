@@ -5,7 +5,8 @@
  * THREE JOBS, one at a time, each on the whole picture:
  *  1. FILL (SAM-25, decision 10, 18 Oct): six flat pastry strips lie on the big house board at every level (S6). The
  *     fillings sit on the shelf band (the bottom 30%) as top-down heaps, no bowls (S2 / Q2), a `🔊 word` chip under
- *     each (tap the heap = use it, tap the chip = hear it; from level 3 the word hides and the speaker stays). Tap
+ *     each (tap the heap = use it, tap the chip = hear it; the word is written until the child has used it right, then the speaker
+ *     alone from the next round: Cook.chipWord, Zafar, 20 Oct). Tap
  *     any strip, then the heaps: each tap drops ONE spoonful on that strip's bottom-left corner and its word pops
  *     with the family clip; tap another strip and fill that one; a tap on a mound takes a spoon back. Nothing is
  *     refused: ONE tick when they think they're done; every strip is graded then (how many of each kind, how many
@@ -347,7 +348,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.wordId = id;
       img.handAction = false; // no hands anywhere (§15)
       img.home = { x: img.x, y: img.y };
-      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: level < 3, w: Math.min(128, pitch - 12) });
+      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: Cook.chipWord(id, z.ctx), w: Math.min(128, pitch - 12) });
       chip.setScale(z.k);
       img.chip = chip;
       items[id] = img;

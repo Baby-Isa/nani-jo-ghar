@@ -7,7 +7,7 @@
  * Sekelo v2 (docs/design-language/ui-design-system.md §15): the chai v2 grid. The
  * prep bowls sit top-down on the shelf band (Zafar, 29 Sept: this station stays top-down) (identical slots, meat | veg,
  * a `🔊 word` chip under each: tap the bowl = thread it, tap the chip = hear
- * it; speaker-only at level 3 up); the board with its upright skewer on the
+ * it; the word until it is used right, then the speaker alone: Cook.chipWord, Zafar, 20 Oct); the board with its upright skewer on the
  * left of the scene, the skewer rack on the right. A piece's word pops by the
  * skewer as it goes on (the family clip plays). A finished skewer moves to
  * the rack, then the next starts; no picture tally (the rack shows them).
@@ -86,7 +86,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       SK.band(S, z0);
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
-      // (the chips by the round's level, not the thread's knob level: from L3 a speaker only, never the word: the level table)
+      // (the chips: the word until it is used right, then the speaker alone: Cook.chipWord, Zafar, 20 Oct)
       const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)) });
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));

@@ -1076,7 +1076,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place): the
     // kitchen kit's (js/cook/kitchen-kit.js), else this file's copy of it
     const C = V2.CHIP;
-    const showWord = Cook.labelMode(id) === "text" && level < 3;
+    // Zafar, 20 Oct: the word is written until the child has used it right, then the speaker alone (every level)
+    const showWord = Cook.chipWord(id, z.ctx);
     if (Cook.Kit && Cook.Kit.chip && z.k === 1) {
       img.chip = Cook.Kit.chip(S, id, z.X(x), z.Y(C.y), { word: showWord, w: C.w });
       return img;

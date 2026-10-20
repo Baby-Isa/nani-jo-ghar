@@ -10,9 +10,9 @@
  *  - THE SHELF (the bottom 30%): identical slots grouped by kind: liquids (water bottle, milk
  *    carton) | jars (chai leaves, sugar) | spices (small identical jars: the extras and the salt
  *    that looks like sugar). Under each object one `🔊 word` chip: tap the object = use it (into the
- *    chosen pan), tap the chip = hear it. At higher levels the word hides but the speaker stays,
- *    the same size and place. When something goes in, its word pops by the pour or spoon and the
- *    family clip plays.
+ *    chosen pan), tap the chip = hear it. Once the child has used a word right the word hides and the
+ *    speaker stays, the same size and place, from the next round (Cook.chipWord, Zafar, 20 Oct). When
+ *    something goes in, its word pops by the pour or spoon and the family clip plays.
  *  - HEAT, per pan (as before): tap the knob to light it (water first); a ring round the pan fills
  *    like a clock and the chai darkens and rolls; tap the knob in the green to turn it down. Ignore
  *    it and it boils over (foam, a hand job (not scored)). Then the pan is ready.
@@ -449,9 +449,8 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       img.isJar = true;
       img.home = { x: img.x, y: img.y };
       // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place)
-      // level 1 always shows the word (the chai leaves' "chai" is already known from the orders, so its
-      // word stage alone would leave that chip a bare speaker); level 2 follows the word's stage
-      const showWord = level < 2 || (Cook.labelMode(id) === "text" && level < 3);
+      // Zafar, 20 Oct: the word is written until the child has used it right, then the speaker alone (every level)
+      const showWord = Cook.chipWord(id, ctx);
       const chip = S.track(S.add.container(x, CHIP.y).setDepth(D.item + 2));
       const bg = S.add.graphics();
       bg.fillStyle(0x28190a, 0.1);
@@ -1572,6 +1571,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           if (r0) UI.mission.missItem(r0.ids[0], dish, { for: pan.who, no: r0.no });
         }
         if (!guided && !round) {
+          // the water and the leaves are in every chai: a cup made with both is their word used right (Zafar, 20 Oct: then
+          // their chips are the speaker alone, like every other jar's; nothing is marked missed for them)
+          if (got.chai) ["cook-paani", "cook-chai"].forEach((id) => Cook.markRight(id));
           (got.milk ? Cook.markRight : Cook.markMiss)("cook-dudh");
           if (p.khun) (got.sugar ? Cook.markRight : Cook.markMiss)(Cook.numId(p.khun));
           (got.sugar ? Cook.markRight : Cook.markMiss)("cook-khun");

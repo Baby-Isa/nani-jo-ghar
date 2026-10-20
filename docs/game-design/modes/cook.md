@@ -146,6 +146,7 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 - **Art to make:** a front-on clear glass serving bowl (empty), front-on prep bowls for each ingredient (the same bowl, different contents), and layer textures (API if under $2, otherwise a paste-block pack).
 
 ### 14a. Zafar's decisions on chaat v2 (29 Sept)
+- **Words on the chips (Zafar, 20 Oct; every Cook jar and chip, replacing s08 w6M's speaker-only chaat jars and the L1-L2 words elsewhere):** an item's word is written on its chip while the child is still learning it; once they have used it right, from the next round the chip is the speaker alone (`Cook.chipWord`, the core's word progress; "Start over" and "Play as new" bring the words back). "It won't last for long and gives an easier onboarding and learning."
 - **Drop the tally** at this station; the glass shows what's in.
 - **Level 4 = still one person**, but the person's card starts **folded** (face + headline only). The child must remember the order they heard; opening the card to peek costs a hint (it counts on the light-bulb badge). This replaces "two bowls for two people".
 - **The serve and taste moment:** Done → the bowl slides to the person, who tastes it.
