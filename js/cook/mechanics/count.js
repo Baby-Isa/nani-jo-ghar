@@ -20,9 +20,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
+  /*
+   * s08 w6B (CHAI-13, the judge at 1112 ms: "two spoons show in the pan at once"): one teaspoon in a vessel at a time. A
+   * spoonful tapped while the last one's spoon still goes round waits (its count and word were already given at the tap,
+   * so nothing the child does waits) and flies in once that spoon has lifted out; while another waits behind it, its stir
+   * is one quick turn, so a run of quick taps never builds a long queue.
+   */
+  function spoon(z, o) {
+    const into = o.into;
+    if (!into || !into.rim) return spoonNow(z, o);
+    into.spoonsWaiting = (into.spoonsWaiting || 0) + 1;
+    const prev = into.spoonQ || Promise.resolve();
+    const mine = prev
+      .then(async () => {
+        while (into.stirring && into.active !== false) await new Promise((r) => setTimeout(r, 30));
+        into.spoonsWaiting--;
+        return spoonNow(z, Object.assign({}, o, { quick: into.spoonsWaiting > 0 }));
+      })
+      .catch(() => {});
+    into.spoonQ = mine;
+    return mine;
+  }
   /** One spoonful from `bowl` into `into` (a vessel or a point): a spoon with a heap on it. */
-  async function spoon(z, { bowl, into, word, ms = 360 }) {
+  async function spoonNow(z, { bowl, into, word, ms = 360, quick = false }) {
     const S = z.S;
+    if (!S || !S.sys || !S.sys.isActive()) return;
     const col = St.heapColor(word, 0xffffff);
     const c = S.centre(bowl);
     // CHAI-13 (S06 round 3): into a pot or a glass, the spoon that flies in is the stir's own teaspoon, the same size and
@@ -53,7 +75,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // into a pot or a glass: a stir with the teaspoon (28 Sept, s8; CHAI-13, S06: two slow turns, so the spoon is seen
       // going round in the pan, not a blink; nothing waits on it: the next tap is taken while it stirs). It takes over
       // from this spoon in the same frame (or, already going round, goes round again)
-      const stir = St.stirIn(S, into, { ms: 900, turns: 2, dipped: true });
+      const stir = St.stirIn(S, into, quick ? { ms: 520, turns: 1, dipped: true } : { ms: 900, turns: 2, dipped: true });
       sp.destroy();
       await stir;
       return;

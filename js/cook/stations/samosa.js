@@ -123,6 +123,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return Cook.Order.speech([L]);
   };
 
+  /** The station's own pictures every round draws (the board, plate, karahi, jharo, thali, the pastry tile, the fry states). */
+  const BASE_ART = () =>
+    [
+      ["sv3-board", V3 + "board.webp"],
+      ["sv3-plate", V3 + "plate.webp"],
+      ["sv3-karahi", V3 + "karahi.webp"],
+      ["sv3-jharo", V3 + "jharo.webp"],
+      ["sv2-thali", "assets/cook/items/vessel-thali-t.png"],
+    ]
+      // SAM-21: the pastry texture the coded fold is drawn in (the s08 art run's tile, seamless across)
+      .concat([["sv3-pastry", "assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp"]])
+      .concat([0, 1, 2, 3].map((i) => [`sv2-fry-${i}`, `${V2}fry-${i}.webp`]));
+  /*
+   * s08 w6B (CK-48, P28: "the time it takes for you to listen to the instruction ... should be enough time to load"): this
+   * file loads when samosa is chosen (CK-25: with the order, or the lab tile), before its view opens, so its own pictures
+   * start loading into the game now, behind the order's card; the round's St.loadArt then finds them there. Only this
+   * station's art (decision 68), each picture at its one drawn size.
+   */
+  function warm() {
+    try {
+      const S = Cook.scene;
+      if (S && S.load && St.loadArt) St.loadArt(S, BASE_ART().concat(Cook.Kit ? Cook.Kit.art(1, [], { wide: true }) : [])).catch(() => {});
+    } catch (e) {
+      /* the round loads it as before */
+    }
+  }
+  warm();
+
   Mech.combined("samosa", {
     station: "samosa",
     view: "marble",
@@ -151,17 +179,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const pool = p.pool || St.tableDecoys(p.decoyPool || [], kinds.concat(kinds2, exclude), level, { want: kinds.concat(kinds2), ok: (id) => !!heapUrl(id), n: Math.max(0, St.knobInt(kFill.decoys != null ? kFill.decoys : 1) - exclude.length), also: exclude.length, what: "fillings" });
     const ids = Cook.shuffle([...new Set(pool.concat(kinds, count2 ? kinds2 : [], exclude))]);
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the fill's own begin shows it (data.onboard.samosa)
-    // the art loads while the order card is up (a slow phone mustn't meet an empty scene)
-    const art = [
-      ["sv3-board", V3 + "board.webp"],
-      ["sv3-plate", V3 + "plate.webp"],
-      ["sv3-karahi", V3 + "karahi.webp"],
-      ["sv3-jharo", V3 + "jharo.webp"],
-      ["sv2-thali", "assets/cook/items/vessel-thali-t.png"],
-    ]
-      // SAM-21: the pastry texture the coded fold is drawn in (the s08 art run's tile, seamless across)
-      .concat([["sv3-pastry", "assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp"]])
-      .concat([0, 1, 2, 3].map((i) => [`sv2-fry-${i}`, `${V2}fry-${i}.webp`]))
+    // the art loads while the order card is up (a slow phone mustn't meet an empty scene; warm() has started it already)
+    const art = BASE_ART()
       .concat(ids.filter(heapUrl).map((id) => [`sv3-heap-${id}`, heapUrl(id)]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       // the wide hob (S19): one big burner, landscape; the karahi is this station's own (v3, 1.5x)
@@ -178,7 +197,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const steps = St.steps(ctx);
     /* ---------- 1 + 2: fill and fold ---------- */
     // the fill and the fold: the first time, the coach shows each move (X11: data.onboard.samosa)
-    await St.begin(S, ctx, "samosa", "marble");
+    // s08 w6B (CK-48; the probe: the combined host's St.begin (js/cook/zone.js M.host) had already set this same view and
+    // key, then this station loaded its art on the bare worktop and began it AGAIN: a second fade out and in before the board
+    // came, 350-1000 ms of empty marble): the host's begin is this station's begin; its art is warmed when this file loads
+    // (warm() below), so the board is drawn the moment the host hands over. Only the first-time coach, which this station
+    // stops above until its scene exists, starts here (as the second begin did).
+    if (!Cook.inStation || S.viewName !== "marble") await St.begin(S, ctx, "samosa", "marble");
+    else if (St.coach) St.coach(ctx, "samosa");
     if (phases.fill) UI.gist(phases.fill);
     if (ctx.nextStep) ctx.nextStep("Fill");
     const fz = Mech.zone(S, ctx, { id: "fill", level });
@@ -188,11 +213,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     /* ---------- 3: fry, then serve and taste ---------- */
     // the fry: its first-time coach runs (X11: data.onboard.fry; it used to be switched off here)
-    await St.begin(S, ctx, "fry", "marble");
-    if (phases.fry) UI.gist(phases.fry);
-    if (ctx.nextStep) ctx.nextStep("Fry");
+    const fryBegun = St.begin(S, ctx, "fry", "marble");
+    await viewUp(S, "marble", fryBegun);
+    const fryReady = fryBegun.then(() => {
+      if (phases.fry) UI.gist(phases.fry);
+      if (ctx.nextStep) ctx.nextStep("Fry");
+    });
     const yz = Mech.zone(S, ctx, { id: "fry", level });
-    const fried = await fry(yz, { n: made.n, level, redo, steps });
+    const fried = await fry(yz, { n: made.n, level, redo, steps, ready: fryReady });
     // the first try's verdict (graded where it happened): the count and the frying
     const countWrong = made.countWrong || null;
     if (countWrong || fried.bad) yz.listen(false, countWrong || fried.bad);
@@ -213,6 +241,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return result;
   }
 
+  /*
+   * s08 w6B (CK-48, P28; the judge: "the stage is bare marble at 2264 and 2665 ms before the board appears at 3168 ms"): the
+   * station's art is loaded before St.begin (above, while the order's card is up), but St.begin's view fade comes up on the
+   * empty worktop and then waits for the station's pop-up (ctx.nextStep) before the scene was drawn. Now the scene is drawn
+   * the moment the new view is set (as it fades in), and only the play waits for St.begin: the game appears with its
+   * worktop, never after it. Resolves once St.begin has set `view` (its fresh layer), or once St.begin has finished.
+   */
+  function viewUp(S, view, begun) {
+    const layer0 = S.layer;
+    let done = false;
+    begun.then(
+      () => (done = true),
+      () => (done = true),
+    );
+    return new Promise((resolve) => {
+      const check = () => (done || (S.layer !== layer0 && S.viewName === view) ? resolve() : setTimeout(check, 16));
+      check();
+    });
+  }
   /**
    * The phase fold (design system 13): once the fill closes, the card can't be acted on until the plate is
    * tasted, so it folds to face + headline (no ✓: the samosas aren't made yet; the count is only in the
@@ -349,7 +396,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const STRIP_H = 290; // a strip's height at full size (design px); its length is the fold's (Cook.Pastry)
   const PPU = 300; // the fold's canvas px per strip height
   const STRIPS = 6;
-  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps }) {
+  async function fillFold(z, { ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps, ready = null }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
     const z0 = z;
     z = Cook.liftZone(z0);
@@ -500,6 +547,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       strips.push(st);
     }
     await Cook.wait(260 + 40 * STRIPS);
+    if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
     let active = null;
     // (the test hook focus, flow.js: the strip's filling corner, where each spoonful lands and puffs; CK-27's filmstrip)
     Cook.focusBox = () => {
@@ -993,7 +1041,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- 3: fry in the karahi on the wide hob, lift onto the paper-lined plate ---------- */
-  async function fry(z, { n, level, redo, steps }) {
+  async function fry(z, { n, level, redo, steps, ready = null }) {
     const z0 = z;
     z = Cook.liftZone(z0);
     const S = z.S;
@@ -1039,6 +1087,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // nothing fries), and on again. T17: Chulo bar!, then Tar!
     const cx = at.x;
     const cy = at.y;
+    if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
     steps.to("samosa:fire");
     await new Promise((resolve) => {
       burner.knobHit.handAction = false;
@@ -1310,6 +1359,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (Cook.samosaTwo: build/shoot_samosa_v3.py asks for an order with two kinds, from level 3)
       for (let i = 0; Cook.samosaTwo != null && L.level >= 3 && !d.count2 === !!Cook.samosaTwo && i < 40; i++) d = R.samosa.make(who, { level: L.level });
       L.card(d, R.samosa.steps(d));
+      // s08 w6B (CK-48: the combined host opens the worktop before the station loads its pictures): they load while the
+      // order's card is read (every filling's heap the round can offer, this station's own art only)
+      const heaps = [...new Set([].concat(Object.keys(d.fillings || {}), Object.keys(d.fillings2 || {}), Cook.data.recipes.samosa.lists.fillings_all || []))].filter(heapUrl);
+      const kit = Cook.Kit ? Cook.Kit.faceArt(who).concat(Cook.Kit.art(1, [], { wide: true })) : [];
+      await St.loadArt(L.S, BASE_ART().concat(heaps.map((id) => [`sv3-heap-${id}`, heapUrl(id)]), kit)).catch(() => {});
       await L.station("samosa", { fillings: d.fillings, exclude: d.no, decoyPool: Cook.data.recipes.samosa.lists.fillings_all, count: d.count, fillings2: d.fillings2, count2: d.count2, who });
     },
   });

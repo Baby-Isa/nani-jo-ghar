@@ -497,10 +497,13 @@
     if (UI.naniMuted()) return callNote(s, "skip-muted");
     const G = global.NaniGuide;
     // MAA-15 (Zafar, 17 Oct: maani's Firai on both turns): a step opened with "again" is called even if its words were just said
-    if (!s.again && G && G.recentlySaid && G.recentlySaid(Lang.plain(s.line))) return callNote(s, "skip-said");
+    if (!s.again && G && (G.recentlySaidIn || G.recentlySaid)(Lang.plain(s.line))) return callNote(s, "skip-said");
     callNote(s, s.again ? "queued-again" : "queued");
+    s.callWaiting = true; // (s08 w6B, contract-36: a call still waiting when its step closes is logged skip-closed then: glow below)
     const line = Lang.role(copyLine(s.line), "call");
     queued(() => {
+      if (!s.callWaiting) return null; // (already logged skip-closed as its step closed)
+      s.callWaiting = false;
       if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
       if (guide) guide.talk(true);
       return Lang.speak(line).finally(() => guide && guide.talk(false));
@@ -519,7 +522,16 @@
         if (guide) guide.set("");
       },
       speak: (s) => (s.line && Lang.hasVoice(s.line) && guide ? queued(() => speakAlong(s.line, guide.el)) : null),
-      glow: (s, on) => s.glow && s.glow(on),
+      glow: (s, on) => {
+        // s08 w6B (contract-36, day 6's pantry: the last thing tapped while step 8's call waited behind a count, then the stage
+        // ended and the queue was dropped, so neither the call nor its skip was logged): a step that closes with its call still
+        // waiting logs the skip now
+        if (!on && s && s.callWaiting) {
+          s.callWaiting = false;
+          callNote(s, "skip-closed");
+        }
+        return s.glow && s.glow(on);
+      },
       level: () => orderLevel(),
       onHelp: (s) => Cook.onHelp && Cook.onHelp("hint", { ids: s.ids || [] }),
       call: (s) => stepCall(s),
@@ -1059,6 +1071,15 @@
       // the order's level: how long the light bulb shows English (data.calm.bulbMs)
       level: orderLevel(),
     };
+    // s08 w6B (contract-35, contract-36: the day flows were judged at their flow's label, L1, while day 3's maani and chai are
+    // L3 and a seen profile plays later dishes higher): the order's own level, for the checks (the sidebar's data-level and a
+    // Lifecycle note "order-level"), never shown to the child
+    try {
+      if ($("#side")) $("#side").dataset.level = String(mission.level);
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-level", { step: String(mission.level), by: String(who || "") });
+    } catch (e) {
+      /* only a marker */
+    }
     UI.bulbOff();
     // SH-59 (C16): a new order starts with the "?" calm (no pulse left over from the last station or a conversation)
     if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
@@ -1923,7 +1944,12 @@
     const face = c.querySelector(".oc-face");
     // SH-102, SH-114 (Zafar, 18 Oct: "they should just read out starting from the remaining steps"): a replay is free and says only the steps
     // not yet done (all of it while nothing is done, and when everything is); a recast (rows) says those rows
-    const parts = rows ? c._parts().filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : c._parts(true);
+    // s08 w6B (contract-31: a replay said "trae khun.", a step already ticked): once every step is done there is nothing left
+    // to say but whose it is, so a replay then says the headline only (never a ticked row again)
+    const all = c._parts();
+    const body = all.slice(1).filter((p) => p && p.row);
+    const allDone = !rows && body.length > 0 && body.every((p) => p.row.done);
+    const parts = rows ? all.filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : allDone ? all.slice(0, 1) : c._parts(true);
     c.classList.add("speaking");
     if (face) face.classList.add("on");
     try {
@@ -1989,6 +2015,8 @@
    */
   function replayLine() {
     const rows = [].concat(...mission.ladders.map((L) => Order().rows(L).filter((r) => !r.head)));
+    // (s08 w6B, contract-31: everything done, the headline alone; nothing done, all of it)
+    if (rows.length && rows.every((r) => r.done) && mission.ladders.some((L) => L.head)) return Order().speech(mission.ladders.map((L) => Object.assign({}, L, { sections: [] })));
     if (!(rows.some((r) => r.done) && rows.some((r) => !r.done))) return mission.line;
     return Order().speech(mission.ladders.map((L) => Object.assign({}, L, { head: null, sections: L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null, groups: s.groups.map((g) => g.filter((r) => !r.done)).filter((g) => g.length) })).filter((s) => s.groups.length) })));
   }

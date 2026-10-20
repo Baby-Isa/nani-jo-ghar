@@ -131,6 +131,15 @@
   const norm = (t) => String(t || "").toLowerCase().replace(/\s+/g, " ").trim();
   G.markSaid = (t) => spoken.set(norm(t), Date.now());
   G.recentlySaid = (t) => Date.now() - (spoken.get(norm(t)) || -1e9) < G.REPEAT;
+  // s08 w6B (contract-22, tadka: "Pela loon." said as part of her whole list, then again as its step's call 1.8 s later): said
+  // a moment ago on its own or inside a longer line
+  G.recentlySaidIn = (t) => {
+    const k = norm(t);
+    if (!k) return false;
+    const now = Date.now();
+    for (const [line, at] of spoken) if (now - at < G.REPEAT && line.includes(k)) return true;
+    return false;
+  };
   const logHelp = (what, info) => {
     try {
       if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note(what, info);

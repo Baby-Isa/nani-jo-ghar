@@ -647,7 +647,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       // SH-39 (D6): the running count sits on the pan in use, over its rim on the side away from the handle
       // (anchored by its right edge at the left of the rim; the word's bubble keeps clear of it (popAt): the DOM badge keeps
       // its size on a phone while the pan shrinks, S05-C3)
-      if (UI.tallyAt) UI.tallyAt([pan.x - panR * 0.7, pan.y - panR * 1.02], { anchor: "right" });
+      if (UI.tallyAt) UI.tallyAt(tallyPt(pan), { anchor: "right" });
       if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
       if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
       pan.extras.forEach((id) => UI.count(spoonsOf(pan, id), { speak: false, id }));
@@ -667,6 +667,23 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       UI.mission.closeItem([], dishNo(), { all: true, for: pan.who });
     };
 
+    /*
+     * s08 w6B (CHAI-19, CHAI-08 judges: "word pills ... sit on the hob's top rim above the left pan"): the count badge's point
+     * (its bottom middle, js/shared/tally.js) is just over the pan's rim on the side away from the handle (SH-39), unless the
+     * badge would then lie across the hob's top edge (two pans on a short stage: the pans reach almost to it); then it sits
+     * wholly above the hob, on the worktop, its bottom a little clear of the edge.
+     */
+    // the hob's steel frame along its top: a pill whose top is less than this below the hob's top edge reads as sitting on the
+    // rim (844x390 L3: a bubble 12 px inside the edge, on the frame), so it goes wholly above the hob instead
+    const RIM_CLEAR = 40;
+    const BADGE_CSS_H = 48; // the badge's height on screen, CSS px (js/shared/tally.js, phone and laptop alike)
+    const pxPerWorld = () => UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+    const tallyPt = (pan) => {
+      const x = pan.x - panR * 0.7;
+      const y = pan.y - panR * 1.02;
+      const h = BADGE_CSS_H / pxPerWorld();
+      return y - h < hobY + RIM_CLEAR ? [x, hobY - 10] : [x, y];
+    };
     /* ---------- the word pop (§4: learning happens during the action) ---------- */
     const pop = (id, pan, { speak = true } = {}) => {
       const k = Math.max(1, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
@@ -682,9 +699,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       t.x = -w / 2 + 50;
       c.add([g, t]);
       const { x, y } = popAt(pan, w * k, 59 * k);
+      const v = Cook.view || {};
+      const drift = y - (59 * k) / 2 - 14 >= (v.top || 0) + 10 ? 14 : 0; // (CHAI-19: no room above, no drift up)
       c.setPosition(x, y + 14);
       S.tweens.add({ targets: c, alpha: 1, y, duration: 180, ease: "Back.easeOut" });
-      S.tweens.add({ targets: c, alpha: 0, y: y - 14, delay: 1900, duration: 320, onComplete: () => c.destroy() });
+      S.tweens.add({ targets: c, alpha: 0, y: y - drift, delay: 1900, duration: 320, onComplete: () => c.destroy() });
       if (speak && !UI.naniMuted()) Lang.popWord(id);
       return c;
     };
@@ -711,19 +730,29 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
      */
     const popAt = (pan, W, H) => {
       const v = Cook.view || {};
-      const top = (v.top || 0) + 10;
+      // (s08 w6B, CHAI-19: the camera's own view of the world is what shows; at 844x390 Cook.view.top sat level with the hob's
+      // top and pushed the bubble back onto its rim)
+      const wv = S.cameras && S.cameras.main && S.cameras.main.worldView;
+      const top = (wv && wv.height ? wv.y : v.top || 0) + 10;
       const left = (v.left || 0) + 10;
       const right = (v.right || 1600) - 10;
       let x = pan.x;
-      let y = pan.y - rimR - 12 - H / 2;
+      let y = pan.y - rimR - 16 - H / 2;
+      // s08 w6B (CHAI-19): never across the hob's top edge: where the pan reaches almost to it, the bubble sits wholly above
+      // the hob, centred on the pan
+      const offRim = (v) => (v - H / 2 < hobY + RIM_CLEAR && v + H / 2 > hobY - 10 ? hobY - 10 - H / 2 : v); // (only ever up)
+      if (y - H / 2 < hobY + RIM_CLEAR) y = hobY - 10 - H / 2;
       const bb = badgeBox();
       const hits = (cx, cy) => bb && cx - W / 2 < bb.x1 + 8 && cx + W / 2 > bb.x0 - 8 && cy - H / 2 < bb.y1 + 8 && cy + H / 2 > bb.y0 - 8;
       if (hits(x, y)) {
-        const above = bb.y0 - 8 - H / 2;
-        if (above - H / 2 - 14 >= top) y = above;
+        // above the count badge, and still never across the hob's top edge (1366x768: the badge sits just under the edge)
+        const above = offRim(Math.min(bb.y0 - 8 - H / 2, y));
+        if (above - H / 2 - 14 >= top && !hits(x, above)) y = above;
         else x = bb.x1 + 8 + W / 2;
       }
-      y = Math.max(top + H / 2 + 14, y);
+      // (the room above a short stage's hob is tight: the bubble may come up to just under the view's top; it then fades
+      // where it is, never drifting up: pop() below)
+      y = Math.max(top + H / 2 + 2, y);
       x = Math.max(left + W / 2, Math.min(right - W / 2, x));
       return { x, y };
     };

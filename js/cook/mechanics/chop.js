@@ -74,6 +74,44 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!ids.length) return {};
       ids.forEach((id) => Cook.markSeen(id));
       const hide = St.hideKnown(ctx);
+      /*
+       * s08 w6B (contract-30, chaat: "Kali hakro bataato." said, and no card written in the stage held "hakro"): a chop run with
+       * no card of its own from its caller (daar passes onCall and keeps Nani's chop card itself; the Chop tile ticks the order
+       * card's rows) gets Nani's chop card the way daar's station has it: her face, "chop these", a row per thing in exactly
+       * the words she says (the number and the thing; from L3 the item word dotted, the number written), ticked at the end.
+       */
+      const M = UI.mission;
+      let own = null;
+      if (!onCall && !tick && M && M.addCard && M.removeCard) {
+        const lv = Cook.roundLevel ? Cook.roundLevel(ctx) : z.level || 1;
+        const dot = (w) => !!(Cook.dotItem && Cook.dotItem(w, lv));
+        const head = Lang.line("chop-these");
+        const rowOf = (id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id)), { hide: dot }), done: false });
+        const rows = Object.keys(want).map(rowOf);
+        const data = () => ({
+          person: { id: "nani", face: UI.faceUrl ? UI.faceUrl("nani") : "", name: "Nani" },
+          headline: { html: Lang.html(head), rec: !head.ok },
+          items: rows.map((r) => ({ label: r.label, count: 2, parts: [], done: r.done, key: r })),
+        });
+        const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
+        try {
+          M.addCard("chop-nani", data(), cardOpts);
+          // R4 (contract-20: one face per person): while she asks on her own card, her box keeps only its tools, as in daar's
+          if (UI.guideStrip) UI.guideStrip(true);
+          own = {
+            tickAll() {
+              rows.forEach((r) => (r.done = true));
+              M.addCard("chop-nani", data(), cardOpts);
+            },
+            close: () => {
+              M.removeCard("chop-nani");
+              if (UI.guideStrip) UI.guideStrip(false);
+            },
+          };
+        } catch (e) {
+          own = null; // (the order card alone, as before)
+        }
+      }
       // S04-B (DAAR-13, ART-17, Z8): the new knife (the art run's, no hand) is the mechanic's own default, wherever it's
       // run (the Chop tile too, not only daar); the old hand-and-knife only if that art can't load
       if (!knifeKey) {
@@ -171,7 +209,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // DAAR-35 (P55, Zafar 17 Oct: "the items should just come continuously"): a round lasts its throws; the next one's
         // throws follow straight on, at the same spacing, while the last round's are still in the air. Only the last round
         // waits for the air to clear (its flight)
-        return { i, targets: tg, kinds, bag, every, secs: bag.length * every };
+        return { i, targets: tg, kinds, bag, size: bag.length, every, secs: bag.length * every };
       });
       const total = rounds.reduce((a, r) => a + r.secs, 0) + flight;
       // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
@@ -501,6 +539,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       for (const r of rounds) {
         phase = r;
         roundT = 0;
+        if (r.i > 0) {
+          // s08 w6B (DAAR-35, contract-65 at L3: a 175 ms gap at the switch): the next wave's first throw goes on its beat
+          // first; the card's new rows and her line (DOM work and a clip starting, a slow frame) come just after it, while
+          // it rises, so nothing the switch does can hold a throw back
+          await new Promise((resolve) => {
+            const off = z.tick(() => {
+              if (r.bag.length === r.size && running) return;
+              off();
+              resolve();
+            });
+          });
+        }
         // DAAR-34 (P54): the card shows this round's rows as she calls them (a caller's cue; daar's chop card fills its dots)
         if (onCall) onCall(r.targets.slice(), r.i);
         if (r.i === 0) {
@@ -551,6 +601,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       // the step has closed (the ring ran out): its rows tick, count rows too, right or not (UX 11)
       if (tick && ctx.closeItem) ctx.closeItem(ids);
+      if (own) {
+        own.tickAll();
+        await Cook.wait(400);
+        own.close();
+      }
       ctx.result.chopped = cut;
       z.skill(100, "chop");
       S.sparkle(z.X(800), z.Y(450));
@@ -569,6 +624,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const many = (o) => [o.onions, o.tomatoes, o.chillies].filter(Boolean).length >= 2;
       for (let i = 0; i < 30 && !many(d); i++) d = R.daal.make("nana", { level: L.level });
       L.card(d, ["Chop"]);
+      // s08 w6B (CK-48: the bare board for 1.8 s while the knife loaded after the view opened): the knife loads while the
+      // order's card is read
+      const kit = St.art("knife");
+      if (kit) await St.loadArt(L.S, [[St.artKey("knife"), kit.file]]).catch(() => {});
       await L.station("chop", { targets: { "veg-02": d.onions, "veg-03": d.tomatoes, "veg-12": d.chillies }, no: d.onions ? [] : ["veg-02"], pool: Cook.data.recipes.daal.lists.veg, tick: true });
     },
   });
