@@ -1,12 +1,15 @@
 /*
- * The window ride on a trip day (js/shared/window-ride.js, the clinic's belt over a scrolling view; data/day.json window.rides).
- * The shared frame: Nani's guide box at the top of the sidebar (her face = replay, her call written as she says it, the bulb),
- * the card of what we'll see under it (the things' words, each ticked when spotted), the play area the view out of the window.
- * The request pop-up opens first and reads the card out (decision 53), folds into the sidebar, then the car goes: Nani asks
- * "Where is the dog?" (an engine sentence) as each group of look-alikes comes by, and the child taps it as it passes.
+ * The window ride on a trip day (js/shared/window-ride.js: the view out of the car's window, the road going by; data/day.json
+ * window.rides). The shared frame: Nani's guide box at the top of the sidebar (her face = replay, her call written as she says
+ * it, the bulb), the card of what we'll see under it (the things' words, each ticked when spotted), the play area the view out
+ * of the window. The request pop-up opens first and reads the card out (decision 53), folds into the sidebar, then the car goes:
+ * Nani asks "Where is the dog?" (an engine sentence) as each group of look-alikes comes into view, and the child taps it as it
+ * passes; a missed one comes round again until it is found. Between the finds she says speed up or slow down (the level's
+ * speeds; engine lines, grey to-record placeholders until Mum records them) and the whole road goes faster or slower.
  * Each thing spotted is a `saw` line in the day log (the evening book's "spotted" page).
  *
- *   await runWindow(el, api, day) -> the ride's result {right, helped, missed, calls, won, hints}
+ *   await runWindow(el, api, day) -> the ride's result {right, helped, missed, calls, found, won, hints}
+ *   ?ride=slow|fast (tests and the lab): Nani's speed held from the ride's start (she says it once, before the first thing)
  */
 import { paintSky } from "./sky.js";
 
@@ -15,12 +18,13 @@ export async function runWindow(el, api, day) {
   const trip = data.trips[day.trip] || data.trips[Object.keys(data.trips)[0]];
   const ride = data.window.rides[(trip && trip.ride) || Object.keys(data.window.rides)[0]];
   const level = Number(api.q.get("level")) || 1;
+  const hold = /^(slow|normal|fast)$/.test(api.q.get("ride") || "") ? api.q.get("ride") : null;
   const WR = window.WindowRide;
   api.test.state("day/window/intro");
   api.test.expect(() => ({ kind: "wait" }));
   window.Day.stage = "window";
 
-  // the things as the engine says them: a thing it can't say yet is never named (it may pass as scenery)
+  // the things as the engine says them: a thing it can't say yet is never named (it still passes by, unasked)
   const meaningOf = (t) => (typeof t.say === "string" ? { fn: "Item", kind: t.say } : t.say);
   const enOf = (id) => ride.things[id].en || id;
   const callable = (id) => {
@@ -38,7 +42,11 @@ export async function runWindow(el, api, day) {
   const callOf = (thing) => Object.assign({ fn: (ride.call && ride.call.fn) || "Where" }, { [(ride.call && ride.call.arg) || "thing"]: thing });
   const asks = plan.calls.map((c) => api.line({ meaning: callOf(meaningOf(ride.things[c.named])), en: String((ride.call && ride.call.en) || "{x}").replace("{x}", enOf(c.named)) }));
   const head = ride.headline ? api.line(ride.headline) : null;
-  window.Day.ride = { plan, level };
+  // speed up / slow down (data: the ride's speedLines; the engine's sentence or the grey placeholder)
+  const speedLine = {};
+  Object.entries(ride.speedLines || {}).forEach(([k, d]) => !k.startsWith("_") && (speedLine[k] = api.line(d)));
+  const order = WR.SPEED_ORDER;
+  window.Day.ride = { plan, level, hold };
 
   // ---- the frame: sidebar (guide, card) and the play area ----
   const root = document.createElement("div");
@@ -59,6 +67,7 @@ export async function runWindow(el, api, day) {
   let current = -1;
   let hints = 0;
   let bulbOn = false;
+  let speaking = null; // a speed line on show in the guide box
   const G = window.NaniGuide;
   const guide = G
     ? G.mount(guideEl, {
@@ -87,6 +96,7 @@ export async function runWindow(el, api, day) {
   };
   const showCall = (i) => {
     if (!guide || bulbOn) return;
+    if (speaking && i < 0) return guide.set(html(speaking), { rec: !speaking.ok });
     if (i < 0) guide.set("");
     else guide.set(html(asks[i]), { rec: !asks[i].ok });
   };
@@ -137,32 +147,47 @@ export async function runWindow(el, api, day) {
       speed: api.speed,
       rng: api.rng,
       hintMs: ride.hintMs,
+      hold,
       sky: (box) => paintSky(box, data.weather[day.weather] || data.weather.sunny, { w: 1600, h: 900, url }),
       say: (i) => {
         current = i;
+        speaking = null;
         showCall(i);
         api.say(asks[i], { who: "nani", min: false });
       },
-      sayStop: () => {
-        const ln = api.line({ meaning: ride.stopCar.meaning, en: ride.stopCar.en });
-        if (guide && !bulbOn) guide.set(html(ln), { rec: !ln.ok });
-        return api.say(ln, { who: "nani" }).then(() => current < 0 && showCall(-1));
+      // Nani to the driver: faster or slower (the whole road eases to the new speed as she says it)
+      saySpeed: (to, from) => {
+        const ln = speedLine[order.indexOf(to) > order.indexOf(from) ? "up" : "down"];
+        if (!ln) return;
+        speaking = ln;
+        if (current < 0) showCall(-1);
+        api.say(ln, { who: "nani" }).then(() => {
+          if (speaking === ln) speaking = null;
+          if (current < 0) showCall(-1);
+        });
       },
-      onTap: (t) => {
-        if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("act", { during: "day:window" });
-        void t;
-      },
-      onResult: (i, outcome) => {
-        done[i] = outcome !== "missed";
-        drawCard();
-        if (window.Lifecycle && window.Lifecycle.note && done[i]) window.Lifecycle.note("step-close", { step: String(i) });
-        if (done[i]) core.log.log({ arc: "day", errand: `day${day.id}:window`, type: "saw", what: meaningOf(ride.things[plan.calls[i].named]).kind });
+      onPass: (i) => {
+        // gone by unfound: it comes round again (her call shows again when it does)
         if (i === current) {
           current = -1;
           showCall(-1);
         }
       },
-      onEnd: (res) => resolve(Object.assign(res, { hints: res.hints + hints })),
+      onTap: () => {
+        if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("act", { during: "day:window" });
+      },
+      onResult: (i, outcome) => {
+        done[i] = true;
+        drawCard();
+        if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("step-close", { step: String(i) });
+        core.log.log({ arc: "day", errand: `day${day.id}:window`, type: "saw", what: meaningOf(ride.things[plan.calls[i].named]).kind });
+        void outcome;
+        if (i === current) {
+          current = -1;
+          showCall(-1);
+        }
+      },
+      onEnd: (res) => resolve(Object.assign(res, { hints: (res.hints || 0) + hints })),
     });
     api.test.expect(() => r.expect());
     window.Day.rideApi = r;
