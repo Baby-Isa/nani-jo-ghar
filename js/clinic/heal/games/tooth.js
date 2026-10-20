@@ -93,7 +93,9 @@
       kind: "brush",
       move: m,
       i,
-      row: Object.assign({ id: `b${i}` }, Lg.show(Lg.step(i, dirM(m), { lower: i > 0 }), { cap: i === 0 })),
+      // rule 11 (CLN-184): "Pela [down]" was Kutchi round an English word: a move whose word is still to record is the
+      // whole row in grey English ("First down"), never a mix; a move with its word ("pela dabo") stays Kutchi
+      row: Object.assign({ id: `b${i}` }, HS.whole(Lg.show(Lg.step(i, dirM(m), { lower: i > 0 }), { cap: i === 0 }))),
     }));
     steps.push({ id: "drill", kind: "drill", patches, timer: (lv.drillMs != null ? lv.drillMs : K.drillMs[L]) || 0, row: Object.assign({}, Lg.w("tooth-drill", { cap: true }), { id: "drill" }) });
     steps.push({ id: "fill", kind: "fill", row: Object.assign({}, Lg.w("tooth-fill", { cap: true }), { id: "fill" }) });
@@ -285,7 +287,27 @@
     };
     const SOFT_HOLE = soft(`${uid}-soft-hole`, 7);
     const SOFT_FILL = soft(`${uid}-soft-fill`, 3.5);
-    const about = (p, k) => `translate(${(p.cx * (1 - k)).toFixed(2)} ${(p.cy * (1 - k)).toFixed(2)}) scale(${k.toFixed(4)})`;
+    // CLN-181 (the judge: the tip "at the upper-right edge of the cavity", the fill "from the edge"): a hollow's middle is
+    // its jagged outline's own centre of area (mid), not the point it was scattered round: the hollow's shading, the
+    // filling's growth and the nozzle's tip all use it
+    const hollowMid = (p) => {
+      if (p.mid) return p.mid;
+      const q = p.pts || [];
+      let A = 0;
+      let X = 0;
+      let Y = 0;
+      for (let i = 0; i < q.length; i++) {
+        const [x0, y0] = q[i];
+        const [x1, y1] = q[(i + 1) % q.length];
+        const c = x0 * y1 - x1 * y0;
+        A += c;
+        X += (x0 + x1) * c;
+        Y += (y0 + y1) * c;
+      }
+      p.mid = Math.abs(A) > 1e-6 ? { x: X / (3 * A), y: Y / (3 * A) } : { x: p.cx, y: p.cy };
+      return p.mid;
+    };
+    const about = (p, k) => `translate(${(hollowMid(p).x * (1 - k)).toFixed(2)} ${(hollowMid(p).y * (1 - k)).toFixed(2)}) scale(${k.toFixed(4)})`;
     const holesG = s("g", {}, ds); // the drilled holes (under the decay)
     const decayG = s("g", { mask: `url(#${uid}-m)` }, ds);
     const scuffG = s("g", {}, ds); // where healthy enamel was drilled
@@ -313,7 +335,7 @@
         // A2 (5 Oct): O2's decay as the patch's texture, clipped to the patch's own outline (the drill's samples)
         const cid = `${uid}-d${k}`;
         s("path", { d }, s("clipPath", { id: cid }, decayG));
-        s("image", { href: url(a.src), x: p.cx - p.r * 1.5, y: p.cy - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none", "clip-path": `url(#${cid})` }, decayG);
+        s("image", { href: url(a.src), x: hollowMid(p).x - p.r * 1.5, y: hollowMid(p).y - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none", "clip-path": `url(#${cid})` }, decayG);
         s("path", { d, fill: "none", stroke: "#6e4c37", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0.6 }, decayG);
       } else {
         s("path", { d, fill: "#4a3326", stroke: "#2f1f17", "stroke-width": 3, "stroke-linejoin": "round" }, decayG);
@@ -486,7 +508,7 @@
           const mk = s("mask", { id: mid, maskUnits: "userSpaceOnUse", x: -400, y: -300, width: 1600, height: 1100 }, pasteG);
           s("path", { d: p.d, fill: "#fff", filter: SOFT_FILL, transform: tf }, mk);
           const g = s("g", { mask: `url(#${mid})` }, pasteG);
-          s("image", { href: url(fillArt.src), x: p.cx - p.r * 1.5, y: p.cy - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none" }, g);
+          s("image", { href: url(fillArt.src), x: hollowMid(p).x - p.r * 1.5, y: hollowMid(p).y - p.r * 1.5, width: p.r * 3, height: p.r * 3, preserveAspectRatio: "none" }, g);
         }
       });
     };
@@ -619,7 +641,7 @@
       if (c.kind === "fill") {
         placeFill(); // the near view has landed: measured on the screen itself (CLN-182)
         const p = filling(0);
-        putNozzle(p.cx, p.cy);
+        putNozzle(hollowMid(p).x, hollowMid(p).y);
         drawPaste();
         S.cue("fill", CUES.fill, inM(BTN.x, BTN.y, BTN.r + 10));
       }
@@ -811,8 +833,8 @@
     let fillT = null;
     const nozzleTo = (snap) => {
       const p = filling(st.fill);
-      if (snap) return putNozzle(p.cx, p.cy);
-      putNozzle(NZ.x + (p.cx - NZ.x) * 0.25, NZ.y + (p.cy - NZ.y) * 0.25);
+      if (snap) return putNozzle(hollowMid(p).x, hollowMid(p).y);
+      putNozzle(NZ.x + (hollowMid(p).x - NZ.x) * 0.25, NZ.y + (hollowMid(p).y - NZ.y) * 0.25);
     };
     const startFill = () => {
       if (st.holding || st.smoothing) return;

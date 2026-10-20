@@ -8,6 +8,84 @@
    "from": 1
   }
  },
+ "_words": "CLN-119: the words this game teaches (its word review, from the language engine: the game reads the engine, never this list). Listed so build/tools/review/heal-marks.mjs shows them; js/clinic/heal/colour-clips.test.mjs keeps it the engine's",
+ "words": {
+  "taste-spots": {
+   "kutchi": null,
+   "english": "spots",
+   "placeholder": true
+  },
+  "col-green": {
+   "kutchi": "lilo",
+   "english": "green",
+   "from": "the engine"
+  },
+  "col-blue": {
+   "kutchi": null,
+   "english": "blue",
+   "placeholder": true
+  },
+  "col-red": {
+   "kutchi": "laal",
+   "english": "red",
+   "from": "the engine"
+  },
+  "fru-02": {
+   "kutchi": "limu",
+   "english": "lemon",
+   "from": "the engine"
+  },
+  "cook-paani": {
+   "kutchi": "paani",
+   "english": "water",
+   "from": "the engine"
+  },
+  "veg-14": {
+   "kutchi": "aadu",
+   "english": "ginger",
+   "from": "the engine"
+  },
+  "cl-honey": {
+   "kutchi": null,
+   "english": "honey",
+   "placeholder": true
+  },
+  "cook-dudh": {
+   "kutchi": "dudh",
+   "english": "milk",
+   "from": "the engine"
+  },
+  "spi-01": {
+   "kutchi": "hardar",
+   "english": "turmeric",
+   "from": "the engine"
+  },
+  "neg.not": {
+   "kutchi": "na",
+   "english": "no / not",
+   "from": "the engine"
+  },
+  "cl-chamchi": {
+   "kutchi": "chamchi",
+   "english": "teaspoon",
+   "from": "the engine"
+  },
+  "num.2": {
+   "kutchi": "ba",
+   "english": "two",
+   "from": "the engine"
+  },
+  "num.3": {
+   "kutchi": "trae",
+   "english": "three",
+   "from": "the engine"
+  },
+  "num.1": {
+   "kutchi": "hakro",
+   "english": "one",
+   "from": "the engine"
+  }
+ },
  "levels": {
   "1": {
    "pop": 1,
@@ -106,7 +184,7 @@
    "ready": true,
    "box": [
     -58.4,
-    -81.0,
+    -81,
     921.6,
     614.4
    ],

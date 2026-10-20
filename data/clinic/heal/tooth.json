@@ -25,6 +25,49 @@
    "story": "a sugar bug and a cracked tooth"
   }
  },
+ "_words": "CLN-119: the words this game teaches (its word review, from the language engine: the game reads the engine, never this list). Listed so build/tools/review/heal-marks.mjs shows them; js/clinic/heal/colour-clips.test.mjs keeps it the engine's",
+ "words": {
+  "tooth-up": {
+   "kutchi": null,
+   "english": "up",
+   "placeholder": true
+  },
+  "tooth-down": {
+   "kutchi": null,
+   "english": "down",
+   "placeholder": true
+  },
+  "body-tooth": {
+   "kutchi": null,
+   "english": "tooth",
+   "placeholder": true
+  },
+  "tooth-brush": {
+   "kutchi": null,
+   "english": "brush",
+   "placeholder": true
+  },
+  "tooth-left": {
+   "kutchi": "dabo",
+   "english": "left",
+   "from": "the engine"
+  },
+  "tooth-right": {
+   "kutchi": null,
+   "english": "right",
+   "placeholder": true
+  },
+  "a.left": {
+   "kutchi": "dabo",
+   "english": "left",
+   "from": "the engine"
+  },
+  "a.right": {
+   "kutchi": null,
+   "english": "right",
+   "placeholder": true
+  }
+ },
  "levels": {
   "1": {
    "chain": 2,
@@ -140,7 +183,7 @@
    ],
    "_s02": "S02-E (RM1, the redo: tighter framing, no ears or plaits): v2's upper teeth (centre 774, 335, about 570 wide) on the same upper row (centre 400, 173) at 0.58 (v1's box kept as box_v1)",
    "box_s02": [
-    -49.0,
+    -49,
     -21.3,
     890.9,
     593.9
@@ -213,7 +256,7 @@
    "ready": true,
    "size": [
     200,
-    125.0
+    125
    ],
    "tip": [
     7.8,

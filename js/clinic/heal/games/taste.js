@@ -282,6 +282,43 @@
       s("ellipse", { cx: 0, cy: -6, rx: 13, ry: 19, fill: "#fbfbf8", stroke: "#d8d4ca", "stroke-width": 2 }, budG);
       s("ellipse", { cx: 0, cy: 4, rx: 11, ry: 9, fill: "#a8d8a8", opacity: 0.9 }, budG); // the ointment on its tip
     }
+    // CLN-195 (s08 w6H; the judge: after the dab "the cotton bud's tips are still plain white" in the tool box): the bud
+    // in its tile keeps the colour of the spot it last touched, a tint over its right-hand swab (the same swab the dab
+    // used); a redrawn tile gets it again
+    let tileCol = null;
+    const tintTile = () => {
+      const b = S.toolEls && S.toolEls.bud;
+      if (!b || !clean) return;
+      const old = b.querySelector(".ts-bud-tip");
+      if (!tileCol) return old && old.remove();
+      const im = b.querySelector("img");
+      if (!im || !im.getBoundingClientRect) return;
+      const br = b.getBoundingClientRect();
+      const ir = im.getBoundingClientRect();
+      if (!ir.width || !ir.height) return;
+      // the picture drawn inside its box (object-fit: contain, centred)
+      const ar = clean.size[0] / clean.size[1];
+      const w = Math.min(ir.width, ir.height * ar);
+      const h0 = w / ar;
+      const x0 = ir.left - br.left - b.clientLeft + (ir.width - w) / 2;
+      const y0 = ir.top - br.top - b.clientTop + (ir.height - h0) / 2;
+      const [tx, ty] = clean.tip;
+      const [sw, sh] = clean.swab;
+      const t = old || S.h("span", "ts-bud-tip", b);
+      Object.assign(t.style, {
+        position: "absolute",
+        left: `${(x0 + (tx - sw * 0.92) * w).toFixed(1)}px`,
+        top: `${(y0 + (ty - sh * 0.86) * h0).toFixed(1)}px`,
+        width: `${(2 * sw * 0.92 * w).toFixed(1)}px`,
+        height: `${(2 * sh * 0.86 * h0).toFixed(1)}px`,
+        borderRadius: "50%",
+        background: hexOf(tileCol),
+        opacity: "0.8",
+        mixBlendMode: "multiply",
+        pointerEvents: "none",
+      });
+      t.dataset.col = tileCol;
+    };
     const dab = (sp) =>
       tween(fast() ? 1 : 220, (u) => {
         // the tip takes the spot's colour as it touches (half way down the dab)
@@ -289,6 +326,8 @@
           budTip.dataset.col = sp.colour;
           budTip.setAttribute("fill", hexOf(sp.colour));
           budTip.setAttribute("opacity", 0.8);
+          tileCol = sp.colour;
+          tintTile();
         }
         budG.setAttribute("opacity", 1);
         budG.setAttribute("transform", `translate(${sp.x} ${sp.y - 6 - 30 * (1 - Math.sin(u * Math.PI))})`);
@@ -473,7 +512,10 @@
         return q ? { x: q.x, y: q.y - 6, r: R + 10 } : null;
       });
     };
-    const popTools = () => S.tools([{ id: "bud", glyph: BUD.glyph, img: BUD.img }], (id) => id === "bud" && ctx.after(200, cueSpot));
+    const popTools = () => {
+      S.tools([{ id: "bud", glyph: BUD.glyph, img: BUD.img }], (id) => id === "bud" && ctx.after(200, cueSpot));
+      ctx.after(0, tintTile); // CLN-195: a redrawn tile keeps the bud's colour
+    };
     const drinkTools = () =>
       S.tools(
         Object.keys(THINGS)

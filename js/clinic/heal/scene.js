@@ -133,9 +133,20 @@
    * CLN-78 (2 Oct): a known word's picture in the clinic (the hearing check, the eye chart): the clinic's own item art
    * where it has the thing (the scrape's water is this jug), else Cook's realistic render the child learned it with.
    */
-  const CLINIC_PIC = { "cook-paani": "water-jug", "cook-dudh": "milk-jug", "fru-02": "lemon-half", "veg-14": "ginger" };
-  HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/items-v2/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
+  // CLN-189 (Zafar, 18 Oct: "an orange, not a lemon"): limu is the whole yellow lemon (s08b LM1), as the eye chart draws it,
+  // never the golden lemon-half that reads as an orange
+  const CLINIC_PIC = { "cook-paani": "items-v2/water-jug", "cook-dudh": "items-v2/milk-jug", "fru-02": "items-s08b/lemon-whole-s08b", "veg-14": "items-v2/ginger" };
+  HS.pic = (lex) => (CLINIC_PIC[lex] ? `assets/clinic/${CLINIC_PIC[lex]}.webp` : `assets/cook/items/icon-${lex}.webp`);
   HS.ph = (english) => ({ kutchi: null, english, placeholder: true }); // unused by the nine games since step 4e (lines are keys)
+  /**
+   * Rule 11, CLN-184 (the tooth's "Pela [down]", "ne poi [right]"): a line is a full engine sentence or a whole grey
+   * to-record placeholder, never Kutchi with an English word in it. A display word with any English piece (Kit.text's
+   * [brackets]) becomes the whole line's English, grey and silent until the missing word is recorded.
+   */
+  HS.whole = (w) => {
+    if (!w || !w.kutchi || !/\[/.test(w.kutchi)) return w;
+    return Object.assign({}, w, { kutchi: null, english: w.english, placeholder: true, plan: [], rec: true });
+  };
   /** The colours: English placeholders until the doctor's recording (Section G). */
   HS.COLOURS = { red: "#d8433f", blue: "#3f6fd8", green: "#3fa35b", yellow: "#f0c43a", orange: "#f08a2c", purple: "#8a55c8", white: "#f7f4ee" };
 
@@ -485,7 +496,23 @@
       const box = shelf.firstElementChild ? shelf.firstElementChild.getBoundingClientRect().height : 0;
       const gap = parseFloat((global.getComputedStyle && global.getComputedStyle(shelf).rowGap) || "") || 8;
       const rr = root.getBoundingClientRect();
-      const room = rr.bottom - Math.max(rr.top, shelf.getBoundingClientRect().top) - gap;
+      // CLN-165 (s08 w6H; boing at 800x360: the ✓ covered the third plaster): the ✓'s corner (bottom right, under the
+      // column: css .cl-actions, its box the --njg-done token) is kept clear, so a tile never sits under it (a game asks
+      // for it: S.clearTick, the boing's four tiles; the others' columns are as they were)
+      const tick = (() => {
+        if (!S.clearTick) return 0;
+        try {
+          const d = shelf.ownerDocument.createElement("div");
+          d.style.cssText = "position:absolute;visibility:hidden;width:1px;height:var(--njg-done)";
+          shelf.appendChild(d);
+          const v = d.getBoundingClientRect().height;
+          d.remove();
+          return v > 0 ? v + Math.max(10, 0.03 * rr.height) : 0;
+        } catch (e) {
+          return 0;
+        }
+      })();
+      const room = rr.bottom - Math.max(rr.top, shelf.getBoundingClientRect().top) - gap - tick;
       const rowsFit = Math.max(2, Math.floor((room + gap) / ((box || 62) + gap)));
       shelf.style.setProperty("--cols", Math.max(1, Math.ceil(list.length / Math.min(6, rowsFit))));
     };
@@ -581,7 +608,12 @@
           // sp.also: more things lit with the move, still tappable during the help (the ear's tweezers tile: a child who
           // picks the tool first is never blocked by the help's light)
           steps.push({ spotlight: [first, to].concat((sp.also || []).map(rectOf)), ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
-        } else if (first()) steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+        } else if (first()) {
+          // sp.also on a tap: more things lit (and tappable) with the one the ghost taps (CLN-107: the eye's other yes/no
+          // pill, so a wrong answer in the taught row still shakes red, as at every level, never a dead tap)
+          const also = (sp.also || []).map(rectOf);
+          steps.push({ spotlight: also.length ? [first].concat(also) : first, ghost: also.length ? { gesture: g, from: first } : { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+        }
         const nx = then || sp.then;
         if (nx) {
           const t2 = rectOf(nx.target || nx);
