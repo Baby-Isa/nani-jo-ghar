@@ -139,8 +139,9 @@
    "id": "fru-02",
    "kutchi": "limu",
    "english": "lemon",
-   "img": "assets/items/fruit/fru-02.png",
-   "audio": "assets/audio/word/fru-02.mp3"
+   "img": "assets/clinic/items-s08b/lemon-whole-s08b.webp",
+   "audio": "assets/audio/word/fru-02.mp3",
+   "_img": "CLN-189 (s08 w6F): the whole yellow lemon (s08b LM1), as the chart draws it (js/clinic/heal/games/eye.js PIC); never fru-02.png or the golden lemon-half that reads as an orange"
   },
   {
    "id": "fru-04",

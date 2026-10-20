@@ -200,7 +200,6 @@
    "opacity": 0.9,
    "why": "s08-clinic-items (DM2 v2): the matte drops that fall into the syringe, in the drawn teardrop's box (aspect = width / height); a little see-through in the barrel (opacity). A colour without art (purple) stays drawn. DM2's levers are not used: today's drawn levers carry their tube's colour"
   },
-  "machine_s02": "assets/clinic/heal-v3/drop-machine.webp",
   "machineV3": {
    "file": "assets/clinic/heal-v3/drop-machine-v3.webp",
    "size": [
@@ -285,6 +284,15 @@
     324
    ],
    "_about": "CLN-168: what is in the hand on the arm (the packet stays on the shelf)"
+  },
+  "plasters": {
+   "skin": "assets/clinic/sheets/plaster-level/plaster-skin-tray.webp",
+   "red": "assets/clinic/sheets/plaster-level/plaster-red-tray.webp",
+   "yellow": "assets/clinic/sheets/plaster-level/plaster-yellow-tray.webp",
+   "blue": "assets/clinic/sheets/plaster-level/plaster-blue-tray.webp",
+   "green": "assets/clinic/sheets/plaster-level/plaster-green-tray.webp",
+   "aspect": 2.52,
+   "_about": "ART-20, CLN-106 (s08 w6F): the level plaster (B1's top-down view, the same plaster as the pharmacy belt's B1 v2 belt view: a white pad on a coloured strip) in its four colours and skin, for the tool column and on the arm (aspect = width / height, about 351 x 139); the shelf shows the colours the game asks for (boing.js PLASTERS), so only those are in `assets`. Replaces the s02 flat plasters (items-v2 remapped to sheets/plaster-flat), whose pad was the strip's own colour"
   }
  },
  "lines": {
@@ -311,9 +319,6 @@
   "assets/clinic/sheets/drops-machine/drop-green.webp",
   "assets/clinic/sheets/drops-machine/drop-red.webp",
   "assets/clinic/sheets/drops-machine/drop-yellow.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-blue.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-skin.webp",
-  "assets/clinic/sheets/plaster-flat/plaster-flat-yellow.webp",
   "assets/clinic/sheets/wipe/wipe-tool.webp",
   "assets/clinic/heal-v3/drop-machine-v3.webp",
   "assets/clinic/heal-v3/lever-up-v3.webp",
@@ -321,9 +326,9 @@
   "assets/clinic/sheets/syringe/syringe-filled.webp",
   "assets/clinic/sheets/syringe/syringe-upright.webp",
   "assets/clinic/sheets/cloth/cloth-dab.webp",
-  "assets/clinic/items-v2/plaster-blue.webp",
-  "assets/clinic/items-v2/plaster-yellow.webp",
-  "assets/clinic/items-v2/plaster-skin.webp"
+  "assets/clinic/sheets/plaster-level/plaster-skin-tray.webp",
+  "assets/clinic/sheets/plaster-level/plaster-blue-tray.webp",
+  "assets/clinic/sheets/plaster-level/plaster-yellow-tray.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
 }
