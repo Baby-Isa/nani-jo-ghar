@@ -16,7 +16,7 @@ Every step works only on pictures ChatGPT drew (never a drawn stand-in, CLAUDE.m
      build/tools/art/upscale.py: assets/cook/worktop-s08c/marble-tile-s08c.webp.
   4. The hob: the plate cut from assets/cook/bg/bg-cook-hob-t-v1.png on a rounded rectangle fitted to it, upscaled x2:
      assets/cook/worktop-s08c/hob-plate-s08c.webp (laid on the tiled marble where the -1600 picture had it).
-  4b. DS1 (DAAR-05): each stirred-in scatter's edge faded and its daal brought to the pot's daal colour.
+  4b. DS1 (DAAR-05): each stirred-in scatter's daal brought to the pot's daal colour (its edge fades in code).
   5. The measures: assets/cook/items-s08c/meta.json (the tray's skewer lines, the pans' contents circles, the tip frames'
      near rim, the kadchi's and teaspoon's bowls, the hob's place in the 1600x900 design box).
 """
@@ -342,7 +342,7 @@ def place_in_1600(png, box):
 # ---------------------------------------------------------------- 4b. DS1: the scatters fade into the pot's daal
 def daar_in():
     """DS1 v2 (DAAR-05): each scatter's own daal is drawn as a scalloped patch; on the pot's daal (DP3's disc) it must not
-    read as a sticker: its edge fades out from 55% of its radius, and its daal is brought to the disc's colour (only the
+    read as a sticker: its daal is brought to the disc's colour (here) and its edge fades out from 0.55 of its radius (in code, at load) (only the
     daal-yellow pixels, by a gain per channel: the pieces keep theirs). Run once, on a fresh cut."""
     d = os.path.join(IT, "daar-in")
     disc = rgba(os.path.join(REPO, "assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp"))
@@ -366,10 +366,10 @@ def daar_in():
             gain = np.clip(target / np.maximum(1, np.median(a[..., :3][daal], 0)), 0.85, 1.25)
             w = ndi.gaussian_filter(daal.astype(np.float32), 1.0)[..., None]
             a[..., :3] = a[..., :3] * (1 - w) + np.clip(a[..., :3] * gain, 0, 255) * w
-        a[..., 3] = al * fade * 255
+        # (the edge's fade is js/cook/stations/daar.js's, at load: a soft rim this wide in the file fails artpixels on cream)
         save(a, os.path.join(d, f))
         out[f] = {"R": round(float(R), 1)}
-    META["daar_in"] = dict(out, _about="DS1 v2 scatters: their radius (px); the edge faded from 0.55 of it, the daal brought to the stirred disc's colour %s" % [round(float(v)) for v in target])
+    META["daar_in"] = dict(out, _about="DS1 v2 scatters: their radius (px); the daal brought to the stirred disc's colour %s" % [round(float(v)) for v in target])
 
 
 # ---------------------------------------------------------------- 5. the other measures

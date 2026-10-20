@@ -121,6 +121,31 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const S8C = "assets/cook/items-s08c/";
   const DS1 = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli", "veg-01": "potato", "veg-13": "garlic", "veg-14": "ginger", "spi-02": "cumin", "spi-05": "mustard" };
   const ds1Key = (id) => `dv5-in-${DS1[id]}`;
+  /*
+   * A scatter laid on the daal: its own daal (drawn as a scalloped patch) fades out from 0.55 of its radius to its edge, so
+   * only the pieces stand out of the pot's daal (in code, made once: a soft rim this wide in the file fails the pixel check
+   * on cream). Its radius is about 0.45 of the cut's shorter side (assets/cook/items-s08c/meta.json daar_in).
+   */
+  function softIn(S, key) {
+    const k2 = `${key}-soft`;
+    if (S.textures.exists(k2)) return k2;
+    const img = S.textures.get(key).getSourceImage();
+    const w = img.width;
+    const h = img.height;
+    const R = 0.45 * Math.min(w, h);
+    const ct = S.textures.createCanvas(k2, w, h);
+    const g = ct.getContext();
+    g.drawImage(img, 0, 0);
+    const fade = g.createRadialGradient(w / 2, h / 2, R * 0.55, w / 2, h / 2, R);
+    fade.addColorStop(0, "rgba(0,0,0,1)");
+    fade.addColorStop(1, "rgba(0,0,0,0)");
+    g.globalCompositeOperation = "destination-in";
+    g.fillStyle = fade;
+    g.fillRect(0, 0, w, h);
+    g.globalCompositeOperation = "source-over";
+    ct.refresh();
+    return k2;
+  }
   // the served bowl on its trivet (528 x 563; its round body, trivet and all: r 0.4833 of w) and the ladle
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
   // S03-D (S8): the tadka bowl redrawn with matte daar (no beads), its own trivet circle measured on the cut
@@ -1017,7 +1042,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const n = ins.length;
     const size = inR * Math.min(0.78, Math.max(0.46, 1.25 / Math.sqrt(n + 1)));
     ins.forEach((id, i) => {
-      const img = S.track(S.add.image(cx, cy, ds1Key(id)).setDepth(D.item + 0.15).setAlpha(0));
+      const img = S.track(S.add.image(cx, cy, softIn(S, ds1Key(id))).setDepth(D.item + 0.15).setAlpha(0));
       img.setScale(size / Math.max(img.width, img.height));
       const deg = spin + i * 137.5;
       const rOut = n === 1 ? 0.25 : Math.min(0.62, 0.2 + 0.42 * Math.sqrt((i + 0.5) / n) + (Math.random() - 0.5) * 0.08);
