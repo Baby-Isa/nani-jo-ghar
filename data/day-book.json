@@ -1,0 +1,1092 @@
+{
+  "_about": "The evening book's games (s09-book; docs/sprints/S09-a-day-at-nanis.md, Zafar 19-20 Oct; build/reports/s09a-fable-review.md sections 2-3). js/day/book.js reads it (loaded only when the book is chosen, decision 68). Every line is an engine meaning (data/lang/): a list is tried in order and the first the engine can say is used; when none can, the first one's English is the grey 'to record' placeholder (decision 84). '{x}' in a meaning is the thing's own Item. Nothing here is Kutchi.",
+  "art": {
+    "_about": "The kept s09a art as placeholders (Zafar, 20 Oct): b1 (Nani by the fire) and b2 cut to its pages (x 170-1360, y 90-800). The redone b1 and b2 replace them by path. Pixel boxes below are in each picture's own pixels.",
+    "room": "assets/day/book/room-b1-v1.webp",
+    "roomSize": [
+      1536,
+      1024
+    ],
+    "pages": "assets/day/book/pages-b2-v1.webp",
+    "pagesSize": [
+      1190,
+      710
+    ],
+    "face": "assets/cook/characters/nani-badge.webp",
+    "pageL": [
+      48,
+      66,
+      546,
+      604
+    ],
+    "pageR": [
+      622,
+      62,
+      532,
+      588
+    ],
+    "fold": [
+      594,
+      0,
+      14,
+      710
+    ],
+    "phoneBox": [
+      45,
+      60,
+      1120,
+      612
+    ],
+    "shelf": {
+      "x": 730,
+      "y": 310,
+      "w": 22,
+      "h": 92,
+      "gap": 4,
+      "max": 17,
+      "colours": [
+        "#a5483c",
+        "#3f6b8a",
+        "#6b8a3f",
+        "#c9962e",
+        "#7a4f8a"
+      ]
+    }
+  },
+  "camera": {
+    "_about": "The camera over the room picture (b1): each shot is a centre in the picture's pixels and a zoom over the cover fit. Times in ms (at speed 1). maxUpscale: never more screen px per picture px than this (ART-05), so a sharper room picture brings the close-ups closer. No player character (Zafar, 19 Oct).",
+    "wide": {
+      "cx": 768,
+      "cy": 512,
+      "zoom": 1
+    },
+    "face": {
+      "cx": 525,
+      "cy": 175,
+      "zoom": 3
+    },
+    "book": {
+      "cx": 668,
+      "cy": 468,
+      "zoom": 3.4
+    },
+    "toFaceMs": 1800,
+    "tiltMs": 1800,
+    "dissolveAt": 0.35,
+    "dissolveMs": 700,
+    "outMs": 2200,
+    "turnMs": 700,
+    "maxUpscale": 1.45
+  },
+  "order": [
+    "find",
+    "nameit",
+    "nameit",
+    "photo",
+    "photo",
+    "ourday"
+  ],
+  "lines": {
+    "greet": [
+      {
+        "meaning": {
+          "fn": "Ask",
+          "x": "phrase.what-did-we-do-today"
+        },
+        "en": "What did we do today?"
+      }
+    ],
+    "where": [
+      {
+        "meaning": {
+          "fn": "Where",
+          "thing": "{x}"
+        },
+        "en": "Where is the {en}?"
+      }
+    ],
+    "found": [
+      {
+        "meaning": {
+          "fn": "Say",
+          "x": "phrase.theres-the-x",
+          "thing": "{x}"
+        },
+        "en": "There's the {en}!",
+        "wanted": true
+      },
+      {
+        "meaning": {
+          "fn": "Exclaim",
+          "x": "phrase.there-over-there"
+        },
+        "en": "There!"
+      }
+    ],
+    "whatsThis": [
+      {
+        "meaning": {
+          "fn": "Ask",
+          "x": "phrase.whats-this"
+        },
+        "en": "What's this?"
+      }
+    ],
+    "firstOf": [
+      {
+        "meaning": {
+          "fn": "First",
+          "x": "{x}"
+        },
+        "en": "First the {en}."
+      }
+    ],
+    "thenOf": [
+      {
+        "meaning": {
+          "fn": "Then",
+          "x": "{x}"
+        },
+        "en": "And then the {en}."
+      }
+    ],
+    "goodnight": [
+      {
+        "meaning": {
+          "fn": "Say",
+          "x": "phrase.goodnight"
+        },
+        "en": "Goodnight!"
+      }
+    ],
+    "tomorrow": [
+      {
+        "meaning": {
+          "fn": "Say",
+          "x": "phrase.see-you-tomorrow"
+        },
+        "en": "See you tomorrow!"
+      },
+      {
+        "word": "adv.tomorrow",
+        "en": "tomorrow"
+      }
+    ]
+  },
+  "shapes": {
+    "_about": "Placeholder pictures (no text), drawn in a 200x200 box, until the s09b art lands.",
+    "dog": [
+      {
+        "t": "ellipse",
+        "cx": 104,
+        "cy": 120,
+        "rx": 58,
+        "ry": 30,
+        "fill": "#9a6a3e"
+      },
+      {
+        "t": "circle",
+        "cx": 156,
+        "cy": 92,
+        "r": 26,
+        "fill": "#9a6a3e"
+      },
+      {
+        "t": "ellipse",
+        "cx": 168,
+        "cy": 74,
+        "rx": 9,
+        "ry": 18,
+        "fill": "#6e4a2a"
+      },
+      {
+        "t": "rect",
+        "x": 60,
+        "y": 136,
+        "w": 14,
+        "h": 40,
+        "r": 6,
+        "fill": "#86592f"
+      },
+      {
+        "t": "rect",
+        "x": 128,
+        "y": 136,
+        "w": 14,
+        "h": 40,
+        "r": 6,
+        "fill": "#86592f"
+      },
+      {
+        "t": "poly",
+        "pts": [
+          [
+            48,
+            112
+          ],
+          [
+            22,
+            92
+          ],
+          [
+            30,
+            120
+          ]
+        ],
+        "fill": "#86592f"
+      },
+      {
+        "t": "circle",
+        "cx": 164,
+        "cy": 88,
+        "r": 4,
+        "fill": "#2b2018"
+      },
+      {
+        "t": "circle",
+        "cx": 180,
+        "cy": 98,
+        "r": 5,
+        "fill": "#2b2018"
+      }
+    ],
+    "bird": [
+      {
+        "t": "ellipse",
+        "cx": 96,
+        "cy": 120,
+        "rx": 48,
+        "ry": 32,
+        "fill": "#5f86b0"
+      },
+      {
+        "t": "circle",
+        "cx": 140,
+        "cy": 92,
+        "r": 24,
+        "fill": "#5f86b0"
+      },
+      {
+        "t": "poly",
+        "pts": [
+          [
+            160,
+            88
+          ],
+          [
+            186,
+            96
+          ],
+          [
+            160,
+            102
+          ]
+        ],
+        "fill": "#e0a63a"
+      },
+      {
+        "t": "poly",
+        "pts": [
+          [
+            52,
+            112
+          ],
+          [
+            16,
+            96
+          ],
+          [
+            40,
+            130
+          ]
+        ],
+        "fill": "#48698f"
+      },
+      {
+        "t": "circle",
+        "cx": 146,
+        "cy": 86,
+        "r": 4,
+        "fill": "#1d2430"
+      },
+      {
+        "t": "rect",
+        "x": 88,
+        "y": 148,
+        "w": 6,
+        "h": 26,
+        "fill": "#c9962e"
+      },
+      {
+        "t": "rect",
+        "x": 106,
+        "y": 148,
+        "w": 6,
+        "h": 26,
+        "fill": "#c9962e"
+      }
+    ],
+    "door": [
+      {
+        "t": "rect",
+        "x": 46,
+        "y": 20,
+        "w": 108,
+        "h": 170,
+        "r": 54,
+        "fill": "#3f6b8a"
+      },
+      {
+        "t": "rect",
+        "x": 58,
+        "y": 34,
+        "w": 84,
+        "h": 156,
+        "r": 42,
+        "fill": "#4c7fa3"
+      },
+      {
+        "t": "circle",
+        "cx": 128,
+        "cy": 116,
+        "r": 7,
+        "fill": "#d9a441"
+      },
+      {
+        "t": "rect",
+        "x": 30,
+        "y": 186,
+        "w": 140,
+        "h": 10,
+        "r": 4,
+        "fill": "#b9a382"
+      }
+    ],
+    "car": [
+      {
+        "t": "rect",
+        "x": 16,
+        "y": 92,
+        "w": 168,
+        "h": 54,
+        "r": 18,
+        "fill": "#c0443c"
+      },
+      {
+        "t": "poly",
+        "pts": [
+          [
+            52,
+            94
+          ],
+          [
+            74,
+            52
+          ],
+          [
+            134,
+            52
+          ],
+          [
+            160,
+            94
+          ]
+        ],
+        "fill": "#c0443c"
+      },
+      {
+        "t": "poly",
+        "pts": [
+          [
+            66,
+            92
+          ],
+          [
+            82,
+            62
+          ],
+          [
+            102,
+            62
+          ],
+          [
+            102,
+            92
+          ]
+        ],
+        "fill": "#cfe3ef"
+      },
+      {
+        "t": "poly",
+        "pts": [
+          [
+            110,
+            92
+          ],
+          [
+            110,
+            62
+          ],
+          [
+            128,
+            62
+          ],
+          [
+            146,
+            92
+          ]
+        ],
+        "fill": "#cfe3ef"
+      },
+      {
+        "t": "circle",
+        "cx": 56,
+        "cy": 148,
+        "r": 20,
+        "fill": "#2b2b2b"
+      },
+      {
+        "t": "circle",
+        "cx": 144,
+        "cy": 148,
+        "r": 20,
+        "fill": "#2b2b2b"
+      },
+      {
+        "t": "circle",
+        "cx": 56,
+        "cy": 148,
+        "r": 8,
+        "fill": "#bdbdbd"
+      },
+      {
+        "t": "circle",
+        "cx": 144,
+        "cy": 148,
+        "r": 8,
+        "fill": "#bdbdbd"
+      }
+    ],
+    "plain": [
+      {
+        "t": "circle",
+        "cx": 100,
+        "cy": 100,
+        "r": 76,
+        "fill": "#e0cba6"
+      }
+    ]
+  },
+  "backdrops": {
+    "_about": "Find it's place, drawn across both pages (each page its own 600x640 box; the horizon at the same height on both), placeholder shapes until the s09b art: an `art` path per page replaces them.",
+    "field": {
+      "l": {
+        "art": null,
+        "shapes": [
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 0,
+            "w": 600,
+            "h": 300,
+            "fill": "#bfe0f2"
+          },
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 300,
+            "w": 600,
+            "h": 340,
+            "fill": "#9fc46a"
+          },
+          {
+            "t": "ellipse",
+            "cx": 300,
+            "cy": 520,
+            "rx": 420,
+            "ry": 60,
+            "fill": "#93b95f"
+          },
+          {
+            "t": "rect",
+            "x": 90,
+            "y": 170,
+            "w": 26,
+            "h": 150,
+            "fill": "#7a5432"
+          },
+          {
+            "t": "circle",
+            "cx": 103,
+            "cy": 150,
+            "r": 78,
+            "fill": "#5f8a3e"
+          },
+          {
+            "t": "ellipse",
+            "cx": 420,
+            "cy": 90,
+            "rx": 70,
+            "ry": 26,
+            "fill": "#ffffff",
+            "a": 0.85
+          }
+        ]
+      },
+      "r": {
+        "art": null,
+        "shapes": [
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 0,
+            "w": 600,
+            "h": 300,
+            "fill": "#bfe0f2"
+          },
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 300,
+            "w": 600,
+            "h": 340,
+            "fill": "#9fc46a"
+          },
+          {
+            "t": "ellipse",
+            "cx": 300,
+            "cy": 520,
+            "rx": 420,
+            "ry": 60,
+            "fill": "#93b95f"
+          },
+          {
+            "t": "rect",
+            "x": 470,
+            "y": 170,
+            "w": 26,
+            "h": 150,
+            "fill": "#7a5432"
+          },
+          {
+            "t": "circle",
+            "cx": 483,
+            "cy": 150,
+            "r": 80,
+            "fill": "#5f8a3e"
+          },
+          {
+            "t": "ellipse",
+            "cx": 170,
+            "cy": 110,
+            "rx": 80,
+            "ry": 28,
+            "fill": "#ffffff",
+            "a": 0.85
+          }
+        ]
+      }
+    },
+    "kitchen": {
+      "l": {
+        "art": null,
+        "shapes": [
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 0,
+            "w": 600,
+            "h": 640,
+            "fill": "#f1dfc0"
+          },
+          {
+            "t": "rect",
+            "x": 60,
+            "y": 60,
+            "w": 200,
+            "h": 150,
+            "r": 12,
+            "fill": "#cfe3ef"
+          },
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 360,
+            "w": 600,
+            "h": 40,
+            "fill": "#b98a5a"
+          },
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 400,
+            "w": 600,
+            "h": 240,
+            "fill": "#d9b88c"
+          }
+        ]
+      },
+      "r": {
+        "art": null,
+        "shapes": [
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 0,
+            "w": 600,
+            "h": 640,
+            "fill": "#f1dfc0"
+          },
+          {
+            "t": "rect",
+            "x": 340,
+            "y": 60,
+            "w": 200,
+            "h": 150,
+            "r": 12,
+            "fill": "#cfe3ef"
+          },
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 360,
+            "w": 600,
+            "h": 40,
+            "fill": "#b98a5a"
+          },
+          {
+            "t": "rect",
+            "x": 0,
+            "y": 400,
+            "w": 600,
+            "h": 240,
+            "fill": "#d9b88c"
+          }
+        ]
+      }
+    }
+  },
+  "places": {
+    "_about": "One place per activity: its things (word = engine lexicon id; ids = what the day log may call it; art or a placeholder shape; h = height on the find page as a share of the page), find it (the backdrop, the things shown, how many asked, the spots: page l/r, x and y of the thing's foot as shares of the page; things are dealt to spots at random), name it and stick in the photo (the pool of things; the day's sentence per thing), our day (the day's things in order). Only things the engine can say are asked; only today's words when the log has enough of them.",
+    "farm": {
+      "things": {
+        "door": {
+          "word": "n.door",
+          "ids": [
+            "door",
+            "red-door",
+            "green-door"
+          ],
+          "shape": "door",
+          "h": 0.4
+        },
+        "car": {
+          "word": "n.car",
+          "ids": [
+            "car",
+            "farm-road"
+          ],
+          "shape": "car",
+          "h": 0.3
+        },
+        "goat": {
+          "word": "n.she-goat",
+          "ids": [
+            "goat"
+          ],
+          "art": "assets/characters/goat/goat-side.png",
+          "h": 0.4
+        },
+        "hen": {
+          "word": "n.chicken",
+          "ids": [
+            "hen"
+          ],
+          "art": "assets/characters/hen/hen-side.png",
+          "h": 0.3
+        },
+        "dog": {
+          "word": "n.dog",
+          "ids": [
+            "dog"
+          ],
+          "shape": "dog",
+          "h": 0.32
+        },
+        "bird": {
+          "word": "n.bird",
+          "ids": [
+            "bird"
+          ],
+          "shape": "bird",
+          "h": 0.24
+        }
+      },
+      "find": {
+        "backdrop": "field",
+        "shown": [
+          "goat",
+          "hen",
+          "dog",
+          "bird"
+        ],
+        "ask": 2,
+        "spots": [
+          {
+            "page": "l",
+            "x": 0.34,
+            "y": 0.86
+          },
+          {
+            "page": "l",
+            "x": 0.72,
+            "y": 0.66
+          },
+          {
+            "page": "r",
+            "x": 0.3,
+            "y": 0.68
+          },
+          {
+            "page": "r",
+            "x": 0.7,
+            "y": 0.88
+          }
+        ]
+      },
+      "nameit": {
+        "pool": [
+          "goat",
+          "hen",
+          "dog",
+          "bird",
+          "car"
+        ],
+        "sentence": {
+          "default": [
+            {
+              "meaning": {
+                "fn": "Then",
+                "x": "{x}"
+              },
+              "en": "And then the {en}."
+            }
+          ],
+          "car": [
+            {
+              "meaning": {
+                "fn": "Say",
+                "x": "phrase.we-went-by-x",
+                "thing": "{x}"
+              },
+              "en": "We went by {en}.",
+              "wanted": true
+            },
+            {
+              "meaning": {
+                "fn": "BeIn",
+                "who": "p1pl.incl",
+                "place": "{x}"
+              },
+              "en": "We're in the {en}."
+            }
+          ]
+        }
+      },
+      "photo": {
+        "pool": [
+          "goat",
+          "hen",
+          "dog",
+          "bird"
+        ],
+        "sentence": {
+          "default": [
+            {
+              "meaning": {
+                "fn": "Say",
+                "x": "phrase.then-we-saw-a-big-x",
+                "thing": "{x}"
+              },
+              "en": "Then we saw a big {en}.",
+              "wanted": true
+            },
+            {
+              "meaning": {
+                "fn": "Then",
+                "x": {
+                  "fn": "Item",
+                  "kind": "{word}",
+                  "mods": [
+                    "a.big"
+                  ]
+                }
+              },
+              "en": "And then the big {en}."
+            }
+          ]
+        }
+      },
+      "ourday": [
+        "door",
+        "car",
+        "goat",
+        "hen",
+        "dog"
+      ]
+    },
+    "kitchen": {
+      "things": {
+        "door": {
+          "word": "n.door",
+          "ids": [
+            "door"
+          ],
+          "shape": "door",
+          "h": 0.4
+        },
+        "chai": {
+          "word": "cook-chai",
+          "ids": [
+            "cook-chai",
+            "chai",
+            "chai-tray"
+          ],
+          "art": "assets/cook/props/glass-chai.webp",
+          "h": 0.3
+        },
+        "milk": {
+          "word": "cook-dudh",
+          "ids": [
+            "cook-dudh",
+            "dudh"
+          ],
+          "art": "assets/cook/props/milk-jug.webp",
+          "h": 0.32
+        },
+        "sugar": {
+          "word": "cook-khun",
+          "ids": [
+            "cook-khun",
+            "khun"
+          ],
+          "art": "assets/cook/props/sugar-jar.webp",
+          "h": 0.3
+        },
+        "maani": {
+          "word": "cook-maani",
+          "ids": [
+            "cook-maani",
+            "maani"
+          ],
+          "art": "assets/cook/props/chapati-puffed.webp",
+          "h": 0.22
+        }
+      },
+      "find": {
+        "backdrop": "kitchen",
+        "shown": [
+          "chai",
+          "milk",
+          "sugar",
+          "maani"
+        ],
+        "ask": 2,
+        "spots": [
+          {
+            "page": "l",
+            "x": 0.3,
+            "y": 0.6
+          },
+          {
+            "page": "l",
+            "x": 0.72,
+            "y": 0.86
+          },
+          {
+            "page": "r",
+            "x": 0.28,
+            "y": 0.86
+          },
+          {
+            "page": "r",
+            "x": 0.7,
+            "y": 0.6
+          }
+        ]
+      },
+      "nameit": {
+        "pool": [
+          "chai",
+          "milk",
+          "sugar",
+          "maani"
+        ],
+        "sentence": {
+          "default": [
+            {
+              "meaning": {
+                "fn": "Say",
+                "x": "phrase.nana-wanted-x",
+                "thing": "{x}"
+              },
+              "en": "Nana wanted {en}.",
+              "wanted": true
+            },
+            {
+              "meaning": {
+                "fn": "Need",
+                "who": "p3",
+                "thing": "{x}"
+              },
+              "en": "He'd like {en}."
+            }
+          ]
+        }
+      },
+      "photo": {
+        "pool": [
+          "chai",
+          "milk",
+          "maani",
+          "sugar"
+        ],
+        "sentence": {
+          "default": [
+            {
+              "meaning": {
+                "fn": "Say",
+                "x": "phrase.then-we-made-x",
+                "thing": "{x}"
+              },
+              "en": "Then we made {en}.",
+              "wanted": true
+            },
+            {
+              "meaning": {
+                "fn": "Then",
+                "x": "{x}"
+              },
+              "en": "And then the {en}."
+            }
+          ]
+        }
+      },
+      "ourday": [
+        "door",
+        "chai",
+        "milk",
+        "maani"
+      ]
+    }
+  },
+  "activityPlace": {
+    "kitchen": "kitchen",
+    "clinic": "kitchen",
+    "trip": "farm",
+    "farm": "farm"
+  },
+  "lab": {
+    "_about": "?log=kitchen|clinic|farm (labs and tests): a day log as that day would leave one (js/core/log.js entries and the words met today), in memory only. The farm day: the door, the ride's finds, the photos.",
+    "kitchen": {
+      "activity": "kitchen",
+      "entries": [
+        {
+          "type": "round",
+          "what": "chai-tray",
+          "count": 3
+        },
+        {
+          "type": "made",
+          "what": "cook-chai",
+          "who": "pn.nana"
+        },
+        {
+          "type": "made",
+          "what": "cook-maani",
+          "who": "pn.ali"
+        },
+        {
+          "type": "counted",
+          "what": "cook-dudh",
+          "count": 2
+        }
+      ],
+      "words": [
+        "cook-chai",
+        "cook-dudh",
+        "cook-khun",
+        "cook-maani"
+      ]
+    },
+    "clinic": {
+      "activity": "clinic",
+      "entries": [
+        {
+          "type": "round",
+          "what": "pharmacy",
+          "count": 2
+        },
+        {
+          "type": "made",
+          "what": "cook-dudh"
+        }
+      ],
+      "words": [
+        "cook-dudh",
+        "cook-chai",
+        "cook-khun",
+        "cook-maani"
+      ]
+    },
+    "farm": {
+      "activity": "farm",
+      "entries": [
+        {
+          "type": "door",
+          "what": "door"
+        },
+        {
+          "type": "ride",
+          "what": "car"
+        },
+        {
+          "type": "saw",
+          "what": "n.she-goat"
+        },
+        {
+          "type": "saw",
+          "what": "n.chicken"
+        },
+        {
+          "type": "saw",
+          "what": "n.dog"
+        },
+        {
+          "type": "saw",
+          "what": "n.bird"
+        },
+        {
+          "type": "photo",
+          "what": "goat"
+        },
+        {
+          "type": "photo",
+          "what": "hen"
+        },
+        {
+          "type": "photo",
+          "what": "dog"
+        }
+      ],
+      "words": [
+        "n.door",
+        "n.car",
+        "n.she-goat",
+        "n.chicken",
+        "n.dog",
+        "n.bird"
+      ]
+    }
+  }
+}
