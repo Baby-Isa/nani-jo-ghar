@@ -98,7 +98,7 @@ export async function runBook(host, api, day) {
       return false;
     }
   };
-  const plan = planBook({ data: D, place: placeKey, today: { entries, words: met }, say: sayable, rng: api.rng, only });
+  const plan = planBook({ data: D, place: placeKey, today: { entries, words: met }, say: sayable, rng: api.q.get("seed") ? api.rng : Math.random, only });
   const results = [];
   window.Day.book = { plan, results, stage: "room", place: placeKey };
 
