@@ -1,0 +1,10 @@
+# The s09a redo (20 Oct): the house closer, Nani bigger (Zafar: "zoomed in enough to see Nani properly and have her take up more of the screen"). The books and the windows are kept.
+# Input to: python3 build/tools/art/artblock.py --spec build/tools/art/specs/s09a.run.yaml --redo docs/design-language/art-plans/s09a-redo-list.yaml
+pack: s09a
+redo:
+  - id: H1
+    why: "Nani too small; the camera two or three steps from the porch, her full figure about two thirds of the height"
+    source: "Zafar, 20 Oct"
+  - id: H2
+    why: "Nani too small; the camera two or three steps from the verandah, her full figure about two thirds of the height"
+    source: "Zafar, 20 Oct"

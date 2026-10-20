@@ -1,6 +1,6 @@
 # Sprint 9 style test art plan (pack `s09a`)
 
-**Written:** 19 Oct 2026, from Zafar's notes on the s09 mock-ups (`docs/sprints/S09-a-day-at-nanis.md`, 19 Oct) and the book-games research (`build/reports/research-book-games-2026-10-19.md`). **Run spec:** `build/tools/art/specs/s09a.run.yaml`; the block is generated from it. This is a style test: one image per prompt, so Zafar can agree how the house, the ride and the evening book look. After that, the full Sprint 9 run makes every pose and variation. The Sprint 8 fix run (`s08c`) comes after this one.
+**Written:** 19 Oct 2026; H1-H2 rewritten 20 Oct (Zafar: closer, Nani bigger; the books and the windows are liked and kept in `sources/art/s09a/`), from Zafar's notes on the s09 mock-ups (`docs/sprints/S09-a-day-at-nanis.md`, 19 Oct) and the book-games research (`build/reports/research-book-games-2026-10-19.md`). **Run spec:** `build/tools/art/specs/s09a.run.yaml`; the block is generated from it. This is a style test: one image per prompt, so Zafar can agree how the house, the ride and the evening book look. After that, the full Sprint 9 run makes every pose and variation. The Sprint 8 fix run (`s08c`) comes after this one.
 
 ## 0. Totals
 
@@ -25,28 +25,24 @@ Paste the Claude in Chrome block (`s09a-chrome-block.txt`). It opens this page, 
 
 ## 5. The prompts
 
-#### H1. Nani's house, one wide arch
+#### H1. Nani's house, one wide arch (closer)
 ```
 Generate an image, 1536×1024, landscape.
 
-The front of Nani's house, seen from the path a few steps away at eye level. A warm, modern family home (not old-fashioned) with textured, rendered walls in cream and sand. A deep shaded porch under ONE wide rounded archway; inside the porch the front door stands open, with a glimpse of a cool hallway. A few potted plants and a tiled step. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands in the porch, full figure, smiling and waving the viewer in. The porch sits a little right of centre; the ground in front of it is clear.
+Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands in the porch of her house, smiling and waving the viewer in. The camera stands on the path just two or three steps from the porch, at a child's eye height, looking straight at her: she is the centre of the picture, her full figure from head to feet taking about TWO THIRDS of the image's height, her face clear and easy to read. The same house as the attached first try (cream and sand textured render, ONE wide rounded arch over the porch, the wooden front door standing open behind her with a glimpse of the hallway, a brass lantern, potted plants either side), but seen much closer: the arch frames her, its sides near the image's left and right thirds, a little wall and plants at the edges. Only a thin strip of plain, soft sky at the very top, no sun and no clouds.
 
-The top third of the image is plain, soft, even sky: no sun, no clouds (the weather is added later).
-
-Style: exactly as the attached clinic doorway and the style anchor: a stylised 3D animated-feature-film look, warm sunlight, soft global illumination, gentle shadows, clean simple shapes, calm and uncluttered, made for young children. No outlines.
+Style: exactly as the attached first try and the style anchor: a stylised 3D animated-feature-film look, warm sunlight, soft global illumination, gentle shadows, calm and uncluttered, made for young children. No outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks. No religious images or markers.
 ```
 
-#### H2. Nani's house, a row of small arches
+#### H2. Nani's house, a row of small arches (closer)
 ```
 Generate an image, 1536×1024, landscape.
 
-The front of Nani's house, seen from the path, slightly from one side. A warm, modern one-storey family home (not old-fashioned) with textured, rendered walls in warm white and terracotta. Along the front, a shaded verandah under a row of THREE small rounded arches; behind the middle arch the blue front door stands open. A wooden bench, a pot of herbs and a low garden wall with a gap for the path. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands under the middle arch, full figure, smiling and waving the viewer in. The path in front is clear.
+Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands under the middle arch of her verandah, smiling and waving the viewer in. The camera stands on the path just two or three steps from the verandah, at a child's eye height, looking straight at her: she is the centre of the picture, her full figure from head to feet taking about TWO THIRDS of the image's height, her face clear and easy to read. The same house as the attached first try (warm white and terracotta textured render, a verandah under a row of small rounded arches, the blue front door standing open behind her, a wooden bench and a pot of herbs), but seen much closer: only the middle arch and part of each arch beside it show. Only a thin strip of plain, soft sky at the very top, no sun and no clouds.
 
-The top third of the image is plain, soft, even sky: no sun, no clouds (the weather is added later).
-
-Style: exactly as the attached clinic doorway and the style anchor: a stylised 3D animated-feature-film look, warm sunlight, soft global illumination, gentle shadows, clean simple shapes, calm and uncluttered, made for young children. No outlines.
+Style: exactly as the attached first try and the style anchor: a stylised 3D animated-feature-film look, warm sunlight, soft global illumination, gentle shadows, calm and uncluttered, made for young children. No outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks. No religious images or markers.
 ```
