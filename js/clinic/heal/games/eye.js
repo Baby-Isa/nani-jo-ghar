@@ -118,7 +118,8 @@
     // S03 (review flaw 5): on a tablet (4:3, 1180x820) the close-up's crop cut the sore eye at the screen's edge: a
     // wider safe area there keeps both eyes whole (and the tool shelf goes down to the cheek, below)
     const tablet = (root.innerWidth || 0) / Math.max(1, root.innerHeight || 0) < 1.5;
-    const S = HS.make(stage, ctx, Object.assign({ place: "head", game: "eye" }, tablet ? { safe: [50, 790] } : {}));
+    const SAFE = tablet ? [50, 790] : [80, 720];
+    const S = HS.make(stage, ctx, Object.assign({ place: "head", game: "eye" }, tablet ? { safe: SAFE } : {}));
     const { s } = S;
     const Kit0 = root.Clinic && root.Clinic.Kit;
     const url = (u) => (Kit0 && Kit0.url ? Kit0.url(u) : u);
@@ -618,16 +619,34 @@
       st.judged[id] = ok;
       ctx.log({ type: ok ? "right" : "wrong", rowId: id, detail });
     };
+    // s08 w6N fix (the eye test stuck on 4:3-3:2 tablets): the tablet's close-up crop starts at x 50, and since CLN-188
+    // moved her picture left her open eye (x 33) sat off the play area, under the side card: the redrop could not be
+    // tapped. The test's view takes in her whole open eye where the close-up's would cut it (the board a little smaller
+    // there, still most of the play area); the close-up's own crop comes back with the close-up
+    const vbOf = () => (S.svg.getAttribute("viewBox") || "0 0 800 500").split(/[\s,]+/).map(Number);
+    const camera = (safe) => {
+      const a = vbOf();
+      S.setSafe(safe);
+      const b = vbOf();
+      S.svg.setAttribute("viewBox", a.join(" "));
+      return (u) => S.svg.setAttribute("viewBox", a.map((v, k) => (v + (b[k] - v) * u).toFixed(1)).join(" "));
+    };
+    // (only the tablet crops to its safe area: phones and laptops show the whole drawing and its margins already)
+    const testSafe = () => (tablet && readEye && readEye.x - 48 < SAFE[0] ? [readEye.x - 48, SAFE[1]] : null);
     const toTest = async () => {
       // the camera pulls back from the eyes to the test (a cross-fade; the art batch makes it a cut, art plan 2.1)
       st.busy = true;
       showDropper(null);
       lightMini(false);
       S.tools([], null);
+      const wide = testSafe();
+      const cam = wide ? camera(wide) : null;
       await tween(450, (u) => {
         dropsG.setAttribute("opacity", 1 - u);
         testG.setAttribute("opacity", u);
+        if (cam) cam(u);
       });
+      if (cam) cam(1);
       st.view = "test";
       st.busy = false;
     };
@@ -839,10 +858,13 @@
       await Promise.resolve(st.reading).catch(() => {});
       if (st.gone) return;
       if (soreEl) soreEl.setAttribute("opacity", eyesArt ? 1 : 0);
+      const cam = camera(null); // the close-up's own crop again
       await tween(450, (u) => {
         testG.setAttribute("opacity", 1 - u);
         dropsG.setAttribute("opacity", u);
+        cam(u);
       });
+      cam(1);
       st.view = "drops";
       S.face("happy");
       blink();
@@ -857,9 +879,10 @@
     S.tools([{ id: "drops", glyph: "💧", img: (DA && DA.tool) || "assets/clinic/items-v2/eye-drops.webp" }], (id) => {
       if (id === "drops" && cur() && cur().kind === "drops") showDropper(sore, false);
     });
-    // S03 (review flaw 5): on a tablet the shelf, centred on the right, sat on the sore eye: it goes down to the cheek
-    const shelfEl = S.toolEls.drops && S.toolEls.drops.parentElement;
-    if (shelfEl && tablet) Object.assign(shelfEl.style, { top: "auto", bottom: "var(--njg-s4)", transform: "none" });
+    // S03 (review flaw 5) moved the tablet's shelf, then centred on the right over the sore eye, down to the cheek. The
+    // shared shelf now hangs under her face circle (SH-112), clear of both eyes, and the cheek's corner is the "to the
+    // eye test" button's from the close-up's start (CLN-107): there it hid the dropper at L2+ (the s08 w6N tablet
+    // stall). The shelf keeps its shared place on every screen
     const dropIn = async (at, hang) => {
       await fallDrop(at, hang);
       S.face("wince", 400);

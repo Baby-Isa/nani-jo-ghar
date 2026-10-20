@@ -221,7 +221,7 @@
     // scale (data/layout.json stage.itemScale, through the shared stage service), cropping its sides down to the
     // game's safe area (opts.safe: [x0, x1] in svg units; the tool column sits over the right edge anyway). Phones and
     // laptops (item scale 1) keep the plain fit.
-    const SAFE = opts.safe || [80, 720];
+    let SAFE = opts.safe || [80, 720];
     const fitView = () => {
       const St = global.Stage;
       const r = root.getBoundingClientRect();
@@ -273,6 +273,12 @@
     fitView();
     ctx.on(global, "resize", fitView);
     S.fitView = fitView;
+    /** a game's own safe area for a later view (the eye test's left panel, s08 w6N fix): [x0, x1] in svg units, or null
+     *  for the one it was made with; the view is fitted again at once (and on every resize after) */
+    S.setSafe = (safe) => {
+      SAFE = safe || opts.safe || [80, 720];
+      fitView();
+    };
 
     /* ---- the patient: their colours, so the close-up matches the person the zoom came from ---- */
     // CLN-67 (2 Oct): the round face (and the close-up's skin and clothes) follow the patient's own kind: hair, skin,
