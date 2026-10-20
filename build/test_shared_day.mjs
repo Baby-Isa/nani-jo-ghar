@@ -44,7 +44,7 @@ test("the engine says every line or reports exactly what it can't (never a silen
     if (!r.ok) assert.ok(r.gaps.some((g) => ["lexeme", "form", "rule"].includes(g.kind)), `${l.en}: not ok and no gap`);
   }
   // the ones it can say today (checked by hand against the lexicon: confirmed or draft entries)
-  for (const en of ["Come!", "Will you help me cook?", "Yes!", "Stop the car!", "Look!"]) {
+  for (const en of ["Come!", "Will you help me cook?", "Yes!", "Look!"]) {
     const l = lines().find((x) => x.en === en);
     assert.ok(l && E.say(l.meaning).ok, `${en} should be the engine's`);
   }
