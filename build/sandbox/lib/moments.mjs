@@ -125,7 +125,7 @@ export function momentsFor(root, flowId, { kindOf = () => null, seen = null } = 
   // driver's wrong tap (rec:*-wrong-tap), a second later
   else if (kind === "day-book") {
     for (const s of ["room-greet", "face", "find", "find-found", "nameit", "nameit-filled", "photo", "photo-in", "ourday", "wrong-tap", "turn-*", "end-zoom-out", "end"]) out.push(`rec:*-${s}`, `rec:*-*-${s}`);
-    out.push("host:day/book", "host:day/book/*", "host:day/book/end");
+    out.push("host:day/book", "host:day/book/*", "host:day/book/end", "drv:wrong-tap");
   }
   const seenHere = (seen || {})[flowId] || (seen || {})[base] || [];
   return [...new Set([...out, ...seenHere])];

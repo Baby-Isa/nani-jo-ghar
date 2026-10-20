@@ -155,7 +155,10 @@ export async function runBook(host, api, day) {
     const vw = root.clientWidth;
     const vh = root.clientHeight;
     const base = Math.max(vw / RW, vh / RH);
-    const sc = base * v.zoom;
+    // never closer than the picture holds (ART-05: at most 1.5 screen px per source px, times the pixel ratio): with today's
+    // 1536 px room the close-ups are gentler on a laptop; a sharper room picture (the s09b redo) lets them come right in
+    const dpr = window.devicePixelRatio || 1;
+    const sc = Math.max(base, Math.min(base * v.zoom, ((C.maxUpscale || 1.5) * (room.naturalWidth || RW)) / RW / dpr));
     let tx = vw / 2 - v.cx * sc;
     let ty = vh / 2 - v.cy * sc;
     tx = Math.min(0, Math.max(vw - RW * sc, tx));

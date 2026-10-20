@@ -3,6 +3,7 @@
 // window.njgTest.expect() ({kind: "wait" | "tap" (sel) | "end"}), with real pointer events, recording each distinct state.
 // The contract checks 45 (the door's lines in turn) and 46 (English only under the door's lines) read these pages.
 import { BASE, sleep } from "../lib/env.mjs";
+import { mark } from "../drivers/index.mjs";
 
 const SPEED = 3;
 const expect = (page) => page.evaluate(() => (window.njgTest && window.njgTest.expect ? window.njgTest.expect() : null)).catch(() => null);
@@ -160,6 +161,8 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
       wronged.add(key);
       if (e.kind === "drag") await dragSel(page, rec, e.wrongSel, e.to);
       else await tapSel(page, rec, e.wrongSel);
+      // the wrong move's own moment (after-wrong is a second after it; the recorded state below lands later, after its shot)
+      await mark(page, "wrong-tap", { block: false });
       await sleep(80);
       await rec.state(`${prefix}wrong-tap`);
       await sleep(500);

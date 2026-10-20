@@ -96,7 +96,11 @@ async function find(g, page) {
           once(b, "day-wiggle", 500);
           g.state("wrong-tap");
           // the wiggle first, then her line again (never a verdict, never red)
-          setTimeout(() => g.say(ask), 450 / api.speed);
+          setTimeout(() => {
+            const hl = g.headLine();
+            if (hl) once(hl.parentElement, "day-again", 1500);
+            g.say(ask);
+          }, 450 / api.speed);
         }
       };
       items.forEach((x) => x.addEventListener("click", onTap));
@@ -161,7 +165,12 @@ async function nameit(g, page) {
           firstTry = false;
           once(b, "day-wobble", 500);
           g.state("wrong-tap");
-          setTimeout(() => !filled && g.say(ask), 700 / api.speed);
+          setTimeout(() => {
+            if (filled) return;
+            const hl = g.headLine();
+            if (hl) once(hl.parentElement, "day-again", 1500);
+            g.say(ask);
+          }, 700 / api.speed);
         }
       }),
     );

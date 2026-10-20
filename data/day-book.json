@@ -54,7 +54,7 @@
     }
   },
   "camera": {
-    "_about": "The camera over the room picture (b1): each shot is a centre in the picture's pixels and a zoom over the cover fit. Times in ms (at speed 1). No player character (Zafar, 19 Oct).",
+    "_about": "The camera over the room picture (b1): each shot is a centre in the picture's pixels and a zoom over the cover fit. Times in ms (at speed 1). maxUpscale: never more screen px per picture px than this (ART-05), so a sharper room picture brings the close-ups closer. No player character (Zafar, 19 Oct).",
     "wide": {
       "cx": 768,
       "cy": 512,
@@ -75,7 +75,8 @@
     "dissolveAt": 0.35,
     "dissolveMs": 700,
     "outMs": 2200,
-    "turnMs": 700
+    "turnMs": 700,
+    "maxUpscale": 1.45
   },
   "order": [
     "find",

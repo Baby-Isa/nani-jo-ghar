@@ -88,6 +88,8 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-face.on { box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); }
 .day-head-line { min-width: 0; background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); padding: var(--njg-s2) var(--njg-s3); }
 .day-head-line:empty { display: none; }
+.day-head-line.day-again { animation: day-again 1.5s ease-in-out 1; }
+@keyframes day-again { 0%, 100% { transform: none; box-shadow: var(--njg-shadow); } 30% { transform: scale(1.06); box-shadow: 0 0 0 4px var(--njg-focus), var(--njg-shadow); } 65% { transform: scale(1.02); } }
 .day-head-line .day-k, .day-under .day-k { font-size: var(--njg-t2); }
 
 /* the page turn: the right page's bottom corner, 64 px, shown only when the page is done */
