@@ -569,11 +569,14 @@
 .wr-car { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
 .wr-car > img { position: absolute; top: 0; display: block; user-select: none; -webkit-user-drag: none; }
 .wr-car > img.wr-car-side { object-fit: fill; }
-.wr-lane .wr-thing { left: 0; top: 0; }
+.wr-lane .wr-thing { left: 0; top: 0; will-change: transform; }
 .wr-body { position: absolute; display: block; pointer-events: none; }
 .wr-body > img, .wr-body > svg { width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; }
 .wr-thing .wr-contact { z-index: 0; }
-.wr-prop { position: absolute; left: 0; top: 0; pointer-events: none; }
+.wr-prop { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
+.wr-layer { will-change: transform; }
+.wr-lead { position: absolute; left: 0; width: 100%; }
+.wr-lead > img, .wr-lead > svg { width: 100%; height: 100%; display: block; }
 .wr-prop > img, .wr-prop > svg { width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; }
 .wr-found > .wr-body { animation: wr-found .6s ease-out 1 forwards; }
 @keyframes wr-found { 0% { transform: none; opacity: 1; } 60% { transform: translateY(-14%) scale(1.12); opacity: 1; } 100% { transform: translateY(-20%) scale(0.9); opacity: 0; } }
@@ -604,22 +607,71 @@
     Object.assign(strip.style, { top: `${def.y}px`, height: `${def.h}px`, width: `${period * n + tile}px`, isolation: "isolate" });
     const f = (W.FADE * 100).toFixed(1);
     const mask = `linear-gradient(to right, transparent 0, #000 ${f}%, #000 ${(100 - W.FADE * 100).toFixed(1)}%, transparent 100%)`;
+    const l0 = def0.lead || null;
+    const lb = l0 ? (useArt && l0.art && l0.artBox ? Object.assign({}, l0, l0.artBox) : l0) : null;
+    const tiles = [];
     for (let i = 0; i < n; i++) {
       const t = doc.createElement("div");
       t.className = "wr-tile";
       Object.assign(t.style, { left: `${i * period}px`, width: `${tile}px`, height: `${def.h}px`, mixBlendMode: "plus-lighter" });
       t.style.webkitMaskImage = mask;
       t.style.maskImage = mask;
+      let main;
       if (useArt && def.art) {
-        const im = doc.createElement("img");
-        im.alt = "";
-        im.draggable = false;
-        im.src = url(def.art);
-        t.appendChild(im);
-      } else t.appendChild(W.shapesSvg(def.shapes, tile, def.h));
+        main = doc.createElement("img");
+        main.alt = "";
+        main.draggable = false;
+        main.src = url(def.art);
+      } else main = W.shapesSvg(def.shapes, tile, def.h);
+      t.appendChild(main);
+      // the trip's start (data: the layer's `lead`, e.g. the town's shops before the fields, Zafar 20 Oct): the first copies of
+      // the layer show the lead's picture in its own box; the copies after it the layer's own, joined by the same cross-fade
+      let lead = null;
+      if (lb) {
+        lead = doc.createElement("div");
+        lead.className = "wr-lead";
+        Object.assign(lead.style, { top: `${lb.y - def.y}px`, height: `${lb.h}px`, display: "none" });
+        if (useArt && lb.art) {
+          const im = doc.createElement("img");
+          im.alt = "";
+          im.draggable = false;
+          im.src = url(lb.art);
+          lead.appendChild(im);
+        } else lead.appendChild(W.shapesSvg(lb.shapes, lb.tile || tile, lb.h));
+        t.appendChild(lead);
+      }
+      tiles.push({ el: t, main, lead, isLead: false });
       strip.appendChild(t);
     }
-    return { strip, period, def };
+    return { strip, period, def, tiles, last: lb ? (def0.lead.last != null ? def0.lead.last : 0) : null };
+  };
+  /** which copies show the lead: tile i shows copy (floor(pos / period) - 1 + i); copies up to `last` are the lead's */
+  W.leadTiles = function (L, pos) {
+    if (L.last == null) return;
+    const base = Math.floor(pos / L.period) - 1;
+    L.tiles.forEach((t, i) => {
+      const on = base + i <= L.last;
+      if (on === t.isLead) return;
+      t.isLead = on;
+      t.main.style.display = on ? "none" : "";
+      t.lead.style.display = on ? "" : "none";
+    });
+  };
+
+  /**
+   * One frame of the ride's clock (pure: the screen's frame loop and the tests): the road moves by exactly the frame's real time
+   * (ms, times the test speed), in pieces of at most 50 ms of ride time whose sum is the frame's, so a long frame is one even
+   * move, never a stall that creeps after. A gap over a second (a hidden tab, a paused page) counts as one 16 ms frame.
+   */
+  W.advance = function (model, ms, speed = 1) {
+    if (!(ms >= 0) || ms > 1000) ms = 16;
+    let dt = ms * speed;
+    while (dt > 1e-9) {
+      const d = Math.min(dt, 50);
+      model.step(d);
+      dt -= d;
+    }
+    return ms;
   };
 
   W.mount = function (el, o) {
@@ -845,20 +897,15 @@
       if (last == null) last = now;
       // the road keeps the wall clock's time (a late frame moves it on, never a stall that then creeps); only a gap of more
       // than a second (a hidden tab, a paused page) counts as one frame. Stepped in small pieces, so no call or pass is missed.
-      let ms = now - last;
-      if (ms > 1000 || ms < 0) ms = 16;
+      W.advance(model, now - last, speed);
       last = now;
-      let dt = ms * speed;
-      while (dt > 0) {
-        const d = Math.min(dt, 50);
-        model.step(d);
-        dt -= d;
-      }
       handle();
       // the layers: each at its own share of the road, one copy left of the window so the first fade never shows
       Object.values(layers).forEach((L) => {
-        const off = (model.road * model.layerSpeed(L.def.id)) % L.period;
-        L.strip.style.transform = `translate3d(${(-off - L.period).toFixed(1)}px, 0, 0)`;
+        const pos = model.road * model.layerSpeed(L.def.id);
+        const off = pos % L.period;
+        W.leadTiles(L, pos);
+        L.strip.style.transform = `translate3d(${-off - L.period}px, 0, 0)`;
       });
       const open = model.open();
       const vw = model.view();
@@ -867,10 +914,13 @@
         live.add(th.uid);
         const e = thingEl(th);
         const b = e.el;
-        b.style.transform = `translate3d(${th.x.toFixed(1)}px, ${model.topOf(th).toFixed(1)}px, 0)`;
+        b.style.transform = `translate3d(${th.x}px, ${model.topOf(th)}px, 0)`;
         // off the window (behind the frame or the sidebar): hidden, so it is never seen or tapped there
         const seen = th.x + th.w > vw.x0 && th.x < vw.x1;
-        b.style.visibility = seen ? "" : "hidden";
+        if (e.seen !== seen) {
+          e.seen = seen;
+          b.style.visibility = seen ? "" : "hidden";
+        }
         const member = th.member >= 0;
         if (e.member !== member) {
           e.member = member;
@@ -891,8 +941,12 @@
       for (const p of model.props) {
         live.add(p.uid);
         const e = propEl(p);
-        e.el.style.transform = `translate3d(${p.x.toFixed(1)}px, ${model.propTop(p).toFixed(1)}px, 0)`;
-        e.el.style.visibility = p.x + p.w > vw.x0 && p.x < vw.x1 ? "" : "hidden";
+        e.el.style.transform = `translate3d(${p.x}px, ${model.propTop(p)}px, 0)`;
+        const pseen = p.x + p.w > vw.x0 && p.x < vw.x1;
+        if (e.seen !== pseen) {
+          e.seen = pseen;
+          e.el.style.visibility = pseen ? "" : "hidden";
+        }
       }
       for (const [u, e] of els) {
         if (live.has(u)) continue;

@@ -121,15 +121,46 @@ test("nothing jumps: every thing and prop comes on right of the window and moves
       }
 });
 
-test("the parallax setting: deep by default, gentle and together from data; the field's things move with the middle layer", () => {
-  assert.equal(ride.parallax, "deep");
+test("the parallax setting: gentle on the farm road (Zafar, 20 Oct evening), deep and together from data; the field's things move with the middle layer", () => {
+  assert.equal(ride.parallax, "gentle");
   const p = W.plan(ride, 1, seeded(2), { callable });
   const of = (parallax) => W.model(ride, p, { rng: seeded(2), view: VIEWS.phone, parallax });
-  assert.deepEqual([of(null).layerSpeed("far"), of(null).layerSpeed("middle"), of(null).layerSpeed("near")], [0.15, 0.4, 1]);
+  assert.deepEqual([of(null).layerSpeed("far"), of(null).layerSpeed("middle"), of(null).layerSpeed("near")], [0.5, 0.8, 1]);
+  assert.deepEqual([of("deep").layerSpeed("far"), of("deep").layerSpeed("middle")], [0.15, 0.4]);
   assert.deepEqual(of("gentle").lineSpeed, { near: 1, field: 0.8 });
   assert.deepEqual(of("together").lineSpeed, { near: 1, field: 1 });
   assert.equal(of("together").layerSpeed("far"), 1);
   assert.equal(of({ far: 0.3, middle: 0.6, near: 1 }).layerSpeed("far"), 0.3);
+});
+
+test("even motion (Zafar, 20 Oct evening: 'very jerkily'): over 10 s of uneven frames the road moves exactly by the frames' real time", () => {
+  const p = W.plan(ride, 1, seeded(6), { callable });
+  for (const speed of [1, 3]) {
+    const m = W.model(ride, p, { rng: seeded(6), view: VIEWS.phone, hold: "normal" });
+    W.advance(m, 1200, speed); // past the start (a held speed eases in from the start)
+    const rng = seeded(9);
+    let t = 0;
+    let worst = 0;
+    while (t < 10000) {
+      // 60 Hz with jitter, a dropped frame now and then, one long hitch
+      const ms = t > 5000 && t < 5017 ? 150 : rng() < 0.05 ? 33.3 : 16.7 + (rng() - 0.5) * 2;
+      const v = m.vel();
+      const r0 = m.road;
+      W.advance(m, ms, speed);
+      const moved = m.road - r0;
+      const want = v * ms * speed;
+      worst = Math.max(worst, Math.abs(moved - want) / want);
+      for (const ev of m.drain()) if (ev.type === "call") m.tap(ev.uid);
+      t += ms;
+    }
+    assert.ok(worst < 0.002, `speed ${speed}: a frame moved ${(worst * 100).toFixed(2)}% off its real time`);
+  }
+  // a gap over a second (a hidden tab) is one frame, not a leap
+  const m = W.model(ride, p, { rng: seeded(6), view: VIEWS.phone, hold: "normal" });
+  W.advance(m, 1200);
+  const r0 = m.road;
+  W.advance(m, 5000);
+  assert.ok(m.road - r0 < m.vel() * 20, "a 5 s gap moves the road one frame");
 });
 
 test("a speed change eases over about a second: no jump, every thing and layer together", () => {
@@ -149,7 +180,7 @@ test("a speed change eases over about a second: no jump, every thing and layer t
   const half = vs[24];
   assert.ok(half > v0 + (v1 - v0) * 0.2 && half < v0 + (v1 - v0) * 0.8, "half way through the second it is half way there");
   assert.ok(Math.abs(vs[55] - v1) < 1e-9, "there after a second");
-  assert.deepEqual(m.lineSpeed, { near: 1, field: 0.4 }, "the field's things move with the middle layer");
+  assert.deepEqual(m.lineSpeed, { near: 1, field: 0.8 }, "the field's things move with the middle layer (gentle)");
 });
 
 test("fair at every speed: never asked while more than two thirds hidden or leaving; a missed thing comes round until found", () => {
@@ -243,6 +274,21 @@ test("an s09r cut that has landed is the art (the placeholder is drawn only whil
     if (d.art) assert.ok(existsSync(new URL(d.art, ROOT)), `${d.art} exists`);
     if (d.cut && existsSync(new URL(d.cut, ROOT))) assert.equal(d.art, d.cut, `${d.cut} has landed: point art at it`);
   }
+});
+
+test("the ride starts by leaving town: the middle layer's first stretch is the shops (a placeholder), then the fields", () => {
+  const mid = ride.view.layers.find((l) => l.id === "middle");
+  assert.ok(mid.lead && /placeholder|replaces/.test(mid.lead.placeholder), "marked as a placeholder (Zafar, 20 Oct)");
+  assert.equal(mid.lead.art, "assets/day/ride/s09r/town-shops.webp");
+  assert.ok(existsSync(new URL(mid.lead.art, ROOT)));
+  const fake = () => ({ style: {} });
+  const L = { period: 1440, last: mid.lead.last, tiles: [0, 1, 2, 3, 4].map(() => ({ main: fake(), lead: fake(), isLead: false })) };
+  W.leadTiles(L, 0);
+  assert.deepEqual(L.tiles.map((t) => t.isLead), [true, true, false, false, false], "at the start: the copies over the window are the town");
+  W.leadTiles(L, 1500);
+  assert.deepEqual(L.tiles.map((t) => t.isLead), [true, false, false, false, false], "the town scrolls off to the left");
+  W.leadTiles(L, 3000);
+  assert.ok(L.tiles.every((t) => !t.isLead) && L.tiles[0].lead.style.display === "none", "then only fields, for good");
 });
 
 test("the cross-fade join: each copy fades in over the outer tenth of the one before", () => {
