@@ -749,3 +749,6 @@
 {"id":"BOOK-01","run":"ev-20261020-183123-8zf","earlier":"**open**"}
 {"id":"BOOK-03","run":"ev-20261020-183123-8zf","earlier":"**open**"}
 {"id":"BOOK-07","run":"ev-20261020-183123-8zf","earlier":"**open**"}
+{"id":"BOOK-01","run":"ev-20261020-194937-bb2","earlier":"**reopened** (evidence FAIL ev-20261020-183123-8zf)"}
+{"id":"BOOK-03","run":"ev-20261020-194937-bb2","earlier":"**reopened** (evidence FAIL ev-20261020-183123-8zf)"}
+{"id":"BOOK-07","run":"ev-20261020-194937-bb2","earlier":"**reopened** (evidence FAIL ev-20261020-183123-8zf)"}

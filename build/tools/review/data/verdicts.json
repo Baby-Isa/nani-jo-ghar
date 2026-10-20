@@ -266,18 +266,19 @@
   "date": "2026-10-20"
  },
  "BOOK-01": {
-  "hash": "8b9e5524c52f76549838",
+  "hash": "18f1a6bf4050583740ca",
   "dhash": [
-   "70703919cd898948",
-   "311313131313130f"
+   "74743d19dd898948",
+   "6434131313130f8e",
+   "64741317072b0f8e"
   ],
   "verdict": "FAIL",
-  "line": "B, the zoom back out is not seen: 0 ms shows the open book shrunk on a solid black field (the room that was behind it in A at 1937 ms is gone), 399 ms is already the full room with the four-word tray at the bottom, nothing between; and neither panel shows a page turn between games (A holds one game on its pages for 12 frames; only a small arrow at B 0 ms hints at one). The zoom in is shown and clean in A (0 ms wide room by the fire, 816 ms her face, 1937 ms down onto the book, 2282 ms on its pages). Other flaws: the two flat light-blue squares on the pages at A 2282-5966 ms look like unfilled placeholders beside the finished maani/jug/chai/pot art; at A 0 ms the grey-italic \"What did we do today?\" bubble sits in the top-left corner with no speaker chip, away from Nani; at B 1693-3014 ms the pale arch (door with sky) is drawn over the fireplace mantel and shelf. \"Goodnight!\" at B 1693 ms is grey-italic to-record over \"saware\" (allowed); \"Huda!\" and the tray words are Kutchi; no clipping.",
+  "line": "B, the zoom-out at 1355 ms and 1722 ms is a hard-edged translucent box holding a second, smaller Nani-with-book sliding over the wide shot (two Nanis at different scales, misregistered), and at 401 ms and 969 ms the box edge shows as a vertical cut through the fireplace; A at 5000 ms shows the same box ghost on the zoom-in; the rest holds (A: greet by the fire at 0 ms, face at 2313-3000 ms, turn down to the book facing the child at 3614-5000 ms, pages at 5501 ms; C: right page lifts at its corner at 471 ms and swings over the fold at 903 ms into the next game); flaws: C 0 ms shows two empty light-blue boxes above the chai items that look like missing art; \"What did we do today?\" at A 501 ms is grey-italic to-record (allowed)",
   "panel": "B",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-183123-8zf",
-  "commit": "44266b3",
-  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-01.png",
+  "judge": "Claude Fable 5.1, session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-194937-bb2",
+  "commit": "bc84d09d",
+  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-01.png",
   "date": "2026-10-20"
  },
  "BOOK-02": {
@@ -297,37 +298,37 @@
   "date": "2026-10-20"
  },
  "BOOK-03": {
-  "hash": "6e6dc1c82edbb7146cc3",
+  "hash": "f6a366becc65800abc78",
   "dhash": [
-   "31171727656b050f",
-   "31171727652a024f",
-   "11171327656b1757",
-   "31171727632b0657"
+   "647417072b0f0f8e",
+   "647417072b0f0f8e",
+   "75379627692b0f11",
+   "75379627692b0f11"
   ],
-  "verdict": "FAIL",
-  "line": "BOOK-03-p1-L1-1366x768 voice, after the found tap Nani says only \"Huda!\" then the next question, not the full line back; the found state (bounce, gold corner tick) and the wrong state (wiggle, no red) are not pictured either, the wrong-tap strip is listed as left off the sheet (A-D do show the find scene at both sizes: today's place across both pages, four sprites, two asked, Kutchi only; at 844x390 Nani's avatar overlaps the left tree crown and the book's bottom edge is cut by the screen)",
-  "panel": "BOOK-03-p1-L1-1366x768 voice",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-183123-8zf",
-  "commit": "44266b3",
-  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-03.png",
+  "verdict": "PASS",
+  "line": "A, the field runs across both pages with four separate sprites (murgi, chakli left; bakri, kutro right) and Nani asks \"Chakli kida ai?\"; the voice timeline asks for two (chakli, bakri) of the four shown and the wrong-tap probe replays \"Chakli kida ai?\" after the wrong tap; C/D show the same at 844x390 unclipped. Not on the sheet: the gold corner tick, the bounce/wiggle and the no-red wrong state (the wrong-tap strip was captured but left off); the found-lines \"There's the bird!\"/\"There's the goat!\" and \"Goodnight!\"/\"See you tomorrow!\" are unrecorded English (silent), allowed only if tagged to-record",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-194937-bb2",
+  "commit": "bc84d09d",
+  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-03.png",
   "date": "2026-10-20"
  },
  "BOOK-04": {
-  "hash": "78071f067343277dcca5",
+  "hash": "aa229c34417f4e97569b",
   "dhash": [
-   "311313135353130f",
-   "315111535353134f",
-   "311313115353130f",
-   "311111515151134f"
+   "6474330323030f8e",
+   "6474330323030f8e",
+   "6474130323030f8e",
+   "6474130323030f8e"
   ],
   "verdict": "PASS",
-  "line": "B, the chai glass alone on the left page, three identical speaker buttons with nothing written on them and an empty dashed sentence row on the right, Nani's \"Hi kuro ai?\" bubble beside her avatar, dom capture holds only that question; D shows the row filled \"Inke chai khape.\" with chai highlighted and the voice timeline has the word spoken only after the tap followed by \"Inke chai khape.\" (note: once filled, the row sits on the right page with no bubble beside Nani, so it reads as a line away from her)",
+  "line": "B, the chai glass alone on the left page, three identical speaker buttons on the right with nothing written and an empty dotted slot above them; the DOM capture of .day-book holds only \"Hi kuro ai?\"; the timeline has no \"chai\" before the tap, then \"chai\" and the day's sentence; D shows \"chai\" in the row with the sentence beneath in grey italic (to-record placeholder \"Nana wanted chai.\"). Flaws: the word is spoken twice after the tap (chai 2.21 and 2.38; khun 5.94 and 6.10 overlapping); a gold underline shows under \"Hi\" and under \"chai\" (check it is not a visible to-record flag)",
   "panel": "B",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-183123-8zf",
-  "commit": "44266b3",
-  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-04.png",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-194937-bb2",
+  "commit": "bc84d09d",
+  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-04.png",
   "date": "2026-10-20"
  },
  "BOOK-05": {
@@ -344,18 +345,33 @@
   "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-05.png",
   "date": "2026-10-20"
  },
- "BOOK-07": {
-  "hash": "55cbb7406a36c7d5d91d",
+ "BOOK-06": {
+  "hash": "3ccf95b75190fdeedd04",
   "dhash": [
-   "f4753919cc89890e"
+   "647433231b130f8e",
+   "647433231b130f8e"
+  ],
+  "verdict": "PASS",
+  "line": "B, five photos with gold corners in order: darwajo, gadi, bakri on the left page, murgi, kutro on the right, none on the fold, no score anywhere, a turn arrow at the corner; Nani's bubble \"Then we saw the dog.\" is grey-italic placeholder English (to-record). Not on the sheet: the slide-in itself and the tap replay (no voice timeline given); the Check is eye only",
+  "panel": "B",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-194937-bb2",
+  "commit": "bc84d09d",
+  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-06.png",
+  "date": "2026-10-20"
+ },
+ "BOOK-07": {
+  "hash": "15f6a454d5e121800a0b",
+  "dhash": [
+   "74743d19ddc9c9cf"
   ],
   "verdict": "FAIL",
-  "line": "A, six gold word cards (chakli, bakri, kutro, gadi, darwajo, murgi) and no stars or scores are there, but no day-book is added to a shelf: the shelf is painted art already full of books with nothing new on it, and a translucent arch-shaped artefact sits over the fireplace chimney; the Goodnight!/saware bubble (grey-italic English, to-record, allowed) is parked top-left away from Nani in the centre",
+  "line": "A, the six word cards (chakli, bakri, kutro, gadi, darwajo, murgi) are white with a thin tan rim, not gold cards; also a large arch/door card sits at the bottom-left over the side table and plant, flush with (or cut by) the screen's bottom edge, unexplained by the row. Met: a red day-book outlined on the empty shelf, no stars and no scores, \"See you tomorrow!\" is a [ph] grey-italic placeholder",
   "panel": "A",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-183123-8zf",
-  "commit": "44266b3",
-  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-07.png",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-194937-bb2",
+  "commit": "bc84d09d",
+  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-07.png",
   "date": "2026-10-20"
  },
  "BOOK-08": {
@@ -5011,20 +5027,20 @@
   "date": "2026-10-20"
  },
  "RIDE-06": {
-  "hash": "c21a400a620d40d2af1e",
+  "hash": "6a925324b10ce01f8655",
   "dhash": [
-   "7c614af96a616a7f",
-   "7e634a796871726f",
-   "ddd7ede9eae9c5ce",
-   "6d4765516963616e"
+   "7c6166f4756a627f",
+   "7e63626c6d72726f",
+   "ddd7edf1e0d5c1ce",
+   "6d47555d6561616e"
   ],
   "verdict": "PASS",
-  "line": "C, at 1366x768 the car frame is fitted to the full height with both pillars and the door extended to the edges, the farm view fills the whole opening and no green shows anywhere; D (800x360) likewise fills the strip beside the word list; A (1024x768) and B (1366x1024) fill by height with the right pillar cropped off-screen, still no green and the view filling the opening; sidebar text (Nar!, laal darwajo, kutro, lilo darwajo) is Kutchi, unclipped at all four sizes",
+  "line": "C, at 1366x768 the car is fitted to the full height and the opening is stretched across to the right edge with the field view filling it and no page background showing beside it; A (1024x768), B (1366x1024) and D (800x360) show the same, the sidebar (Nar!, laal darwajo, kutro, lilo darwajo) sits clear of the car with nothing clipped",
   "panel": "C",
-  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-183123-8zf",
-  "commit": "44266b3",
-  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/RIDE-06.png",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-194937-bb2",
+  "commit": "bc84d09d",
+  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/RIDE-06.png",
   "date": "2026-10-20"
  },
  "SAM-01": {

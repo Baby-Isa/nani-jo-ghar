@@ -16898,10 +16898,10 @@
    "at": "visible:.wr-band",
    "after": null,
    "capture": [
-    "strip:.wr-view:10x400"
+    "strip:.wr-view:16x800"
    ],
    "expect": null,
-   "note": "the three layers scroll at their own speeds; a filmstrip long enough to pass a join of the near layer: no seam, no jump"
+   "note": "the three layers scroll at their own speeds; a filmstrip of about 13 s at a real speed, long enough for the near layer to wrap its join at least once: no seam, no jump"
   }
  ],
  "RIDE-02": [
@@ -17221,12 +17221,12 @@
    "at": "visible:.day-photo",
    "after": null,
    "capture": [
-    "strip:.day-book:8x300",
+    "strip:.day-book:12x500",
     "dom:.day-book",
     "voice"
    ],
    "expect": null,
-   "note": "stick in the photo: the sentence written under the frame as said, three unlabelled photos, the drag and the snap"
+   "note": "stick in the photo: the sentence written under the frame as said, three unlabelled photos, the drag and the snap (a 6 s strip: the drag, the snap and the corners)"
   }
  ],
  "BOOK-06": [
