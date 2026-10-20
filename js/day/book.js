@@ -167,7 +167,7 @@ export async function runBook(host, api, day) {
   place3(C.wide);
 
   // Nani's line in the room: one card, top left
-  const roomSay = el("div", "day-lines day-room-say", root);
+  const roomSay = el("div", "day-lines day-roomline", root);
   const sayRoom = async (ln) => {
     roomSay.innerHTML = "";
     if (!ln) return;

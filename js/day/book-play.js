@@ -95,7 +95,8 @@ async function find(g, page) {
           firstTry = false;
           once(b, "day-wiggle", 500);
           g.state("wrong-tap");
-          g.say(ask);
+          // the wiggle first, then her line again (never a verdict, never red)
+          setTimeout(() => g.say(ask), 450 / api.speed);
         }
       };
       items.forEach((x) => x.addEventListener("click", onTap));

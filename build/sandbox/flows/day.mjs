@@ -8,8 +8,8 @@ const SPEED = 3;
 const expect = (page) => page.evaluate(() => (window.njgTest && window.njgTest.expect ? window.njgTest.expect() : null)).catch(() => null);
 const dayOf = (page) => page.evaluate(() => window.Day && { stage: window.Day.stage, handoff: window.Day.handoff || null, error: window.Day.error || null, ride: window.Day.rideResult || null }).catch(() => null);
 
-async function open(page, query) {
-  await page.goto(`${BASE}/day.html?nonav=1&speed=${SPEED}&${query}`, { waitUntil: "domcontentloaded" });
+async function open(page, query, speed = SPEED) {
+  await page.goto(`${BASE}/day.html?nonav=1&speed=${speed}&${query}`, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => window.njgTest && window.njgTest.state && window.njgTest.state() !== "day/boot", null, { timeout: 30000 });
 }
 // the middle of the element the hook names, if a tap there lands on it
@@ -104,11 +104,11 @@ const bookOf = (page) => page.evaluate(() => window.Day && window.Day.book && { 
  * Records: room, face, find / find-found, nameit / nameit-filled, photo / photo-in, ourday, wrong-tap (after a wrong move),
  * turn-<n> (just before each page turn), end-zoom-out, end.
  */
-async function playBook(ctx, query, prefix, { wrong = [], room = true } = {}) {
+async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = SPEED } = {}) {
   const { page, rec } = ctx;
-  await open(page, query);
+  await open(page, query, speed);
   if (room) {
-    await page.waitForSelector(".day-room-say .day-line", { timeout: 20000 });
+    await page.waitForSelector(".day-roomline .day-line", { timeout: 20000 });
     await sleep(200);
     await rec.state(`${prefix}room-greet`);
     await page.waitForFunction(() => window.Day.book && window.Day.book.stage === "tilt", null, { timeout: 30000 });
@@ -189,7 +189,7 @@ export const dayBook = {
 // the book's evidence paths (build/sandbox/data/evidence.json `_drivers`)
 const BOOK_DRIVERS = {
   find: { q: "stage=book&game=find&log=farm&seed=7", what: "find it alone, played fair" },
-  "find-wrong": { q: "stage=book&game=find&log=farm&seed=7", what: "find it with one wrong tap before each right one", wrong: ["find"] },
+  "find-wrong": { q: "stage=book&game=find&log=farm&seed=7", what: "find it at a child's pace (speed 1), with one wrong tap before each right one", wrong: ["find"], speed: 1 },
   nameit: { q: "stage=book&game=nameit&log=kitchen&seed=7", what: "name it alone (two pages), played fair" },
   photo: { q: "stage=book&game=photo&log=farm&seed=7", what: "stick in the photo alone (two pages), the right photo dragged to the frame" },
   ourday: { q: "stage=book&game=ourday&log=farm&seed=7", what: "our day alone, watched to its end" },
@@ -205,7 +205,7 @@ export function dayBookFlow(level, path) {
     title: `A day at Nani's: the evening book, ${d.what}`,
     timeoutMs: 300000,
     async run(ctx) {
-      await playBook(ctx, d.q, `${path}-`, { wrong: d.wrong || [], room: !!d.room });
+      await playBook(ctx, d.q, `${path}-`, { wrong: d.wrong || [], room: !!d.room, speed: d.speed || SPEED });
       ctx.reachedEnd = true;
     },
   };
