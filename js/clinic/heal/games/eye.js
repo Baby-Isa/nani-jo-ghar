@@ -631,6 +631,9 @@
       st.view = "test";
       st.busy = false;
     };
+    // CLN-107: a line of hers starts only once the one before it is said (a quick judgement opens the next row while
+    // she still reads this one: its words would otherwise be heard under the next line)
+    const after = (prev, fn) => Promise.resolve(prev).catch(() => {}).then(() => (st.gone ? null : fn()));
     const readRow = async (i, again) => {
       const c = P.chart[i];
       const said = again ? c.pics : c.said;
@@ -642,7 +645,7 @@
       mouthSay(P.level === 1 ? said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", ") : null);
       if (again) {
         st.busy = true;
-        await (st.reading = ctx.say(line, { who: "patient", noBubble: true }));
+        await (st.reading = after(st.reading, () => ctx.say(line, { who: "patient", noBubble: true })));
         S.face("neutral");
         // she read it right: the row ticks itself, then a pause before the next row (EY13)
         st.ticked[i] = true;
@@ -664,7 +667,7 @@
       }
       // CLN-107: her reading is kept, so the next line (the doctor naming the row, her "I can see!") starts only when
       // her words are said: a line plays only its own words' clips, never under another line
-      st.reading = ctx.say(line, { who: "patient", noBubble: true }).then(() => S.face("neutral"));
+      st.reading = after(st.reading, () => ctx.say(line, { who: "patient", noBubble: true })).then(() => S.face("neutral"));
     };
     // her bubble under her mouth (the eye test): the anchor below her mouth on the left panel
     const mouthAt = () => (readEye ? { x: readEye.x + (version === "A" ? 40 : 10), y: readEye.y + (version === "A" ? 92 : 70) } : null);
@@ -696,14 +699,20 @@
       unName();
       const el = S.h("div", "eye-name", S.root);
       el.dataset.row = String(i);
+      // his own face at the bubble's start: it is the doctor (off screen) naming the row, by his card in the sidebar
+      if (Kit0 && Kit0.doctorFace) {
+        const f = S.h("img", "eye-name-face", el);
+        f.alt = "";
+        f.src = Kit0.doctorFace("neutral");
+      }
       c.pics.forEach((id) => {
         const im = S.h("img", null, el);
         im.alt = "";
         im.src = url(BY[id].icon);
       });
       const line = HS.L.show(HS.L.join(c.pics.flatMap((id, k) => (k ? [",", BY[id].lex] : [BY[id].lex]))));
-      await Promise.resolve(st.reading).catch(() => {});
-      await ctx.say(line, { who: "doctor", noBubble: true });
+      // his line joins her lines' chain: after her reading, and her re-read after it
+      await (st.reading = after(st.reading, () => ctx.say(line, { who: "doctor", noBubble: true })));
     };
     const onJudge = async (saysRight) => {
       if (!st.awaiting || st.busy || st.over) return;

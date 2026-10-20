@@ -502,7 +502,7 @@
    "_about": "s08-w5b (CLN-188; Zafar 18 Oct: 'an eye test board sitting on an optician's wall'): the s08b EC1 wall with its blank board (assets/clinic/s08b/ec1-meta.json), layout A's right panel. box = where the picture goes in the close-up's 800x500 units (from x 406, the panel's left edge, 350 wide: the wall colour carries on to the right edge, so the board clears her face circle in the corner and, on the shortest screen (800x360), its frame ends above the yes / no pills; its top cut 36 units), board = the board's white face as shares of the picture (ec1-meta board / size), fill and floor = the wall's and the skirting's own colours, round the picture on a taller screen",
    "src": "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
    "box": [
-    172,
+    167,
     -86,
     475,
     713
@@ -519,10 +519,10 @@
    "stretch": [
     0.3,
     0.7,
-    1.83
+    1.8
    ],
    "_s08w6h": "CLN-188 (the judge: the board a third of the play width): box x 230 (was 297) and stretch [a, b, f]: the picture's middle share 0.3-0.7 (the plain board face, the wall above it and the skirting below) drawn 1.835x as wide (js/clinic/heal/games/eye.js, a nine-slice: the frame's sides keep their size), so the board's face is 400 x 400 units, x 300-700, its frame clear of her face circle in the top right corner; the wall is clipped at the split",
-   "_s08w6n": "CLN-188 (s08 w6N): box [172, -86, 475, 713] and stretch middle x1.83: the board's face about 470 x 470 units, its frame clear of her face circle in the top right corner and its foot above the yes / no pills"
+   "_s08w6n": "CLN-188 (s08 w6N): box [167, -86, 475, 713] and stretch middle x1.8: the board's face about 464 x 470 units, its frame clear of her face circle in the top right corner and its foot above the yes / no pills"
   },
   "drop": {
    "_about": "s08-w5b (CLN-186; Zafar 18 Oct: 'photorealistic drops, and the bottle ... isn't cut out nicely'): bottle = the re-cut bottle held nozzle down (SH-115 sheets-v3), cut off at nozzle (its nozzle's end, a share of its height: its own painted drop hidden); tool = the re-cut bottle in the strip; falling = the s08b DP3 photo drop (aspect its width over height, w its width in the close-up's units) hanging at the nozzle and falling; splash = DP3's splash on the eye (splashW wide)",

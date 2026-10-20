@@ -649,7 +649,10 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-said.talk i:nth-child(3) { animation-delay: .26s; }
 /* EY13: the doctor names the row with its pictures (by his box, top left) */
 .eye-name { position: absolute; left: var(--njg-s2); top: var(--njg-s2); z-index: 9; display: flex; gap: var(--njg-s2); padding: var(--njg-s2) var(--njg-s3); background: #e8f1ea; border: 2px solid #9cc2a6; border-radius: 16px; box-shadow: var(--njg-shadow); animation: cl-pop .2s; }
-.eye-name img { width: 48px; height: 48px; object-fit: contain; }
+.eye-name { align-items: center; }
+.eye-name img { width: calc(var(--njg-tap, 48px) * 1.35); height: calc(var(--njg-tap, 48px) * 1.35); object-fit: contain; }
+/* CLN-107 (s08 w6N): his face starts the bubble: the doctor names the row */
+.eye-name img.eye-name-face { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); border-radius: 50%; object-fit: cover; background: #fff; border: 2px solid #9cc2a6; }
 /* a wrong yes / no shakes red (decision 59) */
 .hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
 .eye-btn .njg-next-t { display: flex; align-items: center; }
@@ -697,10 +700,11 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 [data-game="boing"] .hs-tools { --hs-pic-w: calc(var(--hs-pic-h) * 1.8); }
 @media (max-height: 499.98px), (max-width: 499.98px) { [data-game="boing"] .hs-tools { --hs-pic-h: calc(var(--njg-done) * 0.6); --hs-pic-w: calc(var(--hs-pic-h) * 1.8); } }
 /* SH-112 (s08 w6N; the judge: the fever's strip "a thin thermometer" in its box at 800x360): the fever's one tool is a long
-   thin thermometer lying flat (about 5:1), so its tile's picture box is that shape: as wide as two and a half tiles' heights
-   and a little taller than the plain tile's, so the thermometer reads at a glance on every screen */
-[data-game="fever"] .hs-tools { --hs-pic-h: calc(var(--njg-done) * 1.1); --hs-pic-w: calc(var(--hs-pic-h) * 2.6); }
-@media (max-height: 499.98px), (max-width: 499.98px) { [data-game="fever"] .hs-tools { --hs-pic-h: calc(var(--njg-done) * 0.9); --hs-pic-w: calc(var(--hs-pic-h) * 2.6); } }
+   thin thermometer lying flat (about 5:1), so its tile's picture box is a wide one: on a laptop as wide as it can be beside
+   the wall thermometer (it stays clear of it); on a phone, where the strip's corner is narrower than the gauge leaves, the
+   tile hangs just under the gauge, by the door, twice as wide as high */
+[data-game="fever"] .hs-tools { --hs-pic-w: calc(var(--hs-pic-h) * 1.75); }
+@media (max-height: 499.98px), (max-width: 499.98px) { [data-game="fever"] .hs-tools { top: 40%; --hs-pic-h: calc(var(--njg-done) * 0.9); --hs-pic-w: calc(var(--hs-pic-h) * 2); } }
 /* CLN-23 (s08 w6N; the judge: "the stethoscope stands up: its ear tubes rise above the belt's back rail"): its picture is the
    stethoscope lying on a table seen from above; on the belt, seen from the counter's low angle, it is drawn foreshortened
    (its own height a little over half, its foot on the belt) and a little wider, so it lies flat on the belt like the spoon */
