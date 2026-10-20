@@ -7,10 +7,11 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { args, help, die, more, ROOT, rel } from "./lib/common.mjs";
 import { parseRegressions, REGRESSIONS, REGRESSIONS_DONE, readAllRegressions, gitRegressions, moveRows, plain, statusKind } from "./lib/regressions.mjs";
 import { sprintRows } from "./lib/sprint.mjs";
-import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, captureLabels, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds } from "./lib/evidence.mjs";
+import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, captureLabels, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds, changedRows } from "./lib/evidence.mjs";
 
 const HELP = `
 node build/tools/review/evidence.mjs --plan  [--rows a,b | --all | --sprint [--since ref]] [--json]
+node build/tools/review/evidence.mjs --plan|--run --changed [--since <evidence run id or commit>]
 node build/tools/review/evidence.mjs --run   [same rows] [--run-id id | --resume id] [--from-run <sandbox run>] [--parallel 3]
 node build/tools/review/evidence.mjs --sheets [--run-id id]            (--run ends with it)
 node build/tools/review/evidence.mjs --judge  [--run-id id] [--batch 10] [--audit 10]
@@ -21,6 +22,10 @@ node build/tools/review/evidence.mjs --apply  [--run-id id] [--dry]
              probe on it) and the rows with no spec. Exit 1 on any error or row with no spec (a row with no spec is never "built").
              Rows: --all (every live row: default), --rows a,b, or --sprint (sprintcheck.mjs's rows: added or changed since --since).
              Rows tagged needs-decision in their Check go to docs/status.md, never to a sheet.
+  --changed  with --plan or --run: only the rows whose probes play a flow that the files changed since the last evidence run's
+             commit reach (touched.mjs's file -> flow map; a script probe or a broken spec is always kept; an unplaced runtime file
+             widens to every flow). --since names another start: a run id (build/screenshots/evidence) or any git ref. Rows not
+             touched keep their cached verdicts. --plan --changed prints the subset and its count.
   --run      plays those pages through build/sandbox/run.mjs --evidence (13-minute chunks under the browser lock, resumable with
              --resume <id>; inside an outer flock it runs one chunk and exits 75 when pages are left), then --sheets.
              --from-run <id>: a sandbox run (a gate run with --evidence) whose pages already carry the probes: only the pages it
@@ -74,6 +79,41 @@ function selectRows() {
   return { all, rows: rows.filter((r) => !/needs-decision/i.test(r.check)), decision };
 }
 
+// ---------- --changed: the start (a run's commit or a git ref), the changed files, the flows they reach ----------
+function mainRoot() { const c = git("rev-parse", "--path-format=absolute", "--git-common-dir"); return c ? dirname(c) : ROOT; }
+function lastRun(id) { // a finished run (it has index.json), here or in the main checkout (a worktree carries no build/screenshots)
+  for (const root of [ROOT, mainRoot()]) {
+    const base = join(root, "build", "screenshots", "evidence");
+    if (!existsSync(base)) continue;
+    const names = id ? [id] : readdirSync(base).filter((n) => existsSync(join(base, n, "index.json"))).sort((x, y) => statSync(join(base, y, "index.json")).mtimeMs - statSync(join(base, x, "index.json")).mtimeMs);
+    for (const n of names) {
+      const rd = (f) => { try { return JSON.parse(readFileSync(join(base, n, f), "utf8")); } catch (e) { return null; } };
+      const c = (rd("index.json") || {}).commit || (rd("plan.json") || {}).head;
+      if (c) return { run: n, commit: c };
+    }
+  }
+  return null;
+}
+function changeStart() {
+  const since = a.val("since");
+  const r = lastRun(since);
+  if (r) return { label: r.run, commit: r.commit };
+  if (since) { if (git("rev-parse", "--verify", "-q", `${since}^{commit}`)) return { label: since, commit: since }; die(`--since ${since}: not an evidence run and not a git ref.`); }
+  return die("No finished evidence run to start from: name one with --since <run id or commit>.");
+}
+function changedFiles(commit) {
+  const lines = (x) => (x || "").split("\n").filter(Boolean);
+  if (!git("rev-parse", "--verify", "-q", `${commit}^{commit}`)) die(`The last evidence run's commit ${commit} is not in this repository: name a start with --since <commit>.`);
+  return [...new Set([...lines(git("diff", "--name-only", `${commit}..HEAD`)), ...lines(git("diff", "--name-only", "HEAD")), ...lines(git("ls-files", "--others", "--exclude-standard"))])];
+}
+// the flows (base ids) the changed files reach, by touched.mjs
+function touchedFlows(files) {
+  if (!files.length) return [];
+  const r = spawnSync(process.execPath, [join(ROOT, "build/tools/review/touched.mjs"), "--files", files.join(","), "--json"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+  if (r.status !== 0) die(`touched.mjs failed: ${(r.stderr || r.stdout || "").slice(0, 300)}`);
+  return JSON.parse(r.stdout).flows;
+}
+
 // ---------- the plan ----------
 async function makePlan() {
   const S = await import("../../sandbox/lib/evidence.mjs");
@@ -85,13 +125,20 @@ async function makePlan() {
   const cache = new Map();
   const resolve = (id) => { if (!cache.has(id)) cache.set(id, resolveFlow(id, live)); return cache.get(id); };
   const seen = M.seenMoments(ROOT);
-  const { rows, decision, all } = selectRows();
+  let { rows, decision, all } = selectRows();
   const spec = S.loadSpec(ROOT);
   const rowText = Object.fromEntries(all.map((r) => [r.id, plain(r.check)]));
   const ctx = { resolve, kindOf: flowKind, sizes: SIZES, contractChecks: Object.keys(CHECKS), moments: (id) => M.momentsFor(ROOT, id, { kindOf: flowKind, seen }), reachable: M.reachable, rowText };
   // validate the whole file (a broken spec of a row not run today is still broken), plan the selected rows
   const norm = S.normalizeSpec(spec, ctx);
-  const ids = rows.map((r) => r.id);
+  let ids = rows.map((r) => r.id), changed = null;
+  if (a.has("changed")) {
+    const start = changeStart(), files = changedFiles(start.commit), flows = touchedFlows(files);
+    const sel = changedRows(ids, norm.rows, flows, { rowErrors: norm.rowErrors });
+    changed = { since: start.label, commit: start.commit, files: files.length, flows: flows.length, of: ids.length, kept: sel.keep.length };
+    ids = sel.keep;
+    rows = rows.filter((r) => ids.includes(r.id));
+  }
   // a row whose entry is {human} (Zafar's ear or feel) or {needsDecision} (docs/status.md) gets no page; a row with a spec error
   // gets none either: it is a tool failure until its spec or its driver is fixed
   const playable = ids.filter((id) => !norm.human[id] && !norm.decision[id] && !(norm.obsolete || {})[id]);
@@ -99,10 +146,11 @@ async function makePlan() {
   const errRows = Object.fromEntries(Object.entries(norm.rowErrors).filter(([id]) => ids.includes(id)));
   const unknownRows = Object.keys(norm.rows).filter((id) => !all.some((r) => r.id === id));
   const pick = (o) => Object.fromEntries(Object.entries(o).filter(([id]) => ids.includes(id)));
-  return { created: new Date().toISOString(), head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), obsolete: pick(norm.obsolete || {}), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
+  return { created: new Date().toISOString(), changed, head: git("rev-parse", "--short", "HEAD"), rows: rows.map((r) => ({ id: r.id, issue: plain(r.issue), check: plain(r.check), source: plain(r.source), status: plain(r.status), kind: statusKind(r.status), section: [r.h2, r.h3].filter(Boolean).join(" > ") })), decision: [...new Set([...decision.map((r) => r.id), ...Object.keys(pick(norm.decision))])], human: pick(norm.human), decisionText: pick(norm.decision), obsolete: pick(norm.obsolete || {}), noSpec, errors: norm.errors.filter((e) => ids.includes(e.split(/:| probe /)[0])), fileErrors: norm.errors.length, rowErrors: errRows, warnings: norm.warnings, unknownRows, pages, repo, spec: Object.fromEntries(ids.filter((id) => spec[id]).map((id) => [id, spec[id]])) };
 }
 function printPlan(P) {
   const L = log(null);
+  if (P.changed) console.log(`changed rows only: ${P.changed.kept} of ${P.changed.of} rows (since ${P.changed.since} at ${P.changed.commit}: ${P.changed.files} files changed reach ${P.changed.flows} flows); the others keep their cached verdicts`);
   const nh = Object.keys(P.human || {}).length, nerr = Object.keys(P.rowErrors || {}).length;
   console.log(`evidence plan: ${P.rows.length} rows: ${P.rows.length - P.noSpec.length} with a spec (${nh} Zafar's ear or feel, ${P.decision.length} need a decision, ${nerr} with spec errors), ${P.pages.length} pages, ${P.pages.reduce((n, p) => n + p.probes.length, 0)} page probes, ${(P.repo || []).length} script probes`);
   if (P.errors.length) {
@@ -118,7 +166,7 @@ function printPlan(P) {
   console.log(`\npages (${P.pages.length}):`);
   more(P.pages, 80, (p) => `  ${p.flow} @ ${p.size}${p.variant ? ` [${p.variant}]` : ""}: ${p.probes.map((q) => `${q.row}${q.every ? " every" : ""} ${q.at}`).join("; ")}`);
   const mins = Math.ceil(P.pages.length * 0.35);
-  console.log(`\nabout ${mins} min of browser time at 3 pages at once. Run: node build/tools/review/evidence.mjs --run${a.val("rows") ? ` --rows ${a.val("rows")}` : a.has("sprint") ? " --sprint" : ""}`);
+  console.log(`\nabout ${mins} min of browser time at 3 pages at once. Run: node build/tools/review/evidence.mjs --run${a.has("changed") ? " --changed" + (a.val("since") ? ` --since ${a.val("since")}` : "") : ""}${a.val("rows") ? ` --rows ${a.val("rows")}` : a.has("sprint") ? " --sprint" : ""}`);
 }
 
 // the voice timeline for the .md: all of it up to 120 lines; a longer one is the 120 lines that end 60 lines past the probe's moment

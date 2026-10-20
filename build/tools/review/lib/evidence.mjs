@@ -211,3 +211,19 @@ export function redGreen(verdicts, { kinds, specs, log, run, legacy = [] }) {
   }
   return { verdicts: out, refused, strikes };
 }
+
+// --changed (Zafar, 20 Oct): the rows worth playing again after a change. A row is touched when one of its probes plays a flow
+// (by base id: "clinic:heal-eye#mistake@L2" is "clinic:heal-eye") that touched.mjs reaches from the changed files, or when it runs a
+// script (a "repo" probe: no browser, cheap, always kept), or its spec is broken (it must show). `norm` is the normalised spec's rows
+// (id -> probes with .flowId / .repo); rows with no probes (no spec, human, decision) are not played either way.
+export const flowBase = (id) => String(id || "").replace(/[@#].*$/, "");
+export function changedRows(rowIds, norm, touchedIds, { rowErrors = {} } = {}) {
+  const hit = new Set(touchedIds), keep = [], skipped = [];
+  for (const id of rowIds) {
+    const probes = norm[id];
+    if (!probes) { skipped.push(id); continue; }
+    const touched = rowErrors[id] || probes.some((p) => p.repo || hit.has(flowBase(p.flowId)));
+    (touched ? keep : skipped).push(id);
+  }
+  return { keep, skipped };
+}

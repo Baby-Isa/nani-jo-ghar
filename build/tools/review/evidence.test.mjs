@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { parseCapture, parseExpect, parseCmd, momentMatches, normalizeSpec, planPages, unknownWords, lexiconWords, voiceOrder, wordOrder, movesOn, silentAfter, gapMs, traceDecision, traceStats, negate, defaultsFromRow, watchList } from "../../sandbox/lib/evidence.mjs";
 import { isToRecord } from "../../sandbox/lib/evidence-probe.mjs";
 import { reachable } from "../../sandbox/lib/moments.mjs";
-import { rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, captureLabels, labelOf } from "./lib/evidence.mjs";
+import { changedRows, flowBase, rowOutcome, dhash, hamming, fingerprint, cacheHit, batches, parseVerdicts, passRefusal, applyVerdicts, applyGuard, captureLabels, labelOf } from "./lib/evidence.mjs";
 import { blank, encodePng } from "./lib/png.mjs";
 
 test("captures: every kind, a capture at another moment, refusals", () => {
@@ -392,4 +392,20 @@ test("red then green (checks-to-build 1): a PASS marks built only after a FAIL o
   const w = "| A-07 | x | **reopened** · **waiting on Mum (the recordings)** (S06) | c | s |";
   assert.match(applyVerdicts(w, new Map([["A-07", { verdict: "FAIL", line: "A, silent" }]]), "r1").text, /\| \*\*reopened\*\* · \*\*waiting on Mum \(the recordings\)\*\* \(evidence FAIL r1\) \|/);
   assert.doesNotMatch(applyVerdicts(w, new Map([["A-07", { verdict: "PASS", line: "A, said" }]]), "r1").text, /waiting on/);
+});
+
+test("--changed: a row is replayed only when a probe's flow is reached by the changed files (fake mapping)", () => {
+  const norm = {
+    "A-1": [{ flowId: "cook:chai-tray@L2#mistake" }], // base cook:chai-tray
+    "A-2": [{ flowId: "clinic:heal-eye" }, { flowId: "clinic:patient" }],
+    "A-3": [{ flowId: "mode:snap" }],
+    "A-4": [{ repo: true }], // a script probe: always kept
+    "A-5": [{ flowId: "mode:find" }], // a broken spec: always kept
+  };
+  assert.equal(flowBase("cook:chai-tray@L2#mistake"), "cook:chai-tray");
+  const r = changedRows(["A-1", "A-2", "A-3", "A-4", "A-5", "A-6"], norm, ["clinic:heal-eye"], { rowErrors: { "A-5": ["unknown flow"] } });
+  assert.deepEqual(r.keep, ["A-2", "A-4", "A-5"]);
+  assert.deepEqual(r.skipped, ["A-1", "A-3", "A-6"], "A-6 has no spec: not played");
+  assert.deepEqual(changedRows(["A-1"], norm, ["cook:chai-tray"]).keep, ["A-1"], "a path of a flow counts as the flow");
+  assert.deepEqual(changedRows(["A-1", "A-2", "A-3"], norm, []).keep, [], "nothing changed: nothing replayed");
 });
