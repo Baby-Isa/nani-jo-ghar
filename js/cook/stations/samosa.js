@@ -633,7 +633,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // T17 / SH-110: Nani calls the strip's first filling as soon as a strip is wanted ("Bhar! Chundo."), the same step
         // when that strip is tapped (so a strip tap never starts a call over the child's next tap), then each next filling
         const ord = filledOf().filter((x) => x !== active).length;
-        const callFill = (heap) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto" });
+        // SH-60 (s08 w6J: at L2 her help line "Bhar! Chundo." came with nothing lit): the step's help lights the thing to tap
+        // (the heap, or the strip to fill) in the same moment as her line, as the pantry does
+        const helpGlow = (o) => (o ? (on) => o.active && S.glow(o, on, { bounce: true }) : null);
+        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
         if (mv.heap) {
           const o = items[mv.heap];
           if (o && o.active) {
@@ -646,12 +649,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               .filter((id) => id !== mv.heap && items[id] && items[id].active)
               .map((id) => S.centre(items[id]));
             z.expect({ kind: "tap", x: c.x, y: c.y, key: mv.heap, wrongs });
-            callFill(mv.heap);
+            callFill(mv.heap, o);
             return;
           }
         }
         const nb = mv.strip ? needBlock() : 0;
-        if (nb) callFill(kindsOf(nb)[0]);
+        if (nb) callFill(kindsOf(nb)[0], mv.strip || null);
         else steps.done();
         if (mv.strip) {
           if (glow) {

@@ -389,7 +389,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       stepNow();
       ghostSync();
       const need = !chakla && !waiting ? nextType() : null;
-      plates.forEach((b) => glowOn(b, !!((ctx.guided || helping) && need === b.type))); // decision 51: a redo has help
+      // decision 51: a redo has help. SH-60 (s08 w6J: at L2 her help line came with nothing lit): the pile to take from is lit
+      // as help too, held by the ladder (station-lib's glow) until the pause, so it comes with her line
+      plates.forEach((b) => glowOn(b, need === b.type));
       // a rolled maani and a free tawa: that's the next thing (it pulses, whatever the level)
       if (waiting) glowOn(waiting.sprite, !onTawa && waiting.landed);
       if (need) {
