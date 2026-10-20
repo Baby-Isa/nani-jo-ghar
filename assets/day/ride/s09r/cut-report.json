@@ -1,0 +1,108 @@
+{
+ "far-hills": {
+  "size": [
+   1536,
+   593
+  ],
+  "edge_left": 18,
+  "edge_right": 18,
+  "seam_px": 0
+ },
+ "middle-fields": {
+  "size": [
+   1536,
+   643
+  ],
+  "edge_left": 140,
+  "edge_right": 143,
+  "seam_px": 3
+ },
+ "near-verge": {
+  "size": [
+   1536,
+   482
+  ],
+  "edge_left": 26,
+  "edge_right": 18,
+  "seam_px": 8
+ },
+ "town-shops": {
+  "size": [
+   1536,
+   263
+  ],
+  "edge_left": 180,
+  "edge_right": 180,
+  "seam_px": 0
+ },
+ "bush": {
+  "size": [
+   334,
+   247
+  ],
+  "from": "p1-props-v1.png"
+ },
+ "haystack": {
+  "size": [
+   344,
+   205
+  ],
+  "from": "p1-props-v1.png"
+ },
+ "wall": {
+  "size": [
+   407,
+   134
+  ],
+  "from": "p1-props-v1.png"
+ },
+ "tree": {
+  "size": [
+   323,
+   360
+  ],
+  "from": "p1-props-v1.png"
+ },
+ "goat": {
+  "size": [
+   308,
+   360
+  ],
+  "from": "i1-animals-v1.png"
+ },
+ "hen": {
+  "size": [
+   283,
+   360
+  ],
+  "from": "i1-animals-v1.png"
+ },
+ "dog": {
+  "size": [
+   350,
+   360
+  ],
+  "from": "i1-animals-v1.png"
+ },
+ "bird": {
+  "size": [
+   194,
+   305
+  ],
+  "from": "i1-animals-v1.png"
+ },
+ "red-door": {
+  "size": [
+   371,
+   360
+  ],
+  "from": "d1-doors-v1.png"
+ },
+ "green-door": {
+  "size": [
+   370,
+   360
+  ],
+  "from": "d1-doors-v1.png"
+ }
+}

@@ -25,10 +25,10 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 7. **Done means an independent picture, not tests passed.** Red then green: the row's check fails before the fix and passes after, and a judge who isn't the builder (the `judge` agent) passes the picture, flaws first.
 8. **The same shared screens and buttons in every mode,** from `js/shared/`, never restyled per mode.
 9. **No clipped or ellipsised text, anywhere.** Headlines shrink, then wrap.
-10. **Only real family voices ship.** TTS is test-only and never ships; no AI-generated Kutchi.
+10. **Only real family voices ship;** no AI Kutchi. The device voice reads unrecorded lines on the test site only, never the store build (Zafar, 20 Oct).
 11. **Every line is a full, natural sentence built by the language engine, and every word the child hears is a real family voice.** The most frequent phrases (found by statistical analysis of simulated play) are recorded whole; the rest are assembled from recorded words. Never hand-written fragments or hand fixes: if the engine can't say it, report the gap.
 12. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can take it back until Done.
-13. **Art is made in ChatGPT runs that Zafar supervises** (decision 77): Claude plans the run and writes one paste block; he runs it and approves what lands; Claude judges, cuts and wires. No image-API art without his say-so.
+13. **Art is made in ChatGPT runs that Zafar supervises** (decision 77): Claude writes one paste block, he runs it, Claude judges, cuts and wires; no image-API art without his say-so.
 14. **Sessions:** builders are in-chat subagents in their own worktrees, two at most on different files (four while two sprints overlap: Zafar, 19 Oct); they never judge their own work or push; the orchestrator judges, merges, runs the full check and publishes (`/publish`).
 15. **Be cost-conscious:** top model for judgement and visual work, mid-tier for mechanical work; no fan-outs or full re-shoots while iterating.
 16. **The family is Khoja Shia Ithna'asheri Muslim** (internal note only; never named in anything players or the public read): halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).
