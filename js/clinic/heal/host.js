@@ -946,7 +946,8 @@
     // S03-A (decision 53, CLN-84 re-raised, SH-64): every heal game opens with the shared request pop-up, as Cook and
     // the pharmacy do: the doctor's card at full size over the room, read out row by row; a tap anywhere stops the
     // voice and folds it into the sidebar; then the game starts, quiet (its opening repeat of the card is skipped)
-    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText);
+    // (a late goal, def.why.goalAfter: the game's first step is the pop-up's whole content; its rows come at mount)
+    const popup = v2 && opts.popup !== false && !!global.Lifecycle && (card.rows.length > 0 || !!card.titleText || lateGoal);
     const popRead = new Set();
     let popped = false; // the pop-up has read the card
     let popAt = 0;
