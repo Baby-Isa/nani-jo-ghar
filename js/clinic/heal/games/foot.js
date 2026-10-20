@@ -672,10 +672,27 @@
               // CLN-190: one jug is one sweep, through its share of the dirt that's left (top to bottom)
               // s08-w6c (the gate's stuck clinic:patient at 1024x768): only dirt a finger can reach; a bit under the tool
               // column (the sole runs on under it on a narrow screen) is pressed on a tool, so no jug is poured
+              // s08 w6I (the gate's stuck clinic:patient at 1180x820 and 1366x1024): a bit of dirt 6 px left of the tiles was
+              // "reachable" by its centre, then every press landed on the picked tile (its selection ring): a finger's width
+              // all round must be the foot's, and only dirt on the sole counts (bits past its edge are clipped away: nobody
+              // sees them, and the soak's close rinses them off)
+              const pad = 18;
+              const onSvg = (x, y) => {
+                const el = root.document.elementFromPoint(x, y);
+                return !!el && S.svg.contains(el);
+              };
+              const onSole = (d) => {
+                try {
+                  // the clip's shapes carry the mirror themselves: test in their own (unmirrored) units
+                  const pt = new root.DOMPoint(P.flip ? 800 - d.x : d.x, d.y);
+                  return [...clip.children].some((sh) => sh.isPointInFill(pt));
+                } catch (e) {
+                  return true;
+                }
+              };
               const reach = (d) => {
                 const cl = S.client(d.x, d.y);
-                const el = root.document.elementFromPoint(cl.x, cl.y);
-                return !!el && S.svg.contains(el);
+                return onSole(d) && [[0, 0], [pad, 0], [-pad, 0], [0, pad], [0, -pad]].every(([dx, dy]) => onSvg(cl.x + dx, cl.y + dy));
               };
               const left = dirt.filter((d) => !d.gone && reach(d)).sort((a, b) => a.y - b.y);
               const share = left.slice(0, Math.max(1, Math.ceil(left.length / (c.jugs - st.jugs))));

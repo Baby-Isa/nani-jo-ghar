@@ -125,6 +125,46 @@
     const shine = s("ellipse", { cx: A.x, cy: A.y, rx: 62, ry: 30, fill: "#fff", opacity: 0 }, armG);
     const markG = s("g", {}, armG);
 
+    const IMG = "assets/clinic/items-v2/";
+    // ART-20, CLN-106 (s08 w6F): the level plaster (B1's top-down view: a white pad on its coloured strip, the pharmacy
+    // belt's plaster) in the tool column and on the arm (boing.json art.plasters); a colour with no picture keeps the old one
+    const PL = ART.plasters || {};
+    const plasterPic = (c) => PL[c] || `${IMG}plaster-${c}.webp`;
+    const plasterH = (w) => w / (PL.aspect || 2);
+    // B4 (CLN-106): the alcohol wipe's packet on the shelf; CLN-168 (Zafar, 18 Oct: "you should be cleaning it with the
+    // cloth, not ... the packet"): the cloth (sheets/cloth) is what's in the hand on the arm
+    const wipeArt = ART["alcohol-wipe"] && ART["alcohol-wipe"].on ? ART["alcohol-wipe"].file : null;
+    const clothArt = ART.cloth && ART.cloth.file ? ART.cloth : null;
+    const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
+    st.plaster = null;
+    S.clearTick = true; // CLN-165: at 800x360 the ✓ covered the third plaster: the column stops above the ✓'s corner
+    S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: plasterPic(c), glyph: "•" }))), (id) => {
+      if (/^plaster-/.test(id)) st.plaster = id.slice(8);
+    });
+    /*
+     * s08 w6I (the gate's stuck runs: boing at 1024x768, its yellow lever under the tiles): the machine and its syringe
+     * stand left of the tool column at every size. The column is laid first; where it reaches over the machine's place
+     * (a 4:3 screen, whose column is two tiles wide), the machine, its chute, the syringe and the drops all move left by
+     * the overlap (one offset on the machine's box: everything else is drawn from it), never off the play area's left.
+     */
+    const rigDx = (() => {
+      try {
+        const sr = S.shelf.getBoundingClientRect();
+        if (!sr.width) return 0;
+        const left = S.pt({ clientX: sr.left, clientY: sr.top }).x;
+        const vb = S.svg.viewBox && S.svg.viewBox.baseVal;
+        const MV0 = ART.machineV3 && ART.machineV3.file ? ART.machineV3 : null;
+        const x0 = MV0 ? MV0.box[0] : 540 - (50 + K.tubes * 56) / 2;
+        const right = MV0 ? MV0.box[0] + MV0.box[2] : 540 + (50 + K.tubes * 56) / 2;
+        const gap = 12;
+        const want = Math.min(0, left - gap - right);
+        const floor = vb && vb.width ? vb.x + gap - x0 : -Infinity;
+        return Math.round(Math.max(want, Math.min(0, floor)));
+      } catch (e) {
+        return 0;
+      }
+    })();
+
     /*
      * CLN-164, CLN-165 (Zafar, 18 Oct: "a lot more photorealistic ... smaller"): the s07 drop machine (DM1) and its levers
      * (DM2), drawn at about three quarters of the old machine's size: four clear tubes of coloured medicine, each with a
@@ -138,7 +178,8 @@
     let ring;
     const tubeX = {};
     if (MV) {
-      const [bx, by, bw] = MV.box;
+      const [bx0, by, bw] = MV.box;
+      const bx = bx0 + rigDx;
       const k = bw / MV.size[0];
       const at = (x, y) => ({ x: bx + x * k, y: by + y * k });
       s("image", { href: url(MV.file), x: bx, y: by, width: bw, height: MV.size[1] * k, class: "bo-machine-art" }, machG);
@@ -162,7 +203,7 @@
     } else {
       // the drawn machine of before (white and pale steel, clear tubes, a drip spout and a lever each)
       const n = P.tubes.length;
-      const MC = 540;
+      const MC = 540 + rigDx;
       M = { x: MC - (50 + n * 56) / 2, y: 10, w: 50 + n * 56, h: 172 };
       M.spout = M.y + 126;
       M.tubeTop = M.y + 12;
@@ -449,22 +490,6 @@
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 
-    const IMG = "assets/clinic/items-v2/";
-    // ART-20, CLN-106 (s08 w6F): the level plaster (B1's top-down view: a white pad on its coloured strip, the pharmacy
-    // belt's plaster) in the tool column and on the arm (boing.json art.plasters); a colour with no picture keeps the old one
-    const PL = ART.plasters || {};
-    const plasterPic = (c) => PL[c] || `${IMG}plaster-${c}.webp`;
-    const plasterH = (w) => w / (PL.aspect || 2);
-    // B4 (CLN-106): the alcohol wipe's packet on the shelf; CLN-168 (Zafar, 18 Oct: "you should be cleaning it with the
-    // cloth, not ... the packet"): the cloth (sheets/cloth) is what's in the hand on the arm
-    const wipeArt = ART["alcohol-wipe"] && ART["alcohol-wipe"].on ? ART["alcohol-wipe"].file : null;
-    const clothArt = ART.cloth && ART.cloth.file ? ART.cloth : null;
-    const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
-    st.plaster = null;
-    S.clearTick = true; // CLN-165: at 800x360 the ✓ covered the third plaster: the column stops above the ✓'s corner
-    S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: plasterPic(c), glyph: "•" }))), (id) => {
-      if (/^plaster-/.test(id)) st.plaster = id.slice(8);
-    });
     // ✓ (D7): from level 2 the child says when the syringe is full (the count is never given away by moving on at it);
     // then it places itself over the arm (CLN-167). At level 1 the drops close at the count by themselves
     const doneBtn = ctx.button(
