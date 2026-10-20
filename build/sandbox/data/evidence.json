@@ -15174,13 +15174,13 @@
   {
    "flow": "cook:mishkaki-grill",
    "path": "fair",
-   "level": 3,
+   "level": 1,
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": [
-    "/\\b(gos|meat)\\b/i"
+    "/mishkaki/i"
    ],
    "at": "every:placed",
    "after": null,
@@ -15189,7 +15189,7 @@
     "voice"
    ],
    "expect": null,
-   "note": "the raw piece is called gos on the card and in Nani's line; the cooked one is Mishkaki (so the child learns both words); the card says 'Hakri Lakri Mishkaki' with no commas (the order is seeded to hold a meat skewer: seed 1 at L1 is always a tomato skewer, so the raw piece's word would never be asked)",
+   "note": "the raw piece is called gos on the card and in Nani's line; the cooked one is Mishkaki (so the child learns both words); the card says 'Hakri Lakri Mishkaki' with no commas (the order is drawn until it holds a meat skewer, at L1 where the card writes the name; at L3 the level table dots it)",
    "max": 4
   }
  ],

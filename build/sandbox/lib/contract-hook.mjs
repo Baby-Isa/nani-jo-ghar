@@ -678,7 +678,7 @@ export const CONTRACT_HOOK = `(() => {
     // contract-27, contract-29 (s08 w1b, SH-98, SH-101): a card peeking (a tap on its small bulb opened it for a moment): how many,
     // and how many dotted words ("•••") show in them
     const peeking = cards.filter((c) => c.classList.contains("peek"));
-    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots")].filter(shown).length, 0), words: [...new Set(words)], lv: (document.querySelector("#side") && document.querySelector("#side").dataset.level) || null };
+    const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots:not(.unsaid)")].filter(shown).length, 0), words: [...new Set(words)], lv: (document.querySelector("#side") && document.querySelector("#side").dataset.level) || null };
     if (!same("side", sd)) emit({ k: "side", ...sd });
     // contract-30 (SH-99): everything WRITTEN on the sidebar cards, shown or folded away (a closed card holds its rows for the peek):
     // each row's and headline's Kutchi words and every count chip, the bulb's English aside
