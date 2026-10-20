@@ -1,0 +1,53 @@
+{
+  "name": "s08 wave 6E, the contract checks' last mismatches and two small card fixes (the builders' requests)",
+  "model": "Sonnet",
+  "effort": "high",
+  "kind": "tools",
+  "why": "checker and driver fixes, two small card fixes: mechanical",
+  "cost": "about $10-15",
+  "stop": "when every task is accepted, or 2 hours",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "port": 8855,
+  "report": "s08-w6e-checks",
+  "publish": false,
+  "read": [
+    "build/reports/s08-w6b-stations.md (Requests)",
+    "build/reports/s08-w6a-words.md",
+    "build/reports/s08-w6d-tools.md",
+    "build/screenshots/sandbox/s08-gate-close/contract.md"
+  ],
+  "owns": [
+    "build/sandbox/** (contract.mjs, drivers, flows)",
+    "css/shared/order-card.css (the clinic card's face circle only)",
+    "js/cook/recipes.js, js/cook/order.js (the mixed-skewer card row only)",
+    "build/reports/s08-w6e-checks.md"
+  ],
+  "readOnly": [
+    "everything else; docs/process/regressions.md"
+  ],
+  "stubs": "a check that can't be made fair is listed with why",
+  "tasks": [
+    {
+      "do": "CK-31: the serve-wrong driver puts salt where the sugar goes (or another real wrong item) so the cup really is wrong; then the review face is the frown.",
+      "accept": "eye: the wrong-serve review face; the driver's own log says what was wrong"
+    },
+    {
+      "do": "contract-35 and contract-36 read the stage's real level from the log note order-level or #side[data-level] (day flows run L3 dishes under an L1 label); contract-21 skips taps the first-time help blocks (js/shared/onboard.js); contract-1 counts a pop-up closed by the first tap; the SH-60 strip marks the moment the help is logged. Each with a unit test.",
+      "accept": "auto: sandbox unit tests; a short rerun of cook:day3, cook:day6, cook:stir@L3 at 1366x768 shows no break of these kinds that the report doesn't explain"
+    },
+    {
+      "do": "SH-113: the clinic card's face circle is the same size as Cook's (the zoom already matches). Recipe-mishkaki L4: the two-mixed-skewers card writes the count Nani says, only words she says.",
+      "accept": "eye: Cook's and the clinic's card faces side by side; auto: contract-30 on lab:cook/recipe-mishkaki@L4"
+    }
+  ],
+  "flows": [
+    "cook:day3",
+    "cook:day6",
+    "cook:stir",
+    "cook:chai-tray",
+    "clinic:waiting",
+    "lab:cook/recipe-mishkaki"
+  ]
+}
