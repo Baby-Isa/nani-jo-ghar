@@ -4562,8 +4562,14 @@
      "ma-impatient": "assets/cook/characters/ma-impatient.webp",
      "cousin-happy": "assets/cook/characters/cousin-happy.webp",
      "cousin-neutral": "assets/cook/characters/cousin-neutral.webp",
-     "cousin-impatient": "assets/cook/characters/cousin-impatient.webp",
-     "cousin-badge": "assets/cook/characters/cousin-face.webp"
+     "cousin-impatient": "assets/characters/ali/cousin-impatient.webp",
+     "cousin-badge": "assets/cook/characters/cousin-face.webp",
+     "nana-talk": "assets/characters/nana/nana-talk.webp",
+     "nana-blink": "assets/characters/nana/nana-blink.webp",
+     "ma-talk": "assets/characters/ma/ma-talk.webp",
+     "ma-blink": "assets/characters/ma/ma-blink.webp",
+     "cousin-talk": "assets/characters/ali/cousin-talk.webp",
+     "cousin-blink": "assets/characters/ali/cousin-blink.webp"
     },
     "files": [
      "assets/cook/bg/service*",

@@ -760,12 +760,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       this.chars[who] = img;
       if (who === "nani") this.pointFront(img, c);
       // ART-19 (s07 N5): Nani blinks now and then while she rests (only the neutral face; a mood or talk is never cut)
-      if (who === "nani" && this.textures.exists("nani-blink")) {
+      // s08 wave 7B (ART-19): Nana, Ma and Ali too (s08c NN2, MA2, AL2: their blink frames on their neutral canvas)
+      if (this.textures.exists(`${who}-blink`)) {
         const blink = () => {
           if (!img.active) return;
-          if (img.mood === "neutral" && img.texture.key === "nani-neutral") {
-            img.setTexture("nani-blink");
-            this.time.delayedCall(150, () => img.active && img.texture.key === "nani-blink" && img.setTexture("nani-neutral"));
+          if (img.mood === "neutral" && img.texture.key === `${who}-neutral`) {
+            img.setTexture(`${who}-blink`);
+            this.time.delayedCall(150, () => img.active && img.texture.key === `${who}-blink` && img.setTexture(`${who}-neutral`));
           }
           this.time.delayedCall(3200 + Math.random() * 2600, blink);
         };
@@ -845,21 +846,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const img = this.chars[who];
       if (!img) return UI.say(line, { badge: true }, opts);
       const prev = img.mood;
-      img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : `${who}-happy`);
+      // s08 wave 7B (ART-19): a family customer with a talk frame (s08c NN1, MA1, AL1) talks as Nani does (below)
+      const famTalk = who !== "nani" && this.textures.exists(`${who}-talk`);
+      img.setTexture(who === "nani" ? (opts.mood === "point" ? "nani-point" : "nani-talk") : famTalk ? `${who}-talk` : `${who}-happy`);
       const stopBob = this.talkBob(img, who);
       // ART-19 (s08 w6G; the judge: "Nani keeps the same closed smile in all 8 frames while her line plays"): while she
       // speaks at the counter her mouth moves as the guide box's face does (js/shared/guide.js flap): her talking face
       // and her resting one in turn every 130-210 ms (two mouth frames of the one registered picture), until the line ends.
       // Her mood reads "talk" meanwhile, so her resting blink never cuts in
       let flapT = 0;
-      if (who === "nani" && opts.mood !== "point" && this.textures.exists("nani-neutral")) {
+      const talkKey = who === "nani" ? "nani-talk" : `${who}-talk`;
+      const restKey = who === "nani" ? "nani-neutral" : `${who}-neutral`;
+      if ((who === "nani" ? opts.mood !== "point" && this.textures.exists("nani-neutral") : famTalk) && this.textures.exists(restKey)) {
         img.mood = "talk";
         let open = true;
         const flap = () => {
           flapT = 0;
           if (!img.active || img.mood !== "talk") return;
           open = !open;
-          img.setTexture(open ? "nani-talk" : "nani-neutral");
+          img.setTexture(open ? talkKey : restKey);
           flapT = setTimeout(flap, 130 + Math.random() * 80);
         };
         flapT = setTimeout(flap, 130 + Math.random() * 80);
