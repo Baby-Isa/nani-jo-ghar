@@ -125,6 +125,46 @@
     const shine = s("ellipse", { cx: A.x, cy: A.y, rx: 62, ry: 30, fill: "#fff", opacity: 0 }, armG);
     const markG = s("g", {}, armG);
 
+    const IMG = "assets/clinic/items-v2/";
+    // ART-20, CLN-106 (s08 w6F): the level plaster (B1's top-down view: a white pad on its coloured strip, the pharmacy
+    // belt's plaster) in the tool column and on the arm (boing.json art.plasters); a colour with no picture keeps the old one
+    const PL = ART.plasters || {};
+    const plasterPic = (c) => PL[c] || `${IMG}plaster-${c}.webp`;
+    const plasterH = (w) => w / (PL.aspect || 2);
+    // B4 (CLN-106): the alcohol wipe's packet on the shelf; CLN-168 (Zafar, 18 Oct: "you should be cleaning it with the
+    // cloth, not ... the packet"): the cloth (sheets/cloth) is what's in the hand on the arm
+    const wipeArt = ART["alcohol-wipe"] && ART["alcohol-wipe"].on ? ART["alcohol-wipe"].file : null;
+    const clothArt = ART.cloth && ART.cloth.file ? ART.cloth : null;
+    const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
+    st.plaster = null;
+    S.clearTick = true; // CLN-165: at 800x360 the ✓ covered the third plaster: the column stops above the ✓'s corner
+    S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: plasterPic(c), glyph: "•" }))), (id) => {
+      if (/^plaster-/.test(id)) st.plaster = id.slice(8);
+    });
+    /*
+     * s08 w6I (the gate's stuck runs: boing at 1024x768, its yellow lever under the tiles): the machine and its syringe
+     * stand left of the tool column at every size. The column is laid first; where it reaches over the machine's place
+     * (a 4:3 screen, whose column is two tiles wide), the machine, its chute, the syringe and the drops all move left by
+     * the overlap (one offset on the machine's box: everything else is drawn from it), never off the play area's left.
+     */
+    const rigDx = (() => {
+      try {
+        const sr = S.shelf.getBoundingClientRect();
+        if (!sr.width) return 0;
+        const left = S.pt({ clientX: sr.left, clientY: sr.top }).x;
+        const vb = S.svg.viewBox && S.svg.viewBox.baseVal;
+        const MV0 = ART.machineV3 && ART.machineV3.file ? ART.machineV3 : null;
+        const x0 = MV0 ? MV0.box[0] : 540 - (50 + K.tubes * 56) / 2;
+        const right = MV0 ? MV0.box[0] + MV0.box[2] : 540 + (50 + K.tubes * 56) / 2;
+        const gap = 12;
+        const want = Math.min(0, left - gap - right);
+        const floor = vb && vb.width ? vb.x + gap - x0 : -Infinity;
+        return Math.round(Math.max(want, Math.min(0, floor)));
+      } catch (e) {
+        return 0;
+      }
+    })();
+
     /*
      * CLN-164, CLN-165 (Zafar, 18 Oct: "a lot more photorealistic ... smaller"): the s07 drop machine (DM1) and its levers
      * (DM2), drawn at about three quarters of the old machine's size: four clear tubes of coloured medicine, each with a
@@ -138,7 +178,8 @@
     let ring;
     const tubeX = {};
     if (MV) {
-      const [bx, by, bw] = MV.box;
+      const [bx0, by, bw] = MV.box;
+      const bx = bx0 + rigDx;
       const k = bw / MV.size[0];
       const at = (x, y) => ({ x: bx + x * k, y: by + y * k });
       s("image", { href: url(MV.file), x: bx, y: by, width: bw, height: MV.size[1] * k, class: "bo-machine-art" }, machG);
@@ -162,7 +203,7 @@
     } else {
       // the drawn machine of before (white and pale steel, clear tubes, a drip spout and a lever each)
       const n = P.tubes.length;
-      const MC = 540;
+      const MC = 540 + rigDx;
       M = { x: MC - (50 + n * 56) / 2, y: 10, w: 50 + n * 56, h: 172 };
       M.spout = M.y + 126;
       M.tubeTop = M.y + 12;
@@ -366,7 +407,9 @@
     const jab = async () => {
       st.busy = true;
       lightEnd(false);
-      const D = (ms) => (fast() ? 40 : ms);
+      // CLN-106 (s08 w6I; the judge: "never show a jab"): the jab plays at its own pace in the fast test mode too (about
+      // 2 s), so a frame taken as it starts shows the syringe on the arm in its puff
+      const D = (ms) => ms;
       const at = { x: A.x, y: A.y - 4 };
       const down = syG.animate ? syG.animate([{ transform: `translate(${OVER.dx}px, ${OVER.dy}px)` }, { transform: `translate(${OVER.dx}px, ${OVER.dy + 10}px)` }], { duration: D(260), easing: "ease-in", fill: "forwards" }) : null;
       // the puff: soft white mist round the cap's end, with gold sparkles in it
@@ -449,22 +492,6 @@
       ctx.after(fast() ? 200 : 1500, () => ctx.done({ right: P.rows.filter((r) => st.judged[r.id]).length, total: P.rows.length, hints: 0, words: P.words }));
     };
 
-    const IMG = "assets/clinic/items-v2/";
-    // ART-20, CLN-106 (s08 w6F): the level plaster (B1's top-down view: a white pad on its coloured strip, the pharmacy
-    // belt's plaster) in the tool column and on the arm (boing.json art.plasters); a colour with no picture keeps the old one
-    const PL = ART.plasters || {};
-    const plasterPic = (c) => PL[c] || `${IMG}plaster-${c}.webp`;
-    const plasterH = (w) => w / (PL.aspect || 2);
-    // B4 (CLN-106): the alcohol wipe's packet on the shelf; CLN-168 (Zafar, 18 Oct: "you should be cleaning it with the
-    // cloth, not ... the packet"): the cloth (sheets/cloth) is what's in the hand on the arm
-    const wipeArt = ART["alcohol-wipe"] && ART["alcohol-wipe"].on ? ART["alcohol-wipe"].file : null;
-    const clothArt = ART.cloth && ART.cloth.file ? ART.cloth : null;
-    const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
-    st.plaster = null;
-    S.clearTick = true; // CLN-165: at 800x360 the ✓ covered the third plaster: the column stops above the ✓'s corner
-    S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: plasterPic(c), glyph: "•" }))), (id) => {
-      if (/^plaster-/.test(id)) st.plaster = id.slice(8);
-    });
     // ✓ (D7): from level 2 the child says when the syringe is full (the count is never given away by moving on at it);
     // then it places itself over the arm (CLN-167). At level 1 the drops close at the count by themselves
     const doneBtn = ctx.button(
@@ -575,19 +602,22 @@
         // B4 (CLN-106, S06): the cloth in the hand rubs to and fro across the spot, twice, for about a second; the skin
         // it passes over shines wet, a sheen that follows the wipe and settles
         const sheen = Math.min(0.3, st.wipes * 0.08);
-        const dur = fast() ? 60 : 1000;
-        const cw = 74;
+        // CLN-106, CLN-168 (s08 w6I; the judge: "the cotton puff appears ... in almost the same place and then is gone";
+        // "no cloth appears in any frame"): the rub is the same in the fast test mode (it never holds the game up: the
+        // next tap goes ahead while it plays), wider, and the cloth bigger, so its to and fro reads on a filmstrip
+        const dur = 1600;
+        const cw = 96;
         const ch = clothArt ? (cw * clothArt.size[1]) / clothArt.size[0] : 68;
         const w = s("image", { href: clothArt ? url(clothArt.file) : wipeArt ? url(wipeArt) : WIPE_SVG, x: A.x - cw / 2, y: A.y - ch / 2, width: cw, height: ch, class: "bo-cloth" }, S.fx);
         if (w.animate) {
           w.animate(
             [
-              { transform: "translate(-50px, 8px) rotate(-10deg)", opacity: 0 },
-              { transform: "translate(-46px, 7px) rotate(-9deg)", opacity: 1, offset: 0.08 },
-              { transform: "translate(46px, -6px) rotate(8deg)", offset: 0.36 },
-              { transform: "translate(-40px, 6px) rotate(-8deg)", offset: 0.64 },
-              { transform: "translate(40px, -5px) rotate(8deg)", opacity: 1, offset: 0.9 },
-              { transform: "translate(34px, -4px) rotate(7deg)", opacity: 0 },
+              // one slow rub across and back (a filmstrip's frames, a third of a second apart, each catch it somewhere new)
+              { transform: "translate(-84px, 12px) rotate(-12deg)", opacity: 0 },
+              { transform: "translate(-80px, 12px) rotate(-12deg)", opacity: 1, offset: 0.06 },
+              { transform: "translate(84px, -10px) rotate(11deg)", offset: 0.46 },
+              { transform: "translate(-64px, 9px) rotate(-9deg)", opacity: 1, offset: 0.88 },
+              { transform: "translate(-70px, 10px) rotate(-10deg)", opacity: 0 },
             ],
             { duration: dur, fill: "forwards", easing: "ease-in-out" }
           );

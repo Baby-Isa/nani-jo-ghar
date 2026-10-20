@@ -141,6 +141,8 @@
     return false;
   };
   const logHelp = (what, info) => {
+    // SH-60 (s08 w6J): when Nani last helped, so a glow a station asked for lights with her line, never seconds after it
+    if (what === "help") G.lastHelpAt = Date.now();
     try {
       if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note(what, info);
     } catch (e) {

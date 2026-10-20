@@ -114,14 +114,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
 
   /*
-   * 29 Sept (X7, Zafar): the shelf band's one padding rule. The band is the bottom 26% (666-900 in
-   * design px) with the name chips at 860 (46 high). The gap from the top of the band to the top of
+   * 29 Sept (X7, Zafar): the shelf band's one padding rule. The band is the bottom 30% (630-900 in
+   * design px; SH-112, Zafar 20 Oct: was 26%, 666, so the jars and tools are bigger) with the name chips at 860 (46 high).
+   * Every station reads the band's top from here (St.SHELF.top). The gap from the top of the band to the top of
    * the tallest thing on it equals the gap from the bottom of the chips to the bottom of the band;
    * a thing that hops when Nani points at it (S.glow's bounce) and its glow keep inside that, so
    * the hop and a little glow come off the room first. shelfFit gives the largest scale (at most k)
    * that keeps a picture standing on `base` inside the rule.
    */
-  const SHELF = { top: 666, bottom: 900, chipY: 860, chipH: 46, glow: 4 };
+  const SHELF = { top: 630, bottom: 900, chipY: 860, chipH: 46, glow: 4 };
   S$.SHELF = SHELF;
   S$.shelfPad = () => SHELF.bottom - (SHELF.chipY + SHELF.chipH / 2);
   S$.shelfItemTop = () => SHELF.top + S$.shelfPad();
@@ -236,8 +237,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!g || !pending.size) return;
           const need = g.PAUSE[Math.min(g.PAUSE.length, levelOf()) - 1];
           // (a glow asked for waits the pause from when it was asked and from the child's last action, whichever is later)
+          // SH-60 (s08 w6J): or Nani has just helped (her line came after it was asked): the glow comes with her line
           [...pending].forEach(([obj, p]) => {
-            if (Math.min(g.idleMs(), Date.now() - p.at) < need) return;
+            const helped = g.lastHelpAt && g.lastHelpAt >= p.at && Date.now() - g.lastHelpAt < 1000;
+            if (!helped && Math.min(g.idleMs(), Date.now() - p.at) < need) return;
             pending.delete(obj);
             if (obj.active) (g.logHelp("help", { step: "idle", by: `L${levelOf()} glow` }), glow0(obj, true, p.o));
           });

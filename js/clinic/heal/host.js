@@ -208,7 +208,9 @@
      * (an even push-in), sampled into keyframes so the browser plays it (tests can pause it). Out is the same, reversed.
      */
     const closeEl = () => stage.querySelector(".hs-root .hs-svg");
-    const ease = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+    // (s08 w6I, CLN-163: the judge saw the room, the whole girl and the lips in three big steps): a gentle sine ease, so
+    // the middle of the move, where a cubic ease sped through most of the zoom, keeps the in-between sizes on screen
+    const ease = (u) => (1 - Math.cos(Math.PI * u)) / 2;
     const frames = (a, dir) => {
       const N = 24;
       const room = [];

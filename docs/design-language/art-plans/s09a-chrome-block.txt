@@ -6,24 +6,23 @@ Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/doc
 WHERE FILES LIVE (all public; open nothing locally)
 RAW = https://raw.githubusercontent.com/Baby-Isa/nani-jo-ghar/claude/new-session-b5r2am/
 Reference images, by the name the run order uses:
-(All of these are in ChatGPT's library, uploaded by Zafar to the chat titled "Nani jo Ghar s09a references"; attach them from there, never by upload. The repo path is only for the log.)
- style-anchor-v1.png   (repo: sources/art/style-anchor-v1.png)
- clinic-doorway.webp   (repo: assets/clinic/rooms/bg-clinic-door-cb5-v1.webp)
- nani-sheet-final.png  (repo: sources/art/s08/sheet-nani-final-1.png)
+ style-anchor-v1.png   RAW + sources/art/style-anchor-v1.png
+ clinic-doorway.webp   RAW + assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
+ nani-sheet-final.png  RAW + sources/art/s08/sheet-nani-final-1.png
 Kept images: "kept:X" is the image you kept for prompt X, still in its ChatGPT chat (attach it from ChatGPT's library, see below).
 Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library
 
 MOVING IMAGES (references in, kept images stay put until the end)
 Page JavaScript fetch() and the clipboard are blocked on chatgpt.com and raw.githubusercontent.com, so don't use them. ChatGPT shows its generated images as in-page blob: addresses that nothing outside the page can fetch, so never try to copy one out with page JavaScript or to upload it anywhere; last time that was refused and the run lost its pictures.
 
-1. INTO CHATGPT (references). Zafar has uploaded every reference, by the file name the run order uses, to ONE ChatGPT chat titled "Nani jo Ghar s09a references" before this run. Never fetch, download or upload a reference yourself. In a prompt's fresh chat press the "+" button in the composer, choose "Add from library" and pick each file the line names, in the order the line names them, from that chat (by its file name and thumbnail); check the composer shows exactly that many thumbnails before you paste. If a reference is not in the library, log "needs Zafar: reference <name> missing", skip that prompt and carry on.
+1. INTO CHATGPT (references). Fetch each reference once into your cloud workspace (with its file name) and keep it there for the whole run. In a fresh ChatGPT chat use your file-upload tool to attach exactly the files a prompt's line names, in the order the line names them, and check the composer shows exactly that many thumbnails before you paste.
 
 2. INTO CHATGPT (a kept image, "kept:X"). It is still in the chat where it was made. In the new prompt's fresh chat press the "+" button in the composer, choose "Add from library", pick that image (the newest kept try of that chat, by its title and thumbnail), and check the thumbnail is the kept one, not an attachment of its chat. Never download it and re-upload it.
 
 3. OUT OF CHATGPT: only at the very end, or when Zafar says "stop" or "download": from the Library page (https://chatgpt.com/library), each kept image in the run order with ChatGPT's own download button (Chrome's normal download; the file keeps ChatGPT's title, so you log "title -> save as" for each one; see AT THE END). Until then every kept image stays in its chat, and its chat link, title and save-as name are in THE LOG.
 
 THE RUNNER LOOP (decision 43). This is why the run is fast: read it twice.
-A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (finding references in the library, posting the log) happens only while every window is generating.
+A window is one ChatGPT chat in its own browser tab. Keep 3 windows generating at all times. A window must never sit with a finished picture and no next prompt. Anything that is not scanning, judging or sending (fetching references, posting the log) happens only while every window is generating.
 
 YOUR NOTES (update after every action). One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).
 
@@ -34,7 +33,7 @@ THE TICK. Repeat until every line is KEPT or SKIPPED:
    FAIL with redos left: put the prompt back at the front of READY, amended to fix what failed (step 5: change only the words about the failed point; log the new text), to run in a fresh chat with the same attachments; note what failed.
    FAIL with no redos left: keep the best of the tries, note what is wrong, and treat it as a pass for the queue.
 3. FILL. While fewer than 3 windows are generating and a prompt is READY, START the first READY prompt in the free tab: new chat, attach the local copies (screenshot the composer: exactly that many thumbnails), paste the prompt with its slots filled, send. Leave 60 seconds between sends, and spend that gap on one chore from step 4, not on waiting. Order of READY: redos first; then the prompt that unblocks the most WAITING ones (a sheet, a W1, a K1, a Y1, a C1, a D1); then the next in the run order. The parts are priorities, not walls: a free window takes any READY prompt, even from a later part.
-4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) find in ChatGPT's library the references the next READY prompts need; (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
+4. HOUSEKEEP, only when every window is generating, one chore at a time, then straight back to step 1: (a) fetch the references the next READY prompts need; (b) post the progress line and log. No chore may start while a tab is finished and unharvested, and none may take more than about two minutes.
 At the start, fetch only what the first prompts need, send them, and fetch everything else during the gaps.
 
 STALLS. A tab is stalled when its screen shows no change (no progress text, no image) for 6 minutes, or it shows an error ("Something went wrong", a network error, an empty reply).
@@ -50,7 +49,7 @@ APPROVALS
 SAFETY RULES (always)
 - Change no settings anywhere: no ChatGPT settings, model picker, memory, custom instructions, plan or upgrade offers; no Chrome settings; no GitHub settings. If Chrome asks for a site permission, say no.
 - Sign nothing in or out. Delete no chats.
-- Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names. Upload no file to ChatGPT yourself: every attachment comes from ChatGPT's own library (see MOVING IMAGES).
+- Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.
 - Never write a prompt of your own. After a FAILED try you may amend that prompt once per redo (see step 5); otherwise never reword, shorten or add to it. The only change allowed is filling a code box's {SLOTS}.
 - If anything needs a decision from Zafar (a refusal, a login prompt, a payment or settings screen, a missing file, a question you can't answer from this message), log it, skip that prompt and anything that needs it, and carry on.
 - Pacing: at most 3 images generating at once and at least 60 seconds between sends (see the loop).

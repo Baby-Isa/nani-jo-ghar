@@ -16,8 +16,6 @@ dest: sources/art/s08c
 real_people: true
 approvals: "- The doctor and the girl (part C) are real people. Zafar judges their likeness after the run, in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes its check and the PASS/FAIL list.\n- Everything else is yours to judge with the checks below. Redo only for a failed check or a PASS/FAIL point."
 delivery: download
-refs_from: library
-refs_chat: 'Nani jo Ghar s08c references'
 amend: true
 runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
 refs:

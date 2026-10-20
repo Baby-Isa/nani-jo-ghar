@@ -1,6 +1,6 @@
 # Sprint 9 style test art plan (pack `s09a`)
 
-**Written:** 19 Oct 2026, from Zafar's notes on the s09 mock-ups (`docs/sprints/S09-a-day-at-nanis.md`, 19 Oct) and the book-games research (`build/reports/research-book-games-2026-10-19.md`). **Run spec:** `build/tools/art/specs/s09a.run.yaml`; the block is generated from it. This is a style test: one image per prompt, so Zafar can agree how the house, the ride and the evening book look. After that, the full Sprint 9 run makes every pose and variation. The Sprint 8 fix run (`s08c`) comes after this one.
+**Written:** 19 Oct 2026; H1, B1, B2 and L4 rewritten 20 Oct (Zafar chose try 3, the big arch with flowers; Fable's review build/reports/s09a-fable-review.md) (Zafar: closer, Nani bigger, a third of sky for the weather and the sun, moon and stars; L4 nothing over the fold; the books and the windows are liked and kept in `sources/art/s09a/`), from Zafar's notes on the s09 mock-ups (`docs/sprints/S09-a-day-at-nanis.md`, 19 Oct) and the book-games research (`build/reports/research-book-games-2026-10-19.md`). **Run spec:** `build/tools/art/specs/s09a.run.yaml`; the block is generated from it. This is a style test: one image per prompt, so Zafar can agree how the house, the ride and the evening book look. After that, the full Sprint 9 run makes every pose and variation. The Sprint 8 fix run (`s08c`) comes after this one.
 
 ## 0. Totals
 
@@ -25,28 +25,26 @@ Paste the Claude in Chrome block (`s09a-chrome-block.txt`). It opens this page, 
 
 ## 5. The prompts
 
-#### H1. Nani's house, one wide arch
+#### H1. Nani's house, the big arch with flowers (closer)
 ```
 Generate an image, 1536×1024, landscape.
 
-The front of Nani's house, seen from the path a few steps away at eye level. A warm, modern family home (not old-fashioned) with textured, rendered walls in cream and sand. A deep shaded porch under ONE wide rounded archway; inside the porch the front door stands open, with a glimpse of a cool hallway. A few potted plants and a tiled step. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands in the porch, full figure, smiling and waving the viewer in. The porch sits a little right of centre; the ground in front of it is clear.
+The SAME house as the attached first try (Zafar's choice): cream and sand textured render, ONE big rounded arch over the porch with the wooden double door standing open behind it and a glimpse of the hallway, two wall lamps, potted plants and pink and white flowering bushes around the arch and along the low walls. Nani, the woman in the attached character sheet (her locked look: the sheet's face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands DEAD CENTRE in the porch, smiling and waving the viewer in. The camera is closer than the first try, on the path at a child's eye height, looking straight at her: her full figure, feet on the porch step and head just under the arch's crown, takes about 55 to 60 percent of the image's height. Keep the outer 15 percent of the width at each side free of anything important (only plants and wall), because the game puts cards there. The roofline is one straight horizontal line about a third of the way down; above it, the top third of the image is ONE even, pale, empty sky: nothing crosses it (no trees, no sun, moon, clouds or birds), because the game paints the weather, the time of day, the sun, moon and stars there.
 
-The top third of the image is plain, soft, even sky: no sun, no clouds (the weather is added later).
+Light: soft, even, overcast daylight with NO cast shadows (no leaf shadows on the walls, no sun patches on the floor): the game adds sunshine and shadows on sunny days.
 
-Style: exactly as the attached clinic doorway and the style anchor: a stylised 3D animated-feature-film look, warm sunlight, soft global illumination, gentle shadows, clean simple shapes, calm and uncluttered, made for young children. No outlines.
+Style: exactly as the attached first try and the style anchor: a stylised 3D animated-feature-film look, soft global illumination, calm and uncluttered, made for young children. No outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks. No religious images or markers.
 ```
 
-#### H2. Nani's house, a row of small arches
+#### H2. Nani's house, a row of small arches (closer)
 ```
 Generate an image, 1536×1024, landscape.
 
-The front of Nani's house, seen from the path, slightly from one side. A warm, modern one-storey family home (not old-fashioned) with textured, rendered walls in warm white and terracotta. Along the front, a shaded verandah under a row of THREE small rounded arches; behind the middle arch the blue front door stands open. A wooden bench, a pot of herbs and a low garden wall with a gap for the path. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands under the middle arch, full figure, smiling and waving the viewer in. The path in front is clear.
+Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), stands under the middle arch of her verandah, smiling and waving the viewer in. The camera stands on the path just two or three steps from the verandah, at a child's eye height, looking straight at her: she is the centre of the picture, her full figure from head to feet taking about HALF of the image's height, standing in the lower half, her face clear and easy to read. The same house as the attached first try (warm white and terracotta textured render, a verandah under a row of small rounded arches, the blue front door standing open behind her, a wooden bench and a pot of herbs), but seen much closer: only the middle arch and part of each arch beside it show. The top THIRD of the image is open, plain, soft, even sky above the roof line, with nothing in it: no sun, moon, clouds or birds (the game paints the weather, the time of day, the sun, moon and stars there).
 
-The top third of the image is plain, soft, even sky: no sun, no clouds (the weather is added later).
-
-Style: exactly as the attached clinic doorway and the style anchor: a stylised 3D animated-feature-film look, warm sunlight, soft global illumination, gentle shadows, clean simple shapes, calm and uncluttered, made for young children. No outlines.
+Style: exactly as the attached first try and the style anchor: a stylised 3D animated-feature-film look, warm sunlight, soft global illumination, gentle shadows, calm and uncluttered, made for young children. No outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks. No religious images or markers.
 ```
@@ -77,20 +75,20 @@ No people. Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
 Generate an image, 1536×1024, landscape.
 
-A small, cosy home library in the evening. Nani, the woman in the attached character sheet (her locked look: same face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), sits in a comfortable armchair beside a small fireplace with a low, gentle fire behind a guard. She holds a large open picture book on her lap, turned to face the viewer, as if reading a story to them; its two open pages are plain cream with NOTHING printed on them. Behind her, wooden bookshelves with only a few books; ONE whole shelf at about her shoulder height is completely empty, ready for new books. A small rug and a reading lamp. Her full figure, a little left of centre.
+The same cosy home library as the attached first try, in the evening: a small fireplace with a low, gentle fire behind a guard, wooden bookshelves with only a few books and ONE whole shelf at about her shoulder height completely empty (ready for new books), a small rug and a reading lamp. Nani, the woman in the attached character sheet (her locked look: the sheet's face, glasses, plain cream kameez with red motifs, plain red dupatta, slim build, no rings; fully covered modest clothing), sits in the armchair beside the fire, a little left of centre, full figure, turned towards the viewer. She holds a large open picture book up on her lap, turned to FACE THE VIEWER, as if reading a story to the child sitting in front of her; its two open pages are plain cream with NOTHING printed on them. Match the attached character sheet closely: her face exactly as on the sheet, and a slim build (not heavy).
 
-Style: exactly as the attached clinic doorway and the style anchor, but in the evening: a stylised 3D animated-feature-film look, warm lamplight and the soft orange glow of the fire, gentle shadows, calm, made for young children. No outlines.
+Style: exactly as the attached first try and the style anchor: a stylised 3D animated-feature-film look, warm lamplight and the soft orange glow of the fire, gentle shadows, calm, made for young children. No outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks, not on the book spines either. No religious images or markers.
 ```
 
-#### B2. The open book, close up
+#### B2. The open book, close up, from the child's seat
 ```
 Generate an image, 1536×1024, landscape.
 
-A close-up of a large storybook lying open on Nani's lap, facing the viewer. The two open pages fill most of the image: plain cream paper with a thin gold border and NOTHING printed on them, the spine down the middle, the pages curving gently. Nani's hands, with the cream sleeves and red-motif cuffs of the attached character sheet, no rings, hold the book's outer edges. Below the book, just her lap and the arm of the chair. The pages must stay plain: the game draws on them.
+The view of a child sitting on the rug in front of Nani's armchair (the attached first try's scene), looking up at the storybook she holds open towards them, square-on. The open book faces the VIEWER and fills about three quarters of the image's width: two plain cream pages with a thin gold border and NOTHING printed on them, the spine down the middle, the pages flat enough to draw on, seen straight on (not tilted or keystoned). Nani's hands hold the book's outer edges from behind; above the top of the book you see only her chin and the red dupatta and cream kameez of the attached character sheet, softly lit; her face is out of the top of the frame. Behind, softly out of focus, the armchair, the fire's glow and the shelves.
 
-Style: exactly as the style anchor, in the evening: a stylised 3D animated-feature-film look, warm lamplight, the soft glow of a fire off to one side. No outlines.
+Style: exactly as the attached first try and the style anchor: a stylised 3D animated-feature-film look, warm evening lamplight and firelight. No outlines.
 
 Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
@@ -132,7 +130,7 @@ Do not add any text, letters, numbers, labels, logos or watermarks.
 ```
 Generate an image, 1536×1024, landscape.
 
-The same open storybook as the attached close-up, held on Nani's lap, facing the viewer. Across both pages, FIVE square instant photos stuck in with little corner mounts, along a gentle path from the top left to the bottom right, joined by a soft dotted line: a blue front door standing open; fields seen through a car window; a goat in a farmyard; a hen with chicks; and the FIFTH frame empty, a dashed outline waiting for its photo. The photos are evenly spaced and none overlaps another.
+The same open storybook as the attached close-up, held on Nani's lap. FIVE square instant photos stuck in with little corner mounts: THREE on the LEFT page and TWO on the RIGHT page, each photo wholly on its own page, well clear of the spine and the centre fold (nothing crosses or touches the fold). They run in reading order, top to bottom on the left page and then on the right, joined by a soft dotted line that stops at the fold and starts again on the right page: a blue front door standing open; fields seen through a car window; a goat in a farmyard; a hen with chicks; and the FIFTH frame empty, a dashed outline waiting for its photo. The photos are evenly spaced and none overlaps another.
 
 Style: exactly as the attached close-up and the style anchor: a stylised 3D animated-feature-film look, warm evening lamplight on the book, the photos bright and sunny. No outlines.
 

@@ -11,11 +11,12 @@ dest: sources/art/s09a
 real_people: true
 approvals: "- This is a style test. Zafar judges every image, Nani's likeness included, after the run in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes the checks below.\n- Redo only for a failed check (text, the wrong view, the wrong count, a missing or extra person, a printed page that should be plain)."
 delivery: download
-refs_from: library
-refs_chat: 'Nani jo Ghar s09a references'
 amend: true
 runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
 refs:
+  library-first-try.png: sources/art/s09a/b1-library-fireplace-v1.png
+  house-one-arch-try.png: sources/art/s09a/h-try3-v1.png
+  house-three-arches-try.png: sources/art/s09a/h-try5-v1.png
   style-anchor-v1.png: sources/art/style-anchor-v1.png
   clinic-doorway.webp: assets/clinic/rooms/bg-clinic-door-cb5-v1.webp
   nani-sheet-final.png: sources/art/s08/sheet-nani-final-1.png
@@ -24,16 +25,16 @@ limb_sets: {}
 templates: {}
 limb_templates: {}
 lines:
-  H1: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png], save: h1-house-one-arch-v1.png, check: HOUSE}
-  H2: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png], save: h2-house-three-arches-v1.png, check: HOUSE}
+  H1: {attach: [house-one-arch-try.png, style-anchor-v1.png, nani-sheet-final.png], save: h1-house-big-arch-v2.png, check: HOUSE}
+  H2: {attach: [house-three-arches-try.png, style-anchor-v1.png, nani-sheet-final.png], save: h2-house-three-arches-v2.png, check: HOUSE}
   R1: {attach: [style-anchor-v1.png], save: r1-car-window-v1.png, check: WINDOW}
   R2: {attach: [style-anchor-v1.png], save: r2-bus-window-v1.png, check: WINDOW}
-  B1: {attach: [clinic-doorway.webp, style-anchor-v1.png, nani-sheet-final.png], save: b1-library-fireplace-v1.png, check: LIBRARY}
-  B2: {attach: [style-anchor-v1.png, nani-sheet-final.png], save: b2-book-open-v1.png, check: BOOK}
+  B1: {attach: [library-first-try.png, style-anchor-v1.png, nani-sheet-final.png], save: b1-library-fireplace-v2.png, check: LIBRARY}
+  B2: {attach: [library-first-try.png, style-anchor-v1.png, nani-sheet-final.png], save: b2-book-open-v2.png, check: BOOK}
   L1: {attach: ["kept:B2", style-anchor-v1.png], save: l1-book-find-it-v1.png, check: LAYOUT}
   L2: {attach: ["kept:B2", style-anchor-v1.png], save: l2-book-name-it-v1.png, check: LAYOUT}
   L3: {attach: ["kept:B2", style-anchor-v1.png], save: l3-book-stick-photo-v1.png, check: LAYOUT}
-  L4: {attach: ["kept:B2", style-anchor-v1.png], save: l4-book-our-day-v1.png, check: LAYOUT}
+  L4: {attach: ["kept:B2", style-anchor-v1.png], save: l4-book-our-day-v2.png, check: LAYOUT}
 parts:
 - id: A
   title: 'THE HOUSE AND THE RIDE'
@@ -47,19 +48,19 @@ parts:
   - lines: [B1, B2, L1, L2, L3, L4]
 checks:
   HOUSE:
-    text: 'the house front as the line says (one wide arch, or three small arches); Nani full figure in the porch, waving, modestly dressed; the top third plain sky with no sun or clouds; the ground in front clear'
+    text: 'Nani full figure, centred, head to feet about 55-60% of the image height, dead centre, outer 15% clear, face clear, waving in the porch (one wide arch, or the middle of three small arches) with the door open behind her; a straight roofline with the top third one even empty sky; no cast shadows; modestly dressed, no rings'
     judge: {aspect: [3, 2], bg: none}
   WINDOW:
     text: 'only the vehicle''s inside round the edges; the window opening fills most of the image with ONE flat pure green (#00FF00), no reflections, nothing seen through it; no people'
     judge: {aspect: [3, 2], bg: none}
   LIBRARY:
-    text: 'Nani full figure in an armchair by a small fireplace, the open book on her lap facing the viewer with plain cream pages; sparse shelves with one whole shelf empty; no text on any spine'
+    text: 'Nani full figure in an armchair by a small fireplace, the open book on her lap facing the viewer with plain cream pages; sparse shelves with one whole shelf empty; her face as on the sheet, slim; no text on any spine'
     judge: {aspect: [3, 2], bg: none}
   BOOK:
-    text: 'the open book fills most of the image, facing the viewer, two plain cream pages with a thin gold border and nothing printed; Nani''s hands at the outer edges'
+    text: 'seen from the child''s seat: the open book square-on facing the viewer, about three quarters of the width, two plain cream pages, Nani''s hands at the outer edges from behind, only her chin and dupatta above it'
     judge: {aspect: [3, 2], bg: none}
   LAYOUT:
-    text: 'the same open book as B2, with exactly what the line puts on each page, in that place and count, each thing whole and apart; no text or numbers anywhere'
+    text: 'the same open book as B2, with exactly what the line puts on each page, in that place and count, each thing whole and apart, nothing crossing the spine or centre fold; no text or numbers anywhere'
     judge: {aspect: [3, 2], bg: none}
 passfail:
 - Any text, letters, numbers, labels or logos, even fake or blurry ones (the speaker symbol on L2's buttons excepted).

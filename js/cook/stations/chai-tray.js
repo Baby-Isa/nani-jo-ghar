@@ -7,7 +7,7 @@
  *    burner's knob sit on the hob's front edge, in front of it. Tap a pan (or its face: you hear them
  *    again) to work on it. Pans can be cooked in any order, or all at once: the child chooses the
  *    speed and the boil-over risk.
- *  - THE SHELF (the bottom 26%): identical slots grouped by kind: liquids (water bottle, milk
+ *  - THE SHELF (the bottom 30%): identical slots grouped by kind: liquids (water bottle, milk
  *    carton) | jars (chai leaves, sugar) | spices (small identical jars: the extras and the salt
  *    that looks like sugar). Under each object one `🔊 word` chip: tap the object = use it (into the
  *    chosen pan), tap the chip = hear it. At higher levels the word hides but the speaker stays,
@@ -61,7 +61,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
     glassR: 0.94,
   };
   /* ---------- the grid (design px, 1600x900; the canvas is the play area) ---------- */
-  const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const BASE = 818; // the shelf line: every object stands on it
   const BOX = 128; // a slot's fallback box (a word without shelf art)
@@ -70,8 +70,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
   // pantry-v2 canvases: liquids | jars | spices)
   // PAN-09 (S05-C): the small spice jars (elchi, aadu, lasan, loon) drawn as big as the band allows (St.shelfFit caps
   // them at its padding), so their contents read at phone size
-  const SHELF_K = [0.425, 0.33, 0.5];
-  const PITCH = 150;
+  // SH-112 (Zafar 20 Oct: a taller band, bigger jars): the caps a third up; shelfFit keeps each to the band's rule
+  const SHELF_K = [0.56, 0.44, 0.66];
+  const PITCH = 172;
   const GROUP_GAP = 44;
   const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 }; // the tap area: as big as the band allows
   const HOB_K = 0.79; // the mock-up's hob, 15% bigger (§10)
@@ -1105,6 +1106,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       if (sel !== pan) select(pan);
       busy++;
       unglow();
+      // CHAI-08's flaw (the judge, 20 Oct: "loose 'hakro' pills float at the hob's top-left corner during the pour"): the pan's
+      // running count goes while it is off the hob pouring, and comes back with it if it is still on the go
+      UI.hideCount();
       zb.expect({ kind: "wait" });
       const w = pan.well;
       const black = !(pan.has.milk > 0);
@@ -1267,6 +1271,12 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       closeSpoons(pan);
       if (pan.poured >= 2 || !halves) closePan(pan);
       if (pan.poured >= 2) setKnob(pan, "off"); // the pan's empty: the fire goes off
+      if (sel === pan && pan.poured < 2 && halves) {
+        if (UI.tallyAt) UI.tallyAt(tallyPt(pan), { anchor: "right" });
+        if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
+        if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
+        pan.extras.forEach((x) => UI.count(spoonsOf(pan, x), { speak: false, id: x }));
+      }
       busy--;
       if (!doneShown && pans.every((q) => q.poured > 0)) {
         doneShown = true;
@@ -1427,7 +1437,11 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const ws = pans.map((q) => q.well);
       let gap = 400;
       ws.forEach((a, i) => ws.forEach((b, j) => j > i && (gap = Math.min(gap, Math.hypot(a.x - b.x, a.y - b.y)))));
-      const size = Math.max(110, Math.min(pans.length > 1 ? 190 : 230, gap * 0.95));
+      // CHAI-08's flaw (the judge, 20 Oct: "Nana's face badge sits over the glass that was just filled"; s08 w6J): the face sits
+      // at its glass's upper left, over the rim's edge only, so the chai just poured shows; it is sized so it never reaches the
+      // next glass on the tray (was the large face over the dish, CK-07)
+      const size = pans.length > 1 ? Math.max(96, Math.min(130, gap * 0.62)) : 150;
+      const off = (q) => ((q.well.glass.empty.displayWidth || 120) / 2 + size / 2) * 0.74;
       const allOk = !wrongPans.length;
       // the praise card goes right of the last face; at 4 people that face is the tray's bottom right and
       // the card would run off the view (30 Sept), so then it goes left of the leftmost face instead
@@ -1435,7 +1449,7 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
       const vr = (Cook.view && Cook.view.right) || 1600;
       let praise = pans.length - 1;
       let side = "right";
-      if (pans[praise].well.x + size / 2 + 18 + CARD_W > vr - 16) {
+      if (pans[praise].well.x - off(pans[praise]) + size / 2 + 18 + CARD_W > vr - 16) {
         praise = pans.reduce((b, q, j) => (q.well.x < pans[b].well.x ? j : b), 0);
         side = "left";
       }
@@ -1444,9 +1458,9 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
           Cook.Kit.review(S, {
             who: pan.who,
             ok: !wrongPans.includes(pan),
-            x: pan.well.x,
-            // CK-07 (§14a, S05-C): the large face circle over the dish itself: each face on its own glass
-            y: pans.length > 1 ? pan.well.y - size * 0.12 : pan.well.y,
+            x: pan.well.x - off(pan),
+            // CK-07 (§14a, S05-C): each face by its own glass (one face per person: its small rim badge goes)
+            y: pan.well.y - off(pan),
             size,
             side: i === praise ? side : "right",
             line: allOk && i === praise ? undefined : false,

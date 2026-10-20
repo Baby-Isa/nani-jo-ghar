@@ -943,7 +943,7 @@
       const dy = rr.top + rr.height * 0.45 - (br.top + cy);
       box.style.transformOrigin = `${cx.toFixed(1)}px ${cy.toFixed(1)}px`;
       const at = (f) => `translate(${(dx * f).toFixed(1)}px, ${(dy * f).toFixed(1)}px) scale(${(1 + (k - 1) * f).toFixed(4)})`;
-      const T = fast() ? 0.15 : 1;
+      const T = fast() ? 0.6 : 1; // (s08 w6I, CLN-178: the fast test mode keeps most of the ending, so its frames show her well)
       const frames = [
         { offset: 0, transform: at(0), easing: "cubic-bezier(.4,0,.2,1)" },
         { offset: 0.3, transform: at(1) },
@@ -975,13 +975,17 @@
       st.body = st.body - reading();
       st.ending = true;
       showReading(reading());
+      // (s08 w6I, CLN-178: at L3 the judge saw her cold, then the review card): the ending's reading is her normal
+      // temperature, a state of its own, not a swing passing through the green, so it is told apart from one (the
+      // sandbox's frames at each change of the gauge catch her well before the review)
+      gauge.dataset.reading = "normal";
       mood.dataset.state = "";
       if (mouthEl) mouthEl.classList.add("normal");
-      ctx.after(fast() ? 150 : 900, () => {
+      ctx.after(fast() ? 600 : 900, () => {
         fig.react("happy", 0);
         const thanks = ctx.line ? ctx.line("thanks-better") : null;
         let went = false;
-        const go = () => !went && ((went = true), ctx.after(fast() ? 150 : 900, end));
+        const go = () => !went && ((went = true), ctx.after(fast() ? 600 : 900, end));
         // CLN-178 (s08 w6H; the judge: "no visible end"): the end the knee has, in the room: the camera closes in on
         // her well face (the reading normal, the thermometer at her mouth, her smile), then zooms back out to the whole
         // room, and her thank-you comes in the room; the room is the game's own picture throughout (never a blank frame)
@@ -989,7 +993,7 @@
           if (thanks) S.say(thanks, "patient").then(go, go);
           else go();
         });
-        ctx.after(fast() ? 2500 : 8000, go); // a line that never ends (a stalled clip) still moves on
+        ctx.after(fast() ? 5000 : 8000, go); // a line that never ends (a stalled clip) still moves on
       });
     };
 
