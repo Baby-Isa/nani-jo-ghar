@@ -167,12 +167,18 @@ function play(o, draw, counter) {
  * the stream's width at the lip, o.surface(fill) -> {x, y} where the stream lands, o.depth the stream's depth (default
  * just under the vessel), o.frames (tilt pictures, one per step: o.steps = frames.length - 1), o.squash (how much
  * the picture narrows along its lip's axis at full tip, a top-down vessel tipping: 0.14), o.onFill(u), o.onPhase(phase),
- * o.ms, o.arc, o.away, o.fade. Returns a Promise.
+ * o.ms, o.arc, o.away, o.fade, o.fillDisc(fill) -> {x, y, rx, ry} the liquid's pool growing in the target (o.fillDepth).
+ * Returns a Promise.
  */
 function phaser(S, o) {
   const obj = o.obj;
   const g = S.add.graphics().setDepth(o.depth != null ? o.depth : obj.depth - 0.01);
   if (S.track) S.track(g);
+  // SH-117 (s08 w6G; the judge: "no daal stream, no ripple, no yellow fill arriving"): o.fillDisc(fill) -> {x, y, rx, ry}, the
+  // liquid's own pool in the target, growing from where the stream lands as the level rises (its own layer, o.fillDepth:
+  // under the target's rim, over what was in it), so the fill is seen arriving, not a picture swapped in
+  const gf = o.fillDisc ? S.add.graphics().setDepth(o.fillDepth != null ? o.fillDepth : g.depth - 0.02) : null;
+  if (gf && S.track) S.track(gf);
   const sx = obj.scaleX;
   const sy = obj.scaleY;
   const from = { x: obj.x, y: obj.y };
@@ -193,6 +199,14 @@ function phaser(S, o) {
     }
     if (o.onFill) o.onFill(f.fill);
     g.clear();
+    if (gf) {
+      gf.clear();
+      const d = f.fill > 0.001 ? o.fillDisc(f.fill) : null;
+      if (d) {
+        gf.fillStyle(o.colour, 0.97);
+        gf.fillEllipse(d.x, d.y, d.rx * 2, d.ry * 2);
+      }
+    }
     if (f.flow <= 0.01 || !o.surface) return;
     const sp = lipAt(f, [o.lip[0] * k, o.lip[1]]);
     const p = o.surface(f.fill);
@@ -210,6 +224,7 @@ function phaser(S, o) {
   const counter = (ms, fn) => new Promise((r) => S.tweens.addCounter({ from: 0, to: 1, duration: ms, onUpdate: (tw) => fn(tw.getValue()), onComplete: r }));
   return play(spec, draw, counter).then(() => {
     g.destroy();
+    if (gf) gf.destroy();
     if (o.squash && obj.active) obj.setScale(sx, sy);
   });
 }

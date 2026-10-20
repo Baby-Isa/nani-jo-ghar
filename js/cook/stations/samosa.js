@@ -66,7 +66,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // S2 / Q2: the fillings as top-down heaps, no bowls (samosa only)
   const HEAP = { "ph-keema": "chundo", "veg-01": "potato", "veg-10": "peas", "veg-02": "onion", "veg-12": "chilli", "ph-dhana": "dhania", "veg-carrot": "carrot", "veg-cabbage": "cabbage" };
   // 30 Sept (v3.1): S5's green chilli heap read as peas; R5's sliced chilli rings (cut for daar) take its place
-  const HEAP_ART = { "veg-12": "assets/cook/items/v3/daar/chop-heap-chilli.webp" };
+  // ART-11 (s08 w6G): the potato is the landed PT1 pile (matte, starchy cubes), not the butter-yellow v3 heap
+  const HEAP_ART = { "veg-12": "assets/cook/items/v3/daar/chop-heap-chilli.webp", "veg-01": "assets/cook/items-s08b/potato/potato-pile-v3.webp" };
   const heapUrl = (id) => HEAP_ART[id] || (HEAP[id] ? `${V3}fill-${HEAP[id]}.webp` : null);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
   const SHELF_TOP = 666;
@@ -855,10 +856,35 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let nA = 0;
     let nB = 0;
     const onPlate = [];
+    /*
+     * SAM-25 (P43: "fold them all after you make them"; the judge, 20 Oct: "the first fold shows a single pastry with no others
+     * made and waiting"): the filled strips still to fold wait in a row along the board's foot, smaller, their fillings on
+     * them, while the one being folded is in the middle at full size; each comes up from that row in turn
+     */
+    const SW_FULL = LU * STRIP_H;
+    const park = (waiting) => {
+      const n = waiting.length;
+      if (!n) return;
+      const q = Math.min(0.36, (((BOARD.w * 0.9) / n) * 0.88) / SW_FULL);
+      const pitch = Math.min((BOARD.w * 0.9) / n, SW_FULL * q * 1.12);
+      const rowY = BOARD.y + BOARD.h / 2 - BOARD.h * 0.04 - (STRIP_H * q) / 2;
+      waiting.forEach((y, i) => {
+        const tx = z.X(BOARD.x + (i - (n - 1) / 2) * pitch);
+        const ty = z.Y(rowY);
+        const sc = FULL * q;
+        const to = { x: tx, y: ty, scaleX: sc };
+        const k = sc / (y.scaleX || sc);
+        y.blobs.forEach((b) => {
+          const p = u2w(to, w2u(y, b.x, b.y));
+          S.tweens.add({ targets: b, x: p.x, y: p.y, displayWidth: b.displayWidth * k, displayHeight: b.displayHeight * k, alpha: 1, duration: 340, ease: "Cubic.easeInOut" });
+        });
+        S.tweens.add({ targets: y, x: tx, y: ty, scale: sc, alpha: 1, duration: 340, ease: "Cubic.easeInOut" });
+      });
+    };
     for (const x of toFold) {
       const kind = blockOf(x);
-      // the others step back while this one comes to the middle of the board, full size, its filling with it
-      toFold.filter((y) => y !== x && y.active && !onPlate.includes(y)).forEach((y) => S.tweens.add({ targets: [y, ...y.blobs], alpha: 0, duration: 180 }));
+      // the others wait along the board's foot while this one comes to the middle of the board, full size, its filling with it
+      park(toFold.filter((y) => y !== x && y.active && !onPlate.includes(y)));
       const tx = z.X(P0.x);
       const ty = z.Y(P0.y);
       const bk = x.blobs.map((o) => o.wordId);

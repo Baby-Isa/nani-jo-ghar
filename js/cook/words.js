@@ -428,7 +428,8 @@
     // them while it is open and the dots again after
     let run = null;
     const close = () => {
-      if (run) out[run.at] = `<span class="dots" title="Tap the speaker to hear it" data-said="${esc(run.words.join(" "))}">•••</span>`;
+      // (opts.sealed, DAAR-34: words not said yet, the chop's rows she has not called, stay dots even in a peek: no data-said)
+      if (run) out[run.at] = `<span class="dots${opts.sealed ? " unsaid" : ""}" title="Tap the speaker to hear it"${opts.sealed ? "" : ` data-said="${esc(run.words.join(" "))}"`}>•••</span>`;
       run = null;
     };
     line.segs.forEach((s, i) => {

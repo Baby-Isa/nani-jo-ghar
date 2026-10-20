@@ -336,6 +336,19 @@
    */
   function unveil(card, on) {
     if (!card || !card.querySelectorAll) return;
+    // SH-98 (the judge, 20 Oct: the samosa peek at L3 showed "ba samosa" and a bare "samosa" with no fillings): a finished
+    // item folded to its one gold line opens too while the card peeks, so every row is written with its parts (its
+    // number and fillings, as they were said); it folds again when the peek ends
+    if (on)
+      card.querySelectorAll(".oc-item.folded").forEach((it) => {
+        it.classList.remove("folded");
+        it.classList.add("oc-peek-open");
+      });
+    else
+      card.querySelectorAll(".oc-item.oc-peek-open").forEach((it) => {
+        it.classList.remove("oc-peek-open");
+        it.classList.add("folded");
+      });
     if (on)
       card.querySelectorAll(".dots[data-said]").forEach((d) => {
         const w = document.createElement("span");

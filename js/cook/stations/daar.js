@@ -67,7 +67,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const FONT = "Nunito, sans-serif";
   // the vegetables' own art: word id -> file stem
   const VEG = { "veg-01": "bataato", "veg-02": "dungri", "veg-03": "tameto", "veg-12": "marcha", "veg-13": "lasan", "veg-14": "aadu" };
-  const CHOPPED = { "veg-01": "veg-bataato-cubed-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.png" };
+  const CHOPPED = { "veg-01": "veg-bataato-cubed-v2-t.webp", "veg-02": "veg-dungri-chopped-t.png", "veg-03": "veg-tameto-chopped-t.png", "veg-12": "veg-marcha-chopped-t.png", "veg-13": "veg-lasan-chopped-t.webp", "veg-14": "veg-aadu-chopped-t.png" };
   // 30 Sept (R5): onion, tomato and chilli as real chopped heaps (one heap per chopped vegetable) and one piece
   // each (the piece flies off the knife and lands as its heap), in place of the flower-like v2 piles
   const HEAP5 = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli" };
@@ -429,7 +429,12 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // (from L3, where the level table dots the card: an open card, L1-L2, writes every word, contract-35)
     const staged = rounds > 1 && Cook.cardState(level) !== "open";
     const called = new Set(staged ? Object.keys(want).filter((id) => !(id in need)) : Object.keys(want));
-    const label = (id) => Lang.html(Lang.phrase(parts(id)), { hide: (w) => !doneIds.includes(id) && (!called.has(id) || dot(w)) });
+    // (a row she has not called is sealed: its dots stay dots in the bulb's peek too, so the L4 peek writes only what she has
+    // said, the first item, and the rest stay dotted, per the level table; the judge, 20 Oct: "the L4 peek writes all three")
+    const label = (id) => {
+      const unsaid = !doneIds.includes(id) && !called.has(id);
+      return Lang.html(Lang.phrase(parts(id)), { hide: (w) => !doneIds.includes(id) && (!called.has(id) || dot(w)), sealed: unsaid });
+    };
     const rows = Object.keys(want).map((id) => ({ id, label: label(id), done: doneIds.includes(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
@@ -928,6 +933,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       // s08 w6B (DAAR-29): the vessel pouring the daal is part of the pot's picture while it pours (named so, the evidence
       // probes' canvas:pot crop takes it in whole and never cuts it at the crop's edge; it fades out after, alpha 0)
       dBowl.setName("daar-pour-pot");
+      // (the pool: the pot's daal picture over the masala, seen only inside the growing circle; a geometry mask draws in
+      // the canvas renderer too)
+      const pool = S.track(discAt(S.add.image(cx, cy, discTex(S, "daar"))).setRotation(contents.rotation).setDepth(D.item + 0.07).setAlpha(0));
+      const poolMask = S.make.graphics({ add: false });
+      pool.setMask(poolMask.createGeometryMask());
       await NjgPour.phaser(S, {
         obj: dBowl,
         lip: [-rim, 0],
@@ -935,7 +945,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         tilt: -38,
         squash: 0.14,
         colour: 0xe09a12,
-        width: z.L(26),
+        // (s08 w6G, SH-117: a stream thick enough to read as daal falling, and its pool spreading out from where it lands
+        // over the masala until it fills the pot, under the rim; then the pot's own daal picture takes over)
+        width: z.L(40),
         depth: D.item + 0.25,
         surface: () => ({ x: cx + inR * 0.12, y: cy + inR * 0.04 }),
         arc: z.L(50),
@@ -950,13 +962,26 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           }
         },
         onFill: (u) => {
-          if (u <= 0.02 || filling) return;
+          // the pot's own daal picture, uncovered in a circle that grows from where the stream lands until it fills the pot
+          if (u > 0.001 && poolMask) {
+            const e = Math.min(1, u);
+            const r = inR * (0.18 + 0.95 * Math.pow(e, 0.7));
+            poolMask.clear();
+            poolMask.fillStyle(0xffffff, 1);
+            poolMask.fillCircle(cx + inR * 0.12 * (1 - e), cy + inR * 0.04 * (1 - e), r);
+            pool.setAlpha(1);
+          }
+          if (u < 0.97 || filling) return;
           filling = true;
-          setPot("daar", 820);
+          setPot("daar", 200);
         },
       });
       if (pour && pour.stop) pour.stop();
       dBowl.setAlpha(0);
+      await setPot("daar", 120);
+      pool.clearMask();
+      pool.destroy();
+      poolMask.destroy();
     }
     // DAAR-33 (P52, decision 13; reverses DAAR-10): the mat the daar stood on fades away once it has been poured, so it
     // never peeks out under the speed dial or lies beside the served bowl's own
@@ -968,16 +993,24 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
     await setPot("daar", 300);
     const pieces = [];
+    // DAAR-31's flaw (the judge, 20 Oct: "identical toppings in identical places at all four levels"): each round lays the
+    // pieces at its own turn of DP1's spots, each a little nearer or further out, so no two pots are the same picture
+    const spin = Math.random() * 360;
+    // DAAR-05's flaw (s08 w6G: "no white blotches on the pot contents"): the onion is cooked golden in the oil and the
+    // ginger-garlic paste is stirred into the daar's own colour, both a little sunk into it, never pale patches on top
+    const COOKED = { "dv4-onion": [0xe2a85a, 0.82], "dv4-paste": [0xe8b048, 0.7] };
     [...wentIn].forEach((id) =>
       (DP1[id] || []).forEach(([key, w, spots]) => {
         if (!S.textures.exists(key)) return;
         spots.forEach(([deg, rr], i) => {
           const img = S.track(S.add.image(cx, cy, key).setDepth(D.item + 0.15).setAlpha(0));
-          if (key === "dv4-onion") img.setTint(0xffe2b4); // cooked soft in the oil, not raw white
+          const cooked = COOKED[key];
+          if (cooked) img.setTint(cooked[0]);
           img.setScale((inR * w * (0.9 + 0.2 * ((i * 37) % 10) / 10)) / Math.max(img.width, img.height));
-          const piece = { img, a: (deg * Math.PI) / 180, r: inR * rr, turn: ((deg * 7) % 360) * (Math.PI / 180) };
+          const rOut = Math.min(0.72, Math.max(0.15, rr + (Math.random() - 0.5) * 0.16));
+          const piece = { img, a: ((deg + spin) * Math.PI) / 180, r: inR * rOut, turn: ((deg * 7 + spin) % 360) * (Math.PI / 180) };
           img.setPosition(cx + Math.cos(piece.a) * piece.r, cy + Math.sin(piece.a) * piece.r).setRotation(piece.turn);
-          S.tweens.add({ targets: img, alpha: 0.92, duration: 400 });
+          S.tweens.add({ targets: img, alpha: cooked ? cooked[1] : 0.92, duration: 400 });
           pieces.push(piece);
         });
       })
@@ -1590,7 +1623,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const im = p.img;
       if (!im || !im.active || !k) return;
       const q = S.add.image(dx + (im.x - pot.cx) * k, dy + (im.y - pot.cy) * k, im.texture.key);
-      q.setScale(im.scale * k).setRotation(im.rotation).setAlpha(0.95);
+      q.setScale(im.scale * k).setRotation(im.rotation).setAlpha(im.alpha || 0.95);
       if (im.isTinted) q.setTint(im.tintTopLeft);
       box.add(q);
     });
