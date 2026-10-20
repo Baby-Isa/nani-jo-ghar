@@ -8,16 +8,16 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (20 Oct 2026, 03:00 UK):** Sprint 8's fix round (waves 6A-6H) is merged and pushed on `claude/new-session-b5r2am`; `main` = 38d0591a. Checks all green. Running: the final evidence run over the sprint's rows (`evidence.mjs --run --sprint --since 38d0591a`), then the full gate `s08-gate-final`; then judge agents per batch, `--collect`, `--apply`, and ask Zafar before `/publish`.
+**Where things stand (20 Oct 2026, afternoon UK):** Sprint 8's fixes are all merged and pushed on `claude/new-session-b5r2am` (waves 6A-6N, the eye and boing follow-ups, the chips rule); `main` = 38d0591a. The final replays at 8 sizes: every flow reaches its end; the only rule breaks left are contract-11 (the Cook backgrounds' low-res on big screens: s08c's marble tile WT1 fixes it once cut and wired) and contract-37 (sekelo decoys: s08c). Checks green. **Waiting on Zafar's go to `/publish`.**
 
-**Done this round:** spoken English out of the orders (joins dropped where Mum has no Kutchi; tomato asked singly until the plural is known); each line said once; pop-up wraps first; clinic stuck runs fixed; the wrong colour clip (a late line) fixed with a test over every heal game; the parked modes write no English; art that had landed is wired (potato, whole lemon, drop machine, level plasters, Nani's talking and blinking faces); evidence specs reach every moment. Reports `build/reports/s08-w6*.md`.
+**Art:** s08c landed (`build/reports/s08c-art-landing.md`): 21 pass, a 4-image redo (`s08c-redo-block.txt`), the doctor's three-quarter set and the girl's close-ups wait on his likeness call. s09a redo (house, Nani by the fire, the book from the child's seat, our day) is with him (`s09a-redo-block.txt`).
 
-**Art:** Sprint 9 style test `s09a` (10 images) is with Zafar (Chrome block; references from his ChatGPT chat "Nani jo Ghar s09a references", Nani = `sources/art/s08/sheet-nani-final-1.png`; the old Nani archived to `sources/archive/nani-pre-s08`). Sprint 8 fix run `s08c` (28 images) is planned (`docs/design-language/art-plans/s08c-art-plan.md`), after s09a.
+**Process (Zafar, 20 Oct):** builders replay their flows at 8 sizes before reporting (brief.mjs); the full gate once before a publish; judge FAILs checked against his own words first; evidence on changed rows (`--changed`); two builders a round, each owning its rows' specs.
 
-**Waiting on Zafar:** the tomato plural (*ba tameto* or *ba tameta*); the five s08c decisions (sekelo trays, the kadchi, sekelo decoys, the chai pour, pantry stickers); SH-112's shelf band (about 30% vs 26%); boing's tool column (two or four colours); the s09a images with his notes; then /publish.
+**Next steps:** 1. his publish go → `/publish`. 2. Cut and wire the passing s08c art (one builder), then the redo. 3. Sprint 9: the door, the ride and the book on the agreed art.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8's fixes are merged; finish the evidence judging and the gate, then ask me before publishing. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8 is ready to publish on my go; the s08c art is landed and waits on my likeness call. Tell me before launching anything new.
 
 ## The fix list
 
