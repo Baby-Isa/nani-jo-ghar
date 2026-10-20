@@ -10,6 +10,7 @@
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
  * specs  evidence.mjs --lint-specs: the static pass over build/sandbox/data/evidence.json (no browser; new flags only, a baseline holds the known ones)
  * docs   build/tools/review/docs.mjs (decision 99): the docs' size limits and unique IDs
+ * recordings  build/tools/ops/recordings.mjs --check (Zafar, 20 Oct): docs/language/recording-sheet.md is current (regenerate: node build/tools/ops/recordings.mjs)
  * size   build/tools/review/sitesize.mjs (Zafar, 14 Oct): the live site stays under 800 MB (GitHub Pages stops deploying near 1 GB)
  * load   build/tools/review/loadcheck.mjs (decision 68, J11): every Cook station and clinic game page loads only the pictures
  *        in its manifest (never another game's); a browser check, so it runs under the browser lock (B16), about 3 minutes
@@ -23,7 +24,7 @@ import { args, help, ROOT } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
-const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "leak", "bump", "specs", "docs", "size", "load"];
+const only = a.val("only") ? a.val("only").split(",") : ["unit", "words", "static", "leak", "bump", "specs", "docs", "recordings", "size", "load"];
 const run = (cmd, argv) => spawnSync(cmd, argv, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
 const ls = (dir, ok) => readdirSync(join(ROOT, dir)).filter(ok).map((f) => join(dir, f));
 const results = [];
@@ -83,6 +84,10 @@ if (only.includes("docs")) {
   const r = run(process.execPath, ["build/tools/review/docs.mjs"]);
   note("docs", r.status === 0, (r.stdout.trim().split("\n").pop() || `docs.mjs exited ${r.status}`));
   if (r.status !== 0) console.log((r.stdout.match(/^FAIL .*$/gm) || []).slice(0, 10).map((l) => "     " + l).join("\n"));
+}
+if (only.includes("recordings")) {
+  const r = run(process.execPath, ["build/tools/ops/recordings.mjs", "--check"]);
+  note("recordings", r.status === 0, ((r.status === 0 ? r.stdout : r.stderr || r.stdout).trim().split("\n").pop()) || `recordings.mjs exited ${r.status}`);
 }
 if (only.includes("size")) {
   const r = run(process.execPath, ["build/tools/review/sitesize.mjs"]);

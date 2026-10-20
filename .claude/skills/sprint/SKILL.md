@@ -9,7 +9,9 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 ## Open (propose, then wait for Zafar's go)
 1. If new work arrives outside a sprint, steer it in: "This looks like Sprint nn. Goal: …. Budget: … (ceiling and days). Sessions: …. Yes?" Give a model, effort and cost for every session.
 2. On his go: copy the template to `docs/sprints/Snn-<name>.md`; fill goal, budget, planned sessions; status "open". Backlog = the fix list (`docs/process/regressions.md`), `docs/process/checks-to-build.md` and `docs/ideas.md`; nothing else is queued.
-3. Add one line to `docs/status.md` "Next chat" and commit.
+3. Settle the sprint's design decisions with Zafar at the opening, before any builder launches (Sprint 8): a builder never waits on, or guesses, a design call mid-sprint.
+4. Art placeholders are made at the final art's size and position, so wiring the art changes data, not layout (Sprint 8).
+5. Add one line to `docs/status.md` "Next chat" and commit.
 
 ## During
 - Small decisions go in the sprint file's "Small decisions". A lasting decision (one that will still hold next sprint) goes into the doc, row or check it changes, the commit saying "Zafar, <date>"; one answer, one place. Never paste check-ins into the sprint file (`checkin.mjs --log` keeps them in `docs/process/overnight-log.md`).

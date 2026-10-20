@@ -169,3 +169,24 @@ export function proofLines(s, report) {
     "  - `node build/tools/review/skeleton.mjs " + report + "` starts the report's proof section.",
   ];
 }
+
+// Sprint 8's learning, built in (Zafar, 20 Oct): a spec whose tasks name fix-list rows needs those rows' evidence specs before the
+// builder starts, or the builder fixes blind and the first red run proves nothing. `known` = the fix-list ids (live list and archive);
+// `evidence` = build/sandbox/data/evidence.json. A spec with "specsByBuilder": true and build/sandbox/data/evidence.json in its owns
+// hands the writing to the builder (its first task writes the specs and plays them red).
+export const EVIDENCE_FILE = "build/sandbox/data/evidence.json";
+export function rowIdsIn(text, known = null) {
+  const ids = String(text || "").match(/\b[A-Z]{2,5}-\d{1,4}\b/g) || [];
+  return [...new Set(ids)].filter((id) => !known || known.has(id));
+}
+export function missingEvidence(spec, evidence, known = null) {
+  const text = (spec.tasks || []).map((t) => `${t.do || ""} ${t.accept || ""}`).join("\n");
+  const ids = rowIdsIn(text, known);
+  const missing = ids.filter((id) => !Object.prototype.hasOwnProperty.call(evidence || {}, id));
+  if (!missing.length) return { ok: true, ids, missing, message: "" };
+  const owns = (spec.owns || []).some((o) => String(o).includes(EVIDENCE_FILE));
+  if (spec.specsByBuilder === true && owns) return { ok: true, ids, missing, message: "" };
+  const why = spec.specsByBuilder === true
+    ? `"specsByBuilder" is set but the spec does not own ${EVIDENCE_FILE}: add it to "owns" so the builder may write the evidence`
+    : `Write the evidence spec before the builder starts (${EVIDENCE_FILE}), or set "specsByBuilder": true and give the builder ${EVIDENCE_FILE} in "owns"`;
+  return { ok: false, ids, missing, message: `No evidence spec for ${missing.length} fix-list row${missing.length === 1 ? "" : "s"} named in the tasks: ${missing.join(", ")}. ${why}.` };}

@@ -29,6 +29,7 @@ Every tool in one table. Run one when the job needs it; each prints its own `--h
 | `node build/tools/ops/publish.mjs` | The publish gate first (`publishgate.mjs`: refuses while a fixable row is open, checks are red, or the last contract or evidence run is older than the game files), then bump the version, push to `main`, wait for Pages, shoot the live page | `/publish`, orchestrator only |
 | `node build/tools/ops/mumround.mjs <folder>` | Mum's recordings -> clips, manifest, engine, gap counts | `/mum-round` |
 | `node build/tools/ops/mumsheet.mjs` | The engine's gaps -> the next question sheet for Mum | `/mum-round` |
+| `node build/tools/ops/recordings.mjs [--check]` | Writes `docs/language/recording-sheet.md`: every gap in one sheet (1 grammar first, 2 Cook, 3 clinic, 4-6 the story frame, 7 other modes) from the gap list, the engine, `data/day.json`, the doctor's list and the open Mum questions; English only. `--check` (in `checks.mjs` as `recordings`) fails when the sheet is out of date | After `import_all.mjs`, a change to `data/day.json`, or a Mum round; `/mum-round` builds the next question sheet from it |
 | `node build/tools/ops/unpushed.mjs` | Hook: warns after 30 minutes unpushed | Automatic |
 | `python3 build/bump_version.py` | Stamps the new version on every page | Orchestrator, at a publish |
 
