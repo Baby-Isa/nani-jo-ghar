@@ -16874,5 +16874,86 @@
    ],
    "note": "the sekelo order says no English join"
   }
+ ],
+ "CLN-185": [
+  {
+   "flow": "clinic:heal-eye",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-eye-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the eye game's view is not too zoomed in or intimidating: her whole face from chin to hairline, brows and forehead in view, the two eyes well under half the width; her sore eye (pink, watery, open) shows"
+  },
+  {
+   "flow": "clinic:heal-eye",
+   "path": "real-pace",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step:drop",
+   "after": null,
+   "capture": [
+    "strip:.cl-heal:8x60"
+   ],
+   "expect": null,
+   "note": "after each drop she blinks (both eyes closed for a moment, then open) on the same face; nothing else moves",
+   "max": 2
+  },
+  {
+   "flow": "clinic:heal-tooth",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "800x360"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-tooth-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the teeth's view is not too zoomed in or intimidating"
+  }
+ ],
+ "ART-23": [
+  {
+   "flow": "clinic:waiting",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:stage-waiting",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-room"
+   ],
+   "expect": null,
+   "note": "one style on the bench: every person (the old man and woman, the auntie, the uncle, the woman with the baby, the boy and the girl) in the same soft 3D style and proportions, no chibi big heads or clay look, seated at one scale"
+  }
  ]
 }
