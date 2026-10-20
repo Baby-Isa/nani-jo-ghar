@@ -17087,6 +17087,23 @@
    ],
    "expect": null,
    "note": "the zoom back out at the end"
+  },
+  {
+   "flow": "day:book",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "drv:page-turn",
+   "after": null,
+   "capture": [
+    "strip:.day-book:6x200"
+   ],
+   "expect": null,
+   "note": "a page turn between games: the right page lifts from its corner and swings over the fold"
   }
  ],
  "BOOK-02": [
