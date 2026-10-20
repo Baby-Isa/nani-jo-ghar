@@ -40,7 +40,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
   /*
    * SAM-21 (decision 10, Zafar's yes, 18 Oct; P39): the coded fold, in the pastry texture. A flat rectangular strip
-   * (height 1, the unit); the filling at its bottom-left. Each fold turns a flap over a crease, like paper: the first lifts
+   * (height 1, the unit); the filling on its bottom-left corner. Each fold turns a flap over a crease, like paper: the first lifts
    * the bottom-left corner over (bottom left to top right) into a triangle, then that triangle rolls over its right edge
    * onto the next one, alternating (top left to bottom right, then bottom left to top right ...) left to right until the
    * strip is used up; what is left past the last triangle tucks under by itself. The triangles are equilateral (the only
@@ -146,8 +146,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let pieces = [{ poly: [[0, 0], [L, 0], [L, 1], [0, 1]], M: ID }];
       let k = 0; // the next fold
       let act = null; // {line, flap, rest}
-      // the corner flap lands here, over the filling (the strip's bottom-left, in from the corner)
-      const land = [[0, 0], [TS / 2, 1], [0.75 * TS, 0.5]];
+      // s08 w6M (SAM-21; Zafar: "meat in the bottom left-hand corner"; the judge, 20 Oct: "the filling sits mid-height a fifth
+      // of the way in"): the filling sits on the corner flap itself, the strip's bottom-left corner (was: where that flap
+      // lands, mid-height); the first fold carries it over and closes it in (it turns with the flap and is hidden once the
+      // flap is past upright, between the flap and the strip)
+      const land = [[0, 0], [TS / 2, 1], [0, 1]];
       const F = {
         N,
         L,
@@ -316,17 +319,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (under) a.flap.forEach((pc) => layer(pc, { R: turning.R, soft: 0.5 }));
           // at rest the strip is drawn whole (a split there would show as a seam along the crease)
           (turning ? a.rest : pieces).forEach((pc) => layer(pc));
-          (o.blobs || []).forEach((b) => {
-            if (!b.img) return;
-            g.save();
-            g.translate(b.x, b.y);
-            g.rotate(((b.angle || 0) * Math.PI) / 180);
-            g.shadowColor = "rgba(60, 30, 10, 0.25)";
-            g.shadowBlur = 0.03 * ppu;
-            g.shadowOffsetY = 0.012 * ppu;
-            g.drawImage(b.img, -b.w / 2, -b.h / 2, b.w, b.h);
-            g.restore();
-          });
+          // the filling: on the corner flap (SAM-21), so while the first fold turns it goes over with the flap (drawn below)
+          const onFlap = !!(turning && k === 0 && a.line.over);
+          const blobs = (R) =>
+            (o.blobs || []).forEach((b) => {
+              if (!b.img) return;
+              g.save();
+              if (R) g.transform(...R);
+              g.translate(b.x, b.y);
+              g.rotate(((b.angle || 0) * Math.PI) / 180);
+              g.shadowColor = "rgba(60, 30, 10, 0.25)";
+              g.shadowBlur = 0.03 * ppu;
+              g.shadowOffsetY = 0.012 * ppu;
+              g.drawImage(b.img, -b.w / 2, -b.h / 2, b.w, b.h);
+              g.restore();
+            });
+          if (!onFlap) blobs(null);
           if (lit && big) {
             g.save();
             g.fillStyle = `rgba(255, 244, 214, ${0.2 + 0.14 * pulse})`;
@@ -356,6 +364,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const shade = Math.max(-0.35, Math.min(0.25, (b - Lt[2]) * 0.7));
             const order = a.flap.slice().sort((p, q) => (det >= 0 ? p.z - q.z : q.z - p.z));
             order.forEach((pc) => layer(pc, { R, shade, soft: 1 + 2 * s }));
+            // the filling rides on the flap's top face until it is upright; past that it is closed in under it
+            if (onFlap && nz > 0) blobs(R);
           }
           if (o.arrow > 0 && k < N && !turning) F.arrow(g, F.swipe(), o.arrow);
           g.setTransform(1, 0, 0, 1, 0, 0);

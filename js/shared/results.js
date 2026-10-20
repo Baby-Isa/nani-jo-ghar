@@ -241,11 +241,13 @@
   function accuracyBadge(a) {
     // CLN-79 (2 Oct): a round with nothing to judge never shows a dash: the tick is whole (nothing went wrong) and
     // its foot says so with a gold tick, the badge's own picture, never a number or a "–"
+    // SAM-22 (s08 w6M, rule 12: progress, not verdicts; the judge, 20 Oct: "a 1/2 score"): the foot counts what was right
+    // (a gold tick x n, as the bulb's x n), never "n/total", a score out of
     const rw = a.total ? (100 * a.right) / a.total : 100;
-    return `<div class="rs-badge rs-acc tier-${a.tier === "none" ? "mid" : "pending"}" data-badge="accuracy" data-tier="${a.tier}" aria-label="${a.right} right out of ${a.total}">
+    return `<div class="rs-badge rs-acc tier-${a.tier === "none" ? "mid" : "pending"}" data-badge="accuracy" data-tier="${a.tier}" aria-label="${a.right} right">
       <div class="rs-disc">${tickImg(rw)}
         <span class="rs-sparkles" aria-hidden="true">${ICON.spark.repeat(6)}</span></div>
-      <div class="rs-foot">${a.total ? `<b class="rs-n">0</b><span class="rs-of">/${a.total}</span>` : `<span class="rs-of rs-none" aria-hidden="true">&#10003;</span>`}</div>
+      <div class="rs-foot">${a.total ? `<span class="rs-hint-count rs-right-count">${img("rs-cap-icon", "tick-gold")}<b>&times; <span class="rs-n">0</span></b></span>` : `<span class="rs-of rs-none" aria-hidden="true">&#10003;</span>`}</div>
     </div>`;
   }
   function hintsBadge(h) {

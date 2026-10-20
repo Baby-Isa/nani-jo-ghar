@@ -114,7 +114,13 @@
 }
 /* SH-37 (s08 w6J; the judge, 20 Oct: "a stopwatch on the left ... and an empty right half"): a badge still to come is its quiet
    empty tile, so the card reads as three places filling in turn, never a slab with one thing in a corner; what pops is its art */
+/* SAM-22 (s08 w6M; the judge, 20 Oct: "the third card is empty at every level"): a badge still to come shows its picture
+   quietly (faint and grey, under the 0.35 a badge counts as shown: contract-5), never an empty tile; its foot waits. It
+   steps in as before (one, two, three) */
 .rs-badge.pre > * { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
+.rs-badge.pre > .rs-disc { opacity: 0.22; transform: none; filter: grayscale(1); }
+.rs-badge.pre .rs-big, .rs-badge.pre .rs-sparkles { visibility: hidden; }
+.rs-badge.in > .rs-disc { filter: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1), filter 0.3s; }
 .rs-badge.in > * { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1); }
 /* UX 9a: no circle behind the badge -- the object sits straight in the
    square card (.rs-badge is the card; .rs-disc just sizes and stacks it). */

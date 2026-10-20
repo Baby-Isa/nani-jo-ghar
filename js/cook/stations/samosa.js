@@ -544,13 +544,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const m = r < lay.rows - 1 ? lay.cols : STRIPS - lay.cols * (lay.rows - 1);
       const c = i - r * lay.cols;
       const st = pastry(BOARD.x + (c - (m - 1) / 2) * cw, P0.y + (r - (lay.rows - 1) / 2) * ch, lay.q);
-      st.setAlpha(0);
+      // s08 w6M (CK-48; the judge, 20 Oct: "the board washed out with only one of six pastry sheets drawn, the other five pop
+      // in"): the six strips are drawn whole with the board, in the same frame, so they come up together with the view
       st.slot = i;
       st.home = { x: st.x, y: st.y, scale: st.scale };
-      S.tweens.add({ targets: st, alpha: 1, duration: 220, delay: 40 * i });
       strips.push(st);
     }
-    await Cook.wait(260 + 40 * STRIPS);
     if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
     let active = null;
     // (the test hook focus, flow.js: the strip's filling corner, where each spoonful lands and puffs; CK-27's filmstrip)

@@ -405,19 +405,39 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let roundT = 0;
       let last = performance.now();
       let gameRate = Cook.speed;
+      /*
+       * s08 w6M (DAAR-35 reopened, contract-65 at L4: "wave 2's first throw came 481 ms after wave 1's last (its spacing 182
+       * ms)"): the switch to the next wave is made here, in the frame its beat falls on, not by the round loop below a frame or
+       * more later (a slow frame there held the next wave's first throw back). A wave's last throw sets the beat to the
+       * shorter of its spacing and the next wave's; on that beat the next wave starts and throws at once. The loop below then
+       * only says the switch and writes the card (onSwitch). The beat runs on the frame's real time (up to 0.25 s), so a slow
+       * frame never adds to the gap; the flying things still move by the capped step.
+       */
+      let onSwitch = null;
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000) * Cook.speed;
+        const beat = Math.min(0.25, (now - last) / 1000) * Cook.speed;
         // game seconds per real second (slow frames are capped), for the test's aim below
         if (now > last) gameRate += ((dt * 1000) / (now - last) - gameRate) * 0.2;
         last = now;
         if (running && phase) {
-          roundT += dt;
-          left = Math.max(0, left - dt);
-          spawnT -= dt;
+          roundT += beat;
+          left = Math.max(0, left - beat);
+          spawnT -= beat;
+          const next = rounds[phase.i + 1] || null;
+          if (spawnT <= 0 && !phase.bag.length && next && onSwitch) {
+            phase = next;
+            roundT = 0;
+            const cb = onSwitch;
+            onSwitch = null;
+            cb(next);
+          }
           if (spawnT <= 0 && phase.bag.length) {
             throwOne();
-            spawnT += phase.every;
+            spawnT = Math.max(0, spawnT) + phase.every;
+            const nx = rounds[phase.i + 1];
+            if (!phase.bag.length && nx) spawnT = Math.min(spawnT, nx.every);
           }
           drawRing();
           const sec = Math.ceil(left);
@@ -537,19 +557,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const orderLine = (tg, first) =>
         Lang.join(tg.map((id, j) => Lang.line(j === 0 ? (first ? "only" : "now") : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))));
       for (const r of rounds) {
-        phase = r;
-        roundT = 0;
-        if (r.i > 0) {
+        if (r.i === 0) {
+          phase = r;
+          roundT = 0;
+        } else {
           // s08 w6B (DAAR-35, contract-65 at L3: a 175 ms gap at the switch): the next wave's first throw goes on its beat
           // first; the card's new rows and her line (DOM work and a clip starting, a slow frame) come just after it, while
-          // it rises, so nothing the switch does can hold a throw back
-          await new Promise((resolve) => {
-            const off = z.tick(() => {
-              if (r.bag.length === r.size && running) return;
-              off();
-              resolve();
-            });
-          });
+          // it rises, so nothing the switch does can hold a throw back. s08 w6M: the tick makes the switch on the beat
+          // (onSwitch above); this waits for it
+          if (phase !== r) await new Promise((resolve) => (onSwitch = resolve));
         }
         // DAAR-34 (P54): the card shows this round's rows as she calls them (a caller's cue; daar's chop card fills its dots)
         if (onCall) onCall(r.targets.slice(), r.i);
@@ -558,8 +574,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // contract-1): a new order with no pop-up yet this phase (the chop again, only the wrong ones) comes up in the
           // shared request pop-up first, read out; her box then shows it quietly
           const line = orderLine(r.targets, true);
+          // s08 w6M (CK-48; the judge, 20 Oct: "cuts from the kitchen to a bare board with only the timer and knife"): when this
+          // phase's order was read out in its pop-up just before the station opened (Lifecycle.asked), the throws start as
+          // the board comes up and she says it again over them; only an order not yet heard is said first (as before)
+          const LC = global.Lifecycle;
+          const heard = !!(LC && LC.asked && LC.asked());
           const a = UI.mission && UI.mission.askLine ? await UI.mission.askLine(line, { hide }) : { asked: false };
           if (a.asked) z.say(line, { hide, silent: true, ms: 10, keep: true }).catch(() => {});
+          else if (heard) z.say(line, { hide }).catch(() => {});
           else await z.say(line, { hide }).catch(() => {});
           running = true;
           spawnT = 0;
@@ -567,16 +589,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else {
           z.say(orderLine(r.targets, false), { hide }).catch(() => {});
         }
-        // the round lasts its share of the ring: its throws (DAAR-35: the next round's follow on at once); the last one's
-        // air clears
-        await new Promise((resolve) => {
-          const off = z.tick(() => {
-            if (roundT < r.secs || r.bag.length) return;
-            if (r.i === rounds.length - 1 && flying.some((o) => o.active && !o.sliced)) return;
-            off();
-            resolve();
+        // the last round lasts its share of the ring, then its air clears (the others hand over in the tick, on the beat)
+        if (r.i === rounds.length - 1)
+          await new Promise((resolve) => {
+            const off = z.tick(() => {
+              if (roundT < r.secs || r.bag.length) return;
+              if (flying.some((o) => o.active && !o.sliced)) return;
+              off();
+              resolve();
+            });
           });
-        });
       }
       running = false;
       stopDemo();
