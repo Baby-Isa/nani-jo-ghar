@@ -691,9 +691,9 @@ export const CONTRACT_HOOK = `(() => {
     const peeking = cards.filter((c) => c.classList.contains("peek"));
     const sd = { n: cards.length, rows, done, closed: cards.filter((c) => c.classList.contains("closed")).length, peek: peeking.length, dots: peeking.reduce((n, c) => n + [...c.querySelectorAll(".dots:not(.unsaid)")].filter(shown).length, 0), words: [...new Set(words)], lv: (document.querySelector("#side") && document.querySelector("#side").dataset.level) || null };
     if (!same("side", sd)) emit({ k: "side", ...sd });
-    // contract-30 (SH-99): everything WRITTEN on the sidebar cards, shown or folded away (a closed card holds its rows for the peek):
+    // contract-30 (SH-99): everything WRITTEN on the sidebar cards, shown or folded away (a closed card holds its rows for the peek; a [data-howto] line is the doctor's spoken strip, "One more thing.", not a written row, s08 w6L):
     // each row's and headline's Kutchi words and every count chip, the bulb's English aside
-    const cw = cards.flatMap((c) => [...c.querySelectorAll(".oc-headline, .oc-t, .cl-row-text, .cl-row-count")].filter((x) => !x.closest(".cl-row-en")).map((x) => (x.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60))).filter(Boolean);
+    const cw = cards.flatMap((c) => [...c.querySelectorAll(".oc-headline, .oc-t, .cl-row-text, .cl-row-count")].filter((x) => !x.closest(".cl-row-en") && !x.closest("[data-howto]")).map((x) => (x.textContent || "").replace(/\\s+/g, " ").trim().slice(0, 60))).filter(Boolean);
     const cwu = [...new Set(cw)].slice(0, 60);
     if (!same("card", cwu)) emit({ k: "card", words: cwu });
     // contract-28 (SH-100): the light bulbs on screen and what each is drawn with

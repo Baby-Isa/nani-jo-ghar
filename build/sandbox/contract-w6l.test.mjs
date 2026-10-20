@@ -56,3 +56,11 @@ test("contract-35: the rows a #hint player paid to reveal (the bulb, a peek) are
   assert.equal(of(run(page("cook:chai-tray", mk())), "contract-35").length, 1, "red: a dotted word on an L1 card");
   assert.equal(of(run(page("cook:chai-tray#hint", mk())), "contract-35").length, 0, "green: the hint player revealed it");
 });
+
+test("contract-30: the card sample leaves out a [data-howto] line (the doctor's spoken strip), so 'One more thing.' is not counted as written", async () => {
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(join(ROOT, "build", "sandbox", "lib", "contract-hook.mjs"), "utf8");
+  const line = src.split("\n").find((l) => /const cw = cards\.flatMap/.test(l)) || "";
+  assert.match(line, /!x\.closest\("\[data-howto\]"\)/, "the written words skip the howto strip");
+  assert.match(line, /!x\.closest\("\.cl-row-en"\)/, "and still the bulb's English");
+});

@@ -9792,8 +9792,8 @@
     "zoom2:.cl-heal"
    ],
    "expect": null,
-   "note": "new arm and drop machine art",
-   "max": 4
+   "note": "new arm and drop machine art at each step through the wipe, the drops, the jab and the plaster (ten steps)",
+   "max": 10
   }
  ],
  "CLN-107": [
@@ -16216,13 +16216,13 @@
    "at": "every:step:dot",
    "after": null,
    "capture": [
-    "zoom2:.cl-heal",
     "zoom2:.knee-turn"
    ],
    "expect": null,
-   "note": "eight wraps at L3, zoomed: the bandage reaches the edge of the knee each time and is a photographic band",
+   "note": "eight wraps at L3 (seed 2), the knee zoomed after each wrap: the bandage reaches the edge of the knee each time and is a photographic band",
    "max": 8,
-   "kind": "detail"
+   "kind": "detail",
+   "seed": 2
   }
  ],
  "CLN-180": {
