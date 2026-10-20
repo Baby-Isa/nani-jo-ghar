@@ -138,7 +138,11 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
     const game = e.game;
     if (game === "find") await once("find");
     if (game === "nameit") await once("nameit");
-    if (game === "photo") await once("photo");
+    // (the first photo page is dragged at once, so a filmstrip from its first moment sees the drag and the snap; the second is shot)
+    if (game === "photo") {
+      if (!seen.has("photo-first")) seen.add("photo-first");
+      else if (e.sel && !(await page.$(".day-photo-frame.day-mounted"))) await once("photo");
+    }
     if (game === "turn") {
       if (await page.$(".day-nameit .day-filled")) await once("nameit-filled");
       if (await page.$(".day-photo-frame.day-mounted")) await once("photo-in");
