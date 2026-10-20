@@ -3,8 +3,11 @@
 pack: s09a
 redo:
   - id: H1
-    why: "Nani too small; the camera two or three steps from the porch, her full figure about two thirds of the height"
+    why: "Nani too small; closer: her full figure about half the height; the top third open sky for the weather, sun, moon and stars (Zafar, 20 Oct)"
     source: "Zafar, 20 Oct"
   - id: H2
-    why: "Nani too small; the camera two or three steps from the verandah, her full figure about two thirds of the height"
+    why: "Nani too small; closer: her full figure about half the height; the top third open sky for the weather, sun, moon and stars (Zafar, 20 Oct)"
+    source: "Zafar, 20 Oct"
+  - id: L4
+    why: "photos lay over the centre fold (Zafar: not liked); three on the left page, two on the right, nothing on the fold"
     source: "Zafar, 20 Oct"

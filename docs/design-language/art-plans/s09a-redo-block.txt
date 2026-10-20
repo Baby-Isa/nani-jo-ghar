@@ -1,4 +1,4 @@
-You're redoing 2 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Zafar approves the likenesses (see APPROVALS).
+You're redoing 3 images in ChatGPT for a children's game called Nani jo Ghar and keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself. Zafar approves the likenesses (see APPROVALS).
 
 THE PAGE
 Open https://github.com/Baby-Isa/nani-jo-ghar/blob/claude/new-session-b5r2am/docs/design-language/art-plans/s09a-art-plan.md and read section 5, "The prompts". Every prompt there has an ID (S1, W1, K1, ...) and a grey code box with the words to paste. Read it once, at the start, and keep every code box in your notes so you never go back for one mid-run. This message gives the run order and, for every prompt: what to attach, the name to save it under ("save as") and what to check.
@@ -64,13 +64,15 @@ HOW TO RUN EACH PROMPT
 6. Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.
 
 RUN ORDER. Line format: ID (person) | attach | save as | check
-REDO LIST (2). Each line ends with REDO: what was wrong last time; judge for that first, then the whole check.
-H1 | house-one-arch-try.png, style-anchor-v1.png, nani-sheet-final.png | h1-house-one-arch-v3.png | HOUSE + REDO: Nani too small; the camera two or three steps from the porch, her full figure about two thirds of the height
-H2 | house-three-arches-try.png, style-anchor-v1.png, nani-sheet-final.png | h2-house-three-arches-v3.png | HOUSE + REDO: Nani too small; the camera two or three steps from the verandah, her full figure about two thirds of the height
+REDO LIST (3). Each line ends with REDO: what was wrong last time; judge for that first, then the whole check.
+H1 | house-one-arch-try.png, style-anchor-v1.png, nani-sheet-final.png | h1-house-one-arch-v3.png | HOUSE + REDO: Nani too small; closer: her full figure about half the height; the top third open sky for the weather, sun, moon and stars (Zafar, 20 Oct)
+H2 | house-three-arches-try.png, style-anchor-v1.png, nani-sheet-final.png | h2-house-three-arches-v3.png | HOUSE + REDO: Nani too small; closer: her full figure about half the height; the top third open sky for the weather, sun, moon and stars (Zafar, 20 Oct)
+L4 | kept:B2, style-anchor-v1.png | l4-book-our-day-v3.png | LAYOUT + REDO: photos lay over the centre fold (Zafar: not liked); three on the left page, two on the right, nothing on the fold
 A kept image that is not in this list is the one already in the repo; one that is in this list is the new one from this run (it waits for it).
 
 CHECKS (by check ID)
-HOUSE: Nani full figure, centred, head to feet about two thirds of the image height, face clear, waving in the porch (one wide arch, or the middle of three small arches) with the door open behind her; only a thin strip of plain sky; modestly dressed, no rings
+HOUSE: Nani full figure, centred, head to feet about half the image height, in the lower half, face clear, waving in the porch (one wide arch, or the middle of three small arches) with the door open behind her; the top third open plain sky with no sun, moon or clouds; modestly dressed, no rings
+LAYOUT: the same open book as B2, with exactly what the line puts on each page, in that place and count, each thing whole and apart, nothing crossing the spine or centre fold; no text or numbers anywhere
 
 PASS/FAIL LIST (every image; any one of these is a fail)
 - Any text, letters, numbers, labels or logos, even fake or blurry ones (the speaker symbol on L2's buttons excepted).
