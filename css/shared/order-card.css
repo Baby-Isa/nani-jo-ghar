@@ -87,6 +87,10 @@
    --face-y where the face sits in its picture (the point that lands at the circle's centre); the per-face tweak is the rule for its
    picture, set by eye on the side-by-side sheet (build/reports/s08-w1b-card.md) */
 .cl-face img { transform-origin: 50% var(--face-y, 50%); transform: translateY(calc(50% - var(--face-y, 50%))) scale(var(--face-zoom, 1)); }
+/* SH-113, s08 w6E: the circle's SIZE too. Cook's face is --oc-face (44 px) centred in its 48 px tap area; the clinic's button was itself the
+   circle, so its face drew at the tap area's 48 px. The tap area stays; the circle inside it is --oc-face, with Cook's edge ring */
+.cl-card .oc-card .oc-face.cl-card-face { background: transparent; display: grid; place-items: center; }
+.cl-card .oc-card .oc-face.cl-card-face > .cl-face { width: var(--oc-face); height: var(--oc-face); flex: none; box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
 .cl-face.doctor img { --face-zoom: 1.7; --face-y: 40%; }
 .cl-face.person img { --face-zoom: 1.25; --face-y: 44%; }
 .oc-card .oc-headline { flex: 1 1 auto; min-width: 0; font-weight: 800; font-size: var(--oc-h); line-height: 1.25; }

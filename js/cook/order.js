@@ -230,6 +230,19 @@
         Object.assign(L.head, { line, said: line, cardLine, ids: firstAny.ids.slice(), parts: firstAny.parts, phrase: firstAny.phrase });
       }
     }
+    // s08 w6E (contract-30, SEK-03; the 6A/6B request): two DIFFERENT mixes ("ba lakri mixed" with two lists, L4) are two skewers on the
+    // card, each its own box written "hakri lakri mixed" with its own pieces, so the card never wrote the "ba" Nani said (and wrote a
+    // "hakri" she did not). Nani now says each mix by its own count, the words the card writes: the row says "hakri lakri mixed", and
+    // the second list is led by "Ne hakri lakri mixed" (speech below). The same mix twice stays "ba lakri mixed" over its two boxes.
+    L.sections.forEach((s) => s.groups.forEach((g) => g.forEach((r) => {
+      if (!r.cards || r.no || r.block || (r.qty || 1) < 2) return;
+      const kind = r.ids[r.ids.length - 1];
+      if (L.sections.filter((y) => y.cardOf === kind && !y.when).length !== r.qty) return;
+      const parts1 = (r.parts || r.ids).map((x) => (typeof x === "number" ? 1 : x));
+      const one = Lang.phrase(parts1);
+      if (!one || !one.segs) return;
+      Object.assign(r, { perMix: true, parts: parts1, phrase: one, line: { segs: one.segs, en: one.en, plan: one.plan }, said: Lang.line(Lang.frames().any, one) });
+    })));
     return L;
   };
 
@@ -386,7 +399,11 @@
       // the next skewer, never all the lists at the end
       const listsOf = (r) => (r && r.cards ? L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || withWhen)) : []);
       const early = new Set();
+      // (w6E) the second of two different mixes is led by its own count: "Ne hakri lakri mixed. Pela gos. ..."
+      const perMixRow = (s) => (s.cardOf ? O.rows(L, { all: true }).find((r) => r.cards && r.perMix && r.ids[r.ids.length - 1] === s.cardOf) : null);
       const speakSection = (s) => {
+        const pm = perMixRow(s);
+        if (pm && L.sections.filter((y) => y.cardOf === s.cardOf && !y.when).indexOf(s) > 0) push(Lang.line(F.any, pm.phrase), pm);
         let first = true;
         s.groups.forEach((g, gi) => {
           let firstInGroup = true;

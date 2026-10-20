@@ -122,3 +122,32 @@ test("serve-wrong: the sugar step's salt is a real wrong; the tea leaves' second
   assert.equal(realWrong({ kind: "tap", key: "cook-khun", swrongs: [] }), false);
   assert.equal(realWrong(null), false);
 });
+
+// ---- SH-113 / contract-30: recipe-mishkaki L4, two different mixes ----
+test("mishkaki L4: two different mixes are said, and written, each by its own count; the same mix twice keeps its 'ba'", async () => {
+  const { loadCookEngine } = await import("../test_cook_harness.mjs");
+  let distinct = 0, same = 0;
+  for (const seed of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
+    const { Cook } = await loadCookEngine({ seed });
+    const who = Object.keys(Cook.data.customers)[0];
+    const L = Cook.Order.ladder(Cook.Recipes.mishkaki.make(who, { level: 4 }), 0);
+    const rows = Cook.Order.rows(L, { all: true }).filter((r) => r.cards && r.ids.includes("ph-mixed"));
+    const said = Cook.Lang.plain(Cook.Order.speech([L]));
+    for (const r of rows) {
+      const lists = L.sections.filter((y) => y.cardOf === "ph-mixed").length;
+      if ((r.qty || 1) < 2) continue;
+      if (lists === r.qty) {
+        distinct++;
+        assert.equal(Cook.Lang.plain(r.line), "hakri lakri mixed", `seed ${seed}: the card row`);
+        assert.equal((said.match(/hakri lakri mixed/g) || []).length, 2, `seed ${seed}: each mix is said by its own count: ${said}`);
+        assert.ok(!/\bba lakri mixed/.test(said), `seed ${seed}: no 'ba' the card does not write: ${said}`);
+        assert.match(said, /Ne hakri lakri mixed\. Pela /, `seed ${seed}: the second list is led by its count`);
+      } else {
+        same++;
+        assert.equal(Cook.Lang.plain(r.line), "ba lakri mixed");
+        assert.match(said, /ba lakri mixed/);
+      }
+    }
+  }
+  assert.ok(distinct >= 2 && same >= 2, `both shapes seen (${distinct} different, ${same} the same)`);
+});
