@@ -118,33 +118,49 @@
   "date": "2026-10-12"
  },
  "ART-10": {
-  "hash": "1ebb04765970b461ee02",
+  "hash": "39572a98fb8e2888491c",
   "dhash": [
    "00858a8148108000",
-   "c921b79292969201"
+   "8901819696363601"
   ],
   "verdict": "FAIL",
-  "line": "A, all 8 guide-box frames (one per cook-done) show the same Nani face, no change of mood from move to move, so it is still one image, not four moods (B shows the same smiling Nani at pass-me; no Nana, Ma or Ali impatient face is on the sheet)",
+  "line": "A, all eight guide-box frames show what looks like one Nani image (red hijab, glasses, the same smile), with no four distinct cooking moods visible; B shows Nani's pass-me face, not Nana, Ma or Ali",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/ART-10.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/ART-10.png",
+  "date": "2026-10-20"
  },
  "ART-11": {
-  "hash": "bc954d4c0a1996c36a3c",
+  "hash": "138cb69883094dfd3e69",
   "dhash": [
    "00b294b6bcb4f470"
   ],
   "verdict": "FAIL",
-  "line": "A, at x2 zoom the veg-01 cubes are smooth, even, pale-yellow blocks with crisp edges and no starchy or cooked-potato texture, so they still read as butter cubes in the jar",
+  "line": "A, the cubes in the jar are pale yellow, smooth and sharp-edged and still read as butter or cheese, with no potato cues (no matte starchy texture, no skin, no rounded edges)",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/ART-11.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/ART-11.png",
+  "date": "2026-10-20"
+ },
+ "ART-12": {
+  "hash": "0c83a8e79861d189bd7d",
+  "dhash": [
+   "c54ddedee4eececb",
+   "cbefeacec4ccccdb",
+   "f676f2cedeffded7"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the \"where it hurts\" choices show only hath and leg, with no neck, back or hair parts, and B shows no parts at all; the belt in C does sit low",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/ART-12.png",
+  "date": "2026-10-20"
  },
  "ART-13": {
   "hash": "17dfa54d231340562280",
@@ -202,49 +218,52 @@
   "date": "2026-10-12"
  },
  "ART-19": {
-  "hash": "f79cc3fd56dcbe239858",
+  "hash": "fbb5a3791d1c0abf7dab",
   "dhash": [
-   "860d8dcccdc4a1b1",
-   "8001595111030180",
-   "77616969b9a1a1e4",
+   "8f8793978e9c98b7",
+   "8001595151030180",
+   "77616969a9a1a1e4",
    "77616969a9a1a1e4"
   ],
   "verdict": "FAIL",
-  "line": "C, Nani's mouth keeps the same closed smile in all 8 frames while the order line plays (only the eyes change, between 0 and 517 ms), so there are no mouth frames; A and B never show the girl or doctor speaking (A cuts to the room and review cards, B is only review cards), and in D (1550-2444 ms) a card with cut-off text (\"du\", \"hakr\") overlaps Nani's canvas",
+  "line": "C, Nani keeps the same closed smile in all 8 frames while her line plays (her only change is one eye closing at 1757 ms) and D is identical throughout, so there are no mouth shapes; A and B caught only the results card, not anyone speaking in the eye test",
   "panel": "C",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/ART-19.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/ART-19.png",
+  "date": "2026-10-20"
  },
  "ART-20": {
-  "hash": "66baea4135af3918267a",
+  "hash": "c4f62beef82746fa2237",
   "dhash": [
-   "9b9f9fbc7d6969fe"
+   "9b9f9fbc3d2564fa"
   ],
   "verdict": "FAIL",
-  "line": "A, the belt shows only crutches and a single cotton bud, with no level plaster, no comb and no drop machine; the clinic-items.md table (present, linked from clinic.md line 106) still marks the plaster's level view, the comb and the drop machine NEED, and boing.json names heal-v3/drop-machine.webp, which does not exist (flaw: the table says the bud's belt view is the pot, but the belt shows a bare bud)",
+  "line": "A, the pharmacy belt shows only crutches, a cotton bud and a spoon (the spoon cut off at the right edge); none of the first gaps can be seen, and the clinic-items table that clinic.md links still marks the belt plaster (level, not tilted), the comb and boing's drop machine as NEED",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/ART-20.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/ART-20.png",
+  "date": "2026-10-20"
  },
  "ART-21": {
-  "hash": "d7a584e6d9083a4b00ca",
+  "hash": "de56849558106436ff03",
   "dhash": [
-   "dfcfcec6e6eaeaf6"
+   "3f9f8b43435355a5",
+   "cfbb81a185c145f6",
+   "dfcfdec6e6eaeaf6",
+   "677c6363434b6a79"
   ],
-  "verdict": "FAIL",
-  "line": "A, the tap is still cut by the stage's left edge behind Mum's shoulder with only its gold spout showing and no handles, so it does not read as one tap; the doorway at the right shows only outdoor greenery (no floor plant visible), and 844x390 is not on this sheet",
-  "panel": "A",
-  "judge": "claude-opus-5-5 [Claude Code judge subagent, session_01W85EF4CUVUYMaoJk4JskAU]",
-  "run": "ev-20261016-194922-b8t",
-  "commit": "414fc077",
-  "png": "build/screenshots/evidence/ev-20261016-194922-b8t/ART-21.png",
-  "date": "2026-10-16"
+  "verdict": "PASS",
+  "line": "C, the background has one gold gooseneck tap with its spout and handle together, and through the arched door there is only an outdoor garden, no plant on the floor. D at 844x390 shows the same. Flaw: in D the \"Bring me these\" card hides Nani at the counter",
+  "panel": "C",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/ART-21.png",
+  "date": "2026-10-20"
  },
  "CHAI-02": {
   "hash": "7d0f070be18f4468d8e3",
@@ -329,20 +348,20 @@
   "date": "2026-10-13"
  },
  "CHAI-08": {
-  "hash": "c93572cf6a950c495ba7",
+  "hash": "be381e8ab7663f190b48",
   "dhash": [
    "38307434343054b4",
    "083272f272715032",
    "70e0ec68686464ac"
   ],
   "verdict": "FAIL",
-  "line": "C, at 1213 ms the filled glass on the tray is a side-on tumbler of tea, not a top-down glass with its liquid, and at 0 ms \"hakro\" word pills sit on the hob's top rim. A's hob and tray are bigger and lower than the mock-up in B, with the pans top-down.",
+  "line": "C, at 799 and 1156 ms the poured chai shows as a side-on tea glass in the tray slot, not a top-down glass and liquid (the empty glasses in A are top-down)",
   "panel": "C",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CHAI-08.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CHAI-08.png",
+  "date": "2026-10-20"
  },
  "CHAI-09": {
   "hash": "f6b59d4cc34dc9de5f57",
@@ -407,18 +426,18 @@
   "date": "2026-10-12"
  },
  "CHAI-13": {
-  "hash": "ee3a48b0a599596a36b9",
+  "hash": "d0132d21a45014e4345a",
   "dhash": [
-   "8064b8db8b9bd3fb"
+   "80c4f8db8b9bd3fb"
   ],
   "verdict": "FAIL",
-  "line": "A, the sugar stir still uses the flat grey teaspoon drawn in code (the .md calls it \"the drawn teaspoon\"; the real teaspoon picture is still art to come). At 1112 ms two spoons show in the pan at once",
+  "line": "A, the sugar stir still uses a flat pale-blue spoon drawn in code, not a real teaspoon picture; at 2668 ms the spoon has vanished from the pan",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CHAI-13.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CHAI-13.png",
+  "date": "2026-10-20"
  },
  "CHAI-14": {
   "hash": "31bc36f796d660690948",
@@ -663,20 +682,34 @@
   "commit": "b66ad4ff",
   "date": "2026-10-12"
  },
- "CHT-15": {
-  "hash": "89dbdc91e0e614a6abdf",
+ "CHT-12": {
+  "hash": "c2f7d2da966ade9608e7",
   "dhash": [
-   "5f4d8bab8b832ae4",
-   "01018192a4820100"
+   "84b292a28296c4e8"
   ],
-  "verdict": "FAIL",
-  "line": "B, the mission line \"Muke chaat khape.\" runs under the chaat badge, which covers its full stop (the DOM has \"khape.\"), so the text is clipped; the ticks card in A reads 1/3 and bulbs x0, but nothing shows which items were right first time or thrown out",
-  "panel": "B",
+  "verdict": "PASS",
+  "line": "A, the chaat bowl at 2x sits on the counter with no drop shadow under or around it, just the glass base on the marble",
+  "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CHT-15.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CHT-12.png",
+  "date": "2026-10-20"
+ },
+ "CHT-15": {
+  "hash": "53639f5b9c95175aa75e",
+  "dhash": [
+   "5f4d8b8b8b832ae4",
+   "01018194a4820100"
+  ],
+  "verdict": "PASS",
+  "line": "A, the chaat mistake-run results count ticks per item (1/3) beside a separate bulb tally (x1) for help (flaw: in B the tick badge on the mission bubble covers the end of \"khape\")",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CHT-15.png",
+  "date": "2026-10-20"
  },
  "CK-02": {
   "hash": "18d98c29da79813b5e60",
@@ -736,19 +769,19 @@
   "date": "2026-10-12"
  },
  "CK-06": {
-  "hash": "6e6e4090485c3f0b5b9b",
+  "hash": "93f2ad096a28277c777b",
   "dhash": [
-   "8eaa55c5cd13b296",
-   "44f8d989c9e999f9"
+   "8eaad7868e97b286",
+   "4cc891a9c9c999f9"
   ],
-  "verdict": "FAIL",
-  "line": "B, the chai is flat red liquid with hollow outline circles floating on it, drawn bubbles rather than real-looking chai (flaws: A5 has a plain white blob among the seeds; B's left \"hakro\" pill is cut off at the frame edge)",
-  "panel": "B",
+  "verdict": "PASS",
+  "line": "A, the daal pot reads as real oil, then seeds sizzling in oil, onions, then yellow daal with garlic pieces (frames 1-6), no white or swirling dots; B the chai pan is red-brown tea liquid with leaves, ginger and a cardamom leaf. Flaw: B's left \"hakro\" chip is cut off at the crop edge",
+  "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CK-06.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CK-06.png",
+  "date": "2026-10-20"
  },
  "CK-07": {
   "hash": "c560f355ac427be44791",
@@ -942,19 +975,19 @@
   "date": "2026-10-12"
  },
  "CK-24": {
-  "hash": "6e5cb8b22849294bd32b",
+  "hash": "c2a0e21616a5d8f13b5a",
   "dhash": [
    "3f9f8b43435355a5",
-   "81a1a0a4a0a0a080"
+   "81a1a0a880a4a080"
   ],
-  "verdict": "FAIL",
-  "line": "B, Cook's home shows a row of numbered seals (1, then five padlocks) that read as levels; nothing marks them as days",
+  "verdict": "PASS",
+  "line": "B, the home shows the story days as six calendar-page tiles (ringed tops, 1 to 6, day 1 picked), not level buttons 1-4",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CK-24.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CK-24.png",
+  "date": "2026-10-20"
  },
  "CK-25": {
   "hash": "088be5e9583ae4b91440",
@@ -1037,19 +1070,19 @@
   "date": "2026-10-13"
  },
  "CK-31": {
-  "hash": "1034a22b802be25ef034",
+  "hash": "08dfd4d8412c4fcfdb59",
   "dhash": [
    "8e8349e9a1613386",
    "33351b8b1b5f5233"
   ],
   "verdict": "FAIL",
-  "line": "A, after the wrong serve the review face is a broad open-mouthed smile, happy rather than frowning (B at L2: both faces smiling as well)",
+  "line": "A, on the wrong L1 serve the review face is Nana grinning broadly, not frowning; B at L2 shows both Nana and the girl smiling widely on the wrong serve",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CK-31.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CK-31.png",
+  "date": "2026-10-20"
  },
  "CK-32": {
   "hash": "4956a9f9055953ae0eae",
@@ -1216,34 +1249,34 @@
   "date": "2026-10-16"
  },
  "CK-47": {
-  "hash": "3ddd408e3c8291376eff",
+  "hash": "6f1d8671beb5fbc183d2",
   "dhash": [
-   "5f4d81a3818b2ae4",
+   "5f4d81a181832ae4",
    "5f4f5eceebe96af6"
   ],
-  "verdict": "PASS",
-  "line": "B, frame 1: the story order ends in the kitchen with Ali holding the maani at Nani's counter, and the voice timeline has one Shabash, then Thank you and Khuda-fis, with no second well done after the recipe card; A shows the lab order's results over the kitchen (flaws: A's results card is caught mid-fade with one stopwatch badge reading \"2\" against 14s; B's grey-italic English hints are allowed; the lab voice line \"with hakro khun.\" carries the English word \"with\", which is not one of the listed loan words; only 2 stations' ends are sampled)",
+  "verdict": "FAIL",
+  "line": "B, the story order ends at the counter (B1) but Nani never goes over what went into the recipe there: the timeline after the dish is served is only \"Thank you!\" and \"Khuda-fis!\", then a silent results screen. The lab end (A) is a stopwatch results card over an empty kitchen with no Nani",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CK-47.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CK-47.png",
+  "date": "2026-10-20"
  },
  "CK-48": {
-  "hash": "86498481e9e0463f85f6",
+  "hash": "9ceb47cd468a1a47c5da",
   "dhash": [
-   "bf9fbcb6b192d6d5",
-   "bf9fbcb6b192d6d5"
+   "bf9dbe8e9796d6d1",
+   "bf9dbcb6b792d6d5"
   ],
-  "verdict": "FAIL",
-  "line": "B, going into samosa, Nani comes back after the card (1552 ms), then the stage is bare marble at 2264 and 2665 ms before the board appears at 3168 ms. That is the half-loaded gap before the game shows, not one smooth load",
-  "panel": "B",
+  "verdict": "PASS",
+  "line": "A, the order card goes straight to the fully drawn chop board (4592 ms on), with no zoomed-in board in between; B goes from the card to the fully drawn samosa station at 2073 ms and stays unchanged (flaws: the order card sits over Nani's face in A 570-3947 ms and B 390-772 ms; its heading \"Make four things.\" reads as English and cannot be confirmed as grey to-record text at this size)",
+  "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CK-48.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CK-48.png",
+  "date": "2026-10-20"
  },
  "CK-TAB-01": {
   "hash": "2f582bbe2b379cf77a54",
@@ -1263,21 +1296,22 @@
   "date": "2026-10-12"
  },
  "CK-TB-01": {
-  "hash": "82337a12dc671e403950",
+  "hash": "fe97a048835a473c7697",
   "dhash": [
-   "38347434303164e5",
-   "70e0e86060614040",
-   "7f7ffefcf9f8fdcf",
-   "fffffdade1fdfbba"
+   "70e0c4c8e8e424a4",
+   "70e0c4c8e8e424a4",
+   "fffff5f1f1cdd3ba",
+   "fffffdf1f1cdd1ba",
+   "60f0d0d0c4e8c0d4"
   ],
-  "verdict": "PASS",
-  "line": "D, pantry after the take-back: the three tray slots are empty and every item is back on a shelf (loon at the left of the bottom shelf), card rows atto, dudh, khun all plain; B, chai after the spoonful was taken back: the pan still cooks, elchi and trae khun stay open and only dudh is ticked. Note: no before-frame is on the sheet, the chop/stir/tadka/daar question for Zafar stands, and in D the two white jars (atto and khun) are look-alikes with no label while \"green pepper\" is a grey-italic placeholder.",
-  "panel": "D",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev1",
-  "commit": "b66ad4ff",
-  "png": "build/screenshots/evidence/ev-s04-ev1/CK-TB-01.png",
-  "date": "2026-10-12"
+  "verdict": "FAIL",
+  "line": "E, chop still offers no take-back (the round runs to the serve with nothing to undo), so the row's \"stations that offer no take-back\" is still true there; chai passes (B shows the \"hakro\" count badge and an item in the pan, A after the tap shows the badge gone and the pan clear) and the pantry passes (D a jar on the tray with the \"hakro\" badge, C the tray empty and the jar back on the shelf). Flaw: D's \"hakro\" badge sits on the fridge door, away from the tray it counts",
+  "panel": "E",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CK-TB-01.png",
+  "date": "2026-10-20"
  },
  "CLN-01": {
   "hash": "579b9c3d6e0f0e35e8a7",
@@ -1520,21 +1554,25 @@
   "date": "2026-10-19"
  },
  "CLN-107": {
-  "hash": "ac9ab1ff382797f9cdef",
+  "hash": "57f2ee83536a59faf0d7",
   "dhash": [
-   "0000ca9355d5aacc",
-   "0000aa9355d582cc",
-   "0000a8125455aac8",
-   "e6c5e6e6e6e6d1db"
+   "00003313555533c8",
+   "00003313555533c8",
+   "00003313555533c8",
+   "c3c6c5e6e4e6d1d8",
+   "cec6c6e6e4e6e9d9",
+   "8f8b430b8b8ba647",
+   "8f8b4707838ba647",
+   "8f8b470f8b87a647"
   ],
   "verdict": "FAIL",
-  "line": "D, the zoom is still the photoreal eye close-up, not a stylised eye, and the only control on the stage is a small dropper square at the right edge, not a \"to the eye test\" button bottom right; A–C do show the wrong ha/na pill turning red (A shakes at 101 ms and clears by 200 ms; C's \"na\" stays red through 2450 ms with no shake); the chart drawn in code, the doctor naming the row with pictures, the misread's drop and re-read, her fading bubble and the water/milk pictures are on no panel (the three slip zooms were dropped from the sheet)",
-  "panel": "D",
-  "judge": "Fable, orchestrator subagent S05",
-  "run": "ev-20261013-135717-7pn",
-  "commit": "1ffdc85",
-  "png": "build/screenshots/evidence/ev-20261013-135717-7pn/CLN-107.png",
-  "date": "2026-10-13"
+  "line": "A, at L1 the wrong yes/no tap never turns red: \"ha\"/\"na\" stay white in all 12 frames, though it does turn red at L2 (B 434 ms) and L3 (C 0 ms)",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-107.png",
+  "date": "2026-10-20"
  },
  "CLN-108": {
   "hash": "e925b53567788d4c202a",
@@ -1704,16 +1742,16 @@
   "date": "2026-10-14"
  },
  "CLN-119": {
-  "hash": "8ceac37990357bc6de7f",
+  "hash": "c5b1b93eccfab035339f",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "text, heal-marks.mjs shows only the cut game has Kutchi for paani; cloth, plaster, thread, stitches, dabs and boing words (up/down, colours, numbers) are English placeholders, not a Kutchi strand per game",
-  "panel": "TEXT",
-  "judge": "Sonnet [S05-T tools session, not the builder of these rows]",
-  "run": "ev-20261012-2132",
-  "commit": "07cbe59",
+  "line": "node build/tools/review/heal-marks.mjs, tooth and taste mark no words at all (no up/down, left/right), and the eye pool has no household nouns (CLN-38); the scrape's plaster colour is still \"ne poi yellow plaster\" at L1-L3, and at L2 that line plays mum/laal.mp3 under the word \"yellow\"",
+  "panel": null,
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
   "png": null,
-  "date": "2026-10-12"
+  "date": "2026-10-20"
  },
  "CLN-12": {
   "hash": "d6222578548f210c57ad",
@@ -1922,20 +1960,26 @@
   "date": "2026-10-13"
  },
  "CLN-135": {
-  "hash": "4be4a8b8b51bea79a124",
+  "hash": "005d6a1b8b5f7ca00823",
   "dhash": [
-   "9898989c948ccac4",
-   "98989894948ccac4",
-   "98989894948ccac4"
+   "989898949488c8c4",
+   "989898949488c8c4",
+   "989898949488c8c4",
+   "989898949488c8c4",
+   "989898949488c8c4",
+   "989898949488c8c4",
+   "989898949488c8c4",
+   "91f3f97272d8cccc",
+   "91f2e96072f4cccc"
   ],
   "verdict": "PASS",
-  "line": "C, at .hs-healed before the pull-out the ear is clean with no smears and the pink sore spot gone; B at heal:wipe shows three olive smears exactly where A's three lumps were with the sore spot still there; A's lumps are shaded and shadowed to lie on the tilted ear; note: the check names L1 and L2 but the sheet films L1 only",
-  "panel": "C",
-  "judge": "Fable, independent subagent (orchestrator final look)",
-  "run": "ev-20261013-184310-4hz",
-  "commit": "09b5676",
-  "png": "build/screenshots/evidence/ev-20261013-184310-4hz/CLN-135.png",
-  "date": "2026-10-13"
+  "line": "G, the close-up's last frame shows the ear's skin cleared, no purple blob on the lobe and no pink dots; D/E/F show smears left where the L1/L2/L3 blobs were, A/B/C put the wax in the bowl by the canal, H/I show no purple dot on the big toe at L1 and L3 (flaws: in G the \"I can hear again!\" bubble covers the top tool tile; in H and I some dirt clumps sit off the edge of the foot)",
+  "panel": "G",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-135.png",
+  "date": "2026-10-20"
  },
  "CLN-136": {
   "hash": "e2f3e10a40c0f838300a",
@@ -1954,18 +1998,18 @@
   "date": "2026-10-16"
  },
  "CLN-138": {
-  "hash": "ee78a6c0be72e8f955dd",
+  "hash": "fb0457e65d5a0bb4dee2",
   "dhash": [
-   "87ebc1d2c4c2eaec"
+   "5858787078703010"
   ],
   "verdict": "PASS",
-  "line": "A, the barrel holds two drops at 0-400 ms; after the tap, one drop stays at the bottom of the barrel from 600 to 1000 ms, so only the tapped drop went back up and the barrel never emptied (small strip with no zoom; the off-point flaw is the same flat vector machine and syringe stand-ins)",
+  "line": "A, the barrel holds two drops' worth of blue up to 672 ms; after the tap it drops to one drop's worth (947 ms) and stays there to 1753 ms, so only that drop went back up and the barrel never emptied",
   "panel": "A",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-021334-3v9",
-  "commit": "257b7e4",
-  "png": "build/screenshots/evidence/ev-20261014-021334-3v9/CLN-138.png",
-  "date": "2026-10-14"
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-138.png",
+  "date": "2026-10-20"
  },
  "CLN-139": {
   "hash": "7d949ab59ca917f4fb7a",
@@ -2011,18 +2055,18 @@
   "date": "2026-10-14"
  },
  "CLN-141": {
-  "hash": "41ec1f99ae3ac06911ef",
+  "hash": "dc9515941a116d620079",
   "dhash": [
    "a082948021c8c090"
   ],
   "verdict": "PASS",
-  "line": "A, at x2 the sequence line shows only as short stubs in the gaps between the rows and the end arrow; no stroke crosses \"cloth, ba dabs\" or \"yellow plaster\" (grey-italic English there is the allowed to-record form)",
+  "line": "A, the sequence line runs only through the gaps between the rows (Pela paani, Ne poi cloth ba dabs, ne poi yellow plaster) and crosses none of their text",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-141.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-141.png",
+  "date": "2026-10-20"
  },
  "CLN-142": {
   "hash": "34b013547174bc6232c0",
@@ -2179,97 +2223,97 @@
   "date": "2026-10-20"
  },
  "CLN-162": {
-  "hash": "51250b13579c3062244a",
+  "hash": "706559e11c233e675031",
   "dhash": [
    "a794958b8c98323f",
-   "b797979e8e9a323f",
+   "b795959c8c9c3c3f",
    "3f233fae9a1a3e7e"
   ],
   "verdict": "PASS",
-  "line": "A, the fever girl sits with her sandals resting on the wooden step stool and no drop shadow beneath them; B and C show the doctor standing on the floor, no floating shadow under his feet, placed sensibly by the door and the bench (flaws: B has yellow halo rings at the girl's ear and knee; C's white discs under the bench)",
+  "line": "A, the fever girl's sandals rest on the top of the wooden stool with no shadow under them; B shows the doctor standing on the floor beside the couch, not floating; C shows the waving doctor standing on the floor in the waiting room, also not floating",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-162.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-162.png",
+  "date": "2026-10-20"
  },
  "CLN-163": {
-  "hash": "7b2d04670960c74c2814",
+  "hash": "cfa541283b54712d07cb",
   "dhash": [
-   "9b9b939f8e9c98b7",
+   "bf9b939f8e9c98bf",
    "e183e180c4c1e183",
    "e183e180c4c1e183",
    "e183e180c4c1e183",
-   "9b9b939f8e989aae"
+   "bc9ab2928eac1cb3"
   ],
   "verdict": "FAIL",
-  "line": "E, the eye close-up still fills the frame with two huge eyes, the brows cut off at the top (1809-3721 ms), and at 1209 ms a blurred, upscaled face sits in a hexagonal vignette. B-D, the \"far view\" for the teeth, are full-frame mouth close-ups with no cavities to be seen, and A jumps from half-body (1332 ms) to lips only (1685 ms)",
+  "line": "E, the eye close-up ends with the two eyes filling the whole frame from brow to cheek, still as close as the \"too zoomed in, intimidating\" complaint; the mouth close-up in B-D is just as tight (lips edge to edge), and B-D show no cavities anywhere, so the far-view check can't be seen at any level",
   "panel": "E",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-163.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-163.png",
+  "date": "2026-10-20"
  },
  "CLN-164": {
-  "hash": "eb7be3122b496d787921",
+  "hash": "bc96a8236aa0eae9d1eb",
   "dhash": [
-   "cdccccc4c0ca4aec"
+   "c98888848a98d8dc"
   ],
   "verdict": "PASS",
-  "line": "A, the four-colour dropper machine and the syringe are photographic, in the same style as the packet and plasters in the tray (flaw off-point: the arm/dress photo has a hard rectangular top and bottom edge against the background)",
+  "line": "A, the four-tube dropper machine and the syringe below it are photographic, in the same style as the packet and plaster tiles on the right",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-164.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-164.png",
+  "date": "2026-10-20"
  },
  "CLN-165": {
-  "hash": "3b5dcabc6122b28c5da8",
+  "hash": "cafb180f1f6dbb24584e",
   "dhash": [
-   "c564e6e0e2e2f5f6",
-   "8decccd4c2ca68ee",
-   "f776666272767476",
-   "adccccc4c0c8e8ec"
+   "e5c4c4c2e5ecedee",
+   "c988888489d8d8de",
+   "f564646262667476",
+   "c988888480d8d8cc"
   ],
   "verdict": "FAIL",
-  "line": "B, the dropper machine and tall syringe still dominate the right side while the four item tiles stay small (about half the machine's width), and at 1366x768 the arm photo ends above the bottom of .cl-heal with a hard horizontal edge and a strip of background under it (same seam at the bottom of A)",
+  "line": "B, the dropper machine with its syringe still runs about two-thirds of the arm scene's height, and the plaster and wipe icons fill only about half of their small tiles on the right. D (800x360) is the same",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-165.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-165.png",
+  "date": "2026-10-20"
  },
  "CLN-166": {
-  "hash": "25147307db6ad05e5ca7",
+  "hash": "227389c157c1e9d2a68e",
   "dhash": [
-   "cdccccc4c0da4cec"
+   "c98888848a98d8dc"
   ],
   "verdict": "PASS",
-  "line": "A, frame 2 (lever-blue) shows blue liquid in the syringe barrel and frame 4 (lever-yellow) a yellow layer above it, each drop's colour matching its dropper (thumbnails are small; a gold tag over the syringe top is unreadable at this size)",
+  "line": "A, frame 2 (blue lever) shows blue liquid in the syringe, and frames 3 and 4 (yellow lever) add a yellow layer, so each drop fills the syringe in its dropper's colour",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-166.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-166.png",
+  "date": "2026-10-20"
  },
  "CLN-17": {
-  "hash": "de5e0a8c30cfe2ace0cd",
+  "hash": "d125ddbfe4cc6ef9faf4",
   "dhash": [
-   "cbebebcfc6cccadb"
+   "cbefeacec4ccccdb"
   ],
-  "verdict": "FAIL",
-  "line": "A, she sits on the bed edge and there is no anatomy poster (certificate frame kept), but the doctor stands apart by the door past the bed's far end, a bed-length from her, his body almost square to the camera with only his head slightly turned, not beside her and three-quarter turned",
+  "verdict": "PASS",
+  "line": "A, the girl sits on the edge of the examination bed, the doctor stands beside her turned three-quarters towards her, and the right wall has only the certificate frame (no anatomy poster). Flaw: the doctor's head overlaps the bottom corner of the frame",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-17.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-17.png",
+  "date": "2026-10-20"
  },
  "CLN-170": {
   "hash": "022da0971af9a7285884",
@@ -2286,60 +2330,81 @@
   "date": "2026-10-20"
  },
  "CLN-173": {
-  "hash": "3bb7fe35c3c306410e4a",
+  "hash": "3fb69ec95c023fd79437",
   "dhash": [
-   "98989894948ac8c4"
+   "98989894948ac8c4",
+   "f0f8f0f8b8788080",
+   "989898949488c8c4"
   ],
-  "verdict": "FAIL",
-  "line": "A, in the grab frames (775-1560 ms) the tweezers are a thin grey shape lying wholly on top of the wax and ear; no prong is seen passing behind, so one-in-front-one-behind is not shown and the cut-out edge can't be told clean at this size",
-  "panel": "A",
+  "verdict": "PASS",
+  "line": "B, the zoomed tweezers are cleanly cut out with no halo; the near prong runs over the wax blob and curls under it, the far prong goes behind the blob, both close on it and nothing floats in the air (C shows the same grab in the ear at full size)",
+  "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-173.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-173.png",
+  "date": "2026-10-20"
  },
  "CLN-174": {
-  "hash": "52108ad162fa6a3d01fe",
+  "hash": "77c5de3258aaf6c87843",
   "dhash": [
    "989898949488c8c4"
   ],
   "verdict": "PASS",
-  "line": "A, the bin is a stainless kidney-shaped medical tray at the lower right of the ear close-up",
+  "line": "A, a photographic stainless-steel kidney-shaped tray sits where the bin was, below the ear",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-174.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-174.png",
+  "date": "2026-10-20"
  },
  "CLN-176": {
-  "hash": "39236e402adfb6d0315f",
+  "hash": "b9bf33aef98471e48103",
   "dhash": [
    "ab8b919b8e9c1237"
   ],
-  "verdict": "FAIL",
-  "line": "A, the voice timeline under panel A has her say \"barabar\" at 15.25 s and then \"I'm too cold!\" at 17.21 s (and \"barabar\" at 23.11 s then \"I'm too hot!\" at 24.92 s): she still says \"just right\" and then flips to too cold, which is the exact thing Zafar said she shouldn't do",
+  "verdict": "PASS",
+  "line": "A, the gauge goes through green in frames 3, 4, 6 and 7 with no \"just right\" bubble, and the bubbles that show say too hot or too cold in step with the gauge. The voice timeline has \"barabar\" only once (24.00, 2 s after the fan), with no switch after it",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-176.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-176.png",
+  "date": "2026-10-20"
  },
  "CLN-177": {
-  "hash": "2c893e479fda518c9646",
+  "hash": "f4c02c64a3ad9d7f85f7",
   "dhash": [
    "a795918b8c98323f"
   ],
   "verdict": "PASS",
-  "line": "A, at fever mid the drop icon beside the girl's head is red, with the hot-side thermometer and heater in view",
+  "line": "A, the sweat drop beside the hot girl's head is red",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-177.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-177.png",
+  "date": "2026-10-20"
+ },
+ "CLN-178": {
+  "hash": "b8ebc26a82bfdd541b54",
+  "dhash": [
+   "020602061263d1d1",
+   "ab8a959b8e9c1237",
+   "ab8a959b8e9c1237",
+   "0000b0a0a0e03030",
+   "0000b0a0a0e87030",
+   "0000b0b0a0e03030"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the fever L1 sequence ends (frame 5) on a close-up of the top of her head, cut off below the eyes, with no visible end, and C frame 5 is a blank brown frame; only the knee (D-F) visibly finishes, with a zoom-out and a thank-you bubble",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-178.png",
+  "date": "2026-10-20"
  },
  "CLN-18": {
   "hash": "11deb6a0b1a5d8c5d8d3",
@@ -2355,66 +2420,111 @@
   "date": "2026-10-12"
  },
  "CLN-181": {
-  "hash": "85c38762935134d76e86",
+  "hash": "e9b9eadf2c98b3730a8e",
   "dhash": [
    "c0a9818b84869288"
   ],
   "verdict": "FAIL",
-  "line": "A, through 338-2433 ms the drill tip stays at the top edge of the tooth above the cavity, not centred in it, and at 728 ms the cavity shows a light ring at the rim first, so it does not fill from the middle",
+  "line": "A, the drill tip sits at the upper-right edge of the cavity, not its centre (0-2132 ms), and at 694 ms the cavity shows a white rim around a dark middle, so it fills from the edge, not from the middle",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-181.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-181.png",
+  "date": "2026-10-20"
+ },
+ "CLN-182": {
+  "hash": "e17d6354946894033bee",
+  "dhash": [
+   "c0a1218b84969688",
+   "c0a1118b86969698"
+  ],
+  "verdict": "PASS",
+  "line": "A, the button's centre and the gauge's centre sit on one line (about y 438), halfway between the bottom of the tooth and the bottom of the screen; B shows the same at 800x360",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-182.png",
+  "date": "2026-10-20"
+ },
+ "CLN-183": {
+  "hash": "c1a2cfe46bd4b29d2368",
+  "dhash": [
+   "c0a1218b84969688",
+   "7030be7e76312020"
+  ],
+  "verdict": "PASS",
+  "line": "A, the tooth gauge copies Cook's dial in B: dark face, gold rim, red-green-red banded arc, gold needle and hub",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-183.png",
+  "date": "2026-10-20"
+ },
+ "CLN-184": {
+  "hash": "d2ee83d0a9857bd4278c",
+  "dhash": [
+   "c0a9818b84869288",
+   "c0a1218b84969688"
+  ],
+  "verdict": "PASS",
+  "line": "B, after the overfill (\"Too much!\" at 20.66 s) the filling is gone: the cavity is dark again and the gauge is back at zero, ready to refill; the voice timeline shows the refill tap at 24.10 s and the fill step closing at 26.49 s",
+  "panel": "B",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-184.png",
+  "date": "2026-10-20"
  },
  "CLN-187": {
-  "hash": "88b74d7f88922536c8dc",
+  "hash": "9a814a3a9bb42848a77c",
   "dhash": [
    "c3c6c5e6e4e6d1d9",
    "4b85cd0101010101",
    "cec6c6e6e4e6e9d9",
-   "4b93010101010101"
+   "1b83010101010101"
   ],
-  "verdict": "FAIL",
-  "line": "D, the L3 card reads \"Jamni akh, chando\" with no number and no left-eye card (L2 in B does ask a count per eye: \"Jamni akh, chando trae\" / \"Left akh, chando trae\"), so not every L2+ card asks a count per eye",
-  "panel": "D",
+  "verdict": "PASS",
+  "line": "B, the L2 card asks for a count per eye (\"Jamni akh, chando trae\", then \"Left akh, chando trae\"). D shows L3 asking \"Jamni akh, chando ba, left akh, chando ba\"",
+  "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-187.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-187.png",
+  "date": "2026-10-20"
  },
  "CLN-188": {
-  "hash": "aed1acdc7ff729f69eba",
+  "hash": "19060093751e7b8eab8d",
   "dhash": [
-   "e763d3c3c7c1dcd1",
-   "e763d3c3c1c3dcd1",
-   "e763d3c3c3c3dcd1",
-   "e763d3c3c3c3dcd1"
+   "c7c7e7c3e7c7f6e3",
+   "c7c7e7c7e3c7f6e3",
+   "c7c7e7c5e7c7f6e3",
+   "c7c7e7c3e7c3f6e3"
   ],
   "verdict": "FAIL",
-  "line": "A, the board is drawn in code on a wall, rows go 1, 2, 3, 4, with no lines and no eye icon, but at every level (A-D) it fills only about a third of the screen in the right-hand pane and the girl photo takes the larger left part, so it does not take up most of the screen",
+  "line": "A, the board is on a wall with rows of 1, 2, 3 and 4, no lines and no eye icon (same in B-D), but it fills only about a third of the play width next to the girl's face, so it does not take up most of the screen",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-188.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-188.png",
+  "date": "2026-10-20"
  },
  "CLN-189": {
-  "hash": "337d16f7bec989b0e70b",
+  "hash": "622c56009870aab14f63",
   "dhash": [
    "0000000000000000"
   ],
   "verdict": "FAIL",
-  "line": "A, lemon-half.webp still has deep orange-amber flesh inside a golden rind and still reads as an orange; also the capture lists only the pool, with no colour-class check result",
+  "line": "A, lemon-half.webp still has deep orange-yellow flesh with orange segments and reads as an orange, not a lemon; no colour-class capture is shown",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-189.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-189.png",
+  "date": "2026-10-20"
  },
  "CLN-19": {
   "hash": "36a5abb7500d14acb93e",
@@ -2430,6 +2540,50 @@
   "commit": "414fc077",
   "png": "build/screenshots/evidence/ev-20261016-194922-b8t/CLN-19.png",
   "date": "2026-10-16"
+ },
+ "CLN-190": {
+  "hash": "b22347e16c368349ec5f",
+  "dhash": [
+   "81f3e9786aeccccc"
+  ],
+  "verdict": "FAIL",
+  "line": "A, for over 2 s of pouring the bottle stays above the toes and the dirt spots on the sole look the same in every frame; nothing shows the wash moving over and clearing particular bits of dirt",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-190.png",
+  "date": "2026-10-20"
+ },
+ "CLN-191": {
+  "hash": "cc64ba90ff82c08d2546",
+  "dhash": [
+   "91f3e9727acccccc"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 2 shows the plaster laid on the sole as the same photographic plaster as the item-box tile in frame 1, not a coded shape (flaw: in frame 2 the room backdrop and tool tray are gone, foot on a plain cream ground)",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-191.png",
+  "date": "2026-10-20"
+ },
+ "CLN-195": {
+  "hash": "e2e018d8b21eb1b0c61c",
+  "dhash": [
+   "0101010103010101",
+   "0101010103010101",
+   "e1c6cc5582c6ccf0"
+  ],
+  "verdict": "FAIL",
+  "line": "B, after the dab (heal-done:pop) the cotton bud's tips are still plain white, the same as A; no blue from the spot, and C still shows the blue spot on the tongue with a clean bud in the tray",
+  "panel": "B",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-195.png",
+  "date": "2026-10-20"
  },
  "CLN-20": {
   "hash": "06f919ee97acd5e9f9b8",
@@ -2471,18 +2625,18 @@
   "date": "2026-10-13"
  },
  "CLN-23": {
-  "hash": "e3f0622e37b78c8771e4",
+  "hash": "cbf9b90d541acdbcbcfd",
   "dhash": [
-   "9b9f9fbc5c5652fc"
+   "9b9f9fbc75b7b6da"
   ],
-  "verdict": "FAIL",
-  "line": "A, the crutch sits at a slant across the belt in side view with its shadow off to one side below it, so it reads as tilted or floating, not resting on a flat base (the swab's contact shadow is only faint; the item at the right edge is cut off by the crop)",
+  "verdict": "PASS",
+  "line": "A, at x2 the cotton bud and spoon lie flat along the belt, level with it and not tilted, each with a soft contact shadow underneath, not floating (flaw: the item entering at the left is cut off by the frame edge)",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-23.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-23.png",
+  "date": "2026-10-20"
  },
  "CLN-24": {
   "hash": "315ca708cf3adcde23ab",
@@ -2500,18 +2654,18 @@
   "date": "2026-10-12"
  },
  "CLN-25": {
-  "hash": "3f4a8d4fe87a96541787",
+  "hash": "ac5d5c0c31247d59f7a8",
   "dhash": [
    "c7cdefc5cdccf3c3"
   ],
   "verdict": "PASS",
-  "line": "A, door swung open onto the garden at right, doctor standing beside the girl, both in the free wall space on the left, clear of the green cross sign (cross and umbrella hook stand alone between them and the door)",
+  "line": "A, the doctor stands next to the girl in the free wall space on the left, clear of the green cross sign, with the front door swung open onto the garden at the right",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/CLN-25.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-25.png",
+  "date": "2026-10-20"
  },
  "CLN-26": {
   "hash": "2db7a375e045e3264bc4",
@@ -2674,16 +2828,16 @@
   "date": "2026-10-14"
  },
  "CLN-38": {
-  "hash": "3afc7531806bdecdb0ae",
+  "hash": "f118fa3733d884e10dfa",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "node build/tools/review/heal-marks.mjs --pool eye, the chart's pool is 9 items, all fruit, veg and drinks (food 7, drink 2), \"household nouns (bed, table...): 0\"",
+  "line": "node build/tools/review/heal-marks.mjs --pool eye, the chart pool is 9 items (7 fruit/veg, milk and water) with \"household nouns (bed, table...): 0\"; the L1-L3 dom captures show only \"ha / na\"",
   "panel": null,
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
   "png": null,
-  "date": "2026-10-19"
+  "date": "2026-10-20"
  },
  "CLN-39": {
   "hash": "6c55c48ffa2952ab46c2",
@@ -3211,19 +3365,19 @@
   "date": "2026-10-12"
  },
  "CLN-81": {
-  "hash": "4add61e2082e05ded99b",
+  "hash": "dde9b5ffed751bc3c6fc",
   "dhash": [
-   "7cb6ccc461331b79",
-   "018b32928303030b"
+   "3f233f362a2e3e7e",
+   "c0c0c6c6c6cac6c0"
   ],
-  "verdict": "FAIL",
-  "line": "A, only the send-off crop (5) shows the girl's finished art (rendered, yellow dress, on the bench); the waiting (1) and diagnosis (2) crops hold no girl at all; and the doctor is two different arts in one story (a 3D render at the waiting door in 1, a flat vector stand-in body in 2 and 5). B is the badge card with no sticker or card face on it.",
+  "verdict": "PASS",
+  "line": "A, the girl is the finished full-body illustrated art in the waiting room (1), on the stool at diagnosis (2) and at the send-off (5), with her finished face on the sticker sheet (5) and on the end-card row (B); no stand-in body in any frame",
   "panel": "A",
-  "judge": "Fable (orchestrator subagent)",
-  "run": "ev-s04-ev3",
-  "commit": "7812e59a",
-  "png": "build/screenshots/evidence/ev-s04-ev3/CLN-81.png",
-  "date": "2026-10-12"
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/CLN-81.png",
+  "date": "2026-10-20"
  },
  "CLN-82": {
   "hash": "394ca2cae32b6ad27446",
@@ -3454,19 +3608,19 @@
   "date": "2026-10-12"
  },
  "DAAR-02": {
-  "hash": "8cdd056f08b8df85fc35",
+  "hash": "e5d1cdabb372da909617",
   "dhash": [
    "783051d3b6143070",
    "0000000000000000"
   ],
   "verdict": "FAIL",
-  "line": "A, the ladle is still the round dipper/measuring scoop from reference B, its flat straight handle lying across the rim, not foreshortened or rising toward the viewer (flaws: the handle runs over the timing card; flat cartoon pot under a photo ladle)",
+  "line": "A, the stir shows the v3 measuring scoop: a flat straight handle lying across the rim, not a kadchi with its handle rising toward the viewer. The handle also overlaps the speed-gauge card.",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/DAAR-02.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-02.png",
+  "date": "2026-10-20"
  },
  "DAAR-03": {
   "hash": "be62e0ded26699c6dae7",
@@ -3500,21 +3654,21 @@
   "date": "2026-10-13"
  },
  "DAAR-05": {
-  "hash": "2dd25d8c1236b6ea7535",
+  "hash": "63541cefd3d3dfe92324",
   "dhash": [
-   "8eaa55c5cd13b296",
-   "e6cc96b68b93928e",
+   "86b2d7868e97b286",
+   "e6cc96b68a93968e",
    "e0ce181e6e6ea6ba",
-   "3858787818191090"
+   "5f4f9d8fabab6af6"
   ],
   "verdict": "FAIL",
-  "line": "B, after the stir, flat untextured white chunks still sit on the daal, and whole tomatoes and chilli rings float on top, unstirred; the added things do not read as real, stirred-in contents (flaws: A6 adds a plain white blob; C's #stage crop shows only the top-left of the pot; D's \"Shabash!\" is faint, nearly unreadable)",
+  "line": "B, after the stir the pot is a flat cartoon yellow fill with a few sticker pieces (tomato, chilli rings, white chunks) laid on top. It is not A6's pictured contents stirred. D (after the tick) shows the results overlay and no review bowl.",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/DAAR-05.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-05.png",
+  "date": "2026-10-20"
  },
  "DAAR-07": {
   "hash": "f4764cc4ed66711944c4",
@@ -3688,18 +3842,18 @@
   "date": "2026-10-14"
  },
  "DAAR-20": {
-  "hash": "7cef76a3bd08b5936d50",
+  "hash": "a78261c361656a3b2574",
   "dhash": [
-   "c0c0a0ac94d0c8a8"
+   "c0c0a0a4d4d0c8a8"
   ],
   "verdict": "PASS",
-  "line": "A, across 8 frames (0-2032 ms) and the cuts between them the chop board stays light wood and never dims dark brown (the strip samples frames, so a dim lasting a single frame could fall between them)",
+  "line": "A, across 8 frames over 2.1 s of slicing the chop board stays light wood in every frame, never dark brown between cuts",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/DAAR-20.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-20.png",
+  "date": "2026-10-20"
  },
  "DAAR-21": {
   "hash": "1550e5a462d9db4453e6",
@@ -3729,18 +3883,19 @@
   "date": "2026-10-14"
  },
  "DAAR-23": {
-  "hash": "e2433edb95abfa6086a7",
+  "hash": "9945313be2e05ba39a09",
   "dhash": [
-   "01818e81a1818101"
+   "01818e81a1818101",
+   "c0c0a0c49cd0c8a8"
   ],
   "verdict": "PASS",
-  "line": "A, the card asks for \"hakro dungri\" and \"ba mirchi\". Frame 1 has no row lit, frame 2 lights only hakro dungri, and frame 3 lights ba mirchi too. Only three cuts were made in all, so ba mirchi stayed unlit after its first cut and lit at its second, not before",
+  "line": "A, row 1 \"hakro dungri\" lights at A2 once the onion is cut (voice \"hakro dungri\"). Row 2 \"ba mirchi\" stays unlit at A4 after the first chilli (\"hakro mirchi\") and lights at A5 after the second (\"ba mirchi\"), never before its count.",
   "panel": "A",
-  "judge": "Opus judge agent (S06 orchestrator chat; not the builder)",
-  "run": "ev-20261014-011029-06w",
-  "commit": "8d19bac",
-  "png": "build/screenshots/evidence/ev-20261014-011029-06w/DAAR-23.png",
-  "date": "2026-10-14"
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-23.png",
+  "date": "2026-10-20"
  },
  "DAAR-25": {
   "hash": "445c443ced367916b759",
@@ -3752,6 +3907,18 @@
   "run": "ev-20261014-062618-1wr",
   "commit": "93bf1f6c",
   "date": "2026-10-14"
+ },
+ "DAAR-26": {
+  "hash": "eb7333ed3a18473b9e67",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "DAAR-26-p1-L1-1366x768 voice, the stir opens with \"Firai! Ba! jaldi\" (L2 \"Firai! Ba! aste thi\", L3 \"Firai! Char! jaldi\", L4 \"Firai! Ba! jaldi\"): the verb now comes first, but this is three stitched exclamations with \"Ba\" in device voice, not the full recorded stir sentence Zafar asked for; the text cannot show whether a card pops up (flaws: \"daar\" silent at 52.96 and a stray \"ba dungri\" at 19.59 with an unknown voice source)",
+  "panel": "DAAR-26-p1-L1-1366x768 voice",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": null,
+  "date": "2026-10-20"
  },
  "DAAR-27": {
   "hash": "3395894b9d11e3df450b",
@@ -3765,21 +3932,37 @@
   "date": "2026-10-20"
  },
  "DAAR-29": {
-  "hash": "d72fc59ba6da260e7819",
+  "hash": "24fe5cb62f0fefb48b02",
   "dhash": [
-   "86b255c5cd13b296",
-   "8ea255c5cd13b296",
-   "8eaa55c5cd13b296",
-   "96b255c5cd13b296"
+   "96b2d7868e97b286",
+   "8eb2d7868e97b286",
+   "86b2d7868e97b286",
+   "96b2d7868e97b286"
   ],
-  "verdict": "FAIL",
-  "line": "B, frame 7 (and C7, D8; also DAAR-05 A7) shows the pot of daal being poured cut off at the top and right edges of the canvas; it is clipped, the thing the row names (flaw: A7 is a different, flatter pot style and crop from A1-A6)",
+  "verdict": "PASS",
+  "line": "B, in every L2 state (1-6) the pot's top rim is whole and the contents are a round, centred disc inside the rim. A, C and D (L1, L3, L4, each ending in the stirred pot) show the same with no clipping.",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/DAAR-29.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-29.png",
+  "date": "2026-10-20"
+ },
+ "DAAR-30": {
+  "hash": "c23507a8552b1c563a5e",
+  "dhash": [
+   "d4a696b2aa9296cc",
+   "d4a696b2aa9296cc",
+   "70b0aafe72312020"
+  ],
+  "verdict": "PASS",
+  "line": "C, a small chequered flag sits at 12 o'clock on the pot rim and the dial's number changes from \"hakro\" to \"ba\" lap by lap, with \"Hakro!\" and \"Ba!\" said at each stir-lap; A and B show the ladle starting under the flag at L1 and L4",
+  "panel": "C",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-30.png",
+  "date": "2026-10-20"
  },
  "DAAR-31": {
   "hash": "587152c06c0310c53c38",
@@ -3797,6 +3980,50 @@
   "commit": "c17b2baf",
   "png": "build/screenshots/evidence/ev-20261019-172022-khk/DAAR-31.png",
   "date": "2026-10-19"
+ },
+ "DAAR-32": {
+  "hash": "4c530b541f2ad029b4e3",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "DAAR-32-p1-L1-1366x768 voice, at 52.97 Nani says \"Firai! Ba! jaldi\" (jaldi is mum/jaldi-rc.mp3), and the dom:#mission capture's stir row reads \"ba jaldi\"",
+  "panel": "DAAR-32-p1-L1-1366x768 voice",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": null,
+  "date": "2026-10-20"
+ },
+ "DAAR-33": {
+  "hash": "dc67f88430a700f10616",
+  "dhash": [
+   "70b0aaee76312020",
+   "70b0aa6e76314454",
+   "70b0a8ea70312020"
+  ],
+  "verdict": "PASS",
+  "line": "A, after the pour the pot sits on the bare burner and nothing peeks out above or under the speed dial (B the same at L4); C at serve shows one woven mat only, under the served bowl, no second mat overlapping",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-33.png",
+  "date": "2026-10-20"
+ },
+ "DAAR-34": {
+  "hash": "209b4487fd6a399f7b3d",
+  "dhash": [
+   "d191810181818c81",
+   "01d88189818c8201",
+   "d191818181818c83"
+  ],
+  "verdict": "FAIL",
+  "line": "C, the L4 peek writes all three items in full (dungri, tameto, hakro mirchi) instead of the first written and the other two dotted; B's folded L4 card shows no item rows at all in any of its 8 rounds",
+  "panel": "C",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/DAAR-34.png",
+  "date": "2026-10-20"
  },
  "DAAR-35": {
   "hash": "200a1729a8f5d269fbfd",
@@ -4116,16 +4343,16 @@
   "date": "2026-10-13"
  },
  "MAA-15": {
-  "hash": "d67b16edcfa6dd203a6b",
+  "hash": "bbfa27219a1aed440508",
   "dhash": [],
   "verdict": "PASS",
-  "line": "MAA-15-p1-L1-1366x768 voice, \"Firai!\" (mum/firai.mp3) plays at both flip calls, step 4 at 17.04 s and step 5 at 19.35 s, so it is said on both turns of the chapati (flaw off the row's point: \"Muke hakri maani khape.\", \"Thank you!\" and \"Khuda-fis!\" are partly or wholly device speechSynthesis, not a family clip)",
+  "line": "MAA-15-p1-L1-1366x768 voice, \"Firai!\" (mum/firai.mp3) plays on both turns: step 4 at 15.99s and step 5 at 18.03s (off-point flaw: the order line \"Muke hakri maani khape.\" is partly speechSynthesis, and the closing \"Thank you!\" and \"Khuda-fis!\" are device voice only, not family clips)",
   "panel": "MAA-15-p1-L1-1366x768 voice",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
   "png": null,
-  "date": "2026-10-19"
+  "date": "2026-10-20"
  },
  "MOD-01": {
   "hash": "bf03526caddb6f8a26c8",
@@ -4137,6 +4364,21 @@
   "run": "ev-20261013-113508-8ie",
   "commit": "48f64ae",
   "date": "2026-10-13"
+ },
+ "MOD-02": {
+  "hash": "52819708c35181a862aa",
+  "dhash": [
+   "000606224cc4b0b0",
+   "000818404888a460"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the sitting room has no sofa art at all, only flat grey placeholder boxes against the wall with fruit floating beside them, so nothing reads as a sofa whose height can be judged (also the left-edge fruit is cut off behind the curtain and the frame edge)",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/MOD-02.png",
+  "date": "2026-10-20"
  },
  "MOD-03": {
   "hash": "8718212f948685a3c53c",
@@ -4237,19 +4479,19 @@
   "date": "2026-10-13"
  },
  "PAN-06": {
-  "hash": "7c4cecad50070dc5e7f4",
+  "hash": "1f454925a523932575ac",
   "dhash": [
    "7f7ffcdcdcf8fdcf",
    "ffffddb5bdfdfbba"
   ],
   "verdict": "FAIL",
-  "line": "B, the shelves are sparse (two or three items each, the third shelf and the bottom tray empty except ghost slots), the jars have no labels, and the fridge holds dairy, not meat. In A, Nani's \"Bring me these\" card is cut off at its right edge by the stage.",
+  "line": "B, the shelves are side-on, but the jars carry no labels, the third shelf is empty and the others are sparse (not three to four full shelves), the fridge holds yogurt and milk with no meat, and the fridge top is cut off",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/PAN-06.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/PAN-06.png",
+  "date": "2026-10-20"
  },
  "PAN-07": {
   "hash": "7e3ba68b128e6436d273",
@@ -4683,6 +4925,27 @@
   "png": "build/screenshots/evidence/ev-20261013-184310-4hz/SAM-19.png",
   "date": "2026-10-13"
  },
+ "SAM-21": {
+  "hash": "c19bc2c908dad6098de1",
+  "dhash": [
+   "f8fe331b1f236ff4",
+   "f8fe330b1f236ff4",
+   "f8fe330b1f237ff4",
+   "f8fe330b5f237ff4",
+   "70f8b89cb9e11030",
+   "70f8b89cb9e16040",
+   "70f8b89cb9e15050",
+   "70f8b89cb9e14050"
+  ],
+  "verdict": "PASS",
+  "line": "E, a rectangle of pastry with the filling in the bottom-left corner, then three alternating arrowed swipes (bottom left to top right, top left to bottom right, bottom left to top right) moving left to right as the strip gets shorter; F-H show the same at L2-L4 (flaw: strips A-D stay still for 3 s, so the fold's motion itself is not pictured)",
+  "panel": "E",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SAM-21.png",
+  "date": "2026-10-20"
+ },
  "SAM-24": {
   "hash": "8994b86ac7c9fa3598d0",
   "dhash": [],
@@ -4692,6 +4955,27 @@
   "judge": "expect",
   "run": "ev-20261020-004931-exi",
   "commit": "265b0d07",
+  "date": "2026-10-20"
+ },
+ "SAM-25": {
+  "hash": "4c0e6decc99b8843fc4b",
+  "dhash": [
+   "70a0a4a4a5a13030",
+   "70a0a4a4a5a16040",
+   "70a0a4a4a5a15050",
+   "70a0a4a4a5a15058",
+   "70f8b89cb9e11030",
+   "70f8b89cb9e16040",
+   "70f8b89cb9e15050",
+   "70f8b89cb9e14050"
+  ],
+  "verdict": "FAIL",
+  "line": "A, at L1 only the first of the six rolls is filled (frames 2-3) before it jumps to the fryer, and E's first fold shows a single pastry with no others made and waiting; B-D likewise fill only one or two of the six before folding or frying, not all six then fold",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SAM-25.png",
   "date": "2026-10-20"
  },
  "SEK-01": {
@@ -4909,50 +5193,50 @@
   "date": "2026-10-20"
  },
  "SEK-19": {
-  "hash": "d79815ee66dac9341998",
+  "hash": "1c8bfce91077daf4f45b",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "SEK-19-p1-L1-1366x768 dom:#mission at cook-done:click, the card reads \"hakri lakri tameto\" and Nani says \"with hakri lakri tameto.\"; the raw piece is not called gos on the card or in the line, there is no Mishkaki, and the card is not \"Hakri Lakri Mishkaki\"",
-  "panel": "SEK-19-p1-L1-1366x768 dom",
+  "line": "SEK-19-p1-L3-1366x768 voice, the raw piece is \"gos\" (\"Pela gos.\" on mum/gos-rc.mp3, and \"gos\" on the card at tap 3) but \"Mishkaki\" is never heard or shown in the whole round: the order line is \"hakri lakri mixed.\" and the card reads \"hakri lakri •••\", so the child does not learn both words",
+  "panel": "SEK-19-p1-L3-1366x768 voice",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
   "png": null,
-  "date": "2026-10-19"
+  "date": "2026-10-20"
  },
  "SEK-20": {
-  "hash": "219d28be1dee39eb060e",
+  "hash": "3090fc52ad25214081ae",
   "dhash": [
-   "38586e3e1a6c0589",
+   "38586e5e1e6c0589",
    "38586e3c1c6c0589",
-   "38586efe1a6e0589",
-   "38186e3a186c0589",
-   "1c646e6e2e6c6051",
-   "1c246e1e2e6c6051"
+   "38586ede1e6e0589",
+   "38186e3e1c6c0589",
+   "1c642e1e2e6c6051",
+   "1c646e6e2e6c6051"
   ],
   "verdict": "FAIL",
-  "line": "A, the two racks on the left are thin, empty flat bars, not squares; the left of the stage is mostly bare against the grill, still unbalanced (the same in B-F); E also shows a skewer floating over the upper rack",
+  "line": "A, the two \"racks\" on the left are thin horizontal bars, not squares, with the skewer floating vertically across the top one. The left half is mostly empty marble beside the grill, so the layout is still unbalanced (same in B-F).",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SEK-20.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SEK-20.png",
+  "date": "2026-10-20"
  },
  "SEK-21": {
-  "hash": "0a548699f3334ca1f4a9",
+  "hash": "d31b400d19fca7f872fb",
   "dhash": [
-   "38703034303130b0",
-   "70e0e06c60614060"
+   "38703034303128a8",
+   "70e0e06c60615050"
   ],
   "verdict": "PASS",
-  "line": "B, the four bins (gos, tomato, dungri, bataato) sit at equal centre-to-centre gaps; the onions are no closer to the tomatoes than the tomatoes are to the meat (flaw: the tomato bin's label shows only the speaker icon, with no word)",
+  "line": "B, the four bins (gos, bataato, tomato, dungri) sit at equal gaps, their labels evenly spaced about 56 px apart (flaw: the tomato bin's label shows only a speaker icon with no word)",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SEK-21.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SEK-21.png",
+  "date": "2026-10-20"
  },
  "SH-01": {
   "hash": "ad68887514c8535cfa52",
@@ -5109,7 +5393,7 @@
   "date": "2026-10-20"
  },
  "SH-103": {
-  "hash": "b9ea21c237e39dee5c1b",
+  "hash": "0e329022cc742af81341",
   "dhash": [
    "5f4f1f99939b6ae4",
    "616a6b6909030333",
@@ -5117,13 +5401,13 @@
    "01494b6949530703"
   ],
   "verdict": "PASS",
-  "line": "B, with no wrong word the divider sits about a fifth of the way in from the left and the right words (chai, elchi, dudh, hakro, khun) fill the other four fifths at 1366x768; D shows the same at 800x360, nothing cut. The mistake states are not on the sheet. D's word cards are laid out two different ways (side-by-side and stacked).",
+  "line": "B, at 1366x768 the divider sits about one fifth in from the left with the five right words filling the four-fifths on its right; D shows the same at 800x360 (flaw: in D the word cards mix stacked and side-by-side layouts; the mistake runs are not on the sheet)",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SH-103.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-103.png",
+  "date": "2026-10-20"
  },
  "SH-105": {
   "hash": "79c289dd2a3ba58cadc6",
@@ -5167,7 +5451,7 @@
   "date": "2026-10-20"
  },
  "SH-108": {
-  "hash": "be8aeb61ec8182e0dc26",
+  "hash": "8f695e7a1e3964ac483f",
   "dhash": [
    "38307434343054b4",
    "38587070707064a4",
@@ -5177,13 +5461,13 @@
    "3858f878781928a8"
   ],
   "verdict": "PASS",
-  "line": "B, the chai L3 top-down counter is the painted, veined marble, not a code-drawn worktop; A, C, D, E and F show the same marble under chai L1, samosa L1/L3 and daar L1/L3",
+  "line": "B, the chai L3 two-hob counter is drawn on the painted marble, not a code-drawn worktop; A and C-F (chai L1, samosa L1/L3, daar L1/L3) all sit on the same painted marble",
   "panel": "B",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SH-108.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-108.png",
+  "date": "2026-10-20"
  },
  "SH-109": {
   "hash": "f381ea1d9e310601b73c",
@@ -5234,21 +5518,44 @@
   "commit": "265b0d07",
   "date": "2026-10-20"
  },
+ "SH-112": {
+  "hash": "2432d2ef493dc2e1277d",
+  "dhash": [
+   "29314d5968686d11",
+   "3139212d29292929",
+   "0d0101191901010d",
+   "8707011939010707",
+   "ced4989456d46d39",
+   "44544e5456542929",
+   "70e0c4c8e8e424a4",
+   "6064d4446462a464",
+   "ffffddb5bdfdfbba",
+   "fffcf5a4f9f5dbda"
+  ],
+  "verdict": "FAIL",
+  "line": "G, Cook's item strip at 1366x768 still has small jars, about a fifth of the stove's height, under tiny labels, and H at 800x360 is smaller still. That is not bigger against the whole scene. The clinic panels A-F crop only the strip, so their size against the scene can't be seen, and in D (800x360) the thermometer is small inside its box.",
+  "panel": "G",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-112.png",
+  "date": "2026-10-20"
+ },
  "SH-113": {
-  "hash": "d98944e9c8bab3e5ba44",
+  "hash": "4f60b8cac410795f1201",
   "dhash": [
    "01ae91c101e1c101",
-   "0b89810101010101",
+   "0b89910101010101",
    "aa81010101010101"
   ],
   "verdict": "FAIL",
-  "line": "B, the clinic circles in B and C are about a quarter the size of Cook's in A and show a head-and-shoulders crop where the face fills only part of the circle, while A's face fills its circle edge to edge, so the zoom is not the same. B's circle is also the doctor, not the patient the probe names (flaws: grey-italic English \"Bring them in.\" / \"Who's next?\" / \"Bring in man\" / \"Where does it hurt?\" in B and C, allowed only if tagged to record; \"Bring in man\" reads as a fragment)",
-  "panel": "B",
+  "line": "C, the doctor's face circle shows head and shoulders with space around them, while A's Cook customer fills his circle face-first, so the zoom is not the same. B and C were not zoomed x2 as labelled, and B shows no patient circle.",
+  "panel": "C",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SH-113.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-113.png",
+  "date": "2026-10-20"
  },
  "SH-116": {
   "hash": "716f45aad605744b0438",
@@ -5262,18 +5569,18 @@
   "date": "2026-10-20"
  },
  "SH-117": {
-  "hash": "9298409bc31396b32664",
+  "hash": "96aca886c46926caa4ff",
   "dhash": [
-   "c991a4ccc8b296ce"
+   "ce92ceccc89a9ece"
   ],
   "verdict": "FAIL",
-  "line": "A, the daal is not poured. A hairline from the corner bowl fades the pot to yellow in about 350 ms (0-619 ms), then at 1009 ms the pot jumps to different art (side handles) with the tomato and chilli pieces back on top. Only the daal is on the sheet: the taste game's glass fill is not shown",
+  "line": "A, at daar-in the pot shows the same red masala in all 8 frames over 1.9 s: no daal stream, no ripple, no yellow fill arriving (and the taste game's glass fill is not on the sheet)",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SH-117.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-117.png",
+  "date": "2026-10-20"
  },
  "SH-13": {
   "hash": "98676c45b37922381e21",
@@ -5600,18 +5907,18 @@
   "date": "2026-10-12"
  },
  "SH-37": {
-  "hash": "bb7ed063e00b55521576",
+  "hash": "f8a00b668e3e18791a3b",
   "dhash": [
-   "3858481010616080"
+   "385848160c612080"
   ],
   "verdict": "FAIL",
-  "line": "A, view 2's order card text \"Muke daar khape\" runs under the round icon at its right end (overlap), view 1 has no single focal thing (a timer, an onion and a tool scattered across an empty marble counter), and no shelf view is shown for the identical-slots point",
+  "line": "A, view 1 has no single focal thing: a timer, a tool, garlic and ginger with onion are scattered across the marble, and the marble ends in a hard seam above a flat beige band. No pantry shelf slots are shown.",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SH-37.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-37.png",
+  "date": "2026-10-20"
  },
  "SH-38": {
   "hash": "5a39143087edd8fd34d5",
@@ -6276,7 +6583,7 @@
   "date": "2026-10-14"
  },
  "SH-91": {
-  "hash": "eee54caffb39a8a72a82",
+  "hash": "d0e71ceacff9ec783ee0",
   "dhash": [
    "7f7f7f7d7c6c7c6f",
    "7f7ffcdcdcf8fdcf",
@@ -6292,13 +6599,29 @@
    "d75f564e4e4e4e7e"
   ],
   "verdict": "FAIL",
-  "line": "E, the chai marble at 1366x1024 is shown zoomed in, not as more of the same painting: the contract-11 capture for SH-91-p2-L1-1366x1024 reports bg-cook-worktop-t-v1-1600.webp \"low-res: 5.12 screen px per source px\". The pantry (A-D) and clinic (I-L) do show more painting on the taller screens.",
+  "line": "E, at 1366x1024 the chai marble is zoomed in (soft, oversized veins; contract-11 measures 5.12 screen px per source px), and K/L (844x390, 915x412) cut the clinic's plus sign and heart picture at the top edge. The pantry fridge top is also cut in every view (A-D).",
   "panel": "E",
   "judge": "judge",
-  "run": "ev-20261019-172022-khk",
-  "commit": "c17b2baf",
-  "png": "build/screenshots/evidence/ev-20261019-172022-khk/SH-91.png",
-  "date": "2026-10-19"
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-91.png",
+  "date": "2026-10-20"
+ },
+ "SH-98": {
+  "hash": "a479b55f5d5c42e7f515",
+  "dhash": [
+   "8481c6000000000c",
+   "8b81010101010101",
+   "cb85010101010101"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the samosa card's bulb peek at L3 has two rows, \"ba samosa\" and a bare \"samosa\": the second row has no number and neither row names its filling, so words are still missing from the peek. B (clinic peek: grey-italic to-record English, allowed) and C (ear L3 is one card) are fine.",
+  "panel": "A",
+  "judge": "judge",
+  "run": "ev-20261020-004931-exi",
+  "commit": "265b0d07",
+  "png": "build/screenshots/evidence/ev-20261020-004931-exi/SH-98.png",
+  "date": "2026-10-20"
  },
  "SH-99": {
   "hash": "95ba3777cbeca33bd865",
