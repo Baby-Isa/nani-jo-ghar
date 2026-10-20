@@ -49,9 +49,10 @@
   W.SPEEDS = { slow: 9000, normal: 6000, fast: 3300 };
   W.SPEED_ORDER = ["slow", "normal", "fast"];
   W.FADE = 0.1; // the cross-fade: each copy of a layer fades in over the outer tenth of the one before
-  const LINES = { near: { y: 800, scale: 1, layer: "near" }, field: { y: 676, scale: 0.55, layer: "middle", edge: 652 } };
+  const LINES = { near: { y: 800, scale: 1, layer: "near" }, field: { y: 664, scale: 0.55, layer: "middle", edge: 652 } };
   const LAYER_SPEED = { far: 0.15, middle: 0.4, near: 1 };
-  const CALL_SHARE = 0.45; // every member at least this much in view before Nani asks
+  const IN_WINDOW = 0.8; // every member at least this much inside the window before Nani asks ...
+  const CALL_SHARE = 0.45; // ... and at least this much of it showing (a prop may half-hide it)
   const LEAD_MIN = 0.55; // ... and the first of them still right of this share of the window (never as it leaves)
 
   /* ---------------- the plan (pure) ---------------- */
@@ -230,6 +231,8 @@
     };
     const topOf = (th) => lines[th.line].y - th.h;
     const inView = (th) => th.x + th.w > vx0 && th.x < vx1;
+    /** the share of a thing's width inside the window (the frame cuts the rest) */
+    const inWindow = (th) => Math.max(0, Math.min(th.x + th.w, vx1) - Math.max(th.x, vx0)) / th.w;
     m.inView = inView;
     m.topOf = topOf;
     const mk = (id, line, x, member) => {
@@ -387,12 +390,13 @@
       }
       if (u === c.namedTh.uid) {
         th.got = true;
+        th.gotAt = m.t;
         const res = c.pass === 1 && !c.glow && c.wrong === 0 ? "right" : "helped";
         c.state = "found";
         c.result = res;
         m.found += 1;
         emit({ type: "found", i: c.i, pass: c.pass, uid: u, id: c.named, res });
-        c.members.forEach((o) => o !== th && (o.member = -2));
+        // (its look-alikes stay members of their group until they have gone by: the next group comes on after them)
         ci += 1;
         if (ci >= calls.length) endAt = m.t + 600;
         else {
@@ -432,7 +436,7 @@
           const lead = c.members.reduce((a, o) => (o.x < a.x ? o : a), c.members[0]);
           const rel = (lead.x + lead.w / 2 - vx0) / viewW();
           if (rel < LEAD_MIN) passEnded(c, "unasked");
-          else if (c.members.every((o) => m.share(o) >= CALL_SHARE)) ask(c);
+          else if (c.members.every((o) => inWindow(o) >= IN_WINDOW && m.share(o) >= CALL_SHARE)) ask(c);
         } else if (c.state === "asked") {
           if (!c.glow && m.t - c.firstAt >= hintMs) {
             c.glow = true;
@@ -467,8 +471,8 @@
           nextPropAt = m.road + viewW() * (0.45 + rng() * 0.6);
         } else nextPropAt = m.road + viewW() * 0.08;
       }
-      // things gone by leave
-      m.things = m.things.filter((o) => o.x + o.w > vx0 - 60 || (calls[ci] && calls[ci].namedTh === o));
+      // things gone by leave; a found thing leaves once it has hopped up and away (the screen's found animation, 0.6 s)
+      m.things = m.things.filter((o) => (o.x + o.w > vx0 - 60 || (calls[ci] && calls[ci].namedTh === o)) && !(o.got && m.t - o.gotAt > 650));
       m.props = m.props.filter((p) => p.x + p.w > vx0 - 60);
       if (endAt != null && m.t >= endAt && !m.done) {
         m.done = true;
