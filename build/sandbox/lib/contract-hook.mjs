@@ -27,7 +27,7 @@
 //   k: "stale"   {sel, text, from}         a reply pill first seen in an earlier stage, still on screen 600 ms into this one
 //   k: "talk"    {list, spec}              the talk animations running: Cook's character tweens that repeat (lift, tilt,
 //                                          ms) and the play area's CSS talk or bob animations, with Lifecycle.talk.SPEC
-//   k: "texts"   {list: [{t, rec, en, grown, sel}]}   every visible text, tagged (contract-16)
+//   k: "texts"   {list: [{t, rec, en, grown, name, sel}]}   every visible text, tagged (contract-16; name: a player's typed name)
 //   k: "faces"   {list: [{who, sel, doctor}], cards, figFull, clinic}   face circles on screen and whose (contract-20)
 //   k: "bg"      {src, via, sx, sy, dpr}   a background (a picture covering half the screen or the canvas): screen px per
 //                                          source px across (sx) and down (sy)
@@ -35,6 +35,14 @@
 // What the game expected (exp) also carries, for contract-2: Cook's take-back (undo: its expectation offers one), the live
 // play inputs (live: Cook's pictures still taking taps), the heal game's last count (heal.count: {n, of, capped}, read from
 // the heal host's ctx.tally as the game calls it: a read-only wrap, the call goes through unchanged).
+// contract-16: a player's own name, typed by a grown-up (js/home.js: the who's-playing tiles and the corner badge, ".nm"),
+// is not English for the child. A text is that name only in a name element and only when it is one of the saved players'
+// typed names (Save.players(), never the app's made-up "Player 1": auto). Interpolated into the hook below; kept free of backslashes.
+export function playerName(text, inNameEl, typed) {
+  if (!inNameEl || !text) return false;
+  const t = String(text).trim().toLowerCase();
+  return !!t && [...(typed || [])].some((n) => String(n || "").trim().toLowerCase() === t);
+}
 export const CONTRACT_HOOK = `(() => {
   if (window.__njgContractHook) return;
   window.__njgContractHook = true;
@@ -559,8 +567,10 @@ export const CONTRACT_HOOK = `(() => {
 
   // contract-16 (no written English for the child, non-negotiable 5): the visible texts, each tagged: a to-record placeholder
   // (decision 84), the bulb's English (the help, decision 1), or grown-ups' text (the "?" pop-up, a lab panel): those are allowed
+  const playerName = ${playerName.toString()};
   const texts = () => {
     const out = new Map();
+    const typed = safe(() => (window.Save && window.Save.players ? window.Save.players() : []).filter((p) => p && !p.auto && p.name).map((p) => p.name), []) || [];
     const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     let n, k = 0;
     while ((n = w.nextNode()) && k < 400) {
@@ -580,8 +590,9 @@ export const CONTRACT_HOOK = `(() => {
       // the English sit right under a Kutchi line (a .day-k that is not a to-record placeholder)?
       const dEl = el.closest("[data-door-en]");
       const door = dEl ? { stage: !!(window.Day && window.Day.stage === "door"), under: !!(dEl.previousElementSibling && dEl.previousElementSibling.matches(".day-k:not(.to-record)")) } : null;
-      const key = t + "|" + rec + en + grown + (door ? JSON.stringify(door) : "");
-      if (!out.has(key)) { out.set(key, door ? { t: t.slice(0, 80), rec, en, grown, door, sel: desc(el) } : { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }); k++; }
+      const name = playerName(t, !!el.closest(".nm, [data-player-name]"), typed);
+      const key = t + "|" + rec + en + grown + name + (door ? JSON.stringify(door) : "");
+      if (!out.has(key)) { const o = door ? { t: t.slice(0, 80), rec, en, grown, door, sel: desc(el) } : { t: t.slice(0, 80), rec, en, grown, sel: desc(el) }; if (name) o.name = true; out.set(key, o); k++; }
     }
     return [...out.values()];
   };
