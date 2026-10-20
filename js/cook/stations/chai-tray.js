@@ -673,13 +673,16 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
      * badge would then lie across the hob's top edge (two pans on a short stage: the pans reach almost to it); then it sits
      * wholly above the hob, on the worktop, its bottom a little clear of the edge.
      */
+    // the hob's steel frame along its top: a pill whose top is less than this below the hob's top edge reads as sitting on the
+    // rim (844x390 L3: a bubble 12 px inside the edge, on the frame), so it goes wholly above the hob instead
+    const RIM_CLEAR = 40;
     const BADGE_CSS_H = 48; // the badge's height on screen, CSS px (js/shared/tally.js, phone and laptop alike)
     const pxPerWorld = () => UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
     const tallyPt = (pan) => {
       const x = pan.x - panR * 0.7;
       const y = pan.y - panR * 1.02;
       const h = BADGE_CSS_H / pxPerWorld();
-      return y - h < hobY + 10 ? [x, hobY - 10] : [x, y];
+      return y - h < hobY + RIM_CLEAR ? [x, hobY - 10] : [x, y];
     };
     /* ---------- the word pop (§4: learning happens during the action) ---------- */
     const pop = (id, pan, { speak = true } = {}) => {
@@ -727,15 +730,18 @@ import { NjgPour } from "../../shared/pour.js"; // CHAI-26: the shared pour's pl
      */
     const popAt = (pan, W, H) => {
       const v = Cook.view || {};
-      const top = (v.top || 0) + 10;
+      // (s08 w6B, CHAI-19: the camera's own view of the world is what shows; at 844x390 Cook.view.top sat level with the hob's
+      // top and pushed the bubble back onto its rim)
+      const wv = S.cameras && S.cameras.main && S.cameras.main.worldView;
+      const top = (wv && wv.height ? wv.y : v.top || 0) + 10;
       const left = (v.left || 0) + 10;
       const right = (v.right || 1600) - 10;
       let x = pan.x;
       let y = pan.y - rimR - 16 - H / 2;
       // s08 w6B (CHAI-19): never across the hob's top edge: where the pan reaches almost to it, the bubble sits wholly above
       // the hob, centred on the pan
-      const offRim = (v) => (v - H / 2 < hobY + 10 && v + H / 2 > hobY - 10 ? hobY - 10 - H / 2 : v); // (only ever up)
-      if (y - H / 2 < hobY + 10) y = hobY - 10 - H / 2;
+      const offRim = (v) => (v - H / 2 < hobY + RIM_CLEAR && v + H / 2 > hobY - 10 ? hobY - 10 - H / 2 : v); // (only ever up)
+      if (y - H / 2 < hobY + RIM_CLEAR) y = hobY - 10 - H / 2;
       const bb = badgeBox();
       const hits = (cx, cy) => bb && cx - W / 2 < bb.x1 + 8 && cx + W / 2 > bb.x0 - 8 && cy - H / 2 < bb.y1 + 8 && cy + H / 2 > bb.y0 - 8;
       if (hits(x, y)) {

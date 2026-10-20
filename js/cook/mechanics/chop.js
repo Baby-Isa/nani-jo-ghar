@@ -96,12 +96,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
         try {
           M.addCard("chop-nani", data(), cardOpts);
+          // R4 (contract-20: one face per person): while she asks on her own card, her box keeps only its tools, as in daar's
+          if (UI.guideStrip) UI.guideStrip(true);
           own = {
             tickAll() {
               rows.forEach((r) => (r.done = true));
               M.addCard("chop-nani", data(), cardOpts);
             },
-            close: () => M.removeCard("chop-nani"),
+            close: () => {
+              M.removeCard("chop-nani");
+              if (UI.guideStrip) UI.guideStrip(false);
+            },
           };
         } catch (e) {
           own = null; // (the order card alone, as before)
