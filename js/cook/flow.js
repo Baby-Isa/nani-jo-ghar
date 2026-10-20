@@ -105,6 +105,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       t0: null,
       // decision 51 (CK-23): a wrong item is redone on the spot, at most three tries, then the game shows the right way
       redo: global.OrderCard && global.OrderCard.redo ? global.OrderCard.redo({ max: 3 }) : null,
+      // Zafar, 20 Oct: the words used right before this round (Cook.chipWord: a learned word's chip is the speaker alone)
+      learned: Cook.learnedNow(),
     };
     Cook.ctx = ctx;
     ctx.listen = (ok, why) => {

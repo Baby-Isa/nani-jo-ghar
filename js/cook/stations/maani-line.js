@@ -11,7 +11,8 @@
  *    knob on the hob's front edge, the flat wooden turner resting on the counter beside the hob.
  *  - THE SHELF BAND (the bottom 30%): under the chakla, the dough piles (wheat, bajri: always both,
  *    straight on the band, no tray), a `🔊 word` chip under each (tap the pile = one ball flies out,
- *    tap the chip = hear it; the speaker alone from level 3); under the hob, the finished-maani
+ *    tap the chip = hear it; the word written until it is used right, then the speaker alone: Cook.chipWord,
+ *    Zafar, 20 Oct); under the hob, the finished-maani
  *    plates, one per kind, where each cooked maani lands.
  *
  * The flow: tap a dough pile, a ball flies out to the chakla (tap the other pile before you start
@@ -246,7 +247,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (quiet) p.setAlpha(0.9);
       return p;
     };
-    const showWord = level < 3;
     // M3 / Q14: one realistic pile of dough balls per kind, straight on the band (no tray); tap it and one
     // ball flies out. Both piles at one scale (the smaller fit), standing on PILE_BASE by their own bottom.
     const pileKey = (t) => `mv-pile-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
@@ -262,7 +262,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // always more than anyone orders, the same in both, never shown (the pile is one picture): out of
       // balls, the pile goes (a ball put back brings it back)
       img.left = K.ballsPerBowl || 5;
-      img.chip = Kit.chip(S, type, x, CHIP_Y, { word: showWord, w: 188 });
+      img.chip = Kit.chip(S, type, x, CHIP_Y, { word: Cook.chipWord(type, ctx), w: 188 });
       return img;
     });
     const pileShow = (pl) => S.tweens.add({ targets: [pl, pl.shadow].filter(Boolean), alpha: pl.left > 0 ? 1 : 0, duration: 250 });

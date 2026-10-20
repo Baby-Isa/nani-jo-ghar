@@ -28,8 +28,9 @@
  *
  * Levels (data/cook.json's daal recipe slots; data/stations/daar.json's levels; data.mechanics.chop's levels
  * for the chop, data.mechanics.stir's for the dial's bands and the speed words): 1 = only what's asked,
- * one chop round, words on the chips; 2 = decoys, the chop's switch, a speed to stir at; 3 = speaker-only
- * chips; 4 = more decoys, and Nana's card starts folded in the cook (a peek costs a hint).
+ * one chop round; 2 = decoys, the chop's switch, a speed to stir at; 3 = the item words dotted on the card;
+ * 4 = more decoys, and Nana's card starts folded in the cook (a peek costs a hint).
+ * The chips (every level, Zafar, 20 Oct): a word is written until the child has used it right, then the speaker alone (Cook.chipWord).
  * Art: assets/cook/items/v3/daar/ (the nine pots on one registered canvas, the trivet bowl, the ladle;
  * meta.json), the pantry v2 jars, the top-down vegetables (veg-*-whole-t / -chopped-t), tool-knife-t, and
  * the kitchen kit's hob and knob (js/cook/kitchen-kit.js). The dial's face is drawn in code.
@@ -567,7 +568,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.8), height: z.L(16) });
       } else img = S.ingredient(id, z.X(x), z.Y(BASE - 56), { w: z.L(110), h: z.L(100), label: false, depth: D.item + 1 });
       img.wordId = id;
-      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: level < 3, w: Math.min(128, pitch - 12) });
+      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: Cook.chipWord(id, z.ctx), w: Math.min(128, pitch - 12) });
       chip.setScale(z.k);
       img.chip = chip;
       items[id] = img;
