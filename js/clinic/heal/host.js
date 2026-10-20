@@ -526,7 +526,10 @@
     // CLN-140 (Zafar, 14 Oct, R4 in the clinic): the doctor has one card at the top of the sidebar, as in every stage:
     // his face once (the card's, screen.js), his line for the step now as its top strip (T29), then the goal headline
     // and the steps. The parked games keep their goal in the strip (no headline).
-    card.setTitle(v2 ? goal : "", null); // null: the screen's card wears his face (Kit.Card's default face)
+    // s08 w6N (CLN-106): a game whose goal is said once a step is done (def.why.goalAfter: the boing's "Time for the jab"
+    // after the wipe) opens with no headline; it calls ctx.card.goal() then, and the headline comes up as he says it
+    const lateGoal = !!(v2 && def.why && def.why.goalAfter);
+    card.setTitle(v2 && !lateGoal ? goal : "", null); // null: the screen's card wears his face (Kit.Card's default face)
     if (screen.setGuide) screen.setGuide(v2 ? null : goal || null);
     card.ordered(true); // a heal game's steps are one ordered job on the shared card (13c, 13h)
     // D8 (1 Oct, SH-45): one instruction at a time: each step's row appears as it opens and the doctor says it then
@@ -694,6 +697,12 @@
         },
         untick: (rowId) => card.untick(rowId),
         addRow: (row) => card.addRow(row),
+        // CLN-106 (def.why.goalAfter): the late goal: its headline on the card, and the doctor says it (once)
+        goal: () => {
+          if (!lateGoal || card.titleText === goal || !goal) return Promise.resolve();
+          card.setTitle(goal, null);
+          return ctx.say(goal, { who: "doctor" });
+        },
         speak: (ids) => {
           // the whole card is read only in the pop-up (SH-64): a game's own read of it (its opening, the scene's "why"
           // beat) stays quiet; one step's rows (ids) are still said as they open, and the face replays the card

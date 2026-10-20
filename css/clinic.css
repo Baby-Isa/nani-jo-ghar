@@ -652,7 +652,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
 .eye-name { align-items: center; }
 .eye-name img { width: calc(var(--njg-tap, 48px) * 1.35); height: calc(var(--njg-tap, 48px) * 1.35); object-fit: contain; }
 /* CLN-107 (s08 w6N): his face starts the bubble: the doctor names the row */
-.eye-name img.eye-name-face { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); border-radius: 50%; object-fit: cover; background: #fff; border: 2px solid #9cc2a6; }
+.eye-name img.eye-name-face { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); border-radius: 50%; object-fit: cover; border: inherit; }
 /* a wrong yes / no shakes red (decision 59) */
 .hs-judge .njg-pill.nope-red { background: #fbe3e1 !important; border-color: #c0443c !important; color: #8c2f2f !important; animation: cl-shake .5s; }
 .eye-btn .njg-next-t { display: flex; align-items: center; }

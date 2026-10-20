@@ -123,7 +123,7 @@ test("every heal line said by key plays only its own words' clips (the clip test
       }
       lines++;
       const shown = `${pool}.${key} [${w.kutchi || ""} | ${w.english}]`;
-      if (w.placeholder && (w.plan || []).some((c) => c && c.file)) bad.push(`${shown}: a line to record plays ${(w.plan || []).filter((c) => c && c.file).map((c) => c.file).join("+")}`);
+      if (w.placeholder && (w.plan || []).some((c) => c && c.file)) bad.push(`${shown} placeholder → ${(w.plan || []).filter((c) => c && c.file).map((c) => c.file).join("+")}`);
       for (const c of w.plan || []) {
         if (!c || !c.file) continue;
         pieces++;
@@ -133,12 +133,12 @@ test("every heal line said by key plays only its own words' clips (the clip test
       }
       if (w.audio) {
         const rec = byFile.get(w.audio);
-        if (!rec) bad.push(`${shown}: its recording ${w.audio} ∉ family-audio`);
-        else if (norm(rec.kutchi) !== norm(w.kutchi)) bad.push(`${shown}: its recording ${w.audio} [${rec.kutchi}] ≠ the line`);
+        if (!rec) bad.push(`${shown}: ${w.audio} ∉ family-audio`);
+        else if (norm(rec.kutchi) !== norm(w.kutchi)) bad.push(`${shown}: ${w.audio} [${rec.kutchi}] ≠ [${w.kutchi}]`);
       }
     }
   }
-  assert.ok(lines > 100, `lines read: ${lines}`);
-  assert.ok(pieces > 0, "some lines play family clips");
+  assert.ok(lines > 100, String(lines));
+  assert.ok(pieces > 0); // some lines play family clips
   assert.deepEqual([...new Set(bad)].slice(0, 20), []);
 });
