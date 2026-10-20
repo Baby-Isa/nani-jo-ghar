@@ -651,7 +651,9 @@
     const p = planOf(line);
     return p.length === 1 && !!p[0].file;
   };
-  Lang.wordHasVoice = (id) => Lang.voiced(Lang.wordLine(id));
+  // (a fixed expression, bajr ji maani, has no word form of its own (the engine builds it from its parts as an Item): it is
+  // heard as the phrase says it, so it dots like any item with a voice; contract-35, s08 w6J)
+  Lang.wordHasVoice = (id) => Lang.voiced(Lang.wordLine(id)) || (Lang.phrase([id]).ok !== false && Lang.voiced(Lang.phrase([id])));
   // LNG-09 / LNG-16: the device voice is the core's (js/core/voice.js deviceSpeak): normal speed, waits out a cancel, ends when
   // the browser says so (so the next piece never starts under it)
   Cook.synthSay = (text) => {

@@ -434,6 +434,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // own row in the level table (data/cook.json levelTable.stations["daar-chop"]): dotted at L4 too, never folded, so the child
     // sees how many things there are to chop, the one she has called written and the rest dotted
     const cardAt = Cook.cardState(cardLv, "daar-chop");
+    // (and at L4 a row she has called is written whole, "revealed to you audibly and visually in writing"; at L3 the level
+    // table's dotted card keeps the item dotted until its row ticks: data levelTable.stations["daar-chop"].callWritten)
+    const own = (((Cook.data && Cook.data.levelTable) || {}).stations || {})["daar-chop"] || {};
+    const cw = Array.isArray(own.callWritten) ? !!own.callWritten[Math.min(own.callWritten.length, Math.max(1, cardLv)) - 1] : false;
     const staged = rounds > 1 && cardAt !== "open";
     // the rows ticked so far (DAAR-34, the judge's flaw at L3: a ticked row stayed "trae •••"): a ticked row is written whole
     const done = new Set(doneIds);
@@ -442,7 +446,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // said, the first item, and the rest stay dotted, per the level table; the judge, 20 Oct: "the L4 peek writes all three")
     const label = (id) => {
       const unsaid = !done.has(id) && !called.has(id);
-      return Lang.html(Lang.phrase(parts(id)), { hide: (w) => !done.has(id) && (!called.has(id) || dot(w)), sealed: unsaid });
+      return Lang.html(Lang.phrase(parts(id)), { hide: (w) => !done.has(id) && (!called.has(id) || (!cw && dot(w))), sealed: unsaid });
     };
     const rows = Object.keys(want).map((id) => ({ id, label: label(id), done: done.has(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")

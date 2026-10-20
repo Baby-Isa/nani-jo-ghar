@@ -112,8 +112,10 @@
   transition: border-color 0.4s, box-shadow 0.4s, transform 0.3s;
   min-width: 0;
 }
-.rs-badge.pre { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
-.rs-badge.in { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1), border-color 0.4s, box-shadow 0.4s; }
+/* SH-37 (s08 w6J; the judge, 20 Oct: "a stopwatch on the left ... and an empty right half"): a badge still to come is its quiet
+   empty tile, so the card reads as three places filling in turn, never a slab with one thing in a corner; what pops is its art */
+.rs-badge.pre > * { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
+.rs-badge.in > * { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 1.5, 0.6, 1); }
 /* UX 9a: no circle behind the badge -- the object sits straight in the
    square card (.rs-badge is the card; .rs-disc just sizes and stacks it). */
 .rs-disc { position: relative; width: var(--rs-disc); height: var(--rs-disc); display: block; }
@@ -124,7 +126,8 @@
 .rs-badge.tier-plain { opacity: 0.94; }
 /* SH-67 (Z4): a badge waiting its turn stays hidden whatever its tier (.tier-plain's opacity came later in the file and
    showed the bulb before the first two); the badges step in one, two, three */
-.rs-badge.pre, .rs-badge.pre.tier-plain, .rs-badge.pre.tier-gold { opacity: 0; transform: scale(0.85) translateY(var(--njg-s2)); }
+/* (SH-37: its tile shows, plain, with no tier's gold edge until it steps in; only its art waits) */
+.rs-badge.pre, .rs-badge.pre.tier-plain, .rs-badge.pre.tier-gold { opacity: 1; transform: none; border-color: var(--rs-tile-line); box-shadow: none; }
 
 /* ---------- time: the stopwatch art, the time drawn over its empty face ---------- */
 .rs-watch { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
