@@ -213,10 +213,8 @@ async function nameit(g, page) {
   if (window.FitText) window.FitText.run(row.parentElement);
   g.head(null);
   if (sentLn.ok) await g.say(sentLn, node.firstChild);
-  else {
-    await g.say(chosen._word, node.firstChild);
-    await g.say(sentLn, rec);
-  }
+  // (the word was said once, as its button was tapped: never twice; the sentence is a silent placeholder until recorded)
+  else await g.say(sentLn, rec);
 }
 
 // ---------------------------------------------------------------- stick in the photo
