@@ -1688,7 +1688,7 @@
    "expect": [
     "gapMs:view-pantry,hint-glow>=4000"
    ],
-   "note": "fresh profile, L2: line and glow only after the pause, the first item too (the hint player waits at the pantry: the strip runs from it)",
+   "note": "fresh profile, L2: line and glow only after the pause, the first item too (the hint player waits at the pantry: the strip runs from it; the frame where the help is logged has a red frame)",
    "webgl": true
   },
   {
