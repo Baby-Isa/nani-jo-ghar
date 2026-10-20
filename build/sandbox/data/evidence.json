@@ -16266,7 +16266,7 @@
    "after": null,
    "capture": [
     "cmd:node build/tools/review/heal-marks.mjs --pool eye",
-    "ref:assets/clinic/items-v2/lemon-half.webp"
+    "ref:assets/clinic/items-s08b/lemon-whole-s08b.webp"
    ],
    "expect": null,
    "note": "the lemon is yellow, not an orange, so 'limu' marked as a lemon is not scored wrong: does each chart picture's colour class match its word?"
