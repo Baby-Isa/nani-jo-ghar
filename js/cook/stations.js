@@ -482,10 +482,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         obj.preFX.padding = Math.max(obj.preFX.padding || 0, 20);
         fx = obj.preFX.addGlow(0xffcf6a, 3, 0, false, 0.1, 14);
         tweens.push(this.tweens.add({ targets: fx, outerStrength: 8, duration: 520, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
-      } else {
+      }
+      // SH-60 (s08 w6J: the WebGL outline alone was too thin to see on a pantry jar, so her line came "without the highlight"):
+      // the soft halo behind the picture in both renderers, the outline on top where WebGL draws it
+      {
         const c = this.opaqueBox(obj);
         halo = this.track(this.add.ellipse(c.x, c.y, c.w * 1.25 + 24, c.h * 1.2 + 20, 0xffd27a, 0.4).setDepth(obj.depth - 0.5));
         tweens.push(this.tweens.add({ targets: halo, alpha: 0.18, scale: 1.08, duration: 520, yoyo: true, repeat: -1 }));
+      }
+      // (a test hook, only logged: when a glow comes on, so a check can hold it to Nani's help line, SH-60)
+      try {
+        if (window.Lifecycle && window.Lifecycle.note) window.Lifecycle.note("glow", { step: "on", by: String(obj.wordId || (obj.texture && obj.texture.key) || "") });
+      } catch (e) {
+        /* only a log */
       }
       // a small hop of the picture itself (its label and shadow stay where they are)
       let y = null;

@@ -9,7 +9,7 @@
  *    (maani keeps one tawa: the game is rolling the next maani while flipping the one on the tawa),
  *    the flames peeking out all round it, the heat ring on the tawa's rim, the person's face and the
  *    knob on the hob's front edge, the flat wooden turner resting on the counter beside the hob.
- *  - THE SHELF BAND (the bottom 26%): under the chakla, the dough piles (wheat, bajri: always both,
+ *  - THE SHELF BAND (the bottom 30%): under the chakla, the dough piles (wheat, bajri: always both,
  *    straight on the band, no tray), a `🔊 word` chip under each (tap the pile = one ball flies out,
  *    tap the chip = hear it; the speaker alone from level 3); under the hob, the finished-maani
  *    plates, one per kind, where each cooked maani lands.
@@ -45,17 +45,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const MV = IT + "maani-v2/";
   const V3 = IT + "v3/maani/";
   /* ---------- the grid (design px, 1600x900; the canvas is the play area), as chai v2 ---------- */
-  const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const HOB_K = 0.85; // the one-burner hob, a little bigger than chai's (it holds a tawa)
   const HOB_BOTTOM = SHELF_TOP - 40; // breathing space above the shelf (§10)
   const CHAKLA_D = 470;
   const COL_GAP = 150; // between the chakla and the hob
   const TAWA_R = 150; // the tawa's round body
-  const PLATE_D = 150; // a plate on the shelf band
+  const PLATE_D = 182; // a plate on the shelf band (SH-112: a fifth bigger in the taller band)
   // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
-  const PLATE_Y = 666 + (900 - 883) + 8 + PLATE_D / 2;
-  const PLATE_PITCH = 204;
+  const PLATE_Y = SHELF_TOP + (900 - 883) + 8 + PLATE_D / 2;
+  const PLATE_PITCH = 232;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
   // maani-v2/thali.webp: the flat floor is a circle 0.42 of the picture's width across from its centre.
@@ -76,7 +76,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // their chips; St.shelfFit sizes them so the gap above equals the gap under the chips (no hop: a pile
   // doesn't bounce, it squashes a little as a ball comes off)
   const PILE_BASE = 828;
-  const PILE_K = 0.32; // at most (a pile is 590 px): shelfFit brings it down to the band's rule
+  const PILE_K = 0.42; // at most (a pile is 590 px): shelfFit brings it down to the band's rule
   /* ---------- the v3 art (29 Sept play-test M3-M8; assets/cook/items/v3/maani/, build/cut_cook_v3.py) ----------
    * Measured from the art (meta.json; build/check_vessel_meta.py checks these against it): each round body's
    * centre (cx, cy: fractions of the canvas) and radius (r: of the width). Placed by the body, never the box. */
@@ -113,7 +113,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // one drawing space (1:1); the roll zone owns the left column's pointer (a tap on the tawa is not a roll)
     zones: [
       { id: "bowls", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
-      { id: "roll", mech: "roll", region: [0, 0, 830, 666], footprint: { x: 0, y: 0, w: 830, h: 666 } },
+      { id: "roll", mech: "roll", region: [0, 0, 830, SHELF_TOP], footprint: { x: 0, y: 0, w: 830, h: SHELF_TOP } },
       { id: "tawa", mech: "tawa", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
     ],
     run: (host, params) => line(host, params),

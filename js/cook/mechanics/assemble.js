@@ -11,7 +11,7 @@
  *    picture at the bowl's scale), with a little drop and bounce; the top layer shows its surface, and its
  *    word pops by the bowl with the family clip (§4: learning happens during the action). A see-through
  *    copy of the glass lies over the food (its walls and highlights; the floor's ring cut out).
- *  - THE SHELF (the bottom 26%): the side-on glass pots (v3/chaat/pot-*.webp, the pantry jars' look),
+ *  - THE SHELF (the bottom 30%): the side-on glass pots (v3/chaat/pot-*.webp, the pantry jars' look),
  *    standing on their measured bottom-centre on one shelf line, a `🔊 word` chip under each: tap the pot
  *    = use it, tap the chip = hear it. From level 3 the word hides and the speaker stays (the same chip).
  *    Decoys and the "don't" item stand there too. The tomato pot is a stand-in (see POTS).
@@ -169,12 +169,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     "ph-dhana": "pot-dhania",
   };
   /* the grid (design px, 1600x900), the same as chai v2's */
-  const SHELF_TOP = 666; // §3: the scene is the top 74%, the shelf band the bottom 26%
+  const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   const BASE = 818; // the shelf line: every pot stands on it
   const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 };
-  const PITCH = 150;
-  const PREP_W = 132; // one slot's pot (identical for every topping)
+  // SH-112 (Zafar 20 Oct): the taller band's pots a quarter bigger (St.shelfFit keeps the band's top gap)
+  const PITCH = 180;
+  const PREP_W = 166; // one slot's pot (identical for every topping)
   const GLASS_W = 760; // the side-on bowl: wide, so a layer of a long order is still a clear strip
   const GLASS_X = 800;
   // the bowl is centred in the scene above the shelf band (0..SHELF_TOP): its middle at SHELF_TOP / 2
@@ -1015,7 +1016,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const key = `cv3-pot-${id}`;
         let img;
         if (S.textures.exists(key)) {
-          const sc = z.L(w) / POT.w;
+          const sc = z.L(St.shelfFit(S, key, w / POT.w, BASE));
           img = S.track(
             S.add
               .image(z.X(x), z.Y(BASE), key)

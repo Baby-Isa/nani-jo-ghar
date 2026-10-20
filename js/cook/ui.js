@@ -1470,6 +1470,8 @@
     const lv = ds.map((d) => d.level || 1);
     return Math.max(ctx.level || 1, ...(lv.length ? lv : [1]));
   }
+  // (the level the sidebar's cards are drawn at: a station's own card follows it, so one order never has two ladders, contract-35)
+  UI.orderLevel = orderLevel;
   /** Spoken parts ([{line, els}]) of a joined line whose parts know their rows (Cook.Order.speech). */
   function partsOf(line, map) {
     const parts = line && line.parts ? line.parts : line ? [line] : [];
@@ -2530,7 +2532,7 @@
       if (k && base && base.charAt(0) === base.charAt(0).toLowerCase()) k = k.charAt(0).toLowerCase() + k.slice(1);
       return k || base;
     };
-    const look = (segs) => (segs || []).forEach((s) => s.w && s.lang === "k" && !form.has(s.w) && form.set(s.w, { kutchi: clean(s.w, s.t), check: !!s.check, cell: s.cell }));
+    const look = (segs) => (segs || []).forEach((s) => s.w && s.lang === "k" && !s.part && !form.has(s.w) && form.set(s.w, { kutchi: clean(s.w, s.t), check: !!s.check, cell: s.cell }));
     (ladders || []).forEach((L) => Order().rows(L, { all: true }).forEach((r) => look((r.phrase ? r.phrase.segs : r.line.segs).concat(r.line.segs))));
     return ids.map((id) => Object.assign({ id, kutchi: Cook.display(id), check: false }, form.get(id) || {}));
   };
@@ -2640,7 +2642,7 @@
     // level 2: written on the card, no counting along; level 3+: heard in the order only (the face replays it)
     const heard = lv <= 1;
     // PAN-11 (6 Oct): the count word goes over her line at once (her line pauses and carries on), never queued behind it
-    if (speak && n >= 1 && n <= 5 && heard && !UI.naniMuted()) Lang.speak(tallyLine(n, id), { over: true }).catch(() => {});
+    if (speak && n >= 1 && n <= 5 && heard && !UI.naniMuted()) UI.lastCount = Lang.speak(tallyLine(n, id), { over: true }).catch(() => {});
   };
   /** "hakri dungri", "ba maani", "ba wadhi maani": the count and the thing, as the order says it. */
   function tallyLine(n, id) {

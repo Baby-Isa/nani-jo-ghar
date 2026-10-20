@@ -54,15 +54,16 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const IT = "assets/cook/items/";
   const V3 = IT + "v3/daar/";
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
-  const SHELF_TOP = 666;
+  const SHELF_TOP = St.SHELF.top; // the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
   // a scene piece's y: raised into the middle of a taller stage's worktop (Cook.lift, set per round)
   let LIFT = 0;
   const sy = (z, y) => z.Y(y) - z.L(LIFT);
   const BASE = 818;
   const CHIP_Y = 860;
-  const PITCH = 150;
-  const SLOT_W = 112;
+  // SH-112 (Zafar 20 Oct): the taller band's crates and jars a quarter bigger (St.shelfFit keeps the band's top gap)
+  const PITCH = 180;
+  const SLOT_W = 140;
   const INK = { text: "#2A2522", kutchi: "#8C2F2F", card: 0xffffff, grey: 0xd9d2c7, gold: 0xc9962e, panel: 0xefe5d6, page: 0xf4ecdf };
   const FONT = "Nunito, sans-serif";
   // the vegetables' own art: word id -> file stem
@@ -344,7 +345,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         if (ctx.nextStep) ctx.nextStep("Chop");
         if (phases.chop && !tries) UI.gist(phases.chop);
         const cz = Mech.zone(S, ctx, { id: "chop", level });
-        const nani = naniCard(want, no, level, kinds.filter((id) => !(id in need)), need);
+        // (her card is drawn at the order's card level, as the order card beside it: a day's order of daal and maani at L3 dots
+        // both, though the daal itself is a lower level: contract-35, s08 gate's day 3)
+        const nani = naniCard(want, no, level, kinds.filter((id) => !(id in need)), need, Math.max(level, UI.orderLevel ? UI.orderLevel() : level));
         const c = await chop(cz, { want: need, kinds: Object.keys(need), no, pool, level, retry: tries > 0, nani, side });
         nani.close();
         cz.close();
@@ -412,13 +415,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   }
 
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
-  function naniCard(want, no, level = 1, doneIds = [], need = want) {
+  function naniCard(want, no, level = 1, doneIds = [], need = want, cardLv = level) {
     const M = UI.mission;
     // SH-99 (every number said is written) and the level table (s08 w2A, SH-110): the chop card writes how many at every
     // level ("trae dungri"); from L3 its item words are dotted as the order card's are ("trae •••"), and at L4 it starts
     // folded (face + headline; her face replays it). Was: from level 3 words only, the number heard (decision 41)
     const parts = (id) => Lang.countParts(want[id], id);
-    const dot = (w) => Cook.dotItem(w, level);
+    const dot = (w) => Cook.dotItem(w, cardLv);
     /*
      * DAAR-34 (P54, Zafar 17 Oct: "those other items should be dotted, so you can see there's three items to be chopped in total
      * but only the first one is revealed to you audibly and visually in writing"; the level table's L3: "unsaid rows dotted and
@@ -427,15 +430,21 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
      */
     const rounds = Math.min(Math.max(1, (Mech.knobs("chop", { level }) || {}).phases || 1), Object.keys(need).length || 1);
     // (from L3, where the level table dots the card: an open card, L1-L2, writes every word, contract-35)
-    const staged = rounds > 1 && Cook.cardState(level) !== "open";
+    // DAAR-34 (s08 w6J; the judge, 20 Oct: "at L4 every round the chop card shows only 'Chop these.'"): Nani's chop card has its
+    // own row in the level table (data/cook.json levelTable.stations["daar-chop"]): dotted at L4 too, never folded, so the child
+    // sees how many things there are to chop, the one she has called written and the rest dotted
+    const cardAt = Cook.cardState(cardLv, "daar-chop");
+    const staged = rounds > 1 && cardAt !== "open";
+    // the rows ticked so far (DAAR-34, the judge's flaw at L3: a ticked row stayed "trae •••"): a ticked row is written whole
+    const done = new Set(doneIds);
     const called = new Set(staged ? Object.keys(want).filter((id) => !(id in need)) : Object.keys(want));
     // (a row she has not called is sealed: its dots stay dots in the bulb's peek too, so the L4 peek writes only what she has
     // said, the first item, and the rest stay dotted, per the level table; the judge, 20 Oct: "the L4 peek writes all three")
     const label = (id) => {
-      const unsaid = !doneIds.includes(id) && !called.has(id);
-      return Lang.html(Lang.phrase(parts(id)), { hide: (w) => !doneIds.includes(id) && (!called.has(id) || dot(w)), sealed: unsaid });
+      const unsaid = !done.has(id) && !called.has(id);
+      return Lang.html(Lang.phrase(parts(id)), { hide: (w) => !done.has(id) && (!called.has(id) || dot(w)), sealed: unsaid });
     };
-    const rows = Object.keys(want).map((id) => ({ id, label: label(id), done: doneIds.includes(id) }));
+    const rows = Object.keys(want).map((id) => ({ id, label: label(id), done: done.has(id) }));
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
     no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))), { hide: dot })), done: false, no: true }));
@@ -459,7 +468,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const kinds = Object.keys(want).filter((id) => called.has(id));
       return kinds.length ? Lang.join(kinds.map((id, j) => Lang.line(j === 0 ? "only" : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id))))) : null;
     };
-    const opts = { say: Object.keys(want).length ? () => line() && Lang.speak(line()) : null, closed: Cook.cardState(level) === "hidden" };
+    const opts = { say: Object.keys(want).length ? () => line() && Lang.speak(line()) : null, closed: cardAt === "hidden" };
     M.addCard("daar-chop", data(), opts);
     M.closeCards(true);
     if (UI.guideStrip) UI.guideStrip(true);
@@ -479,11 +488,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         const r = rows.find((x) => x.id === id && !x.no);
         if (!r || r.done) return;
         r.done = true;
+        done.add(id);
+        r.label = label(id);
         M.addCard("daar-chop", data(), opts);
       },
       // the rows she asked for tick; her "don't" row stays neutral (nothing was added)
       tickAll() {
-        rows.forEach((r) => !r.no && (r.done = true));
+        rows.forEach((r) => !r.no && (r.done = true, done.add(r.id), (r.label = label(r.id))));
         M.addCard("daar-chop", data(), opts);
       },
       close() {
@@ -546,7 +557,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       let img;
       if (S.textures.exists(key)) {
         const src = S.textures.get(key).getSourceImage();
-        const sc = z.L(w) / src.width;
+        const sc = z.L(St.shelfFit(S, key, w / src.width, BASE));
         img = S.track(S.add.image(z.X(x), z.Y(BASE), key).setOrigin(0.5, 0.97).setScale(sc).setDepth(D.item + 1));
         img.baseScale = sc;
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.8), height: z.L(16) });
@@ -941,7 +952,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       await NjgPour.phaser(S, {
         obj: dBowl,
         lip: [-rim, 0],
-        lipTo: { x: cx + inR * 0.62, y: cy - inR * 0.5 },
+        // SH-117 (s08 w6J; the judge, 20 Oct: "no stream ... no rising fill"): the lip is held over the pot's far rim, so the
+        // stream is seen falling across the masala to the middle, and the pour runs long enough to watch the daal rise
+        lipTo: { x: cx + inR * 0.78, y: cy - inR * 1.02 },
         tilt: -38,
         squash: 0.14,
         colour: 0xe09a12,
@@ -953,7 +966,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         arc: z.L(50),
         away: { x: cx + bodyR * 1.3, y: cy - bodyR * 0.9 },
         fade: true,
-        ms: { lift: 420, tip: 240, pour: 900, untip: 200, back: 300 },
+        ms: { lift: 420, tip: 280, pour: 1900, untip: 220, back: 300 },
         onPhase: (ph) => {
           if (ph === "pour" && !pour) pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
           if (ph === "untip" && pour && pour.stop) {
@@ -965,7 +978,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           // the pot's own daal picture, uncovered in a circle that grows from where the stream lands until it fills the pot
           if (u > 0.001 && poolMask) {
             const e = Math.min(1, u);
-            const r = inR * (0.18 + 0.95 * Math.pow(e, 0.7));
+            // (it rises from a small pool where the stream lands: a third of the pot halfway through the pour, full at its end)
+            const r = inR * (0.12 + 1.0 * Math.pow(e, 1.1));
             poolMask.clear();
             poolMask.fillStyle(0xffffff, 1);
             poolMask.fillCircle(cx + inR * 0.12 * (1 - e), cy + inR * 0.04 * (1 - e), r);

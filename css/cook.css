@@ -1030,8 +1030,11 @@ body.w6:not(.ui-bulb) #guide .ng-bulb { display: none; }
 #stage > .close-kitchen { position: absolute; z-index: 30; top: var(--njg-s2); left: var(--njg-s2); width: var(--njg-tap); height: var(--njg-tap); color: var(--ink); }
 #stage > .close-kitchen svg { width: 60%; height: 60%; }
 #stage > .close-kitchen:disabled { opacity: 1; }
-/* the "to check" flag (decision 21; test site only): a form guessed for a noun Mum hasn't given a gender */
-.to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+/* the "to check" flag (decision 21; test site only): a form guessed for a noun Mum hasn't given a gender. SH-98 (s08 w6J): on
+   the child's cards, boxes and pop-ups only a hidden word is dotted, so the flag is in the markup only there (as decision 84's
+   "to record"); the grown-ups' word book and "?" pop-up still underline it */
+.to-check { text-decoration: none; }
+:is(#panel:has(#book-close), #help-pop) .to-check { text-decoration: underline dotted var(--njg-gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .book-face { display: grid; place-items: center; padding: var(--njg-s2); }
 .book-face img { width: calc(var(--njg-tap) * 1.25); height: calc(var(--njg-tap) * 1.25); border-radius: 50%; object-fit: cover; object-position: top; }
 #panel .cards:has(.book-face) { grid-template-columns: repeat(auto-fill, minmax(calc(var(--njg-tap) * 1.75), 1fr)); }

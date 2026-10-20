@@ -302,6 +302,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       fetching = false;
       Cook.undoAt = null;
+      // contract-3 (s08 gate, the open kitchen: the last thing's count, "hakro chundo", ran on past the pantry's end): the
+      // count said as the last thing lands is heard to its end before the pantry closes (nothing is left to tap by then)
+      if (UI.lastCount) await Promise.race([UI.lastCount, Cook.wait(1600)]);
+      UI.lastCount = null;
       if (tasked) UI.stripTask(null);
       tray.forEach((e) => e.obj.active && S.untap(e.obj));
       // the wrong things on the tray go back to their shelf, one by one; the right ones stay (and close up)

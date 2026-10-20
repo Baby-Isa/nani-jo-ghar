@@ -230,6 +230,10 @@
       if (!s.lang) return;
       const t = toks[k++];
       if (t && t.cell && s.w) s.cell = t.cell; // the form's cell (the end review says that very form)
+      // contract-35 (s08 w6J: the L3 maani card wrote "hakri nindhi bajr ji maani", its item in plain ink): a fixed expression's
+      // own words (bajr, ji, maani: the engine's tokens `of` it) are that one thing, so they carry its Cook id and dot together
+      // as one item word on a dotted card (`part`: the end review still names the whole thing, Cook.display)
+      if (!s.w && t && t.of && ids.has(t.of)) (s.w = ids.get(t.of)), (s.part = true);
       const noun = t && t.defaulted && [].concat(t.defaulted.gender || [])[0];
       // only a form that changes with the gender ("hakro", not "ba"): the form's key names the gender used
       const dflt = (LX().features.gender || {}).default;
