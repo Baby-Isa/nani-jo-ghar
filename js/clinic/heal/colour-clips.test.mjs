@@ -46,7 +46,7 @@ test("every heal game's lines play only their own words' clips; a colour word pl
   let colourLines = 0;
   for (const g of GAMES) {
     const def = Heal.get(g);
-    assert.ok(def && def.bot, `${g}: registered with a bot`);
+    assert.ok(def && def.bot, `${g} bot`);
     for (const level of def.levels) {
       for (let seed = 1; seed <= 40; seed++) {
         const p = def.bot(level, rngFrom(seed * 7919 + level)).plan;
@@ -59,29 +59,29 @@ test("every heal game's lines play only their own words' clips; a colour word pl
             pieces++;
             const rec = byFile.get(c.file);
             if (!rec) {
-              bad.push(`${g} L${level}: "${shown}" plays ${c.file}, which is not a family clip`);
+              bad.push(`${g} L${level} [${shown}] ${c.file} ∉ family-audio`);
               continue;
             }
             // the clip is the word it plays under (the piece's own text)
-            if (norm(rec.kutchi) !== norm(c.text)) bad.push(`${g} L${level}: "${shown}" plays ${c.file} ("${rec.kutchi}") under "${c.text}"`);
+            if (norm(rec.kutchi) !== norm(c.text)) bad.push(`${g} L${level} [${shown}] ${c.file} [${rec.kutchi}] ≠ [${c.text}]`);
             // and a colour line never plays another colour's word
             for (const [other, lemma] of COLOURS) {
               if (!lemma || cols.includes(other)) continue;
-              if (new RegExp(`\\b${lemma}\\b`).test(norm(rec.kutchi))) bad.push(`${g} L${level}: "${shown}" (colour ${cols.join("+") || "none"}) plays ${other}'s clip ${c.file}`);
+              if (new RegExp(`\\b${lemma}\\b`).test(norm(rec.kutchi))) bad.push(`${g} L${level} [${shown}] ${cols.join("+")} ≠ ${other} ${c.file}`);
             }
           }
           // a colour with no recording shows its English (to record) and plays nothing for it
           for (const col of cols) {
             if (COLOURS.get(col)) continue;
             const said = w.plan.filter((c) => c && c.file && norm(c.text).split(" ").includes(col));
-            if (said.length) bad.push(`${g} L${level}: "${shown}" plays ${said.map((c) => c.file).join(", ")} for "${col}", which has no recording`);
+            if (said.length) bad.push(`${g} L${level} [${shown}] ${col} → ${said.map((c) => c.file).join("+")}`);
           }
         }
       }
     }
   }
-  assert.ok(pieces > 0, "some lines play family clips");
-  assert.ok(colourLines > 0, "some lines name a colour");
+  assert.ok(pieces > 0); // some lines play family clips
+  assert.ok(colourLines > 0); // some lines name a colour
   assert.deepEqual([...new Set(bad)].slice(0, 20), []);
 });
 
@@ -92,11 +92,11 @@ test("the tooth and taste games list the words they teach (CLN-119), as the engi
     const taught = new Map();
     const def = Heal.get(g);
     for (const level of def.levels) for (let seed = 1; seed <= 40; seed++) (def.bot(level, rngFrom(seed)).plan.words || []).forEach((w) => w && w.id != null && taught.set(String(w.id), w));
-    assert.ok(taught.size >= 4, `${g}: teaches some words`);
+    assert.ok(taught.size >= 4, `${g} words`);
     for (const [id, w] of taught) {
-      assert.ok(listed[id], `${g}: the word ${id} (${w.english}) is listed in data/clinic/heal/${g}.json words`);
-      assert.equal(listed[id].kutchi || null, w.kutchi || null, `${g}: ${id}'s Kutchi is the engine's`);
-      assert.equal(!!listed[id].placeholder, !w.kutchi, `${g}: ${id} is a to-record placeholder exactly when the engine has no Kutchi`);
+      assert.ok(listed[id], `${g}.json words.${id}`);
+      assert.equal(listed[id].kutchi || null, w.kutchi || null, `${g}.json words.${id}.kutchi`);
+      assert.equal(!!listed[id].placeholder, !w.kutchi, `${g}.json words.${id}.placeholder`);
     }
   }
 });
