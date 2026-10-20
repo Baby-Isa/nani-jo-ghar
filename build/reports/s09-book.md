@@ -1,59 +1,55 @@
 # s09-book
 
-Branch `worktree-agent-ac393bafc43718726` (not pushed: in-chat run, non-negotiable 14). Sandbox run `s09-book-matrix4`; evidence runs `s09-book-red` / `s09-book-red8` (old book) and `s09-book-green4`. Game code changed: the evening book only (`js/day/book*.js`, `css/day.css`, `data/day-book.json`); door and ride untouched.
+Branch `worktree-agent-ac393bafc43718726` (not pushed: in-chat run). Fix round on `dc365a3` + `6f5ab407` (the v2 art). Sandbox run `s09-book-fix-matrix`; evidence `s09-book-fix-red` (pre-fix code) then `s09-book-fix-green2`. Game code: the evening book only.
 
 ## Flaws first (builder's list; the judge decides)
 | # | flaw |
 |---|---|
-| 1 | All game art is placeholder: farm field and kitchen backdrops, dog, bird, door and car are flat shapes; goat, hen and Cook props are real. Paths in `data/day-book.json` |
-| 2 | The camera never upscales the 1536 px room past 1.45x (ART-05, contract-11): on a laptop the "face" shot is head, shoulders and book, not a tight face. A sharper b1 (s09b) brings it in by itself |
-| 3 | Lines still to record (grey, silent): "What did we do today?", "Goodnight!", "See you tomorrow!" (*saware* stands in). Engine stand-ins for Zafar's sentences: "There's the goat" → *Huda!*; "Then we saw a big goat" → *Ne poi wadhi bakri.*; "Nana wanted chai" → *Inke chai khape.*; "We went by car" → *Pa gadi me aayo.* No family clips yet for bakri, murgi, kutro, chakli, gadi, darwajo, chai, dudh, khun |
-| 4 | BOOK-01 probe 1 is a tool failure: `at: page:start` fires on the blank tab (navigation). My filmstrips instead: `build/screenshots/s09-book/BOOK-01-in.png`, `BOOK-01-out.png` (speed 1) |
-| 5 | Name it: a tap chooses at once (it says its word as it flies or wobbles); no listen-first |
-| 6 | Cook and the clinic still write no day log, so a real kitchen or clinic evening falls back to that place's own things |
+| 1 | Rule 11 leaves the book mostly silent grey English: only "Where is the goat?" (*Bakri kida ai?*) and "What's this?" (*Hi kuro ai?*) are engine sentences. In stick in the photo the grey "Then we saw a big goat." names the photo until Mum records it: the leak bot lists it as "still English" (as `leak.mjs` does), not as a pass |
+| 2 | The zoom in and out move the pages picture as a rectangle over the room: its edges show for about a second, fading |
+| 3 | Placeholder art: the find-it backdrops and the dog, bird, door and car |
+| 4 | Laptop "face" shot is head and shoulders (the room picture may not be magnified past 1.45x, ART-05) |
+| 5 | No probe films a page turn: the driver now marks `drv:page-turn`; suggest a BOOK-01 probe `strip:.day-book:6x200` there |
+| 6 | Name it: a tap chooses at once (no listen-first) |
 
-## What was built
-| piece | files |
+## The judge's points
+| point | fix |
 |---|---|
-| Room (b1) and camera: greet, ease to her face, tilt to the book, dissolve to the pages (b2 cut), page-turn curl, zoom back out, the room soft behind the book | `js/day/book.js`, `css/day.css`, `assets/day/book/` |
-| Find it, name it, stick in the photo (drag, take back until the page turns), our day; shared pill row, 64 px buttons, face replay on the page corner | `js/day/book-play.js` |
-| Planner with the leak rules; places, lines, lab logs incl. the farm day | `js/day/book-games.js`, `data/day-book.json` |
-| End: gold word cards, a day-book on the shelf per day (`story.dayBooks`), goodnight, tomorrow's sky | `js/day/book.js` |
-| Drivers find, find-wrong, nameit, photo, ourday, farm; moments | `build/sandbox/flows/day.mjs`, `lib/moments.mjs` |
-| Leak bot, unit tests | `build/leak_book.mjs`, `build/test_day_book.mjs` |
+| BOOK-01 zoom out | The pages shrink back into the book on her lap with the room all round (never black), eased, 2.4 s real time even at test speed |
+| BOOK-01 page turn | The right page lifts from its corner and swings over the fold, 1 s real time; the whole 64 px corner takes the tap (the clipped corner missed taps: it froze one 800x360 run) |
+| BOOK-01 bubble | Her lines in the shared speech bubble (`conversations.css`, speaker chip replays) beside her head |
+| Tomorrow | Its own white card, bottom left, clear of the fire; word cards make room for it |
+| BOOK-07 | A day-book flies from her lap onto b1 v2's empty shelf, gold-outlined |
+| BOOK-06 | The finished layout stays: the driver turns 10.5 s after the slide-in starts |
+| Zafar, 20 Oct | b2 v2 (the book held out to the child, her chin, dupatta and hands) and b1 v2 cut into `assets/day/book/`; pages measured inside its gold frames; v1 cuts deleted |
+
+## Rule 11, line by line
+| line | was | now |
+|---|---|---|
+| Where is the goat? / What's this? | engine | kept: whole sentence, real lexicon |
+| There's the goat! | *Huda!* | grey English |
+| Name it: Nana wanted chai / We saw a dog / We went by car | *Inke chai khape.* ("he wants chai"), *Ne poi kutro.*, *Pa gadi me aayo.* | the Kutchi word in the row, the sentence grey |
+| Then we saw a big goat / Then we used the milk | *Ne poi wadhi bakri.* | grey English |
+| Our day | *Pela darwajo. Ne poi gadi.* | grey: "In the morning we opened the door." ... |
+| What did we do today? / Goodnight! / See you tomorrow! | grey / *saware* | grey English |
 
 ## Play it
-- `day.html?stage=book&log=farm` (the whole farm evening) · `day.html?stage=book&log=kitchen`
-- `day.html?stage=book&game=find` · `&game=nameit` (`&log=kitchen` for chai) · `&game=photo` · `&game=ourday`
-- Add `&seed=7` for the same book twice. Mouse and touch both play (taps on buttons; photos drag on pointer events).
+`day.html?stage=book&log=farm` · `&log=kitchen` · `day.html?stage=book&game=find` · `&game=nameit` · `&game=photo` · `&game=ourday` (`&seed=7`: the same book).
 
 ## Proof
-| row | red (old book) | green (`s09-book-green4`) |
+| row | red (pre-fix) | green (`s09-book-fix-green2`) |
 |---|---|---|
-| BOOK-01 | tool failure | probe 1 tool failure (spec, flaw 4); filmstrips above |
-| BOOK-02 | tool failure | machine PASS (buttons ≥ 64, no clip; pages 322 and 332 px wide at 844x390) |
-| BOOK-03..06 | tool failure (no games) | sheets for the judge |
-| BOOK-07 | a sheet of the old end (progress dots, no cards, no shelf) | sheet for the judge |
-| BOOK-08 | tool failure (no bot) | PASS: blind best 29.4% find (chance 29.2), 33.9% name it, 34.0% photo (33.3); fair 100%; `--plant` caught |
+| BOOK-01 | p1 tool failure; p2 the black cut | both strips (camera in; zoom out) |
+| BOOK-03, 07 | old sheets | sheets |
+| BOOK-06 | tool failure (page turned) | finished 3 + 2 layout |
+| BOOK-02, 08 | | machine PASS |
 
-- **Pages run:** 8 (day:book at all eight sizes). 8 reach their end, 0 page errors. **Contract: 0 breaks** (earlier contract-3 and contract-11 breaks fixed: one stage for the evening; camera capped).
-- **Layout lint:** 0 findings. **Shotdiff:** 305 new, 0 changed (new flow).
-- **checks.mjs:** all ok (unit 461, words, static, leak, bump, specs, docs, recordings, size, load 29/29; `cook:chop` load flaked once in an earlier run).
-- **Regressions:** 0 rows for day:book (touched.mjs widens to every flow only because sandbox files changed).
+- 8 sizes: 8/8 reach the end, 0 page errors, **0 contract breaks**, 0 layout findings. `checks.mjs` all ok (unit 478, load 29/29).
+- Stills: `build/screenshots/s09-book/pages-view-1366x768.png`, `pages-view-844x390.png` (pages 330 and 327 px wide at 844x390).
 
-## Requests (not my files)
+## Requests
 | who | what |
 |---|---|
-| Orchestrator, `evidence.json` | BOOK-01 p1 `at` → `host:day/book/room`; p2 → `visible:.day-zoom-out` (the way out; `.day-tomorrow` comes after it). BOOK-04 `!hasWord:name` only sees proper names |
-| `checks.mjs` / leak configs | run `build/test_day_book.mjs` (only `test_shared_*` run) and `build/leak_book.mjs` |
-| lab/day.html | a tile per book game (links above) |
-| s09b art | sharper b1 or a face close-up; field and kitchen spreads; dog, bird, door, car sprites |
-
-## QA checklist results
-```
-QA: day:book · reviewer: <judge> · commit: <final>
-Auto: layout lint ✅ · contract 0 breaks ✅ · leak_book ✅ · test_day_book ✅ · checks.mjs ✅
-Screens (builder's notes, flaws first): flaws 1-3; "turn-N-2" states are a duplicate shot of the same corner
-Checklist: TXT ⬜ · LAY ⬜ · CMP ⬜ · LNG ⬜ · INT ⬜ · AUD ⬜ · ART ⬜ · CUL ⬜ · REL ⬜   (for the judge)
-Regressions rechecked: 0 rows for day:book
-```
+| Orchestrator | a BOOK-01 page-turn probe at `drv:page-turn` |
+| Mum (recording sheet) | the grey lines above |
+| s09b art | find-it spreads; dog, bird, door, car sprites |
