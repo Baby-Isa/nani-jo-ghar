@@ -265,6 +265,110 @@
   "png": "build/screenshots/evidence/ev-20261020-073941-0e9/ART-21.png",
   "date": "2026-10-20"
  },
+ "BOOK-01": {
+  "hash": "8b9e5524c52f76549838",
+  "dhash": [
+   "70703919cd898948",
+   "311313131313130f"
+  ],
+  "verdict": "FAIL",
+  "line": "B, the zoom back out is not seen: 0 ms shows the open book shrunk on a solid black field (the room that was behind it in A at 1937 ms is gone), 399 ms is already the full room with the four-word tray at the bottom, nothing between; and neither panel shows a page turn between games (A holds one game on its pages for 12 frames; only a small arrow at B 0 ms hints at one). The zoom in is shown and clean in A (0 ms wide room by the fire, 816 ms her face, 1937 ms down onto the book, 2282 ms on its pages). Other flaws: the two flat light-blue squares on the pages at A 2282-5966 ms look like unfilled placeholders beside the finished maani/jug/chai/pot art; at A 0 ms the grey-italic \"What did we do today?\" bubble sits in the top-left corner with no speaker chip, away from Nani; at B 1693-3014 ms the pale arch (door with sky) is drawn over the fireplace mantel and shelf. \"Goodnight!\" at B 1693 ms is grey-italic to-record over \"saware\" (allowed); \"Huda!\" and the tray words are Kutchi; no clipping.",
+  "panel": "B",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-01.png",
+  "date": "2026-10-20"
+ },
+ "BOOK-02": {
+  "hash": "06d43337e96ab9bbda45",
+  "dhash": [
+   "3313531343475317",
+   "3113135341434113",
+   "1311535343435353",
+   "1111135341434353"
+  ],
+  "verdict": "PASS",
+  "line": "machine: minSize:.day-book button>=64 (minSize 93, 72, 64); noClip:.day-book (1 clean); minSize:.day-book button>=64 (minSize 93, 72, 64)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "date": "2026-10-20"
+ },
+ "BOOK-03": {
+  "hash": "6e6dc1c82edbb7146cc3",
+  "dhash": [
+   "31171727656b050f",
+   "31171727652a024f",
+   "11171327656b1757",
+   "31171727632b0657"
+  ],
+  "verdict": "FAIL",
+  "line": "BOOK-03-p1-L1-1366x768 voice, after the found tap Nani says only \"Huda!\" then the next question, not the full line back; the found state (bounce, gold corner tick) and the wrong state (wiggle, no red) are not pictured either, the wrong-tap strip is listed as left off the sheet (A-D do show the find scene at both sizes: today's place across both pages, four sprites, two asked, Kutchi only; at 844x390 Nani's avatar overlaps the left tree crown and the book's bottom edge is cut by the screen)",
+  "panel": "BOOK-03-p1-L1-1366x768 voice",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-03.png",
+  "date": "2026-10-20"
+ },
+ "BOOK-04": {
+  "hash": "78071f067343277dcca5",
+  "dhash": [
+   "311313135353130f",
+   "315111535353134f",
+   "311313115353130f",
+   "311111515151134f"
+  ],
+  "verdict": "PASS",
+  "line": "B, the chai glass alone on the left page, three identical speaker buttons with nothing written on them and an empty dashed sentence row on the right, Nani's \"Hi kuro ai?\" bubble beside her avatar, dom capture holds only that question; D shows the row filled \"Inke chai khape.\" with chai highlighted and the voice timeline has the word spoken only after the tap followed by \"Inke chai khape.\" (note: once filled, the row sits on the right page with no bubble beside Nani, so it reads as a line away from her)",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-04.png",
+  "date": "2026-10-20"
+ },
+ "BOOK-05": {
+  "hash": "3d77fb4e29165cee3fdf",
+  "dhash": [
+   "311113131315130f"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 0 ms the dashed frame on the left page with \"Ne poi wadhi bakri.\" written under it and three unlabelled photos (goat, bird, brown dog) on the right page; 1228-2541 ms the goat photo is dragged across and shrinks into the frame; 3072-4431 ms it sits snapped in with gold corner mounts, the sentence still under it, the other two photos tidied on the right page and the Done arrow shown. Not demonstrated on this sheet: a wrong photo sliding back, a take-back before Done, the word-by-word writing (the full sentence is already up at 0 ms, i.e. 1.23 s, mid-line of the 0.94-1.54 s voice), and the \"book leak bot\" half of the Check has no result in the .md. The dom capture reads only Kutchi; all Nani lines are marked silent (no clip played), which is a recording gap not a leak. No clipping or overlap.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-05.png",
+  "date": "2026-10-20"
+ },
+ "BOOK-07": {
+  "hash": "55cbb7406a36c7d5d91d",
+  "dhash": [
+   "f4753919cc89890e"
+  ],
+  "verdict": "FAIL",
+  "line": "A, six gold word cards (chakli, bakri, kutro, gadi, darwajo, murgi) and no stars or scores are there, but no day-book is added to a shelf: the shelf is painted art already full of books with nothing new on it, and a translucent arch-shaped artefact sits over the fireplace chimney; the Goodnight!/saware bubble (grey-italic English, to-record, allowed) is parked top-left away from Nani in the centre",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/BOOK-07.png",
+  "date": "2026-10-20"
+ },
+ "BOOK-08": {
+  "hash": "62be967f2a9eb788af5d",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/leak_book.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "date": "2026-10-20"
+ },
  "CHAI-02": {
   "hash": "7d0f070be18f4468d8e3",
   "dhash": [
@@ -4843,6 +4947,85 @@
   "run": "ev-20261012-2148",
   "commit": "31ecc7b",
   "date": "2026-10-12"
+ },
+ "RIDE-01": {
+  "hash": "c04528e7316312014e5d",
+  "dhash": [
+   "3a4f0b29c5230d2b",
+   "724f0b91b155a301"
+  ],
+  "verdict": "FAIL",
+  "line": "A, the join is a hard swap, not a soft cross-fade: at 3585 ms the near band shows tree + red door + green door, at 4002 ms (417 ms later) it shows chicken, bicycle, tractor, cow, haystack with no ghost of either set in any frame, and the tree that should carry across is gone; the near band then barely moves from 4002 to 5678 ms (chicken/bicycle/tractor/cow within ~15 px over 1.7 s) while it moved ~300 px per 0.9 s before. B (844x390) shows the same swap: the chicken and cow right of the bush at 2112-2450 ms are replaced by haystack + red + green by 2930 ms without a fade frame, and the chicken creeps only ~35 px from 1601 to 2450 ms. The far hills and the fence/wall band do scroll at their own slower rates and the window frame, sun and clouds are clean; no clipping, no text.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/RIDE-01.png",
+  "date": "2026-10-20"
+ },
+ "RIDE-02": {
+  "hash": "ec2e0591d091c87f3739",
+  "dhash": [
+   "7b4f1bd3074b5b03",
+   "7a4f1b63434a8909"
+  ],
+  "verdict": "PASS",
+  "line": "machine: contract-47 (0 breaks on this page); contract-47 (0 breaks on this page)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "date": "2026-10-20"
+ },
+ "RIDE-03": {
+  "hash": "51d43eea84707bf01ab3",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: lastsMs:.wr-member>=8000 (on screen 10610 ms); lastsMs:.wr-member>=3000 (on screen 3920 ms); lastsMs:.wr-member<=4500 (on screen 3920 ms)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "date": "2026-10-20"
+ },
+ "RIDE-04": {
+  "hash": "32029a9227c9acd985c2",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: contract-48 (0 breaks on this page)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "date": "2026-10-20"
+ },
+ "RIDE-05": {
+  "hash": "2f64cdf3255817c26be9",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/leak_window_ride.mjs --speeds slow,normal,fast: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "date": "2026-10-20"
+ },
+ "RIDE-06": {
+  "hash": "c21a400a620d40d2af1e",
+  "dhash": [
+   "7c614af96a616a7f",
+   "7e634a796871726f",
+   "ddd7ede9eae9c5ce",
+   "6d4765516963616e"
+  ],
+  "verdict": "PASS",
+  "line": "C, at 1366x768 the car frame is fitted to the full height with both pillars and the door extended to the edges, the farm view fills the whole opening and no green shows anywhere; D (800x360) likewise fills the strip beside the word list; A (1024x768) and B (1366x1024) fill by height with the right pillar cropped off-screen, still no green and the view filling the opening; sidebar text (Nar!, laal darwajo, kutro, lilo darwajo) is Kutchi, unclipped at all four sizes",
+  "panel": "C",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261020-183123-8zf",
+  "commit": "44266b3",
+  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/RIDE-06.png",
+  "date": "2026-10-20"
  },
  "SAM-01": {
   "hash": "284fba9159f0fe8bf1aa",

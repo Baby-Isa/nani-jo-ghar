@@ -17228,7 +17228,8 @@
     "crop:.day-book"
    ],
    "expect": null,
-   "note": "our day: the photos in order, three left and two right, nothing on the fold"
+   "note": "our day: the photos in order, three left and two right, nothing on the fold (captured after the slide-in has finished)",
+   "delay": 9000
   }
  ],
  "BOOK-07": [
