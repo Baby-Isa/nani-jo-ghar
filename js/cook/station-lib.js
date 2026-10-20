@@ -518,6 +518,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const ry = vessel.rim.ry * 0.45;
     const L = vessel.rim.rx / 60;
     const sp = S.track(S.add.graphics().setDepth(D.fx + 1)); // CHAI-13 (S06): the stirring teaspoon over the puff, never hidden by it
+    // CHAI-13 (s08c TP1, s08 w7A): the real teaspoon going round, wet with what is in the vessel (milky chai, or water and
+    // black tea: the plain wet steel; vessel.spoonWet), its bowl in the liquid and its handle out to the lower right
+    const wet = typeof vessel.spoonWet === "function" ? vessel.spoonWet() : vessel.spoonWet || "chai";
+    const tid = wet === "empty" ? "teaspoon-empty" : "teaspoon-chai";
+    const pic = S$.hasArt(S, tid) ? S.track(S.add.image(p.x, p.y, S$.artKey(tid)).setDepth(D.fx + 1)) : null;
+    if (pic) {
+      const m = S$.art(tid).meta || {};
+      const bowl = m.bowl || [0.2, 0.5];
+      pic.setOrigin(bowl[0], bowl[1]).setRotation(Math.atan2(38, 70)).setScale((L * Math.hypot(70, 38)) / (((m.end || 0.95) - bowl[0]) * pic.width));
+    }
     const sw = S.track(S.add.graphics().setDepth(D.item + 0.5));
     let first = true;
     const draw = (u) => {
@@ -528,7 +538,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const lift = Math.max(first && !dipped ? 1 - u * 8 : 0, vessel.stirAgain > 0 ? 0 : 1 - (1 - u) * 8, 0);
       sp.clear().setAlpha(1 - lift * 0.7);
       // the handle leans out to the lower right (the hand's side), the bowl in the liquid (CHAI-13: a teaspoon)
-      S$.teaspoon(sp, x, y - lift * L * 20, x + L * 70, y + L * 38 - lift * L * 20, L);
+      if (pic) pic.setPosition(x, y - lift * L * 20).setAlpha(1 - lift * 0.7);
+      else S$.teaspoon(sp, x, y - lift * L * 20, x + L * 70, y + L * 38 - lift * L * 20, L);
       // the swirl it leaves on the surface
       sw.clear();
       for (let i = 0; i < 3; i++) {
@@ -559,6 +570,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             }
             vessel.stirring = false;
             sp.destroy();
+            if (pic) pic.destroy();
             S.tweens.add({ targets: sw, alpha: 0, duration: 300, onComplete: () => sw.destroy() });
             resolve();
           },

@@ -78,7 +78,7 @@
  },
  "hob": {
   "_about": "the hob plate cut from bg-cook-hob-t-v1.png (src_box, source px, its rounded mask's corner radius) x2; in1600: its box in the 1600x900 design box, where bg-cook-hob-t-v1-1600 drew it (the stations' burners, station-lib.js BURNER)",
-  "file": "assets/cook/bg/bg-cook-hob-plate-s08c.webp",
+  "file": "assets/cook/items-s08c/worktop/hob-plate-s08c.webp",
   "h": 1052,
   "in1600": {
    "box": [
@@ -101,7 +101,7 @@
  },
  "marble": {
   "_about": "WT1 cut from its source, cross-faded left-right and top-bottom, upscaled x2: laid tiled at 0.5 design px per source px (js/cook/stations.js fitBg)",
-  "file": "assets/cook/bg/bg-cook-marble-tile-s08c.webp",
+  "file": "assets/cook/items-s08c/worktop/marble-tile-s08c.webp",
   "h": 1840,
   "seam_left_right": 1.05,
   "seam_left_right_before": 3.55,

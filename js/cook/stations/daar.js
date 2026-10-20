@@ -91,7 +91,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * daal goes in the oil, seeds and vegetables cut once as discs from the v3 pot pictures' contents (OLD_IN: their contents
    * circle on that canvas, measured on the cut). DP3's tadka, veg and done discs show curry leaves, a dried chilli, onion with
    * tomato and coriander that an order may not have (DAAR-16: the pot shows what went in), so they are not used: what went in
-   * shows as DP1's pieces on the daal, and the tadka lies under the daal poured over it.
+   * shows as DS1's stirred-in scatters on the daal, and the tadka lies under the daal poured over it.
    */
   const POT2 = { w: 900, h: 705, cx: 0.5, cy: 0.4993, r: 0.3844, inner: 0.3467, cut: [327 / 900, 333 / 900], disc: 337 / 900 };
   /*
@@ -113,25 +113,22 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const VEG_BIT = { "veg-02": 1, "veg-03": 2, "veg-12": 4 };
   const MIX_POT = ["seeds", "onion", "tomato-only", "tomato", "chilli-only", "onion-chilli", "tomato-chilli", "chilli"];
   /*
-   * DAAR-05 (s07 DP1): what went in stays pictured once the daar is poured over it, and turns with the stir: a few of
-   * DP1's pieces (sources/art/s07/dp1-daar-pieces-v1.png, cut to v3/daar/dp1-*) lie on the daar, each vegetable's own,
-   * never one that didn't go in. [texture, its width as a share of the contents' radius, [angle (deg), radius share]...]
+   * DAAR-05 (the s08c redo, DS1 v2; s08 w7A): what went in stays pictured once the daar is poured over it, and turns with the
+   * stir: each thing that went in lies on the daar as its own stirred-in scatter (sources/art/s08c/ds1-daal-stirred-in-v2.png,
+   * cut to assets/cook/items-s08c/daar-in/: soft cooked pieces coated in the daal, never raw stickers), never one that didn't
+   * go in (DAAR-16). They replace DP1's pieces.
    */
-  const DP1 = {
-    "veg-02": [["dv4-onion", 0.2, [[20, 0.55], [140, 0.62], [250, 0.4], [320, 0.7]]]],
-    "veg-03": [["dv4-tomato", 0.3, [[80, 0.5], [200, 0.58], [300, 0.32]]]],
-    "veg-12": [["dv4-chilli-1", 0.17, [[115, 0.3], [345, 0.45]]], ["dv4-chilli-2", 0.17, [[230, 0.68], [40, 0.25]]]],
-    "veg-13": [["dv4-paste", 0.24, [[170, 0.22]]]],
-    "veg-14": [["dv4-paste", 0.24, [[10, 0.12]]]],
-  };
-  const DP1_FILES = { "dv4-onion": "dp1-onion", "dv4-tomato": "dp1-tomato", "dv4-chilli-1": "dp1-chilli-1", "dv4-chilli-2": "dp1-chilli-2", "dv4-paste": "dp1-paste" };
+  const S8C = "assets/cook/items-s08c/";
+  const DS1 = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli", "veg-01": "potato", "veg-13": "garlic", "veg-14": "ginger", "spi-02": "cumin", "spi-05": "mustard" };
+  const ds1Key = (id) => `dv5-in-${DS1[id]}`;
   // the served bowl on its trivet (528 x 563; its round body, trivet and all: r 0.4833 of w) and the ladle
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
   // S03-D (S8): the tadka bowl redrawn with matte daar (no beads), its own trivet circle measured on the cut
   const TRIVET = { w: 528, h: 527, cx: 0.5, cy: 0.5, r: 0.4697 };
-  // S03-D (DAAR-02): ladle-v3, a real kadchi from above (a deep round bowl, a flat strap handle rising to the upper
-  // right, foreshortened by build/gen_s03.py); its bowl: the biggest circle inside it, measured on the cut
-  const LADLE = { w: 360, h: 389, cx: 0.2889, cy: 0.7301, r: 0.2401 };
+  // DAAR-02 (s08c KD1, s08 w7A): the real kadchi from above, its bowl full of daal as it stirs (kadchi-daal-s08c: a deep
+  // round bowl, the handle rising towards us, foreshortened, with its hanging hole); its bowl: the biggest circle inside it,
+  // measured on the cut (assets/cook/items-s08c/meta.json bowls)
+  const LADLE = { w: 436, h: 560, cx: 0.3647, cy: 0.7143, r: 0.3488 };
   // (R4 cell 6) the same bowl of plain daar, no tadka: it waits beside the pot and pours in (the tadka one is the review's)
   // S03-D (C10): the s03 bowl (matte daar) on trivet-t, one canvas with daar-bowl-plain-t (build/gen_s03.py --fit)
   const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4899 };
@@ -139,9 +136,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const DIAL_ICONS = ["stopped", "slow", "fast", "spill"];
   // DAAR-13: the margin-safe knife's edge, tip to heel, as fractions of tool-knife-t.png (345 x 296)
   const KNIFE_BLADE = [0.07, 0.08, 0.5, 0.64];
-  // DAAR-11 (D6): the ladle's handle leaves its bowl about 48 degrees above the right (ladle-v3.webp); turned so it
-  // always points out to the rim, hooked over it, as the ladle goes round
-  const LADLE_HANDLE = (-48 * Math.PI) / 180;
+  // DAAR-11 (D6): the kadchi's handle leaves its bowl about 61 degrees above the right (kadchi-daal-s08c); turned so it
+  // always points out to the rim, resting on it, as the ladle goes round
+  const LADLE_HANDLE = (-60.8 * Math.PI) / 180;
   // DAAR-30: the stir's flag, at 12 o'clock (screen angles: y down, so straight up is -90 degrees)
   const FLAG_AT = -Math.PI / 2;
   /** A test log (the contract checks read it: contract-65, contract-66), never shown. */
@@ -313,7 +310,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const art = [
       ["dv2-knife", IT + "tool-knife-t.png"], // DAAR-13: the margin-safe cut (the webp touched its canvas edge: the tip was clipped)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
-      ["dv3-ladle", V3 + "ladle-v3.webp"],
+      ["dv3-ladle", "assets/cook/items-s08c/kadchi/kadchi-daal-s08c.webp"], // DAAR-02: s08c KD1
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
     ]
@@ -323,7 +320,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
       .concat(DIAL_ICONS.map((n) => [`dv3-dial-${n}`, `${V3}dial-${n}.webp`]))
-      .concat([...new Set(vegAll.flatMap((id) => (DP1[id] || []).map((d) => d[0])))].map((key) => [key, `${V3}${DP1_FILES[key]}.webp`]))
+      .concat([...new Set(vegAll.concat(spiceIds))].filter((id) => DS1[id]).map((id) => [ds1Key(id), `${S8C}daar-in/in-${DS1[id]}-s08c.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
       .concat(St.artLoad(["knife", "daar-bowl", "daar-trivet"])); // S02-B: the art run's knife and split bowl/trivet, once they land
@@ -715,7 +712,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     let mix = 0; // the pictured vegetables in the pot so far (VEG_BIT)
     const stage = (st) => (st === "oil" ? 0 : 1);
     /** A chopped vegetable goes in: the pot shows exactly what's in it (R4: no onion unless onion went in). */
-    const wentIn = new Set(); // DAAR-05: every chopped thing that went in (DP1's pieces after the daar)
+    const wentIn = new Set(); // DAAR-05: every chopped thing and seed that went in (DS1's scatters after the daar)
     const addVeg = (id) => {
       if (id) wentIn.add(id);
       mix |= VEG_BIT[id] || 0;
@@ -800,7 +797,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     let help = false;
     // a pinch from the jar: the jar tips over the pot, the seeds land in the oil (the picture changes: D3)
     const spiceDrop = async (id) => {
-      if (DP1[id]) wentIn.add(id); // (garlic in the tadka: its paste stays pictured on the daar, DAAR-05)
+      if (DS1[id]) wentIn.add(id); // (the seeds and the garlic in the tadka stay pictured, stirred into the daar: DAAR-05)
       const obj = items[id];
       const col = St.heapColor(id, 0x8a5a2a);
       S.tweens.add({ targets: obj, scale: obj.baseScale * 1.06, duration: 90, yoyo: true });
@@ -1012,28 +1009,23 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
     await setPot("daar", 300);
     const pieces = [];
-    // DAAR-31's flaw (the judge, 20 Oct: "identical toppings in identical places at all four levels"): each round lays the
-    // pieces at its own turn of DP1's spots, each a little nearer or further out, so no two pots are the same picture
+    // DAAR-31's flaw (the judge, 20 Oct: "identical toppings in identical places at all four levels"): each round turns the
+    // spots by its own amount. DAAR-05 (DS1 v2): one stirred-in scatter per thing that went in, spread round the daar by the
+    // golden angle, each a little nearer or further out, smaller the more there are, so they never pile on one another
     const spin = Math.random() * 360;
-    // DAAR-05's flaw (s08 w6G: "no white blotches on the pot contents"): the onion is cooked golden in the oil and the
-    // ginger-garlic paste is stirred into the daar's own colour, both a little sunk into it, never pale patches on top
-    const COOKED = { "dv4-onion": [0xe2a85a, 0.82], "dv4-paste": [0xe8b048, 0.7] };
-    [...wentIn].forEach((id) =>
-      (DP1[id] || []).forEach(([key, w, spots]) => {
-        if (!S.textures.exists(key)) return;
-        spots.forEach(([deg, rr], i) => {
-          const img = S.track(S.add.image(cx, cy, key).setDepth(D.item + 0.15).setAlpha(0));
-          const cooked = COOKED[key];
-          if (cooked) img.setTint(cooked[0]);
-          img.setScale((inR * w * (0.9 + 0.2 * ((i * 37) % 10) / 10)) / Math.max(img.width, img.height));
-          const rOut = Math.min(0.72, Math.max(0.15, rr + (Math.random() - 0.5) * 0.16));
-          const piece = { img, a: ((deg + spin) * Math.PI) / 180, r: inR * rOut, turn: ((deg * 7 + spin) % 360) * (Math.PI / 180) };
-          img.setPosition(cx + Math.cos(piece.a) * piece.r, cy + Math.sin(piece.a) * piece.r).setRotation(piece.turn);
-          S.tweens.add({ targets: img, alpha: cooked ? cooked[1] : 0.92, duration: 400 });
-          pieces.push(piece);
-        });
-      })
-    );
+    const ins = [...wentIn].filter((id) => DS1[id] && S.textures.exists(ds1Key(id)));
+    const n = ins.length;
+    const size = inR * Math.min(0.78, Math.max(0.46, 1.25 / Math.sqrt(n + 1)));
+    ins.forEach((id, i) => {
+      const img = S.track(S.add.image(cx, cy, ds1Key(id)).setDepth(D.item + 0.15).setAlpha(0));
+      img.setScale(size / Math.max(img.width, img.height));
+      const deg = spin + i * 137.5;
+      const rOut = n === 1 ? 0.25 : Math.min(0.62, 0.2 + 0.42 * Math.sqrt((i + 0.5) / n) + (Math.random() - 0.5) * 0.08);
+      const piece = { img, a: (deg * Math.PI) / 180, r: inR * rOut, turn: ((deg * 7) % 360) * (Math.PI / 180) };
+      img.setPosition(cx + Math.cos(piece.a) * piece.r, cy + Math.sin(piece.a) * piece.r).setRotation(piece.turn);
+      S.tweens.add({ targets: img, alpha: 0.96, duration: 400 });
+      pieces.push(piece);
+    });
     Cook.daarPhase = "daar-in";
     burner.set("low");
     if (sizzle && sizzle.stop) sizzle.stop();
@@ -1606,7 +1598,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   /*
    * DAAR-05 (s07 fix round): what is in the served bowl, as one container over the plain bowl (it grows with it): the
    * pot's stirred daar (pot-tadka-v2's contents, cut once to a circle with a soft edge) filling the bowl's daar circle,
-   * and the pieces that went in (DP1), each where the stir left it in the pot, scaled from the pot's daar to the bowl's.
+   * and the scatters of what went in (DS1), each where the stir left it in the pot, scaled from the pot's daar to the bowl's.
    * The plain bowl's daar circle (daar-bowl-trivet-plain-v2, measured on the cut): centre (0.499, 0.497), r 0.322 of w.
    */
   const BOWL_DAAR = { cx: 0.499, cy: 0.497, r: 0.322 };
@@ -1656,7 +1648,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     z.expect({ kind: "wait" });
     // a bowl of daar, ladled from the pot, on its wooden trivet beside it
     // DAAR-05 (s07 fix round): the bowl shows what went in, stirred: the plain bowl with the pot's own stirred daar in
-    // it (its tadka seeds) and DP1's pieces where the stir left them; never the old tadka bowl's dry chilli and curry
+    // it (its tadka seeds) and DS1's scatters where the stir left them; never the old tadka bowl's dry chilli and curry
     // leaves, which no order puts in. (No plain bowl: the old one, as before.)
     const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists("dv4-disc-stirred");
     const TB = plain ? TRIVET_PLAIN : TRIVET;
