@@ -191,7 +191,9 @@ test("the farm road's data: three layers with their speeds, the keyed frame, thr
   for (const [g, ids] of Object.entries(ride.groups)) if (!g.startsWith("_")) for (const id of ids) assert.equal(ride.things[id].group, g, id);
   for (const [id, t] of Object.entries(ride.things)) {
     assert.ok(t.en && t.say && t.family, `${id}: an English name, an engine id and a family`);
-    assert.ok(/^assets\/day\/ride\/s09r\/[\w-]+\.webp$/.test(t.cut), `${id}: where its s09r cut lands`);
+    // where its s09r cut is (null: none made yet, s09b: the cow, the tractor, the bicycle keep their placeholder)
+    if (t.cut !== null) assert.ok(/^assets\/day\/ride\/s09r\/[\w-]+\.webp$/.test(t.cut), `${id}: where its s09r cut lands`);
+    else assert.equal(t.art, null, `${id}: no cut, so the placeholder`);
   }
   assert.equal(ride.things.cow.say, "n.cow", "the cow's engine id (the engine reports the gap; its Kutchi is never written here)");
   assert.ok(Object.keys(v.props).every((k) => ["bush", "haystack", "wall", "tree"].includes(k)));

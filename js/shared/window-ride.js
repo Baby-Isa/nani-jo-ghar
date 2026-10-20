@@ -49,7 +49,7 @@
   W.SPEEDS = { slow: 9000, normal: 6000, fast: 3300 };
   W.SPEED_ORDER = ["slow", "normal", "fast"];
   W.FADE = 0.1; // the cross-fade: each copy of a layer fades in over the outer tenth of the one before
-  const LINES = { near: { y: 800, scale: 1, layer: "near" }, field: { y: 664, scale: 0.55, layer: "middle", edge: 652 } };
+  const LINES = { near: { y: 800, scale: 1, layer: "near" }, field: { y: 654, scale: 0.55, layer: "middle", edge: 646 } };
   const LAYER_SPEED = { far: 0.15, middle: 0.4, near: 1 };
   const IN_WINDOW = 0.8; // every member at least this much inside the window before Nani asks ...
   const CALL_SHARE = 0.45; // ... and at least this much of it showing (a prop may half-hide it)
@@ -572,7 +572,9 @@
   };
 
   /** One looping layer: copies of its picture every (1 - FADE) of a tile, each fading in over the tenth before (no seam). */
-  W.layerStrip = function (doc, def, url, useArt) {
+  W.layerStrip = function (doc, def0, url, useArt) {
+    // a picture sits in its own box (its aspect: data artBox), the placeholder shapes in the layer's
+    const def = useArt && def0.art && def0.artBox ? Object.assign({}, def0, def0.artBox) : def0;
     const tile = def.tile || 1600;
     const period = tile * (1 - W.FADE);
     const n = Math.ceil(SCENE.w / period) + 3;
