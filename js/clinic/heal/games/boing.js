@@ -28,6 +28,9 @@
   const COL = 2;
   // line keys in data/clinic/heal/boing.json (the engine says them); T34: the headline is [Time for the jab] (to record)
   const WHY = { problem: "boing-why", goal: "boing-jab-goal" };
+  // s08 w6N (CLN-106; the brief: "'Time for the jab.' comes after the wipe"): the card opens on its steps alone (no
+  // headline said before the wipe); the doctor says the jab line once the wipe is done (close(), below)
+  const DEF_WHY = { problem: WHY.problem };
   // first-time help: the ghost finger's move for each kind of step (13g: no words, no device voice)
   const CUES = {
     wipe: { gesture: "tap", then: "tap" },
@@ -359,6 +362,8 @@
       const c = cur();
       if (!c) return;
       if (c.kind === "wipe") judge("wipe-count", st.wipes === c.count, `${st.wipes} of ${c.count}`);
+      // CLN-106: the arm is clean: now the doctor says it's time for the jab (queued after the wipe's own lines)
+      if (c.kind === "wipe") S.say(WHY.goal, "doctor");
       if (c.kind === "plaster") judge("plaster-colour", st.plaster === c.colour, `${st.plaster || "none"} of ${c.colour}`);
       if (c.kind === "drops") {
         // a drop taken back counts only if the child had gone past the count (the first go is scored)
@@ -718,7 +723,7 @@
     plan,
     mount,
     bot,
-    why: WHY,
+    why: DEF_WHY,
     cues: CUES,
     steps: (level, rng) => plan(level, rng).steps.map((x) => x.kind),
   };

@@ -642,7 +642,7 @@
       mouthSay(P.level === 1 ? said.map((id) => word(BY[id]).replace(/[[\]]/g, "")).join(", ") : null);
       if (again) {
         st.busy = true;
-        await ctx.say(line, { who: "patient", noBubble: true });
+        await (st.reading = ctx.say(line, { who: "patient", noBubble: true }));
         S.face("neutral");
         // she read it right: the row ticks itself, then a pause before the next row (EY13)
         st.ticked[i] = true;
@@ -662,7 +662,9 @@
         // ghost taps the right one, a tap on the other shakes red as at L2-L3
         S.cue("read", Object.assign({}, CUES.read, { also: [c.wrong ? haaBtn : naBtn] }), c.wrong ? naBtn : haaBtn);
       }
-      ctx.say(line, { who: "patient", noBubble: true }).then(() => S.face("neutral"));
+      // CLN-107: her reading is kept, so the next line (the doctor naming the row, her "I can see!") starts only when
+      // her words are said: a line plays only its own words' clips, never under another line
+      st.reading = ctx.say(line, { who: "patient", noBubble: true }).then(() => S.face("neutral"));
     };
     // her bubble under her mouth (the eye test): the anchor below her mouth on the left panel
     const mouthAt = () => (readEye ? { x: readEye.x + (version === "A" ? 40 : 10), y: readEye.y + (version === "A" ? 92 : 70) } : null);
@@ -685,18 +687,23 @@
       ctx.after(text ? (fast() ? 300 : 2000) : fast() ? 300 : 2800, () => el.remove());
     };
     // EY13: a wrong judgement: the doctor (his box, off screen) names the row with its pictures, said aloud
+    // CLN-107 (the judge: at the misread "no doctor bubble naming the row in pictures"): his bubble stays up until the
+    // row is judged again or read again after the drop (unName), never gone a beat after his line; his line waits for
+    // her reading to end (her clips never play under his words)
+    const unName = () => S.root.querySelectorAll(".eye-name").forEach((n) => n.remove());
     const nameRow = async (i) => {
       const c = P.chart[i];
-      S.root.querySelectorAll(".eye-name").forEach((n) => n.remove());
+      unName();
       const el = S.h("div", "eye-name", S.root);
+      el.dataset.row = String(i);
       c.pics.forEach((id) => {
         const im = S.h("img", null, el);
         im.alt = "";
         im.src = url(BY[id].icon);
       });
       const line = HS.L.show(HS.L.join(c.pics.flatMap((id, k) => (k ? [",", BY[id].lex] : [BY[id].lex]))));
+      await Promise.resolve(st.reading).catch(() => {});
       await ctx.say(line, { who: "doctor", noBubble: true });
-      ctx.after(fast() ? 100 : 1600, () => el.remove());
     };
     const onJudge = async (saysRight) => {
       if (!st.awaiting || st.busy || st.over) return;
@@ -710,12 +717,29 @@
         b.classList.remove("nope-red");
         void b.offsetWidth;
         b.classList.add("nope-red");
+        // his bubble with the row's pictures is up at once and his line follows her reading; the child never waits
+        // for it (rule 12): the pills stay live, or (a misread) the dropper comes as soon as the shake is seen
+        nameRow(i);
+        ctx.after(fast() ? 200 : 600, () => b.classList.remove("nope-red"));
+        if (!wrong) return;
         st.busy = true;
-        await nameRow(i);
-        b.classList.remove("nope-red");
+        await new Promise((r) => ctx.after(fast() ? 120 : 550, r));
         st.busy = false;
+        if (st.over || st.gone) return;
+        // CLN-107 (EY13: "a misread gets a drop and a right re-read before the tick"): she misread and the child said
+        // haa: the doctor names the row (his bubble stays up), and the dropper comes for her eye, as after a na
+        {
+          st.awaiting = null;
+          showJudge(false);
+          S.said(null);
+          drawChart();
+          st.redrop = { i };
+          showDropper(readEye, true, HANG.redrop);
+          S.cue("redrop", CUES.redrop, { x: readEye.x, y: readEye.y - tipOf(HANG.redrop) / 2, r: 52 });
+        }
         return;
       }
+      unName(); // judged right this time: the doctor's naming bubble goes
       st.awaiting = null;
       showJudge(false);
       S.said(null);
@@ -737,15 +761,34 @@
       });
     };
     const advance = () => {
+      unName();
       st.i++;
       const c = cur();
       if (!c) return finish();
       open();
     };
+    // EY6 (CLN-107): from level 2 a "to the eye test" button bottom right like every other stage's (a picture of the
+    // chart, no words), never a flashing chart in the corner. CLN-107 (the judge: no button in the close-up): it is
+    // there from the moment the drops' close-up opens, so the way on is seen; it goes on once a drop is in
+    const makeTestBtn = () => {
+      if (testBtn) return testBtn;
+      testBtn = ctx.button("", () => {
+        if (st.busy || st.over || !cur() || cur().kind !== "drops" || st.drops < 1) return;
+        S.did();
+        testBtn.remove();
+        closeDrops();
+      }, "eye-btn"); // CLN-143 (decision 95): no glow: the card's row is the one thing lit (the ✓'s rule, SH-40)
+      testBtn.dataset.go = "eye test";
+      const t = testBtn.querySelector(".njg-next-t") || testBtn;
+      t.textContent = "";
+      t.insertAdjacentHTML("beforeend", '<svg class="eye-btn-chart" viewBox="0 0 40 52" aria-hidden="true"><rect x="2" y="2" width="36" height="48" rx="5" fill="#fffefb" stroke="#a9824d" stroke-width="3"/><circle cx="20" cy="12" r="4.6" fill="#e2b23b"/><circle cx="14.5" cy="23.5" r="3.7" fill="#d9534f"/><circle cx="25.5" cy="23.5" r="3.7" fill="#5aa05a"/><circle cx="11" cy="33.5" r="3" fill="#8a5a3a"/><circle cx="20" cy="33.5" r="3" fill="#e2b23b"/><circle cx="29" cy="33.5" r="3" fill="#d9534f"/><circle cx="9.5" cy="42" r="2.4" fill="#5aa05a"/><circle cx="16.5" cy="42" r="2.4" fill="#8a5a3a"/><circle cx="23.5" cy="42" r="2.4" fill="#e2b23b"/><circle cx="30.5" cy="42" r="2.4" fill="#d9534f"/></svg>');
+      return testBtn;
+    };
     const open = async () => {
       const c = cur();
       drawChart();
       if (c.kind === "drops") {
+        if (P.level >= 2) makeTestBtn();
         ctx.card.now(c.both ? "drops-right" : "drops", c.strip ? { strip: c.strip } : {});
         const te = c.both ? EY.right : sore; // CLN-187: from level 2 the first row's eye (the patient's right)
         return S.cue("drops", CUES.drops, () => S.toolEls.drops, { target: { x: te.x, y: te.y - 55, r: 110 } }); // S02-G: the dropper and the eye
@@ -783,6 +826,9 @@
       // CLN-62 (P88: "then the game just ended… weird"): after the last row she looks up from the chart, both eyes open
       // and clear, happy, and says "I can see!"; only then the pull-out and the end screen
       S.root.querySelectorAll(".eye-said, .eye-name").forEach((n) => n.remove());
+      // CLN-107 (the voice log: "I can see!" over mum/dungri-rc.mp3): her last row's reading ends before she says it
+      await Promise.resolve(st.reading).catch(() => {});
+      if (st.gone) return;
       if (soreEl) soreEl.setAttribute("opacity", eyesArt ? 1 : 0);
       await tween(450, (u) => {
         testG.setAttribute("opacity", 1 - u);
@@ -856,17 +902,9 @@
       if (P.level === 1 && st.drops >= c.count) S.when(() => (cur() !== c || st.over ? "stop" : !st.busy), closeDrops, 900, "drops");
       // EY6 (CLN-107): from level 2, once a drop is in, a "to the eye test" button comes up bottom right like every
       // other stage's (a picture of the chart, no words), never a flashing chart in the corner
-      if (P.level >= 2 && !testBtn) {
-        testBtn = ctx.button("", () => {
-          if (st.busy || st.over || !cur() || cur().kind !== "drops") return;
-          S.did();
-          testBtn.remove();
-          closeDrops();
-        }, "eye-btn"); // CLN-143 (decision 95): no glow: the card's row is the one thing lit (the ✓'s rule, SH-40)
-        testBtn.dataset.go = "eye test";
-        const t = testBtn.querySelector(".njg-next-t") || testBtn;
-        t.textContent = "";
-        t.insertAdjacentHTML("beforeend", '<svg class="eye-btn-chart" viewBox="0 0 40 52" aria-hidden="true"><rect x="2" y="2" width="36" height="48" rx="5" fill="#fffefb" stroke="#a9824d" stroke-width="3"/><circle cx="20" cy="12" r="4.6" fill="#e2b23b"/><circle cx="14.5" cy="23.5" r="3.7" fill="#d9534f"/><circle cx="25.5" cy="23.5" r="3.7" fill="#5aa05a"/><circle cx="11" cy="33.5" r="3" fill="#8a5a3a"/><circle cx="20" cy="33.5" r="3" fill="#e2b23b"/><circle cx="29" cy="33.5" r="3" fill="#d9534f"/><circle cx="9.5" cy="42" r="2.4" fill="#5aa05a"/><circle cx="16.5" cy="42" r="2.4" fill="#8a5a3a"/><circle cx="23.5" cy="42" r="2.4" fill="#e2b23b"/><circle cx="30.5" cy="42" r="2.4" fill="#d9534f"/></svg>');
+      if (P.level >= 2 && !st.testCued) {
+        makeTestBtn();
+        st.testCued = true;
         if (!c.both) S.cue("chart", CUES.chart, testBtn);
       }
       // CLN-187: with a count for each eye, the first-time help points at the eye test only once both eyes have theirs

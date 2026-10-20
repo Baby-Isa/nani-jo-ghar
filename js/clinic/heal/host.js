@@ -224,13 +224,17 @@
         const p = ease(dir > 0 ? u : 1 - u); // p: 0 = the wide shot, 1 = the close-up
         const s = Math.pow(a.k, p);
         const f = a.k > 1.001 ? (s - 1) / (a.k - 1) : p;
-        room.push({ offset: u, transform: `translate(${(a.dx * f).toFixed(2)}px, ${(a.dy * f).toFixed(2)}px) scale(${s.toFixed(4)})`, filter: `blur(${(dir > 0 ? 3 * p : 0).toFixed(2)}px)` });
-        // the room stays the picture until the close-up is nearly its full size (its own edges never show for long), and
-        // hands over in the last stretch, both showing the part in the same place at the same size
-        fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (0.98 - p) / 0.22)).toFixed(3) });
-        // the close-up's own blurred room comes in under the room only once it is big enough to fill the screen (until
-        // then it would be a pale box round the part)
-        bg.push({ offset: u, opacity: Math.max(0, Math.min(1, (p - 0.66) / 0.08)).toFixed(3) });
+        // s08 w6N (CLN-163; the judge: "the zoom still blurs the cartoon girl heavily"): no blur on the room (a blur on
+        // the scaled room grew with the scale, so it read as a smear); the room is only scaled
+        room.push({ offset: u, transform: `translate(${(a.dx * f).toFixed(2)}px, ${(a.dy * f).toFixed(2)}px) scale(${s.toFixed(4)})` });
+        // the room stays the picture until the close-up is all but its full size, and hands over in the last tenth of the
+        // move, both showing the part in the same place at the same size (s08 w6N, CLN-163; the judge: "a curved-edged
+        // overlay": an earlier hand-over showed the close-up small, its own cut-out edge, the jaw or the cheeks, on screen)
+        fade.push({ offset: u, opacity: Math.max(0, Math.min(1, (1 - p) / 0.1)).toFixed(3) });
+        // s08 w6N (CLN-163, CLN-106; the judge: white corners, and the arm's first frame on blank white): the close-up's
+        // own blurred room stays under it all through the move (its svg lets it run past its box while it moves, so
+        // there is never a pale box round the shrunken picture, and never a bare page before the room is up)
+        void bg;
         if (r) {
           const sg = s / a.k;
           const tx = (a.tc.q.x - a.tc.t.x) * (1 - f);
@@ -238,7 +242,7 @@
           shot.push({ offset: u, transform: `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${sg.toFixed(4)})` });
         }
       }
-      const bgEls = r ? [el.querySelector(".hs-bg"), el.querySelector(".hs-bg") && el.querySelector(".hs-bg").nextElementSibling].filter(Boolean) : [];
+      const bgEls = []; // s08 w6N: the blurred room is no longer faded (above): it keeps its own drawn opacity
       return { room, shot, fade, bg, bgEls, el: r ? el : null, origin: r ? `${(a.tc.t.x - r.left).toFixed(1)}px ${(a.tc.t.y - r.top).toFixed(1)}px` : null };
     };
     // the round is over: the "it hurts here" swirl goes (a healed patient never keeps it into the room or the card)
@@ -275,9 +279,13 @@
         let shot = Promise.resolve();
         if (F.el) {
           F.el.style.transformOrigin = F.origin;
+          // s08 w6N (CLN-163; the judge: white corners round the eye close-up): while the close-up is scaled down its
+          // svg lets its blurred room run past its own box, so the screen round it is never the bare page
+          F.el.style.overflow = "visible";
           shot = Promise.all([play(F.el, F.shot, opts)].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         }
         await Promise.all([zoom, fade, shot]);
+        if (F.el) F.el.style.overflow = "";
         z.moving = false;
         // the close-up rests as it is drawn (its own transform gone: no rounding left over from the last frame)
         if (F.el && !z.leaving) [F.el].concat(F.bgEls).forEach((x) => x.getAnimations && x.getAnimations().forEach((an) => an.cancel()));
@@ -310,7 +318,10 @@
         // back over it, both at the same place and size (frames(), above)
         const F = frames(a, -1);
         const opts = { duration: ms, easing: "linear", fill: "forwards" };
-        if (F.el) F.el.style.transformOrigin = F.origin;
+        if (F.el) {
+          F.el.style.transformOrigin = F.origin;
+          F.el.style.overflow = "visible"; // its blurred room past its box as it shrinks (CLN-163)
+        }
         await Promise.all([play(wide, F.fade, opts), play(box, F.room, opts), F.el ? play(F.el, F.shot, opts) : null].concat(F.bgEls.map((b) => play(b, F.bg, opts))));
         Kit.Voice.speakers.patient = () => fig.el.querySelector(".fig-head") || fig.el;
       },

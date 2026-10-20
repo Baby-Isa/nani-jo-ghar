@@ -100,3 +100,45 @@ test("the tooth and taste games list the words they teach (CLN-119), as the engi
     }
   }
 });
+
+// s08 w6N (CLN-107; the voice log: "I can see!" played over mum/dungri-rc.mp3): every line the heal games say by key (each
+// game's data lines, the clinic's and the pipeline's), built by the engine as the game builds it, plays only its own words'
+// clips: each piece's family file is that piece's own word, and a line's whole recording is that line's own Kutchi. A line
+// still to record (the grey English placeholder) plays nothing at all.
+test("every heal line said by key plays only its own words' clips (the clip test over every line)", () => {
+  const L = require(join(ROOT, "js/clinic/lang.js"));
+  const pools = [["clinic", JSON.parse(readFileSync(join(ROOT, "data/clinic.json"), "utf8")).lines || {}], ["pipeline", JSON.parse(readFileSync(join(ROOT, "data/clinic/pipeline.json"), "utf8")).lines || {}]];
+  for (const g of GAMES) pools.push([g, JSON.parse(readFileSync(join(ROOT, `data/clinic/heal/${g}.json`), "utf8")).lines || {}]);
+  const bad = [];
+  let lines = 0;
+  let pieces = 0;
+  for (const [pool, defs] of pools) {
+    for (const [key, def] of Object.entries(defs)) {
+      if (!def || typeof def !== "object") continue;
+      let w;
+      try {
+        w = L.line(key, {}, { def, pipeline: pool === "pipeline" });
+      } catch (e) {
+        continue; // a line with slots needs its game's words (its pieces are covered by the plan test above)
+      }
+      lines++;
+      const shown = `${pool}.${key} [${w.kutchi || ""} | ${w.english}]`;
+      if (w.placeholder && (w.plan || []).some((c) => c && c.file)) bad.push(`${shown}: a line to record plays ${(w.plan || []).filter((c) => c && c.file).map((c) => c.file).join("+")}`);
+      for (const c of w.plan || []) {
+        if (!c || !c.file) continue;
+        pieces++;
+        const rec = byFile.get(c.file);
+        if (!rec) bad.push(`${shown}: ${c.file} ∉ family-audio`);
+        else if (norm(rec.kutchi) !== norm(c.text)) bad.push(`${shown}: ${c.file} [${rec.kutchi}] ≠ [${c.text}]`);
+      }
+      if (w.audio) {
+        const rec = byFile.get(w.audio);
+        if (!rec) bad.push(`${shown}: its recording ${w.audio} ∉ family-audio`);
+        else if (norm(rec.kutchi) !== norm(w.kutchi)) bad.push(`${shown}: its recording ${w.audio} [${rec.kutchi}] ≠ the line`);
+      }
+    }
+  }
+  assert.ok(lines > 100, `lines read: ${lines}`);
+  assert.ok(pieces > 0, "some lines play family clips");
+  assert.deepEqual([...new Set(bad)].slice(0, 20), []);
+});
