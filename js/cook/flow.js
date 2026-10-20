@@ -915,8 +915,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SH-66 (S05-C): the serve is its own beat after the station's stage end, so its call-back, Shabash and thanks
     // are its own lines, never the station's voice carrying over
     await closingBeat();
-    // CK-47 (decision 7, P24): no recap of what went in ("this double level of well done"); only a row that went wrong is said
-    // again by the customer, and the one well done and their thanks come below
+    // CK-47 (decision 7, P24): a row that went wrong is said again by the customer first; Nani's call-back of what went in,
+    // the one well done and their thanks come below, all here in the kitchen
     if (missedRows && who !== "nani") {
       const again = recast(ctx);
       if (again) await S().talk(who, again, { after: "neutral" });
@@ -943,6 +943,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     UI.mission.stamp();
     Cook.writeSave();
     await Cook.wait(900);
+    // CK-47 (decision 7, P24; the judge, 20 Oct: "the story order ends at the counter but Nani never goes over what went into
+    // the recipe there"): at the counter, Nani goes over what went into the dish (the chef's call-back, decision 54: the card's
+    // own rows in the engine's frames, "Chai. Ne daar."), then the one well done, then their thanks. Never in her box after
+    // the round, and never a second well done
+    const recap = callBack(ctx);
+    if (recap) await S().talk("nani", recap, { after: "neutral" });
     if (who === "nani") {
       // Nani's own list (the pantry, T4): Shabash and her happy face; she stays in her kitchen
       if (!praised()) await S().talk("nani", shabash(), { after: "happy" });

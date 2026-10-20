@@ -2440,6 +2440,13 @@
   M.stamp = function () {
     $("#mission").classList.add("stamped");
     if (mission) mission.stamped = true;
+    // CHT-15 (the judge, 20 Oct: "the tick badge on the mission bubble covers the end of 'khape'"): the stamp's room narrows
+    // the card's words (css/shared/order-card.css .stamped), which changes no box FitText.watch sees, so the headline kept
+    // the size it was fitted at and ran under the done tick. Fit the card's words again now (and once the fold has run)
+    const refit = () => global.FitText && $("#mission") && global.FitText.run($("#mission"));
+    refit();
+    setTimeout(refit, 60);
+    setTimeout(refit, 500);
     UI.bulbOff();
     UI.stepDone();
   };
