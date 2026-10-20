@@ -90,11 +90,12 @@ def delivery_texts(mode, spec):
             "CHORES": "(a) commit SAVE (all queued files in one upload) when {{BATCH}} files are queued, or the oldest has waited {{FLUSH}} minutes, or a part has just ended; (b) fetch the references the next READY prompts need; (c) post the progress line and log.",
         }
     if mode == "download":
+        lib = library_refs(spec)
         return {
             "OPENING": "keeping each kept image in its own ChatGPT chat until the end, when you download them to Zafar's PC from ChatGPT's Library page with Chrome's normal download. Never move an image out of ChatGPT any other way: no page JavaScript, no GitHub uploads, no file pickers (last time that route was refused by your safety classifier and nothing landed). Zafar pushes the downloaded folder and your log to the repo himself.",
             "PLACES": "Nothing is committed to GitHub in this run: the kept images stay in their chats and are downloaded at the end (see AT THE END) from ChatGPT's Library page: https://chatgpt.com/library",
-            "MOVING": tpl("moving-download.txt"),
-            "SAFETY_COMMIT": "Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names.",
+            "MOVING": refs_from_library(tpl("moving-download.txt"), lib) if lib else tpl("moving-download.txt"),
+            "SAFETY_COMMIT": "Commit nothing and upload nothing to GitHub. Attach to ChatGPT only the files each prompt's line names." + (" Upload no file to ChatGPT yourself: every attachment comes from ChatGPT's own library (see MOVING IMAGES)." if lib else ""),
             "STEP6": "Log the kept image: its save-as name, its chat's link (the address bar of that chat) and its chat's title (the name ChatGPT gave the chat: the Library page and the downloaded file carry it). It stays in that chat; never download it mid-run.",
             "LOG_HEAD": "One line per kept image:\n <ID> | <time> | save as <the save-as name> | PASS or FAIL (<which points failed>) | redos: 0/1/2 | chat: <that chat's link> | title: <that chat's title> | <notes>",
             "LOG_ALSO": "",
@@ -103,10 +104,32 @@ def delivery_texts(mode, spec):
             "NOTES": "One line per prompt with its state: WAITING (a dependency isn't kept yet) · READY · GENERATING (tab, time sent) · KEPT (judged, logged with its chat link) · SKIPPED or STALLED (why). One queue: READY (redos at the front, then run order).",
             "DONE": "KEPT or SKIPPED",
             "PASS_SAVE": "Refill the freed slot at once (step 3). A prompt that needs this very picture attaches it in its fresh chat from ChatGPT's own library (the \"+\" button, then \"Add from library\": the kept image is there under its chat), never by download and re-upload.",
-            "CHORE_NAMES": "fetching references, posting the log",
-            "CHORES": "(a) fetch the references the next READY prompts need; (b) post the progress line and log.",
+            "CHORE_NAMES": "finding references in the library, posting the log" if lib else "fetching references, posting the log",
+            "CHORES": "(a) find in ChatGPT's library the references the next READY prompts need; (b) post the progress line and log." if lib else "(a) fetch the references the next READY prompts need; (b) post the progress line and log.",
         }
     raise SystemExit("delivery must be github or download, not %r" % mode)
+
+
+# s08c (20 Oct): the runner may not upload files. With `refs_from: library` (and `refs_chat:`, the title of the one ChatGPT
+# chat Zafar uploads every reference to before the run), references are attached from ChatGPT's library like a kept image.
+def library_refs(spec):
+    if spec.get("refs_from", "upload") == "upload":
+        return None
+    if spec["refs_from"] != "library" or not spec.get("refs_chat"):
+        raise SystemExit("refs_from must be upload or library (library needs refs_chat: the chat Zafar uploads them to)")
+    return spec["refs_chat"]
+
+
+def refs_from_library(moving, chat):
+    head = "1. INTO CHATGPT (references)."
+    i = moving.index(head)
+    j = moving.index("\n\n", i)
+    step = ("%s Zafar has uploaded every reference, by the file name the run order uses, to ONE ChatGPT chat titled \"%s\" "
+            "before this run. Never fetch, download or upload a reference yourself. In a prompt's fresh chat press the \"+\" button "
+            "in the composer, choose \"Add from library\" and pick each file the line names, in the order the line names them, from "
+            "that chat (by its file name and thumbnail); check the composer shows exactly that many thumbnails before you paste. If a "
+            "reference is not in the library, log \"needs Zafar: reference <name> missing\", skip that prompt and carry on." % (head, chat))
+    return moving[:i] + step + moving[j:]
 
 
 def compress(ids):
@@ -234,7 +257,13 @@ def build(spec, redo_path=None):
         count, used = len(lines), lines
     used_refs = {a["name"] for l in used for a in l["attach"] if a["kind"] in ("ref", "edit-ref")}
     w = max(len(k) for k in spec["refs"])
-    refs = "\n".join(" %s RAW + %s" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
+    lib = library_refs(spec) if spec.get("delivery") == "download" else None
+    if lib:
+        refs = ("(All of these are in ChatGPT's library, uploaded by Zafar to the chat titled \"%s\"; attach them from there, "
+                "never by upload. The repo path is only for the log.)\n" % lib)
+        refs += "\n".join(" %s (repo: %s)" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
+    else:
+        refs = "\n".join(" %s RAW + %s" % (k.ljust(w + 1), v) for k, v in spec["refs"].items() if k in used_refs)
     check_ids = sorted({l["check"] for l in used}, key=lambda c: list(spec["checks"]).index(c) if c in spec["checks"] else 999)
     allc = dict(spec["checks"])
     allc.update({k: v for k, v in extra_checks.items()})

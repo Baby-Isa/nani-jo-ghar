@@ -1,0 +1,185 @@
+# The run spec for pack s08c: Sprint 8's fix run (20 Oct). The fix list's open art rows, the judges' FAIL lines of run
+# ev-20261019-172022-khk, the builders' art lists (s08 w6B, w6C) and contract-11. Part A Cook, part B the clinic's objects,
+# part C the doctor and the girl (real people: Zafar judges likeness after the run), part D Nana, Ma and Ali's frames and the
+# waiting room. Every part boundary is a safe stop. Zafar runs it in Claude in Chrome on his ChatGPT allowance; delivery
+# "download" (kept images stay in their chats until the end). The runner may not upload files: Zafar uploads every reference
+# to one ChatGPT chat first (refs_chat) and the runner attaches them from ChatGPT's library. Read by artblock.py and
+# artjudge.py. The prompts are in the plan (section 5: docs/design-language/art-plans/s08c-art-plan.md). Edit this file,
+# then regenerate the block; never hand-edit the block.
+pack: s08c
+title: 'Sprint 8 fixes: Cook, the clinic, the doctor and the girl, the family'
+plan: docs/design-language/art-plans/s08c-art-plan.md
+plan_branch: claude/new-session-b5r2am
+repo: Baby-Isa/nani-jo-ghar
+raw_branch: claude/new-session-b5r2am
+dest: sources/art/s08c
+real_people: true
+approvals: "- The doctor and the girl (part C) are real people. Zafar judges their likeness after the run, in another chat. Don't wait for him and don't ask: keep the first image of each prompt that passes its check and the PASS/FAIL list.\n- Everything else is yours to judge with the checks below. Redo only for a failed check or a PASS/FAIL point."
+delivery: download
+refs_from: library
+refs_chat: 'Nani jo Ghar s08c references'
+amend: true
+runner: {windows: 3, send_gap_seconds: 60, stall_minutes: 6, hard_minutes: 10, redos: 2, commit_batch: 6, flush_minutes: 25}
+refs:
+  style-anchor-v1.png: sources/art/style-anchor-v1.png
+  plaster-skin.webp: assets/clinic/items-v2/plaster-skin.webp
+  ladle-v3.webp: assets/cook/items/v3/daar/ladle-v3.webp
+  disc-daal-stirred-s08b.webp: assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp
+  dp1-daar-pieces-v1.png: sources/art/s07/dp1-daar-pieces-v1.png
+  teaspoon-t.webp: assets/cook/items/chai-v2/teaspoon-t.webp
+  pan-top-milk-s08b.webp: assets/cook/items-s08b/chai-pan/pan-top-milk-s08b.webp
+  pan-top-empty-s08b.webp: assets/cook/items-s08b/chai-pan/pan-top-empty-s08b.webp
+  glass-full.webp: assets/cook/items/chai-v2/glass-full.webp
+  glass-black-full.webp: assets/cook/items/chai-v2/glass-black-full.webp
+  cp1-chai-pan-tilt-v1.png: sources/art/s07/cp1-chai-pan-tilt-v1.png
+  tray-4-s08b.webp: assets/cook/items-s08b/sekelo-tray/tray-4-s08b.webp
+  rack-4.webp: assets/cook/items/v3/sekelo/rack-4.webp
+  grill.webp: assets/cook/items/v3/sekelo/grill.webp
+  k4-pieces-v1.png: sources/art/cook-v3/k4-pieces-v1.png
+  k5-heaps-v1.png: sources/art/cook-v3/k5-heaps-v1.png
+  bg-cook-worktop-t-v1.png: assets/cook/bg/bg-cook-worktop-t-v1.png
+  crutches-belt.webp: assets/clinic/sheets/decoys/crutches-belt.webp
+  tumbler.webp: assets/clinic/items-v2/tumbler.webp
+  doctor-front-neutral-v2.png: sources/art/s08/doctor-front-neutral-v2.png
+  sheet-doctor-final-1.png: sources/art/s08/sheet-doctor-final-1.png
+  doctor-3q-left-neutral-v2.png: sources/art/s08/doctor-3q-left-neutral-v2.png
+  sheet-girl-v2-1.png: sources/art/s08/sheet-girl-v2-1.png
+  lineup-v4-1.png: sources/art/s08/lineup-v4-1.png
+  mouth-v2.webp: assets/clinic/closeups/girl/mouth-v2.webp
+  eyes-v2.webp: assets/clinic/closeups/girl/eyes-v2.webp
+  cb6b-closeup-bed-blur-v1.webp: assets/clinic/rooms/cb6b-closeup-bed-blur-v1.webp
+  char-nana-v1.png: sources/art/characters/char-nana-v1.png
+  char-ma-v1.png: sources/art/characters/char-ma-v1.png
+  char-ali-v1.png: sources/art/characters/char-ali-v1.png
+  char-ali-impatient-v2.png: sources/art/chatgpt-batch3/char-ali-impatient-v2.png
+  old-man-front.webp: assets/clinic/patients/old-man/old-man-front.webp
+  old-woman-front.webp: assets/clinic/patients/old-woman/old-woman-front.webp
+  auntie.webp: assets/clinic/rough/patients/auntie/neutral.webp
+  uncle.webp: assets/clinic/rough/patients/uncle/neutral.webp
+  baby.webp: assets/clinic/rough/patients/baby/neutral.webp
+people: {}
+limb_sets: {}
+templates: {}
+limb_templates: {}
+lines:
+  # ---- Part A: Cook ----
+  KD1: {attach: [ladle-v3.webp, disc-daal-stirred-s08b.webp, style-anchor-v1.png], save: kd1-kadchi-v1.png, check: KADCHI}
+  DS1: {attach: [dp1-daar-pieces-v1.png, disc-daal-stirred-s08b.webp, style-anchor-v1.png], save: ds1-daal-stirred-in-v1.png, check: PIECES8}
+  TP1: {attach: [teaspoon-t.webp, pan-top-milk-s08b.webp, style-anchor-v1.png], save: tp1-teaspoon-v1.png, check: SPOON3}
+  GL1: {attach: [glass-full.webp, glass-black-full.webp, style-anchor-v1.png], save: gl1-chai-glasses-top-v1.png, check: GLASS3}
+  CP3: {attach: [pan-top-milk-s08b.webp, cp1-chai-pan-tilt-v1.png, style-anchor-v1.png], save: cp3-chai-pan-tip-pour-v1.png, check: TIP6}
+  CP4: {attach: [pan-top-empty-s08b.webp, pan-top-milk-s08b.webp, style-anchor-v1.png], save: cp4-chai-pan-brewing-v1.png, check: PAN3}
+  SK4: {attach: [tray-4-s08b.webp, rack-4.webp, grill.webp, style-anchor-v1.png], save: sk4-sekelo-tray-upright-v1.png, check: TRAY1}
+  SK5: {attach: [k4-pieces-v1.png, k5-heaps-v1.png, style-anchor-v1.png], save: sk5-sekelo-decoys-v1.png, check: SHEET12}
+  WT1: {attach: [bg-cook-worktop-t-v1.png], save: wt1-marble-tile-v1.png, check: TILE2}
+  # ---- Part B: the clinic ----
+  CR1: {attach: [crutches-belt.webp, plaster-skin.webp], save: cr1-crutches-flat-v1.png, check: FLAT1}
+  TC1: {attach: [tumbler.webp, plaster-skin.webp], save: tc1-steel-cup-v1.png, check: CUP1}
+  # ---- Part C: the doctor and the girl (real people) ----
+  DW2: {attach: [doctor-front-neutral-v2.png, sheet-doctor-final-1.png, doctor-3q-left-neutral-v2.png], save: dw2-doctor-3q-left-v1.png, check: DTURN}
+  DT2: {attach: ['edit: kept:DW2'], save: dt2-doctor-3q-left-talk-v1.png, check: DEDIT}
+  DB2: {attach: ['edit: kept:DW2'], save: db2-doctor-3q-left-blink-v1.png, check: DEDIT}
+  GZ1: {attach: [sheet-girl-v2-1.png, lineup-v4-1.png, mouth-v2.webp, cb6b-closeup-bed-blur-v1.webp], save: gz1-girl-face-aah-v1.png, check: GMOUTH}
+  GZ2: {attach: [sheet-girl-v2-1.png, lineup-v4-1.png, eyes-v2.webp, cb6b-closeup-bed-blur-v1.webp], save: gz2-girl-face-eyes-v1.png, check: GEYES}
+  GZ3: {attach: ['edit: kept:GZ2'], save: gz3-girl-face-eye-sore-v1.png, check: GEDIT}
+  GZ4: {attach: ['edit: kept:GZ2'], save: gz4-girl-face-eyes-closed-v1.png, check: GEDIT}
+  # ---- Part D: the family's frames and the waiting room ----
+  NN1: {prompt: FT, attach: ['edit: char-nana-v1.png'], save: nn1-nana-talk-v1.png, check: FEDIT, slots: {WHO: 'the old man in the white cap leaning on the counter in the top-right panel'}}
+  NN2: {prompt: FB, attach: ['edit: char-nana-v1.png'], save: nn2-nana-blink-v1.png, check: FEDIT, slots: {WHO: 'the old man in the white cap leaning on the counter in the top-right panel'}}
+  MA1: {prompt: FT, attach: ['edit: char-ma-v1.png'], save: ma1-ma-talk-v1.png, check: FEDIT, slots: {WHO: 'the woman in the green dupatta leaning on the counter in the top-right panel'}}
+  MA2: {prompt: FB, attach: ['edit: char-ma-v1.png'], save: ma2-ma-blink-v1.png, check: FEDIT, slots: {WHO: 'the woman in the green dupatta leaning on the counter in the top-right panel'}}
+  AL1: {prompt: FT, attach: ['edit: char-ali-v1.png'], save: al1-ali-talk-v1.png, check: FEDIT, slots: {WHO: 'the boy in the orange T-shirt leaning on the counter in the top-right panel'}}
+  AL2: {prompt: FB, attach: ['edit: char-ali-v1.png'], save: al2-ali-blink-v1.png, check: FEDIT, slots: {WHO: 'the boy in the orange T-shirt leaning on the counter in the top-right panel'}}
+  AL3: {attach: ['edit: char-ali-impatient-v2.png'], save: al3-ali-impatient-v1.png, check: IMPATIENT}
+  WR1: {prompt: WS, attach: [auntie.webp, old-man-front.webp, old-woman-front.webp], save: wr1-auntie-seated-v1.png, check: SEATED, slots: {PERSON: 'the auntie, a woman of about forty: a soft pink dupatta covering her hair, a long orange kurta to below the knee, maroon salwar trousers, flat sandals'}}
+  WR2: {prompt: WS, attach: [uncle.webp, old-man-front.webp, old-woman-front.webp], save: wr2-uncle-seated-v1.png, check: SEATED, slots: {PERSON: 'the uncle, a man of about forty-five: short black hair and a black moustache, a long-sleeved teal kurta to mid-thigh, khaki trousers, brown sandals'}}
+  WR3: {prompt: WS, attach: [baby.webp, old-man-front.webp, old-woman-front.webp], save: wr3-mother-baby-seated-v1.png, check: SEATED, slots: {PERSON: 'the mother with her baby, a woman of about thirty: a green headscarf covering her hair, a long green kurta and trousers, holding a happy baby in a yellow top on her lap with both arms'}}
+parts:
+- id: A
+  title: 'COOK: THE KADCHI, THE DAAL, THE CHAI, SEKELO, THE MARBLE'
+  intro: 'Objects only, no people. Each line attaches the picture it replaces or matches, plus the style anchor; match their look, never their mistakes (the line says which).'
+  items:
+  - lines: [KD1, DS1, TP1, GL1, CP3, CP4, SK4, SK5, WT1]
+- id: B
+  title: 'THE CLINIC: THE CRUTCHES AND THE CUP'
+  intro: 'Objects only, no people. Each line attaches the plaster packet as the look to match: real-looking materials and fine surface detail.'
+  items:
+  - lines: [CR1, TC1]
+- id: C
+  title: 'THE DOCTOR AND THE GIRL (REAL PEOPLE: ZAFAR JUDGES LIKENESS LATER)'
+  intro: 'DW2 redraws the doctor turned from his face-on base; DT2 and DB2 are edits of the kept DW2. GZ1 and GZ2 draw the girl from her sheet and the lineup; GZ3 and GZ4 are edits of the kept GZ2. Keep the first image that passes; do not wait for Zafar.'
+  items:
+  - lines: [DW2, DT2, DB2, GZ1, GZ2, GZ3, GZ4]
+- id: D
+  title: 'THE FAMILY''S FRAMES AND THE WAITING ROOM'
+  intro: 'Nana, Ma and Ali are not real people. NN1 to AL3 are edits of their sheets (attach that one image only; only the named face changes). WR1 to WR3 redraw three waiting-room patients in the style of the attached old man and old woman.'
+  items:
+  - lines: [NN1, NN2, MA1, MA2, AL1, AL2, AL3, WR1, WR2, WR3]
+checks:
+  KADCHI:
+    text: 'two views of the SAME steel kadchi from directly above: a deep round bowl with a short, foreshortened handle rising towards the camera and leaning right (never a flat handle lying level, never a measuring scoop); left clean, right its bowl full of smooth yellow daal; the same size and angle; nothing touches the middle or an edge; flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 2, no_touch: true}
+  PIECES8:
+    text: 'eight scatters in a 4 by 2 grid in the order asked (onion, tomato, green chilli, potato; garlic, ginger, cumin, mustard seeds), every piece cooked, soft, matte and coated in yellow daal: no white chunks, no fresh shiny pieces, no beads; nothing crosses a cell boundary; flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 8, no_touch: true, sweets: true}
+  SPOON3:
+    text: 'the same teaspoon three times from directly above, bowl left, handle right, the same size and height: empty, heaped with white sugar, a little milky chai in its bowl; nothing touches another or an edge; flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  GLASS3:
+    text: 'the same small clear glass three times from EXACTLY above (the rim a perfect circle, the walls equally thick all round, the floor centred), the same size and place in each third: empty, milky chai, black tea (clear dark reddish amber); no side view; nothing touches a boundary; flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  TIP6:
+    text: 'the same steel pan six times in a 3 by 2 grid, from directly above, the handle to the right in every cell: flat, then tipped TOWARDS THE VIEWER (the bottom of the image) at 20, 40 and 60 degrees, the rim a flatter ellipse each time and more of the outside wall showing above it, the chai sliding to the near rim; cell 5 pours milky chai from the near rim straight down, cell 6 black tea; never tipped sideways towards the left lip; nothing crosses a cell boundary'
+    judge: {aspect: [3, 2], bg: flat, pieces: 6, no_touch: true}
+  PAN3:
+    text: 'three times the SAME steel pan from EXACTLY straight above, same size and place in each third, handle to the right: water coming to the boil with real bubbles at the edge, dark amber tea with loose leaves, milky chai with a ring of fine foam; real liquid, never flat colour or drawn rings; the rim a perfect circle; nothing touches a boundary'
+    judge: {aspect: [3, 2], bg: flat, pieces: 3, no_touch: true}
+  TRAY1:
+    text: 'ONE square matte brushed-steel tray from directly above, less shiny than the grill, in the upper part of the image; FOUR bare skewers standing upright, straight and parallel, evenly spread at one to four fifths of its width, tips near the top wall, wooden handles running past the tray''s bottom edge into the grey; no food; touches no edge; flat mid-grey'
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}
+  SHEET12:
+    text: 'twelve things in a 4 by 3 grid; each row one food (chicken, green chilli, corn on the cob): a raw heap, then one chunk raw, grilled, charred, each the size of the attached chunks; the chilli a tube, never a flat pepper square; corn kernels matte, never beads or sweets; nothing crosses a cell boundary; flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces_min: 12, no_touch: true, sweets: true}
+  TILE2:
+    text: 'pale cream marble with warm amber-gold veins filling the whole image, evenly lit (no sunbeams, streaks, vignette or bright corners); the left edge continues the right edge and the top edge continues the bottom edge with no visible seam; nothing on it'
+    judge: {aspect: [3, 2], bg: none}
+  FLAT1:
+    text: 'one pair of crutches lying FLAT and level on an implied surface, seen from the front and about 20 degrees above, pads at the left, feet at the right, every part down (nothing raised, tilted or floating); about 80% wide; no surface, no shadow; touches no edge; flat mid-grey'
+    judge: {aspect: [3, 2], bg: flat, pieces: 1, no_touch: true}
+  CUP1:
+    text: 'one empty brushed-steel tumbler standing upright and level on its base, seen from the front and a little above so the inside and its floor show; NO shadow of any kind; about 50% wide; touches no edge; flat mid-grey'
+    judge: {aspect: [1, 1], bg: flat, pieces: 1, no_touch: true}
+  DTURN:
+    text: 'the doctor standing, full body, turned a TRUE three-quarter (about 45 degrees) to the viewer''s LEFT, chest and feet pointing lower left, head with his body, looking left and a little down; clearly more turned than the attached slight turn; the same size, feet line and head height as the face-on base; drawn, not flipped: the watch on his LEFT wrist; arms relaxed, nothing in his hands, neutral kind face, mouth closed; LIKENESS: the same man as the approved sheet and the lineup; the simplified clothes (plain navy blazer with a faint check, white open shirt, charcoal trousers, brown belt and shoes, silver watch; no bag, no stethoscope); stylised smooth hands, five fingers on each; SKIN within ΔE 6 of the sheet swatch #C88A6F; touches no edge, no floor, one flat mid-grey; Zafar judges likeness later'
+    judge: {aspect: [2, 3], bg: flat, no_touch: true, skin_face: [0.25, 0.0, 0.75, 0.2], skin: '#C88A6F'}
+  DEDIT:
+    text: 'only the face changed (the mouth or the eyes, as asked); glasses, beard, hands, clothes, size and position identical; compare with the base it edits; SKIN unchanged from the base; LIKENESS unchanged (the same man)'
+    judge: {aspect: [2, 3], bg: flat, no_touch: true, edit: {allowed: [0.25, 0.0, 0.75, 0.25]}, skin_face: [0.25, 0.0, 0.75, 0.2], skin: '#C88A6F'}
+  GMOUTH:
+    text: 'the girl from her sheet and the lineup, head and shoulders, front-on, face centred at about 55% of the height; mouth wide open "aah" showing clean white top and bottom teeth and her tongue (like the attached mouth close-up), eyes open and calm; her yellow dress and plaits with white bows; the soft out-of-focus clinic behind her; LIKENESS: the same girl as the sheet and the lineup; SKIN within ΔE 6 of #DA956C; Zafar judges likeness later'
+    judge: {aspect: [3, 2], bg: none}
+  GEYES:
+    text: 'the girl''s face front-on from chin to above the top of her head, brows, forehead, fringe and hairline all in view, eyes wide open and calm (together about 40% of the width), mouth closed in a small smile; less close than the attached eye close-up; the soft out-of-focus clinic behind her; LIKENESS: the same girl as the sheet and the lineup; SKIN within ΔE 6 of #DA956C; Zafar judges likeness later'
+    judge: {aspect: [3, 2], bg: none}
+  GEDIT:
+    text: 'only her eyes changed, as asked (her left eye on the viewer''s right a little sore, pink and watery but fully OPEN; or both eyes gently closed); face, hair, size and position identical; compare with the base it edits; never a wink'
+    judge: {aspect: [3, 2], bg: none, edit: {allowed: [0.2, 0.15, 0.8, 0.6]}}
+  FEDIT:
+    text: 'the same sheet as the attached with ONLY the named person''s face changed (the mouth a little open with the teeth just showing, or both eyes gently closed); every other panel, figure, colour and position identical; compare with the attached'
+    judge: {aspect: [3, 2], bg: none, edit: {allowed: [0.7, 0.0, 1.0, 0.35]}}
+  IMPATIENT:
+    text: 'the same picture as the attached with only the boy''s face changed: brows down and together, mouth a small flat line to one side, eyes glancing aside; impatient, NOT smiling or smirking; arms, pose, clothes and position identical'
+    judge: {aspect: [3, 2], bg: none, edit: {allowed: [0.35, 0.0, 0.65, 0.25]}}
+  SEATED:
+    text: 'the person the line names, seated front-on on an invisible bench, full figure, hands on knees, feet flat, calm small smile; in the style, proportions and scale of the attached old man and old woman (a normal-sized head, never the big clay head of the first picture); the clothes and colours the line names, modest, arms and legs covered; no bench, floor or shadow; about 80% of the height; touches no edge; flat mid-grey'
+    judge: {aspect: [2, 3], bg: flat, pieces: 1, no_touch: true}
+passfail:
+- Any text, letters, numbers, labels or logos, even fake or blurry ones.
+- Outlines, cel shading, a flat vector look or painterly brushwork; blur, a vignette or lens flare (the soft clinic background behind the girl in GZ1 to GZ4 excepted).
+- The background isn't one flat mid-grey (WT1 and GZ1 to GZ4 excepted); a floor, a surface or a shadow on the grey; grid lines, panel borders or labels.
+- Things touching or crossing into a neighbour's cell, or touching an image edge (WT1 and GZ1 to GZ4 excepted).
+- The wrong number of things, things in the wrong order, the wrong view, or extra objects, people, hands or animals.
+- A top-down line not EXACTLY from above (an ellipse instead of a circle, one wall thicker than the other), except CP3's tipped cells, which are meant to flatten.
+- An edit where anything other than what the prompt names has moved, changed size or changed colour, or that looks identical to the attached.
+- 'Anything that looks like sweets, lollies, biscuits or gumballs: seeds, kernels or drops as glossy beads.'
+- Immodest clothing; anything scary or gross; any religious marker.
