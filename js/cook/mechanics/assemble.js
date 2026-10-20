@@ -12,8 +12,8 @@
  *    word pops by the bowl with the family clip (§4: learning happens during the action). A see-through
  *    copy of the glass lies over the food (its walls and highlights; the floor's ring cut out).
  *  - THE SHELF (the bottom 30%): the side-on glass pots (v3/chaat/pot-*.webp, the pantry jars' look),
- *    standing on their measured bottom-centre on one shelf line, a `🔊 word` chip under each: tap the pot
- *    = use it, tap the chip = hear it. From level 3 the word hides and the speaker stays (the same chip).
+ *    standing on their measured bottom-centre on one shelf line, a speaker chip under each: tap the pot
+ *    = use it, tap the chip = hear it. No written word on a chip at any level (s08 w6M, CHT-14: the card writes it).
  *    Decoys and the "don't" item stand there too. The tomato pot is a stand-in (see POTS).
  *  - TAKE IT BACK (UX §17): until Done, a tap on the bowl lifts the top layer back out to its pot.
  *  - NO TALLY at this station (§14a): the bowl shows what's in.
@@ -26,8 +26,7 @@
  *  - wrong: a gentle frown, they say their order again, the bowl EMPTIES and you
  *    build it again. Never a red cross; only the first mistake counts (the accuracy badge, the end review).
  * LEVELS (§14, §14a; the recipe's slots by level in data/cook.json, the decoys in
- * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row (and the words
- * hide on the chips); 4 = the person's card starts FOLDED (face + headline): remember what you heard;
+ * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row; 4 = the person's card starts FOLDED (face + headline): remember what you heard;
  * tapping the card to peek costs a hint (the light-bulb badge).
  * ONBOARDING (first time, §14): a ghost finger shows card row 1 -> the matching pot -> the drop into
  * the bowl -> the tick; then the child does row 2.
@@ -116,15 +115,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   "in"     it is what the order wants here: it stays (its row ticks as it goes in)
    *   "bounce" it is not wanted at all (a decoy, the 'no' item, one more than asked): a pause, the glass wobbles with a
    *            warm glow and it comes back out; the bowl keeps what it had
-   *   "reset"  it is in the order, but later ("if you get the third item in the wrong order, it throws out all the items.
-   *            You have to go from the beginning again"): the same wobble, and the bowl empties
+   *   "early"  it is in the order, but later: the same wobble and only it comes back out; the bowl keeps what it had
+   *            (s08 w6M, CHT-14, rule 12: a child never loses the right things already in; was "reset", the bowl emptied)
    * expected: what the order wanted here (its row loses its tick: a tick is the right item first go).
    */
   function judgeDrop(C, got, id) {
     const m = C.mistake(got.concat(id));
     if (!m || m.got === undefined || m.at > got.length) return { verdict: "in", expected: id };
     const later = [].concat(...C.rest(got.length, got)).includes(id);
-    return { verdict: later ? "reset" : "bounce", expected: C.next(got) };
+    return { verdict: later ? "early" : "bounce", expected: C.next(got) };
   }
   /**
    * The rows a wrong try costs their tick (P63: "you get a tick if you put the right item in the right sequence on the first
@@ -137,7 +136,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const out = [];
     if (j.expected) out.push({ id: j.expected, no: false });
     if (exclude.includes(id)) out.push({ id, no: true });
-    else if (j.verdict === "reset" && id !== j.expected) out.push({ id, no: false });
+    else if (j.verdict === "early" && id !== j.expected) out.push({ id, no: false });
     return out;
   }
   /* ---- /CHAAT_RULES ---- */
@@ -965,8 +964,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- the shelf: identical side-on pots (the pantry jars' look), a chip under each ---------- */
       const n = ids.length;
-      // §4, §14: the word on the chip at levels 1-2, the speaker alone from level 3 (the same chip)
-      const showWord = () => level < 3;
+      // s08 w6M (CHT-14, rule 6, decision 88 (2)): the speaker alone on every chip at every level (was: the word at levels
+      // 1-2, which the open card writes too, so a reader matched letters and won); the glass pot shows its food (the
+      // picture label), the chip says its word
+      const showWord = () => false;
       // the chips' words first: each is never under the 14px floor as rendered (TXT-05), so on a small screen a word can be
       // wider than the usual slot; the pots then spread out over the shelf (their size stays) so every chip fits its slot
       const labels = {};
@@ -1278,7 +1279,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // the pill ticks now (UX 11: its step has closed; decision 9: only a right thing goes in, CHT-14)
         ticked.push(UI.mission.tickItem(id, dishNo()));
         if (UI.mission.advance) UI.mission.advance(dishNo());
-        S.puff(p.x, p.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#ffffff"), z.L(34));
+        S.puff(p.x, p.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#ffffff"), z.L(34), { flat: 0.3 }); // (side-on: a flat ring)
         const settle = bowl.add(id);
         const r = bowl.rimAt();
         pop(Cook.display(id), r.x + z.L(GLASS_W * 0.36), r.y - z.L(40), {
@@ -1298,8 +1299,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       /*
        * CHT-14, CHT-15 (decision 9, softened for rule 12): a wrong thing goes in, a short pause, the glass wobbles with a warm
-       * glow (never red) and it comes back out to its pot; one from later in the order empties the bowl (every layer back to
-       * its pot: start again from the bottom). Nothing is said. The rows it costs lose their tick (judgeDrop, rowsMissed); the
+       * glow (never red) and it comes back out to its pot; one from later in the order too (s08 w6M, CHT-14, rule 12: the
+       * right layers already in stay). Nothing is said. The rows it costs lose their tick (judgeDrop, rowsMissed); the
        * card ticks nothing for it, so the bowl, not a missing tick, is what tells the child.
        */
       const missedIds = new Set();
@@ -1323,28 +1324,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await Cook.wait(260); // the little pause ("maybe there's a tiny little pause, and then the bowl shakes")
         if (Cook.sfx.soft) Cook.sfx.soft();
         await bowl.notIn();
-        if (j.verdict === "bounce") {
-          await bowl.removeTop(260);
-          await spoonBack(id, p);
-        } else {
-          // everything out: each layer's spoonful back to its pot, the card's rows open again (their ticks earned stay earned)
-          const back = got.concat(id);
-          const at = bowl.surfaceAt();
-          await bowl.empty();
-          await Promise.all([...new Set(back)].map((x, i) => Cook.wait(i * 90).then(() => spoonBack(x, at))));
-          got.length = 0;
-          while (ticked.length) {
-            const r = ticked.pop();
-            if (r) {
-              r.got = Math.max(0, (r.got || 1) - 1);
-              r.done = false;
-            }
-          }
-          const L = ladderOf(ctx);
-          const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
-          if (sq) sq.at = 0;
-          UI.mission.refresh();
-        }
+        // s08 w6M (CHT-14, rule 12): only the wrong spoonful comes back out, a decoy or one from later in the order alike;
+        // the right layers already in stay (was: one from later emptied the whole bowl)
+        await bowl.removeTop(260);
+        await spoonBack(id, p);
         z.progress({ wrong: id, verdict: j.verdict, n: got.length });
         busy--;
       }
