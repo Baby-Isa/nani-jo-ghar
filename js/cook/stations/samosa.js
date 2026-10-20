@@ -144,7 +144,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   function warm() {
     try {
       const S = Cook.scene;
-      if (S && S.load && St.loadArt) St.loadArt(S, BASE_ART()).catch(() => {});
+      if (S && S.load && St.loadArt) St.loadArt(S, BASE_ART().concat(Cook.Kit ? Cook.Kit.art(1, [], { wide: true }) : [])).catch(() => {});
     } catch (e) {
       /* the round loads it as before */
     }
@@ -1359,6 +1359,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (Cook.samosaTwo: build/shoot_samosa_v3.py asks for an order with two kinds, from level 3)
       for (let i = 0; Cook.samosaTwo != null && L.level >= 3 && !d.count2 === !!Cook.samosaTwo && i < 40; i++) d = R.samosa.make(who, { level: L.level });
       L.card(d, R.samosa.steps(d));
+      // s08 w6B (CK-48: the combined host opens the worktop before the station loads its pictures): they load while the
+      // order's card is read (every filling's heap the round can offer, this station's own art only)
+      const heaps = [...new Set([].concat(Object.keys(d.fillings || {}), Object.keys(d.fillings2 || {}), Cook.data.recipes.samosa.lists.fillings_all || []))].filter(heapUrl);
+      const kit = Cook.Kit ? Cook.Kit.faceArt(who).concat(Cook.Kit.art(1, [], { wide: true })) : [];
+      await St.loadArt(L.S, BASE_ART().concat(heaps.map((id) => [`sv3-heap-${id}`, heapUrl(id)]), kit)).catch(() => {});
       await L.station("samosa", { fillings: d.fillings, exclude: d.no, decoyPool: Cook.data.recipes.samosa.lists.fillings_all, count: d.count, fillings2: d.fillings2, count2: d.count2, who });
     },
   });

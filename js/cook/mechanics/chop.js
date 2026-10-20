@@ -624,6 +624,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const many = (o) => [o.onions, o.tomatoes, o.chillies].filter(Boolean).length >= 2;
       for (let i = 0; i < 30 && !many(d); i++) d = R.daal.make("nana", { level: L.level });
       L.card(d, ["Chop"]);
+      // s08 w6B (CK-48: the bare board for 1.8 s while the knife loaded after the view opened): the knife loads while the
+      // order's card is read
+      const kit = St.art("knife");
+      if (kit) await St.loadArt(L.S, [[St.artKey("knife"), kit.file]]).catch(() => {});
       await L.station("chop", { targets: { "veg-02": d.onions, "veg-03": d.tomatoes, "veg-12": d.chillies }, no: d.onions ? [] : ["veg-02"], pool: Cook.data.recipes.daal.lists.veg, tick: true });
     },
   });
