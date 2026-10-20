@@ -103,6 +103,8 @@ export async function runBook(host, api, day) {
   };
   const plan = planBook({ data: D, place: placeKey, today: { entries, words: met }, say: sayable, rng: api.q.get("seed") ? api.rng : Math.random, only });
   const results = [];
+  // this book's pictures, fetched now (decision 68: only the chosen book's own art, prefetched while she greets)
+  for (const k of Object.keys(place.things)) if (place.things[k].art) new Image().src = url(place.things[k].art);
   window.Day.book = { plan, results, stage: "room", place: placeKey };
 
   // ---- lines: the first candidate the engine can say, else the first one's grey placeholder (decision 84) ----

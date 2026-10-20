@@ -157,7 +157,7 @@ async function nameit(g, page) {
       b.addEventListener("click", () => {
         if (filled) return;
         // each button says its own word as it is tapped (the shared voice queue: it cuts in, never waits)
-        g.say(b._word, null, { min: false });
+        b._said = g.say(b._word, null, { min: false });
         if (b._key === page.answer) {
           filled = true;
           resolve(b);
@@ -212,9 +212,15 @@ async function nameit(g, page) {
   }
   if (window.FitText) window.FitText.run(row.parentElement);
   g.head(null);
-  if (sentLn.ok) await g.say(sentLn, node.firstChild);
+  if (sentLn.ok) {
+    await (chosen._said || Promise.resolve()).catch(() => {});
+    await g.say(sentLn, node.firstChild);
+  }
   // (the word was said once, as its button was tapped: never twice; the sentence is a silent placeholder until recorded)
-  else await g.say(sentLn, rec);
+  else {
+    await (chosen._said || Promise.resolve()).catch(() => {});
+    await g.say(sentLn, rec);
+  }
 }
 
 // ---------------------------------------------------------------- stick in the photo
