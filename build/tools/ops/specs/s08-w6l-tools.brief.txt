@@ -1,0 +1,59 @@
+SESSION NAME / MODE:  s08 wave 6L, the evidence tools: every sheet shows its row's state (the 26 EVIDENCE lines and 5 tool failures of the last run), text-only passes accepted, contract-26's tap-through
+MODEL AND EFFORT:     Sonnet, high effort (specs and drivers: mechanical)
+COST ESTIMATE:        about $12-20
+HARD STOP:            when every task is accepted, or 3 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/new-session-b5r2am (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s08-w6l-tools.context.md (856 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/tools/review/data/verdicts.json (each row's judge line, run ev-20261020-030207-6zl) and build/reports/evidence-ev-20261020-030207-6zl.md
+     build/screenshots/evidence/ev-20261020-030207-6zl/judge/*.verdicts.md (the EVIDENCE lines)
+     docs/tools.md
+     build/reports/s08-w6d-tools.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - build/sandbox/** except contract-16's names in lib/contract-hook.mjs and contract.mjs, and drivers/catalog.mjs's clinic entries (wave 6I)
+  - build/tools/review/**
+  - build/sandbox/data/evidence.json
+  - build/reports/s08-w6l-tools.md
+READ-ONLY (never edit):
+  - js/**, css/**, data/** (waves 6I, 6J, 6K)
+  - docs/process/regressions.md
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a moment no driver can reach is listed with why
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. Every EVIDENCE line of run ev-20261020-030207-6zl (CLN-105, CLN-166, CLN-167, CLN-181, CLN-194, SH-113, CHAI-25, CHAI-19, MAA-17, SEK-07, SAM-22, CLN-65, CLN-119, CLN-189 and the rest): the sheet shows what the line says is missing (zoom2 crops at the right moment, frames close enough apart, the level the row names, every probe on the sheet). The 5 tool failures (CHT-14, CLN-107, CLN-198, ART-19, LNG-17) reach their moments; LNG-17 and CLN-198 get specs if they have none.
+     Accept: auto: evidence --run on those rows: 0 tool failures; list each line and what the sheet now shows
+  2. collect refuses a text-only PASS that names its capture label (SH-115, CLN-172, LNG-04): accept 'PASS: <capture label>, ...' for a row with no sheet, as the batch file tells the judge, with a unit test. contract-26: exempt the test player's tap-through and to-record words if not already done.
+     Accept: auto: unit tests; collect on the last run accepts those three
+
+REGRESSION ROWS TO RECHECK (100 rows of the fix list and its done archive; * = open or reopened):
+  cook:chai-tray (25): CHAI-13*, CHAI-22*, CHAI-24*, CHAI-25*, CHAI-26, CHAI-19*, CHAI-02, CHAI-03, CHAI-04, CHAI-05, CHAI-06, CHAI-07, CHAI-09, CHAI-10, CHAI-11, CHAI-12, CHAI-14, CHAI-15, CHAI-16, CHAI-17, CHAI-18, CHAI-20, SH-78, CHAI-08, CK-45*
+  clinic:heal-fever (63): CLN-65*, CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-175, CLN-177*, CLN-178*, CLN-198*, CLN-105*, CLN-02, CLN-03, CLN-08, CLN-84, CLN-86, CLN-87, CLN-109, CLN-112, CLN-114, CLN-152, CLN-153, CLN-151, CLN-81, CLN-30, CLN-31, CLN-42, CLN-43, CLN-44, CLN-56, CLN-57, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-120, CLN-124, CLN-125, CLN-128, CLN-130, CLN-132, CLN-133, CLN-147, CLN-146, CLN-148, CLN-45, CLN-100, CLN-126, CLN-127, CLN-149, CLN-131, CLN-118, CLN-140, CLN-176
+  clinic:heal-tooth (56): CLN-119*, CLN-137*, CLN-141*, CLN-150, CLN-154*, CLN-155*, CLN-156*, CLN-157*, CLN-158*, CLN-180, CLN-181*, CLN-182*, CLN-183*, CLN-184*, CLN-198*, CLN-02, CLN-03, CLN-08, CLN-09, CLN-84, CLN-87, CLN-109, CLN-112, CLN-114, CLN-151, CLN-81, CLN-30, CLN-35, CLN-42, CLN-43, CLN-44, CLN-51, CLN-52, CLN-53, CLN-67, CLN-68, CLN-69, CLN-70, CLN-72, CLN-73, CLN-76, CLN-77, CLN-79, CLN-103, CLN-124, CLN-125, CLN-128, CLN-129, CLN-133, CLN-147, CLN-146, CLN-45, CLN-100, CLN-149, CLN-118, CLN-140
+
+PROOF (rule C8, decisions 48 and 50: fast checks only; the orchestrator's /review runs the full matrix once before a publish):
+  - HARD LIMIT: at most about 15 minutes of browser checks, never a full sandbox pass, a whole mode or the size matrix; anything longer is left to the orchestrator's `/review`. If a check would run longer, stop it and say so in the report.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 only, one shot each.
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s08-w6l-tools` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8861.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s08-w6l-tools.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

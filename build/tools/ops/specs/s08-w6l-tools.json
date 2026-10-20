@@ -1,0 +1,47 @@
+{
+  "kind": "tools",
+  "branch": "a worktree of claude/new-session-b5r2am (the orchestrator merges)",
+  "shared": false,
+  "browser": true,
+  "publish": false,
+  "stop": "when every task is accepted, or 3 hours",
+  "name": "s08 wave 6L, the evidence tools: every sheet shows its row's state (the 26 EVIDENCE lines and 5 tool failures of the last run), text-only passes accepted, contract-26's tap-through",
+  "model": "Sonnet",
+  "effort": "high",
+  "why": "specs and drivers: mechanical",
+  "cost": "about $12-20",
+  "port": 8861,
+  "report": "s08-w6l-tools",
+  "read": [
+    "build/tools/review/data/verdicts.json (each row's judge line, run ev-20261020-030207-6zl) and build/reports/evidence-ev-20261020-030207-6zl.md",
+    "build/screenshots/evidence/ev-20261020-030207-6zl/judge/*.verdicts.md (the EVIDENCE lines)",
+    "docs/tools.md",
+    "build/reports/s08-w6d-tools.md"
+  ],
+  "owns": [
+    "build/sandbox/** except contract-16's names in lib/contract-hook.mjs and contract.mjs, and drivers/catalog.mjs's clinic entries (wave 6I)",
+    "build/tools/review/**",
+    "build/sandbox/data/evidence.json",
+    "build/reports/s08-w6l-tools.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/** (waves 6I, 6J, 6K)",
+    "docs/process/regressions.md"
+  ],
+  "stubs": "a moment no driver can reach is listed with why",
+  "tasks": [
+    {
+      "do": "Every EVIDENCE line of run ev-20261020-030207-6zl (CLN-105, CLN-166, CLN-167, CLN-181, CLN-194, SH-113, CHAI-25, CHAI-19, MAA-17, SEK-07, SAM-22, CLN-65, CLN-119, CLN-189 and the rest): the sheet shows what the line says is missing (zoom2 crops at the right moment, frames close enough apart, the level the row names, every probe on the sheet). The 5 tool failures (CHT-14, CLN-107, CLN-198, ART-19, LNG-17) reach their moments; LNG-17 and CLN-198 get specs if they have none.",
+      "accept": "auto: evidence --run on those rows: 0 tool failures; list each line and what the sheet now shows"
+    },
+    {
+      "do": "collect refuses a text-only PASS that names its capture label (SH-115, CLN-172, LNG-04): accept 'PASS: <capture label>, ...' for a row with no sheet, as the batch file tells the judge, with a unit test. contract-26: exempt the test player's tap-through and to-record words if not already done.",
+      "accept": "auto: unit tests; collect on the last run accepts those three"
+    }
+  ],
+  "flows": [
+    "cook:chai-tray",
+    "clinic:heal-fever",
+    "clinic:heal-tooth"
+  ]
+}
