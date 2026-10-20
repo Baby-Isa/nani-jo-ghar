@@ -314,6 +314,7 @@
       [calls[ci], calls[ci + 1]].forEach((c) => c && c.group.forEach((id) => r.add(id)));
       return r;
     };
+    let clearSince = null;
     const membersAround = () => m.things.some((o) => o.member >= 0 && !o.got && o.x + o.w > vx0);
     const idsAround = (ids) => m.things.some((o) => !o.got && ids.includes(o.id) && o.x + o.w > vx0);
 
@@ -427,11 +428,15 @@
       for (const th of m.things) th.x -= d * lineSpeed[th.line];
       for (const p of m.props) p.x -= d * lineSpeed.near;
       const c = calls[ci];
+      // the road since the last group's members went by: a short stretch with none in view before the next comes on
+      const around = membersAround();
+      if (around) clearSince = null;
+      else if (clearSince == null) clearSince = m.road;
       if (c && !m.done) {
         if (c.state === "wait" && m.road >= nextGroupAt) {
           // one group at a time: the last one's members gone by, no thing of this group's on screen, room where it comes on
           const span = c.group.reduce((a, id) => a + sizeOf(id, c.line).w, 0) + itemH * gapK * c.group.length;
-          if (!membersAround() && !idsAround(c.group) && regionClear(c.line, vx1, vx1 + span + 40, c.line === "near")) spawnGroup(c);
+          if (!around && m.road - clearSince >= viewW() * 0.15 && !idsAround(c.group) && regionClear(c.line, vx1, vx1 + span + 40, c.line === "near")) spawnGroup(c);
         } else if (c.state === "coming") {
           const lead = c.members.reduce((a, o) => (o.x < a.x ? o : a), c.members[0]);
           const rel = (lead.x + lead.w / 2 - vx0) / viewW();
