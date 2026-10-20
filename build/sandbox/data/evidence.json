@@ -16573,28 +16573,42 @@
    "delay": 800
   }
  ],
- "CLN-196": {
-  "needsDecision": "Taste: is the metal cup the right thing (clinic decision 10), and is the new cup (no drop shadow, sitting on the surface) wanted from the s08b run?",
-  "probes": [
-   {
-    "flow": "clinic:heal-taste",
-    "path": "fair",
-    "level": 1,
-    "sizes": [
-     "1366x768"
-    ],
-    "profile": "seen",
-    "want": null,
-    "at": "heal-taste-start",
-    "after": null,
-    "capture": [
-     "zoom2:.cl-heal"
-    ],
-    "expect": null,
-    "note": "the metal cup as built: its drop shadow and how it sits on the surface"
-   }
-  ]
- },
+ "CLN-196": [
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-taste-start",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the steel cup (Zafar, 19 Oct: yes, the metal cup; the new cup with no drop shadow, sitting on the surface): no drop shadow, it stands on the tray, the drink seen in its mouth"
+  },
+  {
+   "flow": "clinic:heal-taste",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "heal-taste-mid",
+   "after": null,
+   "capture": [
+    "zoom2:.cl-heal"
+   ],
+   "expect": null,
+   "note": "the cup with the drink in it, mixing"
+  }
+ ],
  "MOD-10": [
   {
    "flow": "mode:tidy",
