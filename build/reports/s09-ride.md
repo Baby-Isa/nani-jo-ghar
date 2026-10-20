@@ -3,35 +3,23 @@
 Branch `worktree-agent-ac78a83501956f4f8` (not pushed). Changed: the window ride (`js/shared/window-ride.js`, `js/day/window.js`, `data/day.json`), its checks, flows, lab.
 
 ## Flaws first
-1. `recordings` and two unit tests outside my files still expect stop-the-car (requests).
-2. Tablets: the height-fitted frame loses its pillars (s09b's window fixes it).
-3. 800x360: things small (door about 70 px; taps 56 px minimum).
-4. `touched.mjs` can't place `js/day/*`, `data/day.json`, `lab/*`: lists every flow (only `day:window` loads the ride).
-5. No cow, tractor, bicycle art: placeholders.
+1. A faint ghost of the far hills remains over each 10% overlap: the cut's outer tenths are not plain hillside.
+2. `plus-lighter` (the two-way cross-fade) needs Safari 15.4 or later.
+3. Tablets: the height-fitted frame loses its pillars (s09b's window fixes it).
+4. 800x360: things are small (door about 70 px; taps 56 px minimum).
+5. `touched.mjs` can't place `js/day/*`, `data/day.json`, `lab/*`.
+6. `load` once failed on cook:chop (an oversized Nani face, Cook's), then passed 29/29.
 
-## Built
-- Three looping layers (0.15, 0.4, 1), cross-faded over the outer tenth; s09r cuts by path.
-- Keyed car window (0 green px), sides from its outer columns.
-- Two ground lines, half-hiding props, unasked things passing; look-alikes asked once all in view.
-- Speeds 9 / 6 / 3.3 s on any window, eased over 1 s; no stop-the-car; a missed thing comes round until found.
-- Contracts 47, 48; three drivers; timed leak bot; 16 tests; `lab/ride-preview.html`.
+## Fix round (20 Oct)
+- **RIDE-01 jump/stall**, causes: (a) the strip filmed a 3x ride, a fifth to a half of the window per 400 ms frame; (b) late frames were clamped to 100 ms, so the road lost time, then crept; (c) a prop at a group's front came on inside the window. Now the fair ride plays at speed 1, the road keeps wall-clock time, and the prop comes on with its group. The new no-jump test was red on (c).
+- **Zafar's stray edge**: the join, not the cut. Only the incoming copy faded, so the old copy's hill line ended in a hard vertical edge. Now both copies fade, summed with `plus-lighter`.
+- **Parallax**: `parallax` and `parallaxSets` (deep, gentle, together) per trip, default deep; switch on the preview.
 
 ## Proof
-| row | red | green (`s09-ride-green2`) |
-|---|---|---|
-| RIDE-01, 06 | tool failure | judge panels |
-| RIDE-02 | tool failure | PASS |
-| RIDE-03 | fast 17 s | slow 10.7 s, fast 3.9 s |
-| RIDE-04 | FAIL | PASS |
-| RIDE-05 | FAIL | PASS |
-
-Matrix `s09-ride-matrix`: 8 sizes end, 0 breaks. Videos: `build/screenshots/s09-ride/ride-{slow,normal,fast}.webm` with stills; placeholder still.
-
-## Engine gaps
-cow, tractor, bicycle, Speed up!, Slow down!
+RIDE-01: red `s09-ride-r01-red`, then green filmstrips `s09-ride-fix2` for the judge. RIDE-02 to 05 machine PASS; RIDE-06 panels. Matrix `s09-ride-matrix3`: fair and miss at 8 sizes, 0 breaks. `checks.mjs` all ok.
+Videos and stills in `build/screenshots/s09-ride/`: slow, normal, fast (20 s); `ride-gentle.webm`, `ride-together.webm` (15 s); a placeholder still.
 
 ## Requests
-- `recordings.mjs:239`: say each `r.speedLines` entry instead of `r.stopCar` (tried: green).
-- `test_shared_day.mjs`: drop "Stop the car!".
 - `catalog.mjs`: `FAIR_MOMENTS["day-window"]` = the `life:ride-*` moments.
 - Move the ride's injected CSS to `css/day.css`.
+- Re-cut far-hills with plain outer tenths.
