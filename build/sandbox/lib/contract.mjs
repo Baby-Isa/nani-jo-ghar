@@ -697,7 +697,8 @@ function check16(tl, lex, add, store) {
     for (const x of e.list || []) {
       if (x.rec && store && !x.grown && !seen.has("rec:" + x.t)) { seen.add("rec:" + x.t); add("contract-16", e.t, `"${x.t}" (${x.sel}): a to-record placeholder on the store build`); continue; }
       // a door line's English (rule 5's door exception) is contract-46's to judge
-      if (x.rec || x.en || x.grown || x.door) continue;
+      // a player's own name, typed by a grown-up on the who's-playing screen (the hook's name tag), is not English
+      if (x.rec || x.en || x.grown || x.door || x.name) continue;
       const words = (String(x.t).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []).map((w) => w.replace(/’/g, "'")).filter((w) => w.length > 1 && !lex.has(w));
       if (!words.length) continue;
       const k = x.t;

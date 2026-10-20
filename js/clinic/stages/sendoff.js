@@ -339,7 +339,11 @@
             if (answer !== "happy") {
               // one more thing (in the scene, by the doctor), then the question again: it always ends happy
               awaitingExtra = true;
-              await S.say(S.line(env, "onemore"), "doctor");
+              // contract-30 (s08 w6I: everything said is written): his "one more thing" is his card's headline while he
+              // gives it; his question comes back to the headline as he asks it again
+              const oneMore = S.line(env, "onemore");
+              screen.card.setTitle(oneMore, null);
+              await S.say(oneMore, "doctor");
               const extra = h("button", "cl-extra", box);
               extra.type = "button";
               S.place(extra, { x: cfg.doctor.x - 0.065, y: cfg.doctor.y - cfg.doctor.h * 0.36, z: 30 }); // in the doctor's hand
@@ -349,7 +353,9 @@
                 awaitingExtra = false;
                 await toPatient(extra);
                 extra.remove();
-                await S.say(S.line(env, "okay-now"), "doctor");
+                const okayNow = S.line(env, "okay-now");
+                screen.card.setTitle(okayNow, null);
+                await S.say(okayNow, "doctor");
                 answer = "happy";
                 await nowHappy();
                 btns.forEach((x) => x.classList.remove("yes"));
