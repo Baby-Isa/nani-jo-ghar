@@ -53,7 +53,8 @@ const el = (tag, cls, parent) => {
 
 export async function runBook(host, api, day) {
   const { core, url, E } = api;
-  api.test.state("day/book");
+  // one stage for the whole evening (day/book/<part>): a page turn is not a stage end
+  api.test.state("day/book/room");
   api.test.expect(() => ({ kind: "wait" }));
   window.Day.stage = "book";
   const D = await fetch(url("data/day-book.json")).then((r) => r.json());
@@ -371,6 +372,9 @@ export async function runBook(host, api, day) {
   book.classList.add("open");
   await api.wait(direct ? 300 : Math.max(C.dissolveMs, C.tiltMs * (1 - C.dissolveAt)));
   window.Day.book.stage = "pages";
+  // behind the open book the room eases back to the whole room, softly out of focus (the close-up stays only for the moves)
+  place3(C.wide);
+  root.classList.add("day-behind");
   layout();
 
   for (let i = 0; i < plan.pages.length; i++) {
@@ -392,9 +396,13 @@ export async function runBook(host, api, day) {
   // ---- the end: the book closes, the camera pulls back out to the room ----
   window.Day.book.stage = "out";
   root.classList.add("day-zoom-out");
+  root.classList.remove("day-behind");
+  await api.wait(350);
+  place3(C.book);
   book.classList.remove("open");
   book.classList.add("closed");
   root.classList.remove("day-reading");
+  await api.wait(300);
   place3(C.wide, C.outMs);
   await api.wait(C.outMs);
   if (ro) ro.disconnect();
