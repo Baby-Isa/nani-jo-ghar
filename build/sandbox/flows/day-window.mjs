@@ -5,7 +5,9 @@
 // missed one comes round), read the ride's test log (Lifecycle ride-call / ride-pass / ride-end) on these pages.
 //
 // The paths (build/sandbox/data/evidence.json `_drivers`, s09-ride):
-//   fair        the ride at the test speed (3x), each thing tapped once it has been asked for and is on screen
+//   fair        the ride at a child's pace (speed 1: the road's real motion, so a filmstrip 400 ms apart sees it scroll, not
+//               jump: at 3x a thing crossed a fifth to a half of the window between two frames; RIDE-01), each thing tapped once
+//               it has been asked for and is on screen; its other levels too
 //   speed-slow  the ride at a child's pace (speed 1, so a crossing takes its real time) with Nani's slow speed held from the ride's
 //               start (?ride=slow: she says "slow down" before the first thing comes into view, and keeps it), then played fair
 //   speed-fast  the same with her fast speed held (?ride=fast)
@@ -93,12 +95,14 @@ const dayWindow = rideFlow({
   id: "day:window",
   title: `${BASE_TITLE}, level 1, fair: the request pop-up, the ride (three looping layers, things on two ground lines, props), each thing asked for as it comes into view and tapped, Nani's speed up and slow down, the end`,
   query: "stage=window&day=2&level=1&seed=7",
+  speed: 1,
+  timeoutMs: 240000,
 });
 
 export const DAY_WINDOW_PATHS = ["fair", "speed-slow", "speed-fast", "miss"];
 export function dayWindowFlow(level, path) {
   const query = `stage=window&day=2&level=${level}&seed=7`;
-  if (path === "fair") return level === 1 ? dayWindow : rideFlow({ id: `day:window@L${level}`, title: `${BASE_TITLE}, level ${level}, fair`, query });
+  if (path === "fair") return level === 1 ? dayWindow : rideFlow({ id: `day:window@L${level}`, title: `${BASE_TITLE}, level ${level}, fair`, query, speed: 1, timeoutMs: 300000 });
   if (path === "speed-slow" || path === "speed-fast") {
     const sp = path.slice(6);
     return rideFlow({ id: `day:window@L${level}#${path}`, title: `${BASE_TITLE}, level ${level}, at a child's pace with Nani's ${sp} speed held from the start, fair`, query: `${query}&ride=${sp}`, speed: 1, timeoutMs: 300000 });

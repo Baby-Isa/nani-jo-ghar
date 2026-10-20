@@ -165,7 +165,11 @@
     const hintMs = opt.hintMs != null ? opt.hintMs : ride.hintMs != null ? ride.hintMs : 5000;
     const itemH = view.itemH || 230;
     const lines = { near: Object.assign({}, LINES.near, (view.lines || {}).near), field: Object.assign({}, LINES.field, (view.lines || {}).field) };
+    // the parallax: the trip's set (data: ride.parallax names one of window.parallaxSets, or is a {far, middle, near} of its own;
+    // a lab may pass opt.parallax), else each layer's own speed. The things on a line move with that line's layer either way.
+    const pset = typeof opt.parallax === "object" && opt.parallax ? opt.parallax : typeof ride.parallax === "object" && ride.parallax && !opt.parallax ? ride.parallax : (opt.parallaxSets || ride.parallaxSets || {})[opt.parallax || ride.parallax] || null;
     const layerSpeed = (id) => {
+      if (pset && pset[id] != null) return pset[id];
       const l = (view.layers || []).find((x) => x.id === id);
       return l && l.speed != null ? l.speed : LAYER_SPEED[id] || 1;
     };
@@ -175,6 +179,7 @@
     const gapK = view.gapK != null ? view.gapK : 0.15;
     const passOnly = Object.keys(things).filter((id) => things[id]);
     const propIds = Object.keys(propDefs);
+    const maxPropW = Math.max(0, ...propIds.map((id) => itemH * (propDefs[id].h || 0.8) * (propDefs[id].ratio || 1)));
     const fam = plan.families || W.families(ride);
 
     let vx0 = 0;
@@ -208,6 +213,7 @@
     m.view = () => ({ x0: vx0, x1: vx1, w: viewW() });
     m.vel = vel;
     m.lineSpeed = lineSpeed;
+    m.layerSpeed = layerSpeed;
     m.lines = lines;
     m.offset = (speed) => m.road * speed;
 
@@ -342,7 +348,13 @@
         const cov = m.coverOf(Object.assign({}, p, { x: 0 }))[0];
         p.x = atStart ? th.x + th.w * f - (cov.x + cov.w) : th.x + th.w * (1 - f) - cov.x;
         // never more than half of any member behind it
-        if (c.members.some((o) => m.share(o) < 0.0 || hiddenBy(o, p) > 0.5)) m.props.pop();
+        if (c.members.some((o) => hiddenBy(o, p) > 0.5)) m.props.pop();
+        else if (p.x < vx1 + 10) {
+          // a prop before the group would come on inside the window (a pop-in): the group and its prop come on further right
+          const dx = vx1 + 10 - p.x;
+          p.x += dx;
+          c.members.forEach((o) => (o.x += dx));
+        }
       }
     }
     const hiddenBy = (th, p) => {
@@ -436,7 +448,7 @@
         if (c.state === "wait" && m.road >= nextGroupAt) {
           // one group at a time: the last one's members gone by, no thing of this group's on screen, room where it comes on
           const span = c.group.reduce((a, id) => a + sizeOf(id, c.line).w, 0) + itemH * gapK * c.group.length;
-          if (!around && m.road - clearSince >= viewW() * 0.15 && !idsAround(c.group) && regionClear(c.line, vx1, vx1 + span + 40, c.line === "near")) spawnGroup(c);
+          if (!around && m.road - clearSince >= viewW() * 0.15 && !idsAround(c.group) && regionClear(c.line, vx1, vx1 + span + 40 + (c.line === "near" ? maxPropW : 0), c.line === "near")) spawnGroup(c);
         } else if (c.state === "coming") {
           const lead = c.members.reduce((a, o) => (o.x < a.x ? o : a), c.members[0]);
           const rel = (lead.x + lead.w / 2 - vx0) / viewW();
@@ -586,12 +598,16 @@
     const strip = doc.createElement("div");
     strip.className = "wr-band wr-layer";
     strip.dataset.band = def.id;
-    Object.assign(strip.style, { top: `${def.y}px`, height: `${def.h}px`, width: `${period * n + tile}px` });
-    const mask = `linear-gradient(to right, transparent 0, #000 ${(W.FADE * 100).toFixed(1)}%, #000 100%)`;
+    // a true cross-fade (Zafar, 20 Oct: "a stray edge that sticks out"): over the overlap the old copy fades OUT as the new one
+    // fades IN, and the two are added (plus-lighter, inside the strip only: isolate), so their weights always sum to one. A
+    // one-sided fade left the old copy's hill line ending in a hard vertical edge wherever the two copies' outlines differ.
+    Object.assign(strip.style, { top: `${def.y}px`, height: `${def.h}px`, width: `${period * n + tile}px`, isolation: "isolate" });
+    const f = (W.FADE * 100).toFixed(1);
+    const mask = `linear-gradient(to right, transparent 0, #000 ${f}%, #000 ${(100 - W.FADE * 100).toFixed(1)}%, transparent 100%)`;
     for (let i = 0; i < n; i++) {
       const t = doc.createElement("div");
       t.className = "wr-tile";
-      Object.assign(t.style, { left: `${i * period}px`, width: `${tile}px`, height: `${def.h}px` });
+      Object.assign(t.style, { left: `${i * period}px`, width: `${tile}px`, height: `${def.h}px`, mixBlendMode: "plus-lighter" });
       t.style.webkitMaskImage = mask;
       t.style.maskImage = mask;
       if (useArt && def.art) {
@@ -623,7 +639,7 @@
       if (parent) parent.appendChild(e);
       return e;
     };
-    const model = W.model(ride, plan, { rng: o.rng || Math.random, hintMs: o.hintMs, hold: o.hold || null });
+    const model = W.model(ride, plan, { rng: o.rng || Math.random, hintMs: o.hintMs, hold: o.hold || null, parallax: o.parallax || null, parallaxSets: o.parallaxSets || null });
 
     // the window: the view (the scene in the frame's opening) and the car's frame over it
     const win = h("div", "wr-window", el);
@@ -827,13 +843,21 @@
     const step = (now) => {
       if (stopped) return;
       if (last == null) last = now;
-      const dt = Math.min(100, now - last) * speed;
+      // the road keeps the wall clock's time (a late frame moves it on, never a stall that then creeps); only a gap of more
+      // than a second (a hidden tab, a paused page) counts as one frame. Stepped in small pieces, so no call or pass is missed.
+      let ms = now - last;
+      if (ms > 1000 || ms < 0) ms = 16;
       last = now;
-      model.step(dt);
+      let dt = ms * speed;
+      while (dt > 0) {
+        const d = Math.min(dt, 50);
+        model.step(d);
+        dt -= d;
+      }
       handle();
       // the layers: each at its own share of the road, one copy left of the window so the first fade never shows
       Object.values(layers).forEach((L) => {
-        const off = (model.road * (L.def.speed != null ? L.def.speed : 1)) % L.period;
+        const off = (model.road * model.layerSpeed(L.def.id)) % L.period;
         L.strip.style.transform = `translate3d(${(-off - L.period).toFixed(1)}px, 0, 0)`;
       });
       const open = model.open();
