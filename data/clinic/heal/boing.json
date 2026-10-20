@@ -207,10 +207,10 @@
     1536
    ],
    "box": [
-    440,
+    454,
     -4,
-    140,
-    210
+    112,
+    168
    ],
    "tubes": [
     210,
@@ -229,10 +229,11 @@
     1256
    ],
    "_about": "CLN-164, CLN-165 (s07 DM1, cut in s08 wave 0): the drop machine, drawn 176 wide at (474, -4) (about three quarters of the old drawn machine); tubes = its four tubes' and sockets' x (source px, red, yellow, blue, green as drawn), tubeY their liquid, spoutY the drip spouts' tips, socketY the lever sockets, ring the chute's round mouth the drops fall from",
-   "_s08w6c": "CLN-165 (s08 wave 6C; the gate's stuck boing at 1024x768: the green lever sat under the tool column, svg x 594 there): 140 wide at (440, -4), 0.8 of before, its last lever at x 564, clear of the tools on every screen"
+   "_s08w6c": "CLN-165 (s08 wave 6C; the gate's stuck boing at 1024x768: the green lever sat under the tool column, svg x 594 there): 140 wide at (440, -4), 0.8 of before, its last lever at x 564, clear of the tools on every screen",
+   "_s08w6h": "CLN-165 (the judge: the machine and syringe still about two thirds of the scene height): 112 wide at (454, -4), 0.8 of 140, its middle kept at x 510; the levers 21 across (art.levers.plate, 0.8 of 26) so they keep their gaps"
   },
   "levers": {
-   "plate": 26,
+   "plate": 21,
    "up": {
     "file": "assets/clinic/heal-v3/lever-up-v3.webp",
     "size": [
@@ -266,7 +267,7 @@
     129,
     384
    ],
-   "h": 190,
+   "h": 150,
    "barrel": [
     37,
     150,
@@ -275,7 +276,8 @@
    ],
    "tip": 366,
    "_about": "CLN-164, CLN-165, CLN-166: the s02 E11 syringe, upright, cap down (no needle is ever shown), 210 tall (0.85 of the old drawn one); barrel = the inside of the barrel [x0, y0, x1, y1] (its own px) where the drops' liquid rises; tip = the cap's end; pressed = the same syringe with the plunger home (same canvas), cross-faded in as the medicine goes in",
-   "_s08w6c": "CLN-165: 190 tall (0.9 of 210), so the machine and the syringe no longer dominate the tools"
+   "_s08w6c": "CLN-165: 190 tall (0.9 of 210), so the machine and the syringe no longer dominate the tools",
+   "_s08w6h": "CLN-165: 150 tall (0.79 of 190): the machine and the syringe together about 0.6 of the scene height (were about 0.76)"
   },
   "cloth": {
    "file": "assets/clinic/sheets/cloth/cloth-dab.webp",

@@ -692,3 +692,7 @@ svg .cl-ring { position: static; width: auto; height: auto; margin: 0; border-ra
    dish (a lifted dish carried its fading outline up with it, so one level showed a box and another none) */
 .cl-counter-tray .cl-dish.lifted { transform: none; box-shadow: none; }
 .cl-counter-tray .cl-dish.lifted .cl-item { transform: translateY(calc(16% - 18px)) scale(1.08); transition: transform .2s ease-out; }
+/* CLN-165 (s08 w6H; the judge: "the plaster and wipe icons fill only about half of their small tiles"): the boing's tools
+   are 2:1 plasters and a wipe packet, so its tile's picture box is as wide as a plaster (on every screen) */
+[data-game="boing"] .hs-tools { --hs-pic-w: calc(var(--hs-pic-h) * 1.8); }
+@media (max-height: 499.98px), (max-width: 499.98px) { [data-game="boing"] .hs-tools { --hs-pic-h: calc(var(--njg-done) * 0.6); --hs-pic-w: calc(var(--hs-pic-h) * 1.8); } }

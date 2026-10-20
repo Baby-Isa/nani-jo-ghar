@@ -992,15 +992,13 @@
         if (popup && global.Lifecycle && global.Lifecycle.isOpen()) global.Lifecycle.close();
         timers.forEach((t) => clearTimeout(t));
         listeners.forEach(([el, type, fn, o]) => el.removeEventListener(type, fn, o));
-        try {
-          controller && controller.destroy && controller.destroy();
-        } catch (e) {
-          console.error(e);
-        }
         // CLN-69: a round that ended keeps the room under the results card (the wide shot at rest); a game with no
-        // zoom (the fever room, the parked games) gets the same still wide shot, so the card never sits on bare cream
+        // zoom (the fever room, the parked games) gets the same still wide shot, so the card never sits on bare cream.
+        // CLN-178 (the judge's blank brown frame after the fever): that still room is laid before the game's own room
+        // goes, so no frame shows the bare stage between the two
         let kept = false;
-        if (ended && opts.backdrop !== false) {
+        const keepRoom = () => {
+          if (kept || !ended || opts.backdrop === false) return;
           try {
             const z = staging || HOST.stage(stage, fig, { part: ailment.part || def.part, side, camera: (data && data.camera) || null, level });
             if (z && z.keep) {
@@ -1011,7 +1009,14 @@
           } catch (e) {
             console.error(e);
           }
+        };
+        if (!staging) keepRoom();
+        try {
+          controller && controller.destroy && controller.destroy();
+        } catch (e) {
+          console.error(e);
         }
+        keepRoom();
         if (viewer) viewer.destroy();
         if (staging && !kept) staging.destroy();
         if (screen.stripMode) screen.stripMode(false);

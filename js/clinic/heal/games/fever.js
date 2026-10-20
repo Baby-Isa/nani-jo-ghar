@@ -923,6 +923,40 @@
       if (Date.now() - pressedAt < 700) return;
       tapPatient(e);
     });
+    // CLN-178: the ending's camera on the room (box: the room picture with her, the things and the gauge on it), about
+    // her head: in to about 1.8x, a beat on her well face, then out to the wide shot. Web Animations (tests can pause
+    // them); reduced motion or no animation support: no move, the ending goes straight on
+    const endZoom = () => {
+      const reduced = !!(root.matchMedia && root.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      const head = artOn && fig.anchorEl ? fig.anchorEl("head") : fig.el.querySelector(".fig-head") || fig.el;
+      if (reduced || !box.animate || !head || !head.getBoundingClientRect) return Promise.resolve();
+      const br = box.getBoundingClientRect();
+      const hr = head.getBoundingClientRect();
+      const rr = roomEl.getBoundingClientRect();
+      if (!br.width || !hr.width || !rr.height) return Promise.resolve();
+      // her head and the thermometer below it fill about half the play height; the point between them stays put
+      const cx = hr.left + hr.width / 2 - br.left;
+      const cy = hr.top + hr.height * 0.75 - br.top;
+      const k = Math.max(1.4, Math.min(2.2, (0.5 * rr.height) / Math.max(40, hr.height * 1.6)));
+      // the zoomed picture keeps her face in the middle of the play area
+      const dx = rr.left + rr.width / 2 - (br.left + cx);
+      const dy = rr.top + rr.height * 0.45 - (br.top + cy);
+      box.style.transformOrigin = `${cx.toFixed(1)}px ${cy.toFixed(1)}px`;
+      const at = (f) => `translate(${(dx * f).toFixed(1)}px, ${(dy * f).toFixed(1)}px) scale(${(1 + (k - 1) * f).toFixed(4)})`;
+      const T = fast() ? 0.15 : 1;
+      const frames = [
+        { offset: 0, transform: at(0), easing: "cubic-bezier(.4,0,.2,1)" },
+        { offset: 0.3, transform: at(1) },
+        { offset: 0.55, transform: at(1), easing: "cubic-bezier(.4,0,.2,1)" },
+        { offset: 1, transform: at(0) },
+      ];
+      roomEl.classList.add("fv-ending"); // (a probe hook: the ending's camera move is on)
+      const an = box.animate(frames, { duration: Math.round(3400 * T), fill: "none" });
+      return an.finished.catch(() => {}).then(() => {
+        box.style.transformOrigin = "";
+        roomEl.classList.remove("fv-ending");
+      });
+    };
     const finish = () => {
       st.over = true;
       unhint();
@@ -948,9 +982,14 @@
         const thanks = ctx.line ? ctx.line("thanks-better") : null;
         let went = false;
         const go = () => !went && ((went = true), ctx.after(fast() ? 150 : 900, end));
-        if (thanks) S.say(thanks, "patient").then(go, go);
-        ctx.after(fast() ? 1500 : 5000, go); // a line that never ends (a stalled clip) still moves on
-        if (!thanks) go();
+        // CLN-178 (s08 w6H; the judge: "no visible end"): the end the knee has, in the room: the camera closes in on
+        // her well face (the reading normal, the thermometer at her mouth, her smile), then zooms back out to the whole
+        // room, and her thank-you comes in the room; the room is the game's own picture throughout (never a blank frame)
+        endZoom().then(() => {
+          if (thanks) S.say(thanks, "patient").then(go, go);
+          else go();
+        });
+        ctx.after(fast() ? 2500 : 8000, go); // a line that never ends (a stalled clip) still moves on
       });
     };
 

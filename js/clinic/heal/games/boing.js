@@ -461,6 +461,7 @@
     const clothArt = ART.cloth && ART.cloth.file ? ART.cloth : null;
     const WIPE_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="14" y="20" width="72" height="60" rx="8" fill="#f8fbfd" stroke="#9fb3c4" stroke-width="4"/><path d="M14 34h72" stroke="#3f8fd0" stroke-width="7"/><path d="M30 60q20-14 40 0" fill="none" stroke="#bcd6ea" stroke-width="5" stroke-linecap="round"/></svg>');
     st.plaster = null;
+    S.clearTick = true; // CLN-165: at 800x360 the ✓ covered the third plaster: the column stops above the ✓'s corner
     S.tools([{ id: "cotton", img: wipeArt || WIPE_SVG, glyph: "•" }].concat(PLASTERS.map((c) => ({ id: `plaster-${c}`, img: plasterPic(c), glyph: "•" }))), (id) => {
       if (/^plaster-/.test(id)) st.plaster = id.slice(8);
     });

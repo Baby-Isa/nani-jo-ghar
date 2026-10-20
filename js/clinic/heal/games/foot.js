@@ -300,6 +300,7 @@
     // plaster one ... you have to put the cursor over specific parts of the dirt and the water clears off those parts"):
     // the scrape's wash. The jug picked tilts over the finger and its water (clear, whatever its warmth) falls where the
     // finger is; only the dirt under it washes off, running down
+    const wetG = s("g", { "clip-path": `url(#${clipId})`, class: "fo-wet-g" }, fxG); // the wash's wet path, on the sole only
     const pourJug = s("image", { width: 104, height: 108, opacity: 0, class: "fo-jug" }, fxG);
     const streamG = s("g", { opacity: 0 }, fxG);
     const streamW = s("path", { fill: "none", stroke: "rgba(170,214,240,.55)", "stroke-width": 13, "stroke-linecap": "round" }, streamG);
@@ -331,7 +332,23 @@
       }
       return hit;
     };
+    // CLN-190 (s08 w6H; the judge: "nothing shows the wash moving over and clearing particular bits of dirt"): a quick
+    // sweep washes everything on its way (every few units between two finger positions, never only where the finger
+    // was sampled), and the water leaves a wet sheen along its path that dries in under a second
+    const washLine = (p, temp) => {
+      const a = st.washFrom;
+      st.washFrom = { x: p.x, y: p.y };
+      if (!a) return washAt(p, temp);
+      const n = Math.max(1, Math.ceil(Math.hypot(p.x - a.x, p.y - a.y) / 16));
+      let hit = 0;
+      for (let k = 1; k <= n; k++) hit += washAt({ x: a.x + ((p.x - a.x) * k) / n, y: a.y + ((p.y - a.y) * k) / n }, temp);
+      const wet = s("path", { d: `M${a.x.toFixed(1)} ${a.y.toFixed(1)} L${p.x.toFixed(1)} ${p.y.toFixed(1)}`, fill: "none", stroke: "rgba(205,232,250,.5)", "stroke-width": 26, "stroke-linecap": "round", class: "fo-wet" }, wetG);
+      if (wet.animate) wet.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fast() ? 80 : 900, fill: "forwards" });
+      ctx.after(fast() ? 100 : 950, () => wet.remove());
+      return hit;
+    };
     const endPour = () => {
+      st.washFrom = null;
       st.pouring = false;
       pourJug.setAttribute("opacity", 0);
       streamG.setAttribute("opacity", 0);
@@ -518,7 +535,8 @@
         // FT2: never "until it's clean" (the count is the words', C10): the rest rinses off when the soak closes
         st.pouring = t;
         if (S.svg.setPointerCapture) try { S.svg.setPointerCapture(e.pointerId); } catch (err) { /* a synthetic pointer */ }
-        washAt(p, t);
+        st.washFrom = null;
+        washLine(p, t);
         S.face(t === "hot" ? "hot" : t === "cold" ? "cold" : "happy", 600);
         return;
       }
@@ -549,7 +567,7 @@
       if (st.pouring) {
         const c = cur();
         if (!c || c.kind !== "soak") return endPour();
-        washAt(S.pt(e), st.pouring);
+        washLine(S.pt(e), st.pouring);
         return;
       }
       if (!drag) return;

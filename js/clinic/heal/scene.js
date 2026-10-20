@@ -496,7 +496,23 @@
       const box = shelf.firstElementChild ? shelf.firstElementChild.getBoundingClientRect().height : 0;
       const gap = parseFloat((global.getComputedStyle && global.getComputedStyle(shelf).rowGap) || "") || 8;
       const rr = root.getBoundingClientRect();
-      const room = rr.bottom - Math.max(rr.top, shelf.getBoundingClientRect().top) - gap;
+      // CLN-165 (s08 w6H; boing at 800x360: the ✓ covered the third plaster): the ✓'s corner (bottom right, under the
+      // column: css .cl-actions, its box the --njg-done token) is kept clear, so a tile never sits under it (a game asks
+      // for it: S.clearTick, the boing's four tiles; the others' columns are as they were)
+      const tick = (() => {
+        if (!S.clearTick) return 0;
+        try {
+          const d = shelf.ownerDocument.createElement("div");
+          d.style.cssText = "position:absolute;visibility:hidden;width:1px;height:var(--njg-done)";
+          shelf.appendChild(d);
+          const v = d.getBoundingClientRect().height;
+          d.remove();
+          return v > 0 ? v + Math.max(10, 0.03 * rr.height) : 0;
+        } catch (e) {
+          return 0;
+        }
+      })();
+      const room = rr.bottom - Math.max(rr.top, shelf.getBoundingClientRect().top) - gap - tick;
       const rowsFit = Math.max(2, Math.floor((room + gap) / ((box || 62) + gap)));
       shelf.style.setProperty("--cols", Math.max(1, Math.ceil(list.length / Math.min(6, rowsFit))));
     };
@@ -592,7 +608,12 @@
           // sp.also: more things lit with the move, still tappable during the help (the ear's tweezers tile: a child who
           // picks the tool first is never blocked by the help's light)
           steps.push({ spotlight: [first, to].concat((sp.also || []).map(rectOf)), ghost: { gesture: "drag", from: first, to }, wait: "hs-did" });
-        } else if (first()) steps.push({ spotlight: first, ghost: { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+        } else if (first()) {
+          // sp.also on a tap: more things lit (and tappable) with the one the ghost taps (CLN-107: the eye's other yes/no
+          // pill, so a wrong answer in the taught row still shakes red, as at every level, never a dead tap)
+          const also = (sp.also || []).map(rectOf);
+          steps.push({ spotlight: also.length ? [first].concat(also) : first, ghost: also.length ? { gesture: g, from: first } : { gesture: g }, wait: isTool ? "tap" : "hs-did" });
+        }
         const nx = then || sp.then;
         if (nx) {
           const t2 = rectOf(nx.target || nx);

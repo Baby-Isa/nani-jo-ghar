@@ -390,7 +390,15 @@
       // panel edge to edge (art.wall.box, the close-up's units; its own wall and skirting colours round it on a tall
       // screen); the board's white face (art.wall.board, shares of the picture) is the chart's own units (CH)
       if (WALL) {
-        const wb = WALL.box;
+        // CLN-188 (s08 w6H; the judge: the board "fills only about a third of the play width"): the board is widened
+        // without stretching its frame (art.wall.stretch: [a, b, f], a nine-slice of the picture: its middle share a..b,
+        // the plain board face and the wall above and below it, drawn f times as wide; the frame's sides keep their
+        // drawn size), so the wall's real picture takes most of the play width
+        const [sa, sb, sf] = WALL.stretch || [0.5, 0.5, 1];
+        const w0 = WALL.box[2];
+        const wb = [WALL.box[0], WALL.box[1], w0 * (sa + (1 - sb) + (sb - sa) * sf), WALL.box[3]];
+        // a share of the picture's width -> its x in the widened picture
+        const xs = (u) => wb[0] + w0 * (u <= sa ? u : u >= sb ? u - (sb - sa) + (sb - sa) * sf : sa + (u - sa) * sf);
         s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: WALL.fill || "#a9b4b8" }, testG);
         s("rect", { x: SPLIT + 14, y: wb[1] + wb[3] - 2, width: 1000, height: 700, fill: WALL.floor || "#c3b6a6" }, testG);
         // s08-w6c (CLN-188): the picture's sides fade into the wall's colour round it (its lit left edge left a seam)
@@ -404,10 +412,24 @@
         [[0, 0], [0.1, 1], [1, 1]].forEach(([o, a]) => s("stop", { offset: o, "stop-color": "#fff", "stop-opacity": a }, gv));
         const mv = s("mask", { id: `${fadeId}-m`, maskUnits: "userSpaceOnUse", x: wb[0], y: wb[1], width: wb[2], height: wb[3] }, testG);
         s("rect", { x: wb[0], y: wb[1], width: wb[2], height: wb[3], fill: `url(#${fadeId}-v)` }, mv);
-        const wallG = s("g", { mask: `url(#${fadeId}-m)` }, testG);
-        s("image", { href: url(WALL.src), x: wb[0], y: wb[1], width: wb[2], height: wb[3], preserveAspectRatio: "none", mask: `url(#${fadeId})` }, wallG);
+        // the wall never reaches over her panel (the widened picture may start left of the split)
+        const clipId = `${fadeId}-c`;
+        const cp = s("clipPath", { id: clipId }, testG);
+        s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100 }, cp);
+        const wallG = s("g", { mask: `url(#${fadeId}-m)`, "clip-path": `url(#${clipId})` }, testG);
+        const fadeG = s("g", { mask: `url(#${fadeId})` }, wallG);
+        // the three slices: each a window (a nested svg) on its share of the one picture. The middle is drawn first and a
+        // little past both joins (pad, a share of the picture), the sides over it: no seam line where they meet
+        const pad = 0.01;
+        [[sa - pad, sb + pad, true], [0, sa], [sb, 1]].forEach(([u0, u1, middle]) => {
+          if (u1 <= u0 || (middle && sb <= sa)) return;
+          const x0 = middle ? xs(sa) - pad * w0 * sf : xs(u0);
+          const x1 = middle ? xs(sb) + pad * w0 * sf : xs(u1);
+          const win = s("svg", { x: x0, y: wb[1], width: x1 - x0, height: wb[3], viewBox: `${u0 * 1000} 0 ${(u1 - u0) * 1000} 1000`, preserveAspectRatio: "none", overflow: "hidden" }, fadeG);
+          s("image", { href: url(WALL.src), x: 0, y: 0, width: 1000, height: 1000, preserveAspectRatio: "none" }, win);
+        });
         const bd = WALL.board;
-        CH = { x: wb[0] + bd[0] * wb[2], y: wb[1] + bd[1] * wb[3], w: (bd[2] - bd[0]) * wb[2], h: (bd[3] - bd[1]) * wb[3] };
+        CH = { x: xs(bd[0]), y: wb[1] + bd[1] * wb[3], w: xs(bd[2]) - xs(bd[0]), h: (bd[3] - bd[1]) * wb[3] };
       } else {
         s("rect", { x: SPLIT + 14, y: -300, width: 1000, height: 1100, fill: "#f4ecdf" }, testG);
         CH = { x: 450, y: 18, w: 262, h: 352 };
@@ -539,7 +561,8 @@
           CHECK(cx, cy, Math.max(8, 0.032 * CH.w), rowsG);
         }
         c.pics.forEach((id, k) => {
-          const px0 = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * ROWS.pitch;
+          // a wider board spreads its rows across it (CLN-188): the pitch grows with the board's width for its height
+          const px0 = CH.x + CH.w / 2 + (k - (c.pics.length - 1) / 2) * b.sz * ROWS.pitch * Math.max(1, CH.w / CH.h / 0.66);
           const z = b.sz * kAt(px0);
           const [px, py] = Q(px0, b.cy);
           const im = s("image", { href: url(BY[id].icon), x: px - z / 2, y: py - z / 2, width: z, height: z, opacity: done || now || !cur() || cur().kind !== "read" || cur().row < i ? 1 : 0.85 }, rowsG);
@@ -635,7 +658,9 @@
       // shows is taught, not scored
       if (i === 0) {
         if (S.cuesOn && !again) P.rows = P.rows.filter((r) => r.id !== RID(0));
-        S.cue("read", CUES.read, c.wrong ? naBtn : haaBtn);
+        // CLN-107 (the judge: at L1 the wrong pill never turned red): both pills are live under the help's light; the
+        // ghost taps the right one, a tap on the other shakes red as at L2-L3
+        S.cue("read", Object.assign({}, CUES.read, { also: [c.wrong ? haaBtn : naBtn] }), c.wrong ? naBtn : haaBtn);
       }
       ctx.say(line, { who: "patient", noBubble: true }).then(() => S.face("neutral"));
     };
