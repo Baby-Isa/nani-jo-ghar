@@ -76,17 +76,6 @@ const bookOf = (page) => page.evaluate(() => window.Day && window.Day.book && { 
 async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = SPEED } = {}) {
   const { page, rec } = ctx;
   await open(page, query, speed);
-  // every line the book says, with its start and end (the page's clock): one at a time, never twice for one event (DAY-02)
-  await page.evaluate(() => {
-    if (!window.Day || window.__bookVoice) return;
-    window.__bookVoice = [];
-    const say = window.Day.say;
-    window.Day.say = function (ln, o) {
-      const e = { text: ln ? String(ln.text || ln.en || "") : "", a: performance.now(), b: null, stage: window.Day.stage };
-      window.__bookVoice.push(e);
-      return Promise.resolve(say.apply(this, arguments)).finally(() => (e.b = performance.now()));
-    };
-  });
   if (room) {
     await page.waitForSelector(".day-cv .day-bubble.in .day-line", { timeout: 20000 });
     await sleep(200);
@@ -173,7 +162,8 @@ async function playBook(ctx, query, prefix, { wrong = [], room = true, speed = S
   const games = b && b.plan ? b.plan.pages.length : 0;
   if (!b || b.results.length < games) throw new Error(`the book did not play every page (${JSON.stringify(b && b.results)})`);
   // the book's lines: none twice within a second (of the child's time) for one event, never two at once, none of no length
-  const said = ((await page.evaluate(() => window.__bookVoice || []).catch(() => [])) || []).filter((e) => e.stage === "book" && e.text);
+  // (the book logs each line it says, window.Day.book.voice: read here, never by wrapping its voice, which the sound log also wraps)
+  const said = ((await page.evaluate(() => (window.Day.book && window.Day.book.voice) || []).catch(() => [])) || []).filter((e) => e.text);
   const faults = voiceFaults(said, { gapMs: 1000 / speed, slackMs: 30 });
   ctx.extra = Object.assign(ctx.extra || {}, { bookVoice: { lines: said.length, faults } });
   if (faults.length) throw new Error(`the book's lines: ${faults.slice(0, 4).map((f) => `${f.kind} "${f.text}"${f.over ? ` over "${f.over}"` : ""} at ${Math.round(f.at)} ms`).join("; ")}${faults.length > 4 ? ` and ${faults.length - 4} more` : ""}`);

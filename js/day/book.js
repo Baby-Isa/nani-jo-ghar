@@ -56,7 +56,13 @@ const el = (tag, cls, parent) => {
 export async function runBook(host, api, day) {
   const { core, url, E } = api;
   // every line the book says, one at a time: each starts after the last has ended, and one event says its line once (DAY-02)
-  const bookSay = sayQueue((ln, o) => api.say(ln, o));
+  // (each line's start and end on the page's clock in window.Day.book.voice: the tests' read-only view, the day-book flow's check)
+  const bookSay = sayQueue((ln, o) => {
+    const e = { text: String(ln.text || ln.en || ""), a: performance.now(), b: null };
+    const B = window.Day.book;
+    if (B) (B.voice = B.voice || []).push(e);
+    return Promise.resolve(api.say(ln, o)).finally(() => (e.b = performance.now()));
+  });
   // one stage for the whole evening (day/book/<part>): a page turn is not a stage end
   api.test.state("day/book/load");
   api.test.expect(() => ({ kind: "wait" }));
