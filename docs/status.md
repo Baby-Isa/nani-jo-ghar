@@ -8,16 +8,14 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (20 Oct 2026, evening UK):** Sprint 8's fixes and its art (s08c, waves 7A and 7B) are merged and pushed on `claude/new-session-b5r2am` (f8e8e92c); `main` = 38d0591a. 7A's replay at 8 sizes: every Cook flow reaches its end with 0 rule breaks (contract-11 and contract-37 now pass). Checks green. **Running:** evidence on the changed rows (`evidence.mjs --run --changed --since 4c0219c9`, about 3 hours in chunks), then the judges, `--apply`, and the full gate once. **Then Zafar's go to `/publish`.**
+**Where things stand (21 Oct 2026, 06:00 UK):** Sprint 8 is finished and pushed on `claude/new-session-b5r2am`: every 17-18 Oct code fix, the s08c art (7A, 7B), the chicken (murgi, English placeholder until Mum records it), and waves 8A/8B's fixes from the pre-publish evidence. Proof: checks.mjs all green (load included); the joint 8-size contract replay `s08-final-joint` (22 Cook, clinic and house flows) 0 breaks over 177 pages; evidence runs ev-20261020-203453-9h9 and ev-20261021-031423-a9z judged and applied (178 rows on the fix list). Main's image uploads are merged in. **Not yet live:** the publish (`publish.mjs --go --force`, Zafar's word, 21 Oct) was refused by the session's permission check; it needs Zafar to run or allow it.
 
-**Art open (from 7A):** the tray's chunks nearly touch; the tip frames' undersides are slightly lumpy; cook:daal's oil still shows glossy bubbles (CK-06). s09a redo (house, Nani by the fire, the book from the child's seat, our day) is with Zafar; Sprint 9 moves to its own chat.
+**The publish gate's three blockers** (why `--force`): 91 open rows with no "waiting on" note; the last full gate run (a2bb1c9c, before this sprint's fixes) had 772 breaks; game files changed since it (mostly main's image uploads). A full `run.mjs --gate` before the next publish clears the second and third.
 
-**Process (Zafar, 20 Oct):** builders replay their flows at 8 sizes before reporting (brief.mjs); the full gate once before a publish; judge FAILs checked against his own words first; evidence on changed rows (`--changed`); two builders a round, each owning its rows' specs.
-
-**Next steps:** 1. finish the evidence, judges and gate → the FAIL list to Zafar. 2. his publish go → `/publish`. 3. Sprint 9 in its own chat.
+**Next steps:** 1. publish (below). 2. Zafar plays; his notes → `/feedback`. 3. Sprint 9 runs in its own chat.
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/new-session-b5r2am` (`main` = 38d0591a). Sprint 8's fixes and art are merged; finish the evidence run, judges and the gate, then ask me before publishing.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Branch `claude/new-session-b5r2am` holds Sprint 8, ready to publish. Run `node build/tools/ops/publish.mjs --go --force --log` (my word: publish Sprint 8), confirm it is live, and give me the play link.
 
 ## The fix list
 
