@@ -3888,19 +3888,19 @@
   "date": "2026-10-20"
  },
  "CLN-87": {
-  "hash": "df72f153c3352e49dd29",
+  "hash": "c354937f8a22d9382e18",
   "dhash": [
-   "bc959c9eba98981f",
-   "e0eccdc6c6c2c3d2",
-   "9058fc8e9686a6a6"
+   "9d979d9b829890ae",
+   "c8c88c9686968683",
+   "9171b1a2a5a7aee6"
   ],
   "verdict": "FAIL",
-  "line": "B, the first frame of the pull-out (x2) is a mid shot of her sitting on the couch (dress, lap, legs, sandals), not full zoom on the healed knee, and no bandage shows; C 0 ms is the same lap framing. Other flaws: A 1187 ms is a ghosted cross-fade of her seated body over the knee close-up; C's later frames switch between two framings (1283/2164 ms against 1728/2604 ms); only the knee game is shown, not every heal game.",
-  "panel": "B",
+  "line": "A, the zoom-in takes about 2.7 s, not about 1.5 s: it is still moving at 2122 ms and only settles at 2669 ms (the probe measured 2678 ms against a limit of 1800). The 2122 ms frame also shows a ghosted cross-fade, with the sitting body see-through over the knee close-up instead of a clean swap. Two other flaws: in B and in C at 478 ms her white trousers reach her ankles with no bandage showing, but the close-ups in A and C at 0 ms show the trouser rolled up and the knee bare and bandaged, so the two pieces of art do not match. In A at 0 ms, the doctor's bubble sits over the room while she stands small at the far side. The pull-out in C (bandaged knee at 0 ms, full room by 1475 ms) is about 1.5 s and starts from full zoom on the healed knee.",
+  "panel": "A",
   "judge": "judge",
-  "run": "ev-20261021-141514-4pn",
-  "commit": "3a402ff9",
-  "png": "build/screenshots/evidence/ev-20261021-141514-4pn/CLN-87.png",
+  "run": "ev-20261021-152759-xhj",
+  "commit": "29f80f7b",
+  "png": "build/screenshots/evidence/ev-20261021-152759-xhj/CLN-87.png",
   "date": "2026-10-21"
  },
  "CLN-88": {
@@ -6359,21 +6359,21 @@
   "date": "2026-10-20"
  },
  "SH-113": {
-  "hash": "345955ace63265f49594",
+  "hash": "430d8ce429b90efb1dda",
   "dhash": [
    "006161e8e06c7c24",
    "0070e4e8d0ec6c04",
    "0070e4e8d0ec6c04",
-   "1464ceaa86563204",
-   "1465ceaa8756370d"
+   "1470cc8eaa203404",
+   "1471cc8eaa23170d"
   ],
-  "verdict": "FAIL",
-  "line": "D, the girl's face circle has white cut-out blotches on both sides of her chin (E has them too), and her face is cropped tighter (top of her hair cut off, a larger circle) than the doctor's whole head in B and C, so the circles are not zoomed in by the same amount",
-  "panel": "D",
+  "verdict": "PASS",
+  "line": "B, the doctor's head now fills his circle from crown to beard with no empty margin (no longer \"very zoomed out\"), the same framing as the Cook customer in A (cap to beard edge to edge), the doctor again in C, and the patient in D and E (hair to chin, cheeks to the rim); flaws: none in the circles, only A's crop edge catching part of a neighbouring card element at right",
+  "panel": "B",
   "judge": "judge",
-  "run": "ev-20261021-141514-4pn",
-  "commit": "3a402ff9",
-  "png": "build/screenshots/evidence/ev-20261021-141514-4pn/SH-113.png",
+  "run": "ev-20261021-152759-xhj",
+  "commit": "29f80f7b",
+  "png": "build/screenshots/evidence/ev-20261021-152759-xhj/SH-113.png",
   "date": "2026-10-21"
  },
  "SH-115": {
@@ -7133,14 +7133,14 @@
   "date": "2026-10-21"
  },
  "SH-63": {
-  "hash": "438ea58b7015d40cf483",
+  "hash": "ffe0b2132d0e33bce998",
   "dhash": [],
   "verdict": "FAIL",
-  "line": "SH-63-p2-L1-1366x768 dom:.njg-guide at life:step-open (4), the guide box is on screen with no words in it at a step opening (Zafar, 21 Oct: never empty); in p1 the guide is empty at all 8 step-closes while the step line \"Nindha nindha kap! [ph] Chop these\" sits in #mission (the card), and in p3 (clinic L1) the guide is empty at every stage with the step lines (\"[ph] Where does it hurt?\", \"[ph] Pick how she feels.\") inside the card, so the step/order rule is not one rule across stations and stages (flaws seen: stray \"[ph] .\" fragment in p1; p4 heal strip reads \"[ph] Hammer, [ph] ba\", a fragment)",
-  "panel": "SH-63-p2-L1-1366x768 dom",
+  "line": "SH-63-p4-L2-1366x768 dom:.cl-side .oc-card at rec:stage-sendoff (5), the clinic card carries a step line (\"Is everything okay now?\") and no order, and so do its diagnosis card (\"Ask where it hurts.\", the same step the guide box gives) and its waiting card (\"Who's next?\"), against \"no step line on the card\"; also the Cook card (SH-63-p1 dom:#mission) is empty at step-close hits 3-4 and step:row-1-2, its order flips between captures (hakro dungri, hakro mirchi, then hakro mirchi, hakro dungri), the L2 heal guide reads only a fragment (\"Hammer, ba\") rather than the step, and to-record tags differ between guide and card for the same words (guide \"[ph] Paani\", \"[ph] char\", \"[ph] ba\"; card untagged)",
+  "panel": "SH-63-p4-L2-1366x768 dom",
   "judge": "judge",
-  "run": "ev-20261021-141514-4pn",
-  "commit": "3a402ff9",
+  "run": "ev-20261021-152759-xhj",
+  "commit": "29f80f7b",
   "png": null,
   "date": "2026-10-21"
  },
