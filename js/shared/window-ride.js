@@ -405,7 +405,7 @@
       c.saidAt = m.t;
       if (c.firstAt == null) c.firstAt = m.t;
       if (!c.glow && (c.wrong > 0 || m.t - c.firstAt >= hintMs)) c.glow = true;
-      emit({ type: "call", i: c.i, pass: c.pass, uid: c.namedTh.uid, id: c.named, glow: c.glow });
+      emit({ type: "call", i: c.i, pass: c.pass, uid: c.namedTh.uid, id: c.named, glow: c.glow, x: c.namedTh.x });
     }
     function passEnded(c, how) {
       emit({ type: "pass", i: c.i, pass: c.pass, id: c.named, how });
@@ -723,10 +723,13 @@
   /**
    * One frame of the ride's clock (pure: the screen's frame loop and the tests): the road moves by exactly the frame's real time
    * (ms, times the test speed), in pieces of at most 50 ms of ride time whose sum is the frame's, so a long frame is one even
-   * move, never a stall that creeps after. A gap over a second (a hidden tab, a paused page) counts as one 16 ms frame.
+   * move, never a stall that creeps after. A gap over W.STALL (a hidden tab, a paused page, a busy page that froze for a moment)
+   * counts as one 16 ms frame: the road never leaps on by a quarter second or more, so a thing asked for is never carried off
+   * past the pillar while the page was stuck (RIDE-04).
    */
+  W.STALL = 250;
   W.advance = function (model, ms, speed = 1) {
-    if (!(ms >= 0) || ms > 1000) ms = 16;
+    if (!(ms >= 0) || ms > W.STALL) ms = 16;
     let dt = ms * speed;
     while (dt > 1e-9) {
       const d = Math.min(dt, 50);
@@ -980,11 +983,13 @@
       const th = model.things.find((x) => x.uid === ev.uid);
       if (!th) return;
       const top = model.topOf(th);
-      const occ = model.inFront(th).map(rectStr).join(";");
+      // where it was when she asked (the event's own moment: a frame can hold several steps), what was in front of it then
+      const dx = ev.x != null ? ev.x - th.x : 0;
+      const occ = model.inFront(th).map((b) => rectStr(Object.assign({}, b, { x: b.x + dx }))).join(";");
       const op = fit.open;
       const pr = win.getBoundingClientRect();
       const edge = th.line === "field" ? Math.round(toScreen(0, model.lines.field.edge).y) : "";
-      note("ride-call", ev.i, `thing:${th.id} pass:${ev.pass} line:${th.line} speed:${model.speed} box:${rectStr({ x: th.x, y: top, w: th.w, h: th.h })} open:${Math.round(pr.left + op.l)},${Math.round(pr.top + op.t)},${Math.round(pr.left + op.r)},${Math.round(pr.top + op.b)} occ:${occ} edge:${edge}`);
+      note("ride-call", ev.i, `thing:${th.id} pass:${ev.pass} line:${th.line} speed:${model.speed} box:${rectStr({ x: th.x + dx, y: top, w: th.w, h: th.h })} open:${Math.round(pr.left + op.l)},${Math.round(pr.top + op.t)},${Math.round(pr.left + op.r)},${Math.round(pr.top + op.b)} occ:${occ} edge:${edge}`);
     };
 
     // the model's news -> the host (Nani's lines) and the log
