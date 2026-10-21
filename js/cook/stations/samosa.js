@@ -725,9 +725,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (UI.naniMood) UI.naniMood("happy", 1600); // ART-10: something went in (progress, never a verdict; the card waits for the tick)
         const into = spoon(sheet, id);
         const pa = fillAt(sheet);
-        // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
-        const cnt = (level || z.level) <= 1 && UI.tallyLine ? UI.tallyLine(sheet.got[id], id) : null;
-        pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(110), cnt ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
+        // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word. SAM-04 (s08 w8A; the level
+        // table, Zafar 19 Oct: counts L1 written and counted along, L2-L3 written, L4 heard only): L2-L3 write the count
+        // with it ("ba chunda") and say the word alone; L4 the word
+        const lvl = level || z.level;
+        const cnt = lvl <= 3 && UI.tallyLine ? UI.tallyLine(sheet.got[id], id) : null;
+        pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(110), cnt && lvl <= 1 ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
         const mound = await into;
         if (mound && mound.active) mound.tapReady = true;
         z.progress({ filled: id, n: sheet.got[id] });

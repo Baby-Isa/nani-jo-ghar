@@ -680,7 +680,9 @@ ORDERS_JS = r"""
     for (let n = 0; n < 30; n++) {
       if (R.chai) {
         const c = R.chai.make("nana", { level });
-        const want = [1, 2, 3, 3][level - 1];
+        // s08 w2A (Zafar, 19 Oct: chai L3 two cups, no half/full): the cup count is the recipe's own data (1, 2, 2, 3), read from it
+        const cb = (((Cook.data.recipes.chai.slots || {}).cups || {}).count || {}).byLevel || [1, 2, 2, 3];
+        const want = cb[Math.min(level, cb.length) - 1];
         if (c.cups.length !== want) out.errors.push("byLevel: chai level " + level + " has " + c.cups.length + " cups");
         if (level < 4 && c.cups.some((p) => p.amount)) out.errors.push("byLevel: chai half/full before level 4");
         if (level === 1) c.cups.forEach((p) => seen.extra.add(p.extra || "plain"));
