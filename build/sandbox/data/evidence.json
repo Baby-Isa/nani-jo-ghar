@@ -11401,10 +11401,11 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -rn \"u.rate = 0\\.[0-7]\\b\" js/cook || echo none-slow"
+    "cmd:grep -rn \"u.rate = \" js/cook"
    ],
    "expect": [
-    "textMatches:^none-slow"
+    "textMatches:u\\.rate = 1;",
+    "!textMatches:u\\.rate = 0\\.[0-7]\\b"
    ],
    "note": "the device's test voice in Cook at normal speed: no utterance rate of 0.7 or below in js/cook (the reopened cause: js/cook/lang.js at 0.7)"
   }

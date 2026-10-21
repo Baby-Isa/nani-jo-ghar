@@ -794,7 +794,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // barely darkened the walnut. Now it lies at the foot itself, on the floor just behind the front wall, starting under the
     // dish and reaching well past its right side, darker: the soft dark patch to the right of every dish's base)
     const shH = Math.max(14, Math.min(t.h * 0.34, h * 0.24));
-    const shY = base - shH * 0.55;
+    // (on the floor's visible strip: just behind the front wall's top edge, which hides the dish's own base; a painted tray's
+    // wall is cut at the floor's front line, a drawn tray's at its middle)
+    const front = t.painted && t.src ? (t.src.oy || 0) + Math.round(t.src.y - 1 * (t.src.k || 1)) / (t.src.k || 1) : t.y;
+    const shY = Math.min(base, front) - shH * 0.45;
     // (its reach kept inside the tray's floor: a wide plate's shadow never runs over the tray's right wall onto the counter)
     const sw = Math.max(w * 0.45, Math.min(w, (t.x + t.w * 0.45 - x) / 1.2));
     [1.25, 1.02, 0.8, 0.6].forEach((f, n) =>
