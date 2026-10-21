@@ -98,7 +98,9 @@
    eyes 0.05 above its middle, the chin at 0.95): the doctor's 144 px bust and the girl's 512 px head */
 .cl-face.person img { --face-zoom: 1.25; --face-y: 44%; }
 .oc-card .oc-face img[src*="/doctor/v2/faces/"], .cl-face.doctor img { --face-zoom: 1.9; --face-y: 36%; }
-.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.7; --face-y: 45%; }
+/* (s09, the judge on 20 Oct: her circle "brows to chin fill the circle, no hair or ears" beside Nana's and the doctor's whole heads with a
+   margin: hers zooms out to her whole face, ears and the top of her hair inside the circle, as theirs are) */
+.oc-card .oc-face img[src*="/girl/girl-head-"], .cl-face img[src*="/girl/girl-head-"], .hs-face .hs-face-art[src*="/girl/girl-head-"] { --face-zoom: 1.3; --face-y: 40%; }
 .hs-face .hs-face-art[src*="/girl/girl-head-"] { transform-origin: 50% var(--face-y); transform: translateY(calc(50% - var(--face-y))) scale(var(--face-zoom)); }
 /* the shared card's face is the picture itself (the ring is its shadow): zoomed, it is cut back to its circle (clip-path, before the
    zoom: a circle of 1/zoom round the face point), and the ring moves to the button, round the same circle */

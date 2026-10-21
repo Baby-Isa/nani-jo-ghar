@@ -311,9 +311,9 @@
         z.top = layer.style.top; // the seated position, kept for the pull-out (the figure moves away in between)
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.add("on");
-        // CLN-87 (S05-D3): the push-in the child sees lasts about 1.5 s: the room is handed over at 60 % of the move
-        // (CLN-77), so the move itself runs 1.5 s / 0.6
-        const inMs = Kit.fast ? ms : Math.round(ms / 0.6);
+        // CLN-87 (Z1, Zafar 6 Oct: "about 1.5 s"; s09, the judge: still moving at 2 s, the end logged at 3.3 s): the whole
+        // push-in is 1.5 s, the room handed over at 60 % of it (CLN-77); S05-D3's 1.5 s / 0.6 made the move 2.5 s
+        const inMs = ms;
         // CLN-163: one camera over the room and the close-up (frames(), above); the room is gone by 75 % of the zoom
         // (CLN-77: the late frames are the close-up itself, never a smear of a blurred, hugely scaled room)
         placeMid(a.k);

@@ -1176,21 +1176,24 @@
  ],
  "SH-62": [
   {
-   "flow": "clinic:heal-cut",
+   "flow": "clinic:heal-knee",
    "path": "fair",
-   "level": 3,
+   "level": [
+    1,
+    2
+   ],
    "sizes": [
     "800x360"
    ],
    "profile": "seen",
    "want": null,
-   "at": "heal-cut-start",
+   "at": "heal-knee-start",
    "after": null,
    "capture": [
     "zoom2:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "a wrapped row: the connector still ends at the last row's centre"
+   "note": "a wrapped row: the knee card at the phone size, where its rows wrap (s09: the scrape at L3 is a closed card with no rows, and the knee's rows were one line at 1366x768): the stick still ends in its tip just below the last row"
   },
   {
    "flow": "clinic:heal-knee",
@@ -6759,7 +6762,8 @@
     "dom:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "after the count the next row appears and its tool glows after a pause (scrape)"
+   "note": "after the count the next row appears and its tool glows after a pause (scrape: every step to the plasters, s09: the 8-frame cap stopped at the first dab)",
+   "max": 20
   },
   {
    "flow": "clinic:heal-knee",
@@ -6780,7 +6784,28 @@
     "dom:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "knee after the kicks (boing after wipes, foot after jugs: the same probe)"
+   "note": "knee after the kicks"
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": null,
+   "note": "boing after the wipes: the next row appears and its tool glows (s09: boing was on no sheet)",
+   "max": 20
   },
   {
    "flow": "clinic:heal-foot",
@@ -8887,11 +8912,12 @@
    "at": "every:placed",
    "after": null,
    "capture": [
-    "crop:.cl-heal",
+    "shot",
     "dom:.njg-guide"
    ],
    "expect": null,
-   "note": "always clear what next; a live thermometer with a zone"
+   "note": "always clear what next: after each change the player waits 8.5 s (the L1 help ladder is 7 s), so the next thing's glow, the doctor's line and the lit row are on the screen; a live thermometer with a zone (s09: the frames were taken at the change itself, before any pause, and the crop left out the sidebar)",
+   "delay": 8500
   }
  ],
  "CLN-58": [
@@ -9577,8 +9603,7 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3
+    2
    ],
    "sizes": [
     "1366x768"
@@ -9591,15 +9616,13 @@
     "zoom2:.cl-side .oc-card"
    ],
    "expect": null,
-   "note": "a dabbing cloth; connector to the last row; plasters in the sequence; no 'Cold!' mid-step"
+   "note": "connector to the last row; plasters in the sequence (L1, L2: from L3 the card is closed and shows no rows, the level table)"
   },
   {
    "flow": "clinic:heal-cut",
    "path": "fair",
    "level": [
-    1,
-    2,
-    3
+    2
    ],
    "sizes": [
     "1366x768"
@@ -9614,8 +9637,26 @@
    "expect": [
     "!textMatches:(?i)cold!"
    ],
-   "note": "no 'Cold!' bubble mid-step (the scene's text at each bubble)",
+   "note": "no 'Cold!' bubble mid-step (the scene's text at each bubble; L2, where the patient speaks mid-round: at L1 and L3 no bubble came in s09's run, a tool failure)",
    "max": 6
+  },
+  {
+   "flow": "clinic:heal-cut",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:heal-done:tap",
+   "after": "heal-done:cloth",
+   "capture": [
+    "crop:.cl-stage"
+   ],
+   "expect": null,
+   "note": "the dabbing cloth on the scrape, at each dab (s09: the cloth was in no panel)",
+   "max": 3
   }
  ],
  "CLN-100": [
@@ -16313,7 +16354,7 @@
  "CLN-179": [
   {
    "flow": "clinic:heal-knee",
-   "path": "fair",
+   "path": "real-pace",
    "level": 3,
    "sizes": [
     "1366x768"
@@ -16326,7 +16367,7 @@
     "zoom2:.knee-turn"
    ],
    "expect": null,
-   "note": "eight wraps at L3 (seed 2), the knee zoomed after each wrap: the bandage reaches the edge of the knee each time and is a photographic band",
+   "note": "eight wraps at L3 (seed 2), the knee zoomed after each wrap: the bandage reaches the edge of the knee each time and is a photographic band (s09: at the real pace, as a child plays it: in the fast test mode the count's move-on came 0.2 s after the eighth wrap, before its frame, where a child has 1.2 s)",
    "max": 8,
    "kind": "detail",
    "seed": 2

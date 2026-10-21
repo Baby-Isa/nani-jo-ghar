@@ -42,7 +42,8 @@ export class ClinicPlayer {
     this.drv.tapped = true;
     // the clinic plays at its real pace for this driver (S05-T2): tap half a second into the first line, so a cut-off would show
     const v = await watchVoice(this.page);
-    if (await v.speaking() || await v.nextLine(3000)) await sleep(500); else this.rec.note("tap-through-popup: no line was said within 3 s of the pop-up opening");
+    // SH-64 (s09; the judge: every tap landed as the first line ended, "plaster" and "Pela paani" are short): 0.2 s in
+    if (await v.speaking() || await v.nextLine(3000)) await sleep(200); else this.rec.note("tap-through-popup: no line was said within 3 s of the pop-up opening");
     if (!(await popupOpen(this.page))) { this.rec.note("tap-through-popup: the pop-up folded by itself within 0.25 s"); return false; }
     await mark(this.page, "tapped-through", { block: false });
     await tapPopup(this.page);
