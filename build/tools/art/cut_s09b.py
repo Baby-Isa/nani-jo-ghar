@@ -88,7 +88,7 @@ def house(path):
     lab, _ = ndimage.label(skyish)
     top = set(np.unique(lab[0])) - {0}
     sky = np.isin(lab, list(top))
-    sky = ndimage.binary_closing(sky, iterations=2)
+    sky = ndimage.binary_closing(sky, iterations=2, border_value=1)  # 1: the image edge is not a wall (no opaque line along the top)
     alpha = np.where(sky, 0, 255).astype(np.float32)
     alpha = ndimage.gaussian_filter(alpha, 0.8)
     w = alpha.shape[1]
