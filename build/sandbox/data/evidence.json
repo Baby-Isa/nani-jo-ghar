@@ -1371,13 +1371,14 @@
    "at": "every:visible:.ob-ghost, .co-finger",
    "after": null,
    "capture": [
-    "shot"
+    "shot",
+    "cmd:node build/check_onboard.mjs --mode cook"
    ],
    "expect": [
-    "count:.ob-ghost,.co-finger>=1"
+    "pass"
    ],
-   "note": "daar: every phase has its help; nothing dimmed with nothing lit (counted once the ghost is visible, not at its 0-opacity first frame) (s08 w8A: 300 ms after it shows: at its first frame the finger is still fading in)",
-   "delay": 300,
+   "note": "daar: every phase has its help (the shots, one per ghost); the machine is the row's own check, build/check_onboard.mjs (s08 w8A: a count at every moment failed on a second 'visible' moment 0.1 s after the last, the finger's one pass already over, and on the 300 ms delay the same)",
+   "delay": 0,
    "max": 14
   }
  ],
@@ -1531,7 +1532,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:life:step-open",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "dom:.njg-guide",
@@ -1540,9 +1541,9 @@
    "expect": [
     "!textMatches:(?i)make each pan|^\\s*$"
    ],
-   "note": "the guide says the next step, one line per step, in step with the highlight (s08 w8A: at each step's opening, not at the tap: the box is empty for the moment between one step closing and the next opening, R2)",
+   "note": "the guide says the next step, one line per step, in step with the highlight (s08 w8A: 0.7 s after each move, when the next step's line is up: at the tap itself the box is between one step's line and the next, R2)",
    "max": 10,
-   "delay": 500
+   "delay": 700
   },
   {
    "flow": "cook:daar",
