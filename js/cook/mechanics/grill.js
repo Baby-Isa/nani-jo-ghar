@@ -981,7 +981,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const names = [...new Set(ids.concat(SK.pieceIds()).map(SK.v3Name).filter(Boolean))];
     names.forEach((n) => ["raw", "grilled", "charred"].forEach((st) => v3.push([`sk3-${n}-${st}`, SK.v3File(n, st)])));
     list.push(...v3);
-    return Promise.race([Cook.Stations.load(S, list).then(() => plain && SK.platePlain(S)), Cook.wait(15000)]);
+    return Cook.Stations.capLoad(Cook.Stations.load(S, list).then(() => plain && SK.platePlain(S)), 15000); // real time (loadcap)
   };
   /**
    * SEK-07 / S2 (S02-E): the plate pictures sk3-plate-0..4 made from the plain plate and the one stick (sk3-stick):
@@ -1028,7 +1028,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     V3.plate = { w: W, h: H, rim: [(pl.width * fl[0]) / W, fl[1], (pl.width * fl[2] * 1.12) / W], sticks, plain: true };
   };
   /** The taster's faces (happy, neutral) for serve and taste. */
-  SK.faceArt = (S, who) => Promise.race([Cook.Stations.load(S, Cook.Kit.faceArt(who)), Cook.wait(15000)]);
+  SK.faceArt = (S, who) => Cook.Stations.loadArt(S, Cook.Kit.faceArt(who), 15000); // real time (loadcap)
   /** The speaker icon, drawn at (x, y) about `s` px tall (the chai v2 chip's). */
   SK.speaker = function (g, x, y, s, color = 0x2a2522) {
     if (Cook.Kit && Cook.Kit.speaker && color === 0x2a2522) return Cook.Kit.speaker(g, x, y, s);
@@ -1066,12 +1066,53 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * hear it). At level 3 and up the word hides but the speaker stays, the same size and place (§4).
    * Returns {id: bowl}; each bowl has .chip and .home.
    */
-  SK.shelf = function (S, z, groups, { level = 1 } = {}) {
+  /**
+   * s08 w8A (cook:mishkaki-grill@L3#hint at 800x360: "veg-03 is covered by #go-btn", the play timed out): the go-on
+   * button (bottom right, a DOM button over the canvas, the grill's picture in it) is wider than V2.RIGHT on a short
+   * screen. Its left edge in world x, measured on a hidden copy of it as it will show (label, picture, arrow), or null.
+   */
+  SK.goLeft = function (S, label = "") {
+    try {
+      const b = document.querySelector("#go-btn");
+      const cv = S && S.game && S.game.canvas;
+      const v = Cook.view;
+      if (!b || !b.parentNode || !cv || !v || !v.s || !v.w) return null;
+      const c = b.cloneNode(true);
+      c.removeAttribute("id");
+      c.classList.remove("hidden", "glow");
+      c.classList.add("has-pic");
+      c.setAttribute("aria-hidden", "true");
+      c.style.visibility = "hidden";
+      c.style.pointerEvents = "none";
+      const t = c.querySelector(".njg-next-t");
+      if (t) t.textContent = label || "";
+      let im = c.querySelector(":scope > .njg-next-pic");
+      if (!im) {
+        im = document.createElement("span");
+        im.className = "njg-next-pic";
+        c.insertBefore(im, c.querySelector(".njg-next-ic"));
+      }
+      im.removeAttribute("srcset");
+      im.style.width = "calc(var(--njg-go-pic) * 1.6)"; // the picture at its widest (buttons.css max-width)
+      b.parentNode.appendChild(c);
+      const r = c.getBoundingClientRect();
+      const cr = cv.getBoundingClientRect();
+      c.remove();
+      if (!r.width || !cr.width) return null;
+      return v.left + (r.left - cr.left) / (cr.width / v.w) / v.s;
+    } catch (e) {
+      return null;
+    }
+  };
+  SK.shelf = function (S, z, groups, { level = 1, go = null } = {}) {
     const n = groups.reduce((a, g) => a + g.length, 0);
     // (SH-112: the bigger bins narrow to fit a long row clear of the tick)
-    const pitch = Math.min(V2.PITCH, (1600 - V2.RIGHT - 80 - (groups.length - 1) * V2.GROUP_GAP) / Math.max(1, n));
+    // s08 w8A: and clear of the go-on button where it is wider than V2.RIGHT (a short phone: it covered a bin)
+    const goX = go != null ? SK.goLeft(S, go) : null;
+    const right = Math.min(1600 - V2.RIGHT, goX != null ? goX - 24 : Infinity);
+    const pitch = Math.min(V2.PITCH, (right - 80 - (groups.length - 1) * V2.GROUP_GAP) / Math.max(1, n));
     const width = n * pitch + (groups.length - 1) * V2.GROUP_GAP;
-    const x0 = Math.max(40, (1600 - V2.RIGHT - width) / 2);
+    const x0 = Math.max(40, (right - width) / 2);
     const out = {};
     let sx = x0 + pitch / 2;
     groups.forEach((group) => {

@@ -1124,6 +1124,16 @@
         "ph-small+cook-bajrmaani"
        ],
        "total": 3,
+       "oneOfEach": [
+        [
+         "ph-big+cook-maani",
+         "ph-small+cook-maani"
+        ],
+        [
+         "ph-big+cook-bajrmaani",
+         "ph-small+cook-bajrmaani"
+        ]
+       ],
        "max": {
         "ph-big+cook-maani": 2,
         "ph-small+cook-maani": 2,
@@ -2959,7 +2969,8 @@
      "decoyPool": [
       "veg-01",
       "veg-12",
-      "n.corn-on-the-cob"
+      "n.corn-on-the-cob",
+      "n.chicken"
      ],
      "showAfterMs": 4000
     },
@@ -2973,7 +2984,7 @@
      "decoys": 3
     }
    ],
-   "_decoys": "s08 w2A (CK-49, P32): decoy bowls 1, 2, 3, 3 by the round's level, from decoyPool (only veg-01 has sekelo piece art: the rest wait on the art run); every piece bowl is out anyway, so a piece no skewer needs is a decoy too s08 w7A (contract-37; the s08c art plan decision 3): s08c SK5 drew the chilli (mirchi, veg-12) and the corn (makai, n.corn-on-the-cob) as heaps and chunks, so the pool holds three: 1, 2, 3, 3 by level, and the potato is the onion's lookalike at L4 (data.lookalikes). SK5's chicken (murgi) is cut and named in data/stations/mishkaki-grill.json but stays out of the pool until Mum's murgi is recorded (data/family-audio.json: no clip)."
+   "_decoys": "s08 w2A (CK-49, P32): decoy bowls 1, 2, 3, 3 by the round's level, from decoyPool (only veg-01 has sekelo piece art: the rest wait on the art run); every piece bowl is out anyway, so a piece no skewer needs is a decoy too s08 w7A (contract-37; the s08c art plan decision 3): s08c SK5 drew the chilli (mirchi, veg-12) and the corn (makai, n.corn-on-the-cob) as heaps and chunks, so the pool holds three: 1, 2, 3, 3 by level, and the potato is the onion's lookalike at L4 (data.lookalikes). SK5's chicken (murgi, cut and named in data/stations/mishkaki-grill.json) joins the pool now (Zafar, 21 Oct): four in the pool, still 1, 2, 3, 3 drawn by level; until Mum records murgi it has no family clip (data/family-audio.json), so it is on the recording sheet and the device says it while we test, never in the store build."
   },
   "grill": {
    "_about": "The Mishkaki grill (js/cook/mechanics/grill.js): each skewer's ring (band, rate in rings per second, rateSpread so they drift apart), turns before the lift, how many cook at once (spots), rack slots (fixed per level, never the number ordered), burntScore, and ignoreBelow (a tap this early in a ring is ignored: no accidental double taps).",

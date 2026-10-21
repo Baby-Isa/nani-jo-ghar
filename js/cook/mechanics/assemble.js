@@ -926,18 +926,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const ids = Cook.shuffle([...new Set(pool.concat(flat, exclude))]);
       const who = (ctx.order && ctx.order.who) || "nana";
       useBowlArt();
-      await Promise.race([
-        St.load(
-          S,
-          [["cv3-bowl", bowlUrl]].concat(
-            Cook.Kit ? Cook.Kit.faceArt(who) : [],
-            ids.filter((id) => POTS[id]).map((id) => [`cv3-pot-${id}`, `${V3}${POTS[id]}.webp`]),
-            // CHT-13: each thing on the shelf's strip (any of them may go in), only these
-            ids.filter((id) => STRIPS[id]).map((id) => [stripKey(id), `${STRIP_DIR}${STRIPS[id]}.webp`]),
-          ),
+      // real-time cap (St.loadArt), never Cook.wait: at test speed a game-time cap shrank and the art missed it
+      await St.loadArt(
+        S,
+        [["cv3-bowl", bowlUrl]].concat(
+          Cook.Kit ? Cook.Kit.faceArt(who) : [],
+          ids.filter((id) => POTS[id]).map((id) => [`cv3-pot-${id}`, `${V3}${POTS[id]}.webp`]),
+          // CHT-13: each thing on the shelf's strip (any of them may go in), only these
+          ids.filter((id) => STRIPS[id]).map((id) => [stripKey(id), `${STRIP_DIR}${STRIPS[id]}.webp`]),
         ),
-        Cook.wait(6000),
-      ]);
+      );
       stripScene = S;
       // (a spoonful's picture is cut from the strip now: an older round's pot-photo spoonful goes)
       ids.forEach((id) => {

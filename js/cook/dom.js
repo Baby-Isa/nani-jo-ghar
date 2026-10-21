@@ -77,9 +77,11 @@ export const screenHTML = () => `
   <!-- the "?" pops out the goal for this station (never shown on its own) -->
   <div id="help-pop" class="hidden" role="dialog" aria-label="What do I do here?" data-ob-pass><div class="hp-text"></div></div>
 
-  <!-- Nani: "pass me…". Her card comes forward in the sidebar column, never over the play area -->
+  <!-- Nani: "pass me…". Her card comes forward in the sidebar column, never over the play area. MAA-14 (s08 w8A): her face
+       sheet's close-up (nani-face, as in the guide box), so her impatient frown swaps in at the same framing, never the
+       half-length badge turning into a tight close-up that reads as someone else -->
   <div id="passme" class="hidden" role="dialog" aria-label="Nani needs something">
-    <div class="pm-nani"><button class="pm-face face-say" type="button" aria-label="Hear it again"><img src="${v("assets/cook/characters/nani-badge.webp")}" alt="Nani"><span class="say-badge" aria-hidden="true"></span></button><div class="pm-say"></div></div>
+    <div class="pm-nani"><button class="pm-face face-say" type="button" aria-label="Hear it again"><img src="${v("assets/cook/characters/nani-face.webp")}" alt="Nani"><span class="say-badge" aria-hidden="true"></span></button><div class="pm-say"></div></div>
     <div class="pm-tray"></div>
   </div>
 </div>

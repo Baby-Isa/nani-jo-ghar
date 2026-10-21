@@ -900,11 +900,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const busy = Cook.save.mode === "busy";
     if (busy && state.patience != null && state.patience < 0.35) S().setMood(who, "impatient");
     // the served pictures were prefetched with the order; a slow one gets a moment, then the drawing stands in
-    await Promise.race([Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), Cook.wait(1200)]);
+    await Cook.Stations.capLoad(Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), 1200); // real time (loadcap)
     // the drawn stand-ins when a served picture is missing OR still loading (a slow one: the stand-in was drawn unloaded,
     // Phaser's green missing-texture box on the tray, S05-C2)
     const unserved = (d) => !Cook.Art.servedArt(d.recipe) || !S().textures.exists(Cook.Art.servedKey(Cook.Art.servedName(d.recipe)));
-    if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Promise.race([Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), Cook.wait(800)]);
+    if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Cook.Stations.capLoad(Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), 800);
     drawServed(ctx, Cook.CHARS[who].x);
     Cook.sfx.pop();
     // TEST HOOK (only the evidence player sets it, as Cook.tasteHold): the served dishes stay on the counter this long in
@@ -1003,6 +1003,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // never compete with this order's own pictures)
       const next = day.orders[i + 1];
       if (next) setTimeout(() => Cook.prefetchDishes(next.dishes), 6000);
+      // SH-51 (s08 w8A: at 1366x768 the day summary opened on an empty card, the jar's picture still loading): the last
+      // order fetches the coin jar's pictures behind it, so the summary opens with its jar
+      else setTimeout(prefetchJar, 6000);
       // Nani shows chai once before the first chai order of the story
       if (!free && day.id === 1 && spec.dishes.includes("chai") && !Cook.save.taught.chai) await chaiDemo();
       const trips = free ? [] : spec.dishes.filter((dish) => !fetched.has(dish) && pantryFirst(dish) && !fetchedEver(dish));
@@ -1062,7 +1065,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await serviceView(null);
     // her chai on her tray, as every served dish is (CK-21): the served picture, never the old "glass-chai" prop, which
     // nothing loads now (Phaser drew its green missing-texture box there, S05-C2)
-    await Promise.race([Cook.Art.loadServed(S(), "chai"), Cook.wait(1200)]);
+    await Cook.Stations.capLoad(Cook.Art.loadServed(S(), "chai"), 1200); // real time (loadcap)
     drawServed({ served: [{ recipe: "chai", count: 1 }] }, Cook.CHARS.nani.x);
     S().setMood("nani", "happy");
     Cook.sfx.fanfare();
@@ -1170,6 +1173,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const JAR_LEVELS = ["empty", "quarter", "half", "three-quarter", "full"];
   const jarFull = () => Math.max(50, ...Cook.data.upgrades.filter((u) => !u.hidden).map((u) => Cook.price(u) || 0));
   const jarLevel = (coins) => Math.max(0, Math.min(4, Math.ceil((coins / jarFull()) * 4 - 0.001)));
+  function prefetchJar() {
+    const s02 = (Cook.data.art || {}).s02 || {};
+    [...JAR_LEVELS.map((l) => `coin-jar-${l}`), "coin"].forEach((k) => {
+      const a = s02[k];
+      if (a && a.ready && a.file && typeof Image !== "undefined") new Image().src = Cook.v(a.file);
+    });
+  }
+  /** The jar at a fill level, redrawn only when the level changes (a new picture each coin flashed it empty while it loaded). */
+  function setJar(pic, level) {
+    if (pic.dataset.lv === String(level)) return;
+    pic.dataset.lv = String(level);
+    pic.innerHTML = jarHtml(level);
+  }
   function jarHtml(level) {
     const art = (((Cook.data.art || {}).s02 || {})[`coin-jar-${JAR_LEVELS[level]}`]) || null;
     if (art && art.ready && art.file) return `<img class="jar-img" src="${Cook.v(art.file)}" alt="">`;
@@ -1197,7 +1213,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const p = UI.panel(`
       <div class="jar-sum">
         <div class="jar-col">
-          <div class="jar-stage"><div class="jar-pic">${jarHtml(jarLevel(shown))}</div><div class="jar-drop"></div></div>
+          <div class="jar-stage"><div class="jar-pic" data-lv="${jarLevel(shown)}">${jarHtml(jarLevel(shown))}</div><div class="jar-drop"></div></div>
           <div class="jar-total">${coinsHtml(shown, "total")}</div>
         </div>
         <div class="jar-today">${coinsHtml(`+${state.dayCoins}`, "today")}</div>
@@ -1265,14 +1281,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           Cook.sfx.coin();
           shown += c.coins;
           tot.innerHTML = coinsHtml(Math.min(shown, total), "total");
-          pic.innerHTML = jarHtml(jarLevel(shown));
+          setJar(pic, jarLevel(shown));
         }
         await anim([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(-70px)", opacity: 0 }], { duration: 420, easing: "ease-in" });
         drop.innerHTML = "";
       }
       if (run === Cook.run && tot.isConnected) {
         tot.innerHTML = coinsHtml(total, "total");
-        pic.innerHTML = jarHtml(jarLevel(total));
+        setJar(pic, jarLevel(total));
       }
     })();
   }

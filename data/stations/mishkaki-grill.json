@@ -12,7 +12,8 @@
  },
  "words": {
   "ph-veg": {},
-  "ph-mixed": {}
+  "ph-mixed": {},
+  "n.chicken": {}
  },
  "mechanic": {
   "skewer": {
@@ -63,7 +64,7 @@
     "n.chicken": "assets/cook/items-s08c/sekelo/chicken-heap-s08c"
    },
    "v3pieces": {
-    "_about": "30 Sept (K5): each piece's v3 chunk (assets/cook/items/v3/sekelo/<name>-raw|grilled|charred.webp); a piece not listed keeps its old sprite. 30 Sept (v3.1, R7): every piece has a charred chunk that keeps its own colour, and the decoy potato has its chunks s08 w7A (contract-37): s08c SK5's chilli, corn and chicken: heap, raw, grilled and charred each ({name, file}: their own folder); the chicken waits on Mum's murgi clip before it joins the decoy pool.",
+    "_about": "30 Sept (K5): each piece's v3 chunk (assets/cook/items/v3/sekelo/<name>-raw|grilled|charred.webp); a piece not listed keeps its old sprite. 30 Sept (v3.1, R7): every piece has a charred chunk that keeps its own colour, and the decoy potato has its chunks s08 w7A (contract-37): s08c SK5's chilli, corn and chicken: heap, raw, grilled and charred each ({name, file}: their own folder); the chicken joins the decoy pool (Zafar, 21 Oct; data/cook.json mechanics.thread decoyPool) before Mum's murgi clip: until she records it the device says it while we test.",
     "ph-meat": "meat",
     "veg-02": "onion",
     "veg-03": "tomato",

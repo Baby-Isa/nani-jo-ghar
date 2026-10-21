@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, run, ROOT } from "./static.mjs";
+import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, bulbFindings, planeFindings, loadcapFindings, run, ROOT } from "./static.mjs";
 
 test("kit: a mode's CSS may not restyle the shared kit, but may keep its own element apart with :not()", () => {
   assert.equal(kitFindings("css/clinic.css", ".cl-card.oc-card { padding: 2px; }").length, 1);
@@ -86,6 +86,13 @@ test("plane: the doctor and the girl on one feet line, him about 1.45x her, a ta
   assert.deepEqual(planeFindings(was).map((f) => f.key), ["plane|stand.back", "plane|stand.phone.back", "plane|exam.back", "plane|door", "plane|door.back", "plane|door.size"]);
   // no door or horizon: his size cannot be checked, which is a finding, never a pass
   assert.deepEqual(planeFindings({ exam: { floor: 0.8, doctor: { y: 0.83, h: 0.7 } } }).map((f) => f.key), ["plane|exam.door"]);
+});
+test("loadcap: an art load is never raced against Cook.wait (game time); a real-time cap or a voice race is fine", () => {
+  // the old chai-tray line (s08 w8A: the faces missed a 1 s cap at test speed and Phaser drew its green box)
+  assert.equal(loadcapFindings("js/cook/stations/chai-tray.js", "await Promise.race([\n  St.load(S, ART.concat(faces)),\n  Cook.wait(5000),\n]);").length, 1);
+  assert.equal(loadcapFindings("js/cook/flow.js", "await Promise.race([Cook.Art.loadServed(S(), \"chai\"), Cook.wait(1200)]);").length, 1);
+  assert.equal(loadcapFindings("js/cook/stations/chai-tray.js", "await St.loadArt(S, ART.concat(faces));").length, 0);
+  assert.equal(loadcapFindings("js/cook/ui.js", "await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);").length, 0);
 });
 test("the repo: no static finding outside the known list (build/lint/static-known.json)", () => {
   const known = new Set(existsSync(join(ROOT, "build/lint/static-known.json")) ? JSON.parse(readFileSync(join(ROOT, "build/lint/static-known.json"), "utf8")) : []);

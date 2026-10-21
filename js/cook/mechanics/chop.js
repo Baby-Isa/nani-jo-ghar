@@ -529,7 +529,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               const x = a.x + (b.x - a.x) * f;
               const y = a.y + (b.y - a.y) * f + Math.sin(f * Math.PI) * z.L(-40);
               const al = u < 0.08 ? u / 0.08 : u > 0.92 ? (1 - u) / 0.08 : 1;
-              knife.setPosition(x + z.L(40), y + z.L(20));
+              // DAAR-13 (s08 w8A; the judge: "a white disc covers the knife blade so its tip can't be seen"): the finger holds
+              // the handle (the knife's lower right), so the knife sits up and left of it, its blade and tip clear
+              knife.setPosition(x - z.L(40), y - z.L(20));
               if (nh) nh.at(x, y, al);
               if (dot) dot.setPosition(x, y).setAlpha(0.75 * al);
             },

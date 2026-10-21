@@ -814,9 +814,9 @@
     "dom:#mission"
    ],
    "expect": [
-    "!hasWord:number"
+    "hasWord:number"
    ],
-   "note": "L3+: heard only, no number in headline or rows (on a save where the numbers are known: decision 57 writes a number the first times it is heard)"
+   "note": "L3: the numbers stay written (the level table, Zafar 19 Oct: 'frames, verbs and numbers stay written'; was 'heard only', decision 41); L4 hides the card"
   }
  ],
  "SH-14": [
@@ -1388,12 +1388,13 @@
    "at": "every:visible:.ob-ghost, .co-finger",
    "after": null,
    "capture": [
-    "shot"
+    "shot",
+    "cmd:node build/check_onboard.mjs --mode cook"
    ],
    "expect": [
-    "count:.ob-ghost,.co-finger>=1"
+    "pass"
    ],
-   "note": "daar: every phase has its help; nothing dimmed with nothing lit (counted once the ghost is visible, not at its 0-opacity first frame)",
+   "note": "daar: every phase has its help (the shots, one per ghost); the machine is the row's own check, build/check_onboard.mjs (s08 w8A: a count at every moment failed on a second 'visible' moment 0.1 s after the last, the finger's one pass already over, and on the 300 ms delay the same)",
    "delay": 0,
    "max": 14
   }
@@ -1557,8 +1558,9 @@
    "expect": [
     "!textMatches:(?i)make each pan|^\\s*$"
    ],
-   "note": "the guide says the next step, one line per step, in step with the highlight",
-   "max": 10
+   "note": "the guide says the next step, one line per step, in step with the highlight (s08 w8A: 0.7 s after each move, when the next step's line is up: at the tap itself the box is between one step's line and the next, R2)",
+   "max": 10,
+   "delay": 700
   },
   {
    "flow": "cook:daar",
@@ -1626,7 +1628,7 @@
  ],
  "SH-58": [
   {
-   "flow": "cook:chai",
+   "flow": "cook:samosa",
    "path": "fair",
    "level": 1,
    "sizes": [
@@ -1642,7 +1644,7 @@
    "expect": [
     "count:.njg-done.njg-pulse=1"
    ],
-   "note": "the check glows when it is the only thing left (first plays)",
+   "note": "the check glows when it is the only thing left (first plays) (s08 w8A: the moment it waited for no longer comes: chai's round ends with the pour, never on a lone tick; samosa's ends on its one tick)",
    "webgl": true
   },
   {
@@ -3705,7 +3707,7 @@
   {
    "flow": "cook:chai-tray",
    "path": "fair",
-   "level": 3,
+   "level": 4,
    "sizes": [
     "1366x768"
    ],
@@ -3721,7 +3723,7 @@
     "pass",
     "count:.oc-closed-big=3"
    ],
-   "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet",
+   "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet (s08 w8A: the 3-person chai is L4 now: the level table, Zafar 19 Oct, made chai L3 two cups, L4 three)",
    "delay": 1200
   }
  ],
@@ -3780,13 +3782,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:#done-btn",
+   "at": "kind-timing",
    "after": null,
    "capture": [
     "zoom2:canvas:tray"
    ],
    "expect": null,
-   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup (L2: always two people) (at the ✓, before the end card: S05 judges saw C under the end card)",
+   "note": "real tray art; each glass with its orderer's face badge on the rim, never over the cup (L2: always two people) (at the ✓, before the end card: S05 judges saw C under the end card) (s08 w8A: the moment it waited for no longer comes: the tray has no lone tick now; the glasses and their badges at the heat, as probe 2)",
    "delay": 400
   },
   {
@@ -4360,8 +4362,7 @@
    "level": [
     1,
     2,
-    3,
-    4
+    3
    ],
    "sizes": [
     "1366x768"
@@ -4377,6 +4378,25 @@
     "hasWord:number"
    ],
    "note": "the chop card writes quantities at every level"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "dom:#mission"
+   ],
+   "expect": [
+    "hasWord:number"
+   ],
+   "note": "L4: the chop card writes its first round's number and item, the rest dotted (DAAR-34, Zafar); the order card itself is folded at L4 (the level table, Zafar 19 Oct), so this reads the daar station's chop card (s08 w8A: the chop lab's L4 had no chop card yet at this moment)"
   }
  ],
  "DAAR-09": [
@@ -4820,7 +4840,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "retry",
+   "at": "wrong-tap",
    "after": null,
    "capture": [
     "strip:#mission:5x400",
@@ -4829,7 +4849,8 @@
    "expect": [
     "count:#mission .oc-card=1"
    ],
-   "note": "a retry re-says the order on his own card with rows lit; no extra card"
+   "note": "a retry re-says the order on his own card with rows lit; no extra card (s08 w8A: the moment it waited for no longer comes: no drv:retry on the chaat's mistake path; 1.5 s after the wrong tap, when he says his order again)",
+   "delay": 1500
   }
  ],
  "CHT-09": [
@@ -4944,16 +4965,14 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3,
-    4
+    2
    ],
    "sizes": [
     "1366x768"
    ],
    "profile": "seen",
    "want": null,
-   "at": "order-card-in-sidebar",
+   "at": "popup-fold",
    "after": null,
    "capture": [
     "dom:#mission"
@@ -4961,7 +4980,8 @@
    "expect": [
     "textMatches:(?i)\\bchund[oa]\\b|\\bbataat[oa]\\b"
    ],
-   "note": "a base filling row in every order"
+   "note": "a base filling row in every order (s08 w8A: the moment it waited for no longer comes at every level: the card read once it has folded into the sidebar); L3 dots the fillings and L4 hides the card (the level table, Zafar 19 Oct), so the written row is read at L1-L2 and the base filling at every level is the orders test's (test_cook.py --orders)",
+   "delay": 900
   }
  ],
  "SAM-04": [
@@ -5319,13 +5339,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "visible:#mission .oc-card.peek",
+   "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card)",
+   "note": "each skewer a plain tinted group box, alternating, no label (L3 two or three skewers, L4 three or four) (taken after a peek: from L3 the groups sit behind the closed card) (s08 w8A: the moment it waited for no longer comes: the hint path shows the big bulb's English, not the card's peek; the grouped card in the sidebar)",
    "delay": 150
   },
   {
@@ -5339,13 +5359,13 @@
    "want": [
     "said:/samosa[\\s\\S]*samosa/"
    ],
-   "at": "visible:#mission .oc-card.peek",
+   "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "note": "samosa kinds the same (an order of two kinds: the second block is said as its own)",
+   "note": "samosa kinds the same (an order of two kinds: the second block is said as its own) (s08 w8A: the moment it waited for no longer comes: the hint path shows the big bulb's English, not the card's peek; the grouped card in the sidebar)",
    "delay": 150
   },
   {
@@ -5577,7 +5597,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:peek-open",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "crop:#mission"
@@ -5585,7 +5605,7 @@
    "expect": null,
    "max": 2,
    "delay": 150,
-   "note": "the card opened by a peek at L3 (a mixed skewer first comes at L3, where cards are closed): its piece rows show (each skewer drawn as its little skewer of pieces)"
+   "note": "the card opened by a peek at L3 (a mixed skewer first comes at L3, where cards are closed): its piece rows show (each skewer drawn as its little skewer of pieces) (s08 w8A: the moment it waited for no longer comes: no peek on the hint path; the card at every piece threaded, as probe 2)"
   },
   {
    "flow": "cook:mishkaki-grill",
@@ -11148,9 +11168,9 @@
    ],
    "expect": [
     "lexicon",
-    "!textMatches:(?i)•|\\bboga\\b"
+    "!textMatches:(?i)\\bboga\\b"
    ],
-   "note": "no English or dot placeholders in pills or cards ('mixed' is Kutchi: decision 87, a marked loan)"
+   "note": "no English or dot placeholders in pills or cards ('mixed' is Kutchi: decision 87, a marked loan); s08 w8A: the dots are the level table's (Zafar 19 Oct: L3 dots the item words, frames, verbs and numbers written; DAAR-34: L4 dots the rows not yet called), so only the English and 'boga' placeholders are banned here"
   },
   {
    "flow": "cook:chop",
@@ -11168,9 +11188,10 @@
    ],
    "expect": [
     "lexicon",
-    "!textMatches:•"
+    "hasWord:number",
+    "!textMatches:(?i)\\bboga\\b"
    ],
-   "note": "the chop L3 headline: no '...' for a number"
+   "note": "the chop L3 headline: the number written, never dots for a number (the item words are dotted at L3: the level table, Zafar 19 Oct)"
   }
  ],
  "LNG-04": [
@@ -11695,7 +11716,6 @@
    "flow": "cook:chai-tray",
    "path": "fair",
    "level": [
-    3,
     4
    ],
    "sizes": [
@@ -11712,7 +11732,7 @@
    "expect": [
     "count:#intro .ic-card .oc-row:not(.oc-ph-row)=0"
    ],
-   "note": "from L3 the order is heard, never written: the pop-up shows face, headline and one row of dots (E12, F9)",
+   "note": "from L3 the order is heard, never written: the pop-up shows face, headline and one row of dots (E12, F9) (s08 w8A: the level table, Zafar 19 Oct, opens the L3 card with its item words dotted; only L4 hides it, so only L4's pop-up writes no row)",
    "delay": 300
   },
   {
@@ -12316,7 +12336,7 @@
  "DAAR-22": [
   {
    "flow": "cook:chop",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -12326,10 +12346,10 @@
    "at": "cook:slice",
    "after": null,
    "capture": [
-    "strip:#stage:6x120"
+    "strip:#stage:8x90"
    ],
    "expect": null,
-   "note": "the first swipe filmed as it happens: the blade crosses the item and it splits cleanly (after the move the halves have already gone)"
+   "note": "the first swipe filmed as it happens: the blade crosses the item and it splits cleanly (after the move the halves have already gone) (s08 w8A: at a child's pace, speed 1, 90 ms apart: at test speed the halves had gone before the strip's second frame, 235 ms)"
   }
  ],
  "DAAR-23": [
@@ -13372,7 +13392,7 @@
  "CK-38": [
   {
    "flow": "cook:mishkaki-grill",
-   "path": "hint",
+   "path": "peek-every-tap",
    "level": 3,
    "sizes": [
     "800x360"
@@ -13387,7 +13407,7 @@
    "expect": [
     "noClip:aside#side"
    ],
-   "note": "L3's peek (the hint) on a short phone: the sidebar holds the opened card without scrolling (it ran 429 px in a 360 px screen). Machine: nothing in aside#side clipped or scrolled",
+   "note": "L3's peek (the hint) on a short phone: the sidebar holds the opened card without scrolling (it ran 429 px in a 360 px screen). Machine: nothing in aside#side clipped or scrolled (s08 w8A: the moment it waited for no longer comes on the hint path (it plays the big bulb): the peek-every-tap path opens the card's peek; the 800x360 time-out is fixed, s08 w8A)",
    "delay": 700
   }
  ],
