@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { rowBlockers, waiting, gateProblems, GAME_FILE } from "./publishgate.mjs";
+import { rowBlockers, waiting, unlabelled, gateProblems, GAME_FILE } from "./publishgate.mjs";
 
 const md = ["| ID | Issue | Status | Check | Source |", "|---|---|---|---|---|",
   "| A-01 | x | **open** | c | s |",
@@ -14,7 +14,7 @@ const md = ["| ID | Issue | Status | Check | Source |", "|---|---|---|---|---|",
 
 test("publish gate: an open row must say what it waits on", () => {
   assert.deepEqual(rowBlockers(md), ["A-01", "A-03"]);
-  assert.deepEqual(waiting(md), ["A-02", "A-05", "A-06"]);
+  assert.deepEqual(waiting(md), ["A-02", "A-04", "A-05", "A-06"]); // A-04: a labelled row is open (Zafar, 21 Oct)
 });
 
 test("publish gate: every problem is named; a clean state has none", () => {
@@ -37,4 +37,11 @@ test("publish gate: a contract break covered by a row that waits on Zafar does n
   const breaks = [{ check: "contract-19", flow: "cook:daar@L2" }, { check: "contract-20", flow: "cook:daar" }, { check: "contract-4", flow: "clinic:x" }];
   const known = [{ check: "contract-19", flow: "cook:daar*", row: "D-24" }, { check: "contract-20", flow: "cook:daar", row: "D-25" }];
   assert.deepEqual(openBreaks(breaks, known, md2).map((b) => b.check), ["contract-20", "contract-4"]);
+});
+
+test("fix list: every open row starts with one label (Zafar, 21 Oct)", () => {
+  const m = ["| ID | Issue | Status | Check | Source |", "|---|---|---|---|---|",
+    "| B-01 | x | **to fix: code** · the wash | c | s |", "| B-02 | x | **waiting on art** · reopened | c | s |",
+    "| B-03 | x | **open** (two strikes: Zafar) | c | s |", "| B-04 | x | built (evidence PASS r3: A) | c | s |"].join("\n");
+  assert.deepEqual(unlabelled(m), ["B-03"]);
 });

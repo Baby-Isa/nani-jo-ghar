@@ -13,6 +13,11 @@ import { parseVerdicts } from "../review/lib/evidence.mjs";
 
 // a row that may stay open at a publish says what it waits on
 export const WAITS = /\b(?:wait(?:s|ing)?\s+(?:on|for)|needs?)\s+(?:Mum|art|Zafar|his\b|the art|an art run)|two strikes: Zafar/i;
+// Zafar, 21 Oct: every open row carries one label, so "all the art ones" or "all my decisions" is one search
+export const LABELS = ["to fix: code", "to fix: check", "waiting on Zafar", "waiting on Mum", "waiting on art"];
+export function unlabelled(md) {
+  return parseRegressions(md).filter((r) => ["open", "reopened"].includes(statusKind(r.status)) && !LABELS.some((l) => plain(r.status).trim().startsWith(l))).map((r) => r.id);
+}
 export const GAME_FILE = /^(?:js|css|data|assets)\/|^[^/]+\.html$/;
 
 export function rowBlockers(md) {
