@@ -109,7 +109,6 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 |---|---|---|---|---|
 | CHT-12 | "The bowl has a drop shadow which doesn't make sense ... let's remove the drop shadow" | **waiting on Zafar** · passes | eye: chaat bowl | `docs/feedback/cook-playtest-2026-10-17.md` P60 |
 | CHT-13 | "Artwork for all the items that can go inside the bowl ... it doesn't really work"; "redraw the bowl so it's exactly side-on ... a horizontal strip ... So let's do that, unless you have any qualms" | **waiting on art** · bowl, item art | eye: every chaat item in the bowl | `docs/feedback/cook-playtest-2026-10-17.md` P61 |
-| CHT-14 | Leak: "you can basically pass the level without knowing any Kutchi because the ticks give it away"; "the bowl shakes, maybe it glows red ... and then the item comes back out"; "if you get the third item in the wrong order, it throws out all the items" | **waiting on Zafar** · bowl fixed; jar words follow your chips rule: close? | auto: leak test, chaat (no tick tells a guess) | `docs/feedback/cook-playtest-2026-10-17.md` P62 |
 | CHT-04 | Layers read as food, not liquid or flat rectangles; chilli layer not too thick; tidy ingredient grid with chips; no big red digit tally; card shows the order; bowl not huge | **waiting on art** · the side-on bowl redraw (CHT-13) | eye: serve and build states | `docs/design-language/ui-design-system.md` §14 |
 
 ## Cook: general
