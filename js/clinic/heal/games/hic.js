@@ -302,6 +302,9 @@
 
     /* ---- drawing ---- */
     const slots = {};
+    // CLN-158 (non-negotiable 5: no written English for the child): the sound bubbles carry marks, never English sound
+    // words ("hic!", "glug!", "BOO!" were written English); only a count bubble writes its Kutchi number
+    const SOUND = { hic: "!", puff: "~ ~", sip: "≈ ≈", hold: "…", boo: "!!", laugh: "♪ ♪" };
     function bubble(text, x, y, big, slot) {
       if (slot && slots[slot]) slots[slot].remove(); // one bubble per spot: a new count replaces the last
       const g = S("g", {}, fxG);
@@ -465,7 +468,7 @@
         restMouth();
       });
       const [bx, by] = toW(500, 60);
-      bubble("hic!", bx, by, false, "hic");
+      bubble(SOUND.hic, bx, by, false, "hic");
       if (holding === "cup" && glassShown && Date.now() - lastSip < 500) splash(GL.x, GL.y - 70);
     }
     function hicLoop() {
@@ -504,7 +507,7 @@
       // the breath comes out: whoosh
       ctx.sfx("whoosh");
       const [bx, by] = toW(290, 420);
-      bubble("pfff!", bx + 90, by, false, "glug");
+      bubble(SOUND.puff, bx + 90, by, false, "glug");
       puff();
       restMouth();
     }
@@ -555,7 +558,7 @@
           mouth("o");
           ctx.after(360, restMouth);
           const [bx, by] = toW(430, 430);
-          bubble("glug!", tall ? bx : bx + 60, tall ? by + 40 : by, false, "glug");
+          bubble(SOUND.sip, tall ? bx : bx + 60, tall ? by + 40 : by, false, "glug");
           // a hiccup right on a sip: splash (comic)
           if (Date.now() - lastHic < 500) splash(GL.x, GL.y - 70);
         } else {
@@ -563,7 +566,7 @@
           ctx.log({ type: "extra", rowId: "sips", detail: "slurp-empty-glass" });
           mouth("slurp");
           ctx.after(600, restMouth);
-          bubble("slurrrp!", GL.x, GL.y - 110, false, "glug");
+          bubble(SOUND.sip, GL.x, GL.y - 110, false, "glug");
           sayOnce("slurp");
         }
       } else if (holding === "paani") {
@@ -615,7 +618,7 @@
       const l = num ? { kutchi: low(num.kutchi), english: num.english, who: "patient" } : line("mmph");
       say(l);
       const [bx, by] = toW(60, 330);
-      bubble(num ? low(num.kutchi) + "!" : "mmph!", bx, by, false, "count");
+      bubble(num ? low(num.kutchi) + "!" : SOUND.hold, bx, by, false, "count");
     }
     function allWorked() {
       return !nextNeed() && isShown("hold");
@@ -632,7 +635,7 @@
       say(line("boo"));
       const [bx, by] = toW(290, 20);
       if (slots.hic) slots.hic.remove();
-      bubble("BOO!", bx, by + 20, true, "hic");
+      bubble(SOUND.boo, bx, by + 20, true, "hic");
       anim(hop, [{ transform: "translateY(0) scale(1)" }, { transform: "translateY(-70px) scale(1.04)" }, { transform: "translateY(0) scale(1)" }, { transform: "translateY(-14px)" }, { transform: "translateY(0)" }], { duration: 650, easing: "ease-out" });
       mouth("eek");
       lookPupils("up");
@@ -643,7 +646,7 @@
         mouth("laugh");
         say(line("laugh"));
         const [lx, ly] = toW(290, 20);
-        bubble("ha ha ha!", lx, ly + 20, false, "hic");
+        bubble(SOUND.laugh, lx, ly + 20, false, "hic");
       });
       if (complete) {
         hicOn = false;

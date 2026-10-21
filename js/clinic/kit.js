@@ -145,47 +145,14 @@
     return (a && a.doctor) || null;
   };
   /**
-   * The contact shadows (s08-placement-judge, CLN-154..157: "pasted on" until his feet and hers touch the floor as every
-   * painted thing does): a soft ellipse under each foot of a standing (or the seated girl's) picture, black at 0.30 (the token), 1.2x
-   * the foot's width and 0.35x of that tall, centred on the foot's lowest row and 0.06x of its width right of the foot (heal-art.json `shoes`, measured by
-   * build/tools/art/shoes.py: [cx, bottom, w, h] as canvas fractions, keyed by the picture's file). The spec's "0.25x its
-   * height" is read as the ellipse's own: a quarter of the foot's measured height (h) is 2 px under the sole on a phone,
-   * where nothing shows. host = the box drawn at that picture's canvas (the picture fills it), aspect = its width over its
-   * height; the shadows go under the picture. A file with no measured feet draws none (and clears the old ones).
+   * CLN-162 (Zafar, 21 Oct: remove the floating shadows in every game; 18 Oct: "her feet have a drop shadow underneath
+   * them ... not resting on the wooden stool", "the doctor has a drop shadow underneath his feet ... floating"): no
+   * figure casts a drawn shadow under its feet; the painted floor and furniture carry their own. This only clears the
+   * old ones (s08-placement-judge's soft ellipse per foot), so a picture swapped in never keeps one.
    */
-  Kit._shadows = 0;
-  Kit.contactShadows = function (host, file, aspect) {
+  Kit.contactShadows = function (host) {
     if (!host) return;
     host.querySelectorAll(":scope > .cl-shadow").forEach((n) => n.remove());
-    const HH = Clinic.HealHost;
-    const S = Clinic.Stages;
-    const a = (HH && HH.healArt) || (S && S._healArt);
-    const key = String(file || "").replace(/[?#].*$/, "").replace(/^.*?(assets\/)/, "$1").replace(/@2x(\.webp)$/, "$1");
-    // CLN-162 (Zafar, 18 Oct: "her feet have a drop shadow underneath them, so it looks like her feet aren't resting on
-    // the wooden stool"; clinic decision 5: her dangling feet were not meant, her shadow goes under the stool): a seated
-    // patient (her front, blanket and bottle pictures: patients.<kind>.front / blanket / bottle) casts no shadow under
-    // her feet, which rest on the stool; the stool's own painted shadow on the floor is the one under her. Standing
-    // pictures (hers and the doctor's) keep one under each measured foot, and a picture with no measured feet has none
-    const P = (a && a.patients) || {};
-    const seated = Object.keys(P).some((k) => ["front", "blanket", "bottle"].some((v) => P[k] && P[k][v] === key));
-    const feet = seated ? [] : (a && a.shoes && a.shoes[key]) || [];
-    feet.forEach(([cx, bottom, w]) => {
-      // an ellipse blurred at its edge (in its own units, so it is as soft at every size); the colour is a token
-      const id = `cl-shadow-${++Kit._shadows}`;
-      const e = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      e.setAttribute("class", "cl-shadow");
-      e.setAttribute("aria-hidden", "true");
-      e.setAttribute("viewBox", "0 0 100 100");
-      e.setAttribute("preserveAspectRatio", "none");
-      e.innerHTML = `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter><ellipse cx="50" cy="50" rx="40" ry="40" filter="url(#${id})"/>`;
-      const ew = 1.2 * w;
-      // s08-rejudge-fixes: 0.35x its width tall (0.25x did not ground anyone on a phone), centred 0.06x of its width right of
-      // the foot (the window light is on the left, shadows fall right)
-      const eh = 0.35 * ew * (aspect || 0.45);
-      const ecx = cx + 0.06 * ew;
-      Object.assign(e.style, { left: `${(ecx - ew / 2) * 100}%`, top: `${(bottom - eh / 2) * 100}%`, width: `${ew * 100}%`, height: `${eh * 100}%` });
-      host.insertBefore(e, host.firstChild);
-    });
   };
   /** His face for a box or a card (neutral, talk, laugh, think), as a URL. */
   Kit.doctorFace = function (mood) {
@@ -607,8 +574,16 @@
         }
         // a figure with its own talking face (the doctor's DF1, the girl's GM1: data-talker, __talk) moves its mouth
         const tk = el && el.closest ? el.closest("[data-talker]") : null;
-        if (tk && tk.__talk) stopTalk = tk.__talk();
-        else if (el && el.tagName === "IMG") stopTalk = global.Lifecycle.talk.dom(el);
+        if (tk && tk.__talk) {
+          // ART-18 (s09; the judge: the waiting room's talker "shows 0 px of movement"): the mouth moves and the figure takes
+          // the one shared talk bob too (Lifecycle.talk: 2 px, 0.4 deg, 380 ms), as Cook's speakers do
+          const mouth = tk.__talk();
+          const bob = global.Lifecycle.talk.dom(tk.closest(".cl-staged") || tk);
+          stopTalk = () => {
+            if (mouth) mouth();
+            bob();
+          };
+        } else if (el && el.tagName === "IMG") stopTalk = global.Lifecycle.talk.dom(el.closest(".cl-staged") || el);
       }
       // ART-19 (s08 w6N; the judge: a closed smile through a whole line): the doctor speaking from his card (off screen, no
       // bubble) moves his mouth on the card's face: his own talk face (faces/talk) and his neutral one in turn

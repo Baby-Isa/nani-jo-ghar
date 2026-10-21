@@ -305,9 +305,19 @@
     const streamG = s("g", { opacity: 0 }, fxG);
     const streamW = s("path", { fill: "none", stroke: "rgba(170,214,240,.55)", "stroke-width": 13, "stroke-linecap": "round" }, streamG);
     const streamC = s("path", { fill: "none", stroke: "rgba(255,255,255,.75)", "stroke-width": 3.5, "stroke-linecap": "round" }, streamG);
+    // CLN-190 (Zafar, 18 Oct: "a colored, coded jet"; the judge, 20 Oct: "a thin, flat pale-blue stroke"): the water runs
+    // down the stream (bright beads moving along it) and throws a few drops where it lands on dirt
+    const streamF = s("path", { fill: "none", stroke: "rgba(255,255,255,.95)", "stroke-width": 3, "stroke-dasharray": "5 15", "stroke-linecap": "round" }, streamG);
+    if (streamF.animate) streamF.animate([{ strokeDashoffset: 0 }, { strokeDashoffset: -40 }], { duration: 260, iterations: Infinity });
     const WASH_R = 44; // svg units round the water's point that it washes
     const washAt = (p, temp) => {
-      pourJug.setAttribute("href", Kit ? Kit.url(`${IMG}jug-${temp}.webp`) : `${IMG}jug-${temp}.webp`);
+      // CLN-108 (s09): the jug's picture is set once per jug, never on every step of a sweep: setting an image's href again
+      // reloads it (the jug blinked out), and a sweep's steps came slow enough that a filmstrip of L1's pour never got past
+      // the first bits of dirt
+      if (pourJug.dataset.temp !== temp) {
+        pourJug.dataset.temp = temp;
+        pourJug.setAttribute("href", Kit ? Kit.url(`${IMG}jug-${temp}.webp`) : `${IMG}jug-${temp}.webp`);
+      }
       pourJug.setAttribute("x", p.x + 16);
       pourJug.setAttribute("y", p.y - 168);
       pourJug.setAttribute("transform", `rotate(-38 ${p.x + 68} ${p.y - 114})`);
@@ -315,6 +325,7 @@
       const d = `M${p.x + 22} ${p.y - 126} Q${p.x + 5} ${p.y - 68} ${p.x} ${p.y}`;
       streamW.setAttribute("d", d);
       streamC.setAttribute("d", d);
+      streamF.setAttribute("d", d);
       streamG.setAttribute("opacity", 1);
       let hit = 0;
       dirt.forEach((q) => {
@@ -331,6 +342,12 @@
         const sp = s("ellipse", { cx: p.x, cy: p.y, rx: 10, ry: 6, fill: "rgba(200,230,248,.35)", stroke: "rgba(255,255,255,.8)", "stroke-width": 2.5 }, fxG);
         sp.animate([{ rx: 10, ry: 6, opacity: 1 }, { rx: hit ? 40 : 28, ry: hit ? 22 : 15, opacity: 0 }], { duration: fast() ? 60 : 420, fill: "forwards" });
         ctx.after(fast() ? 80 : 460, () => sp.remove());
+        if (hit)
+          [-1, 0, 1].forEach((k) => {
+            const dr = s("circle", { cx: p.x, cy: p.y, r: 3.5 + Math.abs(k), fill: "rgba(225,242,252,.9)", stroke: "rgba(255,255,255,.9)", "stroke-width": 1 }, fxG);
+            if (dr.animate) dr.animate([{ transform: "translate(0,0)", opacity: 1 }, { transform: `translate(${k * 26 + 6}px, ${18 - Math.abs(k) * 10}px)`, opacity: 0 }], { duration: 420, easing: "ease-out", fill: "forwards" });
+            ctx.after(460, () => dr.remove());
+          });
       }
       return hit;
     };
@@ -692,7 +709,7 @@
             if (st.jugs >= c.jugs && P.level === 1) return { do: "wait" };
             if (st.jugs < c.jugs) {
               if (S.sel !== "jug-" + c.temp) return tool("jug-" + c.temp);
-              // CLN-190: one jug is one sweep, through its share of the dirt that's left (top to bottom)
+              // CLN-190: one jug is one sweep, through its share of the dirt that's left (its share: top to bottom)
               // s08-w6c (the gate's stuck clinic:patient at 1024x768): only dirt a finger can reach; a bit under the tool
               // column (the sole runs on under it on a narrow screen) is pressed on a tool, so no jug is poured
               // s08 w6I (the gate's stuck clinic:patient at 1180x820 and 1366x1024): a bit of dirt 6 px left of the tiles was
@@ -725,7 +742,25 @@
               const helpUp = !!(root.Onboard && root.Onboard.active && root.Onboard.active());
               const lit = left.filter((d) => Math.hypot(d.x - 400, d.y - 190) < 80).sort((a, b) => Math.hypot(a.x - 400, a.y - 190) - Math.hypot(b.x - 400, b.y - 190))[0];
               const start = st.jugs === 0 && helpUp ? (lit ? [lit] : reach({ x: 400, y: 190 }) ? [{ x: 400, y: 190 }] : []) : [];
-              const way = start.concat(share.filter((d) => d !== lit).length ? share.filter((d) => d !== lit) : start.length ? [] : [{ x: 400, y: 300 }]);
+              // CLN-108 (s09; L1's filmstrip saw the water sit on the toes' bits while the splinter stayed hidden): the sweep goes
+              // the way a hand would, from the bit nearest a splinter's spot (or the help's lit spot) to the nearest bit still
+              // dirty, never zig-zagging across the sole in the order of their heights
+              const rest = share.filter((d) => d !== lit);
+              const spots = P.splinters.map((q) => ({ x: q.pts[0][0], y: q.pts[0][1] }));
+              const near = (from) => (a, b) => Math.hypot(a.x - from.x, a.y - from.y) - Math.hypot(b.x - from.x, b.y - from.y);
+              // (a bit the water already passes within its reach is no stop of its own: the sweep moves on sooner)
+              const route = [];
+              const passed = (d) => {
+                for (let k = rest.length - 1; k >= 0; k--) if (Math.hypot(rest[k].x - d.x, rest[k].y - d.y) < WASH_R - 8) rest.splice(k, 1);
+              };
+              const go = (d) => {
+                route.push(d);
+                passed(d);
+              };
+              if (start.length) passed(start[0]);
+              else if (rest.length) go(rest.slice().sort((a, b) => Math.min(...spots.map((sp) => Math.hypot(a.x - sp.x, a.y - sp.y))) - Math.min(...spots.map((sp) => Math.hypot(b.x - sp.x, b.y - sp.y))))[0]);
+              while (rest.length) go(rest.sort(near(route[route.length - 1] || start[0]))[0]);
+              const way = start.concat(route.length ? route : start.length ? [] : [{ x: 400, y: 300 }]);
               const pts = way.map((d) => {
                 const cl = S.client(d.x, d.y);
                 return [cl.x, cl.y];

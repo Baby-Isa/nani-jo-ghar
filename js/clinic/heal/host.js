@@ -311,9 +311,9 @@
         z.top = layer.style.top; // the seated position, kept for the pull-out (the figure moves away in between)
         box.style.transformOrigin = `${a.ox}% ${a.oy}%`;
         wide.classList.add("on");
-        // CLN-87 (S05-D3): the push-in the child sees lasts about 1.5 s: the room is handed over at 60 % of the move
-        // (CLN-77), so the move itself runs 1.5 s / 0.6
-        const inMs = Kit.fast ? ms : Math.round(ms / 0.6);
+        // CLN-87 (Z1, Zafar 6 Oct: "about 1.5 s"; s09, the judge: still moving at 2 s, the end logged at 3.3 s): the whole
+        // push-in is 1.5 s, the room handed over at 60 % of it (CLN-77); S05-D3's 1.5 s / 0.6 made the move 2.5 s
+        const inMs = ms;
         // CLN-163: one camera over the room and the close-up (frames(), above); the room is gone by 75 % of the zoom
         // (CLN-77: the late frames are the close-up itself, never a smear of a blurred, hugely scaled room)
         placeMid(a.k);
@@ -346,7 +346,7 @@
       },
       /** The pull-out: the room comes back over the close-up, zoomed in, then out to the wide shot (the patient happy). */
       async out() {
-        if (!wide.isConnected) return;
+        if (!wide.isConnected || z.kept) return; // (CLN-69: the end card's kept room is never moved again)
         z.leaving = true;
         // CLN-77: the close-up's own UI (the tool column, the face, panels, pills, counts) goes before the pull-out,
         // so it never shows through the room as ghost rectangles; the close-up's drawing stays for the cross-fade
@@ -384,8 +384,24 @@
        * clearStage() takes the room away.
        */
       keep() {
-        [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
-        box.style.transform = box.style.filter = "";
+        // (s09, CLN-69: at 1024x768 and 844x390 the card sometimes sat on the bare page: the wide shot was left at the
+        // pull-out's first frame, the room scaled up and faded out, after the card came up before the pull-out ended.
+        // The rest state is laid now, and again on the next frames, so no move still running can leave it there)
+        const rest = () => {
+          if (!wide.isConnected) return;
+          [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
+          box.style.filter = "";
+          // (important: a leftover move's frame can outlive its cancel; the kept rest beats it)
+          box.style.setProperty("transform", "none", "important");
+          wide.style.setProperty("opacity", "1", "important");
+          wide.classList.remove("gone");
+          wide.classList.add("on", "kept");
+        };
+        z.leaving = true;
+        rest();
+        if (global.requestAnimationFrame) global.requestAnimationFrame(rest);
+        setTimeout(rest, 300);
+        setTimeout(rest, 1200);
         if (midEl) {
           // (the kept wide shot behind the end card is the room and the drawn girl, never the middle step)
           if (midEl.getAnimations) midEl.getAnimations().forEach((an) => an.cancel());
