@@ -193,7 +193,13 @@ export async function runBook(host, api, day) {
     close.draggable = false;
     close.src = url(FS.art);
     Object.assign(close.style, { left: `${FR.x}px`, top: `${FR.y}px`, width: `${FR.w}px`, height: `${FR.h}px` });
-    close.style.setProperty("--feather", `${(FS.feather || 0.05) * 100}%`);
+    // its soft edge (a share of each side): two crossed fades, the mask's alpha only
+    const fe = `${(FS.feather || 0.05) * 100}%`;
+    const fade = (dir) => `linear-gradient(to ${dir}, transparent 0, black ${fe}, black calc(100% - ${fe}), transparent 100%)`;
+    close.style.webkitMaskImage = `${fade("right")}, ${fade("bottom")}`;
+    close.style.webkitMaskComposite = "source-in";
+    close.style.maskImage = `${fade("right")}, ${fade("bottom")}`;
+    close.style.maskComposite = "intersect";
   }
   // the camera's moves always take their real time (also at test speed): a filmstrip of the camera must see them
   const realWait = (ms) => new Promise((r) => setTimeout(r, ms));
