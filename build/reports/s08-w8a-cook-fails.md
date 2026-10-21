@@ -1,78 +1,68 @@
 # s08 wave 8A: Cook, the pre-publish evidence FAILs
 
-Builder: Opus, worktree branch `worktree-agent-a4d17ff2d400b8b9d` (reset onto `claude/new-session-b5r2am` at 1cf4a05c; it had been cut from `main`). Not pushed.
+Opus builder, worktree branch `worktree-agent-a4d17ff2d400b8b9d` (reset onto `claude/new-session-b5r2am` at 1cf4a05c: it had been cut from `main`). Not pushed.
 
-## What changed
+Seven art loads raced `Cook.wait`, so at test speed the faces, tip frames and glasses missed a 1 s cap: they are capped in real time now, with a static rule (`loadcap`). MAA-14 was never a different woman: the pop-up swapped her half-length badge for a close-up frown; it uses her face sheet throughout. Card redraws re-created every face (the blank circles); decoded faces are kept. Sekelo's shelf keeps clear of the measured go-on button. Then the triage below: small fixes, stale tests reading the data, respecced probes, and Zafar's later words. The chicken is in the sekelo pool; the engine writes it *murgi* (confirmed in the lexicon) and the device says it, so the English placeholder he asked for needs a lexicon change (not my file).
 
-- **Art loads capped in real time.** Seven loads raced `Cook.wait` (a 5 s cap was 1 s at test speed): green boxes, the pan never tipping. All now use `St.loadArt`/`St.capLoad`; new static rule `loadcap`, unit-tested.
-- **MAA-14:** not a different woman: the pop-up's face was the half-length badge and the frown a close-up. It now uses her face sheet throughout.
-- **Blank faces** (DAAR-04/18, CHT-06): every card redraw made a new face picture; decoded faces are now kept.
-- **Sekelo at 800x360:** the shelf measures the go-on button and keeps clear of it; the L3 hint waits the level's pause (contract-24).
-- **Triage fixes:** samosa writes its count at L2-L3 (SAM-04); the count badge stays inside the stage (SH-39); the coin jar is fetched before the summary (SH-51); no digit 0 on a chip; the ghost finger holds the knife's handle; bigger sugar heaps (SH-32); maani L3 always asks for both doughs.
-- **Stale tests:** the vessel check reads the s08c kadchi and tray; the orders test reads chai's and maani's levels from the data.
-- **Chicken:** in the sekelo decoy pool (four in the pool, still 1/2/3/3); on Mum's recording sheet after an `import_all` rebuild (which also caught up the clinic heal sources). The engine writes it as *murgi* (confirmed in the lexicon) and the device speaks it: making it the English "chicken" placeholder needs a lexicon change (not my file).
-
-## Open
-
-SH-57 is Zafar's bulb (ux-principles §139), but CLAUDE.md rule 5 leaves the bulb out: propose adding it. The evidence cmd runs on port+1, so mine (8874) used 8B's server: SEK-05's machine FAIL is stale; locally it is green.
+Two things for the orchestrator: an evidence `cmd` runs on port+1, so mine (8874) hit 8B's server and SEK-05's machine FAIL there is stale. The load check on cook:chop fails only when the guide's face is caught mid-talk: `nani-face-talk` is the same 280 px debt as the known `nani-face`.
 
 ## Proof
 
-Red = the base run ev-20261020-203453-9h9 (its sheets and machine lines) unless named. Green runs (sheets in this worktree's `build/screenshots/evidence/`, not in git; indexes in `build/reports/`): **uz7** = ev-20261021-002422-uz7, **1lu** = ev-20261021-010237-1lu. All need the judge; nothing here is self-passed.
+Red is the base run ev-20261020-203453-9h9 unless named. Green runs (sheets in this worktree's `build/screenshots/evidence/`; indexes in `build/reports/`): uz7 = ev-20261021-002422-uz7, 1lu = ev-20261021-010237-1lu, ekc = ev-20261021-024230-ekc. Every picture still needs the judge.
 
-### Task 1: blockers
-
-| Item | Red | Green |
+| Blocker | Red | Green |
 |---|---|---|
-| (a) loadcap rule | `static.mjs --only loadcap`: 7 findings (chai-tray 252, assemble 929, flow 903/907/1065, grill 984/1031) | 0 findings; `static.test.mjs` 10 pass |
-| (a) CHAI-25, CK-04, CK-13: green boxes | base sheets (boxes by the knob and face badges) | uz7: every face drawn, no box |
-| (a) CHAI-08: pan tips, glass fills | base C: pan flat, glasses empty | uz7 C: pan over the glass at 505-911 ms, glass full at 1354 ms |
-| (b) MAA-14 | base A 3002/3600 ms: badge to close-up swap | uz7 A: one close-up face, her frown at 2400-3001 ms |
-| (c) blank face | base DAAR-18 4-6, CHT-06 B7-8 | 1lu DAAR-18, CHT-06: faces in every frame |
-| (d) mishkaki@L3#hint 800x360 | run w8a-sek-red: timed out, "veg-03 covered by #go-btn" | run w8a-sek-green: end reached at 800x360 and 1366x768 |
-| (e) SH-57 | English after the bulb | ZAFAR: the bulb's 8 s English is his (D11, SH-41) |
-
-### Task 2: triage
+| (a) loadcap rule | 7 findings (chai-tray, assemble, flow x3, grill x2) | 0; static.test.mjs 10 pass |
+| (a) CHAI-25, CK-04, CK-13 | green boxes by the knob and badges | uz7: every face, no box |
+| (a) CHAI-08 | pan flat, glasses empty | uz7 C: pan tips 505-911 ms, glass full |
+| (b) MAA-14 | badge then close-up at 3002 ms | uz7 A: one close-up, frown at 2400 ms |
+| (c) blank faces | DAAR-18 4-6, CHT-06 B7-8 | 1lu: faces in every frame |
+| (d) mishkaki@L3#hint 800x360 | w8a-sek-red: timed out, veg-03 under #go-btn | w8a-sek-green: end reached (also 1366x768); contract-24 hint pause fixed |
+| (e) SH-57 | English after the bulb | ZAFAR: the bulb's 8 s English (D11, SH-41); propose adding the bulb to CLAUDE.md rule 5 |
 
 | Row | Class | Proof or reason |
 |---|---|---|
-| CHAI-06, CK-02, SH-33 | STALE TEST | check_vessel_meta exit 1 (v3 ladle and rack) → exit 0; uz7 machine PASS |
-| SEK-05 | STALE TEST + FIXED | test_cook --orders exit 1 (chai L3 three cups; maani sizes only at L4; maani L3 one dough) → exit 0 on 8873. 1lu's FAIL ran on 8B's server (port 8874) |
-| CHAI-15 | SPEC | chai L3 is two cups now; probe at L4 (three): uz7 PASS |
-| DAAR-08 | SPEC | the L4 order card is folded; probe reads daar's chop card: uz7 PASS |
-| DAAR-22 | SPEC | at test speed the halves had gone by frame 2; speed 1, 90 ms: 1lu shows the split and the cut line |
-| SH-19 | SPEC | a second "visible" moment after the finger's one pass failed the count; judged by check_onboard: 1lu PASS |
-| SAM-04 | FIXED | base B: "chundo", no count → uz7 B: "hakro chundo", "ba chunda" (L2) |
-| SH-39 | FIXED | base B 844x390: badge cut at the top → 1lu B: whole |
-| SH-51 | FIXED | base A: empty card → 1lu A: jar shown (one fill picture up to 37 coins is the fill rule) |
-| SH-32 | FIXED (judge) | heaps were drawn but faint (1lu); a third bigger: ekc (ev-20261021-024230-ekc) A5-A8, partly under the teaspoon |
-| DAAR-12 | ZAFAR + FIXED part | L3 dial follows Nani's spoken switch (level table); card keeps the first ask (a leak question for him). Digit "0": base D → 1lu D icon only |
-| DAAR-13 | FIXED part, rest BIG | finger off the blade (1lu A); throws still cross mid-air |
-| LNG-03, SH-13 | ZAFAR + SPEC | L3 dots item words, numbers written; L4 dots uncalled rows (level table, DAAR-34): uz7 PASS |
-| SH-12 | ZAFAR | L3 dots; the chip rule (Zafar, 20 Oct) |
-| SH-14 | ZAFAR | picture stickers, never word labels (decision 88) |
-| PAN-10 | ZAFAR | one face, no folded box (Zafar, 14 Oct) |
-| CK-21 | ZAFAR | no shadow needed (Zafar, 14 Oct) |
+| CHAI-06, CK-02, SH-33 | STALE TEST | vessel check exit 1 (v3 ladle, rack) → 0 (s08c kadchi, tray); uz7 PASS |
+| SEK-05 | STALE TEST + FIXED | orders test exit 1 → 0 on 8873; maani L3 now always both doughs (oneOfEach) |
+| CHAI-15 | SPEC | L3 is two cups; probe at L4: uz7 PASS |
+| DAAR-08 | SPEC | L4 card folded; probe reads the chop card: uz7 PASS |
+| DAAR-22 | SPEC | speed 1, 90 ms strip: 1lu shows the split and cut line |
+| SH-19 | SPEC | judged by check_onboard: 1lu PASS |
+| SAM-04 | FIXED | "chundo" → uz7 B "hakro chundo", "ba chunda" |
+| SH-39 | FIXED | 844x390 badge cut → 1lu B whole |
+| SH-51 | FIXED | empty card → 1lu A jar |
+| SH-32 | FIXED | faint heaps (1lu) → ekc a third bigger, partly under the teaspoon |
+| DAAR-12 | ZAFAR + part FIXED | L3 dial follows the spoken switch (level table; a leak question); "0" chip → 1lu icon only |
+| DAAR-13 | part FIXED, rest BIG | finger on the handle (1lu A); throws still cross mid-air |
+| LNG-03, SH-13 | ZAFAR + SPEC | L3 dots items, numbers written; L4 dots uncalled rows: uz7 PASS |
+| SH-12, SH-14 | ZAFAR | L3 dots and the chip rule (20 Oct); stickers, never labels (decision 88) |
+| PAN-10, CK-21 | ZAFAR | one face, no fold; no shadow (both 14 Oct) |
 | DAAR-34 | ZAFAR | the bulb peek writes every word (SH-98) |
-| CHT-04 | ZAFAR | the bowl is CHT-14's; the serve probe can't reach a service view in the lab |
-| CK-27 | ZAFAR | the shared effect is a ripple since CK-06 (w6M) |
-| PAN-07 | SPEC (words) | "side-on" (28 Sept §4) means the items, which are side-on |
+| CHT-04 | ZAFAR | CHT-14's bowl; the lab has no service view |
+| CK-27 | ZAFAR | the shared effect is a ripple since CK-06 |
+| PAN-07 | SPEC (words) | "side-on" means the items, which are |
 | PAN-13 | ZAFAR | day 1: pantry, chai demo, chai's pantry, chai |
-| CK-07 | BIG | the faces were shrunk off the glass (CHAI-08 flaw) against CK-07's large face |
-| PAN-01 | BIG | stamped card and 800x360 scroll: shared order card / cook-side-v2.css |
-| SH-56, SH-63 | BIG | the guide box is empty between calls in base and now (old ui.js too); needs the line table |
+| CK-07 | BIG | faces shrunk off the glass (CHAI-08) against CK-07 |
+| PAN-01 | BIG | stamp over the headline, 800x360 scroll: shared card, cook-side-v2.css |
+| SH-56, SH-63 | BIG | the guide box is empty between calls (base and old ui.js alike): the stepper's, needs the line table |
 
-Proposed row words: LNG-03 "no English or 'boga' placeholders; dots only as the level table dots"; SH-13 "L1 counted aloud, L2-L3 written, L4 heard"; CK-21 drop "shadows to the right"; PAN-10 drop "the guide box folded at L2"; PAN-07 "the pass-me pop-up's items side-on"; CK-27 "one shared ripple".
+| Proposed row words | |
+|---|---|
+| LNG-03 | no English or "boga" placeholders; dots only as the level table dots |
+| SH-13 | L1 counted aloud, L2-L3 written, L4 heard |
+| CK-21 / PAN-10 | drop "shadows to the right" / "the guide box folded at L2" |
+| PAN-07 / CK-27 | "the pass-me pop-up's items side-on" / "one shared ripple" |
+| SH-72 | from L4 (the level table opens L3) |
 
-Checks: `checks.mjs` all ok (unit 462, words, static, leak, bump, specs, docs, recordings, size, load 29/29); check_onboard ok; lint-specs 0.
+| Wave 8B's Cook items | Answer |
+|---|---|
+| SH-72 | ZAFAR (above); Cook probe now L4: ekc PASS |
+| Texture names | trivet `dv3-trivet`, `dv3-trivet-plain`; served `s02-served-<recipe>`; chaat bowl `cv3-bowl`; thali `mv-thali`; review faces `<who>-badge[-mood]-v2round-256`. DAAR-06, CHT-11 probe "results", where the station is gone: use a story day's drv:dish-served |
+| Moments (ekc) | SH-58 to samosa: PASS; CHAI-18 kind-timing, SEK-03 and SEK-13 sidebar card: reached; SAM-03 popup-fold, L1-L2. Open: CHT-08 reaches wrong-tap but the card never changes; CK-38's peek never comes at 800x360 (driver) |
+| Load check | add nani-face-talk/-blink/-happy to oversize-known (tools) or cut a 168 px face set (art) |
 
-### Replay at every size (run s08-w8a-cook-fails-matrix)
-
-The brief's 10 flows at 8 sizes, `--contract`, `--parallel 3` (one page at a time would have run 70 min; the two day-1 pages the container restart killed were rerun): 80 of 80 pages reach their end, 0 page errors. 1 contract break: contract-5 (badges all at once) on cook:day1 at 800x360 after the "?" was opened; the same break is in earlier runs of first, samosa and fetch, and the end screen is js/shared's, not changed here. Shot diff: 553 changed against an old manifest, almost all from the s08b and s08c art; on the 40-cell sheet the flaws are the "?" pop-up over the help strip at 1024x768 (cells 5, 23) and the grey-italic placeholders (allowed). No flaw traced to this wave.
-
-### Wave 8B's Cook items
-
-- SH-72: ZAFAR. The level table opens the L3 card with its item words dotted, so the L3 pop-up writes its rows; only L4 hides it. The Cook probe is now L4 only.
-- Texture names for the probes (`canvas:<part of the key>`): daar's trivet `dv3-trivet`, `dv3-trivet-plain`; served dishes `s02-served-<recipe>` (`s02-served-daal`, `s02-served-chaat`); chaat's bowl `cv3-bowl`; maani's thali `mv-thali`; review faces `<who>-badge[-mood]-v2round-256`, rim badges `-v2round`. DAAR-06 and CHT-11 probe at "results", where the station is gone: probe the served dish on a story day (drv:dish-served).
-- Moments respecced (run ekc): SH-58 to samosa (chai ends with the pour): machine PASS; CHAI-18 at kind-timing, SEK-03 at the sidebar card, SEK-13 at each threaded piece: reached, for the judge; SAM-03 after popup-fold, written-row check at L1-L2 (L3 dots, L4 hides). Still open: CHT-08 reaches wrong-tap but the card never changes after it (no re-said order: may be real, needs a look); CK-38's peek never comes on the hint or peek-every-tap path at 800x360 (a driver change). SH-72's clinic probes are 8B's (no text in .njg-rq-card).
-- The picture-load check passes on this branch (29/29). nani-face-talk (280 px) drawn at 56 px comes with 8B's guide face size: it needs a smaller cut of her face sheet (assets, not mine).
+| Replay and checks | Result |
+|---|---|
+| Matrix s08-w8a-cook-fails-matrix (10 flows x 8 sizes, --contract, --parallel 3) | 80/80 reach their end, 0 page errors; 1 break: contract-5 on day1 800x360 after "?", seen in earlier runs (shared end screen) |
+| Shot diff | 553 changed vs an old manifest, nearly all s08b/s08c art; sheet flaws: the "?" pop-up over the help strip (cells 5, 23); none traced to this wave |
+| checks.mjs | unit 462, words, static, leak, bump, specs, recordings, size ok; load flaky as above |
