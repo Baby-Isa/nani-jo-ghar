@@ -1,14 +1,17 @@
 /*
- * The day's scene: one fixed house and foreground, the sky from the horizon up swapped by the weather (Zafar, 19 Oct;
- * docs/game-design/story-and-arcs.md Part 1). Layers, back to front:
- *   sky (the weather's picture, or its gradient with sun, moon and clouds) · stars (code) · house · ground (foreground) ·
- *   sun-shadows (only when the weather says so: the sunny sky) · figures (Nani; the page's own) · rain (code, falling) · light tint
- * Every look is data (data/day.json `scene`, `weather`): an `art` path draws that picture, else the placeholder `shapes`.
- * Nothing here is text. The scene is laid out in its own 1600x900 pixels and scaled to cover the stage, kept to the bottom
- * (the ground) and the middle (the door), never stretched.
+ * The skies and the morning door's scene (Zafar, 19-20 Oct; docs/sprints/S09-a-day-at-nanis.md; DOOR-01).
  *
- *   const s = paintScene(el, { scene, weather, url, rng })   -> {box, figs, fit(), stop(), toScreen(x, y)}
- *   paintSky(el, weather, { w, h, url })                    -> the sky alone, in a box of its own (tomorrow's door, the window)
+ * The door (paintDoor): the day's sky is its own full layer (the s09b picture for the weather) behind the cut-out empty house,
+ * the house scaled so its roofline sits a third of the way down the play area and covering its width (its sides cropped on
+ * squarer screens, its foot running off the bottom); code draws only what moves: the rain falling, the stars twinkling, the
+ * clouds drifting. Every look is data (data/days.json `door`); nothing here is text.
+ *
+ *   const s = paintDoor(el, { look, wkey, weather, url, speed })  -> {stage, figs, geo(), onFit(fn), stop()}
+ *       look: data/days.json door; wkey: the weather's key; weather: data/day.json weather[wkey] (its rain)
+ *       geo(): {W, H, s, left, top, roof, foot: {x, y}} in the play area's px (foot: the foot of the steps, where Nani stands)
+ *   rain(box, def, W, H, speedOf) -> stop()       rain falling on a canvas over box (the door, the weather card)
+ *   paintSky(el, weather, { w, h, url })          the sky alone, in a box of its own (the window, the book's tomorrow)
+ *   shapes(list, w, h)                            placeholder shapes into an svg (no text)
  */
 const NS = "http://www.w3.org/2000/svg";
 const SVG = (tag, attrs = {}, parent = null) => {
@@ -41,19 +44,6 @@ export function shapes(list, w, h, cls) {
     if (p.id) e.dataset.id = p.id;
   });
   return s;
-}
-
-/** A layer: its picture if the data names one, else its shapes. */
-function layer(def, w, h, cls, url) {
-  const d = div(`day-layer ${cls}`);
-  if (def && def.art) {
-    const im = document.createElement("img");
-    im.alt = "";
-    im.src = url(def.art);
-    im.draggable = false;
-    d.appendChild(im);
-  } else if (def && def.shapes) d.appendChild(shapes(def.shapes, w, h));
-  return d;
 }
 
 /** A cloud of three puffs at (cx, cy), scale s. */
@@ -110,16 +100,17 @@ function stars(svg, st, w, h) {
   for (let i = 0; i < (st.n || 60); i++) SVG("circle", { cx: (r() * w).toFixed(1), cy: (r() * h).toFixed(1), r: (0.8 + r() * 2.2).toFixed(2), "fill-opacity": (0.5 + r() * 0.5).toFixed(2) }, g);
 }
 
-/** Rain drawn in code: drops falling on a canvas over the whole scene (stopped by stop()). */
-function rain(box, def, W, H, speedOf) {
+/** Rain drawn in code: drops falling on a canvas over the whole box (W x H logical px, drawn at half size; stopped by the return). */
+export function rain(box, def, W, H, speedOf = () => 1) {
   const cv = document.createElement("canvas");
   cv.className = "day-layer day-rain";
-  cv.width = W / 2;
-  cv.height = H / 2;
+  cv.width = Math.round(W / 2);
+  cv.height = Math.round(H / 2);
   box.appendChild(cv);
   const ctx = cv.getContext("2d");
   const r = rngOf(3);
-  const drops = Array.from({ length: def.drops || 120 }, () => ({ x: r() * W, y: r() * H, v: 0.7 + r() * 0.6 }));
+  const n = Math.round((def.drops || 120) * ((W * H) / (1600 * 900)) ** 0.5);
+  const drops = Array.from({ length: Math.max(12, n) }, () => ({ x: r() * W, y: r() * H, v: 0.7 + r() * 0.6 }));
   let raf = 0;
   let last = null;
   const draw = (now) => {
@@ -131,11 +122,12 @@ function rain(box, def, W, H, speedOf) {
     ctx.globalAlpha = def.a == null ? 0.6 : def.a;
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    const len = def.len || 24;
+    const len = (def.len || 24) * Math.max(0.5, H / 900);
     const sl = def.slant || 0.15;
+    const sp = (def.speed || 900) * Math.max(0.4, H / 900);
     drops.forEach((d) => {
-      d.y += (dt * (def.speed || 900) * d.v) / 1000;
-      d.x -= (dt * (def.speed || 900) * d.v * sl) / 1000;
+      d.y += (dt * sp * d.v) / 1000;
+      d.x -= (dt * sp * d.v * sl) / 1000;
       if (d.y > H) {
         d.y -= H + len;
         d.x = r() * W * 1.1;
@@ -151,56 +143,80 @@ function rain(box, def, W, H, speedOf) {
   return () => cancelAnimationFrame(raf);
 }
 
-export function paintScene(el, { scene, weather, url = (p) => p, speed = () => 1, layers = {} } = {}) {
-  const W = scene.w || 1600;
-  const H = scene.h || 900;
-  const stage = div("day-stage", el);
-  const box = div("day-box", stage);
-  box.style.width = `${W}px`;
-  box.style.height = `${H}px`;
-  const skyL = div("day-layer day-sky", box);
-  paintSky(skyL, weather, { w: W, h: H, url, above: true });
-  box.appendChild(layer(scene.house, W, H, "day-house", url));
-  box.appendChild(layer(scene.foreground, W, H, "day-ground", url));
-  // the sun-shadow layer: only the sunny sky shows it (Zafar, 19 Oct)
-  if (weather && weather.shadow && scene.shadow) box.appendChild(layer(scene.shadow, W, H, "day-shadow", url));
-  const figs = div("day-layer day-figs", box);
-  const stops = [];
-  if (weather && weather.rain && layers.rain !== false) stops.push(rain(box, weather.rain, W, H, speed));
-  // the light: one flat tint of the weather's colour over the whole scene (a relight, never a redraw: ART-04)
-  if (weather && weather.tint) {
-    const t = div("day-layer day-tint", box);
-    t.style.backgroundColor = weather.tint.fill;
-    t.style.opacity = String(weather.tint.a || 0);
+/** The house's place for a play area of W x H (pure: build/test_day_runner.mjs checks it): roofline at roofAt, width covered,
+ *  the foot of the picture never above the bottom. */
+export function houseFit(house, W, H) {
+  const roof = H * (house.roofAt || 1 / 3);
+  const s = Math.max(W / house.w, (H - roof) / (house.h - house.roofline));
+  const left = W / 2 - house.foot.x * s;
+  const top = roof - house.roofline * s;
+  return { W, H, s, left, top, roof, foot: { x: left + house.foot.x * s, y: top + house.foot.y * s } };
+}
+
+/** The morning door's scene into el (the play area): sky, twinkling stars, house, figures, rain. */
+export function paintDoor(el, { look, wkey, weather = {}, url = (p) => p, speed = () => 1 } = {}) {
+  const sk = look.skies[wkey] || look.skies.sunny;
+  const stage = div("day-stage day-door-stage", el);
+  stage.dataset.weather = wkey;
+  // the sky: the weather's own picture, a full layer behind everything (the clouds drift where the weather says so)
+  const skyL = div("day-layer day-sky", stage);
+  const sky = document.createElement("img");
+  sky.alt = "";
+  sky.className = `day-sky-art${sk.drift ? " day-drift" : ""}`;
+  sky.src = url(sk.art);
+  sky.draggable = false;
+  skyL.appendChild(sky);
+  // the stars twinkle (code: small glints over the picture's own stars, in the top of the sky)
+  if (sk.twinkle) {
+    const tw = div("day-layer day-twinkle", stage);
+    const r = rngOf(sk.twinkle.seed || 11);
+    for (let i = 0; i < (sk.twinkle.n || 24); i++) {
+      const s = document.createElement("i");
+      s.style.left = `${(r() * 100).toFixed(1)}%`;
+      s.style.top = `${(r() * (sk.twinkle.top || 0.33) * 100).toFixed(1)}%`;
+      s.style.animationDelay = `${(r() * 2.4).toFixed(2)}s`;
+      s.style.setProperty("--tw", `${(3 + r() * 3).toFixed(1)}px`);
+      tw.appendChild(s);
+    }
   }
-  // cover the stage, kept to the ground; but never crop the scene's safe area (scene.safe: [x0, y0, x1, y1], what must stay on
-  // screen: Nani, the door, the thought bubble): on a 4:3 tablet the picture shrinks to keep it, and the sky (drawn on upwards
-  // past the picture's top) fills what is left above
-  const safe = scene.safe || [0, 0, W, H];
+  const houseL = div("day-layer day-house", stage);
+  const house = document.createElement("img");
+  house.alt = "";
+  house.className = "day-house-art";
+  house.src = url(look.house.art);
+  house.draggable = false;
+  if (sk.house) house.style.filter = sk.house;
+  houseL.appendChild(house);
+  const figs = div("day-layer day-figs", stage);
+  if (sk.nani) figs.style.filter = sk.nani;
+  const stops = [];
+  if (weather.rain) stops.push(rain(stage, weather.rain, 1600, 900, speed));
+
+  let g = null;
+  const subs = [];
   const fit = () => {
-    const w0 = stage.clientWidth || 1;
-    const h0 = stage.clientHeight || 1;
-    let s = Math.max(w0 / W, h0 / H);
-    if (w0 / s < safe[2] - safe[0]) s = w0 / (safe[2] - safe[0]);
-    const cx = (safe[0] + safe[2]) / 2;
-    const x = W * s <= w0 ? (w0 - W * s) / 2 : Math.min(0, Math.max(w0 - W * s, w0 / 2 - cx * s));
-    box.style.transform = `translate(${x.toFixed(1)}px, ${(h0 - H * s).toFixed(1)}px) scale(${s.toFixed(4)})`;
-    fit.s = s;
-    fit.x = x;
-    fit.y = h0 - H * s;
+    const W = stage.clientWidth || el.clientWidth || 1;
+    const H = stage.clientHeight || el.clientHeight || 1;
+    g = houseFit(look.house, W, H);
+    Object.assign(house.style, { left: `${g.left.toFixed(1)}px`, top: `${g.top.toFixed(1)}px`, width: `${(look.house.w * g.s).toFixed(1)}px`, height: `${(look.house.h * g.s).toFixed(1)}px` });
+    subs.forEach((f) => f(g));
   };
   fit();
-  addEventListener("resize", fit);
+  const ro = typeof ResizeObserver === "function" ? new ResizeObserver(fit) : null;
+  if (ro) ro.observe(stage);
+  else addEventListener("resize", fit);
   return {
     stage,
-    box,
     figs,
-    fit,
-    /** a scene point -> px in the stage */
-    toScreen: (x, y) => ({ x: fit.x + x * fit.s, y: fit.y + y * fit.s, s: fit.s }),
+    geo: () => g,
+    onFit(fn) {
+      subs.push(fn);
+      if (g) fn(g);
+    },
     stop() {
       stops.forEach((f) => f());
-      removeEventListener("resize", fit);
+      if (ro) ro.disconnect();
+      else removeEventListener("resize", fit);
     },
   };
 }

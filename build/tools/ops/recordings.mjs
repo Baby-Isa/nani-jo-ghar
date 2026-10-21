@@ -236,7 +236,7 @@ export function buildSheet() {
     const frame = E.test.say(callM).gaps.filter((g) => g.lex && !itemGlosses.has(g.lex) && !E.test.say(meaningOf(probe)).gaps.some((x) => x.lex === g.lex));
     const fs = frame.length ? (frame.some((g) => BLOCKING.has(g.kind)) ? "none" : "rec") : "ready";
     ride.add(`frame|${rid}`, { en: String((r.call && r.call.en) || "Where is the {x}?").replace("{x}", "…"), where: [`Ride ${rid}: Nani's call for every thing`], count: n, often: `${n} of ${days.length} days, every call`, status: frame.length ? `${fs === "none" ? "No Kutchi yet" : "The engine can say it; no family recording"} of: ${[...new Set(frame.map((g) => gloss.get(g.lex) || g.lex))].join(", ")}` : "Ready" });
-    say(r.stopCar.meaning, r.stopCar.en, "Ride: the stop-the-car beat", n, ride);
+    for (const [k, l] of Object.entries(r.speedLines || {})) if (!k.startsWith("_")) say(l.meaning, l.en, `Ride: Nani to the driver (${k === "up" ? "faster" : "slower"})`, n, ride);
   }
   say(day.book.goodnight.meaning, day.book.goodnight.en, "Evening book: Nani at the end", days.length, book);
   say(day.book.tomorrow.meaning, day.book.tomorrow.en, "Evening book: the tomorrow's-sky doorway", days.length, book);

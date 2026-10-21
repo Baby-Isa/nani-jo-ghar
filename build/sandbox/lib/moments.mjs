@@ -123,6 +123,12 @@ export function momentsFor(root, flowId, { kindOf = () => null, seen = null } = 
   else if (kind === "house") out.push("rec:whos-playing", "rec:house", "rec:house-lab-doors", "rec:picker", "rec:picker-add-player", "rec:grown-ups-panel");
   else if (kind === "first") out.push("rec:yes-no", "rec:yes", "rec:no-shakes", "rec:house-with-character", "rec:*-start", "rec:*-made", "rec:*-tab-*", "rec:*-round-play-button");
   else if (kind === "mode") out.push("rec:title", "rec:lab", "rec:result", "rec:results-badges");
+  // the evening book (s09-book, flows/day.mjs playBook): each state is "<path or log>-<state>"; after-wrong is the find-wrong
+  // driver's wrong tap (rec:*-wrong-tap), a second later
+  else if (kind === "day-book") {
+    for (const s of ["room-greet", "face", "find", "find-found", "nameit", "nameit-filled", "photo", "photo-in", "ourday", "wrong-tap", "turn-*", "end-zoom-out", "end"]) out.push(`rec:*-${s}`, `rec:*-*-${s}`);
+    out.push("host:day/book", "host:day/book/*", "host:day/book/end", "drv:wrong-tap", "drv:page-turn");
+  }
   const seenHere = (seen || {})[flowId] || (seen || {})[base] || [];
   return [...new Set([...out, ...seenHere])];
 }

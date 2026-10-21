@@ -8,14 +8,20 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (21 Oct 2026, 06:00 UK):** Sprint 8 is finished and pushed on `claude/new-session-b5r2am`: every 17-18 Oct code fix, the s08c art (7A, 7B), the chicken (murgi, English placeholder until Mum records it), and waves 8A/8B's fixes from the pre-publish evidence. Proof: checks.mjs all green (load included); the joint 8-size contract replay `s08-final-joint` (22 Cook, clinic and house flows) 0 breaks over 177 pages; evidence runs ev-20261020-203453-9h9 and ev-20261021-031423-a9z judged and applied (178 rows on the fix list). Main's image uploads are merged in. **Not yet live:** the publish (`publish.mjs --go --force`, Zafar's word, 21 Oct) was refused by the session's permission check; it needs Zafar to run or allow it.
+**Where things stand (21 Oct 2026, 05:00 UK), Sprint 9's chat:** Sprint 9 ("A day at Nani's") is built, merged and judged on `claude/funny-maxwell-3dkhif`, which sits on Sprint 8's branch; `main` = 700b1023 (Sprint 8 not yet published: its chat was on wave 8B). Reports: `build/reports/s09-ride.md`, `s09-book.md`, `s09-final-door.md`, `s09-final-art.md`. Built: the door on the s09b art (four skies, the empty house, Nani's seven pose cut-outs, the two cards), the window ride (looping layers, gentle parallax, three speeds, the farm road's s09b things, the wide window), the evening book (camera, find it, name it, stick in the photo, our day, gold cards, day-books), and the modular day runner (`data/days.json`: a day is a stage list; the farm day door, ride, book; kitchen and clinic days hand off). Every S09 row has a judge or machine PASS except BOOK-05's wrong-drag and take-back (needs a driver: Sprint 10). Art: s09r and s09b landed and cut (`cut_s09r.py`, `cut_s09b.py`); Nani's s09b likeness approved (Zafar, 21 Oct). Days docs: `docs/game-design/days/` (README, farm, shops, beach, safari, boat).
 
-**The publish gate's three blockers** (why `--force`): 91 open rows with no "waiting on" note; the last full gate run (a2bb1c9c, before this sprint's fixes) had 772 breaks; game files changed since it (mostly main's image uploads). A full `run.mjs --gate` before the next publish clears the second and third.
+**Next steps:**
+1. Zafar's answer on the red-first question (open question 1); then `evidence.mjs --apply` marks the passing S09 rows built.
+2. When Sprint 8 is on `main`: merge `origin/main` into this branch (status.md and overnight-log.md conflict: keep both), `/review` (the full check at 8 sizes), fix, `/publish` (Zafar's go, 21 Oct: "push to main and finish the sprint"), `/sprint` close.
+3. Sprint 10, the farm day in full (`docs/game-design/days/farm.md`): pack the bag, meet Hannah Mami, feed, eggs, snap, the corn stall, animals home, Ali's egg; the engines put-it-in-its-place and count-to-a-number; DAY-03 (Cook and the clinic return to the book and write the day log); LNG-18 (the device voice reads every unrecorded line on the test site, every game); BOOK-05's wrong-drag driver. About $150; two builders.
 
-**Next steps:** 1. publish (below). 2. Zafar plays; his notes → `/feedback`. 3. Sprint 9 runs in its own chat.
+**Open questions to Zafar:**
+1. Count "the probe couldn't run because the feature didn't exist yet" as red, so new-feature rows close on their green PASS? (Recommend yes; a small change to `redGreen` in `build/tools/review/lib/evidence.mjs`.)
+2. Hannah Mami: her name in the game, picture (a likeness run) and voice.
+3. Mum's words: the corn dressings, the shops' directions, the ride's and book's grey lines (the recording sheet).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only. Branch `claude/new-session-b5r2am` holds Sprint 8, ready to publish. Run `node build/tools/ops/publish.mjs --go --force --log` (my word: publish Sprint 8), confirm it is live, and give me the play link.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/funny-maxwell-3dkhif` (Sprint 9, built and judged; `main` = 700b1023, Sprint 8 not yet published). Carry on from "Next steps". Tell me before launching anything new.
 
 ## The fix list
 
@@ -30,7 +36,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 | First launch and shell | 0 | 2 |
 | Other modes | 2 | 9 |
 | Art | 7 | 9 |
-| Language and audio | 10 | 4 |
+| Language and audio | 11 | 4 |
 
 ---
 

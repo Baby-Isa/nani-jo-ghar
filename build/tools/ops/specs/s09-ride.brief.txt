@@ -1,0 +1,80 @@
+SESSION NAME / MODE:  s09-ride, the window ride rebuilt on looping layers: far, middle and near layers per trip, things on two ground lines, props to peek behind, three speeds that make the things rush past, fair at every speed, and a preview page for Zafar to agree the road art
+MODEL AND EFFORT:     Opus, high effort (the shared ride engine every trip uses, judged by motion and the leak test)
+COST ESTIMATE:        about $35-50
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/funny-maxwell-3dkhif (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s09-ride.context.md (874 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S09-a-day-at-nanis.md (the ride: Zafar's 19-20 Oct lines, newest last; the 20 Oct road and door line is the design)
+     docs/process/regressions.md section 'A day at Nani's' rows RIDE-01 to RIDE-06, and their probes in build/sandbox/data/evidence.json (written before you start; run them red first)
+     build/reports/s09-frame.md (how the ride was first built) and build/reports/s09a-fable-review.md section 4 (the window)
+     docs/design-language/art-plans/s09r-art-plan.md (the road art being made now: what each layer, prop and sprite will look like and how it is keyed)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/window-ride.js
+  - js/day/window.js
+  - data/day.json
+  - build/leak_window_ride.mjs
+  - build/test_shared_window_ride.mjs
+  - build/sandbox/flows/day-window.mjs
+  - build/sandbox/lib/contract-day.mjs (add contract-47 and contract-48 here; one import line in contract.mjs if they need registering)
+  - assets/day/ride/** (new: the cut car window and placeholder layers)
+  - lab/ride-preview.html (new)
+  - build/reports/s09-ride.md
+READ-ONLY (never edit):
+  - js/day/book.js, js/day/day.js, css/day.css, data/day-book.json, build/sandbox/flows/day.mjs, build/sandbox/lib/moments.mjs (s09-book owns these; a change you need there goes in your report as a request)
+  - js/day/sky.js and js/day/door.js (reuse the sky; the door is a later round)
+  - build/sandbox/data/evidence.json (the orchestrator's; a probe you think is wrong goes in your report with the fix)
+  - data/lang/** (never add Kutchi: a word the engine can't say is a grey to-record placeholder, listed in the report)
+  - js/shared/** other files (use them, never restyle: non-negotiable 8)
+  - sources/art/** (read: the kept car window is sources/art/s09a/r1-car-window-v1.png)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: layers, props and things the art run hasn't made yet are simple placeholders behind data paths; the s09r cuts (assets/day/ride/s09r/ when the orchestrator lands them) drop in by path
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. RIDE-01: the view is three looping layers per trip from data (far, middle, near, each its own art path and speed: far about 0.15, middle 0.4, near 1), over the sky (reuse js/day/sky.js's sky for the day's weather). Each layer tiles end to end and the join is a soft cross-fade over the tile's outer tenth, so no seam or jump shows at any speed. A layer's art may be a keyed PNG or WebP with alpha; code never keys colours at run time.
+     Accept: RIDE-01's probe (a filmstrip across a near-layer join) at 1366x768 and 844x390
+  2. RIDE-06: the car window frame is the kept s09a car window (sources/art/s09a/r1-car-window-v1.png) keyed to alpha (green to transparent, erode 1 px, saved under assets/day/ride/), fitted by height, its sides extended by repeating its outer columns (pillar and seat) so it fills every screen shape; the view fills the opening; no green left.
+     Accept: RIDE-06's probe at 800x360, 1024x768, 1366x768, 1366x1024
+  3. RIDE-02: things stand on two ground lines placed by code: the near verge (bigger) and the field behind (smaller, drawn behind the near layer's top edge), each moving at its own line's speed. Cut-out props (bush, haystack, wall, tree) stand on the near line and can half-hide a thing. Nani never asks for a thing while it is fully hidden: add contract-47 (a call whose thing is more than about two thirds hidden, or off screen, is a break).
+     Accept: RIDE-02's probe (contract-47 0 breaks) at 1366x768 and 800x360
+  4. RIDE-03: three speeds, never stopped (Zafar, 20 Oct: 'the speed should make the items speed up, that's the fun of it'): normal from the start; Nani says speed up or slow down through the language engine (grey to-record placeholders if the lexicon lacks them), and the whole view and every thing on it go faster or slower together, easing over about a second. On 800x360 a thing crosses the window in about 9 s (slow), 6 s (normal) and 3.5 s (fast, never under 3 s); scale by the window's width so every screen gets the same time. Build the speed-slow and speed-fast drivers in flows/day-window.mjs.
+     Accept: RIDE-03's probes (traces at slow and fast, the voice timeline) at 800x360
+  5. RIDE-04: fair at every speed: a thing is asked for only as it comes into view (entering from the right), never as it leaves; a thing that was asked for and missed comes round again until found (Zafar, 20 Oct: was once); take the stop-the-car beat out (Zafar, 20 Oct). Add contract-48 (a call while its thing is leaving, or a missed thing that never comes round, is a break). Build the miss driver.
+     Accept: RIDE-04's probe (contract-48 0 breaks on a ride with every first pass missed; the ride still ends with everything found)
+  6. RIDE-05: the leak bot (build/leak_window_ride.mjs) plays at the three speeds (--speeds slow,normal,fast) with unasked things passing as well as look-alike groups: fair finds everything; tap-all, wait and blind stay under 10% at every speed and level.
+     Accept: RIDE-05's probe: node build/leak_window_ride.mjs --speeds slow,normal,fast exits 0
+  7. The farm road's things in data/day.json, in three groups, each with an English name, an engine id and an art path (null = placeholder shape): review from earlier days (the red and green doors), the farm animals to come (goat, hen, dog, bird, cow: Zafar says cow is 'gai', so give it the engine id n.cow and let the engine report it as a gap to record; never write the Kutchi yourself), and things you might see passing (a tractor, a bicycle). The art paths point to assets/day/ride/s09r/<name>.webp when that file exists, else the placeholder.
+     Accept: the ride at 1366x768 shows the groups; the report lists every engine gap
+  8. The preview for Zafar: lab/ride-preview.html (a grown-ups' lab page: English allowed) shows the car window over the farm road and the town layers with the things and props on their lines, three buttons (slow, normal, fast) and a layer switch (placeholders or the s09r art when present). Record a 20-second video (Playwright recordVideo, webm) at each speed at 1366x768 into build/screenshots/s09-ride/ for the report.
+     Accept: the three videos and a still per speed in the report
+
+REGRESSION ROWS TO RECHECK (109 rows of the fix list and its done archive; * = open or reopened):
+  shared components (109): SH-70*, SH-98*, SH-99*, SH-107*, SH-37*, SH-90*, SH-91*, SH-92*, SH-93*, SH-97*, SH-102*, SH-103*, SH-104, SH-105*, SH-106*, SH-108*, SH-109*, SH-110*, SH-111*, SH-53*, SH-60*, SH-112*, SH-113*, SH-115*, SH-116*, SH-117*, SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-54, SH-55, SH-62, SH-69, SH-10, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58, SH-59, SH-63, SH-64, SH-65, SH-66, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33, SH-34, SH-35, SH-36, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48, SH-71, SH-72, SH-73, SH-74, SH-75, SH-76, SH-77, SH-79, SH-80, SH-82, SH-83, SH-84, SH-86, SH-87, SH-81, SH-89, SH-88
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow day:window --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s09-ride-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s09-ride` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8881.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s09-ride.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

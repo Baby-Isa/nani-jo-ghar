@@ -56,7 +56,7 @@ import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { lexiconWords } from "./evidence.mjs";
 // contracts 45 and up: the day's frame (s09-frame), in a file of their own
-import { DAY_CHECKS, check45, check46 } from "./contract-day.mjs";
+import { DAY_CHECKS, check45, check46, check47, check48 } from "./contract-day.mjs";
 // contracts 65 and up: the daal station (s08 w4A), in a file of their own
 import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
@@ -1075,6 +1075,9 @@ function check30(r, tl, segs, v, nums, add) {
   for (const l of v.lines) {
     const text = String(l.text || "").trim();
     if (!text || WRITTEN_SKIP.has(l.role) || isCountLine(l, nums)) continue;
+    // a day page (day.html, Sprint 9) has no order cards: its side cards are the door's weather and activity, so its lines are
+    // not orders to write down (the book's placeholder "What did we do today?" read as the number do, 21 Oct)
+    if (/^day:/.test(String(l.who || ""))) continue;
     // the stage it was said in (the request pop-up reads the order out before the station's own stage starts: the first stage's)
     const s = segAt(segs, l.t0) || segs[0] || { key: "page", t0: -Infinity, t1: null };
     if (/cook:between|cook:closing/.test(s.key)) continue;
@@ -1384,6 +1387,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check37(r, tl, segs, add);
   check45(tl, add);
   check46(tl, add);
+  check47(r, tl, add);
+  check48(r, tl, add);
   check50(r, tl, segs, add);
   check65(r, tl, add);
   check66(r, tl, v, add);

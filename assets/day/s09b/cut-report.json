@@ -1,0 +1,211 @@
+{
+ "sky-sunny": "copied",
+ "sky-cloudy": "copied",
+ "sky-raining": "copied",
+ "sky-night": "copied",
+ "nani-face-fire": "copied",
+ "book-farm-spread": "copied",
+ "book-kitchen-spread": "copied",
+ "far-hills": {
+  "size": [
+   1536,
+   594
+  ],
+  "edge_left": 9,
+  "edge_right": 9
+ },
+ "car-window-wide": {
+  "opening": [
+   232,
+   144,
+   1098,
+   562
+  ],
+  "green_left": 0
+ },
+ "house-empty": {
+  "roofline_y": 322
+ },
+ "cow": {
+  "size": [
+   347,
+   360
+  ],
+  "from": "a1-farm-animals-v1.png"
+ },
+ "sheep": {
+  "size": [
+   320,
+   360
+  ],
+  "from": "a1-farm-animals-v1.png"
+ },
+ "donkey": {
+  "size": [
+   276,
+   360
+  ],
+  "from": "a1-farm-animals-v1.png"
+ },
+ "horse": {
+  "size": [
+   291,
+   360
+  ],
+  "from": "a1-farm-animals-v1.png"
+ },
+ "buffalo": {
+  "size": [
+   382,
+   360
+  ],
+  "from": "a2-farm-animals-v1.png"
+ },
+ "duck": {
+  "size": [
+   275,
+   303
+  ],
+  "from": "a2-farm-animals-v1.png"
+ },
+ "camel": {
+  "size": [
+   324,
+   360
+  ],
+  "from": "a2-farm-animals-v1.png"
+ },
+ "hen-chicks": {
+  "size": [
+   295,
+   308
+  ],
+  "from": "a2-farm-animals-v1.png"
+ },
+ "bus": {
+  "size": [
+   454,
+   264
+  ],
+  "from": "v1-road-vehicles-v1.png"
+ },
+ "tractor": {
+  "size": [
+   286,
+   228
+  ],
+  "from": "v1-road-vehicles-v1.png"
+ },
+ "bicycle": {
+  "size": [
+   256,
+   183
+  ],
+  "from": "v1-road-vehicles-v1.png"
+ },
+ "car": {
+  "size": [
+   369,
+   202
+  ],
+  "from": "v1-road-vehicles-v1.png"
+ },
+ "milk-van": {
+  "size": [
+   479,
+   283
+  ],
+  "from": "v2-road-things-v1.png"
+ },
+ "kite": {
+  "size": [
+   301,
+   360
+  ],
+  "from": "v2-road-things-v1.png"
+ },
+ "aeroplane": {
+  "size": [
+   410,
+   226
+  ],
+  "from": "v2-road-things-v1.png"
+ },
+ "butterfly": {
+  "size": [
+   303,
+   309
+  ],
+  "from": "v2-road-things-v1.png"
+ },
+ "windmill": {
+  "size": [
+   260,
+   360
+  ],
+  "from": "l1-road-landmarks-v1.png"
+ },
+ "well": {
+  "size": [
+   342,
+   360
+  ],
+  "from": "l1-road-landmarks-v1.png"
+ },
+ "rainbow": {
+  "size": [
+   550,
+   303
+  ],
+  "from": "l1-road-landmarks-v1.png"
+ },
+ "nani-wave": {
+  "size": [
+   294,
+   689
+  ],
+  "from": "n1-nani-door-poses-v1.png"
+ },
+ "nani-welcome": {
+  "size": [
+   420,
+   685
+  ],
+  "from": "n1-nani-door-poses-v1.png"
+ },
+ "nani-point-up": {
+  "size": [
+   284,
+   688
+  ],
+  "from": "n1-nani-door-poses-v1.png"
+ },
+ "nani-umbrella": {
+  "size": [
+   405,
+   787
+  ],
+  "from": "n1-nani-door-poses-v1.png"
+ },
+ "nani-listen": {
+  "size": [
+   297,
+   880
+  ],
+  "from": "n2-nani-door-poses-v1.png"
+ },
+ "nani-fan": {
+  "size": [
+   341,
+   876
+  ],
+  "from": "n2-nani-door-poses-v1.png"
+ },
+ "nani-shade-eyes": {
+  "size": [
+   340,
+   882
+  ],
+  "from": "n2-nani-door-poses-v1.png"
+ }
+}

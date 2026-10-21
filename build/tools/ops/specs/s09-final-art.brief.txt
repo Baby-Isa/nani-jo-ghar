@@ -1,0 +1,77 @@
+SESSION NAME / MODE:  s09-final-art, the s09b art wired into the ride and the book, and the judges' last points: the farm road's new things, hills and wide window; the book's find-it spreads, face close-up and sprites; a frame-exact sheet of the ride's join
+MODEL AND EFFORT:     Opus, high effort (the agreed art in the ride and the book, judged by picture)
+COST ESTIMATE:        about $30-45
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/funny-maxwell-3dkhif (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s09-final-art.context.md (867 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s09-ride.md and build/reports/s09-book.md (your own work so far)
+     docs/process/regressions.md rows RIDE-01, RIDE-07 and BOOK-09 and their probes in build/sandbox/data/evidence.json; the judges' notes in build/screenshots/evidence/ev-20261021-000057-xfq/judge/*.verdicts.md
+     docs/game-design/days/farm.md (the farm day's things) and docs/design-language/art-plans/s09r-art-plan.md §7
+     assets/day/s09b/cut-report.json (the cut art and its names)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/window-ride.js
+  - js/day/window.js
+  - js/day/book.js and js/day/book-*.js
+  - data/day.json
+  - data/day-book.json
+  - css/day-book.css (new: the book's new styles; css/day.css is the door's)
+  - build/sandbox/flows/day-window.mjs
+  - build/sandbox/flows/day-book.mjs
+  - build/sandbox/lib/moments.mjs
+  - build/leak_window_ride.mjs
+  - build/leak_book.mjs
+  - build/test_shared_window_ride.mjs
+  - build/test_day_book.mjs
+  - assets/day/ride/** except assets/day/ride/s09r/**
+  - assets/day/book/**
+  - lab/ride-preview.html
+  - build/reports/s09-ride-join-844x390.png (new: the frame-exact contact sheet)
+  - build/reports/s09-final-art.md
+READ-ONLY (never edit):
+  - js/day/door.js, js/day/sky.js, js/day/day.js, css/day.css, day.html, data/days.json, build/sandbox/flows/day.mjs, build/sandbox/lib/contract-day.mjs (s09-final-door owns these: a change you need goes in your report as a request; the ride gets its sky through sky.js as it does now)
+  - assets/day/s09b/** and assets/day/ride/s09r/** (the orchestrator's cuts; say if one looks wrong)
+  - build/sandbox/data/evidence.json (the orchestrator's)
+  - data/lang/** (never add Kutchi)
+  - js/shared/** other files (never restyle: non-negotiable 8)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: things with no Kutchi yet pass by and are never asked for (as now); their English is grey to-record in any written line
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. RIDE-07: the farm road's things from assets/day/s09b/ (cow, sheep, donkey, horse, buffalo, duck, camel, hen-chicks, bus, tractor, bicycle, car, milk-van; kite, aeroplane and butterfly in the sky band, never on a ground line; windmill, well and rainbow as passing landmarks on the far or middle line), sized by real-world height ratios in data; the far hills from assets/day/s09b/far-hills.webp (its edges are level, 9 px at both ends: check the join shows no ghost now); the wide window assets/day/s09b/car-window-wide.webp (its opening is [232, 144, 1098, 562] of 1536x1024 in cut-report.json) fitted so both pillars show on 4:3 tablets, and never a plain column under the word rail; things on the field line stand in the grass in front of the fence (never on a rail); a thing is never asked for or shown half behind the window pillar.
+     Accept: RIDE-07's probe at 1024x768, 1366x1024, 844x390; RIDE-02 to RIDE-06 stay green
+  2. RIDE-01: with your paused-clock recorder (every frame kept), make build/reports/s09-ride-join-844x390.png: a contact sheet of 12 frames, evenly spaced in game time over about 12 s at gentle normal speed at 844x390, across a near-layer join, each frame labelled with its game time. Keep it under 1.5 MB.
+     Accept: RIDE-01's probes (the filmstrip and this sheet as its reference)
+  3. BOOK-09: the book's find-it spreads are assets/day/s09b/book-farm-spread.webp and book-kitchen-spread.webp (split at the fold onto the two pages; nothing important on the fold); the camera's face shot uses nani-face-fire.webp lined up with the room picture (the same armchair and fire) so the move to her face is a clean push-in; real sprites for the dog and bird (assets/day/ride/s09r/), the door (red-door) and the car (assets/day/s09b/car.webp) where the placeholders were; every picture of a page is loaded before the page shows (no late pop-in); no empty bubble ever; the camera lands on the book over the same part of the room it zoomed through.
+     Accept: BOOK-09's probes; BOOK-01 to BOOK-08 stay green
+
+REGRESSION ROWS TO RECHECK (109 rows of the fix list and its done archive; * = open or reopened):
+  shared components (109): SH-70*, SH-98*, SH-99*, SH-107*, SH-37*, SH-90*, SH-91*, SH-92*, SH-93*, SH-97*, SH-102*, SH-103*, SH-104, SH-105*, SH-106*, SH-108*, SH-109*, SH-110*, SH-111*, SH-53*, SH-60*, SH-112*, SH-113*, SH-115*, SH-116*, SH-117*, SH-01, SH-02, SH-03, SH-04, SH-05, SH-06, SH-49, SH-50, SH-51, SH-61, SH-07, SH-08, SH-09, SH-11, SH-12, SH-13, SH-14, SH-15, SH-16, SH-17, SH-52, SH-54, SH-55, SH-62, SH-69, SH-10, SH-18, SH-19, SH-20, SH-21, SH-22, SH-56, SH-57, SH-58, SH-59, SH-63, SH-64, SH-65, SH-66, SH-67, SH-68, SH-23, SH-24, SH-25, SH-26, SH-27, SH-28, SH-29, SH-30, SH-31, SH-32, SH-33, SH-34, SH-35, SH-36, SH-38, SH-39, SH-40, SH-41, SH-42, SH-43, SH-44, SH-45, SH-46, SH-47, SH-48, SH-71, SH-72, SH-73, SH-74, SH-75, SH-76, SH-77, SH-79, SH-80, SH-82, SH-83, SH-84, SH-86, SH-87, SH-81, SH-89, SH-88
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow day:window,day:book --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s09-final-art-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s09-final-art` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8885.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s09-final-art.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

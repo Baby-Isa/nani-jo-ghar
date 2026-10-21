@@ -8,7 +8,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 - Discuss first; propose, wait for an explicit go, then act. Approval for one thing is not approval for the next. Never launch while a question to him is open; an agreed overnight run goes ahead.
 - Work in sprints (`/sprint`): one to three days, one goal he can play, a budget; `/review` and publish at the end. Steer new work into a sprint.
-- Work runs in the orchestrator's chat and its subagents, so nothing stalls on a permission prompt (Zafar, 14 Oct).
+- Work runs in the orchestrator's chat and its subagents (no permission stalls; Zafar, 14 Oct).
 - Decisions go to him as a numbered list, each with a recommendation, answerable "yes to all except …".
 - When he says more is coming, collect and list; plan nothing. Improve on his ideas: research, push back where warranted.
 - Short, plain replies; don't assume he remembers IDs. Hand him exactly what to do, ready to paste. Every launch: a model, effort and cost.
@@ -17,12 +17,12 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 ## Non-negotiables
 
 1. **Discuss first; act only when told.** (above)
-2. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his explicit OK.
+2. **If Zafar didn't comment on it, leave it.** Never remove or replace a mechanic or mini-game without his OK.
 3. **Fix it properly, once.** Every genuine thing still to fix is on the fix list (`docs/process/regressions.md`); done rows stay checked and come back if they fail.
 4. **Never invent Kutchi.** Mum is the authority (Masi second opinion; Zafar confirms spellings). Two AIs agreeing is not evidence. Missing Kutchi is its English in grey italic, tagged "to record" in the markup only (no visible flag; decision 84).
 5. **No written English for the child,** except under Nani's lines at the door in story mode (Zafar, 19 Oct). Spoken English only in story mode, said first then in Kutchi, rare and simple. Games and help use no English, except a to-record word's placeholder (decision 84), device-spoken while testing, never in a store build (Zafar, 21 Oct). Written English for grown-ups lives only in the "?" pop-up and the end-of-round review.
 6. **Pass the Kutchi leak test:** someone who knows no Kutchi can't win by reading, matching, eliminating, patterns or waiting.
-7. **Done means an independent picture, not tests passed.** Red then green: the row's check fails before the fix and passes after, and a judge who isn't the builder (the `judge` agent) passes the picture, flaws first.
+7. **Done means an independent picture, not tests passed.** Red then green: the row's check fails before the fix and passes after (a never-failed new feature: green alone; Zafar, 21 Oct), and the `judge` agent, never the builder, passes the picture, flaws first.
 8. **The same shared screens and buttons in every mode,** from `js/shared/`, never restyled per mode.
 9. **No clipped or ellipsised text, anywhere.** Headlines shrink, then wrap.
 10. **Only real family voices ship;** no AI-generated Kutchi.
@@ -43,4 +43,4 @@ Zafar never has to ask: `/sprint`, `/brief` (every launch), `/checkin`, `/review
 
 ## Starting a chat or session
 
-Read `docs/status.md` "Next chat" only; open nothing else until a task needs it. Check `git log origin/main`. Read reports, never transcripts. Hand over at each step end or around 70% context.
+Read `docs/status.md` "Next chat" only; open nothing else until a task needs it. Check `git log origin/main`. Read reports, never transcripts. Hand over at each step end or ~70% context.

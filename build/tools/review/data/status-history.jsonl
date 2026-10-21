@@ -1131,3 +1131,35 @@
 {"id":"LNG-03","run":"ev-20261021-122141-93k","earlier":"**to fix: check** · sweep: right; judge to close"}
 {"id":"SH-56","run":"ev-20261021-122141-93k","earlier":"**to fix: check** · sweep: right; judge to close"}
 {"id":"CLN-108","run":"ev-20261021-122141-93k","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261021-031423-a9z)"}
+{"id":"RIDE-01","run":"ev-20261020-183123-8zf","earlier":"**open**"}
+{"id":"BOOK-01","run":"ev-20261020-183123-8zf","earlier":"**open**"}
+{"id":"BOOK-03","run":"ev-20261020-183123-8zf","earlier":"**open**"}
+{"id":"BOOK-07","run":"ev-20261020-183123-8zf","earlier":"**open**"}
+{"id":"BOOK-01","run":"ev-20261020-194937-bb2","earlier":"**reopened** (evidence FAIL ev-20261020-183123-8zf)"}
+{"id":"BOOK-03","run":"ev-20261020-194937-bb2","earlier":"**reopened** (evidence FAIL ev-20261020-183123-8zf)"}
+{"id":"BOOK-07","run":"ev-20261020-194937-bb2","earlier":"**reopened** (evidence FAIL ev-20261020-183123-8zf)"}
+{"id":"RIDE-01","run":"ev-20261021-000057-xfq","earlier":"**reopened** (evidence FAIL ev-20261020-183123-8zf)"}
+{"id":"BOOK-01","run":"ev-20261021-000057-xfq","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-194937-bb2)"}
+{"id":"BOOK-07","run":"ev-20261021-000057-xfq","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261020-194937-bb2)"}
+{"id":"BOOK-03","run":"ev-20261021-000057-xfq","earlier":"built (evidence PASS ev-20261020-194937-bb2: Fable 5.1 [claude-fable-5-1], session_01PykEzWjMEMAAbLhHgsM1vm: A, the field runs across both pages with four separate sprites [murgi, chakli left; bakri, kutro right] and Nani asks \"Chakli kida ai?\"; the voice timeline asks for two [chakli, bakri] of the four shown and the wrong-tap probe replays \"Chakli kida ai?\" after the wrong tap; C/D show the same at 844x390 unclipped. Not on the sheet: the gold corner tick, the bounce/wiggle and the no-red wrong state [the wrong-tap strip was captured but left off]; the found-lines \"There's the bird!\"/\"There's the goat!\" and \"Goodnight!\"/\"See you tomorrow!\" are unrecorded English [silent], allowed only if tagged to-record)"}
+{"id":"DAY-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DAY-02","run":"ev-20261021-032427-602","earlier":"**open**"}
+{"id":"BOOK-09","run":"ev-20261021-032427-602","earlier":"**open**"}
+{"id":"BOOK-09","run":"ev-20261021-041111-l2d","earlier":"**reopened** (evidence FAIL ev-20261021-032427-602)"}
+{"id":"BOOK-01","run":"ev-20261021-041111-l2d","earlier":"built (evidence PASS ev-20261021-000057-xfq: Claude Fable 5.1 [claude-fable-5-1], session_01PykEzWjMEMAAbLhHgsM1vm: A, 0 ms wide room with Nani by the fire and her greeting, 1437-3189 ms the view moves in to her face, 3659-5683 ms it turns down to the open book facing the child and fills the frame, 6996 ms the kitchen game sits on the two pages; B shows the zoom back out to the full room [0-2305 ms]; C shows the page turn [786 ms the right page swinging over the fold] and the next game on fresh pages; flaws: the landing on the book goes via a dissolve to a different crop [5683 ms bookshelf on the right, 6385 ms fireplace on the right; the same swap in reverse at B 0-464 ms], so the camera does not land on the picture it zoomed through; A 8610 ms shows an empty speech bubble; English lines [\"What did we do today?\", \"There's the chai!\"] are grey italic, allowed under decision 84)"}
+{"id":"BOOK-09","run":"ev-20261021-041649-2u0","earlier":"**open (two strikes: Zafar)** (evidence FAIL ev-20261021-041111-l2d)"}
+{"id":"RIDE-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-03","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-04","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-05","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-06","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-06","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-08","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DOOR-02","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DOOR-03","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DOOR-04","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"DAY-01","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"RIDE-07","run":"ev-20261021-031310-gsc","earlier":"**open**"}
+{"id":"BOOK-04","run":"ev-20261021-041111-l2d","earlier":"**open**"}
+{"id":"DOOR-01","run":"ev-20261021-032427-602","earlier":"**open**"}

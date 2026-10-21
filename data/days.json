@@ -1,0 +1,117 @@
+{
+  "_about": "The days of story mode as stage lists (Zafar, 20 Oct: 'built modularly, so it's easy to chop and change the sequence ... swapped in or out easily or replicated and changed for a new day'; docs/game-design/days/README.md §1; the farm's list: docs/game-design/days/farm.md). js/day/day.js plays a day's `stages` in order through one stage interface (start(day, log) -> done) and writes each stage's result to the day log; a stage whose module is not built yet is skipped with a lab note. A new day is a copy of a list with stages swapped, added, removed or reordered: no code (build/test_day_runner.mjs proves it). Each stage is {stage, ...its settings}. The looks, lines and things the stages use stay in data/day.json (weather, activities, trips, window.rides) and data/day-book.json; this file names them. `door` below is the morning door's own look on the s09b art (sky, house, Nani's poses, the sidebar's two cards). Positions are in the art's own pixels.",
+  "version": 1,
+  "stages": {
+    "_about": "Every stage id a day may use, and its settings. built: js/day/day.js has a module for it today; the rest are skipped (with a lab note) until their sprint builds them (the stage library, docs/game-design/days/README.md §3).",
+    "door": { "built": true, "settings": { "weather": "a key of data/day.json weather", "lines": "the day's line set: a key of data/day.json activities (kitchen, clinic) or trips (farm, shops)" } },
+    "activity": { "built": true, "settings": { "activity": "kitchen | clinic (data/day.json activities: hands off to Cook or the clinic; the evening resumes at the next stage when day.html is opened again)" } },
+    "ride": { "built": true, "settings": { "road": "a key of data/day.json window.rides", "vehicle": "car | bus (the road's own when left out)", "level": "1-3 (the URL's ?level= wins)" } },
+    "book": { "built": true, "settings": { "place": "the book's place (data/day-book.json activityPlace); the day's own activity or trip when left out" } },
+    "pack": { "built": false, "settings": { "bag": "what the bag is for", "for": "the weather that sets its kind" } },
+    "meet": { "built": false, "settings": { "who": "the person met" } },
+    "game": { "built": false, "settings": { "game": "the place game (feed, eggs, snap, animals-home)" } },
+    "stall": { "built": false, "settings": { "stall": "the food stall (corn)" } },
+    "home": { "built": false, "settings": { "give": "the day's thing", "to": "who it is for" } }
+  },
+  "days": [
+    {
+      "id": 1,
+      "name": "a kitchen day",
+      "stages": [
+        { "stage": "door", "weather": "sunny", "lines": "kitchen" },
+        { "stage": "activity", "activity": "kitchen" },
+        { "stage": "book" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "the farm",
+      "stages": [
+        { "stage": "door", "weather": "sunny", "lines": "farm" },
+        { "stage": "pack", "engine": "pack-the-bag", "bag": "farm", "for": "sunny", "level": 1 },
+        { "stage": "ride", "road": "farm-road", "vehicle": "car", "level": 1 },
+        { "stage": "meet", "engine": "conversations", "who": "hannah-mami", "level": 1 },
+        { "stage": "game", "engine": "put-it-in-its-place", "game": "feed", "level": 1 },
+        { "stage": "game", "engine": "count-to-a-number", "game": "eggs", "level": 1 },
+        { "stage": "game", "engine": "snap", "game": "snap", "level": 1 },
+        { "stage": "stall", "engine": "cook-grill", "stall": "corn", "level": 1 },
+        { "stage": "game", "engine": "put-it-in-its-place", "game": "animals-home", "level": 1 },
+        { "stage": "home", "engine": "put-it-in-its-place", "give": "egg", "count": 1, "to": "ali", "level": 1 },
+        { "stage": "book" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "a cloudy kitchen day",
+      "stages": [
+        { "stage": "door", "weather": "cloudy", "lines": "kitchen" },
+        { "stage": "activity", "activity": "kitchen" },
+        { "stage": "book" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "the shops in the rain",
+      "stages": [
+        { "stage": "door", "weather": "raining", "lines": "shops" },
+        { "stage": "ride", "road": "farm-road", "vehicle": "car" },
+        { "stage": "book" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "a clinic day",
+      "stages": [
+        { "stage": "door", "weather": "cloudy", "lines": "clinic" },
+        { "stage": "activity", "activity": "clinic" },
+        { "stage": "book" }
+      ]
+    }
+  ],
+  "door": {
+    "_about": "The morning door on the s09b art (Zafar, 20 Oct, yes to all ten; DOOR-01..04): the sky is its own full layer behind the cut-out empty house, the house scaled so its roofline (y 322 of 1024) sits a third of the way down the play area and covering its width (its sides cropped on squarer screens); code draws only what moves (the rain falling, the stars twinkling, the clouds drifting). Nani is one of her pose cut-outs at about half the screen height, her feet at the foot of the steps (foot, in the house's pixels), every pose at one body height (body: the pose picture's head top and feet bottom rows; the umbrella's top is the umbrella, so its head starts lower; cx: the feet's middle across the picture). Her pose follows her lines (poses). The sidebar's two cards (idea 55): today's weather, then the day's activity, each as its sentence is said, with the speaker and the Kutchi beneath.",
+    "house": { "art": "assets/day/s09b/house-empty.webp", "w": 1536, "h": 1024, "roofline": 322, "foot": { "x": 768, "y": 740 }, "roofAt": 0.3333 },
+    "skies": {
+      "sunny": { "art": "assets/day/s09b/sky-sunny.webp", "card": "78% 22%", "house": null },
+      "cloudy": { "art": "assets/day/s09b/sky-cloudy.webp", "card": "70% 30%", "drift": true, "house": "brightness(0.96) saturate(0.92)" },
+      "raining": { "art": "assets/day/s09b/sky-raining.webp", "card": "60% 30%", "drift": true, "house": "brightness(0.82) saturate(0.78)", "nani": "brightness(0.94)" },
+      "night": { "art": "assets/day/s09b/sky-night.webp", "card": "84% 24%", "twinkle": { "n": 26, "top": 0.36, "seed": 11 }, "house": "brightness(0.52) saturate(0.72) hue-rotate(-8deg)", "nani": "brightness(0.86)" }
+    },
+    "nani": {
+      "height": 0.5,
+      "fadeMs": 260,
+      "poses": {
+        "wave": { "art": "assets/day/s09b/nani-wave.webp", "w": 294, "h": 689, "body": [1, 688], "cx": 0.481 },
+        "welcome": { "art": "assets/day/s09b/nani-welcome.webp", "w": 420, "h": 685, "body": [0, 684], "cx": 0.512 },
+        "point-up": { "art": "assets/day/s09b/nani-point-up.webp", "w": 284, "h": 688, "body": [0, 687], "cx": 0.445 },
+        "umbrella": { "art": "assets/day/s09b/nani-umbrella.webp", "w": 405, "h": 787, "body": [105, 786], "cx": 0.488 },
+        "listen": { "art": "assets/day/s09b/nani-listen.webp", "w": 297, "h": 880, "body": [0, 879], "cx": 0.576 },
+        "fan": { "art": "assets/day/s09b/nani-fan.webp", "w": 341, "h": 876, "body": [1, 874], "cx": 0.537 },
+        "shade-eyes": { "art": "assets/day/s09b/nani-shade-eyes.webp", "w": 340, "h": 882, "body": [1, 881], "cx": 0.503 }
+      }
+    },
+    "poses": {
+      "_about": "Her pose for each line (DOOR-02, Zafar, 20 Oct): standing listening before she speaks; the weather word and its sentence by the weather (pointing up or shading her eyes; the umbrella when raining, the fan when sunny); the day's lines in their order (wave on 'Come!', welcome on the day's line and the question); listening while she waits for the child's Ha!",
+      "idle": "listen",
+      "weather": {
+        "sunny": { "word": "shade-eyes", "sentence": "fan" },
+        "cloudy": { "word": "point-up", "sentence": "shade-eyes" },
+        "raining": { "word": "point-up", "sentence": "umbrella" },
+        "night": { "word": "point-up", "sentence": "point-up" }
+      },
+      "day": ["wave", "welcome", "welcome"],
+      "wait": "listen"
+    },
+    "cards": {
+      "_about": "The sidebar's two cards (Zafar, 19 Oct night; idea 55): the weather card shows as the weather word is said (its picture: the day's own sky, framed on its sun, moon or clouds; the rain falls on it in code), the activity card as the day's line is said (its line marked thought in data/day.json). Under each picture the shared speaker and the card's word: the weather word (data/day.json weather.<w>.word), and the activity's word here (an engine meaning; what the engine can't say is its grey to-record English, decision 84). Pictures: a backdrop and, on it, sprites (x: their middle across, h: their height, both shares of the picture; feet on y).",
+      "activity": {
+        "kitchen": { "word": { "meaning": { "fn": "Item", "kind": "n.cooking" }, "en": "cooking" }, "pic": { "bg": "assets/backgrounds/bg-nani-kitchen-e-v1.webp", "pos": "50% 60%", "sprites": [{ "art": "assets/cook/props/pot-daal.webp", "x": 0.5, "y": 0.9, "h": 0.62 }] } },
+        "clinic": { "word": { "meaning": { "fn": "Item", "kind": "n.clinic" }, "en": "clinic" }, "pic": { "bg": "assets/clinic/rooms/bg-clinic-door-cb5-v1.webp", "pos": "50% 45%" } },
+        "farm": { "word": { "meaning": { "fn": "Item", "kind": "n.farm" }, "en": "farm" }, "pic": { "bg": "assets/day/s09b/book-farm-spread.webp", "pos": "50% 60%", "sprites": [{ "art": "assets/day/ride/s09r/goat.webp", "x": 0.36, "y": 0.92, "h": 0.6 }, { "art": "assets/day/ride/s09r/hen.webp", "x": 0.7, "y": 0.92, "h": 0.36 }] } },
+        "shops": { "word": { "meaning": { "fn": "Item", "kind": "n.market" }, "en": "market" }, "pic": { "bg": "assets/day/ride/s09r/town-shops.webp", "pos": "30% 50%", "fill": "#cfe3ee" } }
+      }
+    },
+    "thought": { "_about": "The thought bubble of the day's place, beside her head on the side away from her lines (its picture: data/day.json activities/trips thought)", "h": 0.2 },
+    "no": { "meaning": { "fn": "Exclaim", "x": "phrase.no" }, "en": "No!" }
+  }
+}

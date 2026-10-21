@@ -206,6 +206,14 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | CLN-57 | Fever: always clear what to do next (no tools that silently do nothing): the doctor's line and the lit row name it, and it glows after a pause (the help ladder, SH-60); a live thermometer with a zone | **to fix: check** · frames miss the glow pulse; re-shoot | eye: fever, after each change | `docs/archive/feedback/clinic-playtest-2026-10-01.md` P58, P59, 2:1:01–2:21; `docs/archive/feedback/clinic-playtest-2026-10-06.md` |
 | CLN-99 | Scrape: a dabbing cloth; the sequence's stick ends in its tip below the last row (SEK-17); all steps (plasters too) in the sequence; no "Cold!" mid-step | **to fix: check** · sweep: right; judge to close | eye: scrape L1–L3 | `docs/archive/feedback/clinic-playtest-2026-10-06.md` S1, S3, H3 |
 
+## A day at Nani's (story mode)
+
+| ID | Issue | Status | Check | Source |
+|---|---|---|---|---|
+| BOOK-05 | Stick in the photo: Nani's sentence about the day ("then we saw a big cow"), written under the dashed frame as she says it; the child drags the right one of three unlabelled photos of the day into the frame; it snaps in or slides back; it can be taken back until Done | **to fix: check** · open | eye: a filmstrip at 1366x768 + auto: the book leak bot | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-20 Oct) |
+| DAY-02 | A whole day plays through: the farm day goes door, ride, book with its finds; a kitchen or clinic day hands off and the book follows on return | **waiting on Zafar** · open (two strikes) (evidence FAIL ev-20261021-032427-602) | auto: the full-day flows reach their end | `docs/sprints/S09-a-day-at-nanis.md` (Zafar, 19-21 Oct) |
+| DAY-03 | The way back: Cook's or the clinic's round returns to the evening book by itself, and writes the day log the book reads | **waiting on** Sprint 8's publish (a change in Cook and the clinic) | auto: day:full-kitchen plays Cook's round and returns to the book | s09-final-door report, 21 Oct |
+
 ## Other modes
 
 | ID | Issue | Status | Check | Source |
@@ -230,6 +238,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
+| LNG-18 | "For the purposes of testing you can use English voices spoken out loud across the game ... on the final release they have to all be replaced": on the test site every line without a family recording, its English placeholders included, is spoken by the device voice in every game (Cook, the clinic, the day); the store build plays none, and a release check lists every line still to record (amends LNG-01 for the test site only) | **to fix: code** · open (Zafar, 20 Oct) | auto: a contract-run check on the test path (every line has a sound) and the store path (no device voice, no TTS) | Zafar, chat 20 Oct |
 | LNG-01 | No English instruction text or audio for the child (pop-ups, help bubbles read by a device voice); no English or pictures where the task is understanding Kutchi; English only in "?" | **waiting on Mum** · device voice stands in | auto: `build/check_onboard.mjs` · LNG-01, LNG-05 | `docs/archive/feedback/cook-ui-feedback-2026-09-28.md` §1 |
 | LNG-04 | English placeholder words still waiting for Mum: the "with" join, *ph-turner*, *sekelo*, the plaster line | **waiting on Mum** · placeholder words | auto: `build/lines_needing_family.py` · LNG-04 | `docs/archive/feedback/cook-playtest-2026-09-29.md` Q5, M6, K1 |
 | LNG-06 | Voice is not "crazy fast"; no device or browser voice in shipped audio (family voices only) | **waiting on Mum** · device voice stands in | eye: ear · AUD-01 | `docs/archive/build-logs/cook-with-nani-build-log.md` §1 |
