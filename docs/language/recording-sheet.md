@@ -53,20 +53,21 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 
 - After Arc 1's game modes are built (Zafar, 14 Oct), with the story-mode recording: the missing words and forms ("with" and "and" for food; roll, pour, sprinkle, serve, oil, a board, each verb's polite and "for me" form; the rest of grammar-notes.md §55); five minutes of re-takes at the start (Mum: *cup*, *ambo*/*amba je mathe*, *chokra*/*chokri*/*Nana sathe*; Zafar: *hakro cup*, *salamun alaykum*, *na, muke na khape*, *trae bateta*, *hakri lakri*, *chokre sathe*); which sweets go in Nani's sweet box; *topi* or *kofia*, and what the family really wears.
 - For the next recording session (Zafar, 20 Oct): the plural of tomato: is two tomatoes *ba tameto* or *ba tameta*? (Mum's notes say it doesn't change; her phrase "hane tameta wij" says *tameta*.) Until she answers, daal and chaat ask for one tomato only.
+- Daal stir line (DAAR-26, Zafar 21 Oct): Nani says "Firai! Ba! jaldi" today. Is that natural, or should it be one sentence, and how would you say it (e.g. "Ba firai jaldi")?
 
 ## 2. Cook
 
-111 rows: 36 with no Kutchi yet, 75 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
+111 rows: 35 with no Kutchi yet, 76 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
-| three | Cook: water; Cook: milk; Cook: sugar (+3 more) | 41 lines | Kutchi known (trae); no family recording. |
+| three | Cook: water; Cook: milk; Cook: sugar (+3 more) | 42 lines | Kutchi known (trae); no family recording. |
 | one | Cook: water; Cook: milk; Cook: sugar | 39 lines | Kutchi known (hakro); no family recording. |
 | I / me | Cook line: I need {x}. | 16 lines | Kutchi known (muke); no family recording. |
 | chai | Cook: chai; Cook: black (of tea: no milk); Cook: unsweetened (of tea) | 13 lines | Kutchi known (chai); no family recording. |
 | milk | Cook: milk; Cook line: I need {x}. | 10 lines | Kutchi known (dudh); no family recording. |
+| one | Cook: chai; Cook: chapati; Cook: millet chapati | 8 lines | Kutchi known (hakri); no family recording. |
 | sugar | Cook: sugar; Cook line: I need {x}.; Cook line: In my chai I want {x}. | 8 lines | Kutchi known (khun); no family recording. |
-| one | Cook: chai; Cook: chapati; Cook: millet chapati | 7 lines | Kutchi known (hakri); no family recording. |
 | be wanted (by someone) | Cook line: I need {x}. | 6 lines | Kutchi known (khape); no family recording. |
 | of ('s) | Cook: millet chapati; Cook: tamarind chutney | 6 lines | Kutchi known (ji); no family recording. |
 | with (mixed in) | Cook: with (mixed in); Cook line: I want chai with {x}. | 5 lines | Kutchi known (waari); no family recording. |
@@ -88,6 +89,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | and | Cook line: And {x}. | 2 lines | Kutchi known (ne); no family recording. |
 | be wanted (by someone) | Cook line: I need {x}. | 2 lines | Kutchi known (khapeto); no family recording. |
 | cardamom | Cook: cardamom | 2 lines | Kutchi known (elchi); no family recording. |
+| chicken | Cook: chicken | 2 lines | Kutchi known (murgi); no family recording. |
 | chilli (the dried chilli, or the plural: Zafar's word) | Cook: red chilli powder | 2 lines | Kutchi known (marcha); no family recording. |
 | chips | Cook: chips | 2 lines | Kutchi known (tarela); no family recording. |
 | cumin seeds | Cook: cumin seeds | 2 lines | Kutchi known (jeeru); no family recording. |
@@ -159,7 +161,6 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekelo); no family recording. |
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekela); no family recording. |
 | Take a dough ball | Cook line: Take a dough ball | 1 line | No Kutchi yet (grey English). |
-| Take it off | Cook line: Take it off | 1 line | No Kutchi yet (grey English). |
 | take out | Cook line: Lift out the {x}. | 1 line | Kutchi known (kadh); no family recording. |
 | tasting (muke chakhan lai de: let me taste it) | Cook line: Let me taste it. | 1 line | Kutchi known (chakhan); no family recording. |
 | thank you | Cook line: Thank you! | 1 line | No Kutchi yet (grey English). |
@@ -388,7 +389,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | What's wrong with knee? | Clinic line: What's wrong with {x}? | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | X-ray the leg, then clonk the bone two times | Clinic line: X-ray the leg, then clonk the bone {n} times | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 
-### 3c. Words (286): 254 with no Kutchi yet, 32 with Kutchi but no recording
+### 3c. Words (285): 253 with no Kutchi yet, 32 with Kutchi but no recording
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
@@ -442,10 +443,8 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | A break. Clonk! | Clinic line: A break. Clonk! | 1 line | No Kutchi yet (grey English). |
 | A bump. | Clinic line: A bump. | 1 line | No Kutchi yet (grey English). |
 | A cracked tooth. | Clinic line: A cracked tooth. | 1 line | No Kutchi yet (grey English). |
-| A cut. | Clinic line: A cut. | 1 line | No Kutchi yet (grey English). |
 | A fever. | Clinic line: A fever. | 1 line | No Kutchi yet (grey English). |
 | A few more drops | Clinic line: A few more drops | 1 line | No Kutchi yet (grey English). |
-| A scrape. | Clinic line: A scrape. | 1 line | No Kutchi yet (grey English). |
 | A sore eye. | Clinic line: A sore eye. | 1 line | No Kutchi yet (grey English). |
 | A sugar bug! | Clinic line: A sugar bug! | 1 line | No Kutchi yet (grey English). |
 | A thorn! | Clinic line: A thorn! | 1 line | No Kutchi yet (grey English). |
@@ -467,6 +466,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | Boing! In you go! | Clinic line: Boing! In you go! | 1 line | No Kutchi yet (grey English). |
 | Boo! | Clinic line: Boo! | 1 line | No Kutchi yet (grey English). |
 | bottle | Clinic: bottle | 1 line | No Kutchi yet (grey English). |
+| Bring me these | Clinic line: Bring me these | 1 line | No Kutchi yet (grey English). |
 | Bring me... | Clinic line: Bring me... | 1 line | No Kutchi yet (grey English). |
 | Bring them in | Clinic line: Bring them in | 1 line | No Kutchi yet (grey English). |
 | Brrr! | Clinic line: Brrr! | 1 line | No Kutchi yet (grey English). |
@@ -877,4 +877,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (162 Cook and 338 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (163 Cook and 337 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 14 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

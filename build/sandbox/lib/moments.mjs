@@ -80,6 +80,8 @@ export function healSteps(root, game) {
   for (const m of src.matchAll(/\{\s*id:\s*"([a-z][a-z-]*)",\s*img:/g)) out.add(m[1]);
   // tools made from an item table (the taste game's milk, water, turmeric ...: { lex: ..., img: ... })
   for (const m of src.matchAll(/^\s+([a-z][a-z-]*):\s*\{\s*lex:\s*"/gm)) out.add(m[1]);
+  // the fever's things table (a key per thing, quoted when it has a dash: "ceiling-fan": { side: ... }), tapped as at(els[id], id) (PRC-06)
+  for (const m of src.matchAll(/^\s+"?([a-z][a-z-]*)"?:\s*\{\s*side:\s*"/gm)) out.add(m[1]);
   for (const m of src.matchAll(/do:\s*"([a-z]+)"/g)) if (m[1] !== "wait") out.add(m[1]);
   return [...out];
 }

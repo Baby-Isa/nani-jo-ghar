@@ -154,7 +154,9 @@ export function applyVerdicts(md, verdicts, run) {
     // the status is the current state only (decision 99): the old one goes to the history file, not after "· earlier:"
     // a FAIL keeps what the row still waits on (Mum, art): that is current state, not history
     const wait = v.verdict === "FAIL" && /waiting on [^·|(*]*(\([^)]*\))?/.exec(plain(r.status));
-    const status = `${head}${wait ? ` · **${wait[0].trim()}**` : ""} (${note})`;
+    // Zafar, 21 Oct: an open row keeps its label (to fix: code/check, waiting on Zafar/Mum/art, before app store); a FAIL with none is "to fix: code"
+    const lab = v.verdict === "FAIL" && (/\b(to fix: (?:code|check)|waiting on (?:Zafar|Mum|art)|before app store)\b/i.exec(plain(r.status)) || [null, "to fix: code"])[1];
+    const status = lab ? `**${lab}** · ${plain(head)} (${note})` : `${head}${wait ? ` · **${wait[0].trim()}**` : ""} (${note})`;
     history.push({ id, run, earlier: r.status });
     const cells = lines[i].replace(/^\|\s*/, "").replace(/\s*\|\s*$/, "").split(/ \| /);
     if (cells.length < 4) { skipped.push({ id, why: "row has fewer than four cells" }); continue; }

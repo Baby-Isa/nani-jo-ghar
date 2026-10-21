@@ -1,0 +1,212 @@
+{
+ "_about": "Pack s08c (sources/art/s08c, judged in build/reports/s08c-art-landing/details.md; the plan's section 6), cut by build/tools/art/artcut.py. Wave 7B's lines are the clinic and the family (CR1, TC1, the doctor's DW2/DT2/DB2 set, the girl's GZ1-GZ4, the family's NN/MA/AL frames, the waiting room's WR1-WR3); wave 7A's are the Cook lines, each in its own entries. Run with --out to a scratch folder and copy the files the game uses (7B: build/reports/s08-w7b-people-art.md lists them); the numbers go into the game's data where each is wired.",
+ "patients": {},
+ "closeups": {},
+ "props": {
+  "kadchi-s08c": {
+   "file": "cook/items-s08c/kadchi/kadchi-s08c.webp",
+   "w": 436,
+   "h": 560,
+   "file2x": "cook/items-s08c/kadchi/kadchi-s08c@2x.webp"
+  },
+  "kadchi-daal-s08c": {
+   "file": "cook/items-s08c/kadchi/kadchi-daal-s08c.webp",
+   "w": 436,
+   "h": 560,
+   "file2x": "cook/items-s08c/kadchi/kadchi-daal-s08c@2x.webp"
+  },
+  "teaspoon-empty-s08c": {
+   "file": "cook/items-s08c/teaspoon/teaspoon-empty-s08c.webp",
+   "w": 480,
+   "h": 139,
+   "file2x": "cook/items-s08c/teaspoon/teaspoon-empty-s08c@2x.webp"
+  },
+  "teaspoon-sugar-s08c": {
+   "file": "cook/items-s08c/teaspoon/teaspoon-sugar-s08c.webp",
+   "w": 480,
+   "h": 139,
+   "file2x": "cook/items-s08c/teaspoon/teaspoon-sugar-s08c@2x.webp"
+  },
+  "teaspoon-chai-s08c": {
+   "file": "cook/items-s08c/teaspoon/teaspoon-chai-s08c.webp",
+   "w": 480,
+   "h": 139,
+   "file2x": "cook/items-s08c/teaspoon/teaspoon-chai-s08c@2x.webp"
+  },
+  "glass-empty-top-s08c": {
+   "file": "cook/items-s08c/glass/glass-empty-top-s08c.webp",
+   "w": 480,
+   "h": 466,
+   "file2x": "cook/items-s08c/glass/glass-empty-top-s08c@2x.webp"
+  },
+  "glass-chai-top-s08c": {
+   "file": "cook/items-s08c/glass/glass-chai-top-s08c.webp",
+   "w": 480,
+   "h": 466,
+   "file2x": "cook/items-s08c/glass/glass-chai-top-s08c@2x.webp"
+  },
+  "glass-black-top-s08c": {
+   "file": "cook/items-s08c/glass/glass-black-top-s08c.webp",
+   "w": 480,
+   "h": 466,
+   "file2x": "cook/items-s08c/glass/glass-black-top-s08c@2x.webp"
+  },
+  "tray-4-s08c": {
+   "file": "cook/items-s08c/sekelo-tray/tray-4-s08c.webp",
+   "w": 800,
+   "h": 900,
+   "file2x": "cook/items-s08c/sekelo-tray/tray-4-s08c@2x.webp"
+  },
+  "chicken-heap-s08c": {
+   "file": "cook/items-s08c/sekelo/chicken-heap-s08c.webp",
+   "w": 317,
+   "h": 291
+  },
+  "chicken-raw-s08c": {
+   "file": "cook/items-s08c/sekelo/chicken-raw-s08c.webp",
+   "w": 248,
+   "h": 245
+  },
+  "chicken-grilled-s08c": {
+   "file": "cook/items-s08c/sekelo/chicken-grilled-s08c.webp",
+   "w": 260,
+   "h": 255
+  },
+  "chicken-charred-s08c": {
+   "file": "cook/items-s08c/sekelo/chicken-charred-s08c.webp",
+   "w": 270,
+   "h": 266
+  },
+  "chilli-heap-s08c": {
+   "file": "cook/items-s08c/sekelo/chilli-heap-s08c.webp",
+   "w": 305,
+   "h": 265
+  },
+  "chilli-raw-s08c": {
+   "file": "cook/items-s08c/sekelo/chilli-raw-s08c.webp",
+   "w": 228,
+   "h": 212
+  },
+  "chilli-grilled-s08c": {
+   "file": "cook/items-s08c/sekelo/chilli-grilled-s08c.webp",
+   "w": 244,
+   "h": 217
+  },
+  "chilli-charred-s08c": {
+   "file": "cook/items-s08c/sekelo/chilli-charred-s08c.webp",
+   "w": 239,
+   "h": 217
+  },
+  "corn-heap-s08c": {
+   "file": "cook/items-s08c/sekelo/corn-heap-s08c.webp",
+   "w": 329,
+   "h": 302
+  },
+  "corn-raw-s08c": {
+   "file": "cook/items-s08c/sekelo/corn-raw-s08c.webp",
+   "w": 263,
+   "h": 272
+  },
+  "corn-grilled-s08c": {
+   "file": "cook/items-s08c/sekelo/corn-grilled-s08c.webp",
+   "w": 277,
+   "h": 279
+  },
+  "corn-charred-s08c": {
+   "file": "cook/items-s08c/sekelo/corn-charred-s08c.webp",
+   "w": 281,
+   "h": 283
+  },
+  "in-onion-s08c": {
+   "file": "cook/items-s08c/daar-in/in-onion-s08c.webp",
+   "w": 320,
+   "h": 314,
+   "file2x": "cook/items-s08c/daar-in/in-onion-s08c@2x.webp"
+  },
+  "in-tomato-s08c": {
+   "file": "cook/items-s08c/daar-in/in-tomato-s08c.webp",
+   "w": 320,
+   "h": 299,
+   "file2x": "cook/items-s08c/daar-in/in-tomato-s08c@2x.webp"
+  },
+  "in-chilli-s08c": {
+   "file": "cook/items-s08c/daar-in/in-chilli-s08c.webp",
+   "w": 320,
+   "h": 310
+  },
+  "in-potato-s08c": {
+   "file": "cook/items-s08c/daar-in/in-potato-s08c.webp",
+   "w": 311,
+   "h": 319
+  },
+  "in-garlic-s08c": {
+   "file": "cook/items-s08c/daar-in/in-garlic-s08c.webp",
+   "w": 301,
+   "h": 295
+  },
+  "in-ginger-s08c": {
+   "file": "cook/items-s08c/daar-in/in-ginger-s08c.webp",
+   "w": 306,
+   "h": 304
+  },
+  "in-cumin-s08c": {
+   "file": "cook/items-s08c/daar-in/in-cumin-s08c.webp",
+   "w": 291,
+   "h": 291
+  },
+  "in-mustard-s08c": {
+   "file": "cook/items-s08c/daar-in/in-mustard-s08c.webp",
+   "w": 292,
+   "h": 289
+  },
+  "pan-water-s08c": {
+   "file": "cook/items-s08c/chai-pan/pan-water-s08c.webp",
+   "w": 497,
+   "h": 307
+  },
+  "pan-leaves-s08c": {
+   "file": "cook/items-s08c/chai-pan/pan-leaves-s08c.webp",
+   "w": 502,
+   "h": 308
+  },
+  "pan-boil-milky-s08c": {
+   "file": "cook/items-s08c/chai-pan/pan-boil-milky-s08c.webp",
+   "w": 508,
+   "h": 308
+  },
+  "pan-tip-0-s08c": {
+   "file": "cook/items-s08c/chai-pan/pan-tip-0-s08c.webp",
+   "w": 484,
+   "h": 406
+  },
+  "pan-tip-20-s08c": {
+   "file": "cook/items-s08c/chai-pan/pan-tip-20-s08c.webp",
+   "w": 484,
+   "h": 406
+  },
+  "pan-tip-40-s08c": {
+   "file": "cook/items-s08c/chai-pan/pan-tip-40-s08c.webp",
+   "w": 484,
+   "h": 406
+  },
+  "pan-tip-60-s08c": {
+   "file": "cook/items-s08c/chai-pan/pan-tip-60-s08c.webp",
+   "w": 484,
+   "h": 406
+  }
+ },
+ "_report": [
+  "cook-kd1-kadchi: 2 piece(s) by cell for 2 name(s)",
+  "  cook-kd1-kadchi: 2 piece(s) on one window 673x867 (cell_align)",
+  "cook-tp1-teaspoon: 3 piece(s) by cell for 3 name(s)",
+  "  cook-tp1-teaspoon: 3 piece(s) on one window 506x141 (cell_align)",
+  "cook-gl1-glasses: 3 piece(s) by cell for 3 name(s)",
+  "  cook-gl1-glasses: 3 piece(s) on one window 482x468 (cell_align)",
+  "cook-sk4-tray: 1 piece(s) by cell for 1 name(s)",
+  "cook-sk5-decoys: 12 piece(s) by cell for 12 name(s)",
+  "cook-ds1-daal-in: 8 piece(s) by cell for 8 name(s)",
+  "cook-cp4-brew: 3 piece(s) by box for 3 name(s)",
+  "cook-cp3-tip: 4 piece(s) by cell for 4 name(s)",
+  "  cook-cp3-tip: 4 piece(s) on one window 476x398 (cell_align)"
+ ]
+}

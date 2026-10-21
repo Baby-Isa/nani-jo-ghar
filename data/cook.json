@@ -1124,6 +1124,16 @@
         "ph-small+cook-bajrmaani"
        ],
        "total": 3,
+       "oneOfEach": [
+        [
+         "ph-big+cook-maani",
+         "ph-small+cook-maani"
+        ],
+        [
+         "ph-big+cook-bajrmaani",
+         "ph-small+cook-bajrmaani"
+        ]
+       ],
        "max": {
         "ph-big+cook-maani": 2,
         "ph-small+cook-maani": 2,
@@ -1360,8 +1370,8 @@
       }
      ],
      "when": "stir",
-     "pic": "assets/cook/items/v3/daar/ladle-v3.webp",
-     "_about": "T14 (DAAR-12, S02-B): the stir row on the card: the laps and the speed asked (from level 2), shown when the stir starts. pic (DAAR-19, S06 r2): the station's own ladle before the words, so the laps alone ('ba': Mum's 'Trae!' for 'stir three times', docs/language/lexicon.md) read as the stir's row, not a stray one; the stir verb is never written (the ladle is the tool, not a word)"
+     "pic": "assets/cook/items-s08c/kadchi/kadchi-s08c.webp",
+     "_about": "T14 (DAAR-12, S02-B): the stir row on the card: the laps and the speed asked (from level 2), shown when the stir starts. pic (DAAR-19, S06 r2): the station's own ladle before the words, so the laps alone ('ba': Mum's 'Trae!' for 'stir three times', docs/language/lexicon.md) read as the stir's row, not a stray one; the stir verb is never written (the ladle is the tool, not a word) DAAR-02 (s08 w7A): the s08c kadchi, empty."
     }
    ],
    "need": [
@@ -2957,7 +2967,10 @@
      "pieces": 4,
      "decoys": 1,
      "decoyPool": [
-      "veg-01"
+      "veg-01",
+      "veg-12",
+      "n.corn-on-the-cob",
+      "n.chicken"
      ],
      "showAfterMs": 4000
     },
@@ -2971,7 +2984,7 @@
      "decoys": 3
     }
    ],
-   "_decoys": "s08 w2A (CK-49, P32): decoy bowls 1, 2, 3, 3 by the round's level, from decoyPool (only veg-01 has sekelo piece art: the rest wait on the art run); every piece bowl is out anyway, so a piece no skewer needs is a decoy too"
+   "_decoys": "s08 w2A (CK-49, P32): decoy bowls 1, 2, 3, 3 by the round's level, from decoyPool (only veg-01 has sekelo piece art: the rest wait on the art run); every piece bowl is out anyway, so a piece no skewer needs is a decoy too s08 w7A (contract-37; the s08c art plan decision 3): s08c SK5 drew the chilli (mirchi, veg-12) and the corn (makai, n.corn-on-the-cob) as heaps and chunks, so the pool holds three: 1, 2, 3, 3 by level, and the potato is the onion's lookalike at L4 (data.lookalikes). SK5's chicken (murgi, cut and named in data/stations/mishkaki-grill.json) joins the pool now (Zafar, 21 Oct): four in the pool, still 1, 2, 3, 3 drawn by level; until Mum records murgi it has no family clip (data/family-audio.json), so it is on the recording sheet and the device says it while we test, never in the store build."
   },
   "grill": {
    "_about": "The Mishkaki grill (js/cook/mechanics/grill.js): each skewer's ring (band, rate in rings per second, rateSpread so they drift apart), turns before the lift, how many cook at once (spots), rack slots (fixed per level, never the number ordered), burntScore, and ignoreBelow (a tap this early in a ring is ignored: no accidental double taps).",
@@ -3348,9 +3361,25 @@
     }
    },
    "bg": {
-    "marble": "bg-cook-worktop-t-v1-1600",
-    "hob": "bg-cook-hob-t-v1-1600",
+    "marble": "assets/cook/worktop-s08c/marble-tile-s08c",
+    "hob": "assets/cook/worktop-s08c/marble-tile-s08c",
     "pantry": "bg-pantry-v3-1600"
+   },
+   "bgTile": {
+    "_about": "contract-11, SH-91, ART-05 (s08 w7A; Zafar 15 Oct: 'one very large upscaled image ... stuff above and below'): the top-down worktops are s08c's seamless marble tile (WT1, assets/cook/worktop-s08c/marble-tile-s08c, x2), laid tiled by js/cook/stations.js fitBg at k design px per source px, never zoomed; the hob's plate (cut from bg-cook-hob-t-v1, x2: build/tools/art/specs/s08c-cook-post.py) lies on it at box (design px: where the -1600 picture drew it). The -1600 pictures stay on disk, unused.",
+    "marble": {
+     "k": 0.5
+    },
+    "hob": {
+     "k": 0.5,
+     "plate": "assets/cook/worktop-s08c/hob-plate-s08c",
+     "box": [
+      247.8,
+      69.4,
+      1356.2,
+      739.5
+     ]
+    }
    },
    "shelf": {
     "_about": "Pantry v2 (28 Sept, docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md): each item as a side-on container for the pantry's shelves and fridge, `<id>.shelf` -> [file stem, size]. size is the container's real height against a tall jar (1), so a spice jar never shows as big as the flour; the fetch mechanic multiplies its slot's box by it. Cut by build/cut_pantry_v2.py; bare (no label) until Zafar decides on labels.",
@@ -3973,40 +4002,44 @@
     ]
    },
    "chai-glass-black-half": {
-    "line": "C3",
-    "file": "assets/cook/items/chai-v2/glass-black-half.webp",
+    "line": "C3 / s08c GL1",
+    "file": "assets/cook/items-s08c/glass/glass-black-top-s08c.webp",
     "ready": true,
     "station": "chai-tray",
     "size": [
-     213,
-     256
-    ]
+     480,
+     466
+    ],
+    "_about": "CHAI-08 (s08 w7A): GL1 cell 3, black tea from exactly above (the half glass: composed in js/cook/stations/chai-tray.js over the empty one)"
    },
    "chai-glass-black-full": {
-    "line": "C3",
-    "file": "assets/cook/items/chai-v2/glass-black-full.webp",
+    "line": "C3 / s08c GL1",
+    "file": "assets/cook/items-s08c/glass/glass-black-top-s08c.webp",
     "ready": true,
     "station": "chai-tray",
     "size": [
-     213,
-     256
-    ]
+     480,
+     466
+    ],
+    "_about": "CHAI-08 (s08 w7A): GL1 cell 3, black tea from exactly above"
    },
    "teaspoon": {
-    "line": "C4",
-    "file": "assets/cook/items/chai-v2/teaspoon-t.webp",
+    "line": "C4 / s08c TP1",
+    "file": "assets/cook/items-s08c/teaspoon/teaspoon-sugar-s08c.webp",
     "ready": true,
     "meta": {
      "bowl": [
-      0.2,
+      0.2219,
       0.5
      ],
-     "len": 1
+     "len": 0.9313,
+     "end": 0.9563,
+     "_about": "CHAI-13 (s08 w7A): TP1 cell 2, the spoonful of sugar (and the salt that looks like it): its bowl's centre and length, of its 480 x 139 (assets/cook/items-s08c/meta.json bowls)"
     },
-    "station": "chai-tray",
+    "station": "chai-tray, count",
     "size": [
-     300,
-     84
+     480,
+     139
     ]
    },
    "sekelo-plate": {
@@ -4481,6 +4514,44 @@
     "ready": true,
     "word": "spi-16",
     "station": "chai-tray, fetch"
+   },
+   "teaspoon-empty": {
+    "line": "s08c TP1",
+    "file": "assets/cook/items-s08c/teaspoon/teaspoon-empty-s08c.webp",
+    "ready": true,
+    "meta": {
+     "bowl": [
+      0.2448,
+      0.4964
+     ],
+     "len": 0.9292,
+     "end": 0.9854,
+     "_about": "CHAI-13: TP1 cell 1, the clean spoon (another spoonful lies on it; the stir in water or black tea)"
+    },
+    "station": "chai-tray, count",
+    "size": [
+     480,
+     139
+    ]
+   },
+   "teaspoon-chai": {
+    "line": "s08c TP1",
+    "file": "assets/cook/items-s08c/teaspoon/teaspoon-chai-s08c.webp",
+    "ready": true,
+    "meta": {
+     "bowl": [
+      0.2,
+      0.4892
+     ],
+     "len": 0.9354,
+     "end": 0.9458,
+     "_about": "CHAI-13: TP1 cell 3, the spoon wet with milky chai (the stir in a pan with milk)"
+    },
+    "station": "chai-tray, count",
+    "size": [
+     480,
+     139
+    ]
    }
   },
   "assets": {
@@ -4502,14 +4573,21 @@
      "ma-impatient": "assets/cook/characters/ma-impatient.webp",
      "cousin-happy": "assets/cook/characters/cousin-happy.webp",
      "cousin-neutral": "assets/cook/characters/cousin-neutral.webp",
-     "cousin-impatient": "assets/cook/characters/cousin-impatient.webp",
-     "cousin-badge": "assets/cook/characters/cousin-face.webp"
+     "cousin-impatient": "assets/characters/ali/cousin-impatient.webp",
+     "cousin-badge": "assets/cook/characters/cousin-face.webp",
+     "nana-talk": "assets/characters/nana/nana-talk.webp",
+     "nana-blink": "assets/characters/nana/nana-blink.webp",
+     "ma-talk": "assets/characters/ma/ma-talk.webp",
+     "ma-blink": "assets/characters/ma/ma-blink.webp",
+     "cousin-talk": "assets/characters/ali/cousin-talk.webp",
+     "cousin-blink": "assets/characters/ali/cousin-blink.webp"
     },
     "files": [
      "assets/cook/bg/service*",
      "assets/cook/characters/*",
      "assets/ui/**",
-     "assets/cook/bg/bg-cook-*-1600.webp"
+     "assets/cook/bg/bg-cook-*-1600.webp",
+     "assets/cook/worktop-s08c/*"
     ],
     "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
    },
@@ -4614,7 +4692,10 @@
       "assets/cook/items/veg-*",
       "assets/cook/items/vessel-milk-jug-f.webp",
       "assets/cook/items/vessel-saucepan-t.webp",
-      "assets/cook/items/vessel-water-jug-f.webp"
+      "assets/cook/items/vessel-water-jug-f.webp",
+      "assets/cook/items-s08c/glass/*",
+      "assets/cook/items-s08c/teaspoon/*",
+      "assets/cook/items-s08c/chai-pan/*"
      ],
      "prefetch": [
       "assets/cook/items-s08b/chai-pan/pan-top-black-s08b.webp",
@@ -4698,7 +4779,9 @@
       "milk-jug",
       "elchi"
      ],
-     "files": []
+     "files": [
+      "assets/cook/items-s08c/teaspoon/*"
+     ]
     },
     "add": {
      "props": [
@@ -4858,7 +4941,9 @@
       "assets/cook/items/tool-knife-t-v2.webp",
       "assets/cook/items/tool-knife-t.png",
       "assets/cook/items/tool-knife-t.webp",
-      "assets/cook/items/veg-*"
+      "assets/cook/items/veg-*",
+      "assets/cook/items-s08c/kadchi/*",
+      "assets/cook/items-s08c/daar-in/*"
      ],
      "prefetch": [
       "assets/cook/items/chai-station/flame-high.webp",
@@ -4996,7 +5081,8 @@
      ],
      "files": [
       "assets/cook/items/tool-ladle-t.webp",
-      "assets/cook/items/v3/daar/ladle-v3.webp"
+      "assets/cook/items/v3/daar/ladle-v3.webp",
+      "assets/cook/items-s08c/kadchi/*"
      ],
      "prefetch": [
       "assets/cook/items/tool-ladle-t.webp",
@@ -5115,7 +5201,9 @@
       "assets/cook/items/veg-*",
       "assets/cook/items/vessel-katori-t.webp",
       "assets/cook/items-s08b/go-on/go-grill-s08b*",
-      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp",
+      "assets/cook/items-s08c/sekelo-tray/*",
+      "assets/cook/items-s08c/sekelo/*"
      ],
      "prefetch": [
       "assets/cook/items/mishkaki-bataato-raw-t.webp",
@@ -5166,7 +5254,9 @@
       "tomato"
      ],
      "files": [
-      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp",
+      "assets/cook/items-s08c/sekelo-tray/*",
+      "assets/cook/items-s08c/sekelo/*"
      ]
     },
     "grill": {
@@ -5175,7 +5265,9 @@
       "tomato"
      ],
      "files": [
-      "assets/cook/items-s08b/potato/potato-cube-v3.webp"
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp",
+      "assets/cook/items-s08c/sekelo-tray/*",
+      "assets/cook/items-s08c/sekelo/*"
      ]
     }
    }

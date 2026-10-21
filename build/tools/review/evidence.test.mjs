@@ -244,7 +244,7 @@ test("apply: FAIL reopens, PASS marks built, keep rows untouched, applying twice
   const v = new Map([["SH-08", { verdict: "FAIL", line: "A, the sugar row (2) is said first | x", png: "build/screenshots/evidence/r1/SH-08.png" }], ["SH-49", { verdict: "PASS", line: "B, every tick kept" }], ["KEEP-01", { verdict: "FAIL", line: "A" }]]);
   const out = applyVerdicts(md, v, "r1");
   assert.deepEqual(out.changed.map((c) => c.id), ["SH-08", "SH-49"]);
-  assert.match(out.text, /\| SH-08 \| Card order \| \*\*reopened\*\* \(evidence FAIL r1\) \|/);
+  assert.match(out.text, /\| SH-08 \| Card order \| \*\*to fix: code\*\* · reopened \(evidence FAIL r1\) \|/); // a FAIL row is born labelled (Zafar, 21 Oct)
   assert.match(out.text, /\| SH-49 \| Ticks \| built \(evidence PASS r1: B, every tick kept\) \|/);
   // the replaced statuses come back as history (decision 99: no "· earlier:" chain in the row)
   assert.deepEqual(out.history.map((h) => [h.id, h.earlier]), [["SH-08", "built, not re-played (S04 audit: no evidence yet)"], ["SH-49", "**reopened** (S04 audit FAIL)"]]);
@@ -387,10 +387,10 @@ test("red then green (checks-to-build 1): a PASS marks built only after a FAIL o
   // a two-strikes FAIL writes the open status Zafar's list reads
   const { applyVerdicts } = await import("./lib/evidence.mjs");
   const t = applyVerdicts("| A-06 | x | **reopened** (y) | c | s |", new Map([["A-06", { verdict: "FAIL", line: "B, still", twoStrikes: true }]]), "r1").text;
-  assert.match(t, /\| A-06 \| x \| \*\*open \(two strikes: Zafar\)\*\* \(evidence FAIL r1\) \|/);
+  assert.match(t, /\| A-06 \| x \| \*\*to fix: code\*\* · open \(two strikes: Zafar\) \(evidence FAIL r1\) \|/);
   // a FAIL keeps what the row still waits on; a PASS drops it
   const w = "| A-07 | x | **reopened** · **waiting on Mum (the recordings)** (S06) | c | s |";
-  assert.match(applyVerdicts(w, new Map([["A-07", { verdict: "FAIL", line: "A, silent" }]]), "r1").text, /\| \*\*reopened\*\* · \*\*waiting on Mum \(the recordings\)\*\* \(evidence FAIL r1\) \|/);
+  assert.match(applyVerdicts(w, new Map([["A-07", { verdict: "FAIL", line: "A, silent" }]]), "r1").text, /\| \*\*waiting on Mum\*\* · reopened \(evidence FAIL r1\) \|/);
   assert.doesNotMatch(applyVerdicts(w, new Map([["A-07", { verdict: "PASS", line: "A, said" }]]), "r1").text, /waiting on/);
 });
 

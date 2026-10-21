@@ -1174,7 +1174,7 @@
      "type": "NP"
     }
    },
-   "en": "Bring in the {kind}.",
+   "en": "Bring in {kind}",
    "elicit": [
     "Bring in man"
    ],

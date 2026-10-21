@@ -448,7 +448,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /** Where m fillings' mounds sit on a strip (world px): inside the corner the first fold lays over them. */
     // (on a strip laid out on the board they're drawn a quarter bigger, so they read at its size; at full size, to be folded,
     // they fit inside where the corner lands)
-    const mounds = (o, m) => proto.mounds(m).map((s) => Object.assign(u2w(o, [s.x, s.y]), { size: 2.3 * s.r * U(o) * (o.scaleX < FULL * 0.9 ? 1.25 : 1) }));
+    // SAM-22 (P40; the judge, 20 Oct: "that cluster hangs half off the wrapper's corner ... the filling spilling over the wrapper
+    // edge"): proto.mounds fits each mound's radius r with 0.85 r to spare from every edge of the corner the fold lays over, but
+    // each was drawn 2.3 r across (a quarter bigger again on the board, and up to 1.15 more as spoons go in), so it hung over
+    // the strip's edges. Now 1.6 r across to be folded and 1.8 r on the board's small strips (the heap pictures' soft edges
+    // leave each mound's visible round inside its 0.85 r margin): inside the corner, never off the pastry
+    const mounds = (o, m) => proto.mounds(m).map((s) => Object.assign(u2w(o, [s.x, s.y]), { size: (o.scaleX < FULL * 0.9 ? 1.8 : 1.6) * s.r * U(o) }));
     const grow = (o) => Math.min(1.15, 1 + 0.05 * ((o.spoons || 1) - 1));
 
     /* a spoonful: a little heap lifts off its pile and lands on the strip's corner (the first fold covers it) */
@@ -725,9 +730,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (UI.naniMood) UI.naniMood("happy", 1600); // ART-10: something went in (progress, never a verdict; the card waits for the tick)
         const into = spoon(sheet, id);
         const pa = fillAt(sheet);
-        // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word
-        const cnt = (level || z.level) <= 1 && UI.tallyLine ? UI.tallyLine(sheet.got[id], id) : null;
-        pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(110), cnt ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
+        // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word. SAM-04 (s08 w8A; the level
+        // table, Zafar 19 Oct: counts L1 written and counted along, L2-L3 written, L4 heard only): L2-L3 write the count
+        // with it ("ba chunda") and say the word alone; L4 the word
+        const lvl = level || z.level;
+        const cnt = lvl <= 3 && UI.tallyLine ? UI.tallyLine(sheet.got[id], id) : null;
+        pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(110), cnt && lvl <= 1 ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
         const mound = await into;
         if (mound && mound.active) mound.tapReady = true;
         z.progress({ filled: id, n: sheet.got[id] });

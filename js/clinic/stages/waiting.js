@@ -15,8 +15,8 @@
  *   fallback) · W4 two in the called order, with the comfort rings.
  * A wrong tick at level 1: the person shakes their head and the doctor says the
  * line once more (the one gentle correction). From level 2 it just shakes (UX s11).
- * Stand-ins: the uncle, the auntie and the woman with the baby are still the rough people (sitting on
- * their stools), recoloured for the colour rung; the girl, the boy, the old man and the old woman are their real art.
+ * Everyone on the bench is their real art (s08 wave 7B, ART-23: the uncle, the auntie and the woman with the baby
+ * from s08c WR1-WR3), recoloured for the colour rung; the rough sprites stay only as a fallback with no art.
  */
 (function (global) {
   "use strict";
@@ -60,13 +60,14 @@
    * old woman sit on the bench in their real art too (data/clinic/heal-art.json `waiting`: the clinic-heal-v3 seated
    * fronts on the girl's framing), seated like her: the seat line on the cushion, one drawn height per person (a child
    * GIRL_H, a grown-up ADULT_H: a seated grown-up about three quarters of the doctor's standing 0.57), never stretched.
-   * The uncle, the auntie and the woman with the baby keep their rough sprites until their seated art is cut.
+   * s08 wave 7B (ART-23): the uncle, the auntie and the woman with the baby too (s08c WR1-WR3).
    */
   const ADULT_H = 0.42;
   let peopleArt = {};
   const artFor = (b) => {
-    if (b.with === "baby") return null; // the woman holding the baby: her stand-in until that art exists
-    const a = b.kind === "girl" ? girlArt : peopleArt[b.kind];
+    // s08 wave 7B (ART-23): the woman holding the baby is WR3 (heal-art.json waiting["mother-baby"]), whoever is called
+    // "with the baby"; the auntie and the uncle are WR1 and WR2 (waiting.auntie, waiting.uncle), seated like the old man
+    const a = b.with === "baby" ? peopleArt["mother-baby"] : b.kind === "girl" ? girlArt : peopleArt[b.kind];
     return a && a.front ? a : null;
   };
 

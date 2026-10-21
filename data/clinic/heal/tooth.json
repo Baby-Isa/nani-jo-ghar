@@ -342,7 +342,38 @@
   ],
   "size": 230,
   "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size.",
-  "_s08": "CLN-163: the target on the brushing mouth's lips (the front teeth's lower edge is y 205.6 in the close-up's units), where the far view (view.farY) puts it, so the room's mouth and the close-up's meet in the one camera move"
+  "_s08": "CLN-163: the target on the brushing mouth's lips (the front teeth's lower edge is y 205.6 in the close-up's units), where the far view (view.farY) puts it, so the room's mouth and the close-up's meet in the one camera move",
+  "mid": {
+   "src": "assets/clinic/closeups/girl/face-aah-s08c.webp",
+   "kinds": [
+    "girl"
+   ],
+   "size": [
+    1536,
+    1024
+   ],
+   "eyes": [
+    0.5098,
+    0.3584
+   ],
+   "mouth": [
+    0.5072,
+    0.5205
+   ],
+   "fade": [
+    0.35,
+    0.5
+   ],
+   "mask": [
+    0.51,
+    0.48,
+    0.28,
+    0.48
+   ],
+   "lips": 0.1139,
+   "lip": 672
+  },
+  "_mid": "s08 wave 7B (CLN-163, Zafar 20 Oct: likeness yes): the zoom's middle step (js/clinic/heal/host.js HOST.stage, MID): GZ1, her face front-on saying aah (sources/art/s08c/gz1-girl-face-aah-v1.png, colour-corrected to her sheet's face #E39468; 1536 x 1024, no @2x), laid over the drawn girl in the room by its eyes' midpoint (783, 367) and mouth (779, 533) in the source as shares (eyes, mouth), dissolving in between 30% and 55% of the push-in; mask = the feathered ellipse kept (centre x, y, radii x, y as shares of the picture); lips = its lips' width (696-871 in the source) as a share of its width, lip = the close-up's lips' width at rest in its svg units (measured on the 1366x768 shot): after it is in it grows about its mouth a little faster than the room, so its lips meet the close-up's at the hand-over"
  },
  "lines": {
   "tooth-ow": {
@@ -390,7 +421,8 @@
   "assets/clinic/heal-v3/filling-nozzle-paste.webp",
   "assets/clinic/heal-v3/filling-patch.webp",
   "assets/clinic/items-v2/dentist-drill.webp",
-  "assets/clinic/items-s08b/toothbrush-s08b*.webp"
+  "assets/clinic/items-s08b/toothbrush-s08b*.webp",
+  "assets/clinic/closeups/girl/face-aah-s08c.webp"
  ],
  "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json",
  "view": {

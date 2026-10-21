@@ -39,6 +39,7 @@ description: Review a finished build session or any change before it goes to Zaf
    #   one `judge` agent call per build/screenshots/evidence/<run>/judge/batch-NN.md (.claude/agents/judge.md; on the orchestrator's model, never the builder)
    node build/tools/review/evidence.mjs --collect            # the verdict files -> the cache
    node build/tools/review/evidence.mjs --apply              # FAIL -> reopened (back to the fix list), PASS -> built (to the archive)
+   #   then label every reopened row (to fix: code / check, waiting on Zafar / Mum / art; checks.mjs fixlist) and hand Zafar the lists by label
    ```
    A row is built only on a PASS of its evidence (a machine expect or a reviewer citing a panel); a FAIL reopens it before Zafar plays. Tool failures (moment never reached, blank crop, spec error) go back to the tool owner, never to Zafar. Zafar gets the FAIL list, the audit disagreements and the `human` rows (his ear or feel) before he plays. At sprint close: `--run --all`, then `--judge --audit 10`. (`sprintcheck.mjs` stays for the row → flow mapping of rows with no spec.)
 

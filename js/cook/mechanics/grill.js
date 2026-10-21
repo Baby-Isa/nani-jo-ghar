@@ -118,9 +118,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * The pieces (meat/onion/tomato/pepper/potato, raw/grilled/charred) and the heaps are the same chunks
    * (K5). A skewer on screen is a container whose local tip is y = -318 and handle y = 164 (the drawn stick's
    * 70x640 canvas, centre 320): SK.onLine lays it along any drawn skewer. */
+  const TRAY8 = "assets/cook/items-s08c/sekelo-tray/";
   const V3 = (SK.V3 = {
     DIR: "assets/cook/items/v3/sekelo/",
-    rack: { w: 502, h: 395, sticks: [[], [[0.1991,0.043,0.7367,0.9519]], [[0.1987,0.043,0.7367,0.9519],[0.3907,0.043,0.7392,0.9519]], [[0.2011,0.043,0.7367,0.9519],[0.3924,0.043,0.7367,0.9519],[0.5836,0.043,0.7367,0.9519]], [[0.1992,0.043,0.7367,0.9519],[0.3943,0.043,0.7367,0.9519],[0.5916,0.043,0.7367,0.9519],[0.7884,0.043,0.7367,0.9519]]] },
+    /*
+     * SEK-14, SEK-20 (Zafar 19-20 Oct, the s08c art plan decision 1; s08 w7A): the rack is s08c SK4's square matte steel tray
+     * (assets/cook/items-s08c/sekelo-tray/tray-0..4-s08c: tray-4 as drawn, tray-0..3 with the skewers painted out from the
+     * right by build/tools/art/specs/s08c-cook-post.py), its four upright skewers measured on the cut (meta.json tray):
+     * the same picture holds the raw skewers above and the cooked below (SK.cooked3). tray: its top and bottom rows (of h).
+     */
+    rack: (() => {
+      const st = [[0.2059, 0.0472, 0.7922, 0.9933], [0.4039, 0.0472, 0.7922, 0.9933], [0.6025, 0.0472, 0.7922, 0.9933], [0.7998, 0.0472, 0.7922, 0.9933]];
+      return { w: 800, h: 900, tray: [6 / 900, 713 / 900], sticks: [0, 1, 2, 3, 4].map((n) => st.slice(0, n)) };
+    })(),
     plate: { w: 465, h: 499, rim: [0.499, 0.461, 0.4506], sticks: [[],[[0.2256,0.1946,0.7881,0.7745,0.9138,0.904]],[[0.138,0.288,0.7337,0.793,0.8914,0.9267],[0.4861,0.0996,0.8065,0.7647,0.8805,0.9182]],[[0.1395,0.2769,0.7135,0.8156,0.8412,0.9355],[0.3907,0.111,0.7789,0.7807,0.8621,0.9244],[0.7571,0.1725,0.8206,0.7615,0.8399,0.9408]],[[0.1391,0.2731,0.7235,0.7953,0.8562,0.9139],[0.3106,0.1347,0.7653,0.7831,0.8567,0.9134],[0.5394,0.0777,0.7992,0.7655,0.8555,0.9146],[0.8011,0.1845,0.8246,0.7574,0.8322,0.9432]]] },
     grill: { w: 1505, h: 801, bars: [0.2422, 0.6554], bed: [0.2013, 0.1746, 0.8027, 0.8065] },
     stick: { w: 49, h: 365, tip: 0.0054, handle: 0.7562, end: 0.989 },
@@ -139,7 +149,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** The painted v3 art is loaded (else the drawn v2 placeholders stand in). */
   SK.v3 = (S) => S.textures.exists("sk3-rack-0") && S.textures.exists("sk3-stick");
   /** The v3 piece name for a piece id (ph-mishkaki -> meat), or null. */
-  SK.v3Name = (id) => (SK.cfg().v3pieces || {})[id] || null;
+  // (s08 w7A, contract-37: a piece may name its own files, {name, file: "assets/...-{state}-s08c"}: the s08c decoys)
+  SK.v3Name = (id) => {
+    const v = (SK.cfg().v3pieces || {})[id];
+    return v == null ? null : typeof v === "string" ? v : v.name || null;
+  };
+  /** A chunk's file: v3/sekelo/<name>-<state>.webp, or the piece's own file pattern. */
+  SK.v3File = (name, st) => {
+    const all = SK.cfg().v3pieces || {};
+    const own = Object.keys(all).map((k) => all[k]).find((v) => v && typeof v === "object" && v.name === name && v.file);
+    return own ? `${own.file.replace("{state}", st)}.webp` : `${V3.DIR}${name}-${st}.webp`;
+  };
+  /** A shelf heap's file (a stem under assets/cook/items/, or a whole "assets/..." path). */
+  SK.bowlFile = (stem) => (String(stem).startsWith("assets/") ? `${stem}.webp` : `assets/cook/items/${stem}.webp`);
   /**
    * Lay skewer container `sk` along a drawn skewer: its tip at `tip`, its handle's start at `handle` (screen
    * px). Returns the {x, y, scale, rotation} (set at once, or for a tween: `apply: false`).
@@ -945,21 +967,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ["sk2-stick", V2.DIR + "stick-v.webp"],
       ["sk2-board", "assets/cook/items/tool-board-t.png"],
       ["sk2-plate", "assets/cook/items/plate-enamel-empty-t.webp"],
-    ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, `assets/cook/items/${bowls[id]}.webp`]));
+    ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, SK.bowlFile(bowls[id])]));
     // v3 (K5, K6, K9): the pictured rack and plate, the grill, the one stick, the chunky pieces
     const v3 = [["sk3-grill", V3.DIR + "grill.webp"], ["sk3-stick", V3.DIR + "stick.webp"]];
     // SEK-07 / S2 (S02-E): the art run's plain plate (art.s02 "sekelo-plate", C7): the skewers are laid on it by code,
     // straight and side by side, left to right (SK.platePlain), in place of the fanned plate-n pictures
     const plain = Cook.Stations.art("sekelo-plate");
     for (let n = 0; n <= 4; n++) {
-      v3.push([`sk3-rack-${n}`, `${V3.DIR}rack-${n}.webp`]);
+      v3.push([`sk3-rack-${n}`, `${TRAY8}tray-${n}-s08c.webp`]); // SEK-14, SEK-20: s08c SK4's tray holding n skewers
       if (!plain) v3.push([`sk3-plate-${n}`, `${V3.DIR}plate-${n}-v2.webp`]);
     }
     if (plain) v3.push(["sk3-plate-plain", plain.file]);
     const names = [...new Set(ids.concat(SK.pieceIds()).map(SK.v3Name).filter(Boolean))];
-    names.forEach((n) => ["raw", "grilled", "charred"].forEach((st) => v3.push([`sk3-${n}-${st}`, `${V3.DIR}${n}-${st}.webp`])));
+    names.forEach((n) => ["raw", "grilled", "charred"].forEach((st) => v3.push([`sk3-${n}-${st}`, SK.v3File(n, st)])));
     list.push(...v3);
-    return Promise.race([Cook.Stations.load(S, list).then(() => plain && SK.platePlain(S)), Cook.wait(15000)]);
+    return Cook.Stations.capLoad(Cook.Stations.load(S, list).then(() => plain && SK.platePlain(S)), 15000); // real time (loadcap)
   };
   /**
    * SEK-07 / S2 (S02-E): the plate pictures sk3-plate-0..4 made from the plain plate and the one stick (sk3-stick):
@@ -1006,7 +1028,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     V3.plate = { w: W, h: H, rim: [(pl.width * fl[0]) / W, fl[1], (pl.width * fl[2] * 1.12) / W], sticks, plain: true };
   };
   /** The taster's faces (happy, neutral) for serve and taste. */
-  SK.faceArt = (S, who) => Promise.race([Cook.Stations.load(S, Cook.Kit.faceArt(who)), Cook.wait(15000)]);
+  SK.faceArt = (S, who) => Cook.Stations.loadArt(S, Cook.Kit.faceArt(who), 15000); // real time (loadcap)
   /** The speaker icon, drawn at (x, y) about `s` px tall (the chai v2 chip's). */
   SK.speaker = function (g, x, y, s, color = 0x2a2522) {
     if (Cook.Kit && Cook.Kit.speaker && color === 0x2a2522) return Cook.Kit.speaker(g, x, y, s);
@@ -1044,12 +1066,53 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * hear it). At level 3 and up the word hides but the speaker stays, the same size and place (§4).
    * Returns {id: bowl}; each bowl has .chip and .home.
    */
-  SK.shelf = function (S, z, groups, { level = 1 } = {}) {
+  /**
+   * s08 w8A (cook:mishkaki-grill@L3#hint at 800x360: "veg-03 is covered by #go-btn", the play timed out): the go-on
+   * button (bottom right, a DOM button over the canvas, the grill's picture in it) is wider than V2.RIGHT on a short
+   * screen. Its left edge in world x, measured on a hidden copy of it as it will show (label, picture, arrow), or null.
+   */
+  SK.goLeft = function (S, label = "") {
+    try {
+      const b = document.querySelector("#go-btn");
+      const cv = S && S.game && S.game.canvas;
+      const v = Cook.view;
+      if (!b || !b.parentNode || !cv || !v || !v.s || !v.w) return null;
+      const c = b.cloneNode(true);
+      c.removeAttribute("id");
+      c.classList.remove("hidden", "glow");
+      c.classList.add("has-pic");
+      c.setAttribute("aria-hidden", "true");
+      c.style.visibility = "hidden";
+      c.style.pointerEvents = "none";
+      const t = c.querySelector(".njg-next-t");
+      if (t) t.textContent = label || "";
+      let im = c.querySelector(":scope > .njg-next-pic");
+      if (!im) {
+        im = document.createElement("span");
+        im.className = "njg-next-pic";
+        c.insertBefore(im, c.querySelector(".njg-next-ic"));
+      }
+      im.removeAttribute("srcset");
+      im.style.width = "calc(var(--njg-go-pic) * 1.6)"; // the picture at its widest (buttons.css max-width)
+      b.parentNode.appendChild(c);
+      const r = c.getBoundingClientRect();
+      const cr = cv.getBoundingClientRect();
+      c.remove();
+      if (!r.width || !cr.width) return null;
+      return v.left + (r.left - cr.left) / (cr.width / v.w) / v.s;
+    } catch (e) {
+      return null;
+    }
+  };
+  SK.shelf = function (S, z, groups, { level = 1, go = null } = {}) {
     const n = groups.reduce((a, g) => a + g.length, 0);
     // (SH-112: the bigger bins narrow to fit a long row clear of the tick)
-    const pitch = Math.min(V2.PITCH, (1600 - V2.RIGHT - 80 - (groups.length - 1) * V2.GROUP_GAP) / Math.max(1, n));
+    // s08 w8A: and clear of the go-on button where it is wider than V2.RIGHT (a short phone: it covered a bin)
+    const goX = go != null ? SK.goLeft(S, go) : null;
+    const right = Math.min(1600 - V2.RIGHT, goX != null ? goX - 24 : Infinity);
+    const pitch = Math.min(V2.PITCH, (right - 80 - (groups.length - 1) * V2.GROUP_GAP) / Math.max(1, n));
     const width = n * pitch + (groups.length - 1) * V2.GROUP_GAP;
-    const x0 = Math.max(40, (1600 - V2.RIGHT - width) / 2);
+    const x0 = Math.max(40, (right - width) / 2);
     const out = {};
     let sx = x0 + pitch / 2;
     groups.forEach((group) => {
@@ -1234,8 +1297,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const m = R.sticks[1][0];
     const k = V3.BAMBOO / ((m[2] - m[1]) * R.h);
     const img = S.track(S.add.image(z.X(x), z.Y(y), "sk3-rack-0").setDepth(D.item - 2).setScale(z.L(k)));
-    // (the shadow under the rails: rack-0's painted rows 148-251, x 18-482)
-    img.shadow = S.contactShadow(img, { centerX: img.x, centerY: img.y + 0.005 * R.h * img.scaleY, width: 0.93 * R.w * img.scaleX, height: 0.27 * R.h * img.scaleY });
+    // (the shadow under the tray: its own rows, R.tray, the full width; the handles below it cast none)
+    const tr = R.tray || [0.375, 0.635];
+    img.shadow = S.contactShadow(img, { centerX: img.x, centerY: img.y + ((tr[0] + tr[1]) / 2 - 0.5) * R.h * img.scaleY, width: 0.97 * R.w * img.scaleX, height: (tr[1] - tr[0]) * R.h * img.scaleY });
     const pt = (fx, fy) => ({ x: img.x + (fx - 0.5) * R.w * img.scaleX, y: img.y + (fy - 0.5) * R.h * img.scaleY });
     const line = (i, n = 4) => {
       const st = (R.sticks[Math.max(n, i + 1)] || R.sticks[4])[i] || R.sticks[4][Math.min(i, 3)];
@@ -1453,6 +1517,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         sk.hit = hit;
         return hit;
       };
+      /*
+       * SEK-14 (evidence ev-20261021-100511-t31): the raw tray's picture holds the first n skewers that have settled in their
+       * slots (tray-n), and every other skewer on it shows its own stick. One rule, applied whenever a skewer lands, leaves or
+       * slides along, so a skewer coming back (SEK-09) while another is taken never leaves a bare painted stick in one slot
+       * and a stickless skewer in the next.
+       */
+      const rackSync = () => {
+        let n = 0;
+        while (n < rack.length && rack[n] && rack[n].settled) n++;
+        rackArt.set(n);
+        rack.forEach((q) => q && SK.stickShown(q.sk, !(q.settled && q.slot < n)));
+      };
       const placeOnRack = (item) => {
         const i = rack.indexOf(null);
         if (rackArt.v3) {
@@ -1466,8 +1542,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const t = SK.lineAt(tip, hd);
           const land = () => {
             r.settled = true;
-            rackArt.set(rack.filter(Boolean).length);
-            SK.stickShown(sk, false);
+            rackSync();
           };
           if (item.sprite) S.tweens.add({ targets: sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut", onComplete: land });
           else {
@@ -1508,34 +1583,35 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (rackArt.v3) {
           // v3: the rack's picture loses it (its own stick goes with it), and the ones after it slide along
           SK.stickShown(r.sk, true);
+          // (one taken while it was still landing goes straight to the grill: its landing tween stops)
+          S.tweens.killTweensOf(r.sk);
           const left = rack.filter(Boolean);
-          const keep = r.slot;
           rack.fill(null);
           left.forEach((q, j) => (rack[j] = q));
-          rackArt.set(keep);
-          let moving = 0;
           left.forEach((q, j) => {
             if (q.slot === j) return;
             q.slot = j;
-            moving++;
             q.settled = false;
-            SK.stickShown(q.sk, true);
             const t = SK.lineAt(...rackArt.line(j, left.length));
             q.sk.hit.setPosition(t.x, t.y);
+            // (SEK-14: one still landing from the grill stops there and slides to its new slot instead; two tweens on
+            // its x and y left it at the old slot, the picture holding a bare stick where it should be)
+            S.tweens.killTweensOf(q.sk);
             S.tweens.add({
               targets: q.sk,
               x: t.x,
               y: t.y,
+              scale: t.scale,
+              rotation: t.rotation,
               duration: 300,
               ease: "Sine.easeInOut",
               onComplete: () => {
                 q.settled = true;
-                if (--moving) return;
-                rackArt.set(rack.filter(Boolean).length);
-                rack.forEach((o) => o && o.settled && SK.stickShown(o.sk, false));
+                rackSync();
               },
             });
           });
+          rackSync();
         }
         const g = { sk: r.sk, pieces: r.pieces, cls: r.cls, spot: i, phase: 0, v: 0, rate: k.rate * (1 + (Math.random() - 0.5) * k.rateSpread), busy: true, burnt: false, scores: [] };
         spots[i] = g;

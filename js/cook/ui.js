@@ -911,6 +911,8 @@
     ring.classList.remove("run");
     box.classList.remove("late");
     const ringMs = opts.ringMs || (Cook.data.calm || {}).passMeRingMs || 3000;
+    // MAA-14: her frown is fetched now, so the swap at the end of the ring is instant (the same framing as her face here)
+    if (typeof Image !== "undefined") new Image().src = Cook.v(Cook.facePath("nani", "frown"));
     let clock = null;
     let ticker = null;
     let over = false;
@@ -1742,6 +1744,24 @@
   function drawCards(box, map, { big = false } = {}) {
     map.clear();
     const OC = OCard();
+    // DAAR-04, DAAR-18, CHT-06 (s08 w8A; the judges: "Nani's face is a blank circle" for a few frames): every redraw made
+    // each face a new picture, blank until it decoded again. The faces already drawn are kept and put back in the new cards
+    const oldFaces = new Map();
+    box.querySelectorAll(".oc-face img").forEach((im) => {
+      const k = im.getAttribute("src");
+      if (k && im.complete && im.naturalWidth && !oldFaces.has(k)) oldFaces.set(k, im);
+    });
+    const keepFaces = (out) => {
+      if (oldFaces.size)
+        box.querySelectorAll(".oc-face img").forEach((im) => {
+          const o = oldFaces.get(im.getAttribute("src"));
+          if (!o || o === im) return;
+          oldFaces.delete(im.getAttribute("src"));
+          o.alt = im.alt;
+          im.replaceWith(o);
+        });
+      return out;
+    };
     box.innerHTML = "";
     if (!OC) return [];
     const folds = (mission.folds = mission.folds || {});
@@ -1774,7 +1794,7 @@
     // mishkaki and chaat) gets ONE card: the first dish's card wears their face, each later dish is a continuation of it
     // (its headline and rows, no second face), joined to it in one .oc-person outline
     const firstOf = new Map();
-    return extra.concat(cards.map((c) => {
+    return keepFaces(extra.concat(cards.map((c) => {
       const lead = c.who ? firstOf.get(c.who) : null;
       if (c.who && !lead) firstOf.set(c.who, c);
       // the pop-up never shows more than the sidebar card it folds into: a start-folded card (§14a, M.closeCards with
@@ -1845,7 +1865,7 @@
       } else box.appendChild(el);
       if (c.who && !lead) c.el = el;
       return el;
-    }));
+    })));
   }
   /**
    * G1 (F8 "only the current need"; R6's phones): a round with several people's cards that doesn't fit the sidebar
@@ -2626,7 +2646,8 @@
     const ws = key && key !== "_" ? String(key).split("+") : [];
     const g = ws.length && Lang.gender ? Lang.gender(ws[ws.length - 1]) : null;
     const w = t.n >= 1 && t.n <= 10 && Lang.num ? (Lang.num(t.n, g)[0] || {}).t : null;
-    return w || String(t.n);
+    // (DAAR-12's flaw, s08 w8A: the laps chip read the digit "0" before the first lap; nothing counted yet is the icon alone)
+    return w || (t.n >= 1 ? String(t.n) : "");
   }
   UI.count = function (n, { speak = true, id = "_", icon = null, state = null } = {}) {
     const prev = tally.get(id);
@@ -2688,11 +2709,14 @@
     b.style.top = `${p.y - st.top}px`;
     // CHAI-20 (S05-C3): a badge anchored by its right edge that grows past the stage's left edge (two count groups at L3 on
     // the first pan) is pushed back on screen, never cut (non-negotiable 9)
-    if (tallyAnchor === "right") {
-      const w = b.getBoundingClientRect().width;
-      const gap = 8;
-      if (p.x - st.left - w < gap) b.style.left = `${w + gap}px`;
-    }
+    // SH-39 (s08 w8A: at 844x390 the badge over the first pan ran off the stage's top edge, its words cut in half): any
+    // badge that would leave the stage, on any side, is moved back inside it, whole
+    const gap = 8;
+    const r = b.getBoundingClientRect();
+    const dx = r.left < st.left + gap ? st.left + gap - r.left : r.right > st.right - gap ? Math.max(st.left + gap - r.left, st.right - gap - r.right) : 0;
+    const dy = r.top < st.top + gap ? st.top + gap - r.top : r.bottom > st.bottom - gap ? Math.max(st.top + gap - r.top, st.bottom - gap - r.bottom) : 0;
+    if (dx) b.style.left = `${p.x - st.left + dx}px`;
+    if (dy) b.style.top = `${p.y - st.top + dy}px`;
   }
   let tallyAnchor = null;
   UI.tallyAt = function (pt, { anchor = null } = {}) {

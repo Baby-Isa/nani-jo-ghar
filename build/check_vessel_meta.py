@@ -156,7 +156,22 @@ def check_daar():
         return {k: float(v) for k, v in re.findall(r"(\w+): ([\d.]+)", m.group(1))}
 
     pairs = [("POT", "pot-empty", ("w", "h", "cx", "cy", "r")), ("TRIVET", "daar-bowl-trivet-v2", ("w", "h", "cx", "cy", "r")),
-             ("LADLE", "ladle-v3", ("w", "h", "bowl_cx", "bowl_cy", "bowl_r")), ("TRIVET_PLAIN", "daar-bowl-trivet-plain-v2", ("w", "h", "cx", "cy", "r"))]
+             ("TRIVET_PLAIN", "daar-bowl-trivet-plain-v2", ("w", "h", "cx", "cy", "r"))]
+    # DAAR-02 (s08c KD1, s08 w7A; s08 w8A): the ladle is the s08c kadchi daar.js loads (its "dv3-ladle" file), measured in
+    # assets/cook/items-s08c/meta.json bowls (the biggest circle inside its bowl and its handle's direction), never v3's ladle
+    lm = re.search(r'\["dv3-ladle", "assets/cook/items-s08c/kadchi/([\w-]+)\.webp"\]', src)
+    bowls = json.load(open(os.path.join(ROOT, "assets/cook/items-s08c/meta.json")))["bowls"]
+    lkey = lm.group(1) if lm else None
+    if not lkey or lkey not in bowls:
+        bad += 1
+        print(f"FAIL daar.js LADLE: the loaded kadchi {lkey!r} has no entry in items-s08c/meta.json bowls")
+    else:
+        meta[f"s08c {lkey}"] = bowls[lkey]
+        pairs.append(("LADLE", f"s08c {lkey}", ("w", "h", "cx", "cy", "r")))
+        hd = re.search(r"const LADLE_HANDLE = \((-?[\d.]+) \* Math\.PI\) / 180", src)
+        ok = bool(hd) and abs(float(hd.group(1)) - bowls[lkey]["handle_deg"]) <= 0.5
+        bad += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} daar.js LADLE_HANDLE: {hd and hd.group(1)} deg vs meta {lkey} handle_deg {bowls[lkey]['handle_deg']}")
     for name, key, fields in pairs:
         c = const(name)
         m = meta[key]
@@ -261,7 +276,29 @@ def check_sekelo():
             return 1
         return max([abs(x - y) for p, q in zip(a, b) for x, y in zip(p, q)] or [0])
 
-    for kind, n0, measure in (("rack", 0, MS.rack_sticks), ("plate", 1, None)):
+    # SEK-14, SEK-20 (s08c SK4, s08 w7A; s08 w8A): the rack is the s08c tray (tray-0..4-s08c), its four upright skewers
+    # measured on the cut (assets/cook/items-s08c/meta.json tray): grill.js's V3.rack must say what that data says, and
+    # every tray picture it loads is that canvas
+    tm = json.load(open(os.path.join(ROOT, "assets/cook/items-s08c/meta.json")))["tray"]
+    t = table("rack")
+    rk = re.search(r"rack: \(\(\) => \{\s*const st = (\[\[.*?\]\]);\s*return \{ w: (\d+), h: (\d+), tray: \[(\d+) / (\d+), (\d+) / (\d+)\]", js, re.S)
+    tdir = os.path.join(ROOT, "assets/cook/items-s08c/sekelo-tray")
+    if not rk:
+        bad += 1
+        print("FAIL v3 sekelo/rack: grill.js V3.rack (the s08c tray) not found")
+    else:
+        sticks = json.loads(rk.group(1))
+        w, h = int(rk.group(2)), int(rk.group(3))
+        rows = [int(rk.group(4)) / int(rk.group(5)), int(rk.group(6)) / int(rk.group(7))]
+        o = off(sticks, tm["sticks"]) if len(sticks) == len(tm["sticks"]) else 1
+        orow = max(abs(a - b / tm["h"]) for a, b in zip(rows, tm["tray"]))
+        for n in range(0, 5):
+            f = os.path.join(tdir, f"tray-{n}-s08c.webp")
+            size = Image.open(f).size if os.path.exists(f) else None
+            ok = size == (w, h) == (tm["w"], tm["h"]) and o <= 0.001 and orow <= 0.001 and len(tm["sticks"]) == 4
+            bad += not ok
+            print(f"{'ok  ' if ok else 'FAIL'} s08c sekelo/tray-{n}: {size} vs grill.js {w}x{h}, rack's {n} skewers vs meta tray off {o:.4f}, tray rows off {orow:.4f}")
+    for kind, n0, measure in (("plate", 1, None),):
         t = table(kind)
         js_sticks = json.loads(re.search(r"sticks: (\[\[.*\]\])", t[2]).group(1)) if t else None
         for n in range(n0, 5):
