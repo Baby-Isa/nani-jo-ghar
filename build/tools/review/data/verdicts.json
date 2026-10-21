@@ -266,20 +266,20 @@
   "date": "2026-10-20"
  },
  "BOOK-01": {
-  "hash": "18f1a6bf4050583740ca",
+  "hash": "2728e12c49fa7749a9df",
   "dhash": [
    "74743d19dd898948",
-   "6434131313130f8e",
+   "6474131313130f8e",
    "64741317072b0f8e"
   ],
-  "verdict": "FAIL",
-  "line": "B, the zoom-out at 1355 ms and 1722 ms is a hard-edged translucent box holding a second, smaller Nani-with-book sliding over the wide shot (two Nanis at different scales, misregistered), and at 401 ms and 969 ms the box edge shows as a vertical cut through the fireplace; A at 5000 ms shows the same box ghost on the zoom-in; the rest holds (A: greet by the fire at 0 ms, face at 2313-3000 ms, turn down to the book facing the child at 3614-5000 ms, pages at 5501 ms; C: right page lifts at its corner at 471 ms and swings over the fold at 903 ms into the next game); flaws: C 0 ms shows two empty light-blue boxes above the chai items that look like missing art; \"What did we do today?\" at A 501 ms is grey-italic to-record (allowed)",
-  "panel": "B",
-  "judge": "Claude Fable 5.1, session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-194937-bb2",
-  "commit": "bc84d09d",
-  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-01.png",
-  "date": "2026-10-20"
+  "verdict": "PASS",
+  "line": "A, 0 ms wide room with Nani by the fire and her greeting, 1437-3189 ms the view moves in to her face, 3659-5683 ms it turns down to the open book facing the child and fills the frame, 6996 ms the kitchen game sits on the two pages; B shows the zoom back out to the full room (0-2305 ms); C shows the page turn (786 ms the right page swinging over the fold) and the next game on fresh pages; flaws: the landing on the book goes via a dissolve to a different crop (5683 ms bookshelf on the right, 6385 ms fireplace on the right; the same swap in reverse at B 0-464 ms), so the camera does not land on the picture it zoomed through; A 8610 ms shows an empty speech bubble; English lines (\"What did we do today?\", \"There's the chai!\") are grey italic, allowed under decision 84",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-01.png",
+  "date": "2026-10-21"
  },
  "BOOK-02": {
   "hash": "643852a44c16db2f7988",
@@ -298,38 +298,38 @@
   "date": "2026-10-21"
  },
  "BOOK-03": {
-  "hash": "f6a366becc65800abc78",
+  "hash": "6c6366cdb494d90a874f",
   "dhash": [
    "647417072b0f0f8e",
-   "647417072b0f0f8e",
-   "75379627692b0f11",
-   "75379627692b0f11"
+   "647417172b0f0f8e",
+   "75b79627692b0f11",
+   "75b79627692b0f11"
   ],
   "verdict": "PASS",
-  "line": "A, the field runs across both pages with four separate sprites (murgi, chakli left; bakri, kutro right) and Nani asks \"Chakli kida ai?\"; the voice timeline asks for two (chakli, bakri) of the four shown and the wrong-tap probe replays \"Chakli kida ai?\" after the wrong tap; C/D show the same at 844x390 unclipped. Not on the sheet: the gold corner tick, the bounce/wiggle and the no-red wrong state (the wrong-tap strip was captured but left off); the found-lines \"There's the bird!\"/\"There's the goat!\" and \"Goodnight!\"/\"See you tomorrow!\" are unrecorded English (silent), allowed only if tagged to-record",
+  "line": "A, the field runs across both pages with four separate sprites (murgi and chakli on the left, bakri and kutro on the right) and Nani asks \"Chakli kida ai?\"; the voice timeline asks for two (chakli, bakri) of the four shown, and the wrong-tap probe replays \"Chakli kida ai?\" after the wrong tap with no other line; C and D show the same at 844x390 with nothing clipped. Noted: crop B (same moment, 1366x768) shows the hen and goat missing with only their shadow ellipses and a blank bubble, so at the instant .day-find appears the sprites and line are not yet drawn; the found bounce, gold corner tick, wiggle and no-red wrong state are still not on the sheet (the wrong-tap strip was captured but left off); \"There's the bird!\"/\"There's the goat!\"/\"Goodnight!\"/\"See you tomorrow!\" are unrecorded English [silent], fine only if tagged to-record; the leak-bot half of the Check is not on this sheet.",
   "panel": "A",
   "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-194937-bb2",
-  "commit": "bc84d09d",
-  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-03.png",
-  "date": "2026-10-20"
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-03.png",
+  "date": "2026-10-21"
  },
  "BOOK-04": {
-  "hash": "aa229c34417f4e97569b",
+  "hash": "dba987d29ad32ef1f376",
   "dhash": [
-   "6474330323030f8e",
-   "6474330323030f8e",
+   "6474130323030f8e",
+   "6474130323030f8e",
    "6474130323030f8e",
    "6474130323030f8e"
   ],
   "verdict": "PASS",
-  "line": "B, the chai glass alone on the left page, three identical speaker buttons on the right with nothing written and an empty dotted slot above them; the DOM capture of .day-book holds only \"Hi kuro ai?\"; the timeline has no \"chai\" before the tap, then \"chai\" and the day's sentence; D shows \"chai\" in the row with the sentence beneath in grey italic (to-record placeholder \"Nana wanted chai.\"). Flaws: the word is spoken twice after the tap (chai 2.21 and 2.38; khun 5.94 and 6.10 overlapping); a gold underline shows under \"Hi\" and under \"chai\" (check it is not a visible to-record flag)",
+  "line": "B, chai glass alone on the left page, three identical speaker buttons on the right with nothing written on them and an empty dashed slot above, Nani's bubble \"Hi kuro ai?\" with no word said first (voice: \"Hi kuro ai?\" family-ok, then the tap); D, after the tap the slot holds \"chai\" and the sentence \"Nana wanted chai.\" sits under it in grey italic (to-record English, allowed) while the voice issues \"chai\" then \"Nana wanted chai.\" Noted: both \"chai\" and the sentence are [silent: nothing played], so the day's sentence is unrecorded; the leak-bot half of the Check is not on this sheet (the probe note hands it to BOOK-08).",
   "panel": "B",
   "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-194937-bb2",
-  "commit": "bc84d09d",
-  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-04.png",
-  "date": "2026-10-20"
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-04.png",
+  "date": "2026-10-21"
  },
  "BOOK-05": {
   "hash": "3d77fb4e29165cee3fdf",
@@ -346,33 +346,33 @@
   "date": "2026-10-20"
  },
  "BOOK-06": {
-  "hash": "3ccf95b75190fdeedd04",
+  "hash": "da174baa4f7ba945a993",
   "dhash": [
-   "647433231b130f8e",
-   "647433231b130f8e"
+   "647413231b130f8e",
+   "647413231b130f8e"
   ],
   "verdict": "PASS",
-  "line": "B, five photos with gold corners in order: darwajo, gadi, bakri on the left page, murgi, kutro on the right, none on the fold, no score anywhere, a turn arrow at the corner; Nani's bubble \"Then we saw the dog.\" is grey-italic placeholder English (to-record). Not on the sheet: the slide-in itself and the tap replay (no voice timeline given); the Check is eye only",
+  "line": "B, darwajo, gadi and bakri on the left page, murgi and kutro on the right, the fold clear, no score or star anywhere, Nani's line \"Then we saw the dog.\" in grey italic (to-record, allowed) beside her avatar on the left page. Noted: the tap-replay cannot be seen in a still and the .md carries no voice timeline for it.",
   "panel": "B",
   "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-194937-bb2",
-  "commit": "bc84d09d",
-  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-06.png",
-  "date": "2026-10-20"
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-06.png",
+  "date": "2026-10-21"
  },
  "BOOK-07": {
-  "hash": "15f6a454d5e121800a0b",
+  "hash": "60e9fe9e4a5ba257dbc0",
   "dhash": [
-   "74743d19ddc9c9cf"
+   "74743d19dd89891b"
   ],
-  "verdict": "FAIL",
-  "line": "A, the six word cards (chakli, bakri, kutro, gadi, darwajo, murgi) are white with a thin tan rim, not gold cards; also a large arch/door card sits at the bottom-left over the side table and plant, flush with (or cut by) the screen's bottom edge, unexplained by the row. Met: a red day-book outlined on the empty shelf, no stars and no scores, \"See you tomorrow!\" is a [ph] grey-italic placeholder",
+  "verdict": "PASS",
+  "line": "A, six gold word cards along the bottom (chakli, bakri, kutro, gadi, darwajo, murgi, the farm day's words) and one day-book outline standing on the otherwise empty shelf behind Nani, no stars and no scores; \"See you tomorrow!\" is [ph] grey italic (allowed). Noted: a pale-blue translucent door, larger than the cards and unlabelled, stands at the right end of the card row flush with the screen bottom, with nothing to say what it is; the dom capture lists no text for it.",
   "panel": "A",
   "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-194937-bb2",
-  "commit": "bc84d09d",
-  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/BOOK-07.png",
-  "date": "2026-10-20"
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-07.png",
+  "date": "2026-10-21"
  },
  "BOOK-08": {
   "hash": "70ef5a34d0bf725ae976",
@@ -4965,19 +4965,19 @@
   "date": "2026-10-12"
  },
  "RIDE-01": {
-  "hash": "c04528e7316312014e5d",
+  "hash": "c3d9cd23ca0b85ee84da",
   "dhash": [
-   "3a4f0b29c5230d2b",
-   "724f0b91b155a301"
+   "3a4f6b29530b1b0b",
+   "724f4b5b6d434101"
   ],
   "verdict": "FAIL",
-  "line": "A, the join is a hard swap, not a soft cross-fade: at 3585 ms the near band shows tree + red door + green door, at 4002 ms (417 ms later) it shows chicken, bicycle, tractor, cow, haystack with no ghost of either set in any frame, and the tree that should carry across is gone; the near band then barely moves from 4002 to 5678 ms (chicken/bicycle/tractor/cow within ~15 px over 1.7 s) while it moved ~300 px per 0.9 s before. B (844x390) shows the same swap: the chicken and cow right of the bush at 2112-2450 ms are replaced by haystack + red + green by 2930 ms without a fade frame, and the chicken creeps only ~35 px from 1601 to 2450 ms. The far hills and the fence/wall band do scroll at their own slower rates and the window frame, sun and clouds are clean; no clipping, no text.",
-  "panel": "A",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-183123-8zf",
-  "commit": "44266b3",
-  "png": "build/screenshots/evidence/ev-20261020-183123-8zf/RIDE-01.png",
-  "date": "2026-10-20"
+  "line": "B, the 844x390 strip never crosses a join (the shop houses and red/green doors of 0-5.5 s do not come round again in 12 s) and the scroll decays to a near-stop over the last three frames (goat, dog and tree barely move between 9899 and 12100 ms, against ~120 px per frame earlier); A at 1366x768 is fine: fence and wall continuous in every frame, the red/green doors come round at 9669-11001 ms with no seam or ghosting, the bicycle (middle) and doors (near) move at different speeds; A's frame spacing is uneven (0 then 4375 ms), a tool quirk",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/RIDE-01.png",
+  "date": "2026-10-21"
  },
  "RIDE-02": {
   "hash": "8dab20bfb8fd676089c3",
@@ -5027,21 +5027,21 @@
   "date": "2026-10-21"
  },
  "RIDE-06": {
-  "hash": "6a925324b10ce01f8655",
+  "hash": "5c92a7ff860a968cb67e",
   "dhash": [
-   "7c6166f4756a627f",
-   "7e63626c6d72726f",
-   "ddd7edf1e0d5c1ce",
-   "6d47555d6561616e"
+   "7c6164f46c68627f",
+   "7e636c746070726f",
+   "ddd7c9cbd3e3c1ce",
+   "6d4745556361616e"
   ],
   "verdict": "PASS",
-  "line": "C, at 1366x768 the car is fitted to the full height and the opening is stretched across to the right edge with the field view filling it and no page background showing beside it; A (1024x768), B (1366x1024) and D (800x360) show the same, the sidebar (Nar!, laal darwajo, kutro, lilo darwajo) sits clear of the car with nothing clipped",
-  "panel": "C",
+  "line": "D, at 800x360 the car art runs roof-to-door-sill (fitted by height) and out to the right edge, the view (sky, hills, houses, wall, grass) fills the whole opening and no green shows; A, B and C the same at 1024x768, 1366x1024 and 1366x768. Noted: the left column under the word rail is plain cream, not car art (the rail's own band, not green); in A, B and D the passing cow is half behind the window pillar mid-slide, a full cow in C.",
+  "panel": "D",
   "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261020-194937-bb2",
-  "commit": "bc84d09d",
-  "png": "build/screenshots/evidence/ev-20261020-194937-bb2/RIDE-06.png",
-  "date": "2026-10-20"
+  "run": "ev-20261021-000057-xfq",
+  "commit": "ca76d32b",
+  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/RIDE-06.png",
+  "date": "2026-10-21"
  },
  "SAM-01": {
   "hash": "284fba9159f0fe8bf1aa",
