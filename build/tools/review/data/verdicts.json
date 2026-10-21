@@ -315,7 +315,7 @@
   "date": "2026-10-21"
  },
  "BOOK-04": {
-  "hash": "dba987d29ad32ef1f376",
+  "hash": "53f2b7762151646bffb3",
   "dhash": [
    "6474130323030f8e",
    "6474130323030f8e",
@@ -323,12 +323,12 @@
    "6474130323030f8e"
   ],
   "verdict": "PASS",
-  "line": "B, chai glass alone on the left page, three identical speaker buttons on the right with nothing written on them and an empty dashed slot above, Nani's bubble \"Hi kuro ai?\" with no word said first (voice: \"Hi kuro ai?\" family-ok, then the tap); D, after the tap the slot holds \"chai\" and the sentence \"Nana wanted chai.\" sits under it in grey italic (to-record English, allowed) while the voice issues \"chai\" then \"Nana wanted chai.\" Noted: both \"chai\" and the sentence are [silent: nothing played], so the day's sentence is unrecorded; the leak-bot half of the Check is not on this sheet (the probe note hands it to BOOK-08).",
+  "line": "B, the chai alone on the left page, three identical speaker buttons with nothing written on them and an empty dashed slot on the right, Nani's bubble \"Hi kuro ai?\"; the voice timeline plays the question (mum/hi-rc.mp3) and says \"chai\" only after the tap at 2.75s; D, the slot now reads \"chai\" with the day's sentence under it in grey italic (to-record, allowed)",
   "panel": "B",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
-  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-04.png",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/BOOK-04.png",
   "date": "2026-10-21"
  },
  "BOOK-05": {
@@ -346,18 +346,18 @@
   "date": "2026-10-20"
  },
  "BOOK-06": {
-  "hash": "da174baa4f7ba945a993",
+  "hash": "8fe2bf0d52e53f04b106",
   "dhash": [
-   "647413231b130f8e",
-   "647413231b130f8e"
+   "647413431b130f8e",
+   "647413431b130f8e"
   ],
   "verdict": "PASS",
-  "line": "B, darwajo, gadi and bakri on the left page, murgi and kutro on the right, the fold clear, no score or star anywhere, Nani's line \"Then we saw the dog.\" in grey italic (to-record, allowed) beside her avatar on the left page. Noted: the tap-replay cannot be seen in a still and the .md carries no voice timeline for it.",
+  "line": "B, three photos on the left page (door, car, goat) and two on the right (hen, dog), the fold clear, no score anywhere, only the turn arrow; A shows it on the full 1366x768 screen",
   "panel": "B",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
-  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/BOOK-06.png",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/BOOK-06.png",
   "date": "2026-10-21"
  },
  "BOOK-07": {
@@ -4273,6 +4273,49 @@
   "commit": "9014b36b",
   "date": "2026-10-21"
  },
+ "DAY-02": {
+  "hash": "544032391efe2aaac7e8",
+  "dhash": [],
+  "verdict": "FAIL",
+  "line": "DAY-02-p2-L1-1366x768 voice, the kitchen day runs door straight to book: after the child's \"Ha!\" at 6.20s the next event is day:book \"What did we do today?\" at 8.66s with no Cook stage between (no request/stage-start/stage-end as the farm probe's day:window has), so the day shown is door -> book, not door -> Cook -> book; p2 also has no dom capture at page:end, and the door line \"Tu muke randhan lai madad kar de\" is marked [?: mum/kar.mp3] (a whole sentence mapped to the single clip \"kar\"). The farm day (p1) does meet its words: door -> ride (bakri, murgi, kutro found) -> book, with the finds in the page:end dom (murgi, kutro, bakri, darwajo, gadi) and reached page:end at 59.1s; \"[ph] See you tomorrow!\" is a tagged placeholder, allowed (decision 84).",
+  "panel": "DAY-02-p2-L1-1366x768 voice",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": null,
+  "date": "2026-10-21"
+ },
+ "DOOR-02": {
+  "hash": "249ccca6e4b0fd9f0bd8",
+  "dhash": [
+   "71e1c9cbcbc6cacb"
+  ],
+  "verdict": "PASS",
+  "line": "A, Nani is a cut-out standing on the path at the foot of the steps at about half the frame's height, and her pose changes with each line: shading her eyes at \"The sun's out!\" (0 ms), a fan at \"Ach!\" (1400 ms), open arms with the pot thought bubble at \"I want to cook today.\" (2101 ms) and hands clasped listening with Ha!/Na! from 4655 ms; flaws noted off the row's point: faint dev text \"Hand-off: cook.html\" shows bottom-left under the sidebar at 8421 ms (written English on the child's screen, needs its own row), Nani is half-transparent mid-fade at 701 ms, and her line card sits top-left away from her while only the thought bubble is tailed to her.",
+  "panel": "A",
+  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/DOOR-02.png",
+  "date": "2026-10-21"
+ },
+ "DOOR-03": {
+  "hash": "ab3043624ce5c8991def",
+  "dhash": [
+   "3959c99bcbc6cacb",
+   "81c1b1f0f1a10101",
+   "6d29694bcbe3e64b",
+   "838181a5f5f1f1b1"
+  ],
+  "verdict": "PASS",
+  "line": "B, at 1366x768 the sidebar shows the weather card (sky picture, speaker icon, \"The sun's out!\" grey italic, [ph]-tagged in the DOM capture) above the activity card (pot, speaker icon, \"randhan\"), and A shows the Ha! and Na! pills bottom right; D and C show the same at 844x390 with the cards filling the column. Minor: the .day-side box overlaps the scene by a few pixels (B's crop carries a sliver of sky and grass), invisible on the screen",
+  "panel": "B",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/DOOR-03.png",
+  "date": "2026-10-21"
+ },
  "DOOR-04": {
   "hash": "66e03b6827748cd97d23",
   "dhash": [
@@ -5058,20 +5101,36 @@
   "date": "2026-10-21"
  },
  "RIDE-06": {
-  "hash": "5c92a7ff860a968cb67e",
+  "hash": "9f98b21598045750c2cb",
   "dhash": [
-   "7c6164f46c68627f",
-   "7e636c746070726f",
-   "ddd7c9cbd3e3c1ce",
-   "6d4745556361616e"
+   "6c6c6bd5db15c926",
+   "6c6c6b9193d10c26",
+   "d8dbe59595b319ee",
+   "735f5557d1c99171"
   ],
   "verdict": "PASS",
-  "line": "D, at 800x360 the car art runs roof-to-door-sill (fitted by height) and out to the right edge, the view (sky, hills, houses, wall, grass) fills the whole opening and no green shows; A, B and C the same at 1024x768, 1366x1024 and 1366x768. Noted: the left column under the word rail is plain cream, not car art (the rail's own band, not green); in A, B and D the passing cow is half behind the window pillar mid-slide, a full cow in C.",
+  "line": "D, at 800x360 the car's ceiling, door and pillar run to every edge with no green outside, the view (sky, rainbow, buildings, wall) fills the whole opening; A, B and C show the same at 1024x768, 1366x1024 and 1366x768, nothing clipped",
   "panel": "D",
-  "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
-  "png": "build/screenshots/evidence/ev-20261021-000057-xfq/RIDE-06.png",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/RIDE-06.png",
+  "date": "2026-10-21"
+ },
+ "RIDE-07": {
+  "hash": "86bd94267fa13c740398",
+  "dhash": [
+   "6c6c6bcdd70bc926",
+   "6c6c6b8b83d30c26",
+   "72534555d59b8d30"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 1024x768 the window shows sun, clouds, rainbow and kite in the sky, looping hills, the buildings, the buffalo standing in the grass in front of the stone wall, the wooden fence empty, and both pillars framing the window; B at 1366x1024 the same with a dog in the grass at the right edge; C at 844x390 the right pillar runs off-screen, as the phone shape allows",
+  "panel": "A",
+  "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "png": "build/screenshots/evidence/ev-20261021-031310-gsc/RIDE-07.png",
   "date": "2026-10-21"
  },
  "SAM-01": {

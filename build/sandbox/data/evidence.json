@@ -17367,6 +17367,25 @@
    ],
    "expect": null,
    "note": "the door on a night morning: the sky behind the empty house, the roofline a third down"
+  },
+  {
+   "flow": "day:door",
+   "path": "cloudy",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the door on a cloudy morning: the sky behind the empty house"
   }
  ],
  "DOOR-02": [
@@ -17495,7 +17514,7 @@
     "voice"
    ],
    "expect": null,
-   "note": "the kitchen day: the door, the hand-off to Cook, back to the evening book"
+   "note": "the kitchen day: the door, the hand-off to Cook, then (day.html opened again) the evening book"
   }
  ],
  "RIDE-07": [
@@ -17525,8 +17544,7 @@
    "path": "farm",
    "level": 1,
    "sizes": [
-    "1366x768",
-    "844x390"
+    "1366x768"
    ],
    "profile": "seen",
    "want": null,
@@ -17536,14 +17554,13 @@
     "shot"
    ],
    "expect": null,
-   "note": "the farm evening with the s09b art at its end"
+   "note": "the farm evening's end with the s09b art"
   },
   {
    "flow": "day:book",
    "path": "find",
    "level": 1,
    "sizes": [
-    "1366x768",
     "844x390"
    ],
    "profile": "seen",
@@ -17554,7 +17571,44 @@
     "crop:.day-book"
    ],
    "expect": null,
-   "note": "the farm find-it spread with real sprites"
+   "note": "the farm find-it spread with real sprites, on a phone"
+  },
+  {
+   "flow": "day:book",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "host:day/book/room",
+   "after": null,
+   "capture": [
+    "strip:.day-book-scene:12x600"
+   ],
+   "expect": null,
+   "note": "the push-in from the room to her face close-up (nani-face-fire), then down onto the book"
+  }
+ ],
+ "DAY-03": [
+  {
+   "flow": "day:full-kitchen",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:.day-root"
+   ],
+   "expect": null,
+   "note": "the kitchen day with Cook's round played and the game back at the book by itself, the book's words from Cook's day log"
   }
  ]
 }

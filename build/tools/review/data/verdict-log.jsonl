@@ -744,3 +744,10 @@
 {"id":"BOOK-08","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"ebfb375d88c522732cd5","judge":"expect","date":"2026-10-21"}
 {"id":"DOOR-04","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"0af3d2b1026ea6da602d","judge":"expect","date":"2026-10-21"}
 {"id":"DAY-01","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"0d897b77cfdbef62381b","judge":"expect","date":"2026-10-21"}
+{"id":"RIDE-06","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"26c1fef08fbb5ace0395","judge":"Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-21"}
+{"id":"BOOK-04","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"58660e0404272d489f16","judge":"Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-21"}
+{"id":"BOOK-06","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"e3ddf6a719ad1e46e48c","judge":"Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-21"}
+{"id":"DOOR-03","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"7a472a7e9d1300ae77b5","judge":"Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-21"}
+{"id":"RIDE-07","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"f0f2feae604666f6f8d4","judge":"Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-21"}
+{"id":"DOOR-02","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"9469398b8349786cfdef","judge":"Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-21"}
+{"id":"DAY-02","run":"ev-20261021-031310-gsc","verdict":"FAIL","spec":"d3b8e5d542c7eee8573a","judge":"Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm","date":"2026-10-21"}
