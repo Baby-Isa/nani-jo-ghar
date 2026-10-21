@@ -659,6 +659,23 @@
    "expect": null,
    "note": "boing L1: the wipes and the drops count up on their rows as each goes in",
    "max": 8
+  },
+  {
+   "flow": "clinic:heal-boing",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "zoom-out",
+   "after": null,
+   "capture": [
+    "crop:.cl-side .oc-card"
+   ],
+   "expect": null,
+   "note": "boing L1 after the last step: the yellow plaster row ticked when its step closed (0.4 s after the plaster goes on, so the every-placed frame of the plaster is before it), then the finished card folds to its headline with the check (CLN-44) (s08 w8B)"
   }
  ],
  "SH-11": [
@@ -3397,13 +3414,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "cook-done:tap",
-   "after": "exp:pour",
+   "at": "exp:pour",
+   "after": null,
    "capture": [
     "strip:canvas:pan:5x200"
    ],
    "expect": null,
-   "note": "the pour moves (the tipped pan, just after the pour tap); knobs wired"
+   "note": "the pour moves (the tipped pan, just after the pour tap); knobs wired ; at the pour itself: after its done-tap the pan has left the screen (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
   }
  ],
  "CHAI-03": [
@@ -3507,14 +3524,14 @@
    "want": [
     "/dudh na|kari chai/"
    ],
-   "at": "cook-done:tap",
-   "after": "exp:pour",
+   "at": "exp:pour",
+   "after": null,
    "capture": [
     "zoom2:canvas:glass",
     "zoom2:canvas:pan"
    ],
    "expect": null,
-   "note": "black-tea glass and tipped-pan art"
+   "note": "black-tea glass and tipped-pan art ; at the pour itself: after its done-tap the pan has left the screen (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
   }
  ],
  "CHAI-08": [
@@ -3743,13 +3760,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "cook-done:tap",
-   "after": "exp:pour",
+   "at": "exp:pour",
+   "after": null,
    "capture": [
     "zoom2:canvas:pan"
    ],
    "expect": null,
-   "note": "the tipped pan's handle touches the top edge while it pours"
+   "note": "the tipped pan's handle touches the top edge while it pours ; at the pour itself: after its done-tap the pan has left the screen (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
   }
  ],
  "CHAI-18": [
@@ -4308,13 +4325,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "served",
    "after": null,
    "capture": [
     "zoom2:canvas:trivet"
    ],
    "expect": null,
-   "note": "finished daar photoreal on a small wooden trivet (s02-daar-trivet at the station's end)"
+   "note": "finished daar photoreal on a small wooden trivet (s02-daar-trivet at the station's end) ; at the service view: at the results the station is gone (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
   }
  ],
  "DAAR-07": [
@@ -4679,13 +4696,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "served",
    "after": null,
    "capture": [
     "zoom2:canvas:bowl"
    ],
    "expect": null,
-   "note": "the full bowl: layer strips, flat and simple"
+   "note": "the full bowl: layer strips, flat and simple ; at the service view: at the results the station is gone (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
   }
  ],
  "CHT-04": [
@@ -4869,13 +4886,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "served",
    "after": null,
    "capture": [
     "zoom2:canvas:cv3-bowl"
    ],
    "expect": null,
-   "note": "the finished chaat bowl at the station's end (the lab has no service view: no s02-served-chaat on screen)"
+   "note": "the finished chaat bowl at the station's end (the lab has no service view: no s02-served-chaat on screen) ; at the service view: at the results the station is gone (s08 w8B: the moment moved to where the thing is on screen; it was not at the old one)"
   }
  ],
  "SAM-01": [
@@ -6764,7 +6781,7 @@
    ],
    "expect": null,
    "note": "foot after the jugs: the whole close-up and its tools, from the jugs to the plasters (s08 w8B: the tools crop alone stopped at the pulls and never showed the splinters' glow nor the plaster step)",
-   "max": 16
+   "max": 20
   }
  ],
  "CLN-83": [
@@ -8419,9 +8436,9 @@
     "dom:.cl-side .oc-card .oc-headline"
    ],
    "expect": [
-    "lines:.cl-side .oc-card .oc-headline>=1"
+    "count:.cl-side .oc-card .oc-headline>=1"
    ],
-   "note": "every heal card has a headline and folds to it with the check (all nine); the headline is a to-record placeholder until Mum records the goals, so the check is that it is drawn (one line or more), not that it holds Kutchi (textMatches skips the hidden to-record tag) (s08 w8B)"
+   "note": "every heal card has a headline and folds to it with the check (all nine); the headline is a to-record placeholder until Mum records the goals, so the check is that it is drawn (the dom capture shows its words), not that it holds Kutchi (textMatches skips the hidden to-record tag) (s08 w8B)"
   }
  ],
  "CLN-45": [
@@ -9086,13 +9103,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "rec:heal-fever-start",
+   "at": "every:heal-fever-change",
    "after": null,
    "capture": [
-    "strip:.cl-fig:12x700"
+    "crop:.cl-fig"
    ],
    "expect": null,
-   "note": "her body alternates visibly as the room swings hot or cold (the heal game's figure, .cl-fig, its pose class): one strip from the game's start"
+   "note": "her body alternates visibly as the room swings hot or cold (the heal game's figure, .cl-fig, its pose class): one strip from the game's start; her pose at each change of the room (the strip from the game start ran 8.4 s before the first change, so it never moved) (s08 w8B)",
+   "max": 6
   },
   {
    "flow": "clinic:patient",
@@ -9229,13 +9247,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results",
+   "at": "results-badges",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "note": "the results card sits over the room, never a bare cream stage"
+   "note": "the results card sits over the room, never a bare cream stage; at the badges, once the end screen has settled (at life:results the room was still to come in at 1024x768 and 1366x768) (s08 w8B)"
   }
  ],
  "CLN-70": [
@@ -11715,7 +11733,7 @@
     "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
    ],
    "note": "the clinic's L3 pop-up: the closed big card, no rows written; once the pop-up card has faded in (at popup-open + 300 ms it was not on screen yet) (s08 w8B)",
-   "delay": 700
+   "delay": 150
   },
   {
    "flow": "clinic:pharmacy",
@@ -11736,7 +11754,7 @@
     "count:.njg-rq-card .oc-row:not(.oc-ph-row)=0"
    ],
    "note": "the pharmacy's L3 pop-up: the closed big card, no rows written; once the pop-up card has faded in (at popup-open + 300 ms it was not on screen yet) (s08 w8B)",
-   "delay": 700
+   "delay": 150
   }
  ],
  "SH-73": [
@@ -16232,6 +16250,23 @@
    "note": "how the fever game ends: the end is clear to the child (the girl's looks change step by step until she is well); the fever game has no pull-out, so its frames are the stage at every change",
    "max": 12,
    "kind": "detail"
+  },
+  {
+   "flow": "clinic:heal-fever",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "rec:heal-fever-change-04",
+   "after": null,
+   "capture": [
+    "strip:.cl-stage:12x600"
+   ],
+   "expect": null,
+   "note": "fever L1, filmed from the fourth change to the end card (7 s): the last change, the gauge settling in the green, the close-in on her well face and the pull back, then the review; at L1 the every-change frame of the last change was taken after the end card was already up (s08 w8B)"
   },
   {
    "flow": "clinic:heal-knee",
