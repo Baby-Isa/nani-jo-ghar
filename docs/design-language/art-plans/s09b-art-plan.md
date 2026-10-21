@@ -15,7 +15,7 @@
 
 ## 1. Flaws and uncertainties first
 
-1. **Nani is a real person:** the poses and the close-up are judged for likeness by Zafar after the run. The runner keeps the first that passes the checks.
+1. **Nani is a real person:** the poses and the close-up are judged for likeness by Zafar after the run. The runner keeps the first that passes the checks. **Approved (Zafar, 21 Oct):** "looking much younger and more generic than the actual 63-year-old Nani, but it's fine, it's consistent with her everywhere else."
 2. **Looping layers are still a risk** (s09r: ChatGPT drew a different hill height at each edge). F2 is an edit of the kept far hills that only evens the edges; if it fails, the cutter makes the loop by mirroring.
 3. **Cut-outs on flat magenta** (#FF00FF), as in s09r, so nothing pink or purple in those images; Nani's poses go on flat mid-grey (her red dupatta is too close to magenta).
 4. **Shops for the road** wait for the shops game's art (Zafar, 20 Oct); not in this run.

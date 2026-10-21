@@ -40,7 +40,17 @@ export const DOC_LIMITS = {
   "docs/game-design/modes/monsoon-rush.md": 500,
   "docs/game-design/modes/snap.md": 500,
   "docs/game-design/modes/story-by-the-fire.md": 2500,
-  "docs/game-design/modes/a-day-at-nanis.md": 2000,
+  "docs/game-design/days/README.md": 1500,
+  "docs/game-design/days/farm.md": 1500,
+  "docs/game-design/days/shops.md": 1500,
+  "docs/game-design/days/beach.md": 1500,
+  "docs/game-design/days/safari.md": 1500,
+  "docs/game-design/days/boat.md": 1500,
+  "docs/game-design/modes/window-ride.md": 1000,
+  "docs/game-design/modes/pack-the-bag.md": 1000,
+  "docs/game-design/modes/put-it-in-its-place.md": 1000,
+  "docs/game-design/modes/count-to-a-number.md": 1000,
+  "docs/game-design/story-and-arcs.md": 3000,
   "docs/game-design/modes/tidy-up.md": 500,
   "docs/game-design/modes/who-did-it.md": 500,
   "docs/design-language/art-bible.md": 6500,
@@ -51,7 +61,7 @@ export const DOC_LIMITS = {
   "docs/design-language/ui-design-system.md": 3500,
   "docs/design-language/ux-principles.md": 3000,
 };
-export const DOC_DIRS = ["docs/game-design/modes", "docs/design-language"];
+export const DOC_DIRS = ["docs/game-design/modes", "docs/game-design/days", "docs/design-language"];
 export const NEXT_CHAT = 600, SPRINT = 1200, STATUS_CHARS = 1200;
 
 const words = (s) => (s.match(/\S+/g) || []).length;

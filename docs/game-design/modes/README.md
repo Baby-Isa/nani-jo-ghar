@@ -8,7 +8,6 @@ Each mode has one file in this folder (parked modes keep a short stub pointing t
 | **The clinic** (`clinic.md`; the doctor's clinic) | Treat | Built on the core and the engine; the girl's art and the heal games wired; visit types and a treatment library; stitches and injections are allowed, the pill organiser stays out (H46) | Its own standalone arc: Volunteering at the clinic |
 | **Find it** (`find-it.md`) | Search | Engine and some games built; next to move onto the core | Arc 1 (the Birthday: find the sweets) |
 | **Conversations** (`conversations.md`, `conversations-wiring.md`) | Reply | Engine and lab live; not yet wired into pages | Woven round every mode |
-| **A day at Nani's** (`a-day-at-nanis.md`) | Days of stages | Building | Story mode |
 | **Story by the Fire** (`story-by-the-fire.md`) | Listen and fill | The evening book | Days |
 | **First launch** (`first-launch.md`) | Make, then cook | Live; its hook still says Eid and is re-worded for the Birthday | Before Arc 1 |
 | **Tidy up** (`tidy-up.md`, stub) | Arrange | Parked, designed | Arc 1 (set the table, pack the sweet box) |
@@ -17,7 +16,7 @@ Each mode has one file in this folder (parked modes keep a short stub pointing t
 | **Monsoon rush** (`monsoon-rush.md`, stub) | React | Parked, designed | The proposed Monsoon arc |
 | **Snap** (`snap.md`, stub) | Aim and capture | Parked, designed | Every day-out destination |
 
-Arcs and trips are in `docs/game-design/story-and-arcs.md`; scoring and pocket money in `progression-and-scoring.md`.
+Days and trips are in `docs/game-design/days/`; the engines they use: `window-ride.md`, `pack-the-bag.md`, `put-it-in-its-place.md`, `count-to-a-number.md`; scoring and pocket money in `progression-and-scoring.md`.
 
 ## Moved from the rulebook and decisions log (13 Oct, decision 99)
 

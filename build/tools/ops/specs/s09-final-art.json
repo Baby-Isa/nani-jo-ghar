@@ -11,7 +11,7 @@
   "read": [
     "build/reports/s09-ride.md and build/reports/s09-book.md (your own work so far)",
     "docs/process/regressions.md rows RIDE-01, RIDE-07 and BOOK-09 and their probes in build/sandbox/data/evidence.json; the judges' notes in build/screenshots/evidence/ev-20261021-000057-xfq/judge/*.verdicts.md",
-    "docs/game-design/modes/a-day-at-nanis.md §4 (the farm day's things) and docs/design-language/art-plans/s09r-art-plan.md §7",
+    "docs/game-design/days/farm.md (the farm day's things) and docs/design-language/art-plans/s09r-art-plan.md §7",
     "assets/day/s09b/cut-report.json (the cut art and its names)"
   ],
   "owns": [
