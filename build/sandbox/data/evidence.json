@@ -397,10 +397,8 @@
    "capture": [
     "voice"
    ],
-   "expect": [
-    "textMatches:ching"
-   ],
-   "note": "the coins drop with a ching"
+   "expect": null,
+   "note": "the coins drop with a ching: the voice timeline shows \"sfx sfx/ching starts\" at each coin (Cook.sfx.coin's njg-sfx event; textMatches reads only spoken lines, so it could never see a sound effect)"
   }
  ],
  "SH-61": [

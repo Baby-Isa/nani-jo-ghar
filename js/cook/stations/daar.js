@@ -300,6 +300,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     station: "daar",
     view: "marble",
     dataFile: "data/stations/daar.json",
+    selfBegin: true, // CK-48: its view comes up (St.begin below) only once its pictures are in (St.loadArt)
     zones: [{ id: "daar", mech: "chop", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } }],
     run: (host, params) => station(host, params),
   });

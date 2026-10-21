@@ -585,9 +585,12 @@
     sizzle(dur = 0.7) {
       noise(dur, { gain: 0.16, freq: 5200, q: 0.5, type: "highpass" });
     },
+    // SH-51: the coin's "ching" (in the sound log as "sfx/ching", the njg-sfx event, as the stir's lap is)
     coin() {
       tone(1320, 0.08, { type: "square", gain: 0.07 });
       tone(1760, 0.18, { type: "square", gain: 0.07, when: 0.07 });
+      const h = sfxEvent("ching", { stop() {} });
+      setTimeout(() => h.stop(), 250);
     },
     star(i = 0) { // parked modes only (Find it, Snap: their legacy stars); Cook never plays it
       tone(880 * Math.pow(1.26, i), 0.25, { type: "triangle", gain: 0.2 });
