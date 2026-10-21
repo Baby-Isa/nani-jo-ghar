@@ -161,10 +161,6 @@
 /* SH-37 / CHT-15 (judges, 19 Oct: "Muke daar khape" ran under the served stamp, which covered its full stop): a card on a stamped
    order keeps the stamp's own room at its right, so its words fit (shrink, then wrap: non-negotiable 9) beside it, never under it */
 .stamped .oc-card { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
-/* PAN-01 (s09; the Cook sweep: at 800x360 and 1366x768 the folded, stamped pantry card's "Bring me these" and its done tick ran
-   under the stamp): a page's own card padding (Cook's sidebar sets it by id) wins over the rule above, so the head keeps the
-   stamp's room itself: its words and tick sit beside the stamp, the words shrinking, then wrapping (non-negotiable 9) */
-.stamped .oc-card > .oc-head { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2)); }
 .oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
 .oc-look svg, .oc-look img { width: 100%; height: 100%; display: block; }
 .oc-look img { object-fit: contain; pointer-events: none; user-select: none; }

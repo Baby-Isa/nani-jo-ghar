@@ -300,17 +300,6 @@
     if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(check);
   }
 
-  // PAN-01 (s09; the Cook sweep: at 800x360 and 1366x768 the folded, stamped pantry card's "Bring me these" ran on under the
-  // done tick at its full size): the tick and the fold narrow the headline, a change no FitText watcher sees (the card's own
-  // box keeps its size), so the card's words are fitted again as it becomes foldable and once the fold has run
-  function refit(c) {
-    const F = root.FitText;
-    if (!F || !c) return;
-    const go = () => c.isConnected && F.run(c);
-    if (root.requestAnimationFrame) root.requestAnimationFrame(go);
-    setTimeout(go, 480);
-  }
-
   /** Fold a finished card a beat after its last tick; a tap opens (and closes) it again. */
   function foldable(c, st, done, opts) {
     if (!done) {
@@ -322,7 +311,6 @@
     if (!st.doneAt) st.doneAt = now;
     const due = st.doneAt + (opts.foldAfter != null ? opts.foldAfter : FOLD_AFTER) - now;
     c.classList.add("foldable");
-    refit(c);
     if (st.open) c.classList.add("reopened");
     else if (due <= 0) c.classList.add("folded", "still");
     else {
@@ -330,10 +318,7 @@
       // the card as it is then (a host may have drawn it again since): the one that carries this state
       st.timer = setTimeout(() => {
         const cur = st.el && st.el.isConnected ? st.el : null;
-        if (cur && !st.open && cur.classList.contains("done")) {
-          cur.classList.add("folded");
-          refit(cur);
-        }
+        if (cur && !st.open && cur.classList.contains("done")) cur.classList.add("folded");
       }, due);
     }
     c.addEventListener("click", (e) => {
