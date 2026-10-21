@@ -1596,3 +1596,9 @@
 {"id":"CLN-157","run":"ev-20261021-141514-4pn","event":"built","date":"2026-10-21"}
 {"id":"LNG-09","run":"ev-20261021-141514-4pn","event":"built","date":"2026-10-21"}
 {"id":"SH-56","run":"ev-20261021-141514-4pn","event":"built","date":"2026-10-21"}
+{"id":"SAM-22","run":"ev-20261021-144926-u2e","verdict":"PASS","spec":"6da402165116cdd29d12","judge":"judge","date":"2026-10-21"}
+{"id":"SH-53","run":"ev-20261021-144926-u2e","verdict":"FAIL","spec":"8603c4ad387697156125","judge":"judge","date":"2026-10-21"}
+{"id":"CK-27","run":"ev-20261021-144926-u2e","verdict":"PASS","spec":"f4500ca235708edae0af","judge":"judge","date":"2026-10-21"}
+{"id":"CHT-14","run":"ev-20261021-144926-u2e","verdict":"FAIL","spec":"af21c3a853f61333c803","judge":"judge","date":"2026-10-21"}
+{"id":"SAM-22","run":"ev-20261021-144926-u2e","event":"built","date":"2026-10-21"}
+{"id":"CK-27","run":"ev-20261021-144926-u2e","event":"built","date":"2026-10-21"}

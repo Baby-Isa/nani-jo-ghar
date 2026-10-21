@@ -911,19 +911,19 @@
   "date": "2026-10-20"
  },
  "CHT-14": {
-  "hash": "0509036b4b314f8e711f",
+  "hash": "7ef2d7b40f15b2c4bfc3",
   "dhash": [
    "0092b28282d4c4e0",
-   "0040f434100034b4",
-   "019883d033511101"
+   "000074f0100030b0",
+   "018c803af0311101"
   ],
   "verdict": "FAIL",
-  "line": "A, chana sits in the bowl at 0 ms and the wrong mirchi lands on it at 533 ms, then at 1190 ms the bowl is empty: the right chana is thrown out with the wrong item, so a wrong item still empties the bowl instead of only that item coming back out (B confirms: bowl empty, the card back on chana). No tick shows on the card in C. Off-point flaw: the order card spells chana / bataato / mirchi and the jar labels below spell the same words, so a child who cannot understand Kutchi can win by matching the text",
-  "panel": "A",
+  "line": "B, the jars are labelled in text with the order card's own words (bataato, mirchi, sev, chana), so a player who knows no Kutchi can match card to jar and pass the level without any Kutchi; also C ticks chana once it is in, and strip A shows a wrong second item (only chana in the bowl), not the wrong third item the row names",
+  "panel": "B",
   "judge": "judge",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
-  "png": "build/screenshots/evidence/ev-20261021-122141-93k/CHT-14.png",
+  "run": "ev-20261021-144926-u2e",
+  "commit": "f7f83e47",
+  "png": "build/screenshots/evidence/ev-20261021-144926-u2e/CHT-14.png",
   "date": "2026-10-21"
  },
  "CHT-15": {
@@ -1260,20 +1260,20 @@
   "date": "2026-10-20"
  },
  "CK-27": {
-  "hash": "c7ace3326e17bf89785d",
+  "hash": "0a427e8909793101301f",
   "dhash": [
    "f0ce8686ced4d6f8",
-   "c88ed68696ccccfc",
-   "00b2b28282a6c4e0",
-   "eec4c1c2c0c2c1c0"
+   "c486d68696ccccfc",
+   "0092b28282a6c4e0",
+   "eec4c1c0c0c2c1c0"
   ],
-  "verdict": "FAIL",
-  "line": "A, when the water goes into the pan (1387-1744 ms) the only effect is a thin white ring at the landing spot, no puff or sprinkle (no clouds rising over the rim); B, C and D show the same thin ring for the salt, the layer and the filling. Flaw: the \"paani\"/\"chai\" label is cut off at the top of panel A's crop",
+  "verdict": "PASS",
+  "line": "A, at 2791 ms a small white star-shaped puff appears where the chai spoonful lands in the pan, and the same single shape shows at the moment an item goes in in B (1279 ms, daar pot), C (795 ms potato and 2760 ms chickpea layer, chaat bowl) and D (978 ms and 1936 ms, samosa filling), so it is one shared effect in all four (flaws: no in-game clipping or English seen; the paani/chai/dudh label pills in A and the bubble edges in D are cut only by the strip crop; the C star is very small, about a potato chunk's width)",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
-  "png": "build/screenshots/evidence/ev-20261021-122141-93k/CK-27.png",
+  "run": "ev-20261021-144926-u2e",
+  "commit": "f7f83e47",
+  "png": "build/screenshots/evidence/ev-20261021-144926-u2e/CK-27.png",
   "date": "2026-10-21"
  },
  "CK-28": {
@@ -5724,24 +5724,24 @@
   "date": "2026-10-20"
  },
  "SAM-22": {
-  "hash": "c45ada14c3a95efaca7c",
+  "hash": "93bba9a2633cc5eb9aee",
   "dhash": [
    "00a8acacacc03030",
    "00a8acacacc04848",
-   "00a8acacacc0e0e0",
+   "00a8acacacc0d8c8",
    "00a8acacacc0c0c8",
-   "3f0949514103d6d0",
-   "3f0949090903d6d0",
-   "3f0949510103d6d0",
-   "3f0949110103d6d0"
+   "3f0949490903d6d0",
+   "3f094b530303d6d0",
+   "3f0949094903d6d0",
+   "3f0949490903d6d0"
   ],
-  "verdict": "FAIL",
-  "line": "A, the filling lands as a tiny speck in the top-left corner of one pastry, the done tick shows with five pastries still empty, and in the fold (A3) the filling sits at the pastry's edge; B-D repeat this, and F's service card shows only the timer with two empty tiles (no tick, unlike E, G, H)",
+  "verdict": "PASS",
+  "line": "A, L1 at 1366x768 played through in order: a spoonful of bataato in one strip's corner, the Done tick appearing only once it is filled, the fold with its guide arrow, then that one samosa in the fryer; B-D show the same steps at L2-L4 (2, 4 and 2 strips filled, the same number fried, the other strips left empty); flaws off the point: E, G and H end cards show two blank tiles where F shows the tick and hint tiles (looks caught mid-reveal: E reads 22 against 32s), no served samosa on the plate in any of E-H, and a small white sliver at the left edge of D frames 1-2",
   "panel": "A",
   "judge": "judge",
-  "run": "ev-20261021-122141-93k",
-  "commit": "a6961675",
-  "png": "build/screenshots/evidence/ev-20261021-122141-93k/SAM-22.png",
+  "run": "ev-20261021-144926-u2e",
+  "commit": "f7f83e47",
+  "png": "build/screenshots/evidence/ev-20261021-144926-u2e/SAM-22.png",
   "date": "2026-10-21"
  },
  "SAM-24": {
@@ -6988,19 +6988,21 @@
   "date": "2026-10-20"
  },
  "SH-53": {
-  "hash": "2d6edf96f8a05f07bc8f",
+  "hash": "7063284f21c8d134701f",
   "dhash": [
+   "00818081c1416101",
    "00a8acacacc0c4e4",
-   "0081a88181898900",
-   "d5cc51a78671ae54"
+   "0081aa8181899901",
+   "dfce5f5da411ae54"
   ],
-  "verdict": "PASS",
-  "line": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
-  "panel": null,
-  "judge": "expect",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "date": "2026-10-20"
+  "verdict": "FAIL",
+  "line": "C, the sekelo L2 card shows the same two rows (hakri lakri tameto / hakri lakri mishkaki) at all 8 placements, with no tick, no per-piece progress and no next-thing glow in the card, so rows do not tick piece by piece. A is the same for samosa L1: 4 placements leave the card unchanged, then the whole row ticks at once and the \"ba bataata\" sub-row disappears, with no box per samosa. In D the clinic strip's glow is white and off-centre, spilling across the towel and the yellow plaster while the help hand points at the jug, which is neither the gold token from B nor centred on one item.",
+  "panel": "C",
+  "judge": "judge",
+  "run": "ev-20261021-144926-u2e",
+  "commit": "f7f83e47",
+  "png": "build/screenshots/evidence/ev-20261021-144926-u2e/SH-53.png",
+  "date": "2026-10-21"
  },
  "SH-54": {
   "hash": "f72c7e3000377ce091fc",
