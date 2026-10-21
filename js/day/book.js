@@ -104,7 +104,29 @@ export async function runBook(host, api, day) {
   const plan = planBook({ data: D, place: placeKey, today: { entries, words: met }, say: sayable, rng: api.q.get("seed") ? api.rng : Math.random, only });
   const results = [];
   // this book's pictures, fetched now (decision 68: only the chosen book's own art, prefetched while she greets)
-  for (const k of Object.keys(place.things)) if (place.things[k].art) new Image().src = url(place.things[k].art);
+  // each picture once, decoded: a page shows only when all of its pictures are ready (never a late pop-in)
+  const pics = new Map();
+  const pic = (p) => {
+    if (!p) return Promise.resolve();
+    if (!pics.has(p))
+      pics.set(
+        p,
+        new Promise((ok) => {
+          const im = new Image();
+          im.onload = im.onerror = () => (im.decode ? im.decode().catch(() => {}).then(ok) : ok());
+          im.src = url(p);
+        }),
+      );
+    return pics.get(p);
+  };
+  const picsOf = (p) => {
+    const keys = [].concat(p.things ? p.things.map((t) => (typeof t === "string" ? t : t.key)) : [], p.choices || [], p.answer ? [p.answer] : []);
+    const bd = p.backdrop && D.backdrops[p.backdrop];
+    const list = keys.map((k) => place.things[k] && place.things[k].art).concat(bd && bd.art ? [bd.art] : []);
+    return Promise.race([Promise.all(list.map(pic)), new Promise((r) => setTimeout(r, 4000))]);
+  };
+  for (const k of Object.keys(place.things)) pic(place.things[k].art);
+  [A.room, A.pages, A.faceShot && A.faceShot.art].forEach(pic);
   window.Day.book = { plan, results, stage: "room", place: placeKey };
 
   // ---- lines: the first candidate the engine can say, else the first one's grey placeholder (decision 84) ----
@@ -155,12 +177,44 @@ export async function runBook(host, api, day) {
   };
   for (let i = 0; i < Math.min(books, S.max - 1); i++) addSpine(i, false);
   const [RW, RH] = A.roomSize;
+  // her face close up by the fire (A.faceShot), laid over the room picture lined up on her eyes: its place in the room's pixels
+  const FS = A.faceShot || null;
+  let FR = null;
+  let close = null;
+  if (FS) {
+    const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const k = dist(...FS.eyes.room) / dist(...FS.eyes.face); // room px per close-up px
+    const rm = mid(...FS.eyes.room);
+    const fm = mid(...FS.eyes.face);
+    FR = { k, x: rm[0] - fm[0] * k, y: rm[1] - fm[1] * k, w: FS.size[0] * k, h: FS.size[1] * k };
+    close = el("img", "day-close", cam);
+    close.alt = "";
+    close.draggable = false;
+    close.src = url(FS.art);
+    Object.assign(close.style, { left: `${FR.x}px`, top: `${FR.y}px`, width: `${FR.w}px`, height: `${FR.h}px` });
+    // its soft edge (a share of each side): two crossed fades, the mask's alpha only
+    const fe = `${(FS.feather || 0.05) * 100}%`;
+    const fade = (dir) => `linear-gradient(to ${dir}, transparent 0, black ${fe}, black calc(100% - ${fe}), transparent 100%)`;
+    close.style.webkitMaskImage = `${fade("right")}, ${fade("bottom")}`;
+    close.style.webkitMaskComposite = "source-in";
+    close.style.maskImage = `${fade("right")}, ${fade("bottom")}`;
+    close.style.maskComposite = "intersect";
+  }
   // the camera's moves always take their real time (also at test speed): a filmstrip of the camera must see them
   const realWait = (ms) => new Promise((r) => setTimeout(r, ms));
-  let shot = C.wide;
+  // the camera: one transform over the room picture (and the close-up laid on it); every move one ease, so the camera and the
+  // pages picture moving with it stay locked together
+  const EASE = "cubic-bezier(.45,.05,.35,1)";
+  let shot = "wide";
   let camAt = { sc: 1, tx: 0, ty: 0 };
-  const place3 = (v, ms = 0) => {
-    shot = v;
+  const setCam = (c, ms = 0) => {
+    camAt = c;
+    cam.style.transition = ms ? `transform ${ms}ms ${EASE}` : "none";
+    cam.style.transform = `translate(${c.tx}px, ${c.ty}px) scale(${c.sc})`;
+  };
+  /** a shot of the room picture: a centre in its pixels and a zoom over the cover fit */
+  const wideCam = (v) => {
     const vw = root.clientWidth;
     const vh = root.clientHeight;
     const base = Math.max(vw / RW, vh / RH);
@@ -171,10 +225,36 @@ export async function runBook(host, api, day) {
     let ty = vh / 2 - v.cy * sc;
     tx = Math.min(0, Math.max(vw - RW * sc, tx));
     ty = Math.min(0, Math.max(vh - RH * sc, ty));
-    camAt = { sc, tx, ty };
-    cam.style.transition = ms ? `transform ${ms}ms cubic-bezier(.45,.05,.35,1)` : "none";
-    cam.style.transform = `translate(${tx}px, ${ty}px) scale(${sc})`;
+    return { sc, tx, ty };
   };
+  const place3 = (v, ms = 0) => {
+    shot = "wide";
+    setCam(wideCam(v), ms);
+  };
+  /** the face shot: the close-up covering the screen inside its feathered edge (C.face: a centre in its pixels, a zoom) */
+  const faceCam = () => {
+    const vw = root.clientWidth;
+    const vh = root.clientHeight;
+    const [FW, FH] = FS.size;
+    const f = FS.feather || 0.05;
+    const iw = FW * (1 - 2 * f);
+    const ih = FH * (1 - 2 * f);
+    const z = Math.max(vw / iw, vh / ih) * ((C.face && C.face.zoom) || 1); // screen px per close-up px
+    let tx = vw / 2 - C.face.cx * z;
+    let ty = vh / 2 - C.face.cy * z;
+    tx = Math.min(-f * FW * z, Math.max(vw - (f * FW + iw) * z, tx));
+    ty = Math.min(-f * FH * z, Math.max(vh - (f * FH + ih) * z, ty));
+    // room px -> screen: tx + z (room - FR.x) / FR.k
+    const sc = z / FR.k;
+    return { sc, tx: tx - sc * FR.x, ty: ty - sc * FR.y };
+  };
+  // the pages picture laid under the close-up (A.faceShot.pagesIn: its spine and top edge on the close-up's), in room px
+  const P2R = FS
+    ? (() => {
+        const PI = FS.pagesIn;
+        return { s: FR.k * PI.q, x: FR.x + FR.k * (PI.spine.face[0] - PI.q * PI.spine.pages[0]), y: FR.y + FR.k * (PI.spine.face[1] - PI.q * PI.spine.pages[1]) };
+      })()
+    : null;
   cam.style.width = `${RW}px`;
   cam.style.height = `${RH}px`;
   place3(C.wide);
@@ -293,33 +373,36 @@ export async function runBook(host, api, day) {
     const [rx, ry, rw, rh] = A.pageR;
     Object.assign(turnBtn.style, { left: `${(rx + rw) * s - 64}px`, top: `${(ry + rh) * s - 64}px` });
     book.style.setProperty("--s", String(s));
-    if (shot && shot.onBook) camOnBook(0);
-    else place3(shot);
+    if (shot === "pages" && FS) setCam(pagesCam());
+    else if (shot === "face" && FS) setCam(faceCam());
+    else place3(C.wide);
     if (bubble.classList.contains("in")) placeBubble(bubble.dataset.side);
     if (window.FitText) window.FitText.run(book);
   };
+  /**
+   * The camera with the pages picture at rest lined up under the close-up (A.faceShot.pagesIn): the close-up's book edge runs on
+   * into the pages' book, so the turn down from her face lands on the very pages the games use, over the same part of the room
+   * it passed through (the judge, 20 Oct: never a dissolve to a different crop). The room is past its resolution here (ART-05)
+   * and only ever on screen while the camera moves: it is marked as zooming then (the sandbox's background check waits).
+   */
+  function pagesCam() {
+    const sc = bookAt.s / P2R.s;
+    return { sc, tx: bookAt.ox - sc * P2R.x, ty: bookAt.oy - sc * P2R.y };
+  }
+  /** the pages picture's transform (over its place at rest) that lays it under the close-up for a camera `c` */
+  const bookTo = (c) => `translate(${c.tx + c.sc * P2R.x - bookAt.ox}px, ${c.ty + c.sc * P2R.y - bookAt.oy}px) scale(${(c.sc * P2R.s) / bookAt.s})`;
   layout();
   const ro = typeof ResizeObserver === "function" ? new ResizeObserver(() => layout()) : null;
   if (ro) ro.observe(root);
-  /**
-   * The camera on the book in her lap, so close that the room's book lies exactly where the pages picture's book lies on screen
-   * (same place, same size: A.lapBook, measured in both pictures). The cross-fade between the two pictures happens only here,
-   * between two book-filling views: no box edge, no second Nani (the judge, 20 Oct). This shot is past the room picture's
-   * resolution (ART-05), so it is only ever on screen while the camera moves or fades: the room is marked as zooming then
-   * (the sandbox's background check waits for a push-in to settle, as it does for the clinic's).
-   */
-  const camOnBook = (ms = 0) => {
-    const [rx, ry, rw] = A.lapBook.room;
-    const [bx, by, bw] = A.lapBook.pages;
-    const sc = (bw * bookAt.s) / rw;
-    const tx = bookAt.ox + bx * bookAt.s - rx * sc;
-    const ty = bookAt.oy + by * bookAt.s - ry * sc;
-    shot = { onBook: true };
-    camAt = { sc, tx, ty };
-    cam.style.transition = ms ? `transform ${ms}ms cubic-bezier(.45,.05,.35,1)` : "none";
-    cam.style.transform = `translate(${tx}px, ${ty}px) scale(${sc})`;
-  };
   const zooming = (on) => root.classList.toggle("njg-zooming", !!on);
+  /** while the pages come up under her close-up (or go back down), their top edge is soft: no hard line across her chin. The
+   * soft band lies above the screen once the pages are at rest (never a jump when it goes) */
+  const softTop = (on) => {
+    const f = on ? Math.max(12, Math.min(80 * bookAt.s, -bookAt.oy)) : 0;
+    const m = on ? `linear-gradient(to bottom, transparent 0, black ${f.toFixed(1)}px)` : "";
+    book.style.webkitMaskImage = m;
+    book.style.maskImage = m;
+  };
 
   // ---- the game's context (book-play.js) ----
   const cleanups = [];
@@ -340,7 +423,25 @@ export async function runBook(host, api, day) {
     return sv;
   };
   const backdrop = (id, side) => {
-    const B = D.backdrops[id] && D.backdrops[id][side];
+    const SP = D.backdrops[id];
+    if (SP && SP.art && SP.size) {
+      // one picture across both pages (s09b): laid over the two page frames as if the fold were not there, each page showing its
+      // own part (the middle strip falls in the fold); `top` picks the band that shows
+      const [lx, ly, lw, lh] = A.pageL;
+      const [rx, ry, rw, rh] = A.pageR;
+      const [PW, PH] = SP.size;
+      const k = (rx + rw - lx) / PW; // pages px per picture px
+      const y0 = ly - (SP.top || 0) * (PH * k - lh); // where the picture's top edge lies (pages px)
+      const [px, py, pw, ph] = side === "l" ? [lx, ly, lw, lh] : [rx, ry, rw, rh];
+      const box = el("div", "day-backdrop day-spread");
+      const im = el("img", "", box);
+      im.alt = "";
+      im.draggable = false;
+      im.src = url(SP.art);
+      Object.assign(im.style, { position: "absolute", left: `${((lx - px) / pw) * 100}%`, top: `${((y0 - py) / ph) * 100}%`, width: `${((PW * k) / pw) * 100}%`, height: `${((PH * k) / ph) * 100}%`, maxWidth: "none" });
+      return box;
+    }
+    const B = SP && SP[side];
     if (!B) return null;
     const box = el("div", "day-backdrop");
     if (B.art) {
@@ -355,6 +456,9 @@ export async function runBook(host, api, day) {
     headLine.innerHTML = "";
     if (ln) headLine.appendChild(api.render(ln));
     if (window.FitText) window.FitText.run(headRow);
+    // her card shows with its words already drawn (never a blank card for a frame while the new line lays out)
+    headLine.style.visibility = "hidden";
+    requestAnimationFrame(() => requestAnimationFrame(() => current === (ln || null) && (headLine.style.visibility = "")));
   };
   let turnOn = false;
   const showTurn = (on) => {
@@ -374,7 +478,8 @@ export async function runBook(host, api, day) {
     head,
     headLine: () => (headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null),
     say: (ln, node, o = {}) => api.say(ln, Object.assign({ el: node === undefined ? g.headLine() : node, who: "nani" }, o)),
-    expect: (fn) => api.test.expect(fn),
+    // (the tests act only once the page shows: a hidden page takes no touch)
+    expect: (fn) => api.test.expect(() => (g.hidden ? { kind: "wait" } : fn())),
     state: (s) => {
       window.Day.book.last = s;
     },
@@ -438,39 +543,61 @@ export async function runBook(host, api, day) {
   // ---------------------------------------------------------------- the evening
   // the room is up: the evening's first moment (BOOK-01 films from here)
   await new Promise((r) => (room.complete ? r() : (room.onload = room.onerror = r)));
+  // (the close-up, the pages and the first page's pictures load while she greets: the camera waits for them before it sets off)
+  // (and the italic face her grey to-record lines use: a face still loading draws its text invisible, a blank card)
+  const italic = document.fonts && document.fonts.load ? document.fonts.load('italic 700 20px "Nunito"').catch(() => {}) : null;
+  const ready = Promise.race([Promise.all([pic(A.pages), FS && pic(FS.art), plan.pages[0] && picsOf(plan.pages[0]), italic]), realWait(4000)]);
   api.test.state("day/book/room");
   await api.wait(500);
   const direct = !!only;
   if (!direct) {
     // she greets by the fire, the camera comes to her face, turns down to the book on her lap ...
     await sayRoom(line("greet"), "left");
+    await ready;
+    // the push-in to her face: the room grows, her close-up (lined up on her eyes) fades in over it as it comes, sharp
     window.Day.book.stage = "face";
-    place3(C.face, C.toFaceMs);
+    zooming(true);
     bubble.classList.remove("in");
     setTimeout(() => (bubble.style.visibility = "hidden"), 250);
-    await realWait(C.toFaceMs + 150);
+    shot = "face";
+    close.style.transition = `opacity ${C.toFaceMs * 0.42}ms ease-in-out ${C.toFaceMs * 0.55}ms`;
+    close.style.opacity = "1";
+    setCam(faceCam(), C.toFaceMs);
+    await realWait(C.toFaceMs + 60);
+    // her face, still: only the close-up is on screen (the room under it is hidden, never judged past its resolution)
+    room.style.visibility = "hidden";
+    zooming(false);
+    await realWait(C.holdMs || 500);
+    // ... and the turn down to the book: the pages picture laid under the close-up's bottom edge comes up into the screen as the
+    // close-up slides up out of it, one move, landing on the pages at rest (the games' own place)
     window.Day.book.stage = "tilt";
-    place3(C.book, C.tiltMs);
-    await realWait(C.tiltMs);
-    // ... and zooms in until her book fills the screen, lined up with the pages picture's book; then the two cross-fade (short:
-    // her hands and dupatta differ a little between the two pictures)
-    window.Day.book.stage = "onto";
-    layout();
     zooming(true);
-    camOnBook(C.inMs);
-    await realWait(C.inMs);
+    layout();
+    book.style.transition = "none";
+    book.style.transform = bookTo(camAt);
+    book.style.opacity = "0";
+    softTop(true);
+    void book.offsetWidth;
+    shot = "pages";
+    book.style.transition = `transform ${C.tiltMs}ms ${EASE}, opacity ${C.tiltMs * 0.45}ms ease-in-out ${C.tiltMs * 0.15}ms`;
     book.style.transform = "none";
-    book.style.transition = `opacity ${C.fadeMs}ms ease-in-out`;
-    book.classList.add("open");
     book.style.opacity = "1";
-    await realWait(C.fadeMs);
+    room.style.visibility = "";
+    setCam(pagesCam(), C.tiltMs);
+    await realWait(C.tiltMs + 40);
+    book.classList.add("open");
+    book.style.transition = "none";
+    softTop(false);
     // the room behind the pages goes back to the whole room (hidden behind the pages, ready for the way out)
+    close.style.transition = "none";
+    close.style.opacity = "0";
     place3(C.wide);
     zooming(false);
   } else {
     place3(C.wide);
     book.classList.add("open");
     book.style.opacity = "1";
+    await ready;
     await api.wait(300);
   }
   window.Day.book.stage = "pages";
@@ -479,10 +606,20 @@ export async function runBook(host, api, day) {
   for (let i = 0; i < plan.pages.length; i++) {
     const p = plan.pages[i];
     keepTurn = null;
+    await picsOf(p);
+    if (plan.pages[i + 1]) picsOf(plan.pages[i + 1]);
     mount(p);
     api.test.state(`day/book/${p.game}`);
     window.Day.book.page = i;
-    await runGame(g, p);
+    // the page shows when every picture on it is drawn (each <img> decoded in place, not only fetched): never a sprite popping in
+    g.hidden = true;
+    g.wrap.style.visibility = "hidden";
+    const run = runGame(g, p);
+    await Promise.race([Promise.all([...g.wrap.querySelectorAll("img")].map((im) => (im.decode ? im.decode().catch(() => {}) : null))), realWait(1500)]);
+    await new Promise((r) => requestAnimationFrame(() => r()));
+    g.wrap.style.visibility = "";
+    g.hidden = false;
+    await run;
     await waitTurn();
     while (cleanups.length) cleanups.pop()();
     head(null);
@@ -497,12 +634,36 @@ export async function runBook(host, api, day) {
   window.Day.book.stage = "out";
   headRow.style.visibility = "hidden";
   zooming(true);
-  camOnBook(0);
   root.classList.add("day-zoom-out");
-  book.style.transition = `opacity ${C.fadeMs}ms ease-in-out`;
-  book.style.opacity = "0";
-  await realWait(C.fadeMs);
-  book.classList.remove("open");
+  if (FS) {
+    // the turn up to her face: under the pages the camera waits lined up, her close-up showing; the pages slide down out of the
+    // screen as the close-up comes down into it ...
+    layout();
+    shot = "face";
+    room.style.visibility = "hidden";
+    setCam(pagesCam());
+    close.style.transition = "none";
+    close.style.opacity = "1";
+    void book.offsetWidth;
+    const to = faceCam();
+    softTop(true);
+    book.style.transition = `transform ${C.upMs}ms ${EASE}, opacity ${C.upMs * 0.45}ms ease-in-out ${C.upMs * 0.4}ms`;
+    book.style.transform = bookTo(to);
+    book.style.opacity = "0";
+    setCam(to, C.upMs);
+    await realWait(C.upMs + 40);
+    book.classList.remove("open");
+    book.style.transition = "none";
+    book.style.transform = "none";
+    softTop(false);
+    // ... then the pull back to the whole room: the room under her close-up, which fades as the camera goes back
+    room.style.visibility = "";
+    close.style.transition = `opacity ${C.outMs * 0.5}ms ease-in-out ${C.outMs * 0.05}ms`;
+    close.style.opacity = "0";
+  } else {
+    book.style.opacity = "0";
+    book.classList.remove("open");
+  }
   place3(C.wide, C.outMs);
   await realWait(C.outMs);
   zooming(false);

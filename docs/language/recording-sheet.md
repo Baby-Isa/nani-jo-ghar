@@ -703,23 +703,39 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ## 5. Story mode: the ride
 
-13 rows to record. Nani names a thing and asks "Where is the …?" as it passes the window.
+29 rows to record. Nani names a thing and asks "Where is the …?" as it passes the window.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
+| aeroplane | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | bicycle | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | bird | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording yet |
+| buffalo | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| bus | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| butterfly | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| camel | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| car | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording yet |
 | cow | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | dog | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording yet |
+| donkey | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| duck | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | goat | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording of: goat (a she-goat) |
 | green door | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording of: green, door |
 | hen | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording of: chicken |
+| hen with her chicks | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| horse | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| kite | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | Look! | Ride: Nani's headline | 2 of 5 days | The engine can say it; no family recording yet |
+| milk van | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| rainbow | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | red door | Ride farm-road: Nani names it | 2 of 5 days | The engine can say it; no family recording of: door |
+| sheep | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | Slow down! | Ride: Nani to the driver (slower) | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | Speed up! | Ride: Nani to the driver (faster) | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | tractor | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
+| well | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 | Where is the …? | Ride farm-road: Nani's call for every thing | 2 of 5 days, every call | The engine can say it; no family recording of: where, be |
+| windmill | Ride farm-road: Nani names it | 2 of 5 days | No Kutchi yet (grey English): the whole line |
 
 **The ride's candidate words with no family recording yet (English only; 18 of 18):** cow, tree, flower, bus, bicycle, tractor, camel, horse, sheep, buffalo, boat, sun, moon, star, cloud, road, field, shop. These are things the ride could name next, not in it yet. tree, flower, moon, star already have an engine entry with no Kutchi; the rest are not in the engine, so they need Mum's word first.
 

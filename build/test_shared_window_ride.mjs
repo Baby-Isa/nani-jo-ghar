@@ -13,15 +13,18 @@ const W = require("../js/shared/window-ride.js");
 const ROOT = new URL("../", import.meta.url);
 const day = JSON.parse(readFileSync(new URL("data/day.json", ROOT), "utf8"));
 const ride = day.window.rides["farm-road"];
-// the engine's gaps today (cow, tractor, bicycle): never named, they only pass by
-const GAPS = new Set(["cow", "tractor", "bicycle"]);
+// the engine's gaps today (every thing whose noun the lexicon lacks: the cow, the s09b animals, vehicles, sky things and
+// landmarks): never named, they only pass by
+const LEX = new Set(JSON.parse(readFileSync(new URL("data/lang/lexicon.json", ROOT), "utf8")).entries.map((e) => e.id));
+const GAPS = new Set(Object.entries(ride.things).filter(([, t]) => !LEX.has(typeof t.say === "string" ? t.say : t.say.kind)).map(([id]) => id));
 const callable = (id) => !GAPS.has(id);
 
 test("the plan: look-alikes together, one named, no thing named twice running, the first group on the near verge", () => {
   for (let s = 1; s <= 200; s++) {
     const p = W.plan(ride, 1 + (s % 3), seeded(s), { callable });
     assert.ok(p.calls.length >= 3);
-    assert.equal(p.calls[0].line, "near");
+    assert.equal(p.calls[0].line, "near", "the first group on the near verge (from a family that may stand there: the doors keep to the field)");
+    p.calls.forEach((c) => c.group.forEach((id) => assert.ok(W.linesOf(ride.things[id]).includes(c.line), `${id} on ${c.line}`)));
     p.calls.forEach((c, i) => {
       assert.ok(c.group.length >= 2, "a group is at least two look-alikes");
       assert.ok(c.group.includes(c.named));
@@ -32,10 +35,13 @@ test("the plan: look-alikes together, one named, no thing named twice running, t
   }
 });
 
-test("every callable thing is named somewhere (no picture is safe to ignore)", () => {
+test("every callable thing with a look-alike is named somewhere (no picture is safe to ignore); one without (the car) only passes", () => {
   const named = new Set();
   for (let s = 1; s <= 300; s++) W.plan(ride, 2, seeded(s), { callable }).calls.forEach((c) => named.add(c.named));
-  Object.keys(ride.things).filter((id) => !GAPS.has(id)).forEach((id) => assert.ok(named.has(id), `${id} is named in some round`));
+  const fam = W.families(ride, callable);
+  const askable = new Set(Object.values(fam).flat());
+  Object.keys(ride.things).filter((id) => !GAPS.has(id)).forEach((id) => assert.equal(named.has(id), askable.has(id), `${id}: named in some round iff it has a callable look-alike`));
+  assert.ok(!askable.has("car"), "the car has no callable look-alike yet: it only passes");
 });
 
 test("judge: right first, helped after a wrong tap or the glow, missed when never tapped", () => {
@@ -112,7 +118,7 @@ test("nothing jumps: every thing and prop comes on right of the window and moves
             const k = `${o.line || "near"}:${o.uid}`;
             if (!last.has(k)) assert.ok(o.x >= m.view().x1, `${vn} seed ${s}: ${o.id} came on inside the window (x ${Math.round(o.x)} < ${Math.round(m.view().x1)})`);
             else {
-              const want = last.get(k) - d * (o.line === "field" ? m.lineSpeed.field : m.lineSpeed.near);
+              const want = last.get(k) - d * (o.line ? m.speedOf(o) : m.lineSpeed.near);
               assert.ok(Math.abs(o.x - want) < 0.01, `${vn} seed ${s}: ${o.id} jumped ${Math.round(o.x - want)} px`);
             }
             last.set(k, o.x);
@@ -127,8 +133,8 @@ test("the parallax setting: gentle on the farm road (Zafar, 20 Oct evening), dee
   const of = (parallax) => W.model(ride, p, { rng: seeded(2), view: VIEWS.phone, parallax });
   assert.deepEqual([of(null).layerSpeed("far"), of(null).layerSpeed("middle"), of(null).layerSpeed("near")], [0.5, 0.8, 1]);
   assert.deepEqual([of("deep").layerSpeed("far"), of("deep").layerSpeed("middle")], [0.15, 0.4]);
-  assert.deepEqual(of("gentle").lineSpeed, { near: 1, field: 0.8 });
-  assert.deepEqual(of("together").lineSpeed, { near: 1, field: 1 });
+  assert.deepEqual(of("gentle").lineSpeed, { near: 1, field: 0.8, far: 0.5, sky: 0.5 });
+  assert.deepEqual(of("together").lineSpeed, { near: 1, field: 1, far: 1, sky: 1 });
   assert.equal(of("together").layerSpeed("far"), 1);
   assert.equal(of({ far: 0.3, middle: 0.6, near: 1 }).layerSpeed("far"), 0.3);
 });
@@ -180,7 +186,7 @@ test("a speed change eases over about a second: no jump, every thing and layer t
   const half = vs[24];
   assert.ok(half > v0 + (v1 - v0) * 0.2 && half < v0 + (v1 - v0) * 0.8, "half way through the second it is half way there");
   assert.ok(Math.abs(vs[55] - v1) < 1e-9, "there after a second");
-  assert.deepEqual(m.lineSpeed, { near: 1, field: 0.8 }, "the field's things move with the middle layer (gentle)");
+  assert.deepEqual(m.lineSpeed, { near: 1, field: 0.8, far: 0.5, sky: 0.5 }, "the field's things move with the middle layer (gentle)");
 });
 
 test("fair at every speed: never asked while more than two thirds hidden or leaving; a missed thing comes round until found", () => {
@@ -254,14 +260,19 @@ test("the farm road's data: three layers with their speeds, the keyed frame, thr
   const v = ride.view;
   assert.deepEqual(v.layers.map((l) => [l.id, l.speed]), [["far", 0.15], ["middle", 0.4], ["near", 1]]);
   for (const l of v.layers) assert.ok(l.tile && l.h && Array.isArray(l.shapes), `${l.id}: a tile, a height and placeholder shapes`);
-  for (const f of [v.frame.art, v.frame.left, v.frame.right]) assert.ok(existsSync(new URL(f, ROOT)), f);
+  // the wide window (s09b W1, RIDE-07): its opening from the cut's report, a show box with both pillars round the opening
+  assert.equal(v.frame.art, "assets/day/s09b/car-window-wide.webp");
+  assert.ok(existsSync(new URL(v.frame.art, ROOT)));
+  const cutWin = JSON.parse(readFileSync(new URL("assets/day/s09b/cut-report.json", ROOT), "utf8"))["car-window-wide"].opening;
+  assert.deepEqual(v.frame.opening, [cutWin[0], cutWin[1], cutWin[0] + cutWin[2], cutWin[1] + cutWin[3]]);
+  assert.ok(v.frame.show[0] < v.frame.opening[0] && v.frame.show[2] > v.frame.opening[2], "both pillars inside the show box");
   assert.ok(!("stopCar" in ride), "no stop-the-car beat (Zafar, 20 Oct)");
   assert.deepEqual(Object.keys(ride.groups).filter((k) => !k.startsWith("_")), ["review", "animals", "passing"]);
   for (const [g, ids] of Object.entries(ride.groups)) if (!g.startsWith("_")) for (const id of ids) assert.equal(ride.things[id].group, g, id);
   for (const [id, t] of Object.entries(ride.things)) {
     assert.ok(t.en && t.say && t.family, `${id}: an English name, an engine id and a family`);
-    // where its s09r cut is (null: none made yet, s09b: the cow, the tractor, the bicycle keep their placeholder)
-    if (t.cut !== null) assert.ok(/^assets\/day\/ride\/s09r\/[\w-]+\.webp$/.test(t.cut), `${id}: where its s09r cut lands`);
+    // where its cut is (s09r: the road style test's things; s09b: the farm road's things, RIDE-07)
+    if (t.cut !== null) assert.ok(/^assets\/day\/(ride\/s09r|s09b)\/[\w-]+\.webp$/.test(t.cut), `${id}: where its cut lands`);
     else assert.equal(t.art, null, `${id}: no cut, so the placeholder`);
   }
   assert.equal(ride.things.cow.say, "n.cow", "the cow's engine id (the engine reports the gap; its Kutchi is never written here)");
@@ -326,4 +337,48 @@ test("contract-48: a call as the thing leaves, a missed thing that never comes r
   assert.ok(b.some((x) => /never came round/.test(x.measured)) && b.some((x) => /0 of 1/.test(x.measured)));
   const round = page([life(T + 10, "ride-call", 0, `thing:goat pass:1 box:800,300,100,100 ${OPEN} occ: edge:`), life(T + 20, "ride-pass", 0, "thing:goat pass:1 how:missed"), life(T + 30, "ride-call", 0, `thing:goat pass:2 box:820,300,100,100 ${OPEN} occ: edge:`), life(T + 40, "ride-end", "", "found:1 calls:1")]);
   assert.equal(runC(check48, round).length, 0);
+});
+
+// ---- the farm road's s09b things (RIDE-07) ----
+test("RIDE-07: things keep their real height ratios, sky things fly only in the sky band, landmarks pass only on the far hills or the field, big things keep to the field", () => {
+  const p = W.plan(ride, 1, seeded(5), { callable });
+  const m = W.model(ride, p, { rng: seeded(5), view: { x0: 157, x1: 1443, minPx: 10 } });
+  m.begin();
+  const seen = new Map();
+  while (m.t < 240000 && !m.done) {
+    m.step(40);
+    for (const ev of m.drain()) if (ev.type === "call") m.tap(ev.uid);
+    for (const o of m.things) seen.set(o.uid, o);
+  }
+  const all = [...seen.values()];
+  const lines = new Map();
+  for (const o of all) (lines.get(o.id) || lines.set(o.id, new Set()).get(o.id)).add(o.line);
+  for (const [id, ls] of lines) for (const l of ls) assert.ok(W.linesOf(ride.things[id]).includes(l), `${id} stood on ${l}`);
+  for (const id of ["kite", "aeroplane", "butterfly"]) assert.deepEqual(W.linesOf(ride.things[id]), ["sky"], id);
+  for (const id of ["windmill", "well", "rainbow"]) assert.ok(W.linesOf(ride.things[id]).every((l) => l === "far" || l === "field"), id);
+  assert.ok(["sky", "far"].every((l) => all.some((o) => o.line === l)), "sky things and landmarks pass");
+  // the same line, real ratios: art height / metres is one number for every thing with a real height
+  const per = all.filter((o) => ride.things[o.id].m != null && o.line === "field").map((o) => o.artH / ride.things[o.id].m);
+  assert.ok(per.length > 3 && Math.max(...per) - Math.min(...per) < 1e-6, "one scale per line");
+  const fieldOnly = ["bus", "tractor", "milk-van", "camel", "horse", "buffalo"];
+  assert.ok(all.filter((o) => fieldOnly.includes(o.id)).every((o) => o.line === "field"), "the big things keep to the field");
+});
+
+test("RIDE-07: never asked once half behind the window's left pillar (the call ends; the thing comes round)", () => {
+  for (let s = 1; s <= 20; s++) {
+    const p = W.plan(ride, 1, seeded(s), { callable });
+    const m = W.model(ride, p, { rng: seeded(s), view: VIEWS.tablet });
+    while (m.t < 120000 && !m.done) {
+      m.step(40);
+      m.drain();
+      const c = m.open();
+      if (c && c.namedTh) {
+        const th = c.namedTh;
+        const inWin = Math.max(0, Math.min(th.x + th.w, m.view().x1) - Math.max(th.x, m.view().x0)) / th.w;
+        assert.ok(!(th.x < m.view().x0 && inWin < 0.5), `seed ${s}: ${th.id} still asked at ${(inWin * 100).toFixed(0)}% in the window`);
+        if (m.share(th) > 0.3 && m.t - c.saidAt > 1500) m.tap(th.uid);
+      }
+    }
+    assert.ok(m.done, `seed ${s}: the ride ends`);
+  }
 });

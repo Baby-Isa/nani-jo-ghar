@@ -56,7 +56,13 @@ export async function runWindow(el, api, day) {
   side.className = "day-side";
   const play = document.createElement("main");
   play.className = "day-play";
-  root.append(side, play);
+  // behind the sidebar: the car's inside runs on under it (window-ride.js draws it there), so the column under the card is the
+  // car, never a plain strip; the sidebar is lifted over it (its look unchanged)
+  const under = document.createElement("div");
+  under.className = "day-car-under";
+  Object.assign(under.style, { position: "absolute", left: "0", top: "0", bottom: "0", width: "100%", pointerEvents: "none", overflow: "hidden" });
+  root.append(under, side, play);
+  Object.assign(side.style, { position: "relative", zIndex: "1" });
   if (window.Frame && window.Frame.mount) window.Frame.mount({ app: root, side, play });
   const guideEl = document.createElement("div");
   side.appendChild(guideEl);
@@ -160,6 +166,7 @@ export async function runWindow(el, api, day) {
       ride,
       plan,
       url,
+      under,
       speed: api.speed,
       rng: api.rng,
       hintMs: ride.hintMs,

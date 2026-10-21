@@ -49,7 +49,10 @@
   W.SPEEDS = { slow: 9000, normal: 6000, fast: 3300 };
   W.SPEED_ORDER = ["slow", "normal", "fast"];
   W.FADE = 0.1; // the cross-fade: each copy of a layer fades in over the outer tenth of the one before
-  const LINES = { near: { y: 800, scale: 1, layer: "near" }, field: { y: 654, scale: 0.55, layer: "middle", edge: 646 } };
+  const LINES = { near: { y: 800, scale: 1, layer: "near" }, field: { y: 654, scale: 0.55, layer: "middle", edge: 646 }, far: { y: 450, scale: 0.12, layer: "far" }, sky: { y: 270, scale: 1, layer: "far" } };
+  const GROUND = ["near", "field"];
+  /** where a thing may stand (data `lines`; the two ground lines by default) */
+  W.linesOf = (def) => (def && Array.isArray(def.lines) && def.lines.length ? def.lines : GROUND);
   const LAYER_SPEED = { far: 0.15, middle: 0.4, near: 1 };
   const IN_WINDOW = 0.8; // every member at least this much inside the window before Nani asks ...
   const CALL_SHARE = 0.45; // ... and at least this much of it showing (a prop may half-hide it)
@@ -107,15 +110,22 @@
     const calls = [];
     const used = new Set();
     let last = null;
+    // the first group comes on the near verge: from a family whose things may all stand there (by their real size), if any
+    const nearBag = bag.filter((f) => fam[f].every((id) => W.linesOf(ride.things[id]).includes("near")));
     for (let i = 0; i < L.calls; i++) {
-      const f = bag[Math.floor(rng() * bag.length)];
+      const from = i === 0 && nearBag.length ? nearBag : bag;
+      const f = from[Math.floor(rng() * from.length)];
       // a thing not named yet if the family has one (the card lists each thing once where it can), never the last one again
       const fresh = fam[f].filter((g) => !used.has(g) && g !== last);
       const pool = fresh.length ? fresh : fam[f].filter((g) => g !== last);
       const named = pool[Math.floor(rng() * pool.length)];
       used.add(named);
       const group = W.groupFor(named, fam[f], L.group || 3, rng);
-      calls.push({ group, named, family: f, line: i === 0 ? "near" : rng() < base.fieldShare ? "field" : "near" });
+      // the first group on the near verge, later ones on the field at the level's share (a group whose things may not stand
+      // on the verge, by their real size, goes on the field)
+      let line = i === 0 ? "near" : rng() < base.fieldShare ? "field" : "near";
+      if (!group.every((id) => W.linesOf(ride.things[id]).includes(line))) line = GROUND.find((l) => group.every((id) => W.linesOf(ride.things[id]).includes(l))) || "near";
+      calls.push({ group, named, family: f, line });
       last = named;
     }
     return Object.assign(base, { calls });
@@ -164,7 +174,9 @@
     const rng = opt.rng || Math.random;
     const hintMs = opt.hintMs != null ? opt.hintMs : ride.hintMs != null ? ride.hintMs : 5000;
     const itemH = view.itemH || 230;
-    const lines = { near: Object.assign({}, LINES.near, (view.lines || {}).near), field: Object.assign({}, LINES.field, (view.lines || {}).field) };
+    const lines = {};
+    Object.keys(LINES).forEach((k) => (lines[k] = Object.assign({}, LINES[k], (view.lines || {})[k])));
+    const perM = view.perM || 1;
     // the parallax: the trip's set (data: ride.parallax names one of window.parallaxSets, or is a {far, middle, near} of its own;
     // a lab may pass opt.parallax), else each layer's own speed. The things on a line move with that line's layer either way.
     const pset = typeof opt.parallax === "object" && opt.parallax ? opt.parallax : typeof ride.parallax === "object" && ride.parallax && !opt.parallax ? ride.parallax : (opt.parallaxSets || ride.parallaxSets || {})[opt.parallax || ride.parallax] || null;
@@ -173,11 +185,17 @@
       const l = (view.layers || []).find((x) => x.id === id);
       return l && l.speed != null ? l.speed : LAYER_SPEED[id] || 1;
     };
-    const lineSpeed = { near: layerSpeed(lines.near.layer), field: layerSpeed(lines.field.layer) };
+    const lineSpeed = {};
+    Object.keys(lines).forEach((k) => (lineSpeed[k] = layerSpeed(lines[k].layer)));
+    // a thing moves with its line's layer; a sky thing with its own (data `layer`: a butterfly close by, an aeroplane far off)
+    const speedOf = (th) => (th.layer ? layerSpeed(th.layer) : lineSpeed[th.line]);
     const speeds = Object.assign({}, W.SPEEDS, ride.speeds || {});
     const easeMs = ride.easeMs || 1000;
     const gapK = view.gapK != null ? view.gapK : 0.15;
-    const passOnly = Object.keys(things).filter((id) => things[id]);
+    // the things that pass unasked: on the ground lines, in the sky band, on the far hills
+    const passOnly = Object.keys(things).filter((id) => things[id] && W.linesOf(things[id]).some((l) => GROUND.includes(l)));
+    const skyOnly = Object.keys(things).filter((id) => things[id] && W.linesOf(things[id]).includes("sky"));
+    const farOnly = Object.keys(things).filter((id) => things[id] && W.linesOf(things[id]).includes("far") && !skyOnly.includes(id));
     const propIds = Object.keys(propDefs);
     const maxPropW = Math.max(0, ...propIds.map((id) => itemH * (propDefs[id].h || 0.8) * (propDefs[id].ratio || 1)));
     const fam = plan.families || W.families(ride);
@@ -214,6 +232,7 @@
     m.vel = vel;
     m.lineSpeed = lineSpeed;
     m.layerSpeed = layerSpeed;
+    m.speedOf = speedOf;
     m.lines = lines;
     m.offset = (speed) => m.road * speed;
 
@@ -229,13 +248,18 @@
     };
 
     // ---- sizes and boxes (scene px; a thing's box is at least minPx each way: its tap area) ----
+    // a thing's height: its real height (data `m`, metres) times perM times its line's scale, so the things keep their real
+    // ratios; a sky thing or the rainbow its own share of itemH (`h`). Never drawn under three quarters of a tap target.
     const sizeOf = (id, line) => {
       const d = things[id] || {};
-      const H = itemH * (d.h || 1) * lines[line].scale;
+      let H = d.m != null ? itemH * d.m * perM * lines[line].scale : itemH * (d.h || 1) * (GROUND.includes(line) ? lines[line].scale : 1);
+      H = Math.max(H, minPx * 0.75);
       const Wd = H * (d.ratio || 1);
       return { artW: Wd, artH: H, w: Math.max(Wd, minPx), h: Math.max(H, minPx) };
     };
-    const topOf = (th) => lines[th.line].y - th.h;
+    // a thing stands with its feet on its line (a sky thing at its own height in the band)
+    const baseOf = (th) => (th.yb != null ? th.yb : lines[th.line].y);
+    const topOf = (th) => baseOf(th) - th.h;
     const inView = (th) => th.x + th.w > vx0 && th.x < vx1;
     /** the share of a thing's width inside the window (the frame cuts the rest) */
     const inWindow = (th) => Math.max(0, Math.min(th.x + th.w, vx1) - Math.max(th.x, vx0)) / th.w;
@@ -243,7 +267,12 @@
     m.topOf = topOf;
     const mk = (id, line, x, member) => {
       const s = sizeOf(id, line);
+      const d = things[id] || {};
       const th = Object.assign({ uid: ++uid, id, line, x, member: member == null ? -1 : member, got: false }, s);
+      if (line === "sky") {
+        th.yb = d.y != null ? d.y : lines.sky.y;
+        if (d.layer) th.layer = d.layer;
+      }
       m.things.push(th);
       return th;
     };
@@ -376,7 +405,7 @@
       c.saidAt = m.t;
       if (c.firstAt == null) c.firstAt = m.t;
       if (!c.glow && (c.wrong > 0 || m.t - c.firstAt >= hintMs)) c.glow = true;
-      emit({ type: "call", i: c.i, pass: c.pass, uid: c.namedTh.uid, id: c.named, glow: c.glow });
+      emit({ type: "call", i: c.i, pass: c.pass, uid: c.namedTh.uid, id: c.named, glow: c.glow, x: c.namedTh.x });
     }
     function passEnded(c, how) {
       emit({ type: "pass", i: c.i, pass: c.pass, id: c.named, how });
@@ -389,6 +418,7 @@
       const f = fam[c.family] || c.group;
       c.group = W.groupFor(c.named, f, Math.max(2, c.group.length), rng);
       c.line = rng() < (plan.fieldShare != null ? plan.fieldShare : 0.3) ? "field" : "near";
+      if (!c.group.every((id) => W.linesOf(things[id]).includes(c.line))) c.line = GROUND.find((l) => c.group.every((id) => W.linesOf(things[id]).includes(l))) || c.line;
       nextGroupAt = m.road + viewW() * 0.12;
     }
 
@@ -430,6 +460,39 @@
 
     m.drain = () => m.events.splice(0, m.events.length);
 
+    // one sky thing or landmark comes on at the window's right edge (x0) on its line when the way is clear; returns when the next
+    // may come (road px)
+    let nextSkyAt = 0;
+    let nextFarAt = 0;
+    const lastOn = {};
+    function passBy(line, ids, at, [a, b], x0) {
+      const on = m.things.filter((o) => o.line === line).map((o) => o.id);
+      const pool = ids.filter((id) => !on.includes(id) && id !== lastOn[line]);
+      if (!pool.length) return m.road + viewW() * 0.3;
+      const id = pool[Math.floor(rng() * pool.length)];
+      const x = x0 != null ? x0 : vx1 + 10;
+      if (!regionClear(line, x, x + sizeOf(id, line).w + 10, false)) return m.road + viewW() * 0.1;
+      mk(id, line, x, -1);
+      lastOn[line] = id;
+      return m.road + viewW() * (a + rng() * (b - a));
+    }
+    // the road as the ride starts: a landmark on the far hills and a thing in the sky already in the window, whole (so the first
+    // look out is never an empty view with things only coming on, half behind the pillar)
+    m.begin = function () {
+      if (farOnly.length) nextFarAt = passBy("far", farOnly, 0, [1.1, 2.2], vx0 + viewW() * (0.12 + rng() * 0.12));
+      if (skyOnly.length) nextSkyAt = passBy("sky", skyOnly, 0, [0.9, 1.6], vx0 + viewW() * (0.6 + rng() * 0.12));
+      // one thing already passing on the field, whole in the window; the next comes on only once the first group has
+      const res = reserved();
+      const pool = passOnly.filter((id) => !res.has(id) && W.linesOf(things[id]).includes("field"));
+      if (pool.length) {
+        const id = pool[Math.floor(rng() * pool.length)];
+        const w = sizeOf(id, "field").w;
+        const x = vx0 + viewW() * 0.42;
+        if (x + w < vx1 - viewW() * 0.05) mk(id, "field", x, -1);
+      }
+      nextPasserAt = Math.max(nextPasserAt, viewW() * 0.6);
+    };
+
     if (opt.hold) m.setSpeed(opt.hold, "hold");
 
     m.step = function (dt) {
@@ -437,7 +500,7 @@
       m.t += dt;
       const d = vel() * dt;
       m.road += d;
-      for (const th of m.things) th.x -= d * lineSpeed[th.line];
+      for (const th of m.things) th.x -= d * speedOf(th);
       for (const p of m.props) p.x -= d * lineSpeed.near;
       const c = calls[ci];
       // the road since the last group's members went by: a short stretch with none in view before the next comes on
@@ -459,7 +522,9 @@
             c.glow = true;
             emit({ type: "glow", i: c.i, why: "wait" });
           }
-          if (c.namedTh.x + c.namedTh.w < vx0) passEnded(c, "missed");
+          // gone by: once it is half behind the window's left pillar it is no longer asked for (never a call or a glow on a
+          // thing half hidden by the frame); it comes round again
+          if (c.namedTh.x < vx0 && inWindow(c.namedTh) < 0.5) passEnded(c, "missed");
         }
       }
       // unasked things pass between the groups (never one of the current or next group's things: two goats would be unfair)
@@ -467,8 +532,8 @@
       const blocked = cur && ((cur.state === "wait" && m.road >= nextGroupAt - viewW() * 0.1) || cur.state === "coming");
       if (!m.done && passOnly.length && m.road >= nextPasserAt && !blocked) {
         const res = reserved();
-        const pool = passOnly.filter((id) => !res.has(id));
         const line = fieldLive() ? "field" : rng() < 0.5 ? "near" : "field";
+        const pool = passOnly.filter((id) => !res.has(id) && W.linesOf(things[id]).includes(line));
         if (pool.length) {
           const id = pool[Math.floor(rng() * pool.length)];
           const s = sizeOf(id, line);
@@ -487,6 +552,12 @@
           mkProp(id, vx1 + 10);
           nextPropAt = m.road + viewW() * (0.45 + rng() * 0.6);
         } else nextPropAt = m.road + viewW() * 0.08;
+      }
+      // the sky band (a kite, an aeroplane, a butterfly) and the far hills (a windmill, a rainbow): one at a time on each, never
+      // the same one twice running; they only pass (never asked, never look-alikes of what is)
+      if (!m.done) {
+        if (skyOnly.length && m.road >= nextSkyAt) nextSkyAt = passBy("sky", skyOnly, nextSkyAt, [0.9, 1.6]);
+        if (farOnly.length && m.road >= nextFarAt) nextFarAt = passBy("far", farOnly, nextFarAt, [1.1, 2.2]);
       }
       // things gone by leave; a found thing leaves once it has hopped up and away (the screen's found animation, 0.6 s)
       m.things = m.things.filter((o) => (o.x + o.w > vx0 - 60 || (calls[ci] && calls[ci].namedTh === o)) && !(o.got && m.t - o.gotAt > 650));
@@ -567,8 +638,9 @@
 .wr-view { position: absolute; overflow: hidden; }
 .wr-view > .wr-scene { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .wr-car { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-.wr-car > img { position: absolute; top: 0; display: block; user-select: none; -webkit-user-drag: none; }
-.wr-car > img.wr-car-side { object-fit: fill; }
+.wr-car-part { position: absolute; overflow: hidden; }
+.wr-car-part > img { position: absolute; display: block; max-width: none; user-select: none; -webkit-user-drag: none; }
+.wr-car-under { right: auto; bottom: auto; z-index: 0; overflow: hidden; }
 .wr-lane .wr-thing { left: 0; top: 0; will-change: transform; }
 .wr-body { position: absolute; display: block; pointer-events: none; }
 .wr-body > img, .wr-body > svg { width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; }
@@ -661,10 +733,13 @@
   /**
    * One frame of the ride's clock (pure: the screen's frame loop and the tests): the road moves by exactly the frame's real time
    * (ms, times the test speed), in pieces of at most 50 ms of ride time whose sum is the frame's, so a long frame is one even
-   * move, never a stall that creeps after. A gap over a second (a hidden tab, a paused page) counts as one 16 ms frame.
+   * move, never a stall that creeps after. A gap over W.STALL (a hidden tab, a paused page, a busy page that froze for a moment)
+   * counts as one 16 ms frame: the road never leaps on by a quarter second or more, so a thing asked for is never carried off
+   * past the pillar while the page was stuck (RIDE-04).
    */
+  W.STALL = 250;
   W.advance = function (model, ms, speed = 1) {
-    if (!(ms >= 0) || ms > 1000) ms = 16;
+    if (!(ms >= 0) || ms > W.STALL) ms = 16;
     let dt = ms * speed;
     while (dt > 1e-9) {
       const d = Math.min(dt, 50);
@@ -710,32 +785,69 @@
       scene.appendChild(L.strip);
       layers[id] = L;
     };
-    // back to front: far, middle, the field's things, near, the verge's things, the props
+    // back to front: far, the far hills' landmarks, the sky's things, middle, the field's things, near, the verge's things, the props
     addLayer("far");
+    lane.far = h("div", "wr-lane wr-line-far", scene);
+    lane.sky = h("div", "wr-lane wr-line-sky", scene);
     addLayer("middle");
     lane.field = h("div", "wr-lane wr-line-field", scene);
     addLayer("near");
     lane.near = h("div", "wr-lane wr-line-near", scene);
     const propLane = h("div", "wr-lane wr-props", scene);
-    // the frame: the keyed car window fitted by height, its sides extended by its own outer columns (pillar and seat)
+    // the frame: the keyed car window. With a `show` box (the wide window: both pillars and the sill, art px) it is fitted so
+    // that box is whole in the play area, as big as that allows; else by height (the first window). Where the picture stops
+    // short of an edge it is carried on: sideways by its own mirror image (from `mirrorAt`, the columns just inside its outer
+    // edges), up and down by its top and bottom edges' colours; and on under the host's sidebar (o.under: an element behind it),
+    // so the car's inside runs the whole width of the screen (never a plain column)
     const fr = view.frame || {};
     const car = useArt && fr.art ? h("div", "wr-car", win) : null;
+    const under = car && o.under ? h("div", "wr-car wr-car-under", o.under) : null;
     const frameEl = car ? null : h("div", "wr-frame", win);
-    let carImg = null;
-    let carL = null;
-    let carR = null;
-    if (car) {
-      carL = h("img", "wr-car-side", car);
-      carR = h("img", "wr-car-side", car);
-      carImg = h("img", "wr-car-main", car);
-      [carL, carR, carImg].forEach((im) => {
+    /** the car's pieces in one host: the picture, its mirrored sides, its stretched top and bottom rows */
+    const carParts = (host) => {
+      const part = (cls) => {
+        const box = h("div", `wr-car-part ${cls}`, host);
+        const im = h("img", "", box);
         im.alt = "";
         im.draggable = false;
+        im.src = url(fr.art);
+        return { box, im };
+      };
+      const P = { main: part("wr-car-main"), l: part("wr-car-l"), r: part("wr-car-r"), t: part("wr-car-t"), b: part("wr-car-b") };
+      // behind a mirrored side: the pillar's trim (data `trim`), where the mirror image has the window's keyed opening
+      if (fr.trim) [P.l, P.r].forEach((p) => (p.box.style.background = fr.trim));
+      // above and below the picture: its top and bottom edges' own colours carried on as soft gradients (data `edges`; never the
+      // picture's rows stretched, which would blow the picture up far past its resolution)
+      [[P.t, "top"], [P.b, "bottom"]].forEach(([p, k]) => {
+        p.im.style.display = "none";
+        if (fr.edges && fr.edges[k]) p.box.style.background = fr.edges[k];
       });
-      carImg.src = url(fr.art);
-      if (fr.left) carL.src = url(fr.left);
-      if (fr.right) carR.src = url(fr.right);
-    }
+      return P;
+    };
+    const carSet = car ? carParts(car) : null;
+    const underSet = under ? carParts(under) : null;
+    // (what no piece reaches, a corner: the frame's own dark trim colour, never the page's cream)
+    if (car && fr.fill) [win, under].forEach((e) => e && (e.style.background = fr.fill));
+    /** lay the car's pieces out in a host whose left edge is `dx` px left of the window's, over a host width `HW` */
+    const placeCar = (P, A, dx, HW, H0) => {
+      const { k, fx, fy, fw, fh } = A;
+      const X = fx + dx;
+      const set = (p, box, im) => {
+        Object.assign(p.box.style, { left: `${box[0]}px`, top: `${box[1]}px`, width: `${Math.max(0, box[2])}px`, height: `${Math.max(0, box[3])}px`, display: box[2] > 0.5 && box[3] > 0.5 ? "block" : "none" });
+        Object.assign(p.im.style, im);
+      };
+      set(P.main, [X, fy, fw, fh], { left: "0px", top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "none" });
+      // sideways: the picture mirrored about the column `mirrorAt` px in from each outer edge (a flipped copy shows column c at
+      // left + fw - c k: column ml lands on the left axis with the rest running on leftwards, column mr on the right one)
+      const [ml, mr] = fr.mirrorAt || [0, fr.w || 1536];
+      const axL = X + ml * k;
+      const axR = X + mr * k;
+      set(P.l, [0, fy, axL, fh], { left: `${axL - fw + ml * k}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "scaleX(-1)" });
+      set(P.r, [axR, fy, HW - axR, fh], { left: `${mr * k - fw}px`, top: "0px", width: `${fw}px`, height: `${fh}px`, transform: "scaleX(-1)" });
+      // up and down: the gaps above and below the picture, its edges' colours carried on (the headliner, the door panel)
+      set(P.t, [X, 0, fw, fy], {});
+      set(P.b, [X, fy + fh, fw, H0 - (fy + fh)], {});
+    };
 
     const fit = { s: 1, tx: 0, open: null, vl: 0, vt: 0 };
     const BLEED = 4;
@@ -746,14 +858,40 @@
       if (car) {
         const fw0 = fr.w || 1536;
         const fh0 = fr.h || 1024;
-        const k = H0 / fh0;
-        const fw = fw0 * k;
-        const fx = (W0 - fw) / 2;
-        Object.assign(carImg.style, { left: `${fx}px`, width: `${fw}px`, height: `${H0}px` });
-        Object.assign(carL.style, { left: "0px", width: `${Math.max(0, fx) + 2}px`, height: `${H0}px`, display: fx > 0 ? "block" : "none" });
-        Object.assign(carR.style, { left: `${fx + fw - 2}px`, width: `${Math.max(0, W0 - fx - fw) + 2}px`, height: `${H0}px`, display: fx > 0 ? "block" : "none" });
         const o4 = fr.opening || [0, 0, fw0, fh0];
-        op = { l: Math.max(0, fx + o4[0] * k), t: o4[1] * k, r: Math.min(W0, fx + o4[2] * k), b: o4[3] * k };
+        let k;
+        let fx;
+        let fy;
+        if (fr.show) {
+          // the show box whole and as big as it can be, centred; the picture then covers what it can (never pulled in past an
+          // edge it reaches); short of the bottom it sits on the bottom (the gap goes to the headliner above)
+          const [sx0, sy0, sx1, sy1] = fr.show;
+          k = Math.min(W0 / (sx1 - sx0), H0 / (sy1 - sy0));
+          fx = W0 / 2 - ((sx0 + sx1) / 2) * k;
+          fy = H0 / 2 - ((sy0 + sy1) / 2) * k;
+          const fw = fw0 * k;
+          const fh = fh0 * k;
+          if (fw >= W0) fx = Math.min(0, Math.max(W0 - fw, fx));
+          if (fh >= H0) fy = Math.min(0, Math.max(H0 - fh, fy));
+          else fy = H0 - fh;
+          // the show box stays whole whatever the clamps did
+          fx = Math.min(-sx0 * k, Math.max(W0 - sx1 * k, fx));
+        } else {
+          k = H0 / fh0;
+          fx = (W0 - fw0 * k) / 2;
+          fy = 0;
+        }
+        fit.car = { k, fx, fy, fw: fw0 * k, fh: fh0 * k };
+        placeCar(carSet, fit.car, 0, W0, H0);
+        if (under) {
+          const ur = o.under.getBoundingClientRect();
+          const wr = win.getBoundingClientRect();
+          placeCar(underSet, fit.car, wr.left - ur.left, ur.width, H0);
+          under.style.top = `${wr.top - ur.top}px`;
+          under.style.height = `${H0}px`;
+          under.style.width = `${Math.max(0, wr.left - ur.left)}px`;
+        }
+        op = { l: Math.max(0, fx + o4[0] * k), t: Math.max(0, fy + o4[1] * k), r: Math.min(W0, fx + o4[2] * k), b: Math.min(H0, fy + o4[3] * k) };
       }
       fit.open = op;
       const vw = op.r - op.l + 2 * BLEED;
@@ -808,8 +946,11 @@
       const body = h("span", "wr-body", b);
       Object.assign(body.style, { left: `${(th.w - th.artW) / 2}px`, top: `${th.h - th.artH}px`, width: `${th.artW}px`, height: `${th.artH}px` });
       draw(def, body);
-      const ct = h("i", "wr-contact", b);
-      Object.assign(ct.style, { left: `${(th.w - th.artW * 0.64) / 2}px`, right: "auto", width: `${th.artW * 0.64}px` });
+      // a ground shadow only for a thing on the ground (never under a kite, a butterfly or a far landmark)
+      if (th.line === "near" || th.line === "field") {
+        const ct = h("i", "wr-contact", b);
+        Object.assign(ct.style, { left: `${(th.w - th.artW * 0.64) / 2}px`, right: "auto", width: `${th.artW * 0.64}px` });
+      }
       b.addEventListener("pointerdown", (ev) => {
         ev.preventDefault();
         tap(th);
@@ -852,11 +993,13 @@
       const th = model.things.find((x) => x.uid === ev.uid);
       if (!th) return;
       const top = model.topOf(th);
-      const occ = model.inFront(th).map(rectStr).join(";");
+      // where it was when she asked (the event's own moment: a frame can hold several steps), what was in front of it then
+      const dx = ev.x != null ? ev.x - th.x : 0;
+      const occ = model.inFront(th).map((b) => rectStr(Object.assign({}, b, { x: b.x + dx }))).join(";");
       const op = fit.open;
       const pr = win.getBoundingClientRect();
       const edge = th.line === "field" ? Math.round(toScreen(0, model.lines.field.edge).y) : "";
-      note("ride-call", ev.i, `thing:${th.id} pass:${ev.pass} line:${th.line} speed:${model.speed} box:${rectStr({ x: th.x, y: top, w: th.w, h: th.h })} open:${Math.round(pr.left + op.l)},${Math.round(pr.top + op.t)},${Math.round(pr.left + op.r)},${Math.round(pr.top + op.b)} occ:${occ} edge:${edge}`);
+      note("ride-call", ev.i, `thing:${th.id} pass:${ev.pass} line:${th.line} speed:${model.speed} box:${rectStr({ x: th.x + dx, y: top, w: th.w, h: th.h })} open:${Math.round(pr.left + op.l)},${Math.round(pr.top + op.t)},${Math.round(pr.left + op.r)},${Math.round(pr.top + op.b)} occ:${occ} edge:${edge}`);
     };
 
     // the model's news -> the host (Nani's lines) and the log
@@ -892,6 +1035,7 @@
     let last = null;
     let rafId = 0;
     let stopped = false;
+    let ro = null;
     const step = (now) => {
       if (stopped) return;
       if (last == null) last = now;
@@ -962,13 +1106,21 @@
       model,
       start() {
         layout();
+        model.begin();
         if (root.addEventListener) root.addEventListener("resize", layout);
+        // the play area or the sidebar can change size without a window resize (the frame's sidebar settling)
+        if (typeof root.ResizeObserver === "function") {
+          ro = new root.ResizeObserver(() => layout());
+          ro.observe(win);
+          if (o.under) ro.observe(o.under);
+        }
         handle();
         rafId = raf(step);
       },
       stop() {
         stopped = true;
         caf(rafId);
+        if (ro) ro.disconnect();
         if (root.removeEventListener) root.removeEventListener("resize", layout);
       },
       layout,

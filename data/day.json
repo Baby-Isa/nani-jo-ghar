@@ -196,60 +196,312 @@
       "farm-road": {
         "vehicle": "car",
         "view": {
-          "frame": { "art": "assets/day/ride/car-window.webp", "left": "assets/day/ride/car-window-left.webp", "right": "assets/day/ride/car-window-right.webp", "w": 1536, "h": 1024, "opening": [152, 49, 1437, 795], "src": "sources/art/s09a/r1-car-window-v1.png (keyed: green to alpha, 1 px eroded; the sides are its outer two columns, stretched)" },
+          "frame": {
+            "art": "assets/day/s09b/car-window-wide.webp",
+            "w": 1536,
+            "h": 1024,
+            "opening": [232,144,1330,706],
+            "show": [120,96,1400,770],
+            "mirrorAt": [60,1520],
+            "fill": "#7a502f",
+            "trim": "linear-gradient(180deg, #96623a 0%, #c48f58 35%, #a87346 60%, #6e4a30 75%, #5a4030 100%)",
+            "edges": { "top": "linear-gradient(to top, transparent 0, rgba(40, 24, 14, 0.35) 100%), linear-gradient(to right, #8a562f 0%, #87562f 30%, #80522f 45%, #6f482a 60%, #7e5231 75%, #7a5031 100%)", "bottom": "linear-gradient(to bottom, transparent 0, rgba(20, 14, 10, 0.4) 100%), linear-gradient(to right, #221a15 0%, #2e3035 33%, #4d3323 60%, #623d26 75%, #423329 100%)" },
+            "src": "sources/art/s09b (W1, keyed by build/tools/art/cut_s09b.py; the opening from its cut-report.json)",
+            "_about": "The wide window (Zafar, 21 Oct: both pillars show on 4:3 tablets): the frame is fitted so its `show` box (both pillars and the sill, art px) is whole inside the play area, as big as that allows; the opening [x0, y0, x1, y1] is the view. Where the art does not reach an edge of the screen it is carried on by its own mirror image sideways (at `mirrorAt`, the columns just inside its outer edges, so the strip of the next window at its very edge never shows) and above and below by its edges' own colours as soft gradients (`edges`; behind a mirrored side the pillar's `trim`); the car runs on under the sidebar (never a plain column under the word rail)."
+          },
           "layers": [
-            { "id": "far", "speed": 0.15, "y": 300, "h": 360, "tile": 1600, "art": "assets/day/ride/s09r/far-hills.webp", "artBox": { "y": 280, "h": 618, "tile": 1600 }, "cut": "assets/day/ride/s09r/far-hills.webp", "shapes": [{ "t": "rect", "x": 0, "y": 150, "w": 1600, "h": 210, "fill": "#9cb87a" }, { "t": "ellipse", "cx": 470, "cy": 172, "rx": 290, "ry": 118, "fill": "#8fae6b" }, { "t": "ellipse", "cx": 860, "cy": 150, "rx": 330, "ry": 140, "fill": "#86a663" }, { "t": "ellipse", "cx": 1250, "cy": 176, "rx": 180, "ry": 96, "fill": "#93b170" }, { "t": "circle", "cx": 560, "cy": 78, "r": 20, "fill": "#6f8f4a" }, { "t": "circle", "cx": 900, "cy": 40, "r": 22, "fill": "#6f8f4a" }, { "t": "circle", "cx": 940, "cy": 46, "r": 16, "fill": "#6f8f4a" }, { "t": "circle", "cx": 1240, "cy": 96, "r": 18, "fill": "#6f8f4a" }] },
-            { "id": "middle", "speed": 0.4, "y": 450, "h": 300, "tile": 1400, "lead": {"placeholder": "the shops game's own art replaces this once agreed (Zafar, 20 Oct: 'you can do shops now, just put in placeholders')", "_about": "The ride starts by leaving town: the first stretch of the middle layer (copies up to `last`, about one window) is the town's shops, then the fields, joined by the same cross-fade", "last": 0, "art": "assets/day/ride/s09r/town-shops.webp", "cut": "assets/day/ride/s09r/town-shops.webp", "artBox": {"y": 380, "h": 274, "tile": 1600}, "y": 400, "h": 340, "tile": 1600, "shapes": [{"t": "rect", "x": 0, "y": 280, "w": 1600, "h": 60, "fill": "#d8c7a6"}, {"t": "rect", "x": 0, "y": 250, "w": 1600, "h": 34, "r": 6, "fill": "#e2d2b2"}, {"t": "rect", "x": 200, "y": 90, "w": 260, "h": 200, "r": 10, "fill": "#ecdcbc"}, {"t": "rect", "x": 280, "y": 170, "w": 90, "h": 120, "r": 45, "fill": "#8c5a35"}, {"t": "rect", "x": 200, "y": 120, "w": 260, "h": 26, "fill": "#cf8f4f"}, {"t": "rect", "x": 520, "y": 60, "w": 300, "h": 230, "r": 10, "fill": "#f1e4c8"}, {"t": "rect", "x": 600, "y": 160, "w": 100, "h": 130, "r": 50, "fill": "#7a4a2b"}, {"t": "rect", "x": 740, "y": 130, "w": 56, "h": 56, "r": 8, "fill": "#5f7f95"}, {"t": "rect", "x": 880, "y": 100, "w": 250, "h": 190, "r": 10, "fill": "#e6d2ac"}, {"t": "rect", "x": 880, "y": 126, "w": 250, "h": 24, "fill": "#7fa36a"}, {"t": "rect", "x": 960, "y": 180, "w": 86, "h": 110, "r": 43, "fill": "#8c5a35"}, {"t": "rect", "x": 1180, "y": 70, "w": 230, "h": 220, "r": 10, "fill": "#efe0c2"}, {"t": "rect", "x": 1250, "y": 170, "w": 90, "h": 120, "r": 45, "fill": "#7a4a2b"}, {"t": "ellipse", "cx": 486, "cy": 268, "rx": 20, "ry": 22, "fill": "#b0603f"}, {"t": "circle", "cx": 486, "cy": 240, "r": 18, "fill": "#5f8a3e"}, {"t": "ellipse", "cx": 1150, "cy": 268, "rx": 20, "ry": 22, "fill": "#b0603f"}, {"t": "circle", "cx": 1150, "cy": 240, "r": 18, "fill": "#5f8a3e"}]}, "art": "assets/day/ride/s09r/middle-fields.webp", "artBox": { "y": 253, "h": 670, "tile": 1600 }, "cut": "assets/day/ride/s09r/middle-fields.webp", "shapes": [{ "t": "rect", "x": 0, "y": 52, "w": 1400, "h": 248, "fill": "#b9c77a" }, { "t": "rect", "x": 0, "y": 40, "w": 1400, "h": 26, "r": 12, "fill": "#7d9a4e" }, { "t": "rect", "x": 0, "y": 130, "w": 1400, "h": 10, "fill": "#aab86c" }, { "t": "rect", "x": 0, "y": 150, "w": 1400, "h": 8, "fill": "#8c7a5a" }, { "t": "rect", "x": 220, "y": 128, "w": 10, "h": 50, "fill": "#8c7a5a" }, { "t": "rect", "x": 420, "y": 128, "w": 10, "h": 50, "fill": "#8c7a5a" }, { "t": "rect", "x": 620, "y": 128, "w": 10, "h": 50, "fill": "#8c7a5a" }, { "t": "rect", "x": 820, "y": 128, "w": 10, "h": 50, "fill": "#8c7a5a" }, { "t": "rect", "x": 1020, "y": 128, "w": 10, "h": 50, "fill": "#8c7a5a" }, { "t": "rect", "x": 1160, "y": 128, "w": 10, "h": 50, "fill": "#8c7a5a" }, { "t": "rect", "x": 342, "y": 20, "w": 16, "h": 40, "fill": "#7a5233" }, { "t": "circle", "cx": 350, "cy": 4, "r": 44, "fill": "#5f8a3e" }, { "t": "rect", "x": 892, "y": 16, "w": 18, "h": 44, "fill": "#7a5233" }, { "t": "circle", "cx": 901, "cy": -4, "r": 52, "fill": "#5a8239" }] },
-            { "id": "near", "speed": 1, "y": 640, "h": 260, "tile": 1200, "art": "assets/day/ride/s09r/near-verge.webp", "artBox": { "y": 640, "h": 502, "tile": 1600 }, "cut": "assets/day/ride/s09r/near-verge.webp", "shapes": [{ "t": "rect", "x": 0, "y": 12, "w": 1200, "h": 248, "fill": "#a9bd6e" }, { "t": "rect", "x": 0, "y": 190, "w": 1200, "h": 70, "fill": "#97ad5e" }, { "t": "poly", "pts": [[200, 14], [212, -6], [222, 14]], "fill": "#94ab5a" }, { "t": "poly", "pts": [[480, 14], [490, -10], [502, 14]], "fill": "#94ab5a" }, { "t": "poly", "pts": [[760, 14], [772, -4], [782, 14]], "fill": "#94ab5a" }, { "t": "poly", "pts": [[960, 14], [968, -8], [978, 14]], "fill": "#94ab5a" }, { "t": "ellipse", "cx": 330, "cy": 120, "rx": 22, "ry": 12, "fill": "#c9c0ae" }, { "t": "ellipse", "cx": 650, "cy": 210, "rx": 28, "ry": 14, "fill": "#c9c0ae" }, { "t": "ellipse", "cx": 900, "cy": 150, "rx": 18, "ry": 10, "fill": "#c9c0ae" }] }
+            {
+              "id": "far",
+              "speed": 0.15,
+              "y": 300,
+              "h": 360,
+              "tile": 1600,
+              "art": "assets/day/s09b/far-hills.webp",
+              "artBox": {"y":280,"h":619,"tile":1600},
+              "cut": "assets/day/s09b/far-hills.webp",
+              "shapes": [
+                {"t":"rect","x":0,"y":150,"w":1600,"h":210,"fill":"#9cb87a"},
+                {"t":"ellipse","cx":470,"cy":172,"rx":290,"ry":118,"fill":"#8fae6b"},
+                {"t":"ellipse","cx":860,"cy":150,"rx":330,"ry":140,"fill":"#86a663"},
+                {"t":"ellipse","cx":1250,"cy":176,"rx":180,"ry":96,"fill":"#93b170"},
+                {"t":"circle","cx":560,"cy":78,"r":20,"fill":"#6f8f4a"},
+                {"t":"circle","cx":900,"cy":40,"r":22,"fill":"#6f8f4a"},
+                {"t":"circle","cx":940,"cy":46,"r":16,"fill":"#6f8f4a"},
+                {"t":"circle","cx":1240,"cy":96,"r":18,"fill":"#6f8f4a"}
+              ]
+            },
+            {
+              "id": "middle",
+              "speed": 0.4,
+              "y": 450,
+              "h": 300,
+              "tile": 1400,
+              "lead": {
+                "placeholder": "the shops game's own art replaces this once agreed (Zafar, 20 Oct: 'you can do shops now, just put in placeholders')",
+                "_about": "The ride starts by leaving town: the first stretch of the middle layer (copies up to `last`, about one window) is the town's shops, then the fields, joined by the same cross-fade",
+                "last": 0,
+                "art": "assets/day/ride/s09r/town-shops.webp",
+                "cut": "assets/day/ride/s09r/town-shops.webp",
+                "artBox": {"y":380,"h":274,"tile":1600},
+                "y": 400,
+                "h": 340,
+                "tile": 1600,
+                "shapes": [
+                  {"t":"rect","x":0,"y":280,"w":1600,"h":60,"fill":"#d8c7a6"},
+                  {"t":"rect","x":0,"y":250,"w":1600,"h":34,"r":6,"fill":"#e2d2b2"},
+                  {"t":"rect","x":200,"y":90,"w":260,"h":200,"r":10,"fill":"#ecdcbc"},
+                  {"t":"rect","x":280,"y":170,"w":90,"h":120,"r":45,"fill":"#8c5a35"},
+                  {"t":"rect","x":200,"y":120,"w":260,"h":26,"fill":"#cf8f4f"},
+                  {"t":"rect","x":520,"y":60,"w":300,"h":230,"r":10,"fill":"#f1e4c8"},
+                  {"t":"rect","x":600,"y":160,"w":100,"h":130,"r":50,"fill":"#7a4a2b"},
+                  {"t":"rect","x":740,"y":130,"w":56,"h":56,"r":8,"fill":"#5f7f95"},
+                  {"t":"rect","x":880,"y":100,"w":250,"h":190,"r":10,"fill":"#e6d2ac"},
+                  {"t":"rect","x":880,"y":126,"w":250,"h":24,"fill":"#7fa36a"},
+                  {"t":"rect","x":960,"y":180,"w":86,"h":110,"r":43,"fill":"#8c5a35"},
+                  {"t":"rect","x":1180,"y":70,"w":230,"h":220,"r":10,"fill":"#efe0c2"},
+                  {"t":"rect","x":1250,"y":170,"w":90,"h":120,"r":45,"fill":"#7a4a2b"},
+                  {"t":"ellipse","cx":486,"cy":268,"rx":20,"ry":22,"fill":"#b0603f"},
+                  {"t":"circle","cx":486,"cy":240,"r":18,"fill":"#5f8a3e"},
+                  {"t":"ellipse","cx":1150,"cy":268,"rx":20,"ry":22,"fill":"#b0603f"},
+                  {"t":"circle","cx":1150,"cy":240,"r":18,"fill":"#5f8a3e"}
+                ]
+              },
+              "art": "assets/day/ride/s09r/middle-fields.webp",
+              "artBox": {"y":253,"h":670,"tile":1600},
+              "cut": "assets/day/ride/s09r/middle-fields.webp",
+              "shapes": [
+                {"t":"rect","x":0,"y":52,"w":1400,"h":248,"fill":"#b9c77a"},
+                {"t":"rect","x":0,"y":40,"w":1400,"h":26,"r":12,"fill":"#7d9a4e"},
+                {"t":"rect","x":0,"y":130,"w":1400,"h":10,"fill":"#aab86c"},
+                {"t":"rect","x":0,"y":150,"w":1400,"h":8,"fill":"#8c7a5a"},
+                {"t":"rect","x":220,"y":128,"w":10,"h":50,"fill":"#8c7a5a"},
+                {"t":"rect","x":420,"y":128,"w":10,"h":50,"fill":"#8c7a5a"},
+                {"t":"rect","x":620,"y":128,"w":10,"h":50,"fill":"#8c7a5a"},
+                {"t":"rect","x":820,"y":128,"w":10,"h":50,"fill":"#8c7a5a"},
+                {"t":"rect","x":1020,"y":128,"w":10,"h":50,"fill":"#8c7a5a"},
+                {"t":"rect","x":1160,"y":128,"w":10,"h":50,"fill":"#8c7a5a"},
+                {"t":"rect","x":342,"y":20,"w":16,"h":40,"fill":"#7a5233"},
+                {"t":"circle","cx":350,"cy":4,"r":44,"fill":"#5f8a3e"},
+                {"t":"rect","x":892,"y":16,"w":18,"h":44,"fill":"#7a5233"},
+                {"t":"circle","cx":901,"cy":-4,"r":52,"fill":"#5a8239"}
+              ]
+            },
+            {
+              "id": "near",
+              "speed": 1,
+              "y": 640,
+              "h": 260,
+              "tile": 1200,
+              "art": "assets/day/ride/s09r/near-verge.webp",
+              "artBox": {"y":676,"h":502,"tile":1600},
+              "cut": "assets/day/ride/s09r/near-verge.webp",
+              "shapes": [
+                {"t":"rect","x":0,"y":12,"w":1200,"h":248,"fill":"#a9bd6e"},
+                {"t":"rect","x":0,"y":190,"w":1200,"h":70,"fill":"#97ad5e"},
+                {"t":"poly","pts":[[200,14],[212,-6],[222,14]],"fill":"#94ab5a"},
+                {"t":"poly","pts":[[480,14],[490,-10],[502,14]],"fill":"#94ab5a"},
+                {"t":"poly","pts":[[760,14],[772,-4],[782,14]],"fill":"#94ab5a"},
+                {"t":"poly","pts":[[960,14],[968,-8],[978,14]],"fill":"#94ab5a"},
+                {"t":"ellipse","cx":330,"cy":120,"rx":22,"ry":12,"fill":"#c9c0ae"},
+                {"t":"ellipse","cx":650,"cy":210,"rx":28,"ry":14,"fill":"#c9c0ae"},
+                {"t":"ellipse","cx":900,"cy":150,"rx":18,"ry":10,"fill":"#c9c0ae"}
+              ]
+            }
           ],
-          "lines": { "near": { "y": 800, "scale": 1, "layer": "near" }, "field": { "y": 654, "scale": 0.55, "layer": "middle", "edge": 646 } },
+          "lines": {
+            "_about": "Where things stand (scene px): near, the verge by the road (bigger); field, the grass in front of the middle layer's fence (smaller, its feet above the verge's top edge, never on a rail); far, the far hills behind the hedge row (landmarks far off); sky, the band above the hills (a sky thing carries its own `y`). Each moves with its layer (a sky thing with its own `layer`).",
+            "near": {"y":830,"scale":1,"layer":"near"},
+            "field": {"y":682,"scale":0.55,"layer":"middle","edge":690},
+            "far": {"y":452,"scale":0.12,"layer":"far"},
+            "sky": {"y":270,"scale":1,"layer":"far"}
+          },
           "itemH": 230,
           "gapK": 0.15,
           "propHalf": 0.4,
           "props": {
-            "bush": { "en": "bush", "art": "assets/day/ride/s09r/bush.webp", "cut": "assets/day/ride/s09r/bush.webp", "shape": "bush", "fill": "#5d8a3c", "h": 0.72, "ratio": 1.35, "cover": [0.05, 0.15, 0.95, 1] },
-            "haystack": { "en": "haystack", "art": "assets/day/ride/s09r/haystack.webp", "cut": "assets/day/ride/s09r/haystack.webp", "shape": "haystack", "fill": "#d9b25a", "fill2": "#8a6a2a", "h": 0.7, "ratio": 1.68, "cover": [0.05, 0.12, 0.95, 1] },
-            "wall": { "en": "low stone wall", "art": "assets/day/ride/s09r/wall.webp", "cut": "assets/day/ride/s09r/wall.webp", "shape": "wall", "fill": "#b9ad98", "fill2": "#5a5046", "h": 0.5, "ratio": 3.04, "cover": [0, 0.08, 1, 1] },
-            "tree": { "en": "tree", "art": "assets/day/ride/s09r/tree.webp", "cut": "assets/day/ride/s09r/tree.webp", "shape": "tree", "fill": "#5f8a3e", "h": 1.9, "ratio": 0.9, "dy": 14, "cover": [[0.42, 0.62, 0.58, 1], [0.06, 0.02, 0.94, 0.68]] }
-          }
+            "bush": {"en":"bush","art":"assets/day/ride/s09r/bush.webp","cut":"assets/day/ride/s09r/bush.webp","shape":"bush","fill":"#5d8a3c","h":0.72,"ratio":1.35,"cover":[0.05,0.15,0.95,1]},
+            "haystack": {
+              "en": "haystack",
+              "art": "assets/day/ride/s09r/haystack.webp",
+              "cut": "assets/day/ride/s09r/haystack.webp",
+              "shape": "haystack",
+              "fill": "#d9b25a",
+              "fill2": "#8a6a2a",
+              "h": 0.7,
+              "ratio": 1.68,
+              "cover": [0.05,0.12,0.95,1]
+            },
+            "wall": {
+              "en": "low stone wall",
+              "art": "assets/day/ride/s09r/wall.webp",
+              "cut": "assets/day/ride/s09r/wall.webp",
+              "shape": "wall",
+              "fill": "#b9ad98",
+              "fill2": "#5a5046",
+              "h": 0.5,
+              "ratio": 3.04,
+              "cover": [0,0.08,1,1]
+            },
+            "tree": {
+              "en": "tree",
+              "art": "assets/day/ride/s09r/tree.webp",
+              "cut": "assets/day/ride/s09r/tree.webp",
+              "shape": "tree",
+              "fill": "#5f8a3e",
+              "h": 1.9,
+              "ratio": 0.9,
+              "dy": 14,
+              "cover": [[0.42,0.62,0.58,1],[0.06,0.02,0.94,0.68]]
+            }
+          },
+          "perM": 1,
+          "_sizes": "A thing's height is its real height `m` (metres) times `perM` (itemH per metre) times its line's scale, so a hen, a goat, a cow and a bus keep their real ratios; never drawn under three quarters of a tap target (a bird stays findable on a phone). Sky things and the rainbow carry `h` (a share of itemH) instead. `lines`: where a thing may stand (default the near verge and the field)."
         },
         "groups": {
-          "_about": "The farm road's things in three groups (Zafar, 20 Oct): review from earlier days, the farm animals to come, things you might see passing. A thing's `family` is its look-alike set (a group is k of one family); a thing the engine can't say yet (cow, tractor, bicycle: gaps to record) is never named and only passes by.",
-          "review": ["red-door", "green-door"],
-          "animals": ["goat", "hen", "dog", "bird", "cow"],
-          "passing": ["tractor", "bicycle"]
+          "_about": "The farm road's things in three groups (Zafar, 20 Oct): review from earlier days, the farm animals to come, things you might see passing. A thing's `family` is its look-alike set (a group is k of one family); a thing the engine can't say yet (today every s09b thing but the car: gaps to record) is never named and only passes by. Sky things fly in the band above the hills; landmarks pass on the far hills or the field; vehicles and the big animals keep to the field (their real height would fill the window on the verge).",
+          "review": ["red-door","green-door"],
+          "animals": ["goat","hen","dog","bird","cow","sheep","donkey","horse","buffalo","duck","camel","hen-chicks"],
+          "passing": ["bus","tractor","bicycle","car","milk-van","kite","aeroplane","butterfly","windmill","well","rainbow"]
         },
         "things": {
-          "red-door": { "en": "red door", "say": { "fn": "Item", "kind": "n.door", "mods": ["a.red"] }, "group": "review", "family": "door", "art": "assets/day/ride/s09r/red-door.webp", "cut": "assets/day/ride/s09r/red-door.webp", "shape": "door", "fill": "#b8433a", "h": 1.1, "ratio": 1.03 },
-          "green-door": { "en": "green door", "say": { "fn": "Item", "kind": "n.door", "mods": ["a.green"] }, "group": "review", "family": "door", "art": "assets/day/ride/s09r/green-door.webp", "cut": "assets/day/ride/s09r/green-door.webp", "shape": "door", "fill": "#4f8a4a", "h": 1.1, "ratio": 1.03 },
-          "goat": { "en": "goat", "say": "n.she-goat", "group": "animals", "family": "animal", "art": "assets/day/ride/s09r/goat.webp", "cut": "assets/day/ride/s09r/goat.webp", "h": 0.95, "ratio": 0.86 },
-          "hen": { "en": "hen", "say": "n.chicken", "group": "animals", "family": "animal", "art": "assets/day/ride/s09r/hen.webp", "cut": "assets/day/ride/s09r/hen.webp", "h": 0.62, "ratio": 0.79 },
-          "dog": { "en": "dog", "say": "n.dog", "group": "animals", "family": "animal", "art": "assets/day/ride/s09r/dog.webp", "cut": "assets/day/ride/s09r/dog.webp", "shape": "animal", "fill": "#9a6a3e", "h": 0.8, "ratio": 0.97 },
-          "bird": { "en": "bird", "say": "n.bird", "group": "animals", "family": "animal", "art": "assets/day/ride/s09r/bird.webp", "cut": "assets/day/ride/s09r/bird.webp", "shape": "bird", "fill": "#5f86b0", "h": 0.8, "ratio": 0.64 },
-          "cow": { "en": "cow", "say": "n.cow", "group": "animals", "family": "animal", "art": null, "cut": null, "shape": "cow", "fill": "#f2ece0", "fill2": "#3b3633", "h": 1.15, "ratio": 1.15, "_note": "Zafar named the cow's word (20 Oct); the engine has no n.cow yet, so it is a gap to record (no Kutchi written here) and the cow only passes by until Mum's word is in" },
-          "tractor": { "en": "tractor", "say": "n.tractor", "group": "passing", "family": "vehicle", "art": null, "cut": null, "shape": "tractor", "fill": "#d08a2e", "h": 1.1, "ratio": 1.2 },
-          "bicycle": { "en": "bicycle", "say": "n.bicycle", "group": "passing", "family": "vehicle", "art": null, "cut": null, "shape": "bicycle", "fill": "#3f7fa8", "h": 0.8, "ratio": 1.2 }
+          "red-door": {
+            "en": "red door",
+            "say": {"fn":"Item","kind":"n.door","mods":["a.red"]},
+            "group": "review",
+            "family": "door",
+            "art": "assets/day/ride/s09r/red-door.webp",
+            "cut": "assets/day/ride/s09r/red-door.webp",
+            "shape": "door",
+            "fill": "#b8433a",
+            "ratio": 1.03,
+            "m": 2.4,
+            "lines": ["field"]
+          },
+          "green-door": {
+            "en": "green door",
+            "say": {"fn":"Item","kind":"n.door","mods":["a.green"]},
+            "group": "review",
+            "family": "door",
+            "art": "assets/day/ride/s09r/green-door.webp",
+            "cut": "assets/day/ride/s09r/green-door.webp",
+            "shape": "door",
+            "fill": "#4f8a4a",
+            "ratio": 1.03,
+            "m": 2.4,
+            "lines": ["field"]
+          },
+          "goat": {"en":"goat","say":"n.she-goat","group":"animals","family":"animal","art":"assets/day/ride/s09r/goat.webp","cut":"assets/day/ride/s09r/goat.webp","ratio":0.86,"m":0.8},
+          "hen": {"en":"hen","say":"n.chicken","group":"animals","family":"animal","art":"assets/day/ride/s09r/hen.webp","cut":"assets/day/ride/s09r/hen.webp","ratio":0.79,"m":0.45},
+          "dog": {
+            "en": "dog",
+            "say": "n.dog",
+            "group": "animals",
+            "family": "animal",
+            "art": "assets/day/ride/s09r/dog.webp",
+            "cut": "assets/day/ride/s09r/dog.webp",
+            "shape": "animal",
+            "fill": "#9a6a3e",
+            "ratio": 0.97,
+            "m": 0.6
+          },
+          "bird": {
+            "en": "bird",
+            "say": "n.bird",
+            "group": "animals",
+            "family": "animal",
+            "art": "assets/day/ride/s09r/bird.webp",
+            "cut": "assets/day/ride/s09r/bird.webp",
+            "shape": "bird",
+            "fill": "#5f86b0",
+            "ratio": 0.64,
+            "m": 0.3
+          },
+          "cow": {
+            "art": "assets/day/s09b/cow.webp",
+            "cut": "assets/day/s09b/cow.webp",
+            "ratio": 0.96,
+            "en": "cow",
+            "say": "n.cow",
+            "group": "animals",
+            "family": "animal",
+            "m": 1.4,
+            "_note": "Zafar named the cow's word (20 Oct); the engine has no n.cow yet, so it is a gap to record (no Kutchi written here) and the cow only passes by until Mum's word is in"
+          },
+          "tractor": {"art":"assets/day/s09b/tractor.webp","cut":"assets/day/s09b/tractor.webp","ratio":1.26,"en":"tractor","say":"n.tractor","group":"passing","family":"vehicle","m":2.3,"lines":["field"]},
+          "bicycle": {"art":"assets/day/s09b/bicycle.webp","cut":"assets/day/s09b/bicycle.webp","ratio":1.39,"en":"bicycle","say":"n.bicycle","group":"passing","family":"vehicle","m":1,"lines":["field"]},
+          "sheep": {"art":"assets/day/s09b/sheep.webp","cut":"assets/day/s09b/sheep.webp","ratio":0.89,"en":"sheep","say":"n.sheep","group":"animals","family":"animal","m":0.9},
+          "donkey": {"art":"assets/day/s09b/donkey.webp","cut":"assets/day/s09b/donkey.webp","ratio":0.76,"en":"donkey","say":"n.donkey","group":"animals","family":"animal","m":1.2},
+          "horse": {"art":"assets/day/s09b/horse.webp","cut":"assets/day/s09b/horse.webp","ratio":0.81,"en":"horse","say":"n.horse","group":"animals","family":"animal","m":1.6,"lines":["field"]},
+          "buffalo": {"art":"assets/day/s09b/buffalo.webp","cut":"assets/day/s09b/buffalo.webp","ratio":1.06,"en":"buffalo","say":"n.buffalo","group":"animals","family":"animal","m":1.5,"lines":["field"]},
+          "duck": {"art":"assets/day/s09b/duck.webp","cut":"assets/day/s09b/duck.webp","ratio":0.9,"en":"duck","say":"n.duck","group":"animals","family":"animal","m":0.5},
+          "camel": {"art":"assets/day/s09b/camel.webp","cut":"assets/day/s09b/camel.webp","ratio":0.9,"en":"camel","say":"n.camel","group":"animals","family":"animal","m":2,"lines":["field"]},
+          "hen-chicks": {"art":"assets/day/s09b/hen-chicks.webp","cut":"assets/day/s09b/hen-chicks.webp","ratio":0.96,"en":"hen with her chicks","say":"n.chick","group":"animals","family":"animal","m":0.45},
+          "bus": {"art":"assets/day/s09b/bus.webp","cut":"assets/day/s09b/bus.webp","ratio":1.72,"en":"bus","say":"n.bus","group":"passing","family":"vehicle","m":3.1,"lines":["field"]},
+          "car": {"art":"assets/day/s09b/car.webp","cut":"assets/day/s09b/car.webp","ratio":1.82,"en":"car","say":"n.car","group":"passing","family":"vehicle","m":1.5,"lines":["field"]},
+          "milk-van": {"art":"assets/day/s09b/milk-van.webp","cut":"assets/day/s09b/milk-van.webp","ratio":1.7,"en":"milk van","say":"n.milk-van","group":"passing","family":"vehicle","m":2.3,"lines":["field"]},
+          "kite": {
+            "art": "assets/day/s09b/kite.webp",
+            "cut": "assets/day/s09b/kite.webp",
+            "ratio": 0.83,
+            "en": "kite",
+            "say": "n.kite",
+            "group": "passing",
+            "family": "sky",
+            "lines": ["sky"],
+            "h": 0.62,
+            "y": 285,
+            "layer": "middle"
+          },
+          "aeroplane": {
+            "art": "assets/day/s09b/aeroplane.webp",
+            "cut": "assets/day/s09b/aeroplane.webp",
+            "ratio": 1.82,
+            "en": "aeroplane",
+            "say": "n.aeroplane",
+            "group": "passing",
+            "family": "sky",
+            "lines": ["sky"],
+            "h": 0.45,
+            "y": 215,
+            "layer": "far"
+          },
+          "butterfly": {
+            "art": "assets/day/s09b/butterfly.webp",
+            "cut": "assets/day/s09b/butterfly.webp",
+            "ratio": 0.98,
+            "en": "butterfly",
+            "say": "n.butterfly",
+            "group": "passing",
+            "family": "sky",
+            "lines": ["sky"],
+            "h": 0.34,
+            "y": 292,
+            "layer": "near"
+          },
+          "windmill": {"art":"assets/day/s09b/windmill.webp","cut":"assets/day/s09b/windmill.webp","ratio":0.72,"en":"windmill","say":"n.windmill","group":"passing","family":"landmark","lines":["far"],"m":9},
+          "well": {"art":"assets/day/s09b/well.webp","cut":"assets/day/s09b/well.webp","ratio":0.95,"en":"well","say":"n.well","group":"passing","family":"landmark","lines":["field"],"m":2.4},
+          "rainbow": {"art":"assets/day/s09b/rainbow.webp","cut":"assets/day/s09b/rainbow.webp","ratio":1.82,"en":"rainbow","say":"n.rainbow","group":"passing","family":"landmark","lines":["far"],"h":1.25}
         },
-        "headline": { "meaning": { "fn": "Command", "verb": "v.look" }, "en": "Look!" },
-        "call": { "fn": "Where", "arg": "thing", "en": "Where is the {x}?" },
-        "speeds": { "slow": 9000, "normal": 6000, "fast": 3300 },
+        "headline": {"meaning":{"fn":"Command","verb":"v.look"},"en":"Look!"},
+        "call": {"fn":"Where","arg":"thing","en":"Where is the {x}?"},
+        "speeds": {"slow":9000,"normal":6000,"fast":3300},
         "easeMs": 1000,
         "parallax": "gentle",
         "parallaxSets": {
           "_about": "How differently the layers move (Zafar, 20 Oct: 'why three different moving speeds ... can we have it all moving together, more normal and realistic?'): the ride's `parallax` names one; each layer moves at its share of the road and the things on a line move with that line's layer. gentle is the farm road's (Zafar, 20 Oct evening: 'the layers move as the gentle version'); deep is the layers' own speeds",
-          "deep": { "far": 0.15, "middle": 0.4, "near": 1 },
-          "gentle": { "far": 0.5, "middle": 0.8, "near": 1 },
-          "together": { "far": 1, "middle": 1, "near": 1 }
+          "deep": {"far":0.15,"middle":0.4,"near":1},
+          "gentle": {"far":0.5,"middle":0.8,"near":1},
+          "together": {"far":1,"middle":1,"near":1}
         },
         "speedLines": {
           "_about": "Nani to the driver as the car speeds up or slows down (Zafar, 20 Oct). No Kutchi yet: grey to-record placeholders until Mum records them (the recorded 'hurry up' and 'turn it down' are other meanings: Mum decides)",
-          "up": { "meaning": { "fn": "Say", "x": "phrase.speed-up" }, "en": "Speed up!" },
-          "down": { "meaning": { "fn": "Say", "x": "phrase.slow-down" }, "en": "Slow down!" }
+          "up": {"meaning":{"fn":"Say","x":"phrase.speed-up"},"en":"Speed up!"},
+          "down": {"meaning":{"fn":"Say","x":"phrase.slow-down"},"en":"Slow down!"}
         },
         "levels": {
-          "1": { "calls": 3, "group": 3, "card": "open", "speeds": ["normal", "fast", "slow"], "fieldShare": 0.25 },
-          "2": { "calls": 4, "group": 3, "card": "open", "speeds": ["normal", "fast", "slow", "normal"], "fieldShare": 0.3 },
-          "3": { "calls": 5, "group": 3, "card": "closed", "speeds": ["normal", "fast", "normal", "slow", "fast"], "fieldShare": 0.35 }
+          "1": {"calls":3,"group":3,"card":"open","speeds":["normal","fast","slow"],"fieldShare":0.25},
+          "2": {"calls":4,"group":3,"card":"open","speeds":["normal","fast","slow","normal"],"fieldShare":0.3},
+          "3": {"calls":5,"group":3,"card":"closed","speeds":["normal","fast","normal","slow","fast"],"fieldShare":0.35}
         },
         "hintMs": 5000
       }
