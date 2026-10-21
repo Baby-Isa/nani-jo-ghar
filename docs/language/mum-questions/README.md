@@ -27,3 +27,4 @@ Mum records one long voice file; before each part she says its name and each lin
 
 **For the next recording session (Zafar, 20 Oct):** the plural of tomato: is two tomatoes *ba tameto* or *ba tameta*? (Mum's notes say it doesn't change; her phrase "hane tameta wij" says *tameta*.) Until she answers, daal and chaat ask for one tomato only.
 - **Daal stir line (DAAR-26, Zafar 21 Oct):** Nani says "Firai! Ba! jaldi" today. Is that natural, or should it be one sentence, and how would you say it (e.g. "Ba firai jaldi")?
+- **Toothbrushing directions (Zafar, 21 Oct):** up *mathe* ("Mutt-Hair") and down *niche* ("Knee-Chair") are Zafar's; please record them with *dabo* (left), *jamno* (right: is that right?), brush and toothbrush.

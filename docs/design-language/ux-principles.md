@@ -39,11 +39,8 @@ People read left to right. Keep the big action buttons (Done, "Go to the barbecu
 - **The pantry is the easiest mode, so it's the first thing a new player does.** No-tutorial first launch goes straight into a three-item pantry round.
 
 ## 8. Onboarding by showing, not telling
-- The first time, each station uses a **graphic overlay**:
-  - dim everything except one thing;
-  - show a ghost finger doing the action once;
-  - let the child do it;
-  - then reveal the next thing.
+- **Easy to play (Zafar, 21 Oct):** `docs/game-design/easy-to-play.md`.
+- The first time, dim everything but one thing, the real item shows the action once, the child does it, then the next thing appears.
 - UI appears only when it's first needed. The sidebar, badges and light bulb fade in over the first rounds, not all at once.
 - After the first time, the overlay is gone; the light bulb is the help.
 - **No English instructions for the child, ever** (Zafar, 29 Sept, restated after the clinic heal games broke it): no English sentences in bubbles and no device voice reading them. The child gets the ghost finger plus the Kutchi line with its read-along. The English goal for grown-ups lives only in the "?" pop. `build/check_onboard.mjs` enforces it in every mode that has first-time help.

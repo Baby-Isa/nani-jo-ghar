@@ -144,7 +144,7 @@ Repo: `/home/user/nani-jo-ghar`.
    - Optional steps are only offered when they were ordered.
    - Fixed positions or order.
    - "No X" is always the odd one out.
-   - Pictures or colour swatches in the order list.
+   - Pictures or colour swatches in the order list, once the word is past support (a supported word shows its picture; Zafar, 21 Oct).
    - Text matching between the order card and item labels.
    - Target zones that move to the answer.
 3. **A word shows as text in only one place at a time**, and fades by word stage: text, then speaker only, then •••; tap-to-reveal costs a hint (the eye badge at closed-card levels).
