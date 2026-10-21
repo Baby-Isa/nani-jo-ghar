@@ -531,14 +531,15 @@ export async function runBook(host, api, day) {
   // ---------------------------------------------------------------- the evening
   // the room is up: the evening's first moment (BOOK-01 films from here)
   await new Promise((r) => (room.complete ? r() : (room.onload = room.onerror = r)));
-  // the close-up, the pages and the first page's pictures before the camera sets off (it never lands on a half-drawn page)
-  await Promise.race([Promise.all([pic(A.pages), FS && pic(FS.art), plan.pages[0] && picsOf(plan.pages[0])]), realWait(4000)]);
+  // (the close-up, the pages and the first page's pictures load while she greets: the camera waits for them before it sets off)
+  const ready = Promise.race([Promise.all([pic(A.pages), FS && pic(FS.art), plan.pages[0] && picsOf(plan.pages[0])]), realWait(4000)]);
   api.test.state("day/book/room");
   await api.wait(500);
   const direct = !!only;
   if (!direct) {
     // she greets by the fire, the camera comes to her face, turns down to the book on her lap ...
     await sayRoom(line("greet"), "left");
+    await ready;
     // the push-in to her face: the room grows, her close-up (lined up on her eyes) fades in over it as it comes, sharp
     window.Day.book.stage = "face";
     zooming(true);

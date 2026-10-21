@@ -711,7 +711,8 @@
             "door"
           ],
           "shape": "door",
-          "h": 0.4
+          "h": 0.4,
+          "art": "assets/day/ride/s09r/red-door.webp"
         },
         "chai": {
           "word": "cook-chai",
