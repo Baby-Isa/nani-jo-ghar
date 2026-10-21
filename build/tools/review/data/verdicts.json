@@ -386,20 +386,20 @@
   "date": "2026-10-21"
  },
  "BOOK-09": {
-  "hash": "1e2baa4e77a94e8bf3ab",
+  "hash": "68f2c16b1ea24a0dbbd7",
   "dhash": [
    "74743d19dd89891b",
    "71b992866f2d0d0f",
    "71b992866f2d0d0f",
    "74743d19dd898948"
   ],
-  "verdict": "FAIL",
-  "line": "D, the camera lands on the book at 4439 ms with blank pages and a lone avatar circle (no bubble text), still blank at 4923 ms; the kitchen spread and \"Maani kida ai?\" bubble only appear at 5400 ms, so the picture is late and an empty-bubble state shows. B/C do show the farm find-it spread with real sprites at 844x390 and the landing frames (5400-6919 ms) sit over the room.",
+  "verdict": "PASS",
+  "line": "D, the 1366x768 strip runs room (0 ms, blank book, no bubble) → \"What did we do today?\" (600 ms, grey-italic to-record, by her head) → push-in to the nani-face-fire close-up (1338–3600 ms) → down onto the book at 4480 ms where the kitchen spread (chapati, jug, chai, sugar jar) is already on the page the first frame the book is in view, over the same lamp-and-fireplace room it zoomed through; \"Maani kida ai?\" (5400 ms) and \"There's the chapati!\" (7011 ms, grey italic) are both bubbles with words, no empty bubble anywhere; B then C show the 844x390 farm find-it spread with real sprites (murgi, bakri, kutro, chakli) and \"Chakli kida ai?\" by Nani's avatar; A shows the farm end at 1366x768 with real sprite tiles (chakli, bakri, kutro, gadi, darwajo, murgi) and \"See you tomorrow!\" grey italic. Flaws off the row's point: D 2399 ms shows a pale translucent rectangle across her chest (the room shot's blank pages ghosting through mid-crossfade), gone by 3000 ms; B has a thin underline under \"ai\" in \"Chakli kida ai?\" that C (same state, cropped) does not show, likely a spellcheck/outline artefact.",
   "panel": "D",
   "judge": "Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-032427-602",
-  "commit": "f5338db7",
-  "png": "build/screenshots/evidence/ev-20261021-032427-602/BOOK-09.png",
+  "run": "ev-20261021-041649-2u0",
+  "commit": "35ebc5e0",
+  "png": "build/screenshots/evidence/ev-20261021-041649-2u0/BOOK-09.png",
   "date": "2026-10-21"
  },
  "CHAI-02": {
