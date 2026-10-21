@@ -91,3 +91,28 @@ test("the book's pages: the day log's words then the words met today, engine ids
   assert.ok(todaysWords({ entries: [], met: [], lexOf }).length === 0);
   assert.ok(todaysWords({ entries: k.entries, met: k.words, lexOf, max: 2 }).length === 2);
 });
+
+// the days as stage lists and the door's own look (data/days.json, s09-final-door): no Kutchi written there either, every
+// picture it names exists, and the door's card words are meanings the engine says or reports
+const days = J("data/days.json");
+test("data/days.json: the door's words are meanings with their English, and every picture exists", () => {
+  const words = [days.door.no, ...Object.values(days.door.cards.activity).map((a) => a.word)];
+  for (const l of words) {
+    assert.ok(l.meaning && l.meaning.fn && l.en, `a door word without a meaning or English: ${JSON.stringify(l)}`);
+    assert.ok(!("kutchi" in l) && !("k" in l) && !("text" in l), `a hand-written word: ${JSON.stringify(l)}`);
+    const r = E.say(l.meaning);
+    if (!r.ok) assert.ok(r.gaps.some((g) => ["lexeme", "form", "rule"].includes(g.kind)), `${l.en}: not ok and no gap`);
+  }
+  assert.ok(E.say(days.door.no.meaning).ok, "Na is the engine's");
+  const arts = [];
+  const walk = (x) => {
+    if (!x || typeof x !== "object") return;
+    for (const [k, v] of Object.entries(x)) {
+      if ((k === "art" || k === "bg") && typeof v === "string") arts.push(v);
+      else walk(v);
+    }
+  };
+  walk(days);
+  assert.ok(arts.length >= 15);
+  for (const a of arts) assert.ok(existsSync(join(ROOT, a)), `missing picture ${a}`);
+});
