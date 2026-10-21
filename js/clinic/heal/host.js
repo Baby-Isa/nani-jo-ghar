@@ -346,7 +346,7 @@
       },
       /** The pull-out: the room comes back over the close-up, zoomed in, then out to the wide shot (the patient happy). */
       async out() {
-        if (!wide.isConnected) return;
+        if (!wide.isConnected || z.kept) return; // (CLN-69: the end card's kept room is never moved again)
         z.leaving = true;
         // CLN-77: the close-up's own UI (the tool column, the face, panels, pills, counts) goes before the pull-out,
         // so it never shows through the room as ghost rectangles; the close-up's drawing stays for the cross-fade
@@ -384,8 +384,24 @@
        * clearStage() takes the room away.
        */
       keep() {
-        [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
-        box.style.transform = box.style.filter = "";
+        // (s09, CLN-69: at 1024x768 and 844x390 the card sometimes sat on the bare page: the wide shot was left at the
+        // pull-out's first frame, the room scaled up and faded out, after the card came up before the pull-out ended.
+        // The rest state is laid now, and again on the next frames, so no move still running can leave it there)
+        const rest = () => {
+          if (!wide.isConnected) return;
+          [box, wide].forEach((el) => el.getAnimations && el.getAnimations().forEach((an) => an.cancel()));
+          box.style.filter = "";
+          // (important: a leftover move's frame can outlive its cancel; the kept rest beats it)
+          box.style.setProperty("transform", "none", "important");
+          wide.style.setProperty("opacity", "1", "important");
+          wide.classList.remove("gone");
+          wide.classList.add("on", "kept");
+        };
+        z.leaving = true;
+        rest();
+        if (global.requestAnimationFrame) global.requestAnimationFrame(rest);
+        setTimeout(rest, 300);
+        setTimeout(rest, 1200);
         if (midEl) {
           // (the kept wide shot behind the end card is the room and the drawn girl, never the middle step)
           if (midEl.getAnimations) midEl.getAnimations().forEach((an) => an.cancel());
