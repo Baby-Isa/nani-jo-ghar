@@ -8,20 +8,19 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Where things stand (21 Oct 2026, 05:00 UK), Sprint 9's chat:** Sprint 9 ("A day at Nani's") is built, merged and judged on `claude/funny-maxwell-3dkhif`, which sits on Sprint 8's branch; `main` = 700b1023 (Sprint 8 not yet published: its chat was on wave 8B). Reports: `build/reports/s09-ride.md`, `s09-book.md`, `s09-final-door.md`, `s09-final-art.md`. Built: the door on the s09b art (four skies, the empty house, Nani's seven pose cut-outs, the two cards), the window ride (looping layers, gentle parallax, three speeds, the farm road's s09b things, the wide window), the evening book (camera, find it, name it, stick in the photo, our day, gold cards, day-books), and the modular day runner (`data/days.json`: a day is a stage list; the farm day door, ride, book; kitchen and clinic days hand off). Every S09 row has a judge or machine PASS except BOOK-05's wrong-drag and take-back (needs a driver: Sprint 10). Art: s09r and s09b landed and cut (`cut_s09r.py`, `cut_s09b.py`); Nani's s09b likeness approved (Zafar, 21 Oct). Days docs: `docs/game-design/days/` (README, farm, shops, beach, safari, boat).
+**Where things stand (21 Oct 2026, 14:30 UK):** Sprint 9 ("A day at Nani's": the door, the window ride, the evening book, the day runner) is live on `main` (a6c72e54) with Sprint 8 under it. Branch `ccr-1888a520-dk18y7` = `main` + this handover. Zafar's 21 Oct rule: a new feature that never failed closes on its green PASS (`redGreen`, CLAUDE.md rule 7); 15 S09 rows closed by it. Still open: BOOK-05 (wrong-drag driver), DAY-02 (two strikes: Zafar's call; it now passes on a stronger probe), DAY-03 and LNG-18 (Sprint 10). Not run before this publish (Zafar: as few checks as possible): `/review`'s full 8-size check and a gate run; the merge took main's game code for every Sprint 8 file.
 
 **Next steps:**
-1. Zafar's answer on the red-first question (open question 1); then `evidence.mjs --apply` marks the passing S09 rows built.
-2. When Sprint 8 is on `main`: merge `origin/main` into this branch (status.md and overnight-log.md conflict: keep both), `/review` (the full check at 8 sizes), fix, `/publish` (Zafar's go, 21 Oct: "push to main and finish the sprint"), `/sprint` close.
-3. Sprint 10, the farm day in full (`docs/game-design/days/farm.md`): pack the bag, meet Hannah Mami, feed, eggs, snap, the corn stall, animals home, Ali's egg; the engines put-it-in-its-place and count-to-a-number; DAY-03 (Cook and the clinic return to the book and write the day log); LNG-18 (the device voice reads every unrecorded line on the test site, every game); BOOK-05's wrong-drag driver. About $150; two builders.
+1. Zafar plays (`labs.html`, `day.html`); his notes → `/feedback`.
+2. `/sprint` close for Sprint 9 (three-line look back), then open Sprint 10, the farm day in full (`docs/game-design/days/farm.md`), with DAY-03, LNG-18 and BOOK-05's driver. About $150; two builders.
 
 **Open questions to Zafar:**
-1. Count "the probe couldn't run because the feature didn't exist yet" as red, so new-feature rows close on their green PASS? (Recommend yes; a small change to `redGreen` in `build/tools/review/lib/evidence.mjs`.)
+1. DAY-02: close it on its latest PASS (the probe was strengthened after its two FAILs)? Recommend yes.
 2. Hannah Mami: her name in the game, picture (a likeness run) and voice.
 3. Mum's words: the corn dressings, the shops' directions, the ride's and book's grey lines (the recording sheet).
 
 **Starting prompt for a new chat:**
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Branch `claude/funny-maxwell-3dkhif` (Sprint 9, built and judged; `main` = 700b1023, Sprint 8 not yet published). Carry on from "Next steps". Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Sprint 9 is live on `main`. Carry on from "Next steps". Tell me before launching anything new.
 
 ## The fix list
 
@@ -41,6 +40,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+21 Oct 2026, published 14:29 UK (a6c72e54, 20261021T132558Z): Sprint 9 ("A day at Nani's") on Sprint 8, past the gate on Zafar's word ("push to main asap"); only checks.mjs run (green).
 
 16 Oct 2026, published 22:17 UK (38d0591a, 20261016T211414Z): Sprint 7, past the gate on Zafar's word (see "Next chat").
 
