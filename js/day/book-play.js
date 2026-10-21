@@ -45,8 +45,11 @@ function idler(g, fn, ms = 8000) {
   };
   const poke = () => arm();
   g.book.addEventListener("pointerdown", poke);
-  arm();
+  // (counted from when the page shows: a page built ahead waits for g.go)
+  let stopped = false;
+  Promise.resolve(g.go).then(() => !stopped && arm());
   return () => {
+    stopped = true;
     clearTimeout(t);
     g.book.removeEventListener("pointerdown", poke);
   };
