@@ -606,6 +606,15 @@
     click() {
       tone(1200, 0.03, { type: "square", gain: 0.05 });
     },
+    // DAAR-30 (P49, Zafar 17 Oct: "a sound, she says the number and the number changes"): the stir's flag as the ladle passes
+    // it, a short bright ding heard over the sizzle (the old 30 ms click at 0.05 was lost under it); in the sound log as
+    // "sfx/lap" (the njg-sfx event, as the sizzle loop), so the evidence voice timeline shows it at each lap
+    lap() {
+      tone(1047, 0.12, { type: "triangle", gain: 0.16 });
+      tone(1568, 0.16, { type: "triangle", gain: 0.1, when: 0.05 });
+      const h = sfxEvent("lap", { stop() {} });
+      setTimeout(() => h.stop(), 220);
+    },
     fanfare() {
       [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.3, { type: "triangle", gain: 0.2, when: i * 0.12 }));
     },

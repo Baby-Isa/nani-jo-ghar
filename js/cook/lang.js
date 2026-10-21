@@ -294,7 +294,9 @@
         const u = new SpeechSynthesisUtterance(text);
         u.voice = v;
         u.lang = v.lang;
-        u.rate = 0.7;
+        // LNG-09 (decision 63; Zafar, 17 Oct: "the weird robotic slow voice. We definitely need to speed the voices up"):
+        // the device's test voice at normal speed, as js/core/voice.js DEVICE_RATE (was 0.7)
+        u.rate = 1;
         u.onend = fin;
         u.onerror = fin;
         global.speechSynthesis.speak(u);

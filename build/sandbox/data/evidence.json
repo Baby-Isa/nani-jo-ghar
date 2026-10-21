@@ -1600,8 +1600,9 @@
    "expect": [
     "!textMatches:(?i)cook it the way they said"
    ],
-   "note": "samosa: 'turn on the pan' line; never empty mid-step (and maani L1 the same)",
-   "max": 10
+   "note": "samosa: 'turn on the pan' line; never empty mid-step (and maani L1 the same). 0.7 s after each move, when the next step's line is up (s08 sweep: at the tap itself the box is between one step's line and the next, so 7 of 10 captures read empty: the chai probe's R2 delay)",
+   "max": 10,
+   "delay": 700
   }
  ],
  "SH-57": [
@@ -2368,7 +2369,8 @@
     "shot"
    ],
    "expect": null,
-   "note": "one focal thing per screen; identical shelf slots; UI and world one product"
+   "note": "one focal thing per screen; identical shelf slots; UI and world one product (1.5 s after each view opens: at the view itself the chop's marble is bare, its throws not yet up, s08 sweep)",
+   "delay": 1500
   }
  ],
  "SH-38": [
@@ -3397,7 +3399,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:pour",
+   "at": "kind-tap",
    "after": null,
    "capture": [
     "shot"
@@ -3405,7 +3407,7 @@
    "expect": [
     "noOverlap:canvas:hob,canvas:tray"
    ],
-   "note": "hob and tray apart; strip side-on jars, carton, bottle; pans and tray top-down; real liquid; pour animation; no fill-line relic"
+   "note": "hob and tray apart; strip side-on jars, carton, bottle; pans and tray top-down; real liquid; pour animation; no fill-line relic (s08 sweep: at the first tap, not at exp:pour: a shot there held the player, so the pour strip on the same moment filmed only the still pan before it)"
   },
   {
    "flow": "cook:chai-tray",
@@ -4517,6 +4519,27 @@
    "expect": null,
    "note": "the wrong speed shown yellow / spill red",
    "webgl": true
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "zoom2:#stage",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "the daal station's own stir (js/cook/stations/daar.js, what a child plays): the card's speed and the dial agree, the asked speed's band green, the other yellow, the spill red (s08 sweep: the lab's stir at L3 changes the speed mid-stir, 'now aste', and its dial follows her while the lab's card keeps the opening speed; the daal station has no mid-stir change)"
   }
  ],
  "DAAR-13": [
@@ -5631,6 +5654,28 @@
    "flow": "cook:mishkaki-grill",
    "path": "fair",
    "level": [
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:exp:rack",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:rack",
+    "ref:sources/art/s08c/sk4-sekelo-tray-upright-v1.png"
+   ],
+   "expect": null,
+   "note": "the grill screen's two square steel trays (s08c SK4: raw above, cooked below), just before each skewer is taken from the raw tray: the raw tray holding all the skewers threaded (3-4 at L4), then one fewer each time (exp:rack; was every:placed, every tap of the threading, so 8 captures never left the first two skewers). At L4 the capture holds the player while other skewers cook, so some char and come back (SEK-09): every frame's tray picture must still hold exactly the skewers on it, each on its own painted stick, never a bare stick or a stickless skewer",
+   "max": 8,
+   "delay": 0
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
     1,
     4
    ],
@@ -5639,16 +5684,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:life:advance",
    "after": null,
    "capture": [
-    "zoom2:canvas:rack",
-    "ref:sources/art/s08c/sk4-sekelo-tray-upright-v1.png"
+    "zoom2:canvas:rack"
    ],
    "expect": null,
-   "note": "the two square steel trays (s08c SK4: raw above, cooked below) holding 1-4 upright skewers, handles towards the child, as each skewer lands (every:placed)",
-   "max": 8,
-   "delay": 500
+   "note": "the end of the grill, as the last skewer lands (life:advance: the grill moves on by itself 600 ms later, so the capture waits 600 ms for the lift to land): the cooked tray below holding every grilled skewer (1 at L1, 3-4 at L4), the raw tray above empty. (Not every:placed through the grill: a capture holds the player while the other skewers' rings run on, so they char and go back; not life:stage-end: the grill screen is gone by then)",
+   "max": 2,
+   "delay": 600
   }
  ],
  "CK-01": {
@@ -11344,6 +11388,26 @@
     "textMatches:ATEMPO = 1\\.0"
    ],
    "note": "the test voice at normal speed (test-only; never ships)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -rn \"u.rate = \" js/cook"
+   ],
+   "expect": [
+    "textMatches:u\\.rate = 1;",
+    "!textMatches:u\\.rate = 0\\.[0-7]\\b"
+   ],
+   "note": "the device's test voice in Cook at normal speed: no utterance rate of 0.7 or below in js/cook (the reopened cause: js/cook/lang.js at 0.7)"
   }
  ],
  "LNG-10": [
@@ -12200,15 +12264,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:cook:tap",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "note": "no loose word pill over the hob's top rim at 844x390, and the pan's label above it while the bottle pours (not under or over the stream)",
+   "note": "no loose word pill over the hob's top rim at 844x390, and the pan's label above it while the bottle pours (not under or over the stream). s08 sweep: just after each tap (cook-done, 0.38 s on), as the thing tapped pours or drops in: at cook:tap (before the tap) every frame showed the pans resting",
    "max": 6,
-   "delay": 650
+   "delay": 380
   },
   {
    "flow": "cook:chai-tray",
@@ -12219,7 +12283,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:cook:tap",
+   "at": "every:cook-done:tap",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -12227,7 +12291,7 @@
    "expect": null,
    "note": "the same at 1366x768: the label centred above the pan while the bottle pours",
    "max": 6,
-   "delay": 650
+   "delay": 380
   }
  ],
  "SH-78": [

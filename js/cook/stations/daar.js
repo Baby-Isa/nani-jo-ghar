@@ -1358,7 +1358,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         const period = now - lapT;
         lapT = now;
         // the flag's sound as the ladle passes it, the flag flutters, and the number on the dial changes at once
-        (Cook.sfx.click || Cook.sfx.bubble || Cook.sfx.soft)();
+        (Cook.sfx.lap || Cook.sfx.click)();
         flag.wave();
         dial.laps(count);
         // DAAR-24 retired (Zafar, 14 Oct, D12): the laps are said aloud at every level, the stir's own exception to the
