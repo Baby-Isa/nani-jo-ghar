@@ -749,7 +749,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * A wrong item wiggles (level 1) or lands quietly (level 2+); from the second wrong try the right one glows.
    * HELP (SH-60, SH-95): nothing is said or lit when it opens, guided or not; once the child has done nothing for the
    * ladder's pause (NaniGuide.PAUSE by level, counted from the last action on the page) Nani says the word and the item
-   * glows at the same moment; again only after REPEAT more of no action. The first (hint) counts as help, the glow as
+   * glows at the same moment; then nothing more until the child acts (SH-60), and after an action the pause again. The first (hint) counts as help, the glow as
    * "shown" (accuracy badge), unless this is the guided first play.
    */
   S$.step = function (S, { items, expected, word, guided, sayLine, allowAny, onWrong, onLand, quiet = false, io = Cook.IO, ctl = null }) {
@@ -780,9 +780,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       poll = setInterval(() => {
         const g = NG();
         if (!g || !target || !target.active) return;
+        // SH-60 (Zafar, 17 Oct: help "shouldn't persist"; the judge, ev-20261021-122141: the same line and glow every 10 s at L2):
+        // help comes once after the pause, then stays quiet until the child acts; an action starts the pause again
+        if (helped && g.idleMs() >= Date.now() - helpedAt) return;
+        if (helped) helped = 0;
         const idle = Math.min(g.idleMs(), Date.now() - openedAt);
-        const need = helped ? g.REPEAT : g.PAUSE[Math.min(g.PAUSE.length, levelOf()) - 1];
-        if (idle < need || (helped && Date.now() - helpedAt < g.REPEAT)) return;
+        const need = g.PAUSE[Math.min(g.PAUSE.length, levelOf()) - 1];
+        if (idle < need) return;
         helped++;
         helpedAt = Date.now();
         if (!guided && Cook.onHelp) Cook.onHelp("hint");
