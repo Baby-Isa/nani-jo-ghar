@@ -110,8 +110,11 @@
     const calls = [];
     const used = new Set();
     let last = null;
+    // the first group comes on the near verge: from a family whose things may all stand there (by their real size), if any
+    const nearBag = bag.filter((f) => fam[f].every((id) => W.linesOf(ride.things[id]).includes("near")));
     for (let i = 0; i < L.calls; i++) {
-      const f = bag[Math.floor(rng() * bag.length)];
+      const from = i === 0 && nearBag.length ? nearBag : bag;
+      const f = from[Math.floor(rng() * from.length)];
       // a thing not named yet if the family has one (the card lists each thing once where it can), never the last one again
       const fresh = fam[f].filter((g) => !used.has(g) && g !== last);
       const pool = fresh.length ? fresh : fam[f].filter((g) => g !== last);

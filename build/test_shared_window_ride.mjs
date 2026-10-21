@@ -23,7 +23,7 @@ test("the plan: look-alikes together, one named, no thing named twice running, t
   for (let s = 1; s <= 200; s++) {
     const p = W.plan(ride, 1 + (s % 3), seeded(s), { callable });
     assert.ok(p.calls.length >= 3);
-    assert.equal(p.calls[0].line, p.calls[0].group.every((id) => W.linesOf(ride.things[id]).includes("near")) ? "near" : "field", "the first group on the near verge where its things may stand there (the doors keep to the field)");
+    assert.equal(p.calls[0].line, "near", "the first group on the near verge (from a family that may stand there: the doors keep to the field)");
     p.calls.forEach((c) => c.group.forEach((id) => assert.ok(W.linesOf(ride.things[id]).includes(c.line), `${id} on ${c.line}`)));
     p.calls.forEach((c, i) => {
       assert.ok(c.group.length >= 2, "a group is at least two look-alikes");
