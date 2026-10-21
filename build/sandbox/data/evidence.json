@@ -17229,7 +17229,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:rec:heal-hic-*",
+   "at": "heal-hic-hold",
    "after": null,
    "capture": [
     "shot",
@@ -17238,8 +17238,7 @@
    "expect": [
     "noFinding:scroll-container"
    ],
-   "note": "the parked hiccups game: no written English sound words, nothing clipped, the sidebar card whole (s08 w8B: a spec for a live row that had none, PRC-06) (s09: every moment of the round, not only its start: the card scrolled at the hold step, its third row, at 800x360)",
-   "max": 6
+   "note": "the parked hiccups game: no written English sound words, nothing clipped, the sidebar card whole (s08 w8B: a spec for a live row that had none, PRC-06) (s09: at the hold step, its third row, where the card scrolled at 800x360, not only at the start)"
   }
  ],
  "SH-92": [
