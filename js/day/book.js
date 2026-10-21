@@ -478,7 +478,8 @@ export async function runBook(host, api, day) {
     head,
     headLine: () => (headLine.firstChild && headLine.firstChild.classList.contains("day-line") ? headLine.firstChild : null),
     say: (ln, node, o = {}) => api.say(ln, Object.assign({ el: node === undefined ? g.headLine() : node, who: "nani" }, o)),
-    expect: (fn) => api.test.expect(fn),
+    // (the tests act only once the page shows: a hidden page takes no touch)
+    expect: (fn) => api.test.expect(() => (g.hidden ? { kind: "wait" } : fn())),
     state: (s) => {
       window.Day.book.last = s;
     },
@@ -611,11 +612,13 @@ export async function runBook(host, api, day) {
     api.test.state(`day/book/${p.game}`);
     window.Day.book.page = i;
     // the page shows when every picture on it is drawn (each <img> decoded in place, not only fetched): never a sprite popping in
+    g.hidden = true;
     g.wrap.style.visibility = "hidden";
     const run = runGame(g, p);
     await Promise.race([Promise.all([...g.wrap.querySelectorAll("img")].map((im) => (im.decode ? im.decode().catch(() => {}) : null))), realWait(1500)]);
     await new Promise((r) => requestAnimationFrame(() => r()));
     g.wrap.style.visibility = "";
+    g.hidden = false;
     await run;
     await waitTurn();
     while (cleanups.length) cleanups.pop()();
