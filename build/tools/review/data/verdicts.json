@@ -2303,15 +2303,15 @@
   "date": "2026-10-21"
  },
  "CLN-152": {
-  "hash": "dd9ce25c08bd7121cfcf",
+  "hash": "e4eb53c7555966af27af",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "machine: CLN-152-p2-L1-1024x768: pass: 1 contract breaks",
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "date": "2026-10-20"
+  "run": "ev-20261021-122141-93k",
+  "commit": "a6961675",
+  "date": "2026-10-21"
  },
  "CLN-153": {
   "hash": "34ee748d4ed4c37dd9be",
@@ -2328,7 +2328,7 @@
   "date": "2026-10-14"
  },
  "CLN-159": {
-  "hash": "e776a61d310b12ebec48",
+  "hash": "d314eed0b66be662b223",
   "dhash": [
    "e5c4c4c0e7ecedee",
    "c988888883d8d8de",
@@ -2338,9 +2338,9 @@
   "line": "machine: count:.cl-lab-out=0 (0 visible); count:.cl-lab-out=0 (0 visible (3 moments))",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "date": "2026-10-20"
+  "run": "ev-20261021-122141-93k",
+  "commit": "a6961675",
+  "date": "2026-10-21"
  },
  "CLN-162": {
   "hash": "e58b05375109d5adc319",
@@ -4363,15 +4363,15 @@
   "date": "2026-10-20"
  },
  "LNG-03": {
-  "hash": "741cd1f0f8c863f82ad7",
+  "hash": "058942cf0da18ef561b8",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "machine: LNG-03-p1-L4-1366x768: !textMatches:(?i)•|\\bboga\\b: not (text: \"Nindha nindha kap ! trae dungri ••• ••• Muke daar khape.\"); LNG-03-p2-L3-1366x768: !textMatches:•: not (text: \"Muke daar khape. trae ••• hakro •••\")",
+  "verdict": "PASS",
+  "line": "machine: lexicon (11 words, all in the lexicon); !textMatches:(?i)\\bboga\\b (not (text: \"Nindha nindha kap ! trae dungri ••• ••• Muke daar khape.\")); lexicon (7 words, all in the lexicon)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "date": "2026-10-20"
+  "run": "ev-20261021-122141-93k",
+  "commit": "a6961675",
+  "date": "2026-10-21"
  },
  "LNG-04": {
   "hash": "eccf0864c893e965b404",
@@ -4420,15 +4420,15 @@
   "date": "2026-10-20"
  },
  "LNG-09": {
-  "hash": "632ddf456c4ddf93bd33",
+  "hash": "a35e6a82fe74a263540c",
   "dhash": [],
   "verdict": "PASS",
-  "line": "machine: textMatches:ATEMPO = 1\\.0 (the script's output matches /ATEMPO = 1\\.0/)",
+  "line": "machine: textMatches:ATEMPO = 1\\.0 (the script's output matches /ATEMPO = 1\\.0/); textMatches:u\\.rate = 1; (the script's output matches /u\\.rate = 1;/); !textMatches:u\\.rate = 0\\.[0-7]\\b (not (the script's output does not match /u\\.rate = 0\\.[0-7]\\b/))",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "date": "2026-10-20"
+  "run": "ev-20261021-122141-93k",
+  "commit": "a6961675",
+  "date": "2026-10-21"
  },
  "LNG-10": {
   "hash": "e614ba831e202ef80056",
@@ -6038,15 +6038,15 @@
   "date": "2026-10-20"
  },
  "SH-13": {
-  "hash": "517b46e5c7013b5c9d3c",
+  "hash": "4ed50fb656aa7c1b8b2d",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "machine: SH-13-p3-L3-1366x768: !hasWord:number: not (number: trae, ba)",
+  "verdict": "PASS",
+  "line": "machine: hasWord:number (number: trae); hasWord:number (number: ba); hasWord:number (number: trae, ba)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261020-203453-9h9",
-  "commit": "4d8a9393",
-  "date": "2026-10-20"
+  "run": "ev-20261021-122141-93k",
+  "commit": "a6961675",
+  "date": "2026-10-21"
  },
  "SH-14": {
   "hash": "0d3daf036babb84d2ed6",
@@ -7092,6 +7092,17 @@
   "commit": "4d8a9393",
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/SH-91.png",
   "date": "2026-10-20"
+ },
+ "SH-92": {
+  "hash": "18d5e57a7daaff276cc2",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-122141-93k",
+  "commit": "a6961675",
+  "date": "2026-10-21"
  },
  "SH-97": {
   "hash": "797b22f96e86be11543e",
