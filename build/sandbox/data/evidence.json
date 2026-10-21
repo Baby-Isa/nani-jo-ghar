@@ -5631,6 +5631,28 @@
    "flow": "cook:mishkaki-grill",
    "path": "fair",
    "level": [
+    4
+   ],
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:exp:rack",
+   "after": null,
+   "capture": [
+    "zoom2:canvas:rack",
+    "ref:sources/art/s08c/sk4-sekelo-tray-upright-v1.png"
+   ],
+   "expect": null,
+   "note": "the grill screen's two square steel trays (s08c SK4: raw above, cooked below), just before each skewer is taken from the raw tray: the raw tray holding all the skewers threaded (3-4 at L4), then one fewer each time (exp:rack; was every:placed, every tap of the threading, so 8 captures never left the first two skewers). At L4 the capture holds the player while other skewers cook, so some char and come back (SEK-09): every frame's tray picture must still hold exactly the skewers on it, each on its own painted stick, never a bare stick or a stickless skewer",
+   "max": 8,
+   "delay": 0
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
     1,
     4
    ],
@@ -5639,16 +5661,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:life:advance",
    "after": null,
    "capture": [
-    "zoom2:canvas:rack",
-    "ref:sources/art/s08c/sk4-sekelo-tray-upright-v1.png"
+    "zoom2:canvas:rack"
    ],
    "expect": null,
-   "note": "the two square steel trays (s08c SK4: raw above, cooked below) holding 1-4 upright skewers, handles towards the child, as each skewer lands (every:placed)",
-   "max": 8,
-   "delay": 500
+   "note": "the end of the grill, as the last skewer lands (life:advance: the grill moves on by itself 600 ms later, so the capture waits 600 ms for the lift to land): the cooked tray below holding every grilled skewer (1 at L1, 3-4 at L4), the raw tray above empty. (Not every:placed through the grill: a capture holds the player while the other skewers' rings run on, so they char and go back; not life:stage-end: the grill screen is gone by then)",
+   "max": 2,
+   "delay": 600
   }
  ],
  "CK-01": {

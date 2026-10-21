@@ -1517,6 +1517,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         sk.hit = hit;
         return hit;
       };
+      /*
+       * SEK-14 (evidence ev-20261021-100511-t31): the raw tray's picture holds the first n skewers that have settled in their
+       * slots (tray-n), and every other skewer on it shows its own stick. One rule, applied whenever a skewer lands, leaves or
+       * slides along, so a skewer coming back (SEK-09) while another is taken never leaves a bare painted stick in one slot
+       * and a stickless skewer in the next.
+       */
+      const rackSync = () => {
+        let n = 0;
+        while (n < rack.length && rack[n] && rack[n].settled) n++;
+        rackArt.set(n);
+        rack.forEach((q) => q && SK.stickShown(q.sk, !(q.settled && q.slot < n)));
+      };
       const placeOnRack = (item) => {
         const i = rack.indexOf(null);
         if (rackArt.v3) {
@@ -1530,8 +1542,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const t = SK.lineAt(tip, hd);
           const land = () => {
             r.settled = true;
-            rackArt.set(rack.filter(Boolean).length);
-            SK.stickShown(sk, false);
+            rackSync();
           };
           if (item.sprite) S.tweens.add({ targets: sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut", onComplete: land });
           else {
@@ -1572,34 +1583,35 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (rackArt.v3) {
           // v3: the rack's picture loses it (its own stick goes with it), and the ones after it slide along
           SK.stickShown(r.sk, true);
+          // (one taken while it was still landing goes straight to the grill: its landing tween stops)
+          S.tweens.killTweensOf(r.sk);
           const left = rack.filter(Boolean);
-          const keep = r.slot;
           rack.fill(null);
           left.forEach((q, j) => (rack[j] = q));
-          rackArt.set(keep);
-          let moving = 0;
           left.forEach((q, j) => {
             if (q.slot === j) return;
             q.slot = j;
-            moving++;
             q.settled = false;
-            SK.stickShown(q.sk, true);
             const t = SK.lineAt(...rackArt.line(j, left.length));
             q.sk.hit.setPosition(t.x, t.y);
+            // (SEK-14: one still landing from the grill stops there and slides to its new slot instead; two tweens on
+            // its x and y left it at the old slot, the picture holding a bare stick where it should be)
+            S.tweens.killTweensOf(q.sk);
             S.tweens.add({
               targets: q.sk,
               x: t.x,
               y: t.y,
+              scale: t.scale,
+              rotation: t.rotation,
               duration: 300,
               ease: "Sine.easeInOut",
               onComplete: () => {
                 q.settled = true;
-                if (--moving) return;
-                rackArt.set(rack.filter(Boolean).length);
-                rack.forEach((o) => o && o.settled && SK.stickShown(o.sk, false));
+                rackSync();
               },
             });
           });
+          rackSync();
         }
         const g = { sk: r.sk, pieces: r.pieces, cls: r.cls, spot: i, phase: 0, v: 0, rate: k.rate * (1 + (Math.random() - 0.5) * k.rateSpread), busy: true, burnt: false, scores: [] };
         spots[i] = g;
