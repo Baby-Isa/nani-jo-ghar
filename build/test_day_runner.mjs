@@ -1,5 +1,5 @@
 // The day runner (DAY-01; Zafar, 20 Oct: "built modularly, so it's easy to chop and change the sequence ... swapped in or out
-// easily or replicated and changed for a new day"; docs/game-design/modes/a-day-at-nanis.md §1). A day is data/days.json's list of
+// easily or replicated and changed for a new day"; docs/game-design/days/README.md §1, days/farm.md). A day is data/days.json's list of
 // stages; js/day/day.js runDay plays it through one stage interface. These tests change ONLY the data (the list) and prove the
 // one runner plays every change: swap, add, remove, reorder and copy need no code, and a stage that is not built yet is skipped
 // with a note. They also hold the door's geometry to its rules (DOOR-01, DOOR-02): the roofline a third down and the house across

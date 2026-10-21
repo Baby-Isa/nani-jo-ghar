@@ -1,5 +1,5 @@
 /*
- * A day at Nani's (Zafar, 19-20 Oct; docs/game-design/modes/a-day-at-nanis.md §1): the day runner. A day is data: an ordered
+ * A day at Nani's (Zafar, 19-20 Oct; docs/game-design/days/README.md §1): the day runner. A day is data: an ordered
  * list of stages in data/days.json, each {stage, ...its settings}; this file plays the list in order through ONE stage
  * interface and writes each stage's result to the day log. A new day is a copy of a list with stages swapped, added, removed or
  * reordered, never code (Zafar, 20 Oct: "built modularly, so it's easy to chop and change the sequence");
