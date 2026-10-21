@@ -7990,8 +7990,9 @@
     "voice"
    ],
    "expect": null,
-   "note": "she says how she feels in her bubble on her real art, then the child picks",
-   "max": 4
+   "note": "she says how she feels in her bubble on her real art, then the child picks; 350 ms after each bubble comes, once it has faded in (taken as it was made, it is still see-through: the judge saw none) (s08 w8B)",
+   "max": 4,
+   "delay": 350
   }
  ],
  "CLN-117": [
@@ -9238,7 +9239,7 @@
  "CLN-69": [
   {
    "flow": "clinic:heal-cut",
-   "path": "fair",
+   "path": "real-pace",
    "level": 1,
    "sizes": [
     "1366x768",
@@ -9253,7 +9254,7 @@
     "shot"
    ],
    "expect": null,
-   "note": "the results card sits over the room, never a bare cream stage; at the badges, once the end screen has settled (at life:results the room was still to come in at 1024x768 and 1366x768) (s08 w8B)"
+   "note": "the results card sits over the room, never a bare cream stage; at the badges, once the end screen has settled (at life:results the room was still to come in at 1024x768 and 1366x768) (s08 w8B); at a child's pace: at test speed the end card is raced in after 0.6 s, before the pull-out has brought the room back (a single page shows the room by then; three at once did not)"
   }
  ],
  "CLN-70": [
@@ -16258,13 +16259,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "rec:heal-fever-change-04",
+   "at": "heal-done:ceiling-fan",
    "after": null,
    "capture": [
-    "strip:.cl-stage:12x600"
+    "strip:.cl-stage:12x500"
    ],
    "expect": null,
-   "note": "fever L1, filmed from the fourth change to the end card (7 s): the last change, the gauge settling in the green, the close-in on her well face and the pull back, then the review; at L1 the every-change frame of the last change was taken after the end card was already up (s08 w8B)"
+   "note": "fever L1, filmed from the last change (the ceiling fan, this seed's last) to the end card (6 s): the last change, the gauge settling in the green, the close-in on her well face and the pull back, then the review; at L1 the every-change frame of the last change was taken after the end card was already up (s08 w8B)"
   },
   {
    "flow": "clinic:heal-knee",
