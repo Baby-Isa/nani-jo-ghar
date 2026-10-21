@@ -402,7 +402,9 @@ async function boot() {
       if (api.nonav || q.get("lab") === "1") labNote(app, `Skipped: ${msg}`);
       void entry;
     },
-    onStage: (entry, i) => {
+    onStage: async (entry, i) => {
+      // a beat between two stages (the one before keeps its end on screen a moment: its test hook's "end" is still read)
+      if (i > from) await new Promise((r) => setTimeout(r, 400));
       window.Day.stage = entry.stage === "ride" ? "window" : entry.stage;
       api.test.state(`day/${entry.stage}`);
       api.test.expect(() => ({ kind: "wait" }));
