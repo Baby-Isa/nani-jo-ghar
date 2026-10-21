@@ -3845,7 +3845,8 @@
    "src": [
     "data/clinic.json words.med-honey: placeholder",
     "data/clinic.json items.honey: the pharmacy tray's placeholder (English, to record)",
-    "data/clinic/lang.json words.cl-honey: English placeholder (to record): a word the clinic's lines use with no Kutchi yet"
+    "data/clinic/lang.json words.cl-honey: English placeholder (to record): a word the clinic's lines use with no Kutchi yet",
+    "data/clinic/heal/taste.json words.cl-honey: no source given"
    ],
    "aliases": [
     "med-honey",
@@ -6332,7 +6333,8 @@
    "glossPl": "spots",
    "status": "to-record",
    "src": [
-    "data/clinic/lang.json words.taste-spots: English placeholder (to record): the sore-spots game: the sore spots on the tongue"
+    "data/clinic/lang.json words.taste-spots: English placeholder (to record): the sore-spots game: the sore spots on the tongue",
+    "data/clinic/heal/taste.json words.taste-spots: no source given"
    ],
    "aliases": [
     "taste-spots"
@@ -7371,7 +7373,8 @@
    "status": "to-record",
    "src": [
     "data/clinic.json words.body-tooth: placeholder",
-    "data/clinic/pipeline.json part_words.tooth: an English placeholder, to record (the doctor's session, Round 4 Section G)"
+    "data/clinic/pipeline.json part_words.tooth: an English placeholder, to record (the doctor's session, Round 4 Section G)",
+    "data/clinic/heal/tooth.json words.body-tooth: no source given"
    ],
    "aliases": [
     "body-tooth",
@@ -8166,6 +8169,7 @@
    "src": [
     "data/clinic.json words.col-blue: placeholder",
     "data/clinic/lang.json words.col-blue: English placeholder (to record): no Kutchi for blue on record yet; the same as data/clinic.json col-blue, here so the seam finds it in Node too (heal-A 2 Oct)",
+    "data/clinic/heal/taste.json words.col-blue: no source given",
     "data/dress.json words.ph-blue: an English placeholder, to record"
    ],
    "aliases": [
@@ -8619,12 +8623,15 @@
     "data/clinic/lang.json words.tooth-right: English placeholder (to record): the tooth game's brush moves at levels 1-2",
     "data/clinic/heal/ear.json words.side-right: no source given",
     "data/clinic/heal/knee.json words.side-right: no source given",
+    "data/clinic/heal/tooth.json words.tooth-right: no source given",
+    "data/clinic/heal/tooth.json words.a.right: no source given",
     "data/dress.json words.ph-right: an English placeholder, to record"
    ],
    "aliases": [
     "side-right",
     "cl-jamno",
     "tooth-right",
+    "a.right",
     "ph-right"
    ],
    "open": [
@@ -9077,7 +9084,8 @@
    "gloss": "brush",
    "status": "to-record",
    "src": [
-    "data/clinic/lang.json words.tooth-brush: English placeholder (to record): the tooth game's word review"
+    "data/clinic/lang.json words.tooth-brush: English placeholder (to record): the tooth game's word review",
+    "data/clinic/heal/tooth.json words.tooth-brush: no source given"
    ],
    "aliases": [
     "tooth-brush"
@@ -11025,7 +11033,8 @@
    "gloss": "down",
    "status": "to-record",
    "src": [
-    "data/clinic/lang.json words.tooth-down: English placeholder (to record): the tooth game's brush moves"
+    "data/clinic/lang.json words.tooth-down: English placeholder (to record): the tooth game's brush moves",
+    "data/clinic/heal/tooth.json words.tooth-down: no source given"
    ],
    "aliases": [
     "tooth-down"
@@ -11304,7 +11313,8 @@
    "gloss": "up",
    "status": "to-record",
    "src": [
-    "data/clinic/lang.json words.tooth-up: English placeholder (to record): the tooth game's brush moves (heal/games/tooth.js); was a bare English id"
+    "data/clinic/lang.json words.tooth-up: English placeholder (to record): the tooth game's brush moves (heal/games/tooth.js); was a bare English id",
+    "data/clinic/heal/tooth.json words.tooth-up: no source given"
    ],
    "aliases": [
     "tooth-up"
@@ -11547,23 +11557,6 @@
    }
   },
   {
-   "id": "phrase.a-cut",
-   "pos": "Phrase",
-   "gloss": "A cut.",
-   "status": "to-record",
-   "src": [
-    "data/clinic/pipeline.json lines.ailment-cut: data/clinic/pipeline.json ailments: the doctor names it; English placeholder, to record"
-   ],
-   "aliases": [
-    "clinic.line.ailment-cut"
-   ],
-   "ask": {
-    "word": [
-     "to record"
-    ]
-   }
-  },
-  {
    "id": "phrase.a-fever",
    "pos": "Phrase",
    "gloss": "A fever.",
@@ -11612,23 +11605,6 @@
    "aliases": [
     "cook.line.little"
    ]
-  },
-  {
-   "id": "phrase.a-scrape",
-   "pos": "Phrase",
-   "gloss": "A scrape.",
-   "status": "to-record",
-   "src": [
-    "data/clinic/pipeline.json lines.ailment-scrape: data/clinic/pipeline.json ailments: the doctor names it; English placeholder, to record"
-   ],
-   "aliases": [
-    "clinic.line.ailment-scrape"
-   ],
-   "ask": {
-    "word": [
-     "to record"
-    ]
-   }
   },
   {
    "id": "phrase.a-sore-eye",
@@ -12220,10 +12196,12 @@
    "gloss": "Bring me these",
    "status": "to-record",
    "src": [
-    "data/cook.json lines.headline-give: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+    "data/cook.json lines.headline-give: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'.",
+    "data/clinic/pipeline.json lines.pipeline.bring-these: data/clinic/pipeline.json"
    ],
    "aliases": [
-    "cook.line.headline-give"
+    "cook.line.headline-give",
+    "clinic.line.pipeline.bring-these"
    ],
    "ask": {
     "word": [
@@ -16335,10 +16313,12 @@
    },
    "status": "confirmed",
    "src": [
-    "data/conversations/lines.json lines.name-nani: Cast; Mum 28 Sept (Round 3 K14; docs/language/grammar-notes.md §30) [cast]"
+    "data/conversations/lines.json lines.name-nani: Cast; Mum 28 Sept (Round 3 K14; docs/language/grammar-notes.md §30) [cast]",
+    "data/story/first-launch.json lines.name-nani: SH-69 (Zafar 13 Oct, S05-G): the first meeting names her: the child calls 'Nani!' as they arrive (K14, Zafar's take so it isn't Nani's own voice, as 'Ha!')."
    ],
    "aliases": [
-    "conversation.line.name-nani"
+    "conversation.line.name-nani",
+    "story.line.name-nani"
    ]
   },
   {
@@ -17954,23 +17934,6 @@
    ],
    "aliases": [
     "fever-take-away"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "phrase.take-it-off",
-   "pos": "Phrase",
-   "gloss": "Take it off",
-   "status": "to-record",
-   "src": [
-    "data/cook.json guide.maani-line:off: Nani's guide box says what to do now; no Kutchi recorded yet"
-   ],
-   "aliases": [
-    "cook.guide.maani-line:off"
    ],
    "ask": {
     "word": [
