@@ -25,6 +25,7 @@ Plan (19 Oct; nothing launched until Zafar answers the decisions). **Goal: every
 About $290 in all, ceiling $350. Waiting on Mum, not this sprint: the stir sentence, "put it on", "take it off", the "and" join, *muke*/*khape* (interim lines where the rows say). Not in this sprint unless Zafar says: SH-90 (phones), CK-TAB-01 (tablets), older two-strike art rows not in his notes.
 
 ## Small decisions
+- Zafar, 21 Oct (01:00): fix everything we can and publish by 8am UK; the chicken goes in now with an English placeholder until Mum records murgi; spoken English placeholders are fine while testing, never in the app-store build.
 - Zafar, 20 Oct (night): run overnight and publish to main with a play link; fix what the judges fail that is easy in code first; keep the tooth zoom's middle step; the chicken can go in before Mum records it (how, without an English or device voice in a game, is put to him: her "murgi" from 5 Oct recommended).
 - Zafar, 20 Oct (s08c landed): the doctor's three-quarter set and the girl's close-ups look like them; colour-correct their skin at the cut, don't redraw; keep GZ2's cropped crown; run the 4-image redo; publish only after the s08c art is cut and wired.
 - Zafar, 20 Oct: fix every code fix in Sprint 8, don't push any to the next sprint; samosa fills only what is ordered; the knee wraps eight times at L3; a taller shelf band (about 30%); the plaster tool column keeps its three colours where space is tight; the tomato plural goes to the next recording session; yes to the s08c art run and its five decisions.
