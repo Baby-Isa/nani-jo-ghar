@@ -789,19 +789,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // (S06 round 3: one flat ellipse at 0.3 of a warm brown read as the tray's own brown on the dark walnut floor: a flat
     // darkening looks like darker wood. Now it fades: darkest at the dish's right foot, lighter as it falls away right,
     // stacked rings of near-black, so the eye reads a shadow by its edge)
-    // (s08 sweep, CK-21: the judge, 20 Oct: "no contact shadow falling to the right shows on the tray floor beside any dish". It
-    // lay at the tray's back (0.28 of the tray above the dish's foot), so the dish hid it, and five rings at 0.13 of black
-    // barely darkened the walnut. Now it lies at the foot itself, on the floor just behind the front wall, starting under the
-    // dish and reaching well past its right side, darker: the soft dark patch to the right of every dish's base)
-    const shH = Math.max(14, Math.min(t.h * 0.34, h * 0.24));
-    // (on the floor's visible strip: just behind the front wall's top edge, which hides the dish's own base; a painted tray's
-    // wall is cut at the floor's front line, a drawn tray's at its middle)
-    const front = t.painted && t.src ? (t.src.oy || 0) + Math.round(t.src.y - 1 * (t.src.k || 1)) / (t.src.k || 1) : t.y;
-    const shY = Math.min(base, front) - shH * 0.45;
-    // (its reach kept inside the tray's floor: a wide plate's shadow never runs over the tray's right wall onto the counter)
-    const sw = Math.max(w * 0.45, Math.min(w, (t.x + t.w * 0.45 - x) / 1.2));
-    [1.25, 1.02, 0.8, 0.6].forEach((f, n) =>
-      s.track(s.add.ellipse(x + sw * (0.12 + f * 0.36), shY, sw * f, shH * (0.6 + f * 0.4), 0x120802, 0.2).setDepth(Cook.D.occ + 1.9 + i * 0.01 + n * 0.001))
+    const shH = Math.max(12, Math.min(t.h * 0.3, h * 0.2));
+    const shY = t.y - t.h * 0.1;
+    [1.3, 1.08, 0.86, 0.66, 0.48].forEach((f, n) =>
+      s.track(s.add.ellipse(x + w * (0.22 + f * 0.2), shY, w * f, shH * (0.55 + f * 0.45), 0x000000, 0.13).setDepth(Cook.D.occ + 1.9 + i * 0.01 + n * 0.001))
     );
     const img = s.track(s.add.image(x, base, a.key).setOrigin(0.5, 0.94).setDisplaySize(w, h).setDepth(Cook.D.occ + 2 + i * 0.01));
     trayFront(s, t);
