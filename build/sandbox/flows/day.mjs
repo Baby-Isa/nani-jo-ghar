@@ -112,6 +112,14 @@ function onThisPage(ctx) {
   });
   return { ...ctx, page, reachedEnd: false };
 }
+/** The book: her greeting in the room (shot here when it is still up), then the book's own pages-first driver (its own query is
+ *  ignored on this page, so the page's real book, planned from today's log, is the one played). */
+async function playBookHere(ctx) {
+  const { page, rec } = ctx;
+  await page.waitForFunction(() => /^day\/book/.test(window.njgTest.state()), null, { timeout: 30000 });
+  if (await page.waitForSelector(".day-cv .day-bubble.in .day-line", { timeout: 8000 }).then(() => true).catch(() => false)) await rec.state("book-room-greet");
+  await playStage(ctx, dayBookFlow(1, "find"), "book");
+}
 async function playStage(ctx, flow, what) {
   const c = onThisPage(ctx);
   await flow.run(c);
@@ -131,10 +139,8 @@ export const dayFullFarm = {
     // the ride, by the ride's own driver
     await page.waitForFunction(() => /^day\/(ride|window)/.test(window.njgTest.state()), null, { timeout: 30000 });
     await playStage(ctx, dayWindowFlow(1, "fair"), "ride");
-    // the book, by the book's own driver: its pages-first player (the room's greeting is said while the ride's driver closes the
-    // ride; the driver ignores its own query here, so the page's real book, planned from the ride's finds, is the one played)
-    await page.waitForFunction(() => /^day\/book/.test(window.njgTest.state()), null, { timeout: 30000 });
-    await playStage(ctx, dayBookFlow(1, "find"), "book");
+    // the book, planned from the ride's finds
+    await playBookHere(ctx);
     await page.waitForFunction(() => window.njgTest.state() === "day/end", null, { timeout: 30000 });
     const d = await dayOf(page);
     const stages = ((d && d.log && d.log.stages) || []).map((s) => `${s.stage}:${s.status}`);
@@ -164,8 +170,7 @@ export const dayFullKitchen = {
     await rec.state("handoff");
     // the child comes back from Cook: day.html again, no day named, picks up where today stopped (the book)
     await open(page, "seed=7");
-    await page.waitForFunction(() => /^day\/book/.test(window.njgTest.state()), null, { timeout: 30000 });
-    await playStage(ctx, dayBookFlow(1, "farm"), "book");
+    await playBookHere(ctx);
     await page.waitForFunction(() => window.njgTest.state() === "day/end", null, { timeout: 30000 });
     const d = await dayOf(page);
     const stages = ((d && d.log && d.log.stages) || []).map((s) => `${s.stage}:${s.status}`);
