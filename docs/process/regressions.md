@@ -75,7 +75,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 | DAAR-27 | "The counting doesn't keep up with the turns ... say it within like three quarters of one revolution" | **waiting on Zafar** · passes | auto: a lap's number starts within 3/4 of a lap | `docs/feedback/cook-playtest-2026-10-17.md` P10 |
 | DAAR-32 | "She says stir three times but I think she should say the speed as well, so either jaldi or aste" | **waiting on Zafar** · passes | ear: daal stir L1 | `docs/feedback/cook-playtest-2026-10-17.md` P51 |
 | DAAR-33 | "The top of the mat just peeks above the indicator"; "the two mats overlap ... just remove the mat that the daal was sitting on once you've poured it" (reverses DAAR-10) | **waiting on Zafar** · passes | eye: daal after the pour and at serve | `docs/feedback/cook-playtest-2026-10-17.md` P52 |
-| DAAR-12 | Laps and speed on the card; asked speed green, the other yellow, spill red | **waiting on Zafar** · stir lab L3: the speed is dots on the card (heard, not written)? | eye: stir L1–L3 | `docs/archive/feedback/cook-playtest-2026-10-06.md` D12, D13 |
+| DAAR-12 | Laps and speed on the card; asked speed green, the other yellow, spill red | **to fix: code** · stir lab L3: the speed is dots on the card (Zafar, 21 Oct) | eye: stir L1–L3 | `docs/archive/feedback/cook-playtest-2026-10-06.md` D12, D13 |
 
 ## Cook: sekelo
 
@@ -280,7 +280,7 @@ The genuine things still to fix, plus the keep list (things Zafar liked: must no
 
 | ID | Issue | Status | Check | Source |
 |---|---|---|---|---|
-| SH-63 | The guide box vs the card: one rule and a table of every line in every Cook station and clinic stage | **to fix: code** · clinic L2 card shows step lines, not the order | eye/ear: every game | `docs/archive/feedback/clinic-playtest-2026-10-06.md` G1, D6, D13, FV7, B1, FT3 |
+| SH-63 | The guide box vs the card: one rule and a table of every line in every Cook station and clinic stage | **waiting on Zafar** · his play first; some instruction or guidance at each point (21 Oct) | eye/ear: every game | `docs/archive/feedback/clinic-playtest-2026-10-06.md` G1, D6, D13, FV7, B1, FT3 |
 
 ## Shared components
 
