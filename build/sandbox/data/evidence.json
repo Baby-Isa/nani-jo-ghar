@@ -16898,7 +16898,7 @@
    "at": "visible:.wr-band",
    "after": null,
    "capture": [
-    "strip:.wr-view:16x800"
+    "strip:.wr-view:12x1100"
    ],
    "expect": null,
    "note": "the three layers scroll at their own speeds; a filmstrip of about 13 s at a real speed, long enough for the near layer to wrap its join at least once: no seam, no jump"
