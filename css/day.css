@@ -9,44 +9,72 @@ body.day { background: var(--njg-house); font-family: var(--njg-font); color: va
 #day-app { position: fixed; inset: 0; overflow: hidden; }
 .day-root { position: absolute; inset: 0; overflow: hidden; }
 
-/* ---------- the scene: 1600x900, scaled to cover, kept to the ground ---------- */
+/* ---------- the morning door (js/day/door.js, sky.js paintDoor; DOOR-01..04): the shared frame, the sky behind the cut-out
+   house (its place set by code from data/days.json door.house), Nani's pose cut-outs, her lines in the shared bubble ---------- */
+.day-play { position: relative; overflow: hidden; }
 .day-stage { position: absolute; inset: 0; overflow: hidden; background: var(--njg-house); }
-.day-box { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .day-layer { position: absolute; inset: 0; pointer-events: none; }
 .day-layer > svg, .day-layer > img, .day-layer > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 canvas.day-layer { width: 100%; height: 100%; }
-.day-layer > img { object-fit: cover; }
+.day-sky > img { object-fit: cover; object-position: 50% 0; user-select: none; }
 .day-sky > svg { width: 100%; height: 100%; }
-.day-tint { mix-blend-mode: multiply; }
-.day-nani-wrap { position: absolute; transform: translateX(-50%); }
-.day-nani { position: relative; display: block; height: 100%; width: auto; transform-origin: 50% 100%; }
+/* the clouds drift (code moves only what moves: the cloudy and raining skies pan slowly to and fro) */
+.day-sky > img.day-drift { transform-origin: 50% 0; animation: day-drift 48s ease-in-out infinite alternate; }
+@keyframes day-drift { from { transform: scale(1.08) translateX(-3%); } to { transform: scale(1.08) translateX(3%); } }
+/* the stars twinkle: small glints over the night sky's own stars */
+.day-twinkle > i { position: absolute; width: var(--tw, 4px); height: var(--tw, 4px); margin: calc(var(--tw, 4px) / -2); border-radius: var(--njg-round); background: var(--njg-cream); box-shadow: 0 0 6px 2px rgba(255, 246, 214, .7); opacity: .2; animation: day-twinkle 2.6s ease-in-out infinite; }
+@keyframes day-twinkle { 0%, 100% { opacity: .15; transform: scale(.6); } 50% { opacity: 1; transform: scale(1); } }
+.day-house > img.day-house-art { position: absolute; inset: auto; max-width: none; user-select: none; }
+/* Nani: her pose cut-outs, feet at the foot of the steps (the wrap is that point), one cross-fading into the next */
+.day-nani-wrap { position: absolute; width: 0; height: 0; }
+.day-nani { position: absolute; display: block; max-width: none; opacity: 0; transition: opacity var(--day-fade, 260ms) ease-in-out; user-select: none; }
+.day-nani.on { opacity: 1; }
 .day-contact { position: absolute; left: 12%; right: 12%; bottom: -12px; height: 24px; border-radius: var(--njg-round); background: var(--njg-contact); }
-.day-nani.gesture { animation: day-gesture 1.1s ease-out 1; }
-@keyframes day-gesture {
-  0%, 100% { transform: none; }
-  35% { transform: translateY(-12px) rotate(-1.5deg); }
-  65% { transform: translateY(-4px) rotate(1deg); }
-}
+.day-nani-wrap > .day-contact { right: auto; bottom: auto; left: calc(var(--day-b, 300px) * -.2); width: calc(var(--day-b, 300px) * .4); top: calc(var(--day-b, 300px) * -.03); height: calc(var(--day-b, 300px) * .06); background: radial-gradient(closest-side, var(--njg-contact), transparent); }
 
-/* the thought bubble of the day's place: a white cloud, the picture in it, two dots down to Nani */
-.day-thought { position: absolute; background: var(--njg-card); border-radius: var(--njg-round); box-shadow: var(--njg-shadow); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transform-origin: 20% 100%; transition: opacity .4s, transform .4s; }
+/* the thought bubble of the day's place: a white cloud beside her head, the picture in it, two dots down to her */
+.day-thought { position: absolute; z-index: 2; background: var(--njg-card); border-radius: var(--njg-round); box-shadow: var(--njg-shadow); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.6); transform-origin: 0% 100%; transition: opacity .4s, transform .4s; pointer-events: none; }
 .day-thought.in { opacity: 1; transform: none; }
 .day-thought.go { opacity: 0; transform: scale(1.15); }
 .day-thought > img, .day-thought > svg { width: 72%; height: 72%; object-fit: contain; }
 .day-thought-dot { position: absolute; background: var(--njg-card); border-radius: var(--njg-round); box-shadow: var(--njg-shadow); }
-.day-thought-dot.d0 { width: 32px; height: 32px; left: 8px; bottom: -40px; }
-.day-thought-dot.d1 { width: 16px; height: 16px; left: -24px; bottom: -72px; }
+.day-thought-dot.d0 { width: 16px; height: 16px; left: 4px; bottom: -16px; }
+.day-thought-dot.d1 { width: 8px; height: 8px; left: -8px; bottom: -28px; }
 
-/* ---------- Nani's lines: one card, each line as it is said, Kutchi with its English beneath (the door) ---------- */
-.day-lines { position: absolute; left: var(--njg-s5); top: var(--njg-s5); max-width: min(56vw, 760px); background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); padding: var(--njg-s3) var(--njg-s4); display: flex; flex-direction: column; gap: var(--njg-s2); }
-.day-lines:empty { display: none; }
+/* her lines: the shared speech bubble (css/shared/conversations.css), placed in the sky's upper left by door.js; the line's Kutchi
+   takes the bubble's own size, its English beneath */
+.day-door-cv { z-index: 20; }
+.day-lines .day-line { display: block; }
+.day-lines .day-k { font-size: inherit; font-weight: inherit; }
+.day-lines .day-k.to-record { font-weight: 700; }
+.day-lines .day-en { font-size: var(--njg-t4); }
+
+/* ---------- the door's sidebar: two cards, the weather and the day's activity, each as its sentence is said (idea 55) ---------- */
+.day-door .day-side { display: flex; flex-direction: column; gap: var(--njg-s3); padding-right: max(var(--njg-side-pad), var(--njg-s2)); box-sizing: border-box; overflow: hidden; }
+.day-wcard { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--njg-s2); padding: var(--njg-s2); background: var(--njg-card); border-radius: var(--njg-radius); box-shadow: var(--njg-shadow); visibility: hidden; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .4s, transform .4s, visibility 0s .4s; }
+.day-wcard.in { visibility: visible; opacity: 1; transform: none; transition: opacity .4s, transform .4s; }
+.day-wpic { position: relative; flex: 0 1 auto; min-height: 0; width: 100%; aspect-ratio: 4 / 3; border-radius: var(--njg-radius); overflow: hidden; background: var(--njg-cream); }
+.day-wpic > img.day-wbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.day-wpic > img.day-wbg.contain { object-fit: contain; }
+.day-wpic > img.day-wsprite { position: absolute; width: auto; transform: translate(-50%, -100%); display: block; }
+.day-wpic > canvas.day-rain { position: absolute; inset: 0; width: 100%; height: 100%; }
+.day-wword { flex: none; display: flex; align-items: center; gap: var(--njg-s2); min-width: 0; }
+.day-wspk { flex: none; width: var(--njg-tap); height: var(--njg-tap); padding: 0; display: grid; place-items: center; border-radius: var(--njg-round); border: var(--njg-line-2) solid var(--njg-cream-edge); background: var(--njg-card); color: var(--njg-ink); cursor: pointer; touch-action: manipulation; }
+.day-wspk svg { width: 24px; height: 24px; display: block; }
+.day-wspk.on { box-shadow: 0 0 0 4px var(--njg-focus); }
+.day-wline { min-width: 0; }
+.day-wline .day-k { font-size: var(--njg-t2); }
+
+/* the child's answer: the shared Ha! and Na pills, bottom right of the play area */
+.day-answer { position: absolute; right: var(--njg-s6); bottom: var(--njg-s6); z-index: 3; opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .3s, transform .3s; }
+.day-answer.in { opacity: 1; transform: none; }
+.day-yes-word .day-k { font-size: var(--njg-t1); }
+@media (max-height: 499.98px) { .day-answer { right: var(--njg-s4); bottom: var(--njg-s4); } }
+.day-lab-note { position: absolute; left: var(--njg-s2); bottom: var(--njg-s2); z-index: 30; margin: 0; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-flag-bg); color: var(--njg-flag); border: var(--njg-line) solid var(--njg-flag-edge); border-radius: var(--njg-radius); font-size: var(--njg-t4); }
+.day-lab-note + .day-lab-note { bottom: calc(var(--njg-s2) * 6); }
+
+/* every line's Kutchi and its English (the door, the book, the ride's card) */
 .day-line { transition: opacity .3s; }
-.day-line.past { opacity: 0.5; }
-/* a phone keeps the scene in view: the line being said and the one before it */
-@media (max-height: 499.98px) {
-  .day-lines { max-width: min(52vw, 760px); left: var(--njg-s3); top: var(--njg-s3); }
-  .day-lines .day-line.past:not(:nth-last-child(2)) { display: none; }
-}
 .day-k { margin: 0; font-size: var(--njg-t1); font-weight: 800; line-height: 1.25; overflow-wrap: normal; word-break: normal; }
 .day-k [data-seg] { text-decoration: underline transparent; text-decoration-thickness: 3px; text-underline-offset: 4px; transition: text-decoration-color .15s; }
 .day-k [data-seg].said { text-decoration-color: var(--njg-focus); }
@@ -54,12 +82,7 @@ canvas.day-layer { width: 100%; height: 100%; }
 .day-en { margin: var(--njg-s1) 0 0; font-size: var(--njg-t4); font-weight: 600; color: var(--njg-ink-soft); }
 .day-inline { display: inline; }
 .day-inline .day-k { display: inline; font-size: inherit; font-weight: inherit; }
-
-/* the child's answer */
-.day-answer { position: absolute; right: var(--njg-s6); bottom: var(--njg-s6); opacity: 0; transform: translateY(var(--njg-s4)); transition: opacity .3s, transform .3s; }
-.day-answer.in { opacity: 1; transform: none; }
-.day-yes-word .day-k { font-size: var(--njg-t1); }
-.day-lab-note { position: absolute; left: var(--njg-s2); bottom: var(--njg-s2); margin: 0; padding: var(--njg-s2) var(--njg-s3); background: var(--njg-flag-bg); color: var(--njg-flag); border: var(--njg-line) solid var(--njg-flag-edge); border-radius: var(--njg-radius); font-size: var(--njg-t4); }
+@media (prefers-reduced-motion: reduce) { .day-sky > img.day-drift, .day-twinkle > i { animation: none; } .day-nani { transition: none; } }
 
 /* ---------- the evening book (js/day/book.js, book-play.js): the room and its camera, the book's two pages, the games ---------- */
 .day-book-scene { background: var(--njg-ink); }
