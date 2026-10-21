@@ -27,25 +27,25 @@ test("the ladder's table: 7, 8, 11 and 15 s by level; a repeat after 10 s; the b
   assert.ok(G.BULB_PULSE >= 15000 && G.BULB_PULSE <= 20000);
 });
 
-test("a step opens: nothing is shown, said or lit at the open, at any level; the help comes after the pause, voice and glow together", async () => {
+test("a step opens: its line is shown at once (SH-63, Zafar 21 Oct), nothing said or lit, at any level; the help comes after the pause, voice and glow together", async () => {
   G.PAUSE = [300, 300, 300, 300];
   G.REPEAT = 5000;
   for (const level of [1, 3]) {
     const { st, log } = make(level);
     G.poke();
     st.open({ html: `Bhar ${level}!`, line: null });
-    assert.deepEqual(kinds(log), [], `L${level}: nothing at the open`);
+    assert.deepEqual(kinds(log), ["show"], `L${level}: the line shown at the open, nothing said or lit`);
     await wait(150);
-    assert.deepEqual(kinds(log), [], "nor before the pause");
+    assert.deepEqual(kinds(log), ["show"], "nor before the pause");
     await wait(450);
-    // voice, glow and the line shown, all in the same turn of the clock
-    assert.deepEqual(kinds(log), ["show", "help", "speak", "glow"], `L${level}: line, voice and glow together`);
+    // voice and glow together
+    assert.deepEqual(kinds(log), ["show", "help", "speak", "glow"], `L${level}: voice and glow together`);
     assert.equal(log.find((x) => x[0] === "glow")[2], true);
     st.close();
   }
 });
 
-test("the pause is counted from the LAST action: a poke restarts it; and the same line is not said again before the repeat time", async () => {
+test("the pause is counted from the LAST action: a poke restarts it; a help never comes again with no action (SH-60); the same line is not said again before the repeat time", async () => {
   G.PAUSE = [400, 400, 400, 400];
   G.REPEAT = 700;
   const { st, log } = make(1);
@@ -54,14 +54,15 @@ test("the pause is counted from the LAST action: a poke restarts it; and the sam
   await wait(250);
   st.poke(); // the child did something
   await wait(300); // 550 ms after the open, 300 after the poke: still no help
-  assert.deepEqual(kinds(log), []);
+  assert.deepEqual(kinds(log), ["show"]);
   await wait(300); // 400+ after the poke
   assert.deepEqual(kinds(log), ["show", "help", "speak", "glow"]);
   log.length = 0;
-  await wait(500); // 500 after the help: below the repeat
-  assert.deepEqual(kinds(log), [], "never twice in a row");
-  await wait(500); // past the repeat and 10 s... of idle
-  assert.ok(kinds(log).includes("glow"), "again after the repeat time");
+  await wait(1000); // past the repeat with no action: SH-60, the help "shouldn't persist"
+  assert.deepEqual(kinds(log), [], "never again while the child does nothing");
+  st.poke(); // the child acts: the pause runs again from that action
+  await wait(750); // (the ladder's clock ticks every 200 ms)
+  assert.ok(kinds(log).includes("glow"), "after an action and the pause, the help again");
   st.close();
 });
 
@@ -93,7 +94,7 @@ test("closing a step stops its help: no line or glow after the step is done", as
   st.open({ html: "Waar!" });
   st.close();
   await wait(500);
-  assert.ok(!kinds(log).includes("speak") && !kinds(log).includes("show") && !log.some((x) => x[0] === "glow" && x[2]), JSON.stringify(log));
+  assert.ok(!kinds(log).includes("speak") && !log.some((x) => x[0] === "glow" && x[2]) && log[log.length - 1][0] === "clear", JSON.stringify(log));
 });
 
 test("the page's idle clock: poke() and idleMs(); the bulbs' pulse is a class on both bulbs", () => {

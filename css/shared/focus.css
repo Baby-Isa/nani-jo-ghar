@@ -7,3 +7,16 @@
 }
 .njg-dim { filter: brightness(0.9) saturate(0.9); transition: filter .3s; }
 @media (prefers-reduced-motion: reduce) { .njg-pulse { animation: none; filter: drop-shadow(0 0 var(--njg-s2) rgba(224, 166, 58, 0.75)); } }
+
+/* SH-53 (Zafar, 17 Oct: "make it glow even more, kind of extend a little bit further out from the item ... like how we got on the
+   tick button ... pulsating quite strongly"): the ONE next-thing glow every game lights after the pause: the tick's own pulse
+   (css/shared/buttons.css njgDonePulse: 1.2 s, a 12 px gold glow at .85), a drop-shadow, so it follows the thing's own shape and
+   is never a ring of a game's own. Cook's item glow writes the same values (js/cook/station-lib.js Cook.GLOW, css/cook.css
+   .help-pulse); the clinic's tool strip uses it as it is (css/clinic.css .hs-tool.pulse) */
+:root { --glow-ms: 1200ms; --glow-radius: var(--njg-s3); --glow-rgb: 224, 166, 58; --glow-alpha: .85; }
+.njg-glow { animation: njgGlow var(--glow-ms) ease-in-out infinite; }
+@keyframes njgGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(var(--glow-rgb), 0)); }
+  50% { filter: drop-shadow(0 0 var(--glow-radius) rgba(var(--glow-rgb), var(--glow-alpha))); }
+}
+@media (prefers-reduced-motion: reduce) { .njg-glow { animation: none; filter: drop-shadow(0 0 var(--glow-radius) rgba(var(--glow-rgb), var(--glow-alpha))); } }
