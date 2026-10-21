@@ -3,13 +3,13 @@
 Branch `worktree-agent-ac78a83501956f4f8` (not pushed). Changed: the window ride (`js/shared/window-ride.js`, `js/day/window.js`, `data/day.json`), its checks, flows, lab.
 
 ## Flaws first
-1. RIDE-01's new spec (`strip:.wr-view:16x800`) is a tool failure: at most 12 frames.
+1. RIDE-01's spec (`16x800`) was a tool failure: at most 12 frames (fixed).
 2. The game's motion was already even in headless Chromium; the jerk was the recorder (below).
 3. One 150-183 ms hitch early at 844x390 in 2 of 6 runs; no new element that frame.
 4. Faint far-hill ghost over each overlap (the cut's outer tenths); `plus-lighter` needs Safari 15.4+.
 5. Tablets lose the frame's pillars; things small at 800x360.
 6. `ride-gentle` and `ride-together` are old recordings (5-8% repeated frames).
-7. `checks.mjs` load: cook:chop fails now and then (Cook's oversized Nani face, not mine); all else ok.
+7. `checks.mjs` load: cook:chop fails now and then (not mine).
 
 ## Round 3 (Zafar, 20 Oct evening)
 - Gentle layers (0.5 / 0.8 / 1) are the farm road's default.

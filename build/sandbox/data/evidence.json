@@ -114,7 +114,10 @@
   "nameit": "day:book only: the book opened on its name-it page and played fair",
   "photo": "day:book only: the book opened on its stick-in-the-photo page, the right photo dragged to the frame",
   "ourday": "day:book only: the book opened on its our-day page, watched to its end",
-  "farm": "day:book only: the book after a farm-trip day (log=farm: the door, the ride's finds, the photos), played fair to its end"
+  "farm": "day:book only: the book after a farm-trip day (log=farm: the door, the ride's finds, the photos), played fair to its end",
+  "raining": "day:door only: the door on a raining day (weather=raining)",
+  "night": "day:door only: the door at night (weather=night)",
+  "cloudy": "day:door only: the door on a cloudy day (weather=cloudy)"
  },
  "_tools": {
   "build/tools/review/evidence.mjs": "the evidence loop itself (--plan --all exits 1 on any live row with no spec: PRC-06); being built in parallel",
@@ -16902,6 +16905,23 @@
    ],
    "expect": null,
    "note": "the three layers scroll at their own speeds; a filmstrip of about 13 s at a real speed, long enough for the near layer to wrap its join at least once: no seam, no jump"
+  },
+  {
+   "flow": "repo",
+   "path": null,
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "ref:build/reports/s09-ride-join-844x390.png"
+   ],
+   "expect": null,
+   "note": "a frame-exact contact sheet (the paused-clock recorder, every frame kept) of the near layer crossing its join at 844x390 at gentle normal speed: steady motion, no seam"
   }
  ],
  "RIDE-02": [
@@ -17288,6 +17308,253 @@
     "pass"
    ],
    "note": "the book leak bot over name it, stick in the photo and find it: no strategy without Kutchi beats chance"
+  }
+ ],
+ "DOOR-01": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the door on a sunny morning: the sky behind the empty house, the roofline a third down"
+  },
+  {
+   "flow": "day:door",
+   "path": "raining",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the door on a raining morning: the sky behind the empty house, the roofline a third down"
+  },
+  {
+   "flow": "day:door",
+   "path": "night",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390",
+    "1024x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the door on a night morning: the sky behind the empty house, the roofline a third down"
+  }
+ ],
+ "DOOR-02": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-lines .day-line",
+   "after": null,
+   "capture": [
+    "strip:.day-root:10x700",
+    "voice"
+   ],
+   "expect": null,
+   "note": "Nani's poses following her lines, standing at the foot of the steps at about half the screen height"
+  }
+ ],
+ "DOOR-03": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "crop:.day-side",
+    "dom:.day-side",
+    "voice"
+   ],
+   "expect": null,
+   "note": "the two cards with their speaker icons and Kutchi, then the Ha! and Na pills"
+  }
+ ],
+ "DOOR-04": [
+  {
+   "flow": "day:door",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "800x360",
+    "844x390",
+    "1024x768",
+    "1180x820",
+    "1280x800",
+    "1366x768",
+    "1366x1024",
+    "1440x900"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-answer.in",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noClip:.day-lines",
+    "noOverlap:.day-nani,.day-side"
+   ],
+   "note": "the door at every shape of screen"
+  }
+ ],
+ "DAY-01": [
+  {
+   "flow": "repo",
+   "path": null,
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_day_runner.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the day runner: days as stage lists in data; swap, add, remove, reorder and copy need no code; an unbuilt stage is skipped"
+  }
+ ],
+ "DAY-02": [
+  {
+   "flow": "day:full-farm",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:.day-root"
+   ],
+   "expect": null,
+   "note": "the farm day from the door through the ride to the book, with the ride's finds in the book"
+  },
+  {
+   "flow": "day:full-kitchen",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "voice"
+   ],
+   "expect": null,
+   "note": "the kitchen day: the door, the hand-off to Cook, back to the evening book"
+  }
+ ],
+ "RIDE-07": [
+  {
+   "flow": "day:window",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1024x768",
+    "1366x1024",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.wr-band",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the farm road with the s09b things, hills and the wide window"
+  }
+ ],
+ "BOOK-09": [
+  {
+   "flow": "day:book",
+   "path": "farm",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-tomorrow",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "the farm evening with the s09b art at its end"
+  },
+  {
+   "flow": "day:book",
+   "path": "find",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "844x390"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.day-find",
+   "after": null,
+   "capture": [
+    "crop:.day-book"
+   ],
+   "expect": null,
+   "note": "the farm find-it spread with real sprites"
   }
  ]
 }

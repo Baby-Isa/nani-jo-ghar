@@ -1,0 +1,56 @@
+{
+  "name": "s09-final-art, the s09b art wired into the ride and the book, and the judges' last points: the farm road's new things, hills and wide window; the book's find-it spreads, face close-up and sprites; a frame-exact sheet of the ride's join",
+  "model": "Opus",
+  "effort": "high",
+  "kind": "shared",
+  "why": "the agreed art in the ride and the book, judged by picture",
+  "cost": "about $30-45",
+  "stop": "when every task is accepted, or 4 hours",
+  "branch": "a worktree of claude/funny-maxwell-3dkhif (the orchestrator merges)",
+  "live": true,
+  "read": [
+    "build/reports/s09-ride.md and build/reports/s09-book.md (your own work so far)",
+    "docs/process/regressions.md rows RIDE-01, RIDE-07 and BOOK-09 and their probes in build/sandbox/data/evidence.json; the judges' notes in build/screenshots/evidence/ev-20261021-000057-xfq/judge/*.verdicts.md",
+    "docs/game-design/modes/a-day-at-nanis.md §4 (the farm day's things) and docs/design-language/art-plans/s09r-art-plan.md §7",
+    "assets/day/s09b/cut-report.json (the cut art and its names)"
+  ],
+  "owns": [
+    "js/shared/window-ride.js",
+    "js/day/window.js",
+    "js/day/book.js and js/day/book-*.js",
+    "data/day.json",
+    "data/day-book.json",
+    "css/day-book.css (new: the book's new styles; css/day.css is the door's)",
+    "build/sandbox/flows/day-window.mjs",
+    "build/sandbox/flows/day-book.mjs",
+    "build/sandbox/lib/moments.mjs",
+    "build/leak_window_ride.mjs",
+    "build/leak_book.mjs",
+    "build/test_shared_window_ride.mjs",
+    "build/test_day_book.mjs",
+    "assets/day/ride/** except assets/day/ride/s09r/**",
+    "assets/day/book/**",
+    "lab/ride-preview.html",
+    "build/reports/s09-ride-join-844x390.png (new: the frame-exact contact sheet)",
+    "build/reports/s09-final-art.md"
+  ],
+  "readOnly": [
+    "js/day/door.js, js/day/sky.js, js/day/day.js, css/day.css, day.html, data/days.json, build/sandbox/flows/day.mjs, build/sandbox/lib/contract-day.mjs (s09-final-door owns these: a change you need goes in your report as a request; the ride gets its sky through sky.js as it does now)",
+    "assets/day/s09b/** and assets/day/ride/s09r/** (the orchestrator's cuts; say if one looks wrong)",
+    "build/sandbox/data/evidence.json (the orchestrator's)",
+    "data/lang/** (never add Kutchi)",
+    "js/shared/** other files (never restyle: non-negotiable 8)"
+  ],
+  "stubs": "things with no Kutchi yet pass by and are never asked for (as now); their English is grey to-record in any written line",
+  "tasks": [
+    {"do": "RIDE-07: the farm road's things from assets/day/s09b/ (cow, sheep, donkey, horse, buffalo, duck, camel, hen-chicks, bus, tractor, bicycle, car, milk-van; kite, aeroplane and butterfly in the sky band, never on a ground line; windmill, well and rainbow as passing landmarks on the far or middle line), sized by real-world height ratios in data; the far hills from assets/day/s09b/far-hills.webp (its edges are level, 9 px at both ends: check the join shows no ghost now); the wide window assets/day/s09b/car-window-wide.webp (its opening is [232, 144, 1098, 562] of 1536x1024 in cut-report.json) fitted so both pillars show on 4:3 tablets, and never a plain column under the word rail; things on the field line stand in the grass in front of the fence (never on a rail); a thing is never asked for or shown half behind the window pillar.", "accept": "RIDE-07's probe at 1024x768, 1366x1024, 844x390; RIDE-02 to RIDE-06 stay green"},
+    {"do": "RIDE-01: with your paused-clock recorder (every frame kept), make build/reports/s09-ride-join-844x390.png: a contact sheet of 12 frames, evenly spaced in game time over about 12 s at gentle normal speed at 844x390, across a near-layer join, each frame labelled with its game time. Keep it under 1.5 MB.", "accept": "RIDE-01's probes (the filmstrip and this sheet as its reference)"},
+    {"do": "BOOK-09: the book's find-it spreads are assets/day/s09b/book-farm-spread.webp and book-kitchen-spread.webp (split at the fold onto the two pages; nothing important on the fold); the camera's face shot uses nani-face-fire.webp lined up with the room picture (the same armchair and fire) so the move to her face is a clean push-in; real sprites for the dog and bird (assets/day/ride/s09r/), the door (red-door) and the car (assets/day/s09b/car.webp) where the placeholders were; every picture of a page is loaded before the page shows (no late pop-in); no empty bubble ever; the camera lands on the book over the same part of the room it zoomed through.", "accept": "BOOK-09's probes; BOOK-01 to BOOK-08 stay green"}
+  ],
+  "flows": ["day:window", "day:book"],
+  "shared": true,
+  "browser": true,
+  "port": 8885,
+  "report": "s09-final-art",
+  "publish": false
+}

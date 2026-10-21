@@ -7,7 +7,7 @@
   "cost": "about $35-50",
   "stop": "when every task is accepted, or 4 hours",
   "branch": "a worktree of claude/funny-maxwell-3dkhif (the orchestrator merges)",
-  "live": true,
+  "live": false,
   "read": [
     "docs/sprints/S09-a-day-at-nanis.md (the book: Zafar's 19-20 Oct lines, newest last)",
     "docs/process/regressions.md section 'A day at Nani's' rows BOOK-01 to BOOK-08, and their probes in build/sandbox/data/evidence.json (written before you start; run them red first)",
@@ -36,15 +36,38 @@
   ],
   "stubs": "the kept s09a art is the placeholder: b1 for Nani by the fire, b2 cut to its pages (x 170-1360, y 90-800); the redone b1, b2 and l4 replace them by path when Zafar uploads them; find-it items are separate sprites (the goat and hen exist; others are placeholder shapes)",
   "tasks": [
-    {"do": "BOOK-01: the camera: Nani greets by the fire ('what did we do today?'), the view eases to her face, turns down to the open book on her lap and zooms onto its pages (a dissolve to the pages view early in the tilt); each game sits on the two pages with a page turn between (a curl from the right page's bottom corner); at the end it zooms back out to the room. No player character.", "accept": "BOOK-01's probes (two filmstrips at 1366x768)"},
-    {"do": "BOOK-02: on phones the book scales to the screen's width (pages at least 320 px wide at 844x390; the border may clip about 16 px), no sidebar, Nani's replay as a round face on a page corner; every button at least 64 px; the sentence is the shared pill row (shrink then wrap, never clipped); a 64 px page-turn corner.", "accept": "BOOK-02's probe at 844x390 and 800x360"},
-    {"do": "BOOK-03: find it: today's place across both pages, drawn as a backdrop with separate item sprites (at least 60 px on the phone); Nani asks for fewer than are shown (2 of 4), only today's words; found: a bounce, the full line back ('there's the goat'), a gold corner tick; wrong: a wiggle and the line again, no red; idle help only replays the line. Build the find and find-wrong drivers and the after-wrong moment.", "accept": "BOOK-03's probes"},
-    {"do": "BOOK-04: name it: the left page shows one thing from the day (the chai, the bus, the goat), the right page three identical speaker buttons, nothing written on them; Nani asks 'what's this?' and never says the word first; each button plays one word; the chosen one flies into the sentence row, which only then shows the written Kutchi, and she says the day's sentence ('Nana wanted chai', 'we went by bus'); a wrong one wobbles and she asks again. Build the nameit driver.", "accept": "BOOK-04's probes"},
-    {"do": "BOOK-05: stick in the photo: Nani says a sentence about the day ('then we saw a big cow') and it is written under a dashed frame as she says it; three loose, unlabelled photos of the day's things (the decoys are also today's words); the child drags one into the frame: the right one snaps in and its photo corners appear, she repeats the line; a wrong one slides back and she says the line again; one asked per page; a placed photo can be taken back until Done. Build the photo driver.", "accept": "BOOK-05's probe"},
-    {"do": "BOOK-06 and BOOK-07: our day: the day's photos slide onto the pages as she tells the day in order, three on the left and two on the right, nothing on the centre fold, a tap replays that photo's line, not scored. The end: today's words as gold cards, a day-book added to the empty shelf (one per day played), no stars or scores, goodnight. Add a farm day to the lab logs (the door, the ride's finds, the photos). Build the ourday and farm drivers.", "accept": "BOOK-06's and BOOK-07's probes"},
-    {"do": "BOOK-08: build/leak_book.mjs, a leak bot over name it, stick in the photo and find it: strategies that know no Kutchi (always the first, by position, by elimination, waiting, tapping everything) win no more than chance; fair play wins everything.", "accept": "BOOK-08's probe: node build/leak_book.mjs exits 0"}
+    {
+      "do": "BOOK-01: the camera: Nani greets by the fire ('what did we do today?'), the view eases to her face, turns down to the open book on her lap and zooms onto its pages (a dissolve to the pages view early in the tilt); each game sits on the two pages with a page turn between (a curl from the right page's bottom corner); at the end it zooms back out to the room. No player character.",
+      "accept": "BOOK-01's probes (two filmstrips at 1366x768)"
+    },
+    {
+      "do": "BOOK-02: on phones the book scales to the screen's width (pages at least 320 px wide at 844x390; the border may clip about 16 px), no sidebar, Nani's replay as a round face on a page corner; every button at least 64 px; the sentence is the shared pill row (shrink then wrap, never clipped); a 64 px page-turn corner.",
+      "accept": "BOOK-02's probe at 844x390 and 800x360"
+    },
+    {
+      "do": "BOOK-03: find it: today's place across both pages, drawn as a backdrop with separate item sprites (at least 60 px on the phone); Nani asks for fewer than are shown (2 of 4), only today's words; found: a bounce, the full line back ('there's the goat'), a gold corner tick; wrong: a wiggle and the line again, no red; idle help only replays the line. Build the find and find-wrong drivers and the after-wrong moment.",
+      "accept": "BOOK-03's probes"
+    },
+    {
+      "do": "BOOK-04: name it: the left page shows one thing from the day (the chai, the bus, the goat), the right page three identical speaker buttons, nothing written on them; Nani asks 'what's this?' and never says the word first; each button plays one word; the chosen one flies into the sentence row, which only then shows the written Kutchi, and she says the day's sentence ('Nana wanted chai', 'we went by bus'); a wrong one wobbles and she asks again. Build the nameit driver.",
+      "accept": "BOOK-04's probes"
+    },
+    {
+      "do": "BOOK-05: stick in the photo: Nani says a sentence about the day ('then we saw a big cow') and it is written under a dashed frame as she says it; three loose, unlabelled photos of the day's things (the decoys are also today's words); the child drags one into the frame: the right one snaps in and its photo corners appear, she repeats the line; a wrong one slides back and she says the line again; one asked per page; a placed photo can be taken back until Done. Build the photo driver.",
+      "accept": "BOOK-05's probe"
+    },
+    {
+      "do": "BOOK-06 and BOOK-07: our day: the day's photos slide onto the pages as she tells the day in order, three on the left and two on the right, nothing on the centre fold, a tap replays that photo's line, not scored. The end: today's words as gold cards, a day-book added to the empty shelf (one per day played), no stars or scores, goodnight. Add a farm day to the lab logs (the door, the ride's finds, the photos). Build the ourday and farm drivers.",
+      "accept": "BOOK-06's and BOOK-07's probes"
+    },
+    {
+      "do": "BOOK-08: build/leak_book.mjs, a leak bot over name it, stick in the photo and find it: strategies that know no Kutchi (always the first, by position, by elimination, waiting, tapping everything) win no more than chance; fair play wins everything.",
+      "accept": "BOOK-08's probe: node build/leak_book.mjs exits 0"
+    }
   ],
-  "flows": ["day:book"],
+  "flows": [
+    "day:book"
+  ],
   "shared": false,
   "browser": true,
   "port": 8882,

@@ -1,0 +1,76 @@
+SESSION NAME / MODE:  s09-final-door, the morning door on the s09b art and the modular day runner: the weather skies behind the cut-out empty house, Nani's pose cut-outs at the foot of the steps, the two sidebar cards, and days as stage lists in data that play a whole day through
+MODEL AND EFFORT:     Opus, high effort (the door's look on the agreed art and the day runner every later day uses)
+COST ESTIMATE:        about $35-50
+HARD STOP:            when every task is accepted, or 4 hours. Push the branch every 30-40 minutes.
+BRANCH:               a worktree of claude/funny-maxwell-3dkhif (the orchestrator merges). Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s09-final-door.context.md (874 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/game-design/modes/a-day-at-nanis.md (§1 modular days, §3 the stage library: the design for the day runner)
+     docs/sprints/S09-a-day-at-nanis.md (the door: Zafar's 19-20 Oct lines, newest last)
+     docs/process/regressions.md rows DOOR-01 to DOOR-04, DAY-01 and DAY-02, and their probes in build/sandbox/data/evidence.json (written before you start; run them red first)
+     build/reports/s09a-fable-review.md §5 (the door) and build/reports/s09-frame.md (how the door was first built)
+     assets/day/s09b/cut-report.json (the cut art: the skies, house-empty with its roofline at y 322 of 1024, the seven nani-* poses)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/day/door.js
+  - js/day/sky.js
+  - js/day/day.js
+  - css/day.css
+  - day.html
+  - data/days.json (new: the days as stage lists)
+  - build/sandbox/flows/day.mjs
+  - build/sandbox/lib/contract-day.mjs
+  - build/test_shared_day.mjs
+  - build/test_day_runner.mjs (new)
+  - assets/day/door/** (new, if you need derived art)
+  - build/reports/s09-final-door.md
+READ-ONLY (never edit):
+  - js/shared/window-ride.js, js/day/window.js, js/day/book*.js, data/day.json, data/day-book.json, css/day-book.css, build/sandbox/flows/day-window.mjs, build/sandbox/flows/day-book.mjs, build/sandbox/lib/moments.mjs (s09-final-art owns these; a change you need goes in your report as a request; to read the day's settings from data/day.json is fine)
+  - js/cook/**, js/clinic/** and their data (Sprint 8's chat is finishing them: never edit; if the way back from Cook or the clinic needs a change there, write it as a request)
+  - assets/day/s09b/** and assets/day/ride/s09r/** (the orchestrator's cuts; say if one looks wrong)
+  - build/sandbox/data/evidence.json (the orchestrator's)
+  - data/lang/** (never add Kutchi)
+  - js/shared/** (use the shared bubble, cards, pills and buttons; never restyle: non-negotiable 8)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: a stage whose module isn't built yet (pack, meet, the farm games, the corn stall, home) is skipped by the runner with a lab note; lines the engine can't say are grey to-record English (Zafar, 20 Oct: they stay visible on the test site until release)
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. DOOR-01: the door's sky is the s09b sky for the day's weather (assets/day/s09b/sky-sunny, -cloudy, -raining, -night) as a full layer behind house-empty.webp, scaled so the house's roofline (y 322 of 1024 in the cut) sits about a third of the way down on every screen and the house covers the width (crop its sides on squarer screens); code draws only what moves (falling rain, twinkling stars, drifting clouds); remove the old flat house and code-drawn sun.
+     Accept: DOOR-01's probes at 1366x768, 844x390, 1024x768 (build the cloudy, raining and night paths in flows/day.mjs)
+  2. DOOR-02: Nani is drawn from the s09b pose cut-outs (nani-wave, nani-welcome, nani-point-up, nani-umbrella, nani-listen, nani-fan, nani-shade-eyes) at about half the screen height, feet at the foot of the steps (in front of the porch, so she may be taller than the door), all poses at one height; her pose follows her lines: wave on 'Come!', point up or shade her eyes on the weather (the umbrella when raining, the fan when sunny), welcome on the day's line, listen while she waits for Ha!. Pose changes are a short cross-fade.
+     Accept: DOOR-02's filmstrip
+  3. DOOR-03 and DOOR-04: the sidebar's two cards (the weather picture, then the activity) appear as their sentences are spoken, each with the shared speaker icon and the Kutchi beneath (idea 55, like the pantry's items); the shared Ha! and Na pills, Na shakes; her lines in the shared bubble in the sky's upper left; nothing clipped and Nani never under the sidebar at all 8 sizes.
+     Accept: DOOR-03's crops; DOOR-04's noClip and noOverlap at the 8 sizes
+  4. DAY-01: the day runner (Zafar, 20 Oct: 'built modularly, so it's easy to chop and change the sequence'). data/days.json lists each day as an ordered list of stages, each {stage, ...its settings} (door with its weather and line set; activity: kitchen or clinic; ride with its road and vehicle; book; and the not-yet-built pack, meet, game, stall, home with their settings). js/day/day.js plays the list in order through one stage interface (start(day, log) -> done), writes each stage's results to the day log, and skips an unbuilt stage with a lab note. Move the five existing days into it (day 2 the farm: door, pack (skipped), ride, meet (skipped), feed (skipped), eggs (skipped), snap (skipped), corn stall (skipped), animals home (skipped), home (skipped), book). build/test_day_runner.mjs proves swap, add, remove, reorder and copy need no code, and that an unbuilt stage is skipped.
+     Accept: DAY-01's probe: node build/test_day_runner.mjs exits 0
+  5. DAY-02: two whole-day flows in flows/day.mjs: day:full-farm (door, ride, book with the ride's finds) and day:full-kitchen (door, hand-off to Cook, then the evening book when day.html is opened again, as today; if a real way back needs a Cook change, request it). Reuse the ride's and the book's own drivers by importing them, never by copying.
+     Accept: DAY-02's probes: both flows reach their end
+
+REGRESSION ROWS TO RECHECK (0 rows of the fix list and its done archive; * = open or reopened):
+
+PROOF (rule C8, decisions 48 and 50: fast checks while building; before the finish, your own flows at every size):
+  - While building: at most about 15 minutes of browser checks at a time, never a full sandbox pass or a whole mode; anything longer is left to the orchestrator's `/review`.
+  - Tests, leak scripts, check_onboard and `node build/tools/review/checks.mjs` (incl. the word lint).
+  - Map what you changed: `node build/tools/review/touched.mjs` and run its sandbox command at 1366x768 while you work, one shot each.
+  - BEFORE THE FINISH, replay your own flows at every size, under the browser lock: `flock -w 3600 /tmp/njg-browser.lock timeout 1800 node build/sandbox/run.mjs --contract --flow day:door --sizes 800x360,844x390,1024x768,1180x820,1280x800,1366x768,1366x1024,1440x900 --run-id s09-final-door-matrix --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain. This one run may take up to 30 minutes (it replaces the old "1366x768 only" line, and the 15-minute cap rises to 30 for this run).
+  - `node build/tools/review/shotdiff.mjs` and look at sheets/changed.png yourself; list flaws first (zoom x2).
+  - `node build/tools/review/touched.mjs --json | node build/tools/review/regress.mjs --stdin`: recheck every row it lists.
+  - `node build/tools/review/skeleton.mjs s09-final-door` starts the report's proof section.
+TESTS: browser tests one at a time (`flock -w 1800 /tmp/njg-browser.lock timeout ...`, B16), own COOK_TEST_PORT = 8884.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s09-final-door.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit and push the branch. No bump_version, no push to main.

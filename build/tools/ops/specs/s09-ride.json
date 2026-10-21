@@ -7,7 +7,7 @@
   "cost": "about $35-50",
   "stop": "when every task is accepted, or 4 hours",
   "branch": "a worktree of claude/funny-maxwell-3dkhif (the orchestrator merges)",
-  "live": true,
+  "live": false,
   "read": [
     "docs/sprints/S09-a-day-at-nanis.md (the ride: Zafar's 19-20 Oct lines, newest last; the 20 Oct road and door line is the design)",
     "docs/process/regressions.md section 'A day at Nani's' rows RIDE-01 to RIDE-06, and their probes in build/sandbox/data/evidence.json (written before you start; run them red first)",
@@ -36,16 +36,42 @@
   ],
   "stubs": "layers, props and things the art run hasn't made yet are simple placeholders behind data paths; the s09r cuts (assets/day/ride/s09r/ when the orchestrator lands them) drop in by path",
   "tasks": [
-    {"do": "RIDE-01: the view is three looping layers per trip from data (far, middle, near, each its own art path and speed: far about 0.15, middle 0.4, near 1), over the sky (reuse js/day/sky.js's sky for the day's weather). Each layer tiles end to end and the join is a soft cross-fade over the tile's outer tenth, so no seam or jump shows at any speed. A layer's art may be a keyed PNG or WebP with alpha; code never keys colours at run time.", "accept": "RIDE-01's probe (a filmstrip across a near-layer join) at 1366x768 and 844x390"},
-    {"do": "RIDE-06: the car window frame is the kept s09a car window (sources/art/s09a/r1-car-window-v1.png) keyed to alpha (green to transparent, erode 1 px, saved under assets/day/ride/), fitted by height, its sides extended by repeating its outer columns (pillar and seat) so it fills every screen shape; the view fills the opening; no green left.", "accept": "RIDE-06's probe at 800x360, 1024x768, 1366x768, 1366x1024"},
-    {"do": "RIDE-02: things stand on two ground lines placed by code: the near verge (bigger) and the field behind (smaller, drawn behind the near layer's top edge), each moving at its own line's speed. Cut-out props (bush, haystack, wall, tree) stand on the near line and can half-hide a thing. Nani never asks for a thing while it is fully hidden: add contract-47 (a call whose thing is more than about two thirds hidden, or off screen, is a break).", "accept": "RIDE-02's probe (contract-47 0 breaks) at 1366x768 and 800x360"},
-    {"do": "RIDE-03: three speeds, never stopped (Zafar, 20 Oct: 'the speed should make the items speed up, that's the fun of it'): normal from the start; Nani says speed up or slow down through the language engine (grey to-record placeholders if the lexicon lacks them), and the whole view and every thing on it go faster or slower together, easing over about a second. On 800x360 a thing crosses the window in about 9 s (slow), 6 s (normal) and 3.5 s (fast, never under 3 s); scale by the window's width so every screen gets the same time. Build the speed-slow and speed-fast drivers in flows/day-window.mjs.", "accept": "RIDE-03's probes (traces at slow and fast, the voice timeline) at 800x360"},
-    {"do": "RIDE-04: fair at every speed: a thing is asked for only as it comes into view (entering from the right), never as it leaves; a thing that was asked for and missed comes round again until found (Zafar, 20 Oct: was once); take the stop-the-car beat out (Zafar, 20 Oct). Add contract-48 (a call while its thing is leaving, or a missed thing that never comes round, is a break). Build the miss driver.", "accept": "RIDE-04's probe (contract-48 0 breaks on a ride with every first pass missed; the ride still ends with everything found)"},
-    {"do": "RIDE-05: the leak bot (build/leak_window_ride.mjs) plays at the three speeds (--speeds slow,normal,fast) with unasked things passing as well as look-alike groups: fair finds everything; tap-all, wait and blind stay under 10% at every speed and level.", "accept": "RIDE-05's probe: node build/leak_window_ride.mjs --speeds slow,normal,fast exits 0"},
-    {"do": "The farm road's things in data/day.json, in three groups, each with an English name, an engine id and an art path (null = placeholder shape): review from earlier days (the red and green doors), the farm animals to come (goat, hen, dog, bird, cow: Zafar says cow is 'gai', so give it the engine id n.cow and let the engine report it as a gap to record; never write the Kutchi yourself), and things you might see passing (a tractor, a bicycle). The art paths point to assets/day/ride/s09r/<name>.webp when that file exists, else the placeholder.", "accept": "the ride at 1366x768 shows the groups; the report lists every engine gap"},
-    {"do": "The preview for Zafar: lab/ride-preview.html (a grown-ups' lab page: English allowed) shows the car window over the farm road and the town layers with the things and props on their lines, three buttons (slow, normal, fast) and a layer switch (placeholders or the s09r art when present). Record a 20-second video (Playwright recordVideo, webm) at each speed at 1366x768 into build/screenshots/s09-ride/ for the report.", "accept": "the three videos and a still per speed in the report"}
+    {
+      "do": "RIDE-01: the view is three looping layers per trip from data (far, middle, near, each its own art path and speed: far about 0.15, middle 0.4, near 1), over the sky (reuse js/day/sky.js's sky for the day's weather). Each layer tiles end to end and the join is a soft cross-fade over the tile's outer tenth, so no seam or jump shows at any speed. A layer's art may be a keyed PNG or WebP with alpha; code never keys colours at run time.",
+      "accept": "RIDE-01's probe (a filmstrip across a near-layer join) at 1366x768 and 844x390"
+    },
+    {
+      "do": "RIDE-06: the car window frame is the kept s09a car window (sources/art/s09a/r1-car-window-v1.png) keyed to alpha (green to transparent, erode 1 px, saved under assets/day/ride/), fitted by height, its sides extended by repeating its outer columns (pillar and seat) so it fills every screen shape; the view fills the opening; no green left.",
+      "accept": "RIDE-06's probe at 800x360, 1024x768, 1366x768, 1366x1024"
+    },
+    {
+      "do": "RIDE-02: things stand on two ground lines placed by code: the near verge (bigger) and the field behind (smaller, drawn behind the near layer's top edge), each moving at its own line's speed. Cut-out props (bush, haystack, wall, tree) stand on the near line and can half-hide a thing. Nani never asks for a thing while it is fully hidden: add contract-47 (a call whose thing is more than about two thirds hidden, or off screen, is a break).",
+      "accept": "RIDE-02's probe (contract-47 0 breaks) at 1366x768 and 800x360"
+    },
+    {
+      "do": "RIDE-03: three speeds, never stopped (Zafar, 20 Oct: 'the speed should make the items speed up, that's the fun of it'): normal from the start; Nani says speed up or slow down through the language engine (grey to-record placeholders if the lexicon lacks them), and the whole view and every thing on it go faster or slower together, easing over about a second. On 800x360 a thing crosses the window in about 9 s (slow), 6 s (normal) and 3.5 s (fast, never under 3 s); scale by the window's width so every screen gets the same time. Build the speed-slow and speed-fast drivers in flows/day-window.mjs.",
+      "accept": "RIDE-03's probes (traces at slow and fast, the voice timeline) at 800x360"
+    },
+    {
+      "do": "RIDE-04: fair at every speed: a thing is asked for only as it comes into view (entering from the right), never as it leaves; a thing that was asked for and missed comes round again until found (Zafar, 20 Oct: was once); take the stop-the-car beat out (Zafar, 20 Oct). Add contract-48 (a call while its thing is leaving, or a missed thing that never comes round, is a break). Build the miss driver.",
+      "accept": "RIDE-04's probe (contract-48 0 breaks on a ride with every first pass missed; the ride still ends with everything found)"
+    },
+    {
+      "do": "RIDE-05: the leak bot (build/leak_window_ride.mjs) plays at the three speeds (--speeds slow,normal,fast) with unasked things passing as well as look-alike groups: fair finds everything; tap-all, wait and blind stay under 10% at every speed and level.",
+      "accept": "RIDE-05's probe: node build/leak_window_ride.mjs --speeds slow,normal,fast exits 0"
+    },
+    {
+      "do": "The farm road's things in data/day.json, in three groups, each with an English name, an engine id and an art path (null = placeholder shape): review from earlier days (the red and green doors), the farm animals to come (goat, hen, dog, bird, cow: Zafar says cow is 'gai', so give it the engine id n.cow and let the engine report it as a gap to record; never write the Kutchi yourself), and things you might see passing (a tractor, a bicycle). The art paths point to assets/day/ride/s09r/<name>.webp when that file exists, else the placeholder.",
+      "accept": "the ride at 1366x768 shows the groups; the report lists every engine gap"
+    },
+    {
+      "do": "The preview for Zafar: lab/ride-preview.html (a grown-ups' lab page: English allowed) shows the car window over the farm road and the town layers with the things and props on their lines, three buttons (slow, normal, fast) and a layer switch (placeholders or the s09r art when present). Record a 20-second video (Playwright recordVideo, webm) at each speed at 1366x768 into build/screenshots/s09-ride/ for the report.",
+      "accept": "the three videos and a still per speed in the report"
+    }
   ],
-  "flows": ["day:window"],
+  "flows": [
+    "day:window"
+  ],
   "shared": true,
   "browser": true,
   "port": 8881,
