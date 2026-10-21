@@ -797,9 +797,9 @@
     "dom:#mission"
    ],
    "expect": [
-    "!hasWord:number"
+    "hasWord:number"
    ],
-   "note": "L3+: heard only, no number in headline or rows (on a save where the numbers are known: decision 57 writes a number the first times it is heard)"
+   "note": "L3: the numbers stay written (the level table, Zafar 19 Oct: 'frames, verbs and numbers stay written'; was 'heard only', decision 41); L4 hides the card"
   }
  ],
  "SH-14": [
@@ -1376,8 +1376,8 @@
    "expect": [
     "count:.ob-ghost,.co-finger>=1"
    ],
-   "note": "daar: every phase has its help; nothing dimmed with nothing lit (counted once the ghost is visible, not at its 0-opacity first frame)",
-   "delay": 0,
+   "note": "daar: every phase has its help; nothing dimmed with nothing lit (counted once the ghost is visible, not at its 0-opacity first frame) (s08 w8A: 300 ms after it shows: at its first frame the finger is still fading in)",
+   "delay": 300,
    "max": 14
   }
  ],
@@ -1531,7 +1531,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:placed",
+   "at": "every:life:step-open",
    "after": null,
    "capture": [
     "dom:.njg-guide",
@@ -1540,8 +1540,9 @@
    "expect": [
     "!textMatches:(?i)make each pan|^\\s*$"
    ],
-   "note": "the guide says the next step, one line per step, in step with the highlight",
-   "max": 10
+   "note": "the guide says the next step, one line per step, in step with the highlight (s08 w8A: at each step's opening, not at the tap: the box is empty for the moment between one step closing and the next opening, R2)",
+   "max": 10,
+   "delay": 500
   },
   {
    "flow": "cook:daar",
@@ -3688,7 +3689,7 @@
   {
    "flow": "cook:chai-tray",
    "path": "fair",
-   "level": 3,
+   "level": 4,
    "sizes": [
     "1366x768"
    ],
@@ -3704,7 +3705,7 @@
     "pass",
     "count:.oc-closed-big=3"
    ],
-   "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet",
+   "note": "everyone who orders comes in first; one pop-up with each person's order; then quiet (s08 w8A: the 3-person chai is L4 now: the level table, Zafar 19 Oct, made chai L3 two cups, L4 three)",
    "delay": 1200
   }
  ],
@@ -4343,8 +4344,7 @@
    "level": [
     1,
     2,
-    3,
-    4
+    3
    ],
    "sizes": [
     "1366x768"
@@ -4360,6 +4360,25 @@
     "hasWord:number"
    ],
    "note": "the chop card writes quantities at every level"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "dom:#mission"
+   ],
+   "expect": [
+    "hasWord:number"
+   ],
+   "note": "L4: the chop card writes its first round's number and item, the rest dotted (DAAR-34, Zafar); the order card itself is folded at L4 (the level table, Zafar 19 Oct), so this reads the daar station's chop card (s08 w8A: the chop lab's L4 had no chop card yet at this moment)"
   }
  ],
  "DAAR-09": [
@@ -11109,9 +11128,9 @@
    ],
    "expect": [
     "lexicon",
-    "!textMatches:(?i)•|\\bboga\\b"
+    "!textMatches:(?i)\\bboga\\b"
    ],
-   "note": "no English or dot placeholders in pills or cards ('mixed' is Kutchi: decision 87, a marked loan)"
+   "note": "no English or dot placeholders in pills or cards ('mixed' is Kutchi: decision 87, a marked loan); s08 w8A: the dots are the level table's (Zafar 19 Oct: L3 dots the item words, frames, verbs and numbers written; DAAR-34: L4 dots the rows not yet called), so only the English and 'boga' placeholders are banned here"
   },
   {
    "flow": "cook:chop",
@@ -11129,9 +11148,10 @@
    ],
    "expect": [
     "lexicon",
-    "!textMatches:•"
+    "hasWord:number",
+    "!textMatches:(?i)\\bboga\\b"
    ],
-   "note": "the chop L3 headline: no '...' for a number"
+   "note": "the chop L3 headline: the number written, never dots for a number (the item words are dotted at L3: the level table, Zafar 19 Oct)"
   }
  ],
  "LNG-04": [
@@ -12280,7 +12300,7 @@
  "DAAR-22": [
   {
    "flow": "cook:chop",
-   "path": "fair",
+   "path": "speed1",
    "level": 1,
    "sizes": [
     "1366x768"
@@ -12290,10 +12310,10 @@
    "at": "cook:slice",
    "after": null,
    "capture": [
-    "strip:#stage:6x120"
+    "strip:#stage:8x90"
    ],
    "expect": null,
-   "note": "the first swipe filmed as it happens: the blade crosses the item and it splits cleanly (after the move the halves have already gone)"
+   "note": "the first swipe filmed as it happens: the blade crosses the item and it splits cleanly (after the move the halves have already gone) (s08 w8A: at a child's pace, speed 1, 90 ms apart: at test speed the halves had gone before the strip's second frame, 235 ms)"
   }
  ],
  "DAAR-23": [
