@@ -4291,14 +4291,14 @@
   "date": "2026-10-21"
  },
  "DAY-02": {
-  "hash": "a8e7f7b83edb65e5704c",
+  "hash": "9982e9151bd43be94831",
   "dhash": [],
-  "verdict": "FAIL",
-  "line": "DAY-02-p2-L1-1366x768 voice, the kitchen day shows no hand-off: after the door \"Ha!\" (8.16s) the next entry is day:book \"What did we do today?\" at 12.00s on the same page clock, with no request/stage step for Cook and no page reopen logged, so \"hands off and the book follows on return\" is not shown (and p2 has no dom capture at page:end); the farm day (p1) is complete: door -> request day:window -> ride-call/ride-found 0,1,2 (bakri, murgi, kutro) -> ride-end -> book with those finds (dom at page:end lists bakri, kutro, murgi, darwajo, gadi) -> \"See you tomorrow!\" -> page:end 59.1s. Flaws off the row: Kutchi book/ride lines (\"Nar!\", \"bakri\", \"murgi\", \"kutro\", \"Bakri kida ai?\", \"Murgi kida ai?\", \"Kutro kida ai?\", \"chai\", \"dudh\") are [silent: nothing played], not to-record English, so decision 84 does not cover them; p2 marks mum/kar.mp3 and mum/ha.mp3 \"[?]\" where p1 marks ha.mp3 family-ok; in both probes a tap on img restarts the turn line while it is still playing (p1 36.16/36.65 \"Then we saw a big goat.\", p2 31.18/32.22 \"Then we used the milk.\").",
-  "panel": "DAY-02-p2-L1-1366x768 voice",
+  "verdict": "PASS",
+  "line": "DAY-02-p1-L1-1366x768 voice + dom:.day-root@page:end, the farm day runs door (Nani's farm invitation, child \"Ha!\" at 6.95s) -> request day:window -> ride with three calls and three ride-found steps (bakri, murgi, kutro) -> ride-end 15.63s -> book \"What did we do today?\" with the ride's finds tapped and recapped -> \"Goodnight!\" / \"See you tomorrow!\" -> page:end reached at 54.1s, and the end dom lists bakri, murgi, kutro, darwajo, gadi; the kitchen day (DAY-02-p2-L1-1366x768) shows door -> \"Ha!\" -> dom:.day-lab-note \"Hand-off: cook.html\" at 8.0s (expect PASS), then on reopening day.html the evening book follows with maani, chai, dudh and reaches page:end at 52.7s (dom:.day-root@page:end lists maani, chai, dudh, darwajo). Flaws off the row's point: book lines double-fire and overlap after an img tap (p1 \"Then we saw a big chicken.\" 31.43 and 31.94; p2 \"Then we used the milk.\" 26.63 and 27.09; p2 \"Then we used the chai.\" 30.18 and 31.71); p1 \"There's the chicken!\" (23.68) starts over \"Murgi kida ai?\" (23.56-24.06); p1 book \"kutro\" has zero duration (28.02-28.02); p2 tags \"Tu muke randhan lai madad kar de.\" as [?: mum/kar.mp3] (a whole sentence on one word clip, unverified) and \"Ha!\" as [?] where p1 has it family-ok; most Nani lines are to-record placeholders (allowed, decision 84) and a text-only sheet cannot show their grey italic.",
+  "panel": "DAY-02-p1-L1",
   "judge": "Claude Fable 5.1 (claude-fable-5-1), session_01PykEzWjMEMAAbLhHgsM1vm",
-  "run": "ev-20261021-032427-602",
-  "commit": "f5338db7",
+  "run": "ev-20261021-032953-b2n",
+  "commit": "75e68f28",
   "png": null,
   "date": "2026-10-21"
  },
