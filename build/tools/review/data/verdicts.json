@@ -282,7 +282,7 @@
   "date": "2026-10-21"
  },
  "BOOK-02": {
-  "hash": "643852a44c16db2f7988",
+  "hash": "78fe6ee72a6e324d0ec7",
   "dhash": [
    "1111535341515111",
    "1111535341515111",
@@ -293,8 +293,8 @@
   "line": "machine: minSize:.day-book button>=64 (minSize 93, 72, 64); noClip:.day-book (1 clean); minSize:.day-book button>=64 (minSize 93, 72, 64)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
   "date": "2026-10-21"
  },
  "BOOK-03": {
@@ -375,14 +375,14 @@
   "date": "2026-10-21"
  },
  "BOOK-08": {
-  "hash": "70ef5a34d0bf725ae976",
+  "hash": "11ec3e7478d4fdfe6df4",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (node build/leak_book.mjs: exit 0)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
   "date": "2026-10-21"
  },
  "CHAI-02": {
@@ -4262,6 +4262,37 @@
   "commit": "10ec9e89",
   "date": "2026-10-20"
  },
+ "DAY-01": {
+  "hash": "9ab7bbf575dc7b52296f",
+  "dhash": [],
+  "verdict": "PASS",
+  "line": "machine: pass (node build/test_day_runner.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
+ "DOOR-04": {
+  "hash": "66e03b6827748cd97d23",
+  "dhash": [
+   "490a68b9ad634749",
+   "286868a9aae34349",
+   "18d8c89bebeacbc1",
+   "1878f899e9634749",
+   "3959c99bcbc6cacb",
+   "18c0c89bebeecbc9",
+   "4d29494bcbe7e26b",
+   "6d29694bcbe3e24b"
+  ],
+  "verdict": "PASS",
+  "line": "machine: noClip:.day-lines (1 clean); noOverlap:.day-nani,.day-side (no overlap); noClip:.day-lines (1 clean)",
+  "panel": null,
+  "judge": "expect",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
+  "date": "2026-10-21"
+ },
  "FL-01": {
   "hash": "e488377841b110b66915",
   "dhash": [
@@ -4980,50 +5011,50 @@
   "date": "2026-10-21"
  },
  "RIDE-02": {
-  "hash": "8dab20bfb8fd676089c3",
+  "hash": "cc18f66e765904cbeadf",
   "dhash": [
-   "e73707b3d3552572",
-   "7a4f2dbd490d890b"
+   "5603375d251c4919",
+   "7f43257d6f1d1d19"
   ],
   "verdict": "PASS",
   "line": "machine: contract-47 (0 breaks on this page); contract-47 (0 breaks on this page)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
   "date": "2026-10-21"
  },
  "RIDE-03": {
-  "hash": "7f2dcf5fe23213a6e669",
+  "hash": "912760a411a18379683d",
   "dhash": [],
   "verdict": "PASS",
-  "line": "machine: lastsMs:.wr-member>=8000 (on screen 11342 ms); lastsMs:.wr-member>=3000 (on screen 3862 ms); lastsMs:.wr-member<=4500 (on screen 3862 ms)",
+  "line": "machine: lastsMs:.wr-member>=8000 (on screen 10786 ms); lastsMs:.wr-member>=3000 (on screen 3921 ms); lastsMs:.wr-member<=4500 (on screen 3921 ms)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
   "date": "2026-10-21"
  },
  "RIDE-04": {
-  "hash": "e9d11ca391ecbf4e658c",
+  "hash": "12a087246b65e9bd0692",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: contract-48 (0 breaks on this page)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
   "date": "2026-10-21"
  },
  "RIDE-05": {
-  "hash": "d21c3537e4c0daad088a",
+  "hash": "f04ab784ccdb81052056",
   "dhash": [],
   "verdict": "PASS",
   "line": "machine: pass (node build/leak_window_ride.mjs --speeds slow,normal,fast: exit 0)",
   "panel": null,
   "judge": "expect",
-  "run": "ev-20261021-000057-xfq",
-  "commit": "ca76d32b",
+  "run": "ev-20261021-031310-gsc",
+  "commit": "9014b36b",
   "date": "2026-10-21"
  },
  "RIDE-06": {

@@ -736,3 +736,11 @@
 {"id":"BOOK-01","run":"ev-20261021-000057-xfq","event":"built","date":"2026-10-21"}
 {"id":"BOOK-07","run":"ev-20261021-000057-xfq","event":"built","date":"2026-10-21"}
 {"id":"BOOK-03","run":"ev-20261021-000057-xfq","event":"built","date":"2026-10-21"}
+{"id":"RIDE-02","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"ed31a8ff527cf462b975","judge":"expect","date":"2026-10-21"}
+{"id":"RIDE-03","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"973c3d3e25c3994e732f","judge":"expect","date":"2026-10-21"}
+{"id":"RIDE-04","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"b5edebaf30801c5c1e19","judge":"expect","date":"2026-10-21"}
+{"id":"RIDE-05","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"9be29306c6fbaf22956d","judge":"expect","date":"2026-10-21"}
+{"id":"BOOK-02","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"d6c76e3d267ba83b17ac","judge":"expect","date":"2026-10-21"}
+{"id":"BOOK-08","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"ebfb375d88c522732cd5","judge":"expect","date":"2026-10-21"}
+{"id":"DOOR-04","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"0af3d2b1026ea6da602d","judge":"expect","date":"2026-10-21"}
+{"id":"DAY-01","run":"ev-20261021-031310-gsc","verdict":"PASS","spec":"0d897b77cfdbef62381b","judge":"expect","date":"2026-10-21"}
